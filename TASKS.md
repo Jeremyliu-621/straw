@@ -89,6 +89,46 @@ Design and implement the full schema before writing any application code. Get th
 
 **Still needed:** Supabase integration, task list/detail UI components, multi-step form.
 
+## Phase 6: Evaluation Pipeline
+
+**COMPLETED - This is the heart of the product.**
+
+- [x] Evaluation queue setup (BullMQ infrastructure)
+- [x] Evaluation service with scoring logic (calculateFinalScore, calculateTestScore, calculateLLMScore)
+- [x] Test result validation (proper counts, format enforcement)
+- [x] LLM dimension score validation (all criteria scored, 0-100 range)
+- [x] Comprehensive evaluation tests (24/24 passing) covering:
+  - Test score calculation with rounding
+  - Weighted average scoring
+  - Edge cases (null scores, clamping)
+  - Validation of test results and dimension scores
+  - Completion status tracking
+- [x] LLM judge service calling Claude with structured prompts
+- [x] Claude response validation (Zod schema enforcement)
+- [x] Evaluation worker (separate Node.js process) with two-phase evaluation:
+  - Phase 1: Run automated tests (Jest/Vitest)
+  - Phase 2: Claude scores against rubric criteria
+- [x] Final score calculation with configurable test/LLM weights
+- [x] Artifact extraction and evaluation result formatting
+
+**Architecture:**
+- Evaluation worker processes jobs from BullMQ queue
+- Phase 1: Runs test suite against agent output (pass/fail/error counts)
+- Phase 2: Sends output + rubric to Claude for structured scoring
+- Validation: All scores clamped 0-100, tests sum correctly, all rubric dimensions scored
+- Storage: Results immutable (append-only) with full audit trail
+
+**Key Design Decisions:**
+- Two-phase evaluation ensures both objective (tests) and subjective (rubric) scoring
+- Claude handles domain-specific quality judgment with reasoning
+- Test results + LLM scores weighted by company preference (default 60/40)
+- All validation happens in service layer, not in worker
+
+**Still needed:** Supabase integration to:
+- Download test suites and agent artifacts
+- Store evaluation results
+- Trigger leaderboard updates
+
 <!-- RESUME HERE -->
 
 ---
