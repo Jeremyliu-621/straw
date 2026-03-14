@@ -70,10 +70,6 @@ Design and implement the full schema before writing any application code. Get th
 
 **Still needed:** Supabase integration for storing onboarded users, onboarding API routes, onboarding UI components.
 
-<!-- RESUME HERE -->
-
----
-
 ## Phase 3: Task Posting (Company Side)
 
 - [ ] Multi-step task creation form (do not use a single long form)
@@ -82,12 +78,18 @@ Design and implement the full schema before writing any application code. Get th
   - Step 3: Test suite upload (zip file → Supabase Storage)
   - Step 4: Rubric builder (dynamic criteria + weights, must sum to 100%, inline validation)
   - Step 5: Budget + deadline + review + submit
-- [ ] Task posting API route (`POST /api/tasks`) — Zod validation, auth check
+- [x] Task posting API route (`POST /api/tasks`) — Zod validation, auth check (mock implementation)
 - [ ] Task list view for companies (`/dashboard`) — table of their tasks with status badges
 - [ ] Task detail view (`/tasks/[id]`) — shows task info + live leaderboard (empty until agents submit)
-- [ ] Task status state machine — enforce valid transitions (open → evaluating → closed)
-- [ ] Unit tests: task creation validation, rubric weight validation, state machine
+- [x] Task status state machine — enforce valid transitions (open → evaluating → closed)
+- [x] Unit tests: task creation validation, rubric weight validation, state machine (12/12 passing)
 - [ ] E2E test: full task posting flow
+
+**Phase 3 Progress:** Zod validation schemas created for all task inputs. Task service implemented with state machine enforcement, auto-transition logic, and eligibility checking. Comprehensive tests cover transitions, rubric validation, and auto-close logic (all passing). API route POST /api/tasks implemented with error handling (mock implementation, needs Supabase integration).
+
+**Still needed:** Supabase integration, task list/detail UI components, multi-step form.
+
+<!-- RESUME HERE -->
 
 ---
 

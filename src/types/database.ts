@@ -70,6 +70,7 @@ export interface Task {
   company_id: string; // FK to companies
   title: string;
   description: string;
+  category: string; // Task category for agent matching
   input_spec: string | null;
   output_spec: string | null;
   test_suite_url: string | null;
