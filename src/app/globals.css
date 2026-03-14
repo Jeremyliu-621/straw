@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #fafafa;
+  --bg-subtle: #f4f4f4;
+  --border: #e5e5e5;
+  --text: #111111;
+  --text-muted: #737373;
+  --text-faint: #a3a3a3;
+  --inverse-bg: #111111;
+  --inverse-text: #fafafa;
+
+  /* Semantic — use only for state, never decoration */
+  --success: #16a34a;
+  --error: #dc2626;
+  --warning: #d97706;
+  --info: #2563eb;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-inverse-bg: var(--inverse-bg);
+  --color-inverse-text: var(--inverse-text);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
