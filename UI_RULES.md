@@ -2,233 +2,302 @@
 
 ## Design Reference
 
-The aesthetic direction is modeled on **ElevenLabs** — not copied, but used as a north star. Study it: https://elevenlabs.io
+The aesthetic is modeled on **ElevenLabs** (elevenlabs.io). Not copied — used as a north star.
 
-What ElevenLabs gets right that you must internalize:
+What ElevenLabs gets right:
 - Black on white. White on black. Almost nothing else.
-- Generous whitespace that feels intentional, not empty
+- Whitespace that feels intentional, not empty
 - Typography does all the heavy lifting — no decoration needed
-- The product UI looks like a tool a serious person uses, not a landing page someone scrolls past
 - Every element earns its place. If it doesn't need to be there, it isn't.
+- It looks like a serious company that doesn't need to try hard
 
-Also study: **Linear**, **Vercel**, **Clerk**, **Resend**. These are the reference class. They look human-made because they were designed with taste, not generated.
+Also study before building anything: **Linear**, **Vercel dashboard**, **Clerk**, **Resend**. These are the reference class. They feel human-made because a person with taste designed them.
 
 ---
 
-## The One Rule Everything Else Flows From
+## The Prime Directive
 
 **This product must look like a person designed it, not a model prompted it.**
 
-If you look at a screen and it could have come from a Figma AI plugin, a generic SaaS template, or a "build me a dashboard" prompt — rebuild it. That feeling is the enemy.
+If you look at a screen and think it could have come from a Figma AI plugin, a generic SaaS template, or a "build me a dashboard" prompt — rebuild it. That is the enemy.
+
+Signs you are building AI slop:
+- Purple anywhere
+- Gradient backgrounds or gradient text
+- Glassmorphism or blur effects
+- Bento grid layouts
+- Cards with colored backgrounds for decoration
+- Emoji in product UI
+- Filled/solid icons
+- Stock illustrations (Undraw, Storyset, Humaaans)
+- Hero sections with a floating laptop mockup
+- Testimonial sections with stock photo avatars
+- Loading spinners (use skeletons)
+- Multiple accent colors
+
+If any of the above appear in your output, remove them.
 
 ---
 
-## Color
+## Color System
 
-**Palette: Near-black, off-white, and one neutral mid-tone. That's it.**
+The entire palette:
 
 ```css
---color-bg:           #fafafa;   /* off-white, not pure white */
---color-bg-secondary: #f4f4f4;   /* subtle surface differentiation */
---color-border:       #e5e5e5;   /* borders, dividers */
---color-text:         #111111;   /* primary text, near-black not #000 */
---color-text-muted:   #737373;   /* secondary text, labels */
---color-text-faint:   #a3a3a3;   /* placeholder, disabled */
---color-inverse-bg:   #111111;   /* dark surfaces, hero sections */
---color-inverse-text: #fafafa;
+:root {
+  --bg:           #fafafa;   /* page background — off-white, not pure white */
+  --bg-subtle:    #f4f4f4;   /* secondary surfaces, sidebar, code blocks */
+  --border:       #e5e5e5;   /* all borders and dividers */
+  --text:         #111111;   /* primary text — near-black, not #000 */
+  --text-muted:   #737373;   /* secondary text, labels, captions */
+  --text-faint:   #a3a3a3;   /* placeholders, disabled states */
+  --inverse-bg:   #111111;   /* dark sections (hero) */
+  --inverse-text: #fafafa;
+
+  /* Semantic — use only when communicating state, never for decoration */
+  --success:      #16a34a;
+  --error:        #dc2626;
+  --warning:      #d97706;
+  --info:         #2563eb;
+}
 ```
 
-**Semantic states — use sparingly, only where meaning requires it:**
-```css
---color-success:  #16a34a;   /* passing tests, won */
---color-error:    #dc2626;   /* failing, errors */
---color-warning:  #d97706;   /* in progress, caution */
---color-info:     #2563eb;   /* neutral info */
-```
-
-**What is completely forbidden:**
-- RGB accent colors that have no human-made precedent (no `#00ff88`, no `#7c3aed`)
-- Gradient backgrounds of any kind
-- Colored cards or panels for decoration
-- Multiple accent colors coexisting
-- Glassmorphism, frosted glass, blur effects
-- Drop shadows larger than `0 1px 3px rgba(0,0,0,0.1)`
-
-If you feel the urge to add color somewhere, ask: does this color communicate information, or am I decorating? If it's decoration, remove it.
+**Rules:**
+- These are the only colors in the product. No additions without a strong reason.
+- Semantic colors appear only on status badges, score indicators, and error states
+- No accent color — contrast comes from weight and size, not color
+- No gradients. Ever.
+- No shadows larger than `0 1px 3px rgba(0,0,0,0.08)`
 
 ---
 
 ## Typography
 
-**Font stack:**
+**Fonts:**
+- Display + UI: `Geist` — geometric, slightly condensed, serious. Load from `next/font/google`.
+- Monospace: `Geist Mono` — for scores, numbers, code, timestamps. Data should look like data.
 
-- **Display/headings:** `Geist` (Vercel's font — geometric, condensed-feeling, serious) or `Instrument Serif` for editorial moments. Pick one and commit for the whole project.
-- **Body:** `Geist` or `DM Sans` — clean, legible, not generic
-- **Monospace (scores, code, data):** `Geist Mono` or `JetBrains Mono` — data should look like data
+**Never use:** Inter, Space Grotesk, Poppins, Roboto, Arial, system-ui for display text.
 
-**Never use:** Inter (overused), Space Grotesk (AI-coded default), Poppins (consumer app), Roboto, Arial, any system font stack for display text.
-
-**Type scale — use fewer sizes than you think you need:**
+**Scale:**
 ```
-Display:   48–64px, weight 500–600, tight letter-spacing (-0.02em)
-H1:        32–40px, weight 500
-H2:        24px, weight 500
-H3:        18px, weight 500
-Body:      15px, weight 400, line-height 1.6
-Small:     13px, weight 400
-Label:     11px, weight 500, tracking 0.06em, UPPERCASE
+Display:  56px / weight 500 / tracking -0.03em  — hero headlines only
+H1:       36px / weight 500 / tracking -0.02em
+H2:       24px / weight 500 / tracking -0.01em
+H3:       18px / weight 500
+Body:     15px / weight 400 / line-height 1.6
+Small:    13px / weight 400
+Label:    11px / weight 500 / tracking 0.06em / UPPERCASE
+Mono:     14px Geist Mono / for all numbers and data
 ```
 
-The label style (small caps, tracked out) is useful for table headers, section labels, status categories. Use it consistently.
+The Label style (11px uppercase tracked) is the workhorse for table headers, section titles, status categories, and form section labels. Use it consistently — it is what makes the UI feel systematic.
 
 ---
 
 ## Spacing
 
-Base unit: `4px`. Everything is a multiple of 4.
+Base unit: 4px. Every spacing value is a multiple of 4.
 
-- Use generous padding inside components. Cramped = cheap.
-- Vertical rhythm matters. Section gaps should feel like breathing room, not like you ran out of content.
-- Sidebar width: `240px` fixed.
-- Max content width: `1200px` centered.
-- Page padding horizontal: `32px` on desktop, `16px` on mobile.
+Key values:
+- Component padding (inputs, buttons): `10px 16px`
+- Card/panel padding: `24px`
+- Section gaps: `48px` or `64px`
+- Sidebar width: `240px` — fixed, not collapsible on desktop
+- Max content width: `1200px` — centered
+- Page horizontal padding: `32px` desktop / `16px` mobile
+
+**Use generous padding.** Cramped feels cheap. When unsure, add more space.
 
 ---
 
 ## Motion
 
-Less is more. Motion should orient, not entertain.
+Motion should orient, not entertain.
 
-**What's allowed:**
-- Fade-in on page load: `opacity 0 → 1`, `200ms`, `ease-out`. Once. Not per-element.
-- Leaderboard row reordering: smooth position transition, `300ms ease`. This is the one dramatic moment — let it land.
-- Hover states: subtle background shift, `150ms`. Never scale transforms on hover for UI elements.
-- Skeleton loading: a single slow pulse, `1.5s`. Not a shimmer, not a bounce.
+**Allowed:**
+- Page fade-in: `opacity 0→1`, `200ms ease-out`, once, not per-element
+- Leaderboard row reorder: `300ms ease` position transition — this is the product's most dramatic moment, let it land
+- Hover background shifts: `150ms`
+- Skeleton pulse: `1.5s` slow fade — not a shimmer
 
-**What is forbidden:**
-- Staggered entrance animations on lists/cards
+**Forbidden:**
+- Staggered list entrance animations
 - Page transitions that slide or flip
-- Parallax
-- Any animation that plays more than once unprompted
-- Lottie files, animated illustrations, confetti
+- Parallax scrolling
+- Animations that loop or play unprompted
+- Lottie animations
+- Confetti or celebration effects
 
 ---
 
-## Components
-
-### The Golden Rule
-Components should look like they belong to a system, not like they were individually styled. Consistency is more important than any individual component being interesting.
+## Component System
 
 ### Buttons
 ```
-Primary:   bg #111, text #fafafa, no border, hover: bg #333
-Secondary: bg transparent, text #111, border 1px #e5e5e5, hover: bg #f4f4f4
-Danger:    bg transparent, text #dc2626, border 1px #dc2626, hover: bg #fef2f2
+Primary:    bg var(--text) / text var(--inverse-text) / hover bg #333333
+Secondary:  bg transparent / text var(--text) / border 1px var(--border) / hover bg var(--bg-subtle)
+Danger:     bg transparent / text var(--error) / border 1px var(--error) / hover bg #fef2f2
+Ghost:      bg transparent / text var(--text-muted) / hover text var(--text) bg var(--bg-subtle)
 ```
 - Padding: `10px 16px`
 - Border-radius: `6px`
-- Font: `14px`, weight `500`
-- No icons inside buttons unless they genuinely aid comprehension. No arrow icons.
+- Font: `14px` weight `500`
+- No icons unless they genuinely aid comprehension
+- No decorative arrow icons
+
+### Inputs
+```
+border:         1px solid var(--border)
+padding:        10px 12px
+border-radius:  6px
+font:           15px var(--text)
+focus:          outline 2px solid var(--text), outline-offset 2px
+error:          border-color var(--error)
+```
+- Label always above input — never floating, never placeholder-only
+- Error message below input, 13px, var(--error)
+- Helper text below input, 13px, var(--text-muted)
 
 ### Tables
-Tables are the primary data surface of this product. They must be excellent.
-- Header: `11px` label style (uppercase, tracked), `--color-text-muted`
-- Rows: `48px` height, `1px` border-bottom `--color-border`, hover `--color-bg-secondary`
-- Scores: always monospaced, right-aligned
-- Empty state: centered in table body, Lucide icon (thin stroke) + headline + CTA
-- Pagination: bottom-right, `Previous / Next` with page count, simple text links
+Tables are the primary data surface. They must be excellent.
+
+```
+Header row:   11px Label style / var(--text-muted) / border-bottom 1px var(--border)
+Data rows:    48px height / border-bottom 1px var(--border) / hover bg var(--bg-subtle)
+Scores:       Geist Mono, right-aligned always
+```
+
+- Sortable columns have a visible sort indicator
+- Empty state: centered, Lucide icon (24px, strokeWidth 1.5) + headline + CTA button
+- Pagination: bottom-right, "Previous / Next", page count in var(--text-muted)
+- Never paginate with numbered page buttons — just Previous/Next
 
 ### Status Badges
 ```
-OPEN:        bg #f0fdf4, text #16a34a, border #bbf7d0
-EVALUATING:  bg #fffbeb, text #d97706, border #fde68a
-CLOSED:      bg #f4f4f4, text #737373, border #e5e5e5
-FAILED:      bg #fef2f2, text #dc2626, border #fecaca
+OPEN:        bg #f0fdf4 / text #16a34a / border 1px #bbf7d0
+EVALUATING:  bg #fffbeb / text #d97706 / border 1px #fde68a
+CLOSED:      bg #f4f4f4 / text var(--text-muted) / border 1px var(--border)
+FAILED:      bg #fef2f2 / text var(--error) / border 1px #fecaca
+PENDING:     bg #f4f4f4 / text var(--text-faint) / border 1px var(--border)
 ```
-- `11px`, weight `500`, uppercase, letter-spacing `0.04em`
-- Padding: `3px 8px`, border-radius `4px`
-- Never use colored dots or icons inside badges — the color does the work
+- Font: `11px` Label style (uppercase, tracked)
+- Padding: `3px 8px`
+- Border-radius: `4px`
+- No dots. No icons. The color communicates the state.
 
 ### Score Display
-Scores are the product. Treat them accordingly.
-- Large final score: `48px` monospaced, weight `600`, `--color-text`
-- Score bar: `4px` height, `--color-border` background, `--color-text` fill. No rounded ends.
-- Dimension scores: `14px` mono, listed cleanly, label left + score right
-- Never show a score as a fraction (not `87/100`) — always as a number (`87.4`)
+Scores are the product. They get the most visual weight on any screen.
 
-### Forms
-- Label above input, always. Never placeholder-only.
-- Input: `1px` border `--color-border`, `10px 12px` padding, `border-radius 6px`
-- Focus: `2px` outline `#111`, `outline-offset 2px`. Not a glow. Not a colored border.
-- Error state: red border + error text below, `13px`, `--color-error`
-- The rubric builder: criteria add/remove dynamically, weight total shows live in `13px` muted text. If weights don't sum to 100%, submit is disabled with an inline explanation — not a toast.
+- Large final score: `48px` Geist Mono, weight `600`, var(--text)
+- Score bar: `4px` height, var(--border) track, var(--text) fill, no rounded ends
+- Dimension breakdown: `14px` Geist Mono, label left aligned var(--text-muted), score right aligned var(--text)
+- Never display as fraction (not `87/100`) — always as decimal (`87.4`)
+- Winning score: no special color treatment — size and position communicate importance
+
+### Rubric Builder
+This is the most important form in the product. It must feel like a tool.
+
+- Criteria are added/removed dynamically
+- Each criterion has: name (text input) + weight (number input, %)
+- Weight total displays live below the list: `"Total: 94% — must equal 100%"` in 13px var(--text-muted) or var(--error) if invalid
+- Submit button is disabled with inline explanation if weights don't sum to 100%
+- Never use a toast for this validation — it must be inline and persistent
 
 ### Icons
-Use **Lucide** icons only. `strokeWidth={1.5}`. Never filled icons. Never emoji. Never custom SVG illustrations that look like stock art.
-
-Icon sizes: `16px` inline with text, `20px` standalone in UI, `24px` for empty states.
+- Lucide only. `strokeWidth={1.5}`. Outline style always — never filled.
+- 16px inline with text
+- 20px standalone in UI
+- 24px in empty states
+- Never emoji as icon replacements
+- Never custom illustrations
 
 ---
 
-## Layout & Navigation
+## Layout
 
-**Authenticated layout:** Fixed left sidebar `240px` + main content area.
+### Authenticated
+- Fixed left sidebar: `240px`, `var(--bg-subtle)` background, `1px` right border `var(--border)`
+- Main content: remaining width, `var(--bg)` background
+- Content padding: `32px`
+- Max content width: `1200px`
 
-**Sidebar:**
-- Logo/wordmark at top — text only, no elaborate mark
-- Navigation links: `14px`, weight `400` default, weight `500` + `2px` left border `#111` when active
-- User info at bottom: name + role, small, muted
+### Sidebar contents (top to bottom)
+- Logo/wordmark: `Map` in 16px weight 600, top `24px` left `20px`
+- Nav links: `14px` weight `400`, padding `8px 20px`, hover `var(--bg)`
+- Active link: weight `500` + `2px` left border `var(--text)` + bg `var(--bg)`
+- User section at bottom: name + role in Label style, `var(--text-muted)`
 
-**Public layout:** Top nav bar, `64px` height. Logo left, nav links center, CTA right.
-
-No sticky headers inside content areas.
+### Public (landing, pricing, auth)
+- Top nav: `64px` height, `var(--bg)`, `1px` bottom border `var(--border)`
+- Logo left, nav links center, CTA right
+- No sticky elements inside page content
 
 ---
 
 ## Landing Page
 
-One job: make a serious person trust this enough to try it.
+**Job:** Make a serious person trust this enough to try it.
 
-**Structure:**
-1. **Hero** — one sentence what it is, one sentence why it's better, two CTAs. Dark background `#111`, white text. No illustration. If there's a visual, it's a real screenshot of the leaderboard — the actual product, not a mockup.
-2. **How it works** — three steps, plain text. `Step 01. Step 02. Step 03.` No icons.
-3. **Why it's different** — two columns. Left: the old way (demos, sales calls, guesswork). Right: the new way (agents compete on real tasks, scores don't lie).
-4. **Pricing** — clean table. No feature-bloat comparison columns.
-5. **Footer** — links, legal.
+**Hero section** — dark background `var(--inverse-bg)`, white text
+- Headline: the product in one sentence. Not clever. Not catchy. Clear.
+  - Use: *"Post your problem. Agents compete to solve it. You define what winning looks like."*
+- Subhead: one sentence on why it's better than the alternative
+- Two CTAs: "Post a Task" (primary) and "Register Your Agent" (ghost)
+- Visual: a real screenshot of the leaderboard with real-looking data. Not a mockup. Not an illustration. The actual product.
+
+**How it works** — three steps
+- `Step 01.` `Step 02.` `Step 03.` — plain text, no icons, no cards, generous spacing
+- Each step is two lines: a short verb headline + one sentence explanation
+
+**Why it's different** — two columns, no heading needed
+- Left: the old way (one paragraph, honest)
+- Right: the new way (one paragraph, specific)
+- Numbers: *"4 agents competed. 1 scored 94.2. You hired it in 48 hours."*
+
+**Pricing** — simple, no feature comparison matrix
+- Three rows: Task Fee / Success Fee / Enterprise
+- Honest numbers or "Contact us"
+
+**Footer** — product name, links, legal. Nothing else.
 
 **Copy rules:**
-- No exclamation marks
-- No "revolutionizing" or "reimagining" or "powerful" or "cutting-edge"
-- Numbers over adjectives: `"4 agents competed. 1 scored 94.2."` beats `"See incredible results."`
-- If the headline could appear on any B2B SaaS website, rewrite it.
+- No exclamation marks anywhere
+- No "revolutionary", "powerful", "cutting-edge", "reimagining", "next-generation"
+- Numbers beat adjectives: *"6 agents, 48 hours, one score"* beats *"fast, comprehensive evaluation"*
+- If a headline could appear on any B2B SaaS site, rewrite it
 
 ---
 
 ## What Makes It Feel Human-Made
 
-- **Typography hierarchy that's obvious without color.** Size, weight, and spacing do the work.
-- **Whitespace that feels almost too generous.** If it feels like there might be too much space, you're probably close to right.
-- **Zero stock photography.** Zero Unsplash. Zero abstract 3D renders.
-- **The product screenshot is the hero visual.** Show the real leaderboard with real-looking data.
-- **Realistic numbers in demos.** Not `99 users`. Use odd, believable numbers like `23 tasks`, `6 agents`, `91.3`.
-- **One element per page that breaks the expected.** A headline that runs longer than comfortable. A number displayed very large. Space where you'd expect content. Grids are structure, not cages.
+These details separate designed from generated:
+
+- **Whitespace that feels almost too generous.** When uncertain, add more.
+- **Typography hierarchy without color.** Size + weight + spacing does all the work.
+- **Realistic data in demos.** Not `99 tasks`, `1000 agents`. Use `23 tasks`, `7 agents`, `91.3` — odd, believable numbers.
+- **One thing per page that breaks the grid.** A very large number. A headline that runs uncomfortably long. Extra space where you'd expect content. The grid is structure, not a cage.
+- **Zero stock photography.** Zero Unsplash. Zero abstract 3D renders. Zero generated images.
+- **The product screenshot is the hero.** If it looks good, show it. It's the most honest thing on the page.
 
 ---
 
-## Hard Prohibitions
+## Hard No List
 
-Never, under any circumstances:
+These are never acceptable under any circumstances:
+
+- Purple anywhere
 - Gradient backgrounds or gradient text
-- Glassmorphism / blur / frosted surfaces
-- Colored section backgrounds (aside from the single dark hero)
-- Emoji anywhere in product UI
-- Stock illustrations (Undraw, Storyset, Humaaans, or anything like them)
-- Purple. Anywhere. At all.
+- Glassmorphism, blur, frosted glass
+- Colored section backgrounds other than the dark hero
+- Emoji in product UI
+- Stock illustrations of any kind
 - Animated gradient borders
-- "Bento grid" layouts
-- Hero sections with a floating laptop/phone mockup
+- Bento grid feature layouts
+- Floating laptop or phone mockups in hero
 - Testimonials with stock photo avatars
-- Filled/solid icons — outlines only
+- Filled/solid icons
 - Loading spinners — skeletons only
-- Modals for destructive actions — inline confirmation only
-- Any color described as "vibrant", "electric", or "neon"
+- Modal dialogs for destructive actions — inline confirmation only
+- Any color described internally as "vibrant", "electric", or "neon"
+- Tooltip on click — hover only
