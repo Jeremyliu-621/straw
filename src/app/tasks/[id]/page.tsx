@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { StatusBadge } from "@/components/status-badge";
+import { Leaderboard } from "@/components/leaderboard";
+import { DeadlineCountdown } from "@/components/deadline-countdown";
 import { ROLE_COMPANY, ROLE_AGENT_BUILDER } from "@/constants";
 
 interface Task {
@@ -41,6 +43,12 @@ export default function TaskDetailPage() {
   const isCompany = session?.user?.role === ROLE_COMPANY;
   const isAgent = session?.user?.role === ROLE_AGENT_BUILDER;
   const isOwner = isCompany && task?.company_id === session?.user?.supabaseId;
+
+  const handleDeadlineExpired = useCallback(() => {
+    // Trigger task close check on deadline expiry
+    fetch(`/api/tasks/${id}/close`, { method: "POST" }).catch(() => {});
+    setTask((prev) => (prev ? { ...prev, status: "evaluating" } : prev));
+  }, [id]);
 
   useEffect(() => {
     if (!id) return;
@@ -195,6 +203,17 @@ export default function TaskDetailPage() {
             {new Date(task.deadline).toLocaleString()}
           </p>
         </Section>
+
+        {/* Deadline countdown — only for open tasks */}
+        {task.status === "open" && (
+          <DeadlineCountdown
+            deadline={task.deadline}
+            onExpired={handleDeadlineExpired}
+          />
+        )}
+
+        {/* Leaderboard — visible for open, evaluating, and closed tasks */}
+        {task.status !== "draft" && <Leaderboard taskId={id} />}
       </div>
 
       {/* Actions */}
