@@ -1,9 +1,7 @@
 import { vi } from "vitest";
 
-// Set test environment
-process.env.NODE_ENV = "test";
-
 // Mock environment variables for tests
+vi.stubEnv("NODE_ENV", "test");
 vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "http://localhost:54321");
 vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "test-anon-key");
 vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "test-service-role-key");
