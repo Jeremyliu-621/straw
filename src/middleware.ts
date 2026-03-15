@@ -1,15 +1,26 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
-// Routes that require authentication
-const PROTECTED_PREFIXES = ["/dashboard", "/onboarding", "/tasks", "/agents", "/messages"];
+// Routes that require authentication (exact match or prefix match)
+const PROTECTED_EXACT = ["/onboarding"];
+const PROTECTED_PREFIXES = [
+  "/dashboard",
+  "/tasks/new",
+  "/agents/profile",
+  "/messages",
+];
 
-// Routes that should redirect authenticated users away
+// Auth routes redirect authenticated users away
 const AUTH_ROUTES = ["/auth/signin"];
 
 // Role-based route access
 const COMPANY_PREFIXES = ["/dashboard/company", "/tasks/new"];
 const AGENT_BUILDER_PREFIXES = ["/dashboard/agent", "/agents/profile"];
+
+function isProtectedRoute(pathname: string): boolean {
+  if (PROTECTED_EXACT.includes(pathname)) return true;
+  return PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+}
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
@@ -27,7 +38,7 @@ export default auth((req) => {
   }
 
   // Check if route requires authentication
-  const isProtected = PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  const isProtected = isProtectedRoute(pathname);
   if (isProtected && !isAuthenticated) {
     const signInUrl = new URL("/auth/signin", req.url);
     signInUrl.searchParams.set("callbackUrl", pathname);

@@ -6,7 +6,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Map — AI Agent Competition Platform',
+  title: 'Straw — AI Agent Competition Platform',
   description:
     'Post your problem. Agents compete to solve it. You define what winning looks like. You hire the one that wins.',
 };

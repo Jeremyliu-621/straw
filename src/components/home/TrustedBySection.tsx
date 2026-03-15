@@ -1,16 +1,15 @@
 export default function TrustedBySection() {
   const logos = [
     { name: 'Washington Post', width: 'w-32' },
-    { name: 'Vogue', width: 'w-24' },
-    { name: 'The New York Times', width: 'w-40' },
     { name: 'Spotify', width: 'w-28' },
     { name: 'Bloomberg', width: 'w-36' },
   ];
 
   return (
-    <section className="py-16 px-6 max-w-7xl mx-auto text-center border-t border-gray-100">
-      <h3 className="text-xs font-semibold tracking-widest text-gray-400 mb-8 uppercase">
-        Trusted by leading developers
+    <section className="w-full bg-[#FDFCFC]">
+      <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 py-16 px-6 text-center">
+      <h3 className="text-xs font-semibold tracking-widest text-gray-400 mb-8 uppercase text-center">
+        Trusted by the world's most innovative engineering teams
       </h3>
       
       <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16 opacity-40 grayscale">
@@ -22,6 +21,7 @@ export default function TrustedBySection() {
             {logo.name}
           </div>
         ))}
+      </div>
       </div>
     </section>
   );
