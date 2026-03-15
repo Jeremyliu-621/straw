@@ -13,7 +13,7 @@ export interface User extends Timestamps {
   id: string;
   email: string;
   name: string;
-  role: UserRole;
+  role: UserRole | null;
   avatar_url: string | null;
   auth_provider_id: string;
   onboarded: boolean;
@@ -22,7 +22,7 @@ export interface User extends Timestamps {
 export interface UserInsert {
   email: string;
   name: string;
-  role: UserRole;
+  role?: UserRole | null;
   avatar_url?: string | null;
   auth_provider_id: string;
 }

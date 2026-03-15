@@ -8,7 +8,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="flex min-h-screen" style={{ background: "var(--bg)" }}>
-      <Sidebar user={session.user} />
+      <Sidebar />
       <main className="flex-1" style={{ marginLeft: "240px" }}>
         <div className="mx-auto max-w-[1200px]" style={{ padding: "32px" }}>
           {children}

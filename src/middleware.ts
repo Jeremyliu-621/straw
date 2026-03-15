@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
-// Routes that require authentication (exact match or prefix match)
 const PROTECTED_EXACT = ["/onboarding"];
 const PROTECTED_PREFIXES = [
   "/dashboard",
@@ -10,12 +9,7 @@ const PROTECTED_PREFIXES = [
   "/messages",
 ];
 
-// Auth routes redirect authenticated users away
 const AUTH_ROUTES = ["/auth/signin"];
-
-// Role-based route access
-const COMPANY_PREFIXES = ["/dashboard/company", "/tasks/new"];
-const AGENT_BUILDER_PREFIXES = ["/dashboard/agent", "/agents/profile"];
 
 function isProtectedRoute(pathname: string): boolean {
   if (PROTECTED_EXACT.includes(pathname)) return true;
@@ -45,32 +39,18 @@ export default auth((req) => {
     return NextResponse.redirect(signInUrl);
   }
 
-  // Redirect to onboarding if not onboarded
+  // Redirect to onboarding if not yet completed
   if (
     isAuthenticated &&
-    !session.user.onboarded &&
+    (!session.user.onboarded || !session.user.role) &&
     isProtected &&
     !pathname.startsWith("/onboarding")
   ) {
     return NextResponse.redirect(new URL("/onboarding", req.url));
   }
 
-  // Role-based access control
-  if (isAuthenticated && session.user.role) {
-    const isCompanyRoute = COMPANY_PREFIXES.some((prefix) => pathname.startsWith(prefix));
-    const isAgentRoute = AGENT_BUILDER_PREFIXES.some((prefix) => pathname.startsWith(prefix));
-
-    if (isCompanyRoute && session.user.role !== "company") {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
-    }
-
-    if (isAgentRoute && session.user.role !== "agent_builder") {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
-    }
-  }
-
-  // /dashboard redirects to role-specific dashboard
-  if (isAuthenticated && pathname === "/dashboard") {
+  // /dashboard → role-specific dashboard
+  if (isAuthenticated && pathname === "/dashboard" && session.user.role) {
     const role = session.user.role;
     if (role === "company") {
       return NextResponse.redirect(new URL("/dashboard/company", req.url));
