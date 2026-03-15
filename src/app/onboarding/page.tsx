@@ -56,7 +56,7 @@ export default function OnboardingPage() {
         return;
       }
 
-      await update();
+      await update({ onboarded: true });
       router.push("/dashboard");
     } catch {
       setError("Network error. Please try again.");

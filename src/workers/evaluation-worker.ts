@@ -12,7 +12,7 @@
  *    - Parse test results → test_score (0-100)
  * 4. Phase 2: LLM judge
  *    - Build prompt: task description + rubric criteria + agent output
- *    - Call Claude with structured output schema
+ *    - Call Gemini with structured output schema
  *    - Zod-validate response
  *    - Retry once on validation failure
  *    - Flag for manual review if retry fails
@@ -31,7 +31,7 @@
  */
 
 import { Worker } from "bullmq";
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod/v4";
 
@@ -40,21 +40,21 @@ import { z } from "zod/v4";
 const REDIS_URL = process.env.REDIS_URL;
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const GEMINI_API_KEY = process.env.GOOGLE_GEMINI_API_KEY;
 
-if (!REDIS_URL || !SUPABASE_URL || !SUPABASE_KEY || !ANTHROPIC_API_KEY) {
+if (!REDIS_URL || !SUPABASE_URL || !SUPABASE_KEY || !GEMINI_API_KEY) {
   console.error("Missing required env vars");
   process.exit(1);
 }
 
-const LLM_MODEL = "claude-sonnet-4-6";
+const LLM_MODEL = "gemini-2.0-flash";
 const LLM_MAX_TOKENS = 4096;
 const QUEUE_NAME = "evaluation";
 
 // ── Clients ──────────────────────────────────────────────────
 
 const db = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
-const anthropic = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+const gemini = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 // ── LLM Response Schema ──────────────────────────────────────
 
@@ -329,14 +329,13 @@ Do not include any text outside the JSON.`;
 
 async function callLLM(prompt: string): Promise<LLMResponse | null> {
   try {
-    const response = await anthropic.messages.create({
-      model: LLM_MODEL,
-      max_tokens: LLM_MAX_TOKENS,
-      messages: [{ role: "user", content: prompt }],
+    const model = gemini.getGenerativeModel({ model: LLM_MODEL });
+    const response = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: LLM_MAX_TOKENS },
     });
 
-    const text =
-      response.content[0].type === "text" ? response.content[0].text : "";
+    const text = response.response.text();
 
     // Parse JSON from response
     const jsonMatch = text.match(/\{[\s\S]*\}/);

@@ -16,8 +16,8 @@ const envSchema = z.object({
   // Redis
   REDIS_URL: z.url(),
 
-  // Anthropic
-  ANTHROPIC_API_KEY: z.string().startsWith("sk-ant-"),
+  // Google Gemini
+  GOOGLE_GEMINI_API_KEY: z.string().min(1),
 
   // App
   NEXT_PUBLIC_APP_URL: z.url(),

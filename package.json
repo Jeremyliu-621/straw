@@ -16,8 +16,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.78.0",
     "@auth/supabase-adapter": "^1.11.1",
+    "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.99.1",
     "bullmq": "^5.71.0",
     "dockerode": "^4.0.9",
