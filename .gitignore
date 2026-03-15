@@ -51,3 +51,6 @@ playwright-report/
 .vscode/
 *.swp
 *.swo
+
+*.md
+!README.md
