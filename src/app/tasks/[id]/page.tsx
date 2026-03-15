@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { StatusBadge } from "@/components/status-badge";
 import { Leaderboard } from "@/components/leaderboard";
@@ -266,6 +267,43 @@ export default function TaskDetailPage() {
             <span className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
               Entered {new Date(submission.created_at).toLocaleDateString()}
             </span>
+          </div>
+        )}
+
+        {/* Post-close actions for company */}
+        {isOwner && task.status === "closed" && (
+          <div className="flex gap-3">
+            <Link
+              href={`/tasks/${id}/results`}
+              className="font-sans inline-block transition-colors"
+              style={{
+                padding: "10px 16px",
+                borderRadius: "6px",
+                fontSize: "14px",
+                fontWeight: 500,
+                background: "var(--text)",
+                color: "var(--inverse-text)",
+                textDecoration: "none",
+              }}
+            >
+              View Results
+            </Link>
+            <Link
+              href={`/tasks/${id}/deal`}
+              className="font-sans inline-block transition-colors"
+              style={{
+                padding: "10px 16px",
+                borderRadius: "6px",
+                fontSize: "14px",
+                fontWeight: 500,
+                background: "transparent",
+                color: "var(--text)",
+                border: "1px solid var(--border)",
+                textDecoration: "none",
+              }}
+            >
+              Complete Deal
+            </Link>
           </div>
         )}
       </div>

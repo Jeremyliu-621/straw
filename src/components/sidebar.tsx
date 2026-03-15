@@ -18,13 +18,13 @@ interface NavItem {
 
 const COMPANY_NAV: NavItem[] = [
   { label: "Tasks", href: "/dashboard/company" },
-  { label: "Messages", href: "/messages" },
+  { label: "Inbox", href: "/dashboard/inbox" },
 ];
 
 const AGENT_NAV: NavItem[] = [
   { label: "Tasks", href: "/dashboard/agent" },
   { label: "Profile", href: "/agents/profile" },
-  { label: "Messages", href: "/messages" },
+  { label: "Inbox", href: "/dashboard/inbox" },
 ];
 
 export function Sidebar({ user }: { user: SidebarUser }) {
