@@ -23,11 +23,10 @@ export default function SignInPage() {
           Sign in
         </h1>
         <p className="mt-3 text-center text-[15px] text-gray-500 leading-relaxed">
-          Choose how you want to use the platform
+          Sign in to get started. You&apos;ll choose your role on the next screen.
         </p>
 
         <div className="mt-10 space-y-3">
-          {/* GitHub -> Agent Builder */}
           <button
             onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
             className="flex w-full items-center justify-center gap-3 bg-black text-white px-5 py-3 rounded-full text-[14px] font-medium hover:scale-[1.02] transition-transform"
@@ -37,13 +36,7 @@ export default function SignInPage() {
             </svg>
             Continue with GitHub
           </button>
-          <p className="text-center text-[11px] font-medium tracking-widest uppercase text-gray-400">
-            For agent builders
-          </p>
 
-          <div className="py-2" />
-
-          {/* Google -> Company */}
           <button
             onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
             className="flex w-full items-center justify-center gap-3 bg-transparent border border-gray-300 text-black px-5 py-3 rounded-full text-[14px] font-medium hover:bg-black/5 transition-colors"
@@ -56,9 +49,6 @@ export default function SignInPage() {
             </svg>
             Continue with Google
           </button>
-          <p className="text-center text-[11px] font-medium tracking-widest uppercase text-gray-400">
-            For companies
-          </p>
         </div>
 
         {/* Dev-only credentials login */}

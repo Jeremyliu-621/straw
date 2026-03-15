@@ -5,7 +5,7 @@ import type { UserRole } from "@/constants";
 interface SyncUserParams {
   email: string;
   name: string;
-  role: UserRole;
+  role?: UserRole | null;
   avatarUrl: string | null;
   authProviderId: string;
 }
@@ -45,13 +45,13 @@ export async function syncUserToSupabase(params: SyncUserParams): Promise<User> 
     return updated as User;
   }
 
-  // Create new user
+  // Create new user — role is null until onboarding sets it
   const { data: created, error: createError } = await db
     .from("users")
     .insert({
       email: params.email,
       name: params.name,
-      role: params.role,
+      role: params.role ?? null,
       avatar_url: params.avatarUrl,
       auth_provider_id: params.authProviderId,
     })

@@ -1,15 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
-import { ROLE_COMPANY, type UserRole } from "@/constants";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import { ROLE_COMPANY, ROLE_AGENT_BUILDER, type UserRole } from "@/constants";
 import { LogOut } from "lucide-react";
-
-interface SidebarUser {
-  name?: string | null;
-  role: UserRole;
-}
 
 interface NavItem {
   label: string;
@@ -27,10 +22,20 @@ const AGENT_NAV: NavItem[] = [
   { label: "Inbox", href: "/dashboard/inbox" },
 ];
 
-export function Sidebar({ user }: { user: SidebarUser }) {
+export function Sidebar() {
+  const { data: session, update } = useSession();
   const pathname = usePathname();
-  const isCompany = user.role === ROLE_COMPANY;
+  const router = useRouter();
+
+  const activeRole = session?.user?.role;
+  const isCompany = activeRole === ROLE_COMPANY;
   const navItems = isCompany ? COMPANY_NAV : AGENT_NAV;
+
+  async function switchRole(newRole: UserRole) {
+    if (newRole === activeRole) return;
+    await update({ role: newRole });
+    router.push(newRole === ROLE_COMPANY ? "/dashboard/company" : "/dashboard/agent");
+  }
 
   return (
     <aside
@@ -42,7 +47,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
       }}
     >
       {/* Logo */}
-      <div style={{ padding: "24px 20px 32px" }}>
+      <div style={{ padding: "24px 20px 20px" }}>
         <Link
           href="/dashboard"
           className="font-sans"
@@ -50,6 +55,53 @@ export function Sidebar({ user }: { user: SidebarUser }) {
         >
           <img src="/strawlonglogo.png" alt="Straw Logo" className="h-5 w-auto" />
         </Link>
+      </div>
+
+      {/* Role switcher */}
+      <div style={{ padding: "0 12px 20px" }}>
+        <div
+          className="flex"
+          style={{
+            background: "var(--bg)",
+            border: "1px solid var(--border)",
+            borderRadius: "8px",
+            padding: "3px",
+            gap: "2px",
+          }}
+        >
+          <button
+            onClick={() => switchRole(ROLE_COMPANY)}
+            className="flex-1 font-sans transition-colors"
+            style={{
+              padding: "5px 8px",
+              borderRadius: "5px",
+              fontSize: "12px",
+              fontWeight: 500,
+              border: "none",
+              cursor: "pointer",
+              background: isCompany ? "var(--text)" : "transparent",
+              color: isCompany ? "var(--inverse-text)" : "var(--text-muted)",
+            }}
+          >
+            Company
+          </button>
+          <button
+            onClick={() => switchRole(ROLE_AGENT_BUILDER)}
+            className="flex-1 font-sans transition-colors"
+            style={{
+              padding: "5px 8px",
+              borderRadius: "5px",
+              fontSize: "12px",
+              fontWeight: 500,
+              border: "none",
+              cursor: "pointer",
+              background: !isCompany ? "var(--text)" : "transparent",
+              color: !isCompany ? "var(--inverse-text)" : "var(--text-muted)",
+            }}
+          >
+            Builder
+          </button>
+        </div>
       </div>
 
       {/* Navigation */}
@@ -83,19 +135,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
           className="font-sans"
           style={{ fontSize: "13px", fontWeight: 500, color: "var(--text)" }}
         >
-          {user.name}
-        </p>
-        <p
-          className="font-sans"
-          style={{
-            fontSize: "11px",
-            fontWeight: 500,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase" as const,
-            color: "var(--text-muted)",
-          }}
-        >
-          {isCompany ? "Company" : "Agent Builder"}
+          {session?.user?.name}
         </p>
         <button
           onClick={() => signOut({ callbackUrl: "/" })}

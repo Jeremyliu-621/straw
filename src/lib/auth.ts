@@ -12,7 +12,7 @@ declare module "next-auth" {
       id: string;
       email: string;
       name: string;
-      role: UserRole;
+      role: UserRole | null;
       supabaseId: string;
       onboarded: boolean;
       image?: string | null;
@@ -28,7 +28,7 @@ declare module "next-auth" {
 
 declare module "@auth/core/jwt" {
   interface JWT {
-    role?: UserRole;
+    role?: UserRole | null;
     supabaseId?: string;
     onboarded?: boolean;
   }
@@ -79,18 +79,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ user, account }) {
       if (!account || !user.email) return false;
 
-      // Determine role based on provider
-      // GitHub → agent_builder, Google → company, credentials → from input
-      let role: UserRole;
-      if (account.provider === "github") {
-        role = ROLE_AGENT_BUILDER;
-      } else if (account.provider === "google") {
-        role = ROLE_COMPANY;
-      } else if (account.provider === "credentials") {
-        role = (user.role as UserRole) ?? ROLE_COMPANY;
-      } else {
+      if (account.provider !== "github" && account.provider !== "google" && account.provider !== "credentials") {
         return false;
       }
+
+      // For credentials (dev login), use the provided role.
+      // For GitHub/Google, role is determined during onboarding — not at sign-in.
+      const credentialsRole =
+        account.provider === "credentials"
+          ? ((user.role as UserRole) ?? ROLE_COMPANY)
+          : undefined;
 
       // Sync to Supabase users table
       try {
@@ -98,12 +96,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const supabaseUser = await syncUserToSupabase({
           email: user.email,
           name: user.name ?? user.email,
-          role,
+          role: credentialsRole,
           avatarUrl: user.image ?? null,
           authProviderId: `${account.provider}:${account.providerAccountId ?? user.id}`,
         });
 
-        user.role = supabaseUser.role as UserRole;
+        user.role = (supabaseUser.role ?? undefined) as UserRole | undefined;
         user.supabaseId = supabaseUser.id;
         user.onboarded = supabaseUser.onboarded;
       } catch (error) {
@@ -120,14 +118,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.supabaseId = user.supabaseId;
         token.onboarded = user.onboarded;
       }
-      if (trigger === "update" && session?.onboarded !== undefined) {
-        token.onboarded = session.onboarded;
+      if (trigger === "update") {
+        if (session?.onboarded !== undefined) token.onboarded = session.onboarded;
+        if (session?.role !== undefined) token.role = session.role;
       }
       return token;
     },
 
     async session({ session, token }) {
-      session.user.role = token.role as UserRole;
+      // Cast needed: NextAuth's internal session type doesn't know about our null extension.
+      // Runtime value is correctly null for new users until onboarding sets a role.
+      session.user.role = (token.role ?? null) as UserRole;
       session.user.supabaseId = token.supabaseId as string;
       session.user.onboarded = token.onboarded as boolean;
       return session;

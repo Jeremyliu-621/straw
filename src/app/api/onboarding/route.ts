@@ -4,18 +4,8 @@ import { createServiceClient } from "@/lib/supabase";
 import { z } from "zod/v4";
 import { ROLE_COMPANY } from "@/constants";
 
-const companySchema = z.object({
-  companyName: z.string().min(1, "Company name is required"),
-  industry: z.string().optional(),
-  website: z.string().optional(),
-  description: z.string().optional(),
-});
-
-const agentBuilderSchema = z.object({
+const onboardingSchema = z.object({
   displayName: z.string().min(1, "Display name is required"),
-  bio: z.string().optional(),
-  githubUrl: z.string().optional(),
-  categories: z.array(z.string()).optional(),
 });
 
 export async function POST(req: Request) {
@@ -25,58 +15,42 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json();
-  const db = createServiceClient();
-  const userId = session.user.supabaseId;
-  const isCompany = session.user.role === ROLE_COMPANY;
-
-  if (isCompany) {
-    const parsed = companySchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json({ error: z.prettifyError(parsed.error) }, { status: 400 });
-    }
-
-    const { error: profileError } = await db.from("company_profiles").upsert(
-      {
-        user_id: userId,
-        company_name: parsed.data.companyName,
-        industry: parsed.data.industry ?? null,
-        website: parsed.data.website ?? null,
-        description: parsed.data.description ?? null,
-      },
-      { onConflict: "user_id" }
-    );
-
-    if (profileError) {
-      console.error("Failed to create company profile:", profileError);
-      return NextResponse.json({ error: "Failed to save profile" }, { status: 500 });
-    }
-  } else {
-    const parsed = agentBuilderSchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json({ error: z.prettifyError(parsed.error) }, { status: 400 });
-    }
-
-    const { error: profileError } = await db.from("agent_builder_profiles").upsert(
-      {
-        user_id: userId,
-        display_name: parsed.data.displayName,
-        bio: parsed.data.bio ?? null,
-        github_url: parsed.data.githubUrl ?? null,
-        categories: parsed.data.categories ?? [],
-      },
-      { onConflict: "user_id" }
-    );
-
-    if (profileError) {
-      console.error("Failed to create agent builder profile:", profileError);
-      return NextResponse.json({ error: "Failed to save profile" }, { status: 500 });
-    }
+  const parsed = onboardingSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: z.prettifyError(parsed.error) }, { status: 400 });
   }
 
-  // Mark user as onboarded
+  const db = createServiceClient();
+  const userId = session.user.supabaseId;
+  const { displayName } = parsed.data;
+
+  // Create (or update) both profiles so the user can switch modes freely
+  const [companyResult, agentResult] = await Promise.all([
+    db.from("company_profiles").upsert(
+      { user_id: userId, company_name: displayName },
+      { onConflict: "user_id" }
+    ),
+    db.from("agent_builder_profiles").upsert(
+      { user_id: userId, display_name: displayName, categories: [] },
+      { onConflict: "user_id" }
+    ),
+  ]);
+
+  if (companyResult.error) {
+    console.error("Failed to create company profile:", companyResult.error);
+    return NextResponse.json({ error: "Failed to save profile" }, { status: 500 });
+  }
+  if (agentResult.error) {
+    console.error("Failed to create agent profile:", agentResult.error);
+    return NextResponse.json({ error: "Failed to save profile" }, { status: 500 });
+  }
+
+  // Default active role is company; user can switch in the dashboard
+  const defaultRole = ROLE_COMPANY;
+
   const { error: updateError } = await db
     .from("users")
-    .update({ onboarded: true })
+    .update({ onboarded: true, role: defaultRole })
     .eq("id", userId);
 
   if (updateError) {
@@ -84,5 +58,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to complete onboarding" }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, role: defaultRole });
 }
