@@ -52,7 +52,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     rubric_criteria: { name: string; weight: number } | null;
   };
 
-  const formatted = (dimensions as DimensionRow[])
+  const formatted = (dimensions as unknown as DimensionRow[])
     .filter((d) => d.rubric_criteria !== null)
     .map((d) => ({
       criterion_name: d.rubric_criteria!.name,

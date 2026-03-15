@@ -48,7 +48,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
           className="font-sans"
           style={{ fontSize: "16px", fontWeight: 600, color: "var(--text)", textDecoration: "none" }}
         >
-          Map
+          <img src="/strawlonglogo.png" alt="Straw Logo" className="h-5 w-auto" />
         </Link>
       </div>
 

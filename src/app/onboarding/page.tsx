@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 import { ROLE_COMPANY } from "@/constants";
 
 export default function OnboardingPage() {
@@ -55,7 +56,6 @@ export default function OnboardingPage() {
         return;
       }
 
-      // Refresh the session to get updated onboarded status
       await update();
       router.push("/dashboard");
     } catch {
@@ -68,18 +68,19 @@ export default function OnboardingPage() {
   if (!session) return null;
 
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ background: "var(--bg)" }}>
+    <div className="flex min-h-screen items-center justify-center bg-[#FDFCFC]">
       <form onSubmit={handleSubmit} className="w-full max-w-md px-8">
-        <h1
-          className="font-sans"
-          style={{ fontSize: "36px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
-        >
+        {/* Logo */}
+        <div className="flex justify-center mb-10">
+          <Link href="/">
+            <img src="/strawlonglogo.png" alt="Straw" className="h-5 w-auto" />
+          </Link>
+        </div>
+
+        <h1 className="text-[32px] font-medium tracking-tight text-black">
           {isCompany ? "Set up your company" : "Set up your profile"}
         </h1>
-        <p
-          className="mt-2 font-sans"
-          style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
-        >
+        <p className="mt-3 text-[15px] text-gray-500 leading-relaxed">
           {isCompany
             ? "Tell us about your company so agents know who they are competing for."
             : "Set up your builder profile. This is how companies will see you."}
@@ -137,7 +138,7 @@ export default function OnboardingPage() {
         </div>
 
         {error && (
-          <p className="mt-4 font-sans" style={{ fontSize: "13px", color: "var(--error)" }}>
+          <p className="mt-4 text-[13px] text-red-600">
             {error}
           </p>
         )}
@@ -145,15 +146,7 @@ export default function OnboardingPage() {
         <button
           type="submit"
           disabled={loading || (isCompany ? !companyName : !displayName)}
-          className="mt-8 w-full font-sans transition-colors disabled:opacity-40"
-          style={{
-            padding: "10px 16px",
-            borderRadius: "6px",
-            fontSize: "14px",
-            fontWeight: 500,
-            background: "var(--text)",
-            color: "var(--inverse-text)",
-          }}
+          className="mt-8 w-full bg-black text-white px-5 py-3 rounded-full text-[14px] font-medium hover:scale-[1.02] transition-transform disabled:opacity-40"
         >
           {loading ? "Saving..." : "Continue"}
         </button>
@@ -179,9 +172,9 @@ function FormField({
 }) {
   return (
     <div>
-      <label className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+      <label className="mb-1.5 block text-[13px] font-medium text-gray-600">
         {label}
-        {required && <span style={{ color: "var(--error)" }}> *</span>}
+        {required && <span className="text-red-500"> *</span>}
       </label>
       <input
         type="text"
@@ -189,18 +182,10 @@ function FormField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className="w-full font-sans outline-none"
-        style={{
-          padding: "10px 12px",
-          borderRadius: "6px",
-          fontSize: "15px",
-          color: "var(--text)",
-          border: "1px solid var(--border)",
-          background: "var(--bg)",
-        }}
+        className="w-full px-4 py-2.5 rounded-xl text-[15px] text-black border border-gray-200 bg-white outline-none focus:border-gray-400 transition-colors placeholder:text-gray-300"
       />
       {helper && (
-        <p className="mt-1 font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+        <p className="mt-1 text-[13px] text-gray-400">
           {helper}
         </p>
       )}
@@ -221,7 +206,7 @@ function FormTextarea({
 }) {
   return (
     <div>
-      <label className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+      <label className="mb-1.5 block text-[13px] font-medium text-gray-600">
         {label}
       </label>
       <textarea
@@ -229,15 +214,7 @@ function FormTextarea({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={3}
-        className="w-full resize-none font-sans outline-none"
-        style={{
-          padding: "10px 12px",
-          borderRadius: "6px",
-          fontSize: "15px",
-          color: "var(--text)",
-          border: "1px solid var(--border)",
-          background: "var(--bg)",
-        }}
+        className="w-full resize-none px-4 py-2.5 rounded-xl text-[15px] text-black border border-gray-200 bg-white outline-none focus:border-gray-400 transition-colors placeholder:text-gray-300"
       />
     </div>
   );
