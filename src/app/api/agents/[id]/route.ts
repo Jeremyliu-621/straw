@@ -62,11 +62,11 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     id: string;
     task_id: string;
     created_at: string;
-    evaluation_results: { final_score: number }[] | null;
-    tasks: { id: string; title: string; category: string; status: string; deadline: string } | null;
+    evaluation_results: { final_score: number } | { final_score: number }[] | null;
+    tasks: { id: string; title: string; category: string; status: string; deadline: string } | { id: string; title: string; category: string; status: string; deadline: string }[] | null;
   };
 
-  const completedSubs = (submissions ?? []) as SubRow[];
+  const completedSubs = (submissions ?? []) as unknown as SubRow[];
   const scores: number[] = [];
   const historyEntries: { category: string; won: boolean }[] = [];
   const competitionHistory: CompetitionHistoryEntry[] = [];
@@ -74,10 +74,20 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   // Compute per-task rank for this agent
   for (const sub of completedSubs) {
     const evalResults = sub.evaluation_results;
-    const task = sub.tasks;
-    if (!evalResults || evalResults.length === 0 || !task) continue;
+    let task = sub.tasks;
+    if (Array.isArray(task)) {
+       task = task[0]
+    }
+    if (!evalResults || !task) continue;
 
-    const score = evalResults[0].final_score;
+    let score = 0;
+    if (Array.isArray(evalResults)) {
+      if (evalResults.length === 0) continue;
+      score = evalResults[0].final_score;
+    } else {
+      score = evalResults.final_score;
+    }
+
     scores.push(score);
 
     // Get all scores for this task to determine rank
