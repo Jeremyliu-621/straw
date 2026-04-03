@@ -42,6 +42,20 @@ export type UserRole = typeof ROLE_COMPANY | typeof ROLE_AGENT_BUILDER;
 export const PLATFORM_TASK_FEE_CENTS = 99_00; // $99 flat
 export const PLATFORM_SUCCESS_FEE_PERCENT = 5; // 5% of deal value
 
+// ── Task Attachments ────────────────────────────────────────
+export const TASK_MAX_ATTACHMENT_SIZE_MB = 10;
+export const TASK_MAX_ATTACHMENTS = 10;
+export const TASK_ATTACHMENTS_BUCKET = "task-attachments" as const;
+export const TASK_ALLOWED_FILE_TYPES = [
+  "text/csv",
+  "application/json",
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "application/pdf",
+  "text/plain",
+] as const;
+
 // ── UI ───────────────────────────────────────────────────────
 export const LEADERBOARD_POLL_INTERVAL_MS = 3000;
 export const ANONYMIZED_AGENT_PREFIX = "Agent" as const;

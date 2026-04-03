@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { RubricBuilder } from "@/components/rubric-builder";
+import { FileUploadZone, type UploadedFile } from "@/components/file-upload-zone";
+import { RefreshCw, Pencil, Check, Loader2 } from "lucide-react";
 import {
   TASK_TITLE_MIN_LENGTH,
   TASK_TITLE_MAX_LENGTH,
@@ -16,11 +18,12 @@ interface Criterion {
   weight: number;
 }
 
-type Step = "basics" | "specifications" | "rubric" | "review";
+type Step = "basics" | "data" | "rubric" | "refine" | "review";
 const STEPS: { key: Step; label: string }[] = [
   { key: "basics", label: "Basics" },
-  { key: "specifications", label: "Specifications" },
+  { key: "data", label: "Data & Format" },
   { key: "rubric", label: "Rubric" },
+  { key: "refine", label: "Refine" },
   { key: "review", label: "Review" },
 ];
 
@@ -30,52 +33,158 @@ export default function NewTaskPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Form data
+  // Step 1: Basics
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [inputSpec, setInputSpec] = useState("");
-  const [outputSpec, setOutputSpec] = useState("");
-  const [testWeight, setTestWeight] = useState(60);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [otherCategory, setOtherCategory] = useState("");
   const [budgetDollars, setBudgetDollars] = useState(500);
   const [deadline, setDeadline] = useState("");
+
+  // Step 2: Data & Format
+  const [inputFiles, setInputFiles] = useState<UploadedFile[]>([]);
+  const [outputFiles, setOutputFiles] = useState<UploadedFile[]>([]);
+  const [inputDescription, setInputDescription] = useState("");
+  const [outputDescription, setOutputDescription] = useState("");
+  const [testWeight, setTestWeight] = useState(60);
+  const llmWeight = 100 - testWeight;
+
+  // Step 3: Rubric
   const [criteria, setCriteria] = useState<Criterion[]>([
     { name: "", description: "", weight: 100 },
   ]);
-
-  const llmWeight = 100 - testWeight;
   const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0);
   const weightsValid = totalWeight === RUBRIC_WEIGHT_SUM;
+
+  // Step 4: AI Refinement
+  const [refinedDescription, setRefinedDescription] = useState("");
+  const [refinedInputSpec, setRefinedInputSpec] = useState("");
+  const [refinedOutputSpec, setRefinedOutputSpec] = useState("");
+  const [isRefining, setIsRefining] = useState(false);
+  const [hasRefined, setHasRefined] = useState(false);
+
+  // Step 5: Review — inline editing
+  const [editingSection, setEditingSection] = useState<string | null>(null);
 
   const currentStepIndex = STEPS.findIndex((s) => s.key === step);
 
   function canAdvance(): boolean {
     switch (step) {
-      case "basics":
-        return title.length >= TASK_TITLE_MIN_LENGTH && !!description && !!category && !!deadline;
-      case "specifications":
-        return !!inputSpec && !!outputSpec;
+      case "basics": {
+        const hasCategory =
+          categories.length > 0 &&
+          (!categories.includes("other") || otherCategory.trim() !== "");
+        return (
+          title.length >= TASK_TITLE_MIN_LENGTH &&
+          !!description &&
+          hasCategory &&
+          !!deadline
+        );
+      }
+      case "data":
+        return !!(inputDescription || inputFiles.length > 0) &&
+               !!(outputDescription || outputFiles.length > 0);
       case "rubric":
         return weightsValid && criteria.every((c) => c.name.trim() !== "");
+      case "refine":
+        return hasRefined && !!refinedDescription && !!refinedInputSpec && !!refinedOutputSpec;
       default:
         return true;
+    }
+  }
+
+  const handleRefine = useCallback(async () => {
+    setIsRefining(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/tasks/refine", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          description,
+          category: categories
+            .map((c) => (c === "other" ? otherCategory.trim() : c))
+            .join(", "),
+          inputFiles: inputFiles.map((f) => ({
+            name: f.file.name,
+            description: f.description,
+          })),
+          outputFiles: outputFiles.map((f) => ({
+            name: f.file.name,
+            description: f.description,
+          })),
+          criteria: criteria.map((c) => ({
+            name: c.name,
+            description: c.description || undefined,
+            weight: c.weight,
+          })),
+          testWeight,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error ?? "Refinement failed");
+        return;
+      }
+      const data = await res.json();
+      setRefinedDescription(data.problemStatement);
+      setRefinedInputSpec(data.inputSpec);
+      setRefinedOutputSpec(data.outputSpec);
+      setHasRefined(true);
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setIsRefining(false);
+    }
+  }, [title, description, categories, otherCategory, inputFiles, outputFiles, criteria, testWeight]);
+
+  function goToStep(target: Step) {
+    setStep(target);
+    // Auto-refine on first visit to refine step
+    if (target === "refine" && !hasRefined && !isRefining) {
+      handleRefine();
     }
   }
 
   async function handleSubmit() {
     setLoading(true);
     setError(null);
-
     try {
+      // Upload files to storage
+      const uploadedInputUrls: string[] = [];
+      const uploadedOutputUrls: string[] = [];
+
+      for (const f of inputFiles) {
+        const formData = new FormData();
+        formData.append("file", f.file);
+        const res = await fetch("/api/tasks/upload", { method: "POST", body: formData });
+        if (res.ok) {
+          const data = await res.json();
+          uploadedInputUrls.push(data.url);
+        }
+      }
+      for (const f of outputFiles) {
+        const formData = new FormData();
+        formData.append("file", f.file);
+        const res = await fetch("/api/tasks/upload", { method: "POST", body: formData });
+        if (res.ok) {
+          const data = await res.json();
+          uploadedOutputUrls.push(data.url);
+        }
+      }
+
       const res = await fetch("/api/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          description,
-          category,
-          input_spec: inputSpec,
-          output_spec: outputSpec,
+          description: refinedDescription,
+          category: categories
+            .map((c) => (c === "other" ? otherCategory.trim() : c))
+            .join(", "),
+          input_spec: refinedInputSpec,
+          output_spec: refinedOutputSpec,
           test_weight: testWeight,
           llm_weight: llmWeight,
           budget_cents: budgetDollars * 100,
@@ -88,13 +197,11 @@ export default function NewTaskPage() {
           })),
         }),
       });
-
       if (!res.ok) {
         const data = await res.json();
         setError(data.error ?? "Failed to create task");
         return;
       }
-
       router.push("/dashboard/company");
     } catch {
       setError("Network error. Please try again.");
@@ -104,88 +211,214 @@ export default function NewTaskPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl" style={{ padding: "32px" }}>
-      <h1
-        className="font-sans"
-        style={{ fontSize: "36px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
+    <div
+      style={{
+        position: "fixed",
+        inset: "32px",
+        display: "flex",
+        alignItems: "stretch",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "860px",
+          display: "flex",
+          flexDirection: "column",
+          borderRadius: "24px",
+          border: "1px solid var(--border)",
+          background: "var(--bg)",
+          overflow: "hidden",
+        }}
       >
-        Post a Task
-      </h1>
-      <p
-        className="mt-2 font-sans"
-        style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
-      >
-        Define your problem and how you will evaluate solutions.
-      </p>
-
-      {/* Step indicator */}
-      <div className="mt-8 flex gap-2">
-        {STEPS.map((s, i) => (
-          <button
-            key={s.key}
-            onClick={() => i <= currentStepIndex && setStep(s.key)}
+        {/* Header with step indicator */}
+        <div
+          style={{
+            padding: "28px 40px 0",
+            borderBottom: "1px solid var(--border)",
+          }}
+        >
+          <h1
             className="font-sans"
             style={{
-              fontSize: "11px",
+              fontSize: "22px",
               fontWeight: 500,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase" as const,
-              color: s.key === step ? "var(--text)" : "var(--text-faint)",
-              background: "transparent",
-              border: "none",
-              cursor: i <= currentStepIndex ? "pointer" : "default",
-              padding: "4px 0",
-              borderBottom: s.key === step ? "2px solid var(--text)" : "2px solid transparent",
+              letterSpacing: "-0.02em",
+              color: "var(--text)",
+              marginBottom: "20px",
             }}
           >
-            {s.label}
-          </button>
-        ))}
-      </div>
+            Post a Task
+          </h1>
 
-      {/* Step content */}
-      <div className="mt-8">
-        {step === "basics" && (
-          <div className="space-y-5">
-            <Field
-              label="Title"
-              required
-              value={title}
-              onChange={setTitle}
-              placeholder="Build a CSV parser that handles edge cases correctly"
-              helper={`${title.length}/${TASK_TITLE_MAX_LENGTH} characters`}
-            />
-            <TextareaField
-              label="Description"
-              required
-              value={description}
-              onChange={setDescription}
-              placeholder="Describe the problem in detail. What do you need solved?"
-            />
-            <Field
-              label="Category"
-              required
-              value={category}
-              onChange={setCategory}
-              placeholder="code-generation"
-              helper="Used to match agents with relevant expertise"
-            />
-            <div>
-              <label className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                Budget <span style={{ color: "var(--error)" }}>*</span>
-              </label>
-              <div className="flex items-center gap-2">
-                <span className="font-mono" style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-                  $
-                </span>
+          {/* Step timeline */}
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "0" }}>
+            {STEPS.map((s, i) => {
+              const isActive = s.key === step;
+              const isPast = i < currentStepIndex;
+              const isClickable = i <= currentStepIndex;
+              return (
+                <div key={s.key} style={{ display: "flex", alignItems: "center" }}>
+                  <button
+                    onClick={() => isClickable && goToStep(s.key)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      background: "transparent",
+                      border: "none",
+                      cursor: isClickable ? "pointer" : "default",
+                      padding: "0 0 16px 0",
+                      borderBottom: isActive
+                        ? "2px solid var(--text)"
+                        : "2px solid transparent",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        flexShrink: 0,
+                        background: isActive
+                          ? "var(--text)"
+                          : isPast
+                            ? "var(--text-faint)"
+                            : "transparent",
+                        border: isActive
+                          ? "none"
+                          : isPast
+                            ? "none"
+                            : "1.5px solid var(--border)",
+                        color: isActive
+                          ? "var(--inverse-text)"
+                          : isPast
+                            ? "var(--bg)"
+                            : "var(--text-faint)",
+                      }}
+                    >
+                      {isPast ? "\u2713" : i + 1}
+                    </div>
+                    <span
+                      className="font-sans"
+                      style={{
+                        fontSize: "13px",
+                        fontWeight: isActive ? 500 : 400,
+                        color: isActive ? "var(--text)" : "var(--text-faint)",
+                      }}
+                    >
+                      {s.label}
+                    </span>
+                  </button>
+                  {i < STEPS.length - 1 && (
+                    <div
+                      style={{
+                        width: "32px",
+                        height: "1px",
+                        background:
+                          i < currentStepIndex ? "var(--text-faint)" : "var(--border)",
+                        margin: "0 6px",
+                        marginBottom: "16px",
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div style={{ flex: 1, overflowY: "auto", padding: "28px 40px" }}>
+          {/* ── Step 1: Basics ── */}
+          {step === "basics" && (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "16px",
+              }}
+            >
+              <div style={{ gridColumn: "1 / -1" }}>
+                <Field
+                  label="Title"
+                  required
+                  value={title}
+                  onChange={setTitle}
+                  placeholder="Build a CSV parser that handles edge cases correctly"
+                  helper={`${title.length}/${TASK_TITLE_MAX_LENGTH} characters${title.length < TASK_TITLE_MIN_LENGTH ? ` \u00b7 minimum ${TASK_TITLE_MIN_LENGTH}` : ""}`}
+                />
+              </div>
+              <div style={{ gridColumn: "1 / -1" }}>
+                <TextareaField
+                  label="Description"
+                  required
+                  value={description}
+                  onChange={setDescription}
+                  placeholder="Describe the problem in detail. What do you need solved?"
+                  rows={3}
+                />
+              </div>
+              <div style={{ gridColumn: "1 / -1" }}>
+                <CategoryPicker
+                  selected={categories}
+                  onChange={setCategories}
+                  otherValue={otherCategory}
+                  onOtherChange={setOtherCategory}
+                />
+              </div>
+              <div>
+                <label
+                  className="mb-1 block font-sans"
+                  style={{ fontSize: "13px", color: "var(--text-muted)" }}
+                >
+                  Budget <span style={{ color: "var(--error)" }}>*</span>
+                </label>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="font-mono"
+                    style={{ fontSize: "14px", color: "var(--text-muted)" }}
+                  >
+                    $
+                  </span>
+                  <input
+                    type="number"
+                    value={budgetDollars}
+                    onChange={(e) => setBudgetDollars(Number(e.target.value))}
+                    min={TASK_MIN_BUDGET_CENTS / 100}
+                    className="w-32 font-mono outline-none"
+                    style={{
+                      padding: "9px 12px",
+                      borderRadius: "6px",
+                      fontSize: "14px",
+                      color: "var(--text)",
+                      border: "1px solid var(--border)",
+                      background: "var(--bg)",
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  className="mb-1 block font-sans"
+                  style={{ fontSize: "13px", color: "var(--text-muted)" }}
+                >
+                  Deadline <span style={{ color: "var(--error)" }}>*</span>
+                </label>
                 <input
-                  type="number"
-                  value={budgetDollars}
-                  onChange={(e) => setBudgetDollars(Number(e.target.value))}
-                  min={TASK_MIN_BUDGET_CENTS / 100}
-                  className="w-32 font-mono outline-none"
+                  type="datetime-local"
+                  value={deadline}
+                  onChange={(e) => setDeadline(e.target.value)}
+                  className="font-sans outline-none"
                   style={{
-                    padding: "10px 12px",
+                    padding: "9px 12px",
                     borderRadius: "6px",
                     fontSize: "14px",
                     color: "var(--text)",
@@ -195,196 +428,636 @@ export default function NewTaskPage() {
                 />
               </div>
             </div>
-            <div>
-              <label className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                Deadline <span style={{ color: "var(--error)" }}>*</span>
-              </label>
-              <input
-                type="datetime-local"
-                value={deadline}
-                onChange={(e) => setDeadline(e.target.value)}
-                className="font-sans outline-none"
-                style={{
-                  padding: "10px 12px",
-                  borderRadius: "6px",
-                  fontSize: "15px",
-                  color: "var(--text)",
-                  border: "1px solid var(--border)",
-                  background: "var(--bg)",
-                }}
-              />
-            </div>
-          </div>
-        )}
+          )}
 
-        {step === "specifications" && (
-          <div className="space-y-5">
-            <TextareaField
-              label="Input Specification"
-              required
-              value={inputSpec}
-              onChange={setInputSpec}
-              placeholder="What will the agent receive? (e.g., 'A CSV file path provided via MAP_TASK_INPUT environment variable.')"
-            />
-            <TextareaField
-              label="Output Specification"
-              required
-              value={outputSpec}
-              onChange={setOutputSpec}
-              placeholder="What must the agent produce? (e.g., 'A JSON file at /output/result.json containing the parsed data.')"
-            />
-            <div>
-              <label className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                Evaluation Weight Split
-              </label>
-              <div className="mt-2 flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                    Tests
-                  </span>
-                  <input
-                    type="number"
-                    value={testWeight}
-                    onChange={(e) => setTestWeight(Math.min(100, Math.max(0, Number(e.target.value))))}
-                    min={0}
-                    max={100}
-                    className="w-16 text-center font-mono outline-none"
-                    style={{
-                      padding: "6px 8px",
-                      borderRadius: "6px",
-                      fontSize: "14px",
-                      color: "var(--text)",
-                      border: "1px solid var(--border)",
-                      background: "var(--bg)",
-                    }}
-                  />
-                  <span className="font-mono" style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-                    %
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                    LLM Judge
-                  </span>
-                  <span className="font-mono" style={{ fontSize: "14px", color: "var(--text)" }}>
-                    {llmWeight}%
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === "rubric" && (
-          <RubricBuilder criteria={criteria} onChange={setCriteria} />
-        )}
-
-        {step === "review" && (
-          <div className="space-y-6">
-            <ReviewSection label="TITLE" value={title} />
-            <ReviewSection label="CATEGORY" value={category} />
-            <ReviewSection label="BUDGET" value={`$${budgetDollars.toLocaleString()}`} />
-            <ReviewSection label="DEADLINE" value={deadline ? new Date(deadline).toLocaleString() : "—"} />
-            <ReviewSection label="EVALUATION" value={`Tests ${testWeight}% / LLM ${llmWeight}%`} />
-            <div>
+          {/* ── Step 2: Data & Format ── */}
+          {step === "data" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               <p
                 className="font-sans"
                 style={{
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase" as const,
+                  fontSize: "14px",
+                  lineHeight: 1.6,
                   color: "var(--text-muted)",
-                  marginBottom: "8px",
+                  marginBottom: "4px",
                 }}
               >
-                RUBRIC
+                Upload example files and describe what agents will receive and
+                what they should produce. This helps us generate precise
+                specifications.
               </p>
-              {criteria.map((c, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between py-2"
-                  style={{ borderBottom: "1px solid var(--border)" }}
+
+              {/* Input section */}
+              <div>
+                <h3
+                  className="font-sans"
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: 500,
+                    color: "var(--text)",
+                    marginBottom: "12px",
+                  }}
                 >
-                  <span className="font-sans" style={{ fontSize: "15px", color: "var(--text)" }}>
-                    {c.name}
-                  </span>
-                  <span className="font-mono" style={{ fontSize: "14px", color: "var(--text)" }}>
-                    {c.weight}%
-                  </span>
+                  What will agents receive?
+                </h3>
+                <TextareaField
+                  label="Input description"
+                  value={inputDescription}
+                  onChange={setInputDescription}
+                  placeholder="e.g. A CSV file with customer transaction data including columns: date, amount, category, merchant..."
+                  rows={2}
+                />
+                <div style={{ marginTop: "12px" }}>
+                  <FileUploadZone
+                    files={inputFiles}
+                    onChange={setInputFiles}
+                    label="Example input files"
+                    hint="CSV, JSON, images, PDF, or text \u00b7 max 10MB each"
+                  />
                 </div>
-              ))}
+              </div>
+
+              {/* Output section */}
+              <div>
+                <h3
+                  className="font-sans"
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: 500,
+                    color: "var(--text)",
+                    marginBottom: "12px",
+                  }}
+                >
+                  What should agents produce?
+                </h3>
+                <TextareaField
+                  label="Output description"
+                  value={outputDescription}
+                  onChange={setOutputDescription}
+                  placeholder="e.g. A JSON file at /output/result.json with categorized transactions and a summary report..."
+                  rows={2}
+                />
+                <div style={{ marginTop: "12px" }}>
+                  <FileUploadZone
+                    files={outputFiles}
+                    onChange={setOutputFiles}
+                    label="Example output files"
+                    hint="Upload expected output samples if available"
+                  />
+                </div>
+              </div>
+
+              {/* Eval weight split */}
+              <div>
+                <label
+                  className="mb-2 block font-sans"
+                  style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-muted)" }}
+                >
+                  Evaluation Weight Split
+                </label>
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="font-sans"
+                      style={{ fontSize: "13px", color: "var(--text-muted)" }}
+                    >
+                      Automated Tests
+                    </span>
+                    <input
+                      type="number"
+                      value={testWeight}
+                      onChange={(e) =>
+                        setTestWeight(
+                          Math.min(100, Math.max(0, Number(e.target.value)))
+                        )
+                      }
+                      min={0}
+                      max={100}
+                      className="w-16 text-center font-mono outline-none"
+                      style={{
+                        padding: "6px 8px",
+                        borderRadius: "6px",
+                        fontSize: "14px",
+                        color: "var(--text)",
+                        border: "1px solid var(--border)",
+                        background: "var(--bg)",
+                      }}
+                    />
+                    <span
+                      className="font-mono"
+                      style={{ fontSize: "14px", color: "var(--text-muted)" }}
+                    >
+                      %
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="font-sans"
+                      style={{ fontSize: "13px", color: "var(--text-muted)" }}
+                    >
+                      LLM Judge
+                    </span>
+                    <span
+                      className="font-mono"
+                      style={{ fontSize: "14px", color: "var(--text)" }}
+                    >
+                      {llmWeight}%
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
+          )}
+
+          {/* ── Step 3: Rubric ── */}
+          {step === "rubric" && (
+            <RubricBuilder criteria={criteria} onChange={setCriteria} />
+          )}
+
+          {/* ── Step 4: AI Refinement ── */}
+          {step === "refine" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {isRefining ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "60px 20px",
+                    gap: "16px",
+                  }}
+                >
+                  <Loader2
+                    size={24}
+                    strokeWidth={1.5}
+                    style={{ color: "var(--text-faint)", animation: "spin 1s linear infinite" }}
+                  />
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: "14px", color: "var(--text-muted)" }}
+                  >
+                    Generating polished specifications from your inputs...
+                  </p>
+                  <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+                </div>
+              ) : hasRefined ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <p
+                      className="font-sans"
+                      style={{
+                        fontSize: "14px",
+                        lineHeight: 1.6,
+                        color: "var(--text-muted)",
+                      }}
+                    >
+                      Review and edit the AI-generated specifications below.
+                      Regenerate if you want a fresh take.
+                    </p>
+                    <button
+                      onClick={handleRefine}
+                      className="font-sans flex items-center gap-2 transition-colors"
+                      style={{
+                        padding: "7px 14px",
+                        borderRadius: "8px",
+                        fontSize: "13px",
+                        fontWeight: 500,
+                        color: "var(--text-muted)",
+                        background: "transparent",
+                        border: "1px solid var(--border)",
+                        cursor: "pointer",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <RefreshCw size={14} strokeWidth={1.5} />
+                      Regenerate
+                    </button>
+                  </div>
+
+                  <RefinedField
+                    label="Problem Statement"
+                    value={refinedDescription}
+                    onChange={setRefinedDescription}
+                    rows={6}
+                  />
+                  <RefinedField
+                    label="Input Specification"
+                    value={refinedInputSpec}
+                    onChange={setRefinedInputSpec}
+                    rows={4}
+                  />
+                  <RefinedField
+                    label="Output Specification"
+                    value={refinedOutputSpec}
+                    onChange={setRefinedOutputSpec}
+                    rows={4}
+                  />
+                </>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "60px 20px",
+                    gap: "16px",
+                  }}
+                >
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: "14px", color: "var(--text-muted)" }}
+                  >
+                    Click below to generate polished specifications from your
+                    inputs.
+                  </p>
+                  <button
+                    onClick={handleRefine}
+                    className="font-sans transition-colors"
+                    style={{
+                      padding: "10px 20px",
+                      borderRadius: "8px",
+                      fontSize: "14px",
+                      fontWeight: 500,
+                      background: "var(--text)",
+                      color: "var(--inverse-text)",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Generate Specifications
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── Step 5: Review ── */}
+          {step === "review" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <p
+                className="font-sans"
+                style={{
+                  fontSize: "14px",
+                  color: "var(--text-muted)",
+                  marginBottom: "4px",
+                }}
+              >
+                Review your task before posting. Click any section to edit.
+              </p>
+
+              {/* Overview card */}
+              <ReviewCard title="Overview">
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "16px",
+                  }}
+                >
+                  <ReviewItem label="Title" value={title} />
+                  <ReviewItem
+                    label="Category"
+                    value={categories
+                      .map((c) =>
+                        c === "other" ? otherCategory || "other" : c
+                      )
+                      .join(", ")}
+                  />
+                  <ReviewItem
+                    label="Budget"
+                    value={`$${budgetDollars.toLocaleString()}`}
+                  />
+                  <ReviewItem
+                    label="Deadline"
+                    value={
+                      deadline
+                        ? new Date(deadline).toLocaleString()
+                        : "\u2014"
+                    }
+                  />
+                  <ReviewItem
+                    label="Evaluation"
+                    value={`Tests ${testWeight}% / LLM ${llmWeight}%`}
+                  />
+                </div>
+                <EditSectionButton onClick={() => goToStep("basics")} />
+              </ReviewCard>
+
+              {/* Problem Statement card */}
+              <ReviewCard title="Problem Statement">
+                {editingSection === "description" ? (
+                  <div>
+                    <textarea
+                      value={refinedDescription}
+                      onChange={(e) => setRefinedDescription(e.target.value)}
+                      rows={5}
+                      className="w-full resize-none font-sans outline-none"
+                      style={{
+                        padding: "9px 12px",
+                        borderRadius: "6px",
+                        fontSize: "13px",
+                        lineHeight: 1.6,
+                        color: "var(--text)",
+                        border: "1px solid var(--border)",
+                        background: "var(--bg)",
+                      }}
+                    />
+                    <button
+                      onClick={() => setEditingSection(null)}
+                      className="mt-2 font-sans flex items-center gap-1 transition-colors"
+                      style={{
+                        padding: "5px 10px",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        fontWeight: 500,
+                        color: "var(--inverse-text)",
+                        background: "var(--text)",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Check size={12} strokeWidth={2} />
+                      Done
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <p
+                      className="font-sans"
+                      style={{
+                        fontSize: "13px",
+                        lineHeight: 1.7,
+                        color: "var(--text)",
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {refinedDescription}
+                    </p>
+                    <EditSectionButton
+                      onClick={() => setEditingSection("description")}
+                    />
+                  </>
+                )}
+              </ReviewCard>
+
+              {/* Specifications card */}
+              <ReviewCard title="Specifications">
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div>
+                    <p
+                      className="font-sans"
+                      style={{
+                        fontSize: "11px",
+                        fontWeight: 500,
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase" as const,
+                        color: "var(--text-faint)",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      Input
+                    </p>
+                    <p
+                      className="font-sans"
+                      style={{
+                        fontSize: "13px",
+                        lineHeight: 1.6,
+                        color: "var(--text)",
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {refinedInputSpec}
+                    </p>
+                  </div>
+                  <div>
+                    <p
+                      className="font-sans"
+                      style={{
+                        fontSize: "11px",
+                        fontWeight: 500,
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase" as const,
+                        color: "var(--text-faint)",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      Output
+                    </p>
+                    <p
+                      className="font-sans"
+                      style={{
+                        fontSize: "13px",
+                        lineHeight: 1.6,
+                        color: "var(--text)",
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {refinedOutputSpec}
+                    </p>
+                  </div>
+                </div>
+                <EditSectionButton onClick={() => goToStep("refine")} />
+              </ReviewCard>
+
+              {/* Files card */}
+              {(inputFiles.length > 0 || outputFiles.length > 0) && (
+                <ReviewCard title="Attached Files">
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "8px",
+                    }}
+                  >
+                    {[...inputFiles, ...outputFiles].map((f, i) => (
+                      <div
+                        key={i}
+                        className="font-sans"
+                        style={{
+                          padding: "6px 12px",
+                          borderRadius: "6px",
+                          fontSize: "12px",
+                          color: "var(--text)",
+                          background: "var(--bg-subtle)",
+                          border: "1px solid var(--border)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                        }}
+                      >
+                        {f.file.type.startsWith("image/") ? (
+                          f.previewUrl ? (
+                            <img
+                              src={f.previewUrl}
+                              alt=""
+                              style={{
+                                width: "16px",
+                                height: "16px",
+                                borderRadius: "2px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          ) : null
+                        ) : null}
+                        {f.file.name}
+                      </div>
+                    ))}
+                  </div>
+                  <EditSectionButton onClick={() => goToStep("data")} />
+                </ReviewCard>
+              )}
+
+              {/* Rubric card */}
+              <ReviewCard title="Rubric">
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {criteria.map((c, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between"
+                      style={{
+                        padding: "10px 0",
+                        borderBottom:
+                          i < criteria.length - 1
+                            ? "1px solid var(--border)"
+                            : "none",
+                      }}
+                    >
+                      <div>
+                        <span
+                          className="font-sans"
+                          style={{
+                            fontSize: "14px",
+                            fontWeight: 500,
+                            color: "var(--text)",
+                          }}
+                        >
+                          {c.name}
+                        </span>
+                        {c.description && (
+                          <p
+                            className="font-sans"
+                            style={{
+                              fontSize: "12px",
+                              color: "var(--text-muted)",
+                              marginTop: "2px",
+                            }}
+                          >
+                            {c.description}
+                          </p>
+                        )}
+                      </div>
+                      <span
+                        className="font-mono"
+                        style={{
+                          fontSize: "13px",
+                          fontWeight: 500,
+                          color: "var(--text)",
+                          flexShrink: 0,
+                        }}
+                      >
+                        {c.weight}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <EditSectionButton onClick={() => goToStep("rubric")} />
+              </ReviewCard>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div
+          style={{
+            padding: "16px 40px",
+            borderTop: "1px solid var(--border)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            {error && (
+              <p
+                className="font-sans"
+                style={{ fontSize: "13px", color: "var(--error)" }}
+              >
+                {error}
+              </p>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* Error */}
-      {error && (
-        <p className="mt-4 font-sans" style={{ fontSize: "13px", color: "var(--error)" }}>
-          {error}
-        </p>
-      )}
-
-      {/* Navigation */}
-      <div className="mt-10 flex justify-between">
-        {currentStepIndex > 0 ? (
-          <button
-            onClick={() => setStep(STEPS[currentStepIndex - 1].key)}
-            className="font-sans transition-colors"
-            style={{
-              padding: "10px 16px",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: 500,
-              background: "transparent",
-              color: "var(--text)",
-              border: "1px solid var(--border)",
-            }}
-          >
-            Back
-          </button>
-        ) : (
-          <div />
-        )}
-
-        {step === "review" ? (
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="font-sans transition-colors disabled:opacity-40"
-            style={{
-              padding: "10px 16px",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: 500,
-              background: "var(--text)",
-              color: "var(--inverse-text)",
-            }}
-          >
-            {loading ? "Creating..." : "Create Task"}
-          </button>
-        ) : (
-          <button
-            onClick={() => setStep(STEPS[currentStepIndex + 1].key)}
-            disabled={!canAdvance()}
-            className="font-sans transition-colors disabled:opacity-40"
-            style={{
-              padding: "10px 16px",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: 500,
-              background: "var(--text)",
-              color: "var(--inverse-text)",
-            }}
-          >
-            Continue
-          </button>
-        )}
+          <div style={{ display: "flex", gap: "8px" }}>
+            {currentStepIndex > 0 && (
+              <button
+                onClick={() => goToStep(STEPS[currentStepIndex - 1].key)}
+                className="font-sans transition-colors"
+                style={{
+                  padding: "9px 18px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  background: "transparent",
+                  color: "var(--text)",
+                  border: "1px solid var(--border)",
+                  cursor: "pointer",
+                }}
+              >
+                Back
+              </button>
+            )}
+            {step === "review" ? (
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="font-sans transition-colors disabled:opacity-40"
+                style={{
+                  padding: "9px 18px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  background: "var(--text)",
+                  color: "var(--inverse-text)",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                {loading ? "Creating..." : "Create Task"}
+              </button>
+            ) : (
+              <button
+                onClick={() => goToStep(STEPS[currentStepIndex + 1].key)}
+                disabled={!canAdvance()}
+                className="font-sans transition-colors disabled:opacity-40"
+                style={{
+                  padding: "9px 18px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  background: "var(--text)",
+                  color: "var(--inverse-text)",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Continue
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
+/* ── Helper Components ─────────────────────────────────────── */
 
 function Field({
   label,
@@ -403,7 +1076,10 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+      <label
+        className="mb-1 block font-sans"
+        style={{ fontSize: "13px", color: "var(--text-muted)" }}
+      >
         {label}
         {required && <span style={{ color: "var(--error)" }}> *</span>}
       </label>
@@ -414,16 +1090,19 @@ function Field({
         placeholder={placeholder}
         className="w-full font-sans outline-none"
         style={{
-          padding: "10px 12px",
+          padding: "9px 12px",
           borderRadius: "6px",
-          fontSize: "15px",
+          fontSize: "14px",
           color: "var(--text)",
           border: "1px solid var(--border)",
           background: "var(--bg)",
         }}
       />
       {helper && (
-        <p className="mt-1 font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+        <p
+          className="mt-1 font-sans"
+          style={{ fontSize: "12px", color: "var(--text-muted)" }}
+        >
           {helper}
         </p>
       )}
@@ -437,16 +1116,21 @@ function TextareaField({
   value,
   onChange,
   placeholder,
+  rows = 4,
 }: {
   label: string;
   required?: boolean;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
+  rows?: number;
 }) {
   return (
     <div>
-      <label className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+      <label
+        className="mb-1 block font-sans"
+        style={{ fontSize: "13px", color: "var(--text-muted)" }}
+      >
         {label}
         {required && <span style={{ color: "var(--error)" }}> *</span>}
       </label>
@@ -454,12 +1138,12 @@ function TextareaField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        rows={4}
+        rows={rows}
         className="w-full resize-none font-sans outline-none"
         style={{
-          padding: "10px 12px",
+          padding: "9px 12px",
           borderRadius: "6px",
-          fontSize: "15px",
+          fontSize: "14px",
           color: "var(--text)",
           border: "1px solid var(--border)",
           background: "var(--bg)",
@@ -469,25 +1153,208 @@ function TextareaField({
   );
 }
 
-function ReviewSection({ label, value }: { label: string; value: string }) {
+function RefinedField({
+  label,
+  value,
+  onChange,
+  rows = 4,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  rows?: number;
+}) {
+  return (
+    <div>
+      <label
+        className="mb-1 block font-sans"
+        style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-muted)" }}
+      >
+        {label}
+      </label>
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        rows={rows}
+        className="w-full resize-y font-sans outline-none"
+        style={{
+          padding: "12px 14px",
+          borderRadius: "8px",
+          fontSize: "13px",
+          lineHeight: 1.7,
+          color: "var(--text)",
+          border: "1px solid var(--border)",
+          background: "var(--bg-subtle)",
+        }}
+      />
+    </div>
+  );
+}
+
+const CATEGORY_OPTIONS = [
+  "code-generation",
+  "data-analysis",
+  "web-scraping",
+  "nlp",
+  "computer-vision",
+  "automation",
+  "research",
+  "other",
+];
+
+function CategoryPicker({
+  selected,
+  onChange,
+  otherValue,
+  onOtherChange,
+}: {
+  selected: string[];
+  onChange: (v: string[]) => void;
+  otherValue: string;
+  onOtherChange: (v: string) => void;
+}) {
+  function toggle(cat: string) {
+    if (selected.includes(cat)) {
+      onChange(selected.filter((c) => c !== cat));
+    } else {
+      onChange([...selected, cat]);
+    }
+  }
+
+  return (
+    <div>
+      <label
+        className="mb-2 block font-sans"
+        style={{ fontSize: "13px", color: "var(--text-muted)" }}
+      >
+        Category <span style={{ color: "var(--error)" }}>*</span>
+      </label>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+        {CATEGORY_OPTIONS.map((cat) => {
+          const active = selected.includes(cat);
+          return (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => toggle(cat)}
+              className="font-sans"
+              style={{
+                padding: "5px 12px",
+                borderRadius: "999px",
+                fontSize: "13px",
+                fontWeight: active ? 500 : 400,
+                border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
+                background: active ? "var(--text)" : "transparent",
+                color: active ? "var(--inverse-text)" : "var(--text-muted)",
+                cursor: "pointer",
+                transition: "all 0.12s",
+              }}
+            >
+              {cat}
+            </button>
+          );
+        })}
+      </div>
+      {selected.includes("other") && (
+        <input
+          type="text"
+          value={otherValue}
+          onChange={(e) => onOtherChange(e.target.value)}
+          placeholder="Specify category..."
+          className="mt-2 font-sans outline-none"
+          style={{
+            padding: "8px 12px",
+            borderRadius: "6px",
+            fontSize: "14px",
+            color: "var(--text)",
+            border: "1px solid var(--border)",
+            background: "var(--bg)",
+            width: "220px",
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+function ReviewCard({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        padding: "20px",
+        borderRadius: "12px",
+        border: "1px solid var(--border)",
+        position: "relative",
+      }}
+    >
+      <p
+        className="font-sans"
+        style={{
+          fontSize: "11px",
+          fontWeight: 600,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase" as const,
+          color: "var(--text-faint)",
+          marginBottom: "12px",
+        }}
+      >
+        {title}
+      </p>
+      {children}
+    </div>
+  );
+}
+
+function ReviewItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
       <p
         className="font-sans"
         style={{
-          fontSize: "11px",
-          fontWeight: 500,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase" as const,
-          color: "var(--text-muted)",
-          marginBottom: "4px",
+          fontSize: "12px",
+          color: "var(--text-faint)",
+          marginBottom: "2px",
         }}
       >
         {label}
       </p>
-      <p className="font-sans" style={{ fontSize: "15px", color: "var(--text)" }}>
+      <p
+        className="font-sans"
+        style={{ fontSize: "14px", fontWeight: 500, color: "var(--text)" }}
+      >
         {value}
       </p>
     </div>
+  );
+}
+
+function EditSectionButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="font-sans flex items-center gap-1 transition-colors"
+      style={{
+        position: "absolute",
+        top: "16px",
+        right: "16px",
+        padding: "4px 10px",
+        borderRadius: "6px",
+        fontSize: "12px",
+        fontWeight: 500,
+        color: "var(--text-muted)",
+        background: "transparent",
+        border: "1px solid var(--border)",
+        cursor: "pointer",
+      }}
+    >
+      <Pencil size={11} strokeWidth={1.5} />
+      Edit
+    </button>
   );
 }
