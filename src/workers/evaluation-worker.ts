@@ -50,6 +50,8 @@ if (!REDIS_URL || !SUPABASE_URL || !SUPABASE_KEY || !GEMINI_API_KEY) {
 const LLM_MODEL = "gemini-2.0-flash";
 const LLM_MAX_TOKENS = 4096;
 const QUEUE_NAME = "evaluation";
+const STORAGE_BUCKET = "agent-outputs";
+const MAX_OUTPUT_SIZE = 100_000; // 100K chars max for LLM context
 
 // ── Clients ──────────────────────────────────────────────────
 
@@ -86,6 +88,54 @@ interface RubricCriterion {
   weight: number;
 }
 
+// ── Output Fetching ─────────────────────────────────────────
+
+async function fetchAgentOutput(outputUrl: string): Promise<string> {
+  // outputUrl is a storage path like "submissions/{id}"
+  // List all files in the path and download them
+  const { data: files, error: listError } = await db.storage
+    .from(STORAGE_BUCKET)
+    .list(outputUrl);
+
+  if (listError) {
+    console.error(`[eval] Failed to list output files: ${listError.message}`);
+    return "";
+  }
+
+  if (!files || files.length === 0) {
+    console.error(`[eval] No output files found at ${outputUrl}`);
+    return "";
+  }
+
+  const outputs: string[] = [];
+
+  for (const file of files) {
+    if (file.metadata && file.metadata.size === 0) continue;
+
+    const { data, error: downloadError } = await db.storage
+      .from(STORAGE_BUCKET)
+      .download(`${outputUrl}/${file.name}`);
+
+    if (downloadError) {
+      console.error(`[eval] Failed to download ${file.name}: ${downloadError.message}`);
+      continue;
+    }
+
+    const text = await data.text();
+    outputs.push(`--- ${file.name} ---\n${text}`);
+  }
+
+  const combined = outputs.join("\n\n");
+
+  // Truncate if too large for LLM context
+  if (combined.length > MAX_OUTPUT_SIZE) {
+    console.log(`[eval] Output truncated from ${combined.length} to ${MAX_OUTPUT_SIZE} chars`);
+    return combined.slice(0, MAX_OUTPUT_SIZE) + "\n\n[Output truncated due to size]";
+  }
+
+  return combined;
+}
+
 // ── Worker ───────────────────────────────────────────────────
 
 const worker = new Worker<EvaluationJobData>(
@@ -115,6 +165,12 @@ const worker = new Worker<EvaluationJobData>(
       throw new Error(`No rubric criteria found for task ${taskId}`);
     }
 
+    // 1.5. Fetch the actual agent output from storage
+    const agentOutput = await fetchAgentOutput(outputUrl);
+    if (!agentOutput) {
+      console.error(`[eval] No output content for submission ${submissionId}`);
+    }
+
     // 2. Phase 1: Automated testing
     let testScore: number | null = null;
     if (task.test_weight > 0) {
@@ -127,7 +183,7 @@ const worker = new Worker<EvaluationJobData>(
     let dimensionScores: LLMResponse["dimensions"] = [];
 
     if (task.llm_weight > 0) {
-      const llmResult = await evaluateWithLLM(task, criteria, outputUrl);
+      const llmResult = await evaluateWithLLM(task, criteria, agentOutput);
       if (llmResult) {
         dimensionScores = llmResult.dimensions;
         llmReasoning = llmResult.overall_reasoning;
@@ -227,21 +283,95 @@ const worker = new Worker<EvaluationJobData>(
 
 async function runAutomatedTests(
   task: Record<string, unknown>,
-  _outputUrl: string
+  outputUrl: string
 ): Promise<number> {
-  // TODO(claude): Implement actual test suite execution
-  // For v1, this will download the test suite from Supabase Storage,
-  // run it against the agent output, and parse results.
-  // For now, return 0 if no test suite is provided.
-
   if (!task.test_suite_url) {
     console.log(`[eval] No test suite for task ${task.id}, skipping automated tests`);
     return 0;
   }
 
-  // Placeholder: actual implementation will run the test suite
+  // Download test suite from storage
+  const testSuiteUrl = task.test_suite_url as string;
   console.log(`[eval] Running test suite for task ${task.id}...`);
-  return 0;
+
+  try {
+    // Download the test suite file
+    const { data: testSuiteData, error: downloadError } = await db.storage
+      .from("test-suites")
+      .download(testSuiteUrl);
+
+    if (downloadError || !testSuiteData) {
+      console.error(`[eval] Failed to download test suite: ${downloadError?.message}`);
+      return 0;
+    }
+
+    // Download agent output for testing
+    const agentOutput = await fetchAgentOutput(outputUrl);
+    if (!agentOutput) {
+      console.log(`[eval] No agent output to test against`);
+      return 0;
+    }
+
+    // Parse test suite — expects JSON with test cases
+    const testSuiteText = await testSuiteData.text();
+    const testSuite = JSON.parse(testSuiteText) as TestSuite;
+
+    return executeTests(testSuite, agentOutput);
+  } catch (err) {
+    console.error(`[eval] Test suite execution failed:`, err);
+    return 0;
+  }
+}
+
+interface TestCase {
+  name: string;
+  input: string;
+  expected_output: string;
+  match_type: "exact" | "contains" | "regex";
+}
+
+interface TestSuite {
+  test_cases: TestCase[];
+}
+
+function executeTests(suite: TestSuite, agentOutput: string): number {
+  if (!suite.test_cases || suite.test_cases.length === 0) {
+    console.log(`[eval] Test suite has no test cases`);
+    return 0;
+  }
+
+  let passed = 0;
+  const total = suite.test_cases.length;
+
+  for (const tc of suite.test_cases) {
+    let match = false;
+
+    switch (tc.match_type) {
+      case "exact":
+        match = agentOutput.includes(tc.expected_output);
+        break;
+      case "contains":
+        match = agentOutput.toLowerCase().includes(tc.expected_output.toLowerCase());
+        break;
+      case "regex":
+        try {
+          match = new RegExp(tc.expected_output).test(agentOutput);
+        } catch {
+          console.error(`[eval] Invalid regex in test case "${tc.name}"`);
+        }
+        break;
+    }
+
+    if (match) {
+      passed++;
+    } else {
+      console.log(`[eval] Test case failed: ${tc.name}`);
+    }
+  }
+
+  const score = Math.round((passed / total) * 100);
+  console.log(`[eval] Tests: ${passed}/${total} passed (score: ${score})`);
+  return score;
 }
 
 // ── Phase 2: LLM Judge ───────────────────────────────────────
@@ -249,9 +379,9 @@ async function runAutomatedTests(
 async function evaluateWithLLM(
   task: Record<string, unknown>,
   criteria: RubricCriterion[],
-  _outputUrl: string
+  agentOutput: string
 ): Promise<LLMResponse | null> {
-  const prompt = buildEvaluationPrompt(task, criteria);
+  const prompt = buildEvaluationPrompt(task, criteria, agentOutput);
 
   // Attempt 1
   let result = await callLLM(prompt);
@@ -269,7 +399,8 @@ async function evaluateWithLLM(
 
 function buildEvaluationPrompt(
   task: Record<string, unknown>,
-  criteria: RubricCriterion[]
+  criteria: RubricCriterion[],
+  agentOutput: string
 ): string {
   const criteriaList = criteria
     .map(
@@ -294,7 +425,7 @@ ${task.output_spec}
 ${criteriaList}
 
 ## Agent Output
-[Agent output would be inserted here from the output URL]
+${agentOutput || "(No output was produced by the agent)"}
 
 ## Instructions
 Score each rubric criterion independently on a scale of 0-100.
