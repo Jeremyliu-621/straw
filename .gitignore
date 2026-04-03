@@ -46,6 +46,9 @@ next-env.d.ts
 test-results/
 playwright-report/
 
+# local git worktrees (nested repos — never commit)
+/worktrees/
+
 # ide
 .idea/
 .vscode/
