@@ -207,9 +207,91 @@ Goal: a complete, correct schema with RLS that can be trusted as a foundation. T
 
 ---
 
-<!-- RESUME HERE -->
+## Phase 11: Pipeline Fix + End-to-End Demo
 
-## Phase 11: Hardening
+Goal: The execution → evaluation pipeline actually works end-to-end. One real submission goes through the full path: submit → execute → evaluate → score on leaderboard.
+
+- [x] Fix execution worker → evaluation handoff: after successful run, enqueue eval job via BullMQ evaluation queue
+- [x] Upload agent output to Supabase Storage instead of file:// URL. agent-outputs bucket, submissions/{id}/ paths.
+- [x] Fix evaluation worker to actually fetch and read agent output before building the LLM prompt
+- [x] Implement automated test runner — JSON test suite format with exact/contains/regex matching
+- [x] Build test Docker images (4: good-agent, okay-agent, sloppy-agent, crash-agent) in test-agents/
+- [x] Submission status polling API — GET /api/submissions/[id]/status (includes evaluated flag + final_score)
+- [x] Wire POST /api/submissions to enqueue execution job via BullMQ (was a TODO)
+<!-- RESUME HERE -->
+- [ ] Run one real end-to-end submission locally: post task → submit agent → execute → evaluate → score appears on leaderboard
+
+> Gemini (gemini-2.0-flash) is the intended LLM judge — this is correct, not a discrepancy.
+
+---
+
+## Phase 12: Real Test Agents + Integration Test Script
+
+Goal: Prove the pipeline works by running real agents through it. Build Docker images that actually execute, submit them through the real APIs, and generate genuine leaderboard data. This is both your test suite and your demo data generator.
+
+### 12a: Test Docker Images (4 agents with different behaviors)
+
+Each image is a real container that reads $MAP_TASK_INPUT and writes to /output. They must actually run through the execution worker.
+
+- [ ] **good-agent**: Reads input carefully, produces well-structured output that should score high. Think "senior engineer" output.
+- [ ] **okay-agent**: Produces correct but minimal output. Should land mid-pack.
+- [ ] **sloppy-agent**: Fast but cuts corners — partial output, missing edge cases. Scores high on some dimensions, low on others.
+- [ ] **crash-agent**: Exits with non-zero code or times out. Tests the failure path.
+- [ ] All images pushed to a registry (Docker Hub or GitHub Container Registry) so the execution worker can pull them.
+
+### 12b: End-to-End Integration Script
+
+A single script (TypeScript, run with tsx) that exercises the full product loop via real API calls and queue jobs. This is the most important artifact in Phase 12 — if this script passes, the product works.
+
+- [ ] Script creates a company user + agent builder users (via Supabase admin client, bypassing OAuth for testing)
+- [ ] Posts 2–3 real tasks with rubrics via the task creation API
+- [ ] Registers the 4 test agents with their real Docker image names
+- [ ] Submits each agent to each task via the submissions API
+- [ ] Enqueues execution jobs (or triggers them via API)
+- [ ] Polls submission status until all jobs complete or fail
+- [ ] Verifies: leaderboard API returns correct rankings
+- [ ] Verifies: good-agent > okay-agent > sloppy-agent in final scores
+- [ ] Verifies: crash-agent has status "failed"
+- [ ] Verifies: evaluation results exist with non-null LLM reasoning
+- [ ] Script outputs a clear PASS/FAIL summary
+- [ ] Script is idempotent — can be run repeatedly (cleans up previous data or uses unique IDs)
+
+### 12c: Dogfooding (use the product as both roles)
+
+After the integration script passes, manually walk through the product as a real user.
+
+- [ ] Sign in as a company via Google OAuth. Post a task with a real rubric. Does the flow feel right?
+- [ ] Sign in as an agent builder via GitHub OAuth. Find the task, enter the competition. Does matching work?
+- [ ] Watch the leaderboard update after submissions are evaluated. Does it tell a story?
+- [ ] Contact the winner. Does the messaging flow make sense?
+- [ ] Note every friction point, broken redirect, confusing label, or missing empty state — these become Phase 14 tasks.
+
+### 12d: Cosmetic Seeding (light, after pipeline is proven)
+
+Only after 12a–12c pass. This is optional polish to fill visual gaps.
+
+- [ ] Add 3–5 extra agent profiles for visual density on the browse page
+- [ ] Backfill 1–2 closed tasks with realistic scores if the integration script didn't generate enough
+- [ ] Agent browsing page — companies can browse agents sorted by reputation (from Phase 9)
+
+---
+
+## Phase 13: Deployment
+
+Goal: App is live on the internet. Workers are running. A user can sign up and see the platform.
+
+- [ ] Dockerfile for execution worker (Railway/Fly.io)
+- [ ] Dockerfile for evaluation worker (Railway/Fly.io)
+- [ ] Deploy Next.js app to Vercel
+- [ ] Deploy workers to Railway or Fly.io
+- [ ] Configure production env vars (Supabase, Redis, Gemini API key, OAuth)
+- [ ] Run Supabase migrations on production database
+- [ ] Verify: OAuth sign-in works in production
+- [ ] Verify: one end-to-end submission works in production
+
+---
+
+## Phase 14: Hardening
 
 - [ ] Rate limiting on all API routes
 - [ ] Input sanitization audit
@@ -227,9 +309,6 @@ Goal: a complete, correct schema with RLS that can be trusted as a foundation. T
 ## Discovered Tasks
 
 - **Docker image validation**: Agent profile should validate Docker image on save (attempt pull). Deferred — needs actual Docker daemon for integration testing.
-- **Supabase Storage upload**: Task creation should support test suite upload. Deferred — not critical for v1 core flow.
+- **Supabase Storage upload for test suites**: Task creation should support test suite upload. Deferred — not critical for v1 core flow.
 - **Email notifications**: Notify agents when matched tasks are posted, notify companies when deadline fires. Needs Resend integration.
-- **Submission status polling API**: Agents need to check submission progress. Simple GET route needed.
-- **Agent browsing page**: Companies should be able to browse agents sorted by reputation. Listed in Phase 9 but not yet built.
 - **Supabase Realtime**: Replace polling-based leaderboard with Supabase Realtime subscriptions for true real-time updates.
-- **Worker → evaluation queue**: Execution worker should enqueue evaluation job after successful run. Currently a TODO in the worker.
