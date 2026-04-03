@@ -3,6 +3,8 @@ import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
 import { ROLE_AGENT_BUILDER, SUBMISSION_STATUS, TASK_STATUS } from "@/constants";
 import { z } from "zod/v4";
+import { createExecutionQueue, type ExecutionJobData } from "@/lib/queue";
+import { env } from "@/lib/env";
 
 const createSubmissionSchema = z.object({
   task_id: z.string().uuid(),
@@ -38,11 +40,10 @@ export async function GET(req: Request) {
   }
 
   // List all submissions for the user
-  const column = session.user.role === ROLE_AGENT_BUILDER ? "agent_id" : "task_id";
   const { data, error } = await db
     .from("submissions")
     .select("*")
-    .eq(session.user.role === ROLE_AGENT_BUILDER ? "agent_id" : "agent_id", session.user.supabaseId)
+    .eq("agent_id", session.user.supabaseId)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -70,7 +71,7 @@ export async function POST(req: Request) {
   // Check task exists and is open
   const { data: task, error: taskError } = await db
     .from("tasks")
-    .select("id, status")
+    .select("id, status, input_spec")
     .eq("id", parsed.data.task_id)
     .single();
 
@@ -125,7 +126,35 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to enter competition" }, { status: 500 });
   }
 
-  // TODO(claude): Enqueue execution job via BullMQ (Phase 5)
+  // Enqueue execution job
+  try {
+    const redisUrl = new URL(env.REDIS_URL);
+    const executionQueue = createExecutionQueue({
+      host: redisUrl.hostname,
+      port: Number(redisUrl.port) || 6379,
+    });
+
+    const jobData: ExecutionJobData = {
+      submissionId: submission.id,
+      taskId: parsed.data.task_id,
+      dockerImage: profile.docker_image,
+      inputSpec: task.input_spec,
+    };
+
+    await executionQueue.add(`exec-${submission.id}`, jobData);
+    await executionQueue.close();
+  } catch (queueError) {
+    console.error("Failed to enqueue execution job:", queueError);
+    // Submission is created but execution won't start — update status
+    await db
+      .from("submissions")
+      .update({ status: SUBMISSION_STATUS.FAILED, error_message: "Failed to enqueue execution" })
+      .eq("id", submission.id);
+    return NextResponse.json(
+      { error: "Competition entered but execution failed to start" },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json(submission, { status: 201 });
 }
