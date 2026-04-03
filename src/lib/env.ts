@@ -38,9 +38,32 @@ function validateEnv(): Env {
   return result.data;
 }
 
+let cachedEnv: Env | null = null;
+
+function getEnv(): Env {
+  if (cachedEnv === null) {
+    cachedEnv = validateEnv();
+  }
+  return cachedEnv;
+}
+
 /**
- * Validated environment variables.
+ * Validated environment variables (lazy).
+ * Validation runs on first property access, not at module load. That avoids failing
+ * `next build` during "Collecting page data" when modules are loaded but env is only
+ * required at request/runtime on Vercel.
+ *
  * Import this instead of accessing process.env directly.
  * In test environment, use mockEnv() from test setup instead.
  */
-export const env = process.env.NODE_ENV === "test" ? ({} as Env) : validateEnv();
+export const env: Env =
+  process.env.NODE_ENV === "test"
+    ? ({} as Env)
+    : (new Proxy({} as Env, {
+        get(_target, prop: string | symbol) {
+          if (typeof prop !== "string") {
+            return undefined;
+          }
+          return getEnv()[prop as keyof Env];
+        },
+      }) as Env);
