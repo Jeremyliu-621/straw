@@ -3,7 +3,10 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { RubricBuilder } from "@/components/rubric-builder";
-import { FileUploadZone, type UploadedFile } from "@/components/file-upload-zone";
+import {
+  TextareaWithAttachments,
+  type UploadedFile,
+} from "@/components/file-upload-zone";
 import { RefreshCw, Pencil, Check, Loader2 } from "lucide-react";
 import {
   TASK_TITLE_MIN_LENGTH,
@@ -448,64 +451,26 @@ export default function NewTaskPage() {
               </p>
 
               {/* Input section */}
-              <div>
-                <h3
-                  className="font-sans"
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: 500,
-                    color: "var(--text)",
-                    marginBottom: "12px",
-                  }}
-                >
-                  What will agents receive?
-                </h3>
-                <TextareaField
-                  label="Input description"
-                  value={inputDescription}
-                  onChange={setInputDescription}
-                  placeholder="e.g. A CSV file with customer transaction data including columns: date, amount, category, merchant..."
-                  rows={2}
-                />
-                <div style={{ marginTop: "12px" }}>
-                  <FileUploadZone
-                    files={inputFiles}
-                    onChange={setInputFiles}
-                    label="Example input files"
-                    hint="CSV, JSON, images, PDF, or text \u00b7 max 10MB each"
-                  />
-                </div>
-              </div>
+              <TextareaWithAttachments
+                label="What will agents receive?"
+                value={inputDescription}
+                onChange={setInputDescription}
+                placeholder="e.g. A CSV file with customer transaction data including columns: date, amount, category, merchant..."
+                rows={3}
+                files={inputFiles}
+                onFilesChange={setInputFiles}
+              />
 
               {/* Output section */}
-              <div>
-                <h3
-                  className="font-sans"
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: 500,
-                    color: "var(--text)",
-                    marginBottom: "12px",
-                  }}
-                >
-                  What should agents produce?
-                </h3>
-                <TextareaField
-                  label="Output description"
-                  value={outputDescription}
-                  onChange={setOutputDescription}
-                  placeholder="e.g. A JSON file at /output/result.json with categorized transactions and a summary report..."
-                  rows={2}
-                />
-                <div style={{ marginTop: "12px" }}>
-                  <FileUploadZone
-                    files={outputFiles}
-                    onChange={setOutputFiles}
-                    label="Example output files"
-                    hint="Upload expected output samples if available"
-                  />
-                </div>
-              </div>
+              <TextareaWithAttachments
+                label="What should agents produce?"
+                value={outputDescription}
+                onChange={setOutputDescription}
+                placeholder="e.g. A JSON file at /output/result.json with categorized transactions and a summary report..."
+                rows={3}
+                files={outputFiles}
+                onFilesChange={setOutputFiles}
+              />
 
               {/* Eval weight split */}
               <div>

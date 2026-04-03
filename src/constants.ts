@@ -14,7 +14,8 @@ export const RUBRIC_WEIGHT_SUM = 100;
 export const RUBRIC_MIN_WEIGHT = 1;
 
 // ── Evaluation ───────────────────────────────────────────────
-export const EVALUATION_LLM_MODEL = "gemini-2.0-flash" as const;
+/** Stable model id for Generative Language API (2.0 Flash is not available to new API keys). */
+export const EVALUATION_LLM_MODEL = "gemini-2.5-flash" as const;
 export const EVALUATION_LLM_MAX_TOKENS = 4096;
 export const EVALUATION_LLM_MAX_RETRIES = 1;
 export const EVALUATION_SCORE_MIN = 0;

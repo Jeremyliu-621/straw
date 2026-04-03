@@ -33,6 +33,7 @@
 import { Worker } from "bullmq";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@supabase/supabase-js";
+import { EVALUATION_LLM_MODEL } from "@/constants";
 import { z } from "zod/v4";
 
 // ── Config ───────────────────────────────────────────────────
@@ -47,7 +48,6 @@ if (!REDIS_URL || !SUPABASE_URL || !SUPABASE_KEY || !GEMINI_API_KEY) {
   process.exit(1);
 }
 
-const LLM_MODEL = "gemini-2.0-flash";
 const LLM_MAX_TOKENS = 4096;
 const QUEUE_NAME = "evaluation";
 const STORAGE_BUCKET = "agent-outputs";
@@ -460,7 +460,7 @@ Do not include any text outside the JSON.`;
 
 async function callLLM(prompt: string): Promise<LLMResponse | null> {
   try {
-    const model = gemini.getGenerativeModel({ model: LLM_MODEL });
+    const model = gemini.getGenerativeModel({ model: EVALUATION_LLM_MODEL });
     const response = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: { maxOutputTokens: LLM_MAX_TOKENS },
