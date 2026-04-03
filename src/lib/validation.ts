@@ -64,3 +64,32 @@ export const createTaskSchema = z
   );
 
 export type CreateTaskInput = z.infer<typeof createTaskSchema>;
+
+// ── Task Refinement (LLM generation) ────────────────────────
+export const refineTaskSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().min(1),
+  category: z.string().min(1),
+  inputFiles: z.array(
+    z.object({
+      name: z.string(),
+      description: z.string(),
+    })
+  ),
+  outputFiles: z.array(
+    z.object({
+      name: z.string(),
+      description: z.string(),
+    })
+  ),
+  criteria: z.array(
+    z.object({
+      name: z.string(),
+      description: z.string().optional(),
+      weight: z.number(),
+    })
+  ),
+  testWeight: z.number().int().min(0).max(100),
+});
+
+export type RefineTaskInput = z.infer<typeof refineTaskSchema>;

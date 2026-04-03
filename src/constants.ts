@@ -14,7 +14,8 @@ export const RUBRIC_WEIGHT_SUM = 100;
 export const RUBRIC_MIN_WEIGHT = 1;
 
 // ── Evaluation ───────────────────────────────────────────────
-export const EVALUATION_LLM_MODEL = "gemini-2.0-flash" as const;
+/** Stable model id for Generative Language API (2.0 Flash is not available to new API keys). */
+export const EVALUATION_LLM_MODEL = "gemini-2.5-flash" as const;
 export const EVALUATION_LLM_MAX_TOKENS = 4096;
 export const EVALUATION_LLM_MAX_RETRIES = 1;
 export const EVALUATION_SCORE_MIN = 0;
@@ -41,6 +42,20 @@ export type UserRole = typeof ROLE_COMPANY | typeof ROLE_AGENT_BUILDER;
 // ── Platform ─────────────────────────────────────────────────
 export const PLATFORM_TASK_FEE_CENTS = 99_00; // $99 flat
 export const PLATFORM_SUCCESS_FEE_PERCENT = 5; // 5% of deal value
+
+// ── Task Attachments ────────────────────────────────────────
+export const TASK_MAX_ATTACHMENT_SIZE_MB = 10;
+export const TASK_MAX_ATTACHMENTS = 10;
+export const TASK_ATTACHMENTS_BUCKET = "task-attachments" as const;
+export const TASK_ALLOWED_FILE_TYPES = [
+  "text/csv",
+  "application/json",
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "application/pdf",
+  "text/plain",
+] as const;
 
 // ── UI ───────────────────────────────────────────────────────
 export const LEADERBOARD_POLL_INTERVAL_MS = 3000;

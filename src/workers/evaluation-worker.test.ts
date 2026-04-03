@@ -212,3 +212,109 @@ function buildTestPrompt(
     )
     .join("\n");
 }
+
+// ── Test runner logic tests ─────────────────────────────────
+
+interface TestCase {
+  name: string;
+  input: string;
+  expected_output: string;
+  match_type: "exact" | "contains" | "regex";
+}
+
+interface TestSuite {
+  test_cases: TestCase[];
+}
+
+function executeTests(suite: TestSuite, agentOutput: string): number {
+  if (!suite.test_cases || suite.test_cases.length === 0) return 0;
+
+  let passed = 0;
+  const total = suite.test_cases.length;
+
+  for (const tc of suite.test_cases) {
+    let match = false;
+    switch (tc.match_type) {
+      case "exact":
+        match = agentOutput.includes(tc.expected_output);
+        break;
+      case "contains":
+        match = agentOutput.toLowerCase().includes(tc.expected_output.toLowerCase());
+        break;
+      case "regex":
+        try {
+          match = new RegExp(tc.expected_output).test(agentOutput);
+        } catch {
+          // invalid regex
+        }
+        break;
+    }
+    if (match) passed++;
+  }
+
+  return Math.round((passed / total) * 100);
+}
+
+describe("automated test runner", () => {
+  it("scores 100 when all exact match tests pass", () => {
+    const suite: TestSuite = {
+      test_cases: [
+        { name: "has status", input: "", expected_output: '"status": "success"', match_type: "exact" },
+        { name: "has output", input: "", expected_output: '"output":', match_type: "exact" },
+      ],
+    };
+    const output = '{"status": "success", "output": "hello"}';
+    expect(executeTests(suite, output)).toBe(100);
+  });
+
+  it("scores 50 when half the tests pass", () => {
+    const suite: TestSuite = {
+      test_cases: [
+        { name: "pass", input: "", expected_output: "hello", match_type: "exact" },
+        { name: "fail", input: "", expected_output: "missing", match_type: "exact" },
+      ],
+    };
+    expect(executeTests(suite, "hello world")).toBe(50);
+  });
+
+  it("scores 0 when no tests pass", () => {
+    const suite: TestSuite = {
+      test_cases: [
+        { name: "fail1", input: "", expected_output: "xyz", match_type: "exact" },
+        { name: "fail2", input: "", expected_output: "abc", match_type: "exact" },
+      ],
+    };
+    expect(executeTests(suite, "nothing here")).toBe(0);
+  });
+
+  it("contains match is case-insensitive", () => {
+    const suite: TestSuite = {
+      test_cases: [
+        { name: "case", input: "", expected_output: "SUCCESS", match_type: "contains" },
+      ],
+    };
+    expect(executeTests(suite, "status: success")).toBe(100);
+  });
+
+  it("regex match works", () => {
+    const suite: TestSuite = {
+      test_cases: [
+        { name: "regex", input: "", expected_output: "\\d{3}-\\d{4}", match_type: "regex" },
+      ],
+    };
+    expect(executeTests(suite, "Phone: 555-1234")).toBe(100);
+  });
+
+  it("handles invalid regex gracefully", () => {
+    const suite: TestSuite = {
+      test_cases: [
+        { name: "bad regex", input: "", expected_output: "[invalid(", match_type: "regex" },
+      ],
+    };
+    expect(executeTests(suite, "anything")).toBe(0);
+  });
+
+  it("returns 0 for empty test suite", () => {
+    expect(executeTests({ test_cases: [] }, "output")).toBe(0);
+  });
+});

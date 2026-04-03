@@ -27,7 +27,7 @@
  * - Docker daemon error → retry via BullMQ backoff
  */
 
-import { Worker } from "bullmq";
+import { Worker, Queue } from "bullmq";
 import Dockerode from "dockerode";
 import { createClient } from "@supabase/supabase-js";
 import path from "path";
@@ -51,11 +51,28 @@ const CPU_LIMIT = 1e9; // 1 CPU in nanoCPUs
 const OUTPUT_DIR = "/output";
 const INPUT_ENV_VAR = "MAP_TASK_INPUT";
 const QUEUE_NAME = "execution";
+const EVAL_QUEUE_NAME = "evaluation";
+const STORAGE_BUCKET = "agent-outputs";
 
 // ── Clients ──────────────────────────────────────────────────
 
 const docker = new Dockerode();
 const db = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+
+const redisConnection = {
+  host: new URL(REDIS_URL).hostname,
+  port: Number(new URL(REDIS_URL).port) || 6379,
+};
+
+const evaluationQueue = new Queue(EVAL_QUEUE_NAME, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 5000 },
+    removeOnComplete: 100,
+    removeOnFail: 50,
+  },
+});
 
 // ── Worker ───────────────────────────────────────────────────
 
@@ -131,9 +148,7 @@ const worker = new Worker<ExecutionJobData>(
       }
 
       // 8. Upload output to Supabase Storage
-      // TODO(claude): Implement actual Supabase Storage upload
-      // For now, store the local path as the output URL
-      const outputUrl = `file://${tmpDir}`;
+      const outputUrl = await uploadOutput(submissionId, tmpDir, outputFiles);
 
       // 9. Update submission to completed
       await updateSubmission(submissionId, "completed", {
@@ -142,8 +157,12 @@ const worker = new Worker<ExecutionJobData>(
       });
 
       // 10. Enqueue evaluation job
-      // TODO(claude): Enqueue via evaluation queue (Phase 6)
-      console.log(`[exec] Submission ${submissionId} completed successfully`);
+      await evaluationQueue.add(`eval-${submissionId}`, {
+        submissionId,
+        taskId: job.data.taskId,
+        outputUrl,
+      });
+      console.log(`[exec] Submission ${submissionId} completed, evaluation enqueued`);
     } catch (err) {
       const message = err instanceof ExecutionError ? err.message : "Unexpected execution error";
       console.error(`[exec] Submission ${submissionId} failed: ${message}`);
@@ -166,10 +185,65 @@ const worker = new Worker<ExecutionJobData>(
     }
   },
   {
-    connection: { host: new URL(REDIS_URL).hostname, port: Number(new URL(REDIS_URL).port) || 6379 },
+    connection: redisConnection,
     concurrency: 2,
   }
 );
+
+// ── Storage Upload ──────────────────────────────────────────
+
+async function ensureBucketExists(): Promise<void> {
+  const { data: buckets } = await db.storage.listBuckets();
+  const exists = buckets?.some((b) => b.name === STORAGE_BUCKET);
+  if (!exists) {
+    const { error } = await db.storage.createBucket(STORAGE_BUCKET, {
+      public: false,
+      fileSizeLimit: 50 * 1024 * 1024, // 50MB max per file
+    });
+    if (error && !error.message.includes("already exists")) {
+      throw new Error(`Failed to create storage bucket: ${error.message}`);
+    }
+  }
+}
+
+async function uploadOutput(
+  submissionId: string,
+  tmpDir: string,
+  outputFiles: string[]
+): Promise<string> {
+  await ensureBucketExists();
+
+  const storagePath = `submissions/${submissionId}`;
+  const uploadedPaths: string[] = [];
+
+  for (const file of outputFiles) {
+    const filePath = path.join(tmpDir, file);
+    const stat = fs.statSync(filePath);
+
+    // Skip directories, only upload files
+    if (stat.isDirectory()) continue;
+
+    const fileContent = fs.readFileSync(filePath);
+    const remotePath = `${storagePath}/${file}`;
+
+    const { error } = await db.storage
+      .from(STORAGE_BUCKET)
+      .upload(remotePath, fileContent, {
+        upsert: true,
+        contentType: "application/octet-stream",
+      });
+
+    if (error) {
+      console.error(`[exec] Failed to upload ${file}: ${error.message}`);
+      throw new Error(`Storage upload failed for ${file}: ${error.message}`);
+    }
+
+    uploadedPaths.push(remotePath);
+  }
+
+  console.log(`[exec] Uploaded ${uploadedPaths.length} files to ${storagePath}`);
+  return storagePath;
+}
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -249,13 +323,13 @@ console.log("[exec] Execution worker started, waiting for jobs...");
 process.on("SIGTERM", async () => {
   console.log("[exec] Shutting down...");
   await worker.close();
-  // Redis connection closed by worker.close()
+  await evaluationQueue.close();
   process.exit(0);
 });
 
 process.on("SIGINT", async () => {
   console.log("[exec] Shutting down...");
   await worker.close();
-  // Redis connection closed by worker.close()
+  await evaluationQueue.close();
   process.exit(0);
 });

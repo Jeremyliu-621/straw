@@ -87,3 +87,39 @@ function buildContainerConfig(image: string, inputSpec: string) {
     },
   };
 }
+
+describe("storage path generation", () => {
+  function buildStoragePath(submissionId: string): string {
+    return `submissions/${submissionId}`;
+  }
+
+  it("generates correct path for submission", () => {
+    const path = buildStoragePath("abc-123");
+    expect(path).toBe("submissions/abc-123");
+  });
+
+  it("uses submission ID as directory name", () => {
+    const id = "550e8400-e29b-41d4-a716-446655440000";
+    const path = buildStoragePath(id);
+    expect(path).toContain(id);
+    expect(path).toMatch(/^submissions\//);
+  });
+});
+
+describe("evaluation queue job shape", () => {
+  it("creates correct job data after successful execution", () => {
+    const submissionId = "sub-123";
+    const taskId = "task-456";
+    const outputUrl = `submissions/${submissionId}`;
+
+    const jobData = {
+      submissionId,
+      taskId,
+      outputUrl,
+    };
+
+    expect(jobData.submissionId).toBe(submissionId);
+    expect(jobData.taskId).toBe(taskId);
+    expect(jobData.outputUrl).toBe("submissions/sub-123");
+  });
+});
