@@ -219,22 +219,20 @@ export default function NewTaskPage() {
       style={{
         position: "fixed",
         inset: 0,
-        background: "var(--bg-subtle)",
+        background: "#FDFCFC",
         display: "flex",
-        alignItems: "center",
         justifyContent: "center",
-        padding: "32px",
+        overflow: "hidden",
       }}
     >
       <div
         style={{
           width: "100%",
           maxWidth: "860px",
-          maxHeight: "100%",
           display: "flex",
           flexDirection: "column",
-          borderRadius: "24px",
-          border: "1px solid var(--border)",
+          borderLeft: "1px solid var(--border)",
+          borderRight: "1px solid var(--border)",
           background: "var(--bg)",
           overflow: "hidden",
         }}
