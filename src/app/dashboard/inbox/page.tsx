@@ -140,7 +140,7 @@ export default function InboxPage() {
               style={{
                 height: "72px",
                 background: "var(--bg-subtle)",
-                borderRadius: "12px",
+                borderRadius: "7px",
               }}
             />
           ))}
@@ -237,7 +237,7 @@ export default function InboxPage() {
           className="mt-6 flex"
           style={{
             border: "1px solid var(--border)",
-            borderRadius: "12px",
+            borderRadius: "7px",
             height: "calc(100vh - 180px)",
             minHeight: "400px",
             overflow: "hidden",
@@ -484,7 +484,7 @@ export default function InboxPage() {
                               width: `${40 + i * 10}%`,
                               height: "48px",
                               background: "var(--bg-subtle)",
-                              borderRadius: "12px",
+                              borderRadius: "7px",
                             }}
                           />
                         </div>
@@ -508,7 +508,7 @@ export default function InboxPage() {
                             style={{
                               maxWidth: "70%",
                               padding: "10px 14px",
-                              borderRadius: "12px",
+                              borderRadius: "7px",
                               background: isMine
                                 ? "var(--accent, var(--text))"
                                 : "var(--bg-subtle)",

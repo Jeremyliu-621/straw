@@ -114,7 +114,7 @@ export default function AgentProfilePage() {
           maxWidth: "640px",
           display: "flex",
           flexDirection: "column",
-          borderRadius: "24px",
+          borderRadius: "7px",
           border: "1px solid var(--border)",
           background: "var(--bg)",
           overflow: "hidden",

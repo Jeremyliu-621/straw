@@ -75,7 +75,7 @@ export function Step3Ready({ role, displayName }: Step3ReadyProps) {
             key={concept.title}
             style={{
               padding: "16px 20px",
-              borderRadius: "12px",
+              borderRadius: "7px",
               border: "1px solid var(--border)",
               background: "var(--bg-subtle)",
             }}

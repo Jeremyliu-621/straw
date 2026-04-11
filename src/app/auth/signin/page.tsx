@@ -13,7 +13,7 @@ export default function SignInPage() {
         style={{
           width: "100%",
           maxWidth: "400px",
-          borderRadius: "24px",
+          borderRadius: "7px",
           border: "1px solid var(--border)",
           background: "var(--bg)",
           padding: "48px 40px",

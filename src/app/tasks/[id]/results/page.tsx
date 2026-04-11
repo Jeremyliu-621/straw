@@ -206,7 +206,7 @@ export default function ResultsPage() {
             padding: "24px",
             border: "1px solid var(--border)",
             borderLeft: "3px solid var(--accent, var(--text))",
-            borderRadius: "12px",
+            borderRadius: "7px",
           }}
         >
           <div className="flex items-center gap-2" style={{ marginBottom: "16px" }}>
@@ -460,7 +460,7 @@ export default function ResultsPage() {
                 style={{
                   padding: "16px",
                   border: "1px solid var(--border)",
-                  borderRadius: "12px",
+                  borderRadius: "7px",
                 }}
               >
                 <div className="flex items-center justify-between">
@@ -540,7 +540,7 @@ export default function ResultsPage() {
             marginTop: "48px",
             padding: "24px",
             border: "1px solid var(--border)",
-            borderRadius: "12px",
+            borderRadius: "7px",
           }}
         >
           <p
