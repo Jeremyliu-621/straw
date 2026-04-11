@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Search, Zap } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
 
 interface TaskSummary {
@@ -22,9 +22,20 @@ interface AgentStats {
   avgScore: number | null;
 }
 
+interface SubmissionSummary {
+  id: string;
+  task_id: string;
+  status: string;
+  mode: string;
+  agent_display_name: string | null;
+  final_score: number | null;
+  created_at: string;
+}
+
 export default function AgentDashboard() {
   const { data: session } = useSession();
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
+  const [submissions, setSubmissions] = useState<SubmissionSummary[]>([]);
   const [stats, setStats] = useState<AgentStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,10 +43,12 @@ export default function AgentDashboard() {
     Promise.all([
       fetch("/api/tasks").then((res) => res.json()),
       fetch("/api/dashboard/stats").then((res) => res.json()),
+      fetch("/api/submissions").then((res) => res.json()),
     ])
-      .then(([tasksData, statsData]) => {
+      .then(([tasksData, statsData, subsData]) => {
         setTasks(Array.isArray(tasksData) ? tasksData : []);
         setStats(statsData);
+        setSubmissions(Array.isArray(subsData) ? subsData : []);
       })
       .catch(() => {
         setTasks([]);
@@ -258,6 +271,132 @@ export default function AgentDashboard() {
               </span>
             </Link>
           ))}
+        </div>
+      )}
+      {/* Your Submissions */}
+      {!loading && submissions.length > 0 && (
+        <div style={{ marginTop: "40px" }}>
+          <div style={{ marginBottom: "12px" }}>
+            <span
+              className="font-sans"
+              style={{
+                fontSize: "11px",
+                fontWeight: 500,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase" as const,
+                color: "var(--text-muted)",
+              }}
+            >
+              Your Submissions ({submissions.length})
+            </span>
+          </div>
+
+          {/* Table header */}
+          <div
+            className="flex items-center gap-4 px-4 py-2"
+            style={{ borderBottom: "1px solid var(--border)" }}
+          >
+            <span className="flex-1 font-sans" style={labelStyle}>
+              Agent
+            </span>
+            <span className="w-20 font-sans" style={labelStyle}>
+              Mode
+            </span>
+            <span className="w-24 font-sans" style={labelStyle}>
+              Status
+            </span>
+            <span className="w-20 text-right font-mono" style={labelStyle}>
+              Score
+            </span>
+            <span className="w-28 text-right font-sans" style={labelStyle}>
+              Submitted
+            </span>
+          </div>
+
+          {/* Submission rows */}
+          {submissions.map((sub) => (
+            <Link
+              key={sub.id}
+              href={`/tasks/${sub.task_id}`}
+              className="flex items-center gap-4 px-4"
+              style={{
+                height: "56px",
+                borderBottom: "1px solid var(--border)",
+                textDecoration: "none",
+                color: "var(--text)",
+                transition: "background-color 0.15s ease",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
+              onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
+            >
+              <span className="flex-1 truncate font-sans" style={{ fontSize: "15px" }}>
+                {sub.agent_display_name || "Unnamed Agent"}
+              </span>
+              <span className="w-20">
+                <span
+                  className="font-sans"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    padding: "2px 8px",
+                    borderRadius: "4px",
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    background: sub.mode === "api" ? "var(--accent-subtle, #f0f0ff)" : "var(--bg-subtle)",
+                    color: sub.mode === "api" ? "var(--accent, var(--text))" : "var(--text-muted)",
+                  }}
+                >
+                  {sub.mode === "api" ? <Zap size={10} strokeWidth={2} /> : null}
+                  {sub.mode === "api" ? "API" : "Docker"}
+                </span>
+              </span>
+              <span className="w-24">
+                <StatusBadge status={sub.status} />
+              </span>
+              <span
+                className="w-20 text-right font-mono"
+                style={{
+                  fontSize: "14px",
+                  color: sub.final_score !== null ? "var(--text)" : "var(--text-faint)",
+                }}
+              >
+                {sub.final_score !== null ? sub.final_score.toFixed(1) : "--"}
+              </span>
+              <span
+                className="w-28 text-right font-sans"
+                style={{ fontSize: "13px", color: "var(--text-muted)" }}
+              >
+                {new Date(sub.created_at).toLocaleDateString()}
+              </span>
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {!loading && submissions.length === 0 && tasks.length > 0 && (
+        <div
+          className="flex flex-col items-center justify-center"
+          style={{
+            marginTop: "40px",
+            padding: "40px 20px",
+            border: "1px solid var(--border)",
+            borderRadius: "12px",
+          }}
+        >
+          <Zap size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />
+          <p
+            className="mt-3 font-sans"
+            style={{ fontSize: "16px", fontWeight: 500, color: "var(--text)" }}
+          >
+            No submissions yet
+          </p>
+          <p
+            className="mt-1 font-sans text-center"
+            style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "320px" }}
+          >
+            Pick a task above and enter the competition to get started.
+          </p>
         </div>
       )}
     </div>

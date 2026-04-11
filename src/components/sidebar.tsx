@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -13,7 +12,6 @@ import {
   User,
   Inbox,
   Terminal,
-  ChevronDown,
 } from "lucide-react";
 
 interface NavItem {
@@ -48,10 +46,6 @@ export function Sidebar() {
   const { data: session, update } = useSession();
   const pathname = usePathname();
   const router = useRouter();
-  const [devOpen, setDevOpen] = useState(false);
-  const [devEmail, setDevEmail] = useState("");
-  const [devRole, setDevRole] = useState<"company" | "agent_builder">("company");
-
   const activeRole = session?.user?.role;
   const isCompany = activeRole === ROLE_COMPANY;
   const navItems = isCompany ? COMPANY_NAV : AGENT_NAV;
@@ -85,6 +79,20 @@ export function Sidebar() {
 
       {/* Role switcher */}
       <div style={{ padding: "0 16px 8px" }}>
+        <p
+          className="font-sans"
+          style={{
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            color: "var(--text-faint)",
+            marginBottom: "8px",
+            paddingLeft: "4px",
+          }}
+        >
+          Viewing as
+        </p>
         <div
           style={{
             background: "var(--bg)",
@@ -187,117 +195,68 @@ export function Sidebar() {
       {/* Dev login panel — development only */}
       {isDev && (
         <div style={{ padding: "0 16px 8px" }}>
-          <button
-            onClick={() => setDevOpen(!devOpen)}
-            className="flex w-full items-center justify-between font-sans transition-colors"
+          <div
+            className="space-y-2"
             style={{
-              padding: "8px 12px",
+              padding: "10px 12px",
               borderRadius: "8px",
-              fontSize: "12px",
-              fontWeight: 500,
-              color: "var(--text-faint)",
-              background: "transparent",
               border: "1px dashed var(--border)",
-              cursor: "pointer",
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.borderColor = "var(--text-muted)";
-              e.currentTarget.style.color = "var(--text-muted)";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.borderColor = "var(--border)";
-              e.currentTarget.style.color = "var(--text-faint)";
             }}
           >
-            <span className="flex items-center gap-2">
-              <Terminal size={13} strokeWidth={1.5} />
-              Dev Login
-            </span>
-            <ChevronDown
-              size={13}
-              strokeWidth={1.5}
-              style={{
-                transform: devOpen ? "rotate(180deg)" : "rotate(0deg)",
-                transition: "transform 0.15s ease",
-              }}
-            />
-          </button>
-
-          {devOpen && (
-            <div
-              className="space-y-2"
-              style={{
-                marginTop: "8px",
-                padding: "12px",
-                borderRadius: "8px",
-                background: "var(--bg)",
-                border: "1px solid var(--border)",
-              }}
+            <p
+              className="flex items-center gap-2 font-sans"
+              style={{ fontSize: "11px", fontWeight: 500, color: "var(--text-faint)" }}
             >
-              <input
-                type="email"
-                value={devEmail}
-                onChange={(e) => setDevEmail(e.target.value)}
-                placeholder="dev@straw.dev"
-                className="w-full font-sans outline-none"
-                style={{
-                  padding: "7px 10px",
-                  borderRadius: "6px",
-                  fontSize: "12px",
-                  color: "var(--text)",
-                  border: "1px solid var(--border)",
-                  background: "var(--bg)",
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = "var(--accent, var(--text))";
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = "var(--border)";
-                }}
-              />
-              <select
-                value={devRole}
-                onChange={(e) =>
-                  setDevRole(e.target.value as "company" | "agent_builder")
-                }
-                className="w-full font-sans outline-none"
-                style={{
-                  padding: "7px 10px",
-                  borderRadius: "6px",
-                  fontSize: "12px",
-                  color: "var(--text)",
-                  border: "1px solid var(--border)",
-                  background: "var(--bg)",
-                }}
-              >
-                <option value="company">Company</option>
-                <option value="agent_builder">Agent Builder</option>
-              </select>
+              <Terminal size={12} strokeWidth={1.5} />
+              Dev Quick Switch
+            </p>
+            <div style={{ display: "flex", gap: "6px" }}>
               <button
                 onClick={() =>
                   signIn("credentials", {
-                    email: devEmail,
-                    role: devRole,
+                    email: "dev-company@straw.dev",
+                    role: "company",
                     callbackUrl: "/dashboard",
                   })
                 }
-                disabled={!devEmail}
-                className="w-full font-sans transition-colors disabled:opacity-40"
+                className="flex-1 font-sans transition-colors"
                 style={{
-                  padding: "7px 10px",
+                  padding: "6px 8px",
                   borderRadius: "6px",
-                  fontSize: "12px",
+                  fontSize: "11px",
                   fontWeight: 500,
-                  background: "var(--text)",
-                  color: "var(--inverse-text)",
-                  border: "none",
+                  background: "var(--bg)",
+                  color: "var(--text-muted)",
+                  border: "1px solid var(--border)",
                   cursor: "pointer",
                 }}
               >
-                Switch Account
+                Company
+              </button>
+              <button
+                onClick={() =>
+                  signIn("credentials", {
+                    email: "dev-builder@straw.dev",
+                    role: "agent_builder",
+                    callbackUrl: "/dashboard",
+                  })
+                }
+                className="flex-1 font-sans transition-colors"
+                style={{
+                  padding: "6px 8px",
+                  borderRadius: "6px",
+                  fontSize: "11px",
+                  fontWeight: 500,
+                  background: "var(--bg)",
+                  color: "var(--text-muted)",
+                  border: "1px solid var(--border)",
+                  cursor: "pointer",
+                }}
+              >
+                Builder
               </button>
             </div>
-          )}
+          </div>
         </div>
       )}
 

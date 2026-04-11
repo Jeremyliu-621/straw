@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
 import { z } from "zod/v4";
-import { ROLE_COMPANY } from "@/constants";
+import { ROLE_COMPANY, ROLE_AGENT_BUILDER } from "@/constants";
+import type { UserRole } from "@/constants";
 
 const onboardingSchema = z.object({
   displayName: z.string().min(1, "Display name is required"),
+  role: z.enum([ROLE_COMPANY, ROLE_AGENT_BUILDER]).optional(),
 });
 
 export async function POST(req: Request) {
@@ -22,7 +24,7 @@ export async function POST(req: Request) {
 
   const db = createServiceClient();
   const userId = session.user.supabaseId;
-  const { displayName } = parsed.data;
+  const { displayName, role: requestedRole } = parsed.data;
 
   // Create (or update) both profiles so the user can switch modes freely
   const [companyResult, agentResult] = await Promise.all([
@@ -45,8 +47,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to save profile" }, { status: 500 });
   }
 
-  // Default active role is company; user can switch in the dashboard
-  const defaultRole = ROLE_COMPANY;
+  // Use requested role or default to company; user can switch in the dashboard
+  const defaultRole: UserRole = requestedRole ?? ROLE_COMPANY;
 
   const { error: updateError } = await db
     .from("users")

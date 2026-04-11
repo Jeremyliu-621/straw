@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter, usePathname } from "next/navigation";
-import { ONBOARDING_STORAGE_KEY, ONBOARDING_SKIP_COOLDOWN_DAYS, ROLE_COMPANY } from "@/constants";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { ONBOARDING_STORAGE_KEY, ONBOARDING_SKIP_COOLDOWN_DAYS, ROLE_COMPANY, ROLE_AGENT_BUILDER } from "@/constants";
 import type { UserRole } from "@/constants";
 import { OnboardingModal } from "./OnboardingModal";
 import { Step1Welcome } from "./steps/Step1Welcome";
@@ -57,13 +57,16 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
   const { data: session, status, update } = useSession();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [phase, setPhase] = useState<FlowPhase>("loading");
   const [onboardingState, setOnboardingState] = useState<OnboardingState>(DEFAULT_ONBOARDING_STATE);
 
   const isOnboardingPage = pathname === "/onboarding";
 
-  // Determine role: from session or default to company
-  const userRole: UserRole = (session?.user?.role as UserRole) ?? ROLE_COMPANY;
+  // Determine role: URL query param > session > default company
+  const roleParam = searchParams.get("role");
+  const roleFromUrl = roleParam === ROLE_COMPANY || roleParam === ROLE_AGENT_BUILDER ? roleParam : null;
+  const userRole: UserRole = roleFromUrl ?? (session?.user?.role as UserRole) ?? ROLE_COMPANY;
 
   useEffect(() => {
     if (status === "loading") return;
@@ -114,6 +117,7 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             displayName: onboardingState.displayName || session?.user?.name || "User",
+            role: userRole,
           }),
         });
 
@@ -139,7 +143,7 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
         router.push("/dashboard");
       }
     }
-  }, [onboardingState, session, update, updateState, router]);
+  }, [onboardingState, session, update, updateState, router, userRole]);
 
   const handleBack = useCallback(() => {
     if (onboardingState.currentStep > 1) {
@@ -160,6 +164,7 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           displayName: onboardingState.displayName || session?.user?.name || "User",
+          role: userRole,
         }),
       }).then(async (res) => {
         if (res.ok) {
@@ -169,7 +174,7 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
         }
       });
     }
-  }, [updateState, isOnboardingPage, onboardingState.displayName, session, update, router]);
+  }, [updateState, isOnboardingPage, onboardingState.displayName, session, update, router, userRole]);
 
   const handleDisplayNameChange = useCallback(
     (name: string) => {

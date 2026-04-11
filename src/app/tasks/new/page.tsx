@@ -52,6 +52,8 @@ export default function NewTaskPage() {
   const [outputDescription, setOutputDescription] = useState("");
   const [testWeight, setTestWeight] = useState(60);
   const llmWeight = 100 - testWeight;
+  const [testSuiteFile, setTestSuiteFile] = useState<File | null>(null);
+  const [testSuiteError, setTestSuiteError] = useState<string | null>(null);
 
   // Step 3: Rubric
   const [criteria, setCriteria] = useState<Criterion[]>([
@@ -87,7 +89,8 @@ export default function NewTaskPage() {
       }
       case "data":
         return !!(inputDescription || inputFiles.length > 0) &&
-               !!(outputDescription || outputFiles.length > 0);
+               !!(outputDescription || outputFiles.length > 0) &&
+               (testWeight === 0 || testSuiteFile !== null);
       case "rubric":
         return weightsValid && criteria.every((c) => c.name.trim() !== "");
       case "refine":
@@ -206,6 +209,24 @@ export default function NewTaskPage() {
         setError(data.error ?? "Failed to create task");
         return;
       }
+
+      const task = await res.json();
+
+      // Upload test suite if provided
+      if (testSuiteFile && testWeight > 0) {
+        const suiteForm = new FormData();
+        suiteForm.append("file", testSuiteFile);
+        const suiteRes = await fetch(`/api/tasks/${task.id}/test-suite`, {
+          method: "POST",
+          body: suiteForm,
+        });
+        if (!suiteRes.ok) {
+          const suiteData = await suiteRes.json();
+          setError(suiteData.error ?? "Task created but failed to upload test suite");
+          return;
+        }
+      }
+
       router.push("/dashboard/company");
     } catch {
       setError("Network error. Please try again.");
@@ -493,11 +514,16 @@ export default function NewTaskPage() {
                     <input
                       type="number"
                       value={testWeight}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setTestWeight(
                           Math.min(100, Math.max(0, Number(e.target.value)))
-                        )
-                      }
+                        );
+                        // Reset test suite if weight goes to 0
+                        if (Number(e.target.value) === 0) {
+                          setTestSuiteFile(null);
+                          setTestSuiteError(null);
+                        }
+                      }}
                       min={0}
                       max={100}
                       className="w-16 text-center font-mono outline-none"
@@ -533,6 +559,108 @@ export default function NewTaskPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Test suite upload — required when testWeight > 0 */}
+              {testWeight > 0 && (
+                <div>
+                  <label
+                    className="mb-1 block font-sans"
+                    style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-muted)" }}
+                  >
+                    Test Suite{" "}
+                    <span style={{ color: "var(--error)" }}>*</span>
+                    <span
+                      className="font-sans"
+                      style={{ fontWeight: 400, marginLeft: "6px", color: "var(--text-faint)" }}
+                    >
+                      Required when automated test weight {">"} 0%
+                    </span>
+                  </label>
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: "12px", color: "var(--text-faint)", marginBottom: "8px", lineHeight: 1.5 }}
+                  >
+                    Upload a <code>.json</code> file with test cases. Format:{" "}
+                    <code>{"{ \"test_cases\": [{ \"name\", \"input\", \"expected_output\", \"match_type\" }] }"}</code>
+                    . Match types: <code>exact</code>, <code>contains</code>, <code>regex</code>.
+                  </p>
+                  <div
+                    style={{
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
+                    <label
+                      className="font-sans"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        padding: "8px 14px",
+                        borderRadius: "7px",
+                        fontSize: "13px",
+                        fontWeight: 500,
+                        color: "var(--text)",
+                        border: "1px solid var(--border)",
+                        background: "var(--bg-subtle)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {testSuiteFile ? "Replace file" : "Choose file"}
+                      <input
+                        type="file"
+                        accept=".json"
+                        style={{ display: "none" }}
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          setTestSuiteError(null);
+                          if (!f) return;
+                          if (!f.name.endsWith(".json")) {
+                            setTestSuiteError("File must be a .json file");
+                            return;
+                          }
+                          if (f.size > 5 * 1024 * 1024) {
+                            setTestSuiteError("File must be under 5MB");
+                            return;
+                          }
+                          // Quick client-side JSON parse check
+                          const reader = new FileReader();
+                          reader.onload = (ev) => {
+                            try {
+                              const json = JSON.parse(ev.target?.result as string);
+                              if (!Array.isArray(json?.test_cases) || json.test_cases.length === 0) {
+                                setTestSuiteError("JSON must have a non-empty \"test_cases\" array");
+                                return;
+                              }
+                              setTestSuiteFile(f);
+                            } catch {
+                              setTestSuiteError("File is not valid JSON");
+                            }
+                          };
+                          reader.readAsText(f);
+                        }}
+                      />
+                    </label>
+                    {testSuiteFile && (
+                      <span
+                        className="font-sans"
+                        style={{ fontSize: "13px", color: "var(--text-muted)" }}
+                      >
+                        {testSuiteFile.name}
+                      </span>
+                    )}
+                    {testSuiteError && (
+                      <span
+                        className="font-sans"
+                        style={{ fontSize: "12px", color: "var(--error)" }}
+                      >
+                        {testSuiteError}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -714,6 +842,12 @@ export default function NewTaskPage() {
                     label="Evaluation"
                     value={`Tests ${testWeight}% / LLM ${llmWeight}%`}
                   />
+                  {testWeight > 0 && testSuiteFile && (
+                    <ReviewItem
+                      label="Test Suite"
+                      value={testSuiteFile.name}
+                    />
+                  )}
                 </div>
                 <EditSectionButton onClick={() => goToStep("basics")} />
               </ReviewCard>

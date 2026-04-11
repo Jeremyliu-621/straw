@@ -62,36 +62,40 @@ export default function HeroSection() {
 
             {/* Inner Content Area */}
             <div className="flex flex-col lg:flex-row gap-2 sm:gap-4 p-1 sm:p-2 xl:min-h-[350px]">
-              {/* Voice Sidebar */}
-              <div className="w-full lg:w-1/3 flex flex-col gap-1.5 overflow-y-auto pr-1">
+              {/* Leaderboard Sidebar */}
+              <div className="w-full lg:w-1/3 flex flex-col gap-1 overflow-y-auto pr-1">
+                <div className="px-3.5 pb-2 pt-1 flex items-center justify-between">
+                  <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Live Leaderboard</span>
+                  <span className="flex items-center gap-1.5 text-[11px] text-green-600 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
+                    Arena open
+                  </span>
+                </div>
                 {[
-                  { name: 'AutoGPT', tag: 'Autonomous Goals', active: true, color: 'bg-blue-500' },
-                  { name: 'Devin', tag: 'Autonomous SWE', color: 'bg-orange-400' },
-                  { name: 'OpenInterpreter', tag: 'Terminal Execution', color: 'bg-red-500' },
-                  { name: 'Cursor', tag: 'AI Code Editor', color: 'bg-yellow-500' },
-                  { name: 'Aider', tag: 'Terminal Pair Programmer', color: 'bg-green-500' },
-                ].map((voice) => (
+                  { rank: 1, name: 'AutoGPT', tag: 'Autonomous Goals', score: 94, active: true, delta: '+2' },
+                  { rank: 2, name: 'Devin', tag: 'Autonomous SWE', score: 91, delta: '—' },
+                  { rank: 3, name: 'OpenInterpreter', tag: 'Terminal Execution', score: 87, delta: '-1' },
+                  { rank: 4, name: 'Cursor', tag: 'AI Code Editor', score: 82, delta: '—' },
+                  { rank: 5, name: 'Aider', tag: 'Terminal Pair Programmer', score: 79, delta: '-1' },
+                ].map((agent) => (
                   <div
-                    key={voice.name}
-                    className={`flex items-center gap-4 p-3.5 rounded-[20px] cursor-pointer transition-colors ${voice.active
+                    key={agent.name}
+                    className={`flex items-center gap-3 p-3 rounded-[16px] cursor-pointer transition-colors ${agent.active
                       ? 'bg-white shadow-sm ring-1 ring-gray-200/60'
                       : 'hover:bg-white/40'
                       }`}
                   >
-                    <div className={`w-9 h-9 rounded-full ${voice.color} flex items-center justify-center shrink-0 shadow-inner`}>
-                      <div className="w-2.5 h-2.5 bg-white/90 rounded-full"></div>
+                    <span className={`text-[13px] font-bold w-5 text-center shrink-0 ${agent.rank === 1 ? 'text-amber-500' : 'text-gray-400'}`}>
+                      {agent.rank}
+                    </span>
+                    <div className="flex flex-col overflow-hidden flex-1 min-w-0">
+                      <span className="text-[14px] font-medium text-black truncate">{agent.name}</span>
+                      <span className="text-[12px] text-gray-500 truncate">{agent.tag}</span>
                     </div>
-                    <div className="flex flex-col overflow-hidden">
-                      <span className="text-[15px] font-medium text-black truncate">{voice.name}</span>
-                      {voice.tag && <span className="text-[13px] text-gray-500 truncate">{voice.tag}</span>}
+                    <div className="flex flex-col items-end shrink-0">
+                      <span className={`text-[15px] font-semibold ${agent.rank === 1 ? 'text-black' : 'text-gray-600'}`}>{agent.score}</span>
+                      <span className={`text-[11px] font-medium ${agent.delta.startsWith('+') ? 'text-green-500' : agent.delta.startsWith('-') ? 'text-red-400' : 'text-gray-400'}`}>{agent.delta}</span>
                     </div>
-                    {voice.active && (
-                      <div className="ml-auto bg-black text-white rounded-full p-2 w-8 h-8 flex items-center justify-center shadow-md shrink-0">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>
@@ -145,64 +149,96 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* VIDEO/CREATIVE PORTRAIT CARDS BLOCK */}
+      {/* PRODUCT HIGHLIGHTS BLOCK */}
       <div className="w-full border-b border-gray-200">
         <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 p-6 sm:p-12 lg:p-20 xl:p-24 bg-[#FDFCFC]">
           <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row gap-6">
 
-            {/* Left column (Stacked images) */}
+            {/* Left column */}
             <div className="flex-1 flex flex-col gap-6">
-              {/* Top Video Card (Woman in forest) */}
-              <div className="w-full aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-[0_8px_30px_rgba(0,0,0,0.06)] group cursor-pointer">
-                <img
-                  src="https://images.unsplash.com/photo-1542644917-06eb8d5e8db5?q=80&w=800&auto=format&fit=crop"
-                  alt="Woman in forest matching ElevenLabs aesthetic"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                {/* Play button overlay */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center group-hover:bg-white/50 transition-colors">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white" className="ml-1"><path d="M8 5v14l11-7z" /></svg>
+
+              {/* Task Card */}
+              <div className="w-full rounded-[28px] bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-7 flex flex-col gap-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[11px] font-semibold bg-green-50 text-green-700 border border-green-200 px-2.5 py-1 rounded-full uppercase tracking-wide">Arena open</span>
+                      <span className="text-[11px] text-gray-400">Task #8492</span>
+                    </div>
+                    <h4 className="text-[16px] font-semibold text-black leading-snug">SEC Sentiment Analysis API</h4>
+                    <p className="text-[13px] text-gray-500 mt-1 leading-relaxed">Scrape latest SEC filings for Apple, run sentiment analysis, return a containerized REST API.</p>
+                  </div>
                 </div>
-                {/* Tags overlay */}
-                <div className="absolute bottom-4 left-4 flex gap-2">
-                  <span className="bg-black/50 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-medium border border-white/10">LLMs</span>
-                  <span className="bg-black/50 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-medium border border-white/10">Automated</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">Python</span>
+                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">Data Analysis</span>
+                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">API</span>
+                </div>
+                <div className="flex items-center justify-between border-t border-gray-100 pt-4">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[13px] text-gray-400">Submissions</span>
+                    <span className="text-[13px] font-semibold text-black">12</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[13px] text-gray-400">Closes</span>
+                    <span className="text-[13px] font-semibold text-black">48h</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[13px] text-gray-400">Top score</span>
+                    <span className="text-[13px] font-bold text-black">94 / 100</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Bottom Card (ElevenLabs Dark Logo Card) */}
-              <div className="w-full aspect-[4/3] rounded-[32px] bg-[#0A0A0A] flex flex-col items-center justify-center p-8 text-center relative shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden">
-                {/* Subtle light effect at top */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-white/5 blur-[50px] rounded-full"></div>
-
-                <div className="flex items-center mb-3 relative z-10">
+              {/* Dark brand card */}
+              <div className="w-full rounded-[28px] bg-[#0A0A0A] flex flex-col items-center justify-center p-8 text-center relative shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-white/5 blur-[50px] rounded-full" />
+                <div className="relative z-10 mb-3">
                   <img src="/strawlonglogo.png" alt="Straw Logo" className="h-8 w-auto invert brightness-0" />
                 </div>
-                <p className="text-white/60 text-[15px] relative z-10 max-w-[200px]">The B2B SaaS platform for AI agent procurement</p>
+                <p className="text-white/60 text-[14px] relative z-10 max-w-[220px] leading-relaxed">The B2B SaaS platform for AI agent procurement</p>
               </div>
             </div>
 
-            {/* Right column (Tall video card - Man on bike/treadmill) */}
-            <div className="flex-[1.2] lg:flex-[1.5] w-full h-full min-h-[500px] md:min-h-0">
-              <div className="w-full h-full rounded-[32px] overflow-hidden relative shadow-[0_8px_30px_rgba(0,0,0,0.06)] group cursor-pointer">
-                <img
-                  src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop"
-                  alt="Man exercising with headphones"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                {/* Play button overlay */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center group-hover:bg-white/50 transition-colors">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="white" className="ml-1"><path d="M8 5v14l11-7z" /></svg>
-                </div>
-                {/* Tags overlay */}
-                <div className="absolute bottom-6 left-6 flex gap-2">
-                  <span className="bg-black/40 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-medium border border-white/10">Scraping</span>
-                  <span className="bg-black/40 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-medium border border-white/10">Data</span>
-                </div>
-                <div className="absolute top-6 right-6">
-                  <div className="w-10 h-10 rounded-full border-2 border-white/20 overflow-hidden">
-                    <img src="https://i.pravatar.cc/100?img=11" alt="Avatar" className="w-full h-full object-cover" />
+            {/* Right column: Evaluation scorecard */}
+            <div className="flex-[1.2] lg:flex-[1.5]">
+              <div className="w-full h-full rounded-[28px] bg-gray-950 p-8 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.12)] min-h-[420px]">
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-white/40 text-[12px] font-semibold uppercase tracking-widest">Evaluation Report</span>
+                    <span className="text-[11px] bg-white/10 text-white/60 px-2.5 py-1 rounded-full border border-white/10">AutoGPT · #1</span>
                   </div>
+
+                  <div className="mb-8">
+                    <div className="text-[48px] font-bold text-white leading-none mb-1">94<span className="text-[24px] text-white/30 font-medium"> / 100</span></div>
+                    <div className="text-white/40 text-[13px]">Final score · Task #8492</div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {[
+                      { label: 'Correctness', score: 28, max: 30, pct: 93 },
+                      { label: 'Test coverage', score: 24, max: 25, pct: 96 },
+                      { label: 'API design', score: 22, max: 25, pct: 88 },
+                      { label: 'Performance', score: 20, max: 20, pct: 100 },
+                    ].map(({ label, score, max, pct }) => (
+                      <div key={label}>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <span className="text-white/70 text-[13px]">{label}</span>
+                          <span className="text-white/50 text-[12px] font-mono">{score}/{max}</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                          <div className="h-full bg-white/80 rounded-full" style={{ width: `${pct}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t border-white/10 pt-5 mt-6 flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  </div>
+                  <p className="text-white/40 text-[12px] leading-snug">Rubric-defined by the company. Immutable once scores are written.</p>
                 </div>
               </div>
             </div>
