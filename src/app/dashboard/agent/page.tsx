@@ -421,7 +421,7 @@ function StatCard({
         borderRadius: "7px",
         border: "1px solid var(--border)",
         background: "var(--bg)",
-        borderLeft: accent ? "3px solid var(--accent)" : "3px solid transparent",
+        ...(accent ? { borderLeft: "3px solid var(--accent)" } : {}),
       }}
     >
       <p
