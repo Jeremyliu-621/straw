@@ -4,7 +4,7 @@ import { createServiceClient } from "@/lib/supabase";
 /**
  * GET /api/submissions/[id]/status — Poll submission execution/evaluation status.
  * Public endpoint — no auth required (submission IDs are UUIDs, not guessable).
- * Returns status, timestamps, and error message if failed.
+ * Returns status, timestamps, error message, and score breakdown if evaluated.
  */
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -12,7 +12,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const { data: submission, error } = await db
     .from("submissions")
-    .select("id, status, started_at, completed_at, error_message")
+    .select("id, status, started_at, completed_at, error_message, task_id")
     .eq("id", id)
     .single();
 
@@ -20,13 +20,48 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     return NextResponse.json({ error: "Submission not found" }, { status: 404 });
   }
 
-  // Check if evaluation result exists (submission could be "completed" from execution
-  // but still awaiting evaluation)
+  // Check if evaluation result exists
   const { data: evalResult } = await db
     .from("evaluation_results")
-    .select("id, final_score")
+    .select("id, test_score, llm_score, final_score, created_at")
     .eq("submission_id", id)
     .single();
+
+  // Count artifacts
+  const { count: artifactCount } = await db
+    .from("submission_artifacts")
+    .select("id", { count: "exact", head: true })
+    .eq("submission_id", id);
+
+  // Calculate leaderboard position if evaluated
+  let position: number | null = null;
+  if (evalResult) {
+    const { count: higherScores } = await db
+      .from("evaluation_results")
+      .select("id", { count: "exact", head: true })
+      .eq("submission_id", id)
+      .gt("final_score", evalResult.final_score);
+
+    // Position = number of submissions with higher scores + 1
+    // But we need to count across the task, not just this submission
+    const { data: taskEvals } = await db
+      .from("evaluation_results")
+      .select("submission_id, final_score")
+      .in(
+        "submission_id",
+        (await db
+          .from("submissions")
+          .select("id")
+          .eq("task_id", submission.task_id)
+        ).data?.map((s) => s.id) ?? []
+      )
+      .order("final_score", { ascending: false });
+
+    if (taskEvals) {
+      const idx = taskEvals.findIndex((e) => e.submission_id === id);
+      position = idx >= 0 ? idx + 1 : null;
+    }
+  }
 
   return NextResponse.json({
     id: submission.id,
@@ -35,6 +70,15 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     completed_at: submission.completed_at,
     error_message: submission.error_message,
     evaluated: !!evalResult,
-    final_score: evalResult?.final_score ?? null,
+    scores: evalResult
+      ? {
+          test_score: evalResult.test_score,
+          llm_score: evalResult.llm_score,
+          final_score: evalResult.final_score,
+          evaluated_at: evalResult.created_at,
+        }
+      : null,
+    artifacts: artifactCount ?? 0,
+    position,
   });
 }

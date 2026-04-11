@@ -1,22 +1,27 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { isValidTransition } from "@/services/task.service";
-import { ROLE_COMPANY, type TaskStatus } from "@/constants";
+import { ROLE_COMPANY, WEBHOOK_EVENT, AUDIT_ACTION, type TaskStatus } from "@/constants";
 import { z } from "zod/v4";
+import { apiError } from "@/lib/api-utils";
+import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
+import { buildTaskStatusChangedPayload } from "@/services/webhook.service";
+import { AuditLogRepository } from "@/db/audit-log";
+import { TaskInvitationRepository } from "@/db/task-invitations";
 
 const statusSchema = z.object({
   status: z.enum(["draft", "open", "evaluating", "closed"]),
 });
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.supabaseId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
-  if (session.user.role !== ROLE_COMPANY) {
-    return NextResponse.json({ error: "Only companies can update task status" }, { status: 403 });
+  if (user.role !== ROLE_COMPANY) {
+    return apiError("Only companies can update task status", 403);
   }
 
   const { id } = await params;
@@ -24,7 +29,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const parsed = statusSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    return apiError("Invalid status", 400, "VALIDATION_ERROR");
   }
 
   const db = createServiceClient();
@@ -34,21 +39,16 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     .from("tasks")
     .select("*")
     .eq("id", id)
-    .eq("company_id", session.user.supabaseId)
+    .eq("company_id", user.supabaseId)
     .single();
 
   if (fetchError || !task) {
-    return NextResponse.json({ error: "Task not found" }, { status: 404 });
+    return apiError("Task not found", 404);
   }
 
   const newStatus = parsed.data.status as TaskStatus;
   if (!isValidTransition(task.status as TaskStatus, newStatus)) {
-    return NextResponse.json(
-      {
-        error: `Invalid status transition: ${task.status} → ${newStatus}`,
-      },
-      { status: 400 }
-    );
+    return apiError(`Invalid status transition: ${task.status} → ${newStatus}`, 400, "INVALID_TRANSITION");
   }
 
   // If publishing (draft → open), validate rubric weights sum to 100
@@ -63,10 +63,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       0
     );
     if (totalWeight !== 100) {
-      return NextResponse.json(
-        { error: `Rubric weights sum to ${totalWeight}%, must equal 100%` },
-        { status: 400 }
-      );
+      return apiError(`Rubric weights sum to ${totalWeight}%, must equal 100%`, 400, "INVALID_WEIGHTS");
     }
   }
 
@@ -78,7 +75,38 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     .single();
 
   if (updateError) {
-    return NextResponse.json({ error: "Failed to update task status" }, { status: 500 });
+    return apiError("Failed to update task status", 500);
+  }
+
+  // Dispatch webhook event (fire-and-forget)
+  const previousStatus = task.status as TaskStatus;
+  dispatchWebhookEvent(
+    user.supabaseId,
+    WEBHOOK_EVENT.TASK_STATUS_CHANGED,
+    buildTaskStatusChangedPayload(id, previousStatus, newStatus)
+  ).catch(() => {
+    // Intentionally swallowed — dispatchWebhookEvent already handles errors
+  });
+
+  // Audit log (fire-and-forget)
+  const auditAction = newStatus === "open" ? AUDIT_ACTION.TASK_PUBLISHED : AUDIT_ACTION.TASK_CLOSED;
+  const auditRepo = new AuditLogRepository(db);
+  auditRepo
+    .log({
+      user_id: user.supabaseId,
+      action: auditAction,
+      resource_type: "task",
+      resource_id: id,
+      metadata: { previous_status: previousStatus, new_status: newStatus },
+    })
+    .catch((err) => console.error("[audit] Failed to log task status change:", err));
+
+  // Expire pending invitations when task closes
+  if (newStatus === "closed") {
+    const invitationRepo = new TaskInvitationRepository(db);
+    invitationRepo
+      .expireByTask(id)
+      .catch((err) => console.error("[invitations] Failed to expire invitations:", err));
   }
 
   return NextResponse.json(updated);
