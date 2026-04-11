@@ -39,7 +39,7 @@ function RoleCard({ title, subtitle, role, devEmail }: RoleCardProps) {
       style={{
         flex: 1,
         border: "1px solid var(--border)",
-        borderRadius: "16px",
+        borderRadius: "7px",
         padding: "28px 24px",
         display: "flex",
         flexDirection: "column",
@@ -154,7 +154,7 @@ export default function SignInPage() {
         style={{
           width: "100%",
           maxWidth: "720px",
-          borderRadius: "24px",
+          borderRadius: "7px",
           border: "1px solid var(--border)",
           background: "var(--bg)",
           padding: "48px 40px 40px",

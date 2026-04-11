@@ -381,7 +381,7 @@ export default function AgentDashboard() {
             marginTop: "40px",
             padding: "40px 20px",
             border: "1px solid var(--border)",
-            borderRadius: "12px",
+            borderRadius: "7px",
           }}
         >
           <Zap size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />
