@@ -33,6 +33,13 @@ import { createClient } from "@supabase/supabase-js";
 import path from "path";
 import fs from "fs";
 import os from "os";
+import { NOTIFICATION_TYPE, AUDIT_ACTION } from "@/constants";
+import {
+  dispatchWebhookFromWorker,
+  dispatchNotificationFromWorker,
+  writeAuditLog,
+} from "./lib/dispatch";
+import type { WebhookPayload } from "./lib/dispatch";
 
 // ── Config (no env.ts import — this is not a Next.js process) ──
 
@@ -52,7 +59,9 @@ const OUTPUT_DIR = "/output";
 const INPUT_ENV_VAR = "MAP_TASK_INPUT";
 const QUEUE_NAME = "execution";
 const EVAL_QUEUE_NAME = "evaluation";
+const WEBHOOK_QUEUE_NAME = "webhook";
 const STORAGE_BUCKET = "agent-outputs";
+const EXECUTION_LOG_MAX_BYTES = 50 * 1024; // 50KB max stored log size
 
 // ── Clients ──────────────────────────────────────────────────
 
@@ -65,6 +74,16 @@ const redisConnection = {
 };
 
 const evaluationQueue = new Queue(EVAL_QUEUE_NAME, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 5000 },
+    removeOnComplete: 100,
+    removeOnFail: 50,
+  },
+});
+
+const webhookQueue = new Queue(WEBHOOK_QUEUE_NAME, {
   connection: redisConnection,
   defaultJobOptions: {
     attempts: 3,
@@ -125,44 +144,93 @@ const worker = new Worker<ExecutionJobData>(
 
       const exitCode = await waitForContainer(container, EXECUTION_TIMEOUT_MS);
 
-      // 4. Capture logs
+      // 4. Capture logs and truncate to max size
       const logs = await container.logs({ stdout: true, stderr: true, follow: false });
-      const logText = logs.toString().slice(0, 10000); // Cap at 10K chars
+      const logText = truncateLog(logs.toString());
 
-      // 5. Clean up container
+      // 5. Persist logs to submission record regardless of outcome
+      await saveExecutionLog(submissionId, logText);
+
+      // 6. Clean up container
       try {
         await container.remove({ force: true });
       } catch {
         // Best effort cleanup
       }
 
-      // 6. Check exit code
+      // 7. Check exit code
       if (exitCode !== 0) {
         throw new ExecutionError(`Agent exited with code ${exitCode}`, logText);
       }
 
-      // 7. Check output exists
+      // 8. Check output exists
       const outputFiles = fs.readdirSync(tmpDir);
       if (outputFiles.length === 0) {
         throw new ExecutionError("No output found in /output");
       }
 
-      // 8. Upload output to Supabase Storage
+      // 9. Upload output to Supabase Storage
       const outputUrl = await uploadOutput(submissionId, tmpDir, outputFiles);
 
-      // 9. Update submission to completed
+      // 10. Update submission to completed
       await updateSubmission(submissionId, "completed", {
         output_url: outputUrl,
         completed_at: new Date().toISOString(),
       });
 
-      // 10. Enqueue evaluation job
+      // 11. Enqueue evaluation job
       await evaluationQueue.add(`eval-${submissionId}`, {
         submissionId,
         taskId: job.data.taskId,
         outputUrl,
       });
       console.log(`[exec] Submission ${submissionId} completed, evaluation enqueued`);
+
+      // 12. Dispatch submission.completed webhook + notification + audit
+      const { data: taskInfo } = await db
+        .from("tasks")
+        .select("company_id")
+        .eq("id", job.data.taskId)
+        .single();
+      if (taskInfo) {
+        await dispatchWebhookFromWorker(
+          db,
+          webhookQueue,
+          taskInfo.company_id as string,
+          "submission.completed",
+          {
+            event: "submission.completed",
+            timestamp: new Date().toISOString(),
+            data: { submission_id: submissionId, task_id: job.data.taskId },
+          }
+        );
+      }
+
+      // 13. Notify the agent that their submission completed
+      const { data: subInfo } = await db
+        .from("submissions")
+        .select("agent_id")
+        .eq("id", submissionId)
+        .single();
+      if (subInfo) {
+        await dispatchNotificationFromWorker(
+          db,
+          NOTIFICATION_TYPE.SUBMISSION_COMPLETED,
+          subInfo.agent_id as string,
+          "Submission completed",
+          `Your submission has finished executing and is queued for evaluation.`,
+          "submission",
+          submissionId
+        );
+        await writeAuditLog(
+          db,
+          AUDIT_ACTION.SUBMISSION_COMPLETED,
+          subInfo.agent_id as string,
+          "submission",
+          submissionId,
+          { task_id: job.data.taskId }
+        );
+      }
     } catch (err) {
       const message = err instanceof ExecutionError ? err.message : "Unexpected execution error";
       console.error(`[exec] Submission ${submissionId} failed: ${message}`);
@@ -171,6 +239,56 @@ const worker = new Worker<ExecutionJobData>(
         error_message: message,
         completed_at: new Date().toISOString(),
       });
+
+      // Dispatch submission.failed webhook + notification + audit
+      const { data: taskInfo } = await db
+        .from("tasks")
+        .select("company_id")
+        .eq("id", job.data.taskId)
+        .single();
+      if (taskInfo) {
+        await dispatchWebhookFromWorker(
+          db,
+          webhookQueue,
+          taskInfo.company_id as string,
+          "submission.failed",
+          {
+            event: "submission.failed",
+            timestamp: new Date().toISOString(),
+            data: {
+              submission_id: submissionId,
+              task_id: job.data.taskId,
+              error_message: message,
+            },
+          }
+        );
+      }
+
+      // Notify the agent that their submission failed
+      const { data: failedSubInfo } = await db
+        .from("submissions")
+        .select("agent_id")
+        .eq("id", submissionId)
+        .single();
+      if (failedSubInfo) {
+        await dispatchNotificationFromWorker(
+          db,
+          NOTIFICATION_TYPE.SUBMISSION_FAILED,
+          failedSubInfo.agent_id as string,
+          "Submission failed",
+          `Your submission failed: ${message}`,
+          "submission",
+          submissionId
+        );
+        await writeAuditLog(
+          db,
+          AUDIT_ACTION.SUBMISSION_FAILED,
+          failedSubInfo.agent_id as string,
+          "submission",
+          submissionId,
+          { task_id: job.data.taskId, error_message: message }
+        );
+      }
 
       // Don't rethrow ExecutionError — these are permanent failures
       if (err instanceof ExecutionError) return;
@@ -257,6 +375,33 @@ class ExecutionError extends Error {
   }
 }
 
+/**
+ * Truncate log output to EXECUTION_LOG_MAX_BYTES.
+ * If truncated, prepends a notice so the agent builder knows.
+ */
+function truncateLog(log: string): string {
+  if (Buffer.byteLength(log, "utf8") <= EXECUTION_LOG_MAX_BYTES) {
+    return log;
+  }
+  const truncated = Buffer.from(log, "utf8").subarray(0, EXECUTION_LOG_MAX_BYTES).toString("utf8");
+  return `[LOG TRUNCATED — showing first ${EXECUTION_LOG_MAX_BYTES} bytes]\n${truncated}`;
+}
+
+/**
+ * Save execution log to the submission record.
+ * Best-effort — failure to save logs should not block the pipeline.
+ */
+async function saveExecutionLog(submissionId: string, logText: string): Promise<void> {
+  const { error } = await db
+    .from("submissions")
+    .update({ execution_log: logText })
+    .eq("id", submissionId);
+
+  if (error) {
+    console.error(`[exec] Failed to save execution log for ${submissionId}:`, error);
+  }
+}
+
 async function pullImage(image: string): Promise<void> {
   return new Promise((resolve, reject) => {
     docker.pull(image, (err: Error | null, stream: NodeJS.ReadableStream) => {
@@ -324,6 +469,7 @@ process.on("SIGTERM", async () => {
   console.log("[exec] Shutting down...");
   await worker.close();
   await evaluationQueue.close();
+  await webhookQueue.close();
   process.exit(0);
 });
 
@@ -331,5 +477,6 @@ process.on("SIGINT", async () => {
   console.log("[exec] Shutting down...");
   await worker.close();
   await evaluationQueue.close();
+  await webhookQueue.close();
   process.exit(0);
 });

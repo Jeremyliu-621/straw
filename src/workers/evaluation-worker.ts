@@ -30,11 +30,25 @@
  * The evaluation result is IMMUTABLE once written. No updates.
  */
 
-import { Worker } from "bullmq";
+import { Worker, Queue } from "bullmq";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@supabase/supabase-js";
-import { EVALUATION_LLM_MODEL } from "@/constants";
+import {
+  EVALUATION_LLM_MODEL,
+  TASK_STATUS,
+  SUBMISSION_STATUS,
+  NOTIFICATION_TYPE,
+  AUDIT_ACTION,
+} from "@/constants";
 import { z } from "zod/v4";
+import { TaskInvitationRepository } from "@/db/task-invitations";
+import {
+  dispatchWebhookFromWorker,
+  dispatchNotificationFromWorker,
+  dispatchNotificationToTaskOwnerFromWorker,
+  writeAuditLog,
+} from "./lib/dispatch";
+import type { WebhookPayload } from "./lib/dispatch";
 
 // ── Config ───────────────────────────────────────────────────
 
@@ -50,6 +64,7 @@ if (!REDIS_URL || !SUPABASE_URL || !SUPABASE_KEY || !GEMINI_API_KEY) {
 
 const LLM_MAX_TOKENS = 4096;
 const QUEUE_NAME = "evaluation";
+const WEBHOOK_QUEUE_NAME = "webhook";
 const STORAGE_BUCKET = "agent-outputs";
 const MAX_OUTPUT_SIZE = 100_000; // 100K chars max for LLM context
 
@@ -57,6 +72,21 @@ const MAX_OUTPUT_SIZE = 100_000; // 100K chars max for LLM context
 
 const db = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
 const gemini = new GoogleGenerativeAI(GEMINI_API_KEY);
+
+const redisConnection = {
+  host: new URL(REDIS_URL).hostname,
+  port: Number(new URL(REDIS_URL).port) || 6379,
+};
+
+const webhookQueue = new Queue(WEBHOOK_QUEUE_NAME, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 5000 },
+    removeOnComplete: 100,
+    removeOnFail: 50,
+  },
+});
 
 // ── LLM Response Schema ──────────────────────────────────────
 
@@ -266,18 +296,188 @@ const worker = new Worker<EvaluationJobData>(
       .update({ status: "completed", completed_at: new Date().toISOString() })
       .eq("id", submissionId);
 
+    // 8. Dispatch evaluation.completed webhook + notification + audit
+    const { data: sub } = await db
+      .from("submissions")
+      .select("agent_id")
+      .eq("id", submissionId)
+      .single();
+
+    const roundedScore = Math.round(finalScore * 100) / 100;
+
+    if (task.company_id) {
+      await dispatchWebhookFromWorker(
+        db,
+        webhookQueue,
+        task.company_id as string,
+        "evaluation.completed",
+        {
+          event: "evaluation.completed",
+          timestamp: new Date().toISOString(),
+          data: {
+            submission_id: submissionId,
+            task_id: taskId,
+            agent_id: sub?.agent_id ?? "",
+            final_score: roundedScore,
+          },
+        }
+      );
+    }
+
+    // Notify the agent that evaluation is done
+    if (sub?.agent_id) {
+      await dispatchNotificationFromWorker(
+        db,
+        NOTIFICATION_TYPE.EVALUATION_COMPLETED,
+        sub.agent_id as string,
+        "Evaluation complete",
+        `Your submission scored ${roundedScore}/100.`,
+        "submission",
+        submissionId,
+        {
+          task_id: taskId,
+          final_score: roundedScore,
+          test_score: testScore,
+          llm_score: llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
+        }
+      );
+
+      await writeAuditLog(
+        db,
+        AUDIT_ACTION.EVALUATION_COMPLETED,
+        sub.agent_id as string,
+        "submission",
+        submissionId,
+        { task_id: taskId, final_score: roundedScore }
+      );
+    }
+
     console.log(
       `[eval] Submission ${submissionId} scored: test=${testScore}, llm=${llmScore?.toFixed(1)}, final=${finalScore.toFixed(1)}`
     );
+
+    // 9. Auto-close task if all submissions are now evaluated
+    await tryAutoCloseTask(db, webhookQueue, taskId);
   },
   {
-    connection: {
-      host: new URL(REDIS_URL).hostname,
-      port: Number(new URL(REDIS_URL).port) || 6379,
-    },
+    connection: redisConnection,
     concurrency: 2,
   }
 );
+
+// ── Auto-Close Task ────────────────────────────────────────
+
+/**
+ * Check if all submissions for a task are in a terminal state (completed + evaluated, or failed).
+ * If so, transition the task from "evaluating" to "closed" using optimistic concurrency.
+ * On success, dispatches webhooks, notifications, audit log, and expires pending invitations.
+ */
+async function tryAutoCloseTask(
+  workerDb: typeof db,
+  workerWebhookQueue: Queue,
+  taskId: string
+): Promise<void> {
+  try {
+    // Get task status — only auto-close if currently "evaluating"
+    const { data: task } = await workerDb
+      .from("tasks")
+      .select("id, status, company_id, title")
+      .eq("id", taskId)
+      .single();
+
+    if (!task || task.status !== TASK_STATUS.EVALUATING) return;
+
+    // Get all submissions for this task
+    const { data: allSubs } = await workerDb
+      .from("submissions")
+      .select("id, status")
+      .eq("task_id", taskId);
+
+    if (!allSubs || allSubs.length === 0) return;
+
+    // Check if all submissions are in terminal states
+    const allTerminal = allSubs.every(
+      (s: { status: string }) => s.status === SUBMISSION_STATUS.COMPLETED || s.status === SUBMISSION_STATUS.FAILED
+    );
+    if (!allTerminal) return;
+
+    // Check all completed submissions have evaluation results
+    const completedIds = allSubs
+      .filter((s: { status: string }) => s.status === SUBMISSION_STATUS.COMPLETED)
+      .map((s: { id: string }) => s.id);
+
+    if (completedIds.length > 0) {
+      const { count: evalCount } = await workerDb
+        .from("evaluation_results")
+        .select("id", { count: "exact", head: true })
+        .in("submission_id", completedIds);
+
+      if ((evalCount ?? 0) < completedIds.length) return; // Not all evaluated yet
+    }
+
+    // Optimistic concurrency: only update if still "evaluating"
+    const { data: updated, error: updateError } = await workerDb
+      .from("tasks")
+      .update({ status: TASK_STATUS.CLOSED })
+      .eq("id", taskId)
+      .eq("status", TASK_STATUS.EVALUATING)
+      .select("id")
+      .single();
+
+    if (updateError || !updated) return; // Another process already closed it
+
+    console.log(`[eval] Task ${taskId} auto-closed — all evaluations complete`);
+
+    // Dispatch task.closed webhook
+    if (task.company_id) {
+      await dispatchWebhookFromWorker(
+        workerDb,
+        workerWebhookQueue,
+        task.company_id as string,
+        "task.status_changed",
+        {
+          event: "task.status_changed",
+          timestamp: new Date().toISOString(),
+          data: {
+            task_id: taskId,
+            old_status: TASK_STATUS.EVALUATING,
+            new_status: TASK_STATUS.CLOSED,
+          },
+        }
+      );
+
+      // Notify task owner
+      await dispatchNotificationToTaskOwnerFromWorker(
+        workerDb,
+        taskId,
+        NOTIFICATION_TYPE.TASK_CLOSED,
+        "Task closed",
+        `"${task.title}" has been closed — all evaluations are complete.`,
+        "task",
+        taskId
+      );
+
+      // Audit log
+      await writeAuditLog(
+        workerDb,
+        AUDIT_ACTION.TASK_CLOSED,
+        task.company_id as string,
+        "task",
+        taskId,
+        { reason: "all_evaluations_complete", previous_status: TASK_STATUS.EVALUATING }
+      );
+    }
+
+    // Expire pending invitations
+    const invitationRepo = new TaskInvitationRepository(workerDb);
+    const expired = await invitationRepo.expireByTask(taskId);
+    if (expired > 0) {
+      console.log(`[eval] Expired ${expired} pending invitations for task ${taskId}`);
+    }
+  } catch (err) {
+    console.error(`[eval] Failed to auto-close task ${taskId}:`, err);
+  }
+}
 
 // ── Phase 1: Automated Testing ───────────────────────────────
 
@@ -518,11 +718,13 @@ console.log("[eval] Evaluation worker started, waiting for jobs...");
 process.on("SIGTERM", async () => {
   console.log("[eval] Shutting down...");
   await worker.close();
+  await webhookQueue.close();
   process.exit(0);
 });
 
 process.on("SIGINT", async () => {
   console.log("[eval] Shutting down...");
   await worker.close();
+  await webhookQueue.close();
   process.exit(0);
 });

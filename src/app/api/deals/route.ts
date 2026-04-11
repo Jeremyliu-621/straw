@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
-import { ROLE_COMPANY, TASK_STATUS, DEAL_TYPE } from "@/constants";
+import { ROLE_COMPANY, TASK_STATUS, DEAL_TYPE, WEBHOOK_EVENT, AUDIT_ACTION } from "@/constants";
 import { calculateSuccessFee } from "@/services/results.service";
 import { z } from "zod/v4";
+import { apiError } from "@/lib/api-utils";
+import { rateLimitResponse } from "@/lib/rate-limit";
+import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
+import { buildDealCreatedPayload } from "@/services/webhook.service";
+import { AuditLogRepository } from "@/db/audit-log";
 
 const createDealSchema = z.object({
   taskId: z.string().uuid(),
@@ -15,15 +20,18 @@ const createDealSchema = z.object({
 /**
  * GET /api/deals — List deals for the current user.
  */
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.supabaseId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function GET(req: Request) {
+  const rateLimited = rateLimitResponse(req);
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const db = createServiceClient();
-  const userId = session.user.supabaseId;
-  const isCompany = session.user.role === ROLE_COMPANY;
+  const userId = user.supabaseId;
+  const isCompany = user.role === ROLE_COMPANY;
 
   const column = isCompany ? "company_id" : "agent_id";
   const { data, error } = await db
@@ -33,7 +41,7 @@ export async function GET() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: "Failed to fetch deals" }, { status: 500 });
+    return apiError("Failed to fetch deals", 500);
   }
 
   return NextResponse.json(data ?? []);
@@ -43,27 +51,27 @@ export async function GET() {
  * POST /api/deals — Create a deal (company only, for closed tasks).
  */
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.supabaseId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const rateLimited = rateLimitResponse(req, { prefix: "deal-create", maxRequests: 10 });
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
-  if (session.user.role !== ROLE_COMPANY) {
-    return NextResponse.json({ error: "Only companies can create deals" }, { status: 403 });
+  if (user.role !== ROLE_COMPANY) {
+    return apiError("Only companies can create deals", 403);
   }
 
   const body = await req.json();
   const parsed = createDealSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Validation failed", details: z.prettifyError(parsed.error) },
-      { status: 400 }
-    );
+    return apiError("Validation failed", 400, "VALIDATION_ERROR", z.prettifyError(parsed.error));
   }
 
   const { taskId, agentId, dealType, dealValueCents } = parsed.data;
-  const companyId = session.user.supabaseId;
+  const companyId = user.supabaseId;
   const db = createServiceClient();
 
   // Verify the task belongs to this company and is closed
@@ -74,15 +82,15 @@ export async function POST(req: Request) {
     .single();
 
   if (taskError || !task) {
-    return NextResponse.json({ error: "Task not found" }, { status: 404 });
+    return apiError("Task not found", 404);
   }
 
   if (task.company_id !== companyId) {
-    return NextResponse.json({ error: "Not your task" }, { status: 403 });
+    return apiError("Not your task", 403);
   }
 
   if (task.status !== TASK_STATUS.CLOSED) {
-    return NextResponse.json({ error: "Task must be closed to create a deal" }, { status: 400 });
+    return apiError("Task must be closed to create a deal", 400, "TASK_NOT_CLOSED");
   }
 
   // Verify the agent has a completed submission for this task
@@ -95,10 +103,7 @@ export async function POST(req: Request) {
     .single();
 
   if (!submission) {
-    return NextResponse.json(
-      { error: "Agent does not have a completed submission for this task" },
-      { status: 400 }
-    );
+    return apiError("Agent does not have a completed submission for this task", 400, "NO_SUBMISSION");
   }
 
   // Check for existing deal on this task
@@ -109,7 +114,7 @@ export async function POST(req: Request) {
     .single();
 
   if (existingDeal) {
-    return NextResponse.json({ error: "A deal already exists for this task" }, { status: 409 });
+    return apiError("A deal already exists for this task", 409, "DEAL_EXISTS");
   }
 
   // Calculate platform fee
@@ -130,8 +135,29 @@ export async function POST(req: Request) {
 
   if (dealError) {
     console.error("Failed to create deal:", dealError);
-    return NextResponse.json({ error: "Failed to create deal" }, { status: 500 });
+    return apiError("Failed to create deal", 500);
   }
+
+  // Dispatch webhook event (fire-and-forget)
+  dispatchWebhookEvent(
+    companyId,
+    WEBHOOK_EVENT.DEAL_CREATED,
+    buildDealCreatedPayload(deal.id, taskId, agentId, dealType, dealValueCents)
+  ).catch(() => {
+    // Intentionally swallowed — dispatchWebhookEvent already handles errors
+  });
+
+  // Audit log (fire-and-forget)
+  const auditRepo = new AuditLogRepository(db);
+  auditRepo
+    .log({
+      user_id: companyId,
+      action: AUDIT_ACTION.DEAL_CREATED,
+      resource_type: "deal",
+      resource_id: deal.id,
+      metadata: { task_id: taskId, agent_id: agentId, deal_type: dealType, deal_value_cents: dealValueCents },
+    })
+    .catch((err) => console.error("[audit] Failed to log deal creation:", err));
 
   return NextResponse.json(deal, { status: 201 });
 }
