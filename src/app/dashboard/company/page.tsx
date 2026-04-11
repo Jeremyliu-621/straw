@@ -117,7 +117,7 @@ export default function CompanyDashboard() {
               style={{
                 height: "88px",
                 background: "var(--bg-subtle)",
-                borderRadius: "12px",
+                borderRadius: "7px",
               }}
             />
           ))}
@@ -163,7 +163,7 @@ export default function CompanyDashboard() {
           style={{
             padding: "64px 20px",
             border: "1px solid var(--border)",
-            borderRadius: "12px",
+            borderRadius: "7px",
           }}
         >
           <ClipboardList size={48} strokeWidth={1} style={{ color: "var(--accent)" }} />
@@ -307,7 +307,7 @@ function StatCard({
     <div
       style={{
         padding: "20px",
-        borderRadius: "12px",
+        borderRadius: "7px",
         border: "1px solid var(--border)",
         background: "var(--bg)",
         borderLeft: accent ? "3px solid var(--accent)" : "3px solid transparent",

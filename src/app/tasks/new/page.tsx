@@ -1244,7 +1244,7 @@ function ReviewCard({
     <div
       style={{
         padding: "20px",
-        borderRadius: "12px",
+        borderRadius: "7px",
         border: "1px solid var(--border)",
         position: "relative",
       }}

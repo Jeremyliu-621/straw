@@ -249,7 +249,7 @@ export default function AgentPublicProfilePage() {
         className="mt-8 grid grid-cols-3 gap-0"
         style={{
           border: "1px solid var(--border)",
-          borderRadius: "12px",
+          borderRadius: "7px",
           overflow: "hidden",
         }}
       >
@@ -303,7 +303,7 @@ export default function AgentPublicProfilePage() {
           <div
             style={{
               border: "1px solid var(--border)",
-              borderRadius: "12px",
+              borderRadius: "7px",
               overflow: "hidden",
             }}
           >

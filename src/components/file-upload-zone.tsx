@@ -186,7 +186,7 @@ export function TextareaWithAttachments({
       {/* Container that wraps files + textarea + button */}
       <div
         style={{
-          borderRadius: "10px",
+          borderRadius: "7px",
           border: "1px solid var(--border)",
           background: "var(--bg)",
           position: "relative",
@@ -420,7 +420,7 @@ export function TextareaWithAttachments({
                 minWidth: "200px",
                 background: "var(--bg)",
                 border: "1px solid var(--border)",
-                borderRadius: "12px",
+                borderRadius: "7px",
                 boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
                 padding: "6px",
                 zIndex: 50,

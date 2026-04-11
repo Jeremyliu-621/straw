@@ -199,7 +199,7 @@ export default function DealPage() {
           style={{
             padding: "20px",
             border: "1px solid var(--border)",
-            borderRadius: "12px",
+            borderRadius: "7px",
           }}
         >
           <div className="space-y-4">
@@ -526,7 +526,7 @@ function DealTypeOption({
       className="font-sans flex-1 text-left transition-colors"
       style={{
         padding: "16px",
-        borderRadius: "12px",
+        borderRadius: "7px",
         border: selected
           ? "2px solid var(--accent, var(--text))"
           : "1px solid var(--border)",

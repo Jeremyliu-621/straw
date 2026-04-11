@@ -20,7 +20,7 @@ export function TourPanel({ step, stepNumber, totalSteps }: TourPanelProps) {
       style={{
         background: "var(--bg)",
         border: "1px solid var(--border)",
-        borderRadius: "12px",
+        borderRadius: "7px",
         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
         padding: "24px",
         position: "relative",

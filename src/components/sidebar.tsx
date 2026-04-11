@@ -89,7 +89,7 @@ export function Sidebar() {
           style={{
             background: "var(--bg)",
             border: "1px solid var(--border)",
-            borderRadius: "10px",
+            borderRadius: "7px",
             padding: "4px",
             display: "flex",
             gap: "4px",
