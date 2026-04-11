@@ -57,6 +57,23 @@ export const TASK_ALLOWED_FILE_TYPES = [
   "text/plain",
 ] as const;
 
+// ── Categories ──────────────────────────────────────────────
+export const CATEGORY_OPTIONS = [
+  "code-generation",
+  "data-analysis",
+  "web-scraping",
+  "nlp",
+  "computer-vision",
+  "automation",
+  "research",
+  "other",
+] as const;
+
+// ── Onboarding ──────────────────────────────────────────────
+export const ONBOARDING_STORAGE_KEY = "straw-onboarding-v1" as const;
+export const ONBOARDING_SKIP_COOLDOWN_DAYS = 7;
+export const ONBOARDING_TOTAL_STEPS = 3;
+
 // ── UI ───────────────────────────────────────────────────────
 export const LEADERBOARD_POLL_INTERVAL_MS = 3000;
 export const ANONYMIZED_AGENT_PREFIX = "Agent" as const;

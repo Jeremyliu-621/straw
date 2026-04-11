@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ClipboardList } from "lucide-react";
+import { ClipboardList, Plus } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
 
 interface TaskSummary {
@@ -16,61 +16,141 @@ interface TaskSummary {
   created_at: string;
 }
 
+interface CompanyStats {
+  totalTasks: number;
+  activeTasks: number;
+  draftTasks: number;
+  closedTasks: number;
+  totalSubmissions: number;
+  totalBudgetCents: number;
+}
+
 export default function CompanyDashboard() {
   const { data: session } = useSession();
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
+  const [stats, setStats] = useState<CompanyStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/tasks")
-      .then((res) => res.json())
-      .then((data) => setTasks(data))
-      .catch(() => setTasks([]))
+    Promise.all([
+      fetch("/api/tasks").then((res) => res.json()),
+      fetch("/api/dashboard/stats").then((res) => res.json()),
+    ])
+      .then(([tasksData, statsData]) => {
+        setTasks(Array.isArray(tasksData) ? tasksData : []);
+        setStats(statsData);
+      })
+      .catch(() => {
+        setTasks([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      {/* Hero section */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          paddingBottom: "24px",
+          borderBottom: "1px solid var(--border)",
+          marginBottom: "24px",
+        }}
+      >
         <div>
           <h1
             className="font-sans"
-            style={{ fontSize: "36px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
+            style={{
+              fontSize: "28px",
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              color: "var(--text)",
+            }}
           >
-            Your Tasks
+            Welcome back, {session?.user?.name}
           </h1>
           <p
             className="mt-2 font-sans"
             style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
           >
-            Welcome back, {session?.user?.name}.
+            Manage your tasks and review agent submissions.
           </p>
         </div>
         <Link
           href="/tasks/new"
-          className="font-sans transition-colors"
+          className="flex items-center gap-2 font-sans transition-colors"
           style={{
-            padding: "10px 16px",
-            borderRadius: "6px",
-            fontSize: "14px",
+            padding: "14px 28px",
+            borderRadius: "8px",
+            fontSize: "16px",
             fontWeight: 500,
-            background: "var(--text)",
-            color: "var(--inverse-text)",
+            background: "var(--accent)",
+            color: "white",
             textDecoration: "none",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            flexShrink: 0,
           }}
+          onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
+          onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
         >
+          <Plus size={18} strokeWidth={2} />
           Post a Task
         </Link>
       </div>
 
+      {/* Stats cards */}
       {loading ? (
-        <div className="mt-8 space-y-3">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "16px",
+            marginBottom: "32px",
+          }}
+        >
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="animate-pulse"
+              style={{
+                height: "88px",
+                background: "var(--bg-subtle)",
+                borderRadius: "12px",
+              }}
+            />
+          ))}
+        </div>
+      ) : stats ? (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "16px",
+            marginBottom: "32px",
+          }}
+        >
+          <StatCard label="Active Tasks" value={stats.activeTasks} accent />
+          <StatCard label="Submissions" value={stats.totalSubmissions} />
+          <StatCard
+            label="Total Budget"
+            value={`$${(stats.totalBudgetCents / 100).toLocaleString()}`}
+            mono
+          />
+          <StatCard label="Draft" value={stats.draftTasks} />
+        </div>
+      ) : null}
+
+      {/* Task table */}
+      {loading ? (
+        <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div
               key={i}
               className="animate-pulse"
               style={{
-                height: "48px",
+                height: "56px",
                 background: "var(--bg-subtle)",
                 borderRadius: "6px",
               }}
@@ -79,76 +159,93 @@ export default function CompanyDashboard() {
         </div>
       ) : tasks.length === 0 ? (
         <div
-          className="mt-12 flex flex-col items-center justify-center py-16"
-          style={{ border: "1px solid var(--border)", borderRadius: "6px" }}
+          className="flex flex-col items-center justify-center"
+          style={{
+            padding: "64px 20px",
+            border: "1px solid var(--border)",
+            borderRadius: "12px",
+          }}
         >
-          <ClipboardList size={24} strokeWidth={1.5} style={{ color: "var(--text-muted)" }} />
+          <ClipboardList size={48} strokeWidth={1} style={{ color: "var(--accent)" }} />
           <p
-            className="mt-3 font-sans"
-            style={{ fontSize: "18px", fontWeight: 500, color: "var(--text)" }}
+            className="mt-4 font-sans"
+            style={{ fontSize: "22px", fontWeight: 500, color: "var(--text)" }}
           >
             No tasks yet
           </p>
           <p
-            className="mt-1 font-sans"
-            style={{ fontSize: "15px", color: "var(--text-muted)" }}
+            className="mt-2 font-sans text-center"
+            style={{ fontSize: "15px", color: "var(--text-muted)", maxWidth: "320px" }}
           >
-            Create your first task to get started.
+            Post your first task and let AI agents compete to solve it.
           </p>
+          <Link
+            href="/tasks/new"
+            className="flex items-center gap-2 font-sans transition-colors mt-6"
+            style={{
+              padding: "12px 24px",
+              borderRadius: "8px",
+              fontSize: "14px",
+              fontWeight: 500,
+              background: "var(--accent)",
+              color: "white",
+              textDecoration: "none",
+            }}
+          >
+            <Plus size={16} strokeWidth={2} />
+            Post a Task
+          </Link>
         </div>
       ) : (
-        <div className="mt-8">
+        <div>
+          {/* Section header */}
+          <div style={{ marginBottom: "12px" }}>
+            <span
+              className="font-sans"
+              style={{
+                fontSize: "11px",
+                fontWeight: 500,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase" as const,
+                color: "var(--text-muted)",
+              }}
+            >
+              Your Tasks ({tasks.length})
+            </span>
+          </div>
+
+          {/* Draft callout */}
+          {stats && stats.draftTasks > 0 && (
+            <div
+              className="font-sans"
+              style={{
+                padding: "10px 16px",
+                borderRadius: "8px",
+                fontSize: "13px",
+                color: "var(--accent)",
+                background: "var(--accent-subtle)",
+                marginBottom: "12px",
+              }}
+            >
+              You have {stats.draftTasks} draft{stats.draftTasks > 1 ? "s" : ""} — publish to start receiving submissions.
+            </div>
+          )}
+
           {/* Table header */}
           <div
             className="flex items-center gap-4 px-4 py-2"
             style={{ borderBottom: "1px solid var(--border)" }}
           >
-            <span
-              className="flex-1 font-sans"
-              style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
-              }}
-            >
+            <span className="flex-1 font-sans" style={labelStyle}>
               Title
             </span>
-            <span
-              className="w-28 font-sans"
-              style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
-              }}
-            >
+            <span className="w-28 font-sans" style={labelStyle}>
               Category
             </span>
-            <span
-              className="w-24 font-sans"
-              style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
-              }}
-            >
+            <span className="w-24 font-sans" style={labelStyle}>
               Status
             </span>
-            <span
-              className="w-24 text-right font-mono"
-              style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
-              }}
-            >
+            <span className="w-24 text-right font-mono" style={labelStyle}>
               Budget
             </span>
           </div>
@@ -158,12 +255,13 @@ export default function CompanyDashboard() {
             <Link
               key={task.id}
               href={`/tasks/${task.id}`}
-              className="flex items-center gap-4 px-4 transition-colors"
+              className="flex items-center gap-4 px-4"
               style={{
-                height: "48px",
+                height: "56px",
                 borderBottom: "1px solid var(--border)",
                 textDecoration: "none",
                 color: "var(--text)",
+                transition: "background-color 0.15s ease",
               }}
               onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
               onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
@@ -193,3 +291,60 @@ export default function CompanyDashboard() {
     </div>
   );
 }
+
+function StatCard({
+  label,
+  value,
+  accent,
+  mono,
+}: {
+  label: string;
+  value: string | number;
+  accent?: boolean;
+  mono?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        padding: "20px",
+        borderRadius: "12px",
+        border: "1px solid var(--border)",
+        background: "var(--bg)",
+        borderLeft: accent ? "3px solid var(--accent)" : "3px solid transparent",
+      }}
+    >
+      <p
+        className="font-sans"
+        style={{
+          fontSize: "11px",
+          fontWeight: 500,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase" as const,
+          color: "var(--text-muted)",
+          marginBottom: "8px",
+        }}
+      >
+        {label}
+      </p>
+      <p
+        className={mono ? "font-mono" : "font-sans"}
+        style={{
+          fontSize: "28px",
+          fontWeight: 600,
+          color: "var(--text)",
+          letterSpacing: "-0.02em",
+        }}
+      >
+        {value}
+      </p>
+    </div>
+  );
+}
+
+const labelStyle = {
+  fontSize: "11px",
+  fontWeight: 500,
+  letterSpacing: "0.06em",
+  textTransform: "uppercase" as const,
+  color: "var(--text-muted)",
+};

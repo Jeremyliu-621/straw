@@ -49,15 +49,16 @@ export function Leaderboard({ taskId }: { taskId: string }) {
   useEffect(() => {
     fetchLeaderboard();
 
-    // Poll for updates while task is open or evaluating
-    intervalRef.current = setInterval(fetchLeaderboard, LEADERBOARD_POLL_INTERVAL_MS);
+    intervalRef.current = setInterval(
+      fetchLeaderboard,
+      LEADERBOARD_POLL_INTERVAL_MS
+    );
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [fetchLeaderboard]);
 
-  // Stop polling when task is closed
   useEffect(() => {
     if (data?.taskStatus === "closed" && intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -71,7 +72,10 @@ export function Leaderboard({ taskId }: { taskId: string }) {
 
   if (error) {
     return (
-      <p className="font-sans" style={{ fontSize: "13px", color: "var(--error)" }}>
+      <p
+        className="font-sans"
+        style={{ fontSize: "13px", color: "var(--error)" }}
+      >
         {error}
       </p>
     );
@@ -83,7 +87,10 @@ export function Leaderboard({ taskId }: { taskId: string }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between" style={{ marginBottom: "16px" }}>
+      <div
+        className="flex items-center justify-between"
+        style={{ marginBottom: "16px" }}
+      >
         <p
           className="font-sans"
           style={{
@@ -97,13 +104,22 @@ export function Leaderboard({ taskId }: { taskId: string }) {
           LEADERBOARD
         </p>
         {!data.revealed && (
-          <p className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+          <p
+            className="font-sans"
+            style={{ fontSize: "13px", color: "var(--text-muted)" }}
+          >
             Identities hidden until deadline
           </p>
         )}
       </div>
 
-      <div style={{ borderTop: "1px solid var(--border)" }}>
+      <div
+        style={{
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          overflow: "hidden",
+        }}
+      >
         {/* Header row */}
         <div
           className="grid font-sans"
@@ -116,18 +132,25 @@ export function Leaderboard({ taskId }: { taskId: string }) {
             color: "var(--text-muted)",
             borderBottom: "1px solid var(--border)",
             padding: "12px 0",
+            background: "var(--bg-subtle)",
           }}
         >
           <span style={{ textAlign: "center" }}>Rank</span>
           <span>Agent</span>
           <span style={{ textAlign: "right" }}>Test</span>
           <span style={{ textAlign: "right" }}>LLM</span>
-          <span style={{ textAlign: "right" }}>Final Score</span>
+          <span style={{ textAlign: "right", paddingRight: "12px" }}>
+            Final Score
+          </span>
         </div>
 
         {/* Data rows */}
         {data.entries.map((entry) => (
-          <LeaderboardRow key={entry.submissionId} entry={entry} isWinner={entry.rank === 1} />
+          <LeaderboardRow
+            key={entry.submissionId}
+            entry={entry}
+            isWinner={entry.rank === 1}
+          />
         ))}
       </div>
     </div>
@@ -146,10 +169,17 @@ function LeaderboardRow({
       className="grid font-sans"
       style={{
         gridTemplateColumns: "48px 1fr 100px 100px 120px",
-        height: "48px",
+        height: "56px",
         alignItems: "center",
         borderBottom: "1px solid var(--border)",
-        transition: "all 300ms ease",
+        transition: "background-color 0.15s ease",
+        cursor: "default",
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.background = "var(--bg-subtle)";
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.background = "transparent";
       }}
     >
       <span
@@ -178,22 +208,28 @@ function LeaderboardRow({
         style={{
           textAlign: "right",
           fontSize: "14px",
-          color: entry.testScore !== null ? "var(--text)" : "var(--text-faint)",
+          color:
+            entry.testScore !== null
+              ? "var(--text)"
+              : "var(--text-faint)",
         }}
       >
-        {entry.testScore !== null ? entry.testScore.toFixed(1) : "—"}
+        {entry.testScore !== null ? entry.testScore.toFixed(1) : "\u2014"}
       </span>
       <span
         className="font-mono"
         style={{
           textAlign: "right",
           fontSize: "14px",
-          color: entry.llmScore !== null ? "var(--text)" : "var(--text-faint)",
+          color:
+            entry.llmScore !== null
+              ? "var(--text)"
+              : "var(--text-faint)",
         }}
       >
-        {entry.llmScore !== null ? entry.llmScore.toFixed(1) : "—"}
+        {entry.llmScore !== null ? entry.llmScore.toFixed(1) : "\u2014"}
       </span>
-      <div style={{ textAlign: "right" }}>
+      <div style={{ textAlign: "right", paddingRight: "12px" }}>
         <span
           className="font-mono"
           style={{
@@ -207,17 +243,19 @@ function LeaderboardRow({
         {/* Score bar */}
         <div
           style={{
-            marginTop: "2px",
-            height: "4px",
+            marginTop: "3px",
+            height: "6px",
             background: "var(--border)",
             width: "100%",
+            borderRadius: "3px",
           }}
         >
           <div
             style={{
-              height: "4px",
-              background: "var(--text)",
+              height: "6px",
+              background: "var(--accent, var(--text))",
               width: `${Math.min(entry.finalScore, 100)}%`,
+              borderRadius: "3px",
               transition: "width 300ms ease",
             }}
           />
@@ -229,7 +267,7 @@ function LeaderboardRow({
 
 function LeaderboardSkeleton() {
   return (
-    <div className="space-y-0">
+    <div>
       <div
         className="font-sans"
         style={{
@@ -243,57 +281,91 @@ function LeaderboardSkeleton() {
       >
         LEADERBOARD
       </div>
-      {[1, 2, 3].map((i) => (
-        <div
-          key={i}
-          style={{
-            height: "48px",
-            borderBottom: "1px solid var(--border)",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+      <div
+        style={{
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          overflow: "hidden",
+        }}
+      >
+        {[1, 2, 3].map((i) => (
           <div
-            className="animate-pulse"
+            key={i}
             style={{
-              height: "16px",
-              width: `${60 + i * 10}%`,
-              background: "var(--bg-subtle)",
-              borderRadius: "4px",
+              height: "56px",
+              borderBottom: "1px solid var(--border)",
+              display: "flex",
+              alignItems: "center",
+              padding: "0 16px",
             }}
-          />
-        </div>
-      ))}
+          >
+            <div
+              className="animate-pulse"
+              style={{
+                height: "16px",
+                width: `${60 + i * 10}%`,
+                background: "var(--bg-subtle)",
+                borderRadius: "4px",
+              }}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 function LeaderboardEmpty() {
   return (
-    <div style={{ textAlign: "center", padding: "48px 0" }}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        style={{ color: "var(--text-faint)", margin: "0 auto 12px" }}
+    <div style={{ textAlign: "center", padding: "64px 0" }}>
+      <div
+        className="flex items-center justify-center"
+        style={{
+          width: "48px",
+          height: "48px",
+          borderRadius: "50%",
+          background: "var(--bg-subtle)",
+          margin: "0 auto 16px",
+        }}
       >
-        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-        <path d="M4 22h16" />
-        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
-        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
-        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
-      </svg>
-      <p className="font-sans" style={{ fontSize: "15px", fontWeight: 500, color: "var(--text)" }}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ color: "var(--text-faint)" }}
+        >
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+          <path d="M4 22h16" />
+          <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+          <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+        </svg>
+      </div>
+      <p
+        className="font-sans"
+        style={{
+          fontSize: "16px",
+          fontWeight: 500,
+          color: "var(--text)",
+        }}
+      >
         No submissions yet
       </p>
-      <p className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "4px" }}>
+      <p
+        className="font-sans"
+        style={{
+          fontSize: "14px",
+          color: "var(--text-muted)",
+          marginTop: "4px",
+        }}
+      >
         Scores will appear here as agents complete their submissions
       </p>
     </div>

@@ -46,7 +46,6 @@ export default function TaskDetailPage() {
   const isOwner = isCompany && task?.company_id === session?.user?.supabaseId;
 
   const handleDeadlineExpired = useCallback(() => {
-    // Trigger task close check on deadline expiry
     fetch(`/api/tasks/${id}/close`, { method: "POST" }).catch(() => {});
     setTask((prev) => (prev ? { ...prev, status: "evaluating" } : prev));
   }, [id]);
@@ -63,7 +62,6 @@ export default function TaskDetailPage() {
       .catch(() => router.push("/dashboard"))
       .finally(() => setLoading(false));
 
-    // Check for existing submission if agent
     if (isAgent) {
       fetch(`/api/submissions?task_id=${id}`)
         .then((res) => res.json())
@@ -127,7 +125,11 @@ export default function TaskDetailPage() {
             <div
               key={i}
               className="animate-pulse"
-              style={{ height: "24px", background: "var(--bg-subtle)", borderRadius: "6px" }}
+              style={{
+                height: "24px",
+                background: "var(--bg-subtle)",
+                borderRadius: "6px",
+              }}
             />
           ))}
         </div>
@@ -137,75 +139,168 @@ export default function TaskDetailPage() {
 
   return (
     <div className="mx-auto max-w-2xl" style={{ padding: "32px" }}>
+      {/* Back link */}
+      <Link
+        href="/dashboard"
+        className="font-sans inline-flex items-center gap-1 transition-colors"
+        style={{
+          fontSize: "13px",
+          color: "var(--text-muted)",
+          textDecoration: "none",
+          marginBottom: "24px",
+        }}
+        onMouseOver={(e) =>
+          (e.currentTarget.style.color = "var(--text)")
+        }
+        onMouseOut={(e) =>
+          (e.currentTarget.style.color = "var(--text-muted)")
+        }
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        Back to Dashboard
+      </Link>
+
+      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <div className="flex items-center gap-3">
-            <h1
-              className="font-sans"
-              style={{ fontSize: "36px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
-            >
-              {task.title}
-            </h1>
-          </div>
+          <h1
+            className="font-sans"
+            style={{
+              fontSize: "28px",
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              color: "var(--text)",
+            }}
+          >
+            {task.title}
+          </h1>
           <div className="mt-2 flex items-center gap-3">
             <StatusBadge status={task.status} />
-            <span className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+            <span
+              className="font-sans"
+              style={{ fontSize: "13px", color: "var(--text-muted)" }}
+            >
               {task.category}
             </span>
           </div>
         </div>
-        <span className="font-mono" style={{ fontSize: "24px", fontWeight: 500, color: "var(--text)" }}>
+        <span
+          className="font-mono"
+          style={{
+            fontSize: "24px",
+            fontWeight: 500,
+            color: "var(--text)",
+          }}
+        >
           ${(task.budget_cents / 100).toLocaleString()}
         </span>
       </div>
 
       <div className="mt-8 space-y-6">
         <Section label="DESCRIPTION">
-          <p className="font-sans" style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text)" }}>
+          <p
+            className="font-sans"
+            style={{
+              fontSize: "15px",
+              lineHeight: 1.6,
+              color: "var(--text)",
+            }}
+          >
             {task.description}
           </p>
         </Section>
 
         <Section label="INPUT SPECIFICATION">
-          <p className="font-sans" style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text)" }}>
-            {task.input_spec}
-          </p>
+          <div
+            style={{
+              padding: "14px 16px",
+              background: "var(--bg-subtle)",
+              borderRadius: "8px",
+              border: "1px solid var(--border)",
+            }}
+          >
+            <p
+              className="font-sans"
+              style={{
+                fontSize: "14px",
+                lineHeight: 1.6,
+                color: "var(--text)",
+              }}
+            >
+              {task.input_spec}
+            </p>
+          </div>
         </Section>
 
         <Section label="OUTPUT SPECIFICATION">
-          <p className="font-sans" style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text)" }}>
-            {task.output_spec}
-          </p>
+          <div
+            style={{
+              padding: "14px 16px",
+              background: "var(--bg-subtle)",
+              borderRadius: "8px",
+              border: "1px solid var(--border)",
+            }}
+          >
+            <p
+              className="font-sans"
+              style={{
+                fontSize: "14px",
+                lineHeight: 1.6,
+                color: "var(--text)",
+              }}
+            >
+              {task.output_spec}
+            </p>
+          </div>
         </Section>
 
         <Section label="EVALUATION">
-          <div className="flex gap-8">
-            <div>
-              <span className="font-mono" style={{ fontSize: "24px", fontWeight: 600, color: "var(--text)" }}>
-                {task.test_weight}%
-              </span>
-              <p className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                Automated tests
-              </p>
-            </div>
-            <div>
-              <span className="font-mono" style={{ fontSize: "24px", fontWeight: 600, color: "var(--text)" }}>
-                {task.llm_weight}%
-              </span>
-              <p className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                LLM judge
-              </p>
-            </div>
+          <div className="flex gap-4">
+            <EvalWeight
+              label="Automated Tests"
+              weight={task.test_weight}
+            />
+            <EvalWeight label="LLM Judge" weight={task.llm_weight} />
           </div>
         </Section>
 
         <Section label="DEADLINE">
-          <p className="font-mono" style={{ fontSize: "14px", color: "var(--text)" }}>
-            {new Date(task.deadline).toLocaleString()}
-          </p>
+          <div className="flex items-center gap-2">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ color: "var(--text-muted)" }}
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <p
+              className="font-mono"
+              style={{ fontSize: "14px", color: "var(--text)" }}
+            >
+              {new Date(task.deadline).toLocaleString()}
+            </p>
+          </div>
         </Section>
 
-        {/* Deadline countdown — only for open tasks */}
+        {/* Deadline countdown */}
         {task.status === "open" && (
           <DeadlineCountdown
             deadline={task.deadline}
@@ -213,30 +308,39 @@ export default function TaskDetailPage() {
           />
         )}
 
-        {/* Leaderboard — visible for open, evaluating, and closed tasks */}
+        {/* Leaderboard */}
         {task.status !== "draft" && <Leaderboard taskId={id} />}
       </div>
 
       {/* Actions */}
       {error && (
-        <p className="mt-6 font-sans" style={{ fontSize: "13px", color: "var(--error)" }}>
+        <p
+          className="mt-6 font-sans"
+          style={{ fontSize: "13px", color: "var(--error)" }}
+        >
           {error}
         </p>
       )}
 
-      <div className="mt-8" style={{ borderTop: "1px solid var(--border)", paddingTop: "24px" }}>
+      <div
+        className="mt-8"
+        style={{
+          borderTop: "1px solid var(--border)",
+          paddingTop: "24px",
+        }}
+      >
         {isOwner && task.status === "draft" && (
           <button
             onClick={publishTask}
             disabled={publishing}
             className="font-sans transition-colors disabled:opacity-40"
             style={{
-              padding: "10px 16px",
-              borderRadius: "6px",
+              padding: "12px 24px",
+              borderRadius: "8px",
               fontSize: "14px",
               fontWeight: 500,
-              background: "var(--text)",
-              color: "var(--inverse-text)",
+              background: "var(--accent, var(--text))",
+              color: "white",
             }}
           >
             {publishing ? "Publishing..." : "Publish Task"}
@@ -249,12 +353,12 @@ export default function TaskDetailPage() {
             disabled={entering}
             className="font-sans transition-colors disabled:opacity-40"
             style={{
-              padding: "10px 16px",
-              borderRadius: "6px",
+              padding: "12px 24px",
+              borderRadius: "8px",
               fontSize: "14px",
               fontWeight: 500,
-              background: "var(--text)",
-              color: "var(--inverse-text)",
+              background: "var(--accent, var(--text))",
+              color: "white",
             }}
           >
             {entering ? "Entering..." : "Enter Competition"}
@@ -262,10 +366,22 @@ export default function TaskDetailPage() {
         )}
 
         {isAgent && submission && (
-          <div className="flex items-center gap-3">
+          <div
+            className="flex items-center gap-3"
+            style={{
+              padding: "12px 16px",
+              background: "var(--accent-subtle, var(--bg-subtle))",
+              borderRadius: "8px",
+              border: "1px solid var(--accent-border, var(--border))",
+            }}
+          >
             <StatusBadge status={submission.status} />
-            <span className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-              Entered {new Date(submission.created_at).toLocaleDateString()}
+            <span
+              className="font-sans"
+              style={{ fontSize: "13px", color: "var(--text-muted)" }}
+            >
+              Entered{" "}
+              {new Date(submission.created_at).toLocaleDateString()}
             </span>
           </div>
         )}
@@ -275,25 +391,38 @@ export default function TaskDetailPage() {
           <div className="flex gap-3">
             <Link
               href={`/tasks/${id}/results`}
-              className="font-sans inline-block transition-colors"
+              className="font-sans inline-flex items-center gap-2 transition-colors"
               style={{
-                padding: "10px 16px",
-                borderRadius: "6px",
+                padding: "12px 24px",
+                borderRadius: "8px",
                 fontSize: "14px",
                 fontWeight: 500,
-                background: "var(--text)",
-                color: "var(--inverse-text)",
+                background: "var(--accent, var(--text))",
+                color: "white",
                 textDecoration: "none",
               }}
             >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 3v18h18" />
+                <path d="m19 9-5 5-4-4-3 3" />
+              </svg>
               View Results
             </Link>
             <Link
               href={`/tasks/${id}/deal`}
-              className="font-sans inline-block transition-colors"
+              className="font-sans inline-flex items-center gap-2 transition-colors"
               style={{
-                padding: "10px 16px",
-                borderRadius: "6px",
+                padding: "12px 24px",
+                borderRadius: "8px",
                 fontSize: "14px",
                 fontWeight: 500,
                 background: "transparent",
@@ -301,7 +430,25 @@ export default function TaskDetailPage() {
                 border: "1px solid var(--border)",
                 textDecoration: "none",
               }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.borderColor = "var(--text)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.borderColor = "var(--border)";
+              }}
             >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
               Complete Deal
             </Link>
           </div>
@@ -311,7 +458,13 @@ export default function TaskDetailPage() {
   );
 }
 
-function Section({ label, children }: { label: string; children: React.ReactNode }) {
+function Section({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
       <p
@@ -327,6 +480,50 @@ function Section({ label, children }: { label: string; children: React.ReactNode
         {label}
       </p>
       {children}
+    </div>
+  );
+}
+
+function EvalWeight({ label, weight }: { label: string; weight: number }) {
+  return (
+    <div
+      className="flex-1"
+      style={{
+        padding: "16px",
+        border: "1px solid var(--border)",
+        borderRadius: "8px",
+      }}
+    >
+      <span
+        className="font-mono"
+        style={{ fontSize: "24px", fontWeight: 600, color: "var(--text)" }}
+      >
+        {weight}%
+      </span>
+      <p
+        className="font-sans"
+        style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}
+      >
+        {label}
+      </p>
+      {/* Visual bar */}
+      <div
+        style={{
+          marginTop: "8px",
+          height: "4px",
+          background: "var(--border)",
+          borderRadius: "2px",
+        }}
+      >
+        <div
+          style={{
+            height: "4px",
+            background: "var(--accent, var(--text))",
+            width: `${weight}%`,
+            borderRadius: "2px",
+          }}
+        />
+      </div>
     </div>
   );
 }

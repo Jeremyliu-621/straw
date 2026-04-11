@@ -13,6 +13,7 @@ import {
   TASK_TITLE_MAX_LENGTH,
   TASK_MIN_BUDGET_CENTS,
   RUBRIC_WEIGHT_SUM,
+  CATEGORY_OPTIONS,
 } from "@/constants";
 
 interface Criterion {
@@ -217,16 +218,19 @@ export default function NewTaskPage() {
     <div
       style={{
         position: "fixed",
-        inset: "32px",
+        inset: 0,
+        background: "var(--bg-subtle)",
         display: "flex",
-        alignItems: "stretch",
+        alignItems: "center",
         justifyContent: "center",
+        padding: "32px",
       }}
     >
       <div
         style={{
           width: "100%",
           maxWidth: "860px",
+          maxHeight: "100%",
           display: "flex",
           flexDirection: "column",
           borderRadius: "24px",
@@ -1155,17 +1159,6 @@ function RefinedField({
     </div>
   );
 }
-
-const CATEGORY_OPTIONS = [
-  "code-generation",
-  "data-analysis",
-  "web-scraping",
-  "nlp",
-  "computer-vision",
-  "automation",
-  "research",
-  "other",
-];
 
 function CategoryPicker({
   selected,

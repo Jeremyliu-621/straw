@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { ROLE_COMPANY, DEAL_TYPE } from "@/constants";
-import { calculateSuccessFee, formatCurrency, formatScore } from "@/services/results.service";
+import {
+  calculateSuccessFee,
+  formatCurrency,
+  formatScore,
+} from "@/services/results.service";
 
 interface LeaderboardEntry {
   rank: number;
@@ -97,7 +102,11 @@ export default function DealPage() {
             <div
               key={i}
               className="animate-pulse"
-              style={{ height: "24px", background: "var(--bg-subtle)", borderRadius: "6px" }}
+              style={{
+                height: "24px",
+                background: "var(--bg-subtle)",
+                borderRadius: "6px",
+              }}
             />
           ))}
         </div>
@@ -108,7 +117,10 @@ export default function DealPage() {
   if (!isCompany || !results.isOwner) {
     return (
       <div className="mx-auto max-w-xl" style={{ padding: "32px" }}>
-        <p className="font-sans" style={{ fontSize: "15px", color: "var(--error)" }}>
+        <p
+          className="font-sans"
+          style={{ fontSize: "15px", color: "var(--error)" }}
+        >
           Only the task owner can create deals.
         </p>
       </div>
@@ -118,7 +130,10 @@ export default function DealPage() {
   if (results.taskStatus !== "closed") {
     return (
       <div className="mx-auto max-w-xl" style={{ padding: "32px" }}>
-        <p className="font-sans" style={{ fontSize: "15px", color: "var(--text-muted)" }}>
+        <p
+          className="font-sans"
+          style={{ fontSize: "15px", color: "var(--text-muted)" }}
+        >
           Deals can only be created after the task is closed.
         </p>
       </div>
@@ -131,36 +146,89 @@ export default function DealPage() {
 
     return (
       <div className="mx-auto max-w-xl" style={{ padding: "32px" }}>
-        <h1
-          className="font-sans"
-          style={{ fontSize: "36px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
-        >
-          Deal Created
-        </h1>
+        {/* Success state */}
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <div
+            className="flex items-center justify-center"
+            style={{
+              width: "56px",
+              height: "56px",
+              borderRadius: "50%",
+              background: "var(--accent-subtle, #f0fdf4)",
+              margin: "0 auto 16px",
+            }}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ color: "var(--accent, #16a34a)" }}
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <h1
+            className="font-sans"
+            style={{
+              fontSize: "28px",
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              color: "var(--text)",
+            }}
+          >
+            Deal Created
+          </h1>
+          <p
+            className="font-sans"
+            style={{
+              fontSize: "14px",
+              color: "var(--text-muted)",
+              marginTop: "6px",
+            }}
+          >
+            The deal has been recorded successfully.
+          </p>
+        </div>
+
         <div
           style={{
-            marginTop: "24px",
-            padding: "24px",
+            padding: "20px",
             border: "1px solid var(--border)",
-            borderRadius: "6px",
+            borderRadius: "12px",
           }}
         >
           <div className="space-y-4">
-            <DetailRow label="Deal Type" value={dealType === DEAL_TYPE.OUTPUT_PURCHASE ? "Output Purchase" : "Agent Hire"} />
-            <DetailRow label="Deal Value" value={formatCurrency(dealValueCents)} />
+            <DetailRow
+              label="Deal Type"
+              value={
+                dealType === DEAL_TYPE.OUTPUT_PURCHASE
+                  ? "Output Purchase"
+                  : "Agent Hire"
+              }
+            />
+            <DetailRow
+              label="Deal Value"
+              value={formatCurrency(dealValueCents)}
+            />
             <DetailRow label="Platform Fee" value={formatCurrency(fee)} />
           </div>
         </div>
+
         <button
           onClick={() => router.push("/dashboard")}
           className="font-sans mt-6 transition-colors"
           style={{
-            padding: "10px 16px",
-            borderRadius: "6px",
+            padding: "12px 24px",
+            borderRadius: "8px",
             fontSize: "14px",
             fontWeight: 500,
-            background: "var(--text)",
-            color: "var(--inverse-text)",
+            background: "var(--accent, var(--text))",
+            color: "white",
           }}
         >
           Back to Dashboard
@@ -169,18 +237,62 @@ export default function DealPage() {
     );
   }
 
-  const dealValueCents = dealValue ? Math.round(parseFloat(dealValue) * 100) : 0;
+  const dealValueCents = dealValue
+    ? Math.round(parseFloat(dealValue) * 100)
+    : 0;
   const fee = dealValueCents > 0 ? calculateSuccessFee(dealValueCents) : 0;
 
   return (
     <div className="mx-auto max-w-xl" style={{ padding: "32px" }}>
+      {/* Back link */}
+      <Link
+        href={`/tasks/${id}/results`}
+        className="font-sans inline-flex items-center gap-1 transition-colors"
+        style={{
+          fontSize: "13px",
+          color: "var(--text-muted)",
+          textDecoration: "none",
+          marginBottom: "24px",
+        }}
+        onMouseOver={(e) => (e.currentTarget.style.color = "var(--text)")}
+        onMouseOut={(e) =>
+          (e.currentTarget.style.color = "var(--text-muted)")
+        }
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        Back to Results
+      </Link>
+
       <h1
         className="font-sans"
-        style={{ fontSize: "36px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
+        style={{
+          fontSize: "28px",
+          fontWeight: 500,
+          letterSpacing: "-0.02em",
+          color: "var(--text)",
+        }}
       >
         Complete Deal
       </h1>
-      <p className="font-sans" style={{ fontSize: "15px", color: "var(--text-muted)", marginTop: "8px" }}>
+      <p
+        className="font-sans"
+        style={{
+          fontSize: "15px",
+          color: "var(--text-muted)",
+          marginTop: "6px",
+        }}
+      >
         Select the winning agent and record the deal terms.
       </p>
 
@@ -207,15 +319,24 @@ export default function DealPage() {
             style={{
               border: "1px solid var(--border)",
               padding: "10px 12px",
-              borderRadius: "6px",
-              fontSize: "15px",
+              borderRadius: "8px",
+              fontSize: "14px",
               color: "var(--text)",
               background: "var(--bg)",
+              outline: "none",
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor =
+                "var(--accent, var(--text))";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = "var(--border)";
             }}
           >
             {results.entries.map((entry) => (
               <option key={entry.agentId} value={entry.agentId}>
-                #{entry.rank} — {entry.agentName} ({formatScore(entry.finalScore)})
+                #{entry.rank} — {entry.agentName} (
+                {formatScore(entry.finalScore)})
               </option>
             ))}
           </select>
@@ -236,11 +357,27 @@ export default function DealPage() {
           >
             DEAL TYPE
           </label>
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <DealTypeOption
               value={DEAL_TYPE.OUTPUT_PURCHASE}
               label="Buy the Output"
               description="Purchase what the agent produced outright"
+              icon={
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                  <path d="m3.3 7 8.7 5 8.7-5" />
+                  <path d="M12 22V12" />
+                </svg>
+              }
               selected={dealType === DEAL_TYPE.OUTPUT_PURCHASE}
               onSelect={setDealType}
             />
@@ -248,6 +385,23 @@ export default function DealPage() {
               value={DEAL_TYPE.AGENT_HIRE}
               label="Hire the Agent"
               description="Engage the builder on an ongoing basis"
+              icon={
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <line x1="19" x2="19" y1="8" y2="14" />
+                  <line x1="22" x2="16" y1="11" y2="11" />
+                </svg>
+              }
               selected={dealType === DEAL_TYPE.AGENT_HIRE}
               onSelect={setDealType}
             />
@@ -273,10 +427,10 @@ export default function DealPage() {
             <span
               className="font-mono absolute"
               style={{
-                left: "12px",
+                left: "14px",
                 top: "50%",
                 transform: "translateY(-50%)",
-                fontSize: "15px",
+                fontSize: "14px",
                 color: "var(--text-muted)",
               }}
             >
@@ -292,24 +446,41 @@ export default function DealPage() {
               className="font-mono w-full"
               style={{
                 border: "1px solid var(--border)",
-                padding: "10px 12px 10px 24px",
-                borderRadius: "6px",
-                fontSize: "15px",
+                padding: "10px 12px 10px 28px",
+                borderRadius: "8px",
+                fontSize: "14px",
                 color: "var(--text)",
                 background: "var(--bg)",
                 outline: "none",
               }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor =
+                  "var(--accent, var(--text))";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = "var(--border)";
+              }}
             />
           </div>
           {fee > 0 && (
-            <p className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "4px" }}>
+            <p
+              className="font-sans"
+              style={{
+                fontSize: "13px",
+                color: "var(--text-muted)",
+                marginTop: "6px",
+              }}
+            >
               Platform fee: {formatCurrency(fee)}
             </p>
           )}
         </div>
 
         {error && (
-          <p className="font-sans" style={{ fontSize: "13px", color: "var(--error)" }}>
+          <p
+            className="font-sans"
+            style={{ fontSize: "13px", color: "var(--error)" }}
+          >
             {error}
           </p>
         )}
@@ -319,12 +490,12 @@ export default function DealPage() {
           disabled={creating || !selectedAgent || !dealValue}
           className="font-sans transition-colors disabled:opacity-40"
           style={{
-            padding: "10px 16px",
-            borderRadius: "6px",
+            padding: "12px 24px",
+            borderRadius: "8px",
             fontSize: "14px",
             fontWeight: 500,
-            background: "var(--text)",
-            color: "var(--inverse-text)",
+            background: "var(--accent, var(--text))",
+            color: "white",
           }}
         >
           {creating ? "Creating Deal..." : "Create Deal"}
@@ -338,12 +509,14 @@ function DealTypeOption({
   value,
   label,
   description,
+  icon,
   selected,
   onSelect,
 }: {
   value: string;
   label: string;
   description: string;
+  icon: React.ReactNode;
   selected: boolean;
   onSelect: (v: string) => void;
 }) {
@@ -352,15 +525,52 @@ function DealTypeOption({
       onClick={() => onSelect(value)}
       className="font-sans flex-1 text-left transition-colors"
       style={{
-        padding: "12px 16px",
-        borderRadius: "6px",
-        border: `1px solid ${selected ? "var(--text)" : "var(--border)"}`,
-        background: selected ? "var(--bg-subtle)" : "transparent",
+        padding: "16px",
+        borderRadius: "12px",
+        border: selected
+          ? "2px solid var(--accent, var(--text))"
+          : "1px solid var(--border)",
+        background: selected
+          ? "var(--accent-subtle, var(--bg-subtle))"
+          : "transparent",
         cursor: "pointer",
       }}
+      onMouseOver={(e) => {
+        if (!selected) e.currentTarget.style.background = "var(--bg-subtle)";
+      }}
+      onMouseOut={(e) => {
+        if (!selected) e.currentTarget.style.background = "transparent";
+      }}
     >
-      <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--text)" }}>{label}</p>
-      <p style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}>{description}</p>
+      <div
+        style={{
+          marginBottom: "8px",
+          color: selected
+            ? "var(--accent, var(--text))"
+            : "var(--text-muted)",
+        }}
+      >
+        {icon}
+      </div>
+      <p
+        style={{
+          fontSize: "14px",
+          fontWeight: 500,
+          color: "var(--text)",
+        }}
+      >
+        {label}
+      </p>
+      <p
+        style={{
+          fontSize: "13px",
+          color: "var(--text-muted)",
+          marginTop: "2px",
+          lineHeight: 1.4,
+        }}
+      >
+        {description}
+      </p>
     </button>
   );
 }
@@ -368,10 +578,16 @@ function DealTypeOption({
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between">
-      <span className="font-sans" style={{ fontSize: "14px", color: "var(--text-muted)" }}>
+      <span
+        className="font-sans"
+        style={{ fontSize: "14px", color: "var(--text-muted)" }}
+      >
         {label}
       </span>
-      <span className="font-mono" style={{ fontSize: "14px", fontWeight: 500, color: "var(--text)" }}>
+      <span
+        className="font-mono"
+        style={{ fontSize: "14px", fontWeight: 500, color: "var(--text)" }}
+      >
         {value}
       </span>
     </div>
