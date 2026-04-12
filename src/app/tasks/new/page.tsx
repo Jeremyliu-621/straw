@@ -242,27 +242,19 @@ export default function NewTaskPage() {
         inset: 0,
         background: "#FDFCFC",
         display: "flex",
-        justifyContent: "center",
+        flexDirection: "column",
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "860px",
-          display: "flex",
-          flexDirection: "column",
-          borderLeft: "1px solid var(--border)",
-          borderRight: "1px solid var(--border)",
-          background: "var(--bg)",
-          overflow: "hidden",
-        }}
-      >
-        {/* Header with step indicator */}
+      {/* Title row — full width */}
+      <div style={{ width: "100%", borderBottom: "1px solid #e5e7eb" }}>
         <div
           style={{
-            padding: "28px 40px 0",
-            borderBottom: "1px solid var(--border)",
+            maxWidth: "860px",
+            margin: "0 auto",
+            padding: "28px 40px 24px",
+            borderLeft: "1px solid #e5e7eb",
+            borderRight: "1px solid #e5e7eb",
           }}
         >
           <h1
@@ -272,12 +264,29 @@ export default function NewTaskPage() {
               fontWeight: 500,
               letterSpacing: "-0.02em",
               color: "var(--text)",
-              marginBottom: "20px",
             }}
           >
             Post a Task
           </h1>
+        </div>
+      </div>
 
+      {/* Middle: steps + content */}
+      <div style={{ flex: 1, overflow: "hidden" }}>
+        <div
+          style={{
+            maxWidth: "860px",
+            margin: "0 auto",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            borderLeft: "1px solid #e5e7eb",
+            borderRight: "1px solid #e5e7eb",
+            overflow: "hidden",
+          }}
+        >
+          {/* Step timeline row */}
+          <div style={{ padding: "16px 40px 0", borderBottom: "1px solid #e5e7eb" }}>
           {/* Step timeline */}
           <div style={{ display: "flex", alignItems: "center", marginBottom: "0" }}>
             {STEPS.map((s, i) => {
@@ -359,10 +368,9 @@ export default function NewTaskPage() {
               );
             })}
           </div>
-        </div>
-
-        {/* Content */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "28px 40px" }}>
+          </div>
+          {/* Content */}
+          <div style={{ flex: 1, overflowY: "auto", padding: "28px 40px" }}>
           {/* ── Step 1: Basics ── */}
           {step === "basics" && (
             <div
@@ -598,7 +606,7 @@ export default function NewTaskPage() {
                         display: "inline-flex",
                         alignItems: "center",
                         padding: "8px 14px",
-                        borderRadius: "7px",
+                        borderRadius: "var(--radius)",
                         fontSize: "13px",
                         fontWeight: 500,
                         color: "var(--text)",
@@ -1075,17 +1083,43 @@ export default function NewTaskPage() {
           )}
         </div>
 
-        {/* Footer */}
+        </div>
+      </div>
+
+      {/* Footer row — full width */}
+      <div style={{ width: "100%", borderTop: "1px solid #e5e7eb" }}>
         <div
           style={{
+            maxWidth: "860px",
+            margin: "0 auto",
             padding: "16px 40px",
-            borderTop: "1px solid var(--border)",
+            borderLeft: "1px solid #e5e7eb",
+            borderRight: "1px solid #e5e7eb",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
-          <div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            {step === "basics" && (
+              <button
+                onClick={() => router.push("/dashboard/company")}
+                className="font-sans transition-colors"
+                style={{
+                  padding: "9px 18px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  background: "transparent",
+                  color: "var(--text-muted)",
+                  border: "1px solid var(--border)",
+                  cursor: "pointer",
+                  width: "fit-content",
+                }}
+              >
+                Exit
+              </button>
+            )}
             {error && (
               <p
                 className="font-sans"
@@ -1378,7 +1412,7 @@ function ReviewCard({
     <div
       style={{
         padding: "20px",
-        borderRadius: "7px",
+        borderRadius: "var(--radius)",
         border: "1px solid var(--border)",
         position: "relative",
       }}

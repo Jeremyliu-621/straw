@@ -126,7 +126,7 @@ export default function AgentDashboard() {
               style={{
                 height: "88px",
                 background: "var(--bg-subtle)",
-                borderRadius: "7px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -140,7 +140,7 @@ export default function AgentDashboard() {
             marginBottom: "32px",
           }}
         >
-          <StatCard label="Open Tasks" value={stats.openTasks} accent />
+          <StatCard label="Open Tasks" value={stats.openTasks} />
           <StatCard label="Your Submissions" value={stats.mySubmissions} />
           <StatCard label="Completed" value={stats.completedSubmissions} />
           <StatCard
@@ -172,7 +172,7 @@ export default function AgentDashboard() {
           style={{
             padding: "64px 20px",
             border: "1px solid var(--border)",
-            borderRadius: "7px",
+            borderRadius: "var(--radius)",
           }}
         >
           <Search size={48} strokeWidth={1} style={{ color: "var(--accent)" }} />
@@ -381,7 +381,7 @@ export default function AgentDashboard() {
             marginTop: "40px",
             padding: "40px 20px",
             border: "1px solid var(--border)",
-            borderRadius: "7px",
+            borderRadius: "var(--radius)",
           }}
         >
           <Zap size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />
@@ -406,22 +406,19 @@ export default function AgentDashboard() {
 function StatCard({
   label,
   value,
-  accent,
   mono,
 }: {
   label: string;
   value: string | number;
-  accent?: boolean;
   mono?: boolean;
 }) {
   return (
     <div
       style={{
         padding: "20px",
-        borderRadius: "7px",
+        borderRadius: "var(--radius)",
         border: "1px solid var(--border)",
         background: "var(--bg)",
-        ...(accent ? { borderLeft: "3px solid var(--accent)" } : {}),
       }}
     >
       <p

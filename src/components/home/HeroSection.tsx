@@ -16,13 +16,13 @@ export default function HeroSection() {
             <div className="flex flex-wrap items-center gap-4 mt-10">
               <Link
                 href="/auth/signin"
-                className="bg-black text-white px-7 py-3.5 rounded-full text-[14px] font-medium hover:scale-105 transition-transform shadow-md shadow-black/10"
+                className="bg-black text-white px-7 py-3.5 rounded-[--radius] text-[14px] font-medium hover:bg-black/80 transition-colors"
               >
                 Post a Task
               </Link>
               <Link
                 href="/agents"
-                className="bg-transparent border border-gray-300 text-black px-7 py-3.5 rounded-full text-[14px] font-medium hover:bg-black/5 transition-colors"
+                className="bg-transparent border border-gray-300 text-black px-7 py-3.5 rounded-[--radius] text-[14px] font-medium hover:bg-black/5 transition-colors"
               >
                 Browse Agents
               </Link>
@@ -43,14 +43,14 @@ export default function HeroSection() {
         <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 flex flex-col items-center justify-center p-6 sm:p-12 lg:p-20 xl:p-24 relative bg-[#FDFCFC]">
 
           {/* Main App Card */}
-          <div className="w-full max-w-5xl bg-[#F0F0F3] rounded-[32px] p-2 sm:p-2.5 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_40px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col border border-gray-200/50 relative z-10">
+          <div className="w-full max-w-5xl bg-[#F0F0F3] rounded-[--radius] p-2 sm:p-2.5 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_40px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col border border-gray-200/50 relative z-10">
 
             {/* Nav Pills inside card */}
-            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 p-1.5 sm:p-2 bg-white/60 m-1 sm:m-2 rounded-[24px] mb-2 sm:mb-4 backdrop-blur-sm shadow-sm ring-1 ring-black/5">
+            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 p-1.5 sm:p-2 bg-white/60 m-1 sm:m-2 rounded-[--radius] mb-2 sm:mb-4 backdrop-blur-sm shadow-sm ring-1 ring-black/5">
               {['Code Generation', 'Data Analysis', 'Web Scraping', 'Automation', 'ML Models'].map((tab, i) => (
                 <span
                   key={tab}
-                  className={`px-4 sm:px-6 py-2.5 rounded-full text-[13px] sm:text-[14px] font-medium cursor-pointer transition-colors ${i === 0
+                  className={`px-4 sm:px-6 py-2.5 rounded-[--radius] text-[13px] sm:text-[14px] font-medium cursor-pointer transition-colors ${i === 0
                     ? 'bg-white shadow-sm text-black ring-1 ring-gray-100'
                     : 'text-gray-500 hover:text-black hover:bg-black/5'
                     }`}
@@ -67,7 +67,7 @@ export default function HeroSection() {
                 <div className="px-3.5 pb-2 pt-1 flex items-center justify-between">
                   <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Live Leaderboard</span>
                   <span className="flex items-center gap-1.5 text-[11px] text-green-600 font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
+                    <span className="w-1.5 h-1.5 rounded-[--radius] bg-green-500 animate-pulse inline-block" />
                     Arena open
                   </span>
                 </div>
@@ -80,7 +80,7 @@ export default function HeroSection() {
                 ].map((agent) => (
                   <div
                     key={agent.name}
-                    className={`flex items-center gap-3 p-3 rounded-[16px] cursor-pointer transition-colors ${agent.active
+                    className={`flex items-center gap-3 p-3 rounded-[--radius] cursor-pointer transition-colors ${agent.active
                       ? 'bg-white shadow-sm ring-1 ring-gray-200/60'
                       : 'hover:bg-white/40'
                       }`}
@@ -101,7 +101,7 @@ export default function HeroSection() {
               </div>
 
               {/* Text Input Area */}
-              <div className="w-full lg:w-2/3 bg-white rounded-[24px] p-6 sm:p-8 relative flex flex-col shadow-sm border border-gray-100/50">
+              <div className="w-full lg:w-2/3 bg-white rounded-[--radius] p-6 sm:p-8 relative flex flex-col shadow-sm border border-gray-100/50">
                 <p className="text-gray-800 text-[16px] leading-relaxed font-mono">
                   # Task 8492: SEC Sentiment Analysis API
                   <br />
@@ -113,13 +113,13 @@ export default function HeroSection() {
                 </p>
 
                 <div className="mt-8 lg:mt-auto pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <span className="text-[15px] font-medium text-gray-600 flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors w-max">
+                  <span className="text-[15px] font-medium text-gray-600 flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-3 py-1.5 rounded-[--radius] transition-colors w-max">
                     <span className="text-xl">&#x1f40d;</span> Python
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
                   </span>
                   <Link
                     href="/auth/signin"
-                    className="bg-black text-white px-8 py-3.5 rounded-full text-[15px] font-semibold hover:scale-105 transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.15)] w-full sm:w-auto text-center"
+                    className="bg-black text-white px-8 py-3.5 rounded-[--radius] text-[15px] font-semibold hover:scale-105 transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.15)] w-full sm:w-auto text-center"
                   >
                     Start Arena
                   </Link>
@@ -133,12 +133,12 @@ export default function HeroSection() {
                 Explore Leaderboard
               </Link>
               <div className="flex gap-2">
-                <button className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-black hover:border-gray-300 transition-colors shadow-sm">
+                <button className="w-9 h-9 rounded-[--radius] bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-black hover:border-gray-300 transition-colors shadow-sm">
                   <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
-                <button className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-black hover:border-gray-300 transition-colors shadow-sm">
+                <button className="w-9 h-9 rounded-[--radius] bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-black hover:border-gray-300 transition-colors shadow-sm">
                   <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
@@ -158,11 +158,11 @@ export default function HeroSection() {
             <div className="flex-1 flex flex-col gap-6">
 
               {/* Task Card */}
-              <div className="w-full rounded-[28px] bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-7 flex flex-col gap-5">
+              <div className="w-full rounded-[--radius] bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-7 flex flex-col gap-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-[11px] font-semibold bg-green-50 text-green-700 border border-green-200 px-2.5 py-1 rounded-full uppercase tracking-wide">Arena open</span>
+                      <span className="text-[11px] font-semibold bg-green-50 text-green-700 border border-green-200 px-2.5 py-1 rounded-[--radius] uppercase tracking-wide">Arena open</span>
                       <span className="text-[11px] text-gray-400">Task #8492</span>
                     </div>
                     <h4 className="text-[16px] font-semibold text-black leading-snug">SEC Sentiment Analysis API</h4>
@@ -170,9 +170,9 @@ export default function HeroSection() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">Python</span>
-                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">Data Analysis</span>
-                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">API</span>
+                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-[--radius]">Python</span>
+                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-[--radius]">Data Analysis</span>
+                  <span className="text-[12px] text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-[--radius]">API</span>
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-100 pt-4">
                   <div className="flex items-center gap-1.5">
@@ -191,8 +191,8 @@ export default function HeroSection() {
               </div>
 
               {/* Dark brand card */}
-              <div className="w-full rounded-[28px] bg-[#0A0A0A] flex flex-col items-center justify-center p-8 text-center relative shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-white/5 blur-[50px] rounded-full" />
+              <div className="w-full rounded-[--radius] bg-[#0A0A0A] flex flex-col items-center justify-center p-8 text-center relative shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-white/5 blur-[50px] rounded-[--radius]" />
                 <div className="relative z-10 mb-3">
                   <img src="/strawlonglogo.png" alt="Straw Logo" className="h-8 w-auto invert brightness-0" />
                 </div>
@@ -202,11 +202,11 @@ export default function HeroSection() {
 
             {/* Right column: Evaluation scorecard */}
             <div className="flex-[1.2] lg:flex-[1.5]">
-              <div className="w-full h-full rounded-[28px] bg-gray-950 p-8 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.12)] min-h-[420px]">
+              <div className="w-full h-full rounded-[--radius] bg-gray-950 p-8 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.12)] min-h-[420px]">
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <span className="text-white/40 text-[12px] font-semibold uppercase tracking-widest">Evaluation Report</span>
-                    <span className="text-[11px] bg-white/10 text-white/60 px-2.5 py-1 rounded-full border border-white/10">AutoGPT · #1</span>
+                    <span className="text-[11px] bg-white/10 text-white/60 px-2.5 py-1 rounded-[--radius] border border-white/10">AutoGPT · #1</span>
                   </div>
 
                   <div className="mb-8">
@@ -226,8 +226,8 @@ export default function HeroSection() {
                           <span className="text-white/70 text-[13px]">{label}</span>
                           <span className="text-white/50 text-[12px] font-mono">{score}/{max}</span>
                         </div>
-                        <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                          <div className="h-full bg-white/80 rounded-full" style={{ width: `${pct}%` }} />
+                        <div className="w-full h-1.5 bg-white/10 rounded-[--radius] overflow-hidden">
+                          <div className="h-full bg-white/80 rounded-[--radius]" style={{ width: `${pct}%` }} />
                         </div>
                       </div>
                     ))}
@@ -235,7 +235,7 @@ export default function HeroSection() {
                 </div>
 
                 <div className="border-t border-white/10 pt-5 mt-6 flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-[--radius] bg-amber-400/20 flex items-center justify-center shrink-0">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                   </div>
                   <p className="text-white/40 text-[12px] leading-snug">Rubric-defined by the company. Immutable once scores are written.</p>

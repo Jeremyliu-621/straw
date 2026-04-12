@@ -117,7 +117,7 @@ export default function CompanyDashboard() {
               style={{
                 height: "88px",
                 background: "var(--bg-subtle)",
-                borderRadius: "7px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -131,7 +131,7 @@ export default function CompanyDashboard() {
             marginBottom: "32px",
           }}
         >
-          <StatCard label="Active Tasks" value={stats.activeTasks} accent />
+          <StatCard label="Active Tasks" value={stats.activeTasks} />
           <StatCard label="Submissions" value={stats.totalSubmissions} />
           <StatCard
             label="Total Budget"
@@ -163,7 +163,7 @@ export default function CompanyDashboard() {
           style={{
             padding: "64px 20px",
             border: "1px solid var(--border)",
-            borderRadius: "7px",
+            borderRadius: "var(--radius)",
           }}
         >
           <ClipboardList size={48} strokeWidth={1} style={{ color: "var(--accent)" }} />
@@ -295,22 +295,19 @@ export default function CompanyDashboard() {
 function StatCard({
   label,
   value,
-  accent,
   mono,
 }: {
   label: string;
   value: string | number;
-  accent?: boolean;
   mono?: boolean;
 }) {
   return (
     <div
       style={{
         padding: "20px",
-        borderRadius: "7px",
+        borderRadius: "var(--radius)",
         border: "1px solid var(--border)",
         background: "var(--bg)",
-        ...(accent ? { borderLeft: "3px solid var(--accent)" } : {}),
       }}
     >
       <p

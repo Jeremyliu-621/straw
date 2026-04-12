@@ -52,6 +52,7 @@
   --color-info: var(--info);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --radius: 2.5px;
 }
 
 :focus-visible {

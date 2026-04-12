@@ -3,11 +3,9 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { ROLE_COMPANY, ROLE_AGENT_BUILDER, type UserRole } from "@/constants";
+import { ROLE_COMPANY, ROLE_AGENT_BUILDER } from "@/constants";
 import {
   LogOut,
-  Building2,
-  Bot,
   ClipboardList,
   User,
   Inbox,
@@ -43,18 +41,12 @@ function getInitials(name: string): string {
 const isDev = process.env.NODE_ENV === "development";
 
 export function Sidebar() {
-  const { data: session, update } = useSession();
+  const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
   const activeRole = session?.user?.role;
   const isCompany = activeRole === ROLE_COMPANY;
   const navItems = isCompany ? COMPANY_NAV : AGENT_NAV;
-
-  async function switchRole(newRole: UserRole) {
-    if (newRole === activeRole) return;
-    await update({ role: newRole });
-    router.push(newRole === ROLE_COMPANY ? "/dashboard/company" : "/dashboard/agent");
-  }
 
   return (
     <aside
@@ -75,81 +67,6 @@ export function Sidebar() {
         >
           <img src="/strawlonglogo.png" alt="Straw Logo" className="h-5 w-auto" />
         </Link>
-      </div>
-
-      {/* Role switcher */}
-      <div style={{ padding: "0 16px 8px" }}>
-        <p
-          className="font-sans"
-          style={{
-            fontSize: "11px",
-            fontWeight: 500,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            color: "var(--text-faint)",
-            marginBottom: "8px",
-            paddingLeft: "4px",
-          }}
-        >
-          Viewing as
-        </p>
-        <div
-          style={{
-            background: "var(--bg)",
-            border: "1px solid var(--border)",
-            borderRadius: "7px",
-            padding: "4px",
-            display: "flex",
-            gap: "4px",
-          }}
-        >
-          <button
-            onClick={() => switchRole(ROLE_COMPANY)}
-            className="flex-1 flex items-center justify-center gap-2 font-sans transition-all"
-            style={{
-              padding: "8px 12px",
-              borderRadius: "7px",
-              fontSize: "13px",
-              fontWeight: 500,
-              border: "none",
-              cursor: "pointer",
-              background: isCompany ? "var(--accent)" : "transparent",
-              color: isCompany ? "var(--inverse-text)" : "var(--text-muted)",
-            }}
-          >
-            <Building2 size={15} strokeWidth={1.8} />
-            Company
-          </button>
-          <button
-            onClick={() => switchRole(ROLE_AGENT_BUILDER)}
-            className="flex-1 flex items-center justify-center gap-2 font-sans transition-all"
-            style={{
-              padding: "8px 12px",
-              borderRadius: "7px",
-              fontSize: "13px",
-              fontWeight: 500,
-              border: "none",
-              cursor: "pointer",
-              background: !isCompany ? "var(--accent)" : "transparent",
-              color: !isCompany ? "var(--inverse-text)" : "var(--text-muted)",
-            }}
-          >
-            <Bot size={15} strokeWidth={1.8} />
-            Builder
-          </button>
-        </div>
-        {/* Role descriptor */}
-        <p
-          className="font-sans text-center"
-          style={{
-            fontSize: "11px",
-            color: "var(--text-faint)",
-            marginTop: "8px",
-            lineHeight: 1.4,
-          }}
-        >
-          {isCompany ? "Managing tasks & hiring agents" : "Competing & building solutions"}
-        </p>
       </div>
 
       {/* Navigation */}
@@ -225,9 +142,9 @@ export function Sidebar() {
                   borderRadius: "6px",
                   fontSize: "11px",
                   fontWeight: 500,
-                  background: "var(--bg)",
-                  color: "var(--text-muted)",
-                  border: "1px solid var(--border)",
+                  background: isCompany ? "var(--accent)" : "var(--bg)",
+                  color: isCompany ? "var(--inverse-text)" : "var(--text-muted)",
+                  border: isCompany ? "1px solid transparent" : "1px solid var(--border)",
                   cursor: "pointer",
                 }}
               >
@@ -247,9 +164,9 @@ export function Sidebar() {
                   borderRadius: "6px",
                   fontSize: "11px",
                   fontWeight: 500,
-                  background: "var(--bg)",
-                  color: "var(--text-muted)",
-                  border: "1px solid var(--border)",
+                  background: !isCompany ? "var(--accent)" : "var(--bg)",
+                  color: !isCompany ? "var(--inverse-text)" : "var(--text-muted)",
+                  border: !isCompany ? "1px solid transparent" : "1px solid var(--border)",
                   cursor: "pointer",
                 }}
               >

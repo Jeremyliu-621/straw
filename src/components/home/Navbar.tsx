@@ -60,7 +60,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/auth/signin"
-              className="text-[14px] font-medium bg-black text-white px-5 py-2.5 rounded-full hover:scale-105 transition-transform"
+              className="text-[14px] font-medium bg-black text-white px-5 py-2.5 rounded-[--radius] hover:bg-black/80 transition-colors"
             >
               Post a Task
             </Link>
@@ -102,7 +102,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-xl transition-colors"
+                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-[--radius] transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   {link.label}
@@ -111,14 +111,14 @@ export default function Navbar() {
               <div className="border-t border-gray-200 mt-4 pt-4 space-y-3">
                 <Link
                   href="/auth/signin"
-                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-xl transition-colors"
+                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-[--radius] transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   Log in
                 </Link>
                 <Link
                   href="/auth/signin"
-                  className="block text-center bg-black text-white px-6 py-3 rounded-full text-[15px] font-medium hover:scale-[1.02] transition-transform"
+                  className="block text-center bg-black text-white px-6 py-3 rounded-[--radius] text-[15px] font-medium hover:bg-black/80 transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   Post a Task

@@ -1,4 +1,4 @@
-import type { UserRole, TaskStatus, SubmissionStatus, DealType } from "@/constants";
+import type { UserRole, TaskStatus, SubmissionStatus, DealType, AuditAction, NotificationType, InvitationStatus } from "@/constants";
 
 // ── Base ─────────────────────────────────────────────────────
 
@@ -219,4 +219,87 @@ export interface DealInsert {
   deal_type: DealType;
   deal_value_cents: number;
   platform_fee_cents: number;
+}
+
+// ── Audit Log ───────────────────────────────────────────────
+
+export interface AuditLogEntry {
+  id: string;
+  user_id: string;
+  action: AuditAction;
+  resource_type: string;
+  resource_id: string;
+  metadata: Record<string, unknown>;
+  ip_address: string | null;
+  created_at: string;
+}
+
+export interface AuditLogInsert {
+  user_id: string;
+  action: AuditAction;
+  resource_type: string;
+  resource_id: string;
+  metadata?: Record<string, unknown>;
+  ip_address?: string | null;
+}
+
+// ── Notifications ───────────────────────────────────────────
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: NotificationType;
+  title: string;
+  body: string;
+  resource_type: string | null;
+  resource_id: string | null;
+  metadata: Record<string, unknown>;
+  read_at: string | null;
+  dismissed_at: string | null;
+  created_at: string;
+}
+
+export interface NotificationInsert {
+  user_id: string;
+  type: NotificationType;
+  title: string;
+  body: string;
+  resource_type?: string | null;
+  resource_id?: string | null;
+  metadata?: Record<string, unknown>;
+}
+
+export interface NotificationPreference {
+  id: string;
+  user_id: string;
+  notification_type: NotificationType;
+  in_app_enabled: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface NotificationPreferenceInsert {
+  user_id: string;
+  notification_type: NotificationType;
+  in_app_enabled: boolean;
+}
+
+// ── Task Invitations ────────────────────────────────────────
+
+export interface TaskInvitation {
+  id: string;
+  task_id: string;
+  company_id: string;
+  agent_id: string;
+  message: string | null;
+  status: InvitationStatus;
+  responded_at: string | null;
+  created_at: string;
+}
+
+export interface TaskInvitationInsert {
+  task_id: string;
+  company_id: string;
+  agent_id: string;
+  message?: string | null;
 }
