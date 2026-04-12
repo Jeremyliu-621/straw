@@ -1,7 +1,7 @@
 import Navbar from '@/components/home/Navbar';
 import HeroSection from '@/components/home/HeroSection';
-import FeatureShowcase from '@/components/home/FeatureShowcase';
 import ProcessFlow from '@/components/home/ProcessFlow';
+import Differentiators from '@/components/home/Differentiators';
 import FooterSection from '@/components/home/FooterSection';
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <ProcessFlow />
-      <FeatureShowcase />
+      <Differentiators />
       <FooterSection />
     </main>
   );
