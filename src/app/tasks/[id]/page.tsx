@@ -128,7 +128,7 @@ export default function TaskDetailPage() {
               style={{
                 height: "24px",
                 background: "var(--bg-subtle)",
-                borderRadius: "6px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -226,7 +226,7 @@ export default function TaskDetailPage() {
             style={{
               padding: "14px 16px",
               background: "var(--bg-subtle)",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               border: "1px solid var(--border)",
             }}
           >
@@ -248,7 +248,7 @@ export default function TaskDetailPage() {
             style={{
               padding: "14px 16px",
               background: "var(--bg-subtle)",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               border: "1px solid var(--border)",
             }}
           >
@@ -336,7 +336,7 @@ export default function TaskDetailPage() {
             className="font-sans transition-colors disabled:opacity-40"
             style={{
               padding: "12px 24px",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               fontSize: "14px",
               fontWeight: 500,
               background: "var(--accent, var(--text))",
@@ -354,7 +354,7 @@ export default function TaskDetailPage() {
             className="font-sans transition-colors disabled:opacity-40"
             style={{
               padding: "12px 24px",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               fontSize: "14px",
               fontWeight: 500,
               background: "var(--accent, var(--text))",
@@ -371,7 +371,7 @@ export default function TaskDetailPage() {
             style={{
               padding: "12px 16px",
               background: "var(--accent-subtle, var(--bg-subtle))",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               border: "1px solid var(--accent-border, var(--border))",
             }}
           >
@@ -394,7 +394,7 @@ export default function TaskDetailPage() {
               className="font-sans inline-flex items-center gap-2 transition-colors"
               style={{
                 padding: "12px 24px",
-                borderRadius: "8px",
+                borderRadius: "var(--radius)",
                 fontSize: "14px",
                 fontWeight: 500,
                 background: "var(--accent, var(--text))",
@@ -422,7 +422,7 @@ export default function TaskDetailPage() {
               className="font-sans inline-flex items-center gap-2 transition-colors"
               style={{
                 padding: "12px 24px",
-                borderRadius: "8px",
+                borderRadius: "var(--radius)",
                 fontSize: "14px",
                 fontWeight: 500,
                 background: "transparent",
@@ -491,7 +491,7 @@ function EvalWeight({ label, weight }: { label: string; weight: number }) {
       style={{
         padding: "16px",
         border: "1px solid var(--border)",
-        borderRadius: "8px",
+        borderRadius: "var(--radius)",
       }}
     >
       <span
@@ -512,7 +512,7 @@ function EvalWeight({ label, weight }: { label: string; weight: number }) {
           marginTop: "8px",
           height: "4px",
           background: "var(--border)",
-          borderRadius: "2px",
+          borderRadius: "var(--radius)",
         }}
       >
         <div
@@ -520,7 +520,7 @@ function EvalWeight({ label, weight }: { label: string; weight: number }) {
             height: "4px",
             background: "var(--accent, var(--text))",
             width: `${weight}%`,
-            borderRadius: "2px",
+            borderRadius: "var(--radius)",
           }}
         />
       </div>

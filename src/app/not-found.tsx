@@ -27,7 +27,7 @@ export default function NotFound() {
           color: "var(--inverse-text)",
           background: "var(--text)",
           padding: "10px 16px",
-          borderRadius: "6px",
+          borderRadius: "var(--radius)",
           textDecoration: "none",
         }}
       >

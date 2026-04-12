@@ -20,7 +20,7 @@ export function TourPanel({ step, stepNumber, totalSteps }: TourPanelProps) {
       style={{
         background: "var(--bg)",
         border: "1px solid var(--border)",
-        borderRadius: "7px",
+        borderRadius: "var(--radius)",
         boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
         padding: "24px",
         position: "relative",
@@ -36,7 +36,7 @@ export function TourPanel({ step, stepNumber, totalSteps }: TourPanelProps) {
           right: 0,
           height: "2px",
           background: "var(--border)",
-          borderRadius: "12px 12px 0 0",
+          borderRadius: "var(--radius) var(--radius) 0 0",
           overflow: "hidden",
         }}
       >
@@ -152,7 +152,7 @@ export function TourPanel({ step, stepNumber, totalSteps }: TourPanelProps) {
             className="flex items-center gap-1.5 font-sans transition-colors"
             style={{
               padding: "6px 14px",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               fontSize: "13px",
               fontWeight: 500,
               background: "var(--text)",

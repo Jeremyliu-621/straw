@@ -36,8 +36,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 h-[72px] border-b border-gray-200 ${scrolled ? 'bg-[#FDFCFC]/90 backdrop-blur-md shadow-sm' : 'bg-[#FDFCFC]'
-          }`}
+        className="fixed top-0 w-full z-50 h-[52px] border-b border-gray-200 bg-[#FDFCFC]"
       >
         <div className="w-full max-w-[1400px] h-full mx-auto border-x border-gray-200 flex items-center justify-between px-6 sm:px-10">
           <div className="flex items-center gap-2">
@@ -60,7 +59,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/auth/signin"
-              className="text-[14px] font-medium bg-black text-white px-5 py-2.5 rounded-[--radius] hover:bg-black/80 transition-colors"
+              className="text-[14px] font-medium border border-gray-300 text-black px-5 py-1.5 rounded-[var(--radius)] hover:bg-black/5 transition-colors"
             >
               Post a Task
             </Link>
@@ -96,13 +95,13 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
           />
           {/* Menu Panel */}
-          <div className="absolute top-[72px] left-0 right-0 bg-[#FDFCFC] border-b border-gray-200 shadow-lg">
+          <div className="absolute top-[52px] left-0 right-0 bg-[#FDFCFC] border-b border-gray-200 shadow-lg">
             <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 px-6 py-6 space-y-1">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-[--radius] transition-colors"
+                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-[var(--radius)] transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   {link.label}
@@ -111,14 +110,14 @@ export default function Navbar() {
               <div className="border-t border-gray-200 mt-4 pt-4 space-y-3">
                 <Link
                   href="/auth/signin"
-                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-[--radius] transition-colors"
+                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-[var(--radius)] transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   Log in
                 </Link>
                 <Link
                   href="/auth/signin"
-                  className="block text-center bg-black text-white px-6 py-3 rounded-[--radius] text-[15px] font-medium hover:bg-black/80 transition-colors"
+                  className="block text-center bg-black text-white px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium hover:bg-black/80 transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   Post a Task

@@ -88,25 +88,6 @@ export default function AgentDashboard() {
             Find tasks, compete, and build your reputation.
           </p>
         </div>
-        <Link
-          href="/agents/profile"
-          className="flex items-center gap-2 font-sans transition-colors"
-          style={{
-            padding: "14px 28px",
-            borderRadius: "8px",
-            fontSize: "16px",
-            fontWeight: 500,
-            background: "var(--accent)",
-            color: "white",
-            textDecoration: "none",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-            flexShrink: 0,
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
-          onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
-        >
-          Edit Profile
-        </Link>
       </div>
 
       {/* Stats cards */}
@@ -161,7 +142,7 @@ export default function AgentDashboard() {
               style={{
                 height: "56px",
                 background: "var(--bg-subtle)",
-                borderRadius: "6px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -340,7 +321,7 @@ export default function AgentDashboard() {
                     alignItems: "center",
                     gap: "4px",
                     padding: "2px 8px",
-                    borderRadius: "4px",
+                    borderRadius: "var(--radius)",
                     fontSize: "11px",
                     fontWeight: 500,
                     background: sub.mode === "api" ? "var(--accent-subtle, #f0f0ff)" : "var(--bg-subtle)",

@@ -45,7 +45,7 @@ export function Step1Welcome({ displayName, onDisplayNameChange }: Step1WelcomeP
           className="w-full font-sans outline-none"
           style={{
             padding: "9px 12px",
-            borderRadius: "6px",
+            borderRadius: "var(--radius)",
             fontSize: "14px",
             color: "var(--text)",
             border: "1px solid var(--border)",

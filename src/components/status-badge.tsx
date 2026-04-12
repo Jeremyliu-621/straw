@@ -23,7 +23,7 @@ export function StatusBadge({ status }: { status: string }) {
         letterSpacing: "0.06em",
         textTransform: "uppercase" as const,
         padding: "3px 8px",
-        borderRadius: "4px",
+        borderRadius: "var(--radius)",
         background: style.bg,
         color: style.text,
         border: `1px solid ${style.border}`,

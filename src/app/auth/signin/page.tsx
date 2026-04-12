@@ -39,7 +39,7 @@ function RoleCard({ title, subtitle, role, devEmail }: RoleCardProps) {
       style={{
         flex: 1,
         border: "1px solid var(--border)",
-        borderRadius: "7px",
+        borderRadius: "var(--radius)",
         padding: "28px 24px",
         display: "flex",
         flexDirection: "column",
@@ -121,7 +121,7 @@ function RoleCard({ title, subtitle, role, devEmail }: RoleCardProps) {
           className="font-sans transition-colors"
           style={{
             padding: "8px 12px",
-            borderRadius: "8px",
+            borderRadius: "var(--radius)",
             fontSize: "12px",
             fontWeight: 500,
             background: "transparent",
@@ -154,7 +154,7 @@ export default function SignInPage() {
         style={{
           width: "100%",
           maxWidth: "720px",
-          borderRadius: "7px",
+          borderRadius: "var(--radius)",
           border: "1px solid var(--border)",
           background: "var(--bg)",
           padding: "48px 40px 40px",

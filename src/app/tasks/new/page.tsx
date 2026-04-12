@@ -430,7 +430,7 @@ export default function NewTaskPage() {
                     className="w-32 font-mono outline-none"
                     style={{
                       padding: "9px 12px",
-                      borderRadius: "6px",
+                      borderRadius: "var(--radius)",
                       fontSize: "14px",
                       color: "var(--text)",
                       border: "1px solid var(--border)",
@@ -453,7 +453,7 @@ export default function NewTaskPage() {
                   className="font-sans outline-none"
                   style={{
                     padding: "9px 12px",
-                    borderRadius: "6px",
+                    borderRadius: "var(--radius)",
                     fontSize: "14px",
                     color: "var(--text)",
                     border: "1px solid var(--border)",
@@ -537,7 +537,7 @@ export default function NewTaskPage() {
                       className="w-16 text-center font-mono outline-none"
                       style={{
                         padding: "6px 8px",
-                        borderRadius: "6px",
+                        borderRadius: "var(--radius)",
                         fontSize: "14px",
                         color: "var(--text)",
                         border: "1px solid var(--border)",
@@ -729,7 +729,7 @@ export default function NewTaskPage() {
                       className="font-sans flex items-center gap-2 transition-colors"
                       style={{
                         padding: "7px 14px",
-                        borderRadius: "8px",
+                        borderRadius: "var(--radius)",
                         fontSize: "13px",
                         fontWeight: 500,
                         color: "var(--text-muted)",
@@ -786,7 +786,7 @@ export default function NewTaskPage() {
                     className="font-sans transition-colors"
                     style={{
                       padding: "10px 20px",
-                      borderRadius: "8px",
+                      borderRadius: "var(--radius)",
                       fontSize: "14px",
                       fontWeight: 500,
                       background: "var(--text)",
@@ -871,7 +871,7 @@ export default function NewTaskPage() {
                       className="w-full resize-none font-sans outline-none"
                       style={{
                         padding: "9px 12px",
-                        borderRadius: "6px",
+                        borderRadius: "var(--radius)",
                         fontSize: "13px",
                         lineHeight: 1.6,
                         color: "var(--text)",
@@ -884,7 +884,7 @@ export default function NewTaskPage() {
                       className="mt-2 font-sans flex items-center gap-1 transition-colors"
                       style={{
                         padding: "5px 10px",
-                        borderRadius: "6px",
+                        borderRadius: "var(--radius)",
                         fontSize: "12px",
                         fontWeight: 500,
                         color: "var(--inverse-text)",
@@ -992,7 +992,7 @@ export default function NewTaskPage() {
                         className="font-sans"
                         style={{
                           padding: "6px 12px",
-                          borderRadius: "6px",
+                          borderRadius: "var(--radius)",
                           fontSize: "12px",
                           color: "var(--text)",
                           background: "var(--bg-subtle)",
@@ -1010,7 +1010,7 @@ export default function NewTaskPage() {
                               style={{
                                 width: "16px",
                                 height: "16px",
-                                borderRadius: "2px",
+                                borderRadius: "var(--radius)",
                                 objectFit: "cover",
                               }}
                             />
@@ -1107,7 +1107,7 @@ export default function NewTaskPage() {
                 className="font-sans transition-colors"
                 style={{
                   padding: "9px 18px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius)",
                   fontSize: "14px",
                   fontWeight: 500,
                   background: "transparent",
@@ -1136,7 +1136,7 @@ export default function NewTaskPage() {
                 className="font-sans transition-colors"
                 style={{
                   padding: "9px 18px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius)",
                   fontSize: "14px",
                   fontWeight: 500,
                   background: "transparent",
@@ -1155,7 +1155,7 @@ export default function NewTaskPage() {
                 className="font-sans transition-colors disabled:opacity-40"
                 style={{
                   padding: "9px 18px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius)",
                   fontSize: "14px",
                   fontWeight: 500,
                   background: "var(--text)",
@@ -1173,7 +1173,7 @@ export default function NewTaskPage() {
                 className="font-sans transition-colors disabled:opacity-40"
                 style={{
                   padding: "9px 18px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius)",
                   fontSize: "14px",
                   fontWeight: 500,
                   background: "var(--text)",
@@ -1226,7 +1226,7 @@ function Field({
         className="w-full font-sans outline-none"
         style={{
           padding: "9px 12px",
-          borderRadius: "6px",
+          borderRadius: "var(--radius)",
           fontSize: "14px",
           color: "var(--text)",
           border: "1px solid var(--border)",
@@ -1277,7 +1277,7 @@ function TextareaField({
         className="w-full resize-none font-sans outline-none"
         style={{
           padding: "9px 12px",
-          borderRadius: "6px",
+          borderRadius: "var(--radius)",
           fontSize: "14px",
           color: "var(--text)",
           border: "1px solid var(--border)",
@@ -1314,7 +1314,7 @@ function RefinedField({
         className="w-full resize-y font-sans outline-none"
         style={{
           padding: "12px 14px",
-          borderRadius: "8px",
+          borderRadius: "var(--radius)",
           fontSize: "13px",
           lineHeight: 1.7,
           color: "var(--text)",
@@ -1388,7 +1388,7 @@ function CategoryPicker({
           className="mt-2 font-sans outline-none"
           style={{
             padding: "8px 12px",
-            borderRadius: "6px",
+            borderRadius: "var(--radius)",
             fontSize: "14px",
             color: "var(--text)",
             border: "1px solid var(--border)",
@@ -1468,7 +1468,7 @@ function EditSectionButton({ onClick }: { onClick: () => void }) {
         top: "16px",
         right: "16px",
         padding: "4px 10px",
-        borderRadius: "6px",
+        borderRadius: "var(--radius)",
         fontSize: "12px",
         fontWeight: 500,
         color: "var(--text-muted)",

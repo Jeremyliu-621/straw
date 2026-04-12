@@ -51,7 +51,7 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
             style={{
               padding: "16px",
               border: "1px solid var(--border)",
-              borderRadius: "6px",
+              borderRadius: "var(--radius)",
             }}
           >
             <div className="flex items-start gap-3">
@@ -65,7 +65,7 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
                     className="flex-1 font-sans outline-none"
                     style={{
                       padding: "8px 12px",
-                      borderRadius: "6px",
+                      borderRadius: "var(--radius)",
                       fontSize: "15px",
                       fontWeight: 500,
                       color: "var(--text)",
@@ -87,7 +87,7 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
                       className="w-16 text-right font-mono outline-none"
                       style={{
                         padding: "8px 8px",
-                        borderRadius: "6px",
+                        borderRadius: "var(--radius)",
                         fontSize: "14px",
                         color: "var(--text)",
                         border: "1px solid var(--border)",
@@ -107,7 +107,7 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
                   className="w-full resize-none font-sans outline-none"
                   style={{
                     padding: "8px 12px",
-                    borderRadius: "6px",
+                    borderRadius: "var(--radius)",
                     fontSize: "13px",
                     color: "var(--text)",
                     border: "1px solid var(--border)",
@@ -143,7 +143,7 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
           className="mt-3 flex items-center gap-1 font-sans transition-colors"
           style={{
             padding: "8px 12px",
-            borderRadius: "6px",
+            borderRadius: "var(--radius)",
             fontSize: "13px",
             fontWeight: 500,
             color: "var(--text-muted)",

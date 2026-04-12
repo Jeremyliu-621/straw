@@ -127,7 +127,7 @@ export default function ResultsPage() {
               style={{
                 height: "24px",
                 background: "var(--bg-subtle)",
-                borderRadius: "6px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -206,7 +206,7 @@ export default function ResultsPage() {
             padding: "24px",
             border: "1px solid var(--border)",
             borderLeft: "3px solid var(--accent, var(--text))",
-            borderRadius: "7px",
+            borderRadius: "var(--radius)",
           }}
         >
           <div className="flex items-center gap-2" style={{ marginBottom: "16px" }}>
@@ -311,7 +311,7 @@ export default function ResultsPage() {
           <div
             style={{
               borderTop: "1px solid var(--border)",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               overflow: "hidden",
               border: "1px solid var(--border)",
             }}
@@ -460,7 +460,7 @@ export default function ResultsPage() {
                 style={{
                   padding: "16px",
                   border: "1px solid var(--border)",
-                  borderRadius: "7px",
+                  borderRadius: "var(--radius)",
                 }}
               >
                 <div className="flex items-center justify-between">
@@ -501,7 +501,7 @@ export default function ResultsPage() {
                     marginTop: "10px",
                     height: "6px",
                     background: "var(--border)",
-                    borderRadius: "3px",
+                    borderRadius: "var(--radius)",
                   }}
                 >
                   <div
@@ -509,7 +509,7 @@ export default function ResultsPage() {
                       height: "6px",
                       background: "var(--accent, var(--text))",
                       width: `${Math.min(dim.score, 100)}%`,
-                      borderRadius: "3px",
+                      borderRadius: "var(--radius)",
                       transition: "width 300ms ease",
                     }}
                   />
@@ -540,7 +540,7 @@ export default function ResultsPage() {
             marginTop: "48px",
             padding: "24px",
             border: "1px solid var(--border)",
-            borderRadius: "7px",
+            borderRadius: "var(--radius)",
           }}
         >
           <p
@@ -599,7 +599,7 @@ export default function ResultsPage() {
                 style={{
                   border: "1px solid var(--border)",
                   padding: "12px 14px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius)",
                   fontSize: "14px",
                   color: "var(--text)",
                   background: "var(--bg)",
@@ -620,7 +620,7 @@ export default function ResultsPage() {
                 className="font-sans mt-3 transition-colors disabled:opacity-40"
                 style={{
                   padding: "10px 20px",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius)",
                   fontSize: "14px",
                   fontWeight: 500,
                   background: "var(--accent, var(--text))",

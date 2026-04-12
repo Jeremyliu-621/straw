@@ -186,7 +186,7 @@ export function TextareaWithAttachments({
       {/* Container that wraps files + textarea + button */}
       <div
         style={{
-          borderRadius: "7px",
+          borderRadius: "var(--radius)",
           border: "1px solid var(--border)",
           background: "var(--bg)",
           position: "relative",
@@ -210,7 +210,7 @@ export function TextareaWithAttachments({
                       position: "relative",
                       width: "72px",
                       height: "72px",
-                      borderRadius: "8px",
+                      borderRadius: "var(--radius)",
                       overflow: "hidden",
                       border: "1px solid var(--border)",
                       cursor: "pointer",
@@ -260,7 +260,7 @@ export function TextareaWithAttachments({
                       alignItems: "center",
                       gap: "6px",
                       padding: "6px 10px",
-                      borderRadius: "8px",
+                      borderRadius: "var(--radius)",
                       border: "1px solid var(--border)",
                       background: "var(--bg-subtle)",
                       cursor: "pointer",
@@ -340,7 +340,7 @@ export function TextareaWithAttachments({
                       className="w-full font-sans outline-none"
                       style={{
                         padding: "7px 10px",
-                        borderRadius: "8px",
+                        borderRadius: "var(--radius)",
                         fontSize: "12px",
                         color: "var(--text)",
                         border: "1px solid var(--border)",
@@ -420,7 +420,7 @@ export function TextareaWithAttachments({
                 minWidth: "200px",
                 background: "var(--bg)",
                 border: "1px solid var(--border)",
-                borderRadius: "7px",
+                borderRadius: "var(--radius)",
                 boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
                 padding: "6px",
                 zIndex: 50,
@@ -442,7 +442,7 @@ export function TextareaWithAttachments({
                       gap: "10px",
                       width: "100%",
                       padding: "9px 12px",
-                      borderRadius: "8px",
+                      borderRadius: "var(--radius)",
                       border: "none",
                       background: "transparent",
                       cursor: opt.enabled ? "pointer" : "default",
@@ -473,7 +473,7 @@ export function TextareaWithAttachments({
                           color: "var(--text-faint)",
                           background: "var(--bg-subtle)",
                           padding: "2px 6px",
-                          borderRadius: "4px",
+                          borderRadius: "var(--radius)",
                         }}
                       >
                         Soon

@@ -116,7 +116,7 @@ export function Leaderboard({ taskId }: { taskId: string }) {
       <div
         style={{
           border: "1px solid var(--border)",
-          borderRadius: "7px",
+          borderRadius: "var(--radius)",
           overflow: "hidden",
         }}
       >
@@ -247,7 +247,7 @@ function LeaderboardRow({
             height: "6px",
             background: "var(--border)",
             width: "100%",
-            borderRadius: "3px",
+            borderRadius: "var(--radius)",
           }}
         >
           <div
@@ -255,7 +255,7 @@ function LeaderboardRow({
               height: "6px",
               background: "var(--accent, var(--text))",
               width: `${Math.min(entry.finalScore, 100)}%`,
-              borderRadius: "3px",
+              borderRadius: "var(--radius)",
               transition: "width 300ms ease",
             }}
           />
@@ -284,7 +284,7 @@ function LeaderboardSkeleton() {
       <div
         style={{
           border: "1px solid var(--border)",
-          borderRadius: "7px",
+          borderRadius: "var(--radius)",
           overflow: "hidden",
         }}
       >
@@ -305,7 +305,7 @@ function LeaderboardSkeleton() {
                 height: "16px",
                 width: `${60 + i * 10}%`,
                 background: "var(--bg-subtle)",
-                borderRadius: "4px",
+                borderRadius: "var(--radius)",
               }}
             />
           </div>

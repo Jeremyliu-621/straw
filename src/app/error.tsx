@@ -32,7 +32,7 @@ export default function Error({
           color: "var(--inverse-text)",
           background: "var(--text)",
           padding: "10px 16px",
-          borderRadius: "6px",
+          borderRadius: "var(--radius)",
           border: "none",
           cursor: "pointer",
         }}

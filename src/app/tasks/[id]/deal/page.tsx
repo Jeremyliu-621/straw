@@ -105,7 +105,7 @@ export default function DealPage() {
               style={{
                 height: "24px",
                 background: "var(--bg-subtle)",
-                borderRadius: "6px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -199,7 +199,7 @@ export default function DealPage() {
           style={{
             padding: "20px",
             border: "1px solid var(--border)",
-            borderRadius: "7px",
+            borderRadius: "var(--radius)",
           }}
         >
           <div className="space-y-4">
@@ -224,7 +224,7 @@ export default function DealPage() {
           className="font-sans mt-6 transition-colors"
           style={{
             padding: "12px 24px",
-            borderRadius: "8px",
+            borderRadius: "var(--radius)",
             fontSize: "14px",
             fontWeight: 500,
             background: "var(--accent, var(--text))",
@@ -319,7 +319,7 @@ export default function DealPage() {
             style={{
               border: "1px solid var(--border)",
               padding: "10px 12px",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               fontSize: "14px",
               color: "var(--text)",
               background: "var(--bg)",
@@ -447,7 +447,7 @@ export default function DealPage() {
               style={{
                 border: "1px solid var(--border)",
                 padding: "10px 12px 10px 28px",
-                borderRadius: "8px",
+                borderRadius: "var(--radius)",
                 fontSize: "14px",
                 color: "var(--text)",
                 background: "var(--bg)",
@@ -491,7 +491,7 @@ export default function DealPage() {
           className="font-sans transition-colors disabled:opacity-40"
           style={{
             padding: "12px 24px",
-            borderRadius: "8px",
+            borderRadius: "var(--radius)",
             fontSize: "14px",
             fontWeight: 500,
             background: "var(--accent, var(--text))",
@@ -526,7 +526,7 @@ function DealTypeOption({
       className="font-sans flex-1 text-left transition-colors"
       style={{
         padding: "16px",
-        borderRadius: "7px",
+        borderRadius: "var(--radius)",
         border: selected
           ? "2px solid var(--accent, var(--text))"
           : "1px solid var(--border)",

@@ -5,7 +5,7 @@ export default function FooterSection() {
 
   return (
     <footer className="w-full bg-[#FDFCFC]">
-      <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 pt-24 pb-12 px-6 md:px-12 lg:px-24">
+      <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 pt-24 pb-12 px-6 sm:px-10">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-20 text-sm">
           {/* Logo Column */}
           <div className="col-span-2 lg:col-span-2 space-y-4">

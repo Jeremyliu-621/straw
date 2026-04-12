@@ -7,7 +7,7 @@ export default function TrustedBySection() {
 
   return (
     <section className="w-full bg-[#FDFCFC]">
-      <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 py-16 px-6 text-center">
+      <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 py-16 px-6 sm:px-10 text-center">
       <h3 className="text-xs font-semibold tracking-widest text-gray-400 mb-8 uppercase text-center">
         Trusted by the world's most innovative engineering teams
       </h3>

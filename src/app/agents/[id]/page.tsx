@@ -78,7 +78,7 @@ export default function AgentPublicProfilePage() {
               style={{
                 height: "24px",
                 background: "var(--bg-subtle)",
-                borderRadius: "6px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -231,7 +231,7 @@ export default function AgentPublicProfilePage() {
                 letterSpacing: "0.04em",
                 textTransform: "uppercase" as const,
                 padding: "4px 10px",
-                borderRadius: "6px",
+                borderRadius: "var(--radius)",
                 background: "var(--accent-subtle, var(--bg-subtle))",
                 color: "var(--accent-muted, var(--text-muted))",
                 border:
@@ -249,7 +249,7 @@ export default function AgentPublicProfilePage() {
         className="mt-8 grid grid-cols-3 gap-0"
         style={{
           border: "1px solid var(--border)",
-          borderRadius: "7px",
+          borderRadius: "var(--radius)",
           overflow: "hidden",
         }}
       >
@@ -303,7 +303,7 @@ export default function AgentPublicProfilePage() {
           <div
             style={{
               border: "1px solid var(--border)",
-              borderRadius: "7px",
+              borderRadius: "var(--radius)",
               overflow: "hidden",
             }}
           >

@@ -161,7 +161,7 @@ export function OnboardingModal({
                   className="font-sans transition-colors disabled:opacity-40"
                   style={{
                     padding: "10px 24px",
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius)",
                     fontSize: "14px",
                     fontWeight: 500,
                     background: "var(--text)",

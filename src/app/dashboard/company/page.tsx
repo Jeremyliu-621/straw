@@ -83,7 +83,7 @@ export default function CompanyDashboard() {
           className="flex items-center gap-2 font-sans transition-colors"
           style={{
             padding: "14px 28px",
-            borderRadius: "8px",
+            borderRadius: "var(--radius)",
             fontSize: "16px",
             fontWeight: 500,
             background: "var(--accent)",
@@ -152,7 +152,7 @@ export default function CompanyDashboard() {
               style={{
                 height: "56px",
                 background: "var(--bg-subtle)",
-                borderRadius: "6px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -184,7 +184,7 @@ export default function CompanyDashboard() {
             className="flex items-center gap-2 font-sans transition-colors mt-6"
             style={{
               padding: "12px 24px",
-              borderRadius: "8px",
+              borderRadius: "var(--radius)",
               fontSize: "14px",
               fontWeight: 500,
               background: "var(--accent)",
@@ -220,7 +220,7 @@ export default function CompanyDashboard() {
               className="font-sans"
               style={{
                 padding: "10px 16px",
-                borderRadius: "8px",
+                borderRadius: "var(--radius)",
                 fontSize: "13px",
                 color: "var(--accent)",
                 background: "var(--accent-subtle)",

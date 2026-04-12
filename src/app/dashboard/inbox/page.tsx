@@ -128,7 +128,7 @@ export default function InboxPage() {
             height: "28px",
             width: "80px",
             background: "var(--bg-subtle)",
-            borderRadius: "6px",
+            borderRadius: "var(--radius)",
             marginBottom: "32px",
           }}
         />
@@ -140,7 +140,7 @@ export default function InboxPage() {
               style={{
                 height: "72px",
                 background: "var(--bg-subtle)",
-                borderRadius: "7px",
+                borderRadius: "var(--radius)",
               }}
             />
           ))}
@@ -237,7 +237,7 @@ export default function InboxPage() {
           className="mt-6 flex"
           style={{
             border: "1px solid var(--border)",
-            borderRadius: "7px",
+            borderRadius: "var(--radius)",
             height: "calc(100vh - 180px)",
             minHeight: "400px",
             overflow: "hidden",
@@ -484,7 +484,7 @@ export default function InboxPage() {
                               width: `${40 + i * 10}%`,
                               height: "48px",
                               background: "var(--bg-subtle)",
-                              borderRadius: "7px",
+                              borderRadius: "var(--radius)",
                             }}
                           />
                         </div>
@@ -508,7 +508,7 @@ export default function InboxPage() {
                             style={{
                               maxWidth: "70%",
                               padding: "10px 14px",
-                              borderRadius: "7px",
+                              borderRadius: "var(--radius)",
                               background: isMine
                                 ? "var(--accent, var(--text))"
                                 : "var(--bg-subtle)",
@@ -573,7 +573,7 @@ export default function InboxPage() {
                     style={{
                       border: "1px solid var(--border)",
                       padding: "10px 14px",
-                      borderRadius: "8px",
+                      borderRadius: "var(--radius)",
                       fontSize: "14px",
                       color: "var(--text)",
                       background: "var(--bg)",
@@ -593,7 +593,7 @@ export default function InboxPage() {
                     className="font-sans transition-colors disabled:opacity-40"
                     style={{
                       padding: "10px 20px",
-                      borderRadius: "8px",
+                      borderRadius: "var(--radius)",
                       fontSize: "14px",
                       fontWeight: 500,
                       background: "var(--accent, var(--text))",
