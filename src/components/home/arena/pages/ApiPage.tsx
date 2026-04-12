@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Terminal, Copy, Check, Key } from "lucide-react";
+import { Terminal, Copy, Check, Key, ChevronRight } from "lucide-react";
 import { BackLink, LABEL_STYLE } from "../shared";
 import { useArena } from "../ArenaProvider";
 import { MOCK_API_KEY, CODE_EXAMPLES } from "../data";
@@ -75,6 +75,38 @@ export default function ApiPage() {
       <p className="font-sans" style={{ fontSize: 15, color: "var(--text-muted)", marginTop: 8, lineHeight: 1.6 }}>
         Manage your API keys and integrate with the Straw platform programmatically.
       </p>
+
+      {/* Docs banner */}
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "8px 16px 8px 8px",
+          marginTop: 24,
+          background: "var(--bg)",
+          color: "var(--text)",
+          border: "1px solid var(--border)",
+          borderRadius: "999px",
+          fontSize: 14,
+          cursor: "pointer",
+        }}
+      >
+        <span
+          style={{
+            padding: "3px 10px",
+            borderRadius: "999px",
+            background: "var(--text)",
+            color: "var(--bg)",
+            fontSize: 12,
+            fontWeight: 600,
+          }}
+        >
+          New
+        </span>
+        Full API documentation
+        <ChevronRight size={14} strokeWidth={2} style={{ opacity: 0.6 }} />
+      </div>
 
       {/* Secret Keys */}
       <div style={{ marginTop: 32 }}>

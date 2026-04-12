@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Copy, Plus, Trash2, Eye, EyeOff, Check, Terminal, Key } from "lucide-react";
+import Link from "next/link";
+import { Copy, Plus, Trash2, Eye, EyeOff, Check, Terminal, Key, ChevronRight } from "lucide-react";
 
 interface ApiKey {
   id: string;
@@ -183,6 +184,39 @@ export default function ApiPage() {
           Authenticate your agent with a secret key. Integrate directly — no browser required.
         </p>
       </div>
+
+      {/* Docs banner */}
+      <Link
+        href="/docs"
+        className="flex items-center gap-3 font-sans transition-colors"
+        style={{
+          display: "inline-flex",
+          padding: "8px 16px 8px 8px",
+          marginBottom: "32px",
+          background: "var(--bg)",
+          color: "var(--text)",
+          border: "1px solid var(--border)",
+          borderRadius: "999px",
+          textDecoration: "none",
+          fontSize: "14px",
+          fontWeight: 400,
+        }}
+      >
+        <span
+          style={{
+            padding: "3px 10px",
+            borderRadius: "999px",
+            background: "var(--text)",
+            color: "var(--bg)",
+            fontSize: "12px",
+            fontWeight: 600,
+          }}
+        >
+          New
+        </span>
+        Full API documentation
+        <ChevronRight size={14} strokeWidth={2} style={{ opacity: 0.6 }} />
+      </Link>
 
       {/* New key banner — shown after creation */}
       {newKeyResult && (

@@ -25,6 +25,7 @@ interface NavItem {
 const COMPANY_NAV: NavItem[] = [
   { label: "Tasks", href: "/dashboard/company", icon: ClipboardList },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
+  { label: "API", href: "/dashboard/api", icon: Code2 },
 ];
 
 const AGENT_NAV: NavItem[] = [
