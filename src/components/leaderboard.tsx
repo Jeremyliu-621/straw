@@ -92,8 +92,11 @@ export function Leaderboard({ taskId }: { taskId: string }) {
     return <LeaderboardEmpty />;
   }
 
-  // Container/hybrid modes don't have separate test/llm scores — only the final container score
-  const showSubScores = !data.evalMode || data.evalMode === "llm";
+  // Only show Test/LLM sub-score columns when they add information:
+  // - Container/hybrid modes: no sub-scores (container score IS the score)
+  // - LLM mode with test_weight=0: sub-scores are redundant (llm = final, test = null)
+  const hasTestScores = data.entries.some((e) => e.testScore !== null);
+  const showSubScores = (!data.evalMode || data.evalMode === "llm") && hasTestScores;
 
   return (
     <div>
@@ -250,38 +253,18 @@ function LeaderboardRow({
           {entry.llmScore !== null ? entry.llmScore.toFixed(1) : "\u2014"}
         </span>
       )}
-      <div style={{ textAlign: "right", paddingRight: "12px" }}>
-        <span
-          className="font-mono"
-          style={{
-            fontSize: isWinner ? "18px" : "14px",
-            fontWeight: 600,
-            color: "var(--text)",
-          }}
-        >
-          {entry.finalScore.toFixed(1)}
-        </span>
-        {/* Score bar */}
-        <div
-          style={{
-            marginTop: "3px",
-            height: "6px",
-            background: "var(--border)",
-            width: "100%",
-            borderRadius: "var(--radius)",
-          }}
-        >
-          <div
-            style={{
-              height: "6px",
-              background: "var(--accent, var(--text))",
-              width: `${Math.min(entry.finalScore, 100)}%`,
-              borderRadius: "var(--radius)",
-              transition: "width 300ms ease",
-            }}
-          />
-        </div>
-      </div>
+      <span
+        className="font-mono"
+        style={{
+          textAlign: "right",
+          paddingRight: "12px",
+          fontSize: isWinner ? "18px" : "14px",
+          fontWeight: 600,
+          color: "var(--text)",
+        }}
+      >
+        {entry.finalScore.toFixed(1)}
+      </span>
     </div>
   );
 }

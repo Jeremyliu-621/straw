@@ -29,9 +29,11 @@ function calculateTimeRemaining(deadline: string): TimeRemaining {
 export function DeadlineCountdown({
   deadline,
   onExpired,
+  compact = false,
 }: {
   deadline: string;
   onExpired?: () => void;
+  compact?: boolean;
 }) {
   const [time, setTime] = useState<TimeRemaining>(() => calculateTimeRemaining(deadline));
 
@@ -50,6 +52,9 @@ export function DeadlineCountdown({
   }, [deadline, onExpired]);
 
   if (time.expired) {
+    if (compact) {
+      return <span className="font-sans text-[13px] text-gray-400">Expired</span>;
+    }
     return (
       <div>
         <p
@@ -68,6 +73,18 @@ export function DeadlineCountdown({
         <p className="font-sans" style={{ fontSize: "15px", color: "var(--text-muted)" }}>
           Deadline passed
         </p>
+      </div>
+    );
+  }
+
+  if (compact) {
+    return (
+      <div className="flex items-center gap-1.5">
+        <span className="font-mono text-[15px] font-medium text-black">
+          {time.days}d {String(time.hours).padStart(2, "0")}h{" "}
+          {String(time.minutes).padStart(2, "0")}m
+        </span>
+        <span className="font-sans text-[13px] text-gray-400">left</span>
       </div>
     );
   }

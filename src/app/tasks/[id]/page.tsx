@@ -68,9 +68,8 @@ export default function TaskDetailPage() {
       fetch(`/api/submissions?task_id=${id}`)
         .then((res) => res.json())
         .then((data) => {
-          // API returns an array of submissions for this agent+task (ordered by created_at desc)
           if (Array.isArray(data) && data.length > 0) {
-            setSubmission(data[0]); // Most recent submission
+            setSubmission(data[0]);
           }
         })
         .catch(() => {});
@@ -101,389 +100,235 @@ export default function TaskDetailPage() {
 
   if (loading || !task) {
     return (
-      <div className="mx-auto max-w-2xl" style={{ padding: "32px" }}>
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="animate-pulse"
-              style={{
-                height: "24px",
-                background: "var(--bg-subtle)",
-                borderRadius: "var(--radius)",
-              }}
-            />
-          ))}
+      <div className="min-h-screen bg-[#FDFCFC]">
+        <div className="max-w-[1400px] mx-auto border-x border-gray-200 min-h-screen">
+          <div className="p-12">
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="animate-pulse"
+                  style={{
+                    height: "24px",
+                    background: "#f3f4f6",
+                    borderRadius: "6px",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-2xl" style={{ padding: "32px" }}>
-      {/* Back link */}
-      <Link
-        href="/dashboard"
-        className="font-sans inline-flex items-center gap-1 transition-colors"
-        style={{
-          fontSize: "13px",
-          color: "var(--text-muted)",
-          textDecoration: "none",
-          marginBottom: "24px",
-        }}
-        onMouseOver={(e) =>
-          (e.currentTarget.style.color = "var(--text)")
-        }
-        onMouseOut={(e) =>
-          (e.currentTarget.style.color = "var(--text-muted)")
-        }
-      >
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="m15 18-6-6 6-6" />
-        </svg>
-        Back to Dashboard
-      </Link>
-
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1
-            className="font-sans"
-            style={{
-              fontSize: "28px",
-              fontWeight: 500,
-              letterSpacing: "-0.02em",
-              color: "var(--text)",
-            }}
-          >
-            {task.title}
-          </h1>
-          <div className="mt-2 flex items-center gap-3">
-            <StatusBadge status={task.status} />
-            <span
-              className="font-sans"
-              style={{ fontSize: "13px", color: "var(--text-muted)" }}
-            >
-              {task.category}
+    <div className="h-screen overflow-hidden bg-[#FDFCFC]">
+      {/* Full-width header */}
+      <div className="border-b border-gray-200 shrink-0">
+        <div className="max-w-[1400px] mx-auto border-x border-gray-200 px-8 lg:px-12 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4 min-w-0">
+              <h1 className="font-sans text-[28px] font-medium tracking-tight text-black leading-none truncate">
+                {task.title}
+              </h1>
+              <StatusBadge status={task.status} />
+              <span className="font-sans text-[13px] text-gray-400 shrink-0">
+                {task.category}
+              </span>
+            </div>
+            <span className="font-mono text-[28px] font-medium text-black shrink-0 ml-6">
+              ${(task.budget_cents / 100).toLocaleString()}
             </span>
           </div>
         </div>
-        <span
-          className="font-mono"
-          style={{
-            fontSize: "24px",
-            fontWeight: 500,
-            color: "var(--text)",
-          }}
-        >
-          ${(task.budget_cents / 100).toLocaleString()}
-        </span>
       </div>
 
-      <div className="mt-8 space-y-6">
-        <Section label="DESCRIPTION">
-          <p
-            className="font-sans"
-            style={{
-              fontSize: "15px",
-              lineHeight: 1.6,
-              color: "var(--text)",
-            }}
-          >
-            {task.description}
-          </p>
-        </Section>
+      {/* Two-column layout: left = details, right = leaderboard */}
+      <div className="max-w-[1400px] mx-auto border-x border-gray-200 flex-1" style={{ height: "calc(100vh - 73px)", overflow: "hidden" }}>
+        <div className="flex flex-col lg:flex-row h-full">
+          {/* Left panel — task details */}
+          <div className="w-full lg:w-[55%] lg:border-r border-gray-200 overflow-y-auto">
+            <div className="px-8 lg:px-12 py-8 space-y-8">
+              <Section label="DESCRIPTION">
+                <p className="font-sans text-[15px] leading-relaxed text-gray-800">
+                  {task.description}
+                </p>
+              </Section>
 
-        <Section label="INPUT SPECIFICATION">
-          <div
-            style={{
-              padding: "14px 16px",
-              background: "var(--bg-subtle)",
-              borderRadius: "var(--radius)",
-              border: "1px solid var(--border)",
-            }}
-          >
-            <p
-              className="font-sans"
-              style={{
-                fontSize: "14px",
-                lineHeight: 1.6,
-                color: "var(--text)",
-              }}
-            >
-              {task.input_spec}
-            </p>
-          </div>
-        </Section>
+              <Section label="INPUT SPECIFICATION">
+                <div className="p-4 bg-gray-50 rounded-md border border-gray-200">
+                  <p className="font-sans text-[14px] leading-relaxed text-gray-800">
+                    {task.input_spec}
+                  </p>
+                </div>
+              </Section>
 
-        <Section label="OUTPUT SPECIFICATION">
-          <div
-            style={{
-              padding: "14px 16px",
-              background: "var(--bg-subtle)",
-              borderRadius: "var(--radius)",
-              border: "1px solid var(--border)",
-            }}
-          >
-            <p
-              className="font-sans"
-              style={{
-                fontSize: "14px",
-                lineHeight: 1.6,
-                color: "var(--text)",
-              }}
-            >
-              {task.output_spec}
-            </p>
-          </div>
-        </Section>
+              <Section label="OUTPUT SPECIFICATION">
+                <div className="p-4 bg-gray-50 rounded-md border border-gray-200">
+                  <p className="font-sans text-[14px] leading-relaxed text-gray-800">
+                    {task.output_spec}
+                  </p>
+                </div>
+              </Section>
 
-        <Section label="EVALUATION">
-          <div className="flex gap-4 mb-3">
-            <EvalWeight
-              label="Automated Tests"
-              weight={task.test_weight}
-            />
-            <EvalWeight label="LLM Judge" weight={task.llm_weight} />
-          </div>
-          <div className="flex items-center gap-2">
-            <span
-              className="font-sans inline-flex items-center gap-1.5"
-              style={{
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "var(--text-muted)",
-                padding: "3px 8px",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius)",
-                background: "var(--bg-subtle)",
-              }}
-            >
-              {task.eval_mode === EVAL_MODE.CONTAINER
-                ? "Container Eval"
-                : task.eval_mode === EVAL_MODE.HYBRID
-                  ? "Hybrid Eval"
-                  : "LLM Judge"}
-            </span>
-            {task.eval_mode !== EVAL_MODE.LLM && task.eval_image && (
-              <span
-                className="font-mono"
-                style={{ fontSize: "11px", color: "var(--text-faint)" }}
-              >
-                {task.eval_image}
-              </span>
-            )}
-          </div>
-        </Section>
+              <Section label="EVALUATION">
+                <div className="flex gap-3">
+                  <EvalWeight label="Automated Tests" weight={task.test_weight} />
+                  <EvalWeight label="LLM Judge" weight={task.llm_weight} />
+                </div>
+                {task.eval_mode !== EVAL_MODE.LLM && (
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="font-sans text-[12px] font-medium text-gray-500 px-2 py-0.5 border border-gray-200 rounded bg-gray-50">
+                      {task.eval_mode === EVAL_MODE.CONTAINER ? "Container Eval" : "Hybrid Eval"}
+                    </span>
+                    {task.eval_image && (
+                      <span className="font-mono text-[11px] text-gray-400">
+                        {task.eval_image}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </Section>
 
-        <Section label="DEADLINE">
-          <div className="flex items-center gap-2">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ color: "var(--text-muted)" }}
-            >
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-            <p
-              className="font-mono"
-              style={{ fontSize: "14px", color: "var(--text)" }}
-            >
-              {new Date(task.deadline).toLocaleString()}
-            </p>
-          </div>
-        </Section>
+              {/* Deadline moved to right panel */}
 
-        {/* Deadline countdown */}
-        {task.status === "open" && (
-          <DeadlineCountdown
-            deadline={task.deadline}
-            onExpired={handleDeadlineExpired}
-          />
-        )}
+              {/* Actions */}
+              {error && (
+                <p className="font-sans text-[13px] text-red-500">{error}</p>
+              )}
 
-        {/* Leaderboard */}
-        {task.status !== "draft" && <Leaderboard taskId={id} />}
-      </div>
+              <div className="border-t border-gray-200 pt-6">
+                {isOwner && task.status === "draft" && (
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href="/dashboard"
+                      className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors no-underline"
+                    >
+                      &larr; Back
+                    </Link>
+                    <button
+                      onClick={publishTask}
+                      disabled={publishing}
+                      className="font-sans text-[14px] font-medium bg-black text-white px-6 py-3 transition-colors disabled:opacity-40 hover:bg-gray-800"
+                      style={{ borderRadius: "2.5px" }}
+                    >
+                      {publishing ? "Publishing..." : "Publish Task"}
+                    </button>
+                  </div>
+                )}
 
-      {/* Actions */}
-      {error && (
-        <p
-          className="mt-6 font-sans"
-          style={{ fontSize: "13px", color: "var(--error)" }}
-        >
-          {error}
-        </p>
-      )}
+                {isAgent && task.status === "open" && (
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href="/dashboard"
+                      className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors no-underline"
+                    >
+                      &larr; Back
+                    </Link>
+                    <Link
+                      href={`/tasks/${id}/enter`}
+                      className="font-sans text-[14px] font-medium bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors no-underline"
+                      style={{ borderRadius: "2.5px" }}
+                    >
+                      {submission ? "Submit Again" : "Enter Competition"}
+                    </Link>
+                    {submission && (
+                      <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-md border border-gray-200">
+                        <StatusBadge status={submission.status} />
+                        <span className="font-sans text-[12px] text-gray-400">
+                          Latest: {new Date(submission.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-      <div
-        className="mt-8"
-        style={{
-          borderTop: "1px solid var(--border)",
-          paddingTop: "24px",
-        }}
-      >
-        {isOwner && task.status === "draft" && (
-          <button
-            onClick={publishTask}
-            disabled={publishing}
-            className="font-sans transition-colors disabled:opacity-40"
-            style={{
-              padding: "12px 24px",
-              borderRadius: "var(--radius)",
-              fontSize: "14px",
-              fontWeight: 500,
-              background: "var(--accent, var(--text))",
-              color: "white",
-            }}
-          >
-            {publishing ? "Publishing..." : "Publish Task"}
-          </button>
-        )}
+                {isAgent && task.status !== "open" && submission && (
+                  <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-md border border-gray-200">
+                    <StatusBadge status={submission.status} />
+                    <span className="font-sans text-[13px] text-gray-400">
+                      Entered {new Date(submission.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
 
-        {isAgent && task.status === "open" && (
-          <div className="flex items-center gap-3">
-            <Link
-              href={`/tasks/${id}/enter`}
-              className="font-sans inline-block transition-colors"
-              style={{
-                padding: "12px 24px",
-                borderRadius: "var(--radius)",
-                fontSize: "14px",
-                fontWeight: 500,
-                background: "var(--accent, var(--text))",
-                color: "white",
-                textDecoration: "none",
-              }}
-            >
-              {submission ? "Submit Again" : "Enter Competition"}
-            </Link>
-            {submission && (
-              <div
-                className="flex items-center gap-2"
-                style={{
-                  padding: "8px 12px",
-                  background: "var(--bg-subtle)",
-                  borderRadius: "var(--radius)",
-                  border: "1px solid var(--border)",
-                }}
-              >
-                <StatusBadge status={submission.status} />
-                <span
-                  className="font-sans"
-                  style={{ fontSize: "12px", color: "var(--text-muted)" }}
-                >
-                  Latest: {new Date(submission.created_at).toLocaleDateString()}
-                </span>
+                {isOwner && task.status === "closed" && (
+                  <div className="flex gap-3">
+                    <Link
+                      href={`/tasks/${id}/results`}
+                      className="font-sans text-[14px] font-medium bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors no-underline inline-flex items-center gap-2"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 3v18h18" />
+                        <path d="m19 9-5 5-4-4-3 3" />
+                      </svg>
+                      View Results
+                    </Link>
+                    <Link
+                      href={`/tasks/${id}/deal`}
+                      className="font-sans text-[14px] font-medium text-black px-6 py-3 rounded-md border border-gray-200 hover:border-black transition-colors no-underline inline-flex items-center gap-2"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                      </svg>
+                      Complete Deal
+                    </Link>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
-        )}
 
-        {isAgent && task.status !== "open" && submission && (
-          <div
-            className="flex items-center gap-3"
-            style={{
-              padding: "12px 16px",
-              background: "var(--accent-subtle, var(--bg-subtle))",
-              borderRadius: "var(--radius)",
-              border: "1px solid var(--accent-border, var(--border))",
-            }}
-          >
-            <StatusBadge status={submission.status} />
-            <span
-              className="font-sans"
-              style={{ fontSize: "13px", color: "var(--text-muted)" }}
-            >
-              Entered{" "}
-              {new Date(submission.created_at).toLocaleDateString()}
-            </span>
-          </div>
-        )}
+          {/* Right panel — leaderboard */}
+          <div className="w-full lg:w-[45%] overflow-y-auto">
+            <div className="px-8 lg:px-8 py-8">
+              {/* Deadline + countdown */}
+              <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
+                <div className="flex items-center gap-2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-gray-400"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                  <p className="font-mono text-[15px] text-black">
+                    {new Date(task.deadline).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
+                {task.status === "open" && (
+                  <DeadlineCountdown
+                    deadline={task.deadline}
+                    onExpired={handleDeadlineExpired}
+                    compact
+                  />
+                )}
+              </div>
 
-        {/* Post-close actions for company */}
-        {isOwner && task.status === "closed" && (
-          <div className="flex gap-3">
-            <Link
-              href={`/tasks/${id}/results`}
-              className="font-sans inline-flex items-center gap-2 transition-colors"
-              style={{
-                padding: "12px 24px",
-                borderRadius: "var(--radius)",
-                fontSize: "14px",
-                fontWeight: 500,
-                background: "var(--accent, var(--text))",
-                color: "white",
-                textDecoration: "none",
-              }}
-            >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M3 3v18h18" />
-                <path d="m19 9-5 5-4-4-3 3" />
-              </svg>
-              View Results
-            </Link>
-            <Link
-              href={`/tasks/${id}/deal`}
-              className="font-sans inline-flex items-center gap-2 transition-colors"
-              style={{
-                padding: "12px 24px",
-                borderRadius: "var(--radius)",
-                fontSize: "14px",
-                fontWeight: 500,
-                background: "transparent",
-                color: "var(--text)",
-                border: "1px solid var(--border)",
-                textDecoration: "none",
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.borderColor = "var(--text)";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.borderColor = "var(--border)";
-              }}
-            >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-              </svg>
-              Complete Deal
-            </Link>
+              {task.status !== "draft" ? (
+                <Leaderboard taskId={id} />
+              ) : (
+                <div className="text-center py-16">
+                  <p className="font-sans text-[13px] text-gray-400">
+                    Leaderboard appears after publishing
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -498,16 +343,7 @@ function Section({
 }) {
   return (
     <div>
-      <p
-        className="mb-2 font-sans"
-        style={{
-          fontSize: "11px",
-          fontWeight: 500,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase" as const,
-          color: "var(--text-muted)",
-        }}
-      >
+      <p className="mb-2 font-sans text-[11px] font-medium tracking-[0.06em] uppercase text-gray-400">
         {label}
       </p>
       {children}
@@ -517,44 +353,21 @@ function Section({
 
 function EvalWeight({ label, weight }: { label: string; weight: number }) {
   return (
-    <div
-      className="flex-1"
-      style={{
-        padding: "16px",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius)",
-      }}
-    >
-      <span
-        className="font-mono"
-        style={{ fontSize: "24px", fontWeight: 600, color: "var(--text)" }}
-      >
-        {weight}%
-      </span>
-      <p
-        className="font-sans"
-        style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}
-      >
+    <div className="flex-1 px-4 py-3 border border-gray-200 rounded-md">
+      <div className="flex items-center gap-3">
+        <span className="font-mono text-[18px] font-semibold text-black leading-none">
+          {weight}%
+        </span>
+        <div className="flex-1 h-1 bg-gray-100 rounded-full">
+          <div
+            className="h-1 bg-black rounded-full"
+            style={{ width: `${weight}%` }}
+          />
+        </div>
+      </div>
+      <p className="font-sans text-[12px] text-gray-400 mt-1">
         {label}
       </p>
-      {/* Visual bar */}
-      <div
-        style={{
-          marginTop: "8px",
-          height: "4px",
-          background: "var(--border)",
-          borderRadius: "var(--radius)",
-        }}
-      >
-        <div
-          style={{
-            height: "4px",
-            background: "var(--accent, var(--text))",
-            width: `${weight}%`,
-            borderRadius: "var(--radius)",
-          }}
-        />
-      </div>
     </div>
   );
 }
