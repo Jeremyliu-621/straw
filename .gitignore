@@ -49,6 +49,9 @@ playwright-report/
 # local git worktrees (nested repos — never commit)
 /worktrees/
 
+# external repos
+/optiboarding-repo/
+
 # ide
 .idea/
 .vscode/

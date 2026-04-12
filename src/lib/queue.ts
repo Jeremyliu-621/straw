@@ -6,8 +6,13 @@ import { QUEUE_EXECUTION, QUEUE_EVALUATION, QUEUE_WEBHOOK, QUEUE_MAX_ATTEMPTS, Q
 export interface ExecutionJobData {
   submissionId: string;
   taskId: string;
-  dockerImage: string;
   inputSpec: string;
+  mode: "api" | "docker";
+  // docker mode
+  dockerImage?: string;
+  // api mode
+  apiEndpoint?: string;
+  agentDisplayName?: string;
 }
 
 export interface EvaluationJobData {

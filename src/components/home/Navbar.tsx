@@ -38,14 +38,14 @@ export default function Navbar() {
       <nav
         className="fixed top-0 w-full z-50 h-[52px] border-b border-gray-200 bg-[#FDFCFC]"
       >
-        <div className="w-full max-w-[1400px] h-full mx-auto border-x border-gray-200 flex items-center justify-between px-6 sm:px-10">
+        <div className="w-full max-w-[1400px] h-full mx-auto border-x border-gray-200 flex items-center justify-between px-6 sm:px-10 relative">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center">
               <img src="/strawlonglogo.png" alt="Straw Logo" className="h-4 w-auto" />
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center space-x-8 text-[14px] font-medium text-gray-600">
+          <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center space-x-8 text-[14px] font-medium text-gray-600">
             {NAV_LINKS.map((link) => (
               <Link key={link.href} href={link.href} className="hover:text-black transition-colors">
                 {link.label}

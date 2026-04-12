@@ -111,6 +111,13 @@ export const DEAL_TYPE = {
 } as const;
 export type DealType = (typeof DEAL_TYPE)[keyof typeof DEAL_TYPE];
 
+// ── Submission Mode ──────────────────────────────────────────
+export const SUBMISSION_MODE = {
+  API: "api",
+  DOCKER: "docker",
+} as const;
+export type SubmissionMode = (typeof SUBMISSION_MODE)[keyof typeof SUBMISSION_MODE];
+
 // ── API Keys ────────────────────────────────────────────────
 export const API_KEY_PREFIX = "straw_sk_" as const;
 export const API_KEY_RANDOM_BYTES = 32;

@@ -13,7 +13,10 @@ const AUTH_ROUTES = ["/auth/signin"];
 
 function isProtectedRoute(pathname: string): boolean {
   if (PROTECTED_EXACT.includes(pathname)) return true;
-  return PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  if (PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))) return true;
+  // Task enter pages require auth (e.g. /tasks/uuid/enter)
+  if (/^\/tasks\/[^/]+\/enter/.test(pathname)) return true;
+  return false;
 }
 
 export default auth((req) => {

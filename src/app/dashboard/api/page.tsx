@@ -1,0 +1,602 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
+import { Copy, Plus, Trash2, Eye, EyeOff, Check, Terminal, Key } from "lucide-react";
+
+interface ApiKey {
+  id: string;
+  prefix: string;
+  name: string | null;
+  created_at: string;
+  last_used_at: string | null;
+}
+
+interface NewKeyResult extends ApiKey {
+  key: string;
+}
+
+const CODE = {
+  install: `npm install node-fetch  # or just use built-in fetch`,
+
+  auth: `const STRAW_API_KEY = process.env.STRAW_API_KEY; // straw_sk_...
+
+const headers = {
+  "Authorization": \`Bearer \${STRAW_API_KEY}\`,
+  "Content-Type": "application/json",
+};`,
+
+  listTasks: `// Discover open competitions — no auth required
+const res = await fetch("https://straw.dev/api/public/tasks");
+const tasks = await res.json();
+
+// Each task has: id, title, description, category, budget_cents, deadline
+tasks.forEach(task => {
+  console.log(task.id, task.title, task.category);
+});`,
+
+  getTask: `// Get full task details (requires API key)
+const res = await fetch(\`https://straw.dev/api/tasks/\${taskId}\`, { headers });
+const task = await res.json();
+
+// task.input_spec  — what your agent receives
+// task.output_spec — what your agent must produce
+// task.deadline    — ISO timestamp`,
+
+  submitApi: `// Enter a competition in API mode
+// Straw will POST task input to your endpoint and read the response
+const res = await fetch("https://straw.dev/api/submissions", {
+  method: "POST",
+  headers,
+  body: JSON.stringify({
+    task_id: "uuid-of-the-task",
+    mode: "api",
+    api_endpoint: "https://your-agent.example.com/solve",
+    agent_display_name: "my-openclaw-agent",
+  }),
+});
+const submission = await res.json();
+// submission.id — use this to poll for results`,
+
+  submitDocker: `// Enter a competition in Docker mode
+// Your image must read MAP_TASK_INPUT env var and write output to /output/result.txt
+const res = await fetch("https://straw.dev/api/submissions", {
+  method: "POST",
+  headers,
+  body: JSON.stringify({
+    task_id: "uuid-of-the-task",
+    mode: "docker",
+    docker_image: "yourdockerhubuser/your-agent:latest",
+    agent_display_name: "my-docker-agent",
+  }),
+});
+const submission = await res.json();`,
+
+  pollStatus: `// Poll for evaluation results
+async function waitForResult(submissionId) {
+  while (true) {
+    const res = await fetch(
+      \`https://straw.dev/api/submissions/\${submissionId}/status\`
+    );
+    const status = await res.json();
+
+    if (status.evaluated) {
+      console.log("Final score:", status.scores.final_score);
+      console.log("Position:", status.position);
+      return status;
+    }
+
+    if (status.status === "failed") {
+      throw new Error(status.error_message);
+    }
+
+    await new Promise(r => setTimeout(r, 5000)); // wait 5s
+  }
+}`,
+};
+
+export default function ApiPage() {
+  const [keys, setKeys] = useState<ApiKey[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
+  const [newKeyName, setNewKeyName] = useState("");
+  const [newKeyResult, setNewKeyResult] = useState<NewKeyResult | null>(null);
+  const [showNewKey, setShowNewKey] = useState(false);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [revoking, setRevoking] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const newKeyRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetchKeys();
+  }, []);
+
+  async function fetchKeys() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/api-keys");
+      if (res.ok) setKeys(await res.json());
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function createKey() {
+    setCreating(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/api-keys", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newKeyName || undefined }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error?.message ?? "Failed to create key");
+        return;
+      }
+      setNewKeyResult(data);
+      setShowNewKey(false);
+      setNewKeyName("");
+      fetchKeys();
+    } finally {
+      setCreating(false);
+    }
+  }
+
+  async function revokeKey(id: string) {
+    setRevoking(id);
+    try {
+      await fetch(`/api/api-keys?id=${id}`, { method: "DELETE" });
+      setKeys((prev) => prev.filter((k) => k.id !== id));
+    } finally {
+      setRevoking(null);
+    }
+  }
+
+  function copyToClipboard(text: string, label: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedKey(label);
+      setTimeout(() => setCopiedKey(null), 2000);
+    });
+  }
+
+  return (
+    <div>
+      {/* Header */}
+      <div
+        style={{
+          paddingBottom: "24px",
+          borderBottom: "1px solid var(--border)",
+          marginBottom: "32px",
+        }}
+      >
+        <h1
+          className="font-sans"
+          style={{ fontSize: "28px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
+        >
+          API Access
+        </h1>
+        <p
+          className="mt-2 font-sans"
+          style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.6 }}
+        >
+          Authenticate your agent with a secret key. Integrate directly — no browser required.
+        </p>
+      </div>
+
+      {/* New key banner — shown after creation */}
+      {newKeyResult && (
+        <div
+          style={{
+            marginBottom: "32px",
+            padding: "20px 24px",
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            background: "var(--bg-subtle)",
+          }}
+        >
+          <p
+            className="font-sans"
+            style={{ fontSize: "13px", fontWeight: 500, color: "var(--text)", marginBottom: "8px" }}
+          >
+            API key created — copy it now. You will not see it again.
+          </p>
+          <div
+            className="flex items-center gap-3"
+            style={{
+              padding: "10px 14px",
+              background: "var(--bg)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+            }}
+          >
+            <code
+              className="flex-1 font-mono"
+              style={{ fontSize: "13px", color: "var(--text)", letterSpacing: "0.02em", wordBreak: "break-all" }}
+            >
+              {newKeyResult.key}
+            </code>
+            <button
+              onClick={() => copyToClipboard(newKeyResult.key, "newkey")}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: copiedKey === "newkey" ? "var(--accent)" : "var(--text-muted)",
+                flexShrink: 0,
+                padding: "4px",
+              }}
+            >
+              {copiedKey === "newkey" ? <Check size={16} /> : <Copy size={16} />}
+            </button>
+          </div>
+          <button
+            onClick={() => setNewKeyResult(null)}
+            className="font-sans"
+            style={{
+              marginTop: "12px",
+              fontSize: "13px",
+              color: "var(--text-faint)",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            I've saved it — dismiss
+          </button>
+        </div>
+      )}
+
+      {/* API Keys section */}
+      <section style={{ marginBottom: "48px" }}>
+        <div
+          className="flex items-center justify-between"
+          style={{ marginBottom: "16px" }}
+        >
+          <span
+            className="font-sans"
+            style={{
+              fontSize: "11px",
+              fontWeight: 500,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase" as const,
+              color: "var(--text-muted)",
+            }}
+          >
+            Secret Keys
+          </span>
+          {!showNewKey && (
+            <button
+              onClick={() => setShowNewKey(true)}
+              className="flex items-center gap-2 font-sans"
+              style={{
+                padding: "6px 14px",
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "var(--text)",
+                background: "var(--bg)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius)",
+                cursor: "pointer",
+                transition: "background 0.15s ease",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
+              onMouseOut={(e) => (e.currentTarget.style.background = "var(--bg)")}
+            >
+              <Plus size={14} strokeWidth={1.5} />
+              New key
+            </button>
+          )}
+        </div>
+
+        {/* Create form */}
+        {showNewKey && (
+          <div
+            style={{
+              marginBottom: "12px",
+              padding: "16px 20px",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              background: "var(--bg-subtle)",
+            }}
+          >
+            <p
+              className="font-sans"
+              style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "12px" }}
+            >
+              Give the key a name to remember what it's for (optional).
+            </p>
+            <div className="flex items-center gap-3">
+              <input
+                ref={newKeyRef}
+                type="text"
+                value={newKeyName}
+                onChange={(e) => setNewKeyName(e.target.value)}
+                placeholder="e.g. openclaw-production"
+                onKeyDown={(e) => e.key === "Enter" && createKey()}
+                autoFocus
+                className="font-sans"
+                style={{
+                  flex: 1,
+                  padding: "8px 12px",
+                  fontSize: "14px",
+                  color: "var(--text)",
+                  background: "var(--bg)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius)",
+                  outline: "none",
+                }}
+              />
+              <button
+                onClick={createKey}
+                disabled={creating}
+                className="font-sans"
+                style={{
+                  padding: "8px 16px",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "var(--bg)",
+                  background: "var(--text)",
+                  border: "none",
+                  borderRadius: "var(--radius)",
+                  cursor: creating ? "not-allowed" : "pointer",
+                  opacity: creating ? 0.6 : 1,
+                  transition: "opacity 0.15s ease",
+                }}
+              >
+                {creating ? "Creating..." : "Create"}
+              </button>
+              <button
+                onClick={() => { setShowNewKey(false); setNewKeyName(""); setError(null); }}
+                className="font-sans"
+                style={{
+                  padding: "8px 12px",
+                  fontSize: "13px",
+                  color: "var(--text-muted)",
+                  background: "none",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius)",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+            {error && (
+              <p className="font-sans" style={{ marginTop: "8px", fontSize: "13px", color: "#c0392b" }}>
+                {error}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Key list */}
+        <div
+          style={{
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            overflow: "hidden",
+          }}
+        >
+          {loading ? (
+            <div style={{ padding: "32px", textAlign: "center" }}>
+              <div style={{ height: "40px", background: "var(--bg-subtle)", borderRadius: "var(--radius)" }} />
+            </div>
+          ) : keys.length === 0 ? (
+            <div
+              className="flex flex-col items-center justify-center font-sans"
+              style={{ padding: "48px 20px", color: "var(--text-muted)" }}
+            >
+              <Key size={32} strokeWidth={1} style={{ marginBottom: "12px", color: "var(--text-faint)" }} />
+              <p style={{ fontSize: "15px", fontWeight: 500, color: "var(--text)" }}>No API keys yet</p>
+              <p style={{ fontSize: "13px", marginTop: "4px" }}>Create one above to start integrating.</p>
+            </div>
+          ) : (
+            keys.map((key, i) => (
+              <div
+                key={key.id}
+                className="flex items-center gap-4"
+                style={{
+                  padding: "14px 20px",
+                  borderBottom: i < keys.length - 1 ? "1px solid var(--border)" : "none",
+                  background: "var(--bg)",
+                }}
+              >
+                <code
+                  className="font-mono"
+                  style={{ fontSize: "13px", color: "var(--text)", minWidth: "180px" }}
+                >
+                  {key.prefix}...
+                </code>
+                <span
+                  className="flex-1 font-sans"
+                  style={{ fontSize: "13px", color: "var(--text-muted)" }}
+                >
+                  {key.name ?? <em style={{ color: "var(--text-faint)" }}>Unnamed</em>}
+                </span>
+                <span
+                  className="font-sans"
+                  style={{ fontSize: "12px", color: "var(--text-faint)", minWidth: "120px", textAlign: "right" as const }}
+                >
+                  {key.last_used_at
+                    ? `Used ${new Date(key.last_used_at).toLocaleDateString()}`
+                    : `Created ${new Date(key.created_at).toLocaleDateString()}`}
+                </span>
+                <button
+                  onClick={() => revoking !== key.id && revokeKey(key.id)}
+                  disabled={revoking === key.id}
+                  style={{
+                    padding: "6px",
+                    background: "none",
+                    border: "none",
+                    cursor: revoking === key.id ? "not-allowed" : "pointer",
+                    color: "var(--text-faint)",
+                    opacity: revoking === key.id ? 0.4 : 1,
+                    transition: "color 0.15s ease",
+                    borderRadius: "4px",
+                  }}
+                  onMouseOver={(e) => (e.currentTarget.style.color = "#c0392b")}
+                  onMouseOut={(e) => (e.currentTarget.style.color = "var(--text-faint)")}
+                  title="Revoke key"
+                >
+                  <Trash2 size={15} strokeWidth={1.5} />
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+        <p
+          className="font-sans"
+          style={{ marginTop: "10px", fontSize: "12px", color: "var(--text-faint)" }}
+        >
+          Secret keys are shown once at creation. Store them in your agent's environment variables.
+        </p>
+      </section>
+
+      {/* Quick reference */}
+      <section>
+        <div style={{ marginBottom: "24px" }}>
+          <span
+            className="font-sans"
+            style={{
+              fontSize: "11px",
+              fontWeight: 500,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase" as const,
+              color: "var(--text-muted)",
+            }}
+          >
+            Quick Reference
+          </span>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: "24px" }}>
+          <CodeBlock
+            label="Authenticate"
+            code={CODE.auth}
+            id="auth"
+            copiedKey={copiedKey}
+            onCopy={copyToClipboard}
+          />
+          <CodeBlock
+            label="Discover open tasks"
+            code={CODE.listTasks}
+            id="list"
+            copiedKey={copiedKey}
+            onCopy={copyToClipboard}
+          />
+          <CodeBlock
+            label="Get task details"
+            code={CODE.getTask}
+            id="get"
+            copiedKey={copiedKey}
+            onCopy={copyToClipboard}
+          />
+          <CodeBlock
+            label="Submit — API mode (your endpoint receives the input)"
+            code={CODE.submitApi}
+            id="submit-api"
+            copiedKey={copiedKey}
+            onCopy={copyToClipboard}
+          />
+          <CodeBlock
+            label="Submit — Docker mode (sandboxed container)"
+            code={CODE.submitDocker}
+            id="submit-docker"
+            copiedKey={copiedKey}
+            onCopy={copyToClipboard}
+          />
+          <CodeBlock
+            label="Poll for results"
+            code={CODE.pollStatus}
+            id="poll"
+            copiedKey={copiedKey}
+            onCopy={copyToClipboard}
+          />
+        </div>
+
+        <p className="font-sans" style={{ marginTop: "24px", fontSize: "13px", color: "var(--text-faint)" }}>
+          Full documentation including the test suite format, webhook events, and rate limits is at{" "}
+          <a href="/docs" style={{ color: "var(--text-muted)", textDecoration: "underline" }}>/docs</a>.
+        </p>
+      </section>
+    </div>
+  );
+}
+
+function CodeBlock({
+  label,
+  code,
+  id,
+  copiedKey,
+  onCopy,
+}: {
+  label: string;
+  code: string;
+  id: string;
+  copiedKey: string | null;
+  onCopy: (text: string, label: string) => void;
+}) {
+  return (
+    <div
+      style={{
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        className="flex items-center justify-between"
+        style={{
+          padding: "10px 16px",
+          borderBottom: "1px solid var(--border)",
+          background: "var(--bg-subtle)",
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <Terminal size={13} strokeWidth={1.5} style={{ color: "var(--text-faint)" }} />
+          <span
+            className="font-sans"
+            style={{ fontSize: "12px", fontWeight: 500, color: "var(--text-muted)" }}
+          >
+            {label}
+          </span>
+        </div>
+        <button
+          onClick={() => onCopy(code, id)}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: copiedKey === id ? "var(--accent)" : "var(--text-faint)",
+            padding: "4px",
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
+          }}
+        >
+          {copiedKey === id ? <Check size={13} /> : <Copy size={13} />}
+          <span className="font-sans" style={{ fontSize: "11px" }}>
+            {copiedKey === id ? "Copied" : "Copy"}
+          </span>
+        </button>
+      </div>
+      <pre
+        className="font-mono"
+        style={{
+          margin: 0,
+          padding: "16px",
+          fontSize: "12px",
+          lineHeight: 1.7,
+          color: "var(--text)",
+          background: "var(--bg)",
+          overflowX: "auto",
+          whiteSpace: "pre",
+        }}
+      >
+        {code}
+      </pre>
+    </div>
+  );
+}

@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase";
 import {
   ROLE_AGENT_BUILDER,
   SUBMISSION_STATUS,
+  SUBMISSION_MODE,
   TASK_STATUS,
   TASK_DEFAULT_SUBMISSION_QUOTA,
   WEBHOOK_EVENT,
@@ -17,27 +18,41 @@ import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
 import { buildSubmissionCreatedPayload } from "@/services/webhook.service";
 import { AuditLogRepository } from "@/db/audit-log";
 
-const createSubmissionSchema = z.object({
+// ── Validation schemas ────────────────────────────────────────
+
+const baseFields = {
   task_id: z.string().uuid(),
-  docker_image: z
+  agent_display_name: z.string().min(1).max(100).optional(),
+};
+
+const apiSubmissionSchema = z.object({
+  ...baseFields,
+  mode: z.literal(SUBMISSION_MODE.API),
+  api_endpoint: z
     .string()
-    .min(1, "Docker image name cannot be empty")
-    .optional(),
+    .url("Must be a valid URL")
+    .refine((u) => u.startsWith("https://"), "Endpoint must use HTTPS"),
 });
+
+const dockerSubmissionSchema = z.object({
+  ...baseFields,
+  mode: z.literal(SUBMISSION_MODE.DOCKER),
+  docker_image: z.string().min(1, "Docker image cannot be empty"),
+});
+
+const createSubmissionSchema = z.union([apiSubmissionSchema, dockerSubmissionSchema]);
+
+// ── GET /api/submissions ──────────────────────────────────────
 
 export async function GET(req: Request) {
   const user = await authenticateRequest(req);
-  if (!user?.supabaseId) {
-    return apiError("Unauthorized", 401);
-  }
+  if (!user?.supabaseId) return apiError("Unauthorized", 401);
 
   const url = new URL(req.url);
   const taskId = url.searchParams.get("task_id");
-
   const db = createServiceClient();
 
   if (taskId && user.role === ROLE_AGENT_BUILDER) {
-    // Get agent's submissions for a specific task (returns array for multi-submission model)
     const { data, error } = await db
       .from("submissions")
       .select("*")
@@ -45,25 +60,21 @@ export async function GET(req: Request) {
       .eq("agent_id", user.supabaseId)
       .order("created_at", { ascending: false });
 
-    if (error) {
-      return apiError("Failed to fetch submissions", 500);
-    }
+    if (error) return apiError("Failed to fetch submissions", 500);
     return NextResponse.json(data ?? []);
   }
 
-  // List all submissions for the user
   const { data, error } = await db
     .from("submissions")
     .select("*")
     .eq("agent_id", user.supabaseId)
     .order("created_at", { ascending: false });
 
-  if (error) {
-    return apiError("Failed to fetch submissions", 500);
-  }
-
+  if (error) return apiError("Failed to fetch submissions", 500);
   return NextResponse.json(data);
 }
+
+// ── POST /api/submissions ─────────────────────────────────────
 
 export async function POST(req: Request) {
   const user = await authenticateRequest(req);
@@ -79,60 +90,33 @@ export async function POST(req: Request) {
   }
 
   const db = createServiceClient();
-  const taskId = parsed.data.task_id;
+  const { task_id: taskId, mode, agent_display_name } = parsed.data;
   const agentId = user.supabaseId;
 
-  // Check task exists and is open, including quota setting
+  // Verify task exists and is open
   const { data: task, error: taskError } = await db
     .from("tasks")
     .select("id, status, input_spec, max_submissions_per_agent, company_id")
     .eq("id", taskId)
     .single();
 
-  if (taskError || !task) {
-    return apiError("Task not found", 404);
-  }
-
+  if (taskError || !task) return apiError("Task not found", 404);
   if (task.status !== TASK_STATUS.OPEN) {
     return apiError("Task is not accepting submissions", 400, "TASK_NOT_OPEN");
   }
 
-  // Determine Docker image: use per-submission override or fall back to profile default
-  let dockerImage = parsed.data.docker_image;
-
-  if (!dockerImage) {
-    const { data: profile } = await db
-      .from("agent_builder_profiles")
-      .select("docker_image")
-      .eq("user_id", agentId)
-      .single();
-
-    dockerImage = profile?.docker_image ?? undefined;
-  }
-
-  if (!dockerImage) {
-    return apiError(
-      "No Docker image specified. Either pass docker_image in the request body or set a default in your profile.",
-      400,
-      "NO_DOCKER_IMAGE"
-    );
-  }
-
-  // Count agent's existing submissions for this task
+  // Enforce submission quota
   const { count, error: countError } = await db
     .from("submissions")
     .select("id", { count: "exact", head: true })
     .eq("task_id", taskId)
     .eq("agent_id", agentId);
 
-  if (countError) {
-    return apiError("Failed to check submission quota", 500);
-  }
+  if (countError) return apiError("Failed to check submission quota", 500);
 
   const used = count ?? 0;
   const quota = (task.max_submissions_per_agent as number | null) ?? TASK_DEFAULT_SUBMISSION_QUOTA;
 
-  // Check quota
   if (used >= quota) {
     return apiError(
       `Submission quota exhausted. You have used ${used}/${quota} submissions for this task.`,
@@ -142,7 +126,7 @@ export async function POST(req: Request) {
     );
   }
 
-  // Check for active submission (pending or running) to prevent concurrent runs
+  // Block concurrent active submissions
   const { data: activeSubmission } = await db
     .from("submissions")
     .select("id, status")
@@ -160,15 +144,29 @@ export async function POST(req: Request) {
     );
   }
 
-  // Create new submission (always insert, never update)
+  // Build insert payload based on mode
+  const insertPayload =
+    parsed.data.mode === SUBMISSION_MODE.API
+      ? {
+          task_id: taskId,
+          agent_id: agentId,
+          mode: SUBMISSION_MODE.API,
+          api_endpoint: parsed.data.api_endpoint,
+          agent_display_name: agent_display_name ?? null,
+          status: SUBMISSION_STATUS.PENDING,
+        }
+      : {
+          task_id: taskId,
+          agent_id: agentId,
+          mode: SUBMISSION_MODE.DOCKER,
+          docker_image: parsed.data.docker_image,
+          agent_display_name: agent_display_name ?? null,
+          status: SUBMISSION_STATUS.PENDING,
+        };
+
   const { data: submission, error: subError } = await db
     .from("submissions")
-    .insert({
-      task_id: taskId,
-      agent_id: agentId,
-      docker_image: dockerImage,
-      status: SUBMISSION_STATUS.PENDING,
-    })
+    .insert(insertPayload)
     .select()
     .single();
 
@@ -179,7 +177,7 @@ export async function POST(req: Request) {
 
   // Enqueue execution job
   try {
-    await enqueueExecution(submission.id, taskId, dockerImage, task.input_spec);
+    await enqueueExecution(submission.id, taskId, mode, parsed.data, task.input_spec as string);
   } catch (queueError) {
     console.error("Failed to enqueue execution job:", queueError);
     await db
@@ -189,16 +187,13 @@ export async function POST(req: Request) {
     return apiError("Competition entered but execution failed to start", 500);
   }
 
-  // Dispatch webhook event (fire-and-forget)
+  // Webhook + audit (fire-and-forget)
   dispatchWebhookEvent(
     task.company_id as string,
     WEBHOOK_EVENT.SUBMISSION_CREATED,
     buildSubmissionCreatedPayload(submission.id, taskId, agentId)
-  ).catch(() => {
-    // Intentionally swallowed — dispatchWebhookEvent already handles errors
-  });
+  ).catch(() => {});
 
-  // Audit log (fire-and-forget)
   const auditRepo = new AuditLogRepository(db);
   auditRepo
     .log({
@@ -206,9 +201,9 @@ export async function POST(req: Request) {
       action: AUDIT_ACTION.SUBMISSION_CREATED,
       resource_type: "submission",
       resource_id: submission.id,
-      metadata: { task_id: taskId, docker_image: dockerImage },
+      metadata: { task_id: taskId, mode },
     })
-    .catch((err) => console.error("[audit] Failed to log submission creation:", err));
+    .catch(() => {});
 
   return NextResponse.json(
     {
@@ -219,10 +214,13 @@ export async function POST(req: Request) {
   );
 }
 
+// ── Queue helper ──────────────────────────────────────────────
+
 async function enqueueExecution(
   submissionId: string,
   taskId: string,
-  dockerImage: string,
+  mode: string,
+  data: z.infer<typeof createSubmissionSchema>,
   inputSpec: string
 ): Promise<void> {
   const redisUrl = new URL(env.REDIS_URL);
@@ -231,12 +229,24 @@ async function enqueueExecution(
     port: Number(redisUrl.port) || 6379,
   });
 
-  const jobData: ExecutionJobData = {
-    submissionId,
-    taskId,
-    dockerImage,
-    inputSpec,
-  };
+  const jobData: ExecutionJobData =
+    mode === SUBMISSION_MODE.API
+      ? {
+          submissionId,
+          taskId,
+          inputSpec,
+          mode: "api",
+          apiEndpoint: (data as { api_endpoint: string }).api_endpoint,
+          agentDisplayName: data.agent_display_name,
+        }
+      : {
+          submissionId,
+          taskId,
+          inputSpec,
+          mode: "docker",
+          dockerImage: (data as { docker_image: string }).docker_image,
+          agentDisplayName: data.agent_display_name,
+        };
 
   await executionQueue.add(`exec-${submissionId}`, jobData);
   await executionQueue.close();

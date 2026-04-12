@@ -157,6 +157,7 @@ export async function POST() {
       await queue.add(`exec-${submission.id}`, {
         submissionId: submission.id,
         taskId: task.id,
+        mode: "docker" as const,
         dockerImage: agent.image,
         inputSpec: task.input_spec,
       });

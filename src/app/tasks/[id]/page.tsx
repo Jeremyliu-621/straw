@@ -37,7 +37,6 @@ export default function TaskDetailPage() {
   const [task, setTask] = useState<Task | null>(null);
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [loading, setLoading] = useState(true);
-  const [entering, setEntering] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -71,29 +70,6 @@ export default function TaskDetailPage() {
         .catch(() => {});
     }
   }, [id, isAgent, router]);
-
-  async function enterCompetition() {
-    setEntering(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/submissions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id: id }),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? "Failed to enter competition");
-        return;
-      }
-      const data = await res.json();
-      setSubmission(data);
-    } catch {
-      setError("Network error");
-    } finally {
-      setEntering(false);
-    }
-  }
 
   async function publishTask() {
     setPublishing(true);
@@ -348,10 +324,9 @@ export default function TaskDetailPage() {
         )}
 
         {isAgent && task.status === "open" && !submission && (
-          <button
-            onClick={enterCompetition}
-            disabled={entering}
-            className="font-sans transition-colors disabled:opacity-40"
+          <Link
+            href={`/tasks/${id}/enter`}
+            className="font-sans inline-block transition-colors"
             style={{
               padding: "12px 24px",
               borderRadius: "var(--radius)",
@@ -359,10 +334,11 @@ export default function TaskDetailPage() {
               fontWeight: 500,
               background: "var(--accent, var(--text))",
               color: "white",
+              textDecoration: "none",
             }}
           >
-            {entering ? "Entering..." : "Enter Competition"}
-          </button>
+            Enter Competition
+          </Link>
         )}
 
         {isAgent && submission && (

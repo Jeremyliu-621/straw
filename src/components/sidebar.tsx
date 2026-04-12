@@ -31,6 +31,7 @@ const AGENT_NAV: NavItem[] = [
   { label: "Tasks", href: "/dashboard/agent", icon: ClipboardList },
   { label: "Profile", href: "/agents/profile", icon: User },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
+  { label: "API", href: "/dashboard/api", icon: Code2 },
 ];
 
 interface WorkspaceOption {

@@ -98,81 +98,43 @@ const webhookQueue = new Queue(WEBHOOK_QUEUE_NAME, {
 interface ExecutionJobData {
   submissionId: string;
   taskId: string;
-  dockerImage: string;
   inputSpec: string;
+  mode: "api" | "docker";
+  dockerImage?: string;
+  apiEndpoint?: string;
+  agentDisplayName?: string;
 }
 
 const worker = new Worker<ExecutionJobData>(
   QUEUE_NAME,
   async (job) => {
-    const { submissionId, dockerImage, inputSpec } = job.data;
-    console.log(`[exec] Processing submission ${submissionId} with image ${dockerImage}`);
+    const { submissionId, mode, inputSpec } = job.data;
+    console.log(`[exec] Processing submission ${submissionId} mode=${mode}`);
 
-    // Update status to running
     await updateSubmission(submissionId, "running", { started_at: new Date().toISOString() });
 
-    // Create temp output directory
     const tmpDir = path.join(os.tmpdir(), `map-exec-${submissionId}`);
     fs.mkdirSync(tmpDir, { recursive: true });
 
     try {
-      // 1. Pull image
-      console.log(`[exec] Pulling image ${dockerImage}...`);
-      try {
-        await pullImage(dockerImage);
-      } catch (err) {
-        throw new ExecutionError("Docker image pull failed", err);
+      let outputUrl: string;
+
+      if (mode === "api") {
+        // ── API mode ────────────────────────────────────────
+        if (!job.data.apiEndpoint) throw new ExecutionError("No API endpoint specified");
+        const output = await executeApiSubmission(job.data.apiEndpoint, inputSpec);
+        // Write response to a file so the same upload path works for both modes
+        fs.writeFileSync(path.join(tmpDir, "result.txt"), output, "utf8");
+        const outputFiles = fs.readdirSync(tmpDir);
+        outputUrl = await uploadOutput(submissionId, tmpDir, outputFiles);
+      } else {
+        // ── Docker mode ─────────────────────────────────────
+        if (!job.data.dockerImage) throw new ExecutionError("No Docker image specified");
+        outputUrl = await executeDockerSubmission(submissionId, job.data.dockerImage, inputSpec, tmpDir);
       }
 
-      // 2. Create and start container
-      console.log(`[exec] Creating container...`);
-      const container = await docker.createContainer({
-        Image: dockerImage,
-        Env: [`${INPUT_ENV_VAR}=${inputSpec}`],
-        HostConfig: {
-          Memory: MEMORY_LIMIT,
-          NanoCpus: CPU_LIMIT,
-          NetworkMode: "none",
-          Binds: [`${tmpDir}:${OUTPUT_DIR}`],
-          AutoRemove: false,
-        },
-      });
-
-      // 3. Start and wait with timeout
-      await container.start();
-      console.log(`[exec] Container started, waiting...`);
-
-      const exitCode = await waitForContainer(container, EXECUTION_TIMEOUT_MS);
-
-      // 4. Capture logs and truncate to max size
-      const logs = await container.logs({ stdout: true, stderr: true, follow: false });
-      const logText = truncateLog(logs.toString());
-
-      // 5. Persist logs to submission record regardless of outcome
-      await saveExecutionLog(submissionId, logText);
-
-      // 6. Clean up container
-      try {
-        await container.remove({ force: true });
-      } catch {
-        // Best effort cleanup
-      }
-
-      // 7. Check exit code
-      if (exitCode !== 0) {
-        throw new ExecutionError(`Agent exited with code ${exitCode}`, logText);
-      }
-
-      // 8. Check output exists
-      const outputFiles = fs.readdirSync(tmpDir);
-      if (outputFiles.length === 0) {
-        throw new ExecutionError("No output found in /output");
-      }
-
-      // 9. Upload output to Supabase Storage
-      const outputUrl = await uploadOutput(submissionId, tmpDir, outputFiles);
-
-      // 10. Update submission to completed
+      // ── Converge: both modes complete here ──────────────────
+      // Update submission to completed
       await updateSubmission(submissionId, "completed", {
         output_url: outputUrl,
         completed_at: new Date().toISOString(),
@@ -307,6 +269,120 @@ const worker = new Worker<ExecutionJobData>(
     concurrency: 2,
   }
 );
+
+// ── API Mode Execution ────────────────────────────────────────
+
+/**
+ * Call the agent's HTTPS endpoint with the task input and return the raw response body.
+ * 5-minute timeout. 50MB response cap. No redirects.
+ */
+async function executeApiSubmission(apiEndpoint: string, inputSpec: string): Promise<string> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), EXECUTION_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(apiEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task_input: inputSpec }),
+      signal: controller.signal,
+      redirect: "follow",
+    });
+
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      throw new ExecutionError(
+        `Agent endpoint returned HTTP ${response.status} ${response.statusText}`
+      );
+    }
+
+    // Cap response size at 50MB
+    const MAX_RESPONSE_BYTES = 50 * 1024 * 1024;
+    const contentLength = response.headers.get("content-length");
+    if (contentLength && parseInt(contentLength, 10) > MAX_RESPONSE_BYTES) {
+      throw new ExecutionError("Agent response too large (>50MB)");
+    }
+
+    const text = await response.text();
+    if (Buffer.byteLength(text, "utf8") > MAX_RESPONSE_BYTES) {
+      throw new ExecutionError("Agent response too large (>50MB)");
+    }
+
+    console.log(`[exec] API response received: ${text.length} chars`);
+    return text;
+  } catch (err) {
+    clearTimeout(timeout);
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new ExecutionError("Agent endpoint timed out after 5 minutes");
+    }
+    if (err instanceof ExecutionError) throw err;
+    throw new ExecutionError(`Failed to call agent endpoint: ${(err as Error).message}`);
+  }
+}
+
+// ── Docker Mode Execution ─────────────────────────────────────
+
+/**
+ * Pull the Docker image, run the container, capture output from /output,
+ * upload to Supabase Storage, and return the storage path.
+ */
+async function executeDockerSubmission(
+  submissionId: string,
+  dockerImage: string,
+  inputSpec: string,
+  tmpDir: string
+): Promise<string> {
+  // Pull image
+  console.log(`[exec] Pulling image ${dockerImage}...`);
+  try {
+    await pullImage(dockerImage);
+  } catch (err) {
+    throw new ExecutionError("Docker image pull failed", err);
+  }
+
+  // Create and start container
+  console.log(`[exec] Creating container...`);
+  const container = await docker.createContainer({
+    Image: dockerImage,
+    Env: [`${INPUT_ENV_VAR}=${inputSpec}`],
+    HostConfig: {
+      Memory: MEMORY_LIMIT,
+      NanoCpus: CPU_LIMIT,
+      NetworkMode: "none",
+      Binds: [`${tmpDir}:${OUTPUT_DIR}`],
+      AutoRemove: false,
+    },
+  });
+
+  await container.start();
+  console.log(`[exec] Container started, waiting...`);
+
+  const exitCode = await waitForContainer(container, EXECUTION_TIMEOUT_MS);
+
+  // Capture and persist logs
+  const logs = await container.logs({ stdout: true, stderr: true, follow: false });
+  const logText = truncateLog(logs.toString());
+  await saveExecutionLog(submissionId, logText);
+
+  // Cleanup container
+  try {
+    await container.remove({ force: true });
+  } catch {
+    // Best effort
+  }
+
+  if (exitCode !== 0) {
+    throw new ExecutionError(`Agent exited with code ${exitCode}`, logText);
+  }
+
+  const outputFiles = fs.readdirSync(tmpDir);
+  if (outputFiles.length === 0) {
+    throw new ExecutionError("No output found in /output");
+  }
+
+  return uploadOutput(submissionId, tmpDir, outputFiles);
+}
 
 // ── Storage Upload ──────────────────────────────────────────
 
