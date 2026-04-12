@@ -33,15 +33,21 @@ export function Leaderboard({ taskId }: { taskId: string }) {
     try {
       const res = await fetch(`/api/tasks/${taskId}/leaderboard`);
       if (!res.ok) {
-        const body = await res.json();
-        setError(body.error ?? "Failed to load leaderboard");
+        let msg = `Leaderboard API returned ${res.status}`;
+        try {
+          const body = await res.json();
+          msg = body.error ?? msg;
+        } catch {
+          // Response wasn't JSON
+        }
+        setError(msg);
         return;
       }
       const newData: LeaderboardData = await res.json();
       setData(newData);
       setError(null);
-    } catch {
-      setError("Network error");
+    } catch (err) {
+      setError(`Network error: ${(err as Error).message}`);
     } finally {
       setLoading(false);
     }
