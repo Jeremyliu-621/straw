@@ -23,7 +23,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   // Check if evaluation result exists
   const { data: evalResult } = await db
     .from("evaluation_results")
-    .select("id, test_score, llm_score, final_score, created_at")
+    .select("id, test_score, llm_score, final_score, container_score, breakdown, eval_mode, created_at")
     .eq("submission_id", id)
     .single();
 
@@ -75,6 +75,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
           test_score: evalResult.test_score,
           llm_score: evalResult.llm_score,
           final_score: evalResult.final_score,
+          container_score: evalResult.container_score ?? null,
+          breakdown: evalResult.breakdown ?? null,
+          eval_mode: evalResult.eval_mode ?? null,
           evaluated_at: evalResult.created_at,
         }
       : null,
