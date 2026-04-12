@@ -459,3 +459,21 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 - **API endpoint health check**: Pre-flight ping on API-mode submission. Nice UX polish, not blocking.
 - **Submission mode badge on leaderboard**: Show API vs Docker mode per entry.
 - **Custom domain**: Point straw.dev (or similar) at Vercel deployment.
+
+## Unbuilt Features (constants exist, code does not)
+
+Constants were added to `src/constants.ts` but no routes, services, or UI were ever built. These are placeholders for future work.
+
+- **Export (CSV/JSON)**: `EXPORT_FORMAT`, `EXPORT_MAX_ROWS` — let companies export leaderboard/results data
+- **Task templates**: `TEMPLATE_MAX_PER_COMPANY`, `TEMPLATE_NAME_MAX_LENGTH` — save and reuse task configurations
+- **Submission comparison**: `COMPARISON_MAX_SUBMISSIONS` — side-by-side comparison of agent outputs
+- **Analytics trends**: `ANALYTICS_TREND_PERIOD`, `ANALYTICS_TREND_DEFAULT_PERIODS`, `ANALYTICS_TREND_MAX_PERIODS` — historical score/activity trends for company dashboard
+- **Task comments**: `COMMENT_MAX_LENGTH`, `COMMENT_DEFAULT_LIMIT`, `COMMENT_MAX_LIMIT` — discussion thread on task pages
+
+## Unmerged Work
+
+- **`worktree-partitioned-sparking-journal`** branch: agent-first API, upload submission mode, webhooks, webhook worker, SDK — labelled "phases 14-16". 3,560 lines added. Not merged to master.
+- **`agent/01-pipeline`**: LLM call latency tracking, retry improvements
+- **`agent/02-api-hardening`**: rate limiting on more routes, error logging, select field tightening
+- **`agent/03-testing`**: 48 additional tests (state machine, auth, validation)
+- **`agent/05-ux-critical`**: accessibility fixes (aria-hidden, skip-nav, semantic HTML)
