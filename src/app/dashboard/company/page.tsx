@@ -13,6 +13,7 @@ interface TaskSummary {
   status: string;
   deadline: string;
   budget_cents: number;
+  eval_mode: string;
   created_at: string;
 }
 
@@ -275,8 +276,24 @@ export default function CompanyDashboard() {
               >
                 {task.category}
               </span>
-              <span className="w-24">
+              <span className="w-24 flex items-center gap-1.5">
                 <StatusBadge status={task.status} />
+                {task.eval_mode && task.eval_mode !== "llm" && (
+                  <span
+                    className="font-sans"
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: 500,
+                      color: "var(--text-faint)",
+                      padding: "1px 5px",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {task.eval_mode === "container" ? "Container" : "Hybrid"}
+                  </span>
+                )}
               </span>
               <span
                 className="w-24 text-right font-mono"

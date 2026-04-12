@@ -415,7 +415,7 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 
 ### 13h: Remaining
 
-- [ ] Update TESTING.md: add "Testing with eval containers" section (how to run the example container locally against test agent output)
+- [x] Update TESTING.md: add "Testing with eval containers" section (how to run the example container locally against test agent output)
 - [ ] E2E test: company creates task with container eval mode → task shows eval mode badge (Playwright)
 - [ ] Apply migration 018 to Supabase (manual — run in Supabase SQL editor)
 
