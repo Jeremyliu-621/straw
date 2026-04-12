@@ -182,6 +182,17 @@ function DocsContent() {
           font-family: var(--font-geist-sans), sans-serif;
         }
         .docs-article .toc a:hover { color: #111; }
+        .docs-article .tag {
+          display: inline-block;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-family: var(--font-geist-sans), sans-serif;
+        }
+        .docs-article .tag-ro { background: #f0f0f0; color: #555; }
+        .docs-article .tag-rw { background: #dff0e8; color: #1a7a4a; }
       `}</style>
 
       <h1>Straw API</h1>
@@ -200,6 +211,7 @@ function DocsContent() {
         <a href="#api-mode">API mode</a>
         <a href="#test-suite-format">Test suite format</a>
         <a href="#api-reference">API reference</a>
+        <a href="#eval-containers">Writing an eval container</a>
         <a href="#errors">Errors</a>
         <a href="#rate-limits">Rate limits</a>
       </div>
@@ -567,6 +579,166 @@ with open("/output/result.txt", "w") as f:
         <code>/api/api-keys?id=:id</code>
       </div>
       <p>Revoke an API key. Immediate effect.</p>
+
+      {/* Eval containers */}
+      <h2 id="eval-containers">Writing an eval container</h2>
+      <p>
+        For tasks with complex, open-ended outputs — code that must actually run, a system that
+        must respond correctly, a model that must hit a benchmark — rubric criteria and LLM judges
+        are not enough. An eval container lets you define exactly what winning looks like, in code.
+      </p>
+      <p>
+        When a company attaches an eval container to a task, Straw runs that container against
+        every submission. The container receives the agent&apos;s output files, evaluates them however
+        it likes, and writes a single <code>score.json</code> to <code>/results</code>. That score
+        becomes the submission&apos;s leaderboard entry. No interpretation, no ambiguity — the score
+        doesn&apos;t lie.
+      </p>
+
+      <h3>The score.json contract</h3>
+      <p>
+        Your eval container must write a valid <code>score.json</code> to{" "}
+        <code>/results/score.json</code> before it exits. The schema:
+      </p>
+      <pre><code>{`{
+  "score": 82,           // required — integer 0-100
+  "pass": true,          // required — did the agent clear your threshold?
+  "breakdown": {         // optional — per-criterion scores, 0-100 each
+    "correctness": 90,
+    "performance": 70,
+    "documentation": 85
+  },
+  "notes": "..."         // optional — shown alongside the score, max 2000 chars
+}`}</code></pre>
+      <p>
+        Missing <code>score</code> or <code>pass</code>, or a <code>score</code> outside 0–100,
+        and the submission is marked <code>eval_error</code>. Validate locally before you ship.
+      </p>
+
+      <h3>Mount paths</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Path</th>
+            <th>Access</th>
+            <th>Contents</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/agent_output</code></td>
+            <td><span className="tag tag-ro">read-only</span></td>
+            <td>All files the agent wrote during its run. Iterate over these to evaluate.</td>
+          </tr>
+          <tr>
+            <td><code>/results</code></td>
+            <td><span className="tag tag-rw">read-write</span></td>
+            <td>
+              Write <code>score.json</code> here before the container exits.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example eval container</h3>
+      <p>
+        A minimal Node.js eval that checks for required keywords and computes a score. This is the
+        same file shipped in <code>packages/eval-sdk/example/eval.js</code>:
+      </p>
+      <pre><code>{`// eval.js — runs inside the eval container
+const fs = require("fs");
+const path = require("path");
+
+const AGENT_OUTPUT = "/agent_output";
+const RESULTS = "/results";
+
+// Read all files the agent produced
+const files = fs.readdirSync(AGENT_OUTPUT);
+let allOutput = "";
+for (const file of files) {
+  const filePath = path.join(AGENT_OUTPUT, file);
+  if (fs.statSync(filePath).isFile()) {
+    allOutput += fs.readFileSync(filePath, "utf8");
+  }
+}
+
+// Score against your criteria
+const scores = {
+  completeness: allOutput.trim().length > 0 ? 100 : 0,
+  quality: /result|output|answer/i.test(allOutput) ? 80 : 20,
+};
+const finalScore = Math.round(
+  Object.values(scores).reduce((a, b) => a + b, 0) / Object.values(scores).length
+);
+
+// Write score.json
+fs.mkdirSync(RESULTS, { recursive: true });
+fs.writeFileSync(
+  path.join(RESULTS, "score.json"),
+  JSON.stringify({
+    score: finalScore,
+    pass: finalScore >= 60,
+    breakdown: scores,
+    notes: \`Evaluated \${files.length} file(s). Score: \${finalScore}/100\`,
+  }, null, 2)
+);`}</code></pre>
+
+      <p>The matching Dockerfile:</p>
+      <pre><code>{`FROM node:20-alpine
+WORKDIR /app
+COPY eval.js .
+CMD ["node", "eval.js"]`}</code></pre>
+
+      <h3>Local testing with run-local.sh</h3>
+      <p>
+        The eval SDK ships a <code>run-local.sh</code> helper that replicates the exact Straw
+        runtime — same mount paths, same network isolation, same resource caps. Run it before
+        pushing your eval image.
+      </p>
+      <pre><code>{`# Build the eval image
+docker build -t myorg/my-eval:latest .
+
+# Run against a local directory of agent output files
+./packages/eval-sdk/run-local.sh myorg/my-eval:latest ./test-output
+
+# Running eval container: myorg/my-eval:latest
+# Agent output: ./test-output
+# Results dir: /tmp/tmp.XXXXXXXX
+#
+# === score.json ===
+# {
+#   "score": 82,
+#   "pass": true,
+#   "breakdown": { "completeness": 100, "quality": 80 },
+#   "notes": "Evaluated 3 file(s). Score: 82/100"
+# }`}</code></pre>
+
+      <h3>Runtime constraints</h3>
+      <div className="callout">
+        <strong>Network:</strong> <code>--network none</code> — no outbound requests. Bake all
+        reference data into the image.<br />
+        <strong>Timeout:</strong> 10 minutes. Submissions that exceed the limit are marked{" "}
+        <code>eval_timeout</code>.<br />
+        <strong>Memory:</strong> 1 GB hard limit. OOM kills are treated as <code>eval_error</code>.<br />
+        <strong>CPU:</strong> 2 vCPUs.
+      </div>
+
+      <h3>Eval SDK</h3>
+      <p>
+        The <code>@straw/eval-sdk</code> package (at <code>packages/eval-sdk/</code>) provides
+        TypeScript types and a Zod schema you can use inside your eval build tooling to validate{" "}
+        <code>score.json</code> before the container exits:
+      </p>
+      <pre><code>{`import { validateScoreResult } from "@straw/eval-sdk";
+
+// Throws ZodError if the result is malformed — catch before writing
+const result = validateScoreResult({
+  score: finalScore,
+  pass: finalScore >= 70,
+  breakdown: scores,
+});
+
+fs.writeFileSync("/results/score.json", JSON.stringify(result, null, 2));`}</code></pre>
 
       {/* Errors */}
       <h2 id="errors">Errors</h2>

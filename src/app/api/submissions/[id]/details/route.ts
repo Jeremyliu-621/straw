@@ -15,15 +15,21 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const { id } = await params;
   const db = createServiceClient();
 
-  // Get the evaluation result for this submission
+  // Get the evaluation result for this submission (include container fields)
   const { data: evalResult, error: evalError } = await db
     .from("evaluation_results")
-    .select("id, llm_reasoning")
+    .select("id, llm_reasoning, container_score, breakdown, eval_mode")
     .eq("submission_id", id)
     .single();
 
   if (evalError || !evalResult) {
-    return NextResponse.json({ dimensions: [], reasoning: null });
+    return NextResponse.json({
+      dimensions: [],
+      reasoning: null,
+      container_score: null,
+      breakdown: null,
+      eval_mode: null,
+    });
   }
 
   // Get the evaluation dimensions with criterion details
@@ -42,7 +48,13 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     .eq("evaluation_result_id", evalResult.id);
 
   if (dimError) {
-    return NextResponse.json({ dimensions: [], reasoning: evalResult.llm_reasoning });
+    return NextResponse.json({
+      dimensions: [],
+      reasoning: evalResult.llm_reasoning,
+      container_score: evalResult.container_score ?? null,
+      breakdown: evalResult.breakdown ?? null,
+      eval_mode: evalResult.eval_mode ?? null,
+    });
   }
 
   // Format for the frontend
@@ -64,5 +76,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   return NextResponse.json({
     dimensions: formatted,
     reasoning: evalResult.llm_reasoning,
+    container_score: evalResult.container_score ?? null,
+    breakdown: evalResult.breakdown ?? null,
+    eval_mode: evalResult.eval_mode ?? null,
   });
 }

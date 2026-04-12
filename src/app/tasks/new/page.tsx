@@ -14,6 +14,8 @@ import {
   TASK_MIN_BUDGET_CENTS,
   RUBRIC_WEIGHT_SUM,
   CATEGORY_OPTIONS,
+  EVAL_MODE,
+  type EvalMode,
 } from "@/constants";
 
 interface Criterion {
@@ -54,6 +56,9 @@ export default function NewTaskPage() {
   const llmWeight = 100 - testWeight;
   const [testSuiteFile, setTestSuiteFile] = useState<File | null>(null);
   const [testSuiteError, setTestSuiteError] = useState<string | null>(null);
+  const [evalMode, setEvalMode] = useState<EvalMode>(EVAL_MODE.LLM);
+  const [evalImage, setEvalImage] = useState("");
+  const [evalImageError, setEvalImageError] = useState<string | null>(null);
 
   // Step 3: Rubric
   const [criteria, setCriteria] = useState<Criterion[]>([
@@ -90,7 +95,8 @@ export default function NewTaskPage() {
       case "data":
         return !!(inputDescription || inputFiles.length > 0) &&
                !!(outputDescription || outputFiles.length > 0) &&
-               (testWeight === 0 || testSuiteFile !== null);
+               (testWeight === 0 || testSuiteFile !== null) &&
+               (evalMode === EVAL_MODE.LLM || evalImage.trim() !== "");
       case "rubric":
         return weightsValid && criteria.every((c) => c.name.trim() !== "");
       case "refine":
@@ -194,6 +200,8 @@ export default function NewTaskPage() {
           output_spec: refinedOutputSpec,
           test_weight: testWeight,
           llm_weight: llmWeight,
+          eval_mode: evalMode,
+          eval_image: evalMode !== EVAL_MODE.LLM ? evalImage.trim() || null : null,
           budget_cents: budgetDollars * 100,
           deadline: new Date(deadline).toISOString(),
           criteria: criteria.map((c, i) => ({
@@ -568,6 +576,176 @@ export default function NewTaskPage() {
                 </div>
               </div>
 
+              {/* Evaluation Method */}
+              <div>
+                <label
+                  className="mb-2 block font-sans"
+                  style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-muted)" }}
+                >
+                  Evaluation Method
+                </label>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  {(
+                    [
+                      {
+                        mode: EVAL_MODE.LLM,
+                        title: "LLM Judge",
+                        description: "Gemini scores your rubric criteria. Best for qualitative tasks.",
+                      },
+                      {
+                        mode: EVAL_MODE.CONTAINER,
+                        title: "Container Eval",
+                        description: "Ship a Docker image that runs your own test suite.",
+                      },
+                      {
+                        mode: EVAL_MODE.HYBRID,
+                        title: "Hybrid",
+                        description: "Container scores + LLM commentary. Best of both.",
+                      },
+                    ] as const
+                  ).map(({ mode, title, description }) => {
+                    const isActive = evalMode === mode;
+                    return (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => {
+                          setEvalMode(mode);
+                          setEvalImageError(null);
+                        }}
+                        className="font-sans text-left"
+                        style={{
+                          flex: "1 1 160px",
+                          padding: "14px 16px",
+                          borderRadius: "var(--radius)",
+                          border: isActive
+                            ? "1.5px solid var(--text)"
+                            : "1px solid var(--border)",
+                          background: isActive ? "var(--bg-subtle)" : "var(--bg)",
+                          cursor: "pointer",
+                          transition: "border-color 0.15s ease, background 0.15s ease",
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: "block",
+                            fontSize: "13px",
+                            fontWeight: 500,
+                            color: isActive ? "var(--text)" : "var(--text-muted)",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          {title}
+                        </span>
+                        <span
+                          style={{
+                            display: "block",
+                            fontSize: "12px",
+                            color: "var(--text-faint)",
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          {description}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Eval container image input */}
+                {(evalMode === EVAL_MODE.CONTAINER || evalMode === EVAL_MODE.HYBRID) && (
+                  <div style={{ marginTop: "14px" }}>
+                    <label
+                      className="mb-1 block font-sans"
+                      style={{ fontSize: "13px", color: "var(--text-muted)" }}
+                    >
+                      Eval container image{" "}
+                      <span style={{ color: "var(--error)" }}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={evalImage}
+                      onChange={(e) => {
+                        setEvalImage(e.target.value);
+                        if (e.target.value.trim()) setEvalImageError(null);
+                      }}
+                      onBlur={() => {
+                        if (!evalImage.trim()) {
+                          setEvalImageError("Eval container image is required");
+                        }
+                      }}
+                      placeholder="myorg/eval:latest"
+                      className="w-full font-mono outline-none"
+                      style={{
+                        padding: "9px 12px",
+                        borderRadius: "var(--radius)",
+                        fontSize: "13px",
+                        color: "var(--text)",
+                        border: evalImageError
+                          ? "1px solid var(--error)"
+                          : "1px solid var(--border)",
+                        background: "var(--bg)",
+                      }}
+                    />
+                    {evalImageError && (
+                      <p
+                        className="mt-1 font-sans"
+                        style={{ fontSize: "12px", color: "var(--error)" }}
+                      >
+                        {evalImageError}
+                      </p>
+                    )}
+                    {/* Mount contract info box */}
+                    <div
+                      style={{
+                        marginTop: "10px",
+                        padding: "12px 14px",
+                        borderRadius: "var(--radius)",
+                        background: "var(--bg-subtle)",
+                        border: "1px solid var(--border)",
+                      }}
+                    >
+                      <p
+                        className="font-sans"
+                        style={{
+                          fontSize: "12px",
+                          color: "var(--text-muted)",
+                          lineHeight: 1.6,
+                          marginBottom: "6px",
+                        }}
+                      >
+                        <strong>Container contract:</strong> Your image will receive two mounts:
+                      </p>
+                      <ul
+                        className="font-mono"
+                        style={{
+                          fontSize: "12px",
+                          color: "var(--text-muted)",
+                          lineHeight: 1.8,
+                          margin: 0,
+                          paddingLeft: "16px",
+                        }}
+                      >
+                        <li>/agent_output — read-only: the agent&apos;s output files</li>
+                        <li>/results — writable: write score.json here</li>
+                      </ul>
+                      <p
+                        className="font-sans"
+                        style={{
+                          fontSize: "12px",
+                          color: "var(--text-muted)",
+                          lineHeight: 1.6,
+                          marginTop: "6px",
+                        }}
+                      >
+                        <code>score.json</code> must contain{" "}
+                        <code>{`{"score": 0–100, "breakdown": {"criterion": score, ...}}`}</code>
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Test suite upload — required when testWeight > 0 */}
               {testWeight > 0 && (
                 <div>
@@ -850,6 +1028,19 @@ export default function NewTaskPage() {
                     label="Evaluation"
                     value={`Tests ${testWeight}% / LLM ${llmWeight}%`}
                   />
+                  <ReviewItem
+                    label="Eval Method"
+                    value={
+                      evalMode === EVAL_MODE.LLM
+                        ? "LLM Judge"
+                        : evalMode === EVAL_MODE.CONTAINER
+                          ? "Container Eval"
+                          : "Hybrid"
+                    }
+                  />
+                  {evalMode !== EVAL_MODE.LLM && evalImage && (
+                    <ReviewItem label="Eval Image" value={evalImage} />
+                  )}
                   {testWeight > 0 && testSuiteFile && (
                     <ReviewItem
                       label="Test Suite"

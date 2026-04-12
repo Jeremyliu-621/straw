@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { StatusBadge } from "@/components/status-badge";
-import { ROLE_COMPANY } from "@/constants";
+import { ROLE_COMPANY, EVAL_MODE, type EvalMode } from "@/constants";
 import { formatScore, formatCurrency } from "@/services/results.service";
 
 interface LeaderboardEntry {
@@ -53,6 +53,9 @@ export default function ResultsPage() {
     null
   );
   const [dimensions, setDimensions] = useState<DimensionDetail[]>([]);
+  const [containerScore, setContainerScore] = useState<number | null>(null);
+  const [breakdown, setBreakdown] = useState<Record<string, number> | null>(null);
+  const [evalMode, setEvalMode] = useState<EvalMode | null>(null);
   const [loading, setLoading] = useState(true);
   const [contactLoading, setContactLoading] = useState(false);
   const [contactMessage, setContactMessage] = useState("");
@@ -86,8 +89,18 @@ export default function ResultsPage() {
         if (r.ok) return r.json();
         return { dimensions: [] };
       })
-      .then((data) => setDimensions(data.dimensions ?? []))
-      .catch(() => setDimensions([]));
+      .then((data) => {
+        setDimensions(data.dimensions ?? []);
+        setContainerScore(data.container_score ?? null);
+        setBreakdown(data.breakdown ?? null);
+        setEvalMode(data.eval_mode ?? null);
+      })
+      .catch(() => {
+        setDimensions([]);
+        setContainerScore(null);
+        setBreakdown(null);
+        setEvalMode(null);
+      });
   }, [selectedEntry]);
 
   async function contactWinner() {
@@ -436,100 +449,216 @@ export default function ResultsPage() {
         </div>
       )}
 
-      {/* Dimension breakdown for selected entry */}
-      {selectedEntry && dimensions.length > 0 && (
+      {/* Evaluation details for selected entry */}
+      {selectedEntry && (dimensions.length > 0 || breakdown) && (
         <div style={{ marginTop: "32px" }}>
-          <p
-            className="font-sans"
-            style={{
-              fontSize: "11px",
-              fontWeight: 500,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase" as const,
-              color: "var(--text-muted)",
-              marginBottom: "16px",
-            }}
+          {/* Section header with eval mode badge */}
+          <div
+            className="flex items-center gap-3"
+            style={{ marginBottom: "16px" }}
           >
-            EVALUATION DETAILS — {selectedEntry.agentName}
-          </p>
+            <p
+              className="font-sans"
+              style={{
+                fontSize: "11px",
+                fontWeight: 500,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase" as const,
+                color: "var(--text-muted)",
+              }}
+            >
+              EVALUATION DETAILS — {selectedEntry.agentName}
+            </p>
+            {evalMode && (
+              <EvalModeBadge mode={evalMode} />
+            )}
+          </div>
 
-          <div className="space-y-3">
-            {dimensions.map((dim) => (
-              <div
-                key={dim.criterion_name}
-                style={{
-                  padding: "16px",
-                  border: "1px solid var(--border)",
-                  borderRadius: "var(--radius)",
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <span
-                    className="font-sans"
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      color: "var(--text)",
-                    }}
-                  >
-                    {dim.criterion_name}
-                    <span
-                      style={{
-                        marginLeft: "8px",
-                        fontSize: "11px",
-                        fontWeight: 400,
-                        color: "var(--text-faint)",
-                      }}
-                    >
-                      {dim.weight}%
-                    </span>
-                  </span>
-                  <span
-                    className="font-mono"
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      color: "var(--text)",
-                    }}
-                  >
-                    {formatScore(dim.score)}
-                  </span>
-                </div>
-                {/* Score bar */}
+          {/* Container Score section (container or hybrid) */}
+          {breakdown &&
+            (evalMode === EVAL_MODE.CONTAINER || evalMode === EVAL_MODE.HYBRID) && (
+              <div style={{ marginBottom: dimensions.length > 0 && evalMode === EVAL_MODE.HYBRID ? "24px" : "0" }}>
                 <div
-                  style={{
-                    marginTop: "10px",
-                    height: "6px",
-                    background: "var(--border)",
-                    borderRadius: "var(--radius)",
-                  }}
+                  className="flex items-center justify-between"
+                  style={{ marginBottom: "10px" }}
                 >
-                  <div
-                    style={{
-                      height: "6px",
-                      background: "var(--accent, var(--text))",
-                      width: `${Math.min(dim.score, 100)}%`,
-                      borderRadius: "var(--radius)",
-                      transition: "width 300ms ease",
-                    }}
-                  />
-                </div>
-                {dim.reasoning && (
                   <p
                     className="font-sans"
                     style={{
-                      fontSize: "13px",
-                      color: "var(--text-muted)",
-                      marginTop: "10px",
-                      lineHeight: 1.6,
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase" as const,
+                      color: "var(--text-faint)",
                     }}
                   >
-                    {dim.reasoning}
+                    Container Score
                   </p>
-                )}
+                  {containerScore !== null && (
+                    <span
+                      className="font-mono"
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        color: "var(--text)",
+                      }}
+                    >
+                      {formatScore(containerScore)}
+                    </span>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  {Object.entries(breakdown).map(([criterion, score]) => (
+                    <div
+                      key={criterion}
+                      style={{
+                        padding: "12px 16px",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius)",
+                      }}
+                    >
+                      <div className="flex items-center justify-between" style={{ marginBottom: "8px" }}>
+                        <span
+                          className="font-sans"
+                          style={{
+                            fontSize: "13px",
+                            fontWeight: 500,
+                            color: "var(--text)",
+                          }}
+                        >
+                          {criterion}
+                        </span>
+                        <span
+                          className="font-mono"
+                          style={{
+                            fontSize: "13px",
+                            fontWeight: 600,
+                            color: "var(--text)",
+                          }}
+                        >
+                          {formatScore(score)}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          height: "5px",
+                          background: "var(--border)",
+                          borderRadius: "var(--radius)",
+                        }}
+                      >
+                        <div
+                          style={{
+                            height: "5px",
+                            background: "var(--accent, var(--text))",
+                            width: `${Math.min(score, 100)}%`,
+                            borderRadius: "var(--radius)",
+                            transition: "width 300ms ease",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
+            )}
+
+          {/* LLM dimensions (llm or hybrid) */}
+          {dimensions.length > 0 && evalMode !== EVAL_MODE.CONTAINER && (
+            <div>
+              {evalMode === EVAL_MODE.HYBRID && (
+                <p
+                  className="font-sans"
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase" as const,
+                    color: "var(--text-faint)",
+                    marginBottom: "10px",
+                  }}
+                >
+                  LLM Commentary
+                </p>
+              )}
+              <div className="space-y-3">
+                {dimensions.map((dim) => (
+                  <div
+                    key={dim.criterion_name}
+                    style={{
+                      padding: "16px",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius)",
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span
+                        className="font-sans"
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "var(--text)",
+                        }}
+                      >
+                        {dim.criterion_name}
+                        <span
+                          style={{
+                            marginLeft: "8px",
+                            fontSize: "11px",
+                            fontWeight: 400,
+                            color: "var(--text-faint)",
+                          }}
+                        >
+                          {dim.weight}%
+                        </span>
+                      </span>
+                      <span
+                        className="font-mono"
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          color: "var(--text)",
+                        }}
+                      >
+                        {formatScore(dim.score)}
+                      </span>
+                    </div>
+                    {/* Score bar */}
+                    <div
+                      style={{
+                        marginTop: "10px",
+                        height: "6px",
+                        background: "var(--border)",
+                        borderRadius: "var(--radius)",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "6px",
+                          background: "var(--accent, var(--text))",
+                          width: `${Math.min(dim.score, 100)}%`,
+                          borderRadius: "var(--radius)",
+                          transition: "width 300ms ease",
+                        }}
+                      />
+                    </div>
+                    {dim.reasoning && (
+                      <p
+                        className="font-sans"
+                        style={{
+                          fontSize: "13px",
+                          color: "var(--text-muted)",
+                          marginTop: "10px",
+                          lineHeight: 1.6,
+                        }}
+                      >
+                        {dim.reasoning}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -634,6 +763,34 @@ export default function ResultsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+const EVAL_MODE_LABEL: Record<EvalMode, string> = {
+  llm: "LLM Judge",
+  container: "Container Eval",
+  hybrid: "Hybrid",
+};
+
+function EvalModeBadge({ mode }: { mode: EvalMode }) {
+  return (
+    <span
+      className="font-sans"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        padding: "2px 8px",
+        borderRadius: "var(--radius)",
+        fontSize: "11px",
+        fontWeight: 500,
+        color: "var(--text-muted)",
+        background: "var(--bg-subtle)",
+        border: "1px solid var(--border)",
+        letterSpacing: "0.02em",
+      }}
+    >
+      {EVAL_MODE_LABEL[mode]}
+    </span>
   );
 }
 
