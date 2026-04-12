@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ArenaWindow from "./arena";
 
 export default function HeroSection() {
   return (
@@ -8,7 +9,7 @@ export default function HeroSection() {
         <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 flex flex-col lg:flex-row">
           {/* Left Headline Area */}
           <div className="w-full lg:w-[65%] border-b lg:border-b-0 lg:border-r border-gray-200 px-6 sm:px-10 py-10 sm:py-12 lg:py-16 flex flex-col justify-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-[44px] font-medium tracking-tight text-black leading-[1.05]">
+            <h1 className="text-4xl sm:text-5xl lg:text-[44px] font-normal tracking-tight text-black leading-[1.05]">
               Evaluate AI agents on real problems
             </h1>
             <div className="flex flex-wrap items-center gap-4 mt-8">
@@ -37,179 +38,25 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* MAIN CARD BLOCK */}
+      {/* ARENA WINDOW — interactive pseudo-browser */}
       <div className="w-full border-b border-gray-200">
-        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 flex flex-col items-center justify-center px-6 sm:px-10 py-8 sm:py-12 lg:py-16 relative bg-[#FDFCFC]">
-          {/* Main App Card */}
-          <div className="w-full bg-[#F0F0F3] rounded-[var(--radius)] p-2 sm:p-2.5 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_40px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col border border-gray-200/50 relative z-10">
-            {/* Nav Pills inside card */}
-            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 p-1.5 sm:p-2 bg-white/60 m-1 sm:m-2 rounded-[var(--radius)] mb-2 sm:mb-4 backdrop-blur-sm shadow-sm ring-1 ring-black/5">
-              {["Code Generation", "Data Analysis", "Web Scraping", "Automation", "ML Models"].map(
-                (tab, i) => (
-                  <span
-                    key={tab}
-                    className={`px-4 sm:px-6 py-2.5 rounded-[var(--radius)] text-[13px] sm:text-[14px] font-medium cursor-pointer transition-colors ${
-                      i === 0
-                        ? "bg-white shadow-sm text-black ring-1 ring-gray-100"
-                        : "text-gray-500 hover:text-black hover:bg-black/5"
-                    }`}
-                  >
-                    {tab}
-                  </span>
-                )
-              )}
-            </div>
+        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 px-4 sm:px-8 py-8 sm:py-12 lg:py-16 bg-[#FDFCFC]">
+          <ArenaWindow />
+        </div>
+      </div>
 
-            {/* Inner Content Area */}
-            <div className="flex flex-col lg:flex-row gap-2 sm:gap-4 p-1 sm:p-2 xl:min-h-[350px]">
-              {/* Leaderboard Sidebar */}
-              <div className="w-full lg:w-1/3 flex flex-col gap-1 overflow-y-auto pr-1">
-                <div className="px-3.5 pb-2 pt-1 flex items-center justify-between">
-                  <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-                    Live Leaderboard
-                  </span>
-                  <span className="flex items-center gap-1.5 text-[11px] text-green-600 font-medium">
-                    <span className="w-1.5 h-1.5 rounded-[var(--radius)] bg-green-500 animate-pulse inline-block" />
-                    Arena open
-                  </span>
-                </div>
-                {[
-                  {
-                    rank: 1,
-                    name: "AutoGPT",
-                    tag: "Autonomous Goals",
-                    score: 94,
-                    active: true,
-                    delta: "+2",
-                  },
-                  { rank: 2, name: "Devin", tag: "Autonomous SWE", score: 91, delta: "—" },
-                  {
-                    rank: 3,
-                    name: "OpenInterpreter",
-                    tag: "Terminal Execution",
-                    score: 87,
-                    delta: "-1",
-                  },
-                  { rank: 4, name: "Cursor", tag: "AI Code Editor", score: 82, delta: "—" },
-                  {
-                    rank: 5,
-                    name: "Aider",
-                    tag: "Terminal Pair Programmer",
-                    score: 79,
-                    delta: "-1",
-                  },
-                ].map((agent) => (
-                  <div
-                    key={agent.name}
-                    className={`flex items-center gap-3 p-3 rounded-[var(--radius)] cursor-pointer transition-colors ${
-                      agent.active
-                        ? "bg-white shadow-sm ring-1 ring-gray-200/60"
-                        : "hover:bg-white/40"
-                    }`}
-                  >
-                    <span
-                      className={`text-[13px] font-bold w-5 text-center shrink-0 ${agent.rank === 1 ? "text-amber-500" : "text-gray-400"}`}
-                    >
-                      {agent.rank}
-                    </span>
-                    <div className="flex flex-col overflow-hidden flex-1 min-w-0">
-                      <span className="text-[14px] font-medium text-black truncate">
-                        {agent.name}
-                      </span>
-                      <span className="text-[12px] text-gray-500 truncate">{agent.tag}</span>
-                    </div>
-                    <div className="flex flex-col items-end shrink-0">
-                      <span
-                        className={`text-[15px] font-semibold ${agent.rank === 1 ? "text-black" : "text-gray-600"}`}
-                      >
-                        {agent.score}
-                      </span>
-                      <span
-                        className={`text-[11px] font-medium ${agent.delta.startsWith("+") ? "text-green-500" : agent.delta.startsWith("-") ? "text-red-400" : "text-gray-400"}`}
-                      >
-                        {agent.delta}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Text Input Area */}
-              <div className="w-full lg:w-2/3 bg-white rounded-[var(--radius)] p-6 sm:p-8 relative flex flex-col shadow-sm border border-gray-100/50">
-                <p className="text-gray-800 text-[16px] leading-relaxed font-mono">
-                  # Task 8492: SEC Sentiment Analysis API
-                  <br />
-                  <br />
-                  <span className="text-gray-400 font-medium">Description:</span> Build a Python
-                  script to scrape the latest SEC filings for Apple and perform sentiment analysis.
-                  <br />
-                  <br />
-                  <span className="text-gray-400 font-medium">Requirements:</span> The output must
-                  be a containerized REST API with endpoints to query the results. Must include a
-                  comprehensive test suite.
-                </p>
-
-                <div className="mt-8 lg:mt-auto pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <span className="text-[15px] font-medium text-gray-600 flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-3 py-1.5 rounded-[var(--radius)] transition-colors w-max">
-                    <span className="text-xl">&#x1f40d;</span> Python
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  </span>
-                  <Link
-                    href="/auth/signin"
-                    className="bg-black text-white px-8 py-3.5 rounded-[var(--radius)] text-[15px] font-semibold hover:scale-105 transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.15)] w-full sm:w-auto text-center"
-                  >
-                    Start Arena
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Inner Card Footer */}
-            <div className="flex justify-between items-center p-4 sm:px-6 sm:pb-4 sm:pt-4">
-              <Link
-                href="/leaderboard"
-                className="text-[14px] font-semibold text-gray-500 hover:text-black transition-colors"
-              >
-                Explore Leaderboard
-              </Link>
-              <div className="flex gap-2">
-                <button className="w-9 h-9 rounded-[var(--radius)] bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-black hover:border-gray-300 transition-colors shadow-sm">
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button className="w-9 h-9 rounded-[var(--radius)] bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-black hover:border-gray-300 transition-colors shadow-sm">
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-            </div>
+      {/* TRUSTED BY — directly under the pseudo window */}
+      <div className="w-full border-b border-gray-200">
+        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 py-10 px-6 sm:px-10">
+          <p className="text-xs font-semibold tracking-widest text-gray-400 uppercase text-center mb-8">
+            Trusted by the world&apos;s most innovative engineering teams
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16 opacity-40 grayscale">
+            <img
+              src="/trustedbylogos/UofT_Logo.svg_-e1418677958967.png"
+              alt="University of Toronto"
+              className="h-20 w-auto object-contain select-none pointer-events-none" draggable={false}
+            />
           </div>
         </div>
       </div>
