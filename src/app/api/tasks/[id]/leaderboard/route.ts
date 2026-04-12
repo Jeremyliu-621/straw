@@ -21,7 +21,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   // Fetch task to check it exists and get deadline + eval mode
   const { data: task, error: taskError } = await db
     .from("tasks")
-    .select("id, status, deadline, company_id, eval_mode")
+    .select("*")
     .eq("id", id)
     .single();
 
@@ -118,7 +118,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     revealed: reveal,
     deadline: task.deadline,
     taskStatus: task.status,
-    evalMode: task.eval_mode ?? "llm",
+    evalMode: (task as Record<string, unknown>).eval_mode ?? "llm",
     isOwner: task.company_id === session.user.supabaseId,
   });
 }
