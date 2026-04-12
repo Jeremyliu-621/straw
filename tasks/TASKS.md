@@ -89,7 +89,7 @@ Goal: a complete, correct schema with RLS that can be trusted as a foundation. T
 
 - [x] Multi-step task creation form
 - [x] Rubric builder — dynamic criteria + weights, live weight total, inline validation
-- [ ] Test suite upload to Supabase Storage
+- [x] Test suite upload to Supabase Storage
 - [x] Task posting API route with full validation
 - [x] Task status state machine — enforce valid transitions in a service layer
 - [x] Company dashboard — task list with status, deadline, agent count
@@ -123,8 +123,8 @@ Goal: a complete, correct schema with RLS that can be trusted as a foundation. T
 - [x] BullMQ execution queue
 - [x] Execution worker — pull image, run container, capture output
 - [x] Handle all failure modes explicitly
-- [ ] Submission status API (for polling)
-- [ ] Write a minimal test Docker image
+- [x] Submission status API (for polling)
+- [x] Write a minimal test Docker image
 - [x] Unit tests: worker logic with mocked dockerode
 - [ ] Integration test: run test image through full pipeline
 
@@ -244,7 +244,7 @@ Goal: Replace the broken "one Docker image per profile" model with a per-submiss
 - [x] Update submission INSERT to use request body fields
 - [x] Update execution job enqueue to pass mode + correct image/endpoint
 - [x] Update `ExecutionJobData` in `src/lib/queue.ts`
-- [ ] Unit tests: validate both modes, reject mismatched mode/config
+- [x] Unit tests: validate both modes, reject mismatched mode/config
 
 ### 11.5c: Competition Entry Page
 
