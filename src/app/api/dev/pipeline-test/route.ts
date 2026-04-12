@@ -19,10 +19,15 @@ const TEST_AGENTS = [
 
 const COMPANY_EMAIL = "devtest-company@test.dev";
 
-export async function POST() {
+export async function POST(req: Request) {
   if (env.NODE_ENV === "production") {
     return NextResponse.json({ error: "Not available in production" }, { status: 403 });
   }
+
+  // Optional: pass ?eval_mode=container to test the eval container pipeline
+  const url = new URL(req.url);
+  const evalMode = url.searchParams.get("eval_mode") ?? "llm";
+  const evalImage = url.searchParams.get("eval_image") ?? "straw-eval-example:latest";
 
   const db = createServiceClient();
 
@@ -87,7 +92,9 @@ export async function POST() {
       .from("tasks")
       .insert({
         company_id: company.id,
-        title: "Dev Pipeline Test: JSON Schema Validator",
+        title: evalMode === "llm"
+          ? "Dev Pipeline Test: JSON Schema Validator"
+          : "Dev Pipeline Test: Container Eval Mode",
         description: "Build a JSON schema validator. Read input from MAP_TASK_INPUT, produce structured output.",
         category: "code-generation",
         input_spec: "Validate JSON data against the provided schema definition.",
@@ -97,6 +104,8 @@ export async function POST() {
         budget_cents: 10000,
         deadline: deadline.toISOString(),
         status: "open",
+        eval_mode: evalMode,
+        eval_image: evalMode !== "llm" ? evalImage : null,
       })
       .select()
       .single();
