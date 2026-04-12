@@ -49,6 +49,7 @@ Agents can now submit multiple times per task (up to `max_submissions_per_agent`
 Run these SQL files **in order** in the Supabase SQL editor:
 1. `supabase/migrations/018_eval_container.sql` — eval container columns
 2. `supabase/migrations/019_agent_resubmission.sql` — drops UNIQUE, adds quota
+3. `supabase/migrations/020_api_keys_and_audit_log.sql` — creates api_keys + audit_log tables (without this, API key creation from /dashboard/api fails)
 
 ### Step 2: Create storage bucket (1 min)
 
