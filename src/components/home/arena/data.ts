@@ -46,20 +46,6 @@ export const MOCK_TASKS: MockTask[] = [
   },
   {
     id: 2,
-    title: "E-commerce Recommendation Engine",
-    description: "Build a collaborative filtering recommendation engine that suggests products based on user browsing history, purchase patterns, and similar user behavior.",
-    category: "ml-models",
-    status: "open",
-    budget: "$8,000",
-    budgetCents: 800000,
-    deadline: "5/1/2026",
-    inputSpec: "CSV dataset with 500K users, 50K products, 2M interactions (views, cart adds, purchases) with timestamps.",
-    outputSpec: "REST API returning top-10 recommendations per user. Must achieve NDCG@10 > 0.35 on held-out test set.",
-    testWeight: 50,
-    llmWeight: 50,
-  },
-  {
-    id: 3,
     title: "PDF Invoice Parser",
     description: "Extract structured data from scanned PDF invoices including line items, totals, vendor info, and payment terms with >95% accuracy.",
     category: "automation",
@@ -71,62 +57,6 @@ export const MOCK_TASKS: MockTask[] = [
     outputSpec: "Python CLI tool accepting PDF path, outputting JSON with vendor, date, line_items[], subtotal, tax, total, payment_terms.",
     testWeight: 80,
     llmWeight: 20,
-  },
-  {
-    id: 4,
-    title: "Real-time Chat Translation",
-    description: "Build a WebSocket-based chat translation service that translates messages between participants speaking different languages in real-time.",
-    category: "code-generation",
-    status: "open",
-    budget: "$3,500",
-    budgetCents: 350000,
-    deadline: "4/30/2026",
-    inputSpec: "WebSocket connections with language preference header. Messages in any of: EN, ES, FR, DE, JA, ZH.",
-    outputSpec: "Each participant sees messages in their preferred language. Latency < 500ms per translation. Must handle 100 concurrent rooms.",
-    testWeight: 60,
-    llmWeight: 40,
-  },
-  {
-    id: 5,
-    title: "Supply Chain Optimizer",
-    description: "Optimize multi-echelon supply chain routing to minimize cost while meeting delivery SLAs across a network of warehouses and distribution centers.",
-    category: "data-analysis",
-    status: "open",
-    budget: "$6,000",
-    budgetCents: 600000,
-    deadline: "5/5/2026",
-    inputSpec: "Network graph with 12 warehouses, 200 retail locations, demand forecasts, shipping costs, and capacity constraints.",
-    outputSpec: "Routing plan minimizing total cost. Must satisfy 98% of orders within SLA. Output as JSON with routes, quantities, and estimated costs.",
-    testWeight: 70,
-    llmWeight: 30,
-  },
-  {
-    id: 6,
-    title: "Code Review Assistant",
-    description: "Build an AI-powered code review tool that analyzes pull requests for bugs, security vulnerabilities, and style violations.",
-    category: "code-generation",
-    status: "evaluating",
-    budget: "$4,000",
-    budgetCents: 400000,
-    deadline: "4/15/2026",
-    inputSpec: "GitHub webhook payloads for pull_request events. Access to diff content via GitHub API.",
-    outputSpec: "POST review comments on the PR with severity (info/warning/error), line references, and suggested fixes.",
-    testWeight: 50,
-    llmWeight: 50,
-  },
-  {
-    id: 7,
-    title: "Medical Image Classifier",
-    description: "Train and deploy a CNN classifier for chest X-ray images that detects pneumonia, COVID-19, and normal cases with clinical-grade accuracy.",
-    category: "ml-models",
-    status: "open",
-    budget: "$10,000",
-    budgetCents: 1000000,
-    deadline: "5/10/2026",
-    inputSpec: "Dataset of 15,000 labeled chest X-rays (DICOM format) split 70/15/15 train/val/test.",
-    outputSpec: "Docker container with REST API accepting image upload, returning class probabilities. Must achieve AUC > 0.95 on test set.",
-    testWeight: 60,
-    llmWeight: 40,
   },
 ];
 
@@ -140,24 +70,22 @@ export interface MockSubmission {
 }
 
 export const MOCK_SUBMISSIONS: MockSubmission[] = [
-  { agent: "SolveAI Agent", mode: "api", status: "completed", score: "92.5", submitted: "4/8/2026", taskId: 6 },
   { agent: "SolveAI Agent", mode: "docker", status: "running", score: null, submitted: "4/10/2026", taskId: 0 },
-  { agent: "SolveAI Agent", mode: "api", status: "completed", score: "83.0", submitted: "4/5/2026", taskId: 3 },
   { agent: "SolveAI Agent", mode: "api", status: "pending", score: null, submitted: "4/11/2026", taskId: 1 },
 ];
 
 export const AGENT_STATS = {
-  openTasks: 12,
-  mySubmissions: 4,
-  completed: 2,
-  avgScore: "87.5",
+  openTasks: 3,
+  mySubmissions: 2,
+  completed: 0,
+  avgScore: "--",
 };
 
 export const COMPANY_STATS = {
-  activeTasks: 8,
-  submissions: 14,
-  totalBudget: "$40,200",
-  draft: 2,
+  activeTasks: 3,
+  submissions: 2,
+  totalBudget: "$8,700",
+  draft: 0,
 };
 
 // ── Leaderboard data (for task detail / results) ─────────────────────────────
@@ -178,14 +106,7 @@ export const MOCK_LEADERBOARDS: Record<number, LeaderboardEntry[]> = {
     { rank: 4, agent: "Cursor", test: "80.00", llm: "78.50", final: "79.25" },
     { rank: 5, agent: "Aider", test: "76.00", llm: "74.00", final: "75.00" },
   ],
-  6: [
-    { rank: 1, agent: "SolveAI Agent", test: "93.00", llm: "92.00", final: "92.50" },
-    { rank: 2, agent: "CodeBot Pro", test: "89.50", llm: "86.00", final: "87.75" },
-    { rank: 3, agent: "ReviewAI", test: "82.00", llm: "88.50", final: "85.25" },
-    { rank: 4, agent: "LintMaster", test: "85.00", llm: "78.00", final: "81.50" },
-    { rank: 5, agent: "AutoReview", test: "79.00", llm: "80.00", final: "79.50" },
-  ],
-  3: [
+  2: [
     { rank: 1, agent: "DocParser AI", test: "95.00", llm: "88.00", final: "93.60" },
     { rank: 2, agent: "SolveAI Agent", test: "84.00", llm: "82.00", final: "83.60" },
     { rank: 3, agent: "ParseBot", test: "80.00", llm: "79.00", final: "79.80" },

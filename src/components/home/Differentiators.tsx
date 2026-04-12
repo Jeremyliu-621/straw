@@ -2,9 +2,9 @@
 
 function RubricVisual() {
   return (
-    <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+    <div style={{ display: "flex", gap: 12 }}>
       {/* Them: fixed metric */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <div
           className="font-mono"
           style={{
@@ -19,6 +19,7 @@ function RubricVisual() {
         </div>
         <div
           style={{
+            flex: 1,
             padding: "12px 14px",
             background: "var(--bg-subtle)",
             borderRadius: "var(--radius)",
@@ -42,7 +43,7 @@ function RubricVisual() {
         </div>
       </div>
       {/* Us: custom rubric */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <div
           className="font-mono"
           style={{
@@ -57,6 +58,7 @@ function RubricVisual() {
         </div>
         <div
           style={{
+            flex: 1,
             padding: "12px 14px",
             background: "var(--bg)",
             borderRadius: "var(--radius)",
@@ -89,9 +91,9 @@ function RubricVisual() {
 
 function AgentsVisual() {
   return (
-    <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+    <div style={{ display: "flex", gap: 12 }}>
       {/* Them: manual upload */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <div
           className="font-mono"
           style={{
@@ -106,6 +108,7 @@ function AgentsVisual() {
         </div>
         <div
           style={{
+            flex: 1,
             padding: "14px",
             background: "var(--bg-subtle)",
             borderRadius: "var(--radius)",
@@ -151,7 +154,7 @@ function AgentsVisual() {
         </div>
       </div>
       {/* Us: API call */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <div
           className="font-mono"
           style={{
@@ -166,6 +169,7 @@ function AgentsVisual() {
         </div>
         <div
           style={{
+            flex: 1,
             padding: "10px 12px",
             background: "#111",
             borderRadius: "var(--radius)",
@@ -199,9 +203,9 @@ function AgentsVisual() {
 
 function BenchmarkVisual() {
   return (
-    <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+    <div style={{ display: "flex", gap: 12 }}>
       {/* Them: generic benchmark */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <div
           className="font-mono"
           style={{
@@ -216,6 +220,7 @@ function BenchmarkVisual() {
         </div>
         <div
           style={{
+            flex: 1,
             padding: "12px 14px",
             background: "var(--bg-subtle)",
             borderRadius: "var(--radius)",
@@ -243,7 +248,7 @@ function BenchmarkVisual() {
         </div>
       </div>
       {/* Us: real business task */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <div
           className="font-mono"
           style={{
@@ -258,6 +263,7 @@ function BenchmarkVisual() {
         </div>
         <div
           style={{
+            flex: 1,
             padding: "12px 14px",
             background: "var(--bg)",
             borderRadius: "var(--radius)",
@@ -307,7 +313,7 @@ function PipelineVisual() {
     { label: "Hire", icon: "\u2713", active: true },
   ];
   return (
-    <div style={{ marginBottom: 20 }}>
+    <div>
       {/* Flow diagram */}
       <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 12 }}>
         {steps.map((s, i) => (
@@ -351,26 +357,6 @@ function PipelineVisual() {
             )}
           </div>
         ))}
-      </div>
-      {/* Comparison line */}
-      <div
-        className="flex items-center gap-3"
-        style={{
-          padding: "8px 12px",
-          background: "var(--bg-subtle)",
-          borderRadius: "var(--radius)",
-          border: "1px solid var(--border)",
-        }}
-      >
-        <span style={{ fontSize: 16 }}>🏅</span>
-        <div>
-          <div className="font-sans" style={{ fontSize: 11, color: "var(--text-faint)" }}>
-            On other platforms, this is where it ends.
-          </div>
-          <div className="font-sans" style={{ fontSize: 11, color: "var(--text-faint)" }}>
-            On Straw, this is where the deal starts.
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -429,9 +415,11 @@ export default function Differentiators() {
                 i % 2 === 0 ? "md:border-r border-gray-200" : ""
               } ${i < 2 ? "border-b border-gray-200" : ""}`}
             >
-              <h3 className="text-[15px] font-mono text-black tracking-tight mb-5">{item.vs}</h3>
-              {item.visual}
-              <p className="text-[#646464] text-[14px] leading-relaxed max-w-[360px]">
+              <h3 className="text-[22px] sm:text-[24px] font-normal tracking-tight text-black leading-[1.2] mb-5">{item.vs}</h3>
+              <div className="min-h-[160px]">
+                {item.visual}
+              </div>
+              <p className="text-[#646464] text-[14px] leading-relaxed">
                 {item.description}
               </p>
             </div>
