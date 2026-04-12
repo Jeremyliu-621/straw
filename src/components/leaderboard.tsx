@@ -19,6 +19,7 @@ interface LeaderboardData {
   revealed: boolean;
   deadline: string;
   taskStatus: string;
+  evalMode: string;
   isOwner: boolean;
 }
 
@@ -85,6 +86,9 @@ export function Leaderboard({ taskId }: { taskId: string }) {
     return <LeaderboardEmpty />;
   }
 
+  // Container/hybrid modes don't have separate test/llm scores — only the final container score
+  const showSubScores = !data.evalMode || data.evalMode === "llm";
+
   return (
     <div>
       <div
@@ -124,7 +128,9 @@ export function Leaderboard({ taskId }: { taskId: string }) {
         <div
           className="grid font-sans"
           style={{
-            gridTemplateColumns: "48px 1fr 100px 100px 120px",
+            gridTemplateColumns: showSubScores
+              ? "48px 1fr 100px 100px 120px"
+              : "48px 1fr 120px",
             fontSize: "11px",
             fontWeight: 500,
             letterSpacing: "0.06em",
@@ -137,10 +143,10 @@ export function Leaderboard({ taskId }: { taskId: string }) {
         >
           <span style={{ textAlign: "center" }}>Rank</span>
           <span>Agent</span>
-          <span style={{ textAlign: "right" }}>Test</span>
-          <span style={{ textAlign: "right" }}>LLM</span>
+          {showSubScores && <span style={{ textAlign: "right" }}>Test</span>}
+          {showSubScores && <span style={{ textAlign: "right" }}>LLM</span>}
           <span style={{ textAlign: "right", paddingRight: "12px" }}>
-            Final Score
+            {data.evalMode === "container" ? "Container Score" : data.evalMode === "hybrid" ? "Score" : "Final Score"}
           </span>
         </div>
 
@@ -150,6 +156,7 @@ export function Leaderboard({ taskId }: { taskId: string }) {
             key={entry.submissionId}
             entry={entry}
             isWinner={entry.rank === 1}
+            showSubScores={showSubScores}
           />
         ))}
       </div>
@@ -160,15 +167,19 @@ export function Leaderboard({ taskId }: { taskId: string }) {
 function LeaderboardRow({
   entry,
   isWinner,
+  showSubScores,
 }: {
   entry: LeaderboardEntry;
   isWinner: boolean;
+  showSubScores: boolean;
 }) {
   return (
     <div
       className="grid font-sans"
       style={{
-        gridTemplateColumns: "48px 1fr 100px 100px 120px",
+        gridTemplateColumns: showSubScores
+          ? "48px 1fr 100px 100px 120px"
+          : "48px 1fr 120px",
         height: "56px",
         alignItems: "center",
         borderBottom: "1px solid var(--border)",
@@ -203,32 +214,36 @@ function LeaderboardRow({
       >
         {entry.agentName}
       </span>
-      <span
-        className="font-mono"
-        style={{
-          textAlign: "right",
-          fontSize: "14px",
-          color:
-            entry.testScore !== null
-              ? "var(--text)"
-              : "var(--text-faint)",
-        }}
-      >
-        {entry.testScore !== null ? entry.testScore.toFixed(1) : "\u2014"}
-      </span>
-      <span
-        className="font-mono"
-        style={{
-          textAlign: "right",
-          fontSize: "14px",
-          color:
-            entry.llmScore !== null
-              ? "var(--text)"
-              : "var(--text-faint)",
-        }}
-      >
-        {entry.llmScore !== null ? entry.llmScore.toFixed(1) : "\u2014"}
-      </span>
+      {showSubScores && (
+        <span
+          className="font-mono"
+          style={{
+            textAlign: "right",
+            fontSize: "14px",
+            color:
+              entry.testScore !== null
+                ? "var(--text)"
+                : "var(--text-faint)",
+          }}
+        >
+          {entry.testScore !== null ? entry.testScore.toFixed(1) : "\u2014"}
+        </span>
+      )}
+      {showSubScores && (
+        <span
+          className="font-mono"
+          style={{
+            textAlign: "right",
+            fontSize: "14px",
+            color:
+              entry.llmScore !== null
+                ? "var(--text)"
+                : "var(--text-faint)",
+          }}
+        >
+          {entry.llmScore !== null ? entry.llmScore.toFixed(1) : "\u2014"}
+        </span>
+      )}
       <div style={{ textAlign: "right", paddingRight: "12px" }}>
         <span
           className="font-mono"

@@ -18,10 +18,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const { id } = await params;
   const db = createServiceClient();
 
-  // Fetch task to check it exists and get deadline
+  // Fetch task to check it exists and get deadline + eval mode
   const { data: task, error: taskError } = await db
     .from("tasks")
-    .select("id, status, deadline, company_id")
+    .select("id, status, deadline, company_id, eval_mode")
     .eq("id", id)
     .single();
 
@@ -107,6 +107,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     revealed: reveal,
     deadline: task.deadline,
     taskStatus: task.status,
+    evalMode: task.eval_mode ?? "llm",
     isOwner: task.company_id === session.user.supabaseId,
   });
 }
