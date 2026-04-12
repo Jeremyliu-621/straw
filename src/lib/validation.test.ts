@@ -90,4 +90,80 @@ describe("createTaskSchema", () => {
     const result = createTaskSchema.safeParse(input);
     expect(result.success).toBe(true);
   });
+
+  // ── eval_mode / eval_image ─────────────────────────────────
+
+  describe("eval_mode and eval_image", () => {
+    it("defaults eval_mode to llm when omitted", () => {
+      const result = createTaskSchema.safeParse(validTaskInput());
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.eval_mode).toBe("llm");
+      }
+    });
+
+    it("accepts explicit llm mode without eval_image", () => {
+      const input = { ...validTaskInput(), eval_mode: "llm" };
+      const result = createTaskSchema.safeParse(input);
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts container mode with eval_image", () => {
+      const input = {
+        ...validTaskInput(),
+        eval_mode: "container",
+        eval_image: "myorg/eval:latest",
+      };
+      const result = createTaskSchema.safeParse(input);
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts hybrid mode with eval_image", () => {
+      const input = {
+        ...validTaskInput(),
+        eval_mode: "hybrid",
+        eval_image: "acme/tests:v2",
+      };
+      const result = createTaskSchema.safeParse(input);
+      expect(result.success).toBe(true);
+    });
+
+    it("rejects container mode without eval_image", () => {
+      const input = { ...validTaskInput(), eval_mode: "container" };
+      const result = createTaskSchema.safeParse(input);
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects hybrid mode without eval_image", () => {
+      const input = { ...validTaskInput(), eval_mode: "hybrid" };
+      const result = createTaskSchema.safeParse(input);
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects container mode with null eval_image", () => {
+      const input = {
+        ...validTaskInput(),
+        eval_mode: "container",
+        eval_image: null,
+      };
+      const result = createTaskSchema.safeParse(input);
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects invalid eval_mode value", () => {
+      const input = { ...validTaskInput(), eval_mode: "magic" };
+      const result = createTaskSchema.safeParse(input);
+      expect(result.success).toBe(false);
+    });
+
+    it("accepts llm mode with null eval_image (explicit)", () => {
+      const input = {
+        ...validTaskInput(),
+        eval_mode: "llm",
+        eval_image: null,
+      };
+      const result = createTaskSchema.safeParse(input);
+      expect(result.success).toBe(true);
+    });
+  });
 });
