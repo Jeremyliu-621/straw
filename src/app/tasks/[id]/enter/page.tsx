@@ -15,6 +15,7 @@ interface TaskSummary {
   output_spec: string;
   eval_mode: string;
   eval_image: string | null;
+  max_submissions_per_agent: number;
   submission_stats: { total: number; your_submissions: number };
 }
 
@@ -399,8 +400,8 @@ Memory: 512MB · CPU: 1 core · Timeout: 5min`}</pre>
           style={{ fontSize: "12px", color: "var(--text-faint)", lineHeight: 1.5 }}
         >
           {task.submission_stats.your_submissions > 0
-            ? `${task.submission_stats.your_submissions} submission${task.submission_stats.your_submissions === 1 ? "" : "s"} so far`
-            : "First submission on this task"}
+            ? `${task.submission_stats.your_submissions} of ${task.max_submissions_per_agent ?? 5} submissions used`
+            : `Up to ${task.max_submissions_per_agent ?? 5} submissions allowed`}
         </p>
       </div>
     </div>

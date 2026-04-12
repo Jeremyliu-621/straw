@@ -81,7 +81,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
     entries.push({
       rank: 0,
-      agentId: reveal ? sub.agent_id : "",
+      agentId: sub.agent_id, // Always store real agent_id for dedup — anonymize later
       agentName,
       finalScore: evalResult.final_score,
       testScore: evalResult.test_score,
@@ -92,12 +92,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   }
 
   // Deduplicate: when agents have multiple submissions, keep only the best score per agent.
-  // This is keyed on agent_id (before anonymization).
+  // Uses the real agent_id (before anonymization) so dedup works regardless of reveal state.
   const bestPerAgent = new Map<string, LeaderboardEntry>();
   for (const entry of entries) {
-    const existing = bestPerAgent.get(entry.agentId || entry.submissionId);
+    const existing = bestPerAgent.get(entry.agentId);
     if (!existing || entry.finalScore > existing.finalScore) {
-      bestPerAgent.set(entry.agentId || entry.submissionId, entry);
+      bestPerAgent.set(entry.agentId, entry);
     }
   }
   const deduplicated = Array.from(bestPerAgent.values());
