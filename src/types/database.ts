@@ -1,4 +1,4 @@
-import type { UserRole, TaskStatus, SubmissionStatus, DealType, AuditAction, NotificationType, InvitationStatus } from "@/constants";
+import type { UserRole, TaskStatus, SubmissionStatus, DealType, AuditAction, NotificationType, InvitationStatus, EvalMode } from "@/constants";
 
 // ── Base ─────────────────────────────────────────────────────
 
@@ -83,6 +83,8 @@ export interface Task extends Timestamps {
   budget_cents: number;
   deadline: string;
   status: TaskStatus;
+  eval_mode: EvalMode;
+  eval_image: string | null;
 }
 
 export interface TaskInsert {
@@ -97,6 +99,8 @@ export interface TaskInsert {
   llm_weight: number;
   budget_cents: number;
   deadline: string;
+  eval_mode?: EvalMode;
+  eval_image?: string | null;
 }
 
 // ── Rubric Criteria ──────────────────────────────────────────
@@ -149,6 +153,10 @@ export interface EvaluationResult {
   llm_score: number | null;
   final_score: number;
   llm_reasoning: string | null;
+  breakdown: Record<string, number> | null;
+  container_score: number | null;
+  container_exit_code: number | null;
+  eval_mode: EvalMode | null;
   created_at: string;
 }
 
@@ -158,6 +166,10 @@ export interface EvaluationResultInsert {
   llm_score?: number | null;
   final_score: number;
   llm_reasoning?: string | null;
+  breakdown?: Record<string, number> | null;
+  container_score?: number | null;
+  container_exit_code?: number | null;
+  eval_mode?: EvalMode | null;
 }
 
 // ── Evaluation Dimensions ────────────────────────────────────

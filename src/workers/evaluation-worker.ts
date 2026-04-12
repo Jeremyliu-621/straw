@@ -7,39 +7,58 @@
  * Flow:
  * 1. Receive job with { submissionId, taskId, outputUrl }
  * 2. Fetch the task (including rubric criteria) and agent output
- * 3. Phase 1: Run automated tests (company test suite against agent output)
- *    - If test_weight is 0, skip
- *    - Parse test results → test_score (0-100)
- * 4. Phase 2: LLM judge
- *    - Build prompt: task description + rubric criteria + agent output
- *    - Call Gemini with structured output schema
- *    - Zod-validate response
- *    - Retry once on validation failure
- *    - Flag for manual review if retry fails
- * 5. Phase 3: Calculate final score
- *    - final_score = (test_score * test_weight + llm_score * llm_weight) / 100
- * 6. Write immutable evaluation_result + evaluation_dimensions
- * 7. Update submission status
+ * 3. Route by task.eval_mode:
+ *
+ *    'llm' (default):
+ *      Phase 1: Run automated tests (if test_weight > 0)
+ *      Phase 2: LLM judge (Gemini) for scores + reasoning
+ *      Phase 3: final_score = weighted blend of test + llm scores
+ *
+ *    'container':
+ *      Download agent output to tmpDir/agent_output/
+ *      Run company's eval Docker image against agent output
+ *      Read /results/score.json for final score + breakdown
+ *      No LLM call
+ *
+ *    'hybrid':
+ *      Same container eval as 'container' mode
+ *      Also run LLM for qualitative notes only (not for scoring)
+ *      final_score = container score
+ *
+ * 4. Write immutable evaluation_result + evaluation_dimensions
+ * 5. Update submission status
  *
  * Edge cases:
  * - No output → llm_score = 0, test_score = 0
  * - Test suite failure → test_score = 0, log error
  * - LLM response invalid → retry once, then flag
  * - Missing rubric criteria → error, do not score
- *
- * The evaluation result is IMMUTABLE once written. No updates.
+ * - EvalContainerError → permanent failure, no retry, record container_exit_code
+ * - eval_image missing when mode is container/hybrid → permanent failure
  */
 
 import { Worker, Queue } from "bullmq";
+import Dockerode from "dockerode";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@supabase/supabase-js";
+import path from "path";
+import fs from "fs";
+import os from "os";
 import {
   EVALUATION_LLM_MODEL,
   TASK_STATUS,
   SUBMISSION_STATUS,
   NOTIFICATION_TYPE,
   AUDIT_ACTION,
+  EVAL_MODE,
+  EVAL_CONTAINER_TIMEOUT_MS,
+  EVAL_CONTAINER_MEMORY_LIMIT,
+  EVAL_CONTAINER_CPU_LIMIT,
+  EVAL_CONTAINER_OUTPUT_PATH,
+  EVAL_CONTAINER_INPUT_PATH,
+  EVAL_SCORE_JSON_FILENAME,
 } from "@/constants";
+import type { EvalMode } from "@/constants";
 import { z } from "zod/v4";
 import { TaskInvitationRepository } from "@/db/task-invitations";
 import {
@@ -70,6 +89,7 @@ const MAX_OUTPUT_SIZE = 100_000; // 100K chars max for LLM context
 
 // ── Clients ──────────────────────────────────────────────────
 
+const docker = new Dockerode();
 const db = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
 const gemini = new GoogleGenerativeAI(GEMINI_API_KEY);
 
@@ -88,6 +108,19 @@ const webhookQueue = new Queue(WEBHOOK_QUEUE_NAME, {
   },
 });
 
+// ── Error Types ───────────────────────────────────────────────
+
+class EvalContainerError extends Error {
+  constructor(
+    message: string,
+    public exitCode?: number,
+    public detail?: unknown
+  ) {
+    super(message);
+    this.name = "EvalContainerError";
+  }
+}
+
 // ── LLM Response Schema ──────────────────────────────────────
 
 const dimensionScoreSchema = z.object({
@@ -102,6 +135,17 @@ const llmResponseSchema = z.object({
 });
 
 type LLMResponse = z.infer<typeof llmResponseSchema>;
+
+// ── Score.json Schema ─────────────────────────────────────────
+
+const scoreJsonSchema = z.object({
+  score: z.number().min(0).max(100),
+  pass: z.boolean(),
+  breakdown: z.record(z.string(), z.number()).optional(),
+  notes: z.string().optional(),
+});
+
+type ScoreJson = z.infer<typeof scoreJsonSchema>;
 
 // ── Job Types ────────────────────────────────────────────────
 
@@ -118,11 +162,17 @@ interface RubricCriterion {
   weight: number;
 }
 
-// ── Output Fetching ─────────────────────────────────────────
+interface ContainerEvalResult {
+  score: number;
+  pass: boolean;
+  breakdown: Record<string, number> | undefined;
+  notes: string | undefined;
+  exitCode: number;
+}
+
+// ── Output Fetching (LLM path — returns combined text string) ────
 
 async function fetchAgentOutput(outputUrl: string): Promise<string> {
-  // outputUrl is a storage path like "submissions/{id}"
-  // List all files in the path and download them
   const { data: files, error: listError } = await db.storage
     .from(STORAGE_BUCKET)
     .list(outputUrl);
@@ -157,13 +207,212 @@ async function fetchAgentOutput(outputUrl: string): Promise<string> {
 
   const combined = outputs.join("\n\n");
 
-  // Truncate if too large for LLM context
   if (combined.length > MAX_OUTPUT_SIZE) {
     console.log(`[eval] Output truncated from ${combined.length} to ${MAX_OUTPUT_SIZE} chars`);
     return combined.slice(0, MAX_OUTPUT_SIZE) + "\n\n[Output truncated due to size]";
   }
 
   return combined;
+}
+
+// ── Output Download (container path — writes files to disk) ─────
+
+/**
+ * Download all files from `outputUrl` in the agent-outputs bucket to `destDir`.
+ * Returns the number of files downloaded.
+ */
+async function downloadAgentOutputToDir(outputUrl: string, destDir: string): Promise<number> {
+  const { data: files, error: listError } = await db.storage
+    .from(STORAGE_BUCKET)
+    .list(outputUrl);
+
+  if (listError) {
+    throw new EvalContainerError(
+      `Failed to list agent output files: ${listError.message}`
+    );
+  }
+
+  if (!files || files.length === 0) {
+    console.warn(`[eval] No agent output files found at ${outputUrl}`);
+    return 0;
+  }
+
+  fs.mkdirSync(destDir, { recursive: true });
+  let downloaded = 0;
+
+  for (const file of files) {
+    // Skip zero-byte placeholder entries (Supabase storage creates these for folders)
+    if (file.metadata && file.metadata.size === 0) continue;
+
+    const { data, error: downloadError } = await db.storage
+      .from(STORAGE_BUCKET)
+      .download(`${outputUrl}/${file.name}`);
+
+    if (downloadError || !data) {
+      console.error(`[eval] Failed to download ${file.name}: ${downloadError?.message}`);
+      continue;
+    }
+
+    const destPath = path.join(destDir, file.name);
+    const buffer = Buffer.from(await data.arrayBuffer());
+    fs.writeFileSync(destPath, buffer);
+    downloaded++;
+  }
+
+  console.log(`[eval] Downloaded ${downloaded} agent output files to ${destDir}`);
+  return downloaded;
+}
+
+// ── Eval Container ────────────────────────────────────────────
+
+/**
+ * Pull `evalImage` if not present locally, then run it:
+ *   - mounts agentOutputPath → /agent_output:ro
+ *   - mounts resultsPath → /results
+ *   - --network none, memory + cpu limits, 10-min timeout
+ *
+ * After the container exits, reads and validates /results/score.json.
+ * Throws EvalContainerError on timeout, non-zero exit, or invalid score.json.
+ */
+async function runEvalContainer(
+  evalImage: string,
+  agentOutputPath: string,
+  resultsPath: string
+): Promise<ContainerEvalResult> {
+  fs.mkdirSync(resultsPath, { recursive: true });
+
+  // Pull image if not present
+  console.log(`[eval] Pulling eval image ${evalImage}...`);
+  try {
+    await pullDockerImage(evalImage);
+  } catch (err) {
+    throw new EvalContainerError(
+      `Failed to pull eval image ${evalImage}: ${(err as Error).message}`,
+      undefined,
+      err
+    );
+  }
+
+  // Create container
+  console.log(`[eval] Creating eval container...`);
+  const container = await docker.createContainer({
+    Image: evalImage,
+    HostConfig: {
+      Memory: EVAL_CONTAINER_MEMORY_LIMIT,
+      NanoCpus: EVAL_CONTAINER_CPU_LIMIT,
+      NetworkMode: "none",
+      Binds: [
+        `${agentOutputPath}:${EVAL_CONTAINER_INPUT_PATH}:ro`,
+        `${resultsPath}:${EVAL_CONTAINER_OUTPUT_PATH}`,
+      ],
+      AutoRemove: false,
+    },
+  });
+
+  await container.start();
+  console.log(`[eval] Eval container started, waiting (timeout: ${EVAL_CONTAINER_TIMEOUT_MS}ms)...`);
+
+  let exitCode: number;
+  try {
+    exitCode = await waitForEvalContainer(container, EVAL_CONTAINER_TIMEOUT_MS);
+  } catch (err) {
+    // Timeout path — container already killed inside waitForEvalContainer
+    try { await container.remove({ force: true }); } catch { /* best effort */ }
+    if (err instanceof EvalContainerError) throw err;
+    throw new EvalContainerError(
+      `Eval container wait failed: ${(err as Error).message}`,
+      undefined,
+      err
+    );
+  }
+
+  // Cleanup container (best effort — don't block on this)
+  try {
+    await container.remove({ force: true });
+  } catch {
+    // Best effort
+  }
+
+  if (exitCode !== 0) {
+    throw new EvalContainerError(
+      `Eval container exited with code ${exitCode}`,
+      exitCode
+    );
+  }
+
+  // Read and validate score.json
+  const scoreJsonPath = path.join(resultsPath, EVAL_SCORE_JSON_FILENAME);
+  if (!fs.existsSync(scoreJsonPath)) {
+    throw new EvalContainerError(
+      `Eval container did not produce ${EVAL_SCORE_JSON_FILENAME}`,
+      exitCode
+    );
+  }
+
+  let parsed: unknown;
+  try {
+    const raw = fs.readFileSync(scoreJsonPath, "utf8");
+    parsed = JSON.parse(raw);
+  } catch (err) {
+    throw new EvalContainerError(
+      `Failed to parse ${EVAL_SCORE_JSON_FILENAME}: ${(err as Error).message}`,
+      exitCode
+    );
+  }
+
+  const validated = scoreJsonSchema.safeParse(parsed);
+  if (!validated.success) {
+    throw new EvalContainerError(
+      `Invalid ${EVAL_SCORE_JSON_FILENAME}: ${z.prettifyError(validated.error)}`,
+      exitCode
+    );
+  }
+
+  const { score, pass, breakdown, notes } = validated.data;
+  console.log(`[eval] Eval container score: ${score} (pass=${pass})`);
+
+  return { score, pass, breakdown, notes, exitCode };
+}
+
+// ── Docker Helpers ────────────────────────────────────────────
+
+async function pullDockerImage(image: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    docker.pull(image, (err: Error | null, stream: NodeJS.ReadableStream) => {
+      if (err) return reject(err);
+      docker.modem.followProgress(stream, (followErr: Error | null) => {
+        if (followErr) return reject(followErr);
+        resolve();
+      });
+    });
+  });
+}
+
+async function waitForEvalContainer(
+  container: Dockerode.Container,
+  timeoutMs: number
+): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(async () => {
+      try {
+        await container.kill({ signal: "SIGKILL" });
+      } catch {
+        // Container may have already exited
+      }
+      reject(new EvalContainerError("Eval container timed out", undefined));
+    }, timeoutMs);
+
+    container
+      .wait()
+      .then((result) => {
+        clearTimeout(timeout);
+        resolve(result.StatusCode);
+      })
+      .catch((err) => {
+        clearTimeout(timeout);
+        reject(err);
+      });
+  });
 }
 
 // ── Worker ───────────────────────────────────────────────────
@@ -195,65 +444,249 @@ const worker = new Worker<EvaluationJobData>(
       throw new Error(`No rubric criteria found for task ${taskId}`);
     }
 
-    // 1.5. Fetch the actual agent output from storage
-    const agentOutput = await fetchAgentOutput(outputUrl);
-    if (!agentOutput) {
-      console.error(`[eval] No output content for submission ${submissionId}`);
+    // Resolve eval mode, defaulting to 'llm'
+    const evalMode: EvalMode = (task.eval_mode as EvalMode) ?? EVAL_MODE.LLM;
+
+    // ── Route by eval mode ────────────────────────────────────
+
+    if (evalMode === EVAL_MODE.CONTAINER || evalMode === EVAL_MODE.HYBRID) {
+      await handleContainerEval(
+        { submissionId, taskId, outputUrl, task, criteria, evalMode },
+        webhookQueue
+      );
+      return;
     }
 
-    // 2. Phase 1: Automated testing
-    let testScore: number | null = null;
-    if (task.test_weight > 0) {
-      testScore = await runAutomatedTests(task, outputUrl);
+    // Default: EVAL_MODE.LLM — existing path unchanged
+    await handleLlmEval(
+      { submissionId, taskId, outputUrl, task, criteria },
+      webhookQueue
+    );
+  },
+  {
+    connection: redisConnection,
+    concurrency: 2,
+  }
+);
+
+// ── Handler: LLM eval (original path) ────────────────────────
+
+interface LlmEvalContext {
+  submissionId: string;
+  taskId: string;
+  outputUrl: string;
+  task: Record<string, unknown>;
+  criteria: RubricCriterion[];
+}
+
+async function handleLlmEval(
+  ctx: LlmEvalContext,
+  workerWebhookQueue: Queue
+): Promise<void> {
+  const { submissionId, taskId, outputUrl, task, criteria } = ctx;
+
+  // Fetch agent output text
+  const agentOutput = await fetchAgentOutput(outputUrl);
+  if (!agentOutput) {
+    console.error(`[eval] No output content for submission ${submissionId}`);
+  }
+
+  // Phase 1: Automated testing
+  let testScore: number | null = null;
+  if (task.test_weight as number > 0) {
+    testScore = await runAutomatedTests(task, outputUrl);
+  }
+
+  // Phase 2: LLM judge
+  let llmScore: number | null = null;
+  let llmReasoning: string | null = null;
+  let dimensionScores: LLMResponse["dimensions"] = [];
+
+  if (task.llm_weight as number > 0) {
+    const llmResult = await evaluateWithLLM(task, criteria, agentOutput);
+    if (llmResult) {
+      dimensionScores = llmResult.dimensions;
+      llmReasoning = llmResult.overall_reasoning;
+
+      let totalWeightedScore = 0;
+      let totalWeight = 0;
+      for (const dim of dimensionScores) {
+        const criterion = criteria.find(
+          (c: RubricCriterion) => c.name === dim.criterion_name
+        );
+        if (criterion) {
+          totalWeightedScore += dim.score * criterion.weight;
+          totalWeight += criterion.weight;
+        }
+      }
+      llmScore = totalWeight > 0 ? totalWeightedScore / totalWeight : 0;
+    } else {
+      llmScore = 0;
+      llmReasoning = "LLM evaluation failed after retry. Flagged for manual review.";
+    }
+  }
+
+  // Phase 3: Calculate final score
+  const finalScore = calculateFinalScore(
+    testScore,
+    llmScore,
+    task.test_weight as number,
+    task.llm_weight as number
+  );
+
+  // Write immutable evaluation result
+  const { data: evalResult, error: evalError } = await db
+    .from("evaluation_results")
+    .insert({
+      submission_id: submissionId,
+      test_score: testScore,
+      llm_score: llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
+      final_score: Math.round(finalScore * 100) / 100,
+      llm_reasoning: llmReasoning,
+      eval_mode: EVAL_MODE.LLM,
+    })
+    .select()
+    .single();
+
+  if (evalError) {
+    throw new Error(`Failed to write evaluation result: ${evalError.message}`);
+  }
+
+  // Write dimension scores
+  if (dimensionScores.length > 0 && evalResult) {
+    const dimensionRows = dimensionScores
+      .map((dim) => {
+        const criterion = criteria.find(
+          (c: RubricCriterion) => c.name === dim.criterion_name
+        );
+        if (!criterion) return null;
+        return {
+          evaluation_result_id: evalResult.id,
+          rubric_criterion_id: criterion.id,
+          score: dim.score,
+          reasoning: dim.reasoning,
+        };
+      })
+      .filter((row): row is NonNullable<typeof row> => row !== null);
+
+    if (dimensionRows.length > 0) {
+      const { error: dimError } = await db
+        .from("evaluation_dimensions")
+        .insert(dimensionRows);
+
+      if (dimError) {
+        console.error(`[eval] Failed to write dimensions: ${dimError.message}`);
+      }
+    }
+  }
+
+  await finalizeEvaluation(
+    submissionId,
+    taskId,
+    finalScore,
+    testScore,
+    llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
+    workerWebhookQueue
+  );
+
+  console.log(
+    `[eval] Submission ${submissionId} scored: test=${testScore}, llm=${llmScore?.toFixed(1)}, final=${finalScore.toFixed(1)} mode=llm`
+  );
+}
+
+// ── Handler: Container / Hybrid eval ─────────────────────────
+
+interface ContainerEvalContext {
+  submissionId: string;
+  taskId: string;
+  outputUrl: string;
+  task: Record<string, unknown>;
+  criteria: RubricCriterion[];
+  evalMode: typeof EVAL_MODE.CONTAINER | typeof EVAL_MODE.HYBRID;
+}
+
+async function handleContainerEval(
+  ctx: ContainerEvalContext,
+  workerWebhookQueue: Queue
+): Promise<void> {
+  const { submissionId, taskId, outputUrl, task, criteria, evalMode } = ctx;
+
+  // Validate that an eval image is configured
+  if (!task.eval_image || typeof task.eval_image !== "string") {
+    await markSubmissionFailed(
+      submissionId,
+      "No eval_image configured for container eval mode"
+    );
+    return;
+  }
+
+  const tmpDir = path.join(os.tmpdir(), `map-eval-${submissionId}`);
+  const agentOutputDir = path.join(tmpDir, "agent_output");
+  const resultsDir = path.join(tmpDir, "results");
+
+  try {
+    // Download agent output files to disk
+    await downloadAgentOutputToDir(outputUrl, agentOutputDir);
+
+    // Run the eval container
+    let containerResult: ContainerEvalResult;
+    try {
+      containerResult = await runEvalContainer(task.eval_image, agentOutputDir, resultsDir);
+    } catch (err) {
+      if (err instanceof EvalContainerError) {
+        console.error(`[eval] Eval container failed for submission ${submissionId}: ${err.message}`);
+        await markSubmissionFailed(submissionId, err.message, err.exitCode);
+        return; // Permanent failure — do not rethrow
+      }
+      throw err;
     }
 
-    // 3. Phase 2: LLM judge
-    let llmScore: number | null = null;
+    const finalScore = Math.round(containerResult.score * 100) / 100;
+
+    // For LLM notes in hybrid mode
     let llmReasoning: string | null = null;
-    let dimensionScores: LLMResponse["dimensions"] = [];
-
-    if (task.llm_weight > 0) {
+    if (evalMode === EVAL_MODE.HYBRID) {
+      const agentOutput = await fetchAgentOutput(outputUrl);
       const llmResult = await evaluateWithLLM(task, criteria, agentOutput);
       if (llmResult) {
-        dimensionScores = llmResult.dimensions;
         llmReasoning = llmResult.overall_reasoning;
-
-        // Calculate weighted LLM score from dimension scores
-        let totalWeightedScore = 0;
-        let totalWeight = 0;
-        for (const dim of dimensionScores) {
-          const criterion = criteria.find(
-            (c: RubricCriterion) => c.name === dim.criterion_name
-          );
-          if (criterion) {
-            totalWeightedScore += dim.score * criterion.weight;
-            totalWeight += criterion.weight;
-          }
-        }
-        llmScore = totalWeight > 0 ? totalWeightedScore / totalWeight : 0;
       } else {
-        llmScore = 0;
-        llmReasoning = "LLM evaluation failed after retry. Flagged for manual review.";
+        llmReasoning = "LLM notes unavailable (evaluation failed after retry).";
       }
     }
 
-    // 4. Phase 3: Calculate final score
-    const finalScore = calculateFinalScore(
-      testScore,
-      llmScore,
-      task.test_weight,
-      task.llm_weight
-    );
+    // Build dimension rows from container breakdown
+    // For each rubric criterion, look up its score in the breakdown by name (default 0 if missing)
+    const dimensionRows: Array<{
+      rubric_criterion_id: string;
+      score: number;
+      reasoning: string;
+    }> = [];
 
-    // 5. Write immutable evaluation result
+    if (containerResult.breakdown) {
+      for (const criterion of criteria) {
+        const score = containerResult.breakdown[criterion.name] ?? 0;
+        dimensionRows.push({
+          rubric_criterion_id: criterion.id,
+          score,
+          reasoning: `Score from eval container breakdown (criterion: ${criterion.name})`,
+        });
+      }
+    }
+
+    // Write immutable evaluation result
     const { data: evalResult, error: evalError } = await db
       .from("evaluation_results")
       .insert({
         submission_id: submissionId,
-        test_score: testScore,
-        llm_score: llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
-        final_score: Math.round(finalScore * 100) / 100,
+        final_score: finalScore,
+        container_score: finalScore,
+        container_exit_code: containerResult.exitCode,
+        breakdown: containerResult.breakdown ?? null,
         llm_reasoning: llmReasoning,
+        llm_score: null,
+        test_score: null,
+        eval_mode: evalMode,
       })
       .select()
       .single();
@@ -262,108 +695,161 @@ const worker = new Worker<EvaluationJobData>(
       throw new Error(`Failed to write evaluation result: ${evalError.message}`);
     }
 
-    // 6. Write dimension scores
-    if (dimensionScores.length > 0 && evalResult) {
-      const dimensionRows = dimensionScores
-        .map((dim) => {
-          const criterion = criteria.find(
-            (c: RubricCriterion) => c.name === dim.criterion_name
-          );
-          if (!criterion) return null;
-          return {
-            evaluation_result_id: evalResult.id,
-            rubric_criterion_id: criterion.id,
-            score: dim.score,
-            reasoning: dim.reasoning,
-          };
-        })
-        .filter((row): row is NonNullable<typeof row> => row !== null);
+    // Write dimension scores
+    if (dimensionRows.length > 0 && evalResult) {
+      const rowsWithEvalId = dimensionRows.map((row) => ({
+        ...row,
+        evaluation_result_id: evalResult.id,
+      }));
 
-      if (dimensionRows.length > 0) {
-        const { error: dimError } = await db
-          .from("evaluation_dimensions")
-          .insert(dimensionRows);
+      const { error: dimError } = await db
+        .from("evaluation_dimensions")
+        .insert(rowsWithEvalId);
 
-        if (dimError) {
-          console.error(`[eval] Failed to write dimensions: ${dimError.message}`);
-        }
+      if (dimError) {
+        console.error(`[eval] Failed to write dimensions: ${dimError.message}`);
       }
     }
 
-    // 7. Update submission status
-    await db
-      .from("submissions")
-      .update({ status: "completed", completed_at: new Date().toISOString() })
-      .eq("id", submissionId);
-
-    // 8. Dispatch evaluation.completed webhook + notification + audit
-    const { data: sub } = await db
-      .from("submissions")
-      .select("agent_id")
-      .eq("id", submissionId)
-      .single();
-
-    const roundedScore = Math.round(finalScore * 100) / 100;
-
-    if (task.company_id) {
-      await dispatchWebhookFromWorker(
-        db,
-        webhookQueue,
-        task.company_id as string,
-        "evaluation.completed",
-        {
-          event: "evaluation.completed",
-          timestamp: new Date().toISOString(),
-          data: {
-            submission_id: submissionId,
-            task_id: taskId,
-            agent_id: sub?.agent_id ?? "",
-            final_score: roundedScore,
-          },
-        }
-      );
-    }
-
-    // Notify the agent that evaluation is done
-    if (sub?.agent_id) {
-      await dispatchNotificationFromWorker(
-        db,
-        NOTIFICATION_TYPE.EVALUATION_COMPLETED,
-        sub.agent_id as string,
-        "Evaluation complete",
-        `Your submission scored ${roundedScore}/100.`,
-        "submission",
-        submissionId,
-        {
-          task_id: taskId,
-          final_score: roundedScore,
-          test_score: testScore,
-          llm_score: llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
-        }
-      );
-
-      await writeAuditLog(
-        db,
-        AUDIT_ACTION.EVALUATION_COMPLETED,
-        sub.agent_id as string,
-        "submission",
-        submissionId,
-        { task_id: taskId, final_score: roundedScore }
-      );
-    }
-
-    console.log(
-      `[eval] Submission ${submissionId} scored: test=${testScore}, llm=${llmScore?.toFixed(1)}, final=${finalScore.toFixed(1)}`
+    await finalizeEvaluation(
+      submissionId,
+      taskId,
+      finalScore,
+      null, // test_score
+      null, // llm_score
+      workerWebhookQueue
     );
 
-    // 9. Auto-close task if all submissions are now evaluated
-    await tryAutoCloseTask(db, webhookQueue, taskId);
-  },
-  {
-    connection: redisConnection,
-    concurrency: 2,
+    console.log(
+      `[eval] Submission ${submissionId} scored: container=${finalScore} mode=${evalMode}`
+    );
+  } finally {
+    // Clean up temp directory
+    try {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    } catch {
+      // Best effort
+    }
   }
-);
+}
+
+// ── Finalize: update submission + dispatch notifications ──────
+
+async function finalizeEvaluation(
+  submissionId: string,
+  taskId: string,
+  finalScore: number,
+  testScore: number | null,
+  llmScore: number | null,
+  workerWebhookQueue: Queue
+): Promise<void> {
+  // Update submission status
+  await db
+    .from("submissions")
+    .update({ status: "completed", completed_at: new Date().toISOString() })
+    .eq("id", submissionId);
+
+  // Fetch supplementary info for notifications
+  const { data: sub } = await db
+    .from("submissions")
+    .select("agent_id")
+    .eq("id", submissionId)
+    .single();
+
+  const { data: taskInfo } = await db
+    .from("tasks")
+    .select("company_id, title")
+    .eq("id", taskId)
+    .single();
+
+  const roundedScore = Math.round(finalScore * 100) / 100;
+
+  if (taskInfo?.company_id) {
+    await dispatchWebhookFromWorker(
+      db,
+      workerWebhookQueue,
+      taskInfo.company_id as string,
+      "evaluation.completed",
+      {
+        event: "evaluation.completed",
+        timestamp: new Date().toISOString(),
+        data: {
+          submission_id: submissionId,
+          task_id: taskId,
+          agent_id: sub?.agent_id ?? "",
+          final_score: roundedScore,
+        },
+      }
+    );
+  }
+
+  if (sub?.agent_id) {
+    await dispatchNotificationFromWorker(
+      db,
+      NOTIFICATION_TYPE.EVALUATION_COMPLETED,
+      sub.agent_id as string,
+      "Evaluation complete",
+      `Your submission scored ${roundedScore}/100.`,
+      "submission",
+      submissionId,
+      {
+        task_id: taskId,
+        final_score: roundedScore,
+        test_score: testScore,
+        llm_score: llmScore,
+      }
+    );
+
+    await writeAuditLog(
+      db,
+      AUDIT_ACTION.EVALUATION_COMPLETED,
+      sub.agent_id as string,
+      "submission",
+      submissionId,
+      { task_id: taskId, final_score: roundedScore }
+    );
+  }
+
+  // Auto-close task if all submissions are now evaluated
+  await tryAutoCloseTask(db, workerWebhookQueue, taskId);
+}
+
+// ── Mark submission failed (container eval permanent failures) ──
+
+async function markSubmissionFailed(
+  submissionId: string,
+  message: string,
+  containerExitCode?: number
+): Promise<void> {
+  await db
+    .from("submissions")
+    .update({
+      status: SUBMISSION_STATUS.FAILED,
+      error_message: message,
+      completed_at: new Date().toISOString(),
+    })
+    .eq("id", submissionId);
+
+  if (containerExitCode !== undefined) {
+    // Record the exit code in the evaluation result for diagnostics.
+    // We write a minimal failed eval record so the exit code is visible.
+    const { error } = await db.from("evaluation_results").insert({
+      submission_id: submissionId,
+      final_score: 0,
+      container_exit_code: containerExitCode,
+      eval_mode: "container",
+      llm_reasoning: message,
+    });
+    if (error) {
+      console.error(`[eval] Failed to write failed eval result: ${error.message}`);
+    }
+  }
+
+  console.error(
+    `[eval] Submission ${submissionId} permanently failed: ${message}` +
+    (containerExitCode !== undefined ? ` (exit code ${containerExitCode})` : "")
+  );
+}
 
 // ── Auto-Close Task ────────────────────────────────────────
 
@@ -378,7 +864,6 @@ async function tryAutoCloseTask(
   taskId: string
 ): Promise<void> {
   try {
-    // Get task status — only auto-close if currently "evaluating"
     const { data: task } = await workerDb
       .from("tasks")
       .select("id, status, company_id, title")
@@ -387,7 +872,6 @@ async function tryAutoCloseTask(
 
     if (!task || task.status !== TASK_STATUS.EVALUATING) return;
 
-    // Get all submissions for this task
     const { data: allSubs } = await workerDb
       .from("submissions")
       .select("id, status")
@@ -395,13 +879,12 @@ async function tryAutoCloseTask(
 
     if (!allSubs || allSubs.length === 0) return;
 
-    // Check if all submissions are in terminal states
     const allTerminal = allSubs.every(
-      (s: { status: string }) => s.status === SUBMISSION_STATUS.COMPLETED || s.status === SUBMISSION_STATUS.FAILED
+      (s: { status: string }) =>
+        s.status === SUBMISSION_STATUS.COMPLETED || s.status === SUBMISSION_STATUS.FAILED
     );
     if (!allTerminal) return;
 
-    // Check all completed submissions have evaluation results
     const completedIds = allSubs
       .filter((s: { status: string }) => s.status === SUBMISSION_STATUS.COMPLETED)
       .map((s: { id: string }) => s.id);
@@ -412,10 +895,9 @@ async function tryAutoCloseTask(
         .select("id", { count: "exact", head: true })
         .in("submission_id", completedIds);
 
-      if ((evalCount ?? 0) < completedIds.length) return; // Not all evaluated yet
+      if ((evalCount ?? 0) < completedIds.length) return;
     }
 
-    // Optimistic concurrency: only update if still "evaluating"
     const { data: updated, error: updateError } = await workerDb
       .from("tasks")
       .update({ status: TASK_STATUS.CLOSED })
@@ -424,11 +906,10 @@ async function tryAutoCloseTask(
       .select("id")
       .single();
 
-    if (updateError || !updated) return; // Another process already closed it
+    if (updateError || !updated) return;
 
     console.log(`[eval] Task ${taskId} auto-closed — all evaluations complete`);
 
-    // Dispatch task.closed webhook
     if (task.company_id) {
       await dispatchWebhookFromWorker(
         workerDb,
@@ -446,7 +927,6 @@ async function tryAutoCloseTask(
         }
       );
 
-      // Notify task owner
       await dispatchNotificationToTaskOwnerFromWorker(
         workerDb,
         taskId,
@@ -457,7 +937,6 @@ async function tryAutoCloseTask(
         taskId
       );
 
-      // Audit log
       await writeAuditLog(
         workerDb,
         AUDIT_ACTION.TASK_CLOSED,
@@ -468,7 +947,6 @@ async function tryAutoCloseTask(
       );
     }
 
-    // Expire pending invitations
     const invitationRepo = new TaskInvitationRepository(workerDb);
     const expired = await invitationRepo.expireByTask(taskId);
     if (expired > 0) {
@@ -490,12 +968,10 @@ async function runAutomatedTests(
     return 0;
   }
 
-  // Download test suite from storage
   const testSuiteUrl = task.test_suite_url as string;
   console.log(`[eval] Running test suite for task ${task.id}...`);
 
   try {
-    // Download the test suite file
     const { data: testSuiteData, error: downloadError } = await db.storage
       .from("test-suites")
       .download(testSuiteUrl);
@@ -505,14 +981,12 @@ async function runAutomatedTests(
       return 0;
     }
 
-    // Download agent output for testing
     const agentOutput = await fetchAgentOutput(outputUrl);
     if (!agentOutput) {
       console.log(`[eval] No agent output to test against`);
       return 0;
     }
 
-    // Parse test suite — expects JSON with test cases
     const testSuiteText = await testSuiteData.text();
     const testSuite = JSON.parse(testSuiteText) as TestSuite;
 
@@ -583,16 +1057,13 @@ async function evaluateWithLLM(
 ): Promise<LLMResponse | null> {
   const prompt = buildEvaluationPrompt(task, criteria, agentOutput);
 
-  // Attempt 1
   let result = await callLLM(prompt);
   if (result) return result;
 
-  // Retry once
   console.log(`[eval] LLM response validation failed, retrying...`);
   result = await callLLM(prompt);
   if (result) return result;
 
-  // Flag for manual review
   console.error(`[eval] LLM evaluation failed after retry for task ${task.id}`);
   return null;
 }
@@ -668,7 +1139,6 @@ async function callLLM(prompt: string): Promise<LLMResponse | null> {
 
     const text = response.response.text();
 
-    // Parse JSON from response
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       console.error("[eval] No JSON found in LLM response");

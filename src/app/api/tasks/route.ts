@@ -79,6 +79,8 @@ export async function POST(req: Request) {
       budget_cents: taskData.budget_cents,
       deadline: taskData.deadline,
       status: TASK_STATUS.DRAFT,
+      eval_mode: taskData.eval_mode,
+      eval_image: taskData.eval_image ?? null,
     })
     .select()
     .single();

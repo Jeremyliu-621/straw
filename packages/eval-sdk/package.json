@@ -1,0 +1,7 @@
+{
+  "name": "@straw/eval-sdk",
+  "version": "0.1.0",
+  "description": "Types and utilities for building Straw eval containers",
+  "main": "index.ts",
+  "types": "index.ts"
+}

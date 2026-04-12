@@ -10,6 +10,7 @@ import {
   RUBRIC_MAX_CRITERIA,
   RUBRIC_WEIGHT_SUM,
   RUBRIC_MIN_WEIGHT,
+  EVAL_MODE,
 } from "@/constants";
 
 export const rubricCriterionSchema = z.object({
@@ -47,6 +48,11 @@ export const createTaskSchema = z
       .array(rubricCriterionSchema)
       .min(RUBRIC_MIN_CRITERIA, `At least ${RUBRIC_MIN_CRITERIA} criterion is required`)
       .max(RUBRIC_MAX_CRITERIA, `At most ${RUBRIC_MAX_CRITERIA} criteria allowed`),
+    eval_mode: z
+      .enum([EVAL_MODE.LLM, EVAL_MODE.CONTAINER, EVAL_MODE.HYBRID])
+      .optional()
+      .default(EVAL_MODE.LLM),
+    eval_image: z.string().min(1).optional().nullable(),
   })
   .refine((data) => data.test_weight + data.llm_weight === 100, {
     message: "Test weight + LLM weight must equal 100",
@@ -60,6 +66,16 @@ export const createTaskSchema = z
     {
       message: `Rubric criteria weights must sum to ${RUBRIC_WEIGHT_SUM}`,
       path: ["criteria"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.eval_mode !== EVAL_MODE.LLM && !data.eval_image) return false;
+      return true;
+    },
+    {
+      message: "An eval container image is required for container and hybrid eval modes",
+      path: ["eval_image"],
     }
   );
 

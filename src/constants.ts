@@ -238,6 +238,22 @@ export type ArtifactType = (typeof ARTIFACT_TYPE)[keyof typeof ARTIFACT_TYPE];
 export const ARTIFACT_MAX_PER_SUBMISSION = 20;
 export const ARTIFACT_FILE_NAME_MAX_LENGTH = 255;
 
+// ── Eval Mode ───────────────────────────────────────────────
+export const EVAL_MODE = {
+  LLM: "llm",
+  CONTAINER: "container",
+  HYBRID: "hybrid",
+} as const;
+export type EvalMode = (typeof EVAL_MODE)[keyof typeof EVAL_MODE];
+
+// ── Eval Container ──────────────────────────────────────────
+export const EVAL_CONTAINER_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
+export const EVAL_CONTAINER_MEMORY_LIMIT = 1024 * 1024 * 1024; // 1GB in bytes
+export const EVAL_CONTAINER_CPU_LIMIT = 2e9; // 2 CPUs in nanoCPUs
+export const EVAL_CONTAINER_OUTPUT_PATH = "/results";
+export const EVAL_CONTAINER_INPUT_PATH = "/agent_output";
+export const EVAL_SCORE_JSON_FILENAME = "score.json";
+
 // ── Invitation Status ───────────────────────────────────────
 export const INVITATION_STATUS = {
   PENDING: "pending",
