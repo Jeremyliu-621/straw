@@ -95,7 +95,7 @@ export default function NewTaskPage() {
       case "data":
         return !!(inputDescription || inputFiles.length > 0) &&
                !!(outputDescription || outputFiles.length > 0) &&
-               (testWeight === 0 || testSuiteFile !== null) &&
+               (evalMode !== EVAL_MODE.LLM || testWeight === 0 || testSuiteFile !== null) &&
                (evalMode === EVAL_MODE.LLM || evalImage.trim() !== "");
       case "rubric":
         return weightsValid && criteria.every((c) => c.name.trim() !== "");
@@ -198,8 +198,8 @@ export default function NewTaskPage() {
             .join(", "),
           input_spec: refinedInputSpec,
           output_spec: refinedOutputSpec,
-          test_weight: testWeight,
-          llm_weight: llmWeight,
+          test_weight: evalMode === EVAL_MODE.LLM ? testWeight : 0,
+          llm_weight: evalMode === EVAL_MODE.LLM ? llmWeight : 100,
           eval_mode: evalMode,
           eval_image: evalMode !== EVAL_MODE.LLM ? evalImage.trim() || null : null,
           budget_cents: budgetDollars * 100,
@@ -511,8 +511,8 @@ export default function NewTaskPage() {
                 onFilesChange={setOutputFiles}
               />
 
-              {/* Eval weight split */}
-              <div>
+              {/* Eval weight split — only relevant for LLM mode (container mode ignores these weights) */}
+              {evalMode === EVAL_MODE.LLM && <div>
                 <label
                   className="mb-2 block font-sans"
                   style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-muted)" }}
@@ -574,7 +574,7 @@ export default function NewTaskPage() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </div>}
 
               {/* Evaluation Method */}
               <div>
@@ -763,8 +763,8 @@ export default function NewTaskPage() {
                 )}
               </div>
 
-              {/* Test suite upload — required when testWeight > 0 */}
-              {testWeight > 0 && (
+              {/* Test suite upload — only for LLM mode when testWeight > 0 (container mode uses its own test harness) */}
+              {evalMode === EVAL_MODE.LLM && testWeight > 0 && (
                 <div>
                   <label
                     className="mb-1 block font-sans"
