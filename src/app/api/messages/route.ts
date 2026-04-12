@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
 import { z } from "zod/v4";
 import { generateThreadId } from "@/services/results.service";
+import { rateLimitResponse } from "@/lib/rate-limit";
 
 const sendMessageSchema = z.object({
   recipientId: z.string().uuid(),
@@ -50,6 +51,9 @@ export async function GET() {
  * POST /api/messages — Send a new message.
  */
 export async function POST(req: Request) {
+  const rateLimited = rateLimitResponse(req, { maxRequests: 30, prefix: "messages" });
+  if (rateLimited) return rateLimited;
+
   const session = await auth();
   if (!session?.user?.supabaseId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

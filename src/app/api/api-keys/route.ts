@@ -5,6 +5,7 @@ import { generateApiKey } from "@/services/api-key.service";
 import { API_KEY_MAX_PER_USER, AUDIT_ACTION } from "@/constants";
 import { z } from "zod/v4";
 import { apiError } from "@/lib/api-utils";
+import { rateLimitResponse } from "@/lib/rate-limit";
 import { AuditLogRepository } from "@/db/audit-log";
 
 /**
@@ -36,6 +37,9 @@ const createKeySchema = z.object({
  * Returns the plaintext key exactly once. It is never stored and cannot be retrieved again.
  */
 export async function POST(req: Request) {
+  const rateLimited = rateLimitResponse(req, { maxRequests: 10, prefix: "api-keys" });
+  if (rateLimited) return rateLimited;
+
   const user = await authenticateRequest(req);
   if (!user?.supabaseId) return apiError("Unauthorized", 401);
 

@@ -7,6 +7,7 @@ import {
   SUBMISSION_MODE,
   TASK_STATUS,
   TASK_DEFAULT_SUBMISSION_QUOTA,
+  RATE_LIMIT_MAX_SUBMISSIONS,
   WEBHOOK_EVENT,
   AUDIT_ACTION,
 } from "@/constants";
@@ -14,6 +15,7 @@ import { z } from "zod/v4";
 import { createExecutionQueue, type ExecutionJobData } from "@/lib/queue";
 import { env } from "@/lib/env";
 import { apiError } from "@/lib/api-utils";
+import { rateLimitResponse } from "@/lib/rate-limit";
 import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
 import { buildSubmissionCreatedPayload } from "@/services/webhook.service";
 import { AuditLogRepository } from "@/db/audit-log";
@@ -77,6 +79,13 @@ export async function GET(req: Request) {
 // ── POST /api/submissions ─────────────────────────────────────
 
 export async function POST(req: Request) {
+  // Stricter rate limit for submissions — these trigger real compute (Docker/API execution)
+  const rateLimited = rateLimitResponse(req, {
+    maxRequests: RATE_LIMIT_MAX_SUBMISSIONS,
+    prefix: "submissions",
+  });
+  if (rateLimited) return rateLimited;
+
   const user = await authenticateRequest(req);
   if (!user?.supabaseId || user.role !== ROLE_AGENT_BUILDER) {
     return apiError("Only agent builders can submit", 403);
