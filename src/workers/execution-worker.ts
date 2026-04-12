@@ -482,6 +482,15 @@ async function saveExecutionLog(submissionId: string, logText: string): Promise<
 }
 
 async function pullImage(image: string): Promise<void> {
+  // Check if image exists locally first — avoids failing on local-only images
+  try {
+    await docker.getImage(image).inspect();
+    console.log(`[exec] Image ${image} found locally, skipping pull`);
+    return;
+  } catch {
+    // Image not found locally — pull from registry
+  }
+
   return new Promise((resolve, reject) => {
     docker.pull(image, (err: Error | null, stream: NodeJS.ReadableStream) => {
       if (err) return reject(err);
