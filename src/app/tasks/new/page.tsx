@@ -669,9 +669,26 @@ export default function NewTaskPage() {
                         setEvalImage(e.target.value);
                         if (e.target.value.trim()) setEvalImageError(null);
                       }}
-                      onBlur={() => {
-                        if (!evalImage.trim()) {
+                      onBlur={async () => {
+                        const trimmed = evalImage.trim();
+                        if (!trimmed) {
                           setEvalImageError("Eval container image is required");
+                          return;
+                        }
+                        try {
+                          const res = await fetch("/api/tasks/validate-eval", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ eval_image: trimmed }),
+                          });
+                          const data = await res.json();
+                          if (!data.valid) {
+                            setEvalImageError(data.error ?? "Invalid image reference");
+                          } else {
+                            setEvalImageError(null);
+                          }
+                        } catch {
+                          // Network error — don't block the user
                         }
                       }}
                       placeholder="myorg/eval:latest"

@@ -7,7 +7,8 @@ import { useSession } from "next-auth/react";
 import { StatusBadge } from "@/components/status-badge";
 import { Leaderboard } from "@/components/leaderboard";
 import { DeadlineCountdown } from "@/components/deadline-countdown";
-import { ROLE_COMPANY, ROLE_AGENT_BUILDER } from "@/constants";
+import { ROLE_COMPANY, ROLE_AGENT_BUILDER, EVAL_MODE } from "@/constants";
+import type { EvalMode } from "@/constants";
 
 interface Task {
   id: string;
@@ -22,6 +23,8 @@ interface Task {
   deadline: string;
   status: string;
   company_id: string;
+  eval_mode: EvalMode;
+  eval_image: string | null;
 }
 
 interface Submission {
@@ -242,12 +245,40 @@ export default function TaskDetailPage() {
         </Section>
 
         <Section label="EVALUATION">
-          <div className="flex gap-4">
+          <div className="flex gap-4 mb-3">
             <EvalWeight
               label="Automated Tests"
               weight={task.test_weight}
             />
             <EvalWeight label="LLM Judge" weight={task.llm_weight} />
+          </div>
+          <div className="flex items-center gap-2">
+            <span
+              className="font-sans inline-flex items-center gap-1.5"
+              style={{
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "var(--text-muted)",
+                padding: "3px 8px",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius)",
+                background: "var(--bg-subtle)",
+              }}
+            >
+              {task.eval_mode === EVAL_MODE.CONTAINER
+                ? "Container Eval"
+                : task.eval_mode === EVAL_MODE.HYBRID
+                  ? "Hybrid Eval"
+                  : "LLM Judge"}
+            </span>
+            {task.eval_mode !== EVAL_MODE.LLM && task.eval_image && (
+              <span
+                className="font-mono"
+                style={{ fontSize: "11px", color: "var(--text-faint)" }}
+              >
+                {task.eval_image}
+              </span>
+            )}
           </div>
         </Section>
 
