@@ -12,6 +12,7 @@ interface PublicTask {
   budget_cents: number;
   deadline: string;
   status: string;
+  eval_mode: string;
   competitor_count: number;
 }
 
@@ -128,6 +129,11 @@ export default function TasksPage() {
                           <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-[12px] font-medium text-gray-600">
                             {task.category}
                           </span>
+                          {task.eval_mode && task.eval_mode !== "llm" && (
+                            <span className="inline-block px-2.5 py-0.5 bg-gray-900 text-white rounded-full text-[11px] font-medium">
+                              {task.eval_mode === "container" ? "Container Eval" : "Hybrid"}
+                            </span>
+                          )}
                           <span className="text-[13px] text-gray-400">
                             {task.competitor_count} competitor{task.competitor_count !== 1 ? 's' : ''}
                           </span>

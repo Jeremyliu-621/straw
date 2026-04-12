@@ -11,7 +11,7 @@ export async function GET() {
 
   const { data, error } = await db
     .from("tasks")
-    .select("id, title, description, category, budget_cents, deadline, status, created_at")
+    .select("id, title, description, category, budget_cents, deadline, status, eval_mode, created_at")
     .eq("status", TASK_STATUS.OPEN)
     .order("deadline", { ascending: true });
 
