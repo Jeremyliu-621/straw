@@ -1,0 +1,134 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { generatePresignedUploadUrl, verifyUploadExists, getSubmissionStoragePath } from "./upload.service";
+
+// ── Mock Supabase client ─────────────────────────────────────
+
+function createMockDb() {
+  const mockStorage = {
+    createSignedUploadUrl: vi.fn(),
+    list: vi.fn(),
+  };
+
+  return {
+    storage: {
+      from: vi.fn(() => mockStorage),
+    },
+    _mockStorage: mockStorage,
+  };
+}
+
+describe("upload.service", () => {
+  let mockDb: ReturnType<typeof createMockDb>;
+
+  beforeEach(() => {
+    mockDb = createMockDb();
+    vi.restoreAllMocks();
+  });
+
+  describe("generatePresignedUploadUrl", () => {
+    it("generates a presigned URL with correct path", async () => {
+      mockDb._mockStorage.createSignedUploadUrl.mockResolvedValue({
+        data: {
+          signedUrl: "https://storage.example.com/signed",
+          token: "tok_abc",
+          path: "submissions/sub-123/agent_output",
+        },
+        error: null,
+      });
+
+      const result = await generatePresignedUploadUrl(
+        mockDb as never,
+        "sub-123"
+      );
+
+      expect(result.signedUrl).toBe("https://storage.example.com/signed");
+      expect(result.token).toBe("tok_abc");
+      expect(result.path).toBe("submissions/sub-123/agent_output");
+      expect(result.expiresAt).toBeTruthy();
+      expect(mockDb.storage.from).toHaveBeenCalledWith("agent-outputs");
+      expect(mockDb._mockStorage.createSignedUploadUrl).toHaveBeenCalledWith(
+        "submissions/sub-123/agent_output"
+      );
+    });
+
+    it("throws on storage error", async () => {
+      mockDb._mockStorage.createSignedUploadUrl.mockResolvedValue({
+        data: null,
+        error: { message: "bucket not found" },
+      });
+
+      await expect(
+        generatePresignedUploadUrl(mockDb as never, "sub-123")
+      ).rejects.toThrow("Failed to create presigned upload URL: bucket not found");
+    });
+
+    it("respects deadline for expiry", async () => {
+      const futureDeadline = new Date(Date.now() + 3600 * 1000).toISOString(); // 1 hour
+      mockDb._mockStorage.createSignedUploadUrl.mockResolvedValue({
+        data: { signedUrl: "url", token: "tok", path: "p" },
+        error: null,
+      });
+
+      const result = await generatePresignedUploadUrl(
+        mockDb as never,
+        "sub-123",
+        futureDeadline
+      );
+
+      // Expiry should be ~1 hour from now, not 24 hours
+      const expiresMs = new Date(result.expiresAt).getTime() - Date.now();
+      expect(expiresMs).toBeLessThan(3700 * 1000); // within 1h + margin
+      expect(expiresMs).toBeGreaterThan(3500 * 1000); // at least ~58 min
+    });
+  });
+
+  describe("verifyUploadExists", () => {
+    it("returns true when files exist", async () => {
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: [{ name: "agent_output", metadata: { size: 1024 } }],
+        error: null,
+      });
+
+      const exists = await verifyUploadExists(mockDb as never, "sub-123");
+      expect(exists).toBe(true);
+      expect(mockDb._mockStorage.list).toHaveBeenCalledWith("submissions/sub-123");
+    });
+
+    it("returns false when no files exist", async () => {
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: [],
+        error: null,
+      });
+
+      const exists = await verifyUploadExists(mockDb as never, "sub-123");
+      expect(exists).toBe(false);
+    });
+
+    it("ignores placeholder files", async () => {
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: [{ name: ".emptyFolderPlaceholder", metadata: { size: 0 } }],
+        error: null,
+      });
+
+      const exists = await verifyUploadExists(mockDb as never, "sub-123");
+      expect(exists).toBe(false);
+    });
+
+    it("throws on storage error", async () => {
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: null,
+        error: { message: "access denied" },
+      });
+
+      await expect(
+        verifyUploadExists(mockDb as never, "sub-123")
+      ).rejects.toThrow("Failed to verify upload: access denied");
+    });
+  });
+
+  describe("getSubmissionStoragePath", () => {
+    it("returns correct path", () => {
+      expect(getSubmissionStoragePath("sub-abc")).toBe("submissions/sub-abc");
+    });
+  });
+});

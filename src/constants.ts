@@ -97,6 +97,7 @@ export type TaskStatus = (typeof TASK_STATUS)[keyof typeof TASK_STATUS];
 
 // ── Submission Status ────────────────────────────────────────
 export const SUBMISSION_STATUS = {
+  REGISTERED: "registered",
   PENDING: "pending",
   RUNNING: "running",
   COMPLETED: "completed",
@@ -115,8 +116,14 @@ export type DealType = (typeof DEAL_TYPE)[keyof typeof DEAL_TYPE];
 export const SUBMISSION_MODE = {
   API: "api",
   DOCKER: "docker",
+  UPLOAD: "upload",
 } as const;
 export type SubmissionMode = (typeof SUBMISSION_MODE)[keyof typeof SUBMISSION_MODE];
+
+// ── Upload ─────────────────────────────────────────────────
+export const UPLOAD_MAX_FILE_SIZE_MB = 50;
+export const UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS = 24 * 60 * 60; // 24 hours
+export const UPLOAD_STORAGE_BUCKET = "agent-outputs" as const;
 
 // ── API Keys ────────────────────────────────────────────────
 export const API_KEY_PREFIX = "straw_sk_" as const;
@@ -126,6 +133,7 @@ export const API_KEY_MAX_PER_USER = 10;
 // ── Webhook Events ──────────────────────────────────────────
 export const WEBHOOK_EVENT = {
   TASK_STATUS_CHANGED: "task.status_changed",
+  TASK_MATCHED: "task.matched",
   SUBMISSION_CREATED: "submission.created",
   SUBMISSION_COMPLETED: "submission.completed",
   SUBMISSION_FAILED: "submission.failed",
@@ -141,7 +149,8 @@ export const WEBHOOK_DELIVERY_STATUS = {
 } as const;
 export type WebhookDeliveryStatus = (typeof WEBHOOK_DELIVERY_STATUS)[keyof typeof WEBHOOK_DELIVERY_STATUS];
 
-export const WEBHOOK_MAX_PER_COMPANY = 10;
+export const WEBHOOK_MAX_PER_USER = 10;
+export const WEBHOOK_MAX_PER_COMPANY = WEBHOOK_MAX_PER_USER;
 export const WEBHOOK_SECRET_BYTES = 32;
 export const WEBHOOK_DELIVERY_TIMEOUT_MS = 10_000;
 export const WEBHOOK_MAX_DELIVERY_ATTEMPTS = 3;
@@ -167,6 +176,7 @@ export const AUDIT_ACTION = {
   WEBHOOK_DELETED: "webhook.deleted",
   API_KEY_CREATED: "api_key.created",
   API_KEY_REVOKED: "api_key.revoked",
+  SUBMISSION_UPLOADED: "submission.uploaded",
 } as const;
 export type AuditAction = (typeof AUDIT_ACTION)[keyof typeof AUDIT_ACTION];
 
@@ -211,6 +221,7 @@ export const NOTIFICATION_TYPE = {
   SUBMISSION_FAILED: "submission.failed",
   EVALUATION_COMPLETED: "evaluation.completed",
   DEAL_CREATED: "deal.created",
+  TASK_MATCHED: "task.matched",
   TASK_DEADLINE_APPROACHING: "task.deadline_approaching",
   TASK_CLOSED: "task.closed",
   COMMENT_CREATED: "comment.created",

@@ -96,6 +96,28 @@ export function buildEvaluationCompletedPayload(
   };
 }
 
+export function buildTaskMatchedPayload(
+  taskId: string,
+  title: string,
+  category: string,
+  deadline: string,
+  evalMode: string,
+  budgetCents: number
+): WebhookPayload {
+  return {
+    event: "task.matched",
+    timestamp: new Date().toISOString(),
+    data: {
+      task_id: taskId,
+      title,
+      category,
+      deadline,
+      eval_mode: evalMode,
+      budget_cents: budgetCents,
+    },
+  };
+}
+
 export function buildDealCreatedPayload(
   dealId: string,
   taskId: string,

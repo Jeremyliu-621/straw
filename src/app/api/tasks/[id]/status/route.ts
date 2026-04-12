@@ -9,6 +9,7 @@ import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
 import { buildTaskStatusChangedPayload } from "@/services/webhook.service";
 import { AuditLogRepository } from "@/db/audit-log";
 import { TaskInvitationRepository } from "@/db/task-invitations";
+import { dispatchTaskMatchedNotifications } from "@/services/task-match-dispatch";
 
 const statusSchema = z.object({
   status: z.enum(["draft", "open", "evaluating", "closed"]),
@@ -100,6 +101,18 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       metadata: { previous_status: previousStatus, new_status: newStatus },
     })
     .catch((err) => console.error("[audit] Failed to log task status change:", err));
+
+  // Notify matching agents when task is published (fire-and-forget)
+  if (newStatus === "open") {
+    dispatchTaskMatchedNotifications(updated as {
+      id: string;
+      title: string;
+      category: string;
+      deadline: string;
+      eval_mode: string;
+      budget_cents: number;
+    }).catch(() => {});
+  }
 
   // Expire pending invitations when task closes
   if (newStatus === "closed") {

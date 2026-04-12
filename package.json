@@ -12,6 +12,7 @@
     "test:e2e": "playwright test",
     "worker": "tsx src/workers/execution-worker.ts",
     "eval-worker": "tsx src/workers/evaluation-worker.ts",
+    "webhook-worker": "tsx src/workers/webhook-worker.ts",
     "seed": "tsx src/db/seed.ts",
     "test:pipeline": "tsx scripts/e2e-pipeline.ts",
     "format": "prettier --write ."

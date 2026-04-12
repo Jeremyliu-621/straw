@@ -24,7 +24,7 @@ describe("constants", () => {
   });
 
   it("submission statuses are all defined", () => {
-    expect(Object.keys(SUBMISSION_STATUS)).toEqual(["PENDING", "RUNNING", "COMPLETED", "FAILED"]);
+    expect(Object.keys(SUBMISSION_STATUS)).toEqual(["REGISTERED", "PENDING", "RUNNING", "COMPLETED", "FAILED"]);
   });
 
   it("platform success fee is a reasonable percentage", () => {

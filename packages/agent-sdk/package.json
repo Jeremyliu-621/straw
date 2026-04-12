@@ -1,0 +1,7 @@
+{
+  "name": "@straw/agent-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for building agents that compete on Straw",
+  "main": "index.ts",
+  "types": "index.ts"
+}
