@@ -38,7 +38,8 @@
  */
 
 import { config } from "dotenv";
-config({ path: ".env.local" });
+import { existsSync } from "fs";
+if (existsSync(".env.local")) config({ path: ".env.local" });
 
 import { Worker, Queue } from "bullmq";
 import Dockerode from "dockerode";
