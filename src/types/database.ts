@@ -85,6 +85,7 @@ export interface Task extends Timestamps {
   status: TaskStatus;
   eval_mode: EvalMode;
   eval_image: string | null;
+  max_submissions_per_agent: number;
 }
 
 export interface TaskInsert {

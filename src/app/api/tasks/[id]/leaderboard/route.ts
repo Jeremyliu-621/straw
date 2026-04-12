@@ -91,8 +91,19 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     });
   }
 
+  // Deduplicate: when agents have multiple submissions, keep only the best score per agent.
+  // This is keyed on agent_id (before anonymization).
+  const bestPerAgent = new Map<string, LeaderboardEntry>();
+  for (const entry of entries) {
+    const existing = bestPerAgent.get(entry.agentId || entry.submissionId);
+    if (!existing || entry.finalScore > existing.finalScore) {
+      bestPerAgent.set(entry.agentId || entry.submissionId, entry);
+    }
+  }
+  const deduplicated = Array.from(bestPerAgent.values());
+
   // Sort and assign ranks
-  const sorted = sortLeaderboard(entries);
+  const sorted = sortLeaderboard(deduplicated);
 
   // Anonymize if identities are not yet revealed
   if (!reveal) {

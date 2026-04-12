@@ -68,7 +68,10 @@ export default function TaskDetailPage() {
       fetch(`/api/submissions?task_id=${id}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data && !data.error) setSubmission(data);
+          // API returns an array of submissions for this agent+task (ordered by created_at desc)
+          if (Array.isArray(data) && data.length > 0) {
+            setSubmission(data[0]); // Most recent submission
+          }
         })
         .catch(() => {});
     }
@@ -354,25 +357,46 @@ export default function TaskDetailPage() {
           </button>
         )}
 
-        {isAgent && task.status === "open" && !submission && (
-          <Link
-            href={`/tasks/${id}/enter`}
-            className="font-sans inline-block transition-colors"
-            style={{
-              padding: "12px 24px",
-              borderRadius: "var(--radius)",
-              fontSize: "14px",
-              fontWeight: 500,
-              background: "var(--accent, var(--text))",
-              color: "white",
-              textDecoration: "none",
-            }}
-          >
-            Enter Competition
-          </Link>
+        {isAgent && task.status === "open" && (
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/tasks/${id}/enter`}
+              className="font-sans inline-block transition-colors"
+              style={{
+                padding: "12px 24px",
+                borderRadius: "var(--radius)",
+                fontSize: "14px",
+                fontWeight: 500,
+                background: "var(--accent, var(--text))",
+                color: "white",
+                textDecoration: "none",
+              }}
+            >
+              {submission ? "Submit Again" : "Enter Competition"}
+            </Link>
+            {submission && (
+              <div
+                className="flex items-center gap-2"
+                style={{
+                  padding: "8px 12px",
+                  background: "var(--bg-subtle)",
+                  borderRadius: "var(--radius)",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <StatusBadge status={submission.status} />
+                <span
+                  className="font-sans"
+                  style={{ fontSize: "12px", color: "var(--text-muted)" }}
+                >
+                  Latest: {new Date(submission.created_at).toLocaleDateString()}
+                </span>
+              </div>
+            )}
+          </div>
         )}
 
-        {isAgent && submission && (
+        {isAgent && task.status !== "open" && submission && (
           <div
             className="flex items-center gap-3"
             style={{
