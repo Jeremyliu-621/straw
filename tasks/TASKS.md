@@ -415,18 +415,47 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 
 ### 13h: Remaining
 
-- [x] Update TESTING.md: add "Testing with eval containers" section (how to run the example container locally against test agent output)
+- [x] Update TESTING.md: add "Testing with eval containers" section
 - [ ] E2E test: company creates task with container eval mode → task shows eval mode badge (Playwright)
 - [x] Apply migrations 018, 019, 020 to Supabase
 
 ---
 
+## Phase 14: Deployment + Docs
+
+### 14a: Docs Rewrite ✅
+
+- [x] Rewrite /docs page for agent readability (structured, every field documented, Python + Node.js examples)
+- [x] New "How You're Scored" section (three eval modes from agent POV)
+- [x] Updated API reference with all current fields (eval_mode, container_score, breakdown, max_submissions_per_agent, leaderboard, PATCH tasks)
+- [x] GET /api/docs — machine-readable JSON API spec for programmatic agent access
+
+### 14b: Deployment Infra ✅
+
+- [x] Vercel: auto-deploys from master, all 11 env vars configured, production live
+- [x] Worker Dockerfiles (workers/execution.Dockerfile, workers/evaluation.Dockerfile) with Docker CLI
+- [x] docker-compose.prod.yml for VPS deployment (Docker socket mount)
+- [x] .env.prod.example template
+- [x] DEPLOY.md step-by-step guide
+- [x] Conditional dotenv loading in workers (dev vs production)
+
+<!-- RESUME HERE -->
+### 14c: Worker Deployment (TODO)
+
+- [ ] Set up Hetzner CX22 VPS ($4.50/mo) — Ubuntu 24.04 + Docker
+- [ ] Set up Upstash Redis (free tier) — get REDIS_URL
+- [ ] Deploy workers: clone repo, create .env.prod, docker compose up
+- [ ] Verify: workers connect to Redis, process a test submission in production
+- [ ] Update OAuth callback URLs to production Vercel domain
+- [ ] Create test-suites bucket in production Supabase Storage
+
+---
+
 ## Discovered Tasks
 
-- **Docker image validation on entry**: When entering a competition in Docker mode, optionally attempt a pull check before accepting the submission. Deferred — adds latency to submission flow, and the execution worker already handles pull failures gracefully.
-- **Supabase Storage upload for test suites**: Done in Phase 12b.
-- **Email notifications**: Notify agents when matched tasks are posted, notify companies when deadline fires. Needs Resend integration.
-- **Supabase Realtime**: Replace polling-based leaderboard with Supabase Realtime subscriptions for true real-time updates.
-- **API endpoint health check**: Optional pre-flight ping to the agent's API endpoint on submission to catch obvious misconfigurations (404, DNS failure). Deferred — nice UX polish but not blocking.
-- **Submission mode badge on leaderboard**: Visual indicator showing whether each entry used API or Docker mode. Companies may care about reproducibility/sandboxing guarantees.
-- **Agent resubmission**: ~~Allow agents to update their submission (new image or endpoint) before the deadline. Currently blocked by UNIQUE(task_id, agent_id).~~ **DONE** — Migration 019 drops UNIQUE constraint, adds per-task `max_submissions_per_agent` (default 5, max 20). Leaderboard deduplicates to best score per agent. Task detail shows "Submit Again" when open.
+- **Docker image validation on entry**: Deferred — execution worker handles pull failures gracefully.
+- **Email notifications**: Notify agents when matched tasks are posted, companies when deadline fires. Needs Resend integration.
+- **Supabase Realtime**: Replace polling-based leaderboard with Realtime subscriptions.
+- **API endpoint health check**: Pre-flight ping on API-mode submission. Nice UX polish, not blocking.
+- **Submission mode badge on leaderboard**: Show API vs Docker mode per entry.
+- **Custom domain**: Point straw.dev (or similar) at Vercel deployment.
