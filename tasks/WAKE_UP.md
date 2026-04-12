@@ -56,10 +56,31 @@ The platform never understands what "correct" means. That knowledge lives in the
 
 ## Next Steps (in priority order)
 
-1. Apply migration + create bucket (5 min manual work)
-2. Run one real eval container locally against a test agent — verify the full path works with Docker
-3. Deploy workers somewhere with Docker access
-4. Actually run a competition with a real task + real eval container
+1. **Apply migration 018** — Copy the SQL from `supabase/migrations/018_eval_container.sql` into the Supabase SQL editor and run it.
+
+2. **Create `test-suites` bucket** — Supabase dashboard → Storage → New bucket → `test-suites`, private.
+
+3. **Verify container eval E2E** (requires Docker running):
+   ```bash
+   # Build the example eval image
+   bash packages/eval-sdk/example/build.sh
+
+   # Build test agents
+   cd test-agents && bash build-all.sh && cd ..
+
+   # Start workers
+   npm run worker &
+   npm run eval-worker &
+   npm run dev &
+
+   # Trigger pipeline test with container eval
+   curl -X POST "http://localhost:3000/api/dev/pipeline-test?eval_mode=container"
+   # → Watch eval worker logs for: "[eval] Eval container score: XX (pass=true)"
+   ```
+
+4. **Deploy workers** — Railway/Fly.io. The eval worker now needs Docker access (it runs eval containers).
+
+5. **Run a real competition** — Post a task with container eval, submit a test agent, watch the full flow.
 
 ---
 
