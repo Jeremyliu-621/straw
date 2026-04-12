@@ -263,6 +263,32 @@ async function downloadAgentOutputToDir(outputUrl: string, destDir: string): Pro
   return downloaded;
 }
 
+/**
+ * Read all files from a local directory and combine them into a single text string
+ * (same format as fetchAgentOutput). Used in hybrid mode to avoid re-downloading from storage.
+ */
+function readLocalOutputAsText(dirPath: string): string {
+  if (!fs.existsSync(dirPath)) return "";
+
+  const files = fs.readdirSync(dirPath);
+  if (files.length === 0) return "";
+
+  const outputs: string[] = [];
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    const stat = fs.statSync(filePath);
+    if (!stat.isFile() || stat.size === 0) continue;
+    const text = fs.readFileSync(filePath, "utf8");
+    outputs.push(`--- ${file} ---\n${text}`);
+  }
+
+  const combined = outputs.join("\n\n");
+  if (combined.length > MAX_OUTPUT_SIZE) {
+    return combined.slice(0, MAX_OUTPUT_SIZE) + "\n\n[Output truncated due to size]";
+  }
+  return combined;
+}
+
 // ── Eval Container ────────────────────────────────────────────
 
 /**
@@ -326,7 +352,16 @@ async function runEvalContainer(
     );
   }
 
-  // Cleanup container (best effort — don't block on this)
+  // Capture logs before removing container (for debugging eval failures)
+  let containerLogs = "";
+  try {
+    const logs = await container.logs({ stdout: true, stderr: true, follow: false });
+    containerLogs = logs.toString().slice(0, 10_000); // Cap at 10KB
+  } catch {
+    // Best effort — don't block on log capture failure
+  }
+
+  // Cleanup container
   try {
     await container.remove({ force: true });
   } catch {
@@ -334,8 +369,9 @@ async function runEvalContainer(
   }
 
   if (exitCode !== 0) {
+    const detail = containerLogs ? `\n--- Container logs ---\n${containerLogs}` : "";
     throw new EvalContainerError(
-      `Eval container exited with code ${exitCode}`,
+      `Eval container exited with code ${exitCode}${detail}`,
       exitCode
     );
   }
@@ -350,12 +386,13 @@ async function runEvalContainer(
   }
 
   let parsed: unknown;
+  let rawContent = "";
   try {
-    const raw = fs.readFileSync(scoreJsonPath, "utf8");
-    parsed = JSON.parse(raw);
+    rawContent = fs.readFileSync(scoreJsonPath, "utf8");
+    parsed = JSON.parse(rawContent);
   } catch (err) {
     throw new EvalContainerError(
-      `Failed to parse ${EVAL_SCORE_JSON_FILENAME}: ${(err as Error).message}`,
+      `Failed to parse ${EVAL_SCORE_JSON_FILENAME}: ${(err as Error).message}. Content: ${rawContent.slice(0, 500)}`,
       exitCode
     );
   }
@@ -363,7 +400,7 @@ async function runEvalContainer(
   const validated = scoreJsonSchema.safeParse(parsed);
   if (!validated.success) {
     throw new EvalContainerError(
-      `Invalid ${EVAL_SCORE_JSON_FILENAME}: ${z.prettifyError(validated.error)}`,
+      `Invalid ${EVAL_SCORE_JSON_FILENAME}: ${z.prettifyError(validated.error)}. Got: ${JSON.stringify(parsed).slice(0, 300)}`,
       exitCode
     );
   }
@@ -643,10 +680,10 @@ async function handleContainerEval(
 
     const finalScore = Math.round(containerResult.score * 100) / 100;
 
-    // For LLM notes in hybrid mode
+    // For LLM notes in hybrid mode — read from disk (already downloaded) instead of re-fetching from storage
     let llmReasoning: string | null = null;
     if (evalMode === EVAL_MODE.HYBRID) {
-      const agentOutput = await fetchAgentOutput(outputUrl);
+      const agentOutput = readLocalOutputAsText(agentOutputDir);
       const llmResult = await evaluateWithLLM(task, criteria, agentOutput);
       if (llmResult) {
         llmReasoning = llmResult.overall_reasoning;
