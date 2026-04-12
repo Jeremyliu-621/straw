@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 // ── Shared mini-window chrome ────────────────────────────────────────────────
 
@@ -338,7 +341,7 @@ export default function ProcessFlow() {
     <section className="w-full bg-[#FDFCFC]">
       <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200">
         {/* Section header */}
-        <div className="border-b border-gray-200 px-6 sm:px-10 py-16 lg:py-20">
+        <div className="border-b border-gray-200 px-6 sm:px-10 py-10 lg:py-14">
           <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-black leading-[1.1] max-w-[600px]">
             How it works
           </h2>
@@ -351,22 +354,36 @@ export default function ProcessFlow() {
         {STEPS.map((step, i) => (
           <div
             key={step.step}
-            className="flex flex-col lg:flex-row border-b border-gray-200"
+            className={`flex flex-col lg:flex-row${i === STEPS.length - 1 ? " border-b border-gray-200" : ""}`}
           >
+            {/* Timeline connector — desktop only */}
+            <div className="hidden lg:flex flex-col items-center w-16 shrink-0">
+              <div className={`w-px flex-1 ${i === 0 ? "" : "bg-gray-200"}`} />
+              <div className="w-7 h-7 rounded-full border border-gray-200 bg-white flex items-center justify-center text-[11px] font-mono text-[#a3a3a3] shrink-0">
+                {step.step}
+              </div>
+              <div className={`w-px flex-1 ${i === STEPS.length - 1 ? "" : "bg-gray-200"}`} />
+            </div>
+
             {/* Text side */}
-            <div
-              className="w-full lg:w-[42%] px-6 sm:px-10 py-12 lg:py-16 flex flex-col justify-center lg:border-r border-gray-200"
+            <motion.div
+              className="w-full lg:w-[40%] px-6 sm:px-10 py-8 lg:py-10 flex flex-col justify-center lg:border-r border-gray-200"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
+              {/* Step number — mobile only (desktop shows in timeline) */}
               <span
-                className="font-mono text-[13px] text-[#a3a3a3] tracking-wide"
+                className="lg:hidden font-mono text-[13px] text-[#a3a3a3] tracking-wide"
                 style={{ marginBottom: 12 }}
               >
                 {step.step}
               </span>
-              <h3 className="text-[22px] sm:text-[24px] font-normal tracking-tight text-black leading-[1.2] mb-4">
+              <h3 className="text-[22px] sm:text-[24px] font-normal tracking-tight text-black leading-[1.2] mb-3">
                 {step.title}
               </h3>
-              <p className="text-[#646464] text-[15px] leading-relaxed mb-6 max-w-[380px]">
+              <p className="text-[#646464] text-[15px] leading-relaxed mb-5 max-w-[380px]">
                 {step.description}
               </p>
               <Link
@@ -375,14 +392,20 @@ export default function ProcessFlow() {
               >
                 {step.cta.label} →
               </Link>
-            </div>
+            </motion.div>
 
             {/* Window side */}
-            <div className="w-full lg:flex-1 px-6 sm:px-10 py-8 lg:py-16 flex items-center justify-center bg-[#FDFCFC]">
+            <motion.div
+              className="w-full lg:flex-1 px-6 sm:px-10 py-6 lg:py-10 flex items-center justify-center bg-[#FDFCFC]"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+            >
               <div className="w-full max-w-[520px]">
                 {step.window}
               </div>
-            </div>
+            </motion.div>
           </div>
         ))}
       </div>
