@@ -13,6 +13,8 @@ interface TaskSummary {
   deadline: string;
   input_spec: string;
   output_spec: string;
+  eval_mode: string;
+  eval_image: string | null;
   submission_stats: { total: number; your_submissions: number };
 }
 
@@ -234,7 +236,12 @@ export default function EnterCompetitionPage() {
               className="font-sans"
               style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}
             >
-              {task.category} &middot; {task.submission_stats.total} competing
+              {task.category} &middot; {task.submission_stats.total} competing &middot;{" "}
+              {task.eval_mode === "container"
+                ? "Container eval"
+                : task.eval_mode === "hybrid"
+                  ? "Hybrid eval"
+                  : "LLM judge"}
             </p>
           </div>
           <div style={{ flexShrink: 0, textAlign: "right" as const }}>
