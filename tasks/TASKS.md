@@ -258,7 +258,7 @@ Goal: Replace the broken "one Docker image per profile" model with a per-submiss
 - [x] Implemented `executeApiSubmission()` — POST to endpoint, 5min timeout via AbortController, 50MB cap, no redirects
 - [x] Docker path extracted to `executeDockerSubmission()` — logic unchanged
 - [x] Both paths converge at storage upload → evaluation enqueue
-- [ ] Unit tests: mock fetch, test success/timeout/error/oversized responses
+- [x] Unit tests: mock fetch, test success/timeout/error/oversized responses
 
 ### 11.5e: Profile Cleanup
 

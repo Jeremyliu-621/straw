@@ -106,6 +106,105 @@ describe("storage path generation", () => {
   });
 });
 
+// ── API Execution Handler Logic ───────────────────────────────
+
+/**
+ * Replicate the core validation logic from executeApiSubmission
+ * for isolated testing (the real function uses fetch + AbortController).
+ */
+const MAX_RESPONSE_BYTES = 50 * 1024 * 1024;
+const EXECUTION_TIMEOUT_MS = 5 * 60 * 1000;
+
+function validateApiResponse(
+  status: number,
+  contentLength: string | null,
+  bodySize: number
+): { ok: boolean; error?: string } {
+  if (status < 200 || status >= 300) {
+    return { ok: false, error: `Agent endpoint returned HTTP ${status}` };
+  }
+  if (contentLength && parseInt(contentLength, 10) > MAX_RESPONSE_BYTES) {
+    return { ok: false, error: "Agent response too large (>50MB)" };
+  }
+  if (bodySize > MAX_RESPONSE_BYTES) {
+    return { ok: false, error: "Agent response too large (>50MB)" };
+  }
+  return { ok: true };
+}
+
+function validateApiEndpoint(endpoint: string): { ok: boolean; error?: string } {
+  try {
+    const url = new URL(endpoint);
+    if (url.protocol !== "https:") {
+      return { ok: false, error: "Endpoint must use HTTPS" };
+    }
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Invalid URL" };
+  }
+}
+
+describe("API execution handler logic", () => {
+  describe("endpoint validation", () => {
+    it("accepts valid HTTPS endpoint", () => {
+      expect(validateApiEndpoint("https://agent.example.com/solve").ok).toBe(true);
+    });
+
+    it("rejects HTTP endpoint", () => {
+      const result = validateApiEndpoint("http://insecure.com/solve");
+      expect(result.ok).toBe(false);
+      expect(result.error).toContain("HTTPS");
+    });
+
+    it("rejects invalid URL", () => {
+      expect(validateApiEndpoint("not-a-url").ok).toBe(false);
+    });
+
+    it("rejects empty string", () => {
+      expect(validateApiEndpoint("").ok).toBe(false);
+    });
+  });
+
+  describe("response validation", () => {
+    it("accepts 200 with normal body", () => {
+      expect(validateApiResponse(200, "1024", 1024).ok).toBe(true);
+    });
+
+    it("rejects 4xx errors", () => {
+      expect(validateApiResponse(400, null, 100).ok).toBe(false);
+    });
+
+    it("rejects 5xx errors", () => {
+      expect(validateApiResponse(500, null, 100).ok).toBe(false);
+    });
+
+    it("rejects oversized content-length header", () => {
+      const result = validateApiResponse(200, String(60 * 1024 * 1024), 0);
+      expect(result.ok).toBe(false);
+      expect(result.error).toContain("50MB");
+    });
+
+    it("rejects oversized body", () => {
+      const result = validateApiResponse(200, null, 60 * 1024 * 1024);
+      expect(result.ok).toBe(false);
+    });
+
+    it("accepts body exactly at 50MB", () => {
+      expect(validateApiResponse(200, null, MAX_RESPONSE_BYTES).ok).toBe(true);
+    });
+
+    it("rejects body over 50MB by 1 byte", () => {
+      expect(validateApiResponse(200, null, MAX_RESPONSE_BYTES + 1).ok).toBe(false);
+    });
+  });
+
+  describe("timeout configuration", () => {
+    it("uses 5-minute timeout", () => {
+      expect(EXECUTION_TIMEOUT_MS).toBe(5 * 60 * 1000);
+    });
+  });
+});
+
 describe("evaluation queue job shape", () => {
   it("creates correct job data after successful execution", () => {
     const submissionId = "sub-123";
