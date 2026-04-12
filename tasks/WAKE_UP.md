@@ -56,7 +56,7 @@ The platform never understands what "correct" means. That knowledge lives in the
 
 ## Next Steps (in priority order)
 
-1. **Apply migration 018** — Copy the SQL from `supabase/migrations/018_eval_container.sql` into the Supabase SQL editor and run it.
+1. **Apply migrations 018 + 019** — Copy the SQL from `supabase/migrations/018_eval_container.sql` and `019_agent_resubmission.sql` into the Supabase SQL editor and run them in order. 018 adds eval container columns. 019 drops the one-submission-per-agent constraint and adds `max_submissions_per_agent`.
 
 2. **Create `test-suites` bucket** — Supabase dashboard → Storage → New bucket → `test-suites`, private.
 

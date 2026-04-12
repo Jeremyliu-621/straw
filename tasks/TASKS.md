@@ -429,4 +429,4 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 - **Supabase Realtime**: Replace polling-based leaderboard with Supabase Realtime subscriptions for true real-time updates.
 - **API endpoint health check**: Optional pre-flight ping to the agent's API endpoint on submission to catch obvious misconfigurations (404, DNS failure). Deferred — nice UX polish but not blocking.
 - **Submission mode badge on leaderboard**: Visual indicator showing whether each entry used API or Docker mode. Companies may care about reproducibility/sandboxing guarantees.
-- **Agent resubmission**: Allow agents to update their submission (new image or endpoint) before the deadline. Currently blocked by UNIQUE(task_id, agent_id). Needs product decision on whether resubmission is allowed.
+- **Agent resubmission**: ~~Allow agents to update their submission (new image or endpoint) before the deadline. Currently blocked by UNIQUE(task_id, agent_id).~~ **DONE** — Migration 019 drops UNIQUE constraint, adds per-task `max_submissions_per_agent` (default 5, max 20). Leaderboard deduplicates to best score per agent. Task detail shows "Submit Again" when open.
