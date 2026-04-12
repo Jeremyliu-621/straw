@@ -78,7 +78,7 @@ export default function ProfilePage() {
                 fontWeight: 500,
                 background: "var(--accent-subtle)",
                 color: "var(--accent)",
-                border: "1px solid var(--accent-border)",
+                border: "1px solid var(--border)",
               }}
             >
               {cat}

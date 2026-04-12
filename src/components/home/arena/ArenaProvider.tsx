@@ -35,9 +35,11 @@ export function ArenaProvider({ children }: { children: ReactNode }) {
   const [history, setHistory] = useState<string[]>([]);
 
   const navigate = useCallback((newRoute: string) => {
-    setHistory((prev) => [...prev, route]);
-    setRoute(newRoute);
-  }, [route]);
+    setRoute((currentRoute) => {
+      setHistory((prev) => [...prev, currentRoute]);
+      return newRoute;
+    });
+  }, []);
 
   const goBack = useCallback(() => {
     setHistory((prev) => {
