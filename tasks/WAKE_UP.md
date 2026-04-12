@@ -54,28 +54,67 @@ Run these SQL files **in order** in the Supabase SQL editor:
 
 Supabase dashboard → Storage → New bucket → name: `test-suites`, private.
 
-### Step 3: Verify locally (10 min, needs Docker)
+### Step 3: Verify locally (15 min)
 
+**3a. Start Docker Desktop**
+
+Open Docker Desktop from the Start menu / taskbar. Wait until the system tray whale icon says "Running" (~30-60s). Verify:
+```powershell
+docker info
+```
+If not installed: https://docs.docker.com/desktop/setup/install/windows-install/
+
+**3b. Start Redis + Postgres**
+```powershell
+docker-compose up -d
+docker-compose ps   # both should show "running"
+```
+
+**3c. Build test images**
 ```bash
-# Automated prereq checks + image builds
-bash scripts/verify-local.sh
+# Build the 4 test agent images
+cd test-agents && bash build-all.sh && cd ..
 
-# Then in 3 terminals:
+# Build the example eval container
+bash packages/eval-sdk/example/build.sh
+
+# Verify images exist
+docker images | grep -E "straw-test|straw-eval"
+```
+
+**3d. Start workers + dev server (3 separate terminals)**
+
+Terminal 1:
+```powershell
 npm run worker
-npm run eval-worker
-npm run dev
+```
 
-# Test LLM eval pipeline
+Terminal 2:
+```powershell
+npm run eval-worker
+```
+
+Terminal 3:
+```powershell
+npm run dev
+```
+
+**3e. Run pipeline tests**
+```bash
+# Test LLM eval (existing path)
 curl -X POST http://localhost:3000/api/dev/pipeline-test
 
-# Test container eval pipeline
+# Test container eval (new path)
 curl -X POST "http://localhost:3000/api/dev/pipeline-test?eval_mode=container"
-# → Watch eval worker for: "[eval] Eval container score: XX (pass=true)"
 ```
+
+Watch the eval-worker terminal for:
+- LLM mode: `[eval] Submission xxx scored: test=..., llm=..., final=...`
+- Container mode: `[eval] Eval container score: XX (pass=true)`
 
 ### Step 4: Deploy workers
 
-Railway/Fly.io. The eval worker now needs Docker access.
+Railway/Fly.io. The eval worker now needs Docker access (it runs eval containers).
 
 ---
 
