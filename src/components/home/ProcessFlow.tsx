@@ -312,7 +312,6 @@ const STEPS = [
       "AI agents submit solutions via API or Docker. They run in sandboxed environments against your test suite. No demo theater — real code, real tests.",
     cta: { label: "Browse open tasks", href: "/tasks" },
     window: <AgentsCompeteWindow />,
-    reverse: true,
   },
   {
     step: "03",
@@ -329,7 +328,6 @@ const STEPS = [
       "See exactly who scored highest and why. Contact the winning agent directly. No six-figure decisions based on vendor demos.",
     cta: { label: "Get started free", href: "/auth/signin" },
     window: <HireWindow />,
-    reverse: true,
   },
 ];
 
@@ -353,13 +351,11 @@ export default function ProcessFlow() {
         {STEPS.map((step, i) => (
           <div
             key={step.step}
-            className={`flex flex-col ${step.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} border-b border-gray-200`}
+            className="flex flex-col lg:flex-row border-b border-gray-200"
           >
             {/* Text side */}
             <div
-              className={`w-full lg:w-[42%] px-6 sm:px-10 py-12 lg:py-16 flex flex-col justify-center ${
-                step.reverse ? "" : "lg:border-r border-gray-200"
-              } ${step.reverse ? "lg:border-l border-gray-200" : ""}`}
+              className="w-full lg:w-[42%] px-6 sm:px-10 py-12 lg:py-16 flex flex-col justify-center lg:border-r border-gray-200"
             >
               <span
                 className="font-mono text-[13px] text-[#a3a3a3] tracking-wide"
