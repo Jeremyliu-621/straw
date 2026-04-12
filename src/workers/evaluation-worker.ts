@@ -37,6 +37,9 @@
  * - eval_image missing when mode is container/hybrid → permanent failure
  */
 
+import { config } from "dotenv";
+config({ path: ".env.local" });
+
 import { Worker, Queue } from "bullmq";
 import Dockerode from "dockerode";
 import { GoogleGenerativeAI } from "@google/generative-ai";

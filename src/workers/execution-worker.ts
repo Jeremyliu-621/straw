@@ -27,6 +27,9 @@
  * - Docker daemon error → retry via BullMQ backoff
  */
 
+import { config } from "dotenv";
+config({ path: ".env.local" });
+
 import { Worker, Queue } from "bullmq";
 import Dockerode from "dockerode";
 import { createClient } from "@supabase/supabase-js";
