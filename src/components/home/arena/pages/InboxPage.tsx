@@ -7,7 +7,7 @@ export default function InboxPage() {
   const [activeThread, setActiveThread] = useState<MockThread>(MOCK_THREADS[0]);
 
   return (
-    <div style={{ margin: -32, display: "flex", height: "100%" }}>
+    <div style={{ margin: -32, display: "flex", height: "calc(680px)" }}>
       {/* Thread list */}
       <div
         style={{

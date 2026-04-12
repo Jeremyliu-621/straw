@@ -39,8 +39,7 @@ function ArenaWindowInner() {
   const { urlPath, route } = useArena();
 
   // Pages that scroll and need bottom fade
-  const scrollableRoutes = ["dashboard", "inbox"];
-  const needsFade = scrollableRoutes.includes(route) || route.startsWith("task/");
+  const needsFade = route === "dashboard" || route.startsWith("task/");
 
   return (
     <div
