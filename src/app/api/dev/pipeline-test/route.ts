@@ -19,6 +19,17 @@ const TEST_AGENTS = [
 
 const COMPANY_EMAIL = "devtest-company@test.dev";
 
+export async function GET() {
+  return NextResponse.json({
+    message: "Pipeline test endpoint. Use POST to trigger.",
+    usage: {
+      llm_mode: "POST /api/dev/pipeline-test",
+      container_mode: "POST /api/dev/pipeline-test?eval_mode=container",
+      powershell: 'Invoke-WebRequest -Method POST -Uri http://localhost:3000/api/dev/pipeline-test',
+    },
+  });
+}
+
 export async function POST(req: Request) {
   if (env.NODE_ENV === "production") {
     return NextResponse.json({ error: "Not available in production" }, { status: 403 });
