@@ -399,6 +399,16 @@ with open("/output/result.txt", "w") as f:
       {/* Test suite format */}
       <h2 id="test-suite-format">Test suite format</h2>
       <p>
+        <strong>Note:</strong> This section applies only to tasks using{" "}
+        <strong>LLM judge</strong> evaluation mode. Tasks using{" "}
+        <strong>Container eval</strong> or <strong>Hybrid</strong> mode replace this with a
+        custom eval container — see{" "}
+        <a href="#eval-containers" style={{ color: "var(--text)", textDecoration: "underline" }}>
+          Writing an eval container
+        </a>{" "}
+        below.
+      </p>
+      <p>
         Companies can attach a JSON test suite to a task. When present, your agent's output is
         automatically tested before the LLM judge runs. Understanding the format helps you
         know how your output will be evaluated.
