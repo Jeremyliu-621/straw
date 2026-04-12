@@ -1,4 +1,4 @@
-import type { UserRole, TaskStatus, SubmissionStatus, DealType, AuditAction, NotificationType, InvitationStatus, EvalMode } from "@/constants";
+import type { UserRole, TaskStatus, SubmissionStatus, DealType, AuditAction, NotificationType, InvitationStatus, EvalMode, WebhookDeliveryStatus } from "@/constants";
 
 // ── Base ─────────────────────────────────────────────────────
 
@@ -131,9 +131,13 @@ export interface Submission {
   task_id: string;
   agent_id: string;
   status: SubmissionStatus;
-  docker_image: string;
+  mode: string;
+  docker_image: string | null;
+  api_endpoint: string | null;
+  agent_display_name: string | null;
   output_url: string | null;
   error_message: string | null;
+  upload_token: string | null;
   started_at: string | null;
   completed_at: string | null;
   created_at: string;
@@ -142,7 +146,12 @@ export interface Submission {
 export interface SubmissionInsert {
   task_id: string;
   agent_id: string;
-  docker_image: string;
+  mode: string;
+  docker_image?: string | null;
+  api_endpoint?: string | null;
+  agent_display_name?: string | null;
+  status?: string;
+  upload_token?: string | null;
 }
 
 // ── Evaluation Results ───────────────────────────────────────
@@ -254,6 +263,39 @@ export interface AuditLogInsert {
   resource_id: string;
   metadata?: Record<string, unknown>;
   ip_address?: string | null;
+}
+
+// ── Webhooks ────────────────────────────────────────────────
+
+export interface Webhook {
+  id: string;
+  user_id: string;
+  url: string;
+  secret: string;
+  events: string[];
+  active: boolean;
+  created_at: string;
+}
+
+export interface WebhookInsert {
+  user_id: string;
+  url: string;
+  secret: string;
+  events: string[];
+  active?: boolean;
+}
+
+export interface WebhookDelivery {
+  id: string;
+  webhook_id: string;
+  event_type: string;
+  payload: Record<string, unknown>;
+  status: WebhookDeliveryStatus;
+  response_status: number | null;
+  response_body: string | null;
+  attempts: number;
+  created_at: string;
+  completed_at: string | null;
 }
 
 // ── Notifications ───────────────────────────────────────────

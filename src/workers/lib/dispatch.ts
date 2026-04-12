@@ -32,7 +32,7 @@ export interface WebhookPayload {
 export async function dispatchWebhookFromWorker(
   db: AnySupabaseClient,
   webhookQueue: Queue,
-  companyId: string,
+  userId: string,
   event: string,
   payload: WebhookPayload
 ): Promise<void> {
@@ -40,7 +40,7 @@ export async function dispatchWebhookFromWorker(
     const { data: webhooks } = await db
       .from("webhooks")
       .select("id, url, secret, events")
-      .eq("company_id", companyId)
+      .eq("user_id", userId)
       .eq("active", true);
 
     const matching = (webhooks ?? []).filter(
@@ -67,6 +67,55 @@ export async function dispatchWebhookFromWorker(
     }
   } catch (err) {
     console.error("[dispatch] Failed to dispatch webhook:", err);
+  }
+}
+
+/**
+ * Dispatch a webhook event to multiple users in a single bulk query.
+ * Used for task matching — notifies all matching agents at once.
+ *
+ * Fire-and-forget — logs errors but never throws.
+ */
+export async function dispatchWebhookToManyUsers(
+  db: AnySupabaseClient,
+  webhookQueue: Queue,
+  userIds: string[],
+  event: string,
+  payload: WebhookPayload
+): Promise<void> {
+  if (userIds.length === 0) return;
+
+  try {
+    const { data: webhooks } = await db
+      .from("webhooks")
+      .select("id, user_id, url, secret, events")
+      .in("user_id", userIds)
+      .eq("active", true);
+
+    const matching = (webhooks ?? []).filter(
+      (w: { events: string[] }) => w.events.includes(event)
+    );
+    if (matching.length === 0) return;
+
+    for (const webhook of matching) {
+      const { data: delivery } = await db
+        .from("webhook_deliveries")
+        .insert({ webhook_id: webhook.id, event_type: event, payload })
+        .select("id")
+        .single();
+
+      if (delivery) {
+        await webhookQueue.add(`wh-${delivery.id}`, {
+          deliveryId: delivery.id,
+          webhookId: webhook.id,
+          url: webhook.url,
+          secret: webhook.secret,
+          payload: JSON.stringify(payload),
+        });
+      }
+    }
+  } catch (err) {
+    console.error("[dispatch] Failed to dispatch webhook to many users:", err);
   }
 }
 

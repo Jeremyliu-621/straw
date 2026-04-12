@@ -88,7 +88,7 @@ describe("dispatchWebhookFromWorker", () => {
       error: null,
     });
 
-    await dispatchWebhookFromWorker(db, queue, "company-1", "submission.completed", {
+    await dispatchWebhookFromWorker(db, queue, "user-1", "submission.completed", {
       event: "submission.completed",
       timestamp: new Date().toISOString(),
       data: { submission_id: "sub-1" },
@@ -105,7 +105,7 @@ describe("dispatchWebhookFromWorker", () => {
       error: null,
     });
 
-    await dispatchWebhookFromWorker(db, queue, "company-1", "submission.completed", {
+    await dispatchWebhookFromWorker(db, queue, "user-1", "submission.completed", {
       event: "submission.completed",
       timestamp: new Date().toISOString(),
       data: {},
@@ -118,7 +118,7 @@ describe("dispatchWebhookFromWorker", () => {
     pushQuery("webhooks", { data: null, error: { message: "DB error" } });
 
     // Should not throw
-    await dispatchWebhookFromWorker(db, queue, "company-1", "submission.completed", {
+    await dispatchWebhookFromWorker(db, queue, "user-1", "submission.completed", {
       event: "submission.completed",
       timestamp: new Date().toISOString(),
       data: {},
@@ -205,7 +205,7 @@ describe("dispatchNotificationToTaskOwnerFromWorker", () => {
 
   it("looks up task owner and dispatches notification", async () => {
     // Look up task
-    pushQuery("tasks", { data: { company_id: "company-1" }, error: null });
+    pushQuery("tasks", { data: { company_id: "user-1" }, error: null });
     // getPreferences
     pushQuery("notification_preferences", { data: [], error: null });
     // create notification

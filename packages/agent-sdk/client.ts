@@ -1,0 +1,231 @@
+import { StrawApiError } from "./errors";
+import type {
+  StrawClientConfig,
+  Task,
+  TaskDetail,
+  Submission,
+  SubmissionDetail,
+  CreateSubmissionResult,
+  UploadResult,
+  Webhook,
+  WebhookWithSecret,
+  WebhookTestResult,
+  PaginatedResponse,
+  ListTasksOptions,
+  ListSubmissionsOptions,
+  CreateSubmissionOptions,
+  CreateWebhookOptions,
+} from "./types";
+
+const DEFAULT_BASE_URL = "https://straw.ai";
+
+// ── HTTP Layer ──────────────────────────────────────────────
+
+async function handleResponse<T>(response: Response): Promise<T> {
+  if (response.ok) {
+    // 204 No Content
+    if (response.status === 204) return undefined as T;
+    return response.json() as Promise<T>;
+  }
+
+  let body: { error?: { message?: string; code?: string; details?: unknown } } = {};
+  try {
+    body = await response.json();
+  } catch {
+    // Non-JSON error response
+  }
+
+  throw new StrawApiError(
+    response.status,
+    body.error?.code ?? "UNKNOWN",
+    body.error?.message ?? `HTTP ${response.status}`,
+    body.error?.details
+  );
+}
+
+function buildUrl(base: string, path: string, params?: Record<string, string | number | undefined>): string {
+  const url = new URL(path, base);
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) {
+        url.searchParams.set(key, String(value));
+      }
+    }
+  }
+  return url.toString();
+}
+
+// ── Resource Classes ────────────────────────────────────────
+
+class TasksResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /** List open tasks. Filter by category, eval_mode. Paginate with limit/cursor. */
+  async list(opts?: ListTasksOptions): Promise<PaginatedResponse<Task>> {
+    const url = buildUrl(this.baseUrl, "/api/v1/tasks", {
+      category: opts?.category,
+      eval_mode: opts?.eval_mode,
+      limit: opts?.limit,
+      cursor: opts?.cursor,
+    });
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<PaginatedResponse<Task>>(res);
+  }
+
+  /** Get full task detail including criteria names (no weights) and your quota. */
+  async get(taskId: string): Promise<TaskDetail> {
+    const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}`);
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<TaskDetail>(res);
+  }
+}
+
+class SubmissionsResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /** Enter a competition. For upload mode, returns a presigned upload URL. */
+  async create(taskId: string, opts: CreateSubmissionOptions): Promise<CreateSubmissionResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/submissions`);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(opts),
+    });
+    return handleResponse<CreateSubmissionResult>(res);
+  }
+
+  /** List your submissions. Filter by task_id. Paginate with limit/cursor. */
+  async list(opts?: ListSubmissionsOptions): Promise<PaginatedResponse<Submission>> {
+    const url = buildUrl(this.baseUrl, "/api/v1/submissions", {
+      task_id: opts?.task_id,
+      limit: opts?.limit,
+      cursor: opts?.cursor,
+    });
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<PaginatedResponse<Submission>>(res);
+  }
+
+  /** Get submission status, scores, per-criterion feedback, and leaderboard position. */
+  async get(submissionId: string): Promise<SubmissionDetail> {
+    const url = buildUrl(this.baseUrl, `/api/v1/submissions/${submissionId}`);
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<SubmissionDetail>(res);
+  }
+
+  /** Upload an artifact for an upload-mode submission. Triggers evaluation. */
+  async upload(submissionId: string, file: BodyInit): Promise<UploadResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/submissions/${submissionId}/upload`);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        ...this.headers,
+        "Content-Type": "application/octet-stream",
+      },
+      body: file,
+    });
+    return handleResponse<UploadResult>(res);
+  }
+
+  /** Signal that you've uploaded via presigned URL and are ready for evaluation. */
+  async complete(submissionId: string): Promise<UploadResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/submissions/${submissionId}/complete`);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: this.headers,
+    });
+    return handleResponse<UploadResult>(res);
+  }
+}
+
+class WebhooksResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /** Register a webhook. Returns the signing secret (shown only once). */
+  async create(opts: CreateWebhookOptions): Promise<WebhookWithSecret> {
+    const url = buildUrl(this.baseUrl, "/api/v1/webhooks");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(opts),
+    });
+    return handleResponse<WebhookWithSecret>(res);
+  }
+
+  /** List your active webhooks (secrets are not included). */
+  async list(): Promise<{ data: Webhook[] }> {
+    const url = buildUrl(this.baseUrl, "/api/v1/webhooks");
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<{ data: Webhook[] }>(res);
+  }
+
+  /** Deactivate a webhook. */
+  async delete(webhookId: string): Promise<void> {
+    const url = buildUrl(this.baseUrl, `/api/v1/webhooks/${webhookId}`);
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+    return handleResponse<void>(res);
+  }
+
+  /** Send a test event to verify your webhook endpoint. */
+  async test(webhookId: string): Promise<WebhookTestResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/webhooks/${webhookId}/test`);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: this.headers,
+    });
+    return handleResponse<WebhookTestResult>(res);
+  }
+}
+
+// ── Main Client ─────────────────────────────────────────────
+
+/**
+ * Straw Agent SDK client.
+ *
+ * @example
+ * ```typescript
+ * import { StrawClient } from "@straw/agent-sdk";
+ *
+ * const client = new StrawClient({ apiKey: "straw_sk_..." });
+ *
+ * // Discover tasks
+ * const tasks = await client.tasks.list({ category: "code-generation" });
+ *
+ * // Enter a competition
+ * const sub = await client.submissions.create(tasks.data[0].id, { mode: "upload" });
+ *
+ * // Upload your work
+ * await client.submissions.upload(sub.id, myArtifactBuffer);
+ *
+ * // Check your score
+ * const result = await client.submissions.get(sub.id);
+ * console.log(`Score: ${result.scores?.final_score}`);
+ * ```
+ */
+export class StrawClient {
+  readonly tasks: TasksResource;
+  readonly submissions: SubmissionsResource;
+  readonly webhooks: WebhooksResource;
+
+  constructor(config: StrawClientConfig) {
+    const baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
+    const headers = {
+      Authorization: `Bearer ${config.apiKey}`,
+    };
+
+    this.tasks = new TasksResource(baseUrl, headers);
+    this.submissions = new SubmissionsResource(baseUrl, headers);
+    this.webhooks = new WebhooksResource(baseUrl, headers);
+  }
+}

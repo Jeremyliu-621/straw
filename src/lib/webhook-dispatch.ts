@@ -11,7 +11,7 @@ import type { WebhookPayload } from "@/services/webhook.service";
  * Never throws — failures are logged and silently ignored.
  */
 export async function dispatchWebhookEvent(
-  companyId: string,
+  userId: string,
   event: WebhookEventType,
   payload: WebhookPayload
 ): Promise<void> {
@@ -22,7 +22,7 @@ export async function dispatchWebhookEvent(
     const { data: webhooks } = await db
       .from("webhooks")
       .select("id, url, secret, events")
-      .eq("company_id", companyId)
+      .eq("user_id", userId)
       .eq("active", true);
 
     const matching = (webhooks ?? []).filter(

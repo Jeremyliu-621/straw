@@ -68,7 +68,7 @@ describe("SubmissionRepository", () => {
 
   describe("create", () => {
     it("creates and returns submission", async () => {
-      const input = { task_id: "t1", agent_id: "a1", docker_image: "test:latest" };
+      const input = { task_id: "t1", agent_id: "a1", mode: "docker", docker_image: "test:latest" };
       const created = { id: "s1", ...input, status: "pending" };
       mock.chain.single.mockResolvedValue({ data: created, error: null });
 

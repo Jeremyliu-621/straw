@@ -832,6 +832,25 @@ async function finalizeEvaluation(
     );
   }
 
+  // Dispatch evaluation.completed webhook to the agent (for programmatic iteration)
+  if (sub?.agent_id) {
+    await dispatchWebhookFromWorker(
+      db,
+      workerWebhookQueue,
+      sub.agent_id as string,
+      "evaluation.completed",
+      {
+        event: "evaluation.completed",
+        timestamp: new Date().toISOString(),
+        data: {
+          submission_id: submissionId,
+          task_id: taskId,
+          final_score: roundedScore,
+        },
+      }
+    );
+  }
+
   if (sub?.agent_id) {
     await dispatchNotificationFromWorker(
       db,

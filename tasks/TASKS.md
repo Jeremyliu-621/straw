@@ -411,13 +411,145 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 - [x] HOW_IT_WORKS.md: rewritten Evaluation Worker section with all three modes, updated architecture diagram
 - [x] DECISIONS.md: D9 documenting the eval container decision + what was rejected
 - [x] REQUIREMENTS.md: Evaluation section updated with three modes + score.json contract
-<!-- RESUME HERE -->
-
 ### 13h: Remaining
 
 - [x] Update TESTING.md: add "Testing with eval containers" section (how to run the example container locally against test agent output)
 - [ ] E2E test: company creates task with container eval mode → task shows eval mode badge (Playwright)
 - [ ] Apply migration 018 to Supabase (manual — run in Supabase SQL editor)
+
+---
+
+## Phase 14: Agent-First API + Upload Submission Mode
+
+Goal: Make the platform usable by autonomous AI agents. Add a third submission mode ("upload") for offline work, and build a v1 API (`/api/v1/`) so agents can programmatically discover tasks, enter competitions, upload artifacts, read scores, and iterate.
+
+### 14a: Database Migration (021)
+
+- [x] Migration 021: add `registered` to `submission_status` enum, update `submission_mode_check` for upload mode, add `upload_token` column
+- [ ] Apply migration 021 to Supabase (manual — run in Supabase SQL editor)
+
+### 14b: Constants + Types
+
+- [x] Add `UPLOAD` mode, `REGISTERED` status, upload constants to `src/constants.ts`
+- [x] Update `Submission`/`SubmissionInsert` interfaces in `src/types/database.ts`
+
+### 14c: Upload Service
+
+- [x] `src/services/upload.service.ts`: presigned URL generation, upload verification, storage path helper
+
+### 14d: Submission Service Extraction
+
+- [x] `src/services/submission.service.ts`: extracted shared validation (task open, quota, active check) + creation logic
+- [x] Updated `src/app/api/submissions/route.ts` to use service, added upload mode branch
+
+### 14e: v1 API Routes
+
+- [x] `GET /api/v1/tasks` — list open tasks with category/eval_mode filters
+- [x] `GET /api/v1/tasks/{id}` — task detail with criteria names (no weights) + agent quota
+- [x] `POST /api/v1/tasks/{id}/submissions` — enter competition (api/docker/upload)
+- [x] `GET /api/v1/submissions` — list agent's submissions
+- [x] `GET /api/v1/submissions/{id}` — scores + per-criterion feedback + position + quota
+- [x] `POST /api/v1/submissions/{id}/upload` — upload artifact (server-mediated)
+- [x] `POST /api/v1/submissions/{id}/complete` — signal presigned upload is done
+
+### 14f: Tests
+
+- [x] Upload service tests (8 tests): presigned URL, verification, placeholder filtering, error handling
+- [x] Submission service tests (7 tests): task validation, quota check, active submission blocking
+
+### 14g: Documentation
+
+- [x] HOW_IT_WORKS.md: upload mode section, v1 API section with iteration loop diagram
+- [x] DECISIONS.md: D10 documenting upload mode + v1 API rationale
+- [x] REQUIREMENTS.md: updated Agents section with upload mode + agent-first API
+
+> Upload mode bypasses execution worker entirely. Agents work offline and upload artifacts via presigned URL or POST. Evaluation runs immediately on upload (Option A). v1 routes are thin wrappers over the existing service/repo layer. 332 tests pass, zero type errors.
+
+### 14h: Remaining
+
+- [ ] E2E test: agent creates API key → discovers task → enters with upload mode → uploads → gets score (Playwright)
+- [ ] Apply migration 021 to Supabase (manual)
+- [ ] Entry page UI: add "Upload" as third tab alongside "Connect API" and "Docker Image"
+- [ ] Agent SDK package (optional): TypeScript/Python wrapper around v1 API
+
+---
+
+## Phase 15: Agent Event System — Webhooks + Task Match Notifications
+
+Goal: Let autonomous agents react to platform events. Generalize webhooks for both roles, wire task matching to dispatch events, build webhook management endpoints, and create the delivery worker.
+
+### 15a: Migration 022
+
+- [x] Rename `company_id` → `user_id` on webhooks table, update indexes + RLS
+- [ ] Apply migration 022 to Supabase (manual)
+
+### 15b: Constants + Types
+
+- [x] Added `TASK_MATCHED` to `WEBHOOK_EVENT` and `NOTIFICATION_TYPE`
+- [x] Added `WEBHOOK_MAX_PER_USER`, `Webhook`/`WebhookInsert`/`WebhookDelivery` types
+
+### 15c-d: Generalize Dispatch + Update Call Sites
+
+- [x] Renamed `companyId` → `userId` in `webhook-dispatch.ts` and `workers/lib/dispatch.ts`
+- [x] Added `dispatchWebhookToManyUsers()` for bulk task matching dispatch
+- [x] Fixed bug in v1 submissions route (was passing `""` as userId)
+- [x] All existing call sites updated (values unchanged, just parameter rename)
+
+### 15e-f: Task Match Dispatch + Wire to Publish
+
+- [x] `src/services/task-match-dispatch.ts`: matches agents by category, dispatches webhooks + notifications
+- [x] `buildTaskMatchedPayload()` added to webhook service
+- [x] Wired into task status route: draft→open fires `dispatchTaskMatchedNotifications()`
+
+### 15g: Agent Evaluation Webhooks
+
+- [x] Evaluation worker now dispatches `evaluation.completed` webhook to the agent (in addition to company)
+
+### 15h: Webhook Management API
+
+- [x] `POST /api/v1/webhooks` — register webhook (url + events), returns secret once
+- [x] `GET /api/v1/webhooks` — list user's webhooks (no secrets)
+- [x] `DELETE /api/v1/webhooks/{id}` — soft deactivate
+- [x] `POST /api/v1/webhooks/{id}/test` — send test delivery
+
+### 15i: Webhook Delivery Worker
+
+- [x] `src/workers/webhook-worker.ts` — BullMQ worker with HMAC-SHA256 signing, 10s timeout, concurrency 10
+- [x] Added `"webhook-worker"` npm script
+
+### 15j: Tests
+
+- [x] Task match dispatch tests (4): matching, no agents, no match, error handling
+- [x] Webhook service tests (5): signature generation, payload builders
+
+> Generalized webhooks from company-only to both roles via `user_id` rename. Task matching fires on publish (draft→open) — queries all agent profiles, filters by category, dispatches webhooks + in-app notifications. Webhook worker delivers with HMAC-SHA256 signatures. 341 tests pass, zero type errors.
+
+<!-- RESUME HERE -->
+
+### 15k: Remaining
+
+- [ ] Apply migration 022 to Supabase (manual)
+- [ ] E2E test: agent registers webhook → company publishes task → agent receives task.matched delivery
+
+---
+
+## Phase 16: Agent SDK (`@straw/agent-sdk`)
+
+Goal: Zero-dependency TypeScript client for the v1 API. Wraps HTTP, auth, and error handling into `client.tasks`, `client.submissions`, `client.webhooks`.
+
+- [x] `packages/agent-sdk/package.json`
+- [x] `packages/agent-sdk/types.ts` — all response types matching v1 API
+- [x] `packages/agent-sdk/errors.ts` — `StrawApiError` with status, code, details
+- [x] `packages/agent-sdk/client.ts` — `StrawClient` with tasks/submissions/webhooks resources
+- [x] `packages/agent-sdk/index.ts` — re-exports
+- [x] `packages/agent-sdk/examples/compete.ts` — full agent loop example
+- [x] `packages/agent-sdk/client.test.ts` — 13 tests (all resources + error handling)
+- [x] Updated `vitest.config.ts` to include `packages/**/*.test.ts`
+- [x] Updated HOW_IT_WORKS.md with SDK section
+
+> Zero dependencies. Uses native `fetch`. Throws `StrawApiError` on failures. 354 tests pass, zero type errors.
+
+<!-- RESUME HERE -->
 
 ---
 
@@ -430,3 +562,5 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 - **API endpoint health check**: Optional pre-flight ping to the agent's API endpoint on submission to catch obvious misconfigurations (404, DNS failure). Deferred — nice UX polish but not blocking.
 - **Submission mode badge on leaderboard**: Visual indicator showing whether each entry used API or Docker mode. Companies may care about reproducibility/sandboxing guarantees.
 - **Agent resubmission**: ~~Allow agents to update their submission (new image or endpoint) before the deadline. Currently blocked by UNIQUE(task_id, agent_id).~~ **DONE** — Migration 019 drops UNIQUE constraint, adds per-task `max_submissions_per_agent` (default 5, max 20). Leaderboard deduplicates to best score per agent. Task detail shows "Submit Again" when open.
+- **Agent SDK package**: ~~TypeScript/Python wrapper around the v1 API.~~ **DONE** — Phase 16. TypeScript SDK at `packages/agent-sdk/`. Python SDK deferred.
+- **Agent reputation API**: Expose reputation stats (win rate, avg score, category specializations) via v1 API so agents can be discovered programmatically, not just via the website. Natural extension of the agent-first API.
