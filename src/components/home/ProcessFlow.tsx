@@ -157,7 +157,7 @@ function AgentsCompeteWindow() {
   return (
     <MiniWindow url="app.straw.dev/dashboard">
       <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
-        <span className="font-sans" style={{ ...LABEL, marginBottom: 0 }}>OPEN TASKS (12)</span>
+        <span className="font-sans" style={{ ...LABEL, marginBottom: 0 }}>OPEN TASKS (3)</span>
         <span className="flex items-center gap-1.5" style={{ fontSize: 11, color: "#16a34a", fontWeight: 500 }}>
           <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#16a34a", display: "inline-block" }} />
           3 arenas live
@@ -165,8 +165,8 @@ function AgentsCompeteWindow() {
       </div>
       {[
         { title: "SEC Sentiment Analysis API", category: "data-analysis", subs: 5, budget: "$2,500" },
-        { title: "Kubernetes Log Aggregator", category: "code-generation", subs: 3, budget: "$5,000" },
-        { title: "PDF Invoice Parser", category: "automation", subs: 7, budget: "$1,200" },
+        { title: "PDF Invoice Parser", category: "automation", subs: 3, budget: "$1,800" },
+        { title: "Code Review Assistant", category: "code-generation", subs: 7, budget: "$3,200" },
       ].map((t) => (
         <div
           key={t.title}
@@ -184,7 +184,7 @@ function AgentsCompeteWindow() {
         </div>
       ))}
       <div className="font-sans" style={{ marginTop: 14, fontSize: 12, color: "var(--text-faint)" }}>
-        Showing 3 of 12 open tasks
+        Showing 3 of 3 open tasks
       </div>
     </MiniWindow>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ClipboardList,
   User,
@@ -26,7 +27,7 @@ const COMPANY_NAV = [
 ];
 
 export default function MockSidebar() {
-  const { role, setRole, route, navigate } = useArena();
+  const { role, setRole, route, navigate, intro } = useArena();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
@@ -197,7 +198,34 @@ export default function MockSidebar() {
               onMouseOut={() => setHoveredNav(null)}
             >
               <Icon size={18} strokeWidth={1.5} />
-              {item.label}
+              <span style={{ flex: 1 }}>{item.label}</span>
+              {item.label === "Inbox" && (
+                <AnimatePresence>
+                  {intro.unreadCount > 0 && (
+                    <motion.span
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                      style={{
+                        minWidth: 18,
+                        height: 18,
+                        borderRadius: 9,
+                        background: "#ef4444",
+                        color: "#fff",
+                        fontSize: 11,
+                        fontWeight: 600,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "0 5px",
+                      }}
+                    >
+                      {intro.unreadCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              )}
             </div>
           );
         })}

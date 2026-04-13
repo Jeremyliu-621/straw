@@ -32,31 +32,31 @@ export const MOCK_TASKS: MockTask[] = [
   },
   {
     id: 1,
-    title: "Kubernetes Log Aggregator",
-    description: "Create a log aggregation service that collects, indexes, and queries logs from Kubernetes pods across multiple namespaces with sub-second latency.",
-    category: "code-generation",
-    status: "open",
-    budget: "$5,000",
-    budgetCents: 500000,
-    deadline: "4/25/2026",
-    inputSpec: "Kubernetes cluster with 3 namespaces, ~50 pods generating structured JSON logs at ~1000 events/sec.",
-    outputSpec: "gRPC service with Search, Tail, and Aggregate RPCs. Must handle 10k queries/min with p99 < 200ms.",
-    testWeight: 70,
-    llmWeight: 30,
-  },
-  {
-    id: 2,
     title: "PDF Invoice Parser",
     description: "Extract structured data from scanned PDF invoices including line items, totals, vendor info, and payment terms with >95% accuracy.",
     category: "automation",
     status: "open",
-    budget: "$1,200",
-    budgetCents: 120000,
-    deadline: "4/18/2026",
+    budget: "$1,800",
+    budgetCents: 180000,
+    deadline: "4/28/2026",
     inputSpec: "100 sample PDF invoices in varied formats (scanned, digital, multi-page). Ground truth JSON provided.",
     outputSpec: "Python CLI tool accepting PDF path, outputting JSON with vendor, date, line_items[], subtotal, tax, total, payment_terms.",
     testWeight: 80,
     llmWeight: 20,
+  },
+  {
+    id: 2,
+    title: "Code Review Assistant",
+    description: "Build an AI-powered code review tool that analyzes pull requests for bugs, style issues, and security vulnerabilities.",
+    category: "code-generation",
+    status: "open",
+    budget: "$3,200",
+    budgetCents: 320000,
+    deadline: "5/05/2026",
+    inputSpec: "GitHub PR webhook payload with diff content. Support Python, TypeScript, and Go codebases.",
+    outputSpec: "JSON array of review comments with file, line, severity, category, and suggestion fields. Must process PRs under 30 seconds.",
+    testWeight: 70,
+    llmWeight: 30,
   },
 ];
 
@@ -71,20 +71,27 @@ export interface MockSubmission {
 
 export const MOCK_SUBMISSIONS: MockSubmission[] = [
   { agent: "SolveAI Agent", mode: "docker", status: "running", score: null, submitted: "4/10/2026", taskId: 0 },
-  { agent: "SolveAI Agent", mode: "api", status: "pending", score: null, submitted: "4/11/2026", taskId: 1 },
+  { agent: "SolveAI Agent", mode: "api", status: "completed", score: "91.50", submitted: "4/08/2026", taskId: 1 },
+  { agent: "SolveAI Agent", mode: "docker", status: "evaluating", score: null, submitted: "4/11/2026", taskId: 2 },
+];
+
+// Extra teaser submissions shown faded in the dashboard
+export const TEASER_SUBMISSIONS: MockSubmission[] = [
+  { agent: "SolveAI Agent", mode: "api", status: "completed", score: "87.20", submitted: "4/05/2026", taskId: 0 },
+  { agent: "SolveAI Agent", mode: "docker", status: "completed", score: "93.80", submitted: "3/30/2026", taskId: 1 },
 ];
 
 export const AGENT_STATS = {
   openTasks: 3,
-  mySubmissions: 2,
-  completed: 0,
-  avgScore: "--",
+  mySubmissions: 47,
+  completed: 1,
+  avgScore: "91.50",
 };
 
 export const COMPANY_STATS = {
   activeTasks: 3,
-  submissions: 2,
-  totalBudget: "$8,700",
+  submissions: 3,
+  totalBudget: "$7,500",
   draft: 0,
 };
 
@@ -105,11 +112,6 @@ export const MOCK_LEADERBOARDS: Record<number, LeaderboardEntry[]> = {
     { rank: 3, agent: "OpenInterpreter", test: "85.50", llm: "83.00", final: "84.25" },
     { rank: 4, agent: "Cursor", test: "80.00", llm: "78.50", final: "79.25" },
     { rank: 5, agent: "Aider", test: "76.00", llm: "74.00", final: "75.00" },
-  ],
-  2: [
-    { rank: 1, agent: "DocParser AI", test: "95.00", llm: "88.00", final: "93.60" },
-    { rank: 2, agent: "SolveAI Agent", test: "84.00", llm: "82.00", final: "83.60" },
-    { rank: 3, agent: "ParseBot", test: "80.00", llm: "79.00", final: "79.80" },
   ],
 };
 
@@ -193,7 +195,7 @@ export const MOCK_THREADS: MockThread[] = [
     initials: "NO",
     taskTitle: "Code Review Assistant",
     lastMessage: "Evaluation is still running. Results should be ready by tomorrow.",
-    unread: false,
+    unread: true,
     timestamp: "Apr 9",
     messages: [
       { id: "m8", body: "Just a heads up — the evaluation pipeline for the Code Review Assistant task is taking longer than expected due to the large test suite.", mine: false, timestamp: "Apr 9, 9:00 AM" },

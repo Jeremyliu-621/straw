@@ -1,4 +1,9 @@
-// Shared presentational components for the arena mini-app (no "use client" needed)
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+
+// Shared presentational components for the arena mini-app
 
 const STATUS_STYLES: Record<string, { bg: string; text: string; border: string }> = {
   open: { bg: "#f0fdf4", text: "#16a34a", border: "#bbf7d0" },
@@ -67,6 +72,134 @@ export function StatCard({ label, value, mono }: { label: string; value: string 
       >
         {value}
       </p>
+    </div>
+  );
+}
+
+// ── Animated stat card with comical overshoot ───────────────────────────────
+
+const BOUNCY_SPRING = { stiffness: 120, damping: 10, mass: 1 };
+const SMOOTH_SPRING = { stiffness: 60, damping: 20, mass: 1 };
+
+function AnimatedNumber({
+  target,
+  active,
+  decimals = 0,
+  mono,
+  overshoot = 3.5,
+}: {
+  target: number;
+  active: boolean;
+  decimals?: number;
+  mono?: boolean;
+  overshoot?: number;
+}) {
+  const motionVal = useMotionValue(0);
+  const springConfig = overshoot > 1 ? BOUNCY_SPRING : SMOOTH_SPRING;
+  const spring = useSpring(motionVal, springConfig);
+  const display = useTransform(spring, (v) => {
+    const clamped = Math.max(0, v);
+    return decimals > 0 ? clamped.toFixed(decimals) : Math.round(clamped).toString();
+  });
+  const [text, setText] = useState(decimals > 0 ? "0.00" : "0");
+
+  useEffect(() => {
+    if (active) {
+      if (overshoot > 1) {
+        // Shoot way past, then settle back to target
+        motionVal.set(target * overshoot);
+        const timer = setTimeout(() => motionVal.set(target), 400);
+        return () => clearTimeout(timer);
+      }
+      motionVal.set(target);
+    }
+  }, [active, target, motionVal, overshoot]);
+
+  useEffect(() => {
+    return display.on("change", (v) => setText(v));
+  }, [display]);
+
+  return (
+    <motion.p
+      className={mono ? "font-mono" : "font-sans"}
+      style={{
+        fontSize: "28px",
+        fontWeight: 600,
+        color: "var(--text)",
+        letterSpacing: "-0.02em",
+      }}
+    >
+      {text}
+    </motion.p>
+  );
+}
+
+export function AnimatedStatCard({
+  label,
+  value,
+  mono,
+  animate,
+  overshoot = 3.5,
+}: {
+  label: string;
+  value: string | number;
+  mono?: boolean;
+  animate: boolean;
+  overshoot?: number;
+}) {
+  const isNumeric = typeof value === "number" || (typeof value === "string" && !isNaN(parseFloat(value)) && value !== "--");
+  const numericTarget = isNumeric ? parseFloat(String(value)) : 0;
+  const hasDecimals = typeof value === "string" && value.includes(".");
+
+  return (
+    <div
+      style={{
+        padding: "20px",
+        borderRadius: "var(--radius)",
+        border: "1px solid var(--border)",
+        background: "var(--bg)",
+      }}
+    >
+      <p
+        className="font-sans"
+        style={{
+          fontSize: "11px",
+          fontWeight: 500,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          color: "var(--text-muted)",
+          marginBottom: "8px",
+        }}
+      >
+        {label}
+      </p>
+      {animate && isNumeric ? (
+        <AnimatedNumber
+          target={numericTarget}
+          active={animate}
+          decimals={hasDecimals ? 2 : 0}
+          mono={mono}
+          overshoot={overshoot}
+        />
+      ) : (
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={String(value)}
+            className={mono ? "font-mono" : "font-sans"}
+            initial={animate ? { opacity: 0, y: 8 } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              fontSize: "28px",
+              fontWeight: 600,
+              color: "var(--text)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {value}
+          </motion.p>
+        </AnimatePresence>
+      )}
     </div>
   );
 }

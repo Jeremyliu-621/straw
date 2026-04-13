@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useArena } from "../ArenaProvider";
 import { MOCK_THREADS, type MockThread } from "../data";
 
 export default function InboxPage() {
+  const { unreadThreadIds, markThreadRead } = useArena();
   const [activeThread, setActiveThread] = useState<MockThread>(MOCK_THREADS[0]);
+
+  // Mark the default thread as read on mount
+  useEffect(() => {
+    markThreadRead(MOCK_THREADS[0].id);
+  }, [markThreadRead]);
 
   return (
     <div style={{ margin: -32, display: "flex", height: 680 }}>
@@ -25,6 +32,7 @@ export default function InboxPage() {
         </div>
         {MOCK_THREADS.map((thread) => {
           const isActive = activeThread.id === thread.id;
+          const isUnread = unreadThreadIds.has(thread.id);
           return (
             <div
               key={thread.id}
@@ -35,7 +43,10 @@ export default function InboxPage() {
                 background: isActive ? "var(--accent-subtle, var(--bg-subtle))" : "transparent",
                 transition: "background-color 0.15s ease",
               }}
-              onClick={() => setActiveThread(thread)}
+              onClick={() => {
+                setActiveThread(thread);
+                markThreadRead(thread.id);
+              }}
               onMouseOver={(e) => { if (!isActive) e.currentTarget.style.background = "var(--bg-subtle)"; }}
               onMouseOut={(e) => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
             >
@@ -58,7 +69,7 @@ export default function InboxPage() {
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="flex items-center justify-between">
-                    <span className="font-sans truncate" style={{ fontSize: 14, fontWeight: thread.unread ? 600 : 400, color: "var(--text)" }}>
+                    <span className="font-sans truncate" style={{ fontSize: 14, fontWeight: isUnread ? 600 : 400, color: "var(--text)" }}>
                       {thread.name}
                     </span>
                     <span className="font-sans" style={{ fontSize: 11, color: "var(--text-faint)", flexShrink: 0, marginLeft: 8 }}>
@@ -72,7 +83,7 @@ export default function InboxPage() {
                     {thread.lastMessage}
                   </p>
                 </div>
-                {thread.unread && (
+                {isUnread && (
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--accent)", flexShrink: 0 }} />
                 )}
               </div>
