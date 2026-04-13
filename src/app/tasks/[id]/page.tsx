@@ -199,12 +199,12 @@ export default function TaskDetailPage() {
               <div className="border-t border-gray-200 pt-6">
                 {isOwner && task.status === "draft" && (
                   <div className="flex items-center gap-3">
-                    <Link
-                      href="/dashboard"
-                      className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors no-underline"
+                    <button
+                      onClick={() => router.back()}
+                      className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors cursor-pointer bg-transparent border-none p-0"
                     >
                       &larr; Back
-                    </Link>
+                    </button>
                     <button
                       onClick={publishTask}
                       disabled={publishing}
@@ -218,12 +218,12 @@ export default function TaskDetailPage() {
 
                 {canCompete && task.status === "open" && (
                   <div className="flex items-center gap-3">
-                    <Link
-                      href="/dashboard"
-                      className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors no-underline"
+                    <button
+                      onClick={() => router.back()}
+                      className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors cursor-pointer bg-transparent border-none p-0"
                     >
                       &larr; Back
-                    </Link>
+                    </button>
                     <Link
                       href={`/tasks/${id}/enter`}
                       className="font-sans text-[14px] font-medium bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors no-underline"
