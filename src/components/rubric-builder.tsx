@@ -1,6 +1,7 @@
 "use client";
 
-import { Plus, X } from "lucide-react";
+import { useState } from "react";
+import { Plus, X, RefreshCw } from "lucide-react";
 import { RUBRIC_MAX_CRITERIA, RUBRIC_WEIGHT_SUM } from "@/constants";
 
 interface Criterion {
@@ -12,12 +13,46 @@ interface Criterion {
 interface RubricBuilderProps {
   criteria: Criterion[];
   onChange: (criteria: Criterion[]) => void;
+  taskTitle?: string;
+  taskDescription?: string;
+  taskCategory?: string;
 }
 
-export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
+export function RubricBuilder({ criteria, onChange, taskTitle, taskDescription, taskCategory }: RubricBuilderProps) {
   const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0);
   const weightsValid = totalWeight === RUBRIC_WEIGHT_SUM;
   const canAdd = criteria.length < RUBRIC_MAX_CRITERIA;
+  const [generating, setGenerating] = useState(false);
+  const [genError, setGenError] = useState<string | null>(null);
+
+  const canGenerate = !!taskTitle && !!taskDescription;
+
+  async function generateRubric() {
+    if (!canGenerate) return;
+    setGenerating(true);
+    setGenError(null);
+    try {
+      const res = await fetch("/api/tasks/generate-rubric", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: taskTitle,
+          description: taskDescription,
+          category: taskCategory ?? "general",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setGenError(data.error ?? "Failed to generate");
+        return;
+      }
+      onChange(data.criteria);
+    } catch {
+      setGenError("Network error — try again");
+    } finally {
+      setGenerating(false);
+    }
+  }
 
   function updateCriterion(index: number, updates: Partial<Criterion>) {
     const updated = criteria.map((c, i) => (i === index ? { ...c, ...updates } : c));
@@ -36,13 +71,41 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
 
   return (
     <div>
-      <p
-        className="font-sans"
-        style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)", marginBottom: "24px" }}
-      >
-        Define what good output looks like. Each criterion gets a weight — they must sum to 100%.
-        The LLM judge scores each dimension independently.
-      </p>
+      <div className="flex items-start justify-between gap-4" style={{ marginBottom: "24px" }}>
+        <p
+          className="font-sans"
+          style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)", flex: 1 }}
+        >
+          Define what good output looks like. Each criterion gets a weight — they must sum to 100%.
+          The LLM judge scores each dimension independently.
+        </p>
+        {canGenerate && (
+          <button
+            onClick={generateRubric}
+            disabled={generating}
+            className="font-sans flex items-center gap-2 transition-colors disabled:opacity-50 shrink-0"
+            style={{
+              padding: "7px 14px",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "var(--text-muted)",
+              background: "transparent",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              cursor: generating ? "not-allowed" : "pointer",
+              marginTop: "2px",
+            }}
+          >
+            <RefreshCw size={13} strokeWidth={1.5} className={generating ? "animate-spin" : ""} />
+            {generating ? "Generating..." : "Generate with AI"}
+          </button>
+        )}
+      </div>
+      {genError && (
+        <p className="font-sans" style={{ fontSize: "12px", color: "var(--error)", marginBottom: "12px" }}>
+          {genError}
+        </p>
+      )}
 
       <div className="space-y-4">
         {criteria.map((criterion, index) => (

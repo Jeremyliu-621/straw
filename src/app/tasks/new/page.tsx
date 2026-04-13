@@ -65,7 +65,10 @@ export default function NewTaskPage() {
 
   // Step 3: Rubric
   const [criteria, setCriteria] = useState<Criterion[]>([
-    { name: "", description: "", weight: 100 },
+    { name: "Correctness", description: "Does the solution work correctly and handle edge cases?", weight: 40 },
+    { name: "Code Quality", description: "Is the code clean, well-structured, and idiomatic?", weight: 25 },
+    { name: "Completeness", description: "Are all requirements addressed? Does it handle the full spec?", weight: 25 },
+    { name: "Documentation", description: "Is the README clear? Does SUBMISSION.md describe the approach?", weight: 10 },
   ]);
   const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0);
   const weightsValid = totalWeight === RUBRIC_WEIGHT_SUM;
@@ -84,21 +87,13 @@ export default function NewTaskPage() {
 
   function canAdvance(): boolean {
     switch (step) {
-      case "basics": {
-        const hasCategory =
-          categories.length > 0 &&
-          (!categories.includes("other") || otherCategory.trim() !== "");
+      case "basics":
         return (
           title.length >= TASK_TITLE_MIN_LENGTH &&
-          !!description &&
-          hasCategory &&
           !!deadline
         );
-      }
       case "data":
-        return !!(inputDescription || inputFiles.length > 0) &&
-               !!(outputDescription || outputFiles.length > 0) &&
-               (evalMode !== EVAL_MODE.LLM || testWeight === 0 || testSuiteFile !== null) &&
+        return (evalMode !== EVAL_MODE.HYBRID || testWeight === 0 || testSuiteFile !== null) &&
                (evalMode === EVAL_MODE.LLM || evalImage.trim() !== "");
       case "rubric":
         return weightsValid && criteria.every((c) => c.name.trim() !== "");
@@ -409,7 +404,6 @@ export default function NewTaskPage() {
                 <TextareaField
                   id="task-description"
                   label="Description"
-                  required
                   value={description}
                   onChange={setDescription}
                   placeholder="Describe the problem in detail. What do you need solved?"
@@ -459,27 +453,51 @@ export default function NewTaskPage() {
               </div>
               <div>
                 <label
-                  htmlFor="task-deadline"
                   className="mb-1 block font-sans"
                   style={{ fontSize: "13px", color: "var(--text-muted)" }}
                 >
                   Deadline <span style={{ color: "var(--error)" }}>*</span>
                 </label>
-                <input
-                  id="task-deadline"
-                  type="datetime-local"
-                  value={deadline}
-                  onChange={(e) => setDeadline(e.target.value)}
-                  className="font-sans outline-none"
-                  style={{
-                    padding: "9px 12px",
-                    borderRadius: "var(--radius)",
-                    fontSize: "14px",
-                    color: "var(--text)",
-                    border: "1px solid var(--border)",
-                    background: "var(--bg)",
-                  }}
-                />
+                <div className="flex items-center gap-2">
+                  <input
+                    id="task-deadline-date"
+                    type="date"
+                    value={deadline ? deadline.split("T")[0] : ""}
+                    onChange={(e) => {
+                      const time = deadline ? deadline.split("T")[1] || "17:00" : "17:00";
+                      setDeadline(e.target.value ? `${e.target.value}T${time}` : "");
+                    }}
+                    className="font-sans outline-none"
+                    style={{
+                      padding: "9px 12px",
+                      borderRadius: "var(--radius)",
+                      fontSize: "14px",
+                      color: deadline ? "var(--text)" : "var(--text-faint)",
+                      border: "1px solid var(--border)",
+                      background: "var(--bg)",
+                      width: "160px",
+                    }}
+                  />
+                  <input
+                    id="task-deadline-time"
+                    type="time"
+                    value={deadline ? (deadline.split("T")[1] || "17:00") : ""}
+                    onChange={(e) => {
+                      const date = deadline ? deadline.split("T")[0] : "";
+                      if (date) setDeadline(`${date}T${e.target.value}`);
+                    }}
+                    className="font-sans outline-none"
+                    style={{
+                      padding: "9px 12px",
+                      borderRadius: "var(--radius)",
+                      fontSize: "14px",
+                      color: deadline ? "var(--text)" : "var(--text-faint)",
+                      border: "1px solid var(--border)",
+                      background: "var(--bg)",
+                      width: "120px",
+                    }}
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -525,8 +543,8 @@ export default function NewTaskPage() {
                 onFilesChange={setOutputFiles}
               />
 
-              {/* Eval weight split — only relevant for LLM mode (container mode ignores these weights) */}
-              {evalMode === EVAL_MODE.LLM && <div>
+              {/* Eval weight split — only relevant for hybrid mode (blending container + LLM scores) */}
+              {evalMode === EVAL_MODE.HYBRID && <div>
                 <label
                   className="mb-2 block font-sans"
                   style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-muted)" }}
@@ -847,8 +865,8 @@ export default function NewTaskPage() {
                 )}
               </div>
 
-              {/* Test suite upload — only for LLM mode when testWeight > 0 (container mode uses its own test harness) */}
-              {evalMode === EVAL_MODE.LLM && testWeight > 0 && (
+              {/* Test suite upload — only for hybrid mode when testWeight > 0 */}
+              {evalMode === EVAL_MODE.HYBRID && testWeight > 0 && (
                 <div>
                   <label
                     className="mb-1 block font-sans"
@@ -953,7 +971,13 @@ export default function NewTaskPage() {
 
           {/* ── Step 3: Rubric ── */}
           {step === "rubric" && (
-            <RubricBuilder criteria={criteria} onChange={setCriteria} />
+            <RubricBuilder
+              criteria={criteria}
+              onChange={setCriteria}
+              taskTitle={title}
+              taskDescription={description}
+              taskCategory={categories[0] ?? "general"}
+            />
           )}
 
           {/* ── Step 4: AI Refinement ── */}
@@ -1658,7 +1682,7 @@ function CategoryPicker({
         className="mb-2 block font-sans"
         style={{ fontSize: "13px", color: "var(--text-muted)" }}
       >
-        Category <span style={{ color: "var(--error)" }}>*</span>
+        Category
       </label>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
         {CATEGORY_OPTIONS.map((cat) => {

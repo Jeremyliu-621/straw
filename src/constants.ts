@@ -1,5 +1,5 @@
 // ── Task ─────────────────────────────────────────────────────
-export const TASK_TITLE_MIN_LENGTH = 10;
+export const TASK_TITLE_MIN_LENGTH = 1;
 export const TASK_TITLE_MAX_LENGTH = 200;
 export const TASK_DESCRIPTION_MAX_LENGTH = 10_000;
 export const TASK_MIN_BUDGET_CENTS = 100_00; // $100
