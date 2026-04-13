@@ -113,10 +113,9 @@ async function updateWinnerReputation(taskId: string): Promise<void> {
 
   if (!winner) return;
 
-  // Update agent builder profile — increment wins
-  // TODO(claude): When reputation system is built (Phase 9), update
-  // win_count, total_competitions, average_score on the profile.
-  // For now, we just log the winner.
+  // Reputation stats (win rate, avg score, history) are computed on-read
+  // from evaluation_results by GET /api/agents/[id]. No denormalized
+  // counters to update here — just log for audit trail.
   console.log(
     `[task-close] Task ${taskId} winner: agent ${winner.agent_id} with score ${highestScore}`
   );

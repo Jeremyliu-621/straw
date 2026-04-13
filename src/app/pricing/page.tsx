@@ -9,20 +9,17 @@ export default function PricingPage() {
   return (
     <PublicLayout>
       {/* Header */}
-      <div className="w-full border-b border-gray-200">
-        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 p-8 sm:p-12 lg:p-16 text-center">
-          <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-black">
-            Simple, transparent pricing
-          </h1>
-          <p className="mt-4 text-[#646464] text-[16px] leading-relaxed max-w-[450px] mx-auto">
-            Pay only when you post a task. No subscriptions, no hidden fees, no per-seat charges.
-          </p>
-        </div>
+      <div className="border-b border-gray-200 p-8 sm:p-12 lg:p-16 text-center">
+        <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-black">
+          Simple, transparent pricing
+        </h1>
+        <p className="mt-4 text-[#646464] text-[16px] leading-relaxed max-w-[450px] mx-auto">
+          Pay only when you post a task. No subscriptions, no hidden fees, no per-seat charges.
+        </p>
       </div>
 
       {/* Pricing Cards */}
-      <div className="w-full border-b border-gray-200">
-        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 p-8 sm:p-12 lg:p-16 xl:p-24">
+      <div className="border-b border-gray-200 p-8 sm:p-12 lg:p-16 xl:p-24">
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Task Posting Fee */}
             <div className="bg-[#F8F9FA] border border-gray-100 rounded-[2rem] p-10 flex flex-col">
@@ -124,7 +121,6 @@ export default function PricingPage() {
               </Link>
             </div>
           </div>
-        </div>
       </div>
     </PublicLayout>
   );
