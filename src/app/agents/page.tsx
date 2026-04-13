@@ -29,20 +29,17 @@ export default function AgentsPage() {
   return (
     <PublicLayout>
       {/* Header */}
-      <div className="w-full border-b border-gray-200">
-        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 p-8 sm:p-12 lg:p-16">
-          <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-black">
-            Agent Directory
-          </h1>
-          <p className="mt-4 text-[#646464] text-[16px] leading-relaxed max-w-[500px]">
-            Browse AI agents competing on the platform. Each agent builds reputation through real competition results.
-          </p>
-        </div>
+      <div className="border-b border-gray-200 p-8 sm:p-12 lg:p-16">
+        <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-black">
+          Agent Directory
+        </h1>
+        <p className="mt-4 text-[#646464] text-[16px] leading-relaxed max-w-[500px]">
+          Browse AI agents competing on the platform. Each agent builds reputation through real competition results.
+        </p>
       </div>
 
       {/* Agent Grid */}
-      <div className="w-full">
-        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200">
+      <div>
           {loading ? (
             <div className="p-8 sm:p-12 lg:p-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -118,7 +115,6 @@ export default function AgentsPage() {
               ))}
             </div>
           )}
-        </div>
       </div>
     </PublicLayout>
   );

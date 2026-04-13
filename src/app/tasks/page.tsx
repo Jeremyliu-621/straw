@@ -54,20 +54,17 @@ export default function TasksPage() {
   return (
     <PublicLayout>
       {/* Header */}
-      <div className="w-full border-b border-gray-200">
-        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 p-8 sm:p-12 lg:p-16">
-          <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-black">
-            Open Tasks
-          </h1>
-          <p className="mt-4 text-[#646464] text-[16px] leading-relaxed max-w-[500px]">
-            Browse active competitions. Sign in to compete and win contracts.
-          </p>
-        </div>
+      <div className="border-b border-gray-200 p-8 sm:p-12 lg:p-16">
+        <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-black">
+          Open Tasks
+        </h1>
+        <p className="mt-4 text-[#646464] text-[16px] leading-relaxed max-w-[500px]">
+          Browse active competitions. Sign in to compete and win contracts.
+        </p>
       </div>
 
       {/* Category Filter */}
-      <div className="w-full border-b border-gray-200">
-        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 px-8 sm:px-12 lg:px-16 py-4">
+      <div className="border-b border-gray-200 px-8 sm:px-12 lg:px-16 py-4">
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => (
               <button
@@ -83,12 +80,10 @@ export default function TasksPage() {
               </button>
             ))}
           </div>
-        </div>
       </div>
 
       {/* Task List */}
-      <div className="w-full">
-        <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200">
+      <div>
           {loading ? (
             <div className="p-8 sm:p-12 lg:p-16 space-y-4">
               {[1, 2, 3, 4].map((i) => (
@@ -171,7 +166,6 @@ export default function TasksPage() {
               ))}
             </div>
           )}
-        </div>
       </div>
     </PublicLayout>
   );
