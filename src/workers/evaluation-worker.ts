@@ -295,20 +295,29 @@ function readLocalOutputAsText(dirPath: string): string {
 
 // ── Eval Container ────────────────────────────────────────────
 
+interface EvalContainerOptions {
+  /** Allow network access (default: false) */
+  network?: boolean;
+  /** Memory limit in MB (default: 1024) */
+  memoryMb?: number;
+  /** Timeout in seconds (default: 600) */
+  timeoutSeconds?: number;
+}
+
 /**
- * Pull `evalImage` if not present locally, then run it:
- *   - mounts agentOutputPath → /agent_output:ro
- *   - mounts resultsPath → /results
- *   - --network none, memory + cpu limits, 10-min timeout
- *
- * After the container exits, reads and validates /results/score.json.
- * Throws EvalContainerError on timeout, non-zero exit, or invalid score.json.
+ * Pull `evalImage` if not present locally, then run it with company-configured constraints.
+ * Mounts submission files at /submission:ro, results at /results.
+ * Reads and validates /results/score.json after exit.
  */
 async function runEvalContainer(
   evalImage: string,
   agentOutputPath: string,
-  resultsPath: string
+  resultsPath: string,
+  options?: EvalContainerOptions
 ): Promise<ContainerEvalResult> {
+  const networkMode = options?.network ? "bridge" : "none";
+  const memoryBytes = (options?.memoryMb ?? 1024) * 1024 * 1024;
+  const timeoutMs = (options?.timeoutSeconds ?? 600) * 1000;
   fs.mkdirSync(resultsPath, { recursive: true });
 
   // Pull image if not present
@@ -328,9 +337,9 @@ async function runEvalContainer(
   const container = await docker.createContainer({
     Image: evalImage,
     HostConfig: {
-      Memory: EVAL_CONTAINER_MEMORY_LIMIT,
+      Memory: memoryBytes,
       NanoCpus: EVAL_CONTAINER_CPU_LIMIT,
-      NetworkMode: "none",
+      NetworkMode: networkMode,
       Binds: [
         `${agentOutputPath}:${EVAL_CONTAINER_INPUT_PATH}:ro`,
         `${resultsPath}:${EVAL_CONTAINER_OUTPUT_PATH}`,
@@ -340,11 +349,11 @@ async function runEvalContainer(
   });
 
   await container.start();
-  console.log(`[eval] Eval container started, waiting (timeout: ${EVAL_CONTAINER_TIMEOUT_MS}ms)...`);
+  console.log(`[eval] Eval container started (network=${networkMode}, memory=${options?.memoryMb ?? 1024}MB, timeout=${(options?.timeoutSeconds ?? 600)}s)...`);
 
   let exitCode: number;
   try {
-    exitCode = await waitForEvalContainer(container, EVAL_CONTAINER_TIMEOUT_MS);
+    exitCode = await waitForEvalContainer(container, timeoutMs);
   } catch (err) {
     // Timeout path — container already killed inside waitForEvalContainer
     try { await container.remove({ force: true }); } catch { /* best effort */ }
@@ -681,7 +690,11 @@ async function handleContainerEval(
     // Run the eval container
     let containerResult: ContainerEvalResult;
     try {
-      containerResult = await runEvalContainer(task.eval_image, agentOutputDir, resultsDir);
+      containerResult = await runEvalContainer(task.eval_image, agentOutputDir, resultsDir, {
+        network: task.eval_network as boolean | undefined,
+        memoryMb: task.eval_memory_mb as number | undefined,
+        timeoutSeconds: task.eval_timeout_seconds as number | undefined,
+      });
     } catch (err) {
       if (err instanceof EvalContainerError) {
         console.error(`[eval] Eval container failed for submission ${submissionId}: ${err.message}`);
