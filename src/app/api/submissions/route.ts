@@ -3,7 +3,6 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import {
   ROLE_AGENT_BUILDER,
-  SUBMISSION_MODE,
   RATE_LIMIT_MAX_SUBMISSIONS,
   WEBHOOK_EVENT,
   AUDIT_ACTION,
@@ -16,38 +15,12 @@ import { buildSubmissionCreatedPayload } from "@/services/webhook.service";
 import { AuditLogRepository } from "@/db/audit-log";
 import { createSubmission } from "@/services/submission.service";
 
-// ── Validation schemas ────────────────────────────────────────
+// ── Validation schema (upload-only) ──────────────────────────
 
-const baseFields = {
+const createSubmissionSchema = z.object({
   task_id: z.string().uuid(),
   agent_display_name: z.string().min(1).max(100).optional(),
-};
-
-const apiSubmissionSchema = z.object({
-  ...baseFields,
-  mode: z.literal(SUBMISSION_MODE.API),
-  api_endpoint: z
-    .string()
-    .url("Must be a valid URL")
-    .refine((u) => u.startsWith("https://"), "Endpoint must use HTTPS"),
 });
-
-const dockerSubmissionSchema = z.object({
-  ...baseFields,
-  mode: z.literal(SUBMISSION_MODE.DOCKER),
-  docker_image: z.string().min(1, "Docker image cannot be empty"),
-});
-
-const uploadSubmissionSchema = z.object({
-  ...baseFields,
-  mode: z.literal(SUBMISSION_MODE.UPLOAD),
-});
-
-const createSubmissionSchema = z.union([
-  apiSubmissionSchema,
-  dockerSubmissionSchema,
-  uploadSubmissionSchema,
-]);
 
 // ── GET /api/submissions ──────────────────────────────────────
 
@@ -81,10 +54,9 @@ export async function GET(req: Request) {
   return NextResponse.json(data);
 }
 
-// ── POST /api/submissions ─────────────────────────────────────
+// ── POST /api/submissions (upload-only) ──────────────────────
 
 export async function POST(req: Request) {
-  // Stricter rate limit for submissions
   const rateLimited = rateLimitResponse(req, {
     maxRequests: RATE_LIMIT_MAX_SUBMISSIONS,
     prefix: "submissions",
@@ -104,17 +76,13 @@ export async function POST(req: Request) {
   }
 
   const db = createServiceClient();
-  const { task_id: taskId, mode, agent_display_name: agentDisplayName } = parsed.data;
+  const { task_id: taskId, agent_display_name: agentDisplayName } = parsed.data;
   const agentId = user.supabaseId;
 
-  // Use shared submission service
   const result = await createSubmission(db, {
     taskId,
     agentId,
-    mode,
     agentDisplayName,
-    dockerImage: "docker_image" in parsed.data ? parsed.data.docker_image : undefined,
-    apiEndpoint: "api_endpoint" in parsed.data ? parsed.data.api_endpoint : undefined,
   });
 
   if ("error" in result) {
@@ -136,21 +104,18 @@ export async function POST(req: Request) {
       action: AUDIT_ACTION.SUBMISSION_CREATED,
       resource_type: "submission",
       resource_id: submissionId,
-      metadata: { task_id: taskId, mode },
+      metadata: { task_id: taskId, mode: "upload" },
     })
     .catch(() => {});
 
-  // Build response
-  const response: Record<string, unknown> = {
-    ...result.submission,
-    quota: result.quota,
-  };
-
-  if (result.uploadUrl) {
-    response.upload_url = result.uploadUrl;
-    response.upload_token = result.uploadToken;
-    response.upload_expires_at = result.uploadExpiresAt;
-  }
-
-  return NextResponse.json(response, { status: 201 });
+  return NextResponse.json(
+    {
+      ...result.submission,
+      quota: result.quota,
+      upload_url: result.uploadUrl,
+      upload_token: result.uploadToken,
+      upload_expires_at: result.uploadExpiresAt,
+    },
+    { status: 201 }
+  );
 }
