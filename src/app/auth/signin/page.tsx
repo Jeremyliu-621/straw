@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 const isDev = process.env.NODE_ENV === "development";
+const callbackUrl = "/onboarding";
 
 function GoogleIcon() {
   return (
@@ -24,57 +25,6 @@ function GitHubIcon() {
   );
 }
 
-interface RoleColumnProps {
-  title: string;
-  role: "company" | "agent_builder";
-  devEmail: string;
-}
-
-function RoleColumn({ title, role, devEmail }: RoleColumnProps) {
-  const callbackUrl = `/onboarding?role=${role}`;
-
-  return (
-    <div className="h-full flex flex-col justify-center px-12 py-16">
-      <h2 className="text-[22px] font-medium text-black tracking-tight leading-snug mb-6">
-        {title}
-      </h2>
-
-      <div className="flex flex-col gap-3">
-        <button
-          onClick={() => signIn("google", { callbackUrl })}
-          className="flex w-full items-center justify-center gap-2.5 px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium text-black bg-transparent border border-gray-300 hover:bg-black/5 transition-colors cursor-pointer"
-        >
-          <GoogleIcon />
-          Continue with Google
-        </button>
-
-        <button
-          onClick={() => signIn("github", { callbackUrl })}
-          className="flex w-full items-center justify-center gap-2.5 px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium text-black bg-transparent border border-gray-300 hover:bg-black/5 transition-colors cursor-pointer"
-        >
-          <GitHubIcon />
-          Continue with GitHub
-        </button>
-
-        {isDev && (
-          <button
-            onClick={() =>
-              signIn("credentials", {
-                email: devEmail,
-                role,
-                callbackUrl: "/dashboard",
-              })
-            }
-            className="px-4 py-2 rounded-[var(--radius)] text-[12px] font-medium text-gray-400 bg-transparent border border-dashed border-gray-200 hover:text-gray-600 transition-colors cursor-pointer w-full"
-          >
-            Dev: Sign in as {role === "company" ? "Company" : "Builder"}
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
-
 export default function SignInPage() {
   return (
     <div className="h-screen overflow-hidden bg-[#FDFCFC]">
@@ -82,13 +32,16 @@ export default function SignInPage() {
         <div className="w-full max-w-[1400px] mx-auto border-x border-y border-gray-200 flex flex-col lg:flex-row h-full">
 
           {/* Left: Branding */}
-          <div className="w-full lg:w-[28%] border-b lg:border-b-0 lg:border-r border-gray-200 px-10 py-16 sm:py-20 flex flex-col justify-center">
+          <div className="w-full lg:w-[40%] border-b lg:border-b-0 lg:border-r border-gray-200 px-10 py-16 sm:py-20 flex flex-col justify-center">
             <Link href="/" className="inline-block mb-10">
               <img src="/strawlonglogo.png" alt="Straw" className="h-6 w-auto" />
             </Link>
-            <h1 className="text-[32px] font-medium tracking-tight text-black leading-[1.1] mb-10">
-              The AI agent<br />evaluation platform
+            <h1 className="text-[32px] font-medium tracking-tight text-black leading-[1.1] mb-4">
+              Post tasks.<br />Compete on tasks.<br />One account.
             </h1>
+            <p className="text-[14px] text-gray-400 leading-relaxed mb-10">
+              Create challenges for AI agents, or compete on them yourself. No separate roles needed.
+            </p>
             <Link
               href="/"
               className="text-[13px] text-gray-400 hover:text-black transition-colors"
@@ -97,30 +50,48 @@ export default function SignInPage() {
             </Link>
           </div>
 
-          {/* Right: Role columns */}
-          <div className="w-full lg:w-[72%] flex flex-col sm:flex-row">
-            {/* Company */}
-            <div className="flex-1 h-full border-b sm:border-b-0 sm:border-r border-gray-200">
-              <RoleColumn
-                title="I'm a Company"
-                role="company"
-                devEmail="dev-company@straw.dev"
-              />
-            </div>
+          {/* Right: Login */}
+          <div className="w-full lg:w-[60%] flex flex-col items-center justify-center px-12 py-16">
+            <h2 className="text-[22px] font-medium text-black tracking-tight leading-snug mb-6 w-full max-w-sm">
+              Sign in
+            </h2>
 
-            {/* Builder */}
-            <div className="flex-1 h-full">
-              <RoleColumn
-                title="I'm a Builder"
-                role="agent_builder"
-                devEmail="dev-builder@straw.dev"
-              />
+            <div className="flex flex-col gap-3 w-full max-w-sm">
+              <button
+                onClick={() => signIn("google", { callbackUrl })}
+                className="flex w-full items-center justify-center gap-2.5 px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium text-black bg-transparent border border-gray-300 hover:bg-black/5 transition-colors cursor-pointer"
+              >
+                <GoogleIcon />
+                Continue with Google
+              </button>
+
+              <button
+                onClick={() => signIn("github", { callbackUrl })}
+                className="flex w-full items-center justify-center gap-2.5 px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium text-black bg-transparent border border-gray-300 hover:bg-black/5 transition-colors cursor-pointer"
+              >
+                <GitHubIcon />
+                Continue with GitHub
+              </button>
+
+              {isDev && (
+                <button
+                  onClick={() =>
+                    signIn("credentials", {
+                      email: "dev@straw.dev",
+                      role: "company",
+                      callbackUrl: "/dashboard",
+                    })
+                  }
+                  className="px-4 py-2 rounded-[var(--radius)] text-[12px] font-medium text-gray-400 bg-transparent border border-dashed border-gray-200 hover:text-gray-600 transition-colors cursor-pointer w-full"
+                >
+                  Dev: Sign in
+                </button>
+              )}
             </div>
           </div>
 
         </div>
       </div>
-
     </div>
   );
 }

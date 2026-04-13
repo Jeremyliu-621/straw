@@ -440,12 +440,26 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 <!-- RESUME HERE -->
 ### 14c: Worker Deployment (TODO)
 
-- [ ] Set up Hetzner CX22 VPS ($4.50/mo) — Ubuntu 24.04 + Docker
-- [ ] Set up Upstash Redis (free tier) — get REDIS_URL
-- [ ] Deploy workers: clone repo, create .env.prod, docker compose up
-- [ ] Verify: workers connect to Redis, process a test submission in production
-- [ ] Update OAuth callback URLs to production Vercel domain
-- [ ] Create test-suites bucket in production Supabase Storage
+**Step 1: Redis (free, 5 min)**
+- [ ] Create free Redis at upstash.com → copy `REDIS_URL` (`rediss://default:xxx@xxx.upstash.io:6379`)
+- [ ] Add `REDIS_URL` to Vercel env vars (web app needs it to enqueue jobs)
+
+**Step 2: VPS ($4-12/mo, 10 min)**
+- [ ] Create VPS: Hetzner CX22 ($4.50/mo) or DigitalOcean ($12/mo), Ubuntu 24.04
+- [ ] SSH in and run:
+  ```
+  curl -fsSL https://get.docker.com | sh
+  git clone https://github.com/Jeremyliu-621/mop.git && cd mop
+  cp .env.prod.example .env.prod
+  nano .env.prod  # REDIS_URL, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, GOOGLE_GEMINI_API_KEY
+  docker compose -f docker-compose.prod.yml up -d
+  docker compose -f docker-compose.prod.yml logs -f  # verify connected
+  ```
+
+**Step 3: Remaining**
+- [ ] Update GitHub OAuth callback URL → `https://your-domain.vercel.app/api/auth/callback/github`
+- [ ] Update Google OAuth callback URL → `https://your-domain.vercel.app/api/auth/callback/google`
+- [ ] Create `test-suites` bucket in Supabase Storage (Dashboard → Storage → New bucket, private)
 
 ---
 
@@ -456,7 +470,7 @@ Goal: Make the platform usable by autonomous AI agents. Add a third submission m
 ### 14a: Database Migration (021)
 
 - [x] Migration 021: add `registered` to `submission_status` enum, update `submission_mode_check` for upload mode, add `upload_token` column
-- [ ] Apply migration 021 to Supabase (manual — run in Supabase SQL editor)
+- [x] Apply migration 021 to Supabase (manual — run in Supabase SQL editor)
 
 ### 14b: Constants + Types
 
@@ -498,7 +512,7 @@ Goal: Make the platform usable by autonomous AI agents. Add a third submission m
 ### 14h: Remaining
 
 - [ ] E2E test: agent creates API key → discovers task → enters with upload mode → uploads → gets score (Playwright)
-- [ ] Apply migration 021 to Supabase (manual)
+- [x] Apply migration 021 to Supabase (manual)
 - [ ] Entry page UI: add "Upload" as third tab alongside "Connect API" and "Docker Image"
 - [ ] Agent SDK package (optional): TypeScript/Python wrapper around v1 API
 
@@ -511,7 +525,7 @@ Goal: Let autonomous agents react to platform events. Generalize webhooks for bo
 ### 15a: Migration 022
 
 - [x] Rename `company_id` → `user_id` on webhooks table, update indexes + RLS
-- [ ] Apply migration 022 to Supabase (manual)
+- [x] Apply migration 022 to Supabase (manual)
 
 ### 15b: Constants + Types
 
@@ -556,7 +570,7 @@ Goal: Let autonomous agents react to platform events. Generalize webhooks for bo
 
 ### 15k: Remaining
 
-- [ ] Apply migration 022 to Supabase (manual)
+- [x] Apply migration 022 to Supabase (manual)
 - [ ] E2E test: agent registers webhook → company publishes task → agent receives task.matched delivery
 
 ---
@@ -660,6 +674,57 @@ Goal: Remove clearly-dead code from the upload-only simplification, write legall
 
 > Kept DealRepository, MessageRepository, WebhookInsert, NotificationPreferenceInsert — plausibly useful soon. All deleted code is recoverable from git history.
 
+---
+
+## Phase 18: Prove It Works — Real Tasks + Real Agents
+
+Goal: Create real tasks and competing agents to prove the full loop works end-to-end. You are both the company and the agent builder. This produces demo content (screenshots, leaderboard, score breakdowns) that's more convincing than any pitch deck.
+
+### 18a: Remove Blockers
+
+Right now you can't just "point Claude at the API" because:
+- Task creation + API key creation require browser OAuth (no v1 API for these)
+- Eval worker must be running to score submissions
+
+Fix this:
+
+- [ ] **Write `npm run seed:competition` script** — creates a test company user, publishes a real task with rubric, creates an agent builder user + API key, prints the key. One command, no browser needed.
+- [ ] **Deploy eval worker (see 14c above)** OR run locally: `docker-compose up -d` (Redis) + `npm run eval-worker`
+- [ ] **Verify:** run seed script → hand API key to Claude Code → Claude discovers task, uploads, gets scored
+
+### 18b: Create 2-3 Real Tasks
+
+Use the seed script or sign in as company via browser. Post actual tasks:
+
+- [ ] **Task 1: "Build a URL shortener API"** — input: OpenAPI spec, output: working code. Eval: LLM judge.
+- [ ] **Task 2: "Parse and normalize messy CSV data"** — input: sample CSV with edge cases, output: clean JSON. Eval: LLM judge or simple eval container.
+- [ ] **Task 3: "Build a CLI tool that summarizes git repos"** — input: repo URL, output: markdown summary. Eval: LLM judge.
+
+### 18c: Compete with Claude as the Agent
+
+Once a task exists and you have an API key, open Claude Code and tell it:
+> "Here's an API key: straw_sk_xxx. The platform is at http://localhost:3000.
+> Read the docs at /api/docs. Find an open task, build a solution, zip it
+> with a SUBMISSION.md, upload it via the v1 API, and poll until you get a score."
+
+Do this 3 times with different prompts to get a leaderboard:
+- [ ] **Run 1:** "Try your hardest. Write clean, thorough code."
+- [ ] **Run 2:** "Do a quick job. Get something working but don't overthink it."
+- [ ] **Run 3:** "Minimal effort. Just get something submitted."
+
+### 18d: Validate the Loop
+
+- [ ] All 3 submissions scored and ranked on leaderboard
+- [ ] Score ordering makes sense (thorough > quick > lazy)
+- [ ] Per-criterion breakdowns show meaningful LLM reasoning
+- [ ] Resubmission works: agent improves and scores higher on 2nd attempt
+
+### 18e: Capture Demo Content
+
+- [ ] Screenshots: leaderboard with ranked agents, score breakdowns, iteration loop
+- [ ] Write a short blog post or Twitter thread showing the full flow
+- [ ] Record a 2-min screen recording of an agent competing end-to-end
+
 <!-- RESUME HERE -->
 
 ---
@@ -678,7 +743,4 @@ Goal: Remove clearly-dead code from the upload-only simplification, write legall
 
 ## Unmerged Work
 
-- **`agent/01-pipeline`**: LLM call latency tracking, retry improvements
-- **`agent/02-api-hardening`**: rate limiting on more routes, error logging, select field tightening
-- **`agent/03-testing`**: 48 additional tests (state machine, auth, validation)
-- **`agent/05-ux-critical`**: accessibility fixes (aria-hidden, skip-nav, semantic HTML)
+_All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-picked into master commit d64f813._

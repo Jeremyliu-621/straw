@@ -147,6 +147,11 @@ export async function createSubmission(
   }
   const { task } = taskResult;
 
+  // Can't compete on your own task
+  if (task.company_id === agentId) {
+    return { error: "You cannot submit to your own task", status: 403 };
+  }
+
   // Check quota
   const quotaResult = await checkSubmissionQuota(db, taskId, agentId, task);
   if ("error" in quotaResult) {

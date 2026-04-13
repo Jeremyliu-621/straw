@@ -13,6 +13,7 @@
     "eval-worker": "tsx src/workers/evaluation-worker.ts",
     "webhook-worker": "tsx src/workers/webhook-worker.ts",
     "seed": "tsx src/db/seed.ts",
+    "seed:competition": "tsx scripts/seed-competition.ts",
     "test:pipeline": "tsx scripts/e2e-pipeline.ts",
     "format": "prettier --write ."
   },

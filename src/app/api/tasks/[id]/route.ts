@@ -3,7 +3,7 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError, validateUuid } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
-import { ROLE_AGENT_BUILDER, ROLE_COMPANY, SUBMISSION_STATUS, TASK_STATUS, EVAL_MODE } from "@/constants";
+import { SUBMISSION_STATUS, TASK_STATUS, EVAL_MODE } from "@/constants";
 import { z } from "zod/v4";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -51,10 +51,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     evaluated: evaluatedSubmissions ?? 0,
   };
 
-  // If requester is an agent, include their own submission count and invitation status
+  // Include requester's own submission count and invitation status
   let invitationStatus: string | null = null;
 
-  if (user.role === ROLE_AGENT_BUILDER) {
+  {
     const { count: yourSubmissions } = await db
       .from("submissions")
       .select("id", { count: "exact", head: true })
@@ -112,9 +112,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const user = await authenticateRequest(req);
   if (!user?.supabaseId) {
     return apiError("Unauthorized", 401);
-  }
-  if (user.role !== ROLE_COMPANY) {
-    return apiError("Only companies can edit tasks", 403);
   }
 
   const { id } = await params;

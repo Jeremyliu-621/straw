@@ -38,7 +38,8 @@ export default function CompanyDashboard() {
       fetch("/api/dashboard/stats").then((res) => res.json()),
     ])
       .then(([tasksData, statsData]) => {
-        setTasks(Array.isArray(tasksData) ? tasksData : []);
+        // /api/tasks now returns { own, open } — company view shows own tasks
+        setTasks(Array.isArray(tasksData) ? tasksData : (tasksData?.own ?? []));
         setStats(statsData);
       })
       .catch(() => {

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
-import { ROLE_COMPANY } from "@/constants";
 import { z } from "zod/v4";
 
 const TEST_SUITE_BUCKET = "test-suites";
@@ -29,10 +28,6 @@ export async function POST(
   const session = await auth();
   if (!session?.user?.supabaseId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  if (session.user.role !== ROLE_COMPANY) {
-    return NextResponse.json({ error: "Only companies can upload test suites" }, { status: 403 });
   }
 
   const { id: taskId } = await params;

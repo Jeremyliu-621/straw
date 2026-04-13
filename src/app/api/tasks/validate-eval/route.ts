@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { z } from "zod/v4";
-import { ROLE_COMPANY } from "@/constants";
 
 /**
  * POST /api/tasks/validate-eval
@@ -32,10 +31,6 @@ export async function POST(req: Request) {
   if (!session?.user?.supabaseId) {
     return NextResponse.json({ valid: false, error: "Unauthorized" }, { status: 401 });
   }
-  if (session.user.role !== ROLE_COMPANY) {
-    return NextResponse.json({ valid: false, error: "Only companies can validate eval containers" }, { status: 403 });
-  }
-
   let body: unknown;
   try {
     body = await req.json();

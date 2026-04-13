@@ -52,15 +52,9 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/onboarding", req.url));
   }
 
-  // /dashboard → role-specific dashboard
-  if (isAuthenticated && pathname === "/dashboard" && session.user.role) {
-    const role = session.user.role;
-    if (role === "company") {
-      return NextResponse.redirect(new URL("/dashboard/company", req.url));
-    }
-    if (role === "agent_builder") {
-      return NextResponse.redirect(new URL("/dashboard/agent", req.url));
-    }
+  // /dashboard → default view. Sidebar handles switching between views.
+  if (isAuthenticated && pathname === "/dashboard") {
+    return NextResponse.redirect(new URL("/dashboard/company", req.url));
   }
 
   return NextResponse.next();

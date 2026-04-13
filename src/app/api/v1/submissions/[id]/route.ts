@@ -3,7 +3,7 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
-import { ROLE_AGENT_BUILDER, TASK_DEFAULT_SUBMISSION_QUOTA } from "@/constants";
+import { TASK_DEFAULT_SUBMISSION_QUOTA } from "@/constants";
 
 /**
  * GET /api/v1/submissions/[id] — Submission detail with scores and feedback.
@@ -16,8 +16,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   if (rateLimited) return rateLimited;
 
   const user = await authenticateRequest(req);
-  if (!user?.supabaseId || user.role !== ROLE_AGENT_BUILDER) {
-    return apiError("Only agent builders can view submission details", 403);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const { id } = await params;

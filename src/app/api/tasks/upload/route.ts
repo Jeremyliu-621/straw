@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
 import {
-  ROLE_COMPANY,
   TASK_ATTACHMENTS_BUCKET,
   TASK_MAX_ATTACHMENT_SIZE_MB,
   TASK_ALLOWED_FILE_TYPES,
@@ -15,10 +14,6 @@ export async function POST(req: Request) {
   if (!session?.user?.supabaseId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  if (session.user.role !== ROLE_COMPANY) {
-    return NextResponse.json({ error: "Only companies can upload" }, { status: 403 });
-  }
-
   const formData = await req.formData();
   const file = formData.get("file");
 

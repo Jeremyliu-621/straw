@@ -4,7 +4,7 @@ import { z } from "zod/v4";
 import { auth } from "@/lib/auth";
 import { env } from "@/lib/env";
 import { refineTaskSchema } from "@/lib/validation";
-import { ROLE_COMPANY, EVALUATION_LLM_MODEL } from "@/constants";
+import { EVALUATION_LLM_MODEL } from "@/constants";
 
 const gemini = new GoogleGenerativeAI(env.GOOGLE_GEMINI_API_KEY);
 
@@ -19,10 +19,6 @@ export async function POST(req: Request) {
   if (!session?.user?.supabaseId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  if (session.user.role !== ROLE_COMPANY) {
-    return NextResponse.json({ error: "Only companies can refine tasks" }, { status: 403 });
-  }
-
   const body = await req.json();
   const parsed = refineTaskSchema.safeParse(body);
 

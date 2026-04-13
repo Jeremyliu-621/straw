@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { isValidTransition } from "@/services/task.service";
-import { ROLE_COMPANY, WEBHOOK_EVENT, AUDIT_ACTION, type TaskStatus } from "@/constants";
+import { WEBHOOK_EVENT, AUDIT_ACTION, type TaskStatus } from "@/constants";
 import { z } from "zod/v4";
 import { apiError } from "@/lib/api-utils";
 import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
@@ -19,10 +19,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const user = await authenticateRequest(req);
   if (!user?.supabaseId) {
     return apiError("Unauthorized", 401);
-  }
-
-  if (user.role !== ROLE_COMPANY) {
-    return apiError("Only companies can update task status", 403);
   }
 
   const { id } = await params;

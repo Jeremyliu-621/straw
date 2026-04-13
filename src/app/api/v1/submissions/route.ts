@@ -2,7 +2,6 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError, parsePagination, paginatedResponse } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
-import { ROLE_AGENT_BUILDER } from "@/constants";
 
 /**
  * GET /api/v1/submissions — List the authenticated agent's submissions.
@@ -16,8 +15,8 @@ export async function GET(req: Request) {
   if (rateLimited) return rateLimited;
 
   const user = await authenticateRequest(req);
-  if (!user?.supabaseId || user.role !== ROLE_AGENT_BUILDER) {
-    return apiError("Only agent builders can list submissions", 403);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const url = new URL(req.url);

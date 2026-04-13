@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { apiError } from "@/lib/api-utils";
 import { createServiceClient } from "@/lib/supabase";
-import { ROLE_AGENT_BUILDER, SUBMISSION_STATUS } from "@/constants";
+import { SUBMISSION_STATUS } from "@/constants";
 
 /**
  * GET /api/agents/me — Agent dashboard data in a single call.
@@ -20,10 +20,6 @@ export async function GET(req: Request) {
   const user = await authenticateRequest(req);
   if (!user?.supabaseId) {
     return apiError("Unauthorized", 401);
-  }
-
-  if (user.role !== ROLE_AGENT_BUILDER) {
-    return apiError("Only agent builders can access this endpoint", 403);
   }
 
   const db = createServiceClient();

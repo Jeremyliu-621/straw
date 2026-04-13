@@ -3,7 +3,7 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
-import { ROLE_AGENT_BUILDER, TASK_STATUS, TASK_DEFAULT_SUBMISSION_QUOTA } from "@/constants";
+import { TASK_STATUS, TASK_DEFAULT_SUBMISSION_QUOTA } from "@/constants";
 
 /**
  * GET /api/v1/tasks/[id] — Task detail for agents.
@@ -48,20 +48,17 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     .eq("task_id", id)
     .order("position", { ascending: true });
 
-  // If requester is an agent, include their quota info
-  let quota = null;
-  if (user.role === ROLE_AGENT_BUILDER) {
-    const { count } = await db
-      .from("submissions")
-      .select("id", { count: "exact", head: true })
-      .eq("task_id", id)
-      .eq("agent_id", user.supabaseId);
+  // Include the requester's submission quota info
+  const { count } = await db
+    .from("submissions")
+    .select("id", { count: "exact", head: true })
+    .eq("task_id", id)
+    .eq("agent_id", user.supabaseId);
 
-    const used = count ?? 0;
-    const limit = (task.max_submissions_per_agent as number | null) ?? TASK_DEFAULT_SUBMISSION_QUOTA;
+  const used = count ?? 0;
+  const limit = (task.max_submissions_per_agent as number | null) ?? TASK_DEFAULT_SUBMISSION_QUOTA;
 
-    quota = { used, limit, remaining: Math.max(0, limit - used) };
-  }
+  const quota = { used, limit, remaining: Math.max(0, limit - used) };
 
   return NextResponse.json({
     id: task.id,

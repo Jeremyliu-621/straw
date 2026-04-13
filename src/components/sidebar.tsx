@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
-import { ROLE_COMPANY, ROLE_AGENT_BUILDER } from "@/constants";
 import {
   LogOut,
   ClipboardList,
@@ -23,13 +22,13 @@ interface NavItem {
 }
 
 const COMPANY_NAV: NavItem[] = [
-  { label: "Tasks", href: "/dashboard/company", icon: ClipboardList },
+  { label: "My Tasks", href: "/dashboard/company", icon: ClipboardList },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { label: "API", href: "/dashboard/api", icon: Code2 },
 ];
 
 const AGENT_NAV: NavItem[] = [
-  { label: "Tasks", href: "/dashboard/agent", icon: ClipboardList },
+  { label: "Compete", href: "/dashboard/agent", icon: ClipboardList },
   { label: "Profile", href: "/agents/profile", icon: User },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { label: "API", href: "/dashboard/api", icon: Code2 },
@@ -40,8 +39,32 @@ interface WorkspaceOption {
   label: string;
   description: string;
   icon: typeof Building2;
-  action: () => void;
+  href: string;
 }
+
+const WORKSPACES: WorkspaceOption[] = [
+  {
+    id: "company",
+    label: "Post Tasks",
+    description: "Create and manage competitions",
+    icon: Building2,
+    href: "/dashboard/company",
+  },
+  {
+    id: "builder",
+    label: "Compete",
+    description: "Find tasks and submit solutions",
+    icon: Bot,
+    href: "/dashboard/agent",
+  },
+  {
+    id: "api",
+    label: "API",
+    description: "Integrate with the Straw API",
+    icon: Code2,
+    href: "/dashboard/api",
+  },
+];
 
 function getInitials(name: string): string {
   return name
@@ -52,15 +75,16 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
-const isDev = process.env.NODE_ENV === "development";
-
 export function Sidebar() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
-  const activeRole = session?.user?.role;
-  const isCompany = activeRole === ROLE_COMPANY;
-  const navItems = isCompany ? COMPANY_NAV : AGENT_NAV;
+
+  // Derive active view from URL path, not session role
+  const isCompanyView = pathname.startsWith("/dashboard/company") || pathname.startsWith("/tasks/new");
+  const navItems = isCompanyView ? COMPANY_NAV : AGENT_NAV;
+  const activeWorkspace = isCompanyView ? WORKSPACES[0] : WORKSPACES[1];
+  const ActiveIcon = activeWorkspace.icon;
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -76,54 +100,6 @@ export function Sidebar() {
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [dropdownOpen]);
-
-  const workspaces: WorkspaceOption[] = [
-    {
-      id: "company",
-      label: "Company",
-      description: "Post tasks and evaluate agents",
-      icon: Building2,
-      action: () => {
-        if (isDev) {
-          signIn("credentials", {
-            email: "dev-company@straw.dev",
-            role: "company",
-            callbackUrl: "/dashboard",
-          });
-        }
-        setDropdownOpen(false);
-      },
-    },
-    {
-      id: "builder",
-      label: "Builder",
-      description: "Build and submit AI agents",
-      icon: Bot,
-      action: () => {
-        if (isDev) {
-          signIn("credentials", {
-            email: "dev-builder@straw.dev",
-            role: "agent_builder",
-            callbackUrl: "/dashboard",
-          });
-        }
-        setDropdownOpen(false);
-      },
-    },
-    {
-      id: "api",
-      label: "API",
-      description: "Integrate with the Straw API",
-      icon: Code2,
-      action: () => {
-        router.push("/dashboard/api");
-        setDropdownOpen(false);
-      },
-    },
-  ];
-
-  const activeWorkspace = isCompany ? workspaces[0] : workspaces[1];
-  const ActiveIcon = activeWorkspace.icon;
 
   return (
     <aside
@@ -211,13 +187,16 @@ export function Sidebar() {
               overflow: "hidden",
             }}
           >
-            {workspaces.map((ws) => {
+            {WORKSPACES.map((ws) => {
               const WsIcon = ws.icon;
               const isCurrent = ws.id === activeWorkspace.id;
               return (
                 <button
                   key={ws.id}
-                  onClick={ws.action}
+                  onClick={() => {
+                    router.push(ws.href);
+                    setDropdownOpen(false);
+                  }}
                   className="flex items-center gap-3 transition-colors"
                   style={{
                     width: "100%",
@@ -323,7 +302,6 @@ export function Sidebar() {
           gap: "12px",
         }}
       >
-        {/* Avatar */}
         {session?.user?.image ? (
           <img
             src={session.user.image}

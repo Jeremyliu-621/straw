@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
 import { createTaskSchema } from "@/lib/validation";
-import { ROLE_COMPANY, TASK_STATUS } from "@/constants";
+import { TASK_STATUS } from "@/constants";
 import { z } from "zod/v4";
 import { parseBody } from "@/lib/api-utils";
 
@@ -13,43 +13,37 @@ export async function GET() {
   }
 
   const db = createServiceClient();
-  const isCompany = session.user.role === ROLE_COMPANY;
+  const userId = session.user.supabaseId;
 
-  if (isCompany) {
-    // Companies see their own tasks
-    const { data, error } = await db
-      .from("tasks")
-      .select("*, rubric_criteria(*)")
-      .eq("company_id", session.user.supabaseId)
-      .order("created_at", { ascending: false });
+  // Return user's own tasks + open tasks they can compete on
+  const { data: ownTasks, error: ownError } = await db
+    .from("tasks")
+    .select("*, rubric_criteria(*)")
+    .eq("company_id", userId)
+    .order("created_at", { ascending: false });
 
-    if (error) {
-      return NextResponse.json({ error: "Failed to fetch tasks" }, { status: 500 });
-    }
-    return NextResponse.json(data);
-  } else {
-    // Agent builders see open tasks
-    const { data, error } = await db
-      .from("tasks")
-      .select("*")
-      .eq("status", TASK_STATUS.OPEN)
-      .order("deadline", { ascending: true });
-
-    if (error) {
-      return NextResponse.json({ error: "Failed to fetch tasks" }, { status: 500 });
-    }
-    return NextResponse.json(data);
+  if (ownError) {
+    return NextResponse.json({ error: "Failed to fetch tasks" }, { status: 500 });
   }
+
+  const { data: openTasks, error: openError } = await db
+    .from("tasks")
+    .select("*")
+    .eq("status", TASK_STATUS.OPEN)
+    .neq("company_id", userId)
+    .order("deadline", { ascending: true });
+
+  if (openError) {
+    return NextResponse.json({ error: "Failed to fetch tasks" }, { status: 500 });
+  }
+
+  return NextResponse.json({ own: ownTasks ?? [], open: openTasks ?? [] });
 }
 
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user?.supabaseId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  if (session.user.role !== ROLE_COMPANY) {
-    return NextResponse.json({ error: "Only companies can create tasks" }, { status: 403 });
   }
 
   const result = await parseBody(req);

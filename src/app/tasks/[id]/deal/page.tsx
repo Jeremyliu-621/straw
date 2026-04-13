@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { ROLE_COMPANY, DEAL_TYPE } from "@/constants";
+import { DEAL_TYPE } from "@/constants";
 import {
   calculateSuccessFee,
   formatCurrency,
@@ -39,7 +39,7 @@ export default function DealPage() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const isCompany = session?.user?.role === ROLE_COMPANY;
+  const isAuthenticated = !!session?.user?.supabaseId;
 
   useEffect(() => {
     if (!id) return;
@@ -114,7 +114,7 @@ export default function DealPage() {
     );
   }
 
-  if (!isCompany || !results.isOwner) {
+  if (!isAuthenticated || !results.isOwner) {
     return (
       <div className="mx-auto max-w-xl" style={{ padding: "32px" }}>
         <p

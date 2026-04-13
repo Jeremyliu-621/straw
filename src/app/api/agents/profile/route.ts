@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
-import { ROLE_AGENT_BUILDER } from "@/constants";
 import { z } from "zod/v4";
 
 const updateProfileSchema = z.object({
@@ -14,7 +13,7 @@ const updateProfileSchema = z.object({
 
 export async function GET() {
   const session = await auth();
-  if (!session?.user?.supabaseId || session.user.role !== ROLE_AGENT_BUILDER) {
+  if (!session?.user?.supabaseId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -34,7 +33,7 @@ export async function GET() {
 
 export async function PATCH(req: Request) {
   const session = await auth();
-  if (!session?.user?.supabaseId || session.user.role !== ROLE_AGENT_BUILDER) {
+  if (!session?.user?.supabaseId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import {
-  ROLE_AGENT_BUILDER,
   RATE_LIMIT_MAX_SUBMISSIONS,
   WEBHOOK_EVENT,
   AUDIT_ACTION,
@@ -32,7 +31,7 @@ export async function GET(req: Request) {
   const taskId = url.searchParams.get("task_id");
   const db = createServiceClient();
 
-  if (taskId && user.role === ROLE_AGENT_BUILDER) {
+  if (taskId) {
     const { data, error } = await db
       .from("submissions")
       .select("*")
@@ -64,8 +63,8 @@ export async function POST(req: Request) {
   if (rateLimited) return rateLimited;
 
   const user = await authenticateRequest(req);
-  if (!user?.supabaseId || user.role !== ROLE_AGENT_BUILDER) {
-    return apiError("Only agent builders can submit", 403);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const body = await req.json();

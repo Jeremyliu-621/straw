@@ -46,7 +46,8 @@ export default function AgentDashboard() {
       fetch("/api/submissions").then((res) => res.json()),
     ])
       .then(([tasksData, statsData, subsData]) => {
-        setTasks(Array.isArray(tasksData) ? tasksData : []);
+        // /api/tasks now returns { own, open } — agent view shows open tasks
+        setTasks(Array.isArray(tasksData) ? tasksData : (tasksData?.open ?? []));
         setStats(statsData);
         setSubmissions(Array.isArray(subsData) ? subsData : []);
       })
@@ -339,10 +340,10 @@ export default function AgentDashboard() {
                 className="w-20 text-right font-mono"
                 style={{
                   fontSize: "14px",
-                  color: sub.final_score !== null ? "var(--text)" : "var(--text-faint)",
+                  color: sub.final_score != null ? "var(--text)" : "var(--text-faint)",
                 }}
               >
-                {sub.final_score !== null ? sub.final_score.toFixed(1) : "--"}
+                {sub.final_score != null ? sub.final_score.toFixed(1) : "--"}
               </span>
               <span
                 className="w-28 text-right font-sans"

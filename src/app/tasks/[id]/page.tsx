@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { StatusBadge } from "@/components/status-badge";
 import { Leaderboard } from "@/components/leaderboard";
 import { DeadlineCountdown } from "@/components/deadline-countdown";
-import { ROLE_COMPANY, ROLE_AGENT_BUILDER, EVAL_MODE } from "@/constants";
+import { EVAL_MODE } from "@/constants";
 import type { EvalMode } from "@/constants";
 
 interface Task {
@@ -43,9 +43,8 @@ export default function TaskDetailPage() {
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isCompany = session?.user?.role === ROLE_COMPANY;
-  const isAgent = session?.user?.role === ROLE_AGENT_BUILDER;
-  const isOwner = isCompany && task?.company_id === session?.user?.supabaseId;
+  const isOwner = task?.company_id === session?.user?.supabaseId;
+  const canCompete = !isOwner;
 
   const handleDeadlineExpired = useCallback(() => {
     fetch(`/api/tasks/${id}/close`, { method: "POST" }).catch(() => {});
@@ -64,17 +63,16 @@ export default function TaskDetailPage() {
       .catch(() => router.push("/dashboard"))
       .finally(() => setLoading(false));
 
-    if (isAgent) {
-      fetch(`/api/submissions?task_id=${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (Array.isArray(data) && data.length > 0) {
-            setSubmission(data[0]);
-          }
-        })
-        .catch(() => {});
-    }
-  }, [id, isAgent, router]);
+    // Fetch user's submissions for this task (if not the owner)
+    fetch(`/api/submissions?task_id=${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setSubmission(data[0]);
+        }
+      })
+      .catch(() => {});
+  }, [id, router]);
 
   async function publishTask() {
     setPublishing(true);
@@ -218,7 +216,7 @@ export default function TaskDetailPage() {
                   </div>
                 )}
 
-                {isAgent && task.status === "open" && (
+                {canCompete && task.status === "open" && (
                   <div className="flex items-center gap-3">
                     <Link
                       href="/dashboard"
@@ -244,7 +242,7 @@ export default function TaskDetailPage() {
                   </div>
                 )}
 
-                {isAgent && task.status !== "open" && submission && (
+                {canCompete && task.status !== "open" && submission && (
                   <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-md border border-gray-200">
                     <StatusBadge status={submission.status} />
                     <span className="font-sans text-[13px] text-gray-400">

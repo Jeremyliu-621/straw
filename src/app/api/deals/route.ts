@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
-import { ROLE_COMPANY, TASK_STATUS, DEAL_TYPE, WEBHOOK_EVENT, AUDIT_ACTION } from "@/constants";
+import { TASK_STATUS, DEAL_TYPE, WEBHOOK_EVENT, AUDIT_ACTION } from "@/constants";
 import { calculateSuccessFee } from "@/services/results.service";
 import { z } from "zod/v4";
 import { apiError, parseBody } from "@/lib/api-utils";
@@ -31,13 +31,11 @@ export async function GET(req: Request) {
 
   const db = createServiceClient();
   const userId = user.supabaseId;
-  const isCompany = user.role === ROLE_COMPANY;
 
-  const column = isCompany ? "company_id" : "agent_id";
   const { data, error } = await db
     .from("deals")
     .select("*")
-    .eq(column, userId)
+    .or(`company_id.eq.${userId},agent_id.eq.${userId}`)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -57,10 +55,6 @@ export async function POST(req: Request) {
   const user = await authenticateRequest(req);
   if (!user?.supabaseId) {
     return apiError("Unauthorized", 401);
-  }
-
-  if (user.role !== ROLE_COMPANY) {
-    return apiError("Only companies can create deals", 403);
   }
 
   const result = await parseBody(req);

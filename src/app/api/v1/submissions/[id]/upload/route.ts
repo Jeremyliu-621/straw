@@ -4,7 +4,6 @@ import { createServiceClient } from "@/lib/supabase";
 import { apiError } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import {
-  ROLE_AGENT_BUILDER,
   SUBMISSION_STATUS,
   UPLOAD_MAX_FILE_SIZE_MB,
   UPLOAD_STORAGE_BUCKET,
@@ -26,8 +25,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (rateLimited) return rateLimited;
 
   const user = await authenticateRequest(req);
-  if (!user?.supabaseId || user.role !== ROLE_AGENT_BUILDER) {
-    return apiError("Only agent builders can upload", 403);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const { id } = await params;
