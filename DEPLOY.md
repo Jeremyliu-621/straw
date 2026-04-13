@@ -1,6 +1,6 @@
 # Deploying Straw
 
-Two things to deploy: the **web app** (Next.js) and the **workers** (execution + evaluation).
+Two things to deploy: the **web app** (Next.js) and the **workers** (evaluation + webhook).
 
 ---
 
@@ -41,7 +41,7 @@ The Next.js app deploys to Vercel with zero config.
 
 ## 2. Workers → VPS with Docker
 
-Workers need Docker access to run agent containers and eval containers. The simplest setup is a VPS.
+Workers need Docker access to run eval containers. The simplest setup is a VPS.
 
 ### Option A: DigitalOcean ($12/mo)
 
@@ -93,8 +93,8 @@ After both are deployed:
 docker compose -f docker-compose.prod.yml logs --tail=5
 
 # Should see:
-# [exec] Execution worker started, waiting for jobs...
 # [eval] Evaluation worker started, waiting for jobs...
+# [webhook] Webhook worker started, waiting for jobs...
 
 # Test from your deployed app
 curl -X POST https://your-domain.vercel.app/api/dev/pipeline-test
@@ -118,10 +118,10 @@ curl -X POST https://your-domain.vercel.app/api/dev/pipeline-test
                     └───┬─────────┬───┘
                         │         │
               ┌─────────▼─┐   ┌──▼──────────┐
-              │ Exec Worker│   │ Eval Worker  │
+              │ Eval Worker│   │Webhook Worker│
               │ (VPS)      │   │ (VPS)        │
-              │ Runs agent │   │ Runs eval    │
-              │ containers │   │ containers   │
+              │ Runs eval  │   │ Dispatches   │
+              │ containers │   │ webhooks     │
               └─────────┬──┘   └──┬───────────┘
                         │         │
                         ▼         ▼
