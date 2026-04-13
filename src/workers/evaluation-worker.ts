@@ -550,6 +550,30 @@ async function handleLlmEval(
     console.error(`[eval] No output content for submission ${submissionId}`);
   }
 
+  // Platform build check — download files to temp dir, attempt build, pass result to LLM
+  let buildCheckResult: string = "";
+  try {
+    const { detectLanguage, runBuildCheck } = await import("@/services/build-check.service");
+    const tmpDir = path.join(os.tmpdir(), `map-build-${submissionId}`);
+    await downloadAgentOutputToDir(outputUrl, tmpDir);
+    const lang = detectLanguage(tmpDir);
+    if (lang) {
+      console.log(`[eval] Build check: detected ${lang.name}, running ${lang.buildCommand}`);
+      const result = runBuildCheck(tmpDir);
+      buildCheckResult = result.success
+        ? `Build check: SUCCESS (${result.detected}, ${result.durationMs}ms)`
+        : `Build check: FAILED (${result.detected})\n${result.output}`;
+      console.log(`[eval] Build check result: ${result.success ? "success" : "failed"} (${result.durationMs}ms)`);
+    } else {
+      buildCheckResult = "Build check: skipped (unknown language/framework)";
+    }
+    // Clean up
+    try { fs.rmSync(tmpDir, { recursive: true, force: true }); } catch { /* best effort */ }
+  } catch (err) {
+    console.error(`[eval] Build check failed:`, err);
+    buildCheckResult = "Build check: error (could not run)";
+  }
+
   // Phase 1: Automated testing
   let testScore: number | null = null;
   if (task.test_weight as number > 0) {
@@ -562,7 +586,7 @@ async function handleLlmEval(
   let dimensionScores: LLMResponse["dimensions"] = [];
 
   if (task.llm_weight as number > 0) {
-    const llmResult = await evaluateWithLLM(task, criteria, agentOutput);
+    const llmResult = await evaluateWithLLM(task, criteria, agentOutput, buildCheckResult || undefined);
     if (llmResult) {
       dimensionScores = llmResult.dimensions;
       llmReasoning = llmResult.overall_reasoning;
@@ -1135,9 +1159,10 @@ function executeTests(suite: TestSuite, agentOutput: string): number {
 async function evaluateWithLLM(
   task: Record<string, unknown>,
   criteria: RubricCriterion[],
-  agentOutput: string
+  agentOutput: string,
+  buildResult?: string
 ): Promise<LLMResponse | null> {
-  const prompt = buildEvaluationPrompt(task, criteria, agentOutput);
+  const prompt = buildEvaluationPrompt(task, criteria, agentOutput, buildResult);
 
   let result = await callLLM(prompt);
   if (result) return result;
@@ -1167,7 +1192,8 @@ function extractSubmissionMd(agentOutput: string): { submissionMd: string; other
 function buildEvaluationPrompt(
   task: Record<string, unknown>,
   criteria: RubricCriterion[],
-  agentOutput: string
+  agentOutput: string,
+  buildResult?: string
 ): string {
   const criteriaList = criteria
     .map(
@@ -1197,6 +1223,9 @@ ${submissionMd ? `## Agent's SUBMISSION.md (their own claims about what they bui
 ${submissionMd}
 
 IMPORTANT: Cross-reference every claim in SUBMISSION.md against the actual code/output below. If the agent claims a feature works but the code doesn't implement it, note that discrepancy and score accordingly. Honest self-assessment should be rewarded.
+` : ""}
+${buildResult ? `## Platform Build Check
+${buildResult}
 ` : ""}
 ## Agent Output (code and files)
 ${otherOutput || "(No output was produced by the agent)"}
