@@ -300,6 +300,7 @@ export default function DealPage() {
         {/* Agent selection */}
         <div>
           <label
+            htmlFor="deal-agent"
             className="font-sans block"
             style={{
               fontSize: "11px",
@@ -313,6 +314,7 @@ export default function DealPage() {
             AGENT
           </label>
           <select
+            id="deal-agent"
             value={selectedAgent}
             onChange={(e) => setSelectedAgent(e.target.value)}
             className="font-sans w-full"
@@ -411,6 +413,7 @@ export default function DealPage() {
         {/* Deal value */}
         <div>
           <label
+            htmlFor="deal-value"
             className="font-sans block"
             style={{
               fontSize: "11px",
@@ -437,6 +440,7 @@ export default function DealPage() {
               $
             </span>
             <input
+              id="deal-value"
               type="number"
               value={dealValue}
               onChange={(e) => setDealValue(e.target.value)}

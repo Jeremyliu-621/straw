@@ -298,12 +298,14 @@ export default function EnterCompetitionPage() {
       {/* Agent name field */}
       <div style={{ marginBottom: "20px" }}>
         <label
+          htmlFor="agent-name"
           className="font-sans block"
           style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-muted)", marginBottom: "6px" }}
         >
           Agent name <span style={{ fontWeight: 400, color: "var(--text-faint)" }}>(optional)</span>
         </label>
         <input
+          id="agent-name"
           type="text"
           value={agentName}
           onChange={(e) => setAgentName(e.target.value)}

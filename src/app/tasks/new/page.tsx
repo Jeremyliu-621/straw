@@ -396,6 +396,7 @@ export default function NewTaskPage() {
             >
               <div style={{ gridColumn: "1 / -1" }}>
                 <Field
+                  id="task-title"
                   label="Title"
                   required
                   value={title}
@@ -406,6 +407,7 @@ export default function NewTaskPage() {
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
                 <TextareaField
+                  id="task-description"
                   label="Description"
                   required
                   value={description}
@@ -424,6 +426,7 @@ export default function NewTaskPage() {
               </div>
               <div>
                 <label
+                  htmlFor="task-budget"
                   className="mb-1 block font-sans"
                   style={{ fontSize: "13px", color: "var(--text-muted)" }}
                 >
@@ -437,6 +440,7 @@ export default function NewTaskPage() {
                     $
                   </span>
                   <input
+                    id="task-budget"
                     type="number"
                     value={budgetDollars}
                     onChange={(e) => setBudgetDollars(Number(e.target.value))}
@@ -455,12 +459,14 @@ export default function NewTaskPage() {
               </div>
               <div>
                 <label
+                  htmlFor="task-deadline"
                   className="mb-1 block font-sans"
                   style={{ fontSize: "13px", color: "var(--text-muted)" }}
                 >
                   Deadline <span style={{ color: "var(--error)" }}>*</span>
                 </label>
                 <input
+                  id="task-deadline"
                   type="datetime-local"
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
@@ -497,6 +503,7 @@ export default function NewTaskPage() {
 
               {/* Input section */}
               <TextareaWithAttachments
+                id="input-description"
                 label="What will agents receive?"
                 value={inputDescription}
                 onChange={setInputDescription}
@@ -508,6 +515,7 @@ export default function NewTaskPage() {
 
               {/* Output section */}
               <TextareaWithAttachments
+                id="output-description"
                 label="What should agents produce?"
                 value={outputDescription}
                 onChange={setOutputDescription}
@@ -662,6 +670,7 @@ export default function NewTaskPage() {
                 {(evalMode === EVAL_MODE.CONTAINER || evalMode === EVAL_MODE.HYBRID) && (
                   <div style={{ marginTop: "14px" }}>
                     <label
+                      htmlFor="eval-image"
                       className="mb-1 block font-sans"
                       style={{ fontSize: "13px", color: "var(--text-muted)" }}
                     >
@@ -669,6 +678,7 @@ export default function NewTaskPage() {
                       <span style={{ color: "var(--error)" }}>*</span>
                     </label>
                     <input
+                      id="eval-image"
                       type="text"
                       value={evalImage}
                       onChange={(e) => {
@@ -775,10 +785,12 @@ export default function NewTaskPage() {
                       </p>
                       <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                         <label
+                          htmlFor="eval-network"
                           className="font-sans flex items-center gap-2"
                           style={{ fontSize: "13px", color: "var(--text-muted)", cursor: "pointer" }}
                         >
                           <input
+                            id="eval-network"
                             type="checkbox"
                             checked={evalNetwork}
                             onChange={(e) => setEvalNetwork(e.target.checked)}
@@ -786,9 +798,10 @@ export default function NewTaskPage() {
                           />
                           Allow network access
                         </label>
-                        <label className="font-sans flex items-center gap-2" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+                        <label htmlFor="eval-memory" className="font-sans flex items-center gap-2" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
                           Memory:
                           <select
+                            id="eval-memory"
                             value={evalMemoryMb}
                             onChange={(e) => setEvalMemoryMb(Number(e.target.value))}
                             className="font-mono"
@@ -807,9 +820,10 @@ export default function NewTaskPage() {
                             <option value={4096}>4 GB</option>
                           </select>
                         </label>
-                        <label className="font-sans flex items-center gap-2" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+                        <label htmlFor="eval-timeout" className="font-sans flex items-center gap-2" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
                           Timeout:
                           <select
+                            id="eval-timeout"
                             value={evalTimeoutSeconds}
                             onChange={(e) => setEvalTimeoutSeconds(Number(e.target.value))}
                             className="font-mono"
@@ -1010,18 +1024,21 @@ export default function NewTaskPage() {
                   </div>
 
                   <RefinedField
+                    id="refined-description"
                     label="Problem Statement"
                     value={refinedDescription}
                     onChange={setRefinedDescription}
                     rows={6}
                   />
                   <RefinedField
+                    id="refined-input-spec"
                     label="Input Specification"
                     value={refinedInputSpec}
                     onChange={setRefinedInputSpec}
                     rows={4}
                   />
                   <RefinedField
+                    id="refined-output-spec"
                     label="Output Specification"
                     value={refinedOutputSpec}
                     onChange={setRefinedOutputSpec}
@@ -1479,6 +1496,7 @@ function Field({
   onChange,
   placeholder,
   helper,
+  id,
 }: {
   label: string;
   required?: boolean;
@@ -1486,10 +1504,12 @@ function Field({
   onChange: (v: string) => void;
   placeholder?: string;
   helper?: string;
+  id: string;
 }) {
   return (
     <div>
       <label
+        htmlFor={id}
         className="mb-1 block font-sans"
         style={{ fontSize: "13px", color: "var(--text-muted)" }}
       >
@@ -1497,6 +1517,7 @@ function Field({
         {required && <span style={{ color: "var(--error)" }}> *</span>}
       </label>
       <input
+        id={id}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -1530,6 +1551,7 @@ function TextareaField({
   onChange,
   placeholder,
   rows = 4,
+  id,
 }: {
   label: string;
   required?: boolean;
@@ -1537,10 +1559,12 @@ function TextareaField({
   onChange: (v: string) => void;
   placeholder?: string;
   rows?: number;
+  id: string;
 }) {
   return (
     <div>
       <label
+        htmlFor={id}
         className="mb-1 block font-sans"
         style={{ fontSize: "13px", color: "var(--text-muted)" }}
       >
@@ -1548,6 +1572,7 @@ function TextareaField({
         {required && <span style={{ color: "var(--error)" }}> *</span>}
       </label>
       <textarea
+        id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
@@ -1571,21 +1596,25 @@ function RefinedField({
   value,
   onChange,
   rows = 4,
+  id,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   rows?: number;
+  id: string;
 }) {
   return (
     <div>
       <label
+        htmlFor={id}
         className="mb-1 block font-sans"
         style={{ fontSize: "13px", fontWeight: 500, color: "var(--text-muted)" }}
       >
         {label}
       </label>
       <textarea
+        id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={rows}

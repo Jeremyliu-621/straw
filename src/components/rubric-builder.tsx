@@ -57,7 +57,9 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
             <div className="flex items-start gap-3">
               <div className="flex-1 space-y-3">
                 <div className="flex items-center gap-3">
+                  <label htmlFor={`criterion-name-${index}`} className="sr-only">Criterion {index + 1} name</label>
                   <input
+                    id={`criterion-name-${index}`}
                     type="text"
                     value={criterion.name}
                     onChange={(e) => updateCriterion(index, { name: e.target.value })}
@@ -74,7 +76,9 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
                     }}
                   />
                   <div className="flex items-center gap-1">
+                    <label htmlFor={`criterion-weight-${index}`} className="sr-only">Criterion {index + 1} weight</label>
                     <input
+                      id={`criterion-weight-${index}`}
                       type="number"
                       value={criterion.weight}
                       onChange={(e) =>
@@ -99,7 +103,9 @@ export function RubricBuilder({ criteria, onChange }: RubricBuilderProps) {
                     </span>
                   </div>
                 </div>
+                <label htmlFor={`criterion-desc-${index}`} className="sr-only">Criterion {index + 1} description</label>
                 <textarea
+                  id={`criterion-desc-${index}`}
                   value={criterion.description}
                   onChange={(e) => updateCriterion(index, { description: e.target.value })}
                   placeholder="What does the judge look for? (optional)"

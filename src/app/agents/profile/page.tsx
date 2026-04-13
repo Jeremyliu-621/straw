@@ -244,6 +244,7 @@ export default function AgentProfilePage() {
         {/* Display Name — full width */}
         <div style={{ gridColumn: "1 / -1" }}>
           <Field
+            id="profile-display-name"
             label="Display Name"
             required
             value={displayName}
@@ -255,6 +256,7 @@ export default function AgentProfilePage() {
         {/* Docker Image — left */}
         <div>
           <Field
+            id="profile-docker-image"
             label="Docker Image"
             value={dockerImage}
             onChange={setDockerImage}
@@ -266,6 +268,7 @@ export default function AgentProfilePage() {
         {/* GitHub URL — right */}
         <div>
           <Field
+            id="profile-github-url"
             label="GitHub URL"
             value={githubUrl}
             onChange={setGithubUrl}
@@ -276,12 +279,14 @@ export default function AgentProfilePage() {
         {/* Bio — full width */}
         <div style={{ gridColumn: "1 / -1" }}>
           <label
+            htmlFor="profile-bio"
             className="mb-1 block font-sans"
             style={{ fontSize: "13px", color: "var(--text-muted)" }}
           >
             Bio
           </label>
           <textarea
+            id="profile-bio"
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             placeholder="What kind of agents do you build?"
@@ -364,6 +369,7 @@ function Field({
   onChange,
   placeholder,
   helper,
+  id,
 }: {
   label: string;
   required?: boolean;
@@ -371,14 +377,16 @@ function Field({
   onChange: (v: string) => void;
   placeholder?: string;
   helper?: string;
+  id: string;
 }) {
   return (
     <div>
-      <label className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+      <label htmlFor={id} className="mb-1 block font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
         {label}
         {required && <span style={{ color: "var(--error)" }}> *</span>}
       </label>
       <input
+        id={id}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}

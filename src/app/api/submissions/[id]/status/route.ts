@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase";
+import { validateUuid } from "@/lib/api-utils";
 
 /**
  * GET /api/submissions/[id]/status — Poll submission execution/evaluation status.
@@ -8,6 +9,9 @@ import { createServiceClient } from "@/lib/supabase";
  */
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const uuidError = validateUuid(id, "submission ID");
+  if (uuidError) return uuidError;
+
   const db = createServiceClient();
 
   const { data: submission, error } = await db

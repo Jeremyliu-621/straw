@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase";
 import { z } from "zod/v4";
 import { generateThreadId } from "@/services/results.service";
 import { rateLimitResponse } from "@/lib/rate-limit";
+import { parseBody } from "@/lib/api-utils";
 
 const sendMessageSchema = z.object({
   recipientId: z.string().uuid(),
@@ -59,8 +60,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await req.json();
-  const parsed = sendMessageSchema.safeParse(body);
+  const result = await parseBody(req);
+  if ("error" in result) return result.error;
+  const parsed = sendMessageSchema.safeParse(result.data);
 
   if (!parsed.success) {
     return NextResponse.json(

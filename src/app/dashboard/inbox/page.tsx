@@ -559,7 +559,9 @@ export default function InboxPage() {
                     gap: "8px",
                   }}
                 >
+                  <label htmlFor="reply-input" className="sr-only">Reply message</label>
                   <input
+                    id="reply-input"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyDown={(e) => {

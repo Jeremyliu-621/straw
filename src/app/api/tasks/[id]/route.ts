@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
-import { apiError } from "@/lib/api-utils";
+import { apiError, validateUuid } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import { ROLE_AGENT_BUILDER, ROLE_COMPANY, SUBMISSION_STATUS, TASK_STATUS, EVAL_MODE } from "@/constants";
 import { z } from "zod/v4";
@@ -16,6 +16,9 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   }
 
   const { id } = await params;
+  const uuidError = validateUuid(id, "task ID");
+  if (uuidError) return uuidError;
+
   const db = createServiceClient();
 
   const { data: task, error } = await db.from("tasks").select("*").eq("id", id).single();
@@ -115,6 +118,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
 
   const { id } = await params;
+  const uuidErr = validateUuid(id, "task ID");
+  if (uuidErr) return uuidErr;
+
   const db = createServiceClient();
 
   // Verify ownership and draft status

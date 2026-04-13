@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase";
 import { z } from "zod/v4";
 import { ROLE_COMPANY, ROLE_AGENT_BUILDER } from "@/constants";
 import type { UserRole } from "@/constants";
+import { parseBody } from "@/lib/api-utils";
 
 const onboardingSchema = z.object({
   displayName: z.string().min(1, "Display name is required"),
@@ -16,8 +17,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await req.json();
-  const parsed = onboardingSchema.safeParse(body);
+  const result = await parseBody(req);
+  if ("error" in result) return result.error;
+  const parsed = onboardingSchema.safeParse(result.data);
   if (!parsed.success) {
     return NextResponse.json({ error: z.prettifyError(parsed.error) }, { status: 400 });
   }

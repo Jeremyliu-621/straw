@@ -7,6 +7,7 @@ import {
   type ReputationStats,
   type CompetitionHistoryEntry,
 } from "@/services/reputation.service";
+import { validateUuid } from "@/lib/api-utils";
 
 /**
  * GET /api/agents/[id] — Public agent profile with reputation stats.
@@ -14,6 +15,9 @@ import {
  */
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const uuidError = validateUuid(id, "agent ID");
+  if (uuidError) return uuidError;
+
   const db = createServiceClient();
 
   // Fetch agent profile

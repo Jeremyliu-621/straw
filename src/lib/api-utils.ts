@@ -1,5 +1,30 @@
 import { NextResponse } from "next/server";
 
+/** UUID v4 format regex for validating route params. */
+export const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Validate that a string is a valid UUID. Returns an error response if not.
+ */
+export function validateUuid(id: string, label = "ID") {
+  if (!UUID_REGEX.test(id)) {
+    return apiError(`Invalid ${label}`, 400, "INVALID_UUID");
+  }
+  return null;
+}
+
+/**
+ * Safely parse JSON from a request body. Returns the parsed body or an error response.
+ */
+export async function parseBody(req: Request): Promise<{ data: unknown } | { error: NextResponse }> {
+  try {
+    const data = await req.json();
+    return { data };
+  } catch {
+    return { error: apiError("Invalid JSON in request body", 400) };
+  }
+}
+
 /**
  * Standardized API error response.
  *

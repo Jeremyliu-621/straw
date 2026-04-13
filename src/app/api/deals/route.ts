@@ -4,7 +4,7 @@ import { createServiceClient } from "@/lib/supabase";
 import { ROLE_COMPANY, TASK_STATUS, DEAL_TYPE, WEBHOOK_EVENT, AUDIT_ACTION } from "@/constants";
 import { calculateSuccessFee } from "@/services/results.service";
 import { z } from "zod/v4";
-import { apiError } from "@/lib/api-utils";
+import { apiError, parseBody } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
 import { buildDealCreatedPayload } from "@/services/webhook.service";
@@ -63,8 +63,9 @@ export async function POST(req: Request) {
     return apiError("Only companies can create deals", 403);
   }
 
-  const body = await req.json();
-  const parsed = createDealSchema.safeParse(body);
+  const result = await parseBody(req);
+  if ("error" in result) return result.error;
+  const parsed = createDealSchema.safeParse(result.data);
 
   if (!parsed.success) {
     return apiError("Validation failed", 400, "VALIDATION_ERROR", z.prettifyError(parsed.error));

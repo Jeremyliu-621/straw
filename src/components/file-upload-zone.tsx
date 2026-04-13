@@ -64,7 +64,8 @@ export function TextareaWithAttachments({
   files,
   onFilesChange,
   maxFiles = TASK_MAX_ATTACHMENTS,
-}: TextareaWithAttachmentsProps) {
+  id,
+}: TextareaWithAttachmentsProps & { id?: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -176,6 +177,7 @@ export function TextareaWithAttachments({
   return (
     <div>
       <label
+        htmlFor={id}
         className="mb-1 block font-sans"
         style={{ fontSize: "13px", color: "var(--text-muted)" }}
       >
@@ -357,6 +359,7 @@ export function TextareaWithAttachments({
 
         {/* Textarea */}
         <textarea
+          id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}

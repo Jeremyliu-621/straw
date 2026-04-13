@@ -31,12 +31,14 @@ export function Step1Welcome({ displayName, onDisplayNameChange }: Step1WelcomeP
 
       <div>
         <label
+          htmlFor="onboarding-display-name"
           className="mb-1 block font-sans"
           style={{ fontSize: "13px", color: "var(--text-muted)" }}
         >
           Display Name
         </label>
         <input
+          id="onboarding-display-name"
           type="text"
           value={displayName}
           onChange={(e) => onDisplayNameChange(e.target.value)}

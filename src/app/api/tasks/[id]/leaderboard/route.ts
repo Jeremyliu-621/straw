@@ -8,6 +8,7 @@ import {
   type LeaderboardEntry,
 } from "@/services/leaderboard.service";
 import { TASK_STATUS } from "@/constants";
+import { validateUuid } from "@/lib/api-utils";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -17,6 +18,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     }
 
     const { id } = await params;
+    const uuidError = validateUuid(id, "task ID");
+    if (uuidError) return uuidError;
+
     const db = createServiceClient();
 
     const { data: task, error: taskError } = await db

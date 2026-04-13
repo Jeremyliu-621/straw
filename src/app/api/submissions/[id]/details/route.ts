@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
+import { validateUuid } from "@/lib/api-utils";
 
 /**
  * GET /api/submissions/[id]/details — Get evaluation dimensions for a submission.
@@ -13,6 +14,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   }
 
   const { id } = await params;
+  const uuidError = validateUuid(id, "submission ID");
+  if (uuidError) return uuidError;
+
   const db = createServiceClient();
 
   // Get the evaluation result for this submission (include container fields)

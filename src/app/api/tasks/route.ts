@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase";
 import { createTaskSchema } from "@/lib/validation";
 import { ROLE_COMPANY, TASK_STATUS } from "@/constants";
 import { z } from "zod/v4";
+import { parseBody } from "@/lib/api-utils";
 
 export async function GET() {
   const session = await auth();
@@ -51,8 +52,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Only companies can create tasks" }, { status: 403 });
   }
 
-  const body = await req.json();
-  const parsed = createTaskSchema.safeParse(body);
+  const result = await parseBody(req);
+  if ("error" in result) return result.error;
+  const parsed = createTaskSchema.safeParse(result.data);
 
   if (!parsed.success) {
     return NextResponse.json(
