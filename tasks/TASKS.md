@@ -627,12 +627,15 @@ Goal: Simplify to one submission mode (upload). Remove API and Docker agent exec
 
 <!-- RESUME HERE -->
 
-### 17c: Platform Build Check (TODO)
+### 17c: Platform Build Check ✅
 
-- [ ] Detect language from uploaded files (package.json → Node, requirements.txt → Python, Cargo.toml → Rust, go.mod → Go)
-- [ ] Attempt standard build command in a lightweight Docker container
-- [ ] Record build result and pass to LLM judge prompt
-- [ ] For eval container path: build check is optional (eval container does its own build)
+- [x] `build-check.service.ts`: `detectLanguage()` (Node/Python/Rust/Go), `runBuildCheck()` with 60s timeout
+- [x] Eval worker (LLM path): downloads to temp dir, runs build check, passes result to LLM prompt
+- [x] `buildEvaluationPrompt()` includes "Platform Build Check" section
+- [x] Skipped for eval container path (container does its own build)
+- [x] 8 tests for language detection
+
+> Runs directly in eval worker process. For production hardening, could be moved to a lightweight container.
 
 ### 17f: Update Docs + SDK (TODO)
 
