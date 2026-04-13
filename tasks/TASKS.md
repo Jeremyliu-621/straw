@@ -625,8 +625,6 @@ Goal: Simplify to one submission mode (upload). Remove API and Docker agent exec
 
 > 357 tests passing. Production build clean. Zero TS errors.
 
-<!-- RESUME HERE -->
-
 ### 17c: Platform Build Check ✅
 
 - [x] `build-check.service.ts`: `detectLanguage()` (Node/Python/Rust/Go), `runBuildCheck()` with 60s timeout
@@ -647,25 +645,36 @@ Goal: Simplify to one submission mode (upload). Remove API and Docker agent exec
 
 ---
 
+## Cleanup: Dead Code + Essential Gaps
+
+Goal: Remove clearly-dead code from the upload-only simplification, write legally-required pages, fix footer placeholders, clean up misleading TODOs.
+
+- [x] Deleted execution worker (`src/workers/execution-worker.ts`, test, Dockerfile) — fully replaced in Phase 17
+- [x] Removed EXECUTION_* and QUEUE_EXECUTION constants — only used by dead worker
+- [x] Removed unused feature constants (EXPORT, TEMPLATE, COMPARISON, COMMENT, ARTIFACT) — zero backing code
+- [x] Deleted unused FeatureShowcase component — built but never imported by any page
+- [x] Replaced terms/privacy "Coming Soon" stubs with real legal pages
+- [x] Fixed footer social links (were pointing to generic domain roots like `https://twitter.com`)
+- [x] Cleaned up reputation TODO — reputation is computed on-read, no denormalized counters needed
+- [x] Cleaned up TASKS.md discovered/unbuilt sections
+
+> Kept DealRepository, MessageRepository, WebhookInsert, NotificationPreferenceInsert — plausibly useful soon. All deleted code is recoverable from git history.
+
+<!-- RESUME HERE -->
+
+---
+
 ## Discovered Tasks
 
-- **Docker image validation on entry**: Deferred — execution worker handles pull failures gracefully.
 - **Email notifications**: Notify agents when matched tasks are posted, companies when deadline fires. Needs Resend integration.
 - **Supabase Realtime**: Replace polling-based leaderboard with Realtime subscriptions.
-- **API endpoint health check**: Pre-flight ping on API-mode submission. Nice UX polish, not blocking.
-- **Submission mode badge on leaderboard**: Show API vs Docker mode per entry.
 - **Custom domain**: Point straw.dev (or similar) at Vercel deployment.
 - **Agent reputation API**: Expose reputation stats via v1 API for programmatic agent discovery.
-
-## Unbuilt Features (constants exist, code does not)
-
-Constants were added to `src/constants.ts` but no routes, services, or UI were ever built. These are placeholders for future work.
-
-- **Export (CSV/JSON)**: `EXPORT_FORMAT`, `EXPORT_MAX_ROWS` — let companies export leaderboard/results data
-- **Task templates**: `TEMPLATE_MAX_PER_COMPANY`, `TEMPLATE_NAME_MAX_LENGTH` — save and reuse task configurations
-- **Submission comparison**: `COMPARISON_MAX_SUBMISSIONS` — side-by-side comparison of agent outputs
-- **Analytics trends**: `ANALYTICS_TREND_PERIOD`, `ANALYTICS_TREND_DEFAULT_PERIODS`, `ANALYTICS_TREND_MAX_PERIODS` — historical score/activity trends for company dashboard
-- **Task comments**: `COMMENT_MAX_LENGTH`, `COMMENT_DEFAULT_LIMIT`, `COMMENT_MAX_LIMIT` — discussion thread on task pages
+- **CSV/JSON export**: Let companies export leaderboard/results data.
+- **Submission comparison**: Side-by-side comparison of agent outputs — high-value feature for companies.
+- **Task templates**: Save and reuse task configurations for repeat posters.
+- **Task comments**: Discussion threads on task pages.
+- **Analytics dashboard**: Historical score/activity trends for company dashboard.
 
 ## Unmerged Work
 

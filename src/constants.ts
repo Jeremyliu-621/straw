@@ -25,19 +25,10 @@ export const EVALUATION_SCORE_MAX = 100;
 export const TASK_DEFAULT_SUBMISSION_QUOTA = 5;
 export const TASK_MAX_SUBMISSION_QUOTA = 20;
 
-// ── Execution ────────────────────────────────────────────────
-export const EXECUTION_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
-export const EXECUTION_MEMORY_LIMIT = "512m";
-export const EXECUTION_CPU_LIMIT = 1;
-export const EXECUTION_OUTPUT_DIR = "/output";
-export const EXECUTION_INPUT_ENV_VAR = "MAP_TASK_INPUT";
-export const EXECUTION_LOG_MAX_BYTES = 50 * 1024; // 50KB max stored log size
-
 // ── Analytics ───────────────────────────────────────────────
 export const ANALYTICS_SCORE_HISTORY_LIMIT = 50;
 
 // ── Queue ────────────────────────────────────────────────────
-export const QUEUE_EXECUTION = "execution" as const;
 export const QUEUE_EVALUATION = "evaluation" as const;
 export const QUEUE_MAX_ATTEMPTS = 3;
 export const QUEUE_BACKOFF_DELAY_MS = 5000;
@@ -183,36 +174,6 @@ export type AuditAction = (typeof AUDIT_ACTION)[keyof typeof AUDIT_ACTION];
 export const AUDIT_LOG_DEFAULT_LIMIT = 50;
 export const AUDIT_LOG_MAX_LIMIT = 200;
 
-// ── Export ───────────────────────────────────────────────────
-export const EXPORT_FORMAT = {
-  CSV: "csv",
-  JSON: "json",
-} as const;
-export type ExportFormat = (typeof EXPORT_FORMAT)[keyof typeof EXPORT_FORMAT];
-
-export const EXPORT_MAX_ROWS = 10_000;
-
-// ── Task Templates ──────────────────────────────────────────
-export const TEMPLATE_MAX_PER_COMPANY = 50;
-export const TEMPLATE_NAME_MAX_LENGTH = 100;
-
-// ── Company Analytics ──────────────────────────────────────
-export const ANALYTICS_TREND_PERIOD = {
-  WEEKLY: "weekly",
-  MONTHLY: "monthly",
-} as const;
-export type AnalyticsTrendPeriod =
-  (typeof ANALYTICS_TREND_PERIOD)[keyof typeof ANALYTICS_TREND_PERIOD];
-export const ANALYTICS_TREND_DEFAULT_PERIODS = 12;
-export const ANALYTICS_TREND_MAX_PERIODS = 52;
-
-// ── Submission Comparison ───────────────────────────────────
-export const COMPARISON_MAX_SUBMISSIONS = 5;
-
-// ── Task Comments ───────────────────────────────────────────
-export const COMMENT_MAX_LENGTH = 5000;
-export const COMMENT_DEFAULT_LIMIT = 50;
-export const COMMENT_MAX_LIMIT = 100;
 
 // ── Notifications ───────────────────────────────────────────
 export const NOTIFICATION_TYPE = {
@@ -235,19 +196,6 @@ export const AGENT_STATS_CACHE_TTL_SECONDS = 300;
 export const AGENT_LEADERBOARD_DEFAULT_LIMIT = 20;
 export const AGENT_LEADERBOARD_MAX_LIMIT = 50;
 
-// ── Artifact Type ───────────────────────────────────────────
-export const ARTIFACT_TYPE = {
-  STDOUT: "stdout",
-  STDERR: "stderr",
-  CODE: "code",
-  MODEL_OUTPUT: "model_output",
-  TEST_RESULTS: "test_results",
-  LOGS: "logs",
-  OTHER: "other",
-} as const;
-export type ArtifactType = (typeof ARTIFACT_TYPE)[keyof typeof ARTIFACT_TYPE];
-export const ARTIFACT_MAX_PER_SUBMISSION = 20;
-export const ARTIFACT_FILE_NAME_MAX_LENGTH = 255;
 
 // ── Eval Mode ───────────────────────────────────────────────
 export const EVAL_MODE = {
