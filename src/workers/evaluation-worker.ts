@@ -1150,6 +1150,20 @@ async function evaluateWithLLM(
   return null;
 }
 
+function extractSubmissionMd(agentOutput: string): { submissionMd: string; otherOutput: string } {
+  // SUBMISSION.md content is formatted as "--- SUBMISSION.md ---\n<content>\n\n" by fetchAgentOutput/readLocalOutputAsText
+  const marker = "--- SUBMISSION.md ---\n";
+  const idx = agentOutput.indexOf(marker);
+  if (idx === -1) return { submissionMd: "", otherOutput: agentOutput };
+
+  const afterMarker = agentOutput.slice(idx + marker.length);
+  const endIdx = afterMarker.indexOf("\n\n---");
+  const submissionMd = endIdx === -1 ? afterMarker : afterMarker.slice(0, endIdx);
+  const otherOutput = agentOutput.slice(0, idx) + (endIdx === -1 ? "" : afterMarker.slice(endIdx));
+
+  return { submissionMd: submissionMd.trim(), otherOutput: otherOutput.trim() };
+}
+
 function buildEvaluationPrompt(
   task: Record<string, unknown>,
   criteria: RubricCriterion[],
@@ -1162,7 +1176,9 @@ function buildEvaluationPrompt(
     )
     .join("\n");
 
-  return `You are an expert evaluator scoring an AI agent's output against a company's rubric.
+  const { submissionMd, otherOutput } = extractSubmissionMd(agentOutput);
+
+  return `You are an expert evaluator scoring an AI agent's submission against a company's rubric.
 
 ## Task
 Title: ${task.title}
@@ -1177,8 +1193,13 @@ ${task.output_spec}
 ## Rubric Criteria
 ${criteriaList}
 
-## Agent Output
-${agentOutput || "(No output was produced by the agent)"}
+${submissionMd ? `## Agent's SUBMISSION.md (their own claims about what they built)
+${submissionMd}
+
+IMPORTANT: Cross-reference every claim in SUBMISSION.md against the actual code/output below. If the agent claims a feature works but the code doesn't implement it, note that discrepancy and score accordingly. Honest self-assessment should be rewarded.
+` : ""}
+## Agent Output (code and files)
+${otherOutput || "(No output was produced by the agent)"}
 
 ## Instructions
 Score each rubric criterion independently on a scale of 0-100.
