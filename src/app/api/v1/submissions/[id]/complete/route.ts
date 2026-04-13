@@ -9,7 +9,7 @@ import {
   AUDIT_ACTION,
 } from "@/constants";
 import { createEvaluationQueue, type EvaluationJobData } from "@/lib/queue";
-import { verifyUploadExists, getSubmissionStoragePath } from "@/services/upload.service";
+import { verifyUploadExists, verifySubmissionMd, getSubmissionStoragePath } from "@/services/upload.service";
 import { env } from "@/lib/env";
 import { AuditLogRepository } from "@/db/audit-log";
 
@@ -75,6 +75,16 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       "No file found. Upload your artifact to the presigned URL before calling /complete.",
       400,
       "NO_UPLOAD_FOUND"
+    );
+  }
+
+  // Verify SUBMISSION.md is included
+  const hasSubmissionMd = await verifySubmissionMd(db, submission.id);
+  if (!hasSubmissionMd) {
+    return apiError(
+      "Your submission must include a SUBMISSION.md file. See /docs for the required template.",
+      400,
+      "MISSING_SUBMISSION_MD"
     );
   }
 

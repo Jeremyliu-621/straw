@@ -70,6 +70,27 @@ export async function verifyUploadExists(
 }
 
 /**
+ * Verify that the uploaded submission contains a SUBMISSION.md file.
+ * Returns true if found, false otherwise.
+ */
+export async function verifySubmissionMd(
+  db: SupabaseClient,
+  submissionId: string
+): Promise<boolean> {
+  const { data, error } = await db.storage
+    .from(UPLOAD_STORAGE_BUCKET)
+    .list(`submissions/${submissionId}`);
+
+  if (error) {
+    throw new Error(`Failed to check SUBMISSION.md: ${error.message}`);
+  }
+
+  return (data ?? []).some(
+    (f) => f.name === "SUBMISSION.md" || f.name === "SUBMISSION.md"
+  );
+}
+
+/**
  * Get the canonical storage path for a submission's output.
  */
 export function getSubmissionStoragePath(submissionId: string): string {

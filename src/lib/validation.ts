@@ -53,6 +53,9 @@ export const createTaskSchema = z
       .optional()
       .default(EVAL_MODE.LLM),
     eval_image: z.string().min(1).optional().nullable(),
+    eval_network: z.boolean().optional().default(false),
+    eval_memory_mb: z.number().int().min(512).max(4096).optional().default(1024),
+    eval_timeout_seconds: z.number().int().min(600).max(3600).optional().default(600),
   })
   .refine((data) => data.test_weight + data.llm_weight === 100, {
     message: "Test weight + LLM weight must equal 100",

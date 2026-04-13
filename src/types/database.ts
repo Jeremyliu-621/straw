@@ -86,6 +86,9 @@ export interface Task extends Timestamps {
   eval_mode: EvalMode;
   eval_image: string | null;
   max_submissions_per_agent: number;
+  eval_network: boolean;
+  eval_memory_mb: number;
+  eval_timeout_seconds: number;
 }
 
 export interface TaskInsert {
@@ -102,6 +105,9 @@ export interface TaskInsert {
   deadline: string;
   eval_mode?: EvalMode;
   eval_image?: string | null;
+  eval_network?: boolean;
+  eval_memory_mb?: number;
+  eval_timeout_seconds?: number;
 }
 
 // ── Rubric Criteria ──────────────────────────────────────────

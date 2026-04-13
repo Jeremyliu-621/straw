@@ -59,6 +59,9 @@ export default function NewTaskPage() {
   const [evalMode, setEvalMode] = useState<EvalMode>(EVAL_MODE.LLM);
   const [evalImage, setEvalImage] = useState("");
   const [evalImageError, setEvalImageError] = useState<string | null>(null);
+  const [evalNetwork, setEvalNetwork] = useState(false);
+  const [evalMemoryMb, setEvalMemoryMb] = useState(1024);
+  const [evalTimeoutSeconds, setEvalTimeoutSeconds] = useState(600);
 
   // Step 3: Rubric
   const [criteria, setCriteria] = useState<Criterion[]>([
@@ -202,6 +205,9 @@ export default function NewTaskPage() {
           llm_weight: evalMode === EVAL_MODE.LLM ? llmWeight : 100,
           eval_mode: evalMode,
           eval_image: evalMode !== EVAL_MODE.LLM ? evalImage.trim() || null : null,
+          eval_network: evalMode !== EVAL_MODE.LLM ? evalNetwork : false,
+          eval_memory_mb: evalMode !== EVAL_MODE.LLM ? evalMemoryMb : 1024,
+          eval_timeout_seconds: evalMode !== EVAL_MODE.LLM ? evalTimeoutSeconds : 600,
           budget_cents: budgetDollars * 100,
           deadline: new Date(deadline).toISOString(),
           criteria: criteria.map((c, i) => ({
@@ -758,6 +764,70 @@ export default function NewTaskPage() {
                         <code>score.json</code> must contain{" "}
                         <code>{`{"score": 0–100, "breakdown": {"criterion": score, ...}}`}</code>
                       </p>
+                    </div>
+                    {/* Eval container constraints */}
+                    <div style={{ marginTop: "14px" }}>
+                      <p
+                        className="font-sans"
+                        style={{ fontSize: "12px", fontWeight: 500, color: "var(--text-muted)", marginBottom: "8px" }}
+                      >
+                        Container constraints
+                      </p>
+                      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                        <label
+                          className="font-sans flex items-center gap-2"
+                          style={{ fontSize: "13px", color: "var(--text-muted)", cursor: "pointer" }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={evalNetwork}
+                            onChange={(e) => setEvalNetwork(e.target.checked)}
+                            style={{ accentColor: "var(--text)" }}
+                          />
+                          Allow network access
+                        </label>
+                        <label className="font-sans flex items-center gap-2" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+                          Memory:
+                          <select
+                            value={evalMemoryMb}
+                            onChange={(e) => setEvalMemoryMb(Number(e.target.value))}
+                            className="font-mono"
+                            style={{
+                              fontSize: "12px",
+                              padding: "4px 8px",
+                              border: "1px solid var(--border)",
+                              borderRadius: "var(--radius)",
+                              background: "var(--bg)",
+                              color: "var(--text)",
+                            }}
+                          >
+                            <option value={512}>512 MB</option>
+                            <option value={1024}>1 GB</option>
+                            <option value={2048}>2 GB</option>
+                            <option value={4096}>4 GB</option>
+                          </select>
+                        </label>
+                        <label className="font-sans flex items-center gap-2" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+                          Timeout:
+                          <select
+                            value={evalTimeoutSeconds}
+                            onChange={(e) => setEvalTimeoutSeconds(Number(e.target.value))}
+                            className="font-mono"
+                            style={{
+                              fontSize: "12px",
+                              padding: "4px 8px",
+                              border: "1px solid var(--border)",
+                              borderRadius: "var(--radius)",
+                              background: "var(--bg)",
+                              color: "var(--text)",
+                            }}
+                          >
+                            <option value={600}>10 min</option>
+                            <option value={1800}>30 min</option>
+                            <option value={3600}>1 hour</option>
+                          </select>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 )}

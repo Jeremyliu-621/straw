@@ -295,20 +295,29 @@ function readLocalOutputAsText(dirPath: string): string {
 
 // ── Eval Container ────────────────────────────────────────────
 
+interface EvalContainerOptions {
+  /** Allow network access (default: false) */
+  network?: boolean;
+  /** Memory limit in MB (default: 1024) */
+  memoryMb?: number;
+  /** Timeout in seconds (default: 600) */
+  timeoutSeconds?: number;
+}
+
 /**
- * Pull `evalImage` if not present locally, then run it:
- *   - mounts agentOutputPath → /agent_output:ro
- *   - mounts resultsPath → /results
- *   - --network none, memory + cpu limits, 10-min timeout
- *
- * After the container exits, reads and validates /results/score.json.
- * Throws EvalContainerError on timeout, non-zero exit, or invalid score.json.
+ * Pull `evalImage` if not present locally, then run it with company-configured constraints.
+ * Mounts submission files at /submission:ro, results at /results.
+ * Reads and validates /results/score.json after exit.
  */
 async function runEvalContainer(
   evalImage: string,
   agentOutputPath: string,
-  resultsPath: string
+  resultsPath: string,
+  options?: EvalContainerOptions
 ): Promise<ContainerEvalResult> {
+  const networkMode = options?.network ? "bridge" : "none";
+  const memoryBytes = (options?.memoryMb ?? 1024) * 1024 * 1024;
+  const timeoutMs = (options?.timeoutSeconds ?? 600) * 1000;
   fs.mkdirSync(resultsPath, { recursive: true });
 
   // Pull image if not present
@@ -328,9 +337,9 @@ async function runEvalContainer(
   const container = await docker.createContainer({
     Image: evalImage,
     HostConfig: {
-      Memory: EVAL_CONTAINER_MEMORY_LIMIT,
+      Memory: memoryBytes,
       NanoCpus: EVAL_CONTAINER_CPU_LIMIT,
-      NetworkMode: "none",
+      NetworkMode: networkMode,
       Binds: [
         `${agentOutputPath}:${EVAL_CONTAINER_INPUT_PATH}:ro`,
         `${resultsPath}:${EVAL_CONTAINER_OUTPUT_PATH}`,
@@ -340,11 +349,11 @@ async function runEvalContainer(
   });
 
   await container.start();
-  console.log(`[eval] Eval container started, waiting (timeout: ${EVAL_CONTAINER_TIMEOUT_MS}ms)...`);
+  console.log(`[eval] Eval container started (network=${networkMode}, memory=${options?.memoryMb ?? 1024}MB, timeout=${(options?.timeoutSeconds ?? 600)}s)...`);
 
   let exitCode: number;
   try {
-    exitCode = await waitForEvalContainer(container, EVAL_CONTAINER_TIMEOUT_MS);
+    exitCode = await waitForEvalContainer(container, timeoutMs);
   } catch (err) {
     // Timeout path — container already killed inside waitForEvalContainer
     try { await container.remove({ force: true }); } catch { /* best effort */ }
@@ -541,6 +550,30 @@ async function handleLlmEval(
     console.error(`[eval] No output content for submission ${submissionId}`);
   }
 
+  // Platform build check — download files to temp dir, attempt build, pass result to LLM
+  let buildCheckResult: string = "";
+  try {
+    const { detectLanguage, runBuildCheck } = await import("@/services/build-check.service");
+    const tmpDir = path.join(os.tmpdir(), `map-build-${submissionId}`);
+    await downloadAgentOutputToDir(outputUrl, tmpDir);
+    const lang = detectLanguage(tmpDir);
+    if (lang) {
+      console.log(`[eval] Build check: detected ${lang.name}, running ${lang.buildCommand}`);
+      const result = runBuildCheck(tmpDir);
+      buildCheckResult = result.success
+        ? `Build check: SUCCESS (${result.detected}, ${result.durationMs}ms)`
+        : `Build check: FAILED (${result.detected})\n${result.output}`;
+      console.log(`[eval] Build check result: ${result.success ? "success" : "failed"} (${result.durationMs}ms)`);
+    } else {
+      buildCheckResult = "Build check: skipped (unknown language/framework)";
+    }
+    // Clean up
+    try { fs.rmSync(tmpDir, { recursive: true, force: true }); } catch { /* best effort */ }
+  } catch (err) {
+    console.error(`[eval] Build check failed:`, err);
+    buildCheckResult = "Build check: error (could not run)";
+  }
+
   // Phase 1: Automated testing
   let testScore: number | null = null;
   if (task.test_weight as number > 0) {
@@ -553,7 +586,7 @@ async function handleLlmEval(
   let dimensionScores: LLMResponse["dimensions"] = [];
 
   if (task.llm_weight as number > 0) {
-    const llmResult = await evaluateWithLLM(task, criteria, agentOutput);
+    const llmResult = await evaluateWithLLM(task, criteria, agentOutput, buildCheckResult || undefined);
     if (llmResult) {
       dimensionScores = llmResult.dimensions;
       llmReasoning = llmResult.overall_reasoning;
@@ -681,7 +714,11 @@ async function handleContainerEval(
     // Run the eval container
     let containerResult: ContainerEvalResult;
     try {
-      containerResult = await runEvalContainer(task.eval_image, agentOutputDir, resultsDir);
+      containerResult = await runEvalContainer(task.eval_image, agentOutputDir, resultsDir, {
+        network: task.eval_network as boolean | undefined,
+        memoryMb: task.eval_memory_mb as number | undefined,
+        timeoutSeconds: task.eval_timeout_seconds as number | undefined,
+      });
     } catch (err) {
       if (err instanceof EvalContainerError) {
         console.error(`[eval] Eval container failed for submission ${submissionId}: ${err.message}`);
@@ -1122,9 +1159,10 @@ function executeTests(suite: TestSuite, agentOutput: string): number {
 async function evaluateWithLLM(
   task: Record<string, unknown>,
   criteria: RubricCriterion[],
-  agentOutput: string
+  agentOutput: string,
+  buildResult?: string
 ): Promise<LLMResponse | null> {
-  const prompt = buildEvaluationPrompt(task, criteria, agentOutput);
+  const prompt = buildEvaluationPrompt(task, criteria, agentOutput, buildResult);
 
   let result = await callLLM(prompt);
   if (result) return result;
@@ -1137,10 +1175,25 @@ async function evaluateWithLLM(
   return null;
 }
 
+function extractSubmissionMd(agentOutput: string): { submissionMd: string; otherOutput: string } {
+  // SUBMISSION.md content is formatted as "--- SUBMISSION.md ---\n<content>\n\n" by fetchAgentOutput/readLocalOutputAsText
+  const marker = "--- SUBMISSION.md ---\n";
+  const idx = agentOutput.indexOf(marker);
+  if (idx === -1) return { submissionMd: "", otherOutput: agentOutput };
+
+  const afterMarker = agentOutput.slice(idx + marker.length);
+  const endIdx = afterMarker.indexOf("\n\n---");
+  const submissionMd = endIdx === -1 ? afterMarker : afterMarker.slice(0, endIdx);
+  const otherOutput = agentOutput.slice(0, idx) + (endIdx === -1 ? "" : afterMarker.slice(endIdx));
+
+  return { submissionMd: submissionMd.trim(), otherOutput: otherOutput.trim() };
+}
+
 function buildEvaluationPrompt(
   task: Record<string, unknown>,
   criteria: RubricCriterion[],
-  agentOutput: string
+  agentOutput: string,
+  buildResult?: string
 ): string {
   const criteriaList = criteria
     .map(
@@ -1149,7 +1202,9 @@ function buildEvaluationPrompt(
     )
     .join("\n");
 
-  return `You are an expert evaluator scoring an AI agent's output against a company's rubric.
+  const { submissionMd, otherOutput } = extractSubmissionMd(agentOutput);
+
+  return `You are an expert evaluator scoring an AI agent's submission against a company's rubric.
 
 ## Task
 Title: ${task.title}
@@ -1164,8 +1219,16 @@ ${task.output_spec}
 ## Rubric Criteria
 ${criteriaList}
 
-## Agent Output
-${agentOutput || "(No output was produced by the agent)"}
+${submissionMd ? `## Agent's SUBMISSION.md (their own claims about what they built)
+${submissionMd}
+
+IMPORTANT: Cross-reference every claim in SUBMISSION.md against the actual code/output below. If the agent claims a feature works but the code doesn't implement it, note that discrepancy and score accordingly. Honest self-assessment should be rewarded.
+` : ""}
+${buildResult ? `## Platform Build Check
+${buildResult}
+` : ""}
+## Agent Output (code and files)
+${otherOutput || "(No output was produced by the agent)"}
 
 ## Instructions
 Score each rubric criterion independently on a scale of 0-100.

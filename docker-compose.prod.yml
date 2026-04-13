@@ -7,13 +7,13 @@
 #   3. docker compose -f docker-compose.prod.yml up -d
 #
 # The workers connect to your cloud Redis and Supabase.
-# They share the host's Docker socket to run agent/eval containers.
+# The eval worker shares the host's Docker socket to run eval containers.
 
 services:
-  execution-worker:
+  evaluation-worker:
     build:
       context: .
-      dockerfile: workers/execution.Dockerfile
+      dockerfile: workers/evaluation.Dockerfile
     env_file: .env.prod
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -25,14 +25,12 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  evaluation-worker:
+  webhook-worker:
     build:
       context: .
       dockerfile: workers/evaluation.Dockerfile
     env_file: .env.prod
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /tmp:/tmp
+    command: ["tsx", "src/workers/webhook-worker.ts"]
     restart: unless-stopped
     logging:
       driver: json-file

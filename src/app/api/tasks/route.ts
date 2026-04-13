@@ -81,6 +81,9 @@ export async function POST(req: Request) {
       status: TASK_STATUS.DRAFT,
       eval_mode: taskData.eval_mode,
       eval_image: taskData.eval_image ?? null,
+      eval_network: taskData.eval_network,
+      eval_memory_mb: taskData.eval_memory_mb,
+      eval_timeout_seconds: taskData.eval_timeout_seconds,
     })
     .select()
     .single();

@@ -4,10 +4,7 @@ import {
   SUBMISSION_MODE,
   TASK_STATUS,
   TASK_DEFAULT_SUBMISSION_QUOTA,
-  type SubmissionMode,
 } from "@/constants";
-import { createExecutionQueue, type ExecutionJobData } from "@/lib/queue";
-import { env } from "@/lib/env";
 import { generatePresignedUploadUrl } from "@/services/upload.service";
 
 // ── Types ────────────────────────────────────────────────────
@@ -30,9 +27,6 @@ export interface SubmissionQuota {
 export interface CreateSubmissionInput {
   taskId: string;
   agentId: string;
-  mode: SubmissionMode;
-  dockerImage?: string;
-  apiEndpoint?: string;
   agentDisplayName?: string;
 }
 
@@ -137,16 +131,14 @@ export async function checkNoActiveSubmission(
 }
 
 /**
- * Create a submission record and handle mode-specific logic.
- *
- * - api/docker: creates with status=pending, enqueues execution job
- * - upload: creates with status=registered, generates presigned upload URL
+ * Create an upload-mode submission.
+ * Returns the submission record + presigned upload URL.
  */
 export async function createSubmission(
   db: SupabaseClient,
   input: CreateSubmissionInput
 ): Promise<CreateSubmissionResult | { error: string; status: number }> {
-  const { taskId, agentId, mode, dockerImage, apiEndpoint, agentDisplayName } = input;
+  const { taskId, agentId, agentDisplayName } = input;
 
   // Validate task
   const taskResult = await validateTaskAcceptsSubmissions(db, taskId);
@@ -168,26 +160,16 @@ export async function createSubmission(
     return { error: activeCheck.error, status: activeCheck.status };
   }
 
-  // Build insert payload
-  const isUpload = mode === SUBMISSION_MODE.UPLOAD;
-  const insertPayload: Record<string, unknown> = {
-    task_id: taskId,
-    agent_id: agentId,
-    mode,
-    agent_display_name: agentDisplayName ?? null,
-    status: isUpload ? SUBMISSION_STATUS.REGISTERED : SUBMISSION_STATUS.PENDING,
-  };
-
-  if (mode === SUBMISSION_MODE.API) {
-    insertPayload.api_endpoint = apiEndpoint;
-  } else if (mode === SUBMISSION_MODE.DOCKER) {
-    insertPayload.docker_image = dockerImage;
-  }
-
-  // Insert submission
+  // Insert submission — always upload mode, always starts as registered
   const { data: submission, error: subError } = await db
     .from("submissions")
-    .insert(insertPayload)
+    .insert({
+      task_id: taskId,
+      agent_id: agentId,
+      mode: SUBMISSION_MODE.UPLOAD,
+      agent_display_name: agentDisplayName ?? null,
+      status: SUBMISSION_STATUS.REGISTERED,
+    })
     .select()
     .single();
 
@@ -196,72 +178,20 @@ export async function createSubmission(
     return { error: "Failed to enter competition", status: 500 };
   }
 
-  const result: CreateSubmissionResult = {
+  // Generate presigned upload URL
+  const presigned = await generatePresignedUploadUrl(db, submission.id as string, task.deadline);
+
+  // Store token for verification
+  await db
+    .from("submissions")
+    .update({ upload_token: presigned.token })
+    .eq("id", submission.id);
+
+  return {
     submission,
     quota: { used: quota.used + 1, limit: quota.limit, remaining: quota.remaining - 1 },
+    uploadUrl: presigned.signedUrl,
+    uploadToken: presigned.token,
+    uploadExpiresAt: presigned.expiresAt,
   };
-
-  // Mode-specific post-creation logic
-  if (isUpload) {
-    // Generate presigned upload URL
-    const presigned = await generatePresignedUploadUrl(db, submission.id as string, task.deadline);
-    result.uploadUrl = presigned.signedUrl;
-    result.uploadToken = presigned.token;
-    result.uploadExpiresAt = presigned.expiresAt;
-
-    // Store token for verification
-    await db
-      .from("submissions")
-      .update({ upload_token: presigned.token })
-      .eq("id", submission.id);
-  } else {
-    // Enqueue execution job for api/docker modes
-    await enqueueExecution(
-      submission.id as string,
-      taskId,
-      mode,
-      { dockerImage, apiEndpoint, agentDisplayName },
-      task.input_spec ?? ""
-    );
-  }
-
-  return result;
-}
-
-// ── Queue helper ─────────────────────────────────────────────
-
-async function enqueueExecution(
-  submissionId: string,
-  taskId: string,
-  mode: string,
-  data: { dockerImage?: string; apiEndpoint?: string; agentDisplayName?: string },
-  inputSpec: string
-): Promise<void> {
-  const redisUrl = new URL(env.REDIS_URL);
-  const executionQueue = createExecutionQueue({
-    host: redisUrl.hostname,
-    port: Number(redisUrl.port) || 6379,
-  });
-
-  const jobData: ExecutionJobData =
-    mode === SUBMISSION_MODE.API
-      ? {
-          submissionId,
-          taskId,
-          inputSpec,
-          mode: "api",
-          apiEndpoint: data.apiEndpoint,
-          agentDisplayName: data.agentDisplayName,
-        }
-      : {
-          submissionId,
-          taskId,
-          inputSpec,
-          mode: "docker",
-          dockerImage: data.dockerImage,
-          agentDisplayName: data.agentDisplayName,
-        };
-
-  await executionQueue.add(`exec-${submissionId}`, jobData);
-  await executionQueue.close();
 }
