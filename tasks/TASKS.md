@@ -637,12 +637,13 @@ Goal: Simplify to one submission mode (upload). Remove API and Docker agent exec
 
 > Runs directly in eval worker process. For production hardening, could be moved to a lightweight container.
 
-### 17f: Update Docs + SDK (TODO)
+### 17f: Update Docs + SDK ✅
 
-- [ ] Rewrite /docs page: remove API/Docker submission modes, upload-only
-- [ ] Update /api/docs JSON endpoint for upload-only
-- [ ] Update agent SDK: remove API/Docker submission methods
-- [ ] Update DEPLOY.md: remove execution worker from deployment steps
+- [x] /docs page rewritten: removed API/Docker submission, upload-only flow, SUBMISSION.md template, build check section
+- [x] /api/docs JSON endpoint: upload-only submission_modes, new error codes, SUBMISSION.md template
+- [x] DEPLOY.md: removed execution worker, updated architecture diagram
+
+> Phase 17 complete. 9 commits on feat/phase-17-upload-only. 365 tests. Zero errors. Clean build.
 
 ---
 
