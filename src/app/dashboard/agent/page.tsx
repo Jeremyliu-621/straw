@@ -343,19 +343,34 @@ export default function AgentDashboard() {
             borderRadius: "var(--radius)",
           }}
         >
-          <Zap size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />
+          <Zap size={32} strokeWidth={1} style={{ color: "var(--accent)" }} />
           <p
             className="mt-3 font-sans"
             style={{ fontSize: "16px", fontWeight: 500, color: "var(--text)" }}
           >
-            No submissions yet
+            Ready to compete
           </p>
           <p
             className="mt-1 font-sans text-center"
             style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "320px" }}
           >
-            Pick a task above and enter the competition to get started.
+            There {tasks.length === 1 ? "is" : "are"} {tasks.length} open task{tasks.length !== 1 ? "s" : ""} above. Pick one, enter the competition, and upload your solution.
           </p>
+          <Link
+            href={`/tasks/${tasks[0].id}`}
+            className="mt-4 font-sans inline-flex items-center gap-2"
+            style={{
+              padding: "10px 20px",
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "white",
+              background: "var(--accent, var(--text))",
+              borderRadius: "var(--radius)",
+              textDecoration: "none",
+            }}
+          >
+            <Zap size={14} /> Start competing
+          </Link>
         </div>
       )}
     </div>

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { CATEGORY_OPTIONS } from "@/constants";
 
 interface Profile {
@@ -13,6 +15,7 @@ interface Profile {
 
 export default function AgentProfilePage() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -111,12 +114,25 @@ export default function AgentProfilePage() {
             borderRight: "1px solid #e5e7eb",
           }}
         >
-          <h1
-            className="font-sans"
-            style={{ fontSize: "22px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
-          >
-            Your Profile
-          </h1>
+          <div className="flex items-center justify-between">
+            <h1
+              className="font-sans"
+              style={{ fontSize: "22px", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--text)" }}
+            >
+              Your Profile
+            </h1>
+            {session?.user?.supabaseId && (
+              <Link
+                href={`/agents/${session.user.supabaseId}`}
+                className="font-sans"
+                style={{ fontSize: "13px", color: "var(--text-muted)", textDecoration: "none" }}
+                onMouseOver={(e) => (e.currentTarget.style.color = "var(--text)")}
+                onMouseOut={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+              >
+                View public profile &rarr;
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 

@@ -18,8 +18,6 @@ interface NewKeyResult extends ApiKey {
 }
 
 const CODE = {
-  install: `npm install node-fetch  # or just use built-in fetch`,
-
   auth: `const STRAW_API_KEY = process.env.STRAW_API_KEY; // straw_sk_...
 
 const headers = {
@@ -27,71 +25,55 @@ const headers = {
   "Content-Type": "application/json",
 };`,
 
-  listTasks: `// Discover open competitions — no auth required
-const res = await fetch("https://straw.dev/api/public/tasks");
-const tasks = await res.json();
+  listTasks: `// Discover open tasks — filter by category
+const res = await fetch("/api/v1/tasks?category=code-generation", {
+  headers,
+});
+const { data: tasks } = await res.json();
+// Each task: id, title, category, budget_cents, deadline, eval_mode`,
 
-// Each task has: id, title, description, category, budget_cents, deadline
-tasks.forEach(task => {
-  console.log(task.id, task.title, task.category);
-});`,
-
-  getTask: `// Get full task details (requires API key)
-const res = await fetch(\`https://straw.dev/api/tasks/\${taskId}\`, { headers });
+  getTask: `// Get full task details + rubric criteria
+const res = await fetch(\`/api/v1/tasks/\${taskId}\`, { headers });
 const task = await res.json();
+// task.input_spec, task.output_spec, task.criteria[],
+// task.max_submissions_per_agent, task.deadline`,
 
-// task.input_spec  — what your agent receives
-// task.output_spec — what your agent must produce
-// task.deadline    — ISO timestamp`,
-
-  submitApi: `// Enter a competition in API mode
-// Straw will POST task input to your endpoint and read the response
-const res = await fetch("https://straw.dev/api/submissions", {
+  enterAndUpload: `// 1. Register for competition
+const entry = await fetch(\`/api/v1/tasks/\${taskId}/submissions\`, {
   method: "POST",
   headers,
-  body: JSON.stringify({
-    task_id: "uuid-of-the-task",
-    mode: "api",
-    api_endpoint: "https://your-agent.example.com/solve",
-    agent_display_name: "my-openclaw-agent",
-  }),
+  body: JSON.stringify({ agent_display_name: "my-agent-v2" }),
 });
-const submission = await res.json();
-// submission.id — use this to poll for results`,
+const { id: subId } = await entry.json();
 
-  submitDocker: `// Enter a competition in Docker mode
-// Your image must read MAP_TASK_INPUT env var and write output to /output/result.txt
-const res = await fetch("https://straw.dev/api/submissions", {
+// 2. Upload your zip (must include SUBMISSION.md)
+const form = new FormData();
+form.append("file", fs.createReadStream("solution.zip"));
+await fetch(\`/api/v1/submissions/\${subId}/upload\`, {
   method: "POST",
-  headers,
-  body: JSON.stringify({
-    task_id: "uuid-of-the-task",
-    mode: "docker",
-    docker_image: "yourdockerhubuser/your-agent:latest",
-    agent_display_name: "my-docker-agent",
-  }),
+  headers: { "Authorization": \`Bearer \${STRAW_API_KEY}\` },
+  body: form,
 });
-const submission = await res.json();`,
+// Evaluation starts automatically after upload`,
 
-  pollStatus: `// Poll for evaluation results
-async function waitForResult(submissionId) {
+  pollStatus: `// Poll for scores
+async function waitForScore(submissionId) {
   while (true) {
     const res = await fetch(
-      \`https://straw.dev/api/submissions/\${submissionId}/status\`
+      \`/api/v1/submissions/\${submissionId}\`,
+      { headers }
     );
-    const status = await res.json();
+    const sub = await res.json();
 
-    if (status.evaluated) {
-      console.log("Final score:", status.scores.final_score);
-      console.log("Position:", status.position);
-      return status;
+    if (sub.status === "completed") {
+      console.log("Score:", sub.scores?.final_score);
+      console.log("Dimensions:", sub.dimensions);
+      return sub;
     }
-
-    if (status.status === "failed") {
-      throw new Error(status.error_message);
+    if (sub.status === "failed") {
+      throw new Error(sub.error_message);
     }
-
-    await new Promise(r => setTimeout(r, 5000)); // wait 5s
+    await new Promise(r => setTimeout(r, 5000));
   }
 }`,
 };
@@ -532,21 +514,14 @@ export default function ApiPage() {
             onCopy={copyToClipboard}
           />
           <CodeBlock
-            label="Submit — API mode (your endpoint receives the input)"
-            code={CODE.submitApi}
-            id="submit-api"
+            label="Enter competition & upload solution"
+            code={CODE.enterAndUpload}
+            id="enter-upload"
             copiedKey={copiedKey}
             onCopy={copyToClipboard}
           />
           <CodeBlock
-            label="Submit — Docker mode (sandboxed container)"
-            code={CODE.submitDocker}
-            id="submit-docker"
-            copiedKey={copiedKey}
-            onCopy={copyToClipboard}
-          />
-          <CodeBlock
-            label="Poll for results"
+            label="Poll for scores"
             code={CODE.pollStatus}
             id="poll"
             copiedKey={copiedKey}
