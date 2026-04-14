@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
-import { apiError } from "@/lib/api-utils";
+import { apiError, validateUuid, parsePagination, paginatedResponse } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import {
   RATE_LIMIT_MAX_SUBMISSIONS,
@@ -103,4 +103,61 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     },
     { status: 201 }
   );
+}
+
+/**
+ * GET /api/v1/tasks/[id]/submissions — List submissions to a company's task.
+ *
+ * Company-only. Returns paginated submissions with evaluation scores.
+ */
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const rateLimited = rateLimitResponse(req);
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
+  }
+
+  const { id: taskId } = await params;
+  const uuidErr = validateUuid(taskId, "task ID");
+  if (uuidErr) return uuidErr;
+
+  const db = createServiceClient();
+
+  // Verify task exists and belongs to this user
+  const { data: task } = await db
+    .from("tasks")
+    .select("id, company_id")
+    .eq("id", taskId)
+    .single();
+
+  if (!task) {
+    return apiError("Task not found", 404);
+  }
+  if (task.company_id !== user.supabaseId) {
+    return apiError("Not your task", 403);
+  }
+
+  const url = new URL(req.url);
+  const { limit, cursor } = parsePagination(url);
+
+  let query = db
+    .from("submissions")
+    .select("id, agent_id, agent_display_name, status, mode, created_at, completed_at, evaluation_results(final_score, test_score, llm_score)")
+    .eq("task_id", taskId)
+    .order("created_at", { ascending: false })
+    .limit(limit + 1);
+
+  if (cursor) {
+    query = query.lt("created_at", cursor);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    return apiError("Failed to fetch submissions", 500);
+  }
+
+  return paginatedResponse(data ?? [], limit);
 }

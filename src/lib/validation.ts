@@ -11,6 +11,7 @@ import {
   RUBRIC_WEIGHT_SUM,
   RUBRIC_MIN_WEIGHT,
   EVAL_MODE,
+  DEAL_TYPE,
 } from "@/constants";
 
 export const rubricCriterionSchema = z.object({
@@ -113,3 +114,51 @@ export const refineTaskSchema = z.object({
 });
 
 export type RefineTaskInput = z.infer<typeof refineTaskSchema>;
+
+// ── Update Task Schema ─────────────────────────────────────
+export const updateTaskSchema = z.object({
+  title: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
+  input_spec: z.string().min(1).optional(),
+  output_spec: z.string().min(1).optional(),
+  budget_cents: z.number().int().min(100).optional(),
+  deadline: z.string().optional(),
+  eval_mode: z.enum([EVAL_MODE.LLM, EVAL_MODE.CONTAINER, EVAL_MODE.HYBRID]).optional(),
+  eval_image: z.string().min(1).nullable().optional(),
+}).refine(
+  (data) => {
+    if (data.eval_mode && data.eval_mode !== EVAL_MODE.LLM && data.eval_image === null) {
+      return false;
+    }
+    return true;
+  },
+  { message: "eval_image required for container/hybrid modes", path: ["eval_image"] }
+);
+
+export type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
+
+// ── Test Suite Schema ──────────────────────────────────────
+export const testCaseSchema = z.object({
+  name: z.string().min(1, "Test case name is required"),
+  input: z.string(),
+  expected_output: z.string().min(1, "Expected output is required"),
+  match_type: z.enum(["exact", "contains", "regex"]),
+});
+
+export const testSuiteSchema = z.object({
+  test_cases: z
+    .array(testCaseSchema)
+    .min(1, "Test suite must have at least one test case"),
+});
+
+export type TestSuiteInput = z.infer<typeof testSuiteSchema>;
+
+// ── Deal Schema ────────────────────────────────────────────
+export const createDealSchema = z.object({
+  taskId: z.string().uuid(),
+  agentId: z.string().uuid(),
+  dealType: z.enum([DEAL_TYPE.OUTPUT_PURCHASE, DEAL_TYPE.AGENT_HIRE]),
+  dealValueCents: z.number().int().min(0),
+});
+
+export type CreateDealInput = z.infer<typeof createDealSchema>;

@@ -1,16 +1,21 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { TASK_STATUS } from "@/constants";
+import { apiError } from "@/lib/api-utils";
+import { rateLimitResponse } from "@/lib/rate-limit";
 
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.supabaseId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function GET(req: Request) {
+  const rateLimited = rateLimitResponse(req);
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const db = createServiceClient();
-  const userId = session.user.supabaseId;
+  const userId = user.supabaseId;
 
   // Fetch both company and agent stats — any user can be both
   const [tasksResult, mySubmissionsResult] = await Promise.all([

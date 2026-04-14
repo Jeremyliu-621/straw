@@ -676,18 +676,60 @@ Goal: Remove clearly-dead code from the upload-only simplification, write legall
 
 ---
 
+## Phase 19: API-First — Full Programmatic Access for Both Roles
+
+Goal: Make every endpoint API-key-friendly. Companies and agents can do everything programmatically — no browser required.
+
+### 19a: Extract Shared Schemas ✅
+
+- [x] Extracted `updateTaskSchema`, `testSuiteSchema`, `testCaseSchema`, `createDealSchema` to `src/lib/validation.ts`
+- [x] Added `TEST_SUITE_BUCKET`, `TEST_SUITE_MAX_FILE_SIZE_BYTES` to `src/constants.ts`
+- [x] Updated importers: `tasks/[id]/route.ts`, `test-suite/route.ts`, `deals/route.ts`, both test files
+
+### 19b: Migrate Session-Only Routes to Unified Auth ✅
+
+Swapped `auth()` → `authenticateRequest()`, added rate limiting and `apiError()` on 7 routes:
+
+- [x] `GET/POST /api/tasks` — task listing + creation (+ added audit log on POST)
+- [x] `POST /api/tasks/[id]/close` — task closure (+ added ownership check, UUID validation)
+- [x] `GET /api/tasks/[id]/leaderboard` — leaderboard access
+- [x] `POST /api/tasks/[id]/test-suite` — test suite upload
+- [x] `GET /api/dashboard/stats` — dashboard stats
+- [x] `GET /api/dashboard/submissions` — company submission list
+- [x] `GET /api/submissions/[id]/details` — evaluation dimensions
+
+### 19c: New v1 Company Routes ✅
+
+9 new endpoints giving companies full programmatic access:
+
+- [x] `POST /api/v1/tasks` — create draft task with rubric criteria
+- [x] `PATCH /api/v1/tasks/[id]` — update draft task fields
+- [x] `PUT /api/v1/tasks/[id]/rubric` — replace rubric criteria (atomic)
+- [x] `POST /api/v1/tasks/[id]/publish` — publish draft → open (validates weights, dispatches webhooks + agent notifications)
+- [x] `POST /api/v1/tasks/[id]/close` — close task early from open/evaluating (dispatches webhooks, expires invitations)
+- [x] `GET /api/v1/tasks/[id]/leaderboard` — ranked results with anonymization
+- [x] `GET /api/v1/tasks/[id]/submissions` — paginated submissions to company's task
+- [x] `POST /api/v1/tasks/[id]/test-suite` — upload test suite JSON
+- [x] `GET/POST /api/v1/deals` — list + create deals with webhook/audit
+
+### 19d: Update API Documentation ✅
+
+- [x] `/api/docs` updated to v1.1 with all 30+ endpoints, roles section, new error codes
+- [x] Every endpoint documented with auth requirements, role restrictions, request/response fields
+
+> Phase 19 complete. Zero type errors. 341 tests pass. All routes follow identical patterns: authenticateRequest, rateLimitResponse, apiError, ownership checks, audit logging, webhook dispatch.
+
+---
+
 ## Phase 18: Prove It Works — Real Tasks + Real Agents
 
 Goal: Create real tasks and competing agents to prove the full loop works end-to-end. You are both the company and the agent builder. This produces demo content (screenshots, leaderboard, score breakdowns) that's more convincing than any pitch deck.
 
 ### 18a: Remove Blockers
 
-Right now you can't just "point Claude at the API" because:
-- Task creation + API key creation require browser OAuth (no v1 API for these)
-- Eval worker must be running to score submissions
+~~Task creation + API key creation required browser OAuth.~~ **Fixed in Phase 19** — full v1 API for task creation, publishing, and all company workflows.
 
-Fix this:
-
+Remaining:
 - [ ] **Write `npm run seed:competition` script** — creates a test company user, publishes a real task with rubric, creates an agent builder user + API key, prints the key. One command, no browser needed.
 - [ ] **Deploy eval worker (see 14c above)** OR run locally: `docker-compose up -d` (Redis) + `npm run eval-worker`
 - [ ] **Verify:** run seed script → hand API key to Claude Code → Claude discovers task, uploads, gets scored
@@ -725,9 +767,9 @@ Do this 3 times with different prompts to get a leaderboard:
 - [ ] Write a short blog post or Twitter thread showing the full flow
 - [ ] Record a 2-min screen recording of an agent competing end-to-end
 
-<!-- RESUME HERE -->
-
 ---
+
+<!-- RESUME HERE -->
 
 ## Discovered Tasks
 

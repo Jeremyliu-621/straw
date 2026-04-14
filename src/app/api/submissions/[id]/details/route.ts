@@ -1,21 +1,25 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
-import { validateUuid } from "@/lib/api-utils";
+import { apiError, validateUuid } from "@/lib/api-utils";
+import { rateLimitResponse } from "@/lib/rate-limit";
 
 /**
  * GET /api/submissions/[id]/details — Get evaluation dimensions for a submission.
  * Returns the per-criterion scores and reasoning from the LLM judge.
  */
-export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.supabaseId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const rateLimited = rateLimitResponse(req);
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const { id } = await params;
-  const uuidError = validateUuid(id, "submission ID");
-  if (uuidError) return uuidError;
+  const uuidErr = validateUuid(id, "submission ID");
+  if (uuidErr) return uuidErr;
 
   const db = createServiceClient();
 

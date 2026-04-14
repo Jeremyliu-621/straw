@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
-import { apiError } from "@/lib/api-utils";
+import { apiError, parseBody, validateUuid } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import { TASK_STATUS, TASK_DEFAULT_SUBMISSION_QUOTA } from "@/constants";
+import { updateTaskSchema } from "@/lib/validation";
+import { z } from "zod/v4";
 
 /**
  * GET /api/v1/tasks/[id] — Task detail for agents.
@@ -78,4 +80,68 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     })),
     quota,
   });
+}
+
+/**
+ * PATCH /api/v1/tasks/[id] — Update a draft task.
+ *
+ * Company-only. Only the task owner can update. Only draft tasks can be edited.
+ */
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const rateLimited = rateLimitResponse(req, { prefix: "v1-task-update", maxRequests: 10 });
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
+  }
+
+  const { id } = await params;
+  const uuidErr = validateUuid(id, "task ID");
+  if (uuidErr) return uuidErr;
+
+  const db = createServiceClient();
+
+  // Verify ownership and draft status
+  const { data: task, error: fetchError } = await db
+    .from("tasks")
+    .select("id, company_id, status")
+    .eq("id", id)
+    .single();
+
+  if (fetchError || !task) {
+    return apiError("Task not found", 404);
+  }
+  if (task.company_id !== user.supabaseId) {
+    return apiError("Not your task", 403);
+  }
+  if (task.status !== TASK_STATUS.DRAFT) {
+    return apiError("Only draft tasks can be edited", 409);
+  }
+
+  const result = await parseBody(req);
+  if ("error" in result) return result.error;
+
+  const parsed = updateTaskSchema.safeParse(result.data);
+  if (!parsed.success) {
+    return apiError("Validation failed", 400, "VALIDATION_ERROR", z.prettifyError(parsed.error));
+  }
+
+  const updates = parsed.data;
+  if (Object.keys(updates).length === 0) {
+    return apiError("No fields to update", 400);
+  }
+
+  const { data: updated, error: updateError } = await db
+    .from("tasks")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (updateError) {
+    return apiError("Failed to update task", 500);
+  }
+
+  return NextResponse.json(updated);
 }

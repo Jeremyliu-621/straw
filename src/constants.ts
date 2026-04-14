@@ -56,6 +56,10 @@ export const TASK_ALLOWED_FILE_TYPES = [
   "text/plain",
 ] as const;
 
+// ── Test Suites ────────────────────────────────────────────
+export const TEST_SUITE_BUCKET = "test-suites" as const;
+export const TEST_SUITE_MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+
 // ── Categories ──────────────────────────────────────────────
 export const CATEGORY_OPTIONS = [
   "code-generation",

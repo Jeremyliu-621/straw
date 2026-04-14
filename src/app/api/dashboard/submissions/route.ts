@@ -1,19 +1,24 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
+import { apiError } from "@/lib/api-utils";
+import { rateLimitResponse } from "@/lib/rate-limit";
 
 /**
  * GET /api/dashboard/submissions
  * Returns recent submissions across all tasks posted by the current user (company view).
  */
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.supabaseId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function GET(req: Request) {
+  const rateLimited = rateLimitResponse(req);
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const db = createServiceClient();
-  const userId = session.user.supabaseId;
+  const userId = user.supabaseId;
 
   // Get company's task IDs
   const { data: tasks } = await db
@@ -35,7 +40,7 @@ export async function GET() {
     .limit(10);
 
   if (error) {
-    return NextResponse.json({ error: "Failed to fetch submissions" }, { status: 500 });
+    return apiError("Failed to fetch submissions", 500);
   }
 
   const result = (submissions ?? []).map((s) => {

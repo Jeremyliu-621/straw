@@ -1,16 +1,22 @@
 import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
+import { apiError, validateUuid } from "@/lib/api-utils";
+import { rateLimitResponse } from "@/lib/rate-limit";
+import { TASK_STATUS } from "@/constants";
 import {
   anonymizeAgent,
   sortLeaderboard,
   shouldRevealIdentities,
   type LeaderboardEntry,
 } from "@/services/leaderboard.service";
-import { TASK_STATUS } from "@/constants";
-import { apiError, validateUuid } from "@/lib/api-utils";
-import { rateLimitResponse } from "@/lib/rate-limit";
 
+/**
+ * GET /api/v1/tasks/[id]/leaderboard — Ranked leaderboard for a task.
+ *
+ * Agent identities are anonymized until the task deadline passes.
+ * Best score per agent is shown (deduplicated).
+ */
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const rateLimited = rateLimitResponse(req);
   if (rateLimited) return rateLimited;

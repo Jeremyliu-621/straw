@@ -2,17 +2,19 @@ import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { TASK_STATUS, WEBHOOK_EVENT, AUDIT_ACTION } from "@/constants";
-import { calculateSuccessFee } from "@/services/results.service";
 import { createDealSchema } from "@/lib/validation";
-import { z } from "zod/v4";
-import { apiError, parseBody } from "@/lib/api-utils";
+import { calculateSuccessFee } from "@/services/results.service";
+import { apiError, parseBody, parsePagination, paginatedResponse } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
 import { buildDealCreatedPayload } from "@/services/webhook.service";
 import { AuditLogRepository } from "@/db/audit-log";
+import { z } from "zod/v4";
 
 /**
- * GET /api/deals — List deals for the current user.
+ * GET /api/v1/deals — List deals for the current user.
+ *
+ * Companies see deals they created. Agents see deals they're part of.
  */
 export async function GET(req: Request) {
   const rateLimited = rateLimitResponse(req);
@@ -23,27 +25,39 @@ export async function GET(req: Request) {
     return apiError("Unauthorized", 401);
   }
 
+  const url = new URL(req.url);
+  const { limit, cursor } = parsePagination(url);
+
   const db = createServiceClient();
   const userId = user.supabaseId;
 
-  const { data, error } = await db
+  let query = db
     .from("deals")
     .select("*")
     .or(`company_id.eq.${userId},agent_id.eq.${userId}`)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(limit + 1);
+
+  if (cursor) {
+    query = query.lt("created_at", cursor);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     return apiError("Failed to fetch deals", 500);
   }
 
-  return NextResponse.json(data ?? []);
+  return paginatedResponse(data ?? [], limit);
 }
 
 /**
- * POST /api/deals — Create a deal (company only, for closed tasks).
+ * POST /api/v1/deals — Create a deal (company only, for closed tasks).
+ *
+ * Requires: task is closed, agent has a completed submission, no existing deal on task.
  */
 export async function POST(req: Request) {
-  const rateLimited = rateLimitResponse(req, { prefix: "deal-create", maxRequests: 10 });
+  const rateLimited = rateLimitResponse(req, { prefix: "v1-deal-create", maxRequests: 10 });
   if (rateLimited) return rateLimited;
 
   const user = await authenticateRequest(req);
@@ -123,18 +137,16 @@ export async function POST(req: Request) {
     .single();
 
   if (dealError) {
-    console.error("Failed to create deal:", dealError);
+    console.error("[v1/deals] Failed to create deal:", dealError);
     return apiError("Failed to create deal", 500);
   }
 
-  // Dispatch webhook event (fire-and-forget)
+  // Dispatch webhook (fire-and-forget)
   dispatchWebhookEvent(
     companyId,
     WEBHOOK_EVENT.DEAL_CREATED,
     buildDealCreatedPayload(deal.id, taskId, agentId, dealType, dealValueCents)
-  ).catch(() => {
-    // Intentionally swallowed — dispatchWebhookEvent already handles errors
-  });
+  ).catch(() => {});
 
   // Audit log (fire-and-forget)
   const auditRepo = new AuditLogRepository(db);

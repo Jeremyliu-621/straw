@@ -1,19 +1,24 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { createTaskSchema } from "@/lib/validation";
-import { TASK_STATUS } from "@/constants";
+import { TASK_STATUS, AUDIT_ACTION } from "@/constants";
 import { z } from "zod/v4";
-import { parseBody } from "@/lib/api-utils";
+import { apiError, parseBody } from "@/lib/api-utils";
+import { rateLimitResponse } from "@/lib/rate-limit";
+import { AuditLogRepository } from "@/db/audit-log";
 
-export async function GET() {
-  const session = await auth();
-  if (!session?.user?.supabaseId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function GET(req: Request) {
+  const rateLimited = rateLimitResponse(req);
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const db = createServiceClient();
-  const userId = session.user.supabaseId;
+  const userId = user.supabaseId;
 
   // Return user's own tasks + open tasks they can compete on
   const { data: ownTasks, error: ownError } = await db
@@ -23,7 +28,7 @@ export async function GET() {
     .order("created_at", { ascending: false });
 
   if (ownError) {
-    return NextResponse.json({ error: "Failed to fetch tasks" }, { status: 500 });
+    return apiError("Failed to fetch tasks", 500);
   }
 
   const { data: openTasks, error: openError } = await db
@@ -34,16 +39,19 @@ export async function GET() {
     .order("deadline", { ascending: true });
 
   if (openError) {
-    return NextResponse.json({ error: "Failed to fetch tasks" }, { status: 500 });
+    return apiError("Failed to fetch tasks", 500);
   }
 
   return NextResponse.json({ own: ownTasks ?? [], open: openTasks ?? [] });
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.supabaseId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const rateLimited = rateLimitResponse(req, { prefix: "task-create", maxRequests: 10 });
+  if (rateLimited) return rateLimited;
+
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
   }
 
   const result = await parseBody(req);
@@ -51,10 +59,7 @@ export async function POST(req: Request) {
   const parsed = createTaskSchema.safeParse(result.data);
 
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Validation failed", details: z.prettifyError(parsed.error) },
-      { status: 400 }
-    );
+    return apiError("Validation failed", 400, "VALIDATION_ERROR", z.prettifyError(parsed.error));
   }
 
   const { criteria, ...taskData } = parsed.data;
@@ -64,7 +69,7 @@ export async function POST(req: Request) {
   const { data: task, error: taskError } = await db
     .from("tasks")
     .insert({
-      company_id: session.user.supabaseId,
+      company_id: user.supabaseId,
       title: taskData.title,
       description: taskData.description,
       category: taskData.category,
@@ -86,7 +91,7 @@ export async function POST(req: Request) {
 
   if (taskError) {
     console.error("Failed to create task:", taskError);
-    return NextResponse.json({ error: "Failed to create task" }, { status: 500 });
+    return apiError("Failed to create task", 500);
   }
 
   // Create rubric criteria
@@ -104,8 +109,20 @@ export async function POST(req: Request) {
     console.error("Failed to create rubric criteria:", rubricError);
     // Clean up the task if rubric creation fails
     await db.from("tasks").delete().eq("id", task.id);
-    return NextResponse.json({ error: "Failed to create rubric criteria" }, { status: 500 });
+    return apiError("Failed to create rubric criteria", 500);
   }
+
+  // Audit log (fire-and-forget)
+  const auditRepo = new AuditLogRepository(db);
+  auditRepo
+    .log({
+      user_id: user.supabaseId,
+      action: AUDIT_ACTION.TASK_CREATED,
+      resource_type: "task",
+      resource_id: task.id,
+      metadata: { title: taskData.title, category: taskData.category },
+    })
+    .catch((err) => console.error("[audit] Failed to log task creation:", err));
 
   return NextResponse.json(task, { status: 201 });
 }

@@ -2,16 +2,21 @@ import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { testSuiteSchema } from "@/lib/validation";
-import { TEST_SUITE_BUCKET, TEST_SUITE_MAX_FILE_SIZE_BYTES } from "@/constants";
+import { TEST_SUITE_BUCKET, TEST_SUITE_MAX_FILE_SIZE_BYTES, TASK_STATUS } from "@/constants";
 import { apiError, validateUuid } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import { z } from "zod/v4";
 
+/**
+ * POST /api/v1/tasks/[id]/test-suite — Upload test suite JSON for a draft task.
+ *
+ * Company-only. Accepts multipart form-data with a 'file' field (.json, max 5MB).
+ */
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const rateLimited = rateLimitResponse(req, { prefix: "test-suite-upload", maxRequests: 10 });
+  const rateLimited = rateLimitResponse(req, { prefix: "v1-test-suite", maxRequests: 10 });
   if (rateLimited) return rateLimited;
 
   const user = await authenticateRequest(req);
@@ -40,8 +45,7 @@ export async function POST(
     return apiError("Not your task", 403);
   }
 
-  // Only allow upload on draft tasks (can't change test suite after publishing)
-  if (task.status !== "draft") {
+  if (task.status !== TASK_STATUS.DRAFT) {
     return apiError("Test suite can only be set on draft tasks", 400);
   }
 
@@ -92,7 +96,7 @@ export async function POST(
     });
 
   if (uploadError) {
-    console.error("[test-suite] Upload failed:", uploadError);
+    console.error("[v1/test-suite] Upload failed:", uploadError);
     return apiError("Failed to upload test suite", 500);
   }
 
@@ -103,7 +107,7 @@ export async function POST(
     .eq("id", taskId);
 
   if (updateError) {
-    console.error("[test-suite] Failed to update task:", updateError);
+    console.error("[v1/test-suite] Failed to update task:", updateError);
     return apiError("Failed to save test suite reference", 500);
   }
 

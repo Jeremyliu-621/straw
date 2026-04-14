@@ -1,20 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { z } from "zod/v4";
-
-// ── Re-declare the schemas from route.ts for isolated testing ──
-
-const testCaseSchema = z.object({
-  name: z.string().min(1, "Test case name is required"),
-  input: z.string(),
-  expected_output: z.string().min(1, "Expected output is required"),
-  match_type: z.enum(["exact", "contains", "regex"]),
-});
-
-const testSuiteSchema = z.object({
-  test_cases: z
-    .array(testCaseSchema)
-    .min(1, "Test suite must have at least one test case"),
-});
+import { testSuiteSchema } from "@/lib/validation";
 
 // ── Storage path convention ────────────────────────────────────
 

@@ -1,26 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { z } from "zod/v4";
-import { EVAL_MODE } from "@/constants";
-
-// Re-declare the updateTaskSchema from route.ts for isolated testing
-const updateTaskSchema = z.object({
-  title: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
-  input_spec: z.string().min(1).optional(),
-  output_spec: z.string().min(1).optional(),
-  budget_cents: z.number().int().min(100).optional(),
-  deadline: z.string().optional(),
-  eval_mode: z.enum([EVAL_MODE.LLM, EVAL_MODE.CONTAINER, EVAL_MODE.HYBRID]).optional(),
-  eval_image: z.string().min(1).nullable().optional(),
-}).refine(
-  (data) => {
-    if (data.eval_mode && data.eval_mode !== EVAL_MODE.LLM && data.eval_image === null) {
-      return false;
-    }
-    return true;
-  },
-  { message: "eval_image required for container/hybrid modes", path: ["eval_image"] }
-);
+import { updateTaskSchema } from "@/lib/validation";
 
 describe("updateTaskSchema", () => {
   describe("valid updates", () => {

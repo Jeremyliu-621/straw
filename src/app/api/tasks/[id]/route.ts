@@ -3,7 +3,8 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError, validateUuid } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
-import { SUBMISSION_STATUS, TASK_STATUS, EVAL_MODE } from "@/constants";
+import { SUBMISSION_STATUS, TASK_STATUS } from "@/constants";
+import { updateTaskSchema } from "@/lib/validation";
 import { z } from "zod/v4";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -85,26 +86,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
  * PATCH /api/tasks/[id] — Update task fields while still in draft status.
  * Only the task owner (company) can update. Only draft tasks can be edited.
  */
-const updateTaskSchema = z.object({
-  title: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
-  input_spec: z.string().min(1).optional(),
-  output_spec: z.string().min(1).optional(),
-  budget_cents: z.number().int().min(100).optional(),
-  deadline: z.string().optional(),
-  eval_mode: z.enum([EVAL_MODE.LLM, EVAL_MODE.CONTAINER, EVAL_MODE.HYBRID]).optional(),
-  eval_image: z.string().min(1).nullable().optional(),
-}).refine(
-  (data) => {
-    // If eval_mode is being set to non-LLM, eval_image must be provided (or already exist)
-    if (data.eval_mode && data.eval_mode !== EVAL_MODE.LLM && data.eval_image === null) {
-      return false;
-    }
-    return true;
-  },
-  { message: "eval_image required for container/hybrid modes", path: ["eval_image"] }
-);
-
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const rateLimited = rateLimitResponse(req);
   if (rateLimited) return rateLimited;
