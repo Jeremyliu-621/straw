@@ -51,8 +51,8 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  if (env.NODE_ENV === "production") {
-    return NextResponse.json({ error: "Not available in production" }, { status: 403 });
+  if (env.NODE_ENV !== "development") {
+    return NextResponse.json({ error: "Dev only" }, { status: 403 });
   }
 
   const url = new URL(req.url);

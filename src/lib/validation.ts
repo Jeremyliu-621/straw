@@ -15,8 +15,8 @@ import {
 } from "@/constants";
 
 export const rubricCriterionSchema = z.object({
-  name: z.string().min(1, "Criterion name is required"),
-  description: z.string().optional(),
+  name: z.string().min(1, "Criterion name is required").max(200),
+  description: z.string().max(1000).optional(),
   weight: z.number().int().min(RUBRIC_MIN_WEIGHT, `Weight must be at least ${RUBRIC_MIN_WEIGHT}%`),
   position: z.number().int().min(0),
 });

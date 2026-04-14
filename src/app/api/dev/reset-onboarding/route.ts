@@ -10,7 +10,7 @@ import { env } from "@/lib/env";
  * After calling this, sign out and back in to re-trigger the onboarding flow.
  */
 export async function POST() {
-  if (env.NODE_ENV === "production") {
+  if (env.NODE_ENV !== "development") {
     return NextResponse.json({ error: "Dev only" }, { status: 403 });
   }
 

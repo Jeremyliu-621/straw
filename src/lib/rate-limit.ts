@@ -121,13 +121,16 @@ export function withRateLimitHeaders(
 /**
  * Rate limit middleware helper.
  * Returns a 429 response if the limit is exceeded, null otherwise.
+ *
+ * Optionally pass a userId to rate-limit by authenticated user instead of IP.
+ * This prevents attackers from bypassing rate limits via x-forwarded-for spoofing.
  */
 export function rateLimitResponse(
   req: Request,
-  config?: RateLimitConfig
+  config?: RateLimitConfig & { userId?: string }
 ): NextResponse | null {
-  const ip = getClientIp(req);
-  const result = checkRateLimit(ip, config);
+  const identifier = config?.userId ?? getClientIp(req);
+  const result = checkRateLimit(identifier, config);
 
   if (!result.allowed) {
     const retryAfter = Math.ceil((result.resetAt - Date.now()) / 1000);

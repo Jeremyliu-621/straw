@@ -43,8 +43,10 @@ function isAllowedFile(filename: string, mimeType: string): boolean {
   const ext = getExtension(filename);
   const allowedMimes = ALLOWED_EXTENSIONS[ext];
   if (!allowedMimes) return false;
-  // Accept if MIME matches or is empty/octet-stream (browsers sometimes mis-report)
-  if (!mimeType || mimeType === "application/octet-stream") return true;
+  // Reject empty MIME — require explicit type. Allow octet-stream as fallback
+  // since some HTTP clients don't set Content-Type on form uploads.
+  if (!mimeType) return false;
+  if (mimeType === "application/octet-stream") return true;
   return allowedMimes.includes(mimeType);
 }
 
