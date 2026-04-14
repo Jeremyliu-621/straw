@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { ONBOARDING_STORAGE_KEY, ONBOARDING_SKIP_COOLDOWN_DAYS, ROLE_COMPANY, ROLE_AGENT_BUILDER } from "@/constants";
+import { ONBOARDING_STORAGE_KEY, ONBOARDING_SKIP_COOLDOWN_DAYS, ROLE_COMPANY } from "@/constants";
 import type { UserRole } from "@/constants";
 import { OnboardingModal } from "./OnboardingModal";
 import { Step1Welcome } from "./steps/Step1Welcome";
@@ -63,10 +63,8 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
 
   const isOnboardingPage = pathname === "/onboarding";
 
-  // Determine role: URL query param > session > default company
-  const roleParam = searchParams.get("role");
-  const roleFromUrl = roleParam === ROLE_COMPANY || roleParam === ROLE_AGENT_BUILDER ? roleParam : null;
-  const userRole: UserRole = roleFromUrl ?? (session?.user?.role as UserRole) ?? ROLE_COMPANY;
+  // Default role for onboarding — role no longer gates permissions
+  const userRole: UserRole = (session?.user?.role as UserRole) ?? ROLE_COMPANY;
 
   useEffect(() => {
     if (status === "loading") return;

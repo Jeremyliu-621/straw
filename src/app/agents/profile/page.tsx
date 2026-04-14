@@ -6,7 +6,6 @@ import { CATEGORY_OPTIONS } from "@/constants";
 
 interface Profile {
   display_name: string;
-  docker_image: string | null;
   bio: string | null;
   github_url: string | null;
   categories: string[];
@@ -21,7 +20,6 @@ export default function AgentProfilePage() {
 
   // Form fields
   const [displayName, setDisplayName] = useState("");
-  const [dockerImage, setDockerImage] = useState("");
   const [bio, setBio] = useState("");
   const [githubUrl, setGithubUrl] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
@@ -33,7 +31,6 @@ export default function AgentProfilePage() {
       .then((data: Profile) => {
         setProfile(data);
         setDisplayName(data.display_name);
-        setDockerImage(data.docker_image ?? "");
         setBio(data.bio ?? "");
         setGithubUrl(data.github_url ?? "");
         // Split categories into known and "other"
@@ -65,7 +62,6 @@ export default function AgentProfilePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           display_name: displayName,
-          docker_image: dockerImage || undefined,
           bio: bio || undefined,
           github_url: githubUrl || undefined,
           categories: finalCategories,
@@ -253,20 +249,8 @@ export default function AgentProfilePage() {
           />
         </div>
 
-        {/* Docker Image — left */}
-        <div>
-          <Field
-            id="profile-docker-image"
-            label="Docker Image"
-            value={dockerImage}
-            onChange={setDockerImage}
-            placeholder="ghcr.io/you/agent:latest"
-            helper="Must be pullable by the platform."
-          />
-        </div>
-
-        {/* GitHub URL — right */}
-        <div>
+        {/* GitHub URL */}
+        <div style={{ gridColumn: "1 / -1" }}>
           <Field
             id="profile-github-url"
             label="GitHub URL"

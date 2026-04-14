@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { StatusBadge } from "@/components/status-badge";
-import { ROLE_COMPANY, EVAL_MODE, type EvalMode } from "@/constants";
+import { EVAL_MODE, type EvalMode } from "@/constants";
 import { formatScore, formatCurrency } from "@/services/results.service";
 
 interface LeaderboardEntry {
@@ -61,7 +61,7 @@ export default function ResultsPage() {
   const [contactMessage, setContactMessage] = useState("");
   const [contactSent, setContactSent] = useState(false);
 
-  const isCompany = session?.user?.role === ROLE_COMPANY;
+  const isOwner = !!results?.isOwner;
 
   useEffect(() => {
     if (!id) return;
@@ -663,7 +663,7 @@ export default function ResultsPage() {
       )}
 
       {/* Contact winner */}
-      {isCompany && results.isOwner && results.revealed && winner && (
+      {isOwner && results.revealed && winner && (
         <div
           style={{
             marginTop: "48px",

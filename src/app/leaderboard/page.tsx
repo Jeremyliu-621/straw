@@ -52,7 +52,7 @@ export default function LeaderboardPage() {
   useEffect(() => {
     fetch('/api/public/leaderboard')
       .then((res) => res.json())
-      .then((data) => setCompetitions(Array.isArray(data) ? data : []))
+      .then((data) => setCompetitions(Array.isArray(data) ? data : (data?.data ?? [])))
       .catch(() => setCompetitions([]))
       .finally(() => setLoading(false));
   }, []);

@@ -28,11 +28,12 @@ export const createTaskSchema = z
       .max(TASK_TITLE_MAX_LENGTH, `Title must be at most ${TASK_TITLE_MAX_LENGTH} characters`),
     description: z
       .string()
-      .min(1, "Description is required")
-      .max(TASK_DESCRIPTION_MAX_LENGTH, `Description must be at most ${TASK_DESCRIPTION_MAX_LENGTH} characters`),
-    category: z.string().min(1, "Category is required"),
-    input_spec: z.string().min(1, "Input specification is required"),
-    output_spec: z.string().min(1, "Output specification is required"),
+      .max(TASK_DESCRIPTION_MAX_LENGTH, `Description must be at most ${TASK_DESCRIPTION_MAX_LENGTH} characters`)
+      .optional()
+      .default(""),
+    category: z.string().optional().default(""),
+    input_spec: z.string().optional().default(""),
+    output_spec: z.string().optional().default(""),
     test_weight: z.number().int().min(0).max(100),
     llm_weight: z.number().int().min(0).max(100),
     budget_cents: z.number().int().min(TASK_MIN_BUDGET_CENTS).max(TASK_MAX_BUDGET_CENTS),

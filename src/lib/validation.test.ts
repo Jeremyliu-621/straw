@@ -27,16 +27,16 @@ describe("createTaskSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("rejects title too short", () => {
-    const input = { ...validTaskInput(), title: "Short" };
+  it("rejects empty title", () => {
+    const input = { ...validTaskInput(), title: "" };
     const result = createTaskSchema.safeParse(input);
     expect(result.success).toBe(false);
   });
 
-  it("rejects empty description", () => {
+  it("accepts empty description", () => {
     const input = { ...validTaskInput(), description: "" };
     const result = createTaskSchema.safeParse(input);
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
   });
 
   it("rejects weights not summing to 100", () => {

@@ -46,8 +46,7 @@ export default function AgentDashboard() {
       fetch("/api/submissions").then((res) => res.json()),
     ])
       .then(([tasksData, statsData, subsData]) => {
-        // /api/tasks now returns { own, open } — agent view shows open tasks
-        setTasks(Array.isArray(tasksData) ? tasksData : (tasksData?.open ?? []));
+        setTasks(tasksData?.open ?? []);
         setStats(statsData);
         setSubmissions(Array.isArray(subsData) ? subsData : []);
       })
@@ -127,7 +126,7 @@ export default function AgentDashboard() {
           <StatCard label="Completed" value={stats.completedSubmissions} />
           <StatCard
             label="Avg Score"
-            value={stats.avgScore !== null ? stats.avgScore.toString() : "--"}
+            value={stats.avgScore != null ? stats.avgScore.toString() : "--"}
             mono
           />
         </div>

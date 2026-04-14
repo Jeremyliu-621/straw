@@ -3,11 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { RubricBuilder } from "@/components/rubric-builder";
-import {
-  TextareaWithAttachments,
-  type UploadedFile,
-} from "@/components/file-upload-zone";
-import { RefreshCw, Pencil, Check, Loader2 } from "lucide-react";
+import { RefreshCw, Pencil, Check } from "lucide-react";
 import {
   TASK_TITLE_MIN_LENGTH,
   TASK_TITLE_MAX_LENGTH,
@@ -24,12 +20,10 @@ interface Criterion {
   weight: number;
 }
 
-type Step = "basics" | "data" | "rubric" | "refine" | "review";
+type Step = "basics" | "evaluation" | "review";
 const STEPS: { key: Step; label: string }[] = [
   { key: "basics", label: "Basics" },
-  { key: "data", label: "Data & Format" },
-  { key: "rubric", label: "Rubric" },
-  { key: "refine", label: "Refine" },
+  { key: "evaluation", label: "Evaluation" },
   { key: "review", label: "Review" },
 ];
 
@@ -47,11 +41,7 @@ export default function NewTaskPage() {
   const [budgetDollars, setBudgetDollars] = useState(500);
   const [deadline, setDeadline] = useState("");
 
-  // Step 2: Data & Format
-  const [inputFiles, setInputFiles] = useState<UploadedFile[]>([]);
-  const [outputFiles, setOutputFiles] = useState<UploadedFile[]>([]);
-  const [inputDescription, setInputDescription] = useState("");
-  const [outputDescription, setOutputDescription] = useState("");
+  // Evaluation config
   const [testWeight, setTestWeight] = useState(60);
   const llmWeight = 100 - testWeight;
   const [testSuiteFile, setTestSuiteFile] = useState<File | null>(null);
@@ -88,17 +78,12 @@ export default function NewTaskPage() {
   function canAdvance(): boolean {
     switch (step) {
       case "basics":
-        return (
-          title.length >= TASK_TITLE_MIN_LENGTH &&
-          !!deadline
-        );
-      case "data":
-        return (evalMode !== EVAL_MODE.HYBRID || testWeight === 0 || testSuiteFile !== null) &&
-               (evalMode === EVAL_MODE.LLM || evalImage.trim() !== "");
-      case "rubric":
-        return weightsValid && criteria.every((c) => c.name.trim() !== "");
-      case "refine":
-        return hasRefined && !!refinedDescription && !!refinedInputSpec && !!refinedOutputSpec;
+        return title.length >= TASK_TITLE_MIN_LENGTH && !!deadline;
+      case "evaluation":
+        return weightsValid &&
+               criteria.every((c) => c.name.trim() !== "") &&
+               (evalMode === EVAL_MODE.LLM || evalImage.trim() !== "") &&
+               (evalMode !== EVAL_MODE.HYBRID || testWeight === 0 || testSuiteFile !== null);
       default:
         return true;
     }
@@ -117,14 +102,8 @@ export default function NewTaskPage() {
           category: categories
             .map((c) => (c === "other" ? otherCategory.trim() : c))
             .join(", "),
-          inputFiles: inputFiles.map((f) => ({
-            name: f.file.name,
-            description: f.description,
-          })),
-          outputFiles: outputFiles.map((f) => ({
-            name: f.file.name,
-            description: f.description,
-          })),
+          inputFiles: [],
+          outputFiles: [],
           criteria: criteria.map((c) => ({
             name: c.name,
             description: c.description || undefined,
@@ -148,54 +127,27 @@ export default function NewTaskPage() {
     } finally {
       setIsRefining(false);
     }
-  }, [title, description, categories, otherCategory, inputFiles, outputFiles, criteria, testWeight]);
+  }, [title, description, categories, otherCategory, criteria, testWeight]);
 
   function goToStep(target: Step) {
     setStep(target);
-    // Auto-refine on first visit to refine step
-    if (target === "refine" && !hasRefined && !isRefining) {
-      handleRefine();
-    }
   }
 
   async function handleSubmit() {
     setLoading(true);
     setError(null);
     try {
-      // Upload files to storage
-      const uploadedInputUrls: string[] = [];
-      const uploadedOutputUrls: string[] = [];
-
-      for (const f of inputFiles) {
-        const formData = new FormData();
-        formData.append("file", f.file);
-        const res = await fetch("/api/tasks/upload", { method: "POST", body: formData });
-        if (res.ok) {
-          const data = await res.json();
-          uploadedInputUrls.push(data.url);
-        }
-      }
-      for (const f of outputFiles) {
-        const formData = new FormData();
-        formData.append("file", f.file);
-        const res = await fetch("/api/tasks/upload", { method: "POST", body: formData });
-        if (res.ok) {
-          const data = await res.json();
-          uploadedOutputUrls.push(data.url);
-        }
-      }
-
       const res = await fetch("/api/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          description: refinedDescription,
+          description: refinedDescription || description,
           category: categories
             .map((c) => (c === "other" ? otherCategory.trim() : c))
             .join(", "),
-          input_spec: refinedInputSpec,
-          output_spec: refinedOutputSpec,
+          input_spec: refinedInputSpec || "",
+          output_spec: refinedOutputSpec || "",
           test_weight: evalMode === EVAL_MODE.LLM ? testWeight : 0,
           llm_weight: evalMode === EVAL_MODE.LLM ? llmWeight : 100,
           eval_mode: evalMode,
@@ -406,8 +358,8 @@ export default function NewTaskPage() {
                   label="Description"
                   value={description}
                   onChange={setDescription}
-                  placeholder="Describe the problem in detail. What do you need solved?"
-                  rows={3}
+                  placeholder={"- What will agents receive as input?\n- What should they produce?\n- Any constraints or requirements?"}
+                  rows={5}
                 />
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
@@ -502,46 +454,12 @@ export default function NewTaskPage() {
             </div>
           )}
 
-          {/* ── Step 2: Data & Format ── */}
-          {step === "data" && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-              <p
-                className="font-sans"
-                style={{
-                  fontSize: "14px",
-                  lineHeight: 1.6,
-                  color: "var(--text-muted)",
-                  marginBottom: "4px",
-                }}
-              >
-                Upload example files and describe what agents will receive and
-                what they should produce. This helps us generate precise
-                specifications.
-              </p>
+          {/* ── Step 2: Evaluation ── */}
+          {step === "evaluation" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
 
-              {/* Input section */}
-              <TextareaWithAttachments
-                id="input-description"
-                label="What will agents receive?"
-                value={inputDescription}
-                onChange={setInputDescription}
-                placeholder="e.g. A CSV file with customer transaction data including columns: date, amount, category, merchant..."
-                rows={3}
-                files={inputFiles}
-                onFilesChange={setInputFiles}
-              />
-
-              {/* Output section */}
-              <TextareaWithAttachments
-                id="output-description"
-                label="What should agents produce?"
-                value={outputDescription}
-                onChange={setOutputDescription}
-                placeholder="e.g. A JSON file at /output/result.json with categorized transactions and a summary report..."
-                rows={3}
-                files={outputFiles}
-                onFilesChange={setOutputFiles}
-              />
+              {/* Evaluation Method */}
+              <div>
 
               {/* Eval weight split — only relevant for hybrid mode (blending container + LLM scores) */}
               {evalMode === EVAL_MODE.HYBRID && <div>
@@ -967,148 +885,19 @@ export default function NewTaskPage() {
                 </div>
               )}
             </div>
-          )}
 
-          {/* ── Step 3: Rubric ── */}
-          {step === "rubric" && (
-            <RubricBuilder
-              criteria={criteria}
-              onChange={setCriteria}
-              taskTitle={title}
-              taskDescription={description}
-              taskCategory={categories[0] ?? "general"}
-            />
-          )}
-
-          {/* ── Step 4: AI Refinement ── */}
-          {step === "refine" && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {isRefining ? (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "60px 20px",
-                    gap: "16px",
-                  }}
-                >
-                  <Loader2
-                    size={24}
-                    strokeWidth={1.5}
-                    style={{ color: "var(--text-faint)", animation: "spin 1s linear infinite" }}
-                  />
-                  <p
-                    className="font-sans"
-                    style={{ fontSize: "14px", color: "var(--text-muted)" }}
-                  >
-                    Generating polished specifications from your inputs...
-                  </p>
-                  <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
-                </div>
-              ) : hasRefined ? (
-                <>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <p
-                      className="font-sans"
-                      style={{
-                        fontSize: "14px",
-                        lineHeight: 1.6,
-                        color: "var(--text-muted)",
-                      }}
-                    >
-                      Review and edit the AI-generated specifications below.
-                      Regenerate if you want a fresh take.
-                    </p>
-                    <button
-                      onClick={handleRefine}
-                      className="font-sans flex items-center gap-2 transition-colors"
-                      style={{
-                        padding: "7px 14px",
-                        borderRadius: "var(--radius)",
-                        fontSize: "13px",
-                        fontWeight: 500,
-                        color: "var(--text-muted)",
-                        background: "transparent",
-                        border: "1px solid var(--border)",
-                        cursor: "pointer",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <RefreshCw size={14} strokeWidth={1.5} />
-                      Regenerate
-                    </button>
-                  </div>
-
-                  <RefinedField
-                    id="refined-description"
-                    label="Problem Statement"
-                    value={refinedDescription}
-                    onChange={setRefinedDescription}
-                    rows={6}
-                  />
-                  <RefinedField
-                    id="refined-input-spec"
-                    label="Input Specification"
-                    value={refinedInputSpec}
-                    onChange={setRefinedInputSpec}
-                    rows={4}
-                  />
-                  <RefinedField
-                    id="refined-output-spec"
-                    label="Output Specification"
-                    value={refinedOutputSpec}
-                    onChange={setRefinedOutputSpec}
-                    rows={4}
-                  />
-                </>
-              ) : (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "60px 20px",
-                    gap: "16px",
-                  }}
-                >
-                  <p
-                    className="font-sans"
-                    style={{ fontSize: "14px", color: "var(--text-muted)" }}
-                  >
-                    Click below to generate polished specifications from your
-                    inputs.
-                  </p>
-                  <button
-                    onClick={handleRefine}
-                    className="font-sans transition-colors"
-                    style={{
-                      padding: "10px 20px",
-                      borderRadius: "var(--radius)",
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      background: "var(--text)",
-                      color: "var(--inverse-text)",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Generate Specifications
-                  </button>
-                </div>
-              )}
+              {/* Rubric */}
+              <RubricBuilder
+                criteria={criteria}
+                onChange={setCriteria}
+                taskTitle={title}
+                taskDescription={description}
+                taskCategory={categories[0] ?? "general"}
+              />
             </div>
           )}
 
-          {/* ── Step 5: Review ── */}
+          {/* ── Step 3: Review ── */}
           {step === "review" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               <p
@@ -1179,167 +968,46 @@ export default function NewTaskPage() {
                 <EditSectionButton onClick={() => goToStep("basics")} />
               </ReviewCard>
 
-              {/* Problem Statement card */}
-              <ReviewCard title="Problem Statement">
-                {editingSection === "description" ? (
-                  <div>
-                    <textarea
-                      value={refinedDescription}
-                      onChange={(e) => setRefinedDescription(e.target.value)}
-                      rows={5}
-                      className="w-full resize-none font-sans outline-none"
-                      style={{
-                        padding: "9px 12px",
-                        borderRadius: "var(--radius)",
-                        fontSize: "13px",
-                        lineHeight: 1.6,
-                        color: "var(--text)",
-                        border: "1px solid var(--border)",
-                        background: "var(--bg)",
-                      }}
-                    />
+              {/* Description card */}
+              {(refinedDescription || description) && (
+                <ReviewCard title="Description">
+                  <p
+                    className="font-sans"
+                    style={{
+                      fontSize: "13px",
+                      lineHeight: 1.7,
+                      color: "var(--text)",
+                      whiteSpace: "pre-wrap",
+                    }}
+                  >
+                    {refinedDescription || description}
+                  </p>
+                  {!isRefining && (
                     <button
-                      onClick={() => setEditingSection(null)}
-                      className="mt-2 font-sans flex items-center gap-1 transition-colors"
+                      onClick={handleRefine}
+                      disabled={isRefining || !description}
+                      className="mt-3 font-sans flex items-center gap-2 transition-colors disabled:opacity-40"
                       style={{
-                        padding: "5px 10px",
-                        borderRadius: "var(--radius)",
+                        padding: "7px 14px",
                         fontSize: "12px",
                         fontWeight: 500,
-                        color: "var(--inverse-text)",
-                        background: "var(--text)",
-                        border: "none",
+                        color: "var(--text-muted)",
+                        background: "transparent",
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius)",
                         cursor: "pointer",
                       }}
                     >
-                      <Check size={12} strokeWidth={2} />
-                      Done
+                      <RefreshCw size={12} strokeWidth={1.5} className={isRefining ? "animate-spin" : ""} />
+                      {hasRefined ? "Re-polish with AI" : "Polish with AI"}
                     </button>
-                  </div>
-                ) : (
-                  <>
-                    <p
-                      className="font-sans"
-                      style={{
-                        fontSize: "13px",
-                        lineHeight: 1.7,
-                        color: "var(--text)",
-                        whiteSpace: "pre-wrap",
-                      }}
-                    >
-                      {refinedDescription}
+                  )}
+                  {isRefining && (
+                    <p className="mt-2 font-sans" style={{ fontSize: "12px", color: "var(--text-faint)" }}>
+                      Generating polished specifications...
                     </p>
-                    <EditSectionButton
-                      onClick={() => setEditingSection("description")}
-                    />
-                  </>
-                )}
-              </ReviewCard>
-
-              {/* Specifications card */}
-              <ReviewCard title="Specifications">
-                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  <div>
-                    <p
-                      className="font-sans"
-                      style={{
-                        fontSize: "11px",
-                        fontWeight: 500,
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase" as const,
-                        color: "var(--text-faint)",
-                        marginBottom: "4px",
-                      }}
-                    >
-                      Input
-                    </p>
-                    <p
-                      className="font-sans"
-                      style={{
-                        fontSize: "13px",
-                        lineHeight: 1.6,
-                        color: "var(--text)",
-                        whiteSpace: "pre-wrap",
-                      }}
-                    >
-                      {refinedInputSpec}
-                    </p>
-                  </div>
-                  <div>
-                    <p
-                      className="font-sans"
-                      style={{
-                        fontSize: "11px",
-                        fontWeight: 500,
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase" as const,
-                        color: "var(--text-faint)",
-                        marginBottom: "4px",
-                      }}
-                    >
-                      Output
-                    </p>
-                    <p
-                      className="font-sans"
-                      style={{
-                        fontSize: "13px",
-                        lineHeight: 1.6,
-                        color: "var(--text)",
-                        whiteSpace: "pre-wrap",
-                      }}
-                    >
-                      {refinedOutputSpec}
-                    </p>
-                  </div>
-                </div>
-                <EditSectionButton onClick={() => goToStep("refine")} />
-              </ReviewCard>
-
-              {/* Files card */}
-              {(inputFiles.length > 0 || outputFiles.length > 0) && (
-                <ReviewCard title="Attached Files">
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "8px",
-                    }}
-                  >
-                    {[...inputFiles, ...outputFiles].map((f, i) => (
-                      <div
-                        key={i}
-                        className="font-sans"
-                        style={{
-                          padding: "6px 12px",
-                          borderRadius: "var(--radius)",
-                          fontSize: "12px",
-                          color: "var(--text)",
-                          background: "var(--bg-subtle)",
-                          border: "1px solid var(--border)",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "6px",
-                        }}
-                      >
-                        {f.file.type.startsWith("image/") ? (
-                          f.previewUrl ? (
-                            <img
-                              src={f.previewUrl}
-                              alt=""
-                              style={{
-                                width: "16px",
-                                height: "16px",
-                                borderRadius: "var(--radius)",
-                                objectFit: "cover",
-                              }}
-                            />
-                          ) : null
-                        ) : null}
-                        {f.file.name}
-                      </div>
-                    ))}
-                  </div>
-                  <EditSectionButton onClick={() => goToStep("data")} />
+                  )}
+                  <EditSectionButton onClick={() => goToStep("basics")} />
                 </ReviewCard>
               )}
 
@@ -1396,7 +1064,7 @@ export default function NewTaskPage() {
                     </div>
                   ))}
                 </div>
-                <EditSectionButton onClick={() => goToStep("rubric")} />
+                <EditSectionButton onClick={() => goToStep("evaluation")} />
               </ReviewCard>
             </div>
           )}

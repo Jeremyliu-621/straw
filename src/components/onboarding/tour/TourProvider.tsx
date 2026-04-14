@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import { ROLE_COMPANY } from "@/constants";
 import { ONBOARDING_STORAGE_KEY } from "@/constants";
 import { TourContext } from "./TourContext";
 import { COMPANY_TOUR_STEPS, BUILDER_TOUR_STEPS } from "./TourTypes";
@@ -26,8 +25,9 @@ export function TourProvider({ children, active }: TourProviderProps) {
   const [dismissing, setDismissing] = useState(false);
   const dismissTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const isCompany = session?.user?.role === ROLE_COMPANY;
-  const TOUR_STEPS = isCompany ? COMPANY_TOUR_STEPS : BUILDER_TOUR_STEPS;
+  // Derive tour from current path context, not role
+  const isCompanyView = pathname.startsWith("/dashboard/company") || pathname.startsWith("/tasks/new");
+  const TOUR_STEPS = isCompanyView ? COMPANY_TOUR_STEPS : BUILDER_TOUR_STEPS;
 
   useEffect(() => {
     if (active && currentStep === 0) {

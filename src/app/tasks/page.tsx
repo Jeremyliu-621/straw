@@ -42,7 +42,7 @@ export default function TasksPage() {
   useEffect(() => {
     fetch('/api/public/tasks')
       .then((res) => res.json())
-      .then((data) => setTasks(Array.isArray(data) ? data : []))
+      .then((data) => setTasks(Array.isArray(data) ? data : (data?.data ?? [])))
       .catch(() => setTasks([]))
       .finally(() => setLoading(false));
   }, []);
