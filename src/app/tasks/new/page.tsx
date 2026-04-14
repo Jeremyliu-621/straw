@@ -78,21 +78,35 @@ export default function NewTaskPage() {
 
   // Step 5: Review — inline editing
   const [editingSection, setEditingSection] = useState<string | null>(null);
+  const [failedAttachments, setFailedAttachments] = useState<string[]>([]);
 
   const currentStepIndex = STEPS.findIndex((s) => s.key === step);
 
-  function canAdvance(): boolean {
+  function getBlockers(): string[] {
+    const blockers: string[] = [];
     switch (step) {
       case "basics":
-        return title.length >= TASK_TITLE_MIN_LENGTH && !!deadline;
+        if (title.length < TASK_TITLE_MIN_LENGTH)
+          blockers.push(`Title must be at least ${TASK_TITLE_MIN_LENGTH} character${TASK_TITLE_MIN_LENGTH === 1 ? "" : "s"}`);
+        if (!deadline)
+          blockers.push("Set a deadline");
+        break;
       case "evaluation":
-        return weightsValid &&
-               criteria.every((c) => c.name.trim() !== "") &&
-               (evalMode === EVAL_MODE.LLM || evalImage.trim() !== "") &&
-               (evalMode !== EVAL_MODE.HYBRID || testWeight === 0 || testSuiteFile !== null);
-      default:
-        return true;
+        if (!weightsValid)
+          blockers.push(`Rubric weights must sum to ${RUBRIC_WEIGHT_SUM} (currently ${totalWeight})`);
+        if (criteria.some((c) => c.name.trim() === ""))
+          blockers.push("All criteria need a name");
+        if (evalMode !== EVAL_MODE.LLM && evalImage.trim() === "")
+          blockers.push("Eval container image is required for this mode");
+        if (evalMode === EVAL_MODE.HYBRID && testWeight > 0 && !testSuiteFile)
+          blockers.push("Upload a test suite or set test weight to 0");
+        break;
     }
+    return blockers;
+  }
+
+  function canAdvance(): boolean {
+    return getBlockers().length === 0;
   }
 
   const handleRefine = useCallback(async () => {
@@ -144,6 +158,7 @@ export default function NewTaskPage() {
   async function handleSubmit() {
     setLoading(true);
     setError(null);
+    setFailedAttachments([]);
     try {
       const res = await fetch("/api/tasks", {
         method: "POST",
@@ -203,6 +218,7 @@ export default function NewTaskPage() {
         ...outputFiles.map((f) => ({ ...f, field: "output_spec" as const })),
       ];
 
+      const failed: string[] = [];
       for (const att of allAttachments) {
         const attForm = new FormData();
         attForm.append("file", att.file);
@@ -213,9 +229,14 @@ export default function NewTaskPage() {
           body: attForm,
         });
         if (!attRes.ok) {
-          // Non-fatal: task was created, just warn about attachment failure
-          console.error("[attachments] Failed to upload:", att.file.name);
+          failed.push(att.file.name);
         }
+      }
+
+      if (failed.length > 0) {
+        setFailedAttachments(failed);
+        // Don't redirect yet — let user see the warning
+        return;
       }
 
       router.push("/dashboard/company");
@@ -1198,6 +1219,39 @@ export default function NewTaskPage() {
                 {error}
               </p>
             )}
+            {failedAttachments.length > 0 && (
+              <div
+                style={{
+                  padding: "12px 16px",
+                  background: "#fffbeb",
+                  border: "1px solid #d97706",
+                  borderRadius: "var(--radius)",
+                }}
+              >
+                <p className="font-sans" style={{ fontSize: "13px", fontWeight: 500, color: "#92400e", marginBottom: "4px" }}>
+                  Task created, but {failedAttachments.length} file{failedAttachments.length > 1 ? "s" : ""} failed to upload
+                </p>
+                <p className="font-sans" style={{ fontSize: "12px", color: "#a16207", marginBottom: "8px" }}>
+                  {failedAttachments.join(", ")}
+                </p>
+                <button
+                  onClick={() => router.push("/dashboard/company")}
+                  className="font-sans"
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    color: "#92400e",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                    textDecoration: "underline",
+                  }}
+                >
+                  Continue to dashboard
+                </button>
+              </div>
+            )}
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
             {currentStepIndex > 0 && (
@@ -1256,6 +1310,15 @@ export default function NewTaskPage() {
               </button>
             )}
           </div>
+          {!canAdvance() && step !== "review" && getBlockers().length > 0 && (
+            <ul style={{ margin: "8px 0 0", padding: 0, listStyle: "none" }}>
+              {getBlockers().map((b) => (
+                <li key={b} className="font-sans" style={{ fontSize: "12px", color: "var(--error, #b52a2a)", lineHeight: 1.6 }}>
+                  {b}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Check, Upload, Clock, AlertCircle, Trophy } from "lucide-react";
+import { ArrowLeft, Check, Upload, Clock, AlertCircle, Trophy, Copy, FileArchive, Loader2 } from "lucide-react";
 
 interface TaskSummary {
   id: string;
@@ -42,6 +42,63 @@ export default function EnterCompetitionPage() {
     id: string;
     uploadUrl: string;
   } | null>(null);
+
+  // Upload UI state
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const copyToClipboard = useCallback((text: string, field: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
+  }, []);
+
+  const handleFileSelect = useCallback((file: File) => {
+    setUploadError(null);
+    if (!file.name.endsWith(".zip")) {
+      setUploadError("Please upload a .zip file");
+      return;
+    }
+    if (file.size > 50 * 1024 * 1024) {
+      setUploadError("File must be under 50 MB");
+      return;
+    }
+    setUploadFile(file);
+  }, []);
+
+  const handleUpload = useCallback(async (submissionId: string) => {
+    if (!uploadFile) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", uploadFile);
+      const res = await fetch(`/api/v1/submissions/${submissionId}/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        const msg = data.error?.message ?? data.error ?? "Upload failed";
+        setUploadError(msg);
+        return;
+      }
+      setUploadSuccess(true);
+      // Refresh submissions list
+      const subsRes = await fetch(`/api/submissions?task_id=${id}`);
+      const subsData = await subsRes.json();
+      setExistingSubmissions(Array.isArray(subsData) ? subsData : []);
+    } catch {
+      setUploadError("Network error — please try again");
+    } finally {
+      setUploading(false);
+    }
+  }, [uploadFile, id]);
 
   useEffect(() => {
     if (!id) return;
@@ -123,99 +180,177 @@ export default function EnterCompetitionPage() {
 
   // ── Just registered state ────────────────────────────────
   if (justRegistered) {
+    // After successful upload
+    if (uploadSuccess) {
+      return (
+        <div className="mx-auto max-w-xl" style={{ padding: "48px 32px" }}>
+          <div style={{ padding: "32px", border: "1px solid var(--border)", borderRadius: "var(--radius)", textAlign: "center" }}>
+            <div className="flex items-center justify-center mx-auto" style={{ width: "48px", height: "48px", borderRadius: "50%", background: "var(--accent-subtle, #f0f9f0)", marginBottom: "16px" }}>
+              <Check size={24} strokeWidth={2} style={{ color: "var(--accent, #1a7a4a)" }} />
+            </div>
+            <h2 className="font-sans" style={{ fontSize: "22px", fontWeight: 500, color: "var(--text)", marginBottom: "8px" }}>
+              Upload complete
+            </h2>
+            <p className="font-sans" style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.6, marginBottom: "24px" }}>
+              Your submission is being evaluated. Check the task page for results.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <Link href={`/tasks/${id}`} className="font-sans inline-flex items-center gap-2" style={{ padding: "10px 20px", fontSize: "14px", fontWeight: 500, color: "var(--bg)", background: "var(--text)", borderRadius: "var(--radius)", textDecoration: "none" }}>
+                View results
+              </Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div className="mx-auto max-w-xl" style={{ padding: "48px 32px" }}>
+      <div className="mx-auto max-w-xl" style={{ padding: "32px" }}>
+        {/* Header */}
+        <div className="flex items-center gap-3" style={{ marginBottom: "24px" }}>
+          <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "var(--accent-subtle, #f0f9f0)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Check size={18} strokeWidth={2} style={{ color: "var(--accent, #1a7a4a)" }} />
+          </div>
+          <div>
+            <h2 className="font-sans" style={{ fontSize: "20px", fontWeight: 500, color: "var(--text)" }}>
+              You're registered — now upload your solution
+            </h2>
+            <p className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+              Your submission must include a <strong>SUBMISSION.md</strong> file.
+            </p>
+          </div>
+        </div>
+
+        {/* Upload zone */}
         <div
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={(e) => { e.preventDefault(); setDragOver(false); const f = e.dataTransfer.files[0]; if (f) handleFileSelect(f); }}
+          onClick={() => !uploadFile && fileInputRef.current?.click()}
           style={{
-            padding: "32px",
-            border: "1px solid var(--border)",
+            padding: uploadFile ? "16px 20px" : "32px 20px",
+            border: `2px dashed ${dragOver ? "var(--accent, #1a7a4a)" : uploadFile ? "var(--accent, #1a7a4a)" : "var(--border)"}`,
             borderRadius: "var(--radius)",
+            background: dragOver ? "var(--accent-subtle, #f0f9f0)" : uploadFile ? "var(--accent-subtle, #f0f9f0)" : "var(--bg)",
             textAlign: "center",
+            cursor: uploadFile ? "default" : "pointer",
+            transition: "border-color 0.15s, background 0.15s",
+            marginBottom: "16px",
           }}
         >
-          <div
-            className="flex items-center justify-center mx-auto"
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".zip"
+            style={{ display: "none" }}
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFileSelect(f); }}
+          />
+          {uploadFile ? (
+            <div className="flex items-center gap-3">
+              <FileArchive size={20} strokeWidth={1.5} style={{ color: "var(--accent, #1a7a4a)", flexShrink: 0 }} />
+              <div style={{ flex: 1, minWidth: 0, textAlign: "left" }}>
+                <p className="font-mono truncate" style={{ fontSize: "14px", color: "var(--text)" }}>{uploadFile.name}</p>
+                <p className="font-sans" style={{ fontSize: "12px", color: "var(--text-muted)" }}>{(uploadFile.size / 1024 / 1024).toFixed(1)} MB</p>
+              </div>
+              <button
+                onClick={(e) => { e.stopPropagation(); setUploadFile(null); setUploadError(null); }}
+                className="font-sans"
+                style={{ fontSize: "12px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer", padding: "4px 8px" }}
+              >
+                Remove
+              </button>
+            </div>
+          ) : (
+            <>
+              <Upload size={24} strokeWidth={1.5} style={{ color: "var(--text-faint)", marginBottom: "8px" }} />
+              <p className="font-sans" style={{ fontSize: "14px", color: "var(--text-muted)", marginBottom: "4px" }}>
+                Drag & drop your .zip file here, or click to browse
+              </p>
+              <p className="font-sans" style={{ fontSize: "12px", color: "var(--text-faint)" }}>
+                Max 50 MB. Must include SUBMISSION.md.
+              </p>
+            </>
+          )}
+        </div>
+
+        {/* Upload error */}
+        {uploadError && (
+          <p className="font-sans" style={{ fontSize: "13px", color: "var(--error, #b52a2a)", marginBottom: "12px" }}>
+            {uploadError}
+          </p>
+        )}
+
+        {/* Upload button */}
+        {uploadFile && (
+          <button
+            onClick={() => handleUpload(justRegistered.id)}
+            disabled={uploading}
+            className="w-full font-sans transition-colors disabled:opacity-40"
             style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "50%",
-              background: "var(--accent-subtle, #f0f9f0)",
-              marginBottom: "16px",
+              padding: "14px 24px",
+              fontSize: "15px",
+              fontWeight: 500,
+              color: "white",
+              background: "var(--accent, var(--text))",
+              borderRadius: "2.5px",
+              border: "none",
+              cursor: uploading ? "not-allowed" : "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              marginBottom: "24px",
             }}
           >
-            <Check size={24} strokeWidth={2} style={{ color: "var(--accent, #1a7a4a)" }} />
-          </div>
-          <h2
-            className="font-sans"
-            style={{ fontSize: "22px", fontWeight: 500, color: "var(--text)", marginBottom: "8px" }}
-          >
-            You're registered
-          </h2>
-          <p
-            className="font-sans"
-            style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.6, marginBottom: "24px" }}
-          >
-            Build your solution, then upload it before the deadline.
-            Your submission must include a <strong>SUBMISSION.md</strong> file.
-          </p>
-          <div
-            className="font-mono"
-            style={{
-              fontSize: "12px",
-              color: "var(--text-faint)",
-              padding: "8px 12px",
-              background: "var(--bg-subtle)",
-              borderRadius: "var(--radius)",
-              marginBottom: "16px",
-            }}
-          >
-            submission: {justRegistered.id}
-          </div>
-          <p
-            className="font-sans"
-            style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "24px" }}
-          >
-            Upload via the API:{" "}
-            <code style={{ fontSize: "12px", background: "var(--bg-subtle)", padding: "2px 6px", borderRadius: "4px" }}>
-              POST /api/v1/submissions/{justRegistered.id}/upload
-            </code>
-            {" "}then{" "}
-            <code style={{ fontSize: "12px", background: "var(--bg-subtle)", padding: "2px 6px", borderRadius: "4px" }}>
-              POST /api/v1/submissions/{justRegistered.id}/complete
-            </code>
-          </p>
-          <div className="flex items-center justify-center gap-3">
-            <Link
-              href={`/tasks/${id}`}
-              className="font-sans inline-flex items-center gap-2"
-              style={{
-                padding: "10px 20px",
-                fontSize: "14px",
-                fontWeight: 500,
-                color: "var(--text)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius)",
-                textDecoration: "none",
-              }}
-            >
-              View task
-            </Link>
-            <Link
-              href="/dashboard/agent"
-              className="font-sans inline-flex items-center gap-2"
-              style={{
-                padding: "10px 20px",
-                fontSize: "14px",
-                fontWeight: 500,
-                color: "var(--bg)",
-                background: "var(--text)",
-                borderRadius: "var(--radius)",
-                textDecoration: "none",
-              }}
-            >
-              Dashboard
-            </Link>
-          </div>
+            {uploading ? <><Loader2 size={16} className="animate-spin" /> Uploading...</> : <><Upload size={16} strokeWidth={2} /> Upload & evaluate</>}
+          </button>
+        )}
+
+        {/* Divider */}
+        <div className="flex items-center gap-3" style={{ margin: "24px 0" }}>
+          <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
+          <span className="font-sans" style={{ fontSize: "12px", color: "var(--text-faint)" }}>or upload via API</span>
+          <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
+        </div>
+
+        {/* Submission ID */}
+        <CopyBlock label="Submission ID" value={justRegistered.id} field="sub-id" copiedField={copiedField} onCopy={copyToClipboard} />
+
+        {/* Server-mediated upload */}
+        <CopyBlock
+          label="Upload (with auth)"
+          value={`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/v1/submissions/${justRegistered.id}/upload \\\n  -H "Authorization: Bearer YOUR_API_KEY" \\\n  -F file=@solution.zip`}
+          field="curl-upload"
+          copiedField={copiedField}
+          onCopy={copyToClipboard}
+        />
+
+        {/* Presigned URL upload */}
+        <CopyBlock
+          label="Upload (presigned URL — no auth needed)"
+          value={`curl -X PUT "${justRegistered.uploadUrl}" \\\n  -H "Content-Type: application/zip" \\\n  --data-binary @solution.zip`}
+          field="curl-presigned"
+          copiedField={copiedField}
+          onCopy={copyToClipboard}
+        />
+
+        {/* Signal completion (for presigned URL flow) */}
+        <CopyBlock
+          label="Then signal completion (presigned URL flow only)"
+          value={`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/v1/submissions/${justRegistered.id}/complete \\\n  -H "Authorization: Bearer YOUR_API_KEY"`}
+          field="curl-complete"
+          copiedField={copiedField}
+          onCopy={copyToClipboard}
+        />
+
+        {/* Nav buttons */}
+        <div className="flex items-center justify-center gap-3" style={{ marginTop: "24px" }}>
+          <Link href={`/tasks/${id}`} className="font-sans inline-flex items-center gap-2" style={{ padding: "10px 20px", fontSize: "14px", fontWeight: 500, color: "var(--text)", border: "1px solid var(--border)", borderRadius: "var(--radius)", textDecoration: "none" }}>
+            View task
+          </Link>
+          <Link href="/dashboard/agent" className="font-sans inline-flex items-center gap-2" style={{ padding: "10px 20px", fontSize: "14px", fontWeight: 500, color: "var(--text)", border: "1px solid var(--border)", borderRadius: "var(--radius)", textDecoration: "none" }}>
+            Dashboard
+          </Link>
         </div>
       </div>
     );
@@ -351,7 +486,7 @@ export default function EnterCompetitionPage() {
       )}
 
       {/* Active submission banner */}
-      {activeSubmission && (
+      {activeSubmission && activeSubmission.status !== "registered" && (
         <div
           style={{
             padding: "16px 20px",
@@ -362,23 +497,73 @@ export default function EnterCompetitionPage() {
           }}
         >
           <p className="font-sans" style={{ fontSize: "14px", fontWeight: 500, color: "#92400e", marginBottom: "4px" }}>
-            {activeSubmission.status === "registered"
-              ? "Awaiting upload"
-              : activeSubmission.status === "running"
-                ? "Evaluation in progress"
-                : "Submission pending"}
+            {activeSubmission.status === "running"
+              ? "Evaluation in progress"
+              : "Submission pending"}
           </p>
           <p className="font-sans" style={{ fontSize: "13px", color: "#a16207", lineHeight: 1.5 }}>
-            {activeSubmission.status === "registered"
-              ? "Upload your solution via the API, then signal completion."
-              : "Your submission is being evaluated. Check back soon for results."}
+            Your submission is being evaluated. Check back soon for results.
+          </p>
+        </div>
+      )}
+
+      {/* Upload zone for registered (awaiting upload) submission */}
+      {activeSubmission && activeSubmission.status === "registered" && (
+        <div style={{ marginBottom: "24px" }}>
+          <p className="font-sans" style={{ fontSize: "14px", fontWeight: 500, color: "var(--text)", marginBottom: "12px" }}>
+            Upload your solution
           </p>
           <div
-            className="font-mono"
-            style={{ fontSize: "11px", color: "#a16207", marginTop: "8px" }}
+            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={(e) => { e.preventDefault(); setDragOver(false); const f = e.dataTransfer.files[0]; if (f) handleFileSelect(f); }}
+            onClick={() => !uploadFile && fileInputRef.current?.click()}
+            style={{
+              padding: uploadFile ? "12px 16px" : "24px 16px",
+              border: `2px dashed ${dragOver ? "var(--accent, #1a7a4a)" : uploadFile ? "var(--accent, #1a7a4a)" : "var(--border)"}`,
+              borderRadius: "var(--radius)",
+              background: dragOver ? "var(--accent-subtle, #f0f9f0)" : uploadFile ? "var(--accent-subtle, #f0f9f0)" : "var(--bg)",
+              textAlign: "center",
+              cursor: uploadFile ? "default" : "pointer",
+              transition: "border-color 0.15s, background 0.15s",
+              marginBottom: "12px",
+            }}
           >
-            POST /api/v1/submissions/{activeSubmission.id}/upload
+            <input ref={fileInputRef} type="file" accept=".zip" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFileSelect(f); }} />
+            {uploadFile ? (
+              <div className="flex items-center gap-3">
+                <FileArchive size={18} strokeWidth={1.5} style={{ color: "var(--accent, #1a7a4a)", flexShrink: 0 }} />
+                <div style={{ flex: 1, minWidth: 0, textAlign: "left" }}>
+                  <p className="font-mono truncate" style={{ fontSize: "13px", color: "var(--text)" }}>{uploadFile.name}</p>
+                  <p className="font-sans" style={{ fontSize: "11px", color: "var(--text-muted)" }}>{(uploadFile.size / 1024 / 1024).toFixed(1)} MB</p>
+                </div>
+                <button onClick={(e) => { e.stopPropagation(); setUploadFile(null); setUploadError(null); }} className="font-sans" style={{ fontSize: "12px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>Remove</button>
+              </div>
+            ) : (
+              <>
+                <Upload size={20} strokeWidth={1.5} style={{ color: "var(--text-faint)", marginBottom: "6px" }} />
+                <p className="font-sans" style={{ fontSize: "13px", color: "var(--text-muted)" }}>Drop .zip here or click to browse</p>
+              </>
+            )}
           </div>
+          {uploadError && (
+            <p className="font-sans" style={{ fontSize: "12px", color: "var(--error, #b52a2a)", marginBottom: "8px" }}>{uploadError}</p>
+          )}
+          {uploadFile && (
+            <button
+              onClick={() => handleUpload(activeSubmission.id)}
+              disabled={uploading}
+              className="w-full font-sans transition-colors disabled:opacity-40"
+              style={{ padding: "12px 20px", fontSize: "14px", fontWeight: 500, color: "white", background: "var(--accent, var(--text))", borderRadius: "2.5px", border: "none", cursor: uploading ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
+            >
+              {uploading ? <><Loader2 size={16} className="animate-spin" /> Uploading...</> : <><Upload size={16} strokeWidth={2} /> Upload & evaluate</>}
+            </button>
+          )}
+          {uploadSuccess && (
+            <div style={{ padding: "12px 16px", background: "var(--accent-subtle, #f0f9f0)", border: "1px solid var(--accent, #1a7a4a)", borderRadius: "var(--radius)", marginTop: "12px" }}>
+              <p className="font-sans" style={{ fontSize: "13px", color: "var(--accent, #1a7a4a)", fontWeight: 500 }}>Upload complete — evaluation queued</p>
+            </div>
+          )}
         </div>
       )}
 
@@ -503,6 +688,43 @@ export default function EnterCompetitionPage() {
           </p>
         </div>
       )}
+    </div>
+  );
+}
+
+/* ── Helper Components ────────────────────────────────────── */
+
+function CopyBlock({ label, value, field, copiedField, onCopy }: {
+  label: string;
+  value: string;
+  field: string;
+  copiedField: string | null;
+  onCopy: (text: string, field: string) => void;
+}) {
+  return (
+    <div style={{ marginBottom: "12px" }}>
+      <p className="font-sans" style={{ fontSize: "12px", fontWeight: 500, color: "var(--text-muted)", marginBottom: "4px" }}>
+        {label}
+      </p>
+      <div
+        className="flex items-start gap-2"
+        style={{
+          padding: "10px 12px",
+          background: "var(--bg-subtle)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius)",
+        }}
+      >
+        <pre className="font-mono flex-1" style={{ fontSize: "11px", color: "var(--text)", margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-all", lineHeight: 1.5 }}>
+          {value}
+        </pre>
+        <button
+          onClick={() => onCopy(value, field)}
+          style={{ background: "none", border: "none", cursor: "pointer", color: copiedField === field ? "var(--accent, #1a7a4a)" : "var(--text-muted)", flexShrink: 0, padding: "2px" }}
+        >
+          {copiedField === field ? <Check size={14} /> : <Copy size={14} />}
+        </button>
+      </div>
     </div>
   );
 }

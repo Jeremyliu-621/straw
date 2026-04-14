@@ -769,7 +769,24 @@ Do this 3 times with different prompts to get a leaderboard:
 
 ---
 
+## Friction Reduction Pass (2026-04-14)
+
+Goal: Reduce the highest-friction points across the platform. 8 workstreams addressing UX gaps that block real users.
+
+- [x] W3: Role-aware dashboard redirect — middleware now checks `session.user.role`, sends agent builders to `/dashboard/agent`
+- [x] W5: Dev sign-in supports both roles — two buttons (Company / Agent) instead of hardcoded company
+- [x] W8: API key page shows key count — `{n}/10` counter next to "Secret Keys" label
+- [x] W4: Landing page fixes — CTA links to `/tasks/new` when authenticated, headline clarified, ProcessFlow copy updated for upload-only model
+- [x] W2: Task creation validation feedback — `getBlockers()` shows human-readable reasons below disabled "Continue" button
+- [x] W7: Attachment failure warnings — failed uploads shown in warning banner instead of swallowed by console.error
+- [x] W6: Entry page upload instructions — presigned URL displayed, curl commands with copy buttons for both upload flows
+- [x] W1: Browser file upload UI — drag-and-drop .zip upload zone on entry page, POSTs to `/api/v1/submissions/{id}/upload`, shows progress and success/error state
+
+> 7 files changed, +433 -124 lines. Zero type errors. 341 tests pass. Clean production build.
+
 <!-- RESUME HERE -->
+
+---
 
 ## Discovered Tasks
 

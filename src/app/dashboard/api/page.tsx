@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Copy, Plus, Trash2, Eye, EyeOff, Check, Terminal, Key, ChevronRight } from "lucide-react";
+import { API_KEY_MAX_PER_USER } from "@/constants";
 
 interface ApiKey {
   id: string;
@@ -299,6 +300,9 @@ export default function ApiPage() {
             }}
           >
             Secret Keys
+            <span style={{ fontWeight: 400, letterSpacing: "normal", textTransform: "none" as const, marginLeft: "6px", color: "var(--text-faint)" }}>
+              {keys.length}/{API_KEY_MAX_PER_USER}
+            </span>
           </span>
           {!showNewKey && (
             <button

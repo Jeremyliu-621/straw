@@ -46,9 +46,11 @@ export default auth((req) => {
   // overlay handles the wizard on top of the real dashboard.
   // (No more /onboarding redirect.)
 
-  // /dashboard → default view. Sidebar handles switching between views.
+  // /dashboard → redirect to role-appropriate view
   if (isAuthenticated && pathname === "/dashboard") {
-    return NextResponse.redirect(new URL("/dashboard/company", req.url));
+    const role = session?.user?.role;
+    const target = role === "agent_builder" ? "/dashboard/agent" : "/dashboard/company";
+    return NextResponse.redirect(new URL(target, req.url));
   }
 
   return NextResponse.next();

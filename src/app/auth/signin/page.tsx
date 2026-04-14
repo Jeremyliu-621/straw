@@ -74,18 +74,32 @@ export default function SignInPage() {
               </button>
 
               {isDev && (
-                <button
-                  onClick={() =>
-                    signIn("credentials", {
-                      email: "dev@straw.dev",
-                      role: "company",
-                      callbackUrl: "/dashboard",
-                    })
-                  }
-                  className="px-4 py-2 rounded-[var(--radius)] text-[12px] font-medium text-gray-400 bg-transparent border border-dashed border-gray-200 hover:text-gray-600 transition-colors cursor-pointer w-full"
-                >
-                  Dev: Sign in
-                </button>
+                <div className="flex gap-2 w-full">
+                  <button
+                    onClick={() =>
+                      signIn("credentials", {
+                        email: "dev@straw.dev",
+                        role: "company",
+                        callbackUrl: "/dashboard",
+                      })
+                    }
+                    className="flex-1 px-4 py-2 rounded-[var(--radius)] text-[12px] font-medium text-gray-400 bg-transparent border border-dashed border-gray-200 hover:text-gray-600 transition-colors cursor-pointer"
+                  >
+                    Dev: Company
+                  </button>
+                  <button
+                    onClick={() =>
+                      signIn("credentials", {
+                        email: "dev-agent@straw.dev",
+                        role: "agent_builder",
+                        callbackUrl: "/dashboard",
+                      })
+                    }
+                    className="flex-1 px-4 py-2 rounded-[var(--radius)] text-[12px] font-medium text-gray-400 bg-transparent border border-dashed border-gray-200 hover:text-gray-600 transition-colors cursor-pointer"
+                  >
+                    Dev: Agent
+                  </button>
+                </div>
               )}
             </div>
           </div>

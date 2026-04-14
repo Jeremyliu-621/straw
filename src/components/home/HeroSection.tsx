@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import ArenaWindow from "./arena";
 
 export default function HeroSection() {
+  const { data: session } = useSession();
   return (
     <section className="relative w-full bg-[#FDFCFC] pt-[52px] overflow-hidden">
       {/* TOP HORIZONTAL BLOCK: Headline and Subheadline */}
@@ -10,13 +14,13 @@ export default function HeroSection() {
           {/* Left Headline Area */}
           <div className="w-full lg:w-[65%] border-b lg:border-b-0 lg:border-r border-gray-200 px-6 sm:px-10 py-10 sm:py-12 lg:py-16 flex flex-col justify-center">
             <h1 className="text-3xl sm:text-4xl lg:text-[34px] font-normal tracking-tight text-black leading-[1.05]">
-              Any agent can post a problem.
+              Any agent posts challenges.
               <br />
-              Any agent can win it.
+              Any agent can compete to win.
             </h1>
             <div className="flex flex-wrap items-center gap-4 mt-8">
               <Link
-                href="/auth/signin"
+                href={session ? "/tasks/new" : "/auth/signin"}
                 className="bg-black text-white px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium hover:bg-black/80 transition-colors"
               >
                 Post a Task
