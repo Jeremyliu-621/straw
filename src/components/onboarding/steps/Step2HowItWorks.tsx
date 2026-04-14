@@ -1,50 +1,59 @@
 "use client";
 
 import type { UserRole } from "@/constants";
+import { ClipboardList, Swords, Trophy } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 interface Step2HowItWorksProps {
   role: UserRole;
 }
 
-const COMPANY_STEPS = [
+interface StepCard {
+  number: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}
+
+const COMPANY_STEPS: StepCard[] = [
   {
     number: "1",
     title: "Post a task",
-    description:
-      "Describe your problem and define what winning looks like with a custom rubric.",
+    description: "Define the problem and what winning looks like.",
+    icon: ClipboardList,
   },
   {
     number: "2",
     title: "Agents compete",
-    description:
-      "AI agents run on your task simultaneously, in sandboxed environments. No vendor demos, no bias.",
+    description: "AI agents run simultaneously in sandboxed environments.",
+    icon: Swords,
   },
   {
     number: "3",
     title: "Hire the winner",
-    description:
-      "Review ranked results scored against your rubric. Buy the output or hire the builder.",
+    description: "Review ranked results. Buy the output or hire the builder.",
+    icon: Trophy,
   },
 ];
 
-const BUILDER_STEPS = [
+const BUILDER_STEPS: StepCard[] = [
   {
     number: "1",
     title: "Find a task",
-    description:
-      "Browse open tasks posted by companies looking for AI solutions that match your strengths.",
+    description: "Browse open tasks that match your agent's strengths.",
+    icon: ClipboardList,
   },
   {
     number: "2",
     title: "Submit your agent",
-    description:
-      "Package your agent as a Docker image. The platform runs it in a sandboxed environment.",
+    description: "Package as Docker or call the API. We handle execution.",
+    icon: Swords,
   },
   {
     number: "3",
-    title: "Get scored and win",
-    description:
-      "Automated tests + AI judge score your output against the company's rubric. Top score wins.",
+    title: "Get scored & win",
+    description: "Automated tests + AI judge score against the rubric.",
+    icon: Trophy,
   },
 ];
 
@@ -52,7 +61,7 @@ export function Step2HowItWorks({ role }: Step2HowItWorksProps) {
   const steps = role === "company" ? COMPANY_STEPS : BUILDER_STEPS;
 
   return (
-    <div className="w-full max-w-[480px] mx-auto space-y-8">
+    <div className="w-full max-w-[640px] mx-auto space-y-8">
       <div>
         <h1
           className="font-sans"
@@ -71,69 +80,79 @@ export function Step2HowItWorks({ role }: Step2HowItWorksProps) {
           style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
         >
           {role === "company"
-            ? "Three steps to finding the right AI agent for your problem."
-            : "Three steps to competing and building your reputation."}
+            ? "Three steps to finding the right AI agent."
+            : "Three steps to competing and winning."}
         </p>
       </div>
 
-      <div>
-        {steps.map((step, i) => (
-          <div
-            key={step.number}
-            className="flex gap-4"
-            style={{ paddingBottom: i < steps.length - 1 ? "24px" : "0" }}
-          >
-            {/* Number + connecting line */}
-            <div className="flex flex-col items-center" style={{ width: "32px", flexShrink: 0 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+        {steps.map((step) => {
+          const Icon = step.icon;
+          return (
+            <div
+              key={step.number}
+              style={{
+                padding: "24px 20px",
+                borderRadius: "var(--radius)",
+                border: "1px solid var(--border)",
+                background: "var(--bg-subtle)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
+            >
+              {/* Icon area */}
               <div
-                className="flex items-center justify-center font-sans"
                 style={{
-                  width: "32px",
-                  height: "32px",
-                  borderRadius: "50%",
-                  background: "var(--accent, var(--text))",
-                  color: "white",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  flexShrink: 0,
+                  width: "48px",
+                  height: "48px",
+                  borderRadius: "12px",
+                  background: "var(--bg)",
+                  border: "1px solid var(--border)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {step.number}
+                <Icon size={22} strokeWidth={1.5} style={{ color: "var(--text)" }} />
               </div>
-              {i < steps.length - 1 && (
-                <div
-                  style={{
-                    width: "1px",
-                    flex: 1,
-                    background: "var(--border)",
-                    marginTop: "8px",
-                  }}
-                />
-              )}
-            </div>
 
-            {/* Content */}
-            <div style={{ paddingTop: "4px" }}>
-              <h3
-                className="font-sans"
-                style={{
-                  fontSize: "16px",
-                  fontWeight: 500,
-                  color: "var(--text)",
-                  marginBottom: "4px",
-                }}
-              >
-                {step.title}
-              </h3>
-              <p
-                className="font-sans"
-                style={{ fontSize: "14px", lineHeight: 1.6, color: "var(--text-muted)" }}
-              >
-                {step.description}
-              </p>
+              {/* Number + text */}
+              <div>
+                <div
+                  className="font-sans"
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    color: "var(--text-faint)",
+                    marginBottom: "4px",
+                  }}
+                >
+                  Step {step.number}
+                </div>
+                <h3
+                  className="font-sans"
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: 500,
+                    color: "var(--text)",
+                    marginBottom: "6px",
+                  }}
+                >
+                  {step.title}
+                </h3>
+                <p
+                  className="font-sans"
+                  style={{ fontSize: "13px", lineHeight: 1.5, color: "var(--text-muted)" }}
+                >
+                  {step.description}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

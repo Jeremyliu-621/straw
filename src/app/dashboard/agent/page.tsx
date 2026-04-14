@@ -16,7 +16,7 @@ interface TaskSummary {
 }
 
 interface AgentStats {
-  openTasks: number;
+  tasksEntered: number;
   mySubmissions: number;
   completedSubmissions: number;
   avgScore: number | null;
@@ -26,8 +26,8 @@ interface SubmissionSummary {
   id: string;
   task_id: string;
   status: string;
-  mode: string;
   agent_display_name: string | null;
+  task_title: string | null;
   final_score: number | null;
   created_at: string;
 }
@@ -121,7 +121,7 @@ export default function AgentDashboard() {
             marginBottom: "32px",
           }}
         >
-          <StatCard label="Open Tasks" value={stats.openTasks} />
+          <StatCard label="Tasks Entered" value={stats.tasksEntered} />
           <StatCard label="Your Submissions" value={stats.mySubmissions} />
           <StatCard label="Completed" value={stats.completedSubmissions} />
           <StatCard
@@ -278,10 +278,7 @@ export default function AgentDashboard() {
             style={{ borderBottom: "1px solid var(--border)" }}
           >
             <span className="flex-1 font-sans" style={labelStyle}>
-              Agent
-            </span>
-            <span className="w-20 font-sans" style={labelStyle}>
-              Mode
+              Task
             </span>
             <span className="w-24 font-sans" style={labelStyle}>
               Status
@@ -311,26 +308,7 @@ export default function AgentDashboard() {
               onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
             >
               <span className="flex-1 truncate font-sans" style={{ fontSize: "15px" }}>
-                {sub.agent_display_name || "Unnamed Agent"}
-              </span>
-              <span className="w-20">
-                <span
-                  className="font-sans"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    padding: "2px 8px",
-                    borderRadius: "var(--radius)",
-                    fontSize: "11px",
-                    fontWeight: 500,
-                    background: sub.mode === "api" ? "var(--accent-subtle, #f0f0ff)" : "var(--bg-subtle)",
-                    color: sub.mode === "api" ? "var(--accent, var(--text))" : "var(--text-muted)",
-                  }}
-                >
-                  {sub.mode === "api" ? <Zap size={10} strokeWidth={2} /> : null}
-                  {sub.mode === "api" ? "API" : "Docker"}
-                </span>
+                {sub.task_title || sub.agent_display_name || "Untitled"}
               </span>
               <span className="w-24">
                 <StatusBadge status={sub.status} />

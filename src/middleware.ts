@@ -42,15 +42,9 @@ export default auth((req) => {
     return NextResponse.redirect(signInUrl);
   }
 
-  // Redirect to onboarding if not yet completed
-  if (
-    isAuthenticated &&
-    (!session.user.onboarded || !session.user.role) &&
-    isProtected &&
-    !pathname.startsWith("/onboarding")
-  ) {
-    return NextResponse.redirect(new URL("/onboarding", req.url));
-  }
+  // Un-onboarded users go straight to the dashboard — the OnboardingProvider
+  // overlay handles the wizard on top of the real dashboard.
+  // (No more /onboarding redirect.)
 
   // /dashboard → default view. Sidebar handles switching between views.
   if (isAuthenticated && pathname === "/dashboard") {

@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ONBOARDING_STORAGE_KEY } from "@/constants";
 import { TourContext } from "./TourContext";
 import { COMPANY_TOUR_STEPS, BUILDER_TOUR_STEPS } from "./TourTypes";
@@ -140,23 +140,24 @@ export function TourProvider({ children, active }: TourProviderProps) {
           />
 
           {/* Tour panel */}
-          {currentTourStep && (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{
-                opacity: dismissing ? 0 : 1,
-                y: dismissing ? 16 : 0,
-              }}
-              transition={{ duration: dismissing ? 0.5 : 0.3, ease: "easeOut" }}
-              className="fixed bottom-8 right-8 z-[56] w-[360px]"
-            >
-              <TourPanel
-                step={currentTourStep}
-                stepNumber={currentStep}
-                totalSteps={TOUR_STEPS.length}
-              />
-            </motion.div>
-          )}
+          <AnimatePresence>
+            {currentTourStep && !dismissing && (
+              <motion.div
+                key="tour-panel"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 16 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="fixed bottom-8 right-8 z-[56] w-[360px]"
+              >
+                <TourPanel
+                  step={currentTourStep}
+                  stepNumber={currentStep}
+                  totalSteps={TOUR_STEPS.length}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </>
       )}
     </TourContext.Provider>

@@ -44,7 +44,7 @@ export function OnboardingModal({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="fixed inset-0 z-[60]"
-            style={{ background: "rgba(17, 17, 17, 0.5)" }}
+            style={{ background: "rgba(17, 17, 17, 0.35)" }}
             onClick={onClose}
           />
 

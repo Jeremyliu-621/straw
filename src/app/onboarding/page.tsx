@@ -1,24 +1,16 @@
 "use client";
 
-import { Suspense } from "react";
-import { OnboardingProvider } from "@/components/onboarding/OnboardingProvider";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
+/**
+ * Legacy /onboarding route — redirects to the dashboard where
+ * the OnboardingProvider shows the wizard overlay.
+ */
 export default function OnboardingPage() {
-  return (
-    <Suspense>
-      <OnboardingProvider>
-        <div
-          className="flex min-h-screen items-center justify-center"
-          style={{ background: "var(--bg)" }}
-        >
-          <img
-            src="/strawlonglogo.png"
-            alt="Straw"
-            className="h-5 w-auto"
-            style={{ opacity: 0.3 }}
-          />
-        </div>
-      </OnboardingProvider>
-    </Suspense>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/dashboard");
+  }, [router]);
+  return null;
 }

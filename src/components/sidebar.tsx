@@ -13,6 +13,7 @@ import {
   Building2,
   Bot,
   Code2,
+  BookOpen,
 } from "lucide-react";
 
 interface NavItem {
@@ -25,6 +26,7 @@ const COMPANY_NAV: NavItem[] = [
   { label: "My Tasks", href: "/dashboard/company", icon: ClipboardList },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { label: "API", href: "/dashboard/api", icon: Code2 },
+  { label: "Docs", href: "/docs", icon: BookOpen },
 ];
 
 const AGENT_NAV: NavItem[] = [
@@ -32,6 +34,7 @@ const AGENT_NAV: NavItem[] = [
   { label: "Profile", href: "/agents/profile", icon: User },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { label: "API", href: "/dashboard/api", icon: Code2 },
+  { label: "Docs", href: "/docs", icon: BookOpen },
 ];
 
 interface WorkspaceOption {

@@ -34,23 +34,33 @@ export async function GET(req: Request) {
   if (taskId) {
     const { data, error } = await db
       .from("submissions")
-      .select("*")
+      .select("*, tasks(title)")
       .eq("task_id", taskId)
       .eq("agent_id", user.supabaseId)
       .order("created_at", { ascending: false });
 
     if (error) return apiError("Failed to fetch submissions", 500);
-    return NextResponse.json(data ?? []);
+    const enriched = (data ?? []).map((s) => ({
+      ...s,
+      task_title: (s.tasks as { title: string } | null)?.title ?? null,
+      tasks: undefined,
+    }));
+    return NextResponse.json(enriched);
   }
 
   const { data, error } = await db
     .from("submissions")
-    .select("*")
+    .select("*, tasks(title)")
     .eq("agent_id", user.supabaseId)
     .order("created_at", { ascending: false });
 
   if (error) return apiError("Failed to fetch submissions", 500);
-  return NextResponse.json(data);
+  const enriched = (data ?? []).map((s) => ({
+    ...s,
+    task_title: (s.tasks as { title: string } | null)?.title ?? null,
+    tasks: undefined,
+  }));
+  return NextResponse.json(enriched);
 }
 
 // ── POST /api/submissions (upload-only) ──────────────────────

@@ -26,20 +26,33 @@ interface CompanyStats {
   totalBudgetCents: number;
 }
 
+interface RecentSubmission {
+  id: string;
+  task_id: string;
+  task_title: string | null;
+  agent_display_name: string | null;
+  status: string;
+  final_score: number | null;
+  created_at: string;
+}
+
 export default function CompanyDashboard() {
   const { data: session } = useSession();
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
   const [stats, setStats] = useState<CompanyStats | null>(null);
+  const [recentSubs, setRecentSubs] = useState<RecentSubmission[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       fetch("/api/tasks").then((res) => res.json()),
       fetch("/api/dashboard/stats").then((res) => res.json()),
+      fetch("/api/dashboard/submissions").then((res) => res.json()),
     ])
-      .then(([tasksData, statsData]) => {
+      .then(([tasksData, statsData, subsData]) => {
         setTasks(tasksData?.own ?? []);
         setStats(statsData);
+        setRecentSubs(Array.isArray(subsData) ? subsData : []);
       })
       .catch(() => {
         setTasks([]);
@@ -249,6 +262,9 @@ export default function CompanyDashboard() {
             <span className="w-24 text-right font-mono" style={labelStyle}>
               Budget
             </span>
+            <span className="w-28 text-right font-sans" style={labelStyle}>
+              Deadline
+            </span>
           </div>
 
           {/* Table rows */}
@@ -300,6 +316,99 @@ export default function CompanyDashboard() {
                 style={{ fontSize: "14px", color: "var(--text)" }}
               >
                 ${(task.budget_cents / 100).toLocaleString()}
+              </span>
+              <span
+                className="w-28 text-right font-sans"
+                style={{ fontSize: "13px", color: "var(--text-muted)" }}
+              >
+                {new Date(task.deadline).toLocaleDateString()}
+              </span>
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {/* Recent Submissions */}
+      {!loading && recentSubs.length > 0 && (
+        <div style={{ marginTop: "40px" }}>
+          <div style={{ marginBottom: "12px" }}>
+            <span
+              className="font-sans"
+              style={{
+                fontSize: "11px",
+                fontWeight: 500,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase" as const,
+                color: "var(--text-muted)",
+              }}
+            >
+              Recent Submissions ({recentSubs.length})
+            </span>
+          </div>
+
+          {/* Table header */}
+          <div
+            className="flex items-center gap-4 px-4 py-2"
+            style={{ borderBottom: "1px solid var(--border)" }}
+          >
+            <span className="flex-1 font-sans" style={labelStyle}>
+              Task
+            </span>
+            <span className="w-32 font-sans" style={labelStyle}>
+              Agent
+            </span>
+            <span className="w-24 font-sans" style={labelStyle}>
+              Status
+            </span>
+            <span className="w-20 text-right font-mono" style={labelStyle}>
+              Score
+            </span>
+            <span className="w-28 text-right font-sans" style={labelStyle}>
+              Submitted
+            </span>
+          </div>
+
+          {recentSubs.map((sub) => (
+            <Link
+              key={sub.id}
+              href={`/tasks/${sub.task_id}`}
+              className="flex items-center gap-4 px-4"
+              style={{
+                height: "56px",
+                borderBottom: "1px solid var(--border)",
+                textDecoration: "none",
+                color: "var(--text)",
+                transition: "background-color 0.15s ease",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
+              onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
+            >
+              <span className="flex-1 truncate font-sans" style={{ fontSize: "15px" }}>
+                {sub.task_title || "Untitled"}
+              </span>
+              <span
+                className="w-32 truncate font-sans"
+                style={{ fontSize: "13px", color: "var(--text-muted)" }}
+              >
+                {sub.agent_display_name || "Anonymous"}
+              </span>
+              <span className="w-24">
+                <StatusBadge status={sub.status} />
+              </span>
+              <span
+                className="w-20 text-right font-mono"
+                style={{
+                  fontSize: "14px",
+                  color: sub.final_score != null ? "var(--text)" : "var(--text-faint)",
+                }}
+              >
+                {sub.final_score != null ? sub.final_score.toFixed(1) : "--"}
+              </span>
+              <span
+                className="w-28 text-right font-sans"
+                style={{ fontSize: "13px", color: "var(--text-muted)" }}
+              >
+                {new Date(sub.created_at).toLocaleDateString()}
               </span>
             </Link>
           ))}

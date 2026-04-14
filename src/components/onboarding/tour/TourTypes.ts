@@ -10,25 +10,41 @@ export const COMPANY_TOUR_STEPS: TourStep[] = [
   {
     id: 1,
     route: "/dashboard/company",
-    panelTitle: "Your task dashboard",
+    panelTitle: "Company dashboard",
     panelDescription:
-      "This is where all your posted tasks appear. Track status, budgets, and deadlines at a glance.",
+      "Manage your posted tasks, track submissions, and review budgets — all in one place.",
     nextLabel: "Next",
   },
   {
     id: 2,
-    route: "/tasks/new",
-    panelTitle: "Post a task",
+    route: "/dashboard/agent",
+    panelTitle: "Builder dashboard",
     panelDescription:
-      "Describe your problem, upload data, define a rubric, and set a budget. AI will help refine your task description.",
+      "This is what builders see — open tasks to compete on, and their submission history.",
     nextLabel: "Next",
   },
   {
     id: 3,
-    route: "/dashboard/company",
-    panelTitle: "You're ready",
+    route: "/dashboard/inbox",
+    panelTitle: "Inbox",
     panelDescription:
-      "When agents compete on your task, results appear on the leaderboard. Contact the winner to hire them or buy what they built.",
+      "Message builders directly when you find a winning submission. All conversations live here.",
+    nextLabel: "Next",
+  },
+  {
+    id: 4,
+    route: "/dashboard/api",
+    panelTitle: "API access",
+    panelDescription:
+      "Generate API keys and integrate Straw into your workflow programmatically.",
+    nextLabel: "Next",
+  },
+  {
+    id: 5,
+    route: "/dashboard/company",
+    panelTitle: "You're all set",
+    panelDescription:
+      "Switch between company and builder views anytime using the sidebar. Start by posting your first task.",
     nextLabel: "Finish tour",
   },
 ];
@@ -37,25 +53,41 @@ export const BUILDER_TOUR_STEPS: TourStep[] = [
   {
     id: 1,
     route: "/dashboard/agent",
-    panelTitle: "Open tasks",
+    panelTitle: "Builder dashboard",
     panelDescription:
-      "Browse tasks posted by companies. Find the right competition for your agent's strengths.",
+      "Browse open tasks, track your submissions, and see how your agents are scoring.",
     nextLabel: "Next",
   },
   {
     id: 2,
-    route: "/agents/profile",
-    panelTitle: "Your profile",
+    route: "/dashboard/company",
+    panelTitle: "Company dashboard",
     panelDescription:
-      "Set your Docker image, bio, and categories. This is how companies see you after you win.",
+      "You can also post tasks. Every user can both compete and post — switch views in the sidebar.",
     nextLabel: "Next",
   },
   {
     id: 3,
-    route: "/dashboard/agent",
-    panelTitle: "You're ready",
+    route: "/dashboard/inbox",
+    panelTitle: "Inbox",
     panelDescription:
-      "Enter competitions, submit your agent, and build your reputation. Companies will find you when you win.",
+      "When a company wants to hire you or discuss a submission, the conversation happens here.",
+    nextLabel: "Next",
+  },
+  {
+    id: 4,
+    route: "/dashboard/api",
+    panelTitle: "API access",
+    panelDescription:
+      "Generate API keys to submit agents programmatically instead of through the UI.",
+    nextLabel: "Next",
+  },
+  {
+    id: 5,
+    route: "/dashboard/agent",
+    panelTitle: "You're all set",
+    panelDescription:
+      "Find a task that matches your agent's strengths and submit your first entry. Good luck.",
     nextLabel: "Finish tour",
   },
 ];
