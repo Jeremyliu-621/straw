@@ -13,6 +13,7 @@ import {
   EVAL_MODE,
   type EvalMode,
 } from "@/constants";
+import { TextareaWithAttachments, type UploadedFile } from "@/components/file-upload-zone";
 
 interface Criterion {
   name: string;
@@ -36,6 +37,11 @@ export default function NewTaskPage() {
   // Step 1: Basics
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionFiles, setDescriptionFiles] = useState<UploadedFile[]>([]);
+  const [inputDescription, setInputDescription] = useState("");
+  const [outputDescription, setOutputDescription] = useState("");
+  const [inputFiles, setInputFiles] = useState<UploadedFile[]>([]);
+  const [outputFiles, setOutputFiles] = useState<UploadedFile[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [otherCategory, setOtherCategory] = useState("");
   const [budgetDollars, setBudgetDollars] = useState(500);
@@ -99,6 +105,8 @@ export default function NewTaskPage() {
         body: JSON.stringify({
           title,
           description,
+          inputDescription,
+          outputDescription,
           category: categories
             .map((c) => (c === "other" ? otherCategory.trim() : c))
             .join(", "),
@@ -127,7 +135,7 @@ export default function NewTaskPage() {
     } finally {
       setIsRefining(false);
     }
-  }, [title, description, categories, otherCategory, criteria, testWeight]);
+  }, [title, description, inputDescription, outputDescription, categories, otherCategory, criteria, testWeight]);
 
   function goToStep(target: Step) {
     setStep(target);
@@ -146,8 +154,8 @@ export default function NewTaskPage() {
           category: categories
             .map((c) => (c === "other" ? otherCategory.trim() : c))
             .join(", "),
-          input_spec: refinedInputSpec || "",
-          output_spec: refinedOutputSpec || "",
+          input_spec: refinedInputSpec || inputDescription,
+          output_spec: refinedOutputSpec || outputDescription,
           test_weight: evalMode === EVAL_MODE.LLM ? testWeight : 0,
           llm_weight: evalMode === EVAL_MODE.LLM ? llmWeight : 100,
           eval_mode: evalMode,
@@ -185,6 +193,28 @@ export default function NewTaskPage() {
           const suiteData = await suiteRes.json();
           setError(suiteData.error ?? "Task created but failed to upload test suite");
           return;
+        }
+      }
+
+      // Upload file attachments (description, input spec, output spec)
+      const allAttachments = [
+        ...descriptionFiles.map((f) => ({ ...f, field: "description" as const })),
+        ...inputFiles.map((f) => ({ ...f, field: "input_spec" as const })),
+        ...outputFiles.map((f) => ({ ...f, field: "output_spec" as const })),
+      ];
+
+      for (const att of allAttachments) {
+        const attForm = new FormData();
+        attForm.append("file", att.file);
+        attForm.append("field", att.field);
+        attForm.append("description", att.description);
+        const attRes = await fetch(`/api/tasks/${task.id}/attachments`, {
+          method: "POST",
+          body: attForm,
+        });
+        if (!attRes.ok) {
+          // Non-fatal: task was created, just warn about attachment failure
+          console.error("[attachments] Failed to upload:", att.file.name);
         }
       }
 
@@ -353,13 +383,39 @@ export default function NewTaskPage() {
                 />
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
-                <TextareaField
+                <TextareaWithAttachments
                   id="task-description"
                   label="Description"
                   value={description}
                   onChange={setDescription}
-                  placeholder={"- What will agents receive as input?\n- What should they produce?\n- Any constraints or requirements?"}
-                  rows={5}
+                  placeholder="High-level overview of the task, constraints, and requirements"
+                  rows={4}
+                  files={descriptionFiles}
+                  onFilesChange={setDescriptionFiles}
+                />
+              </div>
+              <div style={{ gridColumn: "1 / -1" }}>
+                <TextareaWithAttachments
+                  id="input-description"
+                  label="What will agents receive?"
+                  value={inputDescription}
+                  onChange={setInputDescription}
+                  placeholder="e.g. A CSV file with customer transaction data including columns: date, amount, category, merchant..."
+                  rows={3}
+                  files={inputFiles}
+                  onFilesChange={setInputFiles}
+                />
+              </div>
+              <div style={{ gridColumn: "1 / -1" }}>
+                <TextareaWithAttachments
+                  id="output-description"
+                  label="What should agents produce?"
+                  value={outputDescription}
+                  onChange={setOutputDescription}
+                  placeholder="e.g. A JSON file at /output/result.json with categorized transactions and a summary report..."
+                  rows={3}
+                  files={outputFiles}
+                  onFilesChange={setOutputFiles}
                 />
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
@@ -1006,6 +1062,33 @@ export default function NewTaskPage() {
                     <p className="mt-2 font-sans" style={{ fontSize: "12px", color: "var(--text-faint)" }}>
                       Generating polished specifications...
                     </p>
+                  )}
+                  <EditSectionButton onClick={() => goToStep("basics")} />
+                </ReviewCard>
+              )}
+
+              {/* Input / Output card */}
+              {(inputDescription || outputDescription || refinedInputSpec || refinedOutputSpec) && (
+                <ReviewCard title="Input / Output">
+                  {(refinedInputSpec || inputDescription) && (
+                    <div style={{ marginBottom: refinedOutputSpec || outputDescription ? "14px" : 0 }}>
+                      <p className="font-sans" style={{ fontSize: "12px", color: "var(--text-faint)", marginBottom: "4px" }}>
+                        What agents receive
+                      </p>
+                      <p className="font-sans" style={{ fontSize: "13px", lineHeight: 1.7, color: "var(--text)", whiteSpace: "pre-wrap" }}>
+                        {refinedInputSpec || inputDescription}
+                      </p>
+                    </div>
+                  )}
+                  {(refinedOutputSpec || outputDescription) && (
+                    <div>
+                      <p className="font-sans" style={{ fontSize: "12px", color: "var(--text-faint)", marginBottom: "4px" }}>
+                        What agents should produce
+                      </p>
+                      <p className="font-sans" style={{ fontSize: "13px", lineHeight: 1.7, color: "var(--text)", whiteSpace: "pre-wrap" }}>
+                        {refinedOutputSpec || outputDescription}
+                      </p>
+                    </div>
                   )}
                   <EditSectionButton onClick={() => goToStep("basics")} />
                 </ReviewCard>

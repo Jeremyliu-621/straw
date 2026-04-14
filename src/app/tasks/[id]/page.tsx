@@ -27,6 +27,16 @@ interface Task {
   eval_image: string | null;
 }
 
+interface TaskAttachment {
+  id: string;
+  field: string;
+  filename: string;
+  file_size: number;
+  content_type: string;
+  description: string;
+  download_url: string | null;
+}
+
 interface Submission {
   id: string;
   status: string;
@@ -38,6 +48,7 @@ export default function TaskDetailPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const [task, setTask] = useState<Task | null>(null);
+  const [attachments, setAttachments] = useState<TaskAttachment[]>([]);
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [loading, setLoading] = useState(true);
   const [publishing, setPublishing] = useState(false);
@@ -59,7 +70,10 @@ export default function TaskDetailPage() {
         if (!res.ok) throw new Error("Not found");
         return res.json();
       })
-      .then((data) => setTask(data))
+      .then((data) => {
+        setTask(data);
+        if (data.attachments) setAttachments(data.attachments);
+      })
       .catch(() => router.push("/dashboard"))
       .finally(() => setLoading(false));
 
@@ -152,6 +166,7 @@ export default function TaskDetailPage() {
                 <p className="font-sans text-[15px] leading-relaxed text-gray-800">
                   {task.description}
                 </p>
+                <AttachmentChips items={attachments.filter((a) => a.field === "description")} />
               </Section>
 
               <Section label="INPUT SPECIFICATION">
@@ -160,6 +175,7 @@ export default function TaskDetailPage() {
                     {task.input_spec}
                   </p>
                 </div>
+                <AttachmentChips items={attachments.filter((a) => a.field === "input_spec")} />
               </Section>
 
               <Section label="OUTPUT SPECIFICATION">
@@ -168,6 +184,7 @@ export default function TaskDetailPage() {
                     {task.output_spec}
                   </p>
                 </div>
+                <AttachmentChips items={attachments.filter((a) => a.field === "output_spec")} />
               </Section>
 
               <Section label="EVALUATION">
@@ -340,6 +357,37 @@ function Section({
         {label}
       </p>
       {children}
+    </div>
+  );
+}
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function AttachmentChips({ items }: { items: TaskAttachment[] }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-2 mt-3">
+      {items.map((att) => (
+        <a
+          key={att.id}
+          href={att.download_url ?? "#"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md hover:bg-gray-100 transition-colors"
+          title={att.description || att.filename}
+        >
+          <span className="font-sans text-[12px] font-medium text-gray-700 truncate max-w-[180px]">
+            {att.filename}
+          </span>
+          <span className="font-sans text-[11px] text-gray-400">
+            {formatFileSize(att.file_size)}
+          </span>
+        </a>
+      ))}
     </div>
   );
 }

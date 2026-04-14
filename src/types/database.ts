@@ -345,6 +345,32 @@ export interface NotificationPreferenceInsert {
   in_app_enabled: boolean;
 }
 
+// ── Task Attachments ────────────────────────────────────────
+
+export type TaskAttachmentField = "description" | "input_spec" | "output_spec";
+
+export interface TaskAttachment {
+  id: string;
+  task_id: string;
+  field: TaskAttachmentField;
+  filename: string;
+  storage_path: string;
+  file_size: number;
+  content_type: string;
+  description: string;
+  created_at: string;
+}
+
+export interface TaskAttachmentInsert {
+  task_id: string;
+  field: TaskAttachmentField;
+  filename: string;
+  storage_path: string;
+  file_size: number;
+  content_type: string;
+  description?: string;
+}
+
 // ── Task Invitations ────────────────────────────────────────
 
 export interface TaskInvitation {

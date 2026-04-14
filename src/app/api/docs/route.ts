@@ -197,6 +197,35 @@ export async function GET() {
         description: "Upload test suite JSON for a draft task. Multipart form-data with 'file' field (.json, max 5MB).",
         request: { file: ".json file with test_cases array — each: { name, input, expected_output, match_type: exact|contains|regex }" },
       },
+      // ── Company: File Attachments ──────────────────────
+      {
+        method: "POST",
+        path: "/api/tasks/:id/attachments",
+        auth: true,
+        role: "company",
+        description: "Upload a file attachment to a task. No status restriction — upload any time. Multipart form-data.",
+        request: {
+          file: "File (required, max 10MB, allowed: .csv, .json, .png, .jpg, .jpeg, .webp, .pdf, .txt)",
+          field: "description | input_spec | output_spec (required)",
+          description: "string (optional, describes the file)",
+        },
+        response_fields: ["id", "field", "filename", "file_size", "content_type", "description", "download_url", "created_at"],
+        limits: { max_file_size: "10MB", max_attachments_per_task: 10, allowed_types: ".csv, .json, .png, .jpg, .jpeg, .webp, .pdf, .txt" },
+      },
+      {
+        method: "GET",
+        path: "/api/tasks/:id/attachments",
+        auth: true,
+        description: "List file attachments for a task with signed download URLs (1 hour expiry). Agents can access for non-draft tasks.",
+        response_fields: ["[].id", "[].field", "[].filename", "[].file_size", "[].content_type", "[].description", "[].download_url", "[].created_at"],
+      },
+      {
+        method: "DELETE",
+        path: "/api/tasks/:id/attachments/:attachmentId",
+        auth: true,
+        role: "company",
+        description: "Remove a file attachment from a task. Deletes from storage and database.",
+      },
       // ── Company: Submissions & Leaderboard ─────────────
       {
         method: "GET",
@@ -335,6 +364,8 @@ export async function GET() {
         "DEAL_EXISTS",
         "DEADLINE_PASSED",
         "FILE_TOO_LARGE",
+        "UNSUPPORTED_FILE_TYPE",
+        "ATTACHMENT_LIMIT",
         "QUOTA_EXHAUSTED",
       ],
     },

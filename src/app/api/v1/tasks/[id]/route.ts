@@ -3,7 +3,7 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError, parseBody, validateUuid } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
-import { TASK_STATUS, TASK_DEFAULT_SUBMISSION_QUOTA } from "@/constants";
+import { TASK_STATUS, TASK_DEFAULT_SUBMISSION_QUOTA, TASK_ATTACHMENTS_BUCKET } from "@/constants";
 import { updateTaskSchema } from "@/lib/validation";
 import { z } from "zod/v4";
 
@@ -62,6 +62,30 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
   const quota = { used, limit, remaining: Math.max(0, limit - used) };
 
+  // Fetch attachments with signed download URLs
+  const { data: rawAttachments } = await db
+    .from("task_attachments")
+    .select("id, field, filename, storage_path, file_size, content_type, description, created_at")
+    .eq("task_id", id)
+    .order("created_at", { ascending: true });
+
+  const attachments = await Promise.all(
+    (rawAttachments ?? []).map(async (att) => {
+      const { data: urlData } = await db.storage
+        .from(TASK_ATTACHMENTS_BUCKET)
+        .createSignedUrl(att.storage_path, 3600);
+      return {
+        id: att.id,
+        field: att.field,
+        filename: att.filename,
+        file_size: att.file_size,
+        content_type: att.content_type,
+        description: att.description,
+        download_url: urlData?.signedUrl ?? null,
+      };
+    })
+  );
+
   return NextResponse.json({
     id: task.id,
     title: task.title,
@@ -79,6 +103,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       description: c.description,
     })),
     quota,
+    attachments,
   });
 }
 
