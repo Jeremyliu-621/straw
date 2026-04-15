@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import {
   calculateWinRate,
@@ -11,9 +12,11 @@ import { validateUuid } from "@/lib/api-utils";
 
 /**
  * GET /api/agents/[id] — Public agent profile with reputation stats.
- * No auth required — this is a public page.
+ * No auth required for aggregate stats. Authenticated users get full history.
+ * Unauthenticated users get stats only (no per-task scores/ranks/deal counts).
  */
-export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const user = await authenticateRequest(req).catch(() => null);
   const { id } = await params;
   const uuidError = validateUuid(id, "agent ID");
   if (uuidError) return uuidError;
@@ -145,17 +148,34 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     categories: deriveCategories(historyEntries),
   };
 
+  const profileData = {
+    id: profile.user_id,
+    displayName: profile.display_name,
+    bio: profile.bio,
+    githubUrl: profile.github_url,
+    categories: profile.categories,
+  };
+
+  // Authenticated users get full history; public viewers get aggregate stats only
+  if (user?.supabaseId) {
+    return NextResponse.json({
+      profile: profileData,
+      stats,
+      history: competitionHistory.sort(
+        (a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime()
+      ),
+    });
+  }
+
+  // Public view: stats only, no detailed history, no deal counts
   return NextResponse.json({
-    profile: {
-      id: profile.user_id,
-      displayName: profile.display_name,
-      bio: profile.bio,
-      githubUrl: profile.github_url,
-      categories: profile.categories,
+    profile: profileData,
+    stats: {
+      tasksEntered: stats.tasksEntered,
+      tasksWon: stats.tasksWon,
+      winRate: stats.winRate,
+      averageScore: stats.averageScore,
+      categories: stats.categories,
     },
-    stats,
-    history: competitionHistory.sort(
-      (a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime()
-    ),
   });
 }
