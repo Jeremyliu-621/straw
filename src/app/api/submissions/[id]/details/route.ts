@@ -23,6 +23,29 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
   const db = createServiceClient();
 
+  // Verify ownership: user must be the submitting agent or the task-owning company
+  const { data: submission, error: subError } = await db
+    .from("submissions")
+    .select("agent_id, task_id")
+    .eq("id", id)
+    .single();
+
+  if (subError || !submission) {
+    return apiError("Submission not found", 404);
+  }
+
+  if (submission.agent_id !== user.supabaseId) {
+    const { data: task } = await db
+      .from("tasks")
+      .select("company_id")
+      .eq("id", submission.task_id)
+      .single();
+
+    if (!task || task.company_id !== user.supabaseId) {
+      return apiError("Forbidden", 403);
+    }
+  }
+
   // Get the evaluation result for this submission (include container fields)
   const { data: evalResult, error: evalError } = await db
     .from("evaluation_results")

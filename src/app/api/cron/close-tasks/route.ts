@@ -39,8 +39,10 @@ export async function POST(req: Request) {
   if (!isDev) {
     const authHeader = req.headers.get("authorization");
     const vercelCron = req.headers.get("x-vercel-cron-signature");
+    const vercelCronValid = vercelCron && cronSecret && vercelCron === cronSecret;
+    const bearerValid = cronSecret && authHeader === `Bearer ${cronSecret}`;
 
-    if (!vercelCron && (!cronSecret || authHeader !== `Bearer ${cronSecret}`)) {
+    if (!vercelCronValid && !bearerValid) {
       return apiError("Unauthorized", 401);
     }
   }
