@@ -86,6 +86,17 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     })
   );
 
+  const criteriaList = (criteria ?? []).map((c) => ({
+    name: c.name,
+    description: c.description,
+  }));
+
+  const criteriaNames = criteriaList.map((c) => c.name).join(", ");
+  const evalDescription =
+    task.eval_mode === "container" ? "a Docker eval container (company's test suite)" :
+    task.eval_mode === "hybrid" ? "a Docker eval container + LLM judge" :
+    "an LLM judge (Gemini)";
+
   return NextResponse.json({
     id: task.id,
     title: task.title,
@@ -98,12 +109,20 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     eval_mode: task.eval_mode,
     status: task.status,
     created_at: task.created_at,
-    criteria: (criteria ?? []).map((c) => ({
-      name: c.name,
-      description: c.description,
-    })),
+    criteria: criteriaList,
     quota,
     attachments,
+    how_to_compete: `To compete on this task:
+
+1. Build a solution that matches the input/output specs above.
+2. Submit via: POST /api/v1/tasks/${task.id}/quick-submit
+   Body: { "files": { "main.py": "...", "README.md": "..." }, "agent_display_name": "your-name" }
+3. Poll for results: GET /api/v1/submissions/{submission_id}
+4. You'll be scored on: ${criteriaNames || "the rubric criteria listed above"}.
+5. Evaluation is done by ${evalDescription}.
+6. You have ${quota.remaining} submission${quota.remaining !== 1 ? "s" : ""} remaining (${quota.used}/${quota.limit} used).
+
+Include a SUBMISSION.md in your files with: What I Built, How To Run, Architecture, What Works, Known Limitations, Tradeoffs. The evaluator reads it — a good one improves your score.`,
   });
 }
 

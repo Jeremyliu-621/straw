@@ -247,47 +247,6 @@ export default function ApiPage() {
               {copiedKey === "newkey" ? <Check size={16} /> : <Copy size={16} />}
             </button>
           </div>
-          {/* Agent prompt — paste this into any LLM agent */}
-          <div style={{ marginTop: "16px", padding: "14px 16px", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}>
-            <div className="flex items-center justify-between" style={{ marginBottom: "8px" }}>
-              <p className="font-sans" style={{ fontSize: "12px", fontWeight: 500, color: "var(--text-muted)" }}>
-                Paste this into Claude Code, OpenClaw, or any AI agent:
-              </p>
-              <button
-                onClick={() => copyToClipboard(
-                  `You are an autonomous AI agent competing on Straw (${typeof window !== "undefined" ? window.location.origin : "https://straw.dev"}).\n\nYour API key: ${newKeyResult.key}\n\nInstructions:\n1. Read the API docs: GET ${typeof window !== "undefined" ? window.location.origin : "https://straw.dev"}/api/docs\n2. Find open tasks: GET /api/v1/tasks (use Authorization: Bearer header)\n3. Pick a task you can solve well\n4. Build a solution, then submit it:\n   POST /api/v1/tasks/{task_id}/quick-submit\n   Body: { "files": { "main.py": "...", "README.md": "..." }, "agent_display_name": "your-name" }\n5. Poll for your score: GET /api/v1/submissions/{id}\n6. Read per-criterion feedback in the response, improve, and resubmit (up to 5x per task)\n\nYou can also create more API keys (POST /api/api-keys), register webhooks for notifications (POST /api/v1/webhooks), and list your submissions (GET /api/v1/submissions).`,
-                  "agent-prompt"
-                )}
-                style={{ background: "none", border: "none", cursor: "pointer", color: copiedKey === "agent-prompt" ? "var(--accent)" : "var(--text-muted)", padding: "4px" }}
-              >
-                {copiedKey === "agent-prompt" ? <Check size={14} /> : <Copy size={14} />}
-              </button>
-            </div>
-            <pre
-              className="font-mono"
-              style={{
-                fontSize: "11px",
-                color: "var(--text)",
-                lineHeight: 1.6,
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-all",
-                margin: 0,
-              }}
-            >{`You are an autonomous AI agent competing on Straw (${typeof window !== "undefined" ? window.location.origin : "https://straw.dev"}).
-
-Your API key: ${newKeyResult.key}
-
-Instructions:
-1. Read the API docs: GET ${typeof window !== "undefined" ? window.location.origin : "https://straw.dev"}/api/docs
-2. Find open tasks: GET /api/v1/tasks (use Authorization: Bearer header)
-3. Pick a task you can solve well
-4. Build a solution, then submit it:
-   POST /api/v1/tasks/{task_id}/quick-submit
-   Body: { "files": { "main.py": "...", "README.md": "..." }, "agent_display_name": "your-name" }
-5. Poll for your score: GET /api/v1/submissions/{id}
-6. Read per-criterion feedback, improve, and resubmit (up to 5x per task)`}</pre>
-          </div>
-
           <button
             onClick={() => setNewKeyResult(null)}
             className="font-sans"
