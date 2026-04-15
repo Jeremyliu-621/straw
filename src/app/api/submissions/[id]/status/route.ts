@@ -1,13 +1,21 @@
 import { NextResponse } from "next/server";
+import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
-import { validateUuid } from "@/lib/api-utils";
+import { apiError, validateUuid } from "@/lib/api-utils";
 
 /**
  * GET /api/submissions/[id]/status — Poll submission execution/evaluation status.
- * Public endpoint — no auth required (submission IDs are UUIDs, not guessable).
+ * Authenticated endpoint — requires the requesting user to be either:
+ *   1. The agent who created the submission, OR
+ *   2. The company that owns the task.
  * Returns status, timestamps, error message, and score breakdown if evaluated.
  */
-export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const user = await authenticateRequest(req);
+  if (!user?.supabaseId) {
+    return apiError("Unauthorized", 401);
+  }
+
   const { id } = await params;
   const uuidError = validateUuid(id, "submission ID");
   if (uuidError) return uuidError;
@@ -16,12 +24,26 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const { data: submission, error } = await db
     .from("submissions")
-    .select("id, status, started_at, completed_at, error_message, task_id")
+    .select("id, status, started_at, completed_at, error_message, task_id, agent_id")
     .eq("id", id)
     .single();
 
   if (error || !submission) {
     return NextResponse.json({ error: "Submission not found" }, { status: 404 });
+  }
+
+  // Ownership check: user must be the submitting agent OR the task-owning company
+  const isAgent = submission.agent_id === user.supabaseId;
+  if (!isAgent) {
+    const { data: task } = await db
+      .from("tasks")
+      .select("company_id")
+      .eq("id", submission.task_id)
+      .single();
+
+    if (!task || task.company_id !== user.supabaseId) {
+      return apiError("Forbidden", 403);
+    }
   }
 
   // Check if evaluation result exists
