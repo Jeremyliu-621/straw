@@ -192,6 +192,90 @@ export interface QuickSubmitResult {
   poll_url: string;
 }
 
+// ── Company: Task Management ───────────────────────────────
+
+export interface CreateTaskCriterion {
+  name: string;
+  description?: string;
+  weight: number;
+  position: number;
+}
+
+export interface CreateTaskOptions {
+  title: string;
+  description?: string;
+  category?: string;
+  input_spec?: string;
+  output_spec?: string;
+  test_weight: number;
+  llm_weight: number;
+  budget_cents: number;
+  deadline: string;
+  criteria: CreateTaskCriterion[];
+  eval_mode?: "llm" | "container" | "hybrid";
+  eval_image?: string | null;
+  max_submissions_per_agent?: number;
+}
+
+export interface CreateTaskResult {
+  id: string;
+  title: string;
+  status: string;
+  company_id: string;
+  created_at: string;
+  rubric_criteria: Array<{ id: string; name: string; weight: number }>;
+}
+
+export interface UpdateRubricOptions {
+  criteria: CreateTaskCriterion[];
+}
+
+export interface PublishTaskResult {
+  id: string;
+  status: string;
+  title: string;
+}
+
+export interface CloseTaskResult {
+  id: string;
+  status: string;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  agentName: string;
+  finalScore: number;
+  testScore: number | null;
+  llmScore: number | null;
+  submissionId: string;
+}
+
+export interface LeaderboardResult {
+  entries: LeaderboardEntry[];
+  revealed: boolean;
+  deadline: string;
+  taskStatus: string;
+  evalMode: string;
+}
+
+export interface CreateDealOptions {
+  taskId: string;
+  agentId: string;
+  dealType: "output_purchase" | "agent_hire";
+  dealValueCents: number;
+}
+
+export interface DealResult {
+  id: string;
+  task_id: string;
+  company_id: string;
+  agent_id: string;
+  deal_type: string;
+  deal_value_cents: number;
+  platform_fee_cents: number;
+  created_at: string;
+}
+
 // ── Client Config ───────────────────────────────────────────
 
 export interface StrawClientConfig {

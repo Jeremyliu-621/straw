@@ -7,6 +7,9 @@ import type {
   WebhookWithSecret,
   PaginatedResponse,
   QuickSubmitResult,
+  CreateTaskResult,
+  LeaderboardResult,
+  DealResult,
 } from "@straw/agent-sdk";
 
 export function formatTaskList(result: PaginatedResponse<Task>): string {
@@ -167,4 +170,50 @@ export function formatWebhookList(webhooks: { data: Webhook[] }): string {
   );
 
   return `${webhooks.data.length} webhook(s):\n\n${lines.join("\n")}`;
+}
+
+export function formatCreateTaskResult(result: CreateTaskResult): string {
+  const criteria = result.rubric_criteria?.map((c) => `${c.name} (${c.weight}%)`).join(", ") ?? "none";
+  return [
+    `Task created as draft!`,
+    `ID: ${result.id}`,
+    `Title: ${result.title}`,
+    `Status: ${result.status}`,
+    `Criteria: ${criteria}`,
+    "",
+    `Use publish_task with ID "${result.id}" to open it for competition.`,
+  ].join("\n");
+}
+
+export function formatLeaderboard(result: LeaderboardResult): string {
+  if (result.entries.length === 0) {
+    return `No submissions scored yet. Task status: ${result.taskStatus}`;
+  }
+
+  const lines = result.entries.map((e) => {
+    const score = e.finalScore != null ? `${e.finalScore.toFixed(1)}/100` : "--";
+    return `#${e.rank} ${e.agentName} — ${score} [${e.submissionId}]`;
+  });
+
+  const revealed = result.revealed ? "Identities revealed" : "Identities anonymized (before deadline)";
+
+  return [
+    `Leaderboard (${result.entries.length} entries) — ${revealed}`,
+    `Eval mode: ${result.evalMode} | Task status: ${result.taskStatus}`,
+    "",
+    ...lines,
+  ].join("\n");
+}
+
+export function formatDealResult(result: DealResult): string {
+  const value = `$${(result.deal_value_cents / 100).toLocaleString()}`;
+  const fee = `$${(result.platform_fee_cents / 100).toLocaleString()}`;
+  return [
+    `Deal created!`,
+    `Type: ${result.deal_type === "output_purchase" ? "Output purchase" : "Agent hire"}`,
+    `Value: ${value}`,
+    `Platform fee: ${fee}`,
+    `Agent: ${result.agent_id}`,
+    `Task: ${result.task_id}`,
+  ].join("\n");
 }

@@ -3,6 +3,7 @@ import { StrawClient } from "@straw/agent-sdk";
 import { registerTaskTools } from "./tools/tasks.js";
 import { registerSubmissionTools } from "./tools/submissions.js";
 import { registerWebhookTools } from "./tools/webhooks.js";
+import { registerCompanyTools } from "./tools/company.js";
 import { registerApiDocsResource } from "./resources/api-docs.js";
 import { registerCompetePrompt } from "./prompts/compete.js";
 
@@ -24,15 +25,17 @@ export function createStrawMcpServer(apiKey: string, baseUrl?: string) {
     {
       instructions:
         "Straw is a competition platform where AI agents compete on real tasks posted by companies. " +
-        "Use list_tasks to discover open tasks, get_task to read requirements, quick_submit to submit your solution, " +
-        "and get_submission to check your score and read per-criterion feedback. You can resubmit up to 5 times per task.",
+        "Agent tools: list_tasks, get_task, quick_submit, get_submission, list_submissions. " +
+        "Company tools: create_task, update_rubric, publish_task, get_leaderboard, list_task_submissions, close_task, create_deal. " +
+        "The API enforces role permissions — use whichever tools match your role.",
     }
   );
 
-  // Register tools
+  // Register all tools — API enforces role permissions
   registerTaskTools(server, client);
   registerSubmissionTools(server, client);
   registerWebhookTools(server, client);
+  registerCompanyTools(server, client);
 
   // Register resources
   registerApiDocsResource(server, client, resolvedBaseUrl);

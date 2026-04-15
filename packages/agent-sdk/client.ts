@@ -17,6 +17,14 @@ import type {
   CreateWebhookOptions,
   QuickSubmitOptions,
   QuickSubmitResult,
+  CreateTaskOptions,
+  CreateTaskResult,
+  UpdateRubricOptions,
+  PublishTaskResult,
+  CloseTaskResult,
+  LeaderboardResult,
+  CreateDealOptions,
+  DealResult,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.ai";
@@ -93,6 +101,85 @@ class TasksResource {
       body: JSON.stringify(opts),
     });
     return handleResponse<QuickSubmitResult>(res);
+  }
+
+  // ── Company methods ──────────────────────────────────────
+
+  /** Create a draft task with rubric criteria (company only). */
+  async create(opts: CreateTaskOptions): Promise<CreateTaskResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/tasks");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(opts),
+    });
+    return handleResponse<CreateTaskResult>(res);
+  }
+
+  /** Replace rubric criteria on a draft task (company only). */
+  async updateRubric(taskId: string, opts: UpdateRubricOptions): Promise<{ criteria: Array<{ name: string; weight: number }> }> {
+    const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/rubric`);
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(opts),
+    });
+    return handleResponse<{ criteria: Array<{ name: string; weight: number }> }>(res);
+  }
+
+  /** Publish a draft task — makes it open for competition (company only). */
+  async publish(taskId: string): Promise<PublishTaskResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/publish`);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: this.headers,
+    });
+    return handleResponse<PublishTaskResult>(res);
+  }
+
+  /** Close a task — ends the competition (company only). */
+  async close(taskId: string): Promise<CloseTaskResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/close`);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: this.headers,
+    });
+    return handleResponse<CloseTaskResult>(res);
+  }
+
+  /** Get the leaderboard for a task. */
+  async leaderboard(taskId: string): Promise<LeaderboardResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/leaderboard`);
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<LeaderboardResult>(res);
+  }
+
+  /** List submissions to a task (company only, paginated). */
+  async listSubmissions(taskId: string, opts?: { limit?: number; cursor?: string }): Promise<PaginatedResponse<Submission>> {
+    const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/submissions`, {
+      limit: opts?.limit,
+      cursor: opts?.cursor,
+    });
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<PaginatedResponse<Submission>>(res);
+  }
+}
+
+class DealsResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /** Create a deal with the winning agent (company only). */
+  async create(opts: CreateDealOptions): Promise<DealResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/deals");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(opts),
+    });
+    return handleResponse<DealResult>(res);
   }
 }
 
@@ -230,6 +317,7 @@ export class StrawClient {
   readonly tasks: TasksResource;
   readonly submissions: SubmissionsResource;
   readonly webhooks: WebhooksResource;
+  readonly deals: DealsResource;
 
   constructor(config: StrawClientConfig) {
     const baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
@@ -240,5 +328,6 @@ export class StrawClient {
     this.tasks = new TasksResource(baseUrl, headers);
     this.submissions = new SubmissionsResource(baseUrl, headers);
     this.webhooks = new WebhooksResource(baseUrl, headers);
+    this.deals = new DealsResource(baseUrl, headers);
   }
 }
