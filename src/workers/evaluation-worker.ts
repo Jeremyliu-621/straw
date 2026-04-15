@@ -31,10 +31,21 @@
  * Edge cases:
  * - No output → llm_score = 0, test_score = 0
  * - Test suite failure → test_score = 0, log error
- * - LLM response invalid → retry once, then flag
+ * - LLM response invalid → retry 3x with exponential backoff, then mark evaluation_failed
  * - Missing rubric criteria → error, do not score
  * - EvalContainerError → permanent failure, no retry, record container_exit_code
  * - eval_image missing when mode is container/hybrid → permanent failure
+ * - LLM judge total failure → status=evaluation_failed (NOT scored=0)
+ * - File download failures → retry 3x before giving up
+ * - Job timeout → 5 minutes max, graceful failure
+ *
+ * Reliability:
+ * - Structured logging with [eval] prefix, submission ID, timestamps
+ * - Exponential backoff on LLM retries (1s, 3s, 9s)
+ * - File download retries (3 attempts)
+ * - try/finally for temp directory cleanup
+ * - Health check heartbeat file at /tmp/eval-worker-heartbeat
+ * - BullMQ job lock timeout at 5 minutes
  */
 
 import { config } from "dotenv";
@@ -71,7 +82,7 @@ import {
   dispatchNotificationToTaskOwnerFromWorker,
   writeAuditLog,
 } from "./lib/dispatch";
-import type { WebhookPayload } from "./lib/dispatch";
+
 
 // ── Config ───────────────────────────────────────────────────
 
@@ -90,6 +101,60 @@ const QUEUE_NAME = "evaluation";
 const WEBHOOK_QUEUE_NAME = "webhook";
 const STORAGE_BUCKET = "agent-outputs";
 const MAX_OUTPUT_SIZE = 100_000; // 100K chars max for LLM context
+const LLM_MAX_RETRIES = 3;
+const LLM_BACKOFF_BASE_MS = 1000; // 1s, 3s, 9s (base * 3^attempt)
+const DOWNLOAD_MAX_RETRIES = 3;
+const DOWNLOAD_RETRY_DELAY_MS = 2000;
+const JOB_LOCK_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+const HEALTH_CHECK_PATH = path.join(os.tmpdir(), "eval-worker-heartbeat");
+
+// ── Structured Logger ───────────────────────────────────────
+
+type LogLevel = "info" | "warn" | "error";
+
+function formatLog(level: LogLevel, message: string, submissionId?: string): string {
+  const ts = new Date().toISOString();
+  const sid = submissionId ? ` sub=${submissionId}` : "";
+  return `${ts} [eval] [${level.toUpperCase()}]${sid} ${message}`;
+}
+
+const log = {
+  info(message: string, submissionId?: string): void {
+    console.log(formatLog("info", message, submissionId));
+  },
+  warn(message: string, submissionId?: string): void {
+    console.warn(formatLog("warn", message, submissionId));
+  },
+  error(message: string, submissionId?: string, err?: unknown): void {
+    if (err) {
+      console.error(formatLog("error", message, submissionId), err);
+    } else {
+      console.error(formatLog("error", message, submissionId));
+    }
+  },
+};
+
+// ── Health Check ────────────────────────────────────────────
+
+function writeHealthCheck(status: "idle" | "processing", jobId?: string): void {
+  try {
+    const payload = JSON.stringify({
+      pid: process.pid,
+      status,
+      jobId: jobId ?? null,
+      lastHeartbeat: new Date().toISOString(),
+    });
+    fs.writeFileSync(HEALTH_CHECK_PATH, payload, "utf8");
+  } catch {
+    // Best effort — don't crash the worker over a health check write
+  }
+}
+
+// ── Retry Helpers ───────────────────────────────────────────
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 // ── Clients ──────────────────────────────────────────────────
 
@@ -176,18 +241,18 @@ interface ContainerEvalResult {
 
 // ── Output Fetching (LLM path — returns combined text string) ────
 
-async function fetchAgentOutput(outputUrl: string): Promise<string> {
+async function fetchAgentOutput(outputUrl: string, submissionId?: string): Promise<string> {
   const { data: files, error: listError } = await db.storage
     .from(STORAGE_BUCKET)
     .list(outputUrl);
 
   if (listError) {
-    console.error(`[eval] Failed to list output files: ${listError.message}`);
+    log.error(`Failed to list output files: ${listError.message}`, submissionId);
     return "";
   }
 
   if (!files || files.length === 0) {
-    console.error(`[eval] No output files found at ${outputUrl}`);
+    log.error(`No output files found at ${outputUrl}`, submissionId);
     return "";
   }
 
@@ -196,23 +261,38 @@ async function fetchAgentOutput(outputUrl: string): Promise<string> {
   for (const file of files) {
     if (file.metadata && file.metadata.size === 0) continue;
 
-    const { data, error: downloadError } = await db.storage
-      .from(STORAGE_BUCKET)
-      .download(`${outputUrl}/${file.name}`);
+    let downloaded = false;
+    for (let attempt = 1; attempt <= DOWNLOAD_MAX_RETRIES; attempt++) {
+      const { data, error: downloadError } = await db.storage
+        .from(STORAGE_BUCKET)
+        .download(`${outputUrl}/${file.name}`);
 
-    if (downloadError) {
-      console.error(`[eval] Failed to download ${file.name}: ${downloadError.message}`);
-      continue;
+      if (downloadError || !data) {
+        log.warn(
+          `Download failed for ${file.name} (attempt ${attempt}/${DOWNLOAD_MAX_RETRIES}): ${downloadError?.message ?? "no data"}`,
+          submissionId
+        );
+        if (attempt < DOWNLOAD_MAX_RETRIES) {
+          await sleep(DOWNLOAD_RETRY_DELAY_MS);
+        }
+        continue;
+      }
+
+      const text = await data.text();
+      outputs.push(`--- ${file.name} ---\n${text}`);
+      downloaded = true;
+      break;
     }
 
-    const text = await data.text();
-    outputs.push(`--- ${file.name} ---\n${text}`);
+    if (!downloaded) {
+      log.error(`Failed to download ${file.name} after ${DOWNLOAD_MAX_RETRIES} attempts — skipping`, submissionId);
+    }
   }
 
   const combined = outputs.join("\n\n");
 
   if (combined.length > MAX_OUTPUT_SIZE) {
-    console.log(`[eval] Output truncated from ${combined.length} to ${MAX_OUTPUT_SIZE} chars`);
+    log.info(`Output truncated from ${combined.length} to ${MAX_OUTPUT_SIZE} chars`, submissionId);
     return combined.slice(0, MAX_OUTPUT_SIZE) + "\n\n[Output truncated due to size]";
   }
 
@@ -223,9 +303,9 @@ async function fetchAgentOutput(outputUrl: string): Promise<string> {
 
 /**
  * Download all files from `outputUrl` in the agent-outputs bucket to `destDir`.
- * Returns the number of files downloaded.
+ * Returns the number of files downloaded. Retries each file up to DOWNLOAD_MAX_RETRIES times.
  */
-async function downloadAgentOutputToDir(outputUrl: string, destDir: string): Promise<number> {
+async function downloadAgentOutputToDir(outputUrl: string, destDir: string, submissionId?: string): Promise<number> {
   const { data: files, error: listError } = await db.storage
     .from(STORAGE_BUCKET)
     .list(outputUrl);
@@ -237,7 +317,7 @@ async function downloadAgentOutputToDir(outputUrl: string, destDir: string): Pro
   }
 
   if (!files || files.length === 0) {
-    console.warn(`[eval] No agent output files found at ${outputUrl}`);
+    log.warn(`No agent output files found at ${outputUrl}`, submissionId);
     return 0;
   }
 
@@ -248,22 +328,37 @@ async function downloadAgentOutputToDir(outputUrl: string, destDir: string): Pro
     // Skip zero-byte placeholder entries (Supabase storage creates these for folders)
     if (file.metadata && file.metadata.size === 0) continue;
 
-    const { data, error: downloadError } = await db.storage
-      .from(STORAGE_BUCKET)
-      .download(`${outputUrl}/${file.name}`);
+    let fileDownloaded = false;
+    for (let attempt = 1; attempt <= DOWNLOAD_MAX_RETRIES; attempt++) {
+      const { data, error: downloadError } = await db.storage
+        .from(STORAGE_BUCKET)
+        .download(`${outputUrl}/${file.name}`);
 
-    if (downloadError || !data) {
-      console.error(`[eval] Failed to download ${file.name}: ${downloadError?.message}`);
-      continue;
+      if (downloadError || !data) {
+        log.warn(
+          `Download failed for ${file.name} (attempt ${attempt}/${DOWNLOAD_MAX_RETRIES}): ${downloadError?.message ?? "no data"}`,
+          submissionId
+        );
+        if (attempt < DOWNLOAD_MAX_RETRIES) {
+          await sleep(DOWNLOAD_RETRY_DELAY_MS);
+        }
+        continue;
+      }
+
+      const destPath = path.join(destDir, file.name);
+      const buffer = Buffer.from(await data.arrayBuffer());
+      fs.writeFileSync(destPath, buffer);
+      fileDownloaded = true;
+      downloaded++;
+      break;
     }
 
-    const destPath = path.join(destDir, file.name);
-    const buffer = Buffer.from(await data.arrayBuffer());
-    fs.writeFileSync(destPath, buffer);
-    downloaded++;
+    if (!fileDownloaded) {
+      log.error(`Failed to download ${file.name} after ${DOWNLOAD_MAX_RETRIES} attempts — skipping`, submissionId);
+    }
   }
 
-  console.log(`[eval] Downloaded ${downloaded} agent output files to ${destDir}`);
+  log.info(`Downloaded ${downloaded} agent output files to ${destDir}`, submissionId);
   return downloaded;
 }
 
@@ -321,7 +416,7 @@ async function runEvalContainer(
   fs.mkdirSync(resultsPath, { recursive: true });
 
   // Pull image if not present
-  console.log(`[eval] Pulling eval image ${evalImage}...`);
+  log.info(`Pulling eval image ${evalImage}...`);
   try {
     await pullDockerImage(evalImage);
   } catch (err) {
@@ -333,7 +428,7 @@ async function runEvalContainer(
   }
 
   // Create container
-  console.log(`[eval] Creating eval container...`);
+  log.info(`Creating eval container...`);
   const container = await docker.createContainer({
     Image: evalImage,
     HostConfig: {
@@ -349,7 +444,7 @@ async function runEvalContainer(
   });
 
   await container.start();
-  console.log(`[eval] Eval container started (network=${networkMode}, memory=${options?.memoryMb ?? 1024}MB, timeout=${(options?.timeoutSeconds ?? 600)}s)...`);
+  log.info(`Eval container started (network=${networkMode}, memory=${options?.memoryMb ?? 1024}MB, timeout=${(options?.timeoutSeconds ?? 600)}s)`);
 
   let exitCode: number;
   try {
@@ -419,7 +514,7 @@ async function runEvalContainer(
   }
 
   const { score, pass, breakdown, notes } = validated.data;
-  console.log(`[eval] Eval container score: ${score} (pass=${pass})`);
+  log.info(`Eval container score: ${score} (pass=${pass})`);
 
   return { score, pass, breakdown, notes, exitCode };
 }
@@ -430,7 +525,7 @@ async function pullDockerImage(image: string): Promise<void> {
   // Check if image exists locally first — avoids failing on local-only images
   try {
     await docker.getImage(image).inspect();
-    console.log(`[eval] Image ${image} found locally, skipping pull`);
+    log.info(`Image ${image} found locally, skipping pull`);
     return;
   } catch {
     // Image not found locally — pull from registry
@@ -480,7 +575,8 @@ const worker = new Worker<EvaluationJobData>(
   QUEUE_NAME,
   async (job) => {
     const { submissionId, taskId, outputUrl } = job.data;
-    console.log(`[eval] Evaluating submission ${submissionId}`);
+    log.info(`Evaluating submission ${submissionId} (job=${job.id})`, submissionId);
+    writeHealthCheck("processing", job.id);
 
     // 1. Fetch task and rubric criteria
     const { data: task, error: taskError } = await db
@@ -525,6 +621,7 @@ const worker = new Worker<EvaluationJobData>(
   {
     connection: redisConnection,
     concurrency: 2,
+    lockDuration: JOB_LOCK_DURATION_MS,
   }
 );
 
@@ -543,138 +640,162 @@ async function handleLlmEval(
   workerWebhookQueue: Queue
 ): Promise<void> {
   const { submissionId, taskId, outputUrl, task, criteria } = ctx;
+  const buildTmpDir = path.join(os.tmpdir(), `map-build-${submissionId}`);
 
-  // Fetch agent output text
-  const agentOutput = await fetchAgentOutput(outputUrl);
-  if (!agentOutput) {
-    console.error(`[eval] No output content for submission ${submissionId}`);
-  }
-
-  // Platform build check — download files to temp dir, attempt build, pass result to LLM
-  let buildCheckResult: string = "";
   try {
-    const { detectLanguage, runBuildCheck } = await import("@/services/build-check.service");
-    const tmpDir = path.join(os.tmpdir(), `map-build-${submissionId}`);
-    await downloadAgentOutputToDir(outputUrl, tmpDir);
-    const lang = detectLanguage(tmpDir);
-    if (lang) {
-      console.log(`[eval] Build check: detected ${lang.name}, running ${lang.buildCommand}`);
-      const result = runBuildCheck(tmpDir);
-      buildCheckResult = result.success
-        ? `Build check: SUCCESS (${result.detected}, ${result.durationMs}ms)`
-        : `Build check: FAILED (${result.detected})\n${result.output}`;
-      console.log(`[eval] Build check result: ${result.success ? "success" : "failed"} (${result.durationMs}ms)`);
-    } else {
-      buildCheckResult = "Build check: skipped (unknown language/framework)";
+    // Fetch agent output text
+    const agentOutput = await fetchAgentOutput(outputUrl, submissionId);
+    if (!agentOutput) {
+      log.warn("No output content found", submissionId);
     }
-    // Clean up
-    try { fs.rmSync(tmpDir, { recursive: true, force: true }); } catch { /* best effort */ }
-  } catch (err) {
-    console.error(`[eval] Build check failed:`, err);
-    buildCheckResult = "Build check: error (could not run)";
-  }
 
-  // Phase 1: Automated testing
-  let testScore: number | null = null;
-  if (task.test_weight as number > 0) {
-    testScore = await runAutomatedTests(task, outputUrl);
-  }
+    // Platform build check — download files to temp dir, attempt build, pass result to LLM
+    let buildCheckResult: string = "";
+    try {
+      const { detectLanguage, runBuildCheck } = await import("@/services/build-check.service");
+      await downloadAgentOutputToDir(outputUrl, buildTmpDir, submissionId);
+      const lang = detectLanguage(buildTmpDir);
+      if (lang) {
+        log.info(`Build check: detected ${lang.name}, running ${lang.buildCommand}`, submissionId);
+        const result = runBuildCheck(buildTmpDir);
+        buildCheckResult = result.success
+          ? `Build check: SUCCESS (${result.detected}, ${result.durationMs}ms)`
+          : `Build check: FAILED (${result.detected})\n${result.output}`;
+        log.info(`Build check result: ${result.success ? "success" : "failed"} (${result.durationMs}ms)`, submissionId);
+      } else {
+        buildCheckResult = "Build check: skipped (unknown language/framework)";
+      }
+    } catch (err) {
+      log.error("Build check failed", submissionId, err);
+      buildCheckResult = "Build check: error (could not run)";
+    }
 
-  // Phase 2: LLM judge
-  let llmScore: number | null = null;
-  let llmReasoning: string | null = null;
-  let dimensionScores: LLMResponse["dimensions"] = [];
+    // Phase 1: Automated testing
+    let testScore: number | null = null;
+    if (task.test_weight as number > 0) {
+      testScore = await runAutomatedTests(task, outputUrl, submissionId);
+    }
 
-  if (task.llm_weight as number > 0) {
-    const llmResult = await evaluateWithLLM(task, criteria, agentOutput, buildCheckResult || undefined);
-    if (llmResult) {
-      dimensionScores = llmResult.dimensions;
-      llmReasoning = llmResult.overall_reasoning;
+    // Phase 2: LLM judge
+    let llmScore: number | null = null;
+    let llmReasoning: string | null = null;
+    let dimensionScores: LLMResponse["dimensions"] = [];
 
-      let totalWeightedScore = 0;
-      let totalWeight = 0;
-      for (const dim of dimensionScores) {
-        const criterion = criteria.find(
-          (c: RubricCriterion) => c.name === dim.criterion_name
+    if (task.llm_weight as number > 0) {
+      const llmResult = await evaluateWithLLM(task, criteria, agentOutput, submissionId, buildCheckResult || undefined);
+      if (llmResult) {
+        dimensionScores = llmResult.dimensions;
+        llmReasoning = llmResult.overall_reasoning;
+
+        let totalWeightedScore = 0;
+        let totalWeight = 0;
+        for (const dim of dimensionScores) {
+          const criterion = criteria.find(
+            (c: RubricCriterion) => c.name === dim.criterion_name
+          );
+          if (criterion) {
+            totalWeightedScore += dim.score * criterion.weight;
+            totalWeight += criterion.weight;
+          }
+        }
+        llmScore = totalWeight > 0 ? totalWeightedScore / totalWeight : 0;
+      } else {
+        // LLM judge failed completely after all retries — mark as evaluation_failed
+        const failureReason = `LLM evaluation failed after ${LLM_MAX_RETRIES} retries. This submission needs manual review.`;
+        log.error(`MANUAL REVIEW NEEDED — LLM judge failed completely`, submissionId);
+
+        await db
+          .from("submissions")
+          .update({
+            status: SUBMISSION_STATUS.EVALUATION_FAILED,
+            error_message: failureReason,
+            completed_at: new Date().toISOString(),
+          })
+          .eq("id", submissionId);
+
+        // Note: we do NOT write an evaluation_results record here because
+        // final_score is NOT NULL in the schema. A score=0 would be misleading
+        // on the leaderboard. The submission's error_message captures the reason.
+
+        log.error(
+          `Submission marked as evaluation_failed — no score written, needs manual review`,
+          submissionId
         );
-        if (criterion) {
-          totalWeightedScore += dim.score * criterion.weight;
-          totalWeight += criterion.weight;
+        return; // Exit early — do NOT finalize with a misleading score
+      }
+    }
+
+    // Phase 3: Calculate final score
+    const finalScore = calculateFinalScore(
+      testScore,
+      llmScore,
+      task.test_weight as number,
+      task.llm_weight as number
+    );
+
+    // Write immutable evaluation result
+    const { data: evalResult, error: evalError } = await db
+      .from("evaluation_results")
+      .insert({
+        submission_id: submissionId,
+        test_score: testScore,
+        llm_score: llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
+        final_score: Math.round(finalScore * 100) / 100,
+        llm_reasoning: llmReasoning,
+        eval_mode: EVAL_MODE.LLM,
+      })
+      .select()
+      .single();
+
+    if (evalError) {
+      throw new Error(`Failed to write evaluation result: ${evalError.message}`);
+    }
+
+    // Write dimension scores
+    if (dimensionScores.length > 0 && evalResult) {
+      const dimensionRows = dimensionScores
+        .map((dim) => {
+          const criterion = criteria.find(
+            (c: RubricCriterion) => c.name === dim.criterion_name
+          );
+          if (!criterion) return null;
+          return {
+            evaluation_result_id: evalResult.id,
+            rubric_criterion_id: criterion.id,
+            score: dim.score,
+            reasoning: dim.reasoning,
+          };
+        })
+        .filter((row): row is NonNullable<typeof row> => row !== null);
+
+      if (dimensionRows.length > 0) {
+        const { error: dimError } = await db
+          .from("evaluation_dimensions")
+          .insert(dimensionRows);
+
+        if (dimError) {
+          log.error(`Failed to write dimensions: ${dimError.message}`, submissionId);
         }
       }
-      llmScore = totalWeight > 0 ? totalWeightedScore / totalWeight : 0;
-    } else {
-      llmScore = 0;
-      llmReasoning = "LLM evaluation failed after retry. Flagged for manual review.";
     }
+
+    await finalizeEvaluation(
+      submissionId,
+      taskId,
+      finalScore,
+      testScore,
+      llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
+      workerWebhookQueue
+    );
+
+    log.info(
+      `Scored: test=${testScore}, llm=${llmScore?.toFixed(1)}, final=${finalScore.toFixed(1)} mode=llm`,
+      submissionId
+    );
+  } finally {
+    // Always clean up temp directory, even on error
+    try { fs.rmSync(buildTmpDir, { recursive: true, force: true }); } catch { /* best effort */ }
   }
-
-  // Phase 3: Calculate final score
-  const finalScore = calculateFinalScore(
-    testScore,
-    llmScore,
-    task.test_weight as number,
-    task.llm_weight as number
-  );
-
-  // Write immutable evaluation result
-  const { data: evalResult, error: evalError } = await db
-    .from("evaluation_results")
-    .insert({
-      submission_id: submissionId,
-      test_score: testScore,
-      llm_score: llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
-      final_score: Math.round(finalScore * 100) / 100,
-      llm_reasoning: llmReasoning,
-      eval_mode: EVAL_MODE.LLM,
-    })
-    .select()
-    .single();
-
-  if (evalError) {
-    throw new Error(`Failed to write evaluation result: ${evalError.message}`);
-  }
-
-  // Write dimension scores
-  if (dimensionScores.length > 0 && evalResult) {
-    const dimensionRows = dimensionScores
-      .map((dim) => {
-        const criterion = criteria.find(
-          (c: RubricCriterion) => c.name === dim.criterion_name
-        );
-        if (!criterion) return null;
-        return {
-          evaluation_result_id: evalResult.id,
-          rubric_criterion_id: criterion.id,
-          score: dim.score,
-          reasoning: dim.reasoning,
-        };
-      })
-      .filter((row): row is NonNullable<typeof row> => row !== null);
-
-    if (dimensionRows.length > 0) {
-      const { error: dimError } = await db
-        .from("evaluation_dimensions")
-        .insert(dimensionRows);
-
-      if (dimError) {
-        console.error(`[eval] Failed to write dimensions: ${dimError.message}`);
-      }
-    }
-  }
-
-  await finalizeEvaluation(
-    submissionId,
-    taskId,
-    finalScore,
-    testScore,
-    llmScore !== null ? Math.round(llmScore * 100) / 100 : null,
-    workerWebhookQueue
-  );
-
-  console.log(
-    `[eval] Submission ${submissionId} scored: test=${testScore}, llm=${llmScore?.toFixed(1)}, final=${finalScore.toFixed(1)} mode=llm`
-  );
 }
 
 // ── Handler: Container / Hybrid eval ─────────────────────────
@@ -709,7 +830,7 @@ async function handleContainerEval(
 
   try {
     // Download agent output files to disk
-    await downloadAgentOutputToDir(outputUrl, agentOutputDir);
+    await downloadAgentOutputToDir(outputUrl, agentOutputDir, submissionId);
 
     // Run the eval container
     let containerResult: ContainerEvalResult;
@@ -721,7 +842,7 @@ async function handleContainerEval(
       });
     } catch (err) {
       if (err instanceof EvalContainerError) {
-        console.error(`[eval] Eval container failed for submission ${submissionId}: ${err.message}`);
+        log.error(`Eval container failed: ${err.message}`, submissionId);
         await markSubmissionFailed(submissionId, err.message, err.exitCode);
         return; // Permanent failure — do not rethrow
       }
@@ -734,11 +855,11 @@ async function handleContainerEval(
     let llmReasoning: string | null = null;
     if (evalMode === EVAL_MODE.HYBRID) {
       const agentOutput = readLocalOutputAsText(agentOutputDir);
-      const llmResult = await evaluateWithLLM(task, criteria, agentOutput);
+      const llmResult = await evaluateWithLLM(task, criteria, agentOutput, submissionId);
       if (llmResult) {
         llmReasoning = llmResult.overall_reasoning;
       } else {
-        llmReasoning = "LLM notes unavailable (evaluation failed after retry).";
+        llmReasoning = `LLM notes unavailable (evaluation failed after ${LLM_MAX_RETRIES} retries).`;
       }
     }
 
@@ -794,7 +915,7 @@ async function handleContainerEval(
         .insert(rowsWithEvalId);
 
       if (dimError) {
-        console.error(`[eval] Failed to write dimensions: ${dimError.message}`);
+        log.error(`Failed to write dimensions: ${dimError.message}`, submissionId);
       }
     }
 
@@ -807,9 +928,7 @@ async function handleContainerEval(
       workerWebhookQueue
     );
 
-    console.log(
-      `[eval] Submission ${submissionId} scored: container=${finalScore} mode=${evalMode}`
-    );
+    log.info(`Scored: container=${finalScore} mode=${evalMode}`, submissionId);
   } finally {
     // Clean up temp directory
     try {
@@ -947,13 +1066,14 @@ async function markSubmissionFailed(
       llm_reasoning: message,
     });
     if (error) {
-      console.error(`[eval] Failed to write failed eval result: ${error.message}`);
+      log.error(`Failed to write failed eval result: ${error.message}`, submissionId);
     }
   }
 
-  console.error(
-    `[eval] Submission ${submissionId} permanently failed: ${message}` +
-    (containerExitCode !== undefined ? ` (exit code ${containerExitCode})` : "")
+  log.error(
+    `Permanently failed: ${message}` +
+    (containerExitCode !== undefined ? ` (exit code ${containerExitCode})` : ""),
+    submissionId
   );
 }
 
@@ -987,7 +1107,9 @@ async function tryAutoCloseTask(
 
     const allTerminal = allSubs.every(
       (s: { status: string }) =>
-        s.status === SUBMISSION_STATUS.COMPLETED || s.status === SUBMISSION_STATUS.FAILED
+        s.status === SUBMISSION_STATUS.COMPLETED ||
+        s.status === SUBMISSION_STATUS.FAILED ||
+        s.status === SUBMISSION_STATUS.EVALUATION_FAILED
     );
     if (!allTerminal) return;
 
@@ -1014,7 +1136,7 @@ async function tryAutoCloseTask(
 
     if (updateError || !updated) return;
 
-    console.log(`[eval] Task ${taskId} auto-closed — all evaluations complete`);
+    log.info(`Task ${taskId} auto-closed — all evaluations complete`);
 
     if (task.company_id) {
       await dispatchWebhookFromWorker(
@@ -1056,10 +1178,10 @@ async function tryAutoCloseTask(
     const invitationRepo = new TaskInvitationRepository(workerDb);
     const expired = await invitationRepo.expireByTask(taskId);
     if (expired > 0) {
-      console.log(`[eval] Expired ${expired} pending invitations for task ${taskId}`);
+      log.info(`Expired ${expired} pending invitations for task ${taskId}`);
     }
   } catch (err) {
-    console.error(`[eval] Failed to auto-close task ${taskId}:`, err);
+    log.error(`Failed to auto-close task ${taskId}`, undefined, err);
   }
 }
 
@@ -1067,15 +1189,16 @@ async function tryAutoCloseTask(
 
 async function runAutomatedTests(
   task: Record<string, unknown>,
-  outputUrl: string
+  outputUrl: string,
+  submissionId?: string
 ): Promise<number> {
   if (!task.test_suite_url) {
-    console.log(`[eval] No test suite for task ${task.id}, skipping automated tests`);
+    log.info(`No test suite for task ${task.id as string}, skipping automated tests`, submissionId);
     return 0;
   }
 
   const testSuiteUrl = task.test_suite_url as string;
-  console.log(`[eval] Running test suite for task ${task.id}...`);
+  log.info(`Running test suite for task ${task.id as string}...`, submissionId);
 
   try {
     const { data: testSuiteData, error: downloadError } = await db.storage
@@ -1083,22 +1206,22 @@ async function runAutomatedTests(
       .download(testSuiteUrl);
 
     if (downloadError || !testSuiteData) {
-      console.error(`[eval] Failed to download test suite: ${downloadError?.message}`);
+      log.error(`Failed to download test suite: ${downloadError?.message}`, submissionId);
       return 0;
     }
 
-    const agentOutput = await fetchAgentOutput(outputUrl);
+    const agentOutput = await fetchAgentOutput(outputUrl, submissionId);
     if (!agentOutput) {
-      console.log(`[eval] No agent output to test against`);
+      log.info("No agent output to test against", submissionId);
       return 0;
     }
 
     const testSuiteText = await testSuiteData.text();
     const testSuite = JSON.parse(testSuiteText) as TestSuite;
 
-    return executeTests(testSuite, agentOutput);
+    return executeTests(testSuite, agentOutput, submissionId);
   } catch (err) {
-    console.error(`[eval] Test suite execution failed:`, err);
+    log.error("Test suite execution failed", submissionId, err);
     return 0;
   }
 }
@@ -1114,9 +1237,9 @@ interface TestSuite {
   test_cases: TestCase[];
 }
 
-function executeTests(suite: TestSuite, agentOutput: string): number {
+function executeTests(suite: TestSuite, agentOutput: string, submissionId?: string): number {
   if (!suite.test_cases || suite.test_cases.length === 0) {
-    console.log(`[eval] Test suite has no test cases`);
+    log.info("Test suite has no test cases", submissionId);
     return 0;
   }
 
@@ -1137,7 +1260,7 @@ function executeTests(suite: TestSuite, agentOutput: string): number {
         try {
           match = new RegExp(tc.expected_output).test(agentOutput);
         } catch {
-          console.error(`[eval] Invalid regex in test case "${tc.name}"`);
+          log.error(`Invalid regex in test case "${tc.name}"`, submissionId);
         }
         break;
     }
@@ -1145,12 +1268,12 @@ function executeTests(suite: TestSuite, agentOutput: string): number {
     if (match) {
       passed++;
     } else {
-      console.log(`[eval] Test case failed: ${tc.name}`);
+      log.info(`Test case failed: ${tc.name}`, submissionId);
     }
   }
 
   const score = Math.round((passed / total) * 100);
-  console.log(`[eval] Tests: ${passed}/${total} passed (score: ${score})`);
+  log.info(`Tests: ${passed}/${total} passed (score: ${score})`, submissionId);
   return score;
 }
 
@@ -1160,18 +1283,29 @@ async function evaluateWithLLM(
   task: Record<string, unknown>,
   criteria: RubricCriterion[],
   agentOutput: string,
+  submissionId?: string,
   buildResult?: string
 ): Promise<LLMResponse | null> {
   const prompt = buildEvaluationPrompt(task, criteria, agentOutput, buildResult);
 
-  let result = await callLLM(prompt);
-  if (result) return result;
+  for (let attempt = 1; attempt <= LLM_MAX_RETRIES; attempt++) {
+    const result = await callLLM(prompt, submissionId);
+    if (result) return result;
 
-  console.log(`[eval] LLM response validation failed, retrying...`);
-  result = await callLLM(prompt);
-  if (result) return result;
+    if (attempt < LLM_MAX_RETRIES) {
+      const backoffMs = LLM_BACKOFF_BASE_MS * Math.pow(3, attempt - 1); // 1s, 3s, 9s
+      log.warn(
+        `LLM attempt ${attempt}/${LLM_MAX_RETRIES} failed — retrying in ${backoffMs}ms`,
+        submissionId
+      );
+      await sleep(backoffMs);
+    }
+  }
 
-  console.error(`[eval] LLM evaluation failed after retry for task ${task.id}`);
+  log.error(
+    `LLM evaluation failed after ${LLM_MAX_RETRIES} attempts for task ${task.id as string}`,
+    submissionId
+  );
   return null;
 }
 
@@ -1261,49 +1395,70 @@ Respond ONLY with valid JSON matching this exact schema:
 Do not include any text outside the JSON.`;
 }
 
-function sanitizeJsonString(raw: string): string {
-  // Strip markdown code fences
-  let s = raw.replace(/^```(?:json)?\s*/gm, "").replace(/```\s*$/gm, "");
-  // Remove trailing commas before } or ]
-  s = s.replace(/,\s*([}\]])/g, "$1");
-  return s;
-}
-
-async function callLLM(prompt: string): Promise<LLMResponse | null> {
+async function callLLM(prompt: string, submissionId?: string): Promise<LLMResponse | null> {
   try {
-    const model = gemini.getGenerativeModel({
-      model: EVALUATION_LLM_MODEL,
+    const model = gemini.getGenerativeModel({ model: EVALUATION_LLM_MODEL });
+    const response = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
         maxOutputTokens: LLM_MAX_TOKENS,
         responseMimeType: "application/json",
       },
-    });
-    const response = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
 
     const text = response.response.text();
 
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-      console.error("[eval] No JSON found in LLM response");
+      log.error("No JSON found in LLM response", submissionId);
       return null;
     }
 
-    const sanitized = sanitizeJsonString(jsonMatch[0]);
-    const parsed = JSON.parse(sanitized);
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(jsonMatch[0]);
+    } catch (parseErr) {
+      // Attempt to sanitize common JSON issues from LLM output
+      const sanitized = sanitizeJsonString(jsonMatch[0]);
+      try {
+        parsed = JSON.parse(sanitized);
+        log.info("JSON parse succeeded after sanitization", submissionId);
+      } catch {
+        log.error(`JSON parse failed even after sanitization: ${(parseErr as Error).message}`, submissionId);
+        return null;
+      }
+    }
+
     const validated = llmResponseSchema.safeParse(parsed);
 
     if (!validated.success) {
-      console.error("[eval] LLM response validation failed:", z.prettifyError(validated.error));
+      log.error(`LLM response validation failed: ${z.prettifyError(validated.error)}`, submissionId);
       return null;
     }
 
     return validated.data;
   } catch (err) {
-    console.error("[eval] LLM call failed:", err);
+    log.error("LLM call failed", submissionId, err);
     return null;
   }
+}
+
+/**
+ * Sanitize a JSON string that may have common LLM output issues:
+ * - Trailing commas before } or ]
+ * - Control characters in strings
+ * - Smart quotes
+ */
+function sanitizeJsonString(raw: string): string {
+  let s = raw;
+  // Replace smart quotes with standard quotes
+  s = s.replace(/[\u201C\u201D]/g, '"');
+  s = s.replace(/[\u2018\u2019]/g, "'");
+  // Remove trailing commas before } or ]
+  s = s.replace(/,\s*([\]}])/g, "$1");
+  // Remove control characters (except \n, \r, \t which are valid in JSON strings)
+  s = s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
+  return s;
 }
 
 // ── Phase 3: Score Calculation ───────────────────────────────
@@ -1322,25 +1477,32 @@ export function calculateFinalScore(
 // ── Lifecycle ────────────────────────────────────────────────
 
 worker.on("completed", (job) => {
-  console.log(`[eval] Job ${job.id} completed`);
+  log.info(`Job ${job.id} completed`);
+  writeHealthCheck("idle");
 });
 
 worker.on("failed", (job, err) => {
-  console.error(`[eval] Job ${job?.id} failed:`, err.message);
+  log.error(`Job ${job?.id} failed: ${err.message}`);
+  writeHealthCheck("idle");
 });
 
-console.log("[eval] Evaluation worker started, waiting for jobs...");
+// Write initial health check on startup
+writeHealthCheck("idle");
+log.info("Evaluation worker started, waiting for jobs...");
 
 process.on("SIGTERM", async () => {
-  console.log("[eval] Shutting down...");
+  log.info("Shutting down (SIGTERM)...");
   await worker.close();
   await webhookQueue.close();
+  // Clean up health check file
+  try { fs.unlinkSync(HEALTH_CHECK_PATH); } catch { /* best effort */ }
   process.exit(0);
 });
 
 process.on("SIGINT", async () => {
-  console.log("[eval] Shutting down...");
+  log.info("Shutting down (SIGINT)...");
   await worker.close();
   await webhookQueue.close();
+  try { fs.unlinkSync(HEALTH_CHECK_PATH); } catch { /* best effort */ }
   process.exit(0);
 });

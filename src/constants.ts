@@ -97,6 +97,7 @@ export const SUBMISSION_STATUS = {
   RUNNING: "running",
   COMPLETED: "completed",
   FAILED: "failed",
+  EVALUATION_FAILED: "evaluation_failed",
 } as const;
 export type SubmissionStatus = (typeof SUBMISSION_STATUS)[keyof typeof SUBMISSION_STATUS];
 
