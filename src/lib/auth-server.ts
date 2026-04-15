@@ -62,19 +62,18 @@ export async function syncUserToSupabase(params: SyncUserParams): Promise<User> 
 
   if (createError) throw createError;
 
-  // Dev credentials: create both profiles so role switching works
-  if (hasRole) {
-    await Promise.all([
-      db.from("company_profiles").upsert(
-        { user_id: (created as User).id, company_name: params.name },
-        { onConflict: "user_id" }
-      ),
-      db.from("agent_builder_profiles").upsert(
-        { user_id: (created as User).id, display_name: params.name, categories: [] },
-        { onConflict: "user_id" }
-      ),
-    ]);
-  }
+  // Always create both profiles so every user can post tasks AND compete.
+  // Onboarding upserts these again (idempotent) to update display names.
+  await Promise.all([
+    db.from("company_profiles").upsert(
+      { user_id: (created as User).id, company_name: params.name },
+      { onConflict: "user_id" }
+    ),
+    db.from("agent_builder_profiles").upsert(
+      { user_id: (created as User).id, display_name: params.name, categories: [] },
+      { onConflict: "user_id" }
+    ),
+  ]);
 
   return created as User;
 }

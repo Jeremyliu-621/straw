@@ -29,7 +29,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const { data: task, error } = await db
     .from("tasks")
     .select(
-      "id, title, description, category, input_spec, output_spec, deadline, budget_cents, eval_mode, status, max_submissions_per_agent, created_at"
+      "id, title, description, category, input_spec, output_spec, deadline, budget_cents, eval_mode, status, max_submissions_per_agent, company_id, created_at"
     )
     .eq("id", id)
     .single();
@@ -38,8 +38,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     return apiError("Task not found", 404);
   }
 
-  // Only show open tasks to agents (drafts are company-only)
-  if (task.status === TASK_STATUS.DRAFT && user.role !== "company") {
+  // Drafts are only visible to the user who created them
+  if (task.status === TASK_STATUS.DRAFT && task.company_id !== user.supabaseId) {
     return apiError("Task not found", 404);
   }
 

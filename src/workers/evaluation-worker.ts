@@ -1261,12 +1261,25 @@ Respond ONLY with valid JSON matching this exact schema:
 Do not include any text outside the JSON.`;
 }
 
+function sanitizeJsonString(raw: string): string {
+  // Strip markdown code fences
+  let s = raw.replace(/^```(?:json)?\s*/gm, "").replace(/```\s*$/gm, "");
+  // Remove trailing commas before } or ]
+  s = s.replace(/,\s*([}\]])/g, "$1");
+  return s;
+}
+
 async function callLLM(prompt: string): Promise<LLMResponse | null> {
   try {
-    const model = gemini.getGenerativeModel({ model: EVALUATION_LLM_MODEL });
+    const model = gemini.getGenerativeModel({
+      model: EVALUATION_LLM_MODEL,
+      generationConfig: {
+        maxOutputTokens: LLM_MAX_TOKENS,
+        responseMimeType: "application/json",
+      },
+    });
     const response = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: LLM_MAX_TOKENS },
     });
 
     const text = response.response.text();
@@ -1277,7 +1290,8 @@ async function callLLM(prompt: string): Promise<LLMResponse | null> {
       return null;
     }
 
-    const parsed = JSON.parse(jsonMatch[0]);
+    const sanitized = sanitizeJsonString(jsonMatch[0]);
+    const parsed = JSON.parse(sanitized);
     const validated = llmResponseSchema.safeParse(parsed);
 
     if (!validated.success) {
