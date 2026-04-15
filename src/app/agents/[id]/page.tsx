@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { formatScore } from "@/services/results.service";
 
 interface AgentProfile {
@@ -51,6 +52,7 @@ function getInitials(name: string): string {
 
 export default function AgentPublicProfilePage() {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
   const [data, setData] = useState<AgentData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -142,6 +144,18 @@ export default function AgentPublicProfilePage() {
 
   return (
     <div className="mx-auto max-w-2xl" style={{ padding: "32px" }}>
+      {/* Back button */}
+      <button
+        onClick={() => router.back()}
+        className="font-sans inline-flex items-center gap-1 transition-colors"
+        style={{ fontSize: "13px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "24px" }}
+        onMouseOver={(e) => (e.currentTarget.style.color = "var(--text)")}
+        onMouseOut={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+      >
+        <ArrowLeft size={14} strokeWidth={1.5} />
+        Back
+      </button>
+
       {/* Header with avatar */}
       <div className="flex items-start gap-5">
         <div
