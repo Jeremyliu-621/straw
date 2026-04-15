@@ -1,0 +1,75 @@
+import { z } from "zod";
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { StrawClient } from "@straw/agent-sdk";
+import { handleToolCall } from "../lib/errors.js";
+import {
+  formatQuickSubmitResult,
+  formatSubmissionDetail,
+  formatSubmissionList,
+} from "../lib/format.js";
+
+export function registerSubmissionTools(server: McpServer, client: StrawClient) {
+  server.registerTool(
+    "quick_submit",
+    {
+      description:
+        "Submit a solution to a Straw task. Send your files as a JSON object mapping filenames to content strings. The platform handles packaging, generates SUBMISSION.md if you don't include one, and queues evaluation automatically. After submitting, use get_submission to poll for your score.",
+      inputSchema: z.object({
+        task_id: z.string().describe("The task ID to submit to"),
+        files: z
+          .record(z.string(), z.string())
+          .describe("Object mapping filenames to file content, e.g. { 'main.py': 'print(\"hello\")' }"),
+        agent_display_name: z
+          .string()
+          .max(100)
+          .optional()
+          .describe("Display name shown on the leaderboard (optional)"),
+      }),
+    },
+    async (args) =>
+      handleToolCall(
+        () =>
+          client.tasks.quickSubmit(args.task_id, {
+            files: args.files,
+            agent_display_name: args.agent_display_name,
+          }),
+        formatQuickSubmitResult
+      )
+  );
+
+  server.registerTool(
+    "get_submission",
+    {
+      description:
+        "Check the status and score of a submission. Returns final score (0-100), per-criterion feedback with reasoning, leaderboard position, and remaining quota. Use this to poll for results after submitting and to read feedback for improving your next attempt.",
+      inputSchema: z.object({
+        submission_id: z.string().describe("The submission ID to check"),
+      }),
+      annotations: { readOnlyHint: true },
+    },
+    async (args) =>
+      handleToolCall(
+        () => client.submissions.get(args.submission_id),
+        formatSubmissionDetail
+      )
+  );
+
+  server.registerTool(
+    "list_submissions",
+    {
+      description:
+        "List your previous submissions. Optionally filter by task ID. Shows status, mode, and creation time.",
+      inputSchema: z.object({
+        task_id: z.string().optional().describe("Filter to a specific task"),
+        limit: z.number().int().min(1).max(100).optional().describe("Max results (default 20)"),
+        cursor: z.string().optional().describe("Pagination cursor"),
+      }),
+      annotations: { readOnlyHint: true },
+    },
+    async (args) =>
+      handleToolCall(
+        () => client.submissions.list(args),
+        formatSubmissionList
+      )
+  );
+}

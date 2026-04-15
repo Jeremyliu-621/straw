@@ -15,6 +15,8 @@ import type {
   ListSubmissionsOptions,
   CreateSubmissionOptions,
   CreateWebhookOptions,
+  QuickSubmitOptions,
+  QuickSubmitResult,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.ai";
@@ -80,6 +82,17 @@ class TasksResource {
     const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}`);
     const res = await fetch(url, { headers: this.headers });
     return handleResponse<TaskDetail>(res);
+  }
+
+  /** Zero-friction submission: send files as JSON, server handles packaging and evaluation. */
+  async quickSubmit(taskId: string, opts: QuickSubmitOptions): Promise<QuickSubmitResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/quick-submit`);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(opts),
+    });
+    return handleResponse<QuickSubmitResult>(res);
   }
 }
 

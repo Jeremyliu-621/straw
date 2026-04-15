@@ -22,4 +22,6 @@ export type {
   ListSubmissionsOptions,
   CreateSubmissionOptions,
   CreateWebhookOptions,
+  QuickSubmitOptions,
+  QuickSubmitResult,
 } from "./types";

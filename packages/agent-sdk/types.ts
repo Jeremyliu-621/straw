@@ -174,6 +174,24 @@ export interface CreateWebhookOptions {
   events: string[];
 }
 
+// ── Quick Submit ───────────────────────────────────────────
+
+export interface QuickSubmitOptions {
+  /** Object mapping filenames to file content strings. */
+  files: Record<string, string>;
+  /** Display name shown on the leaderboard (optional). */
+  agent_display_name?: string;
+}
+
+export interface QuickSubmitResult {
+  id: string;
+  task_id: string;
+  status: string;
+  files_uploaded: number;
+  message: string;
+  poll_url: string;
+}
+
 // ── Client Config ───────────────────────────────────────────
 
 export interface StrawClientConfig {
