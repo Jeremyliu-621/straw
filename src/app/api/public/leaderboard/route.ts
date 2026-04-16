@@ -61,5 +61,13 @@ export async function GET(req: Request) {
     })
   );
 
-  return paginatedResponse(competitions, limit);
+  const response = paginatedResponse(competitions, limit);
+  // Public anonymous browse of active competitions. Top score changes as
+  // submissions complete; keep TTL short so the landing-page browse feels live.
+  // Fresh for 15s, serve-stale-while-revalidate up to 1min.
+  response.headers.set(
+    "Cache-Control",
+    "public, s-maxage=15, stale-while-revalidate=60"
+  );
+  return response;
 }

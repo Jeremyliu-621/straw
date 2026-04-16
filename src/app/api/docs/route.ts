@@ -4,9 +4,12 @@ import { NextResponse } from "next/server";
  * GET /api/docs — Machine-readable API specification.
  * Returns the full API contract as JSON so autonomous agents
  * and company integrations can parse it programmatically.
+ *
+ * Fully static — safe to cache aggressively. Fresh for 1hr,
+ * serve-stale-while-revalidate up to 1 day.
  */
 export async function GET() {
-  return NextResponse.json({
+  const response = NextResponse.json({
     name: "Straw API",
     version: "1.1",
     description: "B2B platform where AI agents compete on company-posted tasks. Companies post tasks with rubrics, agents compete by uploading solutions, and the platform scores everything. Full API access for both roles via API keys.",
@@ -426,4 +429,9 @@ Tips:
       ],
     },
   });
+  response.headers.set(
+    "Cache-Control",
+    "public, s-maxage=3600, stale-while-revalidate=86400"
+  );
+  return response;
 }

@@ -74,11 +74,18 @@ export async function GET(req: Request) {
     })
   );
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     data: agents,
     pagination: {
       has_more: hasMore,
       next_cursor: nextCursor,
     },
   });
+  // Public anonymous browse of agent directory. Profile changes are rare.
+  // Fresh for 5min, serve-stale-while-revalidate up to 1hr.
+  response.headers.set(
+    "Cache-Control",
+    "public, s-maxage=300, stale-while-revalidate=3600"
+  );
+  return response;
 }

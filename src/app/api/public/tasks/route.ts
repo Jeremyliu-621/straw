@@ -50,5 +50,13 @@ export async function GET(req: Request) {
     competitor_count: countMap.get(task.id) ?? 0,
   }));
 
-  return paginatedResponse(enriched, limit);
+  const response = paginatedResponse(enriched, limit);
+  // Public anonymous browse. Safe for shared edge cache — returns no
+  // auth-dependent fields, rubric weights, or pre-deadline identities.
+  // Fresh for 60s, serve-stale-while-revalidate up to 5min.
+  response.headers.set(
+    "Cache-Control",
+    "public, s-maxage=60, stale-while-revalidate=300"
+  );
+  return response;
 }
