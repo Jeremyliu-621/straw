@@ -22,6 +22,13 @@ config({ path: ".env.local" });
 import { Worker } from "bullmq";
 import { createClient } from "@supabase/supabase-js";
 import { createHmac } from "crypto";
+import fs from "fs";
+import os from "os";
+import path from "path";
+import {
+  WEBHOOK_WORKER_CONCURRENCY_DEFAULT,
+  WORKER_DURATION_WINDOW_SIZE,
+} from "@/constants";
 
 // ── Config ──────────────────────────────────────────────────
 
@@ -37,6 +44,80 @@ if (!REDIS_URL || !SUPABASE_URL || !SUPABASE_KEY) {
 const DELIVERY_TIMEOUT_MS = 10_000;
 const RESPONSE_BODY_MAX_BYTES = 1024;
 const QUEUE_NAME = "webhook";
+const HEALTH_CHECK_PATH = path.join(os.tmpdir(), "webhook-worker-heartbeat");
+
+const WEBHOOK_WORKER_CONCURRENCY = (() => {
+  const raw = process.env.WEBHOOK_WORKER_CONCURRENCY;
+  if (!raw) return WEBHOOK_WORKER_CONCURRENCY_DEFAULT;
+  const parsed = Number.parseInt(raw, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    console.warn(
+      `[webhook-worker] WEBHOOK_WORKER_CONCURRENCY=${raw} invalid, falling back to ${WEBHOOK_WORKER_CONCURRENCY_DEFAULT}`
+    );
+    return WEBHOOK_WORKER_CONCURRENCY_DEFAULT;
+  }
+  return parsed;
+})();
+
+// ── Heartbeat + Metrics ─────────────────────────────────────
+
+interface WebhookMetrics {
+  jobsProcessed: number;
+  jobsFailed: number;
+  durationsMs: number[];
+  lastError: string | null;
+  startedAt: string;
+}
+
+const metrics: WebhookMetrics = {
+  jobsProcessed: 0,
+  jobsFailed: 0,
+  durationsMs: [],
+  lastError: null,
+  startedAt: new Date().toISOString(),
+};
+
+function recordJobResult(durationMs: number, ok: boolean, errorMessage?: string): void {
+  if (ok) {
+    metrics.jobsProcessed += 1;
+  } else {
+    metrics.jobsFailed += 1;
+    if (errorMessage) {
+      metrics.lastError = errorMessage.slice(0, 500);
+    }
+  }
+  metrics.durationsMs.push(durationMs);
+  if (metrics.durationsMs.length > WORKER_DURATION_WINDOW_SIZE) {
+    metrics.durationsMs.shift();
+  }
+}
+
+function averageDurationMs(): number {
+  if (metrics.durationsMs.length === 0) return 0;
+  const total = metrics.durationsMs.reduce((a, b) => a + b, 0);
+  return Math.round(total / metrics.durationsMs.length);
+}
+
+function writeHeartbeat(status: "idle" | "processing", jobId?: string): void {
+  try {
+    const payload = JSON.stringify({
+      pid: process.pid,
+      status,
+      jobId: jobId ?? null,
+      lastHeartbeat: new Date().toISOString(),
+      startedAt: metrics.startedAt,
+      jobsProcessed: metrics.jobsProcessed,
+      jobsFailed: metrics.jobsFailed,
+      avgDurationMs: averageDurationMs(),
+      lastError: metrics.lastError,
+    });
+    fs.writeFileSync(HEALTH_CHECK_PATH, payload, "utf8");
+  } catch {
+    // Best effort
+  }
+}
+
+const jobStartTimes = new Map<string, number>();
 
 // ── Supabase Client ─────────────────────────────────────────
 
@@ -73,6 +154,9 @@ const worker = new Worker<WebhookJobData>(
   async (job) => {
     const { deliveryId, url, secret, payload } = job.data;
     const attempt = (job.attemptsMade ?? 0) + 1;
+
+    if (job.id) jobStartTimes.set(job.id, Date.now());
+    writeHeartbeat("processing", job.id);
 
     console.log(`[webhook-worker] Delivering ${deliveryId} to ${url} (attempt ${attempt})`);
 
@@ -148,7 +232,7 @@ const worker = new Worker<WebhookJobData>(
   },
   {
     connection: redisConnection,
-    concurrency: 10,
+    concurrency: WEBHOOK_WORKER_CONCURRENCY,
   }
 );
 
@@ -156,22 +240,35 @@ const worker = new Worker<WebhookJobData>(
 
 worker.on("failed", (job, err) => {
   console.error(`[webhook-worker] Job ${job?.id} failed (attempt ${job?.attemptsMade}):`, err.message);
+  const startedAt = job?.id ? jobStartTimes.get(job.id) : undefined;
+  if (job?.id) jobStartTimes.delete(job.id);
+  recordJobResult(startedAt ? Date.now() - startedAt : 0, false, err.message);
+  writeHeartbeat("idle");
 });
 
 worker.on("completed", (job) => {
   console.log(`[webhook-worker] Job ${job.id} completed`);
+  const startedAt = job.id ? jobStartTimes.get(job.id) : undefined;
+  if (job.id) jobStartTimes.delete(job.id);
+  recordJobResult(startedAt ? Date.now() - startedAt : 0, true);
+  writeHeartbeat("idle");
 });
 
 process.on("SIGTERM", async () => {
   console.log("[webhook-worker] Shutting down...");
   await worker.close();
+  try { fs.unlinkSync(HEALTH_CHECK_PATH); } catch { /* best effort */ }
   process.exit(0);
 });
 
 process.on("SIGINT", async () => {
   console.log("[webhook-worker] Shutting down...");
   await worker.close();
+  try { fs.unlinkSync(HEALTH_CHECK_PATH); } catch { /* best effort */ }
   process.exit(0);
 });
 
-console.log("[webhook-worker] Started, waiting for jobs...");
+writeHeartbeat("idle");
+console.log(
+  `[webhook-worker] Started, waiting for jobs... (concurrency=${WEBHOOK_WORKER_CONCURRENCY})`
+);

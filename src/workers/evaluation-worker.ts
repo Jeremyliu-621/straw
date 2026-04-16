@@ -72,6 +72,8 @@ import {
   EVAL_CONTAINER_OUTPUT_PATH,
   EVAL_CONTAINER_INPUT_PATH,
   EVAL_SCORE_JSON_FILENAME,
+  EVAL_WORKER_CONCURRENCY_DEFAULT,
+  WORKER_DURATION_WINDOW_SIZE,
 } from "@/constants";
 import type { EvalMode } from "@/constants";
 import { z } from "zod/v4";
@@ -134,7 +136,45 @@ const log = {
   },
 };
 
-// ── Health Check ────────────────────────────────────────────
+// ── Health Check + Metrics ──────────────────────────────────
+
+interface WorkerMetrics {
+  jobsProcessed: number;
+  jobsFailed: number;
+  durationsMs: number[]; // rolling window, capped at WORKER_DURATION_WINDOW_SIZE
+  lastError: string | null;
+  startedAt: string;
+}
+
+const metrics: WorkerMetrics = {
+  jobsProcessed: 0,
+  jobsFailed: 0,
+  durationsMs: [],
+  lastError: null,
+  startedAt: new Date().toISOString(),
+};
+
+function recordJobResult(durationMs: number, ok: boolean, errorMessage?: string): void {
+  if (ok) {
+    metrics.jobsProcessed += 1;
+  } else {
+    metrics.jobsFailed += 1;
+    if (errorMessage) {
+      // Truncate so heartbeat file stays small
+      metrics.lastError = errorMessage.slice(0, 500);
+    }
+  }
+  metrics.durationsMs.push(durationMs);
+  if (metrics.durationsMs.length > WORKER_DURATION_WINDOW_SIZE) {
+    metrics.durationsMs.shift();
+  }
+}
+
+function averageDurationMs(): number {
+  if (metrics.durationsMs.length === 0) return 0;
+  const total = metrics.durationsMs.reduce((a, b) => a + b, 0);
+  return Math.round(total / metrics.durationsMs.length);
+}
 
 function writeHealthCheck(status: "idle" | "processing", jobId?: string): void {
   try {
@@ -143,6 +183,11 @@ function writeHealthCheck(status: "idle" | "processing", jobId?: string): void {
       status,
       jobId: jobId ?? null,
       lastHeartbeat: new Date().toISOString(),
+      startedAt: metrics.startedAt,
+      jobsProcessed: metrics.jobsProcessed,
+      jobsFailed: metrics.jobsFailed,
+      avgDurationMs: averageDurationMs(),
+      lastError: metrics.lastError,
     });
     fs.writeFileSync(HEALTH_CHECK_PATH, payload, "utf8");
   } catch {
@@ -571,11 +616,28 @@ async function waitForEvalContainer(
 
 // ── Worker ───────────────────────────────────────────────────
 
+const EVAL_WORKER_CONCURRENCY = (() => {
+  const raw = process.env.EVAL_WORKER_CONCURRENCY;
+  if (!raw) return EVAL_WORKER_CONCURRENCY_DEFAULT;
+  const parsed = Number.parseInt(raw, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    log.warn(
+      `EVAL_WORKER_CONCURRENCY=${raw} invalid, falling back to ${EVAL_WORKER_CONCURRENCY_DEFAULT}`
+    );
+    return EVAL_WORKER_CONCURRENCY_DEFAULT;
+  }
+  return parsed;
+})();
+
+// Track per-job start times so we can record duration on completion
+const jobStartTimes = new Map<string, number>();
+
 const worker = new Worker<EvaluationJobData>(
   QUEUE_NAME,
   async (job) => {
     const { submissionId, taskId, outputUrl } = job.data;
     log.info(`Evaluating submission ${submissionId} (job=${job.id})`, submissionId);
+    if (job.id) jobStartTimes.set(job.id, Date.now());
     writeHealthCheck("processing", job.id);
 
     // 1. Fetch task and rubric criteria
@@ -620,7 +682,7 @@ const worker = new Worker<EvaluationJobData>(
   },
   {
     connection: redisConnection,
-    concurrency: 2,
+    concurrency: EVAL_WORKER_CONCURRENCY,
     lockDuration: JOB_LOCK_DURATION_MS,
   }
 );
@@ -1478,17 +1540,25 @@ export function calculateFinalScore(
 
 worker.on("completed", (job) => {
   log.info(`Job ${job.id} completed`);
+  const startedAt = job.id ? jobStartTimes.get(job.id) : undefined;
+  if (job.id) jobStartTimes.delete(job.id);
+  recordJobResult(startedAt ? Date.now() - startedAt : 0, true);
   writeHealthCheck("idle");
 });
 
 worker.on("failed", (job, err) => {
   log.error(`Job ${job?.id} failed: ${err.message}`);
+  const startedAt = job?.id ? jobStartTimes.get(job.id) : undefined;
+  if (job?.id) jobStartTimes.delete(job.id);
+  recordJobResult(startedAt ? Date.now() - startedAt : 0, false, err.message);
   writeHealthCheck("idle");
 });
 
 // Write initial health check on startup
 writeHealthCheck("idle");
-log.info("Evaluation worker started, waiting for jobs...");
+log.info(
+  `Evaluation worker started, waiting for jobs... (concurrency=${EVAL_WORKER_CONCURRENCY})`
+);
 
 process.on("SIGTERM", async () => {
   log.info("Shutting down (SIGTERM)...");
