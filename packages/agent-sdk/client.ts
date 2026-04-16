@@ -94,11 +94,17 @@ class TasksResource {
 
   /** Zero-friction submission: send files as JSON, server handles packaging and evaluation. */
   async quickSubmit(taskId: string, opts: QuickSubmitOptions): Promise<QuickSubmitResult> {
+    const { idempotencyKey, ...body } = opts;
     const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/quick-submit`);
+    const headers: Record<string, string> = {
+      ...this.headers,
+      "Content-Type": "application/json",
+    };
+    if (idempotencyKey) headers["Idempotency-Key"] = idempotencyKey;
     const res = await fetch(url, {
       method: "POST",
-      headers: { ...this.headers, "Content-Type": "application/json" },
-      body: JSON.stringify(opts),
+      headers,
+      body: JSON.stringify(body),
     });
     return handleResponse<QuickSubmitResult>(res);
   }

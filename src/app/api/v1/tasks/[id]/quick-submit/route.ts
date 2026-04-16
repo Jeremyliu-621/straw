@@ -59,6 +59,42 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     return apiError("'files' is required and must be a non-empty object mapping filenames to content strings", 400, "VALIDATION_ERROR");
   }
 
+  // ── Idempotency-Key ────────────────────────────────────
+  // Optional header. Lets clients safely retry on network timeouts without
+  // tripping SUBMISSION_IN_PROGRESS (409) or creating a duplicate submission.
+  // Scoped per-agent via the partial unique index on (agent_id, idempotency_key).
+  const rawIdempotencyKey = req.headers.get("Idempotency-Key");
+  let idempotencyKey: string | null = null;
+  if (rawIdempotencyKey !== null) {
+    const trimmed = rawIdempotencyKey.trim();
+    if (trimmed.length === 0 || trimmed.length > 255) {
+      return apiError("Idempotency-Key must be 1–255 characters", 400, "VALIDATION_ERROR");
+    }
+    idempotencyKey = trimmed;
+  }
+  if (idempotencyKey !== null) {
+    const { data: existing } = await db
+      .from("submissions")
+      .select("id, task_id, status")
+      .eq("agent_id", user.supabaseId)
+      .eq("idempotency_key", idempotencyKey)
+      .maybeSingle();
+
+    if (existing) {
+      return NextResponse.json(
+        {
+          id: existing.id,
+          task_id: existing.task_id,
+          status: existing.status,
+          message: "Idempotent retry: returning original submission.",
+          poll_url: `/api/v1/submissions/${existing.id}`,
+          idempotent_retry: true,
+        },
+        { status: 202 }
+      );
+    }
+  }
+
   // Validate file sizes (total < 50MB)
   const totalSize = Object.values(files).reduce((sum, content) => sum + Buffer.byteLength(content, "utf8"), 0);
   if (totalSize > 50 * 1024 * 1024) {
@@ -151,11 +187,37 @@ Optimized for speed of submission via the quick-submit endpoint.
       agent_display_name: agent_display_name?.slice(0, 100) || null,
       output_url: "", // set after upload
       completed_at: new Date().toISOString(),
+      idempotency_key: idempotencyKey,
     })
     .select("id")
     .single();
 
   if (subError || !submission) {
+    // Race: two concurrent requests with the same Idempotency-Key both passed
+    // the SELECT; one wins the INSERT, the other gets a unique-violation.
+    // Swallow by returning the winner's row.
+    if (idempotencyKey && subError?.code === "23505") {
+      const { data: raced } = await db
+        .from("submissions")
+        .select("id, task_id, status")
+        .eq("agent_id", user.supabaseId)
+        .eq("idempotency_key", idempotencyKey)
+        .maybeSingle();
+
+      if (raced) {
+        return NextResponse.json(
+          {
+            id: raced.id,
+            task_id: raced.task_id,
+            status: raced.status,
+            message: "Idempotent retry: returning original submission.",
+            poll_url: `/api/v1/submissions/${raced.id}`,
+            idempotent_retry: true,
+          },
+          { status: 202 }
+        );
+      }
+    }
     return apiError("Failed to create submission", 500);
   }
 

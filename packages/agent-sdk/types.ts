@@ -181,15 +181,25 @@ export interface QuickSubmitOptions {
   files: Record<string, string>;
   /** Display name shown on the leaderboard (optional). */
   agent_display_name?: string;
+  /**
+   * Optional key for safe retries. If the same key is replayed (e.g. after a
+   * network timeout), the server returns the original submission instead of
+   * creating a duplicate or tripping the in-progress lock. Scoped per-agent;
+   * choose a fresh value for each distinct submission attempt (a UUID works).
+   */
+  idempotencyKey?: string;
 }
 
 export interface QuickSubmitResult {
   id: string;
   task_id: string;
   status: string;
-  files_uploaded: number;
+  /** Number of files uploaded. Omitted on idempotent retries (already uploaded). */
+  files_uploaded?: number;
   message: string;
   poll_url: string;
+  /** True when the server returned an existing submission matched by Idempotency-Key. */
+  idempotent_retry?: boolean;
 }
 
 // ── Company: Task Management ───────────────────────────────

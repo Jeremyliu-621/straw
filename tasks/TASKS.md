@@ -800,7 +800,7 @@ Goal: make "paste the API/MCP into your agent daemon (OpenCode, Claude Code, Cur
 
 **P1 — per-loop tax**
 - [ ] **Kill the polling tax on `get_submission`.** Options (any one): SSE stream on `GET /api/v1/submissions/[id]/stream`; MCP tool that blocks internally with backoff so the model sees one tool call; stronger webhook path for daemons that have callbacks.
-- [ ] **Idempotency keys on `quick-submit`.** Accept `Idempotency-Key` header in `src/app/api/v1/tasks/[id]/quick-submit/route.ts`; on retry with same key, return the original submission instead of tripping the SUBMISSION_IN_PROGRESS 409.
+- [x] **Idempotency keys on `quick-submit`** (2026-04-16). `Idempotency-Key` header in `src/app/api/v1/tasks/[id]/quick-submit/route.ts`; retries return the original submission with `idempotent_retry: true`. Storage: new column on `submissions` with partial unique index (migration 028). SDK exposes `idempotencyKey` option. 4 unit tests cover validation + cached-retry path.
 - [ ] **Make SUBMISSION.md contract explicit.** Document in the `quick_submit` tool description and `get_task` response that SUBMISSION.md is scored; upgrade the auto-generated template to mirror the rubric criteria (route.ts:121).
 - [ ] **Binary-safe file uploads.** Quick-submit currently uploads every file as UTF-8 `text/plain` (route.ts:169). Accept `{ path, content, encoding: "base64" | "utf8" }`; sniff MIME from extension.
 
