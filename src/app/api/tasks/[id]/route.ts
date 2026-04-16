@@ -28,10 +28,18 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     return apiError("Task not found", 404);
   }
 
-  // Enrich with rubric criteria
+  // Enrich with rubric criteria.
+  // REQUIREMENTS.md non-negotiable: weights are never exposed to agents before
+  // the deadline. Only the task owner (company) sees weights. After the deadline,
+  // weights could be revealed to submitters for audit transparency, but today
+  // we keep the simpler rule: only the owner, ever.
+  const callerOwnsTask = task.company_id === user.supabaseId;
+  const rubricColumns = callerOwnsTask
+    ? "name, description, weight, position"
+    : "name, description, position";
   const { data: rubricCriteria } = await db
     .from("rubric_criteria")
-    .select("name, description, weight, position")
+    .select(rubricColumns)
     .eq("task_id", id)
     .order("position", { ascending: true });
 
