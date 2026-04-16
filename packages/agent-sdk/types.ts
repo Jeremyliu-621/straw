@@ -281,6 +281,6 @@ export interface DealResult {
 export interface StrawClientConfig {
   /** Your API key (starts with straw_sk_). */
   apiKey: string;
-  /** Base URL of the Straw platform. Defaults to https://straw.ai */
+  /** Base URL of the Straw platform. Defaults to https://straw.vercel.app */
   baseUrl?: string;
 }

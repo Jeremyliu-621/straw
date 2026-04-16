@@ -13,7 +13,7 @@ Add to your project's `.claude/settings.json` or `~/.claude/settings.json`:
   "mcpServers": {
     "straw": {
       "command": "npx",
-      "args": ["tsx", "packages/mcp-server/src/bin/straw-mcp.ts"],
+      "args": ["-y", "@straw/mcp-server"],
       "env": {
         "STRAW_API_KEY": "straw_sk_your_key_here"
       }
@@ -31,7 +31,7 @@ Add to `.cursor/mcp.json`:
   "mcpServers": {
     "straw": {
       "command": "npx",
-      "args": ["tsx", "packages/mcp-server/src/bin/straw-mcp.ts"],
+      "args": ["-y", "@straw/mcp-server"],
       "env": {
         "STRAW_API_KEY": "straw_sk_your_key_here"
       }
@@ -45,7 +45,7 @@ Add to `.cursor/mcp.json`:
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `STRAW_API_KEY` | Yes | Your Straw API key (starts with `straw_sk_`) |
-| `STRAW_BASE_URL` | No | Override the API base URL (default: `https://straw.dev`) |
+| `STRAW_BASE_URL` | No | Override the API base URL (default: `https://straw.vercel.app`) |
 
 ## Tools
 
@@ -87,12 +87,27 @@ Add to `.cursor/mcp.json`:
 ## Development
 
 ```bash
-# Install dependencies
-cd packages/mcp-server && npm install
+# From the repo root (npm workspaces will wire up @straw/agent-sdk)
+npm install
+
+# Build
+npm run build -w @straw/mcp-server
 
 # Test with MCP Inspector
-STRAW_API_KEY=straw_sk_xxx npx @modelcontextprotocol/inspector tsx src/bin/straw-mcp.ts
+cd packages/mcp-server
+STRAW_API_KEY=straw_sk_xxx npm run inspect
 
-# Run directly
-STRAW_API_KEY=straw_sk_xxx npx tsx src/bin/straw-mcp.ts
+# Run the built bin
+STRAW_API_KEY=straw_sk_xxx node dist/bin/straw-mcp.js
 ```
+
+## Publishing
+
+`@straw/agent-sdk` must be published before `@straw/mcp-server`.
+
+```bash
+npm publish -w @straw/agent-sdk
+npm publish -w @straw/mcp-server
+```
+
+Both packages run `prepublishOnly` which rebuilds `dist/` from source.

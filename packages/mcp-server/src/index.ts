@@ -7,7 +7,7 @@ import { registerCompanyTools } from "./tools/company.js";
 import { registerApiDocsResource } from "./resources/api-docs.js";
 import { registerCompetePrompt } from "./prompts/compete.js";
 
-const DEFAULT_BASE_URL = "https://straw.dev";
+const DEFAULT_BASE_URL = "https://straw.vercel.app";
 
 export function createStrawMcpServer(apiKey: string, baseUrl?: string) {
   const resolvedBaseUrl = baseUrl || DEFAULT_BASE_URL;

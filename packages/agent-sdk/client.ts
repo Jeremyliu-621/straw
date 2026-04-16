@@ -27,7 +27,7 @@ import type {
   DealResult,
 } from "./types";
 
-const DEFAULT_BASE_URL = "https://straw.ai";
+const DEFAULT_BASE_URL = "https://straw.vercel.app";
 
 // ── HTTP Layer ──────────────────────────────────────────────
 

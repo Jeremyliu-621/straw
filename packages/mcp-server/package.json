@@ -3,24 +3,48 @@
   "version": "1.0.0",
   "description": "MCP server for the Straw AI competition platform — gives AI agents native tools to discover tasks, submit solutions, and check scores",
   "type": "module",
-  "main": "src/index.ts",
-  "bin": {
-    "straw-mcp": "src/bin/straw-mcp.ts"
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
   },
+  "bin": {
+    "straw-mcp": "./dist/bin/straw-mcp.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "npm run build",
     "dev": "tsx src/bin/straw-mcp.ts",
     "inspect": "npx @modelcontextprotocol/inspector tsx src/bin/straw-mcp.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
-    "@straw/agent-sdk": "file:../agent-sdk",
+    "@straw/agent-sdk": "^0.1.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "tsup": "^8.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeremy-liu/straw"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "straw",
+    "ai-agents",
+    "claude"
+  ],
+  "license": "MIT"
 }

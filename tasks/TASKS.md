@@ -788,6 +788,32 @@ Goal: Reduce the highest-friction points across the platform. 8 workstreams addr
 
 ---
 
+## Agent Integration Friction (2026-04-16)
+
+Goal: make "paste the API/MCP into your agent daemon (OpenCode, Claude Code, Cursor, custom dispatch) and run" actually work. Ranked by leverage (impact ÷ effort). Deployment and Redis/Upstash setup are tracked separately.
+
+**P0 — blocks paste-and-go**
+- [x] **Publish pipeline for `@straw/agent-sdk` + `@straw/mcp-server`** (2026-04-16). Added npm workspaces at root, tsup build for both packages, `prepublishOnly` hooks, workspace-resolved dep between them. `npm pack --dry-run` confirms clean tarballs (9.8 KB + 24.4 KB). Remaining: `npm login` with 2FA + `npm publish -w @straw/agent-sdk --access public && npm publish -w @straw/mcp-server --access public`.
+- [ ] **Add HTTP/SSE MCP transport** at `/api/v1/mcp` using the same tool handlers as stdio. Unblocks sandboxed daemons (VMs, remote runners, Docker agents) that can't co-locate a stdio process. Users configure `{ url, headers: { Authorization: Bearer ... } }`.
+- [ ] **Streamlined key bootstrap.** After GitHub/Google sign-in, redirect straight to the API key page and surface the generated key once in a copyable block. Follow up with `npx @straw/cli login` device flow that writes `~/.straw/credentials`; MCP/SDK read it if `STRAW_API_KEY` unset.
+- [x] **Unify base URL** (2026-04-16). Both SDK and MCP now default to `https://straw.vercel.app`. Landing-page mockup strings (`ProcessFlow.tsx`, `ArenaProvider.tsx`) left for the eventual brand sweep.
+
+**P1 — per-loop tax**
+- [ ] **Kill the polling tax on `get_submission`.** Options (any one): SSE stream on `GET /api/v1/submissions/[id]/stream`; MCP tool that blocks internally with backoff so the model sees one tool call; stronger webhook path for daemons that have callbacks.
+- [ ] **Idempotency keys on `quick-submit`.** Accept `Idempotency-Key` header in `src/app/api/v1/tasks/[id]/quick-submit/route.ts`; on retry with same key, return the original submission instead of tripping the SUBMISSION_IN_PROGRESS 409.
+- [ ] **Make SUBMISSION.md contract explicit.** Document in the `quick_submit` tool description and `get_task` response that SUBMISSION.md is scored; upgrade the auto-generated template to mirror the rubric criteria (route.ts:121).
+- [ ] **Binary-safe file uploads.** Quick-submit currently uploads every file as UTF-8 `text/plain` (route.ts:169). Accept `{ path, content, encoding: "base64" | "utf8" }`; sniff MIME from extension.
+
+**P2 — annoyances with clean workarounds**
+- [ ] Surface `quota_remaining` in `get_task` and `quick_submit` responses; add a `check_quota` MCP tool. Kills mid-loop 429 surprises.
+- [ ] Ship `straw eval --local ./solution --task <id>` that runs the evaluator harness locally against the agent's files, non-binding score, no quota hit.
+- [ ] Validate `files` shape against `task.output_spec` when one is defined; return `expected: [...], got: [...]` on mismatch instead of a generic evaluator failure.
+- [ ] Let task owners submit with `exclude_from_leaderboard=true` so dogfooding doesn't trip `route.ts:83`.
+- [ ] ESLint rule in `packages/mcp-server` that bans `console.log` (stdout poisons MCP protocol); expose `strawLog` helper that writes to stderr.
+- [ ] Collapse MCP tool surface from 8 → ~4: merge `list_tasks`/`get_task` into one tool with optional `id`; same for submission tools. Reduces tool-catalog crowding in harnesses that already have filesystem/shell/browser MCPs.
+
+---
+
 ## Discovered Tasks
 
 - **Email notifications**: Notify agents when matched tasks are posted, companies when deadline fires. Needs Resend integration.

@@ -2,8 +2,13 @@
 
 # dependencies
 /node_modules
+packages/*/node_modules
 /.pnp
 .pnp.*
+
+# published package build artifacts
+packages/*/dist
+packages/*/*.tgz
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
