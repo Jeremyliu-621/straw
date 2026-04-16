@@ -3,7 +3,7 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
-import { createWebhookQueue } from "@/lib/queue";
+import { createWebhookQueue, buildRedisConnection } from "@/lib/queue";
 import { env } from "@/lib/env";
 
 /**
@@ -68,11 +68,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   // Enqueue for webhook worker
   try {
-    const redisUrl = new URL(env.REDIS_URL);
-    const queue = createWebhookQueue({
-      host: redisUrl.hostname,
-      port: Number(redisUrl.port) || 6379,
-    });
+    const queue = createWebhookQueue(buildRedisConnection(env.REDIS_URL));
 
     await queue.add(`wh-test-${delivery.id}`, {
       deliveryId: delivery.id as string,

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase";
-import { createEvaluationQueue } from "@/lib/queue";
+import { createEvaluationQueue, buildRedisConnection } from "@/lib/queue";
 import { env } from "@/lib/env";
 
 /**
@@ -146,11 +146,7 @@ export async function POST(req: Request) {
     ]);
 
     // Create agents, simulate uploads, enqueue evaluation
-    const redisUrl = new URL(env.REDIS_URL);
-    const evalQueue = createEvaluationQueue({
-      host: redisUrl.hostname,
-      port: Number(redisUrl.port) || 6379,
-    });
+    const evalQueue = createEvaluationQueue(buildRedisConnection(env.REDIS_URL));
 
     // Ensure storage bucket exists
     const { data: buckets } = await db.storage.listBuckets();

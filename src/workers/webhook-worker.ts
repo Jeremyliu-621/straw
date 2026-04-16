@@ -29,6 +29,7 @@ import {
   WEBHOOK_WORKER_CONCURRENCY_DEFAULT,
   WORKER_DURATION_WINDOW_SIZE,
 } from "@/constants";
+import { buildRedisConnection } from "@/lib/queue";
 
 // ── Config ──────────────────────────────────────────────────
 
@@ -127,11 +128,9 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY, {
 
 // ── Redis Connection ────────────────────────────────────────
 
-const redisUrl = new URL(REDIS_URL);
-const redisConnection = {
-  host: redisUrl.hostname,
-  port: Number(redisUrl.port) || 6379,
-};
+// Use shared helper so password + TLS (rediss://) are honored identically
+// across web routes and workers. See src/lib/queue.ts::buildRedisConnection.
+const redisConnection = buildRedisConnection(REDIS_URL);
 
 // ── HMAC Signature ──────────────────────────────────────────
 

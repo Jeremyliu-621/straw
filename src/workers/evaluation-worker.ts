@@ -53,6 +53,7 @@ import { existsSync } from "fs";
 if (existsSync(".env.local")) config({ path: ".env.local" });
 
 import { Worker, Queue } from "bullmq";
+import { buildRedisConnection } from "@/lib/queue";
 import Dockerode from "dockerode";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@supabase/supabase-js";
@@ -207,10 +208,9 @@ const docker = new Dockerode();
 const db = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
 const gemini = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-const redisConnection = {
-  host: new URL(REDIS_URL).hostname,
-  port: Number(new URL(REDIS_URL).port) || 6379,
-};
+// Use shared helper so password + TLS (rediss://) are honored identically
+// across web routes and workers. See src/lib/queue.ts::buildRedisConnection.
+const redisConnection = buildRedisConnection(REDIS_URL);
 
 const webhookQueue = new Queue(WEBHOOK_QUEUE_NAME, {
   connection: redisConnection,

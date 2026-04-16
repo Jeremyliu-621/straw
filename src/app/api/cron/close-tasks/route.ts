@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase";
-import { createEvaluationQueue } from "@/lib/queue";
+import { createEvaluationQueue, buildRedisConnection } from "@/lib/queue";
 import { env } from "@/lib/env";
 import { checkDeadlines } from "@/services/task-deadline.service";
 import type { DeadlineEvent } from "@/services/task-deadline.service";
@@ -50,11 +50,7 @@ export async function POST(req: Request) {
   const db = createServiceClient();
 
   // Build evaluation enqueue function
-  const redisUrl = new URL(env.REDIS_URL);
-  const evalQueue = createEvaluationQueue({
-    host: redisUrl.hostname,
-    port: Number(redisUrl.port) || 6379,
-  });
+  const evalQueue = createEvaluationQueue(buildRedisConnection(env.REDIS_URL));
 
   async function enqueueEvaluation(
     submissionId: string,

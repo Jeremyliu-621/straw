@@ -1,6 +1,6 @@
 import { createServiceClient } from "@/lib/supabase";
 import { env } from "@/lib/env";
-import { createWebhookQueue } from "@/lib/queue";
+import { createWebhookQueue, buildRedisConnection } from "@/lib/queue";
 import type { WebhookEventType } from "@/constants";
 import type { WebhookPayload } from "@/services/webhook.service";
 
@@ -31,11 +31,7 @@ export async function dispatchWebhookEvent(
     if (matching.length === 0) return;
 
     const payloadStr = JSON.stringify(payload);
-    const redisUrl = new URL(env.REDIS_URL);
-    const queue = createWebhookQueue({
-      host: redisUrl.hostname,
-      port: Number(redisUrl.port) || 6379,
-    });
+    const queue = createWebhookQueue(buildRedisConnection(env.REDIS_URL));
 
     for (const webhook of matching) {
       const { data: delivery } = await db

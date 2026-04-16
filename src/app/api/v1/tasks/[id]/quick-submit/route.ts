@@ -12,7 +12,7 @@ import {
   AUDIT_ACTION,
   WEBHOOK_EVENT,
 } from "@/constants";
-import { createEvaluationQueue, type EvaluationJobData } from "@/lib/queue";
+import { createEvaluationQueue, buildRedisConnection, type EvaluationJobData } from "@/lib/queue";
 import { getSubmissionStoragePath } from "@/services/upload.service";
 import { env } from "@/lib/env";
 import { AuditLogRepository } from "@/db/audit-log";
@@ -184,11 +184,7 @@ Optimized for speed of submission via the quick-submit endpoint.
 
   // ── Enqueue evaluation ─────────────────────────────────
   try {
-    const redisUrl = new URL(env.REDIS_URL);
-    const evalQueue = createEvaluationQueue({
-      host: redisUrl.hostname,
-      port: Number(redisUrl.port) || 6379,
-    });
+    const evalQueue = createEvaluationQueue(buildRedisConnection(env.REDIS_URL));
 
     const evalJob: EvaluationJobData = {
       submissionId: submission.id,

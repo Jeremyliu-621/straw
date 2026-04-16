@@ -9,7 +9,7 @@ import {
   UPLOAD_STORAGE_BUCKET,
   AUDIT_ACTION,
 } from "@/constants";
-import { createEvaluationQueue, type EvaluationJobData } from "@/lib/queue";
+import { createEvaluationQueue, buildRedisConnection, type EvaluationJobData } from "@/lib/queue";
 import { getSubmissionStoragePath } from "@/services/upload.service";
 import { env } from "@/lib/env";
 import { AuditLogRepository } from "@/db/audit-log";
@@ -137,11 +137,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   // Enqueue evaluation
   try {
-    const redisUrl = new URL(env.REDIS_URL);
-    const evalQueue = createEvaluationQueue({
-      host: redisUrl.hostname,
-      port: Number(redisUrl.port) || 6379,
-    });
+    const evalQueue = createEvaluationQueue(buildRedisConnection(env.REDIS_URL));
 
     const evalJob: EvaluationJobData = {
       submissionId: submission.id,
