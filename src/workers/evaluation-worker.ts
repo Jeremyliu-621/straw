@@ -252,11 +252,19 @@ type LLMResponse = z.infer<typeof llmResponseSchema>;
 
 // ── Score.json Schema ─────────────────────────────────────────
 
+const testResultSchema = z.object({
+  name: z.string(),
+  passed: z.boolean(),
+  duration_ms: z.number().optional(),
+  error: z.string().max(2000).optional(),
+});
+
 const scoreJsonSchema = z.object({
   score: z.number().min(0).max(100),
   pass: z.boolean(),
   breakdown: z.record(z.string(), z.number()).optional(),
   notes: z.string().optional(),
+  tests: z.array(testResultSchema).optional(),
 });
 
 type ScoreJson = z.infer<typeof scoreJsonSchema>;
@@ -276,11 +284,19 @@ interface RubricCriterion {
   weight: number;
 }
 
+interface ContainerTestResult {
+  name: string;
+  passed: boolean;
+  duration_ms?: number;
+  error?: string;
+}
+
 interface ContainerEvalResult {
   score: number;
   pass: boolean;
   breakdown: Record<string, number> | undefined;
   notes: string | undefined;
+  tests: ContainerTestResult[] | undefined;
   exitCode: number;
 }
 
@@ -558,10 +574,10 @@ async function runEvalContainer(
     );
   }
 
-  const { score, pass, breakdown, notes } = validated.data;
-  log.info(`Eval container score: ${score} (pass=${pass})`);
+  const { score, pass, breakdown, notes, tests } = validated.data;
+  log.info(`Eval container score: ${score} (pass=${pass})${tests ? ` (${tests.filter(t => t.passed).length}/${tests.length} tests passed)` : ""}`);
 
-  return { score, pass, breakdown, notes, exitCode };
+  return { score, pass, breakdown, notes, tests, exitCode };
 }
 
 // ── Docker Helpers ────────────────────────────────────────────
@@ -953,6 +969,8 @@ async function handleContainerEval(
         container_score: finalScore,
         container_exit_code: containerResult.exitCode,
         breakdown: containerResult.breakdown ?? null,
+        container_tests: containerResult.tests ?? null,
+        container_notes: containerResult.notes ?? null,
         llm_reasoning: llmReasoning,
         llm_score: null,
         test_score: null,

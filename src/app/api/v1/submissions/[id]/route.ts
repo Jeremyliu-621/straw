@@ -42,7 +42,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   // Fetch evaluation results
   const { data: evalResult } = await db
     .from("evaluation_results")
-    .select("id, test_score, llm_score, final_score, container_score, breakdown, eval_mode, llm_reasoning, created_at")
+    .select("id, test_score, llm_score, final_score, container_score, breakdown, container_tests, container_notes, eval_mode, llm_reasoning, created_at")
     .eq("submission_id", id)
     .single();
 
@@ -133,6 +133,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
           llm_score: evalResult.llm_score,
           container_score: evalResult.container_score ?? null,
           breakdown: evalResult.breakdown ?? null,
+          container_tests: evalResult.container_tests ?? null,
+          container_notes: evalResult.container_notes ?? null,
           eval_mode: evalResult.eval_mode ?? null,
           evaluated_at: evalResult.created_at,
         }
