@@ -27,6 +27,12 @@ export const PROCEDURAL_TYPES = new Set([
   "pendant_light",
   "rolling_whiteboard",
   "wall_clock",
+  "squat_rack",
+  "pull_up_tower",
+  "punching_bag",
+  "dumbbell_rack",
+  "water_dispenser",
+  "half_wall",
 ]);
 
 interface Props {
@@ -501,6 +507,260 @@ function WallClock({ item }: Props) {
   );
 }
 
+// ─── squat_rack ─────────────────────────────────────────────────────────────
+// Two vertical posts + a top crossbar + a barbell resting on J-hooks.
+function SquatRack({ item }: Props) {
+  const [wx, , wz] = toWorld(item.x, item.y);
+  const w = (item.w ?? 60) * SCALE;
+  const d = (item.h ?? 40) * SCALE;
+  const postH = 0.85;
+  const steel = "#4A5058";
+  const barbell = "#2A2E35";
+
+  return (
+    <group position={[wx + w / 2, 0, wz + d / 2]} rotation={[0, itemRotY(item), 0]}>
+      {/* Base plates */}
+      {[-w / 2 + 0.05, w / 2 - 0.05].map((lx, i) => (
+        <mesh key={`b${i}`} position={[lx, 0.01, 0]}>
+          <boxGeometry args={[0.12, 0.02, 0.12]} />
+          <meshStandardMaterial color={steel} roughness={0.5} metalness={0.6} />
+        </mesh>
+      ))}
+      {/* Vertical posts */}
+      {[-w / 2 + 0.05, w / 2 - 0.05].map((lx, i) => (
+        <mesh key={`p${i}`} position={[lx, postH / 2, 0]} castShadow>
+          <boxGeometry args={[0.05, postH, 0.05]} />
+          <meshStandardMaterial color={steel} roughness={0.4} metalness={0.7} />
+        </mesh>
+      ))}
+      {/* Top crossbar */}
+      <mesh position={[0, postH - 0.02, 0]} castShadow>
+        <boxGeometry args={[w, 0.04, 0.06]} />
+        <meshStandardMaterial color={steel} roughness={0.4} metalness={0.7} />
+      </mesh>
+      {/* Resting barbell */}
+      <mesh position={[0, postH * 0.7, 0.04]} castShadow>
+        <cylinderGeometry args={[0.018, 0.018, w * 1.2, 12]} />
+        <meshStandardMaterial color={barbell} roughness={0.4} metalness={0.8} />
+      </mesh>
+      {/* Weight plates on each end of barbell */}
+      {[-w * 0.6, w * 0.6].map((lx, i) => (
+        <mesh key={`w${i}`} position={[lx, postH * 0.7, 0.04]} castShadow>
+          <cylinderGeometry args={[0.07, 0.07, 0.04, 12]} />
+          <meshStandardMaterial color="#1F2228" roughness={0.7} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// ─── pull_up_tower ──────────────────────────────────────────────────────────
+// Tall T-shape: one center post with a pull-up bar on top.
+function PullUpTower({ item }: Props) {
+  const [wx, , wz] = toWorld(item.x, item.y);
+  const w = (item.w ?? 50) * SCALE;
+  const d = (item.h ?? 50) * SCALE;
+  const postH = 1.05;
+  const steel = "#3A3F47";
+  const grip = "#E8B84A";
+
+  return (
+    <group position={[wx + w / 2, 0, wz + d / 2]} rotation={[0, itemRotY(item), 0]}>
+      {/* Wide base plate */}
+      <mesh position={[0, 0.01, 0]} receiveShadow>
+        <boxGeometry args={[w, 0.02, d]} />
+        <meshStandardMaterial color={steel} roughness={0.6} metalness={0.5} />
+      </mesh>
+      {/* Main post */}
+      <mesh position={[0, postH / 2, 0]} castShadow>
+        <boxGeometry args={[0.07, postH, 0.07]} />
+        <meshStandardMaterial color={steel} roughness={0.4} metalness={0.7} />
+      </mesh>
+      {/* Top pull-up bar (cross) */}
+      <mesh position={[0, postH - 0.03, 0]} castShadow>
+        <boxGeometry args={[w * 0.85, 0.05, 0.05]} />
+        <meshStandardMaterial color={steel} roughness={0.4} metalness={0.7} />
+      </mesh>
+      {/* Grip wraps (yellow accents on each end of the bar) */}
+      {[-w * 0.35, w * 0.35].map((lx, i) => (
+        <mesh key={`g${i}`} position={[lx, postH - 0.03, 0]}>
+          <boxGeometry args={[0.08, 0.055, 0.055]} />
+          <meshStandardMaterial color={grip} roughness={0.6} />
+        </mesh>
+      ))}
+      {/* Optional second lower bar for dips */}
+      <mesh position={[0, postH * 0.55, d * 0.35]} castShadow>
+        <boxGeometry args={[w * 0.5, 0.04, 0.05]} />
+        <meshStandardMaterial color={steel} roughness={0.4} metalness={0.7} />
+      </mesh>
+    </group>
+  );
+}
+
+// ─── punching_bag ───────────────────────────────────────────────────────────
+// Red heavy bag hanging from a ceiling bracket.
+function PunchingBag({ item }: Props) {
+  const [wx, , wz] = toWorld(item.x, item.y);
+  const w = (item.w ?? 40) * SCALE;
+  const d = (item.h ?? 40) * SCALE;
+  const bagColor = item.color ?? "#B1262A";
+
+  return (
+    <group position={[wx + w / 2, 0, wz + d / 2]} rotation={[0, itemRotY(item), 0]}>
+      {/* Ceiling bracket */}
+      <mesh position={[0, 1.02, 0]}>
+        <boxGeometry args={[0.12, 0.04, 0.12]} />
+        <meshStandardMaterial color="#2A2E35" metalness={0.6} />
+      </mesh>
+      {/* Chain */}
+      <mesh position={[0, 0.88, 0]}>
+        <cylinderGeometry args={[0.008, 0.008, 0.2, 6]} />
+        <meshStandardMaterial color="#5A6068" metalness={0.7} />
+      </mesh>
+      {/* Bag body */}
+      <mesh position={[0, 0.55, 0]} castShadow>
+        <cylinderGeometry args={[0.1, 0.11, 0.55, 16]} />
+        <meshStandardMaterial color={bagColor} roughness={0.85} />
+      </mesh>
+      {/* Bag strap rings */}
+      {[0.8, 0.3].map((yr, i) => (
+        <mesh key={i} position={[0, yr, 0]}>
+          <torusGeometry args={[0.103, 0.01, 6, 16]} />
+          <meshStandardMaterial color="#3A2A1A" roughness={0.7} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// ─── dumbbell_rack ──────────────────────────────────────────────────────────
+// Two-tier horizontal rack with 5-6 pairs of dumbbells in graduated sizes.
+function DumbbellRack({ item }: Props) {
+  const [wx, , wz] = toWorld(item.x, item.y);
+  const w = (item.w ?? 140) * SCALE;
+  const d = (item.h ?? 35) * SCALE;
+  const frame = "#3A3F47";
+  const pairs = 6;
+
+  return (
+    <group position={[wx + w / 2, 0, wz + d / 2]} rotation={[0, itemRotY(item), 0]}>
+      {/* Rack frame base */}
+      <mesh position={[0, 0.02, 0]} receiveShadow>
+        <boxGeometry args={[w, 0.04, d]} />
+        <meshStandardMaterial color={frame} roughness={0.6} metalness={0.5} />
+      </mesh>
+      {/* Top shelf */}
+      <mesh position={[0, 0.28, 0]} castShadow>
+        <boxGeometry args={[w, 0.03, d * 0.9]} />
+        <meshStandardMaterial color={frame} roughness={0.6} metalness={0.5} />
+      </mesh>
+      {/* Back guard rail */}
+      <mesh position={[0, 0.18, -d / 2 + 0.01]}>
+        <boxGeometry args={[w, 0.015, 0.02]} />
+        <meshStandardMaterial color={frame} />
+      </mesh>
+      {/* Dumbbell pairs — each is two weight spheres connected by a handle */}
+      {Array.from({ length: pairs }).map((_, i) => {
+        const t = i / (pairs - 1);
+        const headR = 0.035 + t * 0.018;
+        const cx = -w / 2 + (w / pairs) * (i + 0.5);
+        return (
+          <group key={i} position={[cx, 0.08, 0]}>
+            <mesh position={[0, 0, 0]}>
+              <cylinderGeometry args={[0.012, 0.012, d * 0.55, 8]} />
+              <meshStandardMaterial color="#1F2228" metalness={0.6} />
+            </mesh>
+            <mesh position={[0, 0, -d * 0.22]} castShadow>
+              <sphereGeometry args={[headR, 10, 10]} />
+              <meshStandardMaterial color="#1A1C20" roughness={0.7} />
+            </mesh>
+            <mesh position={[0, 0, d * 0.22]} castShadow>
+              <sphereGeometry args={[headR, 10, 10]} />
+              <meshStandardMaterial color="#1A1C20" roughness={0.7} />
+            </mesh>
+          </group>
+        );
+      })}
+    </group>
+  );
+}
+
+// ─── water_dispenser ────────────────────────────────────────────────────────
+// Slim cooler with a blue bottle on top.
+function WaterDispenser({ item }: Props) {
+  const [wx, , wz] = toWorld(item.x, item.y);
+  const w = (item.w ?? 35) * SCALE;
+  const d = (item.h ?? 35) * SCALE;
+
+  return (
+    <group position={[wx + w / 2, 0, wz + d / 2]} rotation={[0, itemRotY(item), 0]}>
+      {/* Body */}
+      <mesh position={[0, 0.35, 0]} castShadow>
+        <boxGeometry args={[w, 0.7, d]} />
+        <meshStandardMaterial color="#E0E2E0" roughness={0.5} metalness={0.1} />
+      </mesh>
+      {/* Taps */}
+      <mesh position={[0, 0.42, d / 2 + 0.01]}>
+        <boxGeometry args={[w * 0.6, 0.12, 0.03]} />
+        <meshStandardMaterial color="#2A2E35" metalness={0.4} />
+      </mesh>
+      <mesh position={[-w * 0.15, 0.4, d / 2 + 0.03]}>
+        <boxGeometry args={[0.02, 0.03, 0.025]} />
+        <meshStandardMaterial color="#C0262A" />
+      </mesh>
+      <mesh position={[w * 0.15, 0.4, d / 2 + 0.03]}>
+        <boxGeometry args={[0.02, 0.03, 0.025]} />
+        <meshStandardMaterial color="#2A5AE5" />
+      </mesh>
+      {/* Water bottle on top */}
+      <mesh position={[0, 0.85, 0]} castShadow>
+        <cylinderGeometry args={[w * 0.38, w * 0.38, 0.28, 16]} />
+        <meshPhysicalMaterial
+          color="#6AB4E5"
+          transparent
+          opacity={0.55}
+          roughness={0.1}
+          transmission={0.7}
+        />
+      </mesh>
+      {/* Bottle cap */}
+      <mesh position={[0, 1.0, 0]}>
+        <cylinderGeometry args={[w * 0.22, w * 0.22, 0.04, 12]} />
+        <meshStandardMaterial color="#2A5AE5" />
+      </mesh>
+    </group>
+  );
+}
+
+// ─── half_wall ──────────────────────────────────────────────────────────────
+// A knee-height wall for visually separating a zone without blocking sight
+// lines. Use like `wall` (pass w/h in canvas px for footprint). Color defaults
+// to the partition tone but accepts `item.color` to tint (e.g. a gym's floor
+// color for a cohesive pen).
+function HalfWall({ item }: Props) {
+  const [wx, , wz] = toWorld(item.x, item.y);
+  const w = (item.w ?? 80) * SCALE;
+  const d = (item.h ?? 8) * SCALE;
+  const height = 0.42;
+  const trim = 0.04;
+  const color = item.color ?? "#D6D3CD";
+
+  return (
+    <group position={[wx + w / 2, 0, wz + d / 2]}>
+      {/* Body */}
+      <mesh position={[0, height / 2, 0]} castShadow receiveShadow>
+        <boxGeometry args={[w, height, d]} />
+        <meshStandardMaterial color={color} roughness={0.85} />
+      </mesh>
+      {/* Top cap */}
+      <mesh position={[0, height + trim / 2, 0]}>
+        <boxGeometry args={[w + 0.02, trim, d + 0.02]} />
+        <meshStandardMaterial color="#8A8680" roughness={0.7} />
+      </mesh>
+    </group>
+  );
+}
+
 // ─── helpers ────────────────────────────────────────────────────────────────
 function seededRand(seed: string): () => number {
   let h = 2166136261;
@@ -554,6 +814,18 @@ export default function ProceduralFurniture({ item }: Props) {
       return <RollingWhiteboard item={item} />;
     case "wall_clock":
       return <WallClock item={item} />;
+    case "squat_rack":
+      return <SquatRack item={item} />;
+    case "pull_up_tower":
+      return <PullUpTower item={item} />;
+    case "punching_bag":
+      return <PunchingBag item={item} />;
+    case "dumbbell_rack":
+      return <DumbbellRack item={item} />;
+    case "water_dispenser":
+      return <WaterDispenser item={item} />;
+    case "half_wall":
+      return <HalfWall item={item} />;
     default:
       return null;
   }
