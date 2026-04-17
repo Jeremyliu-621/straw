@@ -62,11 +62,11 @@ const KITCHEN: FurnitureItem[] = [
   { type: "cabinet", x: 980, y: 30, w: 40, h: 40, _uid: uid("cabinet") },
   { type: "cabinet", x: 840, y: 30, w: 80, h: 40, elevation: 0, _uid: uid("cabinet") },
   { type: "coffee_machine", x: 880, y: 30, elevation: 0.56, _uid: uid("coffee") },
-  { type: "round_table", x: 870, y: 240, r: 50, _uid: uid("table") },
-  { type: "chair", x: 930, y: 100, facing: 0, _uid: uid("chair") },
-  { type: "chair", x: 930, y: 180, facing: 180, _uid: uid("chair") },
-  { type: "chair", x: 880, y: 130, facing: 90, _uid: uid("chair") },
-  { type: "chair", x: 970, y: 130, facing: 270, _uid: uid("chair") },
+  { type: "round_table", x: 1000, y: 210, r: 50, _uid: uid("table") },
+  { type: "chair", x: 1010, y: 70, facing: 30, _uid: uid("chair") },
+  { type: "chair", x: 1115, y: 120, facing: 270, _uid: uid("chair") },
+  { type: "chair", x: 1090, y: 70, facing: 330, _uid: uid("chair") },
+  { type: "chair", x: 980, y: 130, facing: 90, _uid: uid("chair") },
   { type: "vending", x: 790, y: 10, _uid: uid("vending") },
   { type: "trash", x: 830, y: 20, _uid: uid("trash") },
 ];
@@ -80,29 +80,29 @@ const LIBRARY: FurnitureItem[] = [
 
 // ── 20 desks, 4 rows of 5 ──────────────────────────────────────────────────
 const DESK_ROWS: FurnitureItem[] = [
-  ...deskCluster("desk_0", 60, 280),
-  ...deskCluster("desk_1", 220, 280),
-  ...deskCluster("desk_2", 380, 280),
-  ...deskCluster("desk_3", 540, 280),
-  ...deskCluster("desk_4", 700, 280),
+  ...deskCluster("desk_0", 180, 300),
+  ...deskCluster("desk_1", 340, 300),
+  ...deskCluster("desk_2", 500, 300),
+  ...deskCluster("desk_3", 660, 300),
+  ...deskCluster("desk_4", 820, 300),
 
-  ...deskCluster("desk_5", 60, 430),
-  ...deskCluster("desk_6", 220, 430),
-  ...deskCluster("desk_7", 380, 430),
-  ...deskCluster("desk_8", 540, 430),
-  ...deskCluster("desk_9", 700, 430),
+  ...deskCluster("desk_5", 180, 450),
+  ...deskCluster("desk_6", 340, 450),
+  ...deskCluster("desk_7", 500, 450),
+  ...deskCluster("desk_8", 660, 450),
+  ...deskCluster("desk_9", 820, 450),
 
-  ...deskCluster("desk_10", 60, 580),
-  ...deskCluster("desk_11", 220, 580),
-  ...deskCluster("desk_12", 380, 580),
-  ...deskCluster("desk_13", 540, 580),
-  ...deskCluster("desk_14", 700, 580),
+  ...deskCluster("desk_10", 180, 600),
+  ...deskCluster("desk_11", 340, 600),
+  ...deskCluster("desk_12", 500, 600),
+  ...deskCluster("desk_13", 660, 600),
+  ...deskCluster("desk_14", 820, 600),
 
-  ...deskCluster("desk_15", 60, 730),
-  ...deskCluster("desk_16", 220, 730),
-  ...deskCluster("desk_17", 380, 730),
-  ...deskCluster("desk_18", 540, 730),
-  ...deskCluster("desk_19", 700, 730),
+  ...deskCluster("desk_15", 180, 750),
+  ...deskCluster("desk_16", 340, 750),
+  ...deskCluster("desk_17", 500, 750),
+  ...deskCluster("desk_18", 660, 750),
+  ...deskCluster("desk_19", 820, 750),
 ];
 
 // ── Lounge (right side) ────────────────────────────────────────────────────
@@ -119,13 +119,13 @@ const LOUNGE: FurnitureItem[] = [
 
 // ── Bottom lounge nook ─────────────────────────────────────────────────────
 const BOTTOM_LOUNGE: FurnitureItem[] = [
-  { type: "couch", x: 390, y: 900, w: 100, h: 40, _uid: uid("couch") },
-  { type: "table_rect", x: 400, y: 950, w: 80, h: 30, _uid: uid("table") },
-  { type: "beanbag", x: 520, y: 900, color: "#16a34a", _uid: uid("bean") },
-  { type: "beanbag", x: 300, y: 900, color: "#8b5cf6", _uid: uid("bean") },
-  { type: "plant", x: 530, y: 850, _uid: uid("plant") },
-  { type: "plant", x: 280, y: 960, _uid: uid("plant") },
-  { type: "lamp", x: 440, y: 860, _uid: uid("lamp") },
+  { type: "couch", x: 570, y: 930, w: 100, h: 40, _uid: uid("couch") },
+  { type: "table_rect", x: 580, y: 980, w: 80, h: 30, _uid: uid("table") },
+  { type: "beanbag", x: 700, y: 930, color: "#16a34a", _uid: uid("bean") },
+  { type: "beanbag", x: 480, y: 930, color: "#8b5cf6", _uid: uid("bean") },
+  { type: "plant", x: 710, y: 880, _uid: uid("plant") },
+  { type: "plant", x: 460, y: 990, _uid: uid("plant") },
+  { type: "lamp", x: 620, y: 890, _uid: uid("lamp") },
 ];
 
 // ── Ambient decor ──────────────────────────────────────────────────────────
