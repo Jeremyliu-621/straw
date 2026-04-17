@@ -9,7 +9,7 @@ import InteriorWall from "../objects/InteriorWall";
 const WORLD_W = CANVAS_W * SCALE;
 const WORLD_H = CANVAS_H * SCALE;
 
-const FLOOR_COLOR = "#f0ebdc";
+const FLOOR_COLOR = "#f7f2e4";
 const WALL_COLOR = "#b8b2a8";
 const OUTSIDE_COLOR = "#000000";
 const ACCENT_COLOR = "#c9c0ae";

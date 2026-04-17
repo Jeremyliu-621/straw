@@ -58,13 +58,13 @@ function ArenaScene({
 
   return (
     <>
-      {/* Lighting — neutral & bright for a fresh/clean feel */}
-      <hemisphereLight args={["#ffffff", "#2a2a2a", 0.4]} />
-      <ambientLight intensity={0.55} color="#ffffff" />
+      {/* Lighting — bright & happy, mid-morning sun feel */}
+      <hemisphereLight args={["#fff8e8", "#4a4a4a", 0.7]} />
+      <ambientLight intensity={0.85} color="#fffaf0" />
       <directionalLight
         position={[12, 18, 10]}
-        intensity={0.9}
-        color="#ffffff"
+        intensity={1.25}
+        color="#fffaf0"
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
@@ -76,7 +76,7 @@ function ArenaScene({
         shadow-camera-far={60}
         shadow-bias={-0.0005}
       />
-      <directionalLight position={[-8, 12, -6]} intensity={0.3} color="#e8ecf0" />
+      <directionalLight position={[-8, 12, -6]} intensity={0.5} color="#e8f0fa" />
 
       <CameraRig position={preset.position} target={preset.target} zoom={preset.zoom} />
 
