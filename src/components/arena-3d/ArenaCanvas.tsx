@@ -58,13 +58,13 @@ function ArenaScene({
 
   return (
     <>
-      {/* Lighting — warm ambient + soft directional to match Claw3D's cozy feel */}
-      <hemisphereLight args={["#fff3e0", "#3a2e1f", 0.35]} />
-      <ambientLight intensity={0.45} color="#fde8c8" />
+      {/* Lighting — neutral & bright for a fresh/clean feel */}
+      <hemisphereLight args={["#ffffff", "#2a2a2a", 0.4]} />
+      <ambientLight intensity={0.55} color="#ffffff" />
       <directionalLight
         position={[12, 18, 10]}
-        intensity={0.85}
-        color="#fff1d5"
+        intensity={0.9}
+        color="#ffffff"
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
@@ -76,7 +76,7 @@ function ArenaScene({
         shadow-camera-far={60}
         shadow-bias={-0.0005}
       />
-      <directionalLight position={[-8, 12, -6]} intensity={0.25} color="#d4c4a8" />
+      <directionalLight position={[-8, 12, -6]} intensity={0.3} color="#e8ecf0" />
 
       <CameraRig position={preset.position} target={preset.target} zoom={preset.zoom} />
 
@@ -149,7 +149,7 @@ export default function ArenaCanvas() {
 
   return (
     <div className="flex w-full" style={{ height: 600 }}>
-      <div className="flex-1 relative bg-[#2a2a3e] rounded-l-lg overflow-hidden">
+      <div className="flex-1 relative bg-[#000000] rounded-l-lg overflow-hidden">
         <Canvas
           orthographic
           shadows
@@ -161,7 +161,7 @@ export default function ArenaCanvas() {
             far: 100,
           }}
           gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
-          style={{ background: "#2a2a3e" }}
+          style={{ background: "#000000" }}
         >
           <Suspense fallback={<ArenaFallback />}>
             <ArenaScene officeAgents={officeAgents} viewMode={viewMode} />

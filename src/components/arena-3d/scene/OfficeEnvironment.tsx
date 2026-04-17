@@ -9,10 +9,10 @@ import InteriorWall from "../objects/InteriorWall";
 const WORLD_W = CANVAS_W * SCALE;
 const WORLD_H = CANVAS_H * SCALE;
 
-const FLOOR_COLOR = "#ebd9b8";
-const WALL_COLOR = "#cdb89a";
-const OUTSIDE_COLOR = "#1a1a28";
-const ACCENT_COLOR = "#b8a077";
+const FLOOR_COLOR = "#f0ebdc";
+const WALL_COLOR = "#b8b2a8";
+const OUTSIDE_COLOR = "#000000";
+const ACCENT_COLOR = "#c9c0ae";
 
 function FloorPlane() {
   return (
