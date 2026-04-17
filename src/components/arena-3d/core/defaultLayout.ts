@@ -153,14 +153,14 @@ const MEETING_ROOM: FurnitureItem[] = [
 // ── Kitchen / Cafe ───────────────────────────────────────────────────────
 const KITCHEN: FurnitureItem[] = [
   { type: "fridge", x: 570, y: 25, _uid: uid("fridge") },
-  { type: "cabinet", x: 620, y: 25, w: 80, h: 40, _uid: uid("cabinet") },
+  { type: "cabinet", x: 620, y: 33, w: 80, h: 40, _uid: uid("cabinet") },
   { type: "coffee_machine", x: 650, y: 30, elevation: 0.56, _uid: uid("coffee") },
-  { type: "cabinet", x: 720, y: 25, w: 80, h: 40, _uid: uid("cabinet") },
-  { type: "vending", x: 820, y: 15, _uid: uid("vending") },
-  { type: "round_table", x: 680, y: 170, r: 50, _uid: uid("table") },
-  { type: "chair", x: 670, y: 105, facing: 30, _uid: uid("chair") },
-  { type: "chair", x: 750, y: 130, facing: 270, _uid: uid("chair") },
-  { type: "chair", x: 730, y: 200, facing: 330, _uid: uid("chair") },
+  { type: "cabinet", x: 720, y: 33, w: 80, h: 40, _uid: uid("cabinet") },
+  { type: "vending", x: 820, y: 25, _uid: uid("vending") },
+  { type: "round_table", x: 610, y: 190, r: 50, _uid: uid("table") },
+  { type: "chair", x: 610, y: 70, facing: 30, _uid: uid("chair") },
+  { type: "chair", x: 735, y: 100, facing: 270, _uid: uid("chair") },
+  { type: "chair", x: 690, y: 160, facing: 220, _uid: uid("chair") },
   { type: "chair", x: 625, y: 170, facing: 90, _uid: uid("chair") },
   { type: "pendant_light", x: 700, y: 170, _uid: uid("pend") },
   { type: "trash", x: 810, y: 100, _uid: uid("trash") },
@@ -171,7 +171,7 @@ const KITCHEN: FurnitureItem[] = [
 const PRINTER_STATION: FurnitureItem[] = [
   { type: "printer_station", x: 920, y: 30, w: 60, h: 50, _uid: uid("print") },
   { type: "printer_station", x: 1000, y: 30, w: 60, h: 50, _uid: uid("print") },
-  { type: "cabinet", x: 1080, y: 25, w: 100, h: 40, _uid: uid("cabinet") },
+  { type: "cabinet", x: 1080, y: 33, w: 100, h: 40, _uid: uid("cabinet") },
   { type: "plant", x: 1150, y: 170, _uid: uid("plant") },
   { type: "trash", x: 920, y: 180, _uid: uid("trash") },
 ];
@@ -208,10 +208,10 @@ const PHONE_BOOTHS: FurnitureItem[] = [
 
 // ── Library nook ─────────────────────────────────────────────────────────
 const LIBRARY: FurnitureItem[] = [
-  { type: "rug", x: 20, y: 570, w: 220, h: 150, color: "#7A6B55", _uid: uid("rug") },
-  { type: "bookshelf", x: 30, y: 580, w: 80, h: 120, _uid: uid("shelf") },
-  { type: "couch_v", x: 150, y: 590, _uid: uid("chair") },
-  { type: "couch_v", x: 150, y: 660, _uid: uid("chair") },
+  { type: "rug", x: 20, y: 570, w: 120, h: 200, color: "#7A6B55", _uid: uid("rug") },
+  { type: "bookshelf", x: 30, y: 590, w: 80, h: 120, _uid: uid("shelf") },
+  { type: "couch_v", x: 80, y: 600, _uid: uid("chair") },
+  { type: "couch_v", x: 80, y: 670, _uid: uid("chair") },
   { type: "lamp", x: 220, y: 590, _uid: uid("lamp") },
   { type: "plant", x: 220, y: 700, _uid: uid("plant") },
 ];
@@ -290,7 +290,16 @@ const GYM: FurnitureItem[] = [
   { type: "rug", x: 1000, y: 990, w: 70, h: 30, color: "#9B8FD1", _uid: uid("mat") },
   { type: "rug", x: 1090, y: 990, w: 70, h: 30, color: "#E8B84A", _uid: uid("mat") },
   // A neon sign on the east wall to brand the zone
-  { type: "neon_sign", x: 1195, y: 820, w: 120, h: 40, color: "#FF4B8B", wallAttach: "E", _uid: uid("neon") },
+  {
+    type: "neon_sign",
+    x: 1195,
+    y: 820,
+    w: 120,
+    h: 40,
+    color: "#FF4B8B",
+    wallAttach: "E",
+    _uid: uid("neon"),
+  },
 ];
 
 // ── Wall art / decor ─────────────────────────────────────────────────────

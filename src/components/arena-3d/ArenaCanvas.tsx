@@ -8,8 +8,10 @@ import { DEFAULT_ARENA_FURNITURE } from "./core/defaultLayout";
 import OfficeEnvironment from "./scene/OfficeEnvironment";
 import AgentCharacter from "./objects/AgentCharacter";
 import ScoreOverlay from "./ScoreOverlay";
+import BWEffects, { type BWVariant } from "./BWEffects";
+import { useArenaMode, type ArenaMode } from "./useArenaMode";
 
-type ViewMode = "iso" | "top";
+type ViewMode = "iso" | "top" | "corner" | "side";
 
 const CAMERA_PRESETS: Record<
   ViewMode,
@@ -17,7 +19,16 @@ const CAMERA_PRESETS: Record<
 > = {
   iso: { position: [14, 16, 19], zoom: 30, target: [0, 0, 1] },
   top: { position: [0, 30, 0.001], zoom: 25, target: [0, 0, 0] },
+  // Flipped-iso: look from the opposite diagonal. Reveals faces the default
+  // iso camera hides (e.g. south faces of desks, back of server racks).
+  corner: { position: [-16, 16, -19], zoom: 30, target: [0, 0, -1] },
+  // Shallow cross-section: nearly eye-level, looking along the east→west axis.
+  // Good for reading relative heights — standing desks vs seated desks,
+  // phone booths, gym rig silhouettes.
+  side: { position: [26, 8, 2], zoom: 26, target: [0, 1.5, 0] },
 };
+
+const VIEW_CYCLE: ViewMode[] = ["iso", "top", "corner", "side"];
 
 function GameLoop({ tick }: { tick: () => void }) {
   useFrame(() => tick());
@@ -48,9 +59,15 @@ function CameraRig({
 function ArenaScene({
   officeAgents,
   viewMode,
+  bwVariant,
+  bwShadows,
+  shadowLightness,
 }: {
   officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
   viewMode: ViewMode;
+  bwVariant: BWVariant | null;
+  bwShadows: boolean;
+  shadowLightness: number;
 }) {
   const furniture = useMemo(() => DEFAULT_ARENA_FURNITURE, []);
   const { renderAgentsRef, tick } = useArenaGameLoop(officeAgents, furniture);
@@ -58,26 +75,66 @@ function ArenaScene({
 
   return (
     <>
-      {/* Lighting — cool LED daylight globally, warm pools come from local
-          lamp / pendant pointLights defined inside ProceduralFurniture. */}
-      <hemisphereLight args={["#EAF0F5", "#2A2E35", 0.75]} />
-      <ambientLight intensity={0.6} color="#E8EEF2" />
-      <directionalLight
-        position={[12, 18, 10]}
-        intensity={1.0}
-        color="#FFF8EC"
-        castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-camera-left={-25}
-        shadow-camera-right={25}
-        shadow-camera-top={25}
-        shadow-camera-bottom={-25}
-        shadow-camera-near={0.1}
-        shadow-camera-far={60}
-        shadow-bias={-0.0005}
-      />
-      <directionalLight position={[-8, 12, -6]} intensity={0.3} color="#C8D4E0" />
+      {bwShadows ? (
+        <>
+          {/* Midday sunny. `shadowLightness` (0-100) controls how bright
+              shadowed faces are: 0 = dark shadows (high directional, low
+              fill), 100 = near-invisible shadows (high fill, low directional).
+              Single sun source, ground color kept light so vertical walls
+              don't darken. */}
+          {(() => {
+            const t = shadowLightness / 100;
+            // Fill rises with t; directional falls. At t=0.6 (default),
+            // ambient≈0.55, hemi≈0.55, directional≈0.9.
+            const fill = 0.3 + t * 0.5;
+            const directional = 1.2 - t * 0.5;
+            return (
+              <>
+                <hemisphereLight args={["#FFFFFF", "#EEEEEE", fill]} />
+                <ambientLight intensity={fill} color="#FFFFFF" />
+                <directionalLight
+                  position={[8, 26, 6]}
+                  intensity={directional}
+                  color="#FFFFFF"
+                  castShadow
+                  shadow-mapSize-width={2048}
+                  shadow-mapSize-height={2048}
+                  shadow-camera-left={-25}
+                  shadow-camera-right={25}
+                  shadow-camera-top={25}
+                  shadow-camera-bottom={-25}
+                  shadow-camera-near={0.1}
+                  shadow-camera-far={60}
+                  shadow-bias={-0.0005}
+                />
+              </>
+            );
+          })()}
+        </>
+      ) : (
+        <>
+          {/* Lighting — cool LED daylight globally, warm pools come from local
+              lamp / pendant pointLights defined inside ProceduralFurniture. */}
+          <hemisphereLight args={["#EAF0F5", "#2A2E35", 0.75]} />
+          <ambientLight intensity={0.6} color="#E8EEF2" />
+          <directionalLight
+            position={[12, 18, 10]}
+            intensity={1.0}
+            color="#FFF8EC"
+            castShadow
+            shadow-mapSize-width={2048}
+            shadow-mapSize-height={2048}
+            shadow-camera-left={-25}
+            shadow-camera-right={25}
+            shadow-camera-top={25}
+            shadow-camera-bottom={-25}
+            shadow-camera-near={0.1}
+            shadow-camera-far={60}
+            shadow-bias={-0.0005}
+          />
+          <directionalLight position={[-8, 12, -6]} intensity={0.3} color="#C8D4E0" />
+        </>
+      )}
 
       <CameraRig position={preset.position} target={preset.target} zoom={preset.zoom} />
 
@@ -89,6 +146,9 @@ function ArenaScene({
 
       {/* Game loop */}
       <GameLoop tick={tick} />
+
+      {/* B&W material + edge overlay — null variant = color mode. */}
+      <BWEffects variant={bwVariant} />
     </>
   );
 }
@@ -137,23 +197,55 @@ function ArenaFallback() {
   );
 }
 
+const MODES: { id: ArenaMode; label: string }[] = [
+  { id: "color", label: "color" },
+  { id: "bw", label: "b&w" },
+  { id: "bw-shadows", label: "b&w + shadows" },
+  { id: "bw-tint", label: "b&w + tint" },
+  { id: "bw-shadows-tint", label: "b&w + shadows + tint" },
+];
+
+function modeToVariant(mode: ArenaMode): BWVariant | null {
+  switch (mode) {
+    case "color":
+      return null;
+    case "bw":
+      return "unlit";
+    case "bw-shadows":
+      return "lit";
+    case "bw-tint":
+      return "unlit-tint";
+    case "bw-shadows-tint":
+      return "lit-tint";
+  }
+}
+
 export default function ArenaCanvas() {
   const { agents, officeAgents, loading } = useStrawAgents();
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
+  const { mode, setMode, shadowLightness, setShadowLightness } = useArenaMode();
+  const bwVariant = modeToVariant(mode);
+  const bw = bwVariant !== null;
+  const bwShadows = bwVariant === "lit" || bwVariant === "lit-tint";
 
   const handleSelectAgent = useCallback((id: string | null) => {
     setSelectedAgentId(id);
   }, []);
 
   const initialPreset = CAMERA_PRESETS.iso;
+  const bgColor = bw ? "#FFFFFF" : "#1A1D21";
+  const shadowsOn = mode === "color" || bwShadows;
 
   return (
     <div className="flex w-full" style={{ height: 600 }}>
-      <div className="flex-1 relative bg-[#1A1D21] rounded-l-lg overflow-hidden">
+      <div
+        className="flex-1 relative rounded-l-lg overflow-hidden"
+        style={{ background: bgColor }}
+      >
         <Canvas
           orthographic
-          shadows
+          shadows={shadowsOn}
           dpr={[0.85, 1.5]}
           camera={{
             position: initialPreset.position,
@@ -162,27 +254,91 @@ export default function ArenaCanvas() {
             far: 100,
           }}
           gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
-          style={{ background: "#1A1D21" }}
+          style={{ background: bgColor }}
         >
           <Suspense fallback={<ArenaFallback />}>
-            <ArenaScene officeAgents={officeAgents} viewMode={viewMode} />
+            <ArenaScene
+              officeAgents={officeAgents}
+              viewMode={viewMode}
+              bwVariant={bwVariant}
+              bwShadows={bwShadows}
+              shadowLightness={shadowLightness}
+            />
           </Suspense>
         </Canvas>
 
         {/* Agent count badge */}
-        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-mono">
+        <div
+          className={`absolute top-3 left-3 backdrop-blur-sm text-xs px-2.5 py-1 rounded-full font-mono ${
+            bw ? "bg-white/90 text-black border border-black" : "bg-black/60 text-white"
+          }`}
+        >
           {officeAgents.length} agent{officeAgents.length !== 1 ? "s" : ""} in arena
         </div>
 
-        {/* View toggle (dev tool) */}
+        {/* Top-right: view toggle (cycles through all camera presets) */}
         <button
-          onClick={() => setViewMode(viewMode === "iso" ? "top" : "iso")}
-          className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full font-mono hover:bg-black/80 transition-colors flex items-center gap-1.5"
-          title={viewMode === "iso" ? "Switch to top-down view" : "Switch to isometric view"}
+          onClick={() => {
+            const i = VIEW_CYCLE.indexOf(viewMode);
+            setViewMode(VIEW_CYCLE[(i + 1) % VIEW_CYCLE.length]);
+          }}
+          className={`absolute top-3 right-3 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-mono transition-colors flex items-center gap-1.5 ${
+            bw
+              ? "bg-white/90 text-black border border-black hover:bg-white"
+              : "bg-black/60 text-white hover:bg-black/80"
+          }`}
+          title="Cycle camera: iso → top → corner → side"
         >
           <span className="opacity-60">view:</span>
-          <span>{viewMode === "iso" ? "iso" : "top"}</span>
+          <span>{viewMode}</span>
         </button>
+
+        {/* Shadow-lightness slider — visible only when a shadow variant is on */}
+        {bwShadows && (
+          <div
+            className={`absolute bottom-14 left-1/2 -translate-x-1/2 flex items-center gap-3 px-3 py-1.5 rounded-full font-mono text-xs backdrop-blur-sm ${
+              bw ? "bg-white/90 text-black border border-black" : "bg-black/60 text-white"
+            }`}
+          >
+            <span className="opacity-60">shadow lightness</span>
+            <input
+              type="range"
+              min={0}
+              max={200}
+              step={1}
+              value={shadowLightness}
+              onChange={(e) => setShadowLightness(parseFloat(e.target.value))}
+              className="w-[220px] accent-black"
+              aria-label="Shadow lightness"
+            />
+            <span className="w-9 text-right tabular-nums">{Math.round(shadowLightness)}</span>
+          </div>
+        )}
+
+        {/* Bottom row: mode radio buttons */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 flex-wrap justify-center max-w-[95%]">
+          {MODES.map((m) => {
+            const active = mode === m.id;
+            return (
+              <button
+                key={m.id}
+                onClick={() => setMode(m.id)}
+                className={`backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-mono transition-colors ${
+                  active
+                    ? bw
+                      ? "bg-black text-white border border-black"
+                      : "bg-white text-black border border-white"
+                    : bw
+                      ? "bg-white/80 text-black border border-black/40 hover:bg-white"
+                      : "bg-black/60 text-white hover:bg-black/80"
+                }`}
+                title={`Switch to ${m.label}`}
+              >
+                {m.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <ScoreOverlay
