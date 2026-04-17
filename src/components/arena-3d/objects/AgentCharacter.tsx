@@ -2,6 +2,7 @@
 
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
+import { Billboard, Text } from "@react-three/drei";
 import * as THREE from "three";
 import { toWorld } from "../core/geometry";
 import { AGENT_SCALE, WALK_ANIM_SPEED } from "../core/constants";
@@ -10,10 +11,15 @@ import type { RenderAgentState } from "../useArenaGameLoop";
 
 interface AgentCharacterProps {
   agentId: string;
+  agentName: string;
   agentsRef: React.RefObject<RenderAgentState[]>;
 }
 
-export default function AgentCharacter({ agentId, agentsRef }: AgentCharacterProps) {
+function truncateName(name: string): string {
+  return name.length > 12 ? `${name.slice(0, 12)}…` : name;
+}
+
+export default function AgentCharacter({ agentId, agentName, agentsRef }: AgentCharacterProps) {
   const groupRef = useRef<THREE.Group>(null);
   const leftArmRef = useRef<THREE.Group>(null);
   const rightArmRef = useRef<THREE.Group>(null);
@@ -166,6 +172,23 @@ export default function AgentCharacter({ agentId, agentsRef }: AgentCharacterPro
         <sphereGeometry args={[3, 8, 8]} />
         <meshBasicMaterial ref={statusMatRef} color="#94a3b8" />
       </mesh>
+
+      {/* Floating nameplate */}
+      <Billboard position={[0, 130, 0]}>
+        <mesh position={[0, 0, -0.1]}>
+          <planeGeometry args={[Math.max(truncateName(agentName).length * 6.5, 40), 16]} />
+          <meshBasicMaterial color="#000000" opacity={0.7} transparent />
+        </mesh>
+        <Text
+          fontSize={10}
+          color="#ffffff"
+          anchorX="center"
+          anchorY="middle"
+          outlineWidth={0}
+        >
+          {truncateName(agentName)}
+        </Text>
+      </Billboard>
     </group>
   );
 }
