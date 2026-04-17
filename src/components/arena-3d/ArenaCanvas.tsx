@@ -15,8 +15,8 @@ const CAMERA_PRESETS: Record<
   ViewMode,
   { position: [number, number, number]; zoom: number; target: [number, number, number] }
 > = {
-  iso: { position: [16, 13, 22], zoom: 40, target: [0, 0, 1] },
-  top: { position: [0, 30, 0.001], zoom: 48, target: [0, 0, 0] },
+  iso: { position: [16, 13, 22], zoom: 32, target: [0, 0, 1] },
+  top: { position: [0, 30, 0.001], zoom: 38, target: [0, 0, 0] },
 };
 
 function GameLoop({ tick }: { tick: () => void }) {
