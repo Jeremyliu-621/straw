@@ -4,9 +4,8 @@ import { useRef, useEffect, useCallback } from "react";
 import type { FurnitureItem } from "./core/types";
 import type { OfficeAgentInput } from "./useStrawAgents";
 import { DESK_STANDING_POINTS } from "./core/defaultLayout";
+import { buildNavGrid, astar, type NavGrid } from "./core/navigation";
 
-// These types mirror the core/types.ts RenderAgent but we define them here
-// so the hook works independently of the extraction.
 export interface RenderAgentState {
   id: string;
   name: string | null;
@@ -25,13 +24,10 @@ export interface RenderAgentState {
   state: "walking" | "sitting" | "standing";
 }
 
-// Simplified constants (matching Claw3D core/constants.ts)
 const WALK_SPEED = 0.3;
 const SEPARATION_STRENGTH = 3;
 const AGENT_RADIUS = 20;
 
-// Roam waypoints — idle agents wander to these. Target open / social areas:
-// kitchen, ping pong, lounge pit, beanbag grove, library, standing-desk island.
 const ROAM_POINTS = [
   { x: 700, y: 180 },   // kitchen
   { x: 400, y: 110 },   // meeting room
@@ -44,30 +40,17 @@ const ROAM_POINTS = [
   { x: 55, y: 420 },    // phone-booth corridor end
 ];
 
-// Simple nav grid-free pathfinding for now (direct movement)
-// TODO: replace with A* from core/navigation.ts once extracted
-function simplePath(
-  fromX: number,
-  fromY: number,
-  toX: number,
-  toY: number
-): { x: number; y: number }[] {
-  return [{ x: toX, y: toY }];
-}
-
 function pickRoamPoint(): { x: number; y: number } {
   return ROAM_POINTS[Math.floor(Math.random() * ROAM_POINTS.length)];
 }
 
 function pickSpawnPoint(): { x: number; y: number } {
-  // Spawn in the main walking-corridor band, away from interior walls.
   return {
     x: Math.random() * 900 + 150,
     y: Math.random() * 400 + 280,
   };
 }
 
-/** Desk standing point, derived from the actual furniture layout. */
 function deskPosition(deskIndex: number): { x: number; y: number } | null {
   return DESK_STANDING_POINTS[deskIndex] ?? null;
 }
@@ -79,9 +62,31 @@ export interface UseArenaGameLoopResult {
 
 export function useArenaGameLoop(
   agents: OfficeAgentInput[],
-  _furniture: FurnitureItem[]
+  furniture: FurnitureItem[]
 ): UseArenaGameLoopResult {
   const renderAgentsRef = useRef<RenderAgentState[]>([]);
+
+  // Nav grid — rebuilt only when the furniture array reference changes.
+  const navGridRef = useRef<NavGrid | null>(null);
+  const gridSourceRef = useRef<FurnitureItem[] | null>(null);
+
+  const getNavGrid = useCallback((): NavGrid => {
+    if (navGridRef.current === null || gridSourceRef.current !== furniture) {
+      navGridRef.current = buildNavGrid(furniture);
+      gridSourceRef.current = furniture;
+    }
+    return navGridRef.current;
+  }, [furniture]);
+
+  const planPath = useCallback(
+    (fromX: number, fromY: number, toX: number, toY: number) => {
+      const path = astar(fromX, fromY, toX, toY, getNavGrid());
+      // A* returns [] when start or end is fully trapped — fall back to a
+      // direct-line single-waypoint so the agent at least moves visibly.
+      return path.length > 0 ? path : [{ x: toX, y: toY }];
+    },
+    [getNavGrid]
+  );
 
   // Reconcile input agents → render agents (runs on agent list changes)
   useEffect(() => {
@@ -95,31 +100,27 @@ export function useArenaGameLoop(
       const deskPos = deskPosition(idx);
 
       if (existing) {
-        // Existing agent — check for status change
         if (agent.status !== existing.status) {
           if (agent.status === "working" && deskPos) {
-            // Walk to desk
             next.push({
               ...existing,
               ...agent,
               targetX: deskPos.x,
               targetY: deskPos.y,
-              path: simplePath(existing.x, existing.y, deskPos.x, deskPos.y),
+              path: planPath(existing.x, existing.y, deskPos.x, deskPos.y),
               state: "walking",
             });
           } else if (agent.status === "idle") {
-            // Roam
             const roam = pickRoamPoint();
             next.push({
               ...existing,
               ...agent,
               targetX: roam.x,
               targetY: roam.y,
-              path: simplePath(existing.x, existing.y, roam.x, roam.y),
+              path: planPath(existing.x, existing.y, roam.x, roam.y),
               state: "walking",
             });
           } else {
-            // Error — stop in place
             next.push({
               ...existing,
               ...agent,
@@ -133,7 +134,6 @@ export function useArenaGameLoop(
           next.push({ ...existing, ...agent });
         }
       } else {
-        // New agent — spawn and walk to desk or roam
         const spawn = pickSpawnPoint();
         const target =
           agent.status === "working" && deskPos ? deskPos : pickRoamPoint();
@@ -143,7 +143,7 @@ export function useArenaGameLoop(
           y: spawn.y,
           targetX: target.x,
           targetY: target.y,
-          path: simplePath(spawn.x, spawn.y, target.x, target.y),
+          path: planPath(spawn.x, spawn.y, target.x, target.y),
           frame: 0,
           walkSpeed: WALK_SPEED * (0.7 + Math.random() * 0.6),
           phaseOffset: Math.random() * Math.PI * 2,
@@ -154,7 +154,7 @@ export function useArenaGameLoop(
     });
 
     renderAgentsRef.current = next;
-  }, [agents]);
+  }, [agents, planPath]);
 
   // Per-frame tick — moves agents along their paths
   const tick = useCallback(() => {
@@ -174,13 +174,11 @@ export function useArenaGameLoop(
       let npath = path;
 
       if (dist > speed) {
-        // Move toward waypoint
         nx = agent.x + (dx / dist) * speed;
         ny = agent.y + (dy / dist) * speed;
         nf = Math.atan2(dx, dy);
         state = "walking";
       } else {
-        // Reached waypoint
         nx = wpX;
         ny = wpY;
         if (path.length > 1) {
@@ -191,7 +189,6 @@ export function useArenaGameLoop(
           if (agent.status === "working") {
             state = "sitting";
           } else if (agent.status === "idle") {
-            // Pick a new roam point after a pause
             if (Math.random() < 0.005) {
               const roam = pickRoamPoint();
               return {
@@ -200,7 +197,7 @@ export function useArenaGameLoop(
                 y: ny,
                 targetX: roam.x,
                 targetY: roam.y,
-                path: simplePath(nx, ny, roam.x, roam.y),
+                path: planPath(nx, ny, roam.x, roam.y),
                 state: "walking" as const,
                 frame: agent.frame + 1,
                 facing: nf,
@@ -245,7 +242,7 @@ export function useArenaGameLoop(
     }
 
     renderAgentsRef.current = moved;
-  }, []);
+  }, [planPath]);
 
   return { renderAgentsRef, tick };
 }
