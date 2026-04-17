@@ -34,8 +34,9 @@ const INTERIOR_WALLS: FurnitureItem[] = [
   // Horizontal wall under meeting nook (leaves gap for doorway)
   wall(0, 220, 230, WALL_THICK),
   wall(280, 220, 50, WALL_THICK),
-  // Kitchen wall (separates kitchen zone from desk area)
-  wall(760, 220, 440, WALL_THICK),
+  // Kitchen wall (separates kitchen zone from desk area) with a 50px doorway
+  wall(760, 220, 155, WALL_THICK), // left segment, x=760 to 915
+  wall(965, 220, 235, WALL_THICK), // right segment, x=965 to 1200
   wall(760, 0, WALL_THICK, 220),
   // Lounge wall (right side, separates right lounge from desk area)
   wall(980, 280, WALL_THICK, 420),
