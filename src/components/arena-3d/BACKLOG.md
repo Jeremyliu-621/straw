@@ -115,6 +115,44 @@ data instead of chat.
 | Task closes | Whole office stands, 1s pause, winner dances / losers slump | — |
 | Two scores tied within 0.5 | Agents occasionally glance at each other across the office | 30s |
 
+### Handling interruption (the "mid-action" problem)
+
+**Don't use a queue.** Queues imply serial ordering; our problem is that
+the world keeps changing, which makes queued actions stale. Example: at
+t=0 agent starts walking to the gym; at t=3s their submission completes.
+A queue would still execute the stale "go to gym." We want them to turn
+around and sit at their desk.
+
+**Use a desired-state reducer with commitment windows** (Claw3D's actual
+pattern, adapted). Each tick:
+
+1. Look at current data → compute `desiredState(agent)` = highest-priority
+   event affecting this agent
+2. Compare to `currentState(agent)`
+3. If different AND current behavior is past its *commitment window* →
+   transition. Otherwise wait.
+
+Priority tiers:
+- `immediate` (submission status change, rank change to #1) — preempts
+  anything, even mid-behavior
+- `high` (rank overtake, task close) — preempts idle/medium, not immediate
+- `medium` (random celebration opportunities, gym invite) — preempts idle
+- `low` (roam, idle filler) — yields to everything
+
+Commitment windows per behavior type:
+- Walking somewhere: 1s (cheap to abandon)
+- Dance / emote: 5s (has narrative weight; interrupting mid-dance reads bad)
+- Sit at desk (working state): 10s (sticky default)
+- Gym / ping pong session: 15s minimum, max 60s (commitment but not infinite)
+
+**How this handles the ping pong scenario**: at t=5s, A's submission
+completes. Reducer sees new `immediate` priority event for A. Even though
+ping pong is in its commitment window, `immediate` > `medium` → preempt.
+A walks back to desk; B keeps playing alone or returns to idle.
+
+The 60s session timer stops being a hard clock and becomes a *fallback*
+for "nothing better has happened yet."
+
 ### Guardrails (to avoid chaos)
 
 - **Max 3 simultaneous "special" behaviors at a time** — otherwise the
@@ -136,16 +174,41 @@ data instead of chat.
   pulsing bubbles, 1.5s freeze. We just trigger it via events instead
   of proximity.
 
-### Rough port order
+### Rough port order (revised by realism audit)
 
-1. Snapshot differ (detect events from polling data) — 2h
-2. Event emitter → "hold" reducer — 2h
-3. Dance + couch behaviors (simplest, just a new state) — 2h
-4. Talk behavior (empty bubble + face each other + pause) — 2h
-5. Gym workout (needs the 3-stage door choreography Claw3D has) — 4h
-6. Ping pong pairing — 3h
+Do simpler behaviors first — they can't have interruption issues because
+they're localized or short. Multi-step activities come last once the
+interruption machinery is proven.
 
-Total realistic estimate: 2 days including polish and edge cases.
+**Prerequisites (must land first):**
+- Wire A* + nav grid (Option 1 elsewhere in this backlog). Without this,
+  any walking behavior phases through walls and the illusion collapses.
+- Bump-freeze-reroute primitive from Claw3D. We reuse this for the
+  "talking" behavior, just driven by events instead of proximity.
+
+**Tier A — zero-movement behaviors (~1 day):**
+1. Snapshot differ + priority reducer skeleton — 3h
+2. Dance on rank change (localized, no movement) — 2h
+3. Emoji reactions + fist-pump emote — 2h
+4. Talk-freeze on overtake (two agents, pause + bubble, no walking) — 1h
+
+At this point the office visibly reacts to every leaderboard event
+without any interruption complexity. This is the 70% win.
+
+**Tier B — single-target behaviors (~1 day):**
+5. Slump to couch on failure — 3h (walk + sit + timer)
+6. Spawn-from-door / despawn-to-door — 3h
+7. Pacing on deadline approach — 2h
+
+**Tier C — multi-step activities (~2 days):**
+8. Gym workout. Needs 3-stage door choreography from Claw3D OR skip the
+   door and accept clipping. Decide first. — 6-8h
+9. Ping pong pairing with interruption handling. Two-agent coordination
+   and 60s session that can be preempted. — 6h
+10. Whole-office reactions to task close / new #1. Global coordination. — 4h
+
+Realistic total: 4 days for everything. 1 day gets you Tier A, which is
+most of the visible impact.
 
 ### Gotchas from the Claw3D deep dive
 
