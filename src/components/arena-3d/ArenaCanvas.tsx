@@ -8,29 +8,53 @@ import { DEFAULT_ARENA_FURNITURE } from "./core/defaultLayout";
 import OfficeEnvironment from "./scene/OfficeEnvironment";
 import AgentCharacter from "./objects/AgentCharacter";
 import ScoreOverlay from "./ScoreOverlay";
-import { CANVAS_W, CANVAS_H, SCALE } from "./core/constants";
+
+type ViewMode = "iso" | "top";
+
+const CAMERA_PRESETS: Record<
+  ViewMode,
+  { position: [number, number, number]; zoom: number; target: [number, number, number] }
+> = {
+  iso: { position: [16, 13, 22], zoom: 40, target: [0, 0, 1] },
+  top: { position: [0, 30, 0.001], zoom: 48, target: [0, 0, 0] },
+};
 
 function GameLoop({ tick }: { tick: () => void }) {
   useFrame(() => tick());
   return null;
 }
 
-function CameraRig({ target }: { target: [number, number, number] }) {
+function CameraRig({
+  position,
+  target,
+  zoom,
+}: {
+  position: [number, number, number];
+  target: [number, number, number];
+  zoom: number;
+}) {
   const { camera } = useThree();
   useEffect(() => {
+    camera.position.set(position[0], position[1], position[2]);
     camera.lookAt(target[0], target[1], target[2]);
+    // Orthographic camera has a .zoom property
+    type OrthoCam = typeof camera & { zoom: number };
+    (camera as OrthoCam).zoom = zoom;
     camera.updateProjectionMatrix();
-  }, [camera, target]);
+  }, [camera, position, target, zoom]);
   return null;
 }
 
 function ArenaScene({
   officeAgents,
+  viewMode,
 }: {
   officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
+  viewMode: ViewMode;
 }) {
   const furniture = useMemo(() => DEFAULT_ARENA_FURNITURE, []);
   const { renderAgentsRef, tick } = useArenaGameLoop(officeAgents, furniture);
+  const preset = CAMERA_PRESETS[viewMode];
 
   return (
     <>
@@ -54,8 +78,7 @@ function ArenaScene({
       />
       <directionalLight position={[-8, 12, -6]} intensity={0.25} color="#d4c4a8" />
 
-      {/* Look at center of the office */}
-      <CameraRig target={[0, 0, 1]} />
+      <CameraRig position={preset.position} target={preset.target} zoom={preset.zoom} />
 
       {/* Office */}
       <OfficeEnvironment furniture={furniture} />
@@ -114,10 +137,13 @@ function ArenaFallback() {
 export default function ArenaCanvas() {
   const { agents, officeAgents, loading } = useStrawAgents();
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>("iso");
 
   const handleSelectAgent = useCallback((id: string | null) => {
     setSelectedAgentId(id);
   }, []);
+
+  const initialPreset = CAMERA_PRESETS.iso;
 
   return (
     <div className="flex w-full" style={{ height: 600 }}>
@@ -127,8 +153,8 @@ export default function ArenaCanvas() {
           shadows
           dpr={[0.85, 1.5]}
           camera={{
-            position: [16, 13, 22],
-            zoom: 40,
+            position: initialPreset.position,
+            zoom: initialPreset.zoom,
             near: 0.1,
             far: 100,
           }}
@@ -136,7 +162,7 @@ export default function ArenaCanvas() {
           style={{ background: "#2a2a3e" }}
         >
           <Suspense fallback={<ArenaFallback />}>
-            <ArenaScene officeAgents={officeAgents} />
+            <ArenaScene officeAgents={officeAgents} viewMode={viewMode} />
           </Suspense>
         </Canvas>
 
@@ -144,6 +170,16 @@ export default function ArenaCanvas() {
         <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full font-mono">
           {officeAgents.length} agent{officeAgents.length !== 1 ? "s" : ""} in arena
         </div>
+
+        {/* View toggle (dev tool) */}
+        <button
+          onClick={() => setViewMode(viewMode === "iso" ? "top" : "iso")}
+          className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full font-mono hover:bg-black/80 transition-colors flex items-center gap-1.5"
+          title={viewMode === "iso" ? "Switch to top-down view" : "Switch to isometric view"}
+        >
+          <span className="opacity-60">view:</span>
+          <span>{viewMode === "iso" ? "iso" : "top"}</span>
+        </button>
       </div>
 
       <ScoreOverlay
