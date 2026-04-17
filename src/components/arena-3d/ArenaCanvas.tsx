@@ -62,12 +62,14 @@ function ArenaScene({
   bwVariant,
   bwShadows,
   shadowLightness,
+  pureWhite,
 }: {
   officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
   viewMode: ViewMode;
   bwVariant: BWVariant | null;
   bwShadows: boolean;
   shadowLightness: number;
+  pureWhite: boolean;
 }) {
   const furniture = useMemo(() => DEFAULT_ARENA_FURNITURE, []);
   const { renderAgentsRef, tick } = useArenaGameLoop(officeAgents, furniture);
@@ -148,7 +150,7 @@ function ArenaScene({
       <GameLoop tick={tick} />
 
       {/* B&W material + edge overlay — null variant = color mode. */}
-      <BWEffects variant={bwVariant} />
+      <BWEffects variant={bwVariant} pureWhite={pureWhite} />
     </>
   );
 }
@@ -160,15 +162,27 @@ function AgentRenderer({
     ReturnType<typeof useArenaGameLoop>["renderAgentsRef"]["current"]
   >;
 }) {
-  // Track agent ID+name pairs so React knows when to add/remove agent components.
-  // Position/animation updates happen inside each AgentCharacter via useFrame reading the ref.
-  const [agents, setAgents] = useState<{ id: string; name: string }[]>([]);
+  // Track agent identity (id, name, rank) so React knows when to add/remove agent
+  // components. Position/animation updates happen inside each AgentCharacter via
+  // useFrame reading the ref.
+  const [agents, setAgents] = useState<
+    { id: string; name: string | null; rank: number | null }[]
+  >([]);
 
   useFrame(() => {
-    const current = renderAgentsRef.current.map((a) => ({ id: a.id, name: a.name }));
+    const current = renderAgentsRef.current.map((a) => ({
+      id: a.id,
+      name: a.name,
+      rank: a.rank,
+    }));
     if (
       current.length !== agents.length ||
-      current.some((a, i) => a.id !== agents[i]?.id || a.name !== agents[i]?.name)
+      current.some(
+        (a, i) =>
+          a.id !== agents[i]?.id ||
+          a.name !== agents[i]?.name ||
+          a.rank !== agents[i]?.rank
+      )
     ) {
       setAgents(current);
     }
@@ -181,6 +195,7 @@ function AgentRenderer({
           key={agent.id}
           agentId={agent.id}
           agentName={agent.name}
+          rank={agent.rank}
           agentsRef={renderAgentsRef}
         />
       ))}
@@ -220,11 +235,35 @@ function modeToVariant(mode: ArenaMode): BWVariant | null {
   }
 }
 
-export default function ArenaCanvas() {
-  const { agents, officeAgents, loading } = useStrawAgents();
+interface ArenaCanvasProps {
+  /** Filter agents to a specific task. Omit for the global top-20 arena. */
+  taskId?: string;
+  /** Height of the canvas in pixels. Defaults to 600 (full leaderboard page). */
+  height?: number;
+  /**
+   * Show the right-side score sidebar. Defaults to true. Turn off when the
+   * arena is rendered next to an existing leaderboard table (task page) so
+   * the two don't duplicate rankings.
+   */
+  showSidebar?: boolean;
+}
+
+export default function ArenaCanvas({
+  taskId,
+  height = 600,
+  showSidebar = true,
+}: ArenaCanvasProps = {}) {
+  const { agents, officeAgents, loading } = useStrawAgents(taskId);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
-  const { mode, setMode, shadowLightness, setShadowLightness } = useArenaMode();
+  const {
+    mode,
+    setMode,
+    shadowLightness,
+    setShadowLightness,
+    pureWhite,
+    setPureWhite,
+  } = useArenaMode();
   const bwVariant = modeToVariant(mode);
   const bw = bwVariant !== null;
   const bwShadows = bwVariant === "lit" || bwVariant === "lit-tint";
@@ -234,13 +273,15 @@ export default function ArenaCanvas() {
   }, []);
 
   const initialPreset = CAMERA_PRESETS.iso;
-  const bgColor = bw ? "#FFFFFF" : "#1A1D21";
+  // Match the site's page background (#FDFCFC) so the arena blends into the
+  // task-detail page in B&W mode instead of reading as a pure-white rect.
+  const bgColor = bw ? "#FDFCFC" : "#1A1D21";
   const shadowsOn = mode === "color" || bwShadows;
 
   return (
-    <div className="flex w-full" style={{ height: 600 }}>
+    <div className="flex w-full" style={{ height }}>
       <div
-        className="flex-1 relative rounded-l-lg overflow-hidden"
+        className={`flex-1 relative overflow-hidden ${showSidebar ? "rounded-l-lg" : "rounded-lg"}`}
         style={{ background: bgColor }}
       >
         <Canvas
@@ -263,6 +304,7 @@ export default function ArenaCanvas() {
               bwVariant={bwVariant}
               bwShadows={bwShadows}
               shadowLightness={shadowLightness}
+              pureWhite={pureWhite}
             />
           </Suspense>
         </Canvas>
@@ -276,22 +318,42 @@ export default function ArenaCanvas() {
           {officeAgents.length} agent{officeAgents.length !== 1 ? "s" : ""} in arena
         </div>
 
-        {/* Top-right: view toggle (cycles through all camera presets) */}
-        <button
-          onClick={() => {
-            const i = VIEW_CYCLE.indexOf(viewMode);
-            setViewMode(VIEW_CYCLE[(i + 1) % VIEW_CYCLE.length]);
-          }}
-          className={`absolute top-3 right-3 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-mono transition-colors flex items-center gap-1.5 ${
-            bw
-              ? "bg-white/90 text-black border border-black hover:bg-white"
-              : "bg-black/60 text-white hover:bg-black/80"
-          }`}
-          title="Cycle camera: iso → top → corner → side"
-        >
-          <span className="opacity-60">view:</span>
-          <span>{viewMode}</span>
-        </button>
+        {/* Top-right controls: view toggle, and pure-white toggle when BW is on */}
+        <div className="absolute top-3 right-3 flex items-center gap-2">
+          {bw && (
+            <button
+              onClick={() => setPureWhite(!pureWhite)}
+              className={`backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-mono transition-colors flex items-center gap-1.5 ${
+                pureWhite
+                  ? "bg-black text-white border border-black hover:bg-gray-900"
+                  : "bg-white/90 text-black border border-black hover:bg-white"
+              }`}
+              title={
+                pureWhite
+                  ? "Turn off pure white (re-enable ACES tone mapping)"
+                  : "Force true #FFFFFF (bypass ACES tone mapping)"
+              }
+            >
+              <span className="opacity-60">pure white:</span>
+              <span>{pureWhite ? "on" : "off"}</span>
+            </button>
+          )}
+          <button
+            onClick={() => {
+              const i = VIEW_CYCLE.indexOf(viewMode);
+              setViewMode(VIEW_CYCLE[(i + 1) % VIEW_CYCLE.length]);
+            }}
+            className={`backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-mono transition-colors flex items-center gap-1.5 ${
+              bw
+                ? "bg-white/90 text-black border border-black hover:bg-white"
+                : "bg-black/60 text-white hover:bg-black/80"
+            }`}
+            title="Cycle camera: iso → top → corner → side"
+          >
+            <span className="opacity-60">view:</span>
+            <span>{viewMode}</span>
+          </button>
+        </div>
 
         {/* Shadow-lightness slider — visible only when a shadow variant is on */}
         {bwShadows && (
@@ -341,12 +403,14 @@ export default function ArenaCanvas() {
         </div>
       </div>
 
-      <ScoreOverlay
-        agents={agents}
-        loading={loading}
-        selectedAgentId={selectedAgentId}
-        onSelectAgent={handleSelectAgent}
-      />
+      {showSidebar && (
+        <ScoreOverlay
+          agents={agents}
+          loading={loading}
+          selectedAgentId={selectedAgentId}
+          onSelectAgent={handleSelectAgent}
+        />
+      )}
     </div>
   );
 }

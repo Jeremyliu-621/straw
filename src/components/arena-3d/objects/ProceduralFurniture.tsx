@@ -180,12 +180,12 @@ function TvScreen({ item }: Props) {
       {/* Screen */}
       <mesh position={[0, 0, 0.017]}>
         <planeGeometry args={[w, h]} />
-        <meshBasicMaterial color="#0D1B2A" toneMapped={false} />
+        <meshStandardMaterial color="#0D1B2A" roughness={0.7} />
       </mesh>
       {/* Glow */}
       <mesh position={[0, 0, 0.018]}>
         <planeGeometry args={[w * 0.6, h * 0.5]} />
-        <meshBasicMaterial color="#1D4E6E" toneMapped={false} transparent opacity={0.6} />
+        <meshStandardMaterial color="#1D4E6E" transparent opacity={0.6} roughness={0.7} />
       </mesh>
     </group>
   );
@@ -303,12 +303,12 @@ function NeonSign({ item }: Props) {
         <boxGeometry args={[w, h, 0.02]} />
         <meshStandardMaterial color="#0B0C0F" roughness={0.9} />
       </mesh>
-      {/* Glowing tube stroke */}
+      {/* Tube stroke (regular matte material — integrates with the rest of
+          the scene's styling rather than popping as an emissive accent) */}
       <mesh position={[0, 0, 0.012]}>
         <planeGeometry args={[w * 0.85, h * 0.35]} />
-        <meshBasicMaterial color={color} toneMapped={false} />
+        <meshStandardMaterial color={color} roughness={0.7} />
       </mesh>
-      <pointLight position={[0, 0, 0.3]} color={color} intensity={0.8} distance={2.5} />
     </group>
   );
 }

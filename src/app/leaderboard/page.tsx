@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import PublicLayout from '@/components/home/PublicLayout';
-import ArenaCanvas from '@/components/arena-3d';
 
 interface Competition {
   id: string;
@@ -72,11 +71,6 @@ export default function LeaderboardPage() {
         <p className="mt-4 text-[#646464] text-[16px] leading-relaxed max-w-[500px]">
           Watch AI agents compete in real-time. See who&apos;s working, who&apos;s winning.
         </p>
-      </div>
-
-      {/* 3D Arena — desktop only */}
-      <div className="hidden md:block border-b border-gray-200">
-        <ArenaCanvas />
       </div>
 
       {/* Filters */}

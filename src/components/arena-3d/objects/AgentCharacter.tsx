@@ -11,15 +11,27 @@ import type { RenderAgentState } from "../useArenaGameLoop";
 
 interface AgentCharacterProps {
   agentId: string;
-  agentName: string;
+  /** Null when the agent is off-leaderboard — nameplate is hidden. */
+  agentName: string | null;
+  /** Null when the agent is off-leaderboard — nameplate is hidden. */
+  rank: number | null;
   agentsRef: React.RefObject<RenderAgentState[]>;
 }
 
 function truncateName(name: string): string {
-  return name.length > 12 ? `${name.slice(0, 12)}…` : name;
+  return name.length > 16 ? `${name.slice(0, 16)}…` : name;
 }
 
-export default function AgentCharacter({ agentId, agentName, agentsRef }: AgentCharacterProps) {
+function rankLabel(rank: number): string {
+  return `#${rank}`;
+}
+
+export default function AgentCharacter({
+  agentId,
+  agentName,
+  rank,
+  agentsRef,
+}: AgentCharacterProps) {
   const groupRef = useRef<THREE.Group>(null);
   const leftArmRef = useRef<THREE.Group>(null);
   const rightArmRef = useRef<THREE.Group>(null);
@@ -173,22 +185,63 @@ export default function AgentCharacter({ agentId, agentName, agentsRef }: AgentC
         <meshBasicMaterial ref={statusMatRef} color="#94a3b8" />
       </mesh>
 
-      {/* Floating nameplate — scaled up since AgentCharacter itself is scaled down */}
-      <Billboard position={[0, 155, 0]}>
-        <mesh position={[0, 0, -0.1]}>
-          <planeGeometry args={[Math.max(truncateName(agentName).length * 13, 80), 32]} />
-          <meshBasicMaterial color="#000000" opacity={0.78} transparent />
-        </mesh>
-        <Text
-          fontSize={20}
-          color="#ffffff"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0}
-        >
-          {truncateName(agentName)}
-        </Text>
-      </Billboard>
+      {/* Floating nameplate — shown only for agents that appear on the
+          leaderboard (rank + name both present). Pre-submission / unscored
+          agents roam unlabeled. */}
+      {agentName !== null && rank !== null && (() => {
+        const name = truncateName(agentName);
+        const rankText = rankLabel(rank);
+        const fontSize = 30;
+        const padding = 14;
+        // Rough glyph width heuristic for a proportional sans — wide enough
+        // without overshooting. Gap between rank and name is 10 units.
+        const rankW = rankText.length * fontSize * 0.62;
+        const nameW = name.length * fontSize * 0.56;
+        const plateW = rankW + nameW + padding * 2 + 14;
+        const plateH = fontSize + padding * 1.1;
+        // Left-align rank, center gap, then name. Origin = plate center.
+        const rankX = -plateW / 2 + padding + rankW / 2;
+        const nameX = -plateW / 2 + padding + rankW + 14 + nameW / 2;
+        return (
+          <Billboard position={[0, 165, 0]}>
+            {/* Plate: white fill with a 2-unit black border */}
+            <mesh position={[0, 0, -0.2]}>
+              <planeGeometry args={[plateW + 4, plateH + 4]} />
+              <meshBasicMaterial color="#000000" />
+            </mesh>
+            <mesh position={[0, 0, -0.1]}>
+              <planeGeometry args={[plateW, plateH]} />
+              <meshBasicMaterial color="#FFFFFF" />
+            </mesh>
+            {/* Rank — black on white, monospace-ish weight */}
+            <Text
+              position={[rankX, 0, 0]}
+              fontSize={fontSize}
+              color="#000000"
+              anchorX="center"
+              anchorY="middle"
+              fontWeight={700}
+            >
+              {rankText}
+            </Text>
+            {/* Vertical divider between rank and name */}
+            <mesh position={[-plateW / 2 + padding + rankW + 7, 0, 0]}>
+              <planeGeometry args={[2, plateH * 0.7]} />
+              <meshBasicMaterial color="#000000" />
+            </mesh>
+            {/* Name — black on white */}
+            <Text
+              position={[nameX, 0, 0]}
+              fontSize={fontSize}
+              color="#000000"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {name}
+            </Text>
+          </Billboard>
+        );
+      })()}
     </group>
   );
 }

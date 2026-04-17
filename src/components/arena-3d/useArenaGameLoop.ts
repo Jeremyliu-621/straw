@@ -9,7 +9,8 @@ import { DESK_STANDING_POINTS } from "./core/defaultLayout";
 // so the hook works independently of the extraction.
 export interface RenderAgentState {
   id: string;
-  name: string;
+  name: string | null;
+  rank: number | null;
   status: "working" | "idle" | "error";
   color: string;
   x: number;
