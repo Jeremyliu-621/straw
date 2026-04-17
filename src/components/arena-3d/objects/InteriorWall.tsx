@@ -4,8 +4,8 @@ import { SCALE, WALL_THICKNESS } from "../core/constants";
 import { toWorld } from "../core/geometry";
 import type { FurnitureItem } from "../core/types";
 
-const WALL_COLOR = "#b8b2a8";
-const WALL_TRIM_COLOR = "#8e877c";
+const WALL_COLOR = "#EDEDEA";
+const WALL_TRIM_COLOR = "#A8A5A0";
 const WALL_HEIGHT = 1.1; // world units
 const TRIM_HEIGHT = 0.06;
 

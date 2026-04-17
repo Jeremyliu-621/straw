@@ -28,17 +28,19 @@ export interface RenderAgentState {
 const WALK_SPEED = 0.3;
 const SEPARATION_STRENGTH = 3;
 const AGENT_RADIUS = 20;
-const CANVAS_W = 1800;
 
-// Hardcoded roam points — agents wander here when idle
+// Roam waypoints — idle agents wander to these. Target open / social areas:
+// kitchen, ping pong, lounge pit, beanbag grove, library, standing-desk island.
 const ROAM_POINTS = [
-  { x: 200, y: 150 },
-  { x: 500, y: 150 },
-  { x: 850, y: 150 },
-  { x: 950, y: 400 },
-  { x: 600, y: 800 },
-  { x: 300, y: 600 },
-  { x: 100, y: 800 },
+  { x: 700, y: 180 },   // kitchen
+  { x: 400, y: 110 },   // meeting room
+  { x: 780, y: 880 },   // ping pong
+  { x: 220, y: 870 },   // lounge pit
+  { x: 535, y: 895 },   // beanbag grove
+  { x: 140, y: 640 },   // library
+  { x: 1005, y: 870 },  // whiteboard zone
+  { x: 1050, y: 420 },  // standing-desk island edge
+  { x: 55, y: 420 },    // phone-booth corridor end
 ];
 
 // Simple nav grid-free pathfinding for now (direct movement)
@@ -57,9 +59,10 @@ function pickRoamPoint(): { x: number; y: number } {
 }
 
 function pickSpawnPoint(): { x: number; y: number } {
+  // Spawn in the main walking-corridor band, away from interior walls.
   return {
-    x: Math.random() * 800 + 100,
-    y: Math.random() * 500 + 100,
+    x: Math.random() * 900 + 150,
+    y: Math.random() * 400 + 280,
   };
 }
 
