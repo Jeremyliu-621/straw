@@ -185,7 +185,7 @@ const CLUSTER_A = rotateAround(CLUSTER_A_RAW, 370, 410, -18);
 
 // ── Benching cluster B (orthogonal) ──────────────────────────────────────
 const CLUSTER_B: FurnitureItem[] = [
-  ...deskPod(8, 580, 290),  // desks 8-11
+  ...deskPod(8, 580, 290), // desks 8-11
   ...deskPod(12, 580, 460), // desks 12-15
 ];
 
@@ -218,11 +218,15 @@ const LIBRARY: FurnitureItem[] = [
 
 // ── Lounge Pit ───────────────────────────────────────────────────────────
 const LOUNGE_PIT: FurnitureItem[] = [
-  { type: "rug", x: 60, y: 760, w: 340, h: 260, color: "#4A6E8E", _uid: uid("rug") },
-  { type: "couch", x: 80, y: 770, w: 100, h: 40, _uid: uid("couch") },
-  { type: "couch", x: 260, y: 770, w: 100, h: 40, _uid: uid("couch") },
-  { type: "couch", x: 80, y: 960, w: 100, h: 40, facing: 180, _uid: uid("couch") },
-  { type: "table_rect", x: 160, y: 870, w: 120, h: 50, _uid: uid("table") },
+  { type: "rug", x: 20, y: 800, w: 340, h: 280, color: "#4A6E8E", _uid: uid("rug") },
+  { type: "couch", x: 40, y: 930, facing: 270, w: 100, h: 40, _uid: uid("couch") },
+  { type: "couch", x: 80, y: 855, facing: 180, w: 100, h: 40, _uid: uid("couch") },
+  { type: "couch", x: 250, y: 855, facing: 180, w: 100, h: 40, _uid: uid("couch") },
+  { type: "couch", x: 140, y: 985, facing: 0, w: 100, h: 40, _uid: uid("couch") },
+  { type: "couch", x: 250, y: 985, facing: 0, w: 100, h: 40, _uid: uid("couch") },
+  { type: "table_rect", x: 180, y: 850, w: 120, h: 50, _uid: uid("table") },
+  { type: "table_rect", x: 30, y: 800, facing: 90, w: 120, h: 50, _uid: uid("table") },
+  { type: "round_table", x: 200, y: 1025, facing: 30, r: 10, _uid: uid("table") },
   { type: "lamp", x: 70, y: 880, _uid: uid("lamp") },
   { type: "lamp", x: 370, y: 880, _uid: uid("lamp") },
   { type: "plant", x: 40, y: 740, _uid: uid("plant") },
@@ -232,56 +236,166 @@ const LOUNGE_PIT: FurnitureItem[] = [
 
 // ── Beanbag Grove ────────────────────────────────────────────────────────
 const BEANBAG_GROVE: FurnitureItem[] = [
-  { type: "rug", x: 430, y: 790, w: 210, h: 200, color: "#C9A478", _uid: uid("rug") },
-  { type: "beanbag", x: 450, y: 810, color: "#e65100", _uid: uid("bean") },
-  { type: "beanbag", x: 520, y: 810, color: "#1565c0", _uid: uid("bean") },
-  { type: "beanbag", x: 580, y: 810, color: "#16a34a", _uid: uid("bean") },
-  { type: "beanbag", x: 450, y: 910, color: "#8b5cf6", _uid: uid("bean") },
-  { type: "beanbag", x: 580, y: 910, color: "#E8B84A", _uid: uid("bean") },
-  { type: "table_rect", x: 500, y: 870, w: 50, h: 30, _uid: uid("t") },
-  { type: "plant", x: 420, y: 970, _uid: uid("plant") },
+  { type: "rug", x: 380, y: 790, w: 210, h: 200, color: "#C9A478", _uid: uid("rug") },
+  { type: "beanbag", x: 400, y: 840, color: "#e65100", _uid: uid("bean") },
+  { type: "beanbag", x: 470, y: 840, color: "#1565c0", _uid: uid("bean") },
+  { type: "beanbag", x: 530, y: 840, color: "#16a34a", _uid: uid("bean") },
+  { type: "beanbag", x: 400, y: 950, color: "#8b5cf6", _uid: uid("bean") },
+  { type: "beanbag", x: 530, y: 950, color: "#E8B84A", _uid: uid("bean") },
+  { type: "table_rect", x: 450, y: 900, facing: 0, w: 50, h: 30, _uid: uid("table") },
+  { type: "plant", x: 300, y: 970, _uid: uid("plant") },
 ];
 
 // ── Ping Pong Zone ───────────────────────────────────────────────────────
 const PING_PONG: FurnitureItem[] = [
-  { type: "ping_pong", x: 690, y: 830, w: 180, h: 100, _uid: uid("pp") },
-  { type: "plant", x: 660, y: 790, _uid: uid("plant") },
-  { type: "plant", x: 900, y: 790, _uid: uid("plant") },
-  { type: "plant", x: 660, y: 970, _uid: uid("plant") },
+  { type: "ping_pong", x: 600, y: 830, facing: 90, w: 180, h: 100, _uid: uid("pp") },
+  { type: "plant", x: 600, y: 790, _uid: uid("plant") },
+  { type: "plant", x: 600, y: 970, _uid: uid("plant") },
 ];
 
 // ── Whiteboard Zone ──────────────────────────────────────────────────────
 const WHITEBOARD_ZONE: FurnitureItem[] = [
-  { type: "rolling_whiteboard", x: 960, y: 760, w: 100, h: 20, _uid: uid("wb") },
-  { type: "rolling_whiteboard", x: 1080, y: 760, w: 100, h: 20, _uid: uid("wb") },
-  { type: "couch_v", x: 980, y: 900, _uid: uid("chair") },
-  { type: "couch_v", x: 1080, y: 900, _uid: uid("chair") },
-  { type: "table_rect", x: 1020, y: 950, w: 60, h: 40, _uid: uid("table") },
-  { type: "plant", x: 1150, y: 770, _uid: uid("plant") },
+  { type: "rolling_whiteboard", x: 960, y: 600, w: 100, h: 20, _uid: uid("wb") },
+  { type: "rolling_whiteboard", x: 1080, y: 600, w: 100, h: 20, _uid: uid("wb") },
+  { type: "couch_v", x: 1000, y: 580, facing: 90, _uid: uid("chair") },
+  { type: "couch_v", x: 1120, y: 580, facing: 90, _uid: uid("chair") },
+  { type: "plant", x: 1170, y: 670, _uid: uid("plant") },
+];
+
+// ── Gym ──────────────────────────────────────────────────────────────────
+// Bottom-right corner, below the whiteboard zone. Knee-height half-walls
+// wrap the zone with an entrance gap on the west side. Medium-gray rubber
+// floor, equipment organized in rows: rigs against the back, dumbbells +
+// water in the middle, yoga mats at the front.
+const GYM: FurnitureItem[] = [
+  // Mid-gray rubber floor
+  { type: "rug", x: 790, y: 760, w: 400, h: 330, color: "#6B7079", _uid: uid("gymFloor") },
+  // ── Half-walls wrapping the gym ──
+  // North edge: continuous from x=790..1190 at y=760 (one 8-thick band)
+  { type: "half_wall", x: 790, y: 756, w: 400, h: 8, _uid: uid("hw") },
+  // West edge: split in two with an entrance gap at y=870..930
+  { type: "half_wall", x: 786, y: 760, w: 8, h: 110, _uid: uid("hw") },
+  { type: "half_wall", x: 786, y: 930, w: 8, h: 160, _uid: uid("hw") },
+  // Back row of equipment (against ~y=780): pull-up towers + squat rack + bag
+  { type: "pull_up_tower", x: 820, y: 790, w: 55, h: 55, _uid: uid("pull") },
+  { type: "pull_up_tower", x: 900, y: 790, w: 55, h: 55, _uid: uid("pull") },
+  { type: "squat_rack", x: 990, y: 795, w: 80, h: 45, _uid: uid("rack") },
+  { type: "punching_bag", x: 1100, y: 800, w: 40, h: 40, _uid: uid("bag") },
+  // Middle row: dumbbell rack + water dispenser
+  { type: "dumbbell_rack", x: 850, y: 900, w: 150, h: 30, _uid: uid("db") },
+  { type: "water_dispenser", x: 1050, y: 905, w: 35, h: 35, _uid: uid("water") },
+  // Front row: yoga / stretching mats in a tidy line
+  { type: "rug", x: 820, y: 990, w: 70, h: 30, color: "#3BAFA9", _uid: uid("mat") },
+  { type: "rug", x: 910, y: 990, w: 70, h: 30, color: "#FF6B5B", _uid: uid("mat") },
+  { type: "rug", x: 1000, y: 990, w: 70, h: 30, color: "#9B8FD1", _uid: uid("mat") },
+  { type: "rug", x: 1090, y: 990, w: 70, h: 30, color: "#E8B84A", _uid: uid("mat") },
+  // A neon sign on the east wall to brand the zone
+  { type: "neon_sign", x: 1195, y: 820, w: 120, h: 40, color: "#FF4B8B", wallAttach: "E", _uid: uid("neon") },
 ];
 
 // ── Wall art / decor ─────────────────────────────────────────────────────
 const WALL_DECOR: FurnitureItem[] = [
   // North perimeter wall
-  { type: "painting", x: 120, y: 5, w: 70, h: 50, color: "#FF6B5B", wallAttach: "N", _uid: uid("art") },
-  { type: "painting", x: 950, y: 5, w: 70, h: 50, color: "#3BAFA9", wallAttach: "N", _uid: uid("art") },
-  { type: "neon_sign", x: 1080, y: 5, w: 100, h: 40, color: "#5EE3D4", wallAttach: "N", _uid: uid("neon") },
+  {
+    type: "painting",
+    x: 120,
+    y: 5,
+    w: 70,
+    h: 50,
+    color: "#FF6B5B",
+    wallAttach: "N",
+    _uid: uid("art"),
+  },
+  {
+    type: "painting",
+    x: 950,
+    y: 5,
+    w: 70,
+    h: 50,
+    color: "#3BAFA9",
+    wallAttach: "N",
+    _uid: uid("art"),
+  },
+  {
+    type: "neon_sign",
+    x: 1080,
+    y: 5,
+    w: 100,
+    h: 40,
+    color: "#5EE3D4",
+    wallAttach: "N",
+    _uid: uid("neon"),
+  },
   // South perimeter wall
-  { type: "painting", x: 200, y: 1095, w: 80, h: 55, color: "#E8B84A", wallAttach: "S", _uid: uid("art") },
-  { type: "painting", x: 800, y: 1095, w: 90, h: 60, color: "#9B8FD1", wallAttach: "S", _uid: uid("art") },
-  { type: "painting", x: 1050, y: 1095, w: 70, h: 50, color: "#7A9AB8", wallAttach: "S", _uid: uid("art") },
+  {
+    type: "painting",
+    x: 200,
+    y: 1095,
+    w: 80,
+    h: 55,
+    color: "#E8B84A",
+    wallAttach: "S",
+    _uid: uid("art"),
+  },
+  {
+    type: "painting",
+    x: 800,
+    y: 1095,
+    w: 90,
+    h: 60,
+    color: "#9B8FD1",
+    wallAttach: "S",
+    _uid: uid("art"),
+  },
+  {
+    type: "painting",
+    x: 1050,
+    y: 1095,
+    w: 70,
+    h: 50,
+    color: "#7A9AB8",
+    wallAttach: "S",
+    _uid: uid("art"),
+  },
   // East perimeter wall
-  { type: "painting", x: 1195, y: 630, w: 80, h: 55, color: "#5C8D65", wallAttach: "E", _uid: uid("art") },
+  {
+    type: "painting",
+    x: 1195,
+    y: 630,
+    w: 80,
+    h: 55,
+    color: "#5C8D65",
+    wallAttach: "E",
+    _uid: uid("art"),
+  },
   // West perimeter wall
-  { type: "painting", x: 5, y: 230, w: 70, h: 50, color: "#D47A5B", wallAttach: "W", _uid: uid("art") },
-  { type: "painting", x: 5, y: 900, w: 80, h: 55, color: "#3BAFA9", wallAttach: "W", _uid: uid("art") },
+  {
+    type: "painting",
+    x: 5,
+    y: 230,
+    w: 70,
+    h: 50,
+    color: "#D47A5B",
+    wallAttach: "W",
+    _uid: uid("art"),
+  },
+  {
+    type: "painting",
+    x: 5,
+    y: 900,
+    w: 80,
+    h: 55,
+    color: "#3BAFA9",
+    wallAttach: "W",
+    _uid: uid("art"),
+  },
 ];
 
 // ── Ambient scatter ──────────────────────────────────────────────────────
 const AMBIENT_DECOR: FurnitureItem[] = [
   { type: "plant", x: 260, y: 740, _uid: uid("plant") },
-  { type: "plant", x: 560, y: 740, _uid: uid("plant") },
-  { type: "plant", x: 880, y: 740, _uid: uid("plant") },
+  { type: "plant", x: 440, y: 1030, _uid: uid("plant") },
+  { type: "plant", x: 560, y: 1030, _uid: uid("plant") },
   { type: "plant", x: 540, y: 250, _uid: uid("plant") },
   { type: "plant", x: 150, y: 260, _uid: uid("plant") },
   { type: "lamp", x: 460, y: 710, _uid: uid("lamp") },
@@ -303,6 +417,7 @@ export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
   ...BEANBAG_GROVE,
   ...PING_PONG,
   ...WHITEBOARD_ZONE,
+  ...GYM,
   ...WALL_DECOR,
   ...AMBIENT_DECOR,
 ];
