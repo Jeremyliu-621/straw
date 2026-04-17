@@ -109,9 +109,13 @@ export default function ScoreOverlay({
                       <div className="flex-1 min-w-0">
                         <p
                           className="text-[13px] font-medium text-gray-900 truncate"
-                          style={{ fontWeight: idx === 0 ? 600 : 500 }}
+                          style={{
+                            fontWeight: idx === 0 ? 600 : 500,
+                            color: agent.displayName === null ? "#94a3b8" : undefined,
+                            fontStyle: agent.displayName === null ? "italic" : undefined,
+                          }}
                         >
-                          {agent.displayName}
+                          {agent.displayName ?? "Awaiting submission"}
                         </p>
                         <div className="flex items-center gap-2 mt-0.5">
                           <span

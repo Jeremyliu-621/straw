@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { StatusBadge } from "@/components/status-badge";
 import { Leaderboard } from "@/components/leaderboard";
 import { DeadlineCountdown } from "@/components/deadline-countdown";
+import ArenaCanvas from "@/components/arena-3d";
 import { EVAL_MODE } from "@/constants";
 import type { EvalMode } from "@/constants";
 
@@ -136,32 +137,28 @@ export default function TaskDetailPage() {
 
   return (
     <div className="h-screen overflow-hidden bg-[#FDFCFC]">
-      {/* Full-width header */}
-      <div className="border-b border-gray-200 shrink-0">
-        <div className="max-w-[1400px] mx-auto border-x border-gray-200 px-8 lg:px-12 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 min-w-0">
-              <h1 className="font-sans text-[28px] font-medium tracking-tight text-black leading-none truncate">
-                {task.title}
-              </h1>
-              <StatusBadge status={task.status} />
-              <span className="font-sans text-[13px] text-gray-400 shrink-0">
-                {task.category}
-              </span>
-            </div>
-            <span className="font-mono text-[28px] font-medium text-black shrink-0 ml-6">
-              ${(task.budget_cents / 100).toLocaleString()}
-            </span>
-          </div>
-        </div>
-      </div>
-
       {/* Two-column layout: left = details, right = leaderboard */}
-      <div className="max-w-[1400px] mx-auto border-x border-gray-200 flex-1" style={{ height: "calc(100vh - 73px)", overflow: "hidden" }}>
+      <div className="max-w-[1720px] mx-auto border-x border-gray-200 h-screen overflow-hidden">
         <div className="flex flex-col lg:flex-row h-full">
           {/* Left panel — task details */}
-          <div className="w-full lg:w-[55%] lg:border-r border-gray-200 overflow-y-auto">
+          <div className="w-full lg:w-[52%] lg:border-r border-gray-200 overflow-y-auto">
             <div className="px-8 lg:px-12 py-8 space-y-8">
+              {/* Heading */}
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-4 min-w-0">
+                  <h1 className="font-sans text-[24px] font-medium tracking-tight text-black leading-none truncate">
+                    {task.title}
+                  </h1>
+                  <StatusBadge status={task.status} />
+                  <span className="font-sans text-[13px] text-gray-400 shrink-0">
+                    {task.category}
+                  </span>
+                </div>
+                <span className="font-mono text-[24px] font-medium text-black">
+                  ${(task.budget_cents / 100).toLocaleString()}
+                </span>
+              </div>
+
               <Section label="DESCRIPTION">
                 <p className="font-sans text-[15px] leading-relaxed text-gray-800">
                   {task.description}
@@ -214,15 +211,8 @@ export default function TaskDetailPage() {
               )}
 
               <div className="border-t border-gray-200 pt-6">
-                <button
-                  onClick={() => router.back()}
-                  className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors cursor-pointer bg-transparent border-none p-0 mb-4"
-                >
-                  &larr; Back
-                </button>
-
                 {isOwner && task.status === "draft" && (
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 mb-4">
                     <button
                       onClick={publishTask}
                       disabled={publishing}
@@ -235,7 +225,7 @@ export default function TaskDetailPage() {
                 )}
 
                 {canCompete && task.status === "open" && (
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 mb-4">
                     <Link
                       href={`/tasks/${id}/enter`}
                       className="font-sans text-[14px] font-medium bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors no-underline"
@@ -255,7 +245,7 @@ export default function TaskDetailPage() {
                 )}
 
                 {canCompete && task.status !== "open" && submission && (
-                  <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-md border border-gray-200">
+                  <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-md border border-gray-200 mb-4">
                     <StatusBadge status={submission.status} />
                     <span className="font-sans text-[13px] text-gray-400">
                       Entered {new Date(submission.created_at).toLocaleDateString()}
@@ -264,7 +254,7 @@ export default function TaskDetailPage() {
                 )}
 
                 {isOwner && task.status === "closed" && (
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 mb-4">
                     <Link
                       href={`/tasks/${id}/results`}
                       className="font-sans text-[14px] font-medium bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors no-underline inline-flex items-center gap-2"
@@ -286,12 +276,19 @@ export default function TaskDetailPage() {
                     </Link>
                   </div>
                 )}
+
+                <button
+                  onClick={() => router.back()}
+                  className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors cursor-pointer bg-transparent border-none p-0"
+                >
+                  &larr; Back
+                </button>
               </div>
             </div>
           </div>
 
           {/* Right panel — leaderboard */}
-          <div className="w-full lg:w-[45%] overflow-y-auto">
+          <div className="w-full lg:w-[48%] overflow-y-auto">
             <div className="px-8 lg:px-8 py-8">
               {/* Deadline + countdown */}
               <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
@@ -328,7 +325,15 @@ export default function TaskDetailPage() {
               </div>
 
               {task.status !== "draft" ? (
-                <Leaderboard taskId={id} />
+                <>
+                  {/* 3D arena — agents competing in this task, visualized.
+                      Hidden on narrow viewports where the panel is too
+                      cramped; shown on md+ above the leaderboard table. */}
+                  <div className="hidden md:block mb-6">
+                    <ArenaCanvas taskId={id} height={360} showSidebar={false} />
+                  </div>
+                  <Leaderboard taskId={id} />
+                </>
               ) : (
                 <div className="text-center py-16">
                   <p className="font-sans text-[13px] text-gray-400">

@@ -36,11 +36,15 @@ type MeshUserData = {
   __isBWEdgeOverlay?: boolean;
 };
 
-const WHITE_UNLIT = new THREE.MeshBasicMaterial({ color: "#FFFFFF" });
+// Match the site's page background (#FDFCFC) so the arena blends into the
+// task-detail page in B&W mode instead of standing out as a true #FFFFFF rect.
+const BW_WHITE = "#FDFCFC";
+
+const WHITE_UNLIT = new THREE.MeshBasicMaterial({ color: BW_WHITE });
 WHITE_UNLIT.name = "__bwWhiteUnlit__";
 
 const WHITE_LIT = new THREE.MeshStandardMaterial({
-  color: "#FFFFFF",
+  color: BW_WHITE,
   roughness: 0.9,
   metalness: 0,
 });
@@ -80,25 +84,32 @@ function extractColor(material: THREE.Material | THREE.Material[]): THREE.Color 
 
 function makeTintedMaterial(
   original: THREE.Material | THREE.Material[],
-  lit: boolean
+  lit: boolean,
+  pureWhite: boolean
 ): THREE.Material {
   const base = extractColor(original);
-  // Lerp toward white by TINT_AMOUNT. After: 10% original + 90% white.
-  base.lerp(new THREE.Color("#FFFFFF"), TINT_AMOUNT);
+  // Lerp toward the site-matching BW_WHITE so the pastel still blends with
+  // the page background. TINT_AMOUNT = 0.4 → 60% original + 40% BW_WHITE.
+  base.lerp(new THREE.Color(BW_WHITE), TINT_AMOUNT);
   if (lit) {
-    return new THREE.MeshStandardMaterial({
+    const m = new THREE.MeshStandardMaterial({
       color: base,
       roughness: 0.9,
       metalness: 0,
     });
+    m.toneMapped = !pureWhite;
+    return m;
   }
-  return new THREE.MeshBasicMaterial({ color: base });
+  const m = new THREE.MeshBasicMaterial({ color: base });
+  m.toneMapped = !pureWhite;
+  return m;
 }
 
 function chooseMaterial(
   variant: BWVariant,
   mesh: THREE.Mesh,
-  originalMaterial: THREE.Material | THREE.Material[]
+  originalMaterial: THREE.Material | THREE.Material[],
+  pureWhite: boolean
 ): THREE.Material {
   if (variant === "unlit") return WHITE_UNLIT;
   if (variant === "lit") return WHITE_LIT;
@@ -109,12 +120,12 @@ function chooseMaterial(
     ud.__bwTintedMaterial.dispose();
     ud.__bwTintedMaterial = undefined;
   }
-  const mat = makeTintedMaterial(originalMaterial, lit);
+  const mat = makeTintedMaterial(originalMaterial, lit, pureWhite);
   ud.__bwTintedMaterial = mat;
   return mat;
 }
 
-function patchMesh(mesh: THREE.Mesh, variant: BWVariant): void {
+function patchMesh(mesh: THREE.Mesh, variant: BWVariant, pureWhite: boolean): void {
   const ud = mesh.userData as MeshUserData;
   if (ud.__isBWEdgeOverlay) return;
   if (ud.__bwPatchedWith === variant) return;
@@ -128,7 +139,7 @@ function patchMesh(mesh: THREE.Mesh, variant: BWVariant): void {
   }
 
   const orig = ud.__bwOriginalMaterial!;
-  mesh.material = chooseMaterial(variant, mesh, orig);
+  mesh.material = chooseMaterial(variant, mesh, orig, pureWhite);
 
   const lit = variant === "lit" || variant === "lit-tint";
   mesh.castShadow = lit;
@@ -185,10 +196,40 @@ function unpatchMesh(mesh: THREE.Mesh): void {
   ud.__bwPatchedWith = undefined;
 }
 
-function applyAll(scene: THREE.Scene, variant: BWVariant): void {
+function applyAll(scene: THREE.Scene, variant: BWVariant, pureWhite: boolean): void {
   scene.traverse((obj) => {
     const mesh = obj as THREE.Mesh;
-    if (mesh.isMesh) patchMesh(mesh, variant);
+    if (mesh.isMesh) patchMesh(mesh, variant, pureWhite);
+  });
+}
+
+/**
+ * Update the shared singleton materials' toneMapped flag and any per-mesh
+ * tinted clones currently in the scene. Called when the pure-white toggle
+ * flips without changing the variant.
+ */
+function updateToneMapped(scene: THREE.Scene, pureWhite: boolean): void {
+  const tm = !pureWhite;
+  if (WHITE_UNLIT.toneMapped !== tm) {
+    WHITE_UNLIT.toneMapped = tm;
+    WHITE_UNLIT.needsUpdate = true;
+  }
+  if (WHITE_LIT.toneMapped !== tm) {
+    WHITE_LIT.toneMapped = tm;
+    WHITE_LIT.needsUpdate = true;
+  }
+  scene.traverse((obj) => {
+    const mesh = obj as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const ud = mesh.userData as MeshUserData;
+    const tinted = ud.__bwTintedMaterial;
+    if (tinted && "toneMapped" in tinted) {
+      const t = tinted as THREE.Material & { toneMapped: boolean };
+      if (t.toneMapped !== tm) {
+        t.toneMapped = tm;
+        t.needsUpdate = true;
+      }
+    }
   });
 }
 
@@ -201,7 +242,13 @@ function unapplyAll(scene: THREE.Scene): void {
   meshes.forEach(unpatchMesh);
 }
 
-export default function BWEffects({ variant }: { variant: BWVariant | null }) {
+export default function BWEffects({
+  variant,
+  pureWhite,
+}: {
+  variant: BWVariant | null;
+  pureWhite: boolean;
+}) {
   const { scene } = useThree();
   const currentRef = useRef<BWVariant | null>(null);
 
@@ -214,10 +261,17 @@ export default function BWEffects({ variant }: { variant: BWVariant | null }) {
       return;
     }
     if (currentRef.current !== variant) {
-      applyAll(scene, variant);
+      applyAll(scene, variant, pureWhite);
       currentRef.current = variant;
     }
-  }, [variant, scene]);
+  }, [variant, scene, pureWhite]);
+
+  // When pureWhite flips *without* a variant change, update existing materials
+  // in place so we don't blow away the per-mesh tinted clones unnecessarily.
+  useEffect(() => {
+    if (currentRef.current === null) return;
+    updateToneMapped(scene, pureWhite);
+  }, [pureWhite, scene]);
 
   useEffect(() => {
     return () => {
@@ -235,7 +289,7 @@ export default function BWEffects({ variant }: { variant: BWVariant | null }) {
       if (!mesh.isMesh) return;
       const ud = mesh.userData as MeshUserData;
       if (ud.__bwPatchedWith === variant || ud.__isBWEdgeOverlay) return;
-      patchMesh(mesh, variant);
+      patchMesh(mesh, variant, pureWhite);
     });
   });
 

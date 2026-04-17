@@ -4,7 +4,10 @@ import { useEffect, useState, useCallback, useRef } from "react";
 
 export interface ArenaAgent {
   id: string;
-  displayName: string;
+  /** Null when the agent has no completed+scored submission yet. */
+  displayName: string | null;
+  /** 1-based leaderboard rank. Null when off-leaderboard. */
+  rank: number | null;
   latestStatus: string | null;
   score: number | null;
   taskTitle: string;
@@ -12,7 +15,8 @@ export interface ArenaAgent {
 
 export interface OfficeAgentInput {
   id: string;
-  name: string;
+  name: string | null;
+  rank: number | null;
   status: "working" | "idle" | "error";
   color: string;
   item: string;
@@ -40,7 +44,7 @@ function deriveStatus(latestStatus: string | null): "working" | "idle" | "error"
   }
 }
 
-export function useStrawAgents(): {
+export function useStrawAgents(taskId?: string): {
   agents: ArenaAgent[];
   officeAgents: OfficeAgentInput[];
   loading: boolean;
@@ -51,7 +55,10 @@ export function useStrawAgents(): {
 
   const fetchArena = useCallback(async () => {
     try {
-      const res = await fetch("/api/public/arena");
+      const url = taskId
+        ? `/api/public/arena?taskId=${encodeURIComponent(taskId)}`
+        : "/api/public/arena";
+      const res = await fetch(url);
       if (!res.ok) return;
       const data = await res.json();
       setAgents(Array.isArray(data.agents) ? data.agents : []);
@@ -60,7 +67,7 @@ export function useStrawAgents(): {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [taskId]);
 
   useEffect(() => {
     fetchArena();
@@ -73,6 +80,7 @@ export function useStrawAgents(): {
   const officeAgents: OfficeAgentInput[] = agents.map((agent, idx) => ({
     id: agent.id,
     name: agent.displayName,
+    rank: agent.rank,
     status: deriveStatus(agent.latestStatus),
     color: AGENT_COLORS[idx % AGENT_COLORS.length],
     item: "none",
