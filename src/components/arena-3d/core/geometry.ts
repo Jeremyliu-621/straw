@@ -66,6 +66,15 @@ export const ITEM_FOOTPRINT: Record<string, [number, number]> = {
   trash: [20, 20],
   mug: [14, 14],
   clock: [20, 20],
+  // Extended types
+  server_rack: [55, 80],
+  glass_wall: [8, 60],
+  printer_station: [60, 50],
+  rug: [100, 80],
+  cable_tray: [230, 18],
+  pendant_light: [20, 20],
+  tv_screen: [120, 10],
+  wall_clock: [20, 20],
 };
 
 export const getItemBaseSize = (item: FurnitureItem) => {
@@ -113,6 +122,15 @@ export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPaddi
   trash:           { blocksNavigation: false },
   clock:           { blocksNavigation: false },
   mug:             { blocksNavigation: false },
+  // Extended types from restructured layout
+  server_rack:     { blocksNavigation: true  },
+  glass_wall:      { blocksNavigation: true  },
+  printer_station: { blocksNavigation: true  },
+  rug:             { blocksNavigation: false }, // floor decal
+  cable_tray:      { blocksNavigation: false }, // overhead
+  pendant_light:   { blocksNavigation: false }, // ceiling
+  tv_screen:       { blocksNavigation: false }, // wall-mounted
+  wall_clock:      { blocksNavigation: false }, // wall-mounted
 };
 
 export const FURNITURE_ROTATION: Record<string, number> = {

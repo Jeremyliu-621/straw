@@ -15,7 +15,7 @@ const PURE_WHITE_KEY = "arena3d.pureWhite";
 const VALID: ArenaMode[] = ["color", "bw", "bw-shadows", "bw-tint", "bw-shadows-tint"];
 
 const DEFAULT_SHADOW_LIGHTNESS = 140; // 0 = dark shadows, 200 = shadows fully gone
-const DEFAULT_PURE_WHITE = false;
+const DEFAULT_PURE_WHITE = true;
 
 function readMode(): ArenaMode {
   if (typeof window === "undefined") return "color";
