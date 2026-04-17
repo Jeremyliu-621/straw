@@ -1,92 +1,128 @@
 import type { FurnitureItem } from "./types";
 
+let uidCounter = 0;
+const uid = (prefix: string) => `${prefix}_${uidCounter++}`;
+
 /**
- * Fixed hackathon arena layout with 20 desk stations arranged in 4 rows of 5.
- * Includes kitchen area, lounge, plants, and decorative furniture.
+ * Dense hackathon-arena layout, adapted from Claw3D's DEFAULT_FURNITURE.
+ * Canvas is 1800x1800. We use the top portion (~y=0 to y=800) for the
+ * populated office, leaving empty space below as outdoor area.
+ *
+ * Extended from Claw3D's 8-desk layout to 20 desks (4 rows of 5) to
+ * support the top 20 agents cap.
  */
 
-function desk(id: string, x: number, y: number): FurnitureItem[] {
+function deskCluster(id: string, x: number, y: number): FurnitureItem[] {
   return [
-    { type: "desk_cubicle", x, y, _uid: `desk_${id}`, id: `desk_${id}` },
-    { type: "chair", x: x + 20, y: y - 10, facing: 180, _uid: `chair_${id}` },
-    { type: "computer", x: x + 20, y: y - 13, _uid: `comp_${id}` },
-    { type: "keyboard", x: x + 30, y: y - 5, _uid: `kb_${id}` },
-    { type: "mouse", x: x + 52, y: y - 5, _uid: `mouse_${id}` },
+    { type: "desk_cubicle", x, y, _uid: uid("desk"), id },
+    { type: "chair", x: x + 20, y: y - 10, facing: 180, _uid: uid("chair") },
+    { type: "computer", x: x + 20, y: y - 13, _uid: uid("comp") },
+    { type: "keyboard", x: x + 30, y: y - 5, _uid: uid("kb") },
+    { type: "mouse", x: x + 52, y: y - 5, _uid: uid("mouse") },
   ];
 }
 
-// 4 rows of 5 desks — covers up to 20 agents
-const DESK_ROWS = [
-  // Row 1 (y=250)
-  ...desk("0", 80, 250),
-  ...desk("1", 260, 250),
-  ...desk("2", 440, 250),
-  ...desk("3", 620, 250),
-  ...desk("4", 800, 250),
-  // Row 2 (y=400)
-  ...desk("5", 80, 400),
-  ...desk("6", 260, 400),
-  ...desk("7", 440, 400),
-  ...desk("8", 620, 400),
-  ...desk("9", 800, 400),
-  // Row 3 (y=550)
-  ...desk("10", 80, 550),
-  ...desk("11", 260, 550),
-  ...desk("12", 440, 550),
-  ...desk("13", 620, 550),
-  ...desk("14", 800, 550),
-  // Row 4 (y=700)
-  ...desk("15", 80, 700),
-  ...desk("16", 260, 700),
-  ...desk("17", 440, 700),
-  ...desk("18", 620, 700),
-  ...desk("19", 800, 700),
+// ── Entrance / meeting nook (top-left) ─────────────────────────────────────
+const ENTRANCE: FurnitureItem[] = [
+  { type: "round_table", x: 50, y: 50, r: 90, _uid: uid("table") },
+  { type: "chair", x: 130, y: 50, facing: 0, _uid: uid("chair") },
+  { type: "chair", x: 200, y: 90, facing: 325, _uid: uid("chair") },
+  { type: "chair", x: 180, y: 170, facing: 240, _uid: uid("chair") },
+  { type: "chair", x: 50, y: 150, facing: 105, _uid: uid("chair") },
+  { type: "chair", x: 60, y: 80, facing: 60, _uid: uid("chair") },
+  { type: "couch", x: 270, y: 90, vertical: true, facing: 180, _uid: uid("couch") },
+  { type: "plant", x: 40, y: 40, _uid: uid("plant") },
+  { type: "trash", x: 210, y: 20, _uid: uid("trash") },
 ];
 
+// ── Kitchen (top-right) ────────────────────────────────────────────────────
 const KITCHEN: FurnitureItem[] = [
-  { type: "fridge", x: 1050, y: 20, _uid: "fridge_0" },
-  { type: "cabinet", x: 980, y: 30, _uid: "cab_0" },
-  { type: "coffee_machine", x: 880, y: 30, elevation: 0.56, _uid: "coffee_0" },
-  { type: "cabinet", x: 840, y: 30, _uid: "cab_1" },
-  { type: "round_table", x: 920, y: 120, r: 50, _uid: "ktable_0" },
-  { type: "chair", x: 960, y: 120, facing: 0, _uid: "kchair_0" },
-  { type: "chair", x: 960, y: 180, facing: 180, _uid: "kchair_1" },
-  { type: "chair", x: 910, y: 150, facing: 90, _uid: "kchair_2" },
+  { type: "fridge", x: 1050, y: 20, _uid: uid("fridge") },
+  { type: "cabinet", x: 980, y: 30, w: 40, h: 40, _uid: uid("cabinet") },
+  { type: "cabinet", x: 840, y: 30, w: 80, h: 40, elevation: 0, _uid: uid("cabinet") },
+  { type: "coffee_machine", x: 880, y: 30, elevation: 0.56, _uid: uid("coffee") },
+  { type: "round_table", x: 890, y: 100, r: 50, _uid: uid("table") },
+  { type: "chair", x: 930, y: 100, facing: 0, _uid: uid("chair") },
+  { type: "chair", x: 930, y: 180, facing: 180, _uid: uid("chair") },
+  { type: "chair", x: 880, y: 130, facing: 90, _uid: uid("chair") },
+  { type: "chair", x: 970, y: 130, facing: 270, _uid: uid("chair") },
+  { type: "vending", x: 790, y: 10, _uid: uid("vending") },
+  { type: "trash", x: 830, y: 20, _uid: uid("trash") },
 ];
 
+// ── Bookshelf row (top-middle) ─────────────────────────────────────────────
+const LIBRARY: FurnitureItem[] = [
+  { type: "bookshelf", x: 600, y: 30, w: 80, h: 120, _uid: uid("shelf") },
+  { type: "chair", x: 550, y: 50, facing: 0, _uid: uid("chair") },
+  { type: "plant", x: 660, y: 30, _uid: uid("plant") },
+];
+
+// ── 20 desks, 4 rows of 5 ──────────────────────────────────────────────────
+const DESK_ROWS: FurnitureItem[] = [
+  ...deskCluster("desk_0", 60, 280),
+  ...deskCluster("desk_1", 220, 280),
+  ...deskCluster("desk_2", 380, 280),
+  ...deskCluster("desk_3", 540, 280),
+  ...deskCluster("desk_4", 700, 280),
+
+  ...deskCluster("desk_5", 60, 430),
+  ...deskCluster("desk_6", 220, 430),
+  ...deskCluster("desk_7", 380, 430),
+  ...deskCluster("desk_8", 540, 430),
+  ...deskCluster("desk_9", 700, 430),
+
+  ...deskCluster("desk_10", 60, 580),
+  ...deskCluster("desk_11", 220, 580),
+  ...deskCluster("desk_12", 380, 580),
+  ...deskCluster("desk_13", 540, 580),
+  ...deskCluster("desk_14", 700, 580),
+
+  ...deskCluster("desk_15", 60, 730),
+  ...deskCluster("desk_16", 220, 730),
+  ...deskCluster("desk_17", 380, 730),
+  ...deskCluster("desk_18", 540, 730),
+  ...deskCluster("desk_19", 700, 730),
+];
+
+// ── Lounge (right side) ────────────────────────────────────────────────────
 const LOUNGE: FurnitureItem[] = [
-  { type: "couch", x: 1000, y: 380, facing: 90, _uid: "couch_0" },
-  { type: "couch", x: 1000, y: 500, facing: 90, _uid: "couch_1" },
-  { type: "table_rect", x: 980, y: 440, facing: 270, _uid: "ltable_0" },
-  { type: "beanbag", x: 1000, y: 330, color: "#6366f1", facing: 90, _uid: "bean_0" },
-  { type: "beanbag", x: 1000, y: 560, color: "#ec4899", facing: 90, _uid: "bean_1" },
-  { type: "lamp", x: 1020, y: 350, _uid: "llamp_0" },
+  { type: "couch", x: 1000, y: 380, w: 100, h: 40, facing: 90, _uid: uid("couch") },
+  { type: "couch", x: 1000, y: 540, w: 100, h: 40, facing: 90, _uid: uid("couch") },
+  { type: "table_rect", x: 980, y: 460, w: 60, h: 30, facing: 270, _uid: uid("table") },
+  { type: "beanbag", x: 1000, y: 330, color: "#e65100", facing: 90, _uid: uid("bean") },
+  { type: "beanbag", x: 1000, y: 410, color: "#1565c0", facing: 90, _uid: uid("bean") },
+  { type: "lamp", x: 980, y: 390, _uid: uid("lamp") },
+  { type: "plant", x: 1090, y: 310, _uid: uid("plant") },
+  { type: "plant", x: 1100, y: 600, _uid: uid("plant") },
 ];
 
+// ── Bottom lounge nook ─────────────────────────────────────────────────────
+const BOTTOM_LOUNGE: FurnitureItem[] = [
+  { type: "couch", x: 390, y: 900, w: 100, h: 40, _uid: uid("couch") },
+  { type: "table_rect", x: 400, y: 950, w: 80, h: 30, _uid: uid("table") },
+  { type: "beanbag", x: 520, y: 900, color: "#16a34a", _uid: uid("bean") },
+  { type: "beanbag", x: 300, y: 900, color: "#8b5cf6", _uid: uid("bean") },
+  { type: "plant", x: 530, y: 850, _uid: uid("plant") },
+  { type: "plant", x: 280, y: 960, _uid: uid("plant") },
+  { type: "lamp", x: 440, y: 860, _uid: uid("lamp") },
+];
+
+// ── Ambient decor ──────────────────────────────────────────────────────────
 const DECOR: FurnitureItem[] = [
-  { type: "round_table", x: 50, y: 50, r: 90, _uid: "entry_table" },
-  { type: "bookshelf", x: 600, y: 30, _uid: "bookshelf_0" },
-  { type: "whiteboard", x: 40, y: 180, _uid: "wb_0" },
-  { type: "clock", x: 550, y: 5, _uid: "clock_0" },
-  { type: "plant", x: 40, y: 40, _uid: "plant_0" },
-  { type: "plant", x: 660, y: 30, _uid: "plant_1" },
-  { type: "plant", x: 340, y: 800, _uid: "plant_2" },
-  { type: "plant", x: 450, y: 150, _uid: "plant_3" },
-  { type: "plant", x: 1090, y: 280, _uid: "plant_4" },
-  { type: "plant", x: 1100, y: 600, _uid: "plant_5" },
-  { type: "plant", x: 200, y: 800, _uid: "plant_6" },
-  { type: "plant", x: 700, y: 800, _uid: "plant_7" },
-  { type: "trash", x: 210, y: 20, _uid: "trash_0" },
-  { type: "trash", x: 830, y: 20, _uid: "trash_1" },
-  { type: "lamp", x: 430, y: 100, _uid: "lamp_0" },
-  { type: "lamp", x: 750, y: 100, _uid: "lamp_1" },
-  { type: "vending", x: 790, y: 10, _uid: "vending_0" },
+  { type: "whiteboard", x: 40, y: 200, w: 10, h: 60, _uid: uid("wb") },
+  { type: "plant", x: 340, y: 800, _uid: uid("plant") },
+  { type: "plant", x: 880, y: 800, _uid: uid("plant") },
+  { type: "lamp", x: 430, y: 100, _uid: uid("lamp") },
+  { type: "lamp", x: 750, y: 100, _uid: uid("lamp") },
 ];
 
 export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
-  ...DESK_ROWS,
+  ...ENTRANCE,
+  ...LIBRARY,
   ...KITCHEN,
+  ...DESK_ROWS,
   ...LOUNGE,
+  ...BOTTOM_LOUNGE,
   ...DECOR,
 ];
 
