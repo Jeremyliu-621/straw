@@ -3,6 +3,7 @@
 import { useRef, useEffect, useCallback } from "react";
 import type { FurnitureItem } from "./core/types";
 import type { OfficeAgentInput } from "./useStrawAgents";
+import { DESK_STANDING_POINTS } from "./core/defaultLayout";
 
 // These types mirror the core/types.ts RenderAgent but we define them here
 // so the hook works independently of the extraction.
@@ -62,18 +63,9 @@ function pickSpawnPoint(): { x: number; y: number } {
   };
 }
 
-/**
- * Derives desk position from desk index. Each desk_cubicle has a standing
- * point offset. Layout has 4 rows of 5 desks starting at (80, 250).
- */
+/** Desk standing point, derived from the actual furniture layout. */
 function deskPosition(deskIndex: number): { x: number; y: number } | null {
-  if (deskIndex < 0 || deskIndex >= 20) return null;
-  const col = deskIndex % 5;
-  const row = Math.floor(deskIndex / 5);
-  // Desk positions from defaultLayout.ts: x starts at 80, spacing 180, y starts at 250, spacing 150
-  const x = 80 + col * 180 + 40; // +40 for the standing point
-  const y = 250 + row * 150 - 5; // -5 for the standing point
-  return { x, y };
+  return DESK_STANDING_POINTS[deskIndex] ?? null;
 }
 
 export interface UseArenaGameLoopResult {
