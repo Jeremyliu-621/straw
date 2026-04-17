@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "vercel-install": "npm install --ignore-workspaces",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
