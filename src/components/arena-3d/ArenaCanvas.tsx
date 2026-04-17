@@ -65,24 +65,29 @@ function AgentRenderer({
 }: {
   renderAgentsRef: React.RefObject<ReturnType<typeof useArenaGameLoop>["renderAgentsRef"]["current"]>;
 }) {
-  // Track agent IDs so React knows when to add/remove agent components.
+  // Track agent ID+name pairs so React knows when to add/remove agent components.
   // Position/animation updates happen inside each AgentCharacter via useFrame reading the ref.
-  const [agentIds, setAgentIds] = useState<string[]>([]);
+  const [agents, setAgents] = useState<{ id: string; name: string }[]>([]);
 
   useFrame(() => {
-    const currentIds = renderAgentsRef.current.map((a) => a.id);
+    const current = renderAgentsRef.current.map((a) => ({ id: a.id, name: a.name }));
     if (
-      currentIds.length !== agentIds.length ||
-      currentIds.some((id, i) => id !== agentIds[i])
+      current.length !== agents.length ||
+      current.some((a, i) => a.id !== agents[i]?.id || a.name !== agents[i]?.name)
     ) {
-      setAgentIds([...currentIds]);
+      setAgents(current);
     }
   });
 
   return (
     <>
-      {agentIds.map((id) => (
-        <AgentCharacter key={id} agentId={id} agentsRef={renderAgentsRef} />
+      {agents.map((agent) => (
+        <AgentCharacter
+          key={agent.id}
+          agentId={agent.id}
+          agentName={agent.name}
+          agentsRef={renderAgentsRef}
+        />
       ))}
     </>
   );
