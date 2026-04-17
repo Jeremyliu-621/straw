@@ -22,6 +22,19 @@ function deskCluster(id: string, x: number, y: number): FurnitureItem[] {
   ];
 }
 
+/**
+ * A "pod" of 4 desks in a 2x2 block, all south-facing so agents sit
+ * on the north side of each desk. Pod bounding box is ~220x155.
+ */
+function deskPod(startIndex: number, x: number, y: number): FurnitureItem[] {
+  return [
+    ...deskCluster(`desk_${startIndex}`, x, y),
+    ...deskCluster(`desk_${startIndex + 1}`, x + 120, y),
+    ...deskCluster(`desk_${startIndex + 2}`, x, y + 90),
+    ...deskCluster(`desk_${startIndex + 3}`, x + 120, y + 90),
+  ];
+}
+
 // ── Interior walls: subdivide the office into zones ───────────────────────
 const WALL_THICK = 8;
 function wall(x: number, y: number, w: number, h: number): FurnitureItem {
@@ -79,31 +92,14 @@ const LIBRARY: FurnitureItem[] = [
   { type: "plant", x: 660, y: 30, _uid: uid("plant") },
 ];
 
-// ── 20 desks, 4 rows of 5 ──────────────────────────────────────────────────
+// ── 5 desk pods of 4 desks each (20 desks total) ──────────────────────────
+// Top row: 3 pods at y=300. Bottom row: 2 pods at y=600, offset for variety.
 const DESK_ROWS: FurnitureItem[] = [
-  ...deskCluster("desk_0", 180, 300),
-  ...deskCluster("desk_1", 340, 300),
-  ...deskCluster("desk_2", 500, 300),
-  ...deskCluster("desk_3", 660, 300),
-  ...deskCluster("desk_4", 820, 300),
-
-  ...deskCluster("desk_5", 180, 450),
-  ...deskCluster("desk_6", 340, 450),
-  ...deskCluster("desk_7", 500, 450),
-  ...deskCluster("desk_8", 660, 450),
-  ...deskCluster("desk_9", 820, 450),
-
-  ...deskCluster("desk_10", 180, 600),
-  ...deskCluster("desk_11", 340, 600),
-  ...deskCluster("desk_12", 500, 600),
-  ...deskCluster("desk_13", 660, 600),
-  ...deskCluster("desk_14", 820, 600),
-
-  ...deskCluster("desk_15", 180, 750),
-  ...deskCluster("desk_16", 340, 750),
-  ...deskCluster("desk_17", 500, 750),
-  ...deskCluster("desk_18", 660, 750),
-  ...deskCluster("desk_19", 820, 750),
+  ...deskPod(0, 200, 300),   // desks 0-3
+  ...deskPod(4, 470, 300),   // desks 4-7
+  ...deskPod(8, 740, 300),   // desks 8-11
+  ...deskPod(12, 340, 590),  // desks 12-15
+  ...deskPod(16, 610, 590),  // desks 16-19
 ];
 
 // ── Lounge (right side) ────────────────────────────────────────────────────
