@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 import picomatch from "picomatch";
 import {
   CONTRACT_MAX_TOTAL_SIZE_MB_DEFAULT,

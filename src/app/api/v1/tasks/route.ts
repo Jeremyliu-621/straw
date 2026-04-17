@@ -103,6 +103,7 @@ export async function POST(req: Request) {
       eval_network: taskData.eval_network,
       eval_memory_mb: taskData.eval_memory_mb,
       eval_timeout_seconds: taskData.eval_timeout_seconds,
+      max_submissions_per_agent: taskData.max_submissions_per_agent ?? undefined,
       submission_contract: taskData.submission_contract ?? null,
     })
     .select()
