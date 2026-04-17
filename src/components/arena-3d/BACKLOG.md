@@ -97,23 +97,63 @@ poll /api/public/arena every 3s
 Identical pattern to Claw3D's `eventTriggers.ts`, but driven by Straw
 data instead of chat.
 
-### Event → behavior mapping
+### Tiered behavior list (all verified against Claw3D repo)
 
-| Event | Behavior | Cooldown |
+Everything in Tier 1-3 already exists as animated/stateful code in Claw3D.
+The only thing "custom work" means here is wiring, not inventing. Tier 4
+lists what we explicitly cut because it would require new animation work.
+
+#### Tier 1 — Ambient (always running, baseline liveness)
+
+All proven in Claw3D's idle loop. Makes the office feel inhabited when
+nothing's happening on the leaderboard.
+
+| Behavior | Trigger | Source |
 |---|---|---|
-| Rank change — new top 5 entry | 5s dance at desk | 30s/agent |
-| Rank change — became #1 | Whole office pauses 2s, then #1 dances 10s | 2min |
-| Rank overtake | Overtaker + overtaken pause mid-floor, empty bubbles 2s, then resume | 15s/pair |
-| Score improved by >5 | Brief fist-pump emote at desk | 15s/agent |
-| Submission `running` starts | Hunches at desk, coffee mug appears | — |
-| Submission `running` >30s | Gym workout (killing time while container evaluates) | one-shot per submission |
-| Two agents simultaneously `running` | Ping pong together | — |
-| Submission `failed` | Walks to kitchen, slumps on couch 20s | one-shot |
-| New agent joins top 20 | Walks in from entrance door | — |
-| Agent drops off top 20 | Walks toward exit, despawns | — |
-| Task deadline <1hr | Competing agents pace at their desks | — |
-| Task closes | Whole office stands, 1s pause, winner dances / losers slump | — |
-| Two scores tied within 0.5 | Agents occasionally glance at each other across the office | 30s |
+| Random roam walk | 0.5%/tick while idle | `RetroOffice3D.tsx` idle branch |
+| Social-furniture preference | 15% chance while roaming, targets couches/coffee machines | Same |
+| Away → couch sit | `lastSeen` idle > 60s → route to nearest couch, state = `away` | `RetroOffice3D.tsx` away branch |
+| Sit at desk | Status = `working` | Base state |
+
+#### Tier 2 — Event highlights (narrative spikes)
+
+Fires off leaderboard data diffs. All reuses Claw3D primitives with a
+different trigger source.
+
+| Event | Behavior | Cooldown | Source |
+|---|---|---|---|
+| Rank change — entered top 3 for first time | 5s dance at desk | 30s/agent | `dancing` state, real animation |
+| Rank overtake (A passed B) | Both pause mid-floor, empty pulsing bubbles 2s, resume | 15s/pair | Bump mechanic, event-triggered |
+| Score improved by >5 | Emoji pop over head for 2.5s (🎉 / ⬆️ / 🔥) | 15s/agent | Existing emoji mood overlay, new icon |
+| Submission `failed` | Walk to couch, sit 30s dejected | one-shot | `away` state, faster trigger |
+
+#### Tier 3 — Activity rooms (real in Claw3D, bigger port)
+
+Real animations exist — route resolvers, door stages, station animations.
+Each ~4 hours to port (extract ~600 lines of room machinery, integrate).
+
+| Behavior | When | Narrative fit |
+|---|---|---|
+| Gym workout (6 styles: run/lift/bike/box/row/stretch) | Submission running > 30s (killing time while container evaluates) OR random ambient ~1%/tick | Strong — "agent has time to kill while eval runs" |
+| QA lab station | Agent's task enters `evaluating` status | Medium — "they're running tests" |
+| Server room / phone booth / SMS booth | — | Cut — no good narrative fit for Straw |
+
+#### Tier 4 — Cut (custom work we decided against)
+
+These would require new animations or mechanics not in the Claw3D repo:
+
+- Fist-pump arm animation — use emoji overlay instead (Tier 2 above)
+- Spawn-from-entrance-door (agent walking *in* from outside) — Claw3D
+  agents just appear when instantiated; there's no "enter office" flow
+- Despawn-to-exit-door — same reason
+- Pacing at desk — no animation variant exists
+- Hunched typing / coffee-mug-in-hand — `sitting` has no variants
+- Whole-office crowd reactions (everyone stops to watch #1) — would
+  require global coordination across 20 agents
+- Ping-pong pairing — two-agent coordination + 60s session + interruption
+  complexity. Cut.
+- Standup meetings on task close — large state machine. Cut.
+- Tied-score glancing — too subtle to read. Cut.
 
 ### Handling interruption (the "mid-action" problem)
 
@@ -174,41 +214,38 @@ for "nothing better has happened yet."
   pulsing bubbles, 1.5s freeze. We just trigger it via events instead
   of proximity.
 
-### Rough port order (revised by realism audit)
+### Build order
 
-Do simpler behaviors first — they can't have interruption issues because
-they're localized or short. Multi-step activities come last once the
-interruption machinery is proven.
+**Prerequisite (non-negotiable):**
+- Wire A* + nav grid — replace `simplePath()` in `useArenaGameLoop.ts`
+  with `astar(buildNavGrid(furniture))`. ~20 minutes. Without this, any
+  walking behavior phases through walls and everything after this
+  collapses visually.
 
-**Prerequisites (must land first):**
-- Wire A* + nav grid (Option 1 elsewhere in this backlog). Without this,
-  any walking behavior phases through walls and the illusion collapses.
-- Bump-freeze-reroute primitive from Claw3D. We reuse this for the
-  "talking" behavior, just driven by events instead of proximity.
+**Tier 1 — Ambient (~3 hours):**
+1. Social-furniture tagging on couches / coffee machines (30m)
+2. 15% social preference in roam picker (30m)
+3. `lastSeen` tracking + away-to-couch after 60s idle (1h)
+4. Sit-on-couch state + animation variant (1h)
 
-**Tier A — zero-movement behaviors (~1 day):**
-1. Snapshot differ + priority reducer skeleton — 3h
-2. Dance on rank change (localized, no movement) — 2h
-3. Emoji reactions + fist-pump emote — 2h
-4. Talk-freeze on overtake (two agents, pause + bubble, no walking) — 1h
+**Tier 2 — Event highlights (~5 hours):**
+5. Snapshot differ skeleton (diffs previous poll response) (2h)
+6. Priority reducer + commitment window machinery (1h)
+7. Dance on rank-change-into-top-3 (30m — animation exists)
+8. Emoji pop on score improvement (30m — overlay exists, swap icon)
+9. Talk-freeze on overtake (30m — bump mechanic, triggered by event)
+10. Walk-to-couch-sit-30s on failure (30m — reuses Tier 1 away logic)
 
-At this point the office visibly reacts to every leaderboard event
-without any interruption complexity. This is the 70% win.
+**Tier 3 — Gym (~4 hours):**
+11. Port `resolveGymRoute` + gym furniture items (1h)
+12. Port `DoorModel` + door-open-on-approach (1h)
+13. Extract `gymStage` field + 3-stage walking machinery (1.5h)
+14. Wire ambient + running-submission triggers (30m)
 
-**Tier B — single-target behaviors (~1 day):**
-5. Slump to couch on failure — 3h (walk + sit + timer)
-6. Spawn-from-door / despawn-to-door — 3h
-7. Pacing on deadline approach — 2h
-
-**Tier C — multi-step activities (~2 days):**
-8. Gym workout. Needs 3-stage door choreography from Claw3D OR skip the
-   door and accept clipping. Decide first. — 6-8h
-9. Ping pong pairing with interruption handling. Two-agent coordination
-   and 60s session that can be preempted. — 6h
-10. Whole-office reactions to task close / new #1. Global coordination. — 4h
-
-Realistic total: 4 days for everything. 1 day gets you Tier A, which is
-most of the visible impact.
+**Total: ~12 hours (1.5 days) for the full Tier 1+2+3 experience.**
+Tier 1 alone is ~3 hours and makes the biggest perceptual difference.
+Tier 2 without Tier 1 would be less impactful because the office still
+reads as frozen between events.
 
 ### Gotchas from the Claw3D deep dive
 
