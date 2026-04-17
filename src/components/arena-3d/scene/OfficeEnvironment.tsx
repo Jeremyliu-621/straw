@@ -33,7 +33,7 @@ function FloorPlane() {
 }
 
 function PerimeterWalls() {
-  const wallH = 0.35;
+  const wallH = 1.1;
   const halfW = WORLD_W / 2;
   const halfH = WORLD_H / 2;
   const thickness = WALL_THICKNESS * SCALE;
