@@ -15,8 +15,8 @@ const CAMERA_PRESETS: Record<
   ViewMode,
   { position: [number, number, number]; zoom: number; target: [number, number, number] }
 > = {
-  iso: { position: [16, 13, 22], zoom: 32, target: [0, 0, 1] },
-  top: { position: [0, 30, 0.001], zoom: 38, target: [0, 0, 0] },
+  iso: { position: [14, 16, 19], zoom: 30, target: [0, 0, 1] },
+  top: { position: [0, 30, 0.001], zoom: 25, target: [0, 0, 0] },
 };
 
 function GameLoop({ tick }: { tick: () => void }) {
@@ -95,7 +95,9 @@ function ArenaScene({
 function AgentRenderer({
   renderAgentsRef,
 }: {
-  renderAgentsRef: React.RefObject<ReturnType<typeof useArenaGameLoop>["renderAgentsRef"]["current"]>;
+  renderAgentsRef: React.RefObject<
+    ReturnType<typeof useArenaGameLoop>["renderAgentsRef"]["current"]
+  >;
 }) {
   // Track agent ID+name pairs so React knows when to add/remove agent components.
   // Position/animation updates happen inside each AgentCharacter via useFrame reading the ref.
