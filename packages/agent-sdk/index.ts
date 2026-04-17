@@ -34,4 +34,9 @@ export type {
   LeaderboardResult,
   CreateDealOptions,
   DealResult,
+  SubmissionContract,
+  ContractRequiredFile,
+  ContractRequiredPattern,
+  ContractOptionalFile,
+  ContainerTestResult,
 } from "./types";

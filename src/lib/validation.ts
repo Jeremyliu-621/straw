@@ -13,6 +13,7 @@ import {
   EVAL_MODE,
   DEAL_TYPE,
 } from "@/constants";
+import { submissionContractSchema } from "@/lib/submission-contract";
 
 export const rubricCriterionSchema = z.object({
   name: z.string().min(1, "Criterion name is required").max(200),
@@ -58,6 +59,7 @@ export const createTaskSchema = z
     eval_network: z.boolean().optional().default(false),
     eval_memory_mb: z.number().int().min(512).max(4096).optional().default(1024),
     eval_timeout_seconds: z.number().int().min(600).max(3600).optional().default(600),
+    submission_contract: submissionContractSchema.optional().nullable(),
   })
   .refine((data) => data.test_weight + data.llm_weight === 100, {
     message: "Test weight + LLM weight must equal 100",

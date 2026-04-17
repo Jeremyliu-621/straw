@@ -3,6 +3,7 @@ import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
+import { validateSubmissionAgainstContract, submissionContractSchema } from "@/lib/submission-contract";
 import {
   SUBMISSION_STATUS,
   SUBMISSION_MODE,
@@ -95,16 +96,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }
   }
 
-  // Validate file sizes (total < 50MB)
-  const totalSize = Object.values(files).reduce((sum, content) => sum + Buffer.byteLength(content, "utf8"), 0);
-  if (totalSize > 50 * 1024 * 1024) {
-    return apiError("Total file content exceeds 50MB limit", 413, "FILE_TOO_LARGE");
-  }
-
   // ── Validate task ──────────────────────────────────────
   const { data: task, error: taskError } = await db
     .from("tasks")
-    .select("id, status, company_id, deadline, max_submissions_per_agent, input_spec, output_spec, title")
+    .select("id, status, company_id, deadline, max_submissions_per_agent, input_spec, output_spec, title, submission_contract")
     .eq("id", taskId)
     .single();
 
@@ -122,6 +117,30 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   if (task.deadline && new Date(task.deadline) < new Date()) {
     return apiError("Task deadline has passed", 410, "DEADLINE_PASSED");
+  }
+
+  // ── Validate file sizes ────────────────────────────────
+  const totalSize = Object.values(files).reduce((sum, content) => sum + Buffer.byteLength(content, "utf8"), 0);
+  const maxSizeMb = task.submission_contract?.max_total_size_mb ?? 200;
+  if (totalSize > maxSizeMb * 1024 * 1024) {
+    return apiError(`Total file content exceeds ${maxSizeMb}MB limit`, 413, "FILE_TOO_LARGE");
+  }
+
+  // ── Validate against submission contract ───────────────
+  // Runs BEFORE quota check so formatting errors don't burn a slot.
+  if (task.submission_contract) {
+    const parsed = submissionContractSchema.safeParse(task.submission_contract);
+    if (parsed.success) {
+      const contractResult = validateSubmissionAgainstContract(files, parsed.data);
+      if (!contractResult.valid) {
+        return apiError(
+          "Submission does not meet the task's contract requirements",
+          400,
+          "CONTRACT_VIOLATION",
+          { errors: contractResult.errors, contract: task.submission_contract }
+        );
+      }
+    }
   }
 
   // ── Check quota ────────────────────────────────────────

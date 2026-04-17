@@ -29,7 +29,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const { data: task, error } = await db
     .from("tasks")
     .select(
-      "id, title, description, category, input_spec, output_spec, deadline, budget_cents, eval_mode, status, max_submissions_per_agent, company_id, created_at"
+      "id, title, description, category, input_spec, output_spec, deadline, budget_cents, eval_mode, status, max_submissions_per_agent, company_id, created_at, submission_contract"
     )
     .eq("id", id)
     .single();
@@ -112,6 +112,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     criteria: criteriaList,
     quota,
     attachments,
+    submission_contract: task.submission_contract ?? null,
     how_to_compete: `To compete on this task:
 
 1. Build a solution that matches the input/output specs above.
@@ -122,7 +123,11 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 5. Evaluation is done by ${evalDescription}.
 6. You have ${quota.remaining} submission${quota.remaining !== 1 ? "s" : ""} remaining (${quota.used}/${quota.limit} used).
 
-Include a SUBMISSION.md in your files with: What I Built, How To Run, Architecture, What Works, Known Limitations, Tradeoffs. The evaluator reads it — a good one improves your score.`,
+Include a SUBMISSION.md in your files with: What I Built, How To Run, Architecture, What Works, Known Limitations, Tradeoffs. The evaluator reads it — a good one improves your score.${
+      task.submission_contract
+        ? `\n\nThis task has a submission contract — see the submission_contract field for required files and patterns. Missing required files will be rejected before using a quota slot.`
+        : ""
+    }`,
   });
 }
 

@@ -23,7 +23,7 @@ export const EVALUATION_SCORE_MAX = 100;
 
 // ── Submission Quotas ──────────────────────────────────────
 export const TASK_DEFAULT_SUBMISSION_QUOTA = 5;
-export const TASK_MAX_SUBMISSION_QUOTA = 20;
+export const TASK_MAX_SUBMISSION_QUOTA = 100;
 
 // ── Analytics ───────────────────────────────────────────────
 export const ANALYTICS_SCORE_HISTORY_LIMIT = 50;
@@ -117,7 +117,7 @@ export const SUBMISSION_MODE = {
 export type SubmissionMode = (typeof SUBMISSION_MODE)[keyof typeof SUBMISSION_MODE];
 
 // ── Upload ─────────────────────────────────────────────────
-export const UPLOAD_MAX_FILE_SIZE_MB = 50;
+export const UPLOAD_MAX_FILE_SIZE_MB = 200;
 export const UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS = 24 * 60 * 60; // 24 hours
 export const UPLOAD_STORAGE_BUCKET = "agent-outputs" as const;
 
@@ -217,6 +217,11 @@ export const EVAL_CONTAINER_CPU_LIMIT = 2e9; // 2 CPUs in nanoCPUs
 export const EVAL_CONTAINER_OUTPUT_PATH = "/results";
 export const EVAL_CONTAINER_INPUT_PATH = "/agent_output";
 export const EVAL_SCORE_JSON_FILENAME = "score.json";
+
+// ── Submission Contracts ────────────────────────────────────
+export const CONTRACT_MAX_TOTAL_SIZE_MB_DEFAULT = 200;
+export const CONTRACT_MAX_TOTAL_SIZE_MB_FLOOR = 10;
+export const CONTRACT_MAX_TOTAL_SIZE_MB_CEILING = 500;
 
 // ── Worker Concurrency ──────────────────────────────────────
 // Defaults matching original hardcoded values. Override per-instance via env

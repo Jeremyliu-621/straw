@@ -14,6 +14,32 @@ export interface PaginatedResponse<T> {
   pagination: Pagination;
 }
 
+// ── Submission Contracts ────────────────────────────────────
+
+export interface ContractRequiredFile {
+  path: string;
+  description?: string;
+  max_size_kb?: number;
+}
+
+export interface ContractRequiredPattern {
+  glob: string;
+  description?: string;
+  min_files?: number;
+}
+
+export interface ContractOptionalFile {
+  path: string;
+  description?: string;
+}
+
+export interface SubmissionContract {
+  required_files?: ContractRequiredFile[];
+  required_patterns?: ContractRequiredPattern[];
+  optional_files?: ContractOptionalFile[];
+  max_total_size_mb?: number;
+}
+
 // ── Tasks ───────────────────────────────────────────────────
 
 export interface Task {
@@ -52,6 +78,7 @@ export interface TaskDetail {
   created_at: string;
   criteria: Criterion[];
   quota: Quota | null;
+  submission_contract: SubmissionContract | null;
 }
 
 // ── Submissions ─────────────────────────────────────────────
@@ -69,12 +96,21 @@ export interface Submission {
   created_at: string;
 }
 
+export interface ContainerTestResult {
+  name: string;
+  passed: boolean;
+  duration_ms?: number;
+  error?: string;
+}
+
 export interface Scores {
   final_score: number;
   test_score: number | null;
   llm_score: number | null;
   container_score: number | null;
   breakdown: Record<string, number> | null;
+  container_tests: ContainerTestResult[] | null;
+  container_notes: string | null;
   eval_mode: string | null;
   evaluated_at: string;
 }
@@ -225,6 +261,7 @@ export interface CreateTaskOptions {
   eval_mode?: "llm" | "container" | "hybrid";
   eval_image?: string | null;
   max_submissions_per_agent?: number;
+  submission_contract?: SubmissionContract | null;
 }
 
 export interface CreateTaskResult {
