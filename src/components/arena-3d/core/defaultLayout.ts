@@ -22,6 +22,25 @@ function deskCluster(id: string, x: number, y: number): FurnitureItem[] {
   ];
 }
 
+// ── Interior walls: subdivide the office into zones ───────────────────────
+const WALL_THICK = 8;
+function wall(x: number, y: number, w: number, h: number): FurnitureItem {
+  return { type: "wall", x, y, w, h, _uid: uid("wall") };
+}
+const INTERIOR_WALLS: FurnitureItem[] = [
+  // Meeting room separating wall (vertical, between entrance nook and desks)
+  wall(320, 0, WALL_THICK, 100),
+  wall(320, 150, WALL_THICK, 70),
+  // Horizontal wall under meeting nook (leaves gap for doorway)
+  wall(0, 220, 230, WALL_THICK),
+  wall(280, 220, 50, WALL_THICK),
+  // Kitchen wall (separates kitchen zone from desk area)
+  wall(760, 220, 440, WALL_THICK),
+  wall(760, 0, WALL_THICK, 220),
+  // Lounge wall (right side, separates right lounge from desk area)
+  wall(980, 280, WALL_THICK, 420),
+];
+
 // ── Entrance / meeting nook (top-left) ─────────────────────────────────────
 const ENTRANCE: FurnitureItem[] = [
   { type: "round_table", x: 50, y: 50, r: 90, _uid: uid("table") },
@@ -117,6 +136,7 @@ const DECOR: FurnitureItem[] = [
 ];
 
 export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
+  ...INTERIOR_WALLS,
   ...ENTRANCE,
   ...LIBRARY,
   ...KITCHEN,
