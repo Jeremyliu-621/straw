@@ -127,7 +127,7 @@ export default function ArenaCanvas() {
           shadows
           dpr={[0.85, 1.5]}
           camera={{
-            position: [16, 11, 22],
+            position: [16, 13, 22],
             zoom: 40,
             near: 0.1,
             far: 100,
