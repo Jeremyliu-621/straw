@@ -2,11 +2,7 @@
   "name": "map-platform",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "vercel-install": "npm install --ignore-workspaces",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
