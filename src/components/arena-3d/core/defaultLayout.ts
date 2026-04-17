@@ -44,7 +44,7 @@ const INTERIOR_WALLS: FurnitureItem[] = [
 // ── Entrance / meeting nook (top-left) ─────────────────────────────────────
 // Table pushed down-right to align with chair cluster (GLB origin offset).
 const ENTRANCE: FurnitureItem[] = [
-  { type: "round_table", x: 80, y: 80, r: 90, _uid: uid("table") },
+  { type: "round_table", x: 130, y: 110, r: 90, _uid: uid("table") },
   { type: "chair", x: 130, y: 50, facing: 0, _uid: uid("chair") },
   { type: "chair", x: 200, y: 90, facing: 325, _uid: uid("chair") },
   { type: "chair", x: 180, y: 170, facing: 240, _uid: uid("chair") },
@@ -62,7 +62,7 @@ const KITCHEN: FurnitureItem[] = [
   { type: "cabinet", x: 980, y: 30, w: 40, h: 40, _uid: uid("cabinet") },
   { type: "cabinet", x: 840, y: 30, w: 80, h: 40, elevation: 0, _uid: uid("cabinet") },
   { type: "coffee_machine", x: 880, y: 30, elevation: 0.56, _uid: uid("coffee") },
-  { type: "round_table", x: 850, y: 125, r: 50, _uid: uid("table") },
+  { type: "round_table", x: 870, y: 135, r: 50, _uid: uid("table") },
   { type: "chair", x: 930, y: 100, facing: 0, _uid: uid("chair") },
   { type: "chair", x: 930, y: 180, facing: 180, _uid: uid("chair") },
   { type: "chair", x: 880, y: 130, facing: 90, _uid: uid("chair") },
