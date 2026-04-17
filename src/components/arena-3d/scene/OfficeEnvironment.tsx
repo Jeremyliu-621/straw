@@ -8,10 +8,10 @@ import FurnitureModel, { FURNITURE_GLB } from "../objects/FurnitureModel";
 const WORLD_W = CANVAS_W * SCALE;
 const WORLD_H = CANVAS_H * SCALE;
 
-const FLOOR_COLOR = "#e8dcc8";
-const WALL_COLOR = "#d4cfc7";
-const OUTSIDE_COLOR = "#3a3a4e";
-const ACCENT_COLOR = "#c9b896";
+const FLOOR_COLOR = "#ebd9b8";
+const WALL_COLOR = "#cdb89a";
+const OUTSIDE_COLOR = "#1a1a28";
+const ACCENT_COLOR = "#b8a077";
 
 function FloorPlane() {
   return (
