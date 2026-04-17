@@ -119,13 +119,13 @@ const LOUNGE: FurnitureItem[] = [
 
 // ── Bottom lounge nook ─────────────────────────────────────────────────────
 const BOTTOM_LOUNGE: FurnitureItem[] = [
-  { type: "couch", x: 570, y: 930, w: 100, h: 40, _uid: uid("couch") },
-  { type: "table_rect", x: 580, y: 980, w: 80, h: 30, _uid: uid("table") },
-  { type: "beanbag", x: 700, y: 930, color: "#16a34a", _uid: uid("bean") },
-  { type: "beanbag", x: 480, y: 930, color: "#8b5cf6", _uid: uid("bean") },
-  { type: "plant", x: 710, y: 880, _uid: uid("plant") },
-  { type: "plant", x: 460, y: 990, _uid: uid("plant") },
-  { type: "lamp", x: 620, y: 890, _uid: uid("lamp") },
+  { type: "couch", x: 570, y: 990, w: 100, h: 40, _uid: uid("couch") },
+  { type: "table_rect", x: 580, y: 1040, w: 80, h: 30, _uid: uid("table") },
+  { type: "beanbag", x: 700, y: 990, color: "#16a34a", _uid: uid("bean") },
+  { type: "beanbag", x: 480, y: 990, color: "#8b5cf6", _uid: uid("bean") },
+  { type: "plant", x: 710, y: 940, _uid: uid("plant") },
+  { type: "plant", x: 460, y: 1050, _uid: uid("plant") },
+  { type: "lamp", x: 620, y: 950, _uid: uid("lamp") },
 ];
 
 // ── Ambient decor ──────────────────────────────────────────────────────────
