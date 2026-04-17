@@ -12,26 +12,65 @@ const uid = (prefix: string) => `${prefix}_${uidCounter++}`;
  * support the top 20 agents cap.
  */
 
-function deskCluster(id: string, x: number, y: number): FurnitureItem[] {
+type DeskType = "desk_cubicle" | "executive_desk";
+type DeskFacing = "south" | "north";
+
+function deskDims(type: DeskType): { w: number; h: number } {
+  return type === "executive_desk" ? { w: 130, h: 65 } : { w: 100, h: 55 };
+}
+
+function deskCluster(
+  id: string,
+  x: number,
+  y: number,
+  opts: { type?: DeskType; facing?: DeskFacing } = {}
+): FurnitureItem[] {
+  const type = opts.type ?? "desk_cubicle";
+  const facing = opts.facing ?? "south";
+  const { w, h } = deskDims(type);
+  const chairX = w / 2 - 30;
+
+  if (facing === "south") {
+    // Chair north of desk, agent faces south toward desk
+    return [
+      { type, x, y, _uid: uid("desk"), id },
+      { type: "chair", x: x + chairX, y: y - 10, facing: 180, _uid: uid("chair") },
+      { type: "computer", x: x + chairX, y: y - 13, _uid: uid("comp") },
+      { type: "keyboard", x: x + chairX + 10, y: y - 5, _uid: uid("kb") },
+      { type: "mouse", x: x + chairX + 32, y: y - 5, _uid: uid("mouse") },
+    ];
+  }
+  // North-facing: desk rotated 180, chair south of desk, agent faces north
   return [
-    { type: "desk_cubicle", x, y, _uid: uid("desk"), id },
-    { type: "chair", x: x + 20, y: y - 10, facing: 180, _uid: uid("chair") },
-    { type: "computer", x: x + 20, y: y - 13, _uid: uid("comp") },
-    { type: "keyboard", x: x + 30, y: y - 5, _uid: uid("kb") },
-    { type: "mouse", x: x + 52, y: y - 5, _uid: uid("mouse") },
+    { type, x, y, _uid: uid("desk"), id, facing: 180 },
+    { type: "chair", x: x + chairX, y: y + h + 10, facing: 0, _uid: uid("chair") },
+    { type: "computer", x: x + chairX, y: y + h + 13, _uid: uid("comp") },
+    { type: "keyboard", x: x + chairX + 10, y: y + h + 5, _uid: uid("kb") },
+    { type: "mouse", x: x + chairX + 32, y: y + h + 5, _uid: uid("mouse") },
   ];
 }
 
 /**
- * A "pod" of 4 desks in a 2x2 block, all south-facing so agents sit
- * on the north side of each desk. Pod bounding box is ~220x155.
+ * A "pod" of 4 desks in a 2x2 block. Top row faces south, bottom row faces
+ * north — so agents in the same pod sit across from each other and make
+ * eye contact over their monitors.
  */
-function deskPod(startIndex: number, x: number, y: number): FurnitureItem[] {
+function deskPod(
+  startIndex: number,
+  x: number,
+  y: number,
+  type: DeskType = "desk_cubicle"
+): FurnitureItem[] {
+  const { w, h } = deskDims(type);
+  const colGap = type === "executive_desk" ? 30 : 20;
+  const rowGap = type === "executive_desk" ? 45 : 35;
+  const xStep = w + colGap;
+  const yStep = h + rowGap;
   return [
-    ...deskCluster(`desk_${startIndex}`, x, y),
-    ...deskCluster(`desk_${startIndex + 1}`, x + 120, y),
-    ...deskCluster(`desk_${startIndex + 2}`, x, y + 90),
-    ...deskCluster(`desk_${startIndex + 3}`, x + 120, y + 90),
+    ...deskCluster(`desk_${startIndex}`, x, y, { type, facing: "south" }),
+    ...deskCluster(`desk_${startIndex + 1}`, x + xStep, y, { type, facing: "south" }),
+    ...deskCluster(`desk_${startIndex + 2}`, x, y + yStep, { type, facing: "north" }),
+    ...deskCluster(`desk_${startIndex + 3}`, x + xStep, y + yStep, { type, facing: "north" }),
   ];
 }
 
@@ -93,13 +132,15 @@ const LIBRARY: FurnitureItem[] = [
 ];
 
 // ── 5 desk pods of 4 desks each (20 desks total) ──────────────────────────
-// Top row: 3 pods at y=300. Bottom row: 2 pods at y=600, offset for variety.
+// Top row: 3 standard cubicle pods. Bottom row: 2 executive L-desk pods for
+// visual variety. Within each pod, top-row desks face south and bottom-row
+// desks face north, so agents sit across from each other.
 const DESK_ROWS: FurnitureItem[] = [
-  ...deskPod(0, 200, 300),   // desks 0-3
-  ...deskPod(4, 470, 300),   // desks 4-7
-  ...deskPod(8, 740, 300),   // desks 8-11
-  ...deskPod(12, 340, 590),  // desks 12-15
-  ...deskPod(16, 610, 590),  // desks 16-19
+  ...deskPod(0, 200, 300, "desk_cubicle"),    // desks 0-3
+  ...deskPod(4, 470, 300, "desk_cubicle"),    // desks 4-7
+  ...deskPod(8, 740, 300, "desk_cubicle"),    // desks 8-11
+  ...deskPod(12, 250, 600, "executive_desk"), // desks 12-15 (manager pod)
+  ...deskPod(16, 600, 600, "executive_desk"), // desks 16-19 (manager pod)
 ];
 
 // ── Lounge (right side) ────────────────────────────────────────────────────
@@ -149,3 +190,29 @@ export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
 export function getDeskIdForAgent(agentIndex: number): string {
   return `desk_${agentIndex}`;
 }
+
+/**
+ * Precomputed standing points (x, y) for each desk_0..desk_19, derived from
+ * the actual layout. Agents walk to these coordinates when their status is
+ * "working" and sit there.
+ */
+export const DESK_STANDING_POINTS: { x: number; y: number }[] = (() => {
+  const deskItems = DEFAULT_ARENA_FURNITURE.filter(
+    (item) =>
+      (item.type === "desk_cubicle" || item.type === "executive_desk") &&
+      typeof item.id === "string" &&
+      item.id.startsWith("desk_")
+  );
+  const byIndex: { x: number; y: number }[] = [];
+  for (const item of deskItems) {
+    const idx = parseInt(item.id!.slice(5), 10);
+    if (Number.isNaN(idx)) continue;
+    const { w, h } = deskDims(item.type as DeskType);
+    const facing = item.facing ?? 0;
+    byIndex[idx] =
+      facing === 180
+        ? { x: item.x + w / 2, y: item.y + h + 5 }
+        : { x: item.x + w / 2, y: item.y - 5 };
+  }
+  return byIndex;
+})();
