@@ -34,16 +34,25 @@ function ArenaScene({
 
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.5} />
+      {/* Lighting — warm ambient + soft directional to match Claw3D's cozy feel */}
+      <hemisphereLight args={["#fff3e0", "#3a2e1f", 0.35]} />
+      <ambientLight intensity={0.45} color="#fde8c8" />
       <directionalLight
-        position={[10, 15, 8]}
-        intensity={0.7}
+        position={[12, 18, 10]}
+        intensity={0.85}
+        color="#fff1d5"
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-left={-25}
+        shadow-camera-right={25}
+        shadow-camera-top={25}
+        shadow-camera-bottom={-25}
+        shadow-camera-near={0.1}
+        shadow-camera-far={60}
+        shadow-bias={-0.0005}
       />
-      <directionalLight position={[-5, 10, -5]} intensity={0.3} />
+      <directionalLight position={[-8, 12, -6]} intensity={0.25} color="#d4c4a8" />
 
       {/* Look at center of the office */}
       <CameraRig target={[0, 0, 1]} />
