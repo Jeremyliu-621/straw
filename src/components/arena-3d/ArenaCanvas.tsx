@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useState, useCallback, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Suspense, useState, useCallback, useMemo, useEffect } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useStrawAgents } from "./useStrawAgents";
 import { useArenaGameLoop } from "./useArenaGameLoop";
 import { DEFAULT_ARENA_FURNITURE } from "./core/defaultLayout";
@@ -12,6 +12,15 @@ import { CANVAS_W, CANVAS_H, SCALE } from "./core/constants";
 
 function GameLoop({ tick }: { tick: () => void }) {
   useFrame(() => tick());
+  return null;
+}
+
+function CameraRig({ target }: { target: [number, number, number] }) {
+  const { camera } = useThree();
+  useEffect(() => {
+    camera.lookAt(target[0], target[1], target[2]);
+    camera.updateProjectionMatrix();
+  }, [camera, target]);
   return null;
 }
 
@@ -36,7 +45,8 @@ function ArenaScene({
       />
       <directionalLight position={[-5, 10, -5]} intensity={0.3} />
 
-      {/* Static isometric-ish camera — no orbit controls to avoid drei dep */}
+      {/* Look at center of the office */}
+      <CameraRig target={[0, 0, 1]} />
 
       {/* Office */}
       <OfficeEnvironment furniture={furniture} />
@@ -99,14 +109,16 @@ export default function ArenaCanvas() {
     <div className="flex w-full" style={{ height: 600 }}>
       <div className="flex-1 relative bg-[#2a2a3e] rounded-l-lg overflow-hidden">
         <Canvas
+          orthographic
           shadows
+          dpr={[0.85, 1.5]}
           camera={{
-            position: [0, 18, 16],
-            fov: 45,
+            position: [14, 16, 18],
+            zoom: 34,
             near: 0.1,
             far: 100,
           }}
-          gl={{ antialias: true, alpha: false }}
+          gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
           style={{ background: "#2a2a3e" }}
         >
           <Suspense fallback={<ArenaFallback />}>
