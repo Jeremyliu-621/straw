@@ -6,8 +6,8 @@ import type { FurnitureItem } from "../core/types";
 
 const WALL_COLOR = "#cdb89a";
 const WALL_TRIM_COLOR = "#b39871";
-const WALL_HEIGHT = 0.55; // world units
-const TRIM_HEIGHT = 0.05;
+const WALL_HEIGHT = 1.1; // world units
+const TRIM_HEIGHT = 0.06;
 
 interface InteriorWallProps {
   item: FurnitureItem;

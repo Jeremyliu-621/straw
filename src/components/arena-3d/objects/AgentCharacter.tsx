@@ -168,19 +168,19 @@ export default function AgentCharacter({ agentId, agentName, agentsRef }: AgentC
       </group>
 
       {/* Status indicator dot above head */}
-      <mesh position={[0, 110, 0]}>
-        <sphereGeometry args={[3, 8, 8]} />
+      <mesh position={[0, 112, 0]}>
+        <sphereGeometry args={[4, 8, 8]} />
         <meshBasicMaterial ref={statusMatRef} color="#94a3b8" />
       </mesh>
 
-      {/* Floating nameplate */}
-      <Billboard position={[0, 130, 0]}>
+      {/* Floating nameplate — scaled up since AgentCharacter itself is scaled down */}
+      <Billboard position={[0, 155, 0]}>
         <mesh position={[0, 0, -0.1]}>
-          <planeGeometry args={[Math.max(truncateName(agentName).length * 6.5, 40), 16]} />
-          <meshBasicMaterial color="#000000" opacity={0.7} transparent />
+          <planeGeometry args={[Math.max(truncateName(agentName).length * 13, 80), 32]} />
+          <meshBasicMaterial color="#000000" opacity={0.78} transparent />
         </mesh>
         <Text
-          fontSize={10}
+          fontSize={20}
           color="#ffffff"
           anchorX="center"
           anchorY="middle"
