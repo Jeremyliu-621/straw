@@ -4,6 +4,7 @@ import { memo, Suspense } from "react";
 import { CANVAS_W, CANVAS_H, SCALE, WALL_THICKNESS } from "../core/constants";
 import type { FurnitureItem } from "../core/types";
 import FurnitureModel, { FURNITURE_GLB } from "../objects/FurnitureModel";
+import InteriorWall from "../objects/InteriorWall";
 
 const WORLD_W = CANVAS_W * SCALE;
 const WORLD_H = CANVAS_H * SCALE;
@@ -75,6 +76,9 @@ function FurnitureRenderer({ items }: { items: FurnitureItem[] }) {
   return (
     <>
       {items.map((item) => {
+        if (item.type === "wall") {
+          return <InteriorWall key={item._uid} item={item} />;
+        }
         if (!FURNITURE_GLB[item.type]) return null;
         return (
           <Suspense key={item._uid} fallback={null}>
