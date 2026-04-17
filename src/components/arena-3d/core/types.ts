@@ -42,6 +42,7 @@ export type FurnitureItem = {
   facing?: number;
   vertical?: boolean;
   elevation?: number;
+  wallAttach?: "N" | "S" | "E" | "W";
 };
 
 export type FurnitureSeed = Omit<FurnitureItem, "_uid">;

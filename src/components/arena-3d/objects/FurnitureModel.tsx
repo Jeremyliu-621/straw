@@ -14,6 +14,7 @@ import type { FurnitureItem } from "../core/types";
 
 export const FURNITURE_GLB: Record<string, string> = {
   desk_cubicle: "/office-assets/models/furniture/desk.glb",
+  standing_desk: "/office-assets/models/furniture/desk.glb",
   executive_desk: "/office-assets/models/furniture/deskCorner.glb",
   chair: "/office-assets/models/furniture/chairDesk.glb",
   round_table: "/office-assets/models/furniture/tableRound.glb",
@@ -35,6 +36,7 @@ export const FURNITURE_GLB: Record<string, string> = {
 
 export const FURNITURE_SCALE: Record<string, [number, number, number]> = {
   desk_cubicle: [1.5, 1.5, 1.5],
+  standing_desk: [1.5, 2.2, 1.5],
   executive_desk: [1.8, 1.8, 1.8],
   chair: [1.2, 1.2, 1.2],
   round_table: [3.2, 3.2, 3.2],
@@ -60,6 +62,7 @@ export const FURNITURE_Y_OFFSET: Record<string, number> = {
 
 export const FURNITURE_TINT: Record<string, string | null> = {
   desk_cubicle: "#8b5e32",
+  standing_desk: "#3A3F47",
   executive_desk: "#6b3c1a",
   chair: "#4a5568",
   round_table: "#9a6332",
@@ -81,6 +84,7 @@ export const FURNITURE_TINT: Record<string, string | null> = {
 
 const SHADOW_CASTING = new Set([
   "desk_cubicle",
+  "standing_desk",
   "executive_desk",
   "round_table",
   "table_rect",

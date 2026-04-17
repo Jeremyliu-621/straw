@@ -5,14 +5,16 @@ import { CANVAS_W, CANVAS_H, SCALE, WALL_THICKNESS } from "../core/constants";
 import type { FurnitureItem } from "../core/types";
 import FurnitureModel, { FURNITURE_GLB } from "../objects/FurnitureModel";
 import InteriorWall from "../objects/InteriorWall";
+import ProceduralFurniture, { PROCEDURAL_TYPES } from "../objects/ProceduralFurniture";
 
 const WORLD_W = CANVAS_W * SCALE;
 const WORLD_H = CANVAS_H * SCALE;
 
-const FLOOR_COLOR = "#f7f2e4";
-const WALL_COLOR = "#b8b2a8";
-const OUTSIDE_COLOR = "#000000";
-const ACCENT_COLOR = "#c9c0ae";
+// Palette A — "Figma HQ / Pale Concrete". Cool, modern, not yellow.
+const FLOOR_COLOR = "#E5E2DB";
+const WALL_COLOR = "#C9C7C2";
+const OUTSIDE_COLOR = "#1A1D21";
+const ACCENT_COLOR = "#B8B3AB";
 
 function FloorPlane() {
   return (
@@ -78,6 +80,9 @@ function FurnitureRenderer({ items }: { items: FurnitureItem[] }) {
       {items.map((item) => {
         if (item.type === "wall") {
           return <InteriorWall key={item._uid} item={item} />;
+        }
+        if (PROCEDURAL_TYPES.has(item.type)) {
+          return <ProceduralFurniture key={item._uid} item={item} />;
         }
         if (!FURNITURE_GLB[item.type]) return null;
         return (

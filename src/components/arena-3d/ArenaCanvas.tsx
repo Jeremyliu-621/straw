@@ -58,13 +58,14 @@ function ArenaScene({
 
   return (
     <>
-      {/* Lighting — bright & happy, mid-morning sun feel */}
-      <hemisphereLight args={["#fff8e8", "#4a4a4a", 0.7]} />
-      <ambientLight intensity={0.85} color="#fffaf0" />
+      {/* Lighting — cool LED daylight globally, warm pools come from local
+          lamp / pendant pointLights defined inside ProceduralFurniture. */}
+      <hemisphereLight args={["#EAF0F5", "#2A2E35", 0.75]} />
+      <ambientLight intensity={0.6} color="#E8EEF2" />
       <directionalLight
         position={[12, 18, 10]}
-        intensity={1.25}
-        color="#fffaf0"
+        intensity={1.0}
+        color="#FFF8EC"
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
@@ -76,7 +77,7 @@ function ArenaScene({
         shadow-camera-far={60}
         shadow-bias={-0.0005}
       />
-      <directionalLight position={[-8, 12, -6]} intensity={0.5} color="#e8f0fa" />
+      <directionalLight position={[-8, 12, -6]} intensity={0.3} color="#C8D4E0" />
 
       <CameraRig position={preset.position} target={preset.target} zoom={preset.zoom} />
 
@@ -149,7 +150,7 @@ export default function ArenaCanvas() {
 
   return (
     <div className="flex w-full" style={{ height: 600 }}>
-      <div className="flex-1 relative bg-[#000000] rounded-l-lg overflow-hidden">
+      <div className="flex-1 relative bg-[#1A1D21] rounded-l-lg overflow-hidden">
         <Canvas
           orthographic
           shadows
@@ -161,7 +162,7 @@ export default function ArenaCanvas() {
             far: 100,
           }}
           gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
-          style={{ background: "#000000" }}
+          style={{ background: "#1A1D21" }}
         >
           <Suspense fallback={<ArenaFallback />}>
             <ArenaScene officeAgents={officeAgents} viewMode={viewMode} />
