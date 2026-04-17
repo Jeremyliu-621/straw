@@ -85,6 +85,8 @@ import {
   dispatchNotificationToTaskOwnerFromWorker,
   writeAuditLog,
 } from "./lib/dispatch";
+import { multiPassLlmEval, type FileIndexEntry } from "./lib/multi-pass-eval";
+import { submissionContractSchema } from "@/lib/submission-contract";
 
 
 // ── Config ───────────────────────────────────────────────────
@@ -754,13 +756,93 @@ async function handleLlmEval(
       testScore = await runAutomatedTests(task, outputUrl, submissionId);
     }
 
-    // Phase 2: LLM judge
+    // Phase 2: LLM judge (multi-pass or single-pass)
     let llmScore: number | null = null;
     let llmReasoning: string | null = null;
     let dimensionScores: LLMResponse["dimensions"] = [];
+    let evalPassData: Record<string, unknown> | null = null;
 
     if (task.llm_weight as number > 0) {
-      const llmResult = await evaluateWithLLM(task, criteria, agentOutput, submissionId, buildCheckResult || undefined);
+      // Check if task has a submission contract → use multi-pass eval
+      const contractRaw = task.submission_contract;
+      const contractParsed = contractRaw ? submissionContractSchema.safeParse(contractRaw) : null;
+      const useMultiPass = contractParsed?.success === true;
+
+      let llmResult: LLMResponse | null = null;
+
+      if (useMultiPass) {
+        log.info("Using multi-pass LLM evaluation (task has submission contract)", submissionId);
+
+        // Build file index from storage listing
+        const { data: storageFiles } = await db.storage.from(STORAGE_BUCKET).list(outputUrl);
+        const fileIndex: FileIndexEntry[] = (storageFiles ?? [])
+          .filter((f) => !(f.metadata && f.metadata.size === 0))
+          .map((f) => ({ name: f.name, sizeBytes: f.metadata?.size ?? 0 }));
+
+        // Lazy file fetcher — downloads individual files on demand
+        const fetchFile = async (filename: string): Promise<string | null> => {
+          for (let attempt = 1; attempt <= DOWNLOAD_MAX_RETRIES; attempt++) {
+            const { data, error: dlErr } = await db.storage
+              .from(STORAGE_BUCKET)
+              .download(`${outputUrl}/${filename}`);
+            if (dlErr || !data) {
+              if (attempt < DOWNLOAD_MAX_RETRIES) await sleep(DOWNLOAD_RETRY_DELAY_MS);
+              continue;
+            }
+            return await data.text();
+          }
+          log.warn(`Failed to fetch file ${filename} after ${DOWNLOAD_MAX_RETRIES} attempts`, submissionId);
+          return null;
+        };
+
+        // LLM caller adapter — reuses existing callLLM but returns parsed JSON
+        const llmCaller = {
+          async call(prompt: string, sid?: string): Promise<unknown> {
+            const model = gemini.getGenerativeModel({ model: EVALUATION_LLM_MODEL });
+            try {
+              const response = await model.generateContent({
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: LLM_MAX_TOKENS, responseMimeType: "application/json" },
+              });
+              const text = response.response.text();
+              const jsonMatch = text.match(/\{[\s\S]*\}/);
+              if (!jsonMatch) { log.error("No JSON in multi-pass LLM response", sid); return null; }
+              try { return JSON.parse(jsonMatch[0]); }
+              catch {
+                const sanitized = sanitizeJsonString(jsonMatch[0]);
+                try { return JSON.parse(sanitized); } catch { return null; }
+              }
+            } catch (err) {
+              log.error("Multi-pass LLM call failed", sid, err);
+              return null;
+            }
+          },
+        };
+
+        const multiResult = await multiPassLlmEval({
+          task,
+          criteria,
+          submissionContract: contractParsed.data,
+          fileIndex,
+          fetchFile,
+          buildResult: buildCheckResult || undefined,
+          llm: llmCaller,
+          submissionId,
+        });
+
+        if (multiResult) {
+          llmResult = { dimensions: multiResult.dimensions, overall_reasoning: multiResult.overall_reasoning };
+          evalPassData = multiResult.pass_data as unknown as Record<string, unknown>;
+          log.info("Multi-pass evaluation completed successfully", submissionId);
+        } else {
+          log.warn("Multi-pass eval failed — falling back to single-pass", submissionId);
+          llmResult = await evaluateWithLLM(task, criteria, agentOutput, submissionId, buildCheckResult || undefined);
+        }
+      } else {
+        // Single-pass (existing behavior)
+        llmResult = await evaluateWithLLM(task, criteria, agentOutput, submissionId, buildCheckResult || undefined);
+      }
+
       if (llmResult) {
         dimensionScores = llmResult.dimensions;
         llmReasoning = llmResult.overall_reasoning;
@@ -791,15 +873,11 @@ async function handleLlmEval(
           })
           .eq("id", submissionId);
 
-        // Note: we do NOT write an evaluation_results record here because
-        // final_score is NOT NULL in the schema. A score=0 would be misleading
-        // on the leaderboard. The submission's error_message captures the reason.
-
         log.error(
           `Submission marked as evaluation_failed — no score written, needs manual review`,
           submissionId
         );
-        return; // Exit early — do NOT finalize with a misleading score
+        return;
       }
     }
 
@@ -821,6 +899,7 @@ async function handleLlmEval(
         final_score: Math.round(finalScore * 100) / 100,
         llm_reasoning: llmReasoning,
         eval_mode: EVAL_MODE.LLM,
+        eval_pass_data: evalPassData,
       })
       .select()
       .single();
