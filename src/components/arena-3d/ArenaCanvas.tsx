@@ -9,6 +9,7 @@ import OfficeEnvironment from "./scene/OfficeEnvironment";
 import AgentCharacter from "./objects/AgentCharacter";
 import ScoreOverlay from "./ScoreOverlay";
 import BWEffects, { type BWVariant } from "./BWEffects";
+import DebugPathOverlay from "./DebugPathOverlay";
 import { useArenaMode, type ArenaMode } from "./useArenaMode";
 
 type ViewMode = "iso" | "top" | "corner" | "side";
@@ -17,7 +18,7 @@ const CAMERA_PRESETS: Record<
   ViewMode,
   { position: [number, number, number]; zoom: number; target: [number, number, number] }
 > = {
-  iso: { position: [14, 16, 19], zoom: 30, target: [0, 0, 1] },
+  iso: { position: [14, 16, 19], zoom: 20, target: [0, 0, 1] },
   top: { position: [0, 30, 0.001], zoom: 25, target: [0, 0, 0] },
   // Flipped-iso: look from the opposite diagonal. Reveals faces the default
   // iso camera hides (e.g. south faces of desks, back of server racks).
@@ -63,6 +64,7 @@ function ArenaScene({
   bwShadows,
   shadowLightness,
   pureWhite,
+  debugPaths,
 }: {
   officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
   viewMode: ViewMode;
@@ -70,6 +72,7 @@ function ArenaScene({
   bwShadows: boolean;
   shadowLightness: number;
   pureWhite: boolean;
+  debugPaths: boolean;
 }) {
   const furniture = useMemo(() => DEFAULT_ARENA_FURNITURE, []);
   const { renderAgentsRef, tick } = useArenaGameLoop(officeAgents, furniture);
@@ -149,6 +152,9 @@ function ArenaScene({
       {/* Game loop */}
       <GameLoop tick={tick} />
 
+      {/* Dev — visible A* path lines. Green = multi-waypoint A*, red = straight-line. */}
+      <DebugPathOverlay agentsRef={renderAgentsRef} visible={debugPaths} />
+
       {/* B&W material + edge overlay — null variant = color mode. */}
       <BWEffects variant={bwVariant} pureWhite={pureWhite} />
     </>
@@ -165,9 +171,9 @@ function AgentRenderer({
   // Track agent identity (id, name, rank) so React knows when to add/remove agent
   // components. Position/animation updates happen inside each AgentCharacter via
   // useFrame reading the ref.
-  const [agents, setAgents] = useState<
-    { id: string; name: string | null; rank: number | null }[]
-  >([]);
+  const [agents, setAgents] = useState<{ id: string; name: string | null; rank: number | null }[]>(
+    []
+  );
 
   useFrame(() => {
     const current = renderAgentsRef.current.map((a) => ({
@@ -178,10 +184,7 @@ function AgentRenderer({
     if (
       current.length !== agents.length ||
       current.some(
-        (a, i) =>
-          a.id !== agents[i]?.id ||
-          a.name !== agents[i]?.name ||
-          a.rank !== agents[i]?.rank
+        (a, i) => a.id !== agents[i]?.id || a.name !== agents[i]?.name || a.rank !== agents[i]?.rank
       )
     ) {
       setAgents(current);
@@ -256,14 +259,9 @@ export default function ArenaCanvas({
   const { agents, officeAgents, loading } = useStrawAgents(taskId);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
-  const {
-    mode,
-    setMode,
-    shadowLightness,
-    setShadowLightness,
-    pureWhite,
-    setPureWhite,
-  } = useArenaMode();
+  const [debugPaths, setDebugPaths] = useState(false);
+  const { mode, setMode, shadowLightness, setShadowLightness, pureWhite, setPureWhite } =
+    useArenaMode();
   const bwVariant = modeToVariant(mode);
   const bw = bwVariant !== null;
   const bwShadows = bwVariant === "lit" || bwVariant === "lit-tint";
@@ -273,9 +271,9 @@ export default function ArenaCanvas({
   }, []);
 
   const initialPreset = CAMERA_PRESETS.iso;
-  // Match the site's page background (#FDFCFC) so the arena blends into the
-  // task-detail page in B&W mode instead of reading as a pure-white rect.
-  const bgColor = bw ? "#FDFCFC" : "#1A1D21";
+  // Match the site's page background (#FDFCFC) in B&W modes; color mode
+  // keeps its own canvas backing tied to the 3D outside-ground color.
+  const bgColor = bw ? "#FDFCFC" : "#FFFFFF";
   const shadowsOn = mode === "color" || bwShadows;
 
   return (
@@ -305,6 +303,7 @@ export default function ArenaCanvas({
               bwShadows={bwShadows}
               shadowLightness={shadowLightness}
               pureWhite={pureWhite}
+              debugPaths={debugPaths}
             />
           </Suspense>
         </Canvas>
@@ -320,6 +319,20 @@ export default function ArenaCanvas({
 
         {/* Top-right controls: view toggle, and pure-white toggle when BW is on */}
         <div className="absolute top-3 right-3 flex items-center gap-2">
+          <button
+            onClick={() => setDebugPaths(!debugPaths)}
+            className={`backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-mono transition-colors flex items-center gap-1.5 ${
+              debugPaths
+                ? "bg-green-500 text-white"
+                : bw
+                  ? "bg-white/90 text-black border border-black hover:bg-white"
+                  : "bg-black/60 text-white hover:bg-black/80"
+            }`}
+            title="Show agent A* paths (green = routed, red = straight)"
+          >
+            <span className="opacity-60">paths:</span>
+            <span>{debugPaths ? "on" : "off"}</span>
+          </button>
           {bw && (
             <button
               onClick={() => setPureWhite(!pureWhite)}

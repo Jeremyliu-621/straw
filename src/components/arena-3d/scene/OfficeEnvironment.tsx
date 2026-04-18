@@ -13,7 +13,9 @@ const WORLD_H = CANVAS_H * SCALE;
 // Palette A — "Figma HQ / Pale Concrete". Cool, modern, not yellow.
 const FLOOR_COLOR = "#E5E2DB";
 const WALL_COLOR = "#C9C7C2";
-const OUTSIDE_COLOR = "#1A1D21";
+// Outside-of-office ground plane. Pure white so the scene sits on a clean
+// page-like surface rather than floating on a dark backdrop in color mode.
+const OUTSIDE_COLOR = "#FFFFFF";
 const ACCENT_COLOR = "#B8B3AB";
 
 function FloorPlane() {
