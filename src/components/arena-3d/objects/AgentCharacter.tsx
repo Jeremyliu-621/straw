@@ -81,8 +81,48 @@ export default function AgentCharacter({
     const isWalking = agent.state === "walking";
     const isDancing = agent.state === "dancing";
     const isWorkingOut = agent.state === "working_out";
+    const isSitting = agent.state === "sitting";
+    const couchTypes = ["couch", "couch_v", "beanbag"];
+    const isOnCouch = isSitting && couchTypes.includes(agent.socialSpotType ?? "");
+    const isAtDeskWorking = isSitting && agent.status === "working";
 
-    if (isWorkingOut) {
+    if (isAtDeskWorking) {
+      // Typing animation: arms reach forward toward monitor with small
+      // alternating motion (like typing on a keyboard). Body lowered to
+      // the chair height.
+      const t = agent.frame * 0.35;
+      const typeL = Math.sin(t) * 0.1;
+      const typeR = Math.sin(t + Math.PI) * 0.1;
+      if (leftArmRef.current) {
+        leftArmRef.current.rotation.x = -1.15 + typeL;
+        leftArmRef.current.rotation.z = 0.15;
+      }
+      if (rightArmRef.current) {
+        rightArmRef.current.rotation.x = -1.15 + typeR;
+        rightArmRef.current.rotation.z = -0.15;
+      }
+      // Legs tuck forward (bent at hip, knees pointing out) to fit under desk.
+      if (leftLegRef.current) leftLegRef.current.rotation.x = -1.4;
+      if (rightLegRef.current) rightLegRef.current.rotation.x = -1.4;
+      // Slight hunch toward screen.
+      groupRef.current.position.y = -0.18 * AGENT_SCALE * 0.01;
+    } else if (isOnCouch) {
+      // Lounging on a couch/beanbag: body sinks lower, legs bent forward,
+      // arms resting at sides. No arm typing motion.
+      if (leftArmRef.current) {
+        leftArmRef.current.rotation.x = -0.2;
+        leftArmRef.current.rotation.z = 0.1;
+      }
+      if (rightArmRef.current) {
+        rightArmRef.current.rotation.x = -0.2;
+        rightArmRef.current.rotation.z = -0.1;
+      }
+      if (leftLegRef.current) leftLegRef.current.rotation.x = -1.4;
+      if (rightLegRef.current) rightLegRef.current.rotation.x = -1.4;
+      // Beanbag sinks more than a couch; couches sit higher off the floor.
+      const sinkDepth = agent.socialSpotType === "beanbag" ? 0.5 : 0.32;
+      groupRef.current.position.y = -sinkDepth * AGENT_SCALE * 0.01;
+    } else if (isWorkingOut) {
       // Workout variant by style. Keep it simple — a few sin waves per limb.
       const t = agent.frame * 0.2;
       const style = agent.workoutStyle ?? "lift";
@@ -160,11 +200,14 @@ export default function AgentCharacter({
       if (rightLegRef.current) rightLegRef.current.rotation.x = legSwing;
     }
 
-    // Sitting: lower body (not applied in dancing/workout branches above)
-    if (agent.state === "sitting") {
-      groupRef.current.position.y = -0.15 * AGENT_SCALE * 0.01;
-    } else if (!isDancing && !isWorkingOut) {
+    // Generic sitting (no specific context) — rare; mostly covered above.
+    // Reset group y-offset when standing/walking/dancing; the specific
+    // sitting/workout branches set their own offsets above.
+    if (!isSitting && !isDancing && !isWorkingOut) {
       groupRef.current.position.y = 0;
+    } else if (isSitting && !isAtDeskWorking && !isOnCouch) {
+      // Generic sit fallback — small lowering like original behavior.
+      groupRef.current.position.y = -0.15 * AGENT_SCALE * 0.01;
     }
 
     // Status color
