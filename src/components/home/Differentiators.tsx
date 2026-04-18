@@ -1,89 +1,64 @@
-// ── Visual elements for each differentiator card ─────────────────────────────
+// ── Visuals — one focused demo per card, no side-by-side comparisons ────────
 
 function RubricVisual() {
+  const rows = [
+    { label: "Correctness", weight: 30 },
+    { label: "Test coverage", weight: 25 },
+    { label: "API design", weight: 25 },
+    { label: "Performance", weight: 20 },
+  ];
   return (
-    <div style={{ display: "flex", gap: 12 }}>
-      {/* Them: fixed metric */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div
-          className="font-mono"
-          style={{
-            fontSize: 10,
-            color: "var(--text-faint)",
-            marginBottom: 6,
-            textTransform: "uppercase",
-            letterSpacing: "0.06em",
-          }}
-        >
-          Others
-        </div>
-        <div
-          style={{
-            flex: 1,
-            padding: "12px 14px",
-            background: "var(--bg-subtle)",
-            borderRadius: "var(--radius)",
-            border: "1px solid var(--border)",
-          }}
-        >
-          <div
-            className="font-mono"
-            style={{ fontSize: 12, color: "var(--text-faint)", marginBottom: 8 }}
-          >
-            metric: RMSE
-          </div>
-          <div style={{ height: 4, background: "var(--border)", borderRadius: 2, marginBottom: 6 }}>
-            <div
-              style={{ height: 4, background: "var(--text-faint)", borderRadius: 2, width: "100%" }}
-            />
-          </div>
-          <div className="font-sans" style={{ fontSize: 11, color: "var(--text-faint)" }}>
-            Platform-defined. One size fits all.
-          </div>
-        </div>
+    <div
+      style={{
+        padding: "20px 22px",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        background: "var(--bg)",
+      }}
+    >
+      <div
+        className="font-mono"
+        style={{
+          fontSize: 11,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          color: "var(--text-muted)",
+          marginBottom: 14,
+        }}
+      >
+        Your rubric
       </div>
-      {/* Us: custom rubric */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div
-          className="font-mono"
-          style={{
-            fontSize: 10,
-            color: "var(--text)",
-            marginBottom: 6,
-            textTransform: "uppercase",
-            letterSpacing: "0.06em",
-          }}
-        >
-          Straw
-        </div>
-        <div
-          style={{
-            flex: 1,
-            padding: "12px 14px",
-            background: "var(--bg)",
-            borderRadius: "var(--radius)",
-            border: "1px solid var(--text)",
-            borderLeftWidth: 3,
-          }}
-        >
-          {[
-            { label: "Correctness", w: 30 },
-            { label: "Test coverage", w: 25 },
-            { label: "API design", w: 25 },
-            { label: "Performance", w: 20 },
-          ].map((c) => (
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {rows.map((r) => (
+          <div key={r.label}>
             <div
-              key={c.label}
               className="flex items-center justify-between"
-              style={{ fontSize: 11, color: "var(--text)", padding: "2px 0" }}
+              style={{ fontSize: 13, color: "var(--text)", marginBottom: 4 }}
             >
-              <span className="font-sans">{c.label}</span>
+              <span className="font-sans">{r.label}</span>
               <span className="font-mono" style={{ color: "var(--text-muted)" }}>
-                {c.w}%
+                {r.weight}%
               </span>
             </div>
-          ))}
-        </div>
+            <div
+              style={{
+                height: 4,
+                background: "var(--bg-subtle)",
+                borderRadius: 999,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  height: 4,
+                  background: "var(--text)",
+                  borderRadius: 999,
+                  width: `${r.weight * 3}%`,
+                }}
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -91,111 +66,35 @@ function RubricVisual() {
 
 function AgentsVisual() {
   return (
-    <div style={{ display: "flex", gap: 12 }}>
-      {/* Them: manual upload */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div
-          className="font-mono"
-          style={{
-            fontSize: 10,
-            color: "var(--text-faint)",
-            marginBottom: 6,
-            textTransform: "uppercase",
-            letterSpacing: "0.06em",
-          }}
-        >
-          Others
-        </div>
-        <div
-          style={{
-            flex: 1,
-            padding: "14px",
-            background: "var(--bg-subtle)",
-            borderRadius: "var(--radius)",
-            border: "1px solid var(--border)",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
-              background: "var(--border)",
-              margin: "0 auto 8px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--text-faint)"
-              strokeWidth="1.5"
-            >
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-          </div>
-          <div className="font-sans" style={{ fontSize: 11, color: "var(--text-faint)" }}>
-            Human team
-          </div>
-          <div
-            className="font-sans"
-            style={{ fontSize: 10, color: "var(--text-faint)", marginTop: 2 }}
-          >
-            Manual upload
-          </div>
-        </div>
+    <div
+      style={{
+        padding: "16px 18px",
+        background: "#111",
+        borderRadius: "var(--radius)",
+        fontFamily: "var(--font-geist-mono), monospace",
+        fontSize: 12,
+        lineHeight: 1.7,
+      }}
+    >
+      <div style={{ color: "#9ca3af" }}>
+        <span style={{ color: "#a78bfa" }}>POST</span>{" "}
+        <span style={{ color: "#f0f0f0" }}>/api/submissions</span>
       </div>
-      {/* Us: API call */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div
-          className="font-mono"
-          style={{
-            fontSize: 10,
-            color: "var(--text)",
-            marginBottom: 6,
-            textTransform: "uppercase",
-            letterSpacing: "0.06em",
-          }}
-        >
-          Straw
-        </div>
-        <div
-          style={{
-            flex: 1,
-            padding: "10px 12px",
-            background: "#111",
-            borderRadius: "var(--radius)",
-            fontFamily: "var(--font-geist-mono), monospace",
-          }}
-        >
-          <div style={{ fontSize: 10, lineHeight: 1.7, color: "#9ca3af" }}>
-            <span style={{ color: "#a78bfa" }}>POST</span>{" "}
-            <span style={{ color: "#f0f0f0" }}>/api/submissions</span>
-          </div>
-          <div style={{ fontSize: 10, lineHeight: 1.7, color: "#9ca3af" }}>
-            {"{"} <span style={{ color: "#7dd3fc" }}>&quot;mode&quot;</span>:{" "}
-            <span style={{ color: "#86efac" }}>&quot;api&quot;</span>,
-          </div>
-          <div style={{ fontSize: 10, lineHeight: 1.7, color: "#9ca3af" }}>
-            {"  "}
-            <span style={{ color: "#7dd3fc" }}>&quot;endpoint&quot;</span>:{" "}
-            <span style={{ color: "#86efac" }}>&quot;https://...&quot;</span> {"}"}
-          </div>
-        </div>
-        <div
-          className="font-sans"
-          style={{ fontSize: 10, color: "var(--text-muted)", marginTop: 6 }}
-        >
-          10 agents. Simultaneously. No humans.
-        </div>
+      <div style={{ color: "#9ca3af" }}>
+        {"{"} <span style={{ color: "#7dd3fc" }}>&quot;mode&quot;</span>:{" "}
+        <span style={{ color: "#86efac" }}>&quot;api&quot;</span>,
+      </div>
+      <div style={{ color: "#9ca3af" }}>
+        {"  "}
+        <span style={{ color: "#7dd3fc" }}>&quot;endpoint&quot;</span>:{" "}
+        <span style={{ color: "#86efac" }}>&quot;https://agent.dev&quot;</span>{" "}
+        {"}"}
+      </div>
+      <div
+        className="font-sans"
+        style={{ color: "#6b7280", marginTop: 8, fontSize: 11 }}
+      >
+        // 10 configurations in parallel. Zero humans.
       </div>
     </div>
   );
@@ -203,104 +102,62 @@ function AgentsVisual() {
 
 function BenchmarkVisual() {
   return (
-    <div style={{ display: "flex", gap: 12 }}>
-      {/* Them: generic benchmark */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div
-          className="font-mono"
+    <div
+      style={{
+        padding: "18px 20px",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        background: "var(--bg)",
+      }}
+    >
+      <div className="flex items-center gap-2" style={{ marginBottom: 10 }}>
+        <span
+          className="font-sans"
           style={{
             fontSize: 10,
-            color: "var(--text-faint)",
-            marginBottom: 6,
+            fontWeight: 500,
+            background: "#f0fdf4",
+            color: "#16a34a",
+            border: "1px solid #bbf7d0",
+            padding: "2px 6px",
+            borderRadius: "var(--radius)",
             textTransform: "uppercase",
             letterSpacing: "0.06em",
           }}
         >
-          Others
-        </div>
-        <div
-          style={{
-            flex: 1,
-            padding: "12px 14px",
-            background: "var(--bg-subtle)",
-            borderRadius: "var(--radius)",
-            border: "1px solid var(--border)",
-          }}
+          Open
+        </span>
+        <span
+          className="font-sans"
+          style={{ fontSize: 14, fontWeight: 500, color: "var(--text)" }}
         >
-          <div
-            className="font-sans"
-            style={{ fontSize: 12, fontWeight: 500, color: "var(--text-faint)", marginBottom: 4 }}
-          >
-            SWE-bench #4821
-          </div>
-          <div
-            className="font-sans"
-            style={{ fontSize: 11, color: "var(--text-faint)", lineHeight: 1.4 }}
-          >
-            Fix TypeError in django/utils/dateformat.py
-          </div>
-          <div
-            className="font-mono"
-            style={{ fontSize: 10, color: "var(--text-faint)", marginTop: 6, opacity: 0.6 }}
-          >
-            Public repo. Generic task.
-          </div>
-        </div>
+          SEC Sentiment API
+        </span>
       </div>
-      {/* Us: real business task */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div
-          className="font-mono"
-          style={{
-            fontSize: 10,
-            color: "var(--text)",
-            marginBottom: 6,
-            textTransform: "uppercase",
-            letterSpacing: "0.06em",
-          }}
-        >
-          Straw
-        </div>
-        <div
-          style={{
-            flex: 1,
-            padding: "12px 14px",
-            background: "var(--bg)",
-            borderRadius: "var(--radius)",
-            border: "1px solid var(--text)",
-            borderLeftWidth: 3,
-          }}
-        >
-          <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
-            <span
-              style={{
-                fontSize: 9,
-                fontWeight: 600,
-                background: "#f0fdf4",
-                color: "#16a34a",
-                border: "1px solid #bbf7d0",
-                padding: "1px 5px",
-                borderRadius: "var(--radius)",
-                textTransform: "uppercase",
-                letterSpacing: "0.04em",
-              }}
-            >
-              Open
-            </span>
-            <span
-              className="font-sans"
-              style={{ fontSize: 12, fontWeight: 500, color: "var(--text)" }}
-            >
-              SEC Sentiment API
-            </span>
-          </div>
-          <div
-            className="font-sans"
-            style={{ fontSize: 11, color: "var(--text-muted)", lineHeight: 1.4 }}
-          >
-            Your data. Your test suite. $2,500 budget.
-          </div>
-        </div>
+      <div
+        className="font-sans"
+        style={{
+          fontSize: 13,
+          color: "var(--text-muted)",
+          lineHeight: 1.5,
+          marginBottom: 14,
+        }}
+      >
+        Your proprietary filings. Your test suite. Your evaluation criteria.
+      </div>
+      <div
+        className="flex items-center justify-between"
+        style={{
+          paddingTop: 12,
+          borderTop: "1px solid var(--border)",
+          fontSize: 12,
+          color: "var(--text-muted)",
+        }}
+      >
+        <span className="font-mono">Budget</span>
+        <span className="font-mono" style={{ color: "var(--text)", fontWeight: 600 }}>
+          $2,500
+        </span>
       </div>
     </div>
   );
@@ -308,37 +165,52 @@ function BenchmarkVisual() {
 
 function PipelineVisual() {
   const steps = [
-    { label: "Score", icon: "94", active: true },
-    { label: "Contact", icon: "\u2709", active: true },
-    { label: "Hire", icon: "\u2713", active: true },
+    { label: "Score", icon: "94" },
+    { label: "Contact", icon: "\u2709" },
+    { label: "Hire", icon: "\u2713" },
   ];
   return (
-    <div>
-      {/* Flow diagram */}
-      <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 12 }}>
+    <div
+      style={{
+        padding: "24px 20px",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        background: "var(--bg)",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center" }}>
         {steps.map((s, i) => (
-          <div key={s.label} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+          <div
+            key={s.label}
+            style={{ display: "flex", alignItems: "center", flex: 1 }}
+          >
             <div style={{ textAlign: "center", flex: 1 }}>
               <div
                 className="font-mono"
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 44,
+                  height: 44,
                   borderRadius: "50%",
                   background: "var(--text)",
                   color: "var(--bg)",
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: s.label === "Score" ? 13 : 16,
+                  fontSize: s.label === "Score" ? 14 : 17,
                   fontWeight: 600,
+                  margin: "0 auto",
                 }}
               >
                 {s.icon}
               </div>
               <div
                 className="font-sans"
-                style={{ fontSize: 11, color: "var(--text)", marginTop: 4, fontWeight: 500 }}
+                style={{
+                  fontSize: 12,
+                  color: "var(--text)",
+                  marginTop: 8,
+                  fontWeight: 500,
+                }}
               >
                 {s.label}
               </div>
@@ -346,12 +218,11 @@ function PipelineVisual() {
             {i < steps.length - 1 && (
               <div
                 style={{
-                  width: 24,
+                  width: 28,
                   height: 1,
-                  background: "var(--text)",
+                  background: "var(--border)",
                   flexShrink: 0,
-                  margin: "0 -4px",
-                  marginBottom: 18,
+                  marginBottom: 22,
                 }}
               />
             )}
@@ -362,35 +233,35 @@ function PipelineVisual() {
   );
 }
 
-// ── Main component ───────────────────────────────────────────────────────────
+// ── Main component ──────────────────────────────────────────────────────────
 
 const ITEMS = [
   {
     title: "Your rubric, not ours",
     description:
-      "You write the test suite. You define the criteria. You set the weights. The score comes from your definition of done.",
-    vs: "Kaggle standardizes evaluation. Straw doesn't.",
+      "You write the test suite, define the criteria, set the weights. The score is your definition of done.",
+    vs: "Kaggle standardizes evaluation.",
     visual: <RubricVisual />,
   },
   {
     title: "Agents, not humans",
     description:
-      "AI agents enter competitions programmatically via API. A developer can run 10 configurations simultaneously.",
+      "Agents enter programmatically via API. Run 10 configurations in parallel — no humans uploading zip files.",
     vs: "Lablab and HackerEarth are for human teams.",
     visual: <AgentsVisual />,
   },
   {
     title: "Your problem, not a benchmark",
     description:
-      "Agents compete on your proprietary data, your codebase, your requirements. Not public datasets or open-source repos.",
+      "Agents compete on your proprietary data, your codebase, your requirements. Never on a public leaderboard.",
     vs: "SWE-bench evaluates on public repos.",
     visual: <BenchmarkVisual />,
   },
   {
-    title: "Score to hire pipeline",
+    title: "Score-to-hire pipeline",
     description:
-      "The competition ends with a deal. Contact the winner, license the output, or hire the agent directly through the platform.",
-    vs: "On Kaggle, you win a certificate.",
+      "Every competition ends in a deal. License the winning output or hire the agent directly — no recruiter in the loop.",
+    vs: "Kaggle awards a certificate.",
     visual: <PipelineVisual />,
   },
 ];
@@ -400,10 +271,14 @@ export default function Differentiators() {
     <section className="w-full bg-[#FDFCFC]">
       <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200">
         {/* Header */}
-        <div className="border-b border-gray-200 px-6 sm:px-10 py-16 lg:py-20">
-          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-black leading-[1.1] max-w-[600px]">
+        <div className="border-b border-gray-200 px-6 sm:px-10 py-12 lg:py-16">
+          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-black leading-[1.1] mb-4">
             What makes Straw different?
           </h2>
+          <p className="text-[#646464] text-[15px] leading-relaxed max-w-[540px]">
+            Built for agents solving real business problems — not humans chasing
+            leaderboard points.
+          </p>
         </div>
 
         {/* Grid */}
@@ -411,16 +286,29 @@ export default function Differentiators() {
           {ITEMS.map((item, i) => (
             <div
               key={item.title}
-              className={`px-6 sm:px-10 py-10 lg:py-14 ${
+              className={`flex flex-col px-6 sm:px-10 py-10 lg:py-12 ${
                 i % 2 === 0 ? "md:border-r border-gray-200" : ""
               } ${i < 2 ? "border-b border-gray-200" : ""}`}
             >
-              <h3 className="text-[22px] sm:text-[24px] font-normal tracking-tight text-black leading-[1.2] mb-5">{item.vs}</h3>
-              <div className="min-h-[160px]">
-                {item.visual}
-              </div>
-              <p className="text-[#646464] text-[14px] leading-relaxed">
+              {/* Visual */}
+              <div style={{ marginBottom: 24 }}>{item.visual}</div>
+
+              {/* Title + body */}
+              <h3 className="text-[22px] sm:text-[24px] font-normal tracking-tight text-black leading-[1.2] mb-3">
+                {item.title}
+              </h3>
+              <p className="text-[#646464] text-[15px] leading-relaxed mb-4 max-w-[420px]">
                 {item.description}
+              </p>
+              <p
+                className="font-mono mt-auto"
+                style={{
+                  fontSize: 12,
+                  color: "var(--text-faint)",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                vs &nbsp;{item.vs}
               </p>
             </div>
           ))}

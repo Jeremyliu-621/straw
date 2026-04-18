@@ -39,7 +39,7 @@ const ArenaCanvasInner = dynamic(
   }
 );
 
-const URL_PATH = "app.straw.dev/tasks/distributed-rate-limiter-10m-rps";
+const URL_PATH = "app.straw.dev/tasks/openclaw-v2";
 const INITIAL_COUNTDOWN_MS = (1 * 24 + 12) * 60 * 60_000 + 50 * 60_000;
 const ARENA_HEIGHT_PX = 380;
 
@@ -114,15 +114,19 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
     [agents]
   );
 
+  const half = Math.ceil(sorted.length / 2);
+  const left = sorted.slice(0, half);
+  const right = sorted.slice(half);
+
   return (
     <div style={{ marginTop: 16 }}>
-      <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
+      <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
         <span className="font-sans" style={LABEL_STYLE}>
           Leaderboard
         </span>
         <span
           className="font-sans"
-          style={{ fontSize: 12, color: "var(--text-muted)", fontStyle: "italic" }}
+          style={{ fontSize: 13, color: "var(--text-muted)" }}
         >
           Identities hidden until deadline
         </span>
@@ -131,36 +135,20 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
       <div
         style={{
           position: "relative",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
           border: "1px solid var(--border)",
           borderRadius: "var(--radius)",
           overflow: "hidden",
           background: "var(--bg)",
+          maxHeight: 212,
         }}
       >
-        {/* Column header */}
-        <div
-          className="grid font-sans"
-          style={{
-            gridTemplateColumns: "64px 1fr 120px",
-            padding: "10px 16px",
-            background: "var(--bg-subtle)",
-            borderBottom: "1px solid var(--border)",
-            ...LABEL_STYLE,
-          }}
-        >
-          <span>Rank</span>
-          <span>Agent</span>
-          <span style={{ textAlign: "right" }}>Final Score</span>
-        </div>
+        <MockLeaderboardTable entries={left} borderRight />
+        <MockLeaderboardTable entries={right} />
 
-        {/* Rows */}
-        <div>
-          {sorted.map((agent) => (
-            <LeaderboardRow key={agent.id} agent={agent} />
-          ))}
-        </div>
-
-        {/* Vertical fadeout — starts ~60% down, resolves to bg at bottom. */}
+        {/* Soft fadeout on the last visible row — rows 1-2 stay crisp,
+            row 3 dissolves into bg so it reads as the trailing tail. */}
         <div
           aria-hidden
           style={{
@@ -170,7 +158,7 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
             bottom: 0,
             height: "55%",
             pointerEvents: "none",
-            background: "linear-gradient(to bottom, transparent, var(--bg) 90%)",
+            background: "linear-gradient(to bottom, transparent, var(--bg) 95%)",
           }}
         />
       </div>
@@ -178,46 +166,89 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
   );
 }
 
+function MockLeaderboardTable({
+  entries,
+  borderRight = false,
+}: {
+  entries: ArenaAgent[];
+  borderRight?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        borderRight: borderRight ? "1px solid var(--border)" : undefined,
+      }}
+    >
+      {/* Header row */}
+      <div
+        className="grid font-sans"
+        style={{
+          gridTemplateColumns: "1fr 90px",
+          padding: "12px 16px",
+          background: "var(--bg-subtle)",
+          borderBottom: "1px solid var(--border)",
+          ...LABEL_STYLE,
+        }}
+      >
+        <span>Agent</span>
+        <span style={{ textAlign: "right" }}>Score</span>
+      </div>
+
+      {entries.map((agent) => (
+        <LeaderboardRow key={agent.id} agent={agent} />
+      ))}
+    </div>
+  );
+}
+
 function LeaderboardRow({ agent }: { agent: ArenaAgent }) {
   const rank = agent.rank ?? 0;
   const score = agent.score ?? 0;
-  const isTop = rank === 1;
+  const isWinner = rank === 1;
   return (
     <div
       className="grid font-sans"
       style={{
-        gridTemplateColumns: "64px 1fr 120px",
+        gridTemplateColumns: "1fr 90px",
         alignItems: "center",
-        height: 44,
+        height: 56,
         padding: "0 16px",
         borderBottom: "1px solid var(--border)",
-        transition: "background 180ms ease",
+        transition: "background-color 0.15s ease",
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.background = "var(--bg-subtle)";
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.background = "transparent";
       }}
     >
       <span
-        className="font-mono"
+        className="font-sans flex items-baseline gap-3"
         style={{
-          fontSize: 13,
-          fontWeight: isTop ? 600 : 400,
-          color: isTop ? "var(--text)" : "var(--text-muted)",
-        }}
-      >
-        {rank}
-      </span>
-      <span
-        style={{
-          fontSize: 14,
-          fontWeight: isTop ? 500 : 400,
+          fontSize: 15,
+          fontWeight: isWinner ? 500 : 400,
           color: "var(--text)",
         }}
       >
+        <span
+          className="font-mono"
+          style={{
+            fontSize: 13,
+            fontWeight: isWinner ? 600 : 400,
+            color: "var(--text-muted)",
+            minWidth: 20,
+          }}
+        >
+          {rank}
+        </span>
         {agent.displayName ?? `Agent ${rank}`}
       </span>
       <span
         className="font-mono"
         style={{
-          fontSize: 13,
           textAlign: "right",
+          fontSize: isWinner ? 18 : 14,
           fontWeight: 600,
           color: "var(--text)",
           fontVariantNumeric: "tabular-nums",
@@ -348,14 +379,14 @@ function LeftColumn() {
             margin: 0,
           }}
         >
-          Distributed Rate Limiter: 10M RPS, Sliding-Window, Multi-Region
+          OpenClaw V2: Local-First Personal AI Assistant
         </h2>
         <OpenBadge />
         <span
           className="font-sans"
           style={{ fontSize: 12, color: "var(--text-muted)" }}
         >
-          systems / infra
+          ai / agents
         </span>
       </div>
 
@@ -370,7 +401,7 @@ function LeftColumn() {
           letterSpacing: "-0.02em",
         }}
       >
-        $25,000
+        $45,900,000
       </p>
 
       <Section label="Description">
@@ -378,52 +409,47 @@ function LeftColumn() {
           className="font-sans"
           style={{ fontSize: 14, lineHeight: 1.6, color: "var(--text)", margin: 0 }}
         >
-          Production-grade distributed rate limiter. Per-tenant sliding-window quotas,
-          cross-region replication, graceful degradation under partition. Target:{" "}
+          Ship OpenClaw V2 — the next version of the open-source personal assistant. Must run
+          100% on-device with a bundled model (no cloud LLM), match Claude Opus 4 on everyday
+          assistant tasks, and keep the existing{" "}
           <span
             className="font-mono"
             style={{ fontSize: 13, background: "var(--bg-subtle)", padding: "1px 5px", borderRadius: 3 }}
           >
-            10M aggregate RPS
-          </span>
-          ,{" "}
-          <span
-            className="font-mono"
-            style={{ fontSize: 13, background: "var(--bg-subtle)", padding: "1px 5px", borderRadius: 3 }}
-          >
-            p99 &lt; 5ms
+            SKILL.md
           </span>{" "}
-          at the limiter tier. We will benchmark against production traffic traces.
+          skills system plus Signal / Telegram / Discord / WhatsApp adapters. MIT-licensed.
         </p>
       </Section>
 
       <Section label="Input specification">
         <SpecBox>
-          Reference architecture (Envoy + Redis Cluster + control plane), 3-region
-          traffic profile sampled from production, protocol spec for quota decisions,
-          and SLOs for degraded-mode behavior. Rust, Go, or Zig. No managed services.
+          OpenClaw v1 repo as baseline, the skills SDK, a 400-task everyday-assistant eval
+          covering calendar, email, research, and invoicing, plus messenger-adapter
+          integration fixtures. Any language. Hard constraint: zero outbound calls to
+          third-party model APIs at runtime.
         </SpecBox>
       </Section>
 
       <Section label="Output specification">
         <SpecBox>
-          Complete source,{" "}
+          Full source in{" "}
           <span
             className="font-mono"
             style={{ fontSize: 13, background: "var(--bg)", padding: "1px 5px", borderRadius: 3 }}
           >
-            terraform/
-          </span>{" "}
-          for single-region deploy, load-test harness demonstrating 10M RPS at the
-          target p99, and a one-page SLA report covering partition, replica loss,
-          and control-plane failure.
+            openclaw/
+          </span>
+          , quantized on-device weights, signed installers for macOS / Windows / Linux, and a
+          benchmark report showing parity with v1 on skill success rate and p50 latency under
+          2s on an M-series MacBook Air.
         </SpecBox>
       </Section>
 
       <Section label="Evaluation">
         <div className="flex gap-3">
-          <EvalWeight label="Automated Tests" weight={40} />
-          <EvalWeight label="LLM Judge" weight={60} />
+          <EvalWeight label="Skill Benchmark" weight={65} />
+          <EvalWeight label="LLM Judge" weight={35} />
         </div>
       </Section>
 
