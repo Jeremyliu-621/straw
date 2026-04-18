@@ -120,41 +120,17 @@ const PRINTER_STATION: FurnitureItem[] = [
 // a desk mapping.
 const CLUSTER_B_STATIONS: DeskStation[] = [...makeDeskPod({ startIndex: 12, x: 580, y: 460 })];
 
-// Round-table nook where CLUSTER_B's first pod used to be. Center at the
-// middle of the old 2x2 pod (~700, 340). 6 chairs spaced every 60° around
-// a radius of 85, each facing the table center.
-const ROUND_TABLE_NOOK: FurnitureItem[] = (() => {
-  const cx = 400;
-  const cy = 640;
-  const radius = 85;
-  const items: FurnitureItem[] = [
-    {
-      type: "round_table",
-      x: cx - 60,
-      y: cy - 60,
-      r: 60,
-      _uid: uid("table"),
-    },
-  ];
-  // atan2(dx, dy) convention: angle θ → direction (sin θ, cos θ).
-  // Chair center = table center + radius * (sin θ, cos θ).
-  // Chair "facing" (degrees) = θ + 180° so the chair looks INTO the table.
-  // Chair footprint is 24×24, so top-left = center - 12.
-  const anglesDeg = [0, 60, 120, 180, 240, 300];
-  for (const a of anglesDeg) {
-    const rad = (a * Math.PI) / 180;
-    const cxChair = cx + radius * Math.sin(rad);
-    const cyChair = cy + radius * Math.cos(rad);
-    items.push({
-      type: "chair",
-      x: Math.round(cxChair - 12),
-      y: Math.round(cyChair - 12),
-      facing: (a + 180) % 360,
-      _uid: uid("chair"),
-    });
-  }
-  return items;
-})();
+// Round-table nook (table center ~400, 640). 6 chairs at radius 85 around
+// the table, each facing inward. Plain item list — no IIFE.
+const ROUND_TABLE_NOOK: FurnitureItem[] = [
+  { type: "round_table", x: 340, y: 700, r: 60, _uid: uid("table") },
+  { type: "chair", x: 388, y: 713, facing: 180, _uid: uid("chair") },
+  { type: "chair", x: 462, y: 671, facing: 240, _uid: uid("chair") },
+  { type: "chair", x: 462, y: 586, facing: 300, _uid: uid("chair") },
+  { type: "chair", x: 388, y: 543, facing: 0, _uid: uid("chair") },
+  { type: "chair", x: 314, y: 586, facing: 60, _uid: uid("chair") },
+  { type: "chair", x: 314, y: 671, facing: 120, _uid: uid("chair") },
+];
 
 // ── Standing-desk island ─────────────────────────────────────────────────
 const STANDING_ISLAND_STATIONS: DeskStation[] = [
@@ -169,10 +145,7 @@ const STANDING_ISLAND_EXTRAS: FurnitureItem[] = [
   { type: "plant", x: 1150, y: 560, _uid: uid("plant") },
 ];
 
-const ALL_DESK_STATIONS: DeskStation[] = [
-  ...CLUSTER_B_STATIONS,
-  ...STANDING_ISLAND_STATIONS,
-];
+const ALL_DESK_STATIONS: DeskStation[] = [...CLUSTER_B_STATIONS, ...STANDING_ISLAND_STATIONS];
 
 // ── Phone booths ─────────────────────────────────────────────────────────
 const PHONE_BOOTHS: FurnitureItem[] = [
