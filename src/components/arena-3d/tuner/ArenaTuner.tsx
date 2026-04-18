@@ -19,6 +19,10 @@ export default function ArenaTuner() {
     setMiscTuning,
     showPaths,
     setShowPaths,
+    showNav,
+    setShowNav,
+    ambientByAgent,
+    setAmbientForAgent,
     stations,
     walkToPoint,
   } = useTunerAgent();
@@ -34,6 +38,7 @@ export default function ArenaTuner() {
           miscTuning={miscTuning}
           agentRef={agentRef}
           showPaths={showPaths}
+          showNav={showNav}
           onFloorClick={cohort === "arena" ? walkToPoint : undefined}
         />
       </div>
@@ -50,6 +55,10 @@ export default function ArenaTuner() {
         setMiscTuning={setMiscTuning}
         showPaths={showPaths}
         setShowPaths={setShowPaths}
+        showNav={showNav}
+        setShowNav={setShowNav}
+        ambientByAgent={ambientByAgent}
+        setAmbientForAgent={setAmbientForAgent}
         onGoto={sendToStation}
         onReset={reset}
         agentRef={agentRef}

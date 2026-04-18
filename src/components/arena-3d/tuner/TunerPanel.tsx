@@ -22,6 +22,10 @@ interface TunerPanelProps {
   setMiscTuning: (updater: (prev: MiscTuningParams) => MiscTuningParams) => void;
   showPaths: boolean;
   setShowPaths: (v: boolean | ((prev: boolean) => boolean)) => void;
+  showNav: boolean;
+  setShowNav: (v: boolean | ((prev: boolean) => boolean)) => void;
+  ambientByAgent: boolean[];
+  setAmbientForAgent: (agentIdx: number, on: boolean) => void;
   onGoto: (agentIdx: number, stationIdx: number | null) => void;
   onReset: () => void;
   agentRef: React.RefObject<RenderAgentState[]>;
@@ -92,6 +96,10 @@ export default function TunerPanel({
   setMiscTuning,
   showPaths,
   setShowPaths,
+  showNav,
+  setShowNav,
+  ambientByAgent,
+  setAmbientForAgent,
   onGoto,
   onReset,
   agentRef,
@@ -135,6 +143,7 @@ export default function TunerPanel({
       {[0, 1].map((agentIdx) => {
         const activeIdx = stationIdxByAgent[agentIdx] ?? null;
         const label = agentIdx === 0 ? "A (red)" : "B (green)";
+        const ambient = ambientByAgent[agentIdx] ?? false;
         return (
           <div key={agentIdx} className="border-t border-gray-200 pt-3">
             <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
@@ -145,6 +154,8 @@ export default function TunerPanel({
                 value={activeIdx ?? ""}
                 onChange={(e) => {
                   const v = e.target.value;
+                  // Manual selection takes over; turn ambient off for this agent.
+                  if (ambient) setAmbientForAgent(agentIdx, false);
                   onGoto(agentIdx, v === "" ? null : Number(v));
                 }}
                 className="flex-1 px-3 py-1.5 rounded-full text-xs bg-white text-black border border-gray-300 hover:border-black focus:outline-none focus:border-black"
@@ -157,16 +168,30 @@ export default function TunerPanel({
                 ))}
               </select>
               <button
-                onClick={() => onGoto(agentIdx, null)}
+                onClick={() => {
+                  if (ambient) setAmbientForAgent(agentIdx, false);
+                  onGoto(agentIdx, null);
+                }}
                 className="px-3 py-1.5 rounded-full text-xs bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
               >
                 stop
               </button>
             </div>
+            <button
+              onClick={() => setAmbientForAgent(agentIdx, !ambient)}
+              className={`mt-2 w-full px-3 py-1.5 rounded-full text-xs transition-colors border ${
+                ambient
+                  ? "bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700"
+                  : "bg-white text-black border-gray-300 hover:border-black"
+              }`}
+              title="When on, this agent autonomously hops between random stations every 6–12s"
+            >
+              ambient: {ambient ? "on" : "off"}
+            </button>
           </div>
         );
       })}
-      <div className="border-t border-gray-200 pt-3 flex gap-2">
+      <div className="border-t border-gray-200 pt-3 flex gap-2 flex-wrap">
         <button
           onClick={() => setShowPaths((v) => !v)}
           className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
@@ -176,6 +201,16 @@ export default function TunerPanel({
           }`}
         >
           paths: {showPaths ? "on" : "off"}
+        </button>
+        <button
+          onClick={() => setShowNav((v) => !v)}
+          className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
+            showNav
+              ? "bg-red-600 text-white border-red-600"
+              : "bg-white text-black border-gray-300 hover:border-red-600"
+          }`}
+        >
+          nav: {showNav ? "on" : "off"}
         </button>
         <button
           onClick={onReset}
