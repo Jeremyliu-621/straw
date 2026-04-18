@@ -73,8 +73,12 @@ export interface RenderAgentState {
   sinkDepthOverride?: number;
   /** Full planned path (tuner-only). `path` is mutated as the agent walks;
    *  this copy is preserved so the "paths: on" overlay can keep showing the
-   *  route even after arrival. */
+   *  route even after arrival. Includes the PLAN-TIME start position as its
+   *  first entry so a direct-line fallback still has 2 points to draw. */
   plannedPath?: { x: number; y: number }[];
+  /** True if `plannedPath` came out of A* (routed around obstacles); false
+   *  if it's a direct-line fallback. Drives the path-overlay color. */
+  plannedPathRouted?: boolean;
 }
 
 const WALK_SPEED = 0.7;

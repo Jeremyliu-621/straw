@@ -1038,15 +1038,13 @@ const PATH_MAX_POINTS = 128;
 function AgentPathLine({
   agentRef,
   agentIdx,
-  color,
 }: {
   agentRef: React.RefObject<RenderAgentState[]>;
   agentIdx: number;
-  color: string;
 }) {
-  // Build a raw three.js Line once and mutate its position buffer per frame.
-  // Using drei's <Line> doesn't re-read mutated buffers reliably; a plain
-  // three.js Line + BufferAttribute + needsUpdate does.
+  // One Line mesh with a fixed-size buffer and a three.js Color we flip
+  // between green (A* routed around obstacles) and red (direct-line fallback).
+  // Matches the non-tuner arena's path overlay color convention.
   const lineRef = useRef<THREE.Line | null>(null);
   const geom = useMemo(() => {
     const g = new THREE.BufferGeometry();
@@ -1058,15 +1056,15 @@ function AgentPathLine({
   const mat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color,
+        color: "#22c55e",
         transparent: true,
         opacity: 0.95,
       }),
-    [color]
+    []
   );
   const lineObj = useMemo(() => {
     const l = new THREE.Line(geom, mat);
-    l.renderOrder = 10; // draw above the floor grid
+    l.renderOrder = 10;
     return l;
   }, [geom, mat]);
 
@@ -1075,25 +1073,24 @@ function AgentPathLine({
     const line = lineRef.current;
     if (!agent || !line) return;
     const planned = agent.plannedPath;
-    const hasPath = Array.isArray(planned) && planned.length > 0;
+    const hasPath = Array.isArray(planned) && planned.length >= 2;
     line.visible = hasPath;
     if (!hasPath || !planned) return;
 
-    const [ax, , az] = toWorld(agent.x, agent.y);
-    const waypoints = planned.slice(0, PATH_MAX_POINTS - 1);
-    const pts: [number, number, number][] = [[ax, 0.25, az]];
-    for (const wp of waypoints) {
-      const [wx, , wz] = toWorld(wp.x, wp.y);
-      pts.push([wx, 0.25, wz]);
-    }
-
+    // Just the planned path itself — no live agent-position prepend.
+    const count = Math.min(planned.length, PATH_MAX_POINTS);
     const pos = geom.attributes.position as THREE.BufferAttribute;
-    for (let i = 0; i < pts.length; i++) {
-      pos.setXYZ(i, pts[i][0], pts[i][1], pts[i][2]);
+    for (let i = 0; i < count; i++) {
+      const [wx, , wz] = toWorld(planned[i].x, planned[i].y);
+      pos.setXYZ(i, wx, 0.25, wz);
     }
     pos.needsUpdate = true;
-    geom.setDrawRange(0, pts.length);
+    geom.setDrawRange(0, count);
     geom.computeBoundingSphere();
+
+    // green for routed, red for direct fallback (same convention as the
+    // main /leaderboard arena).
+    mat.color.set(agent.plannedPathRouted ? "#22c55e" : "#ef4444");
   });
 
   return <primitive ref={lineRef} object={lineObj} />;
@@ -1116,8 +1113,8 @@ function DebugMarkers({
       <AgentDebugMarker agentRef={agentRef} agentIdx={1} color="#10b981" />
       {showPaths && (
         <>
-          <AgentPathLine agentRef={agentRef} agentIdx={0} color="#ef4444" />
-          <AgentPathLine agentRef={agentRef} agentIdx={1} color="#10b981" />
+          <AgentPathLine agentRef={agentRef} agentIdx={0} />
+          <AgentPathLine agentRef={agentRef} agentIdx={1} />
         </>
       )}
       {stationIdxByAgent.map((idx, agentIdx) => {
@@ -1352,14 +1349,14 @@ export function useTunerAgent() {
     return buildNavGrid(allItems);
   }, [items, clusters]);
 
-  // Plan a path from (sx, sy) to (ex, ey) using A*. Falls back to a single
-  // waypoint if A* can't find a path (e.g. the destination is inside an
-  // obstacle).
+  // Plan a path from (sx, sy) to (ex, ey) using A*. Returns the waypoint
+  // list AND whether A* actually routed (true = navigated around obstacles,
+  // false = we fell back to a straight line because A* couldn't find one).
   const planPath = useCallback(
     (sx: number, sy: number, ex: number, ey: number) => {
       const p = astar(sx, sy, ex, ey, navGrid);
-      if (p.length > 0) return p;
-      return [{ x: ex, y: ey }];
+      if (p.length > 0) return { waypoints: p, routed: true };
+      return { waypoints: [{ x: ex, y: ey }], routed: false };
     },
     [navGrid]
   );
@@ -1372,6 +1369,7 @@ export function useTunerAgent() {
         agent.state = "standing";
         agent.path = [];
         agent.plannedPath = undefined;
+        agent.plannedPathRouted = undefined;
         agent.socialSpotType = undefined;
         agent.sitBackOverride = undefined;
         agent.sinkDepthOverride = undefined;
@@ -1389,8 +1387,14 @@ export function useTunerAgent() {
       agent.state = "walking";
       agent.targetX = station.standX;
       agent.targetY = station.standY;
-      agent.path = planPath(agent.x, agent.y, station.standX, station.standY);
-      agent.plannedPath = agent.path.map((p) => ({ ...p }));
+      const plan = planPath(agent.x, agent.y, station.standX, station.standY);
+      agent.path = plan.waypoints;
+      // Prepend the PLAN-TIME start so the overlay always has ≥2 points.
+      agent.plannedPath = [
+        { x: agent.x, y: agent.y },
+        ...plan.waypoints.map((p) => ({ ...p })),
+      ];
+      agent.plannedPathRouted = plan.routed;
       agent.socialSpotType = undefined;
       agent.sitBackOverride = undefined;
       agent.sinkDepthOverride = undefined;
@@ -1420,8 +1424,13 @@ export function useTunerAgent() {
         agent.state = "walking";
         agent.targetX = station.standX;
         agent.targetY = station.standY;
-        agent.path = planPath(agent.x, agent.y, station.standX, station.standY);
-      agent.plannedPath = agent.path.map((p) => ({ ...p }));
+        const plan = planPath(agent.x, agent.y, station.standX, station.standY);
+        agent.path = plan.waypoints;
+        agent.plannedPath = [
+          { x: agent.x, y: agent.y },
+          ...plan.waypoints.map((p) => ({ ...p })),
+        ];
+        agent.plannedPathRouted = plan.routed;
         agent.socialSpotType = undefined;
         agent.sitBackOverride = undefined;
         agent.sinkDepthOverride = undefined;
@@ -1449,7 +1458,13 @@ export function useTunerAgent() {
       agent.state = "walking";
       agent.targetX = canvasX;
       agent.targetY = canvasY;
-      agent.path = planPath(agent.x, agent.y, canvasX, canvasY);
+      const plan = planPath(agent.x, agent.y, canvasX, canvasY);
+      agent.path = plan.waypoints;
+      agent.plannedPath = [
+        { x: agent.x, y: agent.y },
+        ...plan.waypoints.map((p) => ({ ...p })),
+      ];
+      agent.plannedPathRouted = plan.routed;
       agent.socialSpotType = undefined;
       agent.sitBackOverride = undefined;
       agent.sinkDepthOverride = undefined;
