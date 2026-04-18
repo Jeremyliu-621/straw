@@ -177,6 +177,7 @@ export const NAV_ANCHOR_OVERRIDES: Record<string, NavAnchorOverride> = {
   couch_v: { dx: -55, padX: 15, padY: -20 },
   fridge: { dy: -41, padX: 0, padY: -30 },
   squat_rack: { padX: -2, padY: -30 },
+  vending: { dx: -7, dy: -35, padX: -9, padY: -14 },
 };
 
 export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPadding?: number }> = {
