@@ -7,7 +7,12 @@ import {
   FURNITURE_ROTATION,
   ITEM_FOOTPRINT,
 } from "../core/geometry";
-import { SCALE } from "../core/constants";
+import {
+  SCALE,
+  CANVAS_W as MAIN_CANVAS_W,
+  CANVAS_H as MAIN_CANVAS_H,
+  WALL_THICKNESS,
+} from "../core/constants";
 import { toWorld } from "../core/geometry";
 import FurnitureModel, { FURNITURE_GLB } from "../objects/FurnitureModel";
 import ProceduralFurniture, { PROCEDURAL_TYPES } from "../objects/ProceduralFurniture";
@@ -30,12 +35,12 @@ export type Cohort = "seats" | "gym" | "arena";
 // fits. seats/gym keep the smaller floor so the debug markers are readable.
 const CANVAS_W = 600;
 const CANVAS_H = 500;
-const ARENA_CANVAS_W = 1300;
-const ARENA_CANVAS_H = 1200;
 const WORLD_W = CANVAS_W * SCALE;
 const WORLD_H = CANVAS_H * SCALE;
-const ARENA_WORLD_W = ARENA_CANVAS_W * SCALE;
-const ARENA_WORLD_H = ARENA_CANVAS_H * SCALE;
+// Arena cohort matches the MAIN arena exactly so paintings, floor, and
+// perimeter walls all line up. These come from core/constants.
+const ARENA_WORLD_W = MAIN_CANVAS_W * SCALE;
+const ARENA_WORLD_H = MAIN_CANVAS_H * SCALE;
 
 // ── Tuning params ─────────────────────────────────────────────────────────
 // Everything the user can live-tune from the panel.
@@ -718,26 +723,25 @@ function Floor({
 }
 
 function GridLines({ large }: { large?: boolean }) {
-  const w = large ? ARENA_WORLD_W : WORLD_W;
-  const divisions = large ? 40 : 24;
-  // Arena cohort: very subtle grid so it fades into the floor. Seats/gym
-  // cohorts keep the visible grid for tuning precision.
-  const colorA = large ? "#e9e4d7" : "#c9c0ae";
-  const colorB = large ? "#ece8db" : "#d4cbb8";
+  // Arena cohort: no grid at all — matches the main OfficeEnvironment look.
+  // Seats/gym cohorts keep the visible grid for tuning precision.
+  if (large) return null;
   return (
     <gridHelper
-      args={[w, divisions, colorA, colorB]}
+      args={[WORLD_W, 24, "#c9c0ae", "#d4cbb8"]}
       position={[0, 0.002, 0]}
     />
   );
 }
 
 function PerimeterWalls({ large }: { large?: boolean }) {
+  // Port of OfficeEnvironment.PerimeterWalls — identical thickness + color +
+  // dims so paintings that are wallAttached line up against the wall.
   if (!large) return null;
   const wallH = 1.1;
   const halfW = ARENA_WORLD_W / 2;
   const halfH = ARENA_WORLD_H / 2;
-  const thickness = 0.14;
+  const thickness = WALL_THICKNESS * SCALE;
   const color = "#C9C7C2";
   return (
     <>
