@@ -319,10 +319,14 @@ function Rug({ item }: Props) {
   const w = (item.w ?? 180) * SCALE;
   const d = (item.h ?? 120) * SCALE;
   const color = item.color ?? "#7A9AB8";
+  // Base rug sits 0.005 above the office floor. `elevation` lets a rug
+  // stack above another rug (e.g. yoga mats on top of the gym rubber floor)
+  // without z-fighting.
+  const y = 0.005 + (item.elevation ?? 0);
 
   return (
     <mesh
-      position={[wx + w / 2, 0.005, wz + d / 2]}
+      position={[wx + w / 2, y, wz + d / 2]}
       rotation={[-Math.PI / 2, 0, itemRotY(item)]}
       receiveShadow
     >

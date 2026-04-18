@@ -6,8 +6,11 @@ import type { OfficeAgentInput } from "./useStrawAgents";
 import {
   DESK_STANDING_POINTS,
   SOCIAL_POINTS,
+  GYM_WORKOUT_POINTS,
   pickWeightedSocialPoint,
+  pickGymPoint,
   type SocialPoint,
+  type WorkoutStyle,
 } from "./core/defaultLayout";
 import { buildNavGrid, astar, type NavGrid } from "./core/navigation";
 import type { ArenaEvent } from "./useArenaEvents";
@@ -27,7 +30,7 @@ export interface RenderAgentState {
   frame: number;
   walkSpeed: number;
   phaseOffset: number;
-  state: "walking" | "sitting" | "standing" | "dancing";
+  state: "walking" | "sitting" | "standing" | "dancing" | "working_out";
 
   // ── Liveness holds ─────────────────────────────────────────────────
   /** ms timestamp — when set, agent is sitting on a social spot until this time */
@@ -46,6 +49,10 @@ export interface RenderAgentState {
   emojiUntil?: number;
   /** Emoji glyph to render (🎉 / ⬆️ / 🔥 / ❌) */
   emojiIcon?: string;
+  /** ms timestamp — agent is doing a workout at a gym point until this time */
+  gymUntil?: number;
+  /** Which workout animation variant to play */
+  workoutStyle?: WorkoutStyle;
 }
 
 const WALK_SPEED = 0.3;
@@ -65,6 +72,12 @@ const DANCE_HOLD_MS = 5_000;
 const TALK_HOLD_MS = 2_000;
 const EMOJI_HOLD_MS = 2_500;
 const FAILURE_COUCH_MS = 30_000;
+
+// Gym ambient behavior
+const GYM_PREFERENCE = 0.1;              // 10% of idle destination picks → gym
+const GYM_OCCUPANCY_CAP = 3;              // max agents working out simultaneously
+const GYM_WORKOUT_MIN_MS = 45_000;       // 45s min
+const GYM_WORKOUT_MAX_MS = 90_000;       // 90s max
 
 const ROAM_POINTS = [
   { x: 700, y: 180 },   // kitchen
@@ -103,15 +116,44 @@ function countSocialOccupants(agents: RenderAgentState[]): number {
   return n;
 }
 
-/** Pick an idle destination — 40% social, 60% roam. Respects occupancy cap. */
+/** Count agents currently at a gym station (gymUntil active or walking toward). */
+function countGymOccupants(agents: RenderAgentState[]): number {
+  const now = Date.now();
+  let n = 0;
+  for (const a of agents) {
+    if (a.gymUntil !== undefined && a.gymUntil > now) n += 1;
+    else if (a.workoutStyle !== undefined && a.state === "walking") n += 1;
+  }
+  return n;
+}
+
+/**
+ * Pick an idle destination:
+ * - 40% social (couch / coffee / beanbag) if under cap
+ * - 10% gym (workout station) if under cap
+ * - else roam point
+ */
 function pickIdleDestination(
   agents: RenderAgentState[]
 ):
   | { kind: "social"; point: SocialPoint }
+  | { kind: "gym"; point: { x: number; y: number; facing: number; style: WorkoutStyle } }
   | { kind: "roam"; point: { x: number; y: number } } {
-  const occupied = countSocialOccupants(agents);
-  const canSocial = occupied < SOCIAL_OCCUPANCY_CAP && SOCIAL_POINTS.length > 0;
-  if (canSocial && Math.random() < SOCIAL_PREFERENCE) {
+  const r = Math.random();
+  // Gym first, since its preference is lower — gives it a chance before social absorbs.
+  if (
+    r < GYM_PREFERENCE &&
+    countGymOccupants(agents) < GYM_OCCUPANCY_CAP &&
+    GYM_WORKOUT_POINTS.length > 0
+  ) {
+    const g = pickGymPoint();
+    if (g) return { kind: "gym", point: g };
+  }
+  if (
+    countSocialOccupants(agents) < SOCIAL_OCCUPANCY_CAP &&
+    SOCIAL_POINTS.length > 0 &&
+    r < GYM_PREFERENCE + SOCIAL_PREFERENCE
+  ) {
     const point = pickWeightedSocialPoint();
     if (point) return { kind: "social", point };
   }
@@ -307,6 +349,7 @@ export function useArenaGameLoop(
               lastSeenAt: now,
               couchUntil: undefined,
               socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
+              workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
             });
           } else {
             next.push({
@@ -385,6 +428,46 @@ export function useArenaGameLoop(
           path: planPath(agent.x, agent.y, dest.point.x, dest.point.y),
           state: "walking" as const,
           socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
+          workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
+          frame: agent.frame + 1,
+        };
+      }
+
+      // Active gym hold → frozen, working_out
+      if (agent.gymUntil !== undefined && agent.gymUntil > now) {
+        return {
+          ...agent,
+          state: "working_out" as const,
+          path: [],
+          frame: agent.frame + 1,
+        };
+      }
+      // Gym hold just expired → clear it, walk back out
+      if (agent.gymUntil !== undefined && agent.gymUntil <= now) {
+        const dest = pickIdleDestination(currentAgents);
+        return {
+          ...agent,
+          gymUntil: undefined,
+          workoutStyle: undefined,
+          targetX: dest.point.x,
+          targetY: dest.point.y,
+          path: planPath(agent.x, agent.y, dest.point.x, dest.point.y),
+          state: "walking" as const,
+          socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
+          frame: agent.frame + 1,
+        };
+      }
+      // Preempt gym if agent's status has flipped to working (submission started)
+      if (
+        agent.workoutStyle !== undefined &&
+        agent.status === "working"
+      ) {
+        // Fall through to regular walking logic — game loop will route to desk
+        // via the status-change branch on next reconcile. Clear gym fields.
+        return {
+          ...agent,
+          workoutStyle: undefined,
+          gymUntil: undefined,
           frame: agent.frame + 1,
         };
       }
@@ -437,7 +520,8 @@ export function useArenaGameLoop(
         return {
           ...agent,
           couchUntil: undefined,
-          socialSpotType: undefined,
+          socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
+          workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
           targetX: dest.point.x,
           targetY: dest.point.y,
           path: planPath(agent.x, agent.y, dest.point.x, dest.point.y),
@@ -477,6 +561,22 @@ export function useArenaGameLoop(
             state = "sitting";
           } else if (agent.status === "idle") {
             // Arrived at an idle destination.
+            // If this was a gym station → start workout hold.
+            if (agent.workoutStyle !== undefined) {
+              const duration =
+                GYM_WORKOUT_MIN_MS +
+                Math.random() * (GYM_WORKOUT_MAX_MS - GYM_WORKOUT_MIN_MS);
+              return {
+                ...agent,
+                x: nx,
+                y: ny,
+                facing: nf,
+                path: [],
+                state: "working_out" as const,
+                gymUntil: now + duration,
+                frame: agent.frame + 1,
+              };
+            }
             // If this was a social sitting spot → start couch hold.
             const sittingTypes = ["couch", "couch_v", "beanbag"];
             if (agent.socialSpotType && sittingTypes.includes(agent.socialSpotType)) {
@@ -530,6 +630,7 @@ export function useArenaGameLoop(
                 path: planPath(nx, ny, dest.point.x, dest.point.y),
                 state: "walking" as const,
                 socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
+                workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
                 frame: agent.frame + 1,
                 facing: nf,
               };

@@ -284,11 +284,12 @@ const GYM: FurnitureItem[] = [
   // Middle row: dumbbell rack + water dispenser
   { type: "dumbbell_rack", x: 850, y: 900, w: 150, h: 30, _uid: uid("db") },
   { type: "water_dispenser", x: 1050, y: 905, w: 35, h: 35, _uid: uid("water") },
-  // Front row: yoga / stretching mats in a tidy line
-  { type: "rug", x: 820, y: 990, w: 70, h: 30, color: "#3BAFA9", _uid: uid("mat") },
-  { type: "rug", x: 910, y: 990, w: 70, h: 30, color: "#FF6B5B", _uid: uid("mat") },
-  { type: "rug", x: 1000, y: 990, w: 70, h: 30, color: "#9B8FD1", _uid: uid("mat") },
-  { type: "rug", x: 1090, y: 990, w: 70, h: 30, color: "#E8B84A", _uid: uid("mat") },
+  // Front row: yoga / stretching mats. `elevation: 0.005` lifts each mat
+  // above the gym rubber floor (also a rug) so they don't z-fight and clip.
+  { type: "rug", x: 820, y: 990, w: 70, h: 30, color: "#3BAFA9", elevation: 0.005, _uid: uid("mat") },
+  { type: "rug", x: 910, y: 990, w: 70, h: 30, color: "#FF6B5B", elevation: 0.005, _uid: uid("mat") },
+  { type: "rug", x: 1000, y: 990, w: 70, h: 30, color: "#9B8FD1", elevation: 0.005, _uid: uid("mat") },
+  { type: "rug", x: 1090, y: 990, w: 70, h: 30, color: "#E8B84A", elevation: 0.005, _uid: uid("mat") },
   // A neon sign on the east wall to brand the zone
   {
     type: "neon_sign",
@@ -554,6 +555,77 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
   }
   return points;
 })();
+
+export type WorkoutStyle = "lift" | "box" | "stretch" | "row" | "bike" | "run";
+
+export interface GymWorkoutPoint {
+  x: number;
+  y: number;
+  facing: number; // radians; where the agent faces while working out
+  style: WorkoutStyle;
+}
+
+/**
+ * Standing points next to each piece of gym equipment, paired with a
+ * workoutStyle that drives the agent's animation variant. Derived at module
+ * load from gym furniture so it stays in sync with the authored layout.
+ */
+export const GYM_WORKOUT_POINTS: GymWorkoutPoint[] = (() => {
+  const points: GymWorkoutPoint[] = [];
+  for (const item of DEFAULT_ARENA_FURNITURE) {
+    switch (item.type) {
+      case "pull_up_tower":
+      case "squat_rack":
+      case "dumbbell_rack": {
+        const w = item.w ?? 60;
+        const h = item.h ?? 40;
+        // Agent stands just south of the equipment, facing north (into it)
+        points.push({
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y + h + 20),
+          facing: 0, // facing north = +y looking toward -y in canvas? atan2(dx,dy) direction; north visually
+          style: "lift",
+        });
+        break;
+      }
+      case "punching_bag": {
+        const w = item.w ?? 30;
+        const h = item.h ?? 30;
+        points.push({
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y + h + 15),
+          facing: 0,
+          style: "box",
+        });
+        break;
+      }
+      // Yoga mats are rug items with specific accent colors (teal / coral).
+      // Detect them by the color signature set in GYM.
+      case "rug" as string: {
+        if (item.color === "#3BAFA9" || item.color === "#FF6B5B") {
+          const w = item.w ?? 70;
+          const h = item.h ?? 30;
+          points.push({
+            x: Math.round(item.x + w / 2),
+            y: Math.round(item.y + h / 2),
+            facing: 0,
+            style: "stretch",
+          });
+        }
+        break;
+      }
+    }
+  }
+  return points;
+})();
+
+/** Pick a gym point uniformly at random. Null if there are no points. */
+export function pickGymPoint(): GymWorkoutPoint | null {
+  if (GYM_WORKOUT_POINTS.length === 0) return null;
+  return GYM_WORKOUT_POINTS[
+    Math.floor(Math.random() * GYM_WORKOUT_POINTS.length)
+  ];
+}
 
 /** Pick a social point weighted by its `weight`. Returns null if none exist. */
 export function pickWeightedSocialPoint(): SocialPoint | null {

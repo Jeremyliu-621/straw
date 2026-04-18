@@ -2,12 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 
-export type ArenaMode =
-  | "color"
-  | "bw"
-  | "bw-shadows"
-  | "bw-tint"
-  | "bw-shadows-tint";
+export type ArenaMode = "color" | "bw-tint" | "bw-shadows-tint";
 
 const MODE_KEY = "arena3d.mode";
 const SHADOW_KEY = "arena3d.shadowLightness";
@@ -15,7 +10,7 @@ const PURE_WHITE_KEY = "arena3d.pureWhite";
 const TINT_NORMAL_KEY = "arena3d.tintNormal";
 const TINT_PURE_KEY = "arena3d.tintPureWhite";
 const EDGE_KEY = "arena3d.edgeThreshold";
-const VALID: ArenaMode[] = ["color", "bw", "bw-shadows", "bw-tint", "bw-shadows-tint"];
+const VALID: ArenaMode[] = ["color", "bw-tint", "bw-shadows-tint"];
 
 const DEFAULT_SHADOW_LIGHTNESS = 140; // 0 = dark shadows, 200 = shadows fully gone
 const DEFAULT_PURE_WHITE = true;
@@ -23,10 +18,10 @@ const DEFAULT_PURE_WHITE = true;
 // 1 = pure white). Kept separately for pure-white on vs off because ACES
 // off makes the same tint read noticeably more vivid.
 const DEFAULT_TINT_NORMAL = 0.5;
-const DEFAULT_TINT_PURE_WHITE = 0.58;
+const DEFAULT_TINT_PURE_WHITE = 0.6;
 // Edges-geometry threshold in degrees — lines only drawn where adjacent
 // faces meet at >= this angle. Higher = sparser / cleaner.
-const DEFAULT_EDGE_THRESHOLD = 15;
+const DEFAULT_EDGE_THRESHOLD = 40;
 
 function readMode(): ArenaMode {
   if (typeof window === "undefined") return "color";
@@ -140,18 +135,29 @@ export function useArenaMode(): {
     window.dispatchEvent(new StorageEvent("storage", { key: PURE_WHITE_KEY, newValue: s }));
   }, []);
 
-  const makeFloatSetter = (key: string, min: number, max: number) =>
-    (n: number) => {
-      if (typeof window === "undefined") return;
-      const clamped = Math.max(min, Math.min(max, n));
-      const s = String(clamped);
-      window.localStorage.setItem(key, s);
-      window.dispatchEvent(new StorageEvent("storage", { key, newValue: s }));
-    };
+  const setTintNormal = useCallback((n: number) => {
+    if (typeof window === "undefined") return;
+    const clamped = Math.max(0, Math.min(1, n));
+    const s = String(clamped);
+    window.localStorage.setItem(TINT_NORMAL_KEY, s);
+    window.dispatchEvent(new StorageEvent("storage", { key: TINT_NORMAL_KEY, newValue: s }));
+  }, []);
 
-  const setTintNormal = useCallback(makeFloatSetter(TINT_NORMAL_KEY, 0, 1), []);
-  const setTintPureWhite = useCallback(makeFloatSetter(TINT_PURE_KEY, 0, 1), []);
-  const setEdgeThreshold = useCallback(makeFloatSetter(EDGE_KEY, 0, 60), []);
+  const setTintPureWhite = useCallback((n: number) => {
+    if (typeof window === "undefined") return;
+    const clamped = Math.max(0, Math.min(1, n));
+    const s = String(clamped);
+    window.localStorage.setItem(TINT_PURE_KEY, s);
+    window.dispatchEvent(new StorageEvent("storage", { key: TINT_PURE_KEY, newValue: s }));
+  }, []);
+
+  const setEdgeThreshold = useCallback((n: number) => {
+    if (typeof window === "undefined") return;
+    const clamped = Math.max(0, Math.min(60, n));
+    const s = String(clamped);
+    window.localStorage.setItem(EDGE_KEY, s);
+    window.dispatchEvent(new StorageEvent("storage", { key: EDGE_KEY, newValue: s }));
+  }, []);
 
   return {
     mode,

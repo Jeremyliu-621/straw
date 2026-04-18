@@ -80,8 +80,53 @@ export default function AgentCharacter({
 
     const isWalking = agent.state === "walking";
     const isDancing = agent.state === "dancing";
+    const isWorkingOut = agent.state === "working_out";
 
-    if (isDancing) {
+    if (isWorkingOut) {
+      // Workout variant by style. Keep it simple — a few sin waves per limb.
+      const t = agent.frame * 0.2;
+      const style = agent.workoutStyle ?? "lift";
+      if (style === "lift") {
+        // Squat: bob down/up + arms up overhead
+        groupRef.current.position.y = -Math.abs(Math.sin(t)) * 6 * AGENT_SCALE * 0.01;
+        if (leftArmRef.current) {
+          leftArmRef.current.rotation.x = 0;
+          leftArmRef.current.rotation.z = 1.4;
+        }
+        if (rightArmRef.current) {
+          rightArmRef.current.rotation.x = 0;
+          rightArmRef.current.rotation.z = -1.4;
+        }
+        if (leftLegRef.current) leftLegRef.current.rotation.x = 0;
+        if (rightLegRef.current) rightLegRef.current.rotation.x = 0;
+      } else if (style === "box") {
+        // Punch alternating
+        const punchL = Math.max(0, Math.sin(t * 2));
+        const punchR = Math.max(0, Math.sin(t * 2 + Math.PI));
+        if (leftArmRef.current) {
+          leftArmRef.current.rotation.x = -punchL * 1.4;
+          leftArmRef.current.rotation.z = 0;
+        }
+        if (rightArmRef.current) {
+          rightArmRef.current.rotation.x = -punchR * 1.4;
+          rightArmRef.current.rotation.z = 0;
+        }
+        groupRef.current.position.y = 0;
+      } else {
+        // stretch: gentle sway, arms out wide
+        groupRef.current.position.y = 0;
+        if (leftArmRef.current) {
+          leftArmRef.current.rotation.x = 0;
+          leftArmRef.current.rotation.z = 0.7 + Math.sin(t) * 0.15;
+        }
+        if (rightArmRef.current) {
+          rightArmRef.current.rotation.x = 0;
+          rightArmRef.current.rotation.z = -0.7 - Math.sin(t) * 0.15;
+        }
+        if (leftLegRef.current) leftLegRef.current.rotation.x = Math.sin(t * 0.5) * 0.15;
+        if (rightLegRef.current) rightLegRef.current.rotation.x = -Math.sin(t * 0.5) * 0.15;
+      }
+    } else if (isDancing) {
       // Body bob via outer group's y + arms raised overhead + leg wiggle
       const t = agent.frame * 0.25;
       groupRef.current.position.y = Math.sin(t) * 2 * AGENT_SCALE * 0.01;
@@ -115,10 +160,10 @@ export default function AgentCharacter({
       if (rightLegRef.current) rightLegRef.current.rotation.x = legSwing;
     }
 
-    // Sitting: lower body (not applied in dancing branch above)
+    // Sitting: lower body (not applied in dancing/workout branches above)
     if (agent.state === "sitting") {
       groupRef.current.position.y = -0.15 * AGENT_SCALE * 0.01;
-    } else if (!isDancing) {
+    } else if (!isDancing && !isWorkingOut) {
       groupRef.current.position.y = 0;
     }
 
