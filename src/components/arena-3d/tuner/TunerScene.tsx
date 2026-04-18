@@ -1057,14 +1057,18 @@ function AgentPathLine({
   useFrame(() => {
     const agent = agentRef.current[agentIdx];
     if (!agent) return;
-    const walking = agent.state === "walking" && agent.path.length > 0;
-    if (lineRef.current) lineRef.current.visible = walking;
-    if (!walking) return;
+    // Show the full planned route whenever one exists, so the user can
+    // inspect it before/during/after the agent walks it. Cleared on
+    // sendToStation(null) / reset.
+    const planned = agent.plannedPath;
+    const hasPath = Array.isArray(planned) && planned.length > 0;
+    if (lineRef.current) lineRef.current.visible = hasPath;
+    if (!hasPath || !planned) return;
 
-    // Full polyline: current agent position → each remaining A* waypoint.
+    // Full polyline: current agent position → each planned waypoint.
     const [ax, , az] = toWorld(agent.x, agent.y);
     const seq: [number, number, number][] = [[ax, 0.06, az]];
-    const waypoints = agent.path.slice(0, PATH_MAX_POINTS - 1);
+    const waypoints = planned.slice(0, PATH_MAX_POINTS - 1);
     for (const wp of waypoints) {
       const [wx, , wz] = toWorld(wp.x, wp.y);
       seq.push([wx, 0.06, wz]);
@@ -1372,6 +1376,7 @@ export function useTunerAgent() {
       if (idx === null) {
         agent.state = "standing";
         agent.path = [];
+        agent.plannedPath = undefined;
         agent.socialSpotType = undefined;
         agent.sitBackOverride = undefined;
         agent.sinkDepthOverride = undefined;
@@ -1390,6 +1395,7 @@ export function useTunerAgent() {
       agent.targetX = station.standX;
       agent.targetY = station.standY;
       agent.path = planPath(agent.x, agent.y, station.standX, station.standY);
+      agent.plannedPath = agent.path.map((p) => ({ ...p }));
       agent.socialSpotType = undefined;
       agent.sitBackOverride = undefined;
       agent.sinkDepthOverride = undefined;
@@ -1420,6 +1426,7 @@ export function useTunerAgent() {
         agent.targetX = station.standX;
         agent.targetY = station.standY;
         agent.path = planPath(agent.x, agent.y, station.standX, station.standY);
+      agent.plannedPath = agent.path.map((p) => ({ ...p }));
         agent.socialSpotType = undefined;
         agent.sitBackOverride = undefined;
         agent.sinkDepthOverride = undefined;

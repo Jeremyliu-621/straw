@@ -71,6 +71,10 @@ export interface RenderAgentState {
   sitBackOverride?: number;
   /** Override the default sink depth while sitting. Tuner only. */
   sinkDepthOverride?: number;
+  /** Full planned path (tuner-only). `path` is mutated as the agent walks;
+   *  this copy is preserved so the "paths: on" overlay can keep showing the
+   *  route even after arrival. */
+  plannedPath?: { x: number; y: number }[];
 }
 
 const WALK_SPEED = 0.7;
