@@ -442,6 +442,131 @@ export function getDeskIdForAgent(agentIndex: number): string {
  * pods: the standing point is placed along the desk's outward-facing normal
  * so agents approach from the correct side.
  */
+export type SocialPointType =
+  | "couch"
+  | "couch_v"
+  | "beanbag"
+  | "round_table"
+  | "coffee_machine"
+  | "ping_pong"
+  | "water_dispenser"
+  | "whiteboard";
+
+export interface SocialPoint {
+  x: number;
+  y: number;
+  type: SocialPointType;
+  /** Weight used when picking a destination (higher = more popular). */
+  weight: number;
+}
+
+/**
+ * Points across the office where idle agents can gather / hang out. Derived
+ * at module load from the furniture list so the layout is the single source
+ * of truth. Agents walk to (x, y) and stand / sit there.
+ */
+export const SOCIAL_POINTS: SocialPoint[] = (() => {
+  const points: SocialPoint[] = [];
+  for (const item of DEFAULT_ARENA_FURNITURE) {
+    const t = item.type;
+    switch (t) {
+      case "couch":
+      case "couch_v": {
+        const w = item.w ?? 100;
+        const h = item.h ?? 40;
+        points.push({
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y + h / 2),
+          type: t,
+          weight: 3,
+        });
+        break;
+      }
+      case "beanbag": {
+        points.push({
+          x: Math.round(item.x + 20),
+          y: Math.round(item.y + 20),
+          type: t,
+          weight: 2,
+        });
+        break;
+      }
+      case "round_table": {
+        // Stand next to the table (north side is usually walkable).
+        const r = item.r ?? 50;
+        points.push({
+          x: Math.round(item.x + r),
+          y: Math.round(item.y + r + 30),
+          type: t,
+          weight: 1,
+        });
+        break;
+      }
+      case "coffee_machine": {
+        // Stand in front (south) of the coffee machine.
+        points.push({
+          x: Math.round(item.x + 16),
+          y: Math.round(item.y + 50),
+          type: t,
+          weight: 2,
+        });
+        break;
+      }
+      case "ping_pong": {
+        const w = item.w ?? 100;
+        const h = item.h ?? 60;
+        // Two standing points, one on each long side of the table.
+        points.push({
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y - 15),
+          type: t,
+          weight: 1,
+        });
+        points.push({
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y + h + 15),
+          type: t,
+          weight: 1,
+        });
+        break;
+      }
+      case "water_dispenser": {
+        points.push({
+          x: Math.round(item.x + 15),
+          y: Math.round(item.y + 45),
+          type: t,
+          weight: 1,
+        });
+        break;
+      }
+      case "whiteboard":
+      case "rolling_whiteboard" as SocialPointType: {
+        const w = item.w ?? 10;
+        points.push({
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y + 30),
+          type: "whiteboard",
+          weight: 1,
+        });
+        break;
+      }
+    }
+  }
+  return points;
+})();
+
+/** Pick a social point weighted by its `weight`. Returns null if none exist. */
+export function pickWeightedSocialPoint(): SocialPoint | null {
+  if (SOCIAL_POINTS.length === 0) return null;
+  const totalWeight = SOCIAL_POINTS.reduce((sum, p) => sum + p.weight, 0);
+  let r = Math.random() * totalWeight;
+  for (const p of SOCIAL_POINTS) {
+    r -= p.weight;
+    if (r <= 0) return p;
+  }
+  return SOCIAL_POINTS[SOCIAL_POINTS.length - 1];
+}
+
 export const DESK_STANDING_POINTS: { x: number; y: number }[] = (() => {
   const deskItems = DEFAULT_ARENA_FURNITURE.filter(
     (item) =>
