@@ -36,8 +36,13 @@ const CAMERA_PRESETS: Record<
 
 const VIEW_CYCLE: ViewMode[] = ["iso", "top", "corner", "side", "front"];
 
-function GameLoop({ tick }: { tick: () => void }) {
-  useFrame(() => tick());
+function GameLoop({ tick }: { tick: (dtScale: number) => void }) {
+  useFrame((_, delta) => {
+    // dtScale = how many 60fps "frames" this actual frame represents. Clamped
+    // so a long stutter doesn't teleport agents across the arena.
+    const dtScale = Math.min(delta * 60, 6);
+    tick(dtScale);
+  });
   return null;
 }
 

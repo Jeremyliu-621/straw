@@ -452,7 +452,10 @@ function applyDevActionsToAgents(
 
 export interface UseArenaGameLoopResult {
   renderAgentsRef: React.RefObject<RenderAgentState[]>;
-  tick: () => void;
+  /** `dtScale` = how many 60fps "frames" this actual frame represents.
+   *  Used to scale walking so agents move consistently across varying
+   *  framerates (e.g. when the browser throttles a backgrounded canvas). */
+  tick: (dtScale?: number) => void;
 }
 
 export function useArenaGameLoop(
@@ -592,7 +595,7 @@ export function useArenaGameLoop(
     renderAgentsRef.current = next;
   }, [agents, planPath]);
 
-  const tick = useCallback(() => {
+  const tick = useCallback((dtScale: number = 1) => {
     const now = Date.now();
 
     // Drain pending events (from the last poll diff) and apply holds.
@@ -767,7 +770,7 @@ export function useArenaGameLoop(
         };
       }
 
-      const speed = agent.walkSpeed;
+      const speed = agent.walkSpeed * dtScale;
       const path = agent.path;
       const wpX = path.length > 0 ? path[0].x : agent.x;
       const wpY = path.length > 0 ? path[0].y : agent.y;
