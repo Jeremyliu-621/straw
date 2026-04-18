@@ -1,5 +1,12 @@
 import type { FurnitureItem } from "./types";
 import { ITEM_FOOTPRINT, FURNITURE_ROTATION } from "./geometry";
+import {
+  makeDeskStation,
+  makeDeskPod,
+  DESK_W,
+  DESK_H,
+  type DeskStation,
+} from "./stations";
 
 let uidCounter = 0;
 const uid = (prefix: string) => `${prefix}_${uidCounter++}`;
@@ -15,94 +22,10 @@ const uid = (prefix: string) => `${prefix}_${uidCounter++}`;
  */
 
 // ── Desk helpers ─────────────────────────────────────────────────────────
-type DeskType = "desk_cubicle" | "standing_desk";
-type DeskFacing = "south" | "north";
-
-function deskDims(_type: DeskType): { w: number; h: number } {
-  return { w: 100, h: 55 };
-}
-
-function deskCluster(
-  id: string,
-  x: number,
-  y: number,
-  opts: { type?: DeskType; facing?: DeskFacing } = {}
-): FurnitureItem[] {
-  const type = opts.type ?? "desk_cubicle";
-  const facing = opts.facing ?? "south";
-  const { w, h } = deskDims(type);
-  const chairX = w / 2 - 30;
-
-  if (facing === "south") {
-    return [
-      { type, x, y, _uid: uid("desk"), id },
-      { type: "chair", x: x + chairX, y: y - 10, facing: 180, _uid: uid("chair") },
-      { type: "computer", x: x + chairX, y: y - 13, _uid: uid("comp") },
-      { type: "keyboard", x: x + chairX + 10, y: y - 5, _uid: uid("kb") },
-      { type: "mouse", x: x + chairX + 32, y: y - 5, _uid: uid("mouse") },
-    ];
-  }
-  return [
-    { type, x, y, _uid: uid("desk"), id, facing: 180 },
-    { type: "chair", x: x + chairX, y: y + h + 10, facing: 0, _uid: uid("chair") },
-    { type: "computer", x: x + chairX, y: y + h + 13, _uid: uid("comp") },
-    { type: "keyboard", x: x + chairX + 10, y: y + h + 5, _uid: uid("kb") },
-    { type: "mouse", x: x + chairX + 32, y: y + h + 5, _uid: uid("mouse") },
-  ];
-}
-
-/**
- * A pod of 4 desks in a 2x2 block. Top row faces south, bottom row faces
- * north — agents in the same pod sit across from each other.
- */
-function deskPod(
-  startIndex: number,
-  x: number,
-  y: number,
-  type: DeskType = "desk_cubicle"
-): FurnitureItem[] {
-  const { w, h } = deskDims(type);
-  const xStep = w + 20;
-  const yStep = h + 35;
-  return [
-    ...deskCluster(`desk_${startIndex}`, x, y, { type, facing: "south" }),
-    ...deskCluster(`desk_${startIndex + 1}`, x + xStep, y, { type, facing: "south" }),
-    ...deskCluster(`desk_${startIndex + 2}`, x, y + yStep, { type, facing: "north" }),
-    ...deskCluster(`desk_${startIndex + 3}`, x + xStep, y + yStep, { type, facing: "north" }),
-  ];
-}
-
-/** Rotate a list of furniture items around an anchor point (canvas space).
- * Rotates each item's CENTER (not top-left) so items of different sizes stay
- * spatially aligned as a rigid cluster.
- */
-function rotateAround(
-  items: FurnitureItem[],
-  cx: number,
-  cy: number,
-  deg: number
-): FurnitureItem[] {
-  const rad = (deg * Math.PI) / 180;
-  const cos = Math.cos(rad);
-  const sin = Math.sin(rad);
-  return items.map((item) => {
-    const [defW, defH] = ITEM_FOOTPRINT[item.type] ?? [40, 40];
-    const w = item.w ?? defW;
-    const h = item.h ?? defH;
-    const itemCx = item.x + w / 2;
-    const itemCy = item.y + h / 2;
-    const dx = itemCx - cx;
-    const dy = itemCy - cy;
-    const newCx = cx + dx * cos - dy * sin;
-    const newCy = cy + dx * sin + dy * cos;
-    return {
-      ...item,
-      x: Math.round(newCx - w / 2),
-      y: Math.round(newCy - h / 2),
-      facing: ((item.facing ?? 0) + deg + 360) % 360,
-    };
-  });
-}
+// Station factories live in core/stations.ts — the `/arena-tuner` dev page
+// uses the same factories to produce tuner-validated visuals. Each desk
+// station is a rigid cluster (desk + chair + computer) that renders via a
+// three.js <group> so it rotates cleanly at any angle.
 
 // ── Interior walls ───────────────────────────────────────────────────────
 const WALL_THICK = 8;
@@ -188,26 +111,37 @@ const PRINTER_STATION: FurnitureItem[] = [
 ];
 
 // ── Benching cluster A (rotated ~-18°) ───────────────────────────────────
-const CLUSTER_A_RAW: FurnitureItem[] = [
-  ...deskPod(0, 250, 300), // desks 0-3
-  ...deskPod(4, 250, 470), // desks 4-7
+// Pod-level rotation around (370, 410) is applied to each desk station's
+// position AND its own cluster rotation, so desks + chairs + computers
+// stay rigidly aligned through the tilt.
+const CLUSTER_A_STATIONS: DeskStation[] = [
+  ...makeDeskPod({ startIndex: 0, x: 250, y: 300, rotDeg: -18, pivotX: 370, pivotY: 410 }),
+  ...makeDeskPod({ startIndex: 4, x: 250, y: 470, rotDeg: -18, pivotX: 370, pivotY: 410 }),
 ];
-const CLUSTER_A = rotateAround(CLUSTER_A_RAW, 370, 410, -18);
 
 // ── Benching cluster B (orthogonal) ──────────────────────────────────────
-const CLUSTER_B: FurnitureItem[] = [
-  ...deskPod(8, 580, 290), // desks 8-11
-  ...deskPod(12, 580, 460), // desks 12-15
+const CLUSTER_B_STATIONS: DeskStation[] = [
+  ...makeDeskPod({ startIndex: 8, x: 580, y: 290 }),
+  ...makeDeskPod({ startIndex: 12, x: 580, y: 460 }),
 ];
 
 // ── Standing-desk island ─────────────────────────────────────────────────
-const STANDING_ISLAND: FurnitureItem[] = [
-  ...deskCluster("desk_16", 930, 330, { type: "standing_desk", facing: "south" }),
-  ...deskCluster("desk_17", 1060, 330, { type: "standing_desk", facing: "south" }),
-  ...deskCluster("desk_18", 930, 470, { type: "standing_desk", facing: "north" }),
-  ...deskCluster("desk_19", 1060, 470, { type: "standing_desk", facing: "north" }),
+const STANDING_ISLAND_STATIONS: DeskStation[] = [
+  makeDeskStation({ id: "desk_16", x: 930, y: 330, type: "standing_desk" }),
+  makeDeskStation({ id: "desk_17", x: 1060, y: 330, type: "standing_desk" }),
+  // "North-facing" in the old layout → rotate the whole station 180°.
+  makeDeskStation({ id: "desk_18", x: 930, y: 470, type: "standing_desk", rotDeg: 180 }),
+  makeDeskStation({ id: "desk_19", x: 1060, y: 470, type: "standing_desk", rotDeg: 180 }),
+];
+const STANDING_ISLAND_EXTRAS: FurnitureItem[] = [
   { type: "plant", x: 890, y: 330, _uid: uid("plant") },
   { type: "plant", x: 1150, y: 560, _uid: uid("plant") },
+];
+
+const ALL_DESK_STATIONS: DeskStation[] = [
+  ...CLUSTER_A_STATIONS,
+  ...CLUSTER_B_STATIONS,
+  ...STANDING_ISLAND_STATIONS,
 ];
 
 // ── Phone booths ─────────────────────────────────────────────────────────
@@ -432,9 +366,8 @@ export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
   ...MEETING_ROOM,
   ...KITCHEN,
   ...PRINTER_STATION,
-  ...CLUSTER_A,
-  ...CLUSTER_B,
-  ...STANDING_ISLAND,
+  ...ALL_DESK_STATIONS.flatMap((s) => s.items),
+  ...STANDING_ISLAND_EXTRAS,
   ...PHONE_BOOTHS,
   ...LIBRARY,
   ...LOUNGE_PIT,
@@ -691,52 +624,17 @@ export function pickWeightedSocialPoint(): SocialPoint | null {
   return SOCIAL_POINTS[SOCIAL_POINTS.length - 1];
 }
 
+/**
+ * Precomputed standing points for desk_0..desk_19 sourced directly from the
+ * station factories. Each factory knows where its agent stands + which way
+ * they face (post-cluster-rotation), so this is just an index flip.
+ */
 export const DESK_STANDING_POINTS: { x: number; y: number; facing: number }[] = (() => {
-  const deskItems = DEFAULT_ARENA_FURNITURE.filter(
-    (item) =>
-      (item.type === "desk_cubicle" || item.type === "standing_desk") &&
-      typeof item.id === "string" &&
-      item.id.startsWith("desk_")
-  );
   const byIndex: { x: number; y: number; facing: number }[] = [];
-  for (const item of deskItems) {
-    const idx = parseInt(item.id!.slice(5), 10);
+  for (const station of ALL_DESK_STATIONS) {
+    const idx = parseInt(station.id.slice(5), 10);
     if (Number.isNaN(idx)) continue;
-    const { w, h } = deskDims(item.type as DeskType);
-    const facingDeg = item.facing ?? 0;
-    const rad = (facingDeg * Math.PI) / 180;
-    // Desk center (pre-rotation). `facing` field on north-facing desks is 180
-    // (the desk mesh itself gets rotated 180 by the GLB pipeline) — so the
-    // "outward direction" for the chair depends on which face we're sitting at.
-    const cx = item.x + w / 2;
-    const cy = item.y + h / 2;
-    const isNorthFacing = Math.round(facingDeg / 180) % 2 === 1;
-
-    // Chair placement inside deskCluster (must stay in sync with deskCluster):
-    //   chair.x = desk.x + (w/2 - 30), chair.y = desk.y - 10 (south) or +h+10 (north)
-    //   chair footprint = 24x24, so chair center = chair item pos + (12, 12).
-    // Chair-center offset relative to desk top-left:
-    //   dx_local = (w/2 - 30) + 12 = w/2 - 18   (constant −18 from desk center)
-    //   dy_local (south) = -10 + 12 = 2         → (2 − h/2) from desk center
-    //   dy_local (north) =  h + 10 + 12 = h+22  → (h/2 + 22) from desk center
-    const baseDx = -18;
-    const baseDy = isNorthFacing ? h / 2 + 22 : -(h / 2 - 2);
-
-    // Rotate by the *pod* rotation only. The north/south flip was already
-    // handled via isNorthFacing above; subtracting π here cancels the extra
-    // 180° that north-facing desks pick up from their `facing: 180`.
-    const podRot = isNorthFacing ? rad - Math.PI : rad;
-    const cos = Math.cos(podRot);
-    const sin = Math.sin(podRot);
-    const dx = baseDx * cos - baseDy * sin;
-    const dy = baseDx * sin + baseDy * cos;
-    // Agent's facing. +π baseline because the chair (at y-10 for south-facing
-    // desks) places the agent NORTH of the desk — they need to look SOUTH
-    // toward the monitor on the desk surface, which in atan2(dx,dy) is facing=π.
-    // Pod rotation is already baked into item.facing by rotateAround, so this
-    // just works for rotated clusters too.
-    const facing = ((item.facing ?? 0) * Math.PI) / 180 + Math.PI;
-    byIndex[idx] = { x: Math.round(cx + dx), y: Math.round(cy + dy), facing };
+    byIndex[idx] = { ...station.standPoint };
   }
   return byIndex;
 })();

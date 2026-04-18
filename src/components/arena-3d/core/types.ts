@@ -29,6 +29,21 @@ export type RenderAgent = OfficeAgent & {
   interactionTarget?: OfficeInteractionTargetId;
 };
 
+/**
+ * Rigid-body cluster transform. When set on a FurnitureItem, the item's
+ * x/y/facing are PRE-rotation values; the cluster rotation is applied:
+ *   - via a three.js <group> at render time (so items rotate together
+ *     without per-item pivot drift at non-cardinal angles), and
+ *   - via `applyClusterTransform(item)` for consumers that need the
+ *     post-rotation canvas position (nav grid, stand points, social points).
+ */
+export type ClusterTransform = {
+  id: string;
+  pivotX: number;
+  pivotY: number;
+  rotDeg: number;
+};
+
 export type FurnitureItem = {
   _uid: string;
   type: string;
@@ -43,6 +58,7 @@ export type FurnitureItem = {
   vertical?: boolean;
   elevation?: number;
   wallAttach?: "N" | "S" | "E" | "W";
+  _cluster?: ClusterTransform;
 };
 
 export type FurnitureSeed = Omit<FurnitureItem, "_uid">;

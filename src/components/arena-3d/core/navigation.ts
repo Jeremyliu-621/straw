@@ -1,5 +1,6 @@
 import { CANVAS_H, CANVAS_W } from "./constants";
 import {
+  applyClusterTransform,
   getItemBounds,
   ITEM_FOOTPRINT,
   ITEM_METADATA,
@@ -28,8 +29,11 @@ const itemBlocksNavigation = (type: string): boolean =>
 export function buildNavGrid(furniture: FurnitureItem[]): NavGrid {
   const grid = new Uint8Array(GRID_COLS * GRID_ROWS);
   const defaultPad = GRID_CELL * 0.6;
-  for (const item of furniture) {
-    if (!itemBlocksNavigation(item.type)) continue;
+  for (const rawItem of furniture) {
+    if (!itemBlocksNavigation(rawItem.type)) continue;
+    // Cluster-tagged items store PRE-rotation coords; nav grid needs the
+    // post-rotation canvas position to correctly block navigation.
+    const item = applyClusterTransform(rawItem);
     const itemPad = ITEM_METADATA[item.type]?.navPadding ?? defaultPad;
     const bounds = getItemBounds(item);
     const x1 = bounds.x - itemPad;

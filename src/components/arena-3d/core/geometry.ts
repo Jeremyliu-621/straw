@@ -19,6 +19,54 @@ export const toWorld = (cx: number, cy: number): [number, number, number] => [
   cy * SCALE - CANVAS_H * SCALE * 0.5,
 ];
 
+/**
+ * Rotate a point (px, py) around (cx, cy) by `deg` using the canvas-y convention
+ * that matches three.js Y-axis rotation (canvas y ↔ world z):
+ *   x' = x*cos + y*sin
+ *   y' = -x*sin + y*cos
+ */
+export function rotatePointAround(
+  px: number,
+  py: number,
+  cx: number,
+  cy: number,
+  deg: number
+): { x: number; y: number } {
+  const rad = (deg * Math.PI) / 180;
+  const cos = Math.cos(rad);
+  const sin = Math.sin(rad);
+  const dx = px - cx;
+  const dy = py - cy;
+  return {
+    x: cx + dx * cos + dy * sin,
+    y: cy - dx * sin + dy * cos,
+  };
+}
+
+/**
+ * If the item belongs to a cluster, return a copy with x/y/facing rotated by
+ * the cluster transform. Otherwise return the item unchanged.
+ *
+ * Consumers that care about the FINAL canvas position (nav grid bounds,
+ * stand-point derivation, social/gym spot derivation) should call this.
+ * The render path does NOT use this — it uses the raw item positions inside
+ * a three.js <group> that applies the cluster rotation.
+ */
+export function applyClusterTransform(item: FurnitureItem): FurnitureItem {
+  if (!item._cluster) return item;
+  const { pivotX, pivotY, rotDeg } = item._cluster;
+  const baseSize = getItemBaseSize(item);
+  const cx = item.x + baseSize.width / 2;
+  const cy = item.y + baseSize.height / 2;
+  const rotated = rotatePointAround(cx, cy, pivotX, pivotY, rotDeg);
+  return {
+    ...item,
+    x: rotated.x - baseSize.width / 2,
+    y: rotated.y - baseSize.height / 2,
+    facing: ((item.facing ?? 0) + rotDeg + 360) % 360,
+  };
+}
+
 export const snap = (value: number) =>
   Math.round(value / SNAP_GRID) * SNAP_GRID;
 
