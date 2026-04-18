@@ -888,6 +888,14 @@ const WALK_SPEED = 0.7;
 // Ping-pong game length once two agents have paired up at a table.
 const PING_PONG_GAME_MIN_MS = 20_000;
 const PING_PONG_GAME_MAX_MS = 40_000;
+// Ambient talk: proximity-triggered short chats between two idle agents.
+// Covers (1) bumping-into-each-other while roaming and (2) one agent
+// arriving next to another at a social spot — both show up as a pair
+// within TALK_PROXIMITY_PX that isn't already in a hold.
+const TALK_PROXIMITY_PX = 50;
+const TALK_CHANCE_PER_TICK = 0.02;   // ≈1.2/s per eligible pair at 60fps
+const TALK_MIN_MS = 3_000;
+const TALK_MAX_MS = 6_000;
 // Ball / paddle geometry, ported from Claw3D sceneRuntime's PingPongBall.
 const PING_PONG_BALL_RADIUS = 0.06;
 const PING_PONG_PADDLE_OFFSET = 18; // canvas units from player → paddle
@@ -1480,6 +1488,43 @@ function TickLoop({
         a.pingPongSide = undefined;
         a.pingPongUntil = undefined;
       }
+      // Talk hold expiry.
+      if (a.talkUntil !== undefined && a.talkUntil <= now) {
+        a.talkUntil = undefined;
+        a.talkPartnerId = undefined;
+      }
+    }
+
+    // Proximity chat trigger: scan every unordered pair; if both are eligible
+    // (not walking / working-out / ping-pong-playing / already talking) and
+    // within TALK_PROXIMITY_PX, roll a small per-tick chance. Sitting agents
+    // count as eligible so two on the same couch can chat.
+    const agents = agentRef.current;
+    for (let i = 0; i < agents.length; i++) {
+      const a = agents[i];
+      if (!a) continue;
+      if (a.state === "walking" || a.state === "working_out") continue;
+      if (a.talkUntil !== undefined && a.talkUntil > now) continue;
+      if (a.pingPongUntil !== undefined && a.pingPongUntil > now) continue;
+      for (let j = i + 1; j < agents.length; j++) {
+        const b = agents[j];
+        if (!b) continue;
+        if (b.state === "walking" || b.state === "working_out") continue;
+        if (b.talkUntil !== undefined && b.talkUntil > now) continue;
+        if (b.pingPongUntil !== undefined && b.pingPongUntil > now) continue;
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        if (Math.hypot(dx, dy) > TALK_PROXIMITY_PX) continue;
+        if (Math.random() > TALK_CHANCE_PER_TICK * speedScale) continue;
+        const duration =
+          TALK_MIN_MS + Math.random() * (TALK_MAX_MS - TALK_MIN_MS);
+        a.talkUntil = now + duration;
+        b.talkUntil = now + duration;
+        a.talkPartnerId = b.id;
+        b.talkPartnerId = a.id;
+        a.facing = Math.atan2(dx, dy);
+        b.facing = Math.atan2(-dx, -dy);
+      }
     }
 
     for (let agentIdx = 0; agentIdx < agentRef.current.length; agentIdx++) {
@@ -1497,7 +1542,11 @@ function TickLoop({
         agent.sitBackOverride = activeStation.sitBack;
         agent.sinkDepthOverride = activeStation.sinkDepth;
         agent.workoutStyle = activeStation.workoutStyle;
-        agent.facing = activeStation.facing;
+        // Don't overwrite talk-facing — a sitting agent mid-chat should keep
+        // looking at their partner, not snap back to the station's default.
+        const talking =
+          agent.talkUntil !== undefined && agent.talkUntil > now;
+        if (!talking) agent.facing = activeStation.facing;
       }
 
       if (agent.state === "walking" && agent.path.length > 0) {
