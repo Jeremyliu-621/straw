@@ -1,12 +1,6 @@
 import type { FurnitureItem } from "./types";
 import { ITEM_FOOTPRINT, FURNITURE_ROTATION } from "./geometry";
-import {
-  makeDeskStation,
-  makeDeskPod,
-  DESK_W,
-  DESK_H,
-  type DeskStation,
-} from "./stations";
+import { makeDeskStation, makeDeskPod, DESK_W, DESK_H, type DeskStation } from "./stations";
 
 let uidCounter = 0;
 const uid = (prefix: string) => `${prefix}_${uidCounter++}`;
@@ -114,12 +108,13 @@ const PRINTER_STATION: FurnitureItem[] = [
 // Pod-level rotation around (370, 410) is applied to each desk station's
 // position AND its own cluster rotation, so desks + chairs + computers
 // stay rigidly aligned through the tilt.
+// Second pod (desks 4-7 at y=470) removed per user request — that area is
+// now open floor. Agents 4-7 no longer have a desk mapping.
 const CLUSTER_A_STATIONS: DeskStation[] = [
-  ...makeDeskPod({ startIndex: 0, x: 250, y: 300, rotDeg: -18, pivotX: 370, pivotY: 410 }),
-  ...makeDeskPod({ startIndex: 4, x: 250, y: 470, rotDeg: -18, pivotX: 370, pivotY: 410 }),
+  ...makeDeskPod({ startIndex: 0, x: 250, y: 330, rotDeg: -18, pivotX: 370, pivotY: 410 }),
 ];
 
-// ── Benching cluster B (orthogonal) ──────────────────────────────────────
+// ── Benching cluster B (orthogonal  ) ──────────────────────────────────────
 const CLUSTER_B_STATIONS: DeskStation[] = [
   ...makeDeskPod({ startIndex: 8, x: 580, y: 290 }),
   ...makeDeskPod({ startIndex: 12, x: 580, y: 460 }),
@@ -172,9 +167,7 @@ const LOUNGE_PIT: FurnitureItem[] = [
   { type: "couch", x: 250, y: 855, facing: 180, w: 100, h: 40, _uid: uid("couch") },
   { type: "couch", x: 140, y: 985, facing: 0, w: 100, h: 40, _uid: uid("couch") },
   { type: "couch", x: 250, y: 985, facing: 0, w: 100, h: 40, _uid: uid("couch") },
-  { type: "table_rect", x: 180, y: 850, w: 120, h: 50, _uid: uid("table") },
   { type: "table_rect", x: 30, y: 800, facing: 90, w: 120, h: 50, _uid: uid("table") },
-  { type: "round_table", x: 200, y: 1025, facing: 30, r: 10, _uid: uid("table") },
   { type: "lamp", x: 70, y: 880, _uid: uid("lamp") },
   { type: "lamp", x: 370, y: 880, _uid: uid("lamp") },
   { type: "plant", x: 40, y: 740, _uid: uid("plant") },
@@ -234,10 +227,46 @@ const GYM: FurnitureItem[] = [
   { type: "water_dispenser", x: 1050, y: 905, w: 35, h: 35, _uid: uid("water") },
   // Front row: yoga / stretching mats. `elevation: 0.005` lifts each mat
   // above the gym rubber floor (also a rug) so they don't z-fight and clip.
-  { type: "rug", x: 820, y: 990, w: 70, h: 30, color: "#3BAFA9", elevation: 0.005, _uid: uid("mat") },
-  { type: "rug", x: 910, y: 990, w: 70, h: 30, color: "#FF6B5B", elevation: 0.005, _uid: uid("mat") },
-  { type: "rug", x: 1000, y: 990, w: 70, h: 30, color: "#9B8FD1", elevation: 0.005, _uid: uid("mat") },
-  { type: "rug", x: 1090, y: 990, w: 70, h: 30, color: "#E8B84A", elevation: 0.005, _uid: uid("mat") },
+  {
+    type: "rug",
+    x: 820,
+    y: 990,
+    w: 70,
+    h: 30,
+    color: "#3BAFA9",
+    elevation: 0.005,
+    _uid: uid("mat"),
+  },
+  {
+    type: "rug",
+    x: 910,
+    y: 990,
+    w: 70,
+    h: 30,
+    color: "#FF6B5B",
+    elevation: 0.005,
+    _uid: uid("mat"),
+  },
+  {
+    type: "rug",
+    x: 1000,
+    y: 990,
+    w: 70,
+    h: 30,
+    color: "#9B8FD1",
+    elevation: 0.005,
+    _uid: uid("mat"),
+  },
+  {
+    type: "rug",
+    x: 1090,
+    y: 990,
+    w: 70,
+    h: 30,
+    color: "#E8B84A",
+    elevation: 0.005,
+    _uid: uid("mat"),
+  },
   // A neon sign on the east wall to brand the zone
   {
     type: "neon_sign",
@@ -437,9 +466,7 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         // item.facing PLUS the type's FURNITURE_ROTATION default (π for
         // "couch", π/2 for "couch_v"). Without adding FURNITURE_ROTATION we
         // told agents to face south on couches that actually face north/east.
-        const facing =
-          ((item.facing ?? 0) * Math.PI) / 180 +
-          (FURNITURE_ROTATION[t] ?? 0);
+        const facing = ((item.facing ?? 0) * Math.PI) / 180 + (FURNITURE_ROTATION[t] ?? 0);
         // Nudge the social point a small distance toward the couch's "open"
         // side (the direction the couch faces), so agents land on the seat
         // cushion rather than the backrest / back edge. The seat offset is
@@ -618,10 +645,7 @@ export const GYM_WORKOUT_POINTS: GymWorkoutPoint[] = (() => {
         // item by `dist` (measured from item CENTER, so small values place
         // the agent near/inside the mesh footprint). Facing π = looking north,
         // back toward the equipment.
-        const dist =
-          item.type === "squat_rack" ? 7 :
-          item.type === "pull_up_tower" ? 10 :
-          40; // dumbbell_rack
+        const dist = item.type === "squat_rack" ? 7 : item.type === "pull_up_tower" ? 10 : 40; // dumbbell_rack
         points.push({
           x: Math.round(item.x + w / 2),
           y: Math.round(item.y + h / 2 + dist),
@@ -665,9 +689,7 @@ export const GYM_WORKOUT_POINTS: GymWorkoutPoint[] = (() => {
 /** Pick a gym point uniformly at random. Null if there are no points. */
 export function pickGymPoint(): GymWorkoutPoint | null {
   if (GYM_WORKOUT_POINTS.length === 0) return null;
-  return GYM_WORKOUT_POINTS[
-    Math.floor(Math.random() * GYM_WORKOUT_POINTS.length)
-  ];
+  return GYM_WORKOUT_POINTS[Math.floor(Math.random() * GYM_WORKOUT_POINTS.length)];
 }
 
 /** Pick a social point weighted by its `weight`. Returns null if none exist. */
