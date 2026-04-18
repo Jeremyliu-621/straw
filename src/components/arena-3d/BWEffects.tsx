@@ -65,9 +65,28 @@ function isEmissiveMarker(mat: THREE.Material): boolean {
   return mat.toneMapped === false;
 }
 
+/**
+ * True if the material is not a plain THREE.Material instance we can safely
+ * replace/tint (e.g. troika-three-text shader material used by drei <Text>).
+ * Replacing these breaks the renderer because the downstream scene expects
+ * their custom uniforms / shader handles.
+ */
+function isUnswappable(mat: THREE.Material): boolean {
+  if (!(mat instanceof THREE.Material)) return true;
+  // Troika text marks its material with `isTroikaText` or similar fingerprints.
+  const asRecord = mat as unknown as Record<string, unknown>;
+  if (asRecord.isTroikaText === true) return true;
+  if (typeof asRecord.isDerivedMaterial === "function" || asRecord.isDerivedMaterial === true) return true;
+  // Shader-only types without a `color` property — safe to skip.
+  if (mat.type === "ShaderMaterial" || mat.type === "RawShaderMaterial") return true;
+  return false;
+}
+
 function shouldSkip(material: THREE.Material | THREE.Material[]): boolean {
-  if (Array.isArray(material)) return material.every(isEmissiveMarker);
-  return isEmissiveMarker(material);
+  if (Array.isArray(material)) {
+    return material.every((m) => isEmissiveMarker(m) || isUnswappable(m));
+  }
+  return isEmissiveMarker(material) || isUnswappable(material);
 }
 
 function extractColor(material: THREE.Material | THREE.Material[]): THREE.Color {
