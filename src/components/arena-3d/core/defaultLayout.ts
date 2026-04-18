@@ -27,34 +27,32 @@ function wall(x: number, y: number, w: number, h: number): FurnitureItem {
   return { type: "wall", x, y, w, h, _uid: uid("wall") };
 }
 
+// Room layout (top strip of the arena):
+//   Server (0..260) | Meeting (260..540) | Kitchen (540..890) | Printer (890..1200)
+// Adjacent rooms share a single vertical wall instead of each having their
+// own. South walls have doorways facing the main floor.
 const INTERIOR_WALLS: FurnitureItem[] = [
-  // Server room (top-left, 0..260 x 0..220). East wall is solid now; the
-  // old y=120..180 east doorway was closed off. New entrance is on the
-  // south wall facing the main floor (CLUSTER_A desks).
-  wall(252, 0, WALL_THICK, 225), // full east wall
-  wall(0, 220, 90, WALL_THICK), // south wall, left stub
-  wall(170, 220, 90, WALL_THICK), // south wall, right stub (door gap 90..170)
+  // ── Shared vertical walls (one per room boundary) ──
+  wall(260, 0, WALL_THICK, 225), // server east / meeting west
+  wall(540, 0, WALL_THICK, 220), // meeting east / kitchen west
+  wall(890, 0, WALL_THICK, 220), // kitchen east / printer west
 
-  // Meeting room (top-center, 280..530 x 0..220). Doorway widened to 100
-  // (355..455) on the south wall.
-  wall(280, 0, WALL_THICK, 220),
-  wall(530, 0, WALL_THICK, 220),
-  wall(280, 220, 75, WALL_THICK),   // left stub (280..355)
-  wall(455, 220, 83, WALL_THICK),   // right stub (455..538)
+  // ── South walls with doorways ──
+  // Server: 80-wide doorway (90..170) facing the main floor.
+  wall(0, 220, 90, WALL_THICK),
+  wall(170, 220, 90, WALL_THICK), // 170..260 (meets server/meeting wall)
 
-  // Kitchen / cafe (top, 550..880 x 0..220). Doorway widened to 100
-  // (725..825) on the south wall.
-  wall(550, 0, WALL_THICK, 220),
-  wall(880, 0, WALL_THICK, 220),
-  wall(550, 220, 175, WALL_THICK),  // left stub (550..725)
-  wall(825, 220, 63, WALL_THICK),   // right stub (825..888)
+  // Meeting: 100-wide doorway (355..455).
+  wall(260, 220, 95, WALL_THICK), // 260..355
+  wall(455, 220, 85, WALL_THICK), // 455..540
 
-  // Printer station L-partition (x=900..1200 top area). South wall has a
-  // ~160-wide entrance facing the standing-desk island so agents can walk in
-  // without going around the west partition.
-  wall(900, 100, WALL_THICK, 120),
-  wall(900, 220, 70, WALL_THICK), // left stub (900..970)
-  wall(1130, 220, 70, WALL_THICK), // right stub (1130..1200)
+  // Kitchen: 100-wide doorway (725..825).
+  wall(540, 220, 185, WALL_THICK), // 540..725
+  wall(825, 220, 65, WALL_THICK),  // 825..890
+
+  // Printer: 160-wide doorway (970..1130) facing the standing-desk island.
+  wall(890, 220, 80, WALL_THICK),  // 890..970
+  wall(1130, 220, 70, WALL_THICK), // 1130..1200
 ];
 
 // ── Server Room ──────────────────────────────────────────────────────────
@@ -93,8 +91,9 @@ const KITCHEN: FurnitureItem[] = [
   { type: "coffee_machine", x: 650, y: 30, elevation: 0.56, _uid: uid("coffee") },
   { type: "cabinet", x: 720, y: 33, w: 80, h: 40, _uid: uid("cabinet") },
   { type: "vending", x: 820, y: 25, _uid: uid("vending") },
-  { type: "chair", x: 735, y: 100, facing: 270, _uid: uid("chair") },
-  { type: "chair", x: 690, y: 160, facing: 220, _uid: uid("chair") },
+  { type: "table_rect", x: 540, y: 80, facing: 90, w: 140, h: 60, _uid: uid("table") },
+  { type: "chair", x: 565, y: 100, facing: 270, _uid: uid("chair") },
+  { type: "chair", x: 680, y: 50, facing: 220, _uid: uid("chair") },
   { type: "chair", x: 625, y: 170, facing: 90, _uid: uid("chair") },
   { type: "pendant_light", x: 700, y: 170, _uid: uid("pend") },
   { type: "trash", x: 810, y: 100, _uid: uid("trash") },
