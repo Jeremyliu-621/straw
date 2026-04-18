@@ -160,7 +160,7 @@ export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPaddi
   desk_cubicle:    { blocksNavigation: true, navPadding: 0 },
   standing_desk:   { blocksNavigation: true, navPadding: 0 },
   executive_desk:  { blocksNavigation: true, navPadding: 3 },
-  round_table:     { blocksNavigation: true, navPadding: 8 },
+  round_table:     { blocksNavigation: true, navPadding: 25 },
   table_rect:      { blocksNavigation: true  },
   bookshelf:       { blocksNavigation: true  },
   cabinet:         { blocksNavigation: true, navPadding: 5 },
