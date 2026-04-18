@@ -460,6 +460,12 @@ export interface SocialPoint {
   type: SocialPointType;
   /** Weight used when picking a destination (higher = more popular). */
   weight: number;
+  /**
+   * Radians. Direction the agent should face when sitting / standing here.
+   * Undefined = no specific orientation (beanbags, ping-pong, etc.) — agent
+   * keeps whatever direction they were walking in.
+   */
+  facing?: number;
 }
 
 /**
@@ -477,11 +483,14 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         const [defaultW, defaultH] = ITEM_FOOTPRINT[t] ?? [100, 40];
         const w = item.w ?? defaultW;
         const h = item.h ?? defaultH;
+        // Agent on couch faces the couch's authored direction (its "open" side).
+        const facing = ((item.facing ?? 0) * Math.PI) / 180;
         points.push({
           x: Math.round(item.x + w / 2),
           y: Math.round(item.y + h / 2),
           type: t,
           weight: 3,
+          facing,
         });
         break;
       }
@@ -489,6 +498,8 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         const [defaultW, defaultH] = ITEM_FOOTPRINT.beanbag ?? [40, 40];
         const w = item.w ?? defaultW;
         const h = item.h ?? defaultH;
+        // Beanbags have no "front" — leave facing undefined so the agent keeps
+        // whatever direction they walked in from (feels like flopping down).
         points.push({
           x: Math.round(item.x + w / 2),
           y: Math.round(item.y + h / 2),
@@ -584,11 +595,13 @@ export const GYM_WORKOUT_POINTS: GymWorkoutPoint[] = (() => {
       case "dumbbell_rack": {
         const w = item.w ?? 60;
         const h = item.h ?? 40;
-        // Agent stands just south of the equipment, facing north (into it)
+        // Agent stands just south of the equipment. In our atan2(dx, dy)
+        // convention, facing = π means looking toward -y (canvas north)
+        // which is *toward* the equipment.
         points.push({
           x: Math.round(item.x + w / 2),
           y: Math.round(item.y + h + 20),
-          facing: 0, // facing north = +y looking toward -y in canvas? atan2(dx,dy) direction; north visually
+          facing: Math.PI,
           style: "lift",
         });
         break;
@@ -599,21 +612,21 @@ export const GYM_WORKOUT_POINTS: GymWorkoutPoint[] = (() => {
         points.push({
           x: Math.round(item.x + w / 2),
           y: Math.round(item.y + h + 15),
-          facing: 0,
+          facing: Math.PI, // face north toward the bag
           style: "box",
         });
         break;
       }
       // Yoga mats are rug items with specific accent colors (teal / coral).
-      // Detect them by the color signature set in GYM.
       case "rug" as string: {
         if (item.color === "#3BAFA9" || item.color === "#FF6B5B") {
           const w = item.w ?? 70;
           const h = item.h ?? 30;
+          // Stretching on the mat: default face north for a consistent camera look.
           points.push({
             x: Math.round(item.x + w / 2),
             y: Math.round(item.y + h / 2),
-            facing: 0,
+            facing: Math.PI,
             style: "stretch",
           });
         }
@@ -644,14 +657,14 @@ export function pickWeightedSocialPoint(): SocialPoint | null {
   return SOCIAL_POINTS[SOCIAL_POINTS.length - 1];
 }
 
-export const DESK_STANDING_POINTS: { x: number; y: number }[] = (() => {
+export const DESK_STANDING_POINTS: { x: number; y: number; facing: number }[] = (() => {
   const deskItems = DEFAULT_ARENA_FURNITURE.filter(
     (item) =>
       (item.type === "desk_cubicle" || item.type === "standing_desk") &&
       typeof item.id === "string" &&
       item.id.startsWith("desk_")
   );
-  const byIndex: { x: number; y: number }[] = [];
+  const byIndex: { x: number; y: number; facing: number }[] = [];
   for (const item of deskItems) {
     const idx = parseInt(item.id!.slice(5), 10);
     if (Number.isNaN(idx)) continue;
@@ -683,7 +696,13 @@ export const DESK_STANDING_POINTS: { x: number; y: number }[] = (() => {
     const sin = Math.sin(podRot);
     const dx = baseDx * cos - baseDy * sin;
     const dy = baseDx * sin + baseDy * cos;
-    byIndex[idx] = { x: Math.round(cx + dx), y: Math.round(cy + dy) };
+    // Agent's facing = desk's facing (in radians). For a south-facing desk
+    // (facing=0 degrees) the agent looks toward +y (south, toward the monitor).
+    // For a north-facing desk (facing=180) they look toward -y. Pod rotation
+    // is already baked into item.facing by rotateAround, so this just works
+    // for rotated clusters too.
+    const facing = ((item.facing ?? 0) * Math.PI) / 180;
+    byIndex[idx] = { x: Math.round(cx + dx), y: Math.round(cy + dy), facing };
   }
   return byIndex;
 })();

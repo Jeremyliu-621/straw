@@ -19,7 +19,7 @@ const CAMERA_PRESETS: Record<
   ViewMode,
   { position: [number, number, number]; zoom: number; target: [number, number, number] }
 > = {
-  iso: { position: [14, 16, 19], zoom: 23, target: [0, 0, 0] },
+  iso: { position: [14, 16, 19], zoom: 22, target: [0, 0, 0] },
   top: { position: [0, 30, 0.001], zoom: 20, target: [0, 0, 0] },
   // Flipped-iso: look from the opposite diagonal. Reveals faces the default
   // iso camera hides (e.g. south faces of desks, back of server racks).
@@ -271,12 +271,54 @@ interface ArenaCanvasProps {
   showSidebar?: boolean;
 }
 
+/**
+ * Default export — the live arena driven by the real `/api/public/arena`
+ * poll. Thin wrapper that resolves agent data via `useStrawAgents` and hands
+ * off to `ArenaCanvasInner`. The landing-page playground uses
+ * `ArenaCanvasInner` directly with `useMockArenaAgents`, so the renderer
+ * is source-agnostic.
+ */
 export default function ArenaCanvas({
   taskId,
   height = 600,
   showSidebar = true,
 }: ArenaCanvasProps = {}) {
   const { agents, officeAgents, loading, eventBufferRef } = useStrawAgents(taskId);
+  return (
+    <ArenaCanvasInner
+      agents={agents}
+      officeAgents={officeAgents}
+      loading={loading}
+      eventBufferRef={eventBufferRef}
+      height={height}
+      showSidebar={showSidebar}
+    />
+  );
+}
+
+interface ArenaCanvasInnerProps {
+  agents: ReturnType<typeof useStrawAgents>["agents"];
+  officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
+  loading: boolean;
+  eventBufferRef: ReturnType<typeof useStrawAgents>["eventBufferRef"];
+  height?: number;
+  showSidebar?: boolean;
+}
+
+/**
+ * Pure renderer — takes already-resolved agent data plus presentation props
+ * and renders the scene + controls. No data fetching. Split out of
+ * `ArenaCanvas` so the landing-page mock and the real arena can share all
+ * rendering logic while choosing their own data source.
+ */
+export function ArenaCanvasInner({
+  agents,
+  officeAgents,
+  loading,
+  eventBufferRef,
+  height = 600,
+  showSidebar = true,
+}: ArenaCanvasInnerProps) {
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
   const [debugPaths, setDebugPaths] = useState(false);
@@ -356,10 +398,7 @@ export default function ArenaCanvas({
             Kept away from the bottom-center mode row and bottom-center shadow
             slider that overlap when BW mode is on, so it never gets blocked. */}
         <div className="absolute top-14 left-3 z-10">
-          <DevEventPanel
-            queueRef={devActionQueueRef}
-            agentIds={officeAgents.map((a) => a.id)}
-          />
+          <DevEventPanel queueRef={devActionQueueRef} agentIds={officeAgents.map((a) => a.id)} />
         </div>
 
         {/* Top-right controls: view toggle, and pure-white toggle when BW is on */}
