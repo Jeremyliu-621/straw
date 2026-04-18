@@ -146,16 +146,18 @@ const PHONE_BOOTHS: FurnitureItem[] = [
   { type: "phone_booth", x: 20, y: 460, w: 70, h: 70, color: "#2E3338", _uid: uid("booth") },
 ];
 
-// ── Library nook ─────────────────────────────────────────────────────────
-// Bookshelf against the west wall; two armchairs (couch_v) placed east of
-// the bookshelf so they don't overlap it. They face east (their default
-// FURNITURE_ROTATION of +π/2), so agents sit looking away from the shelf.
+// ── Library nook (replaced with a beanbag grove) ─────────────────────────
+// Old library (bookshelf + couch_v armchairs) removed per user request;
+// this area now hosts another cluster of beanbags. Same rug footprint as
+// before so the perimeter paintings / adjacent zones don't need to move.
 const LIBRARY: FurnitureItem[] = [
-  { type: "rug", x: 20, y: 570, w: 220, h: 210, color: "#7A6B55", _uid: uid("rug") },
-  { type: "bookshelf", x: 30, y: 590, w: 80, h: 120, _uid: uid("shelf") },
-  { type: "couch_v", x: 145, y: 595, _uid: uid("chair") },
-  { type: "couch_v", x: 145, y: 690, _uid: uid("chair") },
-  { type: "lamp", x: 210, y: 590, _uid: uid("lamp") },
+  { type: "rug", x: 20, y: 570, w: 220, h: 210, color: "#C9A478", _uid: uid("rug") },
+  { type: "beanbag", x: 40, y: 610, color: "#e65100", _uid: uid("bean") },
+  { type: "beanbag", x: 100, y: 610, color: "#1565c0", _uid: uid("bean") },
+  { type: "beanbag", x: 160, y: 610, color: "#16a34a", _uid: uid("bean") },
+  { type: "beanbag", x: 40, y: 710, color: "#8b5cf6", _uid: uid("bean") },
+  { type: "beanbag", x: 160, y: 710, color: "#E8B84A", _uid: uid("bean") },
+  { type: "table_rect", x: 85, y: 660, facing: 0, w: 50, h: 30, _uid: uid("table") },
   { type: "plant", x: 210, y: 720, _uid: uid("plant") },
 ];
 
@@ -386,7 +388,6 @@ const AMBIENT_DECOR: FurnitureItem[] = [
   { type: "plant", x: 540, y: 250, _uid: uid("plant") },
   { type: "plant", x: 150, y: 260, _uid: uid("plant") },
   { type: "lamp", x: 460, y: 710, _uid: uid("lamp") },
-  { type: "lamp", x: 870, y: 550, _uid: uid("lamp") },
 ];
 
 export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
