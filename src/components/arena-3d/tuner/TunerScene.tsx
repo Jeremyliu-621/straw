@@ -131,7 +131,7 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
   waterDispenserRotDeg: 0,
   waterDispenserDist: 40,
   pingPongRotDeg: 0,
-  pingPongDist: 50,
+  pingPongDist: 70,
   printerStationRotDeg: 0,
   printerStationDist: 47,
 };

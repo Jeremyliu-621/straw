@@ -398,7 +398,11 @@ export type SocialPointType =
   | "coffee_machine"
   | "ping_pong"
   | "water_dispenser"
-  | "whiteboard";
+  | "whiteboard"
+  | "fridge"
+  | "vending"
+  | "phone_booth"
+  | "printer_station";
 
 export interface SocialPoint {
   x: number;
@@ -480,39 +484,87 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         break;
       }
       case "coffee_machine": {
-        // Stand in front (south) of the coffee machine.
+        // Stand 30 south of center (dialed in via arena-tuner misc cohort).
+        const [defW, defH] = ITEM_FOOTPRINT.coffee_machine ?? [32, 34];
+        const w = item.w ?? defW;
+        const h = item.h ?? defH;
         points.push({
-          x: Math.round(item.x + 16),
-          y: Math.round(item.y + 50),
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y + h / 2 + 30),
           type: t,
           weight: 2,
+          facing: Math.PI, // face north, toward the machine
         });
         break;
       }
       case "ping_pong": {
-        const w = item.w ?? 100;
-        const h = item.h ?? 60;
-        // Two standing points, one on each long side of the table.
+        // Two players facing each other at the east/west ends of the long
+        // axis. Distance 70 from item center (dialed in via tuner).
+        const [defW, defH] = ITEM_FOOTPRINT.ping_pong ?? [100, 60];
+        const w = item.w ?? defW;
+        const h = item.h ?? defH;
+        const cx = item.x + w / 2;
+        const cy = item.y + h / 2;
+        const rotRad = ((item.facing ?? 0) * Math.PI) / 180;
+        const longX = Math.cos(rotRad);
+        const longY = -Math.sin(rotRad);
+        const dist = 70;
+        // Slot A (east end, looks west at the other player)
         points.push({
-          x: Math.round(item.x + w / 2),
-          y: Math.round(item.y - 15),
+          x: Math.round(cx + longX * dist),
+          y: Math.round(cy + longY * dist),
           type: t,
           weight: 1,
+          facing: Math.atan2(-longX, -longY),
         });
+        // Slot B (west end, looks east)
         points.push({
-          x: Math.round(item.x + w / 2),
-          y: Math.round(item.y + h + 15),
+          x: Math.round(cx - longX * dist),
+          y: Math.round(cy - longY * dist),
           type: t,
           weight: 1,
+          facing: Math.atan2(longX, longY),
         });
         break;
       }
       case "water_dispenser": {
+        const [defW, defH] = ITEM_FOOTPRINT.water_dispenser ?? [30, 30];
+        const w = item.w ?? defW;
+        const h = item.h ?? defH;
         points.push({
-          x: Math.round(item.x + 15),
-          y: Math.round(item.y + 45),
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y + h / 2 + 40), // tuner
           type: t,
           weight: 1,
+          facing: Math.PI,
+        });
+        break;
+      }
+      case "fridge":
+      case "vending":
+      case "phone_booth":
+      case "printer_station": {
+        // All four placed via the misc cohort. Negative distance for fridge /
+        // vending puts the agent just inside the mesh footprint (the front
+        // face of these items visually extends past item.y + h).
+        const [defW, defH] = ITEM_FOOTPRINT[item.type] ?? [40, 40];
+        const w = item.w ?? defW;
+        const h = item.h ?? defH;
+        const dist =
+          item.type === "fridge"
+            ? -17
+            : item.type === "vending"
+              ? -5
+              : item.type === "phone_booth"
+                ? 0
+                : 47; // printer_station
+        const rotRad = ((item.facing ?? 0) * Math.PI) / 180;
+        points.push({
+          x: Math.round(item.x + w / 2 + Math.sin(rotRad) * dist),
+          y: Math.round(item.y + h / 2 + Math.cos(rotRad) * dist),
+          type: t,
+          weight: 1,
+          facing: rotRad + Math.PI,
         });
         break;
       }
