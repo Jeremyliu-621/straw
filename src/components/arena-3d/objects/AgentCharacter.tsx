@@ -8,6 +8,7 @@ import { toWorld } from "../core/geometry";
 import { AGENT_SCALE, WALK_ANIM_SPEED } from "../core/constants";
 import { createDefaultAgentAvatarProfile } from "../core/avatarProfile";
 import type { RenderAgentState } from "../useArenaGameLoop";
+import EmojiOverlay from "./EmojiOverlay";
 
 interface AgentCharacterProps {
   agentId: string;
@@ -37,6 +38,8 @@ export default function AgentCharacter({
   const rightArmRef = useRef<THREE.Group>(null);
   const leftLegRef = useRef<THREE.Group>(null);
   const rightLegRef = useRef<THREE.Group>(null);
+  const emojiGroupRef = useRef<THREE.Group>(null);
+  const talkBubbleRef = useRef<THREE.Mesh>(null);
   const pos = useRef(new THREE.Vector3(0, 0, 0));
   const statusMatRef = useRef<THREE.MeshBasicMaterial>(null);
 
@@ -75,27 +78,77 @@ export default function AgentCharacter({
     while (rotDelta < -Math.PI) rotDelta += Math.PI * 2;
     groupRef.current.rotation.y += rotDelta * 0.12;
 
-    // Walk animation
     const isWalking = agent.state === "walking";
-    const walkPhase = isWalking
-      ? Math.sin((agent.frame + agent.phaseOffset) * WALK_ANIM_SPEED)
-      : 0;
-    const armSwing = walkPhase * 0.6;
-    const legSwing = walkPhase * 0.5;
+    const isDancing = agent.state === "dancing";
 
-    if (leftArmRef.current) leftArmRef.current.rotation.x = armSwing;
-    if (rightArmRef.current) rightArmRef.current.rotation.x = -armSwing;
-    if (leftLegRef.current) leftLegRef.current.rotation.x = -legSwing;
-    if (rightLegRef.current) rightLegRef.current.rotation.x = legSwing;
+    if (isDancing) {
+      // Body bob via outer group's y + arms raised overhead + leg wiggle
+      const t = agent.frame * 0.25;
+      groupRef.current.position.y = Math.sin(t) * 2 * AGENT_SCALE * 0.01;
+      if (leftArmRef.current) {
+        leftArmRef.current.rotation.x = 0;
+        leftArmRef.current.rotation.z = 1.2 + Math.sin(t * 1.2) * 0.3;
+      }
+      if (rightArmRef.current) {
+        rightArmRef.current.rotation.x = 0;
+        rightArmRef.current.rotation.z = -1.2 - Math.sin(t * 1.2) * 0.3;
+      }
+      if (leftLegRef.current) leftLegRef.current.rotation.x = Math.sin(t * 2) * 0.2;
+      if (rightLegRef.current) rightLegRef.current.rotation.x = -Math.sin(t * 2) * 0.2;
+    } else {
+      // Walk animation
+      const walkPhase = isWalking
+        ? Math.sin((agent.frame + agent.phaseOffset) * WALK_ANIM_SPEED)
+        : 0;
+      const armSwing = walkPhase * 0.6;
+      const legSwing = walkPhase * 0.5;
 
-    // Sitting: lower body
+      if (leftArmRef.current) {
+        leftArmRef.current.rotation.x = armSwing;
+        leftArmRef.current.rotation.z = 0;
+      }
+      if (rightArmRef.current) {
+        rightArmRef.current.rotation.x = -armSwing;
+        rightArmRef.current.rotation.z = 0;
+      }
+      if (leftLegRef.current) leftLegRef.current.rotation.x = -legSwing;
+      if (rightLegRef.current) rightLegRef.current.rotation.x = legSwing;
+    }
+
+    // Sitting: lower body (not applied in dancing branch above)
     if (agent.state === "sitting") {
       groupRef.current.position.y = -0.15 * AGENT_SCALE * 0.01;
+    } else if (!isDancing) {
+      groupRef.current.position.y = 0;
     }
 
     // Status color
     if (statusMatRef.current) {
       statusMatRef.current.color.copy(statusColors[agent.status]);
+    }
+
+    // Emoji overlay — visibility + fade-out in last 500ms
+    const now = Date.now();
+    const emojiActive = agent.emojiUntil !== undefined && agent.emojiUntil > now;
+    if (emojiGroupRef.current) {
+      emojiGroupRef.current.visible = emojiActive;
+      if (emojiActive) {
+        const remaining = (agent.emojiUntil ?? 0) - now;
+        const fadeScale = remaining < 500 ? remaining / 500 : 1;
+        // Slight upward drift
+        emojiGroupRef.current.position.y = 145 + (1 - fadeScale) * 20;
+        emojiGroupRef.current.scale.setScalar(fadeScale);
+      }
+    }
+
+    // Talk bubble — pulsing empty balloon above head
+    const talkActive = agent.talkUntil !== undefined && agent.talkUntil > now;
+    if (talkBubbleRef.current) {
+      talkBubbleRef.current.visible = talkActive;
+      if (talkActive) {
+        const pulse = 1 + Math.sin(agent.frame * 0.2) * 0.1;
+        talkBubbleRef.current.scale.setScalar(pulse);
+      }
     }
   });
 
@@ -184,6 +237,19 @@ export default function AgentCharacter({
         <sphereGeometry args={[4, 8, 8]} />
         <meshBasicMaterial ref={statusMatRef} color="#94a3b8" />
       </mesh>
+
+      {/* Talk bubble — pulsing white circle above head during a talk hold */}
+      <mesh ref={talkBubbleRef} position={[0, 130, 0]} visible={false}>
+        <ringGeometry args={[7, 10, 16]} />
+        <meshBasicMaterial color="#ffffff" side={THREE.DoubleSide} />
+      </mesh>
+
+      {/* Emoji overlay — billboard sprite with a single glyph, fades out */}
+      <Billboard>
+        <group ref={emojiGroupRef} position={[0, 145, 0]} visible={false}>
+          <EmojiOverlay agentId={agentId} agentsRef={agentsRef} />
+        </group>
+      </Billboard>
 
       {/* Floating nameplate — shown only for agents that appear on the
           leaderboard (rank + name both present). Pre-submission / unscored
