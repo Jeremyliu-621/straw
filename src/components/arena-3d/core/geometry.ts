@@ -171,7 +171,8 @@ export interface NavAnchorOverride {
 }
 
 export const NAV_ANCHOR_OVERRIDES: Record<string, NavAnchorOverride> = {
-  // Filled in via /arena-tuner nav-tune cohort. Empty = use defaults.
+  // Tuned in /arena-tuner with nav: on. Locked values per type below.
+  couch_v: { dx: -55, padX: 15, padY: -20 },
 };
 
 export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPadding?: number }> = {
