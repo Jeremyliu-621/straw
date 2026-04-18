@@ -2,6 +2,7 @@
 
 import { useRef, useCallback, useState, useEffect, useMemo, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Line } from "@react-three/drei";
 import * as THREE from "three";
 import {
   FURNITURE_ROTATION,
@@ -855,7 +856,9 @@ export function getArenaStations() {
 
 // ── Tuner agent state ─────────────────────────────────────────────────────
 
-const WALK_SPEED = 0.7;
+// 5× the main-arena walk speed so tuning loops are quick. Matches what a
+// user would experience on a foreground /leaderboard tab with no throttling.
+const WALK_SPEED = 0.7 * 5;
 
 function makeInitialAgent(idx: number): RenderAgentState {
   // Two agents side-by-side in the center of the tuner floor, so clicking a
@@ -888,6 +891,7 @@ interface TunerSceneProps {
   gymTuning: GymTuningParams;
   miscTuning: MiscTuningParams;
   agentRef: React.RefObject<RenderAgentState[]>;
+  showPaths: boolean;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
@@ -1027,19 +1031,85 @@ function AgentDebugMarker({
   );
 }
 
+function AgentPathLine({
+  agentRef,
+  agentIdx,
+  color,
+}: {
+  agentRef: React.RefObject<RenderAgentState[]>;
+  agentIdx: number;
+  color: string;
+}) {
+  // Keep a stable 2-point array and mutate its entries per frame so the
+  // drei Line updates without needing to remount its underlying buffer.
+  const points = useMemo(
+    () => [
+      new THREE.Vector3(0, 0.06, 0),
+      new THREE.Vector3(0, 0.06, 0),
+    ],
+    []
+  );
+  const lineRef = useRef<THREE.Object3D>(null);
+  useFrame(() => {
+    const agent = agentRef.current[agentIdx];
+    if (!agent) return;
+    const walking = agent.state === "walking" && agent.path.length > 0;
+    if (lineRef.current) lineRef.current.visible = walking;
+    if (!walking) return;
+    const [ax, , az] = toWorld(agent.x, agent.y);
+    const wp = agent.path[agent.path.length - 1];
+    const [tx, , tz] = toWorld(wp.x, wp.y);
+    points[0].set(ax, 0.06, az);
+    points[1].set(tx, 0.06, tz);
+    // drei Line re-reads `points` but we also need to flag the geometry as
+    // dirty; setPoints isn't exposed on the drei wrapper so we mutate the
+    // underlying line geometry directly.
+    const line = lineRef.current as unknown as
+      | { geometry?: THREE.BufferGeometry }
+      | null;
+    if (line?.geometry) {
+      const pos = line.geometry.attributes.position;
+      if (pos instanceof THREE.BufferAttribute) {
+        pos.setXYZ(0, ax, 0.06, az);
+        pos.setXYZ(1, tx, 0.06, tz);
+        pos.needsUpdate = true;
+      }
+    }
+  });
+  return (
+    <Line
+      ref={lineRef as React.Ref<THREE.Object3D>}
+      points={points}
+      color={color}
+      lineWidth={2}
+      dashed={false}
+      transparent
+      opacity={0.7}
+    />
+  );
+}
+
 function DebugMarkers({
   stations,
   stationIdxByAgent,
   agentRef,
+  showPaths,
 }: {
   stations: Station[];
   stationIdxByAgent: (number | null)[];
   agentRef: React.RefObject<RenderAgentState[]>;
+  showPaths: boolean;
 }) {
   return (
     <>
       <AgentDebugMarker agentRef={agentRef} agentIdx={0} color="#ef4444" />
       <AgentDebugMarker agentRef={agentRef} agentIdx={1} color="#10b981" />
+      {showPaths && (
+        <>
+          <AgentPathLine agentRef={agentRef} agentIdx={0} color="#ef4444" />
+          <AgentPathLine agentRef={agentRef} agentIdx={1} color="#10b981" />
+        </>
+      )}
       {stationIdxByAgent.map((idx, agentIdx) => {
         if (idx === null) return null;
         const station = stations[idx];
@@ -1158,6 +1228,7 @@ export default function TunerScene({
   gymTuning,
   miscTuning,
   agentRef,
+  showPaths,
   onFloorClick,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
@@ -1224,6 +1295,7 @@ export default function TunerScene({
           stations={stations}
           stationIdxByAgent={stationIdxByAgent}
           agentRef={agentRef}
+          showPaths={showPaths}
         />
         <TickLoop
           agentRef={agentRef}
@@ -1249,6 +1321,7 @@ export function useTunerAgent() {
     useState<GymTuningParams>(DEFAULT_GYM_TUNING);
   const [miscTuning, setMiscTuning] =
     useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
+  const [showPaths, setShowPaths] = useState(false);
   const [, setTick] = useState(0);
 
   useEffect(() => {
@@ -1377,6 +1450,8 @@ export function useTunerAgent() {
     setGymTuning,
     miscTuning,
     setMiscTuning,
+    showPaths,
+    setShowPaths,
     stations,
     walkToPoint,
   };

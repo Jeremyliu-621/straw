@@ -20,6 +20,8 @@ interface TunerPanelProps {
   setGymTuning: (updater: (prev: GymTuningParams) => GymTuningParams) => void;
   miscTuning: MiscTuningParams;
   setMiscTuning: (updater: (prev: MiscTuningParams) => MiscTuningParams) => void;
+  showPaths: boolean;
+  setShowPaths: (v: boolean | ((prev: boolean) => boolean)) => void;
   onGoto: (agentIdx: number, stationIdx: number | null) => void;
   onReset: () => void;
   agentRef: React.RefObject<RenderAgentState[]>;
@@ -88,6 +90,8 @@ export default function TunerPanel({
   setGymTuning,
   miscTuning,
   setMiscTuning,
+  showPaths,
+  setShowPaths,
   onGoto,
   onReset,
   agentRef,
@@ -160,7 +164,17 @@ export default function TunerPanel({
           </div>
         );
       })}
-      <div className="border-t border-gray-200 pt-3">
+      <div className="border-t border-gray-200 pt-3 flex gap-2">
+        <button
+          onClick={() => setShowPaths((v) => !v)}
+          className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
+            showPaths
+              ? "bg-black text-white border-black"
+              : "bg-white text-black border-gray-300 hover:border-black"
+          }`}
+        >
+          paths: {showPaths ? "on" : "off"}
+        </button>
         <button
           onClick={onReset}
           className="px-3 py-1.5 rounded-full text-xs bg-white text-red-600 border border-red-300 hover:bg-red-50"
