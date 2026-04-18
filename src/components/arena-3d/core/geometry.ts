@@ -171,7 +171,9 @@ export interface NavAnchorOverride {
 }
 
 export const NAV_ANCHOR_OVERRIDES: Record<string, NavAnchorOverride> = {
-  // Filled in via /arena-tuner nav-tune cohort. Empty = use defaults.
+  // Round table mesh sits ~50 canvas units north of where its (item.x,
+  // item.y) anchor lands the AABB — shift the nav block to match.
+  round_table: { dy: -50 },
 };
 
 export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPadding?: number }> = {
