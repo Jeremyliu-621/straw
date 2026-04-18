@@ -315,7 +315,7 @@ export default function ArenaCanvas({
         <Canvas
           orthographic
           shadows={shadowsOn}
-          dpr={[1, 2]}
+          dpr={[2.5, 3]}
           camera={{
             position: initialPreset.position,
             zoom: initialPreset.zoom,
