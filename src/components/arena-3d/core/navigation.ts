@@ -50,15 +50,18 @@ export function buildNavGrid(
     const padY = ov?.padY ?? baseItemPad;
 
     if (useOBB) {
-      // Oriented bounding box: only mark cells whose center actually lies
-      // inside the rotated rect. Rotation matches geometry.ts/three.js Y
-      // convention (canvas y ↔ world z).
+      // Snap-to-90° oriented bounding box: round the item's rotation to the
+      // nearest quarter turn so the nav rect always lands axis-aligned in
+      // either w×h or h×w orientation. Avoids the stair-step diagonal that
+      // a true OBB produces against a 25-unit axis-aligned cell grid.
       const { width, height } = getItemBaseSize(item);
       const cx = item.x + width / 2 + dx;
       const cy = item.y + height / 2 + dy;
       const hw = width / 2 + padX;
       const hh = height / 2 + padY;
-      const rotation = getItemRotationRadians(item);
+      const rawRotation = getItemRotationRadians(item);
+      const quarterTurn = Math.PI / 2;
+      const rotation = Math.round(rawRotation / quarterTurn) * quarterTurn;
       const cos = Math.cos(rotation);
       const sin = Math.sin(rotation);
       // AABB of the rotated rect — cell-loop bounds.

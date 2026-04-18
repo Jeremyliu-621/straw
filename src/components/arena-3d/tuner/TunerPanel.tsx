@@ -263,7 +263,7 @@ export default function TunerPanel({
               ? "bg-indigo-600 text-white border-indigo-600"
               : "bg-white text-black border-gray-300 hover:border-indigo-600"
           }`}
-          title="Oriented bounding box: nav blocks only the cells inside the rotated rect, instead of the bloated axis-aligned AABB."
+          title="Snap-to-90° OBB: rotates the nav rect to the nearest quarter turn before rasterizing. Clean axis-aligned rect at any item facing — no stair-step diagonals."
         >
           obb: {obb ? "on" : "off"}
         </button>
