@@ -1,4 +1,5 @@
 import type { FurnitureItem } from "./types";
+import { ITEM_FOOTPRINT } from "./geometry";
 
 let uidCounter = 0;
 const uid = (prefix: string) => `${prefix}_${uidCounter++}`;
@@ -473,8 +474,9 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
     switch (t) {
       case "couch":
       case "couch_v": {
-        const w = item.w ?? 100;
-        const h = item.h ?? 40;
+        const [defaultW, defaultH] = ITEM_FOOTPRINT[t] ?? [100, 40];
+        const w = item.w ?? defaultW;
+        const h = item.h ?? defaultH;
         points.push({
           x: Math.round(item.x + w / 2),
           y: Math.round(item.y + h / 2),
@@ -484,9 +486,12 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         break;
       }
       case "beanbag": {
+        const [defaultW, defaultH] = ITEM_FOOTPRINT.beanbag ?? [40, 40];
+        const w = item.w ?? defaultW;
+        const h = item.h ?? defaultH;
         points.push({
-          x: Math.round(item.x + 20),
-          y: Math.round(item.y + 20),
+          x: Math.round(item.x + w / 2),
+          y: Math.round(item.y + h / 2),
           type: t,
           weight: 2,
         });
@@ -653,23 +658,26 @@ export const DESK_STANDING_POINTS: { x: number; y: number }[] = (() => {
     const { w, h } = deskDims(item.type as DeskType);
     const facingDeg = item.facing ?? 0;
     const rad = (facingDeg * Math.PI) / 180;
-    // Desk center
+    // Desk center (pre-rotation). `facing` field on north-facing desks is 180
+    // (the desk mesh itself gets rotated 180 by the GLB pipeline) — so the
+    // "outward direction" for the chair depends on which face we're sitting at.
     const cx = item.x + w / 2;
     const cy = item.y + h / 2;
-    // Chair is offset in +y for south-facing (facing=0 from our perspective)
-    // or -y for north-facing (facing=180). Apply rotation.
-    // Original offset (facing=0 == south-facing): dx=0, dy=-(h/2 + 5)
-    // Original offset (facing=180 == north-facing): dx=0, dy=(h/2 + 5)
-    // But the `facing` field on desk encodes 180 for north-facing. So the
-    // "outward" direction depends: facing=0 → offset up (-y), facing=180 → down (+y).
     const isNorthFacing = Math.round(facingDeg / 180) % 2 === 1;
-    const baseDx = 0;
-    const baseDy = isNorthFacing ? h / 2 + 5 : -(h / 2 + 5);
-    // Apply item rotation so rotated pods compute the correct world-space stand point.
-    // The rotation applied by rotateAround also rotated the desk body, so its
-    // `facing` already includes the pod rotation. We want the offset rotated
-    // by the *pod* rotation only (not 180 for north-facing), since the
-    // north/south flip was handled via `isNorthFacing`.
+
+    // Chair placement inside deskCluster (must stay in sync with deskCluster):
+    //   chair.x = desk.x + (w/2 - 30), chair.y = desk.y - 10 (south) or +h+10 (north)
+    //   chair footprint = 24x24, so chair center = chair item pos + (12, 12).
+    // Chair-center offset relative to desk top-left:
+    //   dx_local = (w/2 - 30) + 12 = w/2 - 18   (constant −18 from desk center)
+    //   dy_local (south) = -10 + 12 = 2         → (2 − h/2) from desk center
+    //   dy_local (north) =  h + 10 + 12 = h+22  → (h/2 + 22) from desk center
+    const baseDx = -18;
+    const baseDy = isNorthFacing ? h / 2 + 22 : -(h / 2 - 2);
+
+    // Rotate by the *pod* rotation only. The north/south flip was already
+    // handled via isNorthFacing above; subtracting π here cancels the extra
+    // 180° that north-facing desks pick up from their `facing: 180`.
     const podRot = isNorthFacing ? rad - Math.PI : rad;
     const cos = Math.cos(podRot);
     const sin = Math.sin(podRot);
