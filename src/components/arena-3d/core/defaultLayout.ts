@@ -110,30 +110,22 @@ const PRINTER_STATION: FurnitureItem[] = [
   { type: "trash", x: 920, y: 180, _uid: uid("trash") },
 ];
 
-// ── Benching cluster A (rotated ~-18°) ───────────────────────────────────
-// Pod-level rotation around (370, 410) is applied to each desk station's
-// position AND its own cluster rotation, so desks + chairs + computers
-// stay rigidly aligned through the tilt.
-// Second pod (desks 4-7 at y=470) removed per user request — that area is
-// now open floor. Agents 4-7 no longer have a desk mapping.
-const CLUSTER_A_STATIONS: DeskStation[] = [
-  ...makeDeskPod({ startIndex: 0, x: 270, y: 400, rotDeg: -10, pivotX: 370, pivotY: 410 }),
-];
+// ── Benching cluster A (removed) ─────────────────────────────────────────
+// Entire cluster A removed per user request — desks 0-7 no longer exist.
+// The west half of the main floor is now open / available for other zones.
 
 // ── Benching cluster B (orthogonal) ──────────────────────────────────────
 // First pod (desks 8-11 at y=290) replaced with a round-table discussion
 // nook (round table + 6 chairs facing inward). Agents 8-11 no longer have
 // a desk mapping.
-const CLUSTER_B_STATIONS: DeskStation[] = [
-  ...makeDeskPod({ startIndex: 12, x: 580, y: 460 }),
-];
+const CLUSTER_B_STATIONS: DeskStation[] = [...makeDeskPod({ startIndex: 12, x: 580, y: 460 })];
 
 // Round-table nook where CLUSTER_B's first pod used to be. Center at the
 // middle of the old 2x2 pod (~700, 340). 6 chairs spaced every 60° around
 // a radius of 85, each facing the table center.
 const ROUND_TABLE_NOOK: FurnitureItem[] = (() => {
-  const cx = 700;
-  const cy = 340;
+  const cx = 400;
+  const cy = 640;
   const radius = 85;
   const items: FurnitureItem[] = [
     {
@@ -178,7 +170,6 @@ const STANDING_ISLAND_EXTRAS: FurnitureItem[] = [
 ];
 
 const ALL_DESK_STATIONS: DeskStation[] = [
-  ...CLUSTER_A_STATIONS,
   ...CLUSTER_B_STATIONS,
   ...STANDING_ISLAND_STATIONS,
 ];
