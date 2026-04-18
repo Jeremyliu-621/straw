@@ -50,28 +50,22 @@ export function buildNavGrid(
     const padY = ov?.padY ?? baseItemPad;
 
     if (useOBB) {
-      // Snap-to-90° oriented bounding box: round the item's rotation to the
-      // nearest quarter turn so the nav rect always lands axis-aligned in
-      // either w×h or h×w orientation. Avoids the stair-step diagonal that
-      // a true OBB produces against a 25-unit axis-aligned cell grid.
+      // Snap-to-90° oriented bounding box driven by item.facing ONLY (not
+      // by getItemRotationRadians, which also folds in FURNITURE_ROTATION
+      // defaults like couch_v=π/2). Folding that in made the OBB rotate
+      // perpendicular to the visible mesh at certain facings AND fought
+      // the offset rotation. Using item.facing keeps the OBB orientation,
+      // the offset frame, and the slider intent all consistent: at
+      // facing=0 the OBB sits at its authored width × height; the offset
+      // lands in world coords; rotating the slider rotates both together.
       const { width, height } = getItemBaseSize(item);
-      const rawRotation = getItemRotationRadians(item);
+      const facingRad = ((item.facing ?? 0) * Math.PI) / 180;
       const quarterTurn = Math.PI / 2;
-      const rotation = Math.round(rawRotation / quarterTurn) * quarterTurn;
+      const rotation = Math.round(facingRad / quarterTurn) * quarterTurn;
       const cos = Math.cos(rotation);
       const sin = Math.sin(rotation);
-      // Rotate (dx, dy) overrides by item.facing ONLY (not the type's
-      // intrinsic FURNITURE_ROTATION). At facing=0 sliders land in world
-      // coords — the user tunes by direct manipulation. As facing rotates,
-      // the offset rotates with the visible mesh, so a single override pair
-      // works for that type at every facing. Snapped to nearest 90° to
-      // match the OBB rasterization step.
-      const facingRad = ((item.facing ?? 0) * Math.PI) / 180;
-      const facingSnap = Math.round(facingRad / quarterTurn) * quarterTurn;
-      const fCos = Math.cos(facingSnap);
-      const fSin = Math.sin(facingSnap);
-      const worldDx = dx * fCos + dy * fSin;
-      const worldDy = -dx * fSin + dy * fCos;
+      const worldDx = dx * cos + dy * sin;
+      const worldDy = -dx * sin + dy * cos;
       const cx = item.x + width / 2 + worldDx;
       const cy = item.y + height / 2 + worldDy;
       const hw = width / 2 + padX;
