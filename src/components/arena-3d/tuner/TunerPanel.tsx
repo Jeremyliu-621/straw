@@ -140,20 +140,22 @@ export default function TunerPanel({
             <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
               Send agent {label} to…
             </p>
-            <div className="flex flex-wrap gap-2">
-              {stations.map((s, i) => (
-                <button
-                  key={s.label}
-                  onClick={() => onGoto(agentIdx, i)}
-                  className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
-                    activeIdx === i
-                      ? "bg-black text-white border-black"
-                      : "bg-white text-black border-gray-300 hover:border-black"
-                  }`}
-                >
-                  {s.label}
-                </button>
-              ))}
+            <div className="flex items-center gap-2">
+              <select
+                value={activeIdx ?? ""}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  onGoto(agentIdx, v === "" ? null : Number(v));
+                }}
+                className="flex-1 px-3 py-1.5 rounded-full text-xs bg-white text-black border border-gray-300 hover:border-black focus:outline-none focus:border-black"
+              >
+                <option value="">— pick a station —</option>
+                {stations.map((s, i) => (
+                  <option key={s.label} value={i}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
               <button
                 onClick={() => onGoto(agentIdx, null)}
                 className="px-3 py-1.5 rounded-full text-xs bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
