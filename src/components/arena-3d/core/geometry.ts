@@ -69,12 +69,24 @@ export const ITEM_FOOTPRINT: Record<string, [number, number]> = {
   // Extended types
   server_rack: [55, 80],
   glass_wall: [8, 60],
+  half_wall: [80, 8],
   printer_station: [60, 50],
   rug: [100, 80],
   cable_tray: [230, 18],
   pendant_light: [20, 20],
   tv_screen: [120, 10],
   wall_clock: [20, 20],
+  neon_sign: [60, 10],
+  painting: [50, 8],
+  // Gym equipment
+  ping_pong: [100, 60],
+  phone_booth: [78, 72],
+  dumbbell_rack: [80, 28],
+  squat_rack: [80, 80],
+  pull_up_tower: [60, 60],
+  punching_bag: [32, 32],
+  rolling_whiteboard: [90, 40],
+  water_dispenser: [30, 30],
 };
 
 export const getItemBaseSize = (item: FurnitureItem) => {
@@ -125,12 +137,24 @@ export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPaddi
   // Extended types from restructured layout
   server_rack:     { blocksNavigation: true  },
   glass_wall:      { blocksNavigation: true, navPadding: 0 },
+  half_wall:       { blocksNavigation: true, navPadding: 0 },
   printer_station: { blocksNavigation: true, navPadding: 2 },
   rug:             { blocksNavigation: false }, // floor decal
   cable_tray:      { blocksNavigation: false }, // overhead
   pendant_light:   { blocksNavigation: false }, // ceiling
   tv_screen:       { blocksNavigation: false }, // wall-mounted
   wall_clock:      { blocksNavigation: false }, // wall-mounted
+  neon_sign:       { blocksNavigation: false }, // wall-mounted
+  painting:        { blocksNavigation: false }, // wall-mounted
+  // Gym equipment
+  ping_pong:       { blocksNavigation: true  },
+  phone_booth:     { blocksNavigation: true  },
+  dumbbell_rack:   { blocksNavigation: true  },
+  squat_rack:      { blocksNavigation: true  },
+  pull_up_tower:   { blocksNavigation: true  },
+  punching_bag:    { blocksNavigation: true  },
+  rolling_whiteboard: { blocksNavigation: true  },
+  water_dispenser: { blocksNavigation: true  },
 };
 
 export const FURNITURE_ROTATION: Record<string, number> = {
