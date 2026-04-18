@@ -273,9 +273,9 @@ function OpenBadge() {
         textTransform: "uppercase",
         padding: "3px 8px",
         borderRadius: "var(--radius)",
-        background: "#f0fdf4",
-        color: "#16a34a",
-        border: "1px solid #bbf7d0",
+        background: "var(--status-open-bg)",
+        color: "var(--status-open-text)",
+        border: "1px solid var(--status-open-border)",
       }}
     >
       open
@@ -396,7 +396,7 @@ function LeftColumn() {
         style={{
           fontSize: 30,
           fontWeight: 600,
-          color: "var(--text)",
+          color: "var(--coral-text)",
           margin: "0 0 24px 0",
           letterSpacing: "-0.02em",
         }}
@@ -463,8 +463,8 @@ function LeftColumn() {
             borderRadius: "var(--radius)",
             fontSize: 14,
             fontWeight: 500,
-            background: "var(--text)",
-            color: "var(--bg)",
+            background: "var(--coral-text)",
+            color: "#ffffff",
             textDecoration: "none",
             display: "inline-block",
           }}

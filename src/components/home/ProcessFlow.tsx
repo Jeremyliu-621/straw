@@ -162,13 +162,16 @@ function BuilderVisual() {
         }}
       >
         <span>Leaderboard</span>
-        <span className="flex items-center gap-1.5" style={{ color: "#16a34a", fontWeight: 500 }}>
+        <span
+          className="flex items-center gap-1.5"
+          style={{ color: "var(--clay-text)", fontWeight: 500 }}
+        >
           <span
             style={{
               width: 5,
               height: 5,
               borderRadius: "50%",
-              background: "#16a34a",
+              background: "var(--clay-surface)",
               display: "inline-block",
             }}
           />
@@ -249,7 +252,7 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{
               borderRadius: 6,
-              background: "#111111",
+              background: "var(--blue-surface)",
               color: "#ffffff",
               padding: "32px 32px 36px",
             }}
@@ -290,10 +293,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
             style={{
               borderRadius: 6,
-              background: "#f5f5f4",
+              background: "var(--tan-bg)",
               color: "var(--text)",
               padding: "32px 32px 36px",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--tan-border)",
             }}
           >
             <h3
