@@ -116,6 +116,26 @@ function deskPosition(deskIndex: number): { x: number; y: number } | null {
   return DESK_STANDING_POINTS[deskIndex] ?? null;
 }
 
+/**
+ * Anchor level for separation priority. Higher = more anchored (wins overlap
+ * contests and is not pushed).
+ *   2 — sitting, dancing, working_out: committed to a spot, never pushed.
+ *   1 — walking: actively pursuing a goal; wins against idle standing.
+ *   0 — standing: parked/idle; yields to walkers and anchored agents.
+ */
+function anchorLevel(state: RenderAgentState["state"]): number {
+  switch (state) {
+    case "sitting":
+    case "dancing":
+    case "working_out":
+      return 2;
+    case "walking":
+      return 1;
+    case "standing":
+      return 0;
+  }
+}
+
 /** Count agents currently sitting at a social spot (couchUntil active). */
 function countSocialOccupants(agents: RenderAgentState[]): number {
   const now = Date.now();
@@ -824,31 +844,34 @@ export function useArenaGameLoop(
       };
     });
 
-    // Agent separation — prevent overlapping. Asymmetric yielding: only the
-    // lower-priority agent is pushed, so head-on encounters break deterministically
-    // instead of oscillating. Priority: sitting agents are anchored (win);
-    // otherwise lexicographic id tiebreak.
+    // Agent separation — prevent overlapping. Asymmetric yielding: only one
+    // agent of an overlapping pair is pushed, so head-on encounters break
+    // deterministically instead of oscillating. Anchor level determines who
+    // yields:
+    //   2 — fully anchored (sitting / dancing / working_out): cannot be pushed.
+    //   1 — walking: actively pursuing a goal; wins against idle standing.
+    //   0 — standing (idle, parked): steps aside for walkers.
+    // Equal levels fall back to lexicographic id tiebreak.
     for (let i = 0; i < moved.length; i++) {
       for (let j = i + 1; j < moved.length; j++) {
         const a = moved[i];
         const b = moved[j];
-        if (a.state === "sitting" && b.state === "sitting") continue;
+        const aLvl = anchorLevel(a.state);
+        const bLvl = anchorLevel(b.state);
+        if (aLvl === 2 && bLvl === 2) continue;
         const sdx = a.x - b.x;
         const sdy = a.y - b.y;
         const sDist = Math.hypot(sdx, sdy);
         if (sDist < AGENT_RADIUS * 2 && sDist > 0) {
           const push = ((AGENT_RADIUS * 2 - sDist) / sDist) * SEPARATION_STRENGTH;
-          const aAnchored = a.state === "sitting";
-          const bAnchored = b.state === "sitting";
-          let aWins: boolean;
-          if (aAnchored && !bAnchored) aWins = true;
-          else if (bAnchored && !aAnchored) aWins = false;
-          else aWins = a.id < b.id;
-
-          if (aWins && b.state === "walking") {
-            moved[j] = { ...b, x: b.x - sdx * push, y: b.y - sdy * push };
-          } else if (!aWins && a.state === "walking") {
+          let pushLoser: "a" | "b";
+          if (aLvl > bLvl) pushLoser = "b";
+          else if (bLvl > aLvl) pushLoser = "a";
+          else pushLoser = a.id < b.id ? "b" : "a";
+          if (pushLoser === "a") {
             moved[i] = { ...a, x: a.x + sdx * push, y: a.y + sdy * push };
+          } else {
+            moved[j] = { ...b, x: b.x - sdx * push, y: b.y - sdy * push };
           }
         }
       }
