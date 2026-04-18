@@ -172,6 +172,7 @@ export interface NavAnchorOverride {
 
 export const NAV_ANCHOR_OVERRIDES: Record<string, NavAnchorOverride> = {
   // Tuned in /arena-tuner with nav: on. Locked values per type below.
+  couch: { dy: 14, padY: 36 },
   couch_v: { dx: -55, padX: 15, padY: -20 },
 };
 
