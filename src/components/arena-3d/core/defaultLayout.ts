@@ -177,18 +177,6 @@ const LOUNGE_PIT: FurnitureItem[] = [
   { type: "plant", x: 40, y: 1040, _uid: uid("plant") },
 ];
 
-// ── Beanbag Grove ────────────────────────────────────────────────────────
-const BEANBAG_GROVE: FurnitureItem[] = [
-  { type: "rug", x: 380, y: 790, w: 210, h: 200, color: "#C9A478", _uid: uid("rug") },
-  { type: "beanbag", x: 400, y: 840, color: "#e65100", _uid: uid("bean") },
-  { type: "beanbag", x: 470, y: 840, color: "#1565c0", _uid: uid("bean") },
-  { type: "beanbag", x: 530, y: 840, color: "#16a34a", _uid: uid("bean") },
-  { type: "beanbag", x: 400, y: 950, color: "#8b5cf6", _uid: uid("bean") },
-  { type: "beanbag", x: 530, y: 950, color: "#E8B84A", _uid: uid("bean") },
-  { type: "table_rect", x: 450, y: 900, facing: 0, w: 50, h: 30, _uid: uid("table") },
-  { type: "plant", x: 300, y: 970, _uid: uid("plant") },
-];
-
 // ── Ping Pong Zone ───────────────────────────────────────────────────────
 const PING_PONG: FurnitureItem[] = [
   { type: "ping_pong", x: 600, y: 830, facing: 90, w: 180, h: 100, _uid: uid("pp") },
@@ -401,7 +389,6 @@ export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
   ...PHONE_BOOTHS,
   ...LIBRARY,
   ...LOUNGE_PIT,
-  ...BEANBAG_GROVE,
   ...PING_PONG,
   ...WHITEBOARD_ZONE,
   ...GYM,
