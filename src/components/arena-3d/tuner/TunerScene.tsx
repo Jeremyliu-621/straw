@@ -866,9 +866,10 @@ export function getArenaStations() {
 
 // ── Tuner agent state ─────────────────────────────────────────────────────
 
-// 5× the main-arena walk speed so tuning loops are quick. Matches what a
-// user would experience on a foreground /leaderboard tab with no throttling.
-const WALK_SPEED = 0.7 * 5;
+// Matches the main-arena walk speed (useArenaGameLoop WALK_SPEED). We dropped
+// the earlier 5× dev-tool multiplier now that the tuner is the surface we're
+// building the real ambience on — agents should move at their final pace.
+const WALK_SPEED = 0.7;
 
 // Seats / gym / misc cohorts tune poses for one or two subjects at a time;
 // the arena cohort simulates the full office (15 = roughly the main-arena
