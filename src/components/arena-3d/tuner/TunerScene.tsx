@@ -925,6 +925,12 @@ function makeInitialAgent(idx: number, cohort: Cohort): RenderAgentState {
     x = idx === 0 ? 540 : 620;
     y = 530;
   }
+  // Arena cohort: each agent gets a fixed 0.7x–1.3x speed multiplier so the
+  // crowd doesn't move in lockstep — same variance as useArenaGameLoop:594.
+  // Seats/gym/misc keep the flat speed so pose-tuning visuals stay
+  // deterministic between screenshots.
+  const walkSpeed =
+    cohort === "arena" ? WALK_SPEED * (0.7 + Math.random() * 0.6) : WALK_SPEED;
   return {
     id: `tuner_agent_${idx}`,
     name: String.fromCharCode(65 + idx), // A, B, C, …
@@ -938,7 +944,7 @@ function makeInitialAgent(idx: number, cohort: Cohort): RenderAgentState {
     path: [],
     facing: 0,
     frame: 0,
-    walkSpeed: WALK_SPEED,
+    walkSpeed,
     phaseOffset: (idx * 0.37) % 1, // stagger walk animations
     state: "standing",
   };
