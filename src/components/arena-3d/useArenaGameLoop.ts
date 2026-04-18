@@ -65,6 +65,12 @@ export interface RenderAgentState {
   // ── Deadlock recovery ──────────────────────────────────────────────
   /** Consecutive frames a walking agent has made <STUCK_PROGRESS_MIN_PX of progress. */
   stuckFrames?: number;
+
+  // ── Dev tuning ─────────────────────────────────────────────────────
+  /** Override the default sit-back render offset (world units). Tuner only. */
+  sitBackOverride?: number;
+  /** Override the default sink depth while sitting. Tuner only. */
+  sinkDepthOverride?: number;
 }
 
 const WALK_SPEED = 0.7;
@@ -790,6 +796,12 @@ export function useArenaGameLoop(
           npath = [];
           if (agent.status === "working") {
             state = "sitting";
+            // Desk agents use the normal chair sitting pose (not the
+            // specialized typing pose) — cleaner and consistent with the
+            // standalone chair in the tuner.
+            if (agent.socialSpotType === undefined) {
+              agent.socialSpotType = "chair";
+            }
           } else if (agent.status === "idle") {
             // Arrived at an idle destination. If a targetFacing was set by
             // whoever assigned this destination, snap to it (overrides the
