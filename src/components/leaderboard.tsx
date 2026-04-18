@@ -126,46 +126,83 @@ export function Leaderboard({ taskId }: { taskId: string }) {
         )}
       </div>
 
+      {(() => {
+        const half = Math.ceil(data.entries.length / 2);
+        const left = data.entries.slice(0, half);
+        const right = data.entries.slice(half);
+        return (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              overflow: "hidden",
+            }}
+          >
+            <LeaderboardTable
+              entries={left}
+              showSubScores={showSubScores}
+              borderRight
+            />
+            <LeaderboardTable
+              entries={right}
+              showSubScores={showSubScores}
+            />
+          </div>
+        );
+      })()}
+    </div>
+  );
+}
+
+function LeaderboardTable({
+  entries,
+  showSubScores,
+  borderRight = false,
+}: {
+  entries: LeaderboardEntry[];
+  showSubScores: boolean;
+  borderRight?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        borderRight: borderRight ? "1px solid var(--border)" : undefined,
+      }}
+    >
+      {/* Header row */}
       <div
+        className="grid font-sans"
         style={{
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius)",
-          overflow: "hidden",
+          gridTemplateColumns: showSubScores
+            ? "1fr 80px 80px 90px"
+            : "1fr 90px",
+          fontSize: "11px",
+          fontWeight: 500,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase" as const,
+          color: "var(--text-muted)",
+          borderBottom: "1px solid var(--border)",
+          padding: "12px 16px",
+          background: "var(--bg-subtle)",
         }}
       >
-        {/* Header row */}
-        <div
-          className="grid font-sans"
-          style={{
-            gridTemplateColumns: showSubScores
-              ? "1fr 100px 100px 120px"
-              : "1fr 120px",
-            fontSize: "11px",
-            fontWeight: 500,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase" as const,
-            color: "var(--text-muted)",
-            borderBottom: "1px solid var(--border)",
-            padding: "12px 16px",
-            background: "var(--bg-subtle)",
-          }}
-        >
-          <span>Agent</span>
-          {showSubScores && <span style={{ textAlign: "right" }}>Test</span>}
-          {showSubScores && <span style={{ textAlign: "right" }}>LLM</span>}
-          <span style={{ textAlign: "right" }}>Score</span>
-        </div>
-
-        {/* Data rows */}
-        {data.entries.map((entry) => (
-          <LeaderboardRow
-            key={entry.submissionId}
-            entry={entry}
-            isWinner={entry.rank === 1}
-            showSubScores={showSubScores}
-          />
-        ))}
+        <span>Agent</span>
+        {showSubScores && <span style={{ textAlign: "right" }}>Test</span>}
+        {showSubScores && <span style={{ textAlign: "right" }}>LLM</span>}
+        <span style={{ textAlign: "right" }}>Score</span>
       </div>
+
+      {/* Data rows */}
+      {entries.map((entry) => (
+        <LeaderboardRow
+          key={entry.submissionId}
+          entry={entry}
+          isWinner={entry.rank === 1}
+          showSubScores={showSubScores}
+        />
+      ))}
     </div>
   );
 }
@@ -184,8 +221,8 @@ function LeaderboardRow({
       className="grid font-sans"
       style={{
         gridTemplateColumns: showSubScores
-          ? "1fr 100px 100px 120px"
-          : "1fr 120px",
+          ? "1fr 80px 80px 90px"
+          : "1fr 90px",
         height: "56px",
         alignItems: "center",
         borderBottom: "1px solid var(--border)",
