@@ -21,8 +21,8 @@ export default function ArenaTuner() {
     setShowPaths,
     showNav,
     setShowNav,
-    meshFix,
-    setMeshFix,
+    obb,
+    setObb,
     navOverrides,
     setNavOverrides,
     ambientByAgent,
@@ -44,7 +44,7 @@ export default function ArenaTuner() {
           agentRef={agentRef}
           showPaths={showPaths}
           showNav={showNav}
-          meshFix={meshFix}
+          obb={obb}
           navOverrides={navOverrides}
           onFloorClick={cohort === "arena" ? walkToPoint : undefined}
         />
@@ -64,8 +64,8 @@ export default function ArenaTuner() {
         setShowPaths={setShowPaths}
         showNav={showNav}
         setShowNav={setShowNav}
-        meshFix={meshFix}
-        setMeshFix={setMeshFix}
+        obb={obb}
+        setObb={setObb}
         navOverrides={navOverrides}
         setNavOverrides={setNavOverrides}
         ambientByAgent={ambientByAgent}

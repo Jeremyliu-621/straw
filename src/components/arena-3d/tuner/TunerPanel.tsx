@@ -28,8 +28,8 @@ interface TunerPanelProps {
   setShowPaths: (v: boolean | ((prev: boolean) => boolean)) => void;
   showNav: boolean;
   setShowNav: (v: boolean | ((prev: boolean) => boolean)) => void;
-  meshFix: boolean;
-  setMeshFix: (v: boolean | ((prev: boolean) => boolean)) => void;
+  obb: boolean;
+  setObb: (v: boolean | ((prev: boolean) => boolean)) => void;
   navOverrides: Record<string, NavAnchorOverride>;
   setNavOverrides: (
     updater:
@@ -111,8 +111,8 @@ export default function TunerPanel({
   setShowPaths,
   showNav,
   setShowNav,
-  meshFix,
-  setMeshFix,
+  obb,
+  setObb,
   navOverrides,
   setNavOverrides,
   ambientByAgent,
@@ -257,15 +257,15 @@ export default function TunerPanel({
           nav: {showNav ? "on" : "off"}
         </button>
         <button
-          onClick={() => setMeshFix((v) => !v)}
+          onClick={() => setObb((v) => !v)}
           className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
-            meshFix
+            obb
               ? "bg-indigo-600 text-white border-indigo-600"
               : "bg-white text-black border-gray-300 hover:border-indigo-600"
           }`}
-          title="Render GLB centered on the bounds rect (matches InteriorWall convention). When off, uses legacy mesh-at-corner."
+          title="Oriented bounding box: nav blocks only the cells inside the rotated rect, instead of the bloated axis-aligned AABB."
         >
-          mesh-fix: {meshFix ? "on" : "off"}
+          obb: {obb ? "on" : "off"}
         </button>
         <button
           onClick={onReset}
