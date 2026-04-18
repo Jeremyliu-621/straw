@@ -195,9 +195,7 @@ export default function TaskDetailPage() {
                       {task.eval_mode === EVAL_MODE.CONTAINER ? "Container Eval" : "Hybrid Eval"}
                     </span>
                     {task.eval_image && (
-                      <span className="font-mono text-[11px] text-gray-400">
-                        {task.eval_image}
-                      </span>
+                      <span className="font-mono text-[11px] text-gray-400">{task.eval_image}</span>
                     )}
                   </div>
                 )}
@@ -206,9 +204,7 @@ export default function TaskDetailPage() {
               {/* Deadline moved to right panel */}
 
               {/* Actions */}
-              {error && (
-                <p className="font-sans text-[13px] text-red-500">{error}</p>
-              )}
+              {error && <p className="font-sans text-[13px] text-red-500">{error}</p>}
 
               <div className="border-t border-gray-200 pt-6">
                 {isOwner && task.status === "draft" && (
@@ -259,7 +255,16 @@ export default function TaskDetailPage() {
                       href={`/tasks/${id}/results`}
                       className="font-sans text-[14px] font-medium bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors no-underline inline-flex items-center gap-2"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <path d="M3 3v18h18" />
                         <path d="m19 9-5 5-4-4-3 3" />
                       </svg>
@@ -269,7 +274,16 @@ export default function TaskDetailPage() {
                       href={`/tasks/${id}/deal`}
                       className="font-sans text-[14px] font-medium text-black px-6 py-3 rounded-md border border-gray-200 hover:border-black transition-colors no-underline inline-flex items-center gap-2"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                       </svg>
                       Complete Deal
@@ -330,7 +344,7 @@ export default function TaskDetailPage() {
                       Hidden on narrow viewports where the panel is too
                       cramped; shown on md+ above the leaderboard table. */}
                   <div className="hidden md:block mb-6">
-                    <ArenaCanvas taskId={id} height={360} showSidebar={false} />
+                    <ArenaCanvas taskId={id} height={460} showSidebar={false} />
                   </div>
                   <Leaderboard taskId={id} />
                 </>
@@ -349,13 +363,7 @@ export default function TaskDetailPage() {
   );
 }
 
-function Section({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
       <p className="mb-2 font-sans text-[11px] font-medium tracking-[0.06em] uppercase text-gray-400">
@@ -405,15 +413,10 @@ function EvalWeight({ label, weight }: { label: string; weight: number }) {
           {weight}%
         </span>
         <div className="flex-1 h-1 bg-gray-100 rounded-full">
-          <div
-            className="h-1 bg-black rounded-full"
-            style={{ width: `${weight}%` }}
-          />
+          <div className="h-1 bg-black rounded-full" style={{ width: `${weight}%` }} />
         </div>
       </div>
-      <p className="font-sans text-[12px] text-gray-400 mt-1">
-        {label}
-      </p>
+      <p className="font-sans text-[12px] text-gray-400 mt-1">{label}</p>
     </div>
   );
 }
