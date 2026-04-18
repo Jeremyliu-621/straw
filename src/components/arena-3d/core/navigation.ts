@@ -1,6 +1,6 @@
 import { CANVAS_H, CANVAS_W } from "./constants";
 import {
-  getItemBounds,
+  getItemNavBounds,
   ITEM_FOOTPRINT,
   ITEM_METADATA,
 } from "./geometry";
@@ -31,7 +31,7 @@ export function buildNavGrid(furniture: FurnitureItem[]): NavGrid {
   for (const item of furniture) {
     if (!itemBlocksNavigation(item.type)) continue;
     const itemPad = ITEM_METADATA[item.type]?.navPadding ?? defaultPad;
-    const bounds = getItemBounds(item);
+    const bounds = getItemNavBounds(item);
     const x1 = bounds.x - itemPad;
     const y1 = bounds.y - itemPad;
     const x2 = bounds.x + bounds.w + itemPad;
