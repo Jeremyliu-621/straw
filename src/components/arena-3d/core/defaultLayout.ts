@@ -1,5 +1,5 @@
 import type { FurnitureItem } from "./types";
-import { ITEM_FOOTPRINT } from "./geometry";
+import { ITEM_FOOTPRINT, FURNITURE_ROTATION } from "./geometry";
 
 let uidCounter = 0;
 const uid = (prefix: string) => `${prefix}_${uidCounter++}`;
@@ -208,13 +208,16 @@ const PHONE_BOOTHS: FurnitureItem[] = [
 ];
 
 // ── Library nook ─────────────────────────────────────────────────────────
+// Bookshelf against the west wall; two armchairs (couch_v) placed east of
+// the bookshelf so they don't overlap it. They face east (their default
+// FURNITURE_ROTATION of +π/2), so agents sit looking away from the shelf.
 const LIBRARY: FurnitureItem[] = [
-  { type: "rug", x: 20, y: 570, w: 120, h: 200, color: "#7A6B55", _uid: uid("rug") },
+  { type: "rug", x: 20, y: 570, w: 220, h: 210, color: "#7A6B55", _uid: uid("rug") },
   { type: "bookshelf", x: 30, y: 590, w: 80, h: 120, _uid: uid("shelf") },
-  { type: "couch_v", x: 80, y: 600, _uid: uid("chair") },
-  { type: "couch_v", x: 80, y: 670, _uid: uid("chair") },
-  { type: "lamp", x: 220, y: 590, _uid: uid("lamp") },
-  { type: "plant", x: 220, y: 700, _uid: uid("plant") },
+  { type: "couch_v", x: 145, y: 595, _uid: uid("chair") },
+  { type: "couch_v", x: 145, y: 690, _uid: uid("chair") },
+  { type: "lamp", x: 210, y: 590, _uid: uid("lamp") },
+  { type: "plant", x: 210, y: 720, _uid: uid("plant") },
 ];
 
 // ── Lounge Pit ───────────────────────────────────────────────────────────
@@ -483,11 +486,25 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         const [defaultW, defaultH] = ITEM_FOOTPRINT[t] ?? [100, 40];
         const w = item.w ?? defaultW;
         const h = item.h ?? defaultH;
-        // Agent on couch faces the couch's authored direction (its "open" side).
-        const facing = ((item.facing ?? 0) * Math.PI) / 180;
+        // Agent on couch faces the couch's visual orientation — which is
+        // item.facing PLUS the type's FURNITURE_ROTATION default (π for
+        // "couch", π/2 for "couch_v"). Without adding FURNITURE_ROTATION we
+        // told agents to face south on couches that actually face north/east.
+        const facing =
+          ((item.facing ?? 0) * Math.PI) / 180 +
+          (FURNITURE_ROTATION[t] ?? 0);
+        // Nudge the social point a small distance toward the couch's "open"
+        // side (the direction the couch faces), so agents land on the seat
+        // cushion rather than the backrest / back edge. The seat offset is
+        // 1/4 of the shorter dimension — small enough to stay on the mesh,
+        // large enough to land on a free nav cell adjacent to anything
+        // pushed up against the couch's back.
+        const seatOffset = Math.min(w, h) * 0.25;
+        const sx = Math.sin(facing) * seatOffset;
+        const sy = Math.cos(facing) * seatOffset;
         points.push({
-          x: Math.round(item.x + w / 2),
-          y: Math.round(item.y + h / 2),
+          x: Math.round(item.x + w / 2 + sx),
+          y: Math.round(item.y + h / 2 + sy),
           type: t,
           weight: 3,
           facing,
