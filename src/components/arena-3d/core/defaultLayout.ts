@@ -35,17 +35,19 @@ const INTERIOR_WALLS: FurnitureItem[] = [
   wall(0, 220, 90, WALL_THICK), // south wall, left stub
   wall(170, 220, 90, WALL_THICK), // south wall, right stub (door gap 90..170)
 
-  // Meeting room (top-center, 280..530 x 0..220). Doorway on south wall at x=380..430.
+  // Meeting room (top-center, 280..530 x 0..220). Doorway widened to 100
+  // (355..455) on the south wall.
   wall(280, 0, WALL_THICK, 220),
   wall(530, 0, WALL_THICK, 220),
-  wall(280, 220, 100, WALL_THICK),
-  wall(430, 220, 108, WALL_THICK),
+  wall(280, 220, 75, WALL_THICK),   // left stub (280..355)
+  wall(455, 220, 83, WALL_THICK),   // right stub (455..538)
 
-  // Kitchen / cafe (top, 550..880 x 0..220). Doorway at x=750..800.
+  // Kitchen / cafe (top, 550..880 x 0..220). Doorway widened to 100
+  // (725..825) on the south wall.
   wall(550, 0, WALL_THICK, 220),
   wall(880, 0, WALL_THICK, 220),
-  wall(550, 220, 200, WALL_THICK),
-  wall(800, 220, 88, WALL_THICK),
+  wall(550, 220, 175, WALL_THICK),  // left stub (550..725)
+  wall(825, 220, 63, WALL_THICK),   // right stub (825..888)
 
   // Printer station L-partition (x=900..1200 top area). South wall has a
   // ~160-wide entrance facing the standing-desk island so agents can walk in
@@ -91,8 +93,6 @@ const KITCHEN: FurnitureItem[] = [
   { type: "coffee_machine", x: 650, y: 30, elevation: 0.56, _uid: uid("coffee") },
   { type: "cabinet", x: 720, y: 33, w: 80, h: 40, _uid: uid("cabinet") },
   { type: "vending", x: 820, y: 25, _uid: uid("vending") },
-  { type: "round_table", x: 610, y: 190, r: 50, _uid: uid("table") },
-  { type: "chair", x: 610, y: 70, facing: 30, _uid: uid("chair") },
   { type: "chair", x: 735, y: 100, facing: 270, _uid: uid("chair") },
   { type: "chair", x: 690, y: 160, facing: 220, _uid: uid("chair") },
   { type: "chair", x: 625, y: 170, facing: 90, _uid: uid("chair") },
@@ -124,12 +124,12 @@ const CLUSTER_B_STATIONS: DeskStation[] = [...makeDeskPod({ startIndex: 12, x: 5
 // 6 chairs at radius 75 around the table, each facing inward.
 const ROUND_TABLE_NOOK: FurnitureItem[] = [
   { type: "round_table", x: 300, y: 500, r: 60, _uid: uid("table") },
-  { type: "chair", x: 348, y: 623, facing: 180, _uid: uid("chair") },
-  { type: "chair", x: 413, y: 586, facing: 240, _uid: uid("chair") },
-  { type: "chair", x: 413, y: 511, facing: 300, _uid: uid("chair") },
-  { type: "chair", x: 348, y: 473, facing: 0, _uid: uid("chair") },
-  { type: "chair", x: 283, y: 511, facing: 60, _uid: uid("chair") },
-  { type: "chair", x: 283, y: 586, facing: 120, _uid: uid("chair") },
+  { type: "chair", x: 348, y: 503, facing: 180, _uid: uid("chair") },
+  { type: "chair", x: 413, y: 486, facing: 240, _uid: uid("chair") },
+  { type: "chair", x: 413, y: 366, facing: 300, _uid: uid("chair") },
+  { type: "chair", x: 348, y: 343, facing: 0, _uid: uid("chair") },
+  { type: "chair", x: 283, y: 391, facing: 60, _uid: uid("chair") },
+  { type: "chair", x: 283, y: 486, facing: 120, _uid: uid("chair") },
 ];
 
 // ── Standing-desk island ─────────────────────────────────────────────────
