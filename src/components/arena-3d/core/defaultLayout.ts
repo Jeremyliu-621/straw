@@ -48,10 +48,10 @@ const INTERIOR_WALLS: FurnitureItem[] = [
 
   // Kitchen: 100-wide doorway (725..825).
   wall(540, 220, 185, WALL_THICK), // 540..725
-  wall(825, 220, 65, WALL_THICK),  // 825..890
+  wall(825, 220, 65, WALL_THICK), // 825..890
 
   // Printer: 160-wide doorway (970..1130) facing the standing-desk island.
-  wall(890, 220, 80, WALL_THICK),  // 890..970
+  wall(890, 220, 80, WALL_THICK), // 890..970
   wall(1130, 220, 70, WALL_THICK), // 1130..1200
 ];
 
@@ -75,9 +75,6 @@ const MEETING_ROOM: FurnitureItem[] = [
   { type: "chair", x: 340, y: 40, facing: 0, _uid: uid("chair") },
   { type: "chair", x: 400, y: 40, facing: 0, _uid: uid("chair") },
   { type: "chair", x: 460, y: 40, facing: 0, _uid: uid("chair") },
-  { type: "chair", x: 340, y: 150, facing: 180, _uid: uid("chair") },
-  { type: "chair", x: 400, y: 150, facing: 180, _uid: uid("chair") },
-  { type: "chair", x: 460, y: 150, facing: 180, _uid: uid("chair") },
   { type: "tv_screen", x: 405, y: 5, w: 120, h: 70, wallAttach: "N", _uid: uid("tv") },
   { type: "pendant_light", x: 370, y: 80, _uid: uid("pend") },
   { type: "pendant_light", x: 450, y: 80, _uid: uid("pend") },
@@ -86,14 +83,14 @@ const MEETING_ROOM: FurnitureItem[] = [
 
 // ── Kitchen / Cafe ───────────────────────────────────────────────────────
 const KITCHEN: FurnitureItem[] = [
-  { type: "fridge", x: 570, y: 25, _uid: uid("fridge") },
+  { type: "fridge", x: 690, y: 25, _uid: uid("fridge") },
   { type: "cabinet", x: 620, y: 33, w: 80, h: 40, _uid: uid("cabinet") },
   { type: "coffee_machine", x: 650, y: 30, elevation: 0.56, _uid: uid("coffee") },
   { type: "cabinet", x: 720, y: 33, w: 80, h: 40, _uid: uid("cabinet") },
   { type: "vending", x: 820, y: 25, _uid: uid("vending") },
   { type: "table_rect", x: 540, y: 80, facing: 90, w: 140, h: 60, _uid: uid("table") },
   { type: "chair", x: 565, y: 100, facing: 270, _uid: uid("chair") },
-  { type: "chair", x: 680, y: 50, facing: 220, _uid: uid("chair") },
+  { type: "chair", x: 580, y: 50, facing: 0, _uid: uid("chair") },
   { type: "chair", x: 625, y: 170, facing: 90, _uid: uid("chair") },
   { type: "pendant_light", x: 700, y: 170, _uid: uid("pend") },
   { type: "trash", x: 810, y: 100, _uid: uid("trash") },
@@ -220,7 +217,6 @@ const GYM: FurnitureItem[] = [
   { type: "squat_rack", x: 990, y: 795, w: 80, h: 45, _uid: uid("rack") },
   { type: "punching_bag", x: 1100, y: 800, w: 40, h: 40, _uid: uid("bag") },
   // Middle row: dumbbell rack + water dispenser
-  { type: "dumbbell_rack", x: 850, y: 900, w: 150, h: 30, _uid: uid("db") },
   { type: "water_dispenser", x: 1050, y: 905, w: 35, h: 35, _uid: uid("water") },
   // Front row: yoga / stretching mats. `elevation: 0.005` lifts each mat
   // above the gym rubber floor (also a rug) so they don't z-fight and clip.
