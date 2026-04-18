@@ -80,10 +80,18 @@ export function useArenaGameLoop(
 
   const planPath = useCallback(
     (fromX: number, fromY: number, toX: number, toY: number) => {
-      const path = astar(fromX, fromY, toX, toY, getNavGrid());
-      // A* returns [] when start or end is fully trapped — fall back to a
-      // direct-line single-waypoint so the agent at least moves visibly.
-      return path.length > 0 ? path : [{ x: toX, y: toY }];
+      const grid = getNavGrid();
+      const path = astar(fromX, fromY, toX, toY, grid);
+      if (path.length > 0) return path;
+      // A* returned [] — start or end is unreachable. Try falling back to a
+      // known-open roam point rather than drawing a straight line through walls.
+      for (let i = 0; i < 5; i++) {
+        const alt = ROAM_POINTS[Math.floor(Math.random() * ROAM_POINTS.length)];
+        const altPath = astar(fromX, fromY, alt.x, alt.y, grid);
+        if (altPath.length > 0) return altPath;
+      }
+      // Fully stuck — stay put. Empty path → game loop keeps agent idle in place.
+      return [];
     },
     [getNavGrid]
   );
