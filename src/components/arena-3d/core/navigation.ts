@@ -4,6 +4,8 @@ import {
   getItemBounds,
   ITEM_FOOTPRINT,
   ITEM_METADATA,
+  NAV_ANCHOR_OVERRIDES,
+  type NavAnchorOverride,
 } from "./geometry";
 import type { FurnitureItem } from "./types";
 
@@ -26,7 +28,10 @@ export type NavGrid = Uint8Array;
 const itemBlocksNavigation = (type: string): boolean =>
   ITEM_METADATA[type]?.blocksNavigation ?? false;
 
-export function buildNavGrid(furniture: FurnitureItem[]): NavGrid {
+export function buildNavGrid(
+  furniture: FurnitureItem[],
+  overrides?: Record<string, NavAnchorOverride>,
+): NavGrid {
   const grid = new Uint8Array(GRID_COLS * GRID_ROWS);
   const defaultPad = GRID_CELL * 0.6;
   for (const rawItem of furniture) {
@@ -34,12 +39,17 @@ export function buildNavGrid(furniture: FurnitureItem[]): NavGrid {
     // Cluster-tagged items store PRE-rotation coords; nav grid needs the
     // post-rotation canvas position to correctly block navigation.
     const item = applyClusterTransform(rawItem);
-    const itemPad = ITEM_METADATA[item.type]?.navPadding ?? defaultPad;
+    const baseItemPad = ITEM_METADATA[item.type]?.navPadding ?? defaultPad;
+    const ov = overrides?.[item.type] ?? NAV_ANCHOR_OVERRIDES[item.type];
+    const dx = ov?.dx ?? 0;
+    const dy = ov?.dy ?? 0;
+    const padX = ov?.padX ?? baseItemPad;
+    const padY = ov?.padY ?? baseItemPad;
     const bounds = getItemBounds(item);
-    const x1 = bounds.x - itemPad;
-    const y1 = bounds.y - itemPad;
-    const x2 = bounds.x + bounds.w + itemPad;
-    const y2 = bounds.y + bounds.h + itemPad;
+    const x1 = bounds.x + dx - padX;
+    const y1 = bounds.y + dy - padY;
+    const x2 = bounds.x + bounds.w + dx + padX;
+    const y2 = bounds.y + bounds.h + dy + padY;
     const c1 = Math.max(0, Math.floor(x1 / GRID_CELL));
     const c2 = Math.min(GRID_COLS - 1, Math.floor(x2 / GRID_CELL));
     const r1 = Math.max(0, Math.floor(y1 / GRID_CELL));

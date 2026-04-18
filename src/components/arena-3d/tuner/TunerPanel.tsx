@@ -1,12 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import type { RenderAgentState } from "../useArenaGameLoop";
-import type {
-  Cohort,
-  Station,
-  TuningParams,
-  GymTuningParams,
-  MiscTuningParams,
+import { ITEM_METADATA, type NavAnchorOverride } from "../core/geometry";
+import {
+  type Cohort,
+  type Station,
+  type TuningParams,
+  type GymTuningParams,
+  type MiscTuningParams,
+  tunerAgentColor,
+  NAV_TUNABLE_TYPES,
 } from "./TunerScene";
 
 interface TunerPanelProps {
@@ -26,8 +30,15 @@ interface TunerPanelProps {
   setShowNav: (v: boolean | ((prev: boolean) => boolean)) => void;
   meshFix: boolean;
   setMeshFix: (v: boolean | ((prev: boolean) => boolean)) => void;
+  navOverrides: Record<string, NavAnchorOverride>;
+  setNavOverrides: (
+    updater:
+      | Record<string, NavAnchorOverride>
+      | ((prev: Record<string, NavAnchorOverride>) => Record<string, NavAnchorOverride>),
+  ) => void;
   ambientByAgent: boolean[];
   setAmbientForAgent: (agentIdx: number, on: boolean) => void;
+  setAmbientForAll: (on: boolean) => void;
   onGoto: (agentIdx: number, stationIdx: number | null) => void;
   onReset: () => void;
   agentRef: React.RefObject<RenderAgentState[]>;
@@ -102,14 +113,18 @@ export default function TunerPanel({
   setShowNav,
   meshFix,
   setMeshFix,
+  navOverrides,
+  setNavOverrides,
   ambientByAgent,
   setAmbientForAgent,
+  setAmbientForAll,
   onGoto,
   onReset,
   agentRef,
 }: TunerPanelProps) {
-  const agent0 = agentRef.current[0];
-  const agent1 = agentRef.current[1];
+  const agentCount = ambientByAgent.length;
+  const allAmbientOn = ambientByAgent.every(Boolean);
+  const anyAmbientOn = ambientByAgent.some(Boolean);
 
   const setSeatsField = (key: keyof TuningParams, value: number) => {
     setTuning((prev) => ({ ...prev, [key]: value }));
@@ -144,57 +159,82 @@ export default function TunerPanel({
         </div>
       </div>
 
-      {[0, 1].map((agentIdx) => {
-        const activeIdx = stationIdxByAgent[agentIdx] ?? null;
-        const label = agentIdx === 0 ? "A (red)" : "B (green)";
-        const ambient = ambientByAgent[agentIdx] ?? false;
-        return (
-          <div key={agentIdx} className="border-t border-gray-200 pt-3">
-            <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
-              Send agent {label} to…
-            </p>
-            <div className="flex items-center gap-2">
-              <select
-                value={activeIdx ?? ""}
-                onChange={(e) => {
-                  const v = e.target.value;
-                  // Manual selection takes over; turn ambient off for this agent.
-                  if (ambient) setAmbientForAgent(agentIdx, false);
-                  onGoto(agentIdx, v === "" ? null : Number(v));
-                }}
-                className="flex-1 px-3 py-1.5 rounded-full text-xs bg-white text-black border border-gray-300 hover:border-black focus:outline-none focus:border-black"
-              >
-                <option value="">— pick a station —</option>
-                {stations.map((s, i) => (
-                  <option key={s.label} value={i}>
-                    {s.label}
-                  </option>
-                ))}
-              </select>
-              <button
-                onClick={() => {
-                  if (ambient) setAmbientForAgent(agentIdx, false);
-                  onGoto(agentIdx, null);
-                }}
-                className="px-3 py-1.5 rounded-full text-xs bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
-              >
-                stop
-              </button>
-            </div>
-            <button
-              onClick={() => setAmbientForAgent(agentIdx, !ambient)}
-              className={`mt-2 w-full px-3 py-1.5 rounded-full text-xs transition-colors border ${
-                ambient
-                  ? "bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700"
+      <div className="border-t border-gray-200 pt-3">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-[11px] uppercase tracking-wide text-gray-500">
+            Agents ({agentCount})
+          </p>
+          <button
+            onClick={() => setAmbientForAll(!allAmbientOn)}
+            className={`px-3 py-1 rounded-full text-[11px] transition-colors border ${
+              allAmbientOn
+                ? "bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700"
+                : anyAmbientOn
+                  ? "bg-emerald-50 text-emerald-700 border-emerald-300 hover:bg-emerald-100"
                   : "bg-white text-black border-gray-300 hover:border-black"
-              }`}
-              title="When on, this agent autonomously hops between random stations every 6–12s"
-            >
-              ambient: {ambient ? "on" : "off"}
-            </button>
-          </div>
-        );
-      })}
+            }`}
+            title="Toggle ambient mode for every agent at once"
+          >
+            all ambient: {allAmbientOn ? "on" : anyAmbientOn ? "mixed" : "off"}
+          </button>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          {Array.from({ length: agentCount }).map((_, agentIdx) => {
+            const activeIdx = stationIdxByAgent[agentIdx] ?? null;
+            const ambient = ambientByAgent[agentIdx] ?? false;
+            const name = String.fromCharCode(65 + agentIdx);
+            const color = tunerAgentColor(agentIdx);
+            return (
+              <div key={agentIdx} className="flex items-center gap-1.5">
+                <span
+                  className="w-5 text-center text-[11px] font-semibold shrink-0"
+                  style={{ color }}
+                  title={`Agent ${name}`}
+                >
+                  {name}
+                </span>
+                <select
+                  value={activeIdx ?? ""}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (ambient) setAmbientForAgent(agentIdx, false);
+                    onGoto(agentIdx, v === "" ? null : Number(v));
+                  }}
+                  className="flex-1 min-w-0 px-2 py-1 rounded-md text-[11px] bg-white text-black border border-gray-300 hover:border-black focus:outline-none focus:border-black"
+                >
+                  <option value="">—</option>
+                  {stations.map((s, i) => (
+                    <option key={s.label} value={i}>
+                      {s.label}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={() => {
+                    if (ambient) setAmbientForAgent(agentIdx, false);
+                    onGoto(agentIdx, null);
+                  }}
+                  className="px-2 py-1 rounded-md text-[11px] bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 shrink-0"
+                  title="Clear this agent's destination"
+                >
+                  stop
+                </button>
+                <button
+                  onClick={() => setAmbientForAgent(agentIdx, !ambient)}
+                  className={`px-2 py-1 rounded-md text-[11px] border shrink-0 transition-colors ${
+                    ambient
+                      ? "bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700"
+                      : "bg-white text-gray-600 border-gray-300 hover:border-black"
+                  }`}
+                  title="Ambient: hop between random stations every 6–12s"
+                >
+                  {ambient ? "amb✓" : "amb"}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
       <div className="border-t border-gray-200 pt-3 flex gap-2 flex-wrap">
         <button
           onClick={() => setShowPaths((v) => !v)}
@@ -361,53 +401,221 @@ export default function TunerPanel({
         </div>
       )}
 
-      {[agent0, agent1].map((agent, agentIdx) => {
-        const activeIdx = stationIdxByAgent[agentIdx] ?? null;
-        const activeStation = activeIdx !== null ? stations[activeIdx] : null;
-        const label = agentIdx === 0 ? "A" : "B";
-        return (
-          <div key={agentIdx} className="border-t border-gray-200 pt-3">
-            <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
-              Agent {label} state
-            </p>
-            <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
-              <dt className="text-gray-500">position</dt>
-              <dd>
-                ({fmt(agent?.x)}, {fmt(agent?.y)})
-              </dd>
-              <dt className="text-gray-500">facing</dt>
-              <dd>{fmtAngle(agent?.facing)}</dd>
-              <dt className="text-gray-500">state</dt>
-              <dd>{agent?.state ?? "—"}</dd>
-              {activeStation ? (
-                <>
-                  <dt className="text-gray-500">station</dt>
-                  <dd>{activeStation.label}</dd>
-                  <dt className="text-gray-500">stand</dt>
-                  <dd>
-                    ({fmt(activeStation.standX)}, {fmt(activeStation.standY)})
-                  </dd>
-                </>
-              ) : null}
-            </dl>
+      {showNav && (
+        <NavTunePanel
+          navOverrides={navOverrides}
+          setNavOverrides={setNavOverrides}
+        />
+      )}
+
+      {agentCount <= 2 ? (
+        // Seats / gym / misc: show full per-agent state for careful tuning.
+        Array.from({ length: agentCount }).map((_, agentIdx) => {
+          const agent = agentRef.current[agentIdx];
+          const activeIdx = stationIdxByAgent[agentIdx] ?? null;
+          const activeStation = activeIdx !== null ? stations[activeIdx] : null;
+          const name = String.fromCharCode(65 + agentIdx);
+          return (
+            <div key={agentIdx} className="border-t border-gray-200 pt-3">
+              <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
+                Agent {name} state
+              </p>
+              <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
+                <dt className="text-gray-500">position</dt>
+                <dd>
+                  ({fmt(agent?.x)}, {fmt(agent?.y)})
+                </dd>
+                <dt className="text-gray-500">facing</dt>
+                <dd>{fmtAngle(agent?.facing)}</dd>
+                <dt className="text-gray-500">state</dt>
+                <dd>{agent?.state ?? "—"}</dd>
+                {activeStation ? (
+                  <>
+                    <dt className="text-gray-500">station</dt>
+                    <dd>{activeStation.label}</dd>
+                    <dt className="text-gray-500">stand</dt>
+                    <dd>
+                      ({fmt(activeStation.standX)}, {fmt(activeStation.standY)})
+                    </dd>
+                  </>
+                ) : null}
+              </dl>
+            </div>
+          );
+        })
+      ) : (
+        // Arena cohort (15 agents): compact summary table — one row each.
+        <div className="border-t border-gray-200 pt-3">
+          <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
+            Agent state
+          </p>
+          <div className="flex flex-col gap-0.5 text-[11px] font-mono">
+            {Array.from({ length: agentCount }).map((_, agentIdx) => {
+              const agent = agentRef.current[agentIdx];
+              const activeIdx = stationIdxByAgent[agentIdx] ?? null;
+              const activeStation =
+                activeIdx !== null ? stations[activeIdx] : null;
+              const name = String.fromCharCode(65 + agentIdx);
+              const color = tunerAgentColor(agentIdx);
+              return (
+                <div key={agentIdx} className="flex items-center gap-2">
+                  <span
+                    className="w-4 shrink-0 font-semibold"
+                    style={{ color }}
+                  >
+                    {name}
+                  </span>
+                  <span className="w-16 shrink-0 text-gray-500">
+                    {agent?.state ?? "—"}
+                  </span>
+                  <span className="flex-1 truncate text-gray-700">
+                    {activeStation?.label ?? "—"}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
+        </div>
+      )}
 
       <div className="border-t border-gray-200 pt-3">
         <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-1">
           Legend
         </p>
-        <ul className="text-[11px] text-gray-600 leading-relaxed">
-          <li>
-            <span className="inline-block w-2 h-2 rounded-full bg-red-500 mr-1.5" />
-            red — agent A position + facing + stand point
-          </li>
-          <li>
-            <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1.5" />
-            green — agent B position + facing + stand point
-          </li>
-        </ul>
+        <p className="text-[11px] text-gray-600 leading-relaxed">
+          Each agent renders in its assigned color; the debug marker
+          (position + facing + stand point) matches that color.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── Nav-tune panel ─────────────────────────────────────────────────────────
+// Per-type sliders that shift the nav-grid block for the selected type.
+// Lets us dial each item type's red-overlay rectangle until it sits on top
+// of the visible mesh.
+function NavTunePanel({
+  navOverrides,
+  setNavOverrides,
+}: {
+  navOverrides: Record<string, NavAnchorOverride>;
+  setNavOverrides: (
+    updater:
+      | Record<string, NavAnchorOverride>
+      | ((prev: Record<string, NavAnchorOverride>) => Record<string, NavAnchorOverride>),
+  ) => void;
+}) {
+  const [pickedType, setPickedType] = useState<string>(NAV_TUNABLE_TYPES[0] ?? "");
+  const [copied, setCopied] = useState(false);
+
+  if (!pickedType) return null;
+  const ov = navOverrides[pickedType] ?? {};
+  const baseTypePad = ITEM_METADATA[pickedType]?.navPadding ?? 15;
+  const dx = ov.dx ?? 0;
+  const dy = ov.dy ?? 0;
+  const padX = ov.padX ?? baseTypePad;
+  const padY = ov.padY ?? baseTypePad;
+
+  const updateField = (key: keyof NavAnchorOverride, value: number) => {
+    setNavOverrides((prev) => ({
+      ...prev,
+      [pickedType]: { ...(prev[pickedType] ?? {}), [key]: value },
+    }));
+  };
+
+  const resetType = () => {
+    setNavOverrides((prev) => {
+      const next = { ...prev };
+      delete next[pickedType];
+      return next;
+    });
+  };
+
+  const copyAll = async () => {
+    const json = JSON.stringify(navOverrides, null, 2);
+    try {
+      await navigator.clipboard.writeText(json);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1200);
+    } catch {
+      // Clipboard may not be available — fall back to console.
+      // eslint-disable-next-line no-console
+      console.log("[nav-tune] overrides:", json);
+    }
+  };
+
+  const dirtyTypes = Object.keys(navOverrides).length;
+
+  return (
+    <div className="border-t border-gray-200 pt-3">
+      <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
+        Nav tune ({dirtyTypes} edited)
+      </p>
+      <select
+        value={pickedType}
+        onChange={(e) => setPickedType(e.target.value)}
+        className="w-full px-2 py-1 rounded-md text-[11px] bg-white text-black border border-gray-300 hover:border-black focus:outline-none focus:border-black mb-2"
+      >
+        {NAV_TUNABLE_TYPES.map((t) => {
+          const edited = navOverrides[t];
+          return (
+            <option key={t} value={t}>
+              {edited ? "● " : ""}
+              {t}
+            </option>
+          );
+        })}
+      </select>
+      <div className="flex flex-col gap-1.5">
+        <Slider
+          label="offset x"
+          value={dx}
+          min={-100}
+          max={100}
+          step={1}
+          onChange={(v) => updateField("dx", v)}
+        />
+        <Slider
+          label="offset y"
+          value={dy}
+          min={-100}
+          max={100}
+          step={1}
+          onChange={(v) => updateField("dy", v)}
+        />
+        <Slider
+          label="pad x"
+          value={padX}
+          min={-30}
+          max={80}
+          step={1}
+          onChange={(v) => updateField("padX", v)}
+        />
+        <Slider
+          label="pad y"
+          value={padY}
+          min={-30}
+          max={80}
+          step={1}
+          onChange={(v) => updateField("padY", v)}
+        />
+      </div>
+      <div className="mt-2 flex gap-2">
+        <button
+          onClick={resetType}
+          className="flex-1 px-2 py-1 rounded-md text-[11px] bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
+          title="Drop overrides for this type — falls back to defaults"
+        >
+          reset {pickedType}
+        </button>
+        <button
+          onClick={copyAll}
+          className="flex-1 px-2 py-1 rounded-md text-[11px] bg-indigo-600 text-white border border-indigo-600 hover:bg-indigo-700"
+          title="Copy the full overrides map as JSON for pasting into NAV_ANCHOR_OVERRIDES"
+        >
+          {copied ? "copied!" : "copy json"}
+        </button>
       </div>
     </div>
   );

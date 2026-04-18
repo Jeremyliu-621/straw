@@ -150,6 +150,30 @@ export const getItemBaseSize = (item: FurnitureItem) => {
   };
 };
 
+/**
+ * Per-type override for nav-grid blocking. Lets us nudge bounds to match
+ * the actual visible mesh footprint when the GLB origin convention doesn't
+ * line up with our (item.x, item.y) = top-left assumption.
+ *
+ * Tuned interactively via /arena-tuner — the "nav-tune" cohort exposes
+ * sliders for each type and a "copy values" button that emits the dialed-in
+ * map here as a paste-able snippet.
+ */
+export interface NavAnchorOverride {
+  /** Shift bounds.x by this (canvas units). */
+  dx?: number;
+  /** Shift bounds.y by this (canvas units). */
+  dy?: number;
+  /** Override navPadding on x-axis. Falls back to ITEM_METADATA.navPadding. */
+  padX?: number;
+  /** Override navPadding on y-axis. Falls back to ITEM_METADATA.navPadding. */
+  padY?: number;
+}
+
+export const NAV_ANCHOR_OVERRIDES: Record<string, NavAnchorOverride> = {
+  // Filled in via /arena-tuner nav-tune cohort. Empty = use defaults.
+};
+
 export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPadding?: number }> = {
   wall:            { blocksNavigation: true, navPadding: 0 },
   door:            { blocksNavigation: false },
