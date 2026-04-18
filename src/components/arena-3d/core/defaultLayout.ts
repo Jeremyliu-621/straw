@@ -31,9 +31,9 @@ const INTERIOR_WALLS: FurnitureItem[] = [
   // Server room (top-left, 0..260 x 0..220). East wall is solid now; the
   // old y=120..180 east doorway was closed off. New entrance is on the
   // south wall facing the main floor (CLUSTER_A desks).
-  wall(252, 0, WALL_THICK, 225),           // full east wall
-  wall(0, 220, 90, WALL_THICK),            // south wall, left stub
-  wall(170, 220, 90, WALL_THICK),          // south wall, right stub (door gap 90..170)
+  wall(252, 0, WALL_THICK, 225), // full east wall
+  wall(0, 220, 90, WALL_THICK), // south wall, left stub
+  wall(170, 220, 90, WALL_THICK), // south wall, right stub (door gap 90..170)
 
   // Meeting room (top-center, 280..530 x 0..220). Doorway on south wall at x=380..430.
   wall(280, 0, WALL_THICK, 220),
@@ -51,8 +51,8 @@ const INTERIOR_WALLS: FurnitureItem[] = [
   // ~160-wide entrance facing the standing-desk island so agents can walk in
   // without going around the west partition.
   wall(900, 100, WALL_THICK, 120),
-  wall(900, 220, 70, WALL_THICK),   // left stub (900..970)
-  wall(1130, 220, 70, WALL_THICK),  // right stub (1130..1200)
+  wall(900, 220, 70, WALL_THICK), // left stub (900..970)
+  wall(1130, 220, 70, WALL_THICK), // right stub (1130..1200)
 ];
 
 // ── Server Room ──────────────────────────────────────────────────────────
@@ -117,14 +117,52 @@ const PRINTER_STATION: FurnitureItem[] = [
 // Second pod (desks 4-7 at y=470) removed per user request — that area is
 // now open floor. Agents 4-7 no longer have a desk mapping.
 const CLUSTER_A_STATIONS: DeskStation[] = [
-  ...makeDeskPod({ startIndex: 0, x: 250, y: 330, rotDeg: -18, pivotX: 370, pivotY: 410 }),
+  ...makeDeskPod({ startIndex: 0, x: 270, y: 400, rotDeg: -10, pivotX: 370, pivotY: 410 }),
 ];
 
-// ── Benching cluster B (orthogonal  ) ──────────────────────────────────────
+// ── Benching cluster B (orthogonal) ──────────────────────────────────────
+// First pod (desks 8-11 at y=290) replaced with a round-table discussion
+// nook (round table + 6 chairs facing inward). Agents 8-11 no longer have
+// a desk mapping.
 const CLUSTER_B_STATIONS: DeskStation[] = [
-  ...makeDeskPod({ startIndex: 8, x: 580, y: 290 }),
   ...makeDeskPod({ startIndex: 12, x: 580, y: 460 }),
 ];
+
+// Round-table nook where CLUSTER_B's first pod used to be. Center at the
+// middle of the old 2x2 pod (~700, 340). 6 chairs spaced every 60° around
+// a radius of 85, each facing the table center.
+const ROUND_TABLE_NOOK: FurnitureItem[] = (() => {
+  const cx = 700;
+  const cy = 340;
+  const radius = 85;
+  const items: FurnitureItem[] = [
+    {
+      type: "round_table",
+      x: cx - 60,
+      y: cy - 60,
+      r: 60,
+      _uid: uid("table"),
+    },
+  ];
+  // atan2(dx, dy) convention: angle θ → direction (sin θ, cos θ).
+  // Chair center = table center + radius * (sin θ, cos θ).
+  // Chair "facing" (degrees) = θ + 180° so the chair looks INTO the table.
+  // Chair footprint is 24×24, so top-left = center - 12.
+  const anglesDeg = [0, 60, 120, 180, 240, 300];
+  for (const a of anglesDeg) {
+    const rad = (a * Math.PI) / 180;
+    const cxChair = cx + radius * Math.sin(rad);
+    const cyChair = cy + radius * Math.cos(rad);
+    items.push({
+      type: "chair",
+      x: Math.round(cxChair - 12),
+      y: Math.round(cyChair - 12),
+      facing: (a + 180) % 360,
+      _uid: uid("chair"),
+    });
+  }
+  return items;
+})();
 
 // ── Standing-desk island ─────────────────────────────────────────────────
 const STANDING_ISLAND_STATIONS: DeskStation[] = [
@@ -387,6 +425,7 @@ export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
   ...PRINTER_STATION,
   ...ALL_DESK_STATIONS.flatMap((s) => s.items),
   ...STANDING_ISLAND_EXTRAS,
+  ...ROUND_TABLE_NOOK,
   ...PHONE_BOOTHS,
   ...LIBRARY,
   ...LOUNGE_PIT,
