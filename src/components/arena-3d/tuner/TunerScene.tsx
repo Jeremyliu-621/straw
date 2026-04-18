@@ -39,13 +39,18 @@ interface Station {
   workoutStyle?: RenderAgentState["workoutStyle"];
 }
 
+// Item coords are in main-canvas space because FurnitureModel uses the global
+// toWorld() which subtracts CANVAS_W/2=600, CANVAS_H/2=550. To land on the
+// tuner's local floor (centered at world origin), items must cluster around
+// canvas (600, 550).
+
 // Desk (south-facing) — typing pose
 const DESK_W = 100;
 const DESK_H = 55;
 const deskItem: FurnitureItem = {
   type: "desk_cubicle",
-  x: 120,
-  y: 120,
+  x: 420,
+  y: 420,
   _uid: "tuner_desk",
   id: "desk_0",
 };
@@ -57,7 +62,7 @@ const deskStand: Station = {
   label: "Desk (south-facing, typing)",
   item: deskItem,
   standX: deskItem.x + DESK_W / 2 - 18,
-  standY: deskItem.y + DESK_H / 2 - (DESK_H / 2 - 2),
+  standY: deskItem.y + 2,
   facing: 0, // faces +y (south, toward monitor)
   state: "sitting",
 };
@@ -83,8 +88,8 @@ const COUCH_W = 100;
 const COUCH_H = 40;
 const couchItem: FurnitureItem = {
   type: "couch",
-  x: 320,
-  y: 260,
+  x: 650,
+  y: 420,
   w: COUCH_W,
   h: COUCH_H,
   _uid: "tuner_couch",
@@ -106,8 +111,8 @@ const COUCHV_W = ITEM_FOOTPRINT.couch_v?.[0] ?? 40;
 const COUCHV_H = ITEM_FOOTPRINT.couch_v?.[1] ?? 80;
 const couchVItem: FurnitureItem = {
   type: "couch_v",
-  x: 440,
-  y: 280,
+  x: 420,
+  y: 580,
   _uid: "tuner_couch_v",
 };
 const couchVFacing = 0 + Math.PI / 2;
@@ -125,8 +130,8 @@ const couchVStand: Station = {
 // Beanbag
 const beanbagItem: FurnitureItem = {
   type: "beanbag",
-  x: 160,
-  y: 300,
+  x: 680,
+  y: 600,
   color: "#e65100",
   _uid: "tuner_beanbag",
 };
@@ -162,10 +167,10 @@ function makeInitialAgent(): RenderAgentState {
     rank: 1,
     status: "idle",
     color: "#6366f1",
-    x: 50,
-    y: 50,
-    targetX: 50,
-    targetY: 50,
+    x: 560,
+    y: 530,
+    targetX: 560,
+    targetY: 530,
     path: [],
     facing: 0,
     frame: 0,
