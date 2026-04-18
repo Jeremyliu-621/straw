@@ -17,9 +17,9 @@ export const ROAM_POINTS = [
   { x: 150, y: 620 },
 ];
 
-const GRID_CELL = 25;
-const GRID_COLS = Math.ceil(CANVAS_W / GRID_CELL);
-const GRID_ROWS = Math.ceil(CANVAS_H / GRID_CELL);
+export const GRID_CELL = 25;
+export const GRID_COLS = Math.ceil(CANVAS_W / GRID_CELL);
+export const GRID_ROWS = Math.ceil(CANVAS_H / GRID_CELL);
 
 export type NavGrid = Uint8Array;
 

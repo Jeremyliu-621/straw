@@ -27,7 +27,14 @@ import {
   SOCIAL_POINTS,
   GYM_WORKOUT_POINTS,
 } from "../core/defaultLayout";
-import { buildNavGrid, astar } from "../core/navigation";
+import {
+  buildNavGrid,
+  astar,
+  GRID_CELL,
+  GRID_COLS,
+  GRID_ROWS,
+  type NavGrid,
+} from "../core/navigation";
 
 export type Cohort = "seats" | "gym" | "arena" | "misc";
 
@@ -892,6 +899,7 @@ interface TunerSceneProps {
   miscTuning: MiscTuningParams;
   agentRef: React.RefObject<RenderAgentState[]>;
   showPaths: boolean;
+  showNav: boolean;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
@@ -1096,19 +1104,71 @@ function AgentPathLine({
   return <primitive ref={lineRef} object={lineObj} />;
 }
 
+function NavGridOverlay({ grid }: { grid: NavGrid }) {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const blockedCells = useMemo(() => {
+    const cells: { c: number; r: number }[] = [];
+    for (let r = 0; r < GRID_ROWS; r += 1) {
+      for (let c = 0; c < GRID_COLS; c += 1) {
+        if (grid[r * GRID_COLS + c]) cells.push({ c, r });
+      }
+    }
+    return cells;
+  }, [grid]);
+
+  useEffect(() => {
+    const mesh = meshRef.current;
+    if (!mesh) return;
+    const dummy = new THREE.Object3D();
+    blockedCells.forEach((cell, i) => {
+      const cx = (cell.c + 0.5) * GRID_CELL;
+      const cy = (cell.r + 0.5) * GRID_CELL;
+      const [wx, , wz] = toWorld(cx, cy);
+      dummy.position.set(wx, 0.02, wz);
+      dummy.rotation.set(-Math.PI / 2, 0, 0);
+      dummy.updateMatrix();
+      mesh.setMatrixAt(i, dummy.matrix);
+    });
+    mesh.instanceMatrix.needsUpdate = true;
+    mesh.count = blockedCells.length;
+  }, [blockedCells]);
+
+  if (blockedCells.length === 0) return null;
+  const cellWorld = GRID_CELL * SCALE * 0.96;
+  return (
+    <instancedMesh
+      ref={meshRef}
+      args={[undefined, undefined, blockedCells.length]}
+    >
+      <planeGeometry args={[cellWorld, cellWorld]} />
+      <meshBasicMaterial
+        color="#ef4444"
+        transparent
+        opacity={0.28}
+        depthWrite={false}
+      />
+    </instancedMesh>
+  );
+}
+
 function DebugMarkers({
   stations,
   stationIdxByAgent,
   agentRef,
   showPaths,
+  showNav,
+  navGrid,
 }: {
   stations: Station[];
   stationIdxByAgent: (number | null)[];
   agentRef: React.RefObject<RenderAgentState[]>;
   showPaths: boolean;
+  showNav: boolean;
+  navGrid: NavGrid;
 }) {
   return (
     <>
+      {showNav && <NavGridOverlay grid={navGrid} />}
       <AgentDebugMarker agentRef={agentRef} agentIdx={0} color="#ef4444" />
       <AgentDebugMarker agentRef={agentRef} agentIdx={1} color="#10b981" />
       {showPaths && (
@@ -1236,6 +1296,7 @@ export default function TunerScene({
   miscTuning,
   agentRef,
   showPaths,
+  showNav,
   onFloorClick,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
@@ -1244,6 +1305,10 @@ export default function TunerScene({
     if (cohort === "misc") return buildMiscStations(miscTuning);
     return buildStations(tuning);
   }, [cohort, tuning, gymTuning, miscTuning]);
+  const navGrid = useMemo(() => {
+    const allItems = [...items, ...clusters.flatMap((c) => c.items)];
+    return buildNavGrid(allItems);
+  }, [items, clusters]);
   const large = cohort === "arena";
 
   return (
@@ -1303,6 +1368,8 @@ export default function TunerScene({
           stationIdxByAgent={stationIdxByAgent}
           agentRef={agentRef}
           showPaths={showPaths}
+          showNav={showNav}
+          navGrid={navGrid}
         />
         <TickLoop
           agentRef={agentRef}
@@ -1329,6 +1396,22 @@ export function useTunerAgent() {
   const [miscTuning, setMiscTuning] =
     useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
   const [showPaths, setShowPaths] = useState(false);
+  const [showNav, setShowNav] = useState(false);
+  // Ambient mode per agent: when on, the agent autonomously picks a new
+  // random station every 6–12s once it's settled. Picking a specific
+  // station from the dropdown or hitting stop turns ambient off for that
+  // agent. Switching cohort / reset also clears ambient.
+  const [ambientByAgent, setAmbientByAgent] = useState<boolean[]>([
+    false,
+    false,
+  ]);
+  const ambientNextAtRef = useRef<number[]>([0, 0]);
+  // Mirror stationIdxByAgent into a ref so the ambient timer can read the
+  // latest value without re-creating its interval on every station change.
+  const stationIdxByAgentRef = useRef(stationIdxByAgent);
+  useEffect(() => {
+    stationIdxByAgentRef.current = stationIdxByAgent;
+  }, [stationIdxByAgent]);
   const [, setTick] = useState(0);
 
   useEffect(() => {
@@ -1442,12 +1525,55 @@ export function useTunerAgent() {
     });
   }, [stations, stationIdxByAgent, planPath]);
 
+  const setAmbientForAgent = useCallback(
+    (agentIdx: number, on: boolean) => {
+      setAmbientByAgent((prev) => {
+        const next = [...prev];
+        next[agentIdx] = on;
+        return next;
+      });
+      // Fire the first ambient pick immediately when turning on.
+      if (on) ambientNextAtRef.current[agentIdx] = 0;
+    },
+    []
+  );
+
+  // Ambient timer: every 500ms, check each agent; if ambient is on and the
+  // agent is settled (not walking) and its dwell window has elapsed, pick a
+  // new random station (not the one it's currently at) and send it there.
+  useEffect(() => {
+    const anyOn = ambientByAgent.some(Boolean);
+    if (!anyOn) return;
+    const id = window.setInterval(() => {
+      if (stations.length < 2) return;
+      const now = Date.now();
+      for (let i = 0; i < ambientByAgent.length; i++) {
+        if (!ambientByAgent[i]) continue;
+        const agent = agentRef.current[i];
+        if (!agent) continue;
+        if (agent.state === "walking") continue;
+        if (now < ambientNextAtRef.current[i]) continue;
+        const currentIdx = stationIdxByAgentRef.current[i];
+        // Candidates = all stations except the agent's current one.
+        let pick: number;
+        do {
+          pick = Math.floor(Math.random() * stations.length);
+        } while (pick === currentIdx);
+        sendToStation(i, pick);
+        // Dwell 6–12s at the new station before the next hop.
+        ambientNextAtRef.current[i] = now + 6000 + Math.random() * 6000;
+      }
+    }, 500);
+    return () => window.clearInterval(id);
+  }, [ambientByAgent, stations, sendToStation]);
+
   const reset = useCallback(() => {
     agentRef.current = [makeInitialAgent(0), makeInitialAgent(1)];
     setTuning(DEFAULT_TUNING);
     setGymTuning(DEFAULT_GYM_TUNING);
     setMiscTuning(DEFAULT_MISC_TUNING);
     setStationIdxByAgent([null, null]);
+    setAmbientByAgent([false, false]);
   }, []);
 
   // Click-to-direct: send agent 0 walking to a clicked canvas point (arena cohort).
@@ -1484,6 +1610,7 @@ export function useTunerAgent() {
     agentRef.current = [makeInitialAgent(0), makeInitialAgent(1)];
     setCohort(c);
     setStationIdxByAgent([null, null]);
+    setAmbientByAgent([false, false]);
   }, []);
 
   return {
@@ -1501,6 +1628,10 @@ export function useTunerAgent() {
     setMiscTuning,
     showPaths,
     setShowPaths,
+    showNav,
+    setShowNav,
+    ambientByAgent,
+    setAmbientForAgent,
     stations,
     walkToPoint,
   };
