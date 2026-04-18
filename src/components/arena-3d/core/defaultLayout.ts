@@ -155,8 +155,8 @@ const LIBRARY: FurnitureItem[] = [
   { type: "beanbag", x: 40, y: 610, color: "#e65100", _uid: uid("bean") },
   { type: "beanbag", x: 100, y: 610, color: "#1565c0", _uid: uid("bean") },
   { type: "beanbag", x: 160, y: 610, color: "#16a34a", _uid: uid("bean") },
-  { type: "beanbag", x: 40, y: 710, color: "#8b5cf6", _uid: uid("bean") },
-  { type: "beanbag", x: 160, y: 710, color: "#E8B84A", _uid: uid("bean") },
+  { type: "beanbag", x: 50, y: 710, facing: 90, color: "#8b5cf6", _uid: uid("bean") },
+  { type: "beanbag", x: 50, y: 640, facing: 90, color: "#E8B84A", _uid: uid("bean") },
   { type: "table_rect", x: 85, y: 660, facing: 0, w: 50, h: 30, _uid: uid("table") },
   { type: "plant", x: 210, y: 720, _uid: uid("plant") },
 ];
@@ -170,18 +170,18 @@ const LOUNGE_PIT: FurnitureItem[] = [
   { type: "couch", x: 140, y: 985, facing: 0, w: 100, h: 40, _uid: uid("couch") },
   { type: "couch", x: 250, y: 985, facing: 0, w: 100, h: 40, _uid: uid("couch") },
   { type: "table_rect", x: 30, y: 800, facing: 90, w: 120, h: 50, _uid: uid("table") },
-  { type: "lamp", x: 70, y: 880, _uid: uid("lamp") },
+  { type: "lamp", x: 20, y: 880, _uid: uid("lamp") },
   { type: "lamp", x: 370, y: 880, _uid: uid("lamp") },
-  { type: "plant", x: 40, y: 740, _uid: uid("plant") },
+  { type: "plant", x: 40, y: 800, _uid: uid("plant") },
   { type: "plant", x: 390, y: 740, _uid: uid("plant") },
   { type: "plant", x: 40, y: 1040, _uid: uid("plant") },
 ];
 
 // ── Ping Pong Zone ───────────────────────────────────────────────────────
 const PING_PONG: FurnitureItem[] = [
-  { type: "ping_pong", x: 600, y: 830, facing: 90, w: 180, h: 100, _uid: uid("pp") },
-  { type: "plant", x: 600, y: 790, _uid: uid("plant") },
-  { type: "plant", x: 600, y: 970, _uid: uid("plant") },
+  { type: "ping_pong", x: 500, y: 830, facing: 90, w: 180, h: 100, _uid: uid("pp") },
+  { type: "plant", x: 500, y: 790, _uid: uid("plant") },
+  { type: "plant", x: 500, y: 970, _uid: uid("plant") },
 ];
 
 // ── Whiteboard Zone ──────────────────────────────────────────────────────
@@ -371,9 +371,7 @@ const WALL_DECOR: FurnitureItem[] = [
 // ── Ambient scatter ──────────────────────────────────────────────────────
 // Ambient plants removed per user request — the floor was too busy. Lamps
 // kept for lighting character.
-const AMBIENT_DECOR: FurnitureItem[] = [
-  { type: "lamp", x: 460, y: 710, _uid: uid("lamp") },
-];
+const AMBIENT_DECOR: FurnitureItem[] = [];
 
 export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
   ...INTERIOR_WALLS,
@@ -408,7 +406,6 @@ export type SocialPointType =
   | "couch"
   | "couch_v"
   | "beanbag"
-  | "round_table"
   | "coffee_machine"
   | "ping_pong"
   | "water_dispenser"
@@ -484,17 +481,9 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         });
         break;
       }
-      case "round_table": {
-        // Stand next to the table (north side is usually walkable).
-        const r = item.r ?? 50;
-        points.push({
-          x: Math.round(item.x + r),
-          y: Math.round(item.y + r + 30),
-          type: t,
-          weight: 1,
-        });
-        break;
-      }
+      // round_table is a pure prop — no SOCIAL_POINT. It still blocks
+      // navigation via ITEM_METADATA.round_table.blocksNavigation=true, so
+      // A* will route agents around it.
       case "coffee_machine": {
         // Stand 30 south of center (dialed in via arena-tuner misc cohort).
         const [defW, defH] = ITEM_FOOTPRINT.coffee_machine ?? [32, 34];
