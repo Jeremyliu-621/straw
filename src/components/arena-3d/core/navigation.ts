@@ -60,13 +60,18 @@ export function buildNavGrid(
       const rotation = Math.round(rawRotation / quarterTurn) * quarterTurn;
       const cos = Math.cos(rotation);
       const sin = Math.sin(rotation);
-      // Interpret (dx, dy) overrides in the item's LOCAL frame so a single
-      // override pair works for the same type at any rotation. Convention
-      // matches geometry.ts/rotatePointAround (canvas y ↔ three.js z):
-      //   worldX = localX·cos + localY·sin
-      //   worldY = −localX·sin + localY·cos
-      const worldDx = dx * cos + dy * sin;
-      const worldDy = -dx * sin + dy * cos;
+      // Rotate (dx, dy) overrides by item.facing ONLY (not the type's
+      // intrinsic FURNITURE_ROTATION). At facing=0 sliders land in world
+      // coords — the user tunes by direct manipulation. As facing rotates,
+      // the offset rotates with the visible mesh, so a single override pair
+      // works for that type at every facing. Snapped to nearest 90° to
+      // match the OBB rasterization step.
+      const facingRad = ((item.facing ?? 0) * Math.PI) / 180;
+      const facingSnap = Math.round(facingRad / quarterTurn) * quarterTurn;
+      const fCos = Math.cos(facingSnap);
+      const fSin = Math.sin(facingSnap);
+      const worldDx = dx * fCos + dy * fSin;
+      const worldDy = -dx * fSin + dy * fCos;
       const cx = item.x + width / 2 + worldDx;
       const cy = item.y + height / 2 + worldDy;
       const hw = width / 2 + padX;
@@ -96,14 +101,14 @@ export function buildNavGrid(
       continue;
     }
 
-    // AABB branch — interpret (dx, dy) in the item's local frame too, so
-    // override values dialed in OBB mode keep their meaning when toggled
-    // back to AABB. Snap to 90° because the bounds rect is axis-aligned.
-    const aabbRotRaw = getItemRotationRadians(item);
+    // AABB branch — same offset-rotation rule as OBB so an override dialed
+    // in either mode behaves consistently. Rotate by item.facing only and
+    // snap to 90° for axis-aligned alignment.
+    const aabbFacingRad = ((item.facing ?? 0) * Math.PI) / 180;
     const aabbQuarter = Math.PI / 2;
-    const aabbRot = Math.round(aabbRotRaw / aabbQuarter) * aabbQuarter;
-    const aabbCos = Math.cos(aabbRot);
-    const aabbSin = Math.sin(aabbRot);
+    const aabbFacing = Math.round(aabbFacingRad / aabbQuarter) * aabbQuarter;
+    const aabbCos = Math.cos(aabbFacing);
+    const aabbSin = Math.sin(aabbFacing);
     const aabbWorldDx = dx * aabbCos + dy * aabbSin;
     const aabbWorldDy = -dx * aabbSin + dy * aabbCos;
     const bounds = getItemBounds(item);
