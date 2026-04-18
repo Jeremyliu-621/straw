@@ -45,9 +45,12 @@ const INTERIOR_WALLS: FurnitureItem[] = [
   wall(550, 220, 200, WALL_THICK),
   wall(800, 220, 88, WALL_THICK),
 
-  // Printer station L-partition (x=900..1200 top area).
+  // Printer station L-partition (x=900..1200 top area). South wall has a
+  // ~160-wide entrance facing the standing-desk island so agents can walk in
+  // without going around the west partition.
   wall(900, 100, WALL_THICK, 120),
-  wall(900, 220, 300, WALL_THICK),
+  wall(900, 220, 70, WALL_THICK),   // left stub (900..970)
+  wall(1130, 220, 70, WALL_THICK),  // right stub (1130..1200)
 ];
 
 // ── Server Room ──────────────────────────────────────────────────────────
