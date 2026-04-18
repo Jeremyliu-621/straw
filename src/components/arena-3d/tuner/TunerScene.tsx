@@ -1204,6 +1204,13 @@ function TickLoop({
           } else {
             agent.path = [];
             if (activeStation) {
+              // Last-mile snap: A* may have routed to a nearby free cell if
+              // the exact stand point sat inside an obstacle's nav padding.
+              // Snap the agent to the station's canonical (x, y) so the
+              // sit-back + sink-depth offsets are applied from the right
+              // anchor every time.
+              agent.x = activeStation.standX;
+              agent.y = activeStation.standY;
               agent.state = activeStation.state;
               agent.socialSpotType = activeStation.socialSpotType;
               agent.workoutStyle = activeStation.workoutStyle;
