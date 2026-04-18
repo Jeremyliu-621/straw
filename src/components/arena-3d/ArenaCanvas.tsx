@@ -18,8 +18,8 @@ const CAMERA_PRESETS: Record<
   ViewMode,
   { position: [number, number, number]; zoom: number; target: [number, number, number] }
 > = {
-  iso: { position: [14, 16, 19], zoom: 20, target: [0, 0, 1] },
-  top: { position: [0, 30, 0.001], zoom: 25, target: [0, 0, 0] },
+  iso: { position: [14, 16, 19], zoom: 23, target: [0, 0, 1] },
+  top: { position: [0, 30, 0.001], zoom: 20, target: [0, 0, 0] },
   // Flipped-iso: look from the opposite diagonal. Reveals faces the default
   // iso camera hides (e.g. south faces of desks, back of server racks).
   corner: { position: [-16, 16, -19], zoom: 30, target: [0, 0, -1] },
@@ -64,6 +64,9 @@ function ArenaScene({
   bwShadows,
   shadowLightness,
   pureWhite,
+  tintNormal,
+  tintPureWhite,
+  edgeThreshold,
   debugPaths,
 }: {
   officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
@@ -72,6 +75,9 @@ function ArenaScene({
   bwShadows: boolean;
   shadowLightness: number;
   pureWhite: boolean;
+  tintNormal: number;
+  tintPureWhite: number;
+  edgeThreshold: number;
   debugPaths: boolean;
 }) {
   const furniture = useMemo(() => DEFAULT_ARENA_FURNITURE, []);
@@ -156,7 +162,13 @@ function ArenaScene({
       <DebugPathOverlay agentsRef={renderAgentsRef} visible={debugPaths} />
 
       {/* B&W material + edge overlay — null variant = color mode. */}
-      <BWEffects variant={bwVariant} pureWhite={pureWhite} />
+      <BWEffects
+        variant={bwVariant}
+        pureWhite={pureWhite}
+        tintNormal={tintNormal}
+        tintPureWhite={tintPureWhite}
+        edgeThreshold={edgeThreshold}
+      />
     </>
   );
 }
@@ -260,11 +272,27 @@ export default function ArenaCanvas({
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
   const [debugPaths, setDebugPaths] = useState(false);
-  const { mode, setMode, shadowLightness, setShadowLightness, pureWhite, setPureWhite } =
-    useArenaMode();
+  const {
+    mode,
+    setMode,
+    shadowLightness,
+    setShadowLightness,
+    pureWhite,
+    setPureWhite,
+    tintNormal,
+    setTintNormal,
+    tintPureWhite,
+    setTintPureWhite,
+    edgeThreshold,
+    setEdgeThreshold,
+  } = useArenaMode();
   const bwVariant = modeToVariant(mode);
   const bw = bwVariant !== null;
   const bwShadows = bwVariant === "lit" || bwVariant === "lit-tint";
+  const isTintVariant = bwVariant === "unlit-tint" || bwVariant === "lit-tint";
+  // The tint slider edits whichever value matches the current pure-white state.
+  const activeTint = pureWhite ? tintPureWhite : tintNormal;
+  const setActiveTint = pureWhite ? setTintPureWhite : setTintNormal;
 
   const handleSelectAgent = useCallback((id: string | null) => {
     setSelectedAgentId(id);
@@ -303,6 +331,9 @@ export default function ArenaCanvas({
               bwShadows={bwShadows}
               shadowLightness={shadowLightness}
               pureWhite={pureWhite}
+              tintNormal={tintNormal}
+              tintPureWhite={tintPureWhite}
+              edgeThreshold={edgeThreshold}
               debugPaths={debugPaths}
             />
           </Suspense>

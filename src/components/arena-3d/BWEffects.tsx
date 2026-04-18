@@ -58,11 +58,9 @@ const BLACK_LINE_MATERIAL = new THREE.LineBasicMaterial({
 });
 BLACK_LINE_MATERIAL.name = "__bwEdgeLine__";
 
-const EDGE_THRESHOLD_DEG = 15;
-// Fraction of the blend that's white. 0 = full original color, 1 = pure white.
-// 0.4 = pastel blend where the hue reads clearly (brown, red, green visible)
-// with a little more saturation than a 50/50 mix.
-const TINT_AMOUNT = 0.4;
+// Tint amounts and edge threshold are now passed in as props (sliders in the
+// UI — see useArenaMode). The BW modules below receive them and regenerate
+// affected materials / geometries when they change.
 
 function isEmissiveMarker(mat: THREE.Material): boolean {
   if (!(mat instanceof THREE.MeshBasicMaterial)) return false;
@@ -85,12 +83,13 @@ function extractColor(material: THREE.Material | THREE.Material[]): THREE.Color 
 function makeTintedMaterial(
   original: THREE.Material | THREE.Material[],
   lit: boolean,
-  pureWhite: boolean
+  pureWhite: boolean,
+  tintAmount: number
 ): THREE.Material {
   const base = extractColor(original);
-  // Lerp toward the site-matching BW_WHITE so the pastel still blends with
-  // the page background. TINT_AMOUNT = 0.4 → 60% original + 40% BW_WHITE.
-  base.lerp(new THREE.Color(BW_WHITE), TINT_AMOUNT);
+  // Lerp toward BW_WHITE. tintAmount comes from the UI slider and is already
+  // scoped to the pure-white state by the caller.
+  base.lerp(new THREE.Color(BW_WHITE), tintAmount);
   if (lit) {
     const m = new THREE.MeshStandardMaterial({
       color: base,
@@ -109,7 +108,8 @@ function chooseMaterial(
   variant: BWVariant,
   mesh: THREE.Mesh,
   originalMaterial: THREE.Material | THREE.Material[],
-  pureWhite: boolean
+  pureWhite: boolean,
+  tintAmount: number
 ): THREE.Material {
   if (variant === "unlit") return WHITE_UNLIT;
   if (variant === "lit") return WHITE_LIT;
@@ -120,12 +120,18 @@ function chooseMaterial(
     ud.__bwTintedMaterial.dispose();
     ud.__bwTintedMaterial = undefined;
   }
-  const mat = makeTintedMaterial(originalMaterial, lit, pureWhite);
+  const mat = makeTintedMaterial(originalMaterial, lit, pureWhite, tintAmount);
   ud.__bwTintedMaterial = mat;
   return mat;
 }
 
-function patchMesh(mesh: THREE.Mesh, variant: BWVariant, pureWhite: boolean): void {
+function patchMesh(
+  mesh: THREE.Mesh,
+  variant: BWVariant,
+  pureWhite: boolean,
+  tintAmount: number,
+  edgeThreshold: number
+): void {
   const ud = mesh.userData as MeshUserData;
   if (ud.__isBWEdgeOverlay) return;
   if (ud.__bwPatchedWith === variant) return;
@@ -139,7 +145,7 @@ function patchMesh(mesh: THREE.Mesh, variant: BWVariant, pureWhite: boolean): vo
   }
 
   const orig = ud.__bwOriginalMaterial!;
-  mesh.material = chooseMaterial(variant, mesh, orig, pureWhite);
+  mesh.material = chooseMaterial(variant, mesh, orig, pureWhite, tintAmount);
 
   const lit = variant === "lit" || variant === "lit-tint";
   mesh.castShadow = lit;
@@ -148,7 +154,7 @@ function patchMesh(mesh: THREE.Mesh, variant: BWVariant, pureWhite: boolean): vo
   // Add the edge overlay once (independent of variant).
   const hasOverlay = mesh.children.some((c) => (c.userData as MeshUserData).__isBWEdgeOverlay);
   if (!hasOverlay) {
-    const edgeGeom = new THREE.EdgesGeometry(mesh.geometry, EDGE_THRESHOLD_DEG);
+    const edgeGeom = new THREE.EdgesGeometry(mesh.geometry, edgeThreshold);
     const overlay = new THREE.LineSegments(edgeGeom, BLACK_LINE_MATERIAL);
     overlay.name = "__bwEdgeOverlay__";
     (overlay.userData as MeshUserData).__isBWEdgeOverlay = true;
@@ -196,10 +202,50 @@ function unpatchMesh(mesh: THREE.Mesh): void {
   ud.__bwPatchedWith = undefined;
 }
 
-function applyAll(scene: THREE.Scene, variant: BWVariant, pureWhite: boolean): void {
+function applyAll(
+  scene: THREE.Scene,
+  variant: BWVariant,
+  pureWhite: boolean,
+  tintAmount: number,
+  edgeThreshold: number
+): void {
   scene.traverse((obj) => {
     const mesh = obj as THREE.Mesh;
-    if (mesh.isMesh) patchMesh(mesh, variant, pureWhite);
+    if (mesh.isMesh) patchMesh(mesh, variant, pureWhite, tintAmount, edgeThreshold);
+  });
+}
+
+/**
+ * Rebuild the edge overlays with a new threshold angle. Used when the edges
+ * slider moves. We keep the material overrides; only the EdgesGeometry is
+ * replaced.
+ */
+function regenerateEdges(scene: THREE.Scene, edgeThreshold: number): void {
+  scene.traverse((obj) => {
+    const mesh = obj as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const ud = mesh.userData as MeshUserData;
+    if (ud.__isBWEdgeOverlay || !ud.__bwPatchedWith) return;
+    // Remove existing overlay, dispose, attach a fresh one.
+    const toRemove: THREE.Object3D[] = [];
+    mesh.children.forEach((c) => {
+      if ((c.userData as MeshUserData).__isBWEdgeOverlay) toRemove.push(c);
+    });
+    toRemove.forEach((c) => {
+      mesh.remove(c);
+      const ls = c as THREE.LineSegments;
+      if (ls.geometry) ls.geometry.dispose();
+    });
+    if (!mesh.geometry) return;
+    const edgeGeom = new THREE.EdgesGeometry(mesh.geometry, edgeThreshold);
+    const overlay = new THREE.LineSegments(edgeGeom, BLACK_LINE_MATERIAL);
+    overlay.name = "__bwEdgeOverlay__";
+    (overlay.userData as MeshUserData).__isBWEdgeOverlay = true;
+    overlay.position.y = 0.02;
+    overlay.renderOrder = 2;
+    overlay.castShadow = false;
+    overlay.receiveShadow = false;
+    mesh.add(overlay);
   });
 }
 
@@ -245,12 +291,19 @@ function unapplyAll(scene: THREE.Scene): void {
 export default function BWEffects({
   variant,
   pureWhite,
+  tintNormal,
+  tintPureWhite,
+  edgeThreshold,
 }: {
   variant: BWVariant | null;
   pureWhite: boolean;
+  tintNormal: number;
+  tintPureWhite: number;
+  edgeThreshold: number;
 }) {
   const { scene } = useThree();
   const currentRef = useRef<BWVariant | null>(null);
+  const activeTint = pureWhite ? tintPureWhite : tintNormal;
 
   useEffect(() => {
     if (variant === null) {
@@ -261,17 +314,55 @@ export default function BWEffects({
       return;
     }
     if (currentRef.current !== variant) {
-      applyAll(scene, variant, pureWhite);
+      applyAll(scene, variant, pureWhite, activeTint, edgeThreshold);
       currentRef.current = variant;
     }
-  }, [variant, scene, pureWhite]);
+  }, [variant, scene, pureWhite, activeTint, edgeThreshold]);
 
-  // When pureWhite flips *without* a variant change, update existing materials
-  // in place so we don't blow away the per-mesh tinted clones unnecessarily.
+  // When pureWhite flips *without* a variant change:
+  //  - For the shared white variants (unlit / lit), just flip toneMapped on
+  //    the singletons — cheap shader recompile, no material churn.
+  //  - For tint variants, the tint amount itself depends on pureWhite (we
+  //    keep perceived saturation constant across ACES on/off), so we need to
+  //    rebuild the per-mesh tinted materials.
+  useEffect(() => {
+    const cur = currentRef.current;
+    if (cur === null) return;
+    updateToneMapped(scene, pureWhite);
+    if (cur === "unlit-tint" || cur === "lit-tint") {
+      scene.traverse((obj) => {
+        const mesh = obj as THREE.Mesh;
+        if (!mesh.isMesh) return;
+        const ud = mesh.userData as MeshUserData;
+        if (ud.__isBWEdgeOverlay) return;
+        if (ud.__bwPatchedWith !== cur) return;
+        ud.__bwPatchedWith = undefined;
+        patchMesh(mesh, cur, pureWhite, activeTint, edgeThreshold);
+      });
+    }
+  }, [pureWhite, scene, activeTint, edgeThreshold]);
+
+  // When the active tint slider value moves (without a variant or pureWhite
+  // change), rebuild just the tinted per-mesh materials.
+  useEffect(() => {
+    const cur = currentRef.current;
+    if (cur !== "unlit-tint" && cur !== "lit-tint") return;
+    scene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const ud = mesh.userData as MeshUserData;
+      if (ud.__isBWEdgeOverlay) return;
+      if (ud.__bwPatchedWith !== cur) return;
+      ud.__bwPatchedWith = undefined;
+      patchMesh(mesh, cur, pureWhite, activeTint, edgeThreshold);
+    });
+  }, [activeTint, scene, pureWhite, edgeThreshold]);
+
+  // When edge threshold moves, rebuild just the overlay LineSegments geometries.
   useEffect(() => {
     if (currentRef.current === null) return;
-    updateToneMapped(scene, pureWhite);
-  }, [pureWhite, scene]);
+    regenerateEdges(scene, edgeThreshold);
+  }, [edgeThreshold, scene]);
 
   useEffect(() => {
     return () => {
@@ -289,7 +380,7 @@ export default function BWEffects({
       if (!mesh.isMesh) return;
       const ud = mesh.userData as MeshUserData;
       if (ud.__bwPatchedWith === variant || ud.__isBWEdgeOverlay) return;
-      patchMesh(mesh, variant, pureWhite);
+      patchMesh(mesh, variant, pureWhite, activeTint, edgeThreshold);
     });
   });
 
