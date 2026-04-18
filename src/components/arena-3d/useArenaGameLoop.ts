@@ -60,7 +60,7 @@ export interface RenderAgentState {
   stuckFrames?: number;
 }
 
-const WALK_SPEED = 0.3;
+const WALK_SPEED = 0.55;
 const SEPARATION_STRENGTH = 3;
 const AGENT_RADIUS = 20;
 
