@@ -26,7 +26,7 @@ const CAMERA_PRESETS: Record<
   // Half-iso / half-top from the east: pushed further right and elevated so
   // the camera sits higher and further off-axis. Reads as an aerial side
   // view — clearly shows zone layout while keeping recognizable depth.
-  side: { position: [32, 18, 2], zoom: 26, target: [0, 1.5, 0] },
+  side: { position: [30, 20, 2], zoom: 26, target: [0, 0, 0] },
   // Axis-aligned front view: camera on +Z axis looking north toward origin.
   // Room renders as a rectangle (not a diamond) and the south-side zones
   // (ping pong, gym, lounge) sit in the foreground.
