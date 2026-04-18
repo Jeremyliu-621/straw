@@ -1,7 +1,9 @@
 import { CANVAS_H, CANVAS_W } from "./constants";
 import {
   applyClusterTransform,
+  getItemBaseSize,
   getItemBounds,
+  getItemRotationRadians,
   ITEM_FOOTPRINT,
   ITEM_METADATA,
   NAV_ANCHOR_OVERRIDES,
@@ -31,6 +33,7 @@ const itemBlocksNavigation = (type: string): boolean =>
 export function buildNavGrid(
   furniture: FurnitureItem[],
   overrides?: Record<string, NavAnchorOverride>,
+  useOBB?: boolean,
 ): NavGrid {
   const grid = new Uint8Array(GRID_COLS * GRID_ROWS);
   const defaultPad = GRID_CELL * 0.6;
@@ -45,6 +48,44 @@ export function buildNavGrid(
     const dy = ov?.dy ?? 0;
     const padX = ov?.padX ?? baseItemPad;
     const padY = ov?.padY ?? baseItemPad;
+
+    if (useOBB) {
+      // Oriented bounding box: only mark cells whose center actually lies
+      // inside the rotated rect. Rotation matches geometry.ts/three.js Y
+      // convention (canvas y ↔ world z).
+      const { width, height } = getItemBaseSize(item);
+      const cx = item.x + width / 2 + dx;
+      const cy = item.y + height / 2 + dy;
+      const hw = width / 2 + padX;
+      const hh = height / 2 + padY;
+      const rotation = getItemRotationRadians(item);
+      const cos = Math.cos(rotation);
+      const sin = Math.sin(rotation);
+      // AABB of the rotated rect — cell-loop bounds.
+      const absCos = Math.abs(cos);
+      const absSin = Math.abs(sin);
+      const aabbHw = hw * absCos + hh * absSin;
+      const aabbHh = hw * absSin + hh * absCos;
+      const c1 = Math.max(0, Math.floor((cx - aabbHw) / GRID_CELL));
+      const c2 = Math.min(GRID_COLS - 1, Math.floor((cx + aabbHw) / GRID_CELL));
+      const r1 = Math.max(0, Math.floor((cy - aabbHh) / GRID_CELL));
+      const r2 = Math.min(GRID_ROWS - 1, Math.floor((cy + aabbHh) / GRID_CELL));
+      for (let row = r1; row <= r2; row += 1) {
+        for (let column = c1; column <= c2; column += 1) {
+          const cellCx = (column + 0.5) * GRID_CELL;
+          const cellCy = (row + 0.5) * GRID_CELL;
+          const relX = cellCx - cx;
+          const relY = cellCy - cy;
+          const localX = relX * cos - relY * sin;
+          const localY = relX * sin + relY * cos;
+          if (Math.abs(localX) <= hw && Math.abs(localY) <= hh) {
+            grid[row * GRID_COLS + column] = 1;
+          }
+        }
+      }
+      continue;
+    }
+
     const bounds = getItemBounds(item);
     const x1 = bounds.x + dx - padX;
     const y1 = bounds.y + dy - padY;

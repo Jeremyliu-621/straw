@@ -958,20 +958,14 @@ interface TunerSceneProps {
   agentRef: React.RefObject<RenderAgentState[]>;
   showPaths: boolean;
   showNav: boolean;
-  meshFix: boolean;
+  obb: boolean;
   navOverrides: Record<string, NavAnchorOverride>;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
 }
 
-function ClusterGroupRender({
-  cluster,
-  centerOnRect,
-}: {
-  cluster: ClusterGroup;
-  centerOnRect: boolean;
-}) {
+function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
   // Render cluster items at their PRE-rotation canvas positions, but inside a
   // three.js group that rotates around the cluster pivot (in world). This
   // keeps the children rigidly aligned regardless of the rotation angle.
@@ -988,13 +982,7 @@ function ClusterGroupRender({
             return <ProceduralFurniture key={item._uid} item={item} />;
           }
           if (!FURNITURE_GLB[item.type]) return null;
-          return (
-            <FurnitureModel
-              key={item._uid}
-              item={item}
-              centerOnRect={centerOnRect}
-            />
-          );
+          return <FurnitureModel key={item._uid} item={item} />;
         })}
       </group>
     </group>
@@ -1378,7 +1366,7 @@ export default function TunerScene({
   agentRef,
   showPaths,
   showNav,
-  meshFix,
+  obb,
   navOverrides,
   onFloorClick,
 }: TunerSceneProps) {
@@ -1390,8 +1378,8 @@ export default function TunerScene({
   }, [cohort, tuning, gymTuning, miscTuning]);
   const navGrid = useMemo(() => {
     const allItems = [...items, ...clusters.flatMap((c) => c.items)];
-    return buildNavGrid(allItems, navOverrides);
-  }, [items, clusters, navOverrides]);
+    return buildNavGrid(allItems, navOverrides, obb);
+  }, [items, clusters, navOverrides, obb]);
   const large = cohort === "arena";
 
   return (
@@ -1426,21 +1414,11 @@ export default function TunerScene({
             return <ProceduralFurniture key={item._uid} item={item} />;
           }
           if (!FURNITURE_GLB[item.type]) return null;
-          return (
-            <FurnitureModel
-              key={item._uid}
-              item={item}
-              centerOnRect={meshFix}
-            />
-          );
+          return <FurnitureModel key={item._uid} item={item} />;
         })}
 
         {clusters.map((cluster) => (
-          <ClusterGroupRender
-            key={cluster.id}
-            cluster={cluster}
-            centerOnRect={meshFix}
-          />
+          <ClusterGroupRender key={cluster.id} cluster={cluster} />
         ))}
 
         {Array.from({ length: getAgentCount(cohort) }).map((_, i) => (
@@ -1493,7 +1471,7 @@ export function useTunerAgent() {
     useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
   const [showPaths, setShowPaths] = useState(false);
   const [showNav, setShowNav] = useState(false);
-  const [meshFix, setMeshFix] = useState(false);
+  const [obb, setObb] = useState(false);
   // Per-type nav-anchor overrides — sliders write into this; buildNavGrid
   // applies them at grid-build time. Empty by default = use NAV_ANCHOR_OVERRIDES
   // from geometry.ts (which itself is empty until we lock values in).
@@ -1530,12 +1508,12 @@ export function useTunerAgent() {
     return buildStations(tuning);
   }, [cohort, tuning, gymTuning, miscTuning]);
 
-  // Nav grid for collision-aware A* pathing. Rebuilt when cohort items or
-  // per-type overrides change.
+  // Nav grid for collision-aware A* pathing. Rebuilt when cohort items,
+  // per-type overrides, or OBB mode change.
   const navGrid = useMemo(() => {
     const allItems = [...items, ...clusters.flatMap((c) => c.items)];
-    return buildNavGrid(allItems, navOverrides);
-  }, [items, clusters, navOverrides]);
+    return buildNavGrid(allItems, navOverrides, obb);
+  }, [items, clusters, navOverrides, obb]);
 
   // Plan a path from (sx, sy) to (ex, ey) using A*. Returns the waypoint
   // list AND whether A* actually routed (true = navigated around obstacles,
@@ -1764,8 +1742,8 @@ export function useTunerAgent() {
     setShowPaths,
     showNav,
     setShowNav,
-    meshFix,
-    setMeshFix,
+    obb,
+    setObb,
     navOverrides,
     setNavOverrides,
     ambientByAgent,
