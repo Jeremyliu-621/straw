@@ -899,12 +899,12 @@ const TALK_MAX_MS = 6_000;
 
 // Ambient dwell ranges per station type. Applied on ARRIVAL (not pick) so
 // slow walks don't eat the dwell budget.
-const DWELL_SEAT_MIN_MS = 8_000;   // couch / beanbag / chair / desk
-const DWELL_SEAT_MAX_MS = 18_000;
-const DWELL_GYM_MIN_MS = 8_000;
-const DWELL_GYM_MAX_MS = 18_000;
-const DWELL_STAND_MIN_MS = 5_000;  // coffee / water / fridge / printer / etc.
-const DWELL_STAND_MAX_MS = 15_000;
+const DWELL_SEAT_MIN_MS = 24_000;  // couch / beanbag / chair / desk
+const DWELL_SEAT_MAX_MS = 54_000;
+const DWELL_GYM_MIN_MS = 24_000;
+const DWELL_GYM_MAX_MS = 54_000;
+const DWELL_STAND_MIN_MS = 15_000; // coffee / water / fridge / printer / etc.
+const DWELL_STAND_MAX_MS = 45_000;
 
 function dwellMsForStation(station: Station | null): number {
   if (!station) return DWELL_STAND_MIN_MS;
