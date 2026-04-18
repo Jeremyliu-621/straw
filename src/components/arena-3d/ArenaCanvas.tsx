@@ -289,19 +289,12 @@ export default function ArenaCanvas({
     pureWhite,
     setPureWhite,
     tintNormal,
-    setTintNormal,
     tintPureWhite,
-    setTintPureWhite,
     edgeThreshold,
-    setEdgeThreshold,
   } = useArenaMode();
   const bwVariant = modeToVariant(mode);
   const bw = bwVariant !== null;
   const bwShadows = bwVariant === "lit" || bwVariant === "lit-tint";
-  const isTintVariant = bwVariant === "unlit-tint" || bwVariant === "lit-tint";
-  // The tint slider edits whichever value matches the current pure-white state.
-  const activeTint = pureWhite ? tintPureWhite : tintNormal;
-  const setActiveTint = pureWhite ? setTintPureWhite : setTintNormal;
 
   const handleSelectAgent = useCallback((id: string | null) => {
     setSelectedAgentId(id);
@@ -322,7 +315,7 @@ export default function ArenaCanvas({
         <Canvas
           orthographic
           shadows={shadowsOn}
-          dpr={[0.85, 1.5]}
+          dpr={[1, 2]}
           camera={{
             position: initialPreset.position,
             zoom: initialPreset.zoom,
@@ -359,8 +352,10 @@ export default function ArenaCanvas({
           {officeAgents.length} agent{officeAgents.length !== 1 ? "s" : ""} in arena
         </div>
 
-        {/* Bottom-left: dev event trigger panel (hidden when collapsed) */}
-        <div className="absolute bottom-3 left-3">
+        {/* Top-left below the agent count badge: dev event trigger panel.
+            Kept away from the bottom-center mode row and bottom-center shadow
+            slider that overlap when BW mode is on, so it never gets blocked. */}
+        <div className="absolute top-14 left-3 z-10">
           <DevEventPanel
             queueRef={devActionQueueRef}
             agentIds={officeAgents.map((a) => a.id)}
@@ -437,28 +432,6 @@ export default function ArenaCanvas({
                 bw={bw}
               />
             )}
-            {isTintVariant && (
-              <SliderPill
-                label={pureWhite ? "tint (pure white)" : "tint (normal)"}
-                value={activeTint}
-                min={0}
-                max={1}
-                step={0.01}
-                onChange={setActiveTint}
-                display={activeTint.toFixed(2)}
-                bw={bw}
-              />
-            )}
-            <SliderPill
-              label="edge threshold"
-              value={edgeThreshold}
-              min={0}
-              max={60}
-              step={1}
-              onChange={setEdgeThreshold}
-              display={`${Math.round(edgeThreshold)}°`}
-              bw={bw}
-            />
           </div>
         )}
 
