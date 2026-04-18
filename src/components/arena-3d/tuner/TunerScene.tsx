@@ -1186,6 +1186,32 @@ function TickLoop({
         agent.facing = activeStation.facing;
       }
 
+      // Proximity snap: once the agent is within 30 canvas units of the
+      // station's canonical stand point, teleport + sit. A*'s findFree can
+      // leave the last waypoint a cell or two away when the stand point is
+      // inside an obstacle's nav padding — checking distance directly
+      // sidesteps that.
+      if (
+        activeStation &&
+        agent.state === "walking" &&
+        Math.hypot(activeStation.standX - agent.x, activeStation.standY - agent.y) < 30
+      ) {
+        agent.x = activeStation.standX;
+        agent.y = activeStation.standY;
+        agent.path = [];
+        agent.state = activeStation.state;
+        agent.socialSpotType = activeStation.socialSpotType;
+        agent.workoutStyle = activeStation.workoutStyle;
+        agent.sitBackOverride = activeStation.sitBack;
+        agent.sinkDepthOverride = activeStation.sinkDepth;
+        agent.facing = activeStation.facing;
+        if (activeStation.state === "sitting" && !activeStation.socialSpotType) {
+          agent.status = "working";
+        }
+        agent.frame += 1;
+        continue;
+      }
+
       if (agent.state === "walking" && agent.path.length > 0) {
         const wp = agent.path[0];
         const dx = wp.x - agent.x;
