@@ -12,7 +12,7 @@ import BWEffects, { type BWVariant } from "./BWEffects";
 import DebugPathOverlay from "./DebugPathOverlay";
 import { useArenaMode, type ArenaMode } from "./useArenaMode";
 
-type ViewMode = "iso" | "top" | "corner" | "side";
+type ViewMode = "iso" | "top" | "corner" | "side" | "front";
 
 const CAMERA_PRESETS: Record<
   ViewMode,
@@ -23,13 +23,17 @@ const CAMERA_PRESETS: Record<
   // Flipped-iso: look from the opposite diagonal. Reveals faces the default
   // iso camera hides (e.g. south faces of desks, back of server racks).
   corner: { position: [-16, 16, -19], zoom: 30, target: [0, 0, -1] },
-  // Shallow cross-section: nearly eye-level, looking along the east→west axis.
-  // Good for reading relative heights — standing desks vs seated desks,
-  // phone booths, gym rig silhouettes.
-  side: { position: [26, 8, 2], zoom: 26, target: [0, 1.5, 0] },
+  // Half-iso / half-top from the east: pushed further right and elevated so
+  // the camera sits higher and further off-axis. Reads as an aerial side
+  // view — clearly shows zone layout while keeping recognizable depth.
+  side: { position: [32, 18, 2], zoom: 26, target: [0, 1.5, 0] },
+  // Axis-aligned front view: camera on +Z axis looking north toward origin.
+  // Room renders as a rectangle (not a diamond) and the south-side zones
+  // (ping pong, gym, lounge) sit in the foreground.
+  front: { position: [0, 14, 26], zoom: 22, target: [0, 0, 0] },
 };
 
-const VIEW_CYCLE: ViewMode[] = ["iso", "top", "corner", "side"];
+const VIEW_CYCLE: ViewMode[] = ["iso", "top", "corner", "side", "front"];
 
 function GameLoop({ tick }: { tick: () => void }) {
   useFrame(() => tick());
@@ -59,6 +63,7 @@ function CameraRig({
 
 function ArenaScene({
   officeAgents,
+  eventBufferRef,
   viewMode,
   bwVariant,
   bwShadows,
@@ -70,6 +75,7 @@ function ArenaScene({
   debugPaths,
 }: {
   officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
+  eventBufferRef: ReturnType<typeof useStrawAgents>["eventBufferRef"];
   viewMode: ViewMode;
   bwVariant: BWVariant | null;
   bwShadows: boolean;
@@ -81,7 +87,7 @@ function ArenaScene({
   debugPaths: boolean;
 }) {
   const furniture = useMemo(() => DEFAULT_ARENA_FURNITURE, []);
-  const { renderAgentsRef, tick } = useArenaGameLoop(officeAgents, furniture);
+  const { renderAgentsRef, tick } = useArenaGameLoop(officeAgents, furniture, eventBufferRef);
   const preset = CAMERA_PRESETS[viewMode];
 
   return (
@@ -229,8 +235,6 @@ function ArenaFallback() {
 
 const MODES: { id: ArenaMode; label: string }[] = [
   { id: "color", label: "color" },
-  { id: "bw", label: "b&w" },
-  { id: "bw-shadows", label: "b&w + shadows" },
   { id: "bw-tint", label: "b&w + tint" },
   { id: "bw-shadows-tint", label: "b&w + shadows + tint" },
 ];
@@ -239,10 +243,6 @@ function modeToVariant(mode: ArenaMode): BWVariant | null {
   switch (mode) {
     case "color":
       return null;
-    case "bw":
-      return "unlit";
-    case "bw-shadows":
-      return "lit";
     case "bw-tint":
       return "unlit-tint";
     case "bw-shadows-tint":
@@ -268,7 +268,7 @@ export default function ArenaCanvas({
   height = 600,
   showSidebar = true,
 }: ArenaCanvasProps = {}) {
-  const { agents, officeAgents, loading } = useStrawAgents(taskId);
+  const { agents, officeAgents, loading, eventBufferRef } = useStrawAgents(taskId);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
   const [debugPaths, setDebugPaths] = useState(false);
@@ -326,6 +326,7 @@ export default function ArenaCanvas({
           <Suspense fallback={<ArenaFallback />}>
             <ArenaScene
               officeAgents={officeAgents}
+              eventBufferRef={eventBufferRef}
               viewMode={viewMode}
               bwVariant={bwVariant}
               bwShadows={bwShadows}
@@ -399,25 +400,47 @@ export default function ArenaCanvas({
           </button>
         </div>
 
-        {/* Shadow-lightness slider — visible only when a shadow variant is on */}
-        {bwShadows && (
-          <div
-            className={`absolute bottom-14 left-1/2 -translate-x-1/2 flex items-center gap-3 px-3 py-1.5 rounded-full font-mono text-xs backdrop-blur-sm ${
-              bw ? "bg-white/90 text-black border border-black" : "bg-black/60 text-white"
-            }`}
-          >
-            <span className="opacity-60">shadow lightness</span>
-            <input
-              type="range"
+        {/* Dynamic sliders — stacked bottom-center, above the mode row. The
+            mode row wraps onto 2 lines on narrow viewports (because the
+            "b&w + shadows + tint" label is wide), so the slider stack sits at
+            bottom-24 to clear it. Each slider is visible only when it
+            affects the current mode. */}
+        {bw && (
+          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 max-w-[95%]">
+            {bwShadows && (
+              <SliderPill
+                label="shadow lightness"
+                value={shadowLightness}
+                min={0}
+                max={200}
+                step={1}
+                onChange={setShadowLightness}
+                display={Math.round(shadowLightness).toString()}
+                bw={bw}
+              />
+            )}
+            {isTintVariant && (
+              <SliderPill
+                label={pureWhite ? "tint (pure white)" : "tint (normal)"}
+                value={activeTint}
+                min={0}
+                max={1}
+                step={0.01}
+                onChange={setActiveTint}
+                display={activeTint.toFixed(2)}
+                bw={bw}
+              />
+            )}
+            <SliderPill
+              label="edge threshold"
+              value={edgeThreshold}
               min={0}
-              max={200}
+              max={60}
               step={1}
-              value={shadowLightness}
-              onChange={(e) => setShadowLightness(parseFloat(e.target.value))}
-              className="w-[220px] accent-black"
-              aria-label="Shadow lightness"
+              onChange={setEdgeThreshold}
+              display={`${Math.round(edgeThreshold)}°`}
+              bw={bw}
             />
-            <span className="w-9 text-right tabular-nums">{Math.round(shadowLightness)}</span>
           </div>
         )}
 
@@ -455,6 +478,47 @@ export default function ArenaCanvas({
           onSelectAgent={handleSelectAgent}
         />
       )}
+    </div>
+  );
+}
+
+function SliderPill({
+  label,
+  value,
+  min,
+  max,
+  step,
+  onChange,
+  display,
+  bw,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (n: number) => void;
+  display: string;
+  bw: boolean;
+}) {
+  return (
+    <div
+      className={`flex items-center gap-3 px-3 py-1.5 rounded-full font-mono text-xs backdrop-blur-sm ${
+        bw ? "bg-white/90 text-black border border-black" : "bg-black/60 text-white"
+      }`}
+    >
+      <span className="opacity-60 whitespace-nowrap">{label}</span>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className="w-[180px] accent-black"
+        aria-label={label}
+      />
+      <span className="w-12 text-right tabular-nums">{display}</span>
     </div>
   );
 }
