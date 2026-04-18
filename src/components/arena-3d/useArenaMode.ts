@@ -2,7 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 
-export type ArenaMode = "color" | "bw-tint" | "bw-shadows-tint";
+export type ArenaMode = "bw-tint";
 
 const MODE_KEY = "arena3d.mode";
 const SHADOW_KEY = "arena3d.shadowLightness";
@@ -10,7 +10,7 @@ const PURE_WHITE_KEY = "arena3d.pureWhite";
 const TINT_NORMAL_KEY = "arena3d.tintNormal";
 const TINT_PURE_KEY = "arena3d.tintPureWhite";
 const EDGE_KEY = "arena3d.edgeThreshold";
-const VALID: ArenaMode[] = ["color", "bw-tint", "bw-shadows-tint"];
+const VALID: ArenaMode[] = ["bw-tint"];
 
 const DEFAULT_SHADOW_LIGHTNESS = 140; // 0 = dark shadows, 200 = shadows fully gone
 const DEFAULT_PURE_WHITE = true;
@@ -24,10 +24,10 @@ const DEFAULT_TINT_PURE_WHITE = 0.6;
 const DEFAULT_EDGE_THRESHOLD = 40;
 
 function readMode(): ArenaMode {
-  if (typeof window === "undefined") return "color";
+  if (typeof window === "undefined") return "bw-tint";
   const stored = window.localStorage.getItem(MODE_KEY);
   if (stored && (VALID as string[]).includes(stored)) return stored as ArenaMode;
-  return "color";
+  return "bw-tint";
 }
 
 function readLightness(): number {
@@ -72,7 +72,7 @@ function subscribe(onChange: () => void): () => void {
   return () => window.removeEventListener("storage", handler);
 }
 
-const serverMode = (): ArenaMode => "color";
+const serverMode = (): ArenaMode => "bw-tint";
 const serverLightness = (): number => DEFAULT_SHADOW_LIGHTNESS;
 const serverPureWhite = (): boolean => DEFAULT_PURE_WHITE;
 const serverTintNormal = (): number => DEFAULT_TINT_NORMAL;

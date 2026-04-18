@@ -241,20 +241,10 @@ function ArenaFallback() {
   );
 }
 
-const MODES: { id: ArenaMode; label: string }[] = [
-  { id: "color", label: "color" },
-  { id: "bw-tint", label: "b&w + tint" },
-  { id: "bw-shadows-tint", label: "b&w + shadows + tint" },
-];
-
 function modeToVariant(mode: ArenaMode): BWVariant | null {
   switch (mode) {
-    case "color":
-      return null;
     case "bw-tint":
       return "unlit-tint";
-    case "bw-shadows-tint":
-      return "lit-tint";
   }
 }
 
@@ -325,7 +315,6 @@ export function ArenaCanvasInner({
   const devActionQueueRef = useRef<DevAction[]>([]);
   const {
     mode,
-    setMode,
     shadowLightness,
     setShadowLightness,
     pureWhite,
@@ -474,30 +463,6 @@ export function ArenaCanvasInner({
           </div>
         )}
 
-        {/* Bottom row: mode radio buttons */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 flex-wrap justify-center max-w-[95%]">
-          {MODES.map((m) => {
-            const active = mode === m.id;
-            return (
-              <button
-                key={m.id}
-                onClick={() => setMode(m.id)}
-                className={`backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-mono transition-colors ${
-                  active
-                    ? bw
-                      ? "bg-black text-white border border-black"
-                      : "bg-white text-black border border-white"
-                    : bw
-                      ? "bg-white/80 text-black border border-black/40 hover:bg-white"
-                      : "bg-black/60 text-white hover:bg-black/80"
-                }`}
-                title={`Switch to ${m.label}`}
-              >
-                {m.label}
-              </button>
-            );
-          })}
-        </div>
       </div>
 
       {showSidebar && (
