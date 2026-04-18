@@ -28,8 +28,6 @@ interface TunerPanelProps {
   setShowPaths: (v: boolean | ((prev: boolean) => boolean)) => void;
   showNav: boolean;
   setShowNav: (v: boolean | ((prev: boolean) => boolean)) => void;
-  obb: boolean;
-  setObb: (v: boolean | ((prev: boolean) => boolean)) => void;
   navOverrides: Record<string, NavAnchorOverride>;
   setNavOverrides: (
     updater:
@@ -111,8 +109,6 @@ export default function TunerPanel({
   setShowPaths,
   showNav,
   setShowNav,
-  obb,
-  setObb,
   navOverrides,
   setNavOverrides,
   ambientByAgent,
@@ -255,17 +251,6 @@ export default function TunerPanel({
           }`}
         >
           nav: {showNav ? "on" : "off"}
-        </button>
-        <button
-          onClick={() => setObb((v) => !v)}
-          className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
-            obb
-              ? "bg-indigo-600 text-white border-indigo-600"
-              : "bg-white text-black border-gray-300 hover:border-indigo-600"
-          }`}
-          title="Snap-to-90° OBB: rotates the nav rect to the nearest quarter turn before rasterizing. Clean axis-aligned rect at any item facing — no stair-step diagonals."
-        >
-          obb: {obb ? "on" : "off"}
         </button>
         <button
           onClick={onReset}

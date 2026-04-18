@@ -896,6 +896,30 @@ const TALK_PROXIMITY_PX = 50;
 const TALK_CHANCE_PER_TICK = 0.02;   // ≈1.2/s per eligible pair at 60fps
 const TALK_MIN_MS = 3_000;
 const TALK_MAX_MS = 6_000;
+
+// Ambient dwell ranges per station type. Applied on ARRIVAL (not pick) so
+// slow walks don't eat the dwell budget.
+const DWELL_SEAT_MIN_MS = 8_000;   // couch / beanbag / chair / desk
+const DWELL_SEAT_MAX_MS = 18_000;
+const DWELL_GYM_MIN_MS = 8_000;
+const DWELL_GYM_MAX_MS = 18_000;
+const DWELL_STAND_MIN_MS = 5_000;  // coffee / water / fridge / printer / etc.
+const DWELL_STAND_MAX_MS = 15_000;
+
+function dwellMsForStation(station: Station | null): number {
+  if (!station) return DWELL_STAND_MIN_MS;
+  // Ping-pong: dwell = game duration cap + a hair. pingPongUntil will clear
+  // at game end and the picker fires naturally once the dwell window is up.
+  if (station.pingPongTableUid) return PING_PONG_GAME_MAX_MS + 2_000;
+  if (station.state === "sitting") {
+    return DWELL_SEAT_MIN_MS + Math.random() * (DWELL_SEAT_MAX_MS - DWELL_SEAT_MIN_MS);
+  }
+  if (station.state === "working_out") {
+    return DWELL_GYM_MIN_MS + Math.random() * (DWELL_GYM_MAX_MS - DWELL_GYM_MIN_MS);
+  }
+  // standing (default)
+  return DWELL_STAND_MIN_MS + Math.random() * (DWELL_STAND_MAX_MS - DWELL_STAND_MIN_MS);
+}
 // Ball / paddle geometry, ported from Claw3D sceneRuntime's PingPongBall.
 const PING_PONG_BALL_RADIUS = 0.06;
 const PING_PONG_PADDLE_OFFSET = 18; // canvas units from player → paddle
@@ -994,7 +1018,6 @@ interface TunerSceneProps {
   agentRef: React.RefObject<RenderAgentState[]>;
   showPaths: boolean;
   showNav: boolean;
-  obb: boolean;
   navOverrides: Record<string, NavAnchorOverride>;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
@@ -1622,7 +1645,6 @@ export default function TunerScene({
   agentRef,
   showPaths,
   showNav,
-  obb,
   navOverrides,
   onFloorClick,
 }: TunerSceneProps) {
@@ -1634,8 +1656,8 @@ export default function TunerScene({
   }, [cohort, tuning, gymTuning, miscTuning]);
   const navGrid = useMemo(() => {
     const allItems = [...items, ...clusters.flatMap((c) => c.items)];
-    return buildNavGrid(allItems, navOverrides, obb);
-  }, [items, clusters, navOverrides, obb]);
+    return buildNavGrid(allItems, navOverrides);
+  }, [items, clusters, navOverrides]);
   const large = cohort === "arena";
 
   return (
@@ -1732,7 +1754,6 @@ export function useTunerAgent() {
     useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
   const [showPaths, setShowPaths] = useState(false);
   const [showNav, setShowNav] = useState(false);
-  const [obb, setObb] = useState(false);
   // Per-type nav-anchor overrides — sliders write into this; buildNavGrid
   // applies them at grid-build time. Empty by default = use NAV_ANCHOR_OVERRIDES
   // from geometry.ts (which itself is empty until we lock values in).
@@ -1769,12 +1790,12 @@ export function useTunerAgent() {
     return buildStations(tuning);
   }, [cohort, tuning, gymTuning, miscTuning]);
 
-  // Nav grid for collision-aware A* pathing. Rebuilt when cohort items,
-  // per-type overrides, or OBB mode change.
+  // Nav grid for collision-aware A* pathing. Rebuilt when cohort items or
+  // per-type overrides change.
   const navGrid = useMemo(() => {
     const allItems = [...items, ...clusters.flatMap((c) => c.items)];
-    return buildNavGrid(allItems, navOverrides, obb);
-  }, [items, clusters, navOverrides, obb]);
+    return buildNavGrid(allItems, navOverrides);
+  }, [items, clusters, navOverrides]);
 
   // Plan a path from (sx, sy) to (ex, ey) using A*. Returns the waypoint
   // list AND whether A* actually routed (true = navigated around obstacles,
@@ -1918,8 +1939,20 @@ export function useTunerAgent() {
         const agent = agentRef.current[i];
         if (!agent) continue;
         if (agent.state === "walking") continue;
+
+        // Arrival detection: nextAt was set to Infinity at pick-time so the
+        // picker wouldn't re-fire mid-walk. Once the agent is no longer
+        // walking, compute the real per-station-type dwell and start it now.
+        if (!Number.isFinite(ambientNextAtRef.current[i])) {
+          const selfIdx = stationIdxByAgentRef.current[i];
+          const arrivedAt = selfIdx !== null ? stations[selfIdx] : null;
+          ambientNextAtRef.current[i] = now + dwellMsForStation(arrivedAt);
+          continue;
+        }
         if (now < ambientNextAtRef.current[i]) continue;
-        // Build the set of stations occupied by any OTHER agent.
+
+        // Dwell expired → pick a new station. Exclude self + every other
+        // agent's current / in-transit station so no two pile up.
         const occupied = new Set<number>();
         for (let j = 0; j < stationIdxByAgentRef.current.length; j++) {
           if (j === i) continue;
@@ -1935,8 +1968,8 @@ export function useTunerAgent() {
         if (candidates.length === 0) continue;
         const pick = candidates[Math.floor(Math.random() * candidates.length)];
         sendToStation(i, pick);
-        // Dwell 6–12s at the new station before the next hop.
-        ambientNextAtRef.current[i] = now + 6000 + Math.random() * 6000;
+        // Pause timer until they actually arrive — real dwell starts then.
+        ambientNextAtRef.current[i] = Infinity;
       }
     }, 500);
     return () => window.clearInterval(id);
@@ -2011,8 +2044,6 @@ export function useTunerAgent() {
     setShowPaths,
     showNav,
     setShowNav,
-    obb,
-    setObb,
     navOverrides,
     setNavOverrides,
     ambientByAgent,

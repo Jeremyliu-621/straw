@@ -2,8 +2,6 @@ import { CANVAS_H, CANVAS_W } from "./constants";
 import {
   applyClusterTransform,
   getItemBaseSize,
-  getItemBounds,
-  getItemRotationRadians,
   ITEM_FOOTPRINT,
   ITEM_METADATA,
   NAV_ANCHOR_OVERRIDES,
@@ -33,7 +31,6 @@ const itemBlocksNavigation = (type: string): boolean =>
 export function buildNavGrid(
   furniture: FurnitureItem[],
   overrides?: Record<string, NavAnchorOverride>,
-  useOBB?: boolean,
 ): NavGrid {
   const grid = new Uint8Array(GRID_COLS * GRID_ROWS);
   const defaultPad = GRID_CELL * 0.6;
@@ -49,82 +46,52 @@ export function buildNavGrid(
     const padX = ov?.padX ?? baseItemPad;
     const padY = ov?.padY ?? baseItemPad;
 
-    if (useOBB) {
-      // Snap-to-90° oriented bounding box driven by item.facing ONLY (not
-      // by getItemRotationRadians, which also folds in FURNITURE_ROTATION
-      // defaults like couch_v=π/2). Folding that in made the OBB rotate
-      // perpendicular to the visible mesh at certain facings AND fought
-      // the offset rotation. Using item.facing keeps the OBB orientation,
-      // the offset frame, and the slider intent all consistent: at
-      // facing=0 the OBB sits at its authored width × height; the offset
-      // lands in world coords; rotating the slider rotates both together.
-      const { width, height } = getItemBaseSize(item);
-      const facingRad = ((item.facing ?? 0) * Math.PI) / 180;
-      const quarterTurn = Math.PI / 2;
-      const rotation = Math.round(facingRad / quarterTurn) * quarterTurn;
-      const cos = Math.cos(rotation);
-      const sin = Math.sin(rotation);
-      const worldDx = dx * cos + dy * sin;
-      const worldDy = -dx * sin + dy * cos;
-      // padY is ONE-SIDED along the local +y axis: shrinking padY trims
-      // the far edge of the rect (the side away from the item's "front")
-      // and keeps the near edge at width/2. padX stays symmetric on both
-      // sides. Implemented by shifting the OBB center by padY/2 in local
-      // +y and giving the rect half-height = height/2 + padY/2.
-      const halfShiftLocalY = padY / 2;
-      const padShiftWorldX = halfShiftLocalY * sin;
-      const padShiftWorldY = halfShiftLocalY * cos;
-      const cx = item.x + width / 2 + worldDx + padShiftWorldX;
-      const cy = item.y + height / 2 + worldDy + padShiftWorldY;
-      const hw = width / 2 + padX;
-      const hh = height / 2 + padY / 2;
-      // AABB of the rotated rect — cell-loop bounds.
-      const absCos = Math.abs(cos);
-      const absSin = Math.abs(sin);
-      const aabbHw = hw * absCos + hh * absSin;
-      const aabbHh = hw * absSin + hh * absCos;
-      const c1 = Math.max(0, Math.floor((cx - aabbHw) / GRID_CELL));
-      const c2 = Math.min(GRID_COLS - 1, Math.floor((cx + aabbHw) / GRID_CELL));
-      const r1 = Math.max(0, Math.floor((cy - aabbHh) / GRID_CELL));
-      const r2 = Math.min(GRID_ROWS - 1, Math.floor((cy + aabbHh) / GRID_CELL));
-      for (let row = r1; row <= r2; row += 1) {
-        for (let column = c1; column <= c2; column += 1) {
-          const cellCx = (column + 0.5) * GRID_CELL;
-          const cellCy = (row + 0.5) * GRID_CELL;
-          const relX = cellCx - cx;
-          const relY = cellCy - cy;
-          const localX = relX * cos - relY * sin;
-          const localY = relX * sin + relY * cos;
-          if (Math.abs(localX) <= hw && Math.abs(localY) <= hh) {
-            grid[row * GRID_COLS + column] = 1;
-          }
-        }
-      }
-      continue;
-    }
-
-    // AABB branch — same offset-rotation rule as OBB so an override dialed
-    // in either mode behaves consistently. Rotate by item.facing only and
-    // snap to 90° for axis-aligned alignment.
-    const aabbFacingRad = ((item.facing ?? 0) * Math.PI) / 180;
-    const aabbQuarter = Math.PI / 2;
-    const aabbFacing = Math.round(aabbFacingRad / aabbQuarter) * aabbQuarter;
-    const aabbCos = Math.cos(aabbFacing);
-    const aabbSin = Math.sin(aabbFacing);
-    const aabbWorldDx = dx * aabbCos + dy * aabbSin;
-    const aabbWorldDy = -dx * aabbSin + dy * aabbCos;
-    const bounds = getItemBounds(item);
-    const x1 = bounds.x + aabbWorldDx - padX;
-    const y1 = bounds.y + aabbWorldDy - padY;
-    const x2 = bounds.x + bounds.w + aabbWorldDx + padX;
-    const y2 = bounds.y + bounds.h + aabbWorldDy + padY;
-    const c1 = Math.max(0, Math.floor(x1 / GRID_CELL));
-    const c2 = Math.min(GRID_COLS - 1, Math.floor(x2 / GRID_CELL));
-    const r1 = Math.max(0, Math.floor(y1 / GRID_CELL));
-    const r2 = Math.min(GRID_ROWS - 1, Math.floor(y2 / GRID_CELL));
+    // Snap-to-90° OBB driven by item.facing only (not getItemRotationRadians,
+    // which also folds in FURNITURE_ROTATION defaults like couch_v=π/2).
+    // Using item.facing keeps the OBB orientation, the offset frame, and
+    // the pad axes all consistent: at facing=0 the OBB sits at its authored
+    // width × height; offsets and pads land in world coords; rotating the
+    // slider rotates everything together.
+    //
+    // padX is symmetric on both local-x sides; padY is ONE-SIDED along the
+    // local +y axis (shrinking padY trims the far edge of the rect, keeping
+    // the near edge at width/2). Implemented by shifting the OBB center by
+    // padY/2 in local +y and giving the rect half-height = height/2 + padY/2.
+    const { width, height } = getItemBaseSize(item);
+    const facingRad = ((item.facing ?? 0) * Math.PI) / 180;
+    const quarterTurn = Math.PI / 2;
+    const rotation = Math.round(facingRad / quarterTurn) * quarterTurn;
+    const cos = Math.cos(rotation);
+    const sin = Math.sin(rotation);
+    const worldDx = dx * cos + dy * sin;
+    const worldDy = -dx * sin + dy * cos;
+    const halfShiftLocalY = padY / 2;
+    const padShiftWorldX = halfShiftLocalY * sin;
+    const padShiftWorldY = halfShiftLocalY * cos;
+    const cx = item.x + width / 2 + worldDx + padShiftWorldX;
+    const cy = item.y + height / 2 + worldDy + padShiftWorldY;
+    const hw = width / 2 + padX;
+    const hh = height / 2 + padY / 2;
+    // AABB of the rotated rect — cell-loop bounds.
+    const absCos = Math.abs(cos);
+    const absSin = Math.abs(sin);
+    const aabbHw = hw * absCos + hh * absSin;
+    const aabbHh = hw * absSin + hh * absCos;
+    const c1 = Math.max(0, Math.floor((cx - aabbHw) / GRID_CELL));
+    const c2 = Math.min(GRID_COLS - 1, Math.floor((cx + aabbHw) / GRID_CELL));
+    const r1 = Math.max(0, Math.floor((cy - aabbHh) / GRID_CELL));
+    const r2 = Math.min(GRID_ROWS - 1, Math.floor((cy + aabbHh) / GRID_CELL));
     for (let row = r1; row <= r2; row += 1) {
       for (let column = c1; column <= c2; column += 1) {
-        grid[row * GRID_COLS + column] = 1;
+        const cellCx = (column + 0.5) * GRID_CELL;
+        const cellCy = (row + 0.5) * GRID_CELL;
+        const relX = cellCx - cx;
+        const relY = cellCy - cy;
+        const localX = relX * cos - relY * sin;
+        const localY = relX * sin + relY * cos;
+        if (Math.abs(localX) <= hw && Math.abs(localY) <= hh) {
+          grid[row * GRID_COLS + column] = 1;
+        }
       }
     }
   }
