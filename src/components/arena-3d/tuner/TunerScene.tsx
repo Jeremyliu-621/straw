@@ -28,6 +28,7 @@ import {
   SOCIAL_POINTS,
   GYM_WORKOUT_POINTS,
 } from "../core/defaultLayout";
+import { buildNavGrid, astar } from "../core/navigation";
 
 export type Cohort = "seats" | "gym" | "arena" | "misc";
 
@@ -1031,6 +1032,10 @@ function AgentDebugMarker({
   );
 }
 
+// Max waypoints we'll ever display. A* paths are typically <30 cells; cap
+// at 128 so we can keep a fixed-size buffer that re-fills each frame.
+const PATH_MAX_POINTS = 128;
+
 function AgentPathLine({
   agentRef,
   agentIdx,
@@ -1040,13 +1045,12 @@ function AgentPathLine({
   agentIdx: number;
   color: string;
 }) {
-  // Keep a stable 2-point array and mutate its entries per frame so the
-  // drei Line updates without needing to remount its underlying buffer.
   const points = useMemo(
-    () => [
-      new THREE.Vector3(0, 0.06, 0),
-      new THREE.Vector3(0, 0.06, 0),
-    ],
+    () =>
+      Array.from(
+        { length: PATH_MAX_POINTS },
+        () => new THREE.Vector3(0, 0.06, 0)
+      ),
     []
   );
   const lineRef = useRef<THREE.Object3D>(null);
@@ -1056,22 +1060,29 @@ function AgentPathLine({
     const walking = agent.state === "walking" && agent.path.length > 0;
     if (lineRef.current) lineRef.current.visible = walking;
     if (!walking) return;
+
+    // Full polyline: current agent position → each remaining A* waypoint.
     const [ax, , az] = toWorld(agent.x, agent.y);
-    const wp = agent.path[agent.path.length - 1];
-    const [tx, , tz] = toWorld(wp.x, wp.y);
-    points[0].set(ax, 0.06, az);
-    points[1].set(tx, 0.06, tz);
-    // drei Line re-reads `points` but we also need to flag the geometry as
-    // dirty; setPoints isn't exposed on the drei wrapper so we mutate the
-    // underlying line geometry directly.
+    const seq: [number, number, number][] = [[ax, 0.06, az]];
+    const waypoints = agent.path.slice(0, PATH_MAX_POINTS - 1);
+    for (const wp of waypoints) {
+      const [wx, , wz] = toWorld(wp.x, wp.y);
+      seq.push([wx, 0.06, wz]);
+    }
+
     const line = lineRef.current as unknown as
       | { geometry?: THREE.BufferGeometry }
       | null;
     if (line?.geometry) {
       const pos = line.geometry.attributes.position;
       if (pos instanceof THREE.BufferAttribute) {
-        pos.setXYZ(0, ax, 0.06, az);
-        pos.setXYZ(1, tx, 0.06, tz);
+        const last = seq[seq.length - 1];
+        // Fill used waypoints; clamp the remainder to the final point so
+        // segments past the end collapse to length 0 (invisible).
+        for (let i = 0; i < PATH_MAX_POINTS; i++) {
+          const p = i < seq.length ? seq[i] : last;
+          pos.setXYZ(i, p[0], p[1], p[2]);
+        }
         pos.needsUpdate = true;
       }
     }
@@ -1329,12 +1340,30 @@ export function useTunerAgent() {
     return () => window.clearInterval(id);
   }, []);
 
-  const { stations } = useMemo(() => {
+  const { stations, items, clusters } = useMemo(() => {
     if (cohort === "gym") return buildGymStations(gymTuning);
     if (cohort === "arena") return getArenaStations();
     if (cohort === "misc") return buildMiscStations(miscTuning);
     return buildStations(tuning);
   }, [cohort, tuning, gymTuning, miscTuning]);
+
+  // Nav grid for collision-aware A* pathing. Rebuilt when cohort items change.
+  const navGrid = useMemo(() => {
+    const allItems = [...items, ...clusters.flatMap((c) => c.items)];
+    return buildNavGrid(allItems);
+  }, [items, clusters]);
+
+  // Plan a path from (sx, sy) to (ex, ey) using A*. Falls back to a single
+  // waypoint if A* can't find a path (e.g. the destination is inside an
+  // obstacle).
+  const planPath = useCallback(
+    (sx: number, sy: number, ex: number, ey: number) => {
+      const p = astar(sx, sy, ex, ey, navGrid);
+      if (p.length > 0) return p;
+      return [{ x: ex, y: ey }];
+    },
+    [navGrid]
+  );
 
   const sendToStation = useCallback(
     (agentIdx: number, idx: number | null) => {
@@ -1360,7 +1389,7 @@ export function useTunerAgent() {
       agent.state = "walking";
       agent.targetX = station.standX;
       agent.targetY = station.standY;
-      agent.path = [{ x: station.standX, y: station.standY }];
+      agent.path = planPath(agent.x, agent.y, station.standX, station.standY);
       agent.socialSpotType = undefined;
       agent.sitBackOverride = undefined;
       agent.sinkDepthOverride = undefined;
@@ -1372,7 +1401,7 @@ export function useTunerAgent() {
         return next;
       });
     },
-    [stations]
+    [stations, planPath]
   );
 
   // When tuning changes, any active station may have moved — rewalk each
@@ -1390,7 +1419,7 @@ export function useTunerAgent() {
         agent.state = "walking";
         agent.targetX = station.standX;
         agent.targetY = station.standY;
-        agent.path = [{ x: station.standX, y: station.standY }];
+        agent.path = planPath(agent.x, agent.y, station.standX, station.standY);
         agent.socialSpotType = undefined;
         agent.sitBackOverride = undefined;
         agent.sinkDepthOverride = undefined;
@@ -1400,7 +1429,7 @@ export function useTunerAgent() {
         agent.facing = station.facing;
       }
     });
-  }, [stations, stationIdxByAgent]);
+  }, [stations, stationIdxByAgent, planPath]);
 
   const reset = useCallback(() => {
     agentRef.current = [makeInitialAgent(0), makeInitialAgent(1)];
@@ -1411,24 +1440,27 @@ export function useTunerAgent() {
   }, []);
 
   // Click-to-direct: send agent 0 walking to a clicked canvas point (arena cohort).
-  const walkToPoint = useCallback((canvasX: number, canvasY: number) => {
-    const agent = agentRef.current[0];
-    if (!agent) return;
-    agent.state = "walking";
-    agent.targetX = canvasX;
-    agent.targetY = canvasY;
-    agent.path = [{ x: canvasX, y: canvasY }];
-    agent.socialSpotType = undefined;
-    agent.sitBackOverride = undefined;
-    agent.sinkDepthOverride = undefined;
-    agent.workoutStyle = undefined;
-    agent.status = "idle";
-    setStationIdxByAgent((prev) => {
-      const next = [...prev];
-      next[0] = null;
-      return next;
-    });
-  }, []);
+  const walkToPoint = useCallback(
+    (canvasX: number, canvasY: number) => {
+      const agent = agentRef.current[0];
+      if (!agent) return;
+      agent.state = "walking";
+      agent.targetX = canvasX;
+      agent.targetY = canvasY;
+      agent.path = planPath(agent.x, agent.y, canvasX, canvasY);
+      agent.socialSpotType = undefined;
+      agent.sitBackOverride = undefined;
+      agent.sinkDepthOverride = undefined;
+      agent.workoutStyle = undefined;
+      agent.status = "idle";
+      setStationIdxByAgent((prev) => {
+        const next = [...prev];
+        next[0] = null;
+        return next;
+      });
+    },
+    [planPath]
+  );
 
   // Switching cohort clears any selection (positions don't line up across cohorts).
   const changeCohort = useCallback((c: Cohort) => {
