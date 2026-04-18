@@ -720,11 +720,44 @@ function Floor({
 function GridLines({ large }: { large?: boolean }) {
   const w = large ? ARENA_WORLD_W : WORLD_W;
   const divisions = large ? 40 : 24;
+  // Arena cohort: very subtle grid so it fades into the floor. Seats/gym
+  // cohorts keep the visible grid for tuning precision.
+  const colorA = large ? "#e9e4d7" : "#c9c0ae";
+  const colorB = large ? "#ece8db" : "#d4cbb8";
   return (
     <gridHelper
-      args={[w, divisions, "#c9c0ae", "#d4cbb8"]}
+      args={[w, divisions, colorA, colorB]}
       position={[0, 0.002, 0]}
     />
+  );
+}
+
+function PerimeterWalls({ large }: { large?: boolean }) {
+  if (!large) return null;
+  const wallH = 1.1;
+  const halfW = ARENA_WORLD_W / 2;
+  const halfH = ARENA_WORLD_H / 2;
+  const thickness = 0.14;
+  const color = "#C9C7C2";
+  return (
+    <>
+      <mesh position={[0, wallH / 2, -halfH]}>
+        <boxGeometry args={[ARENA_WORLD_W, wallH, thickness]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      <mesh position={[0, wallH / 2, halfH]}>
+        <boxGeometry args={[ARENA_WORLD_W, wallH, thickness]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      <mesh position={[-halfW, wallH / 2, 0]}>
+        <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+      <mesh position={[halfW, wallH / 2, 0]}>
+        <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+    </>
   );
 }
 
@@ -898,7 +931,7 @@ export default function TunerScene({
       frameloop="always"
     >
       <Suspense fallback={null}>
-        <CameraRig zoom={large ? 22 : 50} />
+        <CameraRig zoom={large ? 30 : 50} />
         <ambientLight intensity={0.8} color="#ffffff" />
         <directionalLight
           position={[10, 15, 8]}
@@ -910,6 +943,7 @@ export default function TunerScene({
 
         <Floor onFloorClick={onFloorClick} large={large} />
         <GridLines large={large} />
+        <PerimeterWalls large={large} />
 
         {items.map((item) => {
           if (item.type === "wall") {
