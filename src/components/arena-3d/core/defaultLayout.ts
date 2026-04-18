@@ -72,7 +72,10 @@ function deskPod(
   ];
 }
 
-/** Rotate a list of furniture items around an anchor point (canvas space). */
+/** Rotate a list of furniture items around an anchor point (canvas space).
+ * Rotates each item's CENTER (not top-left) so items of different sizes stay
+ * spatially aligned as a rigid cluster.
+ */
 function rotateAround(
   items: FurnitureItem[],
   cx: number,
@@ -83,12 +86,19 @@ function rotateAround(
   const cos = Math.cos(rad);
   const sin = Math.sin(rad);
   return items.map((item) => {
-    const dx = item.x - cx;
-    const dy = item.y - cy;
+    const [defW, defH] = ITEM_FOOTPRINT[item.type] ?? [40, 40];
+    const w = item.w ?? defW;
+    const h = item.h ?? defH;
+    const itemCx = item.x + w / 2;
+    const itemCy = item.y + h / 2;
+    const dx = itemCx - cx;
+    const dy = itemCy - cy;
+    const newCx = cx + dx * cos - dy * sin;
+    const newCy = cy + dx * sin + dy * cos;
     return {
       ...item,
-      x: Math.round(cx + dx * cos - dy * sin),
-      y: Math.round(cy + dx * sin + dy * cos),
+      x: Math.round(newCx - w / 2),
+      y: Math.round(newCy - h / 2),
       facing: ((item.facing ?? 0) + deg + 360) % 360,
     };
   });
@@ -610,26 +620,33 @@ export const GYM_WORKOUT_POINTS: GymWorkoutPoint[] = (() => {
       case "pull_up_tower":
       case "squat_rack":
       case "dumbbell_rack": {
-        const w = item.w ?? 60;
-        const h = item.h ?? 40;
-        // Agent stands just south of the equipment. In our atan2(dx, dy)
-        // convention, facing = π means looking toward -y (canvas north)
-        // which is *toward* the equipment.
+        const [defW, defH] = ITEM_FOOTPRINT[item.type] ?? [60, 40];
+        const w = item.w ?? defW;
+        const h = item.h ?? defH;
+        // Distances dialed in from the arena-tuner. Agent stands south of the
+        // item by `dist` (measured from item CENTER, so small values place
+        // the agent near/inside the mesh footprint). Facing π = looking north,
+        // back toward the equipment.
+        const dist =
+          item.type === "squat_rack" ? 7 :
+          item.type === "pull_up_tower" ? 10 :
+          40; // dumbbell_rack
         points.push({
           x: Math.round(item.x + w / 2),
-          y: Math.round(item.y + h + 20),
+          y: Math.round(item.y + h / 2 + dist),
           facing: Math.PI,
           style: "lift",
         });
         break;
       }
       case "punching_bag": {
-        const w = item.w ?? 30;
-        const h = item.h ?? 30;
+        const [defW, defH] = ITEM_FOOTPRINT.punching_bag ?? [32, 32];
+        const w = item.w ?? defW;
+        const h = item.h ?? defH;
         points.push({
           x: Math.round(item.x + w / 2),
-          y: Math.round(item.y + h + 15),
-          facing: Math.PI, // face north toward the bag
+          y: Math.round(item.y + h / 2 + 16), // dialed in via tuner
+          facing: Math.PI,
           style: "box",
         });
         break;
@@ -713,12 +730,12 @@ export const DESK_STANDING_POINTS: { x: number; y: number; facing: number }[] = 
     const sin = Math.sin(podRot);
     const dx = baseDx * cos - baseDy * sin;
     const dy = baseDx * sin + baseDy * cos;
-    // Agent's facing = desk's facing (in radians). For a south-facing desk
-    // (facing=0 degrees) the agent looks toward +y (south, toward the monitor).
-    // For a north-facing desk (facing=180) they look toward -y. Pod rotation
-    // is already baked into item.facing by rotateAround, so this just works
-    // for rotated clusters too.
-    const facing = ((item.facing ?? 0) * Math.PI) / 180;
+    // Agent's facing. +π baseline because the chair (at y-10 for south-facing
+    // desks) places the agent NORTH of the desk — they need to look SOUTH
+    // toward the monitor on the desk surface, which in atan2(dx,dy) is facing=π.
+    // Pod rotation is already baked into item.facing by rotateAround, so this
+    // just works for rotated clusters too.
+    const facing = ((item.facing ?? 0) * Math.PI) / 180 + Math.PI;
     byIndex[idx] = { x: Math.round(cx + dx), y: Math.round(cy + dy), facing };
   }
   return byIndex;
