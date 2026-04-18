@@ -290,15 +290,41 @@ function applyDevActionsToAgents(
 
   const byId = new Map(current.map((a) => [a.id, { ...a }]));
 
-  const resolveAgent = (wanted: string | undefined): RenderAgentState | undefined => {
+  const resolveAgent = (
+    wanted: string | undefined,
+    preferIdle = false
+  ): RenderAgentState | undefined => {
     if (wanted) return byId.get(wanted);
     const all = Array.from(byId.values());
+    if (preferIdle) {
+      const idleOnly = all.filter((a) => a.status === "idle");
+      if (idleOnly.length > 0) {
+        return idleOnly[Math.floor(Math.random() * idleOnly.length)];
+      }
+    }
     return all[Math.floor(Math.random() * all.length)];
   };
 
   for (const action of actions) {
-    const agent = resolveAgent(action.agentId);
+    // Gym / couch / dance / overtake need idle state to survive the
+    // working→desk preempt and the idle-only arrival handlers. Score just
+    // pops an emoji and doesn't care.
+    const wantsIdleAgent =
+      action.kind === "gym" ||
+      action.kind === "couch" ||
+      action.kind === "dance" ||
+      action.kind === "overtake" ||
+      action.kind === "fail";
+    const agent = resolveAgent(action.agentId, wantsIdleAgent);
     if (!agent) continue;
+
+    // For behaviors that require the tick loop to treat this agent as idle
+    // (so it doesn't instantly route them back to desk), force-override the
+    // status locally. The next poll might reset it if the real status differs;
+    // that's fine — dev actions are short-lived test triggers.
+    if (wantsIdleAgent && agent.status !== "idle") {
+      agent.status = "idle";
+    }
 
     switch (action.kind) {
       case "dance": {
@@ -338,8 +364,9 @@ function applyDevActionsToAgents(
         break;
       }
       case "overtake": {
-        const partner = resolveAgent(action.partnerId);
+        const partner = resolveAgent(action.partnerId, true);
         if (partner && partner.id !== agent.id) {
+          if (partner.status !== "idle") partner.status = "idle";
           agent.talkUntil = now + TALK_HOLD_MS;
           agent.talkPartnerId = partner.id;
           agent.state = "standing";
