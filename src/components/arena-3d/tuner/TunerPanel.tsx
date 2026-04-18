@@ -24,6 +24,8 @@ interface TunerPanelProps {
   setShowPaths: (v: boolean | ((prev: boolean) => boolean)) => void;
   showNav: boolean;
   setShowNav: (v: boolean | ((prev: boolean) => boolean)) => void;
+  meshFix: boolean;
+  setMeshFix: (v: boolean | ((prev: boolean) => boolean)) => void;
   ambientByAgent: boolean[];
   setAmbientForAgent: (agentIdx: number, on: boolean) => void;
   onGoto: (agentIdx: number, stationIdx: number | null) => void;
@@ -98,6 +100,8 @@ export default function TunerPanel({
   setShowPaths,
   showNav,
   setShowNav,
+  meshFix,
+  setMeshFix,
   ambientByAgent,
   setAmbientForAgent,
   onGoto,
@@ -211,6 +215,17 @@ export default function TunerPanel({
           }`}
         >
           nav: {showNav ? "on" : "off"}
+        </button>
+        <button
+          onClick={() => setMeshFix((v) => !v)}
+          className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
+            meshFix
+              ? "bg-indigo-600 text-white border-indigo-600"
+              : "bg-white text-black border-gray-300 hover:border-indigo-600"
+          }`}
+          title="Render GLB centered on the bounds rect (matches InteriorWall convention). When off, uses legacy mesh-at-corner."
+        >
+          mesh-fix: {meshFix ? "on" : "off"}
         </button>
         <button
           onClick={onReset}

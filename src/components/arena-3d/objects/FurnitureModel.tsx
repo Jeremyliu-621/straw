@@ -137,9 +137,17 @@ function resolveTemplate(
 
 interface FurnitureModelProps {
   item: FurnitureItem;
+  /**
+   * Experimental: when true, place the GLB at the item's bounds CENTER
+   * (matches InteriorWall's convention and getItemBounds). The default
+   * (false) preserves the legacy "GLB at canvas top-left" rendering so we
+   * don't break already-tuned scenes. Toggle from /arena-tuner via the
+   * `mesh-fix` button to A/B the alignment.
+   */
+  centerOnRect?: boolean;
 }
 
-export default function FurnitureModel({ item }: FurnitureModelProps) {
+export default function FurnitureModel({ item, centerOnRect = false }: FurnitureModelProps) {
   const typeKey = resolveItemTypeKey(item);
   const glbPath = FURNITURE_GLB[typeKey];
   const { scene } = useGLTF(glbPath ?? FURNITURE_GLB.table_rect);
@@ -157,15 +165,32 @@ export default function FurnitureModel({ item }: FurnitureModelProps) {
     const scaleArr = FURNITURE_SCALE[typeKey] ?? [1, 1, 1];
     const rotY = getItemRotationRadians(item);
     const { width, height } = getItemBaseSize(item);
+    const halfW = width * SCALE * 0.5;
+    const halfH = height * SCALE * 0.5;
+    const basePos: [number, number, number] = centerOnRect
+      ? [wx + halfW, yOffset, wz + halfH]
+      : [wx, yOffset, wz];
     return {
-      position: [wx, yOffset, wz] as [number, number, number],
+      position: basePos,
       rotation: rotY,
       scale: scaleArr,
-      pivotOffset: [width * SCALE * 0.5, 0, height * SCALE * 0.5] as [number, number, number],
+      pivotOffset: [halfW, 0, halfH] as [number, number, number],
     };
-  }, [item, typeKey]);
+  }, [item, typeKey, centerOnRect]);
 
   if (!glbPath) return null;
+
+  if (centerOnRect) {
+    // GLB origin (assumed at mesh-center horizontally) lands on the bounds
+    // center, so rotation around y just rotates the mesh in place.
+    return (
+      <group position={position}>
+        <group rotation={[0, rotation, 0]} scale={scale}>
+          <primitive object={clone} />
+        </group>
+      </group>
+    );
+  }
 
   return (
     <group position={position}>

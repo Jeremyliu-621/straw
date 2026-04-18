@@ -900,12 +900,19 @@ interface TunerSceneProps {
   agentRef: React.RefObject<RenderAgentState[]>;
   showPaths: boolean;
   showNav: boolean;
+  meshFix: boolean;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
 }
 
-function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
+function ClusterGroupRender({
+  cluster,
+  centerOnRect,
+}: {
+  cluster: ClusterGroup;
+  centerOnRect: boolean;
+}) {
   // Render cluster items at their PRE-rotation canvas positions, but inside a
   // three.js group that rotates around the cluster pivot (in world). This
   // keeps the children rigidly aligned regardless of the rotation angle.
@@ -922,7 +929,13 @@ function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
             return <ProceduralFurniture key={item._uid} item={item} />;
           }
           if (!FURNITURE_GLB[item.type]) return null;
-          return <FurnitureModel key={item._uid} item={item} />;
+          return (
+            <FurnitureModel
+              key={item._uid}
+              item={item}
+              centerOnRect={centerOnRect}
+            />
+          );
         })}
       </group>
     </group>
@@ -1297,6 +1310,7 @@ export default function TunerScene({
   agentRef,
   showPaths,
   showNav,
+  meshFix,
   onFloorClick,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
@@ -1343,11 +1357,21 @@ export default function TunerScene({
             return <ProceduralFurniture key={item._uid} item={item} />;
           }
           if (!FURNITURE_GLB[item.type]) return null;
-          return <FurnitureModel key={item._uid} item={item} />;
+          return (
+            <FurnitureModel
+              key={item._uid}
+              item={item}
+              centerOnRect={meshFix}
+            />
+          );
         })}
 
         {clusters.map((cluster) => (
-          <ClusterGroupRender key={cluster.id} cluster={cluster} />
+          <ClusterGroupRender
+            key={cluster.id}
+            cluster={cluster}
+            centerOnRect={meshFix}
+          />
         ))}
 
         <AgentCharacter
@@ -1397,6 +1421,7 @@ export function useTunerAgent() {
     useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
   const [showPaths, setShowPaths] = useState(false);
   const [showNav, setShowNav] = useState(false);
+  const [meshFix, setMeshFix] = useState(false);
   // Ambient mode per agent: when on, the agent autonomously picks a new
   // random station every 6–12s once it's settled. Picking a specific
   // station from the dropdown or hitting stop turns ambient off for that
@@ -1635,6 +1660,8 @@ export function useTunerAgent() {
     setShowPaths,
     showNav,
     setShowNav,
+    meshFix,
+    setMeshFix,
     ambientByAgent,
     setAmbientForAgent,
     stations,
