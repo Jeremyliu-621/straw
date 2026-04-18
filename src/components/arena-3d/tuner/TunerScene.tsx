@@ -2,7 +2,6 @@
 
 import { useRef, useCallback, useState, useEffect, useMemo, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Line } from "@react-three/drei";
 import * as THREE from "three";
 import {
   FURNITURE_ROTATION,
@@ -1045,63 +1044,59 @@ function AgentPathLine({
   agentIdx: number;
   color: string;
 }) {
-  const points = useMemo(
+  // Build a raw three.js Line once and mutate its position buffer per frame.
+  // Using drei's <Line> doesn't re-read mutated buffers reliably; a plain
+  // three.js Line + BufferAttribute + needsUpdate does.
+  const lineRef = useRef<THREE.Line | null>(null);
+  const geom = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    const arr = new Float32Array(PATH_MAX_POINTS * 3);
+    g.setAttribute("position", new THREE.BufferAttribute(arr, 3));
+    g.setDrawRange(0, 0);
+    return g;
+  }, []);
+  const mat = useMemo(
     () =>
-      Array.from(
-        { length: PATH_MAX_POINTS },
-        () => new THREE.Vector3(0, 0.06, 0)
-      ),
-    []
+      new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.95,
+      }),
+    [color]
   );
-  const lineRef = useRef<THREE.Object3D>(null);
+  const lineObj = useMemo(() => {
+    const l = new THREE.Line(geom, mat);
+    l.renderOrder = 10; // draw above the floor grid
+    return l;
+  }, [geom, mat]);
+
   useFrame(() => {
     const agent = agentRef.current[agentIdx];
-    if (!agent) return;
-    // Show the full planned route whenever one exists, so the user can
-    // inspect it before/during/after the agent walks it. Cleared on
-    // sendToStation(null) / reset.
+    const line = lineRef.current;
+    if (!agent || !line) return;
     const planned = agent.plannedPath;
     const hasPath = Array.isArray(planned) && planned.length > 0;
-    if (lineRef.current) lineRef.current.visible = hasPath;
+    line.visible = hasPath;
     if (!hasPath || !planned) return;
 
-    // Full polyline: current agent position → each planned waypoint.
     const [ax, , az] = toWorld(agent.x, agent.y);
-    const seq: [number, number, number][] = [[ax, 0.06, az]];
     const waypoints = planned.slice(0, PATH_MAX_POINTS - 1);
+    const pts: [number, number, number][] = [[ax, 0.25, az]];
     for (const wp of waypoints) {
       const [wx, , wz] = toWorld(wp.x, wp.y);
-      seq.push([wx, 0.06, wz]);
+      pts.push([wx, 0.25, wz]);
     }
 
-    const line = lineRef.current as unknown as
-      | { geometry?: THREE.BufferGeometry }
-      | null;
-    if (line?.geometry) {
-      const pos = line.geometry.attributes.position;
-      if (pos instanceof THREE.BufferAttribute) {
-        const last = seq[seq.length - 1];
-        // Fill used waypoints; clamp the remainder to the final point so
-        // segments past the end collapse to length 0 (invisible).
-        for (let i = 0; i < PATH_MAX_POINTS; i++) {
-          const p = i < seq.length ? seq[i] : last;
-          pos.setXYZ(i, p[0], p[1], p[2]);
-        }
-        pos.needsUpdate = true;
-      }
+    const pos = geom.attributes.position as THREE.BufferAttribute;
+    for (let i = 0; i < pts.length; i++) {
+      pos.setXYZ(i, pts[i][0], pts[i][1], pts[i][2]);
     }
+    pos.needsUpdate = true;
+    geom.setDrawRange(0, pts.length);
+    geom.computeBoundingSphere();
   });
-  return (
-    <Line
-      ref={lineRef as React.Ref<THREE.Object3D>}
-      points={points}
-      color={color}
-      lineWidth={2}
-      dashed={false}
-      transparent
-      opacity={0.7}
-    />
-  );
+
+  return <primitive ref={lineRef} object={lineObj} />;
 }
 
 function DebugMarkers({
