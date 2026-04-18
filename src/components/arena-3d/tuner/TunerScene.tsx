@@ -142,7 +142,8 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
   waterDispenserRotDeg: 0,
   waterDispenserDist: 40,
   pingPongRotDeg: 0,
-  pingPongDist: 70,
+  // 110 = half-long + 20 margin for a 180x100 table (matches main arena).
+  pingPongDist: 110,
   printerStationRotDeg: 0,
   printerStationDist: 47,
 };
@@ -613,13 +614,15 @@ const MISC_CONFIGS: Record<string, MiscStationConfig> = {
     defaultDist: 40,
   },
   ping_pong: {
+    // Matches the main-arena table dimensions so the pair-and-ball
+    // mechanic looks identical in the misc cohort and at /leaderboard.
     label: "Ping pong",
     type: "ping_pong",
-    cx: 540,
-    cy: 600,
-    w: 100,
-    h: 60,
-    defaultDist: 50,
+    cx: 500,
+    cy: 580,
+    w: 180,
+    h: 100,
+    defaultDist: 110,
   },
   printer_station: {
     label: "Printer",
