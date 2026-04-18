@@ -715,7 +715,18 @@ export function buildMiscStations(tuning: MiscTuningParams): {
     pingPongSlotB,
     miscStation("printer_station", tuning.printerStationRotDeg, tuning.printerStationDist),
   ];
-  const items = stations.flatMap((s) => s.items);
+  // Dedupe items by _uid — ping-pong slots A+B share the same ppItem, so
+  // without this the table would render twice (and React would warn about
+  // duplicate keys).
+  const seen = new Set<string>();
+  const items: FurnitureItem[] = [];
+  for (const s of stations) {
+    for (const item of s.items) {
+      if (seen.has(item._uid)) continue;
+      seen.add(item._uid);
+      items.push(item);
+    }
+  }
   return { items, clusters: [], stations };
 }
 
