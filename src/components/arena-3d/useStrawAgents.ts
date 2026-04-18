@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
+import { diffArenaSnapshots, type ArenaEvent } from "./useArenaEvents";
 
 export interface ArenaAgent {
   id: string;
@@ -48,10 +49,20 @@ export function useStrawAgents(taskId?: string): {
   agents: ArenaAgent[];
   officeAgents: OfficeAgentInput[];
   loading: boolean;
+  /** Buffer of events detected between polls. Game loop drains this. */
+  eventBufferRef: React.RefObject<ArenaEvent[]>;
 } {
   const [agents, setAgents] = useState<ArenaAgent[]>([]);
   const [loading, setLoading] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Snapshot from the previous poll, used for diffing.
+  const previousSnapshotRef = useRef<ArenaAgent[]>([]);
+  // Events emitted by diffs; game loop consumes and drains.
+  const eventBufferRef = useRef<ArenaEvent[]>([]);
+  // Skip emitting events on the very first poll — otherwise "agent-joined"
+  // fires for every agent on initial load, which is noise.
+  const firstPollRef = useRef(true);
 
   const fetchArena = useCallback(async () => {
     try {
@@ -61,7 +72,22 @@ export function useStrawAgents(taskId?: string): {
       const res = await fetch(url);
       if (!res.ok) return;
       const data = await res.json();
-      setAgents(Array.isArray(data.agents) ? data.agents : []);
+      const nextAgents: ArenaAgent[] = Array.isArray(data.agents)
+        ? data.agents
+        : [];
+
+      if (!firstPollRef.current) {
+        const events = diffArenaSnapshots(
+          previousSnapshotRef.current,
+          nextAgents
+        );
+        if (events.length > 0) {
+          eventBufferRef.current.push(...events);
+        }
+      }
+      previousSnapshotRef.current = nextAgents;
+      firstPollRef.current = false;
+      setAgents(nextAgents);
     } catch {
       // Silently ignore network errors for polling
     } finally {
@@ -86,5 +112,5 @@ export function useStrawAgents(taskId?: string): {
     item: "none",
   }));
 
-  return { agents, officeAgents, loading };
+  return { agents, officeAgents, loading, eventBufferRef };
 }
