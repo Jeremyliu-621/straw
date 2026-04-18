@@ -369,12 +369,9 @@ const WALL_DECOR: FurnitureItem[] = [
 ];
 
 // ── Ambient scatter ──────────────────────────────────────────────────────
+// Ambient plants removed per user request — the floor was too busy. Lamps
+// kept for lighting character.
 const AMBIENT_DECOR: FurnitureItem[] = [
-  { type: "plant", x: 260, y: 740, _uid: uid("plant") },
-  { type: "plant", x: 440, y: 1030, _uid: uid("plant") },
-  { type: "plant", x: 560, y: 1030, _uid: uid("plant") },
-  { type: "plant", x: 540, y: 250, _uid: uid("plant") },
-  { type: "plant", x: 150, y: 260, _uid: uid("plant") },
   { type: "lamp", x: 460, y: 710, _uid: uid("lamp") },
 ];
 
