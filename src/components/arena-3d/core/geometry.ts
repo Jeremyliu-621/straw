@@ -156,7 +156,11 @@ export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPaddi
   chair:           { blocksNavigation: false },
   couch:           { blocksNavigation: true, navPadding: 5 },
   couch_v:         { blocksNavigation: true, navPadding: 5 },
-  beanbag:         { blocksNavigation: true  },
+  // Beanbags are soft cushions — agents walk through them and the
+  // social-point sits the agent ON the beanbag. If they blocked nav,
+  // packed clusters would deflect the stand point to a neighbour cell
+  // and the sit-back offset would push the agent the wrong direction.
+  beanbag:         { blocksNavigation: false },
   desk_cubicle:    { blocksNavigation: true, navPadding: 0 },
   standing_desk:   { blocksNavigation: true, navPadding: 0 },
   executive_desk:  { blocksNavigation: true, navPadding: 3 },
