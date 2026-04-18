@@ -1186,14 +1186,16 @@ function TickLoop({
         agent.facing = activeStation.facing;
       }
 
-      // Proximity snap: once the agent is within 30 canvas units of the
-      // station's canonical stand point, teleport + sit. A*'s findFree can
-      // leave the last waypoint a cell or two away when the stand point is
-      // inside an obstacle's nav padding — checking distance directly
-      // sidesteps that.
+      // Proximity snap: once the agent is on the LAST waypoint AND close
+      // to the station's canonical stand point, teleport + sit. This only
+      // fires near the end of the walk so clicking a different station
+      // while the agent is far away still triggers a proper walk. Handles
+      // A*'s findFree deflection when the stand point sits inside an
+      // obstacle's nav padding.
       if (
         activeStation &&
         agent.state === "walking" &&
+        agent.path.length <= 1 &&
         Math.hypot(activeStation.standX - agent.x, activeStation.standY - agent.y) < 30
       ) {
         agent.x = activeStation.standX;
