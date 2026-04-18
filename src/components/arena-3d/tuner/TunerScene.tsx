@@ -6,6 +6,8 @@ import * as THREE from "three";
 import {
   FURNITURE_ROTATION,
   ITEM_FOOTPRINT,
+  ITEM_METADATA,
+  type NavAnchorOverride,
 } from "../core/geometry";
 import {
   SCALE,
@@ -18,6 +20,7 @@ import FurnitureModel, { FURNITURE_GLB } from "../objects/FurnitureModel";
 import ProceduralFurniture, { PROCEDURAL_TYPES } from "../objects/ProceduralFurniture";
 import InteriorWall from "../objects/InteriorWall";
 import AgentCharacter from "../objects/AgentCharacter";
+import BWEffects from "../BWEffects";
 import type { RenderAgentState } from "../useArenaGameLoop";
 import type { FurnitureItem } from "../core/types";
 import type { WorkoutStyle } from "../core/defaultLayout";
@@ -867,28 +870,82 @@ export function getArenaStations() {
 // user would experience on a foreground /leaderboard tab with no throttling.
 const WALK_SPEED = 0.7 * 5;
 
-function makeInitialAgent(idx: number): RenderAgentState {
-  // Two agents side-by-side in the center of the tuner floor, so clicking a
-  // station button for either one produces an obvious movement.
-  const baseX = idx === 0 ? 540 : 620;
-  const color = idx === 0 ? "#6366f1" : "#ef4444";
+// Seats / gym / misc cohorts tune poses for one or two subjects at a time;
+// the arena cohort simulates the full office (15 = roughly the main-arena
+// top-of-leaderboard size).
+export const ARENA_AGENT_COUNT = 15;
+export const DEFAULT_AGENT_COUNT = 2;
+export const getAgentCount = (c: Cohort) =>
+  c === "arena" ? ARENA_AGENT_COUNT : DEFAULT_AGENT_COUNT;
+
+// 15 visually distinct colors for the arena cohort. Index 0/1 preserve
+// the original indigo/red so existing seats/gym/misc tuning screenshots
+// still match. Index 2+ are pulled from the Tailwind palette at 500-weight
+// for consistency against the pale floor.
+const AGENT_COLORS = [
+  "#6366f1", // indigo — A
+  "#ef4444", // red — B
+  "#10b981", // emerald — C
+  "#f59e0b", // amber — D
+  "#8b5cf6", // violet — E
+  "#ec4899", // pink — F
+  "#06b6d4", // cyan — G
+  "#84cc16", // lime — H
+  "#f97316", // orange — I
+  "#14b8a6", // teal — J
+  "#a855f7", // purple — K
+  "#eab308", // yellow — L
+  "#3b82f6", // blue — M
+  "#d946ef", // fuchsia — N
+  "#22c55e", // green — O
+];
+
+export const tunerAgentColor = (idx: number) =>
+  AGENT_COLORS[idx % AGENT_COLORS.length];
+
+// Arena-cohort spawn grid: 5 cols × 3 rows centered on the main-floor
+// open area, ~50px between agents. Once ambient fires they disperse.
+function arenaSpawn(idx: number): { x: number; y: number } {
+  const col = idx % 5;
+  const row = Math.floor(idx / 5);
+  return { x: 500 + col * 50, y: 490 + row * 50 };
+}
+
+function makeInitialAgent(idx: number, cohort: Cohort): RenderAgentState {
+  // Seats/gym/misc keep the two centered spawn points used by the original
+  // tuner so existing tuning screenshots still match.
+  let x: number;
+  let y: number;
+  if (cohort === "arena") {
+    const p = arenaSpawn(idx);
+    x = p.x;
+    y = p.y;
+  } else {
+    x = idx === 0 ? 540 : 620;
+    y = 530;
+  }
   return {
     id: `tuner_agent_${idx}`,
-    name: idx === 0 ? "A" : "B",
+    name: String.fromCharCode(65 + idx), // A, B, C, …
     rank: idx + 1,
     status: "idle",
-    color,
-    x: baseX,
-    y: 530,
-    targetX: baseX,
-    targetY: 530,
+    color: tunerAgentColor(idx),
+    x,
+    y,
+    targetX: x,
+    targetY: y,
     path: [],
     facing: 0,
     frame: 0,
     walkSpeed: WALK_SPEED,
-    phaseOffset: 0,
+    phaseOffset: (idx * 0.37) % 1, // stagger walk animations
     state: "standing",
   };
+}
+
+function makeInitialAgents(cohort: Cohort): RenderAgentState[] {
+  const n = getAgentCount(cohort);
+  return Array.from({ length: n }, (_, i) => makeInitialAgent(i, cohort));
 }
 
 interface TunerSceneProps {
@@ -901,6 +958,7 @@ interface TunerSceneProps {
   showPaths: boolean;
   showNav: boolean;
   meshFix: boolean;
+  navOverrides: Record<string, NavAnchorOverride>;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
@@ -1179,17 +1237,26 @@ function DebugMarkers({
   showNav: boolean;
   navGrid: NavGrid;
 }) {
+  const agentCount = stationIdxByAgent.length;
   return (
     <>
       {showNav && <NavGridOverlay grid={navGrid} />}
-      <AgentDebugMarker agentRef={agentRef} agentIdx={0} color="#ef4444" />
-      <AgentDebugMarker agentRef={agentRef} agentIdx={1} color="#10b981" />
-      {showPaths && (
-        <>
-          <AgentPathLine agentRef={agentRef} agentIdx={0} />
-          <AgentPathLine agentRef={agentRef} agentIdx={1} />
-        </>
-      )}
+      {Array.from({ length: agentCount }).map((_, i) => (
+        <AgentDebugMarker
+          key={`marker_${i}`}
+          agentRef={agentRef}
+          agentIdx={i}
+          color={tunerAgentColor(i)}
+        />
+      ))}
+      {showPaths &&
+        Array.from({ length: agentCount }).map((_, i) => (
+          <AgentPathLine
+            key={`path_${i}`}
+            agentRef={agentRef}
+            agentIdx={i}
+          />
+        ))}
       {stationIdxByAgent.map((idx, agentIdx) => {
         if (idx === null) return null;
         const station = stations[idx];
@@ -1197,7 +1264,7 @@ function DebugMarkers({
         const [tx, , tz] = toWorld(station.standX, station.standY);
         const dirX = Math.sin(station.facing);
         const dirZ = Math.cos(station.facing);
-        const color = agentIdx === 0 ? "#ef4444" : "#10b981";
+        const color = tunerAgentColor(agentIdx);
         return (
           <group key={agentIdx}>
             <mesh position={[tx, 0.05, tz]}>
@@ -1311,6 +1378,7 @@ export default function TunerScene({
   showPaths,
   showNav,
   meshFix,
+  navOverrides,
   onFloorClick,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
@@ -1321,8 +1389,8 @@ export default function TunerScene({
   }, [cohort, tuning, gymTuning, miscTuning]);
   const navGrid = useMemo(() => {
     const allItems = [...items, ...clusters.flatMap((c) => c.items)];
-    return buildNavGrid(allItems);
-  }, [items, clusters]);
+    return buildNavGrid(allItems, navOverrides);
+  }, [items, clusters, navOverrides]);
   const large = cohort === "arena";
 
   return (
@@ -1331,7 +1399,7 @@ export default function TunerScene({
       shadows
       camera={{ near: 0.1, far: 100 }}
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
-      style={{ background: "#fafaf5" }}
+      style={{ background: "#FDFCFC" }}
       frameloop="always"
     >
       <Suspense fallback={null}>
@@ -1374,18 +1442,15 @@ export default function TunerScene({
           />
         ))}
 
-        <AgentCharacter
-          agentId="tuner_agent_0"
-          agentName="A"
-          rank={1}
-          agentsRef={agentRef}
-        />
-        <AgentCharacter
-          agentId="tuner_agent_1"
-          agentName="B"
-          rank={2}
-          agentsRef={agentRef}
-        />
+        {Array.from({ length: getAgentCount(cohort) }).map((_, i) => (
+          <AgentCharacter
+            key={`tuner_agent_${i}`}
+            agentId={`tuner_agent_${i}`}
+            agentName={String.fromCharCode(65 + i)}
+            rank={i + 1}
+            agentsRef={agentRef}
+          />
+        ))}
 
         <DebugMarkers
           stations={stations}
@@ -1400,20 +1465,26 @@ export default function TunerScene({
           stations={stations}
           stationIdxByAgent={stationIdxByAgent}
         />
+
+        {/* Match landing-page default look: b&w + tint + pure white. */}
+        <BWEffects
+          variant="unlit-tint"
+          pureWhite
+          tintNormal={0.5}
+          tintPureWhite={0.6}
+          edgeThreshold={40}
+        />
       </Suspense>
     </Canvas>
   );
 }
 
 export function useTunerAgent() {
-  const agentRef = useRef<RenderAgentState[]>([
-    makeInitialAgent(0),
-    makeInitialAgent(1),
-  ]);
   const [cohort, setCohort] = useState<Cohort>("seats");
+  const agentRef = useRef<RenderAgentState[]>(makeInitialAgents("seats"));
   const [stationIdxByAgent, setStationIdxByAgent] = useState<
     (number | null)[]
-  >([null, null]);
+  >(() => Array(getAgentCount("seats")).fill(null));
   const [tuning, setTuning] = useState<TuningParams>(DEFAULT_TUNING);
   const [gymTuning, setGymTuning] =
     useState<GymTuningParams>(DEFAULT_GYM_TUNING);
@@ -1422,15 +1493,22 @@ export function useTunerAgent() {
   const [showPaths, setShowPaths] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [meshFix, setMeshFix] = useState(false);
+  // Per-type nav-anchor overrides — sliders write into this; buildNavGrid
+  // applies them at grid-build time. Empty by default = use NAV_ANCHOR_OVERRIDES
+  // from geometry.ts (which itself is empty until we lock values in).
+  const [navOverrides, setNavOverrides] = useState<
+    Record<string, NavAnchorOverride>
+  >({});
   // Ambient mode per agent: when on, the agent autonomously picks a new
   // random station every 6–12s once it's settled. Picking a specific
   // station from the dropdown or hitting stop turns ambient off for that
   // agent. Switching cohort / reset also clears ambient.
-  const [ambientByAgent, setAmbientByAgent] = useState<boolean[]>([
-    false,
-    false,
-  ]);
-  const ambientNextAtRef = useRef<number[]>([0, 0]);
+  const [ambientByAgent, setAmbientByAgent] = useState<boolean[]>(() =>
+    Array(getAgentCount("seats")).fill(false)
+  );
+  const ambientNextAtRef = useRef<number[]>(
+    Array(getAgentCount("seats")).fill(0)
+  );
   // Mirror stationIdxByAgent into a ref so the ambient timer can read the
   // latest value without re-creating its interval on every station change.
   const stationIdxByAgentRef = useRef(stationIdxByAgent);
@@ -1451,11 +1529,12 @@ export function useTunerAgent() {
     return buildStations(tuning);
   }, [cohort, tuning, gymTuning, miscTuning]);
 
-  // Nav grid for collision-aware A* pathing. Rebuilt when cohort items change.
+  // Nav grid for collision-aware A* pathing. Rebuilt when cohort items or
+  // per-type overrides change.
   const navGrid = useMemo(() => {
     const allItems = [...items, ...clusters.flatMap((c) => c.items)];
-    return buildNavGrid(allItems);
-  }, [items, clusters]);
+    return buildNavGrid(allItems, navOverrides);
+  }, [items, clusters, navOverrides]);
 
   // Plan a path from (sx, sy) to (ex, ey) using A*. Returns the waypoint
   // list AND whether A* actually routed (true = navigated around obstacles,
@@ -1563,11 +1642,23 @@ export function useTunerAgent() {
     []
   );
 
+  // Master toggle: flip every agent's ambient flag at once. Staggers the
+  // first pick per agent so 15 agents don't all re-route on the same tick.
+  const setAmbientForAll = useCallback((on: boolean) => {
+    setAmbientByAgent((prev) => prev.map(() => on));
+    if (on) {
+      const now = Date.now();
+      for (let i = 0; i < ambientNextAtRef.current.length; i++) {
+        ambientNextAtRef.current[i] = now + i * 250;
+      }
+    }
+  }, []);
+
   // Ambient timer: every 500ms, check each agent; if ambient is on and the
   // agent is settled (not walking) and its dwell window has elapsed, pick a
   // new random station and send it there. Excludes the agent's current
-  // station AND the other agent's current / in-transit station so the two
-  // never converge on the same spot.
+  // station AND every other agent's current / in-transit station so no two
+  // agents converge on the same spot (important with 15 arena agents).
   useEffect(() => {
     const anyOn = ambientByAgent.some(Boolean);
     if (!anyOn) return;
@@ -1580,11 +1671,17 @@ export function useTunerAgent() {
         if (!agent) continue;
         if (agent.state === "walking") continue;
         if (now < ambientNextAtRef.current[i]) continue;
+        // Build the set of stations occupied by any OTHER agent.
+        const occupied = new Set<number>();
+        for (let j = 0; j < stationIdxByAgentRef.current.length; j++) {
+          if (j === i) continue;
+          const s = stationIdxByAgentRef.current[j];
+          if (s !== null) occupied.add(s);
+        }
         const selfIdx = stationIdxByAgentRef.current[i];
-        const otherIdx = stationIdxByAgentRef.current[i === 0 ? 1 : 0];
         const candidates: number[] = [];
         for (let s = 0; s < stations.length; s++) {
-          if (s === selfIdx || s === otherIdx) continue;
+          if (s === selfIdx || occupied.has(s)) continue;
           candidates.push(s);
         }
         if (candidates.length === 0) continue;
@@ -1598,13 +1695,15 @@ export function useTunerAgent() {
   }, [ambientByAgent, stations, sendToStation]);
 
   const reset = useCallback(() => {
-    agentRef.current = [makeInitialAgent(0), makeInitialAgent(1)];
+    const n = getAgentCount(cohort);
+    agentRef.current = makeInitialAgents(cohort);
+    ambientNextAtRef.current = Array(n).fill(0);
     setTuning(DEFAULT_TUNING);
     setGymTuning(DEFAULT_GYM_TUNING);
     setMiscTuning(DEFAULT_MISC_TUNING);
-    setStationIdxByAgent([null, null]);
-    setAmbientByAgent([false, false]);
-  }, []);
+    setStationIdxByAgent(Array(n).fill(null));
+    setAmbientByAgent(Array(n).fill(false));
+  }, [cohort]);
 
   // Click-to-direct: send agent 0 walking to a clicked canvas point (arena cohort).
   const walkToPoint = useCallback(
@@ -1635,12 +1734,16 @@ export function useTunerAgent() {
     [planPath]
   );
 
-  // Switching cohort clears any selection (positions don't line up across cohorts).
+  // Switching cohort clears any selection (positions don't line up across
+  // cohorts) and resizes the per-agent arrays to match the new cohort's
+  // agent count (arena = 15, others = 2).
   const changeCohort = useCallback((c: Cohort) => {
-    agentRef.current = [makeInitialAgent(0), makeInitialAgent(1)];
+    const n = getAgentCount(c);
+    agentRef.current = makeInitialAgents(c);
+    ambientNextAtRef.current = Array(n).fill(0);
     setCohort(c);
-    setStationIdxByAgent([null, null]);
-    setAmbientByAgent([false, false]);
+    setStationIdxByAgent(Array(n).fill(null));
+    setAmbientByAgent(Array(n).fill(false));
   }, []);
 
   return {
@@ -1662,9 +1765,21 @@ export function useTunerAgent() {
     setShowNav,
     meshFix,
     setMeshFix,
+    navOverrides,
+    setNavOverrides,
     ambientByAgent,
     setAmbientForAgent,
+    setAmbientForAll,
     stations,
     walkToPoint,
   };
 }
+
+/**
+ * All types in ITEM_METADATA that block navigation, sorted alphabetically.
+ * Drives the nav-tune type picker in TunerPanel.
+ */
+export const NAV_TUNABLE_TYPES: string[] = Object.entries(ITEM_METADATA)
+  .filter(([, meta]) => meta.blocksNavigation)
+  .map(([type]) => type)
+  .sort();
