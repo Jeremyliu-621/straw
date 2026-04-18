@@ -684,13 +684,16 @@ export function useArenaGameLoop(
           frame: agent.frame + 1,
         };
       }
-      // Talk hold just expired → clear it, resume
+      // Talk hold just expired → clear it. Always resume as "standing" —
+      // if the agent is `working` status but not at their desk, setting
+      // "sitting" here would trigger the typing animation mid-floor. The
+      // next reconcile (on poll) routes them back to desk from standing.
       if (agent.talkUntil !== undefined && agent.talkUntil <= now) {
         return {
           ...agent,
           talkUntil: undefined,
           talkPartnerId: undefined,
-          state: agent.status === "working" ? "sitting" : "standing",
+          state: "standing",
           frame: agent.frame + 1,
         };
       }
