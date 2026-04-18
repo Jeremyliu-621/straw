@@ -8,7 +8,7 @@ export default function ArenaTuner() {
     agentRef,
     cohort,
     setCohort,
-    stationIdx,
+    stationIdxByAgent,
     sendToStation,
     reset,
     tuning,
@@ -26,7 +26,7 @@ export default function ArenaTuner() {
       <div className="flex-1 h-[700px] rounded-lg overflow-hidden border border-gray-200">
         <TunerScene
           cohort={cohort}
-          stationIdx={stationIdx}
+          stationIdxByAgent={stationIdxByAgent}
           tuning={tuning}
           gymTuning={gymTuning}
           miscTuning={miscTuning}
@@ -37,7 +37,7 @@ export default function ArenaTuner() {
       <TunerPanel
         cohort={cohort}
         setCohort={setCohort}
-        stationIdx={stationIdx}
+        stationIdxByAgent={stationIdxByAgent}
         stations={stations}
         tuning={tuning}
         setTuning={setTuning}

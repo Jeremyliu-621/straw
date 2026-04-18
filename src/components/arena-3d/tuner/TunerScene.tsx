@@ -125,15 +125,15 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
   phoneBoothRotDeg: 0,
   phoneBoothDist: 0,
   fridgeRotDeg: 0,
-  fridgeDist: 50,
+  fridgeDist: -17,
   vendingRotDeg: 0,
-  vendingDist: 40,
+  vendingDist: -5,
   waterDispenserRotDeg: 0,
   waterDispenserDist: 40,
   pingPongRotDeg: 0,
   pingPongDist: 50,
   printerStationRotDeg: 0,
-  printerStationDist: 35,
+  printerStationDist: 47,
 };
 
 export const DEFAULT_TUNING: TuningParams = {
@@ -585,14 +585,14 @@ const MISC_CONFIGS: Record<string, MiscStationConfig> = {
     type: "fridge",
     cx: 660,
     cy: 380,
-    defaultDist: 50,
+    defaultDist: -17,
   },
   vending: {
     label: "Vending",
     type: "vending",
     cx: 780,
     cy: 380,
-    defaultDist: 40,
+    defaultDist: -5,
   },
   water_dispenser: {
     label: "Water dispenser",
@@ -617,7 +617,7 @@ const MISC_CONFIGS: Record<string, MiscStationConfig> = {
     cy: 600,
     w: 60,
     h: 50,
-    defaultDist: 35,
+    defaultDist: 47,
   },
 };
 
@@ -662,13 +662,58 @@ export function buildMiscStations(tuning: MiscTuningParams): {
   clusters: ClusterGroup[];
   stations: Station[];
 } {
+  // Ping pong: two slots — one at each end of the long axis, facing each
+  // other. `pingPongDist` slides both slots symmetrically away from the
+  // table center along its long axis.
+  const ppCfg = MISC_CONFIGS.ping_pong;
+  const [ppDefW, ppDefH] = ITEM_FOOTPRINT[ppCfg.type] ?? [100, 60];
+  const ppW = ppCfg.w ?? ppDefW;
+  const ppH = ppCfg.h ?? ppDefH;
+  const ppItem: FurnitureItem = {
+    type: "ping_pong",
+    x: ppCfg.cx,
+    y: ppCfg.cy,
+    w: ppW,
+    h: ppH,
+    facing: tuning.pingPongRotDeg,
+    _uid: `tuner_misc_ping_pong`,
+  };
+  const ppRotRad = (tuning.pingPongRotDeg * Math.PI) / 180;
+  const ppCx = ppCfg.cx + ppW / 2;
+  const ppCy = ppCfg.cy + ppH / 2;
+  // Long axis is +x (local). After rotation, long axis direction in world =
+  // (cos(rot), -sin(rot)) in canvas. Slot A = cx + long*dist, slot B = opposite.
+  const longX = Math.cos(ppRotRad);
+  const longY = -Math.sin(ppRotRad);
+  const pingPongSlotA: Station = {
+    label: "Ping pong A",
+    items: [ppItem],
+    standX: Math.round(ppCx + longX * tuning.pingPongDist),
+    standY: Math.round(ppCy + longY * tuning.pingPongDist),
+    // Face the opposite end (the other player): direction = -long axis.
+    // atan2(dx, dy) convention: facing toward -long means atan2(-longX, -longY).
+    facing: Math.atan2(-longX, -longY),
+    state: "standing",
+    sitBack: 0,
+  };
+  const pingPongSlotB: Station = {
+    label: "Ping pong B",
+    items: [ppItem],
+    standX: Math.round(ppCx - longX * tuning.pingPongDist),
+    standY: Math.round(ppCy - longY * tuning.pingPongDist),
+    facing: Math.atan2(longX, longY),
+    state: "standing",
+    sitBack: 0,
+  };
+
   const stations = [
     miscStation("coffee_machine", tuning.coffeeMachineRotDeg, tuning.coffeeMachineDist),
     miscStation("phone_booth", tuning.phoneBoothRotDeg, tuning.phoneBoothDist),
     miscStation("fridge", tuning.fridgeRotDeg, tuning.fridgeDist),
     miscStation("vending", tuning.vendingRotDeg, tuning.vendingDist),
     miscStation("water_dispenser", tuning.waterDispenserRotDeg, tuning.waterDispenserDist),
-    miscStation("ping_pong", tuning.pingPongRotDeg, tuning.pingPongDist),
+    pingPongSlotA,
+    pingPongSlotB,
     miscStation("printer_station", tuning.printerStationRotDeg, tuning.printerStationDist),
   ];
   const items = stations.flatMap((s) => s.items);
@@ -802,16 +847,20 @@ export function getArenaStations() {
 
 const WALK_SPEED = 0.7;
 
-function makeInitialAgent(): RenderAgentState {
+function makeInitialAgent(idx: number): RenderAgentState {
+  // Two agents side-by-side in the center of the tuner floor, so clicking a
+  // station button for either one produces an obvious movement.
+  const baseX = idx === 0 ? 540 : 620;
+  const color = idx === 0 ? "#6366f1" : "#ef4444";
   return {
-    id: "tuner_agent",
-    name: "Tuner",
-    rank: 1,
+    id: `tuner_agent_${idx}`,
+    name: idx === 0 ? "A" : "B",
+    rank: idx + 1,
     status: "idle",
-    color: "#6366f1",
-    x: 560,
+    color,
+    x: baseX,
     y: 530,
-    targetX: 560,
+    targetX: baseX,
     targetY: 530,
     path: [],
     facing: 0,
@@ -824,13 +873,13 @@ function makeInitialAgent(): RenderAgentState {
 
 interface TunerSceneProps {
   cohort: Cohort;
-  stationIdx: number | null;
+  stationIdxByAgent: (number | null)[];
   tuning: TuningParams;
   gymTuning: GymTuningParams;
   miscTuning: MiscTuningParams;
   agentRef: React.RefObject<RenderAgentState[]>;
   /** Called when the user clicks the floor — used in "arena" cohort to
-   *  direct the agent to walk to the clicked canvas position. */
+   *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
 }
 
@@ -933,57 +982,78 @@ function PerimeterWalls({ large }: { large?: boolean }) {
   );
 }
 
-function DebugMarkers({
-  station,
+function AgentDebugMarker({
   agentRef,
+  agentIdx,
+  color,
 }: {
-  station: Station | null;
   agentRef: React.RefObject<RenderAgentState[]>;
+  agentIdx: number;
+  color: string;
 }) {
-  const agentMarkerRef = useRef<THREE.Mesh>(null);
-  const agentArrowRef = useRef<THREE.Mesh>(null);
-
+  const markerRef = useRef<THREE.Mesh>(null);
+  const arrowRef = useRef<THREE.Mesh>(null);
   useFrame(() => {
-    const agent = agentRef.current[0];
-    if (!agent || !agentMarkerRef.current) return;
+    const agent = agentRef.current[agentIdx];
+    if (!agent || !markerRef.current) return;
     const [ax, , az] = toWorld(agent.x, agent.y);
-    agentMarkerRef.current.position.set(ax, 0.05, az);
-    if (agentArrowRef.current) {
-      agentArrowRef.current.position.set(ax, 0.05, az);
-      agentArrowRef.current.rotation.y = agent.facing;
+    markerRef.current.position.set(ax, 0.05, az);
+    if (arrowRef.current) {
+      arrowRef.current.position.set(ax, 0.05, az);
+      arrowRef.current.rotation.y = agent.facing;
     }
   });
-
   return (
     <>
-      <mesh ref={agentMarkerRef}>
+      <mesh ref={markerRef}>
         <sphereGeometry args={[0.04, 12, 12]} />
-        <meshBasicMaterial color="#ef4444" />
+        <meshBasicMaterial color={color} />
       </mesh>
-      <mesh ref={agentArrowRef}>
+      <mesh ref={arrowRef}>
         <coneGeometry args={[0.05, 0.3, 8]} />
-        <meshBasicMaterial color="#ef4444" />
+        <meshBasicMaterial color={color} />
       </mesh>
-      {station && (() => {
+    </>
+  );
+}
+
+function DebugMarkers({
+  stations,
+  stationIdxByAgent,
+  agentRef,
+}: {
+  stations: Station[];
+  stationIdxByAgent: (number | null)[];
+  agentRef: React.RefObject<RenderAgentState[]>;
+}) {
+  return (
+    <>
+      <AgentDebugMarker agentRef={agentRef} agentIdx={0} color="#ef4444" />
+      <AgentDebugMarker agentRef={agentRef} agentIdx={1} color="#10b981" />
+      {stationIdxByAgent.map((idx, agentIdx) => {
+        if (idx === null) return null;
+        const station = stations[idx];
+        if (!station) return null;
         const [tx, , tz] = toWorld(station.standX, station.standY);
         const dirX = Math.sin(station.facing);
         const dirZ = Math.cos(station.facing);
+        const color = agentIdx === 0 ? "#ef4444" : "#10b981";
         return (
-          <>
+          <group key={agentIdx}>
             <mesh position={[tx, 0.05, tz]}>
               <sphereGeometry args={[0.05, 12, 12]} />
-              <meshBasicMaterial color="#10b981" />
+              <meshBasicMaterial color={color} transparent opacity={0.55} />
             </mesh>
             <mesh
               position={[tx + dirX * 0.2, 0.05, tz + dirZ * 0.2]}
               rotation={[0, station.facing, 0]}
             >
               <coneGeometry args={[0.05, 0.3, 8]} />
-              <meshBasicMaterial color="#10b981" />
+              <meshBasicMaterial color={color} transparent opacity={0.55} />
             </mesh>
-          </>
+          </group>
         );
-      })()}
+      })}
     </>
   );
 }
@@ -1003,83 +1073,77 @@ function CameraRig({ zoom }: { zoom: number }) {
 function TickLoop({
   agentRef,
   stations,
-  stationIdx,
+  stationIdxByAgent,
 }: {
   agentRef: React.RefObject<RenderAgentState[]>;
   stations: Station[];
-  stationIdx: number | null;
+  stationIdxByAgent: (number | null)[];
 }) {
   useFrame((_, delta) => {
-    const agent = agentRef.current[0];
-    if (!agent) return;
+    const speedScale = Math.min(delta * 60, 6);
+    for (let agentIdx = 0; agentIdx < agentRef.current.length; agentIdx++) {
+      const agent = agentRef.current[agentIdx];
+      if (!agent) continue;
+      const stationIdx = stationIdxByAgent[agentIdx] ?? null;
+      const activeStation = stationIdx !== null ? stations[stationIdx] : null;
 
-    // Delta-time-scaled walk so speed is framerate-independent. walkSpeed is
-    // tuned for 60fps, so multiply by (delta * 60) to normalize.
-    const speedScale = Math.min(delta * 60, 6); // clamp at 6× to avoid jumps
+      if (
+        activeStation &&
+        (agent.state === "sitting" ||
+          agent.state === "working_out" ||
+          agent.state === "standing")
+      ) {
+        agent.sitBackOverride = activeStation.sitBack;
+        agent.sinkDepthOverride = activeStation.sinkDepth;
+        agent.workoutStyle = activeStation.workoutStyle;
+        agent.facing = activeStation.facing;
+      }
 
-    const activeStation = stationIdx !== null ? stations[stationIdx] : null;
-
-    // Live-track the active station's overrides + facing even while
-    // sitting/working-out/standing at the station.
-    if (
-      activeStation &&
-      (agent.state === "sitting" ||
-        agent.state === "working_out" ||
-        agent.state === "standing")
-    ) {
-      agent.sitBackOverride = activeStation.sitBack;
-      agent.sinkDepthOverride = activeStation.sinkDepth;
-      agent.workoutStyle = activeStation.workoutStyle;
-      agent.facing = activeStation.facing;
-    }
-
-    if (agent.state === "walking" && agent.path.length > 0) {
-      const wp = agent.path[0];
-      const dx = wp.x - agent.x;
-      const dy = wp.y - agent.y;
-      const dist = Math.hypot(dx, dy);
-      const speed = agent.walkSpeed * speedScale;
-
-      if (dist > speed) {
-        agent.x += (dx / dist) * speed;
-        agent.y += (dy / dist) * speed;
-        agent.facing = Math.atan2(dx, dy);
-      } else {
-        agent.x = wp.x;
-        agent.y = wp.y;
-        if (agent.path.length > 1) {
-          agent.path = agent.path.slice(1);
+      if (agent.state === "walking" && agent.path.length > 0) {
+        const wp = agent.path[0];
+        const dx = wp.x - agent.x;
+        const dy = wp.y - agent.y;
+        const dist = Math.hypot(dx, dy);
+        const speed = agent.walkSpeed * speedScale;
+        if (dist > speed) {
+          agent.x += (dx / dist) * speed;
+          agent.y += (dy / dist) * speed;
+          agent.facing = Math.atan2(dx, dy);
         } else {
-          agent.path = [];
-          if (activeStation) {
-            agent.state = activeStation.state;
-            agent.socialSpotType = activeStation.socialSpotType;
-            agent.workoutStyle = activeStation.workoutStyle;
-            agent.sitBackOverride = activeStation.sitBack;
-            agent.sinkDepthOverride = activeStation.sinkDepth;
-            agent.facing = activeStation.facing;
-            if (activeStation.state === "sitting" && !activeStation.socialSpotType) {
-              agent.status = "working";
-            }
+          agent.x = wp.x;
+          agent.y = wp.y;
+          if (agent.path.length > 1) {
+            agent.path = agent.path.slice(1);
           } else {
-            agent.state = "standing";
-            agent.sitBackOverride = undefined;
-            agent.sinkDepthOverride = undefined;
-            agent.workoutStyle = undefined;
+            agent.path = [];
+            if (activeStation) {
+              agent.state = activeStation.state;
+              agent.socialSpotType = activeStation.socialSpotType;
+              agent.workoutStyle = activeStation.workoutStyle;
+              agent.sitBackOverride = activeStation.sitBack;
+              agent.sinkDepthOverride = activeStation.sinkDepth;
+              agent.facing = activeStation.facing;
+              if (activeStation.state === "sitting" && !activeStation.socialSpotType) {
+                agent.status = "working";
+              }
+            } else {
+              agent.state = "standing";
+              agent.sitBackOverride = undefined;
+              agent.sinkDepthOverride = undefined;
+              agent.workoutStyle = undefined;
+            }
           }
         }
       }
+      agent.frame += 1;
     }
-
-    agent.frame += 1;
   });
-
   return null;
 }
 
 export default function TunerScene({
   cohort,
-  stationIdx,
+  stationIdxByAgent,
   tuning,
   gymTuning,
   miscTuning,
@@ -1092,7 +1156,6 @@ export default function TunerScene({
     if (cohort === "misc") return buildMiscStations(miscTuning);
     return buildStations(tuning);
   }, [cohort, tuning, gymTuning, miscTuning]);
-  const activeStation = stationIdx !== null ? stations[stationIdx] : null;
   const large = cohort === "arena";
 
   return (
@@ -1135,17 +1198,27 @@ export default function TunerScene({
         ))}
 
         <AgentCharacter
-          agentId="tuner_agent"
-          agentName="Tuner"
+          agentId="tuner_agent_0"
+          agentName="A"
           rank={1}
           agentsRef={agentRef}
         />
+        <AgentCharacter
+          agentId="tuner_agent_1"
+          agentName="B"
+          rank={2}
+          agentsRef={agentRef}
+        />
 
-        <DebugMarkers station={activeStation} agentRef={agentRef} />
+        <DebugMarkers
+          stations={stations}
+          stationIdxByAgent={stationIdxByAgent}
+          agentRef={agentRef}
+        />
         <TickLoop
           agentRef={agentRef}
           stations={stations}
-          stationIdx={stationIdx}
+          stationIdxByAgent={stationIdxByAgent}
         />
       </Suspense>
     </Canvas>
@@ -1153,9 +1226,14 @@ export default function TunerScene({
 }
 
 export function useTunerAgent() {
-  const agentRef = useRef<RenderAgentState[]>([makeInitialAgent()]);
+  const agentRef = useRef<RenderAgentState[]>([
+    makeInitialAgent(0),
+    makeInitialAgent(1),
+  ]);
   const [cohort, setCohort] = useState<Cohort>("seats");
-  const [stationIdx, setStationIdxState] = useState<number | null>(null);
+  const [stationIdxByAgent, setStationIdxByAgent] = useState<
+    (number | null)[]
+  >([null, null]);
   const [tuning, setTuning] = useState<TuningParams>(DEFAULT_TUNING);
   const [gymTuning, setGymTuning] =
     useState<GymTuningParams>(DEFAULT_GYM_TUNING);
@@ -1176,8 +1254,8 @@ export function useTunerAgent() {
   }, [cohort, tuning, gymTuning, miscTuning]);
 
   const sendToStation = useCallback(
-    (idx: number | null) => {
-      const agent = agentRef.current[0];
+    (agentIdx: number, idx: number | null) => {
+      const agent = agentRef.current[agentIdx];
       if (!agent) return;
       if (idx === null) {
         agent.state = "standing";
@@ -1187,7 +1265,11 @@ export function useTunerAgent() {
         agent.sinkDepthOverride = undefined;
         agent.workoutStyle = undefined;
         agent.status = "idle";
-        setStationIdxState(null);
+        setStationIdxByAgent((prev) => {
+          const next = [...prev];
+          next[agentIdx] = null;
+          return next;
+        });
         return;
       }
       const station = stations[idx];
@@ -1201,48 +1283,51 @@ export function useTunerAgent() {
       agent.sinkDepthOverride = undefined;
       agent.workoutStyle = undefined;
       agent.status = "idle";
-      setStationIdxState(idx);
+      setStationIdxByAgent((prev) => {
+        const next = [...prev];
+        next[agentIdx] = idx;
+        return next;
+      });
     },
     [stations]
   );
 
-  // When tuning changes, the active station may have moved — update the agent's
-  // target to the new stand point if we're on a station. Agent will walk there.
+  // When tuning changes, any active station may have moved — rewalk each
+  // agent to its (new) stand point.
   useEffect(() => {
-    if (stationIdx === null) return;
-    const agent = agentRef.current[0];
-    const station = stations[stationIdx];
-    if (!agent || !station) return;
-    const dx = station.standX - agent.x;
-    const dy = station.standY - agent.y;
-    const dist = Math.hypot(dx, dy);
-    if (dist > 1) {
-      agent.state = "walking";
-      agent.targetX = station.standX;
-      agent.targetY = station.standY;
-      agent.path = [{ x: station.standX, y: station.standY }];
-      agent.socialSpotType = undefined;
-      agent.sitBackOverride = undefined;
-      agent.sinkDepthOverride = undefined;
-    } else {
-      // Already at the (new) stand point — just snap facing + overrides.
-      agent.sitBackOverride = station.sitBack;
-      agent.sinkDepthOverride = station.sinkDepth;
-      agent.facing = station.facing;
-    }
-  }, [stations, stationIdx]);
+    stationIdxByAgent.forEach((stationIdx, agentIdx) => {
+      if (stationIdx === null) return;
+      const agent = agentRef.current[agentIdx];
+      const station = stations[stationIdx];
+      if (!agent || !station) return;
+      const dx = station.standX - agent.x;
+      const dy = station.standY - agent.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist > 1) {
+        agent.state = "walking";
+        agent.targetX = station.standX;
+        agent.targetY = station.standY;
+        agent.path = [{ x: station.standX, y: station.standY }];
+        agent.socialSpotType = undefined;
+        agent.sitBackOverride = undefined;
+        agent.sinkDepthOverride = undefined;
+      } else {
+        agent.sitBackOverride = station.sitBack;
+        agent.sinkDepthOverride = station.sinkDepth;
+        agent.facing = station.facing;
+      }
+    });
+  }, [stations, stationIdxByAgent]);
 
   const reset = useCallback(() => {
-    agentRef.current[0] = makeInitialAgent();
+    agentRef.current = [makeInitialAgent(0), makeInitialAgent(1)];
     setTuning(DEFAULT_TUNING);
     setGymTuning(DEFAULT_GYM_TUNING);
     setMiscTuning(DEFAULT_MISC_TUNING);
-    setStationIdxState(null);
+    setStationIdxByAgent([null, null]);
   }, []);
 
-  // Click-to-direct: send the agent walking to a clicked canvas point.
-  // Used by the "arena" cohort. Clears any station selection so the agent
-  // doesn't snap into a sit pose on arrival.
+  // Click-to-direct: send agent 0 walking to a clicked canvas point (arena cohort).
   const walkToPoint = useCallback((canvasX: number, canvasY: number) => {
     const agent = agentRef.current[0];
     if (!agent) return;
@@ -1255,21 +1340,25 @@ export function useTunerAgent() {
     agent.sinkDepthOverride = undefined;
     agent.workoutStyle = undefined;
     agent.status = "idle";
-    setStationIdxState(null);
+    setStationIdxByAgent((prev) => {
+      const next = [...prev];
+      next[0] = null;
+      return next;
+    });
   }, []);
 
   // Switching cohort clears any selection (positions don't line up across cohorts).
   const changeCohort = useCallback((c: Cohort) => {
-    agentRef.current[0] = makeInitialAgent();
+    agentRef.current = [makeInitialAgent(0), makeInitialAgent(1)];
     setCohort(c);
-    setStationIdxState(null);
+    setStationIdxByAgent([null, null]);
   }, []);
 
   return {
     agentRef,
     cohort,
     setCohort: changeCohort,
-    stationIdx,
+    stationIdxByAgent,
     sendToStation,
     reset,
     tuning,

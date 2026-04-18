@@ -12,7 +12,7 @@ import type {
 interface TunerPanelProps {
   cohort: Cohort;
   setCohort: (c: Cohort) => void;
-  stationIdx: number | null;
+  stationIdxByAgent: (number | null)[];
   stations: Station[];
   tuning: TuningParams;
   setTuning: (updater: (prev: TuningParams) => TuningParams) => void;
@@ -20,7 +20,7 @@ interface TunerPanelProps {
   setGymTuning: (updater: (prev: GymTuningParams) => GymTuningParams) => void;
   miscTuning: MiscTuningParams;
   setMiscTuning: (updater: (prev: MiscTuningParams) => MiscTuningParams) => void;
-  onGoto: (idx: number | null) => void;
+  onGoto: (agentIdx: number, stationIdx: number | null) => void;
   onReset: () => void;
   agentRef: React.RefObject<RenderAgentState[]>;
 }
@@ -80,7 +80,7 @@ function Slider({
 export default function TunerPanel({
   cohort,
   setCohort,
-  stationIdx,
+  stationIdxByAgent,
   stations,
   tuning,
   setTuning,
@@ -92,8 +92,8 @@ export default function TunerPanel({
   onReset,
   agentRef,
 }: TunerPanelProps) {
-  const agent = agentRef.current[0];
-  const activeStation = stationIdx !== null ? stations[stationIdx] : null;
+  const agent0 = agentRef.current[0];
+  const agent1 = agentRef.current[1];
 
   const setSeatsField = (key: keyof TuningParams, value: number) => {
     setTuning((prev) => ({ ...prev, [key]: value }));
@@ -128,37 +128,45 @@ export default function TunerPanel({
         </div>
       </div>
 
+      {[0, 1].map((agentIdx) => {
+        const activeIdx = stationIdxByAgent[agentIdx] ?? null;
+        const label = agentIdx === 0 ? "A (red)" : "B (green)";
+        return (
+          <div key={agentIdx} className="border-t border-gray-200 pt-3">
+            <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
+              Send agent {label} to…
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {stations.map((s, i) => (
+                <button
+                  key={s.label}
+                  onClick={() => onGoto(agentIdx, i)}
+                  className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
+                    activeIdx === i
+                      ? "bg-black text-white border-black"
+                      : "bg-white text-black border-gray-300 hover:border-black"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+              <button
+                onClick={() => onGoto(agentIdx, null)}
+                className="px-3 py-1.5 rounded-full text-xs bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
+              >
+                stop
+              </button>
+            </div>
+          </div>
+        );
+      })}
       <div className="border-t border-gray-200 pt-3">
-        <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
-          Send agent to…
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {stations.map((s, i) => (
-            <button
-              key={s.label}
-              onClick={() => onGoto(i)}
-              className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
-                stationIdx === i
-                  ? "bg-black text-white border-black"
-                  : "bg-white text-black border-gray-300 hover:border-black"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
-          <button
-            onClick={() => onGoto(null)}
-            className="px-3 py-1.5 rounded-full text-xs bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
-          >
-            stop
-          </button>
-          <button
-            onClick={onReset}
-            className="px-3 py-1.5 rounded-full text-xs bg-white text-red-600 border border-red-300 hover:bg-red-50"
-          >
-            reset
-          </button>
-        </div>
+        <button
+          onClick={onReset}
+          className="px-3 py-1.5 rounded-full text-xs bg-white text-red-600 border border-red-300 hover:bg-red-50"
+        >
+          reset both
+        </button>
       </div>
 
       {cohort === "arena" ? (
@@ -287,53 +295,38 @@ export default function TunerPanel({
         </div>
       )}
 
-      <div className="border-t border-gray-200 pt-3">
-        <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
-          Agent state
-        </p>
-        <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
-          <dt className="text-gray-500">position</dt>
-          <dd>
-            ({fmt(agent?.x)}, {fmt(agent?.y)})
-          </dd>
-          <dt className="text-gray-500">target</dt>
-          <dd>
-            ({fmt(agent?.targetX)}, {fmt(agent?.targetY)})
-          </dd>
-          <dt className="text-gray-500">facing</dt>
-          <dd>{fmtAngle(agent?.facing)}</dd>
-          <dt className="text-gray-500">state</dt>
-          <dd>{agent?.state ?? "—"}</dd>
-          <dt className="text-gray-500">status</dt>
-          <dd>{agent?.status ?? "—"}</dd>
-          <dt className="text-gray-500">socialSpotType</dt>
-          <dd>{agent?.socialSpotType ?? "—"}</dd>
-          <dt className="text-gray-500">workoutStyle</dt>
-          <dd>{agent?.workoutStyle ?? "—"}</dd>
-          <dt className="text-gray-500">sitBack</dt>
-          <dd>{fmt(agent?.sitBackOverride)}</dd>
-        </dl>
-      </div>
-
-      {activeStation && (
-        <div className="border-t border-gray-200 pt-3">
-          <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
-            Target station
-          </p>
-          <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
-            <dt className="text-gray-500">label</dt>
-            <dd>{activeStation.label}</dd>
-            <dt className="text-gray-500">stand point</dt>
-            <dd>
-              ({fmt(activeStation.standX)}, {fmt(activeStation.standY)})
-            </dd>
-            <dt className="text-gray-500">facing</dt>
-            <dd>{fmtAngle(activeStation.facing)}</dd>
-            <dt className="text-gray-500">sit back</dt>
-            <dd>{activeStation.sitBack.toFixed(2)}</dd>
-          </dl>
-        </div>
-      )}
+      {[agent0, agent1].map((agent, agentIdx) => {
+        const activeIdx = stationIdxByAgent[agentIdx] ?? null;
+        const activeStation = activeIdx !== null ? stations[activeIdx] : null;
+        const label = agentIdx === 0 ? "A" : "B";
+        return (
+          <div key={agentIdx} className="border-t border-gray-200 pt-3">
+            <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
+              Agent {label} state
+            </p>
+            <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
+              <dt className="text-gray-500">position</dt>
+              <dd>
+                ({fmt(agent?.x)}, {fmt(agent?.y)})
+              </dd>
+              <dt className="text-gray-500">facing</dt>
+              <dd>{fmtAngle(agent?.facing)}</dd>
+              <dt className="text-gray-500">state</dt>
+              <dd>{agent?.state ?? "—"}</dd>
+              {activeStation ? (
+                <>
+                  <dt className="text-gray-500">station</dt>
+                  <dd>{activeStation.label}</dd>
+                  <dt className="text-gray-500">stand</dt>
+                  <dd>
+                    ({fmt(activeStation.standX)}, {fmt(activeStation.standY)})
+                  </dd>
+                </>
+              ) : null}
+            </dl>
+          </div>
+        );
+      })}
 
       <div className="border-t border-gray-200 pt-3">
         <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-1">
@@ -342,11 +335,11 @@ export default function TunerPanel({
         <ul className="text-[11px] text-gray-600 leading-relaxed">
           <li>
             <span className="inline-block w-2 h-2 rounded-full bg-red-500 mr-1.5" />
-            red — agent position + facing arrow
+            red — agent A position + facing + stand point
           </li>
           <li>
             <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1.5" />
-            green — station stand point + target facing arrow
+            green — agent B position + facing + stand point
           </li>
         </ul>
       </div>
