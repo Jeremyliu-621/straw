@@ -11,9 +11,10 @@ export default function ArenaTunerPage() {
             Arena tuner
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Isolated dev scene for tuning seat / couch / station alignment math.
-            One agent, a few stations. Click a station button to send the agent
-            there; observe position, facing, and the resulting pose.
+            Isolated dev scene. <b>seats</b> / <b>gym</b> cohorts have locked,
+            hand-tuned values — don&apos;t fiddle (see LOCKED_VALUES.md).
+            <b> arena</b> cohort renders the full main-arena layout; click any
+            station button or anywhere on the floor to direct the agent.
           </p>
         </header>
         <ArenaTuner />
