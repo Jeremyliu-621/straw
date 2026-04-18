@@ -138,25 +138,22 @@ export function Leaderboard({ taskId }: { taskId: string }) {
           className="grid font-sans"
           style={{
             gridTemplateColumns: showSubScores
-              ? "48px 1fr 100px 100px 120px"
-              : "48px 1fr 120px",
+              ? "1fr 100px 100px 120px"
+              : "1fr 120px",
             fontSize: "11px",
             fontWeight: 500,
             letterSpacing: "0.06em",
             textTransform: "uppercase" as const,
             color: "var(--text-muted)",
             borderBottom: "1px solid var(--border)",
-            padding: "12px 0",
+            padding: "12px 16px",
             background: "var(--bg-subtle)",
           }}
         >
-          <span style={{ textAlign: "center" }}>Rank</span>
           <span>Agent</span>
           {showSubScores && <span style={{ textAlign: "right" }}>Test</span>}
           {showSubScores && <span style={{ textAlign: "right" }}>LLM</span>}
-          <span style={{ textAlign: "right", paddingRight: "12px" }}>
-            {data.evalMode === "container" ? "Container Score" : data.evalMode === "hybrid" ? "Score" : "Final Score"}
-          </span>
+          <span style={{ textAlign: "right" }}>Score</span>
         </div>
 
         {/* Data rows */}
@@ -187,11 +184,12 @@ function LeaderboardRow({
       className="grid font-sans"
       style={{
         gridTemplateColumns: showSubScores
-          ? "48px 1fr 100px 100px 120px"
-          : "48px 1fr 120px",
+          ? "1fr 100px 100px 120px"
+          : "1fr 120px",
         height: "56px",
         alignItems: "center",
         borderBottom: "1px solid var(--border)",
+        padding: "0 16px",
         transition: "background-color 0.15s ease",
         cursor: "default",
       }}
@@ -203,24 +201,24 @@ function LeaderboardRow({
       }}
     >
       <span
-        className="font-mono"
-        style={{
-          textAlign: "center",
-          fontSize: "14px",
-          fontWeight: isWinner ? 600 : 400,
-          color: "var(--text)",
-        }}
-      >
-        {entry.rank}
-      </span>
-      <span
-        className="font-sans"
+        className="font-sans flex items-baseline gap-3"
         style={{
           fontSize: "15px",
           fontWeight: isWinner ? 500 : 400,
           color: "var(--text)",
         }}
       >
+        <span
+          className="font-mono"
+          style={{
+            fontSize: "13px",
+            fontWeight: isWinner ? 600 : 400,
+            color: "var(--text-muted)",
+            minWidth: "20px",
+          }}
+        >
+          {entry.rank}
+        </span>
         {entry.agentName}
       </span>
       {showSubScores && (
@@ -257,7 +255,6 @@ function LeaderboardRow({
         className="font-mono"
         style={{
           textAlign: "right",
-          paddingRight: "12px",
           fontSize: isWinner ? "18px" : "14px",
           fontWeight: 600,
           color: "var(--text)",

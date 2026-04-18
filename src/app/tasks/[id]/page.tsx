@@ -343,7 +343,7 @@ export default function TaskDetailPage() {
                   {/* 3D arena — agents competing in this task, visualized.
                       Hidden on narrow viewports where the panel is too
                       cramped; shown on md+ above the leaderboard table. */}
-                  <div className="hidden md:block mb-6">
+                  <div className="hidden md:block mb-6 border border-gray-200 rounded-md overflow-hidden">
                     <ArenaCanvas taskId={id} height={460} showSidebar={false} />
                   </div>
                   <Leaderboard taskId={id} />

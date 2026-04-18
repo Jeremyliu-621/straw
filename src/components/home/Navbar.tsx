@@ -38,7 +38,7 @@ export default function Navbar() {
       <nav
         className="fixed top-0 w-full z-50 h-[52px] border-b border-gray-200 bg-[#FDFCFC]"
       >
-        <div className="w-full max-w-[1400px] h-full mx-auto border-x border-gray-200 flex items-center justify-between px-6 sm:px-10 relative">
+        <div className="w-full max-w-[1400px] h-full mx-auto border-x border-gray-200 flex items-center justify-between pl-6 sm:pl-10 pr-4 sm:pr-8 relative">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center">
               <img src="/strawlonglogo.png" alt="Straw Logo" className="h-4 w-auto" />

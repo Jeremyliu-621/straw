@@ -1,8 +1,47 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import ArenaWindow from "./arena";
+import PlaygroundWindow from "./PlaygroundWindow";
+// The dashboard/task-routing pseudo window (./arena) is parked — component
+// kept on disk, not rendered. Re-add the import + <ArenaWindow /> block below
+// to bring it back.
+
+// Defers mounting its children until scrolled within 400px of viewport.
+// Used to keep the R3F bundle off the critical path for above-the-fold users.
+function LazyOnScroll({
+  children,
+  placeholderHeight,
+}: {
+  children: React.ReactNode;
+  placeholderHeight: number;
+}) {
+  const [mounted, setMounted] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (mounted || !ref.current) return;
+    const target = ref.current;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setMounted(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px" }
+    );
+    io.observe(target);
+    return () => io.disconnect();
+  }, [mounted]);
+
+  return (
+    <div ref={ref} style={mounted ? undefined : { minHeight: placeholderHeight }}>
+      {mounted ? children : null}
+    </div>
+  );
+}
 
 export default function HeroSection() {
   const { data: session } = useSession();
@@ -43,10 +82,12 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* ARENA WINDOW — interactive pseudo-browser */}
+      {/* PLAYGROUND WINDOW — live 3D agent arena in a mock task-detail page */}
       <div className="w-full border-b border-gray-200">
         <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 px-4 sm:px-8 py-8 sm:py-12 lg:py-16 bg-[#FDFCFC]">
-          <ArenaWindow />
+          <LazyOnScroll placeholderHeight={820}>
+            <PlaygroundWindow />
+          </LazyOnScroll>
         </div>
       </div>
 
