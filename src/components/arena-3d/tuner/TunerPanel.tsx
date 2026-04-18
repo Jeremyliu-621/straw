@@ -104,7 +104,7 @@ export default function TunerPanel({
           Cohort
         </p>
         <div className="flex gap-2">
-          {(["seats", "gym"] as Cohort[]).map((c) => (
+          {(["seats", "gym", "arena"] as Cohort[]).map((c) => (
             <button
               key={c}
               onClick={() => setCohort(c)}
@@ -153,7 +153,18 @@ export default function TunerPanel({
         </div>
       </div>
 
-      {cohort === "seats" ? (
+      {cohort === "arena" ? (
+        <div className="border-t border-gray-200 pt-3">
+          <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
+            Arena — click to direct
+          </p>
+          <p className="text-[11px] text-gray-600 leading-relaxed">
+            Click anywhere on the floor to send the agent to that spot. Or use
+            a station button above. The layout uses the same validated station
+            factories as seats/gym — do not fiddle with those values.
+          </p>
+        </div>
+      ) : cohort === "seats" ? (
         <div className="border-t border-gray-200 pt-3">
           <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
             Tuning (seats)

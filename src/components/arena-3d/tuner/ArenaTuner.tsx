@@ -16,6 +16,7 @@ export default function ArenaTuner() {
     gymTuning,
     setGymTuning,
     stations,
+    walkToPoint,
   } = useTunerAgent();
 
   return (
@@ -27,6 +28,7 @@ export default function ArenaTuner() {
           tuning={tuning}
           gymTuning={gymTuning}
           agentRef={agentRef}
+          onFloorClick={cohort === "arena" ? walkToPoint : undefined}
         />
       </div>
       <TunerPanel

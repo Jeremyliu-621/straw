@@ -15,14 +15,26 @@ import AgentCharacter from "../objects/AgentCharacter";
 import type { RenderAgentState } from "../useArenaGameLoop";
 import type { FurnitureItem } from "../core/types";
 import type { WorkoutStyle } from "../core/defaultLayout";
+import {
+  DEFAULT_ARENA_FURNITURE,
+  DESK_STANDING_POINTS,
+  SOCIAL_POINTS,
+  GYM_WORKOUT_POINTS,
+} from "../core/defaultLayout";
 
-export type Cohort = "seats" | "gym";
+export type Cohort = "seats" | "gym" | "arena";
 
 // Tuner canvas dimensions — small, focused on one agent + a few stations.
+// The "arena" cohort uses the larger `ARENA_*` dimensions so a full mini-arena
+// fits. seats/gym keep the smaller floor so the debug markers are readable.
 const CANVAS_W = 600;
 const CANVAS_H = 500;
+const ARENA_CANVAS_W = 1300;
+const ARENA_CANVAS_H = 1200;
 const WORLD_W = CANVAS_W * SCALE;
 const WORLD_H = CANVAS_H * SCALE;
+const ARENA_WORLD_W = ARENA_CANVAS_W * SCALE;
+const ARENA_WORLD_H = ARENA_CANVAS_H * SCALE;
 
 // ── Tuning params ─────────────────────────────────────────────────────────
 // Everything the user can live-tune from the panel.
@@ -490,6 +502,365 @@ export function buildGymStations(tuning: GymTuningParams): {
   return { items, clusters: [], stations };
 }
 
+// ── Arena cohort ─────────────────────────────────────────────────────────
+// A mini full-arena layout built ENTIRELY from the validated tuner factories.
+// No custom per-station math. When the layout looks right we copy it into
+// defaultLayout.ts so /leaderboard and the landing-page preview match.
+//
+// Layout is authored in a 1200x900 canvas (close to main arena's 1200x1100)
+// so station positions translate 1:1 when we port them out.
+
+/**
+ * Arena cohort: replicates the full main-arena layout inside the tuner.
+ * Uses `DEFAULT_ARENA_FURNITURE` directly so the positions + clustering
+ * match the main `/leaderboard` + landing-page view 1:1. Stations are
+ * derived from the shared `DESK_STANDING_POINTS` / `SOCIAL_POINTS` /
+ * `GYM_WORKOUT_POINTS` tables so the agent can be directed to any of them.
+ */
+export function buildArenaStations(): {
+  items: FurnitureItem[];
+  clusters: ClusterGroup[];
+  stations: Station[];
+} {
+  const clusters: ClusterGroup[] = [];
+  const stations: Station[] = [];
+
+  // Group cluster-tagged items into the tuner's ClusterGroup shape so
+  // ClusterGroupRender wraps them in the rotation group.
+  const clusterMap = new Map<string, ClusterGroup>();
+  const loose: FurnitureItem[] = [];
+  for (const item of DEFAULT_ARENA_FURNITURE) {
+    if (item._cluster) {
+      const id = item._cluster.id;
+      const existing = clusterMap.get(id);
+      if (existing) existing.items.push(item);
+      else
+        clusterMap.set(id, {
+          id,
+          items: [item],
+          pivotX: item._cluster.pivotX,
+          pivotY: item._cluster.pivotY,
+          rotDeg: item._cluster.rotDeg,
+        });
+    } else {
+      loose.push(item);
+    }
+  }
+  clusters.push(...clusterMap.values());
+
+  // Desk stations — one per DESK_STANDING_POINT.
+  DESK_STANDING_POINTS.forEach((sp, idx) => {
+    if (!sp) return;
+    stations.push({
+      label: `Desk ${idx}`,
+      items: [], // items already rendered via clusters
+      standX: sp.x,
+      standY: sp.y,
+      facing: sp.facing,
+      state: "sitting",
+      socialSpotType: "chair",
+      sitBack: 0.4,
+    });
+  });
+
+  // Social stations (couches / beanbags / round tables / ping pong / etc.).
+  SOCIAL_POINTS.forEach((p, idx) => {
+    const isCouchV = p.type === "couch_v";
+    const isCouch = p.type === "couch";
+    const isBeanbag = p.type === "beanbag";
+    const sitBack = isCouch
+      ? 1.0
+      : isCouchV
+        ? 1.27
+        : isBeanbag
+          ? 0.55
+          : 0;
+    const sinkDepth = isCouch
+      ? -2.0
+      : isCouchV
+        ? 2.0
+        : isBeanbag
+          ? 14.5
+          : undefined;
+    stations.push({
+      label: `${p.type} ${idx}`,
+      items: [],
+      standX: p.x,
+      standY: p.y,
+      facing: p.facing ?? 0,
+      state: isCouch || isCouchV || isBeanbag ? "sitting" : "standing",
+      socialSpotType:
+        isCouch || isCouchV || isBeanbag ? p.type : undefined,
+      sitBack,
+      sinkDepth,
+    });
+  });
+
+  // Gym stations.
+  GYM_WORKOUT_POINTS.forEach((p, idx) => {
+    stations.push({
+      label: `Gym ${p.style} ${idx}`,
+      items: [],
+      standX: p.x,
+      standY: p.y,
+      facing: p.facing,
+      state: "working_out",
+      sitBack: 0,
+      workoutStyle: p.style,
+    });
+  });
+
+  return { items: loose, clusters, stations };
+}
+
+// Module-level cache so repeated callers (useMemo in strict mode, multiple
+// scenes) all get the SAME object reference for the arena cohort. Without
+// this, every render creates a new stations array which flickers the
+// useEffect that resets agent.path — dramatically slowing walk speed.
+let __arenaCache:
+  | { items: FurnitureItem[]; clusters: ClusterGroup[]; stations: Station[] }
+  | null = null;
+export function getArenaStations() {
+  if (!__arenaCache) __arenaCache = buildArenaStations();
+  return __arenaCache;
+}
+
+// (Legacy simplified arena cohort — unused, kept for reference while we
+// port the full layout. Remove once the full-layout arena is dialed in.)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _legacyBuildArenaStations(): {
+  items: FurnitureItem[];
+  clusters: ClusterGroup[];
+  stations: Station[];
+} {
+  const clusters: ClusterGroup[] = [];
+  const stations: Station[] = [];
+
+  // Helper: make a desk cluster station (reuses the "seats" desk math).
+  function deskCluster(
+    label: string,
+    baseX: number,
+    baseY: number,
+    rotDeg = 0
+  ): Station {
+    const deskChairX = DESK_W / 2 - 30;
+    const clusterId = `arena_desk_${label}`;
+    const cluster: ClusterGroup = {
+      id: clusterId,
+      items: [
+        {
+          type: "desk_cubicle",
+          x: baseX,
+          y: baseY,
+          _uid: `${clusterId}_desk`,
+          id: `desk_${label}`,
+        },
+        {
+          type: "chair",
+          x: baseX + deskChairX,
+          y: baseY - 10,
+          facing: 180,
+          _uid: `${clusterId}_chair`,
+        },
+        {
+          type: "computer",
+          x: baseX + deskChairX,
+          y: baseY - 13,
+          _uid: `${clusterId}_computer`,
+        },
+      ],
+      pivotX: baseX + DESK_W / 2,
+      pivotY: baseY + DESK_H / 2,
+      rotDeg,
+    };
+    clusters.push(cluster);
+    const preStand = {
+      x: baseX + DESK_W / 2 - 18,
+      y: baseY + 2,
+    };
+    const rotated = rotatePoint(
+      preStand.x,
+      preStand.y,
+      cluster.pivotX,
+      cluster.pivotY,
+      rotDeg
+    );
+    return {
+      label: `Desk ${label}`,
+      items: cluster.items,
+      standX: Math.round(rotated.x),
+      standY: Math.round(rotated.y),
+      facing: (rotDeg * Math.PI) / 180 + Math.PI,
+      state: "sitting",
+      socialSpotType: "chair",
+      sitBack: 0.4,
+    };
+  }
+
+  // Helper: single-item couch station.
+  function couchStation(label: string, x: number, y: number, rotDeg = 0): Station {
+    const w = 100;
+    const h = 40;
+    const item: FurnitureItem = {
+      type: "couch",
+      x,
+      y,
+      w,
+      h,
+      facing: rotDeg,
+      _uid: `arena_couch_${label}`,
+    };
+    const facing = (rotDeg * Math.PI) / 180 + (FURNITURE_ROTATION.couch ?? 0);
+    const seatOffset = Math.min(w, h) * 0.25;
+    const cx = x + w / 2;
+    const cy = y + h / 2;
+    return {
+      label: `Couch ${label}`,
+      items: [item],
+      standX: Math.round(cx + Math.sin(facing) * seatOffset),
+      standY: Math.round(cy + Math.cos(facing) * seatOffset),
+      facing,
+      state: "sitting",
+      socialSpotType: "couch",
+      sitBack: 1.0,
+      sinkDepth: -2.0,
+    };
+  }
+
+  // Helper: single-item couch_v station.
+  function couchVStation(label: string, x: number, y: number, rotDeg = 0): Station {
+    const w = COUCHV_W;
+    const h = COUCHV_H;
+    const item: FurnitureItem = {
+      type: "couch_v",
+      x,
+      y,
+      facing: rotDeg,
+      _uid: `arena_couchv_${label}`,
+    };
+    const facing =
+      (rotDeg * Math.PI) / 180 + (FURNITURE_ROTATION.couch_v ?? 0);
+    const seatOffset = Math.min(w, h) * 0.25;
+    const cx = x + w / 2;
+    const cy = y + h / 2;
+    return {
+      label: `Couch_v ${label}`,
+      items: [item],
+      standX: Math.round(cx + Math.sin(facing) * seatOffset),
+      standY: Math.round(cy + Math.cos(facing) * seatOffset),
+      facing,
+      state: "sitting",
+      socialSpotType: "couch_v",
+      sitBack: 1.27,
+      sinkDepth: 2.0,
+    };
+  }
+
+  // Helper: beanbag station.
+  function beanbagStation(label: string, x: number, y: number, color: string): Station {
+    const item: FurnitureItem = {
+      type: "beanbag",
+      x,
+      y,
+      color,
+      _uid: `arena_beanbag_${label}`,
+    };
+    return {
+      label: `Beanbag ${label}`,
+      items: [item],
+      standX: x + 20,
+      standY: y + 20,
+      facing: 0,
+      state: "sitting",
+      socialSpotType: "beanbag",
+      sitBack: 0.55,
+      sinkDepth: 14.5,
+    };
+  }
+
+  // Helper: gym equipment (working_out pose).
+  function gymItemStation(
+    label: string,
+    type: string,
+    x: number,
+    y: number,
+    dist: number,
+    style: Station["workoutStyle"]
+  ): Station {
+    const [defW, defH] = ITEM_FOOTPRINT[type] ?? [40, 40];
+    const item: FurnitureItem = { type, x, y, _uid: `arena_${type}_${label}` };
+    const facingRad = FURNITURE_ROTATION[type] ?? 0;
+    const itemCx = x + defW / 2;
+    const itemCy = y + defH / 2;
+    return {
+      label: `${type} ${label}`,
+      items: [item],
+      standX: Math.round(itemCx + Math.sin(facingRad) * dist),
+      standY: Math.round(itemCy + Math.cos(facingRad) * dist),
+      facing: facingRad + Math.PI,
+      state: "working_out",
+      sitBack: 0,
+      workoutStyle: style,
+    };
+  }
+
+  // ─ Layout ─
+  // Top-left 2x2 desk pod.
+  stations.push(deskCluster("A1", 200, 120));
+  stations.push(deskCluster("A2", 340, 120));
+  stations.push(deskCluster("A3", 200, 260, 180));
+  stations.push(deskCluster("A4", 340, 260, 180));
+
+  // Top-right 2x2 desk pod.
+  stations.push(deskCluster("B1", 640, 120));
+  stations.push(deskCluster("B2", 780, 120));
+  stations.push(deskCluster("B3", 640, 260, 180));
+  stations.push(deskCluster("B4", 780, 260, 180));
+
+  // Lounge (bottom-left).
+  stations.push(couchStation("L1", 100, 500));
+  stations.push(couchStation("L2", 240, 500));
+  stations.push(couchVStation("L3", 100, 620));
+  stations.push(beanbagStation("B1", 260, 640, "#e65100"));
+  stations.push(beanbagStation("B2", 320, 640, "#1565c0"));
+
+  // Gym (bottom-right).
+  stations.push(gymItemStation("1", "squat_rack", 700, 520, 7, "lift"));
+  stations.push(gymItemStation("2", "dumbbell_rack", 700, 620, 40, "lift"));
+  stations.push(gymItemStation("3", "pull_up_tower", 820, 520, 10, "lift"));
+  stations.push(gymItemStation("4", "punching_bag", 920, 520, 16, "box"));
+
+  // Collaboration (bottom-center).
+  stations.push({
+    label: "Whiteboard",
+    items: [
+      {
+        type: "rolling_whiteboard",
+        x: 460,
+        y: 500,
+        w: 90,
+        h: 40,
+        _uid: "arena_wb",
+      },
+    ],
+    standX: 505,
+    standY: 560,
+    facing: 0,
+    state: "standing",
+    sitBack: 0,
+  });
+
+  // All non-cluster items (not inside a ClusterGroup).
+  const clusteredUids = new Set(
+    clusters.flatMap((c) => c.items.map((i) => i._uid))
+  );
+  const items = stations
+    .flatMap((s) => s.items)
+    .filter((i) => !clusteredUids.has(i._uid));
+
+  return { items, clusters, stations };
+}
+
 // ── Tuner agent state ─────────────────────────────────────────────────────
 
 const WALK_SPEED = 0.7;
@@ -520,6 +891,9 @@ interface TunerSceneProps {
   tuning: TuningParams;
   gymTuning: GymTuningParams;
   agentRef: React.RefObject<RenderAgentState[]>;
+  /** Called when the user clicks the floor — used in "arena" cohort to
+   *  direct the agent to walk to the clicked canvas position. */
+  onFloorClick?: (canvasX: number, canvasY: number) => void;
 }
 
 function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
@@ -543,20 +917,44 @@ function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
   );
 }
 
-function Floor() {
+function Floor({
+  onFloorClick,
+  large,
+}: {
+  onFloorClick?: (canvasX: number, canvasY: number) => void;
+  large?: boolean;
+}) {
+  const w = large ? ARENA_WORLD_W : WORLD_W;
+  const h = large ? ARENA_WORLD_H : WORLD_H;
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-      <planeGeometry args={[WORLD_W, WORLD_H]} />
+    <mesh
+      rotation={[-Math.PI / 2, 0, 0]}
+      position={[0, 0, 0]}
+      receiveShadow
+      onClick={
+        onFloorClick
+          ? (e) => {
+              e.stopPropagation();
+              // e.point is world coords. Invert toWorld() to recover canvas.
+              const canvasX = e.point.x / SCALE + 600; // CANVAS_W/2 of main
+              const canvasY = e.point.z / SCALE + 550; // CANVAS_H/2 of main
+              onFloorClick(canvasX, canvasY);
+            }
+          : undefined
+      }
+    >
+      <planeGeometry args={[w, h]} />
       <meshStandardMaterial color="#f0ebdc" />
     </mesh>
   );
 }
 
-function GridLines() {
-  const divisions = 24;
+function GridLines({ large }: { large?: boolean }) {
+  const w = large ? ARENA_WORLD_W : WORLD_W;
+  const divisions = large ? 40 : 24;
   return (
     <gridHelper
-      args={[WORLD_W, divisions, "#c9c0ae", "#d4cbb8"]}
+      args={[w, divisions, "#c9c0ae", "#d4cbb8"]}
       position={[0, 0.002, 0]}
     />
   );
@@ -617,15 +1015,15 @@ function DebugMarkers({
   );
 }
 
-function CameraRig() {
+function CameraRig({ zoom }: { zoom: number }) {
   const { camera } = useThree();
   useEffect(() => {
     camera.position.set(8, 10, 10);
     camera.lookAt(0, 0, 0);
     type OrthoCam = typeof camera & { zoom: number };
-    (camera as OrthoCam).zoom = 50;
+    (camera as OrthoCam).zoom = zoom;
     camera.updateProjectionMatrix();
-  }, [camera]);
+  }, [camera, zoom]);
   return null;
 }
 
@@ -708,12 +1106,15 @@ export default function TunerScene({
   tuning,
   gymTuning,
   agentRef,
+  onFloorClick,
 }: TunerSceneProps) {
-  const { items, clusters, stations } = useMemo(
-    () => (cohort === "gym" ? buildGymStations(gymTuning) : buildStations(tuning)),
-    [cohort, tuning, gymTuning]
-  );
+  const { items, clusters, stations } = useMemo(() => {
+    if (cohort === "gym") return buildGymStations(gymTuning);
+    if (cohort === "arena") return getArenaStations();
+    return buildStations(tuning);
+  }, [cohort, tuning, gymTuning]);
   const activeStation = stationIdx !== null ? stations[stationIdx] : null;
+  const large = cohort === "arena";
 
   return (
     <Canvas
@@ -722,9 +1123,10 @@ export default function TunerScene({
       camera={{ near: 0.1, far: 100 }}
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
       style={{ background: "#fafaf5" }}
+      frameloop="always"
     >
       <Suspense fallback={null}>
-        <CameraRig />
+        <CameraRig zoom={large ? 22 : 50} />
         <ambientLight intensity={0.8} color="#ffffff" />
         <directionalLight
           position={[10, 15, 8]}
@@ -734,8 +1136,8 @@ export default function TunerScene({
         />
         <hemisphereLight args={["#ffffff", "#e0e0e0", 0.4]} />
 
-        <Floor />
-        <GridLines />
+        <Floor onFloorClick={onFloorClick} large={large} />
+        <GridLines large={large} />
 
         {items.map((item) => {
           if (PROCEDURAL_TYPES.has(item.type)) {
@@ -781,11 +1183,11 @@ export function useTunerAgent() {
     return () => window.clearInterval(id);
   }, []);
 
-  const { stations } = useMemo(
-    () =>
-      cohort === "gym" ? buildGymStations(gymTuning) : buildStations(tuning),
-    [cohort, tuning, gymTuning]
-  );
+  const { stations } = useMemo(() => {
+    if (cohort === "gym") return buildGymStations(gymTuning);
+    if (cohort === "arena") return getArenaStations();
+    return buildStations(tuning);
+  }, [cohort, tuning, gymTuning]);
 
   const sendToStation = useCallback(
     (idx: number | null) => {
@@ -851,6 +1253,24 @@ export function useTunerAgent() {
     setStationIdxState(null);
   }, []);
 
+  // Click-to-direct: send the agent walking to a clicked canvas point.
+  // Used by the "arena" cohort. Clears any station selection so the agent
+  // doesn't snap into a sit pose on arrival.
+  const walkToPoint = useCallback((canvasX: number, canvasY: number) => {
+    const agent = agentRef.current[0];
+    if (!agent) return;
+    agent.state = "walking";
+    agent.targetX = canvasX;
+    agent.targetY = canvasY;
+    agent.path = [{ x: canvasX, y: canvasY }];
+    agent.socialSpotType = undefined;
+    agent.sitBackOverride = undefined;
+    agent.sinkDepthOverride = undefined;
+    agent.workoutStyle = undefined;
+    agent.status = "idle";
+    setStationIdxState(null);
+  }, []);
+
   // Switching cohort clears any selection (positions don't line up across cohorts).
   const changeCohort = useCallback((c: Cohort) => {
     agentRef.current[0] = makeInitialAgent();
@@ -870,5 +1290,6 @@ export function useTunerAgent() {
     gymTuning,
     setGymTuning,
     stations,
+    walkToPoint,
   };
 }
