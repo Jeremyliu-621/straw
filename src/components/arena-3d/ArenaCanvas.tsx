@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useCallback, useMemo, useEffect } from "react";
+import { Suspense, useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useStrawAgents } from "./useStrawAgents";
 import { useArenaGameLoop } from "./useArenaGameLoop";
@@ -10,6 +10,7 @@ import AgentCharacter from "./objects/AgentCharacter";
 import ScoreOverlay from "./ScoreOverlay";
 import BWEffects, { type BWVariant } from "./BWEffects";
 import DebugPathOverlay from "./DebugPathOverlay";
+import DevEventPanel, { type DevAction } from "./DevEventPanel";
 import { useArenaMode, type ArenaMode } from "./useArenaMode";
 
 type ViewMode = "iso" | "top" | "corner" | "side" | "front";
@@ -18,11 +19,11 @@ const CAMERA_PRESETS: Record<
   ViewMode,
   { position: [number, number, number]; zoom: number; target: [number, number, number] }
 > = {
-  iso: { position: [14, 16, 19], zoom: 23, target: [0, 0, 1] },
+  iso: { position: [14, 16, 19], zoom: 23, target: [0, 0, 0] },
   top: { position: [0, 30, 0.001], zoom: 20, target: [0, 0, 0] },
   // Flipped-iso: look from the opposite diagonal. Reveals faces the default
   // iso camera hides (e.g. south faces of desks, back of server racks).
-  corner: { position: [-16, 16, -19], zoom: 30, target: [0, 0, -1] },
+  corner: { position: [-16, 16, -19], zoom: 21, target: [0, 0, 0] },
   // Half-iso / half-top from the east: pushed further right and elevated so
   // the camera sits higher and further off-axis. Reads as an aerial side
   // view — clearly shows zone layout while keeping recognizable depth.
@@ -64,6 +65,7 @@ function CameraRig({
 function ArenaScene({
   officeAgents,
   eventBufferRef,
+  devActionQueueRef,
   viewMode,
   bwVariant,
   bwShadows,
@@ -76,6 +78,7 @@ function ArenaScene({
 }: {
   officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
   eventBufferRef: ReturnType<typeof useStrawAgents>["eventBufferRef"];
+  devActionQueueRef: React.RefObject<DevAction[]>;
   viewMode: ViewMode;
   bwVariant: BWVariant | null;
   bwShadows: boolean;
@@ -87,7 +90,12 @@ function ArenaScene({
   debugPaths: boolean;
 }) {
   const furniture = useMemo(() => DEFAULT_ARENA_FURNITURE, []);
-  const { renderAgentsRef, tick } = useArenaGameLoop(officeAgents, furniture, eventBufferRef);
+  const { renderAgentsRef, tick } = useArenaGameLoop(
+    officeAgents,
+    furniture,
+    eventBufferRef,
+    devActionQueueRef
+  );
   const preset = CAMERA_PRESETS[viewMode];
 
   return (
@@ -272,6 +280,7 @@ export default function ArenaCanvas({
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
   const [debugPaths, setDebugPaths] = useState(false);
+  const devActionQueueRef = useRef<DevAction[]>([]);
   const {
     mode,
     setMode,
@@ -327,6 +336,7 @@ export default function ArenaCanvas({
             <ArenaScene
               officeAgents={officeAgents}
               eventBufferRef={eventBufferRef}
+              devActionQueueRef={devActionQueueRef}
               viewMode={viewMode}
               bwVariant={bwVariant}
               bwShadows={bwShadows}
@@ -347,6 +357,14 @@ export default function ArenaCanvas({
           }`}
         >
           {officeAgents.length} agent{officeAgents.length !== 1 ? "s" : ""} in arena
+        </div>
+
+        {/* Bottom-left: dev event trigger panel (hidden when collapsed) */}
+        <div className="absolute bottom-3 left-3">
+          <DevEventPanel
+            queueRef={devActionQueueRef}
+            agentIds={officeAgents.map((a) => a.id)}
+          />
         </div>
 
         {/* Top-right controls: view toggle, and pure-white toggle when BW is on */}

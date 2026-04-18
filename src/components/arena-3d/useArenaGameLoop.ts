@@ -14,6 +14,7 @@ import {
 } from "./core/defaultLayout";
 import { buildNavGrid, astar, type NavGrid } from "./core/navigation";
 import type { ArenaEvent } from "./useArenaEvents";
+import type { DevAction } from "./DevEventPanel";
 
 export interface RenderAgentState {
   id: string;
@@ -274,6 +275,108 @@ function applyEventsToAgents(
   return Array.from(byId.values());
 }
 
+/**
+ * Apply a batch of dev actions — directly mutates hold fields on specific
+ * agents to trigger behaviors on demand. Unlike applyEventsToAgents, this
+ * bypasses priority checking because it's a dev tool.
+ */
+function applyDevActionsToAgents(
+  current: RenderAgentState[],
+  actions: DevAction[],
+  planPath: (fx: number, fy: number, tx: number, ty: number) => { x: number; y: number }[],
+  now: number
+): RenderAgentState[] {
+  if (actions.length === 0) return current;
+
+  const byId = new Map(current.map((a) => [a.id, { ...a }]));
+
+  const resolveAgent = (wanted: string | undefined): RenderAgentState | undefined => {
+    if (wanted) return byId.get(wanted);
+    const all = Array.from(byId.values());
+    return all[Math.floor(Math.random() * all.length)];
+  };
+
+  for (const action of actions) {
+    const agent = resolveAgent(action.agentId);
+    if (!agent) continue;
+
+    switch (action.kind) {
+      case "dance": {
+        agent.danceUntil = now + DANCE_HOLD_MS;
+        agent.state = "dancing";
+        agent.path = [];
+        agent.emojiUntil = now + EMOJI_HOLD_MS;
+        agent.emojiIcon = "🏆";
+        break;
+      }
+      case "gym": {
+        const g = GYM_WORKOUT_POINTS[Math.floor(Math.random() * GYM_WORKOUT_POINTS.length)];
+        if (g) {
+          agent.targetX = g.x;
+          agent.targetY = g.y;
+          agent.path = planPath(agent.x, agent.y, g.x, g.y);
+          agent.state = "walking";
+          agent.workoutStyle = g.style;
+          // gymUntil will be set on arrival by the tick loop's arrival handler.
+          agent.couchUntil = undefined;
+          agent.danceUntil = undefined;
+          agent.talkUntil = undefined;
+        }
+        break;
+      }
+      case "couch": {
+        const couch = nearestCouch(agent.x, agent.y);
+        if (couch) {
+          agent.targetX = couch.x;
+          agent.targetY = couch.y;
+          agent.path = planPath(agent.x, agent.y, couch.x, couch.y);
+          agent.state = "walking";
+          agent.socialSpotType = couch.type;
+          agent.danceUntil = undefined;
+          agent.talkUntil = undefined;
+        }
+        break;
+      }
+      case "overtake": {
+        const partner = resolveAgent(action.partnerId);
+        if (partner && partner.id !== agent.id) {
+          agent.talkUntil = now + TALK_HOLD_MS;
+          agent.talkPartnerId = partner.id;
+          agent.state = "standing";
+          agent.path = [];
+          partner.talkUntil = now + TALK_HOLD_MS;
+          partner.talkPartnerId = agent.id;
+          partner.state = "standing";
+          partner.path = [];
+        }
+        break;
+      }
+      case "fail": {
+        const couch = nearestCouch(agent.x, agent.y);
+        if (couch) {
+          agent.targetX = couch.x;
+          agent.targetY = couch.y;
+          agent.path = planPath(agent.x, agent.y, couch.x, couch.y);
+          agent.state = "walking";
+          agent.socialSpotType = couch.type;
+        }
+        agent.emojiUntil = now + EMOJI_HOLD_MS;
+        agent.emojiIcon = "❌";
+        agent.danceUntil = undefined;
+        break;
+      }
+      case "score": {
+        const emojis = ["🎉", "⬆️", "🔥", "✨"];
+        agent.emojiUntil = now + EMOJI_HOLD_MS;
+        agent.emojiIcon = emojis[Math.floor(Math.random() * emojis.length)];
+        break;
+      }
+    }
+  }
+
+  return Array.from(byId.values());
+}
+
 export interface UseArenaGameLoopResult {
   renderAgentsRef: React.RefObject<RenderAgentState[]>;
   tick: () => void;
@@ -282,7 +385,8 @@ export interface UseArenaGameLoopResult {
 export function useArenaGameLoop(
   agents: OfficeAgentInput[],
   furniture: FurnitureItem[],
-  eventBufferRef?: React.RefObject<ArenaEvent[]>
+  eventBufferRef?: React.RefObject<ArenaEvent[]>,
+  devActionQueueRef?: React.RefObject<DevAction[]>
 ): UseArenaGameLoopResult {
   const renderAgentsRef = useRef<RenderAgentState[]>([]);
 
@@ -398,6 +502,17 @@ export function useArenaGameLoop(
     if (eventBufferRef && eventBufferRef.current && eventBufferRef.current.length > 0) {
       const pending = eventBufferRef.current.splice(0);
       renderAgentsRef.current = applyEventsToAgents(
+        renderAgentsRef.current,
+        pending,
+        planPath,
+        now
+      );
+    }
+
+    // Drain dev actions (manual test triggers).
+    if (devActionQueueRef && devActionQueueRef.current && devActionQueueRef.current.length > 0) {
+      const pending = devActionQueueRef.current.splice(0);
+      renderAgentsRef.current = applyDevActionsToAgents(
         renderAgentsRef.current,
         pending,
         planPath,
@@ -675,7 +790,7 @@ export function useArenaGameLoop(
     }
 
     renderAgentsRef.current = moved;
-  }, [planPath, eventBufferRef]);
+  }, [planPath, eventBufferRef, devActionQueueRef]);
 
   return { renderAgentsRef, tick };
 }
