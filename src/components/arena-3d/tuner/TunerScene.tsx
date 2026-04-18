@@ -28,7 +28,7 @@ import {
   GYM_WORKOUT_POINTS,
 } from "../core/defaultLayout";
 
-export type Cohort = "seats" | "gym" | "arena";
+export type Cohort = "seats" | "gym" | "arena" | "misc";
 
 // Tuner canvas dimensions — small, focused on one agent + a few stations.
 // The "arena" cohort uses the larger `ARENA_*` dimensions so a full mini-arena
@@ -97,6 +97,48 @@ export const DEFAULT_GYM_TUNING: GymTuningParams = {
   pullUpTowerDist: 10,
   punchingBagRotDeg: 0,
   punchingBagDist: 16,
+};
+
+// Misc cohort: utility items from the main arena that haven't been tuned yet
+// (coffee machine, phone booth, fridge, vending, water dispenser, round
+// table, ping pong, printer station). Same rotation + distance slider
+// pattern as gym.
+export interface MiscTuningParams {
+  coffeeMachineRotDeg: number;
+  coffeeMachineDist: number;
+  phoneBoothRotDeg: number;
+  phoneBoothDist: number;
+  fridgeRotDeg: number;
+  fridgeDist: number;
+  vendingRotDeg: number;
+  vendingDist: number;
+  waterDispenserRotDeg: number;
+  waterDispenserDist: number;
+  roundTableRotDeg: number;
+  roundTableDist: number;
+  pingPongRotDeg: number;
+  pingPongDist: number;
+  printerStationRotDeg: number;
+  printerStationDist: number;
+}
+
+export const DEFAULT_MISC_TUNING: MiscTuningParams = {
+  coffeeMachineRotDeg: 0,
+  coffeeMachineDist: 30,
+  phoneBoothRotDeg: 0,
+  phoneBoothDist: 0,
+  fridgeRotDeg: 0,
+  fridgeDist: 50,
+  vendingRotDeg: 0,
+  vendingDist: 40,
+  waterDispenserRotDeg: 0,
+  waterDispenserDist: 25,
+  roundTableRotDeg: 0,
+  roundTableDist: 80,
+  pingPongRotDeg: 0,
+  pingPongDist: 50,
+  printerStationRotDeg: 0,
+  printerStationDist: 35,
 };
 
 export const DEFAULT_TUNING: TuningParams = {
@@ -508,6 +550,142 @@ export function buildGymStations(tuning: GymTuningParams): {
   return { items, clusters: [], stations };
 }
 
+// ── Misc cohort ──────────────────────────────────────────────────────────
+// Utility items from the main arena that haven't been tuned yet: coffee
+// machine, phone booth, fridge, vending, water dispenser, round table,
+// ping pong, printer station. Each is a standalone station with a
+// rotation and distance slider. Pose = "standing" (agent stands in front).
+
+interface MiscStationConfig {
+  label: string;
+  type: string;
+  cx: number;
+  cy: number;
+  w?: number;
+  h?: number;
+  defaultDist: number;
+}
+
+const MISC_CONFIGS: Record<string, MiscStationConfig> = {
+  coffee_machine: {
+    label: "Coffee machine",
+    type: "coffee_machine",
+    cx: 380,
+    cy: 200,
+    defaultDist: 30,
+  },
+  phone_booth: {
+    label: "Phone booth",
+    type: "phone_booth",
+    cx: 520,
+    cy: 200,
+    w: 78,
+    h: 72,
+    defaultDist: 0,
+  },
+  fridge: {
+    label: "Fridge",
+    type: "fridge",
+    cx: 680,
+    cy: 200,
+    defaultDist: 50,
+  },
+  vending: {
+    label: "Vending",
+    type: "vending",
+    cx: 820,
+    cy: 200,
+    defaultDist: 40,
+  },
+  water_dispenser: {
+    label: "Water dispenser",
+    type: "water_dispenser",
+    cx: 380,
+    cy: 500,
+    defaultDist: 25,
+  },
+  round_table: {
+    label: "Round table",
+    type: "round_table",
+    cx: 560,
+    cy: 500,
+    defaultDist: 80,
+  },
+  ping_pong: {
+    label: "Ping pong",
+    type: "ping_pong",
+    cx: 780,
+    cy: 500,
+    w: 100,
+    h: 60,
+    defaultDist: 50,
+  },
+  printer_station: {
+    label: "Printer",
+    type: "printer_station",
+    cx: 960,
+    cy: 500,
+    w: 60,
+    h: 50,
+    defaultDist: 35,
+  },
+};
+
+function miscStation(
+  key: keyof typeof MISC_CONFIGS,
+  rotDeg: number,
+  distOverride: number
+): Station {
+  const cfg = MISC_CONFIGS[key];
+  const [defW, defH] = ITEM_FOOTPRINT[cfg.type] ?? [40, 40];
+  const w = cfg.w ?? defW;
+  const h = cfg.h ?? defH;
+  const item: FurnitureItem = {
+    type: cfg.type,
+    x: cfg.cx,
+    y: cfg.cy,
+    w: cfg.w,
+    h: cfg.h,
+    facing: rotDeg,
+    _uid: `tuner_misc_${key}`,
+  };
+  const facingRad =
+    (rotDeg * Math.PI) / 180 + (FURNITURE_ROTATION[cfg.type] ?? 0);
+  const itemCx = cfg.cx + w / 2;
+  const itemCy = cfg.cy + h / 2;
+  const standX = itemCx + Math.sin(facingRad) * distOverride;
+  const standY = itemCy + Math.cos(facingRad) * distOverride;
+  return {
+    label: cfg.label,
+    items: [item],
+    standX: Math.round(standX),
+    standY: Math.round(standY),
+    // Agent looks back at the item.
+    facing: facingRad + Math.PI,
+    state: "standing",
+    sitBack: 0,
+  };
+}
+
+export function buildMiscStations(tuning: MiscTuningParams): {
+  items: FurnitureItem[];
+  clusters: ClusterGroup[];
+  stations: Station[];
+} {
+  const stations = [
+    miscStation("coffee_machine", tuning.coffeeMachineRotDeg, tuning.coffeeMachineDist),
+    miscStation("phone_booth", tuning.phoneBoothRotDeg, tuning.phoneBoothDist),
+    miscStation("fridge", tuning.fridgeRotDeg, tuning.fridgeDist),
+    miscStation("vending", tuning.vendingRotDeg, tuning.vendingDist),
+    miscStation("water_dispenser", tuning.waterDispenserRotDeg, tuning.waterDispenserDist),
+    miscStation("round_table", tuning.roundTableRotDeg, tuning.roundTableDist),
+    miscStation("ping_pong", tuning.pingPongRotDeg, tuning.pingPongDist),
+    miscStation("printer_station", tuning.printerStationRotDeg, tuning.printerStationDist),
+  ];
+  const items = stations.flatMap((s) => s.items);
+  return { items, clusters: [], stations };
+}
+
 // ── Arena cohort ─────────────────────────────────────────────────────────
 // A mini full-arena layout built ENTIRELY from the validated tuner factories.
 // No custom per-station math. When the layout looks right we copy it into
@@ -660,6 +838,7 @@ interface TunerSceneProps {
   stationIdx: number | null;
   tuning: TuningParams;
   gymTuning: GymTuningParams;
+  miscTuning: MiscTuningParams;
   agentRef: React.RefObject<RenderAgentState[]>;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct the agent to walk to the clicked canvas position. */
@@ -914,14 +1093,16 @@ export default function TunerScene({
   stationIdx,
   tuning,
   gymTuning,
+  miscTuning,
   agentRef,
   onFloorClick,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
     if (cohort === "gym") return buildGymStations(gymTuning);
     if (cohort === "arena") return getArenaStations();
+    if (cohort === "misc") return buildMiscStations(miscTuning);
     return buildStations(tuning);
-  }, [cohort, tuning, gymTuning]);
+  }, [cohort, tuning, gymTuning, miscTuning]);
   const activeStation = stationIdx !== null ? stations[stationIdx] : null;
   const large = cohort === "arena";
 
@@ -989,6 +1170,8 @@ export function useTunerAgent() {
   const [tuning, setTuning] = useState<TuningParams>(DEFAULT_TUNING);
   const [gymTuning, setGymTuning] =
     useState<GymTuningParams>(DEFAULT_GYM_TUNING);
+  const [miscTuning, setMiscTuning] =
+    useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
   const [, setTick] = useState(0);
 
   useEffect(() => {
@@ -999,8 +1182,9 @@ export function useTunerAgent() {
   const { stations } = useMemo(() => {
     if (cohort === "gym") return buildGymStations(gymTuning);
     if (cohort === "arena") return getArenaStations();
+    if (cohort === "misc") return buildMiscStations(miscTuning);
     return buildStations(tuning);
-  }, [cohort, tuning, gymTuning]);
+  }, [cohort, tuning, gymTuning, miscTuning]);
 
   const sendToStation = useCallback(
     (idx: number | null) => {
@@ -1063,6 +1247,7 @@ export function useTunerAgent() {
     agentRef.current[0] = makeInitialAgent();
     setTuning(DEFAULT_TUNING);
     setGymTuning(DEFAULT_GYM_TUNING);
+    setMiscTuning(DEFAULT_MISC_TUNING);
     setStationIdxState(null);
   }, []);
 
@@ -1102,6 +1287,8 @@ export function useTunerAgent() {
     setTuning,
     gymTuning,
     setGymTuning,
+    miscTuning,
+    setMiscTuning,
     stations,
     walkToPoint,
   };

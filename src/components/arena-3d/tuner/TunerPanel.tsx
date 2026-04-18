@@ -6,6 +6,7 @@ import type {
   Station,
   TuningParams,
   GymTuningParams,
+  MiscTuningParams,
 } from "./TunerScene";
 
 interface TunerPanelProps {
@@ -17,6 +18,8 @@ interface TunerPanelProps {
   setTuning: (updater: (prev: TuningParams) => TuningParams) => void;
   gymTuning: GymTuningParams;
   setGymTuning: (updater: (prev: GymTuningParams) => GymTuningParams) => void;
+  miscTuning: MiscTuningParams;
+  setMiscTuning: (updater: (prev: MiscTuningParams) => MiscTuningParams) => void;
   onGoto: (idx: number | null) => void;
   onReset: () => void;
   agentRef: React.RefObject<RenderAgentState[]>;
@@ -83,6 +86,8 @@ export default function TunerPanel({
   setTuning,
   gymTuning,
   setGymTuning,
+  miscTuning,
+  setMiscTuning,
   onGoto,
   onReset,
   agentRef,
@@ -96,6 +101,9 @@ export default function TunerPanel({
   const setGymField = (key: keyof GymTuningParams, value: number) => {
     setGymTuning((prev) => ({ ...prev, [key]: value }));
   };
+  const setMiscField = (key: keyof MiscTuningParams, value: number) => {
+    setMiscTuning((prev) => ({ ...prev, [key]: value }));
+  };
 
   return (
     <div className="flex flex-col gap-3 p-4 text-sm font-mono bg-gray-50 rounded-lg min-w-[340px] max-w-[360px] border border-gray-200 max-h-[700px] overflow-y-auto">
@@ -104,7 +112,7 @@ export default function TunerPanel({
           Cohort
         </p>
         <div className="flex gap-2">
-          {(["seats", "gym", "arena"] as Cohort[]).map((c) => (
+          {(["seats", "gym", "misc", "arena"] as Cohort[]).map((c) => (
             <button
               key={c}
               onClick={() => setCohort(c)}
@@ -192,6 +200,54 @@ export default function TunerPanel({
               <Slider label="rotation" value={tuning.beanbagRotDeg} min={0} max={360} step={1} onChange={(v) => setSeatsField("beanbagRotDeg", v)} suffix="°" />
               <Slider label="sit back" value={tuning.beanbagSitBack} min={-0.5} max={1.5} step={0.01} onChange={(v) => setSeatsField("beanbagSitBack", v)} />
               <Slider label="sink depth" value={tuning.beanbagSinkDepth} min={-5} max={20} step={0.1} onChange={(v) => setSeatsField("beanbagSinkDepth", v)} />
+            </div>
+          </div>
+        </div>
+      ) : cohort === "misc" ? (
+        <div className="border-t border-gray-200 pt-3">
+          <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
+            Tuning (misc)
+          </p>
+          <div className="flex flex-col gap-3">
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Coffee machine</p>
+              <Slider label="rotation" value={miscTuning.coffeeMachineRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("coffeeMachineRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={miscTuning.coffeeMachineDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("coffeeMachineDist", v)} />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Phone booth</p>
+              <Slider label="rotation" value={miscTuning.phoneBoothRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("phoneBoothRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={miscTuning.phoneBoothDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("phoneBoothDist", v)} />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Fridge</p>
+              <Slider label="rotation" value={miscTuning.fridgeRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("fridgeRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={miscTuning.fridgeDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("fridgeDist", v)} />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Vending</p>
+              <Slider label="rotation" value={miscTuning.vendingRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("vendingRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={miscTuning.vendingDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("vendingDist", v)} />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Water dispenser</p>
+              <Slider label="rotation" value={miscTuning.waterDispenserRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("waterDispenserRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={miscTuning.waterDispenserDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("waterDispenserDist", v)} />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Round table</p>
+              <Slider label="rotation" value={miscTuning.roundTableRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("roundTableRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={miscTuning.roundTableDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("roundTableDist", v)} />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Ping pong</p>
+              <Slider label="rotation" value={miscTuning.pingPongRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("pingPongRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={miscTuning.pingPongDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("pingPongDist", v)} />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Printer station</p>
+              <Slider label="rotation" value={miscTuning.printerStationRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("printerStationRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={miscTuning.printerStationDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("printerStationDist", v)} />
             </div>
           </div>
         </div>

@@ -15,6 +15,8 @@ export default function ArenaTuner() {
     setTuning,
     gymTuning,
     setGymTuning,
+    miscTuning,
+    setMiscTuning,
     stations,
     walkToPoint,
   } = useTunerAgent();
@@ -27,6 +29,7 @@ export default function ArenaTuner() {
           stationIdx={stationIdx}
           tuning={tuning}
           gymTuning={gymTuning}
+          miscTuning={miscTuning}
           agentRef={agentRef}
           onFloorClick={cohort === "arena" ? walkToPoint : undefined}
         />
@@ -40,6 +43,8 @@ export default function ArenaTuner() {
         setTuning={setTuning}
         gymTuning={gymTuning}
         setGymTuning={setGymTuning}
+        miscTuning={miscTuning}
+        setMiscTuning={setMiscTuning}
         onGoto={sendToStation}
         onReset={reset}
         agentRef={agentRef}
