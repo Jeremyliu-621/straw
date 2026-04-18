@@ -121,15 +121,15 @@ const PRINTER_STATION: FurnitureItem[] = [
 const CLUSTER_B_STATIONS: DeskStation[] = [...makeDeskPod({ startIndex: 12, x: 580, y: 460 })];
 
 // Round-table nook. Table top-left at (300, 500), r=60 → center (360, 560).
-// 6 chairs at radius 85 around the table, each facing inward.
+// 6 chairs at radius 105 around the table, each facing inward.
 const ROUND_TABLE_NOOK: FurnitureItem[] = [
   { type: "round_table", x: 300, y: 500, r: 60, _uid: uid("table") },
-  { type: "chair", x: 348, y: 633, facing: 180, _uid: uid("chair") },
-  { type: "chair", x: 422, y: 591, facing: 240, _uid: uid("chair") },
-  { type: "chair", x: 422, y: 506, facing: 300, _uid: uid("chair") },
-  { type: "chair", x: 348, y: 463, facing: 0, _uid: uid("chair") },
-  { type: "chair", x: 274, y: 506, facing: 60, _uid: uid("chair") },
-  { type: "chair", x: 274, y: 591, facing: 120, _uid: uid("chair") },
+  { type: "chair", x: 348, y: 653, facing: 180, _uid: uid("chair") },
+  { type: "chair", x: 439, y: 601, facing: 240, _uid: uid("chair") },
+  { type: "chair", x: 439, y: 496, facing: 300, _uid: uid("chair") },
+  { type: "chair", x: 348, y: 443, facing: 0, _uid: uid("chair") },
+  { type: "chair", x: 257, y: 496, facing: 60, _uid: uid("chair") },
+  { type: "chair", x: 257, y: 601, facing: 120, _uid: uid("chair") },
 ];
 
 // ── Standing-desk island ─────────────────────────────────────────────────
