@@ -21,6 +21,8 @@ export default function ArenaTuner() {
     setShowPaths,
     showNav,
     setShowNav,
+    meshFix,
+    setMeshFix,
     ambientByAgent,
     setAmbientForAgent,
     stations,
@@ -39,6 +41,7 @@ export default function ArenaTuner() {
           agentRef={agentRef}
           showPaths={showPaths}
           showNav={showNav}
+          meshFix={meshFix}
           onFloorClick={cohort === "arena" ? walkToPoint : undefined}
         />
       </div>
@@ -57,6 +60,8 @@ export default function ArenaTuner() {
         setShowPaths={setShowPaths}
         showNav={showNav}
         setShowNav={setShowNav}
+        meshFix={meshFix}
+        setMeshFix={setMeshFix}
         ambientByAgent={ambientByAgent}
         setAmbientForAgent={setAmbientForAgent}
         onGoto={sendToStation}
