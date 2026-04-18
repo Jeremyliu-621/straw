@@ -28,10 +28,12 @@ function wall(x: number, y: number, w: number, h: number): FurnitureItem {
 }
 
 const INTERIOR_WALLS: FurnitureItem[] = [
-  // Server room (top-left, 0..260 x 0..220). Glass wall on east side with doorway.
-  wall(252, 0, WALL_THICK, 120),
-  wall(252, 180, WALL_THICK, 45),
-  wall(0, 220, 260, WALL_THICK),
+  // Server room (top-left, 0..260 x 0..220). East wall is solid now; the
+  // old y=120..180 east doorway was closed off. New entrance is on the
+  // south wall facing the main floor (CLUSTER_A desks).
+  wall(252, 0, WALL_THICK, 225),           // full east wall
+  wall(0, 220, 90, WALL_THICK),            // south wall, left stub
+  wall(170, 220, 90, WALL_THICK),          // south wall, right stub (door gap 90..170)
 
   // Meeting room (top-center, 280..530 x 0..220). Doorway on south wall at x=380..430.
   wall(280, 0, WALL_THICK, 220),
