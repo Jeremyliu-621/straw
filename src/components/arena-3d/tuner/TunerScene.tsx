@@ -11,6 +11,7 @@ import { SCALE } from "../core/constants";
 import { toWorld } from "../core/geometry";
 import FurnitureModel, { FURNITURE_GLB } from "../objects/FurnitureModel";
 import ProceduralFurniture, { PROCEDURAL_TYPES } from "../objects/ProceduralFurniture";
+import InteriorWall from "../objects/InteriorWall";
 import AgentCharacter from "../objects/AgentCharacter";
 import type { RenderAgentState } from "../useArenaGameLoop";
 import type { FurnitureItem } from "../core/types";
@@ -906,6 +907,9 @@ function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
     <group position={[pivotWx, 0, pivotWz]} rotation={[0, rotRad, 0]}>
       <group position={[-pivotWx, 0, -pivotWz]}>
         {cluster.items.map((item) => {
+          if (item.type === "wall") {
+            return <InteriorWall key={item._uid} item={item} />;
+          }
           if (PROCEDURAL_TYPES.has(item.type)) {
             return <ProceduralFurniture key={item._uid} item={item} />;
           }
@@ -1144,6 +1148,9 @@ export default function TunerScene({
         <GridLines large={large} />
 
         {items.map((item) => {
+          if (item.type === "wall") {
+            return <InteriorWall key={item._uid} item={item} />;
+          }
           if (PROCEDURAL_TYPES.has(item.type)) {
             return <ProceduralFurniture key={item._uid} item={item} />;
           }
