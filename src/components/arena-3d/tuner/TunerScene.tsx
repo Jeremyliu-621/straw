@@ -1540,7 +1540,9 @@ export function useTunerAgent() {
 
   // Ambient timer: every 500ms, check each agent; if ambient is on and the
   // agent is settled (not walking) and its dwell window has elapsed, pick a
-  // new random station (not the one it's currently at) and send it there.
+  // new random station and send it there. Excludes the agent's current
+  // station AND the other agent's current / in-transit station so the two
+  // never converge on the same spot.
   useEffect(() => {
     const anyOn = ambientByAgent.some(Boolean);
     if (!anyOn) return;
@@ -1553,12 +1555,15 @@ export function useTunerAgent() {
         if (!agent) continue;
         if (agent.state === "walking") continue;
         if (now < ambientNextAtRef.current[i]) continue;
-        const currentIdx = stationIdxByAgentRef.current[i];
-        // Candidates = all stations except the agent's current one.
-        let pick: number;
-        do {
-          pick = Math.floor(Math.random() * stations.length);
-        } while (pick === currentIdx);
+        const selfIdx = stationIdxByAgentRef.current[i];
+        const otherIdx = stationIdxByAgentRef.current[i === 0 ? 1 : 0];
+        const candidates: number[] = [];
+        for (let s = 0; s < stations.length; s++) {
+          if (s === selfIdx || s === otherIdx) continue;
+          candidates.push(s);
+        }
+        if (candidates.length === 0) continue;
+        const pick = candidates[Math.floor(Math.random() * candidates.length)];
         sendToStation(i, pick);
         // Dwell 6–12s at the new station before the next hop.
         ambientNextAtRef.current[i] = now + 6000 + Math.random() * 6000;
