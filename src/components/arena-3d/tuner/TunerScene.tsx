@@ -146,7 +146,7 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
   pingPongRotDeg: 0,
   // 110 = half-long + 20 margin for a 180x100 table (matches main arena).
   pingPongDist: 110,
-  pingPongArcHeight: 0.18,
+  pingPongArcHeight: 1,
   printerStationRotDeg: 0,
   printerStationDist: 47,
 };

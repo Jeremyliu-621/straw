@@ -66,10 +66,18 @@ export function buildNavGrid(
       const sin = Math.sin(rotation);
       const worldDx = dx * cos + dy * sin;
       const worldDy = -dx * sin + dy * cos;
-      const cx = item.x + width / 2 + worldDx;
-      const cy = item.y + height / 2 + worldDy;
+      // padY is ONE-SIDED along the local +y axis: shrinking padY trims
+      // the far edge of the rect (the side away from the item's "front")
+      // and keeps the near edge at width/2. padX stays symmetric on both
+      // sides. Implemented by shifting the OBB center by padY/2 in local
+      // +y and giving the rect half-height = height/2 + padY/2.
+      const halfShiftLocalY = padY / 2;
+      const padShiftWorldX = halfShiftLocalY * sin;
+      const padShiftWorldY = halfShiftLocalY * cos;
+      const cx = item.x + width / 2 + worldDx + padShiftWorldX;
+      const cy = item.y + height / 2 + worldDy + padShiftWorldY;
       const hw = width / 2 + padX;
-      const hh = height / 2 + padY;
+      const hh = height / 2 + padY / 2;
       // AABB of the rotated rect — cell-loop bounds.
       const absCos = Math.abs(cos);
       const absSin = Math.abs(sin);
