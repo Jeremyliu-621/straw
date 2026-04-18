@@ -102,6 +102,45 @@ export const getItemBaseSize = (item: FurnitureItem) => {
   };
 };
 
+/**
+ * Visual scale multiplier per furniture type — must stay in sync with
+ * FURNITURE_SCALE in objects/FurnitureModel.tsx. The GLB mesh renders at
+ * item_size × FURNITURE_SCALE, so the nav grid needs to know this or it
+ * blocks a too-small area and agents path through visually-rendered bodies.
+ *
+ * Only listed here for types whose visual scale > 1.0 in either axis. Types
+ * not listed implicitly use [1, 1].
+ */
+export const FURNITURE_VISUAL_SCALE: Record<string, [number, number]> = {
+  desk_cubicle: [1.5, 1.5],
+  standing_desk: [1.5, 1.5],
+  executive_desk: [1.8, 1.8],
+  chair: [1.2, 1.2],
+  round_table: [3.2, 3.2],
+  couch: [1.8, 1.8],
+  couch_v: [1.4, 1.4],
+  bookshelf: [1.5, 1.5],
+  plant: [1.2, 1.2],
+  table_rect: [1.4, 1.0],
+  fridge: [1.0, 1.4],
+  whiteboard: [0.6, 0.3],
+  cabinet: [2.6, 1.0],
+  computer: [1.1, 1.1],
+  lamp: [1.2, 1.2],
+  vending: [0.9, 0.9],
+};
+
+/**
+ * Same width/height as getItemBaseSize, but scaled by the visual multiplier
+ * so the nav grid blocks the area the mesh actually occupies on the floor.
+ */
+export const getItemNavSize = (item: FurnitureItem) => {
+  const base = getItemBaseSize(item);
+  const typeKey = resolveItemTypeKey(item);
+  const [sx, sy] = FURNITURE_VISUAL_SCALE[typeKey] ?? [1, 1];
+  return { width: base.width * sx, height: base.height * sy };
+};
+
 export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPadding?: number }> = {
   wall:            { blocksNavigation: true, navPadding: 0 },
   door:            { blocksNavigation: false },
@@ -184,6 +223,31 @@ export const getItemBounds = (item: FurnitureItem) => {
     h: boundsHeight,
     width,
     height,
+  };
+};
+
+/**
+ * Same as getItemBounds but uses the *visual* (scaled) size so the nav grid
+ * blocks the area the rendered mesh actually occupies. Used by buildNavGrid.
+ */
+export const getItemNavBounds = (item: FurnitureItem) => {
+  const { width, height } = getItemNavSize(item);
+  const rotation = getItemRotationRadians(item);
+  const absCos = Math.abs(Math.cos(rotation));
+  const absSin = Math.abs(Math.sin(rotation));
+  const boundsWidth = width * absCos + height * absSin;
+  const boundsHeight = width * absSin + height * absCos;
+  // Center around the original (unscaled) pivot so the nav grid aligns with
+  // where the mesh actually renders — FurnitureModel pivots on item.x + base/2,
+  // not scaled/2.
+  const base = getItemBaseSize(item);
+  const centerX = item.x + base.width / 2;
+  const centerY = item.y + base.height / 2;
+  return {
+    x: centerX - boundsWidth / 2,
+    y: centerY - boundsHeight / 2,
+    w: boundsWidth,
+    h: boundsHeight,
   };
 };
 
