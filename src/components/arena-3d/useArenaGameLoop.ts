@@ -54,11 +54,20 @@ export interface RenderAgentState {
   gymUntil?: number;
   /** Which workout animation variant to play */
   workoutStyle?: WorkoutStyle;
+
+  // ── Deadlock recovery ──────────────────────────────────────────────
+  /** Consecutive frames a walking agent has made <STUCK_PROGRESS_MIN_PX of progress. */
+  stuckFrames?: number;
 }
 
 const WALK_SPEED = 0.3;
 const SEPARATION_STRENGTH = 3;
 const AGENT_RADIUS = 20;
+
+// Deadlock recovery: if a walking agent makes no progress for this long, nudge sideways.
+const STUCK_THRESHOLD_FRAMES = 60;   // ~1s at 60fps
+const STUCK_PROGRESS_MIN_PX = 0.1;   // per-frame delta considered "not stuck"
+const STUCK_NUDGE_DIST_PX = 30;      // perpendicular detour distance
 
 // Behavior tuning
 const SOCIAL_PREFERENCE = 0.4;           // chance to pick a social point over a roam point
@@ -283,7 +292,7 @@ function applyEventsToAgents(
 function applyDevActionsToAgents(
   current: RenderAgentState[],
   actions: DevAction[],
-  planPath: (fx: number, fy: number, tx: number, ty: number) => { x: number; y: number }[],
+  planPathForce: (fx: number, fy: number, tx: number, ty: number) => { x: number; y: number }[],
   now: number
 ): RenderAgentState[] {
   if (actions.length === 0) return current;
@@ -340,7 +349,7 @@ function applyDevActionsToAgents(
         if (g) {
           agent.targetX = g.x;
           agent.targetY = g.y;
-          agent.path = planPath(agent.x, agent.y, g.x, g.y);
+          agent.path = planPathForce(agent.x, agent.y, g.x, g.y);
           agent.state = "walking";
           agent.workoutStyle = g.style;
           // gymUntil will be set on arrival by the tick loop's arrival handler.
@@ -355,7 +364,7 @@ function applyDevActionsToAgents(
         if (couch) {
           agent.targetX = couch.x;
           agent.targetY = couch.y;
-          agent.path = planPath(agent.x, agent.y, couch.x, couch.y);
+          agent.path = planPathForce(agent.x, agent.y, couch.x, couch.y);
           agent.state = "walking";
           agent.socialSpotType = couch.type;
           agent.danceUntil = undefined;
@@ -383,7 +392,7 @@ function applyDevActionsToAgents(
         if (couch) {
           agent.targetX = couch.x;
           agent.targetY = couch.y;
-          agent.path = planPath(agent.x, agent.y, couch.x, couch.y);
+          agent.path = planPathForce(agent.x, agent.y, couch.x, couch.y);
           agent.state = "walking";
           agent.socialSpotType = couch.type;
         }
@@ -439,6 +448,22 @@ export function useArenaGameLoop(
         if (altPath.length > 0) return altPath;
       }
       return [];
+    },
+    [getNavGrid]
+  );
+
+  /**
+   * Dev-only path planner: forces the agent toward the exact target. If A*
+   * fails, returns a direct-line single-waypoint (may clip through walls
+   * briefly, but guarantees the agent actually arrives at the requested
+   * destination — desired for manual test triggers).
+   */
+  const planPathDevForce = useCallback(
+    (fromX: number, fromY: number, toX: number, toY: number) => {
+      const grid = getNavGrid();
+      const path = astar(fromX, fromY, toX, toY, grid);
+      if (path.length > 0) return path;
+      return [{ x: toX, y: toY }];
     },
     [getNavGrid]
   );
@@ -542,12 +567,16 @@ export function useArenaGameLoop(
       renderAgentsRef.current = applyDevActionsToAgents(
         renderAgentsRef.current,
         pending,
-        planPath,
+        planPathDevForce,
         now
       );
     }
 
     const currentAgents = renderAgentsRef.current;
+
+    // Capture pre-movement positions so we can measure per-tick progress
+    // AFTER separation — needed for deadlock detection.
+    const prevPositions = currentAgents.map((a) => ({ x: a.x, y: a.y }));
 
     const moved = currentAgents.map((agent) => {
       // Active dance hold → frozen, dancing in place
@@ -795,7 +824,10 @@ export function useArenaGameLoop(
       };
     });
 
-    // Agent separation — prevent overlapping. Sitting agents are anchored.
+    // Agent separation — prevent overlapping. Asymmetric yielding: only the
+    // lower-priority agent is pushed, so head-on encounters break deterministically
+    // instead of oscillating. Priority: sitting agents are anchored (win);
+    // otherwise lexicographic id tiebreak.
     for (let i = 0; i < moved.length; i++) {
       for (let j = i + 1; j < moved.length; j++) {
         const a = moved[i];
@@ -805,19 +837,57 @@ export function useArenaGameLoop(
         const sdy = a.y - b.y;
         const sDist = Math.hypot(sdx, sdy);
         if (sDist < AGENT_RADIUS * 2 && sDist > 0) {
-          const push = ((AGENT_RADIUS * 2 - sDist) / sDist) * SEPARATION_STRENGTH * 0.5;
-          if (a.state === "walking") {
-            moved[i] = { ...a, x: a.x + sdx * push, y: a.y + sdy * push };
-          }
-          if (b.state === "walking") {
+          const push = ((AGENT_RADIUS * 2 - sDist) / sDist) * SEPARATION_STRENGTH;
+          const aAnchored = a.state === "sitting";
+          const bAnchored = b.state === "sitting";
+          let aWins: boolean;
+          if (aAnchored && !bAnchored) aWins = true;
+          else if (bAnchored && !aAnchored) aWins = false;
+          else aWins = a.id < b.id;
+
+          if (aWins && b.state === "walking") {
             moved[j] = { ...b, x: b.x - sdx * push, y: b.y - sdy * push };
+          } else if (!aWins && a.state === "walking") {
+            moved[i] = { ...a, x: a.x + sdx * push, y: a.y + sdy * push };
           }
         }
       }
     }
 
+    // Deadlock recovery — if a walking agent made no net progress this tick
+    // (pushed back by a higher-priority agent, or wedged against geometry),
+    // count stuck frames. After STUCK_THRESHOLD_FRAMES, insert a perpendicular
+    // detour waypoint and re-plan to the original target.
+    for (let i = 0; i < moved.length; i++) {
+      const a = moved[i];
+      if (a.state !== "walking") {
+        if ((a.stuckFrames ?? 0) !== 0) moved[i] = { ...a, stuckFrames: 0 };
+        continue;
+      }
+      const p = prevPositions[i];
+      const progress = Math.hypot(a.x - p.x, a.y - p.y);
+      if (progress >= STUCK_PROGRESS_MIN_PX) {
+        if ((a.stuckFrames ?? 0) !== 0) moved[i] = { ...a, stuckFrames: 0 };
+        continue;
+      }
+      const nextStuck = (a.stuckFrames ?? 0) + 1;
+      if (nextStuck < STUCK_THRESHOLD_FRAMES) {
+        moved[i] = { ...a, stuckFrames: nextStuck };
+        continue;
+      }
+      // Nudge: perpendicular to current facing, random side.
+      const side = Math.random() < 0.5 ? 1 : -1;
+      const perpX = side * Math.cos(a.facing);
+      const perpY = -side * Math.sin(a.facing);
+      const nudgeX = a.x + perpX * STUCK_NUDGE_DIST_PX;
+      const nudgeY = a.y + perpY * STUCK_NUDGE_DIST_PX;
+      const detour = planPath(a.x, a.y, nudgeX, nudgeY);
+      const resume = planPath(nudgeX, nudgeY, a.targetX, a.targetY);
+      moved[i] = { ...a, stuckFrames: 0, path: [...detour, ...resume] };
+    }
+
     renderAgentsRef.current = moved;
-  }, [planPath, eventBufferRef, devActionQueueRef]);
+  }, [planPath, planPathDevForce, eventBufferRef, devActionQueueRef]);
 
   return { renderAgentsRef, tick };
 }
