@@ -91,7 +91,7 @@ export const getItemBaseSize = (item: FurnitureItem) => {
 };
 
 export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPadding?: number }> = {
-  wall:            { blocksNavigation: true  },
+  wall:            { blocksNavigation: true, navPadding: 0 },
   door:            { blocksNavigation: false },
   chair:           { blocksNavigation: false },
   couch:           { blocksNavigation: true  },
@@ -124,8 +124,8 @@ export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPaddi
   mug:             { blocksNavigation: false },
   // Extended types from restructured layout
   server_rack:     { blocksNavigation: true  },
-  glass_wall:      { blocksNavigation: true  },
-  printer_station: { blocksNavigation: true  },
+  glass_wall:      { blocksNavigation: true, navPadding: 0 },
+  printer_station: { blocksNavigation: true, navPadding: 2 },
   rug:             { blocksNavigation: false }, // floor decal
   cable_tray:      { blocksNavigation: false }, // overhead
   pendant_light:   { blocksNavigation: false }, // ceiling
