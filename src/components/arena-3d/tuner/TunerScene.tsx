@@ -1036,9 +1036,13 @@ function TickLoop({
   stations: Station[];
   stationIdx: number | null;
 }) {
-  useFrame(() => {
+  useFrame((_, delta) => {
     const agent = agentRef.current[0];
     if (!agent) return;
+
+    // Delta-time-scaled walk so speed is framerate-independent. walkSpeed is
+    // tuned for 60fps, so multiply by (delta * 60) to normalize.
+    const speedScale = Math.min(delta * 60, 6); // clamp at 6× to avoid jumps
 
     const activeStation = stationIdx !== null ? stations[stationIdx] : null;
 
@@ -1061,7 +1065,7 @@ function TickLoop({
       const dx = wp.x - agent.x;
       const dy = wp.y - agent.y;
       const dist = Math.hypot(dx, dy);
-      const speed = agent.walkSpeed;
+      const speed = agent.walkSpeed * speedScale;
 
       if (dist > speed) {
         agent.x += (dx / dist) * speed;
