@@ -479,13 +479,16 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         const [defaultW, defaultH] = ITEM_FOOTPRINT.beanbag ?? [40, 40];
         const w = item.w ?? defaultW;
         const h = item.h ?? defaultH;
-        // Beanbags have no "front" — leave facing undefined so the agent keeps
-        // whatever direction they walked in from (feels like flopping down).
+        // Propagate item.facing so the agent's pose rotation matches the
+        // beanbag mesh rotation. Without this, a beanbag authored with
+        // facing:90 would render east-facing while the agent sits south —
+        // sit-back + sink-depth offsets look misaligned against the mesh.
         points.push({
           x: Math.round(item.x + w / 2),
           y: Math.round(item.y + h / 2),
           type: t,
           weight: 2,
+          facing: ((item.facing ?? 0) * Math.PI) / 180,
         });
         break;
       }

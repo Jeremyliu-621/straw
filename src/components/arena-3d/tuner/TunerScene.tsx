@@ -1186,34 +1186,6 @@ function TickLoop({
         agent.facing = activeStation.facing;
       }
 
-      // Proximity snap: once the agent is on the LAST waypoint AND close
-      // to the station's canonical stand point, teleport + sit. This only
-      // fires near the end of the walk so clicking a different station
-      // while the agent is far away still triggers a proper walk. Handles
-      // A*'s findFree deflection when the stand point sits inside an
-      // obstacle's nav padding.
-      if (
-        activeStation &&
-        agent.state === "walking" &&
-        agent.path.length <= 1 &&
-        Math.hypot(activeStation.standX - agent.x, activeStation.standY - agent.y) < 30
-      ) {
-        agent.x = activeStation.standX;
-        agent.y = activeStation.standY;
-        agent.path = [];
-        agent.state = activeStation.state;
-        agent.socialSpotType = activeStation.socialSpotType;
-        agent.workoutStyle = activeStation.workoutStyle;
-        agent.sitBackOverride = activeStation.sitBack;
-        agent.sinkDepthOverride = activeStation.sinkDepth;
-        agent.facing = activeStation.facing;
-        if (activeStation.state === "sitting" && !activeStation.socialSpotType) {
-          agent.status = "working";
-        }
-        agent.frame += 1;
-        continue;
-      }
-
       if (agent.state === "walking" && agent.path.length > 0) {
         const wp = agent.path[0];
         const dx = wp.x - agent.x;
@@ -1232,13 +1204,6 @@ function TickLoop({
           } else {
             agent.path = [];
             if (activeStation) {
-              // Last-mile snap: A* may have routed to a nearby free cell if
-              // the exact stand point sat inside an obstacle's nav padding.
-              // Snap the agent to the station's canonical (x, y) so the
-              // sit-back + sink-depth offsets are applied from the right
-              // anchor every time.
-              agent.x = activeStation.standX;
-              agent.y = activeStation.standY;
               agent.state = activeStation.state;
               agent.socialSpotType = activeStation.socialSpotType;
               agent.workoutStyle = activeStation.workoutStyle;
