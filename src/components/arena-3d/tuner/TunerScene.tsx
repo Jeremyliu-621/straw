@@ -662,9 +662,9 @@ export function buildMiscStations(tuning: MiscTuningParams): {
   clusters: ClusterGroup[];
   stations: Station[];
 } {
-  // Ping pong: two slots — one at each end of the long axis, facing each
-  // other. `pingPongDist` slides both slots symmetrically away from the
-  // table center along its long axis.
+  // Ping pong: two slots at the ends of the long axis, facing each other.
+  // Distance = half-long + 20 margin (same as main arena SOCIAL_POINTS).
+  // Tuner default table is 100x60 → dist 70, which matches the old manual value.
   const ppCfg = MISC_CONFIGS.ping_pong;
   const [ppDefW, ppDefH] = ITEM_FOOTPRINT[ppCfg.type] ?? [100, 60];
   const ppW = ppCfg.w ?? ppDefW;
@@ -681,27 +681,26 @@ export function buildMiscStations(tuning: MiscTuningParams): {
   const ppRotRad = (tuning.pingPongRotDeg * Math.PI) / 180;
   const ppCx = ppCfg.cx + ppW / 2;
   const ppCy = ppCfg.cy + ppH / 2;
-  // Long axis is +x (local). After rotation, long axis direction in world =
-  // (cos(rot), -sin(rot)) in canvas. Slot A = cx + long*dist, slot B = opposite.
-  const longX = Math.cos(ppRotRad);
-  const longY = -Math.sin(ppRotRad);
+  const ppLongIsX = ppW >= ppH;
+  const ppLongX = ppLongIsX ? Math.cos(ppRotRad) : -Math.sin(ppRotRad);
+  const ppLongY = ppLongIsX ? -Math.sin(ppRotRad) : -Math.cos(ppRotRad);
+  // pingPongDist slider acts as an override — dialed-in value of 70 matches
+  // the size-aware formula for a 100x60 table.
   const pingPongSlotA: Station = {
     label: "Ping pong A",
     items: [ppItem],
-    standX: Math.round(ppCx + longX * tuning.pingPongDist),
-    standY: Math.round(ppCy + longY * tuning.pingPongDist),
-    // Face the opposite end (the other player): direction = -long axis.
-    // atan2(dx, dy) convention: facing toward -long means atan2(-longX, -longY).
-    facing: Math.atan2(-longX, -longY),
+    standX: Math.round(ppCx + ppLongX * tuning.pingPongDist),
+    standY: Math.round(ppCy + ppLongY * tuning.pingPongDist),
+    facing: Math.atan2(-ppLongX, -ppLongY),
     state: "standing",
     sitBack: 0,
   };
   const pingPongSlotB: Station = {
     label: "Ping pong B",
     items: [ppItem],
-    standX: Math.round(ppCx - longX * tuning.pingPongDist),
-    standY: Math.round(ppCy - longY * tuning.pingPongDist),
-    facing: Math.atan2(longX, longY),
+    standX: Math.round(ppCx - ppLongX * tuning.pingPongDist),
+    standY: Math.round(ppCy - ppLongY * tuning.pingPongDist),
+    facing: Math.atan2(ppLongX, ppLongY),
     state: "standing",
     sitBack: 0,
   };

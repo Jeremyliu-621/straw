@@ -498,18 +498,25 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
         break;
       }
       case "ping_pong": {
-        // Two players facing each other at the east/west ends of the long
-        // axis. Distance 70 from item center (dialed in via tuner).
+        // Two players at the ends of the long axis, facing each other.
+        // Size-aware distance: half the long dimension + 20 units margin so
+        // agents stand just past the end regardless of table size. Tuner
+        // table (100×60) → dist 70; main-arena LOUNGE_PIT table (180×100)
+        // → dist 110. Formula locked via /arena-tuner misc cohort.
         const [defW, defH] = ITEM_FOOTPRINT.ping_pong ?? [100, 60];
         const w = item.w ?? defW;
         const h = item.h ?? defH;
         const cx = item.x + w / 2;
         const cy = item.y + h / 2;
         const rotRad = ((item.facing ?? 0) * Math.PI) / 180;
-        const longX = Math.cos(rotRad);
-        const longY = -Math.sin(rotRad);
-        const dist = 70;
-        // Slot A (east end, looks west at the other player)
+        // Long axis: the larger of w / h BEFORE rotation. Most ping pong
+        // meshes in the library have long=+x, but this also covers
+        // authored tables where h > w.
+        const longIsX = w >= h;
+        const longLen = longIsX ? w : h;
+        const longX = longIsX ? Math.cos(rotRad) : -Math.sin(rotRad);
+        const longY = longIsX ? -Math.sin(rotRad) : -Math.cos(rotRad);
+        const dist = longLen / 2 + 20;
         points.push({
           x: Math.round(cx + longX * dist),
           y: Math.round(cy + longY * dist),
@@ -517,7 +524,6 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
           weight: 1,
           facing: Math.atan2(-longX, -longY),
         });
-        // Slot B (west end, looks east)
         points.push({
           x: Math.round(cx - longX * dist),
           y: Math.round(cy - longY * dist),
