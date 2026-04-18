@@ -55,15 +55,22 @@ export function buildNavGrid(
       // either w×h or h×w orientation. Avoids the stair-step diagonal that
       // a true OBB produces against a 25-unit axis-aligned cell grid.
       const { width, height } = getItemBaseSize(item);
-      const cx = item.x + width / 2 + dx;
-      const cy = item.y + height / 2 + dy;
-      const hw = width / 2 + padX;
-      const hh = height / 2 + padY;
       const rawRotation = getItemRotationRadians(item);
       const quarterTurn = Math.PI / 2;
       const rotation = Math.round(rawRotation / quarterTurn) * quarterTurn;
       const cos = Math.cos(rotation);
       const sin = Math.sin(rotation);
+      // Interpret (dx, dy) overrides in the item's LOCAL frame so a single
+      // override pair works for the same type at any rotation. Convention
+      // matches geometry.ts/rotatePointAround (canvas y ↔ three.js z):
+      //   worldX = localX·cos + localY·sin
+      //   worldY = −localX·sin + localY·cos
+      const worldDx = dx * cos + dy * sin;
+      const worldDy = -dx * sin + dy * cos;
+      const cx = item.x + width / 2 + worldDx;
+      const cy = item.y + height / 2 + worldDy;
+      const hw = width / 2 + padX;
+      const hh = height / 2 + padY;
       // AABB of the rotated rect — cell-loop bounds.
       const absCos = Math.abs(cos);
       const absSin = Math.abs(sin);
@@ -89,11 +96,21 @@ export function buildNavGrid(
       continue;
     }
 
+    // AABB branch — interpret (dx, dy) in the item's local frame too, so
+    // override values dialed in OBB mode keep their meaning when toggled
+    // back to AABB. Snap to 90° because the bounds rect is axis-aligned.
+    const aabbRotRaw = getItemRotationRadians(item);
+    const aabbQuarter = Math.PI / 2;
+    const aabbRot = Math.round(aabbRotRaw / aabbQuarter) * aabbQuarter;
+    const aabbCos = Math.cos(aabbRot);
+    const aabbSin = Math.sin(aabbRot);
+    const aabbWorldDx = dx * aabbCos + dy * aabbSin;
+    const aabbWorldDy = -dx * aabbSin + dy * aabbCos;
     const bounds = getItemBounds(item);
-    const x1 = bounds.x + dx - padX;
-    const y1 = bounds.y + dy - padY;
-    const x2 = bounds.x + bounds.w + dx + padX;
-    const y2 = bounds.y + bounds.h + dy + padY;
+    const x1 = bounds.x + aabbWorldDx - padX;
+    const y1 = bounds.y + aabbWorldDy - padY;
+    const x2 = bounds.x + bounds.w + aabbWorldDx + padX;
+    const y2 = bounds.y + bounds.h + aabbWorldDy + padY;
     const c1 = Math.max(0, Math.floor(x1 / GRID_CELL));
     const c2 = Math.min(GRID_COLS - 1, Math.floor(x2 / GRID_CELL));
     const r1 = Math.max(0, Math.floor(y1 / GRID_CELL));
