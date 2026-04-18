@@ -352,6 +352,7 @@ export default function TunerPanel({
               <p className="text-[10px] uppercase text-gray-500 mb-1">Ping pong</p>
               <Slider label="rotation" value={miscTuning.pingPongRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("pingPongRotDeg", v)} suffix="°" />
               <Slider label="distance" value={miscTuning.pingPongDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("pingPongDist", v)} />
+              <Slider label="arc height" value={miscTuning.pingPongArcHeight} min={0} max={2} step={0.01} onChange={(v) => setMiscField("pingPongArcHeight", v)} />
             </div>
             <div>
               <p className="text-[10px] uppercase text-gray-500 mb-1">Printer station</p>

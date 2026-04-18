@@ -54,6 +54,13 @@ export interface RenderAgentState {
   gymUntil?: number;
   /** Which workout animation variant to play */
   workoutStyle?: WorkoutStyle;
+  /** Uid of the ping-pong table this agent is paired at (set on arrival). */
+  pingPongTableUid?: string;
+  /** Which side of the table the agent is on. */
+  pingPongSide?: "A" | "B";
+  /** ms timestamp — agent is playing ping-pong until this time. Undefined
+   *  while waiting for an opponent; set once two agents pair up. */
+  pingPongUntil?: number;
   /**
    * Desired facing (radians) when the agent arrives at targetX/Y. Applied on
    * arrival so stations (desk / gym station / couch) can force the agent to

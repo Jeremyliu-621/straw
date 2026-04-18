@@ -126,6 +126,8 @@ export interface MiscTuningParams {
   waterDispenserDist: number;
   pingPongRotDeg: number;
   pingPongDist: number;
+  /** Peak height of the ball's arc over the net, in three.js world units. */
+  pingPongArcHeight: number;
   printerStationRotDeg: number;
   printerStationDist: number;
 }
@@ -144,6 +146,7 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
   pingPongRotDeg: 0,
   // 110 = half-long + 20 margin for a 180x100 table (matches main arena).
   pingPongDist: 110,
+  pingPongArcHeight: 0.18,
   printerStationRotDeg: 0,
   printerStationDist: 47,
 };
@@ -187,6 +190,10 @@ export interface Station {
   sinkDepth?: number;
   /** Only for working_out stations. */
   workoutStyle?: WorkoutStyle;
+  /** Ping-pong stations carry the table uid + which side the agent is on so
+   *  the tick loop can pair two agents at the same table. */
+  pingPongTableUid?: string;
+  pingPongSide?: "A" | "B";
 }
 
 // Kept for reference — no longer used. Clusters now rotate via three.js
@@ -708,6 +715,8 @@ export function buildMiscStations(tuning: MiscTuningParams): {
     facing: Math.atan2(-ppLongX, -ppLongY),
     state: "standing",
     sitBack: 0,
+    pingPongTableUid: ppItem._uid,
+    pingPongSide: "A",
   };
   const pingPongSlotB: Station = {
     label: "Ping pong B",
@@ -717,6 +726,8 @@ export function buildMiscStations(tuning: MiscTuningParams): {
     facing: Math.atan2(ppLongX, ppLongY),
     state: "standing",
     sitBack: 0,
+    pingPongTableUid: ppItem._uid,
+    pingPongSide: "B",
   };
 
   const stations = [
@@ -873,6 +884,14 @@ export function getArenaStations() {
 // the earlier 5× dev-tool multiplier now that the tuner is the surface we're
 // building the real ambience on — agents should move at their final pace.
 const WALK_SPEED = 0.7;
+
+// Ping-pong game length once two agents have paired up at a table.
+const PING_PONG_GAME_MIN_MS = 20_000;
+const PING_PONG_GAME_MAX_MS = 40_000;
+// Ball / paddle geometry, ported from Claw3D sceneRuntime's PingPongBall.
+const PING_PONG_BALL_RADIUS = 0.06;
+const PING_PONG_PADDLE_OFFSET = 18; // canvas units from player → paddle
+const PING_PONG_CYCLE_MS = 1200;    // full out-and-back loop
 
 // Seats / gym / misc cohorts tune poses for one or two subjects at a time;
 // the arena cohort simulates the full office (15 = roughly the main-arena
@@ -1069,6 +1088,149 @@ function PerimeterWalls({ large }: { large?: boolean }) {
         <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
         <meshStandardMaterial color={color} />
       </mesh>
+    </>
+  );
+}
+
+/**
+ * Renders animated ping-pong balls for every paired table. Scans agentsRef
+ * each frame for pairs (same pingPongTableUid, opposite pingPongSide, both
+ * have pingPongUntil > now) and animates one ball per pair using a 3-phase
+ * trajectory borrowed from Claw3D's PingPongBall: paddle → first bounce
+ * (24%) → arc over net (52%) → second bounce → receiver paddle (24%).
+ */
+function PingPongBalls({
+  agentsRef,
+  arcHeight,
+}: {
+  agentsRef: React.RefObject<RenderAgentState[]>;
+  arcHeight: number;
+}) {
+  // We reuse a small pool of meshes — one per potential table. Misc has 1,
+  // arena has 1, future cohorts could have more; 4 is a safe cap.
+  const POOL = 4;
+  const ballRefs = useRef<Array<THREE.Mesh | null>>(
+    Array.from({ length: POOL }, () => null)
+  );
+  const shadowRefs = useRef<Array<THREE.Mesh | null>>(
+    Array.from({ length: POOL }, () => null)
+  );
+
+  useFrame(() => {
+    const now = Date.now();
+    const agents = agentsRef.current ?? [];
+    // Group active players by tableUid.
+    const byTable = new Map<
+      string,
+      { A?: RenderAgentState; B?: RenderAgentState }
+    >();
+    for (const a of agents) {
+      if (
+        a.pingPongTableUid &&
+        a.pingPongSide &&
+        a.pingPongUntil !== undefined &&
+        a.pingPongUntil > now
+      ) {
+        const pair = byTable.get(a.pingPongTableUid) ?? {};
+        pair[a.pingPongSide] = a;
+        byTable.set(a.pingPongTableUid, pair);
+      }
+    }
+
+    // Render each complete pair onto one ball slot.
+    let slot = 0;
+    for (const pair of byTable.values()) {
+      if (slot >= POOL) break;
+      const ball = ballRefs.current[slot];
+      const shadow = shadowRefs.current[slot];
+      if (!ball || !shadow) {
+        slot += 1;
+        continue;
+      }
+      if (!pair.A || !pair.B) {
+        ball.visible = false;
+        shadow.visible = false;
+        slot += 1;
+        continue;
+      }
+      // Paddle positions: PING_PONG_PADDLE_OFFSET canvas units inside each
+      // player's stand point along the table's long axis. We infer axis from
+      // the two players' midpoint → player vector.
+      const midX = (pair.A.x + pair.B.x) / 2;
+      const midY = (pair.A.y + pair.B.y) / 2;
+      const dxA = pair.A.x - midX;
+      const dyA = pair.A.y - midY;
+      const len = Math.hypot(dxA, dyA) || 1;
+      const ux = dxA / len;
+      const uy = dyA / len;
+      const paddleAx = pair.A.x - ux * PING_PONG_PADDLE_OFFSET;
+      const paddleAy = pair.A.y - uy * PING_PONG_PADDLE_OFFSET;
+      const paddleBx = pair.B.x + ux * PING_PONG_PADDLE_OFFSET;
+      const paddleBy = pair.B.y + uy * PING_PONG_PADDLE_OFFSET;
+
+      // 1.2s cycle: 0..0.5 ball travels A→B, 0.5..1 travels B→A.
+      const phase = (now % PING_PONG_CYCLE_MS) / PING_PONG_CYCLE_MS;
+      const half = phase < 0.5 ? phase / 0.5 : (phase - 0.5) / 0.5;
+      const fromX = phase < 0.5 ? paddleAx : paddleBx;
+      const fromY = phase < 0.5 ? paddleAy : paddleBy;
+      const toX = phase < 0.5 ? paddleBx : paddleAx;
+      const toY = phase < 0.5 ? paddleBy : paddleAy;
+      const bx = fromX + (toX - fromX) * half;
+      const by = fromY + (toY - fromY) * half;
+      // Height: two small bounces (before/after net) plus a larger arc over.
+      // local t in [0,1] across the half stroke.
+      const arc = Math.sin(half * Math.PI) * arcHeight; // tunable peak
+      const bounce = Math.abs(Math.sin(half * Math.PI * 3)) * 0.04; // two tiny dips
+      const heightY = 0.38 + arc - bounce;
+
+      const [wx, , wz] = toWorld(bx, by);
+      ball.position.set(wx, heightY, wz);
+      ball.visible = true;
+      shadow.position.set(wx, 0.01, wz);
+      shadow.scale.setScalar(0.5 + (1 - heightY / 0.56) * 0.5);
+      shadow.visible = true;
+
+      slot += 1;
+    }
+    // Hide unused slots.
+    for (; slot < POOL; slot++) {
+      const b = ballRefs.current[slot];
+      const s = shadowRefs.current[slot];
+      if (b) b.visible = false;
+      if (s) s.visible = false;
+    }
+  });
+
+  return (
+    <>
+      {Array.from({ length: POOL }).map((_, i) => (
+        <group key={i}>
+          <mesh
+            ref={(el) => {
+              shadowRefs.current[i] = el;
+            }}
+            visible={false}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            <circleGeometry args={[PING_PONG_BALL_RADIUS * 1.6, 24]} />
+            <meshBasicMaterial color="#09110d" transparent opacity={0.24} />
+          </mesh>
+          <mesh
+            ref={(el) => {
+              ballRefs.current[i] = el;
+            }}
+            visible={false}
+          >
+            <sphereGeometry args={[PING_PONG_BALL_RADIUS, 16, 12]} />
+            <meshStandardMaterial
+              color="#ff8c1a"
+              roughness={0.18}
+              emissive="#ffb347"
+              emissiveIntensity={0.85}
+            />
+          </mesh>
+        </group>
+      ))}
     </>
   );
 }
@@ -1306,6 +1468,20 @@ function TickLoop({
 }) {
   useFrame((_, delta) => {
     const speedScale = Math.min(delta * 60, 6);
+    const now = Date.now();
+
+    // Ping-pong game expiry — sweep BEFORE the per-agent loop so both
+    // partners clear in the same frame. An expired game leaves both players
+    // idle-standing; ambient / user input decides what's next.
+    for (const a of agentRef.current) {
+      if (!a) continue;
+      if (a.pingPongUntil !== undefined && a.pingPongUntil <= now) {
+        a.pingPongTableUid = undefined;
+        a.pingPongSide = undefined;
+        a.pingPongUntil = undefined;
+      }
+    }
+
     for (let agentIdx = 0; agentIdx < agentRef.current.length; agentIdx++) {
       const agent = agentRef.current[agentIdx];
       if (!agent) continue;
@@ -1350,6 +1526,28 @@ function TickLoop({
               agent.facing = activeStation.facing;
               if (activeStation.state === "sitting" && !activeStation.socialSpotType) {
                 agent.status = "working";
+              }
+              // Ping-pong arrival: claim this side of the table. If the
+              // other side is already waiting, start the game on both.
+              if (
+                activeStation.pingPongTableUid &&
+                activeStation.pingPongSide
+              ) {
+                agent.pingPongTableUid = activeStation.pingPongTableUid;
+                agent.pingPongSide = activeStation.pingPongSide;
+                const partner = agentRef.current.find(
+                  (a) =>
+                    a !== agent &&
+                    a.pingPongTableUid === activeStation.pingPongTableUid &&
+                    a.pingPongSide !== activeStation.pingPongSide
+                );
+                if (partner) {
+                  const duration = PING_PONG_GAME_MIN_MS +
+                    Math.random() *
+                      (PING_PONG_GAME_MAX_MS - PING_PONG_GAME_MIN_MS);
+                  agent.pingPongUntil = now + duration;
+                  partner.pingPongUntil = now + duration;
+                }
               }
             } else {
               agent.state = "standing";
@@ -1439,6 +1637,11 @@ export default function TunerScene({
             agentsRef={agentRef}
           />
         ))}
+
+        <PingPongBalls
+          agentsRef={agentRef}
+          arcHeight={miscTuning.pingPongArcHeight}
+        />
 
         <DebugMarkers
           stations={stations}
@@ -1549,6 +1752,9 @@ export function useTunerAgent() {
         agent.sitBackOverride = undefined;
         agent.sinkDepthOverride = undefined;
         agent.workoutStyle = undefined;
+        agent.pingPongTableUid = undefined;
+        agent.pingPongSide = undefined;
+        agent.pingPongUntil = undefined;
         agent.status = "idle";
         setStationIdxByAgent((prev) => {
           const next = [...prev];
@@ -1574,6 +1780,11 @@ export function useTunerAgent() {
       agent.sitBackOverride = undefined;
       agent.sinkDepthOverride = undefined;
       agent.workoutStyle = undefined;
+      // Clear any prior ping-pong pairing — they'll be re-set on arrival if
+      // the new station is itself a ping-pong slot.
+      agent.pingPongTableUid = undefined;
+      agent.pingPongSide = undefined;
+      agent.pingPongUntil = undefined;
       agent.status = "idle";
       setStationIdxByAgent((prev) => {
         const next = [...prev];
