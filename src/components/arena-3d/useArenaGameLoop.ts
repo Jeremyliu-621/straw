@@ -54,6 +54,13 @@ export interface RenderAgentState {
   gymUntil?: number;
   /** Which workout animation variant to play */
   workoutStyle?: WorkoutStyle;
+  /**
+   * Desired facing (radians) when the agent arrives at targetX/Y. Applied on
+   * arrival so stations (desk / gym station / couch) can force the agent to
+   * face the right direction regardless of which way they walked in from.
+   * Cleared on arrival.
+   */
+  targetFacing?: number;
 
   // ── Deadlock recovery ──────────────────────────────────────────────
   /** Consecutive frames a walking agent has made <STUCK_PROGRESS_MIN_PX of progress. */
@@ -241,6 +248,7 @@ function applyEventsToAgents(
           agent.path = planPath(agent.x, agent.y, couch.x, couch.y);
           agent.state = "walking";
           agent.socialSpotType = couch.type;
+          agent.targetFacing = couch.facing;
           // Set couchUntil when they arrive via the arrival handler;
           // here we just set the destination.
         }
@@ -372,6 +380,7 @@ function applyDevActionsToAgents(
           agent.path = planPathForce(agent.x, agent.y, g.x, g.y);
           agent.state = "walking";
           agent.workoutStyle = g.style;
+          agent.targetFacing = g.facing;
           // gymUntil will be set on arrival by the tick loop's arrival handler.
           agent.couchUntil = undefined;
           agent.danceUntil = undefined;
@@ -387,6 +396,7 @@ function applyDevActionsToAgents(
           agent.path = planPathForce(agent.x, agent.y, couch.x, couch.y);
           agent.state = "walking";
           agent.socialSpotType = couch.type;
+          agent.targetFacing = couch.facing;
           agent.danceUntil = undefined;
           agent.talkUntil = undefined;
         }
@@ -415,6 +425,7 @@ function applyDevActionsToAgents(
           agent.path = planPathForce(agent.x, agent.y, couch.x, couch.y);
           agent.state = "walking";
           agent.socialSpotType = couch.type;
+          agent.targetFacing = couch.facing;
         }
         agent.emojiUntil = now + EMOJI_HOLD_MS;
         agent.emojiIcon = "❌";
@@ -512,9 +523,16 @@ export function useArenaGameLoop(
               lastSeenAt: now,
               couchUntil: undefined,
               socialSpotType: undefined,
+              targetFacing: deskPos.facing,
             });
           } else if (agent.status === "idle") {
             const dest = pickIdleDestination(next.concat(renderAgentsRef.current));
+            const targetFacing =
+              dest.kind === "gym"
+                ? dest.point.facing
+                : dest.kind === "social"
+                  ? dest.point.facing
+                  : undefined;
             next.push({
               ...existing,
               ...agent,
@@ -526,6 +544,7 @@ export function useArenaGameLoop(
               couchUntil: undefined,
               socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
               workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
+              targetFacing,
             });
           } else {
             next.push({
@@ -620,6 +639,12 @@ export function useArenaGameLoop(
           state: "walking" as const,
           socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
           workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
+          targetFacing:
+            dest.kind === "gym"
+              ? dest.point.facing
+              : dest.kind === "social"
+                ? dest.point.facing
+                : undefined,
           frame: agent.frame + 1,
         };
       }
@@ -639,12 +664,18 @@ export function useArenaGameLoop(
         return {
           ...agent,
           gymUntil: undefined,
-          workoutStyle: undefined,
+          workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
           targetX: dest.point.x,
           targetY: dest.point.y,
           path: planPath(agent.x, agent.y, dest.point.x, dest.point.y),
           state: "walking" as const,
           socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
+          targetFacing:
+            dest.kind === "gym"
+              ? dest.point.facing
+              : dest.kind === "social"
+                ? dest.point.facing
+                : undefined,
           frame: agent.frame + 1,
         };
       }
@@ -716,6 +747,12 @@ export function useArenaGameLoop(
           couchUntil: undefined,
           socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
           workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
+          targetFacing:
+            dest.kind === "gym"
+              ? dest.point.facing
+              : dest.kind === "social"
+                ? dest.point.facing
+                : undefined,
           targetX: dest.point.x,
           targetY: dest.point.y,
           path: planPath(agent.x, agent.y, dest.point.x, dest.point.y),
@@ -754,7 +791,10 @@ export function useArenaGameLoop(
           if (agent.status === "working") {
             state = "sitting";
           } else if (agent.status === "idle") {
-            // Arrived at an idle destination.
+            // Arrived at an idle destination. If a targetFacing was set by
+            // whoever assigned this destination, snap to it (overrides the
+            // walking-direction facing).
+            const arrivedFacing = agent.targetFacing !== undefined ? agent.targetFacing : nf;
             // If this was a gym station → start workout hold.
             if (agent.workoutStyle !== undefined) {
               const duration =
@@ -764,7 +804,8 @@ export function useArenaGameLoop(
                 ...agent,
                 x: nx,
                 y: ny,
-                facing: nf,
+                facing: arrivedFacing,
+                targetFacing: undefined,
                 path: [],
                 state: "working_out" as const,
                 gymUntil: now + duration,
@@ -781,7 +822,8 @@ export function useArenaGameLoop(
                 ...agent,
                 x: nx,
                 y: ny,
-                facing: nf,
+                facing: arrivedFacing,
+                targetFacing: undefined,
                 path: [],
                 state: "sitting" as const,
                 couchUntil: now + duration,
@@ -807,6 +849,7 @@ export function useArenaGameLoop(
                   path: planPath(nx, ny, couch.x, couch.y),
                   state: "walking" as const,
                   socialSpotType: couch.type,
+                  targetFacing: couch.facing,
                   frame: agent.frame + 1,
                 };
               }
@@ -825,6 +868,12 @@ export function useArenaGameLoop(
                 state: "walking" as const,
                 socialSpotType: dest.kind === "social" ? dest.point.type : undefined,
                 workoutStyle: dest.kind === "gym" ? dest.point.style : undefined,
+                targetFacing:
+                  dest.kind === "gym"
+                    ? dest.point.facing
+                    : dest.kind === "social"
+                      ? dest.point.facing
+                      : undefined,
                 frame: agent.frame + 1,
                 facing: nf,
               };
@@ -836,14 +885,27 @@ export function useArenaGameLoop(
         }
       }
 
+      // If the agent just arrived at its final waypoint and a targetFacing
+      // was stashed, snap the facing to it and clear the field. Applies to
+      // desk arrivals (status=working → sitting at desk) where we fall
+      // through this bottom return rather than early-returning above.
+      const arrived = npath.length === 0 && path.length > 0;
+      let finalFacing = nf;
+      let clearTargetFacing = false;
+      if (arrived && agent.targetFacing !== undefined) {
+        finalFacing = agent.targetFacing;
+        clearTargetFacing = true;
+      }
+
       return {
         ...agent,
         x: nx,
         y: ny,
-        facing: nf,
+        facing: finalFacing,
         path: npath,
         state,
         frame: agent.frame + 1,
+        ...(clearTargetFacing ? { targetFacing: undefined } : {}),
       };
     });
 
