@@ -100,9 +100,8 @@ export const DEFAULT_GYM_TUNING: GymTuningParams = {
 };
 
 // Misc cohort: utility items from the main arena that haven't been tuned yet
-// (coffee machine, phone booth, fridge, vending, water dispenser, round
-// table, ping pong, printer station). Same rotation + distance slider
-// pattern as gym.
+// (coffee machine, phone booth, fridge, vending, water dispenser, ping pong,
+// printer station). Same rotation + distance slider pattern as gym.
 export interface MiscTuningParams {
   coffeeMachineRotDeg: number;
   coffeeMachineDist: number;
@@ -114,8 +113,6 @@ export interface MiscTuningParams {
   vendingDist: number;
   waterDispenserRotDeg: number;
   waterDispenserDist: number;
-  roundTableRotDeg: number;
-  roundTableDist: number;
   pingPongRotDeg: number;
   pingPongDist: number;
   printerStationRotDeg: number;
@@ -132,9 +129,7 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
   vendingRotDeg: 0,
   vendingDist: 40,
   waterDispenserRotDeg: 0,
-  waterDispenserDist: 25,
-  roundTableRotDeg: 0,
-  roundTableDist: 80,
+  waterDispenserDist: 40,
   pingPongRotDeg: 0,
   pingPongDist: 50,
   printerStationRotDeg: 0,
@@ -566,19 +561,21 @@ interface MiscStationConfig {
   defaultDist: number;
 }
 
+// All items placed in canvas x∈[300, 900], y∈[300, 800] so they land on the
+// tuner floor (the Floor plane is centered at world origin and spans ±5.4×±4.5).
 const MISC_CONFIGS: Record<string, MiscStationConfig> = {
   coffee_machine: {
     label: "Coffee machine",
     type: "coffee_machine",
     cx: 380,
-    cy: 200,
+    cy: 400,
     defaultDist: 30,
   },
   phone_booth: {
     label: "Phone booth",
     type: "phone_booth",
-    cx: 520,
-    cy: 200,
+    cx: 500,
+    cy: 380,
     w: 78,
     h: 72,
     defaultDist: 0,
@@ -586,36 +583,29 @@ const MISC_CONFIGS: Record<string, MiscStationConfig> = {
   fridge: {
     label: "Fridge",
     type: "fridge",
-    cx: 680,
-    cy: 200,
+    cx: 660,
+    cy: 380,
     defaultDist: 50,
   },
   vending: {
     label: "Vending",
     type: "vending",
-    cx: 820,
-    cy: 200,
+    cx: 780,
+    cy: 380,
     defaultDist: 40,
   },
   water_dispenser: {
     label: "Water dispenser",
     type: "water_dispenser",
     cx: 380,
-    cy: 500,
-    defaultDist: 25,
-  },
-  round_table: {
-    label: "Round table",
-    type: "round_table",
-    cx: 560,
-    cy: 500,
-    defaultDist: 80,
+    cy: 600,
+    defaultDist: 40,
   },
   ping_pong: {
     label: "Ping pong",
     type: "ping_pong",
-    cx: 780,
-    cy: 500,
+    cx: 540,
+    cy: 600,
     w: 100,
     h: 60,
     defaultDist: 50,
@@ -623,8 +613,8 @@ const MISC_CONFIGS: Record<string, MiscStationConfig> = {
   printer_station: {
     label: "Printer",
     type: "printer_station",
-    cx: 960,
-    cy: 500,
+    cx: 740,
+    cy: 600,
     w: 60,
     h: 50,
     defaultDist: 35,
@@ -678,7 +668,6 @@ export function buildMiscStations(tuning: MiscTuningParams): {
     miscStation("fridge", tuning.fridgeRotDeg, tuning.fridgeDist),
     miscStation("vending", tuning.vendingRotDeg, tuning.vendingDist),
     miscStation("water_dispenser", tuning.waterDispenserRotDeg, tuning.waterDispenserDist),
-    miscStation("round_table", tuning.roundTableRotDeg, tuning.roundTableDist),
     miscStation("ping_pong", tuning.pingPongRotDeg, tuning.pingPongDist),
     miscStation("printer_station", tuning.printerStationRotDeg, tuning.printerStationDist),
   ];

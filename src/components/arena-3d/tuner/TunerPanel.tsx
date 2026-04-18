@@ -235,11 +235,6 @@ export default function TunerPanel({
               <Slider label="distance" value={miscTuning.waterDispenserDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("waterDispenserDist", v)} />
             </div>
             <div>
-              <p className="text-[10px] uppercase text-gray-500 mb-1">Round table</p>
-              <Slider label="rotation" value={miscTuning.roundTableRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("roundTableRotDeg", v)} suffix="°" />
-              <Slider label="distance" value={miscTuning.roundTableDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("roundTableDist", v)} />
-            </div>
-            <div>
               <p className="text-[10px] uppercase text-gray-500 mb-1">Ping pong</p>
               <Slider label="rotation" value={miscTuning.pingPongRotDeg} min={0} max={360} step={1} onChange={(v) => setMiscField("pingPongRotDeg", v)} suffix="°" />
               <Slider label="distance" value={miscTuning.pingPongDist} min={-100} max={200} step={1} onChange={(v) => setMiscField("pingPongDist", v)} />
