@@ -62,6 +62,9 @@ export interface TuningParams {
   couchRotDeg: number;
   couchVRotDeg: number;
   beanbagRotDeg: number;
+  roundTableRotDeg: number;
+  plantRotDeg: number;
+  tableRectRotDeg: number;
   // Sit-back offset (world units) applied as a render translation when the
   // agent sits at this station.
   deskSitBack: number;
@@ -156,6 +159,9 @@ export const DEFAULT_TUNING: TuningParams = {
   couchRotDeg: 0,
   couchVRotDeg: 0,
   beanbagRotDeg: 0,
+  roundTableRotDeg: 0,
+  plantRotDeg: 0,
+  tableRectRotDeg: 0,
   deskSitBack: 0.4,
   couchSitBack: 1.0,
   couchVSitBack: 1.27,
@@ -256,6 +262,20 @@ const COUCHV_BASE_X = 420;
 const COUCHV_BASE_Y = 580;
 const BEANBAG_BASE_X = 680;
 const BEANBAG_BASE_Y = 600;
+// Round table — large; placed on bottom-center of the seats floor.
+const ROUND_TABLE_BASE_X = 520;
+const ROUND_TABLE_BASE_Y = 670;
+const ROUND_TABLE_R = 60;
+// Plant — small decorative.
+const PLANT_BASE_X = 350;
+const PLANT_BASE_Y = 720;
+const PLANT_W = 24;
+const PLANT_H = 24;
+// Rectangular side table.
+const TABLE_RECT_BASE_X = 760;
+const TABLE_RECT_BASE_Y = 700;
+const TABLE_RECT_W = 80;
+const TABLE_RECT_H = 40;
 
 const DESK_W = 100;
 const DESK_H = 55;
@@ -412,7 +432,76 @@ export function buildStations(tuning: TuningParams): {
     sinkDepth: tuning.beanbagSinkDepth,
   };
 
-  const stations = [deskStation, couchStation, couchVStation, beanbagStation];
+  // ─ Round table (prop, not a sit station) ────────────────────────────
+  const roundTableItem: FurnitureItem = {
+    type: "round_table",
+    x: ROUND_TABLE_BASE_X,
+    y: ROUND_TABLE_BASE_Y,
+    r: ROUND_TABLE_R,
+    facing: tuning.roundTableRotDeg,
+    _uid: "tuner_round_table",
+  };
+  const roundTableCx = ROUND_TABLE_BASE_X + ROUND_TABLE_R;
+  const roundTableCy = ROUND_TABLE_BASE_Y + ROUND_TABLE_R;
+  const roundTableStation: Station = {
+    label: "Round table",
+    items: [roundTableItem],
+    // Stand to the east edge of the table so the agent has somewhere
+    // off-mesh to walk to. Round tables are props — no sit pose.
+    standX: Math.round(roundTableCx + ROUND_TABLE_R + 20),
+    standY: Math.round(roundTableCy),
+    facing: -Math.PI / 2,
+    state: "standing",
+    sitBack: 0,
+  };
+
+  // ─ Plant (decorative prop) ──────────────────────────────────────────
+  const plantItem: FurnitureItem = {
+    type: "plant",
+    x: PLANT_BASE_X,
+    y: PLANT_BASE_Y,
+    facing: tuning.plantRotDeg,
+    _uid: "tuner_plant",
+  };
+  const plantStation: Station = {
+    label: "Plant",
+    items: [plantItem],
+    standX: PLANT_BASE_X + PLANT_W / 2,
+    standY: PLANT_BASE_Y + PLANT_H + 30,
+    facing: Math.PI,
+    state: "standing",
+    sitBack: 0,
+  };
+
+  // ─ Rectangular side table ───────────────────────────────────────────
+  const tableRectItem: FurnitureItem = {
+    type: "table_rect",
+    x: TABLE_RECT_BASE_X,
+    y: TABLE_RECT_BASE_Y,
+    w: TABLE_RECT_W,
+    h: TABLE_RECT_H,
+    facing: tuning.tableRectRotDeg,
+    _uid: "tuner_table_rect",
+  };
+  const tableRectStation: Station = {
+    label: "Table (rect)",
+    items: [tableRectItem],
+    standX: TABLE_RECT_BASE_X + TABLE_RECT_W / 2,
+    standY: TABLE_RECT_BASE_Y + TABLE_RECT_H + 30,
+    facing: Math.PI,
+    state: "standing",
+    sitBack: 0,
+  };
+
+  const stations = [
+    deskStation,
+    couchStation,
+    couchVStation,
+    beanbagStation,
+    roundTableStation,
+    plantStation,
+    tableRectStation,
+  ];
   // Items that live OUTSIDE any cluster group (rendered directly).
   const clusteredUids = new Set(
     clusters.flatMap((c) => c.items.map((i) => i._uid))
@@ -1545,8 +1634,12 @@ function TickLoop({
         b.talkUntil = now + duration;
         a.talkPartnerId = b.id;
         b.talkPartnerId = a.id;
-        a.facing = Math.atan2(dx, dy);
-        b.facing = Math.atan2(-dx, -dy);
+        // Only standing agents rotate to face each other. Sitting agents
+        // keep their station pose — flipping a seated agent mid-sit leaves
+        // the sit-back / sink-depth offsets projected from a new facing and
+        // they end up floating off the couch.
+        if (a.state === "standing") a.facing = Math.atan2(dx, dy);
+        if (b.state === "standing") b.facing = Math.atan2(-dx, -dy);
       }
     }
 
@@ -1565,11 +1658,14 @@ function TickLoop({
         agent.sitBackOverride = activeStation.sitBack;
         agent.sinkDepthOverride = activeStation.sinkDepth;
         agent.workoutStyle = activeStation.workoutStyle;
-        // Don't overwrite talk-facing — a sitting agent mid-chat should keep
-        // looking at their partner, not snap back to the station's default.
+        // Skip station-facing lock only for standing agents mid-chat —
+        // they've been rotated to face their partner and we don't want to
+        // snap them back. Sitting agents keep their station pose regardless.
         const talking =
           agent.talkUntil !== undefined && agent.talkUntil > now;
-        if (!talking) agent.facing = activeStation.facing;
+        if (!(talking && agent.state === "standing")) {
+          agent.facing = activeStation.facing;
+        }
       }
 
       if (agent.state === "walking" && agent.path.length > 0) {

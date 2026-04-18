@@ -300,6 +300,18 @@ export default function TunerPanel({
               <Slider label="sit back" value={tuning.beanbagSitBack} min={-0.5} max={1.5} step={0.01} onChange={(v) => setSeatsField("beanbagSitBack", v)} />
               <Slider label="sink depth" value={tuning.beanbagSinkDepth} min={-5} max={20} step={0.1} onChange={(v) => setSeatsField("beanbagSinkDepth", v)} />
             </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Round table</p>
+              <Slider label="rotation" value={tuning.roundTableRotDeg} min={0} max={360} step={1} onChange={(v) => setSeatsField("roundTableRotDeg", v)} suffix="°" />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Plant</p>
+              <Slider label="rotation" value={tuning.plantRotDeg} min={0} max={360} step={1} onChange={(v) => setSeatsField("plantRotDeg", v)} suffix="°" />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase text-gray-500 mb-1">Table (rect)</p>
+              <Slider label="rotation" value={tuning.tableRectRotDeg} min={0} max={360} step={1} onChange={(v) => setSeatsField("tableRectRotDeg", v)} suffix="°" />
+            </div>
           </div>
         </div>
       ) : cohort === "misc" ? (
