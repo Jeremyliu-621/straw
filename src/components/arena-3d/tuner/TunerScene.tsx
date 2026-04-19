@@ -1333,19 +1333,19 @@ function PerimeterWalls({ large }: { large?: boolean }) {
   const color = "#C9C7C2";
   return (
     <>
-      <mesh position={[0, wallH / 2, -halfH]}>
+      <mesh position={[0, wallH / 2, -halfH]} castShadow={false}>
         <boxGeometry args={[ARENA_WORLD_W, wallH, thickness]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[0, wallH / 2, halfH]}>
+      <mesh position={[0, wallH / 2, halfH]} castShadow={false}>
         <boxGeometry args={[ARENA_WORLD_W, wallH, thickness]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[-halfW, wallH / 2, 0]}>
+      <mesh position={[-halfW, wallH / 2, 0]} castShadow={false}>
         <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[halfW, wallH / 2, 0]}>
+      <mesh position={[halfW, wallH / 2, 0]} castShadow={false}>
         <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
         <meshStandardMaterial color={color} />
       </mesh>
