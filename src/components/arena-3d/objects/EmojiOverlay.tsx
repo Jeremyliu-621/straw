@@ -33,7 +33,7 @@ export default function EmojiOverlay({
 
   return (
     <Text
-      fontSize={36}
+      fontSize={60}
       color="#ffffff"
       anchorX="center"
       anchorY="middle"
