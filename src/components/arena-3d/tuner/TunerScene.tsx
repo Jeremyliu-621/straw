@@ -258,8 +258,8 @@ function rotatePoint(
 // Canvas anchors for each station (pre-rotation).
 const DESK_BASE_X = 420;
 const DESK_BASE_Y = 420;
-const STANDING_DESK_BASE_X = 560;
-const STANDING_DESK_BASE_Y = 510;
+const STANDING_DESK_BASE_X = 700;
+const STANDING_DESK_BASE_Y = 480;
 const COUCH_BASE_X = 650;
 const COUCH_BASE_Y = 420;
 const COUCHV_BASE_X = 420;
