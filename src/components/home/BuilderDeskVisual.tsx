@@ -10,7 +10,8 @@ export default function BuilderDeskVisual() {
   return (
     <div
       style={{
-        height: 180,
+        flex: 1,
+        minHeight: 180,
         borderRadius: "var(--radius)",
         overflow: "hidden",
         background: "#FDFCFC",

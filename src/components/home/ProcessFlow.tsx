@@ -9,7 +9,8 @@ const BuilderDeskVisual = dynamic(() => import("./BuilderDeskVisual"), {
   loading: () => (
     <div
       style={{
-        height: 180,
+        flex: 1,
+        minHeight: 180,
         borderRadius: "var(--radius)",
         background: "#FDFCFC",
         border: "1px solid var(--border)",
@@ -254,7 +255,8 @@ export default function ProcessFlow() {
             <TaskMakerVisual />
           </motion.div>
 
-          {/* Builders — light card */}
+          {/* Builders — light card. flex-column so the video can grow to
+              match the bounty card's height on the left. */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -266,6 +268,8 @@ export default function ProcessFlow() {
               color: "var(--text)",
               padding: "32px 32px 36px",
               border: "1px solid #111",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <h3
