@@ -2505,11 +2505,16 @@ export default function TunerScene({
   );
 }
 
-export function useTunerAgent() {
-  const [cohort, setCohort] = useState<Cohort>("seats");
-  const agentRef = useRef<RenderAgentState[]>(makeInitialAgents("seats"));
+export function useTunerAgent(opts?: {
+  initialCohort?: Cohort;
+  initialAmbientAll?: boolean;
+}) {
+  const initialCohort: Cohort = opts?.initialCohort ?? "seats";
+  const initialAmbientAll = opts?.initialAmbientAll ?? false;
+  const [cohort, setCohort] = useState<Cohort>(initialCohort);
+  const agentRef = useRef<RenderAgentState[]>(makeInitialAgents(initialCohort));
   const [stationIdxByAgent, setStationIdxByAgent] = useState<(number | null)[]>(() =>
-    Array(getAgentCount("seats")).fill(null)
+    Array(getAgentCount(initialCohort)).fill(null)
   );
   const [tuning, setTuning] = useState<TuningParams>(DEFAULT_TUNING);
   const [gymTuning, setGymTuning] = useState<GymTuningParams>(DEFAULT_GYM_TUNING);
@@ -2529,9 +2534,9 @@ export function useTunerAgent() {
   // station from the dropdown or hitting stop turns ambient off for that
   // agent. Switching cohort / reset also clears ambient.
   const [ambientByAgent, setAmbientByAgent] = useState<boolean[]>(() =>
-    Array(getAgentCount("seats")).fill(false)
+    Array(getAgentCount(initialCohort)).fill(initialAmbientAll)
   );
-  const ambientNextAtRef = useRef<number[]>(Array(getAgentCount("seats")).fill(0));
+  const ambientNextAtRef = useRef<number[]>(Array(getAgentCount(initialCohort)).fill(0));
   // Mirror stationIdxByAgent into a ref so the ambient timer can read the
   // latest value without re-creating its interval on every station change.
   const stationIdxByAgentRef = useRef(stationIdxByAgent);

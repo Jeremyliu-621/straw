@@ -19,26 +19,20 @@ import { LANDING_ACCENT_PEACH } from "@/constants";
  * depends on WebGL. The outer window is SSR-safe and hydrates instantly.
  */
 
-const ArenaCanvasInner = dynamic(
-  () =>
-    import("@/components/arena-3d/ArenaCanvas").then((m) => ({
-      default: m.ArenaCanvasInner,
-    })),
-  {
-    ssr: false,
-    loading: () => (
-      <div
-        className="flex items-center justify-center rounded-md border border-gray-200 bg-gray-50"
-        style={{ height: 380 }}
-      >
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
-          <p className="font-sans text-sm text-gray-500">Loading arena…</p>
-        </div>
+const LandingArena = dynamic(() => import("@/components/arena-3d/LandingArena"), {
+  ssr: false,
+  loading: () => (
+    <div
+      className="flex items-center justify-center rounded-md border border-gray-200 bg-gray-50"
+      style={{ height: 380 }}
+    >
+      <div className="flex flex-col items-center gap-3">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
+        <p className="font-sans text-sm text-gray-500">Loading arena…</p>
       </div>
-    ),
-  }
-);
+    </div>
+  ),
+});
 
 const URL_PATH = "app.straw.dev/tasks/openclaw-v2";
 const INITIAL_COUNTDOWN_MS = (1 * 24 + 12) * 60 * 60_000 + 50 * 60_000;
@@ -492,14 +486,7 @@ function RightColumn({ data }: { data: ReturnType<typeof useMockArenaAgents> }) 
           overflow: "hidden",
         }}
       >
-        <ArenaCanvasInner
-          agents={data.agents}
-          officeAgents={data.officeAgents}
-          loading={data.loading}
-          eventBufferRef={data.eventBufferRef}
-          height={ARENA_HEIGHT_PX}
-          showSidebar={false}
-        />
+        <LandingArena height={ARENA_HEIGHT_PX} />
       </div>
 
       <MockLeaderboard agents={data.agents} />
