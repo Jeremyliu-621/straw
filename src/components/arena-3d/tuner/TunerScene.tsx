@@ -2384,6 +2384,7 @@ export default function TunerScene({
   showNav,
   navOverrides,
   view,
+  wallBury,
   onFloorClick,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
@@ -2426,12 +2427,12 @@ export default function TunerScene({
 
         <Floor onFloorClick={onFloorClick} cohort={cohort} />
         <GridLines cohort={cohort} />
-        <PerimeterWalls large={large} />
+        <PerimeterWalls large={large} bury={wallBury} />
         <ArenaDoor large={large} agentsRef={agentRef} />
 
         {items.map((item) => {
           if (item.type === "wall") {
-            return <InteriorWall key={item._uid} item={item} />;
+            return <InteriorWall key={item._uid} item={item} bury={wallBury} />;
           }
           if (PROCEDURAL_TYPES.has(item.type)) {
             return <ProceduralFurniture key={item._uid} item={item} />;
@@ -3308,6 +3309,8 @@ export function useTunerAgent() {
     setShowNav,
     view,
     setView,
+    wallBury,
+    setWallBury,
     navOverrides,
     setNavOverrides,
     ambientByAgent,

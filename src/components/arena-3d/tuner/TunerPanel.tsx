@@ -35,6 +35,8 @@ interface TunerPanelProps {
   setShowNav: (v: boolean | ((prev: boolean) => boolean)) => void;
   view: TunerView;
   setView: (v: TunerView) => void;
+  wallBury: boolean;
+  setWallBury: (v: boolean | ((prev: boolean) => boolean)) => void;
   navOverrides: Record<string, NavAnchorOverride>;
   setNavOverrides: (
     updater:
@@ -126,6 +128,8 @@ export default function TunerPanel({
   setShowNav,
   view,
   setView,
+  wallBury,
+  setWallBury,
   navOverrides,
   setNavOverrides,
   ambientByAgent,
@@ -285,6 +289,17 @@ export default function TunerPanel({
           title="Toggle between isometric and top-down views"
         >
           view: {view}
+        </button>
+        <button
+          onClick={() => setWallBury((v) => !v)}
+          className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
+            wallBury
+              ? "bg-black text-white border-black"
+              : "bg-white text-black border-gray-300 hover:border-black"
+          }`}
+          title="Bury wall bottoms under the floor so the BWEffects edge rectangle disappears"
+        >
+          bury walls: {wallBury ? "on" : "off"}
         </button>
         <button
           onClick={onReset}

@@ -11,19 +11,23 @@ const TRIM_HEIGHT = 0.06;
 
 interface InteriorWallProps {
   item: FurnitureItem;
+  /** Sink the wall 0.06 below the floor to hide the BWEffects bottom
+   *  edge under the floor plane. Off by default = legacy behavior. */
+  bury?: boolean;
 }
 
-export default function InteriorWall({ item }: InteriorWallProps) {
+export default function InteriorWall({ item, bury = false }: InteriorWallProps) {
   const [wx, , wz] = toWorld(item.x, item.y);
   const w = (item.w ?? 80) * SCALE;
   const h = (item.h ?? WALL_THICKNESS) * SCALE;
   const centerX = wx + w / 2;
   const centerZ = wz + h / 2;
 
-  // Extend the wall 0.06 units below the floor plane (y=0) so BWEffects'
-  // bottom-edge overlay renders beneath the floor and gets occluded.
-  // Top edges and silhouette stay unchanged.
-  const BURY = 0.06;
+  // Bury-walls mode: extend the wall 0.06 units below the floor plane
+  // (y=0) so BWEffects' bottom-edge overlay renders beneath the floor
+  // and gets occluded. Top silhouette unchanged. Off = legacy layout
+  // with a visible outline rectangle traced on the floor.
+  const BURY = bury ? 0.06 : 0;
   const bodyH = WALL_HEIGHT + BURY;
   const bodyCenterY = WALL_HEIGHT / 2 - BURY / 2;
   return (

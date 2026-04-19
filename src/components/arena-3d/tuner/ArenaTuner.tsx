@@ -28,6 +28,8 @@ export default function ArenaTuner() {
     setShowNav,
     view,
     setView,
+    wallBury,
+    setWallBury,
     navOverrides,
     setNavOverrides,
     ambientByAgent,
@@ -51,6 +53,7 @@ export default function ArenaTuner() {
           showNav={showNav}
           navOverrides={navOverrides}
           view={view}
+          wallBury={wallBury}
           onFloorClick={cohort === "arena" ? walkToPoint : undefined}
         />
       </div>
@@ -71,6 +74,8 @@ export default function ArenaTuner() {
         setShowNav={setShowNav}
         view={view}
         setView={setView}
+        wallBury={wallBury}
+        setWallBury={setWallBury}
         navOverrides={navOverrides}
         setNavOverrides={setNavOverrides}
         ambientByAgent={ambientByAgent}
