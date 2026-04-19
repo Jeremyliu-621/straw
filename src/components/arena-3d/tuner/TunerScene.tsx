@@ -1788,9 +1788,17 @@ function TickLoop({
       const turn = Math.floor(now / SPEAKER_TURN_MS) % speakers.length;
       const activeSpeaker = speakers[turn];
       activeSpeaker.talkUntil = now + 500;
+      // Active speaker: no head swivel — face the audience straight on.
+      // Non-active speakers: swivel their head toward the active speaker,
+      // same as the audience does.
       for (const s of speakers) {
-        s.lookAtX = undefined;
-        s.lookAtY = undefined;
+        if (s === activeSpeaker) {
+          s.lookAtX = undefined;
+          s.lookAtY = undefined;
+        } else {
+          s.lookAtX = activeSpeaker.x;
+          s.lookAtY = activeSpeaker.y;
+        }
       }
       for (const a of agentRef.current) {
         if (!a) continue;
@@ -1837,12 +1845,17 @@ function TickLoop({
       if (a.state === "walking" || a.state === "working_out") continue;
       if (a.talkUntil !== undefined && a.talkUntil > now) continue;
       if (a.pingPongUntil !== undefined && a.pingPongUntil > now) continue;
+      // Standup participants are in a structured hold (conference or round
+      // table) — the speaker-turn logic drives their bubbles. Skip so the
+      // proximity roll doesn't cross-talk across the audience.
+      if ((a.standupUntil ?? 0) > now) continue;
       for (let j = i + 1; j < agents.length; j++) {
         const b = agents[j];
         if (!b) continue;
         if (b.state === "walking" || b.state === "working_out") continue;
         if (b.talkUntil !== undefined && b.talkUntil > now) continue;
         if (b.pingPongUntil !== undefined && b.pingPongUntil > now) continue;
+        if ((b.standupUntil ?? 0) > now) continue;
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         if (Math.hypot(dx, dy) > TALK_PROXIMITY_PX) continue;
