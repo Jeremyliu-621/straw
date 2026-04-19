@@ -256,7 +256,7 @@ export default function ProcessFlow() {
               backgroundColor: "#d8e3ee",
               color: "#111",
               padding: "32px 32px 36px",
-              border: "1px solid #cfd5e8",
+              border: "1px solid #111",
             }}
           >
             <h3
@@ -299,7 +299,7 @@ export default function ProcessFlow() {
               backgroundColor: "#e0d6d0",
               color: "var(--text)",
               padding: "32px 32px 36px",
-              border: "1px solid rgba(0,0,0,0.08)",
+              border: "1px solid #111",
             }}
           >
             <h3
