@@ -21,6 +21,8 @@ export default function ArenaTuner() {
     setShowPaths,
     showNav,
     setShowNav,
+    view,
+    setView,
     navOverrides,
     setNavOverrides,
     ambientByAgent,
@@ -43,6 +45,7 @@ export default function ArenaTuner() {
           showPaths={showPaths}
           showNav={showNav}
           navOverrides={navOverrides}
+          view={view}
           onFloorClick={cohort === "arena" ? walkToPoint : undefined}
         />
       </div>
@@ -61,6 +64,8 @@ export default function ArenaTuner() {
         setShowPaths={setShowPaths}
         showNav={showNav}
         setShowNav={setShowNav}
+        view={view}
+        setView={setView}
         navOverrides={navOverrides}
         setNavOverrides={setNavOverrides}
         ambientByAgent={ambientByAgent}

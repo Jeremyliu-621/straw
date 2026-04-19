@@ -1108,6 +1108,7 @@ interface TunerSceneProps {
   showPaths: boolean;
   showNav: boolean;
   navOverrides: Record<string, NavAnchorOverride>;
+  view: TunerView;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
@@ -1565,15 +1566,23 @@ function DebugMarkers({
   );
 }
 
-function CameraRig({ zoom }: { zoom: number }) {
+export type TunerView = "iso" | "top";
+
+function CameraRig({ zoom, view }: { zoom: number; view: TunerView }) {
   const { camera } = useThree();
   useEffect(() => {
-    camera.position.set(8, 10, 10);
+    if (view === "top") {
+      // Straight-down ortho. Slight +z tilt keeps the drei Billboard labels
+      // (agent nameplates, station markers) readable instead of edge-on.
+      camera.position.set(0, 20, 0.0001);
+    } else {
+      camera.position.set(8, 10, 10);
+    }
     camera.lookAt(0, 0, 0);
     type OrthoCam = typeof camera & { zoom: number };
     (camera as OrthoCam).zoom = zoom;
     camera.updateProjectionMatrix();
-  }, [camera, zoom]);
+  }, [camera, zoom, view]);
   return null;
 }
 
@@ -1742,6 +1751,7 @@ export default function TunerScene({
   showPaths,
   showNav,
   navOverrides,
+  view,
   onFloorClick,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
@@ -1766,7 +1776,7 @@ export default function TunerScene({
       frameloop="always"
     >
       <Suspense fallback={null}>
-        <CameraRig zoom={large ? 30 : 50} />
+        <CameraRig zoom={large ? 30 : 50} view={view} />
         <ambientLight intensity={0.8} color="#ffffff" />
         <directionalLight
           position={[10, 15, 8]}
@@ -1850,6 +1860,7 @@ export function useTunerAgent() {
     useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
   const [showPaths, setShowPaths] = useState(false);
   const [showNav, setShowNav] = useState(false);
+  const [view, setView] = useState<TunerView>("iso");
   // Per-type nav-anchor overrides — sliders write into this; buildNavGrid
   // applies them at grid-build time. Empty by default = use NAV_ANCHOR_OVERRIDES
   // from geometry.ts (which itself is empty until we lock values in).
@@ -2140,6 +2151,8 @@ export function useTunerAgent() {
     setShowPaths,
     showNav,
     setShowNav,
+    view,
+    setView,
     navOverrides,
     setNavOverrides,
     ambientByAgent,

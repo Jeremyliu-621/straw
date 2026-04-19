@@ -15,6 +15,7 @@ import {
   type MiscTuningParams,
   tunerAgentColor,
   NAV_TUNABLE_TYPES,
+  type TunerView,
 } from "./TunerScene";
 
 interface TunerPanelProps {
@@ -32,6 +33,8 @@ interface TunerPanelProps {
   setShowPaths: (v: boolean | ((prev: boolean) => boolean)) => void;
   showNav: boolean;
   setShowNav: (v: boolean | ((prev: boolean) => boolean)) => void;
+  view: TunerView;
+  setView: (v: TunerView) => void;
   navOverrides: Record<string, NavAnchorOverride>;
   setNavOverrides: (
     updater:
@@ -113,6 +116,8 @@ export default function TunerPanel({
   setShowPaths,
   showNav,
   setShowNav,
+  view,
+  setView,
   navOverrides,
   setNavOverrides,
   ambientByAgent,
@@ -255,6 +260,17 @@ export default function TunerPanel({
           }`}
         >
           nav: {showNav ? "on" : "off"}
+        </button>
+        <button
+          onClick={() => setView(view === "iso" ? "top" : "iso")}
+          className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
+            view === "top"
+              ? "bg-black text-white border-black"
+              : "bg-white text-black border-gray-300 hover:border-black"
+          }`}
+          title="Toggle between isometric and top-down views"
+        >
+          view: {view}
         </button>
         <button
           onClick={onReset}
