@@ -38,6 +38,9 @@ type MeshUserData = {
   __bwOriginalReceiveShadow?: boolean;
   __bwTintedMaterial?: THREE.Material;
   __isBWEdgeOverlay?: boolean;
+  /** Opt out of the black edge overlay. Set on the floor plane and
+   *  walls so their bottom edges don't trace a rectangle at floor level. */
+  __bwSkipEdges?: boolean;
 };
 
 const BW_WHITE = "#FDFCFC";
@@ -172,20 +175,19 @@ function applyBWToMesh(
   mesh.receiveShadow = lit;
 
   // Add (or replace) the edge overlay if its threshold is the right one.
+  // Meshes flagged `__bwSkipEdges` opt out entirely — e.g. floor + walls,
+  // whose bottom edges would trace a rectangle around the main floor.
+  const skipEdges = !!ud.__bwSkipEdges;
   let overlay = mesh.children.find((c) => (c.userData as MeshUserData).__isBWEdgeOverlay) as
     | THREE.LineSegments
     | undefined;
-  if (overlay) {
-    const currentThreshold = (overlay.userData as { __edgeThreshold?: number })
-      .__edgeThreshold;
-    if (currentThreshold !== edgeThreshold) {
-      // Threshold changed — rebuild geometry.
-      mesh.remove(overlay);
-      if (overlay.geometry) overlay.geometry.dispose();
-      overlay = undefined;
-    }
+  if (overlay && (skipEdges || (overlay.userData as { __edgeThreshold?: number }).__edgeThreshold !== edgeThreshold)) {
+    // Threshold changed OR mesh opted out — drop the overlay.
+    mesh.remove(overlay);
+    if (overlay.geometry) overlay.geometry.dispose();
+    overlay = undefined;
   }
-  if (!overlay) {
+  if (!overlay && !skipEdges) {
     const edgeGeom = new THREE.EdgesGeometry(mesh.geometry, edgeThreshold);
     overlay = new THREE.LineSegments(edgeGeom, BLACK_LINE_MATERIAL);
     overlay.name = "__bwEdgeOverlay__";
