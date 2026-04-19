@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useEffect } from "react";
+import { useLayoutEffect, useEffect, useCallback } from "react";
 import TunerScene, { useTunerAgent } from "./tuner/TunerScene";
 
 export default function LandingArena({ height }: { height: number }) {
@@ -14,10 +14,12 @@ export default function LandingArena({ height }: { height: number }) {
     navOverrides,
     wallBury,
     showPaths,
-    setShowPaths,
     showNav,
-    setShowNav,
     triggerJoin,
+    triggerStandup,
+    triggerDevAction,
+    sendToStation,
+    stations,
   } = useTunerAgent({ initialCohort: "arena", initialAmbientAll: true });
 
   // Hide every agent before the first paint so the scene opens on an
@@ -41,51 +43,92 @@ export default function LandingArena({ height }: { height: number }) {
     };
   }, [agentRef, triggerJoin]);
 
+  // Pick a random visible (non-hidden) agent, pop an emoji over their head.
+  const onEmoji = useCallback(() => {
+    const visibleIdx: number[] = [];
+    for (let i = 0; i < agentRef.current.length; i++) {
+      const a = agentRef.current[i];
+      if (a && !a.hidden) visibleIdx.push(i);
+    }
+    if (visibleIdx.length === 0) return;
+    const pick = visibleIdx[Math.floor(Math.random() * visibleIdx.length)];
+    triggerDevAction(pick, "emoji");
+  }, [agentRef, triggerDevAction]);
+
+  // Find the two ping-pong slots in the arena station list, send the first
+  // two eligible idle agents to them. When each arrives, the tick loop
+  // pairs them (same table, opposite side) and starts the game.
+  const onPingPong = useCallback(() => {
+    const agents = agentRef.current;
+    const now = Date.now();
+    const ppStationIdxs: number[] = [];
+    for (let i = 0; i < stations.length; i++) {
+      if (stations[i]?.pingPongTableUid) ppStationIdxs.push(i);
+    }
+    if (ppStationIdxs.length < 2) return;
+    const eligible: number[] = [];
+    for (let i = 0; i < agents.length; i++) {
+      const a = agents[i];
+      if (!a || a.hidden) continue;
+      if (a.state === "walking" || a.state === "working_out") continue;
+      if ((a.pingPongUntil ?? 0) > now) continue;
+      if (a.pingPongTableUid) continue;
+      if ((a.standupUntil ?? 0) > now) continue;
+      if ((a.couchUntil ?? 0) > now) continue;
+      if ((a.danceUntil ?? 0) > now) continue;
+      eligible.push(i);
+      if (eligible.length === 2) break;
+    }
+    if (eligible.length < 2) return;
+    sendToStation(eligible[0], ppStationIdxs[0]);
+    sendToStation(eligible[1], ppStationIdxs[1]);
+  }, [agentRef, stations, sendToStation]);
+
+  // Match the tuner-panel button style (compact, px-2 py-1, rounded-md,
+  // text-[11px]) so the landing triggers feel continuous with the dev tool.
+  const btnClass =
+    "px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black transition-colors";
+
   return (
-    <div style={{ height, width: "100%", position: "relative" }}>
-      <TunerScene
-        cohort={cohort}
-        stationIdxByAgent={stationIdxByAgent}
-        tuning={tuning}
-        gymTuning={gymTuning}
-        miscTuning={miscTuning}
-        agentRef={agentRef}
-        showPaths={showPaths}
-        showNav={showNav}
-        navOverrides={navOverrides}
-        view="iso"
-        wallBury={wallBury}
-        zoom={20}
-      />
+    <div>
+      <div style={{ height, width: "100%", position: "relative" }}>
+        <TunerScene
+          cohort={cohort}
+          stationIdxByAgent={stationIdxByAgent}
+          tuning={tuning}
+          gymTuning={gymTuning}
+          miscTuning={miscTuning}
+          agentRef={agentRef}
+          showPaths={showPaths}
+          showNav={showNav}
+          navOverrides={navOverrides}
+          view="iso"
+          wallBury={wallBury}
+          zoom={20}
+        />
+      </div>
       <div
         style={{
-          position: "absolute",
-          top: 10,
-          right: 10,
           display: "flex",
+          alignItems: "center",
           gap: 6,
-          zIndex: 5,
+          padding: "8px 12px",
+          borderTop: "1px solid var(--border)",
+          background: "var(--bg-subtle)",
+          flexWrap: "wrap",
         }}
       >
-        <button
-          onClick={() => setShowPaths((v) => !v)}
-          className={`px-3 py-1.5 rounded-full text-xs transition-colors border font-mono ${
-            showPaths
-              ? "bg-black text-white border-black"
-              : "bg-white text-black border-gray-300 hover:border-black"
-          }`}
-        >
-          paths: {showPaths ? "on" : "off"}
+        <button onClick={() => triggerStandup("conference")} className={btnClass} title="Top-3 ranked agents speak at the front, rest listen in the audience">
+          conference
         </button>
-        <button
-          onClick={() => setShowNav((v) => !v)}
-          className={`px-3 py-1.5 rounded-full text-xs transition-colors border font-mono ${
-            showNav
-              ? "bg-red-600 text-white border-red-600"
-              : "bg-white text-black border-gray-300 hover:border-red-600"
-          }`}
-        >
-          nav: {showNav ? "on" : "off"}
+        <button onClick={() => triggerStandup("round_table")} className={btnClass} title="6 closest eligible agents gather around the round table">
+          round table
+        </button>
+        <button onClick={onEmoji} className={btnClass} title="Random celebration emoji over a random agent">
+          emoji
+        </button>
+        <button onClick={onPingPong} className={btnClass} title="Send two eligible agents to the ping-pong table">
+          ping pong
         </button>
       </div>
     </div>

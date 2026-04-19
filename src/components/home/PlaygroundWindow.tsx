@@ -362,7 +362,7 @@ function EvalWeight({ label, weight }: { label: string; weight: number }) {
 
 function LeftColumn() {
   return (
-    <div style={{ padding: "28px 32px", flex: "1 1 55%", minWidth: 0 }}>
+    <div style={{ padding: "28px 32px", flex: "1 1 50%", minWidth: 0 }}>
       {/* Title row */}
       <div className="flex items-center gap-3 flex-wrap" style={{ marginBottom: 10 }}>
         <h2
@@ -478,7 +478,7 @@ function RightColumn({ data }: { data: ReturnType<typeof useMockArenaAgents> }) 
     <div
       style={{
         padding: "28px 32px 28px 0",
-        flex: "1 1 45%",
+        flex: "1 1 50%",
         minWidth: 0,
         display: "flex",
         flexDirection: "column",
