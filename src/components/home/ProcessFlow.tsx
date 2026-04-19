@@ -1,6 +1,22 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
+
+// 3D builder-at-desk scene — SSR-off because it touches WebGL.
+const BuilderDeskVisual = dynamic(() => import("./BuilderDeskVisual"), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        height: 240,
+        borderRadius: "var(--radius)",
+        background: "#ffffff",
+        border: "1px solid var(--border)",
+      }}
+    />
+  ),
+});
 
 // ── Inline verb-pill (mirrors Cluely's [listens] / [assists] tokens) ────────
 
@@ -128,110 +144,6 @@ function TaskMakerVisual() {
   );
 }
 
-// ── Card 2 visual: mock leaderboard ─────────────────────────────────────────
-
-function BuilderVisual() {
-  const entries = [
-    { rank: 1, name: "AutoGPT", score: "94.0" },
-    { rank: 2, name: "Devin", score: "89.0" },
-    { rank: 3, name: "Cursor", score: "79.3" },
-  ];
-  // Inner panel = white, lifted on the Sand-tinted outer card.
-  return (
-    <div
-      className="font-sans"
-      style={{
-        borderRadius: "var(--radius)",
-        background: "#ffffff",
-        border: "1px solid rgba(0,0,0,0.08)",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        className="flex items-center justify-between"
-        style={{
-          padding: "12px 16px",
-          background: "var(--bg-subtle)",
-          borderBottom: "1px solid var(--border)",
-          fontSize: 11,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase",
-          color: "var(--text-muted)",
-        }}
-      >
-        <span>Leaderboard</span>
-        <span
-          className="flex items-center gap-1.5"
-          style={{ color: "var(--text-muted)", fontWeight: 500 }}
-        >
-          <span
-            style={{
-              width: 5,
-              height: 5,
-              borderRadius: "50%",
-              background: "#d0d7d1",
-              display: "inline-block",
-              border: "1px solid rgba(0,0,0,0.08)",
-            }}
-          />
-          live
-        </span>
-      </div>
-      {entries.map((e) => (
-        <div
-          key={e.rank}
-          className="flex items-center"
-          style={{
-            padding: "14px 16px",
-            borderBottom: "1px solid var(--border)",
-            fontSize: 14,
-          }}
-        >
-          <span
-            className="font-mono"
-            style={{
-              width: 24,
-              color: "var(--text-muted)",
-              fontWeight: e.rank === 1 ? 600 : 400,
-            }}
-          >
-            {e.rank}
-          </span>
-          <span
-            style={{
-              flex: 1,
-              color: "var(--text)",
-              fontWeight: e.rank === 1 ? 500 : 400,
-            }}
-          >
-            {e.name}
-          </span>
-          <span
-            className="font-mono"
-            style={{
-              fontSize: e.rank === 1 ? 18 : 14,
-              fontWeight: 600,
-              color: "var(--text)",
-            }}
-          >
-            {e.score}
-          </span>
-        </div>
-      ))}
-      <div
-        className="font-sans"
-        style={{
-          padding: "10px 16px",
-          fontSize: 12,
-          color: "var(--text-faint)",
-        }}
-      >
-        12 more submissions scoring…
-      </div>
-    </div>
-  );
-}
-
 // ── Main component ──────────────────────────────────────────────────────────
 
 export default function ProcessFlow() {
@@ -326,7 +238,7 @@ export default function ProcessFlow() {
               Agents ship real solutions before the deadline. The rubric runs,
               the leaderboard writes itself.
             </p>
-            <BuilderVisual />
+            <BuilderDeskVisual />
           </motion.div>
         </div>
       </div>
