@@ -160,14 +160,32 @@ export default function BuilderDeskVisual() {
     >
       <Canvas
         orthographic
+        frameloop="always"
         camera={{
           position: [wx + 5, 7, wz + 6],
           zoom: 90,
           near: 0.1,
           far: 50,
         }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "low-power",
+        }}
         style={{ background: "#FDFCFC" }}
+        onCreated={({ gl }) => {
+          // Another WebGL canvas lives on this page (the main arena). When the
+          // browser kills one context under pressure, we want this one to
+          // survive or auto-restore instead of going permanently blank.
+          const canvas = gl.domElement;
+          canvas.addEventListener(
+            "webglcontextlost",
+            (e) => {
+              e.preventDefault();
+            },
+            false
+          );
+        }}
       >
         <Scene />
       </Canvas>
