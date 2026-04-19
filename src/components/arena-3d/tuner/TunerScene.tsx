@@ -2433,6 +2433,7 @@ export default function TunerScene({
       shadows
       camera={{ near: 0.1, far: 100 }}
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+      dpr={[1, 2]}
       style={{ background: "#FDFCFC" }}
       frameloop="always"
     >

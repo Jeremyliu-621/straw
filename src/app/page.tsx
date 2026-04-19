@@ -4,10 +4,12 @@ import ProcessFlow from '@/components/home/ProcessFlow';
 import Differentiators from '@/components/home/Differentiators';
 import FinalCTA from '@/components/home/FinalCTA';
 import FooterSection from '@/components/home/FooterSection';
+import ArenaPreload from '@/components/arena-3d/ArenaPreload';
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#FDFCFC]">
+      <ArenaPreload />
       <Navbar />
       <HeroSection />
       <ProcessFlow />
