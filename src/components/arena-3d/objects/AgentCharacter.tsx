@@ -238,7 +238,7 @@ export default function AgentCharacter({
         const remaining = (agent.emojiUntil ?? 0) - now;
         const fadeScale = remaining < 500 ? remaining / 500 : 1;
         // Slight upward drift
-        emojiGroupRef.current.position.y = 145 + (1 - fadeScale) * 20;
+        emojiGroupRef.current.position.y = 230 + (1 - fadeScale) * 20;
         emojiGroupRef.current.scale.setScalar(fadeScale);
       }
     }
@@ -340,15 +340,18 @@ export default function AgentCharacter({
         <meshBasicMaterial ref={statusMatRef} color="#94a3b8" />
       </mesh>
 
-      {/* Talk bubble — pulsing white circle above head during a talk hold */}
-      <mesh ref={talkBubbleRef} position={[0, 130, 0]} visible={false}>
+      {/* Talk bubble — pulsing white circle ABOVE the nameplate (which
+          sits at y=165 with ~45-unit height, top edge ≈ y=188). Overlays
+          used to live below the plate and were getting occluded. */}
+      <mesh ref={talkBubbleRef} position={[0, 210, 0]} visible={false}>
         <ringGeometry args={[7, 10, 16]} />
         <meshBasicMaterial color="#ffffff" side={THREE.DoubleSide} />
       </mesh>
 
-      {/* Emoji overlay — billboard sprite with a single glyph, fades out */}
+      {/* Emoji overlay — billboard sprite with a single glyph, fades out.
+          Parked above the talk bubble so both can coexist without overlap. */}
       <Billboard>
-        <group ref={emojiGroupRef} position={[0, 145, 0]} visible={false}>
+        <group ref={emojiGroupRef} position={[0, 230, 0]} visible={false}>
           <EmojiOverlay agentId={agentId} agentsRef={agentsRef} />
         </group>
       </Billboard>
