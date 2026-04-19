@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
+import { OrthographicCamera, View } from "@react-three/drei";
 import * as THREE from "three";
 import AgentCharacter from "@/components/arena-3d/objects/AgentCharacter";
 import FurnitureModel, { FURNITURE_GLB } from "@/components/arena-3d/objects/FurnitureModel";
@@ -14,20 +15,16 @@ import { toWorld } from "@/components/arena-3d/core/geometry";
 import type { RenderAgentState } from "@/components/arena-3d/useArenaGameLoop";
 
 /**
- * Tiny standalone mini-scene for the landing's "Builders compete on the real
- * problem" card. Reuses the same AgentCharacter + procedural furniture the
- * arena tuner uses — no custom artwork. One agent, one standing desk, camera
- * locked. Game-loop state is hand-rolled (frame counter ticked each frame),
- * so it stays independent of the main arena polling / event pipeline.
+ * Builder-at-desk mini scene for the landing's Builders card. Uses drei
+ * <View> to render through the page-level shared Canvas (LandingR3FHost),
+ * avoiding a second WebGL context.
  */
 
 /**
- * Post-render override: find AgentCharacter's left/right arm groups by their
- * hardcoded local positions (x=±14, y=68 in agent-local coords) and pump
- * rotations every frame, so the seated agent reads as "typing hard" instead
- * of the static desk pose the arena renders by default. Mounts AFTER
- * AgentCharacter, so its useFrame (default priority, same render pass) runs
- * later in the frame and overwrites the idle arm rotations.
+ * Post-render override: find AgentCharacter's arm groups by their hardcoded
+ * local positions and pump rotations every frame so the seated agent reads
+ * as "typing hard". Mounts AFTER AgentCharacter so its useFrame runs later
+ * in the same render pass and overwrites the idle pose.
  */
 function ArmFlail() {
   const { scene } = useThree();
@@ -38,14 +35,12 @@ function ArmFlail() {
     if (!leftArm.current || !rightArm.current) {
       scene.traverse((obj) => {
         if (obj.type !== "Group") return;
-        // Agent arms sit at y=68 with x=±14 relative to the character root.
         if (Math.abs(obj.position.y - 68) > 0.1) return;
         if (Math.abs(obj.position.x + 14) < 0.1) leftArm.current = obj;
         else if (Math.abs(obj.position.x - 14) < 0.1) rightArm.current = obj;
       });
     }
     const t = state.clock.elapsedTime;
-    // Two uncorrelated sines per arm — chaotic "flailing" rather than metronomic.
     if (leftArm.current) {
       leftArm.current.rotation.x = -0.4 + Math.sin(t * 7.6) * 0.55;
       leftArm.current.rotation.z = 0.25 + Math.sin(t * 4.1) * 0.2;
@@ -59,7 +54,7 @@ function ArmFlail() {
   return null;
 }
 
-function Scene() {
+function SceneContent() {
   const station = useMemo(
     () =>
       makeDeskStation({
@@ -92,14 +87,12 @@ function Scene() {
     },
   ]);
 
-  // Tick the agent's frame counter so any internal animations (head tilt,
-  // hover, etc.) that read `agent.frame` stay alive.
+  // Tick the frame counter so any animations that read agent.frame stay alive.
   useFrame(() => {
     const a = agentRef.current[0];
     if (a) a.frame += 1;
   });
 
-  // Camera lookAt: centre on the desk's world position.
   const { camera } = useThree();
   useEffect(() => {
     const [wx, , wz] = toWorld(station.standPoint.x, station.standPoint.y);
@@ -146,10 +139,9 @@ function Scene() {
 }
 
 export default function BuilderDeskVisual() {
-  // Compact — the card looks busy if this gets too tall.
   const [wx, , wz] = toWorld(600, 550);
   return (
-    <div
+    <View
       style={{
         height: 180,
         borderRadius: "var(--radius)",
@@ -158,34 +150,14 @@ export default function BuilderDeskVisual() {
         border: "1px solid var(--border)",
       }}
     >
-      <Canvas
-        orthographic
-        frameloop="always"
-        dpr={[2.5, 3]}
-        camera={{
-          position: [wx + 5, 7, wz + 6],
-          zoom: 90,
-          near: 0.1,
-          far: 50,
-        }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: "#FDFCFC" }}
-        onCreated={({ gl }) => {
-          // Another WebGL canvas lives on this page (the main arena). When the
-          // browser kills one context under pressure, we want this one to
-          // survive or auto-restore instead of going permanently blank.
-          const canvas = gl.domElement;
-          canvas.addEventListener(
-            "webglcontextlost",
-            (e) => {
-              e.preventDefault();
-            },
-            false
-          );
-        }}
-      >
-        <Scene />
-      </Canvas>
-    </div>
+      <OrthographicCamera
+        makeDefault
+        position={[wx + 5, 7, wz + 6]}
+        zoom={90}
+        near={0.1}
+        far={50}
+      />
+      <SceneContent />
+    </View>
   );
 }

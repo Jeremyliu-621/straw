@@ -2,6 +2,7 @@
 
 import { Suspense, useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrthographicCamera, View } from "@react-three/drei";
 import { useStrawAgents } from "./useStrawAgents";
 import { useArenaGameLoop } from "./useArenaGameLoop";
 import { DEFAULT_ARENA_FURNITURE } from "./core/defaultLayout";
@@ -298,6 +299,14 @@ interface ArenaCanvasInnerProps {
   eventBufferRef: ReturnType<typeof useStrawAgents>["eventBufferRef"];
   height?: number;
   showSidebar?: boolean;
+  /**
+   * Render the scene through a drei `<View>` that tunnels to a page-level
+   * `<Canvas><View.Port /></Canvas>`, instead of spinning up its own Canvas.
+   * Lets multiple 3D components on one page share a single WebGL context
+   * (used on the landing). Defaults to false so the task-detail page keeps
+   * using a self-contained Canvas.
+   */
+  useViewHost?: boolean;
 }
 
 /**
@@ -313,6 +322,7 @@ export function ArenaCanvasInner({
   eventBufferRef,
   height = 600,
   showSidebar = true,
+  useViewHost = false,
 }: ArenaCanvasInnerProps) {
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
@@ -348,36 +358,66 @@ export function ArenaCanvasInner({
         className={`flex-1 relative overflow-hidden ${showSidebar ? "rounded-l-lg" : "rounded-lg"}`}
         style={{ background: bgColor }}
       >
-        <Canvas
-          orthographic
-          shadows={shadowsOn}
-          dpr={[2.5, 3]}
-          camera={{
-            position: initialPreset.position,
-            zoom: initialPreset.zoom,
-            near: 0.1,
-            far: 100,
-          }}
-          gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
-          style={{ background: bgColor }}
-        >
-          <Suspense fallback={<ArenaFallback />}>
-            <ArenaScene
-              officeAgents={officeAgents}
-              eventBufferRef={eventBufferRef}
-              devActionQueueRef={devActionQueueRef}
-              viewMode={viewMode}
-              bwVariant={bwVariant}
-              bwShadows={bwShadows}
-              shadowLightness={shadowLightness}
-              pureWhite={pureWhite}
-              tintNormal={tintNormal}
-              tintPureWhite={tintPureWhite}
-              edgeThreshold={edgeThreshold}
-              debugPaths={debugPaths}
+        {useViewHost ? (
+          <View
+            style={{ position: "absolute", inset: 0, background: bgColor }}
+          >
+            <OrthographicCamera
+              makeDefault
+              position={initialPreset.position}
+              zoom={initialPreset.zoom}
+              near={0.1}
+              far={100}
             />
-          </Suspense>
-        </Canvas>
+            <Suspense fallback={<ArenaFallback />}>
+              <ArenaScene
+                officeAgents={officeAgents}
+                eventBufferRef={eventBufferRef}
+                devActionQueueRef={devActionQueueRef}
+                viewMode={viewMode}
+                bwVariant={bwVariant}
+                bwShadows={bwShadows}
+                shadowLightness={shadowLightness}
+                pureWhite={pureWhite}
+                tintNormal={tintNormal}
+                tintPureWhite={tintPureWhite}
+                edgeThreshold={edgeThreshold}
+                debugPaths={debugPaths}
+              />
+            </Suspense>
+          </View>
+        ) : (
+          <Canvas
+            orthographic
+            shadows={shadowsOn}
+            dpr={[2.5, 3]}
+            camera={{
+              position: initialPreset.position,
+              zoom: initialPreset.zoom,
+              near: 0.1,
+              far: 100,
+            }}
+            gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+            style={{ background: bgColor }}
+          >
+            <Suspense fallback={<ArenaFallback />}>
+              <ArenaScene
+                officeAgents={officeAgents}
+                eventBufferRef={eventBufferRef}
+                devActionQueueRef={devActionQueueRef}
+                viewMode={viewMode}
+                bwVariant={bwVariant}
+                bwShadows={bwShadows}
+                shadowLightness={shadowLightness}
+                pureWhite={pureWhite}
+                tintNormal={tintNormal}
+                tintPureWhite={tintPureWhite}
+                edgeThreshold={edgeThreshold}
+                debugPaths={debugPaths}
+              />
+            </Suspense>
+          </Canvas>
+        )}
 
         {/* Agent count badge */}
         <div

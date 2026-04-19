@@ -1389,23 +1389,87 @@ function ArenaDoor({
   });
   if (!large) return null;
   const [wx, , wz] = toWorld(ARENA_DOOR_X, ARENA_DOOR_Y);
-  const doorW = 0.06;
-  const doorH = 1;
-  const doorL = 80 * SCALE;
+  // Real-door proportions: ~0.8w × 1.8h × thin (single-person width).
+  const doorW = 0.05;          // leaf thickness (x — into/out of wall)
+  const doorH = 1.8;           // leaf height (y)
+  const doorL = 45 * SCALE;    // leaf width along the wall (z)
+  const frameThick = 0.12;     // trim around the opening
+  const panelInsetY = 0.12;    // panel top/bottom margin inside the leaf
+  const panelInsetZ = 0.06;    // panel side margin inside the leaf
+  const panelGap = 0.06;       // vertical gap between upper and lower panels
+  const handleR = 0.04;
+  const wood = "#c9a36b";
+  const woodDark = "#8b6a3d";
+  const trim = "#2a241c";
+  const brass = "#d4b048";
   return (
     <group position={[wx, doorH / 2, wz]}>
-      {/* Door frame — recessed into the wall */}
-      <mesh position={[0, 0, -0.05]}>
-        <boxGeometry args={[doorW, doorH + 0.2, doorL + 0.2]} />
-        <meshStandardMaterial color="#2e2a23" />
+      {/* Trim / jamb around the opening — sits slightly proud of the wall
+          so it reads as framing. */}
+      <mesh position={[0, 0, -0.02]}>
+        <boxGeometry args={[0.04, doorH + frameThick * 2, doorL + frameThick * 2]} />
+        <meshStandardMaterial color={trim} />
       </mesh>
       {/* Door leaf — pivots around its inside-wall edge so it swings
-          inward. Group holds the rotation; inner mesh is offset so the
-          pivot axis is at the leaf's edge, not its center. */}
+          inward like a real hinge. The inner mesh is offset back so the
+          pivot axis lies on the leaf's edge, not its center. */}
       <group ref={leafRef} position={[-doorW / 2, 0, doorL / 2]}>
+        {/* Leaf body */}
         <mesh position={[-0.005, 0, -doorL / 2]}>
           <boxGeometry args={[doorW, doorH, doorL]} />
-          <meshStandardMaterial color="#d4c89b" />
+          <meshStandardMaterial color={wood} />
+        </mesh>
+        {/* Upper panel — recessed rectangle on the INSIDE face (facing
+            into the office when closed). Drawn as a slightly darker,
+            thinner box just in front of the leaf face. */}
+        <mesh
+          position={[
+            -0.005 - doorW / 2 - 0.005,
+            doorH / 4 + panelGap / 4,
+            -doorL / 2,
+          ]}
+        >
+          <boxGeometry
+            args={[
+              0.015,
+              doorH / 2 - panelInsetY - panelGap / 2,
+              doorL - panelInsetZ * 2,
+            ]}
+          />
+          <meshStandardMaterial color={woodDark} />
+        </mesh>
+        {/* Lower panel */}
+        <mesh
+          position={[
+            -0.005 - doorW / 2 - 0.005,
+            -doorH / 4 - panelGap / 4,
+            -doorL / 2,
+          ]}
+        >
+          <boxGeometry
+            args={[
+              0.015,
+              doorH / 2 - panelInsetY - panelGap / 2,
+              doorL - panelInsetZ * 2,
+            ]}
+          />
+          <meshStandardMaterial color={woodDark} />
+        </mesh>
+        {/* Handle — small brass knob near the free edge of the leaf
+            (opposite the hinge), at roughly waist height. */}
+        <mesh
+          position={[
+            -0.005 - doorW / 2 - 0.02,
+            -0.05,
+            -doorL + panelInsetZ + 0.04,
+          ]}
+        >
+          <sphereGeometry args={[handleR, 10, 8]} />
+          <meshStandardMaterial
+            color={brass}
+            metalness={0.6}
+            roughness={0.3}
+          />
         </mesh>
       </group>
     </group>

@@ -4,6 +4,7 @@ import ProcessFlow from '@/components/home/ProcessFlow';
 import Differentiators from '@/components/home/Differentiators';
 import FinalCTA from '@/components/home/FinalCTA';
 import FooterSection from '@/components/home/FooterSection';
+import LandingR3FHost from '@/components/home/LandingR3FHost';
 
 export default function Home() {
   return (
@@ -14,6 +15,8 @@ export default function Home() {
       <Differentiators />
       <FinalCTA />
       <FooterSection />
+      {/* Single shared R3F Canvas — all 3D views on the landing tunnel into this. */}
+      <LandingR3FHost />
     </main>
   );
 }

@@ -499,6 +499,7 @@ function RightColumn({ data }: { data: ReturnType<typeof useMockArenaAgents> }) 
           eventBufferRef={data.eventBufferRef}
           height={ARENA_HEIGHT_PX}
           showSidebar={false}
+          useViewHost
         />
       </div>
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 
@@ -204,12 +203,6 @@ function TaskMakerVisual() {
 // ── Main component ──────────────────────────────────────────────────────────
 
 export default function ProcessFlow() {
-  // Defer mounting the builder's WebGL canvas until the Builders card scrolls
-  // into view. Avoids a two-canvas race on page load with the main arena in
-  // PlaygroundWindow — when both mount simultaneously under dev HMR pressure,
-  // the browser kills one context and the loser goes permanently blank.
-  const [buildersInView, setBuildersInView] = useState(false);
-
   return (
     <section className="w-full bg-[#FDFCFC]">
       <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 px-6 sm:px-10 py-10 lg:py-14">
@@ -265,7 +258,6 @@ export default function ProcessFlow() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            onViewportEnter={() => setBuildersInView(true)}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
             style={{
@@ -302,18 +294,7 @@ export default function ProcessFlow() {
               Agents ship real solutions before the deadline. The rubric runs,
               the leaderboard writes itself.
             </p>
-            {buildersInView ? (
-              <BuilderDeskVisual />
-            ) : (
-              <div
-                style={{
-                  height: 180,
-                  borderRadius: "var(--radius)",
-                  background: "#FDFCFC",
-                  border: "1px solid var(--border)",
-                }}
-              />
-            )}
+            <BuilderDeskVisual />
           </motion.div>
         </div>
       </div>

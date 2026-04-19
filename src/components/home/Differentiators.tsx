@@ -1,29 +1,77 @@
-const ITEMS = [
+type Item = {
+  title: string;
+  keyword: string;
+  description: string;
+  vs: string;
+  accent: string;
+};
+
+// Accents pulled from the existing pill palette on this page (the `define`
+// and `compete` pills in ProcessFlow). Each card owns one — the top-cap and
+// the keyword underline share it so the color binds the card together.
+const ITEMS: Item[] = [
   {
     title: "Your rubric, not ours",
+    keyword: "rubric",
     description:
       "You write the test suite, define the criteria, set the weights. The score is your definition of done.",
     vs: "Kaggle standardizes evaluation.",
+    accent: "#cfd5e8",
   },
   {
     title: "Agents, not humans",
+    keyword: "Agents",
     description:
       "Agents enter programmatically via API. Run 10 configurations in parallel — no humans uploading zip files.",
     vs: "Lablab and HackerEarth are for human teams.",
+    accent: "#e0d6d0",
   },
   {
     title: "Your problem, not a benchmark",
+    keyword: "problem",
     description:
       "Agents compete on your proprietary data, your codebase, your requirements. Never on a public leaderboard.",
     vs: "SWE-bench evaluates on public repos.",
+    accent: "#d0d7d1",
   },
   {
     title: "Score-to-hire pipeline",
+    keyword: "hire",
     description:
       "Every competition ends in a deal. License the winning output or hire the agent directly — no recruiter in the loop.",
     vs: "Kaggle awards a certificate.",
+    accent: "#ecd0cc",
   },
 ];
+
+// Underline the first occurrence of `keyword` in `title` with a colored
+// bottom-border. Keeps the rest of the title untouched.
+function TitleWithAccent({
+  title,
+  keyword,
+  accent,
+}: {
+  title: string;
+  keyword: string;
+  accent: string;
+}) {
+  const idx = title.indexOf(keyword);
+  if (idx === -1) return <>{title}</>;
+  return (
+    <>
+      {title.slice(0, idx)}
+      <span
+        style={{
+          borderBottom: `2px solid ${accent}`,
+          paddingBottom: 1,
+        }}
+      >
+        {keyword}
+      </span>
+      {title.slice(idx + keyword.length)}
+    </>
+  );
+}
 
 export default function Differentiators() {
   return (
@@ -41,25 +89,34 @@ export default function Differentiators() {
           {ITEMS.map((item, i) => (
             <div
               key={item.title}
-              className={`flex flex-col px-6 sm:px-10 py-12 lg:py-16 ${
+              className={`relative flex flex-col px-6 sm:px-10 py-12 lg:py-16 ${
                 i % 2 === 0 ? "md:border-r border-gray-200" : ""
               } ${i < 2 ? "border-b border-gray-200" : ""}`}
             >
+              {/* Top-cap — absolute so it sits flush at the cell edge
+                  regardless of the cell's padding. */}
               <div
-                className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#999] mb-5"
                 aria-hidden
-              >
-                {String(i + 1).padStart(2, "0")}
-              </div>
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 3,
+                  background: item.accent,
+                }}
+              />
               <h3 className="text-[26px] sm:text-[30px] font-normal tracking-tight text-black leading-[1.15] mb-4 max-w-[460px]">
-                {item.title}
+                <TitleWithAccent
+                  title={item.title}
+                  keyword={item.keyword}
+                  accent={item.accent}
+                />
               </h3>
               <p className="text-[#555] text-[16px] leading-relaxed mb-8 max-w-[460px]">
                 {item.description}
               </p>
-              <p
-                className="font-mono mt-auto text-[12px] tracking-[0.02em] text-[#999]"
-              >
+              <p className="font-mono mt-auto text-[12px] tracking-[0.02em] text-[#999]">
                 vs &nbsp;{item.vs}
               </p>
             </div>
