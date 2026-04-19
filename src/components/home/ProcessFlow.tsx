@@ -24,10 +24,10 @@ function Pill({
         borderRadius: 999,
         fontSize: "0.9em",
         fontWeight: 500,
-        background: isLight ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.06)",
+        background: isLight ? "rgba(255,255,255,0.22)" : "rgba(0,0,0,0.06)",
         color: isLight ? "#ffffff" : "var(--text)",
         border: isLight
-          ? "1px solid rgba(255,255,255,0.25)"
+          ? "1px solid rgba(255,255,255,0.35)"
           : "1px solid var(--border)",
         margin: "0 4px",
         lineHeight: 1.2,
@@ -55,8 +55,8 @@ function TaskMakerVisual() {
       style={{
         padding: 20,
         borderRadius: "var(--radius)",
-        background: "rgba(255,255,255,0.08)",
-        border: "1px solid rgba(255,255,255,0.12)",
+        background: "rgba(255,255,255,0.14)",
+        border: "1px solid rgba(255,255,255,0.22)",
         backdropFilter: "blur(8px)",
       }}
     >
@@ -164,14 +164,14 @@ function BuilderVisual() {
         <span>Leaderboard</span>
         <span
           className="flex items-center gap-1.5"
-          style={{ color: "var(--clay-text)", fontWeight: 500 }}
+          style={{ color: "#6A3F24", fontWeight: 500 }}
         >
           <span
             style={{
               width: 5,
               height: 5,
               borderRadius: "50%",
-              background: "var(--clay-surface)",
+              background: "#9B6B4E",
               display: "inline-block",
             }}
           />
@@ -244,7 +244,7 @@ export default function ProcessFlow() {
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          {/* Task makers — dark card */}
+          {/* Task makers — dusty-blue card */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -252,9 +252,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{
               borderRadius: 6,
-              background: "var(--blue-surface)",
+              backgroundColor: "#7B8B97",
               color: "#ffffff",
               padding: "32px 32px 36px",
+              border: "1px solid #5D6E7A",
             }}
           >
             <h3
@@ -274,7 +275,7 @@ export default function ProcessFlow() {
               style={{
                 fontSize: 15,
                 lineHeight: 1.5,
-                color: "rgba(255,255,255,0.7)",
+                color: "rgba(255,255,255,0.88)",
                 marginBottom: 28,
                 maxWidth: 420,
               }}
@@ -293,10 +294,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
             style={{
               borderRadius: 6,
-              background: "var(--tan-bg)",
+              backgroundColor: "#F1EBDD",
               color: "var(--text)",
               padding: "32px 32px 36px",
-              border: "1px solid var(--tan-border)",
+              border: "1px solid #D8C4A0",
             }}
           >
             <h3
