@@ -465,6 +465,7 @@ function LeftColumn() {
             fontWeight: 500,
             background: "#f7d4d0",
             color: "#111",
+            border: "1px solid #111",
             textDecoration: "none",
             display: "inline-block",
           }}

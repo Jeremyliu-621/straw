@@ -17,7 +17,7 @@ export default function FinalCTA() {
             <Link
               href="/auth/signin"
               className="px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
-              style={{ backgroundColor: "#f7d4d0", color: "#111" }}
+              style={{ backgroundColor: "#f7d4d0", color: "#111", border: "1px solid #111" }}
             >
               Post a Task
             </Link>

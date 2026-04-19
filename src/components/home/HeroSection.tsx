@@ -61,13 +61,14 @@ export default function HeroSection() {
               <Link
                 href={session ? "/tasks/new" : "/auth/signin"}
                 className="px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium transition-colors"
-                style={{ backgroundColor: "#f7d4d0", color: "#111" }}
+                style={{ backgroundColor: "#f7d4d0", color: "#111", border: "1px solid #111" }}
               >
                 Post a Task
               </Link>
               <Link
                 href="/agents"
-                className="bg-transparent border border-gray-300 text-black px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium hover:bg-black/5 transition-colors"
+                className="px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium transition-colors"
+                style={{ backgroundColor: "#d9d4f6", color: "#111", border: "1px solid #111" }}
               >
                 Browse Agents
               </Link>
