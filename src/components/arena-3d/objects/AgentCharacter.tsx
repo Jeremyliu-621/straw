@@ -71,6 +71,12 @@ export default function AgentCharacter({
   const emojiGroupRef = useRef<THREE.Group>(null);
   const talkBubbleRef = useRef<THREE.Group>(null);
   const pos = useRef(new THREE.Vector3(0, 0, 0));
+  // Start true so the first visible frame snaps rather than lerping from
+  // the group's default (0,0,0) world position to the agent's real canvas
+  // position. Also snaps on every hidden→visible transition (e.g. door
+  // join) so the body appears exactly where agent.x/y say, not sliding
+  // from wherever it last lerped.
+  const wasHidden = useRef(true);
   const statusMatRef = useRef<THREE.MeshBasicMaterial>(null);
 
   const avatar = useMemo(() => createDefaultAgentAvatarProfile(agentId), [agentId]);
@@ -108,7 +114,19 @@ export default function AgentCharacter({
     // Offstage agents (not in the top 20) are fully hidden — skip all
     // animation work so they don't show up anywhere visually.
     groupRef.current.visible = !agent.hidden;
-    if (agent.hidden) return;
+    if (agent.hidden) {
+      wasHidden.current = true;
+      return;
+    }
+    // First visible frame (mount or hidden→visible transition): snap the
+    // group to the agent's current canvas coords instead of letting the
+    // lerp slide from whatever stale position the group carried.
+    if (wasHidden.current) {
+      const [wx0, , wz0] = toWorld(agent.x, agent.y);
+      pos.current.set(wx0, 0, wz0);
+      groupRef.current.position.set(wx0, 0, wz0);
+      wasHidden.current = false;
+    }
 
     const isWalking = agent.state === "walking";
     const isDancing = agent.state === "dancing";
