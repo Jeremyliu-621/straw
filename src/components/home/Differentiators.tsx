@@ -103,7 +103,7 @@ export default function Differentiators() {
                   top: 0,
                   left: 0,
                   right: 0,
-                  height: 3,
+                  height: 1,
                   background: item.accent,
                 }}
               />
@@ -114,10 +114,40 @@ export default function Differentiators() {
                   top: 0,
                   left: 0,
                   bottom: 0,
-                  width: 3,
+                  width: 1,
                   background: item.accent,
                 }}
               />
+              {/* Bottom accent — bottom row only (above that, the next row's
+                  top accent covers the shared grid line). */}
+              {i >= 2 && (
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: 1,
+                    background: item.accent,
+                  }}
+                />
+              )}
+              {/* Right accent — only card 4 (closes the bottom-right corner
+                  against the outer section border). */}
+              {i === 3 && (
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: 1,
+                    background: item.accent,
+                  }}
+                />
+              )}
               <h3 className="text-[26px] sm:text-[30px] font-normal tracking-tight text-black leading-[1.15] mb-4 max-w-[460px]">
                 <TitleWithAccent
                   title={item.title}

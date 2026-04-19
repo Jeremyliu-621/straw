@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
-import { OrthographicCamera, View } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import AgentCharacter from "@/components/arena-3d/objects/AgentCharacter";
 import FurnitureModel, { FURNITURE_GLB } from "@/components/arena-3d/objects/FurnitureModel";
@@ -15,9 +14,9 @@ import { toWorld } from "@/components/arena-3d/core/geometry";
 import type { RenderAgentState } from "@/components/arena-3d/useArenaGameLoop";
 
 /**
- * Builder-at-desk mini scene for the landing's Builders card. Uses drei
- * <View> to render through the page-level shared Canvas (LandingR3FHost),
- * avoiding a second WebGL context.
+ * Tiny builder-at-desk mini scene for the landing's Builders card.
+ * Self-contained Canvas, in the normal document flow — scroll works
+ * on the compositor thread, no WebGL-vs-DOM jitter.
  */
 
 /**
@@ -54,7 +53,7 @@ function ArmFlail() {
   return null;
 }
 
-function SceneContent() {
+function Scene() {
   const station = useMemo(
     () =>
       makeDeskStation({
@@ -87,7 +86,6 @@ function SceneContent() {
     },
   ]);
 
-  // Tick the frame counter so any animations that read agent.frame stay alive.
   useFrame(() => {
     const a = agentRef.current[0];
     if (a) a.frame += 1;
@@ -123,10 +121,8 @@ function SceneContent() {
         agentsRef={agentRef}
       />
 
-      {/* MUST mount after AgentCharacter — same frame, later useFrame. */}
       <ArmFlail />
 
-      {/* Match the rest of the landing: b&w materials + mild tint + pure white. */}
       <BWEffects
         variant="unlit-tint"
         pureWhite
@@ -141,7 +137,7 @@ function SceneContent() {
 export default function BuilderDeskVisual() {
   const [wx, , wz] = toWorld(600, 550);
   return (
-    <View
+    <div
       style={{
         height: 180,
         borderRadius: "var(--radius)",
@@ -150,14 +146,30 @@ export default function BuilderDeskVisual() {
         border: "1px solid var(--border)",
       }}
     >
-      <OrthographicCamera
-        makeDefault
-        position={[wx + 5, 7, wz + 6]}
-        zoom={90}
-        near={0.1}
-        far={50}
-      />
-      <SceneContent />
-    </View>
+      <Canvas
+        orthographic
+        frameloop="always"
+        dpr={[2.5, 3]}
+        camera={{
+          position: [wx + 5, 7, wz + 6],
+          zoom: 90,
+          near: 0.1,
+          far: 50,
+        }}
+        gl={{ antialias: true, alpha: true }}
+        style={{ background: "#FDFCFC" }}
+        onCreated={({ gl }) => {
+          // Prevent permanent blank when the browser kills this context
+          // under dev HMR / memory pressure (the two-canvas tradeoff).
+          gl.domElement.addEventListener(
+            "webglcontextlost",
+            (e) => e.preventDefault(),
+            false
+          );
+        }}
+      >
+        <Scene />
+      </Canvas>
+    </div>
   );
 }
