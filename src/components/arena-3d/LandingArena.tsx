@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect, useEffect } from "react";
 import TunerScene, { useTunerAgent } from "./tuner/TunerScene";
 
 export default function LandingArena({ height }: { height: number }) {
@@ -16,7 +17,29 @@ export default function LandingArena({ height }: { height: number }) {
     setShowPaths,
     showNav,
     setShowNav,
+    triggerJoin,
   } = useTunerAgent({ initialCohort: "arena", initialAmbientAll: true });
+
+  // Hide every agent before the first paint so the scene opens on an
+  // empty arena (instead of showing 15 agents piled up at the spawn grid).
+  useLayoutEffect(() => {
+    for (const a of agentRef.current) {
+      if (a) a.hidden = true;
+    }
+  }, [agentRef]);
+
+  // Stagger agents in through the east door. triggerJoin picks the first
+  // hidden agent, teleports them just-inside the door, and walks them to
+  // the spawn area; once idle the ambient picker takes over normally.
+  useEffect(() => {
+    const timers: number[] = [];
+    for (let i = 0; i < agentRef.current.length; i++) {
+      timers.push(window.setTimeout(() => triggerJoin(), 400 + i * 500));
+    }
+    return () => {
+      for (const t of timers) window.clearTimeout(t);
+    };
+  }, [agentRef, triggerJoin]);
 
   return (
     <div style={{ height, width: "100%", position: "relative" }}>
