@@ -253,7 +253,7 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{
               borderRadius: 6,
-              backgroundColor: "#d8e3ee",
+              backgroundColor: "transparent",
               color: "#111",
               padding: "32px 32px 36px",
               border: "1px solid #111",
@@ -296,7 +296,7 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
             style={{
               borderRadius: 6,
-              backgroundColor: "#e0d6d0",
+              backgroundColor: "transparent",
               color: "var(--text)",
               padding: "32px 32px 36px",
               border: "1px solid #111",
