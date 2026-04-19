@@ -204,7 +204,7 @@ function TaskMakerVisual() {
 
 export default function ProcessFlow() {
   return (
-    <section className="w-full bg-[#FDFCFC]">
+    <section className="w-full bg-[#FDFCFC] border-b border-gray-200">
       <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 px-6 sm:px-10 py-10 lg:py-14">
         <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-black leading-[1.1] mb-8 lg:mb-10">
           How Straw works

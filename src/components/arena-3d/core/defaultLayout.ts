@@ -334,15 +334,18 @@ const WALL_DECOR: FurnitureItem[] = [
     wallAttach: "S",
     _uid: uid("art"),
   },
-  // Conference room — N-wall painting tucked next to the tv_screen.
+  // Conference room — painting on the continuous W interior wall
+  // (x=260) at roughly mid-height, facing east into the room. Avoids
+  // the N wall which is split by the tv_screen and the S wall which
+  // is split by the doorway.
   {
     type: "painting",
-    x: 275,
-    y: 5,
-    w: 60,
-    h: 45,
+    x: 268,
+    y: 110,
+    w: 80,
+    h: 55,
     color: "#5C8D65",
-    wallAttach: "N",
+    wallAttach: "W",
     _uid: uid("art"),
   },
   // West perimeter wall
