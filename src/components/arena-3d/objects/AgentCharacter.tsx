@@ -119,9 +119,27 @@ export default function AgentCharacter({
 
     // Head tilt-up at standing desks so the agent looks at the monitor
     // sitting on the taller surface. Otherwise, keep the head level.
+    // Head yaw: if agent.lookAtX/Y is set, swivel the head toward that
+    // canvas point WITHOUT rotating the body (so sit-back offsets stay
+    // valid). Otherwise decay back to neutral.
     if (headRef.current) {
       const targetTilt = isAtStandingDesk ? -0.35 : 0;
       headRef.current.rotation.x += (targetTilt - headRef.current.rotation.x) * 0.18;
+      let targetYaw = 0;
+      if (agent.lookAtX !== undefined && agent.lookAtY !== undefined) {
+        const dxLook = agent.lookAtX - agent.x;
+        const dyLook = agent.lookAtY - agent.y;
+        if (dxLook !== 0 || dyLook !== 0) {
+          const worldYaw = Math.atan2(dxLook, dyLook);
+          // Head rotation is relative to the body's current rotation.
+          let delta = worldYaw - (groupRef.current?.rotation.y ?? 0);
+          while (delta > Math.PI) delta -= Math.PI * 2;
+          while (delta < -Math.PI) delta += Math.PI * 2;
+          // Cap at ±~90° so the head doesn't spin past the shoulders.
+          targetYaw = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, delta));
+        }
+      }
+      headRef.current.rotation.y += (targetYaw - headRef.current.rotation.y) * 0.18;
     }
 
     const [wx, , wz] = toWorld(agent.x, agent.y);

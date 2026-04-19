@@ -69,6 +69,12 @@ export interface RenderAgentState {
    *  facing the audience; listener stands in the audience facing the front.
    *  Undefined for round-table standups (everyone is just "sitting"). */
   conferenceRole?: "speaker" | "listener";
+  /** Canvas coords this agent should rotate their HEAD toward each frame.
+   *  Body facing stays put (so sit-back / sink-depth offsets remain valid);
+   *  only the head swivels. Used for round-table speaker turns and future
+   *  head-turn-to-watch behaviors. */
+  lookAtX?: number;
+  lookAtY?: number;
   /**
    * Desired facing (radians) when the agent arrives at targetX/Y. Applied on
    * arrival so stations (desk / gym station / couch) can force the agent to

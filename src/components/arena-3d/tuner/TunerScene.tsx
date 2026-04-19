@@ -1760,6 +1760,8 @@ function TickLoop({
       if (a.standupUntil !== undefined && a.standupUntil <= now) {
         a.standupUntil = undefined;
         a.conferenceRole = undefined;
+        a.lookAtX = undefined;
+        a.lookAtY = undefined;
         if (a.state === "sitting" && a.socialSpotType === "chair") {
           a.state = "standing";
           a.socialSpotType = undefined;
@@ -1783,6 +1785,31 @@ function TickLoop({
       speakers.sort((x, y) => x.id.localeCompare(y.id));
       const turn = Math.floor(now / SPEAKER_TURN_MS) % speakers.length;
       speakers[turn].talkUntil = now + 500;
+    }
+
+    // Round-table speaker rotation: pick one seated participant per
+    // SPEAKER_TURN_MS window, set their talkUntil, and point every OTHER
+    // participant's head (not body — body stays on the chair) at them.
+    const tableSitters = agentRef.current.filter(
+      (a): a is RenderAgentState =>
+        !!a &&
+        a.conferenceRole === undefined &&
+        (a.standupUntil ?? 0) > now &&
+        a.state === "sitting" &&
+        a.socialSpotType === "chair"
+    );
+    if (tableSitters.length > 1) {
+      tableSitters.sort((x, y) => x.id.localeCompare(y.id));
+      const turn = Math.floor(now / SPEAKER_TURN_MS) % tableSitters.length;
+      const speaker = tableSitters[turn];
+      speaker.talkUntil = now + 500;
+      speaker.lookAtX = undefined;
+      speaker.lookAtY = undefined;
+      for (const a of tableSitters) {
+        if (a === speaker) continue;
+        a.lookAtX = speaker.x;
+        a.lookAtY = speaker.y;
+      }
     }
 
     // Proximity chat trigger: scan every unordered pair; if both are eligible
