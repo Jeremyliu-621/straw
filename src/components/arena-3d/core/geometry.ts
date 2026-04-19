@@ -180,6 +180,7 @@ export const NAV_ANCHOR_OVERRIDES: Record<string, NavAnchorOverride> = {
   plant: { dx: -19, dy: -27, padX: 11, padY: 26 },
   round_table: { dx: 7, dy: -157, padX: 15, padY: 36 },
   squat_rack: { padX: -2, padY: -30 },
+  standing_desk: { dx: -31, dy: -53 },
   table_rect: { dy: -23, padX: 9, padY: 3 },
   vending: { dx: -7, dy: -35, padX: -9, padY: -14 },
 };

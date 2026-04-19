@@ -34,6 +34,7 @@ export default function AgentCharacter({
   agentsRef,
 }: AgentCharacterProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const headRef = useRef<THREE.Group>(null);
   const leftArmRef = useRef<THREE.Group>(null);
   const rightArmRef = useRef<THREE.Group>(null);
   const leftLegRef = useRef<THREE.Group>(null);
@@ -76,6 +77,15 @@ export default function AgentCharacter({
     // chair sits more upright).
     const softSeatTypes = ["couch", "couch_v", "beanbag", "chair"];
     const isOnCouch = isSitting && softSeatTypes.includes(agent.socialSpotType ?? "");
+    const isAtStandingDesk = agent.socialSpotType === "standing_desk";
+
+    // Head tilt-up at standing desks so the agent looks at the monitor
+    // sitting on the taller surface. Otherwise, keep the head level.
+    if (headRef.current) {
+      const targetTilt = isAtStandingDesk ? -0.35 : 0;
+      headRef.current.rotation.x +=
+        (targetTilt - headRef.current.rotation.x) * 0.18;
+    }
 
     const [wx, , wz] = toWorld(agent.x, agent.y);
     // When sitting, pull the body backward along the facing vector so it
@@ -195,12 +205,12 @@ export default function AgentCharacter({
       if (rightLegRef.current) rightLegRef.current.rotation.x = -Math.sin(t * 2) * 0.2;
     } else if (
       agent.pingPongUntil !== undefined &&
-      agent.pingPongUntil > now
+      agent.pingPongUntil > Date.now()
     ) {
       // Playing ping pong: one arm swings on a 1.2s cycle synced with the
       // ball. Side A's paddle peaks at phase 0 (ball leaves), side B's at
       // phase 0.5 — so the two paddle arms alternate like a real rally.
-      const pingPhase = (now % 1200) / 1200;
+      const pingPhase = (Date.now() % 1200) / 1200;
       const strikePhase = agent.pingPongSide === "B" ? 0.5 : 0;
       const paddleSwing =
         Math.cos((pingPhase - strikePhase) * Math.PI * 2) * 1.2;
@@ -280,27 +290,31 @@ export default function AgentCharacter({
 
   return (
     <group ref={groupRef} scale={[s, s, s]}>
-      {/* Head */}
-      <mesh position={[0, 85, 0]}>
-        <boxGeometry args={[22, 22, 22]} />
-        <meshLambertMaterial color={skinColor} />
-      </mesh>
+      {/* Head + hair + eyes in one group so we can tilt them around the
+          neck pivot (y=75). Child positions are relative to that pivot. */}
+      <group ref={headRef} position={[0, 75, 0]}>
+        {/* Head */}
+        <mesh position={[0, 10, 0]}>
+          <boxGeometry args={[22, 22, 22]} />
+          <meshLambertMaterial color={skinColor} />
+        </mesh>
 
-      {/* Hair */}
-      <mesh position={[0, 97, 0]}>
-        <boxGeometry args={[24, 6, 24]} />
-        <meshLambertMaterial color={hairColor} />
-      </mesh>
+        {/* Hair */}
+        <mesh position={[0, 22, 0]}>
+          <boxGeometry args={[24, 6, 24]} />
+          <meshLambertMaterial color={hairColor} />
+        </mesh>
 
-      {/* Eyes */}
-      <mesh position={[-5, 86, 11.5]}>
-        <boxGeometry args={[4, 4, 1]} />
-        <meshBasicMaterial color="#1a1a1a" />
-      </mesh>
-      <mesh position={[5, 86, 11.5]}>
-        <boxGeometry args={[4, 4, 1]} />
-        <meshBasicMaterial color="#1a1a1a" />
-      </mesh>
+        {/* Eyes */}
+        <mesh position={[-5, 11, 11.5]}>
+          <boxGeometry args={[4, 4, 1]} />
+          <meshBasicMaterial color="#1a1a1a" />
+        </mesh>
+        <mesh position={[5, 11, 11.5]}>
+          <boxGeometry args={[4, 4, 1]} />
+          <meshBasicMaterial color="#1a1a1a" />
+        </mesh>
+      </group>
 
       {/* Body / Torso */}
       <mesh position={[0, 58, 0]}>

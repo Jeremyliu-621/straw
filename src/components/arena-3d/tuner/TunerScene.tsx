@@ -427,8 +427,10 @@ export function buildStations(tuning: TuningParams): {
     standX: Math.round(standingDeskStandRot.x),
     standY: Math.round(standingDeskStandRot.y),
     facing: (tuning.standingDeskRotDeg * Math.PI) / 180 + Math.PI,
-    // Standing — no sitting / no chair social spot.
+    // "standing_desk" social spot triggers a head tilt-up so the agent
+    // looks at the monitor on the taller desk surface.
     state: "standing",
+    socialSpotType: "standing_desk",
     sitBack: 0,
   };
 
