@@ -34,6 +34,13 @@ const LandingArena = dynamic(() => import("@/components/arena-3d/LandingArena"),
   ),
 });
 
+// Kick the arena chunk fetch as soon as this module parses on the client
+// (during hydration) instead of waiting for the <LandingArena /> JSX to
+// render. Removes ~2–5s from the "Loading arena…" state on cold loads.
+if (typeof window !== "undefined") {
+  (LandingArena as unknown as { preload?: () => void }).preload?.();
+}
+
 const URL_PATH = "app.straw.dev/tasks/openclaw-v2";
 const INITIAL_COUNTDOWN_MS = (1 * 24 + 12) * 60 * 60_000 + 50 * 60_000;
 const ARENA_HEIGHT_PX = 380;
