@@ -193,7 +193,9 @@ function pickSpawnPoint(): { x: number; y: number } {
   };
 }
 
-function deskPosition(deskIndex: number): { x: number; y: number } | null {
+function deskPosition(
+  deskIndex: number,
+): { x: number; y: number; facing: number } | null {
   return DESK_STANDING_POINTS[deskIndex] ?? null;
 }
 
@@ -922,7 +924,7 @@ export function useArenaGameLoop(
           ...agent,
           talkUntil: undefined,
           talkPartnerId: undefined,
-          state: "standing",
+          state: "standing" as const,
           frame: agent.frame + 1,
         };
       }
@@ -967,7 +969,7 @@ export function useArenaGameLoop(
       const dy = wpY - agent.y;
       const dist = Math.hypot(dx, dy);
 
-      let state = agent.state;
+      let state: RenderAgentState["state"] = agent.state;
       let nx = agent.x;
       let ny = agent.y;
       let nf = agent.facing;

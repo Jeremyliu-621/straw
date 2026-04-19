@@ -348,7 +348,7 @@ export function ArenaCanvasInner({
   // Match the site's page background (#FDFCFC) in B&W modes; color mode
   // keeps its own canvas backing tied to the 3D outside-ground color.
   const bgColor = bw ? "#FDFCFC" : "#FFFFFF";
-  const shadowsOn = mode === "color" || bwShadows;
+  const shadowsOn = bwShadows;
 
   return (
     <div className="flex w-full" style={{ height }}>
