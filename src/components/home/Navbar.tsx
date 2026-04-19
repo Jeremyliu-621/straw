@@ -59,7 +59,8 @@ export default function Navbar() {
             </Link>
             <Link
               href="/auth/signin"
-              className="text-[14px] font-medium border border-gray-300 text-black px-5 py-1.5 rounded-[var(--radius)] hover:bg-black/5 transition-colors"
+              className="text-[14px] font-medium text-black px-5 py-1.5 rounded-[var(--radius)] hover:bg-black/5 transition-colors"
+              style={{ border: "1px solid #D8C4A0" }}
             >
               Post a Task
             </Link>
@@ -117,7 +118,8 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/auth/signin"
-                  className="block text-center bg-black text-white px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium hover:bg-black/80 transition-colors"
+                  className="block text-center text-white px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
+                  style={{ backgroundColor: "#9C7761" }}
                   onClick={() => setMenuOpen(false)}
                 >
                   Post a Task

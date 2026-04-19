@@ -60,7 +60,8 @@ export default function HeroSection() {
             <div className="flex flex-wrap items-center gap-4 mt-8">
               <Link
                 href={session ? "/tasks/new" : "/auth/signin"}
-                className="bg-black text-white px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium hover:bg-black/80 transition-colors"
+                className="text-white px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium transition-colors"
+                style={{ backgroundColor: "#9C7761" }}
               >
                 Post a Task
               </Link>

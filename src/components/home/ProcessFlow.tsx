@@ -49,15 +49,15 @@ function TaskMakerVisual() {
     { label: "API design", weight: 25 },
     { label: "Performance", weight: 20 },
   ];
+  // Inner panel = darker shade of the card's soft blue bg, for separation.
   return (
     <div
       className="font-sans"
       style={{
         padding: 20,
         borderRadius: "var(--radius)",
-        background: "rgba(255,255,255,0.14)",
-        border: "1px solid rgba(255,255,255,0.22)",
-        backdropFilter: "blur(8px)",
+        background: "#D5DCE2",
+        border: "1px solid #B9C4CC",
       }}
     >
       <div
@@ -65,7 +65,7 @@ function TaskMakerVisual() {
           fontSize: 11,
           letterSpacing: "0.06em",
           textTransform: "uppercase",
-          color: "rgba(255,255,255,0.6)",
+          color: "#3A4955",
           marginBottom: 6,
         }}
       >
@@ -75,7 +75,7 @@ function TaskMakerVisual() {
         style={{
           fontSize: 15,
           fontWeight: 500,
-          color: "#ffffff",
+          color: "#111111",
           marginBottom: 16,
         }}
       >
@@ -86,7 +86,7 @@ function TaskMakerVisual() {
           <div key={r.label}>
             <div
               className="flex items-center justify-between"
-              style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", marginBottom: 4 }}
+              style={{ fontSize: 13, color: "#3A4955", marginBottom: 4 }}
             >
               <span>{r.label}</span>
               <span className="font-mono">{r.weight}%</span>
@@ -94,7 +94,7 @@ function TaskMakerVisual() {
             <div
               style={{
                 height: 4,
-                background: "rgba(255,255,255,0.15)",
+                background: "#B9C4CC",
                 borderRadius: 999,
                 overflow: "hidden",
               }}
@@ -103,7 +103,7 @@ function TaskMakerVisual() {
                 style={{
                   height: 4,
                   width: `${r.weight * 3}%`,
-                  background: "#ffffff",
+                  background: "#5A6D7A",
                   borderRadius: 999,
                 }}
               />
@@ -115,15 +115,15 @@ function TaskMakerVisual() {
         style={{
           marginTop: 16,
           paddingTop: 14,
-          borderTop: "1px solid rgba(255,255,255,0.12)",
+          borderTop: "1px solid #B9C4CC",
           display: "flex",
           justifyContent: "space-between",
           fontSize: 13,
-          color: "rgba(255,255,255,0.75)",
+          color: "#3A4955",
         }}
       >
         <span>Budget</span>
-        <span className="font-mono" style={{ color: "#ffffff", fontWeight: 600 }}>
+        <span className="font-mono" style={{ color: "#111111", fontWeight: 600 }}>
           $2,500
         </span>
       </div>
@@ -139,13 +139,14 @@ function BuilderVisual() {
     { rank: 2, name: "Devin", score: "89.0" },
     { rank: 3, name: "Cursor", score: "79.3" },
   ];
+  // Inner panel = darker shade of the card's soft tan bg.
   return (
     <div
       className="font-sans"
       style={{
         borderRadius: "var(--radius)",
-        background: "#ffffff",
-        border: "1px solid var(--border)",
+        background: "#ECE1C7",
+        border: "1px solid #DCCFB3",
         overflow: "hidden",
       }}
     >
@@ -153,12 +154,12 @@ function BuilderVisual() {
         className="flex items-center justify-between"
         style={{
           padding: "12px 16px",
-          background: "var(--bg-subtle)",
-          borderBottom: "1px solid var(--border)",
+          background: "#E3D6B6",
+          borderBottom: "1px solid #DCCFB3",
           fontSize: 11,
           letterSpacing: "0.06em",
           textTransform: "uppercase",
-          color: "var(--text-muted)",
+          color: "#5C4E33",
         }}
       >
         <span>Leaderboard</span>
@@ -184,7 +185,7 @@ function BuilderVisual() {
           className="flex items-center"
           style={{
             padding: "14px 16px",
-            borderBottom: "1px solid var(--border)",
+            borderBottom: "1px solid #DCCFB3",
             fontSize: 14,
           }}
         >
@@ -224,7 +225,7 @@ function BuilderVisual() {
         style={{
           padding: "10px 16px",
           fontSize: 12,
-          color: "var(--text-faint)",
+          color: "#8A7A52",
         }}
       >
         12 more submissions scoring…
@@ -244,7 +245,7 @@ export default function ProcessFlow() {
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          {/* Task makers — dusty-blue card */}
+          {/* Task makers — soft blue-tinted card */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -252,10 +253,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{
               borderRadius: 6,
-              backgroundColor: "#7B8B97",
-              color: "#ffffff",
+              backgroundColor: "#ECEFF3",
+              color: "#111111",
               padding: "32px 32px 36px",
-              border: "1px solid #5D6E7A",
+              border: "1px solid #D1D8DE",
             }}
           >
             <h3
@@ -266,16 +267,17 @@ export default function ProcessFlow() {
                 letterSpacing: "-0.01em",
                 lineHeight: 1.2,
                 marginBottom: 12,
+                color: "#111111",
               }}
             >
-              Task makers <Pill tone="light">define</Pill> winning
+              Task makers <Pill tone="dark">define</Pill> winning
             </h3>
             <p
               className="font-sans"
               style={{
                 fontSize: 15,
                 lineHeight: 1.5,
-                color: "rgba(255,255,255,0.88)",
+                color: "#3A4955",
                 marginBottom: 28,
                 maxWidth: 420,
               }}
@@ -294,10 +296,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
             style={{
               borderRadius: 6,
-              backgroundColor: "#F1EBDD",
+              backgroundColor: "#F7F2E7",
               color: "var(--text)",
               padding: "32px 32px 36px",
-              border: "1px solid #D8C4A0",
+              border: "1px solid #E3D9C3",
             }}
           >
             <h3

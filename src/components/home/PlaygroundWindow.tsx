@@ -463,7 +463,7 @@ function LeftColumn() {
             borderRadius: "var(--radius)",
             fontSize: 14,
             fontWeight: 500,
-            background: "#6D3A2B",
+            background: "#9C7761",
             color: "#ffffff",
             textDecoration: "none",
             display: "inline-block",
