@@ -38,6 +38,8 @@ type MeshUserData = {
   __bwOriginalReceiveShadow?: boolean;
   __bwTintedMaterial?: THREE.Material;
   __isBWEdgeOverlay?: boolean;
+  /** Opt-out set on the source mesh — skip the black edge overlay. */
+  __skipBWEdges?: boolean;
 };
 
 const BW_WHITE = "#FDFCFC";
@@ -170,6 +172,20 @@ function applyBWToMesh(
   const lit = variant === "lit" || variant === "lit-tint";
   mesh.castShadow = lit;
   mesh.receiveShadow = lit;
+
+  // Meshes opted out of outlines (e.g. floor planes) still get the material
+  // swap, but no black edge overlay. Clean up any overlay a previous pass
+  // already attached so the flag is reactive on hot-reload.
+  if (ud.__skipBWEdges) {
+    const stale = mesh.children.find(
+      (c) => (c.userData as MeshUserData).__isBWEdgeOverlay
+    ) as THREE.LineSegments | undefined;
+    if (stale) {
+      mesh.remove(stale);
+      if (stale.geometry) stale.geometry.dispose();
+    }
+    return;
+  }
 
   // Add (or replace) the edge overlay if its threshold is the right one.
   let overlay = mesh.children.find((c) => (c.userData as MeshUserData).__isBWEdgeOverlay) as

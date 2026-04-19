@@ -20,16 +20,29 @@ const OUTSIDE_COLOR = "#FFFFFF";
 const ACCENT_COLOR = "#B8B3AB";
 
 function FloorPlane() {
+  // __skipBWEdges: BWEffects adds a black outline to every mesh via
+  // EdgesGeometry. The floor planes don't want one — a thick black rectangle
+  // on the ground reads as a frame/border, not as part of the scene.
   return (
     <>
       {/* Dark outside ground */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, -0.01, 0]}
+        receiveShadow
+        userData={{ __skipBWEdges: true }}
+      >
         <planeGeometry args={[WORLD_W * 3, WORLD_H * 3]} />
         <meshStandardMaterial color={OUTSIDE_COLOR} />
       </mesh>
 
       {/* Office floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0, 0]}
+        receiveShadow
+        userData={{ __skipBWEdges: true }}
+      >
         <planeGeometry args={[WORLD_W, WORLD_H]} />
         <meshStandardMaterial color={FLOOR_COLOR} />
       </mesh>

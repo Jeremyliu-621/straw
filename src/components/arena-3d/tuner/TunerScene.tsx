@@ -1771,10 +1771,14 @@ function AgentDebugMarker({
   agentRef,
   agentIdx,
   color,
+  showArrow = true,
 }: {
   agentRef: React.RefObject<RenderAgentState[]>;
   agentIdx: number;
   color: string;
+  /** Hide the facing-direction cone. Arena cohort uses this for a clean
+   *  deployment look; tuning cohorts keep the arrow for debugging. */
+  showArrow?: boolean;
 }) {
   const markerRef = useRef<THREE.Mesh>(null);
   const arrowRef = useRef<THREE.Mesh>(null);
@@ -1794,10 +1798,12 @@ function AgentDebugMarker({
         <sphereGeometry args={[0.04, 12, 12]} />
         <meshBasicMaterial color={color} />
       </mesh>
-      <mesh ref={arrowRef}>
-        <coneGeometry args={[0.05, 0.3, 8]} />
-        <meshBasicMaterial color={color} />
-      </mesh>
+      {showArrow && (
+        <mesh ref={arrowRef}>
+          <coneGeometry args={[0.05, 0.3, 8]} />
+          <meshBasicMaterial color={color} />
+        </mesh>
+      )}
     </>
   );
 }
@@ -1913,6 +1919,7 @@ function DebugMarkers({
   showPaths,
   showNav,
   navGrid,
+  cohort,
 }: {
   stations: Station[];
   stationIdxByAgent: (number | null)[];
@@ -1920,8 +1927,12 @@ function DebugMarkers({
   showPaths: boolean;
   showNav: boolean;
   navGrid: NavGrid;
+  cohort: Cohort;
 }) {
   const agentCount = stationIdxByAgent.length;
+  // Arena cohort is the deploy-ready view — no facing cones for agents
+  // or stations. Other cohorts keep them for tuning.
+  const showArrows = cohort !== "arena";
   return (
     <>
       {showNav && <NavGridOverlay grid={navGrid} />}
@@ -1931,6 +1942,7 @@ function DebugMarkers({
           agentRef={agentRef}
           agentIdx={i}
           color={tunerAgentColor(i)}
+          showArrow={showArrows}
         />
       ))}
       {showPaths &&
@@ -1951,13 +1963,15 @@ function DebugMarkers({
               <sphereGeometry args={[0.05, 12, 12]} />
               <meshBasicMaterial color={color} transparent opacity={0.55} />
             </mesh>
-            <mesh
-              position={[tx + dirX * 0.2, 0.05, tz + dirZ * 0.2]}
-              rotation={[0, station.facing, 0]}
-            >
-              <coneGeometry args={[0.05, 0.3, 8]} />
-              <meshBasicMaterial color={color} transparent opacity={0.55} />
-            </mesh>
+            {showArrows && (
+              <mesh
+                position={[tx + dirX * 0.2, 0.05, tz + dirZ * 0.2]}
+                rotation={[0, station.facing, 0]}
+              >
+                <coneGeometry args={[0.05, 0.3, 8]} />
+                <meshBasicMaterial color={color} transparent opacity={0.55} />
+              </mesh>
+            )}
           </group>
         );
       })}
@@ -2470,6 +2484,7 @@ export default function TunerScene({
           showPaths={showPaths}
           showNav={showNav}
           navGrid={navGrid}
+          cohort={cohort}
         />
         <TickLoop agentRef={agentRef} stations={stations} stationIdxByAgent={stationIdxByAgent} />
 
