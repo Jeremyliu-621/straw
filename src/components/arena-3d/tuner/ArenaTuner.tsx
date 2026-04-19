@@ -13,6 +13,7 @@ export default function ArenaTuner() {
     reset,
     triggerDevAction,
     triggerStandup,
+    triggerCluster,
     tuning,
     setTuning,
     gymTuning,
@@ -77,6 +78,7 @@ export default function ArenaTuner() {
         onReset={reset}
         onDevAction={triggerDevAction}
         onStandup={triggerStandup}
+        onCluster={triggerCluster}
         agentRef={agentRef}
       />
     </div>

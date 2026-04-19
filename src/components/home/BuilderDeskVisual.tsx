@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import * as THREE from "three";
 import AgentCharacter from "@/components/arena-3d/objects/AgentCharacter";
 import FurnitureModel, { FURNITURE_GLB } from "@/components/arena-3d/objects/FurnitureModel";
 import ProceduralFurniture, {

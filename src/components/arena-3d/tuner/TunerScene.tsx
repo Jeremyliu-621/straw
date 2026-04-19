@@ -2590,6 +2590,109 @@ export function useTunerAgent() {
     setAmbientByAgent(Array(n).fill(false));
   }, [cohort]);
 
+  // Spawn one random cluster. Same logic as the ambient-interval cluster
+  // trigger, extracted so the dev button can fire it on demand. Returns
+  // true if a cluster was started, false if no eligible anchor/peers.
+  const triggerCluster = useCallback((): boolean => {
+    const now = Date.now();
+    const agents = agentRef.current;
+    const eligible = (a: RenderAgentState | undefined): boolean => {
+      if (!a) return false;
+      if (a.state === "walking") return false;
+      if ((a.standupUntil ?? 0) > now) return false;
+      if ((a.clusterUntil ?? 0) > now) return false;
+      if ((a.gymUntil ?? 0) > now) return false;
+      if ((a.couchUntil ?? 0) > now) return false;
+      if ((a.pingPongUntil ?? 0) > now) return false;
+      if (a.pingPongTableUid) return false;
+      if ((a.danceUntil ?? 0) > now) return false;
+      if ((a.talkUntil ?? 0) > now) return false;
+      return true;
+    };
+    // Random shuffle of candidate anchor indexes so the dev button doesn't
+    // always pick the same agent.
+    const anchors: number[] = [];
+    for (let i = 0; i < agents.length; i++) {
+      if (eligible(agents[i])) anchors.push(i);
+    }
+    for (let i = anchors.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [anchors[i], anchors[j]] = [anchors[j], anchors[i]];
+    }
+    for (const ai of anchors) {
+      const anchor = agents[ai];
+      if (!anchor) continue;
+      const peerIdxs: number[] = [];
+      for (let pi = 0; pi < agents.length; pi++) {
+        if (pi === ai) continue;
+        if (!eligible(agents[pi])) continue;
+        const d = Math.hypot(
+          agents[pi]!.x - anchor.x,
+          agents[pi]!.y - anchor.y
+        );
+        if (d > CLUSTER_RANGE) continue;
+        peerIdxs.push(pi);
+      }
+      if (peerIdxs.length < CLUSTER_MIN_PEERS) continue;
+      peerIdxs.sort(
+        (a, b) =>
+          Math.hypot(agents[a]!.x - anchor.x, agents[a]!.y - anchor.y) -
+          Math.hypot(agents[b]!.x - anchor.x, agents[b]!.y - anchor.y)
+      );
+      const peerCount = Math.min(
+        peerIdxs.length,
+        CLUSTER_MIN_PEERS +
+          Math.floor(
+            Math.random() * (CLUSTER_MAX_PEERS - CLUSTER_MIN_PEERS + 1)
+          )
+      );
+      const chosen = peerIdxs.slice(0, peerCount);
+      const duration =
+        CLUSTER_MIN_MS + Math.random() * (CLUSTER_MAX_MS - CLUSTER_MIN_MS);
+      anchor.clusterUntil = now + duration;
+      anchor.state = "standing";
+      chosen.forEach((pi, k) => {
+        const peer = agents[pi]!;
+        const angle = (k / chosen.length) * Math.PI * 2 + Math.random() * 0.4;
+        const spokeX = anchor.x + Math.sin(angle) * CLUSTER_RADIUS;
+        const spokeY = anchor.y + Math.cos(angle) * CLUSTER_RADIUS;
+        const plan = planPath(peer.x, peer.y, spokeX, spokeY);
+        peer.state = "walking";
+        peer.path = plan.waypoints;
+        peer.plannedPath = [
+          { x: peer.x, y: peer.y },
+          ...plan.waypoints.map((p) => ({ ...p })),
+        ];
+        peer.plannedPathRouted = plan.routed;
+        peer.targetX = spokeX;
+        peer.targetY = spokeY;
+        peer.targetFacing = Math.atan2(
+          anchor.x - spokeX,
+          anchor.y - spokeY
+        );
+        peer.clusterUntil = now + duration;
+        peer.socialSpotType = undefined;
+        peer.sitBackOverride = undefined;
+        peer.sinkDepthOverride = undefined;
+        peer.workoutStyle = undefined;
+        ambientNextAtRef.current[pi] = Infinity;
+        setStationIdxByAgent((prev) => {
+          const next = [...prev];
+          next[pi] = null;
+          return next;
+        });
+      });
+      setStationIdxByAgent((prev) => {
+        const next = [...prev];
+        next[ai] = null;
+        return next;
+      });
+      ambientNextAtRef.current[ai] = Infinity;
+      return true;
+    }
+    return false;
+  }, [planPath]);
+
   // Standup trigger — two flavors:
   //   "conference" — top-3 ranked agents become speakers at the front of
   //     the meeting room; the rest become listeners in the audience rows.
@@ -2832,6 +2935,7 @@ export function useTunerAgent() {
     reset,
     triggerDevAction,
     triggerStandup,
+    triggerCluster,
     tuning,
     setTuning,
     gymTuning,

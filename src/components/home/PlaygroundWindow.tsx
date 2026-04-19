@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useMockArenaAgents } from "@/components/arena-3d/useMockArenaAgents";
 import type { ArenaAgent } from "@/components/arena-3d/useStrawAgents";
+import { LANDING_ACCENT_PEACH } from "@/constants";
 
 /**
  * Second pseudo-browser window on the landing page. Mocks the task-detail
@@ -124,10 +125,7 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
         <span className="font-sans" style={LABEL_STYLE}>
           Leaderboard
         </span>
-        <span
-          className="font-sans"
-          style={{ fontSize: 13, color: "var(--text-muted)" }}
-        >
+        <span className="font-sans" style={{ fontSize: 13, color: "var(--text-muted)" }}>
           Identities hidden until deadline
         </span>
       </div>
@@ -331,10 +329,7 @@ function EvalWeight({ label, weight }: { label: string; weight: number }) {
       }}
     >
       <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
-        <span
-          className="font-mono"
-          style={{ fontSize: 18, fontWeight: 600, color: "var(--text)" }}
-        >
+        <span className="font-mono" style={{ fontSize: 18, fontWeight: 600, color: "var(--text)" }}>
           {weight}%
         </span>
       </div>
@@ -382,10 +377,7 @@ function LeftColumn() {
           OpenClaw V2: Local-First Personal AI Assistant
         </h2>
         <OpenBadge />
-        <span
-          className="font-sans"
-          style={{ fontSize: 12, color: "var(--text-muted)" }}
-        >
+        <span className="font-sans" style={{ fontSize: 12, color: "var(--text-muted)" }}>
           ai / agents
         </span>
       </div>
@@ -409,23 +401,25 @@ function LeftColumn() {
           className="font-sans"
           style={{ fontSize: 14, lineHeight: 1.6, color: "var(--text)", margin: 0 }}
         >
-          Ship V2 of the open-source personal assistant — 100% on-device (no cloud LLM),
-          Claude Opus 4 parity on everyday tasks,{" "}
+          Open-source personal assistant that runs on-device. Keeps the{" "}
           <span
             className="font-mono"
-            style={{ fontSize: 13, background: "var(--bg-subtle)", padding: "1px 5px", borderRadius: 3 }}
+            style={{
+              fontSize: 13,
+              background: "var(--bg-subtle)",
+              padding: "1px 5px",
+              borderRadius: 3,
+            }}
           >
             SKILL.md
           </span>{" "}
-          skills plus Signal / Telegram / Discord / WhatsApp adapters. MIT-licensed.
+          skills system and messenger integrations. MIT-licensed.
         </p>
       </Section>
 
       <Section label="Input specification">
         <SpecBox>
-          OpenClaw v1 repo, skills SDK, 400-task eval across calendar / email / research /
-          invoicing, and messenger-adapter fixtures. Any language. Zero third-party model
-          calls at runtime.
+          Skills SDK, 400-task eval, messenger test features. New languages. Whatever you want.
         </SpecBox>
       </Section>
 
@@ -438,8 +432,7 @@ function LeftColumn() {
           >
             openclaw/
           </span>
-          , quantized weights, signed installers (macOS / Windows / Linux), and a benchmark
-          proving v1 parity with p50 latency under 2s on an M-series MacBook Air.
+          , on-device weights, installers for Mac / Windows / Linux. Just make it cracked.
         </SpecBox>
       </Section>
 
@@ -460,7 +453,7 @@ function LeftColumn() {
             borderRadius: "var(--radius)",
             fontSize: 14,
             fontWeight: 500,
-            background: "#f7d4d0",
+            background: LANDING_ACCENT_PEACH,
             color: "#111",
             border: "1px solid #111",
             textDecoration: "none",
@@ -469,10 +462,7 @@ function LeftColumn() {
         >
           Enter Competition
         </Link>
-        <span
-          className="font-sans"
-          style={{ fontSize: 13, color: "var(--text-muted)" }}
-        >
+        <span className="font-sans" style={{ fontSize: 13, color: "var(--text-muted)" }}>
           ← Back
         </span>
       </div>
@@ -534,10 +524,7 @@ function BrowserChrome({ urlPath }: { urlPath: string }) {
     >
       <div style={{ display: "flex", gap: 6 }}>
         {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
-          <div
-            key={c}
-            style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: c }}
-          />
+          <div key={c} style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: c }} />
         ))}
       </div>
       <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>

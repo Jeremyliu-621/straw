@@ -51,6 +51,7 @@ interface TunerPanelProps {
     action: "dance" | "emoji" | "slump" | "talk"
   ) => void;
   onStandup: (venue: "conference" | "round_table" | "random") => void;
+  onCluster: () => boolean;
   agentRef: React.RefObject<RenderAgentState[]>;
 }
 
@@ -132,6 +133,7 @@ export default function TunerPanel({
   onReset,
   onDevAction,
   onStandup,
+  onCluster,
   agentRef,
 }: TunerPanelProps) {
   const [devAgentIdx, setDevAgentIdx] = useState(0);
@@ -569,6 +571,16 @@ export default function TunerPanel({
             title="6 closest eligible agents sit at the round-table nook (30–75s)"
           >
             round table
+          </button>
+        </div>
+        <div className="mt-2 flex items-center gap-1.5">
+          <span className="text-[11px] text-gray-500 shrink-0">gather:</span>
+          <button
+            onClick={() => onCluster()}
+            className="flex-1 px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black"
+            title="Spawn one random cluster — an anchor + 1–2 nearby agents gather around them for 10–20s"
+          >
+            cluster
           </button>
         </div>
       </div>

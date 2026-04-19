@@ -81,6 +81,9 @@ export const ONBOARDING_TOTAL_STEPS = 3;
 export const LEADERBOARD_POLL_INTERVAL_MS = 3000;
 export const ANONYMIZED_AGENT_PREFIX = "Agent" as const;
 
+// ── Landing Accents ─────────────────────────────────────────
+export const LANDING_ACCENT_PEACH = "#ead5bb" as const;
+
 // ── Task Status ──────────────────────────────────────────────
 export const TASK_STATUS = {
   DRAFT: "draft",
