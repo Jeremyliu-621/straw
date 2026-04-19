@@ -93,8 +93,9 @@ export default function Differentiators() {
                 i % 2 === 0 ? "md:border-r border-gray-200" : ""
               } ${i < 2 ? "border-b border-gray-200" : ""}`}
             >
-              {/* Top-cap — absolute so it sits flush at the cell edge
-                  regardless of the cell's padding. */}
+              {/* Accent L-bracket: 1px colored strips on the top and left
+                  edges of each cell, matching the thickness of the grey grid
+                  dividers so they read as a tint on the grid itself. */}
               <div
                 aria-hidden
                 style={{
@@ -103,6 +104,17 @@ export default function Differentiators() {
                   left: 0,
                   right: 0,
                   height: 3,
+                  background: item.accent,
+                }}
+              />
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  width: 3,
                   background: item.accent,
                 }}
               />

@@ -1389,12 +1389,13 @@ function ArenaDoor({
   });
   if (!large) return null;
   const [wx, , wz] = toWorld(ARENA_DOOR_X, ARENA_DOOR_Y);
-  // Real-door proportions: ~0.8w × 1.8h × thin (single-person width).
+  // Leaf height matches the perimeter wall (wallH = 1.1) so the door
+  // doesn't poke above it. Width is ~0.8 (real single-person doorway).
   const doorW = 0.05;          // leaf thickness (x — into/out of wall)
-  const doorH = 1.8;           // leaf height (y)
+  const doorH = 1.1;           // leaf height (y) — same as PerimeterWalls wallH
   const doorL = 45 * SCALE;    // leaf width along the wall (z)
-  const frameThick = 0.12;     // trim around the opening
-  const panelInsetY = 0.12;    // panel top/bottom margin inside the leaf
+  const frameThick = 0.12;     // trim around the opening (z-side only)
+  const panelInsetY = 0.1;     // panel top/bottom margin inside the leaf
   const panelInsetZ = 0.06;    // panel side margin inside the leaf
   const panelGap = 0.06;       // vertical gap between upper and lower panels
   const handleR = 0.04;
@@ -1404,10 +1405,11 @@ function ArenaDoor({
   const brass = "#d4b048";
   return (
     <group position={[wx, doorH / 2, wz]}>
-      {/* Trim / jamb around the opening — sits slightly proud of the wall
-          so it reads as framing. */}
+      {/* Trim / jamb — same height as the leaf so it doesn't poke above
+          the wall. Wider on the z-axis so it reads as a frame around the
+          doorway opening. */}
       <mesh position={[0, 0, -0.02]}>
-        <boxGeometry args={[0.04, doorH + frameThick * 2, doorL + frameThick * 2]} />
+        <boxGeometry args={[0.04, doorH, doorL + frameThick * 2]} />
         <meshStandardMaterial color={trim} />
       </mesh>
       {/* Door leaf — pivots around its inside-wall edge so it swings
