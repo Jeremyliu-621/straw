@@ -1055,8 +1055,12 @@ export function buildDesksStations(): {
 
   const gridW = (DESKS_GRID_COLS - 1) * DESKS_GRID_PITCH_X + DESK_W;
   const gridH = (DESKS_GRID_ROWS - 1) * DESKS_GRID_PITCH_Y + DESK_H;
-  const originX = (DESKS_CANVAS_W - gridW) / 2;
-  const originY = (DESKS_CANVAS_H - gridH) / 2;
+  // toWorld() centers canvas coords around (MAIN_CANVAS_W/2, MAIN_CANVAS_H/2),
+  // NOT around the tuner's local canvas size. Center the grid on those coords
+  // so world origin sits in the middle of the grid and the floor plane (also
+  // centered at world origin) actually covers the agents.
+  const originX = MAIN_CANVAS_W / 2 - gridW / 2;
+  const originY = MAIN_CANVAS_H / 2 - gridH / 2;
   const deskChairX = DESK_W / 2 - 30;
 
   for (let row = 0; row < DESKS_GRID_ROWS; row++) {
@@ -1968,6 +1972,50 @@ function CameraRig({ zoom, view }: { zoom: number; view: TunerView }) {
   return null;
 }
 
+/**
+ * Post-render arm override for the desks cohort. The chair/couch pose in
+ * AgentCharacter is static — legs bent, arms resting. To read as "working"
+ * we find every agent's arm groups (y=68, x=±14 in agent-local coords)
+ * and overwrite their rotations each frame with two uncorrelated sines
+ * per arm. Phase-offset by arm index so the crowd doesn't type in lockstep.
+ *
+ * Must mount AFTER <AgentCharacter> in the render tree so its useFrame
+ * runs later in the same frame and its rotations land last.
+ */
+function DesksArmFlail() {
+  const { scene } = useThree();
+  const armsRef = useRef<THREE.Object3D[]>([]);
+
+  useFrame((state) => {
+    if (armsRef.current.length < DESKS_AGENT_COUNT * 2) {
+      const found: THREE.Object3D[] = [];
+      scene.traverse((obj) => {
+        if (obj.type !== "Group") return;
+        if (Math.abs(obj.position.y - 68) > 0.1) return;
+        if (Math.abs(Math.abs(obj.position.x) - 14) < 0.1) found.push(obj);
+      });
+      armsRef.current = found;
+    }
+    const t = state.clock.elapsedTime;
+    for (let i = 0; i < armsRef.current.length; i++) {
+      const arm = armsRef.current[i];
+      const isLeft = arm.position.x < 0;
+      // Per-arm phase so arms across the grid don't sync.
+      const phase = i * 0.47;
+      const primary = isLeft
+        ? Math.sin(t * 7.6 + phase)
+        : Math.cos(t * 6.9 + phase);
+      const secondary = isLeft
+        ? Math.sin(t * 4.1 + phase)
+        : Math.cos(t * 4.3 + phase);
+      arm.rotation.x = -0.4 + primary * 0.55;
+      arm.rotation.z = (isLeft ? 0.25 : -0.25) + secondary * (isLeft ? 0.2 : -0.2);
+    }
+  });
+
+  return null;
+}
+
 function TickLoop({
   agentRef,
   stations,
@@ -2341,7 +2389,7 @@ export default function TunerScene({
   // Camera zoom — arena is the biggest floor; desks cohort is mid-size
   // (4×4 grid needs more room than a single tuning seat but less than the
   // full arena). Tune zoom so the whole grid fits comfortably.
-  const cameraZoom = large ? 42 : isDesks ? 30 : 50;
+  const cameraZoom = large ? 42 : isDesks ? 60 : 50;
 
   return (
     <Canvas
@@ -2394,6 +2442,12 @@ export default function TunerScene({
         ))}
 
         <PingPongBalls agentsRef={agentRef} arcHeight={miscTuning.pingPongArcHeight} />
+
+        {/* Desks cohort: drive agent arms every frame so they read as
+            "working" instead of stiff-armed in the default chair pose.
+            Must mount after the AgentCharacter list so its useFrame runs
+            later in the same render pass and wins the rotation write. */}
+        {isDesks && <DesksArmFlail />}
 
         <DebugMarkers
           stations={stations}
