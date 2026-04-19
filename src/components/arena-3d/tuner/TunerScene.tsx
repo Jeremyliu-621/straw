@@ -1082,13 +1082,13 @@ interface StandupSeat {
 }
 const _deg = (d: number) => (d * Math.PI) / 180;
 
-// Conference: 3 presenter spots just south of the tv_screen, facing the
-// audience (south). 12 audience spots in two rows further south, facing
-// the presenters (north).
+// Conference: 3 presenter seats at the meeting-room chairs (chair centers,
+// facing south toward the audience). 12 audience spots in two rows further
+// south, facing the presenters (north).
 const CONFERENCE_PRESENTER_SPOTS: StandupSeat[] = [
-  { x: 360, y: 25, facing: _deg(0) },
-  { x: 410, y: 25, facing: _deg(0) },
-  { x: 460, y: 25, facing: _deg(0) },
+  { x: 340 + 12, y: 40 + 12, facing: _deg(0) },
+  { x: 400 + 12, y: 40 + 12, facing: _deg(0) },
+  { x: 460 + 12, y: 40 + 12, facing: _deg(0) },
 ];
 const CONFERENCE_AUDIENCE_SPOTS: StandupSeat[] = [
   // Row 1 (closer to the front)
@@ -1953,15 +1953,17 @@ function TickLoop({
               agent.standupUntil !== undefined &&
               agent.standupUntil > now
             ) {
-              // Arrived at a standup stand-point. Conference participants
-              // stand (speakers face the audience; listeners face the front);
-              // round-table participants sit as "chair".
-              if (agent.conferenceRole !== undefined) {
+              // Arrived at a standup stand-point. Conference speakers sit
+              // in the meeting-room chairs; conference listeners stand in
+              // the audience rows; round-table participants sit in their
+              // chairs.
+              if (agent.conferenceRole === "listener") {
                 agent.state = "standing";
                 agent.socialSpotType = undefined;
                 agent.sitBackOverride = undefined;
                 agent.sinkDepthOverride = undefined;
               } else {
+                // "speaker" and round-table (undefined role) both sit.
                 agent.state = "sitting";
                 agent.socialSpotType = "chair";
                 agent.sitBackOverride = 0.45;
