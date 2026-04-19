@@ -303,7 +303,7 @@ export default function AgentCharacter({
         const remaining = (agent.emojiUntil ?? 0) - now;
         const fadeScale = remaining < 500 ? remaining / 500 : 1;
         // Slight upward drift
-        emojiGroupRef.current.position.y = 280 + (1 - fadeScale) * 20;
+        emojiGroupRef.current.position.y = 230 + (1 - fadeScale) * 20;
         emojiGroupRef.current.scale.setScalar(fadeScale);
       }
     }
@@ -435,7 +435,7 @@ export default function AgentCharacter({
       {/* Emoji overlay — billboard sprite with a single glyph, fades out.
           Parked above the talk bubble so both can coexist without overlap. */}
       <Billboard>
-        <group ref={emojiGroupRef} position={[0, 280, 0]} visible={false}>
+        <group ref={emojiGroupRef} position={[0, 230, 0]} visible={false}>
           <EmojiOverlay agentId={agentId} agentsRef={agentsRef} />
         </group>
       </Billboard>

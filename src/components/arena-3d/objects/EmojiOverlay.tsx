@@ -31,16 +31,28 @@ export default function EmojiOverlay({
     }
   });
 
+  // Give each glyph a fill color so the monochrome SDF font renders with
+  // some personality instead of washed-out white. Fallback is a warm amber.
+  const color = EMOJI_COLOR[icon.trim()] ?? "#fbbf24";
+
   return (
     <Text
       fontSize={60}
-      color="#ffffff"
+      color={color}
       anchorX="center"
       anchorY="middle"
-      outlineWidth={1.5}
+      outlineWidth={2}
       outlineColor="#000000"
     >
       {icon}
     </Text>
   );
 }
+
+const EMOJI_COLOR: Record<string, string> = {
+  "🎉": "#fbbf24", // amber
+  "⬆️": "#10b981", // emerald
+  "🔥": "#f97316", // orange
+  "❌": "#dc2626", // red
+  "🏆": "#eab308", // gold
+};
