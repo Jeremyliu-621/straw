@@ -50,7 +50,7 @@ interface TunerPanelProps {
     agentIdx: number,
     action: "dance" | "emoji" | "slump" | "talk"
   ) => void;
-  onStandup: (venue: "meeting" | "round_table" | "random") => void;
+  onStandup: (venue: "conference" | "round_table" | "random") => void;
   agentRef: React.RefObject<RenderAgentState[]>;
 }
 
@@ -557,11 +557,11 @@ export default function TunerPanel({
         <div className="mt-2 flex items-center gap-1.5">
           <span className="text-[11px] text-gray-500 shrink-0">standup:</span>
           <button
-            onClick={() => onStandup("meeting")}
+            onClick={() => onStandup("conference")}
             className="flex-1 px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black"
-            title="3 closest eligible agents sit at the meeting room table (30–75s)"
+            title="Top-3 ranked agents speak at the front; rest listen in the audience rows (30–75s)"
           >
-            meeting
+            conference
           </button>
           <button
             onClick={() => onStandup("round_table")}

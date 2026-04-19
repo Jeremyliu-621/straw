@@ -1069,20 +1069,42 @@ const TALK_CHANCE_PER_TICK = 0.02;   // ≈1.2/s per eligible pair at 60fps
 const TALK_MIN_MS = 3_000;
 const TALK_MAX_MS = 6_000;
 
-// Standup meeting — two possible venues, each with fixed seats derived
-// from DEFAULT_ARENA_FURNITURE's chair positions. Sit point = chair
-// center (chair is 24x24 so +12 from top-left). Facing matches the
-// chair's own rotation so the agent looks toward the table.
+// Standup venues:
+//  - Conference (meeting room): top-3 ranked agents stand as speakers at
+//    the front, rest stand as listeners in the audience facing them.
+//  - Round table (round-table nook): up to 6 agents sit in the chairs
+//    facing the round table.
+// Coords derived from DEFAULT_ARENA_FURNITURE.
 interface StandupSeat {
   x: number;
   y: number;
-  facing: number; // radians
+  facing: number; // radians — chair facing (deg → rad)
 }
 const _deg = (d: number) => (d * Math.PI) / 180;
-const MEETING_ROOM_SEATS: StandupSeat[] = [
-  { x: 340 + 12, y: 40 + 12, facing: _deg(0) },
-  { x: 400 + 12, y: 40 + 12, facing: _deg(0) },
-  { x: 460 + 12, y: 40 + 12, facing: _deg(0) },
+
+// Conference: 3 presenter spots just south of the tv_screen, facing the
+// audience (south). 12 audience spots in two rows further south, facing
+// the presenters (north).
+const CONFERENCE_PRESENTER_SPOTS: StandupSeat[] = [
+  { x: 360, y: 25, facing: _deg(0) },
+  { x: 410, y: 25, facing: _deg(0) },
+  { x: 460, y: 25, facing: _deg(0) },
+];
+const CONFERENCE_AUDIENCE_SPOTS: StandupSeat[] = [
+  // Row 1 (closer to the front)
+  { x: 300, y: 160, facing: _deg(180) },
+  { x: 340, y: 160, facing: _deg(180) },
+  { x: 380, y: 160, facing: _deg(180) },
+  { x: 420, y: 160, facing: _deg(180) },
+  { x: 460, y: 160, facing: _deg(180) },
+  { x: 500, y: 160, facing: _deg(180) },
+  // Row 2 (back of the room)
+  { x: 300, y: 195, facing: _deg(180) },
+  { x: 340, y: 195, facing: _deg(180) },
+  { x: 380, y: 195, facing: _deg(180) },
+  { x: 420, y: 195, facing: _deg(180) },
+  { x: 460, y: 195, facing: _deg(180) },
+  { x: 500, y: 195, facing: _deg(180) },
 ];
 const ROUND_TABLE_SEATS: StandupSeat[] = [
   { x: 348 + 12, y: 503 + 12, facing: _deg(180) },
@@ -1094,6 +1116,9 @@ const ROUND_TABLE_SEATS: StandupSeat[] = [
 ];
 const STANDUP_MIN_MS = 30_000;
 const STANDUP_MAX_MS = 75_000;
+// Conference speaker rotation: one presenter has an active speech bubble
+// at a time; turn rotates every SPEAKER_TURN_MS.
+const SPEAKER_TURN_MS = 5_000;
 
 // Ambient dwell ranges per station type. Applied on ARRIVAL (not pick) so
 // slow walks don't eat the dwell budget.
@@ -1729,9 +1754,12 @@ function TickLoop({
         a.danceUntil = undefined;
         if (a.state === "dancing") a.state = "standing";
       }
-      // Standup meeting expiry — get up, clear chair pose, go idle.
+      // Standup expiry — both flavors release the agent to idle. Round-
+      // table participants were sitting (chair pose); conference participants
+      // were just standing, so only the pose reset differs.
       if (a.standupUntil !== undefined && a.standupUntil <= now) {
         a.standupUntil = undefined;
+        a.conferenceRole = undefined;
         if (a.state === "sitting" && a.socialSpotType === "chair") {
           a.state = "standing";
           a.socialSpotType = undefined;
@@ -1739,6 +1767,22 @@ function TickLoop({
           a.sinkDepthOverride = undefined;
         }
       }
+    }
+
+    // Conference speaker rotation: while a conference is active, exactly
+    // one speaker has a refreshed talkUntil so their bubble stays visible.
+    // Rotation window is SPEAKER_TURN_MS, keyed off wall clock so it's
+    // deterministic across ticks and agents.
+    const speakers = agentRef.current.filter(
+      (a): a is RenderAgentState =>
+        !!a &&
+        a.conferenceRole === "speaker" &&
+        (a.standupUntil ?? 0) > now
+    );
+    if (speakers.length > 0) {
+      speakers.sort((x, y) => x.id.localeCompare(y.id));
+      const turn = Math.floor(now / SPEAKER_TURN_MS) % speakers.length;
+      speakers[turn].talkUntil = now + 500;
     }
 
     // Proximity chat trigger: scan every unordered pair; if both are eligible
@@ -1855,13 +1899,20 @@ function TickLoop({
               agent.standupUntil !== undefined &&
               agent.standupUntil > now
             ) {
-              // Arrived at a standup seat (no station — targetFacing drives
-              // the chair orientation). Sit as "chair" for sit-back / sink-
-              // depth to kick in; the standup expiry sweep stands them up.
-              agent.state = "sitting";
-              agent.socialSpotType = "chair";
-              agent.sitBackOverride = 0.45;
-              agent.sinkDepthOverride = 0.3;
+              // Arrived at a standup stand-point. Conference participants
+              // stand (speakers face the audience; listeners face the front);
+              // round-table participants sit as "chair".
+              if (agent.conferenceRole !== undefined) {
+                agent.state = "standing";
+                agent.socialSpotType = undefined;
+                agent.sitBackOverride = undefined;
+                agent.sinkDepthOverride = undefined;
+              } else {
+                agent.state = "sitting";
+                agent.socialSpotType = "chair";
+                agent.sitBackOverride = 0.45;
+                agent.sinkDepthOverride = 0.3;
+              }
               if (agent.targetFacing !== undefined) {
                 agent.facing = agent.targetFacing;
                 agent.targetFacing = undefined;
@@ -2279,23 +2330,24 @@ export function useTunerAgent() {
     setAmbientByAgent(Array(n).fill(false));
   }, [cohort]);
 
-  // Gathers up to `seats.length` idle agents (not walking, no active hold)
-  // and routes each to a seat via A* with a matching targetFacing. Arrival
-  // handler in the tick loop sits them as "chair" and the standup expiry
-  // sweep stands them back up when standupUntil elapses.
+  // Standup trigger — two flavors:
+  //   "conference" — top-3 ranked agents become speakers at the front of
+  //     the meeting room; the rest become listeners in the audience rows.
+  //     Everyone stands; speaker rotation drives the talk bubble.
+  //   "round_table" — up to 6 closest eligible agents sit in the chairs
+  //     around the round table (legacy standup behavior).
   const triggerStandup = useCallback(
-    (venue: "meeting" | "round_table" | "random") => {
-      const seats =
-        venue === "meeting"
-          ? MEETING_ROOM_SEATS
-          : venue === "round_table"
-            ? ROUND_TABLE_SEATS
-            : Math.random() < 0.5
-              ? MEETING_ROOM_SEATS
-              : ROUND_TABLE_SEATS;
+    (venue: "conference" | "round_table" | "random") => {
+      const resolved =
+        venue === "random"
+          ? Math.random() < 0.5
+            ? "conference"
+            : "round_table"
+          : venue;
       const now = Date.now();
       const duration =
         STANDUP_MIN_MS + Math.random() * (STANDUP_MAX_MS - STANDUP_MIN_MS);
+
       const eligible: number[] = [];
       for (let i = 0; i < agentRef.current.length; i++) {
         const a = agentRef.current[i];
@@ -2304,26 +2356,21 @@ export function useTunerAgent() {
         if ((a.gymUntil ?? 0) > now) continue;
         if ((a.couchUntil ?? 0) > now) continue;
         if ((a.pingPongUntil ?? 0) > now) continue;
-        if (a.pingPongTableUid) continue; // waiting-for-partner
+        if (a.pingPongTableUid) continue;
         if ((a.standupUntil ?? 0) > now) continue;
         if ((a.danceUntil ?? 0) > now) continue;
         eligible.push(i);
       }
-      // Sort by distance to the first seat so the closest agents get seats.
-      const ref = seats[0];
-      eligible.sort((a, b) => {
-        const aa = agentRef.current[a]!;
-        const bb = agentRef.current[b]!;
-        return (
-          Math.hypot(aa.x - ref.x, aa.y - ref.y) -
-          Math.hypot(bb.x - ref.x, bb.y - ref.y)
-        );
-      });
-      const count = Math.min(seats.length, eligible.length);
-      for (let k = 0; k < count; k++) {
-        const agent = agentRef.current[eligible[k]];
-        if (!agent) continue;
-        const seat = seats[k];
+      if (eligible.length === 0) return;
+
+      // Helper: send one agent to one stand-point, marking them for standup.
+      const dispatch = (
+        agentIdx: number,
+        seat: StandupSeat,
+        role: "speaker" | "listener" | undefined
+      ) => {
+        const agent = agentRef.current[agentIdx];
+        if (!agent) return;
         const plan = planPath(agent.x, agent.y, seat.x, seat.y);
         agent.state = "walking";
         agent.path = plan.waypoints;
@@ -2336,18 +2383,53 @@ export function useTunerAgent() {
         agent.targetY = seat.y;
         agent.targetFacing = seat.facing;
         agent.standupUntil = now + duration;
-        // Pause the ambient picker for this agent — arrival will sit them
-        // and the expiry sweep releases them.
-        if (ambientByAgent[eligible[k]]) {
-          ambientNextAtRef.current[eligible[k]] = Infinity;
+        agent.conferenceRole = role;
+        if (ambientByAgent[agentIdx]) {
+          ambientNextAtRef.current[agentIdx] = Infinity;
         }
-        // Clear the station idx so ambient picker / arrival doesn't try to
-        // apply station behavior.
         setStationIdxByAgent((prev) => {
           const next = [...prev];
-          next[eligible[k]] = null;
+          next[agentIdx] = null;
           return next;
         });
+      };
+
+      if (resolved === "round_table") {
+        const seats = ROUND_TABLE_SEATS;
+        const ref = seats[0];
+        eligible.sort((a, b) => {
+          const aa = agentRef.current[a]!;
+          const bb = agentRef.current[b]!;
+          return (
+            Math.hypot(aa.x - ref.x, aa.y - ref.y) -
+            Math.hypot(bb.x - ref.x, bb.y - ref.y)
+          );
+        });
+        const count = Math.min(seats.length, eligible.length);
+        for (let k = 0; k < count; k++) {
+          dispatch(eligible[k], seats[k], undefined);
+        }
+        return;
+      }
+
+      // Conference: top-3 by agent.rank → speakers, rest → listeners up to
+      // audience capacity. Ties in rank fall back to eligibility order.
+      const rankedEligible = [...eligible].sort((a, b) => {
+        const ra = agentRef.current[a]!.rank ?? Number.POSITIVE_INFINITY;
+        const rb = agentRef.current[b]!.rank ?? Number.POSITIVE_INFINITY;
+        return ra - rb;
+      });
+      const presenters = rankedEligible.slice(0, CONFERENCE_PRESENTER_SPOTS.length);
+      const listeners = rankedEligible.slice(CONFERENCE_PRESENTER_SPOTS.length);
+      presenters.forEach((agentIdx, k) => {
+        dispatch(agentIdx, CONFERENCE_PRESENTER_SPOTS[k], "speaker");
+      });
+      const audienceCap = Math.min(
+        listeners.length,
+        CONFERENCE_AUDIENCE_SPOTS.length
+      );
+      for (let k = 0; k < audienceCap; k++) {
+        dispatch(listeners[k], CONFERENCE_AUDIENCE_SPOTS[k], "listener");
       }
     },
     [planPath, ambientByAgent]

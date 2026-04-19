@@ -62,8 +62,13 @@ export interface RenderAgentState {
    *  while waiting for an opponent; set once two agents pair up. */
   pingPongUntil?: number;
   /** ms timestamp — agent is at a standup meeting (sitting in a chair at
-   *  the meeting-room table or the round-table nook) until this time. */
+   *  the round-table nook, or standing in the conference room) until this
+   *  time. */
   standupUntil?: number;
+  /** Role within an active conference standup: speaker stands at the front
+   *  facing the audience; listener stands in the audience facing the front.
+   *  Undefined for round-table standups (everyone is just "sitting"). */
+  conferenceRole?: "speaker" | "listener";
   /**
    * Desired facing (radians) when the agent arrives at targetX/Y. Applied on
    * arrival so stations (desk / gym station / couch) can force the agent to
