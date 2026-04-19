@@ -9,14 +9,15 @@ import LandingR3FHost from '@/components/home/LandingR3FHost';
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#FDFCFC]">
+      {/* Single shared R3F Canvas — sticky-wrapped so its compositor layer
+          scrolls in sync with the DOM. Must be the first child of <main>. */}
+      <LandingR3FHost />
       <Navbar />
       <HeroSection />
       <ProcessFlow />
       <Differentiators />
       <FinalCTA />
       <FooterSection />
-      {/* Single shared R3F Canvas — all 3D views on the landing tunnel into this. */}
-      <LandingR3FHost />
     </main>
   );
 }
