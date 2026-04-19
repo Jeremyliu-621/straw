@@ -420,15 +420,6 @@ export default function AgentCharacter({
             <planeGeometry args={[64, 34]} />
             <meshBasicMaterial color="#ffffff" />
           </mesh>
-          {/* Tail — small triangle pointing down, black outline + white fill */}
-          <mesh position={[-8, -22, -0.15]} rotation={[0, 0, Math.PI / 4]}>
-            <planeGeometry args={[12, 12]} />
-            <meshBasicMaterial color="#000000" />
-          </mesh>
-          <mesh position={[-8, -20, -0.05]} rotation={[0, 0, Math.PI / 4]}>
-            <planeGeometry args={[9, 9]} />
-            <meshBasicMaterial color="#ffffff" />
-          </mesh>
           {/* Three dots — bobbing in sequence via agent.frame. rendered as
               circles set to black on top of the white fill. */}
           {[-14, 0, 14].map((x, i) => (
