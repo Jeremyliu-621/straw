@@ -193,6 +193,28 @@ export default function AgentCharacter({
       }
       if (leftLegRef.current) leftLegRef.current.rotation.x = Math.sin(t * 2) * 0.2;
       if (rightLegRef.current) rightLegRef.current.rotation.x = -Math.sin(t * 2) * 0.2;
+    } else if (
+      agent.pingPongUntil !== undefined &&
+      agent.pingPongUntil > now
+    ) {
+      // Playing ping pong: one arm swings on a 1.2s cycle synced with the
+      // ball. Side A's paddle peaks at phase 0 (ball leaves), side B's at
+      // phase 0.5 — so the two paddle arms alternate like a real rally.
+      const pingPhase = (now % 1200) / 1200;
+      const strikePhase = agent.pingPongSide === "B" ? 0.5 : 0;
+      const paddleSwing =
+        Math.cos((pingPhase - strikePhase) * Math.PI * 2) * 1.2;
+      if (rightArmRef.current) {
+        rightArmRef.current.rotation.x = -0.3 + paddleSwing;
+        rightArmRef.current.rotation.z = 0;
+      }
+      if (leftArmRef.current) {
+        // Non-paddle arm: relaxed at the side.
+        leftArmRef.current.rotation.x = 0.1;
+        leftArmRef.current.rotation.z = 0.15;
+      }
+      if (leftLegRef.current) leftLegRef.current.rotation.x = 0;
+      if (rightLegRef.current) rightLegRef.current.rotation.x = 0;
     } else {
       // Walk animation
       const walkPhase = isWalking
