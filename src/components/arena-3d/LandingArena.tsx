@@ -34,7 +34,7 @@ export default function LandingArena({ height }: { height: number }) {
   useEffect(() => {
     const timers: number[] = [];
     for (let i = 0; i < agentRef.current.length; i++) {
-      timers.push(window.setTimeout(() => triggerJoin(), 400 + i * 500));
+      timers.push(window.setTimeout(() => triggerJoin(), 400 + i * 900));
     }
     return () => {
       for (const t of timers) window.clearTimeout(t);
