@@ -43,7 +43,7 @@ import {
   type NavGrid,
 } from "../core/navigation";
 
-export type Cohort = "seats" | "gym" | "arena" | "misc";
+export type Cohort = "seats" | "gym" | "arena" | "misc" | "desks";
 
 // Tuner canvas dimensions — small, focused on one agent + a few stations.
 // The "arena" cohort uses the larger `ARENA_*` dimensions so a full mini-arena
@@ -56,6 +56,19 @@ const WORLD_H = CANVAS_H * SCALE;
 // perimeter walls all line up. These come from core/constants.
 const ARENA_WORLD_W = MAIN_CANVAS_W * SCALE;
 const ARENA_WORLD_H = MAIN_CANVAS_H * SCALE;
+
+// Desks cohort — 4×4 grid of desk clusters, agents start pre-seated and
+// working. Floor is sized to comfortably hold a 4×4 of desk_cubicle (100×55)
+// clusters with chair overhang + breathing room.
+const DESKS_CANVAS_W = 900;
+const DESKS_CANVAS_H = 700;
+const DESKS_WORLD_W = DESKS_CANVAS_W * SCALE;
+const DESKS_WORLD_H = DESKS_CANVAS_H * SCALE;
+const DESKS_GRID_COLS = 4;
+const DESKS_GRID_ROWS = 4;
+const DESKS_GRID_PITCH_X = 170; // horizontal step between desk origins
+const DESKS_GRID_PITCH_Y = 140; // vertical step between desk origins
+export const DESKS_AGENT_COUNT = DESKS_GRID_COLS * DESKS_GRID_ROWS;
 
 // ── Tuning params ─────────────────────────────────────────────────────────
 // Everything the user can live-tune from the panel.
@@ -1026,6 +1039,93 @@ export function getArenaStations() {
   return __arenaCache;
 }
 
+/**
+ * Build a 4×4 grid of desk_cubicle clusters (desk + chair + computer) for
+ * the "desks" cohort. Every station is identical — no rotation, no tuning,
+ * agents start already seated and working. Same cluster geometry as the
+ * seats cohort's desk, just replicated across a grid.
+ */
+export function buildDesksStations(): {
+  items: FurnitureItem[];
+  clusters: ClusterGroup[];
+  stations: Station[];
+} {
+  const clusters: ClusterGroup[] = [];
+  const stations: Station[] = [];
+
+  const gridW = (DESKS_GRID_COLS - 1) * DESKS_GRID_PITCH_X + DESK_W;
+  const gridH = (DESKS_GRID_ROWS - 1) * DESKS_GRID_PITCH_Y + DESK_H;
+  const originX = (DESKS_CANVAS_W - gridW) / 2;
+  const originY = (DESKS_CANVAS_H - gridH) / 2;
+  const deskChairX = DESK_W / 2 - 30;
+
+  for (let row = 0; row < DESKS_GRID_ROWS; row++) {
+    for (let col = 0; col < DESKS_GRID_COLS; col++) {
+      const idx = row * DESKS_GRID_COLS + col;
+      const deskX = originX + col * DESKS_GRID_PITCH_X;
+      const deskY = originY + row * DESKS_GRID_PITCH_Y;
+      const uid = `desks_${row}_${col}`;
+
+      const clusterItems: FurnitureItem[] = [
+        {
+          type: "desk_cubicle",
+          x: deskX,
+          y: deskY,
+          _uid: `${uid}_desk`,
+          id: `desk_${idx}`,
+        },
+        {
+          type: "chair",
+          x: deskX + deskChairX,
+          y: deskY - 10,
+          facing: 180,
+          _uid: `${uid}_chair`,
+        },
+        {
+          type: "computer",
+          x: deskX + deskChairX,
+          y: deskY - 13,
+          _uid: `${uid}_computer`,
+        },
+      ];
+
+      // Match the seats-cohort pivot convention (just north of chair back);
+      // rotDeg is always 0 here since we're not exposing tuning for desks.
+      const chairCenterX = deskX + deskChairX + 12;
+      const chairCenterY = deskY - 10 + 12;
+      clusters.push({
+        id: `desks_cluster_${idx}`,
+        items: clusterItems,
+        pivotX: chairCenterX,
+        pivotY: chairCenterY - 8,
+        rotDeg: 0,
+      });
+
+      const standX = deskX + DESK_W / 2 - 18;
+      const standY = deskY + 2;
+      stations.push({
+        label: `Desk ${idx}`,
+        items: clusterItems,
+        standX: Math.round(standX),
+        standY: Math.round(standY),
+        facing: Math.PI, // seated facing south (toward the monitor)
+        state: "sitting",
+        socialSpotType: "chair",
+        sitBack: 0.45,
+      });
+    }
+  }
+
+  return { items: [], clusters, stations };
+}
+
+let __desksCache: { items: FurnitureItem[]; clusters: ClusterGroup[]; stations: Station[] } | null =
+  null;
+export function getDesksStations() {
+  if (!__desksCache) __desksCache = buildDesksStations();
+  return __desksCache;
+}
+
 // ── Tuner agent state ─────────────────────────────────────────────────────
 
 // Matches the main-arena walk speed (useArenaGameLoop WALK_SPEED). We dropped
@@ -1163,7 +1263,11 @@ export {
 } from "../core/defaultLayout";
 export const DEFAULT_AGENT_COUNT = 2;
 export const getAgentCount = (c: Cohort) =>
-  c === "arena" ? ARENA_AGENT_COUNT : DEFAULT_AGENT_COUNT;
+  c === "arena"
+    ? ARENA_AGENT_COUNT
+    : c === "desks"
+      ? DESKS_AGENT_COUNT
+      : DEFAULT_AGENT_COUNT;
 
 // 15 visually distinct colors for the arena cohort. Index 0/1 preserve
 // the original indigo/red so existing seats/gym/misc tuning screenshots
@@ -1198,6 +1302,35 @@ function arenaSpawn(idx: number): { x: number; y: number } {
 }
 
 function makeInitialAgent(idx: number, cohort: Cohort): RenderAgentState {
+  // Desks cohort: each agent pre-seated at their assigned desk. Skips the
+  // walk-in animation entirely — the scene is meant to read as a full floor
+  // of builders already heads-down.
+  if (cohort === "desks") {
+    const { stations } = getDesksStations();
+    const s = stations[idx];
+    return {
+      id: `tuner_agent_${idx}`,
+      name: String.fromCharCode(65 + (idx % 26)),
+      rank: idx + 1,
+      status: "working",
+      color: tunerAgentColor(idx),
+      x: s.standX,
+      y: s.standY,
+      targetX: s.standX,
+      targetY: s.standY,
+      path: [],
+      facing: s.facing,
+      // Stagger the frame counter so animations that read `agent.frame`
+      // don't all sync — looks less like a puppet show.
+      frame: (idx * 37) % 360,
+      walkSpeed: WALK_SPEED,
+      phaseOffset: (idx * 0.37) % 1,
+      state: "sitting",
+      socialSpotType: "chair",
+      sitBackOverride: s.sitBack,
+    };
+  }
+
   // Seats/gym/misc keep the two centered spawn points used by the original
   // tuner so existing tuning screenshots still match.
   let x: number;
@@ -1285,13 +1418,15 @@ function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
 
 function Floor({
   onFloorClick,
-  large,
+  cohort,
 }: {
   onFloorClick?: (canvasX: number, canvasY: number) => void;
-  large?: boolean;
+  cohort: Cohort;
 }) {
-  const w = large ? ARENA_WORLD_W : WORLD_W;
-  const h = large ? ARENA_WORLD_H : WORLD_H;
+  const w =
+    cohort === "arena" ? ARENA_WORLD_W : cohort === "desks" ? DESKS_WORLD_W : WORLD_W;
+  const h =
+    cohort === "arena" ? ARENA_WORLD_H : cohort === "desks" ? DESKS_WORLD_H : WORLD_H;
   return (
     <mesh
       rotation={[-Math.PI / 2, 0, 0]}
@@ -1315,10 +1450,11 @@ function Floor({
   );
 }
 
-function GridLines({ large }: { large?: boolean }) {
-  // Arena cohort: no grid at all — matches the main OfficeEnvironment look.
-  // Seats/gym cohorts keep the visible grid for tuning precision.
-  if (large) return null;
+function GridLines({ cohort }: { cohort: Cohort }) {
+  // Arena + desks cohorts: no grid — matches the main OfficeEnvironment look
+  // (arena) and keeps the floor-of-desks scene uncluttered (desks).
+  // Seats/gym/misc cohorts keep the visible grid for tuning precision.
+  if (cohort === "arena" || cohort === "desks") return null;
   return <gridHelper args={[WORLD_W, 24, "#c9c0ae", "#d4cbb8"]} position={[0, 0.002, 0]} />;
 }
 
@@ -2193,6 +2329,7 @@ export default function TunerScene({
     if (cohort === "gym") return buildGymStations(gymTuning);
     if (cohort === "arena") return getArenaStations();
     if (cohort === "misc") return buildMiscStations(miscTuning);
+    if (cohort === "desks") return getDesksStations();
     return buildStations(tuning);
   }, [cohort, tuning, gymTuning, miscTuning]);
   const navGrid = useMemo(() => {
@@ -2200,6 +2337,11 @@ export default function TunerScene({
     return buildNavGrid(allItems, navOverrides);
   }, [items, clusters, navOverrides]);
   const large = cohort === "arena";
+  const isDesks = cohort === "desks";
+  // Camera zoom — arena is the biggest floor; desks cohort is mid-size
+  // (4×4 grid needs more room than a single tuning seat but less than the
+  // full arena). Tune zoom so the whole grid fits comfortably.
+  const cameraZoom = large ? 42 : isDesks ? 30 : 50;
 
   return (
     <Canvas
@@ -2216,13 +2358,13 @@ export default function TunerScene({
           matches the CSS background so the seam disappears. */}
       <color attach="background" args={["#FDFCFC"]} />
       <Suspense fallback={null}>
-        <CameraRig zoom={large ? 42 : 50} view={view} />
+        <CameraRig zoom={cameraZoom} view={view} />
         <ambientLight intensity={0.8} color="#ffffff" />
         <directionalLight position={[10, 15, 8]} intensity={1.0} color="#ffffff" castShadow />
         <hemisphereLight args={["#ffffff", "#e0e0e0", 0.4]} />
 
-        <Floor onFloorClick={onFloorClick} large={large} />
-        <GridLines large={large} />
+        <Floor onFloorClick={onFloorClick} cohort={cohort} />
+        <GridLines cohort={cohort} />
         <PerimeterWalls large={large} />
         <ArenaDoor large={large} agentsRef={agentRef} />
 
@@ -2317,6 +2459,7 @@ export function useTunerAgent() {
     if (cohort === "gym") return buildGymStations(gymTuning);
     if (cohort === "arena") return getArenaStations();
     if (cohort === "misc") return buildMiscStations(miscTuning);
+    if (cohort === "desks") return getDesksStations();
     return buildStations(tuning);
   }, [cohort, tuning, gymTuning, miscTuning]);
 

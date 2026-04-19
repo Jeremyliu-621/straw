@@ -162,7 +162,7 @@ export default function TunerPanel({
           Cohort
         </p>
         <div className="flex gap-2">
-          {(["seats", "gym", "misc", "arena"] as Cohort[]).map((c) => (
+          {(["seats", "gym", "misc", "arena", "desks"] as Cohort[]).map((c) => (
             <button
               key={c}
               onClick={() => setCohort(c)}
