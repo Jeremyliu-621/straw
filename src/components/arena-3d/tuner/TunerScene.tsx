@@ -1762,12 +1762,23 @@ function TickLoop({
         a.conferenceRole = undefined;
         a.lookAtX = undefined;
         a.lookAtY = undefined;
+        a.lookAtAgentId = undefined;
+        a.lookAtUntil = undefined;
         if (a.state === "sitting" && a.socialSpotType === "chair") {
           a.state = "standing";
           a.socialSpotType = undefined;
           a.sitBackOverride = undefined;
           a.sinkDepthOverride = undefined;
         }
+      }
+      // Glance hold expiry — clear lookAt fields so the head decays back
+      // to neutral. Standup lookAts don't set lookAtUntil, so they're
+      // unaffected by this sweep.
+      if (a.lookAtUntil !== undefined && a.lookAtUntil <= now) {
+        a.lookAtUntil = undefined;
+        a.lookAtAgentId = undefined;
+        a.lookAtX = undefined;
+        a.lookAtY = undefined;
       }
     }
 
@@ -1873,6 +1884,40 @@ function TickLoop({
         if (a.state === "standing") a.facing = Math.atan2(dx, dy);
         if (b.state === "standing") b.facing = Math.atan2(-dx, -dy);
       }
+    }
+
+    // Head-turn-to-watch: idle agents occasionally glance at a nearby
+    // walker. Reuses the head-only lookAt mechanism (body facing stays
+    // put) and holds the glance via lookAtUntil so the sweep auto-clears.
+    for (let i = 0; i < agents.length; i++) {
+      const a = agents[i];
+      if (!a) continue;
+      if (a.state === "walking") continue;
+      if (a.state === "working_out") continue;
+      if (a.state === "dancing") continue;
+      if ((a.standupUntil ?? 0) > now) continue;
+      if ((a.pingPongUntil ?? 0) > now) continue;
+      if (a.pingPongTableUid) continue;
+      if ((a.lookAtUntil ?? 0) > now) continue;
+      if (Math.random() > 0.003 * speedScale) continue;
+      let bestIdx = -1;
+      let bestDist = 120;
+      for (let j = 0; j < agents.length; j++) {
+        if (j === i) continue;
+        const b = agents[j];
+        if (!b || b.state !== "walking") continue;
+        const d = Math.hypot(b.x - a.x, b.y - a.y);
+        if (d < bestDist) {
+          bestDist = d;
+          bestIdx = j;
+        }
+      }
+      if (bestIdx < 0) continue;
+      const target = agents[bestIdx]!;
+      a.lookAtAgentId = target.id;
+      a.lookAtX = target.x;
+      a.lookAtY = target.y;
+      a.lookAtUntil = now + 1500 + Math.random() * 1000;
     }
 
     for (let agentIdx = 0; agentIdx < agentRef.current.length; agentIdx++) {

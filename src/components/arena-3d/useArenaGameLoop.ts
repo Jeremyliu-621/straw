@@ -71,10 +71,18 @@ export interface RenderAgentState {
   conferenceRole?: "speaker" | "listener";
   /** Canvas coords this agent should rotate their HEAD toward each frame.
    *  Body facing stays put (so sit-back / sink-depth offsets remain valid);
-   *  only the head swivels. Used for round-table speaker turns and future
-   *  head-turn-to-watch behaviors. */
+   *  only the head swivels. Used for standup speaker turns and head-turn
+   *  -to-watch. */
   lookAtX?: number;
   lookAtY?: number;
+  /** Optional id of the agent to track live. If set, AgentCharacter
+   *  resolves the head target from that agent's current x/y each frame
+   *  instead of the snapshot lookAtX/Y. */
+  lookAtAgentId?: string;
+  /** ms timestamp — lookAt fields auto-clear when this passes. Set for
+   *  short head-turn glances; standup rotation writes lookAt without
+   *  lookAtUntil so it keeps until explicitly cleared. */
+  lookAtUntil?: number;
   /**
    * Desired facing (radians) when the agent arrives at targetX/Y. Applied on
    * arrival so stations (desk / gym station / couch) can force the agent to

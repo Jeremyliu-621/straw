@@ -126,9 +126,26 @@ export default function AgentCharacter({
       const targetTilt = isAtStandingDesk ? -0.35 : 0;
       headRef.current.rotation.x += (targetTilt - headRef.current.rotation.x) * 0.18;
       let targetYaw = 0;
-      if (agent.lookAtX !== undefined && agent.lookAtY !== undefined) {
-        const dxLook = agent.lookAtX - agent.x;
-        const dyLook = agent.lookAtY - agent.y;
+      // Prefer a live target if lookAtAgentId is set (so the glance
+      // tracks a moving walker); otherwise fall back to snapshot coords.
+      let lookX: number | undefined;
+      let lookY: number | undefined;
+      if (agent.lookAtAgentId) {
+        const target = agentsRef.current.find(
+          (t) => t.id === agent.lookAtAgentId
+        );
+        if (target) {
+          lookX = target.x;
+          lookY = target.y;
+        }
+      }
+      if (lookX === undefined && agent.lookAtX !== undefined) {
+        lookX = agent.lookAtX;
+        lookY = agent.lookAtY;
+      }
+      if (lookX !== undefined && lookY !== undefined) {
+        const dxLook = lookX - agent.x;
+        const dyLook = lookY - agent.y;
         if (dxLook !== 0 || dyLook !== 0) {
           const worldYaw = Math.atan2(dxLook, dyLook);
           // Head rotation is relative to the body's current rotation.
