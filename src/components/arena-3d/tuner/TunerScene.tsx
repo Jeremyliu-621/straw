@@ -60,8 +60,8 @@ const ARENA_WORLD_H = MAIN_CANVAS_H * SCALE;
 // Desks cohort — 4×4 grid of desk clusters, agents start pre-seated and
 // working. Floor is sized to comfortably hold a 4×4 of desk_cubicle (100×55)
 // clusters with chair overhang + breathing room.
-const DESKS_CANVAS_W = 900;
-const DESKS_CANVAS_H = 700;
+const DESKS_CANVAS_W = 3000;
+const DESKS_CANVAS_H = 2500;
 const DESKS_WORLD_W = DESKS_CANVAS_W * SCALE;
 const DESKS_WORLD_H = DESKS_CANVAS_H * SCALE;
 const DESKS_GRID_COLS = 4;
@@ -1391,6 +1391,7 @@ interface TunerSceneProps {
   showNav: boolean;
   navOverrides: Record<string, NavAnchorOverride>;
   view: TunerView;
+  wallBury: boolean;
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
@@ -1462,7 +1463,13 @@ function GridLines({ cohort }: { cohort: Cohort }) {
   return <gridHelper args={[WORLD_W, 24, "#c9c0ae", "#d4cbb8"]} position={[0, 0.002, 0]} />;
 }
 
-function PerimeterWalls({ large }: { large?: boolean }) {
+function PerimeterWalls({
+  large,
+  bury = false,
+}: {
+  large?: boolean;
+  bury?: boolean;
+}) {
   // Port of OfficeEnvironment.PerimeterWalls — identical thickness + color +
   // dims so paintings that are wallAttached line up against the wall.
   if (!large) return null;
@@ -1471,9 +1478,10 @@ function PerimeterWalls({ large }: { large?: boolean }) {
   const halfH = ARENA_WORLD_H / 2;
   const thickness = WALL_THICKNESS * SCALE;
   const color = "#C9C7C2";
-  // Same trick as InteriorWall: extend walls 0.06 below the floor so
-  // BWEffects' bottom-edge overlay is hidden under the floor plane.
-  const BURY = 0.06;
+  // Bury-walls mode: extend walls below the floor so BWEffects'
+  // bottom-edge overlay is hidden under the floor plane. Off by
+  // default = legacy behavior with the outline rectangle visible.
+  const BURY = bury ? 0.06 : 0;
   const bodyH = wallH + BURY;
   const bodyCenterY = wallH / 2 - BURY / 2;
   return (
@@ -2489,6 +2497,9 @@ export function useTunerAgent() {
   const [showPaths, setShowPaths] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [view, setView] = useState<TunerView>("iso");
+  // Bury-walls mode hides the black floor-rectangle outline by sinking
+  // wall bottoms under the floor plane. Default off = legacy look.
+  const [wallBury, setWallBury] = useState(false);
   // Per-type nav-anchor overrides — sliders write into this; buildNavGrid
   // applies them at grid-build time. Empty by default = use NAV_ANCHOR_OVERRIDES
   // from geometry.ts (which itself is empty until we lock values in).
