@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import type { RenderAgentState } from "../useArenaGameLoop";
-import { ITEM_METADATA, type NavAnchorOverride } from "../core/geometry";
+import {
+  ITEM_FOOTPRINT,
+  ITEM_METADATA,
+  type NavAnchorOverride,
+} from "../core/geometry";
 import {
   type Cohort,
   type Station,
@@ -565,40 +569,51 @@ function NavTunePanel({
           );
         })}
       </select>
-      <div className="flex flex-col gap-1.5">
-        <Slider
-          label="offset x"
-          value={dx}
-          min={-100}
-          max={100}
-          step={1}
-          onChange={(v) => updateField("dx", v)}
-        />
-        <Slider
-          label="offset y"
-          value={dy}
-          min={-100}
-          max={100}
-          step={1}
-          onChange={(v) => updateField("dy", v)}
-        />
-        <Slider
-          label="pad x"
-          value={padX}
-          min={-30}
-          max={80}
-          step={1}
-          onChange={(v) => updateField("padX", v)}
-        />
-        <Slider
-          label="pad y"
-          value={padY}
-          min={-30}
-          max={80}
-          step={1}
-          onChange={(v) => updateField("padY", v)}
-        />
-      </div>
+      {(() => {
+        // Bounds scale with the picked item's footprint so big items like
+        // round_table (120x120) get usable headroom while tiny items don't
+        // expose absurd ranges.
+        const fp = ITEM_FOOTPRINT[pickedType];
+        const maxDim = fp ? Math.max(fp[0], fp[1]) : 40;
+        const offsetCap = Math.max(100, Math.round(maxDim * 1.5));
+        const padCap = Math.max(80, Math.round(maxDim * 0.6));
+        return (
+          <div className="flex flex-col gap-1.5">
+            <Slider
+              label="offset x"
+              value={dx}
+              min={-offsetCap}
+              max={offsetCap}
+              step={1}
+              onChange={(v) => updateField("dx", v)}
+            />
+            <Slider
+              label="offset y"
+              value={dy}
+              min={-offsetCap}
+              max={offsetCap}
+              step={1}
+              onChange={(v) => updateField("dy", v)}
+            />
+            <Slider
+              label="pad x"
+              value={padX}
+              min={-30}
+              max={padCap}
+              step={1}
+              onChange={(v) => updateField("padX", v)}
+            />
+            <Slider
+              label="pad y"
+              value={padY}
+              min={-30}
+              max={padCap}
+              step={1}
+              onChange={(v) => updateField("padY", v)}
+            />
+          </div>
+        );
+      })()}
       <div className="mt-2 flex gap-2">
         <button
           onClick={resetType}
