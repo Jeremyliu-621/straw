@@ -1440,7 +1440,7 @@ function Floor({
       // BWEffects draws a black edge overlay wherever EdgesGeometry finds a
       // boundary. For a flat plane that's the full perimeter — reads as an
       // unwanted black rectangle around the floor. Opt this mesh out.
-      userData={{ __bwSkipEdges: true }}
+      userData={{ __skipBWEdges: true }}
       onClick={
         onFloorClick
           ? (e) => {
