@@ -11,6 +11,7 @@ export default function ArenaTuner() {
     stationIdxByAgent,
     sendToStation,
     reset,
+    triggerDevAction,
     tuning,
     setTuning,
     gymTuning,
@@ -73,6 +74,7 @@ export default function ArenaTuner() {
         setAmbientForAll={setAmbientForAll}
         onGoto={sendToStation}
         onReset={reset}
+        onDevAction={triggerDevAction}
         agentRef={agentRef}
       />
     </div>

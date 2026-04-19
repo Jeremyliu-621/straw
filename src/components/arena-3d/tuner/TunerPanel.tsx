@@ -46,6 +46,10 @@ interface TunerPanelProps {
   setAmbientForAll: (on: boolean) => void;
   onGoto: (agentIdx: number, stationIdx: number | null) => void;
   onReset: () => void;
+  onDevAction: (
+    agentIdx: number,
+    action: "dance" | "emoji" | "slump" | "talk"
+  ) => void;
   agentRef: React.RefObject<RenderAgentState[]>;
 }
 
@@ -125,8 +129,10 @@ export default function TunerPanel({
   setAmbientForAll,
   onGoto,
   onReset,
+  onDevAction,
   agentRef,
 }: TunerPanelProps) {
+  const [devAgentIdx, setDevAgentIdx] = useState(0);
   const agentCount = ambientByAgent.length;
   const allAmbientOn = ambientByAgent.every(Boolean);
   const anyAmbientOn = ambientByAgent.some(Boolean);
@@ -500,6 +506,53 @@ export default function TunerPanel({
           </div>
         </div>
       )}
+
+      <div className="border-t border-gray-200 pt-3">
+        <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">
+          Dev actions
+        </p>
+        <div className="flex items-center gap-1.5">
+          <select
+            value={devAgentIdx}
+            onChange={(e) => setDevAgentIdx(Number(e.target.value))}
+            className="flex-1 min-w-0 px-2 py-1 rounded-md text-[11px] bg-white text-black border border-gray-300 hover:border-black focus:outline-none focus:border-black"
+          >
+            {Array.from({ length: agentCount }).map((_, i) => (
+              <option key={i} value={i}>
+                Agent {String.fromCharCode(65 + i)}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={() => onDevAction(devAgentIdx, "dance")}
+            className="px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black shrink-0"
+            title="Dance hold (5s, 🏆 emoji)"
+          >
+            💃
+          </button>
+          <button
+            onClick={() => onDevAction(devAgentIdx, "emoji")}
+            className="px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black shrink-0"
+            title="Random celebration emoji"
+          >
+            🎉
+          </button>
+          <button
+            onClick={() => onDevAction(devAgentIdx, "slump")}
+            className="px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black shrink-0"
+            title="Failure slump (❌ + 30s couch hold)"
+          >
+            ❌
+          </button>
+          <button
+            onClick={() => onDevAction(devAgentIdx, "talk")}
+            className="px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black shrink-0"
+            title="Talk with nearest agent (≤150px)"
+          >
+            💬
+          </button>
+        </div>
+      </div>
 
       <div className="border-t border-gray-200 pt-3">
         <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-1">

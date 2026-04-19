@@ -1697,6 +1697,12 @@ function TickLoop({
         a.talkUntil = undefined;
         a.talkPartnerId = undefined;
       }
+      // Dance hold expiry — restore standing state so the agent rejoins
+      // idle behavior (ambient picker / talk triggers) after the dance.
+      if (a.danceUntil !== undefined && a.danceUntil <= now) {
+        a.danceUntil = undefined;
+        if (a.state === "dancing") a.state = "standing";
+      }
     }
 
     // Proximity chat trigger: scan every unordered pair; if both are eligible
@@ -2222,6 +2228,67 @@ export function useTunerAgent() {
     setAmbientByAgent(Array(n).fill(false));
   }, [cohort]);
 
+  // Dev actions: fire an event-driven behavior on a chosen agent without
+  // needing real leaderboard events. Writes the same hold fields the main
+  // game loop uses (danceUntil / emojiUntil / couchUntil / talkUntil).
+  const triggerDevAction = useCallback(
+    (agentIdx: number, action: "dance" | "emoji" | "slump" | "talk") => {
+      const agent = agentRef.current[agentIdx];
+      if (!agent) return;
+      const now = Date.now();
+      if (action === "dance") {
+        agent.danceUntil = now + 5_000;
+        agent.state = "dancing";
+        agent.path = [];
+        agent.emojiIcon = "🏆";
+        agent.emojiUntil = now + 2_500;
+      } else if (action === "emoji") {
+        const icons = ["🎉", "⬆️", "🔥"];
+        agent.emojiIcon = icons[Math.floor(Math.random() * icons.length)];
+        agent.emojiUntil = now + 2_500;
+      } else if (action === "slump") {
+        // In-place slump: sad emoji pop + 30s couch-hold flag so if any
+        // downstream logic reads couchUntil it treats them as slumping.
+        agent.emojiIcon = "❌";
+        agent.emojiUntil = now + 3_000;
+        agent.couchUntil = now + 30_000;
+      } else if (action === "talk") {
+        // Find the nearest other agent within 150px and start a 4s talk
+        // hold on both. Faces standing agents toward each other; sitting
+        // agents keep their station pose.
+        let partnerIdx = -1;
+        let bestDist = 150;
+        for (let j = 0; j < agentRef.current.length; j++) {
+          if (j === agentIdx) continue;
+          const b = agentRef.current[j];
+          if (!b) continue;
+          const d = Math.hypot(b.x - agent.x, b.y - agent.y);
+          if (d < bestDist) {
+            bestDist = d;
+            partnerIdx = j;
+          }
+        }
+        if (partnerIdx < 0) return;
+        const partner = agentRef.current[partnerIdx];
+        if (!partner) return;
+        agent.talkUntil = now + 4_000;
+        partner.talkUntil = now + 4_000;
+        agent.talkPartnerId = partner.id;
+        partner.talkPartnerId = agent.id;
+        if (agent.state === "standing") {
+          agent.facing = Math.atan2(partner.x - agent.x, partner.y - agent.y);
+        }
+        if (partner.state === "standing") {
+          partner.facing = Math.atan2(
+            agent.x - partner.x,
+            agent.y - partner.y
+          );
+        }
+      }
+    },
+    []
+  );
+
   // Click-to-direct: send agent 0 walking to a clicked canvas point (arena cohort).
   const walkToPoint = useCallback(
     (canvasX: number, canvasY: number) => {
@@ -2270,6 +2337,7 @@ export function useTunerAgent() {
     stationIdxByAgent,
     sendToStation,
     reset,
+    triggerDevAction,
     tuning,
     setTuning,
     gymTuning,

@@ -73,22 +73,31 @@ export default function AgentCharacter({
   const pos = useRef(new THREE.Vector3(0, 0, 0));
   const statusMatRef = useRef<THREE.MeshBasicMaterial>(null);
 
-  const avatar = useMemo(
-    () => createDefaultAgentAvatarProfile(agentId),
-    [agentId]
-  );
+  const avatar = useMemo(() => createDefaultAgentAvatarProfile(agentId), [agentId]);
 
-  const bodyColor = useMemo(() => new THREE.Color(avatar.clothing.topColor), [avatar.clothing.topColor]);
+  const bodyColor = useMemo(
+    () => new THREE.Color(avatar.clothing.topColor),
+    [avatar.clothing.topColor]
+  );
   const skinColor = useMemo(() => new THREE.Color(avatar.body.skinTone), [avatar.body.skinTone]);
-  const pantsColor = useMemo(() => new THREE.Color(avatar.clothing.bottomColor), [avatar.clothing.bottomColor]);
-  const shoeColor = useMemo(() => new THREE.Color(avatar.clothing.shoesColor), [avatar.clothing.shoesColor]);
+  const pantsColor = useMemo(
+    () => new THREE.Color(avatar.clothing.bottomColor),
+    [avatar.clothing.bottomColor]
+  );
+  const shoeColor = useMemo(
+    () => new THREE.Color(avatar.clothing.shoesColor),
+    [avatar.clothing.shoesColor]
+  );
   const hairColor = useMemo(() => new THREE.Color(avatar.hair.color), [avatar.hair.color]);
 
-  const statusColors = useMemo(() => ({
-    working: new THREE.Color("#16a34a"),
-    error: new THREE.Color("#dc2626"),
-    idle: new THREE.Color("#94a3b8"),
-  }), []);
+  const statusColors = useMemo(
+    () => ({
+      working: new THREE.Color("#16a34a"),
+      error: new THREE.Color("#dc2626"),
+      idle: new THREE.Color("#94a3b8"),
+    }),
+    []
+  );
 
   useFrame(() => {
     if (!groupRef.current) return;
@@ -112,8 +121,7 @@ export default function AgentCharacter({
     // sitting on the taller surface. Otherwise, keep the head level.
     if (headRef.current) {
       const targetTilt = isAtStandingDesk ? -0.35 : 0;
-      headRef.current.rotation.x +=
-        (targetTilt - headRef.current.rotation.x) * 0.18;
+      headRef.current.rotation.x += (targetTilt - headRef.current.rotation.x) * 0.18;
     }
 
     const [wx, , wz] = toWorld(agent.x, agent.y);
@@ -232,17 +240,13 @@ export default function AgentCharacter({
       }
       if (leftLegRef.current) leftLegRef.current.rotation.x = Math.sin(t * 2) * 0.2;
       if (rightLegRef.current) rightLegRef.current.rotation.x = -Math.sin(t * 2) * 0.2;
-    } else if (
-      agent.pingPongUntil !== undefined &&
-      agent.pingPongUntil > Date.now()
-    ) {
+    } else if (agent.pingPongUntil !== undefined && agent.pingPongUntil > Date.now()) {
       // Playing ping pong: one arm swings on a 1.2s cycle synced with the
       // ball. Side A's paddle peaks at phase 0 (ball leaves), side B's at
       // phase 0.5 — so the two paddle arms alternate like a real rally.
       const pingPhase = (Date.now() % 1200) / 1200;
       const strikePhase = agent.pingPongSide === "B" ? 0.5 : 0;
-      const paddleSwing =
-        Math.cos((pingPhase - strikePhase) * Math.PI * 2) * 1.2;
+      const paddleSwing = Math.cos((pingPhase - strikePhase) * Math.PI * 2) * 1.2;
       if (rightArmRef.current) {
         rightArmRef.current.rotation.x = -0.3 + paddleSwing;
         rightArmRef.current.rotation.z = 0;
@@ -409,7 +413,7 @@ export default function AgentCharacter({
           dots + a small tail pointing down at the agent. Whole group
           toggled visible via talkBubbleRef, pulses mildly. */}
       <Billboard>
-        <group ref={talkBubbleRef} position={[0, 215, 0]} visible={false}>
+        <group ref={talkBubbleRef} position={[0, 190, 0]} visible={false}>
           {/* Thin black border (slightly larger plate behind) */}
           <mesh position={[0, 0, -0.2]}>
             <planeGeometry args={[70, 40]} />
@@ -439,60 +443,62 @@ export default function AgentCharacter({
       {/* Floating nameplate — shown only for agents that appear on the
           leaderboard (rank + name both present). Pre-submission / unscored
           agents roam unlabeled. */}
-      {agentName !== null && rank !== null && (() => {
-        const name = truncateName(agentName);
-        const rankText = rankLabel(rank);
-        const fontSize = 30;
-        const padding = 14;
-        // Rough glyph width heuristic for a proportional sans — wide enough
-        // without overshooting. Gap between rank and name is 10 units.
-        const rankW = rankText.length * fontSize * 0.62;
-        const nameW = name.length * fontSize * 0.56;
-        const plateW = rankW + nameW + padding * 2 + 14;
-        const plateH = fontSize + padding * 1.1;
-        // Left-align rank, center gap, then name. Origin = plate center.
-        const rankX = -plateW / 2 + padding + rankW / 2;
-        const nameX = -plateW / 2 + padding + rankW + 14 + nameW / 2;
-        return (
-          <Billboard position={[0, 165, 0]}>
-            {/* Plate: white fill with a 2-unit black border */}
-            <mesh position={[0, 0, -0.2]}>
-              <planeGeometry args={[plateW + 4, plateH + 4]} />
-              <meshBasicMaterial color="#000000" />
-            </mesh>
-            <mesh position={[0, 0, -0.1]}>
-              <planeGeometry args={[plateW, plateH]} />
-              <meshBasicMaterial color="#FFFFFF" />
-            </mesh>
-            {/* Rank — black on white, monospace-ish weight */}
-            <Text
-              position={[rankX, 0, 0]}
-              fontSize={fontSize}
-              color="#000000"
-              anchorX="center"
-              anchorY="middle"
-              fontWeight={700}
-            >
-              {rankText}
-            </Text>
-            {/* Vertical divider between rank and name */}
-            <mesh position={[-plateW / 2 + padding + rankW + 7, 0, 0]}>
-              <planeGeometry args={[2, plateH * 0.7]} />
-              <meshBasicMaterial color="#000000" />
-            </mesh>
-            {/* Name — black on white */}
-            <Text
-              position={[nameX, 0, 0]}
-              fontSize={fontSize}
-              color="#000000"
-              anchorX="center"
-              anchorY="middle"
-            >
-              {name}
-            </Text>
-          </Billboard>
-        );
-      })()}
+      {agentName !== null &&
+        rank !== null &&
+        (() => {
+          const name = truncateName(agentName);
+          const rankText = rankLabel(rank);
+          const fontSize = 30;
+          const padding = 14;
+          // Rough glyph width heuristic for a proportional sans — wide enough
+          // without overshooting. Gap between rank and name is 10 units.
+          const rankW = rankText.length * fontSize * 0.62;
+          const nameW = name.length * fontSize * 0.56;
+          const plateW = rankW + nameW + padding * 2 + 14;
+          const plateH = fontSize + padding * 1.1;
+          // Left-align rank, center gap, then name. Origin = plate center.
+          const rankX = -plateW / 2 + padding + rankW / 2;
+          const nameX = -plateW / 2 + padding + rankW + 14 + nameW / 2;
+          return (
+            <Billboard position={[0, 165, 0]}>
+              {/* Plate: white fill with a 2-unit black border */}
+              <mesh position={[0, 0, -0.2]}>
+                <planeGeometry args={[plateW + 4, plateH + 4]} />
+                <meshBasicMaterial color="#000000" />
+              </mesh>
+              <mesh position={[0, 0, -0.1]}>
+                <planeGeometry args={[plateW, plateH]} />
+                <meshBasicMaterial color="#FFFFFF" />
+              </mesh>
+              {/* Rank — black on white, monospace-ish weight */}
+              <Text
+                position={[rankX, 0, 0]}
+                fontSize={fontSize}
+                color="#000000"
+                anchorX="center"
+                anchorY="middle"
+                fontWeight={700}
+              >
+                {rankText}
+              </Text>
+              {/* Vertical divider between rank and name */}
+              <mesh position={[-plateW / 2 + padding + rankW + 7, 0, 0]}>
+                <planeGeometry args={[2, plateH * 0.7]} />
+                <meshBasicMaterial color="#000000" />
+              </mesh>
+              {/* Name — black on white */}
+              <Text
+                position={[nameX, 0, 0]}
+                fontSize={fontSize}
+                color="#000000"
+                anchorX="center"
+                anchorY="middle"
+              >
+                {name}
+              </Text>
+            </Billboard>
+          );
+        })()}
     </group>
   );
 }
