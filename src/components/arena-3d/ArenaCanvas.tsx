@@ -6,6 +6,8 @@ import { useStrawAgents } from "./useStrawAgents";
 import { useArenaGameLoop } from "./useArenaGameLoop";
 import { DEFAULT_ARENA_FURNITURE } from "./core/defaultLayout";
 import OfficeEnvironment from "./scene/OfficeEnvironment";
+import ArenaDoor from "./objects/ArenaDoor";
+import PingPongBalls from "./objects/PingPongBalls";
 import AgentCharacter from "./objects/AgentCharacter";
 import ScoreOverlay from "./ScoreOverlay";
 import BWEffects, { type BWVariant } from "./BWEffects";
@@ -170,6 +172,12 @@ function ArenaScene({
 
       {/* Office */}
       <OfficeEnvironment furniture={furniture} />
+
+      {/* East-perimeter door (join/leave top-20 visual) + animated
+          ping-pong balls for any agents currently paired up. Ported
+          from /arena-tuner so the live arena gets the same visuals. */}
+      <ArenaDoor agentsRef={renderAgentsRef} />
+      <PingPongBalls agentsRef={renderAgentsRef} />
 
       {/* Agents */}
       <AgentRenderer renderAgentsRef={renderAgentsRef} />
