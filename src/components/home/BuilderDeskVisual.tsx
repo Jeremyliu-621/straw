@@ -21,6 +21,44 @@ import type { RenderAgentState } from "@/components/arena-3d/useArenaGameLoop";
  * so it stays independent of the main arena polling / event pipeline.
  */
 
+/**
+ * Post-render override: find AgentCharacter's left/right arm groups by their
+ * hardcoded local positions (x=±14, y=68 in agent-local coords) and pump
+ * rotations every frame, so the seated agent reads as "typing hard" instead
+ * of the static desk pose the arena renders by default. Mounts AFTER
+ * AgentCharacter, so its useFrame (default priority, same render pass) runs
+ * later in the frame and overwrites the idle arm rotations.
+ */
+function ArmFlail() {
+  const { scene } = useThree();
+  const leftArm = useRef<THREE.Object3D | null>(null);
+  const rightArm = useRef<THREE.Object3D | null>(null);
+
+  useFrame((state) => {
+    if (!leftArm.current || !rightArm.current) {
+      scene.traverse((obj) => {
+        if (obj.type !== "Group") return;
+        // Agent arms sit at y=68 with x=±14 relative to the character root.
+        if (Math.abs(obj.position.y - 68) > 0.1) return;
+        if (Math.abs(obj.position.x + 14) < 0.1) leftArm.current = obj;
+        else if (Math.abs(obj.position.x - 14) < 0.1) rightArm.current = obj;
+      });
+    }
+    const t = state.clock.elapsedTime;
+    // Two uncorrelated sines per arm — chaotic "flailing" rather than metronomic.
+    if (leftArm.current) {
+      leftArm.current.rotation.x = -0.4 + Math.sin(t * 7.6) * 0.55;
+      leftArm.current.rotation.z = 0.25 + Math.sin(t * 4.1) * 0.2;
+    }
+    if (rightArm.current) {
+      rightArm.current.rotation.x = -0.4 + Math.cos(t * 6.9) * 0.55;
+      rightArm.current.rotation.z = -0.25 - Math.cos(t * 4.3) * 0.2;
+    }
+  });
+
+  return null;
+}
+
 function Scene() {
   const station = useMemo(
     () =>
@@ -92,6 +130,9 @@ function Scene() {
         agentsRef={agentRef}
       />
 
+      {/* MUST mount after AgentCharacter — same frame, later useFrame. */}
+      <ArmFlail />
+
       {/* Match the rest of the landing: b&w materials + mild tint + pure white. */}
       <BWEffects
         variant="unlit-tint"
@@ -125,7 +166,7 @@ export default function BuilderDeskVisual() {
           near: 0.1,
           far: 50,
         }}
-        gl={{ antialias: true, alpha: false }}
+        gl={{ antialias: true, alpha: true }}
         style={{ background: "#FDFCFC" }}
       >
         <Scene />
