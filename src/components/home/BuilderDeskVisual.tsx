@@ -167,11 +167,7 @@ export default function BuilderDeskVisual() {
           near: 0.1,
           far: 50,
         }}
-        gl={{
-          antialias: true,
-          alpha: true,
-          powerPreference: "low-power",
-        }}
+        gl={{ antialias: true, alpha: true }}
         style={{ background: "#FDFCFC" }}
         onCreated={({ gl }) => {
           // Another WebGL canvas lives on this page (the main arena). When the

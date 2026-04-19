@@ -105,6 +105,10 @@ export default function AgentCharacter({
     // Read live data from the ref — this is the key to animation
     const agent = agentsRef.current.find((a) => a.id === agentId);
     if (!agent) return;
+    // Offstage agents (not in the top 20) are fully hidden — skip all
+    // animation work so they don't show up anywhere visually.
+    groupRef.current.visible = !agent.hidden;
+    if (agent.hidden) return;
 
     const isWalking = agent.state === "walking";
     const isDancing = agent.state === "dancing";

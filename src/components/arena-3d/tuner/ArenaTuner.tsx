@@ -14,6 +14,8 @@ export default function ArenaTuner() {
     triggerDevAction,
     triggerStandup,
     triggerCluster,
+    triggerJoin,
+    triggerLeave,
     tuning,
     setTuning,
     gymTuning,
@@ -79,6 +81,8 @@ export default function ArenaTuner() {
         onDevAction={triggerDevAction}
         onStandup={triggerStandup}
         onCluster={triggerCluster}
+        onJoin={triggerJoin}
+        onLeave={triggerLeave}
         agentRef={agentRef}
       />
     </div>

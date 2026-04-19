@@ -1171,7 +1171,20 @@ const PING_PONG_CYCLE_MS = 1200;    // full out-and-back loop
 // Seats / gym / misc cohorts tune poses for one or two subjects at a time;
 // the arena cohort simulates the full office (15 = roughly the main-arena
 // top-of-leaderboard size).
-export const ARENA_AGENT_COUNT = 15;
+// 15 onstage + 3 offstage reserve so "+ join" / "− leave" dev buttons
+// always have someone to swap in / out of the arena.
+export const ARENA_AGENT_COUNT = 18;
+export const ARENA_ONSTAGE_COUNT = 15;
+
+// East-perimeter door where agents join / leave the top 20. Placed in
+// the gap between the standing-desk island (y=330–495) and the
+// whiteboard zone (y=600), right at the east wall.
+export const ARENA_DOOR_X = 1200;
+export const ARENA_DOOR_Y = 540;
+// Inside-wall position the incoming agent walks TO once they've
+// "entered" through the door (and that outgoing agents vanish at).
+export const ARENA_DOOR_INSIDE_X = 1155;
+export const ARENA_DOOR_INSIDE_Y = 540;
 export const DEFAULT_AGENT_COUNT = 2;
 export const getAgentCount = (c: Cohort) =>
   c === "arena" ? ARENA_AGENT_COUNT : DEFAULT_AGENT_COUNT;
@@ -1228,6 +1241,9 @@ function makeInitialAgent(idx: number, cohort: Cohort): RenderAgentState {
   // deterministic between screenshots.
   const walkSpeed =
     cohort === "arena" ? WALK_SPEED * (0.7 + Math.random() * 0.6) : WALK_SPEED;
+  // Arena cohort: first ARENA_ONSTAGE_COUNT agents are visible, remainder
+  // start hidden (reserve for "+ join" dev button).
+  const hidden = cohort === "arena" && idx >= ARENA_ONSTAGE_COUNT;
   return {
     id: `tuner_agent_${idx}`,
     name: String.fromCharCode(65 + idx), // A, B, C, …
@@ -1244,6 +1260,7 @@ function makeInitialAgent(idx: number, cohort: Cohort): RenderAgentState {
     walkSpeed,
     phaseOffset: (idx * 0.37) % 1, // stagger walk animations
     state: "standing",
+    hidden,
   };
 }
 
@@ -1364,6 +1381,33 @@ function PerimeterWalls({ large }: { large?: boolean }) {
         <meshStandardMaterial color={color} />
       </mesh>
     </>
+  );
+}
+
+/**
+ * East-perimeter door where agents join / leave the top 20. Visible only
+ * in the arena cohort. Just a recessed plane in the east wall for now —
+ * no open/close animation yet.
+ */
+function ArenaDoor({ large }: { large?: boolean }) {
+  if (!large) return null;
+  const [wx, , wz] = toWorld(ARENA_DOOR_X, ARENA_DOOR_Y);
+  const doorW = 0.06; // thickness, slightly in front of wall
+  const doorH = 1;
+  const doorL = 80 * SCALE;
+  return (
+    <group position={[wx, doorH / 2, wz]}>
+      {/* Door frame — darker rectangle on the wall */}
+      <mesh position={[0, 0, -0.05]}>
+        <boxGeometry args={[doorW, doorH + 0.2, doorL + 0.2]} />
+        <meshStandardMaterial color="#2e2a23" />
+      </mesh>
+      {/* Door leaf — lighter rectangle inset */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[doorW, doorH, doorL]} />
+        <meshStandardMaterial color="#d4c89b" />
+      </mesh>
+    </group>
   );
 }
 
@@ -1880,6 +1924,7 @@ function TickLoop({
     for (let i = 0; i < agents.length; i++) {
       const a = agents[i];
       if (!a) continue;
+      if (a.hidden) continue;
       if (a.state === "walking" || a.state === "working_out") continue;
       if (a.talkUntil !== undefined && a.talkUntil > now) continue;
       if (a.pingPongUntil !== undefined && a.pingPongUntil > now) continue;
@@ -1890,6 +1935,7 @@ function TickLoop({
       for (let j = i + 1; j < agents.length; j++) {
         const b = agents[j];
         if (!b) continue;
+        if (b.hidden) continue;
         if (b.state === "walking" || b.state === "working_out") continue;
         if (b.talkUntil !== undefined && b.talkUntil > now) continue;
         if (b.pingPongUntil !== undefined && b.pingPongUntil > now) continue;
@@ -1918,11 +1964,11 @@ function TickLoop({
     // keep walking through the animation.
     for (let i = 0; i < agents.length; i++) {
       const a = agents[i];
-      if (!a || a.state !== "walking") continue;
+      if (!a || a.hidden || a.state !== "walking") continue;
       if ((a.waveUntil ?? 0) > now) continue;
       for (let j = i + 1; j < agents.length; j++) {
         const b = agents[j];
-        if (!b || b.state !== "walking") continue;
+        if (!b || b.hidden || b.state !== "walking") continue;
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         if (Math.hypot(dx, dy) > WAVE_PROXIMITY_PX) continue;
@@ -1942,7 +1988,7 @@ function TickLoop({
     // put) and holds the glance via lookAtUntil so the sweep auto-clears.
     for (let i = 0; i < agents.length; i++) {
       const a = agents[i];
-      if (!a) continue;
+      if (!a || a.hidden) continue;
       if (a.state === "walking") continue;
       if (a.state === "working_out") continue;
       if (a.state === "dancing") continue;
@@ -1956,7 +2002,7 @@ function TickLoop({
       for (let j = 0; j < agents.length; j++) {
         if (j === i) continue;
         const b = agents[j];
-        if (!b || b.state !== "walking") continue;
+        if (!b || b.hidden || b.state !== "walking") continue;
         const d = Math.hypot(b.x - a.x, b.y - a.y);
         if (d < bestDist) {
           bestDist = d;
@@ -2045,6 +2091,16 @@ function TickLoop({
                   partner.pingPongUntil = now + duration;
                 }
               }
+            } else if (agent.leavingToDoor) {
+              // Arrived at the door with leave intent — hide them. Ambient
+              // picker / every other loop now skips them until a "+ join"
+              // dev click brings them back.
+              agent.hidden = true;
+              agent.leavingToDoor = false;
+              agent.state = "standing";
+              agent.socialSpotType = undefined;
+              agent.sitBackOverride = undefined;
+              agent.sinkDepthOverride = undefined;
             } else if (
               agent.standupUntil !== undefined &&
               agent.standupUntil > now
@@ -2132,6 +2188,7 @@ export default function TunerScene({
         <Floor onFloorClick={onFloorClick} large={large} />
         <GridLines large={large} />
         <PerimeterWalls large={large} />
+        <ArenaDoor large={large} />
 
         {items.map((item) => {
           if (item.type === "wall") {
@@ -2397,6 +2454,7 @@ export function useTunerAgent() {
       // over once they're in range, so no explicit talk logic needed here.
       const eligibleForCluster = (a: RenderAgentState | undefined): boolean => {
         if (!a) return false;
+        if (a.hidden) return false;
         if (a.state === "walking") return false;
         if ((a.standupUntil ?? 0) > now) return false;
         if ((a.clusterUntil ?? 0) > now) return false;
@@ -2516,6 +2574,7 @@ export function useTunerAgent() {
         for (let i = 0; i < agents.length; i++) {
           const cand = agents[i];
           if (!cand || cand === waiter) continue;
+          if (cand.hidden) continue;
           if (!ambientByAgent[i]) continue;
           if (cand.state === "walking") continue;
           if (cand.pingPongTableUid) continue;
@@ -2535,6 +2594,7 @@ export function useTunerAgent() {
         if (!ambientByAgent[i]) continue;
         const agent = agentRef.current[i];
         if (!agent) continue;
+        if (agent.hidden) continue;
         if (agent.state === "walking") continue;
         // Standup participants are in a structured 30–75s hold — leave
         // them alone until standupUntil expires. Without this the
@@ -2589,6 +2649,122 @@ export function useTunerAgent() {
     setStationIdxByAgent(Array(n).fill(null));
     setAmbientByAgent(Array(n).fill(false));
   }, [cohort]);
+
+  // "+ join": find the first hidden agent, teleport them to the east
+  // door position, clear hidden flag, then walk them to a random roam
+  // point inside the arena. They're instantly visible at the door and
+  // walk into the office.
+  const triggerJoin = useCallback((): boolean => {
+    const agents = agentRef.current;
+    let idx = -1;
+    for (let i = 0; i < agents.length; i++) {
+      if (agents[i]?.hidden) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx < 0) return false;
+    const agent = agents[idx];
+    if (!agent) return false;
+    agent.hidden = false;
+    agent.leavingToDoor = false;
+    // Teleport to door, clear holds, walk to a random destination inside.
+    agent.x = ARENA_DOOR_INSIDE_X;
+    agent.y = ARENA_DOOR_INSIDE_Y;
+    agent.targetX = ARENA_DOOR_INSIDE_X;
+    agent.targetY = ARENA_DOOR_INSIDE_Y;
+    agent.facing = Math.PI; // face west, into the office
+    // Walk to the center of the main floor (same spawn-grid area new
+    // arena agents use) via A*.
+    const dest = arenaSpawn(idx % (ARENA_ONSTAGE_COUNT));
+    const plan = planPath(agent.x, agent.y, dest.x, dest.y);
+    agent.state = "walking";
+    agent.path = plan.waypoints;
+    agent.plannedPath = [
+      { x: agent.x, y: agent.y },
+      ...plan.waypoints.map((p) => ({ ...p })),
+    ];
+    agent.plannedPathRouted = plan.routed;
+    agent.targetX = dest.x;
+    agent.targetY = dest.y;
+    agent.status = "idle";
+    agent.state = "walking";
+    // Clear any ghost holds the agent was carrying while offstage.
+    agent.couchUntil = undefined;
+    agent.gymUntil = undefined;
+    agent.pingPongUntil = undefined;
+    agent.pingPongTableUid = undefined;
+    agent.pingPongSide = undefined;
+    agent.standupUntil = undefined;
+    agent.conferenceRole = undefined;
+    agent.clusterUntil = undefined;
+    agent.talkUntil = undefined;
+    agent.socialSpotType = undefined;
+    agent.sitBackOverride = undefined;
+    agent.sinkDepthOverride = undefined;
+    ambientNextAtRef.current[idx] = Infinity;
+    setStationIdxByAgent((prev) => {
+      const next = [...prev];
+      next[idx] = null;
+      return next;
+    });
+    return true;
+  }, [planPath]);
+
+  // "− leave": pick an eligible onstage agent, walk them to the door
+  // with leavingToDoor=true. The arrival branch in the tick loop flips
+  // them to hidden.
+  const triggerLeave = useCallback((): boolean => {
+    const agents = agentRef.current;
+    const now = Date.now();
+    // Prefer agents who aren't in the middle of a structured hold.
+    const candidates: number[] = [];
+    for (let i = 0; i < agents.length; i++) {
+      const a = agents[i];
+      if (!a || a.hidden) continue;
+      if ((a.standupUntil ?? 0) > now) continue;
+      if ((a.danceUntil ?? 0) > now) continue;
+      if ((a.pingPongUntil ?? 0) > now) continue;
+      if ((a.gymUntil ?? 0) > now) continue;
+      if (a.leavingToDoor) continue;
+      candidates.push(i);
+    }
+    if (candidates.length === 0) return false;
+    const idx = candidates[Math.floor(Math.random() * candidates.length)];
+    const agent = agents[idx];
+    if (!agent) return false;
+    // Clear any ambient / cluster state so nothing pulls them elsewhere
+    // on the way out.
+    agent.clusterUntil = undefined;
+    agent.talkUntil = undefined;
+    agent.talkPartnerId = undefined;
+    agent.couchUntil = undefined;
+    agent.socialSpotType = undefined;
+    agent.sitBackOverride = undefined;
+    agent.sinkDepthOverride = undefined;
+    agent.lookAtX = undefined;
+    agent.lookAtY = undefined;
+    agent.lookAtAgentId = undefined;
+    agent.lookAtUntil = undefined;
+    agent.leavingToDoor = true;
+    const plan = planPath(agent.x, agent.y, ARENA_DOOR_INSIDE_X, ARENA_DOOR_INSIDE_Y);
+    agent.state = "walking";
+    agent.path = plan.waypoints;
+    agent.plannedPath = [
+      { x: agent.x, y: agent.y },
+      ...plan.waypoints.map((p) => ({ ...p })),
+    ];
+    agent.plannedPathRouted = plan.routed;
+    agent.targetX = ARENA_DOOR_INSIDE_X;
+    agent.targetY = ARENA_DOOR_INSIDE_Y;
+    ambientNextAtRef.current[idx] = Infinity;
+    setStationIdxByAgent((prev) => {
+      const next = [...prev];
+      next[idx] = null;
+      return next;
+    });
+    return true;
+  }, [planPath]);
 
   // Spawn one random cluster. Same logic as the ambient-interval cluster
   // trigger, extracted so the dev button can fire it on demand. Returns
@@ -2718,6 +2894,7 @@ export function useTunerAgent() {
       for (let i = 0; i < agentRef.current.length; i++) {
         const a = agentRef.current[i];
         if (!a) continue;
+        if (a.hidden) continue;
         if ((a.standupUntil ?? 0) > now) continue;
         if ((a.danceUntil ?? 0) > now) continue;
         eligible.push(i);
@@ -2936,6 +3113,8 @@ export function useTunerAgent() {
     triggerDevAction,
     triggerStandup,
     triggerCluster,
+    triggerJoin,
+    triggerLeave,
     tuning,
     setTuning,
     gymTuning,

@@ -52,6 +52,8 @@ interface TunerPanelProps {
   ) => void;
   onStandup: (venue: "conference" | "round_table" | "random") => void;
   onCluster: () => boolean;
+  onJoin: () => boolean;
+  onLeave: () => boolean;
   agentRef: React.RefObject<RenderAgentState[]>;
 }
 
@@ -134,6 +136,8 @@ export default function TunerPanel({
   onDevAction,
   onStandup,
   onCluster,
+  onJoin,
+  onLeave,
   agentRef,
 }: TunerPanelProps) {
   const [devAgentIdx, setDevAgentIdx] = useState(0);
@@ -581,6 +585,23 @@ export default function TunerPanel({
             title="Spawn one random cluster — an anchor + 1–2 nearby agents gather around them for 10–20s"
           >
             cluster
+          </button>
+        </div>
+        <div className="mt-2 flex items-center gap-1.5">
+          <span className="text-[11px] text-gray-500 shrink-0">door:</span>
+          <button
+            onClick={() => onJoin()}
+            className="flex-1 px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black"
+            title="+ join: one offstage agent enters through the east door (top-20 entry)"
+          >
+            + join
+          </button>
+          <button
+            onClick={() => onLeave()}
+            className="flex-1 px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black"
+            title="− leave: one onstage agent walks to the east door and goes offstage (top-20 exit)"
+          >
+            − leave
           </button>
         </div>
       </div>

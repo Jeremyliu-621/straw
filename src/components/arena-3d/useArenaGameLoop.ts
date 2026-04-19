@@ -90,6 +90,14 @@ export interface RenderAgentState {
   /** ms timestamp — agent is mid-wave (brief right-arm raise) until
    *  this time. Triggered when passing another walker. */
   waveUntil?: number;
+  /** True = agent is offstage (not on the leaderboard). Excluded from
+   *  every tick loop and hidden from render. "− leave" walks them to
+   *  the door then sets hidden; "+ join" teleports a hidden agent to
+   *  the door and clears the flag. */
+  hidden?: boolean;
+  /** True while walking to the door with intent to leave. Arrival
+   *  handler flips them to hidden. */
+  leavingToDoor?: boolean;
   /**
    * Desired facing (radians) when the agent arrives at targetX/Y. Applied on
    * arrival so stations (desk / gym station / couch) can force the agent to
