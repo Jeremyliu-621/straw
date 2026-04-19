@@ -60,6 +60,10 @@ export interface TuningParams {
   // Rotation of each item (degrees added to item.facing).
   deskRotDeg: number;
   standingDeskRotDeg: number;
+  /** Canvas units the agent stands NORTH of the desk's natural anchor.
+   *  0 = at the chair position; positive = pushed further forward (toward
+   *  the camera in iso view), negative = pulled into the desk. */
+  standingDeskDist: number;
   couchRotDeg: number;
   couchVRotDeg: number;
   beanbagRotDeg: number;
@@ -158,6 +162,7 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
 export const DEFAULT_TUNING: TuningParams = {
   deskRotDeg: 0,
   standingDeskRotDeg: 0,
+  standingDeskDist: 0,
   couchRotDeg: 0,
   couchVRotDeg: 0,
   beanbagRotDeg: 0,
@@ -402,9 +407,12 @@ export function buildStations(tuning: TuningParams): {
     pivotY: standingPivotY,
     rotDeg: tuning.standingDeskRotDeg,
   });
+  // Pre-rotation stand point. y is shifted by the distance slider —
+  // positive pushes the agent NORTH (further from the desk into the
+  // open space in front of it), negative pulls them into the desk.
   const standingDeskStandPre = {
     x: STANDING_DESK_BASE_X + DESK_W / 2 - 18,
-    y: STANDING_DESK_BASE_Y + 2,
+    y: STANDING_DESK_BASE_Y + 2 - tuning.standingDeskDist,
   };
   const standingDeskStandRot = rotatePoint(
     standingDeskStandPre.x,
@@ -2114,6 +2122,52 @@ export function useTunerAgent() {
     const id = window.setInterval(() => {
       if (stations.length < 2) return;
       const now = Date.now();
+      const agents = agentRef.current;
+
+      // Ping-pong beckon: if an agent is standing alone at a table (claimed
+      // a side, no partner yet, no active game) and the other side is empty,
+      // redirect any nearby idle ambient agent to come play. Makes pairs form
+      // without waiting for two independent random picks to collide.
+      for (const waiter of agents) {
+        if (!waiter) continue;
+        if (!waiter.pingPongTableUid || !waiter.pingPongSide) continue;
+        if (waiter.pingPongUntil !== undefined && waiter.pingPongUntil > now)
+          continue; // already in a game
+        if (waiter.state === "walking") continue; // still arriving
+        const needSide = waiter.pingPongSide === "A" ? "B" : "A";
+        const targetIdx = stations.findIndex(
+          (s) =>
+            s.pingPongTableUid === waiter.pingPongTableUid &&
+            s.pingPongSide === needSide
+        );
+        if (targetIdx < 0) continue;
+        // Bail if someone's already claimed or walking to the other side.
+        const inbound = agents.some(
+          (a) =>
+            a !== waiter &&
+            a.pingPongTableUid === waiter.pingPongTableUid &&
+            a.pingPongSide === needSide
+        );
+        if (inbound) continue;
+        const alreadyHeaded = stationIdxByAgentRef.current.includes(targetIdx);
+        if (alreadyHeaded) continue;
+        // Pick a candidate: ambient-on, idle, no holds, not at another ping-
+        // pong table. First match wins.
+        for (let i = 0; i < agents.length; i++) {
+          const cand = agents[i];
+          if (!cand || cand === waiter) continue;
+          if (!ambientByAgent[i]) continue;
+          if (cand.state === "walking") continue;
+          if (cand.pingPongTableUid) continue;
+          if ((cand.gymUntil ?? 0) > now) continue;
+          if ((cand.couchUntil ?? 0) > now) continue;
+          if ((cand.talkUntil ?? 0) > now) continue;
+          sendToStation(i, targetIdx);
+          ambientNextAtRef.current[i] = Infinity;
+          break;
+        }
+      }
+
       for (let i = 0; i < ambientByAgent.length; i++) {
         if (!ambientByAgent[i]) continue;
         const agent = agentRef.current[i];

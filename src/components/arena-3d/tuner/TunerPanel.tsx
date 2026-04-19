@@ -305,6 +305,7 @@ export default function TunerPanel({
             <div>
               <p className="text-[10px] uppercase text-gray-500 mb-1">Standing desk</p>
               <Slider label="rotation" value={tuning.standingDeskRotDeg} min={0} max={360} step={1} onChange={(v) => setSeatsField("standingDeskRotDeg", v)} suffix="°" />
+              <Slider label="distance" value={tuning.standingDeskDist} min={-30} max={80} step={1} onChange={(v) => setSeatsField("standingDeskDist", v)} />
             </div>
             <div>
               <p className="text-[10px] uppercase text-gray-500 mb-1">Couch</p>
