@@ -334,15 +334,15 @@ const WALL_DECOR: FurnitureItem[] = [
     wallAttach: "S",
     _uid: uid("art"),
   },
-  // East perimeter wall
+  // Conference room — N-wall painting tucked next to the tv_screen.
   {
     type: "painting",
-    x: 1195,
-    y: 630,
-    w: 80,
-    h: 55,
+    x: 275,
+    y: 5,
+    w: 60,
+    h: 45,
     color: "#5C8D65",
-    wallAttach: "E",
+    wallAttach: "N",
     _uid: uid("art"),
   },
   // West perimeter wall
