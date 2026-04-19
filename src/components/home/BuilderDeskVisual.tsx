@@ -161,6 +161,7 @@ export default function BuilderDeskVisual() {
       <Canvas
         orthographic
         frameloop="always"
+        dpr={[2.5, 3]}
         camera={{
           position: [wx + 5, 7, wz + 6],
           zoom: 90,
