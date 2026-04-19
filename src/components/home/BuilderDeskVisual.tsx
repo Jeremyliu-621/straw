@@ -27,7 +27,7 @@ function Scene() {
         id: "builder_demo_desk",
         x: 600,
         y: 550,
-        type: "standing_desk",
+        type: "desk_cubicle",
       }),
     []
   );
@@ -48,8 +48,8 @@ function Scene() {
       frame: 0,
       walkSpeed: 0,
       phaseOffset: 0,
-      state: "standing",
-      socialSpotType: "standing_desk",
+      state: "sitting",
+      socialSpotType: "chair",
     },
   ]);
 
