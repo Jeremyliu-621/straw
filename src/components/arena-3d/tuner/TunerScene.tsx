@@ -2540,7 +2540,14 @@ export function useTunerAgent(opts?: {
   const [ambientByAgent, setAmbientByAgent] = useState<boolean[]>(() =>
     Array(getAgentCount(initialCohort)).fill(initialAmbientAll)
   );
-  const ambientNextAtRef = useRef<number[]>(Array(getAgentCount(initialCohort)).fill(0));
+  // Mirror setAmbientForAll(true) behavior: stagger first-pick times 250ms
+  // apart so 15 agents don't all route on the same tick from adjacent spawn
+  // cells. Without this, initialAmbientAll=true races and agents cross paths.
+  const ambientNextAtRef = useRef<number[]>(
+    Array(getAgentCount(initialCohort))
+      .fill(0)
+      .map((_, i) => (initialAmbientAll ? Date.now() + i * 250 : 0)),
+  );
   // Mirror stationIdxByAgent into a ref so the ambient timer can read the
   // latest value without re-creating its interval on every station change.
   const stationIdxByAgentRef = useRef(stationIdxByAgent);
