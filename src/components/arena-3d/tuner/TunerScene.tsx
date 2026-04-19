@@ -1114,8 +1114,10 @@ const ROUND_TABLE_SEATS: StandupSeat[] = [
   { x: 283 + 12, y: 391 + 12, facing: _deg(60) },
   { x: 283 + 12, y: 486 + 12, facing: _deg(120) },
 ];
-const STANDUP_MIN_MS = 30_000;
-const STANDUP_MAX_MS = 75_000;
+// Duration is now sized assuming ~15s of door-bottleneck walk-in for 15
+// agents, so min 50s gives ~35s of everyone-seated conference time.
+const STANDUP_MIN_MS = 50_000;
+const STANDUP_MAX_MS = 90_000;
 // Conference speaker rotation: one presenter has an active speech bubble
 // at a time; turn rotates every SPEAKER_TURN_MS.
 const SPEAKER_TURN_MS = 5_000;
@@ -2224,6 +2226,8 @@ export function useTunerAgent() {
         agent.pingPongTableUid = undefined;
         agent.pingPongSide = undefined;
         agent.pingPongUntil = undefined;
+        agent.standupUntil = undefined;
+        agent.conferenceRole = undefined;
         agent.status = "idle";
         setStationIdxByAgent((prev) => {
           const next = [...prev];
@@ -2250,10 +2254,14 @@ export function useTunerAgent() {
       agent.sinkDepthOverride = undefined;
       agent.workoutStyle = undefined;
       // Clear any prior ping-pong pairing — they'll be re-set on arrival if
-      // the new station is itself a ping-pong slot.
+      // the new station is itself a ping-pong slot. Also clear standup
+      // fields so user overrides / beckon interruptions don't leave ghost
+      // conference state.
       agent.pingPongTableUid = undefined;
       agent.pingPongSide = undefined;
       agent.pingPongUntil = undefined;
+      agent.standupUntil = undefined;
+      agent.conferenceRole = undefined;
       agent.status = "idle";
       setStationIdxByAgent((prev) => {
         const next = [...prev];
@@ -2373,6 +2381,8 @@ export function useTunerAgent() {
           if ((cand.gymUntil ?? 0) > now) continue;
           if ((cand.couchUntil ?? 0) > now) continue;
           if ((cand.talkUntil ?? 0) > now) continue;
+          // Don't pull attendees out of an active standup / conference.
+          if ((cand.standupUntil ?? 0) > now) continue;
           sendToStation(i, targetIdx);
           ambientNextAtRef.current[i] = Infinity;
           break;
@@ -2454,15 +2464,13 @@ export function useTunerAgent() {
       const duration =
         STANDUP_MIN_MS + Math.random() * (STANDUP_MAX_MS - STANDUP_MIN_MS);
 
+      // "Everyone goes" — pull in every agent that isn't already in this
+      // standup or mid-dance. Walkers get interrupted, gym/couch/ping-pong
+      // holds get cleared on dispatch. Dance is short (5s) so we leave it.
       const eligible: number[] = [];
       for (let i = 0; i < agentRef.current.length; i++) {
         const a = agentRef.current[i];
         if (!a) continue;
-        if (a.state === "walking") continue;
-        if ((a.gymUntil ?? 0) > now) continue;
-        if ((a.couchUntil ?? 0) > now) continue;
-        if ((a.pingPongUntil ?? 0) > now) continue;
-        if (a.pingPongTableUid) continue;
         if ((a.standupUntil ?? 0) > now) continue;
         if ((a.danceUntil ?? 0) > now) continue;
         eligible.push(i);
@@ -2488,6 +2496,25 @@ export function useTunerAgent() {
         agent.targetX = seat.x;
         agent.targetY = seat.y;
         agent.targetFacing = seat.facing;
+        // Clear any conflicting holds so the conference wins: gym, couch,
+        // ping-pong (waiting or playing), talk, workout pose, sit-back
+        // overrides. Dance is deliberately not cleared (5s window, leave
+        // dancers alone — eligibility already excluded them anyway).
+        agent.gymUntil = undefined;
+        agent.couchUntil = undefined;
+        agent.pingPongUntil = undefined;
+        agent.pingPongTableUid = undefined;
+        agent.pingPongSide = undefined;
+        agent.talkUntil = undefined;
+        agent.talkPartnerId = undefined;
+        agent.workoutStyle = undefined;
+        agent.socialSpotType = undefined;
+        agent.sitBackOverride = undefined;
+        agent.sinkDepthOverride = undefined;
+        agent.lookAtX = undefined;
+        agent.lookAtY = undefined;
+        agent.lookAtAgentId = undefined;
+        agent.lookAtUntil = undefined;
         agent.standupUntil = now + duration;
         agent.conferenceRole = role;
         if (ambientByAgent[agentIdx]) {
