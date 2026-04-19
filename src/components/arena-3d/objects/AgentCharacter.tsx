@@ -311,6 +311,25 @@ export default function AgentCharacter({
       }
       if (leftLegRef.current) leftLegRef.current.rotation.x = -legSwing;
       if (rightLegRef.current) rightLegRef.current.rotation.x = legSwing;
+      // Wave-on-pass overlay: if waveUntil is active, override the right
+      // arm to raise overhead and wag (legs still walk). The raise eases
+      // in/out at the start/end of the hold so it doesn't snap.
+      if (agent.waveUntil !== undefined && agent.waveUntil > Date.now() && rightArmRef.current) {
+        const remaining = agent.waveUntil - Date.now();
+        const waveProgress = 1 - remaining / 900; // 0 → 1 across the hold
+        // Ease: ramp up in first 20%, hold, ramp out in last 20%.
+        const envelope =
+          waveProgress < 0.2
+            ? waveProgress / 0.2
+            : waveProgress > 0.8
+              ? (1 - waveProgress) / 0.2
+              : 1;
+        const wagT = agent.frame * 0.5;
+        rightArmRef.current.rotation.x = 0;
+        // z = rotate outward from body. Raise to ~π/2 over body, wag ±0.3.
+        rightArmRef.current.rotation.z =
+          -envelope * (1.6 + Math.sin(wagT) * 0.3);
+      }
     }
 
     // Generic sitting (no specific context) — rare; mostly covered above.

@@ -409,40 +409,37 @@ function LeftColumn() {
           className="font-sans"
           style={{ fontSize: 14, lineHeight: 1.6, color: "var(--text)", margin: 0 }}
         >
-          Ship OpenClaw V2 — the next version of the open-source personal assistant. Must run
-          100% on-device with a bundled model (no cloud LLM), match Claude Opus 4 on everyday
-          assistant tasks, and keep the existing{" "}
+          Ship V2 of the open-source personal assistant — 100% on-device (no cloud LLM),
+          Claude Opus 4 parity on everyday tasks,{" "}
           <span
             className="font-mono"
             style={{ fontSize: 13, background: "var(--bg-subtle)", padding: "1px 5px", borderRadius: 3 }}
           >
             SKILL.md
           </span>{" "}
-          skills system plus Signal / Telegram / Discord / WhatsApp adapters. MIT-licensed.
+          skills plus Signal / Telegram / Discord / WhatsApp adapters. MIT-licensed.
         </p>
       </Section>
 
       <Section label="Input specification">
         <SpecBox>
-          OpenClaw v1 repo as baseline, the skills SDK, a 400-task everyday-assistant eval
-          covering calendar, email, research, and invoicing, plus messenger-adapter
-          integration fixtures. Any language. Hard constraint: zero outbound calls to
-          third-party model APIs at runtime.
+          OpenClaw v1 repo, skills SDK, 400-task eval across calendar / email / research /
+          invoicing, and messenger-adapter fixtures. Any language. Zero third-party model
+          calls at runtime.
         </SpecBox>
       </Section>
 
       <Section label="Output specification">
         <SpecBox>
-          Full source in{" "}
+          Source in{" "}
           <span
             className="font-mono"
             style={{ fontSize: 13, background: "var(--bg)", padding: "1px 5px", borderRadius: 3 }}
           >
             openclaw/
           </span>
-          , quantized on-device weights, signed installers for macOS / Windows / Linux, and a
-          benchmark report showing parity with v1 on skill success rate and p50 latency under
-          2s on an M-series MacBook Air.
+          , quantized weights, signed installers (macOS / Windows / Linux), and a benchmark
+          proving v1 parity with p50 latency under 2s on an M-series MacBook Air.
         </SpecBox>
       </Section>
 

@@ -1122,6 +1122,24 @@ const STANDUP_MAX_MS = 90_000;
 // at a time; turn rotates every SPEAKER_TURN_MS.
 const SPEAKER_TURN_MS = 5_000;
 
+// Random clusters: spontaneous 2–3 agent gatherings anywhere on the
+// floor. An eligible anchor agent pulls 1–2 nearby idle agents to
+// spokes around them; proximity chat fires naturally once they're
+// within range, so no explicit talk logic is needed.
+const CLUSTER_CHANCE_PER_POLL = 0.003; // per eligible agent per 500ms poll
+const CLUSTER_RADIUS = 55;              // canvas units — spoke distance from anchor
+const CLUSTER_RANGE = 250;              // pull radius — only agents within this range are invited
+const CLUSTER_MIN_PEERS = 1;
+const CLUSTER_MAX_PEERS = 2;
+const CLUSTER_MIN_MS = 10_000;
+const CLUSTER_MAX_MS = 20_000;
+
+// Wave-on-pass: when two walkers cross paths within range, one briefly
+// raises an arm. Purely cosmetic; no movement hold.
+const WAVE_PROXIMITY_PX = 70;
+const WAVE_CHANCE_PER_TICK = 0.002;
+const WAVE_HOLD_MS = 900;
+
 // Ambient dwell ranges per station type. Applied on ARRIVAL (not pick) so
 // slow walks don't eat the dwell budget.
 const DWELL_SEAT_MIN_MS = 24_000;  // couch / beanbag / chair / desk
@@ -1782,6 +1800,13 @@ function TickLoop({
         a.lookAtX = undefined;
         a.lookAtY = undefined;
       }
+      // Cluster / wave expiries.
+      if (a.clusterUntil !== undefined && a.clusterUntil <= now) {
+        a.clusterUntil = undefined;
+      }
+      if (a.waveUntil !== undefined && a.waveUntil <= now) {
+        a.waveUntil = undefined;
+      }
     }
 
     // Conference speaker rotation: while a conference is active, exactly
@@ -1885,6 +1910,30 @@ function TickLoop({
         // they end up floating off the couch.
         if (a.state === "standing") a.facing = Math.atan2(dx, dy);
         if (b.state === "standing") b.facing = Math.atan2(-dx, -dy);
+      }
+    }
+
+    // Wave-on-pass: two walkers within WAVE_PROXIMITY_PX roll a small
+    // chance to trigger a one-sided arm wave. Purely cosmetic; both
+    // keep walking through the animation.
+    for (let i = 0; i < agents.length; i++) {
+      const a = agents[i];
+      if (!a || a.state !== "walking") continue;
+      if ((a.waveUntil ?? 0) > now) continue;
+      for (let j = i + 1; j < agents.length; j++) {
+        const b = agents[j];
+        if (!b || b.state !== "walking") continue;
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        if (Math.hypot(dx, dy) > WAVE_PROXIMITY_PX) continue;
+        if (Math.random() > WAVE_CHANCE_PER_TICK * speedScale) continue;
+        // Random side: ~50/50 who waves.
+        if (Math.random() < 0.5) {
+          a.waveUntil = now + WAVE_HOLD_MS;
+        } else {
+          b.waveUntil = now + WAVE_HOLD_MS;
+        }
+        break; // one wave per tick per anchor
       }
     }
 
@@ -2343,6 +2392,98 @@ export function useTunerAgent() {
       const now = Date.now();
       const agents = agentRef.current;
 
+      // Random clusters: occasionally pick an eligible anchor and pull
+      // 1–2 nearby idle agents to spokes around them. Proximity chat takes
+      // over once they're in range, so no explicit talk logic needed here.
+      const eligibleForCluster = (a: RenderAgentState | undefined): boolean => {
+        if (!a) return false;
+        if (a.state === "walking") return false;
+        if ((a.standupUntil ?? 0) > now) return false;
+        if ((a.clusterUntil ?? 0) > now) return false;
+        if ((a.gymUntil ?? 0) > now) return false;
+        if ((a.couchUntil ?? 0) > now) return false;
+        if ((a.pingPongUntil ?? 0) > now) return false;
+        if (a.pingPongTableUid) return false;
+        if ((a.danceUntil ?? 0) > now) return false;
+        if ((a.talkUntil ?? 0) > now) return false;
+        return true;
+      };
+      for (let ai = 0; ai < agents.length; ai++) {
+        const anchor = agents[ai];
+        if (!ambientByAgent[ai]) continue;
+        if (!eligibleForCluster(anchor)) continue;
+        if (Math.random() > CLUSTER_CHANCE_PER_POLL) continue;
+        // Collect nearest eligible peers within CLUSTER_RANGE.
+        const peerIdxs: number[] = [];
+        for (let pi = 0; pi < agents.length; pi++) {
+          if (pi === ai) continue;
+          if (!ambientByAgent[pi]) continue;
+          const peer = agents[pi];
+          if (!eligibleForCluster(peer)) continue;
+          const d = Math.hypot(peer!.x - anchor!.x, peer!.y - anchor!.y);
+          if (d > CLUSTER_RANGE) continue;
+          peerIdxs.push(pi);
+        }
+        if (peerIdxs.length < CLUSTER_MIN_PEERS) continue;
+        // Pick 1–2 nearest peers.
+        peerIdxs.sort((a, b) => {
+          const aa = agents[a]!;
+          const bb = agents[b]!;
+          return (
+            Math.hypot(aa.x - anchor!.x, aa.y - anchor!.y) -
+            Math.hypot(bb.x - anchor!.x, bb.y - anchor!.y)
+          );
+        });
+        const peerCount = Math.min(
+          peerIdxs.length,
+          CLUSTER_MIN_PEERS + Math.floor(Math.random() * (CLUSTER_MAX_PEERS - CLUSTER_MIN_PEERS + 1))
+        );
+        const chosen = peerIdxs.slice(0, peerCount);
+        const duration =
+          CLUSTER_MIN_MS + Math.random() * (CLUSTER_MAX_MS - CLUSTER_MIN_MS);
+        // Anchor stays put. Peers walk to spokes around the anchor.
+        anchor!.clusterUntil = now + duration;
+        anchor!.state = "standing";
+        chosen.forEach((pi, k) => {
+          const peer = agents[pi]!;
+          // Distribute spokes evenly around the anchor.
+          const angle =
+            (k / chosen.length) * Math.PI * 2 + Math.random() * 0.4;
+          const spokeX = anchor!.x + Math.sin(angle) * CLUSTER_RADIUS;
+          const spokeY = anchor!.y + Math.cos(angle) * CLUSTER_RADIUS;
+          const plan = planPath(peer.x, peer.y, spokeX, spokeY);
+          peer.state = "walking";
+          peer.path = plan.waypoints;
+          peer.plannedPath = [
+            { x: peer.x, y: peer.y },
+            ...plan.waypoints.map((p) => ({ ...p })),
+          ];
+          peer.plannedPathRouted = plan.routed;
+          peer.targetX = spokeX;
+          peer.targetY = spokeY;
+          peer.targetFacing = Math.atan2(anchor!.x - spokeX, anchor!.y - spokeY);
+          peer.clusterUntil = now + duration;
+          peer.socialSpotType = undefined;
+          peer.sitBackOverride = undefined;
+          peer.sinkDepthOverride = undefined;
+          peer.workoutStyle = undefined;
+          ambientNextAtRef.current[pi] = Infinity;
+          setStationIdxByAgent((prev) => {
+            const next = [...prev];
+            next[pi] = null;
+            return next;
+          });
+        });
+        // Anchor also clears its station idx so the ambient picker leaves
+        // them alone.
+        setStationIdxByAgent((prev) => {
+          const next = [...prev];
+          next[ai] = null;
+          return next;
+        });
+        ambientNextAtRef.current[ai] = Infinity;
+      }
+
       // Ping-pong beckon: if an agent is standing alone at a table (claimed
       // a side, no partner yet, no active game) and the other side is empty,
       // redirect any nearby idle ambient agent to come play. Makes pairs form
@@ -2383,6 +2524,7 @@ export function useTunerAgent() {
           if ((cand.talkUntil ?? 0) > now) continue;
           // Don't pull attendees out of an active standup / conference.
           if ((cand.standupUntil ?? 0) > now) continue;
+          if ((cand.clusterUntil ?? 0) > now) continue;
           sendToStation(i, targetIdx);
           ambientNextAtRef.current[i] = Infinity;
           break;
@@ -2399,6 +2541,8 @@ export function useTunerAgent() {
         // arrival-dwell (default 15s for a null station) would fire and
         // redirect them mid-conference.
         if ((agent.standupUntil ?? 0) > now) continue;
+        // Same for random-cluster participants.
+        if ((agent.clusterUntil ?? 0) > now) continue;
 
         // Arrival detection: nextAt was set to Infinity at pick-time so the
         // picker wouldn't re-fire mid-walk. Once the agent is no longer

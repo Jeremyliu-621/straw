@@ -83,6 +83,13 @@ export interface RenderAgentState {
    *  short head-turn glances; standup rotation writes lookAt without
    *  lookAtUntil so it keeps until explicitly cleared. */
   lookAtUntil?: number;
+  /** ms timestamp — agent is participating in a spontaneous cluster
+   *  (random small gathering) until this time. Proximity talk fires
+   *  naturally while they're within range of each other. */
+  clusterUntil?: number;
+  /** ms timestamp — agent is mid-wave (brief right-arm raise) until
+   *  this time. Triggered when passing another walker. */
+  waveUntil?: number;
   /**
    * Desired facing (radians) when the agent arrives at targetX/Y. Applied on
    * arrival so stations (desk / gym station / couch) can force the agent to
