@@ -12,6 +12,7 @@ export default function ArenaTuner() {
     sendToStation,
     reset,
     triggerDevAction,
+    triggerStandup,
     tuning,
     setTuning,
     gymTuning,
@@ -75,6 +76,7 @@ export default function ArenaTuner() {
         onGoto={sendToStation}
         onReset={reset}
         onDevAction={triggerDevAction}
+        onStandup={triggerStandup}
         agentRef={agentRef}
       />
     </div>

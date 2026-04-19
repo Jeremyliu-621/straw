@@ -50,6 +50,7 @@ interface TunerPanelProps {
     agentIdx: number,
     action: "dance" | "emoji" | "slump" | "talk"
   ) => void;
+  onStandup: (venue: "meeting" | "round_table" | "random") => void;
   agentRef: React.RefObject<RenderAgentState[]>;
 }
 
@@ -130,6 +131,7 @@ export default function TunerPanel({
   onGoto,
   onReset,
   onDevAction,
+  onStandup,
   agentRef,
 }: TunerPanelProps) {
   const [devAgentIdx, setDevAgentIdx] = useState(0);
@@ -550,6 +552,23 @@ export default function TunerPanel({
             title="Talk with nearest agent (≤150px)"
           >
             💬
+          </button>
+        </div>
+        <div className="mt-2 flex items-center gap-1.5">
+          <span className="text-[11px] text-gray-500 shrink-0">standup:</span>
+          <button
+            onClick={() => onStandup("meeting")}
+            className="flex-1 px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black"
+            title="3 closest eligible agents sit at the meeting room table (30–75s)"
+          >
+            meeting
+          </button>
+          <button
+            onClick={() => onStandup("round_table")}
+            className="flex-1 px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black"
+            title="6 closest eligible agents sit at the round-table nook (30–75s)"
+          >
+            round table
           </button>
         </div>
       </div>

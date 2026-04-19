@@ -61,6 +61,9 @@ export interface RenderAgentState {
   /** ms timestamp — agent is playing ping-pong until this time. Undefined
    *  while waiting for an opponent; set once two agents pair up. */
   pingPongUntil?: number;
+  /** ms timestamp — agent is at a standup meeting (sitting in a chair at
+   *  the meeting-room table or the round-table nook) until this time. */
+  standupUntil?: number;
   /**
    * Desired facing (radians) when the agent arrives at targetX/Y. Applied on
    * arrival so stations (desk / gym station / couch) can force the agent to

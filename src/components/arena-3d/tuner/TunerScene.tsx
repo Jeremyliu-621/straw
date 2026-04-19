@@ -1069,6 +1069,32 @@ const TALK_CHANCE_PER_TICK = 0.02;   // ≈1.2/s per eligible pair at 60fps
 const TALK_MIN_MS = 3_000;
 const TALK_MAX_MS = 6_000;
 
+// Standup meeting — two possible venues, each with fixed seats derived
+// from DEFAULT_ARENA_FURNITURE's chair positions. Sit point = chair
+// center (chair is 24x24 so +12 from top-left). Facing matches the
+// chair's own rotation so the agent looks toward the table.
+interface StandupSeat {
+  x: number;
+  y: number;
+  facing: number; // radians
+}
+const _deg = (d: number) => (d * Math.PI) / 180;
+const MEETING_ROOM_SEATS: StandupSeat[] = [
+  { x: 340 + 12, y: 40 + 12, facing: _deg(0) },
+  { x: 400 + 12, y: 40 + 12, facing: _deg(0) },
+  { x: 460 + 12, y: 40 + 12, facing: _deg(0) },
+];
+const ROUND_TABLE_SEATS: StandupSeat[] = [
+  { x: 348 + 12, y: 503 + 12, facing: _deg(180) },
+  { x: 413 + 12, y: 486 + 12, facing: _deg(240) },
+  { x: 413 + 12, y: 366 + 12, facing: _deg(300) },
+  { x: 348 + 12, y: 343 + 12, facing: _deg(0) },
+  { x: 283 + 12, y: 391 + 12, facing: _deg(60) },
+  { x: 283 + 12, y: 486 + 12, facing: _deg(120) },
+];
+const STANDUP_MIN_MS = 30_000;
+const STANDUP_MAX_MS = 75_000;
+
 // Ambient dwell ranges per station type. Applied on ARRIVAL (not pick) so
 // slow walks don't eat the dwell budget.
 const DWELL_SEAT_MIN_MS = 24_000;  // couch / beanbag / chair / desk
@@ -1703,6 +1729,16 @@ function TickLoop({
         a.danceUntil = undefined;
         if (a.state === "dancing") a.state = "standing";
       }
+      // Standup meeting expiry — get up, clear chair pose, go idle.
+      if (a.standupUntil !== undefined && a.standupUntil <= now) {
+        a.standupUntil = undefined;
+        if (a.state === "sitting" && a.socialSpotType === "chair") {
+          a.state = "standing";
+          a.socialSpotType = undefined;
+          a.sitBackOverride = undefined;
+          a.sinkDepthOverride = undefined;
+        }
+      }
     }
 
     // Proximity chat trigger: scan every unordered pair; if both are eligible
@@ -1814,6 +1850,21 @@ function TickLoop({
                   agent.pingPongUntil = now + duration;
                   partner.pingPongUntil = now + duration;
                 }
+              }
+            } else if (
+              agent.standupUntil !== undefined &&
+              agent.standupUntil > now
+            ) {
+              // Arrived at a standup seat (no station — targetFacing drives
+              // the chair orientation). Sit as "chair" for sit-back / sink-
+              // depth to kick in; the standup expiry sweep stands them up.
+              agent.state = "sitting";
+              agent.socialSpotType = "chair";
+              agent.sitBackOverride = 0.45;
+              agent.sinkDepthOverride = 0.3;
+              if (agent.targetFacing !== undefined) {
+                agent.facing = agent.targetFacing;
+                agent.targetFacing = undefined;
               }
             } else {
               agent.state = "standing";
@@ -2228,6 +2279,80 @@ export function useTunerAgent() {
     setAmbientByAgent(Array(n).fill(false));
   }, [cohort]);
 
+  // Gathers up to `seats.length` idle agents (not walking, no active hold)
+  // and routes each to a seat via A* with a matching targetFacing. Arrival
+  // handler in the tick loop sits them as "chair" and the standup expiry
+  // sweep stands them back up when standupUntil elapses.
+  const triggerStandup = useCallback(
+    (venue: "meeting" | "round_table" | "random") => {
+      const seats =
+        venue === "meeting"
+          ? MEETING_ROOM_SEATS
+          : venue === "round_table"
+            ? ROUND_TABLE_SEATS
+            : Math.random() < 0.5
+              ? MEETING_ROOM_SEATS
+              : ROUND_TABLE_SEATS;
+      const now = Date.now();
+      const duration =
+        STANDUP_MIN_MS + Math.random() * (STANDUP_MAX_MS - STANDUP_MIN_MS);
+      const eligible: number[] = [];
+      for (let i = 0; i < agentRef.current.length; i++) {
+        const a = agentRef.current[i];
+        if (!a) continue;
+        if (a.state === "walking") continue;
+        if ((a.gymUntil ?? 0) > now) continue;
+        if ((a.couchUntil ?? 0) > now) continue;
+        if ((a.pingPongUntil ?? 0) > now) continue;
+        if (a.pingPongTableUid) continue; // waiting-for-partner
+        if ((a.standupUntil ?? 0) > now) continue;
+        if ((a.danceUntil ?? 0) > now) continue;
+        eligible.push(i);
+      }
+      // Sort by distance to the first seat so the closest agents get seats.
+      const ref = seats[0];
+      eligible.sort((a, b) => {
+        const aa = agentRef.current[a]!;
+        const bb = agentRef.current[b]!;
+        return (
+          Math.hypot(aa.x - ref.x, aa.y - ref.y) -
+          Math.hypot(bb.x - ref.x, bb.y - ref.y)
+        );
+      });
+      const count = Math.min(seats.length, eligible.length);
+      for (let k = 0; k < count; k++) {
+        const agent = agentRef.current[eligible[k]];
+        if (!agent) continue;
+        const seat = seats[k];
+        const plan = planPath(agent.x, agent.y, seat.x, seat.y);
+        agent.state = "walking";
+        agent.path = plan.waypoints;
+        agent.plannedPath = [
+          { x: agent.x, y: agent.y },
+          ...plan.waypoints.map((p) => ({ ...p })),
+        ];
+        agent.plannedPathRouted = plan.routed;
+        agent.targetX = seat.x;
+        agent.targetY = seat.y;
+        agent.targetFacing = seat.facing;
+        agent.standupUntil = now + duration;
+        // Pause the ambient picker for this agent — arrival will sit them
+        // and the expiry sweep releases them.
+        if (ambientByAgent[eligible[k]]) {
+          ambientNextAtRef.current[eligible[k]] = Infinity;
+        }
+        // Clear the station idx so ambient picker / arrival doesn't try to
+        // apply station behavior.
+        setStationIdxByAgent((prev) => {
+          const next = [...prev];
+          next[eligible[k]] = null;
+          return next;
+        });
+      }
+    },
+    [planPath, ambientByAgent]
+  );
+
   // Dev actions: fire an event-driven behavior on a chosen agent without
   // needing real leaderboard events. Writes the same hold fields the main
   // game loop uses (danceUntil / emojiUntil / couchUntil / talkUntil).
@@ -2338,6 +2463,7 @@ export function useTunerAgent() {
     sendToStation,
     reset,
     triggerDevAction,
+    triggerStandup,
     tuning,
     setTuning,
     gymTuning,

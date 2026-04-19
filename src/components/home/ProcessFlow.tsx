@@ -49,15 +49,14 @@ function TaskMakerVisual() {
     { label: "API design", weight: 25 },
     { label: "Performance", weight: 20 },
   ];
-  // Inner panel = Gemini Periwinkle — the darker step of the outer Steel-blue card.
+  // Inner panel = Blue pastel, the darker pair of the outer Lighter-blue card.
   return (
     <div
       className="font-sans"
       style={{
         padding: 20,
         borderRadius: "var(--radius)",
-        background: "#B8C4D9",
-        border: "1px solid #A3B1C6",
+        background: "#cfd5e8",
       }}
     >
       <div
@@ -65,7 +64,7 @@ function TaskMakerVisual() {
           fontSize: 11,
           letterSpacing: "0.06em",
           textTransform: "uppercase",
-          color: "#3A4955",
+          color: "#555",
           marginBottom: 6,
         }}
       >
@@ -75,7 +74,7 @@ function TaskMakerVisual() {
         style={{
           fontSize: 15,
           fontWeight: 500,
-          color: "#111111",
+          color: "#111",
           marginBottom: 16,
         }}
       >
@@ -86,7 +85,7 @@ function TaskMakerVisual() {
           <div key={r.label}>
             <div
               className="flex items-center justify-between"
-              style={{ fontSize: 13, color: "#3A4955", marginBottom: 4 }}
+              style={{ fontSize: 13, color: "#333", marginBottom: 4 }}
             >
               <span>{r.label}</span>
               <span className="font-mono">{r.weight}%</span>
@@ -94,7 +93,7 @@ function TaskMakerVisual() {
             <div
               style={{
                 height: 4,
-                background: "#A3B1C6",
+                background: "rgba(255,255,255,0.5)",
                 borderRadius: 999,
                 overflow: "hidden",
               }}
@@ -103,7 +102,7 @@ function TaskMakerVisual() {
                 style={{
                   height: 4,
                   width: `${r.weight * 3}%`,
-                  background: "#4D6682",
+                  background: "#333",
                   borderRadius: 999,
                 }}
               />
@@ -115,15 +114,15 @@ function TaskMakerVisual() {
         style={{
           marginTop: 16,
           paddingTop: 14,
-          borderTop: "1px solid #A3B1C6",
+          borderTop: "1px solid rgba(0,0,0,0.12)",
           display: "flex",
           justifyContent: "space-between",
           fontSize: 13,
-          color: "#3A4955",
+          color: "#333",
         }}
       >
         <span>Budget</span>
-        <span className="font-mono" style={{ color: "#111111", fontWeight: 600 }}>
+        <span className="font-mono" style={{ color: "#111", fontWeight: 600 }}>
           $2,500
         </span>
       </div>
@@ -139,14 +138,14 @@ function BuilderVisual() {
     { rank: 2, name: "Devin", score: "89.0" },
     { rank: 3, name: "Cursor", score: "79.3" },
   ];
-  // Inner panel = darker step of the outer Sand card.
+  // Inner panel = white, lifted on the Sand-tinted outer card.
   return (
     <div
       className="font-sans"
       style={{
         borderRadius: "var(--radius)",
-        background: "#D9C8AE",
-        border: "1px solid #C8B593",
+        background: "#ffffff",
+        border: "1px solid rgba(0,0,0,0.08)",
         overflow: "hidden",
       }}
     >
@@ -154,26 +153,27 @@ function BuilderVisual() {
         className="flex items-center justify-between"
         style={{
           padding: "12px 16px",
-          background: "#CDBBA0",
-          borderBottom: "1px solid #C8B593",
+          background: "var(--bg-subtle)",
+          borderBottom: "1px solid var(--border)",
           fontSize: 11,
           letterSpacing: "0.06em",
           textTransform: "uppercase",
-          color: "#5C4E33",
+          color: "var(--text-muted)",
         }}
       >
         <span>Leaderboard</span>
         <span
           className="flex items-center gap-1.5"
-          style={{ color: "#6A3F24", fontWeight: 500 }}
+          style={{ color: "var(--text-muted)", fontWeight: 500 }}
         >
           <span
             style={{
               width: 5,
               height: 5,
               borderRadius: "50%",
-              background: "#9B6B4E",
+              background: "#d0d7d1",
               display: "inline-block",
+              border: "1px solid rgba(0,0,0,0.08)",
             }}
           />
           live
@@ -185,7 +185,7 @@ function BuilderVisual() {
           className="flex items-center"
           style={{
             padding: "14px 16px",
-            borderBottom: "1px solid #C8B593",
+            borderBottom: "1px solid var(--border)",
             fontSize: 14,
           }}
         >
@@ -225,7 +225,7 @@ function BuilderVisual() {
         style={{
           padding: "10px 16px",
           fontSize: 12,
-          color: "#8A7A52",
+          color: "var(--text-faint)",
         }}
       >
         12 more submissions scoring…
