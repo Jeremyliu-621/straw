@@ -1,178 +1,106 @@
 "use client";
 
-import { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+import { useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useEffect } from "react";
+import AgentCharacter from "@/components/arena-3d/objects/AgentCharacter";
+import FurnitureModel, { FURNITURE_GLB } from "@/components/arena-3d/objects/FurnitureModel";
+import ProceduralFurniture, {
+  PROCEDURAL_TYPES,
+} from "@/components/arena-3d/objects/ProceduralFurniture";
+import { makeDeskStation } from "@/components/arena-3d/core/stations";
+import { toWorld } from "@/components/arena-3d/core/geometry";
+import type { RenderAgentState } from "@/components/arena-3d/useArenaGameLoop";
 
 /**
- * Hardcoded standalone mini-scene for the landing's "Builders compete on the
- * real problem" card. One lego-style agent, sitting at a desk, arms flailing
- * on fast out-of-phase sine cycles — reads as "a builder going at it."
- *
- * Deliberately NOT wired to the arena game loop or agent state. Zero runtime
- * deps besides three + R3F; safe to render next to the main arena canvas.
+ * Tiny standalone mini-scene for the landing's "Builders compete on the real
+ * problem" card. Reuses the same AgentCharacter + procedural furniture the
+ * arena tuner uses — no custom artwork. One agent, one standing desk, camera
+ * locked. Game-loop state is hand-rolled (frame counter ticked each frame),
+ * so it stays independent of the main arena polling / event pipeline.
  */
 
-function BuilderAgent() {
-  const leftArm = useRef<THREE.Group>(null);
-  const rightArm = useRef<THREE.Group>(null);
-  const head = useRef<THREE.Group>(null);
-  const torso = useRef<THREE.Group>(null);
+function Scene() {
+  const station = useMemo(
+    () =>
+      makeDeskStation({
+        id: "builder_demo_desk",
+        x: 600,
+        y: 550,
+        type: "standing_desk",
+      }),
+    []
+  );
 
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
-    // Arms: two uncorrelated sines per arm → chaotic "flailing" feel that
-    // still has enough rhythm to read as "typing".
-    if (leftArm.current) {
-      leftArm.current.rotation.x = -0.4 + Math.sin(t * 8.1) * 0.7;
-      leftArm.current.rotation.z = 0.35 + Math.sin(t * 5.3) * 0.25;
-    }
-    if (rightArm.current) {
-      rightArm.current.rotation.x = -0.4 + Math.cos(t * 7.4) * 0.7;
-      rightArm.current.rotation.z = -0.35 - Math.cos(t * 5.1) * 0.25;
-    }
-    // Head: subtle bob + yaw so the character feels alive, not a mannequin.
-    if (head.current) {
-      head.current.rotation.y = Math.sin(t * 1.3) * 0.18;
-      head.current.position.y = 1.15 + Math.sin(t * 3) * 0.02;
-    }
-    // Torso: barely-there forward lean on the typing beat.
-    if (torso.current) {
-      torso.current.rotation.x = 0.08 + Math.sin(t * 6) * 0.03;
-    }
+  const agentRef = useRef<RenderAgentState[]>([
+    {
+      id: "builder",
+      name: null,
+      rank: null,
+      status: "working",
+      color: "#cfd5e8",
+      x: station.standPoint.x,
+      y: station.standPoint.y,
+      targetX: station.standPoint.x,
+      targetY: station.standPoint.y,
+      path: [],
+      facing: station.standPoint.facing,
+      frame: 0,
+      walkSpeed: 0,
+      phaseOffset: 0,
+      state: "standing",
+      socialSpotType: "standing_desk",
+    },
+  ]);
+
+  // Tick the agent's frame counter so any internal animations (head tilt,
+  // hover, etc.) that read `agent.frame` stay alive.
+  useFrame(() => {
+    const a = agentRef.current[0];
+    if (a) a.frame += 1;
   });
 
-  const skin = "#E8D2B8";
-  const shirt = "#cfd5e8"; // Blue accent from the palette
-  const pants = "#5C5A55";
+  // Camera lookAt: centre on the desk's world position.
+  const { camera } = useThree();
+  useEffect(() => {
+    const [wx, , wz] = toWorld(station.standPoint.x, station.standPoint.y);
+    camera.lookAt(wx, 0, wz);
+    camera.updateProjectionMatrix();
+  }, [camera, station.standPoint.x, station.standPoint.y]);
 
   return (
-    <group position={[0, 0, 0]}>
-      {/* Torso */}
-      <group ref={torso} position={[0, 0.55, 0]}>
-        <mesh castShadow>
-          <boxGeometry args={[0.55, 0.7, 0.4]} />
-          <meshStandardMaterial color={shirt} />
-        </mesh>
-      </group>
-      {/* Head */}
-      <group ref={head} position={[0, 1.15, 0]}>
-        <mesh castShadow>
-          <boxGeometry args={[0.4, 0.4, 0.4]} />
-          <meshStandardMaterial color={skin} />
-        </mesh>
-        {/* Hair / cap */}
-        <mesh position={[0, 0.22, -0.02]}>
-          <boxGeometry args={[0.42, 0.08, 0.42]} />
-          <meshStandardMaterial color="#2a2a2a" />
-        </mesh>
-      </group>
-      {/* Left arm — pivots from shoulder */}
-      <group ref={leftArm} position={[-0.33, 0.85, 0]}>
-        <mesh position={[0, -0.25, 0]} castShadow>
-          <boxGeometry args={[0.13, 0.5, 0.13]} />
-          <meshStandardMaterial color={shirt} />
-        </mesh>
-        {/* Hand */}
-        <mesh position={[0, -0.54, 0]}>
-          <boxGeometry args={[0.14, 0.1, 0.14]} />
-          <meshStandardMaterial color={skin} />
-        </mesh>
-      </group>
-      {/* Right arm */}
-      <group ref={rightArm} position={[0.33, 0.85, 0]}>
-        <mesh position={[0, -0.25, 0]} castShadow>
-          <boxGeometry args={[0.13, 0.5, 0.13]} />
-          <meshStandardMaterial color={shirt} />
-        </mesh>
-        <mesh position={[0, -0.54, 0]}>
-          <boxGeometry args={[0.14, 0.1, 0.14]} />
-          <meshStandardMaterial color={skin} />
-        </mesh>
-      </group>
-      {/* Legs — bent 90° forward for sitting pose */}
-      <group position={[-0.13, 0.2, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <mesh position={[0, 0.25, 0]}>
-          <boxGeometry args={[0.14, 0.5, 0.14]} />
-          <meshStandardMaterial color={pants} />
-        </mesh>
-      </group>
-      <group position={[0.13, 0.2, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <mesh position={[0, 0.25, 0]}>
-          <boxGeometry args={[0.14, 0.5, 0.14]} />
-          <meshStandardMaterial color={pants} />
-        </mesh>
-      </group>
-      {/* Chair seat under the agent */}
-      <mesh position={[0, 0.1, 0]} receiveShadow>
-        <boxGeometry args={[0.5, 0.08, 0.45]} />
-        <meshStandardMaterial color="#3a3a3a" />
-      </mesh>
-    </group>
-  );
-}
+    <>
+      <ambientLight intensity={0.8} color="#ffffff" />
+      <directionalLight position={[10, 15, 8]} intensity={0.9} color="#ffffff" />
+      <hemisphereLight args={["#ffffff", "#e6e6e6", 0.4]} />
 
-function Desk() {
-  const woodTop = "#D4BE94";
-  const woodLeg = "#9C8563";
-  const deskZ = 0.55;
-  return (
-    <group position={[0, 0, deskZ]}>
-      {/* Top */}
-      <mesh position={[0, 0.9, 0]} receiveShadow>
-        <boxGeometry args={[1.5, 0.06, 0.6]} />
-        <meshStandardMaterial color={woodTop} />
-      </mesh>
-      {/* Legs */}
-      {[
-        [-0.7, 0.45, -0.25],
-        [0.7, 0.45, -0.25],
-        [-0.7, 0.45, 0.25],
-        [0.7, 0.45, 0.25],
-      ].map((p, i) => (
-        <mesh key={i} position={p as [number, number, number]}>
-          <boxGeometry args={[0.06, 0.9, 0.06]} />
-          <meshStandardMaterial color={woodLeg} />
-        </mesh>
-      ))}
-      {/* Monitor stand */}
-      <mesh position={[0, 1.0, -0.05]}>
-        <boxGeometry args={[0.1, 0.12, 0.08]} />
-        <meshStandardMaterial color="#2a2a2a" />
-      </mesh>
-      {/* Monitor */}
-      <mesh position={[0, 1.3, -0.05]}>
-        <boxGeometry args={[0.7, 0.44, 0.04]} />
-        <meshStandardMaterial color="#1a1a1a" />
-      </mesh>
-      {/* Screen glow — inset panel */}
-      <mesh position={[0, 1.3, -0.025]}>
-        <boxGeometry args={[0.66, 0.4, 0.01]} />
-        <meshBasicMaterial color="#d8e3ee" />
-      </mesh>
-      {/* Keyboard */}
-      <mesh position={[0, 0.95, 0.2]} receiveShadow>
-        <boxGeometry args={[0.6, 0.03, 0.18]} />
-        <meshStandardMaterial color="#e5e5e5" />
-      </mesh>
-    </group>
-  );
-}
+      {station.items.map((item) => {
+        if (PROCEDURAL_TYPES.has(item.type)) {
+          return <ProceduralFurniture key={item._uid} item={item} />;
+        }
+        if (FURNITURE_GLB[item.type]) {
+          return <FurnitureModel key={item._uid} item={item} />;
+        }
+        return null;
+      })}
 
-function Ground() {
-  return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-      <planeGeometry args={[10, 10]} />
-      <meshStandardMaterial color="#ffffff" />
-    </mesh>
+      <AgentCharacter
+        agentId="builder"
+        agentName={null}
+        rank={null}
+        agentsRef={agentRef}
+      />
+    </>
   );
 }
 
 export default function BuilderDeskVisual() {
+  // Compact — the card looks busy if this gets too tall.
+  const [wx, , wz] = toWorld(600, 550);
   return (
     <div
       style={{
-        height: 240,
+        height: 180,
         borderRadius: "var(--radius)",
         overflow: "hidden",
         background: "#ffffff",
@@ -181,21 +109,16 @@ export default function BuilderDeskVisual() {
     >
       <Canvas
         orthographic
-        camera={{ position: [4.5, 4, 5.5], zoom: 120, near: 0.1, far: 50 }}
-        style={{ background: "#ffffff" }}
+        camera={{
+          position: [wx + 5, 7, wz + 6],
+          zoom: 90,
+          near: 0.1,
+          far: 50,
+        }}
         gl={{ antialias: true, alpha: false }}
+        style={{ background: "#ffffff" }}
       >
-        <ambientLight intensity={0.75} />
-        <directionalLight
-          position={[4, 8, 5]}
-          intensity={0.7}
-          color="#ffffff"
-          castShadow
-        />
-        <hemisphereLight args={["#ffffff", "#e5e5e5", 0.35]} />
-        <Ground />
-        <Desk />
-        <BuilderAgent />
+        <Scene />
       </Canvas>
     </div>
   );

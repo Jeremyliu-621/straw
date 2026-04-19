@@ -9,7 +9,7 @@ const BuilderDeskVisual = dynamic(() => import("./BuilderDeskVisual"), {
   loading: () => (
     <div
       style={{
-        height: 240,
+        height: 180,
         borderRadius: "var(--radius)",
         background: "#ffffff",
         border: "1px solid var(--border)",
