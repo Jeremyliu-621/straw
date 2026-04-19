@@ -64,9 +64,6 @@ const SERVER_ROOM: FurnitureItem[] = [
   { type: "server_rack", x: 30, y: 130, w: 55, h: 80, _uid: uid("rack") },
   // Moved east so it doesn't sit right in front of the new south-wall doorway.
   { type: "server_rack", x: 180, y: 130, w: 55, h: 80, _uid: uid("rack") },
-  { type: "cable_tray", x: 15, y: 15, w: 230, h: 18, _uid: uid("tray") },
-  { type: "trash", x: 210, y: 185, _uid: uid("trash") },
-  { type: "glass_wall", x: 252, y: 60, w: 8, h: 60, _uid: uid("gw") },
 ];
 
 // ── Meeting Room ─────────────────────────────────────────────────────────

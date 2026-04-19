@@ -2384,6 +2384,11 @@ export function useTunerAgent() {
         const agent = agentRef.current[i];
         if (!agent) continue;
         if (agent.state === "walking") continue;
+        // Standup participants are in a structured 30–75s hold — leave
+        // them alone until standupUntil expires. Without this the
+        // arrival-dwell (default 15s for a null station) would fire and
+        // redirect them mid-conference.
+        if ((agent.standupUntil ?? 0) > now) continue;
 
         // Arrival detection: nextAt was set to Infinity at pick-time so the
         // picker wouldn't re-fire mid-walk. Once the agent is no longer
