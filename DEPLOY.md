@@ -39,48 +39,160 @@ The Next.js app deploys to Vercel with zero config.
 
 ---
 
-## 2. Workers → VPS with Docker
+## 2. Workers → OVH Cloud Canada VPS with Docker (recommended)
 
-Workers need Docker access to run eval containers. The simplest setup is a VPS.
+Workers need host Docker access to run eval containers. The chosen setup is **OVH Cloud Canada VPS-2** ($16 CAD/mo no-commitment, 6 vCore, 12 GB RAM, 100 GB NVMe) in the **Beauharnois (BHS) datacenter**.
 
-### Option A: DigitalOcean ($12/mo)
+Why OVH Canada + Beauharnois:
+- **CAD billing** — no USD/EUR forex.
+- **Same metro as our Upstash Redis** (Montreal / ca-central-1). Worker ↔ Redis latency <5ms, vs. ~20ms from US East.
+- **~15–25ms to Supabase** (us-east-1 Virginia). Fine.
 
-1. Create a Droplet: Ubuntu 24.04, 2GB RAM, 1 vCPU ($12/mo)
-2. SSH in and install Docker:
-   ```bash
-   curl -fsSL https://get.docker.com | sh
-   ```
-3. Clone the repo:
-   ```bash
-   git clone https://github.com/Jeremyliu-621/mop.git
-   cd mop
-   ```
-4. Create `.env.prod` from the example:
-   ```bash
-   cp .env.prod.example .env.prod
-   nano .env.prod  # fill in values
-   ```
-5. Start the workers:
-   ```bash
-   docker compose -f docker-compose.prod.yml up -d
-   ```
-6. Check logs:
-   ```bash
-   docker compose -f docker-compose.prod.yml logs -f
-   ```
+Tier guidance (configurator pricing as of 2026-04-18, no-commitment):
 
-### Option B: Hetzner ($4.50/mo)
+| Tier | Specs | No-commit / 12-mo | When to pick |
+|---|---|---|---|
+| VPS-1 | 4 vCore / 8 GB / 75 GB | $10.25 / $8.71 CAD | Sufficient at MVP volume (concurrency 3–4). Often out of stock. |
+| **VPS-2** | 6 vCore / 12 GB / 100 GB NVMe | $16.00 / $13.60 CAD | Chosen. Headroom for 18+ months without needing a bigger box. |
+| VPS-3+ | — | $27+ CAD | Overkill until Phase 19 triggers fire. Don't. |
 
-Same steps as DigitalOcean. Hetzner is cheaper for EU-based deployment.
+**Expected provisioning:** OVH lists the VPS-2 Beauharnois SKU as *"Pre-order — Delivery within 7 days — Maximum 1 VPS."* Plan for up to a week before SSH is available. While waiting, use the bridge plan below.
 
-### Redis
+Alternatives if OVH is genuinely unavailable when you need it: Hetzner CX22 in Ashburn (€4.51/mo, EUR billing, ~20ms to Upstash), Server Mania Toronto (CAD, same-day), or ionos.ca (CAD, but Kansas datacenter — worse latency).
 
-The workers need a Redis instance for BullMQ. Options:
-- **Upstash** (free tier, serverless) — easiest
-- **Railway Redis** — if you already use Railway
-- **Redis Cloud** — managed, free 30MB tier
+---
 
-Set the `REDIS_URL` in both `.env.prod` (workers) and Vercel env vars (web app). They must point to the same Redis instance.
+### Bridge plan: run workers locally during the pre-order wait
+
+You do NOT need the VPS to start testing end-to-end. The architecture is outbound-only for workers, so you can run them from your dev machine against the real Upstash + Supabase. Agents hitting `straw.vercel.app` will enqueue jobs that your laptop picks up and processes.
+
+```bash
+# From the project root, with .env.local populated
+# (same vars as .env.prod + dev-only extras)
+
+# Terminal 1 — evaluation worker
+npm run eval-worker
+
+# Terminal 2 — webhook worker
+npm run webhook-worker
+```
+
+That's the whole bridge setup. No systemd, no firewall, no sleep-mask — just two long-running processes in terminals. Close them when you're done for the day; restart when you want to test. If a job lands while the worker is offline, it waits in Upstash until you start the worker again (BullMQ's durability handles this).
+
+**What works during the bridge:**
+- Public Vercel URL, API, MCP, OAuth, all UI
+- Task creation, submission upload, eval pipeline, leaderboard, webhooks
+- Agents (including daemons over MCP/SDK) hitting the platform end-to-end
+- Supabase writes, Storage reads/writes
+
+**What doesn't:**
+- Evaluations running while your laptop is closed/asleep (they queue)
+- True 24/7 uptime (fine — you have zero customers with an SLA right now)
+
+When the VPS arrives, move to the VPS steps below — it's `docker compose up -d` on the new box, stop the local processes, done.
+
+### Pre-checks before touching the VPS
+
+1. **Supabase migrations are applied to prod.** Run `supabase db push` (or equivalent) so the files in `supabase/migrations/` match what's actually in the production DB. Workers will hit constraints/tables that must exist.
+2. **Vercel env vars are set.** The web app enqueues jobs, so it needs `REDIS_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `GOOGLE_GEMINI_API_KEY` just like the workers. The `REDIS_URL` on Vercel and the one on the VPS **must point to the same Upstash instance** — otherwise jobs enqueued by web will never be consumed by workers.
+
+### Step 1: Create the server (~5 min)
+
+OVH Cloud Canada ([ovhcloud.com/en-ca](https://ovhcloud.com/en-ca)) → VPS → Configure:
+- **Datacenter:** **Beauharnois (BHS), Canada** — verify this is selectable; OVH sometimes defaults new accounts to Gravelines.
+- **Tier:** VPS-1 (see tier table above)
+- **Image:** Ubuntu 24.04
+- **Billing:** Monthly
+- **SSH key:** upload yours during setup. No password auth.
+- **Firewall:** OVH doesn't have a Hetzner-style cloud firewall on VPS plans — configure UFW on the box itself (covered in Step 2).
+
+### Step 2: First SSH + system setup (~5 min)
+
+```bash
+ssh root@<your-ip>
+```
+
+Lock down the firewall (OVH VPS has no cloud firewall — configure UFW on the box):
+```bash
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow 22/tcp
+ufw --force enable
+```
+
+Install Docker:
+```bash
+curl -fsSL https://get.docker.com | sh
+```
+
+Add swap (helps on smaller tiers; skip if you ordered VPS-2+ which has plenty of RAM):
+```bash
+fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
+echo '/swapfile none swap sw 0 0' >> /etc/fstab
+```
+
+### Step 3: Clone + configure (~5 min)
+
+```bash
+git clone https://github.com/Jeremyliu-621/mop.git
+cd mop
+cp .env.prod.example .env.prod
+nano .env.prod
+```
+
+Fill in these five values. Nothing else is needed for workers.
+
+| Var | Where to get it |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase dashboard → Settings → API |
+| `SUPABASE_SERVICE_ROLE_KEY` | Same page. **Service role, not anon** — workers need RLS bypass to read submissions and write evaluation_results. |
+| `REDIS_URL` | Upstash dashboard. Use the `rediss://` (TLS) URL, not `redis://`. Must match Vercel's `REDIS_URL` exactly. |
+| `GOOGLE_GEMINI_API_KEY` | Same key as your Vercel env — workers run the LLM judge. |
+| `NODE_ENV` | `production` |
+
+### Step 4: Launch (~10 min on first build)
+
+```bash
+docker compose -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.prod.yml logs -f
+```
+
+Look for:
+```
+[eval] Evaluation worker started, waiting for jobs...
+[webhook] Webhook worker started, waiting for jobs...
+```
+
+Ctrl-C the log tail once both lines appear — `restart: unless-stopped` keeps them running in the background.
+
+### Step 5: End-to-end verify (~2 min)
+
+From your laptop, trigger the pipeline test endpoint against your live Vercel URL:
+
+```bash
+curl -X POST https://straw.vercel.app/api/dev/pipeline-test
+```
+
+Then back on the VPS:
+```bash
+docker compose -f docker-compose.prod.yml logs --tail=50 evaluation-worker
+```
+
+You should see the eval worker pick up a job, score it, and write a result. Confirm the `evaluation_results` row landed in Supabase. If yes, you're deployed.
+
+**Remove or disable `/api/dev/pipeline-test` before public launch** — it creates real DB rows.
+
+### Redis (if not already provisioned)
+
+Upstash is the default. Alternatives: Redis Cloud (30MB free), Railway Redis (if you already use Railway). Whichever you pick, the `REDIS_URL` must be identical in Vercel env and `.env.prod` on the VPS.
+
+### Operating notes
+
+- **Updates:** `git pull && docker compose -f docker-compose.prod.yml up -d --build` — that's the whole deploy loop for worker changes.
+- **Logs:** `docker compose -f docker-compose.prod.yml logs -f --tail=100`. Already rotated (10MB × 3 files) per `docker-compose.prod.yml:23`.
+- **Heartbeat files:** `/tmp/eval-worker-heartbeat` and `/tmp/webhook-worker-heartbeat` report per-process stats. See `tasks/SCALE.md` for the full operator playbook.
+- **Scaling this box:** bump `EVAL_WORKER_CONCURRENCY` / `WEBHOOK_WORKER_CONCURRENCY` env vars for vertical scale. For horizontal, add a second VPS with the same `.env.prod` — BullMQ coordinates via Redis, no extra config.
+- **When to stop scaling this way:** see `tasks/DECISIONS.md` D13 for Phase 19 migration triggers.
 
 ---
 

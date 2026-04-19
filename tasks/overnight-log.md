@@ -95,6 +95,11 @@
 
 ## Loop Iteration Log
 
+### Iteration 15 — Idle (loop complete)
+- All 9 tasks have submissions. All actionable security fixes done. Summary written.
+- Remaining work requires user action: restart eval worker, investigate sonnet eval bug, merge branch.
+- **Loop is complete.** No more iterations needed until user wakes up.
+
 ### Iteration 14 — Compete on CP judge (B)
 - CP Judge (`42acfb00`): **94.75/100** (Judging 90, Safety 95, Languages 95, Samples 100, Docs 100). 500-line judge, 70 tests, 27 sample submissions across 3 problems and 3 languages.
 - Judge docked on memory measurement (best-effort) and missing Python recursion limit handling — both legitimate.

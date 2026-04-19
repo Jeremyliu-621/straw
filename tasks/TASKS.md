@@ -784,7 +784,44 @@ Goal: Reduce the highest-friction points across the platform. 8 workstreams addr
 
 > 7 files changed, +433 -124 lines. Zero type errors. 341 tests pass. Clean production build.
 
+---
+
+## Deployment: OVH VPS + Local Bridge (2026-04-18 → in progress)
+
+Goal: Get Straw fully deployed. Web is on Vercel. Workers are the last piece.
+
+**Decided architecture:** Vercel (web) + OVH VPS-2 Beauharnois (workers) + Upstash Montreal (Redis) + Supabase us-east-1 (DB). Full rationale in `tasks/DECISIONS.md` D13. Full walkthrough in `DEPLOY.md` Section 2.
+
+### Already done (as of 2026-04-18)
+
+- [x] Vercel web app deployed at `straw.vercel.app`
+- [x] OAuth apps configured (GitHub + Google)
+- [x] Upstash Redis provisioned in ca-central-1 (Montreal)
+- [x] Supabase project `straw` (`ptvipiqorbqxoypbfeoj`) in us-east-1
+- [x] Gemini API key provisioned
+- [x] **Migration 030 applied** — RLS hardening on 6 public-schema tables (webhooks/webhook_deliveries/notifications/task_invitations/submission_artifacts/task_comments), tightened audit_log INSERT, pinned search_path on 3 trigger functions. Zero security lints remaining.
+
 <!-- RESUME HERE -->
+
+### Next up — finish the OVH pre-order
+
+- [ ] **Complete OVH VPS-2 Beauharnois checkout** at the page where we stopped (No commitment, Ubuntu 25.04, skip all add-ons — automated backup is already included free). $16 CAD/mo, 7-day delivery.
+- [ ] While waiting for the VPS, run workers on the dev machine per `DEPLOY.md` Bridge Plan — test end-to-end with real Upstash/Supabase (`npm run eval-worker` + `npm run webhook-worker` in two terminals).
+
+### When the VPS arrives (within ~7 days of order)
+
+- [ ] SSH in, run UFW + swap + Docker install per `DEPLOY.md` Section 2 Step 2
+- [ ] Clone repo, fill `.env.prod` with same values as Vercel env (especially `REDIS_URL` must match exactly)
+- [ ] `docker compose -f docker-compose.prod.yml up -d --build`, verify both workers log "waiting for jobs"
+- [ ] Trigger `POST /api/dev/pipeline-test`, confirm an eval runs on the VPS (not laptop) and writes to Supabase
+- [ ] Stop local worker processes on laptop
+- [ ] Remove or auth-gate `/api/dev/pipeline-test` before any public announce
+
+### Pre-launch polish (do before announcing to the world)
+
+- [ ] Buy a real domain + point at Vercel, update `NEXT_PUBLIC_APP_URL`, update OAuth callback URLs
+- [ ] Backfill `supabase_migrations.schema_migrations` for migrations 001–027 (currently only 028–030 are tracked; `supabase db push` will try to re-apply 001–027 and may fail until this is fixed)
+- [ ] Verify submission quota is hard-capped at 5/agent/task per commit `6b988c6`
 
 ---
 
@@ -811,6 +848,86 @@ Goal: make "paste the API/MCP into your agent daemon (OpenCode, Claude Code, Cur
 - [ ] Let task owners submit with `exclude_from_leaderboard=true` so dogfooding doesn't trip `route.ts:83`.
 - [ ] ESLint rule in `packages/mcp-server` that bans `console.log` (stdout poisons MCP protocol); expose `strawLog` helper that writes to stderr.
 - [ ] Collapse MCP tool surface from 8 → ~4: merge `list_tasks`/`get_task` into one tool with optional `id`; same for submission tools. Reduces tool-catalog crowding in harnesses that already have filesystem/shell/browser MCPs.
+
+---
+
+## Phase 19: Platform-Native Deployment (proposed, not yet started)
+
+Goal: Move from "Vercel + VPS + docker-compose" to a fully platform-native architecture that scales to week-long competitions with 200+ agents and bursts of hundreds of concurrent evaluations, with zero servers we SSH into.
+
+**Why this phase exists:** Current `DEPLOY.md` is Vercel (web) + Hetzner/DigitalOcean VPS (workers, with `/var/run/docker.sock` mounted for eval container execution). That works at MVP volume but has a fixed concurrency ceiling, a single-region SPOF, ops burden, and a security ceiling on the build-check (`src/services/build-check.service.ts` runs `execSync` on the worker host — see `SCALE.md:62`). A week-long task with 200 agents and a deadline burst breaks all four limits.
+
+**End-state architecture:**
+- **Vercel** — web app (already there) + workers as Functions on Fluid Compute (Node 24, 300s default timeout, instance reuse)
+- **Modal** — eval container execution. Firecracker microVMs, autoscale to thousands concurrent, billed per-millisecond. (Vercel Sandbox is the eventual swap once verified to support arbitrary user-supplied Docker images with mount + network constraints — that's why the abstraction exists.)
+- **Vercel Workflow DevKit (WDK)** — durable orchestration for evals. Pause/resume so a 1-hour eval doesn't tie up function compute. Crash-safe.
+- **Upstash Redis** — BullMQ queue, serverless, multi-region, pay-per-request, TLS by default
+- **Supabase** — DB + Storage. Unchanged.
+
+**Why not Railway:** Railway services don't expose a host Docker socket and don't allow privileged containers, so the eval worker can't spawn eval containers there. To run on Railway you'd do the sandbox-API refactor anyway, at which point Railway adds a third platform with no capability that Vercel + Upstash don't already give you. See conversation 2026-04-17 for full reasoning.
+
+**Why not stay on the VPS:** Fixed concurrency cap, single region, ops burden (patching/monitoring/SSH), single point of failure, and the build-check security ceiling. Hetzner is cheaper at <100 evals/day but more expensive at scale (must over-provision to absorb deadline bursts).
+
+### Open decisions before starting
+
+- [ ] **Sandbox provider:** Modal (mature, recommended) vs verify Vercel Sandbox can pull arbitrary Docker images with `--network none`, volume mounts, and per-task memory/timeout config. Pick before step 19a.
+- [ ] **Cutover timing:** Do this refactor now, or ship Path B (Vercel + Hetzner + Upstash) first to get to live and circle back in 2–3 weeks?
+
+### 19a: `RemoteSandbox` interface refactor
+
+- [ ] Define `interface Sandbox { run(image, mounts, limits, network): Promise<SandboxResult> }` in `src/lib/sandbox/`
+- [ ] Implement `LocalDockerSandbox` that wraps current `dockerode` calls — no behavior change
+- [ ] Wire `evaluation-worker.ts` and `build-check.service.ts` through the interface, gated by `SANDBOX_PROVIDER=local|modal` env var
+- [ ] Tests: existing eval tests still pass against `LocalDockerSandbox`
+
+### 19b: `ModalSandbox` implementation
+
+- [ ] Provision Modal account, capture API key + workspace ID into env scaffold
+- [ ] Implement `ModalSandbox` — submits container job, returns call ID, polls or registers webhook for completion
+- [ ] Side-by-side test: same eval submission against both `LocalDockerSandbox` and `ModalSandbox`, diff `score.json` output for parity
+- [ ] Verify Modal image cache hits during burst (200 evals pulling same eval image should not 429)
+
+### 19c: WDK workflow for eval orchestration
+
+- [ ] Add `@vercel/workflow` (or current WDK package), set up workflow runtime
+- [ ] Convert `evaluation-worker.ts` job handler into a WDK workflow: `evaluateSubmission(submissionId)` with steps `kickOff` → `wait` → `ingest` → `notify`
+- [ ] Idempotency key = `submission_id` so BullMQ redelivery doesn't double-evaluate
+- [ ] Crash-resume test: kill the worker mid-eval, verify workflow resumes and writes a single `evaluation_result`
+
+### 19d: Workers → Vercel Functions
+
+- [ ] Convert `evaluation-worker.ts` from long-running BullMQ worker to a Vercel Function that consumes jobs and kicks off WDK workflows
+- [ ] Convert `webhook-worker.ts` from long-running worker to a Vercel Function (still BullMQ consumer, but as a Function with Fluid Compute instance reuse)
+- [ ] Verify heartbeat/observability still works — replace `/tmp/eval-worker-heartbeat` with a Vercel-native equivalent (queue depth metric, function logs)
+
+### 19e: Redis → Upstash
+
+- [ ] Provision Upstash Redis (multi-region, TLS-enabled `rediss://` URL)
+- [ ] Migrate `REDIS_URL` in Vercel env + worker env
+- [ ] Drain in-flight jobs from old Redis before cutover
+- [ ] Verify BullMQ queue depths and retries behave the same against Upstash
+
+### 19f: Storage lifecycle + quota verification
+
+- [ ] Verify `submission_quota` enforcement is hard-capped at 5 successful submissions per agent per task (per recent commit `6b988c6`)
+- [ ] Add Supabase Storage lifecycle policy: keep agent artifact + `score.json` for 90 days post-deadline (for disputes), delete raw artifact after that. Score record is immutable forever.
+- [ ] Add presigned URL expiry = `task.deadline + 5 min grace window`. Deadline check at evaluation time, not at upload time.
+
+### 19g: Cutover + cleanup
+
+- [ ] Run both architectures in parallel for one week (Hetzner workers + new Vercel Function workers, dual-write to a `migration_check` table, reconcile)
+- [ ] Cut traffic to new architecture, monitor for 48h
+- [ ] Delete `docker-compose.prod.yml` and `workers/evaluation.Dockerfile`
+- [ ] Rewrite `DEPLOY.md` to describe the platform-native architecture
+- [ ] Decommission VPS
+
+### Verification (must pass before declaring 19 complete)
+
+- [ ] Synthetic load test: 200 concurrent eval submissions in <5 minutes, all complete, no failures, no double-evaluations
+- [ ] Long-eval test: eval container that runs for 45 minutes completes correctly via WDK workflow without function timeout
+- [ ] Crash test: kill all workers mid-eval, verify zero data loss and full recovery
+- [ ] Cost report: actual $/eval at the test load matches the estimate (~$0.05–0.15/eval)
+- [ ] Security: confirm Modal microVM isolation by attempting a known container-escape technique inside an eval container; should be contained
 
 ---
 

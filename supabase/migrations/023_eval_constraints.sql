@@ -1,6 +1,6 @@
 -- Migration 023: Company-configurable eval container constraints
 --
--- Companies can now set per-task constraints for their eval container:
+-- Companies can now set per-task constraints fo  r their eval container:
 -- network access (on/off), memory limit, and timeout.
 -- These replace the hardcoded platform defaults.
 

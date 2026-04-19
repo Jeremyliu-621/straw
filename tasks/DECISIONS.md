@@ -423,3 +423,67 @@ The SDK is a product play, not a services play. Companies own their eval logic. 
 - Separate webhook tables per role: Unnecessarily complex. Both roles have the same webhook needs.
 - Polling-only for agents: Defeats the purpose of an event-driven platform. Webhooks are the right primitive for autonomous agents.
 - SSE/WebSocket for real-time: Over-engineered for v1. Webhooks are simpler, more reliable, and work with any agent architecture.
+
+---
+
+## D13: Deployment Strategy — Ship Cheap Now, Migrate to Platform-Native Later
+
+**Decision:** Deploy today on the cheapest viable stack (~$5/mo). Keep the Phase 19 platform-native migration on the shelf as a triggered plan, not a roadmap item. Do not migrate until a concrete scale or revenue trigger fires.
+
+**Ship-today stack:**
+- **Vercel Hobby** — web app. $0 until commercial use requires Pro.
+- **OVH Cloud Canada VPS-1 (~$8.71 CAD/mo)** — single VPS in Beauharnois (Montreal), runs `docker-compose.prod.yml` for both workers + local eval containers. Chose OVH Canada over Hetzner because (a) CAD billing avoids FX, (b) Beauharnois is the same metro as the Upstash Redis primary (Montreal / ca-central-1), so worker ↔ Redis latency is <5ms vs. ~20ms from US East.
+- **Supabase Free** — 500MB DB, 1GB storage, 50K MAU. Upgrade only when a limit actually bites.
+- **Upstash Free (Montreal / ca-central-1)** — 10K Redis commands/day. Upgrade when BullMQ volume exceeds that.
+- **Gemini** — pay-per-token, ~$1–3/mo at MVP volume.
+
+**Total: ~$10–13 CAD/mo all in.** This is already the stack documented in `DEPLOY.md`. No infra work required to ship.
+
+---
+
+### Why not Phase 19 now
+
+Phase 19 (Vercel + Modal + WDK + Upstash) is the architecturally correct long-term answer — microVM isolation, burst-elastic eval capacity, zero SSH'd servers, multi-region capable. It costs ~$65/mo at MVP volume and ~$450/mo at "active" volume. That cost is earned by capabilities (true isolation, deadline-burst handling, ops-free operation) that don't matter until we have real volume or a customer SLA demanding them.
+
+Paying $60/mo over the Hetzner path to solve problems we don't have yet is over-engineering. The right time to migrate is when one of the triggers below fires.
+
+---
+
+### Migration triggers — migrate to Phase 19 when any of these happens
+
+- **Eval throughput saturates the VPS.** Heartbeat `avgDurationMs` climbing or BullMQ `evaluation` queue backlog persisting >5min during normal load (not deadline bursts).
+- **A deadline burst degrades UX.** First observed case where 50+ concurrent submissions cause any agent to wait >10min for an eval.
+- **First paying customer with an SLA** that includes uptime, eval latency, or multi-region requirements.
+- **Build-check security becomes load-bearing.** Moment a company posts a high-value task where "agent uploaded a malicious zip" is a plausible threat, we cannot keep running `execSync` on the worker host (`src/services/build-check.service.ts`, `SCALE.md:62`). Firecracker microVM isolation becomes required, not nice-to-have.
+- **We go multi-region.** A single Hetzner box can't serve EU + US + APAC with good latency.
+- **Operator time on the VPS exceeds 2hrs/month.** At that point, the $60/mo premium is cheaper than the engineering time.
+
+Any one of these. Not all.
+
+---
+
+### Why Railway is not part of either plan
+
+Analyzed in the 2026-04-17 deployment conversation. Two-line summary:
+
+- **At today's scale**, Railway is fine for Redis + webhook worker, but the eval worker can't run there (no host Docker socket, no privileged containers). That forces a second platform for eval anyway, at which point Railway is a coordination tax without a capability gain vs. just using the Hetzner box for everything.
+- **At Phase 19 scale**, once we've done the `RemoteSandbox` refactor, Railway adds nothing that Vercel + Upstash don't already give us with better AI-native tooling, Fluid Compute pricing, and multi-region built-in.
+
+Railway isn't bad. It's just not the cheapest answer today (Hetzner wins) and not the most scalable answer tomorrow (Vercel + Modal wins).
+
+---
+
+### Note on the cost analysis that produced this decision
+
+The earlier architectural recommendation in this conversation quoted ~$65/mo as the Phase 19 MVP cost. That was priced against production-ready components (Vercel Pro, Supabase Pro, Modal minimums) assuming commercial launch. It is the correct number for "ready to take money," not for "iterating pre-revenue."
+
+Documented here because a future session looking at Phase 19's cost column should understand what assumptions produced it, and that the cheaper pre-revenue path exists in the same repo under `DEPLOY.md`.
+
+---
+
+### What we rejected
+
+- **Jumping straight to Phase 19 now.** Would burn ~$700/yr solving problems we don't have. Re-evaluate when a trigger fires.
+- **Path B hybrid (Vercel + Railway + Hetzner + Upstash).** Three platforms to manage for the same ~$5–10/mo price as the one-VPS answer. No capability gain.
+- **All-on-Railway.** Blocked on the Docker-socket issue for eval execution. Would require building the sandbox-API refactor first, which is most of Phase 19 anyway.
+- **Self-host everything on Hetzner (Postgres included).** Tempting at $5/mo total, but gives up Supabase Auth, Storage, and RLS. The ops-time premium on running your own Postgres is not worth $25/mo of savings.
