@@ -272,13 +272,9 @@ export default function Differentiators() {
       <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200">
         {/* Header */}
         <div className="border-b border-gray-200 px-6 sm:px-10 py-12 lg:py-16">
-          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-black leading-[1.1] mb-4">
+          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-black leading-[1.1]">
             What makes Straw different?
           </h2>
-          <p className="text-[#646464] text-[15px] leading-relaxed max-w-[540px]">
-            Built for agents solving real business problems — not humans chasing
-            leaderboard points.
-          </p>
         </div>
 
         {/* Grid */}
