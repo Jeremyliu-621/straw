@@ -27,6 +27,35 @@ function rankLabel(rank: number): string {
   return `#${rank}`;
 }
 
+function TalkDot({
+  x,
+  phase,
+  agentsRef,
+  agentId,
+}: {
+  x: number;
+  phase: number;
+  agentsRef: React.RefObject<RenderAgentState[]>;
+  agentId: string;
+}) {
+  const ref = useRef<THREE.Mesh>(null);
+  useFrame(() => {
+    const agent = agentsRef.current?.find((a) => a.id === agentId);
+    if (!ref.current || !agent) return;
+    // Stagger the three dots by 1/3-cycle each so they bob in sequence —
+    // the classic "..." typing indicator. Period ≈ 0.9s total.
+    const t = agent.frame * 0.18 - (phase * Math.PI * 2) / 3;
+    const bob = Math.max(0, Math.sin(t)) * 4;
+    ref.current.position.y = bob;
+  });
+  return (
+    <mesh ref={ref} position={[x, 0, 0]}>
+      <circleGeometry args={[4, 16]} />
+      <meshBasicMaterial color="#1a1a1a" />
+    </mesh>
+  );
+}
+
 export default function AgentCharacter({
   agentId,
   agentName,
@@ -40,7 +69,7 @@ export default function AgentCharacter({
   const leftLegRef = useRef<THREE.Group>(null);
   const rightLegRef = useRef<THREE.Group>(null);
   const emojiGroupRef = useRef<THREE.Group>(null);
-  const talkBubbleRef = useRef<THREE.Mesh>(null);
+  const talkBubbleRef = useRef<THREE.Group>(null);
   const pos = useRef(new THREE.Vector3(0, 0, 0));
   const statusMatRef = useRef<THREE.MeshBasicMaterial>(null);
 
@@ -376,13 +405,37 @@ export default function AgentCharacter({
         <meshBasicMaterial ref={statusMatRef} color="#94a3b8" />
       </mesh>
 
-      {/* Talk bubble — pulsing white circle ABOVE the nameplate. Bubble
-          was dwarfed by the nameplate in the arena cohort; bumped the
-          ring from [7,10] → [18,26] so it reads clearly at arena zoom. */}
-      <mesh ref={talkBubbleRef} position={[0, 240, 0]} visible={false}>
-        <ringGeometry args={[18, 26, 24]} />
-        <meshBasicMaterial color="#ffffff" side={THREE.DoubleSide} />
-      </mesh>
+      {/* Talk bubble — billboard-ed white chat balloon with three bouncing
+          dots + a small tail pointing down at the agent. Whole group
+          toggled visible via talkBubbleRef, pulses mildly. */}
+      <Billboard>
+        <group ref={talkBubbleRef} position={[0, 240, 0]} visible={false}>
+          {/* Thin black border (slightly larger plate behind) */}
+          <mesh position={[0, 0, -0.2]}>
+            <planeGeometry args={[70, 40]} />
+            <meshBasicMaterial color="#000000" />
+          </mesh>
+          {/* White fill */}
+          <mesh position={[0, 0, -0.1]}>
+            <planeGeometry args={[64, 34]} />
+            <meshBasicMaterial color="#ffffff" />
+          </mesh>
+          {/* Tail — small triangle pointing down, black outline + white fill */}
+          <mesh position={[-8, -22, -0.15]} rotation={[0, 0, Math.PI / 4]}>
+            <planeGeometry args={[12, 12]} />
+            <meshBasicMaterial color="#000000" />
+          </mesh>
+          <mesh position={[-8, -20, -0.05]} rotation={[0, 0, Math.PI / 4]}>
+            <planeGeometry args={[9, 9]} />
+            <meshBasicMaterial color="#ffffff" />
+          </mesh>
+          {/* Three dots — bobbing in sequence via agent.frame. rendered as
+              circles set to black on top of the white fill. */}
+          {[-14, 0, 14].map((x, i) => (
+            <TalkDot key={i} x={x} phase={i} agentsRef={agentsRef} agentId={agentId} />
+          ))}
+        </group>
+      </Billboard>
 
       {/* Emoji overlay — billboard sprite with a single glyph, fades out.
           Parked above the talk bubble so both can coexist without overlap. */}

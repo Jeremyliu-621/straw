@@ -72,7 +72,10 @@ export function buildNavGrid(
     const cy = item.y + height / 2 + worldDy + padShiftWorldY;
     const hw = width / 2 + padX;
     const hh = height / 2 + padY / 2;
-    // AABB of the rotated rect — cell-loop bounds.
+    // At a snapped 90° rotation the OBB is axis-aligned, so its world AABB
+    // and the OBB itself coincide. Mark every cell whose footprint touches
+    // the AABB — using only a cell-CENTER-in-OBB test misses thin items
+    // like walls (h=8 vs cell=25, no center can ever fall inside).
     const absCos = Math.abs(cos);
     const absSin = Math.abs(sin);
     const aabbHw = hw * absCos + hh * absSin;
@@ -83,15 +86,7 @@ export function buildNavGrid(
     const r2 = Math.min(GRID_ROWS - 1, Math.floor((cy + aabbHh) / GRID_CELL));
     for (let row = r1; row <= r2; row += 1) {
       for (let column = c1; column <= c2; column += 1) {
-        const cellCx = (column + 0.5) * GRID_CELL;
-        const cellCy = (row + 0.5) * GRID_CELL;
-        const relX = cellCx - cx;
-        const relY = cellCy - cy;
-        const localX = relX * cos - relY * sin;
-        const localY = relX * sin + relY * cos;
-        if (Math.abs(localX) <= hw && Math.abs(localY) <= hh) {
-          grid[row * GRID_COLS + column] = 1;
-        }
+        grid[row * GRID_COLS + column] = 1;
       }
     }
   }
