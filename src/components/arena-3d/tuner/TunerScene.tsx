@@ -59,6 +59,7 @@ const ARENA_WORLD_H = MAIN_CANVAS_H * SCALE;
 export interface TuningParams {
   // Rotation of each item (degrees added to item.facing).
   deskRotDeg: number;
+  standingDeskRotDeg: number;
   couchRotDeg: number;
   couchVRotDeg: number;
   beanbagRotDeg: number;
@@ -156,6 +157,7 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
 
 export const DEFAULT_TUNING: TuningParams = {
   deskRotDeg: 0,
+  standingDeskRotDeg: 0,
   couchRotDeg: 0,
   couchVRotDeg: 0,
   beanbagRotDeg: 0,
@@ -256,6 +258,8 @@ function rotatePoint(
 // Canvas anchors for each station (pre-rotation).
 const DESK_BASE_X = 420;
 const DESK_BASE_Y = 420;
+const STANDING_DESK_BASE_X = 560;
+const STANDING_DESK_BASE_Y = 510;
 const COUCH_BASE_X = 650;
 const COUCH_BASE_Y = 420;
 const COUCHV_BASE_X = 420;
@@ -360,6 +364,68 @@ export function buildStations(tuning: TuningParams): {
     state: "sitting",
     // Use "chair" social-spot so AgentCharacter picks the normal
     // legs-bent sitting pose (not the typing-at-desk variant).
+    socialSpotType: "chair",
+    sitBack: tuning.deskSitBack,
+  };
+
+  // ─ Standing desk cluster (standing_desk + chair + computer) ─────────
+  // Same construction as the desk cluster above; type = "standing_desk"
+  // means the GLB renders ~1.47× taller and the computer gets an
+  // elevation bump (handled in stations.ts → seats cohort copies the rule).
+  const standingDeskClusterItems: FurnitureItem[] = [
+    {
+      type: "standing_desk",
+      x: STANDING_DESK_BASE_X,
+      y: STANDING_DESK_BASE_Y,
+      _uid: "tuner_standing_desk",
+      id: "tuner_standing_desk",
+    },
+    {
+      type: "chair",
+      x: STANDING_DESK_BASE_X + deskChairX,
+      y: STANDING_DESK_BASE_Y - 10,
+      facing: 180,
+      _uid: "tuner_standing_chair",
+    },
+    {
+      type: "computer",
+      x: STANDING_DESK_BASE_X + deskChairX,
+      y: STANDING_DESK_BASE_Y - 13,
+      // Lift onto the taller standing-desk surface — same value as
+      // makeDeskStation in core/stations.ts.
+      elevation: 0.4,
+      _uid: "tuner_standing_computer",
+    },
+  ];
+  const standingChairCx = STANDING_DESK_BASE_X + deskChairX + 12;
+  const standingChairCy = STANDING_DESK_BASE_Y - 10 + 12;
+  const standingPivotX = standingChairCx;
+  const standingPivotY = standingChairCy - 8;
+  clusters.push({
+    id: "standing_desk_cluster",
+    items: standingDeskClusterItems,
+    pivotX: standingPivotX,
+    pivotY: standingPivotY,
+    rotDeg: tuning.standingDeskRotDeg,
+  });
+  const standingDeskStandPre = {
+    x: STANDING_DESK_BASE_X + DESK_W / 2 - 18,
+    y: STANDING_DESK_BASE_Y + 2,
+  };
+  const standingDeskStandRot = rotatePoint(
+    standingDeskStandPre.x,
+    standingDeskStandPre.y,
+    standingPivotX,
+    standingPivotY,
+    tuning.standingDeskRotDeg
+  );
+  const standingDeskStation: Station = {
+    label: "Standing desk",
+    items: standingDeskClusterItems,
+    standX: Math.round(standingDeskStandRot.x),
+    standY: Math.round(standingDeskStandRot.y),
+    facing: (tuning.standingDeskRotDeg * Math.PI) / 180 + Math.PI,
+    state: "sitting",
     socialSpotType: "chair",
     sitBack: tuning.deskSitBack,
   };
@@ -503,6 +569,7 @@ export function buildStations(tuning: TuningParams): {
 
   const stations = [
     deskStation,
+    standingDeskStation,
     couchStation,
     couchVStation,
     beanbagStation,
@@ -943,6 +1010,10 @@ export function buildArenaStations(): {
         isCouch || isCouchV || isBeanbag ? p.type : undefined,
       sitBack,
       sinkDepth,
+      // Forward ping-pong pairing metadata so the arrival handler can
+      // match up two agents at the same table in the arena cohort.
+      pingPongTableUid: p.pingPongTableUid,
+      pingPongSide: p.pingPongSide,
     });
   });
 

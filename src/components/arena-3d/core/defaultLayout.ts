@@ -431,6 +431,9 @@ export interface SocialPoint {
    * keeps whatever direction they were walking in.
    */
   facing?: number;
+  /** Only set for ping-pong slots. Links the two sides of one table. */
+  pingPongTableUid?: string;
+  pingPongSide?: "A" | "B";
 }
 
 /**
@@ -531,6 +534,8 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
           type: t,
           weight: 1,
           facing: Math.atan2(-longX, -longY),
+          pingPongTableUid: item._uid,
+          pingPongSide: "A",
         });
         points.push({
           x: Math.round(cx - longX * dist),
@@ -538,6 +543,8 @@ export const SOCIAL_POINTS: SocialPoint[] = (() => {
           type: t,
           weight: 1,
           facing: Math.atan2(longX, longY),
+          pingPongTableUid: item._uid,
+          pingPongSide: "B",
         });
         break;
       }

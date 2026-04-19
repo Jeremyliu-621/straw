@@ -92,6 +92,11 @@ export function makeDeskStation(opts: DeskStationOptions): DeskStation {
       type: "computer",
       x: x + DESK_CHAIR_X_OFFSET,
       y: y - 13,
+      // standing_desk renders ~1.47× taller than desk_cubicle (scale Y
+      // 2.2 vs 1.5). The computer's default Y offset places it on the
+      // cubicle surface; lift it on the taller desk so the monitor sits
+      // on top instead of clipping into the desk.
+      ...(type === "standing_desk" ? { elevation: 0.4 } : {}),
       _uid: uid("comp"),
       _cluster: cluster,
     },
