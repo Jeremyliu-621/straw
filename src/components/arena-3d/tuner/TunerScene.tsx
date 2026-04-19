@@ -323,13 +323,21 @@ export function buildStations(tuning: TuningParams): {
       _uid: "tuner_desk_computer",
     },
   ];
-  const deskCenterX = DESK_BASE_X + DESK_W / 2;
-  const deskCenterY = DESK_BASE_Y + DESK_H / 2;
+  // Pivot the cluster around a point JUST BEHIND the chair (north of the
+  // chair backrest) instead of the desk's geometric center. With the
+  // desk-center pivot, the chair sweeps a wide arc as the slider rotates,
+  // making it hard to keep the agent's seat anchored in view while tuning
+  // the desk's nav box. Pivoting near the chair keeps the chair roughly
+  // in place and swings the desk + computer around it.
+  const chairCenterX = DESK_BASE_X + deskChairX + 12; // chair w=24 → center +12
+  const chairCenterY = DESK_BASE_Y - 10 + 12;
+  const pivotX = chairCenterX;
+  const pivotY = chairCenterY - 8; // 8 units behind the back of the chair
   clusters.push({
     id: "desk_cluster",
     items: deskClusterItems,
-    pivotX: deskCenterX,
-    pivotY: deskCenterY,
+    pivotX,
+    pivotY,
     rotDeg: tuning.deskRotDeg,
   });
   const deskStandPre = {
@@ -339,8 +347,8 @@ export function buildStations(tuning: TuningParams): {
   const deskStandRot = rotatePoint(
     deskStandPre.x,
     deskStandPre.y,
-    deskCenterX,
-    deskCenterY,
+    pivotX,
+    pivotY,
     tuning.deskRotDeg
   );
   const deskStation: Station = {
