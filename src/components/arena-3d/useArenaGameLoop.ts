@@ -150,6 +150,20 @@ const TALK_HOLD_MS = 2_000;
 const EMOJI_HOLD_MS = 2_500;
 const FAILURE_COUCH_MS = 30_000;
 
+// Ported from /arena-tuner — proximity talk, wave-on-pass, head glance.
+// Kept identical so live leaderboard + task-detail views match the tuner.
+const TALK_PROXIMITY_PX = 50;
+const TALK_CHANCE_PER_TICK = 0.02;
+const TALK_MIN_MS = 3_000;
+const TALK_MAX_MS = 6_000;
+const WAVE_PROXIMITY_PX = 70;
+const WAVE_CHANCE_PER_TICK = 0.002;
+const WAVE_HOLD_MS = 900;
+const GLANCE_CHANCE_PER_TICK = 0.003;
+const GLANCE_RANGE_PX = 120;
+const GLANCE_MIN_MS = 1_500;
+const GLANCE_MAX_MS = 2_500;
+
 // Gym ambient behavior
 const GYM_PREFERENCE = 0.1;              // 10% of idle destination picks → gym
 const GYM_OCCUPANCY_CAP = 3;              // max agents working out simultaneously
@@ -698,6 +712,104 @@ export function useArenaGameLoop(
     }
 
     const currentAgents = renderAgentsRef.current;
+
+    // ─── Ambient scan passes ───────────────────────────────────────────
+    // Ported from the /arena-tuner so the live /leaderboard + task-detail
+    // views get the same passive behaviors. Each pass mutates the
+    // RenderAgentState records in place; the downstream .map preserves
+    // the new fields via spread. Expiries for hold fields are handled by
+    // the consumers (AgentCharacter checks `*Until > now`) except for
+    // lookAtUntil which we clear explicitly so the head decays to neutral.
+    for (const a of currentAgents) {
+      if (a.lookAtUntil !== undefined && a.lookAtUntil <= now) {
+        a.lookAtUntil = undefined;
+        a.lookAtAgentId = undefined;
+        a.lookAtX = undefined;
+        a.lookAtY = undefined;
+      }
+    }
+
+    // Proximity talk — two idle agents within TALK_PROXIMITY_PX roll a
+    // small chance to start a 3–6s chat. Sitting agents keep their pose
+    // (only standing agents rotate to face each other).
+    for (let i = 0; i < currentAgents.length; i++) {
+      const a = currentAgents[i];
+      if (!a) continue;
+      if (a.state === "walking" || a.state === "working_out") continue;
+      if ((a.talkUntil ?? 0) > now) continue;
+      if ((a.pingPongUntil ?? 0) > now) continue;
+      if ((a.standupUntil ?? 0) > now) continue;
+      for (let j = i + 1; j < currentAgents.length; j++) {
+        const b = currentAgents[j];
+        if (!b) continue;
+        if (b.state === "walking" || b.state === "working_out") continue;
+        if ((b.talkUntil ?? 0) > now) continue;
+        if ((b.pingPongUntil ?? 0) > now) continue;
+        if ((b.standupUntil ?? 0) > now) continue;
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        if (Math.hypot(dx, dy) > TALK_PROXIMITY_PX) continue;
+        if (Math.random() > TALK_CHANCE_PER_TICK * dtScale) continue;
+        const duration =
+          TALK_MIN_MS + Math.random() * (TALK_MAX_MS - TALK_MIN_MS);
+        a.talkUntil = now + duration;
+        b.talkUntil = now + duration;
+        a.talkPartnerId = b.id;
+        b.talkPartnerId = a.id;
+        if (a.state === "standing") a.facing = Math.atan2(dx, dy);
+        if (b.state === "standing") b.facing = Math.atan2(-dx, -dy);
+      }
+    }
+
+    // Wave-on-pass — two walkers within WAVE_PROXIMITY_PX roll for a
+    // brief one-sided arm wave. Purely cosmetic; agents keep walking.
+    for (let i = 0; i < currentAgents.length; i++) {
+      const a = currentAgents[i];
+      if (!a || a.state !== "walking") continue;
+      if ((a.waveUntil ?? 0) > now) continue;
+      for (let j = i + 1; j < currentAgents.length; j++) {
+        const b = currentAgents[j];
+        if (!b || b.state !== "walking") continue;
+        const dist = Math.hypot(b.x - a.x, b.y - a.y);
+        if (dist > WAVE_PROXIMITY_PX) continue;
+        if (Math.random() > WAVE_CHANCE_PER_TICK * dtScale) continue;
+        if (Math.random() < 0.5) a.waveUntil = now + WAVE_HOLD_MS;
+        else b.waveUntil = now + WAVE_HOLD_MS;
+        break;
+      }
+    }
+
+    // Head-turn-to-watch — idle agents occasionally glance at nearby
+    // walkers. Uses lookAtAgentId for live tracking; lookAtUntil
+    // auto-expires and clears the fields above.
+    for (let i = 0; i < currentAgents.length; i++) {
+      const a = currentAgents[i];
+      if (!a) continue;
+      if (a.state !== "standing" && a.state !== "sitting") continue;
+      if ((a.standupUntil ?? 0) > now) continue;
+      if ((a.pingPongUntil ?? 0) > now) continue;
+      if ((a.lookAtUntil ?? 0) > now) continue;
+      if (Math.random() > GLANCE_CHANCE_PER_TICK * dtScale) continue;
+      let bestIdx = -1;
+      let bestDist = GLANCE_RANGE_PX;
+      for (let j = 0; j < currentAgents.length; j++) {
+        if (j === i) continue;
+        const b = currentAgents[j];
+        if (!b || b.state !== "walking") continue;
+        const d = Math.hypot(b.x - a.x, b.y - a.y);
+        if (d < bestDist) {
+          bestDist = d;
+          bestIdx = j;
+        }
+      }
+      if (bestIdx < 0) continue;
+      const target = currentAgents[bestIdx];
+      a.lookAtAgentId = target.id;
+      a.lookAtX = target.x;
+      a.lookAtY = target.y;
+      a.lookAtUntil =
+        now + GLANCE_MIN_MS + Math.random() * (GLANCE_MAX_MS - GLANCE_MIN_MS);
+    }
 
     // Capture pre-movement positions so we can measure per-tick progress
     // AFTER separation — needed for deadlock detection.
