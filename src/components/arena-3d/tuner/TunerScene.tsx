@@ -1774,7 +1774,9 @@ function TickLoop({
     // Conference speaker rotation: while a conference is active, exactly
     // one speaker has a refreshed talkUntil so their bubble stays visible.
     // Rotation window is SPEAKER_TURN_MS, keyed off wall clock so it's
-    // deterministic across ticks and agents.
+    // deterministic across ticks and agents. Listeners' heads swivel to
+    // look at whoever's currently speaking; non-active speakers stand
+    // still facing the audience (no head swivel).
     const speakers = agentRef.current.filter(
       (a): a is RenderAgentState =>
         !!a &&
@@ -1784,7 +1786,19 @@ function TickLoop({
     if (speakers.length > 0) {
       speakers.sort((x, y) => x.id.localeCompare(y.id));
       const turn = Math.floor(now / SPEAKER_TURN_MS) % speakers.length;
-      speakers[turn].talkUntil = now + 500;
+      const activeSpeaker = speakers[turn];
+      activeSpeaker.talkUntil = now + 500;
+      for (const s of speakers) {
+        s.lookAtX = undefined;
+        s.lookAtY = undefined;
+      }
+      for (const a of agentRef.current) {
+        if (!a) continue;
+        if (a.conferenceRole !== "listener") continue;
+        if ((a.standupUntil ?? 0) <= now) continue;
+        a.lookAtX = activeSpeaker.x;
+        a.lookAtY = activeSpeaker.y;
+      }
     }
 
     // Round-table speaker rotation: pick one seated participant per
@@ -2456,7 +2470,16 @@ export function useTunerAgent() {
         CONFERENCE_AUDIENCE_SPOTS.length
       );
       for (let k = 0; k < audienceCap; k++) {
-        dispatch(listeners[k], CONFERENCE_AUDIENCE_SPOTS[k], "listener");
+        // Scatter each listener ±8px on x, ±5px on y so the audience
+        // doesn't look perfectly gridded. Facing stays on the canonical
+        // audience bearing (north, toward presenters).
+        const base = CONFERENCE_AUDIENCE_SPOTS[k];
+        const seat: StandupSeat = {
+          x: base.x + (Math.random() - 0.5) * 16,
+          y: base.y + (Math.random() - 0.5) * 10,
+          facing: base.facing,
+        };
+        dispatch(listeners[k], seat, "listener");
       }
     },
     [planPath, ambientByAgent]
