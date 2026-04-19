@@ -32,7 +32,7 @@ export default function LandingArena({ height }: { height: number }) {
         navOverrides={navOverrides}
         view="iso"
         wallBury={wallBury}
-        zoom={28}
+        zoom={20}
       />
       <div
         style={{
