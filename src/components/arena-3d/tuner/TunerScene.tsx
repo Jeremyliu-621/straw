@@ -162,7 +162,7 @@ export const DEFAULT_MISC_TUNING: MiscTuningParams = {
 export const DEFAULT_TUNING: TuningParams = {
   deskRotDeg: 0,
   standingDeskRotDeg: 0,
-  standingDeskDist: 0,
+  standingDeskDist: -21,
   couchRotDeg: 0,
   couchVRotDeg: 0,
   beanbagRotDeg: 0,
