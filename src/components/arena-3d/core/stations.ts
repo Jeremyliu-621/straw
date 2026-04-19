@@ -71,6 +71,8 @@ export function makeDeskStation(opts: DeskStationOptions): DeskStation {
   // Items at pre-rotation canvas positions. Cluster transform is carried on
   // each item so nav/stand-point consumers can apply it, and the renderer
   // wraps them in a rotated three.js group.
+  // Standing desks omit the chair — agents stand at them; sitting desks
+  // include a chair facing the desk.
   const items: FurnitureItem[] = [
     {
       type,
@@ -80,14 +82,18 @@ export function makeDeskStation(opts: DeskStationOptions): DeskStation {
       id,
       _cluster: cluster,
     },
-    {
-      type: "chair",
-      x: x + DESK_CHAIR_X_OFFSET,
-      y: y - 10,
-      facing: 180,
-      _uid: uid("chair"),
-      _cluster: cluster,
-    },
+    ...(type === "standing_desk"
+      ? []
+      : [
+          {
+            type: "chair" as const,
+            x: x + DESK_CHAIR_X_OFFSET,
+            y: y - 10,
+            facing: 180,
+            _uid: uid("chair"),
+            _cluster: cluster,
+          },
+        ]),
     {
       type: "computer",
       x: x + DESK_CHAIR_X_OFFSET,

@@ -372,6 +372,7 @@ export function buildStations(tuning: TuningParams): {
   // Same construction as the desk cluster above; type = "standing_desk"
   // means the GLB renders ~1.47× taller and the computer gets an
   // elevation bump (handled in stations.ts → seats cohort copies the rule).
+  // Standing desks omit the chair — agents stand at them.
   const standingDeskClusterItems: FurnitureItem[] = [
     {
       type: "standing_desk",
@@ -379,13 +380,6 @@ export function buildStations(tuning: TuningParams): {
       y: STANDING_DESK_BASE_Y,
       _uid: "tuner_standing_desk",
       id: "tuner_standing_desk",
-    },
-    {
-      type: "chair",
-      x: STANDING_DESK_BASE_X + deskChairX,
-      y: STANDING_DESK_BASE_Y - 10,
-      facing: 180,
-      _uid: "tuner_standing_chair",
     },
     {
       type: "computer",
@@ -425,9 +419,9 @@ export function buildStations(tuning: TuningParams): {
     standX: Math.round(standingDeskStandRot.x),
     standY: Math.round(standingDeskStandRot.y),
     facing: (tuning.standingDeskRotDeg * Math.PI) / 180 + Math.PI,
-    state: "sitting",
-    socialSpotType: "chair",
-    sitBack: tuning.deskSitBack,
+    // Standing — no sitting / no chair social spot.
+    state: "standing",
+    sitBack: 0,
   };
 
   // ─ Couch (horizontal) ───────────────────────────────────────────────
@@ -1855,7 +1849,7 @@ export default function TunerScene({
       frameloop="always"
     >
       <Suspense fallback={null}>
-        <CameraRig zoom={large ? 30 : 50} view={view} />
+        <CameraRig zoom={large ? 42 : 50} view={view} />
         <ambientLight intensity={0.8} color="#ffffff" />
         <directionalLight
           position={[10, 15, 8]}
