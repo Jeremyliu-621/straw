@@ -2210,6 +2210,11 @@ export default function TunerScene({
       style={{ background: "#FDFCFC" }}
       frameloop="always"
     >
+      {/* Without a scene background colour, three.js clears to black and
+          the floor plane doesn't cover every pixel of the canvas at some
+          camera angles — producing a dark border around the scene. This
+          matches the CSS background so the seam disappears. */}
+      <color attach="background" args={["#FDFCFC"]} />
       <Suspense fallback={null}>
         <CameraRig zoom={large ? 42 : 50} view={view} />
         <ambientLight intensity={0.8} color="#ffffff" />
