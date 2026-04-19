@@ -133,9 +133,9 @@ export default function Differentiators() {
                   }}
                 />
               )}
-              {/* Right accent — right-column cells (cards 2 and 4), against
-                  the outer section border. */}
-              {i % 2 === 1 && (
+              {/* Right accent — only card 4 (closes the bottom-right corner
+                  against the outer section border). */}
+              {i === 3 && (
                 <div
                   aria-hidden
                   style={{
