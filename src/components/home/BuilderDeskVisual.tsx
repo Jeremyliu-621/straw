@@ -8,6 +8,7 @@ import FurnitureModel, { FURNITURE_GLB } from "@/components/arena-3d/objects/Fur
 import ProceduralFurniture, {
   PROCEDURAL_TYPES,
 } from "@/components/arena-3d/objects/ProceduralFurniture";
+import BWEffects from "@/components/arena-3d/BWEffects";
 import { makeDeskStation } from "@/components/arena-3d/core/stations";
 import { toWorld } from "@/components/arena-3d/core/geometry";
 import type { RenderAgentState } from "@/components/arena-3d/useArenaGameLoop";
@@ -90,6 +91,15 @@ function Scene() {
         rank={null}
         agentsRef={agentRef}
       />
+
+      {/* Match the rest of the landing: b&w materials + mild tint + pure white. */}
+      <BWEffects
+        variant="unlit-tint"
+        pureWhite
+        tintNormal={0.5}
+        tintPureWhite={0.6}
+        edgeThreshold={40}
+      />
     </>
   );
 }
@@ -103,7 +113,7 @@ export default function BuilderDeskVisual() {
         height: 180,
         borderRadius: "var(--radius)",
         overflow: "hidden",
-        background: "#ffffff",
+        background: "#FDFCFC",
         border: "1px solid var(--border)",
       }}
     >
@@ -116,7 +126,7 @@ export default function BuilderDeskVisual() {
           far: 50,
         }}
         gl={{ antialias: true, alpha: false }}
-        style={{ background: "#ffffff" }}
+        style={{ background: "#FDFCFC" }}
       >
         <Scene />
       </Canvas>
