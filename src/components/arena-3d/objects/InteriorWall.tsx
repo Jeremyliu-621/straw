@@ -22,19 +22,12 @@ export default function InteriorWall({ item }: InteriorWallProps) {
 
   return (
     <group position={[centerX, 0, centerZ]}>
-      {/* Main wall body. `__bwSkipEdges` tells BWEffects to skip the
-          black edge overlay — bottom edge would otherwise render at
-          floor level as a dark line. */}
-      <mesh
-        position={[0, WALL_HEIGHT / 2, 0]}
-        castShadow
-        receiveShadow
-        userData={{ __bwSkipEdges: true }}
-      >
+      {/* Main wall body */}
+      <mesh position={[0, WALL_HEIGHT / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[w, WALL_HEIGHT, h]} />
         <meshStandardMaterial color={WALL_COLOR} roughness={0.85} metalness={0.05} />
       </mesh>
-      {/* Top trim — keeps its edge overlay for silhouette */}
+      {/* Top trim */}
       <mesh position={[0, WALL_HEIGHT + TRIM_HEIGHT / 2, 0]}>
         <boxGeometry args={[w + 0.02, TRIM_HEIGHT, h + 0.02]} />
         <meshStandardMaterial color={WALL_TRIM_COLOR} roughness={0.7} />

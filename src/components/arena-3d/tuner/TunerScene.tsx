@@ -1297,7 +1297,6 @@ function Floor({
       rotation={[-Math.PI / 2, 0, 0]}
       position={[0, 0, 0]}
       receiveShadow
-      userData={{ __bwSkipEdges: true }}
       onClick={
         onFloorClick
           ? (e) => {
@@ -1334,19 +1333,19 @@ function PerimeterWalls({ large }: { large?: boolean }) {
   const color = "#C9C7C2";
   return (
     <>
-      <mesh position={[0, wallH / 2, -halfH]} userData={{ __bwSkipEdges: true }}>
+      <mesh position={[0, wallH / 2, -halfH]}>
         <boxGeometry args={[ARENA_WORLD_W, wallH, thickness]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[0, wallH / 2, halfH]} userData={{ __bwSkipEdges: true }}>
+      <mesh position={[0, wallH / 2, halfH]}>
         <boxGeometry args={[ARENA_WORLD_W, wallH, thickness]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[-halfW, wallH / 2, 0]} userData={{ __bwSkipEdges: true }}>
+      <mesh position={[-halfW, wallH / 2, 0]}>
         <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[halfW, wallH / 2, 0]} userData={{ __bwSkipEdges: true }}>
+      <mesh position={[halfW, wallH / 2, 0]}>
         <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
         <meshStandardMaterial color={color} />
       </mesh>
