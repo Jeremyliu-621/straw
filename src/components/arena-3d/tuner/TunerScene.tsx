@@ -29,6 +29,10 @@ import {
   DESK_STANDING_POINTS,
   SOCIAL_POINTS,
   GYM_WORKOUT_POINTS,
+  ARENA_DOOR_X,
+  ARENA_DOOR_Y,
+  ARENA_DOOR_INSIDE_X,
+  ARENA_DOOR_INSIDE_Y,
 } from "../core/defaultLayout";
 import {
   buildNavGrid,
@@ -1148,15 +1152,15 @@ const PING_PONG_CYCLE_MS = 1200; // full out-and-back loop
 export const ARENA_AGENT_COUNT = 18;
 export const ARENA_ONSTAGE_COUNT = 15;
 
-// East-perimeter door where agents join / leave the top 20. Placed in
-// the gap between the standing-desk island (y=330–495) and the
-// whiteboard zone (y=600), right at the east wall.
-export const ARENA_DOOR_X = 1200;
-export const ARENA_DOOR_Y = 440;
-// Inside-wall position the incoming agent walks TO once they've
-// "entered" through the door (and that outgoing agents vanish at).
-export const ARENA_DOOR_INSIDE_X = 1185;
-export const ARENA_DOOR_INSIDE_Y = 440;
+// Door coords live in defaultLayout so the live /leaderboard game loop
+// can share them. Re-exported here for backwards compat with any callers
+// that were importing from this file.
+export {
+  ARENA_DOOR_X,
+  ARENA_DOOR_Y,
+  ARENA_DOOR_INSIDE_X,
+  ARENA_DOOR_INSIDE_Y,
+} from "../core/defaultLayout";
 export const DEFAULT_AGENT_COUNT = 2;
 export const getAgentCount = (c: Cohort) =>
   c === "arena" ? ARENA_AGENT_COUNT : DEFAULT_AGENT_COUNT;
@@ -1354,24 +1358,56 @@ function PerimeterWalls({ large }: { large?: boolean }) {
  * in the arena cohort. Just a recessed plane in the east wall for now —
  * no open/close animation yet.
  */
-function ArenaDoor({ large }: { large?: boolean }) {
+const DOOR_TRIGGER_PX = 120;     // distance within which the door swings open
+const DOOR_OPEN_ANGLE = Math.PI / 2.2; // ~82° — leaf swings inward
+
+function ArenaDoor({
+  large,
+  agentsRef,
+}: {
+  large?: boolean;
+  agentsRef: React.RefObject<RenderAgentState[]>;
+}) {
+  const leafRef = useRef<THREE.Group>(null);
+  useFrame(() => {
+    if (!leafRef.current) return;
+    // Any agent in-transit through the door (leavingToDoor, or just-joined
+    // and still walking from the inside-door spawn point) counts.
+    const agents = agentsRef.current;
+    let closest = Infinity;
+    for (const a of agents) {
+      if (!a) continue;
+      if (a.hidden) continue;
+      const d = Math.hypot(a.x - ARENA_DOOR_X, a.y - ARENA_DOOR_Y);
+      if (d < closest) closest = d;
+    }
+    const shouldOpen = closest < DOOR_TRIGGER_PX;
+    const target = shouldOpen ? DOOR_OPEN_ANGLE : 0;
+    // Smooth rotation lerp — ~0.12 per frame feels like a proper swing.
+    leafRef.current.rotation.y +=
+      (target - leafRef.current.rotation.y) * 0.12;
+  });
   if (!large) return null;
   const [wx, , wz] = toWorld(ARENA_DOOR_X, ARENA_DOOR_Y);
-  const doorW = 0.06; // thickness, slightly in front of wall
+  const doorW = 0.06;
   const doorH = 1;
   const doorL = 80 * SCALE;
   return (
     <group position={[wx, doorH / 2, wz]}>
-      {/* Door frame — darker rectangle on the wall */}
+      {/* Door frame — recessed into the wall */}
       <mesh position={[0, 0, -0.05]}>
         <boxGeometry args={[doorW, doorH + 0.2, doorL + 0.2]} />
         <meshStandardMaterial color="#2e2a23" />
       </mesh>
-      {/* Door leaf — lighter rectangle inset */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[doorW, doorH, doorL]} />
-        <meshStandardMaterial color="#d4c89b" />
-      </mesh>
+      {/* Door leaf — pivots around its inside-wall edge so it swings
+          inward. Group holds the rotation; inner mesh is offset so the
+          pivot axis is at the leaf's edge, not its center. */}
+      <group ref={leafRef} position={[-doorW / 2, 0, doorL / 2]}>
+        <mesh position={[-0.005, 0, -doorL / 2]}>
+          <boxGeometry args={[doorW, doorH, doorL]} />
+          <meshStandardMaterial color="#d4c89b" />
+        </mesh>
+      </group>
     </group>
   );
 }
@@ -2117,7 +2153,7 @@ export default function TunerScene({
         <Floor onFloorClick={onFloorClick} large={large} />
         <GridLines large={large} />
         <PerimeterWalls large={large} />
-        <ArenaDoor large={large} />
+        <ArenaDoor large={large} agentsRef={agentRef} />
 
         {items.map((item) => {
           if (item.type === "wall") {

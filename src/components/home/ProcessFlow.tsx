@@ -54,7 +54,32 @@ function Pill({
   );
 }
 
-// ── Card 1 visual: mock task rubric ─────────────────────────────────────────
+// ── Card 1 visual: bounty poster ────────────────────────────────────────────
+
+// Flat projection of the 3D AgentCharacter's head — same block geometry
+// (skin cube + hair slab + two eye dots), rendered as SVG rects so it reads
+// as a pixel portrait stamped onto the poster rather than a second WebGL
+// canvas. Coordinates mirror the world-space boxes in AgentCharacter.tsx,
+// flipped for SVG's y-down axis.
+function PixelHead({ size = 70 }: { size?: number }) {
+  const skin = "#d8a06e";
+  const hair = "#3e2723";
+  const eye = "#1a1a1a";
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="-14 -17 28 30"
+      shapeRendering="crispEdges"
+      style={{ display: "block" }}
+    >
+      <rect x={-12} y={-15} width={24} height={6} fill={hair} />
+      <rect x={-11} y={-11} width={22} height={22} fill={skin} />
+      <rect x={-7} y={-3} width={4} height={4} fill={eye} />
+      <rect x={3} y={-3} width={4} height={4} fill={eye} />
+    </svg>
+  );
+}
 
 function TaskMakerVisual() {
   const rows = [
@@ -63,83 +88,114 @@ function TaskMakerVisual() {
     { label: "API design", weight: 25 },
     { label: "Performance", weight: 20 },
   ];
-  // Inner panel = neutral white, no accent — the accent now lives on the `define` pill.
+  const serif = "Georgia, 'Times New Roman', serif";
+  const mutedLabel = {
+    fontSize: 11,
+    letterSpacing: "0.14em",
+    textTransform: "uppercase" as const,
+    color: "#555",
+  };
   return (
     <div
       className="font-sans"
       style={{
-        padding: 20,
-        borderRadius: "var(--radius)",
+        padding: "18px 20px 20px",
+        borderRadius: 4,
         background: "#ffffff",
         border: "1px solid var(--border)",
       }}
     >
+      {/* Tiny poster-ism: a ticket header, not a banner */}
       <div
         style={{
-          fontSize: 11,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase",
-          color: "#555",
-          marginBottom: 6,
+          ...mutedLabel,
+          paddingBottom: 10,
+          borderBottom: "1px solid var(--border)",
+          marginBottom: 14,
         }}
       >
-        Rubric
+        Bounty · Task #001
       </div>
+
+      {/* Portrait + title */}
       <div
         style={{
-          fontSize: 15,
-          fontWeight: 500,
-          color: "#111",
+          display: "flex",
+          gap: 14,
+          alignItems: "center",
           marginBottom: 16,
         }}
       >
-        SEC Sentiment Analysis API
+        <div
+          style={{
+            flex: "0 0 auto",
+            padding: 5,
+            background: "var(--bg-subtle)",
+            border: "1px solid var(--border)",
+          }}
+        >
+          <PixelHead size={56} />
+        </div>
+        <div
+          style={{
+            fontSize: 16,
+            fontWeight: 600,
+            color: "#111",
+            lineHeight: 1.25,
+          }}
+        >
+          SEC Sentiment
+          <br />
+          Analysis API
+        </div>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {rows.map((r) => (
-          <div key={r.label}>
-            <div
-              className="flex items-center justify-between"
-              style={{ fontSize: 13, color: "#333", marginBottom: 4 }}
-            >
-              <span>{r.label}</span>
-              <span className="font-mono">{r.weight}%</span>
-            </div>
-            <div
-              style={{
-                height: 4,
-                background: "var(--bg-subtle)",
-                borderRadius: 999,
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  height: 4,
-                  width: `${r.weight * 3}%`,
-                  background: "#333",
-                  borderRadius: 999,
-                }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+
+      {/* Reward */}
       <div
         style={{
-          marginTop: 16,
-          paddingTop: 14,
-          borderTop: "1px solid rgba(0,0,0,0.12)",
           display: "flex",
+          alignItems: "baseline",
           justifyContent: "space-between",
-          fontSize: 13,
-          color: "#333",
+          paddingTop: 12,
+          borderTop: "1px solid var(--border)",
+          marginBottom: 14,
         }}
       >
-        <span>Budget</span>
-        <span className="font-mono" style={{ color: "#111", fontWeight: 600 }}>
+        <span style={mutedLabel}>Reward</span>
+        <span
+          style={{
+            fontFamily: serif,
+            fontSize: 20,
+            fontWeight: 700,
+            color: "#111",
+          }}
+        >
           $2,500
         </span>
+      </div>
+
+      {/* Scored on */}
+      <div
+        style={{
+          paddingTop: 12,
+          borderTop: "1px solid var(--border)",
+        }}
+      >
+        <div style={{ ...mutedLabel, marginBottom: 8 }}>Scored on</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          {rows.map((r) => (
+            <div
+              key={r.label}
+              className="flex items-center justify-between"
+              style={{ fontSize: 13, color: "#111" }}
+            >
+              <span>{r.label}</span>
+              <span className="font-mono" style={{ color: "#333" }}>
+                {r.weight}%
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

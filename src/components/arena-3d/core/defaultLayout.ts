@@ -373,6 +373,14 @@ const WALL_DECOR: FurnitureItem[] = [
 // kept for lighting character.
 const AMBIENT_DECOR: FurnitureItem[] = [];
 
+// East-perimeter door: agents joining the top 20 enter here; agents
+// leaving exit through here. Shared between the arena tuner and the
+// live /leaderboard game loop so both draw and route to the same spot.
+export const ARENA_DOOR_X = 1200;
+export const ARENA_DOOR_Y = 440;
+export const ARENA_DOOR_INSIDE_X = 1185;
+export const ARENA_DOOR_INSIDE_Y = 440;
+
 export const DEFAULT_ARENA_FURNITURE: FurnitureItem[] = [
   ...INTERIOR_WALLS,
   ...SERVER_ROOM,

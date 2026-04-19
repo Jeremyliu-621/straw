@@ -9,6 +9,8 @@ import {
   GYM_WORKOUT_POINTS,
   pickWeightedSocialPoint,
   pickGymPoint,
+  ARENA_DOOR_INSIDE_X,
+  ARENA_DOOR_INSIDE_Y,
   type SocialPoint,
   type WorkoutStyle,
 } from "./core/defaultLayout";
@@ -359,10 +361,33 @@ function applyEventsToAgents(
         agent.emojiIcon = scoreEmojis[Math.floor(Math.random() * scoreEmojis.length)];
         break;
       }
+      case "agent-joined": {
+        // New top-20 entry: spawn them at the east-perimeter door and
+        // walk into the office. We only fire this the first time we see
+        // this agent id — if they've already been placed (non-zero
+        // position), leave them alone.
+        if (agent.x === 0 && agent.y === 0) {
+          agent.x = ARENA_DOOR_INSIDE_X;
+          agent.y = ARENA_DOOR_INSIDE_Y;
+          agent.targetX = ARENA_DOOR_INSIDE_X;
+          agent.targetY = ARENA_DOOR_INSIDE_Y;
+          agent.facing = Math.PI; // face west, into the office
+          agent.state = "standing";
+          agent.emojiUntil = now + EMOJI_HOLD_MS;
+          agent.emojiIcon = "👋";
+        }
+        break;
+      }
+      case "agent-left": {
+        // Fell out of the top-20. We can't animate the exit in this model
+        // because their RenderAgentState is dropped on the next poll —
+        // TODO: zombie pool for walk-to-door-and-fade once that's built.
+        agent.hidden = true;
+        agent.leavingToDoor = true;
+        break;
+      }
       case "submission-completed":
-      case "agent-joined":
-      case "agent-left":
-        // No visual hold for these yet; they're recorded but no-op.
+        // No visual hold for these yet.
         break;
     }
   }
