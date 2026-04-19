@@ -16,8 +16,8 @@ export default function FinalCTA() {
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
             <Link
               href="/auth/signin"
-              className="text-white px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
-              style={{ backgroundColor: "#A68B77" }}
+              className="px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
+              style={{ backgroundColor: "#f7d4d0", color: "#111" }}
             >
               Post a Task
             </Link>

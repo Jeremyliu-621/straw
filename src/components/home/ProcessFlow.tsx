@@ -253,10 +253,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{
               borderRadius: 6,
-              backgroundColor: "#CCD5E3",
-              color: "#111111",
+              backgroundColor: "#d8e3ee",
+              color: "#111",
               padding: "32px 32px 36px",
-              border: "1px solid #B8C4D9",
+              border: "1px solid #cfd5e8",
             }}
           >
             <h3
@@ -277,7 +277,7 @@ export default function ProcessFlow() {
               style={{
                 fontSize: 15,
                 lineHeight: 1.5,
-                color: "#3A4955",
+                color: "#333",
                 marginBottom: 28,
                 maxWidth: 420,
               }}
@@ -296,10 +296,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
             style={{
               borderRadius: 6,
-              backgroundColor: "#EADFCF",
+              backgroundColor: "#e0d6d0",
               color: "var(--text)",
               padding: "32px 32px 36px",
-              border: "1px solid #D9C8AE",
+              border: "1px solid rgba(0,0,0,0.08)",
             }}
           >
             <h3
