@@ -421,7 +421,7 @@ export function ArenaCanvasInner({
 
         {/* Agent count badge */}
         <div
-          className={`absolute top-3 left-3 backdrop-blur-sm text-xs px-2.5 py-1 rounded-full font-mono ${
+          className={`absolute top-3 left-3 z-10 backdrop-blur-sm text-xs px-2.5 py-1 rounded-full font-mono ${
             bw ? "bg-white/90 text-black border border-black" : "bg-black/60 text-white"
           }`}
         >
@@ -436,7 +436,7 @@ export function ArenaCanvasInner({
         </div>
 
         {/* Top-right controls: view toggle, and pure-white toggle when BW is on */}
-        <div className="absolute top-3 right-3 flex items-center gap-2">
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
           <button
             onClick={() => setDebugPaths(!debugPaths)}
             className={`backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-mono transition-colors flex items-center gap-1.5 ${
@@ -492,7 +492,7 @@ export function ArenaCanvasInner({
             bottom-24 to clear it. Each slider is visible only when it
             affects the current mode. */}
         {bw && (
-          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 max-w-[95%]">
+          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 max-w-[95%]">
             {bwShadows && (
               <SliderPill
                 label="shadow lightness"

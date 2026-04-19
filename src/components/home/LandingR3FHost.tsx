@@ -28,6 +28,11 @@ export default function LandingR3FHost() {
         height: "100vh",
         pointerEvents: "none",
         zIndex: 1,
+        // Force the canvas onto its own GPU compositor layer. Without this,
+        // scroll causes a visible 1-frame lag between the DOM (scrolled by
+        // the browser) and the WebGL content (rendered on the next rAF) —
+        // reads as jitter at the View's bounds.
+        willChange: "transform",
       }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       dpr={[2.5, 3]}
