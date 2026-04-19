@@ -212,12 +212,7 @@ export interface Station {
 // Kept for reference — no longer used. Clusters now rotate via three.js
 // <group> wrappers (see ClusterGroupRender) which avoid per-item pivot drift.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function rotateItems(
-  items: FurnitureItem[],
-  cx: number,
-  cy: number,
-  deg: number
-): FurnitureItem[] {
+function rotateItems(items: FurnitureItem[], cx: number, cy: number, deg: number): FurnitureItem[] {
   const rad = (deg * Math.PI) / 180;
   const cos = Math.cos(rad);
   const sin = Math.sin(rad);
@@ -445,8 +440,7 @@ export function buildStations(tuning: TuningParams): {
     _uid: "tuner_couch",
   };
   // Effective facing = item.facing (rad) + FURNITURE_ROTATION[couch] (π).
-  const couchFacing =
-    (tuning.couchRotDeg * Math.PI) / 180 + (FURNITURE_ROTATION.couch ?? 0);
+  const couchFacing = (tuning.couchRotDeg * Math.PI) / 180 + (FURNITURE_ROTATION.couch ?? 0);
   const couchSeatOffset = Math.min(COUCH_W, COUCH_H) * 0.25;
   const couchCx = COUCH_BASE_X + COUCH_W / 2;
   const couchCy = COUCH_BASE_Y + COUCH_H / 2;
@@ -470,9 +464,7 @@ export function buildStations(tuning: TuningParams): {
     facing: tuning.couchVRotDeg,
     _uid: "tuner_couch_v",
   };
-  const couchVFacing =
-    (tuning.couchVRotDeg * Math.PI) / 180 +
-    (FURNITURE_ROTATION.couch_v ?? 0);
+  const couchVFacing = (tuning.couchVRotDeg * Math.PI) / 180 + (FURNITURE_ROTATION.couch_v ?? 0);
   const couchVSeatOffset = Math.min(COUCHV_W, COUCHV_H) * 0.25;
   const couchVCx = COUCHV_BASE_X + COUCHV_W / 2;
   const couchVCy = COUCHV_BASE_Y + COUCHV_H / 2;
@@ -582,12 +574,8 @@ export function buildStations(tuning: TuningParams): {
     tableRectStation,
   ];
   // Items that live OUTSIDE any cluster group (rendered directly).
-  const clusteredUids = new Set(
-    clusters.flatMap((c) => c.items.map((i) => i._uid))
-  );
-  const items = stations
-    .flatMap((s) => s.items)
-    .filter((i) => !clusteredUids.has(i._uid));
+  const clusteredUids = new Set(clusters.flatMap((c) => c.items.map((i) => i._uid)));
+  const items = stations.flatMap((s) => s.items).filter((i) => !clusteredUids.has(i._uid));
   return { items, clusters, stations };
 }
 
@@ -688,8 +676,7 @@ function gymStation(
     facing: rotDeg,
     _uid: `tuner_${key}`,
   };
-  const facingRad =
-    (rotDeg * Math.PI) / 180 + (FURNITURE_ROTATION[cfg.type] ?? 0);
+  const facingRad = (rotDeg * Math.PI) / 180 + (FURNITURE_ROTATION[cfg.type] ?? 0);
   const itemCx = cfg.cx + w / 2;
   const itemCy = cfg.cy + h / 2;
   const dist = distOverride ?? cfg.standDist;
@@ -828,8 +815,7 @@ function miscStation(
     facing: rotDeg,
     _uid: `tuner_misc_${key}`,
   };
-  const facingRad =
-    (rotDeg * Math.PI) / 180 + (FURNITURE_ROTATION[cfg.type] ?? 0);
+  const facingRad = (rotDeg * Math.PI) / 180 + (FURNITURE_ROTATION[cfg.type] ?? 0);
   const itemCx = cfg.cx + w / 2;
   const itemCy = cfg.cy + h / 2;
   const standX = itemCx + Math.sin(facingRad) * distOverride;
@@ -989,20 +975,8 @@ export function buildArenaStations(): {
     const isCouchV = p.type === "couch_v";
     const isCouch = p.type === "couch";
     const isBeanbag = p.type === "beanbag";
-    const sitBack = isCouch
-      ? 1.0
-      : isCouchV
-        ? 1.27
-        : isBeanbag
-          ? 0.55
-          : 0;
-    const sinkDepth = isCouch
-      ? -2.0
-      : isCouchV
-        ? 2.0
-        : isBeanbag
-          ? 14.5
-          : undefined;
+    const sitBack = isCouch ? 1.0 : isCouchV ? 1.27 : isBeanbag ? 0.55 : 0;
+    const sinkDepth = isCouch ? -2.0 : isCouchV ? 2.0 : isBeanbag ? 14.5 : undefined;
     stations.push({
       label: `${p.type} ${idx}`,
       items: [],
@@ -1010,8 +984,7 @@ export function buildArenaStations(): {
       standY: p.y,
       facing: p.facing ?? 0,
       state: isCouch || isCouchV || isBeanbag ? "sitting" : "standing",
-      socialSpotType:
-        isCouch || isCouchV || isBeanbag ? p.type : undefined,
+      socialSpotType: isCouch || isCouchV || isBeanbag ? p.type : undefined,
       sitBack,
       sinkDepth,
       // Forward ping-pong pairing metadata so the arrival handler can
@@ -1042,9 +1015,8 @@ export function buildArenaStations(): {
 // scenes) all get the SAME object reference for the arena cohort. Without
 // this, every render creates a new stations array which flickers the
 // useEffect that resets agent.path — dramatically slowing walk speed.
-let __arenaCache:
-  | { items: FurnitureItem[]; clusters: ClusterGroup[]; stations: Station[] }
-  | null = null;
+let __arenaCache: { items: FurnitureItem[]; clusters: ClusterGroup[]; stations: Station[] } | null =
+  null;
 export function getArenaStations() {
   if (!__arenaCache) __arenaCache = buildArenaStations();
   return __arenaCache;
@@ -1065,7 +1037,7 @@ const PING_PONG_GAME_MAX_MS = 40_000;
 // arriving next to another at a social spot — both show up as a pair
 // within TALK_PROXIMITY_PX that isn't already in a hold.
 const TALK_PROXIMITY_PX = 50;
-const TALK_CHANCE_PER_TICK = 0.02;   // ≈1.2/s per eligible pair at 60fps
+const TALK_CHANCE_PER_TICK = 0.02; // ≈1.2/s per eligible pair at 60fps
 const TALK_MIN_MS = 3_000;
 const TALK_MAX_MS = 6_000;
 
@@ -1127,8 +1099,8 @@ const SPEAKER_TURN_MS = 5_000;
 // spokes around them; proximity chat fires naturally once they're
 // within range, so no explicit talk logic is needed.
 const CLUSTER_CHANCE_PER_POLL = 0.003; // per eligible agent per 500ms poll
-const CLUSTER_RADIUS = 55;              // canvas units — spoke distance from anchor
-const CLUSTER_RANGE = 250;              // pull radius — only agents within this range are invited
+const CLUSTER_RADIUS = 55; // canvas units — spoke distance from anchor
+const CLUSTER_RANGE = 250; // pull radius — only agents within this range are invited
 const CLUSTER_MIN_PEERS = 1;
 const CLUSTER_MAX_PEERS = 2;
 const CLUSTER_MIN_MS = 10_000;
@@ -1142,7 +1114,7 @@ const WAVE_HOLD_MS = 900;
 
 // Ambient dwell ranges per station type. Applied on ARRIVAL (not pick) so
 // slow walks don't eat the dwell budget.
-const DWELL_SEAT_MIN_MS = 24_000;  // couch / beanbag / chair / desk
+const DWELL_SEAT_MIN_MS = 24_000; // couch / beanbag / chair / desk
 const DWELL_SEAT_MAX_MS = 54_000;
 const DWELL_GYM_MIN_MS = 24_000;
 const DWELL_GYM_MAX_MS = 54_000;
@@ -1166,7 +1138,7 @@ function dwellMsForStation(station: Station | null): number {
 // Ball / paddle geometry, ported from Claw3D sceneRuntime's PingPongBall.
 const PING_PONG_BALL_RADIUS = 0.06;
 const PING_PONG_PADDLE_OFFSET = 18; // canvas units from player → paddle
-const PING_PONG_CYCLE_MS = 1200;    // full out-and-back loop
+const PING_PONG_CYCLE_MS = 1200; // full out-and-back loop
 
 // Seats / gym / misc cohorts tune poses for one or two subjects at a time;
 // the arena cohort simulates the full office (15 = roughly the main-arena
@@ -1180,11 +1152,11 @@ export const ARENA_ONSTAGE_COUNT = 15;
 // the gap between the standing-desk island (y=330–495) and the
 // whiteboard zone (y=600), right at the east wall.
 export const ARENA_DOOR_X = 1200;
-export const ARENA_DOOR_Y = 540;
+export const ARENA_DOOR_Y = 440;
 // Inside-wall position the incoming agent walks TO once they've
 // "entered" through the door (and that outgoing agents vanish at).
-export const ARENA_DOOR_INSIDE_X = 1155;
-export const ARENA_DOOR_INSIDE_Y = 540;
+export const ARENA_DOOR_INSIDE_X = 1185;
+export const ARENA_DOOR_INSIDE_Y = 440;
 export const DEFAULT_AGENT_COUNT = 2;
 export const getAgentCount = (c: Cohort) =>
   c === "arena" ? ARENA_AGENT_COUNT : DEFAULT_AGENT_COUNT;
@@ -1211,8 +1183,7 @@ const AGENT_COLORS = [
   "#22c55e", // green — O
 ];
 
-export const tunerAgentColor = (idx: number) =>
-  AGENT_COLORS[idx % AGENT_COLORS.length];
+export const tunerAgentColor = (idx: number) => AGENT_COLORS[idx % AGENT_COLORS.length];
 
 // Arena-cohort spawn grid: 5 cols × 3 rows centered on the main-floor
 // open area, ~50px between agents. Once ambient fires they disperse.
@@ -1239,8 +1210,7 @@ function makeInitialAgent(idx: number, cohort: Cohort): RenderAgentState {
   // crowd doesn't move in lockstep — same variance as useArenaGameLoop:594.
   // Seats/gym/misc keep the flat speed so pose-tuning visuals stay
   // deterministic between screenshots.
-  const walkSpeed =
-    cohort === "arena" ? WALK_SPEED * (0.7 + Math.random() * 0.6) : WALK_SPEED;
+  const walkSpeed = cohort === "arena" ? WALK_SPEED * (0.7 + Math.random() * 0.6) : WALK_SPEED;
   // Arena cohort: first ARENA_ONSTAGE_COUNT agents are visible, remainder
   // start hidden (reserve for "+ join" dev button).
   const hidden = cohort === "arena" && idx >= ARENA_ONSTAGE_COUNT;
@@ -1345,12 +1315,7 @@ function GridLines({ large }: { large?: boolean }) {
   // Arena cohort: no grid at all — matches the main OfficeEnvironment look.
   // Seats/gym cohorts keep the visible grid for tuning precision.
   if (large) return null;
-  return (
-    <gridHelper
-      args={[WORLD_W, 24, "#c9c0ae", "#d4cbb8"]}
-      position={[0, 0.002, 0]}
-    />
-  );
+  return <gridHelper args={[WORLD_W, 24, "#c9c0ae", "#d4cbb8"]} position={[0, 0.002, 0]} />;
 }
 
 function PerimeterWalls({ large }: { large?: boolean }) {
@@ -1428,21 +1393,14 @@ function PingPongBalls({
   // We reuse a small pool of meshes — one per potential table. Misc has 1,
   // arena has 1, future cohorts could have more; 4 is a safe cap.
   const POOL = 4;
-  const ballRefs = useRef<Array<THREE.Mesh | null>>(
-    Array.from({ length: POOL }, () => null)
-  );
-  const shadowRefs = useRef<Array<THREE.Mesh | null>>(
-    Array.from({ length: POOL }, () => null)
-  );
+  const ballRefs = useRef<Array<THREE.Mesh | null>>(Array.from({ length: POOL }, () => null));
+  const shadowRefs = useRef<Array<THREE.Mesh | null>>(Array.from({ length: POOL }, () => null));
 
   useFrame(() => {
     const now = Date.now();
     const agents = agentsRef.current ?? [];
     // Group active players by tableUid.
-    const byTable = new Map<
-      string,
-      { A?: RenderAgentState; B?: RenderAgentState }
-    >();
+    const byTable = new Map<string, { A?: RenderAgentState; B?: RenderAgentState }>();
     for (const a of agents) {
       if (
         a.pingPongTableUid &&
@@ -1686,17 +1644,9 @@ function NavGridOverlay({ grid }: { grid: NavGrid }) {
   if (blockedCells.length === 0) return null;
   const cellWorld = GRID_CELL * SCALE * 0.96;
   return (
-    <instancedMesh
-      ref={meshRef}
-      args={[undefined, undefined, blockedCells.length]}
-    >
+    <instancedMesh ref={meshRef} args={[undefined, undefined, blockedCells.length]}>
       <planeGeometry args={[cellWorld, cellWorld]} />
-      <meshBasicMaterial
-        color="#ef4444"
-        transparent
-        opacity={0.28}
-        depthWrite={false}
-      />
+      <meshBasicMaterial color="#ef4444" transparent opacity={0.28} depthWrite={false} />
     </instancedMesh>
   );
 }
@@ -1730,11 +1680,7 @@ function DebugMarkers({
       ))}
       {showPaths &&
         Array.from({ length: agentCount }).map((_, i) => (
-          <AgentPathLine
-            key={`path_${i}`}
-            agentRef={agentRef}
-            agentIdx={i}
-          />
+          <AgentPathLine key={`path_${i}`} agentRef={agentRef} agentIdx={i} />
         ))}
       {stationIdxByAgent.map((idx, agentIdx) => {
         if (idx === null) return null;
@@ -1861,9 +1807,7 @@ function TickLoop({
     // still facing the audience (no head swivel).
     const speakers = agentRef.current.filter(
       (a): a is RenderAgentState =>
-        !!a &&
-        a.conferenceRole === "speaker" &&
-        (a.standupUntil ?? 0) > now
+        !!a && a.conferenceRole === "speaker" && (a.standupUntil ?? 0) > now
     );
     if (speakers.length > 0) {
       speakers.sort((x, y) => x.id.localeCompare(y.id));
@@ -1944,8 +1888,7 @@ function TickLoop({
         const dy = b.y - a.y;
         if (Math.hypot(dx, dy) > TALK_PROXIMITY_PX) continue;
         if (Math.random() > TALK_CHANCE_PER_TICK * speedScale) continue;
-        const duration =
-          TALK_MIN_MS + Math.random() * (TALK_MAX_MS - TALK_MIN_MS);
+        const duration = TALK_MIN_MS + Math.random() * (TALK_MAX_MS - TALK_MIN_MS);
         a.talkUntil = now + duration;
         b.talkUntil = now + duration;
         a.talkPartnerId = b.id;
@@ -2025,9 +1968,7 @@ function TickLoop({
 
       if (
         activeStation &&
-        (agent.state === "sitting" ||
-          agent.state === "working_out" ||
-          agent.state === "standing")
+        (agent.state === "sitting" || agent.state === "working_out" || agent.state === "standing")
       ) {
         agent.sitBackOverride = activeStation.sitBack;
         agent.sinkDepthOverride = activeStation.sinkDepth;
@@ -2035,8 +1976,7 @@ function TickLoop({
         // Skip station-facing lock only for standing agents mid-chat —
         // they've been rotated to face their partner and we don't want to
         // snap them back. Sitting agents keep their station pose regardless.
-        const talking =
-          agent.talkUntil !== undefined && agent.talkUntil > now;
+        const talking = agent.talkUntil !== undefined && agent.talkUntil > now;
         if (!(talking && agent.state === "standing")) {
           agent.facing = activeStation.facing;
         }
@@ -2071,10 +2011,7 @@ function TickLoop({
               }
               // Ping-pong arrival: claim this side of the table. If the
               // other side is already waiting, start the game on both.
-              if (
-                activeStation.pingPongTableUid &&
-                activeStation.pingPongSide
-              ) {
+              if (activeStation.pingPongTableUid && activeStation.pingPongSide) {
                 agent.pingPongTableUid = activeStation.pingPongTableUid;
                 agent.pingPongSide = activeStation.pingPongSide;
                 const partner = agentRef.current.find(
@@ -2084,9 +2021,9 @@ function TickLoop({
                     a.pingPongSide !== activeStation.pingPongSide
                 );
                 if (partner) {
-                  const duration = PING_PONG_GAME_MIN_MS +
-                    Math.random() *
-                      (PING_PONG_GAME_MAX_MS - PING_PONG_GAME_MIN_MS);
+                  const duration =
+                    PING_PONG_GAME_MIN_MS +
+                    Math.random() * (PING_PONG_GAME_MAX_MS - PING_PONG_GAME_MIN_MS);
                   agent.pingPongUntil = now + duration;
                   partner.pingPongUntil = now + duration;
                 }
@@ -2101,10 +2038,7 @@ function TickLoop({
               agent.socialSpotType = undefined;
               agent.sitBackOverride = undefined;
               agent.sinkDepthOverride = undefined;
-            } else if (
-              agent.standupUntil !== undefined &&
-              agent.standupUntil > now
-            ) {
+            } else if (agent.standupUntil !== undefined && agent.standupUntil > now) {
               // Arrived at a standup stand-point. Conference speakers sit
               // in the meeting-room chairs; conference listeners stand in
               // the audience rows; round-table participants sit in their
@@ -2177,12 +2111,7 @@ export default function TunerScene({
       <Suspense fallback={null}>
         <CameraRig zoom={large ? 42 : 50} view={view} />
         <ambientLight intensity={0.8} color="#ffffff" />
-        <directionalLight
-          position={[10, 15, 8]}
-          intensity={1.0}
-          color="#ffffff"
-          castShadow
-        />
+        <directionalLight position={[10, 15, 8]} intensity={1.0} color="#ffffff" castShadow />
         <hemisphereLight args={["#ffffff", "#e0e0e0", 0.4]} />
 
         <Floor onFloorClick={onFloorClick} large={large} />
@@ -2215,10 +2144,7 @@ export default function TunerScene({
           />
         ))}
 
-        <PingPongBalls
-          agentsRef={agentRef}
-          arcHeight={miscTuning.pingPongArcHeight}
-        />
+        <PingPongBalls agentsRef={agentRef} arcHeight={miscTuning.pingPongArcHeight} />
 
         <DebugMarkers
           stations={stations}
@@ -2228,11 +2154,7 @@ export default function TunerScene({
           showNav={showNav}
           navGrid={navGrid}
         />
-        <TickLoop
-          agentRef={agentRef}
-          stations={stations}
-          stationIdxByAgent={stationIdxByAgent}
-        />
+        <TickLoop agentRef={agentRef} stations={stations} stationIdxByAgent={stationIdxByAgent} />
 
         {/* Match landing-page default look: b&w + tint + pure white. */}
         <BWEffects
@@ -2250,23 +2172,19 @@ export default function TunerScene({
 export function useTunerAgent() {
   const [cohort, setCohort] = useState<Cohort>("seats");
   const agentRef = useRef<RenderAgentState[]>(makeInitialAgents("seats"));
-  const [stationIdxByAgent, setStationIdxByAgent] = useState<
-    (number | null)[]
-  >(() => Array(getAgentCount("seats")).fill(null));
+  const [stationIdxByAgent, setStationIdxByAgent] = useState<(number | null)[]>(() =>
+    Array(getAgentCount("seats")).fill(null)
+  );
   const [tuning, setTuning] = useState<TuningParams>(DEFAULT_TUNING);
-  const [gymTuning, setGymTuning] =
-    useState<GymTuningParams>(DEFAULT_GYM_TUNING);
-  const [miscTuning, setMiscTuning] =
-    useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
+  const [gymTuning, setGymTuning] = useState<GymTuningParams>(DEFAULT_GYM_TUNING);
+  const [miscTuning, setMiscTuning] = useState<MiscTuningParams>(DEFAULT_MISC_TUNING);
   const [showPaths, setShowPaths] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [view, setView] = useState<TunerView>("iso");
   // Per-type nav-anchor overrides — sliders write into this; buildNavGrid
   // applies them at grid-build time. Empty by default = use NAV_ANCHOR_OVERRIDES
   // from geometry.ts (which itself is empty until we lock values in).
-  const [navOverrides, setNavOverrides] = useState<
-    Record<string, NavAnchorOverride>
-  >({});
+  const [navOverrides, setNavOverrides] = useState<Record<string, NavAnchorOverride>>({});
   // Ambient mode per agent: when on, the agent autonomously picks a new
   // random station every 6–12s once it's settled. Picking a specific
   // station from the dropdown or hitting stop turns ambient off for that
@@ -2274,9 +2192,7 @@ export function useTunerAgent() {
   const [ambientByAgent, setAmbientByAgent] = useState<boolean[]>(() =>
     Array(getAgentCount("seats")).fill(false)
   );
-  const ambientNextAtRef = useRef<number[]>(
-    Array(getAgentCount("seats")).fill(0)
-  );
+  const ambientNextAtRef = useRef<number[]>(Array(getAgentCount("seats")).fill(0));
   // Mirror stationIdxByAgent into a ref so the ambient timer can read the
   // latest value without re-creating its interval on every station change.
   const stationIdxByAgentRef = useRef(stationIdxByAgent);
@@ -2350,10 +2266,7 @@ export function useTunerAgent() {
       const plan = planPath(agent.x, agent.y, station.standX, station.standY);
       agent.path = plan.waypoints;
       // Prepend the PLAN-TIME start so the overlay always has ≥2 points.
-      agent.plannedPath = [
-        { x: agent.x, y: agent.y },
-        ...plan.waypoints.map((p) => ({ ...p })),
-      ];
+      agent.plannedPath = [{ x: agent.x, y: agent.y }, ...plan.waypoints.map((p) => ({ ...p }))];
       agent.plannedPathRouted = plan.routed;
       agent.socialSpotType = undefined;
       agent.sitBackOverride = undefined;
@@ -2395,10 +2308,7 @@ export function useTunerAgent() {
         agent.targetY = station.standY;
         const plan = planPath(agent.x, agent.y, station.standX, station.standY);
         agent.path = plan.waypoints;
-        agent.plannedPath = [
-          { x: agent.x, y: agent.y },
-          ...plan.waypoints.map((p) => ({ ...p })),
-        ];
+        agent.plannedPath = [{ x: agent.x, y: agent.y }, ...plan.waypoints.map((p) => ({ ...p }))];
         agent.plannedPathRouted = plan.routed;
         agent.socialSpotType = undefined;
         agent.sitBackOverride = undefined;
@@ -2411,18 +2321,15 @@ export function useTunerAgent() {
     });
   }, [stations, stationIdxByAgent, planPath]);
 
-  const setAmbientForAgent = useCallback(
-    (agentIdx: number, on: boolean) => {
-      setAmbientByAgent((prev) => {
-        const next = [...prev];
-        next[agentIdx] = on;
-        return next;
-      });
-      // Fire the first ambient pick immediately when turning on.
-      if (on) ambientNextAtRef.current[agentIdx] = 0;
-    },
-    []
-  );
+  const setAmbientForAgent = useCallback((agentIdx: number, on: boolean) => {
+    setAmbientByAgent((prev) => {
+      const next = [...prev];
+      next[agentIdx] = on;
+      return next;
+    });
+    // Fire the first ambient pick immediately when turning on.
+    if (on) ambientNextAtRef.current[agentIdx] = 0;
+  }, []);
 
   // Master toggle: flip every agent's ambient flag at once. Staggers the
   // first pick per agent so 15 agents don't all re-route on the same tick.
@@ -2494,28 +2401,24 @@ export function useTunerAgent() {
         });
         const peerCount = Math.min(
           peerIdxs.length,
-          CLUSTER_MIN_PEERS + Math.floor(Math.random() * (CLUSTER_MAX_PEERS - CLUSTER_MIN_PEERS + 1))
+          CLUSTER_MIN_PEERS +
+            Math.floor(Math.random() * (CLUSTER_MAX_PEERS - CLUSTER_MIN_PEERS + 1))
         );
         const chosen = peerIdxs.slice(0, peerCount);
-        const duration =
-          CLUSTER_MIN_MS + Math.random() * (CLUSTER_MAX_MS - CLUSTER_MIN_MS);
+        const duration = CLUSTER_MIN_MS + Math.random() * (CLUSTER_MAX_MS - CLUSTER_MIN_MS);
         // Anchor stays put. Peers walk to spokes around the anchor.
         anchor!.clusterUntil = now + duration;
         anchor!.state = "standing";
         chosen.forEach((pi, k) => {
           const peer = agents[pi]!;
           // Distribute spokes evenly around the anchor.
-          const angle =
-            (k / chosen.length) * Math.PI * 2 + Math.random() * 0.4;
+          const angle = (k / chosen.length) * Math.PI * 2 + Math.random() * 0.4;
           const spokeX = anchor!.x + Math.sin(angle) * CLUSTER_RADIUS;
           const spokeY = anchor!.y + Math.cos(angle) * CLUSTER_RADIUS;
           const plan = planPath(peer.x, peer.y, spokeX, spokeY);
           peer.state = "walking";
           peer.path = plan.waypoints;
-          peer.plannedPath = [
-            { x: peer.x, y: peer.y },
-            ...plan.waypoints.map((p) => ({ ...p })),
-          ];
+          peer.plannedPath = [{ x: peer.x, y: peer.y }, ...plan.waypoints.map((p) => ({ ...p }))];
           peer.plannedPathRouted = plan.routed;
           peer.targetX = spokeX;
           peer.targetY = spokeY;
@@ -2549,14 +2452,11 @@ export function useTunerAgent() {
       for (const waiter of agents) {
         if (!waiter) continue;
         if (!waiter.pingPongTableUid || !waiter.pingPongSide) continue;
-        if (waiter.pingPongUntil !== undefined && waiter.pingPongUntil > now)
-          continue; // already in a game
+        if (waiter.pingPongUntil !== undefined && waiter.pingPongUntil > now) continue; // already in a game
         if (waiter.state === "walking") continue; // still arriving
         const needSide = waiter.pingPongSide === "A" ? "B" : "A";
         const targetIdx = stations.findIndex(
-          (s) =>
-            s.pingPongTableUid === waiter.pingPongTableUid &&
-            s.pingPongSide === needSide
+          (s) => s.pingPongTableUid === waiter.pingPongTableUid && s.pingPongSide === needSide
         );
         if (targetIdx < 0) continue;
         // Bail if someone's already claimed or walking to the other side.
@@ -2676,14 +2576,11 @@ export function useTunerAgent() {
     agent.facing = Math.PI; // face west, into the office
     // Walk to the center of the main floor (same spawn-grid area new
     // arena agents use) via A*.
-    const dest = arenaSpawn(idx % (ARENA_ONSTAGE_COUNT));
+    const dest = arenaSpawn(idx % ARENA_ONSTAGE_COUNT);
     const plan = planPath(agent.x, agent.y, dest.x, dest.y);
     agent.state = "walking";
     agent.path = plan.waypoints;
-    agent.plannedPath = [
-      { x: agent.x, y: agent.y },
-      ...plan.waypoints.map((p) => ({ ...p })),
-    ];
+    agent.plannedPath = [{ x: agent.x, y: agent.y }, ...plan.waypoints.map((p) => ({ ...p }))];
     agent.plannedPathRouted = plan.routed;
     agent.targetX = dest.x;
     agent.targetY = dest.y;
@@ -2750,10 +2647,7 @@ export function useTunerAgent() {
     const plan = planPath(agent.x, agent.y, ARENA_DOOR_INSIDE_X, ARENA_DOOR_INSIDE_Y);
     agent.state = "walking";
     agent.path = plan.waypoints;
-    agent.plannedPath = [
-      { x: agent.x, y: agent.y },
-      ...plan.waypoints.map((p) => ({ ...p })),
-    ];
+    agent.plannedPath = [{ x: agent.x, y: agent.y }, ...plan.waypoints.map((p) => ({ ...p }))];
     agent.plannedPathRouted = plan.routed;
     agent.targetX = ARENA_DOOR_INSIDE_X;
     agent.targetY = ARENA_DOOR_INSIDE_Y;
@@ -2802,10 +2696,7 @@ export function useTunerAgent() {
       for (let pi = 0; pi < agents.length; pi++) {
         if (pi === ai) continue;
         if (!eligible(agents[pi])) continue;
-        const d = Math.hypot(
-          agents[pi]!.x - anchor.x,
-          agents[pi]!.y - anchor.y
-        );
+        const d = Math.hypot(agents[pi]!.x - anchor.x, agents[pi]!.y - anchor.y);
         if (d > CLUSTER_RANGE) continue;
         peerIdxs.push(pi);
       }
@@ -2817,14 +2708,10 @@ export function useTunerAgent() {
       );
       const peerCount = Math.min(
         peerIdxs.length,
-        CLUSTER_MIN_PEERS +
-          Math.floor(
-            Math.random() * (CLUSTER_MAX_PEERS - CLUSTER_MIN_PEERS + 1)
-          )
+        CLUSTER_MIN_PEERS + Math.floor(Math.random() * (CLUSTER_MAX_PEERS - CLUSTER_MIN_PEERS + 1))
       );
       const chosen = peerIdxs.slice(0, peerCount);
-      const duration =
-        CLUSTER_MIN_MS + Math.random() * (CLUSTER_MAX_MS - CLUSTER_MIN_MS);
+      const duration = CLUSTER_MIN_MS + Math.random() * (CLUSTER_MAX_MS - CLUSTER_MIN_MS);
       anchor.clusterUntil = now + duration;
       anchor.state = "standing";
       chosen.forEach((pi, k) => {
@@ -2835,17 +2722,11 @@ export function useTunerAgent() {
         const plan = planPath(peer.x, peer.y, spokeX, spokeY);
         peer.state = "walking";
         peer.path = plan.waypoints;
-        peer.plannedPath = [
-          { x: peer.x, y: peer.y },
-          ...plan.waypoints.map((p) => ({ ...p })),
-        ];
+        peer.plannedPath = [{ x: peer.x, y: peer.y }, ...plan.waypoints.map((p) => ({ ...p }))];
         peer.plannedPathRouted = plan.routed;
         peer.targetX = spokeX;
         peer.targetY = spokeY;
-        peer.targetFacing = Math.atan2(
-          anchor.x - spokeX,
-          anchor.y - spokeY
-        );
+        peer.targetFacing = Math.atan2(anchor.x - spokeX, anchor.y - spokeY);
         peer.clusterUntil = now + duration;
         peer.socialSpotType = undefined;
         peer.sitBackOverride = undefined;
@@ -2878,14 +2759,9 @@ export function useTunerAgent() {
   const triggerStandup = useCallback(
     (venue: "conference" | "round_table" | "random") => {
       const resolved =
-        venue === "random"
-          ? Math.random() < 0.5
-            ? "conference"
-            : "round_table"
-          : venue;
+        venue === "random" ? (Math.random() < 0.5 ? "conference" : "round_table") : venue;
       const now = Date.now();
-      const duration =
-        STANDUP_MIN_MS + Math.random() * (STANDUP_MAX_MS - STANDUP_MIN_MS);
+      const duration = STANDUP_MIN_MS + Math.random() * (STANDUP_MAX_MS - STANDUP_MIN_MS);
 
       // "Everyone goes" — pull in every agent that isn't already in this
       // standup or mid-dance. Walkers get interrupted, gym/couch/ping-pong
@@ -2912,10 +2788,7 @@ export function useTunerAgent() {
         const plan = planPath(agent.x, agent.y, seat.x, seat.y);
         agent.state = "walking";
         agent.path = plan.waypoints;
-        agent.plannedPath = [
-          { x: agent.x, y: agent.y },
-          ...plan.waypoints.map((p) => ({ ...p })),
-        ];
+        agent.plannedPath = [{ x: agent.x, y: agent.y }, ...plan.waypoints.map((p) => ({ ...p }))];
         agent.plannedPathRouted = plan.routed;
         agent.targetX = seat.x;
         agent.targetY = seat.y;
@@ -2957,10 +2830,7 @@ export function useTunerAgent() {
         eligible.sort((a, b) => {
           const aa = agentRef.current[a]!;
           const bb = agentRef.current[b]!;
-          return (
-            Math.hypot(aa.x - ref.x, aa.y - ref.y) -
-            Math.hypot(bb.x - ref.x, bb.y - ref.y)
-          );
+          return Math.hypot(aa.x - ref.x, aa.y - ref.y) - Math.hypot(bb.x - ref.x, bb.y - ref.y);
         });
         const count = Math.min(seats.length, eligible.length);
         for (let k = 0; k < count; k++) {
@@ -2981,10 +2851,7 @@ export function useTunerAgent() {
       presenters.forEach((agentIdx, k) => {
         dispatch(agentIdx, CONFERENCE_PRESENTER_SPOTS[k], "speaker");
       });
-      const audienceCap = Math.min(
-        listeners.length,
-        CONFERENCE_AUDIENCE_SPOTS.length
-      );
+      const audienceCap = Math.min(listeners.length, CONFERENCE_AUDIENCE_SPOTS.length);
       for (let k = 0; k < audienceCap; k++) {
         // Scatter each listener ±8px on x, ±5px on y so the audience
         // doesn't look perfectly gridded. Facing stays on the canonical
@@ -3052,10 +2919,7 @@ export function useTunerAgent() {
           agent.facing = Math.atan2(partner.x - agent.x, partner.y - agent.y);
         }
         if (partner.state === "standing") {
-          partner.facing = Math.atan2(
-            agent.x - partner.x,
-            agent.y - partner.y
-          );
+          partner.facing = Math.atan2(agent.x - partner.x, agent.y - partner.y);
         }
       }
     },
@@ -3072,10 +2936,7 @@ export function useTunerAgent() {
       agent.targetY = canvasY;
       const plan = planPath(agent.x, agent.y, canvasX, canvasY);
       agent.path = plan.waypoints;
-      agent.plannedPath = [
-        { x: agent.x, y: agent.y },
-        ...plan.waypoints.map((p) => ({ ...p })),
-      ];
+      agent.plannedPath = [{ x: agent.x, y: agent.y }, ...plan.waypoints.map((p) => ({ ...p }))];
       agent.plannedPathRouted = plan.routed;
       agent.socialSpotType = undefined;
       agent.sitBackOverride = undefined;
