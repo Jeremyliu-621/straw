@@ -409,7 +409,7 @@ export default function AgentCharacter({
           dots + a small tail pointing down at the agent. Whole group
           toggled visible via talkBubbleRef, pulses mildly. */}
       <Billboard>
-        <group ref={talkBubbleRef} position={[0, 240, 0]} visible={false}>
+        <group ref={talkBubbleRef} position={[0, 215, 0]} visible={false}>
           {/* Thin black border (slightly larger plate behind) */}
           <mesh position={[0, 0, -0.2]}>
             <planeGeometry args={[70, 40]} />
