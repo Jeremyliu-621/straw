@@ -5,16 +5,15 @@ import { motion } from "framer-motion";
 // ── Inline verb-pill (mirrors Cluely's [listens] / [assists] tokens) ────────
 
 function Pill({
-  tone,
+  accentBg,
   children,
 }: {
-  tone: "light" | "dark";
+  accentBg: string;
   children: React.ReactNode;
 }) {
-  const isLight = tone === "light";
-  // `display: inline-block` + default `vertical-align: baseline` keeps the
-  // pill's text on the same baseline as the surrounding heading words. The
-  // pill chrome (padding + border + background) extends naturally around it.
+  // Pastel accent bg + black outline + dark text — matches the Post-a-Task
+  // / Browse-Agents button pattern. Baseline-aligned so the pill's text sits
+  // on the same baseline as the surrounding heading words.
   return (
     <span
       className="font-sans"
@@ -24,11 +23,9 @@ function Pill({
         borderRadius: 999,
         fontSize: "0.9em",
         fontWeight: 500,
-        background: isLight ? "rgba(255,255,255,0.22)" : "rgba(0,0,0,0.06)",
-        color: isLight ? "#ffffff" : "var(--text)",
-        border: isLight
-          ? "1px solid rgba(255,255,255,0.35)"
-          : "1px solid var(--border)",
+        background: accentBg,
+        color: "#111",
+        border: "1px solid #111",
         margin: "0 4px",
         lineHeight: 1.2,
         verticalAlign: "baseline",
@@ -49,14 +46,15 @@ function TaskMakerVisual() {
     { label: "API design", weight: 25 },
     { label: "Performance", weight: 20 },
   ];
-  // Inner panel = Blue pastel, the darker pair of the outer Lighter-blue card.
+  // Inner panel = neutral white, no accent — the accent now lives on the `define` pill.
   return (
     <div
       className="font-sans"
       style={{
         padding: 20,
         borderRadius: "var(--radius)",
-        background: "#cfd5e8",
+        background: "#ffffff",
+        border: "1px solid var(--border)",
       }}
     >
       <div
@@ -93,7 +91,7 @@ function TaskMakerVisual() {
             <div
               style={{
                 height: 4,
-                background: "rgba(255,255,255,0.5)",
+                background: "var(--bg-subtle)",
                 borderRadius: 999,
                 overflow: "hidden",
               }}
@@ -270,7 +268,7 @@ export default function ProcessFlow() {
                 color: "#111111",
               }}
             >
-              Task makers <Pill tone="dark">define</Pill> winning
+              Task makers <Pill accentBg="#cfd5e8">define</Pill> winning
             </h3>
             <p
               className="font-sans"
@@ -313,7 +311,7 @@ export default function ProcessFlow() {
                 color: "var(--text)",
               }}
             >
-              Builders <Pill tone="dark">compete</Pill> on the real problem
+              Builders <Pill accentBg="#e0d6d0">compete</Pill> on the real problem
             </h3>
             <p
               className="font-sans"
