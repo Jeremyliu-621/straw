@@ -28,6 +28,7 @@ export default function LandingArena({ height }: { height: number }) {
         navOverrides={navOverrides}
         view="iso"
         wallBury={wallBury}
+        zoom={32}
       />
     </div>
   );

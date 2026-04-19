@@ -1395,6 +1395,9 @@ interface TunerSceneProps {
   /** Called when the user clicks the floor — used in "arena" cohort to
    *  direct agent 0 to walk to the clicked canvas position. */
   onFloorClick?: (canvasX: number, canvasY: number) => void;
+  /** Optional override for the orthographic camera zoom. Lower = more zoomed
+   *  out. Defaults to the per-cohort value (arena=42, desks=60, other=50). */
+  zoom?: number;
 }
 
 function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
@@ -2404,6 +2407,7 @@ export default function TunerScene({
   view,
   wallBury,
   onFloorClick,
+  zoom,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
     if (cohort === "gym") return buildGymStations(gymTuning);
@@ -2421,7 +2425,7 @@ export default function TunerScene({
   // Camera zoom — arena is the biggest floor; desks cohort is mid-size
   // (4×4 grid needs more room than a single tuning seat but less than the
   // full arena). Tune zoom so the whole grid fits comfortably.
-  const cameraZoom = large ? 42 : isDesks ? 60 : 50;
+  const cameraZoom = zoom ?? (large ? 42 : isDesks ? 60 : 50);
 
   return (
     <Canvas
