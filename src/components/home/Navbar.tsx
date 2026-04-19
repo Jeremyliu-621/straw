@@ -60,7 +60,7 @@ export default function Navbar() {
             <Link
               href="/auth/signin"
               className="text-[14px] font-medium text-black px-5 py-1.5 rounded-[var(--radius)] hover:bg-black/5 transition-colors"
-              style={{ border: "1px solid #D8C4A0" }}
+              style={{ border: "1px solid #A68B77" }}
             >
               Post a Task
             </Link>
@@ -119,7 +119,7 @@ export default function Navbar() {
                 <Link
                   href="/auth/signin"
                   className="block text-center text-white px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
-                  style={{ backgroundColor: "#9C7761" }}
+                  style={{ backgroundColor: "#A68B77" }}
                   onClick={() => setMenuOpen(false)}
                 >
                   Post a Task

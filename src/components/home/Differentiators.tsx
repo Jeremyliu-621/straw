@@ -116,9 +116,9 @@ function BenchmarkVisual() {
           style={{
             fontSize: 10,
             fontWeight: 500,
-            background: "#EAF1E7",
+            background: "#E4ECE5",
             color: "#3F5A3A",
-            border: "1px solid #B8CDB3",
+            border: "1px solid #B1C9B3",
             padding: "2px 6px",
             borderRadius: "var(--radius)",
             textTransform: "uppercase",

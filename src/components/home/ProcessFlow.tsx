@@ -49,15 +49,15 @@ function TaskMakerVisual() {
     { label: "API design", weight: 25 },
     { label: "Performance", weight: 20 },
   ];
-  // Inner panel = darker shade of the card's soft blue bg, for separation.
+  // Inner panel = Gemini Periwinkle — the darker step of the outer Steel-blue card.
   return (
     <div
       className="font-sans"
       style={{
         padding: 20,
         borderRadius: "var(--radius)",
-        background: "#D5DCE2",
-        border: "1px solid #B9C4CC",
+        background: "#B8C4D9",
+        border: "1px solid #A3B1C6",
       }}
     >
       <div
@@ -94,7 +94,7 @@ function TaskMakerVisual() {
             <div
               style={{
                 height: 4,
-                background: "#B9C4CC",
+                background: "#A3B1C6",
                 borderRadius: 999,
                 overflow: "hidden",
               }}
@@ -103,7 +103,7 @@ function TaskMakerVisual() {
                 style={{
                   height: 4,
                   width: `${r.weight * 3}%`,
-                  background: "#5A6D7A",
+                  background: "#4D6682",
                   borderRadius: 999,
                 }}
               />
@@ -115,7 +115,7 @@ function TaskMakerVisual() {
         style={{
           marginTop: 16,
           paddingTop: 14,
-          borderTop: "1px solid #B9C4CC",
+          borderTop: "1px solid #A3B1C6",
           display: "flex",
           justifyContent: "space-between",
           fontSize: 13,
@@ -139,14 +139,14 @@ function BuilderVisual() {
     { rank: 2, name: "Devin", score: "89.0" },
     { rank: 3, name: "Cursor", score: "79.3" },
   ];
-  // Inner panel = darker shade of the card's soft tan bg.
+  // Inner panel = darker step of the outer Sand card.
   return (
     <div
       className="font-sans"
       style={{
         borderRadius: "var(--radius)",
-        background: "#ECE1C7",
-        border: "1px solid #DCCFB3",
+        background: "#D9C8AE",
+        border: "1px solid #C8B593",
         overflow: "hidden",
       }}
     >
@@ -154,8 +154,8 @@ function BuilderVisual() {
         className="flex items-center justify-between"
         style={{
           padding: "12px 16px",
-          background: "#E3D6B6",
-          borderBottom: "1px solid #DCCFB3",
+          background: "#CDBBA0",
+          borderBottom: "1px solid #C8B593",
           fontSize: 11,
           letterSpacing: "0.06em",
           textTransform: "uppercase",
@@ -185,7 +185,7 @@ function BuilderVisual() {
           className="flex items-center"
           style={{
             padding: "14px 16px",
-            borderBottom: "1px solid #DCCFB3",
+            borderBottom: "1px solid #C8B593",
             fontSize: 14,
           }}
         >
@@ -253,10 +253,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             style={{
               borderRadius: 6,
-              backgroundColor: "#ECEFF3",
+              backgroundColor: "#CCD5E3",
               color: "#111111",
               padding: "32px 32px 36px",
-              border: "1px solid #D1D8DE",
+              border: "1px solid #B8C4D9",
             }}
           >
             <h3
@@ -296,10 +296,10 @@ export default function ProcessFlow() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
             style={{
               borderRadius: 6,
-              backgroundColor: "#F7F2E7",
+              backgroundColor: "#EADFCF",
               color: "var(--text)",
               padding: "32px 32px 36px",
-              border: "1px solid #E3D9C3",
+              border: "1px solid #D9C8AE",
             }}
           >
             <h3

@@ -273,9 +273,9 @@ function OpenBadge() {
         textTransform: "uppercase",
         padding: "3px 8px",
         borderRadius: "var(--radius)",
-        background: "#EAF1E7",
+        background: "#E4ECE5",
         color: "#3F5A3A",
-        border: "1px solid #B8CDB3",
+        border: "1px solid #B1C9B3",
       }}
     >
       open
@@ -463,7 +463,7 @@ function LeftColumn() {
             borderRadius: "var(--radius)",
             fontSize: 14,
             fontWeight: 500,
-            background: "#9C7761",
+            background: "#A68B77",
             color: "#ffffff",
             textDecoration: "none",
             display: "inline-block",

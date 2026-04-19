@@ -61,7 +61,7 @@ export default function HeroSection() {
               <Link
                 href={session ? "/tasks/new" : "/auth/signin"}
                 className="text-white px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium transition-colors"
-                style={{ backgroundColor: "#9C7761" }}
+                style={{ backgroundColor: "#A68B77" }}
               >
                 Post a Task
               </Link>
