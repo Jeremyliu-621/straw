@@ -1471,22 +1471,27 @@ function PerimeterWalls({ large }: { large?: boolean }) {
   const halfH = ARENA_WORLD_H / 2;
   const thickness = WALL_THICKNESS * SCALE;
   const color = "#C9C7C2";
+  // Same trick as InteriorWall: extend walls 0.06 below the floor so
+  // BWEffects' bottom-edge overlay is hidden under the floor plane.
+  const BURY = 0.06;
+  const bodyH = wallH + BURY;
+  const bodyCenterY = wallH / 2 - BURY / 2;
   return (
     <>
-      <mesh position={[0, wallH / 2, -halfH]}>
-        <boxGeometry args={[ARENA_WORLD_W, wallH, thickness]} />
+      <mesh position={[0, bodyCenterY, -halfH]}>
+        <boxGeometry args={[ARENA_WORLD_W, bodyH, thickness]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[0, wallH / 2, halfH]}>
-        <boxGeometry args={[ARENA_WORLD_W, wallH, thickness]} />
+      <mesh position={[0, bodyCenterY, halfH]}>
+        <boxGeometry args={[ARENA_WORLD_W, bodyH, thickness]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[-halfW, wallH / 2, 0]}>
-        <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
+      <mesh position={[-halfW, bodyCenterY, 0]}>
+        <boxGeometry args={[thickness, bodyH, ARENA_WORLD_H]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <mesh position={[halfW, wallH / 2, 0]}>
-        <boxGeometry args={[thickness, wallH, ARENA_WORLD_H]} />
+      <mesh position={[halfW, bodyCenterY, 0]}>
+        <boxGeometry args={[thickness, bodyH, ARENA_WORLD_H]} />
         <meshStandardMaterial color={color} />
       </mesh>
     </>
