@@ -121,12 +121,12 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
   const right = sorted.slice(half);
 
   return (
-    <div style={{ marginTop: 16 }}>
-      <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
+    <div style={{ marginTop: 12 }}>
+      <div className="flex items-baseline justify-between" style={{ marginBottom: 6 }}>
         <span className="font-sans" style={LABEL_STYLE}>
           Leaderboard
         </span>
-        <span className="font-sans" style={{ fontSize: 13, color: "var(--text-muted)" }}>
+        <span className="font-sans" style={{ fontSize: 11, color: "var(--text-muted)" }}>
           Identities hidden until deadline
         </span>
       </div>
@@ -140,14 +140,13 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
           borderRadius: "var(--radius)",
           overflow: "hidden",
           background: "var(--bg)",
-          maxHeight: 212,
+          maxHeight: 120,
         }}
       >
         <MockLeaderboardTable entries={left} borderRight />
         <MockLeaderboardTable entries={right} />
 
-        {/* Soft fadeout on the last visible row — rows 1-2 stay crisp,
-            row 3 dissolves into bg so it reads as the trailing tail. */}
+        {/* Soft fadeout — rows 1-3 stay crisp, bottom fades into bg. */}
         <div
           aria-hidden
           style={{
@@ -155,7 +154,7 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
             left: 0,
             right: 0,
             bottom: 0,
-            height: "55%",
+            height: "40%",
             pointerEvents: "none",
             background: "linear-gradient(to bottom, transparent, var(--bg) 95%)",
           }}
@@ -178,21 +177,6 @@ function MockLeaderboardTable({
         borderRight: borderRight ? "1px solid var(--border)" : undefined,
       }}
     >
-      {/* Header row */}
-      <div
-        className="grid font-sans"
-        style={{
-          gridTemplateColumns: "1fr 90px",
-          padding: "12px 16px",
-          background: "var(--bg-subtle)",
-          borderBottom: "1px solid var(--border)",
-          ...LABEL_STYLE,
-        }}
-      >
-        <span>Agent</span>
-        <span style={{ textAlign: "right" }}>Score</span>
-      </div>
-
       {entries.map((agent) => (
         <LeaderboardRow key={agent.id} agent={agent} />
       ))}
@@ -208,24 +192,17 @@ function LeaderboardRow({ agent }: { agent: ArenaAgent }) {
     <div
       className="grid font-sans"
       style={{
-        gridTemplateColumns: "1fr 90px",
+        gridTemplateColumns: "1fr 60px",
         alignItems: "center",
-        height: 56,
-        padding: "0 16px",
+        height: 26,
+        padding: "0 12px",
         borderBottom: "1px solid var(--border)",
-        transition: "background-color 0.15s ease",
-      }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.background = "var(--bg-subtle)";
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.background = "transparent";
       }}
     >
       <span
-        className="font-sans flex items-baseline gap-3"
+        className="font-sans flex items-baseline gap-2"
         style={{
-          fontSize: 15,
+          fontSize: 12,
           fontWeight: isWinner ? 500 : 400,
           color: "var(--text)",
         }}
@@ -233,10 +210,10 @@ function LeaderboardRow({ agent }: { agent: ArenaAgent }) {
         <span
           className="font-mono"
           style={{
-            fontSize: 13,
+            fontSize: 11,
             fontWeight: isWinner ? 600 : 400,
             color: "var(--text-muted)",
-            minWidth: 20,
+            minWidth: 16,
           }}
         >
           {rank}
@@ -247,7 +224,7 @@ function LeaderboardRow({ agent }: { agent: ArenaAgent }) {
         className="font-mono"
         style={{
           textAlign: "right",
-          fontSize: isWinner ? 18 : 14,
+          fontSize: isWinner ? 13 : 12,
           fontWeight: 600,
           color: "var(--text)",
           fontVariantNumeric: "tabular-nums",
