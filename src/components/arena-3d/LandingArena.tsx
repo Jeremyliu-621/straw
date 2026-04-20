@@ -87,35 +87,35 @@ export default function LandingArena({ height }: { height: number }) {
   // Match the tuner-panel button style (compact, px-2 py-1, rounded-md,
   // text-[11px]) so the landing triggers feel continuous with the dev tool.
   const btnClass =
-    "px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-black transition-colors";
+    "px-2 py-1 rounded-md text-[11px] bg-white/90 backdrop-blur-sm border border-gray-300 hover:border-black hover:bg-white transition-colors";
 
   return (
-    <div>
-      <div style={{ height, width: "100%", position: "relative" }}>
-        <TunerScene
-          cohort={cohort}
-          stationIdxByAgent={stationIdxByAgent}
-          tuning={tuning}
-          gymTuning={gymTuning}
-          miscTuning={miscTuning}
-          agentRef={agentRef}
-          showPaths={showPaths}
-          showNav={showNav}
-          navOverrides={navOverrides}
-          view="iso"
-          wallBury={wallBury}
-          zoom={20}
-        />
-      </div>
+    <div style={{ height, width: "100%", position: "relative" }}>
+      <TunerScene
+        cohort={cohort}
+        stationIdxByAgent={stationIdxByAgent}
+        tuning={tuning}
+        gymTuning={gymTuning}
+        miscTuning={miscTuning}
+        agentRef={agentRef}
+        showPaths={showPaths}
+        showNav={showNav}
+        navOverrides={navOverrides}
+        view="iso"
+        wallBury={wallBury}
+        zoom={20}
+      />
       <div
         style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
           display: "flex",
           alignItems: "center",
           gap: 6,
-          padding: "8px 12px",
-          borderTop: "1px solid var(--border)",
-          background: "var(--bg-subtle)",
+          zIndex: 5,
           flexWrap: "wrap",
+          justifyContent: "flex-end",
         }}
       >
         <button onClick={() => triggerStandup("conference")} className={btnClass} title="Top-3 ranked agents speak at the front, rest listen in the audience">
