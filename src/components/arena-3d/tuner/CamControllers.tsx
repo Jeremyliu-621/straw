@@ -186,6 +186,11 @@ export function FollowCamController({
     lookAtRef.current.set(wx, 0.5, wz);
     perspectiveCameraRef.current.lookAt(lookAtRef.current);
     perspectiveCameraRef.current.aspect = size.width / size.height;
+    // Reset zoom to 1 every frame. CameraRig's useEffect writes the
+    // orthographic cameraZoom (e.g. 42 for seats) onto whatever camera
+    // useThree returns — when we swap the perspective cam in, that write
+    // lands on it and magnifies everything 42x. Stomp it back to 1 here.
+    perspectiveCameraRef.current.zoom = 1;
     perspectiveCameraRef.current.updateProjectionMatrix();
   });
 
