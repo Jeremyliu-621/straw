@@ -72,9 +72,13 @@ export function FollowCamController({
   const originalCameraRef = useRef<THREE.Camera | null>(null);
   const wasFollowingRef = useRef(false);
   const lastAgentIdxRef = useRef<number>(-1);
-  const thetaRef = useRef(0);
-  const phiRef = useRef(Math.PI / 6);
-  const radiusRef = useRef(6.0);
+  // `thetaOffsetRef` is the user's drag offset from "directly behind the
+  // agent." Each frame we compute effective theta = agent.facing + π +
+  // offset, so the camera stays behind the agent as they turn, while
+  // respecting the user's orbit drag.
+  const thetaOffsetRef = useRef(0);
+  const phiRef = useRef(Math.PI / 3);
+  const radiusRef = useRef(4.5);
   const isDraggingRef = useRef(false);
   const lastMouseRef = useRef({ x: 0, y: 0 });
   const cameraPositionRef = useRef(new THREE.Vector3());
@@ -99,7 +103,7 @@ export function FollowCamController({
       const dx = event.clientX - lastMouseRef.current.x;
       const dy = event.clientY - lastMouseRef.current.y;
       lastMouseRef.current = { x: event.clientX, y: event.clientY };
-      thetaRef.current -= dx * 0.006;
+      thetaOffsetRef.current -= dx * 0.006;
       phiRef.current = Math.max(
         0.05,
         Math.min(Math.PI / 2.2, phiRef.current + dy * 0.006),
@@ -132,8 +136,8 @@ export function FollowCamController({
   useFrame(() => {
     const isFollowing = mode === "follow";
 
-    // Enter follow mode: create a perspective camera, swap it in, seed theta
-    // from the agent's facing so the camera starts behind them.
+    // Enter follow mode: create a perspective camera, swap it in, seed the
+    // theta offset to 0 so we sit directly behind the agent.
     if (isFollowing && !wasFollowingRef.current) {
       const agent = agentRef.current[agentIdx];
       if (!agent) return;
@@ -145,7 +149,7 @@ export function FollowCamController({
           100,
         );
       }
-      thetaRef.current = agent.facing + Math.PI;
+      thetaOffsetRef.current = 0;
       lastAgentIdxRef.current = agentIdx;
       set({ camera: perspectiveCameraRef.current });
       wasFollowingRef.current = true;
@@ -165,15 +169,19 @@ export function FollowCamController({
     const agent = agentRef.current[agentIdx];
     if (!agent) return;
 
-    // Agent changed while following — re-seed theta to be behind them.
+    // Agent changed while following — reset the drag offset so we sit
+    // directly behind the new agent.
     if (agentIdx !== lastAgentIdxRef.current) {
-      thetaRef.current = agent.facing + Math.PI;
+      thetaOffsetRef.current = 0;
       lastAgentIdxRef.current = agentIdx;
     }
 
     const [wx, , wz] = toWorld(agent.x, agent.y);
     const radius = radiusRef.current;
-    const theta = thetaRef.current;
+    // Effective theta = agent's facing + π (behind them) + user drag offset.
+    // This keeps the camera pinned behind the agent as they turn, while
+    // respecting any orbit dragging the user has done.
+    const theta = agent.facing + Math.PI + thetaOffsetRef.current;
     const phi = phiRef.current;
 
     cameraPositionRef.current.set(
