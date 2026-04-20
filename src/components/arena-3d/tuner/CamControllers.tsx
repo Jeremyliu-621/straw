@@ -74,7 +74,7 @@ export function FollowCamController({
   const lastAgentIdxRef = useRef<number>(-1);
   const thetaRef = useRef(0);
   const phiRef = useRef(Math.PI / 6);
-  const radiusRef = useRef(2.0);
+  const radiusRef = useRef(6.0);
   const isDraggingRef = useRef(false);
   const lastMouseRef = useRef({ x: 0, y: 0 });
   const cameraPositionRef = useRef(new THREE.Vector3());
@@ -112,7 +112,7 @@ export function FollowCamController({
       if (mode !== "follow") return;
       radiusRef.current = Math.max(
         0.8,
-        Math.min(10, radiusRef.current + event.deltaY * 0.005),
+        Math.min(25, radiusRef.current + event.deltaY * 0.01),
       );
     };
 
