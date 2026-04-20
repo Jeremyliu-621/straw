@@ -6,48 +6,7 @@ import * as THREE from "three";
 import { toWorld } from "../core/geometry";
 import type { RenderAgentState } from "../useArenaGameLoop";
 
-export type CamMode = "off" | "chase" | "follow";
-
-/**
- * Chase cam — keeps the existing orthographic iso camera, but lerps its
- * lookAt target toward the selected agent each frame so the scene slides
- * to follow them. Low complexity, consistent with the scene's flat look.
- */
-export function ChaseCamController({
-  mode,
-  agentIdx,
-  agentRef,
-}: {
-  mode: CamMode;
-  agentIdx: number;
-  agentRef: RefObject<RenderAgentState[]>;
-}) {
-  const { camera } = useThree();
-  const lookTargetRef = useRef(new THREE.Vector3(0, 0.55, 0));
-  const desiredTargetRef = useRef(new THREE.Vector3(0, 0.55, 0));
-
-  useFrame(() => {
-    if (mode !== "chase") return;
-    const agent = agentRef.current[agentIdx];
-    if (!agent) return;
-    const [wx, , wz] = toWorld(agent.x, agent.y);
-    desiredTargetRef.current.set(wx, 0.55, wz);
-    lookTargetRef.current.lerp(desiredTargetRef.current, 0.12);
-    camera.lookAt(lookTargetRef.current);
-    camera.updateMatrixWorld();
-  });
-
-  // When chase mode turns off, reset the camera to look at scene origin.
-  useEffect(() => {
-    if (mode === "off") {
-      camera.lookAt(0, 0.55, 0);
-      camera.updateMatrixWorld();
-      lookTargetRef.current.set(0, 0.55, 0);
-    }
-  }, [mode, camera]);
-
-  return null;
-}
+export type CamMode = "off" | "follow";
 
 /**
  * Follow cam — ported from Claw3D's FollowCamController. Swaps the scene

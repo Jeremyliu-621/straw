@@ -21,11 +21,7 @@ import ProceduralFurniture, { PROCEDURAL_TYPES } from "../objects/ProceduralFurn
 import InteriorWall from "../objects/InteriorWall";
 import AgentCharacter from "../objects/AgentCharacter";
 import BWEffects from "../BWEffects";
-import {
-  ChaseCamController,
-  FollowCamController,
-  type CamMode,
-} from "./CamControllers";
+import { FollowCamController, type CamMode } from "./CamControllers";
 import type { RenderAgentState } from "../useArenaGameLoop";
 import type { FurnitureItem } from "../core/types";
 import type { WorkoutStyle } from "../core/defaultLayout";
@@ -2510,9 +2506,7 @@ export default function TunerScene({
         />
         <TickLoop agentRef={agentRef} stations={stations} stationIdxByAgent={stationIdxByAgent} />
 
-        {/* Camera follow controllers — only one is ever active at a time,
-            per `camMode`. */}
-        <ChaseCamController mode={camMode} agentIdx={camAgentIdx} agentRef={agentRef} />
+        {/* Follow cam — perspective orbit around the selected agent. */}
         <FollowCamController mode={camMode} agentIdx={camAgentIdx} agentRef={agentRef} />
 
         {/* Match landing-page default look: b&w + tint + pure white. */}
@@ -2548,9 +2542,8 @@ export function useTunerAgent(opts?: {
   // Bury-walls mode hides the black floor-rectangle outline by sinking
   // wall bottoms under the floor plane. Default off = legacy look.
   const [wallBury, setWallBury] = useState(false);
-  // Camera follow mode — "off" keeps the default ortho iso, "chase" lerps
-  // the ortho camera's lookAt toward the selected agent, "follow" swaps in
-  // a perspective orbit camera parked around the agent.
+  // Camera follow mode — "off" keeps the default ortho iso, "follow" swaps
+  // in a perspective orbit camera parked around the selected agent.
   const [camMode, setCamMode] = useState<CamMode>("off");
   const [camAgentIdx, setCamAgentIdx] = useState(0);
   // Per-type nav-anchor overrides — sliders write into this; buildNavGrid

@@ -643,36 +643,16 @@ export default function TunerPanel({
             ))}
           </select>
           <button
-            onClick={() => setCamMode(camMode === "chase" ? "off" : "chase")}
-            className={`flex-1 px-2 py-1 rounded-md text-[11px] border ${
-              camMode === "chase"
-                ? "bg-black text-white border-black"
-                : "bg-white border-gray-300 hover:border-black"
-            }`}
-            title="Chase cam: keeps the orthographic iso view, slides lookAt toward the target agent"
-          >
-            chase
-          </button>
-          <button
             onClick={() => setCamMode(camMode === "follow" ? "off" : "follow")}
             className={`flex-1 px-2 py-1 rounded-md text-[11px] border ${
               camMode === "follow"
                 ? "bg-black text-white border-black"
                 : "bg-white border-gray-300 hover:border-black"
             }`}
-            title="Follow cam: swaps in a perspective orbit camera around the agent (drag to orbit, wheel to zoom)"
+            title="Follow cam: perspective orbit around the agent (drag to orbit, wheel to zoom)"
           >
-            follow
+            {camMode === "follow" ? "exit follow" : "follow"}
           </button>
-          {camMode !== "off" && (
-            <button
-              onClick={() => setCamMode("off")}
-              className="px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-red-600 text-red-600"
-              title="Exit follow / chase cam"
-            >
-              ✕
-            </button>
-          )}
         </div>
       </div>
 
