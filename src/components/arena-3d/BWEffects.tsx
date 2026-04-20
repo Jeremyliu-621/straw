@@ -40,6 +40,10 @@ type MeshUserData = {
   __isBWEdgeOverlay?: boolean;
   /** Opt-out set on the source mesh — skip the black edge overlay. */
   __skipBWEdges?: boolean;
+  /** Opt-out entirely — skip BOTH the material swap AND the edge overlay.
+   *  Used by invisible/interactive meshes (click hit-boxes, hover rings)
+   *  whose custom materials must not be replaced with the BW white. */
+  __skipBW?: boolean;
 };
 
 const BW_WHITE = "#FDFCFC";
@@ -134,6 +138,7 @@ function applyBWToMesh(
 ): void {
   const ud = mesh.userData as MeshUserData;
   if (ud.__isBWEdgeOverlay) return;
+  if (ud.__skipBW) return;
   if (!mesh.geometry) return;
   if (!mesh.material) return;
 

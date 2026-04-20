@@ -445,7 +445,7 @@ export default function AgentCharacter({
           onClick={handleClick}
           onPointerOver={handlePointerOver}
           onPointerOut={handlePointerOut}
-          userData={{ __skipBWEdges: true }}
+          userData={{ __skipBW: true, __skipBWEdges: true }}
         >
           <boxGeometry args={[50, 120, 50]} />
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -458,7 +458,7 @@ export default function AgentCharacter({
         <mesh
           position={[0, 0.5, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
-          userData={{ __skipBWEdges: true }}
+          userData={{ __skipBW: true, __skipBWEdges: true }}
         >
           <ringGeometry args={[28, 34, 48]} />
           <meshBasicMaterial
