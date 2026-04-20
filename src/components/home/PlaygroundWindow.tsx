@@ -323,24 +323,36 @@ function EvalWeight({ label, weight }: { label: string; weight: number }) {
     <div
       style={{
         flex: 1,
-        padding: 14,
+        padding: "10px 14px",
         border: "1px solid var(--border)",
         borderRadius: "var(--radius)",
         background: "var(--bg)",
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        minWidth: 0,
       }}
     >
-      <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
-        <span className="font-mono" style={{ fontSize: 18, fontWeight: 600, color: "var(--text)" }}>
-          {weight}%
-        </span>
-      </div>
+      <span
+        className="font-mono"
+        style={{
+          fontSize: 16,
+          fontWeight: 600,
+          color: "var(--text)",
+          fontVariantNumeric: "tabular-nums",
+          flexShrink: 0,
+        }}
+      >
+        {weight}%
+      </span>
       <div
         style={{
+          flex: 1,
           height: 4,
           background: "var(--border)",
           borderRadius: 999,
           overflow: "hidden",
-          marginBottom: 8,
+          minWidth: 0,
         }}
       >
         <div
@@ -353,7 +365,15 @@ function EvalWeight({ label, weight }: { label: string; weight: number }) {
           }}
         />
       </div>
-      <span className="font-sans" style={{ fontSize: 12, color: "var(--text-muted)" }}>
+      <span
+        className="font-sans"
+        style={{
+          fontSize: 12,
+          color: "var(--text-muted)",
+          flexShrink: 0,
+          whiteSpace: "nowrap",
+        }}
+      >
         {label}
       </span>
     </div>
