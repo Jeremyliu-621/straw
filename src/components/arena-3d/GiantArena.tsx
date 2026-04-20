@@ -110,8 +110,6 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
           minWidth: 0,
           height,
           position: "relative",
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius)",
           overflow: "hidden",
         }}
       >
@@ -127,18 +125,20 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
           navOverrides={navOverrides}
           view={view}
           wallBury={wallBury}
-          zoom={30}
+          zoom={38}
         />
       </div>
 
-      {/* Admin panel — narrow right column, stacked groups with natural
-          spacing. No border, no background — just buttons on the page. */}
+      {/* Admin panel — narrow right column, with its own bordered container
+          so the controls feel like a standalone toolkit. */}
       <div
         style={{
           flex: "1 1 12%",
           minWidth: 140,
           height,
-          paddingLeft: 4,
+          padding: 12,
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius)",
           display: "flex",
           flexDirection: "column",
           gap: 12,
