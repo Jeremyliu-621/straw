@@ -21,7 +21,7 @@ import ProceduralFurniture, { PROCEDURAL_TYPES } from "../objects/ProceduralFurn
 import InteriorWall from "../objects/InteriorWall";
 import AgentCharacter from "../objects/AgentCharacter";
 import BWEffects from "../BWEffects";
-import { FollowCamController, type CamMode } from "./CamControllers";
+import { FollowCamController, type CamMode } from "../FollowCamController";
 import type { RenderAgentState } from "../useArenaGameLoop";
 import type { FurnitureItem } from "../core/types";
 import type { WorkoutStyle } from "../core/defaultLayout";

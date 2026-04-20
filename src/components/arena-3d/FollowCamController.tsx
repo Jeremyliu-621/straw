@@ -3,8 +3,8 @@
 import { useEffect, useRef, type RefObject } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { toWorld } from "../core/geometry";
-import type { RenderAgentState } from "../useArenaGameLoop";
+import { toWorld } from "./core/geometry";
+import type { RenderAgentState } from "./useArenaGameLoop";
 
 export type CamMode = "off" | "follow";
 
@@ -16,6 +16,9 @@ export type CamMode = "off" | "follow";
  * Controls while active:
  *   - Left-drag to orbit (theta / phi)
  *   - Wheel to zoom (radius)
+ *
+ * Used by both the tuner and the live ArenaCanvas — the scene-camera swap
+ * + zoom-stomp pattern is the same regardless of the outer wrapper.
  */
 export function FollowCamController({
   mode,
@@ -151,9 +154,6 @@ export function FollowCamController({
 
     const [wx, , wz] = toWorld(agent.x, agent.y);
     const radius = radiusRef.current;
-    // Effective theta = agent's facing + π (behind them) + user drag offset.
-    // This keeps the camera pinned behind the agent as they turn, while
-    // respecting any orbit dragging the user has done.
     const theta = agent.facing + Math.PI + thetaOffsetRef.current;
     const phi = phiRef.current;
 
@@ -164,19 +164,15 @@ export function FollowCamController({
     );
     desiredLookRef.current.set(wx, 0.5, wz);
 
-    // Lerp both camera position and lookAt target toward their desired
-    // values so the camera eases the agent's snappier facing/position
-    // changes. ~0.12 per 60fps frame → ~92% of the way in ~180ms.
     currentPosRef.current.lerp(desiredPosRef.current, 0.12);
     currentLookRef.current.lerp(desiredLookRef.current, 0.12);
 
     perspectiveCameraRef.current.position.copy(currentPosRef.current);
     perspectiveCameraRef.current.lookAt(currentLookRef.current);
     perspectiveCameraRef.current.aspect = size.width / size.height;
-    // Reset zoom to 1 every frame. CameraRig's useEffect writes the
-    // orthographic cameraZoom (e.g. 42 for seats) onto whatever camera
-    // useThree returns — when we swap the perspective cam in, that write
-    // lands on it and magnifies everything 42x. Stomp it back to 1 here.
+    // Stomp the perspective camera's zoom to 1 every frame. The tuner's
+    // CameraRig writes the ortho cameraZoom (e.g. 42) onto whatever camera
+    // useThree returns — on the perspective cam that'd magnify 42x.
     perspectiveCameraRef.current.zoom = 1;
     perspectiveCameraRef.current.updateProjectionMatrix();
   });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useCallback } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Billboard, Text } from "@react-three/drei";
 import * as THREE from "three";
@@ -17,6 +17,12 @@ interface AgentCharacterProps {
   /** Null when the agent is off-leaderboard — nameplate is hidden. */
   rank: number | null;
   agentsRef: React.RefObject<RenderAgentState[]>;
+  /** Called when the user clicks this agent's hit-box. If provided,
+   *  wires up an invisible click proxy + hover cursor. */
+  onSelect?: (agentId: string) => void;
+  /** Highlight the agent (ground ring) when true — used by the live
+   *  scene to indicate the currently-selected agent. */
+  isSelected?: boolean;
 }
 
 function truncateName(name: string): string {
@@ -61,7 +67,36 @@ export default function AgentCharacter({
   agentName,
   rank,
   agentsRef,
+  onSelect,
+  isSelected = false,
 }: AgentCharacterProps) {
+  const [hovered, setHovered] = useState(false);
+  const handlePointerOver = useCallback(
+    (e: { stopPropagation: () => void }) => {
+      if (!onSelect) return;
+      e.stopPropagation();
+      setHovered(true);
+      if (typeof document !== "undefined") document.body.style.cursor = "pointer";
+    },
+    [onSelect],
+  );
+  const handlePointerOut = useCallback(
+    (e: { stopPropagation: () => void }) => {
+      if (!onSelect) return;
+      e.stopPropagation();
+      setHovered(false);
+      if (typeof document !== "undefined") document.body.style.cursor = "";
+    },
+    [onSelect],
+  );
+  const handleClick = useCallback(
+    (e: { stopPropagation: () => void }) => {
+      if (!onSelect) return;
+      e.stopPropagation();
+      onSelect(agentId);
+    },
+    [onSelect, agentId],
+  );
   const groupRef = useRef<THREE.Group>(null);
   const headRef = useRef<THREE.Group>(null);
   const leftArmRef = useRef<THREE.Group>(null);
@@ -399,6 +434,40 @@ export default function AgentCharacter({
 
   return (
     <group ref={groupRef} scale={[s, s, s]}>
+      {/* Invisible click proxy — ~1.5x the body volume, sits at torso
+          height. Raycast hits this first because it's the outermost
+          mesh; the body parts underneath stay non-interactive. Only
+          mounted when onSelect is provided, so the tuner + landing
+          mode (which don't pass onSelect) keep zero pointer cost. */}
+      {onSelect && (
+        <mesh
+          position={[0, 45, 0]}
+          onClick={handleClick}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
+          userData={{ __skipBWEdges: true }}
+        >
+          <boxGeometry args={[50, 120, 50]} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </mesh>
+      )}
+      {/* Ground ring — subtle circle under the agent that fades in on
+          hover + stays on while this agent is selected. Gives users
+          visual confirmation that the agent is clickable. */}
+      {onSelect && (hovered || isSelected) && (
+        <mesh
+          position={[0, 0.5, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          userData={{ __skipBWEdges: true }}
+        >
+          <ringGeometry args={[28, 34, 48]} />
+          <meshBasicMaterial
+            color={isSelected ? "#111111" : "#555555"}
+            transparent
+            opacity={isSelected ? 0.7 : 0.35}
+          />
+        </mesh>
+      )}
       {/* Head + hair + eyes in one group so we can tilt them around the
           neck pivot (y=75). Child positions are relative to that pivot. */}
       <group ref={headRef} position={[0, 75, 0]}>

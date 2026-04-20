@@ -3,8 +3,11 @@
 import { Suspense, useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useStrawAgents } from "./useStrawAgents";
-import { useArenaGameLoop } from "./useArenaGameLoop";
+import { useArenaGameLoop, type RenderAgentState } from "./useArenaGameLoop";
 import { DEFAULT_ARENA_FURNITURE } from "./core/defaultLayout";
+import { FollowCamController, type CamMode } from "./FollowCamController";
+import { toWorld } from "./core/geometry";
+import * as THREE from "three";
 import OfficeEnvironment from "./scene/OfficeEnvironment";
 import ArenaDoor from "./objects/ArenaDoor";
 import PingPongBalls from "./objects/PingPongBalls";
@@ -82,6 +85,10 @@ function ArenaScene({
   tintPureWhite,
   edgeThreshold,
   debugPaths,
+  selectedAgentId,
+  onSelectAgent,
+  onRenderAgentsRef,
+  camMode,
 }: {
   officeAgents: ReturnType<typeof useStrawAgents>["officeAgents"];
   eventBufferRef: ReturnType<typeof useStrawAgents>["eventBufferRef"];
@@ -95,6 +102,10 @@ function ArenaScene({
   tintPureWhite: number;
   edgeThreshold: number;
   debugPaths: boolean;
+  selectedAgentId: string | null;
+  onSelectAgent: (id: string) => void;
+  onRenderAgentsRef: (ref: React.RefObject<RenderAgentState[]>) => void;
+  camMode: CamMode;
 }) {
   const furniture = useMemo(() => DEFAULT_ARENA_FURNITURE, []);
   const { renderAgentsRef, tick } = useArenaGameLoop(
@@ -104,6 +115,18 @@ function ArenaScene({
     devActionQueueRef
   );
   const preset = CAMERA_PRESETS[viewMode];
+
+  // Hoist the agents ref so the outer component can read live positions
+  // for projecting the stats panel into screen space.
+  useEffect(() => {
+    onRenderAgentsRef(renderAgentsRef);
+  }, [onRenderAgentsRef, renderAgentsRef]);
+
+  // Resolve the selected agent's index in the ref (if any) so follow cam
+  // can target them. -1 (unused) when nothing is selected.
+  const camAgentIdx = selectedAgentId
+    ? renderAgentsRef.current.findIndex((a) => a.id === selectedAgentId)
+    : -1;
 
   return (
     <>
@@ -180,7 +203,19 @@ function ArenaScene({
       <PingPongBalls agentsRef={renderAgentsRef} />
 
       {/* Agents */}
-      <AgentRenderer renderAgentsRef={renderAgentsRef} />
+      <AgentRenderer
+        renderAgentsRef={renderAgentsRef}
+        onSelectAgent={onSelectAgent}
+        selectedAgentId={selectedAgentId}
+      />
+
+      {/* Follow cam — swaps in a perspective orbit camera parked around
+          the selected agent. Inert when camMode is "off" or camAgentIdx is -1. */}
+      <FollowCamController
+        mode={camAgentIdx >= 0 ? camMode : "off"}
+        agentIdx={camAgentIdx >= 0 ? camAgentIdx : 0}
+        agentRef={renderAgentsRef}
+      />
 
       {/* Game loop */}
       <GameLoop tick={tick} />
@@ -200,12 +235,40 @@ function ArenaScene({
   );
 }
 
+/**
+ * Tiny bridge that runs inside the Canvas: grabs the active camera + the
+ * canvas DOM element from useThree and hands them to outer refs. The outer
+ * stats panel uses these to project the selected agent's world coords into
+ * screen pixels each frame.
+ */
+function CanvasCameraBridge({
+  cameraRef,
+  canvasDomRef,
+}: {
+  cameraRef: React.MutableRefObject<THREE.Camera | null>;
+  canvasDomRef: React.MutableRefObject<HTMLCanvasElement | null>;
+}) {
+  const { camera, gl } = useThree();
+  useEffect(() => {
+    cameraRef.current = camera;
+    canvasDomRef.current = gl.domElement;
+  }, [camera, gl, cameraRef, canvasDomRef]);
+  useFrame(() => {
+    cameraRef.current = camera;
+  });
+  return null;
+}
+
 function AgentRenderer({
   renderAgentsRef,
+  onSelectAgent,
+  selectedAgentId,
 }: {
   renderAgentsRef: React.RefObject<
     ReturnType<typeof useArenaGameLoop>["renderAgentsRef"]["current"]
   >;
+  onSelectAgent?: (id: string) => void;
+  selectedAgentId: string | null;
 }) {
   // Track agent identity (id, name, rank) so React knows when to add/remove agent
   // components. Position/animation updates happen inside each AgentCharacter via
@@ -239,6 +302,8 @@ function AgentRenderer({
           agentName={agent.name}
           rank={agent.rank}
           agentsRef={renderAgentsRef}
+          onSelect={onSelectAgent}
+          isSelected={selectedAgentId === agent.id}
         />
       ))}
     </>
@@ -252,6 +317,22 @@ function ArenaFallback() {
       <meshStandardMaterial color="#e5e7eb" />
     </mesh>
   );
+}
+
+function statusColor(status: string | null): string {
+  switch (status) {
+    case "running":
+    case "pending":
+      return "#f59e0b"; // amber — in progress
+    case "completed":
+      return "#10b981"; // green
+    case "failed":
+      return "#ef4444"; // red
+    case "registered":
+      return "#6366f1"; // indigo
+    default:
+      return "#94a3b8"; // slate — unknown
+  }
 }
 
 function modeToVariant(mode: ArenaMode): BWVariant | null {
@@ -323,9 +404,27 @@ export function ArenaCanvasInner({
   showSidebar = true,
 }: ArenaCanvasInnerProps) {
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const [camMode, setCamMode] = useState<CamMode>("off");
   const [viewMode, setViewMode] = useState<ViewMode>("iso");
   const [debugPaths, setDebugPaths] = useState(false);
   const devActionQueueRef = useRef<DevAction[]>([]);
+  // Bridge to the scene's live agent positions. The inner ArenaScene
+  // surfaces its renderAgentsRef via onRenderAgentsRef; the outer stats
+  // panel reads this each tick to position itself near the selected
+  // agent's on-screen location.
+  const agentsRefRef = useRef<React.RefObject<RenderAgentState[]> | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const panelPosRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const projectVecRef = useRef(new THREE.Vector3());
+  const cameraRef = useRef<THREE.Camera | null>(null);
+  const canvasDomRef = useRef<HTMLCanvasElement | null>(null);
+
+  const onRenderAgentsRef = useCallback(
+    (ref: React.RefObject<RenderAgentState[]>) => {
+      agentsRefRef.current = ref;
+    },
+    [],
+  );
   const {
     mode,
     shadowLightness,
@@ -342,7 +441,94 @@ export function ArenaCanvasInner({
 
   const handleSelectAgent = useCallback((id: string | null) => {
     setSelectedAgentId(id);
+    if (id === null) setCamMode("off");
   }, []);
+  const handleSelectFromMesh = useCallback((id: string) => {
+    setSelectedAgentId(id);
+  }, []);
+
+  // Esc to clear selection + exit follow.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedAgentId(null);
+        setCamMode("off");
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  // Auto-clear on viewport < 768px so mobile doesn't end up in follow
+  // mode with no way to exit (drag/wheel controls assume desktop).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 767px)");
+    const onChange = () => {
+      if (mq.matches) {
+        setSelectedAgentId(null);
+        setCamMode("off");
+      }
+    };
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  const selectedAgent = selectedAgentId
+    ? agents.find((a) => a.id === selectedAgentId) ?? null
+    : null;
+
+  // Project the selected agent's world position to screen coords each
+  // animation frame and move the stats panel there. Runs outside R3F
+  // because the panel is DOM-layer, not inside the Canvas.
+  useEffect(() => {
+    if (!selectedAgentId) return;
+    let raf = 0;
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      const panel = panelRef.current;
+      const camera = cameraRef.current;
+      const canvas = canvasDomRef.current;
+      const agentsRef = agentsRefRef.current;
+      if (!panel || !camera || !canvas || !agentsRef) return;
+      const agent = agentsRef.current?.find((a) => a.id === selectedAgentId);
+      if (!agent) return;
+      const [wx, , wz] = toWorld(agent.x, agent.y);
+      // Aim at head height so the panel sits above the agent, not inside
+      // the floor. 0.9 world-units is roughly head top for our AGENT_SCALE.
+      projectVecRef.current.set(wx, 0.9, wz);
+      projectVecRef.current.project(camera);
+      const rect = canvas.getBoundingClientRect();
+      const x = (projectVecRef.current.x * 0.5 + 0.5) * rect.width;
+      const y = (-projectVecRef.current.y * 0.5 + 0.5) * rect.height;
+      // Lerp toward the target so the panel eases along with the agent
+      // instead of jittering frame-to-frame when the scene is moving.
+      panelPosRef.current.x += (x - panelPosRef.current.x) * 0.2;
+      panelPosRef.current.y += (y - panelPosRef.current.y) * 0.2;
+      panel.style.left = `${Math.round(panelPosRef.current.x)}px`;
+      panel.style.top = `${Math.round(panelPosRef.current.y)}px`;
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [selectedAgentId]);
+
+  // Snap the panel position to the agent's current screen coords on
+  // selection, so the panel appears near the clicked agent instead of
+  // sliding in from its previous location.
+  useEffect(() => {
+    if (!selectedAgentId) return;
+    const camera = cameraRef.current;
+    const canvas = canvasDomRef.current;
+    const agent = agentsRefRef.current?.current?.find((a) => a.id === selectedAgentId);
+    if (!camera || !canvas || !agent) return;
+    const [wx, , wz] = toWorld(agent.x, agent.y);
+    projectVecRef.current.set(wx, 0.9, wz);
+    projectVecRef.current.project(camera);
+    const rect = canvas.getBoundingClientRect();
+    panelPosRef.current.x = (projectVecRef.current.x * 0.5 + 0.5) * rect.width;
+    panelPosRef.current.y = (-projectVecRef.current.y * 0.5 + 0.5) * rect.height;
+  }, [selectedAgentId]);
 
   const initialPreset = CAMERA_PRESETS.iso;
   // Match the site's page background (#FDFCFC) in B&W modes; color mode
@@ -383,7 +569,12 @@ export function ArenaCanvasInner({
               tintPureWhite={tintPureWhite}
               edgeThreshold={edgeThreshold}
               debugPaths={debugPaths}
+              selectedAgentId={selectedAgentId}
+              onSelectAgent={handleSelectFromMesh}
+              onRenderAgentsRef={onRenderAgentsRef}
+              camMode={camMode}
             />
+            <CanvasCameraBridge cameraRef={cameraRef} canvasDomRef={canvasDomRef} />
           </Suspense>
         </Canvas>
 
@@ -473,6 +664,90 @@ export function ArenaCanvasInner({
                 bw={bw}
               />
             )}
+          </div>
+        )}
+
+        {/* Floating stats panel — anchored to the selected agent's
+            projected screen position (updated in an rAF loop above).
+            Click-outside dismisses by way of the canvas background click
+            handler on the container below. */}
+        {selectedAgent && (
+          <div
+            ref={panelRef}
+            className="absolute z-20 pointer-events-auto"
+            style={{
+              left: 0,
+              top: 0,
+              transform: "translate(-50%, calc(-100% - 12px))",
+              minWidth: 220,
+              maxWidth: 260,
+              padding: "10px 12px",
+              background: "rgba(255, 255, 255, 0.97)",
+              border: "1px solid #111",
+              borderRadius: 6,
+              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <div className="flex items-start justify-between gap-2 mb-1">
+              <div className="font-sans font-medium text-[14px] text-black truncate">
+                {selectedAgent.displayName ?? `Agent ${selectedAgent.rank ?? "?"}`}
+              </div>
+              <button
+                onClick={() => handleSelectAgent(null)}
+                className="font-sans text-[11px] text-gray-400 hover:text-black shrink-0 leading-none"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="font-sans text-[11px] text-gray-500 mb-2 truncate">
+              {selectedAgent.taskTitle}
+            </div>
+            <div className="flex items-center gap-3 mb-2">
+              <div>
+                <div className="font-sans text-[10px] text-gray-500 uppercase tracking-wider">
+                  Rank
+                </div>
+                <div className="font-mono text-[16px] font-semibold">
+                  {selectedAgent.rank ?? "—"}
+                </div>
+              </div>
+              <div>
+                <div className="font-sans text-[10px] text-gray-500 uppercase tracking-wider">
+                  Score
+                </div>
+                <div className="font-mono text-[16px] font-semibold">
+                  {selectedAgent.score !== null ? selectedAgent.score.toFixed(1) : "—"}
+                </div>
+              </div>
+              <div>
+                <div className="font-sans text-[10px] text-gray-500 uppercase tracking-wider">
+                  Status
+                </div>
+                <div className="font-sans text-[12px] flex items-center gap-1.5">
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 8,
+                      height: 8,
+                      borderRadius: "50%",
+                      background: statusColor(selectedAgent.latestStatus),
+                    }}
+                  />
+                  {selectedAgent.latestStatus ?? "unknown"}
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={() => setCamMode(camMode === "follow" ? "off" : "follow")}
+              className={`w-full px-3 py-1.5 rounded-full text-[11px] font-sans border transition-colors ${
+                camMode === "follow"
+                  ? "bg-black text-white border-black hover:bg-black/80"
+                  : "bg-white text-black border-gray-300 hover:border-black"
+              }`}
+            >
+              {camMode === "follow" ? "exit follow cam" : "enter follow cam"}
+            </button>
           </div>
         )}
 

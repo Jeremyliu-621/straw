@@ -17,7 +17,7 @@ import {
   NAV_TUNABLE_TYPES,
   type TunerView,
 } from "./TunerScene";
-import type { CamMode } from "./CamControllers";
+import type { CamMode } from "../FollowCamController";
 
 interface TunerPanelProps {
   cohort: Cohort;
