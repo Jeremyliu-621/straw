@@ -43,7 +43,7 @@ if (typeof window !== "undefined") {
 
 const URL_PATH = "app.straw.dev/tasks/openclaw-v2";
 const INITIAL_COUNTDOWN_MS = (1 * 24 + 12) * 60 * 60_000 + 50 * 60_000;
-const ARENA_HEIGHT_PX = 380;
+const ARENA_HEIGHT_PX = 440;
 
 const LABEL_STYLE: React.CSSProperties = {
   fontSize: 11,
