@@ -150,7 +150,7 @@ export default function LandingArena({ height }: { height: number }) {
             title={b.title}
             className="px-2 py-1 text-[11px] font-sans backdrop-blur-sm transition-colors"
             style={{
-              borderRadius: 6,
+              borderRadius: 999,
               border: `1px solid ${b.accent}`,
               background: "rgba(255, 255, 255, 0.9)",
               color: "#111",
