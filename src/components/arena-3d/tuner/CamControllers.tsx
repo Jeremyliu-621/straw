@@ -81,8 +81,10 @@ export function FollowCamController({
   const radiusRef = useRef(4.5);
   const isDraggingRef = useRef(false);
   const lastMouseRef = useRef({ x: 0, y: 0 });
-  const cameraPositionRef = useRef(new THREE.Vector3());
-  const lookAtRef = useRef(new THREE.Vector3());
+  const desiredPosRef = useRef(new THREE.Vector3());
+  const currentPosRef = useRef(new THREE.Vector3());
+  const desiredLookRef = useRef(new THREE.Vector3());
+  const currentLookRef = useRef(new THREE.Vector3());
 
   // Stash the original (ortho iso) camera once, so we can restore it on exit.
   useEffect(() => {
@@ -151,6 +153,18 @@ export function FollowCamController({
       }
       thetaOffsetRef.current = 0;
       lastAgentIdxRef.current = agentIdx;
+      // Snap the smoothed position + lookAt to the immediate target so
+      // follow-entry doesn't visibly slide in from the scene origin.
+      const [wx0, , wz0] = toWorld(agent.x, agent.y);
+      const theta0 = agent.facing + Math.PI;
+      const phi0 = phiRef.current;
+      const r0 = radiusRef.current;
+      currentPosRef.current.set(
+        wx0 + r0 * Math.sin(phi0) * Math.sin(theta0),
+        0.4 + r0 * Math.cos(phi0),
+        wz0 + r0 * Math.sin(phi0) * Math.cos(theta0),
+      );
+      currentLookRef.current.set(wx0, 0.5, wz0);
       set({ camera: perspectiveCameraRef.current });
       wasFollowingRef.current = true;
     }
@@ -184,15 +198,21 @@ export function FollowCamController({
     const theta = agent.facing + Math.PI + thetaOffsetRef.current;
     const phi = phiRef.current;
 
-    cameraPositionRef.current.set(
+    desiredPosRef.current.set(
       wx + radius * Math.sin(phi) * Math.sin(theta),
       0.4 + radius * Math.cos(phi),
       wz + radius * Math.sin(phi) * Math.cos(theta),
     );
-    perspectiveCameraRef.current.position.copy(cameraPositionRef.current);
+    desiredLookRef.current.set(wx, 0.5, wz);
 
-    lookAtRef.current.set(wx, 0.5, wz);
-    perspectiveCameraRef.current.lookAt(lookAtRef.current);
+    // Lerp both camera position and lookAt target toward their desired
+    // values so the camera eases the agent's snappier facing/position
+    // changes. ~0.12 per 60fps frame → ~92% of the way in ~180ms.
+    currentPosRef.current.lerp(desiredPosRef.current, 0.12);
+    currentLookRef.current.lerp(desiredLookRef.current, 0.12);
+
+    perspectiveCameraRef.current.position.copy(currentPosRef.current);
+    perspectiveCameraRef.current.lookAt(currentLookRef.current);
     perspectiveCameraRef.current.aspect = size.width / size.height;
     // Reset zoom to 1 every frame. CameraRig's useEffect writes the
     // orthographic cameraZoom (e.g. 42 for seats) onto whatever camera
