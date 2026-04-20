@@ -13,7 +13,6 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
     agentRef,
     navOverrides,
     wallBury,
-    setWallBury,
     showPaths,
     setShowPaths,
     showNav,
@@ -222,12 +221,6 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
               className={showNav ? pillActiveRed : pill}
             >
               nav: {showNav ? "on" : "off"}
-            </button>
-            <button
-              onClick={() => setWallBury((v) => !v)}
-              className={wallBury ? pillActive : pill}
-            >
-              bury walls: {wallBury ? "on" : "off"}
             </button>
           </div>
         </div>
