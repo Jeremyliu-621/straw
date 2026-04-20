@@ -106,7 +106,7 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
     <div style={{ display: "flex", gap: 14, alignItems: "stretch" }}>
       <div
         style={{
-          flex: "1 1 82%",
+          flex: "1 1 88%",
           minWidth: 0,
           height,
           position: "relative",
@@ -132,17 +132,13 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
       </div>
 
       {/* Admin panel — narrow right column, stacked groups with natural
-          spacing. Buttons keep their native size; any remaining height
-          at the bottom is just part of the panel. */}
+          spacing. No border, no background — just buttons on the page. */}
       <div
         style={{
-          flex: "1 1 18%",
-          minWidth: 160,
+          flex: "1 1 12%",
+          minWidth: 140,
           height,
-          padding: 12,
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius)",
-          background: "var(--bg-subtle)",
+          paddingLeft: 4,
           display: "flex",
           flexDirection: "column",
           gap: 12,
