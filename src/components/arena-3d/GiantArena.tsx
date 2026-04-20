@@ -93,20 +93,22 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
     sendToStation(eligible[1], ppStationIdxs[1]);
   }, [agentRef, stations, sendToStation]);
 
+  // Full-width pills so the narrow right column fills top-to-bottom with
+  // no dead space. Each button takes a full row in the panel.
   const pill =
-    "px-3 py-1.5 rounded-full text-xs font-sans bg-white border border-gray-300 hover:border-black transition-colors";
+    "w-full px-2 py-1.5 rounded-full text-[11px] font-sans bg-white border border-gray-300 hover:border-black transition-colors text-center";
   const pillActive =
-    "px-3 py-1.5 rounded-full text-xs font-sans bg-black text-white border border-black hover:bg-black/80 transition-colors";
+    "w-full px-2 py-1.5 rounded-full text-[11px] font-sans bg-black text-white border border-black hover:bg-black/80 transition-colors text-center";
   const pillActiveRed =
-    "px-3 py-1.5 rounded-full text-xs font-sans bg-red-600 text-white border border-red-600 hover:bg-red-700 transition-colors";
+    "w-full px-2 py-1.5 rounded-full text-[11px] font-sans bg-red-600 text-white border border-red-600 hover:bg-red-700 transition-colors text-center";
   const groupLabel =
-    "font-sans text-[11px] text-gray-500 shrink-0 uppercase tracking-wider";
+    "font-sans text-[10px] text-gray-500 shrink-0 uppercase tracking-wider";
 
   return (
-    <div style={{ display: "flex", gap: 16, alignItems: "stretch" }}>
+    <div style={{ display: "flex", gap: 14, alignItems: "stretch" }}>
       <div
         style={{
-          flex: "1 1 70%",
+          flex: "1 1 82%",
           minWidth: 0,
           height,
           position: "relative",
@@ -131,20 +133,21 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
         />
       </div>
 
-      {/* Admin panel — right column, stacked groups. */}
+      {/* Admin panel — narrow right column, stacked groups. Groups use
+          flex: 1 + justify-between so the full panel height is filled
+          with no dead space at the bottom. */}
       <div
         style={{
-          flex: "1 1 30%",
-          minWidth: 0,
+          flex: "1 1 18%",
+          minWidth: 140,
           height,
-          overflowY: "auto",
-          padding: 14,
+          padding: 12,
           border: "1px solid var(--border)",
           borderRadius: "var(--radius)",
           background: "var(--bg-subtle)",
           display: "flex",
           flexDirection: "column",
-          gap: 14,
+          justifyContent: "space-between",
         }}
       >
         <div className="flex flex-col gap-2">
