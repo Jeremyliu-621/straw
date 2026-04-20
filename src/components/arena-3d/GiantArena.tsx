@@ -103,11 +103,12 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
     "font-sans text-[11px] text-gray-500 shrink-0 uppercase tracking-wider";
 
   return (
-    <div>
+    <div style={{ display: "flex", gap: 16, alignItems: "stretch" }}>
       <div
         style={{
+          flex: "1 1 70%",
+          minWidth: 0,
           height,
-          width: "100%",
           position: "relative",
           border: "1px solid var(--border)",
           borderRadius: "var(--radius)",
@@ -130,95 +131,116 @@ export default function GiantArena({ height = 720 }: { height?: number }) {
         />
       </div>
 
-      {/* Admin controls — grouped into rows like the tuner panel, but laid
-          out horizontally with labels to the left of each group. */}
+      {/* Admin panel — right column, stacked groups. */}
       <div
         style={{
-          marginTop: 16,
+          flex: "1 1 30%",
+          minWidth: 0,
+          height,
+          overflowY: "auto",
+          padding: 14,
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius)",
+          background: "var(--bg-subtle)",
           display: "flex",
           flexDirection: "column",
-          gap: 10,
+          gap: 14,
         }}
       >
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-2">
           <span className={groupLabel}>Standup</span>
-          <button onClick={() => triggerStandup("conference")} className={pill}>
-            conference
-          </button>
-          <button onClick={() => triggerStandup("round_table")} className={pill}>
-            round table
-          </button>
-          <button onClick={() => triggerStandup("random")} className={pill}>
-            random
-          </button>
-          <span className={groupLabel} style={{ marginLeft: 16 }}>
-            Gather
-          </span>
-          <button onClick={() => triggerCluster()} className={pill}>
-            cluster
-          </button>
-          <button onClick={onPingPong} className={pill}>
-            ping pong
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => triggerStandup("conference")} className={pill}>
+              conference
+            </button>
+            <button onClick={() => triggerStandup("round_table")} className={pill}>
+              round table
+            </button>
+            <button onClick={() => triggerStandup("random")} className={pill}>
+              random
+            </button>
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-2">
+          <span className={groupLabel}>Gather</span>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => triggerCluster()} className={pill}>
+              cluster
+            </button>
+            <button onClick={onPingPong} className={pill}>
+              ping pong
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
           <span className={groupLabel}>Door</span>
-          <button onClick={() => triggerJoin()} className={pill}>
-            + join
-          </button>
-          <button onClick={() => triggerLeave()} className={pill}>
-            − leave
-          </button>
-          <span className={groupLabel} style={{ marginLeft: 16 }}>
-            Per-agent
-          </span>
-          <button onClick={() => onDevAction("dance")} className={pill} title="Random visible agent dances 5s">
-            💃 dance
-          </button>
-          <button onClick={() => onDevAction("emoji")} className={pill} title="Random visible agent pops an emoji">
-            🎉 emoji
-          </button>
-          <button onClick={() => onDevAction("slump")} className={pill} title="Random visible agent slumps (❌)">
-            ❌ slump
-          </button>
-          <button onClick={() => onDevAction("talk")} className={pill} title="Random visible agent talks to nearest neighbour">
-            💬 talk
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => triggerJoin()} className={pill}>
+              + join
+            </button>
+            <button onClick={() => triggerLeave()} className={pill}>
+              − leave
+            </button>
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-2">
+          <span className={groupLabel}>Per-agent</span>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => onDevAction("dance")} className={pill} title="Random visible agent dances 5s">
+              💃 dance
+            </button>
+            <button onClick={() => onDevAction("emoji")} className={pill} title="Random visible agent pops an emoji">
+              🎉 emoji
+            </button>
+            <button onClick={() => onDevAction("slump")} className={pill} title="Random visible agent slumps (❌)">
+              ❌ slump
+            </button>
+            <button onClick={() => onDevAction("talk")} className={pill} title="Random visible agent talks to nearest neighbour">
+              💬 talk
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
           <span className={groupLabel}>View</span>
-          <button
-            onClick={() => setView(view === "iso" ? "top" : "iso")}
-            className={view === "top" ? pillActive : pill}
-          >
-            view: {view}
-          </button>
-          <button
-            onClick={() => setShowPaths((v) => !v)}
-            className={showPaths ? pillActive : pill}
-          >
-            paths: {showPaths ? "on" : "off"}
-          </button>
-          <button
-            onClick={() => setShowNav((v) => !v)}
-            className={showNav ? pillActiveRed : pill}
-          >
-            nav: {showNav ? "on" : "off"}
-          </button>
-          <button
-            onClick={() => setWallBury((v) => !v)}
-            className={wallBury ? pillActive : pill}
-          >
-            bury walls: {wallBury ? "on" : "off"}
-          </button>
-          <span className={groupLabel} style={{ marginLeft: 16 }}>
-            Reset
-          </span>
-          <button onClick={() => reset()} className={pill}>
-            reset
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setView(view === "iso" ? "top" : "iso")}
+              className={view === "top" ? pillActive : pill}
+            >
+              view: {view}
+            </button>
+            <button
+              onClick={() => setShowPaths((v) => !v)}
+              className={showPaths ? pillActive : pill}
+            >
+              paths: {showPaths ? "on" : "off"}
+            </button>
+            <button
+              onClick={() => setShowNav((v) => !v)}
+              className={showNav ? pillActiveRed : pill}
+            >
+              nav: {showNav ? "on" : "off"}
+            </button>
+            <button
+              onClick={() => setWallBury((v) => !v)}
+              className={wallBury ? pillActive : pill}
+            >
+              bury walls: {wallBury ? "on" : "off"}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className={groupLabel}>Reset</span>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => reset()} className={pill}>
+              reset
+            </button>
+          </div>
         </div>
       </div>
     </div>
