@@ -1998,7 +1998,10 @@ function CameraRig({ zoom, view }: { zoom: number; view: TunerView }) {
     } else {
       camera.position.set(8, 10, 10);
     }
-    camera.lookAt(0, 0, 0);
+    // Target the scene's vertical midpoint (half wall height = 0.55) instead
+    // of the floor plane, so walls + furniture + agents — the visual mass —
+    // sit centered on screen instead of pushed upward.
+    camera.lookAt(0, 0.55, 0);
     type OrthoCam = typeof camera & { zoom: number };
     (camera as OrthoCam).zoom = zoom;
     camera.updateProjectionMatrix();
