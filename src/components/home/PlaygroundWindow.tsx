@@ -116,9 +116,13 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
     [agents]
   );
 
-  const half = Math.ceil(sorted.length / 2);
-  const left = sorted.slice(0, half);
-  const right = sorted.slice(half);
+  const perCol = Math.ceil(sorted.length / 4);
+  const cols = [
+    sorted.slice(0, perCol),
+    sorted.slice(perCol, perCol * 2),
+    sorted.slice(perCol * 2, perCol * 3),
+    sorted.slice(perCol * 3),
+  ];
 
   return (
     <div style={{ marginTop: 12 }}>
@@ -135,7 +139,7 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
         style={{
           position: "relative",
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "repeat(4, 1fr)",
           border: "1px solid var(--border)",
           borderRadius: "var(--radius)",
           overflow: "hidden",
@@ -143,8 +147,13 @@ function MockLeaderboard({ agents }: { agents: ArenaAgent[] }) {
           maxHeight: 120,
         }}
       >
-        <MockLeaderboardTable entries={left} borderRight />
-        <MockLeaderboardTable entries={right} />
+        {cols.map((entries, i) => (
+          <MockLeaderboardTable
+            key={i}
+            entries={entries}
+            borderRight={i < cols.length - 1}
+          />
+        ))}
 
         {/* Soft fadeout — rows 1-3 stay crisp, bottom fades into bg. */}
         <div
@@ -192,10 +201,10 @@ function LeaderboardRow({ agent }: { agent: ArenaAgent }) {
     <div
       className="grid font-sans"
       style={{
-        gridTemplateColumns: "1fr 60px",
+        gridTemplateColumns: "1fr 44px",
         alignItems: "center",
         height: 26,
-        padding: "0 12px",
+        padding: "0 10px",
         borderBottom: "1px solid var(--border)",
       }}
     >
