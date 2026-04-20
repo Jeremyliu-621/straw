@@ -17,6 +17,7 @@ import {
   NAV_TUNABLE_TYPES,
   type TunerView,
 } from "./TunerScene";
+import type { CamMode } from "./CamControllers";
 
 interface TunerPanelProps {
   cohort: Cohort;
@@ -57,6 +58,10 @@ interface TunerPanelProps {
   onJoin: () => boolean;
   onLeave: () => boolean;
   agentRef: React.RefObject<RenderAgentState[]>;
+  camMode: CamMode;
+  setCamMode: (m: CamMode) => void;
+  camAgentIdx: number;
+  setCamAgentIdx: (i: number) => void;
 }
 
 function fmt(n: number | undefined): string {
@@ -143,6 +148,10 @@ export default function TunerPanel({
   onJoin,
   onLeave,
   agentRef,
+  camMode,
+  setCamMode,
+  camAgentIdx,
+  setCamAgentIdx,
 }: TunerPanelProps) {
   const [devAgentIdx, setDevAgentIdx] = useState(0);
   const agentCount = ambientByAgent.length;
@@ -618,6 +627,52 @@ export default function TunerPanel({
           >
             − leave
           </button>
+        </div>
+        <div className="mt-2 flex items-center gap-1.5">
+          <span className="text-[11px] text-gray-500 shrink-0">cam:</span>
+          <select
+            value={camAgentIdx}
+            onChange={(e) => setCamAgentIdx(Number(e.target.value))}
+            className="px-2 py-1 rounded-md text-[11px] bg-white text-black border border-gray-300 hover:border-black focus:outline-none focus:border-black"
+            title="Target agent for chase / follow cam"
+          >
+            {Array.from({ length: agentCount }).map((_, i) => (
+              <option key={i} value={i}>
+                {String.fromCharCode(65 + i)}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={() => setCamMode(camMode === "chase" ? "off" : "chase")}
+            className={`flex-1 px-2 py-1 rounded-md text-[11px] border ${
+              camMode === "chase"
+                ? "bg-black text-white border-black"
+                : "bg-white border-gray-300 hover:border-black"
+            }`}
+            title="Chase cam: keeps the orthographic iso view, slides lookAt toward the target agent"
+          >
+            chase
+          </button>
+          <button
+            onClick={() => setCamMode(camMode === "follow" ? "off" : "follow")}
+            className={`flex-1 px-2 py-1 rounded-md text-[11px] border ${
+              camMode === "follow"
+                ? "bg-black text-white border-black"
+                : "bg-white border-gray-300 hover:border-black"
+            }`}
+            title="Follow cam: swaps in a perspective orbit camera around the agent (drag to orbit, wheel to zoom)"
+          >
+            follow
+          </button>
+          {camMode !== "off" && (
+            <button
+              onClick={() => setCamMode("off")}
+              className="px-2 py-1 rounded-md text-[11px] bg-white border border-gray-300 hover:border-red-600 text-red-600"
+              title="Exit follow / chase cam"
+            >
+              ✕
+            </button>
+          )}
         </div>
       </div>
 

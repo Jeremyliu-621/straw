@@ -37,6 +37,10 @@ export default function ArenaTuner() {
     setAmbientForAll,
     stations,
     walkToPoint,
+    camMode,
+    setCamMode,
+    camAgentIdx,
+    setCamAgentIdx,
   } = useTunerAgent();
 
   return (
@@ -55,6 +59,8 @@ export default function ArenaTuner() {
           view={view}
           wallBury={wallBury}
           onFloorClick={cohort === "arena" ? walkToPoint : undefined}
+          camMode={camMode}
+          camAgentIdx={camAgentIdx}
         />
       </div>
       <TunerPanel
@@ -89,6 +95,10 @@ export default function ArenaTuner() {
         onJoin={triggerJoin}
         onLeave={triggerLeave}
         agentRef={agentRef}
+        camMode={camMode}
+        setCamMode={setCamMode}
+        camAgentIdx={camAgentIdx}
+        setCamAgentIdx={setCamAgentIdx}
       />
     </div>
   );
