@@ -84,10 +84,35 @@ export default function LandingArena({ height }: { height: number }) {
     sendToStation(eligible[1], ppStationIdxs[1]);
   }, [agentRef, stations, sendToStation]);
 
-  // Match the tuner-panel button style (compact, px-2 py-1, rounded-md,
-  // text-[11px]) so the landing triggers feel continuous with the dev tool.
-  const btnClass =
-    "px-2 py-1 rounded-md text-[11px] bg-white/90 backdrop-blur-sm border border-gray-300 hover:border-black hover:bg-white transition-colors";
+  // Button outline accents — mirrors the ProcessFlow / Differentiators
+  // 4-color pastel palette. Border-radius 6 matches the "Task makers
+  // define winning" / "Builders compete on the real problem" cards.
+  const buttons: Array<{ label: string; accent: string; onClick: () => void; title: string }> = [
+    {
+      label: "conference",
+      accent: "#cfd5e8",
+      onClick: () => triggerStandup("conference"),
+      title: "Top-3 ranked agents speak at the front, rest listen in the audience",
+    },
+    {
+      label: "round table",
+      accent: "#e0d6d0",
+      onClick: () => triggerStandup("round_table"),
+      title: "6 closest eligible agents gather around the round table",
+    },
+    {
+      label: "emoji",
+      accent: "#ecd0cc",
+      onClick: onEmoji,
+      title: "Random celebration emoji over a random agent",
+    },
+    {
+      label: "ping pong",
+      accent: "#d0d7d1",
+      onClick: onPingPong,
+      title: "Send two eligible agents to the ping-pong table",
+    },
+  ];
 
   return (
     <div style={{ height, width: "100%", position: "relative" }}>
@@ -103,7 +128,7 @@ export default function LandingArena({ height }: { height: number }) {
         navOverrides={navOverrides}
         view="iso"
         wallBury={wallBury}
-        zoom={20}
+        zoom={25}
       />
       <div
         style={{
@@ -118,18 +143,28 @@ export default function LandingArena({ height }: { height: number }) {
           justifyContent: "flex-end",
         }}
       >
-        <button onClick={() => triggerStandup("conference")} className={btnClass} title="Top-3 ranked agents speak at the front, rest listen in the audience">
-          conference
-        </button>
-        <button onClick={() => triggerStandup("round_table")} className={btnClass} title="6 closest eligible agents gather around the round table">
-          round table
-        </button>
-        <button onClick={onEmoji} className={btnClass} title="Random celebration emoji over a random agent">
-          emoji
-        </button>
-        <button onClick={onPingPong} className={btnClass} title="Send two eligible agents to the ping-pong table">
-          ping pong
-        </button>
+        {buttons.map((b) => (
+          <button
+            key={b.label}
+            onClick={b.onClick}
+            title={b.title}
+            className="px-2 py-1 text-[11px] font-sans backdrop-blur-sm transition-colors"
+            style={{
+              borderRadius: 6,
+              border: `1px solid ${b.accent}`,
+              background: "rgba(255, 255, 255, 0.9)",
+              color: "#111",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = b.accent;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)";
+            }}
+          >
+            {b.label}
+          </button>
+        ))}
       </div>
     </div>
   );
