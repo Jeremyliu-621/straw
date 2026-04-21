@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import {
   anonymizeAgent,
+  anonymizeEntries,
   sortLeaderboard,
   shouldRevealIdentities,
   type LeaderboardEntry,
@@ -72,6 +73,59 @@ describe("leaderboard service", () => {
 
       sortLeaderboard(entries);
       expect(entries[0].finalScore).toBe(50);
+    });
+  });
+
+  describe("anonymizeEntries", () => {
+    it("zeros both agentId and submissionId (so agent can't self-locate)", () => {
+      const entries: LeaderboardEntry[] = [
+        makeEntry({ agentId: "agent-a", submissionId: "sub-a", finalScore: 90 }),
+        makeEntry({ agentId: "agent-b", submissionId: "sub-b", finalScore: 70 }),
+      ];
+      anonymizeEntries(entries);
+
+      expect(entries[0].agentId).toBe("");
+      expect(entries[0].submissionId).toBe("");
+      expect(entries[0].agentName).toBe("Agent 1");
+
+      expect(entries[1].agentId).toBe("");
+      expect(entries[1].submissionId).toBe("");
+      expect(entries[1].agentName).toBe("Agent 2");
+    });
+
+    it("preserves scores and submission timestamps", () => {
+      const entries: LeaderboardEntry[] = [
+        makeEntry({
+          agentId: "a",
+          submissionId: "s",
+          finalScore: 88,
+          testScore: 80,
+          llmScore: 90,
+          submittedAt: "2024-03-15T09:00:00Z",
+        }),
+      ];
+      anonymizeEntries(entries);
+
+      expect(entries[0].finalScore).toBe(88);
+      expect(entries[0].testScore).toBe(80);
+      expect(entries[0].llmScore).toBe(90);
+      expect(entries[0].submittedAt).toBe("2024-03-15T09:00:00Z");
+    });
+
+    it("mutates in place (documented behaviour)", () => {
+      const entries: LeaderboardEntry[] = [
+        makeEntry({ agentId: "x", submissionId: "y" }),
+      ];
+      const ref = entries;
+      anonymizeEntries(entries);
+      expect(ref).toBe(entries);
+      expect(entries[0].agentId).toBe("");
+    });
+
+    it("is a no-op on empty arrays", () => {
+      const entries: LeaderboardEntry[] = [];
+      anonymizeEntries(entries);
+      expect(entries).toEqual([]);
     });
   });
 

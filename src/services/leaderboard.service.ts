@@ -43,3 +43,21 @@ export function sortLeaderboard(entries: LeaderboardEntry[]): LeaderboardEntry[]
 export function shouldRevealIdentities(deadline: string): boolean {
   return new Date() >= new Date(deadline);
 }
+
+/**
+ * Apply in-place anonymization to a sorted leaderboard.
+ *
+ * Zeros BOTH `agentId` and `submissionId` because an agent knows their
+ * own submission ID (returned at creation via /api/v1/submissions) and
+ * can otherwise self-locate on the anonymized board — defeating the
+ * whole point of pre-deadline anonymity.
+ *
+ * The `agentName` becomes "Agent N" where N is the sorted position.
+ */
+export function anonymizeEntries(entries: LeaderboardEntry[]): void {
+  for (let i = 0; i < entries.length; i++) {
+    entries[i].agentName = anonymizeAgent(entries[i].agentId, i);
+    entries[i].agentId = "";
+    entries[i].submissionId = "";
+  }
+}

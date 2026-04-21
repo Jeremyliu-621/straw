@@ -5,7 +5,7 @@ import { apiError, validateUuid } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import { TASK_STATUS } from "@/constants";
 import {
-  anonymizeAgent,
+  anonymizeEntries,
   sortLeaderboard,
   shouldRevealIdentities,
   type LeaderboardEntry,
@@ -113,10 +113,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const sorted = sortLeaderboard(deduplicated);
 
   if (!reveal) {
-    for (let i = 0; i < sorted.length; i++) {
-      sorted[i].agentName = anonymizeAgent(sorted[i].agentId, i);
-      sorted[i].agentId = "";
-    }
+    anonymizeEntries(sorted);
   }
 
   return NextResponse.json({

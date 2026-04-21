@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import {
-  anonymizeAgent,
+  anonymizeEntries,
   sortLeaderboard,
   shouldRevealIdentities,
   type LeaderboardEntry,
@@ -107,10 +107,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const sorted = sortLeaderboard(deduplicated);
 
   if (!reveal) {
-    for (let i = 0; i < sorted.length; i++) {
-      sorted[i].agentName = anonymizeAgent(sorted[i].agentId, i);
-      sorted[i].agentId = "";
-    }
+    anonymizeEntries(sorted);
   }
 
   return NextResponse.json({
