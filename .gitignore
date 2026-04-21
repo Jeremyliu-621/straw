@@ -53,6 +53,21 @@ playwright-report/
 
 # local git worktrees (nested repos — never commit)
 /worktrees/
+.claude/worktrees/
+
+# claude harness state (session locks, scheduled-task state, etc.)
+# settings.local.json stays tracked historically; exclude transient siblings.
+.claude/scheduled_tasks.lock
+.claude/cache/
+
+# MCP config (may contain auth tokens to other integrations)
+.mcp.json
+
+# local scratch / research dirs — never commit
+/tmp/
+/_tmp_csv/
+/tmp_loadtester/
+/research/
 
 # external repos
 /optiboarding-repo/
