@@ -30,6 +30,7 @@ import {
   WORKER_DURATION_WINDOW_SIZE,
 } from "@/constants";
 import { buildRedisConnection } from "@/lib/queue";
+import { validatePublicUrlDynamic } from "@/lib/public-url";
 
 // ── Config ──────────────────────────────────────────────────
 
@@ -158,6 +159,29 @@ const worker = new Worker<WebhookJobData>(
     writeHeartbeat("processing", job.id);
 
     console.log(`[webhook-worker] Delivering ${deliveryId} to ${url} (attempt ${attempt})`);
+
+    // Block SSRF before we do anything else. URLs could have been registered
+    // via the API (where we apply the sync check) but hostnames can flip to
+    // private IPs via DNS between registration and delivery (rebinding).
+    // Resolve fresh on every attempt.
+    const urlCheck = await validatePublicUrlDynamic(url);
+    if (!urlCheck.ok) {
+      console.error(
+        `[webhook-worker] Refusing to deliver ${deliveryId} to ${url}: ${urlCheck.reason}`
+      );
+      await db
+        .from("webhook_deliveries")
+        .update({
+          status: "failed",
+          response_body: `Refused: ${urlCheck.reason}`,
+          attempts: attempt,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", deliveryId);
+      // Throw a non-retryable error — re-trying a blocked URL will just
+      // keep failing. BullMQ will mark the job as failed.
+      throw new Error(`Refused to deliver to ${url}: ${urlCheck.reason}`);
+    }
 
     const signature = signPayload(payload, secret);
     let parsedEvent = "unknown";
