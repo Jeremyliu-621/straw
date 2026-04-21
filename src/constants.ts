@@ -226,6 +226,10 @@ export const EVAL_CONTAINER_CPU_LIMIT = 2e9; // 2 CPUs in nanoCPUs
 export const EVAL_CONTAINER_OUTPUT_PATH = "/results";
 export const EVAL_CONTAINER_INPUT_PATH = "/agent_output";
 export const EVAL_SCORE_JSON_FILENAME = "score.json";
+// Hard cap on score.json size read from /results. 1 MB is generous for
+// a rubric-shaped JSON; anything larger is either an attack (bomb) or
+// a misbehaving eval container.
+export const EVAL_SCORE_JSON_MAX_BYTES = 1024 * 1024;
 
 // ── Submission Contracts ────────────────────────────────────
 export const CONTRACT_MAX_TOTAL_SIZE_MB_DEFAULT = 200;

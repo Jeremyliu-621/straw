@@ -73,6 +73,7 @@ import {
   EVAL_CONTAINER_OUTPUT_PATH,
   EVAL_CONTAINER_INPUT_PATH,
   EVAL_SCORE_JSON_FILENAME,
+  EVAL_SCORE_JSON_MAX_BYTES,
   EVAL_WORKER_CONCURRENCY_DEFAULT,
   WORKER_DURATION_WINDOW_SIZE,
 } from "@/constants";
@@ -87,7 +88,7 @@ import {
 } from "./lib/dispatch";
 import { multiPassLlmEval, type FileIndexEntry } from "./lib/multi-pass-eval";
 import { submissionContractSchema } from "@/lib/submission-contract";
-import { isSafeFilename, resolveInside } from "@/lib/safe-path";
+import { isSafeFilename, resolveInside, safeReadFileSync } from "@/lib/safe-path";
 
 
 // ── Config ───────────────────────────────────────────────────
@@ -570,23 +571,28 @@ async function runEvalContainer(
     );
   }
 
-  // Read and validate score.json
-  const scoreJsonPath = path.join(resultsPath, EVAL_SCORE_JSON_FILENAME);
-  if (!fs.existsSync(scoreJsonPath)) {
-    throw new EvalContainerError(
-      `Eval container did not produce ${EVAL_SCORE_JSON_FILENAME}`,
-      exitCode
-    );
-  }
-
-  let parsed: unknown;
+  // Read and validate score.json.
+  //
+  // The eval container is untrusted and writes into a mount we control.
+  // A hostile image can swap /results/score.json for a symlink to
+  // /etc/passwd, make it a named pipe that blocks forever, or fill it
+  // with gigabytes of junk. safeReadFileSync enforces:
+  //   - filename is a plain basename (no traversal / null bytes)
+  //   - entry is a regular file (not symlink / fifo / directory)
+  //   - realpath stays inside resultsPath (catches symlink-via-ancestor)
+  //   - size <= EVAL_SCORE_JSON_MAX_BYTES
   let rawContent = "";
+  let parsed: unknown;
   try {
-    rawContent = fs.readFileSync(scoreJsonPath, "utf8");
+    rawContent = safeReadFileSync(
+      resultsPath,
+      EVAL_SCORE_JSON_FILENAME,
+      EVAL_SCORE_JSON_MAX_BYTES
+    ).toString("utf8");
     parsed = JSON.parse(rawContent);
   } catch (err) {
     throw new EvalContainerError(
-      `Failed to parse ${EVAL_SCORE_JSON_FILENAME}: ${(err as Error).message}. Content: ${rawContent.slice(0, 500)}`,
+      `Failed to read/parse ${EVAL_SCORE_JSON_FILENAME}: ${(err as Error).message}. Content: ${rawContent.slice(0, 500)}`,
       exitCode
     );
   }

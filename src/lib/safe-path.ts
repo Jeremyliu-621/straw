@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 
 /**
@@ -55,4 +56,67 @@ export function isWithin(base: string, candidate: string): boolean {
   if (b === c) return true;
   const bPrefix = b.endsWith(path.sep) ? b : b + path.sep;
   return c.startsWith(bPrefix);
+}
+
+/**
+ * Read a file inside a trusted directory, rejecting symlinks and paths
+ * that resolve outside the base. Intended for reading artefacts produced
+ * by sandboxed containers (e.g. /results/score.json) where the producer
+ * is untrusted and could swap the path for a symlink to /etc/passwd.
+ *
+ * Throws on any of:
+ *  - unsafe filename (traversal, separators, null byte)
+ *  - file does not exist
+ *  - target is not a regular file (symlink, FIFO, socket, directory…)
+ *  - realpath resolves outside `baseDir` (e.g. via a symlink chain
+ *    inside an allowed subdir)
+ *  - file size exceeds `maxBytes`
+ */
+export function safeReadFileSync(
+  baseDir: string,
+  name: string,
+  maxBytes: number
+): Buffer {
+  const target = resolveInside(baseDir, name);
+
+  let stat: fs.Stats;
+  try {
+    stat = fs.lstatSync(target);
+  } catch (err) {
+    throw new Error(`File not readable: ${target}: ${(err as Error).message}`);
+  }
+
+  if (!stat.isFile()) {
+    throw new Error(
+      `Refusing to read ${target}: not a regular file (type=${fileKind(stat)})`
+    );
+  }
+
+  if (stat.size > maxBytes) {
+    throw new Error(
+      `File too large: ${target} is ${stat.size} bytes (max ${maxBytes})`
+    );
+  }
+
+  // realpath catches symlink chains where the path itself wasn't a
+  // symlink but an ancestor directory is. On Windows realpath may
+  // return a different case — compare via isWithin which resolves both.
+  const real = fs.realpathSync(target);
+  if (!isWithin(baseDir, real)) {
+    throw new Error(
+      `Refusing to read ${target}: realpath ${real} escapes ${baseDir}`
+    );
+  }
+
+  return fs.readFileSync(real);
+}
+
+function fileKind(stat: fs.Stats): string {
+  if (stat.isSymbolicLink()) return "symlink";
+  if (stat.isDirectory()) return "directory";
+  if (stat.isFIFO()) return "fifo";
+  if (stat.isSocket()) return "socket";
+  if (stat.isBlockDevice()) return "block-device";
+  if (stat.isCharacterDevice()) return "char-device";
+  return "unknown";
 }
