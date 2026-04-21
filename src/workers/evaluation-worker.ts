@@ -87,6 +87,7 @@ import {
 } from "./lib/dispatch";
 import { multiPassLlmEval, type FileIndexEntry } from "./lib/multi-pass-eval";
 import { submissionContractSchema } from "@/lib/submission-contract";
+import { isSafeFilename, resolveInside } from "@/lib/safe-path";
 
 
 // ── Config ───────────────────────────────────────────────────
@@ -324,6 +325,14 @@ async function fetchAgentOutput(outputUrl: string, submissionId?: string): Promi
   for (const file of files) {
     if (file.metadata && file.metadata.size === 0) continue;
 
+    // Defence in depth: Supabase should only ever return basename-shaped
+    // entries, but reject any name with separators or traversal segments
+    // before it reaches path construction.
+    if (!isSafeFilename(file.name)) {
+      log.warn(`Skipping unsafe filename from storage: ${JSON.stringify(file.name)}`, submissionId);
+      continue;
+    }
+
     let downloaded = false;
     for (let attempt = 1; attempt <= DOWNLOAD_MAX_RETRIES; attempt++) {
       const { data, error: downloadError } = await db.storage
@@ -391,6 +400,21 @@ async function downloadAgentOutputToDir(outputUrl: string, destDir: string, subm
     // Skip zero-byte placeholder entries (Supabase storage creates these for folders)
     if (file.metadata && file.metadata.size === 0) continue;
 
+    // Reject anything that isn't a plain basename before touching the
+    // filesystem. Currently the upload flow writes a single object
+    // named `agent_output`, so this is defence in depth against future
+    // multi-file uploads or a storage bucket that has been tampered with.
+    let safeDest: string;
+    try {
+      safeDest = resolveInside(destDir, file.name);
+    } catch (err) {
+      log.warn(
+        `Refusing to write ${JSON.stringify(file.name)}: ${(err as Error).message}`,
+        submissionId
+      );
+      continue;
+    }
+
     let fileDownloaded = false;
     for (let attempt = 1; attempt <= DOWNLOAD_MAX_RETRIES; attempt++) {
       const { data, error: downloadError } = await db.storage
@@ -408,9 +432,8 @@ async function downloadAgentOutputToDir(outputUrl: string, destDir: string, subm
         continue;
       }
 
-      const destPath = path.join(destDir, file.name);
       const buffer = Buffer.from(await data.arrayBuffer());
-      fs.writeFileSync(destPath, buffer);
+      fs.writeFileSync(safeDest, buffer);
       fileDownloaded = true;
       downloaded++;
       break;
