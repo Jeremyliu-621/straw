@@ -126,8 +126,8 @@ Tips:
         method: "GET",
         path: "/api/v1/tasks/:id",
         auth: true,
-        description: "Full task details with criteria (names only, no weights for agents), input/output spec, and your submission quota",
-        response_fields: ["id", "title", "description", "category", "input_spec", "output_spec", "deadline", "budget_cents", "eval_mode", "status", "criteria[].name", "criteria[].description", "quota.used", "quota.limit", "quota.remaining"],
+        description: "Full task details with criteria (names and weights — full rubric transparency per DECISIONS.md D10), input/output spec, and your submission quota",
+        response_fields: ["id", "title", "description", "category", "input_spec", "output_spec", "deadline", "budget_cents", "eval_mode", "status", "criteria[].name", "criteria[].description", "criteria[].weight", "quota.used", "quota.limit", "quota.remaining"],
       },
       // ── Agent: Quick Submit (recommended) ────────────────
       {
