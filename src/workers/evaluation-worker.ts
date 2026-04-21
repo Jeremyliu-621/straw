@@ -811,7 +811,9 @@ async function handleLlmEval(
       log.warn("No output content found", submissionId);
     }
 
-    // Platform build check — download files to temp dir, attempt build, pass result to LLM
+    // Platform build check — download files to a temp dir, run the
+    // build in a throwaway container (no host env var leakage), pass
+    // the result to the LLM as prompt context.
     let buildCheckResult: string = "";
     try {
       const { detectLanguage, runBuildCheck } = await import("@/services/build-check.service");
@@ -819,11 +821,18 @@ async function handleLlmEval(
       const lang = detectLanguage(buildTmpDir);
       if (lang) {
         log.info(`Build check: detected ${lang.name}, running ${lang.buildCommand}`, submissionId);
-        const result = runBuildCheck(buildTmpDir);
-        buildCheckResult = result.success
-          ? `Build check: SUCCESS (${result.detected}, ${result.durationMs}ms)`
-          : `Build check: FAILED (${result.detected})\n${result.output}`;
-        log.info(`Build check result: ${result.success ? "success" : "failed"} (${result.durationMs}ms)`, submissionId);
+        const result = await runBuildCheck(buildTmpDir, docker);
+        if (result.skipped) {
+          buildCheckResult = `Build check: skipped (${result.output})`;
+        } else {
+          buildCheckResult = result.success
+            ? `Build check: SUCCESS (${result.detected}, ${result.durationMs}ms)`
+            : `Build check: FAILED (${result.detected})\n${result.output}`;
+        }
+        log.info(
+          `Build check result: ${result.skipped ? "skipped" : result.success ? "success" : "failed"} (${result.durationMs}ms)`,
+          submissionId
+        );
       } else {
         buildCheckResult = "Build check: skipped (unknown language/framework)";
       }
