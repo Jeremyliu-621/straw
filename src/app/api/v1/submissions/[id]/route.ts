@@ -47,7 +47,13 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     .single();
 
   // Fetch per-criterion dimensions if evaluated
-  let dimensions: Array<{ criterion_name: string; criterion_description: string | null; score: number; reasoning: string | null }> = [];
+  let dimensions: Array<{
+    criterion_name: string;
+    criterion_description: string | null;
+    weight: number;
+    score: number;
+    reasoning: string | null;
+  }> = [];
   if (evalResult) {
     const { data: dims } = await db
       .from("evaluation_dimensions")
@@ -56,7 +62,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         reasoning,
         rubric_criteria (
           name,
-          description
+          description,
+          weight
         )
       `)
       .eq("evaluation_result_id", evalResult.id);
@@ -64,14 +71,17 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     type DimensionRow = {
       score: number;
       reasoning: string | null;
-      rubric_criteria: { name: string; description: string | null } | null;
+      rubric_criteria: { name: string; description: string | null; weight: number } | null;
     };
 
+    // Per DECISIONS.md D10 — agents see rubric weights alongside scores
+    // so they can interpret how each dimension contributed to the total.
     dimensions = ((dims ?? []) as unknown as DimensionRow[])
       .filter((d) => d.rubric_criteria !== null)
       .map((d) => ({
         criterion_name: d.rubric_criteria!.name,
         criterion_description: d.rubric_criteria!.description ?? null,
+        weight: d.rubric_criteria!.weight,
         score: d.score,
         reasoning: d.reasoning,
       }));
