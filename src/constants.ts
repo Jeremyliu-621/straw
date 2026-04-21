@@ -121,7 +121,13 @@ export type SubmissionMode = (typeof SUBMISSION_MODE)[keyof typeof SUBMISSION_MO
 
 // ── Upload ─────────────────────────────────────────────────
 export const UPLOAD_MAX_FILE_SIZE_MB = 200;
-export const UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS = 24 * 60 * 60; // 24 hours
+// Supabase createSignedUploadUrl issues URLs that expire server-side in 2h
+// regardless of any parameter we pass. We cap our displayed value so agents
+// don't see a 24h expiry that Supabase won't honour. The upload endpoints
+// (`/api/v1/submissions/[id]/upload` + `/complete`) enforce task deadline
+// independently, so this is a UX-accuracy concern, not an authz gate.
+export const UPLOAD_PRESIGNED_URL_MAX_TTL_SECONDS = 2 * 60 * 60; // 2 hours
+export const UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS = UPLOAD_PRESIGNED_URL_MAX_TTL_SECONDS;
 export const UPLOAD_STORAGE_BUCKET = "agent-outputs" as const;
 
 // ── API Keys ────────────────────────────────────────────────

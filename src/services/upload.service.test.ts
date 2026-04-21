@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { generatePresignedUploadUrl, verifyUploadExists, getSubmissionStoragePath } from "./upload.service";
+import {
+  generatePresignedUploadUrl,
+  verifyUploadExists,
+  verifySubmissionMd,
+  getSubmissionStoragePath,
+} from "./upload.service";
 
 // ── Mock Supabase client ─────────────────────────────────────
 
@@ -79,6 +84,76 @@ describe("upload.service", () => {
       const expiresMs = new Date(result.expiresAt).getTime() - Date.now();
       expect(expiresMs).toBeLessThan(3700 * 1000); // within 1h + margin
       expect(expiresMs).toBeGreaterThan(3500 * 1000); // at least ~58 min
+    });
+
+    it("caps expiry at Supabase's 2h server-side maximum", async () => {
+      // Deadline is 24h out, but Supabase won't honour > 2h. The displayed
+      // expiresAt must not lie — cap it at 2h.
+      const farFutureDeadline = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
+      mockDb._mockStorage.createSignedUploadUrl.mockResolvedValue({
+        data: { signedUrl: "url", token: "tok", path: "p" },
+        error: null,
+      });
+
+      const result = await generatePresignedUploadUrl(
+        mockDb as never,
+        "sub-123",
+        farFutureDeadline
+      );
+
+      const expiresMs = new Date(result.expiresAt).getTime() - Date.now();
+      // At most 2h plus a small margin for test execution.
+      expect(expiresMs).toBeLessThanOrEqual(2 * 3600 * 1000 + 1000);
+      // At least close to 2h.
+      expect(expiresMs).toBeGreaterThan(2 * 3600 * 1000 - 5000);
+    });
+  });
+
+  describe("verifySubmissionMd", () => {
+    it("returns true when SUBMISSION.md is present (exact case)", async () => {
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: [
+          { name: "agent_output", metadata: { size: 1024 } },
+          { name: "SUBMISSION.md", metadata: { size: 512 } },
+        ],
+        error: null,
+      });
+
+      const ok = await verifySubmissionMd(mockDb as never, "sub-123");
+      expect(ok).toBe(true);
+    });
+
+    it("returns true for case variations (submission.md, Submission.md)", async () => {
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: [{ name: "submission.md", metadata: { size: 100 } }],
+        error: null,
+      });
+      expect(await verifySubmissionMd(mockDb as never, "sub-a")).toBe(true);
+
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: [{ name: "Submission.md", metadata: { size: 100 } }],
+        error: null,
+      });
+      expect(await verifySubmissionMd(mockDb as never, "sub-b")).toBe(true);
+    });
+
+    it("returns false when SUBMISSION.md is absent", async () => {
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: [{ name: "agent_output", metadata: { size: 1024 } }],
+        error: null,
+      });
+      expect(await verifySubmissionMd(mockDb as never, "sub-123")).toBe(false);
+    });
+
+    it("throws on storage error", async () => {
+      mockDb._mockStorage.list.mockResolvedValue({
+        data: null,
+        error: { message: "boom" },
+      });
+
+      await expect(
+        verifySubmissionMd(mockDb as never, "sub-123")
+      ).rejects.toThrow("Failed to check SUBMISSION.md: boom");
     });
   });
 
