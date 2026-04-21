@@ -29,6 +29,42 @@ import type {
 
 const DEFAULT_BASE_URL = "https://straw.vercel.app";
 
+/**
+ * Reject any baseUrl that would send the API key somewhere other than
+ * the intended Straw host. Accepts https://* unconditionally, and
+ * http://localhost (+ 127.0.0.1, ::1) for local dev only.
+ *
+ * Without this check, a customer who sets `STRAW_BASE_URL=http://attacker`
+ * (accidentally or via a malicious env injection) would ship their
+ * Authorization: Bearer straw_sk_... header over unencrypted HTTP to
+ * an attacker-controlled host. Since the SDK also runs inside the MCP
+ * server under customer agent daemons (Claude Code / Cursor / OpenCode),
+ * a stray env var in one of those processes can't be assumed to be
+ * hostile-proof — enforce at construction.
+ */
+function assertAcceptableBaseUrl(base: string): void {
+  let url: URL;
+  try {
+    url = new URL(base);
+  } catch {
+    throw new Error(
+      `StrawClient baseUrl is not a valid URL: ${JSON.stringify(base)}`
+    );
+  }
+  if (url.protocol === "https:") return;
+  if (url.protocol === "http:") {
+    // Node's URL preserves brackets on IPv6 hostnames ("[::1]"), browsers
+    // strip them. Accept both forms so local dev works either way.
+    const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+    if (host === "localhost" || host === "127.0.0.1" || host === "::1") {
+      return;
+    }
+  }
+  throw new Error(
+    `StrawClient baseUrl must use https:// (http://localhost is allowed for local dev). Got: ${JSON.stringify(base)}`
+  );
+}
+
 // ── HTTP Layer ──────────────────────────────────────────────
 
 async function handleResponse<T>(response: Response): Promise<T> {
@@ -327,6 +363,7 @@ export class StrawClient {
 
   constructor(config: StrawClientConfig) {
     const baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
+    assertAcceptableBaseUrl(baseUrl);
     const headers = {
       Authorization: `Bearer ${config.apiKey}`,
     };

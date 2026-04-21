@@ -255,4 +255,58 @@ describe("StrawClient", () => {
       }
     });
   });
+
+  describe("baseUrl validation (protects against API-key exfiltration)", () => {
+    it("accepts https URLs", () => {
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "https://straw.vercel.app" })
+      ).not.toThrow();
+    });
+
+    it("accepts http://localhost for local dev", () => {
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "http://localhost:3000" })
+      ).not.toThrow();
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "http://127.0.0.1:3000" })
+      ).not.toThrow();
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "http://[::1]:3000" })
+      ).not.toThrow();
+    });
+
+    it("rejects http:// to a non-loopback host", () => {
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "http://attacker.com" })
+      ).toThrow(/https/i);
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "http://example.com" })
+      ).toThrow(/https/i);
+    });
+
+    it("rejects non-http(s) schemes", () => {
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "javascript:fetch('//x')" })
+      ).toThrow();
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "file:///etc/passwd" })
+      ).toThrow();
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "ftp://attacker.com" })
+      ).toThrow();
+    });
+
+    it("rejects malformed URLs", () => {
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "not a url" })
+      ).toThrow();
+      expect(() =>
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "" })
+      ).toThrow();
+    });
+
+    it("uses the https default when baseUrl is omitted", () => {
+      expect(() => new StrawClient({ apiKey: "straw_sk_x" })).not.toThrow();
+    });
+  });
 });
