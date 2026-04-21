@@ -70,10 +70,20 @@ describe("isBlockedIp", () => {
     expect(isBlockedIp("fd12:3456:789a::1")).toBe(true);
   });
 
-  it("blocks IPv4-mapped IPv6 pointing at private addresses", () => {
+  it("blocks ALL IPv4-mapped IPv6 regardless of form (::ffff:/96)", () => {
+    // Decimal-embedded form
     expect(isBlockedIp("::ffff:127.0.0.1")).toBe(true);
     expect(isBlockedIp("::ffff:169.254.169.254")).toBe(true);
-    expect(isBlockedIp("::ffff:8.8.8.8")).toBe(false);
+    // Node's URL parser normalizes bracketed IPv4-mapped to hex — we
+    // have to catch the hex form too, which previously slipped through
+    // when we only parsed decimal.
+    expect(isBlockedIp("::ffff:7f00:1")).toBe(true); // 127.0.0.1 in hex
+    expect(isBlockedIp("::ffff:a9fe:a9fe")).toBe(true); // 169.254.169.254 in hex
+    // Even "public" IPv4-mapped is blocked: our use case is "deliver
+    // webhook to a public internet host", and ::ffff:/96 addresses
+    // should not appear there. Better to over-block than leave a gap.
+    expect(isBlockedIp("::ffff:8.8.8.8")).toBe(true);
+    expect(isBlockedIp("::ffff:808:808")).toBe(true);
   });
 
   it("returns false for non-IP strings", () => {
@@ -112,6 +122,15 @@ describe("validatePublicUrlSync", () => {
 
   it("rejects IPv6 loopback literal", () => {
     expect(validatePublicUrlSync("https://[::1]/hook").ok).toBe(false);
+  });
+
+  it("rejects IPv4-mapped IPv6 in both decimal and hex (regression: Node normalizes to hex)", () => {
+    // Decimal form — the straightforward attack
+    expect(validatePublicUrlSync("https://[::ffff:127.0.0.1]/x").ok).toBe(false);
+    expect(validatePublicUrlSync("https://[::ffff:169.254.169.254]/x").ok).toBe(false);
+    // Hex form — what Node actually hands us after URL parsing
+    expect(validatePublicUrlSync("https://[::ffff:7f00:1]/x").ok).toBe(false);
+    expect(validatePublicUrlSync("https://[::ffff:a9fe:a9fe]/x").ok).toBe(false);
   });
 
   it("rejects hostnames that look obviously internal", () => {

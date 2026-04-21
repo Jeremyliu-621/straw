@@ -79,10 +79,15 @@ function isBlockedIpv4(ip: string): boolean {
 function isBlockedIpv6(ip: string): boolean {
   const lower = ip.toLowerCase();
 
-  // IPv4-mapped (::ffff:1.2.3.4 or ::ffff:0102:0304). If the embedded v4
-  // is blocked, the whole address is blocked.
-  const mapped = /^::ffff:(\d+\.\d+\.\d+\.\d+)$/.exec(lower);
-  if (mapped) return isBlockedIpv4(mapped[1]);
+  // IPv4-mapped IPv6 — block the entire ::ffff:/96 range outright.
+  //
+  // `new URL("https://[::ffff:127.0.0.1]").hostname` normalises to the
+  // hex form `[::ffff:7f00:1]`, which the literal-IPv4 regex would
+  // never match. Rather than try to parse every possible hex/decimal
+  // mix that Node's URL parser might emit, we treat ::ffff:/96 as
+  // blocked — that range is RESERVED for IPv4-mapped addresses, and
+  // nothing publicly reachable should live there for our use case.
+  if (lower.startsWith("::ffff:")) return true;
 
   if (lower === "::" || lower === "::1") return true; // any, loopback
   if (lower.startsWith("fe80:") || lower.startsWith("fe90:") || lower.startsWith("fea0:") || lower.startsWith("feb0:")) {
