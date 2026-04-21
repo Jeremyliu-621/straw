@@ -74,6 +74,7 @@ import {
   EVAL_CONTAINER_INPUT_PATH,
   EVAL_SCORE_JSON_FILENAME,
   EVAL_SCORE_JSON_MAX_BYTES,
+  EVAL_IMAGE_PULL_TIMEOUT_MS,
   EVAL_WORKER_CONCURRENCY_DEFAULT,
   WORKER_DURATION_WINDOW_SIZE,
 } from "@/constants";
@@ -89,6 +90,7 @@ import {
 import { multiPassLlmEval, type FileIndexEntry } from "./lib/multi-pass-eval";
 import { submissionContractSchema } from "@/lib/submission-contract";
 import { isSafeFilename, resolveInside, safeReadFileSync } from "@/lib/safe-path";
+import { validateImageReference, imageUsesDigest } from "@/lib/docker-image-ref";
 
 
 // ── Config ───────────────────────────────────────────────────
@@ -614,6 +616,11 @@ async function runEvalContainer(
 // ── Docker Helpers ────────────────────────────────────────────
 
 async function pullDockerImage(image: string): Promise<void> {
+  const refError = validateImageReference(image);
+  if (refError) {
+    throw new EvalContainerError(`Invalid eval image reference: ${refError}`);
+  }
+
   // Check if image exists locally first — avoids failing on local-only images
   try {
     await docker.getImage(image).inspect();
@@ -623,14 +630,59 @@ async function pullDockerImage(image: string): Promise<void> {
     // Image not found locally — pull from registry
   }
 
-  return new Promise((resolve, reject) => {
-    docker.pull(image, (err: Error | null, stream: NodeJS.ReadableStream) => {
-      if (err) return reject(err);
-      docker.modem.followProgress(stream, (followErr: Error | null) => {
-        if (followErr) return reject(followErr);
-        resolve();
+  // Tag-only references (e.g. :latest) are mutable — an attacker who
+  // compromises the registry account can swap the content behind the
+  // tag between posting the task and the eval running. Log a warning
+  // so companies are nudged toward digest pinning, but allow the pull
+  // (hard-erroring would break :latest which is idiomatic).
+  if (!imageUsesDigest(image)) {
+    log.warn(
+      `Eval image ${image} uses a tag, not a digest. Consider pinning with @sha256:... for tamper resistance.`
+    );
+  }
+
+  await withTimeout(
+    new Promise<void>((resolve, reject) => {
+      docker.pull(image, (err: Error | null, stream: NodeJS.ReadableStream) => {
+        if (err) return reject(err);
+        docker.modem.followProgress(stream, (followErr: Error | null) => {
+          if (followErr) return reject(followErr);
+          resolve();
+        });
       });
-    });
+    }),
+    EVAL_IMAGE_PULL_TIMEOUT_MS,
+    `Pull of ${image} exceeded ${EVAL_IMAGE_PULL_TIMEOUT_MS}ms`
+  );
+}
+
+/**
+ * Race a promise against a timeout. If the timeout wins, the pending
+ * promise is abandoned (no cancellation — dockerode's pull stream
+ * doesn't support AbortController natively). That's fine for our case:
+ * the worker will retry on the next job, and Docker's layer-cache
+ * means partial pulls aren't wasted.
+ */
+function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  message: string
+): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new EvalContainerError(message));
+    }, timeoutMs);
+
+    promise.then(
+      (v) => {
+        clearTimeout(timer);
+        resolve(v);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      }
+    );
   });
 }
 

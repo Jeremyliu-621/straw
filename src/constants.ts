@@ -230,6 +230,10 @@ export const EVAL_SCORE_JSON_FILENAME = "score.json";
 // a rubric-shaped JSON; anything larger is either an attack (bomb) or
 // a misbehaving eval container.
 export const EVAL_SCORE_JSON_MAX_BYTES = 1024 * 1024;
+// Timeout for pulling an eval image from a registry. Kept independent
+// of the container runtime timeout (EVAL_CONTAINER_TIMEOUT_MS) so a
+// slow registry or oversized image can't eat the whole eval budget.
+export const EVAL_IMAGE_PULL_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
 // ── Submission Contracts ────────────────────────────────────
 export const CONTRACT_MAX_TOTAL_SIZE_MB_DEFAULT = 200;
