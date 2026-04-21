@@ -464,9 +464,26 @@ function readLocalOutputAsText(dirPath: string): string {
 
   const outputs: string[] = [];
   for (const file of files) {
+    // Reject anything that isn't a plain basename BEFORE we touch
+    // the filesystem. Matches the guard in downloadAgentOutputToDir.
+    if (!isSafeFilename(file)) {
+      continue;
+    }
     const filePath = path.join(dirPath, file);
-    const stat = fs.statSync(filePath);
+
+    // lstat (not stat) so symlinks are detected. A hostile entry in
+    // the agent output dir — even one created by our own extractor
+    // via a name that survived earlier checks — must not be followed
+    // to a host-side file like /etc/passwd during hybrid-mode re-read.
+    let stat: fs.Stats;
+    try {
+      stat = fs.lstatSync(filePath);
+    } catch {
+      continue;
+    }
+    if (stat.isSymbolicLink()) continue;
     if (!stat.isFile() || stat.size === 0) continue;
+
     const text = fs.readFileSync(filePath, "utf8");
     outputs.push(`--- ${file} ---\n${text}`);
   }
