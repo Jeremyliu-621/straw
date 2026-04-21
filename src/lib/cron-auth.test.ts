@@ -6,12 +6,12 @@ describe("verifyCronRequest", () => {
   const originalCronSecret = process.env.CRON_SECRET;
 
   beforeEach(() => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     process.env.CRON_SECRET = "s3cr3t-value-1234567890";
   });
 
   afterEach(() => {
-    process.env.NODE_ENV = originalNodeEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalNodeEnv;
     process.env.CRON_SECRET = originalCronSecret;
   });
 
@@ -62,7 +62,7 @@ describe("verifyCronRequest", () => {
   });
 
   it("accepts any request in dev mode (no secret needed)", () => {
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     const req = new Request("https://example.com/cron", { method: "POST" });
     expect(verifyCronRequest(req)).toBe(true);
   });

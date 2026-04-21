@@ -22,10 +22,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const { id } = await params;
   const db = createServiceClient();
 
-  // Verify ownership + active
+  // Verify ownership + active. Secret not needed here — worker fetches it.
   const { data: webhook, error: fetchError } = await db
     .from("webhooks")
-    .select("id, user_id, url, secret, active")
+    .select("id, user_id, url, active")
     .eq("id", id)
     .single();
 
@@ -74,7 +74,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       deliveryId: delivery.id as string,
       webhookId: webhook.id as string,
       url: webhook.url as string,
-      secret: webhook.secret as string,
       payload: JSON.stringify(testPayload),
     });
 

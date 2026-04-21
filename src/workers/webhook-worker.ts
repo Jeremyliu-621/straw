@@ -141,18 +141,23 @@ function signPayload(payload: string, secret: string): string {
 
 // ── Worker ──────────────────────────────────────────────────
 
+/**
+ * Job data carried through Redis. The signing secret is intentionally
+ * NOT included here — it's fetched from the DB at delivery time so
+ * Redis (and anything with read access to it: log drains, ops tools,
+ * a compromised worker sibling) never sees customer HMAC secrets.
+ */
 interface WebhookJobData {
   deliveryId: string;
   webhookId: string;
   url: string;
-  secret: string;
   payload: string;
 }
 
 const worker = new Worker<WebhookJobData>(
   QUEUE_NAME,
   async (job) => {
-    const { deliveryId, url, secret, payload } = job.data;
+    const { deliveryId, webhookId, url, payload } = job.data;
     const attempt = (job.attemptsMade ?? 0) + 1;
 
     if (job.id) jobStartTimes.set(job.id, Date.now());
@@ -183,6 +188,44 @@ const worker = new Worker<WebhookJobData>(
       throw new Error(`Refused to deliver to ${url}: ${urlCheck.reason}`);
     }
 
+    // Fetch the signing secret fresh from the DB. If the webhook was
+    // deleted or deactivated between enqueue and delivery, skip — the
+    // customer removed consent to deliver.
+    const { data: webhookRow, error: webhookErr } = await db
+      .from("webhooks")
+      .select("secret, active")
+      .eq("id", webhookId)
+      .single();
+
+    if (webhookErr || !webhookRow) {
+      const reason = `Webhook ${webhookId} not found (was it deleted?)`;
+      await db
+        .from("webhook_deliveries")
+        .update({
+          status: "failed",
+          response_body: reason,
+          attempts: attempt,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", deliveryId);
+      throw new Error(reason);
+    }
+
+    if (!webhookRow.active) {
+      const reason = `Webhook ${webhookId} is inactive`;
+      await db
+        .from("webhook_deliveries")
+        .update({
+          status: "failed",
+          response_body: reason,
+          attempts: attempt,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", deliveryId);
+      throw new Error(reason);
+    }
+
+    const secret = webhookRow.secret as string;
     const signature = signPayload(payload, secret);
     let parsedEvent = "unknown";
     try {

@@ -18,10 +18,13 @@ export async function dispatchWebhookEvent(
   try {
     const db = createServiceClient();
 
-    // Find active webhooks for this company subscribed to this event
+    // Find active webhooks for this company subscribed to this event.
+    // Secret is intentionally NOT selected here: we do not put it on the
+    // BullMQ job payload (which lives in Redis and may be readable to
+    // operators or log drains). Worker fetches it at delivery time.
     const { data: webhooks } = await db
       .from("webhooks")
-      .select("id, url, secret, events")
+      .select("id, url, events")
       .eq("user_id", userId)
       .eq("active", true);
 
@@ -49,7 +52,6 @@ export async function dispatchWebhookEvent(
           deliveryId: delivery.id,
           webhookId: webhook.id,
           url: webhook.url,
-          secret: webhook.secret,
           payload: payloadStr,
         });
       }
