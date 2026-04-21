@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError } from "@/lib/api-utils";
+import { verifyCronRequest } from "@/lib/cron-auth";
 import { dispatchNotification } from "@/lib/notification-dispatch";
 import { NOTIFICATION_TYPE } from "@/constants";
 import {
@@ -19,18 +20,8 @@ const REMINDER_HOURS_AHEAD = 24;
  * Protected by CRON_SECRET or dev mode.
  */
 export async function POST(req: Request) {
-  const isDev = process.env.NODE_ENV === "development";
-  const cronSecret = process.env.CRON_SECRET;
-
-  if (!isDev) {
-    const authHeader = req.headers.get("authorization");
-    const vercelCron = req.headers.get("x-vercel-cron-signature");
-    const vercelCronValid = vercelCron && cronSecret && vercelCron === cronSecret;
-    const bearerValid = cronSecret && authHeader === `Bearer ${cronSecret}`;
-
-    if (!vercelCronValid && !bearerValid) {
-      return apiError("Unauthorized", 401);
-    }
+  if (!verifyCronRequest(req)) {
+    return apiError("Unauthorized", 401);
   }
 
   const db = createServiceClient();

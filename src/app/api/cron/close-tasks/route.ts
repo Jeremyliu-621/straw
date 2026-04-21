@@ -5,6 +5,7 @@ import { env } from "@/lib/env";
 import { checkDeadlines } from "@/services/task-deadline.service";
 import type { DeadlineEvent } from "@/services/task-deadline.service";
 import { apiError } from "@/lib/api-utils";
+import { verifyCronRequest } from "@/lib/cron-auth";
 import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
 import { dispatchNotification } from "@/lib/notification-dispatch";
 import { AuditLogRepository } from "@/db/audit-log";
@@ -32,19 +33,8 @@ import {
  * - Running in development mode
  */
 export async function POST(req: Request) {
-  // Auth check: cron secret or dev mode
-  const isDev = process.env.NODE_ENV === "development";
-  const cronSecret = process.env.CRON_SECRET;
-
-  if (!isDev) {
-    const authHeader = req.headers.get("authorization");
-    const vercelCron = req.headers.get("x-vercel-cron-signature");
-    const vercelCronValid = vercelCron && cronSecret && vercelCron === cronSecret;
-    const bearerValid = cronSecret && authHeader === `Bearer ${cronSecret}`;
-
-    if (!vercelCronValid && !bearerValid) {
-      return apiError("Unauthorized", 401);
-    }
+  if (!verifyCronRequest(req)) {
+    return apiError("Unauthorized", 401);
   }
 
   const db = createServiceClient();
