@@ -171,21 +171,27 @@ const worker = new Worker<WebhookJobData>(
     // Resolve fresh on every attempt.
     const urlCheck = await validatePublicUrlDynamic(url);
     if (!urlCheck.ok) {
+      // Log the detailed reason (including the resolved IP) to stderr for
+      // operators. Do NOT write that detail into webhook_deliveries.response_body
+      // — the owner can read that row, and the resolved IP is a free
+      // DNS-based reconnaissance primitive otherwise (register a webhook
+      // at attacker-controlled DNS, observe what our worker sees, rinse).
       console.error(
         `[webhook-worker] Refusing to deliver ${deliveryId} to ${url}: ${urlCheck.reason}`
       );
+      const publicReason = "Webhook URL rejected: not a public host";
       await db
         .from("webhook_deliveries")
         .update({
           status: "failed",
-          response_body: `Refused: ${urlCheck.reason}`,
+          response_body: publicReason,
           attempts: attempt,
           completed_at: new Date().toISOString(),
         })
         .eq("id", deliveryId);
       // Throw a non-retryable error — re-trying a blocked URL will just
       // keep failing. BullMQ will mark the job as failed.
-      throw new Error(`Refused to deliver to ${url}: ${urlCheck.reason}`);
+      throw new Error(`Refused to deliver to ${url}: not a public host`);
     }
 
     // Fetch the signing secret fresh from the DB. If the webhook was

@@ -92,6 +92,7 @@ import { submissionContractSchema } from "@/lib/submission-contract";
 import { isSafeFilename, resolveInside, safeReadFileSync } from "@/lib/safe-path";
 import { validateImageReference, imageUsesDigest } from "@/lib/docker-image-ref";
 import { sanitizePromptContent } from "@/lib/prompt-sanitize";
+import { redactInternalPaths } from "@/lib/redact";
 
 
 // ── Config ───────────────────────────────────────────────────
@@ -1313,11 +1314,17 @@ async function markSubmissionFailed(
   message: string,
   containerExitCode?: number
 ): Promise<void> {
+  // error_message is returned to the agent via /api/submissions/[id]/status.
+  // Strip any worker-internal paths (/tmp/map-eval-*, /tmp/map-build-*, etc.)
+  // before persisting — the agent doesn't need our tmpdir naming scheme and
+  // leaking it is free reconnaissance for future path-collision attacks.
+  const publicMessage = redactInternalPaths(message);
+
   await db
     .from("submissions")
     .update({
       status: SUBMISSION_STATUS.FAILED,
-      error_message: message,
+      error_message: publicMessage,
       completed_at: new Date().toISOString(),
     })
     .eq("id", submissionId);
