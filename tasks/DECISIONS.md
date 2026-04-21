@@ -487,3 +487,26 @@ Documented here because a future session looking at Phase 19's cost column shoul
 - **Path B hybrid (Vercel + Railway + Hetzner + Upstash).** Three platforms to manage for the same ~$5–10/mo price as the one-VPS answer. No capability gain.
 - **All-on-Railway.** Blocked on the Docker-socket issue for eval execution. Would require building the sandbox-API refactor first, which is most of Phase 19 anyway.
 - **Self-host everything on Hetzner (Postgres included).** Tempting at $5/mo total, but gives up Supabase Auth, Storage, and RLS. The ops-time premium on running your own Postgres is not worth $25/mo of savings.
+
+---
+
+## D14: Eval Worker's Host Docker Socket — Known Ceiling
+
+**Decision:** The eval worker bind-mounts `/var/run/docker.sock` on the VPS read-write. We do NOT tag it `:ro` and do NOT route through a socket proxy in v1. Accept the residual risk, keep the worker single-purpose, plan the real fix as part of Phase 19.
+
+**Why not `:ro`:** The `:ro` flag on a Unix domain socket's filesystem bind controls metadata writes (unlink/rename/chmod on the socket file) — it does NOT restrict API calls made through the socket. A `:ro`-mounted Docker socket still lets a compromised worker call `POST /containers/create` with `--privileged` + `-v /:/host`, which is host root. Adding `:ro` would therefore be security theater, and on some runtime combinations causes dockerode's write APIs to fail outright — trading a theatrical mitigation for real breakage.
+
+**Blast radius accepted:** A compromised eval worker is equivalent to root on the VPS. The attacker can spawn `--privileged` containers, bind-mount `/`, and pivot to any other workload on the same host. This is the reason `DEPLOY.md` + `DECISIONS.md` D13 already specifies "single-purpose VPS" — no other services share this machine.
+
+**What would actually fix this:**
+1. **Phase 19 — move eval execution to Modal / Vercel Sandbox microVMs.** The worker no longer needs a local Docker socket. Deletes this concern entirely.
+2. **Short-term hardening (pre-Phase 19):** drop a socket-proxy sidecar (e.g. `tecnativa/docker-socket-proxy`) between the worker and the host socket, allowlisting only the endpoints dockerode actually calls (`/images/create`, `/containers/create`, `/containers/*/start|wait|remove|logs`, `/images/*/json`). Adds one container to the compose file; blocks the trivial `POST /containers/create --privileged` path. Tracked as a Phase 19 hardening step, not v1 scope.
+
+**Triggers to revisit before Phase 19 ships:**
+- Any non-eval workload gets colocated on the eval VPS (would force the hardening sooner).
+- First paying customer with a security-sensitive eval image (e.g. one that must not leak its own contents to a sibling workload).
+- Any observed intrusion attempt hitting the worker process (logs, BullMQ lockouts).
+
+**Rejected:**
+- **Rootless Docker on the host.** Real improvement, but significant setup friction on a CX22 and breaks dockerode's default socket path. Worth it IF we stay on VPS for >6 months post-launch.
+- **Running the eval worker in a VM-per-job model (Firecracker on the VPS).** Essentially re-implementing Modal in-house. Scope-killer.
