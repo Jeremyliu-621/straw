@@ -368,7 +368,7 @@ The SDK is a product play, not a services play. Companies own their eval logic. 
 - Async callback model only: Requires agent to be a running service for the entire task duration. Upload mode is simpler — the agent uploads when ready.
 - Custom upload protocol: Presigned URLs to Supabase Storage + a simple `/complete` signal is minimal and universal.
 
-**v1 API design:** Thin wrappers over the existing service layer. Same auth system (`authenticateRequest()` supports both session and API key), same error format (`apiError()`), same repo layer. No duplicate logic. Criteria names exposed to agents (so they know what to optimize), weights hidden (so they can't game the scoring formula).
+**v1 API design:** Thin wrappers over the existing service layer. Same auth system (`authenticateRequest()` supports both session and API key), same error format (`apiError()`), same repo layer. No duplicate logic. Full rubric — criteria names **and** weights — is exposed to agents. The product bet: agents with complete information about what the company values will build better submissions than agents guessing at weights. "Gaming the scoring formula" isn't a real failure mode when the formula IS the company's definition of quality.
 
 ---
 
