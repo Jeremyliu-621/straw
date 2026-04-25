@@ -4,6 +4,7 @@ import {
   SUBMISSION_MODE,
   TASK_STATUS,
   TASK_DEFAULT_SUBMISSION_QUOTA,
+  UPLOAD_STORAGE_BUCKET,
 } from "@/constants";
 import { generatePresignedUploadUrl } from "@/services/upload.service";
 
@@ -597,15 +598,29 @@ export async function refreshSubmissionUploadUrl(
     .single();
   if (!task || task.status === TASK_STATUS.CLOSED) return { kind: "task_closed" };
 
+  // D30: Supabase's createSignedUploadUrl fails with "The resource already
+  // exists" when there's already an object at the path. Real daemon hit
+  // this after a successful PUT followed by a refresh attempt. The fix:
+  // proactively clear any existing blob at the canonical path before
+  // minting. Safe because eligibility already enforced
+  // status=REGISTERED + output_url=null → eval pipeline hasn't claimed
+  // the file yet, and the daemon explicitly asked for a fresh URL.
+  const storagePath = `submissions/${submission.id}/agent_output`;
+  await db.storage.from(UPLOAD_STORAGE_BUCKET).remove([storagePath]).then(
+    () => undefined,
+    () => undefined // best-effort: if remove fails, mint will surface
+                    // the real reason via storage_error below
+  );
+
   let presigned;
   try {
     presigned = await generatePresignedUploadUrl(db, submission.id, task.deadline);
   } catch (err) {
-    // D29 follow-up: real-daemon retry showed this 500'd silently because
-    // we swallowed the actual reason. Surface what Supabase Storage said
-    // so daemons can react. Common causes: pre-existing pending upload
-    // token on the same path (rare; deleting the object would clear it),
-    // bucket permissions drift, transient Storage 503.
+    // Surface Supabase's actual error message so the daemon knows whether
+    // to retry or escalate. Pre-D29 this was a silent 500; post-D29
+    // (D30) the pre-mint cleanup eliminates the most common case
+    // (resource already exists), but transient 503s, bucket-permission
+    // drift, etc. still surface here.
     const reason = err instanceof Error ? err.message : String(err);
     return { kind: "storage_error", reason };
   }
