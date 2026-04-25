@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase";
-import { createEvaluationQueue, buildRedisConnection } from "@/lib/queue";
-import { env } from "@/lib/env";
+import { createEvaluationQueue, buildRedisConnection, type Queue, type EvaluationJobData } from "@/lib/queue";
 import { checkDeadlines } from "@/services/task-deadline.service";
 import type { DeadlineEvent } from "@/services/task-deadline.service";
 import { apiError } from "@/lib/api-utils";
@@ -20,39 +19,69 @@ import {
 } from "@/constants";
 
 /**
- * POST /api/cron/close-tasks — Auto-close tasks past deadline.
+ * /api/cron/close-tasks — Auto-close tasks past deadline.
  *
- * Designed to be called by a cron job (Vercel Cron, Railway cron, etc.).
- * Protected by a shared secret in the Authorization header.
+ * Wired up via vercel.json cron schedule. Vercel Cron sends GET; manual
+ * tests / external triggers can use POST. Both behave identically.
  *
- * Can also be called manually for testing.
+ * Resilient to a missing or unreachable Redis: the lifecycle transitions
+ * (open → evaluating, evaluating → closed) happen against Postgres, and
+ * the eval-enqueue step degrades to a no-op with a logged warning. This
+ * keeps deadline-auto-close working even when no worker infrastructure is
+ * deployed (the current state for the Vercel-only setup as of 2026-04-25).
  *
  * Security: Requires either:
  * - Authorization: Bearer <CRON_SECRET> header
  * - x-vercel-cron-signature header (for Vercel Cron)
  * - Running in development mode
  */
+
+export async function GET(req: Request) {
+  return runCloseTasksCron(req);
+}
+
 export async function POST(req: Request) {
+  return runCloseTasksCron(req);
+}
+
+async function runCloseTasksCron(req: Request) {
   if (!verifyCronRequest(req)) {
     return apiError("Unauthorized", 401);
   }
 
   const db = createServiceClient();
 
-  // Build evaluation enqueue function
-  const evalQueue = createEvaluationQueue(buildRedisConnection(env.REDIS_URL));
-
-  async function enqueueEvaluation(
-    submissionId: string,
-    taskId: string,
-    outputUrl: string
-  ): Promise<void> {
-    await evalQueue.add(`eval-${submissionId}`, {
-      submissionId,
-      taskId,
-      outputUrl,
-    });
+  // Try to set up the eval queue. If REDIS_URL is unset or the connection
+  // builder throws for any reason, fall through with `evalQueue = null` —
+  // checkDeadlines treats a missing enqueue function as "skip the enqueue
+  // step entirely," which is the correct behavior when no worker is
+  // listening anyway.
+  let evalQueue: Queue<EvaluationJobData> | null = null;
+  let queueWarning: string | null = null;
+  try {
+    if (process.env.REDIS_URL) {
+      evalQueue = createEvaluationQueue(buildRedisConnection(process.env.REDIS_URL));
+    } else {
+      queueWarning = "REDIS_URL not set; deadline transitions only, no eval enqueue.";
+    }
+  } catch (err) {
+    queueWarning = `Eval queue unavailable (${(err as Error).message}); deadline transitions only.`;
+    evalQueue = null;
   }
+
+  // Wrap each enqueue in a try/catch so an unreachable Redis (queue object
+  // exists but Redis won't accept connections) downgrades to a logged
+  // warning per submission rather than killing the whole cron run.
+  const enqueueErrors: string[] = [];
+  const enqueueEvaluation = evalQueue
+    ? async (submissionId: string, taskId: string, outputUrl: string): Promise<void> => {
+        try {
+          await evalQueue!.add(`eval-${submissionId}`, { submissionId, taskId, outputUrl });
+        } catch (err) {
+          enqueueErrors.push(`enqueue ${submissionId}: ${(err as Error).message}`);
+        }
+      }
+    : undefined;
 
   try {
     const result = await checkDeadlines(db, enqueueEvaluation);
@@ -65,10 +94,16 @@ export async function POST(req: Request) {
     return NextResponse.json({
       status: "ok",
       ...result,
+      ...(queueWarning ? { queue_warning: queueWarning } : {}),
+      ...(enqueueErrors.length > 0 ? { enqueue_errors: enqueueErrors } : {}),
       timestamp: new Date().toISOString(),
     });
   } finally {
-    await evalQueue.close();
+    if (evalQueue) {
+      await evalQueue.close().catch(() => {
+        // Closing a queue with an unreachable Redis can throw — swallow.
+      });
+    }
   }
 }
 
