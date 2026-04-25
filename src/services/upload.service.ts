@@ -166,13 +166,39 @@ function isSafeRelativePath(p: string): boolean {
 }
 
 /**
+ * Drop entries that come from common archive-tool noise: macOS resource forks
+ * (`__MACOSX/`, `.DS_Store`) and Windows thumbnail caches (`Thumbs.db`).
+ * These would otherwise pollute the extracted files and confuse the LLM judge.
+ */
+function isArchiveNoise(entryName: string): boolean {
+  if (entryName.startsWith("__MACOSX/") || entryName.includes("/__MACOSX/")) return true;
+  const base = entryName.split("/").pop() ?? "";
+  return base === ".DS_Store" || base === "Thumbs.db";
+}
+
+/**
+ * If every entry shares a single top-level directory prefix, return that
+ * prefix (e.g. `"myproj/"`). Returns null otherwise. Rescues the very common
+ * "right-clicked a folder and zipped it" mistake where SUBMISSION.md ends up
+ * at `myproj/SUBMISSION.md` instead of the archive root — without that fix
+ * the verifier would (correctly per its own contract) report MISSING_SUBMISSION_MD.
+ */
+function findCommonRootPrefix(entryNames: string[]): string | null {
+  if (entryNames.length === 0) return null;
+  const firstSlash = entryNames[0].indexOf("/");
+  if (firstSlash <= 0) return null;
+  const candidate = entryNames[0].slice(0, firstSlash + 1);
+  return entryNames.every((n) => n.startsWith(candidate)) ? candidate : null;
+}
+
+/**
  * Exposed for direct unit testing of the path-traversal guard. AdmZip
  * auto-sanitizes names at construction time, so building a malicious zip
  * through it doesn't exercise this check — but real zips constructed by
  * other tools (or hand-crafted) absolutely can carry `..` segments. The
  * production `extractAgentOutputZip` always calls this on every entry.
  */
-export const __upload_testing__ = { isZipMagic, isSafeRelativePath };
+export const __upload_testing__ = { isZipMagic, isSafeRelativePath, isArchiveNoise, findCommonRootPrefix };
 
 /**
  * If `submissions/${id}/agent_output` is a zip, extract its entries to
@@ -209,7 +235,11 @@ export async function extractAgentOutputZip(
     return { kind: "storage_error", reason: `zip parse failed: ${(err as Error).message}` };
   }
 
-  const entries = zip.getEntries().filter((e) => !e.isDirectory);
+  const allEntries = zip.getEntries().filter((e) => !e.isDirectory);
+  // Drop archive-tool noise (__MACOSX, .DS_Store, Thumbs.db) before we count
+  // entries or compute the common-root prefix — otherwise __MACOSX would mask
+  // legitimate single-root zips.
+  const entries = allEntries.filter((e) => !isArchiveNoise(e.entryName));
   if (entries.length > ZIP_MAX_ENTRIES) {
     return { kind: "too_many_entries", count: entries.length, limit: ZIP_MAX_ENTRIES };
   }
@@ -222,16 +252,28 @@ export async function extractAgentOutputZip(
     return { kind: "too_large", bytes: totalBytes, limit: ZIP_MAX_TOTAL_UNCOMPRESSED_BYTES };
   }
 
+  // Auto-strip a single common top-level directory if all entries share one.
+  // Real-daemon audit (2026-04-25) flagged the common "right-clicked a folder
+  // and zipped it" mistake — SUBMISSION.md ended up at `myproj/SUBMISSION.md`
+  // and the verifier (correctly, per its own contract) failed with
+  // MISSING_SUBMISSION_MD. Stripping is harmless: if the user genuinely
+  // wanted a `myproj/` subdir preserved, they'd have at least one sibling
+  // entry at the root (most commonly SUBMISSION.md itself).
+  const commonRoot = findCommonRootPrefix(entries.map((e) => e.entryName));
+
   let filesWritten = 0;
   let bytesWritten = 0;
 
   for (const entry of entries) {
-    const entryName = entry.entryName;
-    if (!isSafeRelativePath(entryName)) {
-      return { kind: "unsafe_path", path: entryName };
+    const stripped = commonRoot
+      ? entry.entryName.slice(commonRoot.length)
+      : entry.entryName;
+    if (!stripped) continue; // entry was the bare directory marker
+    if (!isSafeRelativePath(stripped)) {
+      return { kind: "unsafe_path", path: stripped };
     }
     const data = entry.getData();
-    const dest = `${dirPath}/${entryName}`;
+    const dest = `${dirPath}/${stripped}`;
     const { error: upErr } = await db.storage
       .from(UPLOAD_STORAGE_BUCKET)
       .upload(dest, data, {
@@ -239,7 +281,7 @@ export async function extractAgentOutputZip(
         contentType: "application/octet-stream",
       });
     if (upErr) {
-      return { kind: "storage_error", reason: `upload failed for ${entryName}: ${upErr.message}` };
+      return { kind: "storage_error", reason: `upload failed for ${stripped}: ${upErr.message}` };
     }
     filesWritten += 1;
     bytesWritten += data.length;

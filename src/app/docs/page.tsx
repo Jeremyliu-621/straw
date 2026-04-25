@@ -1391,11 +1391,17 @@ X-Workspace-Content-Type: application/octet-stream // optional metadata
 { "error": { "code": "INVALID_QUERY", "message": "<reason>" } }`}</code></pre>
       <p>
         Query rules: free-form input is tokenized via PostgreSQL{" "}
-        <code>websearch_to_tsquery</code> — quoted phrases work, <code>OR</code> is
-        supported, and unmatched quotes/operators surface as 400 <code>INVALID_QUERY</code>{" "}
-        rather than silently returning nothing. Drafts are excluded by default; pass{" "}
-        <code>?status=any</code> to include them (only your own drafts come back; RLS
-        filters others). Limit is 1-50, default 20.
+        <code>websearch_to_tsquery</code>. Quoted phrases work (<code>&quot;url shortener&quot;</code>),{" "}
+        <code>OR</code> is supported, and a leading dash negates a term (<code>scraper -python</code>).
+        <strong> The parser is intentionally lenient:</strong> mismatched quotes,
+        unbalanced parentheses, and field-style queries (<code>status:open</code>) do
+        not raise — they fall back to best-effort tokenization. <code>400 INVALID_QUERY</code>{" "}
+        is rare; expect it only for empty queries or pathologically malformed input
+        (e.g. a query that would generate an invalid <code>tsquery</code> after
+        normalization). To filter by status, use the explicit <code>?status=</code>{" "}
+        param, not in-query syntax. Drafts are excluded by default; pass{" "}
+        <code>?status=any</code> to include them (RLS filters out drafts you don&apos;t own).
+        Limit is 1-50, default 20.
       </p>
       <p>
         pgvector-based semantic search (cosine similarity over embeddings) is on the

@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import AdmZip from "adm-zip";
 import { extractAgentOutputZip, __upload_testing__ } from "./upload.service";
 
-const { isZipMagic, isSafeRelativePath } = __upload_testing__;
+const { isZipMagic, isSafeRelativePath, isArchiveNoise, findCommonRootPrefix } = __upload_testing__;
 
 /**
  * Unit tests for the D29 zip-extraction helper.
@@ -222,6 +222,109 @@ describe("extractAgentOutputZip", () => {
     expect(r.kind).toBe("extracted");
     if (r.kind !== "extracted") return;
     expect(r.files_written).toBe(1);
+  });
+
+  // Real-daemon audit (2026-04-25): "right-clicked a folder and zipped it"
+  // case — SUBMISSION.md only existed under `myproj/`, not at the root.
+  // Auto-strip the common root prefix so verifier sees loose files.
+  it("auto-strips a single common root directory (right-click-zip case)", async () => {
+    const zipBuf = buildZip([
+      { name: "myproj/SUBMISSION.md", content: "# What I Built\n" },
+      { name: "myproj/main.py", content: "print('hi')" },
+      { name: "myproj/src/util.py", content: "x" },
+    ]);
+    const state: MockState = {
+      uploadCalls: [],
+      removeCalls: [],
+      agentOutputBuffer: zipBuf,
+    };
+    const db = makeMockDb(state);
+    const r = await extractAgentOutputZip(db, "sub-1");
+    expect(r.kind).toBe("extracted");
+    const paths = state.uploadCalls.map((c) => c.path).sort();
+    expect(paths).toEqual([
+      "submissions/sub-1/SUBMISSION.md",
+      "submissions/sub-1/main.py",
+      "submissions/sub-1/src/util.py",
+    ]);
+  });
+
+  it("does NOT strip when entries don't share a single root", async () => {
+    const zipBuf = buildZip([
+      { name: "SUBMISSION.md", content: "x" },
+      { name: "src/main.py", content: "y" },
+      { name: "tests/test_main.py", content: "z" },
+    ]);
+    const state: MockState = {
+      uploadCalls: [],
+      removeCalls: [],
+      agentOutputBuffer: zipBuf,
+    };
+    const db = makeMockDb(state);
+    const r = await extractAgentOutputZip(db, "sub-1");
+    expect(r.kind).toBe("extracted");
+    const paths = state.uploadCalls.map((c) => c.path).sort();
+    expect(paths).toEqual([
+      "submissions/sub-1/SUBMISSION.md",
+      "submissions/sub-1/src/main.py",
+      "submissions/sub-1/tests/test_main.py",
+    ]);
+  });
+
+  it("ignores macOS __MACOSX/.DS_Store noise when computing common root", async () => {
+    const zipBuf = buildZip([
+      { name: "__MACOSX/myproj/._SUBMISSION.md", content: "macos resource fork garbage" },
+      { name: "myproj/SUBMISSION.md", content: "# real content" },
+      { name: "myproj/main.py", content: "x" },
+      { name: ".DS_Store", content: "ds_store garbage" },
+    ]);
+    const state: MockState = {
+      uploadCalls: [],
+      removeCalls: [],
+      agentOutputBuffer: zipBuf,
+    };
+    const db = makeMockDb(state);
+    const r = await extractAgentOutputZip(db, "sub-1");
+    expect(r.kind).toBe("extracted");
+    const paths = state.uploadCalls.map((c) => c.path).sort();
+    expect(paths).toEqual([
+      "submissions/sub-1/SUBMISSION.md",
+      "submissions/sub-1/main.py",
+    ]);
+  });
+
+  describe("findCommonRootPrefix", () => {
+    it("returns the prefix when all entries share one", () => {
+      expect(findCommonRootPrefix(["myproj/a.py", "myproj/b.py", "myproj/sub/c.py"])).toBe("myproj/");
+    });
+    it("returns null on empty list", () => {
+      expect(findCommonRootPrefix([])).toBeNull();
+    });
+    it("returns null when even one entry is at the root", () => {
+      expect(findCommonRootPrefix(["SUBMISSION.md", "myproj/a.py"])).toBeNull();
+    });
+    it("returns null when entries have different top-level dirs", () => {
+      expect(findCommonRootPrefix(["src/a.py", "tests/b.py"])).toBeNull();
+    });
+    it("returns null when first entry has no slash", () => {
+      expect(findCommonRootPrefix(["SUBMISSION.md"])).toBeNull();
+    });
+  });
+
+  describe("isArchiveNoise", () => {
+    it("matches __MACOSX directories at root and nested", () => {
+      expect(isArchiveNoise("__MACOSX/foo")).toBe(true);
+      expect(isArchiveNoise("myproj/__MACOSX/bar")).toBe(true);
+    });
+    it("matches .DS_Store and Thumbs.db files anywhere", () => {
+      expect(isArchiveNoise(".DS_Store")).toBe(true);
+      expect(isArchiveNoise("nested/.DS_Store")).toBe(true);
+      expect(isArchiveNoise("Thumbs.db")).toBe(true);
+    });
+    it("does not match normal files", () => {
+      expect(isArchiveNoise("SUBMISSION.md")).toBe(false);
+      expect(isArchiveNoise("src/main.py")).toBe(false);
+    });
   });
 
   it("handles empty zip (zero entries) without crashing", async () => {
