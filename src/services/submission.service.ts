@@ -561,6 +561,7 @@ export type RefreshUploadUrlError =
   | { kind: "wrong_status"; status: string }
   | { kind: "already_uploaded" }
   | { kind: "task_closed" }
+  | { kind: "storage_error"; reason: string }
   | { kind: "internal" };
 
 export interface RefreshUploadUrlSuccess {
@@ -599,8 +600,14 @@ export async function refreshSubmissionUploadUrl(
   let presigned;
   try {
     presigned = await generatePresignedUploadUrl(db, submission.id, task.deadline);
-  } catch {
-    return { kind: "internal" };
+  } catch (err) {
+    // D29 follow-up: real-daemon retry showed this 500'd silently because
+    // we swallowed the actual reason. Surface what Supabase Storage said
+    // so daemons can react. Common causes: pre-existing pending upload
+    // token on the same path (rare; deleting the object would clear it),
+    // bucket permissions drift, transient Storage 503.
+    const reason = err instanceof Error ? err.message : String(err);
+    return { kind: "storage_error", reason };
   }
 
   // Update the stored upload_token so any future server-side checks see the

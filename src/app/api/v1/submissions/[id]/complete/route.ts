@@ -8,7 +8,7 @@ import {
   AUDIT_ACTION,
 } from "@/constants";
 import { createEvaluationQueue, buildRedisConnection, type EvaluationJobData } from "@/lib/queue";
-import { verifyUploadExists, verifySubmissionMd, getSubmissionStoragePath } from "@/services/upload.service";
+import { verifyUploadExists, verifySubmissionMd, getSubmissionStoragePath, extractAgentOutputZip } from "@/services/upload.service";
 import { env } from "@/lib/env";
 import { AuditLogRepository } from "@/db/audit-log";
 
@@ -78,6 +78,32 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       400,
       "NO_UPLOAD_FOUND",
       { resume_via: `POST /api/v1/submissions/${submission.id}/upload-url` }
+    );
+  }
+
+  // D29: when the artifact landed as a single agent_output blob (presigned
+  // URL flow), extract it into loose files so the verifier + eval worker
+  // see the loose-file shape they were always designed for. Idempotent:
+  // returns no_blob when already loose-files (quick_submit path).
+  const extractResult = await extractAgentOutputZip(db, submission.id);
+  if (
+    extractResult.kind !== "extracted" &&
+    extractResult.kind !== "not_a_zip" &&
+    extractResult.kind !== "no_blob"
+  ) {
+    const code =
+      extractResult.kind === "too_many_entries"
+        ? "ZIP_TOO_MANY_ENTRIES"
+        : extractResult.kind === "too_large"
+          ? "ZIP_TOO_LARGE"
+          : extractResult.kind === "unsafe_path"
+            ? "ZIP_UNSAFE_PATH"
+            : "ZIP_EXTRACTION_FAILED";
+    return apiError(
+      `Failed to extract uploaded zip: ${JSON.stringify(extractResult)}`,
+      400,
+      code,
+      extractResult
     );
   }
 

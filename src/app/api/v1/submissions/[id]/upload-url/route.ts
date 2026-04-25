@@ -62,6 +62,16 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
           409,
           "TASK_CLOSED"
         );
+      case "storage_error":
+        // D29: surface what Supabase Storage said. Replaces the silent 500
+        // a real daemon hit on retry. Most commonly a transient Storage
+        // 503 or a leftover pending upload token; usually retryable.
+        return apiError(
+          `Storage error minting upload URL: ${result.reason}. Retry in a moment, or delete the existing artifact and re-create the submission if persistent.`,
+          502,
+          "STORAGE_ERROR",
+          { reason: result.reason }
+        );
       default:
         return apiError("Internal error minting upload URL", 500);
     }

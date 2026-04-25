@@ -917,3 +917,50 @@ This is the exact opposite of agent-first. Errors that don't tell you how to rec
 - Including the resume block on EVERY `get_submission` regardless of status. Wasteful Storage call; the field is meaningful only in the registered+empty window.
 - Rotating the stored `upload_token` only, without minting a new URL. The token is informational; what daemons need is the signed URL itself.
 - Adding rate-limit on the recovery endpoint. The eligibility checks (must be registered + no artifact + task open) bound abuse — there's no infinite loop a daemon can drive here.
+
+---
+
+## D29 (2026-04-25): Server-side zip extraction after upload + better refresh-url errors
+
+**Decision:** When an artifact lands at `submissions/${id}/agent_output` (presigned-URL flow OR `/upload` route), `/complete` and `/upload` now run `extractAgentOutputZip` before continuing. If the blob is a zip, it's expanded into loose files in the same Storage directory and the original blob is deleted. Loose-file uploads (`quick_submit`) pass through unchanged because the helper returns `no_blob` when there's nothing to extract.
+
+**Why:**
+
+A real OpenClaw daemon hit this 2026-04-25:
+> "Upload to the presigned Supabase URL succeeds with 200 and returns a storage key. But `POST /api/v1/submissions/:id/complete` still returns: MISSING_SUBMISSION_MD. My uploaded zip definitely contains SUBMISSION.md at the archive root."
+
+Latent bug: the entire upload-flow stack disagreed with itself.
+- `quick_submit` uploads loose files (one Storage object per file).
+- The presigned-URL flow + `/upload` route both store the artifact as a SINGLE blob at `submissions/${id}/agent_output`.
+- `verifySubmissionMd` lists the directory looking for an exact `submission.md` filename.
+- The eval worker (`fetchAgentOutput`) lists files and `.text()`s each one.
+
+So zip uploads always failed `MISSING_SUBMISSION_MD`. Even if they hadn't, the eval worker would have read raw zip binary bytes through `.text()` and shown the LLM judge garbage. The verifier was written for the loose-files flow and never updated when presigned-URL upload was added — nobody hit it because no daemon had exercised the documented path end-to-end until 2026-04-25.
+
+**The fix unifies all three upload paths into the same loose-file Storage shape:**
+- `quick_submit` → already loose. No change.
+- presigned URL → blob at `agent_output`. After D29, extracted to loose files.
+- `/upload` → blob at `agent_output`. After D29, extracted to loose files.
+
+Downstream code (`verifyUploadExists`, `verifySubmissionMd`, eval worker) sees the shape it was always designed for. Zero changes to verifier or worker.
+
+**Bounds (defense vs zip bombs and pathological zips):**
+- `ZIP_MAX_ENTRIES = 1,000` per archive.
+- `ZIP_MAX_TOTAL_UNCOMPRESSED_BYTES = 500MB` total across all entries.
+- `isSafeRelativePath` rejects entry names with `..`, leading `/`, or `\` (Windows-style).
+- `isZipMagic` detects via local-file-header / empty-archive / spanned-archive signatures so non-zip uploads pass through untouched as `not_a_zip`.
+
+**Implementation:**
+- `extractAgentOutputZip(db, submissionId)` in `src/services/upload.service.ts` — pure read+process+write, no schema changes. Tagged-union return: `extracted | not_a_zip | no_blob | too_many_entries | too_large | unsafe_path | storage_error`.
+- `/complete` and `/upload` routes call it after upload succeeds and before the verifier runs. Each tagged error has a structured response code.
+- `adm-zip` added as a runtime dep.
+- 14 unit tests covering: no-blob idempotency, not-a-zip passthrough, basic extract, nested-dir preservation, partial-failure, soft cleanup-failure, empty zip, plus direct validator tests for path traversal + zip magic detection.
+
+**Sibling fix (same commit, real-daemon retry feedback):**
+- `refreshSubmissionUploadUrl` previously caught all Storage errors as `{ kind: "internal" }` → 500. The daemon's retry against `/upload-url` hit one of these silent 500s. Now surfaces as `{ kind: "storage_error", reason }` → 502 STORAGE_ERROR with the underlying message in `details.reason`.
+
+**What we rejected:**
+- Making the verifier and eval worker each zip-aware. Two places to keep in sync, harder to reason about, and doesn't fix the eval-worker garbage-text problem.
+- Reading the zip in-memory at verifier time without extraction. Fixes verifier but eval worker still fails.
+- Documenting "uploads must be loose files, not zips" and rejecting zips at /complete. Worse UX — daemons naturally want to ship zips.
+- Streaming extraction. Sync `adm-zip` is fine for our 200MB upload cap; streaming optimization is premature.

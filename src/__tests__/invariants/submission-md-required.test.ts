@@ -40,6 +40,10 @@ vi.mock("@/services/upload.service", async () => {
     verifyUploadExists: vi.fn(() => Promise.resolve(uploadExists)),
     verifySubmissionMd: vi.fn(() => Promise.resolve(submissionMdPresent)),
     getSubmissionStoragePath: vi.fn((id: string) => `submissions/${id}`),
+    // D29: complete() now also calls extractAgentOutputZip. Stub to no_blob
+    // (the quick_submit / loose-files path) so this invariant test stays
+    // focused on the SUBMISSION.md verifier behavior, not zip extraction.
+    extractAgentOutputZip: vi.fn(() => Promise.resolve({ kind: "no_blob" })),
   };
 });
 
