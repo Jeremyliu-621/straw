@@ -32,8 +32,25 @@
 | 5 | `a7aa670` | `feat(sse): task events stream + wait_for_task_event — third surface; polling tax dead` — Block 1c. |
 | 6 | `099915f` | `feat(submissions): rich submission kinds — schema + validation foundation (D23, Block 2a)` |
 | 7 | `d40f993` | `feat(workspace): persistent agent KV store — substrate primitive #3 (D24, Block 3a)` |
+| 8 | `1749ee8` | `docs(api+handoff): expose new SSE + workspace endpoints in /api/docs; add HANDOFF.md` — Pass-1 polish. |
+| 9 | `5f33ba5` | `feat(eval): dialogic eval — request_re_eval (D25, Block 4a)` — re-roll the eval against the same artifact, no quota hit. |
+| 10 | `<TBD>` | `feat(workspace): persistent agent file storage — substrate primitive #3 done (D26, Block 3b)` — workspace files alongside KV. |
+| 11 | `<TBD>` | `feat(search): cross-task FTS — substrate primitive #6 (D27, Block 6a)` — full-text search across tasks. |
+| 12 | `<TBD>` | `docs: human /docs page covers SSE + workspace + search + re-eval (D24-D27)` — section 11 added with all new substrate APIs. |
 
-**An 8th commit is pending** — the `/api/docs` JSON spec gained the new SSE + workspace endpoints; this handoff doc is part of it.
+**Block 4b (`ask`) was killed mid-design** — daemons already have rubric, weights, judge reasoning, dimensions, and their own files; routing a question through a stateless Gemini call adds no new information. Killed before commit. Documented in OVERNIGHT_LOG.
+
+**Substrate primitive scoreboard** (from `tasks/AGENT_FIRST_DREAM.md`):
+
+| # | Primitive | Status |
+|---|---|---|
+| 1 | Rich submission types | Schema + validation shipped (D23). Worker branches deferred (2b). |
+| 2 | SSE everywhere | **Done.** |
+| 3 | Persistent agent workspace | **Done.** KV (D24) + files (D26). |
+| 4 | Dialogic eval | request_re_eval shipped (D25). `ask` killed. `patch` deferred. |
+| 5 | Massive MCP surface | **~25 tools** (started at ~10). |
+| 6 | Cross-task search | FTS shipped (D27). pgvector embeddings deferred (6b). |
+| 7 | Long-running checkpoints | Not started. |
 
 ---
 
@@ -84,12 +101,17 @@ The commits are independently meaningful, but here's a sane order:
 3. **`0f7b94d`, `e27a8b8`, `a7aa670` (the three SSE streams)** — additive new endpoints + service-layer refactors. Existing routes still pass tests. Safe to merge as a unit.
 4. **`099915f` (rich submissions schema)** — adds DB columns and a validation library. Worker doesn't use the columns yet; routes still accept `zip`-only at the boundary. **Apply migration 031 to prod before merging this commit's behavior changes.**
 5. **`d40f993` (workspace KV)** — adds DB table + 5 new routes + 5 new MCP tools. **Apply migration 032 to prod before merging.**
-6. **(this commit, last)** — docs page updates + this handoff. Trivial.
+6. **`1749ee8`** — docs page (Pass-1) + initial HANDOFF. Trivial.
+7. **`5f33ba5` (request_re_eval)** — pure additive: 1 new route, no schema change. Safe.
+8. **Block 3b commit (workspace files)** — adds DB table + 5 new routes + 6 new MCP tools. **Apply migration 033 to prod before merging.** Also requires manual: create Storage bucket `agent-workspace` (private) in the Supabase dashboard.
+9. **Block 6a commit (search)** — adds 1 generated column + GIN index + 1 new route. **Apply migration 034 to prod before merging.**
+10. **(this commit, last)** — docs page substrate-APIs section + this updated handoff.
 
 Recommended migration application order if you do them all at once:
 ```sh
 supabase migration list      # confirm 030 is the highest applied
-supabase db push             # applies 031 + 032 in order
+# Manually create Storage bucket `agent-workspace` (private) in dashboard
+supabase db push             # applies 031, 032, 033, 034 in order
 ```
 
 ---
@@ -104,11 +126,12 @@ Listed in the order I'd attack them:
    - `dockerfile`: build via the existing dockerode integration in the eval-container sandbox.
    - `mixed`: parallel fan-out to per-part workers; weighted aggregation.
    - Then expose `kind` + `payload` in the quick-submit route + SDK + MCP.
-2. **Block 3b — workspace files.** Schema + presigned uploads to Supabase Storage scoped to `agent_id`. 100MB-per-agent cap. Same RLS pattern as KV.
-3. **Block 4 — dialogic eval.** `POST /api/v1/submissions/[id]/ask` (block on a clarifying question to the eval committee), `POST /api/v1/submissions/[id]/patch` (deltas instead of full re-zip), `POST /api/v1/submissions/[id]/request_re_eval`. The substrate primitive that makes the eval committee a collaborator instead of a dictator.
-4. **Block 5 — multi-daemon eval committee** (Phase 20d in TASKS.md). The big one. `RemoteEvaluator` interface + 3-5 specialized daemons + reviewer + validator + per-daemon breakdown surfaced in `get_submission`. Worth doing AFTER block 2b so the new submission kinds are testable against the new committee.
-5. **Block 6 — agent collaboration channels** (Phase 20b/c — Q&A, chat, DMs, team submissions). The visible substrate features. Best done in a focused session of their own; not loop-friendly.
-6. **Cross-task semantic search** (substrate primitive #6). pgvector-backed embeddings on task descriptions + cosine-similarity search MCP tool.
+2. **Block 4c — patch submissions.** Server stores deltas (`{overwrites, deletes, adds}`), applies them to the prior submission's tree at re-eval time. Cheaper iteration than full re-zip. Requires worker-side delta application — touches the eval pipeline.
+3. **Block 5 — multi-daemon eval committee** (Phase 20d in TASKS.md). The big one. `RemoteEvaluator` interface + 3-5 specialized daemons + reviewer + validator + per-daemon breakdown surfaced in `get_submission`. Worth doing AFTER Block 2b so the new submission kinds are testable against the new committee.
+4. **Block 6b — pgvector semantic search.** Add `pgvector` extension. New `tasks_embedding (task_id, embedding vector)` table. Cron-or-on-create populates via OpenAI/Gemini embeddings. New endpoint `/api/v1/search/tasks/similar?task_id=…` for cosine-nearest. Same SDK shape; new `similar_tasks` MCP tool. Layer on top of D27's FTS.
+5. **Block 7 — long-running checkpoints** (substrate primitive #7). Let an agent save a partial submission, get a non-binding sanity score, keep going. Without soft-scoring it reduces to "versioned files" (already covered by D26 workspace files); the value-add is the soft eval, which requires a sandboxed build-check exposed via API. Needs care — the build-check service runs `execSync` per D14, so exposing it via a route without proper sandboxing is a footgun.
+6. **Block 6 collaboration channels** (Phase 20b/c — Q&A, chat, DMs, team submissions). The visible substrate features. Best done in a focused session of their own; not loop-friendly.
+7. **Block 6a-stage-2 — real ts_rank in search**. Today the search route returns a synthetic position-based rank because supabase-js's typed builder doesn't expose `ts_rank`. Wire via a Postgres RPC; API contract stays the same.
 
 ---
 

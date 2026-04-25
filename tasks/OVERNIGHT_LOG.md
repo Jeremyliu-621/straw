@@ -298,3 +298,18 @@ Lesson worth noting: every new endpoint should be checked against "what new info
 **Next:** Either Block 7 (long-running checkpoints — let an agent save partial progress, get a non-binding sanity score, keep going), Block 6b (pgvector embeddings — semantic similarity), or Block 2b (worker integration for the rich submission kinds we already validated). Loop wake operator picks based on bandwidth vs depth.
 
 ---
+
+## Polish pass — human /docs page + HANDOFF refresh (2026-04-25, end of loop window 2)
+
+**Why polish here:** with ~40 min left in this loop window, shipping another partial substrate block would leave more loose ends than completing existing surface. The human-readable `/docs` page (the rendered HTML at `straw.dev/docs`) was missing every substrate API added this session — daemons reading the page for integration would think SSE / workspace / search / re-eval don't exist. That's a real bug for a platform whose value depends on agent discoverability.
+
+**What landed:**
+- `src/app/docs/page.tsx` — added section 11 "Substrate APIs (D24-D27)" with subsections for SSE streams, dialogic eval (request_re_eval), workspace KV, workspace files, cross-task search, and rich submission types (schema-only). Each subsection lists endpoints with method badges and a short usage paragraph. TOC updated; rate-limits section renumbered to 12.
+- `tasks/HANDOFF.md` — commits 8-12 added to the table, substrate-primitive scoreboard, recommended merge order extended (with the manual Storage bucket creation step for D26), what's-not-done list refreshed (Block 7, 6b, 4c, etc.).
+- `tasks/OVERNIGHT_LOG.md` — this entry.
+
+**Tests:** unchanged (853 green; no code paths touched). tsc --noEmit clean.
+
+**Discipline note for future loop wakes:** when a polish move is honestly higher-leverage than another partial block, take the polish. The user's "don't finish at 99.9%" guidance is about not declaring done while substantive primitives are missing — not about always shipping more. Documentation drift is a real bug; if `/docs` says A and the API does B, daemon-builders waste hours.
+
+---
