@@ -216,3 +216,49 @@ Three of seven primitives substantively progressed in one overnight session. Sub
 **Next (Block 4b):** `POST /api/v1/submissions/[id]/ask` — block on a clarifying question routed through the eval pipeline. The agent gets a free-form answer scoped to their submission + the rubric + the latest judge reasoning. Uses existing Gemini integration; rate-limited per submission so it can't be abused into a free chat session.
 
 ---
+
+## Block 4b — KILLED. Pivoted to Block 3b (workspace files) (2026-04-25)
+
+**Why I dropped 4b:** The user pushed back on `ask` and was right. The daemon already has access to the rubric, weights, the full judge reasoning, dimensions, and its own submission contents. Routing its question through a stateless Gemini call returns at best a re-interpretation of context the daemon already has — no new information enters the system. It's middleware dressed up as a feature, not a substrate primitive. Killed before any of it was committed.
+
+The two ways to actually add information would be (a) cross-submission context (Phase 20a, open visibility) or (b) per-daemon committee breakdown (Phase 20d, multi-daemon eval). Neither is `ask`-shaped.
+
+Lesson worth noting: every new endpoint should be checked against "what new information does this give the daemon that they couldn't compute themselves?" If the answer is "nothing," it's gimmicky.
+
+---
+
+## Block 3b — Persistent agent workspace files (2026-04-25)
+
+**Goal:** Pair with D24 (workspace KV) to complete substrate primitive #3. Daemons cache binaries, datasets, model weights, scrape outputs across submissions and tasks. Real cost-and-latency reduction for agents whose work involves heavy computation.
+
+**What landed:**
+- `supabase/migrations/033_agent_workspace_files.sql` — `agent_workspace_files (agent_id, path, storage_ref, size_bytes, content_type, timestamps)` table. Composite PK on (agent_id, path), idx on (agent_id, updated_at desc), updated_at trigger, RLS owner-only policies. **NOT applied to prod.** Bucket `agent-workspace` must be created manually in the Supabase dashboard.
+- `src/constants.ts` — `WORKSPACE_FILES_*` constants: 1k files / 25MB per file / 100MB total / 512-char path / regex.
+- `src/services/workspace-files.service.ts` — full CRUD with quota enforcement. Two-phase upload (Storage first, metadata second) with best-effort cleanup on failure. Idempotent delete. Path validation with explicit `..` and absolute-path rejection. 16 service unit tests.
+- `src/app/api/v1/workspace/files/route.ts` — POST upload (accepts both JSON+base64 and raw octet-stream-with-headers shapes) + GET list.
+- `src/app/api/v1/workspace/files/[...path]/route.ts` — catch-all for per-file ops: GET (download or `?metadata=1`) + DELETE.
+- `src/app/api/v1/workspace/files/quota/route.ts` — per-agent files-quota snapshot.
+- `packages/agent-sdk/types.ts` — `WorkspaceFileMetadata`, `WorkspaceFilesListResult`, `WorkspaceFilesQuotaSnapshot`.
+- `packages/agent-sdk/index.ts` — re-exports.
+- `packages/agent-sdk/client.ts` — `client.workspace.uploadFile/downloadFile/fileMetadata/deleteFile/listFiles/filesQuota`.
+- `packages/mcp-server/src/tools/workspace.ts` — 6 new MCP tools (`workspace_upload_file`, `workspace_download_file`, `workspace_file_metadata`, `workspace_delete_file`, `workspace_list_files`, `workspace_files_quota`). All accept/return base64 for binary safety in the JSON-only MCP transport.
+- `packages/mcp-server/src/index.ts` — server instructions block updated to mention the new file tools + `request_re_eval`.
+- `tasks/DECISIONS.md` D26 — full record: storage architecture, why-pair-with-KV, manual deploy step, what was rejected (presigned URLs, versioning, range requests).
+
+**Tests:** 848 green across the entire repo (was 832 before this block). tsc --noEmit clean.
+
+**Substrate primitive scoreboard (updated):**
+
+| # | Primitive | Status |
+|---|---|---|
+| 1 | Rich submission types | Schema + validation shipped (D23, 2a). Worker branches deferred (2b). |
+| 2 | SSE everywhere | **Done.** Three streams + SDK + MCP. |
+| 3 | Persistent agent workspace | **Done.** KV (D24) + files (D26). |
+| 4 | Dialogic eval | request_re_eval shipped (D25). `ask` killed as gimmicky; `patch` deferred (4c). |
+| 5 | Massive MCP surface | **~24 tools** now (started session at ~10). |
+| 6 | Cross-task semantic search | Not started. |
+| 7 | Long-running checkpoints | Not started. |
+
+**Next (Block 4c or pivot):** `patch` submissions are real engineering — server stores deltas, applies them to the last submission's tree at re-eval time. Or pivot to substrate primitive #6 (cross-task semantic search via pgvector) which is a self-contained piece. The next loop wake should pick based on what feels most under-served.
+
+---

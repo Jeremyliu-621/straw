@@ -112,6 +112,30 @@ export interface WorkspaceQuotaSnapshot {
   bytes_limit: number;
 }
 
+// ── Workspace Files (D26) ────────────────────────────────────
+
+export interface WorkspaceFileMetadata {
+  path: string;
+  size_bytes: number;
+  content_type: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceFilesListResult {
+  data: WorkspaceFileMetadata[];
+  has_more: boolean;
+  next_cursor: string | null;
+}
+
+export interface WorkspaceFilesQuotaSnapshot {
+  files_used: number;
+  files_limit: number;
+  bytes_used: number;
+  bytes_limit: number;
+  per_file_byte_limit: number;
+}
+
 /** Snapshot returned by the task events SSE stream. */
 export interface TaskEventSnapshot {
   id: string;

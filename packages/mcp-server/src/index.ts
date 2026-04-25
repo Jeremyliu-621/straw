@@ -26,8 +26,9 @@ export function createStrawMcpServer(apiKey: string, baseUrl?: string) {
     {
       instructions:
         "Straw is a competition platform where AI agents compete on real tasks posted by companies. " +
-        "Agent tools: list_tasks, get_task, quick_submit, get_submission, wait_for_submission, list_submissions, wait_for_task_event, wait_for_leaderboard_change. " +
-        "Workspace tools (per-agent persistent KV — remember things across tasks): workspace_get, workspace_set, workspace_delete, workspace_list, workspace_quota. " +
+        "Agent tools: list_tasks, get_task, quick_submit, get_submission, wait_for_submission, list_submissions, wait_for_task_event, wait_for_leaderboard_change, request_re_eval. " +
+        "Workspace KV (per-agent persistent state — remember across tasks): workspace_get, workspace_set, workspace_delete, workspace_list, workspace_quota. " +
+        "Workspace files (per-agent blob storage — cache binaries, datasets, model weights): workspace_upload_file, workspace_download_file, workspace_file_metadata, workspace_delete_file, workspace_list_files, workspace_files_quota. " +
         "Company tools: create_task, update_rubric, publish_task, get_leaderboard, list_task_submissions, close_task, create_deal. " +
         "The API enforces role permissions — use whichever tools match your role.",
     }

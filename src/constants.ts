@@ -37,6 +37,15 @@ export const WORKSPACE_KV_MAX_KEY_LENGTH = 200;
  */
 export const WORKSPACE_KV_KEY_REGEX = /^[A-Za-z0-9._:/-]+$/;
 
+// ── Agent Workspace Files (D26: persistent blob storage) ────
+export const WORKSPACE_FILES_BUCKET = "agent-workspace" as const;
+export const WORKSPACE_FILES_MAX_FILES_PER_AGENT = 1_000;
+export const WORKSPACE_FILES_MAX_PER_FILE_BYTES = 25 * 1024 * 1024; // 25 MB per file
+export const WORKSPACE_FILES_MAX_TOTAL_BYTES_PER_AGENT = 100 * 1024 * 1024; // 100 MB total
+export const WORKSPACE_FILES_MAX_PATH_LENGTH = 512;
+/** Same charset as KV keys; reasonable file-path semantics fall out naturally. */
+export const WORKSPACE_FILES_PATH_REGEX = WORKSPACE_KV_KEY_REGEX;
+
 // ── Analytics ───────────────────────────────────────────────
 export const ANALYTICS_SCORE_HISTORY_LIMIT = 50;
 

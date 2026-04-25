@@ -29,6 +29,9 @@ import type {
   WorkspaceEntry,
   WorkspaceListResult,
   WorkspaceQuotaSnapshot,
+  WorkspaceFileMetadata,
+  WorkspaceFilesListResult,
+  WorkspaceFilesQuotaSnapshot,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.vercel.app";
@@ -793,6 +796,96 @@ class WorkspaceResource {
     const res = await fetch(url, { headers: this.headers });
     return handleResponse<WorkspaceQuotaSnapshot>(res);
   }
+
+  // ── Files (D26) ────────────────────────────────────────────
+
+  /**
+   * Upload a file to your persistent agent workspace. `bytes` accepts a
+   * Uint8Array, a Buffer, or any ArrayBuffer view. Sent as raw octet-stream
+   * with the path in `X-Workspace-Path` to avoid base64 bloat.
+   *
+   * Caps: 25MB per file, 100MB total per agent, 1k files per agent.
+   */
+  async uploadFile(
+    path: string,
+    bytes: Uint8Array | ArrayBuffer | Buffer,
+    opts: { contentType?: string } = {}
+  ): Promise<WorkspaceFileMetadata> {
+    const url = buildUrl(this.baseUrl, "/api/v1/workspace/files");
+    const body: BodyInit =
+      bytes instanceof Uint8Array
+        ? new Blob([bytes as unknown as ArrayBuffer])
+        : bytes instanceof ArrayBuffer
+        ? new Blob([bytes])
+        : new Blob([bytes as unknown as ArrayBuffer]);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        ...this.headers,
+        "Content-Type": "application/octet-stream",
+        "X-Workspace-Path": path,
+        "X-Workspace-Content-Type": opts.contentType ?? "application/octet-stream",
+      },
+      body,
+    });
+    return handleResponse<WorkspaceFileMetadata>(res);
+  }
+
+  /** Download a file's bytes. Returns a Uint8Array. */
+  async downloadFile(path: string): Promise<Uint8Array> {
+    const url = buildUrl(this.baseUrl, `/api/v1/workspace/files/${encodePath(path)}`);
+    const res = await fetch(url, { headers: this.headers });
+    if (!res.ok) {
+      let body: { error?: { message?: string; code?: string; details?: unknown } } = {};
+      try { body = await res.json(); } catch { /* not json */ }
+      throw new StrawApiError(
+        res.status,
+        body.error?.code ?? "DOWNLOAD_FAILED",
+        body.error?.message ?? `Download failed (HTTP ${res.status})`,
+        body.error?.details
+      );
+    }
+    return new Uint8Array(await res.arrayBuffer());
+  }
+
+  /** Get a file's metadata without downloading the bytes. */
+  async fileMetadata(path: string): Promise<WorkspaceFileMetadata> {
+    const url = buildUrl(this.baseUrl, `/api/v1/workspace/files/${encodePath(path)}`, {
+      metadata: "1",
+    });
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<WorkspaceFileMetadata>(res);
+  }
+
+  /** Delete a file. Idempotent. */
+  async deleteFile(path: string): Promise<{ deleted: boolean }> {
+    const url = buildUrl(this.baseUrl, `/api/v1/workspace/files/${encodePath(path)}`);
+    const res = await fetch(url, { method: "DELETE", headers: this.headers });
+    return handleResponse<{ deleted: boolean }>(res);
+  }
+
+  /** List files (metadata only). */
+  async listFiles(opts: { prefix?: string; limit?: number; cursor?: string } = {}): Promise<WorkspaceFilesListResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/workspace/files", {
+      prefix: opts.prefix,
+      limit: opts.limit,
+      cursor: opts.cursor,
+    });
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<WorkspaceFilesListResult>(res);
+  }
+
+  /** Current files usage against the per-agent caps. Distinct from KV quota. */
+  async filesQuota(): Promise<WorkspaceFilesQuotaSnapshot> {
+    const url = buildUrl(this.baseUrl, "/api/v1/workspace/files/quota");
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<WorkspaceFilesQuotaSnapshot>(res);
+  }
+}
+
+/** Encode a workspace path for use in a URL — preserves slashes, escapes the rest. */
+function encodePath(path: string): string {
+  return path.split("/").map(encodeURIComponent).join("/");
 }
 
 // ── Main Client ─────────────────────────────────────────────
