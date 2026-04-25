@@ -262,3 +262,39 @@ Lesson worth noting: every new endpoint should be checked against "what new info
 **Next (Block 4c or pivot):** `patch` submissions are real engineering — server stores deltas, applies them to the last submission's tree at re-eval time. Or pivot to substrate primitive #6 (cross-task semantic search via pgvector) which is a self-contained piece. The next loop wake should pick based on what feels most under-served.
 
 ---
+
+## Block 6a — Cross-task FTS search (2026-04-25)
+
+**Goal:** Substrate primitive #6 from the dream doc. Daemons should be able to search across the full task corpus, not just list with one or two filter knobs. FTS first; pgvector embeddings come in 6b (substantively different capability).
+
+**What landed:**
+- `supabase/migrations/034_task_search.sql` — `tasks.search_tsv` generated tsvector column with `setweight` per field (title=A, category=B, description=C, specs=D). GIN index. **NOT applied to prod.** Generated columns auto-populate on writes and re-index on reads, so zero application maintenance.
+- `src/services/search.service.ts` — `searchTasks(db, opts)` using `websearch_to_tsquery` via supabase-js `textSearch`. Cursor pagination via `${created_at}|${id}`. Default status filter excludes drafts.
+- `src/services/search.service.test.ts` — 5 cases: empty query rejection, oversize query rejection, pagination has_more, single-page no-cursor, rank attached.
+- `src/app/api/v1/search/tasks/route.ts` — `GET /api/v1/search/tasks` with full query/status/category/limit/cursor parsing.
+- `packages/agent-sdk/types.ts` + `index.ts` + `client.ts` — `SearchResource` + `client.search.tasks(opts)` + types.
+- `packages/mcp-server/src/tools/search.ts` — `search_tasks` MCP tool with budget+deadline-aware formatter.
+- `packages/mcp-server/src/index.ts` — registered + instructions block updated.
+- `tasks/DECISIONS.md` D27 — full record: weighting, default filter rationale, rank caveat (synthetic today, real ts_rank via RPC in 6a-stage-2), Block 6b roadmap (pgvector + embeddings), what was rejected.
+
+**Tests:** 853 green across the entire repo (was 848 before this block). tsc --noEmit clean.
+
+**Rank caveat documented:** the API returns `rank: number` but it's currently a position-based stub (1, 0.95, 0.9...) because supabase-js's typed builder doesn't expose `ts_rank`. Block 6a-stage-2 wires the real value via a Postgres RPC. The contract field is stable so consumers won't need to change when that lands.
+
+**Substrate primitive scoreboard (updated):**
+
+| # | Primitive | Status |
+|---|---|---|
+| 1 | Rich submission types | Schema + validation shipped (D23, 2a). Worker branches deferred (2b). |
+| 2 | SSE everywhere | **Done.** |
+| 3 | Persistent agent workspace | **Done.** KV (D24) + files (D26). |
+| 4 | Dialogic eval | request_re_eval shipped (D25). `ask` killed. `patch` deferred. |
+| 5 | Massive MCP surface | **~25 tools** now. |
+| 6 | Cross-task search | FTS shipped (D27, 6a). pgvector embeddings deferred (6b). |
+| 7 | Long-running checkpoints | Not started. |
+
+5 of 7 primitives substantively shipped (with sub-blocks remaining). The schema-only primitives (1) and the missing one (7) are the next horizons.
+
+**Next:** Either Block 7 (long-running checkpoints — let an agent save partial progress, get a non-binding sanity score, keep going), Block 6b (pgvector embeddings — semantic similarity), or Block 2b (worker integration for the rich submission kinds we already validated). Loop wake operator picks based on bandwidth vs depth.
+
+---

@@ -136,6 +136,35 @@ export interface WorkspaceFilesQuotaSnapshot {
   per_file_byte_limit: number;
 }
 
+// ── Search (D27) ─────────────────────────────────────────────
+
+export interface TaskSearchHit {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string | null;
+  status: string;
+  budget_cents: number;
+  deadline: string;
+  eval_mode: string;
+  created_at: string;
+  rank: number;
+}
+
+export interface SearchTasksResult {
+  data: TaskSearchHit[];
+  has_more: boolean;
+  next_cursor: string | null;
+}
+
+export interface SearchTasksOptions {
+  query: string;
+  status?: "open" | "closed" | "evaluating" | "any";
+  category?: string;
+  limit?: number;
+  cursor?: string;
+}
+
 /** Snapshot returned by the task events SSE stream. */
 export interface TaskEventSnapshot {
   id: string;

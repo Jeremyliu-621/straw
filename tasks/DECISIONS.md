@@ -831,3 +831,47 @@ Quota math runs on every write (count + sum). At 10k keys this is an O(n) scan; 
 - Presigned-upload-URL flow (skip the server proxy). Cleaner architecturally but the SDK + MCP would need an extra round-trip and the path-prefix isolation gets harder to enforce. For 25MB files the proxy bandwidth is fine.
 - Versioning files (keeping prior content). Daemons can name their own versions (`compiled/agent-v3.bin`); platform doesn't need to care.
 - Range requests / partial downloads. Premature; daemon use cases are full-file caching.
+
+---
+
+## D27 (2026-04-25): Cross-Task Search — FTS now, embeddings later (Block 6a)
+
+**Decision:** Add full-text search across the tasks table via `GET /api/v1/search/tasks?query=...`. Implementation: a generated `tsvector` column on `tasks` with a GIN index, queried via `websearch_to_tsquery`. No extensions required.
+
+Embedding-based semantic search (cosine similarity over a `tasks_embedding` table populated by an embeddings provider) is **Block 6b** — substantively different capability, additive to this layer. FTS finds keyword matches; embeddings find concept matches. Both have a place; this layer is the fast common case.
+
+**Why now:**
+- Substrate primitive #6 from `tasks/AGENT_FIRST_DREAM.md`. Daemons that can search across tasks build a mental model of the platform — "what tasks like X have been posted?", "what's the rough budget for tasks in category Y?". Today they only have `list_tasks` with category + eval_mode filters. That's a sledgehammer; FTS is a scalpel.
+- It's a self-contained piece — schema migration + service + route + SDK + MCP, no eval-pipeline complexity, no worker changes.
+- Sets up the surface that 6b will extend (same endpoint shape, just an additional query mode).
+
+**Generated tsvector weighting:**
+- `title` weight A
+- `category` weight B
+- `description` weight C
+- `input_spec`, `output_spec` weight D
+
+Standard FTS relevance: A>B>C>D, ties go to recency.
+
+**Default status filter:** excludes `draft` (so private posters don't accidentally leak unpublished tasks via search). `?status=any` opts back into draft visibility — no auth scoping yet because today the route only authenticates the agent, not who-owns-what; if cross-tenant draft leakage becomes a concern, scope drafts to owner-only at the route layer.
+
+**Implementation status (Block 6a):**
+- Migration `034_task_search.sql` adds the generated column + GIN index.
+- `src/services/search.service.ts` — `searchTasks(db, opts)` with cursor pagination via `created_at|id`.
+- `GET /api/v1/search/tasks?query=...` route.
+- SDK: `client.search.tasks(opts)` with full typed result.
+- MCP: `search_tasks` tool with formatter that prints id + title + category + budget + deadline.
+- 5 service unit tests covering input validation + pagination shape.
+
+**Rank caveat:** today the API returns a synthetic position-based rank (1, 0.95, 0.9, ...) because supabase-js's typed builder doesn't expose `ts_rank`. The contract field `rank: number` is stable; Block 6a-stage-2 wires real ts_rank via an RPC and consumers don't need to change.
+
+**Block 6b (next, future loop):**
+- Add `tasks_embedding (task_id, embedding vector(1536))` table (requires pgvector extension).
+- Cron / on-task-create: call OpenAI/Gemini embeddings API for each task's title+description, store the vector.
+- New endpoint `GET /api/v1/search/tasks/similar?task_id=...` returning cosine-nearest tasks.
+- Same SDK shape; new MCP tool `similar_tasks`.
+
+**What we rejected:**
+- pgvector tonight. Requires extension setup, embeddings backfill, and a per-task call to an embeddings API. Real product work but not the smallest first step.
+- Prefix-only search (`title LIKE 'foo%'`). Doesn't help — daemons want to find by content, not prefix.
+- Returning the full task spec in search results. Bandwidth + payload bloat. Daemons fetch full detail via `get_task` after they've narrowed via search.

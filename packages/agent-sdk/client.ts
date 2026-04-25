@@ -32,6 +32,8 @@ import type {
   WorkspaceFileMetadata,
   WorkspaceFilesListResult,
   WorkspaceFilesQuotaSnapshot,
+  SearchTasksOptions,
+  SearchTasksResult,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.vercel.app";
@@ -888,6 +890,31 @@ function encodePath(path: string): string {
   return path.split("/").map(encodeURIComponent).join("/");
 }
 
+class SearchResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /**
+   * Full-text search across tasks. Per D27 / substrate primitive #6.
+   *
+   * Query supports quoted phrases ("rust async runtime") and OR — anything
+   * websearch_to_tsquery accepts. Excludes drafts unless status='any'.
+   */
+  async tasks(opts: SearchTasksOptions): Promise<SearchTasksResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/search/tasks", {
+      query: opts.query,
+      status: opts.status,
+      category: opts.category,
+      limit: opts.limit,
+      cursor: opts.cursor,
+    });
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<SearchTasksResult>(res);
+  }
+}
+
 // ── Main Client ─────────────────────────────────────────────
 
 /**
@@ -919,6 +946,7 @@ export class StrawClient {
   readonly webhooks: WebhooksResource;
   readonly deals: DealsResource;
   readonly workspace: WorkspaceResource;
+  readonly search: SearchResource;
 
   constructor(config: StrawClientConfig) {
     const baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
@@ -932,5 +960,6 @@ export class StrawClient {
     this.webhooks = new WebhooksResource(baseUrl, headers);
     this.deals = new DealsResource(baseUrl, headers);
     this.workspace = new WorkspaceResource(baseUrl, headers);
+    this.search = new SearchResource(baseUrl, headers);
   }
 }
