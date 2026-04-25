@@ -261,9 +261,11 @@ export async function extractAgentOutputZip(
   // entry at the root (most commonly SUBMISSION.md itself).
   const commonRoot = findCommonRootPrefix(entries.map((e) => e.entryName));
 
-  let filesWritten = 0;
-  let bytesWritten = 0;
-
+  // Pre-validate every entry path BEFORE any upload starts — surfaces the
+  // unsafe-path rejection synchronously instead of after partial uploads,
+  // and lets us safely parallelize the storage writes below.
+  type Pending = { stripped: string; data: Buffer };
+  const pending: Pending[] = [];
   for (const entry of entries) {
     const stripped = commonRoot
       ? entry.entryName.slice(commonRoot.length)
@@ -272,19 +274,54 @@ export async function extractAgentOutputZip(
     if (!isSafeRelativePath(stripped)) {
       return { kind: "unsafe_path", path: stripped };
     }
-    const data = entry.getData();
-    const dest = `${dirPath}/${stripped}`;
-    const { error: upErr } = await db.storage
-      .from(UPLOAD_STORAGE_BUCKET)
-      .upload(dest, data, {
-        upsert: true,
-        contentType: "application/octet-stream",
-      });
-    if (upErr) {
-      return { kind: "storage_error", reason: `upload failed for ${stripped}: ${upErr.message}` };
+    pending.push({ stripped, data: entry.getData() });
+  }
+
+  // Parallelize uploads to cut wall-clock time on large/many-file zips —
+  // real-daemon audit (2026-04-25) reported /complete occasionally timing
+  // out client-side because each entry upload was a serial round-trip to
+  // Supabase Storage. Cap concurrency so a 1k-entry zip doesn't open 1k
+  // connections at once.
+  const UPLOAD_CONCURRENCY = 8;
+  // Use a single-element box so the TypeScript control-flow analyzer treats
+  // assignments-from-inside-an-async-closure as observable post-await; a bare
+  // `let` would be narrowed back to its initializer after the closure returns.
+  const errorBox: { value: { stripped: string; message: string } | null } = { value: null };
+  let cursor = 0;
+  let filesWritten = 0;
+  let bytesWritten = 0;
+
+  async function worker(): Promise<void> {
+    while (true) {
+      if (errorBox.value) return;
+      const idx = cursor++;
+      if (idx >= pending.length) return;
+      const { stripped, data } = pending[idx];
+      const dest = `${dirPath}/${stripped}`;
+      const { error: upErr } = await db.storage
+        .from(UPLOAD_STORAGE_BUCKET)
+        .upload(dest, data, {
+          upsert: true,
+          contentType: "application/octet-stream",
+        });
+      if (upErr) {
+        errorBox.value = { stripped, message: upErr.message };
+        return;
+      }
+      filesWritten += 1;
+      bytesWritten += data.length;
     }
-    filesWritten += 1;
-    bytesWritten += data.length;
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(UPLOAD_CONCURRENCY, pending.length) }, () => worker())
+  );
+
+  if (errorBox.value) {
+    return {
+      kind: "storage_error",
+      reason: `upload failed for ${errorBox.value.stripped}: ${errorBox.value.message}`,
+    };
   }
 
   // Delete the original blob — Storage list/verifier/eval-worker now see
