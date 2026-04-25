@@ -66,16 +66,16 @@ async function readStreamFully(stream: ReadableStream<Uint8Array>, capMs = 1000)
   const reader = stream.getReader();
   const decoder = new TextDecoder();
   let out = "";
-  const deadline = Date.now() + capMs;
-  while (Date.now() < deadline) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    out += decoder.decode(value);
-  }
+  // Force-cancel after capMs so a long-poll runner doesn't block the test.
+  const cancelTimer = setTimeout(() => { reader.cancel().catch(() => {}); }, capMs);
   try {
-    await reader.cancel();
-  } catch {
-    /* already closed */
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      out += decoder.decode(value);
+    }
+  } finally {
+    clearTimeout(cancelTimer);
   }
   return out;
 }

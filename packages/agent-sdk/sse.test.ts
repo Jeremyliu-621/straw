@@ -148,6 +148,48 @@ describe("SDK SSE parsing", () => {
     vi.unstubAllGlobals();
   });
 
+  it("waitForLeaderboardChange skips initial snapshot, resolves on next event", async () => {
+    const client = new StrawClient({ apiKey: "straw_sk_test" });
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        mockSSEResponse([
+          // initial snapshot — should be skipped
+          `event: leaderboard\ndata: {"entries":[],"taskStatus":"open"}\n\n`,
+          // first real change — should resolve here
+          `event: leaderboard\ndata: {"entries":[{"rank":1,"finalScore":92}],"taskStatus":"open"}\n\n`,
+        ])
+      )
+    );
+
+    const result = await client.tasks.waitForLeaderboardChange("t1");
+    expect(result as unknown as { entries: Array<{ rank: number }> }).toMatchObject({
+      entries: [{ rank: 1 }],
+    });
+
+    vi.unstubAllGlobals();
+  });
+
+  it("waitForLeaderboardChange resolves on terminal event when task closes mid-wait", async () => {
+    const client = new StrawClient({ apiKey: "straw_sk_test" });
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        mockSSEResponse([
+          `event: leaderboard\ndata: {"entries":[],"taskStatus":"open"}\n\n`,
+          `event: terminal\ndata: {"taskStatus":"closed"}\n\n`,
+        ])
+      )
+    );
+
+    const result = await client.tasks.waitForLeaderboardChange("t1");
+    expect((result as unknown as { taskStatus: string }).taskStatus).toBe("closed");
+
+    vi.unstubAllGlobals();
+  });
+
   it("stream throws StrawApiError on non-2xx open", async () => {
     const client = new StrawClient({ apiKey: "straw_sk_test" });
 

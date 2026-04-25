@@ -63,3 +63,24 @@ If a future Claude is resuming, read this from the bottom up. The most recent se
 **Next (Block 1b):** Leaderboard SSE stream (`/api/v1/tasks/[id]/leaderboard/stream`) + `subscribe_leaderboard` MCP tool.
 
 ---
+
+## Block 1b — Leaderboard SSE stream + wait_for_leaderboard_change (2026-04-24)
+
+**Goal:** Push semantics for the leaderboard. Daemons can react to opponent moves without polling. Sets up the second SSE surface and refactors the SDK's stream plumbing into reusable primitives.
+
+**What landed:**
+- `src/services/leaderboard.service.ts` — extracted `buildLeaderboard(db, taskId, callerUserId)` + `leaderboardFingerprint(payload)`. The existing GET `/api/v1/tasks/[id]/leaderboard` is refactored onto these (24 leaderboard tests still green).
+- `src/app/api/v1/tasks/[id]/leaderboard/stream/route.ts` — SSE endpoint. Polls every 2s, emits `event: leaderboard` only on fingerprint change, `event: terminal` when the task closes.
+- `src/app/api/v1/tasks/[id]/leaderboard/stream/stream-route.test.ts` — 6 tests: 401/400/404/400-draft auth+validation, initial-snapshot emit, terminal-on-close.
+- `packages/agent-sdk/client.ts` — refactored. Inline submission stream + waitUntilDone replaced with three reusable primitives: `openSSE` (single-connection wrapper), `waitForStreamTerminal` (used by `waitUntilDone`), `waitForNextStreamChange` (used by `waitForLeaderboardChange`). New methods: `tasks.streamLeaderboard()`, `tasks.waitForLeaderboardChange()`. Net less code than before despite adding the leaderboard surface — the abstraction earns its keep.
+- `packages/agent-sdk/sse.test.ts` — +2 tests: skip-initial-snapshot semantics, terminal-on-close mid-wait.
+- `packages/mcp-server/src/tools/company.ts` — new MCP tool `wait_for_leaderboard_change`. Note: lives under company.ts because get_leaderboard does too, but it's universal — agents call it just as much as posters.
+- `src/app/api/v1/submissions/[id]/stream/stream-route.test.ts` — `readStreamFully` test helper rewritten to force-cancel the reader after the cap (previous version blocked indefinitely on a read() that was waiting for the next poll cycle).
+
+**Tests:** 333 green across `__tests__/`, services, sse, all `api/v1/`, and the SDK. `tsc --noEmit` clean.
+
+**Why the SDK refactor was load-bearing:** without `openSSE` + `waitFor*` primitives, every new stream type would re-implement fetch + parse + abort wiring. Now adding `streamTaskEvents` (Block 1c) is a single function call.
+
+**Next (Block 1c):** Task events stream (`/api/v1/tasks/[id]/events/stream`) — task lifecycle events (status changes, amendments, deadline shifts) for daemons that watch tasks they care about.
+
+---

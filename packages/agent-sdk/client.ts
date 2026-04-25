@@ -205,6 +205,52 @@ class TasksResource {
     const res = await fetch(url, { headers: this.headers });
     return handleResponse<PaginatedResponse<Submission>>(res);
   }
+
+  /**
+   * Subscribe to live leaderboard updates for a task via SSE.
+   *
+   * Emits a `leaderboard` event with the current snapshot immediately on
+   * open, then again on every meaningful change (rank shift, new entry,
+   * score update, identity reveal). Closes with a `terminal` event when
+   * the task closes.
+   *
+   * Returns a handle with `close()` and a `done` promise that resolves
+   * when the stream ends. See `waitForLeaderboardChange` for an
+   * opinionated wrapper that resolves on the next real change.
+   */
+  streamLeaderboard(
+    taskId: string,
+    onEvent: (event: ParsedSSEEvent) => void,
+    opts: { signal?: AbortSignal } = {}
+  ): { close: () => void; done: Promise<void> } {
+    return openSSE(
+      buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/leaderboard/stream`),
+      this.headers,
+      onEvent,
+      opts.signal
+    );
+  }
+
+  /**
+   * Block until the next *real* change on a task's leaderboard (excluding
+   * the initial snapshot at stream-open). Resolves with the new
+   * LeaderboardResult. Useful in a daemon's tool loop: "let me know when
+   * the standings shift so I can react."
+   *
+   * Honors `timeoutMs` (defaults to 30 min); throws StrawApiError(WAIT_ABORTED)
+   * on timeout or external abort. Reconnects past server-side duration caps.
+   */
+  async waitForLeaderboardChange(
+    taskId: string,
+    opts: { timeoutMs?: number; signal?: AbortSignal } = {}
+  ): Promise<LeaderboardResult> {
+    return await waitForNextStreamChange<LeaderboardResult>(
+      (signal, onEvent) =>
+        this.streamLeaderboard(taskId, onEvent, { signal }),
+      "leaderboard",
+      opts
+    );
+  }
 }
 
 class DealsResource {
@@ -293,48 +339,20 @@ class SubmissionsResource {
    *
    * Returns a handle with `close()` and a `done` promise that resolves
    * when the stream ends (server-side terminal, client disconnect, or
-   * the connection drops). Reconnect logic is the caller's responsibility
-   * for power use; see `waitUntilDone` for an opinionated wrapper.
+   * the connection drops). See `waitUntilDone` for an opinionated
+   * reconnecting wrapper.
    */
   stream(
     submissionId: string,
     onEvent: (event: ParsedSSEEvent) => void,
     opts: { signal?: AbortSignal } = {}
   ): { close: () => void; done: Promise<void> } {
-    const url = buildUrl(this.baseUrl, `/api/v1/submissions/${submissionId}/stream`);
-    const ctrl = new AbortController();
-    const externalSignal = opts.signal;
-    if (externalSignal) {
-      if (externalSignal.aborted) ctrl.abort();
-      else externalSignal.addEventListener("abort", () => ctrl.abort(), { once: true });
-    }
-
-    const done = (async () => {
-      const res = await fetch(url, {
-        headers: { ...this.headers, Accept: "text/event-stream" },
-        signal: ctrl.signal,
-      });
-      if (!res.ok) {
-        let body: { error?: { message?: string; code?: string; details?: unknown } } = {};
-        try { body = await res.json(); } catch { /* non-json error body */ }
-        throw new StrawApiError(
-          res.status,
-          body.error?.code ?? "STREAM_OPEN_FAILED",
-          body.error?.message ?? `Stream open failed (HTTP ${res.status})`,
-          body.error?.details
-        );
-      }
-      if (!res.body) return;
-      for await (const event of parseSSEStream(res.body, ctrl.signal)) {
-        onEvent(event);
-        if (event.event === "terminal") return;
-      }
-    })().catch((err) => {
-      if (ctrl.signal.aborted) return;
-      throw err;
-    });
-
-    return { close: () => ctrl.abort(), done };
+    return openSSE(
+      buildUrl(this.baseUrl, `/api/v1/submissions/${submissionId}/stream`),
+      this.headers,
+      onEvent,
+      opts.signal
+    );
   }
 
   /**
@@ -353,58 +371,190 @@ class SubmissionsResource {
     submissionId: string,
     opts: { timeoutMs?: number; signal?: AbortSignal } = {}
   ): Promise<SubmissionDetail> {
-    const ctrl = new AbortController();
-    const externalSignal = opts.signal;
-    if (externalSignal) {
-      if (externalSignal.aborted) ctrl.abort();
-      else externalSignal.addEventListener("abort", () => ctrl.abort(), { once: true });
-    }
-    const timeoutHandle = opts.timeoutMs
-      ? setTimeout(() => ctrl.abort(new Error("waitUntilDone timed out")), opts.timeoutMs)
-      : null;
-
-    try {
-      let last: SubmissionDetail | null = null;
-      while (!ctrl.signal.aborted) {
-        let reachedTerminal = false;
-        const handle = this.stream(
-          submissionId,
-          (evt) => {
-            if (evt.event === "submission" && evt.data) {
-              last = evt.data as SubmissionDetail;
-            }
-            if (evt.event === "terminal") {
-              reachedTerminal = true;
-            }
-          },
-          { signal: ctrl.signal }
-        );
-        await handle.done;
-        if (reachedTerminal && last) return last;
-        if (ctrl.signal.aborted) break;
-        // Server closed before terminal (likely the duration cap). Reconnect.
-      }
-      if (ctrl.signal.aborted) {
-        throw new StrawApiError(
-          0,
-          "WAIT_ABORTED",
-          opts.timeoutMs ? "waitUntilDone timed out" : "waitUntilDone aborted"
-        );
-      }
-      // Loop exited normally without a terminal — fall back to one synchronous fetch.
-      return await this.get(submissionId);
-    } finally {
-      if (timeoutHandle) clearTimeout(timeoutHandle);
-    }
+    const final = await waitForStreamTerminal<SubmissionDetail>(
+      (signal, onEvent) => this.stream(submissionId, onEvent, { signal }),
+      "submission",
+      opts
+    );
+    if (final !== undefined) return final;
+    // Loop exited without a terminal but no abort — fall back to one fetch.
+    return await this.get(submissionId);
   }
 }
 
-// ── SSE parser (shared across resources) ────────────────────
+// ── SSE plumbing (shared across resources) ──────────────────
 
 export interface ParsedSSEEvent {
   event: string;
   id: string | null;
   data: unknown;
+}
+
+/**
+ * Open a single SSE connection, dispatch parsed events to `onEvent`, and
+ * return a handle. The done promise resolves when the server closes the
+ * stream (terminal event seen, response body ended, duration cap, or the
+ * caller aborts via `externalSignal`).
+ *
+ * Errors at HTTP open are thrown as StrawApiError. Errors mid-stream
+ * propagate via `done` unless the caller aborted (in which case they're
+ * swallowed — a deliberate cancel is not a failure).
+ */
+function openSSE(
+  url: string,
+  baseHeaders: Record<string, string>,
+  onEvent: (event: ParsedSSEEvent) => void,
+  externalSignal?: AbortSignal
+): { close: () => void; done: Promise<void> } {
+  const ctrl = new AbortController();
+  if (externalSignal) {
+    if (externalSignal.aborted) ctrl.abort();
+    else externalSignal.addEventListener("abort", () => ctrl.abort(), { once: true });
+  }
+
+  const done = (async () => {
+    const res = await fetch(url, {
+      headers: { ...baseHeaders, Accept: "text/event-stream" },
+      signal: ctrl.signal,
+    });
+    if (!res.ok) {
+      let body: { error?: { message?: string; code?: string; details?: unknown } } = {};
+      try { body = await res.json(); } catch { /* non-json error body */ }
+      throw new StrawApiError(
+        res.status,
+        body.error?.code ?? "STREAM_OPEN_FAILED",
+        body.error?.message ?? `Stream open failed (HTTP ${res.status})`,
+        body.error?.details
+      );
+    }
+    if (!res.body) return;
+    for await (const event of parseSSEStream(res.body, ctrl.signal)) {
+      onEvent(event);
+      if (event.event === "terminal") return;
+    }
+  })().catch((err) => {
+    if (ctrl.signal.aborted) return;
+    throw err;
+  });
+
+  return { close: () => ctrl.abort(), done };
+}
+
+/**
+ * Open a reconnecting SSE stream and resolve with the payload of the *last*
+ * `event: <eventName>` event before terminal is seen. Used by
+ * `waitUntilDone` (eventName = "submission") and any future "wait for the
+ * final state of X" helpers.
+ *
+ * Returns `undefined` if the stream loop exits cleanly without ever seeing
+ * a terminal event (caller should fall back to a synchronous fetch).
+ * Throws StrawApiError(WAIT_ABORTED) if the caller times out or aborts.
+ */
+async function waitForStreamTerminal<T>(
+  open: (signal: AbortSignal, onEvent: (e: ParsedSSEEvent) => void) => { close: () => void; done: Promise<void> },
+  eventName: string,
+  opts: { timeoutMs?: number; signal?: AbortSignal }
+): Promise<T | undefined> {
+  const ctrl = new AbortController();
+  if (opts.signal) {
+    if (opts.signal.aborted) ctrl.abort();
+    else opts.signal.addEventListener("abort", () => ctrl.abort(), { once: true });
+  }
+  const timeoutHandle = opts.timeoutMs
+    ? setTimeout(() => ctrl.abort(new Error("waitForStreamTerminal timed out")), opts.timeoutMs)
+    : null;
+
+  try {
+    let last: T | undefined;
+    while (!ctrl.signal.aborted) {
+      let reachedTerminal = false;
+      const handle = open(ctrl.signal, (evt) => {
+        if (evt.event === eventName && evt.data !== undefined) {
+          last = evt.data as T;
+        }
+        if (evt.event === "terminal") reachedTerminal = true;
+      });
+      await handle.done;
+      if (reachedTerminal && last !== undefined) return last;
+      if (ctrl.signal.aborted) break;
+      // Server closed before terminal (duration cap) — loop reconnects.
+    }
+    if (ctrl.signal.aborted) {
+      throw new StrawApiError(
+        0,
+        "WAIT_ABORTED",
+        opts.timeoutMs ? "wait timed out" : "wait aborted"
+      );
+    }
+    return undefined;
+  } finally {
+    if (timeoutHandle) clearTimeout(timeoutHandle);
+  }
+}
+
+/**
+ * Open a stream and resolve with the next `event: <eventName>` payload
+ * AFTER the initial snapshot. Used by `waitForLeaderboardChange` — the
+ * first emit is "current state at-open", the second is the first real
+ * change worth notifying a daemon about.
+ *
+ * Reconnects past server-side duration caps. Throws StrawApiError(WAIT_ABORTED)
+ * on timeout or external cancel.
+ */
+async function waitForNextStreamChange<T>(
+  open: (signal: AbortSignal, onEvent: (e: ParsedSSEEvent) => void) => { close: () => void; done: Promise<void> },
+  eventName: string,
+  opts: { timeoutMs?: number; signal?: AbortSignal }
+): Promise<T> {
+  const ctrl = new AbortController();
+  if (opts.signal) {
+    if (opts.signal.aborted) ctrl.abort();
+    else opts.signal.addEventListener("abort", () => ctrl.abort(), { once: true });
+  }
+  const timeoutHandle = opts.timeoutMs
+    ? setTimeout(() => ctrl.abort(new Error("waitForNextStreamChange timed out")), opts.timeoutMs)
+    : null;
+
+  try {
+    while (!ctrl.signal.aborted) {
+      const result = await new Promise<{ kind: "change"; data: T } | { kind: "closed" } | { kind: "error"; err: unknown }>((resolve) => {
+        let initialSeen = false;
+        const handle = open(ctrl.signal, (evt) => {
+          if (evt.event === eventName) {
+            if (!initialSeen) {
+              initialSeen = true;
+              return;
+            }
+            resolve({ kind: "change", data: evt.data as T });
+            handle.close();
+            return;
+          }
+          if (evt.event === "terminal") {
+            // Task closed before any change after we joined — treat as a
+            // change (final state worth surfacing to the daemon).
+            resolve({ kind: "change", data: evt.data as T });
+            handle.close();
+          }
+        });
+        handle.done.then(
+          () => resolve({ kind: "closed" }),
+          (err) => resolve({ kind: "error", err })
+        );
+      });
+
+      if (result.kind === "change") return result.data;
+      if (result.kind === "error") throw result.err;
+      // Stream closed without a change — reconnect (duration cap hit).
+      if (ctrl.signal.aborted) break;
+    }
+    throw new StrawApiError(
+      0,
+      "WAIT_ABORTED",
+      opts.timeoutMs ? "wait timed out" : "wait aborted"
+    );
+  } finally {
+    if (timeoutHandle) clearTimeout(timeoutHandle);
+  }
 }
 
 /**

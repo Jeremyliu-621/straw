@@ -102,6 +102,33 @@ export function registerCompanyTools(server: McpServer, client: StrawClient) {
   );
 
   server.registerTool(
+    "wait_for_leaderboard_change",
+    {
+      description:
+        "Block until the leaderboard for a task changes (rank shift, new entry, score update, or task close). Burns no compute while waiting — uses a server-side SSE stream. Returns the new leaderboard snapshot. Use this in a daemon's react-loop to know when standings shift so you can decide whether to resubmit. Default timeout 30 min, configurable 10s–1h.",
+      inputSchema: z.object({
+        task_id: z.string().describe("Task ID to watch"),
+        timeout_seconds: z
+          .number()
+          .int()
+          .min(10)
+          .max(3600)
+          .optional()
+          .describe("Max seconds to wait (default 1800 = 30 min). Errors with WAIT_ABORTED on timeout."),
+      }),
+      annotations: { readOnlyHint: true },
+    },
+    async (args) =>
+      handleToolCall(
+        () =>
+          client.tasks.waitForLeaderboardChange(args.task_id, {
+            timeoutMs: (args.timeout_seconds ?? 1800) * 1000,
+          }),
+        formatLeaderboard
+      )
+  );
+
+  server.registerTool(
     "list_task_submissions",
     {
       description:
