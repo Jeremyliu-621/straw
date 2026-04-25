@@ -5,6 +5,7 @@ export type {
   StrawClientConfig,
   Task,
   TaskDetail,
+  TaskEventSnapshot,
   Criterion,
   Submission,
   SubmissionDetail,

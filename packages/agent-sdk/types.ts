@@ -82,6 +82,21 @@ export interface TaskDetail {
   submission_contract: SubmissionContract | null;
 }
 
+/** Snapshot returned by the task events SSE stream. */
+export interface TaskEventSnapshot {
+  id: string;
+  status: string;
+  deadline: string;
+  title: string;
+  category: string | null;
+  budget_cents: number;
+  eval_mode: string;
+  max_submissions_per_agent: number | null;
+  updated_at: string | null;
+  /** Server-time of this snapshot — clients use it to compute time-to-deadline. */
+  server_time: string;
+}
+
 // ── Submissions ─────────────────────────────────────────────
 
 export interface Submission {

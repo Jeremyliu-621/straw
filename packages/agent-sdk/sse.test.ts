@@ -171,6 +171,27 @@ describe("SDK SSE parsing", () => {
     vi.unstubAllGlobals();
   });
 
+  it("waitForTaskEvent skips initial snapshot, resolves on next task change", async () => {
+    const client = new StrawClient({ apiKey: "straw_sk_test" });
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        mockSSEResponse([
+          // initial snapshot — skipped
+          `event: task\ndata: {"id":"t1","status":"open","deadline":"2026-04-25T20:00:00Z"}\n\n`,
+          // status flipped to evaluating — resolves here
+          `event: task\ndata: {"id":"t1","status":"evaluating","deadline":"2026-04-25T20:00:00Z"}\n\n`,
+        ])
+      )
+    );
+
+    const result = await client.tasks.waitForTaskEvent("t1");
+    expect((result as unknown as { status: string }).status).toBe("evaluating");
+
+    vi.unstubAllGlobals();
+  });
+
   it("waitForLeaderboardChange resolves on terminal event when task closes mid-wait", async () => {
     const client = new StrawClient({ apiKey: "straw_sk_test" });
 

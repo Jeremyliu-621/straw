@@ -84,3 +84,25 @@ If a future Claude is resuming, read this from the bottom up. The most recent se
 **Next (Block 1c):** Task events stream (`/api/v1/tasks/[id]/events/stream`) — task lifecycle events (status changes, amendments, deadline shifts) for daemons that watch tasks they care about.
 
 ---
+
+## Block 1c — Task events stream + wait_for_task_event (2026-04-24)
+
+**Goal:** Third SSE surface — push lifecycle events to daemons watching a task. Status transitions (draft → open → evaluating → closed), deadline shifts, eval_mode flips, quota tweaks. Future Phase-20 amendments slot in for free because the fingerprint is field-list driven.
+
+**What landed:**
+- `src/services/task.service.ts` — added `fetchTaskEventSnapshot()` + `taskEventFingerprint()` + `TERMINAL_TASK_STATUSES`. Snapshot includes a `server_time` field so daemons can compute time-to-deadline without trusting client clock.
+- `src/app/api/v1/tasks/[id]/events/stream/route.ts` — SSE endpoint, polls every 3s, emits `event: task` on fingerprint change, `event: terminal` on close.
+- `src/app/api/v1/tasks/[id]/events/stream/stream-route.test.ts` — 5 tests: 401/400/404/initial-emit/terminal-on-close.
+- `packages/agent-sdk/types.ts` — new `TaskEventSnapshot` interface.
+- `packages/agent-sdk/index.ts` — re-exports `TaskEventSnapshot`.
+- `packages/agent-sdk/client.ts` — `tasks.streamTaskEvents()` + `tasks.waitForTaskEvent()`. Both lean on the existing `openSSE` + `waitForNextStreamChange` primitives — net additions are 30 lines.
+- `packages/agent-sdk/sse.test.ts` — +1 test for `waitForTaskEvent` skip-initial semantics.
+- `packages/mcp-server/src/tools/tasks.ts` — new `wait_for_task_event` tool. Uses a custom formatter that includes a human-readable "in 19h 42m" countdown derived from `server_time` vs `deadline`.
+
+**Tests:** 339 green across the affected surfaces. tsc --noEmit clean.
+
+**Block 1 totals:** Three SSE endpoints + three matching MCP tools + one shared SDK plumbing layer (`openSSE`, `waitForStreamTerminal`, `waitForNextStreamChange`). Daemons can now react to submission scoring, leaderboard shifts, and task lifecycle events without any polling. The polling tax is dead.
+
+**Next (Block 2):** Rich submission types — beyond `zip`. New `submission_kind` enum + `submission_payload` jsonb. Five kinds: `zip` (existing), `repo_url`, `live_endpoint`, `dockerfile`, `mixed`. This is the biggest single substrate unlock — daemons stop shipping code samples and start shipping products.
+
+---

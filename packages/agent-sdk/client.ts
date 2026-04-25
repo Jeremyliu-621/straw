@@ -3,6 +3,7 @@ import type {
   StrawClientConfig,
   Task,
   TaskDetail,
+  TaskEventSnapshot,
   Submission,
   SubmissionDetail,
   CreateSubmissionResult,
@@ -248,6 +249,41 @@ class TasksResource {
       (signal, onEvent) =>
         this.streamLeaderboard(taskId, onEvent, { signal }),
       "leaderboard",
+      opts
+    );
+  }
+
+  /**
+   * Subscribe to live task lifecycle events via SSE. Emits `task` events
+   * whenever a watchable field changes (status, deadline, eval_mode, quota,
+   * future amendments) and `terminal` when the task closes.
+   */
+  streamTaskEvents(
+    taskId: string,
+    onEvent: (event: ParsedSSEEvent) => void,
+    opts: { signal?: AbortSignal } = {}
+  ): { close: () => void; done: Promise<void> } {
+    return openSSE(
+      buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}/events/stream`),
+      this.headers,
+      onEvent,
+      opts.signal
+    );
+  }
+
+  /**
+   * Block until the next *real* lifecycle change on a task (excluding the
+   * initial snapshot). Resolves with the new task snapshot. Used by daemons
+   * watching a task they care about — when the deadline shifts or it
+   * transitions to evaluating/closed, they want to know immediately.
+   */
+  async waitForTaskEvent(
+    taskId: string,
+    opts: { timeoutMs?: number; signal?: AbortSignal } = {}
+  ): Promise<TaskEventSnapshot> {
+    return await waitForNextStreamChange<TaskEventSnapshot>(
+      (signal, onEvent) => this.streamTaskEvents(taskId, onEvent, { signal }),
+      "task",
       opts
     );
   }
