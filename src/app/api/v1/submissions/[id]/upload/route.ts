@@ -10,7 +10,7 @@ import {
   AUDIT_ACTION,
 } from "@/constants";
 import { createEvaluationQueue, buildRedisConnection, type EvaluationJobData } from "@/lib/queue";
-import { getSubmissionStoragePath } from "@/services/upload.service";
+import { getSubmissionStoragePath, extractAgentOutputZip } from "@/services/upload.service";
 import { env } from "@/lib/env";
 import { AuditLogRepository } from "@/db/audit-log";
 
@@ -117,6 +117,33 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (uploadError) {
     console.error("Upload failed:", uploadError);
     return apiError("Failed to store upload", 500);
+  }
+
+  // D29: extract zip into loose files so the eval worker can read it.
+  // Pre-D29 the eval worker would download the agent_output blob and
+  // try to .text() it — for binary zips that produced garbage that the
+  // LLM judge couldn't make sense of. The extraction unifies all upload
+  // paths into the same loose-files Storage shape.
+  const extractResult = await extractAgentOutputZip(db, submission.id);
+  if (
+    extractResult.kind !== "extracted" &&
+    extractResult.kind !== "not_a_zip" &&
+    extractResult.kind !== "no_blob"
+  ) {
+    const code =
+      extractResult.kind === "too_many_entries"
+        ? "ZIP_TOO_MANY_ENTRIES"
+        : extractResult.kind === "too_large"
+          ? "ZIP_TOO_LARGE"
+          : extractResult.kind === "unsafe_path"
+            ? "ZIP_UNSAFE_PATH"
+            : "ZIP_EXTRACTION_FAILED";
+    return apiError(
+      `Failed to extract uploaded zip: ${JSON.stringify(extractResult)}`,
+      400,
+      code,
+      extractResult
+    );
   }
 
   // Update submission status
