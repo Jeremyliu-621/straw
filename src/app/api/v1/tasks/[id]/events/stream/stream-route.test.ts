@@ -129,4 +129,25 @@ describe("GET /api/v1/tasks/[id]/events/stream", () => {
     expect(body).toContain("event: terminal");
     expect(body).toContain('"status":"closed"');
   });
+
+  it(
+    "emits task event then terminal when status transitions to closed mid-stream",
+    async () => {
+      mockSequence = [
+        makeSnap({ status: TASK_STATUS.OPEN }),
+        makeSnap({ status: TASK_STATUS.OPEN }),
+        makeSnap({ status: TASK_STATUS.CLOSED }),
+      ];
+      const req = makeGetRequest("http://localhost:3000/api/v1/tasks/" + UUID.task1 + "/events/stream");
+      const res = await GET(req, makeParams(UUID.task1));
+
+      const body = await readStreamFully(res.body!, 12000);
+      expect(body).toContain('"status":"closed"');
+      expect(body).toContain("event: terminal");
+      const lastTaskIdx = body.lastIndexOf("event: task");
+      const terminalIdx = body.indexOf("event: terminal");
+      expect(terminalIdx).toBeGreaterThan(lastTaskIdx);
+    },
+    15000
+  );
 });
