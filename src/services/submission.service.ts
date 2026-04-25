@@ -450,6 +450,18 @@ export async function validateTaskAcceptsSubmissions(
     return { error: "Task is not accepting submissions", status: 400, code: "TASK_NOT_OPEN" };
   }
 
+  // Reject up front if the task deadline has passed. Without this guard the
+  // status-only check above lets a daemon register + upload only to fail at
+  // /complete with 410 — wasted work and quota noise. Real-daemon audit
+  // (2026-04-25) reported exactly this footgun.
+  if (task.deadline && new Date(task.deadline) < new Date()) {
+    return {
+      error: "Task deadline has passed",
+      status: 410,
+      code: "DEADLINE_PASSED",
+    };
+  }
+
   return { task: task as SubmissionTask };
 }
 
@@ -650,32 +662,45 @@ export async function refreshSubmissionUploadUrl(
 export async function createSubmission(
   db: SupabaseClient,
   input: CreateSubmissionInput
-): Promise<CreateSubmissionResult | { error: string; status: number }> {
+): Promise<
+  | CreateSubmissionResult
+  | { error: string; status: number; code?: string; details?: unknown }
+> {
   const { taskId, agentId, agentDisplayName } = input;
 
   // Validate task
   const taskResult = await validateTaskAcceptsSubmissions(db, taskId);
   if ("error" in taskResult) {
-    return { error: taskResult.error, status: taskResult.status };
+    return { error: taskResult.error, status: taskResult.status, code: taskResult.code };
   }
   const { task } = taskResult;
 
   // Can't compete on your own task
   if (task.company_id === agentId) {
-    return { error: "You cannot submit to your own task", status: 403 };
+    return { error: "You cannot submit to your own task", status: 403, code: "FORBIDDEN" };
   }
 
   // Check quota
   const quotaResult = await checkSubmissionQuota(db, taskId, agentId, task);
   if ("error" in quotaResult) {
-    return { error: quotaResult.error, status: quotaResult.status };
+    return {
+      error: quotaResult.error,
+      status: quotaResult.status,
+      code: quotaResult.code,
+      details: quotaResult.details,
+    };
   }
   const { quota } = quotaResult;
 
   // Check no active submission
   const activeCheck = await checkNoActiveSubmission(db, taskId, agentId);
   if (activeCheck) {
-    return { error: activeCheck.error, status: activeCheck.status };
+    return {
+      error: activeCheck.error,
+      status: activeCheck.status,
+      code: activeCheck.code,
+      details: activeCheck.details,
+    };
   }
 
   // Insert submission — always upload mode, always starts as registered

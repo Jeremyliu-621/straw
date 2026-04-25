@@ -62,7 +62,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   });
 
   if ("error" in result) {
-    return apiError(result.error, result.status);
+    return apiError(result.error, result.status, result.code, result.details);
   }
 
   // Fire-and-forget: webhook + audit

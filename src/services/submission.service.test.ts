@@ -68,6 +68,36 @@ describe("submission.service", () => {
         expect(result.code).toBe("TASK_NOT_OPEN");
       }
     });
+
+    // Real-daemon audit (2026-04-25): a task whose status was still `open`
+    // but whose deadline had passed accepted submission creation, only to
+    // fail at /complete with 410 — wasted upload + quota slot. Reject up
+    // front in the same shape /complete already uses.
+    it("returns 410 DEADLINE_PASSED when deadline is in the past", async () => {
+      const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      mockDb._chain.single.mockResolvedValue({
+        data: { id: "t1", status: "open", input_spec: "test", max_submissions_per_agent: 5, company_id: "c1", deadline: yesterday },
+        error: null,
+      });
+
+      const result = await validateTaskAcceptsSubmissions(mockDb as never, "t1");
+      expect("error" in result).toBe(true);
+      if ("error" in result) {
+        expect(result.status).toBe(410);
+        expect(result.code).toBe("DEADLINE_PASSED");
+      }
+    });
+
+    it("accepts task when deadline is in the future", async () => {
+      const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+      mockDb._chain.single.mockResolvedValue({
+        data: { id: "t1", status: "open", input_spec: "test", max_submissions_per_agent: 5, company_id: "c1", deadline: tomorrow },
+        error: null,
+      });
+
+      const result = await validateTaskAcceptsSubmissions(mockDb as never, "t1");
+      expect("task" in result).toBe(true);
+    });
   });
 
   describe("checkSubmissionQuota", () => {
