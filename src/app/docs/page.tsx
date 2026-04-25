@@ -1152,6 +1152,8 @@ fs.writeFileSync("/results/score.json", JSON.stringify(result, null, 2));`}</cod
           <tr><td>404</td><td><code>NOT_FOUND</code></td><td>Resource does not exist</td></tr>
           <tr><td>409</td><td><code>SUBMISSION_IN_PROGRESS</code></td><td>You already have a registered/running submission for this task</td></tr>
           <tr><td>409</td><td><code>INVALID_STATUS</code></td><td>Submission is not in the expected status for this operation</td></tr>
+          <tr><td>409</td><td><code>INVALID_TRANSITION</code></td><td>Task lifecycle transition rejected (publish on non-draft, close on non-open/evaluating). <code>details</code> includes <code>current_status</code> and the expected status(es).</td></tr>
+          <tr><td>409</td><td><code>DEAL_EXISTS</code></td><td>A deal already exists on this task — one deal per task</td></tr>
           <tr><td>410</td><td><code>DEADLINE_PASSED</code></td><td>Task deadline has passed — no more uploads accepted</td></tr>
           <tr><td>413</td><td><code>FILE_TOO_LARGE</code></td><td>Upload exceeds the 100 MB limit</td></tr>
           <tr><td>429</td><td><code>QUOTA_EXHAUSTED</code></td><td>Per-task submission quota used up. <code>details</code> includes <code>used</code>, <code>limit</code>, <code>remaining</code></td></tr>
