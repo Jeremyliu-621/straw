@@ -283,6 +283,198 @@ class SubmissionsResource {
     });
     return handleResponse<UploadResult>(res);
   }
+
+  /**
+   * Subscribe to live updates for a single submission via SSE.
+   *
+   * Calls `onEvent` for every event the server emits. Emits `submission`
+   * events (full detail payload) on state change and a final `terminal`
+   * event when scoring is complete.
+   *
+   * Returns a handle with `close()` and a `done` promise that resolves
+   * when the stream ends (server-side terminal, client disconnect, or
+   * the connection drops). Reconnect logic is the caller's responsibility
+   * for power use; see `waitUntilDone` for an opinionated wrapper.
+   */
+  stream(
+    submissionId: string,
+    onEvent: (event: ParsedSSEEvent) => void,
+    opts: { signal?: AbortSignal } = {}
+  ): { close: () => void; done: Promise<void> } {
+    const url = buildUrl(this.baseUrl, `/api/v1/submissions/${submissionId}/stream`);
+    const ctrl = new AbortController();
+    const externalSignal = opts.signal;
+    if (externalSignal) {
+      if (externalSignal.aborted) ctrl.abort();
+      else externalSignal.addEventListener("abort", () => ctrl.abort(), { once: true });
+    }
+
+    const done = (async () => {
+      const res = await fetch(url, {
+        headers: { ...this.headers, Accept: "text/event-stream" },
+        signal: ctrl.signal,
+      });
+      if (!res.ok) {
+        let body: { error?: { message?: string; code?: string; details?: unknown } } = {};
+        try { body = await res.json(); } catch { /* non-json error body */ }
+        throw new StrawApiError(
+          res.status,
+          body.error?.code ?? "STREAM_OPEN_FAILED",
+          body.error?.message ?? `Stream open failed (HTTP ${res.status})`,
+          body.error?.details
+        );
+      }
+      if (!res.body) return;
+      for await (const event of parseSSEStream(res.body, ctrl.signal)) {
+        onEvent(event);
+        if (event.event === "terminal") return;
+      }
+    })().catch((err) => {
+      if (ctrl.signal.aborted) return;
+      throw err;
+    });
+
+    return { close: () => ctrl.abort(), done };
+  }
+
+  /**
+   * Open an SSE stream and resolve with the submission detail once it reaches
+   * a terminal state (`completed`, `failed`, `evaluation_failed`).
+   *
+   * This is the polling-tax killer. Instead of `while (true) { sleep; get(); }`,
+   * an autonomous daemon awaits this once per submission and burns no compute
+   * while waiting.
+   *
+   * Reconnects automatically if the server closes the stream before reaching
+   * a terminal state (e.g. function timeout). Honors `timeoutMs` and an
+   * external `signal`.
+   */
+  async waitUntilDone(
+    submissionId: string,
+    opts: { timeoutMs?: number; signal?: AbortSignal } = {}
+  ): Promise<SubmissionDetail> {
+    const ctrl = new AbortController();
+    const externalSignal = opts.signal;
+    if (externalSignal) {
+      if (externalSignal.aborted) ctrl.abort();
+      else externalSignal.addEventListener("abort", () => ctrl.abort(), { once: true });
+    }
+    const timeoutHandle = opts.timeoutMs
+      ? setTimeout(() => ctrl.abort(new Error("waitUntilDone timed out")), opts.timeoutMs)
+      : null;
+
+    try {
+      let last: SubmissionDetail | null = null;
+      while (!ctrl.signal.aborted) {
+        let reachedTerminal = false;
+        const handle = this.stream(
+          submissionId,
+          (evt) => {
+            if (evt.event === "submission" && evt.data) {
+              last = evt.data as SubmissionDetail;
+            }
+            if (evt.event === "terminal") {
+              reachedTerminal = true;
+            }
+          },
+          { signal: ctrl.signal }
+        );
+        await handle.done;
+        if (reachedTerminal && last) return last;
+        if (ctrl.signal.aborted) break;
+        // Server closed before terminal (likely the duration cap). Reconnect.
+      }
+      if (ctrl.signal.aborted) {
+        throw new StrawApiError(
+          0,
+          "WAIT_ABORTED",
+          opts.timeoutMs ? "waitUntilDone timed out" : "waitUntilDone aborted"
+        );
+      }
+      // Loop exited normally without a terminal — fall back to one synchronous fetch.
+      return await this.get(submissionId);
+    } finally {
+      if (timeoutHandle) clearTimeout(timeoutHandle);
+    }
+  }
+}
+
+// ── SSE parser (shared across resources) ────────────────────
+
+export interface ParsedSSEEvent {
+  event: string;
+  id: string | null;
+  data: unknown;
+}
+
+/**
+ * Iterate Server-Sent Events from a streaming Response body.
+ *
+ * Buffers across `\n\n` boundaries. Multi-line `data:` fields are joined with
+ * `\n` per the SSE spec. JSON-parses the data field (Straw never emits raw
+ * text). Comments (lines starting with `:`) are dropped — they're heartbeats.
+ */
+async function* parseSSEStream(
+  body: ReadableStream<Uint8Array>,
+  signal?: AbortSignal
+): AsyncGenerator<ParsedSSEEvent> {
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  // Cancelling the reader on abort lets in-flight `read()` settle promptly
+  // even when the underlying body is a synthetic stream that doesn't honor
+  // fetch's signal natively (tests, custom transports).
+  const onAbort = () => { reader.cancel().catch(() => {}); };
+  if (signal) {
+    if (signal.aborted) onAbort();
+    else signal.addEventListener("abort", onAbort, { once: true });
+  }
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        if (buffer.trim()) {
+          const parsed = parseSSEMessage(buffer);
+          if (parsed) yield parsed;
+        }
+        return;
+      }
+      buffer += decoder.decode(value, { stream: true });
+      let sepIdx: number;
+      while ((sepIdx = buffer.indexOf("\n\n")) !== -1) {
+        const raw = buffer.slice(0, sepIdx);
+        buffer = buffer.slice(sepIdx + 2);
+        const parsed = parseSSEMessage(raw);
+        if (parsed) yield parsed;
+      }
+    }
+  } finally {
+    if (signal) signal.removeEventListener("abort", onAbort);
+  }
+}
+
+function parseSSEMessage(raw: string): ParsedSSEEvent | null {
+  let event = "message";
+  let id: string | null = null;
+  const dataLines: string[] = [];
+  for (const lineRaw of raw.split("\n")) {
+    const line = lineRaw.replace(/\r$/, "");
+    if (!line) continue;
+    if (line.startsWith(":")) continue; // comment / heartbeat
+    const colonIdx = line.indexOf(":");
+    const field = colonIdx === -1 ? line : line.slice(0, colonIdx);
+    const value = colonIdx === -1 ? "" : line.slice(colonIdx + 1).replace(/^\s/, "");
+    if (field === "event") event = value;
+    else if (field === "id") id = value;
+    else if (field === "data") dataLines.push(value);
+  }
+  if (dataLines.length === 0) return null;
+  const dataStr = dataLines.join("\n");
+  let data: unknown = dataStr;
+  try { data = JSON.parse(dataStr); } catch { /* leave as string */ }
+  return { event, id, data };
 }
 
 class WebhooksResource {

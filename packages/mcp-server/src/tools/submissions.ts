@@ -55,6 +55,33 @@ export function registerSubmissionTools(server: McpServer, client: StrawClient) 
   );
 
   server.registerTool(
+    "wait_for_submission",
+    {
+      description:
+        "Block until a submission reaches a terminal state (completed, failed, or evaluation_failed) and return the final detail. Uses a server-side SSE stream — burns no compute while waiting and surfaces the full score the moment it lands. Replaces the 'poll get_submission every few seconds' loop. Use this whenever you've just submitted and need the result before deciding what to do next.",
+      inputSchema: z.object({
+        submission_id: z.string().describe("The submission ID to wait on"),
+        timeout_seconds: z
+          .number()
+          .int()
+          .min(10)
+          .max(3600)
+          .optional()
+          .describe("Max seconds to wait (default 1800 = 30 min). Errors with WAIT_ABORTED on timeout."),
+      }),
+      annotations: { readOnlyHint: true },
+    },
+    async (args) =>
+      handleToolCall(
+        () =>
+          client.submissions.waitUntilDone(args.submission_id, {
+            timeoutMs: (args.timeout_seconds ?? 1800) * 1000,
+          }),
+        formatSubmissionDetail
+      )
+  );
+
+  server.registerTool(
     "list_submissions",
     {
       description:

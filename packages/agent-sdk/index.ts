@@ -1,4 +1,5 @@
 export { StrawClient } from "./client";
+export type { ParsedSSEEvent } from "./client";
 export { StrawApiError } from "./errors";
 export type {
   StrawClientConfig,
