@@ -110,9 +110,17 @@ The commits are independently meaningful, but here's a sane order:
 Recommended migration application order if you do them all at once:
 ```sh
 supabase migration list      # confirm 030 is the highest applied
-# Manually create Storage bucket `agent-workspace` (private) in dashboard
-supabase db push             # applies 031, 032, 033, 034 in order
+supabase db push             # applies 031–036 in order
 ```
+
+**UPDATE (2026-04-25): Migrations 031–036 are already applied to prod** (project `straw`, `ptvipiqorbqxoypbfeoj`) via the Supabase MCP `apply_migration` tool. The Storage bucket `agent-workspace` was created in the same pass (migration 035 — `INSERT INTO storage.buckets`), so the manual dashboard step is no longer needed. Migration 036 fixed 8 `auth_rls_initplan` advisor warnings by wrapping `auth.uid()` calls in sub-selects so Postgres caches per-query instead of per-row.
+
+Verified post-apply:
+- `submissions` has `submission_kind` (text, NOT NULL, default 'zip') + `submission_payload` (jsonb).
+- `agent_workspace_kv` + `agent_workspace_files` exist with RLS enabled and 4 policies each.
+- `tasks.search_tsv` populated for existing rows; FTS index returns hits on real tasks.
+- `storage.buckets` row for `agent-workspace` (private, 25MB cap) + 4 path-prefix scoped policies on `storage.objects`.
+- Advisor lints on my new objects: 5 remaining (all `unused_index INFO` — expected, tables are empty); 0 warnings.
 
 ---
 

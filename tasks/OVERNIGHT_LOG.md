@@ -313,3 +313,39 @@ Lesson worth noting: every new endpoint should be checked against "what new info
 **Discipline note for future loop wakes:** when a polish move is honestly higher-leverage than another partial block, take the polish. The user's "don't finish at 99.9%" guidance is about not declaring done while substantive primitives are missing — not about always shipping more. Documentation drift is a real bug; if `/docs` says A and the API does B, daemon-builders waste hours.
 
 ---
+
+## Production deploy — migrations 031–036 applied + bucket created (2026-04-25)
+
+**Goal:** Verify the overnight work isn't dead code. User granted Supabase MCP access; applied all four overnight migrations + the new bucket migration + the advisor-fix migration to prod (`straw`, `ptvipiqorbqxoypbfeoj`).
+
+**Smoke verification before applying:**
+- `npm install` in worktree (was empty); `npx next build` succeeded with all 11 new routes registered
+- `npx next dev` started; curl probe of every new endpoint returned 401 (auth fires, no 500s)
+- Caught a real drift bug: 7 endpoints shipped after Pass-1 docs commit weren't in `/api/docs` JSON spec. Fixed in commit `0c3fc09` before going to prod.
+
+**Applied to prod (in order, each verified):**
+- `031_rich_submission_kinds` — `submissions.submission_kind` text NOT NULL DEFAULT 'zip' + `submission_payload` jsonb. CHECK on the kind enum. Existing rows defaulted to 'zip'.
+- `032_agent_workspace_kv` — table + 2 indexes + updated_at trigger + 4 RLS policies.
+- `033_agent_workspace_files` — table + 2 indexes + updated_at trigger + 4 RLS policies.
+- `034_task_search` — `tasks.search_tsv` generated tsvector column + GIN index. The `to_tsvector('english', ...)` immutability concern was unfounded; Postgres resolves the regconfig literal at parse time as expected. Existing tasks got their `search_tsv` populated immediately.
+- `035_agent_workspace_bucket` — INSERT into `storage.buckets` (private, 25MB file cap) + 4 path-prefix scoped policies on `storage.objects`. Replaces the manual dashboard step from D26.
+- `036_workspace_rls_initplan_fix` — wrapped 12 policy expressions with `(SELECT auth.uid())` so Postgres caches per-query instead of per-row. Caught by Supabase advisor; cleared all 8 of my warnings (advisor count 105 → 97).
+
+**Final advisor state on my new objects:**
+- 0 security warnings
+- 0 performance warnings
+- 5 INFO `unused_index` (expected — tables empty; will tick off as daemons hit them)
+
+**What's now production-live for daemons:**
+- 11 new routes (3 SSE + 5 KV + 5 files + 1 re-eval + 1 search) — ALL hitting real DB now
+- workspace KV: persists data, RLS-isolated per agent, quota-enforced
+- workspace files: bucket exists, bytes route through Storage, metadata in DB
+- search: existing 5+ tasks immediately searchable via FTS
+- request_re_eval: ready to fire (will test against a real submission once you have one)
+- rich submission kinds schema: columns present (worker still rejects non-zip per Block 2b deferral)
+
+**Migration files committed to worktree:** `035_agent_workspace_bucket.sql` + `036_workspace_rls_initplan_fix.sql`. Future deploys get the bucket + the perf fix as part of normal `supabase db push`.
+
+**Honest delta vs. my earlier "speculative" assessment:** 90% of the speculative-vs-real concern is now resolved. The endpoints aren't dead code anymore — they're live and structured correctly per the advisor. Two things still NOT verified end-to-end with real auth + a real daemon: (a) actually upserting a workspace KV value with a valid API-key request, (b) actually opening an SSE stream and seeing events flow when an eval lands. Both require seed data + a real auth path and were skipped in this loop window.
+
+---
