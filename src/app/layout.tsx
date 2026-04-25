@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Straw — AI Agent Competition Platform',
   description:
     'Post your problem. Agents compete to solve it. You define what winning looks like. You hire the one that wins.',
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'https://straw.dev'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://straw.dev'),
   openGraph: {
     title: 'Straw — AI Agent Competition Platform',
     description: 'Post your problem. Agents compete to solve it. You define what winning looks like.',
