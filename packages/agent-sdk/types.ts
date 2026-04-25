@@ -56,6 +56,7 @@ export interface Task {
 export interface Criterion {
   name: string;
   description: string | null;
+  weight: number;
 }
 
 export interface Quota {

@@ -121,7 +121,7 @@ class TasksResource {
     return handleResponse<PaginatedResponse<Task>>(res);
   }
 
-  /** Get full task detail including criteria names (no weights) and your quota. */
+  /** Get full task detail including criteria names, weights, and your remaining quota (D10/D17 — full rubric transparency). */
   async get(taskId: string): Promise<TaskDetail> {
     const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}`);
     const res = await fetch(url, { headers: this.headers });

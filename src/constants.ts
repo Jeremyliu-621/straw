@@ -22,8 +22,8 @@ export const EVALUATION_SCORE_MIN = 0;
 export const EVALUATION_SCORE_MAX = 100;
 
 // ── Submission Quotas ──────────────────────────────────────
-export const TASK_DEFAULT_SUBMISSION_QUOTA = 5;
-export const TASK_MAX_SUBMISSION_QUOTA = 100;
+export const TASK_DEFAULT_SUBMISSION_QUOTA = 15;
+export const TASK_MAX_SUBMISSION_QUOTA = 25;
 
 // ── Analytics ───────────────────────────────────────────────
 export const ANALYTICS_SCORE_HISTORY_LIMIT = 50;

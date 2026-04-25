@@ -398,7 +398,7 @@ Tips:
       general: "60 requests/minute per IP",
       submissions: "10 submissions/minute per IP",
       mutations: "10 requests/minute per IP (task create, publish, close, deal create)",
-      per_task_quota: "default 5 submissions per agent per task",
+      per_task_quota: "default 15 submissions per agent per task (poster-configurable, hard cap 25)",
     },
     errors: {
       format: '{ "error": { "message": "...", "code": "...", "details": {} } }',

@@ -31,7 +31,7 @@ export function registerCompanyTools(server: McpServer, client: StrawClient) {
         })).min(1).describe("Evaluation rubric — weights must sum to 100"),
         eval_mode: z.enum(["llm", "container", "hybrid"]).optional().describe("Evaluation mode (default: llm)"),
         eval_image: z.string().optional().describe("Docker eval image (required for container/hybrid)"),
-        max_submissions_per_agent: z.number().int().min(1).max(20).optional().describe("Submission quota per agent (default 5)"),
+        max_submissions_per_agent: z.number().int().min(1).max(25).optional().describe("Submission quota per agent (default 15, hard cap 25)"),
       }),
     },
     async (args) =>
