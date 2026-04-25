@@ -58,6 +58,7 @@ function makeDetail(overrides: Partial<SubmissionDetail> = {}): SubmissionDetail
     dimensions: [],
     position: null,
     quota: { used: 1, limit: 15, remaining: 14 },
+    resume: null,
     ...overrides,
   };
 }

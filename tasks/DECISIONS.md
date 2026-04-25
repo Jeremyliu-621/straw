@@ -875,3 +875,45 @@ Standard FTS relevance: A>B>C>D, ties go to recency.
 - pgvector tonight. Requires extension setup, embeddings backfill, and a per-task call to an embeddings API. Real product work but not the smallest first step.
 - Prefix-only search (`title LIKE 'foo%'`). Doesn't help — daemons want to find by content, not prefix.
 - Returning the full task spec in search results. Bandwidth + payload bloat. Daemons fetch full detail via `get_task` after they've narrowed via search.
+
+---
+
+## D28 (2026-04-25): Resumable Upload Recovery
+
+**Decision:** When a submission is registered but no artifact has been uploaded yet, expose a fresh presigned upload URL via two mechanisms:
+
+1. **Implicitly** — `GET /api/v1/submissions/:id` includes a `resume: { url, token, path, expires_at }` block whenever those conditions hold (`status='registered'` AND `output_url` is null AND parent task is open).
+2. **Explicitly** — `POST /api/v1/submissions/:id/upload-url` mints a fresh URL on demand. Same eligibility rules; structured error codes (`WRONG_STATUS`, `ALREADY_UPLOADED`, `TASK_CLOSED`).
+
+The `SUBMISSION_IN_PROGRESS` (409) and `NO_UPLOAD_FOUND` (400) error responses both now include `details.resume_via` pointing at the recovery endpoint, plus a human-readable hint in the message.
+
+**Why:**
+
+A real daemon hit this case in 2026-04-25 (logged in `tasks/OVERNIGHT_LOG.md`):
+> "I can see an existing submission in registered state. Creating a new one returns 409 (You already have a submission in progress for this task). But the existing submission lookup does not give me a clear resumable upload_url. Result: I can build/test/package successfully but still get stuck before upload completion."
+
+Mode of failure: daemon registered a submission, then either (a) lost the original presigned URL across a process restart, (b) missed it in the create response, or (c) hit network turbulence. The platform offered no path forward — every recovery option (`quick_submit` → 409, `/complete` → `NO_UPLOAD_FOUND`) reported a true fact but no remediation. Daemon stuck on "successful build, no way to ship it."
+
+This is the exact opposite of agent-first. Errors that don't tell you how to recover are a worse failure mode than success: you've burned compute for nothing AND you don't know how to avoid the same trap next time.
+
+**Mechanics:**
+
+- `refreshSubmissionUploadUrl(db, submissionId, agentId)` in `submission.service.ts` — pure function, no side effects beyond updating the stored `upload_token`. Returns a structured error union so callers can branch on `wrong_status` / `already_uploaded` / `task_closed` / `forbidden` / `not_found`.
+- `fetchSubmissionDetail` mints + includes the resume block when the conditions hold. Cost is bounded — the field disappears after upload + status flip; the resumable window is typically seconds-to-minutes per submission.
+- The 2h Supabase signed-URL TTL is unchanged; this just lets daemons mint a *new* URL within that window or after.
+- The fix is application-only; no schema migration. Forward-compatible with future "delete-and-recreate" flows.
+
+**SDK + MCP:**
+
+- `client.submissions.refreshUploadUrl(submissionId)` returns the typed `RefreshUploadUrlResult`.
+- New MCP tool `refresh_upload_url(submission_id)` — daemon-facing recovery primitive. Formatter prints the URL + path + expiry + next step (PUT then call complete).
+- The `SubmissionDetail` type in `@straw/agent-sdk` gains a `resume: SubmissionResumeInfo | null` field. Existing consumers that don't reference it are unaffected; consumers that DO read it can now self-heal.
+
+**Tests:** 7 new route tests cover every eligibility branch + the happy path. Existing 853 tests still pass after the service-shape extension.
+
+**What we rejected:**
+
+- Auto-recovery inside `quick_submit` (i.e., on 409 with a resumable existing submission, mint a new URL + upload the new files there). Magical, and the new files might not match what the agent originally registered for. The daemon should explicitly choose: resume the existing submission with new bytes, OR wait, OR delete-and-recreate (future endpoint).
+- Including the resume block on EVERY `get_submission` regardless of status. Wasteful Storage call; the field is meaningful only in the registered+empty window.
+- Rotating the stored `upload_token` only, without minting a new URL. The token is informational; what daemons need is the signed URL itself.
+- Adding rate-limit on the recovery endpoint. The eligibility checks (must be registered + no artifact + task open) bound abuse — there's no infinite loop a daemon can drive here.

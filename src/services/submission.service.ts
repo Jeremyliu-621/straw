@@ -29,6 +29,17 @@ export interface SubmissionScores {
   evaluated_at: string;
 }
 
+export interface SubmissionResumeInfo {
+  /** Fresh presigned URL the agent can PUT their artifact to. */
+  url: string;
+  /** Storage token (informational; signed-URL is what the request needs). */
+  token: string;
+  /** Object path within the upload bucket. */
+  path: string;
+  /** ISO timestamp the URL expires. */
+  expires_at: string;
+}
+
 export interface SubmissionDetail {
   id: string;
   task_id: string;
@@ -44,6 +55,12 @@ export interface SubmissionDetail {
   dimensions: SubmissionDimension[];
   position: number | null;
   quota: SubmissionQuota;
+  /**
+   * Present (and includes a fresh presigned URL) when the submission is
+   * registered but no artifact has been uploaded yet — the resumable case
+   * from D28. Null for any other state.
+   */
+  resume: SubmissionResumeInfo | null;
 }
 
 export type SubmissionFetchError =
@@ -73,6 +90,40 @@ export async function fetchSubmissionDetail(
 
   if (error || !submission) return { kind: "not_found" };
   if (submission.agent_id !== agentId) return { kind: "forbidden" };
+
+  // Resume info (D28): when status=registered AND no artifact uploaded yet,
+  // mint a fresh presigned URL so daemons can recover from a lost upload_url
+  // without re-creating the submission. Bounded cost — the field disappears
+  // after upload + status flips, which is the typical few-minute window.
+  let resume: SubmissionResumeInfo | null = null;
+  if (
+    submission.status === SUBMISSION_STATUS.REGISTERED &&
+    !submission.output_url
+  ) {
+    const { data: taskForResume } = await db
+      .from("tasks")
+      .select("status, deadline")
+      .eq("id", submission.task_id)
+      .single();
+    if (taskForResume && taskForResume.status !== TASK_STATUS.CLOSED) {
+      try {
+        const presigned = await generatePresignedUploadUrl(
+          db,
+          submission.id,
+          taskForResume.deadline
+        );
+        resume = {
+          url: presigned.signedUrl,
+          token: presigned.token,
+          path: presigned.path,
+          expires_at: presigned.expiresAt,
+        };
+      } catch {
+        // Storage glitch — leave resume null; the dedicated /upload-url
+        // endpoint will surface a more specific error if the agent calls it.
+      }
+    }
+  }
 
   const { data: evalResult } = await db
     .from("evaluation_results")
@@ -182,6 +233,7 @@ export async function fetchSubmissionDetail(
     dimensions,
     position,
     quota: { used, limit, remaining: Math.max(0, limit - used) },
+    resume,
   };
 }
 
@@ -436,15 +488,23 @@ export async function checkSubmissionQuota(
 
 /**
  * Block if the agent has a submission currently in progress (pending, running, or registered).
+ *
+ * The error response includes the existing submission's id + a hint to the
+ * resume path (D28). A real daemon hit this case in 2026-04 — they had a
+ * registered submission but couldn't recover the upload URL — and got stuck
+ * after building a working solution. The error now tells them how to resume.
  */
 export async function checkNoActiveSubmission(
   db: SupabaseClient,
   taskId: string,
   agentId: string
-): Promise<{ error: string; status: number; code: string } | null> {
+): Promise<
+  | { error: string; status: number; code: string; details: { existing_submission_id: string; existing_status: string; resume_via: string } }
+  | null
+> {
   const { data: active } = await db
     .from("submissions")
-    .select("id, status")
+    .select("id, status, output_url")
     .eq("task_id", taskId)
     .eq("agent_id", agentId)
     .in("status", [
@@ -456,14 +516,109 @@ export async function checkNoActiveSubmission(
     .maybeSingle();
 
   if (active) {
+    const isResumable =
+      active.status === SUBMISSION_STATUS.REGISTERED && !active.output_url;
     return {
-      error: "You already have a submission in progress for this task",
+      error: isResumable
+        ? `You already have a registered submission for this task with no artifact uploaded yet. ` +
+          `Resume it: GET /api/v1/submissions/${active.id} (returns a fresh resume.url) or ` +
+          `POST /api/v1/submissions/${active.id}/upload-url (mints a fresh presigned upload URL). ` +
+          `Existing submission id: ${active.id}.`
+        : `You already have a submission in progress for this task (id: ${active.id}, status: ${active.status}). ` +
+          `Wait for it to complete or fail before submitting again.`,
       status: 409,
       code: "SUBMISSION_IN_PROGRESS",
+      details: {
+        existing_submission_id: active.id,
+        existing_status: active.status,
+        resume_via: isResumable
+          ? `POST /api/v1/submissions/${active.id}/upload-url`
+          : "wait",
+      },
     };
   }
 
   return null;
+}
+
+// ── Resumable upload (D28) ──────────────────────────────────
+
+/**
+ * Mint a fresh presigned upload URL for a registered submission whose
+ * artifact hasn't been uploaded yet. The fix for the real-daemon stuck-at-
+ * upload bug from 2026-04: an agent who lost the original presigned URL
+ * (process restart, missed it in the original response, network hiccup)
+ * needs a way to get a new one without deleting the submission and
+ * starting over.
+ *
+ * Eligibility: submission exists, agent owns it, status=REGISTERED, no
+ * output_url set yet, parent task still open. Anything else returns a
+ * specific error so the caller can react programmatically.
+ */
+export type RefreshUploadUrlError =
+  | { kind: "not_found" }
+  | { kind: "forbidden" }
+  | { kind: "wrong_status"; status: string }
+  | { kind: "already_uploaded" }
+  | { kind: "task_closed" }
+  | { kind: "internal" };
+
+export interface RefreshUploadUrlSuccess {
+  submission_id: string;
+  upload_url: string;
+  upload_token: string;
+  upload_path: string;
+  upload_expires_at: string;
+}
+
+export async function refreshSubmissionUploadUrl(
+  db: SupabaseClient,
+  submissionId: string,
+  agentId: string
+): Promise<RefreshUploadUrlSuccess | RefreshUploadUrlError> {
+  const { data: submission, error } = await db
+    .from("submissions")
+    .select("id, agent_id, task_id, status, output_url")
+    .eq("id", submissionId)
+    .single();
+
+  if (error || !submission) return { kind: "not_found" };
+  if (submission.agent_id !== agentId) return { kind: "forbidden" };
+  if (submission.status !== SUBMISSION_STATUS.REGISTERED) {
+    return { kind: "wrong_status", status: submission.status };
+  }
+  if (submission.output_url) return { kind: "already_uploaded" };
+
+  const { data: task } = await db
+    .from("tasks")
+    .select("status, deadline")
+    .eq("id", submission.task_id)
+    .single();
+  if (!task || task.status === TASK_STATUS.CLOSED) return { kind: "task_closed" };
+
+  let presigned;
+  try {
+    presigned = await generatePresignedUploadUrl(db, submission.id, task.deadline);
+  } catch {
+    return { kind: "internal" };
+  }
+
+  // Update the stored upload_token so any future server-side checks see the
+  // currently-valid token. (Today this column is informational; tomorrow's
+  // verification flows might use it.)
+  await db
+    .from("submissions")
+    .update({ upload_token: presigned.token })
+    .eq("id", submission.id)
+    .then(() => undefined, () => undefined);
+
+  return {
+    submission_id: submission.id,
+    upload_url: presigned.signedUrl,
+    upload_token: presigned.token,
+    upload_path: presigned.path,
+    upload_expires_at: presigned.expiresAt,
+  };
 }
 
 /**

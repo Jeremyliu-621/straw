@@ -7,6 +7,7 @@ import type {
   Submission,
   SubmissionDetail,
   CreateSubmissionResult,
+  RefreshUploadUrlResult,
   UploadResult,
   Webhook,
   WebhookWithSecret,
@@ -372,6 +373,21 @@ class SubmissionsResource {
       headers: this.headers,
     });
     return handleResponse<UploadResult>(res);
+  }
+
+  /**
+   * Mint a fresh presigned upload URL for a registered submission with no
+   * artifact yet (D28). Use when you've lost the original URL or it expired.
+   * Doesn't consume a quota slot.
+   *
+   * Errors with StrawApiError(WRONG_STATUS) if the submission is past
+   * registered, ALREADY_UPLOADED if an artifact is already there (use
+   * complete() instead), or TASK_CLOSED if the parent task closed.
+   */
+  async refreshUploadUrl(submissionId: string): Promise<RefreshUploadUrlResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/submissions/${submissionId}/upload-url`);
+    const res = await fetch(url, { method: "POST", headers: this.headers });
+    return handleResponse<RefreshUploadUrlResult>(res);
   }
 
   /**

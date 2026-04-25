@@ -19,6 +19,8 @@ export type {
   Criterion,
   Submission,
   SubmissionDetail,
+  SubmissionResumeInfo,
+  RefreshUploadUrlResult,
   CreateSubmissionResult,
   UploadResult,
   Scores,

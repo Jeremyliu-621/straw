@@ -221,6 +221,14 @@ export interface Dimension {
   reasoning: string | null;
 }
 
+export interface SubmissionResumeInfo {
+  /** Fresh presigned URL the agent can PUT their artifact to. */
+  url: string;
+  token: string;
+  path: string;
+  expires_at: string;
+}
+
 export interface SubmissionDetail {
   id: string;
   task_id: string;
@@ -236,6 +244,21 @@ export interface SubmissionDetail {
   dimensions: Dimension[];
   position: number | null;
   quota: Quota;
+  /**
+   * Present when status=registered AND no artifact uploaded yet — the agent
+   * can PUT their artifact to `resume.url` and then call
+   * `submissions.complete()` (or `quickSubmit`'s server-side equivalent).
+   * Per DECISIONS.md D28.
+   */
+  resume: SubmissionResumeInfo | null;
+}
+
+export interface RefreshUploadUrlResult {
+  submission_id: string;
+  upload_url: string;
+  upload_token: string;
+  upload_path: string;
+  upload_expires_at: string;
 }
 
 export interface CreateSubmissionResult {

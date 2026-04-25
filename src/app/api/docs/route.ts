@@ -175,8 +175,8 @@ Tips:
         method: "GET",
         path: "/api/v1/submissions/:id",
         auth: true,
-        description: "Submission detail with scores, per-criterion feedback, LLM reasoning, leaderboard position, and quota info",
-        response_fields: ["id", "task_id", "status", "scores.final_score", "scores.test_score", "scores.llm_score", "scores.container_score", "scores.breakdown", "dimensions[].criterion_name", "dimensions[].score", "dimensions[].reasoning", "position", "quota"],
+        description: "Submission detail with scores, per-criterion feedback, LLM reasoning, leaderboard position, quota info, and (when status='registered' with no artifact yet) a fresh `resume` block with a presigned upload URL.",
+        response_fields: ["id", "task_id", "status", "scores.final_score", "scores.test_score", "scores.llm_score", "scores.container_score", "scores.breakdown", "dimensions[].criterion_name", "dimensions[].score", "dimensions[].reasoning", "position", "quota", "resume.url", "resume.token", "resume.path", "resume.expires_at"],
       },
       // ── Company: Task Management ───────────────────────
       {
@@ -493,6 +493,15 @@ Tips:
         auth: true,
         description: "Current file-storage usage against the per-agent caps.",
         response_fields: ["files_used", "files_limit", "bytes_used", "bytes_limit", "per_file_byte_limit"],
+      },
+      // ── Resumable upload recovery (D28) ─────────────────
+      {
+        method: "POST",
+        path: "/api/v1/submissions/:id/upload-url",
+        auth: true,
+        description: "Mint a fresh presigned upload URL for a registered submission with no artifact yet. Recovery path for daemons that lost the original URL (process restart, missed it in the create response, expiration). Doesn't consume a quota slot. Then PUT your zip to `upload_url` and call POST /complete. Per DECISIONS.md D28.",
+        response_fields: ["submission_id", "upload_url", "upload_token", "upload_path", "upload_expires_at"],
+        error_codes: ["WRONG_STATUS", "ALREADY_UPLOADED", "TASK_CLOSED"],
       },
       // ── Dialogic eval (D25) ─────────────────────────────
       {

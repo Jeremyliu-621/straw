@@ -349,3 +349,29 @@ Lesson worth noting: every new endpoint should be checked against "what new info
 **Honest delta vs. my earlier "speculative" assessment:** 90% of the speculative-vs-real concern is now resolved. The endpoints aren't dead code anymore — they're live and structured correctly per the advisor. Two things still NOT verified end-to-end with real auth + a real daemon: (a) actually upserting a workspace KV value with a valid API-key request, (b) actually opening an SSE stream and seeing events flow when an eval lands. Both require seed data + a real auth path and were skipped in this loop window.
 
 ---
+
+## D28 — Resumable upload recovery (2026-04-25)
+
+**Why this entry matters:** This is the first overnight commit driven by **real daemon feedback**, not by speculation about what daemons might want. An OpenClaw running against the platform hit a dead-end submission flow:
+
+> "I can see an existing submission in registered state. Creating a new one returns 409 (You already have a submission in progress for this task). But the existing submission lookup does not give me a clear resumable upload_url. Result: I can build/test/package successfully but still get stuck before upload completion."
+
+This is the exact "errors don't point to recovery" anti-pattern from the agent-first dream. The fix:
+
+**What landed:**
+- `src/services/submission.service.ts` — `refreshSubmissionUploadUrl()` function with structured error union (not_found/forbidden/wrong_status/already_uploaded/task_closed/internal). `checkNoActiveSubmission` rewritten to return `details.{existing_submission_id, existing_status, resume_via}` so consumers can react programmatically. `fetchSubmissionDetail` enriched with `resume: { url, token, path, expires_at } | null` — populated when status=registered, no artifact yet, task still open.
+- `src/app/api/v1/submissions/[id]/upload-url/route.ts` — new POST endpoint, eligibility checks delegated to service, structured error codes per branch.
+- `src/app/api/v1/submissions/[id]/upload-url/upload-url-route.test.ts` — 7 cases: 401, 404, 403, 409 wrong_status, 409 already_uploaded, 409 task_closed, 200 happy path.
+- `src/app/api/v1/tasks/[id]/quick-submit/route.ts` — 409 message rewritten to include the existing submission ID + the resume endpoint URL when the existing one is resumable. Otherwise: clear "wait for it to complete" message with the in-flight ID.
+- `src/app/api/v1/submissions/[id]/complete/route.ts` — NO_UPLOAD_FOUND now includes `details.resume_via` and a human-readable "did your PUT succeed? mint a fresh URL with…" hint.
+- `packages/agent-sdk/types.ts` + `client.ts` + `index.ts` — `SubmissionResumeInfo`, `RefreshUploadUrlResult`, `SubmissionDetail.resume` field, `client.submissions.refreshUploadUrl(id)`.
+- `packages/mcp-server/src/tools/submissions.ts` — `refresh_upload_url` MCP tool with formatter that prints URL + path + expiry + next step.
+- `packages/mcp-server/src/index.ts` — instructions block updated.
+- `src/app/api/docs/route.ts` — JSON spec entry for the new endpoint + `resume.*` fields added to the `/api/v1/submissions/:id` response_fields.
+- `tasks/DECISIONS.md` D28 — full record: real daemon quote, mechanics, what was rejected (auto-recovery, always-include-resume, rate-limiting).
+
+**Tests:** 860 green (was 853). tsc --noEmit clean. The change to checkNoActiveSubmission's return shape is forward-compatible — consumers that ignore the new `details` field are unaffected.
+
+**Discipline note:** Bug reports from real daemons are the most valuable signal we have. Every other block in this branch was speculative; this one wasn't. Future loop wakes should prioritize real-daemon feedback over building more substrate primitives, when both are an option.
+
+---

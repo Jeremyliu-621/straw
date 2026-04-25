@@ -70,10 +70,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   // Verify file was uploaded via presigned URL
   const exists = await verifyUploadExists(db, submission.id);
   if (!exists) {
+    // D28: tell the daemon how to recover instead of just reporting the failure.
     return apiError(
-      "No file found. Upload your artifact to the presigned URL before calling /complete.",
+      `No file found at the upload path. Did the PUT to your presigned URL succeed? ` +
+        `If you lost the URL or it expired, mint a fresh one with ` +
+        `POST /api/v1/submissions/${submission.id}/upload-url and PUT your artifact there before calling /complete.`,
       400,
-      "NO_UPLOAD_FOUND"
+      "NO_UPLOAD_FOUND",
+      { resume_via: `POST /api/v1/submissions/${submission.id}/upload-url` }
     );
   }
 

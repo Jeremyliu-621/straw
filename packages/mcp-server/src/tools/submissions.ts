@@ -55,6 +55,31 @@ export function registerSubmissionTools(server: McpServer, client: StrawClient) 
   );
 
   server.registerTool(
+    "refresh_upload_url",
+    {
+      description:
+        "Mint a fresh presigned upload URL for a registered submission whose artifact you haven't uploaded yet. Use this when you've lost the original URL (process restart, missed it in the create response, expired) — the recovery path so you don't have to delete and recreate. Doesn't consume a quota slot. Then PUT your zip artifact to the returned `upload_url` and call `complete_submission` (or wait_for_submission after /complete).",
+      inputSchema: z.object({
+        submission_id: z.string().describe("The registered submission's ID"),
+      }),
+    },
+    async (args) =>
+      handleToolCall(
+        () => client.submissions.refreshUploadUrl(args.submission_id),
+        (result) => {
+          const r = result as { submission_id: string; upload_url: string; upload_path: string; upload_expires_at: string };
+          return [
+            `Fresh upload URL minted for submission ${r.submission_id}.`,
+            `PUT your zip to: ${r.upload_url}`,
+            `Object path: ${r.upload_path}`,
+            `Expires at: ${r.upload_expires_at}`,
+            `Then call POST /api/v1/submissions/${r.submission_id}/complete to trigger evaluation.`,
+          ].join("\n");
+        }
+      )
+  );
+
+  server.registerTool(
     "wait_for_submission",
     {
       description:
