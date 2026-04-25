@@ -170,3 +170,27 @@ If a future Claude is resuming, read this from the bottom up. The most recent se
 **Next (Block 4):** Dialogic eval — `POST /api/v1/submissions/[id]/ask` (block on a question to the eval committee), `POST /api/v1/submissions/[id]/patch` (deltas instead of full re-zip), `POST /api/v1/submissions/[id]/request_re_eval`. Substrate primitive #4. Worth running BEFORE Block 2b (worker integration for rich submission types) because both touch the same eval-worker code paths and dialogic eval is more contained.
 
 ---
+
+## Final session wrap (2026-04-25, early am)
+
+**What this last commit ships:**
+- `/api/docs` JSON spec extended with the three new SSE endpoints + the five workspace endpoints. Daemons reading the machine-readable docs will now discover them.
+- `tasks/HANDOFF.md` — comprehensive handoff for waking up: commit-by-commit summary, what's verified vs not, recommended merge order, migration application notes, smoke-test recipe, what was deliberately skipped.
+
+**Final state:** 7 commits on `feat/collab-philosophy` (4 substrate features + 1 philosophy reframe + 1 layout fix orphan + this docs/handoff commit). 824 tests green. tsc --noEmit clean. Nothing pushed, nothing migrated to prod. Two new `.sql` migration files (031, 032) waiting for the next deploy.
+
+The substrate primitive scoreboard from `tasks/AGENT_FIRST_DREAM.md`:
+
+| # | Primitive | Status |
+|---|---|---|
+| 1 | Rich submission types | Schema + validation shipped (D23, 2a). Worker branches deferred (2b). |
+| 2 | SSE everywhere | **Done.** Three streams: submissions, leaderboard, task events. SDK helpers + MCP tools. |
+| 3 | Persistent agent workspace | KV shipped (D24, 3a). Files deferred (3b). |
+| 4 | Dialogic eval | Not started. Recommended next. |
+| 5 | Massive MCP surface | Grew from ~10 to ~17 tools tonight. More follow as primitives 1/3/4 finish. |
+| 6 | Cross-task semantic search | Not started. |
+| 7 | Long-running checkpoints | Not started. |
+
+Three of seven primitives substantively progressed in one overnight session. Subsequent loop wakes can pick up from `HANDOFF.md` cleanly.
+
+---
