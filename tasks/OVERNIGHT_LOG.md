@@ -106,3 +106,34 @@ If a future Claude is resuming, read this from the bottom up. The most recent se
 **Next (Block 2):** Rich submission types — beyond `zip`. New `submission_kind` enum + `submission_payload` jsonb. Five kinds: `zip` (existing), `repo_url`, `live_endpoint`, `dockerfile`, `mixed`. This is the biggest single substrate unlock — daemons stop shipping code samples and start shipping products.
 
 ---
+
+## Block 2a — Rich submission kinds: schema + validation foundation (2026-04-24)
+
+**Goal:** Land the schema + validation layer for rich submission types so future loop wakes can add the worker branches without re-litigating the data shape or security model. Per-kind SSRF/scheme guards live in code now, with 35 unit tests covering the obvious attacks.
+
+**What landed:**
+- `supabase/migrations/031_rich_submission_kinds.sql` — `submission_kind text NOT NULL DEFAULT 'zip'` + `submission_payload jsonb` on `submissions`. CHECK constraint on the kind enum. Backwards-compatible (existing rows default to 'zip' / NULL). **NOT applied to prod** — file written, deferred to your next prod deploy.
+- `src/constants.ts` — new `SUBMISSION_KIND` constant + `SUBMISSION_KINDS_SUPPORTED_BY_WORKER` set (currently `{ZIP}`; flips when 2b ships).
+- `src/lib/submission-payload.ts` — Zod schemas for all 5 kinds + `isSafePublicUrl` SSRF guard + `validateSubmissionPayload(kind, payload)` dispatcher. Recursive validation for `mixed` with bounded recursion (nested mixed rejected by schema).
+- `src/lib/submission-payload.test.ts` — 35 tests covering: SSRF guard (loopback, RFC1918, IPv6 ULA, link-local, cloud metadata, non-{http,https} schemes, malformed URLs), each kind's payload shape (positive + negative cases), mixed weight validation + nested-mixed rejection.
+- `src/types/database.ts` — `Submission` + `SubmissionInsert` gain the new fields.
+- `tasks/DECISIONS.md` — D23 added: full philosophy, security model, what ships now vs Block 2b deferred.
+
+**Tests:** 809 green across the entire repo. tsc --noEmit clean.
+
+**Why ship just the foundation tonight:** Worker integration per kind is deep work (cloning repos, probing live endpoints, building Dockerfiles inside the eval-container sandbox, fan-out for mixed). It's another 3-4 hours that would push past the 8-hour budget at quality. The schema + validation layer is solid groundwork that the next loop wake can build on without revisiting the data shape or SSRF policy.
+
+**What's deferred to Block 2b (next loop wake):**
+- Quick-submit + create-submission route changes to accept `kind` + `payload`.
+- Eval worker branches per kind:
+  - `repo_url`: `git clone --depth 1 <url> --branch <ref>` to tmpdir, then existing build-check + LLM judge flow as if the cloned tree were the unzipped artifact.
+  - `live_endpoint`: prober that hits the URL with rubric-derived probes, captures responses, scores via committee.
+  - `dockerfile`: `docker build` in the eval-container sandbox, then `docker run` with company-configured constraints.
+  - `mixed`: parallel fan-out to per-part workers, weighted aggregation.
+- Second-line DNS-time SSRF check in the worker (defends against rebinding; the validation library only catches obvious string-based attacks).
+- SDK + MCP exposure (typed `submitRepoUrl`, `submitLiveEndpoint`, etc., plus tool descriptions).
+- Tests: route-level acceptance tests + worker-side integration tests for each kind.
+
+**Next (Block 3):** Persistent agent workspace — KV + file storage scoped to `agent_id`, persists across submissions and tasks. The third major substrate primitive.
+
+---

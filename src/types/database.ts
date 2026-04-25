@@ -147,6 +147,10 @@ export interface Submission {
   started_at: string | null;
   completed_at: string | null;
   created_at: string;
+  /** Per D23 — what the submission *is*. Defaults to 'zip' for back-compat. */
+  submission_kind: string;
+  /** Kind-specific payload validated by src/lib/submission-payload.ts. NULL for kind=zip. */
+  submission_payload: unknown | null;
 }
 
 export interface SubmissionInsert {
@@ -158,6 +162,8 @@ export interface SubmissionInsert {
   agent_display_name?: string | null;
   status?: string;
   upload_token?: string | null;
+  submission_kind?: string;
+  submission_payload?: unknown | null;
 }
 
 // ── Evaluation Results ───────────────────────────────────────

@@ -119,6 +119,31 @@ export const SUBMISSION_MODE = {
 } as const;
 export type SubmissionMode = (typeof SUBMISSION_MODE)[keyof typeof SUBMISSION_MODE];
 
+// ── Submission Kind (D23: rich submission types) ────────────
+// Per DECISIONS.md D23 (2026-04-24): a submission declares its *kind*
+// so daemons can ship live products + repos + dockerfiles, not just
+// code samples. See src/lib/submission-payload.ts for per-kind schemas.
+export const SUBMISSION_KIND = {
+  ZIP: "zip",
+  REPO_URL: "repo_url",
+  LIVE_ENDPOINT: "live_endpoint",
+  DOCKERFILE: "dockerfile",
+  MIXED: "mixed",
+} as const;
+export type SubmissionKind = (typeof SUBMISSION_KIND)[keyof typeof SUBMISSION_KIND];
+
+/**
+ * Kinds the eval worker can currently process. Submissions with a kind
+ * NOT in this set are rejected at the route boundary with 501 — the
+ * validation pipeline accepts them so we can add SDK + MCP surface
+ * incrementally, but the worker doesn't have branches for them yet.
+ *
+ * Worker integration tracked under Phase 20 / Block 2b.
+ */
+export const SUBMISSION_KINDS_SUPPORTED_BY_WORKER: ReadonlySet<SubmissionKind> = new Set([
+  SUBMISSION_KIND.ZIP,
+]);
+
 // ── Upload ─────────────────────────────────────────────────
 export const UPLOAD_MAX_FILE_SIZE_MB = 200;
 // Supabase createSignedUploadUrl issues URLs that expire server-side in 2h

@@ -671,3 +671,47 @@ What that changes vs. what stays:
 | LLM judge as a primitive | Single-judge → committee | Team submissions (D20) |
 | Per-criterion feedback loop | | Rich task posts (D21) |
 | Webhooks (D11) — now also used for daemon monitoring (D19) | | Multi-engagement winner flow (D22) |
+
+---
+
+## D23 (2026-04-24): Rich Submission Kinds — Beyond Zip
+
+**Decision:** A submission declares its **kind** via a `submission_kind` enum on the `submissions` table. Five kinds:
+
+| Kind | What it is | What the eval committee does |
+|---|---|---|
+| `zip` (default) | Traditional zip artifact uploaded to Storage | Unzip into `/agent_output/`, run committee against the tree (today's flow) |
+| `repo_url` | Public HTTPS Git URL + optional ref + subpath | Clone at eval time (`git clone --depth 1`), run committee against the cloned tree |
+| `live_endpoint` | Live HTTPS endpoint root + optional health path + auth header | Probe the endpoint with structured requests derived from the rubric; committee scores responses + observed behavior |
+| `dockerfile` | Inline Dockerfile content + optional context files + build args | Build the image in the eval-container sandbox, run committee against the running container |
+| `mixed` | Array of the above (max 10, no nesting) | Score each part independently; final = rubric-weighted average |
+
+**Why:** Per `tasks/AGENT_FIRST_DREAM.md` — the agent-first dream requires daemons to ship *products*, not code samples. A daemon spinning up a Vercel deployment and submitting the URL as a `live_endpoint` is a more honest answer to "did your agent solve the problem" than a zip of code that may or may not run.
+
+D12 stays intact: the platform is a judge, not a runtime for AGENT code in the general case. But:
+- `repo_url`: cloning a public repo is a read, not arbitrary execution. Same security posture as zip.
+- `live_endpoint`: the platform calls a URL the daemon already controls and operates. The daemon's hosting infra is the runtime; Straw is the judge.
+- `dockerfile`: built + run inside the existing eval-container sandbox the company controls (D9). Same isolation, same constraints.
+- `mixed`: composition of the above; security is the union of its parts.
+
+**Security model:**
+- All URL-bearing fields go through an SSRF guard (`src/lib/submission-payload.ts`) that rejects http://, non-{http,https} schemes, RFC1918 / loopback / link-local hosts, IPv6 ULA, and known cloud metadata endpoints. The eval worker MUST add a second-line DNS-time check (block private-resolved IPs) when it actually fetches — defends against DNS rebinding. That's tracked under Block 2b worker integration.
+- Dockerfiles are content (not URLs to fetch). Size-capped at 64KB. Build runs in the existing eval-container sandbox with company-configured constraints.
+- `mixed` recursion is bounded: nested `mixed` is rejected by the schema; max 10 parts; weights (if set) must sum to 1.
+
+**What ships now (Block 2a, 2026-04-24):**
+- Migration `031_rich_submission_kinds.sql` — `submission_kind text NOT NULL DEFAULT 'zip'` + `submission_payload jsonb`. CHECK constraint on the kind enum. Backwards-compatible.
+- `SUBMISSION_KIND` constant + `SUBMISSION_KINDS_SUPPORTED_BY_WORKER` set in `src/constants.ts`.
+- `src/lib/submission-payload.ts` — Zod schemas for all kinds + the SSRF guard + recursive `mixed` validation. 35 unit tests.
+- `src/types/database.ts` — `Submission` interface gains `submission_kind` + `submission_payload`.
+
+**What's deferred to Block 2b:**
+- Quick-submit + create-submission route changes to accept `kind` + `payload` (today's routes accept `zip`-only by default).
+- Eval worker branches per kind (clone for repo_url, prober for live_endpoint, build+run for dockerfile, fan-out for mixed).
+- SDK + MCP surface (typed helpers per kind, e.g. `submitRepoUrl`).
+- Second-line DNS-time SSRF check in the worker (the validation library catches the obvious cases; DNS rebinding needs a runtime check).
+
+**What we rejected:**
+- Accepting `git+ssh://` or other non-https Git URLs. Requires SSH key management. https-only for v1.
+- Letting the platform fetch external Dockerfiles by URL. Adds an SSRF surface for no payoff — the daemon can paste content.
+- Allowing nested `mixed`. Unbounded recursion is a footgun; flat composition covers all real cases.
