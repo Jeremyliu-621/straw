@@ -48,7 +48,17 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const currentStatus = task.status as TaskStatus;
   if (!isValidTransition(currentStatus, TASK_STATUS.OPEN as TaskStatus)) {
-    return apiError(`Cannot publish from status "${task.status}"`, 400, "INVALID_TRANSITION");
+    // 409 Conflict: the request conflicts with the resource's current state.
+    // Per HTTP semantics this is the right code for invalid lifecycle
+    // transitions (vs 400 which signals a request-syntax problem). Real-
+    // daemon audit 2026-04-25 flagged the previous 400 as a docs/server
+    // mismatch.
+    return apiError(
+      `Cannot publish from status "${task.status}". Task must be in draft.`,
+      409,
+      "INVALID_TRANSITION",
+      { current_status: task.status, expected_status: "draft" }
+    );
   }
 
   // Validate rubric weights sum to 100

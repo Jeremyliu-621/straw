@@ -47,10 +47,12 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const currentStatus = task.status as TaskStatus;
   if (currentStatus !== TASK_STATUS.OPEN && currentStatus !== TASK_STATUS.EVALUATING) {
+    // 409 Conflict: invalid lifecycle transition (vs 400 = request syntax).
     return apiError(
       `Cannot close task from status "${task.status}". Task must be open or evaluating.`,
-      400,
-      "INVALID_TRANSITION"
+      409,
+      "INVALID_TRANSITION",
+      { current_status: task.status, expected_statuses: ["open", "evaluating"] }
     );
   }
 

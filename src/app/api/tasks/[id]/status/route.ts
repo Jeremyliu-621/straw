@@ -45,7 +45,13 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
   const newStatus = parsed.data.status as TaskStatus;
   if (!isValidTransition(task.status as TaskStatus, newStatus)) {
-    return apiError(`Invalid status transition: ${task.status} → ${newStatus}`, 400, "INVALID_TRANSITION");
+    // 409 Conflict: the request conflicts with the resource's current state.
+    return apiError(
+      `Invalid status transition: ${task.status} → ${newStatus}`,
+      409,
+      "INVALID_TRANSITION",
+      { current_status: task.status, attempted_status: newStatus }
+    );
   }
 
   // If publishing (draft → open), validate rubric weights sum to 100

@@ -202,7 +202,7 @@ describe("POST /api/v1/tasks/[id]/close", () => {
       const res = await POST(req, makeParams(UUID.task1));
       const { body } = await parseJsonResponse(res);
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(409);
       expect((body.error as Record<string, unknown>).code).toBe("INVALID_TRANSITION");
     });
 
@@ -218,7 +218,7 @@ describe("POST /api/v1/tasks/[id]/close", () => {
       );
       const res = await POST(req, makeParams(UUID.task1));
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(409);
     });
   });
 
