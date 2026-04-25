@@ -194,3 +194,25 @@ The substrate primitive scoreboard from `tasks/AGENT_FIRST_DREAM.md`:
 Three of seven primitives substantively progressed in one overnight session. Subsequent loop wakes can pick up from `HANDOFF.md` cleanly.
 
 ---
+
+## Loop wake 2 — Block 4a — Dialogic eval: request_re_eval (2026-04-25)
+
+**Goal:** Start substrate primitive #4 (dialogic eval). The eval committee should be a collaborator, not a dictator. First step: let a daemon ask for a fresh score on the same artifact when they suspect a fluke or when their live_endpoint state changed.
+
+**What landed:**
+- `src/services/submission.service.ts` gains: `RE_EVAL_COOLDOWN_MS` (1 hour), `RE_EVAL_ALLOWED_STATUSES` (completed/failed/evaluation_failed only), `checkReEvalEligibility(db, submissionId, agentId)` (pure-ish validator: ownership + task-open + status + cooldown + artifact present), `clearSubmissionForReEval(db, submissionId)` (delete eval result + reset submission status).
+- `src/app/api/v1/submissions/[id]/request_re_eval/route.ts` — POST endpoint that wires eligibility + clear + enqueue + audit log + 202 response. Each rejection path returns its own structured error code (TASK_CLOSED, WRONG_STATUS, RE_EVAL_COOLDOWN, NO_ARTIFACT, FORBIDDEN, NOT_FOUND).
+- `src/app/api/v1/submissions/[id]/request_re_eval/re-eval-route.test.ts` — 8 cases: 401, 404, 403, 409 (task_closed), 409 (wrong_status), 429 (cooldown), 409 (no_artifact), 202 happy path.
+- `packages/agent-sdk/client.ts` — `client.submissions.requestReEval(id)` returning the typed response shape.
+- `packages/mcp-server/src/tools/submissions.ts` — new `request_re_eval` MCP tool with formatter explaining the iteration + next-step (use wait_for_submission to block on the new score).
+- `tasks/DECISIONS.md` D25 — full record: why, mechanics, cooldown rationale, what's in 4b/4c, what was rejected.
+
+**Tests:** 54 green across the affected surfaces (`packages/agent-sdk`, `src/services/submission.service`, `src/app/api/v1/submissions`). tsc --noEmit clean.
+
+**Migration footprint:** zero. Re-eval delete-and-replaces the existing eval row, so no schema change is needed today. Future Block 4a-stage-2 can add an `iteration` column for history preservation; the API already exposes `iteration` so consumers won't break.
+
+**Why I scoped 4a tight:** preserving eval history would have required dropping the UNIQUE on `evaluation_results.submission_id` plus updating every read site (fetchSubmissionDetail, buildLeaderboard, the worker insert) to handle multiple rows per submission. That's another 90+ minutes and the user's "don't finish at 99.9%" message is more valuable spent on the next primitive.
+
+**Next (Block 4b):** `POST /api/v1/submissions/[id]/ask` — block on a clarifying question routed through the eval pipeline. The agent gets a free-form answer scoped to their submission + the rubric + the latest judge reasoning. Uses existing Gemini integration; rate-limited per submission so it can't be abused into a free chat session.
+
+---

@@ -211,6 +211,138 @@ export function submissionStateFingerprint(detail: SubmissionDetail): string {
   ].join("|");
 }
 
+// ── Re-evaluation (D25 — dialogic eval) ──────────────────────
+
+/**
+ * How recently the submission must NOT have been re-evaluated for a new
+ * re-eval to be allowed. Bounds abuse — a daemon can't infinite-loop the
+ * eval pipeline against a single submission. The leaderboard already takes
+ * best-score-per-agent so re-rolls have natural ceiling, but a per-hour
+ * cap also bounds judge cost.
+ */
+export const RE_EVAL_COOLDOWN_MS = 60 * 60 * 1000; // 1 hour
+
+/**
+ * Statuses that allow re-evaluation. Reject in-flight or never-uploaded
+ * submissions — the client wants a *re-roll*, which only makes sense when
+ * a previous eval has already landed (or failed).
+ */
+export const RE_EVAL_ALLOWED_STATUSES: ReadonlySet<string> = new Set([
+  SUBMISSION_STATUS.COMPLETED,
+  SUBMISSION_STATUS.FAILED,
+  SUBMISSION_STATUS.EVALUATION_FAILED,
+]);
+
+export type RequestReEvalError =
+  | { kind: "not_found" }
+  | { kind: "forbidden" }
+  | { kind: "task_closed" }
+  | { kind: "wrong_status"; status: string }
+  | { kind: "cooldown"; retry_after_ms: number }
+  | { kind: "no_artifact" }
+  | { kind: "internal" };
+
+export interface RequestReEvalSuccess {
+  submission_id: string;
+  /** Iteration we're requesting (1-based). 1 means the original eval; 2+ means re-roll. */
+  iteration: number;
+  enqueued_at: string;
+}
+
+/**
+ * Validate that a submission is eligible for re-evaluation. Doesn't mutate
+ * anything — caller commits the side effects (delete old result, requeue
+ * job) only when this returns success.
+ *
+ * Pure-ish so it's testable without a real worker / queue.
+ */
+export async function checkReEvalEligibility(
+  db: SupabaseClient,
+  submissionId: string,
+  agentId: string
+): Promise<
+  | { ok: true; submission: { id: string; task_id: string; status: string; output_url: string | null }; iteration: number }
+  | RequestReEvalError
+> {
+  const { data: submission, error } = await db
+    .from("submissions")
+    .select("id, task_id, agent_id, status, output_url")
+    .eq("id", submissionId)
+    .single();
+
+  if (error || !submission) return { kind: "not_found" };
+  if (submission.agent_id !== agentId) return { kind: "forbidden" };
+  if (!RE_EVAL_ALLOWED_STATUSES.has(submission.status)) {
+    return { kind: "wrong_status", status: submission.status };
+  }
+  if (!submission.output_url) return { kind: "no_artifact" };
+
+  // Task must still be open. Re-evaling closed tasks would cost compute
+  // for no leaderboard movement.
+  const { data: task } = await db
+    .from("tasks")
+    .select("status")
+    .eq("id", submission.task_id)
+    .single();
+  if (!task || task.status === TASK_STATUS.CLOSED) return { kind: "task_closed" };
+
+  // Cooldown — based on the timestamp of the most recent eval result.
+  // If we ever shipped multiple-iteration history (today we delete the old
+  // row before re-eval), this naturally generalizes to MAX(created_at).
+  const { data: lastEval } = await db
+    .from("evaluation_results")
+    .select("created_at")
+    .eq("submission_id", submissionId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (lastEval) {
+    const elapsed = Date.now() - new Date(lastEval.created_at).getTime();
+    if (elapsed < RE_EVAL_COOLDOWN_MS) {
+      return { kind: "cooldown", retry_after_ms: RE_EVAL_COOLDOWN_MS - elapsed };
+    }
+  }
+
+  // Iteration count: today we delete-and-replace, so the new row is
+  // iteration 1 of the *current* generation. Future schema can preserve
+  // history; this field is exposed so the API contract is stable.
+  return { ok: true, submission, iteration: 1 };
+}
+
+/**
+ * Clear the existing evaluation_result for a submission (cascades dimensions)
+ * and reset the submission status so the eval worker treats it as fresh.
+ *
+ * The route handler is responsible for actually enqueuing the BullMQ job
+ * after this returns. Service stays out of queue plumbing.
+ */
+export async function clearSubmissionForReEval(
+  db: SupabaseClient,
+  submissionId: string
+): Promise<{ ok: true } | RequestReEvalError> {
+  // DELETE cascades to evaluation_dimensions (FK ON DELETE CASCADE).
+  const { error: deleteError } = await db
+    .from("evaluation_results")
+    .delete()
+    .eq("submission_id", submissionId);
+  if (deleteError) return { kind: "internal" };
+
+  // Flip the submission back to RUNNING so the SSE stream + leaderboard
+  // reflect "we're re-evaluating" rather than the prior terminal status.
+  const { error: updateError } = await db
+    .from("submissions")
+    .update({
+      status: SUBMISSION_STATUS.RUNNING,
+      error_message: null,
+      completed_at: null,
+    })
+    .eq("id", submissionId);
+  if (updateError) return { kind: "internal" };
+
+  return { ok: true };
+}
+
 // ── Types ────────────────────────────────────────────────────
 
 export interface SubmissionTask {

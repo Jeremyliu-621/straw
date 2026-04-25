@@ -370,6 +370,30 @@ class SubmissionsResource {
   }
 
   /**
+   * Request a re-evaluation against the same artifact (D25 — dialogic eval).
+   *
+   * Use this when you suspect a fluke score, when your live_endpoint state
+   * has changed since the committee last looked, or when an evaluation_failed
+   * status looks transient. Doesn't consume a quota slot — re-eval is its
+   * own thing, distinct from re-submit.
+   *
+   * Rate-limited to once per submission per hour. Will reject with
+   * StrawApiError(WRONG_STATUS) if the submission is currently in flight,
+   * (TASK_CLOSED) if the parent task already closed, or (NO_ARTIFACT) if
+   * the upload was never completed.
+   */
+  async requestReEval(submissionId: string): Promise<{
+    submission_id: string;
+    iteration: number;
+    enqueued_at: string;
+    message: string;
+  }> {
+    const url = buildUrl(this.baseUrl, `/api/v1/submissions/${submissionId}/request_re_eval`);
+    const res = await fetch(url, { method: "POST", headers: this.headers });
+    return handleResponse(res);
+  }
+
+  /**
    * Subscribe to live updates for a single submission via SSE.
    *
    * Calls `onEvent` for every event the server emits. Emits `submission`

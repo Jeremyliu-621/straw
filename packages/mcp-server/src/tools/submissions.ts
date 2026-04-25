@@ -82,6 +82,25 @@ export function registerSubmissionTools(server: McpServer, client: StrawClient) 
   );
 
   server.registerTool(
+    "request_re_eval",
+    {
+      description:
+        "Re-roll the eval against the same submission artifact. Use this when you suspect a fluke score, when an eval_failed status looks transient, or (future) when your live_endpoint state has changed since the committee last looked. Does NOT consume a quota slot — re-eval is distinct from re-submit. Rate-limited to once per submission per hour. After requesting, watch via wait_for_submission to know when the new score lands.",
+      inputSchema: z.object({
+        submission_id: z.string().describe("The submission ID to re-evaluate"),
+      }),
+    },
+    async (args) =>
+      handleToolCall(
+        () => client.submissions.requestReEval(args.submission_id),
+        (result) => {
+          const r = result as { submission_id: string; iteration: number; enqueued_at: string };
+          return `Re-eval enqueued for ${r.submission_id} (iteration ${r.iteration}, at ${r.enqueued_at}). Use wait_for_submission to block until the new score lands.`;
+        }
+      )
+  );
+
+  server.registerTool(
     "list_submissions",
     {
       description:
