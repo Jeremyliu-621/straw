@@ -137,3 +137,36 @@ If a future Claude is resuming, read this from the bottom up. The most recent se
 **Next (Block 3):** Persistent agent workspace — KV + file storage scoped to `agent_id`, persists across submissions and tasks. The third major substrate primitive.
 
 ---
+
+## Block 3a — Persistent agent workspace KV (2026-04-25, early am)
+
+**Goal:** Substrate primitive #3 from the dream doc. Daemons that can remember things across submissions and tasks build up knowledge over time. KV first; file storage deferred to 3b.
+
+**What landed:**
+- `supabase/migrations/032_agent_workspace_kv.sql` — `agent_workspace_kv (agent_id, key, value jsonb, size_bytes generated, timestamps)`. RLS enabled with per-policy owner scopes. updated_at trigger. Composite primary key on (agent_id, key). NOT applied to prod.
+- `src/constants.ts` — `WORKSPACE_KV_*` constants: 10k keys / 1MB per value / 10MB total / 200-char key length / regex of allowed key chars.
+- `src/services/workspace.service.ts` — `validateKey`, `valueSizeBytes`, `getWorkspaceEntry`, `setWorkspaceEntry` (with 3-tier quota enforcement), `listWorkspaceEntries` (prefix + cursor pagination, sorted by updated_at desc, metadata-only), `deleteWorkspaceEntry` (idempotent), `getWorkspaceQuota`. 15 unit tests covering validation, quota cases, list pagination shape, and quota snapshot computation.
+- `src/app/api/v1/workspace/kv/[key]/route.ts` — GET/PUT/DELETE with shared service-error mapper.
+- `src/app/api/v1/workspace/kv/route.ts` — GET list endpoint (prefix + limit + cursor).
+- `src/app/api/v1/workspace/quota/route.ts` — GET quota endpoint.
+- `packages/agent-sdk/types.ts` — `WorkspaceEntry`, `WorkspaceKeyMetadata`, `WorkspaceListResult`, `WorkspaceQuotaSnapshot`.
+- `packages/agent-sdk/index.ts` — re-exports.
+- `packages/agent-sdk/client.ts` — `WorkspaceResource` with `get/set/delete/list/quota`.
+- `packages/mcp-server/src/tools/workspace.ts` — five MCP tools mirroring the SDK + a `workspace_quota` tool with a percentage-used display.
+- `packages/mcp-server/src/index.ts` — registers the new tools and updates the server instructions block.
+- `tasks/DECISIONS.md` — D24 added: full philosophy, security model, quota math, what's deferred to 3b.
+
+**Tests:** 824 green across the entire repo (was 809 before this block). tsc --noEmit clean.
+
+**Why ship just the KV tonight:** File storage requires presigned-upload integration with Supabase Storage (a different surface than the DB-backed KV). The KV alone is the most useful primitive — daemons can persist drafts, learnings, draft submissions, scratch state — without needing to build their own data layer. File storage is a clean follow-on once the KV pattern is validated in the wild.
+
+**What's deferred to Block 3b:**
+- `agent_workspace_files (agent_id, path, storage_ref, size_bytes, created_at)` table.
+- `POST /api/v1/workspace/files` for presigned-upload + `GET /api/v1/workspace/files/[path]` for download + `DELETE` for removal.
+- Storage bucket `agent-workspace` with RLS (or path-prefixed convention) for per-agent isolation.
+- 100MB-per-agent files quota.
+- SDK + MCP file tools.
+
+**Next (Block 4):** Dialogic eval — `POST /api/v1/submissions/[id]/ask` (block on a question to the eval committee), `POST /api/v1/submissions/[id]/patch` (deltas instead of full re-zip), `POST /api/v1/submissions/[id]/request_re_eval`. Substrate primitive #4. Worth running BEFORE Block 2b (worker integration for rich submission types) because both touch the same eval-worker code paths and dialogic eval is more contained.
+
+---

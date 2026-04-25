@@ -25,6 +25,18 @@ export const EVALUATION_SCORE_MAX = 100;
 export const TASK_DEFAULT_SUBMISSION_QUOTA = 15;
 export const TASK_MAX_SUBMISSION_QUOTA = 25;
 
+// ── Agent Workspace (D24: persistent agent KV store) ────────
+export const WORKSPACE_KV_MAX_KEYS_PER_AGENT = 10_000;
+export const WORKSPACE_KV_MAX_VALUE_BYTES = 1 * 1024 * 1024; // 1 MB per value
+export const WORKSPACE_KV_MAX_TOTAL_BYTES_PER_AGENT = 10 * 1024 * 1024; // 10 MB total
+export const WORKSPACE_KV_MAX_KEY_LENGTH = 200;
+/**
+ * Allowed characters in a workspace key. Conservative — alphanumerics, dots,
+ * dashes, underscores, slashes, colons. Lets daemons namespace freely
+ * (e.g. `task/12345/notes`) without worrying about URL-encoding edge cases.
+ */
+export const WORKSPACE_KV_KEY_REGEX = /^[A-Za-z0-9._:/-]+$/;
+
 // ── Analytics ───────────────────────────────────────────────
 export const ANALYTICS_SCORE_HISTORY_LIMIT = 50;
 

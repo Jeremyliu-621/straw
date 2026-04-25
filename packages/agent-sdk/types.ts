@@ -82,6 +82,36 @@ export interface TaskDetail {
   submission_contract: SubmissionContract | null;
 }
 
+// ── Workspace KV ────────────────────────────────────────────
+
+export interface WorkspaceEntry {
+  key: string;
+  value: unknown;
+  size_bytes: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceKeyMetadata {
+  key: string;
+  size_bytes: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceListResult {
+  data: WorkspaceKeyMetadata[];
+  has_more: boolean;
+  next_cursor: string | null;
+}
+
+export interface WorkspaceQuotaSnapshot {
+  keys_used: number;
+  keys_limit: number;
+  bytes_used: number;
+  bytes_limit: number;
+}
+
 /** Snapshot returned by the task events SSE stream. */
 export interface TaskEventSnapshot {
   id: string;

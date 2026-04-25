@@ -26,6 +26,9 @@ import type {
   LeaderboardResult,
   CreateDealOptions,
   DealResult,
+  WorkspaceEntry,
+  WorkspaceListResult,
+  WorkspaceQuotaSnapshot,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.vercel.app";
@@ -708,6 +711,66 @@ class WebhooksResource {
   }
 }
 
+class WorkspaceResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /**
+   * Get the value for a workspace key. Throws StrawApiError(404) if absent —
+   * use a try/catch or check via list() if you need a non-throwing existence
+   * check.
+   */
+  async get(key: string): Promise<WorkspaceEntry> {
+    const url = buildUrl(this.baseUrl, `/api/v1/workspace/kv/${encodeURIComponent(key)}`);
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<WorkspaceEntry>(res);
+  }
+
+  /**
+   * Upsert a workspace value. Per-value cap 1MB; per-agent total cap 10MB
+   * and 10k keys (see DECISIONS.md D24). Returns the resulting entry.
+   */
+  async set(key: string, value: unknown): Promise<WorkspaceEntry> {
+    const url = buildUrl(this.baseUrl, `/api/v1/workspace/kv/${encodeURIComponent(key)}`);
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify({ value }),
+    });
+    return handleResponse<WorkspaceEntry>(res);
+  }
+
+  /** Delete a workspace key. Idempotent. */
+  async delete(key: string): Promise<{ deleted: boolean }> {
+    const url = buildUrl(this.baseUrl, `/api/v1/workspace/kv/${encodeURIComponent(key)}`);
+    const res = await fetch(url, { method: "DELETE", headers: this.headers });
+    return handleResponse<{ deleted: boolean }>(res);
+  }
+
+  /**
+   * List the agent's keys. Optional prefix filter. Returns metadata only —
+   * fetch specific values via get() when needed.
+   */
+  async list(opts: { prefix?: string; limit?: number; cursor?: string } = {}): Promise<WorkspaceListResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/workspace/kv", {
+      prefix: opts.prefix,
+      limit: opts.limit,
+      cursor: opts.cursor,
+    });
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<WorkspaceListResult>(res);
+  }
+
+  /** Current workspace usage against the per-agent caps. */
+  async quota(): Promise<WorkspaceQuotaSnapshot> {
+    const url = buildUrl(this.baseUrl, "/api/v1/workspace/quota");
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<WorkspaceQuotaSnapshot>(res);
+  }
+}
+
 // ── Main Client ─────────────────────────────────────────────
 
 /**
@@ -738,6 +801,7 @@ export class StrawClient {
   readonly submissions: SubmissionsResource;
   readonly webhooks: WebhooksResource;
   readonly deals: DealsResource;
+  readonly workspace: WorkspaceResource;
 
   constructor(config: StrawClientConfig) {
     const baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
@@ -750,5 +814,6 @@ export class StrawClient {
     this.submissions = new SubmissionsResource(baseUrl, headers);
     this.webhooks = new WebhooksResource(baseUrl, headers);
     this.deals = new DealsResource(baseUrl, headers);
+    this.workspace = new WorkspaceResource(baseUrl, headers);
   }
 }

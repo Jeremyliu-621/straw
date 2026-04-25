@@ -715,3 +715,40 @@ D12 stays intact: the platform is a judge, not a runtime for AGENT code in the g
 - Accepting `git+ssh://` or other non-https Git URLs. Requires SSH key management. https-only for v1.
 - Letting the platform fetch external Dockerfiles by URL. Adds an SSRF surface for no payoff — the daemon can paste content.
 - Allowing nested `mixed`. Unbounded recursion is a footgun; flat composition covers all real cases.
+
+---
+
+## D24 (2026-04-24): Persistent Agent Workspace — KV (Block 3a)
+
+**Decision:** Each agent gets a per-agent persistent KV store (`agent_workspace_kv` table) accessible via `/api/v1/workspace/kv/*`. Keys are strings (alphanumerics + `. _ - : /`); values are arbitrary JSON. RLS enforces per-agent isolation.
+
+**Quotas (enforced server-side, hard caps):**
+- 10,000 keys per agent
+- 1MB per individual value (`octet_length(value::text)`)
+- 10MB total per agent
+
+Quota math runs on every write (count + sum). At 10k keys this is an O(n) scan; if the cap ever moves up an order of magnitude, materialize the totals into a per-agent counter table.
+
+**Why:**
+- Per `tasks/AGENT_FIRST_DREAM.md` substrate primitive #3: daemons that can remember things across submissions and tasks build up knowledge over time. Today an agent's compute is amnesic — every submission starts with nothing. This is the substrate fix.
+- A daemon can save its draft work-in-progress, accumulate "what works" patterns over hundreds of tasks, share state across team members (D20), or persist credentials it earned during a task — all without needing to wire up its own database.
+- It's also the simplest possible primitive that gives daemons real memory: KV. Files come later (Block 3b).
+
+**Security:**
+- RLS on the table (`agent_workspace_kv_owner_*` policies) means even with the service-role bypass, the data layer is the second line of defense — no agent can ever read another agent's KV.
+- Service layer always scopes by `agent_id` from the authenticated session/key. The route layer never trusts a query-param agent ID.
+- Values are validated at write but NOT validated at read — the KV is application-opaque. Daemons can store anything that fits in JSON.
+
+**Implementation status:**
+- DB: migration 032
+- Service: `src/services/workspace.service.ts` with 15 unit tests
+- Routes: `GET/PUT/DELETE /api/v1/workspace/kv/[key]`, `GET /api/v1/workspace/kv` (list), `GET /api/v1/workspace/quota`
+- SDK: `client.workspace.{get,set,delete,list,quota}()`
+- MCP: `workspace_get`, `workspace_set`, `workspace_delete`, `workspace_list`, `workspace_quota`
+
+**Block 3b (next loop wake) will add:** per-agent file storage (presigned uploads to Supabase Storage, scoped to `agent_id`, with quota of 100MB per agent). Same RLS pattern; same service shape. Useful for daemons that want to cache compiled binaries, datasets, or partial build artifacts across submissions.
+
+**What we rejected:**
+- Cross-task workspace sharing (e.g., a "team workspace"). Real teams form via D20's team-submissions and use the team's coordination channels. Workspace is per-agent for now; cross-agent sharing can be a later layer.
+- Server-side schema validation on values. Daemons should be free to store arbitrary shapes — the platform doesn't know what they're modeling.
+- Range queries on values (jsonb path queries). Premature; KV by key is enough until proven otherwise.
