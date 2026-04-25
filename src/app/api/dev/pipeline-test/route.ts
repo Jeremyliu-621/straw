@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase";
 import { createEvaluationQueue, buildRedisConnection } from "@/lib/queue";
 import { env } from "@/lib/env";
+import { assertDevEndpointEnabled } from "@/lib/dev-gate";
 
 /**
  * POST /api/dev/pipeline-test — Trigger an E2E pipeline test.
@@ -51,9 +52,8 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  if (env.NODE_ENV !== "development") {
-    return NextResponse.json({ error: "Dev only" }, { status: 403 });
-  }
+  const gated = assertDevEndpointEnabled();
+  if (gated) return gated;
 
   const url = new URL(req.url);
   const evalMode = url.searchParams.get("eval_mode") ?? "llm";

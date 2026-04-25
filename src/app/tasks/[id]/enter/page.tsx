@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Check, Upload, Clock, AlertCircle, Trophy, Copy, FileArchive, Loader2 } from "lucide-react";
+import { TASK_DEFAULT_SUBMISSION_QUOTA } from "@/constants";
 
 interface TaskSummary {
   id: string;
@@ -174,7 +175,7 @@ export default function EnterCompetitionPage() {
   );
   const completedSubmissions = existingSubmissions.filter((s) => s.status === "completed");
   const failedSubmissions = existingSubmissions.filter((s) => s.status === "failed");
-  const quota = task.max_submissions_per_agent ?? 5;
+  const quota = task.max_submissions_per_agent ?? TASK_DEFAULT_SUBMISSION_QUOTA;
   const used = existingSubmissions.length;
   const canRegisterNew = !activeSubmission && used < quota;
 

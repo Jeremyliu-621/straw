@@ -56,6 +56,7 @@ export interface Task {
 export interface Criterion {
   name: string;
   description: string | null;
+  weight: number;
 }
 
 export interface Quota {
@@ -79,6 +80,104 @@ export interface TaskDetail {
   criteria: Criterion[];
   quota: Quota | null;
   submission_contract: SubmissionContract | null;
+}
+
+// ── Workspace KV ────────────────────────────────────────────
+
+export interface WorkspaceEntry {
+  key: string;
+  value: unknown;
+  size_bytes: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceKeyMetadata {
+  key: string;
+  size_bytes: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceListResult {
+  data: WorkspaceKeyMetadata[];
+  has_more: boolean;
+  next_cursor: string | null;
+}
+
+export interface WorkspaceQuotaSnapshot {
+  keys_used: number;
+  keys_limit: number;
+  bytes_used: number;
+  bytes_limit: number;
+}
+
+// ── Workspace Files (D26) ────────────────────────────────────
+
+export interface WorkspaceFileMetadata {
+  path: string;
+  size_bytes: number;
+  content_type: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceFilesListResult {
+  data: WorkspaceFileMetadata[];
+  has_more: boolean;
+  next_cursor: string | null;
+}
+
+export interface WorkspaceFilesQuotaSnapshot {
+  files_used: number;
+  files_limit: number;
+  bytes_used: number;
+  bytes_limit: number;
+  per_file_byte_limit: number;
+}
+
+// ── Search (D27) ─────────────────────────────────────────────
+
+export interface TaskSearchHit {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string | null;
+  status: string;
+  budget_cents: number;
+  deadline: string;
+  eval_mode: string;
+  created_at: string;
+  rank: number;
+}
+
+export interface SearchTasksResult {
+  data: TaskSearchHit[];
+  has_more: boolean;
+  next_cursor: string | null;
+}
+
+export interface SearchTasksOptions {
+  query: string;
+  status?: "open" | "closed" | "evaluating" | "any";
+  category?: string;
+  limit?: number;
+  cursor?: string;
+}
+
+/** Snapshot returned by the task events SSE stream. */
+export interface TaskEventSnapshot {
+  id: string;
+  status: string;
+  deadline: string;
+  title: string;
+  category: string | null;
+  budget_cents: number;
+  eval_mode: string;
+  max_submissions_per_agent: number | null;
+  updated_at: string | null;
+  /** Server-time of this snapshot — clients use it to compute time-to-deadline. */
+  server_time: string;
 }
 
 // ── Submissions ─────────────────────────────────────────────
@@ -122,6 +221,14 @@ export interface Dimension {
   reasoning: string | null;
 }
 
+export interface SubmissionResumeInfo {
+  /** Fresh presigned URL the agent can PUT their artifact to. */
+  url: string;
+  token: string;
+  path: string;
+  expires_at: string;
+}
+
 export interface SubmissionDetail {
   id: string;
   task_id: string;
@@ -137,6 +244,21 @@ export interface SubmissionDetail {
   dimensions: Dimension[];
   position: number | null;
   quota: Quota;
+  /**
+   * Present when status=registered AND no artifact uploaded yet — the agent
+   * can PUT their artifact to `resume.url` and then call
+   * `submissions.complete()` (or `quickSubmit`'s server-side equivalent).
+   * Per DECISIONS.md D28.
+   */
+  resume: SubmissionResumeInfo | null;
+}
+
+export interface RefreshUploadUrlResult {
+  submission_id: string;
+  upload_url: string;
+  upload_token: string;
+  upload_path: string;
+  upload_expires_at: string;
 }
 
 export interface CreateSubmissionResult {

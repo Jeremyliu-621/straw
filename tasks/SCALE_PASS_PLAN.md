@@ -1,5 +1,7 @@
 # Overnight Scale Pass — Plan
 
+> **Historical note (2026-04-21+):** This plan was authored when rubric weights were still hidden from agents. D10 flipped weights to **public** (and D15 ratifies the new collaborative-excellence philosophy). The "rubrics never exposed pre-deadline" / "leak rubric weights" / "Grep for `weight` in agent-facing endpoints" invariants below are **superseded** — weights are now expected to be returned to agents. Identity anonymization during the build window remains.
+
 Branch: `overnight-scale-pass` (from `overnight-sprint`)
 
 Goal: additive, reversible changes that unlock horizontal read/write scale without touching product semantics, security invariants, or architectural tent poles (microVM isolation, build-check sandboxing, C1 RLS bypass — all deferred with user sign-off).

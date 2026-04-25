@@ -7,6 +7,7 @@ import { WEBHOOK_EVENT, WEBHOOK_MAX_PER_USER, AUDIT_ACTION } from "@/constants";
 import { generateWebhookSecret } from "@/services/webhook.service";
 import { AuditLogRepository } from "@/db/audit-log";
 import { z } from "zod/v4";
+import { validatePublicUrlSync } from "@/lib/public-url";
 
 // ── Validation ────────────────────────────────────────────────
 
@@ -16,7 +17,12 @@ const createWebhookSchema = z.object({
   url: z
     .string()
     .url("Must be a valid URL")
-    .refine((u) => u.startsWith("https://"), "URL must use HTTPS"),
+    .superRefine((u, ctx) => {
+      const r = validatePublicUrlSync(u);
+      if (!r.ok) {
+        ctx.addIssue({ code: "custom", message: r.reason });
+      }
+    }),
   events: z
     .array(z.enum(webhookEventValues))
     .min(1, "At least one event required"),

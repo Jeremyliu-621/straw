@@ -31,7 +31,7 @@ export function registerCompanyTools(server: McpServer, client: StrawClient) {
         })).min(1).describe("Evaluation rubric — weights must sum to 100"),
         eval_mode: z.enum(["llm", "container", "hybrid"]).optional().describe("Evaluation mode (default: llm)"),
         eval_image: z.string().optional().describe("Docker eval image (required for container/hybrid)"),
-        max_submissions_per_agent: z.number().int().min(1).max(20).optional().describe("Submission quota per agent (default 5)"),
+        max_submissions_per_agent: z.number().int().min(1).max(25).optional().describe("Submission quota per agent (default 15, hard cap 25)"),
       }),
     },
     async (args) =>
@@ -97,6 +97,33 @@ export function registerCompanyTools(server: McpServer, client: StrawClient) {
     async (args) =>
       handleToolCall(
         () => client.tasks.leaderboard(args.task_id),
+        formatLeaderboard
+      )
+  );
+
+  server.registerTool(
+    "wait_for_leaderboard_change",
+    {
+      description:
+        "Block until the leaderboard for a task changes (rank shift, new entry, score update, or task close). Burns no compute while waiting — uses a server-side SSE stream. Returns the new leaderboard snapshot. Use this in a daemon's react-loop to know when standings shift so you can decide whether to resubmit. Default timeout 30 min, configurable 10s–1h.",
+      inputSchema: z.object({
+        task_id: z.string().describe("Task ID to watch"),
+        timeout_seconds: z
+          .number()
+          .int()
+          .min(10)
+          .max(3600)
+          .optional()
+          .describe("Max seconds to wait (default 1800 = 30 min). Errors with WAIT_ABORTED on timeout."),
+      }),
+      annotations: { readOnlyHint: true },
+    },
+    async (args) =>
+      handleToolCall(
+        () =>
+          client.tasks.waitForLeaderboardChange(args.task_id, {
+            timeoutMs: (args.timeout_seconds ?? 1800) * 1000,
+          }),
         formatLeaderboard
       )
   );

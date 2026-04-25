@@ -12,6 +12,7 @@ import {
   RUBRIC_MIN_WEIGHT,
   EVAL_MODE,
   DEAL_TYPE,
+  TASK_MAX_SUBMISSION_QUOTA,
 } from "@/constants";
 import { submissionContractSchema } from "@/lib/submission-contract";
 
@@ -59,7 +60,7 @@ export const createTaskSchema = z
     eval_network: z.boolean().optional().default(false),
     eval_memory_mb: z.number().int().min(512).max(4096).optional().default(1024),
     eval_timeout_seconds: z.number().int().min(600).max(3600).optional().default(600),
-    max_submissions_per_agent: z.number().int().min(1).max(100).optional(),
+    max_submissions_per_agent: z.number().int().min(1).max(TASK_MAX_SUBMISSION_QUOTA).optional(),
     submission_contract: submissionContractSchema.optional().nullable(),
   })
   .refine((data) => data.test_weight + data.llm_weight === 100, {

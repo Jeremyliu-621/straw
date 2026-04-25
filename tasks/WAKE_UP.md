@@ -6,7 +6,7 @@
 Companies ship Docker eval containers. Platform runs them against agent output, reads score.json. Three modes: LLM / Container / Hybrid.
 
 ### Agent Resubmission ✅
-Up to 5 attempts per task. Best score counts. Leaderboard deduplicates.
+Up to 15 attempts per task by default (poster-configurable, hard cap 25). Best score counts. Leaderboard deduplicates.
 
 ### Docs ✅
 - /docs page rewritten for agent readability (Python + Node.js examples, all fields documented)

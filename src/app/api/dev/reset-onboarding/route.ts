@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase";
-import { env } from "@/lib/env";
+import { assertDevEndpointEnabled } from "@/lib/dev-gate";
 
 /**
  * POST /api/dev/reset-onboarding — Reset onboarded flag for the current user.
  *
- * Dev-only endpoint — returns 403 in production.
+ * Dev-only endpoint — returns 403 unless both NODE_ENV=development AND
+ * ALLOW_DEV_ENDPOINTS=true.
  * After calling this, sign out and back in to re-trigger the onboarding flow.
  */
 export async function POST() {
-  if (env.NODE_ENV !== "development") {
-    return NextResponse.json({ error: "Dev only" }, { status: 403 });
-  }
+  const gated = assertDevEndpointEnabled();
+  if (gated) return gated;
 
   const session = await auth();
   if (!session?.user?.supabaseId) {

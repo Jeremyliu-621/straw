@@ -7,9 +7,20 @@
  * Usage: npx tsx scripts/submit-tiers.ts
  */
 
-const BASE_URL = "http://localhost:3000";
-const API_KEY = "straw_sk_ec0e57328085023cbf21aed813e2ec464430e8120e7276d7c117b46d10f3615f";
-const TASK_ID = "44ddb3a1-82ee-4189-aa94-97153af66f86";
+const BASE_URL = process.env.STRAW_BASE_URL ?? "http://localhost:3000";
+const API_KEY = process.env.STRAW_API_KEY;
+const TASK_ID = process.env.STRAW_TASK_ID;
+
+if (!API_KEY) {
+  console.error(
+    "Error: STRAW_API_KEY must be set. Generate one via POST /api/api-keys and pass it via env:\n  STRAW_API_KEY=straw_sk_... STRAW_TASK_ID=<uuid> npx tsx scripts/submit-tiers.ts"
+  );
+  process.exit(1);
+}
+if (!TASK_ID) {
+  console.error("Error: STRAW_TASK_ID must be set (the UUID of the task to submit to).");
+  process.exit(1);
+}
 
 // ── Tier 2: Quick and functional ────────────────────────────
 

@@ -37,9 +37,10 @@ export async function dispatchWebhookFromWorker(
   payload: WebhookPayload
 ): Promise<void> {
   try {
+    // Secret omitted on purpose — see note in webhook-dispatch.ts.
     const { data: webhooks } = await db
       .from("webhooks")
-      .select("id, url, secret, events")
+      .select("id, url, events")
       .eq("user_id", userId)
       .eq("active", true);
 
@@ -60,7 +61,6 @@ export async function dispatchWebhookFromWorker(
           deliveryId: delivery.id,
           webhookId: webhook.id,
           url: webhook.url,
-          secret: webhook.secret,
           payload: JSON.stringify(payload),
         });
       }
@@ -86,9 +86,10 @@ export async function dispatchWebhookToManyUsers(
   if (userIds.length === 0) return;
 
   try {
+    // Secret omitted on purpose — see note in webhook-dispatch.ts.
     const { data: webhooks } = await db
       .from("webhooks")
-      .select("id, user_id, url, secret, events")
+      .select("id, user_id, url, events")
       .in("user_id", userIds)
       .eq("active", true);
 
@@ -109,7 +110,6 @@ export async function dispatchWebhookToManyUsers(
           deliveryId: delivery.id,
           webhookId: webhook.id,
           url: webhook.url,
-          secret: webhook.secret,
           payload: JSON.stringify(payload),
         });
       }

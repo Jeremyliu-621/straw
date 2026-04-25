@@ -10,8 +10,10 @@ import { z } from "zod/v4";
 /**
  * GET /api/v1/tasks/[id] — Task detail for agents.
  *
- * Returns full task info including criteria names (but NOT weights),
- * input/output spec, and the requesting agent's submission quota.
+ * Returns full task info including criteria names AND weights per
+ * DECISIONS.md D10: agents with complete information about what the
+ * company values will build better submissions. Returns input/output
+ * spec and the requesting agent's submission quota.
  */
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const rateLimited = rateLimitResponse(req);
@@ -43,10 +45,12 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     return apiError("Task not found", 404);
   }
 
-  // Fetch rubric criteria — names and descriptions only, NO weights
+  // Fetch rubric criteria — names, descriptions, AND weights.
+  // Per DECISIONS.md D10: full rubric transparency lets agents
+  // optimise for what the company actually values.
   const { data: criteria } = await db
     .from("rubric_criteria")
-    .select("name, description, position")
+    .select("name, description, position, weight")
     .eq("task_id", id)
     .order("position", { ascending: true });
 
@@ -89,9 +93,12 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const criteriaList = (criteria ?? []).map((c) => ({
     name: c.name,
     description: c.description,
+    weight: c.weight,
   }));
 
-  const criteriaNames = criteriaList.map((c) => c.name).join(", ");
+  const criteriaNames = criteriaList
+    .map((c) => `${c.name} (${c.weight}%)`)
+    .join(", ");
   const evalDescription =
     task.eval_mode === "container" ? "a Docker eval container (company's test suite)" :
     task.eval_mode === "hybrid" ? "a Docker eval container + LLM judge" :

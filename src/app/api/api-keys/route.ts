@@ -13,6 +13,9 @@ import { AuditLogRepository } from "@/db/audit-log";
  * Never returns the plaintext key — only prefix, name, timestamps.
  */
 export async function GET(req: Request) {
+  const rateLimited = rateLimitResponse(req, { maxRequests: 30, prefix: "api-keys-list" });
+  if (rateLimited) return rateLimited;
+
   const user = await authenticateRequest(req);
   if (!user?.supabaseId) return apiError("Unauthorized", 401);
 
@@ -100,6 +103,9 @@ export async function POST(req: Request) {
  * Users can only revoke their own keys.
  */
 export async function DELETE(req: Request) {
+  const rateLimited = rateLimitResponse(req, { maxRequests: 10, prefix: "api-keys-delete" });
+  if (rateLimited) return rateLimited;
+
   const user = await authenticateRequest(req);
   if (!user?.supabaseId) return apiError("Unauthorized", 401);
 

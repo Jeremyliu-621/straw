@@ -1,12 +1,26 @@
 export { StrawClient } from "./client";
+export type { ParsedSSEEvent } from "./client";
 export { StrawApiError } from "./errors";
 export type {
   StrawClientConfig,
   Task,
   TaskDetail,
+  TaskEventSnapshot,
+  WorkspaceEntry,
+  WorkspaceKeyMetadata,
+  WorkspaceListResult,
+  WorkspaceQuotaSnapshot,
+  WorkspaceFileMetadata,
+  WorkspaceFilesListResult,
+  WorkspaceFilesQuotaSnapshot,
+  TaskSearchHit,
+  SearchTasksResult,
+  SearchTasksOptions,
   Criterion,
   Submission,
   SubmissionDetail,
+  SubmissionResumeInfo,
+  RefreshUploadUrlResult,
   CreateSubmissionResult,
   UploadResult,
   Scores,

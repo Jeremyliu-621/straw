@@ -184,8 +184,19 @@ export async function GET(request: Request) {
       displayName = anonymizeAgent(a.agentId, (rank ?? idx + 1) - 1);
     }
 
+    // Before the reveal deadline, emit a synthetic per-position id so
+    // clients keep a stable React key / state anchor without learning
+    // the real agent UUID. An agent can identify themselves from a UUID
+    // they already know (returned at submission creation); matching the
+    // leaderboard route's anonymisation here closes the same gap.
+    const publicId = reveal
+      ? a.agentId
+      : rank !== null
+        ? `anon-rank-${rank}`
+        : `anon-idx-${idx}`;
+
     return {
-      id: a.agentId,
+      id: publicId,
       displayName,
       rank,
       latestStatus: a.latestStatus,

@@ -30,6 +30,7 @@ import {
   WORKER_DURATION_WINDOW_SIZE,
 } from "@/constants";
 import { buildRedisConnection } from "@/lib/queue";
+import { validatePublicUrlDynamic } from "@/lib/public-url";
 
 // ── Config ──────────────────────────────────────────────────
 
@@ -140,18 +141,23 @@ function signPayload(payload: string, secret: string): string {
 
 // ── Worker ──────────────────────────────────────────────────
 
+/**
+ * Job data carried through Redis. The signing secret is intentionally
+ * NOT included here — it's fetched from the DB at delivery time so
+ * Redis (and anything with read access to it: log drains, ops tools,
+ * a compromised worker sibling) never sees customer HMAC secrets.
+ */
 interface WebhookJobData {
   deliveryId: string;
   webhookId: string;
   url: string;
-  secret: string;
   payload: string;
 }
 
 const worker = new Worker<WebhookJobData>(
   QUEUE_NAME,
   async (job) => {
-    const { deliveryId, url, secret, payload } = job.data;
+    const { deliveryId, webhookId, url, payload } = job.data;
     const attempt = (job.attemptsMade ?? 0) + 1;
 
     if (job.id) jobStartTimes.set(job.id, Date.now());
@@ -159,6 +165,73 @@ const worker = new Worker<WebhookJobData>(
 
     console.log(`[webhook-worker] Delivering ${deliveryId} to ${url} (attempt ${attempt})`);
 
+    // Block SSRF before we do anything else. URLs could have been registered
+    // via the API (where we apply the sync check) but hostnames can flip to
+    // private IPs via DNS between registration and delivery (rebinding).
+    // Resolve fresh on every attempt.
+    const urlCheck = await validatePublicUrlDynamic(url);
+    if (!urlCheck.ok) {
+      // Log the detailed reason (including the resolved IP) to stderr for
+      // operators. Do NOT write that detail into webhook_deliveries.response_body
+      // — the owner can read that row, and the resolved IP is a free
+      // DNS-based reconnaissance primitive otherwise (register a webhook
+      // at attacker-controlled DNS, observe what our worker sees, rinse).
+      console.error(
+        `[webhook-worker] Refusing to deliver ${deliveryId} to ${url}: ${urlCheck.reason}`
+      );
+      const publicReason = "Webhook URL rejected: not a public host";
+      await db
+        .from("webhook_deliveries")
+        .update({
+          status: "failed",
+          response_body: publicReason,
+          attempts: attempt,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", deliveryId);
+      // Throw a non-retryable error — re-trying a blocked URL will just
+      // keep failing. BullMQ will mark the job as failed.
+      throw new Error(`Refused to deliver to ${url}: not a public host`);
+    }
+
+    // Fetch the signing secret fresh from the DB. If the webhook was
+    // deleted or deactivated between enqueue and delivery, skip — the
+    // customer removed consent to deliver.
+    const { data: webhookRow, error: webhookErr } = await db
+      .from("webhooks")
+      .select("secret, active")
+      .eq("id", webhookId)
+      .single();
+
+    if (webhookErr || !webhookRow) {
+      const reason = `Webhook ${webhookId} not found (was it deleted?)`;
+      await db
+        .from("webhook_deliveries")
+        .update({
+          status: "failed",
+          response_body: reason,
+          attempts: attempt,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", deliveryId);
+      throw new Error(reason);
+    }
+
+    if (!webhookRow.active) {
+      const reason = `Webhook ${webhookId} is inactive`;
+      await db
+        .from("webhook_deliveries")
+        .update({
+          status: "failed",
+          response_body: reason,
+          attempts: attempt,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", deliveryId);
+      throw new Error(reason);
+    }
+
+    const secret = webhookRow.secret as string;
     const signature = signPayload(payload, secret);
     let parsedEvent = "unknown";
     try {

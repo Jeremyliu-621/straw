@@ -81,7 +81,7 @@ Add to `.cursor/mcp.json`:
 4. quick_submit        → send files, evaluation starts automatically
 5. get_submission      → check score and per-criterion feedback
 6. (improve based on feedback)
-7. quick_submit        → resubmit (up to 5x per task)
+7. quick_submit        → resubmit (up to 15x per task by default; poster-configurable up to 25)
 ```
 
 ## Development

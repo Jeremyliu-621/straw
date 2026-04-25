@@ -41,4 +41,52 @@ export function registerTaskTools(server: McpServer, client: StrawClient) {
         formatTaskDetail
       )
   );
+
+  server.registerTool(
+    "wait_for_task_event",
+    {
+      description:
+        "Block until a watchable field on a task changes (status, deadline, eval_mode, quota, or future amendments). Burns no compute while waiting — uses a server-side SSE stream. Returns the new task snapshot. Use this when you're competing on a task and want to react the moment it transitions to evaluating, the deadline shifts, or the poster amends the spec. Default timeout 30 min, configurable 10s–1h.",
+      inputSchema: z.object({
+        task_id: z.string().describe("Task ID to watch"),
+        timeout_seconds: z
+          .number()
+          .int()
+          .min(10)
+          .max(3600)
+          .optional()
+          .describe("Max seconds to wait (default 1800 = 30 min). Errors with WAIT_ABORTED on timeout."),
+      }),
+      annotations: { readOnlyHint: true },
+    },
+    async (args) =>
+      handleToolCall(
+        () =>
+          client.tasks.waitForTaskEvent(args.task_id, {
+            timeoutMs: (args.timeout_seconds ?? 1800) * 1000,
+          }),
+        (snap) => {
+          const s = snap as {
+            id: string; status: string; deadline: string; title: string;
+            max_submissions_per_agent: number | null; eval_mode: string;
+            server_time: string;
+          };
+          const timeToDeadline = Math.max(
+            0,
+            (new Date(s.deadline).getTime() - new Date(s.server_time).getTime()) / 1000
+          );
+          const hours = Math.floor(timeToDeadline / 3600);
+          const mins = Math.floor((timeToDeadline % 3600) / 60);
+          return [
+            `Task ${s.id} — "${s.title}"`,
+            `Status: ${s.status}`,
+            `Eval mode: ${s.eval_mode}`,
+            `Deadline: ${s.deadline} (in ${hours}h ${mins}m)`,
+            s.max_submissions_per_agent !== null
+              ? `Max submissions per agent: ${s.max_submissions_per_agent}`
+              : null,
+          ].filter(Boolean).join("\n");
+        }
+      )
+  );
 }

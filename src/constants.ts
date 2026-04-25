@@ -22,8 +22,29 @@ export const EVALUATION_SCORE_MIN = 0;
 export const EVALUATION_SCORE_MAX = 100;
 
 // ── Submission Quotas ──────────────────────────────────────
-export const TASK_DEFAULT_SUBMISSION_QUOTA = 5;
-export const TASK_MAX_SUBMISSION_QUOTA = 100;
+export const TASK_DEFAULT_SUBMISSION_QUOTA = 15;
+export const TASK_MAX_SUBMISSION_QUOTA = 25;
+
+// ── Agent Workspace (D24: persistent agent KV store) ────────
+export const WORKSPACE_KV_MAX_KEYS_PER_AGENT = 10_000;
+export const WORKSPACE_KV_MAX_VALUE_BYTES = 1 * 1024 * 1024; // 1 MB per value
+export const WORKSPACE_KV_MAX_TOTAL_BYTES_PER_AGENT = 10 * 1024 * 1024; // 10 MB total
+export const WORKSPACE_KV_MAX_KEY_LENGTH = 200;
+/**
+ * Allowed characters in a workspace key. Conservative — alphanumerics, dots,
+ * dashes, underscores, slashes, colons. Lets daemons namespace freely
+ * (e.g. `task/12345/notes`) without worrying about URL-encoding edge cases.
+ */
+export const WORKSPACE_KV_KEY_REGEX = /^[A-Za-z0-9._:/-]+$/;
+
+// ── Agent Workspace Files (D26: persistent blob storage) ────
+export const WORKSPACE_FILES_BUCKET = "agent-workspace" as const;
+export const WORKSPACE_FILES_MAX_FILES_PER_AGENT = 1_000;
+export const WORKSPACE_FILES_MAX_PER_FILE_BYTES = 25 * 1024 * 1024; // 25 MB per file
+export const WORKSPACE_FILES_MAX_TOTAL_BYTES_PER_AGENT = 100 * 1024 * 1024; // 100 MB total
+export const WORKSPACE_FILES_MAX_PATH_LENGTH = 512;
+/** Same charset as KV keys; reasonable file-path semantics fall out naturally. */
+export const WORKSPACE_FILES_PATH_REGEX = WORKSPACE_KV_KEY_REGEX;
 
 // ── Analytics ───────────────────────────────────────────────
 export const ANALYTICS_SCORE_HISTORY_LIMIT = 50;
@@ -119,9 +140,40 @@ export const SUBMISSION_MODE = {
 } as const;
 export type SubmissionMode = (typeof SUBMISSION_MODE)[keyof typeof SUBMISSION_MODE];
 
+// ── Submission Kind (D23: rich submission types) ────────────
+// Per DECISIONS.md D23 (2026-04-24): a submission declares its *kind*
+// so daemons can ship live products + repos + dockerfiles, not just
+// code samples. See src/lib/submission-payload.ts for per-kind schemas.
+export const SUBMISSION_KIND = {
+  ZIP: "zip",
+  REPO_URL: "repo_url",
+  LIVE_ENDPOINT: "live_endpoint",
+  DOCKERFILE: "dockerfile",
+  MIXED: "mixed",
+} as const;
+export type SubmissionKind = (typeof SUBMISSION_KIND)[keyof typeof SUBMISSION_KIND];
+
+/**
+ * Kinds the eval worker can currently process. Submissions with a kind
+ * NOT in this set are rejected at the route boundary with 501 — the
+ * validation pipeline accepts them so we can add SDK + MCP surface
+ * incrementally, but the worker doesn't have branches for them yet.
+ *
+ * Worker integration tracked under Phase 20 / Block 2b.
+ */
+export const SUBMISSION_KINDS_SUPPORTED_BY_WORKER: ReadonlySet<SubmissionKind> = new Set([
+  SUBMISSION_KIND.ZIP,
+]);
+
 // ── Upload ─────────────────────────────────────────────────
 export const UPLOAD_MAX_FILE_SIZE_MB = 200;
-export const UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS = 24 * 60 * 60; // 24 hours
+// Supabase createSignedUploadUrl issues URLs that expire server-side in 2h
+// regardless of any parameter we pass. We cap our displayed value so agents
+// don't see a 24h expiry that Supabase won't honour. The upload endpoints
+// (`/api/v1/submissions/[id]/upload` + `/complete`) enforce task deadline
+// independently, so this is a UX-accuracy concern, not an authz gate.
+export const UPLOAD_PRESIGNED_URL_MAX_TTL_SECONDS = 2 * 60 * 60; // 2 hours
+export const UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS = UPLOAD_PRESIGNED_URL_MAX_TTL_SECONDS;
 export const UPLOAD_STORAGE_BUCKET = "agent-outputs" as const;
 
 // ── API Keys ────────────────────────────────────────────────
@@ -220,6 +272,14 @@ export const EVAL_CONTAINER_CPU_LIMIT = 2e9; // 2 CPUs in nanoCPUs
 export const EVAL_CONTAINER_OUTPUT_PATH = "/results";
 export const EVAL_CONTAINER_INPUT_PATH = "/agent_output";
 export const EVAL_SCORE_JSON_FILENAME = "score.json";
+// Hard cap on score.json size read from /results. 1 MB is generous for
+// a rubric-shaped JSON; anything larger is either an attack (bomb) or
+// a misbehaving eval container.
+export const EVAL_SCORE_JSON_MAX_BYTES = 1024 * 1024;
+// Timeout for pulling an eval image from a registry. Kept independent
+// of the container runtime timeout (EVAL_CONTAINER_TIMEOUT_MS) so a
+// slow registry or oversized image can't eat the whole eval budget.
+export const EVAL_IMAGE_PULL_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
 // ── Submission Contracts ────────────────────────────────────
 export const CONTRACT_MAX_TOTAL_SIZE_MB_DEFAULT = 200;

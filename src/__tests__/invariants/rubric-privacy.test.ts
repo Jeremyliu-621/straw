@@ -1,15 +1,19 @@
 /**
- * INVARIANT: Rubric weights are never exposed to agents before the deadline.
+ * INVARIANT: Rubric weights are fully visible to agents.
  *
- * REQUIREMENTS.md:144 non-negotiable:
- *   "Rubrics are never exposed to agents before the deadline."
+ * DECISIONS.md D10 + REQUIREMENTS.md (updated 2026-04-21):
+ *   Full rubric — criteria names AND weights — is exposed to agents.
+ *   The product bet is that agents with complete information about
+ *   what the company values will build better submissions than agents
+ *   guessing. "Gaming the scoring formula" isn't a real failure mode
+ *   when the formula IS the company's definition of quality.
  *
- * Implementation: agent-facing task detail endpoints must only return criterion
- * `name`, `description`, and `position`. The `weight` column must be filtered.
- * Company (task owner) callers DO see weights — they wrote them.
+ * This file is the regression gate for that policy. A future refactor
+ * that re-hides `weight` in an agent-facing response will fail here.
  *
- * These tests are regression gates. A future refactor that accidentally
- * reintroduces weights in an agent-visible response will fail here.
+ * This test file previously asserted the OPPOSITE (weights hidden). It
+ * was flipped on 2026-04-21 alongside the product decision. Keeping the
+ * filename so git history tracks the reversal explicitly.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
@@ -47,7 +51,6 @@ function nextMockResult(table: string): { data: unknown; error: unknown } {
   return (mockResultsByTable[table] ?? [])[idx] ?? { data: null, error: null };
 }
 
-// Capture every select() call so we can assert what columns were requested.
 const selectedColumns: Record<string, string[]> = {};
 
 function createTableChain(tableName: string) {
@@ -84,7 +87,6 @@ vi.mock("@/lib/supabase", () => ({
   })),
 }));
 
-// Import route modules AFTER mocks are installed
 const { GET: getLegacyTask } = await import("@/app/api/tasks/[id]/route");
 const { GET: getV1Task } = await import("@/app/api/v1/tasks/[id]/route");
 
@@ -101,14 +103,14 @@ beforeEach(() => {
 
 // ── Legacy route: /api/tasks/[id] ─────────────────────────────
 
-describe("invariant: rubric weights hidden from agents", () => {
+describe("invariant: rubric weights visible to agents (D10)", () => {
   describe("GET /api/tasks/[id]", () => {
-    it("does NOT include weight in the rubric_criteria response for an agent", async () => {
+    it("selects weight in the SQL column list for an agent caller", async () => {
       mockUser = mockAgentUser();
       pushMockResult("tasks", {
         data: {
           id: UUID.task1,
-          company_id: UUID.user1, // different from agent
+          company_id: UUID.user1,
           status: "open",
           title: "test",
           description: "test",
@@ -116,34 +118,26 @@ describe("invariant: rubric weights hidden from agents", () => {
         error: null,
       });
       pushMockResult("rubric_criteria", {
-        data: [{ name: "Correctness", description: "tests pass", position: 0 }],
+        data: [{ name: "Correctness", description: "tests pass", position: 0, weight: 60 }],
         error: null,
       });
 
       const req = makeGetRequest(`http://localhost/api/tasks/${UUID.task1}`);
-      const res = await getLegacyTask(req, makeParams(UUID.task1));
-      const { body } = await parseJsonResponse(res);
+      await getLegacyTask(req, makeParams(UUID.task1));
 
-      const criteria = (body as { rubric_criteria?: Array<Record<string, unknown>> })
-        .rubric_criteria ?? [];
-
-      for (const c of criteria) {
-        expect(c).not.toHaveProperty("weight");
-      }
-
-      // Secondary assertion: the SQL-level column list didn't include weight.
       const selects = selectedColumns["rubric_criteria"] ?? [];
+      expect(selects.length).toBeGreaterThan(0);
       for (const colList of selects) {
-        expect(colList).not.toContain("weight");
+        expect(colList).toContain("weight");
       }
     });
 
-    it("DOES include weight for the task owner (company)", async () => {
-      mockUser = mockCompanyUser();
+    it("returns weight in the rubric_criteria response body for an agent", async () => {
+      mockUser = mockAgentUser();
       pushMockResult("tasks", {
         data: {
           id: UUID.task1,
-          company_id: UUID.user1, // same as company user
+          company_id: UUID.user1,
           status: "open",
           title: "test",
           description: "test",
@@ -161,19 +155,41 @@ describe("invariant: rubric weights hidden from agents", () => {
 
       const criteria = (body as { rubric_criteria?: Array<Record<string, unknown>> })
         .rubric_criteria ?? [];
-
       expect(criteria.length).toBeGreaterThan(0);
-      // At least one criterion should carry weight for the owner view
-      const hasWeight = criteria.some((c) => "weight" in c);
-      expect(hasWeight).toBe(true);
+      expect(criteria.every((c) => "weight" in c)).toBe(true);
+    });
+
+    it("returns weight for a company (task owner) caller as well", async () => {
+      mockUser = mockCompanyUser();
+      pushMockResult("tasks", {
+        data: {
+          id: UUID.task1,
+          company_id: UUID.user1, // same as mockCompanyUser supabaseId
+          status: "open",
+          title: "test",
+          description: "test",
+        },
+        error: null,
+      });
+      pushMockResult("rubric_criteria", {
+        data: [{ name: "Correctness", description: "tests pass", position: 0, weight: 60 }],
+        error: null,
+      });
+
+      const req = makeGetRequest(`http://localhost/api/tasks/${UUID.task1}`);
+      const res = await getLegacyTask(req, makeParams(UUID.task1));
+      const { body } = await parseJsonResponse(res);
+
+      const criteria = (body as { rubric_criteria?: Array<Record<string, unknown>> })
+        .rubric_criteria ?? [];
+      expect(criteria.some((c) => "weight" in c)).toBe(true);
     });
   });
 
   // ── v1 route: /api/v1/tasks/[id] ─────────────────────────────
 
   describe("GET /api/v1/tasks/[id]", () => {
-    it("never includes weight in the SQL column list — agent or company caller", async () => {
-      // Test for an agent (the caller we care about protecting)
+    it("selects weight in the SQL column list for an agent caller", async () => {
       mockUser = mockAgentUser();
       pushMockResult("tasks", {
         data: {
@@ -188,13 +204,49 @@ describe("invariant: rubric weights hidden from agents", () => {
           eval_mode: "llm",
           status: "open",
           max_submissions_per_agent: 5,
-          company_id: UUID.user1, // owner is someone else
+          company_id: UUID.user1,
           created_at: new Date().toISOString(),
         },
         error: null,
       });
       pushMockResult("rubric_criteria", {
-        data: [{ name: "Correctness", description: "x", position: 0 }],
+        data: [{ name: "Correctness", description: "x", position: 0, weight: 50 }],
+        error: null,
+      });
+      pushMockResult("submissions", { data: null, error: null });
+
+      const req = makeGetRequest(`http://localhost/api/v1/tasks/${UUID.task1}`);
+      await getV1Task(req, makeParams(UUID.task1));
+
+      const selects = selectedColumns["rubric_criteria"] ?? [];
+      expect(selects.length).toBeGreaterThan(0);
+      for (const colList of selects) {
+        expect(colList).toContain("weight");
+      }
+    });
+
+    it("returns weight in the criteria array body for an agent caller", async () => {
+      mockUser = mockAgentUser();
+      pushMockResult("tasks", {
+        data: {
+          id: UUID.task1,
+          title: "test",
+          description: "test",
+          category: "code-generation",
+          input_spec: "x",
+          output_spec: "y",
+          deadline: new Date(Date.now() + 86400000).toISOString(),
+          budget_cents: 10000,
+          eval_mode: "llm",
+          status: "open",
+          max_submissions_per_agent: 5,
+          company_id: UUID.user1,
+          created_at: new Date().toISOString(),
+        },
+        error: null,
+      });
+      pushMockResult("rubric_criteria", {
+        data: [{ name: "Correctness", description: "x", position: 0, weight: 50 }],
         error: null,
       });
       pushMockResult("submissions", { data: null, error: null });
@@ -203,17 +255,10 @@ describe("invariant: rubric weights hidden from agents", () => {
       const res = await getV1Task(req, makeParams(UUID.task1));
       const { body } = await parseJsonResponse(res);
 
-      // Response-shape assertion
-      const criteria = (body as { criteria?: Array<Record<string, unknown>> })
-        .criteria ?? [];
+      const criteria = (body as { criteria?: Array<Record<string, unknown>> }).criteria ?? [];
+      expect(criteria.length).toBeGreaterThan(0);
       for (const c of criteria) {
-        expect(c).not.toHaveProperty("weight");
-      }
-
-      // SQL-level assertion — strongest form: the query never asked for weight
-      const selects = selectedColumns["rubric_criteria"] ?? [];
-      for (const colList of selects) {
-        expect(colList).not.toContain("weight");
+        expect(c).toHaveProperty("weight");
       }
     });
   });

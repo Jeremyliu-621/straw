@@ -8,6 +8,39 @@
 #
 # The workers connect to your cloud Redis and Supabase.
 # The eval worker shares the host's Docker socket to run eval containers.
+#
+# SECURITY NOTE — Docker socket exposure (PHASE 19 MIGRATION TARGET)
+# ------------------------------------------------------------------
+# The eval worker needs to spawn eval containers, so the host Docker
+# socket is bind-mounted in. Read-write is required: dockerode calls
+# pull / createContainer / start / remove — all write operations on
+# the Docker API. A `:ro` mount on the socket file does NOT restrict
+# API calls made THROUGH the socket (the `ro` flag controls filesystem
+# metadata, not IO on a Unix domain socket), so tagging it ro would
+# only be security theater — and on some kernel/runtime combinations
+# would break the eval worker outright.
+#
+# The blast radius of a compromised eval worker on this VPS is:
+# "root-equivalent on the host" — via `docker run --privileged -v /:/host`
+# through the socket. Mitigations that are actually useful:
+#
+#   1. Keep the eval worker's own attack surface small. No web server,
+#      no inbound ports, no user input except BullMQ job data (which
+#      is authenticated by service role against Supabase).
+#   2. Run this box as a single-purpose host. Don't colocate other
+#      services on the same VM.
+#   3. [Phase 19] Move eval execution to Modal / Vercel Sandbox
+#      microVMs. That deletes this concern entirely — the worker no
+#      longer needs a local Docker socket.
+#   4. [Option] Put a Docker socket proxy sidecar (e.g. tecnativa's
+#      docker-socket-proxy) between the worker and the host socket,
+#      allowlisting only the endpoints dockerode actually calls. Not
+#      v1 scope; track as part of the Phase 19 hardening pass.
+#
+# For the `/tmp:/tmp` mount: required because we write agent output to
+# a temp dir and mount it into eval containers. Keep aware that any
+# process on the host can read those files during a run; they're
+# cleared post-eval.
 
 services:
   evaluation-worker:

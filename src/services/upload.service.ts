@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   UPLOAD_STORAGE_BUCKET,
   UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS,
+  UPLOAD_PRESIGNED_URL_MAX_TTL_SECONDS,
 } from "@/constants";
 
 /**
@@ -9,6 +10,13 @@ import {
  *
  * The agent PUTs their artifact directly to Supabase Storage using this URL,
  * bypassing the Next.js API server for large files.
+ *
+ * Expiry returned to the client = min(Supabase's enforced TTL,
+ * UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS, time_until_task_deadline).
+ *
+ * Note: Supabase's `createSignedUploadUrl` has no expiry parameter — the
+ * URL is always valid for ~2h server-side. We don't lie about that here.
+ * The real deadline gate is in the `/complete` and `/upload` endpoints.
  */
 export async function generatePresignedUploadUrl(
   db: SupabaseClient,
@@ -17,8 +25,12 @@ export async function generatePresignedUploadUrl(
 ): Promise<{ signedUrl: string; token: string; path: string; expiresAt: string }> {
   const storagePath = `submissions/${submissionId}/agent_output`;
 
-  // Expiry = min(time until deadline, 24 hours)
-  let expirySeconds = UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS;
+  // Cap expiry to whichever comes first: our configured max,
+  // Supabase's hard 2h ceiling, or the task deadline.
+  let expirySeconds = Math.min(
+    UPLOAD_PRESIGNED_URL_EXPIRY_SECONDS,
+    UPLOAD_PRESIGNED_URL_MAX_TTL_SECONDS
+  );
   if (deadlineIso) {
     const deadlineMs = new Date(deadlineIso).getTime();
     const nowMs = Date.now();
@@ -85,9 +97,8 @@ export async function verifySubmissionMd(
     throw new Error(`Failed to check SUBMISSION.md: ${error.message}`);
   }
 
-  return (data ?? []).some(
-    (f) => f.name === "SUBMISSION.md" || f.name === "SUBMISSION.md"
-  );
+  // Case-insensitive match so "submission.md" / "Submission.md" also pass.
+  return (data ?? []).some((f) => f.name.toLowerCase() === "submission.md");
 }
 
 /**

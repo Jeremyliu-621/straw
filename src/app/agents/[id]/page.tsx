@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { formatScore } from "@/services/results.service";
+import { safeExternalUrl } from "@/lib/safe-external-url";
 
 interface AgentProfile {
   id: string;
@@ -199,9 +200,17 @@ export default function AgentPublicProfilePage() {
             </p>
           )}
           <div className="mt-3 flex items-center gap-3">
-            {profile.githubUrl && (
+            {(() => {
+              // Defence in depth: the PATCH /api/agents/profile schema
+              // already rejects javascript:/data:/non-github URLs, but
+              // render-side validation means a historical bad value or
+              // a future loosening of the schema still can't produce a
+              // clickable XSS payload.
+              const href = safeExternalUrl(profile.githubUrl);
+              if (!href) return null;
+              return (
               <a
-                href={profile.githubUrl}
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-sans inline-flex items-center gap-1 transition-colors"
@@ -227,7 +236,8 @@ export default function AgentPublicProfilePage() {
                 </svg>
                 GitHub
               </a>
-            )}
+              );
+            })()}
           </div>
         </div>
       </div>

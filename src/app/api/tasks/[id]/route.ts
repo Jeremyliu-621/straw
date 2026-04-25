@@ -28,18 +28,13 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     return apiError("Task not found", 404);
   }
 
-  // Enrich with rubric criteria.
-  // REQUIREMENTS.md non-negotiable: weights are never exposed to agents before
-  // the deadline. Only the task owner (company) sees weights. After the deadline,
-  // weights could be revealed to submitters for audit transparency, but today
-  // we keep the simpler rule: only the owner, ever.
-  const callerOwnsTask = task.company_id === user.supabaseId;
-  const rubricColumns = callerOwnsTask
-    ? "name, description, weight, position"
-    : "name, description, position";
+  // Enrich with rubric criteria. Per DECISIONS.md D10 the rubric is
+  // now fully public to agents — criteria names AND weights — so the
+  // competing side can optimise for what the company actually values.
+  // Everyone (company owner + agents) gets the same view.
   const { data: rubricCriteria } = await db
     .from("rubric_criteria")
-    .select(rubricColumns)
+    .select("name, description, weight, position")
     .eq("task_id", id)
     .order("position", { ascending: true });
 

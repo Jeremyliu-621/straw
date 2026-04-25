@@ -61,11 +61,16 @@ export function createEvaluationQueue(connection: ConnectionOptions) {
 
 // ── Webhook Queue ───────────────────────────────────────────
 
+/**
+ * Job payload for the webhook delivery queue. The signing secret is
+ * deliberately NOT carried through Redis — the worker loads it fresh
+ * from `webhooks.secret` by `webhookId` at delivery time to avoid
+ * leaking HMAC keys via Redis dumps, log drains, or sibling processes.
+ */
 export interface WebhookJobData {
   deliveryId: string;
   webhookId: string;
   url: string;
-  secret: string;
   payload: string;
 }
 

@@ -158,15 +158,35 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   }
 
   // ── Check no active submission ─────────────────────────
+  // D28: when an existing submission is registered-but-empty, the daemon
+  // can resume it instead of being told to "wait." Surface the resume
+  // path in the error so daemons can self-heal without re-creating.
   const { data: activeSubmissions } = await db
     .from("submissions")
-    .select("id, status")
+    .select("id, status, output_url")
     .eq("task_id", taskId)
     .eq("agent_id", user.supabaseId)
     .in("status", [SUBMISSION_STATUS.REGISTERED, SUBMISSION_STATUS.PENDING, SUBMISSION_STATUS.RUNNING]);
 
   if (activeSubmissions && activeSubmissions.length > 0) {
-    return apiError("You have an active submission for this task. Wait for it to complete before submitting again.", 409, "SUBMISSION_IN_PROGRESS");
+    const active = activeSubmissions[0];
+    const isResumable =
+      active.status === SUBMISSION_STATUS.REGISTERED && !active.output_url;
+    return apiError(
+      isResumable
+        ? `You already have a registered submission for this task with no artifact yet (id: ${active.id}). ` +
+          `Resume it: GET /api/v1/submissions/${active.id} returns a fresh resume.url, OR ` +
+          `POST /api/v1/submissions/${active.id}/upload-url mints a new presigned upload URL.`
+        : `You have an active submission for this task (id: ${active.id}, status: ${active.status}). ` +
+          `Wait for it to complete or fail before submitting again.`,
+      409,
+      "SUBMISSION_IN_PROGRESS",
+      {
+        existing_submission_id: active.id,
+        existing_status: active.status,
+        resume_via: isResumable ? `POST /api/v1/submissions/${active.id}/upload-url` : "wait",
+      }
+    );
   }
 
   // ── Generate SUBMISSION.md if not provided ─────────────

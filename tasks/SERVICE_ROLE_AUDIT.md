@@ -107,7 +107,7 @@ This is tracked as "C1: service client bypasses RLS" in the overnight sprint log
 | File:line | Uncertainty | Investigation step |
 |---|---|---|
 | `src/app/api/agents/[id]/route.ts` | Returns different data depending on whether caller is authenticated or anonymous (per the recent H1 fix). Service-role is currently used; anon might be enough if the gating logic moves fully to the route. | Confirm the auth branches still work if switched to anon client — especially the "aggregate stats only for unauthenticated" code path. |
-| `src/app/api/tasks/[id]/route.ts` (GET) | Returns `rubric_criteria` including weights. Non-negotiable (REQUIREMENTS.md:144): weights must never be exposed to agents pre-deadline. Verify whether agents can reach this route and what it returns in that case. | Check the route's auth gating + response shape when `user.role === 'agent_builder'`. If it returns weights to agents, this is a latent violation independent of service-role. |
+| `src/app/api/tasks/[id]/route.ts` (GET) | Returns `rubric_criteria` including weights. **Per D10 (2026-04-21) and D15: weights are intentionally public — full rubric transparency is the product bet.** Original concern resolved; route is correct as-is. Service-role usage on this route is the only remaining audit question. | Confirm only the service-role bypass justification (RLS + storage signed-URLs) remains; weight visibility is no longer a violation. |
 
 **Action:** Flag for follow-up. Both have product-correctness implications beyond RLS.
 
