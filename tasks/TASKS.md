@@ -975,6 +975,17 @@ Goal: implement the corrected philosophy from D15–D22 + D30. Replace the impli
 > ($5/$25 per M Opus, $3/$15 Sonnet), defeating the cost model.
 > See D30 in `tasks/DECISIONS.md` and memory file
 > `project_eval_setup_openclaw_codex.md` for the full playbook.
+>
+> **🔶 Before starting Phase 20d work: read `tasks/zeroclaw-build-research.md`.**
+> Research on 2026-04-25 verified the ZeroClaw API surface and surfaced
+> an architectural correction (the Gateway is webhook-only — no agent
+> CRUD endpoints; multi-agent is delegation-based not independent
+> peers). The right shape is "single judge agent called per-submission
+> via `POST /webhook`," not "agent-create on task publish." That doc
+> also has the full phased build plan (Phase A verify ✅ done, Phase B
+> platform-side, Phase C scaffold judge artifacts, Phase D deploy,
+> Phase E cutover) and the open questions that need answering on
+> build day.
 
 - [ ] Provision Hetzner CX22 (per existing D13, ~€4.51/mo). 4GB RAM is enough — ZeroClaw at <5MB per agent fits 200+ judges.
 - [ ] Install Rust toolchain + ZeroClaw. Build the `zeroclaw` binary (3.4MB single binary). Configure systemd to run as a daemon.
