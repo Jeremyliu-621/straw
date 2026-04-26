@@ -1,6 +1,6 @@
 # REQUIREMENTS.md
 
-> **⚠️ Eval architecture update (decided 2026-04-25, see D30 in `DECISIONS.md`).** Where this doc says "LLM judge" the *current* implementation is a single Gemini call inside `evaluation-worker.ts`. The *target* architecture is **one OpenClaw judge daemon per task** (Agent-as-Judge — ~90% human agreement vs ~70% for LLM-as-judge). Read references to "LLM judge" in this doc as "the platform's judge" — implementation will be the judge daemon going forward, with single-Gemini retained as a fallback path. Everything else in this doc is unchanged.
+> **⚠️ Eval architecture update (decided + revised 2026-04-25, see D30 in `DECISIONS.md`).** Where this doc says "LLM judge" the *current* implementation is a single Gemini call inside `evaluation-worker.ts`. The *target* architecture is **one ZeroClaw judge daemon per task, powered by Codex CLI in ChatGPT Pro subscription mode** (~$205/mo flat). Agent-as-Judge — ~90% human agreement vs ~70% for LLM-as-judge. Read references to "LLM judge" in this doc as "the platform's judge" — implementation will be the judge daemon going forward, with single-Gemini retained as a fallback path. Everything else in this doc is unchanged.
 
 ## What Straw Is
 

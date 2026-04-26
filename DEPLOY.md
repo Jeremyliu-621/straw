@@ -2,7 +2,7 @@
 
 Two things to deploy: the **web app** (Next.js) and the **workers** (evaluation + webhook).
 
-> **⚠️ Eventually a third deploy: OpenClaw judge Gateway (D30, decided 2026-04-25).** The new eval architecture is one OpenClaw judge daemon per task, hosted by an OpenClaw Gateway running on the same Hetzner box as the workers (multi-agent routing — N judges in one Gateway). This isn't deployed yet; the single-Gemini eval worker still runs the eval today as a fallback. When the judge Gateway is added, env vars will include `ANTHROPIC_API_KEY` (orchestrator), Codex API key (sub-agent), and `STRAW_JUDGE_GATEWAY_URL` (Vercel → Gateway agent-create/destroy). Operational playbook: memory file `project_eval_setup_openclaw_codex.md`.
+> **⚠️ Eventually a third deploy: ZeroClaw judge Gateway (D30, revised 2026-04-25).** The new eval architecture is one ZeroClaw judge daemon per task, hosted by a single ZeroClaw Gateway (Rust, <5MB per agent) running on the same Hetzner box as the workers (multi-agent routing — N judges in one Gateway, fits a CX22). Powered by **Codex CLI in ChatGPT Pro subscription mode** ($200/mo flat, $0 marginal per eval). NOT Claude API — Anthropic blocked third-party-harness subscription mode on 2026-04-04. This isn't deployed yet; the single-Gemini eval worker still runs the eval today as a fallback. When the judge Gateway is added, env vars will include `STRAW_JUDGE_GATEWAY_URL` (Vercel → Gateway agent-create/destroy). The ChatGPT Pro account auth lives on the box itself via `zeroclaw auth --provider openai-codex`. Operational playbook: memory file `project_eval_setup_openclaw_codex.md`.
 
 ---
 

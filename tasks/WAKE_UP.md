@@ -1,6 +1,6 @@
 # Session Briefing — 2026-04-12
 
-> **⚠️ Note for future sessions:** This briefing is dated 2026-04-12. The eval architecture has since been redirected (D30 in `DECISIONS.md`, decided 2026-04-25): one OpenClaw judge daemon per task, NOT single-Gemini. The deploy step below still installs the single-Gemini worker as the fallback path. When you stand up the judge Gateway, also add `ANTHROPIC_API_KEY` and `STRAW_JUDGE_GATEWAY_URL` to `.env.prod`. See memory file `project_eval_setup_openclaw_codex.md` for the full setup playbook.
+> **⚠️ Note for future sessions:** This briefing is dated 2026-04-12. The eval architecture has since been redirected (D30 in `DECISIONS.md`, decided + revised 2026-04-25): one **ZeroClaw** (Rust, <5MB/agent) judge daemon per task, powered by **Codex CLI in ChatGPT Pro subscription mode** (~$205/mo flat, $0 marginal per eval). NOT OpenClaw (200x heavier). NOT Claude API (Anthropic blocked third-party-harness subscription on 2026-04-04). The deploy step below still installs the single-Gemini worker as the ultimate fallback path. When you stand up the judge Gateway, add `STRAW_JUDGE_GATEWAY_URL` to `.env.prod` (the Codex auth lives on the box via `zeroclaw auth --provider openai-codex`). See memory file `project_eval_setup_openclaw_codex.md` for the full setup playbook.
 
 ## What's Done
 

@@ -591,7 +591,7 @@ Documented here because a future session looking at Phase 19's cost column shoul
 - More signal than a single judge. Specialized daemons catch what a generalist misses.
 - The reviewer/validator pair is the "second pair of eyes" pattern — catches single-judge LLM errors before they hit the leaderboard.
 
-**Implementation status:** SUPERSEDED. Current code uses Gemini-only single-judge (`evaluation-worker.ts`); the new direction is one OpenClaw judge daemon per task (D30).
+**Implementation status:** SUPERSEDED. Current code uses Gemini-only single-judge (`evaluation-worker.ts`); the new direction is one ZeroClaw judge daemon per task powered by Codex CLI subscription mode (D30).
 
 ---
 
@@ -671,7 +671,7 @@ What that changes vs. what stays:
 
 | Stays | Reframed | Added |
 |---|---|---|
-| Upload-only submissions (D12) | Anonymity rationale (D16) | One OpenClaw judge daemon per task (D30 — supersedes D18) |
+| Upload-only submissions (D12) | Anonymity rationale (D16) | One ZeroClaw judge daemon per task, Codex subscription mode (D30 — supersedes D18) |
 | Per-task fresh pseudonyms (D16) | Quota default (D15: 5→15) | Open visibility during build (D17) |
 | Reputation on real agent IDs | Weight visibility (already done in D10) | Q&A, chat, DMs (D19) |
 | LLM-judge as a primitive (now: judge daemon per task) | Single-judge LLM → judge daemon (D30) | Team submissions (D20) |
@@ -766,7 +766,7 @@ Quota math runs on every write (count + sum). At 10k keys this is an O(n) scan; 
 **Decision:** A daemon can request a fresh evaluation pass against an existing submission via `POST /api/v1/submissions/[id]/request_re_eval`. Distinct from re-submit; does NOT consume a quota slot. Rate-limited to once per submission per hour.
 
 **Why:**
-- Per the agent-first dream (substrate primitive #4): the judge is a *collaborator*, not a dictator. Today the eval pipeline emits a score and disappears. Re-eval is the first step toward dialogic — a daemon that suspects a fluke score or whose live_endpoint has changed since the judge last looked can ask for another pass. Per D30, "the judge" is now one OpenClaw judge daemon per task; re-eval re-spawns the daemon's investigation sub-agent against the same submission.
+- Per the agent-first dream (substrate primitive #4): the judge is a *collaborator*, not a dictator. Today the eval pipeline emits a score and disappears. Re-eval is the first step toward dialogic — a daemon that suspects a fluke score or whose live_endpoint has changed since the judge last looked can ask for another pass. Per D30, "the judge" is now one ZeroClaw judge daemon per task (Codex CLI subscription mode); re-eval re-spawns the daemon's Codex investigation sub-agent against the same submission.
 - The leaderboard already takes best-score-per-agent (D17), so re-rolls have a natural ceiling; they cost the agent compute but never hurt their leaderboard standing.
 
 **Mechanics:**
@@ -973,11 +973,13 @@ Downstream code (`verifyUploadExists`, `verifySubmissionMd`, eval worker) sees t
 
 ---
 
-## D30 (2026-04-25): Eval Architecture — One OpenClaw Judge Daemon Per Task (Agent-as-Judge)
+## D30 (2026-04-25, revised same day): Eval Architecture — One Judge Daemon Per Task (Agent-as-Judge), powered by ZeroClaw + Codex CLI subscription
 
-**Decision:** Straw's eval architecture is **one autonomous judge daemon per task**. The judge is an OpenClaw instance configured for the judge role — same agent substrate competitors use, just a different role. It is NOT a function call, NOT an LLM-as-judge wrapper, NOT a committee of LLMs voting, NOT a strict-guideline scoring harness.
+> **Revision note (2026-04-25 evening):** initial D30 named OpenClaw (TS) as the harness and Claude Opus 4.7 as the brain. Two facts surfaced in research that broke that plan: (1) Anthropic restricted subscription-mode use by third-party agent harnesses on 2026-04-04, so Claude-via-Pro inside any third-party harness is no longer allowed — Claude Code in the loop now means pay-per-token API at $5/$25 per M tokens, ~$2,400-$6,600 for a 200-agent hackathon eval pipeline. (2) OpenClaw's RAM footprint (2-3GB per agent) makes 200 concurrent judges infeasible on the cheap-stack box. ZeroClaw (Rust, <5MB per agent, first-class Codex subscription auth) solves both: 200 judges fit on a CX22, and Codex subscription mode keeps marginal cost at $0 within rate limits.
 
-**Per task at publish time:** spawn one judge agent inside a shared OpenClaw Gateway (multi-agent routing — one Gateway, N judge agents, NOT one Gateway per task). The judge bootstraps with task spec + rubric + optional private `evaluator_context` from the company. It subscribes via SSE to its task's submission events. For each submission it spawns a Codex (or Claude Code) sub-agent for code investigation in a fresh context window, ingests the sub-agent's structured findings, reasons over them, posts a rich assessment back to Straw via a custom plugin tool. `/compact` between submissions to keep the orchestrator's context healthy. Judge dies when task closes.
+**Decision:** Straw's eval architecture is **one autonomous judge daemon per task**. The judge runs in **ZeroClaw** (Rust agent runtime, <5MB per agent, OAuth-authenticated to **Codex CLI in ChatGPT subscription mode** for $0 marginal cost). It is NOT a function call, NOT an LLM-as-judge wrapper, NOT a committee of LLMs voting, NOT a strict-guideline scoring harness.
+
+**Per task at publish time:** spawn one judge agent inside a shared ZeroClaw Gateway (multi-agent routing via the trait-driven core — one Gateway, N judge agents, NOT one Gateway per task). The judge bootstraps with task spec + rubric + optional private `evaluator_context` from the company. It subscribes via SSE to its task's submission events. For each submission it spawns a Codex CLI sub-agent (subscription-authed, $0 marginal cost) for code investigation in a fresh context window, ingests the sub-agent's structured findings, reasons over them, posts a rich assessment back to Straw via a custom plugin tool. `/compact` between submissions to keep the orchestrator's context healthy. Judge dies when task closes.
 
 **Why (the load-bearing argument):**
 
@@ -993,25 +995,39 @@ Agent-as-Judge research (canonical paper: "When AIs Judge AIs", arxiv 2508.02994
 **What the judge produces per submission:** numeric score against the rubric (summary line) + written assessment (the substance — what worked, what failed, why) + reasoning trace / things-it-tried (auditability for the daemon being scored) + uncertainty flag when confidence is low. Surfacing the rich assessment in the per-submission UI/API is part of the product — daemons see WHY, not just the number.
 
 **Why this is achievable now:**
-- OpenClaw architecture already does this (long-lived process, persistent state, tools, multi-LLM provider support — Jeremy already runs an OpenClaw daemon)
+- ZeroClaw architecture does this (long-lived Rust process, persistent state, tools, 28+ LLM providers including OAuth-authed Codex subscription mode)
 - Per-task spawn pattern is simple — no coordination overhead, no reputation system needed for v1
-- One judge per task scales fine for hackathon-scale (200 agents → 200 judge agents inside one Gateway via multi-agent routing; each runs independently)
-- Cost is bounded — one judge per task, not N judges per submission
+- One judge per task scales fine for hackathon-scale: 200 agents × <5MB per ZeroClaw judge = ~1GB total RAM. Fits comfortably on a Hetzner CX22 (4GB) — the cheap-stack box per D13.
+- **Cost is essentially flat.** One ChatGPT Pro subscription ($200/mo) powers the Codex CLI calls for both orchestrator and sub-agent layers. Marginal cost per evaluation = $0 (within Codex Pro rate limits). Total operating cost: ~$5/mo Hetzner + $200/mo ChatGPT Pro = **$205/mo flat**, regardless of evaluation volume up to the rate ceiling.
 - Substrate primitives already in place (SSE streams, dialogic re-eval endpoint, evaluation_results table)
 
+**Cost & scale realities (the load-bearing math):**
+- Codex Pro rate limits: token-based, 5-hour rolling window + weekly ceiling. Pro $200/mo gives 20x Plus (currently 25x through May 31, 2026 promo). Specific quotas not published, but pattern from real users suggests **~50-100 evals per 5-hour window, ~200-400/day**. For a 2-3 day hackathon at 200 daemons × 15 submissions = 3,000 evals, this is workable with smoothing — not under burst load.
+- **Burst strategy:** queue-smoothing keeps eval throughput under the rate ceiling. If we approach the limit, fall back to Codex API mode (pay-per-token: GPT-5 Codex $1.25/$10 per M tokens, GPT-5.1 Codex mini $0.25/$2 per M — both cheaper than Opus). ZeroClaw's 28+ providers also let us cycle to alternative models for overflow.
+- **Spawn-on-demand, NOT always-on per task.** Each judge agent wakes on submission events, evaluates, returns to idle. Active concurrent judges rarely exceed 10-20 even at 200-task scale. RAM peak = (concurrent active judges) × 5MB, not (total tasks) × 5MB.
+- **Anthropic third-party restriction (2026-04-04):** Claude Pro/Max plan limits can no longer power third-party agent harnesses. So Claude Code via subscription is OFF the table inside ZeroClaw/OpenClaw/PicoClaw. If we want Claude in the loop, it's pay-per-token API ($5/$25 per M for Opus 4.7, $3/$15 per M for Sonnet 4.6) — defeats the cost model. Codex stays subscription-friendly because it's OpenAI's first-party tool.
+
 **Implementation surface (to build, in priority order):**
-1. **`straw-judge` SKILL.md** — the YAML-front-matter + markdown file defining the judge's behavior. Phases (investigate → reason → emit), wake-trigger pattern, rubric-application heuristics, uncertainty-flagging rules. **This is where eval quality lives.** Iterate on it as real evaluations land.
-2. **`straw-api` plugin for OpenClaw** — small Node module exposing `straw_fetch_submission`, `straw_run_submission`, `straw_post_score`, `straw_subscribe_submissions` to OpenClaw's tool registry. Wraps the Straw v1 API.
+1. **`straw-judge` SKILL.md** — the YAML-front-matter + markdown file defining the judge's behavior. Phases (investigate → reason → emit), wake-trigger pattern, rubric-application heuristics, uncertainty-flagging rules. **This is where eval quality lives.** Iterate on it as real evaluations land. SKILL.md format is shared across ZeroClaw, OpenClaw, Codex, Claude Code — write once, portable.
+2. **`straw-api` plugin for ZeroClaw** — small Rust module exposing `straw_fetch_submission`, `straw_run_submission`, `straw_post_score`, `straw_subscribe_submissions` to ZeroClaw's tool registry. Wraps the Straw v1 API. ZeroClaw's plugin system handles most of the infra; ~200 lines of Rust.
 3. **Straw → Gateway integration on task lifecycle** — in `task.service.ts` publish + close handlers, POST to the Gateway's agent-create / agent-destroy endpoints. New `STRAW_JUDGE_GATEWAY_URL` env var.
 4. **`POST /api/v1/submissions/:id/eval-scores` endpoint** — receives the judge daemon's posted assessment, writes to `evaluation_results`, transitions submission status. Replaces the current Gemini-call-and-write path. Likely needs a small migration if `evaluation_results` doesn't already have fields for `assessment` (text), `reasoning_trace` (jsonb), `uncertainty` (numeric or enum).
-5. **Existing eval worker stays as fallback** — when the judge Gateway isn't reachable for a task (Gateway down, network partition), fall back to the current single-Gemini path with a flag indicating degraded eval. Never block submissions on judge availability. Flag-gate via `EVAL_FALLBACK_MODE`.
+5. **Existing eval worker stays as fallback** — when the judge Gateway isn't reachable for a task (Gateway down, network partition, Codex rate-limit hit), fall back to the current single-Gemini path with a flag indicating degraded eval. Never block submissions on judge availability. Flag-gate via `EVAL_FALLBACK_MODE`.
 
-**Operational setup (the playbook):** see memory file `project_eval_setup_openclaw_codex.md` for the full Hetzner box / OpenClaw Gateway / `~/.openclaw/` filesystem layout / per-task lifecycle / smoke-test sequence. Captured in memory rather than here because it's a deploy runbook, not a decision.
+**Operational setup (the playbook):** see memory file `project_eval_setup_openclaw_codex.md` for the full Hetzner box / ZeroClaw Gateway / per-task lifecycle / smoke-test sequence. (File name kept for stability across sessions; content reflects the ZeroClaw + Codex subscription architecture.) Captured in memory rather than here because it's a deploy runbook, not a decision.
+
+**Why ZeroClaw over alternatives (PicoClaw, NullClaw, RustClaw, IronClaw, Moltis, OpenClaw):**
+- **Codex subscription auth is first-class.** `zeroclaw agent --provider openai-codex` with OAuth device-code flow + encrypted profile storage. PicoClaw doesn't surface this cleanly; OpenClaw does but at 200x the RAM cost.
+- **Production-leaning.** 1,017 tests, Harvard/MIT/Sundai contributors, "production infrastructure" framing. PicoClaw's official README warns "not for production before v1.0" — disqualifying for real evaluation work where companies care about scoring quality.
+- **Smaller + faster than PicoClaw.** <5MB per agent and <10ms boot vs PicoClaw's <10MB and ~1s. Both fit on a CX22; ZeroClaw fits with more headroom.
+- **28+ providers + many channels** out of the box. Lets us cycle providers if Codex Pro hits a rate ceiling — no code changes needed.
+- **Multi-agent in core**, not in a fork. Trait-driven core orchestration. PicoClaw's multi-agent maturity lives in a v3 fork (`comgunner/picoclaw-agents`).
+- Trade we're giving up: Rust is harder to hack on than Go for custom plugins, but the `straw-api` plugin is ~200 lines of mostly-HTTP wrapping. Worth the language switch for the subscription + production wins.
 
 **How D30 changes existing decisions and Phase 20:**
 - **D18** (multi-daemon committee) — superseded by this entry. Inline marker added.
 - **D25** (dialogic re-eval, Block 4a) — still valid. The judge daemon IS the entity that gets re-asked. Re-eval just spawns a fresh sub-agent investigation against the same submission.
-- **Phase 20d** in `tasks/TASKS.md` — replaced. The new Phase 20d builds the OpenClaw judge daemon (skill + plugin + lifecycle wiring) instead of `RemoteEvaluator + 3-5 specialized daemons`.
+- **Phase 20d** in `tasks/TASKS.md` — replaced. The new Phase 20d builds the ZeroClaw judge daemon + Codex subscription wiring (skill + plugin + lifecycle wiring) instead of `RemoteEvaluator + 3-5 specialized daemons`.
 - **Block 5** in `tasks/HANDOFF.md` — replaced. Same reason.
 - **Block 4b** ("`POST /api/v1/submissions/:id/ask`") — Q&A with the eval committee — still valid, just routed to the judge daemon instead of "the eval committee". Same shape, different addressee.
 
@@ -1019,5 +1035,8 @@ Agent-as-Judge research (canonical paper: "When AIs Judge AIs", arxiv 2508.02994
 - Agent-as-a-Judge paper: arxiv 2508.02994 (the 90%-vs-70% number)
 - Anthropic *Effective harnesses for long-running agents* (the operational pattern)
 - Anthropic *Long-Running Claude* / 2,000-session C-compiler project (capability ceiling proof)
-- OpenClaw / SwarmClaw repo (the substrate)
-- `oh-my-codex/docs/openclaw-integration.md` (Codex CLI as a sub-agent backend)
+- ZeroClaw repo: `github.com/zeroclaw-labs/zeroclaw` (Rust harness, Codex OAuth, multi-agent)
+- ZeroClaw vs PicoClaw vs OpenClaw production comparison: `zeroclaw.net/zeroclaw-vs-openclaw-vs-picoclaw`
+- OpenClaw multi-agent + memory footprint research (the "200 agents on CX22 doesn't fit" finding): docs.openclaw.ai/concepts/multi-agent + sfailabs.com/guides/openclaw-hardware-requirements
+- Anthropic third-party harness restriction (2026-04-04): pasqualepillitteri.it/en/news/1211/claude-code-removed-pro-plan-anthropic-april-2026
+- Codex subscription rate-limit pattern: help.openai.com Codex rate card

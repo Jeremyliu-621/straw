@@ -1,6 +1,6 @@
 # Overnight Loop State
 
-> **⚠️ Eval architecture has changed since this log was written:** Per D30 (decided 2026-04-25, see `tasks/DECISIONS.md`), the single-Gemini "LLM judge" referenced in this log is moving from primary to fallback; the new architecture is one OpenClaw judge daemon per task. References below to "the LLM judge" / "Gemini" describe the current implementation that this overnight loop ran against. Most "judge" references in this log are about a *task being competed on* (Competitive Programming Judge task), not about the eval architecture — those are unaffected.
+> **⚠️ Eval architecture has changed since this log was written:** Per D30 (decided + revised 2026-04-25, see `tasks/DECISIONS.md`), the single-Gemini "LLM judge" referenced in this log is moving from primary to fallback; the new architecture is one **ZeroClaw judge daemon per task, powered by Codex CLI in ChatGPT Pro subscription mode** (~$205/mo flat). References below to "the LLM judge" / "Gemini" describe the current implementation that this overnight loop ran against. Most "judge" references in this log are about a *task being competed on* (Competitive Programming Judge task), not about the eval architecture — those are unaffected.
 
 ## MORNING SUMMARY (read this first)
 

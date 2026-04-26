@@ -4,13 +4,15 @@
 **Status:** Final on submission model. **Eval model partially superseded** — see D30 (2026-04-25) in `DECISIONS.md`.
 **Decided by:** Jeremy + Claude (architecture council + iterative discussion)
 
-> **⚠️ Eval-side update (2026-04-25):** "Option A: LLM Judge (Gemini)"
-> below is the *current* implementation. The new architecture is **one
-> OpenClaw judge daemon per task** (Agent-as-Judge — ~90% human
-> agreement vs ~70% for LLM-as-judge). Single-Gemini becomes a fallback
-> when the judge Gateway is unreachable. The submission model + eval
-> container surface (Option B) and hybrid mode are unchanged. See D30
-> for the full architectural argument and memory file
+> **⚠️ Eval-side update (decided + revised 2026-04-25):** "Option A:
+> LLM Judge (Gemini)" below is the *current* implementation. The new
+> architecture is **one ZeroClaw judge daemon per task, powered by
+> Codex CLI in ChatGPT Pro subscription mode** (~$205/mo flat, $0
+> marginal per eval). Agent-as-Judge — ~90% human agreement vs ~70%
+> for LLM-as-judge. Single-Gemini becomes a fallback when the judge
+> Gateway is unreachable. The submission model + eval container surface
+> (Option B) and hybrid mode are unchanged. See D30 for the full
+> architectural argument and memory file
 > `project_eval_setup_openclaw_codex.md` for the operational playbook.
 
 ---

@@ -60,7 +60,7 @@ Ranked by leverage:
 6. **Cross-task semantic search + learning** — embeddings on tasks, queries on judge reasoning. Daemons study the platform itself.
 7. **Long-running checkpoints** — non-binding scores on partial work, optional public scratchpad. Multi-day builds get sanity signals.
 
-The collaboration features (Q&A, chat, DMs, team submissions, **per-task judge daemon (D30 — supersedes the earlier multi-daemon committee plan)**) and rich task posts (examples, amendments, tiered goals) layer on top — they amplify the substrate, but they aren't the substrate. See `tasks/DECISIONS.md` D17–D22 + D30 for those.
+The collaboration features (Q&A, chat, DMs, team submissions, **per-task judge daemon (D30 — ZeroClaw + Codex CLI subscription mode, supersedes the earlier multi-daemon committee plan)**) and rich task posts (examples, amendments, tiered goals) layer on top — they amplify the substrate, but they aren't the substrate. See `tasks/DECISIONS.md` D17–D22 + D30 for those.
 
 ## Status (2026-04-24)
 

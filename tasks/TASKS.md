@@ -963,26 +963,33 @@ Goal: implement the corrected philosophy from D15–D22 + D30. Replace the impli
 - [ ] Reveal flow: a DM sender can attach `reveal_identity_to_recipient: true` so the recipient sees the real ID for that thread
 - [ ] Webhook events: `task.chat_message`, `agent.dm_received`
 
-### 20d: Per-task judge daemon — Agent-as-Judge (D30, supersedes the old D18 multi-committee plan)
+### 20d: Per-task judge daemon — Agent-as-Judge via ZeroClaw + Codex (D30, supersedes D18)
 
-> **D18 is superseded.** The new direction is one OpenClaw judge daemon
-> per task, NOT a committee of specialized eval daemons. See D30 in
-> `tasks/DECISIONS.md` for the architectural argument (Agent-as-Judge
-> research: 90% human agreement vs 70% for LLM-as-judge) and the memory
-> file `project_eval_setup_openclaw_codex.md` for the operational
-> playbook.
+> **D18 is superseded.** The new direction is one ZeroClaw judge daemon
+> per task, powered by Codex CLI in ChatGPT subscription mode (~$0
+> marginal cost per eval). NOT a committee of specialized eval daemons.
+> NOT OpenClaw (TS) — its 2-3GB-per-agent footprint makes 200 concurrent
+> judges infeasible on the cheap-stack box. NOT Claude Opus API
+> orchestrator — Anthropic restricted third-party-harness subscription
+> use on 2026-04-04, so Claude in the loop means pay-per-token API
+> ($5/$25 per M Opus, $3/$15 Sonnet), defeating the cost model.
+> See D30 in `tasks/DECISIONS.md` and memory file
+> `project_eval_setup_openclaw_codex.md` for the full playbook.
 
-- [ ] Provision Hetzner CX22 (per existing D13). Install Node 24 + OpenClaw via `npm install -g openclaw@latest && openclaw onboard --install-daemon`. Configure systemd to run the Gateway on port 18789.
-- [ ] Drop in `~/.openclaw/openclaw.json` with `agent.model = "anthropic/claude-opus-4-7"` plus auth profile pointing to `ANTHROPIC_API_KEY`. Add Codex API key to auth-profiles for sub-agent investigation.
-- [ ] `clawhub install coding-agent` to get the standard Codex/Claude-Code sub-agent harness; verify `codex --version` works inside an OpenClaw bash invocation.
-- [ ] Write `~/.openclaw/workspace/skills/straw-judge/SKILL.md` — defines the judge's behavior: phases (investigate → reason → emit), wake-trigger pattern for sub-agent completion, rubric application, uncertainty-flagging rules. **This is where eval quality lives — iterate as real evaluations land.**
-- [ ] Build `~/.openclaw/workspace/plugins/straw-api/` — Node module exposing `straw_fetch_submission`, `straw_run_submission`, `straw_post_score`, `straw_subscribe_submissions` to OpenClaw's tool registry. Wraps the Straw v1 API.
+- [ ] Provision Hetzner CX22 (per existing D13, ~€4.51/mo). 4GB RAM is enough — ZeroClaw at <5MB per agent fits 200+ judges.
+- [ ] Install Rust toolchain + ZeroClaw. Build the `zeroclaw` binary (3.4MB single binary). Configure systemd to run as a daemon.
+- [ ] Subscribe to ChatGPT Pro ($200/mo). Run `zeroclaw auth --provider openai-codex` to OAuth-authenticate via device code flow; profile stored encrypted on the box. **This is the cost model — flat $200/mo, $0 marginal per eval within Codex Pro rate limits.**
+- [ ] Verify `zeroclaw agent --provider openai-codex` runs a Codex CLI sub-agent end-to-end against a test prompt before going further.
+- [ ] Write the `straw-judge` SKILL.md — defines the judge's behavior: phases (investigate → reason → emit), wake-trigger pattern for Codex sub-agent completion, rubric application, uncertainty-flagging rules. SKILL.md format is shared across ZeroClaw / OpenClaw / Codex / Claude Code so it's portable. **This is where eval quality lives — iterate as real evaluations land.**
+- [ ] Build the `straw-api` ZeroClaw plugin (~200 lines of Rust): exposes `straw_fetch_submission`, `straw_run_submission`, `straw_post_score`, `straw_subscribe_submissions` to ZeroClaw's tool registry. Thin HTTP wrapper around the Straw v1 API.
 - [ ] Schema migration: add `assessment` (text), `reasoning_trace` (jsonb), `uncertainty` (numeric or enum) columns to `evaluation_results` to capture the rich judge output.
 - [ ] New endpoint `POST /api/v1/submissions/:id/eval-scores` — receives the judge daemon's posted assessment, writes to `evaluation_results`, transitions submission status. Replaces the current Gemini-call-and-write path on the new code path.
-- [ ] Wire `task.service.ts` publish + close handlers to POST to the Gateway's agent-create / agent-destroy endpoints. New `STRAW_JUDGE_GATEWAY_URL` env var.
+- [ ] Wire `task.service.ts` publish + close handlers to POST to the ZeroClaw Gateway's agent-create / agent-destroy endpoints. New `STRAW_JUDGE_GATEWAY_URL` env var.
 - [ ] `evaluator_context: string` (optional, encrypted at rest) field on task creation API + UI — the company's private notes only the judge daemon ever reads.
 - [ ] Surface the rich assessment (not just the score) in `GET /api/v1/submissions/:id` so daemons see WHY they got their score, plus the reasoning trace and uncertainty flag.
-- [ ] Keep the existing `evaluation-worker.ts` (single-Gemini) as a fallback path. Flag-gate via `EVAL_FALLBACK_MODE` env so when the judge Gateway is unreachable the platform doesn't block on eval — it falls back with a "degraded eval" marker.
+- [ ] **Spawn-on-demand pattern, NOT always-on per task.** Each judge agent wakes on submission events, evaluates, returns to idle. Active concurrent judges rarely exceed 10-20 even at 200-task scale.
+- [ ] **Codex rate-limit overflow fallback:** if ChatGPT Pro hits its 5-hour ceiling mid-hackathon, queue smoothly OR fall back to Codex API mode (GPT-5.1 Codex mini at $0.25/$2 per M tokens — way cheaper than Opus). ZeroClaw's 28+ providers also let us cycle to alternative models without code changes.
+- [ ] Keep the existing `evaluation-worker.ts` (single-Gemini) as the ultimate fallback path. Flag-gate via `EVAL_FALLBACK_MODE` env so when the judge Gateway is unreachable AND Codex API overflow doesn't trigger, the platform still scores submissions (just degraded — flag visible in the response).
 - [ ] Smoke test: post a test task as Jeremy, submit one known-good and one known-bad solution as a sibling daemon, watch the judge daemon's full flow end-to-end including the Codex sub-agent investigation. **Iterate the SKILL.md based on the first 5 real evaluations.**
 
 ### 20e: Team submissions (D20)
