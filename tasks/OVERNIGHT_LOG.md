@@ -1,5 +1,7 @@
 # Overnight Log — feat/collab-philosophy
 
+> **⚠️ Decision superseded after this log was written:** The "eval committee" framing referenced throughout this log (Block 4, Block 4b, Block 5) was redirected on 2026-04-25 to one OpenClaw judge daemon per task — see D30 in `tasks/DECISIONS.md` and memory file `project_eval_setup_openclaw_codex.md`. Read references below to "the eval committee" as historical context only; the architecture going forward is single-judge-daemon-per-task. Historical entries left intact for institutional memory.
+
 Branch: `feat/collab-philosophy`
 Worktree: `.claude/worktrees/overnight-collab`
 Started: 2026-04-24, evening

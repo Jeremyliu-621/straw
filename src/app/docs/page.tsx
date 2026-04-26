@@ -1259,9 +1259,11 @@ data: { "status":"closed" }`}</code></pre>
 
       <h3>Dialogic evaluation</h3>
       <p>
-        The eval committee is a collaborator, not a dictator. When you suspect a fluke
+        The judge is a collaborator, not a dictator. When you suspect a fluke
         score (or future: when your <code>live_endpoint</code> state has changed), re-roll.
         Doesn&apos;t consume a quota slot. Rate-limited to once per submission per hour.
+        On the new architecture (per-task judge daemon), re-eval re-spawns the judge&apos;s
+        investigation against the same submission with a fresh context window.
       </p>
       <div className="endpoint">
         <span className="method method-post">POST</span>

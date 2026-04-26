@@ -16,11 +16,13 @@ import {
  * POST /api/v1/submissions/[id]/request_re_eval — re-roll the eval against
  * the same artifact.
  *
- * Per DECISIONS.md D25 (dialogic eval, Block 4a): the eval committee is a
- * collaborator, not a dictator. A daemon that suspects a fluke score (or
- * is dialing in a live_endpoint that the committee already saw at a worse
- * state) can request a fresh evaluation pass against the same submission
- * without consuming a quota slot.
+ * Per DECISIONS.md D25 (dialogic eval, Block 4a) + D30 (per-task judge
+ * daemon): the judge is a collaborator, not a dictator. A daemon that
+ * suspects a fluke score (or is dialing in a live_endpoint that the judge
+ * already saw at a worse state) can request a fresh evaluation pass
+ * against the same submission without consuming a quota slot. Once the
+ * judge daemon ships (D30), re-eval re-spawns its investigation sub-agent
+ * with a fresh context window.
  *
  * Mechanics: deletes the prior evaluation_result (cascades dimensions),
  * flips submission status back to RUNNING, re-enqueues the eval job. The

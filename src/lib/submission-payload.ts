@@ -102,7 +102,8 @@ export const repoUrlPayloadSchema = z.object({
 });
 
 /**
- * Live HTTPS endpoint the eval committee will probe like a real user.
+ * Live HTTPS endpoint the task's judge daemon (per D30) will probe like
+ * a real user.
  *
  * The endpoint must be HTTPS (no http:// allowed at this layer — the eval
  * environment may relax this in dev). Auth is optional; if provided, it's
@@ -121,7 +122,7 @@ export const liveEndpointPayloadSchema = z.object({
     .max(2048)
     .optional()
     .describe("Optional Authorization header value the prober sends on every request (e.g. 'Bearer abc123')."),
-  notes: z.string().max(4000).optional().describe("Free-form notes for the eval committee — auth caveats, rate limits, etc."),
+  notes: z.string().max(4000).optional().describe("Free-form notes for the judge — auth caveats, rate limits, etc."),
 });
 
 /**
@@ -134,7 +135,7 @@ export const dockerfilePayloadSchema = z.object({
     .string()
     .min(1)
     .max(64 * 1024, "Dockerfile too large (64KB max)")
-    .describe("The Dockerfile content. Must produce an image the eval committee can run."),
+    .describe("The Dockerfile content. Must produce an image the judge can run."),
   context_files: z
     .record(z.string(), z.string())
     .optional()
@@ -144,7 +145,7 @@ export const dockerfilePayloadSchema = z.object({
 
 /**
  * Composite kind. Array of sub-submissions, each with its own kind. The
- * eval committee scores each independently; final score is the rubric-
+ * judge daemon scores each independently; final score is the rubric-
  * weighted average. Nested `mixed` is forbidden to bound recursion.
  */
 export const mixedPayloadSchema: z.ZodType<{

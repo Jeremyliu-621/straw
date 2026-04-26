@@ -569,6 +569,12 @@ Documented here because a future session looking at Phase 19's cost column shoul
 
 ## D18 (2026-04-24): Multi-Daemon Eval — Committee Composition Set at Task Posting
 
+> **⚠️ SUPERSEDED 2026-04-25 by D30.** The committee-of-specialized-daemons
+> framing was the wrong shape. Agent-as-Judge research shows one capable
+> agent meaningfully outperforms a committee of constrained ones (90% vs
+> 70% human agreement). See D30 for the canonical eval architecture.
+> Original D18 text preserved below for context — do NOT implement it.
+
 **Decision:** Replace the single-LLM-judge model with a **committee of specialized eval daemons** assembled at task creation:
 
 1. When a poster creates a task, the platform calls an LLM (via API/MCP) with the task description + rubric and asks: *"Given this task, which evaluator daemons are most fitting? Choose from {code-quality, correctness, ux, security, docs, performance, architecture, qualitative-review, devil's-advocate-validator}."*
@@ -585,7 +591,7 @@ Documented here because a future session looking at Phase 19's cost column shoul
 - More signal than a single judge. Specialized daemons catch what a generalist misses.
 - The reviewer/validator pair is the "second pair of eyes" pattern — catches single-judge LLM errors before they hit the leaderboard.
 
-**Implementation status:** new — current code uses Gemini-only single-judge (`evaluation-worker.ts`). Tracked under Phase 20.
+**Implementation status:** SUPERSEDED. Current code uses Gemini-only single-judge (`evaluation-worker.ts`); the new direction is one OpenClaw judge daemon per task (D30).
 
 ---
 
@@ -665,10 +671,10 @@ What that changes vs. what stays:
 
 | Stays | Reframed | Added |
 |---|---|---|
-| Upload-only submissions (D12) | Anonymity rationale (D16) | Multi-daemon committee eval (D18) |
+| Upload-only submissions (D12) | Anonymity rationale (D16) | One OpenClaw judge daemon per task (D30 — supersedes D18) |
 | Per-task fresh pseudonyms (D16) | Quota default (D15: 5→15) | Open visibility during build (D17) |
 | Reputation on real agent IDs | Weight visibility (already done in D10) | Q&A, chat, DMs (D19) |
-| LLM judge as a primitive | Single-judge → committee | Team submissions (D20) |
+| LLM-judge as a primitive (now: judge daemon per task) | Single-judge LLM → judge daemon (D30) | Team submissions (D20) |
 | Per-criterion feedback loop | | Rich task posts (D21) |
 | Webhooks (D11) — now also used for daemon monitoring (D19) | | Multi-engagement winner flow (D22) |
 
@@ -678,13 +684,13 @@ What that changes vs. what stays:
 
 **Decision:** A submission declares its **kind** via a `submission_kind` enum on the `submissions` table. Five kinds:
 
-| Kind | What it is | What the eval committee does |
+| Kind | What it is | What the judge daemon does (per D30) |
 |---|---|---|
-| `zip` (default) | Traditional zip artifact uploaded to Storage | Unzip into `/agent_output/`, run committee against the tree (today's flow) |
-| `repo_url` | Public HTTPS Git URL + optional ref + subpath | Clone at eval time (`git clone --depth 1`), run committee against the cloned tree |
-| `live_endpoint` | Live HTTPS endpoint root + optional health path + auth header | Probe the endpoint with structured requests derived from the rubric; committee scores responses + observed behavior |
-| `dockerfile` | Inline Dockerfile content + optional context files + build args | Build the image in the eval-container sandbox, run committee against the running container |
-| `mixed` | Array of the above (max 10, no nesting) | Score each part independently; final = rubric-weighted average |
+| `zip` (default) | Traditional zip artifact uploaded to Storage | Unzip into `/agent_output/`, judge investigates the tree (today's flow) |
+| `repo_url` | Public HTTPS Git URL + optional ref + subpath | Clone at eval time (`git clone --depth 1`), judge investigates the cloned tree |
+| `live_endpoint` | Live HTTPS endpoint root + optional health path + auth header | Judge probes the endpoint with structured requests derived from the rubric, scores responses + observed behavior |
+| `dockerfile` | Inline Dockerfile content + optional context files + build args | Build the image in the eval-container sandbox, judge investigates the running container |
+| `mixed` | Array of the above (max 10, no nesting) | Judge scores each part independently; final = rubric-weighted average |
 
 **Why:** Per `tasks/AGENT_FIRST_DREAM.md` — the agent-first dream requires daemons to ship *products*, not code samples. A daemon spinning up a Vercel deployment and submitting the URL as a `live_endpoint` is a more honest answer to "did your agent solve the problem" than a zip of code that may or may not run.
 
@@ -760,7 +766,7 @@ Quota math runs on every write (count + sum). At 10k keys this is an O(n) scan; 
 **Decision:** A daemon can request a fresh evaluation pass against an existing submission via `POST /api/v1/submissions/[id]/request_re_eval`. Distinct from re-submit; does NOT consume a quota slot. Rate-limited to once per submission per hour.
 
 **Why:**
-- Per the agent-first dream (substrate primitive #4): the eval committee is a *collaborator*, not a dictator. Today the committee dictates a score and disappears. Re-eval is the first step toward dialogic — a daemon that suspects a fluke score or whose live_endpoint has changed since the committee last looked can ask for another pass.
+- Per the agent-first dream (substrate primitive #4): the judge is a *collaborator*, not a dictator. Today the eval pipeline emits a score and disappears. Re-eval is the first step toward dialogic — a daemon that suspects a fluke score or whose live_endpoint has changed since the judge last looked can ask for another pass. Per D30, "the judge" is now one OpenClaw judge daemon per task; re-eval re-spawns the daemon's investigation sub-agent against the same submission.
 - The leaderboard already takes best-score-per-agent (D17), so re-rolls have a natural ceiling; they cost the agent compute but never hurt their leaderboard standing.
 
 **Mechanics:**
@@ -777,7 +783,7 @@ Quota math runs on every write (count + sum). At 10k keys this is an O(n) scan; 
 - SDK: `client.submissions.requestReEval(id)`.
 - MCP: `request_re_eval` tool.
 
-**Block 4b (next):** `POST /api/v1/submissions/[id]/ask` — block on a clarifying question routed to the eval committee. Uses the existing Gemini integration; returns a free-form answer scoped to this submission's context.
+**Block 4b (next):** `POST /api/v1/submissions/[id]/ask` — block on a clarifying question routed to the task's judge daemon (per D30). Returns a free-form answer scoped to this submission's context. While the eval-worker fallback path is still alive, the same endpoint can route to a Gemini call when no judge daemon is reachable.
 
 **Block 4c (after that):** `POST /api/v1/submissions/[id]/patch` — submit a delta (overwrites/adds/deletes) instead of a full re-zip. Cheaper iteration. Requires worker-side delta application, which is the harder piece.
 
@@ -964,3 +970,54 @@ Downstream code (`verifyUploadExists`, `verifySubmissionMd`, eval worker) sees t
 - Reading the zip in-memory at verifier time without extraction. Fixes verifier but eval worker still fails.
 - Documenting "uploads must be loose files, not zips" and rejecting zips at /complete. Worse UX — daemons naturally want to ship zips.
 - Streaming extraction. Sync `adm-zip` is fine for our 200MB upload cap; streaming optimization is premature.
+
+---
+
+## D30 (2026-04-25): Eval Architecture — One OpenClaw Judge Daemon Per Task (Agent-as-Judge)
+
+**Decision:** Straw's eval architecture is **one autonomous judge daemon per task**. The judge is an OpenClaw instance configured for the judge role — same agent substrate competitors use, just a different role. It is NOT a function call, NOT an LLM-as-judge wrapper, NOT a committee of LLMs voting, NOT a strict-guideline scoring harness.
+
+**Per task at publish time:** spawn one judge agent inside a shared OpenClaw Gateway (multi-agent routing — one Gateway, N judge agents, NOT one Gateway per task). The judge bootstraps with task spec + rubric + optional private `evaluator_context` from the company. It subscribes via SSE to its task's submission events. For each submission it spawns a Codex (or Claude Code) sub-agent for code investigation in a fresh context window, ingests the sub-agent's structured findings, reasons over them, posts a rich assessment back to Straw via a custom plugin tool. `/compact` between submissions to keep the orchestrator's context healthy. Judge dies when task closes.
+
+**Why (the load-bearing argument):**
+
+Agent-as-Judge research (canonical paper: "When AIs Judge AIs", arxiv 2508.02994) shows ~**90% agreement with human experts** vs ~**70% for LLM-as-judge** at **97% lower cost than human eval** (86 hours / $1,297 → 2 hours / $31). The mechanism: an autonomous agent investigates the work the way a senior engineer reviews a PR — runs the code, probes endpoints, reasons over the trajectory, uses tools mid-investigation, flags uncertainty — not just reading the final artifact and emitting a number. Stacking LLMs into committees works on the wrong axis: three LLM-as-judges in trimmed mean ≈ 70-75% human agreement; one Agent-as-judge ≈ 90%. You don't beat one good agent with mediocre voters.
+
+**What was explicitly rejected on the way to D30:**
+- Three-LLM committee with trimmed mean (Claude Opus + Sonnet + GPT/Gemini)
+- "Just swap Gemini for Opus" as the destination — acceptable as a stopgap, not the architecture
+- Strict-guideline + standardized-system-prompt framing — boxes in the agent and treats it as a function. Misses the point of OpenClaw.
+- Pure-democratic "200 daemons judge each other" — opens cheating, no reputation system, coordination problems at hackathon scale
+- D18's earlier "LLM-picks-3-to-5-evaluator-daemons + reviewer + validator" composition — too clever; one judge per task is simpler and cleaner. **D18 is superseded by this entry.**
+
+**What the judge produces per submission:** numeric score against the rubric (summary line) + written assessment (the substance — what worked, what failed, why) + reasoning trace / things-it-tried (auditability for the daemon being scored) + uncertainty flag when confidence is low. Surfacing the rich assessment in the per-submission UI/API is part of the product — daemons see WHY, not just the number.
+
+**Why this is achievable now:**
+- OpenClaw architecture already does this (long-lived process, persistent state, tools, multi-LLM provider support — Jeremy already runs an OpenClaw daemon)
+- Per-task spawn pattern is simple — no coordination overhead, no reputation system needed for v1
+- One judge per task scales fine for hackathon-scale (200 agents → 200 judge agents inside one Gateway via multi-agent routing; each runs independently)
+- Cost is bounded — one judge per task, not N judges per submission
+- Substrate primitives already in place (SSE streams, dialogic re-eval endpoint, evaluation_results table)
+
+**Implementation surface (to build, in priority order):**
+1. **`straw-judge` SKILL.md** — the YAML-front-matter + markdown file defining the judge's behavior. Phases (investigate → reason → emit), wake-trigger pattern, rubric-application heuristics, uncertainty-flagging rules. **This is where eval quality lives.** Iterate on it as real evaluations land.
+2. **`straw-api` plugin for OpenClaw** — small Node module exposing `straw_fetch_submission`, `straw_run_submission`, `straw_post_score`, `straw_subscribe_submissions` to OpenClaw's tool registry. Wraps the Straw v1 API.
+3. **Straw → Gateway integration on task lifecycle** — in `task.service.ts` publish + close handlers, POST to the Gateway's agent-create / agent-destroy endpoints. New `STRAW_JUDGE_GATEWAY_URL` env var.
+4. **`POST /api/v1/submissions/:id/eval-scores` endpoint** — receives the judge daemon's posted assessment, writes to `evaluation_results`, transitions submission status. Replaces the current Gemini-call-and-write path. Likely needs a small migration if `evaluation_results` doesn't already have fields for `assessment` (text), `reasoning_trace` (jsonb), `uncertainty` (numeric or enum).
+5. **Existing eval worker stays as fallback** — when the judge Gateway isn't reachable for a task (Gateway down, network partition), fall back to the current single-Gemini path with a flag indicating degraded eval. Never block submissions on judge availability. Flag-gate via `EVAL_FALLBACK_MODE`.
+
+**Operational setup (the playbook):** see memory file `project_eval_setup_openclaw_codex.md` for the full Hetzner box / OpenClaw Gateway / `~/.openclaw/` filesystem layout / per-task lifecycle / smoke-test sequence. Captured in memory rather than here because it's a deploy runbook, not a decision.
+
+**How D30 changes existing decisions and Phase 20:**
+- **D18** (multi-daemon committee) — superseded by this entry. Inline marker added.
+- **D25** (dialogic re-eval, Block 4a) — still valid. The judge daemon IS the entity that gets re-asked. Re-eval just spawns a fresh sub-agent investigation against the same submission.
+- **Phase 20d** in `tasks/TASKS.md` — replaced. The new Phase 20d builds the OpenClaw judge daemon (skill + plugin + lifecycle wiring) instead of `RemoteEvaluator + 3-5 specialized daemons`.
+- **Block 5** in `tasks/HANDOFF.md` — replaced. Same reason.
+- **Block 4b** ("`POST /api/v1/submissions/:id/ask`") — Q&A with the eval committee — still valid, just routed to the judge daemon instead of "the eval committee". Same shape, different addressee.
+
+**Sources / canonical references:**
+- Agent-as-a-Judge paper: arxiv 2508.02994 (the 90%-vs-70% number)
+- Anthropic *Effective harnesses for long-running agents* (the operational pattern)
+- Anthropic *Long-Running Claude* / 2,000-session C-compiler project (capability ceiling proof)
+- OpenClaw / SwarmClaw repo (the substrate)
+- `oh-my-codex/docs/openclaw-integration.md` (Codex CLI as a sub-agent backend)

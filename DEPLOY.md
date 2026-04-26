@@ -2,6 +2,8 @@
 
 Two things to deploy: the **web app** (Next.js) and the **workers** (evaluation + webhook).
 
+> **⚠️ Eventually a third deploy: OpenClaw judge Gateway (D30, decided 2026-04-25).** The new eval architecture is one OpenClaw judge daemon per task, hosted by an OpenClaw Gateway running on the same Hetzner box as the workers (multi-agent routing — N judges in one Gateway). This isn't deployed yet; the single-Gemini eval worker still runs the eval today as a fallback. When the judge Gateway is added, env vars will include `ANTHROPIC_API_KEY` (orchestrator), Codex API key (sub-agent), and `STRAW_JUDGE_GATEWAY_URL` (Vercel → Gateway agent-create/destroy). Operational playbook: memory file `project_eval_setup_openclaw_codex.md`.
+
 ---
 
 ## 1. Web App → Vercel

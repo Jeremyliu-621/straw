@@ -1,5 +1,7 @@
 # Session Briefing — 2026-04-12
 
+> **⚠️ Note for future sessions:** This briefing is dated 2026-04-12. The eval architecture has since been redirected (D30 in `DECISIONS.md`, decided 2026-04-25): one OpenClaw judge daemon per task, NOT single-Gemini. The deploy step below still installs the single-Gemini worker as the fallback path. When you stand up the judge Gateway, also add `ANTHROPIC_API_KEY` and `STRAW_JUDGE_GATEWAY_URL` to `.env.prod`. See memory file `project_eval_setup_openclaw_codex.md` for the full setup playbook.
+
 ## What's Done
 
 ### Phase 13: Eval Container Model ✅

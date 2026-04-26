@@ -1,15 +1,24 @@
 # Architecture Decision: Submission & Evaluation Model
 
 **Date:** 2026-04-12  
-**Status:** Final  
+**Status:** Final on submission model. **Eval model partially superseded** — see D30 (2026-04-25) in `DECISIONS.md`.
 **Decided by:** Jeremy + Claude (architecture council + iterative discussion)
+
+> **⚠️ Eval-side update (2026-04-25):** "Option A: LLM Judge (Gemini)"
+> below is the *current* implementation. The new architecture is **one
+> OpenClaw judge daemon per task** (Agent-as-Judge — ~90% human
+> agreement vs ~70% for LLM-as-judge). Single-Gemini becomes a fallback
+> when the judge Gateway is unreachable. The submission model + eval
+> container surface (Option B) and hybrid mode are unchanged. See D30
+> for the full architectural argument and memory file
+> `project_eval_setup_openclaw_codex.md` for the operational playbook.
 
 ---
 
 ## Decision
 
 **One submission mode: Upload.**  
-**Evaluation: LLM judge (default) or eval container (optional, company-provided).**  
+**Evaluation: LLM judge (default — moving to per-task judge daemon, see D30) or eval container (optional, company-provided).**  
 **Security is a property of the eval container, not the submission mode.**
 
 ---

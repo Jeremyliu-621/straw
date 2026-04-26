@@ -48,7 +48,7 @@ export type TaskEventFetchError = { kind: "not_found" };
  *
  * What's "watchable" today: status, deadline, max_submissions_per_agent,
  * eval_mode, and (when present) updated_at. Future Phase-20 additions —
- * amendments, eval_committee composition — slot in naturally because the
+ * amendments, judge_daemon_id (per D30) — slot in naturally because the
  * fingerprint is field-list driven.
  */
 export async function fetchTaskEventSnapshot(
