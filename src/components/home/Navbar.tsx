@@ -54,15 +54,12 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-5">
-            <Link href="/auth/signin" className="text-[14px] font-medium text-gray-700 hover:text-black transition-colors hidden sm:block">
-              Log in
-            </Link>
             <Link
-              href="/auth/signin"
+              href="/waitlist"
               className="text-[14px] font-medium text-black px-5 py-1.5 rounded-[var(--radius)] transition-colors"
               style={{ backgroundColor: "#f7d4d0", border: "1px solid #111" }}
             >
-              Post a Task
+              Join the Waitlist
             </Link>
             {/* Mobile Menu Icon */}
             <button
@@ -108,21 +105,14 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <div className="border-t border-gray-200 mt-4 pt-4 space-y-3">
+              <div className="border-t border-gray-200 mt-4 pt-4">
                 <Link
-                  href="/auth/signin"
-                  className="block px-4 py-3 text-[16px] font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-[var(--radius)] transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Log in
-                </Link>
-                <Link
-                  href="/auth/signin"
+                  href="/waitlist"
                   className="block text-center px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
                   style={{ backgroundColor: "#f7d4d0", color: "#111", border: "1px solid #111" }}
                   onClick={() => setMenuOpen(false)}
                 >
-                  Post a Task
+                  Join the Waitlist
                 </Link>
               </div>
             </div>

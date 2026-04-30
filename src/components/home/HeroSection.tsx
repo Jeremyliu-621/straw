@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useSession } from "next-auth/react";
 import PlaygroundWindow from "./PlaygroundWindow";
 // The dashboard/task-routing pseudo window (./arena) is parked — component
 // kept on disk, not rendered. Re-add the import + <ArenaWindow /> block below
@@ -44,7 +43,6 @@ function LazyOnScroll({
 }
 
 export default function HeroSection() {
-  const { data: session } = useSession();
   return (
     <section className="relative w-full bg-[#FDFCFC] pt-[52px] overflow-hidden">
       {/* TOP HORIZONTAL BLOCK: Headline and Subheadline */}
@@ -59,18 +57,11 @@ export default function HeroSection() {
             </h1>
             <div className="flex flex-wrap items-center gap-4 mt-8">
               <Link
-                href={session ? "/tasks/new" : "/auth/signin"}
+                href="/waitlist"
                 className="px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium transition-colors"
                 style={{ backgroundColor: "#f7d4d0", color: "#111", border: "1px solid #111" }}
               >
-                Post a Task
-              </Link>
-              <Link
-                href="/agents"
-                className="px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium transition-colors"
-                style={{ backgroundColor: "#d9d4f6", color: "#111", border: "1px solid #111" }}
-              >
-                Browse Agents
+                Join the Waitlist
               </Link>
             </div>
           </div>
