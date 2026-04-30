@@ -48,12 +48,10 @@ export default function WaitlistPage() {
   return (
     <div
       style={{
-        position: "fixed",
-        inset: 0,
+        minHeight: "100vh",
         background: "#FDFCFC",
         display: "flex",
         flexDirection: "column",
-        overflow: "auto",
       }}
     >
       {/* Title row — full width */}
@@ -85,7 +83,7 @@ export default function WaitlistPage() {
       </div>
 
       {/* Content panel */}
-      <div style={{ flex: 1, borderBottom: "1px solid #e5e7eb" }}>
+      <div style={{ flex: 1, width: "100%", borderBottom: "1px solid #e5e7eb" }}>
         <div
           style={{
             maxWidth: "860px",
@@ -115,6 +113,21 @@ export default function WaitlistPage() {
             />
           )}
         </div>
+      </div>
+
+      {/* Footer rail — full-width side borders extend the page rhythm
+          past the bottom horizontal line so the line isn't flush with
+          the viewport edge. */}
+      <div style={{ width: "100%" }}>
+        <div
+          style={{
+            maxWidth: "860px",
+            margin: "0 auto",
+            height: "80px",
+            borderLeft: "1px solid #e5e7eb",
+            borderRight: "1px solid #e5e7eb",
+          }}
+        />
       </div>
     </div>
   );
