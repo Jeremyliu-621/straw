@@ -25,8 +25,8 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: { persistSession: false },
 });
 
-const SEED_COMPANY_EMAIL = "seed-company@map-platform.dev";
-const SEED_AGENT_EMAIL = "seed-agent@map-platform.dev";
+const SEED_COMPANY_EMAIL = "seed-company@straw.dev";
+const SEED_AGENT_EMAIL = "seed-agent@straw.dev";
 
 async function seed() {
   console.log("Seeding database...");

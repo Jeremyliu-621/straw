@@ -449,7 +449,7 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 - [ ] SSH in and run:
   ```
   curl -fsSL https://get.docker.com | sh
-  git clone https://github.com/Jeremyliu-621/mop.git && cd mop
+  git clone https://github.com/Jeremyliu-621/straw.git && cd straw
   cp .env.prod.example .env.prod
   nano .env.prod  # REDIS_URL, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, GOOGLE_GEMINI_API_KEY
   docker compose -f docker-compose.prod.yml up -d

@@ -87,14 +87,14 @@ describe("validateSubmissionPayload — zip", () => {
 describe("validateSubmissionPayload — repo_url", () => {
   it("accepts a public github URL", () => {
     const r = validateSubmissionPayload(SUBMISSION_KIND.REPO_URL, {
-      url: "https://github.com/Jeremyliu-621/mop",
+      url: "https://github.com/Jeremyliu-621/straw",
     });
     expect(r.valid).toBe(true);
   });
 
   it("accepts an optional ref + subpath", () => {
     const r = validateSubmissionPayload(SUBMISSION_KIND.REPO_URL, {
-      url: "https://github.com/Jeremyliu-621/mop",
+      url: "https://github.com/Jeremyliu-621/straw",
       ref: "feat/collab-philosophy",
       subpath: "packages/agent-sdk",
     });

@@ -13,7 +13,7 @@ The Next.js app deploys to Vercel with zero config.
 ### Steps
 
 1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
-2. Click "Import Project" → select `Jeremyliu-621/mop`
+2. Click "Import Project" → select `Jeremyliu-621/straw`
 3. Vercel auto-detects Next.js. No build settings to change.
 4. Add environment variables (Settings → Environment Variables):
 
@@ -136,8 +136,8 @@ echo '/swapfile none swap sw 0 0' >> /etc/fstab
 ### Step 3: Clone + configure (~5 min)
 
 ```bash
-git clone https://github.com/Jeremyliu-621/mop.git
-cd mop
+git clone https://github.com/Jeremyliu-621/straw.git
+cd straw
 cp .env.prod.example .env.prod
 nano .env.prod
 ```

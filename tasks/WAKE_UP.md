@@ -40,8 +40,8 @@ Up to 15 attempts per task by default (poster-configurable, hard cap 25). Best s
 
 # c) SSH into VPS and run:
 curl -fsSL https://get.docker.com | sh
-git clone https://github.com/Jeremyliu-621/mop.git
-cd mop
+git clone https://github.com/Jeremyliu-621/straw.git
+cd straw
 cp .env.prod.example .env.prod
 nano .env.prod  # fill in: SUPABASE_URL, SUPABASE_KEY, REDIS_URL, GEMINI_KEY
 docker compose -f docker-compose.prod.yml up -d
