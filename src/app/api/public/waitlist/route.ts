@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod/v4";
 import { createServiceClient } from "@/lib/supabase";
+import { sendWaitlistNotification } from "@/lib/email";
 
 const bodySchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(200),
@@ -49,6 +50,15 @@ export async function POST(req: Request) {
     console.error("[waitlist] insert failed", { code: error.code, message: error.message });
     return NextResponse.json({ error: "Could not save signup" }, { status: 500 });
   }
+
+  await sendWaitlistNotification({
+    name,
+    email,
+    company,
+    position,
+    queuePosition: inserted.position,
+    alreadyJoined: false,
+  });
 
   return NextResponse.json({ position: inserted.position, alreadyJoined: false });
 }

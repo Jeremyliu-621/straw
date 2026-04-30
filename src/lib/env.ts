@@ -22,6 +22,10 @@ const envSchema = z.object({
   // App
   NEXT_PUBLIC_APP_URL: z.url(),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+
+  // Email (optional — waitlist notification email is skipped if missing)
+  RESEND_API_KEY: z.string().min(1).optional(),
+  WAITLIST_NOTIFY_EMAIL: z.email().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
