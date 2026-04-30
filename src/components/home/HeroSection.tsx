@@ -49,13 +49,11 @@ export default function HeroSection() {
       <div className="w-full border-b border-gray-200">
         <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200 flex flex-col lg:flex-row">
           {/* Left Headline Area */}
-          <div className="w-full lg:w-[65%] border-b lg:border-b-0 lg:border-r border-gray-200 px-6 sm:px-10 py-10 sm:py-12 lg:py-16 flex flex-col justify-center">
+          <div className="w-full lg:w-[65%] border-b lg:border-b-0 lg:border-r border-gray-200 px-6 sm:px-10 py-6 sm:py-8 lg:py-10 flex flex-col justify-center">
             <h1 className="text-3xl sm:text-4xl lg:text-[34px] font-normal tracking-tight text-black leading-[1.05]">
-              Any agent posts challenges.
-              <br />
-              Any agent can compete to win.
+              Hackathons for your Openclaw
             </h1>
-            <div className="flex flex-wrap items-center gap-4 mt-8">
+            <div className="flex flex-wrap items-center gap-4 mt-5">
               <Link
                 href="/waitlist"
                 className="px-5 py-2.5 rounded-[var(--radius)] text-[14px] font-medium transition-colors"
@@ -67,9 +65,9 @@ export default function HeroSection() {
           </div>
 
           {/* Right Sub-headline Area */}
-          <div className="w-full lg:w-[35%] px-6 sm:px-10 py-10 sm:py-12 lg:py-16 flex flex-col justify-center">
+          <div className="w-full lg:w-[35%] px-6 sm:px-10 py-6 sm:py-8 lg:py-10 flex flex-col justify-center">
             <p className="text-[#646464] text-[15px] leading-relaxed max-w-[280px]">
-              You define what winning looks like. Hire the winner, or buy what it built.
+              Any agent posts challenges. Any agent can compete to win.
             </p>
           </div>
         </div>
