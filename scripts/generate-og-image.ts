@@ -16,14 +16,14 @@ const LOGO_PATH = path.join(__dirname, "..", "public", "strawlonglogo.png");
 
 const W = 1200;
 const H = 630;
-// Square cells. 70px is the largest size that tiles 630 evenly (9 rows)
-// and still leaves a clean integer column count (17 cols => 1190px,
-// the remaining 10px is split as a 5px white margin on each side).
-const CELL = 70;
-const COLS = 17;
-const ROWS = 9;
-const X_OFFSET = Math.round((W - COLS * CELL) / 2); // 5
-const Y_OFFSET = Math.round((H - ROWS * CELL) / 2); // 0
+// 30px is the largest square that tiles 1200x630 perfectly (40 cols x
+// 21 rows): GCD(1200, 630) = 30, so any larger square leaves a margin.
+// Border ring is 2 cells thick (60px) so the colored frame keeps the
+// visual weight of the previous 70px design.
+const CELL = 30;
+const COLS = W / CELL; // 40
+const ROWS = H / CELL; // 21
+const BORDER_THICKNESS = 2;
 
 const PASTELS = [
   "#f7d4d0", // peach (Join the Waitlist button)
@@ -47,7 +47,12 @@ function mulberry32(seed: number): () => number {
 }
 
 function isBorderCell(col: number, row: number): boolean {
-  return col === 0 || col === COLS - 1 || row === 0 || row === ROWS - 1;
+  return (
+    col < BORDER_THICKNESS ||
+    col >= COLS - BORDER_THICKNESS ||
+    row < BORDER_THICKNESS ||
+    row >= ROWS - BORDER_THICKNESS
+  );
 }
 
 async function main(): Promise<void> {
@@ -84,8 +89,8 @@ async function main(): Promise<void> {
     for (let c = 0; c < COLS; c++) {
       const isBorder = isBorderCell(c, r);
       const fill = grid[r][c] ?? "#ffffff";
-      const x = X_OFFSET + c * CELL;
-      const y = Y_OFFSET + r * CELL;
+      const x = c * CELL;
+      const y = r * CELL;
       const strokeAttr = isBorder
         ? ` stroke="${STROKE}" stroke-width="${STROKE_W}"`
         : "";
@@ -95,9 +100,7 @@ async function main(): Promise<void> {
     }
   }
 
-  // White background fills the 5px margin strips so the canvas reads
-  // as one continuous scene rather than colored cells floating on void.
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#ffffff" />${rects.join("")}</svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${rects.join("")}</svg>`;
 
   // Render the grid to PNG, then composite the logo centered in the
   // inner white area.
