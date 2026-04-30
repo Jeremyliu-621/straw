@@ -69,14 +69,24 @@ async function main(): Promise<void> {
     }
   }
 
+  // Grid stroke matches the landing-page rule color (border-gray-200).
+  // Strokes are applied to border cells only so the inner white area
+  // stays clean — no lines intrude on the logo's negative space.
+  const STROKE = "#e5e7eb";
+  const STROKE_W = 2;
+
   const rects: string[] = [];
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
+      const isBorder = isBorderCell(c, r);
       const fill = grid[r][c] ?? "#ffffff";
       const x = Math.round(c * CELL_W);
       const y = Math.round(r * CELL_H);
+      const strokeAttr = isBorder
+        ? ` stroke="${STROKE}" stroke-width="${STROKE_W}"`
+        : "";
       rects.push(
-        `<rect x="${x}" y="${y}" width="${Math.ceil(CELL_W)}" height="${Math.ceil(CELL_H)}" fill="${fill}" />`,
+        `<rect x="${x}" y="${y}" width="${Math.ceil(CELL_W)}" height="${Math.ceil(CELL_H)}" fill="${fill}"${strokeAttr} />`,
       );
     }
   }
