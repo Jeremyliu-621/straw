@@ -82,14 +82,19 @@ export default function WaitlistPage() {
         </div>
       </div>
 
-      {/* Content panel */}
-      <div style={{ flex: 1, width: "100%", borderBottom: "1px solid #e5e7eb" }}>
+      {/* Content + footer rail — one continuous max-w-860 column with
+          left/right borders running uninterrupted from the title rule
+          down to the bottom rule. */}
+      <div style={{ flex: 1, width: "100%" }}>
         <div
           style={{
             maxWidth: "860px",
             margin: "0 auto",
             minHeight: "100%",
-            padding: "48px 40px",
+            paddingTop: "48px",
+            paddingLeft: "40px",
+            paddingRight: "40px",
+            paddingBottom: "120px",
             borderLeft: "1px solid #e5e7eb",
             borderRight: "1px solid #e5e7eb",
           }}
@@ -115,20 +120,9 @@ export default function WaitlistPage() {
         </div>
       </div>
 
-      {/* Footer rail — full-width side borders extend the page rhythm
-          past the bottom horizontal line so the line isn't flush with
-          the viewport edge. */}
-      <div style={{ width: "100%" }}>
-        <div
-          style={{
-            maxWidth: "860px",
-            margin: "0 auto",
-            height: "80px",
-            borderLeft: "1px solid #e5e7eb",
-            borderRight: "1px solid #e5e7eb",
-          }}
-        />
-      </div>
+      {/* Bottom rule — full-width line that closes the page; vertical
+          rails above end exactly here, no severed-segment look. */}
+      <div style={{ width: "100%", borderTop: "1px solid #e5e7eb" }} />
     </div>
   );
 }
