@@ -72,7 +72,7 @@ async function main(): Promise<void> {
   // Grid stroke matches the landing-page rule color (border-gray-200).
   // Strokes are applied to border cells only so the inner white area
   // stays clean — no lines intrude on the logo's negative space.
-  const STROKE = "#e5e7eb";
+  const STROKE = "#111111";
   const STROKE_W = 2;
 
   const rects: string[] = [];
