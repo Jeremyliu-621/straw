@@ -120,9 +120,23 @@ export default function WaitlistPage() {
         </div>
       </div>
 
-      {/* Bottom rule — full-width line that closes the page; vertical
-          rails above end exactly here, no severed-segment look. */}
+      {/* Bottom rule — full-width horizontal line that closes the page. */}
       <div style={{ width: "100%", borderTop: "1px solid #e5e7eb" }} />
+
+      {/* Footer rail — 80px of side rails below the bottom rule so the
+          line sits visibly inside the viewport instead of flush with the
+          edge. Mirrors the landing page's footer rhythm. */}
+      <div style={{ width: "100%" }}>
+        <div
+          style={{
+            maxWidth: "860px",
+            margin: "0 auto",
+            height: "80px",
+            borderLeft: "1px solid #e5e7eb",
+            borderRight: "1px solid #e5e7eb",
+          }}
+        />
+      </div>
     </div>
   );
 }
