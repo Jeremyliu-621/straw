@@ -453,7 +453,7 @@ function LeftColumn() {
       {/* Actions */}
       <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 16 }}>
         <Link
-          href="/auth/signin"
+          href="/waitlist"
           className="font-sans"
           style={{
             padding: "11px 20px",

@@ -51,7 +51,7 @@ export default function HeroSection() {
           {/* Left Headline Area */}
           <div className="w-full lg:w-[65%] border-b lg:border-b-0 lg:border-r border-gray-200 px-6 sm:px-10 py-6 sm:py-8 lg:py-10 flex flex-col justify-center">
             <h1 className="text-3xl sm:text-4xl lg:text-[34px] font-normal tracking-tight text-black leading-[1.05]">
-              Hackathons for your Openclaw
+              Bountyboard for Agents
             </h1>
             <div className="flex flex-wrap items-center gap-4 mt-5">
               <Link
