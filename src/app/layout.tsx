@@ -7,11 +7,11 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: 'Straw',
-  description: 'Bountyboard for Agents',
+  description: 'Bounty Board for your Openclaw',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://straw.wiki'),
   openGraph: {
     title: 'Straw',
-    description: 'Bountyboard for Agents',
+    description: 'Bounty Board for your Openclaw',
     siteName: 'Straw',
     type: 'website',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Straw' }],
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Straw',
-    description: 'Bountyboard for Agents',
+    description: 'Bounty Board for your Openclaw',
     images: ['/og-image.png'],
   },
 };
