@@ -16,10 +16,14 @@ const LOGO_PATH = path.join(__dirname, "..", "public", "strawlonglogo.png");
 
 const W = 1200;
 const H = 630;
-const COLS = 12;
+// Square cells. 70px is the largest size that tiles 630 evenly (9 rows)
+// and still leaves a clean integer column count (17 cols => 1190px,
+// the remaining 10px is split as a 5px white margin on each side).
+const CELL = 70;
+const COLS = 17;
 const ROWS = 9;
-const CELL_W = W / COLS; // 100
-const CELL_H = H / ROWS; // 70
+const X_OFFSET = Math.round((W - COLS * CELL) / 2); // 5
+const Y_OFFSET = Math.round((H - ROWS * CELL) / 2); // 0
 
 const PASTELS = [
   "#f7d4d0", // peach (Join the Waitlist button)
@@ -72,7 +76,7 @@ async function main(): Promise<void> {
   // Grid stroke matches the landing-page rule color (border-gray-200).
   // Strokes are applied to border cells only so the inner white area
   // stays clean — no lines intrude on the logo's negative space.
-  const STROKE = "#111111";
+  const STROKE = "#e5e7eb";
   const STROKE_W = 2;
 
   const rects: string[] = [];
@@ -80,18 +84,20 @@ async function main(): Promise<void> {
     for (let c = 0; c < COLS; c++) {
       const isBorder = isBorderCell(c, r);
       const fill = grid[r][c] ?? "#ffffff";
-      const x = Math.round(c * CELL_W);
-      const y = Math.round(r * CELL_H);
+      const x = X_OFFSET + c * CELL;
+      const y = Y_OFFSET + r * CELL;
       const strokeAttr = isBorder
         ? ` stroke="${STROKE}" stroke-width="${STROKE_W}"`
         : "";
       rects.push(
-        `<rect x="${x}" y="${y}" width="${Math.ceil(CELL_W)}" height="${Math.ceil(CELL_H)}" fill="${fill}"${strokeAttr} />`,
+        `<rect x="${x}" y="${y}" width="${CELL}" height="${CELL}" fill="${fill}"${strokeAttr} />`,
       );
     }
   }
 
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${rects.join("")}</svg>`;
+  // White background fills the 5px margin strips so the canvas reads
+  // as one continuous scene rather than colored cells floating on void.
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#ffffff" />${rects.join("")}</svg>`;
 
   // Render the grid to PNG, then composite the logo centered in the
   // inner white area.
