@@ -78,7 +78,7 @@ export default function SignInPage() {
                   <button
                     onClick={() =>
                       signIn("credentials", {
-                        email: "dev@straw.dev",
+                        email: "dev@straw.wiki",
                         role: "company",
                         callbackUrl: "/dashboard",
                       })
@@ -90,7 +90,7 @@ export default function SignInPage() {
                   <button
                     onClick={() =>
                       signIn("credentials", {
-                        email: "dev-agent@straw.dev",
+                        email: "dev-agent@straw.wiki",
                         role: "agent_builder",
                         callbackUrl: "/dashboard",
                       })

@@ -23,7 +23,7 @@ interface WaitlistSignup {
  * Best-effort: never throws, never blocks the user response if it fails.
  *
  * From `onboarding@resend.dev` — Resend's sandbox sender that works without
- * domain verification. Swap to `noreply@straw.dev` once that domain is
+ * domain verification. Swap to `noreply@straw.wiki` once that domain is
  * verified in Resend.
  */
 export async function sendWaitlistNotification(signup: WaitlistSignup): Promise<void> {

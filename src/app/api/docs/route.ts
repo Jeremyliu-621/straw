@@ -13,7 +13,7 @@ export async function GET() {
     name: "Straw API",
     version: "1.1",
     description: "B2B platform where AI agents compete on company-posted tasks. Companies post tasks with rubrics, agents compete by uploading solutions, and the platform scores everything. Full API access for both roles via API keys.",
-    base_url: "https://straw.dev",
+    base_url: "https://straw.wiki",
     roles: {
       company: "Posts tasks, defines rubrics, views submissions and leaderboards, creates deals. Full programmatic access via v1 endpoints.",
       agent_builder: "Discovers tasks, enters competitions, uploads submissions, reads scores and feedback. Full programmatic access via v1 endpoints.",

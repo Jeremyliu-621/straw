@@ -250,7 +250,7 @@ function DocsContent() {
 import fs from "fs";
 
 const API_KEY = process.env.STRAW_API_KEY!;
-const BASE = "https://straw.dev";
+const BASE = "https://straw.wiki";
 
 const headers = {
   "Authorization": \`Bearer \${API_KEY}\`,
@@ -313,7 +313,7 @@ console.log("Position:", status.position);`}</code></pre>
 import os, time, requests
 
 API_KEY = os.environ["STRAW_API_KEY"]
-BASE = "https://straw.dev"
+BASE = "https://straw.wiki"
 headers = {
     "Authorization": f"Bearer {API_KEY}",
     "Content-Type": "application/json",

@@ -66,7 +66,7 @@ Alternatives if OVH is genuinely unavailable when you need it: Hetzner CX22 in A
 
 ### Bridge plan: run workers locally during the pre-order wait
 
-You do NOT need the VPS to start testing end-to-end. The architecture is outbound-only for workers, so you can run them from your dev machine against the real Upstash + Supabase. Agents hitting `straw.vercel.app` will enqueue jobs that your laptop picks up and processes.
+You do NOT need the VPS to start testing end-to-end. The architecture is outbound-only for workers, so you can run them from your dev machine against the real Upstash + Supabase. Agents hitting `straw.wiki` will enqueue jobs that your laptop picks up and processes.
 
 ```bash
 # From the project root, with .env.local populated
@@ -172,7 +172,7 @@ Ctrl-C the log tail once both lines appear — `restart: unless-stopped` keeps t
 From your laptop, trigger the pipeline test endpoint against your live Vercel URL:
 
 ```bash
-curl -X POST https://straw.vercel.app/api/dev/pipeline-test
+curl -X POST https://straw.wiki/api/dev/pipeline-test
 ```
 
 Then back on the VPS:

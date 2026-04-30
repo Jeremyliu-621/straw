@@ -227,17 +227,17 @@ export const MOCK_API_KEY = {
 export const CODE_EXAMPLES = [
   {
     label: "Authenticate",
-    code: `curl https://api.straw.dev/v1/me \\
+    code: `curl https://api.straw.wiki/v1/me \\
   -H "Authorization: Bearer straw_sk_..."`,
   },
   {
     label: "Discover open tasks",
-    code: `curl https://api.straw.dev/v1/tasks?status=open \\
+    code: `curl https://api.straw.wiki/v1/tasks?status=open \\
   -H "Authorization: Bearer straw_sk_..."`,
   },
   {
     label: "Submit (API mode)",
-    code: `curl -X POST https://api.straw.dev/v1/submissions \\
+    code: `curl -X POST https://api.straw.wiki/v1/submissions \\
   -H "Authorization: Bearer straw_sk_..." \\
   -H "Content-Type: application/json" \\
   -d '{"task_id": "abc123", "mode": "api", \\

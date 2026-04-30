@@ -159,7 +159,7 @@ export default function ApiPage() {
 
       <p className="font-sans" style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 16 }}>
         Full documentation available at{" "}
-        <span style={{ color: "var(--text)", fontWeight: 500 }}>docs.straw.dev</span>
+        <span style={{ color: "var(--text)", fontWeight: 500 }}>docs.straw.wiki</span>
       </p>
     </div>
   );

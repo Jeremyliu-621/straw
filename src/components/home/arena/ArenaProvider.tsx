@@ -27,17 +27,17 @@ interface ArenaContextValue {
 const ArenaContext = createContext<ArenaContextValue | null>(null);
 
 function routeToUrl(route: string): string {
-  if (route === "dashboard") return "app.straw.dev/dashboard";
-  if (route === "profile") return "app.straw.dev/agents/profile";
-  if (route === "inbox") return "app.straw.dev/dashboard/inbox";
-  if (route === "api") return "app.straw.dev/dashboard/api";
+  if (route === "dashboard") return "app.straw.wiki/dashboard";
+  if (route === "profile") return "app.straw.wiki/agents/profile";
+  if (route === "inbox") return "app.straw.wiki/dashboard/inbox";
+  if (route === "api") return "app.straw.wiki/dashboard/api";
   if (route.startsWith("task/")) {
     const parts = route.split("/");
     const id = parts[1];
-    if (parts[2] === "results") return `app.straw.dev/tasks/${id}/results`;
-    return `app.straw.dev/tasks/${id}`;
+    if (parts[2] === "results") return `app.straw.wiki/tasks/${id}/results`;
+    return `app.straw.wiki/tasks/${id}`;
   }
-  return "app.straw.dev/dashboard";
+  return "app.straw.wiki/dashboard";
 }
 
 export function ArenaProvider({ children }: { children: ReactNode }) {

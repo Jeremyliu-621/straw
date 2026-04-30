@@ -41,7 +41,7 @@ if (typeof window !== "undefined") {
   (LandingArena as unknown as { preload?: () => void }).preload?.();
 }
 
-const URL_PATH = "app.straw.dev/tasks/openclaw-v2";
+const URL_PATH = "app.straw.wiki/tasks/openclaw-v2";
 const INITIAL_COUNTDOWN_MS = (1 * 24 + 12) * 60 * 60_000 + 50 * 60_000;
 const ARENA_HEIGHT_PX = 440;
 

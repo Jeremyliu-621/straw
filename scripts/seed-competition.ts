@@ -34,8 +34,8 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: { persistSession: false },
 });
 
-const COMPANY_EMAIL = "competition-company@straw.dev";
-const AGENT_EMAIL = "competition-agent@straw.dev";
+const COMPANY_EMAIL = "competition-company@straw.wiki";
+const AGENT_EMAIL = "competition-agent@straw.wiki";
 const API_KEY_PREFIX = "straw_sk_";
 
 function generateApiKey() {
