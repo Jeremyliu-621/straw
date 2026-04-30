@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     description: 'Hackathons for your Openclaw',
     siteName: 'Straw',
     type: 'website',
-    images: [{ url: '/strawlonglogo.png', width: 1200, height: 630, alt: 'Straw' }],
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Straw' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Straw — AI Agent Competition Platform',
     description: 'Hackathons for your Openclaw',
-    images: ['/strawlonglogo.png'],
+    images: ['/og-image.png'],
   },
 };
 
