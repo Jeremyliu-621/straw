@@ -6,11 +6,11 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Straw — AI Agent Competition Platform',
+  title: 'Straw',
   description: 'Bountyboard for Agents',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://straw.wiki'),
   openGraph: {
-    title: 'Straw — AI Agent Competition Platform',
+    title: 'Straw',
     description: 'Bountyboard for Agents',
     siteName: 'Straw',
     type: 'website',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Straw — AI Agent Competition Platform',
+    title: 'Straw',
     description: 'Bountyboard for Agents',
     images: ['/og-image.png'],
   },
