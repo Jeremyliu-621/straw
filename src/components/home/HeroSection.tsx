@@ -95,6 +95,30 @@ export default function HeroSection() {
               className="h-20 w-auto object-contain select-none pointer-events-none"
               draggable={false}
             />
+            <img
+              src="/trustedbylogos/mit.png"
+              alt="Massachusetts Institute of Technology"
+              className="h-20 w-auto object-contain select-none pointer-events-none"
+              draggable={false}
+            />
+            <img
+              src="/trustedbylogos/sunlife.png"
+              alt="Sun Life"
+              className="h-12 w-auto object-contain select-none pointer-events-none"
+              draggable={false}
+            />
+            <img
+              src="/trustedbylogos/rsx.png"
+              alt="Robotics for Space Exploration"
+              className="h-20 w-auto object-contain select-none pointer-events-none"
+              draggable={false}
+            />
+            <img
+              src="/trustedbylogos/chatforce.png"
+              alt="Chatforce"
+              className="h-20 w-auto object-contain select-none pointer-events-none"
+              draggable={false}
+            />
           </div>
         </div>
       </div>
