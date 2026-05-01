@@ -19541,3 +19541,708 @@ Straw is the institution the market is missing.
 - MIT AI Agent Index 2025: aiagentindex.mit.edu/
 - S&P Global: 42% of businesses scrapped AI initiatives in 2025: market research cited in DigitalApplied sources
 
+
+---
+
+## Tick 123 (2026-05-01): AI agent categories — healthcare, finance, HR/recruiting — path from Quadrant B/C to Quadrant A
+
+*The core question: which verticals generate the highest-value competitions, and what infrastructure does Straw need to serve them?*
+
+### Straw's task quadrant framework (from Tick 17)
+
+- **Quadrant A**: High stakes + objectively measurable outcome = ideal Straw competitions (e.g., "build a tax reconciliation tool that passes this test suite")
+- **Quadrant B**: High stakes + hard-to-measure outcome = requires rubric investment before competing (e.g., "summarize this patient chart for clinician handoff")
+- **Quadrant C**: Measurable but low stakes = commoditized, not worth enterprise competition spend
+- **Quadrant D**: Low stakes + subjective = irrelevant for Straw
+
+The thesis: every vertical starts in Quadrant B (high stakes, measurement unclear), and Straw's rubric design service (Tick 99) moves them to Quadrant A by making evaluation explicit.
+
+---
+
+### Vertical 1: Healthcare AI agents
+
+**What healthcare AI agents are being deployed (2025–2026)**:
+- Clinical documentation (ambient dictation, SOAP note generation): Suki, Nuance DAX, Abridge
+- Prior authorization automation: Waystar Aquadex, Cohere Health, Infinitus
+- Diagnostic imaging AI: Rad AI, Aidoc, Nines
+- Patient triage and ED flow optimization: Viz.ai, Cerebras + hospital systems
+- Revenue cycle management: Waystar, Omega Healthcare, Ensemble Health
+- Population health outreach: Luma Health, Phreesia, Commure
+
+**Why healthcare is Quadrant B today**:
+- Outcome measure = clinical quality, but clinical quality is contested
+- No standardized rubric for "good prior auth denial prediction"
+- HIPAA complicates sharing any real patient data in a competition context
+- FDA clearance status matters (510(k) AI software as medical device)
+- Liability is shared across vendor + health system + clinician — unclear who owns competition failure
+
+**Path to Quadrant A for healthcare Straw competitions**:
+
+| Step | Action | Who does it |
+|------|---------|-------------|
+| 1 | Use synthetic patient data (not real PHI) | Straw + health system partner |
+| 2 | Define rubric in terms of workflow impact, not clinical outcome | Rubric design workshop |
+| 3 | Add clinical expert panel for Tier 3 review | Straw curates judges |
+| 4 | Require agents to submit audit trails (explainability) | Straw platform feature |
+| 5 | Sign BAA with health system client | Straw legal requirement |
+
+**Realistic Straw competition format for healthcare**:
+- Task: "Given these 500 synthetic prior auth requests (with diagnosis codes, clinical notes, payer criteria), classify each as approve/deny/more-info with rationale. Accuracy vs. ground truth, plus clinician usability rating."
+- Data: synthetic data generated from MIMIC-IV-derived templates + HL7 FHIR format
+- Rubric: 60% accuracy vs. ground truth, 25% clinician review score, 15% latency/throughput
+- Prize pool: $25K–$50K (higher than software competitions due to complexity and stakes)
+- Enterprise value: healthcare AI procurement is a $2.3B market; enterprises spend $250K–$5M per procurement
+
+**Infrastructure Straw needs for healthcare**:
+- BAA capability: HIPAA-compliant data handling framework
+- Synthetic data generation: partner with Syntegra, Gretel.ai, or similar for de-identified synthetic datasets
+- Clinical judge network: 20–30 clinicians (hospitalists, specialists) available for Tier 3 review
+- FDA status disclosure: require all competing agents to disclose FDA clearance status in submission
+- Timeline: 18-month buildout from today — this is **Phase 3/4 on the product roadmap (Tick 27)**
+
+**Healthcare segment attractiveness for Straw**:
+- TAM: $2.3B healthcare AI procurement (Grand View Research 2025)
+- Competition price point: $75K–$150K (vs. $20K standard) due to data complexity and clinical stakes
+- Sales cycle: 12–18 months (longest segment)
+- Biggest buyer: health systems with 500+ beds, digital transformation budget
+- Risk: HIPAA compliance must be air-tight before first competition — one breach ends Straw's healthcare business
+
+---
+
+### Vertical 2: Financial AI agents
+
+**What financial AI agents are being deployed**:
+- Anti-money laundering (AML/KYC) screening: Pega, NICE Actimize, ComplyAdvantage
+- Credit underwriting: Zest AI, Upstart, Nova Credit
+- Trade surveillance: Nasdaq SMARTS, Behavox, NICE Actimize
+- Financial document analysis: Eigen Technologies, Luminance, Kira Systems
+- Wealth management personalization: FutureAdvisor, Mercer, Envestnet Tamarac
+- Risk modeling: MoSys, RiskFuel, Cape Analytics (property)
+- Fraud detection: Sardine, Featurespace, DataVisor
+
+**Why finance is partially Quadrant A already**:
+- Fraud detection has clear ground truth: "these 10,000 transactions — which ones are fraudulent?" (label is known from chargebacks)
+- AML has structured outcome: "these 1,000 entities — which ones match OFAC/SDN?" (list-based ground truth)
+- Credit underwriting: harder — ground truth is 12–24 months of repayment history
+
+**Finance-specific rubric construction**:
+- Fraud/AML: precision/recall on labeled datasets, plus false positive rate (critical — too many false positives = customer friction)
+- Credit: 12-month vintage tracking required for ground truth — not suited to Straw's short-form competition format
+- Document analysis: agreement with legal expert judgment, document classification accuracy
+- Trade surveillance: detection rate on synthetic trading scenarios (wash trading, spoofing, layering)
+
+**Realistic Straw competition format for financial agents**:
+- Best-fit task: "Given 50,000 labeled transactions (10% fraudulent, 90% legitimate), build a classifier. Maximize F1 score. Latency < 100ms per transaction."
+- Format: Kaggle-style but enterprise-private (company's own transaction data, not public)
+- Rubric: 70% F1 score on held-out test set, 20% false positive rate, 10% explainability (SHAP/LIME output quality)
+- Prize pool: $20K–$40K
+- Enterprise value: banks spend $5M–$50M per fraud/AML system; competition is 0.5% of contract value
+
+**Regulatory requirements for financial competitions**:
+- SR 11-7 (Fed): model risk management requires validation — Straw competition can serve as MRM validation evidence
+- OCC guidelines: AI models in credit decisions require explainability documentation
+- CFPB ECOA: fair lending analysis on credit underwriting agents
+- EU AI Act (financial services AI): high-risk AI systems require conformity assessment
+- **Key insight**: SR 11-7 compliance is a **forcing function** that makes Straw competitions more valuable in banking, not a blocker. Banks already need third-party validation — Straw provides it with a competitive twist.
+
+**Financial segment attractiveness**:
+- TAM: $8.4B banking/financial services AI procurement (IDC 2025)
+- Competition price point: $40K–$80K (premium over standard)
+- Sales cycle: 6–9 months (faster than healthcare due to existing procurement machinery)
+- Biggest buyer: top-20 US banks, insurance carriers, payments networks
+- Who to target first: community banks ($500M–$5B assets) building AI risk controls — not the tier-1 banks, which have internal AI labs and will disintermediate
+
+---
+
+### Vertical 3: HR/recruiting AI agents
+
+**What HR/recruiting AI agents are being deployed**:
+- Resume screening: Workday AI, Eightfold.ai, Paradox, Phenom
+- Interview scheduling: Calendly AI, ModernHire, myInterview
+- Bias detection in job descriptions and screening: Textio, Pymetrics, Applied
+- Skills inference and workforce planning: Humu, Lattice, Beamery
+- Compensation benchmarking: Radford (Aon), Mercer, Pave AI
+- Onboarding automation: ServiceNow HR Service Delivery, Leapsome
+
+**Why HR is Quadrant B today — and the hardest vertical to bring to A**:
+- "Good hire" has a 12–24 month time horizon for validation (performance reviews, retention)
+- Bias metrics are contested — different definitions of fairness produce different winners
+- EEOC compliance creates legal risk if competition rubric implies Straw is evaluating people, not algorithms
+- Privacy risk: job applicant data is sensitive (different protections than patient/financial data, but still regulated in some states)
+
+**The bias problem is specifically acute for HR agents**:
+- Resume screening AI has faced major legal challenges: HireVue FTC investigation (2021), Amazon's abandoned resume screener (2018 retrospective)
+- NYCC Local Law 144 (effective July 2023): automated employment decision tools must undergo annual bias audits
+- Illinois AI Video Interview Act (effective 2020): facial expression AI in interviews requires disclosure + consent
+- Colorado SB 24-205 extends to algorithmic employment decisions starting 2026
+- **Straw insight**: A Straw competition for resume screening AI must include a mandatory bias audit section in the rubric, making Straw competitions the de facto bias audit mechanism
+
+**Realistic Straw competition format for HR agents**:
+- Best-fit task: "Given 2,000 anonymized resumes (structured as JSON with education, experience, skills fields — no names/demographics) and a job description, rank candidates. Score: relevance to JD (70%), demographic parity across synthetic subgroups (20%), explainability of ranking (10%)."
+- Prize pool: $15K–$25K
+- Enterprise value: bad hire cost = 50–200% of annual salary; HR AI purchase for mid-market = $200K–$1M
+
+**What makes HR attractive despite complexity**:
+- Every company is a buyer — HR AI cuts across all industries
+- Regulatory pressure (NYC Local Law 144, Colorado SB 24-205) creates immediate demand for auditable evaluation
+- Timing: these laws are creating procurement paralysis — HR teams don't know how to evaluate compliant AI tools
+- Straw can position competitions as delivering Local Law 144 bias audit evidence alongside procurement
+
+**HR segment attractiveness**:
+- TAM: $3.1B HR AI market (MarketsandMarkets 2025)
+- Competition price point: $20K–$35K (standard, not premium — HR budgets are smaller than IT/security)
+- Sales cycle: 4–6 months
+- Biggest buyer: 500–5,000 employee companies with active recruiting (not enterprise — too much political complexity)
+- Key blocker: legal review of rubric is mandatory before first competition — EEOC risk must be scoped
+
+---
+
+### Vertical 4: Legal AI agents
+
+**Not listed in the original thread but critical to include**:
+- Contract review and extraction: Ironclad AI, Kira Systems (now part of Litera), Harvey.ai
+- Legal research: Casetext (acquired by Thomson Reuters), Lexis+ AI, Westlaw AI
+- Litigation analytics: Lex Machina, Docket Alarm
+- Regulatory compliance monitoring: Orbital AI, Compliance.ai, Relativity
+
+**Why legal is ideal for Straw**:
+- Contract review has near-perfect ground truth: "extract these 47 clauses from this 200-page contract, compare to expert extraction"
+- Legal research has partial ground truth: "given this case, find the 10 most relevant precedents" (expert-ranked gold standard)
+- Stakes are high ($500K–$5M deals turn on correct contract extraction)
+- Harvey.ai raised $300M at $3B in 2025 — legal AI is a proven category
+
+**Legal competition format**:
+- Task: "Review these 100 commercial contracts. Extract: governing law clause, limitation of liability cap, IP assignment terms, auto-renewal provisions. Score against expert gold standard."
+- Prize: $20K–$40K
+- Enterprise value: large law firm or in-house legal team spends $500K–$2M on contract review tools
+
+---
+
+### Sequencing recommendation for Straw
+
+| Phase | Vertical | Why now/later |
+|-------|----------|---------------|
+| **Phase 1 (MVP, months 1–12)** | Software/code/data science | Quadrant A already, agent supply is here, infrastructure is minimal |
+| **Phase 2 (months 12–24)** | Legal AI | Near-Quadrant A, Harvey.ai proves demand, lower compliance burden than health/finance |
+| **Phase 2 (months 12–24)** | Financial fraud/AML | Ground truth available, SR 11-7 is forcing function, financial services budgets are large |
+| **Phase 3 (months 24–36)** | HR/recruiting | Local law compliance tailwind, but legal review required first |
+| **Phase 3+ (Series A)** | Healthcare | Highest value but requires BAA, synthetic data infrastructure, FDA expertise |
+
+**The key insight across all verticals**: Straw's rubric design service (Tick 99) is not a nice-to-have — it is the mechanism that converts verticals from Quadrant B to Quadrant A. Without it, Straw is a software competition platform that can't expand. With it, every vertical with measurable outcomes eventually becomes a Straw market.
+
+---
+
+### Sources
+
+- Healthcare AI market: Grand View Research, "Healthcare AI Market Size Report 2025"; FDA Digital Health Center guidance on AI/ML-based SaMD
+- Financial AI regulatory context: Federal Reserve SR 11-7 (Model Risk Management 2011, updated guidance 2023); OCC Bulletin 2021-19 (Model Risk Governance)
+- HR AI regulatory context: NYC Local Law 144 (effective July 2023); Illinois AI Video Interview Act 2019; Colorado SB 24-205 (effective 2026)
+- Legal AI: Harvey.ai $300M raise at $3B valuation (Business Insider, 2025); Thomson Reuters Casetext acquisition $650M (2023)
+- Verticals TAM: IDC AI Spending Guide 2025; MarketsandMarkets "HR Technology Market" 2025; Grand View "Healthcare AI" 2025
+
+
+---
+
+## Tick 124 (2026-05-01): "Straw for model providers" — revisited with LMArena $1.7B comp data
+
+*LMArena raised $150M at a $1.7B valuation in January 2026. That changes how we should pitch Straw to model providers, and it changes the competitive map. This tick rethinks both.*
+
+### What LMArena's raise actually signals
+
+LMArena (formerly LMSYS Chatbot Arena) runs pairwise comparison tests of foundation models using human preference data. Their valuation is $1.7B on a platform that:
+- Does not charge per evaluation (the comparisons are free to users)
+- Earns revenue primarily from enterprise API access, co-branding, and data licensing
+- Compares foundation models to foundation models (GPT-4o vs. Claude 3.5 vs. Gemini 1.5)
+- Has no ability to evaluate agent-to-agent on domain-specific enterprise tasks
+- Takes no position on rubric design, winner definition, or business value
+
+LMArena's valuation is a market-cap on the thesis that **evaluation data is worth billions**. A $1.7B valuation on a platform that doesn't even charge for evaluations means the market believes evaluation infrastructure for AI is a category-defining business.
+
+**What does this mean for Straw?**
+
+| Dimension | LMArena | Straw |
+|-----------|---------|-------|
+| What gets compared | Foundation model outputs (chatbot responses) | Enterprise AI agents on domain-specific tasks |
+| Who picks the evaluation task | Arbitrary users typing prompts | Enterprise client with a real business problem and defined rubric |
+| What defines "winning" | Human preference votes | Objective rubric scores + client acceptance |
+| Revenue model | API access + data licensing (unclear ARR) | SaaS: competition fee per enterprise client |
+| Deployability of winner | N/A — pure comparison | Yes: winning agent can be immediately hired/licensed |
+| Agent provider type | Foundation model labs (OpenAI, Anthropic, Google) | Independent agent vendors, specialized teams |
+
+Straw is the **task-specific, outcome-grounded, deployable** layer above where LMArena operates. The comparison isn't one vs. the other — they are two different markets.
+
+**The framing for VCs**: "LMArena is the Yelp of AI models — it tells you which chatbot feels better. Straw is the specialized procurement layer — it tells you which agent can actually do your tax reconciliation. They're both worth billions because evaluation data compounds. LMArena proved the category. Straw captures the enterprise-grade, action-oriented tier."
+
+---
+
+### How model providers should view Straw (vs. how they probably view LMArena)
+
+Model providers (Anthropic, OpenAI, Google DeepMind, Mistral, Cohere) have a complicated relationship with evaluation platforms:
+
+**The conflict at LMArena**: These labs are simultaneously LMArena's customers (they want their models ranked highly) and the thing being evaluated. There's structural pressure for labs to optimize for Arena Elo rather than for genuine capability improvement. This is the "teaching to the test" problem. LMArena's methodology paper (Chiang et al., 2024) acknowledged that preference data can be gamed.
+
+**Straw's different relationship with model providers**:
+
+| Use case | Model provider motivation | Straw's position |
+|----------|--------------------------|-----------------|
+| Foundation model benchmarking | Optimize for Elo leaderboard | Straw doesn't compare foundation models — no conflict |
+| Agent evaluation | Winning agents use their model | Straw helps demonstrate that Claude-based agents outperform GPT-based agents on specific tasks |
+| Enterprise procurement | Enterprises buy more API calls if they trust the agent | Straw de-risks the adoption decision, accelerating API consumption |
+| Research | Tasks from Straw competitions reveal model capability gaps | Straw data is a research asset |
+
+**The pitch to model providers (2026 version)**:
+
+"Anthropic — your customers aren't yet confident that Claude-based agents are worth deploying. They've read the benchmark manipulation papers. They don't trust Chatbot Arena as a procurement signal. Straw gives your ecosystem agents a venue to prove themselves on real enterprise tasks with auditable methodology. When a Claude-based agent wins a Straw competition at Goldman Sachs, that's a procurement signal that no benchmark can replicate — and it drives API consumption at Goldman by 3–10× post-win. We're not competing with LMArena. We're the downstream deployment pipeline."
+
+---
+
+### Why model providers won't build Straw themselves (the LMArena comp makes this clearer)
+
+Before LMArena's $1.7B raise, the argument was: "model providers have structural conflicts of interest." That argument was somewhat theoretical. The LMArena raise makes the market stakes concrete — $1.7B for a neutral evaluator means there's a market for neutral evaluation that is too large for a model provider to own without credibility destruction.
+
+**Thought experiment**: If Anthropic announced "we're launching ArenaForAgents to rank AI agents including competitor agents," what happens?
+1. OpenAI agents would refuse to participate or would demand reciprocal evaluation on OpenAI-hosted infrastructure
+2. Enterprise buyers would distrust the results — "of course Anthropic-based agents win on an Anthropic platform"
+3. The evaluation infrastructure would be perceived as marketing, not procurement
+4. Enterprise trust in the platform would approach zero
+
+**What LMArena's $1.7B teaches us**: The market specifically valued the **independent** nature of LMArena. LMSYS is an academic institution (UC Berkeley, etc.). Its neutrality was the product. Straw's neutrality — no training, no inference, no agent sales — is the same structural moat, but applied to the more valuable enterprise procurement use case.
+
+---
+
+### Revised positioning: Straw + LMArena as complementary infrastructure
+
+Before LMArena's raise, Straw might have competed for the same investor attention. After the raise, the positioning shifts:
+
+**For investors**: "LMArena proved the category at $1.7B by evaluating foundation models. That's the consumer tier of AI evaluation. Straw is the enterprise tier — where the outcome is deployable agent selection rather than chatbot preference. We are the next layer in the evaluation stack, occupying the quadrant LMArena can't serve."
+
+**For enterprises**: "LMArena tells you which base model scores better in conversation. Straw tells you which agent actually solves your specific problem. You need both — LMArena for model selection, Straw for vendor selection."
+
+**For model providers**: "LMArena gives your foundation model an Elo score. Straw gives your API ecosystem a proof-of-deployment score on real enterprise tasks. One drives R&D messaging; the other drives sales."
+
+---
+
+### Implications for Straw's model provider partnership strategy
+
+Given the LMArena comp, Straw should pursue a different relationship with model providers than previously analyzed:
+
+1. **Preferential API pricing**: Approach Anthropic, Cohere, Mistral for preferential API pricing in exchange for Straw's evaluation pipeline driving their enterprise agent ecosystem. Straw runs Claude/Mistral as the Tier 2 LLM judge on every competition — that's recurring API consumption at enterprise scale.
+
+2. **Co-marketing on wins**: When a Claude-based agent wins a Straw competition at a Fortune 500, both Straw and Anthropic benefit from a co-announcement. Structure this formally: "Straw will co-promote wins from [model provider]'s ecosystem agents if [model provider] includes Straw in their enterprise developer documentation."
+
+3. **Research data sharing**: Straw's calibration corpus (task definitions, rubrics, submissions, scores) is a research asset. Offer model providers structured access to de-identified aggregate data in exchange for compute credits or enterprise introductions.
+
+4. **The ecosystem build-out**: Apple doesn't compete with App Store developers. AWS doesn't compete with SaaS companies on EC2. The model providers need a distribution mechanism for their agent ecosystems — Straw is that distribution mechanism. Frame it that way.
+
+---
+
+### What the LMArena raise means for Straw's Series A valuation
+
+LMArena's comparable: $1.7B for foundation model comparison, unclear ARR, academic origin.
+
+Straw's position: purpose-built for enterprise procurement, SaaS revenue model, auditable methodology, deployable output.
+
+**Valuation argument**: Straw should trade at a significant premium to LMArena's revenue multiple because:
+- Straw has actual SaaS ARR (per-competition fees), not uncertain data licensing
+- Straw's output is directly deployable — drives immediate ROI for buyer
+- Straw is defensible through the calibration corpus moat (LMArena's data is mostly public)
+- Straw serves enterprise buyers (higher ARPU, longer contracts, lower churn) vs. LMArena's mix of academic/lab/enterprise
+
+At Straw's Series A target of $3M ARR with 20× AI-native multiple = $60M post-money. If the market comes to view Straw as the "enterprise tier" of the evaluation stack LMArena anchored, the narrative supports a $75M–$100M pre-money by the time Straw is at $5M ARR.
+
+**The LMArena raise should be slide 3 of the Series A deck**: "The market has already demonstrated that AI evaluation infrastructure is worth $1.7B. We are the enterprise-specific, outcome-grounded, deployable layer that LMArena cannot serve."
+
+---
+
+### Sources
+
+- LMArena $1.7B raise: The Information, January 2026; TechCrunch coverage January 2026
+- LMArena methodology: Chiang et al., "Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference," arXiv:2403.04132 (2024)
+- Model provider conflict of interest: Prior session findings (Ticks 98, 106); structural conflict analysis consistent with AWS/Marketplace model
+- Straw Series A valuation targets: Tick 107, Tick 120
+
+
+---
+
+## Tick 121 (2026-05-01): Marketplace lessons from Upwork, Fiverr, Kaggle, HackerOne, Topcoder
+
+*Sourced from background research agent. Deep dive on what works and what fails in two-sided evaluation/quality/hiring marketplaces.*
+
+### The disintermediation problem — how Upwork solved it
+
+Upwork's take rate in Q4 2024 was 18.1%, full-year 2024 revenue $769M, GMV ~$4B. Client spend retention (net) was ~102% — meaning returning clients spent *more* year over year, despite the existence of disintermediation. How?
+
+**Four simultaneous mechanisms, not one**:
+
+1. **Contractual lock with sliding exit cost**: ToS Section 7.3 requires all payments through Upwork for the first two years of any client-freelancer relationship. Want to go direct legally? Pay a conversion fee: 13.5% of the freelancer's estimated annual earnings (rate × 2,080 hours). A $75/hour developer = 13.5% × $156,000 = **$21,060 conversion fee**. After two years, the fee drops to $1. Smart design: it captures the relationship value at the moment the platform delivered it, then grants freedom cheaply — reducing long-term resentment while protecting near-term economics.
+
+2. **Fee structure designed around relationship depth**: The old 20/10/5% tiered freelancer fee (20% on first $500, 10% on $500–$10K, 5% above) rewarded staying. The current variable 0–15% structure by category maintains similar logic. The longer you transact, the cheaper it gets — inversion of the usual marketplace dynamic.
+
+3. **Non-transferable reputation capital**: JSS (Job Success Score), portfolio, client reviews exist only on Upwork. A freelancer who leaves loses their professional identity on the platform. This behavioral lock-in is more durable than contractual lock-in.
+
+4. **Enterprise infrastructure embedding**: Upwork Enterprise ($107M in 2024, +4% YoY) embeds procurement workflows, vendor onboarding, compliance automation, and worker classification into the buyer's systems. Switching cost becomes organizational.
+
+**Upwork's 2024 numbers for context**:
+- 832,000 active clients
+- $4,815 GSV per active client (up 6% YoY)
+- 18.1% marketplace take rate
+- $215.6M GAAP net income on $769M revenue — genuinely profitable marketplace
+
+**The lesson for Straw**: 102% net spend retention is the correct metric, not gross churn. If Straw's enterprise clients run more competitions year-over-year (expansion > defection), the math works even if some clients run one-off competitions and then try to go direct. Design the platform so that the ongoing value — historical performance data, calibration corpus, new agent entrants — compels continued use.
+
+---
+
+### HackerOne — solving disintermediation by making the platform the irreplaceable value
+
+HackerOne does NOT prohibit enterprises from hiring individual researchers they meet on-platform. Their ToS explicitly state: "Any contract or other interaction between a Customer and a Community Member... will be between the Customer and the Community Member only." Opposite of Upwork.
+
+**Why this works**: The value is the crowd, not the individual. No single ethical hacker replicates 1,000 concurrent researchers on a time-boxed program. The moat is the network, not the match. The individual researcher's incentive to stay: HackerOne's reputation system, signal history, and program access are non-transferable.
+
+**HackerOne's business model**:
+- Annual platform fee: $20K–$200K+/year depending on program type
+- Percentage of bounty payouts: ~20-30% marketplace take
+- Mid-size enterprise all-in Year 1: $40K–$120K
+- Large enterprise: $400K–$1M+/year
+
+**HackerOne's scale**:
+- $81M in bounties paid in the 12 months ending June 2025 (+13% YoY)
+- 85,000 valid bug reports in 2025
+- 28% market share in bug bounty platforms by revenue
+- ~25% of Fortune 100 are customers
+- Total funding: $159M; estimated valuation ~$829M (private)
+- ROI claim: $15 in breach-cost mitigation per $1 in bounties
+
+**The HackerOne lesson for Straw**: "Build the crowd as the product, not the individual match." Straw's equivalent: the calibration corpus — the accumulated performance data across all competitions and all agents — is the product, not the individual winning agent. An enterprise that tries to bypass Straw after finding a winning agent loses access to the historical benchmark, the ongoing competition pool, and the ability to track that agent's performance improvement over time. Make the platform the irreplaceable element.
+
+---
+
+### Kaggle — a competition platform that couldn't monetize
+
+Google acquired Kaggle in March 2017 for approximately $12M–$30M. The low price (Kaggle had millions of ML practitioners) reflects a fundamental failure: the platform built extraordinary community but near-zero SaaS economics.
+
+**Why Kaggle failed to monetize**:
+
+1. **The winning model isn't deployable.** Competition winners optimize for leaderboard metrics using ensemble methods that are computationally impractical in production. The evaluation metric didn't match the business metric. This created a value delivery gap that eroded willingness to pay. Companies paid for a competition, got a winning model, couldn't deploy it.
+
+2. **No recurring revenue.** Competitions are episodic. Each client is a new sales cycle. Kaggle couldn't build predictable ARR.
+
+3. **Pivot attempts failed.** 2013 vertical consulting pivot (Oil & Gas) → Shell contract → 2014 oil price crash → back to competitions with no enterprise revenue model.
+
+4. **Top performers captured no value through Kaggle.** Kaggle Masters and Grandmasters used their ranking as a credential for jobs and consulting, but Kaggle took none of that downstream value. The platform created signal but couldn't tax it.
+
+5. **Kaggle CEO Anthony Goldbloom on the early years**: "The first nine months were really slow — it was a battle to get companies to host their datasets." The market wasn't ready.
+
+**The most important Kaggle lesson for Straw**:
+
+> "Competition wins must translate to deployable value. If the thing you're evaluating can't be immediately operationalized by the buyer, the evaluation marketplace is a marketing expense, not a procurement tool."
+
+This is the exact problem Straw solves that Kaggle didn't. Straw evaluates AI agents (not trained models) on enterprise-defined rubrics (not leaderboard metrics) — and the winning agent can be immediately hired or licensed by the enterprise. The evaluation output is a procurement decision, not a trophy.
+
+Kaggle's residual value (why Google paid anything): brand credibility, talent recruitment pipeline, GCP promotion. These are marketing values, not product values. Straw must have product value, not marketing value.
+
+---
+
+### Fiverr — cold start via price anchor, anti-disintermediation via reputation lock
+
+**Cold start solution — the $5 anchor**:
+
+Fiverr launched February 2010 at $5 fixed price for all gigs. This wasn't just pricing — it was a mechanism:
+- Eliminated buyer hesitation (cost of bad purchase = irrelevant)
+- Seeded supply quickly (sellers saw demand immediately)
+- Made quality irrelevant initially (bar was low enough for any early seller)
+
+Result: 100,000 Gigs by January 2011, 1.3M by early 2012. The 2011 pivot to "Gig Extras" (premium add-ons at higher price points) moved Fiverr from novelty to real marketplace while preserving the $5 entry hook.
+
+**Fiverr's 2024–2025 numbers**:
+- Take rate: 27.6–27.7% — highest among all platforms covered (reflects commodity/impulse positioning)
+- Full year 2025 results publicly disclosed
+
+**Trust signals (supply-side quality gradient)**:
+- New → Level One → Level Two → Top Rated → Pro Verified
+- Pro Verified requires manual vetting; only longtime Top Rated sellers are invited; revoked if ratings fall below 4.7 stars
+- Pro sellers earn ~5× the rate of regular sellers
+- Visible: response rate, order completion rate, on-time delivery
+
+**Anti-disintermediation**:
+- Messaging system strips identifying details
+- Trust & Safety flags off-platform contact patterns
+- Community reporting for off-platform solicitation
+- Reputation dependency: 5,000 reviews and Top Rated status = professional identity on the platform
+
+**The Fiverr lesson for Straw**: The cold-start mechanism for the demand side doesn't have to be a price anchor — it can be a "certainty anchor." Straw's equivalent: "Your first competition is de-risked. We facilitate the rubric design, recruit the initial agent pool from our community, and guarantee minimum submission count." The barrier to first competition is the psychological one (uncertainty about whether it'll work), not the price. Remove the uncertainty, and demand-side cold start solves itself.
+
+---
+
+### Topcoder — enterprise crowdsourcing with IP control
+
+**Pricing model**:
+- Fixed monthly platform fee (access to crowd + copilot resources + community management)
+- Per-challenge: prize money + 20% administration fee (capped at $250/challenge)
+- Large enterprise contracts: $200K+/annually
+- Additional submissions: 50% of winning prize each
+
+**IP ownership resolution**:
+- Winning submission IP transfers to client upon payment of prize
+- Non-winning submissions: remain with submitter or are abandoned
+- Hybrid Crowd model (2017): private, certified sub-community of pre-vetted, NDA'd developers for confidential enterprise work
+
+**IBM ran 35+ projects through Topcoder. Microsoft used it for QA testing.** The model works for well-specified, self-contained problems. Breaks down on ambiguous problems or those requiring production system access.
+
+**The Topcoder lesson for Straw on IP**: Straw needs an explicit IP policy before the first competition. The recommended structure (from Topcoder's experience):
+- Winning agent's implementation: Client gets a non-exclusive license to deploy (not ownership)
+- Rubric and task definition: Straw owns or client owns (configurable)
+- Submitted evaluation artifacts (code, reports): Agent retains ownership, grants client view rights
+- Agent's underlying model/system: Agent retains full ownership
+
+This is cleaner than Topcoder's "IP transfers on prize payment" — which created complexity when winning code was built on third-party libraries. Straw should separate "right to deploy" (client gets this) from "ownership of the agent" (agent retains this).
+
+---
+
+### The five critical platform design decisions — synthesis across all five platforms
+
+**Decision 1: Make the platform the source of irreplaceable value, not the individual match**
+
+HackerOne gets this right. Kaggle and Topcoder get it wrong long-term. The test: can the platform be bypassed once the match is made? If yes, it's a directory. If the ongoing value is the historical performance database + comparative benchmarking + new entrant pool + compliance documentation, the platform is infrastructure.
+
+**For Straw**: The calibration corpus is the irreplaceable element. Every competition adds data points to the benchmark. An enterprise that goes direct after finding a winning agent loses the ability to compare that agent to new entrants over time, track improvement, and maintain the audit trail. Design the post-competition relationship — ongoing agent monitoring, new competition alerts, re-benchmarking — as a subscription that can't be replicated off-platform.
+
+**Decision 2: Evaluation metrics must map to deployed value**
+
+Kaggle's fatal flaw. Leaderboard optimization ≠ production performance. Straw's design is correct: enterprises define the rubric on their real problem. But the risk exists: enterprises may define bad rubrics (measuring what's easy to measure, not what predicts production value). This is why rubric design as a service (Tick 99) is not optional — it's the mechanism that prevents Straw from becoming Kaggle.
+
+**Decision 3: Cold start bias — pick one side to seed first**
+
+Supply-side bias (agents) is correct for B2B evaluation marketplaces because:
+- Supply is slower to recruit and vet than demand
+- Enterprises won't show up without proven supply
+- Supply-side reputation takes time to build
+- You can create synthetic demand (Straw-funded Straw Open competitions) before real enterprise demand exists
+
+Fiverr biased demand-first with $5. That's right for consumer marketplaces where supply is abundant (any person can be a freelancer). For B2B agent evaluation, supply is the scarce resource that needs to be recruited before demand. HackerOne launched their first program with a marquee security buyer and then grew the hacker community around it — demand-first bootstrapped supply. For Straw, the first 2–3 competitions can use Straw-funded prizes to prove the supply side before charging enterprises.
+
+**Decision 4: Economics must reward ongoing platform use over direct relationships**
+
+Upwork's sliding fee + conversion fee is the model. The platform must create an ongoing cost-of-exit that exceeds the friction of using it. For Straw:
+- Non-transferable agent track records (compete once, scores only visible in Straw ecosystem)
+- Subscription to ongoing agent benchmarking (enterprise pays monthly for continuous performance monitoring)
+- Historical performance database that only grows with platform tenure
+- Ongoing improvement tracking: winning agent improves over 6 months; only Straw has the baseline measurement to prove it
+
+**Decision 5: Trust infrastructure proportional to stake size**
+
+Fiverr's star ratings are right for $5. Upwork's escrow + dispute resolution is right for $50K contracts. HackerOne's triage teams + legal safe harbor are right for high-stakes security work.
+
+For Straw (average competition $20K–$75K):
+- SOC 2 Type II certification (non-negotiable for enterprise procurement)
+- Auditable evaluation methodology (enterprise can inspect how winner was determined)
+- IP ownership clarity (pre-defined at platform level, not negotiated per deal)
+- SLA guarantees (minimum submission count, timeline commitments)
+- Reference customers at peer enterprises (the trust pack from Tick 103)
+- Legal framework for agent conduct (Straw's rules of engagement, liability scope)
+
+---
+
+### Summary table — five platforms
+
+| Platform | 2024 Take Rate | Primary Anti-Disintermediation | Cold Start Mechanism | Key Failure / Lesson |
+|----------|----------------|-------------------------------|---------------------|---------------------|
+| Upwork | 18.1% (marketplace) | 2-year ToS lock + conversion fee + reputation | Supply seeding + strong seller tools | 102% net spend retention proves it works |
+| HackerOne | ~20-30% of bounties + platform fee | Crowd is the product (can't hire the network) | Marquee security program launch | Private — hard to independently verify NRR |
+| Kaggle | 0% (never monetized) | Nothing — bypassed constantly | Community + competitions as brand | Evaluation ≠ deployable value; no recurring revenue → $12-30M exit |
+| Fiverr | 27.7% | Reputation lock + off-platform detection | $5 impulse price created instant demand | Commodity positioning limits enterprise expansion |
+| Topcoder | ~20% admin + platform sub | IP transfer on win; Hybrid Crowd for NDA | IBM/NASA enterprise partnerships | Spec quality is bottleneck; Kaggle's same deployment gap |
+
+---
+
+### Sources
+
+- Upwork Q4 and Full Year 2024 Financial Results (investors.upwork.com)
+- Upwork conversion fee policy (support.upwork.com)
+- HackerOne $81M bounties in year ending June 2025 (bleepingcomputer.com)
+- HackerOne Customer Terms (hackerone.com/terms)
+- Kaggle AMA with Anthony Goldbloom (medium.com/implodinggradients)
+- Google acquires Kaggle — TechCrunch, March 2017
+- Fiverr Q4 and Full Year 2024 Results (investors.fiverr.com)
+- Fiverr off-platform policy (help.fiverr.com)
+- Fiverr growth story — NFX (nfx.com/post/fiverr-road-to-growth)
+- Topcoder IP and Licensing (topcoder.com/thrive/articles)
+- Topcoder Pricing (topcoder.com/html/cockpit/framework/content/pricing.html)
+- Platform disintermediation research: INFORMS Operations Research, "Disintermediation in Two-Sided Markets" (2025)
+- 19 Marketplace Tactics for Overcoming the Chicken-or-Egg Problem — NFX (nfx.com)
+
+
+---
+
+## Tick 122 (2026-05-01): Seed investor targeting — specific funds, partners, and angels with thesis alignment
+
+*Sourced from background research agent. Real fund data, specific partner names, warm path analysis.*
+
+### The tier-1 funds for Straw's seed round
+
+**1. Conviction Partners (Sarah Guo + Mike Vernal) — highest thesis alignment**
+
+- Fund II: $230M (announced January 2025)
+- Check size: $1M–$25M, seed through Series A
+- Partners: Sarah Guo (founding GP, ex-Greylock AI lead since 2017), Mike Vernal (GP, ex-Sequoia)
+- Core thesis: "The pace of AI change will exceed enterprise capabilities. Startups win because they have speed and unruliness that large enterprises can't replicate." Guo: "We are at a cosmic inflection point where advantages have tipped toward startups."
+- Portfolio: Mistral, Harvey ($11B), Sierra ($10B), HeyGen, Baseten, LangChain, Cognition (Devin), OpenEvidence
+- 24 investments in 2025
+
+**Why Conviction is the ideal lead for Straw**:
+- Their portfolio IS the ecosystem Straw evaluates: agent platforms (Cognition/Devin), legal AI (Harvey), enterprise AI (Sierra), model infrastructure (Mistral, Baseten). When Straw runs a legal AI competition, Harvey's team might be competing. When Straw evaluates agent development frameworks, Cognition's users are the agents. Conviction's LP return is partly served by Straw validating their portfolio companies in live procurement competitions.
+- Sarah Guo has been writing about enterprise AI procurement credibility since 2023 — the market timing narrative in Tick 114 is exactly her thesis.
+- Mike Vernal brings Sequoia's enterprise infrastructure playbook.
+
+**Warm path to Conviction**: Any Conviction portfolio company founder = direct intro. Harvey, Sierra, LangChain, Baseten founders all have strong network overlap with enterprise AI infrastructure builders. Kaggle Grandmasters with prior Mistral usage are another path.
+
+---
+
+**2. Unusual Ventures (Jyoti Bansal + John Vrionis) — the AppDynamics pattern match**
+
+- Fund: $485M (closed 2022)
+- Stage: Seed-stage focus with embedded operator support
+- Partners: Jyoti Bansal (AppDynamics → Cisco $3.7B; Harness; Traceable AI), John Vrionis (Bansal's first investor at AppDynamics)
+- Core thesis: "AI is reshaping the future of enterprise. We look for founders building AI-driven infrastructure and applications that redefine industries." Differentiation: Unusual embeds experienced operators with founders during seed — PMF, design partner acquisition, GTM motion, early hiring.
+
+**Why Unusual is ideal**: The pattern match with Jyoti Bansal is uncanny.
+- AppDynamics thesis (2008): "You can't manage enterprise software without visibility and measurement."
+- Straw thesis (2026): "You can't procure AI agents without evaluation infrastructure."
+- Same structure: previously invisible performance becomes measurable → measurement becomes the procurement standard → whoever owns the measurement layer owns enterprise trust.
+- Bansal built the APM (application performance monitoring) category from scratch. Straw is building the AEM (agent evaluation and monitoring) category.
+- Unusual's embedded operator model would give Straw operational scaffolding during the most dangerous early phase — before product-market fit is clear.
+
+**Warm path to Unusual**: Bansal speaks at enterprise AI and DevOps conferences. The Harness co-founder community is adjacent to enterprise infrastructure. Any AppDynamics or Harness alumnus is a natural introduction point.
+
+---
+
+**3. NFX (Pete Flint + Gigi Levy-Weiss) — two-sided marketplace and network effects thesis**
+
+- Fund IV: $325M (~$1.5B AUM total)
+- Check size: $800K–$1.5M, targeting 10–14% ownership
+- Partners relevant to Straw: Pete Flint (founded Trulia, two-sided real estate marketplace), Gigi Levy-Weiss (December 2025 piece: "The Leap From Tools to Employees" on agent orchestration)
+- Core thesis: Network effects as the core moat. AI-native companies with embedded network effects are winner-take-most.
+
+**Why NFX fits**: Pete Flint ran a two-sided marketplace (Trulia) where trust, evaluation, and transaction integrity were core. He understands marketplace liquidity and the cold-start problem from the inside. Gigi Levy-Weiss is actively writing about the agentic transition — Straw's supply-side is exactly the agent workforce he's theorizing about.
+
+**The NFX pitch**: Lead with the network effects thesis. "Straw has five distinct network effects that compound simultaneously: more agents → better competitions → more enterprises → more calibration data → better evaluation → attracts better agents. This is a marketplace with data-network effects on top — LMArena's $1.7B raise validates the valuation of evaluation data."
+
+**NFX's most active quarter ever was Q1 2026** — they are writing checks quickly into AI infrastructure.
+
+---
+
+**4. Felicis Ventures (Niki Haskaraman for AI seed) — active community builder in the space**
+
+- Fund X: $900M ($3.9B AUM)
+- Partners for Straw: Niki Haskaraman (specifically hired to win AI seed deals through community building); Aydin Senkut (founder)
+- Portfolio: n8n, Supabase, Mercor, Runway, Letta, LMArena, Browser Use, Deep Infra
+- Core thesis: "Backing soon-to-break-out AI infrastructure." Senkut: "The next generation of enterprise investors aren't just picking companies, they're building ecosystems."
+
+**Why Felicis matters for Straw**: They backed LMArena. They understand the evaluation-as-product thesis from their investment. Niki Haskaraman's mandate is specifically to win AI seed deals through community access — and Straw's supply-side community (AI agent builders) is exactly the community she's cultivating. A Felicis investment also gives Straw a warm intro to the LMArena team, which could be a strategic partnership (Tick 124 — complementary layers of the evaluation stack).
+
+---
+
+### The strategic angels — who to close first
+
+**Tier 1 — Pattern-matched domain experts (highest signal, fastest enterprise credibility)**
+
+| Angel | Why Straw | Likely warm path |
+|-------|-----------|-----------------|
+| **Jyoti Bansal** (GP, Unusual Ventures; AppDynamics, Harness, Traceable AI) | Built the application performance monitoring category — exact intellectual analog to Straw's AEM category | Enterprise AI conference circuit; Harness/AppDynamics alumni |
+| **Bob McGrew** (ex-CTO Research, OpenAI) | Active enterprise AI angel; his "FDE Playbook for AI" thesis aligns with Straw's domain expertise moat | AI safety/enterprise conference overlap; YC demo day network |
+| **Andrej Karpathy** (ex-OpenAI, ex-Tesla AI; AI infrastructure/agent platform investor) | Most credible technical name in AI; portfolio spans AI infrastructure and agent platforms; his endorsement signals legitimacy to enterprise buyers | Direct cold outreach (he is publicly accessible on X/Twitter); Stanford AI Lab alumni network |
+| **Ali Ghodsi** (CEO, Databricks) | Enterprise data/AI platform of record; Databricks blessing = massive enterprise credibility for sales | Enterprise AI conference keynotes; if Straw uses Databricks as competition infrastructure |
+
+**Tier 2 — Brand amplification angels (open doors, provide narrative gravity)**
+
+| Angel | Why Straw | Likely warm path |
+|-------|-----------|-----------------|
+| **Elad Gil** (solo VC/angel, $3B fund) | Backed Perplexity, Harvey, Character.ai, Decagon, Abridge, OpenAI, Mistral — the "blessing" opens every Series A door | Any of his portfolio founders |
+| **Mike Knoop** (co-founder Zapier, co-founder Ndea) | Zapier built the workflow automation marketplace; Ndea focuses on AI research; understands marketplace dynamics and enterprise automation adoption | Zapier/no-code community; AI research circles |
+| **David Singleton** (ex-CTO Stripe, co-founder /dev/agents) | Enterprise infrastructure credibility; /dev/agents builds OS for AI agents — directly understands the agent ecosystem Straw evaluates | Developer-first enterprise circles; Stripe alumni network |
+
+---
+
+### Warm path prioritization
+
+**Insight**: The fastest path to a Conviction or Unusual term sheet is a portfolio company founder referral, not a cold pitch. The fastest path to Elad Gil or Karpathy is conference proximity + a cold email with a single-paragraph hook.
+
+**90-day warm path plan**:
+
+| Week | Action |
+|------|--------|
+| Weeks 1–3 | Identify 3 portfolio founders at Conviction (Harvey, Sierra, LangChain) who overlap with enterprise AI procurement. Request 20-minute advice call, not intro. Build relationship. |
+| Weeks 4–6 | Reach out to Jyoti Bansal via LinkedIn/conference with single-paragraph hook: "I'm building AppDynamics for AI agents — you invented the category I'm extending." |
+| Weeks 7–9 | Submit to any Unusual Ventures office hours or founder events. Simultaneously submit to NFX's Venture Unlocked or similar founder program. |
+| Weeks 10–12 | Reach out to Bob McGrew via YC network or direct. 3 sentence cold email: what Straw is, why it's the right time, specific ask (30-minute call). |
+| Weeks 13+ | If Elad Gil is a target, do it through portfolio overlap — Perplexity, Harvey, or Decagon founders. He is also reachable via his blog/newsletter comments on relevant posts. |
+
+---
+
+### Seed round structure target (2026)
+
+Based on the research agent's findings on 2026 seed round norms:
+
+**Instrument**: Post-money SAFE (accounts for 92% of pre-priced rounds in Q3 2025)
+**Straw's target raise**: $2.5M seed
+**Target valuation cap**: $18M–$25M post-money (AI premium: median post-money for AI seed rounds = $20M)
+**Dilution**: 10–14% (well within the 20–25% maximum acceptable range)
+**Discount**: Omit if possible; use cap-only SAFE to reduce deal complexity
+**Pro-rata**: Grant to lead investor only; restrict to 1× their check size at Series A
+
+**Why $18M–$25M is the right cap range**:
+- Median AI seed post-money in 2025 = $20M
+- LMArena Series A at $1.7B gives Straw a narrative anchor
+- At $20M cap with $2.5M raised, dilution = 12.5% — clean
+- Series A at $3M ARR × 20× multiple = $60M. The 3× step-up from seed to A is standard
+
+**Terms to negotiate**:
+- No board seats at seed (SAFE doesn't grant this anyway; keep the priced round clean)
+- Information rights: quarterly updates + annual financials
+- No MFN provision (if you're doing a single-close SAFE, no MFN needed)
+- No participating preferred when the priced round happens (1× non-participating is the standard in 2026)
+
+---
+
+### The institutional anchor fund for credibility at seed
+
+One non-obvious target: **General Catalyst** at seed, specifically through their "Ignition" seed vehicle. GC led a $15M seed for The Interaction Company (enterprise AI) in 2025. They are actively seeding enterprise AI infrastructure at $3M–$10M check sizes. GC's "Unscaling" thesis — using AI to personalize core societal services — applies to the enterprise procurement category Straw is disrupting.
+
+**Why GC at seed matters even beyond the check**: General Catalyst's LP relationships include most Fortune 500 CEOs and CHROs through their Health Assurance Ecosystem and other corporate programs. A GC seed deal = warm introductions to the exact enterprise buyers Straw needs as its first design partners.
+
+**GC Hemant Taneja** is specifically focused on AI transformation of financial services, healthcare, and enterprise software — the verticals where Straw's competitions will be highest-value.
+
+---
+
+### What seed investors will ask Straw — and the answers
+
+**Q: This is a marketplace. Marketplaces are hard. How do you solve cold start?**
+
+A: Supply first. We recruit the agent community before we charge enterprises. The first 3–5 competitions are Straw-funded (Straw Open model) to prove supply quality. Once we have 20+ agents with verified track records, enterprise demand has something to evaluate. Then we charge. Cold start timeline: 60–90 days of supply recruitment before first paying competition.
+
+**Q: How do you prevent enterprises from going direct to the winning agent after the first competition?**
+
+A: Same way HackerOne solves this — the platform is the product, not the match. Straw provides: (a) ongoing comparative benchmarking as new agents enter the market, (b) historical performance tracking, (c) the auditable evaluation record that satisfies enterprise compliance requirements. Going direct loses all of that. The winning agent also has incentive to stay: their Straw track record is their marketing.
+
+**Q: Kaggle tried this. They couldn't monetize. Why is Straw different?**
+
+A: Two structural differences. First, Straw evaluates AI agents (not trained models), so the winner is immediately deployable — there's no production gap. Second, enterprises define the rubric on their real problem, so the evaluation directly predicts production value. Kaggle's competitions used public datasets with leaderboard metrics that didn't match business outcomes. Straw competitions use the enterprise's real problem. The evaluation output IS the procurement decision.
+
+**Q: LMArena raised $1.7B. Are you competing with them?**
+
+A: No — we're the next layer down the stack. LMArena compares foundation models based on human preference votes. We compare enterprise AI agents on domain-specific tasks with client-defined rubrics. LMArena tells you which chatbot feels better; Straw tells you which agent actually solves your $500K problem. They proved the category. We're the enterprise-grade, outcome-grounded, deployable version.
+
+---
+
+### Sources
+
+- Conviction Fund II ($230M): TechCrunch, January 2025; Conviction portfolio (conviction.vc)
+- NFX Fund IV ($325M): NFX.com fund pages; Gigi Levy-Weiss "Leap From Tools to Employees," NFX Library, December 2025
+- Unusual Ventures $485M fund: TechCrunch, May 2022; Unusual.vc investment thesis
+- Felicis Ventures / Niki Haskaraman: Crunchbase News, "Why Felicis' Newest Partner Focuses On Community Building To Win AI Deals At Seed"
+- Andrej Karpathy portfolio: Tracxn, 2025
+- Elad Gil investment thesis: f4.fund/firms/elad-gil; Newcomer media, "The Founders Writing Checks into Silicon Valley's Top AI Startups"
+- Bob McGrew angle: TechCrunch, "Former Coatue partner raises huge $65M seed for enterprise AI agent startup" (March 2026); YC talks
+- Seed round structure: Carta State of Pre-Seed Q2 2025; Causo Hub "Seed Valuation 2026"; Pitchwise "Median Seed Round Size by Industry 2026"
+- Marketplace seed metrics: Phoenix Strategy Group, "10 Marketplace KPIs for VC-Backed Companies"; CRV, "Pro Rata Rights: A Founder's Guide"
+- General Catalyst seed: GC Fund XII announcement; vcsheet.com/fund/general-catalyst
+
