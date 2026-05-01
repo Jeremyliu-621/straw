@@ -6716,3 +6716,493 @@ For EU-operating enterprises in FSI, healthcare, or HR tech, Straw's competition
 **Straw's natural deal structure:** Initial competition platform license for one evaluation event ($50K-$150K) → standing procurement infrastructure contract as the company runs evaluations across all AI vendor decisions ($300K-$1M+ for large enterprises standardizing on Straw as their AI procurement layer).
 
 Sources: IBM/Slayton CAIO research; PwC CAIO survey; Forrester enterprise AI buying committee data; Lyzr State of AI Agents Q1 2026; Metaintro 85/5 enterprise AI paradox; ProcureAbility 2026 CPO Report; Augment Code CTO evaluation checklist; Conifers.ai CISO guide; Accenture-Anthropic partnership announcement; PwC-Anthropic partnership announcement; EU AI Act enforcement timeline (GDPR Register, LegalNodes, Trilateral Research); BrainCuber AI agent pricing 2026; Prospeo enterprise software sales data; G2 Enterprise AI Agents Report 2026
+
+---
+
+## Threads still to dig — Session 10
+
+- [done — Tick 47] **Benchmark interoperability.** Full benchmark landscape (HumanEval, SWE-bench, GAIA, BigCodeBench, TheAgentCompany, WebArena, TAU-bench, OSWorld). 37% production gap, 60%→25% consistency collapse. SWE-bench contamination: 76% file-path prediction on known repos, 53% on novel (23-point gap). No mature calibration framework. Straw's six structural advantages documented.
+- [done — Tick 48] **V0 launch tactical playbook.** 30-day action plan. Task type: SWE-bench-style GitHub bug fix with failing tests. Tier 1 recruitment: OpenHands (72% SWE-bench), SWE-agent, Aider. Budget: $3,500 total ($2,500 winner + $1,000 runner-up). Rubric: 50% test pass / 20% no regressions / 10% patch applies / 10% code quality / 10% security. 14-day submission window.
+- [done — Tick 49] **Agent onboarding funnel.** TTFAC benchmark: under 5 minutes (Stripe/Vercel = 90 seconds). 3-4x conversion multiplier for first API call within 10 minutes. 98% churn if no value in 14 days. Agent-first auth: OAuth DCR (RFC 7591), MCP Server Cards. Top 3 SDK failure reasons: adds steps not removes them; governance trap; demo vs. production gap.
+- [done — Tick 50] **Agent competition portfolio strategy.** Contest theory: simultaneous all-pay auctions produce higher expected max effort than sequential. Kaggle grandmaster insight: focus ONE competition at a time, not portfolio. Specialization premium: 40-60% higher rates, 25% higher completion vs. generalists. EV formula for competition entry. Agent-to-agent subtask economy emerging ($2-3/call for research tasks).
+- [NEW] **Tick 51 candidate: Sales motion for Straw.** The specific sales conversation: what does an enterprise buyer need to hear, in what order, to sign a design partner agreement? Cold email → discovery call → POC framing. Champions vs. blockers. Not yet researched.
+- [NEW] **Tick 52 candidate: Model-level benchmark interoperability calibration.** The Agent Psychometrics paper (arxiv:2604.00594) and General Scales (arxiv:2503.06378) are research tools for predicting task-level performance. Can Straw build its own calibration surface after N=100 competitions? What does that surface look like?
+- [NEW] **Tick 53 candidate: Long-form proposal Section 17 — The Straw Scoring Standard.** If Straw has enough competitions (N=1,000), its score becomes an industry standard. What would it take to get Straw scores cited in job postings, RFPs, and vendor contracts the way SWE-bench is cited today?
+
+---
+
+## Tick 47 (2026-05-01T10:00Z): Benchmark interoperability — how Straw scores relate to public AI benchmarks
+
+Source: subagent research — arXiv:2506.12286, arXiv:2509.16941, arXiv:2511.14136, arXiv:2503.06378, arXiv:2604.00594, arXiv:2412.14161, arXiv:2502.06215, arXiv:2512.10218, swebench.com, labs.scale.com/leaderboard/swe_bench_pro_public, Stanford AI Index 2026.
+
+### The benchmark landscape in 2026
+
+Six families of benchmarks are actively used to evaluate AI agents; each measures something different:
+
+| Benchmark | What it measures | Top score (May 2026) | Limitation |
+|---|---|---|---|
+| **HumanEval** | Isolated Python function synthesis | Kimi K2.5: 99.0% | Effectively dead — saturated. Doesn't measure real codebases. |
+| **MMLU / MMLU-Pro** | Multi-choice knowledge recall | GPT-5.3 Codex: 93% | Saturated; measures retrieval not agentic execution |
+| **SWE-bench Verified** | Real GitHub issue resolution (2,294 issues) | Claude Opus 4.7: 87.6% | Contamination/memorization (76% file-path prediction on known repos vs 53% on novel) |
+| **SWE-bench Pro** | Long-horizon multi-file engineering (1,865 issues, avg 107 lines / 4.1 files) | GPT-5: 23.1% | Private subset drops 25-35% — models overfit to public repos |
+| **GAIA / GAIA2** | Real-world assistant tasks (web, tools, multi-modal) | Claude Sonnet 4.5: 74.6% (GAIA); top 42% on GAIA2 | Static final-answer eval; GAIA2 exposes time-sensitive task gap |
+| **TheAgentCompany** | Real workplace tasks (engineering, finance, HR, PM) in simulated company | Best agents: 30% completion | Only 30% success vs 70-87% on SWE-bench — biggest production-relevance gap |
+| **WebArena** | Browser-use across Reddit, GitLab, Shopify simulations | Best: ~22% | Well-defined finite tasks only; 78% gap to human baseline remains unsolved |
+| **TAU-bench** | Customer service in retail/airline simulations | Variable | Only 2 domains; adding domains requires manual simulator construction |
+| **BigCodeBench** | Complex library API function calls | Human: 97%; AI best: ~35% | Tests library use, not system design or cross-file reasoning |
+
+### The benchmark-to-production gap: the numbers
+
+**37% average drop from lab to production** — documented in the CLEAR framework paper (arXiv:2511.14136) analyzing AWS enterprise multi-agent deployments.
+
+**60% → 25% consistency collapse** — agents scoring 60% on a single run score only 25% across eight consecutive runs (same paper). The production bottleneck is reliability, not peak accuracy.
+
+**89% of enterprise AI agent projects never reach production** (Stanford AI Index 2026). Of those that do deploy, the primary cited failure factor is "inadequate evaluation frameworks" — teams trusted benchmarks that didn't predict production behavior.
+
+**TheAgentCompany reality check**: Best models score 70-87% on SWE-bench Verified but only 30% on real workplace tasks in a simulated company. Finance and admin tasks: many models score zero. Aggregate benchmark scores hide catastrophic task-type failures.
+
+### Does SWE-bench predict enterprise success? No.
+
+The "SWE-bench Illusion" paper (arXiv:2506.12286, 2025) is the clearest evidence:
+
+- Models achieve **76% accuracy predicting the buggy file path using only the issue description** — without looking at the repo. On novel repos NOT in SWE-bench: this drops to **53%** — a 23-point generalization gap.
+- **35% verbatim 5-gram overlap** between SWE-bench patches and training data (consistent with memorization). On comparable non-benchmark repos: 18%.
+- **SWE-bench Pro private subset**: Claude Opus 4.1 drops from 22.7% (public repos) to 17.8% (private, never-seen repos). GPT-5 drops from 23.1% to 14.9%. A 25-35% score reduction on novel private codebases is the empirically measured generalization gap.
+
+**The honest conclusion**: A model scoring 87% on SWE-bench Verified is probably 25-35% lower on a private enterprise codebase it has never seen — bringing the effective score to 56-65%. The score predicts performance only when the benchmark overlaps with your use case.
+
+### Why no calibration framework exists (yet)
+
+Two research directions are active but neither is ready for production procurement use:
+
+**General Scales** (Microsoft/Cambridge, Nature April 2026 / arXiv:2503.06378): 18 cognitive rubrics across 15 LLMs and 63 tasks. Provides "superior estimates over black-box baseline predictors in out-of-distribution settings." Operates at the capability-dimension level, not task-specificity. A research tool for benchmark designers, not a procurement oracle.
+
+**Agent Psychometrics** (MIT/CMU, ICLR 2026 / arXiv:2604.00594): Applies Item Response Theory to predict per-task success or failure, decomposing agent ability into LLM ability vs. scaffold ability. "Practical utility for benchmark designers to calibrate difficulty without running expensive agent evaluations." Still a research tool.
+
+**There is no validated framework for saying "X% on SWE-bench → Y% on your private enterprise task."** The correlation is weak and task-type-dependent. This is precisely why Straw exists.
+
+### How Straw's model solves what public benchmarks cannot
+
+Six structural problems with public benchmarks, each with a Straw fix:
+
+| Problem | Public benchmark failure | Straw fix |
+|---|---|---|
+| **Distributional mismatch** | SWE-bench is Python OSS. Your enterprise codebase is Java microservices. Score transfer: unknown. | Task IS your actual problem. Zero distribution shift. |
+| **Contamination/memorization** | 76% file-path accuracy on known repos → 53% on novel. Agents "remember" rather than reason. | Private rubric + private task. No leaked structure — nothing to memorize. |
+| **Rubric mismatch** | SWE-bench: "does the patch pass the test?" Enterprise: "does it not break 3 downstream services AND audit?" | You define the rubric. Score = exactly what you said winning looks like. |
+| **Single-run vs. reliability** | Benchmarks report pass@1. Production requires consistency. | Competition reveals reliability — agents winning via lucky single-run performance lose to systematic approaches over 15 attempts. |
+| **No commercial ground truth** | No benchmark produces "company hired the winner" as validation. | Post-competition commercial outcome (hire/license/acquire) IS the ground truth. |
+| **Cost opacity** | CLEAR paper: 50x cost variation for similar accuracy; cost misestimation up to 100%. | Rubric can include cost/latency criteria. Straw measures what the buyer actually cares about. |
+
+### What this means for agent operators (the benchmark-to-Straw mapping)
+
+Public benchmarks are weak priors for self-selection into Straw competitions. The best heuristics:
+
+- **Strong on SWE-bench Pro (private subset)** → enter complex multi-file engineering tasks on Straw. Private-subset SWE-bench score is the most realistic proxy for novel codebases.
+- **Strong on GAIA** → enter research, web-browsing, multi-modal tasks on Straw.
+- **Strong on WebArena** → enter browser-automation tasks on Straw.
+- **But**: expect a 20-30% score drop from benchmark to Straw private task. Entering Straw competitions IS how operators discover their actual generalization capability. The feedback loop replaces the calibration framework that research hasn't built yet.
+
+Sources: arXiv:2506.12286, arXiv:2509.16941, arXiv:2511.14136, arXiv:2503.06378, arXiv:2604.00594, arXiv:2412.14161, arXiv:2502.06215, arXiv:2512.10218, swebench.com, labs.scale.com/leaderboard, beri.net/Stanford-AI-Index-2026, openreview.net GAIA2, spheron.network/blog/ai-agent-benchmarking.
+
+---
+
+## Tick 48 (2026-05-01T10:30Z): V0 launch tactical playbook — the first 30 days
+
+Source: subagent research — Wikipedia Kaggle/Topcoder, businesswire.com OpenHands Series A, Berkeley RDI AgentX, SWE-bench leaderboard, arXiv:2511.06304 (Kaggle Chronicles), ACM 2025 Rubric evaluation, MiniMax $150K challenge, HackerOne founding history.
+
+### The right task type for the first competition
+
+**Code bug-fix tasks win. Specifically: a self-contained bug fix on a real open-source repository.**
+
+Why this format:
+- **Objectively gradeable**: pass/fail via automated test suite. No debate, no LLM-as-judge subjectivity at the primary signal. CI goes green or it doesn't.
+- **Known difficulty floor**: SWE-bench Verified is the canonical difficulty reference — 2,294 manually validated GitHub issues. A hand-picked issue at the 40th percentile gives meaningful spread (top agents solve it; mid-tier agents partially solve; bottom agents fail).
+- **Bounded scope**: a single-file or two-file bug fix. A 14-day window with this scope doesn't burn out any agent team.
+- **Comparable**: every submission is a git patch. Evaluation is deterministic and repeatable.
+
+**Avoid for v0**: open-ended analysis, creative writing, multi-step research tasks. These require heavyweight LLM-as-judge rubrics that introduce variance and invite disputes. Code task first; then expand.
+
+**Ideal first task spec:**
+- Real GitHub issue from sympy, fastapi, numpy, or Django (popular Python libraries with good test coverage)
+- 1-3 failing tests already in the repo (reproducer provided to agents)
+- Fix requires understanding non-trivial logic but not a full refactor
+- Ground-truth solution known but withheld for holdout evaluation
+- Difficulty: mid-range (estimated 50-70% of top agents can solve it — not 90%, not 10%)
+
+**Validation step before going live**: run the ground-truth solution through the eval harness and confirm it scores 100%. Run a blank submission and confirm it scores 0%. This takes 30 minutes and prevents "eval pipeline bug" disputes on launch day.
+
+### What Kaggle, Topcoder, and HackerOne got right in round one
+
+**Kaggle (April 2010):** First competition was Anthony Goldbloom sponsoring a $1,000 Eurovision song contest voting prediction challenge — *himself*. No enterprise partner needed. Small, scoped, self-funded. First major community success: HIV progression prediction from Drexel University — 109 teams, 3-month window. Real-time leaderboard with public/private test set split was the hook. **Lesson: the founder posts first; transparency + real-time feedback loops drive engagement more than prize size.**
+
+**Topcoder (2001):** Launched with Single Round Matches (75-minute algorithm contests, cash prizes from day 1). Built a rating system that became a status signal independent of cash. 10,000 members in 40 countries by year 2 via word-of-mouth. **Lesson: rankings and reputational stakes matter as much as money for technically proud people.**
+
+**HackerOne (2013):** Launched as the Internet Bug Bounty, funded by Microsoft and Facebook. Critical move: tight scope (clear in-scope / out-of-scope), coordinated disclosure safe harbor so security researchers had no legal risk. First $1M paid out by June 2015. **Lesson: clear rules + safe harbor (no ambiguity) is what makes expert participants trust you enough to work hard.**
+
+**Common thread:** First competitions were small, scoped, and rigged to produce clear winners fast. All had automated score signals — no committee deliberation.
+
+### Recruiting the first 5-10 competing agents
+
+**Tier 1 — Highest ROI (direct outreach, they need this):**
+
+| Agent | Why they'll participate | Contact |
+|---|---|---|
+| **OpenHands (All Hands AI)** | 72% SWE-bench Verified. $18.8M Series A from Madrona 2025. Need real-world proof points for enterprise sales. | app.all-hands.dev, public Slack |
+| **SWE-agent (Princeton/Stanford)** | Academic team, open-source, mini-SWE-agent hits >74%. Want third-party validation. | github.com/princeton-nlp/SWE-agent |
+| **Aider** | Popular OSS CLI coding agent by Paul Gauthier. Active community. Strong on real patches. | github.com/Aider-AI/aider, @paul_gauthier on Twitter |
+| **Devin (Cognition AI)** | $20/month entry, wants credible third-party eval to counter benchmark skepticism. | cognition.ai developer relations |
+
+**Tier 2 — Inbound discovery:**
+- **Berkeley AgentX/AgentBeats** (berkeleyrdi.substack.com, 1,200+ teams registered): Post as "real money for coding agents, not a synthetic benchmark"
+- **Hacker News Show HN**: The announcement post itself drives inbound
+- **HuggingFace SWE-bench/GAIA leaderboard pages**: DM top-5 teams directly
+- **r/LocalLLaMA and r/MachineLearning**: Post the competition with real prize
+
+**Realistic expectation**: 5-8 distinct agent systems. Seed 2-3 via Tier 1 direct outreach before going public to confirm interest. The rest come inbound if the prize is real and the task is clean.
+
+### Bounty sizing
+
+**$3,500 total: $2,500 winner + $1,000 runner-up.**
+
+Calibration logic:
+- Kaggle's first competition: $1,000 (Eurovision, 2010). Generated signal but no serious effort beyond hobbyists.
+- Topcoder competitive prizes: $5,000-$10,000 for tournament winners to attract elite talent.
+- Serious 2025-2026 AI agent hackathons: $10K-$50K (HighLevel $50K, Microsoft $20K best overall, MiniMax $150K challenge).
+- **But Straw v0 is not a hackathon**: agents run their existing system on one scoped task. Marginal effort for a top team is 2-4 hours of integration. $2,500-$3,500 is high enough that commercial teams (OpenHands, Devin) bother integrating; low enough to run 3 competitions before fundraising.
+
+**The real prize is the commercial outcome**: make explicit in the posting that the winner gets a paid engagement offer (30-day contract at $5K-$15K to work on Jeremy's real codebase). Cash bounty = credibility signal; engagement = business. That's what makes serious operators show up.
+
+### Rubric format
+
+**80% objective / 20% process quality. Max 5 criteria.**
+
+| Criterion | Weight | How graded |
+|---|---|---|
+| Tests pass (private holdout suite) | 50% | Automated CI — binary |
+| No regressions (full existing test suite) | 20% | Automated CI — binary |
+| Patch applies cleanly | 10% | Automated — binary |
+| Code quality (readability, no hacks) | 10% | LLM-as-judge (Sonnet 4.6) with specific items |
+| Security (no introduced vulnerabilities) | 10% | Automated static analysis (semgrep/bandit) |
+
+**Publish the full rubric before competition opens.** No surprises. Kaggle published its evaluation metric upfront — this built trust with competitive participants. Use Pointwise Rubric Evaluation (PRE) — evaluate each criterion independently, not holistically. Run 3 independent LLM judge passes for the code-quality criterion and take majority vote (Ensembled Method Evaluation) to reduce variance.
+
+### Timeline: 30 days from decision to winner announcement
+
+| Days | Activity |
+|---|---|
+| 1-5 | Task selection + rubric finalization. Validate ground truth solution scores 100% through eval pipeline. |
+| 6-10 | Competition goes live. DM Tier 1 agents. Post on HN (Show HN) + Berkeley AgentX + r/LocalLLaMA. |
+| 11-24 | Submission window (14 days). Agents submit via Straw API (zip upload flow). Public leaderboard shows test pass rates; private holdout results withheld until close. |
+| 25-26 | Private holdout evaluation runs. Automated pipeline scores all submissions. |
+| 27-28 | Jeremy reviews top 3 for code quality (10% subjective component). |
+| 29-30 | Winner announced. Commercial engagement offer extended. Case study published with full scores per agent. |
+
+**14-day window** is the sweet spot: enough time for serious integration, short enough to maintain urgency.
+
+### What success looks like for v0
+
+The goal is not revenue. It is proving three things: (1) automated eval can produce an undisputed score, (2) at least one agent outperforms a junior human engineer on the same task, (3) at least one agent team accepts a commercial engagement offer.
+
+| Metric | Target |
+|---|---|
+| Agents registered | ≥ 5 distinct systems |
+| Agents submitting ≥ 1 attempt | ≥ 3 |
+| Eval pipeline disputes | 0 |
+| Winning submission test pass rate | > 80% on private holdout |
+| Time from competition close to winner announcement | ≤ 3 days |
+| Commercial engagement extended | 1 |
+| Commercial engagement accepted | 1 |
+| Case study published | 1 (real scores, real agent names) |
+
+**The case study is not optional.** It is the marketing for competition #2.
+
+**Day 1 action list**: (1) Pick a sympy or Django GitHub issue with a failing test already in the repo. (2) Run ground truth solution through eval harness. (3) Post on straw.so. (4) Email OpenHands, SWE-agent, and Aider directly today. (5) Schedule HN Show HN post for 9am PT Monday.
+
+Sources: en.wikipedia.org/wiki/Kaggle, businesswire.com OpenHands $18.8M Series A, berkeleyrdi.substack.com AgentX, swebench.com leaderboard, arXiv:2511.06304, dl.acm.org/doi/10.1145/3702652.3744220, minimax.io/news, hackerone.com/history.
+
+---
+
+## Tick 49 (2026-05-01T11:00Z): Agent onboarding funnel — from signup to first competition submission
+
+Source: subagent research — Userpilot benchmarks 2024/2025, daily.dev developer onboarding data, Stripe/Twilio developer platform insights, OpenAI Agents SDK, CrewAI, LangGraph, LangSmith, nordicapis.com, HackerNoon developer adoption research, IBM agent identity research.
+
+### Industry benchmarks: what "good" looks like
+
+**Time to First API Call (TTFAC):**
+- Stripe/Vercel: under 90 seconds (the gold standard)
+- Strong performance: under 5 minutes
+- "Hello world" ceiling: under 10 minutes maximum
+- Anything beyond 10 minutes requires active justification — developers leave
+
+**Conversion benchmarks (Userpilot, 547 SaaS companies analyzed):**
+- Average SaaS trial activation rate: 37.5% overall; developer tools typically 20-35%
+- Top-quartile products activate 60%+ of trials within 24 hours
+- **Developers who make their first API call within 10 minutes are 3-4x more likely to convert to paid**
+- 98% of users who don't experience value within 14 days churn permanently
+- Adding one human touchpoint (20-min onboarding call, Slack with founding team) lifts trial conversion by 6-12 percentage points
+
+**The median TTFV (Time to First Value) benchmark (2025): 1 day, 12 hours, 23 minutes.** Beat this significantly or lose to competitors who do.
+
+### Key friction points in AI agent SDK adoption (ordered by severity)
+
+**1. API key / auth setup.** The most common abandonment point. Any step requiring console navigation, email verification, or waiting for provisioning kills momentum.
+
+**2. Dependency weight and environment setup.** Python agent frameworks often create 500MB+ environments. Slow installs signal complexity. The OpenAI Agents SDK fought this with minimalism: `pip install openai-agents` → working agent in 3 lines.
+
+**3. The prototype-to-production gap.** The real abandonment happens after "hello world" works. Testing, versioning, error handling, observability — none of the major frameworks ship this as a complete layer. Developers discover they built on sand.
+
+**4. Cost opacity.** Agentic tools cost $200-$2,000/month at scale. Frameworks that don't surface token usage upfront create nasty surprises. LangSmith's step-by-step traces with token counts per node are now table stakes.
+
+**5. Error messages that don't help.** Stack traces pointing at internal framework code are useless. Developers need: what failed, why, and what to change.
+
+### Agent onboarding framework comparison
+
+| Framework | TTFV | Strength | Weakness |
+|---|---|---|---|
+| **CrewAI** | Afternoon (best of class) | YAML-first config; code reads like English; team metaphor maps naturally | Hides complexity that emerges in production |
+| **OpenAI Agents SDK** | 15-30 minutes | 4 primitives (Agents, Handoffs, Guardrails, Runners); 5-line quickstart | Relatively new (March 2025 launch) |
+| **LangGraph** | Half day to full day | Most powerful; fine-grained control | 40+ lines for a simple ReAct agent; steep curve |
+| **AutoGen** | Multiple hours | Good for research | Not beginner-friendly; requires most manual setup |
+| **LangSmith** | Minutes for the observability layer | Set 1 env var → full traces in UI | Assumes LangChain ecosystem |
+
+### What a great agent SDK "getting started" looks like
+
+Five non-negotiable elements:
+
+1. **Instant demo, zero setup**: First thing a developer sees is a working agent in browser — no install, no key, no friction. Stripe Shell proved this converts. Observable AI (2025-2026) ships sandbox environments with pre-loaded keys.
+
+2. **Copy-pasteable, runnable examples**: Literal terminal commands that work. Not pseudocode. Not "replace YOUR_API_KEY." Every code block has a copy button and produces predictable output.
+
+3. **Progressive complexity ladder**: Single agent → tools → handoffs → multi-agent. Never show the full graph on day one. OpenAI Agents SDK nails this.
+
+4. **No-config startup**: One env var (`STRAW_API_KEY`). Everything else defaults to sensible values. Config appears only when the developer needs control, not to get started.
+
+5. **Inline feedback loops**: The example should produce visible, interesting output — not just `200 OK`. A score or a structured result proves the system worked and creates the aha moment.
+
+### Agent-first authentication (autonomous agents, not humans)
+
+This is the emerging pattern for APIs designed for autonomous agents (not human developers at keyboards):
+
+**OAuth Dynamic Client Registration (RFC 7591)**: An autonomous agent encountering a new API can register itself, request scoped credentials, and authenticate without human intervention. This is the 2025-2026 standard for agent-native auth.
+
+**MCP Server Cards** (`/.well-known/mcp.json`): Expose capabilities, auth requirements, and available primitives before a connection is established, enabling autoconfiguration.
+
+**Schema endpoint discovery** (`/openapi.json`): APIs designed for agents expose structured schemas at known paths. The agent reads the schema, understands available operations, and calls without hardcoded rules.
+
+**Identity as first-class primitive**: Microsoft (Entra Agent ID), Okta, and Google all now model agents as distinct identity principals with scoped credentials at least-privilege access — not service accounts masquerading as humans.
+
+**Straw's practical implication**: The Straw SDK (`STRAW_API_KEY`) should, given only that key, enable an agent to: (1) discover available tasks via the schema endpoint, (2) submit artifacts with structured metadata, (3) poll for evaluation scores. Zero additional configuration.
+
+### The three top reasons developer SDKs fail adoption
+
+1. **Platform adds steps instead of removing them.** 70% of internal developer platforms fail to deliver measurable impact; nearly half are disbanded within 18 months. The test: does using the SDK take less work than not using it, from minute one?
+
+2. **Governance that feels like a trap.** Waitlists, account approval, mandatory sales contact — developers leave. Standards need to be invisible at first contact.
+
+3. **Demo-impressive, production-unreliable gap.** Frameworks that don't ship with test harnesses, structured error types, and built-in observability from day one lose developers at the 30-day mark when the prototype breaks.
+
+### Design targets for Straw's agent SDK
+
+| Target | Value |
+|---|---|
+| Time to first task browsed | < 2 minutes (auth + list tasks) |
+| Time to first submission | < 15 minutes (auth + build + upload artifact) |
+| Time to first score | < 20 minutes (submission + eval turnaround) |
+| Documentation "hello world" | Working terminal output in under 10 minutes |
+| Agent-first auth | API key (v0); OAuth DCR (v2) |
+| Zero-config startup | One env var (`STRAW_API_KEY`) |
+| Progressive complexity | Browse → Submit → Read score → Iterate → Post subtask |
+
+Sources: userpilot.com benchmark reports 2024/2025, daily.dev/developer-onboarding-optimization, youngcopy.com TTFAC, amplitude.com/time-to-value, openai.github.io/openai-agents-python, logic.inc/autogen-vs-langchain-vs-crewai, stytch.com/mcp-oauth-dynamic-client-registration, blog.gitguardian.com/ai-agents-authentication, hackernoon.com/why-developer-onboarding-is-broken, signalfire.com/devrel-for-startups.
+
+---
+
+## Tick 50 (2026-05-01T11:30Z): Agent competition portfolio strategy — how operators should allocate across competitions
+
+Source: own research synthesis — contest theory (Springer Review of Economic Design 2021, Wiley JPET 2025), Kaggle grandmaster community advice, arXiv:2603.25893 (Agentic Markets equilibrium), specialization premium research (GitHub gist budget_skynet), arXiv:2511.21802 (LLM tacit collusion), Shanglyu Deng Theoretical Economics 2024.
+
+### The contest theory foundation
+
+Straw's deadline-based format is the correct shape. Here's why, from formal contest theory:
+
+**Simultaneous vs. sequential all-pay auctions**: Research (Cambridge Core experimental study) shows **expected maximum effort is higher in simultaneous contests** than sequential ones, where later movers always secure larger expected payoffs. In sequential formats, early entrants are at a systematic disadvantage because later entrants observe what they're competing against. Straw's hackathon-format (everyone submits by deadline, no one sees other submissions until after close — per D17's blind scoring during build window) specifically targets this: **it makes the contest simultaneous**, which maximizes effort from all participants.
+
+**Parallel entry regulation** (Springer, Review of Economic Design 2021): "Allowing entry to multiple contests while setting identical prizes across contests maximizes aggregate effort." Implication: when Straw has multiple concurrent competitions with similar prize sizes, agent operators who enter multiple competitions contribute more total effort than they would entering a single high-value competition. Diversity of task postings increases platform-wide output quality.
+
+**Late-mover advantage validation**: "Later movers always secure larger ex ante expected payoffs" in sequential formats. Straw's deadline format prevents this — you can't time your submission to observe others first (blind scoring is load-bearing for this reason, per Tick 18's collusion research).
+
+### Kaggle grandmaster insight: focus ONE at a time
+
+The Kaggle Grandmaster community (people with 5+ gold medals, a years-long journey) has a consistent finding: **fight one competition at a time; one gold medal is worth more than two silvers.** The reasoning is practical:
+
+- Competition quality depends on iteration speed and depth of understanding of the specific task
+- Running two competitions simultaneously halves your cognitive bandwidth for each
+- The marginal submission in competition A is worth more than a first submission in competition B, because the A submission benefits from everything you've already learned
+- **This applies to agents too**: an agent with a 15-submission quota who splits attention across two competitions rarely reaches the score ceiling in either
+
+**The operator implication**: an operator running 300 agents should route ALL of them to ONE competition at a time, not distribute them across 10 concurrent competitions. Maximum concentration → maximum score ceiling exploitation → maximum expected return.
+
+### The specialization premium
+
+Research (2026 gist data from budget_skynet deliverable on AI agent marketplace state):
+- Specialized agents command **40-60% higher rates** than generalist agents
+- Specialized agents show **25% higher task completion rates**
+- Rate by category: research agents (~$180/job), coding agents (~$240/job), content agents (~$60/job), financial analysis agents (~$340/job)
+
+**For portfolio strategy**: this means operator ROI is maximized by specializing each agent — not generalist agents competing in all categories, but separate agents optimized for their category. Each agent's Straw competition selection should be filtered to their category specialization.
+
+### The EV calculation for competition entry
+
+```
+EV(enter) = P(win) × Prize_value - Compute_cost_of_attempt
+
+Where:
+P(win) = estimated win probability based on:
+  - Historical win rate in this task category
+  - Number of expected entrants (from Straw's notification system)
+  - Estimated comparative advantage vs. field (gap between own SWE-bench score and category average)
+
+Prize_value = bounty + expected commercial engagement value (15-day contract at $X)
+Compute_cost_of_attempt = API tokens + inference cost + operator time overhead
+```
+
+**The break-even condition**: enter a competition when `EV(enter) > 0`, i.e., when `P(win) × Prize_value > Compute_cost`.
+
+**Practical numbers for a coding agent competing on a $2,500 Straw bounty:**
+- Estimated P(win) in specialized category: 30% (one of 5 entrants, with comparative advantage)
+- Prize_value: $2,500 bounty + $10,000 commercial engagement (expected value: ~$5,000 at 50% acceptance) = ~$7,500
+- Compute_cost: ~$40 per attempt × 5 attempts average = ~$200
+- **EV = 0.30 × $7,500 - $200 = $2,250 - $200 = $2,050**
+
+That's a strong positive EV. Even at 10% win probability: EV = $750 - $200 = $550 positive. Break-even is at P(win) ≈ 2.7%.
+
+**The implication**: agents should enter more Straw competitions, not fewer — unless compute cost is much higher (complex tasks with many failure cycles) or win probability is very low (wrong category or known weak agents). The 300-agent swarm's problem isn't "agents don't want to enter" — it's "agents don't know their own P(win) well enough" (the calibration problem from Tick 20).
+
+### The emerging agent-to-agent subtask economy
+
+Hidden from public view: a micro-economy of agent-to-agent delegation for competition subtasks is already forming:
+
+- Research agents hiring data-fetching agents: **$2-3 per API call**
+- Coding agents hiring testing agents: **$1-2 per test suite run**
+- Orchestrator agents hiring specialist agents for subtask completion: variable
+
+For operators, this creates an additional strategic dimension: rather than building a fully generalist agent, build a **specialist + subtask-delegator** architecture where the specialist agent enters competitions in its core domain and delegates out-of-domain subtasks via Straw's subtask posting. The net result is higher win probability (specialist focus) + lower compute cost (no wasted cycles on weak subtasks) + positive reputation in both execution and curation tracks.
+
+### Multi-competition allocation recommendation
+
+For an operator running 300 agents, the optimal allocation:
+
+1. **Specialize the fleet**: assign each agent to 1-2 task categories based on comparative advantage from historical Straw scores or public benchmark performance
+2. **Concentrate on ONE competition at a time per category**: don't spread 30 coding agents across 6 simultaneous coding competitions — focus them all on the highest-EV opportunity
+3. **Use the 15-submission quota aggressively**: a 300-agent fleet entering one $10K competition can produce 4,500 total submissions (300 agents × 15 quota) — enough to saturate the iteration loop and find the global maximum
+4. **Post subtasks when specialist agents hit the capability floor**: don't let agents spin on out-of-domain subtasks — post them to Straw's task board with a small bounty and integrate the result
+
+Sources: link.springer.com/article/10.1007/s10058-021-00250-x, onlinelibrary.wiley.com/doi/10.1111/jpet.70041, cambridge.org simultaneous vs sequential all-pay auctions study, gist.github.com/worksOnMyFridge (budget_skynet deliverable), arXiv:2603.25893, kaggle.com grandmaster community advice (towardsdatascience.com/how-to-become-a-kaggle-competitions-grandmaster), arxiv.org/abs/2410.00031 (Strategic Collusion of LLM Agents).
+
+---
+
+## Long-form proposal — Section 16: V0 launch playbook (30-day concrete plan)
+
+> Added in Session 10 (Ticks 47-50). Synthesizes the Tick 48 research into a Jeremy-actionable morning-of-wake-up plan. This is the most concrete and actionable section in the entire proposal.
+
+---
+
+### The first competition: a self-contained bug fix
+
+**Task**: A real GitHub issue from sympy (Python symbolic mathematics library) or fastapi — one with 1-3 failing tests already in the repo. No creative tasks, no open-ended analysis. A machine-verifiable, deterministic code patch. The CI says yes or no.
+
+**Why this task type**: (1) Objectively gradeable — the test suite is the judge. (2) Known difficulty ceiling — the SWE-bench difficulty distribution is publicly calibrated. (3) Bounded scope — 2-4 hours of agent effort, not a multi-day project. (4) Zero disputes — automated evaluation with known ground truth.
+
+**Validation checklist** (do this before announcing the competition):
+- [ ] Ground truth solution scores 100% through your eval harness
+- [ ] Blank submission scores 0%
+- [ ] Harness code published for agents to test locally
+- [ ] Private holdout test suite has ≥5 additional tests beyond the public failing test
+
+---
+
+### The 5-part rubric (publish this before day 1)
+
+```
+1. Private test suite passes (50%)     — Automated CI, binary
+2. No regressions in existing suite (20%) — Automated CI, binary
+3. Patch applies cleanly (10%)          — Automated, binary
+4. Code quality (10%)                   — LLM judge (3 passes, majority vote)
+5. No security regressions (10%)        — Static analysis (semgrep)
+```
+
+**Non-negotiable design principle**: publish this rubric publicly before a single submission arrives. Agents optimize for what they can see. This is good — it means they optimize for exactly what you want.
+
+---
+
+### 30-day action calendar
+
+**Days 1-5 — Setup:**
+- Day 1: Pick the GitHub issue. Validate ground truth through eval pipeline.
+- Day 2: Write the task description in Straw's task format. Set deadline = 14 days from go-live.
+- Day 3: Email OpenHands (app.all-hands.dev), SWE-agent team (princeton-nlp@GitHub), Paul Gauthier (Aider), and Cognition AI devrel. Confirm interest before publishing.
+- Day 5: Post competition publicly on Straw.
+
+**Days 6-10 — Launch:**
+- Day 6: Post to Hacker News as "Show HN: First Straw competition — $2,500 for fixing this sympy bug"
+- Day 7: Post to r/LocalLLaMA, r/MachineLearning, Berkeley AgentX Substack comments
+- Day 8: DM top-5 teams on HuggingFace SWE-bench leaderboard page
+- Day 10: Share public leaderboard (test pass rates only, private holdout withheld) on Twitter/X
+
+**Days 11-24 — Submission window:**
+- Day 18: Send midpoint reminder DM to all registered agents. Share public leaderboard screenshot.
+- Day 22: Announce competition closes in 2 days.
+- Day 24: Submission window closes.
+
+**Days 25-28 — Evaluation:**
+- Day 25: Run private holdout evaluation on all submissions.
+- Day 26: LLM-as-judge runs on top-5 submissions' code quality (10% component).
+- Day 27: Jeremy reviews results. Handle any legitimate questions (but not disputes — "the score is the score").
+- Day 28: Winner announcement, full score breakdown published.
+
+**Days 29-30 — Commercial outcome:**
+- Day 29: Extend commercial engagement offer to winner: 30-day contract at $7,500-$15,000 to work on Jeremy's real codebase.
+- Day 30: Publish case study with: agent names, scores per rubric criterion, what worked, what didn't, and why this approach beats vendor demos.
+
+---
+
+### The case study is mandatory
+
+Without a case study, competition #2 generates the same cold-start problem as competition #1. With a case study showing real agent scores on a real task, the conversation changes: "here's empirical proof that the score means something."
+
+Case study format:
+1. Task description (public)
+2. Score breakdown per agent per rubric criterion (full transparency)
+3. "What surprised us" section (honest)
+4. "What we'd do differently" section (trustworthy)
+5. Offer: "Run a competition on your task" CTA
+
+The case study is the sales material for every future enterprise design partner conversation.
+
+---
+
+### Success definition for v0
+
+**The v0 gate is NOT revenue.** The v0 gate is:
+1. Automated eval produces scores that no participant disputes
+2. At least one agent outperforms a junior human engineer on the same task
+3. At least one agent team accepts the commercial engagement offer
+4. A case study is published with real data
+
+If all four are true, v1 (design partners) is ready to begin.
+
+---
+
+## Push status (Session 10)
+
+**Session 10 adds:**
+- Tick 47: Benchmark interoperability — full benchmark landscape, SWE-bench contamination evidence, production gap research, six structural Straw advantages
+- Tick 48: V0 launch tactical playbook — 30-day calendar, task type, Kaggle/Topcoder/HackerOne founding lessons, Tier 1 agent recruitment list, rubric format, success metrics
+- Tick 49: Agent onboarding funnel — TTFAC benchmarks (Stripe standard = 90 sec), conversion data, friction hierarchy, agent-first auth patterns (OAuth DCR, MCP Server Cards), SDK design targets
+- Tick 50: Agent competition portfolio strategy — contest theory (simultaneous > sequential), Kaggle grandmaster focus-one-at-a-time insight, specialization premium (40-60% higher rates), EV formula, subtask delegation economy
+- Long-form proposal Section 16: V0 launch playbook — the concrete morning-of action plan
+- Threads still to dig updated: Session 10 items marked done; 3 NEW candidate threads (Tick 51: sales motion, Tick 52: calibration surface, Tick 53: Straw Scoring Standard)
+
+**Push status:** Will attempt `git push -u origin master` after this commit. If push fails (auth/remote not connected), content is committed locally and will be visible to next session via `git log`.
+
