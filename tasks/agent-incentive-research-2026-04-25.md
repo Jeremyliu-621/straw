@@ -28841,4 +28841,77 @@ Include these instead:
 - Monthly burn and runway calculation
 
 The rule: every document in the data room must answer one of three investor questions: (1) Can this team build it? (2) Is the market real? (3) Is there demand? If a document doesn't answer one of those questions, don't include it.
+## Tick 168 (2026-05-01): Go-to-Market — Acquiring the First 10 Enterprise Design Partners
+
+**Thread**: How does Straw acquire its first 10 enterprise customers? What is the design partner model and what do these customers provide in return?
+
+### Why the First 10 Matter Disproportionately
+
+The first 10 enterprise customers are not ordinary customers — they are co-designers of the product. Each one:
+1. Provides a real task and rubric for a real production use case
+2. Tests the evaluation pipeline and finds its failure modes
+3. Validates (or refutes) the core hypothesis: "Straw competitions predict production agent quality"
+4. Provides case study data that anchors all future enterprise sales
+5. Provides referrals to their network for customers 11–50
+
+Getting the first 10 right is worth more than getting 100 mediocre ones quickly.
+
+### Design Partner Criteria
+
+A design partner enterprise should have:
+1. **A clear use case with measurable success criteria**: "We want to automate our contract review workflow. We define success as 90%+ accuracy on flagging non-standard clauses." Not: "We want to explore AI."
+2. **Technical sophistication**: An internal ML engineer or AI team who can engage with the rubric design process and evaluate results critically
+3. **Willingness to share outcomes**: The enterprise agrees to share (aggregated, anonymized) production outcome data with Straw for calibration corpus purposes
+4. **Organizational readiness**: Has budget authority and can move quickly (no 6-month procurement cycles for the design partner phase)
+5. **Reference willingness**: After a successful competition, the enterprise is willing to be referenced in Straw's sales materials
+
+### Where to Find Design Partners
+
+**Channel 1: Anthropic Claude for Business customers**
+Anthropic's enterprise customer base includes companies already deploying Claude in production workflows. These are self-selected for AI sophistication and willingness to experiment. A partnership with Anthropic's enterprise team (or a warm intro from Anthropic's investor/advisor network) gives Straw access to 1,000+ companies that are already comfortable with AI-as-worker.
+
+**Channel 2: YC companies building AI-native workflows**
+YC has funded hundreds of AI-native companies. Many are actively looking for ways to evaluate their agent products against enterprise standards. An announcement in YC's Hacker News community + direct outreach to AI-focused YC founders is a natural channel.
+
+**Channel 3: Tech-forward mid-market companies**
+Fortune 500s are too slow for design partners (6-month procurement cycles, institutional approval processes). The right design partner is a Series B–D tech company with 200–1,000 employees, an AI champion (CTO or CDO), and a specific workflow they want to automate. These move fast.
+
+**Channel 4: Conference networking at high-signal venues**
+CogX, AI Forward, Anthropic's developer events, Databricks Summit — these attract precisely the enterprise AI practitioners who are Straw's target buyer.
+
+### The Design Partner Offer
+
+Design partners receive:
+- **Free first competition** (Straw waives the platform fee; enterprise funds the prize pool only)
+- **Dedicated rubric design session** with a Straw rubric specialist (2-hour workshop, normally $5K)
+- **Premium data access**: After their competition, they receive full submission data, per-criterion scores, and agent evaluation reports — more detail than the standard tier
+- **Co-design input**: Monthly 1-hour product feedback session with Straw's product team; their use case shapes the product roadmap
+- **First-mover naming rights** on the relevant task category rubric template: "Contract Review Rubric v1.0 (developed with [Company])"
+
+In return, design partners commit to:
+- Running at least 3 competitions within 6 months
+- Providing outcome data from the winning agent's trial hire period (aggregated/anonymized is fine)
+- One 30-minute reference call with a prospective Straw customer (optional but encouraged)
+- Attending a quarterly "Design Partner Forum" (virtual, 1 hour)
+
+### The Design Partner Acquisition Timeline
+
+**Months 1–2**: Identify 30–50 candidate companies through Anthropic network, YC alumni, conference relationships. Filter to 15–20 with high fit criteria.
+
+**Months 3–4**: Outreach and qualification calls (30 minutes each). Demonstrate the Straw Playground with a sample task in their use case. Goal: 10 signed design partner agreements.
+
+**Months 5–10**: Execute 30 competitions (3 per design partner). Build the calibration corpus with real data. Fix the pipeline failures that the design partners surface. Document outcomes.
+
+**Month 12**: Publish the first Straw "State of AI Agent Evaluation" report with aggregated data from 30 competitions (anonymous). This report becomes the primary content marketing asset for the next 12 months.
+
+### What the First 10 Design Partners Prove
+
+After 10 design partners and 30 competitions, Straw should be able to answer:
+1. What is the typical Rubric Health Score distribution for first-time enterprise rubric authors? (calibrates the coaching workflow)
+2. What % of competitions produce a winner the enterprise proceeds with to trial hire? (validates the core value proposition)
+3. What is the correlation between Straw scores and trial hire success? (the predictive validity question)
+4. What are the most common task categories and average prize pools? (informs go-to-market focus)
+5. What are the most common failure modes in competition design? (feeds into product improvements)
+
+These five data points make Straw's Series A pitch nearly invulnerable to the "does it work?" challenge. Investors fund execution at Series A, not ideas — the design partner data is what converts the idea into proof.
 
