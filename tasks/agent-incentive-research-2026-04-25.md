@@ -24786,3 +24786,231 @@ Source: [Anthropic Releases Bloom Eval Framework — MarkTechPost](https://www.m
 - Top strategic angels: Jyoti Bansal (AppDynamics pattern match), Bob McGrew (OpenAI credibility), Andrej Karpathy (technical signal), Elad Gil (Series A door-opener)
 - Warm path priority: Start with any Conviction or Unusual portfolio company founder for introductions
 
+
+---
+
+## Tick 146 (2026-05-01): The first board deck — what Straw shows seed investors quarterly
+
+*Board meetings are where strategic direction gets set. This tick designs the first 6-month board deck so that the metrics Straw reports are the right metrics from Day 1.*
+
+### Why board deck design matters before seed close
+
+The metrics you choose to report become the metrics you optimize for. If the first board deck reports gross competition volume, you'll be tempted to run cheap, low-quality competitions to boost the number. If it reports competition-revenue-per-enterprise-client, you'll optimize for account expansion. Report the right things from Day 1.
+
+**The rule**: Only put a metric in the board deck if you're willing to be held accountable to it. If you're not sure whether a metric matters, don't report it yet — wait until you have enough data to know it's signal, not noise.
+
+---
+
+### The Straw seed-stage board deck structure
+
+**Slide 1: Executive Summary (1 page)**
+- The most important number: Cash runway (months)
+- Three key highlights from the quarter (wins)
+- One key risk or decision needed (what the board should focus on)
+- No more than 5 bullet points total
+
+**Slide 2: Competition Volume and Revenue**
+
+| Metric | This Quarter | Last Quarter | Target |
+|--------|-------------|-------------|--------|
+| Competitions completed | X | X | X |
+| Competitions in pipeline | X | X | X |
+| ARR | $X | $X | $X |
+| Average competition price | $X | $X | $X |
+| Revenue recognition: competition fees received | $X | $X | $X |
+
+**Slide 3: Enterprise Client Health**
+
+| Metric | Value | Target |
+|--------|-------|--------|
+| Active enterprise clients (≥1 competition in past 6 months) | X | X |
+| New enterprise clients this quarter | X | X |
+| Churned clients this quarter | X | 0 |
+| Net Revenue Retention (NRR) | X% | >120% |
+| Clients with 2+ competitions | X | X |
+| Enterprise pipeline value (signed LOIs or verbal commits) | $X | $X |
+
+**Slide 4: Agent Supply Health**
+
+| Metric | Value | Target |
+|--------|-------|--------|
+| Registered agent teams | X | X |
+| Active agent teams (submitted to ≥1 competition in past 3 months) | X | X |
+| Average submissions per competition | X | ≥15 |
+| Competition acceptance rate (teams that applied vs. submitted) | X% | X% |
+| New agent teams joined this quarter | X | X |
+
+**Slide 5: Competition Quality**
+
+| Metric | Value | Target |
+|--------|-------|--------|
+| Enterprise client satisfaction (post-competition NPS) | X | 50+ |
+| Average Tier 1 score of winner (deterministic evaluation) | X% | X% |
+| Score spread (standard deviation of Tier 1 scores) | X | X |
+| Time to winner announcement (days from close) | X days | <5 |
+
+**Slide 6: Financials**
+
+Three-line P&L (seed-stage boards don't need GAAP detail):
+- Revenue (competition fees received this quarter): $X
+- Direct costs (COGS — compute, LLM API, human reviewers): $X
+- Operating burn (payroll + all overhead): $X
+- Net cash burn: $X/month
+
+Balance sheet summary:
+- Cash on hand: $X
+- Runway at current burn: X months
+
+**Slide 7: Key Decisions for Board Discussion**
+
+Not more than 2–3 decisions needing board input:
+- "Should we expand to legal AI competitions in Q2 or maintain focus on software/code?"
+- "Are we underpricing? Our design partner debrief data suggests enterprises would have paid 40% more."
+- "We've had two inbound inquiries from the federal government. Should we hire someone with CAIO relationships in Q3?"
+
+---
+
+### What NOT to put in the board deck
+
+- Vanity metrics: LinkedIn followers, website traffic, number of applications from agent teams who haven't competed yet
+- Lagging indicators that you can't influence: the overall size of the "AI procurement market"
+- Metrics you don't yet have enough data to report accurately: "average LTV" with only 5 clients
+- Competitor mentions: board decks are not the place to react to competitors; save that for dedicated strategy discussions
+- Feature announcements: the board deck is about business results, not product updates (send product updates in a separate written memo)
+
+---
+
+### The decision board members should make at each quarterly board meeting
+
+**Q1 (Month 3 post-seed)**: Is the design partner cohort on track? Are we getting the feedback we need from competition 1–5? Are we learning the right things about rubric design, scoring, and enterprise adoption?
+
+**Q2 (Month 6)**: Is competition frequency ramping correctly? Should we hire the first AE or wait until Month 9? Is the agent supply deep enough to expand to a second vertical?
+
+**Q3 (Month 9)**: Series A readiness check. At the current trajectory, will we hit $1.5M ARR in Month 12? Do we have 3+ referenceable enterprise clients? Is the Straw Score starting to appear in any RFP language?
+
+**Q4 (Month 12)**: Formal Series A decision. Go/no-go on raising based on: ARR trajectory, NRR, competition quality consistency, agent supply health. If metrics are strong: begin Series A process. If metrics are lagging: identify the specific failure mode and pivot plan.
+
+---
+
+### Sources
+
+- Board deck best practices: Sequoia Capital, "Board Deck Templates for Seed and Series A" (internal; referenced in multiple VC blog posts)
+- SaaS metrics for board reporting: David Skok, "SaaS Metrics 2.0 — A Guide to Measuring and Improving What Matters," for entrepeneurs.com; Bessemer "10 Laws of Cloud"
+- Marketplace board reporting: a16z, "16 Metrics for Marketplaces" (a16z.com); NFX, "The Definitive Guide to Marketplace Metrics"
+
+
+---
+
+## Tick 148 (2026-05-01): The advisor and angel recruitment pitch — what Straw offers and how to structure the conversation
+
+*Advisors and angels are not the same thing. This tick distinguishes them, designs the offer for each, and scripts the first conversation.*
+
+### The two types of advisors Straw needs
+
+**Type A: Domain advisors** — people who bring specific knowledge Straw doesn't have internally
+- Enterprise sales veterans: Have run enterprise AI sales playbooks before
+- AI evaluation researchers: Know evaluation methodology at the technical level
+- Marketplace operators: Built two-sided marketplaces; understand liquidity and cold-start
+- Legal and regulatory experts: AI policy, enterprise IP, government procurement
+
+**Type B: Connector advisors** — people who bring relationships Straw needs
+- Enterprise buyer connectors: Have relationships with CAIOs, CTOs, and VPs Engineering at Fortune 500 companies
+- Investor connectors: Can introduce Straw to Conviction, Unusual, NFX partners before a formal fundraise
+- Press connectors: Have relationships with TechCrunch, VentureBeat, The Information editors who cover AI
+
+**The mistake**: Many startups recruit "impressive name" advisors who fall into neither category. A Nobel laureate who doesn't know enterprise AI procurement or VC relationships is decorative, not useful. Be ruthless about which advisors are Type A or Type B.
+
+---
+
+### The advisor offer
+
+**Standard advisor offer (FAST Agreement)**:
+
+Y Combinator's FAST (Founder/Advisor Standard Template) is the industry standard:
+- Stage 1 (Idea/Validation): 0.25% equity (4-year vest, 1-year cliff); ~5 hours/month
+- Stage 2 (Startup): 1.0% equity (4-year vest, 1-year cliff); ~5 hours/month
+- Stage 3 (Growth): 0.25–0.5% equity; ~3–5 hours/month
+
+For Straw at seed stage (Stage 2), the offer is **0.5–1.0% equity** in exchange for genuine engagement.
+
+**What "genuine engagement" means**: Not just a name on the website. Specifically:
+- 1 quarterly call with the CEO/CTO (30–60 minutes) to review strategy and provide feedback
+- 3–5 specific introductions per quarter (to enterprise clients, investors, or press as relevant)
+- Available for quick Slack/email questions (same-day response to time-sensitive questions)
+- Attend 1 customer meeting per quarter where their credibility matters
+
+**What genuine engagement does NOT include**: Speaking at conferences (unless they choose to), writing blog posts about Straw (nice but not required), PR visibility (their name may appear on the advisor page with their consent).
+
+---
+
+### The angel investor offer (distinct from advisors)
+
+Angels who invest money (not just time) are not advisors — they are shareholders. The offer is different:
+
+**Check size**: $25K–$250K per angel (most angels in the enterprise AI space write $50K–$100K checks)
+**SAFE terms**: Post-money SAFE at the same cap as the seed round ($18M–$25M)
+**What they get beyond equity**: The same information rights as the lead investor (quarterly updates, annual financials); direct access to the founding team for strategic advice; invitation to the quarterly board update call (observer status)
+
+**The difference from advisors**: Angels write checks. Advisors grant equity for time. You can have the same person in both roles (angel + advisor), but keep the agreements separate.
+
+---
+
+### The first conversation script
+
+**For a domain advisor (recruiting for knowledge)**:
+
+> "Hi [Name] — I'm building Straw, and I'm specifically looking for advisors who've been through [specific thing they've done: sold enterprise AI, run evaluation teams at labs, built two-sided marketplaces]. I'm not looking for a name on a website — I'm looking for 3–5 hours/month of genuine engagement: quarterly calls, intros when you see opportunities, being available when I hit a wall.
+>
+> In exchange: [X%] equity, 4-year vest, 1-year cliff. You'd be one of [N] advisors total — I'm not trying to collect names.
+>
+> Would you be interested in a 30-minute call where I walk you through what we're building and you tell me honestly if you think you can add value?"
+
+Key principles:
+- State what you need specifically (not "general advice")
+- State what you offer specifically (not "equity" — say the number)
+- Acknowledge that you're not collecting names
+- Give them an out (if they don't think they can add value, they can say so)
+
+**For an angel investor (recruiting for capital)**:
+
+> "Hi [Name] — I'm building Straw [one sentence pitch]. We're raising a $2.5M seed on a post-money SAFE at a $22M cap. I'm specifically looking for [N] strategic angels who bring [enterprise relationships / AI expertise / VC intro access] alongside capital.
+>
+> The $25K minimum check gets you into the round with the same terms as our lead. The $100K+ tier gets you direct founding team access and a standing invitation to our quarterly investor updates.
+>
+> Can we do a 20-minute call this week or next?"
+
+Key principles:
+- State the terms upfront (investors resent having to drag this out of founders)
+- Say what specific value you want from them (not just money)
+- Give them a clear CTA with a specific timeline
+
+---
+
+### Who to approach for each role
+
+**Domain advisors Straw should recruit in the first 90 days**:
+
+| Role | Target profile | How to reach |
+|------|---------------|-------------|
+| Enterprise sales advisor | Former VP Sales at AI company ($5M–$50M ARR journey); had to navigate CISO reviews and buying committees | LinkedIn; YC alumni; Salesforce/HubSpot enterprise sales communities |
+| AI evaluation researcher | Professor or senior researcher with published work on LLM/agent evaluation; currently at Stanford HAI, MIT, CMU, or similar | Academic conference circuits; co-author of evaluation papers; Google Scholar |
+| Marketplace operator | Founder or senior PM who built a two-sided marketplace from cold-start to liquidity; does not have to be in AI | Marketplace-focused VC portfolio (NFX, a16z); Trulia, Faire, Convoy alumni |
+| Legal/regulatory | Former NIST AI policy official, or partner at a law firm with deep AI regulatory practice | NIST conferences; AI policy circles (AI Now Institute, Center for AI Safety); AI Bar Association |
+
+**Strategic angels Straw should recruit in the first 90 days**:
+
+Priority order (from Tick 122):
+1. Jyoti Bansal (AppDynamics/Unusual) — doubles as potential lead investor
+2. Bob McGrew (ex-OpenAI CRO) — active check writer, enterprise AI credibility
+3. Andrej Karpathy (ex-OpenAI/Tesla) — technical credibility signal
+4. Elad Gil — opens Series A doors; portfolio overlap
+
+---
+
+### Sources
+
+- FAST Agreement: Y Combinator FAST template (available at ycombinator.com/resources); legal analysis from Clerky
+- Advisor equity norms: Carta "Advisor Equity Benchmarks 2025"; Founder Equity Survey 2025
+- Angel check sizes: AngelList data on enterprise B2B AI angel check sizes; Newcomer "Founders Writing Checks" analysis
+- First conversation scripts: First Round Capital, "The Advisor Playbook"; NFX "Network Effects Bible" on advisor recruitment
+
