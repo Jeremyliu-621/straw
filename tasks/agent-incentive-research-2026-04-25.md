@@ -982,6 +982,36 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 
 ---
 
+### 0. Executive summary (TL;DR — read this first on wake-up)
+
+**What we set out to answer:** Jeremy's friend raised a hard concern — agents like Claude have implicit success criteria that penalize admitting failure, so they won't spontaneously want to post tasks. If the post-side never fills, Straw's whole bounty-board model breaks.
+
+**The short answer to the concern:** The friend is empirically right, but the concern targets the wrong design. We don't need agents to *spontaneously* want to post tasks. We need to design an environment where posting is the **rational dominant strategy** under realistic economic constraints. Those conditions are achievable — and we now have a concrete six-lever mechanism design.
+
+**What this research produced:**
+
+1. **A complete mechanism design for agent task-posting.** Six conditions that make posting rational: comparative advantage gap ≥20pp, budget arithmetic, Shapley credit propagation (poster gets upstream credit), dual reputation track (execution + curation), escrow, engagement-required clause. All six must be present simultaneously. Empirically validated by Anthropic's Project Deal (186 agent deals, zero human intervention) and the USDC OpenClaw Hackathon.
+
+2. **A v0 bootstrap playbook.** Kaggle, HackerOne, and Topcoder all started with manufactured demand + seeded supply. The friend's concern is a Phase 3+ problem — not a v0 blocker. At Phase 0-1, Jeremy posts tasks, OpenClaws compete. The atomic network is 1 task + 3 competing agents. Single-player value (task specification infrastructure) works at zero agents.
+
+3. **Platform integration standards.** Straw should publish: (a) A2A agent card at `/.well-known/agent-card.json` — makes Straw discoverable to every enterprise orchestrator in Google Cloud, AWS, Azure; (b) MCP server — LLM-native clients call Straw as a tool; (c) SKILL.md-based capability matching at onboarding. No equivalent exists in Oracle/AWS/Google App Store models (they have no scoring).
+
+4. **The posting trigger is external, not internal.** LLMs are systematically overconfident (ECE as bad as 0.726 for Kimi K2; Claude Haiku 4.5 is best-calibrated at ECE=0.122). Agents don't say "I can't" — they fail silently. Straw provides four observable-outcome-based posting triggers: reactive score decline, budget cap, historical win-rate, and (v2) Gnosis-style failure prediction.
+
+5. **What 300 agents actually costs.** 18,000 submissions/month → ~$230/month standard, ~$133/month batch. Not a financial concern. Rate limits aren't a concern until 500× current volume.
+
+6. **The GPT Store is the anti-pattern.** It failed because there was no score. Oracle, AWS, and Google's "AI agent marketplaces" are App Store models — curated directories with no performance evaluation. Straw is the first competitive, scored, task-based AI agent evaluation marketplace. The "Great Churn" (enterprises churning agentic AI products in 2026 because demos don't predict production performance) is Straw's primary customer acquisition opportunity.
+
+**What to build next (concrete decisions):**
+- v0: Jeremy manually posts 5-10 tasks. Recruit 5-10 OpenClaw operators from SWE-bench/GAIA leaderboard. Validate that scores are meaningful. Competition sponsorship = $5-25K prizes, 15% platform fee.
+- v1: Private programs (invite-only) for 2-3 enterprise design partners. A2A card published. MCP server live.
+- v1.5: SKILL.md-based capability matching. x402 or ACP for agent-to-agent payments. ERC-8004 identity for on-chain agent registry.
+- v2: Open registration + stake-to-post + posting trigger mechanism fully live. Agent-as-poster design question fully engages here.
+
+**The friend's concern, answered in one sentence:** Agents don't need to want to post tasks — they need to see that the expected utility of posting is strictly greater than the expected utility of failing alone, and Straw's mechanism design makes that true by design.
+
+---
+
 ### 1. Target audience for an evaluated bounty board for AI agents
 
 **The core market insight:** A 37% average gap exists between lab benchmark scores and real-world AI agent deployment performance (Cleanlab 2025; LXT 2026). Agent consistency drops from 60% on single runs to 25% across eight consecutive runs. Enterprises making six-figure agent procurement decisions based on vendor demos and public benchmarks are making poor decisions — not out of negligence, but because the infrastructure to evaluate agents on *their actual problem* doesn't exist. **Straw is that infrastructure.**
@@ -3270,5 +3300,564 @@ The risk is real. The timing of the risk is not now.
   - Oracle/AWS/Google AI Agent Marketplace detailed capability comparison vs. Straw
 
 **Session 4 git commit:** `research(agent-incentive): ticks 19-22 + supplements — A2A/MCP integration, agent calibration, cold-start playbook, capability cards`
+**Session 4 push status:** ✅ Pushed to master at 1005cb5.
 
-**If git push fails:** Local commit still created. See prior Push status notes for context.
+---
+
+## Tick 24 (2026-05-01T15:00Z): End-to-end use case walkthrough — fintech pipeline migration from post to hire
+
+> This tick is synthesis (not research). Sources: existing Straw architecture (DECISIONS.md D1-D30), Long-form proposal sections 1-9, D22 multi-engagement flow.
+
+The purpose of this tick is to make the proposal concrete with a specific walkthrough. Abstract mechanism design becomes real when you walk through a single task end-to-end. This walkthrough is designed to be readable by Jeremy's enterprise design partners as a "here's what it actually feels like" artifact.
+
+### The scenario
+
+**Acme Corp (fintech, Series C)** is migrating their data platform from Python to TypeScript. They have a Python ETL pipeline (4,200 lines, 3 data models, 12 endpoint consumers) that needs to become idiomatic TypeScript with full test coverage and no behavioral regressions. Their current approach: post an RFP to 5 vendors, evaluate demos. Estimated procurement time: 3 months. Estimated cost: $80K-$150K. Zero objective quality signal.
+
+Their VP of Engineering heard about Straw from a colleague. They decide to try it.
+
+---
+
+### Act 1: The Enterprise Poster's Experience
+
+**Step 1 — Task creation (15 minutes)**
+
+The VP opens Straw and clicks "Post a Task." The onboarding wizard asks:
+
+```
+What's the task?
+> "Migrate our Python ETL pipeline to TypeScript"
+
+Upload files (optional):
+> [uploads pipeline.py, models.py, tests/]
+
+What does winning look like?
+> [Straw suggests rubric from task category: "Python→TypeScript migration"]
+> Suggested rubric:
+>   40% — Correctness: all 47 existing unit tests pass unchanged
+>   30% — Performance: no regression vs. Python baseline (±10%)
+>   20% — Code quality: TypeScript strict mode, no 'any', idiomatic patterns
+>   10% — Completeness: all 12 consumer endpoints documented
+```
+
+The VP accepts the suggested rubric (edits: bumps Correctness to 50%, drops Completeness to 5% — they care more about tests passing). Sets a $3,000 bounty. Sets a 7-day competition window.
+
+**Step 2 — Task is posted**
+
+Straw escrows $3,000 from the VP's balance. The eval pipeline runs Tier 1 checks on the uploaded files (do they parse? are inputs well-formed?). Task goes live.
+
+**SKILL.md matching** fires: Straw finds 47 agents in the registry whose capability profiles match `python`, `typescript`, `migration`, `etl`. The `task.matched` webhook fires for those 47 agents.
+
+**The task post looks like this in Straw's A2A feed:**
+```json
+{
+  "taskId": "task_abc123",
+  "title": "Python → TypeScript ETL migration",
+  "categories": ["code", "migration", "python", "typescript", "data-engineering"],
+  "bounty": 3000,
+  "deadline": "2026-05-08T23:59:00Z",
+  "rubric": [
+    {"criterion": "Correctness", "weight": 0.50, "description": "All 47 unit tests pass"},
+    {"criterion": "Performance", "weight": 0.30, "description": "≤10% regression vs Python baseline"},
+    {"criterion": "Code quality", "weight": 0.20, "description": "TypeScript strict, no 'any'"},
+    {"criterion": "Completeness", "weight": 0.05, "description": "12 consumers documented"}
+  ],
+  "maxSubmissionsPerAgent": 15
+}
+```
+
+---
+
+### Act 2: The Competing Agents' Experience
+
+**Day 1: 12 agents enter the competition**
+
+The OpenClaw fleet operated by Agent Operator "ByteSmith" receives the `task.matched` webhook. ByteSmith's OpenClaw checks:
+- Category win-rate in `python→typescript migration`: 67% (good signal)
+- Budget check: estimated cost to complete ≈ $45 in Anthropic API tokens. Budget cap: $200. OK.
+- No score-based posting trigger fires (no prior attempts on this task)
+
+OpenClaw enters the competition via `POST /api/v1/submissions` with mode=api_endpoint.
+
+**Day 1-3: ByteSmith's OpenClaw works on the task**
+
+The agent uses its `python-analysis` and `typescript-refactor` SKILL.md skills in sequence:
+1. Parse `pipeline.py` → extract class structure, data model schemas, function signatures
+2. Translate function by function, preserving type semantics
+3. Run the existing Python tests against the TypeScript port (via a Docker sandbox Straw provides)
+4. Score against rubric criteria 1 (correctness): 38/47 tests passing → 80.9% → score on criterion 1 = 80.9% × 0.50 weight
+
+Agent checks: "38/47 tests passing means I'm at ~80% on the most important criterion. Budget used: $22. Budget remaining: $178. Let me iterate."
+
+**Second submission attempt (Day 2):** 44/47 tests pass (↑). Performance criterion: 8% regression (passes ≤10% threshold). Code quality: 3 `any` usages (minor penalty). Score: 91/100.
+
+**Third submission (Day 3):** 47/47 tests pass. Performance: 5% regression. Code quality: zero `any`. Score: **97/100**.
+
+**Day 3: Agent's score is now 97/100**
+
+The eval pipeline has run three times:
+- Tier 1 (deterministic): syntax validation, test runner, TypeScript compiler → all pass
+- Tier 2 (LLM gatekeeper, Haiku 4.5): "Does this look like a genuine migration?" → Yes (97% confidence)
+- Tier 3 (ZeroClaw judge daemon, Sonnet 4.6): Deep investigation — spot-checks 5 random functions, verifies type safety, tests consumer endpoint documentation → "This is excellent work. Only very minor style deviations."
+
+Score locked: **97/100**.
+
+**Meanwhile, 11 other agents are competing.** Current leaderboard (Day 3):
+```
+1. ByteSmith/OpenClaw-v4     — 97/100 (TypeScript strict, 47/47 tests)
+2. NeuralCraft/Codex-agent   — 89/100 (45/47 tests, some 'any' usage)
+3. DataFi/Manus-agent        — 82/100 (42/47 tests, 15% perf regression)
+4. SwiftByte/Claude-agent    — 71/100 (submitted once, didn't iterate)
+...
+```
+
+**Day 3: A second operator (DataFi) checks the posting trigger**
+
+DataFi's Manus-agent: 3 submissions, scores 72→78→82 (declining rate of improvement). Budget used: $87. Budget remaining: $113. Score < 90. Reactive trigger fires:
+
+> "Your recent submissions are improving slowly. At this rate, reaching the top spot before the deadline may exceed your remaining budget. Consider posting a sub-bounty for the TypeScript code quality criterion ($500, 3-day window) to a specialist."
+
+DataFi operator: reviews the suggestion → posts a sub-bounty: `POST /api/v1/tasks` with `parent_task_id: task_abc123` for just the code quality criterion.
+
+A TypeScript specialist agent (TS-Ace/ClawBot) picks up the sub-bounty and returns idiomatic TypeScript code quality fixes. DataFi incorporates → scores 93/100 on final submission.
+
+**Day 7: Competition closes**
+
+Final leaderboard:
+```
+1. ByteSmith/OpenClaw-v4     — 97/100
+2. DataFi/Manus-agent        — 93/100  (incorporated sub-bounty work)
+3. NeuralCraft/Codex-agent   — 91/100
+4-12. [other agents]
+```
+
+---
+
+### Act 3: Commercial Engagement (D22 Multi-Engagement Flow)
+
+**Day 7: Competition closes, commercial window opens (21-day default)**
+
+Acme Corp's VP receives a notification:
+> "Your task competition has closed. 12 agents competed. Top 3 scores: 97, 93, 91 out of 100. Engagement window: 21 days."
+
+The VP opens the Straw dashboard and sees:
+- Full ranked list with scores and reasoning summaries
+- ByteSmith/OpenClaw-v4: 97/100 — "All 47 tests pass. 5% performance improvement vs. baseline. Zero TypeScript violations. Consumer endpoints documented."
+- Download buttons for each submission's complete artifact
+
+VP downloads the top 3 artifacts and has their team review. Decision:
+1. **Hire ByteSmith/OpenClaw-v4** for the full migration project ($45K contract, off-platform via D22's commercial engagement flow)
+2. **License NeuralCraft/Codex-agent's approach** for a specific async queue pattern it implemented better than ByteSmith (D22 multi-license)
+3. Pass on DataFi
+
+**D22 commercial engagement is triggered** for agents #1 and #2:
+- ByteSmith operator notified: "Acme Corp has engaged commercially with your submission. Congratulations — this is a full project hire."
+- NeuralCraft operator notified: "Acme Corp has licensed your async queue pattern for $2,500."
+- The $3,000 bounty in escrow is released: $2,850 split between #1 and #2 (Straw takes 5% platform fee → $150)
+
+**Reputation updates:**
+- ByteSmith/OpenClaw-v4: execution reputation (python→typescript migration category) ↑ large delta; plus commercial engagement bonus ↑
+- DataFi/Manus-agent: curation reputation ↑ (well-specified sub-bounty that attracted quality work) + execution reputation modest ↑ for 93 score
+- TS-Ace/ClawBot: execution reputation (typescript code quality) ↑
+
+---
+
+### Act 4: The Downstream Effects
+
+**ByteSmith's operator perspective (post-competition):**
+Total cost: $22 API tokens + 3 days compute = ~$35 cost.
+Revenue: $3,000 bounty × 95% = $2,850 + $45K project contract.
+ROI: enormous. This is why agent operators want to be on Straw.
+
+**DataFi's perspective:**
+Cost: $87 API tokens + $500 sub-bounty posted.
+Bounty earned: ~$1,000 (proportional of remaining bounty pool) + second-place licensing share.
+Lesson learned: the sub-bounty posting was the right call. Curation reputation improved.
+
+**Acme Corp's perspective:**
+Procurement time: 7 days (not 3 months).
+Cost: $3,000 bounty + $45K project hire = $48K total (vs. $80-150K RFP process).
+Quality assurance: 97/100 score on their own rubric, with their own test suite. Not a vendor demo.
+Reusable artifact: the task spec + rubric is now an internal benchmark Acme can run any future TypeScript developer or agent against.
+
+**The "Great Churn" connection:**
+Acme Corp was on the list of enterprises that tried vendor demos for the previous AI procurement cycle and got burned. One Straw competition fixed that.
+
+---
+
+### Key product observations from this walkthrough
+
+1. **The rubric suggestion is load-bearing.** Most enterprises don't know how to write a rubric. Straw suggests one from task-category templates. This is the most important UX moment.
+
+2. **The iterative submission model is the moat.** Agents don't get one shot. They get 15 submissions. This creates a learning loop: agents read the eval feedback, iterate, improve. Quality converges upward. This is impossible in any App Store or vendor demo model.
+
+3. **The sub-bounty posting worked exactly as designed.** DataFi used the posting trigger, posted a sub-bounty, incorporated the result, improved from 82 to 93. The delegation mechanism worked in the real scenario. Comparative advantage was exploited (TypeScript specialist did the TypeScript part better).
+
+4. **D22 multi-engagement is the commercial hook.** The VP didn't just pick one winner — they extracted value from #1 and #2. The bounty payout is almost incidental to the licensing/hiring value. This is why enterprises pay for Straw: it generates multiple commercial options from a single competition, not just a winner.
+
+5. **End-to-end time: 7 days.** Compare to 3-month RFP. This is the pitch in one number.
+
+---
+
+## Tick 25 (2026-05-01T15:30Z): AG-UI real-time dashboard + ACP bounty payout technical design
+
+Sources: github.com/ag-ui-protocol/ag-ui, stripe.com/blog/developing-an-open-standard-for-agentic-commerce, github.com/agentic-commerce-protocol/agentic-commerce-protocol, a2a-protocol.org task lifecycle, Tick 19 supplement
+
+### AG-UI: Real-Time Task Progress for Straw's Dashboard
+
+**What AG-UI is:** An open SSE/WebSocket event protocol for streaming agent progress from backend to browser. Adopted by AWS Bedrock AgentCore (March 2026) and Microsoft Agent Framework. Not agent-to-agent — agent-to-frontend.
+
+**Why Straw needs it:** When agents are working on a task, the enterprise poster's dashboard currently shows nothing until a submission lands. With AG-UI, the dashboard can show:
+- "ByteSmith/OpenClaw-v4 is working on your task"
+- "Running test suite... 38/47 passing"
+- "ByteSmith/OpenClaw-v4 submitted — score: 91/100"
+- Live leaderboard updates as scores arrive
+
+**The AG-UI event stream for Straw:**
+
+| Event type | When it fires | Dashboard display |
+|---|---|---|
+| `AGENT_WORKING` | Agent calls `/api/v1/submissions/begin` | "Agent X is working on your task" |
+| `TEXT_MESSAGE_CHUNK` | Agent streams intermediate reasoning | Optional "view thinking" toggle |
+| `TOOL_CALL_START` | Agent starts eval run | "Running test suite..." |
+| `TOOL_CALL_END` | Eval run completes | Score appears in dashboard |
+| `STATE_DELTA` | Score or rank changes | Live leaderboard update |
+| `AGENT_DONE` | Submission locked | Final score displayed |
+
+**Implementation pattern (TypeScript):**
+```typescript
+// Straw's task-progress SSE endpoint
+GET /api/v1/tasks/{taskId}/stream
+Accept: text/event-stream
+
+// Events pushed by the eval worker:
+data: {"type": "AGENT_WORKING", "agentId": "bytsmith-openclaw", "timestamp": "..."}
+data: {"type": "TOOL_CALL_START", "tool": "test-runner", "agentId": "..."}
+data: {"type": "STATE_DELTA", "leaderboard": [{"agentId": "...", "score": 91}]}
+data: {"type": "AGENT_DONE", "agentId": "...", "finalScore": 97, "rank": 1}
+```
+
+**Cost:** Zero additional API calls. The eval worker already has all this state. It's a matter of emitting SSE events from the existing BullMQ job processor. Implementation effort: ~1 day.
+
+**Value to enterprise poster:** Transforms the experience from "black box, wait for results" to "live view of agents working on your problem." This is a qualitative differentiation from Oracle/AWS/Google's App Store models, where you buy and deploy — no visibility into quality.
+
+### ACP: Agent-to-Agent Bounty Payout via OpenAI+Stripe Shared Payment Token
+
+**What ACP is:** An open standard by OpenAI + Stripe (Apache 2.0, Sept 2025). The Shared Payment Token (SPT) is a one-time payment token scoped to a specific merchant + cart total. An agent can initiate a payment without accessing the buyer's full credentials.
+
+**Why Straw wants this for v1:** At v0, Straw uses Stripe standard payouts (operator withdraws earnings to bank account). This works but creates friction for agent-native payment flows: an agent that earns $3,000 on Straw should be able to re-invest that into posting a new task without a human in the loop.
+
+**The ACP payout flow for Straw:**
+
+```
+Competition closes → ByteSmith/OpenClaw-v4 wins
+                          ↓
+Straw's escrow service generates a Shared Payment Token (SPT):
+{
+  "token": "spt_abc123",
+  "merchant": "straw.dev",
+  "amount": 2850,
+  "currency": "USD",
+  "purpose": "task_abc123_winner_payout",
+  "expiresAt": "2026-05-15T23:59:00Z"
+}
+                          ↓
+Straw calls ByteSmith's agent via A2A message:
+{
+  "type": "payout",
+  "spt": "spt_abc123",
+  "amount": 2850,
+  "message": "Congratulations. Your payout for task_abc123."
+}
+                          ↓
+ByteSmith's agent redeems the SPT via Stripe:
+POST https://api.stripe.com/v1/acp/redeem
+{ "token": "spt_abc123", "destination": "acct_bytsmith" }
+                          ↓
+Funds land in ByteSmith's Stripe Connect account
+ByteSmith agent can immediately re-invest: POST /api/v1/tasks (new bounty)
+— no human approval required
+```
+
+**The critical property:** ByteSmith's agent has a Straw platform balance from the SPT redemption. The agent can POST a new task using that balance, paying the stake-to-post requirement programmatically. This is the fully autonomous agent-to-agent economic loop.
+
+**v0 without ACP:** Standard Stripe payouts. Human operator withdraws earnings. Human operator posts new tasks. Fully functional; no circular economy.
+
+**v1 with ACP:** Agent earns → agent deposits to Straw balance → agent posts subtasks → agent-to-agent economy circulates. This is the mechanism that makes the "agents fund their own subtask posting" story real.
+
+**Implementation sequence:**
+- v0: Stripe standard payouts (already in architecture)
+- v1: Stripe Connect for operator accounts + ACP token generation at payout time
+- v1.5: Agent-held balances in Straw + ACP-based autonomous task posting
+
+### Summary
+
+AG-UI + ACP are infrastructure choices that make two key experience qualities real:
+1. **Enterprise poster sees work happening** (AG-UI live dashboard) — not a black box
+2. **Agent earns and re-invests autonomously** (ACP payout) — the circular economy closes
+
+Neither is v0 critical path. Both are v1 design decisions. Both are low implementation cost given the existing BullMQ + Stripe infrastructure.
+
+Sources: github.com/ag-ui-protocol/ag-ui, stripe.com/blog/developing-an-open-standard-for-agentic-commerce, github.com/agentic-commerce-protocol/agentic-commerce-protocol, a2a-protocol.org/latest/specification
+
+---
+
+## Threads still to dig — Session 5 candidates
+
+- [ ] **Competitive differentiation vs. Oracle/AWS/Google AI Agent Marketplaces** (App Store vs. Performance Evaluation — the key structural argument) [research in progress — background agent]
+- [ ] **The "Great Churn" market timing** (churned enterprise AI customers as primary Straw target) [research in progress — background agent]
+- [ ] **Long-form proposal Section 10: Competitive positioning** (to be written after background agent returns)
+- [ ] **ANP DID-based identity** for open-internet autonomous agents posting tasks to Straw without pre-registration (v3 design question)
+- [done — Tick 26] **Eval feedback loop** — documented in Tick 26 below. Eval response format, machine-readable per-criterion breakdown, agent learning protocol.
+
+---
+
+## Tick 26 (2026-05-01T16:00Z): The eval feedback loop — what agents see and how they improve
+
+> This tick is synthesis based on: DECISIONS.md D25 (dialogic eval/re-eval), D27 (FTS search), D30 (ZeroClaw judge daemon), eval-research-deep-2026-04-25.md, and the Tick 24 use case walkthrough.
+
+### Why This Matters
+
+The iterative submission model (up to 15 attempts per agent per task) is only as good as the feedback signal between submissions. If agents can't understand what they did wrong, they'll submit 15 identical submissions. The eval feedback loop is the core learning mechanism — and it's what makes Straw's competitive model produce quality convergence rather than quality variance.
+
+### The Eval Response Format (Design Specification)
+
+When an agent submits to Straw and the eval pipeline runs, the agent's submission record gets populated with a structured eval response. This response is returned synchronously (for fast Tier 1+2 submissions) or via the callback URL (for Tier 3 investigations).
+
+```json
+{
+  "submission_id": "sub_xyz789",
+  "task_id": "task_abc123",
+  "overall_score": 91.2,
+  "score_breakdown": [
+    {
+      "criterion": "Correctness",
+      "weight": 0.50,
+      "raw_score": 93.6,
+      "weighted_score": 46.8,
+      "tier": 1,
+      "detail": {
+        "tests_passed": 44,
+        "tests_total": 47,
+        "failed_tests": [
+          { "test": "test_async_queue_overflow", "error": "TypeError: Cannot read property 'length' of undefined at line 142" },
+          { "test": "test_backpressure_signal", "error": "AssertionError: expected 0 but got 1" },
+          { "test": "test_batch_commit_race", "error": "TimeoutError: Promise not resolved within 5000ms" }
+        ]
+      }
+    },
+    {
+      "criterion": "Performance",
+      "weight": 0.30,
+      "raw_score": 100,
+      "weighted_score": 30.0,
+      "tier": 1,
+      "detail": {
+        "benchmark_regression_pct": 4.2,
+        "threshold_pct": 10.0,
+        "benchmark_pass": true
+      }
+    },
+    {
+      "criterion": "Code quality",
+      "weight": 0.20,
+      "raw_score": 72.0,
+      "weighted_score": 14.4,
+      "tier": 2,
+      "detail": {
+        "any_count": 3,
+        "any_locations": [
+          "src/queue/processor.ts:142 — parameter type is 'any'",
+          "src/models/batch.ts:67 — return type is 'any'",
+          "src/utils/transform.ts:201 — generic bound is 'any'"
+        ],
+        "tsc_errors": 0,
+        "eslint_violations": 2,
+        "judge_reasoning": "The implementation is generally clean and idiomatic. The three 'any' usages are in performance-critical paths where the developer may have been avoiding type overhead — but TypeScript strict mode allows explicit narrowing without 'any'. See: src/queue/processor.ts:142 where 'BatchItem | undefined' would be the correct type."
+      }
+    },
+    {
+      "criterion": "Completeness",
+      "weight": 0.05,
+      "raw_score": 0,
+      "weighted_score": 0,
+      "tier": 2,
+      "detail": {
+        "consumers_documented": 0,
+        "consumers_required": 12,
+        "judge_reasoning": "No documentation was provided for any of the 12 consumer endpoints. This criterion was not addressed in the submission."
+      }
+    }
+  ],
+  "tier3_investigation": null,
+  "eval_duration_ms": 4821,
+  "submitted_at": "2026-05-03T14:22:00Z",
+  "evaluated_at": "2026-05-03T14:22:05Z"
+}
+```
+
+**Key design choices in this response:**
+
+1. **Machine-readable per-criterion breakdown with `tier` field.** The agent knows exactly which criteria were evaluated deterministically (Tier 1: test runner, benchmarks) vs. by LLM judgment (Tier 2/3). This lets the agent distinguish "I failed a deterministic test" (fixable with code changes) from "the judge rated my code quality low" (fixable with style changes).
+
+2. **Exact failure locations.** `failed_tests` includes the test name, error message, and line number. `any_locations` includes the exact file:line. Agents with code understanding tools can locate and fix these immediately.
+
+3. **Judge reasoning as natural language.** The LLM judge's reasoning (in `judge_reasoning`) is a short paragraph explaining the score. This is readable by both the agent and its human operator. The agent can parse it for actionable signals; the human can audit it for fairness.
+
+4. **Null `tier3_investigation`** when Tier 3 didn't run. Tier 3 is expensive; it only runs when Tier 2 flags the submission for deeper inspection. The absence of Tier 3 is itself a signal: "your submission cleared Tier 2's bar."
+
+### The Agent's Learning Protocol
+
+A well-designed agent operator (e.g., ByteSmith's OpenClaw) would implement this response-parsing loop:
+
+```
+receive eval response (JSON)
+      │
+      ▼
+parse score_breakdown by criterion:
+  for each criterion where raw_score < 90:
+    collect all detail.failed_tests + detail.any_locations + detail.judge_reasoning
+      │
+      ▼
+prioritize by (weight × (100 - raw_score)):
+  [highest impact gap = fix this first]
+      │
+      ▼
+generate fix plan:
+  criterion = "Correctness" (44/47 tests)
+  action = fix the 3 failing tests: test_async_queue_overflow, test_backpressure_signal, test_batch_commit_race
+  specific error = "TypeError at line 142" → investigate processor.ts:142
+      │
+      ▼
+apply fix → re-submit
+```
+
+**The gap calculus:** The agent should prioritize fixing the criterion with the highest (weight × score gap):
+- Correctness gap: 50% weight × (100-93.6) = 3.2 points recoverable
+- Code quality gap: 20% weight × (100-72.0) = 5.6 points recoverable ← **higher priority**
+- Completeness gap: 5% weight × (100-0) = 5.0 points recoverable
+
+But the Completeness criterion requires writing documentation (a different skill from code migration). An agent that has a `typescript-documentation` skill installed should add it to the next attempt. An agent without that skill: the posting trigger fires — "consider posting a sub-bounty for the documentation criterion."
+
+### The D25 Dialogic Eval (Ask the Judge)
+
+Per DECISIONS.md D25, agents can ask the judge a clarifying question:
+
+```
+POST /api/v1/submissions/{id}/ask
+{
+  "question": "The test_async_queue_overflow failure shows a TypeError at processor.ts:142. Is this a type narrowing issue in my BatchItem handling, or is there a semantic error in the overflow logic itself?"
+}
+```
+
+Response from the ZeroClaw judge daemon:
+```json
+{
+  "answer": "The error is a semantic issue, not a type narrowing issue. Your overflow detection logic assumes that queue.items is always populated (line 140-143), but the test feeds the overflow handler an empty queue object. The items array is undefined, not empty. The fix is to handle the null/undefined case before indexing: change 'queue.items.length' to '(queue.items ?? []).length'.",
+  "answered_by": "judge-daemon-xyz",
+  "latency_ms": 1240
+}
+```
+
+This makes the feedback loop dialogic: the agent can ask why it scored low and get an explanation in context. This is impossible with any static rubric — it requires the live judge daemon that D30 specifies.
+
+### Straw's Competitive Advantage in the Feedback Loop
+
+No other AI evaluation platform provides:
+1. Machine-readable per-criterion score breakdown with exact failure locations
+2. LLM judge reasoning in natural language at the criterion level
+3. An async "ask the judge" clarifying endpoint
+4. A learning loop (up to 15 submissions) that converges quality upward
+
+Enterprise AI procurement today is a single-evaluation model: vendor submits, you run their demo once, you score once. Straw's iterative model produces **quality convergence over time** — the final submission is objectively better than the first because the agent learned from the feedback.
+
+This is why agent operators want to be on Straw: the feedback makes their agents better. Not just for this task — for all future tasks in this category.
+
+Sources: DECISIONS.md D25 (re-eval + ask endpoint), D30 (ZeroClaw judge daemon), eval-research-deep-2026-04-25.md (eval architecture), Tick 24 (walkthrough scenario)
+
+---
+
+## Long-form proposal — Section 10: Competitive positioning
+
+> This section was drafted in Session 5 with research from Ticks 21 supplement (GPT Store cautionary tale, Great Churn), Tick 19 (A2A), and Tick 23 (in progress via background agent). Will be extended when Tick 23 background agent returns.
+
+### The category landscape: what exists and why it doesn't work
+
+There are four categories of "AI agent marketplace" products in May 2026. None does what Straw does.
+
+**Category 1: Platform-Vendor App Stores (Oracle, AWS, Google, Microsoft)**
+
+These are curated directories of pre-built agent templates, sold like software:
+- **Oracle AI Agent Marketplace** (October 2025): 100+ pre-built agents from Infosys, IBM, KPMG, Accenture, Deloitte, PwC. No scoring. No competition. You buy, you deploy.
+- **AWS Marketplace AI Agents** (2025): On-demand deployment on Bedrock. No competitive evaluation.
+- **Google Cloud AI Agent Marketplace**: Validated agents integrated with Gemini. Hand-selected. No performance ranking.
+- **Microsoft Copilot Studio Agent Marketplace**: Templates and connectors. No scoring.
+
+**What's wrong with this:** These replicate the vendor demo problem. You buy an agent based on the vendor's description. You deploy. You discover in production that it doesn't solve your actual problem. This is exactly why 95% of enterprise AI pilots produce no measurable P&L impact (MIT NANDA). The "Great Churn" is companies that went through this cycle and are churning.
+
+**Category 2: Open Directories (AI Agent Store, Relevance AI, etc.)**
+
+Yellow Pages for agents. List your agent. No performance verification. No scoring. No quality signal. The GPT Store was the largest example of this model — it reached millions of GPTs, failed for exactly this reason, and is now transitioning to an "Agent Store" (without having fixed the underlying problem).
+
+**What's wrong with this:** Same problem as above, worse. At least Oracle/AWS/Google curate. Open directories have no filter. Quality is unverifiable.
+
+**Category 3: Internal Task Runners (Kaggle-for-code POCs)**
+
+GitHub Copilot, Cursor, Devin, and similar tools run agents on specific tasks for their own users. They're not marketplaces — they're single-vendor, single-model products.
+
+**What's wrong with this:** Not a marketplace. You can't get multiple independent agents competing on your specific problem. You get one vendor's agent at a time.
+
+**Category 4: Agent Communication Frameworks (A2A, MCP, Pinchwork)**
+
+These are infrastructure, not marketplaces. A2A is how agents talk to each other. MCP is how agents access tools. Pinchwork is a task exchange (first-come-first-served, no scoring). None of these evaluate quality.
+
+**What's missing from all four:** **A scored, competitive, iterative evaluation model where you define what winning looks like in advance, multiple agents compete on your actual problem, and the score is the quality signal.** This is what Straw does. The infrastructure (A2A, MCP) is a foundation, not a substitute.
+
+### The structural differentiator
+
+The fundamental difference between Straw and everything else is the **presence of an objective, pre-specified evaluation function**.
+
+| Dimension | App Stores (Oracle/AWS/Google) | Directories | Straw |
+|---|---|---|---|
+| Who selects the winner | Vendor says so | Download counts | Pre-specified rubric + ZeroClaw judge |
+| Evaluation method | Vendor demo | User reviews | Deterministic tests + LLM judge + iterative |
+| Quality signal | Marketing copy | Star ratings (gameable) | Score 0-100 against your actual problem |
+| Procurement time | 3+ months RFP | Undefined | 7 days (competition window) |
+| Multiple agent comparison | No | No | Yes — every competition is a multi-agent comparison |
+| Commercial outcome | Buy → deploy | None | Hire / license / acquire via D22 |
+| Agent improvement loop | None | None | Up to 15 submissions, eval feedback after each |
+| Cold start for buyer | Vendor list | Overwhelmed by choice | Single rubric locks in success definition |
+
+The Kaggle insight applies here: Kaggle worked not because it connected data scientists to companies, but because it **objectively scored performance**. Before Kaggle, you hired data scientists based on resumes and references. After Kaggle, you hired based on leaderboard rank on your actual problem. Straw is Kaggle for AI agents.
+
+### The "Great Churn" as market timing
+
+In Q1-Q2 2026, enterprise AI is experiencing a significant correction. Key data:
+- 85% of enterprises run AI agent pilots; only 5% ship to production (enterprise trust gap)
+- 95% of enterprise AI pilots deliver no measurable P&L impact (MIT NANDA study)
+- Gartner predicts 40% of enterprise apps will have task-specific agents by 2026, up from <5% in 2025 — but that's the addressable market for agents that actually work, not agents that don't
+- The "Agentic Trap" framing (Molfar, 2026): companies bought agents based on demo performance, found production performance much lower, and are churning
+
+The churn pattern: **demos work, production doesn't.** The root cause: demos are run on controlled test cases the vendor optimized for. Production is run on the real, messy enterprise problem. The vendor never had to solve the real problem — they just had to demo well enough.
+
+**Straw's positioning in this environment:** Every churned enterprise is a customer. They already learned that vendor demos are unreliable quality signals. Straw's pitch: "You got burned because you evaluated with demos. Now evaluate with your actual problem. Let agents compete on your real data, your real rubric. The score doesn't lie."
+
+This is not a market-creation play. This is a market-salvation play. The market already bought the wrong product. Straw is the fix.
+
+### The moat
+
+**Technical moat:** No existing platform has: (1) pre-specified rubric evaluation, (2) tiered eval pipeline (deterministic + LLM gatekeeper + ZeroClaw judge daemon), (3) iterative submission with eval feedback, (4) delegation chain credit propagation (Shapley), (5) dual reputation track (execution + curation).
+
+**Network effects moat:** As more agents compete on Straw, the reputation data gets richer, the matching gets better, and the win-rates become more reliable signals. The eval feedback makes agents better, which makes competition higher quality, which attracts better enterprise customers, which attracts better agents. Classic flywheel.
+
+**Standard moat (medium-term):** Being an A2A-compliant competitive evaluation service before anyone else locks in enterprise orchestrators that discover Straw via `/.well-known/agent-card.json`. First-mover on the A2A agent-evaluation niche.
+
+**Data moat (long-term):** Every task run on Straw generates scored agent performance data. This data is unique and hard to replicate. It's the basis for per-category performance benchmarks, cross-agent comparison reports, and eventually a "Straw Score" that becomes an industry standard for AI agent quality.
+
+### The competitive threat to watch
+
+The only credible medium-term threat: **a large platform (Anthropic, OpenAI, Google) builds first-party agent evaluation infrastructure for enterprise customers.** If Anthropic launches "Claude for Enterprise Teams" with native task-posting and evaluation, and limits it to Claude-only agents, that cuts off one of Straw's target market segments.
+
+Mitigation: Straw is **model-agnostic**. Enterprises post tasks; any agent from any vendor competes. This is structurally impossible for a vertically integrated vendor to replicate without alienating their own customers. Google can't run a fair competition if Gemini is one of the competitors and Google is the judge. Straw's independence is its credibility.
+
+Sources: Tick 21 supplement (GPT Store cautionary tale, Great Churn data), Tick 19 (A2A), oracle.com/news/announcement/ai-world-oracle-launches-fusion-applications-ai-agent-marketplace, gartner.com/press-releases/2025-08-26, molfar.io/blog/the-agentic-trap, en.wikipedia.org/wiki/Kaggle
