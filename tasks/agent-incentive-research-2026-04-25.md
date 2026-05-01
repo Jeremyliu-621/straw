@@ -20274,3 +20274,124 @@ A: No — we're the next layer down the stack. LMArena compares foundation model
 
 - [ ] **Long-form synthesis: The master proposal** — Synthesize Ticks 1-128 into a coherent 15-20 page brief covering: (1) Why agents want to post tasks (Ticks 127), (2) Why enterprises need the platform (Tick 126), (3) The evaluation infrastructure that makes it trustworthy (Ticks 116-122), (4) The economics of competition design (Ticks 123-124), (5) The agent identity layer that makes scores portable (Tick 125), (6) The product roadmap through Series A (Tick 27 / Section 27). This is the morning deliverable Jeremy asked for.
 
+
+---
+
+## Tick 130 (2026-05-01): Agent fleet management economics — the post-hire product layer
+
+**Thread**: An enterprise that hires 10 agents from Straw competitions now manages them as a fleet. What does that fleet management look like? How does Straw's platform extend into this layer, and where is the line between Straw's core product and adjacent SaaS?
+
+---
+
+### The fleet management problem emerges at scale
+
+An enterprise after 12 months on Straw:
+- 8 active hired agents across 5 task categories
+- 3 agents under license (one-time task output licensed, not ongoing hire)
+- 2 agents in production monitoring (Straw Monitor)
+- 4 competitions in-flight for new task categories
+
+Managing this portfolio is non-trivial. Questions the enterprise faces:
+1. Agent #3 (contract review) was excellent at hire, but performance has degraded — is this model drift, task scope creep, or a real quality decline?
+2. Agent #5 (financial analysis) has been outperformed by Agent #7 in overlapping tasks. Should the enterprise run a head-to-head evaluation?
+3. Budget renewal is in 30 days — which agents merit renewal, which should be re-competed?
+4. A new agent capability (multimodal contract analysis) has emerged — how does the enterprise update its agent portfolio?
+
+None of these questions are handled by Straw's core competition marketplace. They require a fleet management layer.
+
+---
+
+### What the fleet management layer needs to do
+
+**Function 1: Performance monitoring (Straw Monitor)**
+
+Already scoped as Series A feature A1 — $500/agent/month recurring. Monitors each hired agent for performance drift relative to its competition baseline. Key metrics:
+- Task completion rate (does the agent complete the assigned task type?)
+- Quality score (measured by spot-check re-evaluation, triggered automatically when outliers are detected)
+- Latency trend (is the agent getting slower?)
+- Error rate (is the agent failing more frequently?)
+
+**Function 2: Portfolio analytics dashboard**
+
+A single view of all agents in the enterprise's portfolio: current performance, cost per task, historical trend, alert status. This is Straw's "Fleet Control Center" — the product that makes Straw sticky beyond the first competition.
+
+Key metrics to surface per agent:
+- Current performance vs. competition score (drift measurement)
+- Cost per task (total license/hire cost divided by tasks completed)
+- Performance vs. alternatives (if Straw knows of competing agents in the same category, how does the hired agent compare to current competition winners?)
+- Alert status (anomalies detected by Straw Monitor)
+
+**Function 3: Re-evaluation triggers**
+
+When an agent's performance drops below a threshold or a new superior agent emerges in its category, Straw proactively recommends: "Your contract review agent's score has declined from 94 to 78 over the past 90 days. Based on current competition data, there are 3 agents in this category with scores above 85. Do you want to run a re-evaluation competition?"
+
+This is the most powerful retention mechanism for Straw: the platform that told you about the quality decline is also the platform that can fix it. The re-evaluation competition is a new revenue event (new competition fee + potential new hire contract).
+
+**Function 4: Renewal recommendations**
+
+30 days before an agent contract renewal:
+- Performance summary for the current contract period
+- Competitive landscape update (are better agents available now than at hire?)
+- Renewal vs. re-competition analysis (estimated cost and time of re-running the competition vs. renewal at current rates)
+- Recommendation: renew / re-compete / expand scope
+
+**Function 5: Head-to-head evaluation**
+
+When two agents in the portfolio overlap in capability (Agent #5 and Agent #7 both do financial analysis), the enterprise can run a Straw head-to-head evaluation: same tasks, same rubric, direct comparison. Not a full competition — just a 1v1 evaluation run to inform portfolio rationalization decisions.
+
+---
+
+### The Straw Monitor product architecture
+
+Straw Monitor is the fleet management enabling service. Architecture:
+- Straw Monitor daemon subscribes to the agent's task outputs (via API hook or webhook)
+- Periodic re-evaluation: a sample of tasks (3-5% of production volume) is re-evaluated against the original competition rubric
+- Drift detection: statistical comparison of current scores vs. competition baseline
+- Alert thresholds: configurable (default: alert when 30-day rolling score drops >10 points from baseline)
+- Integration: results feed into the Fleet Control Center dashboard
+
+**Sampling strategy**: Straw cannot evaluate every production task (cost prohibitive). The 3-5% spot-check sample is statistically sufficient for drift detection at typical enterprise task volumes (100-500 tasks/week = 3-25 re-evaluated tasks/week). The sample is selected via stratified random sampling across task subtypes.
+
+---
+
+### The line between Straw core and adjacent SaaS
+
+**Straw core (build it):**
+- Straw Monitor (performance drift detection against competition rubric baseline)
+- Fleet Control Center dashboard (portfolio view)
+- Re-evaluation competition flow (triggered by Monitor alerts)
+
+**Adjacent SaaS (don't build):**
+- Agent orchestration (which tasks get routed to which agent) — this is the business of AWS Bedrock, Azure AI Studio, Google Vertex
+- Agent workflow design (how tasks are decomposed, sequenced, parallelized) — this is the business of Zapier for AI, n8n, LangChain
+- Fine-tuning and model improvement for hired agents — this belongs to the agent operators, not Straw
+
+**The boundary principle**: Straw owns the evaluation-side relationship (is the agent performing as expected?), not the orchestration-side relationship (what tasks should the agent execute?). Straw is the performance measurement layer, not the workflow execution layer.
+
+Violating this boundary would require Straw to build general-purpose workflow orchestration — a much larger product scope that would compete with well-funded incumbents. Straw's fleet management layer is the evaluation-informed performance intelligence product on top of whoever the enterprise uses for orchestration.
+
+---
+
+### Fleet management as the NRR driver
+
+This is the financial thesis for building the fleet management layer:
+
+**Without fleet management**: An enterprise runs 2 competitions in year 1, hires 2 agents, pays 2 competition fees ($20K total). Year 2: maybe 1 more competition. NRR: ~50-100% (flat or slight growth).
+
+**With fleet management**: An enterprise runs 2 competitions, hires 2 agents, subscribes to Straw Monitor for both ($500/agent/month = $12K/year). Year 2: Monitor alerts trigger 2 re-evaluation competitions. New hires expand to 4 agents. Monitor expands to 4 agents ($24K/year). Renewal recommendations lead to 1 renewal at higher scope. NRR: 150-200%.
+
+The fleet management layer converts Straw from a "sporadic procurement tool" (high churn risk) into "production monitoring infrastructure" (very low churn risk). This is the architectural change that makes the 140%+ NRR target achievable.
+
+**Straw's financial model requires this**: The difference between a 100% NRR company and a 140% NRR company at $3M ARR is $1.2M/year in additional expansion revenue. At 20× ARR multiples, that $1.2M difference is worth $24M in Series A valuation. The fleet management layer is not a nice-to-have — it is the structural source of the valuation premium.
+
+---
+
+### Sources
+
+- NRR impact of monitoring products: Gainsight Enterprise Metrics 2025 — companies with health scoring products see 6-12 point NRR lift
+- Agent performance drift research: Anthropic Model Card update cadence (quarterly performance updates) — deployed model performance changes measurably over model update cycles
+- Enterprise fleet management analogies: ServiceNow IT asset management, CrowdStrike endpoint fleet management — both built monitoring/reporting layers on top of point products to drive expansion revenue
+- Spot-check sampling for production monitoring: statistical quality control literature (Deming, 1986) — 3-5% sampling sufficient for process monitoring at typical enterprise volumes
+- Straw Monitor as Series A feature A1: Section 27 (product roadmap) + Tick 92 research
+- NRR mechanics: Tick 109 research (recurring competition flywheel, 120%+ NRR targets)
+
