@@ -16736,3 +16736,123 @@ SOC 2 Type II requires a significant burst of effort (control implementation, po
 - Equity structures: AngelList 2025 equity benchmark report; Carta equity data
 - Burn rate modeling: SaaS Capital burn rate benchmarks; High Alpha operating model templates
 
+
+---
+
+## Tick 114 (2026-05-01): The founding story — the narrative Straw must tell investors, press, and the market
+
+**Thread**: Fundraising, press, and enterprise sales all require a compelling founding narrative. What is Straw's story? What's the "why now," the hero's journey, and the category-defining claim?
+
+---
+
+### Why the founding story matters beyond fundraising
+
+The founding story does three things:
+1. **Investor**: gives them a shorthand to describe you to other investors and in their portfolio memos ("they're the Kaggle for enterprise AI agent procurement")
+2. **Press**: gives journalists a headline and a quote ("Anthropic competitor? No — we evaluate AI agents so enterprises don't have to trust vendor demos")
+3. **Enterprise champion**: gives the internal champion a way to explain the purchase to their CFO and board ("we ran a competition instead of trusting a PowerPoint")
+
+A story that doesn't work for all three audiences is a story that's too inside-baseball. Straw's founding narrative must be simultaneously technically credible, emotionally resonant, and economically obvious.
+
+---
+
+### The market timing narrative: why 2026 is the right moment
+
+**The 2026 moment in one paragraph**:
+
+AI agents are being deployed into enterprise workflows that process real money and affect real decisions. The market for AI agent services is growing faster than any prior software category. But the evaluation infrastructure hasn't caught up. Enterprises are making six-figure AI agent procurement decisions based on vendor demos and public benchmarks that are provably gamed — Devin's SWE-bench score included tasks from its training data; benchmark contamination is now a documented, quantified phenomenon. SWE-bench went from 81% → 23% on the controlled private version in one year. Meanwhile, OMB M-26-04 now requires federal agencies to document their AI procurement decisions. Colorado, New York, and Texas all require annual impact assessments. Enterprise AI governance is becoming mandatory. The market is demanding what didn't exist: an independent evaluation venue that generates defensible procurement evidence. That's what Straw is.
+
+**Why 2026 specifically** (not 2024, not 2028):
+- 2024: Too early — the agent market hadn't matured enough to have multiple competing agents with overlapping capabilities. Differentiation was obvious. Evaluation wasn't a bottleneck.
+- 2028: Too late — the evaluation standard will have been set by someone. If that someone is Straw, great. If not, entering as a follower in a winner-take-most market is terminal.
+- 2026: The benchmark credibility crisis (Devin, SWE-bench Pro, "Leaderboard Illusion" paper) is fresh. Enterprises are burned and aware. The regulatory mandates are live. LMArena's $1.7B Series A validated the market. The agent supply side is large enough (400+ companies tracked by CB Insights) to populate competitions. The moment is now.
+
+---
+
+### The four-sentence Straw pitch
+
+*For investors (seed round)*:
+"AI agents are the fastest-growing enterprise software category. Enterprises can't evaluate them — benchmarks are gamed, demos lie. We run competitions on your actual task: multiple agents compete, you hire the winner. We're building the calibration corpus and community that makes us the only credible neutral evaluator in the market."
+
+*For the press*:
+"Companies spend months on vendor demos for AI agents that fail in production. Straw changes the evaluation method: post your task, let agents compete, hire the one that wins. We're the Kaggle for enterprise AI procurement."
+
+*For the enterprise champion*:
+"Straw is how you evaluate AI agents before you commit a six-figure contract. You design the rubric. Multiple agents compete. You pick the winner. The whole thing takes 4–6 weeks and costs less than a day of consulting."
+
+*For the agent team*:
+"Enterprise sales takes 9–18 months and costs $1M+ in sales headcount you don't have. We give you a shot in 4–6 weeks: compete on the customer's actual task, win the contract. Your capability speaks for itself."
+
+---
+
+### The Straw origin story (for press and investor narrative)
+
+*Note: Jeremy should adapt this to match his actual founding experience. The framework below is the narrative structure; the specific details are placeholders.*
+
+**The problem observation**: Jeremy [or the co-founder pair] observed firsthand that the hardest moment in enterprise AI adoption isn't the model choice — it's the evaluation. When you've identified that you need an AI agent for workflow X, the question becomes "which one?" The market's answer — run the vendor demo, check the benchmark, trust the sales deck — is inadequate. Every sophisticated buyer knows this. Nobody had built the right answer.
+
+**The "why we're the ones to build it"**:
+- Deep knowledge of both sides: enterprise procurement psychology AND AI agent capabilities
+- Understanding that the problem is fundamentally a marketplace problem, not an AI problem
+- Conviction that the calibration corpus — private, compound, irreplicable — is the right moat
+- Personal frustration with the status quo [specific story from Jeremy's experience]
+
+**The category-defining claim**:
+"Straw is the evaluation layer for the AI agent economy. We don't train agents. We don't sell agents. We judge competitions. Our only interest is in the score being right."
+
+The neutrality is the product. That sentence should be in every deck.
+
+---
+
+### What the narrative must NOT be
+
+**Don't position as**:
+- "A Kaggle for AI" — Kaggle is for academic machine learning competitions with public data. Straw is for enterprise procurement with private data. The difference is everything.
+- "An AI testing tool" — implies you're a quality assurance product for agents you already chose. Straw helps you choose.
+- "An AI governance platform" — Credo AI, IBM Watson Governance, and Gartner's governance platforms own that positioning. Straw generates the procurement evidence that goes into those platforms.
+- "Better benchmarks" — benchmarks are public and static. Straw is private and task-specific. The comparison is misleading.
+
+**The right positioning**: "The evaluation marketplace where AI agents compete for enterprise contracts." Not a tool. Not a benchmark. A marketplace with a structured evaluation mechanism.
+
+---
+
+### The three investor skeptic questions and their answers
+
+**Skeptic 1: "Can't the enterprises just do this themselves?"**
+
+"Some try. It costs $200K–$500K in consulting fees, takes 3–6 months, and produces a result that's valid for one agent on one version of one task. Straw runs 20 agents in parallel in 4–6 weeks for $20K–$40K and produces a ranked outcome with audit trail. The enterprise couldn't build what we're building even if they wanted to — they'd need the agent supply side and the calibration corpus, neither of which they can develop in isolation."
+
+**Skeptic 2: "Can't OpenAI or Anthropic build this?"**
+
+"They have the strongest incentive not to. An OpenAI evaluation platform running a competition between OpenAI's agent and Claude or Gemini would immediately face 'who watches the watchmen?' scrutiny. No enterprise would trust results from a model provider evaluating their own models. Straw's neutrality — we don't train models, we don't sell models — is not just a positioning choice; it's architecturally required for the product to be trustworthy. Straw is the UL (Underwriters Laboratories) of AI: providers fund certification but don't control standards."
+
+**Skeptic 3: "What's your moat if someone raises $50M to compete?"**
+
+"The calibration corpus. Every competition we run adds private, task-specific evaluation data that makes our judge more accurate, our rubric templates better, and our Straw Scores more reliable. A competitor starting today must run real competitions with real enterprise data to build calibration data — which requires the enterprise relationships and agent community we've already built. This is structurally analogous to how S&P's ratings database couldn't be built overnight even with $50M. The corpus compounds with use; a competitor's cash doesn't."
+
+---
+
+### Press coverage strategy
+
+**The two stories that generate the most enterprise press coverage**:
+
+1. **"The benchmark credibility crisis"** — The story already exists: SWE-bench contamination, Devin controversy, "Leaderboard Illusion" paper. Straw is the logical market response. Pitch this as a solution story, not a product launch.
+
+2. **"The enterprise AI procurement gap"** — 76% of enterprises prefer buying AI vs. building it (Menlo Ventures). Only 11% have agents running in production. The gap between interest and production deployment is the evaluation problem. Straw fills it. Pitch this with the enterprise customer case study as the anchor.
+
+**Outlets to target first**: VentureBeat (AI-specific), The Information (enterprise tech), Fortune Tech (AI coverage team), MIT Technology Review (benchmark credibility angle). Do NOT pitch TechCrunch first — their audience is consumer/developer, not enterprise buyers.
+
+**The press timing**: First press story after design partner case study is published (Month 8–10). Don't pitch press without a named customer reference.
+
+---
+
+### Sources
+
+- LMArena $1.7B Series A: January 2026 (market validation comp)
+- SWE-bench contamination: documented Tick 74; SWE-bench Pro 81%→23%
+- Menlo Ventures 2025 State of GenAI: 76% buy vs build
+- CB Insights AI agent market map: 400+ agent companies tracked
+- OMB M-26-04/M-25-22 regulatory environment: Tick 112
+- UL (Underwriters Laboratories) neutrality model: Tick 90 research
+- S&P methodology premium: Tick 85 exit thesis research
+
