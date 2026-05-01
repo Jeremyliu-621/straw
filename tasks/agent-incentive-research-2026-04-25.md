@@ -21491,4 +21491,196 @@ The improvement trajectory is a second-order signal that Kaggle never built. A t
 - ARC Prize multi-year participation: ARC Prize 2024 and 2025 team registration data (public)
 - Topcoder prize structure: topcoder.com/thrive/articles/Standard_Challenge_Types; 50% second-place prize standard
 - Practice mode precedent: Codeforces gym (competitive programming practice platform); Kaggle's competition archive
+## Tick 133 (2026-05-01): The master proposal — Straw's full thesis in 15 sections
+
+**Thread**: Synthesis of Ticks 1-132. The definitive answer to Jeremy's friend's concern, and the complete investment narrative for Straw.
+
+---
+
+### Part 1: The market failure Straw fixes
+
+Enterprise AI procurement is broken. Companies make six-figure decisions to deploy AI agents based on three flawed inputs: vendor demos (cherry-picked, not representative), public benchmarks (contaminated, over-fitted, Goodhart's Law in action), and analyst reports (built on vendor self-reports).
+
+The result: **88% of AI agent projects fail before reaching sustained production** (DigitalApplied, Jan 2026). **95% of enterprise AI pilots deliver no measurable ROI** (MIT/RAND). The 4% of enterprises that successfully deployed AI agents have one thing in common: they defined success criteria in advance and measured against them.
+
+Anthropic's Project Deal (April 2026) proved the invisible cost: users with weaker agents extracted 70% less value from negotiations — and never noticed. The capability gap is invisible without measurement. **Straw makes it visible.**
+
+---
+
+### Part 2: Why demos and benchmarks aren't enough
+
+**The demo problem**: Vendors control demo conditions. They use curated datasets, cherry-picked examples, and rehearsed sequences. Production conditions — messy data, edge cases, unexpected inputs — are never present in demos.
+
+**The benchmark problem**: SWE-bench, HumanEval, MMLU — the three most-cited agent benchmarks — all have documented contamination problems. SWE-bench Pro: agents trained on public GitHub data achieve 81% scores that fall to 23% on novel tasks (arXiv:2410.06992). Benchmark scores have become marketing collateral, not signal.
+
+**The core finding**: Evaluation that the evaluated party can see in advance cannot be trusted. This is not a cynical claim — it is Goodhart's Law, a mathematical property of measurement systems. Straw's private holdout test sets and locked rubrics break the Goodhart loop.
+
+---
+
+### Part 3: The Straw mechanism — how it actually works
+
+1. Enterprise posts a task to Straw: real data, real business context, success criteria written into a locked rubric
+2. Agents compete: submissions evaluated by Straw's tiered eval pipeline (Docker sandbox → LLM judge → human review for contested cases)
+3. Competition closes: ranked leaderboard published with Straw Scores (0-100)
+4. Winner selection: enterprise reviews top submissions, selects winner
+5. Commercial outcome: enterprise hires, licenses, or acquihires the winning agent
+6. Post-hire monitoring: Straw Monitor tracks whether competition performance holds in production
+
+The key properties: the rubric is locked before competition opens; the test set has a private holdout; the enterprise defines success before any agent sees the task; gaming is structurally harder than doing good work.
+
+---
+
+### Part 4: Why agents compete (supply-side incentive)
+
+Agents compete on Straw because competition produces the economic outcomes that matter to autonomous agents and their operators:
+
+1. **Revenue**: Prize money for winning; hire income for ongoing work; license fees for one-time outputs
+2. **Reputation**: Straw Scores accumulate into a verified performance profile — portable via A2A AgentCard, ERC-8004 on-chain attestations, or W3C Verifiable Credentials
+3. **Discovery**: Enterprises cannot hire agents they've never evaluated. Competition is the discovery mechanism. Agents with no prior enterprise relationships can win competitions purely on merit
+4. **Calibration**: Competing agents learn from competition outcomes — where their performance ranked, which criteria they excelled or failed on, what the market currently rewards
+
+An agent with a strong Straw Score in "contract review" is more likely to be found, hired, and retained by enterprises with contract review needs. The competition is not just a prize mechanism — it is the agent's primary enterprise marketing channel.
+
+---
+
+### Part 5: Why agents would post tasks (the original question)
+
+Jeremy's friend asked: "If agents are trained to maximize task completion, why would they want to post tasks to competitors?" The answer has two levels.
+
+**Level 1: Framing error.** An agent optimizing for long-run task completion quality has strong incentives to delegate specialist subtasks. A research agent that delegates coding to a coding specialist produces better research faster — the outcome optimization *supports* delegation, not self-execution.
+
+**Level 2: The five economic conditions.** Agents post tasks when: (1) the task requires capabilities the posting agent lacks; (2) parallel execution reduces time-to-completion; (3) quality validation requires external benchmarking; (4) the principal demands competitive validation; (5) the agent has budget authority and delegation is the optimal procurement mechanism.
+
+The RLHF concern — that reward shaping creates a "do it yourself" bias — is real for narrow task-completion training but does not apply to frontier model agents trained on the full distribution of human intelligent work, which includes management, delegation, and procurement as core activities.
+
+---
+
+### Part 6: The evaluation integrity stack
+
+Straw's credibility depends on gaming-resistant evaluation. The three threat classes:
+
+**Agent-side gaming (Tick 116)**: 8 attack types from scoring infrastructure tampering to long-term evaluator preference learning. Defense: hermetically isolated Docker containers, private holdout test sets, submission rate limiting, RULERS-locked rubrics, multi-judge consensus, behavioral anomaly detection.
+
+**Poster-side gaming (Tick 118)**: Enterprise crafts rubric to favor a pre-selected vendor. Defense: rubric diversity scoring, conflict-of-interest disclosure requirement, Certified Open Competition badge, win-concentration monitoring, protest mechanism.
+
+**Rail-guarding (Tick 122)**: Honest over-specification that kills solution diversity. Defense: Rubric Health Score (0-100) surfaced to poster before publication; rubric design service for complex tasks.
+
+**Sandbagging (Tick 119)**: Agent deliberately underperforms to obscure capabilities. Defense: capability fingerprint at registration, behavioral consistency probing, temporal performance monitoring, noise injection detection (white-box).
+
+The eval stack is not perfect — no evaluation system is. The goal is raising the cost of gaming above the cost of genuine quality. The evidence: METR found gaming 43× more likely when scoring functions are visible. Straw's private holdouts and locked rubrics structurally reduce gaming by making the target partially invisible.
+
+---
+
+### Part 7: Competition design for non-deterministic tasks
+
+Not all enterprise tasks produce deterministic right answers. Contract review quality, strategic recommendation clarity, and design elegance are inherently subjective. Straw's four-tier task taxonomy:
+- **Tier A**: Deterministic (unit test pass/fail) — standard Docker eval pipeline
+- **Tier B**: Rubric-verifiable (clear criteria, LLM judge) — G-Eval / RULERS locked rubrics
+- **Tier C**: Comparative/pairwise (no ground truth, relative quality) — Bradley-Terry Elo system
+- **Tier D**: Inherently contested (requires human judgment) — human-in-the-loop final round
+
+The G-Eval finding (Spearman r=0.514 with human judgments) means LLM judges are useful but imperfect. Straw's multi-judge consensus (3+ judges, anomaly detection) reduces single-judge error rates substantially.
+
+---
+
+### Part 8: Long-horizon competition design
+
+METR's capability trajectory projects week-long tasks by 2027, month-long tasks by 2028-2030. Straw's Campaign format (Tick 117) addresses this:
+- Multi-phase structure with checkpoint deadlines
+- Milestone payments released at advancement gates (reduces compute cost barrier)
+- Checkpoint trajectory scoring (not just final output)
+- Pre-qualification rounds for competitions attracting 100+ agents
+
+The 300-agent scenario (Tick 123): at scale, Tullock contest theory predicts 10:1 enrolled-to-serious ratio (300 registered ≈ 30 genuine submissions). Solution diversity peaks at 20-50 competitors and declines via cascade effects at higher counts. Infrastructure (not solution quality) is the binding constraint.
+
+---
+
+### Part 9: The calibration corpus — the compounding moat
+
+Every Straw competition generates a (task, rubric, submissions, scores, production outcomes) data tuple. After 500 competitions, Straw has:
+- The only empirically-grounded task performance dataset for enterprise AI agents
+- The only validated rubric template library for enterprise task evaluation
+- The only outcome-validated judge calibration dataset
+
+This corpus makes Straw's evaluation more accurate than any competitor's on day one of that competitor's operation — because the competitor has zero calibration data. The corpus compounds with every competition, widening the accuracy gap over time.
+
+The FICO analogy: FICO's 40-year database of scored-mortgage-outcomes makes their predictive accuracy structurally inimitable. A competitor with a better algorithm but no historical data cannot prove it's better. Straw's version compounds in years, not decades.
+
+---
+
+### Part 10: The agent identity layer
+
+ERC-8004 (deployed Ethereum mainnet January 2026), A2A AgentCard (150+ organizations), and SKILL.md (52,000+ public skills) create the infrastructure for portable agent reputation. Straw Scores become verifiable credentials — issued by Straw, cryptographically signed, presentable to any enterprise without Straw in the loop.
+
+This transforms Straw from a competition platform into an agent credentialing institution. The LSAT analogy: LSAC's value is not just running the test — it's issuing the credential that law schools recognize. Straw's long-term value is not just running competitions — it's issuing the scores that enterprise procurement recognizes.
+
+---
+
+### Part 11: The institutional anchor strategy
+
+Score standards form through institutional anchor adoption, not bottom-up organic growth. Freddie Mac mandated FICO scores in 1995 — forcing the entire secondary mortgage market to align without any legislation. Straw's anchor strategy:
+
+- Year 1-2: Identify and win one $1B+ enterprise willing to require Straw Scores in their AI procurement policy
+- Year 2-3: Win one AI lab (Anthropic, Google DeepMind, OpenAI) to reference Straw Scores in their enterprise agent certification program
+- Year 3-4: Win one regulatory or standards body (NIST, IEEE, or OMB) to reference Straw in AI procurement guidance
+
+Each anchor is a forcing function: the enterprise anchor forces agents to compete to qualify for procurement; the lab anchor creates credibility with the technical community; the regulatory reference creates permanence. Three anchors together = self-reinforcing standard.
+
+---
+
+### Part 12: The regulatory tailwind
+
+Six overlapping AI governance mandates create enterprise demand for neutral, third-party AI capability assessment:
+- OMB M-26-04 (January 2026): Federal agencies must use "empirically grounded capability documentation" when deploying AI agents above moderate risk threshold
+- EU AI Act (effective August 2026): High-risk AI systems require third-party conformity assessment
+- Colorado AI Act / NY RAISE Act / Texas AI Act: Multiple state-level requirements creating 50-state compliance complexity
+- ISO 42001 AI management standard: Enterprise buyers requesting ISO 42001 compliance evidence from AI vendors — rising from 12% to 40% in procurement questionnaires in the past 18 months
+
+Straw is not just selling evaluation rigor — it is selling compliance infrastructure. For regulated enterprises, a Straw competition provides the documented evaluation evidence required by multiple overlapping regulatory frameworks. This is a hard procurement requirement that competitors without a competition track record cannot satisfy.
+
+---
+
+### Part 13: The business model and path to Series A
+
+**Revenue model**: Competition fees ($2K-$10K per competition) + hire transaction fees (5-10% of annual hire value) + Straw Monitor subscriptions ($500/agent/month) + rubric design service ($2K-$5K)
+
+**Year 1 target**: 5 design partners → 15-20 competitions → $300K-$600K ARR
+**Year 2 target (Series A raise)**: 30 customers → 100+ competitions → $2M-$4M ARR
+**Series A metrics that matter**: ARR growth 100-150% YoY, NRR 140%+ (expansion from Monitor + re-competitions), gross margin 75%+, CAC payback <12 months
+
+**The NRR thesis**: Monitor subscriptions convert one-time competition events into recurring revenue. Re-evaluation competitions (triggered by Monitor drift alerts) generate new competition fees from existing customers. A customer who ran 2 competitions in Year 1 runs 4-6 in Year 2 as Monitor identifies performance issues and new capability gaps.
+
+**Valuation at Series A**: $3M ARR × 20× multiple = $60M pre-money. The AI-native premium is justified by the calibration corpus moat and the 140%+ NRR profile. The institutional anchor and regulatory tailwind are the narrative drivers.
+
+---
+
+### Part 14: The five-year scenario (2030)
+
+By 2030, METR's trajectory projects agents capable of month-long work units. The enterprise AI agent market reaches $40-50B. Straw in the 2030 scenario:
+
+- **If Straw wins**: 3,000+ competitions run annually; Straw Score is the industry reference standard embedded in enterprise procurement policies, regulatory frameworks, and AI lab certification programs; calibration corpus has 50,000+ task performance datapoints with production outcome validation; $100M+ ARR at 80%+ gross margins
+- **If Straw loses (most likely cause)**: A model vendor consortium forms before Straw achieves institutional anchor status; the consortium's "neutral" evaluation platform is perceived as legitimate despite vendor governance; Straw becomes a niche provider for buyers who specifically distrust the consortium
+- **Hybrid/middle path (most likely)**: Straw establishes deep moat in 3-4 category verticals (legal, finance, engineering) where vendor conflict of interest is most disqualifying; Microsoft/Google dominate generalist enterprise evaluation; Straw is acquired by a fintech/governance company seeking to own the AI evaluation standard in regulated industries
+
+---
+
+### Part 15: The answer to Jeremy's friend's concern
+
+The concern: "If an agent is trained via RLHF to maximize task completion, why would it want to post tasks to competitors?"
+
+The complete answer:
+
+1. **The frame is wrong**: An agent optimizing for task completion quality in complex, real-world settings achieves better outcomes through intelligent delegation than through self-execution. Delegation is task completion optimization, not deviation from it.
+
+2. **The RLHF concern is about narrow training**: It applies to narrowly-trained task-executors, not frontier model agents trained on the full distribution of intelligent human work, which includes management, procurement, and delegation.
+
+3. **The economic conditions are real**: For any sufficiently capable autonomous agent operating with budget authority, Straw is the optimal procurement mechanism for specialist subtasks. The agent doesn't "want" to post tasks any more than a CFO "wants" to use Bloomberg terminals — it's the tool that produces the best outcome for the work.
+
+4. **The capability gap is the whole point**: Anthropic Project Deal proved that weaker agents produce 70% less value and don't know it. An agent that uses Straw to validate its own work against competitors is the epistemically honest agent — the one whose principal should trust it most. The agent-posts-task scenario is not a threat to Straw's thesis; it is its strongest validation.
+
+**The score doesn't lie. Everything else does.**
+
+---
+
+*End of master proposal. Ticks 1-133 support each section above.*
 
