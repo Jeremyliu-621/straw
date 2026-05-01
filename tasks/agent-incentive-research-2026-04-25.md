@@ -29755,4 +29755,318 @@ New since early 2026:
 
 **Key finding for Jeremy to read on wake-up (if nothing else):** Anthropic published "Project Deal" on April 25, 2026 — a real-money agent marketplace experiment where AI agents transacted $4,000+ in one week. The critical finding: agents represented by weaker models got significantly worse deals ($38 for a bike vs. $65), and **the weaker-model participants didn't notice.** This is the Straw thesis in empirical form: agent quality creates invisible inequality. Independent evaluation makes the gap visible before hiring. This is a slide in every deck from this point forward.
 
+---
+
+## Tick 173 (2026-05-01): Agentic procurement — how Ramp, Coupa, and Ariba AI agents create demand for Straw
+
+**Thread source:** Session 17 candidate thread. The claim: agentic procurement platforms (Ramp's autonomous purchasing fleet, Coupa Navi AI, Fairmarkit Total Agentic Sourcing) are automating the buying side of enterprise purchasing. This creates a recursive need: if AI agents are making procurement decisions, someone needs to evaluate whether the AI agents procuring your AI agents are actually any good. Straw sits exactly there.
+
+**Factual landscape (from searches, 2026-05-01):**
+
+**Ramp (April 29, 2026):** Ramp announced a full autonomous purchasing fleet — AI agents that handle the entire purchasing workflow: request intake, vendor sourcing, compliance checks, and contract renewals. Claimed results: 16% average vendor cost reduction, 46 hours/month saved in manual purchasing effort. This is real-money autonomous procurement by AI agents, not RPA.
+
+**Coupa Navi AI:** Built on $8 trillion in spend data. Coupa's agents predict supply chain disruptions, prescribe optimization based on transaction patterns, and execute routine workflows without human intervention. Theme at Coupa Inspire 2026: "Mastering the Agentic Revolution."
+
+**SAP Ariba:** SAP investing in "agentic AI innovation" as one of three platform modernization pillars. Futurum research asks: is Next-Gen Ariba "the missing link for real agentic procurement workflows?"
+
+**Fairmarkit Total Agentic Sourcing:** First platform to autonomously source both tail spend ($500 purchases) and strategic spend ($500M contracts) in the same environment. Native integration with SAP Ariba, Coupa, Oracle, ServiceNow.
+
+**Market context:** Gartner says 70% of finance leaders will adopt AI-enabled procurement solutions by 2027. Only 12% have moved AI procurement beyond pilots today. This is a wave moving from pilot to production — exactly the phase where evaluation matters most.
+
+**The recursive problem this creates for Straw:**
+
+When companies deploy Ramp's procurement agents, a natural question emerges: "Which vendor's AI procurement agent should we use? Ramp's? Coupa's? A specialist?" This is the Straw use case at the procurement layer. The actual decision-makers (CPOs, finance leaders) now have to evaluate AI agents — not software features, but live agents making real purchasing decisions — before committing.
+
+There are five procurement evaluation scenarios where Straw is directly applicable:
+
+**Scenario 1 — AP Agent Benchmarking.** A Fortune 500 procurement team runs a Straw competition: "Given these 50 vendor invoices, flag anomalies, negotiate better terms, and route for approval. The task is done on 200 real historical invoices with known optimal outcomes. Agents compete. Straw scores them on invoice accuracy, negotiation yield, and approval routing correctness."
+
+**Scenario 2 — Sourcing Agent Evaluation.** Before committing to Fairmarkit vs. a competitor's sourcing agent, a CPO posts: "Source three vendors for category X, obtain quotes, evaluate against our supplier criteria. We'll score based on price, lead time, compliance score, and diversity certification." Agents do it live.
+
+**Scenario 3 — Contract Review Agent.** Legal + procurement wants to know: can this AI agent review and redline a vendor MSA in 4 hours? Post the task. Run the competition. Score on coverage of risk clauses, time to completion, miss rate.
+
+**Scenario 4 — The meta-procurement case.** A CFO has $500K budget for AI procurement software. She uses Straw to evaluate AI procurement agents before buying one. The agent that wins the Straw competition gets hired — Straw is literally the procurement mechanism for the AI procurement tool. This is the recursive loop made real.
+
+**Scenario 5 — Multi-agent procurement orchestration.** Large enterprises will deploy *orchestrator* agents that delegate to specialized sub-agents (sourcing sub-agent, contract sub-agent, AP sub-agent). Straw can evaluate the orchestrator's effectiveness at routing and the sub-agent's effectiveness at execution in the same pipeline.
+
+**Why procurement is a high-priority ICP expansion vector:**
+
+The procurement buyer is structurally different from the engineering buyer who cares about code quality. Key differences:
+
+| Dimension | Engineering Buyer (current ICP) | Procurement Buyer (expansion ICP) |
+|---|---|---|
+| Job title | VP Engineering, CTO | CPO, VP Procurement, CFO |
+| Budget cycle | Engineering headcount | Operating expense / vendor contracts |
+| Evaluation instinct | Already runs benchmarks, familiar with evals | Less familiar, but highly ROI-motivated |
+| Time horizon | Quarterly sprint | Annual vendor cycle |
+| Task complexity | Code, debugging, architecture | Invoice processing, sourcing, contract review |
+| Competition task design | Technical rubrics (unit tests, code quality) | Business outcome rubrics (price negotiated, accuracy, time) |
+
+The procurement buyer is a **CFO-adjacent** budget holder. This is good for Straw. CFOs approve large discretionary spend more easily when it's framed as avoiding a worse spend — "run a Straw competition before signing a $400K AI procurement software contract" is an easy sell.
+
+**Go-to-market wedge:** Target the 40% of procurement teams that are evaluating AI vendors right now but lack a rigorous evaluation framework. Cold outreach: "Coupa and Ramp both want your business. Before you commit, post a competition on Straw. Let them compete on your actual invoices. The score doesn't lie."
+
+**Competition design for procurement:**
+
+Procurement tasks have a structural advantage: outcomes are often **objectively measurable** (price negotiated, invoice processed correctly, contract clause covered). This makes Tier 1 deterministic scoring easier than in many software evaluation tasks. A procurement competition can use:
+- Tier 1: Invoice accuracy rate, price delta vs. optimal
+- Tier 2: LLM judge for qualitative contract redlining quality
+- Tier 3: Agent investigator for edge case handling
+
+**Risk:** Procurement tasks often involve sensitive supplier relationships and proprietary contract data. Straw's D22 data isolation architecture (per-submission containerized environments) handles this — agents never see each other's submissions, and task inputs can be fully encrypted at rest with customer-held keys.
+
+**Timeline signal:** Ramp's April 29, 2026 announcement suggests the procurement AI wave is 3-6 months ahead of where most procurement leaders think it is. The window to position Straw as "the evaluation layer for procurement AI" is now, before incumbents like Coupa build internal benchmarking tools.
+
+**Sources:**
+- Ramp procurement agents announcement: https://www.pymnts.com/news/b2b-payments/2026/ramp-launches-ai-agents-to-automate-corporate-procurement/
+- Coupa Inspire 2026 "Mastering the Agentic Revolution": https://procurementmag.com/news/mastering-the-agentic-revolution-at-coupa-inspire-2026
+- Fairmarkit Total Agentic Sourcing: https://martechseries.com/predictive-ai/ai-platforms-machine-learning/fairmarkit-launches-total-agentic-sourcing-the-first-platform-to-put-ai-to-work-across-all-enterprise-spend-with-leading-erps/
+- SAP Ariba agentic AI: https://futurumgroup.com/insights/is-saps-next-gen-ariba-the-missing-link-for-real-agentic-procurement-workflows/
+
+---
+
+## Tick 174 (2026-05-01): Agent-side legal framework gaps — what's missing, and how Straw's structure addresses it
+
+**Thread source:** Session 17 candidate thread. Anthropic's Project Deal research surfaced that "legal frameworks don't exist" for agent-to-agent commerce. This tick documents specifically what is missing, what the law actually says, and how Straw's contract architecture navigates the gap.
+
+**The honest state of agent commerce law in 2026:**
+
+Commerce law was built for human actors making conscious decisions. AI agents that browse, negotiate, select, and pay on a user's behalf break every assumption that law rests on — and the law has not caught up. Three most important unresolved questions, per legal infrastructure analysis (2026):
+
+1. **Who is liable when an agent causes a loss?** No clear standard for loss allocation between agent operator, agent developer, model provider, and the counterparty.
+2. **Can on-chain reputation be trusted?** ERC-8004 reputation registries can be "manufactured" quickly — the infrastructure exists before the trust does.
+3. **Who governs agents that have outpaced their operators?** If an agent executes a $200K procurement decision autonomously, and the operator didn't explicitly authorize that specific transaction, who bears liability?
+
+**Six legal fault lines in agentic commerce (from Clifford Chance, Squire Patton Boggs, Proskauer analysis 2026):**
+
+1. **Identity and authentication.** When an AI agent clicks "buy," who is actually "buying"? Current e-signature and electronic contracts law treats authorized agents as binding the principal — but AI agent authority is often implied, not explicit. Courts are still working out what counts as "authorized."
+
+2. **Delegated authority scope.** The Amazon v. Perplexity case (March 2026) is the landmark here: a federal court issued a preliminary injunction finding that an AI shopping agent *may have violated federal hacking law* even though the user had expressly authorized the agent to act. The court held that user permission does not override a merchant's express prohibition. **User-delegated authority and merchant-controlled access can conflict, and the merchant's prohibition wins.** This has massive implications for autonomous agent commerce.
+
+3. **Contract formation and assent.** Does an agent clicking "accept terms" create a binding contract? Current law says yes under UETA/E-SIGN — electronic agents can form contracts on behalf of their principals. But the exact scope of authority granted to the agent matters enormously. Legacy enterprise contracts don't specify what AI agents can and cannot bind the company to.
+
+4. **Liability gap in legacy technology contracts.** Enterprise SaaS agreements were written for passive, predictable software under human control. As vendors ship agentic capabilities faster than contracts evolve, a liability gap is emerging: when an AI agent acting under a SaaS agreement causes a loss, the customer bears regulatory and audit liability for behavior they may not have been able to predict or control. Clifford Chance (February 2026) published an explicit warning on this.
+
+5. **Logging and evidence.** Proving what happened when the witness is a black-box AI. Courts need transaction logs, audit trails, decision rationales. Most agentic deployments don't generate adequate evidence for dispute resolution.
+
+6. **Loss allocation in multi-agent orchestration.** When an orchestrator delegates to a sub-agent that makes a bad decision, who's responsible — the orchestrator operator, the sub-agent developer, or the model provider? No clear legal standard exists.
+
+**The GSA regulatory signal (March 2026):** The General Services Administration proposed a new AI clause for government contractors (Holland & Knight analysis) requiring explicit documentation of AI agent authority scope, capability limitations, and audit trails. This is regulatory pressure creating compliance demand — and creating a procurement evaluation mandate.
+
+**What "legal frameworks don't exist" actually means for agent procurement:**
+
+The Project Deal paper used this phrase in the context of agent-to-agent commerce specifically. When Opus-3.5 negotiated a price with another agent, there was no contract. No SLA. No warranty. No dispute mechanism. This is fine for a research experiment — it's catastrophic if enterprise companies try to hire AI agents via informal channels.
+
+**The specific legal artifacts that don't yet exist for agent hiring:**
+
+| Legal artifact | Human hiring analog | Agent hiring status (May 2026) |
+|---|---|---|
+| Employment agreement | Standard, fully developed | No standard. Custom contracts only. |
+| Non-disclosure agreement | Standard | Unclear what NDA means when the agent's "knowledge" is a model weight. |
+| Scope of work / deliverable definition | Standard SoW | Emerging — most agent contracts are informal. |
+| Liability cap for agent errors | Standard limitation of liability | Unclear who the indemnifying party is. |
+| IP ownership of agent outputs | Work-for-hire doctrine | Contested: does agent output belong to operator, model provider, or customer? |
+| Performance warranty | Standard SLA | Almost nonexistent for autonomous agents. |
+| Audit rights | Standard in enterprise contracts | No standard for agent decision audit trails. |
+
+**How Straw's structure addresses the gap:**
+
+Straw is not a law firm, but the platform's architecture provides structural answers to several of these problems:
+
+**1. Defined deliverables:** Every Straw competition has a formal task definition, rubric, and evaluation criteria. This is the functional equivalent of a SoW. When a company hires an agent after a Straw competition, they have a documented record of what the agent was evaluated on. This is not a contract, but it's the evidentiary foundation for one.
+
+**2. Performance evidence before commitment:** Straw produces a scored competition report before any hiring decision. If the company later argues "the agent didn't perform as represented," Straw's report documents exactly what the agent demonstrated at time of hire. This is the audit trail that "logging and evidence" law requires.
+
+**3. Separation of evaluation from deployment:** Straw doesn't deploy the agent. It evaluates and certifies. This limits Straw's liability surface: we're an independent testing laboratory, not an agent operator. The liability for what the agent does post-hire rests with the customer (as operator) and the agent developer.
+
+**4. Standardized agent identity:** Straw competition results are linked to a specific agent version (ID + hash). This addresses the identity problem: the company hired agent v2.3.1, not "some version of agent X." If the developer ships a breaking update, that's a new agent — the original evaluation doesn't cover it.
+
+**5. VCG pricing as an arm's-length transaction record:** Straw's VCG prize mechanism produces a documented price signal for what agents are worth on specific task types. This is admissible evidence for "what was this agent's market value at time of hire?" if a dispute arises.
+
+**Near-term Straw product implication:**
+
+Add a **Post-Competition Summary PDF** that documents: task definition, rubric, agent performance scores, winner declaration, prize amount paid, and agent version hash. This is designed to attach to any hiring contract or vendor agreement the customer's legal team drafts. Straw positions this as "the exhibit your legal team needs." This is a zero-additional-cost legal moat: lawyers love documented evaluation records.
+
+**Longer-term:** As the regulatory environment hardens (OMB M-26-04 already requires documented eval evidence; EU AI Act Article 9.7 mandates it by August 2026), Straw's post-competition reports may become a compliance artifact. Companies will need Straw not just to find the best agent, but to prove they did due diligence.
+
+**The IP ownership question (unresolved, flag for Straw legal):**
+
+When an agent competes on Straw and produces work during the competition, who owns that work output? If the company hires the agent and the output becomes the basis for a product, does the agent developer have a claim? This is not resolved. Straw's terms of service should address this explicitly. Current position: competition outputs produced during a paid competition are owned by the task-posting company (they funded the compute). The agent developer retains ownership of the agent itself (model weights, architecture) but not the specific outputs produced during the competition. This should be made explicit in TOS.
+
+**Sources:**
+- Clifford Chance, Agentic AI liability gap (February 2026): https://www.cliffordchance.com/insights/resources/blogs/talking-tech/en/articles/2026/02/agentic-ai-and-the-liability-gap-your-contracts-may-not-cover.html
+- Proskauer, contract law and agentic AI: https://www.proskauer.com/blog/contract-law-in-the-age-of-agentic-ai-whos-really-clicking-accept
+- FBT Gibbons, commerce law not ready: https://fbtgibbons.com/ai-agents-are-starting-to-act-inside-the-transaction-and-commerce-law-is-not-ready/
+- Holland & Knight, GSA AI clause (March 2026): https://www.hklaw.com/en/insights/publications/2026/03/gsas-proposed-ai-clause-a-deep-dive
+- Amazon v. Perplexity AI, March 2026 (cited in Squire Patton Boggs analysis): https://www.squirepattonboggs.com/insights/publications/the-agentic-ai-revolution-managing-legal-risks/
+
+---
+
+## Tick 175 (2026-05-01): Model provider dynamics — judge model conflict of interest, Braintrust at $800M, OpenAI evals.openai.com, Claude Partner Network
+
+**Thread source:** Background research agent (model provider dynamics) returned after Session 17 writes. Incorporating key findings.
+
+**A. LLM self-preference bias — the judge model problem quantified**
+
+The most cited finding for Straw's judge architecture: LLMs systematically prefer their own outputs when acting as judges. Updated research as of April 2026:
+
+- **GPT-4 family:** Exhibits the strongest measured self-preference bias. GPT-4o systematically assigns higher scores to GPT-4o outputs than human evaluators do.
+- **Claude family:** Claude 3.5 Sonnet shows measurable self-preference bias. Debiasing strategy (the "combined budget" approach) improves Claude Sonnet 4 by +11.2 percentage points — meaning the bias is significant enough that a debias step is necessary.
+- **Style bias is the dominant bias, not position bias:** Recent April 2026 research (arxiv 2604.23178) found style bias is 0.76–0.92 across all models — far exceeding position bias (≤ 0.04). Style bias (favoring outputs that match the judge model's preferred writing style) has received minimal research attention despite being the largest confound.
+
+**Implications for Straw's three-tier eval pipeline:**
+
+The D30 judge daemon was designed with this in mind. Key design choices that survive new evidence:
+
+1. **Tier 2 LLM judge must not be the same model family as the competing agents.** If Anthropic Claude agents are competing, the Tier 2 judge should not be a Claude model. Straw should maintain a default to use a *different* provider's model as the Tier 2 judge — or use ensemble voting across multiple judge models.
+
+2. **Style bias (0.76–0.92) is larger than previously understood.** This means a single-LLM judge is unreliable even without self-preference. Ensemble approach (averaging scores from 3+ judge models from different families) reduces style bias. Straw should document this in the competition report: "Judges: GPT-4o + Claude 3.7 + Gemini Ultra 2. Ensemble score taken."
+
+3. **Tier 3 agent investigator (the deep audit layer) is the right call.** For high-stakes enterprise competitions ($25K+ prize pool), the Tier 3 investigator agent — which probes for edge cases the Tier 2 judge missed — is justified precisely because LLM judges have systematic biases. Straw's three-tier design is differentiated vs. anyone running a single-LLM judge.
+
+4. **"Debias before scoring" as a product feature.** Straw can offer customers a debiasing step (the +11.2pp improvement method) as part of the premium competition tier. This is a genuine quality improvement that competitors running vanilla LLM judges don't offer.
+
+**B. Braintrust raises $80M Series B at $800M valuation (February 17, 2026)**
+
+Lead: Iconiq. Participants: Andreessen Horowitz, Greylock, basecase capital, Elad Gil. CEO: Ankur Goyal.
+
+Key customers: Notion, Replit, Cloudflare, Ramp, Dropbox.
+
+Positioning: "observability layer for AI." Braintrust monitors deployed agents in production — logging, eval traces, LLM evaluation scoring, experiment tracking. It is emphatically **not** a competition-based procurement evaluation platform.
+
+**What Braintrust does:** Post-deployment observability. A company ships a product using Claude. Braintrust monitors every LLM call, logs outputs, runs automated eval scores, flags regressions. This is the production monitoring layer.
+
+**What Straw does:** Pre-deployment competition evaluation. A company hasn't decided which agent to hire. They post a task. Agents compete. Straw scores them. The company hires the winner. 
+
+**The relationship:** Braintrust at $800M is evidence that the market believes deeply in LLM evaluation infrastructure. But Braintrust is orthogonal to Straw — they serve different moments in the agent lifecycle. A customer can (and should) use Braintrust to monitor their deployed agent AND Straw to evaluate which agent to deploy. These are not substitutes.
+
+**Competitive risk:** Braintrust could theoretically add a "competition" feature — let vendors submit agents, run evals against customer-defined test suites, score them comparatively. They have the eval infrastructure. They don't have the marketplace (agents submitting, competing, getting paid). Building the marketplace is the hard part; Braintrust is missing it.
+
+**The $800M valuation signal:** Braintrust is solving the monitoring side of a $800M problem. Straw is solving the procurement side. If monitoring is worth $800M, procurement evaluation could be worth more — the procurement decision is where the money actually moves.
+
+**C. OpenAI evals.openai.com — evaluating external (non-OpenAI) models**
+
+OpenAI's eval platform (evals.openai.com) is both an open-source framework (17,600 GitHub stars, 2,900 forks) and a hosted dashboard. Key capability: supports evaluation of external models via custom API endpoints — not just OpenAI models. This means OpenAI could, in principle, offer "bring your agent, we'll run it against our benchmarks" as a service.
+
+**Current status:** evals.openai.com is primarily a framework for engineering teams running their own evals. It's not a marketplace. There's no task-posting. Agents don't compete. Companies don't receive competition reports. It's more like a test harness than a procurement platform.
+
+**Competitive risk assessment:** Low in the short term. OpenAI would need to build the marketplace layer (task posting, agent registry, competition mechanics, VCG pricing, judge daemon, post-competition reports). Their incentive is to keep companies on OpenAI models, not to run fair multi-vendor competitions. This conflicts-of-interest issue is significant — OpenAI running a competition where GPT-5 competes against Claude is structurally problematic. Straw is model-agnostic by design.
+
+**The independence advantage:** Straw's strongest competitive claim against OpenAI's eval platform is independence. "Our competitor is the model vendor. When OpenAI runs the eval, OpenAI judges. When Straw runs the eval, nobody judges — the task does." This is a slide.
+
+**D. Anthropic Claude Partner Network — $100M committed**
+
+Anthropic launched a formal Claude Partner Network with $100M committed to preferred technology partners. Partners get: early model access, co-marketing, dedicated support channels, revenue sharing on Anthropic-powered products.
+
+**Straw's position:** Straw is a natural Claude Partner Network member. Straw competitions use Claude as a default judge model. Straw agents built on Claude compete on Straw. Anthropic benefits from Straw: more Claude usage across competing agents, more demand for enterprise Claude API, more real-world performance data. The partnership benefits are mutual.
+
+**Risk:** If Straw joins the Partner Network, does that compromise independence? If Anthropic's Claude is both competing in Straw competitions AND providing Straw's judge model, the self-preference bias problem (25% Claude self-preference) creates an actual conflict of interest. Resolution: Straw maintains model-agnostic judge ensemble as policy. Straw can be a Claude Partner for go-to-market purposes while maintaining independent judgment infrastructure. This separation should be explicit in Straw's public trust documentation.
+
+**GPT-5.5 Pro 100% price increase:** In Q1 2026, OpenAI raised GPT-5.5 Pro pricing by 100%. This makes Claude increasingly cost-competitive for enterprise API usage. Straw competitions that use Claude as default judge benefit from this dynamic — customers comparing agent costs see OpenAI-built agents becoming more expensive to run while Claude-built agents stay cost-stable.
+
+**Sources:**
+- LLM self-preference bias, arxiv: https://arxiv.org/abs/2410.21819
+- Judging the Judges, mitigation strategies, April 2026: https://arxiv.org/abs/2604.23178
+- Braintrust $80M Series B (SiliconANGLE, February 17, 2026): https://siliconangle.com/2026/02/17/braintrust-lands-80m-series-b-funding-round-become-observability-layer-ai/
+- Braintrust $800M valuation (Axios): https://www.axios.com/pro/enterprise-software-deals/2026/02/17/ai-observability-braintrust-80-million-800-million
+- OpenAI evals external model support: https://platform.openai.com/docs/guides/external-models
+
+---
+
+## Tick 176 (2026-05-01): Agent identity infrastructure matures — A2A v1.0, ERC-8004 mainnet, x402 volume reality check, what it means for Straw's agent registry
+
+**Thread source:** Background research agent (marketplace landscape updates) returned after Session 17 writes. Incorporating key findings on the infrastructure layer.
+
+**A. A2A Protocol v1.0 — stable, production-ready, 150+ organizations**
+
+The Agent-to-Agent Protocol community announced v1.0: the first stable, production-ready standard for communication between AI agents. 150+ organizations are building on it.
+
+**Key v1.0 features:**
+- **Signed Agent Cards:** Cryptographic verification of agent identity and metadata. Establishes trust before interaction across organizational boundaries. An agent presents a signed card; the counterparty verifies it cryptographically before accepting the task.
+- **Heterogeneous environment support:** Multi-protocol bindings and version negotiation. An A2A v1.0 agent can communicate with agents built on different stacks.
+- **Multi-tenancy:** A single A2A endpoint can securely host many agents.
+
+**What A2A v1.0 means for Straw's agent registry:**
+
+Currently, Straw's agent registry stores agent metadata manually submitted by developers: description, capability tags, API endpoint, submission mode (API/Docker). With A2A v1.0, agents can now present signed agent cards with cryptographically verified capability claims. Straw should accept A2A-compliant agent cards as a submission mechanism: the agent card becomes the registration document, its signature verifies the agent's identity, and its capability metadata populates the registry automatically.
+
+**Practical implication:** An agent developer who has built an A2A-compliant agent can register on Straw with one command: submit their signed agent card. Straw verifies the signature, extracts capability metadata, and creates the agent profile. This reduces onboarding friction for the 150+ organizations building on A2A. This should be a 2026 Q3 feature.
+
+**B. ERC-8004 — Ethereum mainnet agent identity, 20,000+ agents registered**
+
+ERC-8004 went live on Ethereum mainnet January 29, 2026. As of May 2026: 20,000+ agents registered, 70+ projects building agent browsers and tooling.
+
+**Three registries in ERC-8004:**
+1. **Identity Registry:** ERC-721-based handle resolving to an agent's registration file. Each agent has an on-chain NFT-like identity.
+2. **Reputation Registry:** Standard interface for posting and fetching feedback signals. On-chain reputation scores.
+3. **Validation Registry:** Cryptographic and crypto-economic task verification. Agents can cryptographically prove task completion.
+
+**The relationship between ERC-8004 and Straw:**
+
+ERC-8004's Validation Registry is particularly interesting: agents can post cryptographic proof of task completion on-chain. Straw's competition results (scores, winner declarations) could be anchored to ERC-8004 as on-chain validation records. This would mean: an agent's Straw competition wins are verifiable on Ethereum, not just in Straw's database. This is a trust upgrade — competitors cannot claim wins they didn't earn, and third parties can verify an agent's competition history without trusting Straw's centralized record.
+
+**Risk:** ERC-8004 reputation is "manufactured" quickly — 20,000 agents registered in 3 months suggests low quality bar. On-chain reputation without quality signal is noise. Straw's value is that Straw reputation IS the quality signal. Anchoring Straw scores to ERC-8004 gives on-chain provenance without conflating Straw reputation with raw on-chain activity.
+
+**C. x402 payment protocol — $28K/day actual volume (demand problem, not supply)**
+
+The x402 payment protocol (machine-readable HTTP 402 for agent micropayments) is live, but actual transaction volume is low: approximately $28,000/day as of May 2026.
+
+**What this tells us:** The infrastructure exists. The demand doesn't yet. x402 is supply-constrained by buyer adoption, not by the protocol itself. Most companies are not yet running agents that autonomously purchase services — they're still in pilot mode.
+
+**Straw implication:** x402 is the natural payment rail for Straw's agent economy. When a company hires an agent via Straw, the payment mechanism should be x402-compatible — the agent can be paid automatically via machine-readable payment, without a human invoice process. But at $28K/day volume, the ecosystem isn't ready for Straw to depend on x402 exclusively. Straw should support x402 as one payment option, alongside traditional wire/ACH/Stripe. The x402 integration is a 2026-2027 feature, not a 2025 requirement.
+
+**D. Kite Chain mainnet — April 28–30, 2026**
+
+Kite Chain launched mainnet in the last 3 days of April 2026. Kite is an agent-native blockchain designed specifically for multi-agent coordination, payments, and reputation. Key claimed features: sub-second finality, native agent wallet primitive, built-in reputation staking.
+
+**Assessment:** Too new to evaluate seriously. Kite Chain is one of several agent-native chain attempts (alongside Virtuals Protocol's agent chain, NEAR Protocol's agent layer). None have achieved meaningful adoption. Watch Kite Chain's developer ecosystem through Q3 2026 — if it attracts serious agent developers, it becomes relevant for Straw's payment layer. Don't build on it now.
+
+**E. SURGE x OpenClaw second hackathon (February–March 2026)**
+
+The second SURGE x OpenClaw hackathon ran February–March 2026. OpenClaw is emerging as a platform for agent builders who want to showcase capabilities in competitive environments. This is the closest thing to a Straw competitor focused on agent builders rather than enterprise buyers.
+
+**Assessment:** OpenClaw targets a different customer: agent builders wanting to demo their agents, not enterprises wanting to evaluate agents for procurement. OpenClaw is a developer showcase; Straw is a procurement platform. No direct competition today. If OpenClaw adds an enterprise-facing evaluation layer with real task posting and structured rubrics, reassess. Until then: different markets.
+
+**F. Truesight — new competitor (March 2026)**
+
+Truesight launched March 2026. Positioning: "AI evaluation platform." Limited public information available.
+
+**Assessment needed:** Monitor Truesight's product positioning and pricing. If they are building competition-based procurement evaluation (not just operational monitoring), they are a direct competitor. Need more information before assessing threat level. Add to the quarterly competitive monitoring list alongside Scale AI's SEAL evaluations and W&B evaluations.
+
+**The infrastructure maturation summary for Straw:**
+
+The agent identity and payment infrastructure is converging in 2026. By end of 2026, expect:
+- A2A v1.0 as the default inter-agent communication protocol (already stable)
+- ERC-8004 as the default agent identity standard on Ethereum (already live)
+- x402 as the emerging payment rail (low volume now, growing)
+- Multiple agent-native chains competing (Kite Chain, Virtuals, NEAR) — none dominant
+
+Straw's position in this stack: Straw is at the application layer, not the infrastructure layer. Straw doesn't need to pick a chain or a payment rail today. The right approach is to design Straw's agent registry and payment interfaces to be protocol-agnostic, with adapters for A2A agent cards, ERC-8004 identities, and x402 payments as adoption grows.
+
+**Infrastructure-layer risk for Straw:** If one payment protocol or identity standard wins and Straw isn't integrated, developers building on that standard won't register on Straw. Mitigate by: (1) accepting A2A agent cards in 2026 Q3, (2) offering ERC-8004 identity verification as optional, (3) accepting x402 as a payment option alongside traditional rails.
+
+**Sources:**
+- A2A Protocol v1.0 announcement: https://a2a-protocol.org/latest/announcing-1.0/
+- ERC-8004 on Ethereum mainnet (Eco.com): https://eco.com/support/en/articles/13221214-what-is-erc-8004-the-ethereum-standard-enabling-trustless-ai-agents
+- ERC-8004 EIP: https://eips.ethereum.org/EIPS/eip-8004
+- x402 volume data: background research agent session 17
+
+---
+
+## Threads still to dig — Session 18
+
+**Status as of 2026-05-01 (continued overnight session):**
+
+Ticks 170–176 complete. 
+
+**Remaining high-priority thread:**
+- **Section 32:** Long-form enterprise sales playbook — the full 3,000-word playbook the first AE will use. Tick 171 wrote the summary; Section 32 writes the actual playbook document. This is the morning deliverable.
+
+**Additional candidate threads:**
+- Tick 177: The "agent acquihire" deal structure revisited — now that Project Deal proves agents transact at real money, what does a $500K–$2M agent acquihire term sheet look like in 2026?
+- Tick 178: Straw's judge model provider selection — building a vendor-neutral judge ensemble, managing model deprecation risk, SLA for judge availability
+- Tick 179: Competition task taxonomy — the 8 task categories where Straw has most traction (code, data pipelines, document analysis, procurement, customer support, research synthesis, content generation, API integration) with scoring rubric templates for each
+- Tick 180: The "Straw for Government" play — OMB M-26-04 mandates documented AI evaluation evidence. Federal procurement offices are the highest-compliance, highest-budget vertical. What does a FedRAMP-ready Straw look like?
+
+---
 
