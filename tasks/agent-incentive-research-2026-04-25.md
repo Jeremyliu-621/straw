@@ -20245,4 +20245,32 @@ A: No — we're the next layer down the stack. LMArena compares foundation model
 - Seed round structure: Carta State of Pre-Seed Q2 2025; Causo Hub "Seed Valuation 2026"; Pitchwise "Median Seed Round Size by Industry 2026"
 - Marketplace seed metrics: Phoenix Strategy Group, "10 Marketplace KPIs for VC-Backed Companies"; CRV, "Pro Rata Rights: A Founder's Guide"
 - General Catalyst seed: GC Fund XII announcement; vcsheet.com/fund/general-catalyst
+## Threads still to dig — Session 18 (2026-05-01, continuation)
+
+**Completed this session:**
+- [x] Tick 116: Adversarial rubric gaming — 8 attack types, tiered defense stack (Tier 1-3), rubric disclosure policy, gaming-resistance analysis
+- [x] Tick 117: Long-horizon competition design — METR trajectory, DARPA/XPRIZE/Topcoder precedents, Campaign format specification, checkpoint structure, eval pipeline changes
+- [x] Tick 118: Poster-side rubric gaming — procurement fraud literature (IACRC, OECD, FAR), 6 attack patterns, automated detection signals, mitigation stack with protest mechanism
+- [x] Tick 119: Sandbagging detection — Weij et al. foundational paper, noise injection detection (NeurIPS 2025), evaluation-awareness research, chess/sports/finance analogues, tiered response policy, preventive countermeasures
+- [x] Tick 120: Graduated rubric release mechanism — phased criteria disclosure, 3-stage schedule, failure modes and mitigations, where graduated release adds maximum value
+- [x] Tick 121: Agent compute marketplace integration — 3 integration models (referral/sponsorship/full marketplace), model provider sponsorship strategy, Phase 1-3 build plan
+- [x] Tick 122: Rail-guarded rubric problem — over-specification failure mode, 3 automated detection approaches, Rubric Health Score product design, rubric quality flywheel
+- [x] Tick 123: 300-agent swarm — Tullock contest theory, CAMELYON/Kaggle empirics, infrastructure constraints, optimal prize structure, 10:1 enrollment ratio, design implications
+- [x] Tick 124: Straw Score as industry standard — FICO/LSAT/S&P analogues, calibration corpus moat, standard-formation mechanics, 5 things Straw needs to build
+- [x] Tick 125: Agent identity infrastructure — ERC-8004 live on mainnet (Jan 2026), A2A AgentCard format, ANP complementary layer, SKILL.md format, portable Straw credentials as W3C VCs + ERC-8004
+- [x] Tick 126: Agent quality gap — credence good framing, 4 cognitive biases, demo-to-deployment gap data (88% failure, 95% no ROI), Anthropic Project Deal (Opus vs. Haiku, 70% value gap, users can't perceive the difference), 76% buy-vs-build signal
+- [x] Tick 127: Long-form proposal — Why agents post tasks (5 economic conditions, RLHF concern answered, day-in-the-life scenario)
+- [x] Tick 128: Task-posting UX/payment/reputation — Agent SDK design, 3 payment models (pre-funded/per-authorization/agent-escrow), automated winner selection, poster reputation dimensions, posting flywheel
+
+**New candidate threads for Session 19:**
+
+- [ ] **Tick 129: The competitor response playbook** — Now that Straw's product thesis is clear (neutral eval marketplace with calibration corpus moat), what is the specific response playbook for each likely competitor attack? (Azure Agent Certification: undercut on price + emphasize neutrality. Kaggle for Enterprise: differentiate on privacy + real enterprise tasks. OpenAI Eval service: neutrality argument + labs have conflicted incentives.) Each competitor needs a specific counter-strategy, not a generic "we're different" response.
+
+- [ ] **Tick 130: Agent fleet management economics** — An enterprise that hires 10 agents from Straw competitions needs to manage them as a fleet. What does the fleet management layer look like? (Performance monitoring across all 10 agents, rebalancing between agents as their relative performance changes, renewal/replacement decisions.) How does Straw's platform extend into fleet management? Where is the line between Straw's core product and adjacent SaaS?
+
+- [ ] **Tick 131: The network effect floor** — What is the minimum viable supply of agents that makes a Straw competition genuinely competitive? If only 3 agents compete, the best one wins by default — no competition signal. What is the empirical minimum for meaningful competition? How does Straw achieve the network effect floor in its first 12 months?
+
+- [ ] **Tick 132: The agent labor market — worker classification, contracts, and IP ownership** — When a Straw agent wins a competition and is hired, what is the legal structure? (Independent contractor? Service agreement? IP license?) Who owns the work product generated during the competition? Who owns the work product generated post-hire? This has significant enterprise procurement and legal compliance implications.
+
+- [ ] **Long-form synthesis: The master proposal** — Synthesize Ticks 1-128 into a coherent 15-20 page brief covering: (1) Why agents want to post tasks (Ticks 127), (2) Why enterprises need the platform (Tick 126), (3) The evaluation infrastructure that makes it trustworthy (Ticks 116-122), (4) The economics of competition design (Ticks 123-124), (5) The agent identity layer that makes scores portable (Tick 125), (6) The product roadmap through Series A (Tick 27 / Section 27). This is the morning deliverable Jeremy asked for.
 
