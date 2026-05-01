@@ -15141,3 +15141,179 @@ The supply-side opportunity: the top agent startups that recognize this dynamic 
 - Global Analyst Research Settlement: SEC Release No. 34-48252 (2003)
 - Morningstar independent research model: morningstar.com/company/about
 
+
+---
+
+## Tick 105 (2026-05-01): SOC 2 Type II fast-track — specific plan for Straw's compliance roadmap
+
+**Thread**: SOC 2 Type II is the single largest gate blocking enterprise deals. What's the fastest credible path? What does it actually cost? What AI-specific questions will enterprises ask?
+
+---
+
+### The core finding: SOC 2 is mandatory, the timeline is fixed
+
+SOC 2 Type II is non-negotiable for Tier 1 enterprise vendors (vendors that process customer production data). It cannot be waived, substituted, or replaced. Enterprise security teams filter out vendors without a current Type II report before evaluation begins — the question isn't whether Straw needs it, but when.
+
+**Impact**: Vendors with SOC 2 Type II report **2.3× faster enterprise sales cycles** and **67% higher contract values** than non-certified competitors (Agentplace 2025 data). Given Straw's target $20K–$50K/competition price point, every month without SOC 2 is a month of enterprise deals that cannot close.
+
+---
+
+### The minimum viable timeline
+
+**The minimum observation period is 3 months** (AICPA-compliant for first-time reports). A 6-month observation period is more credible with enterprise security reviewers.
+
+| Phase | Duration |
+|-------|----------|
+| Gap analysis + readiness assessment | 2–4 weeks |
+| Control implementation | 6–10 weeks |
+| Observation period (minimum) | 3 months |
+| Auditor fieldwork + report issuance | 4–6 weeks |
+| **Total (aggressive)** | **~5–6 months** |
+| **Total (credible)** | **~8–10 months** |
+
+**Recommendation**: Skip SOC 2 Type I entirely. Go directly to Type II with a 6-month observation window. The Type I→Type II path takes 11+ months. Direct to Type II with 6-month observation is 9 months. With a 3-month observation window (accepted by most but not all enterprises), 6 months is achievable. Start immediately.
+
+**Straw's clock**: If started 2026-05-01, Type II with 6-month observation → ready February 2027. Type II with 3-month observation → ready November 2026.
+
+---
+
+### Platform selection
+
+| Platform | Annual cost (Year 1) | Best for |
+|----------|---------------------|---------|
+| Sprinto | $6K–$10K | Lowest cost; startup-friendly; 20–40% below Vanta/Drata |
+| Drata | $7.5K–$15K | Best support; includes SafeBase Trust Center |
+| Secureframe | $7.5K–$12K | Mid-range, solid feature set |
+| Vanta | $10K–$15K | Broadest integrations (400+); best AI tooling |
+
+**Recommendation for Straw**: Start with Drata (includes SafeBase Trust Center post-acquisition; best support for a founder-led company that isn't yet investing in a dedicated security engineer). Switch to Vanta when the integration count matters more (at Series A).
+
+**What these platforms actually automate**:
+- Continuous evidence collection from AWS, GitHub, Okta → automatic (hands-off once configured)
+- Control monitoring dashboards, pass/fail status → automatic
+- Policy templates → provided, but a human must review and approve them
+- Quarterly access reviews → surfaces who to review; a human makes the decisions
+- Penetration test coordination → not automated; you schedule and run it
+
+**What still requires human effort** (cannot be automated):
+- Writing and owning security policies
+- Conducting tabletop incident response exercises (evidence of testing is required by auditors)
+- Vendor due diligence decisions
+- Auditor interviews
+- MDM deployment on every employee device (always has stragglers)
+
+---
+
+### Real total cost for a 5–15 person team
+
+| Item | Low | High |
+|------|-----|------|
+| Compliance platform (Year 1) | $6K | $15K |
+| SOC 2 auditor (Type II, specialist CPA firm) | $12K | $30K |
+| Penetration test (required) | $5K | $15K |
+| Legal counsel (policy review) | $2K | $8K |
+| Security tooling (SIEM, MDM, vulnerability scanner) | $3K | $10K |
+| **Total cash** | **~$28K** | **~$78K** |
+| Engineering time (150–200 hours, $150/hr) | $22.5K | $30K |
+| **All-in Year 1 total** | **~$50K** | **~$108K** |
+
+**Year 2 drops to ~$20K–$40K** (platform renewal + auditor refresh, no one-time implementation costs).
+
+**Budget guidance for Straw**: $60K all-in Year 1 is a realistic mid-range estimate. This should be in the seed funding plan as a hard cost, not a surprise.
+
+---
+
+### The four hardest controls (where implementations get delayed)
+
+**1. Access Control (CC6) — most common audit exception**
+- MFA must be enforced (not just enabled) across all production systems, with evidence
+- Quarterly access reviews with documented approvals — someone must sign off, a dashboard isn't enough
+- Offboarding procedures executed within defined SLAs (often 24 hours) — requires actual process, not policy
+- MDM deployment on every employee endpoint — 4–8 weeks to deploy agents across the team
+
+**2. Vulnerability Management (CC7.1) — longest lead time**
+- Continuous scanning tool deployed on all systems
+- Patching SLAs defined and evidenced (critical = 30 days, high = 60 days) — not just policy, but evidence of meeting the SLA
+- SIEM configuration: 4–8 weeks of log source onboarding
+
+**3. Incident Response (CC7.3–CC7.5) — hardest to evidence**
+- IR plan is easy to write (one day)
+- Auditors want evidence it was tested: tabletop exercise with documented minutes/results
+- For a 3-month observation window: must run a tabletop within that period
+
+**4. Change Management (CC8) — cultural shift**
+- Every production change must be authorized, tracked, and reviewed
+- Informal "I pushed a hotfix" culture must become formal PR-review-with-approval workflows
+- This is harder than the technical controls because it's behavioral
+
+**Start the hard controls first.** The observation period clock starts when controls are in place, not when you sign up for the compliance platform.
+
+---
+
+### SOC 2 bridge letters
+
+A bridge letter is a management-signed document (not auditor-signed) stating that controls from the last Type II report remained in place through a date beyond the audit period. It covers the "gap" between the last report's end date and today.
+
+**When enterprises accept them**: Most mid-market enterprises accept bridge letters as a temporary measure when combined with a valid prior Type II report. Heavily regulated industries (financial services, healthcare, federal) frequently reject them and require a current in-period report.
+
+**What they cannot do**: Bridge letters are useless before your first Type II report. They are gap-fillers for subsequent renewal periods, not substitutes for the initial report.
+
+---
+
+### Trust Center: set up immediately (even without SOC 2)
+
+A Trust Center is a self-serve web portal where prospects view Straw's security posture, request NDA-gated documents, and answer their security questions without emailing the sales team. Drata includes SafeBase Trust Center post-acquisition.
+
+**Why to set up immediately**: Even before SOC 2 is complete, a Trust Center signals maturity. Prospects can see: controls in progress, platform in use, policies published, penetration test scheduled. This moves the conversation from "are you serious about security?" to "when will the report be ready?"
+
+**Impact**: Security reviewers visit the Trust Center instead of sending a 300-question SIG questionnaire. Reduces security review friction by 60–80% for mid-tier enterprises.
+
+---
+
+### AI-specific security questions Straw must be prepared to answer
+
+Beyond the standard SIG/CAIQ questionnaire, enterprises are asking AI-specific questions (Cloud Security Alliance AI-CAIQ, 2025):
+
+**The questions most critical for Straw's specific architecture**:
+
+| Question | Straw's required answer |
+|----------|------------------------|
+| "Does our data train your models?" | No — enterprise task data and submissions are not used to train any models; anonymized evaluation signals are used only for rubric calibration with explicit DPA consent |
+| "Can agents access each other's submissions during a competition?" | No — each agent's submission is isolated in a separate S3 prefix with no cross-competition read access; Firecracker/Docker sandbox prevents lateral movement |
+| "What happens if a malicious agent submission tries to exfiltrate data?" | Container sandbox (Docker + network egress rules): agents cannot make outbound network calls to external services during execution; all execution logs are audited |
+| "Who has access to our prompt logs?" | Access limited to named Straw staff, logged and auditable; retention is X days post-competition; enterprise can request deletion with 30-day confirmation |
+| "Are you aligned with NIST AI RMF / EU AI Act?" | Publish NIST RMF alignment documentation; EU AI Act risk classification for Straw's use case |
+| "Do you monitor for model drift in your judge models?" | Yes — Straw Monitor includes judge calibration drift detection; enterprises are notified when judge model updates occur |
+
+**The highest-risk answer**: The sandbox isolation question. Enterprise buyers will ask whether agents can see each other's work during a competition, and whether a malicious agent submission could exfiltrate another company's task data. This needs a clear technical answer with architecture diagram in the Trust Center before enterprise deals reach security review.
+
+---
+
+### Straw's 12-month SOC 2 action plan
+
+| Month | Action |
+|-------|--------|
+| 0 | Sign up for Drata; run gap analysis; schedule penetration test |
+| 1 | Implement MDM on all devices; enforce MFA on all systems; set up SIEM |
+| 2 | Document all policies (IR plan, access control policy, change management policy) |
+| 2 | Publish Trust Center (even pre-SOC 2) |
+| 3 | Run tabletop incident response exercise (documented); begin 6-month observation period |
+| 4–8 | Observation period; evidence collection automated by Drata |
+| 9 | Engage SOC 2 auditor (specialist CPA firm, not Big 4) |
+| 10 | Auditor fieldwork |
+| 11 | Report draft + remediation |
+| 12 | SOC 2 Type II report issued → share with enterprise prospects |
+
+---
+
+### Sources
+
+- SOC 2 observation period options: Compass ITC (compassitc.com/blog/selecting-your-soc-2-type-2-observation-period)
+- Compliance platform comparison: Cavanex 2026 (cavanex.com/blog/soc-2-compliance-platforms-compared-2026)
+- SOC 2 cost breakdown: Cavanex; StartupDefense (startupdefense.io/soc-2-costs-for-startups-complete-breakdown)
+- SOC 2 CC6/CC7 controls: soc2auditors.org/insights/soc-2-security-controls
+- Bridge letter definition: Vanta (vanta.com/collection/soc-2/what-is-a-soc-2-bridge-letter)
+- SafeBase Trust Center: safebase.io; Drata/SafeBase acquisition documentation
+- CSA AI-CAIQ: cloudsecurityalliance.org/artifacts/ai-consensus-assessments-initiative-questionnaire-ai-caiq
+- SOC 2 impact on enterprise sales cycle: agentplace.io/blog/soc-2-type-ii-for-agent-platforms-security-certification-roadmap
+
