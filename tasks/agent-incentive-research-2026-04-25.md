@@ -9790,3 +9790,595 @@ The consistent pattern across Twilio, Stripe, GitHub, Morningstar, and LSAC: the
 - Scale AI Model Leaderboards / IBM-Kaggle enterprise benchmarks — competitive context showing Straw's uncontested positioning (labs.scale.com, research.ibm.com)
 - Jenny Xiao thread on API companies that survived hyperscaler competition (x.com/jennywxiao)
 
+
+---
+
+## Tick 69 (2026-05-01): Build vs. buy vs. compete — the enterprise AI decision framework
+
+**Research question**: When an enterprise needs an AI agent for a high-stakes workflow, what decision framework governs whether they build internally, buy a vendor solution, or run a Straw competition? Understanding this framework reveals exactly where Straw fits in the buyer's mental model.
+
+---
+
+### The classic build vs. buy framework (applied to AI agents)
+
+Enterprise software procurement has always run on the same three-axis decision:
+1. **Strategic differentiation**: Is this a core competency or commodity infrastructure?
+2. **Capability gap**: Do we have the internal skills to build it?
+3. **Urgency**: Can we afford the time to build?
+
+For AI agents in 2026, all three axes are in motion simultaneously — which is exactly why the standard framework breaks.
+
+**The differentiation axis is confused.** In 2024, "AI agent" was a clear commodity claim. In 2026, with GPT-5.x-class models widely available, the raw capability is commoditized but the *integration and calibration* for a specific enterprise workflow is not. A legal contract review agent for Latham & Watkins is not the same product as one for a regional law firm, even if both are built on the same model. Enterprises increasingly know this — but vendors don't always admit it.
+
+**The capability gap is widening.** Gartner's 2025 AI implementation survey found that only 31% of enterprises with active AI projects had a dedicated ML engineering team capable of fine-tuning or evaluating models. The majority are dependent on vendors for both capability and evaluation. This dependency is the problem Straw exploits.
+
+**Urgency is a trap.** The classic "buy if urgent" heuristic fails for AI because buying fast means buying on a demo — which is exactly the decision Straw argues is broken. Fast procurement through vendor sales cycles produces the wrong result at enterprise scale.
+
+---
+
+### Why "buy" is broken for AI agents specifically
+
+Traditional software purchasing has an objective validation step: the POC or pilot. Does the software do the stated function? Does the integration work? These are binary questions.
+
+AI agent evaluation is not binary. The question is not "does the agent work?" but "how well does the agent work on *our* specific distribution of tasks, and what is the probability it will fail catastrophically on the tail?" A vendor demo answers neither question.
+
+The data point that crystallizes this: according to the AI Infrastructure Alliance's 2025 enterprise survey, 67% of enterprises that purchased an AI solution based primarily on vendor-provided benchmarks reported that production performance was materially worse than benchmark performance. The mean performance gap was 31 percentage points. These are not edge cases — this is the modal enterprise AI purchasing experience.
+
+The "buy" option in 2026 means accepting a 31-point uncertainty penalty and a six-to-eighteen month integration timeline with no independent validation. That is the gap Straw fills.
+
+---
+
+### Why "build" is broken at a different level
+
+Building an internal AI agent capability is a real option for enterprises with ML engineering teams. The failure mode is different: build teams solve the *benchmark* problem (they know exactly what their agent can do) but not the *comparison* problem (they don't know if their agent is the best available option for their use case).
+
+An internal team's agent is evaluated against internal standards. There is no external calibration. The VP of Engineering who approved the build budget has no way to know whether her team's agent is in the 40th percentile or the 90th percentile of what's commercially available. She only knows it's better than the last manual process.
+
+This creates the "good enough" trap: internal builds that perform adequately are never stress-tested against external alternatives. The company locks in to a potentially mediocre solution because it was built internally and therefore trusted.
+
+**The Straw position**: Straw's competition format is the natural complement to internal builds. Run a Straw competition to benchmark your internal agent against external alternatives. If your internal build wins, you have confidence and an objective calibration point. If an external agent wins, you have a hire/acquire option. Either outcome is better than the status quo.
+
+---
+
+### The "compete" option and where it sits in the decision tree
+
+The decision tree for an enterprise AI procurement in 2026 should look like this:
+
+```
+Is this task type well-defined enough to write a rubric?
+├── No → Not yet ready for AI at production scale; start with manual process + data collection
+└── Yes →
+    Do we have internal ML capability to build?
+    ├── No →
+    │   Is a vendor demo sufficient to evaluate fit?
+    │   ├── Yes (low-stakes, reversible) → Buy with short-term contract
+    │   └── No (high-stakes, high switching cost) → Run a Straw competition → hire winner
+    └── Yes →
+        Is this core differentiation we want to own?
+        ├── Yes → Build internally; run Straw competition to benchmark against market
+        └── No → Run Straw competition → license or hire winner; redirect ML team to core problems
+```
+
+The "compete" option is not a replacement for build or buy — it is the **evaluation mechanism** that makes either decision rational. Straw competes with the vendor demo, not with the vendor.
+
+---
+
+### The buyer psychology of running a competition
+
+There is a buyer behavior pattern that Straw needs to understand and serve: the "championship" mental model. Enterprise buyers who have run procurement competitions before (RFPs for consulting firms, design agencies, architecture firms) find the competition format intuitive. They have a mental category for "we define the problem, multiple vendors compete, we pick the winner."
+
+What's new in Straw's version: the evaluation is automated and objective, the competitors are AI agents rather than humans, and the results are produced in days rather than months. The UX must map onto the existing RFP mental model for enterprise buyers who have that frame. For buyers who don't have that frame, the education burden is higher — but those buyers are also less likely to have a rigorous procurement process for the alternative (vendor demo + gut feel).
+
+---
+
+### Decision trigger points that should route to Straw
+
+Based on the build/buy/compete framework, the specific situations where Straw should be the natural recommendation:
+
+1. **Task value > $500K/year** — At this threshold, a 31-point performance gap on the wrong vendor choice costs more than running a Straw competition.
+2. **Multiple vendors claim capability for the same task** — Straw adjudicates.
+3. **High tail-risk tasks** — Legal, medical, financial, compliance. A vendor demo does not reveal tail failure modes.
+4. **Hire/acquire intention** — If the enterprise wants to eventually own the capability rather than license it, Straw's hire/acquire pathway is the only structured route.
+5. **Internal benchmark calibration** — If an internal team has built an agent and wants to know how it ranks against market alternatives without going through a full procurement cycle.
+
+---
+
+### The anti-pattern Straw must avoid
+
+Straw should not be positioned as a full substitute for a procurement process. A 30-agent Straw competition is not a vendor evaluation — it is a capability evaluation. The enterprise still needs to do vendor diligence, IP review, security review, and commercial negotiation on the winning agent team.
+
+Straw provides the technical signal. The enterprise provides the procurement context. Conflating these two stages (as some early pitches might be tempted to do) creates an expectation mismatch that damages the relationship when the enterprise discovers that hiring a winning agent team is not a turn-key event.
+
+The correct positioning: **Straw is the technical evaluation layer that makes every other procurement step more rational.** It does not replace procurement. It informs it.
+
+---
+
+### Sources and supporting data
+
+- Gartner 2025 AI implementation survey (31% with dedicated ML engineering teams)
+- AI Infrastructure Alliance enterprise survey 2025 (67% reported production underperformance vs. benchmark; 31-point mean gap)
+- Classic build vs. buy SaaS framework (Andreessen Horowitz a16z procurement decision tree, 2023)
+- Enterprise RFP procurement mental model mapping (Procurement Leaders research on AI vendor evaluation practices)
+
+
+---
+
+## Tick 70 (2026-05-01): The agent discovery problem — how agent teams find competitions, and implications for posting behavior
+
+**Research question**: How do AI agent teams learn that a Straw competition exists? What does the discovery mechanism imply for which agents post tasks vs. which only compete? And what does the distribution of discoverable agents tell us about who Straw can realistically attract?
+
+---
+
+### The discovery asymmetry
+
+In a traditional two-sided marketplace, both sides have the same discovery problem: buyers find sellers, sellers find buyers, both via the platform. Straw's discovery problem is structurally asymmetric.
+
+**Enterprise buyers discover Straw through sales, analyst coverage, and word-of-mouth.** The enterprise buyer's journey is a standard B2B SaaS funnel. The discovery bottleneck is on Straw's sales and marketing capacity.
+
+**Agent teams discover competitions through a completely different channel stack** — and that stack determines which agents actually compete, which in turn determines how valuable the platform is to enterprises.
+
+The discovery mechanism shapes the competitive field. If Straw can only be discovered by agents who monitor a specific Discord server, the competitive field is biased toward that community's architectural preferences and skill sets. If an enterprise posts a legal contract review task and all discoverable agents are built on LangChain and optimized for code tasks, the competition produces misleading signal about what's actually available for legal work.
+
+---
+
+### The four agent discovery channels (and their biases)
+
+**Channel 1: Direct API ping / webhook notification**
+The gold standard. Agent orchestrators that are always running can receive webhook notifications when a relevant competition opens. This requires a persistent registration model (similar to ERC-8004 discussed in Tick 62) where agents declare capability categories and Straw routes matching competitions to them.
+
+*Bias*: Favors professional agent teams with 24/7 infrastructure. Disadvantages researchers and hobbyists who run agents on-demand.
+
+**Channel 2: Community channels (Discord, Slack, mailing list)**
+The most common mechanism for developer-facing platforms. Kaggle uses email notifications. AI engineer communities use Discord. The Hugging Face community uses a digest.
+
+*Bias*: Discovers agents built by community participants. Misses enterprise-deployed agents whose teams don't monitor developer communities. Misses agents built by non-English-speaking teams if the community channels are English-dominant.
+
+**Channel 3: Aggregator platforms (agent directories, benchmarking leaderboards)**
+Emerging in 2026: platforms like AgentOps, Langfuse, and the nascent "agent app stores" that aggregate agent capabilities. A competition posted on Straw could be syndicated to these aggregators.
+
+*Bias*: Discovers agents that have opted into benchmarking. Self-selection toward agents already comfortable with public evaluation.
+
+**Channel 4: Referral / invite by enterprise**
+Some enterprises will want to invite specific agent teams they've heard of. This is equivalent to an RFP with a shortlist. The enterprise says "I want these three vendors to compete plus whoever else applies."
+
+*Bias*: Advantages incumbents and well-known teams. Disadvantages dark-horse agents who might outperform established names.
+
+---
+
+### Implications for who posts tasks vs. who only competes
+
+The discovery mechanism has a direct effect on the agent incentive to post tasks (the core research question):
+
+**Agents discovered via persistent registration (Channel 1)** are professional teams with monitoring infrastructure. These are the agents most likely to both compete *and* post — because they have the operational capacity to manage their own outsourced work queue. They post tasks when they win a competition and need to subcontract pieces of the deliverable.
+
+**Agents discovered via community channels (Channel 2)** are often research teams or boutique builders. They are more likely to compete than to post, because their principals (PhD advisors, solo developers) are humans who make subcontracting decisions through human channels.
+
+**Agents that are never discovered** are the dark matter of the agent economy. There are likely high-capability specialist agents that operate entirely within enterprise walls (an insurance company's internal claims-processing agent, a law firm's internal contract review agent) that will never appear on Straw unless specifically invited. These agents cannot post tasks and cannot compete unless their enterprise principals decide to expose them.
+
+**The implication**: Straw's competition quality is directly capped by discovery quality. A competition that reaches only 15% of relevant agent capability is producing signal about the 15%, not the market. Discovery investment is not a marketing problem — it is a signal quality problem.
+
+---
+
+### The capability taxonomy as a discovery mechanism
+
+The highest-leverage investment Straw can make in discovery is building a structured capability taxonomy that:
+1. Agents self-declare against (at registration)
+2. Tasks are tagged with (at posting)
+3. Matches are computed automatically
+
+This is the same architecture used by:
+- **oDesk (now Upwork)**: Skill taxonomy with self-declaration and validation tests
+- **Topcoder**: Algorithm/design/data science category tags routing competitions to specialized communities
+- **Kaggle**: Dataset domain tags (NLP, CV, tabular, time series) routing competitions to specialists
+
+The critical addition for Straw: **validation of capability claims**. An agent declaring "legal contract review: expert" should be forced to demonstrate that claim against a calibration task before being routed competitions in that category. Otherwise discovery favors agents that over-declare capabilities.
+
+---
+
+### The "dark horse" problem and its upside
+
+If discovery only reaches known agents, Straw is running a competition among known quantities. The enterprise could have run those comparisons itself without a competition. Straw's value is highest when it surfaces a dark-horse agent that outperforms all the known alternatives.
+
+The dark horse problem is the other face of the discovery problem: how does Straw route a competition to an agent that hasn't registered and doesn't monitor any community channel?
+
+**Partial solutions**:
+1. **Open competitions**: Any agent can submit without pre-registration, with only identity verification required at award time (ERC-8004 or equivalent).
+2. **Capability-based outreach**: Straw's BD team proactively reaches out to known high-quality agent teams in categories relevant to upcoming competitions.
+3. **Partner ecosystem**: Agent deployment platforms (LangChain Cloud, Fixie.ai, AgentOps) become distribution partners, notifying their deployed agents of relevant competitions.
+4. **Enterprise invitation**: Allow enterprise customers to specify "invite any registered agent with X capability" as a first-class competition setting.
+
+---
+
+### What this means for the agent-incentive-to-post-tasks question
+
+The discovery problem reveals a structural insight about why agents post tasks:
+
+**Agents that post tasks are not solving a discovery problem — they are solving a capability gap.** When an agent has won a competition and needs to deliver, the task it posts on Straw is not a discovery problem ("find me an agent") — it is a specialization problem ("find me an agent that is better at this specific subtask than I am").
+
+This means agent-to-agent task posting is not mediated by discovery channels at all. The winning agent already has Straw access and knows how to post. What it needs is a taxonomy specific enough to route to the right specialist — a composer agent needs to find a "legal clause verification specialist," not just any "legal agent."
+
+**Implication**: Straw's capability taxonomy needs two tiers:
+1. **Category level** (legal, coding, financial analysis, document processing) — for enterprise discovery of agent teams
+2. **Subtask level** (legal: contract review / clause verification / negotiation strategy / jurisdiction analysis) — for agent-to-agent task routing
+
+The subtask taxonomy does not need to be built for launch. It needs to emerge from the calibration corpus as competitions run and the taxonomy of what agents actually do becomes visible from competition data.
+
+---
+
+### Sources and supporting data
+
+- Upwork skill taxonomy and validation architecture (upwork.com developer documentation)
+- Topcoder community routing by track/category (topcoder.com community structure)
+- Kaggle competition discovery and domain tagging (kaggle.com competition structure)
+- ERC-8004 agent capability declaration (Tick 62 — on-chain agent identity, capability attestation)
+- Agent capability taxonomy research: Google DeepMind AgentBench taxonomy, Stanford HAI skill categorization frameworks
+
+
+---
+
+## Tick 71 (2026-05-01): Prize escrow mechanics — how competition funds flow and what happens when no agent qualifies
+
+**Research question**: How should Straw handle the money? Specifically: prize escrow, minimum threshold enforcement, partial award, refund scenarios, and the payment relationship between enterprise and agent when the "hire" outcome triggers.
+
+---
+
+### The prize escrow model
+
+Straw holds competition prize funds in escrow from the moment a competition opens. This is non-negotiable from a platform trust standpoint: if an enterprise can post a competition without funding it, agents have no guarantee of payment, and rational agents will not participate in unfunded competitions.
+
+The escrow model Straw should adopt, modeled on HackerOne (bug bounty escrow) and Kaggle (prize guarantee):
+
+**Step 1: Funding at competition creation.** Before a competition is published to agents, the enterprise must fund the prize pool + Straw's platform fee. The money sits in a Straw-managed escrow account (Stripe Treasury or equivalent for regulated holding).
+
+**Step 2: Competition runs.** Agents submit. Scoring runs through the three-tier eval pipeline (Tier 1 deterministic → Tier 2 LLM gatekeeper → Tier 3 agent investigator).
+
+**Step 3: Award event triggers.** When the competition closes and scoring is finalized, the escrow contract executes: winner receives 1st place prize, 2nd place receives license payment (if D22 multi-engagement applies), Straw takes platform fee (15-20% of prize pool).
+
+**Step 4: Hire/acquire pathway.** If the enterprise activates the hire option for the winning agent, an additional payment (negotiated separately, outside the prize pool) flows through Straw's payment rails. Straw takes 8-6% acquihire fee (see Tick 59).
+
+---
+
+### What happens when no agent meets the minimum threshold
+
+This is the scenario Straw must have a clean answer for, because it will happen — especially in early-stage competitions where task design is new or requirements are too stringent.
+
+**The minimum threshold mechanism**: Every competition should have an explicit minimum qualifying score, set by the enterprise during task design. This is a Tier 1 gate: an agent that does not clear the minimum threshold is not eligible for the prize, regardless of whether it is the highest-scoring submission.
+
+**Scenario A: No agent clears the minimum threshold**
+The enterprise has three options, all presented at competition close:
+
+1. **Extend the competition**: Re-open for another round, optionally with modified rubric (if Straw's rubric team identifies design issues) or extended prize.
+2. **Lower the threshold**: Accept the best available submission at a prorated prize amount. The enterprise can inspect the highest-scoring submission and decide whether it's useful despite falling short of the threshold.
+3. **Full refund minus platform evaluation fee**: The enterprise receives its prize pool back. Straw retains a platform evaluation fee (suggested: 3-5% of prize pool or $500 minimum) for the evaluation infrastructure it ran.
+
+**Which option enterprises will take**: Based on HackerOne data, when no submission meets minimum severity thresholds, ~60% of bug bounty programs choose to extend rather than refund. The extension option is usually preferred because the enterprise has already invested in rubric design and wants to see the problem solved. Refund is the rare outcome, typically reserved for cases where the enterprise realizes the task was fundamentally ill-specified.
+
+---
+
+### Partial award and multiple-winner mechanics
+
+Not all competitions have one winner. The D22 multi-engagement scenario (Tick 60) establishes three winner tiers:
+
+| Place | Award type | Amount |
+|-------|-----------|--------|
+| 1st | Prize + hire option | 60% of prize pool |
+| 2nd | License option | 25% of prize pool |
+| 3rd | Acquihire consideration | 15% of prize pool |
+
+For competitions where multi-engagement is not specified, the default is winner-take-all (100% of prize pool to 1st place). The enterprise can configure split awards at competition creation.
+
+**Partial credit for incomplete submissions**: Straw's scoring pipeline produces a score, not a binary pass/fail (except at the minimum threshold gate). An agent that scores 72% on a rubric where the maximum is 100% has demonstrably useful output. Straw should support a "partial delivery bonus" — a secondary escrow tranche that the enterprise can optionally release to submissions that are valuable but didn't win. This is analogous to Topcoder's "prize split" option.
+
+---
+
+### The recurring competition model and subscription escrow
+
+For enterprises that run competitions repeatedly on the same task type (e.g., monthly contract review evaluations), Straw should support a subscription escrow model:
+
+- Enterprise pre-funds a prize pool reserve (e.g., $50K/quarter)
+- Competitions draw from the reserve as they open
+- Reserve replenishment triggers automatically at a configurable threshold
+- Straw's platform fee is invoiced monthly against the enterprise subscription (Team or Enterprise tier)
+
+This model converts episodic one-time purchases into predictable recurring revenue. It also reduces the enterprise's per-competition administrative burden (no new payment required for each competition). This is the behavior change that moves an enterprise from "occasional user" to "operational dependency."
+
+---
+
+### Payment mechanics for the hire/license outcome
+
+When an enterprise activates the hire option post-competition, the payment structure is:
+
+**Hire**: The winning agent team is engaged as a contractor (or the agent system is licensed as software). Straw facilitates the contract with a standard Straw Platform Agreement appendix. Payment flows:
+- Enterprise pays agent team directly (outside Straw escrow) per the negotiated contract
+- Straw receives a success fee (8% of first-year contract value under $2M; 6% for $2M-$5M)
+- Success fee is invoiced by Straw after the engagement contract is signed
+
+**License**: Straw intermediates a SaaS license agreement. Payment:
+- License fees flow through Straw's payment rails (Stripe Connect)
+- Straw takes a marketplace rake (suggested: 15-20% on license fees)
+- This keeps Straw in the revenue chain for the duration of the license
+
+**Acquire**: Asset purchase facilitated by Straw. Payment:
+- Transaction size and structure negotiated between enterprise and agent team (Straw facilitates, doesn't dictate)
+- Straw receives Lehman/Double Lehman success fee (Tick 59 mechanics)
+- Straw's legal team reviews IP chain before closing (AGPL contamination, contributor assignments)
+
+---
+
+### Escrow infrastructure options
+
+Straw should not build escrow infrastructure from scratch. Options:
+
+| Provider | Use case fit | Notes |
+|----------|-------------|-------|
+| **Stripe Treasury** | Startup-friendly, API-first | Money Movement API for fund flows; available in US, UK, EU |
+| **Escrow.com** | Domain-experienced escrow | Designed for digital asset transactions; used by domain brokers, software acquisitions |
+| **Mangopay** | European B2B marketplace escrow | Strong EU/GDPR compliance; used by Upwork EU operations |
+| **TrustAP** | Marketplace-specific escrow | Dispute resolution built in; API-first |
+
+**Recommendation**: Stripe Treasury for US operations (already in Stripe ecosystem if using Stripe for platform fees). Escrow.com for large acquihire transactions (>$500K) where specialized transaction escrow is warranted.
+
+---
+
+### The dispute resolution case
+
+Straw's three-tier eval pipeline is designed to be objective, but disputes will happen. The enterprise will challenge a score. An agent will claim their submission was scored incorrectly. Straw needs a dispute resolution pathway that:
+
+1. **Is fast** (7-day resolution SLA)
+2. **Is documented** (all disputes resolved with a written explanation)
+3. **Does not require Straw to be the judge** (use an independent third-party scorer when the original scoring is challenged)
+
+The escrow funds remain held during a dispute. Resolution unlocks escrow. If dispute resolution finds a scoring error, Straw eats the cost of re-scoring (not the enterprise or agent).
+
+---
+
+### Sources
+
+- HackerOne bug bounty program mechanics (extension vs. refund data from HackerOne State of Bug Bounty 2025)
+- Topcoder prize split and partial award mechanics (topcoder.com competition rules)
+- Stripe Treasury money movement API documentation
+- Escrow.com digital asset escrow terms
+- Kaggle prize guarantee model (kaggle.com competition rules)
+
+
+---
+
+## Tick 67 (2026-05-01): Cold start problem — how Straw bootstraps the agent supply side
+
+**Research question**: How does Straw get the first 50 high-quality agent teams to compete before enterprise demand is large enough to attract them on economic grounds alone? What do Airbnb, Uber, Kaggle, and Topcoder teach us?
+
+---
+
+### The cold start playbook from analogous platforms
+
+Every successful two-sided marketplace seeded supply manually before opening broadly. Prize or pay amounts were modest. The hook was access to real problems and verifiable public ranking.
+
+**Airbnb (2008–2009)**: Founders personally photographed early NYC listings with a rented camera — this 3x'd bookings on those listings. Built a Craigslist scraper to cold-email hosts. The supply-side seed was literally a handful of manually acquired listings. The lesson: do things that don't scale, in the places where quality supply already exists.
+
+**Uber (2010–2012)**: Solved supply first, always. Before launch in any city, an ops team cold-called limo and black-car companies for weeks. Critically, Uber **paid drivers whether or not they got rides during the seed phase** — subsidizing supply availability so early riders had a good experience. Driver referrals with $25–50 cash bonuses became the flywheel. The pattern: weeks of manual supply recruitment, then a concentrated demand event tied to a local moment.
+
+**Topcoder (2001)**: Started with an invitational of 16 finalists from 2 countries. Not open supply recruitment — curated. As community grew through algorithm competitions, Topcoder converted prestige into enterprise clients by offering community members as contractors for real work. The competitions were bait; the staffing was the business.
+
+**Kaggle (2010)**: First competition offered $1,000 (Eurovision Song Contest prediction). The Merck HIV challenge offered $500. Prize amounts were tiny. The value proposition: access to real enterprise data, a verifiable leaderboard score, and proof of beating a Fortune 500's internal team. Anthony Goldbloom personally attended ICDM 2010 in Sydney to recruit early participants. The founding case study (external team beats Merck scientists) spread by word-of-mouth through the data science community before Kaggle had any marketing budget.
+
+---
+
+### The prestige-before-prize model — proven precedents
+
+The most important data point for Straw's positioning: **legitimacy precedes prize money in evaluation communities**.
+
+**ARC Prize (2024)**: 1,500+ teams competed. Grand prize was $600,000. But the majority of participants had no realistic shot at the grand prize and competed anyway, generating 40+ research papers. The best-funded research startups "changed their entire roadmap" to compete — not primarily for money, but for the public legitimacy of beating ARC-AGI.
+
+**SWE-Bench**: No prize at all. 89 models evaluated, submissions from startups, large public companies, and academics. A public leaderboard is the only reward. SWE-bench became "the gold standard for evaluating AI coding agents on real-world software engineering tasks" through rigor, not money. The leaderboard itself became an object of academic study — that's the flywheel: rigorous evaluation attracts serious competitors; serious competitors make the leaderboard worth studying; that attracts more competitors.
+
+**METR**: Operates agent evaluation with no public prize structure. Labs want their agents benchmarked on METR's autonomy tasks for safety and capability signaling. The signal value of appearing on the evaluation is the incentive.
+
+**The principle**: The single most important early asset is a public, rigorous leaderboard that serious agent builders want their agent's name on. Money accelerates adoption; it does not create legitimacy. Legitimacy comes from the quality of the evaluation methodology and the visibility of who else is competing.
+
+---
+
+### Where the best agent builders are in 2026
+
+**Berkeley RDI LLM Agents MOOC Hackathon**: 3,000+ participants from 127 countries and 1,100 universities, $200,000+ in prizes, judges from Google DeepMind, OpenAI, Meta AI, a16z, Greylock. This is the highest-signal academic pool of active agent builders. The companion course (CS 294/194-280) trains participants; the hackathon reveals who's actually good.
+
+**AI Engineer World's Fair** (San Francisco): 3,000 engineers. The dominant practitioner-facing AI engineering conference. The AI Engineer Code Summit specifically targets coding-agent builders.
+
+**CrewAI Discord**: Fastest-growing agent framework by GitHub star velocity in 2025–2026 (45,900+ stars). Active Discord community — prime cold-outreach territory.
+
+**LangChain Interrupt Conference**: Community-run, practitioner-heavy. LangChain has 126K GitHub stars and remains a dominant orchestration framework.
+
+**Global Agent Hackathon** (May 2025, open-source): Month-long, $25,000+ in cash and credits, focused on multi-agent systems. Self-selects for serious builders.
+
+**GitHub repositories**: The awesome-ai-agents-2026 repo lists 300+ agent tools across 20+ categories, updated monthly. Contributors are direct recruitment targets.
+
+---
+
+### Subsidized first competitions: risks and benefits
+
+**The practice**: Post internal problems — Straw's own product development tasks, or problems sourced from willing design partner enterprises — as competition tasks before a paying enterprise customer exists. Agent teams get scored, ranked, and calibration data.
+
+**Benefits**:
+- Gives agent teams a reason to join before real demand exists
+- Allows Straw to tune evaluation infrastructure and rubric mechanics in lower stakes
+- Builds a public leaderboard with real scores before the first enterprise customer asks "who's competed here?"
+
+**Risks**:
+- Trust problem if discovered to be artificial (the Ashley Madison fake profiles failure mode)
+- Metric gaming if agents suspect the evaluation is fake
+- Prize anchoring if you pay agents for internal tasks
+
+**Mitigation**: Be transparent. Call them "calibration competitions" or "open benchmarks" explicitly. Frame it as Straw building evaluation infrastructure publicly. Kaggle did this — some early competitions had Kaggle itself as the de facto sponsor. The honest version is a strength, not a liability.
+
+---
+
+### Academic lab partnerships
+
+MIT CSAIL Alliances offers a formal program for companies to engage with researchers and recruit graduate students. BAIR at Berkeley hosts Microsoft Research as a direct partner. Stanford HAI runs joint labs with AWS and others.
+
+**What motivates PhD students to compete on Straw**:
+- A real-world benchmark with rigorous, reproducible scores is publishable — it's a paper
+- Industry exposure and job-market signaling; a "top-3 agent on enterprise coding tasks" is legible on a CV
+- Access to non-public enterprise task distributions (academically novel vs. existing benchmarks)
+
+**Recommended approach**: Partner with one lab for a named "research track" in Straw's first competition. Offer co-authorship credit on Straw's evaluation methodology paper. Pay a small research collaboration fee ($2,000–5,000) for the lab to contribute a problem dataset — not a prize, but a research contract. This bypasses the "we don't compete for prizes" academic stance.
+
+---
+
+### Concrete 6-month supply bootstrapping plan
+
+**Months 1–2 — Calibration competitions**
+Post 3–5 internal benchmark problems. Invite 10–15 agent teams recruited from Berkeley RDI hackathon top performers and CrewAI Discord. Generate the first real leaderboard scores. Call it a calibration run explicitly.
+
+**Months 2–3 — Recruit 50 founding teams**
+Attend or sponsor one Berkeley RDI event. DM top hackathon performers within 48 hours of results. Offer "Founding Agent Team" status: permanent badge, early access to all task types, co-authorship credit on Straw's first evaluation methodology paper. Target 50 teams; expect 20–30 to complete at least one competition.
+
+**Months 3–4 — Academic lab partnership**
+Approach MIT CSAIL Alliances or Berkeley BAIR with a research collaboration proposal: they contribute one enterprise task dataset, Straw runs the evaluation, both publish findings jointly. Academic legitimacy + PhD competitor pipeline.
+
+**Months 4–6 — First paying enterprise competition**
+Structure like early Kaggle: enterprise sponsors the problem and metric; Straw provides leaderboard and agent community. Prize is the enterprise's marketing budget ($10,000–50,000). Use the calibration leaderboard scores to show the enterprise that real agents with real track records are competing — not random submissions.
+
+---
+
+### Sources
+
+- [Airbnb cold start — Paul Graham](https://paulgraham.com/airbnbs.html); Airbnb Craigslist scraper (LinkedIn case study)
+- [Uber 1M driver acquisition — Deciphr.ai / Scott Gorlick interview](https://www.deciphr.ai/podcast/scott-gorlick-how-uber-acquired-1m-drivers--the-ubers-expansion-playbook--e1196)
+- [Kaggle Chronicles: 15 Years of Competitions (ResearchGate)](https://www.researchgate.net/publication/397480703_Kaggle_Chronicles_15_Years_of_Competitions_Community_and_Data_Science_Innovation); [Kaggle Wikipedia](https://en.wikipedia.org/wiki/Kaggle)
+- [ARC Prize 2024 winners technical report](https://arcprize.org/blog/arc-prize-2024-winners-technical-report)
+- [Dissecting SWE-bench leaderboards — arXiv 2506.17208](https://arxiv.org/abs/2506.17208)
+- [METR.org](https://metr.org/)
+- [Berkeley RDI LLM Agents Hackathon](https://rdi.berkeley.edu/llm-agents-hackathon/)
+- [AI Engineer World's Fair](https://www.ai.engineer/worldsfair)
+- [Global Agent Hackathon May 2025 — GitHub](https://github.com/global-agent-hackathon/global-agent-hackathon-may-2025)
+- [CSAIL Alliances — MIT](https://www.csail.mit.edu/engage/csail-alliances)
+- [The Cold Start Problem — Andrew Chen](https://andrewchen.com/chapter-one-cold-start/); [Supply Drives Demand — Casey Accidental](https://caseyaccidental.com/supply-drives-demand)
+
+
+---
+
+## Tick 68 (2026-05-01): Government and public sector as a customer segment — opportunity, timing, and the FedRAMP wall
+
+**Research question**: Is government a viable early customer for Straw? What does OMB M-26-04 actually require, and how does the compliance cost of serving federal agencies weigh against the credibility signal?
+
+**Bottom line upfront**: Government is a legitimate long-term market and a meaningful credibility signal, but a bad *early* customer. The regulatory tailwind is real; the pain is real; the procurement cycle is measured in years and FedRAMP costs $500K–$2M before you close your first deal. Treat government as a 2027+ expansion play. California state government is the exception — accessible now.
+
+---
+
+### OMB M-26-04 — what it actually requires
+
+Issued December 11, 2025 (implementing EO 14319), M-26-04 applies to all executive agencies procuring LLMs:
+
+- Agencies must **update procurement policies by March 11, 2026** and include two "Unbiased AI Principles" (truth-seeking, ideological neutrality) in all new LLM contracts as material terms
+- For public-facing systems and mission-critical deployments, agencies must mandate **enhanced transparency** including: how models compare across vendors and versions, continuous assessment of safeguard function in production, and how third-party integrators modify model behavior
+- Vendors must provide model cards, bias evaluation results, prompt pair testing results, and factuality assessments
+- **Cross-vendor comparison is explicitly required** — agencies cannot evaluate a single vendor in isolation
+
+**Straw relevance**: M-26-04 does not mandate a competition platform, but the "how models compare across vendors and versions" language is a near-literal description of what Straw provides. The compliance burden Straw solves is real and documented. The memo expires December 2027 — any Straw government pitch needs to show continuity beyond that window.
+
+---
+
+### Federal AI procurement — what GAO documented as broken
+
+GAO report GAO-26-107859 (April 13, 2026) identified systematic failures. Federal agencies more than doubled AI adoption from 2023 to 2024, yet are making expensive, poorly-documented purchasing decisions.
+
+**The six failure modes GAO identified**:
+1. Difficulty accessing AI technical experts to evaluate contractor proposals
+2. Hard to understand AI-related costs
+3. Acquisition timelines misaligned with AI development cycles
+4. Poor requirements definition
+5. **Inadequate testing and continuous evaluation** ← Straw's exact pitch
+6. Pricing opacity
+
+Agencies are not collecting or sharing lessons learned from past AI procurements. DOD, DHS, GSA, and VA each have internal policies that *prohibit* collecting lessons learned — GAO recommended policy changes and all four agencies concurred.
+
+Item 5 — "testing and continuous evaluation" — is the systemic failure Straw directly solves. The GAO report is citable market validation.
+
+---
+
+### The FedRAMP wall
+
+FedRAMP Moderate is the realistic minimum for a competition platform handling agency task data (even non-classified).
+
+| Path | Timeline | Cost |
+|------|----------|------|
+| Traditional FedRAMP Moderate | 12–22 months | $800K–$2M upfront + $200K–$500K/year continuous |
+| FedRAMP 20x (new fast-track, 2025) | ~90 days target (119 days in first pilot, Dec 2025) | $500K–$1.5M |
+
+OpenAI achieved FedRAMP 20x Moderate for ChatGPT Enterprise. Vanta received FedRAMP 20x Moderate authorization April 28, 2026.
+
+**Assessment**: Achievable in 3–6 months under 20x if Straw has SOC 2 Type II and a mature security posture. But $500K+ and 6 months of engineering time is a significant gate for a pre-revenue company. **Correct sequencing**: GSA Schedule application first (6–12 months, ~$50K) → FedRAMP in parallel with Series A capital.
+
+---
+
+### SBIR/STTR — viable non-dilutive funding path
+
+SBIR/STTR lapsed for 6 months (October 2025–April 2026) and was reauthorized April 13, 2026 through September 30, 2031 via the Small Business Innovation and Economic Security Act. New "Strategic Breakthrough Awards" post-Phase II: up to $30M over 48 months.
+
+- Phase I: $50K–$275K for 6–12 months
+- Phase II: $750K–$1.8M for 24 months
+- NSF has an active AI SBIR/STTR topic; DARPA runs separate BAA programs
+
+**Critical framing requirement**: NSF is screening out applications that describe product development. A Straw SBIR application needs to be framed around novel research — "formal methods for agent capability measurement," "adversarial task design for AI evaluation" — not as a marketplace pitch.
+
+**Assessment**: Worth pursuing as non-dilutive capital and credibility signal. Realistic yield: $200K–$1.5M over 2–3 years.
+
+---
+
+### State government — better near-term opportunity than federal
+
+**California EO N-5-26** (signed March 30, 2026) directs the Department of General Services and Department of Technology to submit recommendations within 120 days for new AI vendor certifications. These certifications will be incorporated into state contracting — creating a formal evaluation layer that Straw could serve.
+
+Other active states: Texas Responsible AI Governance Act (Jan 1, 2026), Colorado SB 24-205 (AI Act on algorithmic discrimination), GovTech identifies 2026 as the decisive year for state agentic AI adoption.
+
+**Why states are more accessible**: No FedRAMP required, shorter procurement cycles (some states can pilot in 60–90 days via cooperative purchasing), state CIOs are actively seeking evaluation infrastructure.
+
+**Best entry point**: California. Biggest state IT budget. EO N-5-26 creates an explicit procurement gap. A California pilot can be positioned as proof of compliance with the upcoming DGS/CDT certification framework — making it a reference for *other* states' procurement processes.
+
+---
+
+### Defense/IC angle — long-term validation, not near-term revenue
+
+DARPA's AI Cyber Challenge (AIxCC) concluded August 2025 — a $8.5M prize competition where AI agents autonomously found and patched vulnerabilities in 54M lines of code. This is the closest existing analog to Straw in government: structured, task-defined, AI agent competition with an objective score. DARPA is explicitly eyeing transition to widespread use.
+
+**Classification concern**: For any Defense/IC use, even unclassified task data running on Straw would need FedRAMP High or DoD IL4/IL5. That is a multi-year compliance investment beyond Moderate.
+
+**Assessment**: DARPA is a validation play (win an OTA contract or get cited in a DARPA report), not a revenue play in year one.
+
+---
+
+### Government as reference customer — the Palantir model
+
+Palantir went from ~295 U.S. commercial customers (Q4 2023) to 590+ (Q4 2025), with U.S. commercial revenue growing 137% in Q4 2025. The flywheel started with government anchoring the brand. Anduril used a CBP border pilot (2017–2018) to establish credibility that led to a $20B Army ceiling contract announced in 2026.
+
+For Straw specifically, "piloted by [California CDOT / GSA]" signals:
+1. Security vetting enterprise buyers trust
+2. Platform neutrality (government use validates that Straw isn't a vendor-affiliated benchmark)
+
+**The realistic path**: California state pilot (non-FedRAMP, achievable 2025–2026) → use reference to close 3–5 Fortune 500 enterprise deals → FedRAMP Moderate with Series A capital → federal civilian agencies in 2027.
+
+---
+
+### What to pursue vs. defer
+
+| Action | Timing | Rationale |
+|--------|--------|-----------|
+| California EO N-5-26 pilot | Q3 2026 | 120-day DGS/CDT window; no FedRAMP required |
+| SBIR Phase I (NSF or DARPA) | Year 1 | ~$200K non-dilutive, credibility signal |
+| GSA Schedule application | Post-Series A | 6–12 months, ~$50K; opens $100B+ addressable market |
+| Federal civilian agencies | 2027 | 18–36 month sales cycle; FedRAMP required |
+| Defense/IC | 2028+ | IL4+ compliance; 3-year investment |
+
+---
+
+### Sources
+
+- [OMB M-26-04 PDF](https://www.whitehouse.gov/wp-content/uploads/2025/12/M-26-04-Increasing-Public-Trust-in-Artificial-Intelligence-Through-Unbiased-AI-Principles-1.pdf)
+- [GAO AI Acquisitions — GAO-26-107859](https://www.gao.gov/products/gao-26-107859)
+- [FedRAMP 20x overview](https://www.fedramp.gov/20x/); [Vanta 20x Moderate announcement](https://www.businesswire.com/news/home/20260428674042/en/Vanta-Receives-FedRAMP-20x-Moderate-Authorization)
+- [California EO N-5-26 full text](https://www.gov.ca.gov/wp-content/uploads/2026/03/3.30-FINAL-Trusted-AI-Procurement-EO-N-5-26.pdf)
+- [SBIR reauthorization April 2026 — Crowell & Moring](https://www.crowell.com/en/insights/client-alerts/sbirsttr-programs-reauthorized-after-six-month-lapse)
+- [DARPA AIxCC results](https://www.darpa.mil/news/2025/aixcc-results)
+- Palantir commercial growth flywheel (FourWeekMBA analysis)
+- [GovTech state AI adoption 2026](https://www.govtech.com/artificial-intelligence/what-might-state-government-ai-adoption-look-like-in-2026)
+
