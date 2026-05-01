@@ -16583,3 +16583,156 @@ This is a complete AI-BOM procurement entry. For any enterprise building an AI-B
 - NIST AI RMF 2025 update: ispartnersllc.com/blog/nist-ai-rmf-2025-updates
 - NYC Local Law 144: babl.ai/ai-audits/nyc-bias-audit
 
+
+---
+
+## Tick 113 (2026-05-01): The founding team and Year 1 hiring plan — who Straw needs and when
+
+**Thread**: Who does Straw need in its first 12 months? What are the critical early hires, when do they get triggered, and what does burn look like at each stage?
+
+---
+
+### The founding team question
+
+The ideal founding team for enterprise B2B AI infrastructure:
+
+**The minimum viable founding team**:
+- 1 technical co-founder (backend + ML systems — can build the platform and the evaluation pipeline)
+- 1 GTM co-founder (enterprise sales + product — can sell to the first 10 customers and understand what to build)
+
+**Why 2, not 3**:
+A three-person founding team at seed stage is sometimes right, but only if the third founder fills a genuinely distinct capability that neither of the first two can cover. For Straw, the critical early capabilities are engineering and enterprise sales. A third co-founder in "product" or "business development" is premature before product-market fit — those functions can be covered by the two founders.
+
+**The co-founder skill matrix** (what Straw specifically needs):
+
+*Technical co-founder must have*:
+- Backend engineering (Node.js/TypeScript, Postgres, cloud infrastructure)
+- LLM API integration (Anthropic, OpenAI, multi-model prompting)
+- Basic ML evaluation concepts (rubric design, scoring, inter-rater agreement)
+- Infrastructure-as-code (AWS, Vercel deployment, CI/CD)
+- *Nice to have*: prior experience at a marketplace or two-sided platform
+
+*GTM co-founder must have*:
+- Enterprise sales experience (closed at least 3 enterprise deals personally >$50K ACV)
+- AI/ML enough to run a credible technical conversation with a Head of AI
+- Product sense to translate enterprise feedback into actionable engineering requirements
+- *Nice to have*: prior experience in evaluation, assessment, or B2B marketplace
+
+---
+
+### Year 1 hiring plan: triggers and timing
+
+**The guiding principle**: Don't hire until the role is blocking growth. The cost of a premature hire is not just salary — it's the distraction of management, onboarding, and culture-setting at a moment when founders need to be selling and building.
+
+| Hire | Trigger | Timing | What unblocks |
+|------|---------|--------|---------------|
+| Founding engineer #2 | First design partner competition scheduled | Month 2–3 | Platform velocity; co-founder can focus on GTM |
+| Enterprise AE #1 | 5 paying enterprise customers | Month 8–12 | More pipeline than founder can manage |
+| Customer success #1 | 10 paying enterprise customers | Month 10–14 | Expansion motion; champion equipping; renewal conversations |
+| Security/compliance lead | SOC 2 audit in progress | Month 6–9 | Enterprise security reviews blocking deals |
+| Agent community manager | 100 registered agent teams | Month 8–12 | Supply-side quality maintenance; competition onboarding |
+
+**Month-by-month burn model** (seed round, SF Bay Area salaries):
+
+| Period | Team size | Monthly burn | Notes |
+|--------|-----------|-------------|-------|
+| Month 0–3 | 2 founders (no salary) | $15K–$20K | Infrastructure, tools, SOC 2 platform |
+| Month 3–6 | 2 founders + 1 engineer | $35K–$45K | Engineer salary $150K–$180K; benefits |
+| Month 6–9 | 2 founders + 2 engineers | $55K–$65K | Second engineer; SOC 2 audit costs |
+| Month 9–12 | 4 + 1 AE | $80K–$95K | AE base $120K + OTE $240K; benefits |
+| Month 12–18 | 6 (add CS + PM or second engineer) | $100K–$120K | CS at $110K base; infrastructure scaling |
+
+**Total seed spend** ($2.5M seed over 18 months): ~$90K/month average burn = $1.62M in personnel + $880K in infrastructure, tools, SOC 2 audit, GTM spend, legal.
+
+**Runway**: $2.5M seed → 18–20 months runway at $90K–$120K/month burn → Series A conversation at Month 15–18.
+
+---
+
+### The first engineering hire: what matters most
+
+The founding engineer's first hire must be able to work in Straw's stack independently. The wrong hire (someone who needs significant mentorship or is early-career) costs 3× the salary in distraction.
+
+**Non-negotiables for hire #2**:
+- Shipped production software at a startup (not just big company experience)
+- Can own an entire feature from API design to database schema to frontend
+- Has worked with LLM APIs before (not requires it, but dramatically reduces ramp time)
+- Experience with event-driven architectures (competition state machine; webhook delivery)
+
+**Red flags** in candidates:
+- "I work on ML models" without any systems/infrastructure experience — Straw needs backend engineers first; model engineers later
+- "I've only worked at FAANG/large companies" — startup pace and ambiguity tolerance is different
+- Requires detailed specifications before writing code — Straw's early engineering is discovery work, not implementation from spec
+
+---
+
+### The first enterprise AE: what matters most
+
+The founding AE needs to be able to sell something new to someone skeptical. Straw in 2026 is a new category — there's no playbook to follow, no brand to lean on, and no reference customers to cite for the first 10 deals.
+
+**The difference between "enterprise AE at established company" and "founding AE"**:
+- At Salesforce, the AE has a recognized product, a support structure, and a sales methodology that's been proven over thousands of deals
+- At Straw, the AE is creating the category, handling objections that have never been handled before, and writing the playbook from scratch
+
+**What this means for the hire**: Prioritize 5–8 years of experience over 15+. Look for people who've sold a new category before (not just a new company, but a genuinely new concept). Prioritize intellectual curiosity and resilience over raw quota attainment history.
+
+**Compensation structure**:
+- Base salary: $120K–$140K
+- On-target earnings: $240K–$280K (2× base is standard for enterprise SaaS AE)
+- Ramp period: 6 months (first 3 months at 50% quota, months 4–6 at 75% quota)
+- Quota at ramp completion: $600K–$800K annual ARR
+- Equity: 0.25–0.5% (founding AE at a seed-stage company)
+
+---
+
+### The SOC 2 / security function: contractor vs. hire
+
+SOC 2 Type II requires a significant burst of effort (control implementation, policy writing, evidence gathering) followed by ongoing maintenance. This is not a full-time role for a 5-person company.
+
+**Recommendation**: Use a fractional security consultant or a compliance platform (Drata + a part-time security advisor from a service firm) for the first 18 months. Budget $50K–$80K for the combination.
+
+**When to hire a dedicated security/compliance role**: After Series A, when the volume of enterprise security questionnaires and the complexity of customer-specific security requirements exceeds what a consultant can manage.
+
+---
+
+### The founding team equity structure
+
+**Standard seed-stage equity splits**:
+- 2 co-founders: 40–50% each (with 4-year vesting, 1-year cliff)
+- Employee option pool: 10–15% (typically 15% pre-Series A)
+- Investor pool: 10–20% (seed round, priced or SAFEs)
+
+**Early employee equity** (as % of total diluted shares):
+- Employee #1 (founding engineer): 1.0–2.0%
+- Employee #2: 0.75–1.5%
+- Employee #3-5: 0.25–0.75% each
+- Enterprise AE #1 (founding): 0.25–0.5%
+- CS #1: 0.15–0.3%
+
+**The equity principle**: Equity at early-stage companies is cheap to give and expensive to regret not giving. The founding engineer who ships the first 10 competitions is as valuable as a co-founder — don't under-equitize them.
+
+---
+
+### Outsource vs. build: the functions Straw doesn't need in-house in Year 1
+
+**Outsource**:
+- Legal: outside counsel for standard contracts (MSA, DPA, employment agreements). Budget $30K–$50K/year. No in-house counsel until Series B.
+- Finance/accounting: fractional CFO or accounting firm. Budget $15K–$25K/year. No CFO until Series A.
+- Marketing content: contract writer for thought leadership content. Budget $2K–$5K/month.
+- SOC 2 audit: specialist auditor firm (not Big Four). Budget $15K–$30K.
+- Design: contract designer for brand and product UI. Budget $3K–$8K/month (or hire a full-stack engineer who can do design).
+
+**Build in-house** (non-negotiable):
+- Core platform engineering: must be founders, cannot be outsourced
+- Enterprise sales: must be a person in your time zone who can do discovery calls in real-time
+- Customer success: once you have 5+ enterprise customers, must have someone who owns those relationships full-time
+
+---
+
+### Sources
+
+- Enterprise SaaS founding team patterns: First Round Capital "State of Startups" 2024; a16z enterprise startup guides
+- Founding AE compensation: OpenComp 2025 SaaS compensation benchmarks; Carta compensation survey 2025
+- SOC 2 fractional security model: Drata customer examples; Sprinto use cases for 5-15 person teams (Tick 105 research)
+- Equity structures: AngelList 2025 equity benchmark report; Carta equity data
+- Burn rate modeling: SaaS Capital burn rate benchmarks; High Alpha operating model templates
+
