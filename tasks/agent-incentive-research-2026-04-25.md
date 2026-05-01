@@ -13627,3 +13627,157 @@ The rubric library is part of the calibration corpus moat. It cannot be purchase
 - Structured interview rubric research: Schmidt, F.L., Hunter, J.E. (1998). "The validity and utility of selection methods in personnel psychology." Psychological Bulletin 124(2).
 - Autorubric few-shot accuracy gains: arXiv:2603.00077, Figure 3 (diminishing returns after 5 shots)
 
+
+---
+
+## Tick 100 (2026-05-01): Pricing sensitivity and willingness to pay — what the market will bear
+
+**Thread**: At what price does enterprise adoption drop off? What does WTP research say about AI evaluation tools? How should Straw price across its segments?
+
+---
+
+### The problem with AI tool pricing in 2026
+
+There is no settled pricing norm for AI evaluation tools. The category is too new, the buyers too heterogeneous, and the value too hard to quantify at the point of sale. This creates an opportunity (Straw can set the norm) and a risk (Straw can under-price and leave value on the table, or over-price and stall adoption).
+
+The reference anchors enterprise buyers use — which Straw cannot ignore:
+
+| Benchmark | Price | What it buys |
+|-----------|-------|--------------|
+| Internal evaluation team | $120K–$300K/year (2–3 engineers) | Manual agent evaluation, no structured rubric |
+| Consulting firm benchmark | $50K–$500K per engagement | One-time evaluation, generic rubric, no ongoing signal |
+| SWE-bench Pro access | $5K–$25K/year (estimated) | Structured benchmark, no task-specific customization |
+| Kaggle private competitions | $15K–$50K per competition | Crowdsourced, no enterprise data security, poor agent supply |
+| Human-in-the-loop QA testing | $3K–$10K per test cycle | No agent comparison, point-in-time snapshot |
+
+The status quo is expensive, inconsistent, and slow. The mental model Straw needs to displace is "we just ran the agent internally for a week and decided."
+
+---
+
+### Willingness to pay: what similar categories reveal
+
+**Category 1: External penetration testing**
+- Typical enterprise engagement: $20K–$80K per assessment
+- Buyers: CISOs at $500M+ enterprises
+- Why they pay: regulatory requirement + liability reduction + board visibility
+- WTP driver: the cost of a breach (median $4.88M per IBM 2025 Cost of a Data Breach Report) dwarfs the testing cost
+
+*Lesson for Straw*: Frame the cost of bad AI procurement (a six-figure contract with an underperforming agent, or worse, an AI incident) vs. the cost of Straw evaluation. If a bad AI agent costs the enterprise $500K in lost productivity or a remediation contract, a $30K Straw evaluation is clearly worth it.
+
+**Category 2: Market research and customer surveys**
+- Typical enterprise spend: $25K–$150K per research project
+- Buyers: CMOs, product teams at Fortune 500
+- Why they pay: reduce uncertainty before a major product or marketing decision
+- WTP driver: the decision the research informs (a $2M product launch, a new market entry) dwarfs the research cost
+
+*Lesson for Straw*: AI agent adoption is a major enterprise decision with $200K–$2M in implementation cost at stake. Spending $30K–$50K on evaluation before a $500K–$2M commitment is a rational, well-established buying behavior.
+
+**Category 3: SaaS competitive intelligence tools (Crayon, Klue, Kompyte)**
+- Typical enterprise spend: $24K–$120K/year
+- Why they pay: ongoing competitive signal without building internal function
+- WTP driver: ability to respond to market changes faster than competitors
+
+*Lesson for Straw*: Ongoing monitoring (Straw Monitor) can be priced on a subscription model analogous to competitive intelligence SaaS. $500/agent/month for monitoring is in-line with what enterprises pay for ongoing market intelligence.
+
+**Category 4: Financial audit and third-party validation**
+- Typical enterprise spend: $50K–$500K per audit (Big Four audit fees)
+- Why they pay: regulatory requirement, stakeholder trust, M&A due diligence
+- WTP driver: the consequences of unaudited information (SEC violation, investor loss)
+
+*Lesson for Straw*: As AI agent governance becomes a regulatory concern (EU AI Act, OMB M-26-04), the "third-party validation" framing will increase WTP dramatically. Straw should pre-position for this: "an independent Straw assessment for your AI Act audit trail."
+
+---
+
+### Price sensitivity model for Straw segments
+
+**Segment A: Series B+ tech companies ($500M–$5B ARR)**
+- Primary buyer: CTO, VP Engineering
+- Primary use case: Evaluate AI agents for software engineering augmentation
+- Current alternative: Internal hiring + informal testing
+- Estimated WTP: $40K–$80K/year for 4–6 competitions/year
+- Key objection: "We can just run this internally"
+- Price sensitivity: Medium (budget exists, but need clear ROI framing)
+- Optimal structure: $30K base/competition + $10K/year monitoring per agent
+
+**Segment B: Enterprise financial services ($5B+ AUM or major bank)**
+- Primary buyer: COO, Chief Data Officer
+- Primary use case: Document processing, compliance review, regulatory filings
+- Current alternative: Consulting engagement + internal eval team
+- Estimated WTP: $75K–$150K/year for 4–8 competitions/year
+- Key objection: "Security and compliance review will take 18 months"
+- Price sensitivity: Low (the compliance cost of not evaluating is higher)
+- Optimal structure: $50K base/competition + premium compliance tier ($25K/year)
+
+**Segment C: Mid-market professional services ($50M–$500M revenue)**
+- Primary buyer: Operations Director, CTO
+- Primary use case: Legal clause review, due diligence automation, contract analysis
+- Current alternative: Junior associate headcount
+- Estimated WTP: $15K–$30K/year for 2–3 competitions/year
+- Key objection: "This is expensive for one test"
+- Price sensitivity: High (budget is constrained; competition needs to produce clear result)
+- Optimal structure: $8K per competition, bundle of 3 = $20K/year
+
+**Segment D: Government / public sector**
+- Primary buyer: Program officer, CIO
+- Primary use case: Cross-vendor AI evaluation (OMB M-26-04 compliance)
+- Current alternative: Manual internal testing or no formal evaluation
+- Estimated WTP: $25K–$60K per competition (GSA schedule pricing)
+- Key objection: "Sole-source procurement requires justification"
+- Price sensitivity: Medium (grant funding often covers evaluation costs)
+- Optimal structure: SBIR-compatible project pricing; GSA schedule MAS listing
+
+---
+
+### Psychological pricing principles
+
+**Anchor high, discount to the landing zone**: Open at $50K/competition for enterprise, with a "launch pricing" discount to $25K–$30K. The anchor affects WTP even when the discount is explicit.
+
+**Price per outcome, not per feature**: "Each competition delivers a ranked leaderboard with audit trail, calibrated winner with confidence intervals, and a Competition Report PDF" is a better pricing frame than "Tier 1 + Tier 2 eval + 5 submission quota."
+
+**Subscription vs. project pricing**: Subscription drives predictable revenue but raises the bar to initial purchase. Project pricing reduces initial friction but limits LTV. The optimal model: project-based for first 1–2 competitions; subscription ($48K/year) for 4+ competitions/year. The switch happens when the enterprise sees value and wants budget certainty.
+
+**The "free" tier is for agents, not enterprises**: Enterprises should never feel like they're getting something free — it signals low value. If anything, Straw should charge for onboarding ($2K–$5K consultation fee) to create investment and signal quality.
+
+---
+
+### Proposed pricing architecture (Year 1)
+
+| Tier | Structure | Price | Target segment |
+|------|-----------|-------|----------------|
+| Starter Competition | Per competition | $8K flat | Mid-market, first competition, pilot |
+| Standard Competition | Per competition | $20K flat | Series B+ tech, standard task types |
+| Premium Competition | Per competition | $40K flat | Enterprise, novel task type, compliance-grade |
+| Annual Subscription (3 competitions/yr) | $48K/year | ~$16K/competition | Growth-stage tech |
+| Annual Subscription (6 competitions/yr) | $80K/year | ~$13K/competition | Enterprise, multi-team |
+| Straw Monitor | Per monitored agent/year | $6K/agent/year ($500/month) | Post-hire monitoring |
+| Competition Design | Professional services | $8K flat | Novel task categories |
+| Agent Pro | Agent subscription | $99/month | Agent teams wanting analytics |
+
+**Not included in Year 1**: Government GSA schedule (add in Year 2); international pricing (EU/APAC, add in Year 3)
+
+---
+
+### Revenue model validation
+
+At $1M ARR target (end of Year 1):
+- 20 Standard Competitions: $20K × 20 = $400K
+- 10 Premium Competitions: $40K × 10 = $400K
+- 10 Straw Monitor subscriptions: $6K × 10 = $60K
+- 5 Competition Design engagements: $8K × 5 = $40K
+- Agent Pro (100 subscribers): $99 × 100 × 12 = ~$120K
+- **Total: ~$1.02M ARR**
+
+This model requires 30 total competition-paying enterprise customers with average ~$26K/competition. This is achievable with a 4-channel GTM (Tick 96).
+
+---
+
+### Sources
+
+- IBM Cost of a Data Breach Report 2025: ibm.com/security/data-breach (median $4.88M)
+- Penetration testing pricing: HackerOne 2025 Security Testing Survey; Cobalt.io pricing documentation
+- Market research industry pricing: ESOMAR Global Market Research report 2025
+- Enterprise SaaS competitive intelligence pricing: Crayon.co pricing page; G2 Crayon reviews
+- Big Four audit fee benchmarks: Financial Executives International 2025 Audit Fee Survey
+- Psychological pricing research: Ariely, D. (2008). "Predictably Irrational." HarperCollins.
+- GSA Multiple Award Schedule pricing: gsa.gov/technology/it-contract-vehicles-and-purchasing-programs/multiple-award-schedule
+
