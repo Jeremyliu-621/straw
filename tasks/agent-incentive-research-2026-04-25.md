@@ -26723,3 +26723,253 @@ This document is the foundation for Straw's security one-pager and the first-res
 - FedRAMP P-ATO process: fedramp.gov/agency-authorization
 - AWS GovCloud: aws.amazon.com/govcloud-us
 
+
+---
+
+## Tick 155 (2026-05-01): Year 0 critical path — the 8 things that must happen before Competition 1
+
+*A pre-launch checklist that is ruthlessly prioritized. Everything else is optional. These are blockers.*
+
+### What "Year 0" means
+
+Year 0 is the period between "we're building Straw" and "Competition 1 is live." Based on the MVP design (Tick 143) and the legal framework (Tick 136), this is a 60–90 day window. The goal is not to build the perfect platform — it is to run the first valid, trustworthy, enterprise-grade competition before the seed round closes.
+
+**Why Competition 1 must happen before seed close**: Investors at seed stage invest in traction, not plans. A single real competition result — even at $10K design partner pricing — transforms Straw's fundraising from "here's why this should work" to "here's what actually happened." This is the difference between a $15M pre-money cap and a $25M cap.
+
+---
+
+### The 8 blockers (things that stop Competition 1 from happening)
+
+**Blocker 1: No first design partner**
+
+Without an enterprise client willing to define a real task, there is no competition. Getting the first design partner requires:
+- Outreach to 30 qualified targets (Tick 141)
+- At least 1 enterprise willing to sign the design partner agreement (Tick 136, DPA + competition scope)
+- A real task: specific enough to design a rubric, with ground truth that can be evaluated
+
+**Timeline**: 4–6 weeks of outreach. This starts Day 1.
+
+**Blocker 2: No agent community (minimum 15 teams)**
+
+The minimum viable supply side for a trustworthy competition is 15+ agent team submissions. Getting 15 teams requires:
+- Registration of 30–50 agent teams (to get 15 who submit)
+- Community outreach (Straw Discord, LangChain community, Hugging Face forums, direct LinkedIn outreach to ML engineers and agent builders)
+
+**Timeline**: 3–4 weeks. Can run parallel to design partner outreach.
+
+**Blocker 3: No legal documents signed**
+
+Before Competition 1 opens, every agent team must have signed the Agent Team Terms of Service. The enterprise client must have signed the Enterprise Client Agreement. Both must happen before the task is revealed.
+
+**Timeline**: Documents drafted in Week 2; signed by all parties before competition opens.
+
+**Blocker 4: No secure submission infrastructure**
+
+Agent submissions cannot be sent via email. Straw needs a secure file upload system (Tick 143: AWS S3 with per-team IAM policies + signed URLs). Without this, the integrity of the competition is compromised.
+
+**Timeline**: 2-day build; deploy in Week 1.
+
+**Blocker 5: No Tier 1 evaluation pipeline**
+
+For the first competition, Tier 1 evaluation (deterministic scoring against ground truth) must be automated or the scoring timeline is days, not hours. This requires:
+- A script that takes agent submissions and runs them against the test suite
+- A script that outputs a structured score (accuracy, F1, precision/recall as appropriate)
+
+**Timeline**: 3–5 days of engineering. Depends on task type. For code generation: unit test execution. For document extraction: structured output comparison. This is standard engineering, not novel work.
+
+**Blocker 6: No NDA and task sealing process**
+
+The competition task must be revealed simultaneously to all teams. The sealing and reveal mechanism (Tick 133: Merkle tree hash + encrypted S3 + simultaneous presigned URL delivery) must be tested and reliable before the first competition.
+
+**Timeline**: 1-day build; test with 2–3 team test accounts before the real competition.
+
+**Blocker 7: No rubric design for the specific task**
+
+The competition rubric is not generic — it is specific to the enterprise client's task. The rubric design workshop (Tick 99) takes 10–20 hours across 2–3 sessions with the enterprise client.
+
+**Timeline**: 2–3 weeks once the enterprise client is confirmed. Cannot start until Blocker 1 is resolved.
+
+**Blocker 8: No prize escrow**
+
+The prize money must be held in escrow before the competition opens. Agent teams will not compete for a prize they can't trust is real. Options:
+- Simple: Enterprise client wires prize amount to Straw's bank account pre-competition
+- Formal: Third-party escrow service (Escrow.com or similar)
+
+**Timeline**: 1 day (wire transfer) or 1 week (formal escrow). Must happen before competition opens.
+
+---
+
+### The critical path (Gantt-style)
+
+```
+Week 1: Incorporate company; open bank account; deploy S3 submission infrastructure
+        Begin design partner outreach (30 contacts)
+        Begin agent community outreach (Discord, LinkedIn, LangChain forums)
+        Draft legal documents (Wilson Sonsini initial consultation)
+
+Week 2: Legal documents finalized (Agent TOS, Enterprise Client Agreement)
+        First design partner discovery calls
+        Agent community registration flow live
+        SSO integration (Okta/Entra) deployed
+
+Week 3: First design partner identified; Design Partner Agreement signed
+        Rubric design workshop session 1 with enterprise client
+        20+ agent teams registered (target: 50)
+        Tier 1 evaluation pipeline for the specific task type built
+
+Week 4: Rubric design workshop session 2; rubric finalized
+        NDA sent to all registered agent teams (DocuSign); deadline: 48 hours before competition open
+        Task sealed in encrypted S3; hash published on Straw website
+        Prize escrow received from enterprise client
+
+Week 5-10: Competition open (45 days for design partner pilot; 30 days if task is simpler)
+           Agent teams submit
+           Straw monitors submission count (minimum threshold check at Day 20)
+
+Week 10-11: Competition closes; Tier 1 scoring runs (automated, 24 hours)
+            Tier 2 scoring runs (LLM judge, 48 hours)
+            Results compiled; winner identified
+            Competition report drafted (48 hours)
+            Winner announced; Competition Integrity Report published
+
+Week 12: Post-competition debrief with enterprise client
+         Straw Open announced with lessons from Competition 1
+         Seed fundraising materials updated with real data from Competition 1
+```
+
+---
+
+### What the founding team is doing during Year 0
+
+**CEO**: Design partner outreach (100% of time until Blocker 1 is resolved); investor relationship building (1 coffee per week with target seed investors); press/community seeding (writing content, getting on podcasts, building the Straw founding story).
+
+**CTO**: Building the MVP infrastructure (Blockers 4, 5, 6); participating in rubric design workshop as technical lead; setting up the AWS infrastructure, DevOps, and security controls.
+
+**Both**: Legal document review and negotiation; design partner discovery calls (CEO leads, CTO joins for technical questions); agent community building.
+
+---
+
+### What happens if Blocker 1 isn't resolved by Week 4
+
+If no design partner is identified by Week 4, pivot to a Straw Open as the first competition:
+- Straw funds the prize ($10K from founders' own capital or first angel check)
+- Task is designed by Straw (not by an enterprise client) using a publicly relevant domain (legal contract extraction from public case law, or fraud detection on synthetic transaction data)
+- The Straw Open serves as the first calibration corpus seed AND the proof of concept
+
+The Straw Open path is less commercially compelling (no enterprise client revenue) but de-risks the supply side and demonstrates the platform's functionality before the seed round. It is better to run a Straw Open Competition 1 than to delay competition launch indefinitely waiting for the perfect design partner.
+
+---
+
+### Sources
+
+- Critical path analysis: PMBOK Guide (Project Management Body of Knowledge); applied here as a founder's pre-launch tool
+- AWS S3 setup timeline: AWS Well-Architected Framework; internal benchmarks from comparable infrastructure setups
+- Wilson Sonsini initial consultation: typical first consultation for seed-stage startups; $0–$500 for initial 30-minute call; documents drafted at $25K–$50K range
+- DocuSign enterprise signing: docusign.com/en-us/products/electronic-signature; turnaround time for NDA signing 24–48 hours typical
+
+
+---
+
+## Tick 156 (2026-05-01): Cap table design and employee equity pool — seed stage
+
+*Before the seed round closes, the cap table must be clean. This tick designs Straw's initial cap table structure.*
+
+### Why cap table design matters before the first check
+
+A messy cap table kills deals. If a seed investor does diligence and finds: unclear founder equity split, no vesting schedules, advisors with too much equity, or an employee option pool that hasn't been carved out before the round — these are red flags that either kill the deal or result in investor-favorable terms to compensate for the complexity.
+
+Design the cap table in Month 1, before anyone writes a check.
+
+---
+
+### The founding equity split
+
+**The right question**: Not "what's fair?" but "what split will create the right incentive structure for the next 4 years of building Straw?"
+
+**Straw's founding scenario** (2-co-founder model, Tick 145):
+
+If CEO and CTO are equal partners (both left comparable situations, both committed full-time from Day 1):
+- 50/50 split is defensible and simple
+
+If there is meaningful differentiation (one founder had the original idea, one is joining later, one is giving up more):
+- Common splits: 55/45, 60/40, 65/35
+- Asymmetric splits above 70/30 create resentment over a 4-year journey — avoid
+
+**Vesting schedule**: Standard is 4-year vest, 1-year cliff. Both founders. No exceptions.
+- If founder A leaves after 6 months with no cliff, they keep 0 equity
+- If founder A leaves after 18 months, they keep 25/48 of their total grant = ~52% of the equity they would have earned with full vesting
+
+**Acceleration**: Single-trigger acceleration (upon acquisition or IPO) is standard for co-founders. Double-trigger (upon acquisition AND involuntary termination) is more common for employees.
+
+---
+
+### The employee option pool
+
+Before the seed round, establish a fully diluted employee option pool of **10–15%** of post-round fully diluted shares.
+
+**Why 10–15%**: Investors will want this. If you set the pool before the round, it dilutes the founders (the standard); if you set it after, it dilutes the investors. Setting 10–15% pre-round is the standard. 10% is minimum for a technical company; 15% if you anticipate hiring 5+ engineers in Year 1.
+
+**Straw's recommendation**: 12% option pool, allocated as follows:
+- CTO future hires (engineering team): 5%
+- First AE (account executive): 1.5%
+- First CSM (customer success manager): 0.75%
+- First BD/partnerships hire: 0.5%
+- Research/evaluation team hires: 1.5%
+- Reserved for advisors: 0.75%
+- Buffer for unplanned hires / refreshes: 2%
+
+**Vesting for employees**: 4-year vest, 1-year cliff. Standard. No deviation.
+
+---
+
+### Post-seed cap table (projected)
+
+Assuming: $2.5M raise on $22M post-money SAFE (11.4% dilution to seed investors); 12% option pool established pre-round.
+
+| Party | Shares (illustrative) | % (fully diluted) |
+|-------|-----------------------|-------------------|
+| Founder A (CEO) | 4,000,000 | 44.0% |
+| Founder B (CTO) | 4,000,000 | 44.0% |
+| Employee option pool | 1,090,909 | 12.0% |
+| — (unissued, reserved) | | |
+| **Pre-money total** | **9,090,909** | **100%** |
+| Seed investors (SAFE, converting at close) | 1,136,364 | 11.4% |
+| **Post-money total (fully diluted)** | **10,227,273** | **100%** |
+
+Note: SAFE doesn't convert until Series A; this table shows the pro forma fully diluted view if the SAFE converts at the cap.
+
+**Effective founder ownership post-seed**: 44% each (fully diluted with option pool). After Series A at 20–25% additional dilution: ~33% each for the founders.
+
+---
+
+### What to do with advisors' equity
+
+Advisors receive 0.25–0.5% each from the employee option pool (not from founder equity). Maximum 5 advisors = maximum 2.5% total. Budget: 0.75% reserved from the pool (Tick 148 — advisor equity).
+
+Key rule: **Do not grant advisor equity before the seed round without the seed investors' knowledge**. Disclose all outstanding options, grants, and advisor agreements in the seed round's disclosure schedule.
+
+---
+
+### The Delaware C-Corp structure
+
+**Incorporate as a Delaware C-Corp** before the first check. Not an LLC. Not an S-Corp.
+
+Why:
+- VCs require C-Corp for institutional investment (prevents LLC pass-through tax complications)
+- SAFEs require C-Corp structure
+- Stock options (ISO/NSO) require C-Corp
+- Delaware is the standard for a reason: predictable case law, Court of Chancery for corporate disputes, most investors and lawyers know Delaware law
+
+**How to incorporate**: Stripe Atlas ($500, 1-2 days) or directly through a law firm (Wilson Sonsini, Cooley, Gunderson Dettmer — most offer free or deferred fee incorporation for startups).
+
+**83(b) election**: Both founders must file the 83(b) election with the IRS within 30 days of incorporation. This election treats the founding shares as ordinary income at the time of grant (likely near-zero value) rather than at vesting — dramatically reducing the tax burden. Missing this deadline has cost founders millions in unnecessary taxes. Do not miss it.
+
+---
+
+### Sources
+
+- Co-founder equity split frameworks: YC "Advice on Equity Split" (ycombinator.com/library); First Round Capital, "The Founder Handbook" on equity splits
+- Option pool sizing: Feld and Mendelson, "Venture Deals" (4th ed., 2022), Chapter 3 on option pools; Carta cap table data on option pool sizes at seed stage
+- 83(b) election: IRS Revenue Procedure 2012-29; Clerky, "Why Every Founder Should File an 83(b) Election"
+- Delaware C-Corp: State of Delaware Division of Corporations; Stripe Atlas "Why Delaware?"; NVCA model legal documents require Delaware C-Corp
+
