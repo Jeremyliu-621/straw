@@ -15604,3 +15604,188 @@ Each of these actions is reversible. Not doing them is irreversible — the Seri
 - FICO standard timeline: Tick 97 analysis
 - Series A enterprise AI infrastructure check sizes: PitchBook Q4 2025 VC report; Crunchbase AI infrastructure funding data
 
+
+---
+
+## Tick 108 (2026-05-01): Enterprise sales motion — the specific playbook from first contact to signed MSA
+
+**Thread**: Given the 9-month enterprise cycle (Tick 103), the 25-stakeholder buying committee, and the need to stay under $50K Director approval threshold — what is the exact Straw sales motion?
+
+---
+
+### The strategic constraints the sales motion must respect
+
+1. **Average cycle is 9 months** (from Tick 103: mid-market $30K–$100K ACV = 4–9 months; enterprise = 6–18 months)
+2. **25 stakeholders in large enterprise deals** — the champion must be equipped to sell internally; Straw can't do it for them
+3. **$50K Director approval threshold** — staying at $8K–$30K per competition keeps initial deals in Director approval authority; no procurement committee required
+4. **47% AI deals reach production** (vs. 25% for traditional SaaS) — the conversion rate is good; the bottleneck is time, not conviction
+5. **Straw has no dedicated sales team in Year 1** — founder-led sales only; every deal must close or generate learning
+
+---
+
+### The ideal customer profile (ICP) at Year 1
+
+Not all enterprises are equal targets. In Year 1, Straw should only pursue:
+
+**Primary ICP** (easiest to close, fastest value demonstration):
+- Series B–D tech company or public company with $100M–$5B revenue
+- Has an AI/ML team (5+ people) — they understand what an evaluation framework is
+- Has already used or is actively evaluating at least one commercial AI agent for a specific workflow
+- Has a technical champion (Director or VP of Engineering, Head of AI) who has budget authority up to $30K–$50K
+- Primary task type: software engineering or document processing (Quadrant A from Tick 75)
+
+**Secondary ICP** (close once primary is proven):
+- Financial services and legal firms with document-heavy workflows (regulatory filings, contract review)
+- Professional services firms evaluating AI for research, summarization, or client deliverables
+
+**Disqualify in Year 1**:
+- Companies without an existing AI strategy or AI team (too much education required)
+- Highly regulated industries (healthcare, federal) without SOC 2 Type II in hand
+- Companies seeking to evaluate AI agents in "fuzzy" domains (brand strategy, executive communication) — rubric design time is too high
+- Companies expecting to use Straw as a free discovery tool ("we want to find AI vendors, not evaluate ones we already know")
+
+---
+
+### The six-stage Straw sales playbook
+
+**Stage 1: Trigger identification (Week 1)**
+
+The trigger that makes a company buyable: they are actively evaluating an AI agent or just had a failed AI agent engagement.
+
+Trigger signals to watch for:
+- Press coverage: "Company X pilots AI agent for [workflow]"
+- LinkedIn posts from AI champions: "We're evaluating AI coding assistants"
+- Job postings: "AI Evaluation Specialist" or "Head of AI Procurement"
+- Conference talks: company presenting an AI adoption story at SaaStr, AWS re:Invent, etc.
+- Product launches: a company ships a new AI-powered feature ("this was built with an AI agent")
+
+Outbound cold email template (triggered by signal):
+```
+Subject: Your [workflow] AI evaluation
+
+[First name],
+
+Saw [Company X's] recent [press/LinkedIn/talk] about evaluating [AI workflow].
+
+We built a platform that runs head-to-head competitions between AI agent vendors on your actual task — not a vendor demo, not a public benchmark. You design the rubric; we run the competition; you hire the winner.
+
+Deloitte charges $150K for an agent evaluation and delivers a PowerPoint. We deliver a ranked leaderboard with an audit trail for $20K.
+
+Worth a 20-minute call to see if it fits what you're doing?
+
+[Jeremy]
+```
+
+**Stage 2: Discovery call (Week 2–3)**
+
+Goal: Determine if Straw is the right fit, identify the champion, understand the task, and get a verbal commitment to a POC conversation.
+
+The 7 discovery questions (from Tick 96):
+1. "What AI agent decision are you trying to make in the next 90 days?"
+2. "How are you currently evaluating AI agents — internal testing, consultants, vendor demos?"
+3. "What's the cost of making the wrong choice?" (anchors the price)
+4. "Do you have a rubric or success criteria already defined, or is that part of what we'd build together?"
+5. "Who else is involved in this decision — is it just your team, or does procurement/security get involved?"
+6. "What's your budget range for a vendor evaluation engagement?"
+7. "If the competition produces a clear winner, what happens next — are you authorized to make a hiring decision?"
+
+Red flags to disqualify: question 5 reveals 15+ stakeholders with no executive sponsor; question 6 reveals budget under $8K; question 7 reveals no purchase authority.
+
+**Stage 3: POC scoping (Week 3–6)**
+
+Goal: Design the competition that the enterprise will pay for, get a signed SOW for $8K–$20K, and begin rubric design.
+
+POC scope document (1 page):
+- Task description (3–5 sentences, what the agent must do)
+- Deliverable format (what does a submission look like)
+- Evaluation criteria (3–5 dimensions with weights, from the Autorubric wizard)
+- Success definition (what result would make this competition valuable?)
+- Timeline (start date, submission deadline, results delivery)
+- Prize structure (amount, winner distribution)
+- SOW terms (payment upfront, enterprise owns task, Straw owns anonymized evaluation signals)
+
+The SOW for $8K–$20K keeps the deal in Director approval territory. No procurement committee, no security review yet. The first competition is a "pilot" — not a "vendor contract."
+
+**Stage 4: Running the competition (Week 6–14)**
+
+This is the product doing its job. The sales rep's role:
+- Champion check-in at Week 1 of competition: "Submissions are coming in — here's the current count"
+- Mid-point update at Week 4: "We have X submissions; here's a preview of score distribution"
+- Results delivery (live call): Walk through the Competition Report PDF together. Champion must understand the results well enough to present them to their manager.
+
+The competition itself is the demo. Unlike traditional SaaS demos, the "aha moment" is seeing real submissions ranked against a rubric the enterprise designed for their real task. Nothing demonstrates Straw's value better than the competition actually happening.
+
+**Stage 5: Champion equipping (Week 14–18)**
+
+The competition is over. The champion has results. Now they must sell Straw internally to:
+- Their manager (approve the next competition)
+- Procurement (set up a vendor contract for annual subscription)
+- Security (initiate vendor risk assessment — the SOC 2 question)
+- Finance (budget line item for next year)
+
+What Straw provides to the champion:
+1. **Competition Report PDF** — formatted, executive-ready. "Here is the ranked leaderboard, the rubric, the methodology, and the winning agent's performance summary."
+2. **ROI framing email template** — "We ran a competition that saved us [X months] of internal testing and [Y] in consulting fees. The winning agent scored [Z] against our rubric and is ready for a pilot."
+3. **"Next Competition" session** — 30-minute call with champion to design the next competition. Do this within 10 days of results delivery; the interest is highest immediately after.
+4. **Security questionnaire response pack** — pre-filled SIG Lite answers, data flow diagram, SOC 2 status (bridge letter or full report), incident response commitments. Ready to submit without Straw's involvement.
+
+**Stage 6: Annual contract close (Week 16–26)**
+
+The transition from per-competition to annual subscription:
+- Trigger: champion has run 2 competitions and wants to plan 3–4 more in the next 12 months
+- Offer: "Instead of $20K per competition, we can do 4 competitions + Straw Monitor for 2 agents at $80K/year — saves you $20K vs. per-competition pricing"
+- Procurement enters: this is now a >$50K contract, needs procurement review, legal redlines, security questionnaire
+- Sales assists with: pre-filled security questionnaire, DPA template, MSA first draft (favorable to enterprise to reduce legal friction), source code escrow offer letter
+
+**Average time to annual contract close from first contact**: 6–9 months. Per-competition pilots close in 6–12 weeks. Annual contracts add 3–4 months for procurement and security review.
+
+---
+
+### The three most common objection sequences
+
+**Objection 1: "We can just test this internally"**
+
+The internal testing objection is the most common. The responses in priority order:
+
+1. "What does your current internal testing look like?" — Most will describe ad hoc testing on a sample problem with no rubric. "Straw structures that: your rubric, multiple agents, audited results. You get the same test but with a comparison."
+2. "How long does your internal testing take, and how many agents can you test in parallel?" — Internal testing is serial (test one agent at a time) and takes 2–4 weeks per agent. Straw runs 10–50 agents in parallel in 4–6 weeks.
+3. "What happens when you need to re-test?" — Internal testing requires re-running the whole process. Straw keeps the rubric and allows re-competition with one click.
+
+**Objection 2: "We're worried about security / our data leaving the company"**
+
+This is legitimate and should not be minimized. The response:
+
+1. "Your task data stays in your Straw competition — it's not shared with other enterprises or used to train any models." (Straw's DPA clause)
+2. "Agent submissions are sandboxed in isolated containers — no agent can access another's work or your production environment."
+3. "We're [in process for / have completed] SOC 2 Type II with a 6-month observation period. Here's our trust center." (Send Trust Center link immediately)
+4. "If you want to start with a synthetic or anonymized version of your task, we can do that — many customers start this way for security comfort."
+
+**Objection 3: "We don't have a rubric / don't know how to evaluate this"**
+
+This is the rubric design problem from Tick 99. The response:
+
+"That's exactly what our onboarding is for. We run a 2-hour rubric design session with you — we'll decompose your task, help you identify the criteria that matter, and calibrate a rubric against examples you already have. Most customers come out of that session surprised at how clear the success criteria actually are once you write them down."
+
+Then: schedule the rubric design session immediately. The session converts skeptics because it surfaces clarity they didn't know they had.
+
+---
+
+### Founder-led sales discipline
+
+In Year 1, every deal is a learning. After each deal closes or dies:
+1. Write a one-paragraph post-mortem: what worked, what didn't, what objection was new
+2. Add new objection responses to the shared playbook
+3. Update the ICP definition based on what closed vs. what stalled
+
+The goal of the first 10 deals is not revenue — it's playbook development. The playbook built in deals 1–10 is what makes deals 11–50 faster and more consistent.
+
+---
+
+### Sources
+
+- Enterprise buying committee size (25 stakeholders): Tick 103, citing Optifai 2025 / Gartner
+- Director approval threshold ($50K): standard enterprise budget authority research; Madrona enterprise buying guide
+- AI deal conversion rate (47% vs. 25%): Menlo Ventures 2025
+- Sales cycle timing: 4–9 months for $30K–$100K ACV (Tick 103)
+- Objection handling methodology: SPIN Selling (Rackham, 1988); Challenger Sale (Dixon & Adamson, 2011)
+
