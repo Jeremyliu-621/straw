@@ -21789,3 +21789,112 @@ Straw will not have uniform supply depth across all task categories at launch. C
 - Kaggle Chronicles: researchgate.net/publication/397480703
 - Prize allocation and entry in ideation contests (Kireyev/Wharton): marketing.wharton.upenn.edu/wp-content/uploads/2016/10/Kireyev-Pavel-JMP
 
+
+---
+
+## Tick 136 (2026-05-01): The design partner program — getting the first 5 enterprise customers
+
+**Thread**: Theory is complete. The hardest operational question: how does Straw get its first 5 enterprise design partners? What is the specific playbook?
+
+---
+
+### The design partner is not the same as a customer
+
+A design partner in the Straw context is an enterprise that:
+1. Has a real AI agent procurement problem they haven't solved
+2. Is willing to share that problem with Straw in exchange for deeply subsidized or free competition services
+3. Will provide active feedback on rubric design, competition results, and product gaps
+4. May (but doesn't have to) be willing to be a named reference after the relationship matures
+
+Design partners are not paying customers yet. They are collaborative product validation relationships. The goal is not revenue in months 1-3 — it is 5 completed competitions with real enterprise data that can become the first calibration corpus entries and the first case studies.
+
+---
+
+### The ideal design partner profile
+
+**Company size**: $100M-$5B revenue (large enough to have real AI procurement budget and pain; small enough that the AI procurement decision-maker is accessible without a 12-month sales cycle)
+
+**Vertical**: Financial services, legal tech, professional services — verticals where AI agent quality directly impacts business outcomes and where the cost of deploying the wrong agent is high
+
+**AI procurement stage**: Currently evaluating 2-5 AI agent vendors for a specific use case; has run at least one internal POC; has experienced the "vendors all demo great, hard to compare" problem
+
+**Decision-maker**: VP of Engineering, VP of Product, Chief AI Officer, or equivalent — someone with budget authority and a mandate to deploy AI agents, not just evaluate them
+
+**Relationship path**: Warm introduction via a shared investor, advisor, or fellow founder — not cold outreach. Design partner relationships built on cold outreach have 3-5× longer time-to-first-competition than relationship-initiated ones.
+
+---
+
+### The 5-company sourcing strategy
+
+**Channel 1: Founder network (3 of 5 companies)**
+The first 3 design partners should come from the founder's direct network or one degree of separation. If the founder has worked in a vertical (e.g., finance), they should have relationships with 2-3 potential design partners before launch. These relationships are pre-existing trust — the conversation starts at "let me show you what we're building" not "let me convince you we exist."
+
+**Channel 2: YC / accelerator network (1 of 5 companies)**
+If Straw goes through YC or another accelerator, the batch companies and YC alumni network are a concentrated source of companies at the AI deployment stage. YC companies in Series A/B often have the exact profile: $50M-$500M revenue, active AI deployment mandates, innovative teams willing to run experiments.
+
+**Channel 3: Model provider partner program (1 of 5 companies)**
+Anthropic, Google DeepMind, and OpenAI all have partner programs connecting their enterprise customers to ecosystem companies. A Straw partnership with Anthropic (as the natural choice given Straw's model-neutral but Claude-running-on-infrastructure position) could provide warm introductions to 10-20 enterprise customers who are actively deploying Claude-based agents and struggling with evaluation. Ask: "Which of your enterprise customers have told you they wish they could compare Claude-based agents objectively? We'd like to reach out to 3 of them."
+
+---
+
+### The design partner conversation: what to say
+
+**Opening ask**: "We're building Straw — an evaluation marketplace where AI agents compete on your real tasks. We're looking for 5 companies to run their first competition for free in exchange for feedback on the platform. Your data stays private; we use the anonymized outcomes to improve our evaluation infrastructure."
+
+**The value proposition in 2 sentences**: "Instead of comparing vendor demos, you run a Straw competition: all 3 vendors compete on your actual task, with your actual data, evaluated against criteria you define. You get a ranked output and an audit trail. We handle all the infrastructure."
+
+**The ask specificity**: "Would you be willing to run one competition — a task your team would otherwise spend 2-3 weeks evaluating manually — and give us 1 hour of feedback after the results come in? We'll take care of everything else."
+
+**What to offer**: Free first competition (prize pool funded by Straw up to $5K per design partner), white-glove rubric design assistance, 1-1 onboarding with Straw founder.
+
+---
+
+### What a design partner needs to give Straw
+
+The design partner contract (informal, usually just a signed NDA + LOI) asks for:
+1. A real task they'd actually want evaluated (not a toy problem)
+2. Access to the relevant data for the competition (enterprise data, private)
+3. 3-5 hours of rubric design collaboration (1 setup call + 1 review call)
+4. A debrief after competition close (1 hour, structured feedback)
+5. Permission to use anonymized, aggregated competition outcomes in Straw's calibration corpus
+6. A willingness to be an internal reference (not public, just internal) for Straw's first paying customer conversations
+
+In exchange: free competition platform, free rubric design, white-glove support, option to continue at discounted rate post-design-partner period.
+
+---
+
+### The design partner to customer conversion
+
+Design partner → paying customer conversion happens naturally when:
+1. The competition results are useful (the enterprise got genuine signal from the evaluation)
+2. The rubric the enterprise got is valuable enough that they want to reuse it
+3. The winning agent is deployed in production
+4. The enterprise has a second task category they want to evaluate
+
+Conversion rate target: 4 of 5 design partners convert to paying within 6 months. If fewer than 3 convert, the signal is either that the task categories were wrong, the rubric design was poor, or the competition results were not actionable — each of which is a specific product failure mode to diagnose.
+
+**Pricing for converted design partners**: 50% discount for Year 1 as a loyalty reward for being early. Competition fees at $2,500 (vs. $5,000-$10,000 full rate). This makes the transition feel like a reward, not a price increase.
+
+---
+
+### Red flags in design partner selection
+
+**Red flag 1: Design partner wants free evaluation for a task they've already decided on**
+This produces a "validation theater" dynamic — the enterprise already knows the winner, they want Straw to provide cover. Rubric will likely be rail-guarded. Exclude from design partner program if this seems likely.
+
+**Red flag 2: Design partner's data is heavily regulated and can't be shared even with NDAs**
+HIPAA PHI, classified government data, active litigation materials — these cannot be used in Straw's infrastructure without complex legal infrastructure Straw doesn't have in Year 1. Identify this early; don't waste months on a deal that will fall apart on data security review.
+
+**Red flag 3: Design partner has no one internally who "owns" the AI procurement mandate**
+Without a clear internal champion, the design partner relationship becomes an advisory committee that never makes decisions. The champion must have budget authority and a mandate to deploy — not just evaluate.
+
+---
+
+### Sources
+
+- Design partner program best practices: First Round Capital "How to Land Design Partners" playbook; YC's design partner advice for B2B SaaS (startupschool.org)
+- B2B enterprise sales cycle length benchmarks: Gartner enterprise sales cycle data (average 6-9 months for $50K+ deals); OpenView's bottom-up sales data showing warm-intro deals close 3-5× faster
+- Enterprise data sharing legal structure: standard NDA + data processing agreement structure; GDPR Article 28 data processor requirements for European design partners
+- AI lab partner programs: Anthropic Partner Program (anthropic.com/partners); Google Cloud ISV program; OpenAI Applied Research partner program
+- Design partner → customer conversion benchmarks: First Round Capital SaaS benchmarks; typical B2B design partner conversion rate 60-80% when product-market fit exists
+
