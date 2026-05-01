@@ -13893,3 +13893,259 @@ Straw has three distinct network mechanisms. Only one is a pure network effect. 
 - Learning curve / experience curve economics: Wright, T.P. (1936). "Factors affecting the cost of airplanes." Journal of the Aeronautical Sciences.
 - Marketplace liquidity thresholds: Shapiro, C., Varian, H. (1998). "Information Rules." Harvard Business School Press.
 
+
+---
+
+## Tick 102 (2026-05-01): Agent team archetypes — who competes, what motivates them, and what they need
+
+**Thread**: Deep dive on who actually builds winning AI agents. Sourced data from SWE-bench, ARC Prize, and Kaggle on demographics, motivations, costs, and monetization.
+
+---
+
+### Who competes: empirical breakdown
+
+The SWE-bench leaderboard composition (arXiv:2506.17208, analyzing all submissions through mid-2025) provides the best demographic data:
+
+**By organization type**:
+- Small companies (≤15 employees): 32.6% of submissions on SWE-bench Lite
+- Academic teams (single university groups): approximately equal to small companies; academic teams submit 4 entries/submitter vs. <2 for companies — higher engagement intensity
+- Large labs (Anthropic, ByteDance, IBM, OpenAI): hold the top positions but are a small fraction of total submissions
+- Open-source collaborations (AllHands AI / OpenHands, spun out of UIUC research): competitive with or ahead of funded startups in the open-source tier
+
+**ARC Prize 2024 data (1,430 teams, 17,789 entries)**:
+- Winners: Daniel Franzen and Jan Disselhoff (ARChitects) — PhD students at Johannes Gutenberg University, Mainz — beat all well-funded startups on prize eligibility
+- Highest score (55.5%): MindsAI (Jack Cole, Michael Hodel, Mohammed Osman) — small research startup; declined to open-source, therefore ineligible for official prize
+- ARC organizers confirmed: "at least seven well-funded startups shifted their roadmaps to work on ARC-AGI" — serious prizes draw in commercial actors
+- ARC Prize 2025: winner was a Samsung senior AI researcher (industry); ARChitects placed second; no dominant pattern by organization type
+
+**Kaggle Grandmasters (the deep supply-side view)**:
+- 612 Grandmasters out of 23.29M registered accounts (0.003% — the top of the top)
+- Country distribution: Russia, China, Japan, South Korea, India heavily represented; US and Europe significant
+- Employment: many are at AI companies (H2O.ai explicitly recruits Grandmasters; multiple top-20 world-ranked Grandmasters on H2O.ai team), tech companies (Google, Amazon, Microsoft), or academic research positions
+- Prize pool: $22M+ total in 2024 (up from $7.8M in 2023 across 400+ competitions); only top 0.1–1% of entrants see prize money
+
+**The distribution insight**: The talent pool is NOT concentrated only at frontier labs. A 2-person PhD team can beat well-funded startups on capability metrics. The entry point to the top of the talent distribution is accessible to small, technically excellent teams.
+
+---
+
+### Motivations by archetype
+
+| Archetype | Primary motivation | Secondary motivation | Straw relevance |
+|-----------|-------------------|---------------------|-----------------|
+| Academic labs / PhD researchers | Publication, benchmark claims in papers, peer recognition | Prize money (meaningful but secondary) | Will compete for credibility; need structured rubrics, not just leaderboard rank |
+| Well-funded AI startups (Cognition, Sierra) | SOTA claims drive customer acquisition and investor rounds | Benchmark credibility with press coverage | May not need Straw for credibility; use Straw for task-specific differentiation |
+| Large companies (Anthropic, ByteDance, IBM) | Developer/enterprise marketing, recruiting, model capability demonstration | Internal research benchmarking | Will compete if competition is high-prestige; need structured format, not just raw benchmark |
+| Solo engineers / hobbyist Grandmasters | Prize money, career advancement, reputation, community | Intellectual challenge | Highest supply-side elasticity: will compete for even moderate prizes if recognition is high |
+| Research-adjacent small startups (MindsAI, Devin-class) | Product development and customer signal validation | Prize (meaningful at $100K+) | Most natural Straw participants: need enterprise credibility, lack direct sales channel |
+
+**The key insight for Straw**: The most valuable supply-side archetype is the "research-adjacent small startup" — technically excellent, lacking enterprise sales capacity, actively seeking credibility with enterprise buyers. This is exactly the archetype Straw's competition format is designed to serve. The "why top agents use Straw" narrative from Tick 77 maps perfectly onto this archetype.
+
+---
+
+### Real resource costs: what serious competition requires
+
+**SWE-bench evaluation alone**: Some benchmark runs cost $5,000+ per API call for long-context agentic workloads. Competition prep for a SOTA submission requires multiple iterations. Total compute: $20K–$100K per submission attempt.
+
+**ARC Prize-level (test-time training approach)**: MindsAI and comparable teams required significant GPU compute for fine-tuning at inference time. Lambda Labs (academic rate) or cloud GPU — estimated $50K–$200K in compute for a competitive run.
+
+**Full competition engineering time**:
+- Simple AI agent POC: 2–8 weeks, $5K–$20K engineering cost
+- Mid-complexity LLM agent: 3–5 months of engineering time
+- Full multi-agent system for a serious enterprise competition: 6–12 months, $100K–$500K total (engineering + compute)
+
+**Implication for Straw's task design**: Straw competitions must be scoped to be achievable with 1–4 weeks of preparation, not months. Otherwise the cost of entry eliminates the solo engineer and small startup archetypes that Straw most wants to attract. Prize-to-effort ratio must remain above $1K prize per $1K effort — at which point competition participation is economically rational even for unfunded teams.
+
+---
+
+### How agent teams currently sell to enterprises: the pain points
+
+Based on enterprise AI adoption data (Menlo Ventures 2025, PwC, HBR):
+
+- **Only 6% of companies fully trust AI agents with core processes** (HBR survey) — the trust gap is structural
+- **The credibility trap**: An unknown 3-person agent team cannot get a meeting at a Fortune 500 regardless of capability — enterprise procurement requires existing relationships, reference customers, or institutional credibility that takes years to build
+- **Security review is a hard gate**: 78% of security review delays stem from inadequate SOC 2 coverage; enterprise AI tools are classified as Tier 1 vendors (processing sensitive data), requiring full SIG Core review (855 questions, 3–5 week review timeline)
+- **Sales cycles**: Mid-market deals ($25K–$100K ACV) average 60–120 days; enterprise ($100K+ ACV) average 6–18 months. Agent teams without a dedicated sales function are structurally disadvantaged.
+- **9-month enterprise deal cycle** → enterprise AI agents need $2M+ in runway just to survive the sales cycle before seeing revenue
+
+**The Straw solution**: Straw's competition format short-circuits the credibility trap. A competition outcome on the enterprise's actual task is worth more than any reference customer, case study, or SOC 2 Type II report — it's proof of capability in-context, witnessed by the buyer. This is the core supply-side value proposition.
+
+---
+
+### How top competition performers monetize success
+
+**The H2O.ai model (most studied)**:
+H2O.ai built their entire enterprise brand around Kaggle Grandmaster credentials. Their Driverless AI product is described as "a Kaggle Grandmaster in a box." The company employs multiple top-20 world-ranked Grandmasters and uses this fact as both a sales differentiator and a product development engine. Revenue from enterprise ML platform licenses — all flowing from competition credibility.
+
+**Career/recruiting signal** (dominant monetization path):
+Amazon, Microsoft, Meta explicitly cite Kaggle Grandmaster status in job postings. A Grandmaster credential materially increases salary negotiating power. H2O.ai, Google, Amazon actively recruit based on competition track records.
+
+**The career arc**:
+Solo competitor → Grandmaster status → recruited by AI company → senior ML engineer / research scientist → either stays in industry or founds a company. The ARC Prize equivalent: competition winner → acquired or hired by well-funded lab OR raises funding on the back of demonstrated capability (MindsAI).
+
+**Straw's contribution to this arc**:
+Adding "Straw Expert, SWE-Engineering" to this arc — between the competition win and the enterprise hiring — creates a referenceable credential that appears in commercial contexts, not just academic ones. The Straw Score (Tick 97) is the mechanism that makes competition performance visible to enterprise buyers without requiring a direct pitch.
+
+---
+
+### Sources
+
+- Dissecting the SWE-Bench Leaderboards (arXiv:2506.17208): arxiv.org/html/2506.17208v2
+- ARC Prize 2024 Technical Report: arcprize.org/blog/arc-prize-2024-winners-technical-report
+- ARC Prize 2025 Results: arcprize.org/blog/arc-prize-2025-results-analysis
+- Kaggle statistics: en.wikipedia.org/wiki/Kaggle
+- H2O.ai Grandmaster team: h2o.ai/company/team/kaggle-grandmasters
+- State of ML Competitions 2024: mlcontests.com/state-of-machine-learning-competitions-2024
+- Enterprise AI trust: fortune.com/2025/12/09/harvard-business-review-survey-only-6-percent-companies-trust-ai-agents
+- SOC 2 impact on sales cycles: agentplace.io/blog/soc-2-type-ii-for-agent-platforms-security-certification-roadmap
+- Menlo Ventures 2025 State of GenAI: menlovc.com/perspective/2025-the-state-of-generative-ai-in-the-enterprise
+
+
+---
+
+## Tick 103 (2026-05-01): Enterprise procurement journey — the 8-stage buying process, security gates, and what it means for Straw
+
+**Thread**: How does the enterprise buying journey actually work for an AI evaluation tool? Specific stages, timelines, stakeholders, required certifications, and contract terms.
+
+---
+
+### The 8-stage enterprise buying journey
+
+Based on Menlo Ventures 2025 (495 enterprise AI decision-makers), AI Journal Fortune 500 procurement documentation, and Madrona enterprise buying research:
+
+**Stage 1: Awareness & Problem Definition (2–6 weeks)**
+A business unit leader or senior IC identifies a problem: "We need to evaluate AI agents before signing contracts." Informal research begins — vendor websites, peer recommendations, analyst reports. The CISO is not involved. The champion is typically a Director or VP of ML Engineering.
+
+*Straw implication*: Content marketing and community (Tick 96's "content flywheel") must reach this champion during informal research. Thought leadership on "how to evaluate AI agents" is more valuable than "why Straw" — enter the conversation when the buyer is defining the problem, not when they've already decided what solution they want.
+
+**Stage 2: Shortlisting (2–4 weeks)**
+Champion runs demos with 3–5 vendors. Shortlist of 2–3 emerges. Internal IT/security team is engaged. An RFI goes out if the company has formal procurement. Straw must be on the shortlist before formal procurement begins — post-RFP, it's too late to differentiate on positioning.
+
+**Stage 3: Internal champion building (3–6 weeks)**
+Champion builds the business case and recruits internal allies. The buying committee crystallizes: typically 10–11 stakeholders at mid-market, rising to **25 stakeholders at large enterprises** (13 from IT, 12 from business units). 71% of enterprise software decisions are committee-made.
+
+*Straw implication*: Straw's sales motion must provide multi-stakeholder content — not just one deck. Security documentation for the CISO. ROI model for the CFO. Technical API docs for IT. Competition Report sample for the business unit.
+
+**Stage 4: Proof of Concept / Pilot (6–12 weeks)**
+A formal POC is run. Gartner estimates 30% of GenAI projects are abandoned after POC, usually because vendors couldn't translate demos into production-grade systems. Recommended POC structure: setup (20–30 days), active testing (30–40 days), evaluation (10–20 days). Maximum attention span: 90 days.
+
+*Straw implication*: Straw's POC is a first competition. The POC should produce a Competition Report PDF that the champion can use to present to the buying committee. Making the POC output a presentation-ready artifact is critical for champion effectiveness.
+
+**Stage 5: Vendor Risk / Security Review (4–12 weeks, runs parallel to POC)**
+The security team issues a vendor risk questionnaire:
+- **SIG Core** (Shared Assessments): 855 questions across 21 domains — used by banks, insurance, healthcare
+- **SIG Lite**: 126 questions — used for lower-tier vendors  
+- **CAIQ v4** (Cloud Security Alliance): 261 questions — cloud-specific
+- **CAIQ Lite**: 124 questions
+
+For AI evaluation tools that process enterprise production data: classified as **Tier 1 vendor** (critical data access). Full security review timeline: **8–12 weeks** after questionnaire submission; 3–5 weeks for the enterprise team to review vendor's response.
+
+Completing the SIG Core questionnaire on the vendor side takes 20–40 hours of internal staff time per enterprise assessment.
+
+**Stage 6: Legal & Contract Negotiation (4–8 weeks)**
+Legal team redlines the MSA and DPA. Data Processing Agreements under GDPR add a layer. Each side's legal teams introduce unpredictable delays. This stage is the most variable — a single objectionable IP clause can add 4 weeks.
+
+**Stage 7: Procurement & Finance Approval (2–4 weeks)**
+Finance validates ROI. Procurement validates vendor terms against internal playbooks. Sign-off from appropriate authority: Director for <$50K, VP for $50K–$200K, C-suite for >$200K (approximate thresholds vary).
+
+*Straw implication*: $30K–$50K deal pricing is important to stay within Director approval authority at many enterprises. Exceeding $50K often triggers a procurement review cycle that adds 4–8 weeks.
+
+**Stage 8: Deployment & Integration (4–12 weeks)**
+Technical onboarding, integration into evaluation pipeline, training rollout.
+
+**Total realistic cycle**: For a $30K–$100K ACV deal at a large enterprise: **6–12 months** end-to-end, midpoint around 9 months. Enterprise deals exceeding $100K ACV average 170–540 days from first contact to signature. Average B2B buying cycle in 2025: 11.5 months (22% longer than 2022 due to budget scrutiny and larger committees).
+
+---
+
+### What the security review actually requires
+
+**SOC 2 Type II**: Non-negotiable for Tier 1 vendors. Enterprise security teams filter out any vendor without a current (within 12 months) report before evaluation even begins.
+
+Impact: Vendors with SOC 2 Type II report **2.3× faster enterprise sales cycles** and **67% higher contract values** than non-certified competitors. (Source: Agentplace 2025)
+
+Timeline from scratch: **9–12 months** (1–2 months gap analysis, 2–4 months control implementation, 6-month observation period, 1–2 months audit and remediation).
+
+*Straw implication*: SOC 2 Type II audit should begin **immediately** — it is a prerequisite for enterprise sales, not a nice-to-have. Every month without SOC 2 is a month of enterprise deals that cannot close. Starting today, Straw can have Type II in ~10 months (March 2027). Starting at Series A, that's another 10 months lost.
+
+**The security certification priority order for Straw**:
+
+| Certification | Priority | Why | Timeline |
+|--------------|----------|-----|----------|
+| SOC 2 Type II | Critical (Year 1) | Unlocks enterprise deals; 2.3× faster cycle | 9–12 months from start |
+| GDPR DPA | Critical (Year 1) | Required for any EU-connected enterprise | 4–8 weeks to draft with counsel |
+| Penetration test | Required (Year 1) | Required evidence for SOC 2 CC4.1 control; enterprises request report | 2–4 weeks |
+| ISO 27001 | Recommended (Year 2) | Required by financial services, European enterprises | 6–9 months |
+| HIPAA BAA | Vertical-specific | Healthcare customers | 2–4 weeks to implement BAA template |
+| FedRAMP | Government (Year 3) | Required for federal customers | 12–24 months, ~$500K cost |
+| GSA Schedule | Government (Year 2) | Required for federal contract vehicles | 3–6 months |
+
+---
+
+### Stakeholder map and their concerns
+
+| Stakeholder | Primary concern | Key question | What Straw must provide |
+|-------------|----------------|--------------|------------------------|
+| CISO / Security | Data exfiltration, model training on customer data | "Does our data train your model?" | SOC 2 Type II, data flow diagram, pentest results, sub-processor list |
+| Legal / Privacy | Liability, IP, GDPR | "Who owns outputs?" | DPA, indemnification terms, clear IP ownership clause |
+| IT / Architecture | Integration, SSO, SLA | "Does this plug into our stack?" | API documentation, SAML/OIDC SSO, uptime SLA |
+| Procurement | Pricing, vendor viability | "What if they go under?" | Multi-year pricing, source code escrow offer, references |
+| Business Unit (champion) | Does it work? Can we deploy in 30 days? | "Can we run our first competition this month?" | Fast onboarding, Competition Report PDF, clear timeline |
+| CFO / Finance | ROI, total cost | "What's the quantifiable return?" | ROI model, consumption pricing clarity |
+| AI Governance Board | Responsible AI, auditability | "Is this AI governable?" | Audit logs, model cards, judge methodology documentation |
+
+---
+
+### Contract terms enterprises will insist on
+
+| Term | Enterprise demand | Straw recommendation |
+|------|------------------|---------------------|
+| Liability cap | 2–3× annual fees for data breach | Accept: 2× annual fees for breach, 12 months for general claims |
+| Indemnification | Vendor indemnifies against IP infringement, data breach, AI output harm | Accept: mutual indemnification; carve out for enterprise-provided data errors |
+| SLA credits | 99.9%–99.95% uptime; 10–25% credit for breach | Accept: 99.9% SLA; 15% credit for downtime below threshold |
+| Data deletion | Written confirmation within 30 days | Accept: 30-day deletion with written confirmation + audit right |
+| Audit rights | Annual security audit + AI audit rights | Accept: annual third-party audit; provide competition audit trail |
+| Source code escrow | Triggered by insolvency or acquisition | Accept: offer Codekeeper escrow proactively ($2K–$5K/year cost) |
+| Termination for convenience | 30–90 days notice after Year 1 | Accept: allow after Year 1 with 60-day notice |
+| Price lock | CPI or 3–5% annual cap | Accept: 3% annual cap on renewals in Year 1–3 |
+
+---
+
+### The enterprise trust pack: what Straw must have ready
+
+From Startup Boston's "Trust Pack" framework (2026): when a startup can produce these documents proactively (before the enterprise asks), the conversation shifts from "Is this risky?" to "When can we start?"
+
+**Straw's Year 1 Trust Pack**:
+1. SOC 2 Type II report (or: Type I + roadmap to Type II if Type II isn't ready)
+2. Penetration test results (within 12 months)
+3. Data flow diagram (where does enterprise data go, who touches it, what sub-processors)
+4. Sub-processor list (GDPR Article 28 disclosure)
+5. DPA template ready for signature
+6. Security White Paper / Trust Center page (public, always-current)
+7. Source code escrow offer letter (Codekeeper)
+8. Incident response SLA (24-hour breach notification commitment)
+9. Reference customers (2–3 enterprise logos — design partners from Tick 95)
+10. Competition audit trail example (shows enterprise how their competition data is handled)
+
+---
+
+### Why AI deals close faster than traditional SaaS — and how Straw exploits this
+
+One genuinely good data point in this otherwise slow picture: AI-native tools convert at **47% vs. 25% for traditional SaaS** in reaching production (Menlo Ventures 2025). The speed advantage lives in the early stages — buyers are more willing to experiment and less skeptical of AI capability claims than they were two years ago.
+
+Enterprise AI investment: **$37B in 2025 (3× from 2024)**, with 76% of enterprises buying rather than building (up from 47% in 2024).
+
+This means: a buyer who reaches Stage 4 (POC) is much more likely to convert than in previous years. The bottleneck is Stages 5–6 (security review and legal) — which are slow regardless of interest level. Straw's Trust Pack strategy is specifically designed to compress Stages 5–6 by proactively providing the documentation that those stages generate requests for.
+
+---
+
+### Sources
+
+- 2025 State of GenAI in the Enterprise: Menlo Ventures (menlovc.com/perspective/2025-the-state-of-generative-ai-in-the-enterprise)
+- Fortune 500 AI procurement journey: AI Journal (aijourn.com/from-pilot-to-procurement-how-ai-actually-gets-approved-inside-a-fortune-500)
+- Madrona enterprise AI buying: madrona.com/this-is-how-fortune-500-companies-are-buying-ai-today
+- Sales cycle benchmarks: Optifai 2025 (optif.ai/learn/questions/sales-cycle-length-benchmark)
+- SOC 2 impact on sales: Agentplace (agentplace.io/blog/soc-2-type-ii-for-agent-platforms-security-certification-roadmap)
+- SIG questionnaire: Shared Assessments (sharedassessments.org/sig); Vanta (vanta.com/collection/trust/sig-questionnaire)
+- Enterprise trust pack: Startup Boston (startupbos.org/post/the-trust-pack-how-b2b-startups-close-enterprise-deals-in-2026)
+- SaaS contract terms: Contract Nerds (contractnerds.com/negotiating-saas-agreements); ABA Business Law Today
+- Source code escrow ROI: Codekeeper (codekeeper.co/articles/the-roi-of-software-escrow)
+
