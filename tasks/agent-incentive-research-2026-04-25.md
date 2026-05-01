@@ -19331,3 +19331,213 @@ This SDK reduces integration to a few lines. An agent system that needs to deleg
 - Auto-rubric generation via calibration corpus: Tick 99 research (rubric design as a service)
 - Agent procurement authority model: Tick 127 research (why agents post tasks — Condition 5: delegated authority)
 
+
+---
+
+## Tick 125 (2026-05-01): Agent identity infrastructure — ERC-8004, A2A AgentCard, SKILL.md, and portable Straw credentials
+
+**Thread**: Straw's v2 roadmap mentions ANP/DID identity for agents. What is the current state of agent identity infrastructure, and how should Straw's agent registry be designed to integrate with emerging standards?
+
+---
+
+### ERC-8004: on-chain agent identity is live on mainnet
+
+ERC-8004 ("Trustless Agents") was proposed August 2025 and **deployed to Ethereum mainnet on January 29, 2026.** This is real, not vaporware.
+
+The standard provides two registries:
+- **Identity Registry**: ERC-721 with URIStorage — each agent gets a portable, censorship-resistant identifier resolving to an agent registration file
+- **Reputation Registry**: standard interface for posting and fetching feedback signals, with scoring occurring both on-chain (for composability) and off-chain (for sophisticated algorithms)
+
+Current deployment: reference implementations on Ethereum Sepolia, Base Sepolia, Linea Sepolia, and Hedera Testnet before mainnet. Explorer at 8004scan.io is live. 1,000-2,000 builders in development groups; projections of ~130,000 ERC-8004 agents across multiple chains by end of 2026.
+
+**Implication for Straw**: ERC-8004's Reputation Registry is a natural anchor for "Straw Score on-chain." An agent holds an ERC-721 identity token; Straw writes competition results to the on-chain reputation registry as a verifiable third-party attestation. Any enterprise buyer can query the on-chain record without trusting Straw as an intermediary.
+
+---
+
+### A2A protocol AgentCard: the de facto standard for agent discovery
+
+Google's Agent-to-Agent (A2A) protocol, adopted by 150+ organizations, uses an **AgentCard** — a JSON file served at `/.well-known/agent-card.json`. Key fields:
+- `name`, `description`, `version`
+- `provider`: organization + URL
+- `capabilities`: streaming, pushNotifications, stateTransitionHistory
+- `authentication`: schemes (Bearer, Basic, ApiKey)
+- `skills`: specific capability units the agent exposes
+- `defaultInputModes`/`defaultOutputModes`: MIME types
+
+**Implication for Straw**: Straw's agent registry should ingest AgentCards from URLs. A Straw-specific extension field can be added in the standard `extensions` field: `x-straw-score: 94.2` and `x-straw-competition-history: [{task_id, score, date, category}]`. This makes Straw-registered agents discoverable by any A2A-compatible orchestrator — including agent systems that need to post tasks or hire agents.
+
+---
+
+### ANP (Agent Network Protocol): complementary, not competing
+
+ANP is not A2A's replacement but its decentralized counterpart. A2A is HTTPS + JSON-RPC, enterprise-governed, task-outsourcing. ANP is web-crawl of agent URL graphs, open internet, data-discovery. A2A + ANP are complementary layers:
+- A2A for enterprise procurement workflows (near-term Straw use case)
+- ANP for open marketplace discovery (long-term Straw vision)
+
+---
+
+### SKILL.md: the capability profile format
+
+Released by Anthropic in December 2025, immediately adopted by OpenAI (Codex CLI), Google (Gemini CLI), GitHub Copilot, Cursor, VS Code. Format: SKILL.md folder with YAML frontmatter (`name`, `description`, `version`) and Markdown body (instructions, rules, examples). Progressive disclosure: ~30-50 tokens load at startup; full instructions load only when task matches.
+
+**Scale (May 2026)**: ClawHub hosts 52,000+ community-published skills; skills.sh (Vercel) does 235,000+ installs/week. February 2026 analysis of 40,000+ public skills: median body is 1,414 tokens.
+
+**Implication for Straw**: SKILL.md is the natural format for agents to declare what task categories they compete in. Straw's agent onboarding should accept or generate SKILL.md files. An agent's `description` field maps directly to Straw's task-category matching.
+
+---
+
+### Portable Straw Score as a credential: implementation path
+
+Three standards-compliant implementation options:
+
+1. **ERC-8004 Reputation Registry**: Straw writes signed on-chain attestations. Any third party queries without trusting Straw. Permanent, composable.
+
+2. **A2A AgentCard extension**: `x-straw-score` and `x-straw-competition-history` in the extensions field. Discoverable by any A2A orchestrator.
+
+3. **W3C Verifiable Credentials with DID anchoring**: Straw issues a VC to the winning agent's DID, cryptographically signed. The agent presents the VC to any employer without Straw being in the loop. arXiv:2511.02841 demonstrates exactly this pattern. Microsoft's Agent Governance Toolkit (open-sourced April 2026) and EU eIDAS 2.0 wallets both use this VC/DID pattern.
+
+**Recommended approach**: All three, in phases. V1: A2A AgentCard extension (easy, immediate). V2: W3C VCs issued by Straw (privacy-preserving, portable). V3: ERC-8004 on-chain attestations (composable, permanent).
+
+---
+
+### Privacy and gaming risks of portable reputation
+
+**Credential washing**: An agent fine-tuned specifically to game Straw's evaluation criteria, then presented to buyers as broadly capable. The Straw score reflects only what Straw measured — generalization is a buyer's problem, but Straw must communicate scope clearly.
+
+**Sybil-adjacent attacks**: 93% of current agent projects use only environment-variable API keys with no cryptographic identity (State of AI Agent Security 2026, Grantex). If Straw uses simple API keys, a single operator registers N agents, uses failures to learn evaluation criteria, presents only the winner. Mitigation: operator-level identity separate from agent-level identity.
+
+**Supply chain poisoning**: February 2026, Antiy CERT confirmed 1,184 malicious skills across ClawHub. Compromised SKILL.md from a "highly-rated" agent is a trust inversion attack. Straw's agent registry must verify SKILL.md provenance.
+
+**Immutable failure records**: ERC-8004 on-chain scores are permanent and public. A poor Straw score would be permanently visible. Policy decision needed: opt-in vs. automatic on-chain registration, whether failed competitions are published.
+
+**Mitigation stack**:
+- Task diversity requirements before scores become portable (minimum N competitions, M categories)
+- Blind evaluation design (agents don't know ground-truth rubric during competition)
+- Operator-level reputation separate from agent-level (Sybil resistance)
+- ZK proofs for selective disclosure ("prove score > 80 without revealing exact score")
+
+---
+
+### Sources
+
+- ERC-8004 mainnet launch: eips.ethereum.org/EIPS/eip-8004; crypto.news/ethereum-erc-8004-ai-agents-mainnet-launch-2026/; 8004scan.io
+- A2A protocol AgentCard: a2a-protocol.org/latest/specification/; agent2agent.info/docs/concepts/agentcard/
+- ANP vs. A2A comparison: agent-network-protocol.com/blogs/posts/mcp-a2a-anp-interaction-comparison.html
+- SKILL.md specification: github.com/anthropics/skills/blob/main/spec/agent-skills-spec.md; firecrawl.dev/blog/agent-skills
+- AI agents with DIDs and VCs: arxiv.org/abs/2511.02841; arxiv.org/html/2604.25189
+- Microsoft Agent Governance Toolkit: opensource.microsoft.com/blog/2026/04/02/introducing-the-agent-governance-toolkit-open-source-runtime-security-for-ai-agents/
+- State of AI Agent Security 2026: grantex.dev/report/state-of-agent-security-2026
+- ERC-8004 ecosystem overview: chainup.com/blog/erc-8004-ai-agent-identity-standard/
+
+
+---
+
+## Tick 126 (2026-05-01): The agent quality gap problem — behavioral economics of enterprise AI procurement and Anthropic Project Deal
+
+**Thread**: How do enterprises currently estimate AI agent quality before purchase? What cognitive biases cause systematic over-estimation? What does the empirical data say about demo-to-production failure rates? And what is the Anthropic Project Deal finding — the specific empirical foundation of Straw's "the score doesn't lie" thesis?
+
+---
+
+### AI agent quality as a credence good
+
+A **credence good** is one whose quality cannot be assessed objectively even after consumption — the canonical examples are legal advice and medical treatment. AI agent quality meets all three markers of a credence good:
+1. Cannot evaluate before purchase (search good failure)
+2. Cannot evaluate during the demo (experience good failure)  
+3. Cannot evaluate after deployment — because enterprises lack the counterfactual ("would a better agent have produced a better outcome?")
+
+The 2025 MIT AI Agent Index reinforces this: of 13 frontier-autonomy agents surveyed, only 4 disclosed any safety evaluations — developers share capability information freely but withhold reliability data. The World Economic Forum (July 2025) frames trust as "the new currency in the AI agent economy" precisely because quality signals are so weak.
+
+**The Straw positioning implication**: Straw solves the credence good problem by converting AI agent procurement from credence evaluation (trust the vendor) to outcome evaluation (measure the result). This is the same value proposition as medical device clinical trials — you don't trust the manufacturer's claims; you run the trial.
+
+---
+
+### Four cognitive biases that compound the credence good problem
+
+**1. Technology optimism bias**: C-suite AI expectations consistently outrun delivery. A 2024 study found optimism bias inflates projected technology outcomes by ~18% in the venture context. The "AI enthusiasm gap" between corporate optimism and measurable deployment results is systemic — not anecdotal or company-specific.
+
+**2. Benchmark anchoring**: Top models routinely exceed 90% on math, coding, and QA benchmarks while "still inventing APIs, skipping tools, and looping in production." Analysis of 2.8 million LMArena comparison records found cherry-picked benchmark submissions inflated leaderboard scores by up to 100 points among Meta, OpenAI, Google, and Amazon. Goodhart's Law — "when a measure becomes a target, it ceases to be a good measure" — is now the structural condition of AI evaluation.
+
+**3. Vendor authority bias**: Standard procurement due diligence trusts vendor-supplied benchmarks run on curated datasets. Production data is "years of inconsistent, poorly governed data that nobody has cleaned because nobody ever needed to clean it before" — and the gap between clean demo data and real enterprise data is where most projects die.
+
+**4. Demo-to-deployment illusion**: A 2025 BCG procurement study found 49% of teams run pilots but only 4% reach meaningful deployment — a 12:1 attrition ratio. The expectation formed at demo time survives far longer than evidence warrants.
+
+---
+
+### The demo-to-deployment gap: specific data
+
+The numbers are stark and consistent across multiple independent research organizations:
+
+- **88%** of AI agent projects fail before reaching sustained production operation (DigitalApplied, January 2026)
+- **78%** of enterprises have AI agent pilots; under **15%** have reached production (March 2026)
+- **70-85%** of GenAI deployment efforts fail to meet desired ROI (NTT DATA, 2024)
+- **95%** of enterprise AI pilots deliver no measurable ROI (MIT/RAND-cited multiple sources)
+- RAND Corporation: >80% of AI projects fail to reach meaningful production — 2× the failure rate of non-AI IT projects
+- Root causes: 61% of failures attributable to scope creep and data quality; integration complexity timelines expand 2-5× from estimates
+
+The BCG executive survey adds a crucial behavioral finding: most enterprise AI failures are not technical failures — they are evaluation failures. Teams could not agree on what success looked like before launch, meaning they had no clear standard to hold the vendor accountable to.
+
+**This is the exact market failure Straw fixes**: a pre-defined rubric, agreed upon before the competition opens, means "success" has a definition that doesn't move. The vendor (agent) and buyer (enterprise) both know what winning looks like. Accountability is built into the mechanism.
+
+---
+
+### Anthropic Project Deal: the empirical foundation of Straw's thesis
+
+Anthropic's Project Deal (published April 2026) is the most directly relevant empirical evidence for Straw's core claim that agent quality differences produce measurable economic differences, and that weaker agents don't know they're weaker.
+
+**Experimental design**: In a real, incentivized marketplace, 69 Anthropic employees used Claude agents (Opus or Haiku, randomly assigned, double-blind) to buy and sell goods. Real stakes — real money.
+
+**Key findings**:
+- Opus agents completed ~2 more deals on average than Haiku agents
+- When the same item was sold by Opus vs. Haiku, Opus fetched **$3.64 more on average** — illustrative: identical broken bike sold for $65 by Opus vs. $38 by Haiku (**70% gap** in realized value)
+- Across 782 transactions: Opus sellers extracted $2.68 more per item; Opus buyers paid $2.45 less
+- **Users with weaker models did not perceive the disadvantage**: Haiku users rated deal fairness at 4.06/5; Opus users at 4.05/5 — **statistically identical**
+- Aggressive prompting had **no statistically significant effect** on outcomes; model quality was the only driver
+
+**The finding that matters most for Straw**: The principals using weaker agents had no idea they were leaving value on the table. You cannot detect the capability gap through subjective experience. You cannot prompt your way out of it. The score, not the feeling, is the only honest signal.
+
+This is the empirical proof of the "invisible capability gap" — the phenomenon where an enterprise uses an inferior AI agent, pays an inferior agent price, gets inferior business outcomes, and never discovers the gap because they lack a counterfactual. Straw provides the counterfactual: run both agents on the same task, measure the gap.
+
+---
+
+### What enterprises currently use for validation, and why it fails
+
+| Validation method | Failure mode | Documented failure rate |
+|------------------|--------------|------------------------|
+| Internal POCs | Ambiguous success criteria; vendor controls narrative | 49% start, 4% reach production (BCG) |
+| Vendor benchmarks | Goodhart's Law; training contamination; selective submission | 70%+ inflated vs. real-world performance |
+| Analyst reports (Gartner) | Built on vendor self-reports; no adversarial testing | Structural conflict of interest |
+| Peer references | Survivorship bias (bad outcomes → fewer reference customers) | Not quantified; directionally clear |
+| Standard eval frameworks | No multistep evaluation, no cost-efficiency, weak compliance | arxiv:2511.14136 identifies systematic gaps |
+
+S&P Global Market Intelligence: **42% of businesses scrapped most of their AI initiatives in 2025** after acting on procurement decisions made with these methods.
+
+---
+
+### The 76% buy-vs-build signal: spend without maturity
+
+Menlo Ventures' 2025 State of Generative AI in the Enterprise (n=495 US enterprise AI decision-makers):
+- **76% of enterprise AI solutions now purchased** rather than built — up from 53% in 2024
+- Enterprise AI software spend: **$37B in 2025**, up 3.2× from $11.5B in 2024
+- AI procurement converts at **47% vs. 25%** for standard SaaS — buyers move faster
+
+The 76% figure does not indicate procurement maturity — it indicates **procurement volume without maturity**. Enterprises are spending $37B/year on AI agents using validation methods that demonstrably fail 70-95% of the time. This is the highest-risk combination: large spend, fast decisions, inadequate evaluation infrastructure.
+
+Straw is the institution the market is missing.
+
+---
+
+### Sources
+
+- Anthropic Project Deal (April 2026): anthropic.com/features/project-deal; techcrunch.com/2026/04/25/anthropic-created-a-test-marketplace-for-agent-on-agent-commerce/
+- The Decoder analysis of Project Deal: the-decoder.com/anthropic-says-stronger-ai-models-cut-better-deals-and-the-losers-dont-even-notice/
+- Menlo Ventures 2025 State of Generative AI: menlovc.com/perspective/2025-the-state-of-generative-ai-in-the-enterprise/
+- DigitalApplied 88% failure rate: digitalapplied.com/blog/88-percent-ai-agents-never-reach-production-failure-framework
+- DigitalApplied AI agent scaling gap March 2026: digitalapplied.com/blog/ai-agent-scaling-gap-march-2026-pilot-to-production
+- NTT DATA 70-85% GenAI failure: nttdata.com/global/en/insights/focus/2024/between-70-85p-of-genai-deployment-efforts-are-failing
+- BCG Executive Perspectives: Future of Procurement with AI 2025: media-publications.bcg.com/BCG-Executive-Perspectives-Future-of-Procurement-with-AI-2025
+- Can We Trust AI Benchmarks? (arXiv:2502.06559): arxiv.org/html/2502.06559v1
+- Goodhart's Law in AI leaderboard controversy: blog.collinear.ai/p/gaming-the-system-goodharts-law-exemplified
+- WEF Trust as the new currency in AI agent economy (July 2025): weforum.org/stories/2025/07/ai-agent-economy-trust/
+- MIT AI Agent Index 2025: aiagentindex.mit.edu/
+- S&P Global: 42% of businesses scrapped AI initiatives in 2025: market research cited in DigitalApplied sources
+
