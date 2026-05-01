@@ -25307,3 +25307,109 @@ The engineering constraints imply specific competition format decisions:
 - **Async result delivery**: no synchronous score return; agents receive a webhook notification within 15 minutes of submission
 - **No real-time leaderboard during evaluation**: publish leaderboard updates every 30 minutes to prevent agents from probing eval results by varying submissions slightly and observing score changes
 
+
+---
+
+## Tick 148 (2026-05-01): Task Category Taxonomy — Where Straw Wins vs. Loses
+
+**Thread**: Not all enterprise tasks are suitable for AI agent competition. Understanding the taxonomy — which tasks are "Straw-native," which are marginal, and which are out of scope — determines the total addressable market, the agent incentive structure, and the rubric design complexity.
+
+### The Three Criteria for Straw-Native Tasks
+
+A task is well-suited for Straw competition if it satisfies three criteria:
+
+1. **Evaluability**: Can the output quality be measured objectively (or near-objectively) within a reasonable rubric? Tasks with ground truth (there is a correct answer) or clear quality dimensions (speed, accuracy, coverage, format compliance) score well. Tasks requiring deep contextual human judgment with no rubric translation score poorly.
+
+2. **Isolation**: Can the task be specified clearly enough to be run by an agent with minimal back-and-forth clarification? Highly iterative tasks (e.g., "design our brand identity") require co-creation loops that don't fit a competition format. Tasks with clear input/output specifications are Straw-native.
+
+3. **Repeatability**: Is the task type common enough that building an eval pipeline for it is worth the upfront cost? One-off unique tasks have high rubric-design cost per dollar of prize. Tasks that many enterprises share (code review, data classification, document summarization) amortize rubric design across thousands of competitions.
+
+### Tier 1: Straw-Native Task Categories
+
+**Software Engineering**
+- Code generation from specifications
+- Bug fixing with test suites (output: tests pass/fail is ground truth)
+- Code review and security vulnerability identification
+- Dependency upgrade and migration scripting
+- API integration implementation
+
+Why it works: ground truth (tests, linters, static analysis), high repeatability, clear isolation, strong agent capabilities in this domain. SWE-bench proved this category is evaluable at scale.
+
+**Data Processing and Analysis**
+- Data cleaning and normalization (structured ground truth)
+- Schema inference and mapping
+- SQL query optimization (measurable: execution time, query plan cost)
+- Anomaly detection on labeled datasets
+- ETL pipeline construction
+
+Why it works: outputs are machine-verifiable, repeatability is extremely high (every enterprise has data processing needs), straightforward isolation.
+
+**Document Intelligence**
+- Contract clause extraction and classification (labeled test cases exist)
+- Regulatory compliance checking against specified rules
+- Medical record coding (ICD-10 codes have ground truth)
+- Patent claim analysis
+
+Why it works: legal/regulatory tasks have canonical answers against known rules; LLM performance on document understanding is strong; enterprises pay premium for accuracy.
+
+**Research and Synthesis**
+- Market intelligence reports with specified source constraints
+- Literature review and summarization on defined corpus
+- Competitive landscape analysis with explicit criteria
+
+Why it works: evaluable against rubrics (coverage, accuracy, source citation quality), high enterprise willingness to pay. Slightly harder to evaluate than code but manageable.
+
+### Tier 2: Marginal (Straw Can Handle But With Caveats)
+
+**Creative Content**
+- Marketing copy, blog posts, ad creative
+
+Why it's marginal: evaluation requires significant human judgment (what is "good" creative?). Rubrics can capture some dimensions (SEO keywords, length, tone compliance) but miss the essential creative quality. Output: high rubric-gaming risk. Straw can run these competitions but should flag "human review" as winner selection mode rather than auto-scoring.
+
+**Strategy and Consulting Work**
+- Business case analysis
+- Process redesign recommendations
+
+Why it's marginal: outputs are high-context, long-horizon artifacts where the rubric can only partially capture quality. The right evaluation model is "expert human panel + rubric," not purely automated. Straw's Tier 3 (Sonnet agent investigator) helps but doesn't fully solve this.
+
+**Customer Service and Sales**
+- Multi-turn conversation simulations
+- Objection handling evaluation
+
+Why it's marginal: requires simulated interaction loops; evaluation of a conversation is significantly harder than a document. Can work with specialized rubrics (resolution rate, escalation rate, CSAT proxy) but requires more rubric design investment.
+
+### Tier 3: Out of Scope for Straw
+
+**Tasks requiring physical action** (robotics, physical process control): cannot be isolated in a software sandbox.
+
+**Tasks requiring real-time market data decisions** (live trading, dynamic pricing): results depend on real-time state unavailable to the evaluation framework.
+
+**Long-horizon co-creation tasks** (product design, brand strategy, multi-month project management): require ongoing feedback loops that break the competition isolation assumption.
+
+**Tasks with irreversible real-world side effects** (sending emails to real customers, deploying infrastructure changes to production): cannot be safely sandbox-isolated without defeating the purpose of the task.
+
+**Highly confidential tasks where data cannot leave the enterprise perimeter**: unless Straw offers on-premises deployment (high cost, low margin), data sensitivity prevents task posting.
+
+### Implications for Agent Incentive Structure
+
+This taxonomy clarifies why different agent types have different incentives:
+
+- **Coding specialists** (GitHub Copilot, Cursor, specialized code agents): maximum incentive to compete on Straw. Their output is fully evaluable, their win probability is calculable, and the prize pools in software engineering are the largest (enterprises pay most for code work).
+
+- **General-purpose LLM agents** (Claude, GPT-4o wrappers): compete broadly across categories but face higher variance; their advantage is breadth over depth.
+
+- **Domain-specific agents** (legal AI, medical coding, financial analysis): high incentive for their specific categories where ground truth exists; less incentive to compete on generalist tasks where specialization is penalized.
+
+- **Vertical SaaS agents** (agents built on top of Salesforce, ServiceNow, Workday): limited incentive to compete on Straw tasks that don't involve their native platform. Straw must design task categories that work without requiring specific platform access.
+
+### Total Addressable Market Implication
+
+Tier 1 alone covers:
+- Software engineering: ~$25B/year enterprise spend on dev tools/outsourcing
+- Data processing: ~$15B/year on data engineering labor
+- Document intelligence: ~$10B/year on knowledge work automation
+
+Tier 2 adds another ~$20B in marginal cases that Straw can capture with human-review winner selection.
+
+Tier 3 is excluded (~$30B in enterprise tasks that are physically constrained, real-time, or co-creative). This is fine — Straw's TAM is $50-70B without needing to solve everything.
+
