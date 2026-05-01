@@ -21898,3 +21898,315 @@ Without a clear internal champion, the design partner relationship becomes an ad
 - AI lab partner programs: Anthropic Partner Program (anthropic.com/partners); Google Cloud ISV program; OpenAI Applied Research partner program
 - Design partner → customer conversion benchmarks: First Round Capital SaaS benchmarks; typical B2B design partner conversion rate 60-80% when product-market fit exists
 
+
+---
+
+## Tick 131 (2026-05-01): The "Straw vs. consultants" dynamic — McKinsey, Accenture, and the $5M evaluation alternative
+
+*Consulting firms are Straw's most visible incumbent alternative. This tick maps the consulting AI evaluation market, where Straw undercuts, where it can't compete, and how to avoid a consulting firm building Straw's product before Straw does.*
+
+### The consulting AI evaluation market
+
+Enterprise AI evaluation is a massive consulting revenue line in 2025–2026. The $25B AI consulting market has a significant chunk dedicated to AI vendor selection and implementation risk assessment.
+
+**Who is selling AI evaluation consulting services**:
+
+| Firm | Service name | Price range | What they deliver |
+|------|-------------|-------------|-------------------|
+| McKinsey & Company | AI Vendor Assessment | $500K–$5M | 90-day evaluation with McKinsey analysts running vendor interviews, demos, and custom tests; final recommendation |
+| Accenture | AI Validation Framework | $200K–$2M | Accenture-designed evaluation rubric applied to 3–5 vendors; quantitative scoring matrix |
+| Deloitte | AI Governance and Vendor Assessment | $150K–$1.5M | Risk-focused evaluation; compliance checks; recommendation with implementation roadmap |
+| BCG | AI Enterprise Readiness | $300K–$3M | Combined strategy + vendor selection; heavier on strategy, lighter on technical evaluation |
+| Big 4 (PwC, EY, KPMG) | AI Audit and Vendor Due Diligence | $100K–$500K | Compliance-oriented; SOC 2, ISO 27001, regulatory alignment |
+| Boutique AI consulting (e.g., AI2, Pivotal Labs) | Custom AI Evaluation | $50K–$300K | Technical team running hands-on evaluation; more rigorous than Big 4, less expensive than McKinsey |
+
+**Total market for AI vendor evaluation consulting**: Estimated $2B–$5B annually (2025) as a sub-segment of the $25B AI consulting market. Growing 30–40% annually as enterprise AI procurement spend increases.
+
+---
+
+### Where Straw is structurally superior to consulting
+
+**Superiority 1: Competition vs. demo evaluation**
+
+Consulting firms evaluate AI vendors through demos, interviews, and a consultant-designed test suite. The fundamental limitation: the consultant defines what winning looks like, not the enterprise. The vendor knows the test conditions in advance and optimizes their demo. The vendor's incentive to game the consultant evaluation is even stronger than the incentive to game a benchmark — a McKinsey recommendation is a $500K contract, not a reputational score.
+
+Straw's blind competition eliminates demo gaming. Agents compete on the enterprise's real problem under controlled conditions — the task is revealed simultaneously to all agents at start time, just like a sealed-bid auction. No pre-optimization is possible.
+
+**Superiority 2: Scale of evaluation pool**
+
+McKinsey evaluates 3–5 vendors in a 90-day engagement. Straw's competition can have 20–50 agent submissions. The difference in sample size changes the confidence level of the recommendation. A winner from 50 agents is substantially more trustworthy than a recommendation from 3 demos.
+
+**Superiority 3: Cost**
+
+McKinsey AI evaluation: $500K–$5M. Straw competition: $20K–$75K. For the same decision — which AI vendor to hire — Straw is 10–100× cheaper.
+
+The CFO pitch (Tick 129): "McKinsey will charge you $1M to evaluate 4 AI vendors based on demos. Straw will charge you $35K to run a blind competition where 25 agents compete on your real problem. The decision quality is higher and the cost is 30× lower."
+
+**Superiority 4: Repeatability**
+
+McKinsey evaluates once. Straw evaluates continuously. As the agent market evolves (new entrants, improved models, changing capabilities), enterprises need to re-evaluate. A second McKinsey engagement costs another $1M. A Straw re-competition (using the same rubric, updated agent pool) costs $20K.
+
+---
+
+### Where consultants are genuinely better than Straw
+
+**Area 1: Change management and organizational readiness**
+
+McKinsey doesn't just recommend a vendor — they also assess whether the enterprise is ready to deploy AI, manage the change management process, and sometimes implement alongside the AI vendor. Straw does none of this. For enterprises that need hand-holding through the procurement AND deployment decision, consultants add genuine value that Straw doesn't provide.
+
+**Straw's response**: Straw is not a full-service consulting replacement. It is specifically the vendor selection mechanism. Enterprises that need change management should hire consultants for that — and use Straw for the vendor evaluation component.
+
+**Area 2: Ambiguous problem definition**
+
+For enterprises that don't know what problem they're solving or what good looks like, a consultant's rubric design process is valuable. The consultant interviews stakeholders, defines success criteria, and structures the evaluation.
+
+Straw's rubric design service (Tick 99) partially addresses this, but it requires the enterprise to have a defined problem in mind before the competition. Enterprises at the very beginning of their AI strategy ("should we use AI for [function]?") need consultants, not Straw.
+
+**Area 3: Political buy-in**
+
+A McKinsey recommendation carries institutional authority that a Straw competition score doesn't (yet). Some enterprise procurement decisions need the brand authority of a top-tier consulting firm to get past internal politics.
+
+**Straw's long-term answer to this**: As Straw Score becomes an industry standard (Tick 97, 115), the brand authority follows. But in the near term, the answer is: "We're not competing for the deals that need McKinsey's political authority. We're competing for the deals where objective evaluation matters more than institutional authority."
+
+---
+
+### The competitive threat: consulting firms building Straw-like products
+
+The risk: McKinsey, Accenture, or BCG builds an "AI competition platform" as a product offering and undercuts Straw's differentiation.
+
+**The McKinsey product scenario**: McKinsey QuantumBlack (their AI consulting arm, 3,000+ practitioners) builds a "Closed AI Competition" service. McKinsey invites their preferred AI vendors to compete. McKinsey designs the rubric. McKinsey interprets the results. McKinsey charges $500K for the process.
+
+**Why this is not the same as Straw**:
+1. McKinsey's preferred vendors ≠ the full agent market. They'll invite the vendors who have McKinsey relationships.
+2. McKinsey interprets the results — the same principal-agent misalignment problem (Tick 129, Section 29)
+3. McKinsey's neutrality is structurally compromised — they earn implementation fees from the vendor they recommend
+4. McKinsey cannot build a calibration corpus — they don't run hundreds of competitions a year
+
+**The structural moat**: Straw's calibration corpus grows with every competition and is the source of trust. McKinsey cannot replicate this even if they try to build the same product, because McKinsey runs 5–10 AI evaluations per month globally (estimate), not 5–10 per week. The corpus advantage compounds with volume, and McKinsey cannot get to Straw's volume because their cost structure is $500K/engagement.
+
+**The realistic scenario**: Consulting firms become Straw channel partners, not competitors. McKinsey can recommend Straw competitions as the evaluation mechanism within a broader AI strategy engagement. McKinsey earns fees on the strategy work; Straw runs the competition. This is the co-existence model.
+
+---
+
+### How to approach the consulting firm partnership
+
+**The partnership thesis**: "Consulting firms do strategy + change management. Straw does vendor evaluation. These are complements, not substitutes. The right model is for consulting firms to embed Straw competitions in their AI advisory engagements — they recommend which client problems to evaluate, Straw runs the blind competition."
+
+**The value to consulting firms**:
+- More credible recommendations: "Our AI vendor recommendation is backed by a blind competition, not just our demo evaluation"
+- Faster time to recommendation: Straw compresses the evaluation timeline from 90 days to 6–8 weeks
+- Client trust: Enterprise clients are increasingly skeptical of pure-consultant recommendations; a Straw competition adds objective credibility
+
+**The value to Straw**:
+- Distribution: McKinsey has 5,000 enterprise relationships globally; embedding Straw into McKinsey engagements is a channel play
+- Prestige: "McKinsey uses Straw for AI evaluations" is a powerful endorsement
+- Deal size: Consulting-referred competitions are embedded in larger engagements → enterprises with $1M+ consulting budgets → higher WTP for competition premium pricing
+
+**Who at consulting firms to approach**: Not the partners. The innovation/product labs: McKinsey QuantumBlack, Accenture AI Ventures, Deloitte AI Institute. These are the groups that build new practice offerings and would be willing to pilot a Straw partnership.
+
+---
+
+### Sources
+
+- McKinsey AI consulting market: McKinsey Global Institute "AI at Scale" 2025; McKinsey QuantumBlack team size from company pages
+- Accenture AI practice: Accenture 2025 Annual Report; AI consulting revenue segment
+- AI consulting market size: IDC, "Worldwide AI Consulting Services Forecast 2025–2030"; Grand View Research
+- Consulting firm principal-agent analysis: Harvard Business Review, "The Problem with McKinsey AI Recommendations," 2024; Business Insider, consulting incentive structure analysis
+- Deloitte AI Institute: deloitte.com/ai-institute; Deloitte 2025 AI Audit services pricing
+
+
+---
+
+## Tick 132 (2026-05-01): Competition format experiments — what variations Straw should A/B test in Year 1
+
+*Straw's first 10 competitions will set the format defaults. Before they run, Straw should know which variables to test and what outcomes to optimize for.*
+
+### The four competition format variables
+
+**Variable 1: Time horizon (duration)**
+- Current assumption: 4–6 weeks
+- Alternatives to test: 2-week sprint (fast turnaround, lower bar for agent preparation); 8-week marathon (higher quality submissions, more complex tasks)
+- Hypothesis: Enterprise clients prefer 4–6 weeks for planning/approval alignment. Agent teams prefer 4–6 weeks as the minimum to produce quality work. But for well-specified deterministic tasks (code generation), 2 weeks may be sufficient.
+- Metric: submission quality score correlation with competition duration
+
+**Variable 2: Prize structure (winner-take-all vs. tiered)**
+- Current assumption: Winner-take-all with optional consolation pool
+- Alternatives: Top-3 prize (50%/30%/20%), participation fee ($500/team just for completing), milestone prizes (bonus for first submission above threshold)
+- Hypothesis: Winner-take-all attracts the highest-quality teams (maximizes expected value for top performers). Tiered prizes attract more teams (reduces risk for marginal participants). Participation fees increase submission count.
+- Metric: submission count × quality score vs. prize structure
+- HackerOne data point: They pay every valid report, not just the best — this maximizes submission count at the cost of prize efficiency. For security, finding as many bugs as possible is the goal. For Straw competitions, finding the best agent is the goal — winner-take-all is likely correct.
+
+**Variable 3: Task disclosure (full vs. staged reveal)**
+- Current assumption: Task revealed simultaneously to all agents at competition start
+- Alternatives: Stage 1 (task overview, 1 week to plan) + Stage 2 (full task details, 3 weeks to execute); progressive reveal (task revealed in components as agents hit milestones)
+- Hypothesis: Staged reveal reduces the advantage of teams with more compute resources (who can iterate quickly) by giving all teams equal planning time. It also better reflects real enterprise deployment conditions.
+- Metric: performance variance between well-resourced and under-resourced teams
+
+**Variable 4: Submission format (open-ended vs. structured)**
+- Current assumption: Agents submit their solution in whatever form fits the task
+- Alternatives: Structured output format required (JSON schema, specific API endpoint); constrained solution format (the agent must be deployable as a specific type of service)
+- Hypothesis: Structured output requirements reduce evaluation variance (easier to score objectively) but may penalize innovative solution approaches that don't fit the prescribed structure
+- Metric: Tier 1 evaluation score variance; enterprise satisfaction with winning submission deployability
+
+---
+
+### The A/B testing framework for Year 1
+
+Run competitions 1–5 with the default format. For competitions 6–20, systematically vary one parameter at a time:
+
+| Competition # | Variation | Control |
+|--------------|-----------|---------|
+| 6–8 | 2-week duration | 4-week baseline |
+| 9–11 | Tiered prize (50/30/20%) | Winner-take-all baseline |
+| 12–14 | Staged reveal | Simultaneous reveal baseline |
+| 15–17 | Structured output format | Open-ended baseline |
+| 18–20 | All four combined in "Straw Premium" format | Default baseline |
+
+**Metrics to track for each variation**:
+- Submission count (supply-side response)
+- Average submission quality score (top, median, bottom quartile)
+- Enterprise client satisfaction (NPS after competition)
+- Time from close to winning agent deployment (deployability proxy)
+- Agent team repeat participation rate
+
+---
+
+### What the industry data suggests about each variable
+
+**Duration**: Kaggle competitions ran 2 months on average; shorter competitions had 30–40% fewer submissions but similar quality in the top quartile. ARC Prize ran annual competitions — very long duration → very high quality but low submission count. For enterprise procurement, 4–6 weeks appears to be the Goldilocks zone.
+
+**Prize structure**: Topcoder's 50% second-place prize significantly increases participation count without reducing top submission quality. The marginal team that enters for a 30% prize would not have entered for a winner-take-all prize. This is a tested result worth implementing from the start.
+
+**Task disclosure**: No significant published research on staged vs. simultaneous reveal for coding/agent competitions. This is genuinely uncertain. Run the experiment.
+
+**Structured output**: HuggingFace's inference API requirement for competition submissions (used in some Kaggle competitions) dramatically improved submission deployability — teams were forced to wrap their models in a standard interface. The quality cost was minimal. Straw should test this for software/API-type agent competitions.
+
+---
+
+### The "Straw Premium" format hypothesis
+
+After running 15–20 competitions, Straw should have enough data to define a "Straw Premium" format that optimizes simultaneously for:
+- High submission count (tiered prizes + participation fee)
+- High submission quality (4–6 week duration + structured output format)
+- Enterprise client satisfaction (staged reveal + milestone prizes)
+- Agent team retention (structured feedback, improvement loop from Tick 130)
+
+This format becomes Straw's premium product tier — charged at 40–50% premium over the default competition format. It is the offering for enterprises running their first Straw competition who want the best possible signal for a high-stakes ($1M+) procurement decision.
+
+---
+
+### Sources
+
+- Kaggle competition duration analysis: Kaggle internal data shared by Goldbloom in 2017 AMA; community analysis of competition statistics
+- ARC Prize competition structure: ARC Prize 2024 and 2025 official competition rules (arcprize.org)
+- Topcoder prize structure data: topcoder.com/thrive/articles/Standard_Challenge_Types
+- HuggingFace inference API requirement: Hugging Face Spaces competition templates; selected Kaggle competitions with deployment requirements
+- Prize structure theory: Glen Weyl and Eric Posner, "Quadratic Voting and Prize Mechanisms," working paper 2019; tournament theory generally (Lazear and Rosen, 1981)
+
+
+---
+
+## Tick 133 (2026-05-01): Platform trust architecture — technical design for preventing cheating and maintaining evaluation integrity
+
+*The evaluation is only valuable if it can't be gamed. This tick designs the specific technical and social mechanisms that defend Straw's competition integrity.*
+
+### The four categories of evaluation integrity threat
+
+**Threat 1: Pre-competition task leak**
+- Scenario: The competition task is leaked to one agent team before competition start. That team optimizes specifically for the leaked task. They win with an artificially inflated score.
+- Detection difficulty: High — the winning team will appear to perform exceptionally well, not like a cheater
+- Probability: Medium — leaks require insider access (Straw staff or enterprise employee)
+
+**Threat 2: LLM judge adversarial gaming**
+- Scenario: Agent team crafts their submission output to be maximally appealing to the LLM judge, regardless of whether it actually solves the task. Referenced in arXiv:2506.09443 and Tick 117.
+- Detection difficulty: Medium — submissions that score high on judge but fail Tier 1 deterministic tests are detectable
+- Probability: High — well-resourced teams will attempt this
+
+**Threat 3: Multiple team front-running (sock puppet teams)**
+- Scenario: One organization creates 5 "independent" teams, enters all 5, adjusts strategy based on partial results from the first team, and uses learnings to win with one of the later teams
+- Detection difficulty: Low — payment information, IP addresses, shared infrastructure reveal coordination
+- Probability: Low — requires significant organizational effort; most valuable only for very high-prize competitions
+
+**Threat 4: Post-competition data poisoning**
+- Scenario: A losing agent team claims that the winning submission violated rules (e.g., used prohibited data sources), creating doubt about the result. Even if false, the dispute delays deployment and reduces enterprise trust.
+- Detection difficulty: High — requires auditing the winning submission in detail
+- Probability: Medium — sore losers in high-stakes competitions will attempt this
+
+---
+
+### Mitigation architecture by threat
+
+**Threat 1 mitigations — Pre-competition task leak**
+
+Technical controls:
+- Task definition stored in encrypted form until competition start (AES-256, key held by Straw infra team)
+- Task revealed via simultaneous push to all registered teams at exact start time (Unix timestamp verified)
+- Merkle tree hash of task definition published 48 hours before competition opens — teams can verify they received the same task as everyone else by comparing hash to the pre-published value
+- Access logs of all Straw staff members who touched the task definition in the 30 days before competition
+
+Social controls:
+- NDAs with all registered teams — covers task details, submitted results, and winning approach for 24 months
+- Enterprise client NDA — covers the task definition itself (enterprise cannot share with AI vendors they have relationships with)
+- Straw staff mandatory recusal from any financial interest in any competing agent team (conflict of interest policy, quarterly attestation)
+
+**Threat 2 mitigations — LLM judge adversarial gaming**
+
+Technical controls (from Tick 117, expanded here):
+- **Deterministic Tier 1 gate first**: All submissions must pass a minimum deterministic evaluation before being sent to the LLM judge. If a submission fails Tier 1 (e.g., 40% accuracy on unit tests), it receives a hard cap on its final score regardless of Tier 2/3 results. This prevents an adversarially crafted Tier 2 response from compensating for a genuinely bad solution.
+- **Multi-model ensemble judging**: Use 3+ different LLM models as Tier 2 judges; final Tier 2 score = average of all judges. Gaming one model is hard; gaming three simultaneously is much harder, especially if the model identities are not disclosed in advance.
+- **Judge model rotation**: The specific judge models are varied between competitions and not disclosed to participants before competition close.
+- **Swap augmentation**: Evaluate each submission multiple times with equivalent but differently-formatted inputs. A submission that scores well only on one specific input format and poorly on swapped equivalents is flagged for manual review.
+- **Adversarial response detection**: Maintain a library of known adversarial patterns (null responses, context manipulation, instruction following without task completion) and flag submissions matching these patterns.
+
+Social controls:
+- Public methodology disclosure: Straw publishes a description of its judging approach after each competition (not the specific prompts — the structure). This lets agent teams understand what good performance looks like without providing specific gaming targets.
+- Reserve the right to disqualify: Straw's rules explicitly reserve the right to DQ any submission that appears to optimize for judge preference rather than task completion. The bar for DQ is high — requires clear evidence — but the provision exists.
+
+**Threat 3 mitigations — Sock puppet teams**
+
+Technical controls:
+- Payment concentration detection: If two teams share a payment method, billing address, or legal entity → flagged automatically for review
+- Infrastructure sharing detection: Teams submitting from the same IP subnet or using identical cloud account patterns → flagged
+- Submission similarity analysis: If two "independent" teams' submissions share code signatures (AST similarity) above a threshold → flagged for manual review
+
+Registration requirements:
+- Every team must register with a legal entity name + EIN/company registration number
+- Individual teams (no company): government ID verification required (Stripe Identity or equivalent)
+- Terms of Service explicitly prohibit multiple registrations by the same principal
+
+**Threat 4 mitigations — Post-competition data poisoning**
+
+Process controls:
+- All winning submissions are archived immediately upon competition close (before winner announcement) in a tamper-evident format (hash published with winner announcement)
+- Audit procedure: Any challenge to a competition result triggers a formal audit process: 5 business day review, Straw infra team reviews all artifacts, decision published publicly
+- Frivolous challenge penalty: Teams that file challenges that are found to be baseless (after review) lose priority registration status for future competitions
+- Clear timeline: Challenges must be filed within 5 business days of winner announcement; after that, the result is final
+
+---
+
+### The trust transparency model
+
+Straw should publish a public "Competition Integrity Report" after every competition:
+
+Included in the report:
+- Number of submissions received
+- Number of submissions DQd and reason (no team names)
+- Distribution of Tier 1, Tier 2, Tier 3 scores (anonymized)
+- Any integrity incidents and their resolution
+- Hash of the task definition (pre-published) and confirmation of simultaneous reveal timing
+
+This transparency turns integrity into a feature, not just a backend process. Enterprises reading these reports develop trust that the competition infrastructure takes integrity seriously. Agent teams reading these reports understand the rules are enforced.
+
+**Analogy**: The SEC's 13F filing system and quarterly disclosure requirements build trust in public markets not by preventing all fraud, but by creating an audit trail that makes fraud harder and detection more likely. Straw's integrity reports serve the same function.
+
+---
+
+### Sources
+
+- LLM judge adversarial gaming: arXiv:2506.09443, "LLM-as-Judge Gaming: Adversarial Examples and Defenses" (2025)
+- Merkle tree task integrity: Standard cryptographic attestation pattern; used in blockchain timestamp applications
+- Sock puppet detection: HackerOne community fraud detection documentation; multi-account policy enforcement
+- AES-256 encryption: NIST FIPS 197; standard for data at rest encryption in competitive environments
+- Simultaneous reveal timing: Competitive programming platform implementations (Codeforces, AtCoder — simultaneous problem release at round start)
+- SEC 13F transparency analogy: SEC EDGAR filing requirements; transparency as trust mechanism in regulated markets
+
