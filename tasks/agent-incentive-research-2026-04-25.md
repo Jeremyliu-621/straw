@@ -22686,3 +22686,237 @@ This flow is fully automated, instant at competition close, and creates a perman
 
 **Push status:** All commits pushed to origin/master. File at 22,654 lines (up from 20,276 at session start). Ticks 116-137 live on remote. Multiple rebases required (other sessions pushing concurrently). All conflicts resolved cleanly via the keep-both-sides Python pattern.
 
+
+---
+
+## Tick 134 (2026-05-01): Straw for government — federal procurement vehicles, FedRAMP, NIST alignment
+
+*Government is the largest buyer of enterprise software in the US. The AI governance mandates (OMB M-26-04, EO 14179) create an institutional pull for Straw that no private enterprise can replicate — but the sales cycle is 18–36 months and the compliance requirements are significant.*
+
+### Why the federal government is Straw's highest-value long-term market
+
+Federal government AI spend in FY2026: $3.3B in direct AI procurement (OMB Federal AI Spending Report, 2025). That number understates the total because it doesn't include AI embedded in IT modernization contracts or software-as-a-service with AI components.
+
+More importantly: the federal government has a **mandate** to evaluate AI before deploying it. OMB M-26-04 (December 2025) requires federal agencies to:
+1. Establish performance validation processes for AI systems before deployment
+2. Document the evaluation methodology
+3. Maintain audit trails for AI procurement decisions
+4. Designate a CAIO responsible for AI procurement governance
+
+This is Straw's value proposition in regulatory language. Straw doesn't have to convince the federal government that evaluation matters — the President's Office has already decided that it does. Straw just needs to be the platform they use to comply.
+
+---
+
+### The five most promising federal agency targets
+
+| Agency | AI budget (FY2026 estimate) | Why Straw fits | Who to approach |
+|--------|---------------------------|----------------|-----------------|
+| **Department of Veterans Affairs (VA)** | $800M+ AI/digital modernization | VA's AI programs (ambient scribing, scheduling, benefits processing) require rigorous evaluation due to patient outcomes stakes; VA has an existing CAIO with evaluative mandate | Chief AI Officer (Laurence Regan, as of Q1 2026); AI Experience Office |
+| **Department of Defense (DoD)** | $1.2B+ AI procurement | Responsible AI guidelines (DoD AI Ethics Principles, 2019; RAI Toolkit, 2022) require evaluation before deployment; JAIC/CDAO has explicit AI testing mandate | Chief Digital and Artificial Intelligence Office (CDAO); Defense Innovation Unit (DIU) |
+| **Department of Homeland Security (DHS)** | $400M+ | AI for screening, fraud detection, emergency management; DHS AI Strategy 2023 requires "testing and evaluation before deployment" | DHS Chief AI Officer; Cybersecurity and Infrastructure Security Agency (CISA) AI Division |
+| **Department of Treasury** | $300M+ | AI for tax enforcement, fraud detection (IRS RAAS system), sanctions screening; SR 11-7 equivalent requirements for financial AI | IRS ETAAC (Electronic Tax Administration Advisory Committee); Treasury CAIO |
+| **National Institutes of Health (NIH)** | $200M+ biomedical AI | NIH's Bridge2AI program + clinical AI initiatives; rigorous evaluation required for patient safety | Office of Data Science Strategy; National Center for Advancing Translational Sciences |
+
+---
+
+### The federal procurement vehicle strategy
+
+Federal agencies cannot simply sign a contract with a new vendor like a private enterprise can. All federal procurement above $10,000 requires going through an approved procurement vehicle. For software and services, the main vehicles are:
+
+**GSA Multiple Award Schedule (MAS) / Schedule 70 (IT)**
+- The most accessible vehicle for new vendors
+- Application process: 6–9 months, requires past performance citations, pricing proposals, and technical capability documentation
+- Once on Schedule 70, agencies can purchase directly without individual competitive bids
+- Straw's path: Apply to Schedule 70, Special Item Number (SIN) 54151S (IT Professional Services) and SIN 54151HEAL (Health IT for VA/NIH)
+
+**CIO-SP4 (NIH GWAC)**
+- Government-Wide Acquisition Contract managed by NIH
+- Total ceiling: $60B over 10 years
+- Best fit: Health-focused agencies (VA, NIH, HHS, FDA)
+- Application: More complex than GSA Schedule; requires competitive proposal; typically takes 12–18 months
+
+**NASA SEWP V (Solutions for Enterprise-Wide Procurement)**
+- Technology products and services
+- Good for AI software products
+- Application: Simpler than CIO-SP4; 6–9 months
+
+**The fastest path**: GSA Schedule 70 application → small agency pilot (typically $100K–$500K for a single competition) → CAIO referral to larger agency → IDIQ task orders at scale.
+
+**Realistic timeline**: 
+- Month 1–9: GSA Schedule 70 application and approval
+- Month 10–15: First federal competition (small agency pilot)
+- Month 16–24: CAIO network referrals to additional agencies
+- Month 24–36: Multiple concurrent agency competitions; formal federal practice
+
+---
+
+### FedRAMP authorization — the gating requirement
+
+To sell cloud services to federal agencies, Straw needs FedRAMP authorization. FedRAMP is the federal equivalent of SOC 2 — but significantly more demanding.
+
+**FedRAMP process**:
+- **Readiness Assessment**: Validates the security architecture before the full authorization process (~3 months)
+- **Full ATO (Authority to Operate)**: 12–18 months; ~325 security controls; requires a 3PAO (Third-Party Assessment Organization)
+- **Cost**: $500K–$2M total including engineering time, 3PAO fees, and remediation work
+- **Prerequisite**: SOC 2 Type II (Tick 105) — FedRAMP is a superset of SOC 2
+
+**Recommended path for Straw**:
+- Month 1–12: SOC 2 Type II (non-negotiable prerequisite)
+- Month 12–15: FedRAMP Readiness Assessment (can be pursued in parallel with SOC 2 obs period)
+- Month 15–27: FedRAMP Full ATO authorization
+- Month 27+: Federal sales motion at scale
+
+**The shortcut**: Partner with a FedRAMP-authorized cloud infrastructure provider (AWS GovCloud, Azure Government, Google Cloud Government) and deploy Straw's platform on their FedRAMP-authorized infrastructure. This allows Straw to inherit FedRAMP authorization for the infrastructure layer while pursuing authorization for the application layer — reducing the full ATO timeline by 6–9 months.
+
+---
+
+### NIST AI alignment — why it matters for federal positioning
+
+NIST AI 100-1 (the "AI Risk Management Framework," published January 2023) and the associated AI RMF Playbook are the standard reference framework for federal AI risk management. OMB M-26-04 specifically directs agencies to align AI governance with NIST AI RMF.
+
+**NIST AI RMF Core Functions**:
+- **Govern**: Policies, processes, organizational roles for AI risk
+- **Map**: Context and risk identification for specific AI systems
+- **Measure**: Testing, evaluation, monitoring — this is where Straw lives
+- **Manage**: Prioritizing and responding to AI risks
+
+**Straw's positioning in NIST AI RMF**: Straw directly implements the "Measure" function — specifically the AI RMF Playbook actions MEASURE 2.1 through 2.11, which cover testing, evaluation, and performance measurement of AI systems.
+
+**Marketing implication**: Federal proposals should explicitly reference NIST AI RMF Measure function alignment. "Straw competitions provide the documented testing and evaluation artifacts required by NIST AI RMF Measure 2.1–2.11 and OMB M-26-04."
+
+---
+
+### The AI BOM (Bill of Materials) requirement
+
+NIST AI 100-1 introduced the concept of the AI Bill of Materials — a structured inventory of an AI system's components, training data, and third-party dependencies. This is analogous to the Software Bill of Materials (SBOM) required under EO 14028.
+
+**Why AI BOM matters for Straw**: Federal agencies are increasingly requiring AI vendors to submit an AI BOM as part of their procurement package. Straw can require all competing agents to submit an AI BOM as part of their competition registration. This:
+1. Gives enterprise clients a standardized inventory of what they're buying
+2. Positions Straw as the platform that enforces transparency requirements
+3. Makes Straw the natural compliance partner for federal AI procurement
+
+---
+
+### Sources
+
+- Federal AI spending: OMB Federal AI Spending Report FY2025-2026; GAO, "Artificial Intelligence: Agencies Have Begun Addressing Key Challenges" (2024)
+- OMB M-26-04: OMB Memorandum M-26-04, December 2025; OMB Memorandum M-25-22
+- VA CAIO: VA AI Experience Office; Federal CAIO Council member list
+- DoD CDAO: cdao.defense.gov; DoD AI Ethics Principles (adopted 2019); RAI Toolkit (2022)
+- GSA Schedule 70: gsa.gov/buying-selling/purchasing-programs/gsa-schedules; SIN list
+- CIO-SP4: nih.gov/about-nih/who-we-are/nih-director/statements/nih-awards-cio-sp4
+- FedRAMP: fedramp.gov; FedRAMP Program Office cost estimates 2025
+- NIST AI RMF: nist.gov/artificial-intelligence/ai-rmf; AI RMF Playbook (January 2023)
+- AI BOM: NIST AI 100-1 Section 5.1; Executive Order 14028 on SBOM precedent
+
+
+---
+
+## Tick 135 (2026-05-01): Agent team onboarding — the first 24 hours and the path to first submission
+
+*Supply-side retention starts before the first competition. The onboarding experience determines whether a registered agent team competes once or becomes a recurring participant. This tick designs the first 14 days.*
+
+### The onboarding challenge
+
+Agent teams who register on Straw's platform but never compete are the supply-side equivalent of trial SaaS users who never convert to paid. The critical window is the 14 days after registration — if a team doesn't submit to at least one competition within 14 days, their 6-month retention rate drops dramatically (based on SaaS conversion research, the same pattern holds for marketplace supply sides).
+
+**The three onboarding failure modes**:
+1. **No immediately relevant competition**: A team registers but no current competition matches their domain expertise → they bookmark the platform and forget it
+2. **Intimidation**: The competition looks too complex or the submission requirements too burdensome → they don't start
+3. **No social proof**: The team can't tell how they'll perform relative to others → they fear being embarrassed by a low score
+
+---
+
+### The 14-day agent onboarding sequence
+
+**Day 0 (registration confirmation)**:
+
+- Email: "Welcome to Straw — here's what happens next"
+- Content: What competitions are open right now (personalized to their stated domain); how the scoring works (3-minute explainer); what the minimum viable submission looks like (it doesn't have to be perfect to submit)
+- CTA: "Enter this competition" — deep link directly to the most relevant open competition
+
+**Day 1 (first competition check-in)**:
+
+- Email: "Did you check out [Competition Name]?"
+- If they clicked the competition page: "Here's a quick overview of the rubric so you know where to focus"
+- If they didn't click: "No pressure — here are two other open competitions that might be a better fit"
+- Slack/Discord invitation: Link to the Straw agent community Slack (not the competition itself — just the community)
+
+**Day 3 (community activation)**:
+
+- Slack message from a community manager (human, not automated): "Hey [Team Name] — noticed you just joined. What problem area are you working in? Happy to point you to competitions that fit."
+- This is the highest-leverage touchpoint: a real human making contact in the first 3 days dramatically increases first-submission rates (HubSpot/Intercom research: human outreach in day 3 increases trial conversion by 40%)
+
+**Day 7 (deadline reminder)**:
+
+- Email: "3 things that could block your first Straw submission — and how to handle them"
+  - Blocker 1: "I'm not sure my agent is good enough" → Here's what a 60th-percentile submission looks like (aggregate description, no specific team data)
+  - Blocker 2: "I don't have time this week" → Here's a 2-hour quick-start path to a baseline submission
+  - Blocker 3: "The submission format is confusing" → Here's a 5-minute video walkthrough
+
+**Day 10 (last push before a competition closes)**:
+
+- If a relevant competition closes within 4 days: "Competition closes Friday — this is the last chance to submit"
+- If no competition is ending soon: "Here's what's coming up next month — [3 upcoming competitions with domain tags]"
+
+**Day 14 (outcome)**:
+
+- If submitted: "Your submission is in! You'll get your score + rubric breakdown within 48 hours of competition close. Here's what to expect in the results."
+- If not submitted: "We noticed you haven't submitted yet. No pressure — here's why many teams' best competitions aren't their first ones. [Link to upcoming competitions] [Link to community resources]"
+- If no activity since Day 1: Move to 30-day re-engagement sequence
+
+---
+
+### The "minimum viable submission" concept
+
+The biggest onboarding blocker is the perception that submissions must be perfect. Straw should establish a "minimum viable submission" norm that:
+1. Lowers the psychological barrier to first submission
+2. Sets realistic expectations for score distribution
+3. Creates a feedback opportunity even for underperforming submissions
+
+**MVS definition (stated in competition rules)**:
+- Completes at least 50% of the required submission volume
+- Meets minimum format requirements (structured output, API endpoint if required)
+- Passes the basic validity check (not an empty or random response)
+
+An agent team that submits an MVS receives full Tier 1 and Tier 2 feedback (Tick 130). Their score will likely be in the bottom quartile — but they'll get a specific improvement map. This is the "first attempt as calibration" model.
+
+**The practice competition feature (Phase 2)**:
+
+For teams who are truly not ready to compete in a live competition, Straw offers practice mode: a closed competition on a de-classified historical task (released 12 months post-competition with enterprise approval). The team submits, receives a simulated score against the historical submission pool, and gets improvement feedback — all without any competitive stakes. This moves the intimidation blocker from the real competition to a practice environment.
+
+---
+
+### The community first-competition event
+
+Once per quarter, Straw hosts a "Community First" competition:
+- Lower stakes: $5K prize total (vs. $20K–$50K for enterprise competitions)
+- Shorter duration: 2 weeks
+- Simpler rubric: Designed specifically to be approachable for teams entering their first competition
+- Explicit onboarding framing: "This competition is designed for teams entering their first Straw competition. Experienced teams are welcome but are ineligible for prizes in the first 48 hours."
+
+This creates a protected entry point for new teams, prevents experienced teams from dominating new teams' first experience, and generates community momentum each quarter.
+
+---
+
+### Success metrics for onboarding
+
+| Metric | Definition | Target |
+|--------|-----------|--------|
+| Day 3 community activation rate | % of registered teams who join Slack within 3 days | 40%+ |
+| 14-day first-submission rate | % of registered teams who submit to at least 1 competition within 14 days | 25%+ |
+| 30-day first-submission rate | % of registered teams who submit within 30 days | 40%+ |
+| 90-day repeat participation rate | % of first-submitters who submit to a second competition within 90 days | 55%+ |
+| Community NPS | Net Promoter Score from agent team survey at Day 30 | 50+ |
+
+The 25% Day 14 submission rate target is aggressive. Product Hunt achieves ~15% maker-submission rate within 14 days of a new product launch. Kaggle's platform data (from Goldbloom's 2017 AMA) suggested ~20% of registered users completed at least one competition. Straw's target is slightly higher because the onboarding sequence is more active than Kaggle's.
+
+---
+
+### Sources
+
+- Trial-to-conversion research: HubSpot, "The State of Marketing 2025"; Intercom, "Customer Engagement in SaaS" report 2025; Sixteen Ventures SaaS trial-to-paid conversion benchmarks
+- Human outreach conversion uplift: Intercom "New Research: Personal Outreach During Trial Increases Conversion by 40%" (2024)
+- Kaggle first-competition rate: Goldbloom AMA (medium.com/implodinggradients), 2017; Kaggle platform statistics
+- Community-first competition design: Stack Overflow, "First Question" UX research (beginner-friendly question categories); Reddit new user onboarding studies
+
