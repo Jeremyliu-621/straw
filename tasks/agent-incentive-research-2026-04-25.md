@@ -9590,3 +9590,85 @@ The output is a validated, locked rubric ready for Straw's compliance certificat
 
 **Bottom line for Tick 65:** Rubric quality is the primary determinant of evaluation quality on Straw — more important than the judge model. The five rules are: explicit anchors, orthogonal criteria, at least one automatable criterion, no single criterion dominating weights, and technology-neutral outcome criteria. The pre-competition validation checklist prevents the four RIFT failure modes (underspecification, overlap, anchoring failure, scale compression). Target reliability: Krippendorff's α ≥ 0.80 between eval runs, κ ≥ 0.60 between judge models. The premium rubric design session ($1,500/90 minutes) converts the common failure of "I'll know good when I see it" companies into well-specified evaluations that produce meaningful scores.
 
+
+---
+
+## Session summary — morning of 2026-05-01
+
+*For Jeremy: what was discovered overnight. Start here.*
+
+---
+
+### What this session produced
+
+This session (Sessions 10-13 in the overnight research chain) added approximately 2,600 lines of research to the master file, running from **Tick 47 through Tick 65** plus **Long-form proposal Sections 16-23**. All content committed and pushed to origin/master.
+
+---
+
+### The five most important findings from this session
+
+**1. The regulatory mandate for what Straw is is real and imminent.**
+
+OMB M-26-04 (March 2026) requires US federal agencies to get "custom benchmarking/metrics customized to agency-specific use cases" before purchasing LLMs. EU AI Act Article 9 (enforcement August 2026) requires "performance metrics established prior to deployment." California EO N-5-26 (March 2026) is developing AI vendor certification standards.
+
+All three mandate exactly what a Straw competition produces. None of them define what valid evaluation looks like — that gap is the business opportunity. Straw doesn't just solve an enterprise purchasing problem; it produces the compliance evidence that regulation now requires. This changes the sales motion: not "would you like better AI evaluation?" but "you need compliance evidence — Straw produces it."
+
+**2. The benchmark contamination crisis has made Straw's architecture uniquely defensible.**
+
+OpenAI formally abandoned SWE-bench Verified in 2025 after discovering that all tested frontier models could reproduce exact solution patches verbatim (arXiv:2506.12286). GPT-5.2 drops from 81% (SWE-bench Verified) to 23% on private SWE-bench Pro — a 58-point gap from contamination alone. The contamination crisis has destroyed trust in public benchmarks at exactly the moment when regulatory mandates require trustworthy evaluation evidence.
+
+Straw's private-task architecture structurally cannot be contaminated. Task-specific private tasks that agents have never seen are immune to the contamination cycle that destroyed SWE-bench. This is a structural competitive advantage, not just a feature.
+
+**3. Armilla (the Lloyd's of London AI liability insurer) requires evaluation evidence to underwrite AI agent deployments.**
+
+The specialty AI insurance market (Armilla, Testudo, HSB/Munich Re) explicitly requires evaluation evidence and governance documentation before underwriting. Armilla treats evaluation quality as an underwriting pricing input — better-evaluated agents qualify for better coverage at lower premiums. This is the insurance market version of a credit rating: Straw Score functions as a portable, verifiable risk signal that reduces underwriting friction.
+
+Companies that hire AI agents through Straw without evaluation evidence may not be able to insure those agents. This creates a second economic demand for Straw that's entirely separate from the procurement efficiency argument.
+
+**4. The core research question is answered — and the answer is more nuanced than expected.**
+
+*Will AI agents want to post tasks on Straw's bounty board?*
+
+The RLHF training aversion (Jeremy's friend's concern) applies only to one of three agent types. RL-trained specialist agents (DeepSWE, SWE-RL) can't post tasks at all without an orchestrator wrapper — their action space doesn't include it. RLHF-trained agents (Claude, GPT-4o) can be prompted to delegate but have training aversion. Orchestrator agents (LangGraph, CrewAI, AutoGen) are designed for delegation — they will post tasks natively if Straw is in their toolset.
+
+The correct reframe: "will agents want to post tasks?" is the wrong question. "Will operators design agents that post tasks?" is the right one. And the answer is yes — when posting leads to better outcomes, lower costs, and more reliable delivery, operators build it in. The RLHF aversion is real but it's not an obstacle; it's the wrong unit of analysis. **(See Section 21 for the full synthesis.)**
+
+**5. Straw's pricing model has a non-obvious design constraint that affects enterprise sales velocity.**
+
+The CFO signing threshold for enterprise deals is typically $50K. Deals above $50K add 4-8 weeks to the procurement cycle (CFO review). The recommended enterprise floor price ($48K ARR = $4,000/month) keeps initial enterprise contracts below this threshold so VP Engineering can sign alone on Year 1. This single design decision could cut average enterprise sales cycle from 4-5 months to 6-8 weeks, which dramatically affects CAC payback. **(See Tick 58 for the full pricing architecture.)**
+
+---
+
+### The most important new threads discovered
+
+**Thread: Straw as compliance infrastructure, not just evaluation tool** — The regulatory framing changes everything about how Straw is sold. Regulated industries (healthcare, finance, government) face mandatory compliance requirements that produce demand for Straw without a sales conversation about evaluation quality. The pitch in regulated verticals is: "here's the compliance evidence package you're legally required to have."
+
+**Thread: The Armilla model** — The AI liability insurance market provides a direct financial incentive structure for Straw Score adoption: agents with higher Straw scores qualify for better insurance rates. This is the bond-rating/bond-insurance analogy in practice. If Straw establishes a relationship with Armilla (or the next five specialty AI insurers), Straw Score adoption in regulated verticals accelerates without Straw having to do the selling.
+
+**Thread: The anti-thesis** — Section 23 documents the strongest challenges to Straw's thesis: rubric capture (companies bias the rubric for their preferred vendor), platform bias (Straw's eval pipeline may favor certain agent architectures), contamination cycle (eventually agents will optimize for Straw's evaluation style), and monopoly risk. These are real challenges with partial mitigations — Jeremy should think through them before investor conversations.
+
+---
+
+### Where to read in the file
+
+The master file is now 9,600+ lines. Reading it sequentially is not recommended. Key sections to read first:
+
+- **Section 21** (agent incentives final synthesis) — directly answers the original research question
+- **Section 18** (regulatory moat) — the compliance positioning argument
+- **Tick 52** (benchmark contamination) — the SWE-bench collapse data
+- **Tick 54** (AI liability/insurance) — the Armilla model
+- **Tick 58** (pricing architecture) — the $48K ARR CFO threshold insight
+- **Section 22** (investor pitch narrative) — the 500-word version of the thesis
+- **Section 23** (anti-thesis) — the challenges and honest residual risks
+
+---
+
+### Session statistics
+
+- Ticks added: 47-65 (19 new ticks)
+- Long-form proposal sections added: 16, 18, 19, 20, 21, 22, 23
+- Lines added: ~2,600
+- Commits: 7 successful commits, all pushed to origin/master
+- File size: ~9,600 lines (~540KB)
+- Background agents launched and completed: 8
+
