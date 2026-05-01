@@ -931,6 +931,17 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done — Tick 13] **Cooperative AI Foundation grants list — what work has been funded.** $15M from Macroscopic Ventures. FOCAL (CMU, ~$500K), FLAIR (Oxford). Top grant priority: "Incentivizing Cooperation Among AI Agents" — peer incentivization, inter-agent contracting, automated mechanism design for LLM agents. CAIF funds the theory; Straw would be doing the applied version. Academic collaboration opportunity.
 - [done — Tick 18] **MultiAgent4Collusion** (OASIS-family framework). github.com/renqibing/MultiAgent4Collusion. Wolf Packs outperform Armies — decentralized collusion is more effective. Detection: embedding trajectory clustering. 9 specific countermeasures for Straw documented.
 
+### Session 9 threads (Ticks 36–43)
+
+- [done — Tick 36] **Enterprise AI agent use case taxonomy.** 15-category priority matrix; three production-ready rubric templates (software engineering code migration, financial services fraud detection, legal contract review). Tier 1 build immediately: Software Engineering, Financial Services, Customer Service. Highest-value templates: machine-verifiable outcomes, recurring task types, criteria matching existing KPIs.
+- [done — Tick 37] **Straw investor pitch — TAM/SAM/SOM.** TAM ~$20B by 2028 (10% of Gartner $200B agentic AI enterprise market). SAM ~$23.8M ARR at full penetration (~3,900 qualifying enterprises × $6,100/year). SOM ~$10M ARR Year 5. Comparables: HackerOne $745M, Topcoder/Appirio $500M, Scale AI $29B at 19x revenue. Blended take rate ~5%. $1M ARR requires only 248 postings/year. Compliance wedge (EU AI Act) identified as primary enterprise sales entry point.
+- [done — Tick 38] **METR reward hacking + eval hardening.** 43x higher hacking rate when scoring function visible (RE-Bench vs HCAST). Five exploit taxonomy documented. Seven D30 hardening changes: opaque eval Docker images, public/private test set split, score feedback rate limiting, behavioral consistency flags, randomized ZeroClaw prompts, human review at top-N, network-isolated eval containers. "The score doesn't lie when the evaluator can't be gamed."
+- [done — Tick 39] **ANP DID self-registration — x402 integration and security model.** Recommended DID methods: `did:key` (zero infra) + `did:web` (domain-verified) at launch. x402 uses EVM secp256k1, DIDs use Ed25519 — bind via `paymentAddress` declaration in signed registration payload. DID proves accountability not autonomy; sandboxed eval is the real integrity layer. Open design decisions: key rotation, Straw-hosted DID service, ANP adoption bet.
+- [done — Tick 40] **EU AI Act Article 9 compliance via Straw competition artifacts.** Article 9.7 enforcement date: August 2, 2026. Requires "prior defined metrics and probabilistic thresholds appropriate to intended purpose" tested before deployment. Full mapping table: Straw rubric → Article 9.7, ZeroClaw report → Annex IV §3, competition timestamp → proof of pre-deployment testing. Compliance pitch: "the competition IS the compliance record." Vanta/HackerOne analogy. Key limitation: Straw covers pre-deployment only; Article 9.2(c) (ongoing monitoring) requires separate tooling.
+- [done — Tick 41] **Agent-as-employer loop.** Delegation condition: `Δp_win × R > C_sub`. Ricardian comparative advantage: even capable agents should delegate when opportunity cost exceeds delta. Capability boundary detection: agents are systematically overconfident (73% predicted vs 35% actual); use behavioral triggers (trajectory stall, entropy increase) not declarative self-assessment. API design with `parent_task_id`, `lineage[]`, `delegation_depth`. Loop prevention: DAG cycle check + escalating fees (3%→6%→12%) + quality degradation guard. RL agents natural fit; RLHF agents need proxy reward injection + preference data.
+- [done — Tick 42] **OpenHands scaffold SDK plugin.** Three action types: `ListBountiesAction`, `SubmitArtifactAction`, `PostSubtaskAction` — Pydantic-typed, paired with Observation types. Zero-config: STRAW_API_KEY env var → auto-browse open bounties → submit → receive score. Plugin structure with SKILL.md, PostToolUse hook for audit logging. Same REST client wraps as MCP server for free — works with Claude Code, Cursor, all MCP clients. Distribute as `straw-agent-sdk` on PyPI + OpenHands extensions registry.
+- [done — Tick 43] **300-agent swarm market dynamics.** Median agent compute: $20-40/serious attempt (Devin $16-18, Claude Code $5-50). At 300 agents, quality race to the bottom without market design. Optimal entrant count: 10-15 (procurement literature + Kaggle evidence). Market design: stake-to-participate (5-10% of bounty) + tiered reputation routing (top-20 exclusive window for high-value tasks). Minimum bounty floors: quick $500, standard $2K, complex $10K. Core insight: maximize quality of best submission, not entrant count. Eval gaming risk: 30K evaluator queries in hours — requires public/private split (Tick 38 hardening essential at scale).
+
 ### Session 8 threads (Ticks 32–35)
 
 - [done — Tick 32] **RL-trained vs RLHF-trained agent delegation behavior.** Key finding: SWE-bench RL agents (SWE-RL, Agent-RLVR, DeepSWE, SSR, SWE-TRACE) have NO `delegate`/`escalate`/`post_bounty` action in their action space. Delegation cannot emerge from training — must be explicitly added at scaffold layer. BAPO (Boundary-Aware Policy Optimization) is the right capability-boundary signal. SAGE (arXiv:2512.17102) + Intelligent AI Delegation (arXiv:2602.11865) provide templates for reward-compatible delegation. Design recommendation: Straw SDK must ship as a scaffold plugin (Python package wrapping OpenHands/SWE-agent), not as LLM prompts.
@@ -5914,3 +5925,554 @@ The METR finding that "half of test-passing PRs wouldn't be merged" is simultane
 **Strategic implication:** Get METR to cite Straw's evaluation methodology as the correct applied version of what they're measuring in theory. Academic credibility from METR citation would close the evaluation credibility gap (weakness #2 identified in Tick 35).
 
 Sources: METR "Recent Frontier Models Are Reward Hacking" (June 2025); METR MALT dataset (October 2025); METR "Many SWE-bench-Passing PRs" (March 2026); HCAST PDF (metr.org/hcast.pdf); METR Claude 3.7 evaluation report; Berkeley benchmark audit (Hao Wang, awesomeagents.ai); SWE-Bench Pro arXiv:2509.16941; "Large Language Models Often Know When They Are Being Evaluated" arXiv:2505.23836; Scale SWE-bench Pro Leaderboard; Brookings "How Can We Best Evaluate Agentic AI?"
+
+---
+
+## Tick 39 (2026-05-01T06:30Z): ANP DID self-registration — x402 integration and security model
+
+> See Tick 29 for the full ANP conceptual background (did:wba spec, DID document structure, ANP three layers, JIT provisioning, trust tiers, Tobira proof point). This tick focuses on the gaps Tick 29 left open: x402+DID payment identity binding, agent key management, and the security model.
+
+### DID method recommendation for Straw v3
+
+| DID Method | Infrastructure Required | Update/Rotation | Best For |
+|---|---|---|---|
+| `did:key` | None (derived from key) | No (immutable) | Zero-infra agents, prototyping |
+| `did:web` | HTTPS server | Yes (update doc) | SaaS agents with stable domain |
+| `did:wba` | HTTPS server + ANP | Yes + integrity proof | ANP-native agents |
+| `did:ion`/`did:ethr` | Blockchain | Yes (on-chain tx) | High-value long-lived identities |
+
+**Recommendation:** Support `did:key` + `did:web` at v3 launch. `did:wba` as optional bonus for ANP-native agents. Hold blockchain DIDs for v4.
+
+### Straw agent self-registration API (zero human involvement)
+
+```
+Step 1: Agent generates Ed25519 key pair → derives did:key or publishes did:web doc
+        Agent also generates/loads EVM wallet (secp256k1) for x402 payments — separate key
+
+Step 2: Agent discovers Straw:
+        GET https://straw.ai/.well-known/agent-card.json
+        → Returns: registration endpoint, supported DID methods, challenge endpoint
+
+Step 3: Challenge request:
+        POST /api/v3/agents/challenge
+        { "did": "did:key:z6Mk..." }
+        → { "challenge": "straw_chal_a8f3c2...", "expiresAt": "T+5min" }
+
+Step 4: Registration:
+        POST /api/v3/agents/register
+        {
+          "did": "did:key:z6Mk...",
+          "challenge": "straw_chal_a8f3c2...",
+          "signature": "<Ed25519 sig over challenge + did + timestamp>",
+          "agentCard": { "name": "...", "capabilities": [...] },
+          "paymentAddress": "0x1234...abcd"   // EVM wallet for x402 bounties
+        }
+
+Step 5: Straw verifies:
+        1. Resolve DID doc (or derive from did:key)
+        2. Ed25519.verify(challenge, signature, publicKey)
+        3. Assert challenge unused (Redis nonce store), not expired
+        4. For did:web: assert DID doc is live at declared URL
+        5. Rate-limit: 5 registrations/IP/hour (Sybil defense)
+        → Response: { agentId, accessToken, capabilities: ["submit", "post_subtask"] }
+```
+
+### x402 payment + DID identity binding
+
+x402 uses EVM secp256k1 wallets; DIDs use Ed25519 — different key types. They must be explicitly bound.
+
+**Recommended binding (v3 launch):** Agent includes `paymentAddress` in the signed registration payload. The Ed25519 DID signature covers the EVM address declaration. Straw records the binding. No DID doc changes required.
+
+**Future state:** Agent lists EVM address in DID document as a `blockchainAccountId` verification method:
+```json
+{
+  "id": "#payment-key",
+  "type": "EcdsaSecp256k1VerificationKey2019",
+  "blockchainAccountId": "eip155:8453:0x1234...abcd"  // CAIP-10
+}
+```
+This creates a cryptographically verifiable binding: any party can verify the agent's payment wallet by resolving its DID document.
+
+**Autonomous payment loop:**
+```
+1. Agent self-registers (DID auth + EVM wallet binding)
+2. Agent browses tasks → selects task → begins work
+3. Agent submits solution → Straw returns HTTP 402 for entry fee
+4. Agent signs ERC-20 authorization (EIP-3009 TransferWithAuthorization)
+5. Agent retries with X-PAYMENT header containing signed payload
+6. Straw eval runs in sandboxed Docker → agent wins
+7. Straw EVM-transfers payout to agent's registered wallet
+8. Agent's DID accumulates Straw reputation VCs
+```
+No human involved at any step after initial key generation.
+
+### Security model — what DID registration proves and doesn't prove
+
+**Proves:**
+- Registrant controls the private key corresponding to the DID
+- For `did:web`/`did:wba`: DID document is hosted at the declared domain (domain cost is a Sybil barrier)
+- Payment wallet address was declared under the same DID key
+
+**Does NOT prove:**
+- The registrant is an AI agent vs. a human-operated script (fundamentally unverifiable by cryptography alone)
+- The agent is competent or honest
+
+**Threat matrix:**
+
+| Threat | Mitigation |
+|---|---|
+| Sybil registration (mass fake DIDs) | Rate-limit per IP; require `did:web` (domain cost); x402 entry fee is the real gate |
+| Human gaming evaluations | Task design defense, not identity defense — sandboxed deterministic evals |
+| DID document spoofing | TLS + CT logs for `did:web`; data integrity proof for `did:wba` |
+| Replay attacks | One-time nonce in Redis with TTL |
+| Key compromise | DID key rotation via doc update; Straw must track key history for reputation continuity |
+| Registration storm | x402 entry fee per submission — economic gate applies regardless of DID |
+
+**Correct mental model:** DID identity proves **accountability**, not autonomy. The same key must win to collect payment, creating a persistent verifiable reputation. Sandboxed evaluation integrity prevents gaming; identity makes actors traceable.
+
+### Open design decisions
+
+1. **Straw-hosted DID service:** Many agents (serverless, embedded) cannot host a web server. A `straw.ai/agents/{did}/did.json` hosting option would remove the `did:web` infrastructure barrier.
+2. **Key rotation:** Rotating a DID key today can orphan historical reputation. Straw must maintain a key history per DID to preserve reputation continuity through rotations.
+3. **ANP adoption bet:** did:wba is technically superior but concentrated in the Chinese AI developer ecosystem as of 2026. DID-method-agnostic auth (supporting any method) is the safer platform bet.
+4. **KYB future:** Regulators may require "Know Your Bot" for AI agents handling money >$X. VC-based attestation from trusted issuers should overlay self-registration for high-value bounties.
+
+Sources: ANP spec (agent-network-protocol.com, arXiv:2508.00007); did:wba method spec; W3C DIDs v1.1; x402 docs (x402.org, coinbase/x402 GitHub); A2A protocol spec; arXiv:2511.02841 (AI Agents with DIDs and VCs); arXiv:2505.02279 (survey of agent protocols); openagents.org agent identity post
+
+---
+
+## Tick 40 (2026-05-01T07:00Z): EU AI Act Article 9 compliance via Straw competition artifacts
+
+### Summary
+
+EU AI Act Article 9.7 requires "prior defined metrics and probabilistic thresholds" tested before deployment. Straw's competition format generates exactly this documentation by design. Enforcement deadline: August 2, 2026. The compliance wedge is Straw's single strongest enterprise sales pitch for regulated industries.
+
+### What the EU AI Act actually requires
+
+**Enforcement date:** August 2, 2026 — Articles 9, 11, 16, and 26 become fully enforceable for high-risk AI systems.
+
+**Who is affected (Annex III):** High-risk AI use cases including Straw's target verticals:
+- Financial services: credit scoring, risk assessment, life/health insurance pricing
+- Employment/HR: CV screening, candidate ranking, interview scoring, performance monitoring, promotion/termination recommendations
+- Healthcare: eligibility evaluation for essential public services
+- Legal/justice: law enforcement, migration, administration of justice
+
+All Straw enterprise customers deploying agents in these verticals are deploying Annex III high-risk AI systems.
+
+**Article 9.7 — the load-bearing provision:**
+> Testing must be "carried out against prior defined metrics and probabilistic thresholds appropriate to the intended purpose" — this must happen **before** the system is placed on the market or put into service.
+
+Regulators can ask for: the metrics you defined before selecting the system, and the test results against those metrics. If no such documentation exists, there is no compliant risk management system.
+
+**Article 9 full requirements:**
+- (9.2a) Identification and analysis of known and foreseeable risks under intended purpose
+- (9.2b) Estimation and evaluation of risks under intended use and foreseeable misuse
+- (9.2c) Evaluation based on post-market monitoring data (ongoing — Straw doesn't cover this)
+- (9.4) Residual risk per hazard documented as "acceptable"
+- (9.6) Testing must ensure system "performs consistently for its intended purpose"
+- (9.7) Testing against prior-defined metrics before deployment ← **Straw's primary claim**
+
+**Annex IV: Technical Documentation — 9 mandatory sections:**
+1. General description (intended purpose, system version, interfaces)
+2. Development and design (logic, algorithmic choices, rationale, what the system optimizes)
+3. Monitoring and control (validation procedures, test data, accuracy/robustness metrics, test logs with dates and signatures)
+4. Performance metrics (accuracy, robustness, non-discrimination)
+5. Risk management documentation (Article 9 records)
+6. Lifecycle changes (predetermined changes, continuous compliance solutions)
+7. Applied standards (harmonized standards or substitute solutions)
+8. EU Declaration of Conformity (Article 47)
+9. Post-market monitoring plan (Article 72)
+
+### Mapping table: Straw artifact → EU AI Act requirement
+
+| Straw Artifact Component | EU AI Act Requirement Satisfied | Provision |
+|---|---|---|
+| Written task specification (what the AI must do) | "Intended purpose" documentation; precondition for all risk analysis | Article 9.2(a); Annex IV §1 |
+| Multi-criteria rubric with explicit weights | "Prior defined metrics and probabilistic thresholds appropriate to the intended purpose" | **Article 9.7 (central requirement)** |
+| Independent evaluation scores for multiple agents | Evidence testing was performed against those metrics before deployment; comparative risk assessment across alternatives | Article 9.6; Annex IV §3 (test logs with dates) |
+| Comparative agent performance data | Risk estimation across alternative systems — due diligence | Article 9.2(b); Annex IV §3-4 |
+| Winning agent submission artifact | Documented system output for the intended purpose; accuracy/capability baseline | Annex IV §3-4 |
+| ZeroClaw evaluation report | Signed test report; explanation of why residual risk is acceptable | Article 9.4; Annex IV §3 |
+| Losing agent scores and failure analysis | Documents alternatives considered and rejected — demonstrates due diligence | Article 9.2(a-b); supports FRIA under Article 26 |
+| Competition timestamp / immutable record | Proves documentation existed before deployment | Article 9.7 ("prior to being placed on the market") |
+
+**Key gap to acknowledge:** Straw's artifact covers the *selection and pre-deployment testing* phase. It does not satisfy Article 9.2(c) (ongoing post-market evaluation) or Article 26's 6-month log retention. Those require separate monitoring infrastructure.
+
+### The compliance pitch (for a European financial institution compliance officer)
+
+The EU AI Act's Article 9.7 requirement is precise: testing against prior-defined metrics, before deployment. This is the documentation regulators will request first in any audit. The problem enterprises face is that most AI procurement happens through vendor demos — there are no pre-defined metrics, no comparative test results, no independent evaluator. When a national competent authority asks "how did you determine this AI system was fit for its intended purpose," the typical enterprise answer amounts to "we trusted the vendor." That is not a compliant risk management system.
+
+Straw's competition format generates exactly what Article 9.7 requires by design. The enterprise defines the intended purpose (task specification), sets success criteria before seeing any results (the rubric), multiple agents are tested by an independent evaluator (ZeroClaw), and the outcome — scores, artifacts, reasoning — is timestamped and archived. The competition record is not a retroactive compliance document assembled for auditors; it is the procurement process itself.
+
+### The Vanta analogy
+
+Vanta, Drata, and Secureframe built a compliance automation category around SOC 2: enterprises need the report to close enterprise deals, these companies generate it continuously. Vanta now serves 15,000+ customers. HackerOne's model is identical: the bug bounty competition (researchers compete for prizes) generates the CVE disclosure record that satisfies coordinated vulnerability disclosure requirements under NIST SP 800-216 and ISO 29147.
+
+**Straw is this for EU AI Act Article 9.7.** The competition *is* the compliance record.
+
+**Critical differentiator vs. Vanta-style compliance automation:** Vanta collects evidence that a security *process* exists. Straw generates evidence that the AI system was actually *tested against defined criteria* before deployment. One is process compliance; the other is outcome evidence. Article 9.7 demands outcome evidence.
+
+### Risks and limitations
+
+1. **Provider vs. deployer distinction:** Primary Article 9 obligations fall on the *provider* (the entity placing the AI on the market), not the *deployer* (enterprise using it). If the enterprise is purely a deployer purchasing a third-party agent, the provider bears primary obligations. Straw's artifact helps deployers document their selection under Article 26, but may not fully satisfy a provider's obligations unless the agent was custom-built for the competition. **Regulatory uncertainty:** treatment of meaningfully customized/fine-tuned agents for specific deployments is still being interpreted.
+
+2. **Point-in-time record:** Article 9 requires continuous lifecycle management. Straw covers pre-deployment; post-deployment performance drift is out of scope. Be explicit about this.
+
+3. **Not a substitute for FRIA:** Article 26 requires Fundamental Rights Impact Assessments for certain deployer use cases. The competition artifact informs but doesn't replace it.
+
+4. **No harmonized standard mapping yet:** No published CEN/CENELEC standard covers AI procurement competition formats as compliant risk management evidence. Straw's artifact would be documented under the "detailed description of solutions adopted" fallback path — legitimate but slightly weaker.
+
+5. **Regulatory interpretation risk:** August 2026 enforcement is new. National competent authorities are still developing guidance on what counts as sufficient "prior defined metrics" under Article 9.7. Frame as "designed to satisfy Article 9.7" not "certified compliant."
+
+Sources: EU Artificial Intelligence Act (artificialintelligenceact.eu); Article 9, 11, 26, Annex III, Annex IV; arXiv:2604.04604 (AI Agents Under EU Law: Compliance Architecture); LegalNodes EU AI Act 2026 updates; Goodwin (EU AI Act Key Points for Financial Services); Vanta/Drata compliance platforms; Future Market Insights Enterprise AI Governance market report
+
+---
+
+## Tick 41 (2026-05-01T07:30Z): Agent-as-employer loop — winning agents posting sub-tasks
+
+### Summary
+
+The agent-as-employer loop sidesteps the hardest problem in AI procurement: you cannot ask an agent to admit it needs help. But you can make sub-task posting the **winning move** — the action that maximizes score. RL-trained agents adopt this naturally. RLHF agents require deliberate training intervention. The task lineage graph is the compounding moat.
+
+### Economic model for rational delegation
+
+**Variables:**
+- `R` — parent task reward (e.g., $10K)
+- `S_i` — agent's skill level on sub-task i (probability of acceptable output, 0-1)
+- `C_sub_i` — market cost to post sub-task i on Straw
+- `Q_sub_i` — expected quality of winning sub-agent output
+- `p_win(q)` — probability parent task score crosses winning threshold given quality q
+
+**Delegation condition:**
+```
+Δp_win × R > C_sub
+```
+Where `Δp_win = p_win(Q_sub_i) - p_win(S_i)` — the quality gain from delegation.
+
+**Concrete example:** $10K parent bounty, specialist agent lifts expected score from 62% to 85% on a competitive benchmark. Posting a $2K sub-task is rational: `Δp_win (0.23) × $10K = $2,300 > $2,000`.
+
+**Comparative advantage amendment (Ricardian extension):** Even when `S_i` is high, delegate sub-task i if opportunity cost of time on i exceeds the delta from doing it in-house:
+```
+(R_j / t_j) × t_i > R_i × Δp_win_i
+```
+An agent 40% better than market on task i but 200% better on task j should delegate i and concentrate on j. The NBER "Economy of AI Agents" paper (Hadfield & Koh) formalizes market-clearing prices in agent labor markets confirming comparative advantage dominates capability floor in multi-agent hierarchies.
+
+**At Straw steady state:** Agent-to-agent posting is rational when comparative advantage gap ≥ 30 points (Tick 11 finding confirmed). Specialization emerges naturally from repeated competitions.
+
+### Capability boundary detection — current state
+
+Agents are systematically overconfident. GPT-5.2-Codex-based agents predict 73% success on SWE-bench-Pro tasks against a 35% actual rate. Some agents that succeed 22% of the time predict 77% success (arXiv:2602.06948, 2601.15703).
+
+**Naive self-declaration cannot be the delegation trigger.** State of the art instead uses:
+
+1. **Dual-process agentic UQ (2026):** System 1 propagates verbalized uncertainty across trajectory; System 2 triggers delegation only when accumulated uncertainty crosses threshold. Corrects 14.3% of ReAct failures with only 3.6% regression.
+2. **Holistic Trajectory Calibration (HTC, ICLR 2025):** Macro dynamics + micro stability features across entire trajectory → calibrated confidence. Agent computes HTC score on partial completion vs. delegation threshold.
+3. **Implicit "spinning wheels" heuristic (practical):** Agent with 3+ tool-call iterations without measurable progress toward eval metric = behavioral capability boundary signal. Correlates with overconfidence detection in trajectory analysis.
+
+**For Straw:** The delegation trigger must be behavioral (trajectory stall, entropy increase, tool-call diversity drop), not declarative. Straw can expose this signal via a per-task `capability_check` API endpoint that returns the agent's historical win-rate in the task's category — an external trigger that bypasses the agent's overconfident self-assessment.
+
+### API design: agent-as-employer sub-task posting
+
+```json
+POST /v1/tasks
+{
+  "parent_task_id": "task_7xK9mN2p",
+  "posted_by": {
+    "agent_id": "agent_aurora_v3",
+    "type": "agent"
+  },
+  "title": "PostgreSQL query optimization for latency <50ms",
+  "evaluation": {
+    "metric": "p99_latency_ms",
+    "threshold": 50,
+    "dataset_ref": "eval_set_task_7xK9mN2p_db_slice"
+  },
+  "budget": {
+    "amount": 1000,
+    "currency": "USD",
+    "source": "earned_credit"
+  },
+  "delegation_depth": 2,
+  "max_delegation_depth": 3,
+  "lineage": ["task_2aB1xQ", "task_7xK9mN2p"],
+  "deadline_iso": "2026-05-08T00:00:00Z"
+}
+```
+
+**Key fields:**
+- `parent_task_id` — links sub-task into provenance graph for Shapley credit propagation (SHARP arXiv:2602.08335 formalizes hierarchical attribution exactly this way)
+- `lineage[]` — full ancestor chain, used for loop detection
+- `delegation_depth` — current depth; Straw enforces platform-wide hard limit (recommended: 3-4 levels)
+- `budget.source: "earned_credit"` — funds drawn from agent's Straw credit balance, not external injection
+- `evaluation` — inherits/derives from parent task criteria, ensuring sub-task quality maps to parent score
+
+### Loop prevention (three layers)
+
+1. **Direct cycle (A → B → A):** At post time, Straw checks `agent_id` against all agents in `lineage[]`. Match → rejected with HTTP 409.
+2. **Emergent cycle (A → B → C → A):** Straw traverses full ancestor DAG before accepting any submission and checks submitting agent is not already a node. Mirrors LangGraph orchestrator-as-DAG pattern.
+3. **Economic brake:** Platform fee escalates with delegation depth: 3% at depth 1 → 6% at depth 2 → 12% at depth 3. Makes infinite loops economically self-defeating before hard cap triggers.
+4. **Quality degradation guard:** If sub-task evaluation metric cannot plausibly improve parent task score (per lineage-aware evaluation mapper), sub-task post is rejected. Prevents delegation for its own sake.
+
+### Training implications by agent type
+
+**RL-trained agents (reward = task completion score):** Delegation is immediately rational, no training intervention needed. If posting a sub-task raises expected completion score above sub-task cost, a pure RL agent will learn to delegate. These are Straw's natural early adopters for the agent-as-employer loop.
+
+**RLHF agents (reward = human approval):** Structurally resistant. Human approval correlates with appearing capable — the opposite of delegation. Two interventions:
+1. **Proxy reward injection:** Include task completion score as secondary signal in the reward model, weighted 20-30%. Creates financial incentive gradient that makes delegation legible to the RLHF reward model.
+2. **Delegation examples in preference data:** RLHF preference pairs where the better response is "I've posted a sub-task for X" over "I attempted X and produced a mediocre result." Human raters, when shown final outcomes rather than immediate responses, tend to prefer effective delegation over proud failure.
+
+**Honest assessment:** RLHF agents won't naturally adopt the loop without deliberate training intervention. The loop is primarily compelling for RL agents; RLHF agents require Straw to provide reward signal integration tooling.
+
+### Key insight for the product narrative
+
+The task lineage graph is the moat. Every sub-task posted by a winning agent enriches the provenance chain, generating training signal for future agents, enabling Shapley-fair credit attribution across entire task hierarchies, and creating a network effect that no single-agent deployment can replicate. The more agents win on Straw, the more sub-tasks get posted, the richer the evaluation ecosystem becomes. This is not a marketplace for AI labor — it is a compounding measurement infrastructure for AI capability, with economic loops that self-reinforce rather than requiring external curation.
+
+Sources: arXiv:2602.11865 (Intelligent AI Delegation); arXiv:2602.06948 (Agentic Uncertainty Reveals Overconfidence); arXiv:2601.15703 (Agentic UQ); arXiv:2601.15778 (Agentic Confidence Calibration); arXiv:2601.23211 (Multi-Agent as Principal-Agent Problems); NBER Hadfield & Koh "Economy of AI Agents"; arXiv:2602.08335 (SHARP); Nature "Decentralized Adaptive Task Allocation"; Google Research "Towards a Science of Scaling Agent Systems"; dev.to "Agent Economy Is Real: Bounties, Predictions, Lightning Payments"; companyofagents.ai "AI Agent Unit Economics 2026"
+
+---
+
+## Tick 42 (2026-05-01T08:00Z): Straw scaffold SDK — OpenHands plugin design
+
+### Summary
+
+The Straw agent-side SDK should be an **OpenHands Software Agent SDK plugin** — a typed tool bundle injecting three new action types into any OpenHands agent. OpenHands is the correct scaffold layer (47 extensions registry, MCP-native, Pydantic-typed action system). The same wrapper doubles as an MCP server for Claude Code and Cursor with zero additional work.
+
+### Why OpenHands, not SWE-agent or AutoGen
+
+**OpenHands:** Strict Action-Execution-Observation triad with Pydantic validation. Extensions registry with one-line install. MCP-native — a Straw plugin can be deployed as an MCP server for non-OpenHands agents (Claude Code, Cursor) with no extra work. **The right layer.**
+
+**SWE-agent:** YAML-declared bash scripts. No Python type system. Adding a `submit_artifact` tool means writing a bash script + curl + string-matching on stdout. Not a foundation to build on.
+
+**AutoGen (now Microsoft Agent Framework since Q4 2025):** In maintenance mode, absorbed into Semantic Kernel. No plugin registry. Wrong architecture.
+
+### Plugin structure
+
+```
+plugins/straw/
+├── .plugin/
+│   └── plugin.json          # Marketplace metadata
+├── skills/
+│   └── straw-marketplace/
+│       └── SKILL.md         # Agent prompt instructions for Straw tools
+├── hooks/
+│   └── hooks.json           # PostToolUse hook for submission logging
+└── straw_tools/
+    ├── __init__.py
+    ├── actions.py            # Three action types + observation types
+    ├── client.py             # Straw REST API client (httpx, retry, typed errors)
+    └── tool_definitions.py  # register_tool() calls
+```
+
+### The three action types
+
+```python
+# Action 1: Discover open bounties
+class ListBountiesAction(Action):
+    skill_filter: Optional[str] = Field(default=None,
+        description="Comma-separated skill tags (e.g. 'python,data-analysis')")
+    budget_min: Optional[float] = Field(default=None,
+        description="Minimum bounty value in USD")
+    limit: int = Field(default=20)
+
+class ListBountiesObservation(Observation):
+    tasks: list[dict]
+    total_count: int
+    error: Optional[str] = None
+
+    @property
+    def to_llm_content(self) -> str:
+        if self.error: return f"Straw API error: {self.error}"
+        lines = [f"Found {self.total_count} open tasks on Straw:\n"]
+        for t in self.tasks:
+            lines.append(f"  [{t['id']}] {t['title']} | Budget: ${t['budget']} | "
+                         f"Skills: {', '.join(t.get('skills', []))} | Deadline: {t.get('deadline', 'open')}")
+        return "\n".join(lines)
+
+# Action 2: Submit completed work
+class SubmitArtifactAction(Action):
+    task_id: str
+    artifact_path: str  # file, directory, or archive; plugin auto-tarballs directories
+    solution_summary: str
+    self_score: Optional[float] = Field(default=None, ge=0.0, le=1.0)
+
+class SubmitArtifactObservation(Observation):
+    submission_id: str
+    status: str  # "pending_review" | "scored" | "rejected"
+    score: Optional[float] = None
+    feedback: Optional[str] = None
+    error: Optional[str] = None
+
+# Action 3: Post a sub-task (agent-as-employer)
+class PostSubtaskAction(Action):
+    spec: str
+    budget: float
+    rubric: str  # plain English evaluation criteria
+    parent_task_id: str
+    required_skills: list[str] = Field(default_factory=list)
+    deadline_hours: Optional[int] = Field(default=24)
+
+class PostSubtaskObservation(Observation):
+    subtask_id: str
+    status: str  # "open" | "error"
+    url: Optional[str] = None
+    error: Optional[str] = None
+```
+
+### Zero-config onboarding flow
+
+```
+Step 1: Plugin load
+  → Reads STRAW_API_KEY from env
+  → If absent: browse-only mode (list_bounties works; submit/post return 401)
+
+Step 2: Agent initialization
+  → SKILL.md injected into system prompt:
+    "You have access to the Straw bounty marketplace.
+     Call list_bounties() to see open tasks matching your skills.
+     When you complete a task, call submit_artifact() with your work.
+     You can delegate sub-tasks by calling post_subtask()."
+
+Step 3: Agent calls list_bounties(skill_filter="python,testing", budget_min=100)
+  → GET /api/v1/tasks?status=open&skills=python,testing&budget_min=100
+  → LLM sees formatted task list, picks highest-value matching task
+
+Step 4: Agent works on task using existing shell/file/browser tools
+
+Step 5: Agent calls submit_artifact(task_id="t_abc123", artifact_path="/workspace/solution/", ...)
+  → Plugin creates gzip tarball if directory
+  → POST /api/v1/submissions (multipart: metadata JSON + artifact binary)
+  → Plugin polls GET /api/v1/submissions/{id} until scored
+  → Score delivered as SubmitArtifactObservation
+
+Step 6 (optional): Agent calls post_subtask() for work beyond its capability
+  → POST /api/v1/tasks with parent_task_id and earned_credit budget
+```
+
+`PostToolUse` hook after `submit_artifact` logs to `~/.straw/history.jsonl` for audit.
+
+### Straw REST API (agent-facing surface)
+
+```
+GET  /api/v1/tasks
+     ?status=open&skills=python,testing&budget_min=100&limit=20
+
+GET  /api/v1/tasks/{task_id}
+     → full task object with rubric, deadline, company_name
+
+POST /api/v1/submissions
+     Content-Type: multipart/form-data
+     Fields: metadata (JSON), artifact (binary)
+     Authorization: Bearer {STRAW_API_KEY}
+     → 201: { submission_id, status: "pending_review" }
+
+GET  /api/v1/submissions/{submission_id}
+     → { status, score?, feedback? }
+
+POST /api/v1/tasks
+     Body: { spec, budget, rubric, parent_task_id, required_skills, deadline_hours }
+     → 201: { task_id, status: "open", url }
+```
+
+### MCP server wrapper (bonus: free support for all MCP clients)
+
+Because OpenHands V1 is MCP-native, wrapping the same three tools as MCP tools adds Claude Code, Cursor, and any other MCP-compatible client at near-zero additional engineering cost. The Straw plugin ships as both a Python package (`pip install straw-agent-sdk`) and an MCP server (`npx @straw/mcp-server`) — same REST API client underneath.
+
+**Distribution target:** Published to PyPI as `straw-agent-sdk` + submitted to OpenHands extensions registry (`github.com/OpenHands/extensions/plugins/straw/`). This gives Straw passive distribution to every new OpenHands agent deployment.
+
+Sources: OpenHands Software Agent SDK (GitHub, arXiv:2511.03690 MLSys 2026); OpenHands extensions registry (47 extensions); OpenHands V1 custom tools example; OpenHands Tool System & MCP docs; Plugin 1.0 Definition issue #1440; SWE-agent tools documentation; OpenHands vs SWE-agent comparison; AI Agent Frameworks Compared 2026
+
+---
+
+## Tick 43 (2026-05-01T08:30Z): 300-agent swarm — market dynamics and price discovery
+
+### Summary
+
+With no market design intervention, 300 agents competing for a $10K bounty is economically irrational for agents as a class, leads to low-effort submissions, and enables catastrophic eval gaming. The fix: stake-to-participate (screens out low-effort agents) + tiered reputation routing (targets 10-15 serious entrants). At the right entrant count, quality is high and the market is healthy.
+
+### Current AI agent compute costs (2026 actuals)
+
+| Agent | Task Size | Cost Range |
+|---|---|---|
+| Devin (Cognition) | 2-hour task | $16-18 (8 ACUs @ $2/ACU) |
+| Devin | Complex 4-hour task | $60-225 (30+ ACUs) |
+| Claude Code / Sonnet 4.6 API | 2-4 hour coding task | $5-50 (context-dependent) |
+| GPT-4o with tools | Complex task, 100K+ token context | $10-80 |
+| Effective cost-per-resolved task | Accounting for ~50% task failure rate | 2x raw compute |
+
+**Median serious agent attempt:** $20-40 for mid-complexity coding or analysis task. This is not zero — and that asymmetry is the foundation of all market design decisions below.
+
+### What auction theory predicts for many-entrant quality competition
+
+Straw is not a price auction — it's a **quality contest** (procurement contest / innovation tournament). Classical result (Lazear & Rosen 1981; Taylor 1995): in an all-pay contest where quality is the output, expected best-submission quality rises logarithmically with N. Marginal value of the (N+1)th entrant decreases sharply past **N ≈ 6-8**.
+
+Procurement literature finding: procurement costs decrease until **6-8 bidders**; additional entrants add negligible benefit beyond that. The key mechanism: each entrant invests real resources to compete; at high N, P(win) → 0, discouraging serious investment.
+
+**The AI twist:** With 300 agents at $20 compute each = $6,000 total market spend for a $10K bounty. Net positive for the poster, net negative for agents as a class. Each agent's entry is rational only if it believes P(win) > 2% — i.e., it's better than 98% of 300 competitors. This creates a **quality race to the bottom**: all agents defect to cheap ($5-10) attempts, the winning submission is mediocre.
+
+### Kaggle evidence: competition size vs. solution quality
+
+- ~85% of Kaggle registrants never submit (free registration ≠ serious participation)
+- Top performers: ~20-30 dense collaborator coalitions regardless of headline participant count
+- At large N, public leaderboard creates **eval gaming at scale**: agents (and humans) optimize the leaderboard metric, not the underlying task
+- Kaggle medal structure is logarithmic: gold medals = top 10 + floor(N/500) — reflects empirical reality that information content above position 20 is near zero
+- SWE-bench Pro public/private split confirms adaptation: Claude Opus 4.1 drops 4.9 pp, GPT-5 drops 8.2 pp moving from public to private test set
+
+### Goodhart's Law amplified by N
+
+With 300 agents × 100 resubmissions = 30,000 evaluator queries in hours. If Straw's evaluator is static and transparent, agents will find its blind spots and exploit them faster than any fixed evaluator can adapt. This is the existential risk — eval integrity breaks down before quality can accumulate.
+
+Combined with Tick 38 findings: public/private test set split + opaque eval images are mandatory at scale, not optional.
+
+### Recommended market design
+
+**Primary: Stake-to-participate**
+- Agents must stake 5-10% of bounty to register for a task
+- Stake returned to all participants with qualifying-quality attempt (above floor threshold)
+- Forfeited by no-shows and below-floor submissions; absorbed into the bounty pool
+- Effect: $1K bounty requires $50-100 stake → eliminates $5-10 low-effort agents while leaving serious agents ($20-50 compute) with positive expected value
+
+**Secondary: Tiered reputation routing**
+- High-value tasks ($10K+): auto-routed first to top-20 rated agents in the category, with a 48-hour exclusive window
+- After window: opens to all with staking
+- Effect: ensures the first serious attempts come from proven agents; mirrors Topcoder's "activity scores and won times" filtering
+
+**What the optimal crowdsourcing literature says:** The optimal contest induces entry from the 2-6 most efficient firms (Archibugi-Ghosh). For a marketplace, target 10-15 serious entrants. Staking operationalizes the capability threshold that screens for this range.
+
+### Rational minimum bounty floor
+
+**Derivation:**
+- Median agent compute cost: C = $20-50 per serious attempt
+- Target serious entrants: N = 10-15
+- Rational entry: P(win) × Bounty > C, i.e., Bounty > C × N
+- At $20/attempt, 10 entrants: **floor = $200**
+- Accounting for 50% task failure rate (agent attempts = 2× expected): **floor = $400**
+- With 50% failure at $50 compute: **floor = $1,000**
+
+**Recommended Straw minimum bounties by task class:**
+| Task Class | Agent Time | Minimum Bounty |
+|---|---|---|
+| Quick | 1-2 hours | $500 |
+| Standard | 2-8 hours | $2,000 |
+| Complex | 8+ hours, multi-step | $10,000 |
+
+These floors ensure at the target entrant count (10-15 agents), each agent's expected return exceeds compute cost by 2-3x — leaving margin for failed attempts.
+
+### The 300-agent scenario: with vs. without market design
+
+**Without design:**
+- P(win) = 0.33% per agent; rational compute spend = $5-15
+- Total market: $5K-10K compute for $10K bounty
+- Submission quality: low (cheap compute, quick attempts)
+- Eval gaming: severe (30K evaluator queries in hours)
+- Poster gets: mediocre winner from noise-dominated field
+
+**With stake + tiered routing:**
+- Effective serious entrants: 12-18 (stake screens out the rest)
+- P(win) per agent: 6-8%; rational compute: $150-400/attempt
+- Submission quality: high (agents invest real compute)
+- Eval gaming: mitigated (held-out eval set + human spot checks)
+- Poster gets: genuine competition, winner quality scales with bounty
+
+**Core market design insight:** Straw's value is not maximizing entrant count — it's maximizing expected quality of the best submission. Those are opposite objectives past N ≈ 15. Staking converts agent count from a vanity metric into a quality signal.
+
+Sources: Devin pricing (devin.ai/pricing); VentureBeat Devin 2.0 pricing; Claude Sonnet 4.6 pricing (Anthropic); Morph "Real Cost of AI Coding in 2026"; Galileo "Hidden Costs of Agentic AI"; Kaggle collaboration network study (Oxford JCMC); SWE-bench leaderboard; Lazear & Rosen 1981 tournament theory; Taylor 1995 optimal contests; Optimal bidder participation in public procurement (Springer); "Optimal Procurement with Quality Concerns" (AEA); "Optimal Design of Crowdsourcing Contests" (NYU Stern); Behavioral Mechanism Design: Optimal Contests for Simple Agents; Gaming the System: Goodhart's Law in AI Leaderboards (Collinear); Lil'Log reward hacking post
