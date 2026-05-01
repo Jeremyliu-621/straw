@@ -21,6 +21,19 @@ Specific questions Jeremy asked us to dig into:
 
 ---
 
+## Companion Files Index
+
+> This file crossed 2,000 lines after Ticks 12-18 were added. The detailed tick content has been reorganized into four themed companion files. This master file retains: the brief, early synthesis, **Threads still to dig**, the **Long-form proposal** (the primary deliverable), and the Push status. Ticks 0–18 remain below for in-context access.
+
+| Companion file | Ticks covered | Topics |
+|---|---|---|
+| [`agent-incentive-mechanics.md`](agent-incentive-mechanics.md) | 1, 2, 7, 14, 16 | VCG auction design, Shapley credit propagation, reputation systems, SHARP/Shapley-Coop implementation, Bradley-Terry scoring |
+| [`agent-incentive-comparable-systems.md`](agent-incentive-comparable-systems.md) | 0.7, 6, 9, 12, 13 | Real production prototypes, Kite AI, Magentic Marketplace, x402 payment integration, Anthropic harness patterns, ERC-8004 |
+| [`agent-incentive-swarm-dynamics.md`](agent-incentive-swarm-dynamics.md) | 0.5, 4, 8, 15, 18 | OASIS simulation, cost arithmetic, Magentic extension code, stake-to-post mechanism, MultiAgent4Collusion + 9 countermeasures |
+| [`agent-incentive-target-audience.md`](agent-incentive-target-audience.md) | 3, 5, 10, 11, 17 | Target audience archetypes, operator motivation, pricing models, steady-state economy P&L, operator UX dashboards |
+
+---
+
 ## Tick 0 (2026-05-01T03:15Z): Initial research sweep
 
 This tick by Claude on the local machine before Jeremy slept. Goal: bootstrap the file with substantive material so the cron doesn't start cold.
@@ -902,7 +915,7 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done — Tick 5 (partial)] **MetaGPT's role-allocation mechanism in detail.** Fixed SOPs (not dynamic LLM routing). ProjectManager routes by code file ownership. Structural, not capability-based.
 - [done — Tick 5 (partial)] **CrewAI's hierarchical mode in detail.** Manager never executes directly. Routes by role/goal/backstory fields. `allowed_agents` parameter constrains routing.
 - [done — Tick 10] **Pricing models for the post-side.** $99-199 flat posting fee + 5-8% success fee. Artifact access control as harvest-attack mitigation. Subscription model rejected. Full academic framework (Rochet & Tirole, Parker & Van Alstyne). Tiered pricing at $99/$199/$499.
-- [ ] **Anthropic's "effective harnesses for long-running agents" paper — full read.** Do a deep close-read. What patterns translate to Straw's bounty-board context specifically?
+- [done — Tick 12] **Anthropic's "effective harnesses for long-running agents" paper — full read.** Three distinct harness types: (1) Initializer+Coding Agent multi-session dev harness (Nov 2025) using git+claude-progress.txt as external memory; (2) Three-Agent Harness (Planner/Generator/Evaluator, Apr 2026) with "sprint contracts" + Playwright evaluation; (3) Claude Managed Agents platform (Apr 2026 beta, $0.08/session-hour). Multi-agent research system: Opus 4 lead + Sonnet 4 workers, 90.2% better than single Opus 4, 15× token cost. Critical lesson: subagents need explicit objective + output format + tool guidance + task boundaries or they duplicate work.
 
 ### Open / exploratory
 
@@ -913,18 +926,18 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done — Tick 5 (partial)] **USDC OpenClaw Hackathon mechanism design.** Full writeup in Tick 5. Forced dual-role (submit AND vote on 5+). Format compliance was decisive. Vote-exchange coalitions and manipulation emerged naturally. Key design lesson: agents need both competing AND evaluating roles.
 - [done — Tick 6] **akmenon1996/ai-agent-marketplace + keyko-io/agent-marketplace-frontend.** Both are agent directories/subscription models, not competitive task evaluation. Confirmed gap.
 - [done — Tick 9] **x402 payment rail + Straw integration.** Full integration design documented. 7-step HTTP 402 flow, TypeScript middleware snippet. V2 reusable sessions + Bazaar discovery. Non-custodial StrawEscrow contract on Base. TraceRank for automatic reputation from payment graph. GENIUS Act compliance framework. v0/v1 uses Stripe; v1.5 adds x402 + escrow.
-- [ ] **ERC-8004 on-chain agent reputation (Ethereum mainnet, Jan 2026).** Three registries: Identity, Reputation, Validation. No Shapley attribution yet but the hook exists. Design Straw's v2+ on-chain settlement on top of ERC-8004.
+- [done — Tick 13] **ERC-8004 on-chain agent reputation (Ethereum mainnet, Jan 2026).** Three registries: Identity (ERC-721, `agentId` NFT), Reputation (raw signals 0-100), Validation (TEE/zkML proofs). ~107K agents indexed across chains. Gaps: no task posting, no scoring aggregation, no Shapley attribution, no delegation chains — Straw builds these on top. Mainnet contracts: Identity 0x8004A169..., Reputation 0x8004BAa1...
 - [done — Tick 8] **Microsoft Magentic Marketplace simulation vs OASIS for 300-agent test.** Magentic is the right choice. Complete extension plan documented. Existing Postgres/async/LLM abstraction all carry over unchanged. Estimated cost <$10 for full parameter sweep.
-- [ ] **Cooperative AI Foundation grants list — what work has been funded.**
-- [ ] **MultiAgent4Collusion** (OASIS-family framework for collusion-modeling).
-- [ ] **Stake-to-post mechanism** — concrete production designs. Optimal stake relative to bounty value? Slashing rules?
-- [ ] **Engagement-required clause** — legal / contract design for "must engage or forfeit."
-- [ ] **Operator UX / dashboards.** v0 UI for an operator running 30 OpenClaws. Per-agent earnings, per-agent reputation, swarm-level metrics.
-- [ ] **MS AI Agents Hackathon winners — Apollo (Athena + Hermes orchestrator pattern)** — self-reflective RAG pattern for Straw's tier-3 agent-investigator design.
-- [ ] **DoraHacks / Gitcoin / HackerOne / Bugcrowd internals.** Reputation, payment, dispute resolution internals.
-- [ ] **Bradley-Terry pairwise scoring** — combining with VCG?
+- [done — Tick 13] **Cooperative AI Foundation grants list — what work has been funded.** $15M from Macroscopic Ventures. FOCAL (CMU, ~$500K), FLAIR (Oxford). Top grant priority: "Incentivizing Cooperation Among AI Agents" — peer incentivization, inter-agent contracting, automated mechanism design for LLM agents. CAIF funds the theory; Straw would be doing the applied version. Academic collaboration opportunity.
+- [done — Tick 18] **MultiAgent4Collusion** (OASIS-family framework). github.com/renqibing/MultiAgent4Collusion. Wolf Packs outperform Armies — decentralized collusion is more effective. Detection: embedding trajectory clustering. 9 specific countermeasures for Straw documented.
+- [done — Tick 15] **Stake-to-post mechanism.** 10% of bounty (ClawTasks/Sherlock data points). Three slashing triggers (harvest attack 100%, frivolous task 50%, ghost poster 100%). Augur dual-bond pattern (validity + no-show). Smart contract: OZ ConditionalEscrow on Base. v0: Stripe pre-capture with TOS non-refundability clause.
+- [done — Tick 15] **Engagement-required clause.** Option exercise window framing (FAR/procurement law). 21 days default (configurable 7-60). Forfeited bounty → highest-scoring agent if score ≥70; platform retains otherwise. v0: Stripe credit-lock with TOS burn-on-non-engagement.
+- [done — Tick 17] **Operator UX / dashboards.** AgentOps 4-level span hierarchy + Mission Control open-source reference (26 panels). North-star KPI: revenue per dollar of compute. HackerOne reputation model (Raw × Signal × Impact percentile) is the right formula — penalizes noise, rewards quality, gates privileges behind minimum signal threshold.
+- [done — Tick 16] **MS AI Agents Hackathon winners — Apollo (Athena + Hermes orchestrator pattern).** github.com/manasseh-zw/apollo. Self-reflective RAG = active coverage gap critique loop. Apollo → Coordinator, Athena → Executor, Hermes → Quality Reasoner. Maps to Straw's Tier-3 investigator (Orchestrator/Code Runner/Quality Reasoner, iterative test coverage critique loop).
+- [done — Tick 17] **DoraHacks / Gitcoin / HackerOne / Bugcrowd internals.** HackerOne: three-factor reputation (Raw × Signal × Impact). Bugcrowd Kudos: additive = gameable (instructive failure). Gitcoin: Allo Protocol smart contracts, Merkle Payout Strategy. DoraHacks: quadratic funding, no formal dispute resolution. Synthesis: HackerOne's three-factor model is the right design; 3-business-day SLA + Straw-as-arbiter for disputes.
+- [done — Tick 16] **Bradley-Terry pairwise scoring.** BT = second-price Elo with cleaner CIs. Pairwise flips 35% on order-swap vs 9% for absolute scoring. Recommendation: rubric scoring (primary) + BT pairwise calibration on top-N (secondary). O(n log n) sparse tournament (Arena-Lite). BT πᵢ scores are cardinal and valid as VCG bid proxies.
 - [done — Tick 11] **What does the Straw economy look like in steady state?** P&L table for 300-agent operator. Break-even at 512 tasks/month. Day-1 profitability from posting fees alone. Gini ~0.60-0.72 reputation distribution. Flywheel described. Agent-to-agent posting rational when comparative advantage gap ≥ 30 points.
-- [ ] **SHARP/Shapley-Coop implementation for Straw's reputation service.** Monte Carlo Shapley (M=5-10 samples), async post-task settlement, 2-level HAE (planner vs executor), potential-based reward shaping for sub-agent training.
+- [done — Tick 14] **SHARP/Shapley-Coop implementation for Straw's reputation service.** SHARP: counterfactual masking + three-component reward decomposition (+23.66%). Shapley-Coop: Short-Term CoT (pre-task price negotiation) + Long-Term CoT (post-task redistribution). AgentSHAP/TokenSHAP: ρ≥0.4 sampling ratio, github.com/GenAISHAP/TokenSHAP. Minimal Straw service: M=50 for N≤5 agents, replaying trajectory with coalition masking, using actual task evaluation metric as value function. ShapleyFlow (arXiv:2502.00510) — treat each rubric criterion as a component, compute Shapley to see which criteria actually drove the final score.
 
 ### Done in Tick 0
 
@@ -1260,6 +1273,95 @@ The right pre-deployment move is to run a simulation before paying real API toke
 
 **Q: The 300-agent swarm?**
 *A: Simulate first (Microsoft Magentic Marketplace or OASIS, <$50 for full mechanism-design exploration). Real deployment at 300 agents costs ~$230/month in LLM evals — trivially affordable. Five failure modes to specifically test for in simulation. Rate limits and DB/storage are not concerns at this scale.*
+
+---
+
+### 6. Updated findings from Ticks 12–18
+
+> These ticks were added in a second overnight session. They extend and sharpen the proposal above. Each section cites the companion file for full detail.
+
+#### Eval pipeline: the Anthropic harness validates Straw's design (Tick 12)
+
+Anthropic's multi-agent research system (Opus 4 lead + Sonnet 4 workers) achieves **90.2% better outcomes than single Opus 4** at 15× token cost. The improvement comes from parallel information gathering — exactly the pattern Straw's tiered eval pipeline uses (multiple Tier-2 gatekeeper calls in parallel, then Tier-3 for the 15% flagged).
+
+More importantly, the **Evaluator-Optimizer pattern** (one agent generates, another evaluates, loop continues) is the precise architecture of Straw's Tier-3 agent investigator. The Apollo orchestrator (Microsoft Hackathon winner, github.com/manasseh-zw/apollo) maps exactly: Apollo (Coordinator) → Tier-3 Orchestrator; Athena (Executor) → Code Runner; Hermes (Quality Reasoner) → Quality Reasoner; self-reflective RAG gap loop → test coverage critique loop.
+
+Critical lesson for subagent design: subagents need explicit objective + output format + tool guidance + task boundaries. Without all four, multi-agent systems duplicate work and produce confused output. This applies to both Straw's eval subagents AND to agents working on tasks that delegate subtasks.
+
+Full detail: [`agent-incentive-comparable-systems.md` — Anthropic harness section](agent-incentive-comparable-systems.md).
+
+#### Shapley implementation: ship the minimal service in v1 (Tick 14)
+
+The SHARP paper's counterfactual masking technique means Shapley can be computed without LLM re-runs — just replay the task trajectory with coalition members masked, measure quality drop. For a delegation chain A → B → C, masking B and measuring how much C's output degrades is the marginal contribution estimate.
+
+**Recommended M (sample count):** N=2: exact; N=3: M=20; N=4: M=50; N=5+: M=100. These are conservative minimums that guarantee stability.
+
+Code reference: `github.com/GenAISHAP/TokenSHAP`. Sampling ratio ρ ≥ 0.4 for stability. Replace cosine similarity value function with Straw's actual task evaluation metric (ground truth, not proxy).
+
+**ShapleyFlow bonus application:** Treat each rubric criterion as a "component." Compute Shapley to identify which criteria actually drove the final score. Use this to calibrate rubric weights post-task.
+
+Full detail: [`agent-incentive-mechanics.md` — SHARP/Shapley-Coop section](agent-incentive-mechanics.md).
+
+#### Stake-to-post: 10%, Augur dual-bond, Stripe v0 (Tick 15)
+
+The canonical stake-to-post design:
+- **10% of bounty value** (validated by ClawTasks worker-side data as market-accepted)
+- **Augur dual-bond pattern:** (1) validity bond for poorly-specified tasks (frivolous task analogue), (2) no-show bond for non-engagement
+- **v0 via Stripe pre-capture** (`capture_method: manual`) — no smart contract required; this is how Kaggle and Topcoder operate
+- **v1 via OZ ConditionalEscrow on Base** with `SLASHER_ROLE` (Straw's eval service signs off-chain, contract executes)
+
+The three slashing triggers: harvest attack (100%), frivolous task (50%), ghost poster (100%). One explicit non-trigger: legitimate cancellation before any submissions arrive (full refund).
+
+Engagement-required clause: 21-day default option window. Forfeited bounty → highest-scoring agent if score ≥70/100. Protects agents who do genuine work from harvest attacks.
+
+Full detail: [`agent-incentive-swarm-dynamics.md` — Stake-to-post section](agent-incentive-swarm-dynamics.md).
+
+#### Scoring: rubric primary, Bradley-Terry calibration secondary (Tick 16)
+
+The empirical finding is decisive: pairwise preferences flip in **35% of cases** when submission order is swapped (ACL 2025), vs. only **9% of cases** for absolute rubric scores. Pure pairwise is too noisy; pure rubric is vulnerable to calibration drift and rubric overfitting.
+
+**Recommended stack for Straw:**
+1. Rubric scoring (0-100) as primary signal for all submissions
+2. BT pairwise tournament as calibration layer on top-N submissions (O(n log n) comparisons via Arena-Lite's Swiss-system tournament)
+3. BT πᵢ scores are cardinal and valid as VCG bid proxies — if Straw eventually runs a reverse auction, BT scores can directly feed the VCG allocation
+
+Full detail: [`agent-incentive-mechanics.md` — Bradley-Terry section](agent-incentive-mechanics.md).
+
+#### Reputation: HackerOne Raw × Signal × Impact formula (Tick 17)
+
+The operator dashboard north-star is **revenue per dollar of compute**. Everything else is diagnostic.
+
+The reputation formula that penalizes noise without being purely additive (Bugcrowd's failure case): Raw score × Signal Percentile × Impact Percentile. For Straw: Raw = cumulative wins, Signal = submission acceptance rate, Impact = average eval score of accepted submissions.
+
+This formula specifically prevents agents from flooding the platform with low-quality submissions — Signal drives toward zero as acceptance rate falls, which multiplies out the Raw score.
+
+Dispute gate: require minimum Signal (acceptance rate above threshold) to file a dispute. Prevents bad-faith disputes from agents with no track record.
+
+Full detail: [`agent-incentive-target-audience.md` — Operator UX section](agent-incentive-target-audience.md).
+
+#### Collusion: Wolf Packs beat Armies, blind scoring is the primary defense (Tick 18)
+
+The most important finding: collusion does not require a communication channel. Wolf Packs (decentralized, no leader, spontaneous coordination via observation of peer behavior) **outperform** centralized command structures. LLM agents infer collusive strategies in **dozens of interactions** vs. thousands for RL agents.
+
+For a bounty board with a small number of high-capability operator fleets (thin market), tacit territorial division is the dominant threat — each fleet learns to avoid categories where a competitor dominates.
+
+**Primary defense: blind scoring with delayed reveal.** Do not show intermediate scores or ranks until all submissions for a bounty close. This removes the observable signal that enables strategy inference. Cost: zero. Effectiveness: directly targets the mechanism.
+
+**Supporting defenses:** heterogeneity enforcement (no single base model >40% of submissions in a category), cross-operator minimum per bounty (require ≥N distinct fleets for "competitive"), randomized routing (20% of bounty eligibility randomly assigned), whistleblower incentive (report cartel → receive bounty premium, counterparty suspended).
+
+Full detail: [`agent-incentive-swarm-dynamics.md` — MultiAgent4Collusion section](agent-incentive-swarm-dynamics.md).
+
+#### ERC-8004 on-chain identity: v2 feature, not v0 blocker (Tick 13)
+
+ERC-8004 mainnet (January 29, 2026): three on-chain registries (Identity/ERC-721, Reputation/raw signals, Validation/TEE+zkML). ~107K agents indexed.
+
+Current gap: no task posting, no scoring aggregation, no Shapley attribution, no delegation chains. **Straw builds all of these on top.** ERC-8004 provides the identity hook; Straw provides the marketplace mechanics.
+
+Integration path: v0/v1 use Supabase off-chain → v1.5 Straw issues ERC-8004 identity NFTs to registered agents → v2 Shapley attribution written to on-chain audit trail.
+
+Academic angle: Cooperative AI Foundation (CAIF) funds the theory (peer incentivization, inter-agent contracting, Shapley attribution). Straw would be doing the applied version. CAIF academic collaboration could provide fellowship funding ($40K/year + tuition) for a researcher working on Straw's Shapley attribution service.
+
+Full detail: [`agent-incentive-comparable-systems.md` — ERC-8004 section](agent-incentive-comparable-systems.md).
 
 ---
 
@@ -1774,7 +1876,11 @@ Sources: Upwork freelancer earnings data, HackerOne bug bounty program stats, Ka
 
 **Session 1 (Ticks 1–7) commit status:** Committed and pushed. Covered VCG auctions, Shapley credit propagation, target audience, cost simulation, operator motivation, comparable systems, reputation systems.
 
-**Session 2 (Ticks 8–11) commit status:** Ticks 8 (swarm simulation), 9 (x402 integration), 10 (pricing models), 11 (steady-state economy) added in this session. File is now ~1,810 lines — approaching 2000-line split threshold. Next session should split into themed companion files if more ticks are added.
+**Session 2 (Ticks 8–11) commit status:** Ticks 8 (swarm simulation), 9 (x402 integration), 10 (pricing models), 11 (steady-state economy) added in this session. File was ~1,810 lines at end of Session 2.
+
+**Session 3 (Ticks 12–18) commit status:** Ticks 12 (Anthropic harness), 13 (ERC-8004 + CAIF), 14 (SHARP/Shapley-Coop), 15 (stake-to-post), 16 (Bradley-Terry + Apollo), 17 (operator UX), 18 (MultiAgent4Collusion + collusion) added. File exceeded 2,000 lines → split executed: 4 themed companion files created (`agent-incentive-mechanics.md`, `agent-incentive-comparable-systems.md`, `agent-incentive-swarm-dynamics.md`, `agent-incentive-target-audience.md`). Long-form proposal updated with Ticks 12-18 findings. Commit pending (see below).
+
+**Session 3 git commit:** `research(agent-incentive): ticks 12-18 — harness, ERC-8004, Shapley impl, stake-to-post, Bradley-Terry, operator UX, collusion + companion file split`
 
 **If git push fails (no GitHub creds in this context):** Local commit still created. Next session will see it via `git log --oneline`.
 
@@ -1808,3 +1914,481 @@ Sources: Upwork freelancer earnings data, HackerOne bug bounty program stats, Ka
 **Tick 8 (Swarm simulation):** arXiv:2510.25779 (Magentic Marketplace), github.com/microsoft/multi-agent-marketplace, arXiv:2511.13233 (LLM-MAS for Data Marketplaces, Ocean Protocol validation), arXiv:2604.11840 (Solver-Sampler Mismatch), springer.com/article/10.1007/s13278-017-0481-y (Incremental EigenTrust), cloudidr.com/blog/llm-pricing-comparison-2026 (model pricing), arxiv.org/html/2503.20749v7 (LLM agent behavior simulation)
 
 **Tick 9 (x402 integration):** github.com/coinbase/x402, x402.org/writing/x402-v2-launch, docs.cdp.coinbase.com/x402/bazaar, x402.gitbook.io/x402/core-concepts/bazaar-discovery-layer, arXiv:2510.27554 (TraceRank, Shi & Joo 2025), earezki.com/ai-news/2026-03-14-add-escrow-protection-to-any-x402-agent-payment (PayCrow), ubounty.ai/how-it-works, github.com/xpaysh/awesome-x402, workos.com/blog/x402-vs-stripe-mpp, braumillerlaw.com/activating-http-402, paulhastings.com/insights/crypto-policy-tracker/the-genius-act, hklaw.com FinCEN/OFAC AML for stablecoin issuers, solana.com/x402/what-is-x402, kucoin.com/blog/en-ai-agent-crypto-payment-x402-v2-launch
+
+**Tick 12 (Anthropic harness):** anthropic.com/research/building-effective-agents, anthropic.com/engineering/multi-agent-research-system, platform.claude.com/docs/en/managed-agents/overview, infoq.com/news/2026/04/anthropic-managed-agents/, zenml.io/llmops-database/building-a-multi-agent-research-system-for-complex-information-tasks, myaiexp.com/en/insights/anthropic-subagent-multi-agent-revolution, github.com/cloudflare/agents/blob/main/guides/anthropic-patterns/README.md
+
+**Tick 13 (ERC-8004):** eips.ethereum.org/EIPS/eip-8004, github.com/erc-8004/erc-8004-contracts, eco.com ERC-8004 explainer, kucoin.com/blog/understanding-erc-8004, buildbear.io/blog/erc-8004, blog.quicknode.com/erc-8004, allium.so/blog/onchain-ai-identity-what-erc-8004-unlocks, composable-security.com/blog/erc-8004, github.com/sudeepb02/awesome-erc8004, cooperativeai.com/grant-research-areas/incentivizing-cooperation-among-ai-agents, cooperativeai.com/post/multi-agent-risks-from-advanced-ai, grantedai.com/grants CAIF 2026
+
+**Tick 17 (Operator UX + platform internals):** agentops.ai, docs.agentops.ai/v1/concepts/events, microsoft.github.io/autogen autogenstudio, langchain.com/langsmith/observability, github.com/builderz-labs/mission-control, github.com/crshdn/mission-control, cloud.google.com/transform kpis-for-production-ai-agents, pendo.io/essential-kpis, dorahacks.io/blog/guides, docs.hackerone.com reputation + mediation, docs.bugcrowd.com getting-rewarded, github.com/bugcrowd/vulnerability-rating-taxonomy, docs.allo.gitcoin.co, support.gitcoin.co passport scoring
+
+**Tick 14 (SHARP/Shapley-Coop):** arxiv.org/abs/2602.08335 (SHARP), arxiv.org/abs/2506.07388 (Shapley-Coop), openreview.net/pdf?id=HnJ1UkuJXS, neurips.cc/virtual/2025/poster/118868, github.com/GenAISHAP/TokenSHAP (AgentSHAP), arxiv.org/abs/2512.12597 (AgentSHAP), arxiv.org/abs/2502.00510 (ShapleyFlow)
+
+**Tick 16 (Bradley-Terry + Apollo):** arxiv.org/abs/2411.01281 (Arena-Lite), arxiv.org/html/2403.04132 (Chatbot Arena), arxiv.org/abs/2406.07791 (positional bias), arxiv.org/abs/2406.12319 (Comparative Trap), arxiv.org/abs/2504.20879 (Leaderboard Illusion), github.com/manasseh-zw/apollo, microsoft.github.io/AI_Agents_Hackathon/winners, techcommunity.microsoft.com hackathon 2025 showcase
+
+---
+
+## Tick 12 (2026-05-01T09:30Z): Anthropic multi-agent harness and effective agent patterns
+
+Source: anthropic.com/research/building-effective-agents, anthropic.com/engineering/multi-agent-research-system, platform.claude.com/docs/en/managed-agents/overview, plus secondary sources.
+
+### The five workflow patterns from "Building Effective Agents" (Anthropic, Dec 2024)
+
+Anthropic's canonical guide describes a spectrum from simple workflows to fully autonomous agents. The key insight: **start with the simplest pattern that solves the problem; add complexity only when measurable improvement justifies it.**
+
+| Pattern | Structure | Best for | Key design element |
+|---|---|---|---|
+| **Prompt chaining** | Sequential LLM calls; output of step N is input to step N+1 | Multi-step pipelines where steps are well-defined and order matters | "Gate" between steps — fail fast if intermediate output doesn't meet threshold |
+| **Routing** | Classifier LLM → appropriate specialist path | Variable-difficulty tasks (easy to Haiku, hard to Opus), customer service triaging | The classifier is cheap; specialists are expensive — classify before committing |
+| **Parallelization** | Multiple LLMs run concurrently, results combined | Two variants: *Sectioning* (divide doc into chunks, process in parallel) and *Voting* (multiple judges vote on same input) | Useful when tasks are independent or when confidence intervals matter |
+| **Orchestrator-workers** | Central LLM dynamically decomposes task → delegates to workers → synthesizes | Complex multi-step tasks where subtasks aren't known in advance | Unlike parallelization, subtasks are not pre-defined — the orchestrator decides |
+| **Evaluator-optimizer** | Generator LLM → Evaluator LLM → (if not satisfied) → Generator again | Iterative refinement when clear evaluation criteria exist | Loop until evaluator passes OR max iterations reached — prevents infinite loops |
+
+**Autonomous agents** sit atop all these: they use tools, maintain state across steps, self-direct, and should be given increasing autonomy only as you gain confidence in their reliability.
+
+**The key design advice on multi-agent systems:** Anthropic specifically notes that multi-agent systems are appropriate when: (a) tasks are too long for one context window, (b) tasks benefit from parallel specialized workers, (c) you need independent verification. **Warning:** "Multi-agent systems consume approximately 15× more tokens than standard chat interactions."
+
+### Anthropic's multi-agent research system (production architecture)
+
+From the Anthropic engineering blog (2025), a live production implementation:
+
+- **Architecture:** Lead agent (Claude Opus 4) + parallel subagents (Claude Sonnet 4)
+- **Performance:** 90.2% better than single-agent Claude Opus 4 on internal research evaluation. This is a 90.2 percentage-point gain, not ratio — the absolute improvement is substantial.
+- **Task decomposition:** The lead agent analyzes the query, develops a strategy, and spawns subagents to explore different aspects simultaneously. Each subagent receives: (1) a specific objective, (2) an explicit output format, (3) guidance on which tools/sources to use, (4) clear task boundaries.
+- **Critical failure mode:** "Without detailed task descriptions, agents duplicate work, leave gaps, or fail to find necessary information. Simple instructions were vague enough that subagents misinterpreted the task or performed the exact same searches as other agents."
+- **Solution:** Explicit, structured subagent briefs — not just "research this" but "research X with the goal of finding Y, using sources Z, returning a list in format F."
+
+### Claude Managed Agents (April 8, 2026, beta)
+
+Anthropic's fully-managed agentic infrastructure. Endpoints: `/v1/agents`, `/v1/environments`, `/v1/sessions`.
+
+**Four core concepts:**
+
+| Concept | What it is |
+|---|---|
+| **Agent** | Model + system prompt + tools + MCP servers + skills — defined once, referenced by ID |
+| **Environment** | Container template: packages, network access rules, mounted files |
+| **Session** | A running agent instance performing a specific task, with full event history persisted |
+| **Events** | Messages between your app and the agent: user turns, tool results, status updates |
+
+**Built-in tools:** Bash, file read/write/edit, web search + fetch, MCP servers.
+
+**Pricing:** Standard Claude token rates + $0.08/session-hour for active runtime.
+
+**Rate limits:** 300 create requests/minute, 600 read requests/minute per organization.
+
+**Multi-agent feature:** "Certain features (outcomes and multiagent) are in research preview." Still gated — not yet general-availability.
+
+**Context management at scale:** The harness handles prompt caching, compaction, and checkpointing automatically. Sessions resume from last checkpoint if they crash. This is critical for long-running evals.
+
+### How Anthropic's patterns map to Straw
+
+**Straw's eval pipeline IS an orchestrator-workers system:**
+- Tier 2 gatekeeper = routing (fast classifier on 85% of submissions)
+- Tier 3 investigator = evaluator-optimizer loop (investigates, evaluates, iterates up to N cycles)
+- The agent-under-evaluation's Reflexion loop = evaluator-optimizer pattern from the agent's perspective
+
+**Claude Managed Agents as Straw's judge daemon (D30):**
+Managed Agents is architecturally the right substrate for D30's judge daemon. The harness provides: sandboxed code execution (the eval container), file system access (reading submission artifacts), tool access (running the agent's submitted code), session persistence (checkpointing mid-investigation), and streaming events (for real-time feedback to the task poster). Instead of building a custom BullMQ worker + eval container orchestrator, Straw could use Managed Agents as the execution layer for Tier 3.
+
+**The 15× token cost finding validates Tick 4's cost estimate:** Tick 4 estimated ~12K tokens for Tier 3 multi-step investigation. The 15× baseline-over-standard-chat is consistent: standard chat ≈ 1K tokens, 15× = 15K tokens, matching the estimate within 20%.
+
+**The "detailed task brief" lesson is design-critical for Straw:** When posting a subtask for another agent to handle (agent-as-poster), the posting agent must provide: explicit objective, expected output format, relevant constraints, tool guidance. The failure mode — duplicated work and gaps — is exactly what Straw's task spec format (title, description, input_spec, output_spec, rubric) is designed to prevent.
+
+Sources: anthropic.com/research/building-effective-agents, anthropic.com/engineering/multi-agent-research-system, platform.claude.com/docs/en/managed-agents/overview, infoq.com/news/2026/04/anthropic-managed-agents/
+
+---
+
+## Tick 13 (2026-05-01T09:50Z): ERC-8004 on-chain agent identity + Cooperative AI Foundation
+
+Source: eips.ethereum.org/EIPS/eip-8004, github.com/erc-8004/erc-8004-contracts, secondary sources.
+
+### ERC-8004 "Trustless Agents" — the three registries
+
+**Created by:** Marco De Rossi (MetaMask), Davide Crapis (Ethereum Foundation dAI team), Jordan Ellis (Google), Erik Reppel (Coinbase). Submitted August 2025. Deployed Ethereum mainnet January 29, 2026. **As of early March 2026:** ~107,000 agents indexed across Ethereum (~29K), Base (~34K), BSC (~44K).
+
+**1. Identity Registry (ERC-721 extension)**
+
+Each agent is minted an NFT; tokenId = `agentId`. The `tokenURI` points to an off-chain **agent card** JSON with: name, description, image, endpoints (supports A2A, MCP, OASF, ENS, DID formats, each versioned), and payment wallet addresses.
+
+Key methods: `register(agentURI)` → mints NFT + assigns agentId; `setAgentWallet(agentId, wallet, sig)` → links payment address; `getAgentWallet(agentId)` → read.
+
+Mainnet contract: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
+
+**2. Reputation Registry**
+
+Stores bounded raw feedback signals (score 0–100) per `agentId`. Fields per feedback entry: score, categorical tags (response_time, uptime, accuracy), optional off-chain evidence URI + hash. Agent owners authorize specific reviewers (access-controlled). x402 payment proofs can be attached to prove only paying customers posted reviews.
+
+Key methods: `postFeedback(agentId, score, tags[], evidenceURI, evidenceHash)`; `getFeedback(agentId)`; `authorizeReviewer` / `revokeReviewer`.
+
+Mainnet contract: `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`
+
+**3. Validation Registry**
+
+Framework for requesting/recording independent third-party verification. Mechanism-agnostic: supports zkML proofs, TEE attestations (Intel TDX via Phala Network), or any validator contract. Key methods: `validationRequest(validatorAddress, agentId, requestURI, requestHash)` → agent owner triggers; `validationResponse(requestHash, response, responseURI, responseHash, tag)` → validator replies. Still under active revision.
+
+### What ERC-8004 explicitly does NOT define (gaps for Straw to fill)
+
+| Gap | What Straw must build on top |
+|---|---|
+| Task posting / bounty mechanics | Entire post-side: POST /tasks, rubric, budget, deadline |
+| Payment / escrow | x402 + StrawEscrow contract (Tick 9) |
+| Scoring aggregation algorithms | EigenTrust / Beta reputation system (Tick 7) |
+| Shapley attribution | SHARP/Shapley-Coop settlement service (Tick 14) |
+| Delegation chain tracking | `parent_task_id` lineage graph in Straw's DB |
+| Fraud handling + slashing | Stake-to-post + engagement-required clause (Tick 15) |
+| Validator incentive economics | Platform fee model (Tick 10) |
+
+**Bottom line:** ERC-8004 gives Straw the identity primitive (a stable `agentId` to anchor all reputation, payment, and task history data) and a raw ledger to write reputation signals into. It's the foundation layer — Straw's application logic is what makes it a marketplace.
+
+**Straw integration recommendation (v2+):**
+1. Register each agent on ERC-8004 at signup (Ethereum or Base L2 for cheap gas)
+2. Link the agentId to Straw's internal UUID via `setAgentWallet`
+3. After each evaluated task, call `postFeedback(agentId, score, tags, evidenceURI)` with the eval result hash as evidence
+4. Validate high-stakes submissions via TEE attestation (Phala's extension) for transparency
+5. Use the on-chain reputation registry as the settlement-layer source-of-truth; keep Straw's internal EigenTrust computation for real-time display
+
+### Cooperative AI Foundation (CAIF)
+
+**What it is:** $15M philanthropic fund (from Macroscopic Ventures), academic research only. Board: Allan Dafoe (DeepMind), Gillian Hadfield, Thore Graepel, Jesse Clifton, Audrey Tang. Advisors: Noam Brown (Meta/OpenAI), Jakob Foerster, Vincent Conitzer.
+
+**Most relevant grant area:** "Incentivizing Cooperation Among AI Agents" — explicitly funds: (1) monetary mechanisms for peer incentivization in mixed-motive settings, (2) decentralized norm enforcement at scale, (3) inter-agent commitments and contracting, (4) automated mechanism design scalable to large LLM-agent populations. **This is Straw's exact problem space in academic language.**
+
+**Funded projects:**
+- FOCAL (Carnegie Mellon, ~$500K) — decision theory and game theory for machine agent cooperation
+- FLAIR (Oxford, Jakob Foerster's lab) — multi-agent RL, opponent shaping
+- 2024/2025: additional grants not yet published
+
+**Gap:** No CAIF grant has funded anything resembling a working marketplace implementation. Straw would be doing applied work that CAIF is funding as theory. An academic collaborator working on mechanism design for Straw's stake-to-post or Shapley attribution could be funded via CAIF's fellowship ($40K/year + tuition) or regular grant (up to £100K).
+
+Sources: eips.ethereum.org/EIPS/eip-8004, github.com/erc-8004/erc-8004-contracts, cooperativeai.com/grant-research-areas/incentivizing-cooperation-among-ai-agents, cooperativeai.com/post/multi-agent-risks-from-advanced-ai
+
+---
+
+## Tick 14 (2026-05-01T10:10Z): SHARP / Shapley-Coop implementation for Straw's reputation service
+
+Source: arxiv.org/abs/2602.08335, arxiv.org/abs/2506.07388, arxiv.org/abs/2512.12597, arxiv.org/abs/2502.00510.
+
+### SHARP (arXiv:2602.08335) — counterfactual masking mechanism
+
+**What it does:** Decomposes per-agent reward in a multi-agent LLM pipeline into three components: (1) global broadcast (all agents get the outcome score), (2) Shapley marginal credit (counterfactual masking, see below), (3) process reward (tool use correctness). Result: +23.66% over single-agent Qwen3-8B, +14.05% over non-Shapley multi-agent baselines on HotpotQA / MATH / GSM-style benchmarks.
+
+**Counterfactual masking:** For a sequential chain A → B → C, to compute B's marginal contribution: skip B and pass A's raw output directly to C. Measure the quality drop. This is the cheapest possible counterfactual — no LLM re-run required, just trajectory replay with masking.
+
+**Formula:** φᵢ = Σ_{S ⊆ N\{i}} [|S|!(N-|S|-1)!/N!] × [v(S∪{i}) − v(S)]
+
+**Computation:** For N≤4 agents in a chain, the coalition space is small enough (≤16 subsets, ≤24 orderings) that exact computation is tractable without MC approximation. SHARP appears to use exact Shapley for their pipeline sizes.
+
+**Post-task application:** SHARP operates on completed trajectories — it is fully asynchronous and does not require real-time computation.
+
+### Shapley-Coop (arXiv:2506.07388, NeurIPS 2025) — the post-task redistribution mechanism
+
+Two components:
+
+**Short-Term Shapley CoT (pre-task negotiation):** Agents reason about their expected marginal contribution before committing to collaboration. They propose a reward share fraction. Negotiation iterates until price agreement or failure. For Straw: agents can skip this — just execute and let post-task settlement handle credit.
+
+**Long-Term Shapley CoT (post-task redistribution):** After task completion, full trajectory τₙ is observed. Each agent's actual marginal contribution is computed from the trajectory record. Reward pool redistributed proportionally. Agents who demanded too high a pre-task price face reputation consequences. **This is the mechanism Straw wants.**
+
+Validated in three environments: Escape Room (social dilemma), Raid Battle (cooperative defeat with contribution tracking), ChatDEV (software engineering). Consistently improves cooperation rates vs. equal-split or greedy baselines.
+
+### AgentSHAP / TokenSHAP (arXiv:2512.12597) — the approximation recipe
+
+**Code:** github.com/GenAISHAP/TokenSHAP. Attributes credit to tools using MC Shapley. Value function: cosine similarity of embedding(output with coalition S) vs. embedding(full output). Sampling ratio ρ ≥ 0.4 required for stability.
+
+**Adapting for agent-chain attribution:** Replace tools with agents as players. Replace cosine similarity value function with actual task evaluation metric (which Straw already has). Apply SHARP's counterfactual masking to reconstruct coalition outputs from trajectory record without LLM re-runs.
+
+### The minimal Straw Shapley attribution service
+
+**When it runs:** Asynchronously after task closes and final outcome score is known.
+
+**Inputs:** agent list, trajectory record (who did what), outcome score.
+
+**Sample count M recommendation:**
+- N=2 agents: exact computation (2 permutations)
+- N=3 agents: M=20
+- N=4 agents: M=50
+- N=5+ agents: M=100 + always include all first-order omissions (remove one at a time)
+
+**Value function:** Replay the task trajectory with only the coalition's actions. Score using the existing evaluation metric. This avoids the AgentSHAP cosine proxy — Straw has ground truth.
+
+**Negative Shapley values:** An agent that hurt the coalition outcome gets a negative φᵢ. Options: (a) clip to zero and renormalize (marketplace-friendly), (b) allow negatives and subtract from reputation score (principled). Recommend option (b) — bad posters should face reputation consequences.
+
+**ShapleyFlow (arXiv:2502.00510) — bonus find:** Exhaustive Shapley over 2^4=16 workflow component configurations, then per-component scoring. Directly maps to Straw's rubric criteria: treat each rubric criterion as a "component" and compute Shapley to determine which aspects of the agent's output actually drove the final score.
+
+Sources: arxiv.org/abs/2602.08335, arxiv.org/abs/2506.07388, arxiv.org/abs/2512.12597, arxiv.org/abs/2502.00510, github.com/GenAISHAP/TokenSHAP
+
+---
+
+## Tick 16 (2026-05-01T10:30Z): Bradley-Terry pairwise scoring + Apollo orchestrator pattern
+
+Source: multiple arXiv papers, LMSYS blog, github.com/manasseh-zw/apollo.
+
+### Bradley-Terry model — the math
+
+P(i beats j) = πᵢ / (πᵢ + πⱼ). In log-odds: log(πᵢ) − log(πⱼ) = log-odds(i > j). This is equivalent to Elo ratings (Chatbot Arena switched from Elo to BT MLE because BT produces "significantly more stable ratings and precise confidence intervals").
+
+**MLE estimation (MM algorithm):**
+```
+πᵢ(new) = Wᵢ / Σⱼ≠ᵢ [ nᵢⱼ / (πᵢ + πⱼ) ]
+```
+where Wᵢ = total wins, nᵢⱼ = total comparisons between i and j. Converges to unique MLE. Requires connected comparison graph.
+
+**Minimum comparisons for stable ranking:** O(n log n) with random sparse graphs (vs. O(n²) all-pairs). For n=20 agents: ~60 comparisons vs. 190 all-pairs — 3× more efficient. Arena-Lite (EMNLP 2025) validated single-elimination tournaments achieving O(n log n) comparisons with higher reliability than all-pairs Arena.
+
+**Multi-way generalization (Plackett-Luce):** P(i ranked first among S) = πᵢ / Σⱼ∈S πⱼ. One 4-way comparison ≈ statistical information of 3 binary comparisons. Relevant when LLM judge ranks multiple submissions simultaneously.
+
+### Pairwise vs. absolute scoring — empirical verdict
+
+**The case against pure pairwise:**
+- "Judging the Judges" (IJCNLP 2025, 150K+ evaluations): position bias is severe and model-dependent. GPT-4: primacy bias (favors response A). GPT-4o: recency bias (favors response B). Position bias dominates when submissions are close in quality.
+- "The Comparative Trap" (ACL 2025): pairwise preferences flip in **35% of cases** when candidate order is swapped. Absolute scores flip in only **9% of cases**. Pairwise amplifies superficial biases (verbosity, authoritative tone).
+- Mitigation: run both orderings (A|B and B|A), count only on agreement. Halves throughput, dramatically reduces positional artifacts.
+
+**The case against pure absolute (rubric) scoring:**
+- Calibration drift: absolute scores from different evaluation runs may use different internal scales, making cross-task comparison noisy. BT pairwise is invariant to this.
+- Rubric overfitting: agents can optimize for rubric criteria specifically (reward hacking) when rubric is public.
+
+**Recommendation for Straw:** Run rubric scoring (0-100) as the primary signal for all submissions. Run BT pairwise tournament as a secondary calibration layer between the top-N submissions to catch rubric drift. Arena-Lite's tournament structure (single-elimination or Swiss-system with O(n log n) comparisons) is the right shape for the calibration phase.
+
+**BT + VCG integration:** BT πᵢ scores are cardinal (not just ordinal) — πᵢ/πⱼ encodes how much better agent i is, not just that it is better. This makes BT scores valid as revealed-preference bid proxies in a VCG allocation: run BT tournament → derive πᵢ → use as bid in VCG → winner pays externality imposed on others. Theoretically sound; no published paper combines BT+VCG exactly, but Tournament Auctions (Anderlini, arXiv:2403.08102) is the closest framework.
+
+### Apollo orchestrator (GitHub: manasseh-zw/apollo)
+
+**Winner:** Best C# Agent, Microsoft AI Agents Hackathon 2025. Stack: .NET 9 / ASP.NET Core, Semantic Kernel, Kernel Memory + pgvector (PostgreSQL), Exa AI (web search), Azure AI Agents Service (GPT-4), React + Vite frontend.
+
+**Three-agent architecture:**
+
+| Agent | Role | Key behavior |
+|---|---|---|
+| **Apollo** (Coordinator) | Orchestrator — plans, assigns, synthesizes | Does NOT research. Generates research questions dynamically from user query |
+| **Athena** (Research Engine) | Executor — searches, retrieves, ingests | 3-5 search queries per question, 5-10 results per query, ingests into pgvector. Tracks URL dedup. |
+| **Hermes** (Analyzer) | Quality Reasoner — critiques coverage gaps | Queries pgvector for what's known, generates gap analysis, triggers new research questions when gaps found |
+
+**Self-reflective RAG:** After Athena ingests content, Hermes queries the vector store semantically: "What do we know about X?" → generates a gap critique: "We have A and B but not C or D" → triggers new Athena research cycles. Loop terminates when no significant gaps OR max iterations hit. This is an active critique loop on retrieval quality, not passive one-shot retrieval.
+
+**Mapping to Straw's Tier-3 investigator:**
+
+| Apollo | Straw Tier-3 |
+|---|---|
+| Apollo (Coordinator) | Investigation Orchestrator: manages eval lifecycle |
+| Athena (Executor) | Code Runner: executes agent's submission, captures outputs + logs |
+| Hermes (Analyzer) | Quality Reasoner: checks outputs against rubric, identifies uncovered criteria |
+| Self-reflective RAG gap loop | Test Coverage Critique: generates additional test cases when rubric criteria remain uncovered |
+| pgvector store | Execution trace store: embeddings of run outputs for semantic coverage search |
+| Two-stage synthesis | Per-criterion scores → final weighted judgment with citations to execution traces |
+
+**Key Apollo patterns to adopt for Straw's Tier-3:**
+1. Explicit three-role separation (Coordinator, Executor, Analyzer) — prevents role conflation and makes the loop auditable
+2. The gap-analysis termination condition — "investigate until rubric fully covered OR max iterations" — maps directly to Tier-3's investigation depth
+3. Event-driven async queue via .NET channels (or equivalent) — decouples investigation cycles and enables parallel investigation of multiple submissions
+
+**What doesn't transfer:** Apollo does open-ended web research; Straw runs deterministic code in a sandbox. The Executor needs Docker/WASM isolation, timeout enforcement, resource measurement. The Analyzer needs rubric-aware domain reasoning, not just completeness assessment.
+
+Sources: github.com/manasseh-zw/apollo, arxiv.org/abs/2411.01281, arxiv.org/abs/2406.07791, arxiv.org/abs/2406.12319, arxiv.org/abs/2403.08102, lmsys.org/blog/2023-05-03-arena
+
+---
+
+## Tick 17 (2026-05-01T10:50Z): Operator UX dashboards + platform internals (DoraHacks, Gitcoin, HackerOne, Bugcrowd)
+
+Source: Multi-platform research session. Full citation list in Tick 17 sources row above.
+
+### Operator dashboard — best reference implementations
+
+**AgentOps (agentops.ai) — the canonical data model:**
+Four-level span hierarchy: Session (root, total cost + duration) → Agent (named agent scope) → Operation/Workflow (planning steps, sub-workflows) → LLM/Tool call (individual invocations). Every LLM call: prompt, completion, token counts, model, latency. Every tool call: input, output, latency, error state. Dashboard surfaces: cost per session, token usage, latency P50/P99, error rate, agent failure events, tool call frequency, multi-agent interaction graphs, recursive loop detection. Available integrations: CrewAI, AutoGen/AG2, LangChain.
+
+**Mission Control (github.com/builderz-labs/mission-control) — best open-source reference:**
+26 panels: tasks, agents, logs, tokens, memory, cron jobs, alerts, webhooks, pipelines, and more. Self-hostable, SQLite-backed. RBAC (viewer/operator/admin). WebSocket + SSE for real-time push. Built-in "Aegis" review gate: blocks task completion without human sign-off. A second Mission Control (github.com/crshdn/mission-control) bills itself as an "Autonomous Product Engine" with convoy mode and crash recovery — directly applicable to OpenClaw-style agent fleet management.
+
+**LangSmith — production-grade distributed tracing:**
+Nested span tracing per agent; cost attribution to individual spans; latency at P50/P99; custom dashboards with drill-down from fleet to individual traces; alerting on threshold breaches. Handles distributed tracing across agents that call each other, preserving full parent-child span chain across service boundaries. This is the right architecture for Straw's operator dashboard.
+
+### Must-have metrics for Straw's operator dashboard
+
+**Per-agent KPIs:**
+- Win rate by task category (code, analysis, research, etc.)
+- Average eval score per category (not just pass/fail — the actual score distribution)
+- Time-to-first-submission per task (leading competitive indicator — not shown in current dashboards, Straw-specific advantage)
+- Cost per successful outcome = total LLM spend / accepted submissions
+- Reputation trajectory (rolling 30-day sparkline: up/flat/down)
+- Revenue per agent per month
+
+**Fleet-level KPIs:**
+- Fleet-wide win rate vs. other operators on the same tasks (requires cross-operator leaderboard data)
+- Task coverage: % of open bounties the fleet has at least one submission on
+- Duplicate submission rate (are agents stepping on each other's tasks?)
+- Total monthly revenue vs. compute spend (margin)
+
+**North-star:** Revenue per dollar of compute. Everything else is a diagnostic.
+
+### HackerOne reputation model — most directly applicable to Straw
+
+HackerOne's leaderboard rank = Reputation × Signal Percentile × Impact Percentile.
+
+**Reputation (raw score):** +7 for resolved, +2 for duplicate (resolved before you), 0 or negative for informational/N/A, −10 for spam. High-severity bounties above program mean add bonus reputation points.
+
+**Signal (−10 to +7 scale):** Rolling average of accepted reports / total reports. Low-severity and informational drag it down. Signal > 0 required to request mediation.
+
+**Impact:** Average severity of accepted reports. Determines "will this agent's future submissions be high-severity?"
+
+**Triage (Hai):** AI filters duplicates + out-of-scope submissions before human review. AI also guides reporters through the submission process in real-time, flagging out-of-scope issues before submission. h1 Validation (April 2026): new product specifically addressing AI-generated report noise.
+
+**Dispute resolution (Hacker Mediation):** Available only to Signal > 0 agents. Process: 3-business-day SLA, HackerOne can force resolution. Hard enforced.
+
+**Why this matters for Straw:** HackerOne's three-factor model (raw × signal × impact) captures exactly the dimensions Straw needs: volume of wins (raw reputation), signal-to-noise ratio (penalizes agents who submit garbage), and quality of wins (impact). The Signal factor specifically discourages agents from flooding the platform with low-quality submissions — exactly the right anti-spam incentive for a competitive bounty board.
+
+### Bugcrowd — Kudos (additive, gameable) — instructive failure case
+
+P1 (Critical) = 40 kudos, P2 = 20, P3 = 10, P4 = 5. Always additive, never penalized. Consequence: researchers farmed low-severity duplicates to inflate Kudos. Bugcrowd changed the algorithm; exact changes not fully public. **Lesson for Straw:** Pure additive reputation is gameable. HackerOne's Signal factor (penalizing noise) is the correction.
+
+### DoraHacks — quadratic funding internals
+
+Rubric format: 3-4 criteria max, each as an answerable question, with visible weights for both judges and participants. AI evaluation produces ranked list with per-criterion reasoning alongside human scores. Payout: determined by number of unique voters (breadth > depth), with progressive cost-per-vote (Nth vote costs 0.1×N TON). Anti-Sybil: DoraID staking. No formal dispute resolution — disputes handled at organizer level. BountyFlow (community-built) adds a 48-hour dispute window before USDT escrow auto-releases.
+
+### Gitcoin — Allo Protocol internals
+
+Grants Stack uses **Allo Protocol** (open-source smart contracts). Merkle Payout Strategy: merkle root of {recipient → amount} committed on-chain; recipients claim permissionlessly. Milestone-based programs: funds unlock on verified completion. Gitcoin Passport: stamps from connected accounts (GitHub, Twitter, ENS, Coinbase), each with pre-determined weights; score 20+ = matching eligibility. **No formal dispute mechanism** — critical gap for task-based platforms (Gitcoin is grants, not competitive tasks). No on-chain arbitration.
+
+### Synthesis — concrete design choices for Straw
+
+| Component | Design choice | Rationale |
+|---|---|---|
+| Dashboard data model | Session → Agent → Operation → LLM/Tool call (AgentOps pattern) | Enables cost attribution, latency analysis, and multi-agent trace preservation |
+| North-star KPI | Revenue per dollar of compute | Aligns operator incentives with platform efficiency |
+| Reputation formula | Raw × Signal × Impact (HackerOne model) | Penalizes noise (bad Signal) while rewarding quality (high Impact) |
+| Signal equivalent | Submission acceptance rate (accepted/total per agent) | Low-quality flooding drives Signal → 0 |
+| Dispute gate | Require minimum reputation (Signal > 0 equivalent) to dispute | Prevents bad-faith disputes from agents with no track record |
+| Dispute SLA | 3 business days, Straw as binding arbiter | HackerOne pattern, proven at scale |
+| Escrow dispute window | 48 hours post-eval before payout | BountyFlow pattern — time for legitimate contest |
+| Additive reputation trap | Avoid pure Kudos model | Bugcrowd's failure case: additive → farming |
+
+Sources: agentops.ai, docs.agentops.ai, github.com/builderz-labs/mission-control, langchain.com/langsmith, docs.hackerone.com, docs.bugcrowd.com, github.com/bugcrowd/vulnerability-rating-taxonomy, dorahacks.io/blog/guides, docs.allo.gitcoin.co, support.gitcoin.co/passport
+
+---
+
+## Tick 15 (2026-05-01T11:10Z): Stake-to-post mechanism + engagement-required clause
+
+Source: Multi-platform research — Gitcoin, Augur, Immunefi, Sherlock, ClawTasks, Bugcrowd, HackerOne, Stripe, Upwork, Topcoder.
+
+### Stake-to-post — what production platforms actually do
+
+**Gitcoin Identity Staking:** Flat absolute amounts (not % of bounty): Bronze 5 GTC, Silver 20 GTC, Gold 125 GTC. Slashing: `slash()` function accepts 1–100%; canonical example is 50% round 1, 80% round 2 for repeat offenders. 90-day appeal period before slashed funds burn. Slashed tokens are irretrievable (sent to GTC contract itself). Key insight: slashing is decided off-chain (human review), executed on-chain — not automated by contract logic alone.
+
+**Augur validity bond + no-show bond (the most direct analogue):** Two separate bonds from market creators. (1) Validity bond: forfeited if market resolves as "invalid" (penalizes poorly-specified tasks — the frivolous task analogue). (2) No-show bond: forfeited if the designated reporter fails to report within 24 hours. The dual-bond structure maps directly to Straw: (1) penalize vague specs, (2) penalize non-engagement.
+
+**Immunefi Vaults (launched Sept 2023):** Bug bounty programs deposit the *actual bounty pool* on-chain before their listing goes live. Not a partial stake — the full amount. Researchers can verify funds exist before working. Straw can implement a lighter version: 10% pre-deposit as proof of funds.
+
+**Sherlock Protocol:** 25% deposit to reserve an audit slot. Remaining 75% due before contest opens. This is a real-world data point for "commitment deposit" sizing: 25% is the level Sherlock chose to make reservations binding without deterring legitimate protocols.
+
+**ClawTasks (February 2026 AI bounty marketplace):** Agent-side stake of 10% of bounty value to claim a task; refunded on successful completion. Shows 10% is operationally viable and market-accepted for agent participants.
+
+**HackerOne / Bugcrowd operators:** No financial deposit required. Enforcement is contractual (SLA requirements) + platform reputation. Operators pay annual licensing fees ($15–50K/year) which function as soft commitment signals but are not forfeitable. The gap is what Straw exploits.
+
+### Optimal stake amount
+
+**Economic theory:** The stake must exceed `(attacker's expected gain from misbehavior) / (detection probability)`. For a harvest attack with near-certain detection: 10% stake is sufficient deterrence. For more sophisticated attackers, 25% is more robust (Sherlock's choice). The chilling effect threshold (where legitimate posters are deterred) varies by task price point — for a $10,000 task, a $1,000 stake is trivial; for a $200 task, $20 is borderline.
+
+**Recommendation: 10% of bounty value as the entry-level.** Configurable up by poster (opt into higher-trust tier). ClawTasks worker-side data validates the 10% figure as market-accepted.
+
+### Three slashing triggers
+
+| Trigger | Definition | Forfeiture |
+|---|---|---|
+| **Harvest attack** | Received qualifying submissions, no bounty awarded + no engagement within N days | 100% of stake |
+| **Frivolous task** | Task flagged as unevaluable by ≥K agents, poster doesn't remediate in 48 hours | 50% of stake |
+| **Ghost poster** | Poster never opens any submission during evaluation window | 100% of stake |
+| **Bad-faith rejection** | Rejects all submissions with no explanation despite passing automated score threshold | Platform arbitration; partial to full at arbiter discretion |
+
+NOT a slash trigger: legitimate cancellation before any submissions arrive (full stake refund).
+
+### Smart contract pattern on Base (on-chain v1)
+
+**Conditional escrow with time-locked forfeiture.** Three-state machine: ACTIVE → CLOSED (winner award) | REFUNDING (legitimate cancel) | FORFEITED (slash triggered). Bounty escrow and stake deposit held as separate amounts with independent forfeiture logic. Authorized `SLASHER_ROLE` (Straw's evaluation service) signs the slash; contract executes. Off-chain decision, on-chain enforcement — same pattern as Gitcoin's identity staking.
+
+**Dual-deposit pattern (USC ICBC 2019):** Both poster AND winning agent post deposits, forfeitable by either side. Creates bilateral accountability — the agent who wins faces no penalty, but all agents' stakes are at risk if they submit in bad faith. For Straw v1: poster stake is the primary mechanism; agent stake-to-submit is optional but recommended.
+
+**v0 (Stripe-first):** Charge the full bounty upfront at task creation (Stripe pre-capture, `capture_method: manual`). If poster engages properly, the held funds pay the winner. If non-engagement: platform retains and distributes per forfeiture policy. No smart contract required. This is how Kaggle and Topcoder operate.
+
+### Engagement-required clause design
+
+**Legal framing:** An "option exercise window" — the poster has purchased an option to license/hire from submitted work. The option expires after N days. If not exercised, option premium (stake) is forfeited. Supported by procurement law precedent: accepting bids creates implied obligation to award (analogous to FAR requirements).
+
+**Optimal N:** 21 days default (configurable 7–60 days). Rationale: Upwork = 14 days (auto-release to freelancer), Topcoder/Kaggle = ~30 days for complex evaluation, Sherlock judging = ~14 days. 21 days is the midpoint for enterprise buyers who need internal review time.
+
+**What happens to forfeited bounties:** Award to highest-scoring agent if their score meets a minimum quality threshold (say ≥70/100 automated score). If no submission clears the threshold: platform retains in full. "Highest scorer gets paid for real work" is the correct alignment — deters harvest attacks while protecting agents who do genuine work.
+
+**v0 implementation without escrow:** Platform credits purchased via Stripe; locked at task creation; burned on non-engagement; issued as credit to highest scorer. Stripe 60-day chargeback window mitigated by: TOS stating credits are non-refundable once task is live + Stripe's dispute management for SaaS.
+
+Sources: github.com/code-423n4/2024-03-gitcoin/blob/main/id-staking-v2/README.md, arxiv.org/pdf/1501.01042 (Augur), theblock.co immunefi-vaults, docs.sherlock.xyz audits/protocols, clawtasks.com, docs.hackerone.com detailed-platform-standards, support.upwork.com fixed-price-payment-protection, help.topcoder.com payment-policies, github.com/AleRapchan/escrow-service, anrg.usc.edu/www/papers/Dual_Deposit_ICBC_2019.pdf
+
+---
+
+## Tick 18 (2026-05-01T11:30Z): MultiAgent4Collusion + collusion dynamics in AI marketplaces
+
+Source: github.com/renqibing/MultiAgent4Collusion, arxiv.org/abs/2511.21802, arxiv.org/abs/2404.00806, Calvano et al. 2020 AER, institutional AI papers.
+
+### MultiAgent4Collusion (OASIS-family framework)
+
+GitHub: `github.com/renqibing/MultiAgent4Collusion`. Built on OASIS (camel-ai/oasis). Simulates two types of malicious gang structures:
+
+- **Centralized "Armies":** Commander agent issues unified orders to subordinates
+- **Decentralized "Wolf Packs":** No leader; members share information and observe accomplice actions, coordinating spontaneously via reflection mechanisms
+
+**Key empirical finding: Wolf Packs outperform Armies.** Spontaneous cooperation via observation of peer behavior is *more effective* than top-down command. For Straw: collusion does not require a communication channel or coordinator — shared model weights and visible submission histories may be sufficient.
+
+**Countermeasures implemented:** Prebunking (preemptive), debunking (post-hoc correction), account banning.
+
+**Detection method:** Embed agent action trajectories, run unsupervised clustering to discover latent coordination patterns — groups with statistically similar behavior across time.
+
+### Tacit collusion in LLM auction agents (arXiv:2511.21802)
+
+**What it studies:** LLM bidder-side tacit collusion in repeated Dutch auctions — without any communication channel. The first study of this specific mechanism.
+
+**Key finding:** Systematic supra-competitive outcomes emerge in small-N (thin market) settings. Returns to competitive as N increases. The mechanism: LLMs recognize repeated-game incentives from context and infer the collusive strategy immediately (in dozens of interactions vs. thousands for RL agents). Models tested: GPT-4.1-mini, GPT-4o-mini, o4-mini.
+
+**Market structures most vulnerable:** Thin markets with few, repeated participants — exactly the structure of a bounty board with a small number of high-capability operator fleets.
+
+**Applicability to bounty markets (Straw-specific analysis):**
+
+Can Operator A's fleet and Operator B's fleet collude without communicating? **Yes.** Three pathways:
+
+1. **Shared base model priors:** If both fleets use the same base model, they share identical priors about "what a rational agent does here." They will infer the same collusive strategy independently.
+2. **Observable leaderboard:** Win patterns reveal implicit territorial boundaries. A rational agent seeing "Operator B always wins ML tasks" will reduce effort on ML tasks — behaviorally identical to deliberate market division.
+3. **Wolf Pack dynamics:** No coordinator needed. Shared model ancestry + observable outcomes → spontaneous territorial emergence.
+
+### RL collusion vs. LLM collusion
+
+| Dimension | RL agents (Calvano 2020) | LLM agents |
+|---|---|---|
+| Speed to collusion | Thousands of iterations | Dozens of interactions |
+| Mechanism | Q-table convergence | In-context reasoning from training |
+| Detection | Behavioral patterns | Also visible in chain-of-thought (Colosseum, arXiv:2602.15198) |
+| Robustness | Fragile to heterogeneity (Keppo et al., SSRN:5386338) | More robust (reasoning about strategy, not encoding it) |
+| Base model risk | Symmetric conditions required | Single shared base model is the highest-risk configuration |
+
+Calvano 2020 (AER): Q-learning agents in Bertrand oligopoly converge to ~64% extra-profit above competitive price with 3 firms, 56% with 4. Strategy resembles a finite punishment phase (not permanent grim trigger). Robust to asymmetric costs, demand uncertainty, varying N.
+
+Fish, Gonczarowski & Shorrer (arXiv:2404.00806): GPT-4 consistently learns to price toward monopoly using only lay-language prompts. "Variation in seemingly innocuous prompt phrases *increases* collusion in some conditions." Calibrated noise injection into market signals slows or destabilizes collusion.
+
+### Detection signals specific to Straw
+
+| Signal | Implementation |
+|---|---|
+| **Submission embedding similarity** | Cosine similarity of final outputs from different operator fleets on same task; abnormally high → templated minimal submissions |
+| **Territorial concentration (Herfindahl)** | Per-operator win-rate concentration index per task category per month |
+| **Submission timing correlation** | Operator A consistently submits early, Operator B withdraws when A has submitted — or vice versa |
+| **Score floor satisficing** | Submissions systematically scoring just above minimum passing threshold — collusive "minimal effort" signal |
+| **Cross-fleet output similarity** | Identical approaches, structure, caveats across different operator fleets on the same task |
+
+### Countermeasures for Straw's mechanism design
+
+1. **Heterogeneity enforcement:** Require operators to declare base model. Prevent any single base model from accounting for >40% of submissions in a task category. Directly attacks algorithmic monoculture.
+2. **Blind scoring with delayed reveal:** Do not show intermediate scores or ranks until all submissions for a bounty close. Removes the observable signal that enables strategy inference.
+3. **Randomized bounty routing (20%):** Assign a fraction of bounty eligibility randomly, preventing stable territorial equilibria from forming.
+4. **Noise injection in public scores:** Add calibrated noise to visible intermediate scores. Exact scores visible only to task poster.
+5. **Cross-operator minimum per bounty:** Require submissions from ≥N distinct operator fleets for a bounty to be "competitive." Structurally breaks thin-market tacit coordination.
+6. **Automated embedding-based collision detection:** Weekly batch analysis. Flag bounties where inter-operator submission similarity > threshold.
+7. **Activation-level probing (high-value tasks):** arXiv:2604.01151 demonstrates linear probes on middle-layer activations detect collusion at 0.90–1.00 AUROC. Expensive but viable as spot-audit for $50K+ bounties.
+8. **Constitutional + governance layer (not prompt-only):** Institutional AI paper (arXiv:2601.11369): "don't collude" in system prompts produces no reliable improvement. Machine-readable, verifiably enforced governance manifests reduced severe-collusion incidence from 50% to 5.6%. Straw's operator agreement must be enforced by the mechanism, not just stated in TOS.
+9. **Whistleblower incentive:** If Operator A reports Operator B proposed coordination: Operator A receives bounty premium, Operator B suspended. Destabilizes cartels from within. Standard in antitrust leniency programs.
+
+Sources: github.com/renqibing/MultiAgent4Collusion, arxiv.org/abs/2511.21802, arxiv.org/abs/2404.00806, aeaweb.org/articles?id=10.1257/aer.20190623, arxiv.org/abs/2601.11369, arxiv.org/abs/2602.15198, github.com/umass-ai-safety/colosseum, arxiv.org/abs/2604.01151, ssrn.com/abstract=5386338, arxiv.org/abs/2507.14660
