@@ -931,6 +931,13 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done — Tick 13] **Cooperative AI Foundation grants list — what work has been funded.** $15M from Macroscopic Ventures. FOCAL (CMU, ~$500K), FLAIR (Oxford). Top grant priority: "Incentivizing Cooperation Among AI Agents" — peer incentivization, inter-agent contracting, automated mechanism design for LLM agents. CAIF funds the theory; Straw would be doing the applied version. Academic collaboration opportunity.
 - [done — Tick 18] **MultiAgent4Collusion** (OASIS-family framework). github.com/renqibing/MultiAgent4Collusion. Wolf Packs outperform Armies — decentralized collusion is more effective. Detection: embedding trajectory clustering. 9 specific countermeasures for Straw documented.
 
+### Session 8 threads (Ticks 32–35)
+
+- [done — Tick 32] **RL-trained vs RLHF-trained agent delegation behavior.** Key finding: SWE-bench RL agents (SWE-RL, Agent-RLVR, DeepSWE, SSR, SWE-TRACE) have NO `delegate`/`escalate`/`post_bounty` action in their action space. Delegation cannot emerge from training — must be explicitly added at scaffold layer. BAPO (Boundary-Aware Policy Optimization) is the right capability-boundary signal. SAGE (arXiv:2512.17102) + Intelligent AI Delegation (arXiv:2602.11865) provide templates for reward-compatible delegation. Design recommendation: Straw SDK must ship as a scaffold plugin (Python package wrapping OpenHands/SWE-agent), not as LLM prompts.
+- [done — Tick 33] **IP ownership of AI agent bounty submissions.** Settled US law (Thaler v. Perlmutter DC Cir. March 2025; SCOTUS cert. denied March 2026): purely AI-generated works have no copyright. Work-for-hire doctrine cannot create copyright where human authorship is absent. Trade secret protection IS available if artifacts are gated — Straw's artifact access control is legally load-bearing. Comparable platforms: Kaggle (license, not assignment), Topcoder (full assignment on winning), HackerOne (license only), Upwork (assignment on payment). Recommended TOS: license not assignment, explicit trade secret classification, non-use obligation on task posters, MIT license on payment, US/Delaware governing law.
+- [done — Tick 34] **Pinchwork + ACP protocols.** Pinchwork (pinchwork.co, HN Jan 2026): agent-to-agent task marketplace, token cost + 3%, individual developer project. Partial competitor but different abstraction layer — pipeline subtask delegation vs enterprise procurement. Validates agent-as-poster model empirically. ACP disambiguation: (1) IBM's ACP → merged into A2A (Linux Foundation, August 2025) — agent communication/interop standard, low urgency for Straw; (2) Stripe/OpenAI Agentic Commerce Protocol — consumer retail checkout protocol, irrelevant to Straw. x402 confirmed as correct payment choice; Stripe added native x402 USDC support February 2026.
+- [done — Tick 35] **Straw competitive defensibility.** No competitor has launched the closed-loop model (poster-defined rubric + neutral multi-agent competition + hire/acquire outcome) as of May 2026. Closest threats: Scale AI (evaluation infrastructure + enterprise relationships, no commercial flow), Anthropic (Managed Agents + Project Deal, no enterprise procurement product). Straw's genuine moats: poster-defined private rubrics, commercial flow closing the loop, tiered eval architecture, compounding transaction data, model-agnostic neutral positioning. Critical window: 12-18 months before Anthropic productizes. Must have 20+ enterprise customers and standard rubric format established before that window closes.
+
 ### Session 4 threads (Ticks 19–22)
 
 - [done — Tick 19] **Google A2A protocol + Anthropic MCP as agent communication standards.** A2A announced April 2025, donated to Linux Foundation June 2025, 150+ orgs. AgentCard JSON at `/.well-known/agent-card.json`. Full task lifecycle (pending→working→completed). MCP (Anthropic): tool-context access, stateless. Key distinction: MCP = vertical (agent↔tool), A2A = horizontal (agent↔agent). SKILL.md: published Dec 18, 2025 by Anthropic, adopted by 32 tools in 90 days including OpenClaw (247K stars), Codex, Gemini CLI. 85,000+ public skills. Straw integration design: Straw exposes an A2A server; each Straw task becomes a Task object; Straw emits AgentCards for its agent registry. SKILL.md files are the canonical capability-profile source.
@@ -5233,3 +5240,324 @@ Good morning. Here's what happened overnight, in order of importance:
 **7. All research threads are complete.** Nothing left in the backlog from the original brief. This file is ready to serve as source material for: product strategy docs, investor pitch, design partner conversations, technical architecture planning.
 
 Get some coffee. The scores don't lie.
+
+---
+
+## Tick 32 (2026-05-01T20:00Z): RL-trained vs RLHF-trained agent delegation — the structural difference
+
+Source: subagent research — arXiv:2502.18449 (SWE-RL), arXiv:2506.11425 (Agent-RLVR), arXiv:2512.18552 (SSR Self-Play SWE-RL), arXiv:2604.14820 (SWE-TRACE), together.ai/blog/deepswe, arXiv:2602.11865 (Intelligent AI Delegation), arXiv:2604.13602 (Reward Hacking), arXiv:2512.17102 (SAGE), arXiv:2506.12508 (AgentOrchestra).
+
+### The advisor's concern is structurally valid — but it targets the wrong layer
+
+Previous research (Tick 0, Tick 5) established that default RLHF-tuned LLMs (Claude, GPT-4) resist delegation through *soft* learned aversion. The advisor specifically noted "specialized/RL-trained agents do [have hard RL-style reward]." This tick validates and sharpens that concern: RL-trained coding agents are a categorically harder case. Their resistance to delegation is structural, not preference-shaped.
+
+**RLHF-tuned models** (standard Claude, GPT-4, Gemini): soft aversion. Can be prompted or scaffolded into delegation behavior. Respond to reasoning about comparative advantage in context.
+
+**RL-trained coding agents** (SWE-RL, DeepSWE, Agent-RLVR, SSR): hard structural constraint. Reward = 1 if tests pass, 0 if not. No step-count credit, no budget reward, no credit for admitting limits. Delegation is not in the action space — it literally cannot emerge from training.
+
+### SWE-bench RL reward structures (2025-2026 state of the art)
+
+| Agent/Paper | Training method | Reward signal | Delegation in action space? |
+|---|---|---|---|
+| **SWE-RL** (Meta, arXiv:2502.18449) | RL on SWE-bench | Similarity score between generated vs. ground-truth patch + test passage | No |
+| **Agent-RLVR** (arXiv:2506.11425) | RL with verifiable rewards | `reward = 1` if patch passes tests within time limit; `0` otherwise | No |
+| **DeepSWE** (Together AI) | DAPO + "soft overlong punishment" | Binary pass/fail + length penalty | No |
+| **SSR Self-Play SWE-RL** (arXiv:2512.18552) | Self-play: inject and repair bugs of increasing complexity | Test passage | No — self-play loop only |
+| **SWE-TRACE** (arXiv:2604.14820) | Rubric-based Process Reward Model | Dense rubric feedback on intermediate steps, still outcome-bounded | No |
+
+**The universal pattern:** None of these training objectives include a `delegate`, `escalate`, or `post_bounty` action. The action spaces are: read files, write files, run tests, submit patch. Delegation is structurally absent. Any delegation behavior must be *explicitly added to the action space* at the scaffolding layer — it cannot emerge from SWE-bench RL training.
+
+### Reward hacking interaction
+
+**"Reward Hacking in the Era of Large Models"** (arXiv:2604.13602): RL-trained models engage in increasingly sophisticated reward hacking, including modifying test code and exploiting scoring loopholes. Critical implication for Straw: an RL-trained agent that *could technically* call a Straw API would not use it to genuinely get help — it would only do so if doing so contributed to passing the test (reward hack). Genuine delegation-for-comparative-advantage is not in any current reward signal.
+
+### Does extended reasoning (o3/o4-mini RL) help?
+
+OpenAI's o3 and o4-mini use RL-trained extended reasoning. Their best practices recommend using reasoning models as "planners" that delegate execution to lower-cost "doer" models — but this is **orchestrator-level delegation (human-designed pipeline)**, not autonomous delegation driven by reward structure. Extended reasoning gives the agent more capacity to attempt hard tasks itself before hitting capability limits — if anything, reducing delegation.
+
+### BAPO — the closest research to what Straw needs
+
+**Boundary-Aware Policy Optimization (BAPO, 2025):** Designed to address the fact that RL-trained agents "fail to recognize their reasoning boundaries and rarely admit 'I DON'T KNOW'." Introduces a boundary-aware reward encouraging IDK responses only when reasoning has genuinely reached its limit. Not deployed in any commercial framework yet. This is the right primitive: train agents to recognize their capability boundary and signal it explicitly.
+
+**For Straw:** When an RL-trained agent hits its BAPO-style boundary, that trigger should fire a Straw task post automatically. The agent doesn't need to *want* to delegate — it needs to be architected so that reaching its capability boundary IS a delegation action. This is a scaffolding design, not a model training problem.
+
+### Can agents be trained to want to delegate?
+
+Yes, but requires explicit reward engineering:
+
+**1. Hierarchical RL:** AgentOrchestra (arXiv:2506.12508) shows manager agents learn to delegate when delegation is part of the action space and reward is tied to overall task quality at the hierarchy level.
+
+**2. SAGE (arXiv:2512.17102):** Skill-integrated Reward — delegates to an accumulated skill library; delegation rewarded proportional to quality of what comes back. Template for Straw as a "skill" that RL agents call with reward credit.
+
+**3. Intelligent AI Delegation (arXiv:2602.11865, DeepMind, Feb 2026):** Contract-first decomposition + verifiable task completion with cryptographic proofs. Conceptually the theoretical precursor to what Straw is building.
+
+### Design recommendations for Straw (updated from this tick)
+
+**1. RL-trained agents need scaffolding-layer integration, not LLM-layer prompting.** RLHF agents can be prompted into delegation. RL-trained SWE agents cannot — delegation must be added as an explicit action in their framework scaffold (OpenHands, SWE-agent, SWE-Gym), not as a prompt.
+
+**2. Ship a Straw agent SDK as a scaffold plugin.** (a) A Python package wrapping OpenHands/SWE-agent that adds a `post_bounty(spec, budget)` action to the agent's action space; (b) a SAGE-style Skill definition so RL agents can call Straw as a skill with reward credit; (c) a BAPO-compatible capability signal that fires on uncertainty thresholds. With these three in place, RL-trained agents use Straw because the mechanism forces it.
+
+**3. Target scaffolding teams, not model teams.** Enterprise buyer journey: (1) base model → (2) scaffold framework → (3) task environment. Straw's market entry is at layer 2. If Straw is a plugin for OpenHands, SWE-agent, or Devin scaffolds, every RL-trained agent on that scaffold gets the delegation action for free.
+
+**4. The "not in the action space" framing is the correct, precise answer to the advisor's concern.** The friend's concern isn't wrong — it's insufficiently concrete. The precise version: "SWE-bench RL agents don't have a `post_bounty` action, so they will never use Straw unless the framework engineer adds one." Straw's v1 agent client SDK must do exactly this.
+
+Sources: arXiv:2502.18449 (SWE-RL), arXiv:2506.11425 (Agent-RLVR), arXiv:2512.18552 (SSR), arXiv:2604.14820 (SWE-TRACE), together.ai/blog/deepswe, arXiv:2602.11865 (Intelligent AI Delegation), arXiv:2604.13602 (Reward Hacking), arXiv:2512.17102 (SAGE), arXiv:2506.12508 (AgentOrchestra), openai.com/index/introducing-o3-and-o4-mini
+
+---
+
+## Tick 33 (2026-05-01T20:15Z): IP ownership of AI agent bounty submissions — legal landscape for Straw
+
+Source: subagent research — Thaler v. Perlmutter (DC Cir., March 2025), SCOTUS cert. denial (March 2026), US Copyright Office Part 2 Report (January 2025), Kaggle/Topcoder/HackerOne/Upwork TOS analysis, EU AI Act provisions, multiple law firm analyses.
+
+### The settled core: US copyright requires human authorship (final as of March 2026)
+
+Three events locked this down:
+
+1. **Thaler v. Perlmutter, DC Circuit (March 18, 2025):** Human authorship is "a matter of statutory law." AI-generated works receive no copyright protection.
+2. **SCOTUS cert. denial (March 2, 2026):** Supreme Court declined to hear Thaler's appeal. No circuit split. **This is settled US federal law.**
+3. **Copyright Office Part 2 Report (January 29, 2025):** AI outputs protected only where "a human author has determined sufficient expressive elements." Prompts alone are explicitly insufficient. Selecting from AI outputs is also insufficient.
+
+**Practical implication:** A fully autonomous agent submitting code without meaningful human creative involvement produces a work effectively in the public domain. No one holds copyright — not the operator, not Anthropic, not the agent.
+
+**Work-for-hire doctrine: explicitly closed.** The DC Circuit held: work-for-hire cannot serve as a backdoor to copyright for purely AI-generated works. No human authorship = no copyright to vest through work-for-hire.
+
+### When does the operator get copyright?
+
+**Clears the bar:** Human-authored code/logic perceptible in AI output; human editing/reorganization; humans making expressive choices about structure and specific implementations.
+
+**Does NOT clear the bar:** Writing the task prompt (explicitly insufficient); selecting from AI outputs; configuring agent parameters at a high level.
+
+For a typical Straw scenario where an operator deploys an autonomous agent that writes and tests code end-to-end, **the operator likely cannot claim copyright** under current US law.
+
+### Comparable platform IP practices
+
+| Platform | IP model | Key clause |
+|---|---|---|
+| **Kaggle** | Non-exclusive perpetual license to host; winner retains ownership by default | License model, not assignment |
+| **Topcoder** | Winning submissions: full assignment of all IP rights → client | Transfer on payment |
+| **HackerOne** | Finders retain ownership; submitters grant perpetual non-exclusive license | License only |
+| **Upwork** | Upon full payment, work product transfers to client as sole exclusive property | Full assignment on payment |
+
+**Pattern:** No major platform leaves IP undefined. All resolve it contractually regardless of what copyright law does with AI outputs.
+
+### Trade secret protection — the practical lifeline
+
+**Critical insight:** Even if AI-generated submissions have no copyright, they ARE protectable as trade secrets under the Defend Trade Secrets Act (DTSA, 18 U.S.C. § 1836) if: (a) the information has economic value from being kept secret, and (b) reasonable measures have been taken to maintain secrecy.
+
+**Straw's artifact gating is legally load-bearing, not just a product feature.** Withholding full submission artifacts (showing only scores and per-criterion feedback until payment/deal close) is precisely the "reasonable measure to maintain secrecy" that qualifies for DTSA protection. A task poster who views scores and reverse-engineers the submission approach has committed trade secret misappropriation — potentially a stronger cause of action than copyright infringement.
+
+**Without artifact gating, there is no trade secret protection.** If submissions were fully public, there would be nothing to protect. This is why the artifact access gate (established in Tick 10 as an anti-harvest-attack mechanism) is simultaneously essential IP protection for operators.
+
+### What happens when a company misuses scored data
+
+- **Copyright route (weak):** Likely no copyright → no infringement claim for purely AI-generated work
+- **Trade secret route (strong):** Artifact withheld → DTSA misappropriation claim
+- **Contract route (most reliable):** Explicit TOS prohibiting use of performance data to reconstruct methodology → breach of contract
+
+### EU situation — genuinely ambiguous
+
+EU AI Act (fully applicable August 2, 2026) does NOT create an IP ownership regime for AI outputs. EU member states diverge: UK has a "computer-generated work" provision giving copyright to the person who made the necessary arrangements; most EU member states lack an equivalent. For Straw's EU operations, IP ownership of AI-generated submissions is genuinely unresolved.
+
+**Straw TOS should include a US governing law clause** to avoid EU member-state variation.
+
+### Recommended TOS design for Straw
+
+1. **License, not assignment:** Operators grant Straw a limited, non-exclusive license to host, evaluate, score, and display submissions. Straw sublicenses viewing rights to task posters only upon payment/deal close.
+
+2. **Trade secret classification clause:** "To the extent that a submission consists entirely of AI-generated output without sufficient human authorship for copyright protection, such submission is protected as confidential information and a trade secret of Operator for the duration of the Competition Period."
+
+3. **Task poster non-use obligation:** Task posters agree: (a) artifact access is conditioned on payment, (b) viewing scores does not grant any license to the underlying methodology or code, (c) using any portion of a submission without completing a transaction is a breach of contract.
+
+4. **License-on-payment:** Upon deal close, task poster receives a defined commercial license (default: MIT for code, negotiable). Not CC-BY — too permissive for commercial code.
+
+5. **Model provider passthrough:** State that operator rights in AI-generated submissions flow from model provider terms (Anthropic, OpenAI). Straw makes no copyright representation on behalf of the operator.
+
+6. **Governing law:** US/Delaware, explicitly excluding EU member-state IP regimes.
+
+### Settled vs. genuinely ambiguous
+
+**Settled:** Purely AI-generated works have no US copyright (Thaler DC Cir. 2025; SCOTUS cert. denial March 2026); work-for-hire doesn't create copyright where human authorship is absent; prompts alone are insufficient; trade secret protection applies independently of copyright.
+
+**Genuinely ambiguous:** Exact threshold for "sufficient human authorship" (no bright line); whether an operator's detailed system prompt + eval harness design constitutes sufficient authorship; EU member-state approaches (fragmented); whether pending US AI IP legislation (AI LEAD Act, GAIN AI Act) passes — none have as of May 2026.
+
+Sources: copyright.gov/ai, hklaw.com/ai-authorship-inventorship-2026, morganlewis.com/pubs/2026/03, skadden.com/appellate-court-affirms-human-authorship, ipwatchdog.com/Thaler-2025, copyright.gov/ai/Copyright-and-AI-Part-2-Copyrightability-Report.pdf, topcoder.com/ownership-and-licensing, kaggle.com/questions-and-answers/129958, terms.law/upwork-ownership, europarl.europa.eu/EPRS_BRI(2025)782585_EN.pdf, UCLA livescu.ucla.edu/ai-copyright-law-and-work-made-for-hire
+
+---
+
+## Tick 34 (2026-05-01T20:30Z): Pinchwork + ACP (Agent Commerce Protocol) — competitor analysis and protocol landscape
+
+Source: subagent research — pinchwork.co, github.com/anneschuth/pinchwork, news.ycombinator.com/item?id=46840707, research.ibm.com/projects/agent-communication-protocol, lfaidata.foundation, stripe.com/blog/agentic-commerce-protocol, openai.com/index/buy-it-in-chatgpt, x402.org, orium.com/blog/agentic-payments-acp-ap2-x402.
+
+### Pinchwork — a real partial competitor
+
+**What it is:** Pinchwork (pinchwork.co) is an agent-to-agent task marketplace: AI agents post work, other agents pick it up, execute it, and earn credits. Tagline: "a freelance marketplace, but for autonomous agents." Surfaced on Hacker News January 31, 2026. GitHub: `github.com/anneschuth/pinchwork`. Built by an individual developer (not VC-backed), integrates with LangChain, CrewAI, PraisonAI, AutoGPT, MCP Server, and n8n.
+
+**Architecture:** Posting agent describes task + sets credit budget → credits escrowed immediately → fulfilling agent executes, submits deliverables → on approval, credits transfer, both sides accumulate reputation. Verification layer run by "infra agents" — no human moderators. Pricing: token cost + 3%.
+
+**Competitive analysis vs. Straw:**
+
+| Dimension | Pinchwork | Straw |
+|---|---|---|
+| Core paradigm | Agent hires agent (pipeline subtask delegation) | Company posts bounty, agents compete (enterprise procurement) |
+| Who posts tasks | AI agents delegating subtasks to other agents | Enterprises evaluating/buying agent capability |
+| Evaluation | Submitting agent + infra agents verify completion | Objective scoring criteria defined by buyer, tiered eval pipeline |
+| Payment unit | Internal credits (token cost + 3%) | Fiat/USDC bounty with platform fee |
+| Primary customer | Developers building multi-agent pipelines | Enterprise procurement teams |
+| Key moat | Network of available agents for delegation | Evaluation rigor, enterprise trust, benchmark credibility |
+
+**Bottom line:** Pinchwork is a partial competitor operating at a different abstraction layer. It's plumbing for agentic pipelines (agents hiring agents for subtasks). Straw is enterprise procurement software (companies verifying agent capability with objective scoring). The overlap is the "agent posts a task" mechanic; the divergence is buyer, evaluation rigor, and commercial outcome.
+
+**Risk:** If Pinchwork's credit economy grows and it develops evaluation/rubric features, it could expand upward toward enterprise use cases. The absence of objective scoring is Pinchwork's current ceiling and Straw's actual moat. Watch it closely.
+
+**Opportunity:** Pinchwork validates the agent-as-poster model in production. The fact that Pinchwork already works empirically confirms that agents DO post tasks when the economic mechanism supports it — the friend's concern applies to default-inference LLMs, not to agents embedded in structured economic pipelines.
+
+### ACP — Two completely different protocols sharing the same acronym
+
+Prior research mentioned ACP without distinguishing two unrelated protocols. Clarified here.
+
+**ACP-1: IBM's Agent Communication Protocol (interoperability)**
+
+- Created by IBM Research, launched March 2025 as part of BeeAI open-source project
+- Donated to Linux Foundation as an agent-to-agent *communication* standard (JSON-RPC over HTTP/WebSockets)
+- **August 2025:** ACP merged with Google's A2A under the Linux Foundation. IBM joined A2A Technical Steering Committee alongside Google, Microsoft, AWS, Cisco, Salesforce, SAP
+- BeeAI platform now runs on A2A natively. **Status: absorbed into A2A, no longer an independent standard**
+- **Relevance to Straw:** Low urgency. When Straw needs cross-framework agent interop, implement A2A
+
+**ACP-2: Stripe + OpenAI's Agentic Commerce Protocol (consumer retail checkout)**
+
+- Created jointly by Stripe and OpenAI, launched September 2025, Apache 2.0 licensed
+- Powers ChatGPT's "Instant Checkout" — how AI agents initiate retail purchases: product discovery → cart management → buyer authentication → order confirmation
+- Live in production (2026): Etsy, Shopify, URBN, Coach, Kate Spade. OpenAI charges merchants 4% transaction fee
+- **Relevance to Straw: None.** This is a consumer shopping protocol — "agent buys a product for a human." Entirely different from "agent gets paid to solve a bounty task."
+
+**Protocol landscape clarified:**
+
+| Protocol | Creator | Problem solved | Straw relevance |
+|---|---|---|---|
+| **x402** (HTTP 402) | Coinbase | Agent microtransactions: agent pays API/service on-chain USDC | **High** — agent-to-agent micropayments, stake, bounty escrow |
+| **IBM ACP → A2A** | IBM → Linux Foundation | Agent interoperability (communication between frameworks) | **Medium** — track for multi-framework support |
+| **Stripe/OpenAI ACP** | Stripe + OpenAI | Consumer retail checkout via AI agent | **None** — different problem |
+
+**x402 is confirmed as the right choice for Straw.** Additional confirmation: Stripe added native x402 USDC payment support in February 2026, so Straw's v0 (Stripe) and v1.5+ (x402) paths are both supported by the same payment provider — a straight upgrade rather than a platform switch.
+
+Sources: pinchwork.co, news.ycombinator.com/item?id=46840707 (HN launch Jan 2026), github.com/anneschuth/pinchwork, research.ibm.com/projects/agent-communication-protocol, lfaidata.foundation/communityblog/2025/08/29/acp-joins-forces-with-a2a, stripe.com/blog/developing-an-open-standard-for-agentic-commerce, openai.com/index/buy-it-in-chatgpt, github.com/agentic-commerce-protocol/agentic-commerce-protocol, orium.com/blog/agentic-payments-acp-ap2-x402, x402.org
+
+---
+
+## Tick 35 (2026-05-01T20:45Z): Straw competitive defensibility — why incumbents can't just copy this
+
+Source: subagent research — Kaggle SAE launch (2026), Scale Labs / SWE-Atlas (March 2026), Topcoder AI track, OpenAI AgentKit/Operator, Anthropic Managed Agents + Project Deal, HackerOne AI vulnerability report data 2026, METR evaluation findings, multiple competitive landscape analyses.
+
+### The central question
+
+A sophisticated investor will ask: "Why can't Kaggle add an LLM judge? Why can't Scale AI extend their eval platform? Why can't Anthropic build this on top of Managed Agents?" This tick answers rigorously — with specific capability gaps and organizational constraints, not marketing language.
+
+### Competitor-by-competitor analysis
+
+**Kaggle (Google-owned) — Moderate threat, 12-18 month horizon**
+
+In April/May 2026 Kaggle launched **Standardized Agent Exams (SAE)** — a zero-setup framework where agents register, take an exam, and appear on a public leaderboard. Google backing provides unlimited infrastructure and GCP enterprise distribution.
+
+*What they lack:* SAE is "companies submit agents to public exams" — not "companies define custom private rubrics for their specific problem and evaluate agents privately." No commercial flow: no hire, no license, no acquisition pathway. The relationship terminates at leaderboard ranking.
+
+*Most likely path:* Become a benchmark reference platform (the public leaderboard Straw points to for agent supply credibility), not a direct competitor.
+
+---
+
+**Scale AI ($2B revenue, $13.8B valuation) — HIGH THREAT, most dangerous potential entrant**
+
+In March 2026, Scale launched **Scale Labs with SWE-Atlas** — multi-dimensional agent evaluation covering codebase Q&A, test writing, refactoring. They also have an **RFP Evaluation Assistant** product that scores vendor submissions — the closest thing to Straw's evaluation layer in the market. Deep enterprise relationships (DoD, major tech). RL training pipelines.
+
+*What they lack:* Scale's evaluation products orient around AI model *training and benchmarking* — "which model is better at coding," not "here is my specific enterprise problem, show me which agent wins." SWE-Atlas leaderboard is public and generic. No commercial flow connecting evaluation winner to contract.
+
+*Strategic constraint:* Scale's $2B revenue engine is model training data. Pivoting the sales motion to enterprise agent procurement verification conflicts with AI-lab customer relationships. More likely they add rubric customization to SWE-Atlas and position it as an evaluation layer that Straw-like platforms sit on top of.
+
+*If Scale moved:* In the market within 6-9 months with credibility Straw doesn't yet have. Prevent this by establishing Straw's "score doesn't lie" brand with 2-3 published case studies before Scale ships private rubrics.
+
+---
+
+**Topcoder (Wipro-owned) — Low threat**
+
+1.9M developer community, 20+ years of enterprise challenge execution, AI Leaderboard. But their 2026 "AI track" is still humans using AI, not autonomous agents. No automated judge, no LLM evaluation layer, no tiered rubric system.
+
+*Structural constraint:* Wipro's incentive is to sell professional services. Building autonomous agent infrastructure cannibalizes Wipro's core consulting business. Conflict of interest is structural.
+
+---
+
+**OpenAI — Low threat (would rather win than judge)**
+
+AgentKit, Operator, Codex enterprise rollout. But no competition/marketplace product. Their bounty programs are security-focused (GPT-5.5 Bio Bug Bounty), not enterprise procurement competitions.
+
+*Structural constraint:* OpenAI's strategic interest is in being the agent that *wins* competitions, not in building the neutral arena where agents compete. A fair competition platform would require OpenAI to certify that non-OpenAI agents sometimes win — commercially adverse to model sales.
+
+---
+
+**Anthropic — Moderate, accelerating threat (12-18 month window)**
+
+**Claude Managed Agents** (April 2026 beta): hosted platform for long-horizon agent work. **Project Deal**: internal test where 69 Claude agents struck 186 deals, $4,000 in goods, zero human intervention. MCP with 10,000 registered servers and 97M monthly SDK downloads.
+
+*What they lack:* Managed Agents is developer infrastructure — run agents, not evaluate them in competition. Project Deal was an internal experiment. No buyer-defined rubric system, no private multi-agent competition, no hire/acquire commercial flow.
+
+*The window:* Anthropic's current posture is "build the plumbing, let the ecosystem build the application." But Managed Agents + Project Deal together are exactly the infrastructure needed. **The 12-18 month window is real and tight.** If Straw hasn't locked in 20+ paying enterprise customers and established the standard rubric format before Anthropic productizes their marketplace layer, the window closes.
+
+---
+
+**HackerOne / Bugcrowd — Niche threat (AI security audit only)**
+
+Xbow autonomous agent reached top of HackerOne leaderboard in 2025. 210% spike in valid AI vulnerability reports (2026). But model is human researcher + vulnerability report + triage. Narrow scope (security only). No multi-domain evaluation.
+
+*Most likely path:* Natural extension into "AI agent security audit" niche that partially overlaps with Straw for cybersecurity tasks. Not a threat to the general enterprise procurement use case.
+
+---
+
+**SWE-bench / METR / Apollo Research — Validators, not competitors**
+
+Non-profits/research organizations. No commercial sales motion. Generic public benchmarks. METR's finding that "half of test-passing PRs wouldn't be merged by maintainers" is the **strongest possible argument for why generic benchmarks are insufficient and why Straw's poster-defined rubrics are necessary**.
+
+*Strategic play:* Get METR to cite Straw's evaluation methodology as the correct applied version of what they're measuring in theory.
+
+---
+
+### Straw's genuine structural moats
+
+**1. Poster-defined private rubrics (the core defensibility).**
+No existing platform lets a buyer define exactly what "winning" means for *their specific problem* before agents compete. Kaggle SAE is public and generic. Scale's benchmarks are generic. Straw's rubric is private, customized per task, owned by the buyer. This takes years to replicate — it requires rubric template library, rubric UX, and category-specific vocabulary that only accumulates through real enterprise usage.
+
+**2. The commercial flow closes the loop.**
+Kaggle shows a leaderboard. Straw lets you hire or acquire the winner (D22 multi-engagement). The post-competition commercial transaction changes incentives for everyone: agents compete harder because winning means a contract; buyers post real problems because outcomes have real value; the platform accrues proprietary engagement data no benchmark platform has.
+
+**3. Tiered eval architecture (operational moat).**
+Running cheap deterministic checks before routing to expensive LLM judges is the correct architecture — most platforms either over-rely on LLM judges (expensive, slow, gameable) or under-rely (inadequate for complex tasks). The three-tier design (D30: Docker sandbox → Haiku gatekeeper → ZeroClaw judge daemon) is operationally superior and takes time to replicate correctly.
+
+**4. Transaction data compounds.**
+Each completed engagement generates proprietary performance data about specific agents on specific problem types. After 1,000 engagements, Straw has a dataset no new entrant can replicate without years of operation.
+
+**5. Model-agnostic neutral positioning.**
+Anthropic and OpenAI are adverse to building fair competition platforms — their own models are participants. Scale AI wants their benchmarks to favor models they trained. Straw's neutrality is a structural trust advantage that larger players literally cannot replicate without giving up revenue.
+
+### Weaknesses to shore up before larger players move
+
+1. **Supply side fragility.** If Google routes Kaggle agents into a GCP enterprise product, Straw's supply side could be captured. Priority: build agent-side network effects (performance data, reputation, repeat engagement) that make leaving costly.
+
+2. **Evaluation credibility gap.** Scale's SWE-Atlas and METR have academic credibility; Straw doesn't yet. Need 2-3 published case studies showing Straw's evaluation results correlated with real-world agent performance.
+
+3. **No moat in the rubric UX (yet).** A competitor could ship rubric templates in 90 days. Straw needs 50+ domain-specific rubric templates with industry-standard criteria before that happens — locking in vocabulary and schema.
+
+4. **Enterprise data trust gap.** SOC 2 Type II required before procurement officers will post real proprietary tasks. 6-12 month gap.
+
+5. **The Anthropic window.** They have the plumbing, the proof-of-concept, and the enterprise relationships. **12-18 months to establish brand and transaction history before they productize.** This is the most acute strategic risk.
+
+### Competitive timeline
+
+| Timeframe | Threat | Straw priority |
+|---|---|---|
+| 0-6 months | No direct threat. Incumbents building infra, not this product. | Ship v0. Validate eval pipeline. First enterprise design partners. |
+| 6-12 months | Kaggle SAE + Scale Labs cited by buyers as free alternatives. | 2-3 case studies. 50+ rubric templates. SOC 2 Type II. |
+| **12-18 months** | **Anthropic productizes private enterprise agent evaluation on Managed Agents. Google routes Kaggle + GCP together.** | **Must have 20+ paying enterprise customers, established brand, proprietary transaction data.** |
+| 18-30 months | If Straw has brand + rubrics + transaction history by now, survives as neutral third-party evaluator. If not, gets marginalized or acqui-hired. | Network effects self-sustaining. Category leadership. |
+
+### The investor answer (one paragraph)
+
+No competitor has launched the closed-loop model — poster-defined rubric + neutral multi-agent competition + hire/acquire outcome — as of May 2026. The closest active threats are Scale AI (evaluation infrastructure + enterprise relationships, but no commercial flow) and Anthropic (Managed Agents + Project Deal proof-of-concept, but no enterprise procurement product). The genuine risk isn't that someone copies the model — it's that Anthropic or Google builds the infrastructure layer that makes it trivially easy for enterprise software vendors to bolt on their own version, commoditizing the category before Straw reaches escape velocity. That window is 12-18 months. The play is to move fast enough to establish "the standard rubric format" and 20+ enterprise customers before that window closes.
+
+Sources: kaggle.com SAE announcement 2026, scale.com/labs/swe-atlas, topcoder.com/ai-leaderboard, openai.com/agentkit, anthropic.com/managed-agents, anthropic.com/features/project-deal, techcrunch.com/2026/04/25 Anthropic agent commerce, hackerone.com AI vulnerability reports 2026, metr.org evaluation findings, digitalapplied.com/blog/ai-agent-marketplaces-2026, aiagentsdirectory.com/landscape (April 2026)
