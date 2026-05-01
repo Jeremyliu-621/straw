@@ -26085,4 +26085,73 @@ First AE compensation:
 - Enterprise AI procurement failures: MIT/Stanford Digital Economy Lab, "Enterprise AI Playbook: Lessons from 51 Successful Deployments," March 2026; OlakAI "AI Pilot to Production"
 - B2B SaaS funnel benchmarks 2025: The Digital Bloom "2025 B2B SaaS Funnel Benchmarks"; MarketJoy "B2B Sales Pipeline Conversion Rates"
 - CISO AI vendor review requirements: Docketry AI, "What CISOs Really Look for Before Approving AI Systems," 2026; Traction Technology, "Enterprise AI Vendor Risk Assessment"
+## Tick 151 (2026-05-01): The Ghost Competition Problem — Minimum Prize Floors and Participation Guarantees
+
+**Thread**: What happens when an enterprise posts a task but no serious agents show up? How does Straw prevent ghost competitions and guarantee minimum participation quality?
+
+### The Ghost Competition Risk
+
+Every two-sided marketplace has an inventory liquidity problem on launch. Straw's version: an enterprise posts a $500 task and receives three trivial submissions from low-quality agents who are farming small prizes, or receives zero submissions. The enterprise has wasted its prize pool, received no value, and has no incentive to use Straw again.
+
+This is a real failure mode in existing competition platforms. HackerRank's "challenges" feature has a documented problem with low-quality submissions on smaller contests. Kaggle competitions below $10,000 in prize have noticeably lower participation and lower submission quality than their flagship grand challenges ($100K+).
+
+### The Participation Economics at Different Prize Levels
+
+A serious agent operator runs the expected value calculation before committing to a competition:
+
+```
+EV = (prize × win_probability) - compute_cost - opportunity_cost
+```
+
+For a $500 coding task:
+- Compute cost: ~$2-5 (GPT-4o/Sonnet-class model running a 30-minute coding task)
+- Time cost for engineering setup: ~$10-20 (amortized if reused)
+- Opportunity cost vs. other competitions running simultaneously: low if pipeline is automated
+
+At a 10% win probability with a $500 prize, EV = $50 - $5 - $10 = **+$35**. Positive EV even at low prize levels — IF the competition is evaluable automatically (coding) and the operator has a capable agent.
+
+But for a $500 document analysis task requiring manual rubric interpretation:
+- Compute cost: ~$3-8
+- But win probability plummets to 5% if the rubric is ambiguous and 20 agents enter
+- EV = $25 - $5 - $15 = **+$5**. Barely positive. Marginal entrants drop out.
+
+The conclusion: prize floors are task-category dependent. Coding tasks (high win probability × low compute cost × automated eval) can sustain lower prizes. Creative/research tasks (lower win probability × higher rubric uncertainty) need higher prizes to attract quality.
+
+### Empirical Prize Floor Estimates by Category
+
+Based on Kaggle prize distribution analysis and competitive programming economics:
+
+| Task Category | Suggested Minimum Prize | Target Entrant Count |
+|---|---|---|
+| Code generation / bug fix | $500 | 10-30 |
+| Data processing / ETL | $750 | 8-20 |
+| Document intelligence | $1,000 | 8-15 |
+| Research synthesis | $1,500 | 5-12 |
+| Multi-step reasoning | $2,500 | 5-10 |
+| Long-horizon campaigns (1+ week) | $5,000+ | 10-30 (phased) |
+
+Below these floors, Straw risks ghost competitions. Above them, serious participation is likely given reasonable task clarity.
+
+### Structural Solutions
+
+**1. Minimum Prize Floor Policy (public)**
+Straw enforces minimum prize floors by task category. Enterprise trying to post a document intelligence task for $200 is blocked — the system quotes the minimum ($1,000) and explains why. This is also a marketing move: it communicates quality standards to agents ("Straw enforces minimum prizes, so competitions here are worth your time").
+
+**2. Straw Participation Guarantee**
+For enterprise customers on managed tier (25% take rate), offer a **participation guarantee**: if fewer than 5 qualified submissions are received within the competition window, Straw refunds 50% of the prize pool and offers a free competition retry. This is affordable at managed tier economics ($5,000+ prize × 25% = $1,250+ platform fee; a refund of $2,500 costs Straw $1,250 gross margin) but provides significant enterprise confidence.
+
+**3. Reputation-Weighted Agent Enrollment**
+Before a competition opens for general enrollment, allow Straw to invite the top 10 agents in the relevant task category to enroll early (48 hours before general open). High-reputation agents are given first-look access in exchange for committing to submit. This "anchor enrollment" is visible to general agents: "8 agents with 1500+ rating have enrolled" signals quality and attracts more participation (the social proof effect documented in Kickstarter crowdfunding research).
+
+**4. Task Clarity Score Before Publication**
+Before a competition goes live, the Rubric Health Score (introduced in earlier ticks) is shown to the enterprise. If the score is below 60/100 (ambiguous rubric, high gaming risk), Straw warns: "Competitions with low Rubric Health Score receive 40% fewer qualified submissions. Improve clarity before publishing?" This catches the structural ghost competition problem (bad rubrics that no agent can confidently respond to) before it costs the enterprise their prize.
+
+**5. Minimum Viable Agent Pool Requirement**
+At the time of competition publication, require a minimum enrollment threshold before the competition "activates" (similar to Kickstarter's all-or-nothing model). If enrollment doesn't reach 5 agents within 48 hours of opening, the enterprise is notified and can choose to increase the prize, improve the rubric, or cancel for a full refund. This prevents the enterprise from waiting 72 hours only to find 1 submission waiting at the end.
+
+### The Data Network Effect Benefit of Ghost Competition Prevention
+
+Every ghost competition is a lost calibration data point. Straw's moat depends on accumulating high-quality (task, rubric, submissions, scores, outcome) tuples — and a competition with 0-2 trivial submissions contributes garbage data. Enforcing minimum prize floors and participation guarantees is not just about enterprise satisfaction; it's about data quality in the calibration corpus that compounds over years.
+
+**Open thread**: Should Straw offer "private competitions" — enterprises post tasks that don't go to the open agent marketplace but instead go to a curated set of pre-vetted agents? This is a premium product (higher take rate, guaranteed quality entrants) that addresses the ghost competition risk for sensitive enterprise workflows.
 
