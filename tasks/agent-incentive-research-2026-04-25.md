@@ -27941,3 +27941,137 @@ Source: [SEC 2026 Exam Focus on AI — Wealth Management](https://www.wealthmana
 
 Source: [Agentic AI Revolution: Managing Legal Risks — Squire Patton Boggs](https://www.squirepattonboggs.com/insights/publications/the-agentic-ai-revolution-managing-legal-risks/); [LLM Compliance 2026: ISO 42001, EU AI Act, SOC 2, GDPR — Guardion](https://guardion.ai/blog/llm-compliance-guide-iso-42001-eu-ai-act-soc2-gdpr-2026)
 
+
+---
+
+## Tick 159 (2026-05-01): Rubric Design — The Core Workflow That Makes or Breaks Every Competition
+
+**Thread**: How does Straw actually design the evaluation rubric? This is the hardest product problem, not the pipeline.
+
+### The Core Insight
+
+Every other piece of Straw is engineering. The rubric is epistemology. A bad pipeline loses accuracy. A bad rubric loses *validity* — you optimize agents for the wrong thing and never know it. The rubric design process is Straw's highest-leverage, most defensible activity.
+
+The dirty secret of AI evaluation: most enterprise clients cannot write a good evaluation rubric without help. They know what "good" looks like when they see it. They cannot specify it in advance. Straw's rubric design workshop is what converts vague intent into objective measurement.
+
+---
+
+### Phase 0: Pre-Workshop Intake (1-2 weeks before competition launch)
+
+**Required deliverables from the client**:
+1. **3-5 examples of excellent past work** — real outputs the client would have approved. These become the "gold standard" anchors.
+2. **3-5 examples of unacceptable work** — outputs that were rejected or required major revision. These define the floor.
+3. **Primary failure modes** — what goes wrong most often? (Hallucinated citations? Wrong tone? Missing edge cases? Incorrect calculations?)
+4. **The "last mile" user** — who actually uses this output? What do they do with it next?
+5. **The "so what" test** — what decision gets made or action gets taken based on this output?
+
+**Why this intake matters**: Clients default to describing *what they want* rather than *what good looks like*. "High quality, accurate, professional" describes nothing. "Passes a senior analyst review without requiring more than 2 corrections" describes something measurable.
+
+---
+
+### The 4 Failure Modes of Rubric Design
+
+**Failure Mode 1: Ambiguity**
+- Symptom: Two independent evaluators score the same output differently >20% of the time.
+- Cause: Rubric criteria use interpretive language ("clear," "appropriate," "professional") without operationalization.
+- Fix: Every criterion must have a pass/fail threshold or a 1-5 scale with labeled anchors (behavioral anchors per level).
+- Detection: Inter-rater reliability check — score 20 sample outputs with 2 independent evaluators. Cohen's kappa < 0.6 means the rubric needs revision.
+
+**Failure Mode 2: Gaming**
+- Symptom: Agents score well on the rubric but the client hates the outputs.
+- Cause: Rubric measures proxies rather than the underlying capability. Word count, citation count, structural compliance.
+- Fix: Include at least 20% "holistic quality" criteria that require end-to-end reasoning, not local optimization. Make task variants unpredictable enough that gaming one variant doesn't transfer.
+- Detection: Ask the client to blind-review top-5 submissions without seeing scores. If their ranking diverges >40% from the rubric ranking, the rubric is measuring the wrong thing.
+
+**Failure Mode 3: Specification Capture**
+- Symptom: The rubric reflects what the rubric-writer cares about, not what the client actually needs.
+- Cause: Straw wrote the rubric based on the intake document without iterating with the client's end-users.
+- Fix: Workshop rule — the rubric must be reviewed and signed off by at minimum: (a) the task sponsor (champion), (b) a representative end-user, (c) one skeptical peer who wasn't involved in the intake. All three must agree.
+- Detection: "Does this rubric measure what you actually care about, or what you said you care about during the intake?"
+
+**Failure Mode 4: Coverage Gaps**
+- Symptom: Agents produce outputs that score perfectly but fail on a dimension not in the rubric.
+- Cause: The intake process didn't surface all relevant failure modes.
+- Fix: Include a mandatory "surprise test" — 5 adversarial edge cases not disclosed to agents. Score these separately and weight them 15% of the final score.
+- Detection: Ask "What's the most embarrassing way an agent could get a perfect score and still be completely wrong for us?" — then add that failure mode to the rubric.
+
+---
+
+### The Rubric Design Workshop (Half-Day, On-Site or Video)
+
+**Participants**: Straw rubric designer (1), client task sponsor (1), client end-user (1-2), client technical peer (1).
+
+**Workshop agenda** (4 hours):
+
+**Hour 1: Output Anatomy**
+- Walk through the "excellent examples" collected in intake
+- For each: "What specifically makes this good? What would make it slightly worse?"
+- Document 8-12 atomic dimensions (e.g., "factual accuracy," "completeness," "appropriate caveats," "actionable format")
+
+**Hour 2: Scoring Architecture**
+- For each dimension: binary pass/fail OR 1-5 scale?
+- Assign weights (must sum to 100%). Force a ranking if clients want everything equally weighted — they can't have it.
+- Write behavioral anchors for each scale point: "A 5 means... A 3 means... A 1 means..."
+- Red-line rule: any dimension where the client cannot write a 3-anchor description in 5 minutes is probably too vague. Rephrase or remove.
+
+**Hour 3: Validation Run**
+- Score 10 sample outputs using the draft rubric
+- 2 evaluators score independently, then compare
+- Identify all disagreements and revise rubric until inter-rater agreement >80%
+- Flag any dimension that generated >3 disagreements — likely needs re-anchoring
+
+**Hour 4: Edge Case Design**
+- Design the 5 adversarial surprise cases (the "coverage gap" test)
+- These are sealed — not disclosed to agents or public
+- Agree on the scoring weight for surprise cases (default: 15%)
+- Final sign-off from all workshop participants
+
+**Output**: A 2-4 page rubric document including: dimension list with weights, behavioral anchors, scoring procedure, adversarial case catalog, evaluator instructions.
+
+---
+
+### Rubric Format: What the Document Looks Like
+
+**Header block**:
+- Task name and version number
+- Rubric authors and review sign-offs
+- Effective date and expiry (rubrics expire — a 6-month-old rubric for a new task type may need revision)
+
+**Dimension table** (one row per dimension):
+| Dimension | Weight | Scale | Anchor-1 | Anchor-3 | Anchor-5 | Automated? |
+|---|---|---|---|---|---|---|
+| Factual accuracy | 30% | 1-5 | >3 factual errors | 1-2 factual errors | Zero factual errors | Partial (fact-check model) |
+| Completeness | 20% | 1-5 | Missing >2 required sections | Missing 1 section | All sections present | Yes (template check) |
+| Appropriate caveats | 15% | Binary | No risk/limit disclosures | — | All standard caveats present | Partial |
+| ... | ... | ... | ... | ... | ... | ... |
+
+**Automated vs. human scoring split**: Target 70% automated (fast, cheap, consistent) + 30% human (holistic quality, surprise cases). Fully human rubrics don't scale. Fully automated rubrics get gamed.
+
+**Evaluator instructions**: Step-by-step procedure for the human-scored dimensions. Trained evaluators, not crowdworkers.
+
+---
+
+### Rubric Economics
+
+- Rubric design workshop: 16 person-hours (Straw) + 8 person-hours (client)
+- Validation run: 8 person-hours
+- Total pre-competition rubric cost: ~$8,000-$12,000 in Straw labor
+- This cost is bundled into the $50K-$200K competition package — it's not itemized
+- The rubric becomes Straw IP (the client gets the competition results; Straw keeps the rubric design methodology and uses anonymized rubric patterns for the calibration corpus)
+
+The insight: clients are buying the rubric as much as the competition. The rubric is the specification of "what good looks like" — something most enterprise clients have never written down before. That's value even before the first agent submits.
+
+---
+
+### Rubric Portability (The Anti-Disintermediation Mechanism)
+
+Clients often ask: "Can we take the rubric and run our own competitions off-platform?"
+
+The honest answer: Yes, you can take the rubric document. You cannot replicate:
+1. The historical baseline — all prior competition scores that give the rubric *meaning* (a score of 720 is only meaningful because we know what 720 means against 400 other evaluated outputs)
+2. The evaluator calibration — Straw evaluators are trained to the rubric; new evaluators drift significantly in the first 20-30 evaluations
+3. The adversarial cases — the surprise test cases are sealed and Straw-designed; a client running their own evaluation loses this layer
+4. The multi-model ensemble judging that makes scores forgery-resistant
+
+The rubric document is 20% of the value. The calibration context is 80%.
+
