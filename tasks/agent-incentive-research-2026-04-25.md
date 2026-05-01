@@ -18972,3 +18972,105 @@ The FICO analogy: FICO's millions of scored-mortgage-outcome pairs took 40 years
 - Straw Monitor as production validation: Tick 92 (Straw Monitor $500/agent/month Series A feature A1)
 - Institutional anchor strategy: Tick 115 (The institutional anchor strategy — finding and winning the enterprise that makes Straw a standard)
 
+
+---
+
+## Tick 123 (2026-05-01): The 300-agent swarm scenario — contest theory, infrastructure challenges, and optimal prize design
+
+**Thread**: What happens when 300+ AI agents compete in a single Straw competition? This is both an opportunity (the distribution's right tail improves) and a structural challenge (evaluation infrastructure, gaming surface, solution homogenization). Contest theory makes specific predictions; empirical evidence from Kaggle and medical AI challenges confirms them.
+
+---
+
+### What contest theory predicts: the discouragement effect and the right tail
+
+**Tullock contest theory (1980) and all-pay auction extensions** make clear predictions about scaling competitor count:
+
+- Individual effort is inversely related to the number of contestants. Experimental evidence: individual effort drops from ~33% of prize value in 2-player contests to ~25% in 4-player contests. With 300 agents, rational individual effort for any single agent collapses — but the distribution's **right tail** (quality of the best submission) still improves because there are more draws from the skill distribution.
+
+- **The discouragement effect is real**: Above roughly 15-20 competitors, the "active core" — agents who genuinely believe they can win — is typically logarithmically small relative to total entrants. With 300 agents, approximately 10-30 will compete seriously. The rest rationally invest minimally or copy public approaches.
+
+- **Winner-take-all is theoretically optimal at high entrant counts**: Chawla, Hartline et al. proved that when agents are risk-neutral, allocating the entire budget to the top prize maximizes quality of the best submission. With 300 agents, you only care about the maximum — not the average. Winner-heavy prize structures (top-3 taking 70/20/10) outperform flat distributions.
+
+- **As N grows, prizes must grow to maintain incentives**: Any individual agent's expected return shrinks with 1/N. Flagship competitions attracting 300+ agents require proportionally larger prizes to prevent wholesale discouragement effect collapse.
+
+---
+
+### What empirical data shows: Kaggle and medical AI challenges at scale
+
+**CAMELYON17 (2018 — 300+ enrolled teams)**: The largest medical AI challenge at the time. Prior year CAMELYON16 had 32 submissions from 23 teams; 10 of those 32 beat the best pathologist. Scale in CAMELYON17 was driven by notoriety from the prior results. The enrollment-to-active-submission gap was stark: hundreds enrolled, far fewer submitted final predictions.
+
+**Kaggle at scale (2,000-5,000 teams, flagship competitions)**:
+1. **Leaderboard shake-up amplifies with scale**: The delta between public and private leaderboard rankings grows with contestant count. One analyzed case saw public #2 drop to #52 on private evaluation — a direct artifact of 300+ agents collectively probing the public test set and overfitting to it.
+2. **Solution homogenization at scale**: Large competitions see rapid convergence on dominant approaches via public discussion threads. The middle 80% copies what's winning; the "long tail" of diverse approaches disappears.
+3. **Top-quintile diversity does improve**: Among genuinely elite participants, approach diversity increases because there are more diverse elite entrants.
+
+**Key Kaggle finding**: 15 years of competition data show that solution write-ups from 3,000+ team competitions show *higher technique overlap* than 50-100 team competitions, despite higher absolute participation. Diversity peaks at roughly 20-50 competitors and declines thereafter — an **inverted-U relationship**.
+
+**NeurIPS 2024 ML4CFD (240 teams, 650 submissions)**: Organizers reported infrastructure stress — shared GPU queue became a bottleneck, evaluation fairness was compromised by shared hardware making runtimes non-deterministic.
+
+**NeurIPS 2023 LLM Efficiency Challenge**: Received more submissions than they could provision hardware for. Forced to cap mid-competition. 700 evaluations processed; ran out of hardware budget.
+
+---
+
+### Infrastructure challenges at 300 agents
+
+**The binding constraint is evaluation infrastructure, not solution quality.**
+
+- At 10-30 minutes per evaluation, a 300-agent competition generates 50-150 hours of compute for a single round. Serial queues become 2-6 day waits at peak.
+- **Hardware non-determinism**: Shared evaluation hardware creates fairness problems. NeurIPS organizers observed the same code getting different runtimes depending on queue position.
+- **Coordinated leaderboard probing**: With 300 agents each allowed 10 submissions, that's 3,000 probe attempts. Adversarial agents can effectively reverse-engineer the test set through coordinated probing even within per-agent submission limits.
+- **Judge quality degradation**: For human-in-the-loop evaluation components, 300 agents creates cognitive overload. AI judge pipelines scale better, but LLM judges show inconsistency at volume and are vulnerable to prompt injection.
+
+**Gaming amplifies at scale — with a counterforce**: Berkeley RDI (2025-2026) documented that every major AI agent benchmark can be exploited. With 300 competing agents, statistically, several will discover evaluation vulnerabilities. But: **community scrutiny scales with participation**. Large competitions create a self-policing community of hundreds of knowledgeable participants motivated to report gaming (it threatens their own prize position). Kaggle's history consistently shows gaming exposed via community threads, not platform detection.
+
+---
+
+### Optimal prize structure for 300-agent competitions
+
+| Structure | Mechanism | Performance at 300 agents |
+|-----------|-----------|--------------------------|
+| Winner-take-all | 100% top prize | Maximizes peak quality; kills mid-tier engagement |
+| Top-3 concentrated | 70/20/10 split | Near-optimal for peak quality; preserves some mid-tier incentive |
+| Milestone + top prize | Base reward at quality threshold + top prize | Best for discovering rising agents; slightly reduces top-quality incentive |
+| Proportional allocation | Prize ∝ relative score | **No Nash Equilibrium exists**; agents face incoherent incentives; under-invest |
+
+**Recommendation for Straw**: Standard competitions use a top-3 concentrated structure (60/25/15). Campaign competitions (Tick 117) add a milestone reward layer (10% of prize pool released at checkpoint advancement gates) to maintain engagement over the longer window.
+
+---
+
+### The 10:1 enrollment-to-serious-submission ratio
+
+This is the most important number for Straw's infrastructure planning. **300 registered agents ≈ 30 genuine high-quality submissions.** Design implications:
+
+1. **Infrastructure**: Scale for 300 (elastic compute provisioning, parallel evaluation lanes) but optimize costs around the expected 30-50 serious submissions.
+2. **Leaderboard management**: A 300-agent public leaderboard with real-time updates creates chaos (constant movement, gaming noise). Consider update frequency limits (hourly, not real-time) and partial-set leaderboards.
+3. **Prize signaling**: Clearly communicate that participation without a serious submission earns nothing — reduce phantom registration that clogs evaluation queues.
+4. **Registration filtering**: Optional pre-qualification round (fast 30-minute task) that filters to serious competitors before the main competition opens. This has a significant quality benefit at scale — the DARPA Challenge model (qualifying events before the main competition) exists for exactly this reason.
+
+---
+
+### What the 300-agent scenario means for Straw's platform design
+
+The 300-agent scenario is ultimately positive — it represents Straw achieving sufficient supply-side liquidity that major competitions attract serious competition depth. The challenges are engineering (infrastructure), not economic (incentives). The key design decisions:
+
+1. **Elastic evaluation compute**: Auto-scale Docker evaluation infrastructure based on queue depth. Don't pay for 300-agent capacity when 10 agents are in the queue.
+2. **Partial public leaderboard**: Never expose the full test set to the public leaderboard. Show provisional scores on 30% of test cases; final ranking on 100%.
+3. **Submission rate limiting at scale**: At 300 agents, individual submission limits must be enforced more strictly — 5 submissions/day (not 10) to limit coordinated test-set probing.
+4. **Pre-qualification filtering**: For competitions expected to attract 100+ agents, require a 30-minute qualifying task. Expected 50% filter rate: 300 registrants → 150 qualified → 30 serious final submissions.
+5. **Community forum as first-line integrity monitoring**: Enable public discussion threads in competitions. The self-policing community is more effective than platform detection for gaming at this scale.
+
+---
+
+### Sources
+
+- Tullock (1980) "Efficient Rent Seeking": journal of law and economics; Optimal Large Population Tullock Contests (Oxford Open Economics, doi:10.1093/ooec/odad003)
+- Chawla, Hartline et al., "Optimal Crowdsourcing Contests": yiling.seas.harvard.edu/files/2025/01/sc2011-chawla.pdf
+- Archak & Sundararajan, "Optimal Design of Crowdsourcing Contests": pages.stern.nyu.edu/~narchak/optimalCrowdsourcingDesign.pdf
+- CAMELYON17 competition: grand-challenge.org; CAMELYON16 PMC analysis (pmc.ncbi.nlm.nih.gov/articles/PMC5820737/)
+- Kaggle Chronicles: 15 Years of Competitions: researchgate.net/publication/397480703
+- Kaggle competition shake-up analysis: kaggle.com/code/jtrotman/meta-kaggle-competition-shake-up
+- NeurIPS 2024 ML4CFD: arxiv.org/html/2506.08516v1
+- NeurIPS 2023 LLM Efficiency Challenge: arxiv.org/pdf/2503.13507
+- Berkeley RDI benchmark exploitation research: rdi.berkeley.edu/blog/trustworthy-benchmarks-cont/
+- Hunting for the discouragement effect in contests: Springer, link.springer.com/article/10.1007/s10058-022-00308-4
+
