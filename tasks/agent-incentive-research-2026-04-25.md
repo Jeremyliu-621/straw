@@ -22479,3 +22479,100 @@ We are building the infrastructure that all of them need.
 - Supply-side activation benchmarks: Upwork (marketplace): 35-50% activation rate for new freelancer registrations within 90 days; Topcoder: ~40% of registered members compete in at least 1 event per year
 - Community forum dynamics: Discourse (discourse.org) for developer-focused technical communities
 
+
+---
+
+## Tick 134 (2026-05-01): Straw's secondary data business — calibration corpus as a secondary market
+
+**Thread**: After 500 competitions, Straw's calibration corpus has value beyond competition operations. What is the secondary data market worth, how should Straw structure its data products, and what are the legal constraints?
+
+---
+
+### The market context: enterprise AI evaluation data
+
+**Scale AI's data business**: $2B revenue in 2025 (up from $870M in 2024). Enterprise evaluation contracts average ~$93K/year; large deals exceed $400K. The conflict risk is real: Meta's $14.3B 49% investment in June 2025 triggered customer flight from Google, Microsoft, and OpenAI due to perceived conflict of interest. This is live evidence that evaluation data neutrality commands a premium — and is structurally fragile when the evaluator has conflicted investors. Straw's independence is not just a positioning choice; it is worth money.
+
+**RLHF preference data pricing**: Pairwise human preference data trades at $0.50-$5 per sample at the commodity end. The full data annotation market projects to $10.2B by 2034. But Straw's data differs structurally: it is not raw preference labels but **outcome-calibrated agent performance data tied to real enterprise tasks**. That closes the loop between preference signal and production result — the hardest data to obtain, and structurally more valuable than commodity preference labels.
+
+**Enterprise AI benchmarking data market**: The public benchmarking space (HELM, BIG-bench, MMLU) is largely academic and free. Running a single AI model across a standard evaluation suite costs $344-$2,767 in inference alone (Artificial Analysis 2025). The commercial opportunity in domain-specific agentic evaluation data is unoccupied by any scaled player. IBM has extended HELM for enterprise domains but it is open-source. Straw's real-task corpus is the closest thing to a native commercial benchmark for agents.
+
+---
+
+### What the Straw corpus becomes at scale
+
+After 500 competitions (Year 2-3), the corpus contains:
+- 500+ task specifications (with rubrics) across 8-12 enterprise categories
+- 5,000+ agent submissions with criterion-level scores
+- 200+ production outcome validations (Straw Monitor: did competition performance predict production performance?)
+- Category-level difficulty curves (how hard is Expert-tier in each category)
+- Agent performance trajectories (which agent operators are improving, plateauing, declining)
+
+This is the only dataset of this type in existence. It is not reproducible by a competitor starting today — you need real enterprise tasks with real rubrics and real agent submissions evaluated against real business outcomes.
+
+---
+
+### The three secondary data products
+
+**Product A: Straw Agent Performance Index (quarterly publication)**
+
+A quarterly report on AI agent performance trends across Straw competitions. Modeled on how SimilarWeb, G2, and CB Insights built eight-figure businesses selling intelligence products derived from aggregated behavioral data.
+
+Pricing targets:
+- AI labs (Anthropic, Google DeepMind, OpenAI, Mistral): $25K-$50K/year for pre-publication access + custom analysis. They need real-world competitive performance data to calibrate their agents.
+- VC investors: $15K-$25K/year. VCs evaluating AI agent investments want to know which companies' agents are actually winning enterprise competitions.
+- Enterprise procurement teams: $5K-$15K/year. Pre-competition due diligence — which agents perform well in this category?
+
+Revenue estimate at modest penetration (15 lab/VC subscribers + 30 enterprise subscribers): $1M-$2.5M ARR.
+
+**Product B: Custom competitive analysis**
+
+Enterprise pays $5K-$25K for a custom analysis: "Based on historical competition data, which agents perform well on tasks similar to ours? What rubric dimensions differentiate top performers in this category?" This converts research intent into qualified sales leads — most enterprises that buy custom analysis end up running a Straw competition.
+
+**Product C: Calibration corpus API**
+
+AI labs pay for API access to Straw's calibration corpus for model training and evaluation calibration. Pricing: $100K-$500K/year for enterprise-tier access. This is the Scale AI model applied to Straw's unique dataset — but with cleaner provenance (enterprise tasks from real competitions, not crowd-sourced labeling).
+
+---
+
+### Legal structure: what can and can't be sold
+
+**What Straw can sell freely**:
+- Derived, aggregated metrics: category-level capability scores, rubric dimension distributions, agent performance percentiles
+- Anonymized capability vectors: stripped of submission content, preserving only scored performance
+- Time-series trend data: are agents in category X improving?
+- Category difficulty indices: average Straw Score distributions per task type
+
+**What requires explicit consent and careful structuring**:
+- Raw task descriptions (enterprise customer IP — need explicit data use consent in ToS)
+- Agent submission content (submitter IP — need competition entry agreement clause)
+- Named agent performance data (identity-linked — requires opt-in from agent operators)
+
+**The FTC risk**: The FTC has enforcement posture on AI companies that repurpose user data beyond stated purposes. Straw's ToS needs an explicit provision: "Competition data may be used in aggregate, anonymized form for benchmarking and research publications." Without this clause, selling corpus-derived products is FTC-exposed.
+
+**The clean path**: Sell derived, aggregated metrics — not raw content. Require enterprise customers to consent to aggregated benchmarking use as a condition of platform access. This is precisely the model Yelp, LinkedIn, and Glassdoor used: underlying data is user-generated and proprietary, but derived aggregate indices are monetizable.
+
+---
+
+### Build sequence
+
+**Year 1**: Don't build. Accumulate data. Let the corpus grow naturally from competitions.
+
+**Year 2 (50+ competitions)**: Build the internal data infrastructure. Standardize the output format of each competition so historical data is consistently queryable. Begin internal "Performance Index" reports for design partner feedback.
+
+**Year 3 (200+ competitions)**: Launch the quarterly Agent Performance Index publication. 10-15 paying subscribers is a credible start. Use the publication as a marketing tool as much as a revenue tool — press pick-up of "Straw Q3 2027 Agent Performance Index" is better marketing than any paid campaign.
+
+**Year 4 (500+ competitions)**: Launch the calibration corpus API for AI labs. This is the highest-revenue secondary product but requires the longest dataset accumulation. Don't build before the data justifies it.
+
+---
+
+### Sources
+
+- Scale AI revenue and Meta deal: sacra.com/c/scale-ai/; cnbc.com/2025/11/04/scale-ais-life-after-meta
+- Scale AI evaluation enterprise pricing: vendr.com/buyer-guides/scale-ai
+- RLHF data market: lemon.io/blog/rlhf-platforms-for-data-annotation/
+- Benchmarking cost data: techcrunch.com/2025/04/10/the-rise-of-ai-reasoning-models-is-making-benchmarking-more-expensive/
+- IBM HELM enterprise: github.com/IBM/helm-enterprise-benchmark
+- Gartner pricing: vendr.com/marketplace/gartner
+- FTC data use enforcement: ftc.gov/policy/advocacy-research/tech-at-ftc/2024/01/ai-companies-uphold-your-privacy-confidentiality-commitments
+- SimilarWeb/G2/CB Insights secondary data business models: general knowledge from company histories
+
