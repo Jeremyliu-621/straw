@@ -11565,3 +11565,231 @@ Vesting and retention: 4-year vesting with 1-year cliff, signing bonuses of $50K
 - [Legal Priorities When Prospecting Your Next AI Acquihire](https://www.globalcompliancenews.com/2021/08/09/legal-priorities-prospecting-ai-acquihire29072021/)
 - [Upwork Study: 69% of employers plan to continue using freelancers, not hire](https://investors.upwork.com/news-releases/news-release-details/upwork-study-finds-1-4-us-skilled-knowledge-workers-now-work)
 
+
+---
+
+## Tick 82 (2026-05-01): Developer experience — the agent API, CLI, and SDK
+
+**Research question**: What does the ideal developer-facing interface look like for AI agent teams submitting to Straw competitions? How do the best evaluation platforms design for agent-side DX?
+
+---
+
+### The DX hierarchy for agent submissions
+
+For a human developer building and running an agent system, the Straw interface needs to be in this priority order:
+
+1. **SDK / programmatic API first** — the agent team wants to integrate Straw into their CI/CD pipeline, not manually upload files through a web UI
+2. **CLI second** — for manual operations (checking scores, viewing competition status, managing registrations)
+3. **Web UI third** — for non-technical stakeholders at the agent team (viewing portfolio analytics, managing account settings)
+
+The inverse priority (UI-first, API-as-afterthought) is the failure mode of enterprise B2B SaaS that is supposed to serve developers. SWE-bench ran its evaluations entirely through command-line tooling and GitHub. ARC Prize accepted submissions through a GitHub-linked web form. Neither required a polished UI and both attracted top-tier participants.
+
+---
+
+### The submission lifecycle from the agent team's perspective
+
+```
+Competition opens (webhook notification to agent)
+    ↓
+Agent fetches task description and rubric via API
+    ↓
+Agent processes task internally (arbitrary compute, not Straw's concern)
+    ↓
+Agent submits artifacts via API (structured JSON + artifact files)
+    ↓
+Straw confirms receipt (HTTP 202 Accepted, submission ID returned)
+    ↓
+Tier 1 scoring runs (asynchronous, agent polls or receives webhook)
+    ↓
+Tier 1 score available via API (agent can inspect partial score)
+    ↓
+Tier 2/3 scoring completes (webhook notification)
+    ↓
+Final score available via API
+    ↓
+Competition closes (leaderboard published, winner notified)
+```
+
+The critical design decision: **asynchronous submission and scoring**. The agent submits, gets a receipt, and polls for results (or receives a push notification). No synchronous blocking calls that time out. This is the SQS/Lambda pattern for reliability under variable load.
+
+---
+
+### The core API endpoints
+
+Following RFC 9457 (Problem Details for HTTP APIs) for error responses and OpenAPI 3.1 for specification:
+
+```
+GET  /competitions                          — list open competitions (filtered by agent's declared capabilities)
+GET  /competitions/{id}                     — competition details, rubric, deadline, prize
+GET  /competitions/{id}/task               — task description and any attached datasets (paginated, signed URLs)
+POST /competitions/{id}/submissions        — submit artifacts (multipart/form-data or JSON body with artifact URLs)
+GET  /competitions/{id}/submissions/{sid}  — submission status and score (when available)
+GET  /agents/me/portfolio                  — competition history, scores, categorical ranks
+GET  /agents/me/notifications              — unread competition notifications
+POST /agents/me/capabilities               — update capability declaration (for competition routing)
+POST /webhooks                             — register webhook endpoint for push notifications
+```
+
+The design principle: **agent teams should never need to poll Straw manually**. Webhook push for competition open (relevant to declared capabilities), Tier 1 score available, Tier 2/3 score final, and competition close. The agent's orchestration system handles everything asynchronously.
+
+---
+
+### The x402 payment protocol integration
+
+For competitions where agents are posting sub-tasks (agent-to-agent task delegation, Tick 70), the x402 HTTP payment protocol (built on Coinbase's CDP SDK) enables machine-to-machine payment without human approval at each step. Implementation:
+
+1. Winning agent posts a sub-task with an x402 payment offer attached (e.g., $50 USDC for "translate this contract clause into jurisdiction-specific legal language")
+2. Specialist agent accepts the task and provides capability proof
+3. Winning agent's x402 client evaluates the work and releases payment automatically
+4. Straw's escrow layer logs the transaction for audit purposes
+
+This is the technical implementation of the agent-to-agent economy described in Section 21 and Tick 70. The x402 protocol was documented in Tick 57 (agent onboarding UX).
+
+---
+
+### The "hello world" task for TTFAC (Time-to-First-API-Call)
+
+The target is under 5 minutes from registration to first scored submission. Based on developer onboarding research (Tick 57), the 5-minute threshold is the drop-off point — developers who haven't made their first meaningful API call within 5 minutes of starting have a significantly higher abandonment rate.
+
+The Straw "hello world" path:
+1. Register agent (API key issued immediately)
+2. `pip install straw-sdk` or `npm install @straw/sdk`
+3. `straw competitions list --category=software-engineering` — see available calibration competitions
+4. `straw submissions create --competition=<id> --file=hello_world.json` — submit to a trivial calibration task
+5. `straw submissions status <submission_id>` — see Tier 1 score (available within 30 seconds for deterministic tasks)
+
+The SDK wraps the HTTP API with typed client objects and handles auth, retry, and error parsing automatically. The agent team's code never touches raw HTTP for the common path.
+
+---
+
+### Error design following RFC 9457
+
+Every API error returns a Problem Details object:
+
+```json
+{
+  "type": "https://straw.ai/problems/submission-deadline-passed",
+  "title": "Competition submission deadline has passed",
+  "status": 422,
+  "detail": "The submission deadline for competition 'comp_abc123' was 2026-05-01T18:00:00Z. Current time is 2026-05-01T18:03:42Z.",
+  "instance": "/competitions/comp_abc123/submissions",
+  "competition_id": "comp_abc123",
+  "deadline": "2026-05-01T18:00:00Z"
+}
+```
+
+Cloudflare research found 98% token reduction when serving structured errors to AI agents vs. HTML error pages (Tick 57). For an agent-facing API, RFC 9457 compliance is not a nicety — it is a requirement.
+
+---
+
+### The evaluation sandbox SDK
+
+For competitions with code execution (the agent runs code in Straw's sandbox), the SDK provides a local simulation environment:
+
+```python
+from straw import CompetitionClient, SandboxClient
+
+# Test your agent locally before submitting
+sandbox = SandboxClient.from_competition("comp_abc123")
+result = sandbox.run(your_agent_function, test_cases=sandbox.get_test_cases())
+print(result.score_preview)  # Preview Tier 1 score before submission
+```
+
+The sandbox runs the same Tier 1 deterministic scoring locally (against sanitized test cases — not the full private test suite) so agents can iterate without burning their submission quota. Submission quotas (e.g., 5 scored submissions per competition per agent) are enforced to prevent timing attacks and brute-force rubric optimization.
+
+---
+
+### Sources
+
+- RFC 9457 (Problem Details for HTTP APIs) — structured error design standard
+- RFC 7591 (Dynamic Client Registration) — agent API key provisioning
+- x402 payment protocol (Coinbase CDP SDK documentation)
+- OpenAPI 3.1 specification standard
+- SWE-bench GitHub submission interface (evaluation platform DX reference)
+- Kaggle API documentation (competition SDK reference for developer UX patterns)
+- Tick 57 (agent onboarding UX — TTFAC, abandonment rate research)
+
+
+---
+
+## Tick 83 (2026-05-01): International expansion — GDPR, APAC, and non-US enterprise markets
+
+**Research question**: When should Straw expand internationally and what are the regulatory, operational, and go-to-market requirements for EU and APAC markets?
+
+---
+
+### The sequencing argument: US-only for at least 18 months
+
+The strongest argument for staying US-only in year one is not regulatory risk — it is focus. The US enterprise market is the largest, most accessible, and most agent-aware market in the world. The Y Combinator, a16z, and Sequoia portfolio companies Straw will sell to are US-headquartered. The Berkeley RDI, MIT CSAIL, and Stanford HAI agent communities are US-based. Dividing attention across regulatory environments in year one costs more than it gains.
+
+The regulatory argument for US-only adds further weight: EU AI Act compliance (effective August 2026 for high-risk systems) requires significant documentation investment, a compliance posture, and potentially an EU Data Protection Officer (DPO). GDPR has been in effect since 2018 but enterprise data that flows into Straw's evaluation pipeline may include PII (especially for HR and legal tasks), triggering Article 28 DPA obligations and potentially cross-border data transfer restrictions under Article 44.
+
+**Recommendation**: US-only for the first 18 months. Plan EU expansion for Series A funding round, funded by the compliance cost.
+
+---
+
+### EU expansion: what's required
+
+**GDPR requirements for Straw as a data processor**:
+- Data Processing Agreement (DPA) with every EU enterprise customer — non-negotiable under GDPR Article 28
+- Sub-processor list transparency: Anthropic, Google, AWS must each be listed with their own DPA compliance documentation
+- Data residency option: EU enterprises will increasingly require data to remain in EU data centers (AWS eu-west-1 or equivalent)
+- Data subject rights: For competitions involving personal data, Straw must support right of access, rectification, and erasure requests within 30 days
+- Breach notification: 72-hour notification to supervisory authority under GDPR Article 33
+
+**EU AI Act Article 9.7 implications** (effective August 2026):
+- High-risk AI systems used in EU require pre-defined metrics and prior-stated measurement methodology — exactly the rubric pre-declaration structure Straw already implements
+- Employment, education, and credit access AI systems are classified as high-risk; competitions in these categories for EU enterprises will require full Article 9.7 compliance documentation
+- Straw's Competition Compliance Certificate (Tick 61) should include EU AI Act compliance attestation as a separate section when serving EU enterprises
+
+**Practical EU go-to-market**: The EU enterprise AI market is concentrated in DACH (Germany, Austria, Switzerland), UK (post-Brexit, separate ICO requirements), Netherlands, and France. The UK ICO is more enterprise-friendly than some EU supervisory authorities. DACH enterprises are the strictest on data sovereignty. Start with UK + Netherlands for lower regulatory friction, then DACH.
+
+---
+
+### APAC expansion: the complexity is worth it for one market
+
+The APAC enterprise AI market is fragmented. Japan, Australia, Singapore, and South Korea are the most accessible enterprise markets for a US-based platform:
+
+**Japan**: Strong enterprise AI adoption, especially in manufacturing and financial services. Japan has no comprehensive AI regulation analogous to EU AI Act as of 2026 (soft AI guidelines only). Data residency is not legally required but culturally expected — a Japan-region AWS deployment is effectively required for large Japanese enterprise customers. Entry requires local partnership or a Japan-based sales hire; cold direct outreach has very low conversion.
+
+**Australia**: English-language market, common law jurisdiction, GDPR-inspired Privacy Act amendments in force since 2024. Simpler compliance path than EU. Strong financial services and professional services AI adoption. Direct US-to-Australia sales motion works without local presence up to about $100K ACV.
+
+**Singapore**: IMDA's Model AI Governance Framework (2019, updated 2023) is the closest APAC analog to EU AI Act — explicit, enterprise-friendly, and increasingly referenced in procurement requirements. English common law, low tax, regional hub for Southeast Asia enterprise procurement. Best APAC first market for an evaluation platform with regulatory positioning.
+
+**China**: Market closed to US cloud platforms without local entity and data localization infrastructure investment. Not viable for a pre-Series B Straw.
+
+**Recommendation**: Singapore as first APAC market (Series B expansion, 2027–2028). Australia as secondary APAC market (can be served from US infrastructure). Japan only with a committed local partner.
+
+---
+
+### The EU AI Act as a tailwind, not just a compliance burden
+
+EU AI Act Article 9.7 requires that high-risk AI systems in the EU have prior-defined metrics evaluated before deployment. This is the regulatory argument for Straw in the EU that mirrors OMB M-26-04 in the US. EU enterprises using AI in employment, credit, and education contexts are legally required to have evaluation evidence before deployment from August 2026.
+
+The EU regulatory position is a sales argument: "Your EU compliance officer needs documented evaluation evidence before deploying this agent in your HR workflow. Straw provides the evaluation and the compliance documentation in a single platform."
+
+This is the GDPR-driven data protection market that spawned companies like OneTrust ($1B+ ARR) and TrustArc. The EU AI Act will spawn a compliance market of similar scale. Straw's evaluation platform is positioned as core compliance infrastructure for high-risk AI deployment in the EU.
+
+---
+
+### International agent team recruitment
+
+International expansion of the supply side is simpler than the enterprise side. Agent teams from anywhere in the world can compete in Straw competitions as long as:
+1. Payment rails work (Stripe Connect supports 40+ countries for payouts)
+2. Prize disbursement is tax-compliant (1099-NEC for US teams; Form W-8BEN for international teams)
+3. Identity verification is possible (ERC-8004 or equivalent for non-US agent teams)
+
+The international agent community is already large. Berkeley RDI hackathon participants came from 127 countries. Straw should support international agent team participation from day one, even while enterprise customer acquisition is US-only. This maximizes competition field quality without requiring international enterprise sales infrastructure.
+
+---
+
+### Sources
+
+- GDPR Article 28 (processor obligations), Article 33 (breach notification), Article 44 (cross-border transfers)
+- EU AI Act Article 9.7 (risk management requirements for high-risk systems)
+- UK Information Commissioner's Office (ICO) AI guidance documentation
+- IMDA Singapore Model AI Governance Framework (2019/2023)
+- Australian Privacy Act 1988 and 2024 amendments
+- Stripe Connect international payout documentation (40+ country support)
+- Berkeley RDI hackathon participant data (127 countries, Tick 67 research)
+
