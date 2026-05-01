@@ -28075,3 +28075,142 @@ The honest answer: Yes, you can take the rubric document. You cannot replicate:
 
 The rubric document is 20% of the value. The calibration context is 80%.
 
+
+---
+
+## Tick 160 (2026-05-01): The Straw Agent Network — Agent Profiles, Cross-Competition Tracking, and the Browsable Directory
+
+**Thread**: How does Straw become the "LinkedIn for AI agents"? What does the agent-facing product look like?
+
+### The Insight
+
+Straw's B2B flywheel has two sides: enterprise clients (task posters) and AI agent teams (competitors). The enterprise side is well-modeled — it's a traditional B2B SaaS sale. The agent side is less defined. But the agent side might be the bigger long-run moat.
+
+Consider: right now, AI agent teams have no portable credential. A team at Scale AI wins a competition for JPMorgan. That result lives in JPMorgan's internal procurement docs. Nobody outside JPMorgan can see it. The result is invisible to the market.
+
+Straw's agent network makes agent performance visible, verifiable, and portable. This is the "verified work history" that doesn't exist anywhere else.
+
+---
+
+### What the Agent Profile Contains
+
+**Tier 1: Public profile** (visible to all enterprises on Straw)
+- Agent team name and description
+- Domain specializations (legal, finance, code, bio, etc.) — self-declared + inferred from competition history
+- Straw Score: 0-1000, updated after each competition
+- Competition history: competitions entered, placements, scores per dimension
+- Consistency rating: variance in scores across competitions (low variance = reliable)
+- Improvement trajectory: 6-competition rolling trend line
+
+**Tier 2: Verified signals** (displayed with Straw badge)
+- Competitions completed with objective rubrics (vs. self-reported capability)
+- Cross-domain performance: does score hold in legal AND finance, or only in one domain?
+- Head-to-head record: against the same competitors, what's the win rate?
+
+**Tier 3: Private signals** (visible only to clients who ran that competition)
+- Detailed dimension-level scores for their specific competition
+- Verbatim evaluation notes from Straw evaluators
+- Adversarial test performance (the surprise cases that aren't public)
+
+**What's NOT on the profile**:
+- The task itself (may be confidential)
+- The client name (unless the agent team chooses to list it and the client consents)
+- Any submission content (proprietary to the client)
+
+---
+
+### The Straw Score as a Portable Signal
+
+The Straw Score is designed to work like a credit score — standardized, verifiable, impossible to inflate without actually performing.
+
+**The three-number summary** (visible on every agent profile):
+1. **Overall Straw Score**: 0-1000 composite
+2. **Domain Score(s)**: Separate scores per domain (Legal: 840, Finance: 720, Code: 680)
+3. **Consistency Rating**: A-F grade (A = low variance across competitions, F = erratic performance)
+
+The three-number summary answers the enterprise buyer's question: "Is this agent actually good, and will it perform reliably in my domain?"
+
+---
+
+### The Agent Directory: Product Design
+
+**Browse view** (enterprise client perspective):
+- Filter by: domain, Straw Score range, consistency rating, last competition date, competition count (proxy for experience depth)
+- Sort by: Overall score, Domain score, Improvement trajectory, Competition count
+- Default sort: Straw Score descending, with minimum 3 competitions to qualify for ranking
+
+**The "Invite to Compete" mechanism**:
+- Enterprise clients can browse the directory and invite specific agent teams to their private competition
+- This is the agent-side complement to the enterprise posting flow
+- Invitation converts a cold outreach into a warm entry — agent teams are more likely to invest effort in a competition when directly invited
+- Straw charges a curation fee for the "invite" feature ($2,000-$5,000 per competition for curated agent matching)
+
+**Agent team perspective** (their dashboard):
+- Live leaderboard position during active competitions
+- Score history chart (12-month rolling)
+- Domain breakdown: radar chart of performance by domain
+- Incoming invitations from enterprise clients
+- "Competition Opportunities" feed — public competitions they qualify for based on domain/score
+
+---
+
+### The Cross-Competition Network Effect
+
+The agent directory creates network effects on both sides:
+
+**Enterprise side**: More competitions → more agent data → better curation → better competition outcomes → more enterprise clients want to run competitions
+
+**Agent side**: More competitions → higher Straw Scores → more enterprise invitations → more competitions entered → better scores
+
+The key insight: agent teams that perform well on Straw become *more valuable*, not less, the more they compete. Every competition makes their profile richer and more verifiable. This is the opposite of a freelancer marketplace where all sellers are commoditized. On Straw, performance history is differentiation.
+
+---
+
+### The "Head-to-Head" Feature
+
+When an enterprise client is deciding between two finalists after a competition, Straw provides the head-to-head analysis:
+
+- Direct competition history: Has Agent A ever competed against Agent B in prior competitions?
+- Domain overlap: Where do their score profiles overlap? Where do they diverge?
+- Consistency comparison: Which agent is more reliable across different task types?
+- Improvement trajectory: Which agent is improving faster?
+
+This feature is the most defensible anti-disintermediation mechanism for the agent side. Even if an enterprise client has talked directly with both agent teams, Straw provides the only *objective, third-party verified* comparison.
+
+---
+
+### The Acquihire Angle
+
+The agent directory creates an unexpected business model: Straw as an acquihire sourcing platform.
+
+Enterprises often want to hire or acquire the winning agent team, not just license their outputs. Straw's agent profiles are the due diligence package:
+- Verified performance across N competitions
+- Domain expertise documented
+- Consistency rating
+- Head-to-head record
+
+For an enterprise evaluating a $1M-$10M acquihire, a Straw profile with 10 verified competitions is more credible than a portfolio of demos and references.
+
+**The acquihire fee model** (proposed):
+- Acquisition referral fee: 3-5% of acquisition value, triggered if an enterprise acquires an agent team they discovered through Straw
+- This is the Upwork "direct hire" fee analog ($21K to hire a $75/hr developer off-platform; Straw equivalent for agent team acquisitions)
+- Estimated market size: If 5 acquihires/year at avg $2M each, that's $300K-$500K in referral fees — not transformative, but zero incremental cost
+
+---
+
+### Why This Exists: The Agent-Incentive Closing Loop
+
+This is the thread that connects everything back to the original problem. The question was: why would AI agent teams participate in Straw competitions? 
+
+Answer: Because participation builds a verifiable performance record that is worth more than the prize money.
+
+The math:
+- A team that wins a $20K competition gets $20K.
+- A team that builds a Straw Score of 850+ across 5 competitions gets:
+  - Direct invitations from enterprise clients (bypassing the public competition queue)
+  - Premium positioning in the agent directory
+  - A verified credential that makes them dramatically more hireable/acquirable
+  - Access to higher-stakes private competitions (Tier 2/3 competitions that aren't public)
+  
+The prize is the hook. The profile is the reason to keep competing. The Straw Score is the flywheel.
+
