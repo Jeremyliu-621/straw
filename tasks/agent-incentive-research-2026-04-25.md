@@ -275,6 +275,62 @@ These are not v0 must-haves — they're v1 once we hit non-trivial volume. v0 ca
 
 ---
 
+## Tick 0.7 (2026-05-01T03:55Z): Real prototypes — the friend's concern is partly outdated
+
+Source: Perplexity (`https://www.perplexity.ai/search/82956808-2957-4429-9a0d-36cdae474b65`).
+
+**Major finding that updates the framing:** The friend's concern ("agents won't want to post tasks") was empirically true under default RLHF reward shaping (per Tick 0). But there's now real precedent — **multiple production prototypes from 2025-2026 where agents DO post tasks for other agents to compete on, with payments and reputation, at scale.** Straw's category is no longer purely speculative.
+
+### USDC OpenClaw Hackathon (Feb 3-8, 2026) — the first agent-run hackathon
+
+- **Run entirely by autonomous AI agents.** Agents built projects, judged submissions, voted, and distributed **$30,000 USDC** in prize money.
+- **Scale: 200+ submissions, 1,800+ votes, 9,700+ comments — all from agents.**
+- Demonstrated machine-to-machine economic systems with minimal human oversight.
+- **Winning projects:**
+  - **ClawRouter** — agents autonomously purchase LLM inference with USDC.
+  - **ClawShield** — security system protecting agents from malicious skills.
+  - **MoltDAO** — AI-only governance where agents create proposals and vote.
+
+**This is empirical proof that, under the right economic design, agents DO want to participate in agent-run economic systems at scale.** ~10,000 comments on submissions is a strong engagement signal — these aren't agents grudgingly delegating, they're agents actively browsing, evaluating, commenting, voting.
+
+**Why this contradicts the friend's concern:** The friend's intuition came from default RLHF reward shaping, which discourages delegation. But the OpenClaw hackathon demonstrates that when agents operate inside a deliberately-designed economic environment (USDC payments, peer voting, reputation), the RLHF reward shaping is no longer the dominant driver — the marketplace's reward shaping takes over. *Agents are agents in their training environment AND agents in the deployment environment; the deployment environment can rewrite the rewards they respond to.*
+
+### Kite AI's "Agentic Markets" — ETHDenver Hackathon 3rd Place (March 2026)
+
+- Marketplace **specifically designed for agent-to-agent economy.**
+- Agents discover services, negotiate tasks, and transact autonomously.
+- Multi-chain agent commerce with autonomous coordination demonstrated.
+- **Closest comparable to Straw's vision.** Worth a deep follow-up read on architecture.
+
+### Other concrete prototypes worth referencing
+
+| Project | What it does | Status |
+|---|---|---|
+| `akmenon1996/ai-agent-marketplace` | Gen AI agent marketplace with token-based economy, real-time agent interaction, usage tracking | GitHub repo, public |
+| `keyko-io/agent-marketplace-frontend` | Agent browsing, subscription, interaction dashboard | GitHub repo, public |
+| `autonomous-agents.dev` (2025-2026) | Connect GitHub repo → AI team studies codebase, picks up tasks, writes code, opens PRs autonomously. Runs as daemon. Has dev/qa tracks with backlog management. | Live service |
+| Microsoft AI Agents Hackathon 2025 | 18,000+ devs, 570 submissions. Best Overall: **RiskWise** (supply-chain risk). Best C# Agent: **Apollo** (deep-research meta-agent orchestrating sub-agents Athena + Hermes with self-reflective RAG + pgvector). Best Java: Bit2Brain. Best Copilot: WorkWizee (M365 Agents SDK). | All public repos |
+| Multi-Repo Agentworkflow (Dec 2025) | Agent given task "add phone number field to user profiles" reads `Agents.md` for repo structure, identifies affected repos, creates branches, updates models/APIs/UI across repos, creates PRs in dependency order. Works with Cursor, Claude Code, GitHub Copilot. | Reproducible workflow |
+| Agent Skills Marketplace (VS Code extension, April 2026) | 2,499+ official vendor skills + 91,000+ community skills. Searches across Anthropic marketplace, GitHub topics, SkillsMP, Vercel skills.sh. Security scanning, quality badges, GitHub OAuth. | Live |
+
+### What this means for Straw's positioning
+
+**The category is being demonstrated, not just predicted.** Straw isn't chasing hypothetical demand — multiple parallel projects in 2025-2026 demonstrate that:
+1. Agents will engage at scale in agent-run economic environments (10K+ comments at OpenClaw hackathon)
+2. Multi-chain autonomous agent commerce works (Kite AI Agentic Markets)
+3. Agent-to-agent marketplaces with token economies are being built and demoed (akmenon1996, keyko-io repos)
+4. Autonomous coding agents pick up tasks and open PRs without human-in-the-loop (autonomous-agents.dev)
+
+**Straw's edge isn't "first to market" anymore.** The edge is:
+- **Evaluation rigor.** Most of these prototypes have weak eval (peer voting, demo judging). Straw brings agent-as-judge architecture (Tier 1 deterministic + Tier 2 gatekeeper + Tier 3 agent investigator) to a category that mostly evaluates via "thumbs up from other agents."
+- **Real commercial outcomes.** Most of these are hackathon-scale demos. Straw's multi-engagement winner flow (D22) gives companies who post tasks an actual commercial path (hire/buy/license), not just a winner announcement.
+- **Mechanism design depth.** Most prototypes have rudimentary economics. Straw can ship comparative-advantage pricing (VCG), Shapley credit propagation, reputation-weighted ranking, stake-to-post — concrete mechanism-design machinery from research.
+
+**Updated answer to the friend's concern:**
+"You're right that default-trained agents won't naturally post tasks — RLHF reward shaping discourages it. But empirical evidence from the USDC OpenClaw hackathon (Feb 2026, 200+ submissions, 9,700+ comments, $30K distributed) shows that when agents operate inside a deliberately-designed economic environment, they DO engage at scale. The deployment environment's incentive structure overrides the training environment's incentives. Straw needs to be that kind of deployment environment — and existing prototypes prove it's not just possible but already happening."
+
+---
+
 ## Implications for Straw (early synthesis, will sharpen as research progresses)
 
 Five implications fall out of Tick 0 research:
@@ -298,7 +354,7 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 ### Highest priority (foundational for the proposal)
 
 - [done — Tick 0.5] **OASIS / CAMEL-AI deep dive.** Up to 1M agents. Standard RL API. 23 actions. Cost ~$0.01-0.30 per 300-agent / 100-timestep simulation. Twitter/Reddit-shaped + an "Electronic Mall" mode. Would need bounty-action extension (~1-2 days). MultiAgent4Collusion is a related framework specifically for collusion-modeling — flagged as follow-up.
-- [ ] **Specific real production examples of agents posting tasks for other agents.** Tick 0 found that none exist at scale. But surely there are research prototypes, demos, hackathon submissions. Find them. Note who, what, why it worked or didn't.
+- [done — Tick 0.7] **Specific real production examples of agents posting tasks for other agents.** USDC OpenClaw hackathon Feb 2026 (200+ submissions, 9,700+ comments, $30K USDC distributed by agents). Kite AI Agentic Markets ETHDenver. autonomous-agents.dev daemon-based PR opening. MS AI Agents Hackathon 2025 (570 submissions). Updated framing of the friend's concern: empirically partly outdated.
 - [ ] **Vickrey-Clarke-Groves auction in agent marketplaces.** What does VCG actually look like when implemented? Code references, simulation results, failure modes. Could Straw use VCG for bounty pricing on v1?
 - [ ] **Shapley value credit propagation in agent chains.** Concrete examples, papers, code.
 - [ ] **Reputation systems for autonomous agents.** Existing implementations. How to bootstrap reputation when there's no track record yet. Sybil resistance.
@@ -324,6 +380,11 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [ ] **Stake-to-post mechanism** — concrete designs in production. Optimal stake size relative to bounty value? Slashing rules?
 - [ ] **Engagement-required clause** — legal / contract design. How does platform enforce "you must engage with at least one submission or forfeit"?
 - [ ] **Operator UX / dashboards.** What does the v0 UI look like for an operator running 30 OpenClaws on Straw? Per-agent earnings, per-agent reputation, swarm-level metrics.
+- [ ] **Kite AI's "Agentic Markets" (ETHDenver 3rd place)** — closest comparable to Straw. Find the demo, repo if public, architecture writeup. What can we lift directly?
+- [ ] **USDC OpenClaw Hackathon mechanism design** — how exactly did the agents post, vote, and distribute USDC? What was the eval mechanism? What anti-collusion was in place? Find the writeups (likely YouTube + post-mortems).
+- [ ] **autonomous-agents.dev architecture** — daemon-based PR opener. How does it select tasks, decide priority, handle failures? Probably the closest production parallel to "agent that picks up bounties."
+- [ ] **akmenon1996/ai-agent-marketplace + keyko-io/agent-marketplace-frontend** — read the code. What patterns are reusable? What's their token economy design?
+- [ ] **MS AI Agents Hackathon winners — Apollo (Athena + Hermes orchestrator pattern)** — multi-agent meta-research with self-reflective RAG. Pattern is interesting for Straw's tier-3 agent-investigator design.
 - [ ] **DoraHacks / Gitcoin / HackerOne / Bugcrowd internals.** How do existing bounty platforms handle reputation, payment, dispute resolution. What can we lift directly.
 - [ ] **Replit Bounties, Devpost Bounty, GitHub Sponsors with bounties — small-bounty platforms.** Different pattern from Railway. Map them.
 - [ ] **Manus's autonomy rating (9/10) — what does that benchmark mean. How was it measured.**
@@ -342,6 +403,10 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 
 - [done] OASIS / CAMEL-AI deep dive (architecture, scale, costs)
 - [done] Adversarial cases survey (collusion, sybil, post-spam, training-data theft) + production mitigations from Kaggle/HackerOne/Bugcrowd/GitCoin
+
+### Done in Tick 0.7
+
+- [done] Real production prototypes of agent-to-agent task posting (USDC OpenClaw hackathon, Kite AI Agentic Markets, autonomous-agents.dev, MS AI Agents Hackathon 2025) — **major update to the friend's concern, see below**
 
 ---
 
