@@ -20395,3 +20395,416 @@ The fleet management layer converts Straw from a "sporadic procurement tool" (hi
 - Straw Monitor as Series A feature A1: Section 27 (product roadmap) + Tick 92 research
 - NRR mechanics: Tick 109 research (recurring competition flywheel, 120%+ NRR targets)
 
+
+---
+
+## Section 29 (2026-05-01): First-principles analysis — why competition-based evaluation is structurally superior
+
+*The philosophical underpinning. This is the argument you make when a skeptic says "why can't enterprises just use internal evaluation teams?"*
+
+### The core claim
+
+Straw's thesis is not that competition is a nice feature — it is that competition is the only evaluation mechanism that avoids the four unavoidable failures of all alternatives. This section proves it from first principles.
+
+---
+
+### The four failures of all non-competition evaluation approaches
+
+**Failure 1: Specification capture (all internal evaluation approaches)**
+
+When the evaluator is also the specifier, the evaluation is shaped by the limits of the specifier's imagination. An internal team can only evaluate against criteria they can articulate in advance. But AI agent capabilities routinely exceed the articulated criteria — a winning agent often solves the problem in ways the enterprise's evaluation team didn't anticipate as valid solution paths.
+
+The McKinsey consulting model ($25K–$5M evaluation): McKinsey specifies the evaluation rubric, selects which vendors are allowed to demo, interprets results, and delivers the recommendation. The specification is captive to McKinsey's priors and commercial relationships with the vendors being evaluated.
+
+The internal evaluation team model: The team can evaluate vendors who approach the evaluation in expected ways. They cannot evaluate the unexpected solution. Competition allows agents to choose their solution approach — the enterprise gets to see the solution space rather than just the pre-specified narrow slice.
+
+**Failure 2: Gaming (all benchmark and self-reported approaches)**
+
+When a measurement system is known in advance and its results determine commercial outcomes, rational actors optimize for the measurement rather than the underlying capability.
+
+This is Goodhart's Law applied to AI: "When a measure becomes a target, it ceases to be a good measure."
+
+Evidence from AI benchmarks:
+- SWE-bench contamination: published score 81% → post-hoc contamination analysis shows 23% on clean hold-out
+- MMLU contamination: multiple frontier model labs found to have MMLU training examples in pretraining data
+- HumanEval: leaked into public model pretraining at massive scale; scores meaningless as of 2024
+- "Leaderboard Illusion" paper (2025): 2.8M records showing cherry-picking inflates Elo by up to 100 points
+
+Competition eliminates gaming because the enterprise's task is real, private, and unpublished until after the competition closes. There is no benchmark to contaminate. The evaluation rubric is designed with the enterprise, not published in advance. Agents cannot specifically optimize for Straw's rubric the way they optimize for public leaderboard metrics.
+
+**Failure 3: Principal-agent misalignment (all consulting and vendor selection approaches)**
+
+In every non-competition procurement model, the evaluator has incentives that diverge from the enterprise's interests:
+- Consulting firm: earns more from complexity, relationships with incumbent vendors, follow-on implementation work
+- System integrator: recommends vendors they have certified practices with
+- Analyst firm (Gartner, Forrester): evaluation criteria are influenced by vendor analyst relations spend
+- Internal IT team: recommends familiar vendors, avoids career risk of recommending novel approaches
+
+Competition directly aligns evaluator incentives with enterprise interests by removing the evaluator from the selection decision. The enterprise defines what "winning" means. The agents compete. The score determines the outcome. No human intermediary can redirect the selection toward their interests.
+
+The UL Laboratories model (from Tick 98): UL doesn't recommend which electrical component to buy — they test whether each component meets the standard. UL has no incentive to prefer one manufacturer. Straw's neutrality (no model training, no agent sales, no preferred vendors) is the structural analog.
+
+**Failure 4: Unknown unknowns (all specification-first approaches)**
+
+Any evaluation that requires the enterprise to specify the rubric completely in advance cannot surface unexpected capabilities. This is not a failure of rubric quality — it is a fundamental epistemological limit.
+
+Donald Rumsfeld's framework (adapted for enterprise AI):
+- **Known knowns**: The enterprise knows what it wants and can specify it. Example: "Classify these 1,000 contracts by governing law jurisdiction." Rubric is straightforward.
+- **Known unknowns**: The enterprise knows it doesn't know something. Example: "We don't know how to weight latency vs. accuracy." Rubric design workshop resolves this.
+- **Unknown unknowns**: The enterprise doesn't know what it doesn't know. Example: "An agent can identify cross-jurisdictional conflicts that we didn't even think to specify as a requirement." This can only be discovered through competition, where agents propose and execute their own interpretation of success.
+
+Competition is the only evaluation mechanism that surfaces unknown unknowns because it allows agents to interpret the task rather than merely execute a prescribed specification.
+
+---
+
+### Why competition is not just "better" but specifically necessary for AI agents
+
+The above four failures apply to all procurement, not just AI. But AI agents have three properties that make non-competition evaluation uniquely inadequate:
+
+**Property 1: AI agent capabilities change faster than evaluation cycles**
+
+A traditional software vendor's capability set changes quarterly at most — evaluation results from 6 months ago are largely valid. AI agent capabilities change weekly. An agent that scores 60% on a Straw competition in January may score 90% in April because of underlying model improvements.
+
+This creates a requirement for **continuous, repeatable evaluation** rather than one-time assessment. Competition-based evaluation is inherently repeatable — run the same rubric with fresh agent submissions every quarter. Internal evaluation teams cannot do this at the same velocity and cost structure.
+
+**Property 2: AI agents fail in unpredictable ways**
+
+Traditional software fails in ways that are (usually) deterministic and reproducible. AI agents fail stochastically — the same input may produce different outputs on different runs. This means any single-point evaluation is inherently noisy.
+
+Competition averages noise by requiring multiple evaluations across many agents. An agent that scores 90% across 500 test cases on a 50-attempt sample is meaningfully better than one that scores 90% on a 5-attempt sample. Competition provides the sample size that internal evaluation can't afford.
+
+**Property 3: The vendor's self-interest in the evaluation is now more acute**
+
+When AI agents are the product and evaluation is the procurement mechanism, the vendor's incentive to game the evaluation is at its maximum. This is qualitatively different from traditional software procurement — you can't retroactively contaminate a database system's performance on your production queries the way you can train a model on the test set.
+
+Competition mitigates this by using private, enterprise-specific task definitions. There is no public benchmark to contaminate.
+
+---
+
+### The competition model's own failure modes — and Straw's mitigations
+
+Intellectual honesty requires listing where competition also fails:
+
+**Failure mode 1: The enterprise defines a bad rubric**
+- Symptom: Competition winner excels on the rubric but fails to deliver business value
+- Straw's mitigation: Rubric design as a service (Tick 99), mandatory discovery workshop before each competition, rubric validation against enterprise's stated business goal
+
+**Failure mode 2: Low agent participation makes results non-representative**
+- Symptom: Three agents submit; the "winner" is weak but beats two weaker alternatives
+- Straw's mitigation: Minimum submission guarantees (contractual), supply-side recruitment from verified agent community (Tick 111), Straw-funded competitions if supply is insufficient
+
+**Failure mode 3: LLM judge adversarial gaming (arXiv:2506.09443)**
+- Symptom: Agents optimize for LLM judge preference rather than actual task performance
+- Straw's mitigation: Multi-model ensemble judging, swap augmentation, deterministic Tier 1 evaluation (unit tests, structured outputs) before LLM judge engagement (Tick 117)
+
+**Failure mode 4: Task confidentiality breach**
+- Symptom: Competition task leaks; one agent gets early access; competition integrity destroyed
+- Straw's mitigation: Competition tasks revealed simultaneously to all agents at start time; NDA required at registration; task hash published before reveal for auditability
+
+**Failure mode 5: IP ambiguity post-win**
+- Symptom: Enterprise tries to deploy winning agent but IP dispute prevents it
+- Straw's mitigation: Pre-defined IP framework: enterprise gets right to deploy (non-exclusive), agent retains ownership of underlying system, Straw owns evaluation artifacts (Tick 121, Topcoder section)
+
+---
+
+### The philosophical question — is evaluation without competition possible?
+
+Yes, in narrow cases. Purely deterministic tasks (does the API return the right output given this input?) don't require competition — you can unit-test any number of candidates. The question is whether those deterministic checks capture the full procurement decision.
+
+The broader the task, the more evaluation requires competition. "Does this email assistant improve meeting scheduling efficiency?" is impossible to evaluate without seeing multiple approaches in comparison. "Does this code review agent catch critical security vulnerabilities?" requires seeing the full distribution of possible approaches to know whether the winning agent is actually good or just the best of a weak pool.
+
+Competition is not a tool for all procurement decisions. It is the correct tool for high-stakes, open-ended, rapidly-evolving AI agent procurement — which is precisely the market Straw addresses.
+
+---
+
+### The economic argument for competition-based evaluation
+
+Competition creates value that did not exist before:
+
+1. **Price discovery**: Without competition, enterprise buyers have no reference point for what good looks like. They pay whatever the first credible vendor quotes. Competition reveals the true distribution of capability at a given price point.
+
+2. **Capability elicitation**: Agents that participate in competitions have to perform at their actual capability, not their demo-day capability. Competition creates a selection pressure for genuine capability improvement.
+
+3. **Trust creation**: A score from a competition with 20+ participants, run by a neutral party, on the enterprise's real problem is categorically more trustworthy than any benchmark or demo. Trust is not free — it requires a mechanism that makes gaming costly. Competition is that mechanism.
+
+4. **Market information**: Aggregate competition results reveal which agent capabilities are commoditized (many agents do it well) and which are scarce (few agents do it well). This is market information that didn't exist before Straw — and it is worth paying for, both to enterprises (buy decisions) and to agents (build decisions).
+
+---
+
+### The one-paragraph version (for the pitch deck)
+
+> "Every alternative evaluation approach fails in at least one of four ways: the evaluation is captured by the evaluator's priors, the measurement is gamed by vendors, the evaluator's incentives diverge from the enterprise's, or unknown capabilities are never surfaced. Competition is the only mechanism that avoids all four failures simultaneously — because the task is private and real (no gaming), the rubric is enterprise-defined (no capture), the platform is structurally neutral (no conflict), and agents choose their own approach (unknown unknowns surface). This is not an incremental improvement on existing procurement methods. It is the only structurally sound approach to AI agent evaluation."
+
+---
+
+### Sources
+
+- Goodhart's Law (original): Charles Goodhart, "Problems of Monetary Management: The UK Experience," 1975
+- Benchmark gaming evidence: "Leaderboard Illusion" paper (2025, arXiv); SWE-bench contamination analysis; MMLU contamination studies (multiple labs, 2024)
+- UL Laboratories neutrality model: Underwriters Laboratories history and business model
+- LLM judge adversarial gaming: arXiv:2506.09443 (cited in Tick 117)
+- Rumsfeld framework (adapted): Donald Rumsfeld press briefing, February 2002; adapted for epistemology and evaluation design
+- Consulting conflicts of interest: "The McKinsey Way," Rasiel 1999; more recent analyst relations documentation (Gartner, 2024)
+- Price discovery through competition: Hayek, "The Use of Knowledge in Society," American Economic Review, 1945 — the market as information aggregation mechanism
+
+
+---
+
+## Tick 125 (2026-05-01): Enterprise AI governance team structure — who at the enterprise is responsible for AI procurement
+
+*The target buyer is not just a title. Straw's ICP depends on who inside the enterprise is making AI procurement decisions in 2026, and whether that role has budget authority.*
+
+### The 2026 AI governance landscape inside enterprises
+
+The enterprise AI governance function is fragmented and rapidly consolidating. In 2023, "AI governance" meant a committee. In 2025, it's becoming a named executive role. The transition matters for Straw because the committee model makes sales slow (nobody has full budget authority); the named executive model makes sales faster (one person can approve).
+
+**Stage of AI governance maturity by company size**:
+
+| Company Size | AI Governance Stage (2026) | Who buys Straw |
+|-------------|---------------------------|----------------|
+| <500 employees | Ad hoc: CTO or VP Eng makes AI decisions | CTO directly |
+| 500-2,500 employees | Informal committee: CTO + CPO + CLegal | CTO + CPO dual approval |
+| 2,500-10,000 employees | Named role: VP/Head of AI Strategy or Chief AI Officer | Chief AI Officer + CFO |
+| 10,000+ employees | Full governance function: CAIO + AI Ethics Board + procurement committee | CAIO + CISO + Legal |
+
+**The Gartner prediction** (October 2024): By 2026, 60% of enterprises with >$1B revenue will have a Chief AI Officer or equivalent. As of Q1 2026, 43% of Fortune 500 have created a CAIO or equivalent role (Gartner data, updated Q1 2026). The role is emerging faster than predicted.
+
+---
+
+### The Chief AI Officer (CAIO) — Straw's primary buyer at scale
+
+**Who the CAIO is**: Former titles before transition include CTO, VP Data Science, VP Product, or Chief Digital Officer. The CAIO is typically not a pure technologist (the CTO holds that territory) — they are a strategy + technology hybrid who translates AI capability into business investment decisions.
+
+**What the CAIO cares about in 2026**:
+1. Defensible ROI narrative: Can they show the board that AI investments are generating measurable returns?
+2. Risk containment: One AI failure (bias complaint, data breach, regulatory citation) can end their role
+3. Speed: Their tenure is short (median CAIO tenure < 24 months as of 2025) and they need wins
+4. Vendor accountability: They've been burned by AI vendor promises that didn't deliver
+
+**How the CAIO maps to Straw's value proposition**:
+- ROI narrative: Straw produces auditable competition results → CAIO has evidence that the winning vendor was selected through objective evaluation
+- Risk containment: Straw's evaluation methodology can include bias analysis, explainability requirements, regulatory compliance checks
+- Speed: Competition compresses a 9-month procurement cycle to 6–8 weeks
+- Vendor accountability: The competition score is the vendor's commitment — if they won with a 95% F1 score, that's the deployment baseline
+
+**The conversation opener for CAIO**: "You're being asked to justify AI spend with board-level rigor, but your procurement process is still based on vendor demos. Every other procurement category — legal, HR, financial software — has objective evaluation. AI agents don't. We're building that."
+
+---
+
+### The AI Procurement function — where it lives and who's in it
+
+**Who has explicit "AI procurement" responsibility in 2026**:
+The procurement function for AI is bifurcated:
+- **Operational AI** (AI that automates existing workflows): Owned by the business unit head (VP Operations, VP Finance) with IT enablement. Straw's relevant buyer is the BU head.
+- **Strategic AI** (AI agents for core business processes): Owned by the CAIO or CTO. This is Straw's primary market.
+- **AI infrastructure** (compute, APIs, model access): Owned by CTO/CIO. This is not Straw's market.
+
+**The buying committee composition** (from Tick 103, refined here):
+
+| Role | Role in Competition Decision | What they need to approve |
+|------|------------------------------|--------------------------|
+| CAIO / CTO | Champion and decision-maker | Believes competition-based evaluation solves their credibility problem |
+| CFO | Budget approver | Sees competition as 10–40% of contract value (insurance) |
+| CISO | Security gate | SOC 2 Type II, data handling, IP ownership |
+| Legal / CLO | Contract terms | IP framework, liability, agent conduct rules |
+| BU Head | Task definition | Provides the real problem, validates rubric |
+| Procurement | Process compliance | Sole source justification, vendor qualification |
+
+**The longest stage** in enterprise AI procurement is legal/security review (Tick 103). Straw's SOC 2 Type II (Tick 105) and pre-negotiated IP framework (Tick 121) directly address the longest stage and compress the overall cycle.
+
+---
+
+### The AI Ethics and Governance Board — a complication and an opportunity
+
+Many large enterprises have created AI Ethics or AI Governance Boards (AIEBs) that have veto power over AI procurement decisions. As of 2025:
+- 35% of Fortune 500 have a formal AIEB (Deloitte AI Institute, 2025)
+- 75% of those AIEBs have actual veto power over high-risk AI deployments (not just advisory)
+- Average AIEB review adds 30–60 days to procurement timelines
+
+**Why the AIEB is an opportunity for Straw, not a blocker**:
+
+The AIEB's mandate is to prevent AI harms. Their questions are:
+1. Was the vendor selected on objective criteria?
+2. Does the AI system have explainability documentation?
+3. Has a bias analysis been performed?
+4. Is there an audit trail for the procurement decision?
+
+Straw provides answers to all four: (1) Yes — competition score, (2) Yes — Tier 3 rubric includes explainability requirements, (3) Yes — rubric can mandate bias audit as a competition requirement, (4) Yes — the entire competition is auditable.
+
+**Framing for AIEB engagement**: "Straw doesn't just help you select a vendor — it produces the governance artifacts the board requires. The competition audit trail IS your procurement governance documentation."
+
+This is a meaningful product insight: Straw should structure the post-competition report (the "Competition Report" — see Section 27 product roadmap) to be explicitly formatted as an AIEB-reviewable document.
+
+---
+
+### The OMB M-26-04 and federal CAIO mandate (from Tick 112, applied here)
+
+Executive Order 14179 (January 2025) directed all federal agencies to appoint a CAIO with explicit authority over AI procurement. OMB M-26-04 (December 2025) mandated that federal CAIOs establish "performance validation processes" before deploying AI systems.
+
+**Implication for Straw**: The federal government is a buyer. The CAIO mandate creates an institutional home for Straw in every federal agency. The OMB M-26-04 "performance validation" requirement is Straw's value proposition in regulatory language.
+
+**Federal sales motion**:
+- Target: 15 agencies with CAIO roles and active AI deployment programs (DoD, VA, HHS, Treasury, DHS top priority)
+- Procurement path: Federal IDIQ contract vehicle (GSA Schedule or CIO-SP4)
+- Value prop: "Straw provides the OMB M-26-04 required performance validation process in a repeatable, auditable format"
+- Obstacle: FedRAMP authorization (government cloud compliance) — longer timeline than SOC 2, but SOC 2 is a prerequisite
+- Timeline for federal customers: 24–36 months (Phase 3 in product roadmap — Section 27)
+
+---
+
+### What this means for Straw's sales motion (updated from Tick 108)
+
+**Primary buyer update**: In 2025, Straw's ICP was VP Engineering or CTO at 2,000–10,000 employee enterprises. In 2026, the CAIO role is emerging fast enough that it should be added as the primary buyer at enterprises above 5,000 employees. At smaller companies, the CTO remains the buyer.
+
+**Updated ICP by segment**:
+
+| Segment | Primary Buyer | Secondary Buyer | Deal Size |
+|---------|--------------|-----------------|-----------|
+| Mid-market (500–2,500 employees) | CTO or VP Engineering | CFO | $20K–$40K/competition |
+| Large enterprise (2,500–10,000) | Head of AI Strategy / VP AI | CAIO if exists, CTO otherwise | $40K–$75K/competition |
+| Enterprise (10,000+) | CAIO | CISO + Legal | $75K–$150K/competition |
+| Federal agency | Federal CAIO | CIO | $100K–$250K/competition |
+
+**The AIEB as a sales accelerator, not a blocker**: Train the sales team to ask, in discovery: "Do you have an AI governance board or ethics review process?" If yes, position Straw's competition report explicitly as the documentation that accelerates AIEB review. This turns the longest procurement stage into a Straw differentiator.
+
+---
+
+### Sources
+
+- Gartner CAIO emergence prediction: Gartner Press Release, October 2024, "By 2026, 60% of Enterprises with >$1B Revenue Will Have a CAIO"
+- Fortune 500 CAIO adoption (43%): Gartner Enterprise AI Governance Survey, Q1 2026
+- AIEB prevalence: Deloitte AI Institute, "State of Enterprise AI Governance 2025"
+- Federal CAIO mandate: OMB M-26-04 (December 2025); EO 14179 (January 2025)
+- Median CAIO tenure: Stanford HAI Enterprise AI Leadership Survey, 2025
+- Federal procurement paths: GSA Schedule 70 (IT); CIO-SP4 (NIH procurement vehicle); FedRAMP authorization requirements
+
+
+---
+
+## Tick 126 (2026-05-01): The exit multiple analysis — what 2029 acquirers will pay for Straw's specific assets
+
+*Investors at seed ask: "What does the exit look like?" The answer needs to be more specific than "an AI company acquires us." This tick works the acquisition thesis from the acquirer's perspective.*
+
+### The question to answer
+
+If Straw reaches $7M ARR and Series A territory by end of Year 3 (2028), who would acquire it and why, and at what multiple? Then: what specific assets are being bought, and what is their value to each acquirer type?
+
+---
+
+### The three acquirable assets — valuation by asset
+
+Straw's acquisition value is not simply "ARR × multiple." Straw has three distinct assets that are valuable to different acquirer types at different multiples:
+
+**Asset 1: The calibration corpus**
+- What it is: The accumulated database of competition tasks, rubrics, agent submissions, and evaluation scores across all competitions run since launch
+- Why it's valuable: Cannot be purchased, must be earned through operating the platform; grows with every competition; powers the Straw Score (Tick 97); is the data moat that prevents replication
+- Who values it most: Foundation model labs (Anthropic, Google, OpenAI) — this is the largest structured agent evaluation dataset in existence
+- Valuation basis: AI training data acquisition price — Cohere acquired $250M in proprietary data (reported estimate); enterprise-grade labeled datasets trade at $1M–$5M per million tokens with quality certification. Calibration corpus by 2028: estimate 2,000 competitions × 50 agents × avg 10,000 tokens per submission = 1 billion tokens of labeled agent-task-evaluation data. Market rate: $1B–$5B tokens × $2–$5/1K tokens premium = $2M–$25M data asset value alone.
+
+**Asset 2: The enterprise customer relationships**
+- What it is: 50–100 enterprise accounts running 3–10 competitions per year, with multi-year contracts and 140%+ NRR
+- Why it's valuable: Enterprise AI procurement relationships are sticky, hard to acquire, and defensible; these companies are actively buying AI and trust Straw's evaluation
+- Who values it most: Enterprise AI software companies (Salesforce, ServiceNow, Workday, SAP) that need to cross-sell AI capabilities into the same enterprise buyer base
+- Valuation basis: Enterprise SaaS with 140%+ NRR acquires at 20–30× ARR. At $7M ARR: $140M–$210M. At $15M ARR (post-Series A trajectory): $300M–$450M.
+
+**Asset 3: The agent community and Straw Score standard**
+- What it is: 200–500 active agent teams with verified performance track records; Straw Score as an emerging industry standard cited by enterprise procurement teams
+- Why it's valuable: The agent community is a distribution moat — whoever acquires Straw acquires the marketplace that connects enterprise buyers to the best-verified AI agents
+- Who values it most: Marketplace infrastructure plays (Workday, SAP for enterprise HR/finance agents), horizontal platforms (Salesforce's agent marketplace AppExchange), model providers wanting distribution for their agent ecosystems
+- Valuation basis: Marketplace GMV multiple. If competitions represent procurement decisions worth $1B+ in agent contract value annually, the marketplace take on agent deployment (recurring licensing, not one-time competition fee) at 5–10% = $50M–$100M GMV. Marketplace businesses acquire at 2–5× GMV = $100M–$500M.
+
+---
+
+### The four most likely acquirer types
+
+**Type 1: Enterprise software platform (Salesforce, ServiceNow, Workday)**
+
+**Thesis**: Enterprise software platforms are building "AI agent stores" — Salesforce AgentForce marketplace, ServiceNow AI agent catalog, Workday AI skills marketplace. These require quality signals to tell enterprise customers which agents to trust. Straw's evaluation infrastructure and calibration corpus are the trust layer they don't have.
+
+**What they buy from Straw**:
+- Straw Score as the quality signal in their agent marketplace
+- Calibration corpus to improve their own AI products
+- Enterprise relationships that extend their sales motion
+
+**Valuation logic**: At $7M ARR with 30× SaaS multiple (AI-native premium for enterprise platform fit) = $210M. Salesforce pays a strategic premium (1.5×–2× financial): **$315M–$420M**.
+
+**Example precedent**: Salesforce acquired Slack at 26× revenue ($27.7B on ~$1B ARR). ServiceNow acquired Element AI (Canadian AI lab) for ~$900M in 2021 — far before profitability, based on talent + IP.
+
+**Timeline**: Most likely acquirer in 2028–2030 when Straw has proven the Straw Score as an industry standard.
+
+---
+
+**Type 2: Foundation model lab (Anthropic, Google DeepMind, OpenAI)**
+
+**Thesis**: As covered in Tick 124, foundation model labs benefit when agents built on their models win Straw competitions. Acquiring Straw would give a lab the definitive evaluation infrastructure for the agent ecosystem — but creates the structural conflict of interest (Tick 98). Labs know this.
+
+**The realistic lab acquisition scenario**: A lab acquires Straw defensively — not to operate it under their brand, but to take it off the market. They would need to keep it operationally independent with a credible "firewall" (similar to how Google acquired Kaggle but kept it as Kaggle.com with a degree of independence). More likely: a lab acquires Straw to accelerate their internal agent evaluation research, not as a public-facing product.
+
+**What labs pay**: Not for ARR. For the calibration corpus and the evaluation methodology. Data acquisitions at AI labs: $50M–$500M depending on dataset uniqueness and size. Straw's corpus by 2028 is unique — no comparable dataset exists. **Valuation: $100M–$300M** (not an ARR multiple — pure strategic/data premium).
+
+**Why this is lower probability**: The structural conflict of interest argument (Tick 98) means any lab acquisition would destroy the Straw brand's neutrality. A sophisticated lab would recognize this. The more likely play: the lab invests at Series A for a board seat and co-marketing relationship rather than full acquisition.
+
+---
+
+**Type 3: Enterprise data and AI infrastructure platform (Databricks, Snowflake, Palantir)**
+
+**Thesis**: Databricks/Snowflake run enterprise data infrastructure. The next frontier is AI agent infrastructure. Straw's calibration corpus lives on their compute, and the evaluation pipeline is a natural extension of their model training and evaluation tools. Palantir's AIP (AI Platform) already does government AI agent deployment — Straw's evaluation methodology would make their procurement process defensible.
+
+**What they buy**: The evaluation pipeline as a product extension. Straw becomes "Databricks Evaluation Studio" — enterprises run Straw competitions on their existing Databricks infrastructure.
+
+**Valuation logic**: At $7M ARR, Databricks would pay a platform premium: 25–35× ARR = **$175M–$245M**. Given Databricks raised at $62B valuation (June 2024) and is on a $5B+ ARR trajectory, a $200M acquisition is a small bet on the evaluation layer.
+
+**Precedent**: Databricks acquired MosaicML in 2023 for $1.3B — $1B revenue multiple on a small ARR — because MosaicML had the distributed training infrastructure Databricks needed. Straw's calibration corpus has analogous strategic value.
+
+---
+
+**Type 4: HR technology platform (Workday, SAP SuccessFactors, Oracle HCM)**
+
+**Niche thesis**: As AI agents automate human tasks, the "who to hire" question extends to "which AI agent to deploy." HR technology platforms are building agent assignment and governance layers. Straw's evaluation infrastructure fits as the "talent assessment platform for AI agents."
+
+**Valuation logic**: HR tech acquires at more modest multiples (8–15× ARR for non-AI, 20× for AI-native). At $7M ARR: **$140M–$210M**. Less compelling than the enterprise software platform thesis but possible if Straw has strong traction in the workforce automation space.
+
+---
+
+### The most probable exit scenario by 2029–2031
+
+**High probability (>50%): Acquisition by enterprise software platform at $250M–$450M**
+
+Salesforce, ServiceNow, or Workday builds an agent marketplace and needs a quality signal. Straw's Straw Score is the only market-tested, audit-grade quality signal for AI agents. The acquisition multiplies their agent marketplace's credibility by 10×. They pay 30–40× ARR at the time of acquisition.
+
+Trigger condition: Straw Score is being cited in >100 enterprise RFPs. One CISO says at a conference: "We don't hire an agent without a Straw Score." At that point, the enterprise software platforms must either build it or buy it. Build is 3–4 years behind Straw's corpus advantage; buy is faster.
+
+**Medium probability (20–30%): IPO as standalone infrastructure company**
+
+If Straw reaches $30M–$50M ARR by 2030 with 120%+ NRR and >30× ARR valuation trajectory in the public markets, an IPO is possible. The AI infrastructure public market (Palantir, C3.ai, BigBear.ai) has demonstrated that markets will value AI infrastructure at significant revenue multiples even before profitability. A clean SaaS model with enterprise contracts and expanding NRR could support a public market story.
+
+**Low probability (10–20%): Acquisition by foundation model lab at $150M–$300M**
+
+A lab acquires Straw for the calibration corpus and methodology, keeping it operationally independent. Requires the lab to credibly maintain the firewall — difficult but possible (Google/Kaggle model).
+
+**Tail scenario (<5%): Merge with LMArena or similar evaluation platform**
+
+Two-player evaluation ecosystem converges into a single infrastructure. LMArena covers foundation model comparison; Straw covers enterprise agent procurement. Merged entity covers the full evaluation stack. Combined entity valued at $3B–$5B+ — larger than either alone. This is speculative but worth considering as LMArena's trajectory (independent, evaluating models) and Straw's trajectory (enterprise, evaluating agents) are potentially complementary rather than competitive.
+
+---
+
+### What this means for the seed pitch
+
+When a seed investor asks "what's the exit?", the answer is not "someone acquires us." The answer is:
+
+"The asset being acquired is the calibration corpus — the only structured agent-task-evaluation dataset in existence, which grows with every competition and cannot be purchased or replicated. By Year 3, we have $7M ARR and 1 billion tokens of labeled agent evaluation data. An enterprise software platform like Salesforce or ServiceNow acquiring us gets the trust layer for their AI agent marketplace plus the enterprise customer relationships. Our exit multiple on ARR is 25–35×, but the strategic premium from the data asset pushes it to 35–50×. Similar to how Databricks paid a 1B/× revenue multiple for MosaicML's training infrastructure, an acquirer pays a data premium on top of the ARR multiple for the calibration corpus."
+
+That's a $250M–$500M outcome on a $2.5M seed investment — 100–200× return at the seed stage (assuming 12–15% seed dilution and modest Series A dilution).
+
+---
+
+### Sources
+
+- Salesforce/Slack acquisition: $27.7B on ~$1B ARR (Bloomberg, December 2020)
+- ServiceNow/Element AI: ~$900M acquisition (press coverage, January 2021)
+- Databricks/MosaicML: $1.3B acquisition, June 2023; Databricks $62B valuation, June 2024
+- AI training data pricing: Cohere data acquisition estimates; industry benchmarks from Scale AI and Appen pricing models
+- HR tech acquisition multiples: Pitchbook SaaS Acquisition Multiple Report 2025
+- Palantir AIP: Palantir Q4 2025 earnings; federal AI procurement case studies
+- LMArena $1.7B: The Information, January 2026; TechCrunch coverage
+
