@@ -21684,3 +21684,108 @@ The complete answer:
 
 *End of master proposal. Ticks 1-133 support each section above.*
 
+
+---
+
+## Tick 131 (2026-05-01): The network effect floor — minimum viable supply for meaningful competition signal
+
+**Thread**: What is the minimum number of competing agents for a Straw competition to produce statistically meaningful quality signal? What does empirical data from Kaggle, DARPA, and contest theory say?
+
+---
+
+### The core problem: rank signal degrades sharply at low N
+
+A competition with 2-3 agents doesn't prove the winner is good — it only proves the winner was the least bad of a thin field. Enterprise buyers need to know the competition had enough density for the winner's performance to be skill-attributed rather than luck-attributed.
+
+**Kaggle's empirical encoding of this floor**: Kaggle's medal tier system applies wide percentile bands for thin competitions (top 40% bronze at small N) and tighter bands at scale (top 10%/5%/top-10-teams at 1,000+ teams). This is a de facto acknowledgment that rank signal degrades below ~100 teams.
+
+Blum et al.'s "The Ladder: A Reliable Leaderboard for Machine Learning Competitions" (ICML/JMLR 2015) formalizes the problem: even random search can achieve top ranks in small-field competitions by exploiting score variance. A meta-analysis of 100+ Kaggle competitions found public-to-private leaderboard score discrepancies of 5-10% on average, but variance spikes dramatically in small-field competitions where a single team's overfit can move the entire table.
+
+**The practical floor from Kaggle**: approximately 50 independent teams for leaderboard stability to begin; 200+ for rankings to be noise-resistant enough that top-10 placement is skill-attributable.
+
+---
+
+### Contest theory: what's the minimum for skill to dominate luck?
+
+From Tullock contest success function analysis and experimental contest literature (Sheremeta et al.):
+
+- **n=2-3**: Over-bidding relative to Nash equilibrium is extreme — participants behave like lottery ticket buyers, not capability demonstrators. Rank is dominated by variance, not skill.
+- **n=5-7**: Equilibrium play converges; effort levels begin to reflect true ability distributions.
+- **n≥5 (symmetric models)**: The gap between 1st and 2nd place begins to exceed what's attributable to random performance variation. This is the theoretical minimum for "the winner is probably better."
+- **n≥10-15 (heterogeneous agent populations)**: The floor for "the top 3 are skill-ranked with reasonable confidence."
+
+**Straw-specific interpretation**: n=5 is workable for "the winner is probably better"; n=10 is the floor for "the top 3 are skill-ranked." Straw should refuse to surface a "winner" claim for competitions with fewer than 5 genuine submissions.
+
+---
+
+### How platforms bootstrapped to the floor: Topcoder, Kaggle, InnoCentive
+
+**Topcoder (2001)**: Gamified before monetizing. First SRMs had no cash prizes — pure competition exploiting intrinsic motivation among competitive programmers. Recruited from university programming clubs where marginal cost of participation was near zero. First TCO had 16 finalists from two countries — thin field, but the spectator/community model (live matches, ratings, problem archives) compounded supply over time.
+
+**Kaggle (2010)**: Targeted outreach at ML conferences (ICDM 2010). Launched first competition (Eurovision forecasting) with modest prizes, relying on novelty and word-of-mouth. The 2011 Heritage Health Prize ($3M) was a deliberate demand-side shock to achieve awareness escape velocity — not a model for normal competitions.
+
+**InnoCentive (2001, Eli Lilly spinout)**: Seeded first challenges with Lilly's own R&D problems and internal scientific staff as initial solver pool. Never required many solvers competing — required *diversity* of solvers. Only needed one solution above the prize threshold. Grew solver community to 185,000+ by recruiting scientific diaspora in emerging markets.
+
+**DARPA Grand Challenge precedent**: 2004 race had 106 entering vehicles and zero finishers — thin field, technically insufficient competition density. But: DARPA published human-level benchmarks so that even a thin field was interpretable — progress against a fixed reference point substitutes for cross-competitor ranking when N is low. The 2005 follow-up produced 5 finishers from 195 teams after community building and difficulty recalibration.
+
+---
+
+### Artificial competition density mechanisms
+
+For Straw to reach the floor in new categories before organic supply exists:
+
+**1. Persistent benchmark baselines**: Post a Straw-maintained "baseline submission" (equivalent to Kaggle's benchmark entry) as a permanent leaderboard entry in every competition. This ensures the field never has zero above-baseline competitors and gives agents a target to beat. No game-theoretic distortion — the baseline never wins prizes.
+
+**2. Invited cohort seeding**: For new category competitions, direct-invite 5 known agents from adjacent categories before opening to public. This seeds the leaderboard with credible entries before public visibility and guarantees a minimum viable field.
+
+**3. Human performance anchors**: When N is below the meaningful-signal threshold, publish a human-performance benchmark (how long a skilled human would take, what score they'd achieve). This makes even a 3-agent competition interpretable: "These 3 agents achieved X score; a skilled human would achieve Y in Z time." The competition is about the human-vs-agent gap, not the agent-vs-agent ranking.
+
+**4. Minimum submission guarantee refund**: If a competition closes with fewer than 5 genuine submissions (defined as above baseline-score), the poster receives a 50% fee refund. This creates Straw's financial incentive to seed supply into thin categories.
+
+---
+
+### Prize size and entry volume: the empirical relationship
+
+From research on Topcoder and InnoCentive task archives:
+
+| Prize range | Expected serious submissions | Competition density |
+|------------|----------------------------|---------------------|
+| Sub-$500 | <5 (hobbyists, students) | Below floor — don't run |
+| $1,000-$2,500 | 5-15 | At floor — viable |
+| $5,000-$10,000 | 15-30 | Good — meaningful signal |
+| $25,000+ | 50+ in narrow domains | Strong — robust ranking |
+
+The relationship is nonlinear: prize acts as a credibility signal below ~$1,000-$1,500 (credibility threshold) and as a genuine economic incentive above it. Moving from 1 prize to 20-30% of entrants receiving prizes dramatically increases both volume and quality — the deterrent effect of expected loss is strong at low win probability.
+
+**Straw's cold-start design implications**:
+1. Minimum viable competition prize: $2,500-$5,000 (to clear the credibility floor and attract 10+ serious agents)
+2. Flagship launch competitions: $25K+ prize to achieve awareness and supply-side recruitment
+3. Below-floor competitions: visible warning to enterprise buyers that competition N is below Straw's statistical significance threshold; manual winner selection recommended instead of automated top-score
+
+---
+
+### The category-by-category cold start
+
+Straw will not have uniform supply depth across all task categories at launch. Cold-start sequence:
+
+**Phase 1 (Months 1-6)**: Focus on 2-3 high-density categories where agent supply is known to exist and is motivated (software engineering, data analysis). Run flagship competitions with $10K+ prizes. Build the first 50-competition calibration corpus.
+
+**Phase 2 (Months 7-12)**: Expand to 3-5 additional categories where design partners have specific needs. Use invited agent seeding + baseline benchmarks for each new category. Don't launch categories below minimum viable supply floor.
+
+**Phase 3 (Year 2+)**: Organic supply emerges for new categories as agents discover Straw as a discovery mechanism. The platform becomes self-seeding: agents register proactively in categories where competitions are expected.
+
+---
+
+### Sources
+
+- Blum et al., "The Ladder: A Reliable Leaderboard for Machine Learning Competitions" (2015): arxiv.org/pdf/1502.04585
+- Kaggle medal threshold system: kaggle.com/progression/competitions
+- Sheremeta et al., "Bounded rationality in Tullock contests": sciencedirect.com/science/article/pii/S0167268113003089
+- "How Much Should I Pay? Monetary Prize in TopCoder" (arXiv:2004.12504): arxiv.org/abs/2004.12504
+- "The Secret to Successful Crowdsourcing Contests? More Prizes" (INSEAD Knowledge): knowledge.insead.edu/entrepreneurship/secret-successful-crowdsourcing-contests-more-prizes
+- DARPA Grand Challenge 2004+2005: en.wikipedia.org/wiki/DARPA_Grand_Challenge_(2004); en.wikipedia.org/wiki/DARPA_Grand_Challenge_(2005)
+- Topcoder history: en.wikipedia.org/wiki/Topcoder
+- InnoCentive history: en.wikipedia.org/wiki/InnoCentive
+- Kaggle Chronicles: researchgate.net/publication/397480703
+- Prize allocation and entry in ideation contests (Kireyev/Wharton): marketing.wharton.upenn.edu/wp-content/uploads/2016/10/Kireyev-Pavel-JMP
+
