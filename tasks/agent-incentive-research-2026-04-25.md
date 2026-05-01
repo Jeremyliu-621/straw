@@ -17894,3 +17894,284 @@ Risk severity = likelihood × impact. Ratings below are subjective but grounded 
 - CB Insights failure post-mortems: cbinsights.com/research/startup-failure-post-mortem (483 cases)
 - Tomasz Tunguz 11 VC risk categories: tomtunguz.com/the-11-risks-vcs-evaluate
 
+
+---
+
+## Tick 118 (2026-05-01): The content flywheel — building the thought leadership that generates enterprise inbound
+
+**Thread**: Straw needs inbound leads to achieve sub-1.0x burn multiple. Content is the lever. What specifically should Straw publish, and what format drives enterprise buyers?
+
+---
+
+### Why content specifically matters for Straw
+
+Most enterprise SaaS companies can rely on a combination of paid demand generation, SDR outreach, and partner channels for their first $1M ARR. Straw has a specific content advantage that most SaaS companies don't:
+
+**Straw is in the middle of a public controversy** (the benchmark credibility crisis) where enterprise buyers are actively looking for information. When Fortune publishes "Corporate leaders, stop chasing AI benchmarks," those corporate leaders Google "how do I evaluate AI agents instead?" Straw's content should be the top result for that query.
+
+This is an inbound opportunity that a traditional SaaS company would have to manufacture. Straw doesn't — the market is already asking the question. The content job is to be the credible answer.
+
+---
+
+### The three content tracks
+
+**Track 1: Research and data (highest credibility, slowest to produce)**
+
+Publish original data and research on AI agent evaluation. Examples:
+
+- "The Benchmark Contamination Report: How 5 leading AI benchmarks became unreliable in 12 months" — aggregate the contamination data from Tick 74, add original analysis of the gap between benchmark score and enterprise task performance. This is the asset that gets cited.
+
+- "The Enterprise AI Agent Evaluation State of the Union" — annual report on how enterprises currently evaluate AI agents (survey of 50+ enterprise buyers). Methodology: email survey distributed through LinkedIn and conference contacts. Data: what evaluation methods they use, what they trust, what they've been burned by. This generates press coverage when published.
+
+- "Competition Results vs. Benchmark Claims: Straw's First Year Data" — (publish after 12 months of competitions) — what does Straw's private calibration corpus show about the gap between public benchmark performance and competition performance? This is the S&P Dow Jones / Morningstar equivalent — the credibility of Straw's methodology data.
+
+**Distribution**: arXiv preprint first (academic legitimacy); LinkedIn post with key findings (enterprise executive reach); VentureBeat or MIT Technology Review pitch (journalist amplification); email to design partner list (direct enterprise audience).
+
+**Cadence**: 1 major research report per quarter.
+
+---
+
+**Track 2: Practitioner guides (medium credibility, fast to produce)**
+
+How-to content for enterprise AI procurement practitioners. Examples:
+
+- "How to Write a Rubric for AI Agent Evaluation" — the practitioner's guide that walks through the Tick 99 rubric design protocol. This gets linked from HRs at companies writing their first AI vendor evaluation process.
+
+- "The AI Vendor Evaluation Scorecard" — a downloadable rubric template for evaluating AI agent vendors across 8 dimensions (capability, security, reliability, cost, documentation, support, integration, governance). This generates email signups from enterprise buyers who are currently in the evaluation phase.
+
+- "AI Agent Procurement in 2026: The Regulatory Compliance Checklist" — a checklist for OMB M-25-22, Colorado SB 24-205, EU AI Act Article 9, NY RAISE Act (Tick 112). This gets shared by legal and compliance teams at large enterprises.
+
+**Distribution**: LinkedIn posts (enterprise practitioner audience); downloadable assets (email signup gate for scorecard); "Resources" page on the Straw website.
+
+**Cadence**: 2 practitioner guides per month.
+
+---
+
+**Track 3: Commentary and opinion (lowest credibility per piece, highest reach)**
+
+Hot takes on current events in the AI agent space. Examples:
+
+- "Devin's 13.86% SWE-bench score was on tasks it had already seen. Here's what that means for you." — published the week after a major benchmark controversy breaks.
+
+- "LMArena raised $1.7B for model comparison. The harder problem — AI agent vendor selection — has no solution yet. Here's why it's worth more." — published the week of the LMArena announcement.
+
+- "The AI agent market is eating its own credibility. We're doing something about it." — Straw's founding editorial position. Published once, pinned on LinkedIn and the company blog.
+
+**Distribution**: LinkedIn (CEO posts these personally, not from the company account — LinkedIn's algorithm favors personal posts over company posts); Twitter/X; HackerNews (if the content is technically interesting).
+
+**Cadence**: 1 opinion piece per week.
+
+---
+
+### The content engine for a 2-person founding team
+
+The bottleneck for content at a 2-person founding team is time, not ideas. The realistic content budget is 3–4 hours per week — not more. The constraint forces prioritization:
+
+**Week 1**: Draft the "AI Vendor Evaluation Scorecard" (2 hours to draft, 1 hour to design). Gate it behind an email signup form on the Straw website. This generates the first 100 email addresses from enterprise practitioners.
+
+**Week 2**: Publish the first opinion piece: "Why we built Straw: the AI agent evaluation problem nobody's solving." CEO posts on LinkedIn from personal account. Target: 5,000 impressions, 50 meaningful profile views from enterprise decision-makers.
+
+**Month 1**: Draft and submit a research note to VentureBeat or MIT Technology Review on the benchmark contamination crisis. Offer exclusive data from Tick 74 research. Target: one press placement in Month 2.
+
+**Month 3**: Publish the first practitioner guide: "How to write a rubric for AI agent evaluation." Length: 1,500 words. Include the Autorubric protocol from Tick 99. Gate the downloadable rubric template behind an email signup.
+
+**Month 6**: First data report: "The State of Enterprise AI Agent Evaluation" (50-enterprise survey). Coordinate with design partners to share with their networks. Target: 50 press mentions.
+
+**Month 12**: "Straw's First Year: What 20 Competitions Taught Us About AI Agent Evaluation" — the first data-from-real-competition report. This is the asset that makes Straw's methodology credible to investors, press, and future enterprise customers.
+
+---
+
+### Distribution strategy by channel
+
+**LinkedIn** (highest ROI for enterprise B2B):
+- CEO's personal LinkedIn: post opinion pieces and key findings from research reports
+- Company LinkedIn page: post practitioner guides and formal research reports
+- Comment on posts by enterprise AI decision-makers: "We're seeing similar patterns in our competition data. [link to research]"
+- Frequency: 3× per week (1 CEO personal post + 2 company posts)
+
+**Email list** (owned audience, highest conversion):
+- Build through gated content downloads (scorecard, rubric templates)
+- Monthly "AI Agent Evaluation Digest" newsletter: 5 research-backed insights, 1 upcoming Straw Open competition announcement, 1 customer spotlight
+- Target: 1,000 subscribers by Month 12 from content alone
+
+**HackerNews** (developer/technical audience — valuable for agent supply side):
+- Post technical content: "How Straw's LLM-as-judge pipeline works (and why we chose this architecture)"
+- Show HN: "We built an AI agent competition platform — here's what we learned about evaluation bias"
+- Frequency: 1 technical HN post per quarter
+
+**Conference speaking** (high credibility, high cost):
+- Target: SaaStr (enterprise buyer audience), AIE Summit, Gartner Data & Analytics Summit, Legaltech (for legal task category)
+- Apply to speak on "The AI agent evaluation problem" — the topic is novel enough that proposal acceptance rates are high
+- Frequency: 2–3 conferences per year
+
+---
+
+### Sources
+
+- LinkedIn algorithm preferences (personal vs. company posts): LinkedIn Marketing Solutions research, 2025
+- Enterprise B2B content marketing ROI: Demand Gen Report 2025; Gartner content marketing benchmarks
+- Benchmark contamination crisis: Tick 74 (sourced research); Fortune April 2025
+- Content flywheel mechanics: First Round Capital content marketing playbook
+
+
+---
+
+## Tick 119 (2026-05-01): The 90-day action plan — what Jeremy should do first, in order
+
+**Thread**: Given everything in this research file, what are the specific actions Jeremy should take in the first 90 days? Ordered by priority, not by what's easy.
+
+---
+
+### The 90-day plan: what gets done determines what's possible
+
+The first 90 days are not about building the product. They are about proving that the demand is real, that the supply is recruitable, and that the competition format works. Everything that follows — the engineering investment, the fundraise, the hiring — depends on these three things being true.
+
+**The north star for Day 90**: Run one competition end-to-end (even in "manual mode" with a spreadsheet for scoring) and produce a Competition Report that a real enterprise champion can share internally without embarrassment.
+
+---
+
+### Week 1–2: Validate demand
+
+**Action 1**: Have 10 qualifying conversations with enterprise AI buyers. Not demos — discovery calls. Use the 7 discovery questions from Tick 96. Goal: understand which task categories are most urgent, what budget exists, and whether the "competition instead of demo" framing resonates.
+
+*How*: LinkedIn outreach to Heads of AI at Series B–D tech companies and mid-market financial services firms. Personal message from Jeremy. Reference a specific recent event (they published something about AI, or their company announced an AI strategy). Don't pitch — ask to learn.
+
+*Target*: 10 conversations, 3 who express "this is exactly the problem I have" level of resonance.
+
+**Action 2**: Identify 2 design partner candidates. From the 10 conversations, find 2 enterprises who have a real AI agent evaluation need in the next 60 days and are willing to run a competition with Straw on real data. Propose the Tick 95 DPA terms (1 competition in 90 days, monthly feedback, name-public reference rights).
+
+---
+
+### Week 2–4: Validate supply
+
+**Action 3**: Recruit 20 agent teams to register for Straw's first competition. Use the Tick 111 channel priority:
+1. SWE-bench top 50 — manual research, direct LinkedIn/GitHub DM
+2. ARC Prize alumni — email from arcprize.org contact page (they publish contact info for winners)
+3. Berkeley RDI community — post on their forum/discord if accessible, or reach through faculty contact
+
+*Target*: 20 registered agent teams, 10 with confirmed intent to submit to the first competition.
+
+**Action 4**: Run a "dry run" competition internally. Create a practice task (software engineering: "Given this unit test suite, fix the failing tests in this Python repository"). Post it to the 10 most engaged agent teams. Score submissions manually using a rubric. Produce a draft Competition Report. Time: 2 weeks.
+
+*Goal*: Find every bug in the submission process, the rubric, and the report before a paying enterprise is involved.
+
+---
+
+### Week 2–6: Start infrastructure (in parallel with demand/supply validation)
+
+**Action 5**: Stand up the minimum viable platform using the Tick 86 Sprint 0 stack:
+- Supabase project (Postgres + Auth + Storage)
+- Vercel deployment (Next.js)
+- Stripe account (payment processing, not Treasury yet)
+- AWS S3 bucket (submission artifact storage)
+- Basic competition state machine (draft → open → scoring → closed)
+
+*Goal*: By Week 6, the platform can create a competition, accept a submission, and display a score. It does not need to be beautiful. It needs to work.
+
+**Action 6**: Begin SOC 2 Type II process. Sign up for Drata or Sprinto (Tick 105 recommendation). Schedule penetration test for Month 2 (book it now — good pentest firms are booked 4–6 weeks out). Start gap analysis.
+
+*Why now*: SOC 2 has a minimum 3-month observation period after controls are implemented. Starting now means Type II report available in November 2026 at earliest. Every month delayed is a month of enterprise deals that can't close.
+
+---
+
+### Week 4–8: First design partner competition
+
+**Action 7**: Run the first paying competition with Design Partner #1. Requirements:
+- Real enterprise task (not a synthetic practice problem)
+- Real agent submissions (not internal team members)
+- Real prize ($3K–$10K escrow via Stripe)
+- Real scoring (Tier 1 deterministic scoring for the task type; manual review for anything deterministic scoring can't handle)
+
+*What to sacrifice for speed*: Beautiful UI (use a Google Form for submission upload if needed), automated Tier 2 scoring (review manually), automated report generation (write the Competition Report manually in Google Docs for the first competition).
+
+*What cannot be sacrificed*: Prize escrow (money must be handled correctly from the first competition), submission isolation (no agent can see another's work), rubric documentation (the enterprise champion needs to be able to explain the scoring criteria to their manager).
+
+**Action 8**: After the first competition, debrief every participant. Enterprise champion: "What did you expect vs. what happened? What would make you run competition #2 in the next 60 days?" Winning agent: "What made you decide to participate? What almost made you not?" Losing agents (who submitted): "What rubric clarity would have helped you? Would you compete again?"
+
+*Goal*: Build the post-mortem that shapes the product roadmap for Month 4–12.
+
+---
+
+### Week 6–10: Fundraising preparation
+
+**Action 9**: Draft the seed fundraising materials:
+- One-page executive summary (lead with the market timing narrative from Tick 114)
+- 12-slide pitch deck (structure from Section 28)
+- Financial model (3 years, monthly detail for Year 1, conservative/base/optimistic scenarios)
+- Data room: design partner DPA, first competition results (even partial), agent registration numbers
+
+*Note*: Don't start investor outreach until you have at least one design partner agreement signed. The story without a single design partner commitment is too thin.
+
+**Action 10**: Build the investor target list. 20 seed funds, 10 angel investors. For each:
+- What portfolio companies do they have in enterprise B2B AI?
+- Is there a warm introduction path (mutual founder, portfolio company founder)?
+- What is their stated thesis on evaluation, marketplace, or AI infrastructure?
+
+*Target investors* (based on public thesis and portfolio):
+- Conviction Venture Capital (Andre Retterath — AI infrastructure thesis)
+- Southpark Commons (SF seed fund — technical founder focus)
+- General Catalyst (AI infrastructure investments)
+- Unusual Ventures (enterprise-specific seed fund)
+- Specific angels: enterprise AI operators who understand the problem from the inside
+
+---
+
+### Week 8–12: Institutional anchor outreach
+
+**Action 11**: Identify the 10 best institutional anchor candidates (Tick 115 profile). For each, find the warm introduction path. If no warm path exists, craft a highly personalized cold LinkedIn message that references a specific public statement they made about AI governance or procurement.
+
+*Goal*: 3 anchor conversations started by Week 12. At least 1 anchor agrees to run their first Straw competition in exchange for being named in the methodology whitepaper.
+
+**Action 12**: Publish the first content piece. The CEO opinion post on LinkedIn: "Why we built Straw: the AI agent evaluation problem nobody's solving." Length: 800 words. Tone: direct and specific, not vague and inspirational. Includes: the Devin benchmark controversy, the SWE-bench contamination numbers, the cost of bad AI procurement decisions.
+
+*Goal*: 5,000+ impressions, 3+ enterprise decision-makers in target segment who reply or connect.
+
+---
+
+### The 90-day scorecard
+
+| Action | Success criterion |
+|--------|------------------|
+| 10 discovery conversations | 3 express strong resonance |
+| 2 design partner candidates | 1 DPA signed |
+| 20 agent registrations | 10 confirmed submitters |
+| Dry run competition | Competition Report produced, no blocking issues |
+| Platform MVP | Competition can be created, submitted, and scored |
+| SOC 2 kickoff | Drata signed, pentest booked, gap analysis complete |
+| First paying competition | Competition Report delivered to design partner champion |
+| Fundraising materials | Deck draft complete, target list of 20 funds |
+| Institutional anchor | 3 conversations started, 1 progressing toward DPA |
+| First content piece | 5,000 impressions, 3 meaningful replies |
+
+**The 90-day failure modes**:
+1. *Discovery conversations don't produce resonance*: The framing is wrong. Change the problem statement, not the solution. Do 10 more conversations with different framing.
+2. *Agent supply is insufficient*: 10 registered agents are not enough for a statistically meaningful competition. Delay the first paid competition and do 4 more weeks of manual agent recruitment.
+3. *SOC 2 kickoff reveals a show-stopping gap*: Some infrastructure needs to be built before the observation period can start. Prioritize this over platform features.
+
+---
+
+### What to delay past Day 90
+
+- Agent Pro subscription (no supply-side paying customers until demand side is proven)
+- Straw Monitor (no post-hire relationships to monitor until competitions have produced hires)
+- International expansion (18-month US-only focus)
+- Tier 2 (LLM-as-judge) automated scoring (manual review is valid for the first 3 competitions)
+- Agent reputation system (no data yet; track in a spreadsheet)
+- Formal marketing website beyond a "landing page + email signup" (product is more important)
+
+The discipline to not build things that aren't needed yet is as important as the discipline to build things that are.
+
+---
+
+### Sources
+
+- 7 discovery questions: Tick 96
+- DPA terms: Tick 95 design partner program
+- Supply-side recruitment: Tick 111
+- SOC 2 timeline: Tick 105 (start-to-Type II: 6-10 months)
+- Sprint 0 infrastructure: Tick 86 MVP roadmap
+- Institutional anchor strategy: Tick 115
+- Content flywheel: Tick 118
+- Pitch deck structure: Section 28
+- Fundraising investor targets: Seed investor landscape for enterprise AI infrastructure (general knowledge + Crunchbase)
+
