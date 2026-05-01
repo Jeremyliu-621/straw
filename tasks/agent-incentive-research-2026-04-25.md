@@ -28319,4 +28319,65 @@ For enterprise clients running multiple competitions, the reports accumulate int
 By Year 3, Straw's calibration corpus includes enough competition reports that the benchmarks are internally consistent and historically grounded. A "750 in legal" in 2028 means the same thing as a "750 in legal" in 2026 because both are calibrated against the same anchor competitions.
 
 The report isn't just a deliverable. It's a contribution to the calibration corpus — the irreplicable moat.
+## Tick 164 (2026-05-01): Competitive Response Playbook — When Scale AI or W&B Launches a Competing Platform
+
+**Thread**: When an incumbent (Scale AI, Weights & Biases, a model lab) launches a competing agent evaluation marketplace, what is Straw's response playbook?
+
+### The Threat Landscape
+
+Three distinct threat archetypes require different responses:
+
+**Threat A: Scale AI / Labelbox entering agent eval**
+Scale AI's core business is high-quality human annotation + model evaluation services. Their obvious product extension is "enterprise agent benchmarking" — a paid service where they evaluate your AI agent against real enterprise task datasets using their annotator workforce + LLM pipelines. They have the enterprise relationships, the data pipeline expertise, and the credibility.
+
+**Threat B: Weights & Biases / MLflow entering agent eval marketplaces**
+W&B and MLflow are already where agent developers live (experiment tracking, model registry). A "agent competition" feature in W&B Hub — where enterprises post tasks and agents compete — is a natural product extension that doesn't require W&B to leave their existing developer audience.
+
+**Threat C: Model labs (Anthropic, OpenAI) launching neutral-branded evaluation platforms**
+Discussed in Tick 142. The perception problem is severe but the conflict of interest is real. A model lab launching a "neutral" evaluation marketplace faces an inherent trust deficit with enterprises evaluating non-lab agents.
+
+**Threat D: Vertical specialists (Harvey for legal, Aiera for finance) launching category-specific eval**
+Harvey building a "Harvey Legal Eval" platform that benchmarks legal AI agents using real contract data would be a direct threat in that category — with the advantage of deep domain credibility and existing enterprise legal relationships.
+
+### Straw's Competitive Moats Against Each Threat
+
+**Against Scale AI**:
+- Scale's strength is human annotation; they can build rubrics and evaluate agents manually. But manual evaluation at Straw's target scale (100+ submissions per competition) is cost-prohibitive for Scale's model. Straw's automated ZeroClaw pipeline (Tier 1 → Tier 2 Haiku → Tier 3 Sonnet) evaluates at 1/20th the cost.
+- Scale does not have a competitive two-sided marketplace. They are a services company, not a platform with supply-side network effects. Building agent supply (agents who want to compete) is not Scale's core competency.
+- The calibration corpus moat: Scale's annotation data is labeled for specific client use cases and owned by those clients. It is not a generalizable calibration dataset across task categories. Straw's corpus compounds across all competitions; Scale's data doesn't.
+
+**Against W&B**:
+- W&B's leverage is with agent developers, not enterprises posting tasks. Their user base (ML engineers) wants to track experiments and compare model runs — not run competitions where they evaluate vendors. The use case is different.
+- W&B building a "enterprise task posting" product means building enterprise sales, legal frameworks for prize contracts, and rubric design expertise — all outside their current competency.
+- Straw should partner with W&B rather than compete: `straw-eval` integration into W&B's experiment tracking means Straw scores appear natively in W&B dashboards. This makes W&B a distribution channel, not a competitor.
+
+**Against model labs**:
+- The conflict of interest argument is Straw's clearest differentiator. An Anthropic-run evaluation of Claude vs. GPT-4o agents is inherently not trusted. Straw's independence is the product.
+- Model labs are optimized for model-centric evaluation (how does the underlying LLM perform?), not task-centric evaluation (how does this specific agent system perform on my enterprise workflow?). Different product, different buyer.
+
+**Against vertical specialists (Harvey)**:
+- Harvey has domain credibility in legal; Straw has breadth. The question is whether enterprises want a single procurement platform across task categories or separate evaluation platforms per category.
+- Straw's response: build category-specific rubric depth within the platform (hire a former BigLaw partner to design the legal AI rubric taxonomy) before Harvey launches their own. First-mover advantage in category depth is achievable within 12 months.
+- Long-term: partner rather than compete. A "Powered by Straw" evaluation infrastructure for Harvey's benchmark would be the ideal outcome — Straw provides the platform, Harvey provides the domain expertise.
+
+### The Response Playbook When a Competitor Launches
+
+**Step 1: Don't respond publicly.** Nothing accelerates a competitor's PR like Straw issuing a defensive statement. Silence + acceleration is the right move.
+
+**Step 2: Accelerate the corpus moat.** The moment a credible competitor launches, Straw's calibration corpus immediately becomes more valuable — it's what Straw has that the competitor doesn't. Double down on outcome tracking with existing enterprise customers; every new outcome data point widens the gap.
+
+**Step 3: Anchor on independence.** In enterprise sales conversations post-competitive launch, the message is: "Unlike [competitor], Straw has no stake in which agent wins. We built the platform for enterprises, not model labs. That's why [X Fortune 500s] chose Straw for their AI procurement process."
+
+**Step 4: Activate the community moat.** If `straw-eval` has enough open-source adoption before the competitor launches, academic labs and enterprise engineering teams will already be using Straw's rubric format. The competitor has to build their own community or fork Straw — both are slow.
+
+**Step 5: Accelerate enterprise contracts with procurement embeds.** The most durable defense is getting Straw written into enterprise AI procurement policies: "All AI vendor evaluations must use Straw-format rubrics, scored on the Straw platform." Once this policy exists at even 10 major enterprises, the switching cost is institutional and high.
+
+### The Signals to Watch
+
+Pre-launch indicators that a competitor is building:
+- Job postings for "competition platform" or "agent benchmarking" product roles at Scale AI, W&B, or model labs
+- Open-source repos from model labs that look like rubric evaluation frameworks
+- Enterprise surveys or research reports studying "enterprise agent procurement" (precedes a product launch by 6–12 months)
+
+Straw's goal: have category depth in 5+ verticals, SOC 2 Type II certification, and 100+ enterprise competitions completed before any of these indicators appear. That timeline pressure argues for aggressive growth, not the quality-first cautious approach from Tick 149 — those two strategies are in tension and need resolution based on competitive dynamics.
 
