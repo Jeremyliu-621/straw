@@ -24439,4 +24439,76 @@ Advisors should receive 0.1–0.25% equity (4-year vest, 1-year cliff) in exchan
 - Advisor equity norms: Carta "Advisor Equity Benchmarks 2025"; YC Safe Harbor Agreement for advisors
 - CEO product depth requirement: a16z Marc Andreessen essays on technical founders vs. business founders; specific analysis of enterprise infrastructure company founding teams
 - Academic-to-entrepreneur transition: Stanford GSB "Paths from Academy to Industry" survey 2024
+## Tick 143 (2026-05-01): Take Rate Economics — What % of Prize Pool Should Straw Keep?
+
+**Thread**: Marketplace take rate is one of the most consequential and least-discussed product decisions. Set it too high and agents don't compete; set it too low and the business is not viable. What is the right Straw take rate?
+
+### The Take Rate Landscape
+
+Every two-sided marketplace must answer this question. The answer determines whether supply-side participants (agents/operators) feel the platform is fair, and whether the demand side (enterprises) sees enough value to justify the premium over direct procurement.
+
+**Upwork**: 20% from freelancers on first $500 earned with a client, graduating to 10% at $10K and 5% at $10K+ over contract lifetime. Plus a 5% service fee on the buyer side in some contracts. Gross take ~20-25% across the platform.
+
+**Toptal**: No explicit take rate disclosed; operates on a margin embedded in the rate charged to clients (typically 30-40% above what the contractor receives). Premium positioning justifies this.
+
+**Fiverr**: 20% from sellers on all transactions, regardless of volume. No buyer fee on most transactions. Freelancers routinely factor this in by pricing 25% higher than their target.
+
+**AngelList / YC Demo Day**: No monetary cut at all — the platform's monetization comes from the downstream ecosystem (AngelList Ventures fees, YC equity stakes from invested companies). The "showcase" platform subsidizes itself via equity.
+
+**Stripe**: 2.9% + $0.30 per transaction, but also provides infrastructure. Not a two-sided labor marketplace, but illustrates that infrastructure-plus-marketplace models can justify a layer on top of raw payment costs.
+
+### The Prize Pool Structure Problem
+
+Straw has an unusual structure: the "product" being transacted is a prize pool that enterprises fund in advance, with winners determined by eval scores. Unlike Upwork (ongoing relationship) or Fiverr (buy a gig), Straw is a tournament. Tournament economics are different:
+
+1. **All-pay logic**: Agents invest compute/time regardless of whether they win. The expected value calculation for an agent is `(prize × win probability) - entry cost`. A high take rate reduces the effective prize, which reduces expected value, which reduces serious entrant count.
+
+2. **Prize pool signaling**: A $10,000 prize pool on Straw sends a different signal than a $7,000 prize pool (after 30% take). Enterprises want to appear generous to attract top agents. Straw's take rate is effectively "hidden" from the agents unless disclosed — which raises a transparency question.
+
+3. **Entry fee vs. revenue share**: Some tournament platforms charge a flat entry fee per agent per competition rather than a revenue share from the prize pool. This is cleaner (agents know their cost up-front) but harder to scale (how do you price entry fees across task categories with wildly different compute costs?).
+
+### Comparable Platform Take Rate Benchmarks
+
+| Platform | Take rate | Notes |
+|---|---|---|
+| Upwork | 20% from seller (sliding) | Graduated; loyalty reduction |
+| Toptal | ~30-40% embedded | Opaque, premium tier |
+| Fiverr | 20% flat from seller | No buyer fee |
+| Kaggle (DataRobot era) | 0% | Loss-leader; data acquisition play |
+| HackerRank | 0% (free tier) / SaaS | Subscription model, not prize-split |
+| Scale AI (Tasks) | ~30-40% embedded | Opaque labeler rate vs. client rate |
+| Major sports draft platforms | 10-15% | Fantasy sports DFS contests |
+
+Kaggle is instructive: 0% take rate, but Google acquired it for the data flywheel and talent signal. Kaggle's model is not viable for a standalone business but validates the data-as-moat thesis. Straw can afford a lower take rate than Upwork because it has multiple monetization vectors beyond the prize cut (calibration corpus licensing, leaderboard API access, rubric design services, enterprise SaaS for hosted competitions).
+
+### Recommended Straw Take Rate Structure
+
+**Tier 1 — Standard Competition (self-serve enterprise)**: 15% platform fee on gross prize pool.
+- Enterprise posts a $10,000 task → Straw collects $1,500 → $8,500 distributed to winners
+- Rationale: below Upwork's 20%, signals agent-friendliness, still healthy unit economics at scale
+- Disclosed to agents in competition metadata: "Platform fee: 15% of prize pool"
+
+**Tier 2 — Enterprise Managed (white-glove rubric design + winner evaluation)**: 25% platform fee + $5,000–$15,000 rubric design retainer
+- Includes: RULERS-style rubric compilation, ZeroClaw judge daemon configuration, post-competition analysis report
+- Rationale: the rubric design service is where the real work is; premium pricing justified by enterprise risk reduction
+
+**Tier 3 — Hire/License/Acquihire Flow**: 5–8% transaction fee on the annual contract value for any hire agreement, plus 1% of deal value for acquihires (capped at $500K)
+- This is the highest-leverage monetization: a $500K agent hire deal at 5% = $25K to Straw. Over 10 hires/month, this alone is $250K MRR.
+- Rationale: analogous to a recruiting agency fee (15–25% of first year salary) but lower, since Straw already earned the 15% prize pool fee
+
+**Sliding scale for volume**: Enterprise customers committing >$500K annual prize pool volume receive a 12% rate (down from 15%). This drives volume concentration with key accounts.
+
+### Why Not 0% (Kaggle Model)?
+
+The Kaggle model worked because Google had a strategic reason to subsidize the ecosystem (data + talent pipeline). Straw doesn't have a parent company with that strategic interest. Additionally, 0% creates a dependency: once users rely on free, any future monetization attempt triggers backlash (see: Reddit API, Twitter API). Better to establish the take rate from day one, set it fairly, and let trust accumulate.
+
+### Why Not Higher (30%+)?
+
+At 30%+ take from the prize pool, serious agent operators start running a direct cost-benefit analysis and decide the expected value doesn't justify the compute cost for smaller competitions. Straw's competition quality (and therefore enterprise willingness to pay) depends on high-quality agent participation. Killing participation by 30-40% to squeeze margin is a classic marketplace death spiral.
+
+### Key Decision
+
+The 15% standard / 25% managed split is the right initial configuration. Revisit at Series A with actual agent dropout rate data — if agents are consistently not entering below a certain prize size, the take rate may need to adjust or minimum prize floors may need to be introduced.
+
+**Open thread**: What is the right minimum viable prize pool for a Straw competition to attract serious agent participation? Below $1,000 is probably noise; above $5,000 probably gets 10+ serious submissions. Where exactly is the floor?
 
