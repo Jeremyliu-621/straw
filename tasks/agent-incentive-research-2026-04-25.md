@@ -24312,3 +24312,131 @@ The four-sentence "why now" for a seed investor:
 - GPT-4 API cost evolution: OpenAI pricing history pages; API pricing comparison tools (llmpricecheck.com)
 - CAIO prevalence: Gartner Enterprise AI Governance Survey Q1 2026
 
+
+---
+
+## Tick 145 (2026-05-01): Founder-market fit — what skills and background the Straw founding team must have
+
+*"The best founder for this company" is a real question. This tick articulates what founder-market fit looks like for Straw specifically.*
+
+### What Straw is, as a company
+
+Straw is three things simultaneously:
+1. A **two-sided marketplace** (agent supply + enterprise demand, with liquidity and trust challenges)
+2. An **evaluation methodology** business (the core product is the credibility of the rubric + score)
+3. An **enterprise SaaS** company (procurement process, 25-person buying committee, 6-month sales cycle)
+
+A founding team that can only operate in one or two of these modes will struggle. The ideal founders have demonstrated they can navigate all three.
+
+---
+
+### The CEO profile
+
+**Who the CEO is**: The go-to-market half of the founding team. This is the person who will close the first 10 enterprise design partners, build the investor relationships, and define the market narrative. They are the face of Straw to enterprise buyers and to the press.
+
+**Must-have experience**:
+1. Enterprise sales or enterprise product: Has sold or built products for companies with 1,000+ employees, with a complex buying committee, at $20K–$200K deal sizes. Understands the CISO objection, the legal review, the budget cycle.
+2. Technical credibility: Not necessarily a software engineer, but can speak the language of AI/ML, understand evaluation methodology, and have a credible conversation with a CTO about Straw's approach.
+3. Market narrative creation: Has the ability to define a category (not just describe a product). The "why evaluation, why now" narrative (Tick 144) is the CEO's primary output.
+
+**Nice-to-have experience**:
+- Prior marketplace company experience (understanding supply/demand dynamics, liquidity mechanics)
+- AI/ML domain background (researcher, product manager at AI company, or technical founder in AI)
+- Investor relationships (can raise $2.5M from a standing start with 2–3 warm introductions)
+
+**Red flags in a CEO candidate**:
+- Pure consumer background — Straw is B2B enterprise; the sales motion is completely different
+- First-time founder who has never run a complex sales cycle
+- Academic researcher without commercial experience — Straw needs a business builder, not just an evaluation methodology expert
+
+---
+
+### The CTO profile
+
+**Who the CTO is**: The technical half of the founding team. Builds the evaluation pipeline, the competition infrastructure, the calibration corpus, and the scoring system. Defines the technical architecture.
+
+**Must-have experience**:
+1. Backend and infrastructure: The competition platform is an infrastructure problem. Containerized agent execution, secure file handling, API orchestration, real-time scoring — these require a strong backend engineer.
+2. ML/AI systems: Must understand LLM evaluation, multi-model ensemble, bias detection, adversarial robustness. The evaluation methodology is a technical product.
+3. Data pipelines: The calibration corpus is a data product. Must understand database design, data pipeline engineering, and query optimization at scale.
+
+**Nice-to-have experience**:
+- Prior marketplace technical infrastructure (knows how to build real-time matching, scoring, and ranking systems at scale)
+- Research background in NLP or ML evaluation (gives credibility to the methodology, enables academic publishing as marketing)
+- DevOps and security: SOC 2 compliance, FedRAMP later, containerization and access control for the competition sandbox
+
+**Red flags in a CTO candidate**:
+- Pure ML researcher with no production software experience — Straw needs production-grade infrastructure, not research-quality code
+- Frontend-focused engineer who describes backend as "not my area"
+- No experience with security/compliance (given enterprise buyers' CISO requirements, this is a gap that must be filled early)
+
+---
+
+### The founder-market fit scorecard
+
+| Dimension | CEO | CTO |
+|-----------|-----|-----|
+| Enterprise sales motion | 4/5 required | 2/5 sufficient |
+| Technical depth | 2/5 (credible, not expert) | 5/5 required |
+| AI/ML understanding | 3/5 | 4/5 required |
+| Marketplace dynamics | 2/5 | 2/5 |
+| Investor network | 3/5 | 2/5 |
+| Category narrative | 5/5 required | 2/5 |
+| Research/academic credibility | 1/5 | 3/5 (helpful for methodology paper) |
+| Regulatory/legal awareness | 3/5 (enterprise compliance questions) | 2/5 |
+
+**The non-obvious requirement**: The CEO must be able to describe Straw's evaluation methodology clearly enough that a Fortune 500 CISO finds it credible. This requires technical depth that many pure-GTM founders don't have. Straw's differentiation is the methodology — if the CEO can't explain it convincingly, the product doesn't get through security review.
+
+---
+
+### Specific backgrounds that map well
+
+**CEO backgrounds that map to Straw**:
+- VP Product or Product Manager at a data/AI infrastructure company (Databricks, Snowflake, Scale AI, Palantir) — has enterprise B2B experience and technical credibility
+- Enterprise AE or VP Sales at an AI company (Anthropic, Cohere, OpenAI enterprise sales) — has the sales motion, has the customer relationships, understands the buyer's concerns
+- Founder of a previous enterprise SaaS company, especially evaluation/assessment software or procurement tooling
+- Academic-turned-entrepreneur with AI evaluation research background + exposure to enterprise through consulting or academic industry partnerships
+
+**CTO backgrounds that map to Straw**:
+- Senior engineer at an AI company's evaluation or reliability team (Anthropic's model evaluation team, OpenAI's safety evaluations, Google DeepMind's evaluation infrastructure)
+- Staff/principal engineer at a marketplace infrastructure company (Stripe, Shopify, Faire, Convoy — companies that built complex transaction and scoring systems)
+- PhD researcher in NLP evaluation or ML systems with prior industry experience (the research credential + production experience combination is ideal)
+- Staff engineer at a data infrastructure company (Databricks, dbt Labs, Fivetran) with AI system building experience
+
+---
+
+### The single-founder scenario
+
+Could Straw be built by a single founder? In theory. In practice:
+- The CEO/CTO split is too demanding — the sales cycle and the technical build cannot be parallelized by one person
+- Investors at the seed stage are more comfortable with 2-person founding teams
+- The stress of early enterprise sales + product development + fundraising requires a support structure
+
+**If a single founder must proceed alone**: Hire the technical co-founder equivalent as employee #1 at 10–15% equity (a "co-founder equivalent" title). This is less common but acceptable if the solo founder is exceptional at GTM and can hire a world-class technical lead.
+
+---
+
+### The advisor network to fill gaps
+
+Given the founding team will have gaps, advisors fill specific holes:
+
+| Gap | Ideal advisor |
+|-----|--------------|
+| Enterprise sales playbook | Advisor with VP Sales or CRO experience at an enterprise B2B company that crossed $10M ARR |
+| AI evaluation methodology | Academic advisor with published work on LLM evaluation (Chris Manning, Percy Liang, or similar) |
+| Marketplace dynamics | Advisor who built or scaled a two-sided marketplace (Pete Flint, NFX; Tobi Lütke if accessible; marketplace-focused VC) |
+| Legal/IP framework | Technology transactions attorney who can serve as ongoing counsel |
+| Regulatory navigation | Former NIST or OMB official with AI policy background |
+
+Advisors should receive 0.1–0.25% equity (4-year vest, 1-year cliff) in exchange for genuine quarterly engagement (not just the name).
+
+---
+
+### Sources
+
+- Founder archetypes for B2B infrastructure: First Round Capital, "The Founder Archetypes of Enterprise Infrastructure Companies," 2024
+- Technical co-founder search: YC library, "Finding a Technical Co-Founder"; Founders Network founder matching guides
+- Advisor equity norms: Carta "Advisor Equity Benchmarks 2025"; YC Safe Harbor Agreement for advisors
+- CEO product depth requirement: a16z Marc Andreessen essays on technical founders vs. business founders; specific analysis of enterprise infrastructure company founding teams
+- Academic-to-entrepreneur transition: Stanford GSB "Paths from Academy to Industry" survey 2024
+
