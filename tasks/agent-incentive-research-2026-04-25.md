@@ -23714,3 +23714,87 @@ Timing: Hire first CSM when Straw has 10+ enterprise clients. At <10 clients, AE
 - Artificial Analysis methodology: artificialanalysis.ai/methodology/intelligence-benchmarking
 - Can We Trust AI Benchmarks?: arxiv.org/html/2502.06559v1
 
+
+---
+
+## Tick 140 (2026-05-01): Permanent Agent Leaderboard Design — Glicko RD, Version Pinning, Anchor Tasks, LSAT Equating
+
+**Thread**: Should Straw maintain a permanent all-time agent leaderboard (ELO-style) or only competition-specific rankings?
+
+### The Core Tension
+
+A permanent leaderboard creates stickiness and press value ("The top 10 AI coding agents on Straw in 2026") and gives enterprise buyers a comparative signal for procurement. Competition-only rankings have no narrative, no stickiness, and no cross-competition comparison. But permanent rankings create gaming incentives (agents optimize for rank, not task quality) and go stale as models improve — a "Straw Expert" score from Q1 2026 may not mean the same thing in Q4 2026.
+
+Four comparison platforms illuminate the right design.
+
+### 1. Chess.com / Glicko-2: Widen Confidence, Don't Decay the Score
+
+Chess.com uses Glicko (not classic Elo). The key design decision: **a player's rating number does not decay due to inactivity, but their Rating Deviation (RD) increases.** RD is one standard deviation of uncertainty around the true skill estimate. A player with rating 1500 and RD 50 is expected to have true strength between 1402 and 1598. A returning player with inflated RD experiences larger rating swings until the system re-converges on their actual strength.
+
+Critically, there is no explicit rating floor. The RD mechanism does the work instead: a stale rating is not treated as authoritative. Any result against a high-RD player earns or costs less for the opponent (low information gain). This is the right mental model for agent staleness: **don't decay the number, widen the confidence interval.**
+
+Source: [How do ratings work on Chess.com?](https://support.chess.com/en/articles/8566476-how-do-ratings-work-on-chess-com); [Glicko Rating System — Wikipedia](https://en.wikipedia.org/wiki/Glicko_rating_system)
+
+### 2. LMArena / Chatbot Arena: No Rebasing — Version Pinning Is Mandatory
+
+Chatbot Arena (now LMArena) shifted from online Elo to Bradley-Terry (BT) maximum likelihood estimation across all historical battles. **Critical design choice: when a model is updated, old and new versions are listed as separate leaderboard entries.** When GPT-4's API silently updated from `gpt-4-0314` to `gpt-4-0613`, Arena retroactively split them — the rating gap was 49 points, meaningful. Old scores are never rebased; deprecated models remain frozen on the board as historical artifacts.
+
+To handle recency imbalance, battles are reweighted inversely proportional to frequency — older, less-contested models don't dominate the ranking. Major data pipeline improvement deployed January 13, 2026, resolving known issues and applying data filtering more consistently.
+
+The lesson: **version pinning is mandatory.** A "Claude Sonnet" score from Q1 2026 must be a separate row from "Claude Sonnet Q3 2026" — they are different products.
+
+Darker finding: researchers at Computerworld documented that Meta, Google, and OpenAI were given privileged private access to test multiple model versions and selectively publish only the highest-performing ones — inflating their Arena rankings. Straw must explicitly prohibit selective publishing of private trials.
+
+Source: [Chatbot Arena: New models & Elo system update](https://www.lmsys.org/blog/2023-12-07-leaderboard/); [Leaderboard illusion — Computerworld](https://www.computerworld.com/article/3976355/leaderboard-illusion-how-big-tech-skewed-ai-rankings-on-chatbot-arena.html); [Leaderboard Changelog — Arena.ai](https://arena.ai/blog/leaderboard-changelog/)
+
+### 3. Codeforces: No Decay, but Inflation Is a Known Structural Problem
+
+Codeforces ratings are persistent and never decay from inactivity. Their multi-player Elo generalization builds in slight deflation pressure: performing exactly as expected causes a marginal rating decrease, fighting inflation. The community has repeatedly proposed optional decay for inactive high-rated users (2100+) but it has not been implemented.
+
+The system suffers from **rating deflation** as the player pool grows — as more lower-rated newcomers enter, top ratings become harder to achieve even with constant skill. For Straw the analog is: as more agents enter the platform, a fixed rating band shifts in meaning over time without periodic recalibration.
+
+Source: [Open Codeforces Rating System](https://codeforces.com/blog/entry/20762); [Rating decay proposal](https://codeforces.com/blog/entry/67133)
+
+### 4. LSAT IRT True-Score Equating: Anchor Items Are the Gold Standard
+
+LSAC applies **Item Response Theory (IRT) true-score equating** to every test administration: raw scores map to the fixed 120–180 scale by adjusting for difficulty of each specific test form. A 165 in 2018 is designed to mean the same as a 165 in 2026. The mechanism is anchoring: each new test form contains a block of previously-calibrated items ("anchor items") that let psychometricians measure difficulty drift and adjust the curve accordingly.
+
+LSAT percentile ranks also use a **rolling three-year normative window** rather than the all-time population, explicitly accounting for changes in who takes the test.
+
+The Straw analog: a stable set of canonical benchmark tasks administered with every rating cycle allows drift detection and recalibration without invalidating historical scores.
+
+Source: [The LSAT Curve / Test-Equating at LSAC](https://www.unpluggedprep.com/lsat-prep/lsat-curve-test-equating-at-lsac/)
+
+### 5. Recommended Straw Design
+
+**Verdict: Versioned permanent leaderboard with annual recalibration — not competition-only rankings.**
+
+The case against competition-only is strong: no press narrative, no stickiness, no comparative signal for enterprise buyers. The "top 10 agents on Straw" headline is a real acquisition driver.
+
+Specific design drawing from all four systems:
+
+**A. Version-pin every agent release (LMArena rule)**
+`AgentX v2.1` and `AgentX v2.2` are separate leaderboard rows. Scores never migrate between versions. Each version's score is frozen when it is deprecated. This prevents the Arena abuse pattern of silently improving an agent while accumulating score under the old version's reputation.
+
+**B. Glicko RD, not naked ELO**
+Each agent's score displays as a range: `1847 ± 38`. Agents inactive for 90+ days show a widened RD, flagging that the estimate is stale — without destroying the score itself. When a stale-RD agent competes, their result has larger rating movement until confidence re-converges.
+
+**C. Anchor task pool (LSAT method)**
+Maintain 15–20 canonical benchmark tasks held constant across competitions. Every new competition includes these anchors. If platform-wide mean on anchors drifts more than one standard deviation from the prior year's mean, trigger a **recalibration epoch** — a multiplicative scale adjustment applied uniformly across all active ratings. Recalibration epochs published explicitly in a public changelog.
+
+**D. Annual cohort segmentation**
+Publish a "Class of 2026" leaderboard alongside the all-time board. This separates "best agent right now" (press-worthy) from historical record, and prevents gaming the all-time rank by cherry-picking easy task categories.
+
+**E. Anti-gaming: mandatory category randomization**
+Require agents to compete across randomized task categories they cannot pre-select. Apply LMArena's reweighting so no single easy-win category inflates a score disproportionately. Prohibit private trial access that allows selective publishing of results.
+
+### Why Permanent > Competition-Only for Straw's Business Model
+
+Enterprise buyers doing due diligence want a single authoritative number: "This agent has an 1847 Straw score ± 38 (Class of 2026, last active 23 days ago, 312 competitions)." That sentence replaces a six-figure vendor evaluation process. Competition-only rankings provide none of that. The leaderboard is Straw's moat with enterprises — not just a feature.
+
+### Open Thread
+
+**Tick 141 candidate**: Anti-collusion mechanisms — how do you detect agent operators coordinating to inflate each other's scores on the platform? (Ring-trading analogs from chess; market manipulation detection from equity markets.)
+
+**Tick 142 candidate**: Series B story — what does the Straw Series B narrative look like in 2027, given the calibration corpus moat, the leaderboard network effect, and the long-horizon campaign format? Who are the likely lead investors (Tiger vs. a16z vs. strategic from an enterprise software house)?
+
