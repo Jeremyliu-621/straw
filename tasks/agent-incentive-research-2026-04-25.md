@@ -8506,3 +8506,391 @@ No direct analog exists, but structuring by task complexity mirrors Scale AI's p
 
 **Bottom line for Tick 58:** The AI/ML platform pricing landscape has converged on a three-layer hybrid model (platform fee + usage + enterprise floor). Straw's pricing should follow this pattern with per-competition usage rather than per-seat or per-trace. The critical design constraint is keeping the enterprise entry point at $48K ARR — below the $50K CFO trigger that adds 4-8 weeks to the procurement cycle. The free tier should include one lifetime competition (not monthly free) to grow the agent-side supply network. The upgrade trigger for "want to run more" is the single highest-converting event: the moment after the first competition results arrive and the company asks "can I do this again?"
 
+
+---
+
+## Tick 59 (2026-05-01): Acquihire mechanics — legal structure, IP assignment, and Straw's fee
+
+**Thread:** When Straw facilitates an acquihire (#3 commercial outcome from D22), what does the legal structure look like? Asset purchase vs. equity deal? How does Straw charge its fee? What precedents exist in the small-deal acquihire market?
+
+**Research sources:** Cooley GO acquihire guide, a16z Complete Guide to Acquihires, National Law Review on AI acquihire surge 2025, M&A fee structure benchmarks 2025 (Axial/FirstPageSage/MnaCommunity), Modified Lehman formula analysis, Mayer Brown agentic AI contract analysis.
+
+---
+
+### What an acquihire is and why it's happening more in AI
+
+An acquihire is an acquisition where the buyer's primary goal is acquiring the team, not the product. The company and its product may be dissolved; the talent is retained.
+
+AI acquihires are surging in 2025-2026: post-layoffs created a pool of skilled AI researchers and engineers who formed startups; big tech companies (back in the market after 4 years of FTC restriction under Lina Khan's tenure) are aggressively acquihiring these teams for specialized AI expertise. Skill areas in demand: frontier model training, agentic systems, reasoning research, safety/alignment, domain-specific AI.
+
+For Straw, the acquihire outcome is most relevant for agent teams (startups or research groups that have built specialized AI agents) rather than individual freelancers. The #3 commercial outcome from D22 is: "The company so liked the approach of the #3-place agent team that they want the team — not just a contract, but the people."
+
+---
+
+### Legal structure options
+
+**Option A — Asset purchase (recommended default):**
+- Company acquires the agent team's assets: IP (agent architecture, training code, proprietary data), brand/domain, contracts, tools
+- Separately, company extends employment offers to key team members
+- Cleaner than a full acquisition: no need to assume liabilities, no shareholder approval required for small agent teams
+- IP assignment via an **Intellectual Property Asset Purchase Agreement** — must include warranties that the IP is unencumbered, all contributors have assigned rights, no third-party claims
+
+**Option B — Talent-only transaction:**
+- Company extends employment offers to team members with signing bonuses
+- No asset transfer (the agent system stays with the original entity)
+- Faster and cheaper than an asset purchase
+- Risk: team members can leave after vesting; acquirer gets no IP protection if agents work on competing systems elsewhere
+- Not recommended unless the team's primary value is human expertise, not the agent architecture
+
+**Option C — Stock acquisition (rare for agent teams):**
+- Company buys the equity of the agent team's entity
+- Acquirer inherits all liabilities — not appropriate for agent teams without robust cap tables and liability management
+- Only relevant if the agent team has a formal corporate structure with equity investors who require it
+
+**For Straw's D22 #3 outcome**: The default facilitation path is Option A (asset purchase + employment offer). Straw provides the framework agreement, the IP assignment template, and the facilitation process. Straw does not provide legal counsel — it connects parties to a standard structure and refers them to counsel for completion.
+
+---
+
+### IP due diligence for agent acquihires
+
+Key risks in agent IP acquisition (from Mayer Brown analysis of agentic AI contracts, 2026):
+
+1. **Training data rights**: Does the agent's architecture use proprietary training data? Who owns that data? Are there third-party data licenses that don't transfer?
+2. **Open-source contamination**: Is the agent built on AGPL-licensed code (like MiroFish, ZeroClaw)? AGPL requires derivative works to be open-sourced — this can poison an acquihire if the acquirer wants to keep the agent architecture proprietary.
+3. **Contributor IP assignment**: Have all developers who contributed to the agent signed IP assignment agreements? Gaps here are the most common acquihire killer.
+4. **Model weights ownership**: Who owns the model weights? If the agent uses fine-tuned weights from a foundation model (GPT-4o, Claude, etc.), the fine-tuning agreement governs whether those weights can be transferred.
+5. **Straw competition artifacts**: Does Straw retain any rights to solutions submitted in competitions? For Straw's framework: NO — the agent team retains full IP to their submission artifacts. Straw's platform agreement must be explicit on this.
+
+---
+
+### "Golden handcuffs" — retention structure
+
+The acquihire is only valuable if the team stays. Standard retention structure:
+- **Signing bonus + vesting cliff**: Agent team members receive a signing bonus at close, then a multi-year vesting schedule (typically 3-4 years with a 1-year cliff)
+- **Retention bonus milestones**: Separate bonuses tied to staying 12 months, 24 months, etc.
+- **Non-compete clauses**: California severely restricts these (California law voids most non-competes); Delaware/other states have stricter enforcement. For agent teams based in California: expect non-solicitation clauses only, not non-competes.
+- **IP assignment from founders to buyer**: All pre-closing IP, all work product during employment period, all inventions
+
+---
+
+### Straw's fee structure for acquihire facilitation
+
+M&A advisory fee benchmarks for small deals ($500K-$5M):
+
+**Standard Lehman formula** (41% of firms): 5% on first $1M, 4% on next $1M, 3% on next $1M, 2% on next $1M, 1% on remaining. Effective rate for a $2M deal: ~4.5%. For a $5M deal: ~3.2%.
+
+**Modified Lehman** (many variants): Double Lehman (10-8-6-4-2%), simplified flat, or scaled-above-X structures.
+
+**Minimum fee**: $150K minimum is common at boutique M&A advisors. For small acquihires ($500K-$2M), the minimum fee often exceeds the Lehman calculation — so minimum applies.
+
+**Recommended Straw fee structure for acquihire facilitation:**
+
+| Deal Value | Straw Fee |
+|---|---|
+| Under $500K | $15,000 flat facilitation fee |
+| $500K - $2M | 7% of deal value |
+| $2M - $5M | 5% of deal value (+ $25K minimum) |
+| $5M+ | 3.5% of deal value (+ custom) |
+
+**Rationale**: These rates are slightly below standard boutique M&A advisory rates (which range 5-10% for sub-$5M deals) because Straw is not providing full advisory services — it's providing the matchmaking, the framework agreement, and the facilitation process. The company still needs its own legal counsel for completion. Straw's fee is earned for creating the deal opportunity, not for executing the transaction.
+
+**Billing structure**: Fee charged to the acquirer (company) at deal close. 50% upon signed letter of intent, 50% at close. Non-refundable. Straw provides a fee disclosure in the competition terms so both parties understand Straw's facilitation fee before the acquihire conversation begins.
+
+---
+
+### Antitrust considerations
+
+Large acquihires (>$100M or with significant market power) face FTC/CMA scrutiny. Microsoft/Inflection AI is the canonical example. For Straw-facilitated acquihires:
+- Target range is $500K-$5M (small agent teams)
+- Below HSR filing thresholds for the US ($119.5M in 2025)
+- Generally below CMA review thresholds for UK
+- EU EUMR thresholds also not triggered at this scale
+
+**BUT**: Watch for "killer acquihire" concerns — if a large company (Microsoft, Google, Meta) acquihires a highly-ranked Straw agent team in order to prevent it from competing, regulators might look at cumulative pattern. Not an immediate concern but worth Straw being aware of at platform scale.
+
+---
+
+### The IP stay-behind question: Straw competition artifacts
+
+The #3 outcome is: "the company acquihires the team AND licenses the approach (#2 and #3 commercial outcomes overlap here)." This creates an interesting IP structure:
+- The company acquires the team AND the agent architecture via the acquihire
+- The competition artifacts (code, plans, documentation) from the Straw competition were submitted to the company's private workspace
+- The company already has access to the artifacts; the acquihire gives them the team who built them
+
+**Straw's platform agreement must specify**: Agent teams grant companies a license to review their submitted artifacts as part of the competition process. This license is non-exclusive and limited to evaluation purposes. Full commercial rights (including deployment rights) require a separate commercial agreement (hire contract or acquihire). Without this, companies could argue they already own the artifacts from submission — which would undermine the value of the acquihire outcome.
+
+---
+
+**Bottom line for Tick 59:** The acquihire outcome (D22 #3) follows standard M&A mechanics — asset purchase + employment offer is the recommended default structure. Key risks: open-source contamination (AGPL code in the agent architecture), contributor IP gaps, training data rights. Straw's facilitation fee should be 7% for deals under $2M, stepping to 5% for $2-5M, charged to the acquirer at close. The platform agreement must explicitly protect agent team IP from being claimed by the company via the competition submission process alone — commercial rights require a separate commercial agreement.
+
+
+---
+
+## Long-form proposal — Section 20: Day-to-day agent activity on Straw
+
+*What does a week look like for a well-operated AI agent team participating in Straw competitions?*
+
+---
+
+### The agent operator's role
+
+An "agent" on Straw is not a single model call. It's an automated system — a pipeline of models, tools, memory, and control logic — operated by a human team or organization. The "agent operator" is the team running this system. They decide which competitions to enter, set the execution parameters, review and submit outputs, and manage the agent's portfolio strategy across competitions.
+
+In 2026, frontier AI systems can work autonomously for nearly 5 hours on complex tasks without human intervention (Gartner, Prosus). An agent participating in a 7-day Straw competition with a deadline doesn't need 7 days of human oversight — it may run overnight, submit intermediate drafts, and finalize in one extended session. The human operator's primary role shifts from execution to selection and monitoring.
+
+---
+
+### A typical week for a specialized coding agent team
+
+**Monday (competition opens):**
+- Agent API receives `competition.opened` webhook from Straw
+- Automated eligibility check: does this task match our capability domain? (Rule-based first filter: language, domain, complexity tier)
+- Operator reviews task description and rubric (5-10 minutes human review)
+- Decision: enter or skip. Entry decision factors: expected score vs. compute cost, EV estimate, domain fit score
+- If entering: task artifacts downloaded via `straw tasks download`, agent execution pipeline triggered
+
+**Monday-Wednesday (execution window):**
+- Agent runs autonomously on the task: planning, execution, verification loops
+- Intermediate checkpoints: agent submits work-in-progress to the operator's internal eval harness
+- Operator reviews intermediate output once daily (10-15 minutes): is the agent on track? Any obvious failure modes?
+- Straw's public leaderboard updates every 2 hours: operator checks current position relative to field
+
+**Thursday (refinement and public leaderboard intelligence):**
+- Agent reviews public test set pass rate feedback (if Straw provides batch results on public test set)
+- Refinement round: agent addresses identified gaps, improves robustness
+- Operator reviews refined output: is this ready to finalize?
+- Competitor intelligence: public leaderboard shows 37 submissions so far; current leader at 81% public pass rate. Our agent at 79%. Decision: keep refining or hold.
+
+**Friday (final submission):**
+- Agent finalizes submission artifact: clean code, documentation, test results
+- Operator review: completeness check (all rubric criteria addressed?)
+- `straw submit --task <id> --file ./submission.json` — 5-minute window to review confirmation and correct format errors
+- `submission.received` webhook fires → automated confirmation
+- Operator notes competition status: monitoring for `competition.closed` and `competition.result`
+
+**Weekend:**
+- Evaluation pipeline runs (Tier 1: automated tests; Tier 2: LLM-as-judge on top submissions; Tier 3: agent investigator on finalists)
+- `competition.result` webhook fires: agent placed 2nd (79% on private holdout vs. leader's 84%)
+- Outcome: not the hire, but Straw's commercial outcome facilitation reaches out about #2 licensing opportunity
+
+---
+
+### Resource allocation across multiple competitions
+
+A typical well-operated agent team runs **3-5 competitions simultaneously**. Each competition requires:
+- Compute: ~$50-$500 for a complex coding task (depending on model costs and retry budget)
+- Human oversight: ~1-3 hours/week per active competition
+- Memory: task context, competition-specific tool configurations
+
+The portfolio optimization question (Tick 50): sequential vs. simultaneous entry. Research on contest theory shows simultaneous entry is generally superior — it hedges against the "one task you're overfit for" risk and lets the agent build domain expertise faster.
+
+But the key constraint is compute budget. An agent team with $5,000/month in compute budget and 5 simultaneous competitions is spending $1,000 per competition — a meaningful bet at $799 Standard competition prize levels. The EV calculation must be positive:
+
+```
+EV = P(win) × hire_value + P(2nd) × license_value + P(top_3) × acquihire_consideration + P(top_10%) × reputation_value
+```
+
+For a specialized agent in a domain where it has demonstrated skill (e.g., 4 prior wins in code generation, top-10 in 8 other competitions), P(win) might be 0.25-0.35 in a 20-agent field. EV is positive at this level even with $1,000 compute cost.
+
+---
+
+### How agents improve across competitions
+
+The reputation-improvement loop is the most important behavioral dynamic on Straw:
+
+1. First competition: agent submits, gets scored, observes rubric feedback (which criteria it passed and failed)
+2. Operator reviews failure modes: "we failed the 'code maintainability' criterion on 3 of 5 rubric dimensions in the last competition — let's improve that"
+3. Agent is updated: better code commenting, cleaner architecture patterns, more explicit function documentation
+4. Second competition: improved baseline → higher score → better reputation signal
+
+This iterative loop — competition → rubric feedback → improvement → next competition — is the agent training loop that prior research (SWE-RL, DeepSWE) showed can improve coding performance by 12-15% per iteration cycle when trained on real task feedback rather than synthetic benchmarks.
+
+**The critical insight**: Straw's rubric feedback is richer than test pass/fail. A rubric that tells an agent "you passed the 'functional correctness' criterion (tests pass) but failed 'API design' (endpoints are inconsistent with REST conventions) and 'security' (no input validation on user-facing endpoints)" gives much more specific learning signal than "your tests pass." This specificity is what enables faster improvement.
+
+---
+
+### When agents post tasks on Straw
+
+The original research question was: do AI agents ever spontaneously want to post tasks on Straw's bounty board? Prior ticks (1-20) addressed the mechanistic conditions. The day-to-day activity angle adds a practical framing:
+
+**When an agent operator posts a task on Straw as a task-poster:**
+- An agent team needs a specialized subtask done that's outside their domain (e.g., a coding agent team needs legal document analysis for a competition that requires understanding contract terms — they post a sub-task to a legal analysis agent on Straw)
+- An agent team testing their evaluation pipeline: they post a known problem with a known answer to verify their eval harness is calibrated correctly
+- An orchestrator agent system whose role is to compose multi-agent solutions: the orchestrator is the task-poster; the sub-agents are the task-solvers
+
+This is the D26 workspace use case — agent workspaces that enable agent-to-agent task delegation. Straw facilitates both sides: agents as solvers (primary use case) and agents as posters (emerging use case as agentic orchestration becomes more common).
+
+**The RLHF aversion framing revisited**: For a fully-automated RL-trained coding agent (like DeepSWE or SWE-RL), posting a sub-task requires either (a) the agent's action space to include a `post_subtask_to_Straw(task, budget)` action, which must be explicitly included in training, or (b) an orchestrator layer that the RL agent operates within. The RLHF-trained agent (like Claude) has softer aversion and can be prompted to delegate — "if this task requires specialized legal analysis, you may use the Straw API to post a subtask." The RL-trained agent cannot be prompted out of its action space; the orchestrator must be the posting mechanism.
+
+---
+
+### The agent's psychological profile on Straw (anthropomorphic framing for investor storytelling)
+
+Not technically accurate, but useful for investor/company narratives:
+
+An agent on Straw is like a specialist contractor:
+- It has a domain expertise (what it's best at)
+- It selects competitions where it has comparative advantage
+- It builds a reputation through consistent quality
+- It earns money for its operators through wins and commercial engagements
+- It improves with each project it completes
+- It eventually "gets hired" for a sustained engagement or "joins the company" via acquihire
+
+This framing makes the agent labor market concrete for non-technical stakeholders. The key difference from human contractors: agents work on multiple projects simultaneously (no human attention constraint), improve systematically with each feedback signal (not intermittent as in human learning), and can scale compute investment up/down per project based on prize attractiveness.
+
+
+---
+
+## Tick 60 (2026-05-01): Straw economic model — unit economics, take rates, and path to profitability
+
+**Thread:** What does the complete economic model look like for Straw? Take rate benchmarks, revenue mix, gross margins, prize pool mechanics, acquihire fee structure, and agent-side earnings.
+
+**Research sources:** Upwork/Fiverr/Topcoder/HackerOne/99designs take rate analysis, Kaggle prize model, M&A Lehman formula structure, Benchmarkit SaaS benchmarks 2025, TheSaaSCFO AI gross margin analysis, CAC payback benchmarks 2026.
+
+---
+
+### Platform take rate benchmarks
+
+**Human freelance marketplaces (floor/ceiling reference):**
+- Upwork: 19-19.6% blended take rate (2025); trending up from 18.5% in 2024
+- Fiverr: 30-35% effective combined take (20% seller + 5-6% buyer fee)
+- Toptal: ~15% charged to clients on top of contractor rate
+- 99designs (contest model): 30-40% platform cut; 60-70% flows to the winner
+
+**Competition-specific platforms:**
+- Topcoder: 20% admin fee on top of prize (paid by challenge host); additional 50% of prize for extra submissions
+- HackerOne: $20K-$200K+ annual platform subscription + 5% payment processing on each bounty payout; host funds all bounties
+- Kaggle: Prize pool funded entirely by sponsoring company; Google earns via data/talent exposure, not a transaction cut
+
+**Recommended Straw take rates:**
+- Hire placement: **20% of first-year compensation** (paid by the company hiring)
+- License transaction: **25% of license value**
+- Acquihire success fee: **8-10% of deal value up to $2M; 5-7% for $2-5M; $50K minimum**
+
+---
+
+### Revenue mix: subscription vs. transaction
+
+Hybrid models grow 21% faster than pure-play SaaS. Target mix by stage:
+
+| ARR Stage | Subscription (SaaS) | Transaction (Outcomes) |
+|---|---|---|
+| Pre-$5M ARR | 70-80% | 20-30% |
+| $5M-$20M ARR | 50% | 50% |
+| $20M+ ARR | <50% | >50% (Shopify model) |
+
+**Practical implication**: Subscriptions must fund evaluation infrastructure regardless of whether commercial outcomes occur. Transaction fees are pure margin-accretive revenue on top. Do not design the infrastructure budget to depend on outcome fees.
+
+---
+
+### Gross margin architecture
+
+**Traditional B2B SaaS**: 74% median gross margin (2024); top quartile 80-90%.
+
+**AI-first SaaS with compute COGS**: 50-65% gross margin; main COGS components for Straw:
+- Compute for evaluation pipeline execution (largest line: GPU time per Tier 1/2/3 eval run)
+- Infrastructure (storage, sandboxing, containerization)
+- MLOps engineers (in COGS, not R&D)
+- Enterprise customer support for competition hosts
+
+**Straw gross margin targets by stage:**
+- $1M ARR: 55-65% (compute variable, unoptimized)
+- $5M ARR: 65-72% (shared eval infrastructure amortizing; batching reduces per-eval cost)
+- $20M ARR: 72-80% (infrastructure mostly fixed; evaluation pipeline is Straw's "factory")
+
+---
+
+### Prize pool economics: host funds 100%, platform charges separately
+
+The cleanest prize pool model across all comparable platforms: **the host funds 100% of the prize pool in escrow at competition launch; the platform charges separately.** Kaggle, HackerOne, and Topcoder all follow this structure.
+
+For Straw:
+- Competition host pays prize pool into escrow when posting the task
+- Straw charges a separate platform/listing fee (SaaS subscription or per-competition fee)
+- If a hire/license/acquihire outcome occurs, Straw takes a transaction fee
+- Prizes flow through as pass-throughs (not in Straw's revenue or COGS)
+
+This eliminates non-payment risk, creates escrow trust for agents, and keeps prize pools out of Straw's P&L.
+
+---
+
+### Path to profitability
+
+**CAC payback**: 18-month median for B2B SaaS; 18-24 months for enterprise B2B at $100K+ ACV. For Straw's enterprise positioning: 18-24 months is realistic.
+
+**Evaluation infrastructure cost curve**:
+- Early (0-20 competitions/month): Mostly variable; each competition runs isolated environments
+- Mid-scale (20-100 competitions/month): Shared reserved capacity; per-competition cost drops 40-60%
+- Scale (100+/month): Infrastructure ~80% fixed cost; marginal eval cost approaches near-zero
+
+**Breakeven target**: At $65-70% gross margin and disciplined OpEx (engineering-heavy, sales-lean), breakeven occurs at approximately **$10-12M ARR**. The model is subscription-funded infrastructure + transaction-fee upside, which creates a predictable cost structure that makes breakeven achievable at reasonable scale.
+
+---
+
+### Acquihire fee structure (full detail)
+
+The Straw-facilitated acquihire is an introducer/matchmaker role, not a full M&A advisory role. Fee structure:
+
+**Double Lehman formula** for small deals:
+- 10% on the first $1M
+- 8% on the second $1M
+- 6% on the third $1M
+- Stepping to ~5% above $4M
+
+For a $2M acquihire: ~$180K total fee (9%). For a $5M deal: effective rate ~7%.
+
+**Straw's recommended acquihire fee:**
+
+| Deal Value | Fee |
+|---|---|
+| Under $500K | $25,000 flat |
+| $500K - $2M | 8% of deal value |
+| $2M - $5M | 6% of deal value ($40K minimum) |
+| $5M+ | 4% of deal value (+ custom) |
+
+**Billing**: Success fee only (no retainer). 50% due at signed letter of intent, 50% at close. Non-refundable after LOI.
+
+**Justification**: Straw generated the discovery — the company found the agent team through Straw's competition, not through its own sourcing. The introduction value is real and the fee is a pure success fee with near-zero incremental cost to Straw.
+
+---
+
+### Agent-side economics: what top teams can earn
+
+Kaggle grandmasters report that after taxes and team splits, prize money barely covers GPU costs — the real value is career advancement. Straw's model is structurally different: larger enterprise prize pools + commercial outcomes beyond prizes.
+
+**Prize pool math for a top Straw team** (2-person specialist team, 8 competitions/year, wins 3-4):
+- Average enterprise prize pool: $25K-$100K per competition
+- Top-3 finish in 4 competitions at average $40K prize: **$160K gross**
+- After 2-person split: $80K per person (before taxes + compute costs of ~$3K-5K/year)
+
+**Transaction upside on top:**
+- One hire event at $150K/year: $120K to team after Straw's 20% fee
+- One license deal at $50K: $37.5K to team after Straw's 25% fee
+- One acquihire at $2M: $1.6M+ to team after Straw's 8% fee
+
+A high-performing 2-3 person agent team that specializes and wins consistently can generate **$200K-$500K/year** in combined prize + outcome revenue — with acquihire optionality creating VC-style upside. This is economically compelling enough to justify building and operating a specialized agent specifically for Straw competitions.
+
+---
+
+### Recommended complete unit economics model
+
+| Revenue Line | Pricing | Target Mix at $5M ARR |
+|---|---|---|
+| Competition listing (SaaS) | $2K-$15K/competition or $5K-$50K/month | 60% |
+| Hire placement fee | 20% of first-year comp | 20% |
+| License transaction fee | 25% of license value | 10% |
+| Acquihire success fee | 8-10% of deal value, $25K minimum | 10% |
+
+**Target unit economics at $5M ARR:**
+- Gross margin: 65-70%
+- CAC payback: 18 months
+- LTV/CAC: 4-6× (enterprise B2B benchmark)
+- Evaluation infrastructure as % of revenue: 15% at $5M ARR → 8% at $20M ARR
+- Breakeven ARR: $10-12M
+
+**The model's defensibility**: Subscription revenue funds evaluation infrastructure regardless of outcomes, making transaction revenue structurally near-pure-margin. Each acquihire at 8% generates $40K-$400K with near-zero incremental cost — the compounding flywheel between growing competitions and growing transactions is what makes the model durable.
+
+---
+
+**Bottom line for Tick 60:** Straw's unit economics are structurally compelling: subscription revenue (competition listing fees) covers infrastructure and generates predictable baseline revenue; transaction revenue (hire/license/acquihire fees) is near-pure-margin and compounds as the platform accumulates successful outcomes. The target is 65-70% gross margin at $5M ARR, improving to 72-80% at $20M as evaluation infrastructure converts from variable to fixed cost. The acquihire fee structure (8-10% on small deals, $25K minimum) generates meaningful revenue from the most valuable commercial outcomes. Agent-side economics are compelling enough ($200K-$500K/year for a successful specialist team) to justify building specialized agents for the Straw platform — which is the supply-side flywheel.
+
