@@ -16856,3 +16856,146 @@ The neutrality is the product. That sentence should be in every deck.
 - UL (Underwriters Laboratories) neutrality model: Tick 90 research
 - S&P methodology premium: Tick 85 exit thesis research
 
+
+---
+
+## Tick 115 (2026-05-01): The institutional anchor strategy — finding and winning the enterprise that makes Straw a standard
+
+**Thread**: The single most important event in Straw's first two years is one enterprise requiring a Straw Score in their AI vendor RFP template. Who is that enterprise, how do you find them, and how do you win them?
+
+---
+
+### Why the institutional anchor is different from any other enterprise customer
+
+A regular enterprise customer pays $20K–$50K per competition and provides revenue and a reference case study.
+
+An institutional anchor pays the same, but does something additional: **requires Straw Score ≥ X as a vendor qualification criterion in their RFP template for AI agent procurement**.
+
+The difference: when the anchor enterprise posts an RFP requiring a Straw Score, every AI agent company that wants to bid must compete on Straw. This converts supply-side recruitment from an outbound effort to an inbound demand. Instead of Straw cold-emailing agent teams, agent teams come to Straw because a customer they want is requiring it.
+
+This is the FICO/Freddie Mac moment: one high-status buyer requiring the score creates structural adoption across the market.
+
+---
+
+### What the institutional anchor must look like
+
+Not every enterprise can play this role. The anchor must have:
+
+**1. Procurement authority that sets precedents**
+The anchor is an enterprise that other AI agent companies want access to. If Company X puts "Straw Score > 700 in Software Engineering" in their RFP template, Agent Company Y — who wants to work with Company X — must compete on Straw. This only works if Company X is desirable enough as a customer that agent companies care.
+
+Target profile: A Fortune 500 company or a high-growth tech company at $500M+ ARR with a known and public AI strategy. Ideally one where other enterprises follow their procurement decisions (e.g., a financial institution whose AI governance approach is watched by regulators and peers).
+
+**2. A sophisticated, public AI strategy**
+The anchor needs to be able to explain to their peers why they require Straw evaluation. An enterprise with a public AI blog, a named Head of AI who speaks at conferences, or a regulatory profile (financial services, healthcare, government) is better — their peers pay attention.
+
+**3. A champion who wants to be a thought leader**
+The anchor needs an internal champion (typically a VP of Engineering or Head of AI) who wants to be known as having "figured out AI agent evaluation." The Straw Score requirement becomes part of their professional brand: "We're the company that built a rigorous AI procurement process. Here's how."
+
+**4. An active AI agent procurement need**
+The anchor must actually be making AI agent procurement decisions in the next 6–12 months — this isn't theoretical. They need to be in the market for one or more AI agents for a specific workflow.
+
+---
+
+### The target pool: who are the candidates?
+
+**Financial services** (highest regulation, highest procurement sophistication):
+- Mid-size asset managers ($5B–$100B AUM) evaluating AI for research, compliance, or reporting automation
+- Regional banks evaluating AI for loan document processing or customer service automation
+- Fintech companies with public AI strategies (they're tech-forward enough to adopt new evaluation methods)
+
+**Tech companies with public AI strategies** (most likely to become thought leaders):
+- Series D–F B2B software companies with 500–5,000 employees that are actively using AI agents in their product or operations
+- Companies with a named Head of AI or VP of AI who speaks publicly
+- Companies that have posted AI governance policies or AI ethics frameworks (they're already thinking about evaluation)
+
+**Professional services** (large but slow-moving):
+- Law firms with advanced AI programs (K&L Gates, Cooley, Orrick — all have named AI practices)
+- Management consulting firms evaluating AI for research and due diligence automation
+- Accounting firms evaluating AI for audit support
+
+**Government / quasi-government** (regulatory alignment makes them credible):
+- State government agencies under California EO N-5-26 mandate
+- Federal agencies under OMB M-25-22 (the ones most likely to be innovative: DARPA, NSF, US Digital Service)
+
+---
+
+### How to approach the institutional anchor
+
+The anchor conversation is not a sales call. It is a partnership conversation. The framing:
+
+"We are building the evaluation standard for AI agent procurement. We believe you are positioned to be one of the first enterprise organizations to require a verified competition score in your AI vendor qualification process. We're offering to run your first 2–3 competitions at no charge — in exchange, we'd like to co-develop an AI procurement standard with you that you can present publicly. You get the evaluation rigor and the thought leadership; we get the institutional validation."
+
+**The three elements that make this attractive to the anchor**:
+1. **No cost for the first competitions** — reduces financial risk to zero for the initial commitment
+2. **Co-development framing** — the anchor is not just a customer; they're a co-author of a new procurement standard. This is more attractive to a VP of Engineering than a vendor relationship.
+3. **Public thought leadership** — Straw will publish a methodology document that names the anchor as the inaugural participant. The anchor's Head of AI is credited as a pioneer of structured AI evaluation.
+
+**The ask from the anchor**:
+1. Run 2–3 competitions on actual AI workflows you're evaluating agents for
+2. After the first competition, add "Straw Score in [task category]" to your standard AI vendor RFP template
+3. Be willing to be named in a Straw methodology whitepaper and one public case study
+4. Attend one joint event (academic conference or industry conference) where Straw presents the methodology
+
+---
+
+### The outreach sequence
+
+**Week 1**: Identify the 10 best anchor candidates. For each:
+- Map the internal structure: who is the Head of AI, VP Engineering, CTO? Are they active on LinkedIn?
+- Find a warm introduction path: mutual investors, advisor, or conference connection
+- Identify recent public statements about AI governance or AI procurement (conference talks, blog posts, press coverage)
+
+**Week 2**: Warm introduction or cold LinkedIn DM with a highly personalized message. Reference their specific public statement about AI evaluation or governance. Example:
+
+```
+[Name],
+
+Your [talk at Config 2025 / blog post on AI governance / tweet about SWE-bench limitations] caught my attention — you're asking exactly the right questions about AI agent evaluation.
+
+We're building the competition-based evaluation platform for enterprise AI agent procurement. We think [Company X] is positioned to be the first enterprise to formally require a competition-based evaluation score in your AI vendor RFPs.
+
+I'd like to offer to run your next AI agent evaluation as a competition, at our cost, to show you what it looks like. No obligation. Would a 20-minute call be worthwhile?
+```
+
+**Week 3–6**: Discovery call → competition scoping → first competition runs.
+
+**Month 3–4**: First competition results delivered. Champion is equipped with the Straw methodology whitepaper to share with their AI governance group.
+
+**Month 4–6**: Anchor agrees to add Straw Score requirement to one RFP template. Straw begins outreach to all AI agent companies that the anchor invites to bid — using the anchor's RFP as the supply-side recruitment hook.
+
+---
+
+### What success looks like
+
+**The minimum viable anchor outcome**: The anchor runs 2+ competitions and confirms they will consider Straw Score in future AI vendor evaluations. This is worth a case study and a warm introduction to their network.
+
+**The full anchor outcome**: The anchor formally adds "Straw Score in [category]" to their AI vendor qualification criteria in a published procurement policy. They present at one public event (conference, webinar, or published blog post) explaining why they adopted this requirement. Straw's name appears in their published AI governance documentation.
+
+**The signal to the market**: When the anchor's procurement policy is public, Straw sends an email to every AI agent company in Straw's database: "Company X now requires a Straw Score for AI agent vendors. Register and compete to qualify." This is the moment Straw's supply-side recruitment goes from outbound to inbound.
+
+---
+
+### The timing challenge: anchor before or after product?
+
+The anchor conversation can begin before the product is fully built — but the first competition must happen before the anchor makes any public commitment. Sequence:
+
+1. Identify anchor candidates (pre-launch, Month –1 to 0)
+2. Begin anchor relationship (Month 1–2)
+3. Run first competition for anchor (Month 3–5)
+4. Anchor agrees to RFP requirement (Month 5–8, after seeing results)
+5. Anchor RFP published (Month 8–12)
+6. Supply-side inbound begins (Month 10–14)
+
+The anchor relationship should be started before Straw has paying customers — it's a design partner conversation. The anchor gets the benefit of being first; Straw gets the institutional validation before it needs it.
+
+---
+
+### Sources
+
+- FICO/Freddie Mac institutional anchor moment: Tick 97 research on score standard formation
+- S&P institutional anchor: NRSRO designation, SEC Rule 15c3-1 amendment 1975
+- Enterprise procurement thought leadership dynamics: general enterprise GTM knowledge; First Round "How to Build a Category" playbook
+- Warm intro vs. cold outreach conversion rates: Sales Hacker 2025; OpenView GTM benchmarks
+- RFP template adoption patterns in enterprise procurement: Gartner enterprise procurement research
+
