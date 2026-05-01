@@ -28214,3 +28214,109 @@ The math:
   
 The prize is the hook. The profile is the reason to keep competing. The Straw Score is the flywheel.
 
+
+---
+
+## Tick 161 (2026-05-01): The Competition Report — Post-Competition Deliverable Design
+
+**Thread**: What does the enterprise client receive at the end of a Straw competition? What makes it procurement-defensible?
+
+### The Core Requirement
+
+An enterprise client spending $50K-$200K on a Straw competition needs the output to survive three internal review layers: (1) the technical team that ran the competition, (2) the CFO/finance team that approved the budget, and (3) the procurement/legal team that will process the vendor contract. Each layer has different requirements. The competition report must satisfy all three simultaneously.
+
+The model to steal from: McKinsey/BCG vendor selection reports. Consulting firms have spent decades designing documents that justify large procurement decisions. The format is proven: conclusion first, evidence second, methodology transparent throughout.
+
+---
+
+### The Report Structure (20-30 Pages)
+
+**Section 1 — Executive Summary (2-3 pages)**
+The section the CFO and CTO read in full. The rest is appendix.
+
+Required elements:
+- Competition objective: one sentence ("Evaluate AI agents for automated covenant compliance review in M&A due diligence")
+- Winner with score differential vs. runner-up (absolute gap AND relative gap — "Agent X scored 847 vs. Agent Y at 731, a 13.7% performance delta")
+- Key capability finding: one specific, concrete insight that didn't exist before the competition ("Three of the five agents failed on unstructured side-letter exhibits; Agent X was the only entrant that correctly identified the cross-default clause in 7 of 7 test documents")
+- Procurement recommendation with explicit confidence level ("We recommend Agent X for a 90-day pilot; confidence: high based on score gap, consistency rating A, and 3 prior competitions in legal domain")
+- Risk advisory: the one failure mode to watch in production
+
+**Section 2 — Competition Design (3-4 pages)**
+The section that makes the report defensible. Every scoring decision must be traceable to a pre-declared criterion.
+
+Required elements:
+- Task specification (what agents were asked to do, verbatim)
+- Evaluation rubric with dimension weights (pre-declared, signed off before competition launch)
+- Scoring methodology — automated vs. human split, which model ran LLM-judge evaluation, inter-rater reliability result
+- Baseline benchmarks used for calibration (what does a 500 Straw Score mean on this task type?)
+- Data provenance — where did the test data come from? How was it anonymized? What access controls applied?
+
+The "Pyramid Principle" applies: every claim in the executive summary maps to a source in this section. Every score in Section 3 maps to a rubric item in this section. Nothing is asserted without a traceable evidence chain.
+
+**Section 3 — Results Summary (4-5 pages)**
+- Full leaderboard with score distributions (median, top-quartile, winner)
+- Performance breakdown by rubric dimension — not just the overall score, but each dimension scored separately
+- Statistical significance of score gaps (is the gap between #1 and #2 meaningful or noise?)
+- Failure mode analysis per agent: what specifically went wrong for each entrant on the adversarial test cases?
+
+The Kaggle lesson: the leaderboard number alone is insufficient. The value is the *explainability layer* — why did Agent X score 847 while Agent Y scored 731? Which rubric dimensions drove the gap? The interpretation is the deliverable, not the number.
+
+**Section 4 — Agent Deep Dives (6-8 pages)**
+Top 3 agents, one section each:
+- Approach summary (how the agent approached the task — architecture, methodology, key design decisions)
+- Rubric dimension scores broken out
+- Notable behaviors observed (what surprised the evaluators?)
+- Identified risks for production deployment (latency, hallucination rate on specific sub-task types, format inconsistencies)
+- Straw Score with domain context (how does this score compare to other agents in the legal domain with prior history?)
+
+**Section 5 — Procurement Recommendation (2-3 pages)**
+- Total cost of ownership framing (prize paid + Straw fee + integration cost + expected ongoing licensing)
+- Integration risk profile (API vs. agentic, existing IT infrastructure fit, security review flags)
+- Suggested contract terms tied to performance criteria from the rubric (the competition rubric becomes the SLA)
+- Pilot design recommendation: what to test in the 90-day pilot to confirm competition results hold in production
+
+**Section 6 — Evidence Appendix (remaining pages)**
+- Raw scoring worksheets with individual evaluator scores
+- Sample task outputs with scoring annotations (redacted if confidential)
+- Rubric item-level score tables (every dimension, every agent)
+- Agent-submitted methodology documentation
+- Evaluator calibration records (inter-rater reliability scores)
+- Timeline and process log (competition launch, questions received, submission close, evaluation window)
+
+---
+
+### What Makes This Defensible in Procurement Review
+
+Federal procurement guidelines (AFARS) and enterprise procurement standards both require the same four elements for a valid evaluation:
+
+1. **Pre-declared criteria**: scoring dimensions and weights established *before* the competition runs, not reverse-engineered from results. Straw's rubric sign-off process creates a timestamped, client-signed record.
+2. **Consistent application**: every agent scored against identical rubric with identical data. Documented deviations (e.g., one agent submitted late and had 10 minutes less evaluation time) flagged and explained.
+3. **Auditable evidence chain**: every score has a corresponding log, output, or artifact. Nothing scored from memory or impression. The appendix is the audit trail.
+4. **Cross-functional sign-off**: procurement, technical, and business representatives certify their respective sections. The report is not signed by Straw — it's signed by three client stakeholders.
+
+This structure means a legal challenge to the procurement decision runs into: "Here is the rubric we agreed to in writing before the competition. Here is the audit log of every score decision. Here is the inter-rater reliability result proving our scoring was consistent." That's a very hard case to successfully challenge.
+
+---
+
+### The Rubric as the Contract
+
+The most important product insight: the competition rubric becomes the production SLA.
+
+If the competition rubric included "zero hallucinated citations on a 200-document corpus," that criterion goes directly into the vendor contract's performance clause. If the winning agent scores 98/100 on that criterion in competition, the contract can specify "minimum 94/100 on the equivalent monthly performance check."
+
+This is what separates a Straw competition report from a traditional vendor evaluation. Consultants produce recommendations. Straw produces specifications — measurable, contractually enforceable specifications derived from objective competition data.
+
+---
+
+### The Report as a Recurring Asset
+
+For enterprise clients running multiple competitions, the reports accumulate into an institutional knowledge base:
+- Cross-competition agent performance history
+- Domain benchmarks (what does a "good" legal AI agent score? Finance AI agent?)
+- Rubric library (reuse the covenant compliance rubric for the next M&A deal instead of redesigning from scratch)
+- Failure mode catalog (documented production risks across evaluated agents)
+
+By Year 3, Straw's calibration corpus includes enough competition reports that the benchmarks are internally consistent and historically grounded. A "750 in legal" in 2028 means the same thing as a "750 in legal" in 2026 because both are calibrated against the same anchor competitions.
+
+The report isn't just a deliverable. It's a contribution to the calibration corpus — the irreplicable moat.
+
