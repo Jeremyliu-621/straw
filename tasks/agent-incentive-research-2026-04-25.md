@@ -28735,3 +28735,110 @@ When investors ask each founder separately: "Why will Straw win?" and get materi
 **Red flag 5: Market sizing math doesn't hold up**
 Investors with industry expertise will challenge the TAM calculation in the first follow-up meeting. "The Gartner report says $2.7B" is not a valid TAM analysis — it's a reference. Fix: build the TAM from the bottom up (# of Fortune 500 companies with AI governance boards × annual competition budget per company × market penetration estimate) and reconcile to the top-down number.
 
+
+---
+
+## Tick 163 (2026-05-01): Series A Readiness Benchmarks — Sourced Numbers and the NRR Obsession
+
+**Thread**: Supplemental to Tick 162 — the specific Series A metrics VCs use to separate funded from unfunded, with sourced numbers.
+
+### What Series A Investors Actually Measure (2025-2026 Consensus)
+
+Based on SaaStr, The SaaS CFO, Spectup, and a16z diligence frameworks — the benchmarks that matter at the $8-15M Series A raise:
+
+| Metric | Minimum to Get Meeting | Fundable | Exceptional |
+|---|---|---|---|
+| ARR | $1M | $2-3M | $4M+ |
+| YoY Growth | 80% | 100-120% | 150%+ |
+| NRR (Net Revenue Retention) | 100% | 110-115% | 120%+ |
+| Gross Margin | 65% | 70-75% | 80%+ |
+| CAC Payback Period | <18 months | <12 months | <6 months |
+| LTV:CAC | 3:1 | 4:1 | 5:1+ |
+| Gross Annual Churn | <20% | <10% | <5% |
+| Burn Multiple | <2.5x | <1.5x | <1.0x |
+| Pipeline Coverage | 2× target ARR | 3× | 4×+ |
+
+The key insight: **NRR is the single most important metric in 2024-2026.** Companies at 120%+ NRR can raise at 25-50% higher valuation multiples than equivalent-ARR companies at 95% NRR. The market has repriced capital efficiency above growth rate — a company that retains and expands existing customers is worth more than a company that chases new logos at high CAC.
+
+**The Burn Multiple** (net burn ÷ net new ARR) is the efficiency metric VCs use to determine if a company will need to raise again before Series B:
+- Burn Multiple >2.5x: "You're spending $2.50 to generate $1 of ARR. This doesn't close."
+- Burn Multiple 1.5x-2.5x: "Fundable, but expect pushback on team size and spend."
+- Burn Multiple <1.5x: "Capital-efficient. Series B will be easy if growth holds."
+
+Straw's Year 2 target: Burn Multiple <1.5x. The math: if Year 2 net burn is $3.5M and net new ARR is $3M, burn multiple is 1.17x. That's exceptional and will get Series B conversations before you need them.
+
+---
+
+### Cohort Analysis: The Slide That Wins or Loses Series A
+
+Series A investors will ask for a cohort retention chart. They want to see:
+1. **Month-0 retention** (what % of new customers are still paying after 30 days): target >95%
+2. **Month-12 retention**: target >85% for enterprise SaaS
+3. **Expansion curve**: do later cohorts start higher and retain better than early cohorts? This signals product improvement.
+4. **NDR bending upward**: Net Dollar Retention by cohort trending up over time means expansion revenue is real and consistent.
+
+For Straw at Series A: the cohort chart will show 3-5 enterprise customers. Small sample = high variance = investors will ask for the underlying data. The answer is to present the data honestly and argue the *quality* of each customer relationship (CAIO at Fortune 500 > 5 mid-market marketing agencies).
+
+---
+
+### The Corpus Metrics Dashboard: A Novel Series A Asset
+
+Straw's unusual position: the calibration corpus is a data asset that grows independently of revenue. At Series A, this becomes a separate section in the data room:
+
+**Corpus metrics to track and present**:
+- Total labeled evaluations in corpus (target: 100K+ by Series A)
+- Token volume (target: 250M+ tokens of labeled task/rubric/result data)
+- Domain coverage (how many distinct task domains?)
+- Rubric diversity (how many distinct rubric frameworks?)
+- Inter-rater reliability average across all rubrics (target: Cohen's kappa >0.80)
+- Calibration anchor competition count (minimum 3 anchor competitions to call the corpus calibrated)
+
+The framing for investors: "Our data asset grows at zero marginal cost with every competition. A competitor starting today would need 2-3 years of competitions to replicate our corpus quality. This is the moat that makes our Straw Score defensible."
+
+---
+
+### The IP Assignment Red Flag (Most Common Deal Killer)
+
+The #1 legal reason deals collapse in due diligence: missing IP assignment agreements.
+
+If any of the following wrote code that became part of Straw's product and did NOT sign an IP assignment:
+- Any co-founder (even if equity was never issued)
+- Any contractor or freelancer who built the MVP
+- Any advisor who contributed to technical architecture
+
+... then the startup may not legally own its own technology. VCs' legal teams flag this in week 1. There are documented cases of Series B deals dying 72 hours before close over a single missing assignment from a contractor who'd moved to another country.
+
+**Fix**: Every person who has ever written code for Straw signs a standard IP assignment and Invention Assignment Agreement. This is a 2-page document. File it before opening the first data room conversation.
+
+---
+
+### Pre-Revenue LOI Credibility: The Hierarchy
+
+The background agent research confirmed the exact hierarchy:
+
+**Tier 1 (high investor weight)**: Signed SOWs or POs, even small ones ($5K-$25K) from recognizable enterprise logos. Any payment proves conviction.
+
+**Tier 2 (moderate weight)**: Signed Design Partner Agreements with mutual commitments. Named LOIs with commercial terms. Signed NDAs with specific next steps documented.
+
+**Tier 3 (low weight)**: Verbal LOIs. "Conversations with 20 companies." Industry conference warm leads.
+
+The strategic move for Straw: convert at least one LOI to a paid pilot before the seed close. Even a $10K pilot fee — 100% credited toward the eventual competition — transforms the data room from "interest" to "revenue." The narrative shifts from "here's what companies told us they'd pay" to "here's what a company has already paid."
+
+---
+
+### What a16z Explicitly Skips at Seed Stage
+
+From a16z's published seed data room guidance:
+- No office lease agreements
+- No employee offer letters (unless there's an unusual clause relevant to equity)
+- No 5-year financial projections (seed investors don't believe them)
+- No "vision documents" without substance
+
+Include these instead:
+- 12-18 months actual P&L (even if $0 revenue — shows burn management)
+- Current bank balance (updated within 30 days)
+- 18-24 month model with assumptions documented
+- Monthly burn and runway calculation
+
+The rule: every document in the data room must answer one of three investor questions: (1) Can this team build it? (2) Is the market real? (3) Is there demand? If a document doesn't answer one of those questions, don't include it.
+
