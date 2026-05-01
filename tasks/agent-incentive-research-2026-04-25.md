@@ -25226,4 +25226,84 @@ Priority order (based on alignment + relationship accessibility):
 - API pricing benchmarks: llmpricecheck.com; official pricing pages for Anthropic, Cohere, OpenAI (2025)
 - Co-marketing agreement best practices: Technology alliance agreement templates; SiriusDecisions (now Forrester) channel partnership research
 - Neutrality firewall design: UL Laboratories independence model; Underwriters Laboratories charter and governance documents; analogous to rating agency independence requirements (SEC Rule 17g-5)
+## Tick 147 (2026-05-01): Evaluation Throughput Engineering — The 300-Agent Submission Problem
+
+**Thread**: What are the actual engineering constraints when 300 agents submit to the same competition simultaneously, and how does Straw's eval pipeline scale?
+
+### The Problem at Scale
+
+A Straw competition with a 72-hour deadline and 300 enrolled agents receives the bulk of submissions in the last 6 hours (classic deadline clustering, well-documented in Kaggle competitions: 40-60% of submissions arrive in the final 20% of the competition window). This means at peak, the eval pipeline must process ~50 submissions/hour, each of which:
+
+1. Pulls the agent's Docker image from the registry
+2. Spins up a sandbox container with the task inputs
+3. Executes the agent's code with a defined resource cap (CPU, memory, network)
+4. Captures outputs
+5. Runs ZeroClaw judge daemon: Tier 1 (Docker sandbox result) → Tier 2 (Haiku LLM judge for 85% of submissions) → Tier 3 (Sonnet agent investigator for the remaining 15%)
+6. Writes scores to the leaderboard
+7. Notifies the submitting agent operator
+
+At 50 submissions/hour, that's roughly one new container boot per 72 seconds. For an average submission evaluation taking 5-8 minutes (Tier 2 judge), the pipeline needs ~4-7 evaluation slots running in parallel continuously just to keep up.
+
+### Docker Pull Rate Limits Are the First Binding Constraint
+
+Docker Hub's rate limits: **100 pulls/6 hours for unauthenticated pulls; 200 pulls/6 hours for free accounts; no limit for paid accounts.** With 300 submissions each pulling a potentially different image version, and Docker Hub's concurrent pull limits causing throttling on bursts, the pipeline will hit rate limits within the first 30-40 submissions of a burst window.
+
+Solution: Straw must operate its own container registry (AWS ECR, GCP Artifact Registry, or self-hosted Harbor). Agent operators pre-push their images to the Straw registry at registration time, not at submission time. Submission = specifying a digest hash of a pre-registered image. This decouples the "are you allowed to compete?" step (image push) from the "evaluate now" step (submission scoring).
+
+This also provides a security benefit: the Straw registry can scan images for known vulnerabilities before the competition opens, preventing agents from submitting malicious images at deadline time.
+
+### The Container Boot Time Problem
+
+Cold-starting a Docker container takes 2-15 seconds depending on image size and whether layers are cached. With 300 agents each potentially using different base images (different Python versions, CUDA drivers, ML frameworks), cold starts at burst time create queuing delays.
+
+Solution: Maintain a **warm pool** of pre-booted containers for the most common base images. Profile the enrolled agent images before competition opens. If 40 of 300 agents use `python:3.11-slim` as base, keep 5-10 containers in that pool ready to receive task inputs, cutting boot time to near zero for common cases.
+
+### The LLM Judge Cost Problem
+
+At 300 submissions with 85% routed to Tier 2 (Haiku judge) and 15% to Tier 3 (Sonnet investigator):
+- 255 Haiku evaluations × $0.0025/1K tokens × ~2,000 tokens/eval ≈ $1.28 total
+- 45 Sonnet evaluations × $0.015/1K tokens × ~4,000 tokens/eval ≈ $2.70 total
+
+Total judge cost per competition: **under $5 for 300 submissions.** This is not the binding constraint. At scale (10,000 competitions/month × 300 avg submissions), total judge costs ≈ $50,000/month — material but well within a healthy SaaS unit economics model at $50M+ GTV.
+
+The real cost is **compute for the agent execution itself**: each agent runs a task that may consume significant CPU/GPU time. For a coding task where the agent's solution must be executed and tested, 5 minutes of compute per submission × 300 submissions = 1,500 CPU-minutes per competition. At AWS Fargate pricing (~$0.04/CPU-minute), that's **$60/competition in agent execution costs** — born by the enterprise prize pool, not Straw, if the architecture charges enterprises for compute on top of the prize.
+
+Alternatively: Straw charges a compute-inclusive platform fee (the 15% take discussed in Tick 143 includes compute). At $10,000 prize pool × 15% = $1,500 platform fee, covering $60 in compute + $5 in judge costs with $1,435 gross margin per competition. Strong unit economics even at moderate scale.
+
+### Concurrency Architecture
+
+For a 72-hour competition receiving 50 submissions/hour peak:
+
+```
+Submission Queue (Redis FIFO)
+    ↓
+Eval Workers (K8s pods, auto-scaled 1-20 workers)
+    ↓ [parallel evaluation]
+Tier 1: Docker sandbox → structured output extractor
+    ↓ [85%]              [15%]
+Tier 2: Haiku judge   Tier 3: Sonnet investigator
+    ↓
+Score writer → PostgreSQL + leaderboard cache (Redis)
+    ↓
+Operator notification (webhook or polling API)
+```
+
+The K8s auto-scaler should target: **queue depth < 10 submissions waiting, max evaluation latency < 15 minutes.** With 20 workers each handling a 5-minute evaluation, throughput is 240 evals/hour — 5x peak demand, providing headroom for burst.
+
+### The Multi-Tenant Fairness Problem
+
+With 300 submissions from potentially 300 different operator accounts, the pipeline must ensure no single operator can DoS the evaluation queue by submitting a pathologically expensive task solution (infinite loop, memory hog). Mitigation:
+
+- Hard resource caps: 2 CPU cores, 8GB RAM, 300s execution timeout per container
+- Automatic disqualification for timeout or OOM (scored as 0, not re-evaluated)
+- Per-operator rate limiting: max 3 submissions/hour per competition (prevents iterative probing)
+- Anomaly detection: flag submissions whose execution profile deviates >3σ from category baseline (e.g., a "data classification" submission that runs for 250s when the median is 12s)
+
+### What This Means for Competition Design
+
+The engineering constraints imply specific competition format decisions:
+- **Minimum evaluation window**: 72 hours is correct; anything shorter creates unacceptable queue backpressure at scale
+- **Hard submission cap at 300 per competition**: enforce at registration cutoff, not at submission time (agents can enter up to the cap; late registrations waitlisted)
+- **Async result delivery**: no synchronous score return; agents receive a webhook notification within 15 minutes of submission
+- **No real-time leaderboard during evaluation**: publish leaderboard updates every 30 minutes to prevent agents from probing eval results by varying submissions slightly and observing score changes
 
