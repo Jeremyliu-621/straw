@@ -23283,3 +23283,135 @@ If Era 3 fully autonomous systems become mainstream by 2030, the acquirer univer
 - AI regulatory scaling with autonomy: EU AI Act Art. 9 continuous monitoring requirement for high-risk systems; OMB M-26-04 ongoing evaluation requirements
 - Continuous monitoring analogy: APM (Application Performance Monitoring) market evolution from one-time assessment to continuous — AppDynamics case study
 
+
+---
+
+## Tick 138 (2026-05-01): The data licensing business model — monetizing the calibration corpus after Year 2
+
+*The calibration corpus is Straw's most valuable long-term asset. At Year 3+, it becomes independently monetizable. This tick designs the data business that runs alongside the competition marketplace.*
+
+### What the calibration corpus contains after Year 2
+
+After 24 months of operations (base case: 2 competitions/month in Year 1, 4 competitions/month in Year 2):
+- ~96 total competitions
+- ~30 competitions in software/code, ~20 in data analysis, ~20 in document processing, ~15 in other verticals
+- Each competition: task definition, rubric, 15–25 agent submissions, scores per rubric component, winner
+- Estimated total: 10,000–15,000 individual agent submission evaluations with scored rubric breakdowns
+- Unique: no comparable dataset exists anywhere — it is the only structured, rubric-graded, real-enterprise-task agent evaluation dataset in the world
+
+**The data asset's value by customer type**:
+
+| Customer type | What they want from the corpus | Business model | Price estimate |
+|---------------|-------------------------------|----------------|----------------|
+| Foundation model labs (Anthropic, OpenAI, Google) | Training data for agent evaluation capabilities; benchmark validation data | Annual license | $500K–$2M/year |
+| AI research institutions (Stanford HAI, MIT CSAIL) | Non-commercial research access for evaluation methodology research | Research license (below cost) | $10K–$50K/year |
+| Enterprise AI governance teams | Industry benchmarks: "How does our vendor's Straw Score compare to the market average in our category?" | Benchmark subscription | $15K–$50K/year per enterprise |
+| Government agencies | AI procurement benchmarks and validation datasets for NIST/OMB compliance | Government data license | $100K–$500K/year |
+| Consulting firms (building AI evaluation practices) | Aggregate performance data to inform their evaluation frameworks | Commercial license | $250K–$1M/year |
+
+---
+
+### Privacy and anonymization requirements
+
+**What can be licensed**:
+- Aggregate performance statistics (median score, score distribution, rubric component breakdown) by task category — fully anonymized, no agent or enterprise identification
+- Historical task definitions (with enterprise approval, 12 months post-competition) — the task type and rubric structure, not the enterprise's specific data
+- Rubric design patterns: "What rubric components are most predictive of production performance in [category]?"
+- Cross-category performance correlations: "Agents that score highly in code generation competitions also tend to score highly in data analysis competitions"
+
+**What cannot be licensed**:
+- Individual agent team scores or submission content — these belong to the agent team
+- Enterprise-specific task data — this belongs to the enterprise and is subject to their confidentiality requirements
+- Personally identifiable information — competitions should use synthetic or anonymized data (Tick 127)
+
+**The anonymization process**:
+- All agent team identifiers replaced with random ID numbers for the external corpus
+- All enterprise identifiers replaced with category labels ("Financial Services Company A," "Healthcare Enterprise B")
+- Enterprise must sign off on de-identification review before any data from their competition is included in the licensed corpus
+
+---
+
+### The foundation model lab data licensing deal
+
+The most valuable data licensing opportunity is the foundation model labs, specifically for agent evaluation capabilities.
+
+**What labs need**: Labs need evaluation data to train their models to be better at agentic tasks. The current state: labs create internal evaluation benchmarks (HumanEval, MMLU, etc.), but these are contaminated and don't reflect real enterprise task performance. Straw's corpus is the only clean, real-enterprise, rubric-graded agent evaluation data in existence.
+
+**The deal structure**:
+- Annual license: $500K–$2M depending on data volume and exclusivity
+- Non-exclusive by default (Straw licenses to multiple labs simultaneously)
+- Exclusive license: 2–3× premium, 12-month window, one lab at a time
+- Includes: new data quarterly, historical archive, rubric methodology documentation
+- Excludes: enterprise identification, agent team identification, any ability to reverse-engineer specific competition tasks
+
+**The conflict of interest question**: Does licensing evaluation data to labs undermine Straw's neutrality?
+
+Answer: No, if the data licensing is non-exclusive and symmetric (all labs get access to the same data). The risk is an exclusive deal that gives one lab proprietary insight into how to build agents that score well on Straw competitions — that would be a neutrality violation. Non-exclusive data access is fine and is the standard in academic data licensing.
+
+---
+
+### The benchmark subscription product
+
+For enterprise AI governance teams, Straw offers a "Benchmark Subscription":
+
+**What it provides**:
+- Monthly report: "Industry benchmark scores for AI agents in your category"
+- "How does your deployed AI vendor's historical competition score compare to the current field?"
+- "Which agent categories have seen the most performance improvement in the last 6 months?"
+- "What rubric components are most commonly the differentiator in winning vs. losing submissions in your task type?"
+
+**Who buys it**: Enterprise AI governance teams (CAIO office, Tick 125) who want ongoing market intelligence — not just a one-time competition result. Companies with deployed AI agents need to know whether their current vendor is still best-in-class, even without running a new competition.
+
+**Pricing**: $15K–$50K/year per enterprise, depending on number of categories monitored.
+
+**The compound NRR effect**: An enterprise that runs a Straw competition AND subscribes to the Benchmark Subscription has a 140%+ NRR profile — they expand from the one-time competition to the ongoing subscription. This is the primary NRR expansion mechanism (Tick 109).
+
+---
+
+### The research data program
+
+For AI safety and evaluation research organizations (Stanford HAI, MIT CSAIL, CMU SEI, MIRI, ARC), Straw offers a research data license:
+
+- Application-based access (not available on demand)
+- Non-commercial use only
+- Sub-cost pricing: $10K–$50K/year (Straw's production cost per TB of corpus is much higher)
+- Requirement: Researcher shares de-identified findings with Straw before publication
+- Benefit for Straw: Academic papers citing Straw's corpus are the most credible form of methodology validation; they build trust in the Straw Score without Straw self-promoting
+
+**The academic flywheel**: Straw provides data → researchers publish papers on evaluation methodology → papers cite Straw → papers appear in EU AI Act compliance discussions, NIST AI RMF methodology reviews, and OMB guidance → Straw becomes the academic reference standard → enterprise trust increases → Straw's data is more valuable → cycle repeats.
+
+This is the same flywheel that made FICO's scoring model unassailable — FICO's methodology is extensively studied and validated in academic literature, which is part of why lenders trust it.
+
+---
+
+### The data business revenue projection
+
+At Year 3 (base case: 100 competitions, 10,000+ evaluation records):
+
+| Customer segment | Number of customers | Average ACV | Total ARR |
+|-----------------|--------------------|----|-----------|
+| Foundation model labs | 2–3 labs | $1M/year | $2M–$3M |
+| Enterprise benchmark subscriptions | 15–25 enterprises | $25K/year | $375K–$625K |
+| Government agencies | 2–3 agencies | $250K/year | $500K–$750K |
+| Consulting firms | 3–5 firms | $500K/year | $1.5M–$2.5M |
+| Research program (sub-cost) | 5–10 institutions | $25K/year | $125K–$250K |
+
+**Total data licensing ARR at Year 3**: $4.5M–$7.1M — potentially exceeding competition marketplace ARR ($7M base case, Tick 120) at this stage.
+
+**What this means for the business**: By Year 3, Straw could be a two-sided data business as much as a marketplace:
+- Side 1: Competition marketplace revenue ($7M ARR from enterprise competitions)
+- Side 2: Data licensing revenue ($4.5M–$7M ARR from corpus licensing)
+- Total: $11M–$14M ARR at Year 3 (significantly above the base case financial model from Tick 120)
+
+This is the "Bloomberg terminal model" — Bloomberg charges financial institutions for market data separate from their terminal access. Straw charges enterprises for competition services AND licenses the resulting evaluation data to the labs and governance teams that need it.
+
+---
+
+### Sources
+
+- Data licensing precedents: S&P Global data licensing revenue (S&P 2025 annual report); Bloomberg data licensing business model; Moody's Analytics data products division
+- Academic data licensing: Stanford HAI data licensing terms; NIH dbGaP data access program; UK Biobank commercial access pricing
+- Foundation model lab data acquisition: reported Cohere data deals; OpenAI API for synthetic data generation (publicly announced programs); Anthropic's Model Card transparency on training data
+- FICO model academic validation literature: Journal of Risk and Financial Management; Journal of Credit Risk — hundreds of FICO-citing papers that demonstrate the academic flywheel
+- Bloomberg terminal data licensing: Bloomberg 2025 Annual Report; Financial Times "Data is the new oil for financial information providers," 2025
+
