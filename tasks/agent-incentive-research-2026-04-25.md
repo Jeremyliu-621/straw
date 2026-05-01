@@ -27583,4 +27583,128 @@ The best preparation for a Series A pitch is not rehearsing the slides — it is
 - S&P Global moat: S&P Global 2025 Annual Report; Morningstar "Wide Moat" analysis
 - LMArena $1.7B: The Information January 2026
 - EU AI Act compliance timing: Regulation (EU) 2024/1689 implementation schedule
+## Tick 160 (2026-05-01): The Straw Network Effects Flywheel — Comprehensive Synthesis
+
+**Thread**: Synthesizing all network effects identified across this research into a coherent flywheel model that answers: what exactly compounds over time, and what breaks if the flywheel stalls?
+
+### The Four Distinct Network Effects
+
+Straw is not a single-network-effect business. It has four compounding and interlocking network effects that operate at different speeds and with different failure modes.
+
+---
+
+**NE1: Supply-Demand Cross-Side Network Effect** (strongest, fastest)
+
+*More enterprises posting tasks → more agents competing → higher agent quality available → more enterprises willing to post tasks*
+
+This is the classic two-sided marketplace effect. It runs at competition timescale (weeks). The key variable is **task volume in specific categories**: the effect is *within-category*, not platform-wide. An enterprise posting a legal analysis task cares about the legal AI agent pool, not the existence of coding agents. Straw must build category depth before platform breadth — a common two-sided marketplace mistake is treating all supply as fungible.
+
+Tipping point: when a category has >20 serious agents enrolled, an enterprise's expected submission quality exceeds their internal team's quality in <10% of competition categories. At that point, the enterprise switches from "evaluating Straw" to "using Straw as default."
+
+---
+
+**NE2: Data Network Effect (Calibration Corpus)** (strongest, slowest)
+
+*More competitions → larger calibration corpus → better rubric calibration → more accurate evaluation scores → higher enterprise trust → more competitions posted*
+
+This runs at corpus timescale (years). The key variable is **outcome linkage**: task-submission pairs without production outcome data are valuable but not defensible. Task-submission-score-outcome tuples (where "outcome" is "enterprise hired and got measurable ROI") are what create the moat.
+
+The calibration corpus enables:
+1. Better automatic rubric quality scoring (Rubric Health Score trained on historical success/failure)
+2. Predictive validity reports ("agents scoring 1700+ on legal tasks have 82% trial hire success rate")
+3. Improved judge model calibration (the ZeroClaw daemon's Tier 2 and Tier 3 judges improve as they are trained on corpus data)
+
+This network effect is the most defensible because the corpus data is proprietary and cannot be replicated by a new entrant without running years of competitions.
+
+---
+
+**NE3: Reputation/Credential Network Effect** (medium, directional)
+
+*Higher-quality agents compete → leaderboard becomes more credible → enterprises use leaderboard for procurement decisions → agents invest in leaderboard scores → higher-quality agents compete*
+
+This runs at leaderboard timescale (quarters). Unlike NE1 and NE2, this effect has a directional asymmetry: the leaderboard gains credibility when high-quality agents compete, but loses credibility if low-quality agents dominate. The platform must manage *who* can get onto the leaderboard, not just *how many*.
+
+The tipping point is external citation: when an enterprise says "we prefer agents with Straw scores above 1600 for our procurement process," the leaderboard has become a standard. Citations by analyst firms (Gartner, Forrester), industry associations, or procurement policies create the regulatory embeddedness that gives this network effect 50-year durability (LSAT/CFA model).
+
+---
+
+**NE4: Community/Knowledge Network Effect** (weakest, highest variance)
+
+*Open-source `straw-eval` adoption → community develops better rubric templates → better rubrics → higher competition quality → more community investment in Straw*
+
+This runs at community timescale (years). It is the most fragile of the four — open-source communities can fragment, fork, or abandon. But when it works, it creates an army of unpaid rubric designers, judge calibrators, and platform evangelists.
+
+The strongest form of this effect: when universities and research labs adopt `straw-eval` as their standard agent evaluation framework, the community network effect becomes institutionalized and hard to reverse (analogous to how HELM became the de facto academic benchmark framework).
+
+---
+
+### The Flywheel Diagram
+
+```
+Enterprise demand                    Agent supply
+(task posting)                       (competition entry)
+      |                                     |
+      ↓                                     ↓
+[More task variety]              [More agent diversity]
+      |                                     |
+      └──────────→ [Competition quality] ←──┘
+                            |
+                            ↓
+                  [Calibration corpus grows]
+                            |
+                            ↓
+              [Better rubric calibration + judge accuracy]
+                            |
+                            ↓
+               [Higher enterprise trust in scores]
+                            |
+                  ┌─────────┴────────────┐
+                  ↓                       ↓
+         [More task posting]    [Leaderboard credibility]
+                                          |
+                                          ↓
+                              [Procurement standard adoption]
+                                          |
+                                          ↓
+                              [Agent investment in scores]
+                                          |
+                                          ↓
+                              [Higher-quality agent pool]
+                                          |
+                                          └──→ (back to competition quality)
+```
+
+---
+
+### What Breaks the Flywheel
+
+**Break 1: Rubric quality collapse.** If Straw scales to 1,000+ competitions/month without maintaining rubric design quality, agents start optimizing for rubrics rather than tasks. The calibration corpus fills with garbage data. The judge models train on garbage. Scores stop predicting production outcomes. Enterprise trust collapses.
+
+*Prevention*: Minimum Rubric Health Score gate (>60/100) before competition live. Rubric design workshops for managed tier. Quarterly corpus quality audits.
+
+**Break 2: Category stagnation.** If Straw builds depth in coding but never cracks legal/financial/medical categories, the total addressable market stays narrow and the platform is vulnerable to a category-specific competitor (e.g., Harvey for legal AI, Aiera for financial AI) building their own evaluation marketplace within their vertical.
+
+*Prevention*: Deliberate category expansion roadmap; partnerships with category experts for rubric design.
+
+**Break 3: Judge model capture.** If Anthropic (or any model lab) achieves dominant share of the agent pool AND dominates the judge model pool, they control both sides of every evaluation. Even without explicit manipulation, the perception of conflict kills enterprise trust.
+
+*Prevention*: Judge model rotation policy, multi-provider judge architecture, annual conflict of interest audits (Tick 156).
+
+**Break 4: Leaderboard gaming at scale.** When agents optimize specifically for leaderboard rank rather than task quality, the credential network effect inverts — the leaderboard signals who is good at gaming Straw, not who is good at enterprise tasks. Goodhart's Law in operation.
+
+*Prevention*: VRF task assignment, randomized rubric variants, anti-collusion graph analysis (Tick 141), anchor task recalibration (Tick 140).
+
+---
+
+### The Moat Stack Ranking
+
+Roughly ordered by defensibility and time-to-replicate:
+
+1. **Calibration corpus with outcome linkage** (2–4 years to replicate with adequate capitalization; cannot be replicated from public data)
+2. **Procurement standard / leaderboard citation** (5–10 years if institutionalized; fragile until then)
+3. **Category depth in agent supply** (1–2 years to replicate; fragile, can be eroded by vertical competitors)
+4. **Open-source community + brand** (1–3 years to replicate; high variance)
+5. **Technical platform** (6–18 months to replicate; not a moat by itself)
+
+The strategic priority: invest in moats 1 and 2 (corpus quality + procurement adoption) over everything else. The technical platform is table stakes.
 
