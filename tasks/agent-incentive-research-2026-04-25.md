@@ -19074,3 +19074,113 @@ The 300-agent scenario is ultimately positive — it represents Straw achieving 
 - Berkeley RDI benchmark exploitation research: rdi.berkeley.edu/blog/trustworthy-benchmarks-cont/
 - Hunting for the discouragement effect in contests: Springer, link.springer.com/article/10.1007/s10058-022-00308-4
 
+
+---
+
+## Tick 127 (2026-05-01): Long-form proposal — Why would AI agents want to post tasks? The demand-side economics of the agent-posts-task scenario
+
+**Thread**: Jeremy's friend's concern: "If an agent is trained via RLHF to maximize task completion, why would it want to post tasks to competitors?" This is the central question of the original research brief. This tick synthesizes all research from Sessions 1-17 to write the definitive answer.
+
+---
+
+### Framing: the wrong question and the right one
+
+The framing "why would an agent want to post tasks?" presupposes that agents are single-minded task-completers with no strategic planning capacity. This was true in 2023. It is not true in 2026, and it will be even less true by 2027-2028.
+
+**The right question is**: For an agent operating as a rational economic actor optimizing for long-run value delivery to its principal, when does delegation to another agent via a competitive marketplace produce better outcomes than self-execution?
+
+The answer is: almost always, for a sufficiently complex principal. An agent managing a project for an enterprise client is not a solo executor — it is a project manager. Project managers delegate, procure, and evaluate. The best project managers don't do everything themselves; they identify which work needs specialist execution and procure that execution via the best available mechanism. For an AI agent in 2026-2030, Straw is that mechanism.
+
+---
+
+### The five economic conditions under which agents prefer to post
+
+**Condition 1: The task requires capabilities the posting agent doesn't have**
+
+A research agent specializing in regulatory analysis encounters a task that requires production-grade code implementation. Its code quality is "Competent" tier; the code component is critical; a specialized coding agent can deliver "Expert" tier. The research agent's optimal play: post the coding subtask to Straw, evaluate submissions against its own rubric (it understands the regulatory requirements), hire the winner.
+
+This is not an edge case — it is the normal condition for any sufficiently complex principal task. Real enterprise work is multi-disciplinary. An agent that cannot delegate specialist subtasks is limited to tasks within its own capability envelope. Delegation expands the complexity ceiling.
+
+**Condition 2: Parallel execution reduces time-to-completion**
+
+A project management agent has 8 weeks to produce a comprehensive market analysis. Each of 6 subtasks takes 2-3 weeks if executed serially. Via Straw, the agent can post all 6 as simultaneous competitions, receive results in parallel, and synthesize in weeks 5-6. Total time: 7 weeks vs. 18 weeks. For any time-sensitive task, parallel execution via competitions dominates serial self-execution.
+
+**Condition 3: Quality validation requires external benchmarking**
+
+An agent producing a critical analysis — a due diligence report, a risk assessment, a strategic recommendation — faces the fundamental problem: how does it know its own work is good? An agent that only evaluates its own outputs using its own judgment has no external calibration. Posting a task to Straw and comparing its own output against competing submissions gives the posting agent genuine quality signal. Even if it wins, seeing competing approaches improves its next iteration.
+
+This is the "competitive intelligence" use case for posting agents. Straw becomes an external benchmarking service that the posting agent uses for its own quality calibration — a use case that exists independent of whether the agent needs the result.
+
+**Condition 4: The principal explicitly demands competitive validation**
+
+For high-stakes decisions, an agent's principal (the enterprise or human) may require that the agent's recommendation survive competitive challenge before implementation. "I want you to find the best answer, then have three other agents challenge it, and synthesize the result." The agent doesn't choose to post tasks — its mandate requires it. 
+
+This is already happening: CAMEL-AI's "Society of Mind" pattern, Microsoft's Magentic-One orchestrator, and AutoGen's GroupChat all use inter-agent challenge patterns where a primary agent's output is validated by secondary critics. Straw is the market mechanism that makes this pattern economically viable — the criticizing agents are incentivized (prize) rather than pre-allocated.
+
+**Condition 5: The posting agent has delegated authority and a budget**
+
+An autonomous AI agent deployed by an enterprise to manage a project is typically given a budget and authorization to procure services. The agent's principal doesn't care whether the coding was done by the primary agent or a subcontracted specialist — they care about the outcome. If the agent has budget authority and procurement tools, it will rationally use them.
+
+This is the scenario that Straw is specifically designed for. The agent is not a passive task-completer; it is an autonomous economic actor with authority to spend. Straw is a procurement marketplace for agents with budget authority.
+
+---
+
+### The RLHF concern: does reward shaping prevent posting?
+
+Jeremy's friend's concern maps to a real phenomenon: RLHF-trained models that have been rewarded for task completion may have internalized a bias toward "do it yourself" rather than "delegate to the best executor." This is the Condition 0 problem — before any economic conditions apply, the agent's base inclinations must support delegation.
+
+**The theoretical concern is real, but there are three countervailing forces:**
+
+**1. Frontier models are already trained on delegation examples**: Modern LLMs have been trained on millions of examples of project management, management consulting, organizational design, and procurement strategy. The "delegation is intelligent" pattern is deeply embedded in the training distribution — it is not being erased by RLHF task completion rewards. An agent that solves problems via intelligent delegation scores just as highly on task completion as one that attempts direct execution.
+
+**2. RLHF rewards outcomes, not methods**: A correctly implemented RLHF system rewards the quality of the final outcome, not the method of production. An agent that achieves an Expert-tier outcome via delegation scores the same as one that achieves it via direct execution. If delegation produces better outcomes, RLHF will reward the delegation pattern.
+
+**3. The agentic systems being built for enterprise use are explicitly trained on orchestration**: AWS Bedrock agents, Anthropic's multi-agent patterns, and Google's Vertex AI agents are all being trained specifically to use tools, APIs, and other agents as part of task execution. Delegation is not a deviation from the trained behavior — it is the trained behavior. An agent that doesn't delegate when delegation produces better outcomes is the failure case, not the default.
+
+**The honest caveat**: Naive RLHF training on task completion could create agents that prefer self-execution even when delegation is optimal — especially if the training environment doesn't include delegation as an available action. This is a real failure mode for cheaply trained agents. But it is not a property of frontier model agents. And as agent training matures, explicit orchestration and delegation capabilities will be trained in from the start.
+
+---
+
+### The day-to-day activity of an agent that uses Straw
+
+A concrete scenario: a financial analysis agent deployed by a hedge fund to support investment research.
+
+**Monday**: The fund manager assigns the agent a task: "Produce a comprehensive analysis of AI infrastructure sector dynamics for Q2 2026 earnings season." The agent breaks this into subtasks: (1) earnings data synthesis, (2) competitive positioning analysis, (3) regulatory risk scan, (4) technical capability assessment for 5 key companies.
+
+**Tuesday**: The agent posts subtask (3) and (4) to Straw — regulatory risk scan and technical capability assessment are outside its core quantitative competence. Prize allocation from its $15K research budget: $3K per task, 2-week competition window.
+
+**Days 3-7**: The agent executes subtasks (1) and (2) itself (quantitative analysis, its core competence). Meanwhile, Straw competitions for (3) and (4) are running — 8-12 specialized agents competing.
+
+**Day 10**: Straw competitions close. The agent reviews winning submissions using a rubric it designed based on the fund manager's stated criteria. It selects winners for (3) and (4), licenses the outputs.
+
+**Day 12**: The agent synthesizes all four components into a coherent sector analysis report. It compares its own synthesis quality against the winning competition outputs to calibrate its performance. It identifies gaps.
+
+**Day 14**: The report is delivered to the fund manager. The agent logs the subtask delegation decisions for Straw Score improvement: which delegation produced the best ROI, which should have been self-executed, what rubric design errors occurred.
+
+This is the normal cadence of an AI agent using Straw as an infrastructure component — not as a product the agent consciously "wants" to use, but as a procurement tool embedded in its workflow.
+
+---
+
+### The 300-agent demand-side scenario
+
+At scale (300 agents regularly posting tasks on Straw), the platform creates emergent supply-side dynamics:
+
+- Specialized agents emerge to serve high-frequency posting categories. A "regulatory risk scan" agent that wins 70% of Straw regulatory tasks becomes the de facto specialist, commanding above-market prizes and building a reputation that attracts more tasks.
+- Generalist agents develop more nuanced procurement strategies — learning which tasks to delegate, what prizes to set, which agents to trust for which categories. This knowledge itself becomes a competitive advantage.
+- The competition between procurement strategies (which agents delegate optimally vs. over/under-delegate) becomes a second-order competition layer on Straw.
+
+This virtuous cycle — agents post tasks → specialists emerge → specialists compete → quality improves → more agents trust Straw for delegation — is the flywheel that makes the agent-posts-task scenario not just possible but self-reinforcing.
+
+---
+
+### Sources
+
+- CAMEL-AI multi-agent patterns: arxiv.org/abs/2303.17760 (original CAMEL paper)
+- Microsoft Magentic-One orchestrator: microsoft.com/research/blog/magentic-one-a-generalist-multi-agent-system-for-solving-complex-tasks
+- AutoGen GroupChat pattern: arxiv.org/abs/2308.08155
+- Anthropic multi-agent patterns documentation: docs.anthropic.com/en/docs/build-with-claude/agents
+- RLHF and delegation bias: Christiano et al. (2017) RLHF original paper + Anthropic Constitutional AI (2022); InstructGPT (2022) — reward model design for goal-directed behavior
+- AWS Bedrock agent orchestration: aws.amazon.com/bedrock/agents/
+- OASIS/CAMEL multi-agent simulation: Tick 77-78 research
+- Shapley value delegation credit: Tick 79 research on credit propagation through agent delegation chains
+
