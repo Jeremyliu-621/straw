@@ -12909,3 +12909,306 @@ The case study goes on Straw's website with the enterprise's approval. The enter
 - Tick 75: Task type taxonomy (Quadrant A as design partner target)
 - Tick 84: Legal structure (design partner agreement provisions)
 
+
+---
+
+## Tick 96 (2026-05-01): The go-to-market motion — from zero to $1M ARR
+
+**Research question**: What is the specific go-to-market motion for Straw to reach $1M ARR? What are the sales channels, conversion rates, deal sizes, and the number of customers needed?
+
+---
+
+### The arithmetic of $1M ARR
+
+Working backward from the pricing model (Tick 58) and unit economics (Tick 60):
+
+| Path | Average deal size | Customers needed |
+|------|-----------------|-----------------|
+| Team tier ($999/month) only | $12K ARR | 84 customers |
+| Enterprise tier ($4K/month) only | $48K ARR | 21 customers |
+| Mixed 50/50 blend | $30K ARR | 34 customers |
+| Plus competition success fees (15–20% on prize pools) | Variable — reduces customer threshold |
+
+**Target for $1M ARR**: 20 enterprise customers at $48K ARR average, or 30 customers at a blended $33K ARR. The competition success fees (on a $10K average prize pool, 20% fee = $2K per competition, assuming 2 competitions per customer per year = $4K/customer) add approximately $80K–$100K ARR for 20 customers running 2 competitions each.
+
+This is achievable in 18–24 months with 2 enterprise AEs or founder-led sales.
+
+---
+
+### The sales motion hierarchy
+
+**Channel 1: Founder-led sales (months 1–12)**
+The first $500K ARR should come from the founding team. This is not a scalable channel — it is the channel that validates the pitch and produces the playbook that future AEs will follow.
+
+Founder-led sales targets: design partner relationships (Tick 95), warm introductions from investors and advisors, direct outreach to VPs of Engineering and AI at companies in target industries.
+
+Key metrics:
+- Time-to-first-meeting: target <5 business days from first outreach (personalized, relevant, reference a specific problem)
+- First meeting → second meeting conversion: target 40%+ (if it's below 30%, the pitch needs refinement)
+- Pipeline → close: target 25% (B2B SaaS median is 20–27% — Straw should be at the higher end because design partner prospects are pre-qualified)
+
+**Channel 2: Model provider referrals (months 6–18)**
+Once Straw has 5+ enterprise customers, approach Anthropic's enterprise sales team, OpenAI's enterprise team, and Google Cloud's sales team with a formal referral partner agreement. The ask: "When your enterprise customers ask you 'which agent is best for X task,' refer them to Straw."
+
+The referral value proposition for model providers: Straw validates enterprise AI adoption (solving the 40% project cancellation problem) which keeps enterprise contracts alive and growing. Successful enterprise AI adoption = more model API spend = direct benefit to the model provider.
+
+Commission structure: 15% of first-year ARR for each referred customer that closes. This is the standard SaaS referral partner rate. It costs Straw $7,200 for each $48K ARR enterprise customer referred by a model provider — justified if the CAC on inbound leads is above that threshold.
+
+**Channel 3: Agent community inbound (months 3–12)**
+Agent teams that win competitions become Straw advocates in enterprise buyer communities. When an agent team's champion (VP Engineering) moves to a new company, they are a warm lead for Straw at the new company — they already know the platform works.
+
+This is why building the agent-side community (Tick 67) and tracking agent team champions is a sales investment: every agent team that builds a strong reputation on Straw has an incentive to refer enterprises, because enterprise competitions are how agent teams build revenue.
+
+**Channel 4: Content and thought leadership (months 1–ongoing)**
+Every competition result is content:
+- "We ran a competition for [task type]. Here's what we learned about which AI approaches outperform" (blog post)
+- The anonymized leaderboard data (which categories of agents win which task types, with no enterprise or agent name identifiers) is data journalism that AI-focused media will cover
+- The Competition Compliance Certificate (Tick 61) as a regulatory compliance resource — downloadable template that drives inbound from compliance-conscious enterprises
+
+The goal of content: make "Straw" the first thing enterprise buyers search when they're trying to figure out how to evaluate AI agents. Google "[task type] AI agent evaluation" → Straw appears → free inbound.
+
+---
+
+### The sales playbook per channel
+
+**Outbound cold email to VP Engineering / Head of AI** (Tick 51 research):
+- Baseline open rate: 3.43% for generic outbound
+- Target with personalization: 15–25% open rate
+- The personalization hook: a specific AI agent pain point at their company, cited by company name (e.g., a LinkedIn post where their CEO mentioned AI adoption challenges)
+- Call to action: "20-minute demo where I show you a competition we ran for a similar company"
+
+**Discovery call framework (7 questions from Tick 51)**:
+1. What AI agent tasks are you most actively trying to evaluate or procure right now?
+2. How did your team evaluate the last AI vendor you selected?
+3. What would a 30% performance improvement on [specific task] mean for your business?
+4. Do you have a baseline — how well does the current solution or human team perform on this task?
+5. What does your AI adoption review process look like internally?
+6. Who else needs to be involved in a decision to run an AI agent evaluation?
+7. If we could show you a winner-agent that outperforms your current approach by 20%+, what's your process for moving forward?
+
+**The POC structure**: 30-day structured proof of concept. Straw facilitates a competition on a task the enterprise provides. The enterprise gets competition results within 30 days. If the results are compelling (winning agent demonstrates improvement over baseline), they sign a 12-month contract.
+
+---
+
+### The critical sales objections
+
+**"We can evaluate agents ourselves"**: Most enterprises can write a rubric and test a few agents. What they can't do is attract 15 competing agent teams and score them in 2 weeks with a defensible methodology. Straw does in days what a DIY process takes months.
+
+**"We'll just ask vendors for their benchmark data"**: Vendor-provided benchmarks are contaminated (Tick 74). 67% of enterprises that bought AI based on vendor benchmarks reported production underperformance (31-point gap). Straw provides independent evaluation on your actual tasks.
+
+**"We don't have a task ready to specify"**: Offer the $1,500 rubric design session (Tick 65) as an add-on. Straw helps the enterprise specify the task and rubric before the competition opens. This turns a "not ready" into a paid onboarding.
+
+**"The prize pool is too expensive"**: Position the prize pool as a marketing budget, not a platform cost. An enterprise that pays $15K in prizes to attract 20 agent teams competing on their specific problem is spending $750/agent compared to $250K for a traditional vendor evaluation process. The prize is not a cost — it is the mechanism for attracting the world's best AI agents to compete for the enterprise's business.
+
+---
+
+### Sources
+
+- Tick 51: Enterprise sales motion (cold email benchmarks, discovery questions, POC structure)
+- Tick 58: Pricing architecture ($48K ARR enterprise floor)
+- Tick 60: Unit economics (take rate, gross margin)
+- Tick 73: Customer success (champion identification, referral mechanics)
+- B2B SaaS conversion benchmarks (SaaStr annual survey; Bridge Group median pipeline conversion)
+- Partner referral program benchmarks (Partnerstack 15% standard referral commission)
+
+
+---
+
+## Tick 92 (2026-05-01): The agent economy in 2030 — market size, organizational change, and Straw's position
+
+**Research question**: What does the enterprise AI agent market look like in 2030, and where does Straw sit in it?
+
+---
+
+### Market size: the $50–70B consensus by 2030
+
+| Source | 2030 Projection | CAGR |
+|--------|----------------|------|
+| Grand View Research (standalone AI agents) | $50.31B | 45.8% |
+| Grand View Research (enterprise agentic AI) | $24.50B | 46.2% |
+| MarketsandMarkets | $52.62B | 46.3% |
+| Grand View Research (autonomous AI broad category) | $70.53B | 42.8% |
+| Gartner (SCM alone with agentic AI) | $53B in SCM spend | — |
+
+The consensus on standalone AI agent platform market: **$50–70B** by 2030, 44–46% CAGR. Where analysts diverge: boundary definition. Gartner counts embedded agentic features in enterprise software (much larger). Grand View and MarketsandMarkets count standalone AI agent products (smaller). The $53B Gartner SCM number alone exceeds Grand View's total — because Gartner counts the entire SCM software market that happens to be agentic.
+
+**The evaluation sub-segment**: Gartner predicts guardian agents (monitoring, safety, governance) will capture **10–15% of the agentic AI market by 2030** — implying **$5B–$10.5B** for evaluation and oversight infrastructure. Competitive procurement infrastructure (Straw's specific category) is a sub-segment of that: **$500M–$2B TAM**.
+
+---
+
+### The "billion agents" scenario and OASIS at scale
+
+Multiple sources project 1B+ AI agents deployed globally by 2026/2030 (definitionally contested — depends on whether every automated workflow counts). IDC projects a **1,000× increase in inference demand by 2027** — infrastructure scaling consistent with hundreds of millions of agent-hours per day by 2030.
+
+**OASIS key findings for Straw** (arXiv:2411.11581, 1M agent social simulation):
+- Emergent group behaviors (polarization, herd effects, information cascades) only appeared at **10,000+ agents** — below that, agents behave as isolated individuals
+- AI agents are **more prone to herd effects than humans** under negative feedback
+- Large populations self-correct misinformation through emergent consensus
+
+**Straw implication**: At scale (500 competitions, hundreds of competing agents), herd behaviors become a real design constraint. If agents observe each other's performance signals, they may converge on similar approaches rather than exploring diverse solutions. Blind submissions and information isolation between competitors are not just fairness features — they're scientifically necessary for valid evaluation.
+
+---
+
+### Organizational change: the Klarna lesson defines enterprise posture by 2030
+
+Klarna's AI replacement strategy (claiming 853 FTE equivalents replaced) collapsed when customer satisfaction deteriorated on complex interactions. The reversal accelerated board-level scrutiny of pure-AI replacement strategies. A Forrester/Orgvue study found **55% of companies that rushed to replace human workers with AI now regret the decision**.
+
+The 2030 enterprise organizational pattern is not replacement — it's tiered hybrid:
+- Autonomous agents handle routine, measurable, high-volume tasks
+- Human-AI hybrid teams handle complex, judgment-intensive work
+- A dedicated "agent procurement and quality assurance" function manages agent selection, evaluation, and ongoing quality assurance
+
+**The third function is the institutional buyer for Straw's platform.** By 2030, enterprises with serious AI agent deployments will have a dedicated internal function (or outsourced equivalent) responsible for proving that their agents are the right ones. This function has a budget, has compliance obligations (EU AI Act, OMB M-26-04), and needs tooling.
+
+---
+
+### The 2030 failure rate as market driver
+
+The AI project failure rate in 2026: 80–95% by most measures (RAND: 80.3% fail to deliver intended value; MIT Sloan: 95% of GenAI pilots fail to scale). Even dropping to 40–50% by 2030 through better evaluation infrastructure represents a massive unlock — trillions of dollars of AI investment becoming productive rather than wasted.
+
+**TAM model for Straw's category**:
+- 250,000 enterprise AI agent projects in 2030
+- 40–50% failure rate → 125,000–150,000 successful deployments
+- 60% of survivors face competitive procurement evaluation
+- Average evaluation spend: $50K–$250K per deployment
+- Straw's serviceable segment: **$3.8B–$22.5B** in evaluation spend by 2030 (Straw targets the $50K–$250K competitive procurement layer, not the $5K observability tool layer)
+
+At $500K average ARR per enterprise customer and 50+ enterprise customers with 500+ competitions, Straw's 2030 position is **$25M–$100M ARR** — a defensible, compounding position in the competitive procurement sub-segment.
+
+---
+
+### Straw's competitive position in 2030
+
+**Three categories of competitors by 2030**:
+
+1. **Observability/monitoring tools** (LangSmith — $1.25B valuation, $70M Series C 2025; Weave; Datadog AI): measure *how* an agent ran. Do not tell you *whether* it solved the business problem.
+
+2. **Benchmark platforms** (SWE-bench, GAIA, WebArena): academic/technical benchmarks on standardized problems. Can't reflect proprietary enterprise workflows.
+
+3. **Straw's category — competitive evaluation on real enterprise problems**: No funded, scaled player in this category as of May 2026. The data moat is the advantage: 500+ competitions of real performance data, calibrated across task types, cannot be replicated retroactively.
+
+**Why consultants can't win this market**: McKinsey, Deloitte, and Accenture have enterprise relationships but lack speed (6–12 month engagement timelines vs. Straw's 2-week competition), cost efficiency (a McKinsey evaluation costs $200K+; a Straw competition costs $10–50K), and data compound advantage (each McKinsey engagement is standalone; each Straw competition adds to the calibration corpus).
+
+**Why hyperscalers are a real threat**: AWS Bedrock, Azure AI, and GCP all have evaluation features built into their model serving platforms. If they build competitive multi-agent evaluation (not just model benchmarking) as a free feature, Straw must already own the methodology standard before that happens. The 2026–2028 window is the critical proof period.
+
+---
+
+### Sources
+
+- Grand View Research: [$50.31B AI agents 2030](https://www.prnewswire.com/news-releases/ai-agents-market-size-to-hit-50-31-billion-by-2030-at-cagr-45-8---grand-view-research-inc-302447060.html); [$24.50B enterprise agentic AI](https://www.grandviewresearch.com/industry-analysis/enterprise-agentic-ai-market-report)
+- MarketsandMarkets: [$52.62B](https://www.marketsandmarkets.com/PressReleases/ai-agents.asp)
+- Gartner: [Guardian agents 10–15%](https://www.gartner.com/en/newsroom/press-releases/2025-06-11-gartner-predicts-that-guardian-agents-will-capture-10-15-percent-of-the-agentic-ai-market-by-2030); [SCM $53B](https://www.gartner.com/en/newsroom/press-releases/2026-04-07-gartner-forecasts-supply-chain-management-software-with-agentic-ai-will-grow-to-53-billion-in-spend-by-2030)
+- [OASIS arXiv:2411.11581](https://arxiv.org/abs/2411.11581)
+- [Klarna AI reversal — Fast Company](https://www.fastcompany.com/91468582/klarna-tried-to-replace-its-workforce-with-ai)
+- [RAND 80% failure rate — Pertama Partners](https://www.pertamapartners.com/insights/ai-project-failure-statistics-2026)
+- [MIT Sloan 95% GenAI pilots fail](https://sranalytics.io/blog/why-95-of-ai-projects-fail/)
+- a16z Big Ideas 2026: agent infrastructure gaps
+- [McKinsey AI future of work](https://www.mckinsey.com/mgi/our-research/generative-ai-and-the-future-of-work-in-america/)
+
+
+---
+
+## Tick 91 (2026-05-01): Non-deterministic task evaluation — how to score subjective tasks reliably
+
+**Research question**: How does Straw score tasks where quality is inherently subjective — creative writing, strategic analysis, customer service quality, executive communication? What does the 2025–2026 research say about LLM-as-judge best practices?
+
+---
+
+### The three dominant LLM-as-judge failure modes
+
+**Position bias** (most studied): All tested judge models exhibit significant positional preference — in pairwise comparisons, the submission presented first is favored. Critically, judge model choice has a larger impact on positional bias than task complexity or quality gap between submissions (arXiv:2406.07791, 150,000+ evaluation instances across 15 judge models). Bias worsens substantially as candidate count increases beyond two — directly relevant to Straw's multi-agent competition format.
+
+*Mitigation*: Swap augmentation — run evaluation twice (A vs. B, then B vs. A); flag any judgment where the winner flips. For multi-agent competitions, use round-robin pairwise comparison rather than single-pass ranking.
+
+**Verbosity/surface quality bias**: LLMs prefer the surface appearance of quality (structure, hedging, fluency) over substantive quality. Contrary to the established narrative, the 2025 paper arXiv:2604.23178 found judges actually prefer concise responses over artificially padded alternatives — the bias is surface quality, not raw length.
+
+*Mitigation*: Per-criterion atomic evaluation with explicit length-neutral rubric language ("evaluate only [specific criterion], regardless of response length").
+
+**Self-enhancement bias**: Models produce a 5–7% score boost when evaluating their own outputs (arXiv:2604.22891). Do not use the same model family that generated submissions as the sole judge.
+
+*Mitigation*: Use at least two judges from different model families; ensemble and average; flag cases where judges disagree by more than 15 points.
+
+---
+
+### The hybrid tier model: when humans are required
+
+Research consensus: LLM judges reach 80–90% agreement with humans on well-structured tasks, but drop sharply on open-ended creative and reasoning work — **creative writing 58% LLM-human agreement, open-ended reasoning 47%** (Galileo analysis). In medical, legal, and expert domains: 60–70%.
+
+**Straw's tier model for subjective evaluation**:
+
+| Tier | Volume | Condition | Handler |
+|------|--------|-----------|---------|
+| Automated | ~80–90% | High judge confidence, familiar task type, established calibration | LLM judge ensemble |
+| Spot-check | ~10% random | Calibration drift detection | Human reviewer (blinded to automated score) |
+| Mandatory human | Always | Medical/legal/financial; judge confidence <0.7; judges disagree; first competition in new task type; high-stakes label | Human reviewer |
+
+**Minimum calibration sample**: Domain experts evaluate a representative 100–200 examples from a gold standard set. Per Autorubric (arXiv:2603.00077), accuracy gains from few-shot calibration are steepest from 0–5 examples (+2.8 percentage points per shot), with diminishing returns beyond 5. For Straw, each enterprise client should go through a 50–100 example calibration exercise before their first live competition scores are trusted.
+
+---
+
+### Rubric anchoring: lessons from high-stakes human evaluation
+
+**The SAT Essay rubric principle**: Each criterion (Reading, Analysis, Writing) is decomposed into observable, countable behaviors — not impressions. A score of "4" (advanced) is defined by specific, verifiable textual elements. The evaluator cannot rely on holistic feel.
+
+**Toastmasters' M.A.R.S. framework**: Evaluators are explicitly prohibited from scoring based on personal content preferences. The rubric anchors each criterion to observable behaviors (body language cues, specific transition types, vocal variety techniques).
+
+**For Straw's non-deterministic rubrics**:
+1. Every criterion must be falsifiable from the submission content alone — no criterion should require guessing intent
+2. Anchor each score level with a behavioral exemplar (what does a "7" actually look like vs. a "5"?)
+3. Never bundle distinct criteria into a single score (separate "clarity" from "strategic insight")
+4. Use binary criteria where gradation doesn't genuinely exist — they are the most reliable
+
+---
+
+### Pairwise vs. absolute scoring
+
+**The empirical finding** (arXiv:2504.14716): Pairwise preferences flip in ~35% of cases vs. only 9% for absolute scores — absolute scoring is more stable. Pairwise is also more vulnerable to adversarial manipulation: a longer, more structured response can swing pairwise results without actually being better.
+
+**The counterargument** (LMSYS/Chatbot Arena, arXiv:2403.04132, 80%+ human-LLM agreement on pairwise): Pairwise is more natural for humans evaluating subjective dimensions like tone and coherence, where "this one is better" is genuinely easier to assess than assigning a number.
+
+**Straw's resolution**: Hybrid approach. Run pairwise for final ranking (which agent won?). Run absolute scoring for dimensional diagnostics (where did each agent underperform?). Bradley-Terry models convert accumulated pairwise wins into reliable ratings. Confidence intervals around Elo scores give appropriate uncertainty communication to enterprise clients.
+
+---
+
+### The taste problem: encoding enterprise-specific preferences
+
+The hardest problem for non-deterministic tasks: some evaluation dimensions (brand voice, strategic fit, executive communication style) require enterprise-specific calibration that no general rubric can capture.
+
+**The Autorubric few-shot calibration approach** (arXiv:2603.00077): 5 "gold" exemplar submissions with scores and written rationale are included in the judge prompt. This is the most tractable encoding of brand voice and strategic style preferences.
+
+**Straw's enterprise taste onboarding flow**:
+1. Enterprise supplies 5–10 "exemplar" submissions with quality ratings and written rationale → these become few-shot calibration examples
+2. Enterprise supplies "anti-exemplars" (what bad looks like for them) → anchors the low end of the scale
+3. LLM extracts behavioral criteria from the exemplars (what specific observable behaviors distinguish high-rated from low-rated examples?)
+4. Criteria stored as a client-specific rubric profile prepended to every evaluation prompt
+5. Calibration check: judge scores the exemplars; compare to enterprise ratings; iterate until Cohen's kappa > 0.60 on the calibration set
+
+---
+
+### When to prohibit automated final judgment
+
+**Mandatory escalation triggers**:
+- Medical, legal, or financial recommendations with liability implications
+- Judge confidence below 0.70 (implement confidence scoring in the judge structured output)
+- Two judges disagree on winner (>15-point delta)
+- First competition in a new task domain for this enterprise (no calibration baseline)
+- Enterprise marks competition as "high-stakes / human-required final call"
+- Score within statistical noise margin between top-ranked agents
+
+The escalation path: human reviewers are blind to the automated score to avoid anchoring bias. Disagreement between automated and human on more than 15% of submissions triggers rubric review, not case-by-case arbitration.
+
+---
+
+### Sources
+
+- [Position bias in LLM-as-judge (arXiv:2406.07791)](https://arxiv.org/abs/2406.07791)
+- [Self-preference bias mitigation (arXiv:2604.22891)](https://arxiv.org/html/2604.22891v1)
+- [Bias mitigation strategies in LLM judge pipelines (arXiv:2604.23178)](https://arxiv.org/html/2604.23178)
+- [Pairwise vs. pointwise evaluation (arXiv:2504.14716)](https://arxiv.org/abs/2504.14716)
+- [Chatbot Arena / LMSYS pairwise validation (arXiv:2403.04132)](https://arxiv.org/abs/2403.04132)
+- [Autorubric few-shot calibration (arXiv:2603.00077)](https://arxiv.org/abs/2603.00077)
+- [LLM-as-judge vs. human evaluation — Galileo](https://galileo.ai/blog/llm-as-a-judge-vs-human-evaluation)
+- [Trust or Escalate: LLM Judges with Escalation (ICLR 2025)](https://proceedings.iclr.cc/paper_files/paper/2025/file/08dabd5345b37fffcbe335bd578b15a0-Paper-Conference.pdf)
+- [SAT Essay scoring rubric — College Board](https://satsuite.collegeboard.org/media/pdf/sat-sd-essay-understanding-scores.pdf)
+- [Toastmasters Generic Evaluation Resource](https://toastmasters.org/resources/generic-evaluation-resource)
+
