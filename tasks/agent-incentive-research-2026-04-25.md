@@ -29147,3 +29147,98 @@ That is a one-sentence expansion vector that signals category vision without dil
 
 The Series B story writes itself: "We started with AI agents because they were the first software that could attempt any task without pre-integration. The first 18 months proved the model. Now we're extending competition-based evaluation to any software that exposes an API — starting with the $400B enterprise automation market where RPA tools, AI coding assistants, and workflow platforms compete for the same budget." That's a $10B-category company narrative. Don't burn it at seed.
 
+
+---
+
+## Tick 166 (2026-05-01): Customer Success Playbook — How Straw Ensures Every Competition Produces Renewal
+
+**Thread**: How does Straw structure post-sale success to drive the 120%+ NRR required at Series A/B?
+
+### Why CS Matters More for Straw Than Most SaaS
+
+Most SaaS renewal is automatic friction: switching costs + inertia + "good enough." Straw renewals require active satisfaction. An enterprise that ran one competition and got a mediocre result has no reason to run a second competition. There is no accidental renewal in a project-based model.
+
+This makes Customer Success existential for Straw in a way it isn't for CRM or project management tools. Every competition is a discrete choice to re-engage. CS is what converts a one-time competition into a recurring relationship.
+
+The goal: every enterprise client that completes Competition 1 should run Competition 2. That's the only path to the LTV:CAC ratios that make the business work (Scenario C: recurring = 10.75× LTV:CAC; Scenario A: one competition = 0.75×, below threshold).
+
+---
+
+### The CS Playbook: Five Stages
+
+**Stage 1: Pre-Competition Kickoff (2 weeks before launch)**
+
+The CS Manager becomes the client's primary relationship owner from contract close. The kickoff has three objectives:
+1. Validate the rubric (confirm final sign-off from all stakeholders — champion, end-user, technical peer)
+2. Set evaluation expectations (what does a "good" competition look like? What Straw Score range is typical for this task type based on corpus benchmarks?)
+3. Define the "next competition" trigger upfront ("If Competition 1 scores an agent above 750, what's the next task you'd evaluate?")
+
+Why objective 3 matters: surfacing the next use case before Competition 1 runs means the CS Manager can plant the seed while excitement is high. If you wait until after the competition to ask "what's next?" you're starting from a cold state.
+
+**Stage 2: Competition Monitoring (During the 4-6 week window)**
+
+CS responsibility during the active competition:
+- Weekly check-in with the client champion (5-10 minute call or async update) — "Here's agent participation so far, here's what we're seeing in submission quality"
+- Flag any rubric ambiguity issues before final evaluation (better to refine the rubric 2 weeks in than dispute scores after results are published)
+- Manage agent team questions that require client input (some questions about task scope require the client to clarify — CS routes these without burdening the champion unnecessarily)
+- Internal monitoring: if submission volume is below forecast at week 2, CS triggers the "competition promotion" protocol (Straw directly recruits additional agent teams to ensure sufficient competitive depth)
+
+**Stage 3: Results Presentation (Evaluation close + 1 week)**
+
+CS owns the results presentation meeting, not the AE. The meeting structure:
+1. Leaderboard and score distribution (10 minutes)
+2. Deep dive on the top 3 agents — dimension-level scores, notable behaviors, identified risks (20 minutes)
+3. Surprise test results — adversarial case performance (10 minutes)
+4. Procurement recommendation (10 minutes)
+5. Competition 2 scoping (10 minutes) — "Based on what we learned, here's what the next evaluation could look like. We'd recommend running it in Q3."
+
+The 50-minute structure ensures Competition 2 is discussed in the same meeting where Competition 1 results are delivered. This is the highest-conversion moment: the client has just received concrete value, the rubric methodology is fresh in their minds, and the CS Manager has a natural opening to say "the next use case you mentioned in kickoff — let's design it now while we have momentum."
+
+**Stage 4: 30/60/90-Day Follow-Through**
+
+After the results meeting:
+- 30 days: Check in on procurement outcome. Did the client move forward with the winning agent? If yes: "Would you like us to track the agent's production performance against the competition rubric?" (Straw can provide this as an add-on, at additional cost)
+- 60 days: Share a benchmark update — "We've run 3 new competitions in your domain this quarter. Here's how the Straw Score landscape has shifted. Your winning agent's score of 847 is now in the 89th percentile for legal AI agents on the platform."
+- 90 days: Formal business review. Quantify the value delivered: time savings vs. traditional vendor evaluation, risk reduction from objective scoring, outcome of the procurement decision. This becomes the customer story Straw uses for case studies and sales references.
+
+**Stage 5: Renewal and Expansion Planning**
+
+The renewal conversation happens at 8 months into a 12-month contract (not at month 11 — too late). At 8 months:
+- CS presents the Competition 2 proposal with specific task scope, pricing, and timeline
+- Frame as a discounted renewal bundle ("Competition 1 + Competition 2 at $90K vs. $115K a la carte")
+- Introduce the "Straw Benchmark Subscription" at renewal — $15K/year for ongoing Straw Score tracking, competitor monitoring, and quarterly domain benchmark reports
+
+The Benchmark Subscription converts a project relationship into a recurring data relationship. It is the product that shifts Straw from 0% NRR to 100%+ NRR by keeping a revenue thread between competitions.
+
+---
+
+### CS Team Design: When to Hire
+
+**Year 0 (pre-seed)**: No dedicated CS. Founders own all relationships.
+
+**Year 1 (post-seed, first 3 competitions)**: One CS Manager hire, focused entirely on competition success and renewal setup. This person must be both technically literate (can read an evaluation rubric) and enterprise-savvy (can run a C-suite business review).
+
+**Year 2 (Series A, 10+ active clients)**: CS Manager-to-client ratio target of 1:8-10 for enterprise accounts. At $150K-$200K ACV, one CS Manager managing 8 accounts generates $1.2M-$1.6M in managed ARR. Add a CS Ops function at Year 2 to systematize the playbook and track CS health metrics.
+
+**CS health metrics** (tracked per account):
+- Competition completion rate (did the competition run and close on time?)
+- Client satisfaction score (post-competition survey, 1-10)
+- Time to next competition (how quickly did Competition 2 get scoped and signed?)
+- Competition 2 conversion rate (what % of Competition 1 clients run Competition 2 within 12 months?)
+- Benchmark subscription attach rate (what % of Competition 1 clients add the subscription?)
+
+The target metrics: Competition 2 conversion >60%; Benchmark subscription attach >40%. Together these get Straw to 120%+ NRR without requiring large new logo acquisition.
+
+---
+
+### The Renewal Math
+
+If every Competition 1 client:
+- Runs Competition 2 within 12 months (60% conversion): adds $80K-$150K
+- Adds a Benchmark Subscription at renewal (40% attach): adds $15K
+- Runs a third competition at year 2 (40% of those who ran Competition 2): adds another $80K-$150K
+
+A client who entered at $100K Year 1 (Competition 1 fee) exits Year 2 at $195K (Competition 1 + 2 + Benchmark Subscription) and Year 3 at $295K (three competitions + subscription). That is 195% and 295% NRR respectively — driven entirely by product quality and CS execution, not by pricing changes.
+
+This is the math that makes the Straw unit economics work at scale: LTV:CAC of 10.75× is achievable because the average client more than triples their spend over three years before showing any churn signal.
+
