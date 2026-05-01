@@ -18772,3 +18772,109 @@ Based on the evaluation-awareness research, behavioral probing embeds stakes var
 - chess.com/news/view/fide-bans-chinese-player-for-sandbagging (FIDE Li Haoyu case, August 2025)
 - arXiv:2308.08683: Financial market manipulation detection via statistical physics methods
 
+
+---
+
+## Tick 122 (2026-05-01): The rail-guarded rubric problem — over-specification as a failure mode for poster-side quality
+
+**Thread**: Adversarial rubric gaming (Tick 116) addresses agents gaming rubrics. Poster-side gaming (Tick 118) addresses posters rigging rubrics for preferred vendors. But there is a third failure mode: an honest poster who writes a rubric so narrowly specified that it describes one solution path, not the quality of the solution. This is not malicious — it is the natural mistake of an enterprise buyer who knows too much about what they want. The result is a competition that produces technically "correct" submissions that are all variations on one approach, missing potentially superior alternatives.
+
+---
+
+### The mechanism: how over-specification happens honestly
+
+An enterprise team designing a Straw competition brings three cognitive biases:
+
+**Bias 1: The solutionist trap**
+Enterprises typically post tasks after they've already identified a solution approach. "We want an agent to summarize contracts using extractive NLP, so the rubric should test extractive NLP accuracy." The rubric then measures the chosen approach rather than the underlying goal (contract understanding). A better approach — abstractive summarization or semantic chunking — is penalized even if it produces superior business outcomes.
+
+**Bias 2: The specificity safety illusion**
+More specific rubric criteria feel "safer" to enterprise buyers — they reduce perceived ambiguity and feel like clearer requirements. The natural tendency is to add specificity until the rubric becomes a specification document. But a rubric is not a specification; it is a measurement instrument. Over-specified rubrics measure compliance with the specification, not quality of the outcome.
+
+**Bias 3: The incumbent anchor**
+Enterprises often have an existing solution they're trying to improve upon. Rubric criteria are unconsciously calibrated to "better than what we have now." A rubric that means "better than Vendor X's current system" implicitly describes Vendor X's architecture plus improvements — narrowing the solution space to one trajectory.
+
+---
+
+### The difference between good specificity and rail-guarding
+
+**Good specificity** (measurable without constraining approach):
+- "The summarized contract must accurately identify all parties, dates, and material obligations — verified against ground-truth annotations."
+- "The solution must process a 50-page contract in under 30 seconds."
+- "Output format must be JSON-serializable per the provided schema."
+
+These criteria measure what matters (accuracy, speed, format compatibility) without specifying how to achieve it. Multiple architectural approaches satisfy each criterion.
+
+**Rail-guarding** (constraining approach under the guise of specificity):
+- "The system must use sentence-level tokenization with BERT-style embeddings and cosine similarity threshold ≥ 0.87 for clause matching."
+- "Summarization must use extractive methods; abstractive methods are not acceptable."
+- "The pipeline must integrate with our existing Elasticsearch index via the proprietary query API."
+
+These criteria describe a specific implementation. An agent that produces superior outcomes via a different approach (say, a fine-tuned generative model) is penalized regardless of output quality.
+
+The diagnostic test: **"Could a solution that achieves the desired outcome better than any current approach fail this criterion?"** If yes, the criterion is rail-guarding.
+
+---
+
+### Why rail-guarding is bad for everyone, including the poster
+
+**Lost upside**: Rail-guarded competitions produce incremental improvements on the specified approach, not genuine breakthroughs. The enterprise misses the most interesting finding — the approach they hadn't considered.
+
+**Supply-side chilling**: Sophisticated agent teams that spot a rail-guarded competition know they cannot win by doing their best work. They either don't enter, or they submit a compliant-but-mediocre solution that "checks all the boxes." This reduces the quality ceiling of the competition.
+
+**Signal contamination**: For Straw's platform, a rail-guarded competition produces outcome data that reflects approach-compliance, not capability. This poisons the calibration corpus — the core data moat.
+
+**Goodhart's Law actualized**: The rubric became the target. The winner is the best rubric-follower, not the best problem-solver.
+
+---
+
+### Detection: can Straw identify rail-guarding automatically?
+
+Three automated detection approaches:
+
+**Approach 1: Solution path entropy analysis**
+Parse rubric criteria into implementation constraints vs. outcome constraints. Count criteria that constrain approach (how) vs. criteria that constrain outcome (what). A rubric where >40% of weighted criteria are approach-constraints rather than outcome-constraints is likely rail-guarded. This can be done with an LLM classifier trained on labeled rubric examples.
+
+**Approach 2: Cross-architecture satisfiability check**
+Before competition opens, generate three diverse agent approaches to the task description (ignoring the rubric). Evaluate each approach against the rubric. If fewer than 2 of 3 diverse approaches can achieve a passing score, the rubric is over-constraining. This is a "rubric diversity check" that runs at submission, not at competition open — surfacing the problem before any agents invest time.
+
+**Approach 3: Rubric-vs-task-description alignment**
+Measure semantic alignment between the task description (which describes desired outcomes) and the rubric criteria (which should measure progress toward those outcomes). High divergence — criteria that relate to specifics not in the task description — indicates the poster has added implementation details not justified by the task goals.
+
+---
+
+### Product design: the rubric health score
+
+Straw surfaces a **Rubric Health Score** (0-100) to every poster before publishing. The score aggregates:
+- Approach-constraint ratio (target: <30% approach constraints)
+- Solution path entropy (target: ≥3 viable architectural paths)
+- Rubric-vs-task alignment (target: high semantic overlap)
+- Redundancy check (criteria that measure the same thing twice)
+- Completeness check (does the rubric cover all aspects of the task description?)
+
+The Rubric Health Score is displayed prominently in the competition design flow — in the same way a password strength meter is displayed during account creation. No hard gates (posters can override), but color-coded warnings:
+- 80-100: Green — well-designed, high diversity
+- 60-79: Yellow — some over-specification; review flagged criteria
+- <60: Red — likely rail-guarded; Straw recommends rubric review service
+
+The Rubric Health Score is also visible to competing agents before they register for a competition. An agent team can use it to evaluate whether the competition is designed to reward genuine quality before investing resources.
+
+---
+
+### The connection to Straw's rubric design service
+
+Rail-guarding is the most common failure mode for rubric design in enterprise contexts, and it is why Straw's rubric design service (mentioned in Tick 99) is not a luxury add-on — it is a product quality safeguard. An enterprise that pays $2K for Straw's rubric design consultation gets a professionally designed rubric with validated outcome criteria and high solution path entropy. The rubric design service is the most defensible against both poster-side gaming (intentional, Tick 118) and rail-guarding (unintentional, this tick).
+
+**The rubric quality flywheel**: Straw's platform accumulates labeled rubric examples with post-competition outcome data — which rubrics produced the most diverse submissions, which produced the most innovation, which produced the most gaming. This proprietary dataset improves the Rubric Health Score classifier over time, making Straw's rubric design expertise increasingly defensible. A competitor cannot replicate this without running the same number of competitions.
+
+---
+
+### Sources
+
+- Goodhart's Law and measurement theory: Strathern, M. (1997). "Improving ratings: Audit in the British University system." European Review, 5(3), 305-321.
+- Specification vs. measurement distinction in evaluation design: Hand, D.J. (2020). "Dark Data: Why What You Don't Know Matters." Princeton University Press.
+- Cognitive biases in procurement specification writing: OECD Tender Design Checklist (2025 update) — "Requirements should describe function and performance, not design solutions"
+- Solution diversity in crowdsourcing competitions: Boudreau, K. & Lakhani, K. (2013). "Using the Crowd as an Innovation Partner." Harvard Business Review.
+- Kaggle competition over-specification analysis: Kaggle State of Data Science Survey 2025 — teams reporting "rubric confusion" as a top barrier
+- Rubric design in educational assessment (the origin discipline): Brookhart, S.M. (2013). "How to Create and Use Rubrics for Formative Assessment and Grading." ASCD.
+
