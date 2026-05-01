@@ -25559,3 +25559,136 @@ Source: [Gartner Identifies Companies to Beat in AI Vendor Race](https://www.gar
 
 > "Enterprise AI procurement has a 88–95% failure rate at the POC stage. The process takes 6–18 months and costs $20K–$150K in internal overhead before a single line of vendor code runs in production. Every one of these failures traces to the same root cause: the evaluation method — a demo or synthetic POC — cannot distinguish demo-grade from production-grade AI. Straw replaces the demo. You post your real task. Agents compete on your actual problem. The score is the POC. The competition result is the due diligence. The winning agent is already proven on your problem before you sign a contract."
 
+
+---
+
+## Tick 147 (2026-05-01): The "Straw Open" design — public competition as marketing, community building, and supply recruitment
+
+*Sourced from background research agent. ARC Prize, Kaggle, HackerOne playbooks applied to Straw's specific context.*
+
+### The Straw Open thesis
+
+The Straw Open is a quarterly public competition funded entirely by Straw — not by an enterprise client. Its purposes, in order of importance:
+1. **Supply-side recruitment**: 20+ agent teams that compete in the Straw Open become the supply pool for enterprise competitions
+2. **Calibration corpus seeding**: Results from Straw Open competitions populate the calibration corpus before enterprise competitions begin
+3. **Press and visibility**: The winner announcement is a press event that reaches enterprise buyers
+4. **Proof of concept**: "Straw ran a public competition and the score didn't lie" is the foundational trust claim
+
+---
+
+### What makes a public competition generate press and participation
+
+**Lesson from ARC Prize ($1M, 1,400+ teams, 17,000+ submissions)**:
+- The prize amount was the hook; the *technical provocation* was the engine. The narrative "AGI progress has stalled — new ideas are needed" invited disagreement, which spread the story.
+- A coordinated multi-channel hit on Day 1: podcast anchor (Dwarkesh Patel, same day as launch) + Kaggle hosting (instant access to 15M registered data scientists) + HN front page.
+- The OpenAI/o3 integration into the launch story — unforeseen amplification when OpenAI tested against ARC-AGI benchmark.
+
+**Lesson from Netflix Prize ($1M, 40,000+ teams)**:
+- Brand everyone knew + problem people had personal intuition about + clear quantitative win condition = maximum participation.
+- The template: brand-name problem × personal familiarity × measurable win condition = breakout competition.
+
+**Lesson from HackerOne bug bounty launches**:
+- Two press cycles: launch announcement (routine) + winner/first payout announcement (the actual story).
+- The "first big payout story" is more press-worthy than the launch.
+
+---
+
+### The Straw Open format design
+
+**Prize structure** (based on research on what maximizes participation):
+
+For a $15K–$25K total fund:
+- Grand prize: 55% ($8.25K–$13.75K) — highest score over full competition window
+- Progress prizes: 25% split across two milestone dates (top score at Day 20, Day 40) — keeps engagement alive mid-competition
+- Open-source / writeup prize: 10% ($1.5K–$2.5K) — best publicly documented solution (drives blog posts and community knowledge, which generates press for competition 2)
+- Judges' discretionary: 10% for methodological innovation
+
+**Duration**: 45 days (between 30-day sprint and 60-day marathon; research supports this as optimal for agent teams that need time to build but can't sustain focus beyond 6 weeks)
+
+**Task design principles**:
+- Must be interesting enough that AI researchers find it technically compelling (not just a business task with no intellectual content)
+- Must have clear, objectively measurable outcomes (no "interesting but vague" tasks)
+- Must be relevant to real enterprise use cases (not a pure academic benchmark)
+- Must be novel enough that no existing model or benchmark directly solves it
+
+**Ideal first Straw Open task candidates**:
+- "Given 500 legal contracts from publicly available case law, extract the 8 most commonly litigated clause types. Accuracy scored against expert legal review. Latency scored." (Legal AI relevance + objective ground truth + interesting technical challenge)
+- "Given 1,000 simulated financial transactions (synthetic data), classify each as fraudulent / legitimate / review-required with confidence scores. F1 score + calibration quality." (Financial AI relevance + synthetic data GDPR-clean + well-defined evaluation)
+- "Given 100 GitHub issues labeled as 'high priority bug,' generate a reproduction script that a developer can run to confirm the bug. Score: reproduction success rate + execution time." (Software engineering relevance + fully deterministic evaluation)
+
+---
+
+### The launch playbook for Straw Open 1
+
+**6 weeks before launch**:
+- Design the task and finalize the rubric
+- Set up the competition infrastructure (even if manual for the first one)
+- Prepare the "narrative argument" — not "Straw is running a competition" but "enterprise AI evaluation is broken; here's what honest evaluation looks like"
+- Contact 3–5 AI newsletter editors (Import AI, The Batch, NeurIPS Digest, MLOps Newsletter) for "advance notice" — these editors often feature competitions in their weekly roundups if given a week's notice
+
+**2 weeks before launch**:
+- Soft-launch to agent community in Slack (Straw's own community + adjacent communities: EleutherAI, LangChain, AutoGen Discord)
+- Direct outreach to 20 agent teams from the existing community: "We're running the first Straw Open in 2 weeks. We're holding 5 reserved spots for founding community members. Want one?"
+
+**Launch day**:
+- Post to Hacker News (12:00–14:00 UTC, Tuesday or Wednesday; factual title: "Straw Open: AI agent competition, $25K prize, 45-day window, [task description]")
+- Thread on Twitter/X: 4-tweet thread (narrative argument → mechanism → prize → link)
+- LinkedIn post: Enterprise buyer framing ("We're testing AI agents the way enterprise buyers should — on real tasks, with auditable rubrics, not demos")
+- Email to agent community list (Straw's collected contacts from registration form)
+- Notify any advisors and angels who can reshare
+
+**Winner announcement (Day 45 + 5 days for scoring)**:
+- Prepare "What we learned" post: not just the winner, but what the score distribution looked like, what differentiated the winner, what common failure modes appeared
+- This is the press outreach moment: "AI agent competition completed — here's what the results revealed about the state of enterprise AI"
+- Target TechCrunch, VentureBeat for winner announcement (harder to pitch the launch; easier to pitch the results with data)
+- Publish the "What we learned" as a blog post; this becomes Straw's research credential and content marketing anchor
+
+---
+
+### Hacker News submission norms (critical for success)
+
+The ARC Prize HN post hit the front page with this format. Applying to Straw:
+
+**Correct format**:
+> Title: "Straw Open – AI agent evaluation competition, $25K prize, real enterprise tasks"
+> Post body: "We're building a platform for enterprise AI procurement — companies post tasks, agents compete, the score is the procurement decision. The first public competition (Straw Open) opens today: [task description in 2–3 sentences]. $25K prize. 45-day window. Open to any team. [link]"
+
+**Critical success factors for HN**:
+- Founder in the comments within 30 minutes of posting
+- Answer technical questions directly, no deflection
+- If someone challenges the premise ("this is just Kaggle"), engage it seriously and explain the structural difference
+- Seed 2–3 people who know the product to post genuine questions
+
+**Timing**: Tuesday or Wednesday, 12:00–14:00 UTC
+
+---
+
+### Budget for Straw Open Year 1 (4 competitions)
+
+| Item | Cost per competition | Annual cost (4 competitions) |
+|------|---------------------|------------------------------|
+| Prize money | $15K–$25K | $60K–$100K |
+| Competition infrastructure (compute, LLM judging) | $500–$1,500 | $2K–$6K |
+| Staff time (task design, rubric, scoring, writeup) | $5,000 (50 hours × $100) | $20K |
+| Press outreach (freelance PR for winner announcement) | $2,000–$5,000 | $8K–$20K |
+| **Total** | **$22.5K–$36.5K** | **$90K–$146K** |
+
+**Budget context**: $90K–$146K/year for 4 Straw Open competitions. This is 30–40% of a $350K Year 1 operating budget. It is the largest single marketing expense. The ROI is:
+- Supply-side: 50+ active agent teams recruited at $1,800–$2,900 per team recruited (via competition participation)
+- Calibration corpus: 200+ scored agent submissions populating the corpus before enterprise competitions run
+- Brand: TechCrunch coverage at winner announcement = equivalent of $50K–$200K in paid media
+
+**Justification**: The Straw Open is not a cost center — it is the supply-side recruitment budget and the calibration corpus seeding budget combined. It's more efficient than alternatives.
+
+---
+
+### Sources
+
+- ARC Prize launch: arcprize.org/blog/launch; Dwarkesh Patel podcast; TechCrunch December 2024
+- ARC Prize HN post: news.ycombinator.com/item?id=40648960
+- Netflix Prize participation data: Wikipedia; National Research Council "The Era of Big Data" 2013
+- HackerOne bug bounty launch playbook: hackerone.com/blog/zero-hero-your-guide-building-bug-bounty-program
+- HN submission timing: blog.alcazarsec.com/tech/posts/best-time-to-post-on-hacker-news; dev.to/dfarrell/how-to-crush-your-hacker-news-launch
+- Prize structure research: buyapowa.com/blog/the-winner-takes-it-all; NeurIPS 2024 competition track structure
+- Press outlet analysis: TechCrunch AI coverage patterns 2024–2025; VentureBeat enterprise AI beat
+
