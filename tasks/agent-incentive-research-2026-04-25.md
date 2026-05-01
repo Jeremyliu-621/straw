@@ -13002,6 +13002,267 @@ The goal of content: make "Straw" the first thing enterprise buyers search when 
 
 ---
 
+## Long-form proposal (DRAFT) — Section 27: The product roadmap — MVP through Series A features
+
+*Audience: Jeremy + seed investor. This section answers the operational question: what exactly gets built and when? It synthesizes the sprint-level MVP plan (Tick 86), the v0/v1/v2 capability roadmap (Section 13), the competitive window (Tick 35), revenue milestones (Tick 37), and the design partner program (Tick 95).*
+
+---
+
+### The organizing question
+
+The roadmap has a single organizing question: **what is the minimum product that closes the first paying customer, and what do you add in what order to reach Series A?**
+
+Everything that doesn't serve one of those two goals is deferred. This is a resource-constrained roadmap for a 2-3 person team building before product-market fit. The temptation to build the full mechanism design (VCG auctions, Shapley propagation, ANP/DID identity, multi-chain payment) before the first customer is lethal. The mechanism design only works when there's genuine competition and genuine evaluation to give it signal. Ship the eval pipeline and one real task before writing a line of mechanism design.
+
+---
+
+### Phase 0: Pre-product (months −2 to 0)
+
+The two months before any code is written are the most important.
+
+**The goal of Phase 0:** Close three design partner LOIs (letters of intent) from enterprises willing to post a real task with a real budget on Straw. These LOIs define the MVP. Without them, you're building for a hypothetical customer.
+
+**The Phase 0 activities:**
+
+1. **Identify 15 design partner candidates** — focus on Archetype A (technical teams inside large enterprises, Tick 3) with a specific AI agent evaluation problem. Best candidates: fintech/SaaS VP of Engineering, Head of AI Automation at a Fortune 500, Chief Operating Officer at a financial services firm automating a document workflow.
+
+2. **Run the design partner outreach** (Tick 95 outreach script): "You write the rubric. Agents compete. The best one wins. The score doesn't lie." Three design partner slots for Q2 2026.
+
+3. **Map the first task type** — the design partner's task determines the MVP's scoring engine. If the first partner has a coding evaluation task, Sprint 3 builds code correctness scoring. If they have document processing, Sprint 3 builds field extraction scoring. Do not build before you know the task type.
+
+4. **Sign the Design Partner Agreement** (Tick 95 DPA template): enterprise commits to running at least one competition within 90 days, providing 60 minutes/month of structured feedback, and permitting Straw to reference them publicly. Enterprise gets 50% discount or free first competition in exchange.
+
+**Phase 0 success criteria:** Three signed LOIs from enterprises representing at least two distinct task types (coding + one of: document processing, data analysis, legal review).
+
+**Critical dependency:** Phase 0 cannot be skipped or compressed. Jeremy discovered the correct beachhead tasks through customer conversations, not from first principles. The list of realistic Straw task types (Tick 75 Quadrant A) only becomes actionable when a specific enterprise with a specific problem signs a piece of paper. Proceed to Phase 1 only after Phase 0 is closed.
+
+---
+
+### Phase 1: The MVP (months 0–4)
+
+The MVP is the minimum product that proves the core loop: enterprise posts a task with a rubric → agent discovers and submits → platform scores the submission → enterprise sees the leaderboard → winner gets paid. Every feature beyond that is Phase 2+.
+
+**The four-sprint MVP build (Tick 86):**
+
+**Sprint 0 (pre-launch, 2 weeks): Infrastructure**
+- Supabase project with RLS policies (enterprise + agent tenant isolation, Tick 79)
+- S3 bucket structure with IAM isolation (enterprise-specific key prefixes)
+- Stripe for prize escrow and payout (Stripe Connect for agent team KYC + payout)
+- GitHub Actions CI/CD pipeline
+
+**Sprint 1 (weeks 1–4): Enterprise competition creation**
+- Competition creation form (enterprise web UI): task description (rich text), rubric builder (criteria + weights), deadline, prize amount
+- Competition state machine: `draft → funded → open → closed → awarded`
+- Stripe payment collection at creation (prize + platform fee escrowed)
+- Basic enterprise dashboard: competition list, submission count, status
+
+**Sprint 2 (weeks 5–8): Agent discovery and submission**
+- Agent registration (email + API key, no DIDs yet)
+- Competition listing API (`GET /competitions`, filter by open/status/category)
+- Submission upload API (`POST /competitions/{id}/submissions`, accepts JSON + artifact files up to 500MB)
+- Submission receipt (HTTP 202, submission ID, estimated eval time)
+- Webhook registration (agent teams subscribe to `competition.open` and `competition.close` events)
+
+**Sprint 3 (weeks 9–12): Tier 1 scoring**
+- Deterministic scoring engine for the design partners' specific task types. Default implementations:
+  - Code correctness: test suite runner in Docker sandbox (output: pass rate + edge case coverage)
+  - Structured data extraction: field match against ground truth (output: precision/recall per field)
+  - Document classification: ground-truth label match (output: F1 per category)
+- Score availability via API (`GET /competitions/{id}/submissions/{sid}`)
+- Basic leaderboard (enterprise-only view initially; public option controlled by enterprise)
+- Webhook push on score available (`submission.scored` event)
+
+**Sprint 4 (weeks 13–16): Prize disbursement and launch**
+- Stripe Connect payout to winning agent team
+- Public leaderboard option (enterprise configures before competition opens)
+- Basic agent portfolio page (competition history, scores, tier badge)
+- Competition Compliance Certificate: PDF export of competition metadata + rubric + all scores (Tick 61 — serves EU AI Act Article 9.7 documentation requirements out of the box)
+- First calibration competition: an open, public competition with a $1,000 Straw-funded prize to generate the first supply-side signal and attract the initial agent team cohort
+
+**What is explicitly NOT in the MVP:**
+- Tier 2 LLM judge (replaced by manual review: a Straw team member scores submissions on the rubric during v0)
+- Tier 3 agent investigator (deferred to post-seed; Tier 1 + manual Tier 2 is the eval stack for the first 5–10 competitions)
+- Agent-side task posting (agents only compete in Phase 1)
+- VCG pricing (deferred until there's enough supply for auctions to be meaningful)
+- Shapley credit propagation (deferred)
+- DID-based identity (KYC via Stripe Connect pre-payout)
+- Agent reputation VCs (deferred until 50+ competitions of history)
+- x402/ACP payment rail (Stripe payouts for Phase 1)
+- Subscription tiers (deferred until 30+ active agent teams want premium features)
+- AG-UI real-time streaming (deferred)
+
+**Phase 1 success criteria:**
+- 3 enterprise design partners each post and close one competition
+- At least 2 of those competitions reach commercial engagement (hire or license deal closes — the D22 multi-engagement flow)
+- Average score spread: >30 points between best and worst submission (confirms eval is discriminating)
+- Eval time: <30 minutes for Tier 1 + manual Tier 2
+- First case study: one enterprise permits Straw to reference them publicly with the competition outcome
+
+**"Do things that don't scale" in Phase 1 (Tick 86):**
+- Manually review and approve every competition rubric before it goes live
+- Manually run Tier 2 scoring (a product manager reads submissions and scores on the rubric)
+- Manually generate the Competition Compliance Certificate as a Word document → export to PDF
+- Manually reach out to agent teams that haven't submitted 48 hours before deadline
+- Manually broker the commercial engagement conversation between enterprise and winning agent team
+
+The unscalable phase ends when competition volume creates manual operations as the bottleneck. That's probably 8–10 simultaneous competitions — realistically around month 8–10.
+
+---
+
+### Phase 2: Seed buildout (months 4–16)
+
+Phase 2 is triggered when Phase 1 has: (a) three design partner competitions closed, (b) at least two hire or license deals completed, (c) one signed case study. That's the PMF signal. Now you build for scale.
+
+**The priority stack in Phase 2 (in dependency order):**
+
+**Priority 1: Automate the eval pipeline (months 4–8)**
+The manual Tier 2 is the scaling constraint. Replace it:
+- Tier 2 LLM gatekeeper (Claude Haiku 4.5 via Anthropic Batch API — $19/month at 300-agent scale, Tick 4). Multi-criterion rubric scoring with structured output (JSON: `{criterion: string, score: 0-100, reasoning: string}`). Ships as the first automated eval automation.
+- Tier 3 agent investigator (Claude Sonnet 4.6, triggered for 15% of submissions where Tier 2 score is ambiguous or submission passes Tier 1 but raises qualitative concerns). The Apollo orchestrator pattern (Tick 16): Orchestrator + Code Runner + Quality Reasoner.
+- Public/private test set split (Tick 38 METR finding): all competitions now ship with a held-out private test set (20-30% of test cases). Public leaderboard shows public score. Winners are determined by private score. Prevents overfitting and eval gaming.
+- Eval contamination detection: cosine similarity across submissions in the same competition (flag pairs >0.9 for review — collusion defense, Tick 0.5).
+
+**Priority 2: Agent capability matching (months 6–10)**
+Discovery is load-bearing for market efficiency (Tick 6 Microsoft Magentic Marketplace finding). Replace the manual "email agent teams about new competitions" with:
+- SKILL.md parsing at onboarding (Tick 22): wizard reads agent's SKILL.md files → auto-generates capability profile → tags with category taxonomy (coding/legal/data/research/etc.)
+- `task.matched` webhook (D11): fires for all agents whose capability profile overlaps the competition's category. Rate-limited to 5-7 matched competitions per agent per day (Paradox of Choice mitigation, Tick 6).
+- FTS + embedding search (D27): agents can proactively browse competitions with full-text search + semantic similarity on task descriptions.
+- A2A agent card at `/.well-known/agent-card.json` (Tick 19): makes Straw discoverable to enterprise orchestrators in Google Cloud, AWS, Azure, and any system that implements the Google A2A protocol.
+
+**Priority 3: Reputation system bootstrap (months 8–12)**
+50+ competitions by month 8 (aggressive but achievable if design partner cohort grows to 10-15 enterprises) provides enough history to compute first-generation reputation scores.
+- Beta Reputation System (Tick 7): per-agent, per-category reputation as Bayesian beta distribution. Cold-start prior = category population win rate (not zero). Temporal decay λ = 0.9/month.
+- Five reputation dimensions (Tick 80): task execution quality, task specification quality (for future agent-posters), reliability (on-time submission rate), calibration accuracy (self-assessment vs. actual score), and collaboration signal.
+- Tier structure (Tick 80): Competitor → Specialist → Expert → Master → Grandmaster. Gate tier promotions on minimum competitions + minimum score. Grandmaster designation requires top-5% all-time score in at least one category.
+- Public agent leaderboard: enterprise posters browse agents by tier and category before inviting specific agents to their competitions (analogous to inviting specific hackers on HackerOne's private programs).
+
+**Priority 4: Agent Pro subscription (months 10–14)**
+Once 30+ active agent teams are competing regularly, introduce the Agent Pro subscription tier (Tick 76):
+- **Free tier**: browse open competitions, submit to public competitions, receive standard-priority eval, basic portfolio page
+- **Agent Pro** ($49/month): early-match notifications (competition.matched webhook fires 24h before public announcement for Pro subscribers), submission analytics (score breakdown by criterion, historical benchmarking against category average), A2A card hosting and discovery, team accounts (up to 5 operator accounts under one Agent Pro subscription)
+- **Competition intelligence** (Pro): see aggregate submission statistics for competitions you've competed in after close (how many teams submitted, score distribution, time-to-submission patterns)
+
+**Priority 5: Enterprise self-service + expansion (months 12–16)**
+Remove the white-glove onboarding that was appropriate for design partners but doesn't scale to 30+ enterprise customers:
+- Rubric template library: pre-built rubric templates for the top 6 task categories (code migration, document extraction, contract review, data analysis, research synthesis, API integration). Templates are starting points, not constraints.
+- Competition analytics dashboard: enterprise tracks which agent teams submitted, score distribution, criteria breakdown, commercial engagement funnel. Replaces the current manual Straw-to-enterprise briefing.
+- Invite-only mode: enterprise can run private competitions where only pre-approved agent teams can participate (the HackerOne private program model, Tick 21). Useful for sensitive enterprise tasks.
+- Stripe invoicing for enterprise billing (monthly/annual invoices for posting fees and success fees, replacing per-transaction Stripe Checkout links).
+
+**Phase 2 success criteria (the Series A trigger):**
+- $1M ARR (248 competitions/year at $4,030 blended revenue per posting — Tick 37)
+- 30+ enterprise customers from at least 3 verticals (software engineering, financial services, legal/compliance as the beachhead — Tick 75)
+- 200+ active agent teams on the platform
+- Tier 2 + Tier 3 fully automated (no manual eval review for any competition)
+- At least one case study from each of the three beachhead verticals
+- Agent reputation system producing meaningful differentiation (Grandmaster agents win demonstrably more than Competitor-tier agents on the same task category)
+- NRR ≥ 110% (enterprises run second and third competitions — the land-and-expand pattern)
+
+---
+
+### The Series A raise
+
+**Series A size:** $8–12M based on comparables (HackerOne Series A: $25M in June 2017 after ~3 years post-launch and several enterprise security programs; Scale AI Series A: $18M in 2019 on early traction; both later commanded premium exit multiples). Straw at $1M ARR and 30+ enterprise customers is a reasonable Series A profile given the macro tailwinds.
+
+**Pre-money valuation guidance:** $50–80M based on Tick 37 SAM/SOM analysis. $1M ARR at 50–80× revenue (justified by: (1) market tailwind — 46.3% CAGR AI agents market; (2) strong NRR signal; (3) network effects / calibration corpus moat beginning to accumulate; (4) regulatory mandate tailwind from EU AI Act Article 9 and OMB M-26-04).
+
+**The Series A narrative:**
+"We've proven the product works in three enterprise verticals with a 110%+ NRR. The opportunity is to build the evaluation infrastructure layer that sits between the $50B+ enterprise AI agent market and the enterprise procurement teams making the buying decisions. Every dollar spent on AI agents is either preceded by a Straw evaluation or represents uninformed procurement. The market we're building toward is $20B by 2028 (Gartner). We have 12-18 months before any hyperscaler can replicate our calibration corpus. This raise is to lock in the vertical coverage and institutional embedding before that window closes."
+
+---
+
+### Series A features (months 16–30)
+
+With Series A capital, the platform accelerates from "proven with early adopters" to "defensible market position."
+
+**Series A feature set, in priority order:**
+
+**A1: Straw Monitor (post-hire agent monitoring, Tick 87)**
+The product that closes the feedback loop between competition score and production performance. Enterprises that hire via Straw can subscribe to Straw Monitor ($500/agent/month). Straw Monitor runs periodic spot-checks against the original competition rubric + a new "production benchmark" (a subset of tasks representative of the agent's production workload). Outputs: performance drift alerts, re-competition triggers when an agent's production performance falls below its competition score.
+
+Why this is the most important Series A feature: it builds the empirical track record that validates Straw as a predictive methodology (Section 26, Condition 1). Every Straw Monitor data point is a data point in the study that will eventually show "Straw top-20% agents perform 30%+ better in production." Without the monitoring loop, the predictive validity study is impossible.
+
+**A2: Agent-side task posting (the v1 mechanism design)**
+Full implementation of the agent-as-poster capability, with all six mechanism levers (Section 27.v1 checklist):
+- Second-price reverse auction (VCG collapsed to single-task — Tick 1)
+- Shapley credit propagation (Monte Carlo M=50 for N≤5 agents, Tick 14)
+- Curation reputation dimension (separate Dirichlet for posting quality)
+- Stake-to-post (5% refundable bond, Tick 15)
+- Engagement-required clause (14-day window, forfeiture on non-engagement, Tick 15)
+- Budget tokens (per-agent compute budget tracked by platform; "consider posting" suggestion when budget is exceeded)
+
+This is the feature that fully answers Jeremy's friend's concern: once agent-side posting is live with all six levers, posting becomes the rational dominant strategy for out-of-domain tasks. The mechanism design literature says all six must be present simultaneously. None can be deferred once agent-side posting opens.
+
+**A3: x402 + ACP payment rail (Tick 9 + Tick 34)**
+Replace Stripe Connect payouts with x402 (HTTP-native, USDC on Base, 119M+ transactions, $600M annualized volume, zero protocol fees) for agent-to-agent micropayment. Traditional Stripe payouts remain for operators who want fiat payout. x402 enables:
+- Agents to receive bounty payouts autonomously (no human KYC required for prize receipt under $10K threshold per GENIUS Act, Tick 9)
+- Agents to re-invest earnings into new task posts without operator intervention
+- Sub-millisecond payment finality for the delegation chain payout
+
+**A4: Straw Scoring Standard publication (Tick 53 + Tick 89)**
+Publish the Straw Scoring Standard: the methodology, rubric design guide, inter-rater reliability protocols, and calibration corpus statistics as an open, citable document. Submit to NIST AI Risk Management Framework as a contributing methodology. Brief Gartner and Forrester analysts. Apply to ISO/IEC JTC 1/SC 42 for inclusion in the AI evaluation standards working group.
+
+This is the institutional embedding move (Section 26, Condition 3). The Straw Scoring Standard gives procurement teams, regulatory bodies, and insurance underwriters a specific, citable methodology to require in their processes. Once a Gartner Magic Quadrant criteria includes "does the vendor have an independent Straw score?" the demand-side embedding is complete.
+
+**A5: Vertical acceleration (software engineering + financial services + legal)**
+Hire vertical specialists (Tick 64 — Head of Agent Relations profile) for each of the three beachhead verticals. Each specialist:
+- Owns the rubric template library for their vertical (working with domain experts from design partner enterprises)
+- Recruits agent teams with demonstrated expertise in the vertical (SWE-bench leaderboard for engineering; FinanceBench or similar for financial services; LegalBench for legal)
+- Manages the design partner program for the vertical
+- Attends vertical industry conferences as "AI procurement" subject matter expert
+
+**A6: Calibration competition program (Tick 67)**
+Straw-funded "calibration competitions" in each vertical: Straw posts the task, funds the prize ($5K–$25K from Straw's balance), and uses the resulting data to calibrate the scoring methodology in the vertical. Calibration competitions serve multiple goals:
+- Generate supply-side supply (agent teams who win calibration competitions become the seeded supply for the first enterprise competitions in the vertical)
+- Produce rubric calibration data (which criteria actually discriminate good from great work in this domain?)
+- Create marketing content (calibration competition results are publishable and demonstrate Straw's evaluation rigor to prospective enterprise customers)
+
+**A7: International expansion — EU + Singapore (Tick 83)**
+EU AI Act creates mandatory demand from Q2 2026 onward: high-risk AI systems require documented pre-deployment testing with "prior defined metrics and probabilistic thresholds." Straw's Competition Compliance Certificate satisfies Article 9.7 by design. The EU market is pull-market demand, not push-market selling.
+
+Priority actions:
+- GDPR DPA (Data Processing Agreement) template for EU enterprise customers (Tick 83 design)
+- EU-resident data processing option (Supabase EU region, S3 eu-west-1 for artifact storage)
+- Singapore as APAC beachhead (IMDA's AI governance framework cites competition-based evaluation as a best practice; Singapore MAS fintech regulatory sandbox is receptive to novel evaluation methodologies)
+
+**A8: Government track — California first (Tick 68 Section 25)**
+California Executive Order N-5-26 mandates AI procurement reform for state agencies with budgets >$10M in AI contracts. OMB M-26-04 (federal) requires cross-vendor comparison. Both create direct demand for Straw's competition format. Government track in Phase 3:
+- California DGS (Department of General Services) partnership: position Straw as the evaluation methodology for California state AI agent procurement
+- FedRAMP "in process" designation (Tick 68 — 12–18 month timeline, but start early to be ready when federal enterprise sales begin)
+- SBIR Phase I application: DARPA/DoD has funded AI evaluation infrastructure ($150K–$250K non-dilutive, available as SBIR Phase I)
+
+---
+
+### The Series A product position
+
+At the point of a Series A close (Month 16–18, $1M ARR, 30+ enterprise customers), Straw's product has the following layers:
+
+| Layer | What it is | Why it matters |
+|---|---|---|
+| **Eval pipeline** (Tier 1 + 2 + 3) | Fully automated, gaming-resistant scoring with public/private test set split | The "score doesn't lie" foundation — everything else depends on this |
+| **Competition platform** | Enterprise creates task + rubric → agents compete → leaderboard → hire/license/acquihire | The core product loop — proven with Phase 1 design partners |
+| **Agent matching** | SKILL.md parsing + FTS + embedding + task.matched webhook + A2A card | Discovery efficiency — the Microsoft Magentic finding shows this is load-bearing for market efficiency |
+| **Reputation system** | 5-dimension Beta/Dirichlet per agent, EigenTrust global ranking, tier structure | The supply-side flywheel — Grandmaster agents attract more enterprise competitions |
+| **Compliance artifact** | Competition Compliance Certificate = EU AI Act Article 9.7 documentation | The regulatory moat — enterprises use Straw partly because it produces the required compliance record |
+| **Agent Pro subscription** | Enhanced matching, early notifications, analytics, team accounts | $49/month × 200+ agent teams = ~$10K MRR from agent side alone — not the primary revenue stream but validates agent-side willingness to pay |
+| **Straw Monitor** | Post-hire production monitoring, drift detection, re-competition triggers | Closes the feedback loop AND builds the predictive validity study that validates Straw as a methodology |
+| **Agent-side posting** | v1 mechanism design: stake-to-post + escrow + Shapley + curation reputation + x402 | The feature that fully addresses Jeremy's friend's concern — agents can now post tasks rationally |
+
+---
+
+### What the roadmap prioritizes and what it defers
+
+**The single load-bearing dependency:** the eval pipeline must produce scores that enterprises trust before any feature above it is meaningful. "The score doesn't lie" is the foundation. This is why Phase 1's primary work — even though it's manual and embarrassing — is to run real evaluations and prove they're meaningful. The mechanism design, the reputation system, the agent-side posting — all of these are downstream of trusted evaluation.
+
+**The two biggest schedule risks:**
+1. **Design partner acquisition takes longer than expected** — if Phase 0 doesn't close 3 LOIs in 60 days, the MVP's task type is undefined, Sprint 3 can't be specified, and the whole Phase 1 timeline slips. Mitigation: Jeremy starts outreach before writing any code.
+2. **Agent supply is thin on early competitions** — if the first enterprise competition attracts only 2 submissions, the comparison is meaningless. Mitigation: Tick 67 calibration competition is run before the first enterprise competition to seed agent team supply; Straw commits to seeding every enterprise competition with at least 5 known-quality agent teams via direct outreach.
+
+**The feature that must ship before the Series A:**
+Straw Monitor. The Series A thesis depends on proving that Straw competition scores predict production performance. Without the monitoring loop, that proof is impossible. If Straw Monitor isn't live with at least 3 enterprises before the Series A close, the S&P analogy and the methodology premium thesis remain speculative. Ship Monitor in month 16 at the latest, even if it's manual (spot-checks run by the Straw team rather than automated monitoring) for the first cohort of hires.
+
+---
+
 ### Sources
 
 - Tick 51: Enterprise sales motion (cold email benchmarks, discovery questions, POC structure)
@@ -14411,6 +14672,375 @@ Features that don't satisfy any of these three are "nice to have" and should be 
 | 2: Repeatability | 4–10 months | 10 enterprises, <15% early churn | Self-serve works; agent community growing |
 | 3: PMF | 10–18 months | 20 enterprises, $1M ARR | Calibration corpus at 50+ competitions |
 | 4: Series A | 18–30 months | $3–5M ARR, 100%+ NRR | Three irreplicable assets demonstrated |
+- Tick 86: MVP build sequence (Sprint 0–4 detail, "do things that don't scale" phase)
+- Section 13: v0/v1/v2 technical capability roadmap
+- Tick 37: TAM/SAM/SOM, GMV-to-ARR bridge, revenue milestones
+- Tick 35: Competitive defensibility, 12–18 month window
+- Tick 95: Design partner program (DPA, outreach script, case study structure)
+- Tick 75: Task type taxonomy (Quadrant A beachhead verticals)
+- Section 24: Supply-side bootstrapping (calibration competition design)
+- Section 26: Exit thesis (Series A narrative, methodology premium conditions)
+- Tick 87: Straw Monitor design (post-hire monitoring, drift detection)
+- Tick 67: Cold start supply-side bootstrapping
+- Tick 68 / Section 25: Government track (California + federal)
+
+
+
+---
+
+## Tick 91 (2026-05-01): Competition design for non-deterministic tasks — evaluating subjective and open-ended agent outputs
+
+**Research question**: How does Straw evaluate agent submissions where there is no deterministic ground truth? (Creative writing, strategic analysis, open-ended research, business writing, legal narrative, design critique.) The platform's current tiered eval pipeline is optimized for checkable correctness. This tick maps the extension to subjective quality evaluation.
+
+---
+
+### Executive summary
+
+Any task can be given an objective rubric if the poster decomposes quality into measurable dimensions — but not all rubrics are equally reliable, and some task types require fundamentally different evaluation machinery: pairwise comparison over absolute scoring, multi-judge panels over single judges, and confidence-gated human escalation for highest-stakes tasks. The framework below provides a 4-tier task taxonomy and 5 design recommendations, ordered by implementation priority.
+
+---
+
+### Core frameworks for evaluating subjective AI outputs
+
+**G-Eval (Liu et al., EMNLP Best Paper)**
+The foundational production-grade framework. Three steps: (1) natural-language task description + rubric, (2) chain-of-thought reasoning pass generating explicit evaluation steps, (3) probability-weighted scoring where the judge model's token-level probability distribution over score tokens (1–5) is used as the final score rather than greedy decoding. The probability-weighting step prevents score "bunching" at round numbers and produces a continuous signal. GPT-4-backed G-Eval achieves Spearman r=0.514 with humans on summarization, beating all prior automated metrics.
+
+**For Straw:** G-Eval's CoT + probability-weighted scoring should be the default scoring kernel for Tier 2/3 evals on non-deterministic tasks.
+
+Source: https://arxiv.org/abs/2306.05685
+
+**RULERS: Locked Rubrics + Evidence-Anchored Scoring (2025)**
+Reframes rubric evaluation as a "compiler-executor" problem. Rubrics are compiled into **locked execution specs** that deterministically map textual evidence to score values. The scorer must produce a quoted evidence string from the submission before assigning a score; if no evidence can be cited for a criterion, the score defaults to the minimum. This forces the judge to be grounded and eliminates score hallucination.
+
+RULERS addresses three failure modes specific to Straw's use case: rubric drift (soft criteria get interpreted differently each run), unverifiable reasoning (a judge assigns 4/5 but can't show why), and scale misalignment (judge confidence doesn't correspond to human scales).
+
+**For Straw:** The poster writes the rubric; RULERS-style compilation locks it into an execution spec before task launch. This is the most critical paper for non-deterministic eval design — directly applicable to Straw's poster-defined rubric architecture.
+
+Source: https://arxiv.org/abs/2601.08654
+
+**AdaRubric (2026)**
+Generates task-specific rubrics dynamically from task descriptions, scores agent trajectories step-by-step with confidence-weighted per-dimension feedback. Achieves Pearson r=0.79 human correlation and Krippendorff's α=0.83 (above the 0.80 deployment-grade threshold). Most relevant for Straw when a task poster doesn't want to write a rubric from scratch — AdaRubric can generate the draft rubric, which the poster approves and locks.
+
+Source: https://arxiv.org/abs/2603.21362
+
+**Prometheus 2 (Open-source specialized judge model)**
+Open-source 7B/8x7B model fine-tuned specifically to follow custom rubrics. Supports both absolute scoring (1–5) and pairwise ranking. Prometheus 2 8x7B outperforms Claude-3-Opus on absolute grading tasks at a fraction of the cost.
+
+**For Straw's cost structure:** Running Prometheus 2 as a specialized Tier-2 judge for non-deterministic tasks is dramatically cheaper than GPT-4 or Claude Sonnet while retaining rubric-following accuracy. A potential low-cost extension of the eval pipeline for subjective task categories.
+
+Source: https://arxiv.org/abs/2405.01535
+
+---
+
+### The 4-tier task taxonomy for Straw
+
+**Tier A — Fully Deterministic (current pipeline handles natively)**
+- Code that runs against test suites
+- Math/quantitative problems with verifiable answers
+- Data transformation (schema-in, schema-out with diff)
+- API integration (mock server, verify correct calls)
+- Structured data extraction (JSON output against schema)
+
+**Tier B — Verifiable Against Rubric (needs RULERS-style rubric compilation; fully automatable)**
+Tasks that resist deterministic unit-testing but become reliable when the rubric is locked and evidence-anchored. Each dimension should be a yes/no or 1–5 question with explicit evidence requirements:
+- Research summaries with required citations/claims
+- Technical documentation (coverage of required sections, code example accuracy)
+- Data analysis narratives (correct statistical claims, appropriate uncertainty, no cherry-picking)
+- Translation/localization (semantic fidelity, terminology consistency, tone match)
+- Business writing — emails, proposals (structure, clarity, tone, call-to-action presence)
+
+**Tier C — Comparative Quality (needs pairwise ranking + Bradley-Terry Elo; absolute scores unreliable at the tails)**
+- Creative writing (originality, voice, emotional impact resist absolute scoring but respond well to pairwise preference)
+- Strategic analysis / competitive landscapes (relative quality more reliable than absolute; one analysis is "better" even if neither is "correct")
+- Open-ended research (when "correctness" is a spectrum, rank ordering is more stable than point scores)
+- Design critique (aesthetic and functional dimensions decouple; dimension-specific pairwise comparison)
+
+**Tier D — Inherently Contested (requires human escalation; acknowledge evaluator uncertainty)**
+- Novel ethical/legal reasoning (correct answer depends on normative commitments; no rubric can substitute for domain expert review)
+- Cross-cultural creative work with local idiom/allusion (LLM judges have systematic blind spots)
+- Strategic decisions with high uncertainty (can evaluate process quality, not outcome correctness)
+
+**The key distinction:** Tier C tasks have stable quality gradients even without ground truth. Tier D tasks have legitimate quality disagreement even among expert humans. Straw should support Tier A–C with automated evaluation, escalate Tier D to human review, and be explicit about the distinction in the rubric design guide.
+
+---
+
+### LLM-as-judge bias and mitigations (load-bearing for eval integrity)
+
+Research from 2024–2026 documents three dominant biases that affect Straw's non-deterministic eval pipeline:
+
+**Positional Bias**: LLMs favor the first-presented response in pairwise comparisons. Accuracy shifts exceeding 10 percentage points when position is swapped.
+- **Mitigation**: Run every pairwise evaluation twice (A-vs-B and B-vs-A), discard inconsistent results or average scores.
+
+**Verbosity Bias**: Judges prefer longer responses regardless of substantive quality. AlpacaEval 2.0's Length-Controlled WinRate is the definitive fix: a GLM is fitted to predict judge preference as a function of length delta, then the length term is zeroed out. Improved Spearman correlation with Chatbot Arena from 0.94 to 0.98.
+- **Mitigation for Straw**: Any rubric dimension gameable by verbosity ("completeness," "detail") must include explicit length-penalty language: "Score completeness assuming a proportional response length. Penalize padding and redundancy."
+
+**Self-Enhancement Bias**: A model judge inflates scores for outputs from the same model family.
+- **Mitigation for Straw**: Judge model constraint — the judge cannot be from the same family as the competing agent. If agents are predominantly Claude-based, use Gemini or GPT-4o as judge, and vice versa. This should be part of the competition configuration: poster specifies a judge family, or Straw auto-selects the family least represented in the agent pool.
+
+Source: https://arxiv.org/abs/2404.04475 (AlpacaEval LC), https://arxiv.org/html/2410.21819v2 (self-enhancement bias), https://aclanthology.org/2025.ijcnlp-long.18.pdf (positional bias)
+
+---
+
+### Multi-judge panels for high-stakes evaluations
+
+**Panel of Diverse LLM Evaluators (PoLL) Finding (arXiv:2404.18796)**
+A panel of smaller, diverse models outperforms a single large judge on correlation with human judgment — and costs 7× less. The key is diversity: judges from different model families have low correlation in their errors. When they agree, the score is reliable; when they disagree, that disagreement is informative.
+
+**Aggregation hierarchy (best to worst for subjective tasks):**
+1. Confidence-weighted aggregation with reasoning-branch comparison (AgentAuditor): best reliability, high compute cost
+2. Panel of diverse model families with majority vote (PoLL): good reliability, moderate cost
+3. Single judge with position-swap + score averaging: adequate reliability, low cost
+4. Single judge, single pass: fragile; acceptable only for Tier A tasks
+
+**Krippendorff's alpha inter-rater reliability threshold:**
+- α ≥ 0.80: publish scores with high confidence (deployment-grade)
+- α 0.67–0.80: publish with confidence intervals, flag for optional human review
+- α < 0.67: do not use scores — surface disagreement to the task poster, offer human review escalation
+
+**MultEval (2026)**: Pre-scoring rubric negotiation among judges reduces inter-judge variance by ~30% on ambiguous tasks. The judges first resolve criterion definitions, then score independently.
+
+Source: https://arxiv.org/abs/2404.18796 (PoLL), https://arxiv.org/html/2604.26679v1 (MultEval)
+
+---
+
+### Production systems and their mechanisms
+
+| System | Mechanism | Key insight for Straw |
+|---|---|---|
+| **Chatbot Arena (LMSYS)** | Bradley-Terry MLE over pairwise outcomes | BT rating is the right model for Tier C task leaderboards — stable, principled, manipulation-resistant |
+| **AlpacaEval 2.0** | LC-WinRate: GLM debiasing of length effect | Length debiasing is mandatory for any "completeness" or "coverage" rubric dimension |
+| **MT-Bench** | GPT-4 judge, absolute scoring 1–10 | Questions must be explicitly hard and discriminative — easy questions produce bunched scores |
+| **EQ-Bench Creative Writing v3** | Rubric-based per-piece + pairwise Elo for top-N differentiation | Hybrid rubric+Elo is state-of-the-art for creative tasks |
+| **Kaggle AES 2.0** | Quadratic Weighted Kappa (QWK) as loss | QWK is the canonical metric for ordinal rubric scores — implement for Straw's competition-level scoring aggregation |
+
+**EQ-Bench methodology (source: https://eqbench.com/creative_writing_longform.html)**: 96 samples per model, rubric-based per-piece scoring, then pairwise Elo for high-quality discrimination. This hybrid approach is the state of the art.
+
+---
+
+### Evaluating strategic analysis specifically
+
+Rumelt's four-criteria framework (1979) is the foundational rubric: **Consistency** (no internal contradictions), **Consonance** (fit with external environment), **Feasibility** (realistic given resource constraints), **Advantage** (durable competitive edge). These four criteria are directly operationalizable as rubric dimensions.
+
+Additional dimensions for AI-generated strategic analysis:
+- **Evidence quality**: Are claims supported by cited data, not assertion?
+- **Assumption transparency**: Are key assumptions made explicit and bounded?
+- **Uncertainty acknowledgment**: Does the analysis flag where it lacks information?
+- **Counterargument engagement**: Does it address the strongest objection?
+- **Actionability**: Does it produce prioritized, concrete next steps?
+
+**The critical philosophical position**: Straw evaluates process quality (thoroughness, logical coherence, evidence use) — not outcome accuracy. Strategic analysis tasks are Tier C, not Tier D. The process can be evaluated for rigor even when the strategic outcome is unknowable. This is the framing that makes strategic analysis tasks viable on Straw.
+
+---
+
+### Five design recommendations for Straw (in implementation order)
+
+**Rec 1 (Phase 1): Rubric compiler**
+Implement a rubric compilation layer that transforms poster-written rubrics into locked execution specs (RULERS-style). Each dimension requires: (a) an evidence requirement string, (b) score anchors (what textual evidence maps to each score), (c) an anti-verbosity flag. This is a system prompt template + validation step, not a new model. **Impact: immediately extends Straw to Tier B tasks.**
+
+**Rec 2 (Phase 1): Bias mitigations in the eval pipeline**
+For every Tier B/C evaluation: mandatory position swap on pairwise comparisons, judge model family constraint (judge ≠ agent family), verbosity normalization language in all rubric prompts for "completeness" / "coverage" dimensions. **Impact: reduces judge error rate from ~50% to ~10–15% per the research.**
+
+**Rec 3 (Phase 2): PoLL multi-judge for high-stakes tasks**
+For high-value tasks (prize ≥ $5K or enterprise competition), run a panel of 3 judges from different model families. Compute Krippendorff's α. Gate score publication on α ≥ 0.67. When α < 0.67, surface disagreement to the task poster and offer human review escalation. **Impact: gives Straw a credible signal quality guarantee with verifiable inter-judge agreement score.**
+
+**Rec 4 (Phase 2): Pairwise Elo for Tier C tasks**
+For creative writing, open-ended research, and strategic analysis: run pairwise comparisons across all submissions and compute Bradley-Terry ratings. Display rankings rather than absolute scores. For large submission sets, use Arena-Hard sampling strategy — compare all submissions against a fixed "baseline set" of reference outputs rather than full round-robin (avoids O(n²) cost). **Impact: enables Straw to handle the fastest-growing enterprise task categories (research, analysis, writing) with principled ranking.**
+
+**Rec 5 (Phase 3): Rubric generation assistant (AdaRubric-style)**
+For task posters who don't want to write rubrics from scratch: auto-generate a draft rubric from the task description using an AdaRubric-inspired approach. Poster reviews and approves; rubric is then locked before task launch. **Impact: dramatically lowers the barrier for posting non-deterministic tasks on Straw.**
+
+**Human escalation protocol:**
+Flag any submission for human review when:
+1. Krippendorff's α < 0.67 across judge panel
+2. A judge's score differs from the mean by > 2 standard deviations
+3. A competing agent disputes the score with a specific evidence objection
+4. Task type is classified Tier D
+
+---
+
+### New threads discovered from Tick 91
+
+- **Adversarial rubric gaming**: Can a sophisticated agent game locked rubrics by producing evidence strings that score well without genuine quality? RULERS acknowledges this; mitigation is opaque evidence anchors (not shown to agents pre-submission). Investigate: what rubric disclosure policy maximizes honesty without enabling gaming?
+- **Calibration drift across domains**: Fine-tuned judge models (Prometheus 2) were calibrated on specific domains; out-of-distribution use degrades silently. Investigate: domain-adaptive recalibration using small human-labeled reference sets per task category.
+- **Ill-defined task auto-detection**: arXiv:2603.17067 (2026) proposes a formal typology of underspecified tasks. Can Straw auto-detect ambiguous task descriptions and require poster clarification before opening submissions?
+- **Factual verification pass**: For research tasks where agents are given search tools, LLM judges cannot detect fabricated citations. Investigate a separate citation-checking pass as a prerequisite filter before quality scoring.
+- **Elo stability for small submission sets**: The Bradley-Terry model requires sufficient comparisons to converge. For small competitions (5–10 agents), pairwise Elo may produce unstable rankings. Investigate bootstrap confidence intervals as mandatory output alongside rankings.
+
+Sources: https://arxiv.org/abs/2306.05685, https://arxiv.org/abs/2601.08654, https://arxiv.org/abs/2603.21362, https://arxiv.org/abs/2405.01535, https://arxiv.org/abs/2404.04475, https://arxiv.org/html/2410.21819v2, https://aclanthology.org/2025.ijcnlp-long.18.pdf, https://arxiv.org/abs/2404.18796, https://arxiv.org/html/2604.26679v1, https://eqbench.com/creative_writing_longform.html, https://hippocampus-garden.com/kaggle_aes2/, https://arxiv.org/abs/2212.08073
+
+
+
+---
+
+## Tick 92 (2026-05-01): The enterprise AI agent economy at 5 years — 2030 landscape and Straw's strategic position
+
+**Research question**: What does the enterprise AI agent market look like in 2030, where does Straw sit in it, and what are the key strategic risks and opportunities?
+
+---
+
+### Market size: The numbers (multiple independent sources, consensus range)
+
+| Source | AI Agents Market (2030) | CAGR |
+|---|---|---|
+| Grand View Research | $24.50B | 46.2% |
+| Omdia | $41.8B | ~55% |
+| MarkNtel Advisors | $42.7B | 41.5% |
+| Marqstats | $47.80B | 61.5% |
+
+**Consensus midpoint**: $40-50B in dedicated agentic AI spend by 2030.
+
+The more important number: Gartner projects AI agents will intermediate **$15 trillion in B2B purchasing by 2028** — meaning agents don't just represent a software market, they become the commercial infrastructure through which enterprise transactions flow. Hyperscaler distribution channel grows from $30B (2024) to $163B (2030) at 29% CAGR.
+
+Sources: https://www.grandviewresearch.com/industry-analysis/enterprise-agentic-ai-market-report, https://omdia.tech.informa.com/pr/2025/sep/new-omdia-analysis-shows-agentic-ai-outpacing-growth-rates-of-traditional-generative-ai, https://www.digitalcommerce360.com/2025/11/28/gartner-ai-agents-15-trillion-in-b2b-purchases-by-2028/, https://omdia.tech.informa.com/pr/2025/oct/hyperscaler-cloud-marketplace-sales-to-hit-us-163-billion-us-dollars-by-2030
+
+---
+
+### Capability trajectory (METR data — the most alarming number)
+
+METR measures the longest autonomous task an agent can reliably complete (50% success rate) vs. human expert time.
+
+| Period | Doubling time of task time-horizon |
+|---|---|
+| 2019–2025 | ~7 months |
+| 2024–2026 | **~4 months** (accelerating) |
+
+Current extrapolations:
+- **May 2026**: Agents reliably complete ~2-4 hour tasks
+- **Late 2026**: Full 8-hour workday tasks
+- **2028**: Full work-week (40+ hours) tasks; months-long autonomous projects beginning
+- **2030**: Month-long autonomous projects; some year-long projects at high reliability
+
+On SWE-bench Verified: frontier closed-source leaders at 77-87%. SWE-bench Pro (long-horizon, multi-file, enterprise-realistic): still below 45%. This gap between short-task and long-task capability is the signal — the METR trend predicts this gap closes substantially by 2028-2029.
+
+**New task categories automatable by 2028-2030**: Full feature implementations and architectural redesigns (software), contract drafting and due diligence review (legal — Harvey AI already at $100M+ ARR), end-to-end financial research reports, McKinsey estimates 30% of current knowledge work hours automatable.
+
+Sources: https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/, https://metr.org/blog/2026-1-29-time-horizon-1-1/, https://arxiv.org/abs/2509.16941 (SWE-bench Pro), https://www.mckinsey.com/mgi/our-research/agents-robots-and-us-skill-partnerships-in-the-age-of-ai
+
+---
+
+### Knowledge worker impact: TAM expansion for Straw
+
+Every new automatable knowledge work category creates a new procurement decision: "which agent does this best?" The expansion from today's narrow SWE focus to legal, finance, strategy, and operations by 2028-2030 is a direct TAM expansion for Straw — each vertical is a new marketplace category.
+
+**The Anthropic Economic Index finding (Jan 2026)**: 52% of Claude interactions are augmentation, 45% automation. This split shifts dramatically as time-horizon capabilities extend. The 40% project cancellation rate (Gartner: will happen by end 2027) creates a cohort of burned, sophisticated enterprise buyers who will be rigorous about agent procurement in 2028-2030 — exactly Straw's target customer.
+
+Source: https://arxiv.org/abs/2506.06576, https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027
+
+---
+
+### The consolidation landscape by 2030
+
+**The five-way hyperscaler contest (2026):**
+- **Microsoft**: Copilot Studio, A2A protocol, Office/Azure distribution
+- **Salesforce**: Agentforce, Atlas Reasoning Engine, $125-550/user/month pricing
+- **Google**: Gemini Enterprise Agent Platform (Vertex + Agentspace unified)
+- **OpenAI**: Strongest consumer brand, workspace agents
+- **Anthropic**: MCP as de facto tool protocol (97M+ monthly SDK downloads, 10K+ public MCP servers)
+
+**The open-source trajectory**: Best open-weight models (Llama 4 405B, DeepSeek-V4) at ~72% SWE-bench Verified vs. 77-87% closed. Gap closing. GPT-4 class inference ~50x cheaper in April 2026 than March 2023. 89% of enterprises deploy open-weight models alongside proprietary. **Open source proliferation is net positive for Straw** — more agents = more evaluation complexity = more need for objective evaluation infrastructure.
+
+---
+
+### The three 2030 scenarios: Where does Straw sit?
+
+**Scenario A: Hyperscalers Win**
+Microsoft/Google/AWS become de facto enterprise AI stacks. Procurement flows through cloud marketplaces.
+*Straw position*: **Surviving but not thriving.** Pre-procurement evaluation tool, vulnerable to hyperscalers launching their own evaluation frameworks. The biggest near-term existential risk.
+
+**Scenario B: Vertical Specialists Win**
+Best coding agent, best legal agent, best financial agent — each vertical has a dominant specialist. Enterprises assemble point solutions. Harvey AI ($100M+ ARR) is the early signal.
+*Straw position*: **Thriving.** When 15-20 viable legal agents exist, enterprises desperately need an objective arena. Each new vertical is a new Straw marketplace category.
+
+**Scenario C: Neutral Marketplace Wins**
+No single stack dominates. Straw becomes infrastructure — the Bloomberg Terminal of AI agent performance.
+*Straw position*: **Dominant.** Network effects compound.
+
+**Most likely 2030 outcome: Hybrid B + C**
+Vertical specialists win category by category, but no agent dominates across all verticals. Enterprises want vendor-neutral multi-category evaluation. This creates the exact conditions for Straw to become the connective evaluation tissue — an evaluation marketplace spanning coding, legal, financial, and operational agents, run by an entity with no incentive to favor any provider.
+
+The pure hyperscaler win (Scenario A) faces a structural inhibitor: enterprises deeply distrust Microsoft evaluating Microsoft's own Copilot. Vendor-neutral evaluation has credibility hyperscalers cannot replicate.
+
+---
+
+### The core economic insight: anti-commoditization
+
+**Forces pushing toward commoditization**: inference costs down 50x in 3 years, open-weight models closing the gap, horizontal orchestration becoming commodity infrastructure (MCP, A2A).
+
+**Forces preserving quality differentiation**: Harvey AI's domain expertise is not commoditizing, data flywheels compound, task-specific fine-tuning creates durable performance gaps, enterprise risk tolerance (for high-stakes decisions, a 10% performance gap justifies 10x pricing premium), outcome-based pricing replacing seat pricing.
+
+**The key economic insight**: In a world of abundant cheap AI, the scarce resource becomes **verified, trusted performance on specific enterprise tasks**. This is precisely what Straw provides. As securities proliferated, the need for independent credit ratings (Moody's, S&P) increased, not decreased. Straw is positioned to be the credit rating agency of AI agents.
+
+Sources: https://www.bvp.com/atlas/the-ai-pricing-and-monetization-playbook, https://stormy.ai/blog/outcome-based-pricing-2026-gtm-playbook, https://www.informationweek.com/machine-learning-ai/2026-enterprise-ai-predictions-fragmentation-commodification-and-the-agent-push-facing-cios
+
+---
+
+### Structural factors making a neutral evaluation marketplace MORE vs. LESS valuable in 2030
+
+**Factors increasing Straw's value:**
+1. **Agent proliferation**: More agents = more noise = more need for signal. Evaluation infrastructure becomes more valuable as a filter.
+2. **METR task-duration scaling**: Higher-stakes, longer-horizon deployments = more willingness to pay for verified performance
+3. **EU AI Act compliance**: Enterprises face regulatory accountability for AI decisions; Straw's competition logs provide audit trails
+4. **Gartner's 40% cancellation rate creating burned buyers**: Enterprises burned in 2025-2027 will be far more rigorous — they'll pay for objective evaluation
+5. **Multi-agent trust infrastructure**: Anthropic's Project Deal shows agents don't know which counterparty agents are trustworthy; Straw's reputation data enables trust calibration in agent-to-agent commerce
+6. **Outcome-based pricing**: If enterprises pay per outcome, they need to prove they selected the best agent
+
+**Factors decreasing Straw's value:**
+1. **Hyperscaler capture**: If Microsoft or Google builds compelling evaluation tools bundled with their marketplace
+2. **Market convergence on 2-3 dominant agents per category**: Reduces need for evaluation infrastructure
+3. **Evaluation gaming (Goodhart's Law)**: Agents train to perform well on Straw rubrics but not in production — trust erodes. Continuous task evolution is the mandatory countermeasure
+4. **Model capability plateau**: Unlikely given METR data, but if capability plateaus, enterprise AI becomes commodity procurement
+
+---
+
+### Key strategic risks for Straw by 2028-2030
+
+1. **Platform encirclement (HIGH risk)**: Microsoft launches "Azure Agent Certification" bundled with enterprise agreements. Counter: become the de facto standard before they decide to compete.
+2. **Evaluation gaming / benchmark overfitting (MEDIUM risk)**: Agents optimize for Straw rubrics, not real performance. Counter: real-task evaluation, continuous task rotation, production performance tracking via Straw Monitor.
+3. **Market fragmentation into vertical-specific evaluation platforms (MEDIUM risk)**: Specialized legal-agent or coding-agent evaluation platforms displace Straw in a vertical. Counter: build vertical depth with horizontal network effects — each enterprise using Straw for legal AND coding builds data the verticals can't replicate.
+4. **Talent concentration at model labs (LOW-MEDIUM risk)**: Best evaluation methodologists go to Anthropic/OpenAI. Straw must be an attractive destination.
+
+---
+
+### Key strategic opportunities by 2028-2030
+
+1. **The "Moody's moment"**: Become the credit rating agency of AI agents. As $15T B2B intermediation materializes, every counterparty in agent-to-agent commerce needs a trust signal.
+2. **Regulation as tailwind**: EU AI Act requires documented AI system selection; Straw's audit trails are compliance infrastructure.
+3. **Multi-agent trust infrastructure**: Anthropic's Project Deal reveals the "agent quality gap" — agents don't know when they're negotiating against an inferior counterparty. Straw's reputation data enables trust calibration in agent-to-agent commerce.
+4. **Performance-as-a-service**: Enterprises subscribe to Straw Monitor ($500/agent/month) for continuous monitoring — high-margin recurring revenue that also builds the predictive validity study.
+5. **M&A signal**: Straw evaluation data predicts acquisition targets. Enterprises considering acquiring an AI agent company need due diligence data that validates performance. Straw provides it.
+
+---
+
+### New threads discovered from Tick 92
+
+- **Agent-to-agent trust protocols**: What infrastructure governs multi-agent commerce trust beyond MCP/A2A? Is Straw's reputation score the right primitive, or is something like a financial credit score needed?
+- **Regulatory landscape depth**: Map EU AI Act high-risk classification to Straw's evaluation categories — which agent competitions would be required for compliant enterprise deployment?
+- **Hyperscaler response timing**: When does Microsoft/Google/AWS decide Straw is large enough to threaten? What triggers their response?
+- **Open-source agent evaluation dynamics**: If a Llama 4 fine-tune wins a Straw competition, who's the "agent"? The model weight, the deployment, the organization? Product architecture implications.
+- **The "evaluation gaming" problem depth**: How does benchmark contamination work in practice, and what methodological defenses can Straw build?
+
+Sources: https://www.grandviewresearch.com/industry-analysis/enterprise-agentic-ai-market-report, https://omdia.tech.informa.com/pr/2025/sep/new-omdia-analysis-shows-agentic-ai-outpacing-growth-rates-of-traditional-generative-ai, https://www.digitalcommerce360.com/2025/11/28/gartner-ai-agents-15-trillion-in-b2b-purchases-by-2028/, https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/, https://metr.org/blog/2026-1-29-time-horizon-1-1/, https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027, https://www.bvp.com/atlas/the-ai-pricing-and-monetization-playbook, https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-agentic-commerce-opportunity-how-ai-agents-are-ushering-in-a-new-era-for-consumers-and-merchants, https://omdia.tech.informa.com/pr/2025/oct/hyperscaler-cloud-marketplace-sales-to-hit-us-163-billion-us-dollars-by-2030
+
+
+
+---
+
+## Threads still to dig — Session 15 (this session, overnight 2026-05-01)
+
+**Completed this session:**
+- [x] Section 27: Long-form proposal — The product roadmap (MVP through Series A features). Synthesizes Tick 86 (MVP sprints), Section 13 (v0/v1/v2), Tick 37 (revenue milestones), Tick 35 (competitive window), Tick 95 (design partners). Covers Phase 0 (design partner LOIs), Phase 1 (4-sprint MVP build), Phase 2 (seed buildout months 4-16), Series A raise conditions, and Series A feature set (A1-A8).
+- [x] Tick 91: Competition design for non-deterministic tasks. G-Eval, RULERS, AdaRubric, Prometheus 2. 4-tier task taxonomy (A: deterministic, B: rubric-verifiable, C: comparative/pairwise, D: inherently contested). Three dominant LLM-judge biases + mitigations. PoLL multi-judge panel. Bradley-Terry Elo for Tier C. 5 implementation recommendations for Straw.
+- [x] Tick 92: The agent economy at 5 years. Consensus $40-50B by 2030. METR doubling-every-4-months capability trajectory extrapolated to 2030. Three scenarios (hyperscaler / vertical specialist / neutral marketplace) → most likely is hybrid B+C. The anti-commoditization thesis: as agents proliferate, verified performance becomes the scarce resource. Straw as the credit rating agency of AI agents.
+
+**New candidate threads for Session 16:**
+
+- [ ] **Tick 96: Adversarial rubric gaming** — Can sophisticated agents game Straw's locked rubrics by producing evidence strings that score well without genuine quality? What rubric disclosure policy maximizes honest competition without enabling gaming? Relate to Goodhart's Law in evaluation, benchmark contamination literature, RE-Bench reward hacking (43× higher hacking rate when scoring function visible — Tick 38).
+- [ ] **Tick 97: The agent quality gap problem** — Anthropic's Project Deal found that weaker principals don't realize they're represented by inferior agents in negotiations. Deep research on the behavioral economics of AI agent quality perception. How do enterprises currently estimate agent quality? What cognitive biases affect their procurement decisions? What does this mean for Straw's go-to-market — do enterprises need help understanding when they need evaluation?
+- [ ] **Tick 98: Hyperscaler response timing** — Historical analysis of when and why hyperscalers copy category-defining marketplaces (App Store vs. GetApp, AWS Marketplace vs. independent software catalogs, Microsoft Teams vs. Slack). What is the trigger? Revenue threshold? Enterprise customer overlap? What precedents from Stripe, Twilio, Figma, and other companies that survived hyperscaler competition are applicable to Straw?
+- [ ] **Tick 99: Open-source agent evaluation dynamics** — If a Llama 4 fine-tune wins a Straw competition, who is the "competitor"? The model weights, the deployment configuration, the company, the operator? This has significant product architecture, legal, and incentive design implications. What is the right identity model for open-source-based agents on Straw?
+- [ ] **Tick 100: The Straw API for enterprises** — What does the enterprise-facing API look like beyond the web UI? Can enterprises programmatically: create competitions from specs (CI/CD integration), receive leaderboard data in machine-readable form, trigger re-evaluation after agent updates, integrate Straw scores into their internal vendor management systems? This is the B2B developer experience layer.
+- [ ] **Section 28: Long-form proposal — The anti-thesis: the strongest case that Straw fails, and the three responses** — (Related to but extending Section 23.) The most dangerous failure mode for Straw by 2028: Microsoft launches Azure Agent Certification with enterprise agreement bundling. Write the complete counter-strategy.
+- [ ] **Tick 101: The 2028 competition design** — As METR's capability trajectory extends agent task time-horizons to full work-weeks, how does Straw's competition design change? Week-long competitions? Month-long evaluations? What new evaluation machinery is required when the task window is 40+ hours?
 
 
 ---
