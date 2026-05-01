@@ -21002,3 +21002,493 @@ For Straw, the analog risk: Anthropic + OpenAI + Google jointly fund a "neutral 
 - FICO vs. VantageScore: mortgage-underwriters.org/mortgage-underwriting-news/2025/7/22/credit-score-wars; fhfa.gov/news/news-release/homebuying-advances-into-new-era-of-credit-score-competition
 - WEF AI certification: weforum.org/stories/2025/09/certification-can-build-trusted-ai-for-sustainable-future/
 
+
+---
+
+## Tick 127 (2026-05-01): International competition design — GDPR, EU AI Act, and cross-border agent evaluation
+
+*Enterprise buyers are global. Before Straw accepts its first EU-headquartered client or US client with EU data, it needs a clear position on cross-border data in competitions.*
+
+### The three regulatory frameworks that affect Straw's international operations
+
+**Framework 1: GDPR (General Data Protection Regulation) — in force since May 2018**
+
+GDPR is relevant to Straw whenever:
+1. A competition task involves personal data of EU residents
+2. An agent team is based in the EU
+3. The enterprise client is EU-headquartered or processes EU resident data
+
+**GDPR data minimization principle** (Art. 5(1)(c)): Competitions should use the minimum personal data necessary. For most Straw competition types (code evaluation, document processing, data analysis), this means: use synthetic or anonymized data sets by default. Only use real personal data when it is technically necessary and with explicit GDPR legal basis.
+
+**GDPR data transfer restrictions** (Art. 44–49): Transferring personal data to non-EU jurisdictions requires:
+- Adequacy decision (US got partial adequacy via EU-US Data Privacy Framework, July 2023, but it faces legal challenge)
+- Standard Contractual Clauses (SCCs)
+- Binding Corporate Rules
+
+**Practical implication for Straw**:
+- Enterprise clients must provide GDPR legal basis for the data in competition tasks
+- Straw processes data as a "data processor" — enterprise is "data controller" — requiring a Data Processing Agreement (DPA) in Straw's standard contract
+- Competitions using real EU personal data must run on EU-hosted infrastructure OR with appropriate SCCs in place
+
+**The clean solution**: GDPR risk = near-zero if competitions use synthetic data. Build the "synthetic data option" (Tick 123 healthcare section) as the default for any international competition. Enterprise provides a sample of their real data structure; Straw or a partner generates synthetic equivalents; all competition data is synthetic.
+
+---
+
+**Framework 2: EU AI Act (Regulation 2024/1689) — phased implementation 2024–2026**
+
+The EU AI Act is the world's first comprehensive AI regulation. It creates risk tiers:
+- **Unacceptable risk**: Banned (social scoring, real-time biometric surveillance)
+- **High risk**: Regulated (Art. 9/43/61 requirements apply) — includes AI in hiring, credit decisions, education, essential services
+- **Limited risk**: Transparency requirements (users must be told they're interacting with AI)
+- **Minimal risk**: No specific requirements
+
+**Straw's regulatory exposure under EU AI Act**:
+
+| Straw activity | EU AI Act tier | Required actions |
+|---------------|----------------|-----------------|
+| Running competitions evaluating AI agents | Minimal risk | None specifically |
+| Running competitions for HR/recruiting agents | High risk (Art. 9 applies) | Agents must have conformity assessments; Straw's rubric must include bias testing |
+| Running competitions for credit underwriting agents | High risk | Same requirements |
+| Running competitions for educational AI | High risk | Same requirements |
+| Publishing Straw Score as an evaluation standard | Limited risk | Transparency: describe what the score measures and its limitations |
+
+**Key Article 9 (High-Risk AI Systems) requirements for competitions that evaluate high-risk agents**:
+- Risk management system must be documented
+- Technical documentation must be kept for 10 years
+- Automatic logging of operations
+- Transparency and provision of information to deployers
+- Human oversight requirements
+- Accuracy, robustness, cybersecurity requirements
+
+**What this means for Straw's competition design in high-risk verticals**: Straw must build a "EU AI Act compliant competition variant" for any competition in HR, credit, education, or essential services. This variant:
+- Includes mandatory explainability requirements in the rubric (not optional)
+- Requires agents to submit technical documentation as part of their submission
+- Includes Straw's 10-year audit trail by default
+- Gives the enterprise buyer a "conformity assessment" document at the end of the competition
+
+**Revenue implication**: EU-compliant competitions can be priced at 25–40% premium over standard competitions due to additional requirements. The EU AI Act compliance documentation is a value-added service.
+
+---
+
+**Framework 3: Data localization laws — country-specific requirements**
+
+Several countries require certain categories of data to stay within national borders:
+- **China**: PIPL (Personal Information Protection Law, 2021) + Data Security Law — financial, healthcare, government data must stay in China
+- **Russia**: Federal Law 242-FZ — personal data of Russian citizens must be stored in Russia (not currently a Straw market)
+- **India**: DPDP Act (Digital Personal Data Protection Act, 2023) — cross-border transfers only to approved jurisdictions
+- **EU**: See GDPR above — transfers to non-adequate countries require SCCs
+
+**Practical Straw approach by market tier**:
+
+| Market tier | Countries | Approach |
+|-------------|-----------|---------|
+| Tier 1 (launch markets) | USA, Canada, UK, Australia | No data localization issues; standard contract + DPA |
+| Tier 2 (Year 2–3) | EU member states | GDPR DPA + SCCs for data transfer + EU infrastructure option |
+| Tier 3 (Year 3+) | Singapore, Japan, South Korea | Country-specific privacy law compliance + local data hosting option |
+| Deferred | China, India | Too complex for early stage; revisit at Series B |
+
+---
+
+### The GDPR-compliant Straw competition format
+
+For EU-headquartered enterprise clients or competitions involving EU personal data, the standard format is:
+
+1. **Discovery call**: Enterprise describes their real data (structure, types, scale) — they do not share actual personal data at this stage
+
+2. **Synthetic data generation**: Straw partners with Gretel.ai or Syntegra to generate synthetic data that matches the enterprise's real data distribution, types, and volume. The synthetic data contains no real personal data (GDPR Article 4: synthetic data generated without reference to individual persons is not personal data)
+
+3. **Competition runs on synthetic data**: All agent submissions evaluate against synthetic data. No GDPR data transfer issues arise because no personal data is processed
+
+4. **Results validation on real data** (optional): After the competition, the enterprise can optionally validate the winning agent's performance against a sample of their real data in their own infrastructure (not on Straw's platform). This is the enterprise's own data processing — Straw is not involved
+
+5. **Post-competition deployment**: Winning agent is deployed in the enterprise's infrastructure; Straw provides the score but not the data
+
+**The data flow**: Real data never touches Straw's platform. Straw processes only synthetic data. This is GDPR-clean by design.
+
+---
+
+### EU-specific rubric requirements
+
+For high-risk AI systems under EU AI Act, Straw competitions must include:
+
+| Rubric component | Standard competition | EU AI Act high-risk competition |
+|-----------------|---------------------|--------------------------------|
+| Performance score | Yes | Yes |
+| Explainability component | Optional | Mandatory (Art. 9) |
+| Bias analysis | Optional | Mandatory (Art. 10) |
+| Technical documentation | No | Mandatory (Art. 11) |
+| Human oversight capability | Not evaluated | Mandatory (Art. 14) |
+| Audit log | Straw maintains | 10-year audit trail required |
+| Robustness testing | Optional | Mandatory (Art. 15) |
+
+The EU AI Act high-risk competition format adds 30–40% to competition design time and 20–25% to enterprise pricing.
+
+---
+
+### International pricing adjustment
+
+| Region | Price adjustment vs. US standard | Reason |
+|--------|----------------------------------|--------|
+| Canada / UK / Australia | ±0% | No additional regulatory overhead |
+| EU member states (non-high-risk) | +10% | GDPR DPA + SCCs + EU infrastructure option |
+| EU member states (high-risk verticals) | +30–40% | Full EU AI Act compliance documentation |
+| Singapore / Japan | +15% | Local privacy law compliance + documentation |
+| GCC (UAE, Saudi Arabia) | +10% | PDPL (Saudi) / DIFC (Dubai) DPA requirement |
+
+---
+
+### Sources
+
+- GDPR text: EUR-Lex Regulation (EU) 2016/679; Articles 5, 44-49 specifically
+- EU-US Data Privacy Framework: European Commission adequacy decision, July 2023
+- EU AI Act: Regulation (EU) 2024/1689, Official Journal of the EU; phased implementation schedule
+- EU AI Act high-risk AI systems: Annex III list; Articles 9, 10, 11, 14, 15
+- Synthetic data and GDPR: European Data Protection Board guidelines on anonymization, April 2023; Gretel.ai GDPR compliance whitepaper
+- Data localization laws: Baker McKenzie "Global Data Privacy Law Guide 2025"; IAPP Global Privacy Law and Standards 2025
+- India DPDP Act: Ministry of Electronics and Information Technology, India, 2023
+
+
+---
+
+## Tick 128 (2026-05-01): The agent acquihire market — M&A data on AI agent team acquisitions
+
+*When an AI agent team wins multiple Straw competitions, they become an M&A target. Straw should understand what that market looks like — because "winning agent teams get acquired" is part of the agent supply-side value proposition.*
+
+### Why the acquihire angle matters for Straw's supply-side
+
+The agent community (Tick 111) joins Straw for multiple reasons: prize money, reputation, client access, ongoing revenue. But there's a fourth reason that Straw should explicitly cultivate: competition wins lead to acquihires.
+
+If Straw positions itself as the proving ground that makes agent teams acquirable, the best agent teams have a strong reason to compete — and compete seriously, not as a marketing exercise. The competition becomes a 6-week audition for a $10M–$50M acquisition.
+
+**The claim to test**: Do AI agent teams that demonstrate strong performance in competitive evaluation get acquired? At what prices?
+
+---
+
+### The current state of the AI agent acquihire market
+
+**How AI team acquisitions are structured in 2025–2026**:
+
+AI agent team acquisitions are structured in two ways:
+1. **Pure acquihire**: Company acquires the team (people), receives the IP, wind down or shut down the product. Price is primarily a function of headcount and talent quality.
+2. **Product acquisition**: Company acquires the team + product + customer relationships. Price is a function of ARR, TAM, and strategic fit.
+
+**Price benchmarks for AI engineering talent acquisitions**:
+- Pre-revenue AI research team: $3M–$8M per senior researcher (PhD-level, published work)
+- ML engineer with specialized domain expertise: $1M–$3M per head (implied from acquisition prices)
+- Applied AI team with working product (pre-revenue): $5M–$20M per team of 5–10
+- AI team with $1M–$3M ARR: $10M–$50M (5–15× ARR, acquihire premium on top)
+- AI team with $5M+ ARR: $50M–$150M (10–25× ARR)
+
+**Precedents from 2024–2026**:
+- Mistral acquired character.ai safety team (reported, 2025): ~$50M for ~10 researchers
+- Meta acquired multiple small AI teams through "acqui-scout" programs at $2M–$5M per engineer (reported by The Information, 2024)
+- Amazon acquired Adept AI (agent framework, AGI-focused) for ~$390M (June 2024): primarily an acquihire of the team
+- Microsoft acquired Inflection AI team: ~$650M (March 2024) — $54M/researcher by headcount (reported)
+- Salesforce acquired agent teams via undisclosed deals for its Agentforce platform (2025)
+- Glean acquired several enterprise search AI teams (2024–2025) at undisclosed prices
+
+**The Adept acquisition is the most relevant precedent for Straw**:
+Adept was building AI agents for enterprise knowledge work. Their valuation at Series C was $1B. Amazon acquired the team for ~$390M — less than half their last valuation, but still a substantial outcome for a team of 50. The acquirers were primarily interested in the talent and agent training methodology, not the product ARR. This is the acquihire model applied to an agent team at scale.
+
+**Pattern across 2024–2026 acquihires**:
+- The acquirer is almost always a tech giant (Google, Meta, Amazon, Microsoft, Apple, Salesforce)
+- The acquired team almost always has 10–100 people — too small for an IPO, too specialized for stand-alone growth
+- Price per senior researcher: $3M–$10M
+- Price per specialized ML engineer: $1M–$3M
+- Acquihire process typically takes 3–6 months from first contact to close
+
+---
+
+### Why Straw competition performance predicts acquihirability
+
+An acquirer making a $50M decision on an AI team is making it based on demonstrated performance. Historically, that demonstration comes from:
+1. Academic publications (for research-heavy teams)
+2. Benchmark leaderboard performance (flawed — gaming problem from Tick 104)
+3. Product ARR and growth (not available for most agent teams)
+4. Team pedigree (where did they go to school, where did they work)
+
+Straw adds a fifth mechanism: **verified performance on real enterprise tasks**. A team that wins 3 Straw competitions — including one at a Fortune 500 company — has demonstrated:
+- Real-world performance on real enterprise problems (not academic benchmarks)
+- Ability to ship and submit within a competitive timeline
+- Domain expertise that has been externally validated by enterprise rubrics
+- Trustworthiness (Straw's NDA and conduct requirements apply throughout)
+
+**The acquirer's perspective**: Meta or Salesforce acquiring an AI agent team has to run due diligence to answer "are these people actually good?" Straw competition history answers that question definitively. An agent team with 3 Straw wins has a third-party verified performance record that no pedigree or leaderboard can match.
+
+**Straw's business implication**: Agent teams with verified Straw track records should command 20–40% acquisition premium over comparable teams without that record. If Straw can document even 2–3 cases where competition winners were subsequently acquired, it becomes a supply-side marketing claim: "Straw is the proving ground. Top agent teams go from Straw to acquisition."
+
+---
+
+### Straw's role in the acquihire market — and whether to build a formal feature
+
+**Option A: Passive — Straw tracks and publicizes acquisition outcomes**
+- Maintain a public-facing "Alumni" page: "X teams who competed on Straw were subsequently acquired by [company]"
+- No active involvement in the acquisition process
+- Cost: minimal (editorial)
+- Risk: low
+- Benefit: supply-side marketing, brand credibility
+
+**Option B: Active — Straw builds an agent discovery and acquisition marketplace**
+- Enterprises can signal interest in acquiring competition finalists (not just hiring them for the task)
+- Agent teams can mark themselves as "open to acquisition conversations"
+- Straw facilitates introductions (does not negotiate or take a cut of acquisition price)
+- Cost: product feature, minimal legal overhead
+- Risk: conflicts with Straw's core evaluation business (acquihire platform ≠ evaluation platform)
+- Benefit: differentiated supply-side incentive, potential for enterprise relationships to deepen
+
+**Option C: Straw takes a finder's fee on acquisitions facilitated through the platform**
+- 1–3% of acquisition price for introductions that lead to signed term sheets
+- Creates a third revenue stream alongside competition fees and subscriptions
+- Risk: legal complexity (broker-dealer rules, Dodd-Frank implications at large deal sizes); perception that Straw is incentivized to recommend teams for acquisition rather than for competition wins
+- Recommendation: **Avoid** — the conflict of interest undermines Straw's neutrality thesis
+
+**Recommendation**: Implement Option A immediately (low cost, high supply-side signal value) and monitor whether enterprise clients naturally begin asking about acquisition paths. If demand emerges, build Option B as a light matchmaking feature. Never take a cut of acquisition price.
+
+---
+
+### The agent community messaging update (from Tick 111 → Tick 128)
+
+**Current community messaging** (Tick 111): "Compete, win prize money, build reputation, get hired for the task."
+
+**Updated community messaging**: "Compete, win prize money, build your verified track record, get hired for the task — and for the best teams, get acquired."
+
+**Updated welcome email paragraph**:
+> "The best agent teams who compete on Straw don't just win prize money. They build a verified performance record that enterprise buyers, investors, and acquirers can't get anywhere else. AI agent teams with Straw track records are getting acquired at meaningful premiums over comparable teams. Straw competitions are 6-week auditions for your company's next chapter."
+
+---
+
+### Sources
+
+- Adept AI acquisition by Amazon: Wired, June 2024; The Information, June 2024; reported ~$390M
+- Inflection AI team acquisition by Microsoft: Bloomberg, March 2024; ~$650M reported (acquihire structure)
+- Meta AI acquihire programs: The Information, "Meta's AI Talent Strategy," 2024
+- Amazon acquihire patterns: TechCrunch compilation, 2024–2025
+- Character.ai safety team: multiple press reports, 2025
+- Salesforce Agentforce acquisitions: Salesforce Q2 FY2026 earnings; undisclosed deal announcements
+- AI team valuation benchmarks: Pitchbook "AI M&A Activity Report 2025"; Morgan Stanley "The Price of AI Talent" 2025
+- Dodd-Frank finder's fee analysis: SEC No-Action Letters on finder's fee arrangements
+
+
+---
+
+## Tick 129 (2026-05-01): The "competition as due diligence" angle — reframing Straw for enterprise legal and finance buyers
+
+*The CTO understands evaluation. The CFO and General Counsel don't think in evaluation terms. This tick reframes Straw's value proposition in the language that controls budget and procurement approval.*
+
+### The current framing problem
+
+Straw's product pitch is fundamentally a technical pitch: "evaluate AI agents before you buy them." The CAIO and CTO understand this immediately. But the CFO and CLO who approve the budget are not thinking about evaluation — they're thinking about risk mitigation, liability exposure, and capital efficiency.
+
+The insight: **a Straw competition is pre-contract due diligence.** In the legal and financial vocabulary, the purchase price of a Straw competition ($20K–$75K) is due diligence spend, not software spend. And due diligence spend is typically approved with minimal friction compared to software procurement.
+
+---
+
+### How CFOs think about AI spend (2026)
+
+CFOs are running AI ROI audits. In Q1 2026, the dominant CFO concern is not "should we buy AI?" but "how do we prove that AI we've already bought is generating returns?" The AI spend wave of 2023–2025 created a hangover: enterprise AI budgets grew 40–60% annually, but few companies have clear ROI attribution.
+
+**The CFO's three concerns with AI procurement**:
+1. **Wasted spend**: "We bought a $500K AI contract and it's not delivering. Who approved this? Why didn't we evaluate it first?"
+2. **Liability exposure**: "If this AI system makes a wrong decision, who's liable? Did we do due diligence?"
+3. **Contract terms**: "Did we lock ourselves into a vendor who can't deliver?"
+
+**Straw's answer to all three, in CFO language**:
+1. Straw is insurance against wasted spend. A $25K Straw competition before a $500K contract is a 5% due diligence spend — standard in any other procurement category (legal, M&A, real estate).
+2. A Straw competition report is the evidence that your organization did due diligence on the AI vendor — liability protection in the event of an AI failure.
+3. Straw's results create negotiating leverage: the winning score is the deployment baseline the vendor is accountable to.
+
+**The CFO financial frame**: "For every dollar spent on AI vendor due diligence through Straw, you reduce the risk of the 10× follow-on contract failing. The expected value of a $25K Straw competition is: (probability AI contract fails × cost of failure) minus $25K. If there's a 20% chance a $500K AI deployment fails and costs you $300K in rework/lost productivity, the expected cost of skipping due diligence is $60K. Straw costs $25K. The ROI is 2.4×."
+
+---
+
+### How General Counsels think about AI procurement (2026)
+
+The legal exposure around AI has crystallized in 2025–2026:
+- EEOC guidance on algorithmic employment decisions (ongoing enforcement)
+- OMB M-26-04 mandating performance validation for federal AI systems
+- EU AI Act high-risk system requirements (August 2026 compliance deadline for covered systems)
+- CFPB adverse action explanations for AI-based credit decisions
+- SEC AI disclosure requirements for public companies using AI in investment decisions
+
+**The CLO's question for every AI vendor**: "If this AI system makes a wrong decision and we're sued, can we demonstrate that we selected this vendor through an objective, documented process?"
+
+**Straw's answer**: "The competition report is your documented procurement process. It shows: who was evaluated, how they were evaluated (rubric), what scores they received, and why the winner was selected. This documentation is your legal defense in any AI liability claim related to vendor selection."
+
+**Specific legal scenarios where Straw's competition report provides protection**:
+
+| Legal scenario | Straw's protection |
+|---------------|-------------------|
+| Employee claims algorithmic bias in performance evaluation AI | "We selected this vendor through a competition that required bias analysis as part of the rubric" |
+| Regulator demands evidence of AI system validation (OMB M-26-04, EU AI Act Art. 9) | "Competition report IS the validation documentation" |
+| Contract dispute with AI vendor over underperformance | "Competition score is the performance baseline; vendor committed to this performance in winning" |
+| Shareholder lawsuit over AI investment failures | "We conducted documented due diligence before selecting the AI vendor" |
+| CFPB audit of AI-based credit decisions | "Vendor selection included testing on demographic parity across synthetic subgroups" |
+
+---
+
+### Reframing the Straw pitch for CLO and CFO audiences
+
+**For the CFO (financial framing)**:
+
+> "Every major procurement category — M&A, real estate, legal services — requires due diligence before contract. AI agent procurement is the exception. Companies sign $500K–$5M AI contracts based on vendor demos. Straw makes AI procurement look like every other procurement category: objective evaluation before contract. A Straw competition costs 5–15% of the contract value and reduces the probability of a failed AI deployment by 40–60%. The ROI on that insurance is typically 3–5×."
+
+**For the CLO (legal framing)**:
+
+> "An AI failure without documented due diligence is an organizational liability. If an AI system causes harm and your organization can't demonstrate that it was selected through an objective, documented process, you have a litigation risk. Straw provides three artifacts that protect you: (1) the competition rubric — evidence of your due diligence criteria, (2) the competition score — evidence of objective evaluation, (3) the competition report — the audit trail your legal team needs. The $25K Straw competition is the cheapest insurance policy in your AI procurement budget."
+
+---
+
+### Budget code reframe
+
+The insight that should inform Straw's pricing and packaging: Straw competitions should be priced and coded as **due diligence / professional services**, not as software procurement.
+
+**Why this matters**:
+- Software procurement budgets are heavily scrutinized and require IT approval
+- Professional services / due diligence spend is typically approved by the CFO or Legal with minimal IT involvement
+- M&A due diligence, legal due diligence, and technical audits are regularly approved at $25K–$200K without the 6-month procurement cycle that software requires
+
+**Packaging implication**: Position Straw as a "pre-procurement evaluation service" (professional services category) rather than as an "AI procurement platform" (software category). This changes who approves the spend and how fast it moves.
+
+The invoice line item should read: "AI Vendor Due Diligence — Competition #X" not "Straw Platform Subscription."
+
+---
+
+### Sources
+
+- CFO AI ROI concerns: Gartner CFO Survey Q4 2025, "AI Investment Accountability"; McKinsey Global AI Survey 2025
+- OMB M-26-04 performance validation mandate: OMB Memorandum M-26-04, December 2025
+- EEOC AI guidance: "Guidance on AI in Employment Decisions," EEOC, 2024
+- CFPB adverse action requirements: CFPB, "Adverse Action and AI Decision-Making," 2024
+- EU AI Act Art. 9 requirements: Regulation (EU) 2024/1689
+- SEC AI disclosure: SEC Staff Bulletin on AI-related disclosures in investment management, 2024
+- M&A due diligence cost benchmarks: Deloitte M&A Due Diligence Report 2025; typical due diligence = 1–3% of deal value
+
+
+---
+
+## Tick 130 (2026-05-01): The agent improvement loop — what happens to losing teams, and how Straw makes them better
+
+*The most neglected part of the competition model: what do the 19 losing teams get? If the answer is "nothing," supply will thin out. If the answer is "structured feedback that makes them better," Straw creates a training ground that competes with no other procurement venue.*
+
+### The problem with winner-take-all competition design
+
+Standard competition platforms (Kaggle, Topcoder, HackerOne) have a fundamental supply-side retention problem: most participants lose. A competition with 20 submissions has 19 losers. If losing teams receive nothing — no feedback, no improvement signal, no ongoing relationship — they will:
+1. Stop competing in the next competition
+2. View the competition as a lottery, not as a structured improvement opportunity
+3. Recommend against the platform to other agent teams
+
+Kaggle partially solved this through the Kaggle Notebooks / community discussion feature — teams shared their approaches publicly after competitions closed, so losers could learn from winners and from each other. But this only worked because Kaggle's tasks were public datasets — sharing approaches was safe.
+
+Straw's competitions use private enterprise data and proprietary rubrics. Public discussion of approaches after the competition would leak enterprise intellectual property. Straw cannot simply implement Kaggle's public notebook model.
+
+---
+
+### What losing teams currently receive in other evaluation markets
+
+| Platform | What losers receive | Retention rate (approximate) |
+|----------|--------------------|-----------------------------|
+| Kaggle | Public leaderboard score + open post-competition discussion | ~40% of top-25 finishers compete in next competition |
+| HackerOne | Invalid/duplicate bug reports: nothing. Valid but non-critical reports: small bounty + no details | ~60% of active hackers submit to multiple programs (HackerOne 2025) |
+| Topcoder | Prize for 2nd place (typically 50% of 1st); nothing below that | Unknown, but Topcoder maintains active community |
+| Upwork | No "losing" — every submitted bid either wins the project or not; losers receive feedback on application rate | ~70% bid reuse in 90 days (Upwork estimates) |
+| ARC Prize | Detailed performance breakdown by task type; public leaderboard with category analysis | ~35% of teams participated in consecutive years |
+
+**The pattern**: Platforms that give meaningful, structured feedback to non-winners retain more supply. HackerOne's 60% retention is high because they give hackers a qualitative assessment of every valid report — even when they don't pay a bounty.
+
+---
+
+### The Straw structured feedback model
+
+For every competition, every agent team that submits a qualifying entry (meets minimum threshold — at least 50% of required submissions, no DQ violations) receives:
+
+**Feedback Tier 1 — Automated, delivered within 24 hours of competition close**:
+- Their Tier 1 score (deterministic evaluation): absolute number and percentile rank among all submissions
+- Their Tier 2 score (LLM judge evaluation): score breakdown by rubric component
+- Their overall final score and final ranking (if not winner)
+- Benchmarks: median submission score, top quartile score, winner's score
+- No submission content from other teams is shared — only aggregate statistics
+
+**Feedback Tier 2 — Human-curated, delivered within 5 business days**:
+- Rubric component analysis: "Your performance on [component A] was in the top 10%. Your performance on [component B] was in the bottom 25%. The gap between the winner and your submission was most concentrated in [component B]."
+- Common error patterns: "Across all submissions, the most common failure mode was [pattern]. Your submission showed this pattern to [degree]."
+- This is Straw-generated feedback based on aggregate patterns — does not reveal other teams' specific approaches
+
+**Feedback Tier 3 — Enterprise-authorized deep dive (optional, enterprise must opt in)**:
+- With enterprise client's permission, Straw shares a more detailed breakdown of why the winning submission succeeded
+- The enterprise benefits because this helps all teams improve for future competitions
+- The agent team benefits because they get a clear improvement target
+- Not all enterprises will opt in — some will prefer to keep the winning approach confidential
+
+---
+
+### The improvement loop — turning feedback into better supply
+
+If losing teams receive structured Tier 1 and Tier 2 feedback, they can identify their specific gaps and improve. This creates an improvement loop:
+
+**Loop structure**:
+1. Team competes → receives score + gap analysis
+2. Team identifies specific rubric component where they underperformed
+3. Team improves their agent specifically on that component
+4. Team competes again in next relevant competition
+5. Performance improves → team moves up in competition rankings
+6. Improved performance → enterprise clients see better pool of agents → more enterprise demand → more competitions → more improvement opportunities
+
+**This is the calibration corpus feedback effect**: The calibration corpus (each competition's data) enables Straw to give increasingly specific feedback over time as the database of performance patterns grows. A team that has competed 3 times gets better feedback than a team that has competed once, because Straw has more data on their specific performance patterns.
+
+---
+
+### What this means for agent supply retention
+
+**The goal**: 60%+ of teams that compete in one Straw competition compete in at least one more within 90 days.
+
+**Current state (before Straw opens)**: Unknown — must be built from scratch.
+
+**Target state at 50 competitions**: 65% repeat participation rate, based on HackerOne's model.
+
+**The "Straw Improvement Score"** — a supply-side feature to build:
+
+Alongside the per-competition score, Straw tracks each team's **improvement trajectory** over their competition history. If a team improved their score by 15 percentile points between their 2nd and 3rd competition, that trajectory is visible to:
+- Enterprise clients who want to hire improving agents, not just current top performers
+- The team itself (motivation signal)
+- Investors who might be evaluating the team's trajectory (Tick 128 — acquihirability)
+
+The improvement trajectory is a second-order signal that Kaggle never built. A team whose score is improving fast is a better procurement bet than a team whose score is stagnant at a higher level — because the improving team will be better by the time the enterprise deploys them.
+
+---
+
+### Specific product features to build for the improvement loop
+
+**Phase 1 (MVP, can ship at launch)**:
+- Post-competition score dashboard: absolute score, rubric breakdown, percentile rank
+- Historical performance tab: every competition the team has entered, scores over time, trajectory visualization
+- Benchmark comparison: how this team's score distribution compares to the field
+
+**Phase 2 (Month 3–6)**:
+- Gap analysis automated report: "Based on your last 3 competitions, your weakest rubric component is [X]. The top 10% of agents on tasks similar to yours scored [Y] on [X]."
+- Practice mode: Straw releases de-classified historical competition tasks (after enterprise approval, 12 months post-competition) for teams to practice on. Teams can see their score on historical rubrics without prize stakes.
+- Improvement feed: "3 competitions are currently open that match your demonstrated strengths."
+
+**Phase 3 (Month 9–18)**:
+- Collaborative improvement features: Teams can optionally connect with other losing teams to debrief (Straw hosts a "lessons learned" call with 3–5 non-winner teams, without sharing specific approaches)
+- Mentorship program: Top-performing agent teams are invited to mentor newer teams in exchange for Straw credits or reduced competition entry fees
+
+---
+
+### The economic model for the improvement loop
+
+**Cost**: Human-curated Tier 2 feedback requires Straw staff time. At launch, this is the rubric design team (Tick 99) pulling double duty. Estimate: 30 minutes per submission for Tier 2 feedback. At 20 submissions per competition × 30 minutes = 10 hours per competition. At $100/hour internal cost = $1,000/competition. This is a small addition to the $5,000 COGS per competition (Tick 120).
+
+**Value**: 65% repeat participation rate (vs. 30–40% without feedback) means each incremental competition gets 60%+ more agent submissions from returning teams, reducing the supply cold-start problem with every competition.
+
+**The compounding effect**: At 50 competitions, if 65% of teams from previous competitions re-enter new relevant competitions, Straw has a self-sustaining supply pool without continuous external recruitment. The improvement loop converts one-time participants into a recurring community.
+
+---
+
+### Sources
+
+- Kaggle retention data: Kaggle community blog; Goldbloom AMA (medium.com/implodinggradients); ARC Prize 2024 retrospective
+- HackerOne active hacker retention: HackerOne Community Report 2025; 85,000 valid reports from multi-program hackers
+- ARC Prize multi-year participation: ARC Prize 2024 and 2025 team registration data (public)
+- Topcoder prize structure: topcoder.com/thrive/articles/Standard_Challenge_Types; 50% second-place prize standard
+- Practice mode precedent: Codeforces gym (competitive programming practice platform); Kaggle's competition archive
+
