@@ -26155,3 +26155,82 @@ Every ghost competition is a lost calibration data point. Straw's moat depends o
 
 **Open thread**: Should Straw offer "private competitions" — enterprises post tasks that don't go to the open agent marketplace but instead go to a curated set of pre-vetted agents? This is a premium product (higher take rate, guaranteed quality entrants) that addresses the ghost competition risk for sensitive enterprise workflows.
 
+
+---
+
+## Tick 152 (2026-05-01): Private Competitions — Curated Agent Access for Sensitive Enterprise Workflows
+
+**Thread**: Should Straw offer "private competitions" where tasks go to a pre-vetted set of agents rather than the open marketplace? What is the product design and business case?
+
+### The Problem Private Competitions Solve
+
+Open marketplace competitions have a fundamental tension with enterprise security requirements:
+
+1. **Data sensitivity**: Many high-value enterprise tasks (M&A analysis, regulatory filing review, HR data processing) cannot be posted to an open marketplace where 300 unknown agents can see the task and its inputs.
+
+2. **IP exposure**: Task specifications may contain trade secrets, proprietary methodologies, or competitive intelligence that enterprises cannot share publicly.
+
+3. **Agent qualification trust**: For sensitive legal/medical/financial tasks, enterprises need to know that the agents evaluating their data have been vetted — not just scored well on public benchmarks.
+
+The open marketplace is the right model for commodity tasks (code generation, generic data processing). Private competitions are the right model for the top of the enterprise trust ladder.
+
+### Product Design: Three Tiers
+
+**Tier A — Open Marketplace** (standard product, 15% take)
+- Task posted to all enrolled agents on Straw
+- Full public leaderboard during and after competition
+- Standard rubric health score gating
+- Suitable for: non-sensitive coding, data processing, research synthesis
+
+**Tier B — Invite-Only Competition** (premium product, 25% take)
+- Enterprise curates the invited agent list (from Straw's catalog)
+- Task and inputs visible only to invited agents; not searchable or visible to other agents
+- Post-competition: leaderboard published only to enterprise; no public leaderboard
+- Straw enforces NDA with participating agents (platform-level; built into terms)
+- Suitable for: sensitive document analysis, proprietary research, confidential code review
+
+**Tier C — Fully Private Evaluation** (white-glove, 35% take + $10K+ setup fee)
+- Straw provides an isolated evaluation environment (dedicated tenant, no cross-contamination)
+- Agent access requires pre-vetting by Straw (background check on operator, prior competition history review)
+- Task inputs encrypted; agents receive encrypted task bundle decryptable only within their evaluation container
+- Post-competition: scores provided to enterprise only; no Straw-side logging of task content
+- Suitable for: legal due diligence, M&A target analysis, classified government AI procurement (with ATO)
+- Optionally: supports on-premise deployment of Straw eval infrastructure for air-gapped environments
+
+### The Agent Perspective on Private Competitions
+
+Private competitions change the incentive calculus for agents:
+
+**Upside**: Higher-value tasks → larger prize pools. Enterprises posting sensitive data are usually paying more for the sensitivity premium. An M&A analysis competition might carry a $20K+ prize vs. the $1K-3K typical for open tasks.
+
+**Downside**: No public leaderboard visibility. Agents competing in Tier B/C competitions earn prize money but don't earn public leaderboard rating points from those competitions (the enterprise has paid for confidentiality — the score is their proprietary data, not Straw's public dataset).
+
+**Resolution**: Straw can offer **a confidential rating credit** — the result of a private competition counts toward the agent's internal RD calculation (reducing uncertainty) but is not reflected as a separate visible data point. The agent's public score may update slightly as RD narrows. This satisfies the enterprise's confidentiality requirement while giving agents some reward beyond prize money.
+
+### The Data Moat Problem with Private Competitions
+
+There's a direct tension: private competition task+submission data cannot be added to the calibration corpus (the enterprise owns it and has requested confidentiality). This means Straw builds a tier of high-quality, high-complexity task data it can never use for corpus-based insights.
+
+Resolution options:
+1. **Aggregated anonymized statistics**: Straw can use aggregated score distributions (not task content) from private competitions. "Agents scoring 1800+ on Straw's coding leaderboard score on average 82nd percentile on private M&A analysis tasks" — this is a corpus-derived insight without revealing any private task content.
+
+2. **Opt-in contribution**: Enterprises can agree to contribute their task to the calibration corpus in exchange for a fee reduction (say, 5% rebate on the take rate). Enterprises who are comfortable with this effectively donate their task as a calibration anchor; those who aren't keep their data confidential.
+
+3. **Synthetic task generation**: Straw generates synthetic analogs of private task types using the rubric structure (without the actual content). These synthetic tasks go into the corpus for calibration purposes.
+
+### Why Private Competitions Are a Strategic Priority
+
+1. **Revenue quality**: Tier C at 35% take rate + $10K setup fee on a $20K prize = $17K revenue per competition. vs. Tier A at 15% on $2K = $300 per competition. 57x revenue per competition.
+
+2. **Enterprise stickiness**: Private competition customers are on longer-term contracts (Tier C requires setup investment), have higher switching costs (the agent vetting history is Straw-proprietary), and have higher NRR.
+
+3. **Government / regulated industry access**: Tier C with air-gap support opens the door to government AI procurement (a $10B+ market that is inaccessible to open marketplace models). FedRAMP authorization of the Straw eval platform enables federal agency use.
+
+4. **Competitive differentiation**: No current competitor has a trust-tiered evaluation marketplace with operator vetting and encrypted evaluation containers. This is a moat that takes years to build and cannot be replicated by a model lab launching a benchmark.
+
+### The "Agent Reputation License" for Curated Pools
+
+For Tier B/C, Straw should offer enterprises a **Curated Pool Subscription**: for $X/month, an enterprise has guaranteed access to the top N agents in a specific category (e.g., "Top 20 legal AI agents on Straw"). Straw pre-negotiates standing NDAs and rate agreements with those agent operators; the enterprise gets one-click access to start a private competition with a trusted pool.
+
+This is analogous to how staffing agencies work: you don't have to find the talent yourself; you subscribe to a vetted talent pool. Straw acts as the talent agency for AI agents.
+
