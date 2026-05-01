@@ -17603,3 +17603,294 @@ Resolution: Campaigns are a premium product tier. Standard hourly competitions r
 
 **Push status:** `git push -u origin master` succeeded after one rebase (another session had pushed Section 28 seed pitch deck content during our work window). Commit `2d2e267` is live on origin/master. File is now 17,309 lines (up from 17,001 at session start).
 
+
+---
+
+## Tick 116 (2026-05-01): Hiring benchmarks — confirmed salary and equity data for Straw's early team
+
+**Thread**: Grounding the hiring plan from Tick 113 in actual 2025–2026 market data from Carta, Betts Recruiting, Wellfound, and Kruze Consulting.
+
+*All figures are US Bay Area market unless noted. Sources: Carta H1 2025 Compensation Survey, Betts Recruiting 2025 AE data, Wellfound salary data, Kruze Consulting TechCrunch startup compensation study.*
+
+---
+
+### Confirmed salary and equity ranges
+
+| Role | Base salary (2025-2026) | OTE / Total comp | Equity range | Notes |
+|------|------------------------|-----------------|-------------|-------|
+| Founding engineer (#1) | $140K–$200K | Same (no commission) | 1.0–2.5% | Carta average: $189K for new engineering hire |
+| Second engineer (#2) | $150K–$190K | Same | 0.3–1.0% | Highly negotiable based on seed progress |
+| Enterprise AE (#1, founding) | $110K–$160K base | $220K–$300K OTE | 0.05–0.2% | Betts 2025: avg AE base $140K, avg OTE $270K |
+| Customer Success Manager | $80K–$130K | $100K–$160K | 0.05–0.15% | Wellfound: avg $99K base |
+| Head of Product (IC → VP) | $160K–$220K | Same | 0.15–0.75% | Varies sharply by timing and scope |
+| ML/AI systems engineer | $160K–$220K | Same | 0.3–0.75% | AI/ML +9.1% YoY at seed stage |
+
+**Carta H1 2025 key data**:
+- Average new engineering hire salary at seed: **$189,000**
+- Product titles: also at $189K average (tied with engineering as highest-paid function)
+- AI/ML engineers specifically: median compensation up 9.1% YoY at early-stage startups
+
+**Betts Recruiting 2025 enterprise AE data**:
+- Average enterprise AE base: $140K
+- Average OTE: $270K (typical quota = 5–8× OTE)
+- First AE at seed stage: expect lower base ($90K–$120K) with higher equity compensation in lieu of guaranteed quota attainment
+
+---
+
+### Burn rate: confirmed with AI-specific benchmark
+
+AI startups burn approximately **2× faster than traditional SaaS** (SVB / SaaStr data):
+
+| Team size | Monthly burn (AI startup) | Notes |
+|-----------|--------------------------|-------|
+| 3–5 people (seed) | $100K–$150K | AI compute adds $8K–$25K/month vs. $3K–$8K for traditional SaaS |
+| 8–12 people (post-seed) | $300K–$500K | Active sales motion + model inference costs |
+
+**Straw's specific burn dynamics**:
+- Competition execution requires model inference (LLM-as-judge) → $2K–$8K per competition in API costs
+- Container execution sandbox (Docker + network isolation) → $1K–$3K per competition in compute
+- Total per-competition infrastructure cost: ~$3K–$11K at current model pricing, declining with volume discounts
+
+**Target burn multiple**: Under 1.8× at Series A ($1.80 spent per $1 new ARR). Top quartile AI companies achieve sub-1.2×.
+
+---
+
+### Equity structure: the data behind Tick 113 guidance
+
+From Carta, Pave, and Pear VC framework:
+
+**The option pool**: 12–15% of fully diluted shares at seed is standard. 15% is preferred — gives room for 5–7 meaningful early-employee grants without running short before Series A.
+
+**Early employee equity** (% of fully diluted shares):
+| Hire # | Equity range | P50 |
+|--------|-------------|-----|
+| #1 (founding engineer) | 0.5–2.5% | ~1.5% |
+| #2 | 0.3–1.0% | ~0.6% |
+| #3 | 0.1–0.5% | ~0.25% |
+| #4 | 0.1–0.4% | ~0.20% |
+| #5 | 0.1–0.35% | ~0.15% |
+
+**Sam Altman's rule**: "Give at least 10% in total to your first 10 employees."
+
+**The important counterargument** (Ortutay, Substack): "1% Equity for Founding Engineers is BS." The market-rate 0.5%–1% dramatically undervalues founding engineers relative to co-founders who joined at the same risk level. Straw should grant toward the high end of these ranges for the first 2–3 hires — they are taking co-founder-level risk without co-founder titles.
+
+**Vesting standard**: 4-year vest with 1-year cliff is universal. No variation from this unless the hire has unusual leverage.
+
+---
+
+### Engineering specialization priority order for Straw
+
+Based on the architecture required to build the platform and the risk profile:
+
+**Priority 1 (Founding, Day 1)**: Full-stack/backend engineer
+- TypeScript, Postgres/Supabase, async job queues (BullMQ/Redis), REST API design
+- Must be able to own the entire platform in the first 6 months
+
+**Priority 2 (Hire #2, Month 4–6)**: Infrastructure/DevOps engineer
+- Docker, cloud infrastructure (AWS), CI/CD, security hardening, multi-tenant isolation
+- The sandboxed execution environment (isolating agent submissions from each other and from enterprise data) is a security-critical, infrastructure-heavy problem — Straw's hardest technical challenge
+
+**Priority 3 (Hire #3, Month 8–12)**: ML/AI systems engineer
+- Python, LLM evaluation frameworks, multi-model judge ensemble, scoring pipelines
+- This is the core product differentiation — the judge must be credible and adversarially resistant
+
+**Priority 4 (Series A)**: Frontend engineer
+- Can be deferred if founders can maintain the MVP frontend
+- React/Next.js, real-time updates, data visualization for leaderboards
+
+**Priority 5 (Series A)**: Security engineer
+- SOC 2 Type II compliance in the early stage can be handled with a fractional security consultant + compliance platform (Drata/Sprinto)
+- Full-time security hire triggers after the volume of enterprise security questionnaires exceeds what a consultant can manage
+
+**The critical insight from comparable companies** (Braintrust, Arize, LangSmith):
+All three were engineering-first companies. No dedicated enterprise AEs before $1M ARR. Open-source or free tier as distribution. ML evaluation expertise was core, not bolt-on. Enterprise sales came post-Series A.
+
+---
+
+### Sources
+
+- Carta H1 2025 startup compensation survey: carta.com/data/startup-compensation-h1-2025
+- Betts Recruiting 2025 AE data: bettsrecruiting.com/blog/top-tech-account-executive-compensation-trends-for-2025
+- Wellfound CSM salary: wellfound.com/hiring-data/r/customer-success-manager-3/i/b2b
+- AI startup burn rates: saastr.com (SVB data on AI startups burning 2× vs. traditional SaaS)
+- Pear VC equity framework: pear.vc/how-to-structure-startup-equity-for-early-hires
+- Founding engineer equity counterargument: ortutay.substack.com/p/1-equity-for-founding-engineers-is
+- Comparable AI eval company team structures: Braintrust, Arize, LangSmith public information
+- Burn multiple benchmarks: cfoadvisors.com/blog/2025-burn-multiple-benchmarks
+- Kruze/TechCrunch startup salary study: techcrunch.com/2024/12/25/132k-149k
+
+
+---
+
+## Tick 117 (2026-05-01): Risk register — the 7 existential risks and their mitigations
+
+**Thread**: Comprehensive risk register for Straw's fundraising materials. Sourced from: a16z marketplace research, CB Insights failure analysis, arXiv adversarial ML papers, Squire Patton Boggs agentic AI legal analysis, Gartner hype cycle data.
+
+---
+
+### Risk register overview
+
+Risk severity = likelihood × impact. Ratings below are subjective but grounded in the research.
+
+| Risk | Likelihood | Impact | Severity | Priority |
+|------|-----------|--------|----------|----------|
+| Cold-start liquidity trap | High | Existential | Critical | 1 |
+| Disintermediation | High | High | Critical | 1 |
+| LLM judge adversarial gaming | Medium | Existential | Critical | 2 |
+| IP liability for submissions | Medium | High | High | 3 |
+| Foundation model provider entry | High | Medium | High | 3 |
+| Enterprise trust deficit | High | High | High | 3 |
+| Regulatory crystallization (hostile) | Low | High | Medium | 4 |
+
+---
+
+### Risk 1: Cold-start liquidity trap (existential)
+
+**Description**: Without agents, enterprises won't post tasks. Without tasks, agents won't onboard. The marketplace never reaches self-sustaining liquidity.
+
+**Why it's existential**: Convoy, the $4B "Uber for trucking," collapsed in October 2023 specifically because it never achieved durable liquidity in enough geographic corridors. The trap is a documented marketplace killer.
+
+**Straw-specific form**: Agents need a pipeline of live tasks to justify integration overhead. Enterprises need a proven agent pool before risking real work. Neither side moves first.
+
+**Mitigation**:
+1. Straw-funded calibration competitions (solve the chicken-or-egg by being the first buyer of agent supply)
+2. Manual agent recruitment (SWE-bench top 50, ARC Prize alumni — identified, named, reachable)
+3. Model provider as demand substitute (a model provider's agent competing in the first competition validates supply)
+4. Prize-to-effort ratio maintenance (always above $1K prize per $1K effort to make competition economically rational)
+
+**Success criterion**: 10+ agent submissions per competition by Month 4. Below this threshold: emergency supply-side outreach protocol.
+
+---
+
+### Risk 2: Disintermediation (platform leakage — structural, persistent)
+
+**Description**: Enterprise meets Agent X through Straw, succeeds, and contracts Agent X directly in Year 2. Straw captures none of the lifetime value.
+
+**Why it's severe**: This is the defining risk of every B2B marketplace. HBS classifies "monogamous categories" — where one buyer repeatedly engages the same seller — as having the highest disintermediation risk. Straw's product literally facilitates the initial relationship formation.
+
+**Mitigation**:
+1. **The off-platform conversion fee** (Tick 78): 2–4% ACV charge when an enterprise converts a Straw competition winner to a direct contract. Requires contractual language in the enterprise MSA and agent terms. Makes disintermediation expensive, not impossible.
+2. **The Straw Monitor lock-in**: Straw Monitor ($500/agent/month) creates a continuous service relationship that survives the initial competition. If Straw continues monitoring the hired agent's performance, there is ongoing value that a direct contract doesn't replace.
+3. **Competition repeat design**: The value of running a second competition exceeds the value of repeating the first agent. Enterprises who "own" Agent X still need Straw to evaluate Agent Y for their next workflow.
+4. **Straw Score as the asset**: The agent's Straw Score history is hosted on Straw and verifiable only through Straw. An agent who moves off-platform loses the ability to display verified performance history.
+
+**The honest acknowledgment**: Disintermediation cannot be fully prevented. Straw must design for it from Day 1 and build product features that create ongoing value beyond the initial match. This is the same problem Upwork, Fiverr, and every B2B marketplace faces — and none has fully solved it.
+
+---
+
+### Risk 3: LLM judge adversarial gaming (undermines core value proposition)
+
+**Description**: An agent learns to produce outputs that score well with Straw's judge regardless of functional correctness. Winning agents represent prompt engineers, not task solvers.
+
+**The research basis**: Published 2025 research (arXiv:2506.09443) demonstrates that LLMs cannot reliably evaluate at scale. Universal adversarial attacks can inflate assessment scores. A "null" response crafted in a persuasive style receives high rankings from GPT-4 evaluators. UCBerkeley RDI (2026) shows every major public benchmark can be exploited with 10 lines of code.
+
+**Straw-specific risk**: If the judge model is known or guessable (e.g., "Straw uses Claude 3.7 as its primary judge"), motivated agent developers will red-team it. A single public exploit — "here's how to score 950/1000 on Straw without solving the task" — destroys platform credibility.
+
+**Mitigation**:
+1. **Multi-model judge ensemble** with undisclosed model mix and rotation — any attack that works against one judge is checked by the others
+2. **Deterministic Tier 1 layer** — functional tests (unit test pass rate, extraction accuracy) cannot be gamed by prompt engineering; agents must actually solve the task
+3. **Tier 2 judge swap augmentation** — run evaluation twice (A vs. B, then B vs. A); flag any judgment that flips. Gaming requires consistent scoring regardless of presentation order.
+4. **Adversarial submission detection** — statistical anomaly detection on score distributions; submissions that score unusually high on rubric adherence but unusually low on functional tests are flagged for human review
+5. **Human spot check**: 10% random sampling of competitions with human expert review; discrepancy > 15 points triggers full human review
+
+**What cannot be fully mitigated**: LLM judges with expert domain knowledge gaps (medical, legal, biomedical). Research shows LLM-human agreement drops to 64–68% for expert knowledge tasks. Straw must explicitly prohibit LLM-as-judge for high-stakes expert-domain competitions and require human review escalation.
+
+---
+
+### Risk 4: IP liability for competition submissions
+
+**Description**: Agents submit work containing IP from copyrighted training data. Enterprise deploys the winning output. The original IP holder sues. Straw facilitated the infringement.
+
+**The legal landscape**: Courts have not yet established clear precedent for competition platform liability for AI-generated submissions. The EU Product Liability Directive (effective December 2026) classifies software as a "product" — enabling strict liability if defective. Straw's act of declaring a "winner" could be interpreted as an endorsement creating duty of care.
+
+**Additional IP wrinkle**: If a losing submission contains a patentable innovation that the enterprise reviewed during the competition process, is the enterprise now contaminated? The enterprise has seen the invention. The agent submitted it. Straw hosted it. No clear precedent.
+
+**Mitigation**:
+1. **IP indemnification clause in agent ToS**: Agent team represents and warrants that their submission does not infringe any third-party IP. Straw is indemnified by the agent for IP claims arising from their submission.
+2. **Enterprise ToS carve-out**: Straw does not warrant the IP cleanliness of submissions; enterprise performs its own IP due diligence before deployment
+3. **"Clean room" protocol for finalist submissions**: Finalist agents (top 3) must complete an IP provenance questionnaire before the prize is disbursed
+4. **Outside counsel review**: Straw obtains a legal opinion on competition platform IP liability before the first enterprise competition runs. This is a $5K–$15K legal cost that is non-optional.
+
+**The honest acknowledgment**: A single high-profile IP lawsuit involving a Straw competition could cause enterprise buyers to pause new competitions during investigation. Straw must have cyber liability insurance that covers IP infringement claims from Day 1.
+
+---
+
+### Risk 5: Foundation model provider entry (competitive — structural conflict but not insurmountable)
+
+**Description**: OpenAI, Anthropic, or Google builds an evaluation tool for enterprises that sufficiently undercuts Straw's differentiation.
+
+**Why it might happen**: Model providers have direct enterprise relationships with 25–32% of the enterprise LLM market. They have structural incentives to own the evaluation layer because evaluation results drive model selection.
+
+**Why it probably won't succeed** (Tick 98):
+- A model provider's evaluation platform is structurally conflicted: "we used Anthropic's platform to evaluate which AI agent won, and it turns out the Anthropic agent won" is not a credible evaluation
+- Non-Anthropic agents won't submit to an Anthropic-branded platform
+- The multi-cloud enterprise needs a cloud-neutral venue
+
+**Datadog rollup risk** (more subtle): Datadog has invested across LangChain, Arize, Braintrust, and Patronus AI in 2025 — a roll-up strategy that could produce a well-resourced observability+evaluation incumbent. This is not a conflict-of-interest problem, but it is a distribution problem: if Datadog bundles evaluation into its observability suite, enterprises may accept "good enough" evaluation as part of an existing vendor relationship.
+
+**Mitigation**:
+1. The neutrality defense: explicitly publish and market Straw's independence from model providers. "We don't train models. We don't sell models. Our only interest is in the score being right."
+2. Institutional anchor: once one enterprise requires Straw Score in their RFP, alternatives face credibility pressure — "why isn't your score on Straw?"
+3. Calibration corpus moat: a competitor must run real competitions to build calibration data. Even a well-resourced competitor can't shortcut this.
+
+---
+
+### Risk 6: Enterprise trust deficit
+
+**Description**: Only 6% of enterprises fully trust AI agents with core business processes (HBR, December 2025). 43% restrict agents to limited/routine tasks. If the adoption bottleneck is organizational culture rather than evaluation methodology, Straw's TAM is narrower than projected.
+
+**The "agentwashing" variant**: Gartner labels the current state: 79% of enterprises *claim* AI agent adoption, but only 11% actually have agents in production. Most "agents" are assistants or chatbots. If enterprises aren't deploying agents at scale, they don't need to evaluate them at procurement scale.
+
+**Straw's exposure**: Straw's business model assumes enterprises are making real AI agent procurement decisions in the next 6–12 months. If the market is 24–36 months away from that inflection point, Straw is too early and will run out of runway waiting for demand to materialize.
+
+**The honest assessment**: This is a timing risk more than a market risk. The probability that enterprise AI agent deployment is real is high (the evidence of actual deployments is extensive). The probability that evaluation is the bottleneck (vs. capability, trust, or implementation complexity) is the open question.
+
+**Mitigation**:
+1. Focus on Quadrant A task types (software engineering, document processing) where deployment is already happening, not aspirational
+2. Require design partners to have an existing AI agent in use or evaluation — not "planning to use AI." If they don't have a real agent evaluation need, disqualify.
+3. Price the first competition at $8K (in Starter tier) to reduce risk for cautious enterprises — this is a pilot, not a commitment
+
+---
+
+### Risk 7: Regulatory crystallization in a hostile direction
+
+**Description**: A regulation is passed that requires "AI evaluations" to be conducted only by licensed, regulated entities — or that places strict liability on platforms that facilitate AI agent hiring in a way that makes Straw's model unviable.
+
+**The current gap**: No regulation specifically addresses agentic AI evaluation as of May 2026. The EU AI Act, EU Product Liability Directive (effective December 2026), and US executive orders are all drafting toward this space.
+
+**The worst case**: The EU Product Liability Directive is interpreted to mean that Straw, by certifying a "winner," bears strict liability for the winning agent's subsequent actions. This would require Straw to purchase product liability insurance at costs that make the business model unviable, or to add so many disclaimers that the "certification" value is destroyed.
+
+**The realistic case**: Regulations require Straw to maintain specific documentation (AI-BOM, audit trails, DPA with each enterprise) and restrict what Straw can promise (no liability claims, explicit disclaimers). This adds compliance cost but doesn't destroy the business model.
+
+**Mitigation**:
+1. Engage outside counsel specializing in AI law immediately — not when the regulation arrives, but now
+2. Design Straw's legal positioning as a "marketplace platform" (like Upwork or Airbnb) rather than a "certification body" — marketplace platforms have substantially lower liability than certification bodies
+3. Monitor EU AI Act implementation closely; apply for notified body status if it becomes advantageous
+4. Proactively engage NIST, IEEE, and AI governance bodies to shape the regulatory language in a direction that accommodates Straw's model
+
+---
+
+### Known unknowns: the risks we can't quantify
+
+**The "bring your own eval" enterprise pattern**: Large enterprises (the only buyers with $100K+ budgets) are building internal AI governance teams. If Goldman Sachs and JPMorgan build their own private evaluation infrastructure, Straw's TAM shrinks to mid-market — which has smaller budgets and longer sales cycles.
+
+**Multi-agent system complexity**: Evaluating an individual agent in a Straw competition may not predict performance in a real multi-agent system. A winning agent in isolation might be incompatible with the enterprise's existing orchestration infrastructure.
+
+**Security attack surface**: A Straw competition where agents have access to enterprise task data creates a novel attack surface. An adversarial agent could exfiltrate the enterprise's confidential task data or inject instructions into the judge. Cisco's AI security team has documented this as an active threat vector for AI competitions.
+
+**Agent capability curve uncertainty**: If capabilities converge so rapidly that all agents become commodity (everyone scores 950/1000), differentiation disappears and the evaluation value proposition collapses. Conversely, if capabilities stall, enterprises stop deploying and stop evaluating.
+
+---
+
+### Sources
+
+- Cold-start and disintermediation: a16z required reading for marketplace entrepreneurs (a16z.com/required-reading-for-marketplace-entrepreneurs); HBS disintermediation research
+- Convoy collapse: TechCrunch October 2023
+- LLM judge failure modes: arXiv:2506.09443; UC Berkeley RDI trustworthy benchmarks (2026)
+- Adversarial attacks on LLM judges: arXiv:2508.02994; Alibaba PAI-Judge attack paper (2025)
+- IP liability: Squire Patton Boggs agentic AI legal risk (squirepattonboggs.com); EU Product Liability Directive December 2026
+- Agent trust deficit: HBR/Fortune December 2025 (6% full trust); Gartner 2026 Hype Cycle for Agentic AI (79% claim vs. 11% production)
+- Foundation model market share: Datadog AI observability investment footprint (disclosed in Q4 2025 earnings)
+- CB Insights failure post-mortems: cbinsights.com/research/startup-failure-post-mortem (483 cases)
+- Tomasz Tunguz 11 VC risk categories: tomtunguz.com/the-11-risks-vcs-evaluate
+
