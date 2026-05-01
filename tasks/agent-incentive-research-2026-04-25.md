@@ -31348,6 +31348,381 @@ Ticks 170–185 and Section 32 complete. 16 ticks and one major section added th
 2. Ticks 173-176 — PUSHED ✓
 3. Section 32 — PUSHED ✓
 4. Ticks 177-180 — PUSHED ✓
-5. Ticks 181-185 — PUSH NOW
+5. Ticks 181-185 — PUSHED ✓
+
+---
+
+## Tick 186 (2026-05-01): The Straw developer ecosystem — SDK, webhooks, CI/CD integration
+
+**Thread source:** Session 20 candidate thread. Straw needs agents to register and participate. What developer experience infrastructure makes this frictionless?
+
+**The core tension:**
+
+Enterprise buyers care about competition quality (best agents competing). Agent developers care about developer experience (easy to submit, clear feedback, financial upside). Both are supply-side problems: Straw needs enough qualified agents to run credible multi-agent competitions. The developer ecosystem is how Straw builds that supply.
+
+**The agent developer lifecycle on Straw:**
+
+1. **Discovery:** Agent developer hears about Straw (community, documentation, GitHub presence)
+2. **Registration:** Creates Straw developer account, registers agent with capability metadata
+3. **First submission:** Submits agent to an open competition (or a sandbox competition)
+4. **Competition result:** Receives score, ranking, feedback on performance
+5. **Iteration:** Updates agent based on feedback, re-submits to next competition
+6. **Reputation building:** Accumulates competition history, ELO-style rating, wins
+7. **Revenue:** Wins prize money; gets licensing inquiries from enterprise customers; earns acquihire outreach
+
+Each step needs to be frictionless. Every friction point loses a developer who doesn't register, doesn't submit, or submits once and never returns.
+
+**SDK design principles:**
+
+The Straw SDK (TypeScript / Python primary, with Go and Rust libraries planned) needs to do three things:
+
+1. **Agent registration:** One command to register an agent — name, capabilities, submission mode (API endpoint or Docker image), pricing tier for licensing inquiries. With A2A v1.0, accept signed agent cards as an alternative registration path.
+
+2. **Local testing:** The SDK includes a local Straw evaluation runner — the same Tier 1 deterministic scoring the production platform uses, runnable locally before submitting to a live competition. This means an agent developer can see their score before paying a competition entry.
+
+3. **Result streaming:** After submission, the SDK streams scoring events in real-time — "Tier 1 complete: 87/100. Entering Tier 2 LLM evaluation..." This is a developer experience detail that makes the evaluation feel transparent rather than a black box.
+
+**Webhook integration:**
+
+Straw sends webhook events at key lifecycle moments:
+
+- `competition.opened` — A new competition matching the agent's registered capabilities is open for submission
+- `submission.received` — Straw has received the agent's submission and is evaluating
+- `tier1.complete` — Tier 1 deterministic scoring complete; score available
+- `tier2.complete` — Tier 2 LLM evaluation complete; score available
+- `competition.closed` — All submissions scored; results available
+- `winner.declared` — Winner announced; prize disbursement initiated
+- `licensing.inquiry` — An enterprise customer has expressed interest in licensing or hiring the agent
+- `acquihire.inquiry` — An enterprise customer has expressed interest in acquiring the agent
+
+The `licensing.inquiry` and `acquihire.inquiry` webhooks are the developer's payoff signal. These turn Straw from a competition platform into a deal flow generator for agent developers.
+
+**CI/CD integration:**
+
+The ideal developer workflow: agent developer pushes code to GitHub → CI/CD pipeline runs local tests → on merge to main, automatically submits the new agent version to Straw's sandbox evaluation → receives score report in the PR → optionally triggers submission to any active competitions matching capabilities.
+
+Implementation:
+- Straw GitHub Action: `straw-submit` action available in GitHub Marketplace
+- Parameters: agent endpoint, capabilities, optional: `competition_id` to submit to a specific competition
+- Output: Straw score report as a PR comment, with a direct link to the full competition dashboard
+- This turns Straw submission into a continuous integration step, not a manual action
+
+**Sandbox competitions:**
+
+Not every agent is ready for live enterprise competitions. Straw runs always-on sandbox competitions:
+- Using synthetic tasks designed by Straw to test each capability category
+- Open to all registered agents
+- Free to enter (no prize money)
+- Purpose: gives new agents a warm-up run, generates initial ELO rating, and populates the agent's Straw profile with performance history before they enter paid competitions
+
+This is the developer onboarding funnel: sandbox → first rating → real competition invitation.
+
+**Documentation and community:**
+
+The Straw developer portal needs:
+- Getting started guide (register agent, make first submission, read results) in under 20 minutes
+- Full API reference (OpenAPI spec, all endpoints, all webhook events)
+- Rubric design guide for agent developers: how to read a rubric, how to optimize for specific scoring criteria without gaming
+- Community Discord: competition announcements, agent developer Q&A, feedback on scoring
+- Leaderboard: public-facing agent rankings by task category (ELO ratings visible; specific competition scores anonymized)
+
+**Source:**
+- A2A v1.0 signed agent cards: https://a2a-protocol.org/latest/announcing-1.0/
+- SDK and CI/CD design principles informed by Scale AI, Braintrust, and LangSmith developer tooling patterns
+
+---
+
+## Tick 187 (2026-05-01): International expansion sequencing — EU first, APAC second
+
+**Thread source:** Session 20 candidate thread. Straw is US-based. When and how does it expand internationally?
+
+**The EU opportunity (expand now — regulatory tailwind is live):**
+
+The EU AI Act compliance deadline is August 2, 2026 — three months away. High-risk AI systems require documented conformity assessments including evaluation evidence. US companies that sell AI-powered products into the EU are in scope: if you sell or license AI systems to EU customers, the AI Act applies to you.
+
+The EU AI Act's practical effect on Straw's EU business: European enterprises deploying AI agents are now under regulatory mandate to have documented evaluation evidence. Straw's post-competition reports are the artifact. This is a pull-market dynamic: EU enterprises are looking for evaluation platforms because they need them for compliance, not just because they think it's a good idea.
+
+**EU market entry strategy:**
+
+*Phase 1: EU data residency (Q3 2026)*
+- Stand up an EU infrastructure node (AWS eu-west-1 or Azure Germany West Central)
+- All EU customer data processed and stored in EU region
+- Data Processing Agreement (DPA) template for GDPR compliance
+- This removes the primary sales objection: "We can't send our task data outside the EU"
+
+*Phase 2: EU AI Act compliance positioning (Q3 2026, concurrent)*
+- Explicitly market Straw's post-competition report as an EU AI Act Article 9.7 conformity assessment artifact
+- Add "EU AI Act Compliance Documentation" as a named deliverable in the Enterprise tier
+- Translate key documentation to German, French, Dutch (primary EU enterprise languages)
+- Target: EU enterprises under high-risk AI Act categories (finance, insurance, healthcare, HR tech)
+
+*Phase 3: EU direct sales (Q4 2026 / Q1 2027)*
+- Hire first EU-based AE (Berlin or Amsterdam, both strong enterprise AI hubs)
+- First priority markets: Germany (highest enterprise AI spend in EU), UK (post-Brexit but same AI regulation direction), Netherlands (high density of enterprise-grade AI deployments)
+- Partner with EU-based AI consulting firms who advise enterprises on EU AI Act compliance (they will refer Straw as the evaluation infrastructure)
+
+**The EU pricing note:** EU enterprise procurement cycles are slower (20-30% longer) and require more compliance documentation upfront. Price at 15-20% premium over US pricing for EU Enterprise tier to account for the additional data residency and compliance documentation cost.
+
+**APAC expansion (2027 — secondary priority):**
+
+APAC is the fastest-growing market for AI adoption, but the regulatory environment is fragmented (Singapore, Japan, Australia have voluntary/light frameworks; China has a mandatory framework incompatible with Straw's multi-vendor design). The APAC play waits until:
+- US and EU revenue base is established ($5M+ ARR)
+- Singapore or Japan emerge as coordination points for APAC AI regulation
+- A natural partner (SI, consulting firm, or enterprise channel) emerges in the region
+
+**What Straw does NOT need for EU expansion:**
+
+- FedRAMP is US-only — no EU equivalent required for commercial sales
+- EU AI Act compliance documentation is producible from Straw's existing architecture (no new product features needed, just new DPA/legal docs and data residency)
+- EU expansion does not require local corporate entity in Year 1 — selling to EU enterprises from a US entity is legal, just requires GDPR compliance (DPA + data residency)
+
+**Sources:**
+- EU AI Act full applicability August 2, 2026: https://www.legalnodes.com/article/eu-ai-act-2026-updates-compliance-requirements-and-business-risks
+- US companies in scope if selling to EU: https://www.tredence.com/blog/eu-ai-act-compliance-guide-us-companies
+- Holland & Knight EU AI Act August deadline analysis: https://www.hklaw.com/en/insights/publications/2026/04/us-companies-face-eu-ai-acts-possible-august-2026-compliance-deadline
+
+---
+
+## Tick 188 (2026-05-01): Straw's hiring plan — first 10 hires in sequence
+
+**Thread source:** Session 20 candidate thread. The first 10 hires define the company's technical culture, sales motion, and customer success posture. What is the right sequence and what does 90-day success look like for each role?
+
+**Founding team assumptions:**
+
+Jeremy (CEO/founder): technical background, product vision, early sales. Already conducting founder-led sales, doing first competitions, designing rubrics.
+
+Hire sequence (rough order):
+
+**Hire 1: Full-Stack Engineer (Product)**
+*When:* Immediately after seed round (Day 1)
+*Why first:* The competition platform needs to ship. Jeremy is the product vision; Hire 1 builds it. This person turns the prototype into the product customers can use.
+*Profile:* TypeScript (Next.js / Node.js) + PostgreSQL/Supabase proficiency. Has shipped production B2B SaaS before. Self-directed — can take a feature spec and deliver without daily supervision.
+*Total comp 2026:* $220K–$320K (base + equity)
+*90-day success:* Competition creation flow is live, first 3 design partner competitions have run end-to-end on the platform (not manually), basic agent registration works.
+
+**Hire 2: ML/AI Engineer (Evaluation Pipeline)**
+*When:* 1–2 months after Hire 1
+*Why second:* The three-tier evaluation pipeline (Tier 1 deterministic → Tier 2 LLM ensemble → Tier 3 agent investigator) is the product's core. It needs a dedicated owner who understands both ML engineering and the judge bias problem.
+*Profile:* ML engineering background, experience with LLM evaluation frameworks (has used or contributed to LangSmith, Braintrust, or similar), Python strong, TypeScript acceptable. Understands self-preference bias and ensemble judge design.
+*Total comp 2026:* $280K–$400K
+*90-day success:* Three-tier eval pipeline is automated (no manual steps), Tier 2 judge ensemble (3 providers) is live, first post-competition PDF report is auto-generated.
+
+**Hire 3: Founding AE (Sales)**
+*When:* 3–4 months in (after at least 2–3 design partner competitions validate the product)
+*Why third:* Founder-led sales proves the message and the motion. First AE codifies it into a repeatable process. Hire 3 before the product is proven creates an AE with no support.
+*Profile:* Has closed enterprise software deals ($50K–$200K ACV), comfortable with technical buyers (Head of AI, VP Engineering), willing to build the playbook from scratch. "Founding AE" mentality — doesn't expect leads to fall in their lap.
+*Total comp 2026:* $220K–$280K OTE (50/50 base/variable)
+*90-day success:* 3+ Stage 2 opportunities in CRM, 1 POC scoped and started, cold email sequence tested with A/B data.
+
+**Hire 4: DevOps / Infrastructure Engineer**
+*When:* 4–5 months in
+*Why fourth:* As competitions scale, the Docker-based agent execution environment needs hardening. Security isolation, job queuing, auto-scaling, logging. This can't be maintained by the full-stack engineer indefinitely.
+*Profile:* Strong Kubernetes/Docker background, experience with job queue systems (Redis, BullMQ), security-conscious design, observability experience (Datadog, Grafana).
+*Total comp 2026:* $260K–$380K
+*90-day success:* Agent execution environment runs 5 concurrent competitions without intervention, security isolation is audited, basic Datadog observability is live.
+
+**Hire 5: Customer Success Manager (CSM)**
+*When:* 5–6 months in (when first 3 paying customers are live)
+*Why fifth:* Enterprise competitions require hand-holding: rubric design sessions, task definition review, interpreting competition results. The founder and AE can't scale this. First CSM owns design partner relationships and sets the customer success motion.
+*Profile:* Has worked as CSM at an enterprise SaaS company, comfortable with technical customers, able to run rubric design workshops without product team support.
+*Total comp 2026:* $130K–$170K base
+*90-day success:* All 3 active design partners have a documented success plan, at least 1 has renewed or expressed renewal intent, QBR template exists.
+
+**Hire 6: Rubric Designer / Competition Architect**
+*When:* 6–7 months in
+*Why sixth:* Rubric design is the highest-value-add activity for enterprise customers, and it's bottlenecked on the founder. This hire owns rubric templates, competition design consultation, and builds the rubric library that compounds over time.
+*Profile:* Hybrid technical/analytical background — understands both what makes a good ML evaluation (precision/recall, edge cases) and what enterprise customers care about (business outcomes, ROI). Former ML engineer or technical PM with enterprise customer experience.
+*Total comp 2026:* $150K–$220K
+*90-day success:* 8 rubric templates exist for the top task categories (from Tick 179), 3 enterprise customers have used template-based competition design without founder involvement.
+
+**Hire 7: Second Full-Stack Engineer**
+*When:* 7–8 months in
+*Why seventh:* Product backlog is overwhelming Hire 1. Agent developer portal, Benchmark Subscription dashboard, post-competition PDF generation, API improvements — the product needs to move faster.
+*Total comp:* $200K–$280K
+
+**Hire 8: SDR (Sales Development Rep)**
+*When:* 8–9 months in (after Founding AE has a proven outbound sequence)
+*Why eighth:* The AE's cold outbound sequence is proven (A/B tested, benchmarked). The SDR scales the top of the funnel while the AE focuses on closing.
+*Profile:* 1–2 years SDR experience, B2B SaaS, technically curious (needs to understand what Straw does to have credible conversations with Heads of AI).
+*Total comp 2026:* $70K–$90K base + $20K–$30K variable OTE = $90K–$120K OTE
+*90-day success:* 50+ new contacts/week in sequence, 8+ discovery calls booked in first month for the AE, qualified stage 1 pipeline ≥3x AE's quarterly quota.
+
+**Hire 9: Legal / Contract Counsel (fractional or full-time)**
+*When:* 9–10 months in (when closing $75K+ enterprise deals)
+*Why ninth:* MSA redlines, DPA negotiation, IP ownership clauses, facilitation fee agreements for acquihires — legal work balloons as deal size grows. Fractional counsel is appropriate at seed stage; full-time at Series A.
+*Profile:* SaaS contract experience, comfortable with AI-specific IP questions, enterprise-ready (has redlined MSAs with Fortune 500 procurement teams).
+*Fractional cost:* $15K–$25K/month for fractional; $200K–$280K base for full-time at Series A.
+
+**Hire 10: Head of Marketing / Content**
+*When:* 10–12 months in (before Series A close)
+*Why tenth:* Inbound pipeline matters at Series A. The Straw Index, thought leadership content, event presence, and developer community content need an owner. This hire builds the marketing machine that makes the AE's job easier.
+*Profile:* B2B SaaS marketing background with technical content production experience. Has run a content program that generates qualified leads (not just views). Understands developer marketing (will own agent developer content alongside enterprise buyer content).
+*Total comp 2026:* $160K–$220K
+
+**The total headcount math at 12 months:**
+Jeremy (CEO) + 10 hires = 11 people. Total annual compensation estimate: $2.2M–$3.1M. For a $1M ARR target, this burn rate suggests a 18–30 month runway from a $5M–$8M seed round.
+
+**Sources:**
+- AI engineer compensation 2026: https://spaculus.com/blog/hiring-ai-engineers-2026-guide-startups-enterprises/
+- Founding AI team structure: https://www.ai-infra-link.com/how-to-hire-your-first-engineer-a-startups-growth-blueprint-for-2026/
+- CTO hiring timeline 6 months: https://www.volumetree.com/2026/04/30/in-house-cto-vs-fractional-ai-team-a-cost-benefit-analysis/
+
+---
+
+## Tick 189 (2026-05-01): The Straw Index — public benchmark as content marketing and trust-building strategy
+
+**Thread source:** Session 20 candidate thread. Publishing an anonymized cross-company benchmark (the "Straw Index") as content marketing.
+
+**The strategic bet:**
+
+Public benchmarks and leaderboards are among the most powerful content marketing assets in the AI space. The Hugging Face Open LLM Leaderboard gets millions of page views and has become the primary way the industry tracks model quality. Stanford HAI's AI Index Report is cited in board meetings and regulatory proceedings. The Chatbot Arena leaderboard has become the default model comparison tool.
+
+All three succeed for the same reason: they provide genuinely useful information that the audience can't get elsewhere, they position the publisher as the authoritative source on the topic, and they generate inbound from the exact buyers the publisher wants to reach.
+
+**The Straw Index concept:**
+
+The Straw Index is a quarterly public report showing:
+- **Task category rankings:** Which agent types perform best across 8 task categories (from Tick 179), based on anonymized Straw competition results
+- **Model family performance:** How agents built on different LLM families (Claude, GPT-4o, Gemini, open-source) compare on task performance — across all anonymous competitions run in the quarter
+- **Performance trends:** How performance in each category has changed over the past 4 quarters — is code review getting better faster than document analysis?
+- **New entrant spotlights:** Anonymized profiles of agents that dramatically outperformed in the quarter (no names, but: agent category, task type, score percentile, what made them distinctive)
+
+What the Straw Index does NOT publish:
+- Any company or agent developer name
+- Any specific competition results
+- Any task data that could be used for benchmark gaming
+- Any information that would deter enterprise customers from sharing task data with Straw
+
+**Why this works as a marketing asset:**
+
+1. **SEO value:** "AI agent benchmark 2026," "best code review AI agents 2026," "document analysis AI performance" — these search queries are valuable, increasingly searched, and currently unowned. The Straw Index answers them.
+
+2. **Press coverage:** The Straw Index is the kind of original data that AI journalists cite. "According to Straw's Q2 2026 Index, Claude-based agents outperform GPT-4o-based agents on document extraction by 18 percentage points..." TechCrunch, VentureBeat, The Information all cover this.
+
+3. **Enterprise buyer discovery:** The exact buyers Straw wants (Head of AI, VP Engineering evaluating AI agents) are the readers of this content. They see the Index, learn Straw exists, and start asking "how do we get our agents into Straw competitions?"
+
+4. **Agent developer recruitment:** Developers building agents see the Index, want their agents to appear as top performers, and register on Straw. This is inbound supply-side acquisition.
+
+5. **Trust signal for sales:** When an enterprise prospect asks "is Straw credible?", the AE can point to the Straw Index as independent evidence that Straw runs rigorous, cross-industry evaluations. Public accountability = credibility.
+
+**The "leaderboards are gameable" counterargument:**
+
+The concern: if agents know the Straw Index methodology, they'll optimize specifically for it, degrading the index's validity.
+
+The structural answer: the Straw Index uses anonymized data from real enterprise competitions with real task data. There's nothing to optimize against — each task is unique and never published. This is fundamentally different from a static benchmark like SWE-bench. The Index reflects performance on real tasks; the only way to improve your Index ranking is to improve actual task performance.
+
+**Production cadence and format:**
+
+- Published quarterly (Q1, Q2, Q3, Q4) with a press embargo lift on a fixed date
+- 20–30 page PDF + web microsite with interactive charts
+- Covers last 90 days of competition data (minimum: 50 competitions, 500+ agent submissions)
+- Straw's Head of Marketing owns this as a flagship content program
+
+**When to launch the Straw Index:** After accumulating at least 50 anonymized competitions with 5+ agents each — enough data to produce statistically meaningful rankings. At current trajectory (3–5 design partner competitions before Series A), the Straw Index can launch with Q1 2027 data.
+
+---
+
+## Tick 190 (2026-05-01): Customer success at Straw — what CSM does between competitions, at-risk detection, expansion motion
+
+**Thread source:** Session 20 candidate thread. Once a competition ends, what keeps the customer engaged until the next one? How does Straw detect customers at risk of churn? What does the expansion motion look like?
+
+**The challenge between competitions:**
+
+A Straw customer's "active engagement" peaks during a competition: task definition, agent onboarding, scoring, competition results review. Between competitions, engagement can drop to near zero if Straw doesn't create touch points.
+
+The risk: a customer who hired an agent via Straw feels "done." They have their agent. Why run another competition? The CSM's job is to create the next competition trigger before the customer concludes they don't need one.
+
+**Between-competition CSM activities:**
+
+1. **Monthly performance review:** Straw's Benchmark Subscription (if active) generates monthly performance reports on the hired agent. The CSM sends a 2-paragraph summary: "Your hired agent's performance on [task type] is tracking at [X%] vs. [Y%] at time of hire. [Below threshold: we recommend scheduling Competition 2.] [Above threshold: performance is strong, tracking well.]" This is the renewal signal factory.
+
+2. **Quarterly business review (QBR):** A 45-minute call with the champion + economic buyer. Agenda: (1) Review performance data from the Benchmark Subscription. (2) Discuss upcoming AI initiatives that might be candidates for new competitions. (3) Preview of new Straw features and task category templates. (4) Reference and case study ask if NPS is high.
+
+3. **New competition opportunity identification:** The CSM tracks news, job postings, and public announcements from every active customer to identify new AI initiatives. "{{Company}} announced a new customer service AI initiative last week — have you evaluated which agent to use for it? We could design a competition."
+
+4. **Agent update alerts:** When an agent developer ships a major update to the agent a customer hired, Straw notifies the CSM. CSM contacts customer: "The agent you hired just shipped version 3.0 — we can run a quick benchmark to verify the update didn't degrade performance." This is a Benchmark Subscription upsell or a Competition 2 trigger.
+
+**At-risk account detection signals:**
+
+| Signal | What it means | CSM action |
+|---|---|---|
+| No login in 30 days | Disengaged | Personal outreach from CSM, not automated email |
+| Benchmark Subscription not reviewed in 60 days | Champion may have left or deprioritized | Confirm champion is still active; get intro to backup contact |
+| Competition count stalled at 1 | Customer hired an agent but didn't find additional use cases | QBR focused on identifying next competition |
+| Hired agent getting complaints from champion | Post-hire performance gap | Proactive: "Would you like to run a re-evaluation?" |
+| Company announces hiring freeze or reorg | Budget at risk | Contact EB directly; understand budget status |
+| NPS score below 7 (from post-competition survey) | Product/experience issue | CSM escalation within 24 hours; root cause analysis |
+
+**The expansion motion:**
+
+Every Straw enterprise customer starts with one competition in one task category. Expansion comes from:
+
+1. **Additional task categories:** "You ran a code review competition. Do you also need a document analysis agent? A customer support agent? We have rubric templates for both."
+
+2. **Additional teams:** "Your ML Engineering team used Straw. Does your Legal team or your Procurement team also have an AI agent selection need?" Enterprise companies have multiple teams deploying AI agents — the first competition is the wedge.
+
+3. **Benchmark Subscription upsell:** Any customer on a per-competition model who has run 2+ competitions in a year is a Benchmark Subscription candidate. The sell: "You're already monitoring your agents with informal check-ins. The Benchmark Subscription formalizes that and generates the compliance documentation your regulators are starting to ask for."
+
+4. **Platform License upgrade:** A customer running 4+ competitions per year at per-competition pricing is paying more than a Platform License. The CSM triggers the upgrade conversation: "Based on your competition cadence, a Platform License saves you $X annually and includes unlimited competitions."
+
+**NPS and feedback as product improvement fuel:**
+
+After every competition, Straw sends a 5-question NPS survey to the champion and the economic buyer (separately — their experiences differ). Questions:
+1. How likely are you to recommend Straw to a colleague? (NPS)
+2. How well did the competition rubric reflect your actual task requirements?
+3. How satisfied were you with the post-competition report?
+4. Did the winning agent's competition performance match your expectations in production? (asked 90 days post-competition)
+5. What would make you run a second competition sooner?
+
+Question 5 is the most valuable: the customer tells Straw exactly what the next competition trigger needs to be. This is expansion research disguised as a satisfaction survey.
+
+**Customer success KPIs for Straw:**
+
+| KPI | Target | Alarm threshold |
+|---|---|---|
+| NPS | ≥50 | <30 |
+| Time to second competition | <9 months from first | >12 months |
+| Gross revenue retention | ≥90% | <85% |
+| Net revenue retention | ≥115% | <100% |
+| Benchmark Subscription attach rate | ≥60% of Enterprise customers | <40% |
+| QBR completion rate | 100% of Enterprise customers quarterly | <80% |
+| Champion identified for all active accounts | 100% | <90% |
+
+---
+
+## Threads still to dig — Session 21
+
+**Status as of 2026-05-01 (overnight research agent — continuing):**
+
+Ticks 170–190 and Section 32 complete. 21 ticks and one major section added across this session.
+
+**Session 21 candidate threads:**
+- Tick 191: The agent certification program — Straw Certified Agent as a trust signal, what it means, how agents earn it, how enterprises use it
+- Tick 192: Competition replay and audit feature — letting enterprises replay a competition result with different rubric weights or additional agents after the fact
+- Tick 193: The Straw API design — external API that lets enterprise systems trigger competitions programmatically (integrating Straw into their existing vendor management workflows)
+- Tick 194: Straw's biggest product risks — the top 5 ways the core product could fail in production and how each is mitigated
+- Tick 195: The crowdfunded competition model — could a group of companies co-fund a competition to evaluate a shared class of agents? (Consortium model)
+
+---
+
+## Push status (Session 20 complete)
+
+**Session 20 adds:**
+- Tick 186: Developer ecosystem — SDK design (TypeScript/Python), local evaluation runner, webhook lifecycle events (including licensing.inquiry and acquihire.inquiry), CI/CD integration (Straw GitHub Action), sandbox competitions for agent onboarding, developer portal and community Discord
+- Tick 187: International expansion — EU first (regulatory pull: EU AI Act August 2026 deadline, data residency Q3 2026, EU AI Act compliance positioning, first EU AE Q4 2026/Q1 2027). APAC second (2027+, waiting for regulatory coordination). No FedRAMP equivalent needed for EU commercial sales.
+- Tick 188: Hiring plan — 10 hires in sequence: (1) Full-stack engineer $220–320K, (2) ML/AI engineer $280–400K, (3) Founding AE $220–280K OTE, (4) DevOps/infrastructure $260–380K, (5) CSM $130–170K, (6) Rubric Designer $150–220K, (7) Second full-stack $200–280K, (8) SDR $90–120K OTE, (9) Fractional legal counsel, (10) Head of Marketing $160–220K. Total burn rate: $2.2M–$3.1M/year at 12 months headcount.
+- Tick 189: Straw Index — quarterly public benchmark report (anonymized, model-family performance, task category rankings, performance trends). Launch after 50+ competitions. SEO, press, enterprise buyer discovery, agent developer recruitment, trust signal for sales.
+- Tick 190: Customer success — between-competition CSM activities (monthly perf review, QBR, new competition triggers, agent update alerts). At-risk signals and response playbook. Expansion motion (additional task categories, additional teams, Benchmark Subscription upsell, Platform License upgrade). 5-question post-competition NPS survey. CS KPI targets: NRR ≥115%, time to second competition <9 months, Benchmark Subscription attach rate ≥60%.
+
+**Lines added this session:** ~520 lines
+**Total file size:** ~31,900 lines
+
+**Commits this session:**
+1. Ticks 170-172 — PUSHED ✓
+2. Ticks 173-176 — PUSHED ✓
+3. Section 32 — PUSHED ✓
+4. Ticks 177-180 — PUSHED ✓
+5. Ticks 181-185 — PUSHED ✓
+6. Ticks 186-190 — PUSH NOW
 
 
