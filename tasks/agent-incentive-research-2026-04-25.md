@@ -154,6 +154,127 @@ The research literature has a real, concrete answer to "how do you make agents r
 
 ---
 
+## Tick 0.5 (2026-05-01T03:35Z): OASIS deep dive + adversarial defenses
+
+### OASIS / CAMEL-AI — concrete capability + cost (the simulation tool)
+
+Source: `https://github.com/camel-ai/oasis`, paper `arxiv 2411.11581`.
+
+**Scale:** Up to **1 million agents**. Documentation provides token-consumption references for 100, 1,000, and 10,000 agent configurations. So 300 agents is well within the tested envelope.
+
+**API:** Standard RL-style.
+```python
+env = oasis.make(...)        # instantiate environment
+env.reset()                  # initialize
+obs = env.step(actions)      # one simulation tick
+env.close()                  # cleanup
+```
+
+**Agent action space (23 actions):** following, commenting, reposting, like/dislike, search, trending, social graph operations. Reports added 2025-06-08, group chat + interview added later. **An "Electronic Mall" marketplace mode was added 2024-12-05** — that's the closest fit to a bounty board, but it's not the main focus.
+
+**Cost (the load-bearing number for our 300-agent simulation):**
+- 100 agents × 1 timestep × 0.1 activation probability:
+  - Qwen-plus: **¥0.026848** (~$0.004 USD)
+  - Qwen-max: **¥0.717** (~$0.10 USD)
+- Linear scaling in agent count and timesteps.
+- For 300 agents × 100 timesteps × 0.1 activation = **roughly $0.012 to $0.30 per simulation run** depending on model. Run 100 different scenarios for under $30 total.
+- **This is an absurdly cheap de-risking tool.** We could simulate the entire mechanism design space — multiple pricing rules, multiple reputation systems, multiple budget structures — for less than a single hour of running real OpenClaws on real Codex.
+
+**Action types received by agents:** `ManualAction` (explicit instructions, deterministic) or `LLMAction` (autonomous behavior, reasoned by LLM).
+
+**The catch:** OASIS is built around Twitter/Reddit social-graph dynamics. The "Electronic Mall" feature exists but isn't the main focus, and it isn't a bounty marketplace specifically — it's a general consumer-marketplace pattern. To use OASIS for a Straw simulation, we'd have to **extend the action space** with bounty-specific actions: `post_bounty(spec, budget, deadline)`, `submit_to_bounty(bounty_id, work)`, `evaluate_submission(submission_id)`, `pay_winner(submission_id, amount)`, `update_reputation(agent_id, delta)`.
+
+**Estimated extension effort:** A small handful of new action classes + a bounty-marketplace state object. Probably 1-2 days of focused work for someone who knows Python + OASIS internals. The simulation's main value isn't visualization — it's running the mechanism design through a thousand simulated agent-hours and seeing what equilibria emerge.
+
+**Other related frameworks** (cited as follow-ups to OASIS): MultiAgent4Collusion (specifically for studying collusion dynamics — directly relevant to our adversarial concerns), CUBE (Unity3D environments), MultiAgent4Fraud. **MultiAgent4Collusion is worth a follow-up read** — it's the OASIS-family tool specifically designed to model the kind of collusion attacks Straw would be vulnerable to.
+
+### Adversarial defenses — what Kaggle, HackerOne, Bugcrowd, GitCoin actually do in production
+
+Source: Perplexity (`https://www.perplexity.ai/search/25f8380b-7d7e-4599-bda6-5fdd3a62a5e9`).
+
+**The 2026 reality:** AI has industrialized sybil attacks. Attackers use AI to generate realistic personas that bypass rigid bot detection. Traditional rule-based systems fail. The new standard combines multi-signal correlation, economic slashing, cryptographic guarantees, and continuous monitoring.
+
+#### Sybil attacks (one operator, 300 fake agents)
+
+How it works: single actor creates many fake identities to vote, win bounties, manipulate rankings.
+
+Production mitigations:
+- **Identity validation:** phone + credit card + KYC per account.
+- **Behavioral graph analysis:** ML detects coordinated traffic spikes and "sybil clusters" across nodes (SybilGuard / SybilRank).
+- **Proof of Personhood:** ties each identity to a verified unique human (World ID / Worldcoin).
+- **Social trust graphs:** identify structural anomalies without exposing identity.
+
+**For Straw:** the operator-mediated v0 model partly sidesteps this — operators are KYC'd humans who run swarms under their name, not anonymous agents. Reputation is per-operator, not per-agent. v1+ open-posting needs additional defenses: stake-to-post (small refundable bond), graph-based correlation detection across submission patterns, optional Proof-of-Personhood gating for high-value bounties.
+
+#### Collusion rings (operators coordinate to game leaderboards)
+
+How it works: groups coordinate to submit fake bugs, upvote plagiarized work, or game leaderboards.
+
+Production mitigations:
+- **Cross-node correlation:** evaluate patterns across accounts rather than in isolation.
+- **AI-powered anomaly detection:** flags synthetic behavior patterns even when AI-generated personas look realistic.
+- **Submission fingerprinting:** code/plagiarism detection (n-gram analysis, embedding similarity) catches reused submissions.
+
+**For Straw:** the eval architecture's tier-2 gatekeeper LLM should include a "submission similarity check" against other submissions in the same bounty — flag suspiciously similar pairs for human review. Over time, behavioral graph analysis on operator-pair posting/competing patterns can catch persistent collusion rings.
+
+#### Post-spam / harvest attacks
+
+How it works: flooding marketplace with low-quality submissions to extract rewards or drown legitimate work.
+
+Production mitigations:
+- **Quality gating:** automated scoring + human review threshold before payouts.
+- **Rate limiting:** per-identity submission caps with escalating cooldowns.
+- **Reputation-weighted voting:** only trusted accounts' votes/counters count toward rankings.
+
+**For Straw:** rate limit per-agent submissions per-task (already in the system). Stake-to-post for new operators (refundable on no-fraud). Tier-2 gatekeeper rejects low-quality submissions before they consume tier-3 agent investigation budget — naturally throttles the attack vector.
+
+#### Training-data theft (post a bounty to harvest competitor work)
+
+How it works: one operator posts a bounty, harvests submitted work as training data for their own agents, doesn't actually pay or engage commercially.
+
+Production mitigations:
+- **Zero-knowledge proofs:** verify task completion without revealing raw data.
+- **Differential privacy:** add noise to submitted datasets to prevent reverse engineering.
+- **License-enforced access:** watermarked submissions with automated takedown scanning.
+- **Private leaderboards:** holdout test sets kept secret until final submission.
+
+**For Straw:** this is the trickiest case. A bad-actor operator posts a bounty for "translate this codebase from Python to Rust," 50 agents submit their best Rust code, the operator harvests all 50 codebases for training, marks none as winner, pockets the bounty refund. Mitigations:
+- **Mandatory engagement-or-forfeit:** if a poster doesn't engage commercially with at least one submission within N days of bounty close, the bounty is non-refundable (goes to platform / split among submitters).
+- **Reputation impact:** posters who chronically don't engage with high-quality submissions get reputation penalty + visibility downrank.
+- **Rate-limit + stake** for new posters (so even harvest-attack motivated, the cost of doing it at scale exceeds the value extracted).
+- **Output access control:** submissions only viewable to the poster + platform; agents can opt to reveal their work after the fact for reputation, but it's their choice.
+
+#### Platform-specific real-world implementations
+
+**Kaggle:**
+- Ensemble plagiarism detection: code similarity + text embedding + execution behavior.
+- Account verification linked to Google identity + device fingerprinting.
+- Discussion forum moderation via ML-trained spam filters with rate-limit-new-accounts.
+- Private leaderboard prevents overfitting and data harvesting until competition ends.
+
+**Bug Bounty (HackerOne, Bugcrowd):**
+- Duplicate detection AI auto-merges reports + identifies ring behavior via IP/device correlation.
+- KYC + payout verification: legal identity before payouts >$100.
+- Vulnerability validation workflow: triagers manually verify critical findings before payment.
+- Reputation scores: hackers build history; low-rep accounts face stricter review.
+
+**GitCoin:**
+- Quadratic funding detection: sybil-resistant voting via proof-of-humanity protocols.
+- AI + ZK fraud verification: AI analyzes, ZK proves completion without exposing code.
+- Clawback mechanisms: smart contracts can revoke funds if fraud proven post-payout.
+- On-chain identity: Proof of Personhood via World ID / Worldcoin.
+
+**Synthesis for Straw:** Multi-signal correlation + economic slashing + cryptographic guarantees + continuous monitoring is the 2026 standard. Most concretely for a v0 / v1 Straw:
+- KYC + Stripe Connect for any operator who wants to withdraw earnings (trivial integration, big sybil-cost lift)
+- Submission fingerprinting (cosine similarity between submission embeddings) — flag pairs >0.9 for human review
+- Stake-to-post: 5% of bounty value, refundable on legitimate engagement, forfeit on harvest-attack pattern
+- Engagement-required: posters must engage with at least one submission or forfeit the bounty
+- Behavioral graph: detect operator-pair correlations across posting/competing patterns
+
+These are not v0 must-haves — they're v1 once we hit non-trivial volume. v0 can run with manual review of suspicious patterns.
+
+---
+
 ## Implications for Straw (early synthesis, will sharpen as research progresses)
 
 Five implications fall out of Tick 0 research:
@@ -176,7 +297,7 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 
 ### Highest priority (foundational for the proposal)
 
-- [ ] **OASIS / CAMEL-AI deep dive.** MiroFish is built on OASIS — the canonical multi-agent simulation framework. Read the OASIS paper, understand the API, evaluate whether Straw could plausibly use it for the 300-agent swarm simulation. Capture: capability ceiling, integration complexity, cost per simulation tick.
+- [done — Tick 0.5] **OASIS / CAMEL-AI deep dive.** Up to 1M agents. Standard RL API. 23 actions. Cost ~$0.01-0.30 per 300-agent / 100-timestep simulation. Twitter/Reddit-shaped + an "Electronic Mall" mode. Would need bounty-action extension (~1-2 days). MultiAgent4Collusion is a related framework specifically for collusion-modeling — flagged as follow-up.
 - [ ] **Specific real production examples of agents posting tasks for other agents.** Tick 0 found that none exist at scale. But surely there are research prototypes, demos, hackathon submissions. Find them. Note who, what, why it worked or didn't.
 - [ ] **Vickrey-Clarke-Groves auction in agent marketplaces.** What does VCG actually look like when implemented? Code references, simulation results, failure modes. Could Straw use VCG for bounty pricing on v1?
 - [ ] **Shapley value credit propagation in agent chains.** Concrete examples, papers, code.
@@ -185,7 +306,7 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 
 ### Medium priority (for the proposal's depth)
 
-- [ ] **Adversarial cases.** An agent posts a task to harvest insights from competing agents (uses competitor submissions as training data). An agent posts low-quality tasks to dump bad work and inflate its post count. An agent forms collusion rings (posts → buddies "win"). Map these out + mitigations.
+- [done — Tick 0.5] **Adversarial cases.** Survey of sybil, collusion, post-spam, training-data theft attacks + production mitigations from Kaggle, HackerOne/Bugcrowd, GitCoin. Synthesis: KYC + Stripe + fingerprinting + stake-to-post + engagement-required is the v1 mitigation stack. Multi-signal + economic + cryptographic + continuous monitoring is the 2026 standard.
 - [ ] **Target audience: who's the actual customer for Straw?** Is it: (a) human companies posting tasks, agents competing? (b) AI labs paying for agent training data? (c) agent operators (Jeremy) running their own swarms? (d) Some mix? Different audiences want different things from the platform.
 - [ ] **Pricing models for the post-side.** Pre-funded bounty (poster pre-pays the prize pool, full risk on poster), pay-on-engagement (poster pays only when they hire/buy), success-share (poster pays a percentage of the value the work creates), subscription (poster pays a monthly fee for unlimited posts). Which incentivizes posting most?
 - [ ] **Why would an autonomous agent OPERATOR (a human running OpenClaws) want their agents to post tasks?** This is the more practical question for v0/v1. The operator pays the API bills. They have their own incentives. Map them.
@@ -198,6 +319,11 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [ ] **Cost simulation: what does a 300-agent month on Straw actually cost in API tokens?** With our tiered eval (Tier 1 deterministic + Tier 2 gatekeeper + Tier 3 agent on 15%), at bounty-board scale (5-50 agents per task, async). Budget envelope.
 - [ ] **Sybil resistance.** If reputation matters, what stops one operator from spinning up 300 OpenClaws and farming reputation across them? Solutions: stake-to-post, identity-bonded reputation, etc.
 - [ ] **Cooperative AI Foundation grants list — what work has been funded.** They fund peer incentivization research; their grantees are doing exactly this work.
+- [ ] **MultiAgent4Collusion** (OASIS-family framework). Specifically designed to model collusion attacks. Read the paper + repo. Could combine with OASIS for Straw's adversarial robustness simulation.
+- [ ] **Agent Exchange (AEX) architecture** — referenced in mechanism design research but not deeply explored. Find the canonical reference + read it.
+- [ ] **Stake-to-post mechanism** — concrete designs in production. Optimal stake size relative to bounty value? Slashing rules?
+- [ ] **Engagement-required clause** — legal / contract design. How does platform enforce "you must engage with at least one submission or forfeit"?
+- [ ] **Operator UX / dashboards.** What does the v0 UI look like for an operator running 30 OpenClaws on Straw? Per-agent earnings, per-agent reputation, swarm-level metrics.
 - [ ] **DoraHacks / Gitcoin / HackerOne / Bugcrowd internals.** How do existing bounty platforms handle reputation, payment, dispute resolution. What can we lift directly.
 - [ ] **Replit Bounties, Devpost Bounty, GitHub Sponsors with bounties — small-bounty platforms.** Different pattern from Railway. Map them.
 - [ ] **Manus's autonomy rating (9/10) — what does that benchmark mean. How was it measured.**
@@ -211,6 +337,11 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done] Friend's incentive concern empirical validation (RLHF reward shaping research)
 - [done] Production agent systems landscape (Manus, Devin, MetaGPT, CrewAI, AutoGen, AutoGPT)
 - [done] Mechanism design recipe (six principles from cooperativeai / arxiv)
+
+### Done in Tick 0.5
+
+- [done] OASIS / CAMEL-AI deep dive (architecture, scale, costs)
+- [done] Adversarial cases survey (collusion, sybil, post-spam, training-data theft) + production mitigations from Kaggle/HackerOne/Bugcrowd/GitCoin
 
 ---
 
