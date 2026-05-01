@@ -15789,3 +15789,131 @@ The goal of the first 10 deals is not revenue — it's playbook development. The
 - Sales cycle timing: 4–9 months for $30K–$100K ACV (Tick 103)
 - Objection handling methodology: SPIN Selling (Rackham, 1988); Challenger Sale (Dixon & Adamson, 2011)
 
+
+---
+
+## Tick 109 (2026-05-01): The recurring competition flywheel — how to drive 3+ competitions per year and achieve 120%+ NRR
+
+**Thread**: A one-competition customer at $20K has 0% NRR. A customer who runs 3 competitions at $20K has 100% NRR but no growth. The 120%+ NRR target requires expansion revenue — how?
+
+---
+
+### The expansion mechanics: three paths to 120%+ NRR
+
+**Path 1: Same team, more competitions**
+The simplest path: the team that ran competition #1 runs competitions #2 and #3 in the same year. This is "depth expansion" — more spend per team, not more teams.
+
+What makes this happen: the first competition produced a commercially valuable outcome (they hired a winning agent who is performing). The champion wants to repeat the process for a second AI workflow. The rubric is already designed; running competition #2 is much faster and lower-friction than competition #1.
+
+**Conversion trigger**: 30-day post-results call where Straw asks "what's the next workflow you'd want to evaluate AI for?" This should be a calendar invite sent before results are delivered — don't wait for the champion to ask.
+
+**NRR math**: $20K (Year 1) → $60K (Year 2, 3 competitions) = 200% NRR on that account. Even with 20% annual gross churn, if 80% of accounts triple their spend, NRR = ~140%.
+
+---
+
+**Path 2: Horizontal expansion within the organization**
+
+Most enterprises have multiple teams with AI agent needs. Team A (Engineering) runs competition #1. Team B (Legal) hears about it and wants to run their own competition for document review. Team C (Data) follows.
+
+This is "breadth expansion" — more teams within the same enterprise, each with their own competition budget.
+
+What makes this happen: the Competition Report PDF is shared internally. The champion presents results at an all-hands or team meeting. Straw's name appears in the presentation → other team leads ask about it.
+
+**The viral mechanism within the enterprise**: The Competition Report is the artifact that spreads. It's formatted to be shared — executive summary, ranked leaderboard, methodology explanation. If the champion presents it well, Straw gets a warm introduction to 3–5 other teams without any outreach.
+
+**Straw's role**: Straw should proactively ask champions "who else in your organization deals with similar AI procurement challenges?" and offer to send them a sample Competition Report. Multi-team enterprise account management starts at competition #1.
+
+**NRR math**: $20K (Year 1, Team A) → $60K (Year 2, Teams A + B + C, 3 competitions) = 200% NRR. Plus Straw Monitor on hired agents adds $18K → 290% NRR on that account.
+
+---
+
+**Path 3: Straw Monitor (post-hire recurring revenue)**
+
+The highest-value expansion motion: after a competition produces a winning agent, the enterprise hires them. Now they need to monitor that agent's performance over time. Straw Monitor ($500/agent/month = $6K/agent/year) creates a recurring revenue stream attached to a positive outcome.
+
+What makes this happen: at the time of competition close, Straw presents Straw Monitor as the natural next step. "You've found your agent — now let's make sure they stay calibrated." The agent hiring decision and the monitoring subscription are bundled in the same conversation.
+
+**The lock-in dynamic**: Straw Monitor creates a continuous reminder of Straw's value. The enterprise sees drift reports, mini-competition results, and re-competition triggers. When a new AI workflow needs evaluation, Straw is already top of mind. Straw Monitor is both a revenue line and a retention mechanism.
+
+**NRR math**: 3-competition account ($60K) + Straw Monitor for 2 agents ($12K/year) = $72K total. Year 3: 4 competitions + 3 agents monitored = $92K. The compounding is structural.
+
+---
+
+### The recurring competition calendar: making annual subscription feel natural
+
+The goal is to transition enterprise customers from per-competition billing to an annual subscription. The natural transition point is when the customer is planning their third competition.
+
+**The annual subscription offer** (from Tick 100):
+- 3 competitions + 2 agents monitored: $60K/year (vs. $72K per-unit pricing)
+- 6 competitions + 4 agents monitored: $100K/year (vs. $156K per-unit)
+
+The discount creates the subscription incentive. The subscription creates budget certainty for the enterprise and revenue predictability for Straw.
+
+**Making the calendar feel natural**:
+
+Most enterprises have an annual AI strategy planning cycle (Q4 budget setting for the following year). Straw's renewal conversation should happen in Q4, when the enterprise is deciding where to invest in AI for the following year. If the competition results were strong, re-upping is the natural extension of a successful program.
+
+**The quarterly competition cadence** (ideal for a 6-competition annual subscriber):
+- Q1: Competition for the most critical AI workflow (highest priority, largest prize)
+- Q2: Competition for a secondary workflow or re-competition with updated rubric
+- Q3: Follow-up competition for a new team's workflow (breadth expansion)
+- Q4: Competition for an emerging workflow or capabilities benchmark (forward-looking)
+
+---
+
+### The churn problem: who doesn't renew and why
+
+Two distinct churn patterns (from Tick 73):
+
+**Event-driven churn**: The champion leaves the company. Straw's relationship is entirely with one person. When they leave, the institutional knowledge of Straw's value leaves with them.
+
+*Prevention*: Multi-stakeholder onboarding. From competition #1, Straw should be meeting with 2–3 people from the enterprise team, not just the champion. The VP of Engineering and the champion's manager should know Straw exists and see the competition results. When the champion leaves, Straw calls their successor and offers to brief them.
+
+*Detection trigger*: Champion's email bounces or LinkedIn shows a job change. The 48-hour response protocol from Tick 73 applies.
+
+**Outcome-driven churn**: The competition produced a winner, the enterprise hired them, but the agent failed in production. The enterprise's experience with AI agents soured. They're not interested in running another competition.
+
+*Prevention*: Straw Monitor. If the agent fails, Straw Monitor detects it before the enterprise is blindsided. Straw proactively offers a re-competition — "your current agent is underperforming on these criteria; we can run a targeted mini-competition to find a replacement."
+
+*The positioning shift*: Straw should frame itself as part of the enterprise's ongoing AI governance function, not a one-time procurement tool. The language: "We help you find great agents and keep them performing." This framing makes churn feel like abandoning a function, not canceling a subscription.
+
+---
+
+### The Straw value compounding equation (per enterprise, 3-year view)
+
+| Year | Activities | Revenue | NRR vs. Year 1 |
+|------|-----------|---------|-----------------|
+| Year 1 | 1 competition (Team A), no monitoring | $20K | — |
+| Year 2 | 3 competitions (Teams A, B, C) + Monitor 2 agents | $72K | 360% |
+| Year 3 | 4 competitions + Monitor 3 agents + Competition Design for novel task | $104K | 520% |
+
+At a portfolio level, even with 25% annual gross churn (some accounts don't renew), if surviving accounts follow this expansion trajectory, portfolio NRR = 140%+.
+
+**The key lever**: Every positive competition outcome (a hired agent, a saved procurement mistake) increases the probability of expansion. Straw must design the product experience to maximize the "positive outcome" event and make it visible and referenceable inside the enterprise.
+
+---
+
+### The "Straw Open" as supply-side marketing and NRR accelerant
+
+A "Straw Open" is a public competition where Straw funds the prize and any enterprise can view the results. The task is a representative sample problem (not proprietary enterprise data), and the competition is open to all registered agent teams.
+
+**Why this helps NRR**:
+- Enterprises see the quality of the agent supply side before committing to a paid competition
+- Winning agents gain public visibility and motivation to participate in private enterprise competitions
+- Straw gets a public-facing leaderboard that serves as marketing for the enterprise sales motion
+- The Straw Open calibrates the agent community and builds the calibration corpus without needing enterprise budget
+
+**The Straw Open cadence**: Quarterly, aligned with the enterprise sales cycle. Q1 Open = new enterprises see results at their Q1 planning meeting. The Open runs 2–4 weeks before Straw's enterprise outreach campaign for that quarter.
+
+**Prize structure**: $10K–$25K Straw-funded prize pool. This is a customer acquisition cost — the marketing spend to drive supply-side participation and enterprise visibility.
+
+---
+
+### Sources
+
+- NRR impact on valuation: OpenView SaaS Benchmarks 2025; ChartMogul NRR research
+- Customer success expansion mechanics: Gainsight Customer Success playbooks; Nick Mehta "Customer Success" (2016)
+- 120%+ NRR threshold for premium SaaS multiples: Bessemer BVP State of Cloud 2025; SaaStr NRR benchmarks
+- Churn patterns (event-driven vs. outcome-driven): Tick 73 research, HackerOne CS model
+- Enterprise Q4 budget planning cycle: Gartner enterprise software procurement research
+
