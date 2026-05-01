@@ -13212,3 +13212,418 @@ The escalation path: human reviewers are blind to the automated score to avoid a
 - [SAT Essay scoring rubric — College Board](https://satsuite.collegeboard.org/media/pdf/sat-sd-essay-understanding-scores.pdf)
 - [Toastmasters Generic Evaluation Resource](https://toastmasters.org/resources/generic-evaluation-resource)
 
+
+---
+
+## Tick 97 (2026-05-01): The "Straw Score" as industry standard — conditions for evaluation output achieving recognized artifact status
+
+**Thread**: Can Straw's competition output become a recognized industry artifact? What makes a score into a standard?
+
+---
+
+### Why a recognized scoring standard matters
+
+The difference between "we ran a benchmark" and "our Straw Score is 847" is the difference between a vendor claim and a credential. FICO didn't just create a credit score — it created a shared language that eliminated information asymmetry across an entire industry. Kaggle's Grandmaster credential isn't a prize; it's a signal that travels. S&P's ratings are a methodology so trusted that regulations require them.
+
+If Straw can achieve the same credentialing function for AI agents, the moat becomes nearly unassailable. Enterprises ask "what's your Straw Score?" in RFPs. Agents advertise their scores. Analysts cite Straw data. The score itself becomes a line item in procurement forms.
+
+That's the vision. Here's what it actually takes.
+
+---
+
+### Historical case studies: how scores become standards
+
+**FICO Score (1989 → standard by ~1995)**
+- Origin: Fair Isaac created scores for individual lenders, not as an industry standard
+- Catalytic event: Freddie Mac recommended FICO scores for mortgage evaluation (1995) — a single institutional endorsement from a systemically important buyer
+- Network effect: once lenders knew Freddie Mac used it, refusing to use FICO meant being unable to sell mortgages to Freddie Mac — adoption became structurally required
+- Moat: FICO retained proprietary model; lenders can see scores but not the model; the opacity is a feature (prevents gaming) and a moat (prevents replication)
+- Time to standard: ~6 years from commercial availability
+
+**S&P Credit Ratings (1860s → regulatory mandate)**
+- Origin: railroad bond research reports, sold as information products
+- Catalytic event: SEC's 1936 Nationally Recognized Statistical Rating Organization (NRSRO) designation gave S&P's ratings regulatory standing
+- Key insight: regulatory incorporation is the highest form of standardization — it turns a choice into a requirement
+- Current premium: 32–40× earnings vs. 10–15× for generic financial services, attributable to the ratings standard status
+
+**NPS (Net Promoter Score, 2003 → ubiquitous by 2010)**
+- Origin: Bain / Fred Reichheld article in Harvard Business Review, 2003
+- Catalytic event: Bain made the methodology public and simple (one question, 0–10 scale, detractors/passives/promoters)
+- Diffusion: open methodology + corporate adoption by Apple, GE, American Express — peer pressure spread it through the C-suite
+- Irony: NPS is not actually predictive of business outcomes in most rigorous studies, but it became standard because of simplicity and social proof
+- Key lesson: simplicity and memorability matter as much as validity for standards adoption
+
+**h-index (2005 → academic standard)**
+- Origin: physicist Jorge Hirsch proposed it in a paper; immediately adopted because it was simple and unforgeable
+- Catalytic event: Scopus and Web of Science built it into their indexing platforms (institutional infrastructure adoption)
+- Key lesson: embedding in existing infrastructure platforms accelerates standard adoption by orders of magnitude
+
+**Klout Score (2008–2018) — the cautionary tale**
+- Purported to measure social media influence (0–100)
+- Reached ~200M profiles evaluated
+- Never became a standard: no institutional endorsement; methodology opaque without being unforgeable; gaming was easy and public; never regulatory or procurement significance
+- Shut down 2018
+- Key lesson: a score with no external institutional anchor and easy gaming collapses
+
+---
+
+### The five conditions for a score to achieve standard status
+
+**Condition 1: Institutional anchor**
+A single high-status institution using the score in a consequential decision. For FICO: Freddie Mac. For S&P: the SEC. For h-index: academic hiring committees. For NPS: Fortune 50 C-suite adoption.
+
+*For Straw*: The first enterprise that includes "Straw Score above X" as a requirement in an AI vendor RFP is the institutional anchor moment. This is worth more than 100 positive reviews. The target is a publicly traded company with a widely followed procurement team — financial services, healthcare, or a tech company that other buyers follow.
+
+**Condition 2: Methodology public, data proprietary**
+Open enough that critics can audit the logic; closed enough that replication is impossible without the underlying data.
+
+FICO: algorithm partially public, model coefficients private.
+S&P: methodology reports published, underlying analytical software proprietary.
+h-index: formula public (by definition), citation database proprietary to Scopus/WoS.
+
+*For Straw*: Publish the rubric design methodology, the tier model, the LLM-as-judge approach, the calibration procedure. Keep the calibration corpus proprietary. This is exactly the open standard defense already documented.
+
+**Condition 3: Forgery resistance / score integrity**
+A score that can be gamed isn't a credential. FICO has hard-to-game inputs (payment history, debt-to-income). h-index requires actual citations from real papers. NPS is gameable (and indeed gets gamed by coaching respondents), which is why it never achieved true institutional standing.
+
+*For Straw*: Competition integrity infrastructure (behavioral fingerprinting, ERC-8004 identity, multi-judge panel, task-specific private test sets) is the forgery resistance layer. The key: Straw scores should be verifiable — an enterprise can see the full audit trail, not just the final number.
+
+**Condition 4: Simplicity and memorability**
+Standards that require explanation before use never become standards. NPS succeeded partly because "would you recommend us?" is one question, and the 0–100 scale is intuitive.
+
+*For Straw*: "Straw Score: 847 / 1000, Tier: Expert, Task: SWE-eng, Competitions: 23" is a credential card. This format needs to be fixed and memorable. The score itself should be interpretable by a non-technical procurement officer without a decode key. A benchmark number with no reference class is useless — the score needs to be relative to a distribution that the buyer knows.
+
+**Condition 5: Infrastructure embedding**
+The score needs to appear in places people already look. h-index: Google Scholar, Scopus, LinkedIn. NPS: Qualtrics, Medallia, Salesforce. FICO: credit reports, banking dashboards.
+
+*For Straw*: The Straw Score should appear on:
+- The Straw platform (obvious)
+- Agent team LinkedIn pages and websites
+- Model provider marketplaces (Anthropic, OpenAI, Google model pages)
+- Procurement database platforms (G2, Capterra for enterprise AI tools)
+- AI agent aggregators (if/when they emerge)
+
+Embedding in model provider documentation is the highest-value infrastructure play.
+
+---
+
+### The Straw Score architecture
+
+To become a standard, the score needs a fixed, version-controlled definition.
+
+**Proposed Straw Score v1.0 architecture**:
+
+```
+Straw Score (0–1000)
+├── Performance Score (0–700): raw competition percentile within task category
+│   ├── Absolute Score: weighted average of all competition outcomes
+│   └── Calibrated Score: ELO-adjusted for competition difficulty and field strength
+├── Reliability Score (0–200): consistency and reproducibility
+│   ├── Score variance across multiple competitions in same category
+│   └── Re-submission consistency (same task, different run)
+└── Portfolio Score (0–100): breadth and commercial validation
+    ├── Task diversity: distinct task categories competed in
+    └── Commercial outcome rate: competitions that led to paid engagements
+```
+
+**Score versioning**: When the methodology changes significantly, issue Straw Score v2.0 with a clear changelog. This is how S&P handles methodology updates. Historical scores remain tagged to the version under which they were issued.
+
+**Score display**: Agent leaderboard card shows:
+- Straw Score: 847
+- Category: Software Engineering
+- Tier: Expert (top 15%)
+- Competitions: 23 (18 wins, 5 runner-up)
+- Commercial outcomes: 7 confirmed engagements
+
+---
+
+### What Straw can do in Year 1 to build toward standard status
+
+**Action 1: Fix the format and release v1.0 methodology publicly**
+Publish a methodology document (not just a blog post — a formal PDF with version number, authorship, and revision policy). Post it on arXiv. This is the "we exist and are serious" signal to the research community.
+
+**Action 2: Target one anchor institution**
+Find one enterprise with procurement authority and a public AI strategy that will agree to require Straw Score in their next AI vendor evaluation. This is a design partner negotiation, not a marketing campaign. Offer to fund their first competition. Get them to publish a case study that mentions Straw Score.
+
+**Action 3: Embed in model provider documentation**
+When model providers (Anthropic, OpenAI, etc.) list their own benchmark results, get Straw Scores included alongside MMLU, SWE-bench, and ARC-AGI. This is the infrastructure embedding play. Even a footnote in an Anthropic benchmark report mentioning "task-specific Straw Score: [X]" starts the embedding process.
+
+**Action 4: Release an agent score API**
+Allow agents to embed their Straw Score in their own documentation, websites, and marketing via a live-updating badge (like a GitHub stars badge or npm download count). Verification-backed: clicking the badge shows the full audit trail. This is the virality mechanism.
+
+**Action 5: Commission external validation research**
+Partner with a university lab (MIT CSAIL, CMU) to publish a paper validating that Straw Scores correlate with real-world agent performance outcomes. This is the academic legitimation step — what distinguished Kaggle scores from Klout scores.
+
+---
+
+### Realistic timeline
+
+| Milestone | Year |
+|-----------|------|
+| Straw Score v1.0 methodology published | 2026 |
+| First enterprise RFP citing Straw Score | 2027 |
+| External academic validation paper | 2027–2028 |
+| Model provider documentation embedding | 2028 |
+| Regulatory citation (NIST framework reference) | 2029+ |
+| "Industry standard" designation in analyst reports | 2029–2030 |
+
+**The honest risk**: Most scores never achieve standard status. The critical path goes through the anchor institution in 2027 — if no enterprise is willing to publicly require Straw Scores, the standard strategy collapses. This makes the design partner acquisition in Year 1 existential for the standard thesis.
+
+---
+
+### Sources
+
+- FICO Score history: Freddie Mac 1995 adoption mandate documented in mortgage industry records; Wikipedia FICO
+- NPS methodology: Reichheld, F. (2003). "The One Number You Need to Grow." Harvard Business Review.
+- h-index: Hirsch, J.E. (2005). "An index to quantify an individual's scientific research output." PNAS 102(46).
+- S&P NRSRO designation history: SEC Rule 15c3-1 (Net Capital Rule), amended 1975
+- Score standard failure analysis: Klout shutdown documented in TechCrunch, May 2018
+
+
+---
+
+## Tick 98 (2026-05-01): Competitive moat deep dive — why hyperscalers won't replicate Straw
+
+**Thread**: OpenAI, Google, Anthropic, and Microsoft all have evaluation capabilities. What specifically prevents them from replicating Straw? What would an attack look like?
+
+---
+
+### The structural conflict of interest that protects Straw
+
+The single most important competitive moat for Straw isn't technology — it is the conflict of interest that prevents model providers from operating a credible neutral evaluation platform.
+
+Consider: if OpenAI builds an "AI agent evaluation platform" where enterprises post tasks and agents compete, what happens?
+
+1. GPT-based agents have structural advantage: the same company that writes the judge prompts also trains the winning agent. Even if the conflict is managed ethically, no enterprise would trust the results.
+2. Anthropic Claude agents won't compete: why would Claude-based agents submit their work to a platform where the judge is built by OpenAI?
+3. The enterprise buyer has no confidence: "We used OpenAI's platform to evaluate which AI agent won, and it turns out the OpenAI agent won" is not a credible evaluation.
+
+This conflict of interest is not solvable at the model provider layer. It's structural. A model provider evaluation platform is inherently self-referential. Straw's neutrality is only credible because Straw doesn't train or sell models.
+
+The analogy: UL (Underwriters Laboratories) couldn't have become the electrical safety standard if GE or Westinghouse ran it. The certification credibility requires institutional separation from the thing being certified.
+
+---
+
+### What a hyperscaler attack would actually look like
+
+**Scenario A: Microsoft builds "Azure Agent Arena"**
+
+Microsoft could build a competition platform on Azure, leveraging:
+- Existing Azure OpenAI distribution (thousands of enterprise accounts)
+- GitHub Copilot agent ecosystem (developer community trust)
+- Existing enterprise procurement relationships (Azure is already in the security-approved vendor list)
+- Compute subsidy capability (Microsoft can offer free eval compute at a loss)
+
+**Why this fails**:
+- Azure is a vendor. Enterprises using Azure for agent evaluation have the same conflict problem — Microsoft's own Azure AI agents would compete on Microsoft's platform.
+- AWS and Google agents won't participate — they won't give a competitor's platform any commercial signal about how their agents perform.
+- The multi-cloud enterprise (typical at F500) needs a cloud-neutral venue. Straw is cloud-neutral.
+- Microsoft cannot credibly publish cross-vendor evaluation results that include Microsoft's own products.
+
+**The tell**: Microsoft's existing benchmarks (Azure AI Foundry benchmarks, GitHub Copilot usage metrics) are all single-vendor. They have never published a credible "OpenAI vs. Claude vs. Gemini on your task" evaluation. They can't — it's not in their commercial interest.
+
+**Scenario B: Anthropic builds "Claude Benchmarking Platform"**
+
+Anthropic has the strongest evaluation brand (Constitutional AI, Responsible Scaling Policy, frontier model research). They could:
+- Leverage the ARC-AGI / HELM methodology reputation
+- Partner with Berkeley AI Safety Center for credibility
+- Offer enterprise evaluation as a service
+
+**Why this fails**:
+- Anthropic makes Claude. An enterprise using Anthropic's evaluation platform to decide whether to hire Claude or GPT-4o is asking the fox to count the chickens.
+- The multi-model judge requirement (Straw's neutrality defense) would require Anthropic to include GPT-4o and Gemini as judges — which OpenAI and Google won't cooperate with.
+- Anthropic's commercial incentive is to optimize evaluations to show Claude-based agents winning. Even if they don't, the perception is unavoidable.
+- No non-Anthropic agent would submit to a Claude-branded evaluation platform.
+
+**Scenario C: Google builds "AI Agent Benchmark Suite"**
+
+Google has the deepest benchmark history (BIG-Bench, MMLU, HellaSwag) and could build a task-competition platform leveraging:
+- DeepMind research credibility
+- Google Cloud enterprise distribution
+- Kaggle community (already 17M+ registered) — this is the most dangerous vector
+
+**Why the Kaggle angle is dangerous**:
+- Google already owns the most successful AI competition platform in the world
+- If Google reorients Kaggle toward enterprise agentic task competitions, they have instant supply-side community
+- Kaggle has brand trust that Straw doesn't have yet
+
+**Why it still doesn't work**:
+- Kaggle is Gemini's company. The conflict of interest is identical to the others — Gemini-based agents competing on Kaggle is self-referential.
+- Kaggle's prize structure is consumer/academic (DataScienceBowl, $1M Kaggle prizes) — the culture is ML researcher, not enterprise AI agent. Rebuilding that culture is a multi-year project.
+- Google doesn't want to run competitions where enterprise data is shared with a public audience — the security architecture for private enterprise task data is completely different from Kaggle's public dataset model.
+- Google's attention is on Vertex AI and Gemini commercialization, not building a neutral third-party evaluation platform that would compete with Gemini's sales.
+
+**Scenario D: A "neutral" big-tech consortium**
+
+Most dangerous scenario: AWS + Microsoft + Google create a joint industry body for AI agent evaluation, structurally similar to how SWIFT or PCI-DSS works.
+
+**Why this hasn't happened and won't**:
+- The hyperscalers compete directly on AI agent capabilities. They have opposite incentives regarding whose agents win evaluations.
+- Consortium governance is slow (see: W3C, IETF standards processes) — by the time a consortium is functional, Straw has 2+ years of calibration data.
+- Consortium evaluation would still be backward-looking (standard tasks) vs. Straw's forward-looking enterprise-specific task design.
+- Antitrust scrutiny: a joint evaluation consortium by the three largest cloud providers would attract FTC/DOJ attention given current AI concentration concerns.
+
+**Scenario E: A well-funded startup (the most credible threat)**
+
+A startup with deep enterprise AI relationships, $20–30M raised, and a head start on one task category (e.g., a specialized software engineering evaluation firm) could build a point solution that out-executes Straw in one vertical.
+
+**This is the realistic threat**: Not a hyperscaler. A specialized, well-funded competitor in software engineering evaluation or document processing evaluation.
+
+**The defense**: First-mover calibration corpus. Once Straw has 100+ competitions in software engineering with a growing calibration dataset, replicating the calibration corpus requires running real competitions — which requires the enterprise relationships and agent community that Straw already has. The corpus is the moat.
+
+---
+
+### What Straw must achieve before the competition arrives
+
+**The window**: 18–24 months before a well-funded competitor reaches product-market fit in any category where Straw operates. The calibration corpus built in that window is the durable moat.
+
+**The irreversibility test**: What would Straw have to build in Year 1 that a competitor in Year 2 cannot replicate with money?
+
+| Asset | Replicable with money? | Time to replicate | Straw's head start |
+|-------|------------------------|-------------------|-------------------|
+| Platform software | Yes | 6–12 months | None |
+| Enterprise relationships (design partners) | Slowly | 12–18 months | 12 months |
+| Agent community (supply side) | With aggressive subsidies | 12–24 months | 12 months |
+| Calibration corpus (private, grows with use) | No — requires running competitions | Never (structurally) | Permanent once seeded |
+| Straw Score methodology credibility | Partially — requires external validation | 24–36 months | 18 months |
+| Institutional anchor endorsement | No — earned, not bought | Earned organically | First-mover advantage |
+
+**The conclusion**: Straw must prioritize calibration corpus growth and institutional anchor acquisition in Year 1, above all other metrics. These are the only two assets that cannot be purchased or replicated.
+
+---
+
+### The one existential risk: "good enough" benchmark convergence
+
+If general-purpose LLM benchmarks become so accurate that enterprises stop caring about task-specific evaluation, Straw's value proposition collapses. This is the SWE-bench case run in reverse — if public benchmarks become reliable predictors of enterprise-specific performance, there's no value in running private competitions.
+
+**Why this won't happen** (per Tick 74):
+- Capability convergence on general metrics is the trend (all frontier models scoring 85–95% on MMLU, HumanEval, etc.)
+- Convergence makes general benchmarks useless for differentiation — everyone scores the same
+- The differentiating signal becomes task-specific, domain-specific, enterprise-context-specific
+- This is the structural tailwind for Straw: as capabilities converge, private evaluations become more valuable, not less
+
+The only scenario where "good enough" benchmarks kill Straw: if one frontier model pulls so far ahead of all others that differentiation is irrelevant — everyone knows to use Model X. This would require a discontinuous capability leap that the field currently judges as unlikely within the 2026–2029 window.
+
+---
+
+### Sources
+
+- UL (Underwriters Laboratories) founding history and neutrality model: UL.com/history
+- Microsoft Azure AI Foundry benchmarks: azure.microsoft.com/products/ai-foundry
+- Google Kaggle community size: kaggle.com/about (17M+ users as of 2025)
+- SWIFT consortium governance model: swift.com/about-us/governance
+- FTC AI concentration concerns: ftc.gov/reports/ai-market-study-2024
+- ARC-AGI governance: arcprize.org
+
+
+---
+
+## Tick 99 (2026-05-01): Rubric design as a service — should Straw build it, sell it, or leave it to enterprises?
+
+**Thread**: Enterprises often don't know how to evaluate what they want. Who designs the rubric? Should Straw offer rubric design as a professional service?
+
+---
+
+### The problem: enterprises know the output they want, not how to measure it
+
+The hardest moment in a Straw enterprise sale is when the buyer says: "We want the best AI agent for X." The natural follow-up question — "How will you know which agent is best?" — is met with silence, or hand-waving ("it'll just be obvious"), or circular reasoning ("we'll know it when we see it").
+
+This is not unique to AI procurement. It's the fundamental challenge in any qualitative-to-quantitative translation. Sports teams struggled with it before Moneyball. Hiring managers struggle with it before structured interviews. Legal partners struggle with it before partner scorecard systems.
+
+**The rubric design problem has three layers**:
+1. **Criteria identification**: What dimensions matter? (most enterprises can do this with prompting)
+2. **Criteria weighting**: How much does each dimension matter relative to others? (few enterprises have ever done this rigorously)
+3. **Behavioral anchoring**: What does a "7" look like vs. a "5"? (almost no enterprise has ever done this without help)
+
+Straw cannot run a reliable competition without all three layers. Rubric design is therefore not a nice-to-have — it's a prerequisite for the core product.
+
+---
+
+### Four models for rubric design
+
+**Model A: Enterprise self-service (current default)**
+Enterprise fills out a rubric template. Straw provides a guide, example rubrics, and an "Autorubric" tool that generates criteria suggestions based on task description.
+
+*Pros*: Scales infinitely, zero marginal cost, keeps Straw out of the professional services business.
+*Cons*: Most enterprise buyers will produce bad rubrics. Bad rubrics produce bad competitions. Bad competitions produce bad experiences and churn.
+*When this works*: Enterprise has a previous eval, is willing to iterate, and has an internal technical champion.
+
+**Model B: Rubric design as included onboarding (recommended)**
+Straw CS or a specialist runs a 2-hour rubric design session with the enterprise before the first competition launches. The session follows a structured protocol: task decomposition, criteria card sorting, weighting exercise, behavioral anchoring with exemplars.
+
+*Pros*: Ensures first competition quality; differentiates Straw's onboarding from self-serve competitors; captures enterprise domain knowledge.
+*Cons*: Not infinitely scalable; requires rubric-design-trained CS staff; adds ~2 weeks to onboarding timeline.
+*When this works*: $30K+ ARR enterprise customers; standard for all new accounts.
+
+**Model C: Rubric design as premium professional service**
+Straw offers a standalone "Competition Design" engagement at $5K–$15K per competition. Includes rubric design, test case specification, calibration corpus construction, and a dry-run competition with internal enterprise raters.
+
+*Pros*: Revenue-positive; signals expertise; creates enterprise investment in competition quality ("we paid $10K to design this rubric, we're going to use it").
+*Cons*: Only appeals to large, sophisticated buyers; can feel like a barrier to entry for smaller customers.
+*When this works*: Fortune 500 first-time competitions with novel task types; regulated industries (legal, finance) where rubric validity matters for compliance.
+
+**Model D: Rubric as a product (Autorubric feature)**
+Straw builds an LLM-powered rubric generator that takes a task description and enterprise exemplars, then auto-generates a calibrated rubric with weighted criteria and behavioral anchors. Enterprise reviews and approves. This is the Autorubric approach from arXiv:2603.00077.
+
+*Pros*: Scalable; can surface rubric quality issues before competition launch; can learn from calibration corpus to improve over time.
+*Cons*: LLM-generated rubrics can be plausible-sounding but wrong; enterprise trust in auto-generated rubrics is low initially; requires a review step.
+*When this works*: Familiar task categories (software engineering, document processing) where Straw has calibration data; fast iteration on rubric variants.
+
+---
+
+### The recommended approach: onboarding-included + Autorubric + premium upsell
+
+**Tier 1 (standard)**: Autorubric generates a draft rubric from task description. CS specialist reviews with enterprise in a 2-hour video call. Included in standard onboarding for $30K+ ARR accounts.
+
+**Tier 2 (premium)**: Full Competition Design engagement for enterprises posting in a novel task category (not yet in Straw's calibration corpus). $8K flat fee. Includes: criteria workshop, exemplar collection, calibration dry-run, rubric v1.0 documentation.
+
+**Tier 3 (research)**: For academic and government customers interested in rubric methodology research, Straw publishes rubric design guides and offers consulting hours through a preferred research partner (MIT CSAIL, CMU SEI). Revenue neutral for Straw; builds methodology credibility.
+
+---
+
+### What makes a good rubric? (The protocol)
+
+**Step 1: Task decomposition** (30 min)
+Break the target task into 3–5 subtasks. "Write a marketing email that converts" becomes: (1) clarity of value proposition, (2) appropriate tone for the audience segment, (3) call to action strength, (4) subject line effectiveness.
+
+**Step 2: Criteria card sorting** (20 min)
+Generate 10–15 possible evaluation criteria. Enterprise team sorts into three buckets: Must Have (failure if missing), Important, Nice to Have. Discard Nice to Have. Weight Must Have 3x, Important 1x.
+
+**Step 3: Weighting calibration** (20 min)
+For the remaining criteria, run a pairwise comparison: "If you had to choose between maximizing criterion A and criterion B, which matters more for your business outcome?" Bradley-Terry model converts pairwise results to weights. (This is the same technique used in multi-criteria decision analysis for procurement.)
+
+**Step 4: Behavioral anchoring** (30 min)
+For each criterion, the enterprise rates 3–5 exemplar outputs at the high, middle, and low ends. These ratings anchor the scoring scale. The LLM judge is few-shot calibrated against these examples.
+
+**Step 5: Rubric validation** (20 min)
+Run the rubric against 3 "gold standard" outputs that the enterprise has already rated. If LLM judge agrees with enterprise ratings within ±1 point on 80%+ of criteria, rubric is launch-ready. If not, iterate.
+
+**Total time**: ~2 hours for the rubric design session; 1 week for the full onboarding including validation.
+
+---
+
+### The rubric library as a compounding asset
+
+Every rubric Straw designs with an enterprise is a proprietary asset — with permission, it feeds the rubric library. Over time, Straw accumulates:
+
+- 50 software engineering rubrics (code quality, test coverage, architecture, security, performance)
+- 30 document processing rubrics (accuracy, format compliance, extraction completeness, citation accuracy)
+- 20 legal review rubrics (clause identification, risk flagging, jurisdiction-specific compliance)
+- 15 customer support rubrics (resolution rate, escalation avoidance, tone appropriateness, policy compliance)
+
+This library does two things:
+1. Reduces rubric design time for future customers in the same category (start from a template, not from scratch)
+2. Builds the calibration corpus — real rubrics anchored to real enterprise exemplars, used in real competitions
+
+The rubric library is part of the calibration corpus moat. It cannot be purchased — it must be earned by running real competitions.
+
+---
+
+### Sources
+
+- Autorubric few-shot calibration approach: arXiv:2603.00077 (Mirchandani et al., 2026)
+- Bradley-Terry pairwise weighting: Bradley, R.A., Terry, M.E. (1952). "Rank analysis of incomplete block designs." Biometrika 39(3–4).
+- Multi-criteria decision analysis in enterprise procurement: Saaty, T.L. (1980). "The Analytic Hierarchy Process." McGraw-Hill.
+- Structured interview rubric research: Schmidt, F.L., Hunter, J.E. (1998). "The validity and utility of selection methods in personnel psychology." Psychological Bulletin 124(2).
+- Autorubric few-shot accuracy gains: arXiv:2603.00077, Figure 3 (diminishing returns after 5 shots)
+
