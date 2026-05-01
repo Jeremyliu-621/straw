@@ -30959,7 +30959,395 @@ Ticks 170–180 and Section 32 complete. All Session 17 and Session 18 candidate
 1. `research(agent-incentive): ticks 170-172` — PUSHED ✓
 2. `research(agent-incentive): ticks 173-176` — PUSHED ✓
 3. `research(agent-incentive): section 32` — PUSHED ✓
-4. `research(agent-incentive): ticks 177-180 — acquihire structure, judge architecture, task taxonomy, government vertical` — PUSH NOW
+4. `research(agent-incentive): ticks 177-180 — acquihire structure, judge architecture, task taxonomy, government vertical` — PUSHED ✓
 
+---
+
+## Tick 181 (2026-05-01): Straw's pricing model evolution — when does per-competition give way to platform subscription?
+
+**Thread source:** Session 19 candidate thread. Straw currently monetizes through per-competition fees. At what scale and under what conditions does the pricing architecture shift to platform subscription? What is the transition trigger?
+
+**The 2026 SaaS pricing landscape context:**
+
+The AI industry in 2026 is experiencing a fundamental pricing architecture debate: per-seat subscription (the old SaaS model) vs. usage-based consumption vs. hybrid. Key data points:
+- 43% of companies currently use hybrid pricing models; adoption projected to reach 61% by end of 2026
+- Hybrid pricing models report 38% higher net revenue retention (NRR) compared to pure subscription firms
+- AI spending on AI-native SaaS applications surged 108% YoY (Zylo 2026 SaaS Management Index)
+- SAP is abandoning per-user/subscription in favor of AI consumption pricing — customers are struggling with cost predictability under pure consumption models
+
+New cost primitives in AI pricing: CPT (cost per thousand tokens), CPR (cost per resolved request), CPAM (cost per agent minute). These signal the market moving toward outcome-based pricing.
+
+**Straw's current pricing mechanics:**
+
+| Product | Pricing model | Revenue type |
+|---|---|---|
+| Competition fee | Per-competition, $5K–$50K depending on scope | Transactional — unpredictable |
+| POC fee | One-time per engagement | Transactional |
+| Benchmark Subscription | $15K–$40K/year | Recurring — predictable |
+| Facilitation fee | % of acquihire deal | Event-driven, lumpy |
+
+The problem with pure per-competition pricing: revenue is lumpy and hard to forecast. A customer who runs 3 competitions in Q1 and zero in Q2 creates a 50% revenue drop that doesn't reflect customer health. NRR is hard to calculate when there's no recurring base.
+
+**The hybrid model Straw should evolve to:**
+
+**Phase 1 (0–$1M ARR):** Per-competition pricing + Benchmark Subscription as an add-on. The Benchmark Subscription is the recurring revenue base. Competitions are the usage-based overlay. This is the early-stage hybrid.
+
+**Phase 2 ($1M–$5M ARR):** Introduce the Platform License: a fixed annual fee that includes a competition allowance (N competitions per year), plus a per-competition overage rate. This gives customers cost predictability (they know the baseline) while Straw captures upside from heavy users.
+
+*Example: $50K Platform License → includes 4 competitions per year + unlimited agents per competition + Benchmark Subscription. Additional competitions at $8K each (vs. $12K à la carte). Annual deal with 30-day cancellation notice.*
+
+This structure:
+- Creates recurring revenue predictability for Straw
+- Gives customers budget certainty (no surprise invoices)
+- Incentivizes customers to run more competitions (they've already paid for them — use them)
+- Generates data on which customers are "at risk" (using fewer competitions than their license allows)
+
+**Phase 3 ($5M–$20M ARR):** Full platform subscription tiers. The per-competition overage disappears. All competitions are included in tier pricing. Revenue becomes almost entirely subscription-based, with expansion driven by tier upgrades.
+
+*Example tiers:*
+- Pro ($25K/year): 6 competitions/year, up to 10 agents/competition, basic rubric templates
+- Business ($75K/year): Unlimited competitions, unlimited agents, advanced rubric design support, 3-tier eval pipeline, Benchmark Subscription included
+- Enterprise ($150K–$300K/year): All of Business + dedicated CSM, custom judge ensemble, compliance documentation, data residency, SLA, named executive sponsor
+
+**The transition trigger analysis:**
+
+| Trigger | Signal | Phase transition |
+|---|---|---|
+| 10+ paying customers | Enough data to set predictable usage allowances | Phase 1 → Phase 2 |
+| $500K ARR | Enough to justify platform license design and sales motion | Phase 1 → Phase 2 |
+| 3+ customers running 4+ competitions/year | Usage pattern established; platform pricing is value-accretive | Phase 2 |
+| $2M ARR | Revenue base to support platform subscription model without cash flow risk | Phase 2 → Phase 3 |
+| NRR above 120% | Confirmed expansion motion; subscription tiers accelerate expansion | Phase 3 |
+
+**Why rush the transition is wrong:** Early-stage per-competition pricing is correct. It:
+1. Lets Straw learn what competitions are actually worth to different customer types (critical for tier pricing)
+2. Removes the customer's upfront commitment barrier at the critical design partner phase
+3. Allows Straw to selectively discount without setting a subscription anchor
+
+**The key insight from the Braintrust comparison:** Braintrust uses freemium PLG (free tier → Pro $249/month → Enterprise custom). Their free tier is the hook; enterprise is the money. Straw's equivalent is: free competition design consultation → paid competition ($10K–$50K) → Platform License (annual). The free hook is the rubric design session, not a free eval run.
+
+**Sources:**
+- Hybrid pricing 38% higher NRR: https://www.saasmag.com/hybrid-pricing-saas-growth-2026/
+- AI SaaS pricing transition 2026: https://www.getmonetizely.com/blogs/the-2026-guide-to-saas-ai-and-agentic-pricing-models
+- SAP shifts to AI consumption pricing: https://erp.today/sap-shifts-to-ai-consumption-pricing-as-agents-threaten-saas-revenue-model/
+- Zylo 108% YoY AI SaaS spend: https://zylo.com/blog/ai-cost/
+
+---
+
+## Tick 182 (2026-05-01): 300-agent swarm dynamics revisited — winner concentration, prize design, and preventing market collapse
+
+**Thread source:** Session 19 candidate thread. The 300-agent swarm scenario was explored in earlier ticks (Sections 14-15). Project Deal's actual data (winner concentration: 20% of agents capture 80% of rewards) validates the OASIS simulation findings. What does this mean for Straw's prize design?
+
+**The Project Deal empirical confirmation:**
+
+Project Deal (April 25, 2026, 69 agents, 186 deals) found:
+- Winner concentration: the top 20% of agents captured 80% of total rewards
+- Information cascades: agents with early wins attracted more attention from buyers, further concentrating outcomes
+- Specialization: agents that won did so consistently within specific categories (negotiation style, product type, price range) — generalists underperformed specialists
+
+This matches the OASIS large-scale simulation findings (18,000 agents) and Shapley value credit propagation theory. Winner concentration is a structural feature of agent competition markets, not an anomaly.
+
+**The market collapse risk:**
+
+In a pure winner-take-all market (one prize, one winner), 80% of competing agents receive nothing. At scale, agents with rational incentive structures will:
+1. Stop competing in categories where a known winner dominates (adverse selection)
+2. Concentrate in niche categories where competition is lighter (specialization acceleration)
+3. Develop anti-competitive strategies (collude to bid below the top agent's performance, splitting a market artificially)
+4. Simply exit the market (the 80% who never win stop maintaining their agents)
+
+If enough agents exit, competition degrades. A competition with 2 agents is less informative than a competition with 10. The information value of the competition (which agent is truly best?) degrades as participation drops. This is the market collapse risk: winner concentration → agent exit → competition quality degradation → enterprise buyer loss of confidence → revenue collapse.
+
+**Prize design as the key mechanism against collapse:**
+
+The prize design problem: how do you structure prizes to maintain broad participation while still giving the enterprise buyer a clear winner?
+
+**Option 1: Top-N prize pool with percentage distribution**
+
+Instead of one winner getting 100% of the prize, distribute across top N:
+- 1st place: 60% of prize pool
+- 2nd place: 25%
+- 3rd place: 10%
+- Performance bonus pool: 5% distributed to all agents that exceeded a minimum quality threshold
+
+*Example: $20K prize pool → $12K to 1st, $5K to 2nd, $2K to 3rd, $1K distributed to all above-threshold agents.*
+
+This maintains incentive for 2nd and 3rd place agents to compete seriously, and the above-threshold bonus gives every participating agent something, reducing exit incentives.
+
+**Option 2: Bradley-Terry scoring with continuous payout**
+
+Instead of discrete prizes, use Bradley-Terry pairwise scoring to produce a continuous skill rating for every agent across all competitions. Payout is proportional to the rating increment an agent achieves in each competition — even a 4th-place finish that improves an agent's rating earns a small payment.
+
+This is closest to the ELO rating system in chess — every game matters for every player, not just wins. Agents with high ratings in a category can charge premium licensing fees from the Straw agent directory. The prize in individual competitions is less important than the rating signal.
+
+**Option 3: Category-specific competitions with rotating advantage**
+
+Instead of one mega-competition, Straw runs category-specific competitions where no single agent dominates across all categories. A customer who needs a code review agent and a document analysis agent runs two separate competitions in those two categories. This naturally distributes wins: the code specialist wins the code competition; the document specialist wins the document competition.
+
+Category specialization is already emerging (Project Deal showed consistent winners within specific task types). Straw should accelerate this by designing competitions that are specific enough that specialist agents dominate, rather than general agents sweeping across categories.
+
+**Option 4: ERC-8004 reputation staking as a non-prize reward signal**
+
+Even agents that don't win a Straw competition earn an on-chain reputation signal from their performance. An agent that finishes 4th in 10 competitions has a rich ERC-8004 reputation record showing: competed 10 times, task categories, performance percentile, consistency score. This reputation record has monetary value in the broader agent economy (enterprise buyers may select agents based on reputation even without running their own competition).
+
+The non-prize reward signal (reputation) keeps agents participating even when they don't win prize money.
+
+**The Straw prize design recommendation:**
+
+For competitions below $10K prize pool: top-3 prize structure (60/25/10) + above-threshold participation bonus (remaining 5%). Simple, proven, maintains broad participation.
+
+For competitions above $10K: Bradley-Terry continuous payout option available. Enterprise buyer chooses the distribution model at competition setup. Straw recommends continuous payout for competitions where category expertise depth matters more than a single clear winner.
+
+**The 300-agent swarm at steady state:**
+
+With category specialization, the healthy swarm doesn't look like 300 agents competing in every competition. It looks like:
+- 20–30 specialists per category (code review, data pipelines, document analysis, etc.)
+- 5–10 top-tier specialists per category who win most competitions in that category
+- Steady competition turnover as customers rotate through categories
+- New entrant agents competing in lower-tier competitions to build reputation before challenging established specialists
+
+This is closer to a guild system than a gladiatorial arena — agents specialize, build reputation in their category, and compete for new customers in their domain. The winner concentration (20% capture 80%) is healthy if it's the RIGHT 20% — the genuinely best agents in each category — and if the 80% who don't win the big prizes still earn enough through participation signals and reputation to stay in the market.
+
+---
+
+## Tick 183 (2026-05-01): Series A pitch — 10 hardest VC challenges and the correct responses
+
+**Thread source:** Session 19 candidate thread. Updated for May 2026 market conditions. The Series A is the next major capital event after establishing design partners and initial ARR. What are the 10 hardest questions a VC will ask, and what are the defensible answers?
+
+**Context: The Series A environment in May 2026**
+
+Private AI companies raised $226B in Q1 2026 alone — the VC market is hot for AI but also increasingly sophisticated. VCs that were previously willing to fund a "vision" now demand: evidence of enterprise demand, defined category, demonstrable retention, and a clear path to $10M ARR. The bar for Series A in enterprise AI SaaS is:
+- $1M–$3M ARR (or credible path within 12 months)
+- 3–5 enterprise design partners with documented renewal intent
+- NRR above 110%
+- Defined category (you can explain what you are vs. what you're not in one sentence)
+- Demonstrable moat (not just "we'll be first")
+
+**The 10 hardest VC questions:**
+
+**Challenge 1: "Why can't Braintrust or LangSmith just add a competition feature?"**
+
+*The bad answer:* "They're focused on monitoring, we're focused on evaluation." (Too vague, doesn't address the threat.)
+
+*The correct answer:* "They could build the eval infrastructure. They're missing the marketplace — agents submitting, competing, getting paid. That's a two-sided network with independent dynamics. Braintrust has 0 agent developers registered; they have no supply side. Building a marketplace from scratch against an incumbent marketplace is very hard. Additionally, Braintrust is owned by and positioned toward enterprise dev teams; their incentive is to keep companies on their existing agent stack, not to run independent vendor evaluation. We're structurally independent — that's the product, not a feature."
+
+**Challenge 2: "What happens when OpenAI builds a native evaluation layer into the API?"**
+
+*The correct answer:* "OpenAI evaluating OpenAI is the problem, not the solution. The entire value of independent evaluation is that no model vendor can win on their own judge. If OpenAI runs the eval, OpenAI's models have a structural advantage. We're the Switzerland of AI evaluation. Every model vendor — OpenAI, Anthropic, Google, open-source models — has an incentive to participate in Straw because we're the only platform where their model can win on merit, not on judge selection. OpenAI building an eval platform is actually good for Straw: it validates the category and simultaneously proves our independence advantage."
+
+**Challenge 3: "How do you prevent evaluation gaming? Agents could be trained specifically to pass Straw evaluations."**
+
+*The correct answer:* "This is the benchmark contamination problem — it's why SWE-bench Verified was abandoned and why OpenAI moved to SWE-bench Pro. The Straw architecture is immune: tasks are customer-defined and private. An agent can't train on Straw tasks because they don't exist until the customer posts them. The private task is the product. No task is revealed before the competition, and after the competition, tasks are never published. This is structurally different from any published benchmark — it's impossible to contaminate a task that doesn't exist yet."
+
+**Challenge 4: "Enterprise AI procurement is already broken — why don't enterprises just fix their internal procurement process?"**
+
+*The correct answer:* "That's what 76% of them tried. They built internal evaluation frameworks. 14-month average build time. Most were discarded within 12 months because they required constant maintenance as new agents shipped. Straw is not asking enterprises to change their procurement process — we ARE the procurement process. You post the task, we run the competition, you get the report. It's a service, not a framework you maintain. The key insight is that building a fair evaluation harness is a hard technical problem — rubric design, judge model selection, containerized agent execution, multi-tier scoring — and it's a solved problem at Straw. You don't need to solve it yourself."
+
+**Challenge 5: "How do you handle tasks where there's no objective ground truth? Customer support quality, creative writing, strategic recommendations?"**
+
+*The correct answer:* "We prioritize task categories where objective scoring covers 60%+ of the rubric weight — code review, data pipelines, document extraction, API integration. These are the most credible competitions. For the remaining 40% that requires LLM judgment, we use a vendor-neutral ensemble of 3+ judge models with published self-preference bias disclosure. For the hardest subjective categories (strategic recommendations, creative content), we recommend human expert evaluation as the Tier 3 layer. We don't claim to eliminate subjectivity — we claim to minimize it with multi-tier evaluation and maximize transparency about what judgment is still involved."
+
+**Challenge 6: "What's the evidence of enterprise retention? Why would a company run a second competition?"**
+
+*The correct answer:* "Three reasons enterprises run second competitions: (1) The winning agent's performance degrades as the underlying model is updated — they need to re-evaluate. (2) A new task category emerges that the current hired agent wasn't designed for. (3) The agent developer raises prices or changes terms — the company wants to know if a new entrant beats the incumbent. Our Benchmark Subscription specifically serves reason 1 by providing ongoing monitoring that triggers Competition 2 when performance drifts past a threshold. We've designed the product to produce its own renewal signal."
+
+**Challenge 7: "Why is this a $1B company and not a $50M company?"**
+
+*The correct answer:* "Three compounding vectors: (1) Every enterprise deploying an AI agent is a potential customer — the TAM is every company making an AI procurement decision. At 54% of enterprises actively deploying AI agents, that's tens of thousands of companies globally. (2) Platform economics: as more agents register on Straw, competitions are better (more diverse supply), which attracts more enterprise buyers, which attracts more agents. This is a marketplace flywheel that compounds. (3) Data licensing: Straw accumulates the world's largest private dataset of task-performance correlations — which agent types perform best on which task types. This dataset is worth independently of the competition marketplace. AI labs will pay for it. Regulators will require access to it. That's a second revenue stream that emerges naturally from operating the marketplace."
+
+**Challenge 8: "How do you handle IP liability? If an agent produces valuable IP in a competition, who owns it?"**
+
+*The correct answer:* "The task-posting company owns competition outputs — they funded the compute, they defined the task, they receive the deliverable. The agent developer retains the agent itself (model weights, architecture). This is explicitly stated in Straw's TOS. We're currently in uncharted legal territory, as are all agentic commerce platforms — but our TOS takes a clear position that is consistent with work-for-hire doctrine. We will update as case law develops. The key point is that Straw is not a party to the IP — we're the evaluation platform, not the employer or the contractor."
+
+**Challenge 9: "Who is the real buyer — engineering, AI teams, or procurement? What's the sales motion?"**
+
+*The correct answer:* "The champion is the Head of AI or ML Engineering Lead — they feel the pain most acutely. The economic buyer is the CTO or VP Engineering for sub-$75K deals, the CAIO or CFO for larger deals. The procurement/compliance team becomes a stakeholder at the paper process stage. The sales motion is champion-first, EB-second: find the person who has tried to evaluate AI and failed, make them your champion, use their pain to get to the budget holder. Our ICP is tight: 500–5,000 employee company, active AI deployment or vendor selection, dedicated AI team. Sales cycle is 90–120 days for a $75K ACV deal."
+
+**Challenge 10: "What's the moat? Why can't a well-funded competitor replicate this in 12 months?"**
+
+*The correct answer:* "Four compounding moats: (1) Agent supply network — we have agents registered that aren't on competing platforms. Replicating the supply side takes 12–18 months of developer outreach minimum. (2) Calibration data — every competition Straw runs adds to a proprietary dataset of task-performance correlations. This dataset is what makes Straw's rubric recommendations accurate. A new entrant has no calibration data. (3) Trust and certification — enterprises that have run competitions on Straw have made hiring decisions based on our scores. Switching to a new platform means re-running every competition. The historical audit trail is sticky. (4) Regulatory positioning — as OMB M-26-04 and EU AI Act Article 9.7 create compliance mandates, Straw's post-competition reports become the compliance artifact. The first platform recognized as producing regulatory-compliant evaluation evidence has a structural advantage that compounds with each new regulation."
+
+---
+
+## Tick 184 (2026-05-01): Straw's data strategy — what competition data Straw owns, what it's worth, and how the data moat compounds
+
+**Thread source:** Session 19 candidate thread. Every Straw competition produces data. What specifically does Straw own? What is the data worth? How does the moat compound?
+
+**The proprietary data moat thesis (2026 context):**
+
+The 2026 consensus on AI competitive moats: AI models are becoming commodities (multiple providers offering similar capability). The durable competitive advantage is proprietary data — specifically, data that (a) competitors can't easily replicate, (b) compounds in value as the dataset grows, and (c) creates feedback loops that improve the product.
+
+C.H. Robinson's example: 100 trillion proprietary data points powering AI agents that deliver measurably faster outcomes for 75,000 customers. Their data moat is transaction history that took decades to accumulate — no competitor can replicate it without running the same business for decades.
+
+Straw's equivalent: competition performance data that took years of running competitions to accumulate — no competitor can replicate it without running years of competitions.
+
+**What data Straw owns from each competition:**
+
+| Data type | What it is | Who owns it | Straw's rights |
+|---|---|---|---|
+| Task definition | The specific task description, constraints, deliverables | Enterprise customer | Customer owns; Straw may use anonymized version for rubric improvement |
+| Rubric | The scoring criteria and weights | Enterprise customer (co-designed with Straw) | Straw owns the rubric template; customer owns the specific instantiation |
+| Agent submissions | The actual outputs each agent produced | Agent developer | Agent developer owns; Straw may use anonymized performance signals |
+| Performance scores | Tier 1/2/3 scores per submission, per criterion | Straw owns | Full Straw ownership — this is the core data asset |
+| Agent metadata | Agent type, model family, parameter count, architecture class | Agent developer | Agent developer owns the IP; Straw owns the registry record |
+| Task-performance correlations | "Which agent types perform how on which task categories" | Straw owns | Core proprietary dataset — not shared |
+| Winner history | Which agent won which competition, on which task type, on which rubric | Straw owns | Straw-owned; anonymized for directory display |
+| Judge model decisions | Which judge model scored which submission how | Straw owns | Core data for judge calibration |
+| Calibration quality | Correlation between judge scores and human expert annotations | Straw owns | Used for quarterly calibration |
+
+**The core proprietary dataset: task-performance correlations**
+
+Straw accumulates, across every competition ever run, a dataset of the form: `(task_category, task_complexity, rubric_type, agent_architecture_class, model_family) → performance_score`. This is the world's largest private dataset mapping task characteristics to agent performance outcomes.
+
+Why is this valuable? Three reasons:
+
+1. **Rubric recommendation engine.** When a new enterprise customer wants to design a rubric for a code review competition, Straw can say: "Based on 847 prior code review competitions, the rubric weight that correlates most strongly with production agent performance is [specific weights]. Customers who use this weight distribution report 31% higher satisfaction with hired agents at 6-month review." This is a product feature that gets better with every competition. A new entrant can't offer this.
+
+2. **Agent capability discovery.** Straw's dataset reveals which agent architectures are systematically better at which task types. This is intelligence that AI labs don't have (they run their own internal evals, not cross-vendor task-performance studies). This data is worth paying for — research licenses to AI labs and institutional researchers.
+
+3. **Regulatory evidence.** As governments mandate AI capability documentation, the Straw dataset provides the empirical grounding. "We've evaluated 5,000+ agent-task combinations. Here is the statistical distribution of performance across agent types for code review tasks." This is public-interest data that regulators and standards bodies will want access to.
+
+**Revenue from data:**
+
+| Data product | Customers | Revenue model | ACV estimate |
+|---|---|---|---|
+| Rubric recommendation engine | Enterprise customers (built into platform) | Included in Enterprise tier | — |
+| Research data license | AI labs (Anthropic, OpenAI, Google), academic institutions | Annual data license | $100K–$500K/year |
+| Regulatory evidence package | Government agencies, compliance bodies | Custom engagement | $50K–$200K/engagement |
+| Benchmark report (Straw Index) | Enterprise analysts, investors, press | Subscription | $5K–$15K/year |
+
+**The compounding flywheel:**
+
+More competitions → richer task-performance dataset → better rubric recommendations → customers run better competitions → higher customer satisfaction → more customers → more competitions. This is the data moat flywheel. It compounds geometrically because each competition adds data across multiple dimensions (task category, agent type, judge model response, rubric design quality).
+
+**The a16z counterargument (and why it doesn't apply to Straw):**
+
+A16z's "empty promise of data moats" argues that data moats are overrated because: (1) large model providers have more data, (2) synthetic data generation is becoming cheaper, (3) data alone doesn't create sustainable advantage without operational excellence.
+
+The counterargument applies to generic training data (yes, OpenAI has more text data than any startup). It does NOT apply to Straw's data: Straw's task-performance correlation data is specifically about real agent performance on real enterprise tasks under real evaluation conditions. This data doesn't exist elsewhere. OpenAI doesn't have it. Anthropic doesn't have it. No AI lab runs multi-vendor competitive evaluations at enterprise scale. The data is genuinely unique and can't be synthesized.
+
+**Data governance and customer trust:**
+
+Straw's data rights must be clearly stated in customer contracts:
+- Customer task data is never shared in identifiable form
+- Agent submission outputs are never shared with competing agents
+- Straw may use anonymized performance signals for rubric improvement and research
+- Customers can opt out of contributing to the research dataset (reduced pricing incentive)
+- Research data is licensed only in aggregate, never at the competition-specific level
+
+**Sources:**
+- Proprietary data moat thesis (2026): https://aiireland.ie/2026/03/25/the-new-moat-why-proprietary-data-is-your-only-durable-competitive-advantage-in-ai/
+- C.H. Robinson example: https://thestrategystack.substack.com/p/how-to-create-proprietary-data-moats
+- a16z counterargument: https://a16z.com/the-empty-promise-of-data-moats/
+
+---
+
+## Tick 185 (2026-05-01): The "Straw for AI Safety" angle — red teaming, adversarial evaluation, and regulatory demand
+
+**Thread source:** Session 19 candidate thread. Could Straw's competition format be used for red-teaming and adversarial AI evaluation? What is the regulatory demand for this?
+
+**The AI red-teaming market in 2026:**
+
+The AI red team agents market will be worth $7.9 billion globally by 2033 (14% CAGR). The EU AI Act requires automated red-teaming for high-risk AI systems, full enforcement August 2, 2026, with fines up to €35M for non-compliance. Demand has officially outpaced supply. 2026 is the year the convergence happens: EU AI Act deadline + AI deployment boom + tooling maturation.
+
+Microsoft published an AI Agent Eval Scenario Library (GitHub) specifically covering red-teaming and adversarial evaluation scenarios. OWASP Gen AI Security Project published a Q2 2026 AI Security Solutions Landscape for Agentic Red Teaming. This is a category that is crystallizing right now.
+
+**Multi-turn jailbreaks: the empirical challenge**
+
+A key finding from 2026 red-teaming research: multi-turn jailbreaks reach a 97% success rate within five conversational turns. Single-turn safety testing is essentially useless — any agent that passes single-turn testing can be broken in five turns. This has massive implications for enterprise AI procurement: a vendor demo that shows "safe" behavior is worthless. Only prolonged adversarial testing reveals true safety posture.
+
+**How Straw's competition format maps to red-teaming:**
+
+In a standard Straw competition, multiple agents compete to produce the best output on a defined task. The rubric rewards quality. In a red-team competition, the format is inverted: multiple adversarial agents compete to find vulnerabilities in a target AI system. The rubric rewards vulnerability discovery.
+
+| Standard competition | Red-team competition |
+|---|---|
+| Task: "Process these invoices correctly" | Task: "Find all ways to make this AI agent process invoices incorrectly" |
+| Rubric: correctness, speed, accuracy | Rubric: vulnerabilities found, exploits demonstrated, recovery behavior |
+| Competing agents: task-solving agents | Competing agents: adversarial red-team agents |
+| Winner: agent that performs best | Winner: agent that finds most critical vulnerabilities |
+| Customer benefit: hires best agent | Customer benefit: knows their AI agent's vulnerability profile before deploying |
+
+**The EU AI Act compliance use case:**
+
+Under EU AI Act Article 9.7 (August 2026): AI systems classified as high-risk must have documented conformity assessments including red-teaming evidence. Specifically: "the testing of the AI system to identify the most appropriate risk mitigation measures" must be documented before deployment.
+
+Straw's red-team competition produces exactly this: a documented multi-adversary test with scored vulnerability findings, exploits demonstrated, and remediation recommendations. This is the Article 9.7 conformity assessment evidence.
+
+**The red-team competition product design:**
+
+A red-team Straw competition would work differently from a standard competition:
+
+1. **Target agent (not competing agents):** The customer submits their deployed-or-about-to-be-deployed AI agent as the target. Multiple adversarial agents attack it.
+
+2. **Red-team agent pool:** Straw maintains a certified pool of red-team agents — adversarial agents designed to probe for jailbreaks, prompt injection, data leakage, role confusion, and policy violations. These are Straw-operated, not customer-submitted.
+
+3. **Attack taxonomy:** Straw's attack rubric follows OWASP Gen AI Top 10: prompt injection, jailbreaking, model extraction, data leakage, insecure output handling. Each category is scored and documented.
+
+4. **Severity scoring:** Vulnerabilities are rated Critical / High / Medium / Low based on exploitability and impact. The post-red-team report documents: vulnerabilities found, severity, reproduction steps, and recommended mitigations.
+
+5. **Compliance artifact:** The report is formatted for regulatory use — specifically designed to be attached to an EU AI Act Article 9.7 conformity assessment or OMB M-26-04 documentation package.
+
+**Market positioning for Straw red-team:**
+
+This is a separate product from the standard procurement competition. Different buyer, different use case, different budget:
+
+| Dimension | Standard competition | Red-team competition |
+|---|---|---|
+| Buyer | Head of AI, VP Engineering (procurement) | CISO, Head of AI Security, Chief AI Officer (security) |
+| Budget | Engineering / AI procurement | Security / compliance |
+| Urgency driver | AI vendor selection | EU AI Act deadline (August 2026), recent AI security incident |
+| Revenue | $10K–$50K per competition | $15K–$75K per engagement |
+| Target company size | 500–5,000 employees | 1,000+ employees (higher security budget) |
+| Sales cycle | 90–120 days | 60–90 days (compliance deadline drives urgency) |
+
+**The strategic question: launch red-team competition now or later?**
+
+*For:* EU AI Act enforcement starts August 2, 2026 — 3 months from now. The timing is perfect. There's genuine regulatory urgency. The CISO buyer has budget and mandate.
+
+*Against:* Straw's current product is procurement evaluation. Red-team evaluation requires different infrastructure (certified adversarial agent pool, OWASP-aligned attack rubric, severity scoring). Building this divides focus at a critical early growth stage.
+
+*Verdict:* Launch a basic "Red-Team Edition" beta in Q3 2026, explicitly targeting the EU AI Act August deadline. Scope: OWASP Gen AI Top 10 attack taxonomy, 3 adversarial agents from Straw's certified pool, post-engagement report formatted for Article 9.7 compliance. Price: $20K–$30K flat fee per engagement. This is MVP — not the full multi-adversary competition format. Reserve the full red-team competition format for 2027 when the product and market are both more mature.
+
+**Sources:**
+- AI red team market $7.9B by 2033: https://mindgard.ai/blog/ai-red-teaming-statistics
+- EU AI Act red-teaming requirement: https://genai.owasp.org/resource/ai-security-solutions-landscape-for-ai-and-agentic-red-teaming-q2-2026/
+- Multi-turn jailbreak 97% success rate: https://invisibletech.ai/blog/ai-red-teaming-2026
+- Microsoft AI Agent Eval Scenario Library: https://github.com/microsoft/ai-agent-eval-scenario-library/blob/main/capability-scenarios/red-teaming-and-adversarial-evaluation.md
+
+---
+
+## Threads still to dig — Session 20
+
+**Status as of 2026-05-01 (final overnight session check):**
+
+Ticks 170–185 and Section 32 complete. 16 ticks and one major section added this session.
+
+**Session 20 candidate threads (if session continues):**
+- Tick 186: The Straw developer ecosystem — SDK design, webhook integration, CI/CD hooks, and how agent developers integrate Straw into their development workflow
+- Tick 187: International expansion sequencing — EU first (regulatory tailwind), APAC second, what the localization challenges are and which Straw features need country-specific adaptation
+- Tick 188: Straw's hiring plan — first 10 hires in sequence, what each role does, when to hire, and what "success at 90 days" looks like for each
+- Tick 189: The "agent benchmark" as a public good — publishing a Straw Index (anonymized cross-company benchmark) as a content marketing and trust-building strategy
+- Tick 190: Customer success at Straw — what does the CS team do between competitions? How do they detect at-risk accounts? What does expansion motion look like at 20 enterprise customers?
+
+---
+
+## Push status (Session 19 complete)
+
+**Session 19 adds:**
+- Tick 181: Pricing model evolution — per-competition → hybrid → platform subscription. Phase 1 (0–$1M ARR): per-competition + Benchmark Subscription. Phase 2 ($1M–$5M ARR): Platform License with competition allowance. Phase 3 ($5M–$20M ARR): full subscription tiers. Transition triggers: 10+ customers / $500K ARR → Phase 2; $2M ARR / NRR 120%+ → Phase 3.
+- Tick 182: 300-agent swarm dynamics — winner concentration confirmed (Project Deal: 20% capture 80% of rewards). Four prize design options: top-N pool, Bradley-Terry continuous payout, category-specific competitions, ERC-8004 reputation staking. Recommendation: top-3 pool (60/25/10) + above-threshold bonus for sub-$10K; Bradley-Terry for $10K+ at customer option.
+- Tick 183: Series A pitch — 10 hardest VC challenges and correct responses. Covers: Braintrust adding competition (missing supply side and incentive alignment), OpenAI building native eval (validates category, proves independence advantage), gaming/contamination (private tasks are immune), enterprise retention (Benchmark Subscription produces renewal signal), $1B vs. $50M (marketplace flywheel + data licensing), IP liability, buyer identity and sales motion, moat (4 compounding moats).
+- Tick 184: Data strategy — task-performance correlation dataset as core proprietary asset. Revenue from rubric recommendation engine (built into Enterprise tier), research data licenses ($100K–$500K/year to AI labs), regulatory evidence packages ($50K–$200K/engagement), Straw Index benchmark subscription ($5K–$15K/year). Compounding flywheel. a16z data moat counterargument rebutted.
+- Tick 185: Straw for AI Safety / red-teaming — EU AI Act red-teaming mandate (August 2, 2026, €35M fines). $7.9B red-team market by 2033. Multi-turn jailbreak 97% success rate proving demo safety is useless. Red-team competition design (inverted format: adversarial agents attack target agent). Verdict: launch "Red-Team Edition" beta Q3 2026 targeting EU AI Act August deadline.
+
+**Lines added this session:** ~500 lines
+**Total file size:** ~31,500 lines
+
+**Commits this session:**
+1. Ticks 170-172 — PUSHED ✓
+2. Ticks 173-176 — PUSHED ✓
+3. Section 32 — PUSHED ✓
+4. Ticks 177-180 — PUSHED ✓
+5. Ticks 181-185 — PUSH NOW
 
 
