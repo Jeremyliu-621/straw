@@ -22794,6 +22794,78 @@ NIST AI 100-1 introduced the concept of the AI Bill of Materials — a structure
 1. Gives enterprise clients a standardized inventory of what they're buying
 2. Positions Straw as the platform that enforces transparency requirements
 3. Makes Straw the natural compliance partner for federal AI procurement
+## Tick 139 (2026-05-01): International expansion sequencing — which markets after the US launch?
+
+**Thread**: After establishing US design partners and the first 50 competitions, which international markets does Straw expand to first, and in what order?
+
+---
+
+### The expansion decision framework
+
+International expansion for an enterprise B2B platform requires:
+1. **Market size**: How many enterprise AI procurement decisions happen per year in this market?
+2. **Regulatory fit**: Do local AI governance regulations create demand for evaluation services (tailwind) or create compliance barriers that add complexity (friction)?
+3. **Supply availability**: Are there enough AI agent operators in this market to compete in Straw competitions? Can Straw competitions attract sufficient supply from this market?
+4. **Language and localization**: Are enterprise tasks primarily in English or require translation infrastructure?
+5. **Legal and data residency**: Can Straw operate under US jurisdiction, or are there data residency requirements that demand local infrastructure?
+
+---
+
+### Market 1: United Kingdom (expand in Year 2, Months 14-18)
+
+**Why UK first**: English-language market, minimal localization cost. Post-Brexit regulatory flexibility — the UK is more permissive than EU on AI development but is actively building AI governance frameworks (UK AI Safety Institute founded 2023, now a global leader). Enterprise AI adoption is high: London is Europe's largest AI ecosystem by VC investment ($1.8B in 2025). Strong fintech and professional services sectors — exactly Straw's target verticals.
+
+**Regulatory fit**: UK AI Safety Institute (AISI) is developing AI evaluation standards and has explicitly sought industry input. Straw's evaluation platform aligns with AISI's mandate. The UK does not yet have prescriptive AI Act-equivalent legislation — this means less compliance complexity, but also less regulatory forcing function. **Net: moderate tailwind, low friction.**
+
+**Legal structure**: UK GDPR (post-Brexit divergence is minimal for 2026). Data can flow UK-US under the UK Extension to the US-EU Data Privacy Framework (DPF). Straw can operate as a US entity with UK customers under standard DPF.
+
+**Supply side**: UK has a significant Python/AI developer community (DeepMind, Stability AI, Wayve are all London-based). The developer community is English-first. Agent operators from the UK can compete in US competitions and vice versa — supply is fungible across the English-speaking world.
+
+**Entry strategy**: 1 UK design partner in months 12-16; target a mid-sized UK financial services firm or law firm. Attend AIuK or London Technology Week to establish presence. No UK entity required in Year 2.
+
+---
+
+### Market 2: European Union / Germany lead (Year 2-3, Months 18-24)
+
+**Why EU second, Germany as lead market**: EU AI Act creates the strongest regulatory forcing function of any market — high-risk AI systems require third-party conformity assessment by August 2026. This is a near-term enterprise procurement requirement that Straw is positioned to fulfill. Germany is the EU's largest enterprise market and has strong industrial AI adoption (Siemens, BASF, Deutsche Bank, SAP are all active AI deployers).
+
+**Regulatory fit**: EU AI Act is the strongest tailwind globally. AI Act Article 10+ requirements for high-risk systems create explicit demand for documentation and third-party evaluation evidence. **Net: very strong tailwind, but with friction from compliance requirements.**
+
+**Friction**: EU GDPR Article 44+ restrictions on data transfer. Enterprise task data originating in the EU may not be processable on US-based infrastructure without Standard Contractual Clauses (SCCs) or UK bridge agreement. Straw will need EU data processing infrastructure (likely an EU-hosted evaluation pipeline) for competitions involving EU-origin task data. This is a non-trivial engineering investment.
+
+**Language**: German-language task interface is required for German enterprise penetration. English-only works for UK but not for German mid-market. Translation layer adds 3-6 months of product development.
+
+**Entry strategy**: Begin with EU AI Act compliance positioning — market Straw as the platform that provides the evaluation evidence required by Article 10. Target a German enterprise in a high-risk AI category (HR systems, credit scoring). Hire a EU-based commercial contact in Year 2. Legal entity (GmbH) required by Year 3.
+
+---
+
+### Market 3: Japan (Year 3, evaluate but don't rush)
+
+**Why consider Japan**: Japan launched its own AI governance framework in 2024 (Japan's AI Guidelines for Business); enterprise AI adoption is high in finance and manufacturing. Japan's Ministry of Economy, Trade and Industry (METI) has been an active AI standards participant.
+
+**The challenge**: Japanese enterprise sales cycles are 12-24 months (much slower than US/UK). Business relationships require significant in-person investment. Tasks are in Japanese, requiring full localization. The barrier to entry is high enough that Straw should not expand to Japan until the US/UK/EU business is well established (Year 3+).
+
+---
+
+### The wrong expansions to make in Year 1-2
+
+**India (compelling long-term, wrong timing)**: India has a massive English-language developer community — excellent for supply. But enterprise AI procurement in India at the scale where Straw's pricing makes sense ($5K-$10K competition fee) is concentrated in tech multinationals, not domestic enterprises. The domestic enterprise market for Straw is likely 5-7 years away from being material. India is a supply-side expansion, not a demand-side expansion.
+
+**Canada (low-hanging fruit but small)**: Canada is the closest international market to the US in regulatory environment, language, and enterprise culture. But the Canadian market for enterprise AI procurement is 1/10 the size of the US market and most large Canadian enterprises are subsidiaries of US companies that already buy through US headquarters. Low incremental investment, low incremental return.
+
+**China (avoid for now)**: Data sovereignty requirements, regulatory uncertainty, and geopolitical complexity make China non-viable for a US-based evaluation platform in 2026-2027.
+
+---
+
+### Summary expansion sequence
+
+| Timeline | Market | Primary driver | Key friction |
+|----------|--------|---------------|-------------|
+| Launch | US | Largest market, home market | Cold-start supply |
+| Year 2 (M14-18) | UK | English market, AI Safety Institute tailwind | Modest |
+| Year 2-3 (M18-24) | EU (Germany lead) | EU AI Act conformity requirement | GDPR, localization |
+| Year 3+ | Japan | Enterprise AI governance | Language, sales cycle |
+| Year 4+ | India | Supply-side (agent operator recruitment) | Limited demand |
 
 ---
 
@@ -22919,4 +22991,10 @@ The 25% Day 14 submission rate target is aggressive. Product Hunt achieves ~15% 
 - Human outreach conversion uplift: Intercom "New Research: Personal Outreach During Trial Increases Conversion by 40%" (2024)
 - Kaggle first-competition rate: Goldbloom AMA (medium.com/implodinggradients), 2017; Kaggle platform statistics
 - Community-first competition design: Stack Overflow, "First Question" UX research (beginner-friendly question categories); Reddit new user onboarding studies
+- UK AI Safety Institute: gov.uk/government/organisations/ai-safety-institute
+- UK AI ecosystem investment data: London & Partners 2025 AI investment report
+- EU AI Act high-risk system requirements: eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689 (Articles 9-17)
+- GDPR international transfer mechanisms: edpb.europa.eu/our-work-tools/general-guidance/guidelines-recommendations-best-practices/international-transfers
+- Japan AI Guidelines for Business: meti.go.jp/english/press/2024/0419_002.html
+- Enterprise sales cycle benchmarks by country: Gartner enterprise sales cycle research; OpenView SaaS benchmark report 2025
 
