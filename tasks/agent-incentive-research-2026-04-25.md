@@ -12597,3 +12597,94 @@ Credo.ai got into Gartner's AI governance Market Guide through exactly this mech
 - [NeurIPS Datasets and Benchmarks track](https://neurips.cc/)
 - [Morningstar Rating methodology](https://en.wikipedia.org/wiki/Morningstar_Rating_for_Funds)
 
+
+---
+
+## Tick 93 (2026-05-01): The training data flywheel — can Straw's competition data improve the agents that compete on it?
+
+**Research question**: Could Straw's competition outputs — scored submissions across hundreds of enterprise tasks — become training data that improves the AI agents competing on the platform? What are the ethics, IP, and competitive implications?
+
+---
+
+### The potential flywheel
+
+Every competition produces a dataset of structure:
+```
+{task_description, rubric, agent_submission, score, tier_1_result, tier_2_result, tier_3_investigation}
+```
+
+At scale, this is extraordinarily valuable training data:
+- The task description and rubric define "what good looks like" for real enterprise work
+- The scored submissions create a labeled dataset of (input, output, quality_score) triples
+- The scoring feedback identifies *which aspects* of outputs are high vs. low quality (not just binary pass/fail)
+
+If an agent team could access their own scored submissions and improve their agent based on the feedback, Straw becomes a systematic improvement loop, not just an evaluation platform. This is the RLHF data flywheel applied to competitive evaluation.
+
+---
+
+### Three possible data use models
+
+**Model A: Agent teams access their own submission feedback**
+Each agent team receives their submission artifacts and scores — they already get this (the score and Tier 1 result are shown). Straw could additionally provide structured rubric breakdowns (which criteria were strong, which were weak) to help agents improve for future competitions.
+
+*This is already partially in the MVP*: score and category breakdowns are the natural output of a rubric-based evaluation. The question is how granular the feedback should be.
+
+*Risk*: Detailed per-criterion feedback enables faster rubric gaming (Tick 72 Failure Mode 5). If agents know exactly which rubric dimensions they're weak on, they can over-optimize for those dimensions in the next competition.
+
+*Mitigation*: Provide feedback at the category level (e.g., "accuracy: 8/10, completeness: 6/10") but not at the sub-criterion level (which specific claims were wrong). Category-level feedback helps genuine improvement without enabling narrow gaming.
+
+**Model B: Straw aggregates anonymized training datasets**
+Straw creates anonymized datasets from competition outputs — stripping enterprise and agent team identifiers — and licenses them to:
+- AI research labs for training evaluation models
+- Agent teams for improving their agents on enterprise task types (without knowing which specific enterprise's data it was)
+- Academic researchers studying enterprise AI performance
+
+*Legal requirements*: Agent teams must consent to anonymized training use in their participation agreement. Enterprises must consent to anonymized task use. This is analogous to how Kaggle licenses competition datasets — the enterprise keeps proprietary results but allows the raw task structure to be publicly released after competition close.
+
+*Business model*: Straw licenses anonymized evaluation datasets. Suggested pricing: $10K–$50K per curated domain-specific dataset (e.g., "1,000 scored legal contract review tasks with rubrics"). Target buyers: AI labs, enterprise ML teams, agent platform companies.
+
+**Model C: Straw trains its own judge models on competition data**
+The most strategically valuable use: Straw trains Tier 2 and Tier 3 judge models on accumulated competition data, creating proprietary judge models that outperform general-purpose LLMs at evaluating enterprise task quality.
+
+After 500 competitions across 5 task types, Straw has labeled data that general-purpose judge models (GPT, Claude, Gemini) were never trained on: real enterprise scoring decisions with human-verified ground truth. Fine-tuned judge models trained on this data would be measurably better at evaluating enterprise AI agent output quality.
+
+*Competitive implication*: Proprietary judge models are the moat that most resembles the LSAC calibration corpus moat. If Straw's judges are demonstrably better than general-purpose LLMs at evaluating the specific task types enterprises care about, the evaluation infrastructure becomes genuinely proprietary — not just the task design framework.
+
+*The virtuous loop*: Better judges → more reliable scores → more enterprise trust → more competitions → more training data → better judges. This is a compounding advantage that a competitor starting fresh cannot retroactively access.
+
+---
+
+### The IP ethics question
+
+The most important constraint: **Straw cannot use an agent team's submission to train a competing agent without explicit consent.** If Agent A submits a brilliant legal contract review solution, and Straw uses that submission to train a Straw-owned judge or agent, Straw is effectively competing with Agent A using Agent A's IP. This is the GitHub Copilot controversy applied to competition platforms.
+
+The bright lines:
+- Agent team submissions may be used to train Straw's judge models (which evaluate quality, not produce competitive outputs)
+- Agent team submissions may NOT be used to train Straw's own competing agents
+- Anonymized aggregate statistics (e.g., "70% of submissions in this category addressed criterion X") are fair use for platform calibration
+- Individual submission content used in training data requires explicit opt-in consent in the agent team's participation agreement
+
+This is the same distinction that Anthropic makes between "using your Claude conversations to improve Claude's responses" (with consent) vs. "using your conversations to train a competing chatbot" (never acceptable).
+
+---
+
+### The agent improvement loop as a supply-side retention mechanism
+
+From the agent team's perspective: if Straw competitions are the fastest way to identify where your agent underperforms on real enterprise tasks — and that feedback directly improves your agent — then competing on Straw becomes a systematic improvement investment, not just a prize lottery.
+
+This converts "winning" from the primary value of competing to "learning" — which benefits both winning and losing agent teams. A team that consistently places 4th but uses the rubric feedback to improve their agent by 15% over three competitions is getting more value from Straw than a team that wins once and stops competing.
+
+**The supply-side retention mechanism**: Agent teams that improve through Straw competition feedback have a financial incentive to keep competing, because each competition makes their agent more commercially valuable. The platform's feedback quality is a direct supply-side retention lever.
+
+---
+
+### Sources
+
+- RLHF (Reinforcement Learning from Human Feedback) — original InstructGPT paper methodology
+- GitHub Copilot training data controversy (2022–2023 litigation history)
+- Kaggle dataset licensing terms (enterprise data release after competition close)
+- Tick 63: Data governance (agent team retains methodology IP; Straw has limited evaluation license)
+- Tick 84: Legal structure (participation agreement provisions on training data consent)
+- OASIS simulation (arXiv:2411.11581) — agent learning behaviors in multi-agent environments
+- Tick 80: Agent reputation system — feedback loop from scoring to capability improvement
+
