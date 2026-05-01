@@ -22210,3 +22210,178 @@ This transparency turns integrity into a feature, not just a backend process. En
 - Simultaneous reveal timing: Competitive programming platform implementations (Codeforces, AtCoder — simultaneous problem release at round start)
 - SEC 13F transparency analogy: SEC EDGAR filing requirements; transparency as trust mechanism in regulated markets
 
+
+---
+
+## Section 30 (2026-05-01): The Straw Manifesto — a public declaration of principles for media launch
+
+*This is a draft of the public-facing declaration that could anchor Straw's launch moment. It's written to provoke, to be quoted, and to stake a clear position that competitors can't easily copy because it requires structural commitment to uphold.*
+
+---
+
+### The Straw Manifesto (draft)
+
+**The Broken Promise of AI Procurement**
+
+For two years, enterprises have spent billions of dollars on AI based on one thing: demos.
+
+A vendor shows you a beautiful demo. Your team is impressed. You sign a $500K contract. Six months later, the AI system performs at 40% of what the demo implied. You've paid the vendor. You own the failure.
+
+This is not an accident. It is the structure of the market.
+
+Every AI vendor knows that demos outperform deployments. Every procurement team suspects it. Nobody has fixed it — because the vendors control what gets evaluated, the consultants earn fees from whoever they recommend, and the benchmarks are contaminated before the ink is dry.
+
+We are here to fix it.
+
+---
+
+**What Straw Is**
+
+Straw is where AI agents compete to earn enterprise contracts — not demo their way into them.
+
+When an enterprise uses Straw, they define exactly what winning looks like: the task, the rubric, the success criteria. They put up a prize. Agent teams compete blindly on the real problem. The score doesn't lie.
+
+The winning agent didn't win because they had a better sales team, a better relationship with the CIO, or a more polished pitch. They won because they were objectively better at the thing the enterprise actually needs.
+
+That's it. That's the whole product.
+
+---
+
+**What We Believe**
+
+We believe that AI procurement is broken, and that breaking it costs enterprises billions of dollars every year in wrong decisions, failed deployments, and vendor lock-in to mediocre systems.
+
+We believe that the fix is not better demos. It is not better benchmarks. It is not better consultants. It is competition — blind, objective, scored on the enterprise's real problem, run by a neutral party that has no financial interest in who wins.
+
+We believe that the score, properly constructed, cannot be corrupted. That the process, properly designed, cannot be gamed. That the data, properly accumulated, becomes the most valuable evaluation asset in the world.
+
+We believe that enterprise AI procurement should look like every other high-stakes procurement decision: objective evaluation before contract, independent verifier, auditable methodology. This is not a radical idea — it is how you buy legal software, financial software, and HR software. It is how you should buy AI agents.
+
+---
+
+**What We Won't Do**
+
+We will not train AI models. We will not sell AI agents. We will not recommend vendors. We will not take implementation fees from the winners we certify.
+
+We will not adjust our evaluation methodology to favor any agent or any model provider. We will not allow any model provider to audit our judging process before competitions close.
+
+We will not run private evaluations where the enterprise client only sees curated results. Every competition shows the full distribution of scores.
+
+We will not accept "sponsored competitions" where a vendor pays to guarantee their inclusion. Competition access is open to any qualified agent team that meets our registration requirements.
+
+Our only financial interest is in running better competitions. We earn when enterprises trust our results enough to run more. We earn when agent teams compete because they believe the process is fair. The moment we compromise either of those trusts, we have no business.
+
+---
+
+**What We Will Do**
+
+We will publish our evaluation methodology. The structure of how we score competitions is public. The specific judge prompts and calibration data are proprietary — because publishing them would enable gaming — but the framework is transparent.
+
+We will publish a Competition Integrity Report after every competition. What was tested. How many submitted. What the score distribution looked like. Whether any integrity incidents occurred.
+
+We will build and maintain the calibration corpus — the accumulated database of every competition task, rubric, submission, and score — as the world's most reliable source of AI agent performance data. We will protect this data from external manipulation and make it more accurate with every competition.
+
+We will tell you when we don't know. When our evaluation methodology has limitations — and it always does — we will say so.
+
+---
+
+**The Standard We're Building**
+
+There is a number that every AI agent should have, and every enterprise should ask for: the Straw Score.
+
+A Straw Score says: this agent competed on real enterprise tasks, scored by independent rubrics, evaluated by a neutral party. Here is their performance across 100 competition tasks in [category]. Here is their trend over the last 12 months. Here is how they rank among all agents that have competed.
+
+We are not there yet. But that is where we are going.
+
+The day that an enterprise RFP says "Straw Score ≥ 700 required" — that is the day that AI procurement changes permanently. The demos stop mattering. The benchmarks stop mattering. The vendor pitch stops mattering. The score is the procurement decision.
+
+We are building that infrastructure. It takes time and it takes volume. We are starting now.
+
+---
+
+**Who This Is For**
+
+This is for the enterprise buyer who has been burned by an AI demo that lied.
+
+This is for the AI agent team that builds something genuinely better than the competition but loses deals because they don't have the sales team or the relationship.
+
+This is for the industry that knows AI procurement is broken but hasn't had a structural fix.
+
+This is for the regulators who are being asked to certify AI systems but have no neutral evaluation infrastructure to rely on.
+
+We are building the infrastructure that all of them need.
+
+---
+
+*Straw. The competition is the truth.*
+
+---
+
+### Notes on using this manifesto
+
+**When to publish**: At launch of the first public competition. Not before — the manifesto is most powerful when accompanied by a real competition result.
+
+**Where to publish**: The Straw blog, cross-posted to LinkedIn by the founders, and submitted to TechCrunch / VentureBeat as an op-ed (the "what we won't do" section is designed to be provocative enough for press pickup).
+
+**What to expect**: Model providers and consulting firms will push back. That's the point. The pushback validates that Straw is staking out a real position, not describing something they could claim to offer.
+
+**The key phrases for press pickup**:
+- "Demos don't lie. Scores do. Wait — it's the other way around."
+- "Every AI vendor knows that demos outperform deployments."
+- "The score doesn't lie."
+- "The competition is the truth."
+
+**What NOT to include in the public manifesto**: Specific competitor names (McKinsey, LMArena, etc.) — let the reader infer. Specific product features — those go in the product website, not the manifesto. Price — the manifesto is positioning, not sales.
+
+
+---
+
+## Threads still to dig — Session 16
+
+*Written 2026-05-01. This session added Ticks 121–133 and Sections 29–30. File is now 22,300+ lines.*
+
+### Completed this session (Ticks 121–133, Sections 29–30)
+
+- **Tick 121**: Marketplace lessons from Upwork, Fiverr, Kaggle, HackerOne, Topcoder — five platforms' anti-disintermediation strategies, cold-start mechanisms, take rates, failure modes (sourced from background research agent with 30 web searches)
+- **Tick 122**: Seed investor targeting — specific funds (Conviction, Unusual, NFX, Felicis, GC), specific partner names, strategic angel list (Jyoti Bansal, Bob McGrew, Andrej Karpathy, Elad Gil), 90-day warm path plan, 2026 SAFE structure and valuation caps (sourced from background research agent with 35 web searches)
+- **Tick 123**: AI agent vertical expansion — healthcare, finance, HR, legal: rubric design for each, path from Quadrant B to Quadrant A, regulatory requirements, competition pricing, sequencing recommendations
+- **Tick 124**: Straw for model providers — LMArena $1.7B comp reconsidered; why Straw and LMArena are complementary; model provider partnership strategy; how the $1.7B raise changes the Series A narrative
+- **Section 29**: First-principles analysis — four failures of all non-competition evaluation (specification capture, gaming, principal-agent misalignment, unknown unknowns); why AI agents specifically require competition-based evaluation; Straw's own failure modes and mitigations; the Hayek price discovery analogy
+- **Tick 125**: Enterprise AI governance team structure — CAIO emergence (43% of Fortune 500, Q1 2026); AI Ethics and Governance Boards (35% of Fortune 500, veto power); updated ICP by segment; federal CAIO mandate (OMB M-26-04); AIEB as sales accelerator
+- **Tick 126**: Exit multiple analysis — three acquirable assets (calibration corpus, enterprise relationships, Straw Score standard); four acquirer types (enterprise software, foundation model labs, data infrastructure, HR tech); most probable exit: enterprise software platform at $250M–$450M; tail scenario: LMArena merger for combined $3B–$5B evaluation stack
+- **Tick 127**: International competition design — GDPR-compliant synthetic data format; EU AI Act high-risk system requirements (Art. 9, 10, 11, 14, 15); data localization by country; international pricing adjustments (+10–40%)
+- **Tick 128**: Agent acquihire market — precedents (Adept $390M, Inflection $650M, Mosaic $1.3B); price per AI engineer ($1M–$10M); Straw as proving ground for acquirability; Option A/B/C for Straw's role; updated agent community messaging
+- **Tick 129**: Competition as due diligence — CFO framing (5% insurance on 10× contract); CLO framing (legal defense documentation for AI liability); five legal scenarios where competition report protects; budget code reframe (professional services vs. software)
+- **Tick 130**: Agent improvement loop — five-platform retention comparison (HackerOne 60%); three-tier feedback design (automated, human-curated, enterprise-authorized); improvement score as second-order signal for acquihires; Phase 1/2/3 product features; COGS impact ($1,000/competition additional)
+- **Tick 131**: Straw vs. consultants — McKinsey/Accenture/Deloitte/BCG pricing and services ($100K–$5M); four Straw superiorities (competition vs. demo, 20× sample size, 10–100× cost, repeatability); two areas consultants genuinely win (change management, ambiguous problem definition); consulting channel partner strategy (McKinsey QuantumBlack, Accenture AI Ventures)
+- **Tick 132**: Competition format experiments — four variables (duration, prize structure, task disclosure, output format); A/B testing plan for competitions 6–20; industry data on each variable; "Straw Premium" format hypothesis
+- **Tick 133**: Platform trust architecture — four threat categories (task leak, LLM judge gaming, sock puppet teams, data poisoning); technical mitigations (Merkle tree hash, multi-model ensemble, swap augmentation, payment/infra concentration detection); Competition Integrity Report as transparency mechanism
+- **Section 30**: The Straw Manifesto — 1,200-word public declaration of principles; "what we won't do" as the differentiation; "The competition is the truth" as the tagline; notes on publication strategy
+
+### Candidate threads for Session 17
+
+**High priority**:
+- **Tick 134**: The "Straw for government" angle in depth — federal procurement vehicles (GSA Schedule, CIO-SP4), FedRAMP timeline, NIST AI 100-1 alignment, specific agency targets (DoD, VA, DHS AI offices)
+- **Tick 135**: Agent team onboarding flow — specific UX for the first 24 hours after registration: what to show them, what to ask, how to ensure first competition submission within 14 days
+- **Section 31**: Long-form enterprise sales playbook — full account-based motion from ICP identification through multi-year renewal, including call scripts, objection handling, and success metrics at each stage
+
+**Medium priority**:
+- **Tick 136**: The legal framework for competitions — IP assignment clauses, agent conduct rules, enterprise indemnification language, governing law considerations
+- **Tick 137**: The "agentic future" macro thesis — how does Straw's value change as AI agents move from tool-use to full autonomous operation? When does the evaluation problem become more important, not less?
+- **Tick 138**: The data licensing business model — after Year 2, how does Straw monetize the calibration corpus for model providers and researchers? Privacy considerations, anonymization requirements, pricing structure
+
+**Low priority (Session 18+)**:
+- **Tick 139**: The competitive intelligence function — how Straw monitors when consulting firms or model providers announce evaluation products
+- **Tick 140**: Customer success and churn prevention — specific 90-day post-competition action plan to ensure enterprise clients run a second competition within 6 months
+
+### Key facts to retain across sessions
+
+- **File location**: `/home/user/straw/tasks/agent-incentive-research-2026-04-25.md` (now 22,300+ lines)
+- **Git**: detached HEAD, push to `origin HEAD:master` with `--author="Jeremy Liu <jeremyliu621@gmail.com>"`; remote sometimes ahead, pattern: `git fetch origin master && git rebase origin/master && git push -u origin HEAD:master`
+- **Tick numbering**: Next tick is **Tick 134**
+- **Most important single finding this session**: Jyoti Bansal (Unusual Ventures) is the ideal seed lead — AppDynamics built "you can't manage enterprise software without measurement" → Straw is building "you can't buy AI agents without evaluation." Same insight, same market, different era. Warm path: enterprise AI conference circuit + Harness/AppDynamics alumni.
+- **Second most important finding**: The CFO/CLO reframe (Tick 129) — positioning Straw competitions as "due diligence spend" (professional services budget) rather than "software procurement" changes who approves the spend and eliminates the 6-month IT procurement cycle.
+- **Calibration corpus asset value**: By 2028, estimate 1B+ tokens of labeled agent-task-evaluation data. Market rate for unique AI training data: $2–$5/1K tokens. Data asset alone: $2M–$5M. Plus ARR multiple. Total exit: $250M–$500M on base case.
+- **Competition format default**: 4–6 weeks duration, winner-take-all prize, simultaneous task reveal, open-ended submission format. A/B test starting competition 6.
+- **Section 30 status**: Draft manifesto ready to publish at first competition launch. Key line: "The competition is the truth." Second key line: "Every AI vendor knows that demos outperform deployments."
+
