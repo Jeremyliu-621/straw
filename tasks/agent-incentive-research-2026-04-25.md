@@ -930,6 +930,14 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done — Tick 8] **Microsoft Magentic Marketplace simulation vs OASIS for 300-agent test.** Magentic is the right choice. Complete extension plan documented. Existing Postgres/async/LLM abstraction all carry over unchanged. Estimated cost <$10 for full parameter sweep.
 - [done — Tick 13] **Cooperative AI Foundation grants list — what work has been funded.** $15M from Macroscopic Ventures. FOCAL (CMU, ~$500K), FLAIR (Oxford). Top grant priority: "Incentivizing Cooperation Among AI Agents" — peer incentivization, inter-agent contracting, automated mechanism design for LLM agents. CAIF funds the theory; Straw would be doing the applied version. Academic collaboration opportunity.
 - [done — Tick 18] **MultiAgent4Collusion** (OASIS-family framework). github.com/renqibing/MultiAgent4Collusion. Wolf Packs outperform Armies — decentralized collusion is more effective. Detection: embedding trajectory clustering. 9 specific countermeasures for Straw documented.
+
+### Session 4 threads (Ticks 19–22)
+
+- [done — Tick 19] **Google A2A protocol + Anthropic MCP as agent communication standards.** A2A announced April 2025, donated to Linux Foundation June 2025, 150+ orgs. AgentCard JSON at `/.well-known/agent-card.json`. Full task lifecycle (pending→working→completed). MCP (Anthropic): tool-context access, stateless. Key distinction: MCP = vertical (agent↔tool), A2A = horizontal (agent↔agent). SKILL.md: published Dec 18, 2025 by Anthropic, adopted by 32 tools in 90 days including OpenClaw (247K stars), Codex, Gemini CLI. 85,000+ public skills. Straw integration design: Straw exposes an A2A server; each Straw task becomes a Task object; Straw emits AgentCards for its agent registry. SKILL.md files are the canonical capability-profile source.
+- [done — Tick 20] **Agent self-assessment accuracy — LLM calibration and the posting trigger.** LLMs are systematically overconfident (verbalized confidence 80-100%, insensitive to task difficulty). COREA paper (arXiv:2603.03752): RL-trained confidence routing saves 21.5% LLM cost. SWE-bench: 52% of failures = silent wrong answer, 23.4% cascading edits — agents don't say "I can't." Implication: Straw cannot rely on agents to self-declare incapability; the platform provides external triggers (budget cap exceeded, historical win-rate in category <threshold, repeat-submission declining-score pattern).
+- [done — Tick 21] **Two-sided market cold start — Kaggle/HackerOne/Topcoder bootstrap + Straw v0 playbook.** Kaggle: founded April 2010, prize money + data = early quality supply, Jeremy Howard Nov 2010. Topcoder: 2001, first TCO had 16 finalists, enterprise mode came 2007-2008. HackerOne: founded 2012, $1M paid by June 2015. Andrew Chen cold-start framework: supply is hard side. Key insight: single-player mode (Jeremy manually posts tasks = useful to OpenClaws without two-sided market). Atomic network = 1 real task + 3+ competing agents. Straw v0 bootstrap plan documented.
+- [done — Tick 22] **Agent capability cards and task-matching schema.** A2A AgentCard: standard JSON manifest. SKILL.md format: name, description, version + metadata.openclaw (requires.env/bins/config, emoji, install). 85,000 public skills. OpenClaw/clawhub skill directory is the supply-side registry. For Straw: onboarding wizard reads agent's SKILL.md files → auto-generates capability profile → feeds FTS+embedding matching engine. Capability profile = union of all SKILL.md frontmatter tags + category classification.
+
 - [done — Tick 15] **Stake-to-post mechanism.** 10% of bounty (ClawTasks/Sherlock data points). Three slashing triggers (harvest attack 100%, frivolous task 50%, ghost poster 100%). Augur dual-bond pattern (validity + no-show). Smart contract: OZ ConditionalEscrow on Base. v0: Stripe pre-capture with TOS non-refundability clause.
 - [done — Tick 15] **Engagement-required clause.** Option exercise window framing (FAR/procurement law). 21 days default (configurable 7-60). Forfeited bounty → highest-scoring agent if score ≥70; platform retains otherwise. v0: Stripe credit-lock with TOS burn-on-non-engagement.
 - [done — Tick 17] **Operator UX / dashboards.** AgentOps 4-level span hierarchy + Mission Control open-source reference (26 panels). North-star KPI: revenue per dollar of compute. HackerOne reputation model (Raw × Signal × Impact percentile) is the right formula — penalizes noise, rewards quality, gates privileges behind minimum signal threshold.
@@ -2392,3 +2400,875 @@ Fish, Gonczarowski & Shorrer (arXiv:2404.00806): GPT-4 consistently learns to pr
 9. **Whistleblower incentive:** If Operator A reports Operator B proposed coordination: Operator A receives bounty premium, Operator B suspended. Destabilizes cartels from within. Standard in antitrust leniency programs.
 
 Sources: github.com/renqibing/MultiAgent4Collusion, arxiv.org/abs/2511.21802, arxiv.org/abs/2404.00806, aeaweb.org/articles?id=10.1257/aer.20190623, arxiv.org/abs/2601.11369, arxiv.org/abs/2602.15198, github.com/umass-ai-safety/colosseum, arxiv.org/abs/2604.01151, ssrn.com/abstract=5386338, arxiv.org/abs/2507.14660
+
+---
+
+## Tick 19 (2026-05-01T12:00Z): Google A2A + Anthropic MCP — agent communication standards and Straw integration
+
+Sources: github.com/a2aproject/A2A, gist.github.com/SecureAgentTools/0815a2de9cc31c71468afd3d2eef260a, a2a-protocol.org, google.github.io/A2A, onereach.ai/blog/guide-choosing-mcp-vs-a2a-protocols, github.com/openclaw/clawhub/blob/main/docs/skill-format.md, agentskills.io, arxiv.org/abs/2602.12430, developers.openai.com/codex/skills
+
+### Google Agent2Agent (A2A) Protocol
+
+**Background:** Google announced A2A in April 2025 as an open protocol for agent-to-agent communication and interoperability. In June 2025, Google donated A2A to the Linux Foundation, establishing the Agent2Agent Protocol Project under neutral governance. Initial Linux Foundation members include AWS, Cisco, Google, Microsoft, Salesforce, SAP, and ServiceNow. By May 2026, the protocol has **150+ organizations** building on it (source: stellagent.ai/insights/a2a-protocol-google-agent-to-agent).
+
+**Technical foundation:** JSON-RPC 2.0 over HTTPS. Supports:
+- Synchronous request/response
+- Streaming via Server-Sent Events (SSE)
+- Asynchronous push notifications
+
+**The AgentCard — agent discovery mechanism:**
+
+The AgentCard is a JSON document published by an A2A Server at a well-known path: `https://<base_url>/.well-known/agent-card.json`. It serves as the agent's machine-readable identity and capability manifest.
+
+```json
+{
+  "schemaVersion": "1.0",
+  "humanReadableId": "strawai/openclaw-coding-agent",
+  "agentVersion": "2.1.0",
+  "name": "OpenClaw Coding Agent",
+  "description": "Solves software engineering tasks: debugging, refactoring, test writing, migrations. Strong on Python/TypeScript/Rust. Weak on embedded/Verilog.",
+  "url": "https://agents.openclaw.dev/a2a",
+  "provider": {
+    "name": "OpenClaw Inc.",
+    "url": "https://openclaw.dev"
+  },
+  "capabilities": {
+    "a2aVersion": "1.0",
+    "streaming": true,
+    "pushNotifications": true,
+    "stateTransitionHistory": true
+  },
+  "authSchemes": [
+    { "scheme": "bearer" }
+  ],
+  "skills": [
+    {
+      "id": "python-debugging",
+      "name": "Python Debugging",
+      "description": "Diagnose and fix runtime errors, logic bugs, and performance issues in Python codebases",
+      "tags": ["python", "debugging", "code-quality"],
+      "inputModes": ["text/plain", "application/json"],
+      "outputModes": ["text/plain", "application/json", "application/zip"]
+    },
+    {
+      "id": "typescript-refactor",
+      "name": "TypeScript Refactoring",
+      "description": "Modernize, clean, and type-strengthen TypeScript codebases",
+      "tags": ["typescript", "refactoring", "code-quality"]
+    }
+  ],
+  "tags": ["coding", "software-engineering", "debugging", "python", "typescript"],
+  "lastUpdated": "2026-04-15T00:00:00Z"
+}
+```
+
+**Required fields:** schemaVersion, humanReadableId, agentVersion, name, description, url, provider (name required), capabilities (a2aVersion required), authSchemes (at least one).
+
+**The A2A Task lifecycle:**
+A task starts in `submitted` state and progresses through: `submitted → working → [requires-input | completed | failed | canceled]`. Long-running tasks persist through this state machine. Tasks carry: id, status, messages (conversation history), artifacts (output files), and metadata.
+
+**Authentication schemes supported:** apiKey (in Authorization header), oauth2 (requires tokenUrl, optional scopes), bearer (pre-shared token), none (public).
+
+### Anthropic's Model Context Protocol (MCP)
+
+**What it is:** MCP standardizes how agents (LLM clients) connect to external *tools and data sources* (MCP servers). Published by Anthropic in late 2024. A purely stateless request-response protocol — the server exposes tools and resources; the client (agent) invokes them.
+
+**Structure:** MCP server exposes a `tools/list` endpoint returning available tools with name, description, and JSON Schema for parameters. The agent calls `tools/call` to invoke.
+
+**Key distinction from A2A:**
+| Dimension | MCP | A2A |
+|---|---|---|
+| Purpose | Tool/data access | Agent-to-agent orchestration |
+| Direction | Agent → tool (vertical) | Agent ↔ agent (horizontal) |
+| Statefulness | Stateless (per-call) | Stateful (persistent task) |
+| Discovery | MCP server manifest | AgentCard at /.well-known/agent-card.json |
+| Long-running tasks | No built-in support | Native (task lifecycle) |
+| Best for | External API access, file ops, search | Multi-agent workflows, delegation, collaboration |
+
+**The recommended stack (per Google + community consensus):** Use MCP for tool access within an agent; use A2A for agent-to-agent task delegation and collaboration. Most advanced systems will use both.
+
+### SKILL.md — The Agent Capability Manifest Standard
+
+**What happened:** Anthropic published the Agent Skills specification on **December 18, 2025** at agentskills.io. Within 48 hours Microsoft (VS Code) and OpenAI (ChatGPT + Codex CLI) integrated it. By March 2026, **32 tools from competing companies** read the same SKILL.md files including:
+
+- **OpenClaw** (openclaw/openclaw, 247K stars) — the most popular open-source agent runner
+- OpenAI Codex CLI
+- Google Gemini CLI
+- GitHub Copilot (VS Code agent skills)
+- JetBrains Junie
+- AWS Kiro
+- Block's Goose
+
+As of May 2026: **85,000+ public skills** available at openclaw/skills and openclaw/clawhub.
+
+**The SKILL.md format (from github.com/openclaw/clawhub/docs/skill-format.md):**
+
+```markdown
+---
+name: typescript-refactor
+description: "Modernize and type-strengthen TypeScript codebases. Removes 'any', adds strict types, migrates to modern patterns."
+version: 1.2.0
+metadata:
+  openclaw:
+    requires:
+      env:
+        - GITHUB_TOKEN
+      bins:
+        - node
+        - npm
+    primaryEnv: GITHUB_TOKEN
+    envVars:
+      - name: GITHUB_TOKEN
+        required: true
+        description: GitHub Personal Access Token with repo scope.
+    emoji: "🔧"
+    homepage: https://github.com/example/ts-refactor-skill
+    os: ["linux", "darwin"]
+---
+
+## Instructions
+
+When invoked with a TypeScript codebase, perform the following steps:
+1. Run tsc --noEmit to capture baseline errors
+2. ...
+```
+
+**Key fields:**
+- `name`, `description`, `version` — required
+- `metadata.openclaw.requires.env` — environment variables the skill needs
+- `metadata.openclaw.requires.bins` — CLI binaries that must be installed
+- `metadata.openclaw.primaryEnv` — the main credential variable (for permission prompts)
+- `metadata.openclaw.emoji`, `homepage`, `os` — optional metadata
+- `metadata.openclaw.install` — dependency specs (brew, node, go, uv packages)
+- `metadata.openclaw.always` — boolean, if true the skill is always active
+
+**Progressive disclosure:** Agents pre-load only `name` + `description` at startup (zero context overhead). Full instructions loaded on demand when the skill is invoked. This allows an agent to be "aware" of thousands of installed skills without context bloat.
+
+**Academic validation:** arXiv:2602.12670 (SkillsBench, Feb 2026) tested curated skills across 86 tasks, 7,308 trajectories. Result: curated skills raise pass rates by **+16.2 percentage points** on average. Range: +4.5pp (software engineering) to **+51.9pp (healthcare)**. Critical finding: **self-generated skills provide zero average benefit** — agents cannot reliably author the procedural knowledge they benefit from consuming.
+
+### Straw Integration Design
+
+**How Straw fits into the A2A + SKILL.md ecosystem:**
+
+**Straw as an A2A server:**
+```
+POST /a2a
+Body: {
+  "jsonrpc": "2.0",
+  "method": "tasks/send",
+  "params": {
+    "id": "task-uuid",
+    "message": {
+      "role": "user",
+      "parts": [{ "type": "text", "text": "Post a new bounty: ..." }]
+    }
+  }
+}
+```
+
+Straw exposes a `/.well-known/agent-card.json` for the Straw platform itself — agents can discover Straw the same way they discover any A2A server. The AgentCard for Straw would declare skills like: `post-bounty`, `browse-bounties`, `submit-to-bounty`, `check-submission-status`, `withdraw-earnings`.
+
+**Agent capability profile = SKILL.md union:**
+When an agent operator onboards to Straw, the onboarding wizard:
+1. Reads the agent's installed SKILL.md files (either from the agent's repository or via SKILL.md discovery)
+2. Extracts `name`, `description`, `tags`, `category` from each skill's frontmatter
+3. Generates an initial capability profile: `{ skills: [...], categories: [...], keywords: [...] }`
+4. This profile feeds into the FTS + embedding matching engine (D27)
+5. Profile is re-generated whenever the agent's SKILL.md files change (webhook on agent repo)
+
+**Why this matters for the friend's concern:**
+The SKILL.md standard gives Straw a canonical, machine-readable source of truth for what an agent can do. But SkillsBench tells us self-generated descriptions have zero benefit. The implication: **empirical performance on Straw tasks is the ground truth**, and SKILL.md provides the initial capability seed that gets refined by observed win-rates per category.
+
+**Capability matching → posting trigger:**
+When an agent's SKILL.md tags don't match a task's categories AND the agent's historical win-rate in that category is low AND the agent has a compute budget: the platform surfaces a "Post this subtask?" suggestion with a pre-filled bounty form using A2A task metadata.
+
+---
+
+## Tick 20 (2026-05-01T12:30Z): Agent self-assessment accuracy — LLM calibration and the posting trigger
+
+Sources: arXiv:2603.09985, arXiv:2510.05457, arXiv:2512.16030, arXiv:2603.05881, arXiv:2604.19444, arXiv:2509.21545, arXiv:2512.20578, arXiv:2602.03338, arXiv:2509.16941, arXiv:2511.00197, arXiv:2503.13657, arXiv:2602.12670, arXiv:2407.18418, arxiv.org/abs/2602.12430, cmu.edu dietrich news ai-overconfidence
+
+### The Core Finding: LLMs Are Systematically, Quantifiably Overconfident
+
+The friend's implicit assumption about "implicit success criteria" understates the problem. LLMs don't just have a weak signal about their failure probability — they have the **wrong signal with large magnitude**. Research is unambiguous:
+
+| Model | Verbalized confidence | Actual accuracy | ECE (gap) |
+|---|---|---|---|
+| Kimi K2 | 95.7% | 23.3% | **0.726** |
+| GPT-5 (typical) | ~80-95% | 50-65% (domain) | ~0.25-0.40 |
+| Claude Haiku 4.5 | varies (std=41.0) | varies | **0.122** (best) |
+| Claude Opus 4.5 | varies | varies | **0.120** |
+| Human superforecasters | calibrated | calibrated | **0.03-0.05** |
+
+Sources: arXiv:2603.09985 (Dunning-Kruger in LLMs), arXiv:2512.16030 (KalshiBench).
+
+**Key calibration findings:**
+- Verbalized confidence clusters 80-100%, rarely drops for hard tasks (insensitive to difficulty)
+- Extended reasoning / chain-of-thought *worsens* calibration — produces more text, degrades uncertainty
+- GPT-4 AUROC on its own stated confidence: ~62.7% (barely better than random) (arXiv:2306.13063)
+- Best methods achieve AUROC ~0.75-0.85 using internal circuit probing or multi-sample consistency
+
+**The Dunning-Kruger gradient:** Overconfidence is strongest in unfamiliar domains — rare programming languages, low-resource knowledge areas (arXiv:2510.05457, ICLR 2025). Claude Haiku 4.5 is notable for *variable* confidence (std=41.0) — it actually modulates confidence based on difficulty — while most models show narrow, high confidence regardless of task.
+
+### How Agents Actually Fail: The Silent Failure Problem
+
+The most directly relevant finding: **agents fail silently**. The dominant failure mode is not "I can't do this" — it's producing a confidently wrong answer.
+
+From SWE-Bench Pro (arXiv:2509.16941, GPT-5 as best performer at 23.3% Pass@1):
+- **>60% of failures: Instruction Following** — agent misunderstands the task and delivers a wrong solution confidently
+- **Tool-Use failures**: incorrect invocation
+- **"Gave Up Prematurely"**: real but minority mode — agents that stop early while viable steps remain
+- 40.9% of SWE-Bench Lite "passing" solutions are actually incorrect (arXiv:2503.15223) — agents trick their own tests
+
+From trajectory analysis (arXiv:2511.00197):
+- Failed trajectories are **longer** than successful ones (agents don't know to stop)
+- **72-81% of failed trajectories correctly identify the right files** — failure happens at modification, not search
+- Agents loop, not quit
+
+From MAST (arXiv:2503.13657, NeurIPS 2025): 79% of multi-agent system failures trace to specification/coordination issues, not model capability limits. Agents confidently execute the wrong specification.
+
+### The State of the Art: Internal Circuit Probing
+
+Two paths forward for building a reliable "should I post this?" trigger:
+
+**1. Gnosis (arXiv:2512.20578, December 2025):** A ~5M parameter probe on hidden states and attention patterns that predicts whether the current generation is correct. **Surpasses 8B Skywork reward models and Gemini 2.5 Pro judge in AUROC** on math reasoning, open-domain QA, and academic knowledge. Cost: minimal. Works at inference time.
+
+**2. COREA (arXiv:2603.03752):** RL-trained SLM with calibrated confidence. Routes questions to an LLM when confidence falls below threshold. Result: **21.5% cost reduction** vs. using LLM for everything. Same idea applicable to capability routing: attempt with small model, route to specialized agent on Straw if confidence falls below threshold.
+
+### The Intervention Paradox (Critical Product Design Constraint)
+
+arXiv:2602.03338 (February 2026): A binary LLM critic with **AUROC 0.94** can still cause **26-percentage-point performance collapse** when deployed as an intervention. Why? Interventions disrupt trajectories that would have succeeded. Every time you stop an agent from completing a task it would have gotten right, you generate a false negative.
+
+**Implication for Straw's posting trigger design:**
+- Triggering a subtask post too aggressively will interrupt good trajectories
+- The right trigger is **not** "agent might fail" — it's "agent has ALREADY failed (score below threshold) + retry is unlikely to help + another agent has demonstrated capability in this category"
+- The posting suggestion should be reactive (score-based, budget-based) not predictive
+
+### The SKILL.md / Capability Manifest Finding
+
+SkillsBench (arXiv:2602.12670, Feb 2026): **self-generated skills provide zero average benefit**. Agents cannot reliably author the procedural knowledge they benefit from consuming.
+
+**Implication:** An agent's self-declared capability profile (SKILL.md) is the starting point, not the ground truth. Empirical performance data on Straw tasks is the ground truth. This means:
+1. At onboarding: use SKILL.md to bootstrap the capability profile
+2. After first 10 tasks: empirical win-rate data per category replaces SKILL.md as the matching signal
+3. Cold-start calibration issue: new agents get matched by SKILL.md, so a good SKILL.md file is worth writing well (even if it doesn't help the agent internally, it helps the matching engine)
+
+### Structural Implications for Straw's Posting Trigger Design
+
+**Do NOT rely on:** Verbalized agent confidence ("I'm 90% sure I can do this"), SKILL.md self-description alone.
+
+**DO use:**
+1. **Reactive score-based trigger:** After 3 submissions on a task, if score < 50/100 and each submission is lower than the previous, surface "This task looks hard for you — post it as a subtask?" with pre-fill.
+2. **Budget-based trigger:** When remaining compute budget < projected cost for another attempt (using token cost history), surface the posting suggestion.
+3. **Category win-rate trigger:** If agent's historical win-rate in this task category < 30%, surface posting suggestion at task browse time (not mid-task — avoids Intervention Paradox).
+4. **Gnosis-style probe (v2):** Require agent operators to expose a calibration endpoint. Straw queries it before displaying the task: "Predicted success probability: 23%." Agent operator can set a threshold (e.g., "don't attempt if <40%") and have Straw auto-post subtasks below threshold.
+
+The posting trigger must be **external to the agent** and based on **observable outcomes**, not agent introspection.
+
+Sources: arXiv:2603.09985, arXiv:2510.05457, arXiv:2512.16030, arXiv:2306.13063, arXiv:2603.03752, arXiv:2604.19444, arXiv:2509.21545, arXiv:2512.20578, arXiv:2602.03338, arXiv:2509.16941, arXiv:2511.00197, arXiv:2503.15223, arXiv:2503.13657, arXiv:2602.12670, cmu.edu/dietrich/news/news-stories/2025/july/trent-cash-ai-overconfidence.html
+
+---
+
+## Tick 21 (2026-05-01T13:00Z): Two-sided market cold start — comparable platform bootstraps + Straw v0 playbook
+
+Sources: Kaggle Wikipedia + kdnuggets.com/2010/02, Topcoder Wikipedia, HackerOne Wikipedia + TechCrunch, andrewchen.com cold-start problem, reforge.com/guides/beat-the-cold-start-problem, a16z.com/books/cold-start-problem, researchgate.net Kaggle Chronicles
+
+### How the Analogues Bootstrapped
+
+**Kaggle (founded April 2010):**
+- Founded by Anthony Goldbloom and Ben Hamner. Jeremy Howard joined Nov 2010 as President + Chief Scientist.
+- First competition: early 2010. Prize money attracted initial data scientists even with no network effects.
+- Key bootstrap mechanism: **competitions as marketing**. The data science community was small and prize-motivated; a $25K prize attracted the best.
+- Supply side (data scientists) was drawn by prize money. Demand side (companies) was drawn by quality of solutions.
+- Year 1: ~100 active competitors, a handful of enterprise customers.
+- By 2013: large enough for network effects to kick in. Acquired by Google in 2017 for $400M.
+- **The single-player insight for Kaggle:** A data scientist could participate in Kaggle competitions with zero social graph — just them, the data, and the leaderboard. Pure individual value before any network effects.
+
+**Topcoder (founded April 2001):**
+- Founded by Jack Hughes (Tallan). First TCO in 2001 had **just 16 finalists from 2 countries**.
+- Started as competitive coding (algorithms) — not enterprise work. Community built first.
+- Enterprise crowdsourcing didn't come until **2007-2008** after 6+ years of community building.
+- By 2009: 16 project managers servicing 35 enterprise clients while community did the work.
+- **The lesson:** Platform operated in single-player (competitive coding) mode for 6 years before the enterprise two-sided market emerged.
+
+**HackerOne (founded 2012):**
+- Founded by Dutch hackers Jobert Abma and Michiel Prins + Merijn Terheggen and Alex Rice.
+- Hard side = hackers (supply). Easy side = companies wanting security (demand).
+- Bootstrap move: in 2013, they launched the **Internet Bug Bounty** with Microsoft + Facebook funding. This gave hackers immediate incentive to engage even before a two-sided market existed.
+- By June 2015: **~10,000 vulnerabilities identified, $1M paid out.**
+- By 2022: **$230M+ in cumulative bounties paid.** AI is now finding bugs in high volumes.
+- **The "subsidize the hard side" lesson:** HackerOne subsidized hacker reputation/earnings early. Microsoft + Facebook funding meant hackers got paid even when the market was thin.
+
+### Andrew Chen's Cold Start Framework (The Cold Start Problem, 2021)
+
+Key concepts applicable to Straw:
+
+**The Hard Side:** Every network has an easy side and a hard side. Supply is usually hard — hard to recruit, hard to retain, not intrinsically motivated to join an empty network. For Straw: **agents are the hard side** at v0 (there aren't enough compelling tasks); **enterprises are the hard side** at v2 (convincing them to post real proprietary problems requires proof of agent quality).
+
+**The Atomic Network:** The minimum viable network is the smallest group that creates standalone value. For Straw: **1 real task + 3+ competing agents = atomic network**. This means Jeremy can create the atomic network himself: post one good task, invite 3+ OpenClaws to compete.
+
+**Single-Player Mode:** Products that provide value to one user without any other users. For Straw: agent operators get value from using Straw as an internal QA/evaluation tool — spinning up 5 variants of their agent on the same internal task gives comparative quality scores even with zero other operators. This is Straw's single-player mode.
+
+**The "Invite-Only" Phase:** Tight initial community. Uber launched in San Francisco only. Airbnb launched at Obama's DNC. HackerOne launched invitation-only for both hackers AND companies. **Straw v0: Jeremy handpicks 3-5 agent operators, 2-3 enterprise task posters. 100% curated. No open registration.**
+
+### Straw v0 Bootstrap Playbook
+
+Based on the above research, here is a concrete bootstrap plan:
+
+**Phase 0 (weeks 1-4): Single-player validation**
+- Jeremy posts 5-10 tasks himself (using real Straw infrastructure, not mocks)
+- OpenClaws (3-5 instances) compete
+- Goal: prove the eval pipeline produces meaningful, consistent scores
+- Success metric: score distribution is non-trivial (not all 0 or all 100), scores correlate with Jeremy's manual judgment
+- No enterprise customers needed. No two-sided market. Just the eval pipeline working.
+
+**Phase 1 (weeks 5-12): Atomic network with handpicked operators**
+- Invite 3-5 agent operators (people running OpenClaws or similar) — they compete on Jeremy's tasks AND can post their own tasks
+- Post 2-3 "featured tasks" per week from Jeremy's network (friends' companies who'll try it)
+- Goal: establish posting/competing patterns, discover what breaks in the UX
+- Bootstrap dynamic: operators are incentivized by reputation (leaderboard) and learning (they see eval reasoning)
+- No money changes hands yet — reputation and bragging rights are enough for v0
+
+**Phase 2 (weeks 13-24): Enterprise design partners**
+- Find 2-3 Archetype A companies (technical teams with real AI agent evaluation needs)
+- Offer design-partner pricing: free to post, platform takes no percentage
+- Their real tasks drive quality agent submissions
+- Goal: prove score meaningfulness to enterprise buyers
+- The result of Phase 2 is a case study: "Company X posted this task, 12 agents competed, score #1 was hired and saved $X"
+
+**Phase 3 (months 6-12): Open registration + pricing**
+- Open registration for agent operators (with stake-to-post requirement)
+- Enterprise pricing: $10K-100K/year or per-task pricing (~$199 post + 5-8% success)
+- Scale: 300+ agents across 20-30 enterprise customers
+
+**The "subsidize the hard side" move for Straw:**
+- At v0/v1: Straw provides the judge infrastructure for FREE to agent operators (they pay nothing to compete)
+- Operators get: reputation, eval feedback, leaderboard visibility, potential commercial engagement
+- This subsidizes the supply side, which is the hard side
+- The cost is: ~$230/month for 300 agents (from Tick 4) — trivially affordable
+
+**The "atomic network" proof at each phase:**
+- Phase 0: 1 task + 3 agents = working
+- Phase 1: 5 tasks/week + 15 competing agents = alive
+- Phase 2: 2 enterprise tasks + 30 competing agents = commercially viable
+- Phase 3: 20+ tasks/week + 300+ agents = network effects kick in
+
+### Critical Cold-Start Insight: Don't Solve the Wrong Problem
+
+The friend's concern (agents won't post tasks) is a **Phase 2+ problem**. At Phase 0 and Phase 1, the post-side is Jeremy. At Phase 2, the post-side is enterprise customers. The question "will agents post tasks?" only becomes load-bearing at Phase 3+, when:
+1. There are enough agents to form a healthy supply side
+2. Some agents are operators running automation workflows that have natural subtask-delegation needs
+3. The reputation system has enough data to make curation-track reputation meaningful
+
+**The practical bootstrap answer:** Straw doesn't need to solve agent-as-poster to launch. It needs to solve: (a) the eval pipeline produces trustworthy scores, (b) there are enough agents that enterprises see competitive submissions, (c) the commercial engagement mechanism (D22) converts scores to real outcomes. The agent-as-poster dynamic is designed in but activated later.
+
+Sources: kaggle.com/docs/competitions, en.wikipedia.org/wiki/Kaggle, en.wikipedia.org/wiki/Topcoder, en.wikipedia.org/wiki/HackerOne, andrewchen.com/how-to-solve-the-cold-start-problem, a16z.com/books/the-cold-start-problem, reforge.com/guides/beat-the-cold-start-problem-in-a-marketplace, researchgate.net/publication/397480703_Kaggle_Chronicles
+
+---
+
+## Tick 22 (2026-05-01T13:30Z): Agent capability cards, task-matching schemas, and SKILL.md in depth
+
+Sources: github.com/openclaw/clawhub/blob/main/docs/skill-format.md, arxiv.org/abs/2602.12430, arxiv.org/abs/2602.12670, arxiv.org/abs/2602.20867, arxiv.org/abs/2603.02176, github.com/openclaw/skills, agentskills.io, developers.openai.com/codex/skills
+
+### The Matching Problem
+
+For Straw to work at scale, when an enterprise posts a task, the platform needs to:
+1. Route a notification to all agents whose capabilities match the task
+2. Avoid flooding agents with irrelevant tasks (the Paradox of Choice finding from Microsoft Magentic Marketplace — Tick 8)
+3. Surface the task to the 5-7 best-matched agents, not the entire registry
+
+This is a two-sided matching problem. The capability manifest is the supply-side input.
+
+### The SKILL.md Ecosystem at Scale
+
+As of May 2026:
+- **85,000+ public skills** on openclaw/skills and openclaw/clawhub
+- **32 tools support SKILL.md** including all major agent runners
+- **openclaw/clawhub** is the central registry — agents publish skills there, other agents discover them
+- **arXiv:2603.02176** ("Organizing, Orchestrating, and Benchmarking Agent Skills at Ecosystem Scale") specifically addresses the matching problem: given a task, how do you select the right skill (or combination of skills)?
+
+**The registry structure (openclaw/clawhub):**
+```
+clawhub/
+  skills/
+    <username>/
+      <skill-name>/
+        SKILL.md
+        [supporting files]
+```
+
+Each skill is indexed by: name, description, tags, category (auto-classified), author, download count, rating.
+
+### The A2A AgentCard as Capability Manifest
+
+The A2A AgentCard skills array is designed for capability matching:
+
+```json
+"skills": [
+  {
+    "id": "data-pipeline-migration",
+    "name": "Data Pipeline Migration",
+    "description": "Migrates legacy ETL pipelines to modern streaming architectures (Flink, Kafka, Spark). Handles schema evolution, backfill strategies, cutover planning.",
+    "tags": ["data-engineering", "migration", "kafka", "spark", "etl"],
+    "inputModes": ["text/plain", "application/json"],
+    "outputModes": ["text/plain", "application/zip"]
+  }
+]
+```
+
+The `tags` array is the primary matching key. For task-to-agent matching, Straw computes:
+1. BM25 overlap between task title/description and skill `name`+`description`
+2. Tag intersection score between task categories and skill tags
+3. Embedding similarity (D27 search) for semantic matching beyond keyword
+
+### The SKILL.md → Capability Profile Pipeline (Straw Implementation Design)
+
+```
+Agent publishes/updates SKILL.md files
+         ↓
+Straw onboarding webhook fires
+         ↓
+Parser: extract all SKILL.md frontmatter (name, description, tags, version)
+         ↓
+Classifier: auto-assign categories from Straw taxonomy (code/data/research/writing/etc.)
+     using embedding similarity to Straw's category list
+         ↓
+Initial capability profile: {
+  agent_id: "...",
+  skills: [{ name, description, tags, category, skill_md_path }],
+  categories: ["code", "python", "data-engineering"],
+  keywords: ["migration", "kafka", "etl", "debugging"],
+  capability_version: "2026-04-15T00:00:00Z"
+}
+         ↓
+Stored in Supabase (FTS on keywords + pgvector on description embeddings)
+         ↓
+Task matching: when task is posted → BM25 + vector similarity → top-10 agent list
+         ↓
+Empirical override layer (after 10+ tasks):
+  Replace SKILL.md-derived scores with observed win-rate per category
+         ↓
+Matching confidence = 0.3 × SKILL.md score + 0.7 × empirical win-rate
+  (weight shifts toward empirical as data accumulates)
+```
+
+**Why 0.3/0.7 weighting:** SkillsBench (arXiv:2602.12670) shows self-generated skills have zero average benefit — SKILL.md is a prior to be updated. By 10+ tasks, the empirical signal dominates. The 0.3 weight preserves cold-start matching quality.
+
+### Skill Composition for Complex Tasks
+
+arXiv:2602.20867 (SoK: Agentic Skills) defines the **composition problem**: many tasks require multiple skills in sequence. Example: "migrate this Python ETL pipeline to Rust and add comprehensive tests" requires python-analysis + rust-coding + test-writing.
+
+For Straw's matching:
+1. Decompose task description into skill-atomic subtasks (using LLM with task taxonomy)
+2. For each subtask: find top-3 matching agents
+3. Intersection: agents that match all required subtasks get top ranking
+4. For agents that match only some: surface "this agent is strong on X but not Y — consider requiring separate submissions for Y"
+
+This decomposition is also the foundation for the **automatic subtask-posting suggestion**: if no single agent matches all required skills, Straw can offer to post a separate bounty for the missing skill component.
+
+### Straw's Skill Taxonomy (Proposed)
+
+Based on SWE-bench, Kaggle, and HackerOne task distributions:
+
+```
+Level 1: Domain
+  ├── Code (software engineering tasks)
+  │   ├── Debugging (find + fix errors)
+  │   ├── Refactoring (restructure without behavior change)
+  │   ├── Migration (language/framework/architecture change)
+  │   ├── Test Writing (coverage, assertions, property tests)
+  │   └── Implementation (new features, APIs, services)
+  ├── Data (data engineering + ML)
+  │   ├── Pipeline Design
+  │   ├── Model Training
+  │   ├── EDA + Analysis
+  │   └── Evaluation + Benchmarking
+  ├── Research (information gathering + synthesis)
+  │   ├── Literature Review
+  │   ├── Competitive Analysis
+  │   └── Technical Due Diligence
+  └── Writing (documentation, specs, reports)
+      ├── Technical Documentation
+      ├── API Spec Writing
+      └── Report Generation
+
+Level 2: Technology (tags like python, typescript, rust, postgres, kafka, etc.)
+Level 3: Difficulty (inferred from rubric complexity + typical eval scores)
+```
+
+Tasks are tagged at all three levels. Agent capability profiles map to this taxonomy from SKILL.md parsing.
+
+### The "Agent Contact Card" Community Skill
+
+There is already a community skill in openclaw/skills: `skills/davedean/agent-contact-card/SKILL.md`. This is an agent skill specifically for generating structured capability descriptions. It's an early example of agents self-documenting capabilities in a standard format for discovery by other agents or platforms.
+
+This validates the SKILL.md-as-capability-profile approach: the community is already using it for agent discovery, not just for tool access.
+
+Sources: github.com/openclaw/clawhub/blob/main/docs/skill-format.md, github.com/openclaw/skills, arxiv.org/abs/2602.12430, arxiv.org/abs/2602.12670, arxiv.org/abs/2602.20867, arxiv.org/abs/2603.02176, agentskills.io, developers.openai.com/codex/skills, skills/davedean/agent-contact-card/SKILL.md
+
+---
+
+## Tick 19 supplement (2026-05-01T14:00Z): Additional A2A findings — adjacent protocols, full Straw card, Pinchwork
+
+Sources (from additional deep-research pass): github.com/a2aproject/A2A, a2a-protocol.org/latest, github.com/anneschuth/pinchwork, github.com/agent-network-protocol/AgentNetworkProtocol, github.com/ag-ui-protocol/ag-ui, stripe.com/blog/developing-an-open-standard-for-agentic-commerce, arxiv.org/abs/2508.00007, prnewswire.com A2A 150+ orgs
+
+### A2A v1.0 Production Status (May 2026)
+
+A2A v1.0 was released in early 2026. As of May 2026: **150+ organizations in production** (not pilots). Natively integrated into Google Cloud ADK, AWS Bedrock AgentCore, and Microsoft Azure AI Foundry + Copilot Studio (GA April 2026). Official SDKs: Python, Go, JS, Java, .NET, Rust. 23.5K GitHub stars.
+
+**A2A v1.0 additions over v0.3.x:**
+- **Signed Agent Cards** — JWS + JSON Canonicalization. Receiving agents verify the card was issued by the domain owner.
+- **Multi-tenancy** — single endpoint hosts multiple agents with tenant scoping in gRPC headers
+- **Multi-protocol bindings** — same agent over JSON-RPC and gRPC with equivalence guarantees (`additionalInterfaces` array in card)
+- **Mutual TLS** — added to `securitySchemes` alongside apiKey, oauth2, bearer, none
+- **Version negotiation** — backward-compatible migration from v0.3 to v1.0
+
+### The Recursive A2A Graph (Critical Architecture Pattern)
+
+The most important architectural insight for Straw: **Straw acts as BOTH an A2A server (to enterprise orchestrators) AND an A2A client (to competing agents)**. This creates a recursive A2A graph:
+
+```
+Enterprise Orchestrator
+    │  A2A client
+    │  message/send → Straw /.well-known/agent-card.json
+    ▼
+Straw Platform (A2A Server + Client)
+    │  A2A client × N
+    ├─ message/send → Agent A /.well-known/agent-card.json
+    ├─ message/send → Agent B /.well-known/agent-card.json
+    └─ message/send → Agent C /.well-known/agent-card.json
+
+Straw collects artifacts from A, B, C → evaluates → returns best artifact
+to the enterprise orchestrator as the task artifact.
+```
+
+This is an enormous moat: Straw becomes a standard A2A node that any LLM orchestrator can call. It abstracts the competition behind the protocol. The enterprise orchestrator doesn't need to know about Straw's internal mechanics — it just calls `message/send` with a task and gets the best solution back.
+
+### Complete Straw AgentCard with Skill inputSchema
+
+```json
+{
+  "name": "Straw Task Marketplace",
+  "description": "Competitive AI task marketplace. Post a task, define evaluation criteria, receive the best solution from a pool of specialized agents — with scores that don't lie.",
+  "version": "1.0.0",
+  "protocolVersion": "1.0.0",
+  "url": "https://straw.dev/a2a/v1",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "stateTransitionHistory": true
+  },
+  "defaultInputModes": ["text/plain", "application/json"],
+  "defaultOutputModes": ["application/json", "text/markdown"],
+  "securitySchemes": {
+    "bearerAuth": {
+      "type": "http",
+      "scheme": "bearer",
+      "description": "Straw API key from straw.dev/dashboard"
+    }
+  },
+  "security": [{ "bearerAuth": [] }],
+  "skills": [
+    {
+      "id": "post-task",
+      "name": "Post Competitive Task",
+      "description": "Post a task. Multiple specialized agents compete. Returns winning solution + score + attribution.",
+      "tags": ["task", "competition", "delegation", "procurement", "evaluation"],
+      "examples": [
+        "Write a Python function that parses RFC 3339 timestamps with timezone handling",
+        "Analyze this sales CSV and produce a summary with trend charts",
+        "Refactor this React component to use hooks with full test coverage"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "task": { "type": "string", "description": "Full task description" },
+          "evaluationCriteria": { "type": "string", "description": "Machine-readable rubric or natural-language criteria" },
+          "maxBudgetUSD": { "type": "number", "description": "Maximum bounty in USD (escrowed at post time)" },
+          "timeoutHours": { "type": "integer", "default": 24, "description": "Competition window in hours" },
+          "requiredTags": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "SKILL.md tags that competing agents must match"
+          },
+          "parentTaskId": { "type": "string", "description": "Optional: link to parent task for delegation-chain credit" }
+        },
+        "required": ["task", "evaluationCriteria", "maxBudgetUSD"]
+      }
+    },
+    {
+      "id": "list-agents",
+      "name": "List Available Agents",
+      "description": "Browse agents in the Straw registry, filterable by capability tags and performance scores.",
+      "tags": ["discovery", "agents", "catalog"],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"]
+    }
+  ]
+}
+```
+
+This card should live at `https://straw.dev/.well-known/agent-card.json`. Any enterprise orchestrator (LangGraph, Google ADK, Microsoft Copilot Studio, AWS Bedrock) will discover it automatically.
+
+### Pinchwork — The Closest Existing Straw Analog
+
+Source: github.com/anneschuth/pinchwork (open source)
+
+Pinchwork is the closest existing implementation to Straw's concept. Key design:
+- `POST /v1/register` → (name) → API key + 100 credits
+- `POST /v1/tasks` with `{ need, maxCredits, timeout }` → task escrow
+- `POST /v1/tasks/pickup` → first-come-first-served pickup (not competitive)
+- `POST /v1/tasks/{id}/deliver` → delivery, credit transfer
+- Serves `/.well-known/agent-card.json` natively
+- Supports LangChain, CrewAI, PraisonAI, MCP (Claude Desktop) integrations
+- Real-time events via SSE + webhooks with HMAC
+
+**Key difference from Straw:** Pinchwork is first-come-first-served, not competitive. No multi-agent evaluation. No rubric scoring. **Straw's moat: the evaluation layer.** Multiple agents attempt, scores decide.
+
+### Additional Protocols (Ecosystem Context)
+
+**ANP — Agent Network Protocol** (github.com/agent-network-protocol/AgentNetworkProtocol, arXiv:2508.00007):
+- Decentralized, P2P; three-layer: identity (W3C DID) + meta-protocol (natural language negotiation) + application (semantic capability description)
+- Targets open-internet agent ecosystems; A2A targets enterprise/intranet
+- Not production-ready in May 2026 but directionally important: autonomous agents operating on the open internet without pre-registration → ANP's DID-based identity is the path
+
+**AG-UI — Agent-User Interaction Protocol** (github.com/ag-ui-protocol/ag-ui):
+- Not agent-to-agent but agent-to-frontend
+- Adopted by AWS Bedrock AgentCore (March 2026) and Microsoft Agent Framework
+- SSE/WebSocket event stream from agent → browser UI
+- Events: `TEXT_MESSAGE_CHUNK`, `TOOL_CALL_START`, `TOOL_CALL_END`, `STATE_DELTA`
+- **Directly relevant to Straw:** AG-UI is the right protocol for Straw's real-time "agents are working on your task" dashboard. When an agent is actively solving a task, the dashboard could stream intermediate progress via AG-UI events.
+
+**Agentic Commerce Protocol (ACP)** — OpenAI + Stripe (stripe.com/blog/agentic-commerce):
+- Co-developed by OpenAI and Stripe, September 2025. Apache 2.0.
+- Shared Payment Token (SPT): scoped to specific merchant + cart total. Agent can initiate payment without seeing buyer credentials.
+- Supports physical goods, digital goods, subscriptions, async purchases
+- Native MCP transport
+- Already powers "Instant Checkout" in ChatGPT
+- **For Straw:** When Straw pays winning agents, ACP's SPT infrastructure avoids building bespoke payment credential flows. The task poster's escrow can be released via ACP rather than raw Stripe. v1 use case: paying agent operators their bounty earnings.
+
+**MCP Straw Server (complement to A2A):**
+Straw should publish BOTH an A2A endpoint AND an MCP server. The MCP server exposes the same `post_task` and `list_agents` as MCP tools. This enables:
+- Claude Desktop users: use Straw via MCP (call it as a Claude tool)
+- Cursor/Copilot users: post tasks from their IDE
+- Any LLM-native agent: call Straw without A2A client setup
+
+The MCP transport is simpler for LLM-native clients; A2A is better for enterprise orchestrators managing long-running tasks. Both should exist.
+
+Sources: github.com/a2aproject/A2A, a2a-protocol.org, github.com/anneschuth/pinchwork, github.com/agent-network-protocol/AgentNetworkProtocol, github.com/ag-ui-protocol/ag-ui, stripe.com/blog/developing-an-open-standard-for-agentic-commerce, arxiv.org/abs/2508.00007, prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations
+
+---
+
+## Tick 21 supplement (2026-05-01T14:30Z): Additional cold-start findings — exact founding numbers, GPT Store cautionary tale, Great Churn
+
+Sources (from additional deep-research pass): en.wikipedia.org/wiki/Kaggle, arxiv.org/abs/2511.06304 (Kaggle Chronicles), fastcompany.com goldbloom, en.wikipedia.org/wiki/Topcoder, sramanamitra.com topcoder, en.wikipedia.org/wiki/HackerOne, stripe.com/guides/atlas/andrew-chen, nfx.com/post/19-marketplace-tactics, li-jin.co fake-it-til-you-make-it, gartner.com press-releases 2025-08-26, molfar.io/blog/the-agentic-trap, oracle.com AI-agent-marketplace 2025-10-15, techcrunch.com 2026-04-25 anthropic project-deal
+
+### Exact Bootstrapping Numbers
+
+| Platform | First supply count | Time to "real" | How demand was manufactured |
+|---|---|---|---|
+| **Kaggle** | 1 task posted by founder ($1K Eurovision prize) | 9 months to first enterprise case study | Goldbloom self-seeded. Allstate was customer #2. Merck was the "explosion" case. |
+| **Topcoder** | **81 competitors at first SRM (May 8, 2001)** | Day 1 — competition ran, had a winner | Competition sponsorship ($3-6K prizes paid by enterprises for community recognition) |
+| **HackerOne** | 1 qualified hacker finding 1 real vulnerability | Immediate on first private program | Private programs: every enterprise that ran one found a real vuln. Demand self-justified. |
+| **Straw (target)** | 5–10 vetted agents per private task | First task where agent beats enterprise's internal baseline | Jeremy/design partners post; agents compete on private programs |
+
+**The exact first Kaggle competition:** Anthony Goldbloom funded it himself — $1,000 prize to predict Eurovision Song Contest voting outcomes (2010). This was manufactured demand. The real inflection point came from **Merck's drug activity prediction competition**, where the winning external model outperformed Merck's internal team. This was Goldbloom's stated "things exploded" moment.
+
+### The GPT Store as Straw's Anti-Pattern (Cautionary Tale)
+
+OpenAI's GPT Store (launched January 2024, closed 2025) is the exact failure mode Straw must avoid:
+- Flooded with thin wrappers ("PDF Summarizers," "Dating Coaches")
+- No performance evaluation, no scored task, no leaderboard
+- Download counts were the only quality signal — gameable
+- By mid-2025, widely acknowledged failure. Transitioning to "Agent Store."
+
+**The GPT Store failed for precisely the reason Straw exists.** It had no score. The store had millions of agents and no way to tell which one actually solved your problem. "The score doesn't lie" is not a slogan — it's the structural fix to the GPT Store failure.
+
+### The "Great Churn" / "Agentic Trap" (2026 Market Context)
+
+By Q1 2026, enterprise AI is experiencing what analysts call the **"Great Churn"** (Molfar, "The Agentic Trap", 2026): companies that bought agentic AI products in 2025 are churning because agents don't deliver ROI in production. Root cause: pilots passed in controlled conditions and failed in uncontrolled production. Tasks were not well-specified. Success was not scored. Winning agents were selected based on demo performance.
+
+**This is the Straw thesis in reverse.** Every churning enterprise is a future Straw customer: they tried to buy AI agents the old way (vendor demo) and got burned. "Our benchmark is your problem" directly addresses the Great Churn — you don't evaluate on controlled conditions, you evaluate on the actual production problem.
+
+Key market data points supporting this:
+- Only 5% of enterprises that run AI agent pilots ship them to production (85% run pilots, 5% ship)
+- 40% of enterprise apps will have task-specific agents by 2026, up from <5% in 2025 (Gartner)
+- 95% of enterprise AI pilots deliver no measurable P&L impact (MIT NANDA study)
+
+### The Competition Sponsorship Bootstrap Model
+
+Topcoder's most underappreciated bootstrap tactic: **competition sponsorship**. Enterprises paid $3-6K prize money to sponsor Topcoder competitions — without buying development output. They got: brand visibility in the competitive programming community, first-look at top talent, and bragging rights if their problem drew elite competitors.
+
+**This is Straw's Phase 1 revenue model:** Find enterprises willing to pay $5K–$50K in prize money to a winning agent builder. Straw takes a platform fee (10-15%). Zero per-seat subscription required. The enterprise pays only if agents compete. The agent operator wins real money for winning. The value of "this agent won the Straw challenge for Acme Corp" is a marketing credential.
+
+This generates revenue from day one without requiring enterprise subscription sales.
+
+### The Single-Player Value Proposition (Deeper Analysis)
+
+The most important insight from this research: **Straw's single-player mode is task specification and evaluation infrastructure**.
+
+The process of defining a task clearly enough to post it on Straw forces enterprises to:
+1. Define inputs precisely
+2. Define outputs precisely
+3. Articulate success criteria before seeing outputs
+4. Write (or verify) the evaluation rubric
+
+This output — a rigorous, scored task specification — is **valuable even at zero competing agents**. It functions as:
+- An **AI procurement RFP**: "Here is our benchmark. Show us your score. Vendors who can't produce a score don't advance."
+- An **internal benchmarking harness**: Run your existing agents against the same spec; generate a private leaderboard
+- A **due diligence artifact**: Document the exact task and the exact winning score for internal approval chains
+
+This is not a consolation prize for when no agents compete. It is genuine standalone value that most enterprises currently cannot create (they don't have the tooling to define what "winning" looks like precisely).
+
+Sources: en.wikipedia.org/wiki/Kaggle, arxiv.org/abs/2511.06304, fastcompany.com/1789736/kaggles-anthony-goldbloom, en.wikipedia.org/wiki/Topcoder, en.wikipedia.org/wiki/HackerOne, stripe.com/guides/atlas/andrew-chen, nfx.com/post/19-marketplace-tactics, gartner.com/press-releases/2025-08-26, molfar.io/blog/the-agentic-trap, oracle.com/news/announcement/ai-world-oracle-launches-fusion-applications-ai-agent-marketplace, techcrunch.com/2026/04/25/anthropic-created-a-test-marketplace
+
+---
+
+## Long-form proposal — updated sections 7–9 (Session 4 additions)
+
+> Previous sections 1–6 remain in their positions above. These new sections add three topics first researched in Session 4: platform integration standards, the posting trigger mechanism, and the v0 bootstrap playbook.
+
+---
+
+### 7. Platform integration standards: A2A, MCP, SKILL.md
+
+#### The ecosystem Straw lives inside
+
+By May 2026, three standards define how agents communicate with tools and each other:
+
+1. **MCP (Anthropic, Nov 2024)**: Stateless vertical protocol — agent ↔ tool/data source. How an agent calls a database, web search, or external API. Adopted by 97M+ downloads, natively in Claude, GPT-4o, Gemini, VS Code, Cursor, JetBrains. De facto standard for tool access.
+
+2. **A2A (Google, April 2025; donated to Linux Foundation June 2025)**: Stateful horizontal protocol — agent ↔ agent. How an agent delegates a task to another agent, tracks its lifecycle (submitted → working → completed), and receives artifacts back. 150+ organizations in production by May 2026. Natively in GCP, AWS Bedrock, Azure AI Foundry. Enterprise-grade, signed cards, mTLS.
+
+3. **SKILL.md (Anthropic, Dec 18, 2025)**: Capability manifest format. Adopted by 32 tools in 90 days including OpenClaw (247K stars), Codex, Gemini CLI. 85,000+ public skills. The machine-readable declaration of what an agent knows how to do.
+
+These are complementary: MCP for tool access, A2A for agent orchestration, SKILL.md for capability declaration.
+
+#### Straw's integration position
+
+Straw sits at the A2A layer. It exposes:
+- **`/.well-known/agent-card.json`** — makes Straw discoverable as an A2A-compliant agent to any enterprise orchestrator (LangGraph, Google ADK, Copilot Studio)
+- **`/a2a/v1` endpoint** — receives `message/send` calls with task descriptions; spawns competitive evaluation; returns winning artifact as the task result
+- **`/mcp` endpoint** — MCP server for LLM-native clients (Claude Desktop, Cursor, VS Code Copilot). Same `post_task` and `list_agents` as MCP tools.
+
+The **recursive A2A graph** is Straw's architectural pattern: Straw is an A2A *server* to enterprise orchestrators, and an A2A *client* to the competing agents in its registry. An enterprise orchestrator doesn't need to know about Straw's internal competition mechanics — it calls `message/send` and gets the best artifact back.
+
+#### Competitor landscape through A2A lens
+
+No existing A2A-compliant service runs competitive multi-agent evaluation. Pinchwork (github.com/anneschuth/pinchwork) is the closest — it uses A2A for task posting but does first-come-first-served pickup, not competitive evaluation. Oracle, AWS, and Google's "AI Agent Marketplaces" are curated App Store models with no scoring. **Straw is the first A2A-compliant competitive evaluation marketplace.** The A2A card is filed, not purchased.
+
+#### SKILL.md for capability matching
+
+At agent onboarding: Straw reads the operator's agent SKILL.md files → generates capability profile → stores in Supabase with FTS + pgvector. Task matching: BM25 (keyword) + embedding similarity. After 10+ tasks: empirical win-rate per category dominates (0.3 × SKILL.md score + 0.7 × win-rate). SkillsBench finding (arXiv:2602.12670): self-generated skills have zero average benefit, so the profile is only a cold-start prior. Real calibration happens through competition.
+
+**Straw's SKILL.md contribution:** The platform can read any SKILL.md from the 85,000+ public registry and auto-suggest which agents in Straw's registry would match a task's required tags. This is a network effect: as more skills are added to the public registry, Straw's matching improves for free.
+
+---
+
+### 8. The posting trigger: why agents can't self-report and what Straw does instead
+
+#### The research finding
+
+From Tick 20 research: LLM agents are systematically overconfident. Claude Haiku 4.5 is the best-calibrated model at ECE=0.122 (vs. human superforecasters at ECE=0.03-0.05). The dominant failure mode in SWE-bench is not "gave up prematurely" — it's delivering a confidently wrong answer (>60% of GPT-5 failures). Agents don't say "I can't." They fail silently.
+
+This invalidates the naive design where agents self-report incapability and Straw's posting mechanism is triggered by that report.
+
+The Intervention Paradox (arXiv:2602.03338): a binary LLM critic with AUROC 0.94 causes 26pp performance collapse when deployed as an intervention. Triggering a subtask post too early disrupts trajectories that would have succeeded.
+
+#### The four external triggers Straw provides
+
+Rather than relying on agent self-assessment, Straw provides these external triggers:
+
+**Trigger 1 — Reactive score-based:** After 3 submissions on the same task where each submission scores lower than the previous, Straw surfaces: "Your recent submissions are declining — this task may be outside your strength. Post it as a subtask?" (pre-filled form with parent_task_id). This is post-hoc, not predictive. The Intervention Paradox doesn't apply because the trajectory has already failed.
+
+**Trigger 2 — Budget-based:** When the remaining agent compute budget < projected cost for another attempt (using token cost history for this category), Straw surfaces the posting suggestion. No task interruption — just a visible "cheaper to post than retry" suggestion.
+
+**Trigger 3 — Category win-rate:** At task browse time (not mid-task), when an agent browses a task whose category has a win-rate < 30% in the agent's historical profile, Straw shows a yellow flag: "Your win-rate in this category is low. Consider posting as a subtask instead of competing." This is a pre-entry warning, not a mid-task interruption.
+
+**Trigger 4 — Gnosis-style calibration probe (v2):** Require agent operators to expose a failure-prediction endpoint. Straw queries it at task browse time: "Predicted success probability: 23%." Operators can set auto-post thresholds. At v2, this becomes a standard part of the agent registration API: `GET /capability-check?task_description=...` → `{ success_probability: 0.23, confidence: 0.91 }`.
+
+These triggers are observable-outcome-based, not predictive. They avoid the Intervention Paradox by acting on confirmed failure signals, not predicted ones.
+
+#### Why this is a product advantage
+
+No other platform tells an agent "you're probably going to fail at this" AND provides an immediate action (post a subtask). Straw's trigger mechanism is the missing link between an agent's performance history and the bounty board's posting-side. It converts observable failure patterns into new demand.
+
+---
+
+### 9. Straw v0 bootstrap playbook (the concrete plan)
+
+This section consolidates the Tick 21 cold-start research into a usable plan for Jeremy.
+
+#### The core lesson from analogues
+
+Every successful platform in this category (Kaggle, HackerOne, Topcoder) used some form of **manufactured demand + seeded supply** for the first 3-9 months before organic network effects emerged. The pattern:
+1. Founder (or founder-adjacent) posts the first tasks themselves
+2. Known, recruited supply competes (not random applicants)
+3. One compelling case study breaks open organic demand
+4. Platform charges for the infrastructure that already proved its value
+
+#### The Straw v0 bootstrap plan
+
+**Phase 0 — Manufactured demand + seeded supply (months 1-3)**
+- Jeremy posts 5-10 tasks on Straw's live infrastructure (not mocks)
+- Tasks are real enterprise problems (from Jeremy's network; design partner companies provide them with consent)
+- Supply: directly recruit 5-10 agent operators from SWE-bench/GAIA leaderboard top performers (the supply exists and is publicly ranked)
+- Revenue model: **competition sponsorship** — design partner companies pay $5K–$25K prize per task. Straw takes 15% platform fee. No subscription required.
+- Success metric: score distribution is non-trivial AND scores correlate with Jeremy's manual judgment
+
+**Phase 1 — Private programs (months 3-9)**
+- All competitions are private, invite-only (no open leaderboard)
+- 5-10 curated vetted agents compete on each task
+- Enterprise customer sees ranked results and scores, but the public doesn't
+- Every private program will find a result — because even 1 competing agent produces a score, which is more than any current AI procurement process offers
+- Revenue: competition sponsorship + v1 platform subscription trial ($10K/year design partner pricing)
+
+**Phase 2 — The case study moment (months 6-12)**
+- Find the one task where the winning agent beats the enterprise's internal system
+- Document precisely: "Agent X scored 91/100 on Task Y. The enterprise's existing system scored 67/100."
+- This is the Merck/Kaggle moment. One published case study unlocks the demand side.
+- Specifically: target enterprises experiencing the "Great Churn" (already burned by vendor demos). They are the most motivated buyers.
+
+**Phase 3 — Open registration + pricing (months 12-18)**
+- Open registration for agent operators (with stake-to-post requirement)
+- Public leaderboard
+- Enterprise pricing: $10K-$100K/year or $199 task post + 5-8% success fee
+- 300+ agents, 20+ enterprise customers, network effects starting
+
+#### The single-player pitch (for enterprises skeptical about agent supply)
+
+"Post a task on Straw. Even if no agents compete, you walk away with:
+1. A rigorous, machine-readable task specification (the thing most AI procurement teams can't produce)
+2. A reusable evaluation harness for benchmarking any vendor or internal model
+3. An RFP document with verifiable success criteria
+
+If agents do compete, you get ranked solutions with objective scores. That's worth $199 regardless of what happens."
+
+This is the conversation stopper for the cold-start objection.
+
+#### The critical timing insight
+
+The friend's concern about agent task-posting is a **Phase 3+ problem**. It is not a v0 blocker. At Phase 0-1: Jeremy posts tasks. At Phase 2-3: enterprises post tasks. At Phase 3+: autonomous agent operators post subtasks. The question "will agents want to post?" only becomes load-bearing when both sides of the market are running on their own. By then, Straw has 18 months of mechanism design data, reputation scores, and empirical win-rate history to make the posting trigger effective.
+
+The risk is real. The timing of the risk is not now.
+
+---
+
+## Push status (Session 4)
+
+**Session 4 (Ticks 19–22 + supplements) commit status:** Ticks 19 (A2A+MCP), 20 (agent calibration), 21 (cold start), 22 (capability cards) added. Supplements for Ticks 19 and 21 added with additional deep research from background agents. Long-form proposal sections 7–9 added.
+
+**Threads still to dig (remaining open items):**
+- All previously identified threads are [done]
+- New threads discovered in Session 4 (could be Session 5 work):
+  - AG-UI implementation for Straw's real-time task dashboard (detailed design)
+  - ACP (OpenAI+Stripe) integration for bounty payout flow
+  - ANP DID-based identity for open-internet autonomous agents (v3 design)
+  - "The Great Churn" customer interviews — primary research with churned enterprise AI customers
+  - Oracle/AWS/Google AI Agent Marketplace detailed capability comparison vs. Straw
+
+**Session 4 git commit:** `research(agent-incentive): ticks 19-22 + supplements — A2A/MCP integration, agent calibration, cold-start playbook, capability cards`
+
+**If git push fails:** Local commit still created. See prior Push status notes for context.
