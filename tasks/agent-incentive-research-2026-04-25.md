@@ -28596,3 +28596,142 @@ Gartner predicts 40% of enterprise apps will feature task-specific AI agents by 
 
 Source: [Gartner: 40% of Enterprise Apps to Feature Task-Specific AI Agents by 2026](https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025)
 
+
+---
+
+## Tick 162 (2026-05-01): The Investor Data Room — Seed and Series A Due Diligence Requirements
+
+**Thread**: What does Straw need to prepare for investor due diligence? What separates funded from unfunded at each stage?
+
+### The Data Room: What It Is and Why It Matters
+
+The data room is the investor's due diligence package — everything they need to verify the claims in the pitch deck. A bad data room kills deals that a good pitch won. A great data room accelerates due diligence from 8 weeks to 3 weeks for a sophisticated investor.
+
+The seed data room for Straw is unusual because Straw is pre-revenue at seed stage. No ARR. No cohort data. No renewal data. The data room must therefore prove a different set of things: market insight is real, team can build, demand is validated, the moat is credible.
+
+---
+
+### Seed Data Room: Folder Structure
+
+Standard structure (what Conviction, NFX, Unusual expect to find):
+
+```
+Straw / Seed Data Room
+├── 1. Company
+│   ├── Pitch deck (current)
+│   ├── One-pager / executive summary
+│   └── Company overview memo (2-3 pages, written for investors who didn't see the pitch)
+├── 2. Team
+│   ├── Founder bios and LinkedIn profiles
+│   ├── Cap table (current, fully diluted)
+│   ├── Advisor agreements and equity grants
+│   └── Reference contacts (2-3 per founder, warm)
+├── 3. Market
+│   ├── Market sizing memo (TAM/SAM/SOM with sourced numbers)
+│   ├── Competitive landscape analysis
+│   └── Primary research (customer interviews, surveys, expert calls — verbatim notes or excerpts)
+├── 4. Product
+│   ├── Product demo video or working demo access
+│   ├── Technical architecture overview
+│   └── Product roadmap (18-month)
+├── 5. Traction
+│   ├── Design partner pipeline (company, contact, status, signed/unsigned LOI)
+│   ├── Signed design partner agreements or LOIs
+│   └── Competition 1 post-mortem (if completed before close)
+├── 6. Financials
+│   ├── Financial model (3-year projection, scenario-based)
+│   ├── Unit economics memo (CAC, LTV, payback, margin by scenario)
+│   └── Use of funds breakdown
+├── 7. Legal
+│   ├── Certificate of incorporation (Delaware C-Corp)
+│   ├── Founder equity agreements with vesting schedules
+│   ├── 83(b) elections (filed and confirmed)
+│   └── IP assignment agreements
+└── 8. Reference Materials
+    ├── Industry research (EU AI Act, OMB M-26-04, relevant analyst reports)
+    └── Customer discovery interview transcripts
+```
+
+**What's missing that investors will ask for immediately**:
+- Any existing revenue (zero at seed is fine; just disclose it)
+- Prior round documentation (if any angels invested pre-seed)
+- Signed NDAs with design partners (shows real relationship vs. interest)
+
+---
+
+### Seed Data Room: Key Investor Tests
+
+**Test 1: Is the team capable?** 
+What investors look for: prior technical execution, domain expertise, co-founder complementarity, references that validate character. What Straw provides: engineering track record, AI/evaluation domain knowledge, and warm references from the advisor network. The rubric design background and enterprise relationships are the differentiator.
+
+**Test 2: Is the market real?**
+What investors want: a clear TAM with a defensible logic path, not a giant number with no path to it. What Straw provides: the AI governance / enterprise AI procurement budget ($2.7B by 2027, per Gartner) with a specific addressable wedge (the 43% of Fortune 500 with CAIOs and AI governance boards).
+
+**Test 3: Is there real demand?**
+For pre-revenue companies, the demand proof is: signed LOIs from named companies, not "we've had conversations with 20 companies." The quality threshold: 3 signed LOIs from recognizable companies > 20 verbal expressions of interest. One signed LOI from a Fortune 500 > five signed LOIs from mid-market.
+
+**Test 4: Can it be defended?**
+The moat question. At seed, "network effects" and "calibration corpus" are thesis claims, not proven facts. What makes them credible:
+- Specific articulation of why the corpus is hard to replicate (task variety, rubric quality, cross-competition calibration)
+- An analogy that's worked before (LMArena's model weight data, Crowdstrike's threat intelligence corpus)
+- A concrete early signal (even 1 completed competition with real data shows the corpus starts accumulating immediately)
+
+---
+
+### Pre-Revenue Traction: What Substitutes for Metrics
+
+The investor playbook for pre-revenue B2B SaaS:
+
+**Tier 1 — Best signals (approximately equivalent to revenue)**:
+- Signed paid pilot agreements (even $5K-$25K pilots; payment proves conviction)
+- Named design partners willing to be public reference customers
+- LOIs with performance-linked terms (company commits to X if pilot meets criteria)
+
+**Tier 2 — Good signals**:
+- Completed pilot (even unpaid) with documented results
+- Enterprise security reviews completed (shows procurement process is real)
+- Internal champion identified with title and business unit (CAIO, Head of AI)
+
+**Tier 3 — Weak signals (don't present as primary evidence)**:
+- "Positive conversations" without specific next steps
+- Interest from individuals without budget authority
+- Generic inbound from job boards or product hunt
+
+The strategic move: Straw should complete Competition 1 before the seed close (or simultaneously). One completed, scored competition — even if Straw-funded — converts Tier 3 signals to Tier 1. It proves the pipeline works, the rubric holds, and the Straw Score is real.
+
+---
+
+### Series A Data Room: What Gets Added
+
+Twelve to eighteen months later, when Straw is raising Series A ($8M-$15M on a $50M-$80M pre-money), the data room expands significantly:
+
+**New sections required**:
+- **Revenue cohort analysis**: Monthly ARR by cohort, NRR by cohort (target: >120%)
+- **Customer concentration**: No single customer >20% of ARR (investors flag this immediately)
+- **Sales pipeline**: SFDC or equivalent export — qualified leads, stage, ACV, expected close
+- **Team org chart**: Who's been hired since seed, who's been let go, why
+- **Competition update**: How many competitions have run, aggregate Straw Score volume, corpus size
+- **Product metrics**: MAU/WAU, activation rate, time-to-value, feature usage breakdown
+
+**The Series A data room for Straw specifically**:
+The calibration corpus size (in tokens of labeled eval data) becomes a featured metric. It's the "data asset" that justifies a premium valuation multiple. Investors at Series A need to believe: (a) the corpus is growing with each competition, (b) the corpus is already large enough that a new entrant would take 2-3 years to replicate it, and (c) the data is licensed in a way that generates recurring revenue separate from competition fees.
+
+---
+
+### Fatal Red Flags That Kill Deals
+
+**Red flag 1: Cap table mess**
+Unconventional cap tables — too many small angels, missing 83(b) elections, convertible notes that haven't been documented properly — add legal cost and deal friction. Fix: clean cap table before every fundraising round. Delaware C-Corp, clean founder equity, properly documented advisors.
+
+**Red flag 2: No IP ownership clarity**
+If any founder wrote code at a prior employer that could be confused with Straw's IP, investors will require a legal opinion. Fix: IP assignment agreements signed at founding; founders confirm in writing they brought no encumbered IP to Straw.
+
+**Red flag 3: Customer concentration + no NRR data**
+A $1M ARR business where 80% comes from one client is a business that's one cancelled contract from being a $200K ARR business. Series A investors run the NRR calculation immediately. Fix: don't raise Series A until you have 3-5 paying customers and can calculate NRR.
+
+**Red flag 4: Founders don't agree on the story**
+When investors ask each founder separately: "Why will Straw win?" and get materially different answers, that's a conviction gap. Fix: align on the 3-sentence company thesis before investor meetings; practice it until both founders give the same answer without looking at each other.
+
+**Red flag 5: Market sizing math doesn't hold up**
+Investors with industry expertise will challenge the TAM calculation in the first follow-up meeting. "The Gartner report says $2.7B" is not a valid TAM analysis — it's a reference. Fix: build the TAM from the bottom up (# of Fortune 500 companies with AI governance boards × annual competition budget per company × market penetration estimate) and reconcile to the top-down number.
+
