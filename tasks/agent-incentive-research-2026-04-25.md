@@ -10909,3 +10909,381 @@ No commercial evaluation platform has implemented full adaptive IRT-based diffic
 - [From Static Benchmarks to Adaptive Testing (arXiv:2306.10512)](https://arxiv.org/html/2306.10512v3)
 - [Best AI Models April 2026 — Build Fast With AI](https://www.buildfastwithai.com/blogs/best-ai-models-april-2026-comparison)
 
+
+---
+
+## Tick 76 (2026-05-01): Agent-side pricing and the free-to-compete model
+
+**Research question**: Should Straw charge agent teams to participate in competitions? What is the correct economic model for the supply side — free, subscription, or rev-share?
+
+---
+
+### The three models and their tradeoffs
+
+**Model A: Free to compete, enterprise-funded**
+Agent teams pay nothing to participate. All platform economics come from the enterprise side (competition posting fees, platform fee on prize pool, hire/acquihire success fees).
+
+*Advantages*: Maximum supply-side participation; no friction for new agent teams; aligns with open competition philosophy; no subscription revenue risk from supply side
+*Disadvantages*: No direct financial relationship with agent teams; harder to enforce submission quality standards without fee barrier; free competitions attract more low-quality spam submissions
+
+*Analogues*: Kaggle (free to compete), ARC Prize (free to compete), HackerOne (free for researchers, company-funded)
+
+**Model B: Agent-tier subscription**
+Agent teams pay a monthly fee ($49/month for basic, $199/month for advanced features) to access competitions, get priority routing notifications, and access performance analytics across their competition history.
+
+*Advantages*: Additional revenue stream; filters for committed agent teams; creates natural product engagement loop; allows enterprise-level features (custom webhooks, API rate limits) for paying agent teams
+*Disadvantages*: Reduces supply-side participation by erecting a payment gate; competes with the open competition philosophy; difficult to charge for something competitors give free
+
+*Analogues*: Upwork (charges freelancers for "connects" to bid on jobs); some professional certification platforms charge for credential maintenance
+
+**Model C: Rev-share only**
+Agent teams pay nothing upfront. Straw takes a percentage of prize winnings (above a de minimis floor, e.g., above $1,000) as a platform fee.
+
+*Advantages*: Purely aligned incentives — Straw only makes money when agents win; no payment barrier; agents accept prize deduction as a standard marketplace rake
+*Disadvantages*: Revenue is lumpy and tied to competition frequency; doesn't create a recurring revenue relationship with agent teams; accounting complexity for prize disbursement
+
+*Analogues*: App stores take 30% of in-app purchases; no direct marketplace analog for competition prize revenue sharing
+
+---
+
+### The correct model: free to compete, with premium analytics
+
+**Recommendation: Model A as the default, with an optional Model B add-on layer.**
+
+The supply side of Straw's marketplace is not the revenue driver — the enterprise side is. Making agents pay to compete reduces the supply quality and density that makes competitions valuable for enterprises. The correct frame is: agent teams are Straw's product (the thing enterprises pay to access), not Straw's customers.
+
+This is the exact structure that Kaggle, HackerOne, and Topcoder all use: the platform monetizes the enterprise demand side while keeping the supply side free to maximize quality and density.
+
+**The Model B add-on**: Straw can offer an optional **Agent Pro subscription** ($99/month) with:
+- Advance notification (24-hour lead time) when competitions in declared capability categories open
+- Portfolio analytics dashboard (win rate by category, scoring breakdown history, percentile rankings)
+- API access for programmatic competition management (submission via API, score polling, webhook configuration)
+- Priority dispute resolution (48-hour SLA vs. 7-day standard)
+- Verified Agent status badge (public trust signal)
+
+Crucially, **Verified Agent status requires subscription** but participation does not. This gives professional agent teams a reason to pay without locking out casual participants.
+
+---
+
+### What this means for the agent incentive to post tasks
+
+The free-to-compete model has a direct implication for agent-to-agent task posting:
+
+If agent teams pay nothing to compete, their BATNA (best alternative to not using Straw) is zero cost. A winning agent team that needs to subcontract pieces of a competition delivery has no friction from the platform side — they can post a sub-task on Straw for free and route it to a specialist agent.
+
+The economic model that makes agent-to-agent task posting work: **the posting agent pays the escrow premium, not a platform access fee.** The fee is attached to the value (the prize pool) rather than the activity (the competition). This means a specialist agent receiving $500 for a sub-task from a winning agent has the same zero-friction access to Straw that the winning agent had.
+
+---
+
+### Agent-side revenue as a maturity signal
+
+One counterintuitive data point: platforms that charge agent teams for premium access often find that the fee functions as a **quality signal** — agents who pay a monthly subscription demonstrate commitment and professionalism that free-tier agents don't. This is why Upwork's "Connects" system (where freelancers pay credits to bid on jobs) exists despite the friction cost.
+
+Straw should not charge agents to compete, but it should eventually move serious agent teams toward the Agent Pro tier — not for revenue, but because the subscription creates a data relationship that is useful for both routing competitions and building agent reputation scores. The monthly subscription makes Straw's agent roster more predictable and professional over time.
+
+---
+
+### Agent-side economic summary
+
+| Agent type | Straw cost | Straw revenue source |
+|-----------|-----------|---------------------|
+| First-time agent team | Free to compete | Enterprise prize pool platform fee |
+| Active competitor (5+ competitions/year) | Optional $99/month Agent Pro | Subscription + prize platform fee |
+| Winning agent team (hire outcome) | Free | 8-6% hire success fee (enterprise pays) |
+| Winning agent team (license outcome) | Free | 15-20% license rake (enterprise pays) |
+| Acquihired agent team | Free | Lehman/Double Lehman fee (enterprise pays) |
+
+All agent-side Straw costs are optional or zero. All mandatory Straw fees are on the enterprise side. This is the correct incentive structure for a platform whose supply-side quality determines enterprise-side value.
+
+
+---
+
+## Long-form proposal (DRAFT) — Section 25: Government strategy — California first, federal later
+
+*Audience: co-founder / seed investor / policy advisor. This section lays out the government go-to-market sequencing.*
+
+---
+
+Government is not an early customer for Straw. It is a medium-term credibility multiplier and a long-term revenue opportunity.
+
+The reason to engage with government now — not to close a deal but to position Straw for the moment when government becomes accessible — is that regulatory momentum is moving faster than enterprise adoption. By the time Straw has 50 enterprise competitions and $3M ARR, the regulatory infrastructure for mandatory AI agent evaluation will be in place. The companies that helped shape that infrastructure will be positioned differently than those that showed up after the fact.
+
+---
+
+### The regulatory window is open now
+
+OMB M-26-04 (December 2025) requires all federal agencies to evaluate AI models across vendors and versions — not just evaluate a single vendor in isolation. The memo explicitly requires cross-vendor comparison as a procurement requirement. This is the legal basis for a federal agency to say "we need a competition platform that lets us evaluate agents against each other on our specific tasks."
+
+California EO N-5-26 (March 2026) directs the Department of General Services and Department of Technology to submit AI vendor certification recommendations within 120 days. Those certifications will be incorporated into state contracting processes. An evaluation platform that helped define those certifications would be the natural incumbent when agencies begin implementing them.
+
+The GAO's April 2026 report on federal AI acquisitions (GAO-26-107859) documented exactly the failure mode Straw solves: agencies lack the infrastructure to test and continuously evaluate AI agent performance before buying. The GAO recommended policy changes; all four agencies audited (DOD, DHS, GSA, VA) concurred. The policy pressure is creating the conditions for mandatory evaluation infrastructure.
+
+---
+
+### Why California is the right first government customer
+
+California has the largest state IT budget, the most aggressive AI policy posture, and — uniquely — an executive order that creates an explicit procurement gap in Straw's space. The 120-day clock on EO N-5-26 means the DGS and CDT are actively working on AI vendor certification recommendations right now (Q3 2026 delivery).
+
+A Straw pilot with a California agency — specifically positioning it as a proof-of-concept for the certification framework — achieves three things simultaneously:
+
+1. **No FedRAMP required**: State government pilots don't require FedRAMP authorization. California has its own security framework (SIMM 5305-B) that is significantly less expensive to comply with.
+
+2. **Reference for other states**: California AI policy consistently leads the nation. A California pilot that works is immediately replicable in Colorado, Texas, and the 12 other states with active AI governance legislation. The state reference network is fast-moving.
+
+3. **The federal credibility signal**: When Straw eventually pursues federal customers, "piloted by the California Department of General Services as part of the EO N-5-26 certification framework" is a meaningful trust signal. Federal procurement teams recognize California's compliance rigor.
+
+The right agency to target is CalHR (California Department of Human Resources) or CDTFA (California Department of Tax and Fee Administration) — both have active AI modernization programs, are large enough for a meaningful pilot, and have task types (HR document processing, tax form analysis) that fall squarely in Straw's Quadrant A task taxonomy.
+
+---
+
+### SBIR as non-dilutive capital and credibility
+
+SBIR/STTR was reauthorized April 13, 2026, through September 30, 2031. NSF has an active AI track; DARPA runs separate BAA programs. New "Strategic Breakthrough Awards" allow up to $30M post-Phase II.
+
+The framing for a Straw SBIR application: **"Novel benchmarking methodology for agentic AI systems"** — not a marketplace pitch, but a research grant for developing formal methods to evaluate AI agent capability on enterprise tasks. Phase I award is $200K–$275K, takes 6–12 months. Phase II is $750K–$1.8M.
+
+SBIR has two strategic values beyond the cash:
+1. **The NSF/DARPA imprimatur**: "NSF-funded AI evaluation research" carries academic credibility that venture-backed startup language doesn't. It matters in conversations with government buyers and enterprise compliance teams.
+2. **The research publication pipeline**: An SBIR grant requires deliverables. Those deliverables become the papers that establish Straw's evaluation methodology as the academic reference.
+
+The SBIR path is parallel to, not blocking, the commercial sales motion. Apply in Q3 2026 alongside the California pilot.
+
+---
+
+### The federal timeline is 2027+
+
+Federal civilian agencies are not viable customers in 2025–2026. The reasons are structural, not market-related:
+- GSA Schedule application: 6–12 months, ~$50K cost, prerequisite for most federal sales
+- FedRAMP Moderate: 3–6 months under the new FedRAMP 20x fast-track, $500K–$1.5M cost, prerequisite for any federal cloud platform
+- Federal procurement cycle: 18–36 months from solicitation to award for significant programs
+
+The correct timing: GSA Schedule application after Series A (where the $50K and 6-month investment is affordable). FedRAMP Moderate in parallel with Series A capital. Federal civilian agency pilots in 2027. DARPA citation or OTA contract in 2026 as a validation signal without requiring full compliance.
+
+---
+
+### The government-to-commercial flywheel
+
+The Palantir model is the lesson. Palantir went from ~295 US commercial customers (Q4 2023) to 590+ (Q4 2025), with US commercial revenue growing 137% in Q4 2025. That flywheel started with government anchoring the brand. Anduril used a CBP border pilot in 2017–2018 to establish credibility that led to a $20B Army contract in 2026.
+
+For Straw, "piloted by [California agency] as part of the EO N-5-26 AI vendor certification framework" signals two things to enterprise buyers that money can't buy:
+1. The platform passed a security vetting process the enterprise implicitly trusts
+2. The platform's evaluation methodology was rigorous enough for a government agency evaluating taxpayer AI spending
+
+Government doesn't scale fast enough to be Straw's growth driver. But one visible government reference account, established in year one, changes how enterprise buyers perceive the platform's credibility permanently.
+
+
+---
+
+## Tick 79 (2026-05-01): Multi-tenant data isolation — keeping competition data secure and separate across enterprises
+
+**Research question**: How does Straw ensure that competition data from one enterprise is never visible to another? What are the technical and legal requirements for data isolation in a competition platform?
+
+---
+
+### Why this is a first-principles product design question
+
+An enterprise posting a task on Straw is revealing proprietary information: the nature of the problem they're trying to solve, the quality of their internal systems (which the task exposes), and the evaluation rubric (which reveals their performance standards). If any of this data leaks to a competitor enterprise or to agents competing in other competitions, Straw has failed in a way that is irreparable.
+
+Unlike most SaaS platforms where data isolation is a compliance requirement, for Straw it is a core value proposition. The reason enterprises will post sensitive operational tasks (not just toy problems) is that they trust Straw's data isolation. That trust must be warranted.
+
+---
+
+### The three isolation boundaries
+
+**Boundary 1: Enterprise-to-enterprise isolation**
+An enterprise's task data, submission data, and scoring results are never visible to any other enterprise on the platform. This is the fundamental multi-tenancy requirement.
+
+Implementation: Row-level security (RLS) policies at the database layer (Supabase/Postgres) ensure that every query is scoped to the current enterprise's tenant ID. No application-layer enforcement — the database itself enforces isolation even if there is an application bug. This is the architecture described in CLAUDE.md's "Security at the data layer" principle.
+
+The task description, rubric, and submission artifacts are stored in enterprise-specific S3 prefixes with IAM policies that deny cross-tenant access. No shared S3 buckets for competition data.
+
+**Boundary 2: Agent-to-enterprise isolation**
+An agent can see only the task description (what they're competing on) and their own submission history. They cannot see other agents' submissions, scores, or the enterprise's internal evaluation notes.
+
+The leaderboard during an active competition is optionally public (agents can see rank ordering without seeing others' scores) or private (blind competition — agents see only their own scores). The enterprise sets this preference at competition creation.
+
+After the competition closes, submission artifact data from all agents is retained only in the enterprise's tenant storage. Agents retain only their own submission artifacts.
+
+**Boundary 3: Agent-to-agent isolation**
+A competing agent cannot see another competing agent's submission or interim scores during an active competition. This prevents adaptive strategies based on others' approaches.
+
+Implementation: During the evaluation window, submission artifacts are stored under agent-specific paths. The Tier 1/2/3 scoring pipeline reads from those paths but the score outputs are only surfaced to the enterprise and to the submitting agent.
+
+---
+
+### The compliance framework for data isolation
+
+**GDPR/CCPA**: Competition data that includes personal data (e.g., an HR task with employee names, a medical task with patient records) falls under GDPR Article 28 (processor obligations). Straw must execute Data Processing Agreements (DPAs) with each enterprise customer. The DPA specifies:
+- Data categories processed (task data, submission artifacts, scoring metadata)
+- Retention periods (see Tick 63 data governance)
+- Sub-processor list (Supabase, S3, Anthropic/Google for Tier 2 judge models)
+- Data subject rights support (deletion, portability)
+
+**The Anthropic/Google sub-processor issue**: When Straw's Tier 2 judge sends submission text to an LLM API for scoring, the submission text is processed by a third-party LLM provider. This is a sub-processor relationship. The enterprise's DPA must cover this. The practical implication: Straw must either obtain an enterprise-specific API agreement with Anthropic/Google that covers their data, or implement a data minimization policy (strip PII from submissions before sending to Tier 2 judge).
+
+The cleanest architecture: a PII scrubbing step in the Tier 1 → Tier 2 pipeline that removes identifiable data before submission text leaves Straw's infrastructure for external LLM scoring. The Tier 2 judge sees anonymized task outputs; the enterprise sees scored results with PII restored from Straw's internal mapping.
+
+**ISO 27001 / SOC 2 Type II**: The enterprise buyer procurement checklist will include these certifications. SOC 2 Type II (evaluated over 6+ months) should be Straw's initial certification target. ISO 27001 follows as a European expansion requirement.
+
+---
+
+### The agent team data rights question
+
+When an agent team submits to a Straw competition, what data rights does Straw acquire? This is a supply-side contractual question that has implications for platform trust.
+
+**The correct framework** (from Tick 63 data governance):
+- Enterprise retains all rights to the task description and rubric
+- Agent team retains all rights to their methodology (the approach, not the specific output)
+- Straw acquires a limited evaluation license: the right to score the submission using the rubric, store the score in the leaderboard, and use aggregate (non-identifying) performance data to calibrate the evaluation infrastructure
+
+**What Straw cannot do** with agent submission data:
+- Share it with other enterprises
+- Use it to train Straw's own models (without explicit agent team consent)
+- Reveal methodology to other agent teams or the enterprise beyond the scored output
+
+**What Straw can do**:
+- Publish aggregate statistics (e.g., "80% of submissions in the legal contract review category scored above 70% on clause identification accuracy") without identifying individual agents
+- Retain scored submission artifacts in the enterprise's tenant storage for audit purposes
+
+---
+
+### The competition sandboxing question
+
+For tasks that require code execution or agent actions in a production-like environment, Straw must sandbox the execution environment to prevent:
+1. Data exfiltration by a malicious agent (agent extracts enterprise data during task execution)
+2. Destructive actions (agent modifies or deletes enterprise data during task execution)
+3. Side-channel attacks (agent uses timing or resource consumption to infer information)
+
+**Implementation approach**: Container-based execution sandbox (Docker + Firecracker/gVisor) for any task that involves code execution or system interactions. Network egress from sandbox containers is restricted to task-specified data sources only. No internet access unless the task explicitly requires it.
+
+For tasks that are purely analytical (submit a document, receive a score), sandboxing is less critical — the submission is static data. The sandboxing requirement kicks in for agentic tasks where the agent takes actions in an environment.
+
+---
+
+### Enterprise security due diligence requirements
+
+Based on standard enterprise security review processes, Straw will need to answer these questions for every Fortune 500 enterprise procurement:
+
+| Requirement | Straw's answer |
+|-------------|----------------|
+| Data residency | US-only (AWS us-east-1, us-west-2); EU option via EU-WEST-1 post-Series A |
+| Encryption at rest | AES-256 (S3 server-side encryption, Supabase transparent encryption) |
+| Encryption in transit | TLS 1.3 minimum for all data movement |
+| Multi-tenant isolation | Row-level security at database layer + S3 IAM policy isolation |
+| Penetration testing | Annual third-party pentest; results available under NDA to enterprise customers |
+| Incident response SLA | 72-hour notification for data breaches (GDPR Art. 33 compliant) |
+| Vendor access | Zero-knowledge access by default; break-glass procedure for support access |
+| Certifications | SOC 2 Type II (Year 2); ISO 27001 (Year 3) |
+
+The security questionnaire is the blocker in every enterprise procurement. Having pre-completed answers to the CAIQ (Cloud Security Alliance) questionnaire reduces time-to-close by 4–6 weeks based on Venafi/Vanta customer data.
+
+---
+
+### Sources
+
+- GDPR Article 28 (data processor obligations) and Article 33 (breach notification)
+- SOC 2 Type II audit framework (AICPA Trust Services Criteria)
+- Supabase Row Level Security documentation (Postgres RLS)
+- Docker + Firecracker sandboxing (AWS Firecracker isolation documentation)
+- CAIQ (Cloud Security Alliance questionnaire) enterprise security standard
+- AWS S3 IAM policy isolation best practices
+- Vanta/Drata enterprise security compliance acceleration data
+
+
+---
+
+## Tick 80 (2026-05-01): The agent reputation system — how Straw builds durable trust signals for agent teams
+
+**Research question**: How does Straw build a reputation system for agent teams that is durable, gaming-resistant, and commercially meaningful to enterprise buyers?
+
+---
+
+### Why reputation is the core product (not the competition)
+
+The competition is the mechanism. Reputation is the output that makes the mechanism valuable over time.
+
+A Kaggle Grandmaster designation in 2026 is more legible on a resume than most engineering credentials. Employers specifically ask for Kaggle rankings. That credibility was built over 15 years of rigorous public competitions where score is the only currency. Straw's reputation system needs to be on the same trajectory — a Straw Grandmaster Agent designation in 2030 should carry signal that enterprise buyers use to make procurement decisions without additional validation.
+
+The architecture of Straw's reputation system determines whether it achieves that. A system that can be gamed, that doesn't distinguish domains, or that confuses general performance with domain-specific capability will not compound into the kind of credential that enterprises rely on.
+
+---
+
+### The five dimensions of agent reputation
+
+**Dimension 1: Categorical rank**
+An agent's performance rank within a specific task category (software engineering, legal document review, data analysis, etc.). Displayed as percentile (top 5%, top 20%) against all agents that have competed in that category with sufficient sample size (≥5 competitions).
+
+The percentile display prevents rank gaming (you cannot improve your percentile by entering weak competitions — the pool adjusts). It also prevents stale reputation (percentile is continuously recalculated as new agents enter the category).
+
+**Dimension 2: Calibrated win rate**
+Number of competitions won, normalized by field quality. Winning a 3-agent competition is not the same as winning a 50-agent competition. Straw's calibration system adjusts win credit based on the quality of the competitive field (measured by the field's average categorical rank).
+
+This is similar to chess ELO: beating a 2400-rated opponent increases your rating more than beating an 1800-rated opponent. A Straw win over a top-10 field carries more credential weight than a win over an unranked field.
+
+**Dimension 3: Task diversity score**
+An agent that has competed across multiple task types within a category demonstrates breadth. An agent that has competed in 20 different legal contract review tasks has a richer credential than one that has competed in the same task type 20 times.
+
+Diversity score is displayed separately from categorical rank to allow enterprises to distinguish generalist capability (high diversity score) from specialist depth (high categorical rank in one narrow area).
+
+**Dimension 4: Commercial outcome rate**
+What percentage of competitions this agent has won resulted in a commercial outcome — hire, license, or acquihire? An agent with a 40% commercial outcome rate (4 out of 10 wins converted to enterprise engagement) is demonstrably more commercially viable than an agent with a 10% conversion rate, even if their categorical rank is identical.
+
+This dimension requires a longer track record (≥5 competition wins) to be meaningful. Initially hidden for new agents; progressively revealed as data accumulates.
+
+**Dimension 5: Enterprise rating**
+For agents that have been hired by enterprises post-competition, Straw requests a post-engagement rating from the enterprise (1–5 stars plus category scores for: reliability, quality of output in production, communication/documentation). This is the supply-side equivalent of Upwork's Job Success Score.
+
+The enterprise rating is the hardest dimension to collect (requires actively asking enterprise buyers for feedback) but the most commercially meaningful. An agent with a 4.8/5 enterprise rating across 6 engagements has better commercial credibility than any competition leaderboard position alone.
+
+---
+
+### Tier structure: the Kaggle model
+
+Straw should implement a visible tier system analogous to Kaggle's (Novice → Contributor → Expert → Master → Grandmaster) but tuned for enterprise commercial outcomes:
+
+| Tier | Requirements | Visible badge |
+|------|-------------|---------------|
+| **Challenger** | Registered; completed ≥1 calibration competition | "Challenger" |
+| **Competitor** | ≥5 scored competitions across ≥2 task types | "Competitor" |
+| **Expert** | Top 20% categorical rank in any category | "Expert — [Category]" |
+| **Master** | Top 10% in ≥2 categories; ≥1 commercial outcome | "Master" |
+| **Grandmaster** | Top 5% in ≥1 category; ≥3 commercial outcomes; enterprise rating ≥4.5 | "Grandmaster" |
+
+The Grandmaster designation is the target credential. It should be hard enough to earn that it means something. The combination of competitive rank + commercial outcomes + enterprise rating makes Grandmaster genuinely multi-dimensional — not just good at scoring, but commercially trusted.
+
+---
+
+### Gaming resistance mechanisms
+
+**The score-only manipulation**: An agent optimizes for rubric performance without underlying capability (see Tick 72, failure mode 5 on task specification gaming). Resistance: Tier 3 holistic evaluation flags rubric optimization patterns; Grandmaster tier requires enterprise rating ≥4.5, which reflects real-world performance that is hard to fake.
+
+**The account multiplication attack**: A team creates multiple agent accounts to compete against themselves and inflate win counts. Resistance: ERC-8004 on-chain identity verification for Competitor tier and above; behavioral fingerprinting of submissions catches correlated outputs from the same team across accounts.
+
+**The field stuffing attack**: A team competes only in competitions with few participants to maintain high win rates. Resistance: calibrated win rate adjusts for field quality; the percentile rank is pool-normalized and not affected by field size.
+
+**The paid reviews attack**: An enterprise partner artificially boosts an agent's enterprise rating. Resistance: enterprise ratings are weighted by the enterprise's own track record on Straw (new enterprises have lower rating weight than long-standing enterprises); multiple competition reviews from the same enterprise-agent pair are aggregated, not stacked.
+
+---
+
+### How enterprise buyers use the reputation system
+
+The reputation system serves different purposes at different stages of the enterprise buying journey:
+
+**Pre-competition discovery**: "We want to post a competition for legal contract review. What agent teams should we invite?" Straw's categorical rank and diversity score surfaces the top 10 agents for that task type. This is the reputation system as procurement intelligence.
+
+**During competition evaluation**: "We have 25 submissions. Which should we prioritize reviewing in detail?" Categorical rank of submitting agent teams surfaces the highest-credentialed submissions for deeper review. This is reputation as attention allocation.
+
+**Post-competition hire decision**: "We have two agents within 3 points of each other on the rubric. Which should we hire?" Commercial outcome rate and enterprise rating differentiate between equivalently-scoring agents on demonstrated commercial reliability. This is reputation as tiebreaker.
+
+**Long-term portfolio management**: "Which agents have we worked with before and how did they perform in production?" Enterprise-specific history, combined with the public reputation dimensions, gives enterprises an integrated view of their agent procurement track record.
+
+---
+
+### Sources
+
+- Kaggle tier system and Grandmaster designation mechanics (kaggle.com Community documentation)
+- ELO rating system calibration (chess.com FIDE rating algorithm)
+- Upwork Job Success Score methodology (upwork.com help documentation)
+- ERC-8004 on-chain agent identity verification (Tick 62 findings)
+- Behavioral fingerprinting for gaming detection (Tick 72 failure modes)
+
