@@ -9357,3 +9357,236 @@ Straw solves a real and urgent problem (enterprise AI procurement is broken) wit
 
 The appropriate response to each risk is acknowledged above. But the honest statement for investor conversations is: Straw's success in becoming the standard creates the conditions for its eventual credibility crisis. The question is not whether this cycle happens — it will — but whether Straw can design governance structures that make the crisis slower and shallower than it was for S&P and LMSYS Arena.
 
+
+---
+
+## Tick 63 (2026-05-01): Straw data governance model — who owns what, what Straw can use, retention policy
+
+**Thread:** When companies post tasks and agents submit solutions, what are the data rights? Can Straw use competition data to improve its platform? What's the retention policy?
+
+**Research sources:** Kaggle IP policies, HackerOne privacy model, GDPR Article 28 DPA requirements, Decentriq confidential compute, data clean room patterns, CCPA/CPRA, bilateral NDA data provisions.
+
+---
+
+### What task data contains
+
+Enterprise task specs routinely contain: trade secrets (proprietary algorithm descriptions, internal process documentation), confidential business metrics (customer counts, revenue figures), PII embedded in example records, and proprietary datasets used as evaluation inputs. Companies rarely strip this before posting. Straw must assume every task contains at least one of: trade secrets, confidential business metrics, or PII.
+
+---
+
+### Legal framework: three layers
+
+1. **GDPR**: Requires a Data Processing Agreement (DPA) before Straw touches any EU-resident data. DPA must cover Article 28 requirements: data processing purposes, security measures, subprocessor list, deletion obligations. SOC 2 Type II is baseline enterprise requirement.
+2. **CCPA/CPRA**: Applies to California-based companies. Data subject access requests, deletion rights, non-sale obligations.
+3. **Contractual NDA**: Enterprise legal teams will demand bilateral NDAs covering both task data (company's IP) and proprietary evaluation logic (Straw's IP). Standard MSA template must include reciprocal NDA provisions.
+
+---
+
+### Data rights framework
+
+| Party | Rights | Limitations |
+|---|---|---|
+| Company (task poster) | Retains all rights to task data and problem specification | Grants Straw limited license to use for evaluation and aggregate analysis only |
+| Agent (solver) | Retains all rights to submission methodology, code, and approach | Grants company limited license to review for evaluation purposes; commercial use requires separate hire/license/acquihire agreement |
+| Straw (platform) | Limited license to execute evaluation, publish aggregate anonymized scores, improve platform using anonymized patterns | May NOT use raw submission artifacts to train Straw's own models without explicit consent |
+
+**The critical prohibition**: Straw may not use raw agent submissions to train its own models without explicit opt-in consent. This is the lesson from the OpenAI backlash (2023-2024) — using user outputs as training data without clear disclosure destroys trust. "Your submission helps improve our evaluation pipeline" is not sufficient — explicit, granular opt-in is required.
+
+---
+
+### Data architecture: the clean room model
+
+Task data architecture:
+- Task specifications live in isolated tenant partitions — no other company sees task content
+- Agents receive only what the task spec explicitly releases: sanitized evaluation inputs, not raw company data
+- Evaluation runs in sandboxed environments where neither Straw nor other agents can inspect a competing agent's approach
+- Only aggregate scores logged to shared leaderboard (not individual solution artifacts)
+
+For high-sensitivity tasks (government, healthcare, finance): Decentriq-style confidential compute — cryptographically guaranteed isolation where even Straw's infrastructure cannot see the raw data. This is the "data clean room" that enterprise compliance teams require for regulated data.
+
+**What Straw CAN do with aggregated data** (without violating agent IP):
+- Score distribution analysis across competitions (which task types attract more agents? what score variance is typical?)
+- Evaluation step timings (how long do automated tests take for different task complexity levels?)
+- Rubric calibration (which rubric structures produce more discriminating scores — fewer ties, wider spread?)
+- Platform improvement (detecting underspecified rubric patterns, improving rubric validation tooling)
+
+---
+
+### Data retention policy
+
+| Data Type | Retention Period | Rationale |
+|---|---|---|
+| Task specifications + evaluation inputs | 2 years | Audit trail for OMB M-26-04 compliance certificates |
+| Agent submission artifacts | 90 days post-competition | Dispute resolution window; deleted after or returned to agent operator on request |
+| Evaluation results and scores | Indefinitely (anonymized agent IDs) | Platform calibration corpus; feeds domain leaderboard |
+| Compliance certificates | 7 years | Regulatory audit requirement for federal procurement |
+| Personal data (agent operator contact info) | Until account deletion + 30-day buffer | GDPR Article 17 right to deletion |
+
+**Self-service deletion portal**: Companies must be able to request deletion of their task data after competition completion (GDPR Article 17). Agents must be able to request deletion of submission artifacts within the 90-day window. Straw must honor these within 30 days.
+
+---
+
+**Bottom line for Tick 63:** Straw's data governance model follows a clean-room architecture: task data isolated per tenant, agents receive only sanitized evaluation inputs, raw submissions never used to train Straw's models without explicit consent. Company retains task data rights; agent retains submission methodology rights; Straw gets a limited evaluation license. Retention: task specs 2 years, submission artifacts 90 days, scores indefinitely (anonymized). The compliance certificate retention period is 7 years to satisfy federal procurement audit requirements. The GDPR DPA is non-negotiable table stakes for enterprise customers.
+
+---
+
+## Tick 64 (2026-05-01): The first "Head of Agent Relations" hire — profile, skills, and communities
+
+**Thread:** What does the ideal first non-founder hire look like for managing agent recruitment, community, and commercial outcome facilitation?
+
+**Research sources:** Kaggle developer advocate model, HackerOne community manager model, Upwork enterprise talent success model, AI Engineer World's Fair, Agent Conference NYC, LangChain Discord community, acquihire deal structure for AI agent startups.
+
+---
+
+### Why this role is genuinely novel
+
+This is not a pure community manager. Not a pure enterprise salesperson. Not a pure developer advocate. It's a BD/community hybrid who must simultaneously: hold their own in a $1M acquihire negotiation AND moderate a Discord thread about evaluation fairness AND convince a top agent team to participate in Straw's first competition even though the prize is $5K.
+
+No obvious comp from a single comparable company:
+- Kaggle's Developer Advocate: community-building + technical depth, but limited commercial deal-making
+- HackerOne's Community Manager: hacker relations + program management, but not AI-specific
+- Upwork's Enterprise Talent Success: commercial, not technical
+- Straw's Head of Agent Relations requires all three components simultaneously
+
+---
+
+### Skills profile (priority-ranked)
+
+1. **Technical credibility floor**: understands how agents are built (LLM orchestration, tool use, evals) well enough to earn trust from agent teams. Not necessarily an engineer, but a sophisticated practitioner who has used these tools. Must be able to debug an integration issue with an agent operator.
+2. **Commercial ceiling**: can structure and close licensing, hire, and acquihire conversations in the $500K-$2M range. Requires M&A/deal literacy — understanding LOI structure, IP assignment, earnout provisions, and how to get both sides to yes.
+3. **Community instinct**: patient enough to manage disputes, reputation appeals, and "this eval is unfair" complaints without escalating drama. The job includes absorbing frustration; if this person escalates rather than de-escalates, it's wrong.
+
+---
+
+### Best recruit archetypes (priority-ranked)
+
+1. **Failed/acquihired AI agent startup founder**: has technical credibility, understands deal dynamics from the founder perspective, motivated to find a new platform after their company was acquihired or ran out of runway. Best archetype — rare but findable at the density of AI agent failures in 2025-2026.
+2. **Kaggle Grandmaster with BD instincts**: technically credible, deeply embedded in the competition community, occasionally transitions to industry. Rare because Kaggle credentials usually attract FAANG roles, but the small subset who want to build community rather than engineer models is findable.
+3. **Former AI-focused VC associate at a seed/Series A firm**: decided operations is more interesting than deal memos; has deal literacy from sourcing and evaluating investments; needs to develop technical depth and community patience.
+4. **Developer relations lead from major LLM provider** (Anthropic, OpenAI, Cohere): strong technical community relationships, understands AI agent ecosystem, may want more commercial upside than DevRel typically provides.
+
+**Do not hire**: a pure community manager (can't close deals); a pure enterprise salesperson (loses credibility in technical community immediately); a pure engineer (won't enjoy the community and commercial dimensions).
+
+---
+
+### Compensation structure
+
+- **Base**: $180K-$240K (SF/NYC market, 2026 AI talent premium)
+- **Success fee**: 2-5% on commercial transactions this person brokers (hire fees, license fees, acquihire facilitation fees) — aligns incentives directly with the agent recruitment and outcome facilitation mission
+- **Straw equity**: standard early-hire equity with accelerated vesting tied to commercial milestones (e.g., first $500K in facilitated commercial outcomes)
+- **No carry in acquirees**: Straw takes the platform fee; this person takes success fee on Straw's revenue, not a slice of the target company
+
+---
+
+### The five communities where this person must be present
+
+1. **AI Engineer World's Fair**: densest concentration of production agent builders in one physical location annually (SF)
+2. **LangChain/LangGraph Discord**: where production agent teams live day-to-day, ask questions, share failures; this is where relationships form before competitions
+3. **Hugging Face community forums + Spaces**: open-source agent researchers; early adopters of any new evaluation platform
+4. **Agent Conference NYC** (agentconference.com): explicitly agent-first; growing into the premier gathering for agent-native companies
+5. **Private Slack groups for CrewAI, AutoGen, Agency-specific frameworks**: top teams self-organize in private channels; this person needs to be invited in
+
+---
+
+**Bottom line for Tick 64:** The Head of Agent Relations role is genuinely novel — BD/community/technical hybrid with no perfect single-company template. Best archetype is a failed/acquihired AI agent startup founder: technical credibility, deal literacy, motivated to build. Pay $180-240K base + 2-5% success fee on commercial outcomes to align incentives with agent recruitment and deal facilitation. The five essential communities are AI Engineer World's Fair, LangChain Discord, Hugging Face forums, Agent Conference NYC, and framework-specific private Slacks. Presence in all five is non-negotiable for recruiting the agent supply-side flywheel.
+
+
+---
+
+## Tick 65 (2026-05-01): The Straw rubric design guide — how companies write good evaluation criteria
+
+**Thread:** What concrete guidance should Straw provide to companies for writing rubrics that produce meaningful, reproducible, unbiased competition scores?
+
+**Research sources:** AdaRubric (arXiv:2603.21362), RIFT failure mode taxonomy (arXiv:2604.01375), AutoRubric (arXiv:2603.00077), LLM-Rubric (ACL 2024), Snorkel AI science of rubric design, Label Studio calibration guide.
+
+---
+
+### Why rubric quality is Straw's most critical design constraint
+
+LLM-as-judge alignment improved from **37.3% to 93.95%** when rubric access was provided (empirical finding from 2025 research). The rubric is the primary determinant of evaluation quality, not the judge model. A high-quality judge running a bad rubric produces bad scores. A mediocre judge running a good rubric produces usable scores.
+
+The four failure modes (RIFT taxonomy):
+1. **Underspecification**: criteria too vague → scores cluster in the middle → agents indistinguishable
+2. **Criterion overlap**: two criteria measure the same thing → double-counting one dimension
+3. **Anchoring failures**: scale labels don't correspond to real performance differences
+4. **Scale compression**: 1-5 scale used but only 3-4 values appear in practice
+
+Straw must prevent all four before a competition launches.
+
+---
+
+### The rubric design guide: five rules
+
+**Rule 1 — Each criterion must have explicit pass/fail anchors**
+Bad: "Code quality (1-5)"
+Good: "Code quality: 1 = failing tests or major logic errors; 2 = tests pass but code is unreadable; 3 = tests pass, reasonable structure; 4 = tests pass, clear names, documented public API; 5 = tests pass, clear names, documented API, handles edge cases explicitly"
+
+The anchor language eliminates LLM judge interpretive latitude. Without anchors, two judges scoring the same submission will diverge based on their trained priors about "good code quality."
+
+**Rule 2 — Criteria must be orthogonal (not overlapping)**
+Bad: "Security" + "Input validation" (overlapping — input validation IS a security criterion)
+Good: "Input validation" + "Authentication" + "Audit logging" (three distinct security dimensions)
+
+Test for overlap: can an agent score high on criterion A and low on criterion B, or does scoring high on A always imply high on B? If the latter, they overlap.
+
+**Rule 3 — At least one criterion must be objectively automatable (Tier 1)**
+Every rubric must include at least one criterion that the Tier 1 automated harness can score deterministically: unit tests pass, API call succeeds and returns valid JSON, runtime under 2 seconds on the provided test dataset. This creates an unbiased floor score that prevents LLM judge bias from dominating.
+
+**Rule 4 — Weight distribution must not be dominated by a single criterion**
+Bad: "Functional correctness (80%) + Code style (10%) + Documentation (10%)" — 80% weight means code style and documentation scores are irrelevant to the outcome
+Good: "Functional correctness (40%) + Performance (25%) + Code quality (20%) + Documentation (15%)" — no single criterion dominates; agents must perform on multiple dimensions
+
+**Rule 5 — Criteria must reference task-specific outcomes, not implementation choices**
+Bad: "Uses PostgreSQL for persistence" — rules out valid approaches
+Good: "Persistence layer supports 10,000 concurrent writes/second with ACID guarantees" — evaluates the outcome, not the implementation
+Bad: "Uses REST API design" — excludes GraphQL, gRPC, etc.
+Good: "API is self-documenting and adheres to an established API contract specification (REST, GraphQL, or gRPC)" — evaluates the characteristic, not the choice
+
+---
+
+### The rubric validation checklist (pre-competition gate)
+
+Before any competition launches, Straw's rubric validation system checks:
+
+- [ ] Each criterion has explicit pass/fail or scale anchors (not just a name)
+- [ ] No two criteria can be scored identically by definition (orthogonality check)
+- [ ] At least one Tier 1 automatable criterion exists
+- [ ] No single criterion has weight > 50%
+- [ ] No criterion references specific implementation choices (technology-neutral)
+- [ ] Rubric has been reviewed by a domain expert (human review for niche domains)
+- [ ] Rubric hash is locked and timestamped before competition opens (EU AI Act compliance)
+
+---
+
+### Calibration: how to know if the rubric is working
+
+After the first few submissions arrive on the public leaderboard, the rubric is working if:
+- Score distribution has variance (not all agents clustering at 60-70%)
+- Scores on individual criteria show different rank orderings (agent A scores high on correctness, agent B scores high on documentation — not perfect correlation)
+- Tier 1 automated score correlates with Tier 2 LLM score at r > 0.7 (if automated tests and LLM judge disagree systematically, the rubric has a reliability problem)
+
+Target reliability metrics:
+- Krippendorff's α ≥ 0.80 between repeated evaluations of the same submission
+- Cohen's weighted κ ≥ 0.60 between different judge models on the same rubric
+
+If the rubric fails these checks after 5-10 submissions: intervention. Options: rubric refinement (add anchors, reduce overlap), add more Tier 1 automated criteria, or escalate to human expert review.
+
+---
+
+### The rubric design service as a premium offering
+
+Not all companies will write good rubrics. This is predictable: the skill required (translating "I'll know good when I see it" into pre-defined, weighted, anchored criteria) is not widely held.
+
+Straw's premium offering: a 90-minute rubric design session with a Straw domain expert + $1,500 fee per rubric design session. The session follows a structured format:
+1. Task clarification: what is the precise output the agent must produce? (30 min)
+2. Criterion brainstorming: what dimensions make the output "good"? (20 min)
+3. Orthogonality check: eliminate overlapping criteria (15 min)
+4. Anchor writing: define what 1, 3, and 5 look like on each dimension (20 min)
+5. Weight assignment: what's the relative importance of each dimension? (15 min)
+
+The output is a validated, locked rubric ready for Straw's compliance certificate.
+
+---
+
+**Bottom line for Tick 65:** Rubric quality is the primary determinant of evaluation quality on Straw — more important than the judge model. The five rules are: explicit anchors, orthogonal criteria, at least one automatable criterion, no single criterion dominating weights, and technology-neutral outcome criteria. The pre-competition validation checklist prevents the four RIFT failure modes (underspecification, overlap, anchoring failure, scale compression). Target reliability: Krippendorff's α ≥ 0.80 between eval runs, κ ≥ 0.60 between judge models. The premium rubric design session ($1,500/90 minutes) converts the common failure of "I'll know good when I see it" companies into well-specified evaluations that produce meaningful scores.
+
