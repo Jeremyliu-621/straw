@@ -11793,3 +11793,416 @@ The international agent community is already large. Berkeley RDI hackathon parti
 - Stripe Connect international payout documentation (40+ country support)
 - Berkeley RDI hackathon participant data (127 countries, Tick 67 research)
 
+
+---
+
+## Tick 86 (2026-05-01): MVP product roadmap — what Straw builds first and why
+
+**Research question**: Given resource constraints (2–3 engineers, founder-led sales, pre-revenue), what is the correct sequencing of features to build the minimum viable version of Straw that can close the first enterprise customer?
+
+---
+
+### The MVP definition
+
+Straw's MVP is not a fully realized platform with all five reputation dimensions, three legal contract templates, FedRAMP compliance, and an agent capability taxonomy. The MVP is the minimum system that can:
+
+1. Allow an enterprise to post a task with a rubric
+2. Allow an agent team to discover and submit to that task
+3. Score the submission through at least Tier 1 (deterministic) evaluation
+4. Display results to the enterprise on a basic leaderboard
+5. Facilitate payment of the prize to the winning agent team
+
+That's it. Every feature beyond those five is post-MVP. The question is what order to add features after the MVP is closed.
+
+---
+
+### The build sequence
+
+**Sprint 0 (pre-launch, 2 weeks): Infrastructure**
+- Supabase project with basic auth, RLS policies for enterprise and agent tenants
+- S3 bucket structure with IAM isolation (enterprise-specific prefixes)
+- Stripe account for competition prize escrow and payout
+- GitHub Actions CI/CD pipeline
+
+**Sprint 1 (weeks 1–4): Enterprise task posting**
+- Competition creation form (enterprise web UI): task description (rich text), rubric builder (add criteria + weights), deadline, prize amount
+- Competition state machine: draft → funded → open → closed → awarded
+- Stripe payment collection at competition creation (prize + platform fee into escrow)
+- Basic enterprise dashboard: view competitions, see submission count
+
+**Sprint 2 (weeks 5–8): Agent discovery and submission**
+- Agent registration (email + API key generation)
+- Competition listing API (GET /competitions, filtered by open/status)
+- Submission upload API (POST /competitions/{id}/submissions, accepts JSON + artifact files)
+- Submission receipt (HTTP 202, submission ID)
+- Competition webhook notifications (competition open, competition close) via webhook registration
+
+**Sprint 3 (weeks 9–12): Tier 1 scoring**
+- Tier 1 deterministic scoring engine for three task types: code correctness (test suite), structured data extraction (field match), document classification (ground-truth label match)
+- Score availability via API (GET /competitions/{id}/submissions/{sid})
+- Basic leaderboard (enterprise-only view initially)
+- Webhook push on score available
+
+**Sprint 4 (weeks 13–16): Prize disbursement and first launch**
+- Stripe Connect payout to winning agent team
+- Public leaderboard option (enterprise configurable)
+- Basic agent portfolio view (competition history, scores)
+- Competition Compliance Certificate generation (PDF export of competition metadata + scores — Tick 61)
+- First calibration competition (internal, public)
+
+---
+
+### What to defer
+
+**Tier 2 LLM judge**: Expensive to run reliably, requires multi-model infrastructure, introduces external dependency (Anthropic/Google). Defer to month 4–6. For the first 3–5 enterprise competitions, manual Tier 2 review by the Straw team (a product manager reads submissions and scores them on the rubric) is a valid substitute. This is embarrassingly manual but scalable enough for 3–5 competitions.
+
+**Tier 3 agent investigator**: Even more expensive and complex. Defer to post-Series A. The primary gaming defense in MVP is behavioral anomaly detection in Tier 1 (submission timing, output consistency) rather than a full Tier 3 investigation pipeline.
+
+**Agent reputation system**: Defer to month 6+ when there is enough competition history to compute meaningful percentile ranks. Before 50+ competitions, the reputation system has no data to compute against.
+
+**International payments**: Stripe Connect covers 40+ countries for payout. Defer non-US currency invoicing (EUR, GBP, JPY) until first non-US enterprise customer.
+
+**ERC-8004 on-chain identity**: Defer until after first 20 competitions. Identity verification for prize-eligible submissions can be handled manually (require agent teams to complete KYC via Stripe before receiving payouts) in the MVP.
+
+**Agent Pro subscription tier**: Defer until there are 30+ active agent teams who might want the premium features. Building subscription infrastructure before you have subscribers is premature.
+
+---
+
+### The first sale determines the roadmap
+
+The correct approach is not to build the MVP and then find customers — it is to find the first enterprise design partner before writing line one of code, and let their requirements determine what MVP means in practice.
+
+If the first enterprise design partner has a coding evaluation task, Sprint 3 must include code correctness scoring. If they have a document processing task, Sprint 3 needs field extraction scoring. The platform agnosticism of the MVP is a fiction — the first enterprise customer will dictate the task type, and the first task type dictates the scoring implementation.
+
+The founding team should be in design partner conversations before any code is written. The design partner relationship provides:
+1. Specific task type that defines the MVP scoring requirements
+2. A rubric to validate the rubric builder UI against
+3. A commitment letter or LOI that signals commercial seriousness (reduces build-for-nothing risk)
+4. A launch milestone that creates urgency for the build schedule
+
+Two or three design partner conversations in the first 30 days should precede any infrastructure setup.
+
+---
+
+### The "do things that don't scale" phase
+
+For the first 5 competitions, Straw should do everything manually that will eventually be automated:
+
+- Manually review and approve competition rubrics before they go live
+- Manually review submission artifacts for policy violations
+- Manually run Tier 2 scoring (a product manager reads and scores submissions)
+- Manually generate the Competition Compliance Certificate as a Word document
+- Manually reach out to agent teams that haven't submitted near the deadline
+
+This is the Paul Graham "do things that don't scale" principle applied to a B2B platform. The goal is to close the first enterprise customer and learn what they actually need, not to build automation infrastructure for scale that doesn't exist yet.
+
+The unscalable phase ends when competition volume reaches the point where manual operations become the constraint. That's probably 10–15 simultaneous competitions, which realistically won't happen until month 8–12 at the earliest.
+
+---
+
+### Sources
+
+- Paul Graham "Do Things That Don't Scale" (paulgraham.com — the founding principle for MVP approach)
+- Stripe Connect API documentation (payment and payout infrastructure)
+- Supabase Row Level Security documentation (multi-tenant auth foundation)
+- S3 IAM policy architecture for multi-tenant isolation (AWS documentation)
+- SWE-bench evaluation infrastructure (scoring pipeline reference for code correctness)
+
+
+---
+
+## Tick 87 (2026-05-01): Post-hire agent monitoring — how Straw maintains signal quality after a competition ends
+
+**Research question**: After an enterprise hires a winning agent, does Straw have a role in monitoring the deployed agent's performance? What does this product look like and what is the business model?
+
+---
+
+### The monitoring product rationale
+
+Straw's competition provides a snapshot — the agent's performance on the competition task, under competition conditions, at the moment of the competition. Production is different in three ways:
+
+1. **Task distribution drift**: The production task distribution may drift from the competition task. An agent that scored 85% on the competition's representative sample may encounter production edge cases that weren't in the sample.
+
+2. **Model drift**: If the agent is built on a foundation model that is updated by its provider, the agent's behavior may change at the foundation model layer without any action by the agent team. The GPT-4o that scored 85% in January may behave differently in July after an unannounced update.
+
+3. **Data drift**: The documents, code, or data the agent processes in production change over time. An agent trained and evaluated on 2024 legal contracts may perform differently on 2026 contracts that use different clause structures.
+
+These three drift types are not hypothetical — they are documented causes of production AI performance degradation. The question is whether Straw has a product role in detecting and surfacing them.
+
+---
+
+### The monitoring product design
+
+**Product name**: Straw Monitor (or Straw Continuous Eval)
+
+**Core function**: Run periodic mini-competitions (5–10 submissions, same rubric as the original competition, new task instances from the same distribution) against the hired agent. Compare scores to the competition baseline. Alert the enterprise if performance has degraded more than X% from baseline.
+
+**Who runs the periodic mini-competitions**: The enterprise sends new task instances from their production queue (with PII scrubbed per Tick 79). Straw scores them against the original rubric. The hired agent submits. Score delta from baseline is computed and surfaced in the enterprise dashboard.
+
+**Alert thresholds**: Configurable by enterprise. Default recommendation: alert if score drops more than 10% from competition baseline in any 30-day window. Critical alert if score drops more than 25% from baseline.
+
+**Business model**: Subscription fee on top of the Enterprise tier. Suggested: $500/month per monitored agent (10 monthly mini-competition runs with 10 task instances each). For an enterprise with 3 hired agents, this is $1,500/month = $18K/year in incremental ARR from monitoring alone.
+
+---
+
+### The re-competition trigger
+
+If monitoring detects significant performance degradation, Straw recommends (and can facilitate) a re-competition: post the same task type with an updated competition to find a better agent for the current task distribution.
+
+This is the "quarterly evaluation cadence" from Tick 73 (customer success) in product form. Instead of asking the enterprise to remember to run evaluations quarterly, the monitoring product automatically surfaces when a re-competition is warranted.
+
+**The flywheel implication**: Monitoring converts one-time competition customers into recurring competition customers. An enterprise that runs 2 competitions/year on average becomes an enterprise that runs 2 competitions/year *plus* 36 monthly mini-competition monitoring runs — a 19× increase in platform engagement that also produces more calibration data (valuable for Straw's corpus) and more agent traffic (valuable for the supply side).
+
+---
+
+### Comparison to existing AI monitoring platforms
+
+Several platforms compete in the AI model monitoring space in 2026:
+
+| Platform | Focus | What Straw does differently |
+|----------|-------|---------------------------|
+| Weights & Biases | ML experiment tracking, model performance drift | Straw evaluates against a pre-agreed enterprise rubric, not internal ML metrics |
+| Braintrust | LLM evaluation and tracing | Straw's evaluations are competitive (multi-agent benchmarks), not single-agent introspection |
+| Langfuse | LLM observability and tracing | Straw evaluates outcome quality, not just operational metrics |
+| Scale AI RLHF / RLAIF | Human feedback loop for model improvement | Straw evaluates deployed agent performance, not training data quality |
+| Arize AI | ML model monitoring and drift detection | Straw provides rubric-specific quality scores, not just distributional drift alerts |
+
+Straw's differentiation: monitoring is rubric-grounded (evaluates what the enterprise actually cares about, not what ML engineers find easy to measure) and calibrated (compared to competition baseline scores, not an arbitrary threshold the enterprise defines internally).
+
+---
+
+### The data flywheel from monitoring
+
+Every monitoring run produces scored task instances — real enterprise data with ground-truth rubric evaluations. For Straw, this data compounds the calibration corpus (Tick 66) that is the core long-term moat.
+
+After 1,000 monitoring runs across 50 enterprise customers on legal contract review tasks, Straw knows:
+- What score distributions are typical for this task type at different agent quality levels
+- Which rubric criteria show the most performance variance over time (drift indicators)
+- Which task types show the fastest model drift (requires more frequent monitoring)
+- What a "good enough" vs. "excellent" score looks like in production vs. competition conditions
+
+This knowledge informs:
+- Better rubric design recommendations for new competitions in the same task type
+- Better monitoring alert thresholds (calibrated from real drift data, not arbitrary percentages)
+- Research papers on AI agent performance drift (academic credibility for Straw's methodology)
+
+---
+
+### The monitoring SLA and Straw's liability
+
+When Straw is monitoring a deployed agent, is Straw liable if monitoring fails to detect significant performance degradation? This is the legal boundary to establish clearly in the Straw Monitor contract:
+
+- Straw Monitor is a **signal, not a guarantee**: Straw monitors for statistical drift from competition baseline. It does not guarantee that the hired agent will perform at any specific level in production.
+- **The enterprise is responsible for production deployment decisions**: Straw's monitoring output is advisory. The enterprise decides whether to re-compete, retrain, or continue with the current agent based on the monitoring signal.
+- **Limitation of liability**: Straw Monitor SLA includes a monthly uptime commitment (99.5% for monitoring runs) and a credit mechanism for missed monitoring windows. Straw's liability is capped at the fees paid for the monitoring subscription in the prior 12 months.
+
+---
+
+### Sources
+
+- Weights & Biases, Braintrust, Langfuse, Arize AI product documentation (competitive landscape reference)
+- AI model drift detection literature (AWS SageMaker Model Monitor documentation, IBM Watson OpenScale)
+- Mayer Brown "Contracting for Agentic AI Solutions" (Feb 2026) — SLA structure for AI agent service agreements
+- Tick 73 (customer success — quarterly cadence recommendation)
+- Tick 71 (prize escrow mechanics — minimum threshold and re-competition mechanics)
+- Tick 79 (data isolation — PII scrubbing for monitoring task instances)
+
+
+---
+
+## Tick 85 (2026-05-01): Exit thesis — who acquires Straw and why
+
+**Research question**: Who are the realistic acquirers of Straw, at what valuation, and when? What is the most value-maximizing exit path?
+
+---
+
+### Core strategic value for acquirers
+
+Straw's moat is not software — it is the scoring methodology and the accumulation of ground-truth performance data across AI agent evaluations. This mirrors how S&P Global commands a 30–35× P/E premium over generic software vendors: the methodology becomes the industry standard, and switching costs compound over time. Every task posted and every agent scored makes Straw more acquisition-attractive as a data and validation layer, not just a workflow tool.
+
+---
+
+### Tier 1 acquirers: highest strategic fit
+
+**ServiceNow** (most compelling). Acquired Moveworks for $2.85B (December 2025) to bolster agentic AI. The missing piece: a procurement and validation layer that tells enterprise customers which agents are worth buying. Straw slots in as "ServiceNow Agent Procurement" — a marketplace that sources, benchmarks, and contracts AI agents for enterprise workflows. Expected multiple: **12–20× ARR**.
+
+**Workday** (second strongest). Acquired HiredScore, Paradox ($2B, August 2025), and Sana ($1.1B, 2025) — building a full AI workforce platform. Straw extends that thesis from hiring humans to evaluating and procuring AI agents. "You use Workday to hire people. You use Workday to hire AI." Expected multiple: **8–15× ARR**.
+
+**Salesforce** (later stage). Acquired Convergence.ai (May 2025) to deepen Agentforce. Straw becomes the "App Exchange with proof." More likely after Straw has 50+ enterprise customers and an established methodology. Expected multiple: **10–18× ARR**.
+
+---
+
+### Tier 2: cloud platform defensive acquisitions
+
+AWS, Azure, and GCP would acquire Straw defensively — to prevent a competitor from owning the AI agent evaluation standard on their platform. GCP already owns Kaggle; Azure's OpenAI partnership gives it reason to provide model-agnostic AI vetting. These acquisitions tend to be earlier and cheaper ($50–200M) — acqui-hire risk is high if Straw is not yet at scale. Better to use them as distribution partners than sell early.
+
+---
+
+### The S&P Global analogy (valuation ceiling)
+
+S&P Global trades at ~32× earnings, Moody's at ~40× — these are evaluation methodology premiums, not software multiples. S&P's $44B acquisition of IHS Markit (2022) expressed the "essential intelligence" thesis — owning the data standard becomes more valuable than any single product.
+
+If Straw's methodology becomes the de facto standard for enterprise AI procurement — the way S&P ratings gate access to bond markets — the valuation ceiling is dramatically higher than standard SaaS comps. The first company to own the accepted AI agent scoring standard will trade at evaluation-company multiples.
+
+---
+
+### Comparable acquisitions
+
+| Target | Acquirer | Year | Price | Notes |
+|--------|---------|------|-------|-------|
+| Kaggle | Google | 2017 | ~$12–30M | Pre-revenue community/evaluation platform |
+| Appirio/Topcoder | Wipro | 2016 | $500M (bundle) | Crowdsourced evaluation; talent model |
+| Moveworks | ServiceNow | 2025 | $2.85B | Agentic AI capability acquisition |
+| Scale AI | Meta (49%) | 2025 | ~$14.8B implied | AI data + evaluation infrastructure |
+| Sana | Workday | 2025 | $1.1B | Enterprise AI knowledge layer |
+
+**The Kaggle lesson**: Google paid a modest price for a community/evaluation platform because it was pre-revenue. Don't sell before demonstrating methodology stickiness and NRR of enterprise accounts. Straw should reach $10M+ ARR and 3+ enterprise reference customers before entertaining strategic dialogue.
+
+---
+
+### IPO threshold
+
+At $100M ARR growing 40%+ with 80% gross margins and 120% NRR, Straw commands 12–18× ARR at IPO ($1.2–1.8B market cap). The AI-native premium could push higher. Veeva is the best comp: deep vertical specificity, proprietary methodology, high switching costs, $100M ARR in 7 years. IPO is not realistic before 2031.
+
+---
+
+### Recommended fundraising and exit timeline
+
+| Stage | Year | Capital | Target ARR | Milestone |
+|-------|------|---------|-----------|-----------|
+| Seed | 2025–2026 | $2–5M | $0→$1M | 3 enterprise pilots; scoring methodology proven |
+| Series A | 2027 | $15–25M | $3M | 10 enterprise customers; 115%+ NRR |
+| Series B | 2028–2029 | $40–80M | $10–20M | Vertical specialization; PE-interesting |
+| Strategic/Series C | 2029–2031 | — | $30–50M | 15–25× ARR exit ($450M–$1.25B) |
+
+**Most likely exit**: Strategic acquisition at $30–50M ARR by ServiceNow, Workday, or Salesforce at 15–25× ARR ($500M–$1B range), once AI agent procurement becomes a recognized enterprise budget category (2029–2031).
+
+---
+
+### Honest risk
+
+The thesis only holds if Straw's methodology achieves industry-standard status before an incumbent captures the category. If AWS Bedrock or Azure AI builds their own evaluation layers, the independent evaluation standard thesis weakens. The S&P analogy only holds if you're S&P — not one of three rating agencies competing with AWS.
+
+The optimal playbook: (1) publish the methodology as open standard, (2) build the community of evaluated agents, (3) lock in Fortune 500 reference customers before incumbents move. That combination commands the $500M+ strategic premium. Selling early likely yields a Kaggle-sized outcome ($30–100M), not a Moveworks-sized one ($2.85B).
+
+---
+
+### Sources
+
+- [Google acquires Kaggle (TechCrunch, 2017)](https://techcrunch.com/2017/03/08/google-confirms-its-acquisition-of-data-science-community-kaggle/)
+- [ServiceNow acquires Moveworks $2.85B (Dec 2025)](https://cyntexa.com/blog/servicenow-acquisitions/)
+- [Workday acquires Paradox + Sana (2025)](https://newsroom.workday.com/2025-08-21-Workday-Signs-Definitive-Agreement-to-Acquire-Paradox,-the-AI-Company-Redefining-the-Frontline-Candidate-Experience)
+- [Databricks $134B valuation (Dec 2025)](https://techcrunch.com/2025/12/16/databricks-raises-4b-at-134b-valuation-as-its-ai-business-heats-up/)
+- [S&P Global / Moody's evaluation premiums (Scuttleblurb)](https://scuttleblurb.substack.com/p/spgi-mco-ai)
+- [SaaS valuation multiples 2015–2026 (Aventis Advisors)](https://aventis-advisors.com/saas-valuation-multiples/)
+- [Veeva at $2B ARR analysis (SaaStr)](https://www.saastr.com/5-interesting-learnings-from-veeva-at-2-billion-in-arr/)
+- [AI startup fundraising trends 2026 (Eqvista)](https://eqvista.com/ai-startup-fundraising-trends/)
+
+
+---
+
+## Tick 84 (2026-05-01): Legal structure — the Straw contract stack and key provisions
+
+**Research question**: What legal documents does Straw need to operate? What provisions are unique to an AI agent competition marketplace vs. standard SaaS or freelance marketplace contracts?
+
+---
+
+### The three-tier document stack
+
+**Tier 1 (must have at launch)**:
+1. Enterprise Competition Posting Agreement
+2. Agent Team Participation Agreement
+3. Platform Terms of Service (governing law, dispute resolution, fee structure)
+
+**Tier 2 (required at first hire or acquihire)**:
+4. Hire Agreement (between enterprise and winning agent team, facilitated by Straw)
+5. Acquihire Document Suite (LOI template, APA template, IP Assignment, Employment Agreement, Non-Compete/Non-Solicitation, Platform Fee Acknowledgment)
+
+**Tier 3 (required for EU market entry)**:
+6. EU Data Processing Addendum (GDPR, Article 28 compliance)
+7. European Addendum (EU Product Liability Directive, ICC arbitration alternative, GDPR controller designation)
+
+---
+
+### Enterprise agreement: novel provisions
+
+**IP ownership disclosure**: The enterprise must represent it owns rights to the task description, rubric, and any data in the competition brief. Straw needs a limited license to reproduce and display these to agent teams. *"Enterprise grants Straw a non-exclusive, non-transferable license to use the Competition Brief and Rubric solely to administer the Competition. No agent team acquires any rights to the Competition Brief or Rubric by virtue of participation."*
+
+**Submission artifact data rights**: Two-track IP regime (model: Topcoder). Winning submission IP transfers via a separate Assignment Agreement at hire. Non-winning submission IP stays with the agent team, subject to the enterprise's evaluation-only review license. *"Enterprise may not use, copy, or deploy any non-winning Submission outside of the evaluation process without Team's express written consent."*
+
+**Production deployment liability cutoff**: Once the enterprise deploys a hired agent in production, Straw's liability terminates. Model on Mayer Brown's February 2026 agentic AI contracting guidance: *"Enterprise acknowledges that any deployment of a Hired Agent in a production environment constitutes a unilateral decision by Enterprise. Straw provides no warranty as to the fitness of any Hired Agent for production use."*
+
+**Non-solicitation of competing agent teams**: Enterprise agrees not to attempt to hire or acquire any competition participant outside of Straw's marketplace for 12 months post-competition. Carve-out for pre-existing relationships disclosed at posting time.
+
+**Pre-existing relationship disclosure**: *"Enterprise represents that it has disclosed to Straw any known pre-existing commercial, employment, or investment relationship with any prospective participant."* Undisclosed pre-existing relationships invalidate the competition and result in prize pool refund.
+
+---
+
+### Agent team agreement: the autonomous AI representation
+
+The single most legally novel provision in the entire document stack — no direct analog exists in HackerOne, Topcoder, or standard SaaS terms:
+
+*"Team represents and warrants that the Submission is generated by an AI system operating with substantial autonomy, and that human involvement was limited to system configuration, training, and quality review and did not extend to direct generation of competition outputs."*
+
+Define tiers (e.g., "human-in-the-loop with approval" vs. "human-designed, AI-executed") and require disclosure. Do not claim 100% autonomous — that's unprovable and creates fraud risk. This provision is what makes Straw's competitive integrity credible and is the first thing an enterprise legal team will ask about.
+
+**Methodology IP retention**: *"Team retains all right, title, and interest in the AI system, model weights, training data, and methodology used to generate the Submission. No rights in the foregoing are transferred by these Terms."*
+
+**Cross-competition information barrier**: *"Team will not use Confidential Information from any Competition to inform any submission to a subsequent Competition for a different Enterprise in the same or a substantially similar domain for 12 months from the close of the originating Competition."*
+
+**Private competition NDA** (adapted from HackerOne's community terms): Agent teams must not disclose the existence, scope, or content of any competition designated "Private" by the enterprise.
+
+---
+
+### AI-specific liability provisions (2026 emerging standard)
+
+From Mayer Brown, Clifford Chance, and Bonterms AI Standard Clauses v1.0:
+
+**Output Disclaimer**: *"Outputs are generated through machine learning processes and are not tested, verified, endorsed, or guaranteed to be accurate, complete, or current. Enterprise should independently review and verify all Outputs as to appropriateness for any use case."*
+
+**Kill-Switch Provision**: *"Enterprise retains the right to immediately suspend any Hired Agent operating in Enterprise's production environment if the agent generates harmful, noncompliant, or unexpected outputs, without requiring Straw's consent."* Require agent teams to include a documented suspension mechanism as part of their winning submission deliverable.
+
+**Model Drift Provision**: *"Agent Team shall monitor for material performance degradation ('Model Drift') and notify Enterprise within 5 business days of detecting drift exceeding [threshold]. Agent Team shall implement remediation within 30 days or allow Enterprise to terminate for cause without penalty."*
+
+**EU Product Liability Directive** (effective December 2026): European Addendum acknowledges AI systems deployed in EU may constitute "products" — enterprise assumes product liability for EU deployments.
+
+---
+
+### Acquihire document sequence
+
+1. Term Sheet / LOI (non-binding except exclusivity, confidentiality, Straw fee acknowledgment)
+2. Mutual NDA (for due diligence)
+3. Exclusivity Agreement (30–60 days)
+4. Asset Purchase Agreement (IP, code, models, data pipelines + representations)
+5. IP Assignment Agreement (all founders + contributors assign all IP)
+6. Employment Agreements (4-year vesting, 1-year cliff, retention bonuses)
+7. Non-Compete / Non-Solicitation (1–2 years; note: California non-competes largely unenforceable for employees — structure as asset-purchase non-competes under Cal. Bus. & Prof. Code §16601)
+8. Equity Cancellation Agreement
+
+**Straw-specific**: Platform Transaction Fee Acknowledgment embedded in LOI so it is not a surprise at closing.
+
+---
+
+### Governing law recommendation
+
+**Delaware law, JAMS arbitration, seated in New York.**
+
+Delaware: most enterprise-friendly neutral jurisdiction in the US; Court of Chancery has sophisticated commercial precedent; global enterprises familiar with Delaware law. Avoid California governing law — California courts expand implied duties in ways that create unexpected enterprise liability.
+
+*"This Agreement shall be governed by the laws of the State of Delaware, without regard to conflicts of law principles. Any dispute arising out of or relating to this Agreement shall be finally resolved by binding arbitration administered by JAMS pursuant to its Streamlined Arbitration Rules (for disputes under $500,000) or Comprehensive Arbitration Rules (for disputes $500,000 or more), with the seat of arbitration in New York, New York."*
+
+Offer ICC arbitration as an alternative for EU-headquartered enterprises in the European Addendum.
+
+---
+
+### Sources
+
+- [HackerOne Community Member Terms and Conditions](https://www.hackerone.com/terms/community)
+- [Topcoder Ownership and Licensing of Submissions](https://www.topcoder.com/thrive/articles/Ownership%20and%20Licensing%20of%20Submissions)
+- [Bonterms AI Standard Clauses v1.0](https://bonterms.com/forms/ai-standard-clauses-version-1-0)
+- [Mayer Brown: Contracting for Agentic AI Solutions (Feb 2026)](https://www.mayerbrown.com/en/insights/publications/2026/02/contracting-for-agentic-ai-solutions-shifting-the-model-from-saas-to-services)
+- [Clifford Chance: Agentic AI — The Liability Gap (Jan 2026)](https://www.cliffordchance.com/content/dam/cliffordchance/briefings/2026/02/agentic-ai-theliability-gap-your-contracts-may-not-cover.pdf)
+- [Morgan Lewis: Contracts for AI Agent Development (Sep–Oct 2025)](https://www.morganlewis.com/blogs/sourcingatmorganlewis/2025/09/contracts-for-ai-agent-development-and-implementation-part-1-setting-the-stage)
+- [Cooley GO: Acquihire Basics](https://www.cooleygo.com/acqui-hire-basics/)
+- California Business & Professions Code §16601 (non-compete enforceability for asset purchases)
+
