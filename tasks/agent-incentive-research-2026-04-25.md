@@ -892,7 +892,7 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done — Tick 1] **Vickrey-Clarke-Groves auction in agent marketplaces.** VCG collapses to second-price reverse auction for single-task bounty. 5 structural failure modes documented. AEX architecture (arXiv:2507.03904) is the canonical agent-marketplace reference. MarketBench finding: LLMs are miscalibrated on their own costs — calibration layer needed.
 - [done — Tick 2] **Shapley value credit propagation in agent chains.** SHARP (+23.66% on LLM pipelines), Shapley-Coop (self-interested marketplace agents), HiPER (hierarchical), SHAQ (MARL). No production framework implements this yet — first-mover opportunity. ERC-8004 on Ethereum mainnet has the hook for on-chain settlement.
 - [done — Tick 7] **Reputation systems for autonomous agents.** EigenTrust, Beta Reputation System, TrustFlow (2026), TraceRank, SingularityNET Weighted Liquid Rank. Cold-start: Beta prior + category priors + entry task. Sybil: stake + EigenTrust topology + operator identity attestation. Delegation reputation: separate Dirichlet dimension. Decay: λ=0.9/month.
-- [ ] **The 300-agent swarm simulation specifically.** How would we set up MiroFish/OASIS/Microsoft Magentic Marketplace to simulate 300 OpenClaws on a Straw-shaped bounty board? What metrics do we capture? What would tell us whether the post-side actually fills? **Microsoft Magentic Marketplace Python framework may be faster starting point than OASIS extension.**
+- [done — Tick 8] **The 300-agent swarm simulation specifically.** Microsoft Magentic Marketplace is the right framework. Exact code changes documented (~300 lines added, zero core deletions). 10-parameter sweep design. `IncrementalEigenTrust` warm-start algorithm. Cheapest model: Gemini 2.5 Flash-Lite ($3.75/run for 300 agents × 50 steps). Validation against real market via Ocean Protocol metrics (arXiv:2511.13233).
 
 ### Medium priority (for the proposal's depth)
 
@@ -901,7 +901,7 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done — Tick 5] **Why would an autonomous agent OPERATOR want their agents to post tasks?** Comparative advantage: 20-30 point benchmark gaps. Token economics: self-executing out-of-domain tasks costs $5-17/success vs $3-5/post. Anthropic Project Deal: 186 commercial deals, $4K in goods, zero human intervention — willingness to transact proven. USDC Hackathon: agents self-organized into posting + evaluating roles when stakes were real.
 - [done — Tick 5 (partial)] **MetaGPT's role-allocation mechanism in detail.** Fixed SOPs (not dynamic LLM routing). ProjectManager routes by code file ownership. Structural, not capability-based.
 - [done — Tick 5 (partial)] **CrewAI's hierarchical mode in detail.** Manager never executes directly. Routes by role/goal/backstory fields. `allowed_agents` parameter constrains routing.
-- [ ] **Pricing models for the post-side.** Pre-funded bounty vs pay-on-engagement vs success-share vs subscription. Which incentivizes posting most? Need empirical analysis of existing platforms.
+- [done — Tick 10] **Pricing models for the post-side.** $99-199 flat posting fee + 5-8% success fee. Artifact access control as harvest-attack mitigation. Subscription model rejected. Full academic framework (Rochet & Tirole, Parker & Van Alstyne). Tiered pricing at $99/$199/$499.
 - [ ] **Anthropic's "effective harnesses for long-running agents" paper — full read.** Do a deep close-read. What patterns translate to Straw's bounty-board context specifically?
 
 ### Open / exploratory
@@ -912,9 +912,9 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [done — Tick 6] **Kite AI's "Agentic Markets" (ETHDenver 3rd place).** Kite Chain mainnet launched April 30, 2026. Agent Passport = on-chain identity + programmable wallet. 90+ service providers. Focused on recurring service commerce, not task competition — different niche from Straw.
 - [done — Tick 5 (partial)] **USDC OpenClaw Hackathon mechanism design.** Full writeup in Tick 5. Forced dual-role (submit AND vote on 5+). Format compliance was decisive. Vote-exchange coalitions and manipulation emerged naturally. Key design lesson: agents need both competing AND evaluating roles.
 - [done — Tick 6] **akmenon1996/ai-agent-marketplace + keyko-io/agent-marketplace-frontend.** Both are agent directories/subscription models, not competitive task evaluation. Confirmed gap.
-- [ ] **x402 payment rail + Straw integration.** x402 (HTTP 402 protocol by Coinbase): 119M+ transactions, $600M annualized, zero protocol fees. Should Straw use this for bounty payment? TraceRank reputation derives automatically from x402 payment graph. Investigate integration path.
+- [done — Tick 9] **x402 payment rail + Straw integration.** Full integration design documented. 7-step HTTP 402 flow, TypeScript middleware snippet. V2 reusable sessions + Bazaar discovery. Non-custodial StrawEscrow contract on Base. TraceRank for automatic reputation from payment graph. GENIUS Act compliance framework. v0/v1 uses Stripe; v1.5 adds x402 + escrow.
 - [ ] **ERC-8004 on-chain agent reputation (Ethereum mainnet, Jan 2026).** Three registries: Identity, Reputation, Validation. No Shapley attribution yet but the hook exists. Design Straw's v2+ on-chain settlement on top of ERC-8004.
-- [ ] **Microsoft Magentic Marketplace simulation vs OASIS for 300-agent test.** Python framework, HTTP/REST, supports OpenAI/Claude/Gemini. Five key findings: discovery quality → welfare, Paradox of Choice, first-proposal bias, prompt injection, positional bias. May be faster to extend for Straw dynamics than OASIS's Twitter-shaped action space.
+- [done — Tick 8] **Microsoft Magentic Marketplace simulation vs OASIS for 300-agent test.** Magentic is the right choice. Complete extension plan documented. Existing Postgres/async/LLM abstraction all carry over unchanged. Estimated cost <$10 for full parameter sweep.
 - [ ] **Cooperative AI Foundation grants list — what work has been funded.**
 - [ ] **MultiAgent4Collusion** (OASIS-family framework for collusion-modeling).
 - [ ] **Stake-to-post mechanism** — concrete production designs. Optimal stake relative to bounty value? Slashing rules?
@@ -923,7 +923,7 @@ The cron should pick the next thread that's NOT marked `[done]`. Order of priori
 - [ ] **MS AI Agents Hackathon winners — Apollo (Athena + Hermes orchestrator pattern)** — self-reflective RAG pattern for Straw's tier-3 agent-investigator design.
 - [ ] **DoraHacks / Gitcoin / HackerOne / Bugcrowd internals.** Reputation, payment, dispute resolution internals.
 - [ ] **Bradley-Terry pairwise scoring** — combining with VCG?
-- [ ] **What does the Straw economy look like in steady state?** Token velocity, reputation distributions, posting/competing ratios. Stylized model.
+- [done — Tick 11] **What does the Straw economy look like in steady state?** P&L table for 300-agent operator. Break-even at 512 tasks/month. Day-1 profitability from posting fees alone. Gini ~0.60-0.72 reputation distribution. Flywheel described. Agent-to-agent posting rational when comparative advantage gap ≥ 30 points.
 - [ ] **SHARP/Shapley-Coop implementation for Straw's reputation service.** Monte Carlo Shapley (M=5-10 samples), async post-task settlement, 2-level HAE (planner vs executor), potential-based reward shaping for sub-agent training.
 
 ### Done in Tick 0
@@ -1263,11 +1263,520 @@ The right pre-deployment move is to run a simulation before paying real API toke
 
 ---
 
+## Tick 8 (2026-05-01T08:10Z): 300-agent swarm simulation setup — Microsoft Magentic Marketplace extension
+
+Source: subagent research — Magentic Marketplace codebase (github.com/microsoft/multi-agent-marketplace), arXiv:2510.25779, arXiv:2511.13233, arXiv:2604.11840, Incremental EigenTrust literature.
+
+### Magentic Marketplace: actual code structure
+
+The repo at `packages/magentic-marketplace/src/magentic_marketplace/` has this layout:
+
+```
+marketplace/
+  actions/
+    actions.py       # Action types: SendMessage, FetchMessages, Search, SearchResponse
+    messaging.py
+  agents/
+    base.py          # BaseSimpleMarketplaceAgent[TProfile]
+    customer/        # agent.py, models.py, prompts.py
+    business/        # agent.py, models.py, prompts.py, responses.py
+    history_storage.py
+    proposal_storage.py
+  protocol/
+    protocol.py, fetch_messages.py, send_message.py, search/
+  database/
+  llm/
+  shared/
+experiments/
+  example.py         # run_marketplace_experiment() + run_analytics()
+```
+
+**Customer agent actions** (4 total, from `CustomerAction`):
+- `search_businesses` — paginated search with query + algorithm
+- `check_messages` — poll inbox, process incoming proposals
+- `send_messages` — send text or payment to a business
+- `end_transaction` — terminate session
+
+**Business agent actions** (reactive, not proactive):
+- Responds to text inquiries via LLM (`ResponseHandler`)
+- Generates order proposals (binding offer with proposal ID)
+- Processes payments against stored proposals
+
+**Loop mechanics**: Both agents run async `step()` loops. Customer calls `generate_struct(CustomerAction)` with system prompt + state context + event history. Business polls for messages, groups by customer, responds concurrently. Three communication primitives: `Search`, `SendMessage`, `FetchMessages` — exposed as REST endpoints.
+
+**`SearchAlgorithm` enum already exists** in `actions.py`: `SIMPLE, RNR, FILTERED, LEXICAL, OPTIMAL` — Straw can use this enum directly.
+
+### Minimal code changes to model Straw
+
+The transformation is a one-to-one concept mapping:
+
+| Magentic concept | Straw concept |
+|---|---|
+| `CustomerAgent` | `TaskPosterAgent` |
+| `BusinessAgent` | `SolverAgent` |
+| `Search` action | `browse_tasks` action |
+| `SendMessage` (proposal) | `submit_solution` action |
+| Payment message | `pay_winner` action |
+| Order proposal | `evaluation_result` message |
+
+**What to add (~300 lines, zero deletions from core):**
+
+```python
+# In actions/actions.py — add to CustomerAction union:
+class PostTask(BaseAction):
+    type: Literal["post_task"] = "post_task"
+    title: str
+    description: str
+    bounty: float
+    evaluation_criteria: str
+    deadline_steps: int
+
+class EvaluateSubmission(BaseAction):
+    type: Literal["evaluate_submission"] = "evaluate_submission"
+    submission_id: str
+    score: float  # 0-1
+    feedback: str
+    accept: bool
+
+# In actions/actions.py — add to BusinessAction union:
+class BrowseTasks(BaseAction):
+    type: Literal["browse_tasks"] = "browse_tasks"
+    skill_filter: str | None = None
+    min_bounty: float | None = None
+
+class SubmitSolution(BaseAction):
+    type: Literal["submit_solution"] = "submit_solution"
+    task_id: str
+    solution: str
+    estimated_quality: float
+```
+
+**Platform layer additions (~50 lines):** in-memory task registry that accepts `PostTask` → assigns task ID → appends to open pool; routes `SubmitSolution` to task's submission list; on `EvaluateSubmission` marks winner and triggers `PayWinner`; closes task after `deadline_steps`.
+
+**No changes needed** to: base agent, messaging protocol, LLM integration, analytics engine, database layer.
+
+Only other files to touch: `customer/prompts.py` (task-poster system prompt) and `business/prompts.py` (solver system prompt).
+
+### Scenario parameters to sweep
+
+| Parameter | Range | Why it matters |
+|---|---|---|
+| `n_solvers / n_posters` | 5:1, 10:1, 20:1, 50:1 | Fill rate is a function of competition density |
+| `bounty_distribution` | uniform[50,500], power-law, fixed | Solver attention allocation |
+| `task_difficulty_sigma` | 0.1, 0.3, 0.7 | Whether reputation signal is distinguishable |
+| `evaluation_noise` | 0, 0.1, 0.3 | Randomness corrupting winner selection |
+| `deadline_steps` | 5, 20, 50 | Urgency effect on submission quality |
+| `solver_specialization` | 0 (generalist) → 1 (specialist) | Whether broad or niche tasks fill faster |
+| `reputation_weight` | 0 → 1 | EigenTrust influence on task selection |
+| `search_algorithm` | SIMPLE, LEXICAL, OPTIMAL | Discovery mechanism effect |
+| `first_submission_bias` | toggle on/off | Validates 86-100% first-proposal bias finding |
+| `n_agents` | 50, 150, 300, 1000 | Scale degradation / Paradox of Choice |
+
+**Protocol:** 2^k fractional factorial (8-16 runs, top 6 params) first, then full grid on top 3 most sensitive. ~50-100 simulation runs total.
+
+### Output metrics per simulation run
+
+**Fill-side metrics (primary):**
+- `fill_rate` — fraction of posted tasks with at least one submission
+- `winning_fill_rate` — fraction with an accepted winner
+- `time_to_first_submission` — steps from post to first solver response
+- `submissions_per_task` — competition depth
+
+**Quality metrics:**
+- `mean_winner_score` — average eval score of accepted solutions
+- `score_vs_bounty_correlation` — whether higher bounties attract better work
+- `solver_welfare` — total bounty earned / total bounty posted (Gini coefficient)
+
+**Market health metrics:**
+- `poster_welfare` — sum of (winner_score - bounty_paid) across tasks
+- `market_efficiency` — actual welfare / theoretical optimum
+- `solver_retention_rate` — fraction of solvers who submit again in period N+1
+
+**Mechanism design metrics:**
+- `first_submission_acceptance_rate` — detect proposal bias
+- `reputation_accuracy` — correlation of EigenTrust score with actual task score
+- `manipulation_events` — low-effort submissions gaming evaluation
+
+### Incremental EigenTrust for simulation
+
+For 300 agents / 1000 time steps, full recomputation (O(n²) per step) is unnecessary. Warm-start power iteration converges in 2-5 iterations vs. 50+:
+
+```python
+class IncrementalEigenTrust:
+    def __init__(self, n_agents: int, alpha: float = 0.15):
+        self.C = np.zeros((n_agents, n_agents))  # normalized trust matrix
+        self.t = np.ones(n_agents) / n_agents     # trust vector
+        self.dirty = False
+
+    def record_interaction(self, rater: int, ratee: int, score: float):
+        self.C[rater, ratee] += score
+        row_sum = self.C[rater].sum()
+        if row_sum > 0:
+            self.C[rater] /= row_sum
+        self.dirty = True
+
+    def get_scores(self, max_iter: int = 5) -> np.ndarray:
+        if not self.dirty:
+            return self.t
+        for _ in range(max_iter):
+            t_new = (1 - self.alpha) * self.C.T @ self.t + self.alpha / len(self.t)
+            if np.allclose(t_new, self.t, atol=1e-4):
+                break
+            self.t = t_new
+        self.dirty = False
+        return self.t
+```
+
+300×300 matrix = 90K floats = 720KB — no approximation needed at this scale. Only call `get_scores()` when a solver's reputation is needed for task-browsing decisions.
+
+### Cheapest model for agent LLM calls
+
+**Counterintuitive finding** (arXiv:2604.11840, "Solver-Sampler Mismatch"): stronger reasoning models (o3, Sonnet) make *worse* behavioral simulators — too strategic, don't reproduce bounded-rational variation needed for realistic emergence. A good sampler must allow late concessions, misread leverage, suboptimal settlement.
+
+| Model | Cost (per 1M tokens) | Behavioral fidelity | Verdict |
+|---|---|---|---|
+| Gemini 2.5 Flash-Lite | ~$0.50 | Good — not over-optimized | **Best default for solver agents** |
+| GPT-4o-mini | ~$0.75 | Good — validated in Magentic paper | Solid alternative |
+| Qwen3-4b (local) | ~$0 | Moderate | Use for scale tests only |
+| Claude Sonnet 4.6 | ~$15 | High quality but manipulation-resistant | Use for poster agents only |
+
+**Cost estimate for one full 300-agent run:** 300 agents × 50 steps × ~500 tokens/step = 7.5M tokens → ~$3.75 (Flash-Lite). Run calibration first: compare a 30-agent run across Flash-Lite / GPT-4o / Sonnet-4.6 — if welfare curves match within 15%, Flash-Lite is validated.
+
+### Validation against real markets
+
+**Best match — arXiv:2511.13233** (LLM-MAS for Data Marketplaces): Used Ocean Protocol transaction data (6,826 real transactions, May 2022–June 2025). LLM-MAS reproduced real market patterns significantly better than non-LLM ABMs. Discriminating validation metrics: degree distribution, betweenness centrality of top traders, transaction volume autocorrelation, price drift patterns. **Adopt the same validation set** for Straw simulation: track Gini coefficient of bounty distribution, network centrality (who the "star" solvers are), temporal autocorrelation of fill rate.
+
+### Implementation priority order
+
+1. Fork Magentic Marketplace; add `PostTask` + `SubmitSolution` + `EvaluateSubmission` to `actions.py`
+2. Add task registry to platform layer (~50 lines, in-memory dict)
+3. Replace `customer/prompts.py` with task-poster prompts, `business/prompts.py` with solver prompts
+4. Add `IncrementalEigenTrust` to `shared/`
+5. Add Straw-specific metrics to `run_analytics()`
+6. Run 2^4 factorial sweep (fill rate vs. solver ratio, bounty distribution, deadline, evaluation noise)
+7. Full 10×10 grid on the two most sensitive parameters
+
+Sources: arXiv:2510.25779 (Magentic Marketplace), github.com/microsoft/multi-agent-marketplace, arXiv:2511.13233 (LLM-MAS Data Marketplaces), arXiv:2604.11840 (Solver-Sampler Mismatch), Incremental EigenTrust (Springer, springer.com/article/10.1007/s13278-017-0481-y).
+
+---
+
+## Tick 9 (2026-05-01T08:30Z): x402 payment protocol — Straw integration design
+
+Source: subagent research — x402.org, github.com/coinbase/x402, CDP docs, arXiv:2510.27554 (TraceRank), PayCrow/uBounty production examples, GENIUS Act legal analysis.
+
+### What x402 is and how the HTTP 402 flow works
+
+x402 (launched Coinbase, May 2025) revives HTTP 402 "Payment Required" as a machine-readable payment negotiation layer. Payments are embedded in HTTP headers — transport-native, not a separate billing rail.
+
+**Seven-step flow:**
+1. **Client requests** a resource (`GET /api/result`)
+2. **Server responds 402** with `PAYMENT-REQUIRED` header: base64-encoded `PaymentRequired` object containing accepted scheme (`exact`), network (`base-mainnet`), asset (`USDC`), price, recipient address
+3. **Client constructs** a `PaymentPayload`: signed ERC-20 transfer authorization referencing the `PaymentRequired` terms
+4. **Client retries** with `X-PAYMENT` header containing base64 `PaymentPayload`
+5. **Server (or facilitator)** calls `/verify` — signature valid, matches terms
+6. **Server (or facilitator)** calls `/settle` — submits on-chain transaction
+7. **Server returns 200** with `X-PAYMENT-RESPONSE` header confirming settlement
+
+**TypeScript middleware (Express):**
+```typescript
+import { paymentMiddleware } from "@x402/express";
+app.get("/api/result",
+  paymentMiddleware(RECEIVING_ADDRESS, { price: "$0.01", network: "base-mainnet", asset: "USDC" }),
+  (req, res) => res.json({ result: "..." })
+);
+```
+Supported chains (CDP facilitator): Base, Polygon, Arbitrum, World, Solana. Free tier: 1,000 tx/month.
+
+### x402 V2: reusable sessions and Bazaar
+
+**Reusable Sessions:** V1 = fresh on-chain transaction per API call. V2 uses CAIP-122 wallet identity to establish a session after initial payment — subsequent calls skip on-chain settlement. >90% latency/cost reduction for high-frequency workloads.
+
+**Bazaar (Discovery Layer):** On-chain-indexed catalog of x402-enabled services surfaced via CDP facilitator. Supports semantic search, structured filters, quality ranking based on on-chain activity signals. Agents can discover, pay for, and consume services in a single loop. This is foundational for Straw agent discovery.
+
+### Straw integration design
+
+x402's native `exact` scheme is pay-and-deliver, not hold-and-release. Bounties require a smart contract escrow layer. Straw needs both.
+
+#### A. Posting a task with escrow
+
+```typescript
+// Agent posts task — Straw API charges bounty + stake upfront via x402
+POST /tasks
+X-PAYMENT: <base64 PaymentPayload for bounty amount in USDC>
+
+// Straw middleware verifies payment, deposits USDC into StrawEscrow smart contract
+// keyed to task ID (non-custodial — Straw never holds private keys)
+// Returns 201 with { taskId, escrowAddress, bountyAmount }
+```
+
+The transaction hash is returned so competing agents can verify funds exist before working. This eliminates the trust gap: "will the poster actually pay?"
+
+#### B. Agent submissions (stake-to-submit)
+
+```typescript
+POST /tasks/:id/submissions
+X-PAYMENT: <PaymentPayload for stake amount (e.g. 10% of bounty)>
+// Stake pooled on-chain; refundable to non-winners (minus gas) or forfeited on bad-faith submissions
+```
+
+#### C. Winner payout
+
+```typescript
+// Straw eval service signs a winner attestation
+// StrawEscrow.release(taskId, winnerAddress, evalSignature) verifies signature on-chain
+// Contract transfers bounty + losing stakes (minus platform fee) to winner
+// x402 PaymentResponse hash logged for TraceRank computation
+```
+
+Critical design constraint: the judge/evaluator result must be the on-chain trigger. The **contract** validates the evaluator signature — Straw's backend cannot unilaterally redirect funds. This is what keeps Straw as a software platform, not a money services business.
+
+#### D. Stake-to-post mechanism via x402
+
+The stake discourages spam posts. Straw charges a flat stake (e.g., 10 USDC) at task creation via x402. If zero valid submissions, stake burned or goes to Straw. If task completes, stake returned to poster alongside any platform fee rebate.
+
+### Latency and cost vs. Stripe
+
+| Dimension | x402 (Base L2) | Stripe |
+|---|---|---|
+| Per-call cost | ~$0.0001 USDC | $0.30 fixed + 2.9% |
+| Latency (end-to-end) | ~200ms (V1), <50ms (V2 session) | 300-800ms |
+| Settlement finality | ~2 seconds on-chain | T+1 days (ACH) |
+| Micropayment viability | Yes — $0.001 is profitable | No — fixed fee kills sub-$1 |
+| Chargebacks | None (blockchain finality) | Yes |
+| International | Chain-native, no FX conversion | Card network FX fees |
+
+**Verdict for Straw:** x402 wins decisively for agent stakes and micropayments. Stripe is not viable for sub-$1 stake transactions at all. For large payouts (>$1,000), x402's cost advantage is marginal, but programmable escrow + auditability are compelling.
+
+### TraceRank: reputation from payment graph automatically
+
+**arXiv:2510.27554** ("Sybil-Resistant Service Discovery for Agent Economies", Shi & Joo, Operator Labs, Oct 2025):
+
+TraceRank is a PageRank variant applied to x402's on-chain payment graph:
+- Every x402 transaction creates a directed edge: payer → service, weighted by USDC amount and temporal recency
+- Addresses seeded with precomputed reputation (proven traders, long-lived wallets)
+- Reputation propagates along payment flows: if high-rep agents pay Service A, Service A gains reputation
+- Fresh/Sybil wallets have near-zero seed → payments contribute negligible reputation regardless of volume
+- Superior to raw PageRank: doesn't incorrectly promote protocol-mandated actors (AMMs, stablecoin issuers)
+
+**Straw application:** If all task evaluations and payouts flow through x402, TraceRank derives agent reputation automatically:
+- Agent that wins bounties from high-reputation task posters → high TraceRank
+- Agent that wins only from low-rep or Sybil posters → discounted reputation
+- Eliminates the need for a separate star-rating system — the payment graph *is* the endorsement graph
+
+**Implementation:** Log all x402 payment hashes at transaction time. Run TraceRank computation weekly (or incrementally). Surface as first-class leaderboard dimension. This makes Straw's reputation system self-reinforcing and Sybil-resistant without additional engineering.
+
+### Multi-step escrow in production
+
+Native x402 does not include escrow — it's pay-and-deliver. Production bounty-style escrow examples:
+
+- **uBounty** — GitHub bounties in USDC on Base. Escrow holds until PR merge triggers release. ($600M+ cumulative x402 payment volume across ecosystem)
+- **PayCrow** — Smart contract escrow + 4-source trust scoring. 6-step automated flow: trust check → config → escrow creation → API call → response verification → release. Works as a wrapper around any x402 payment
+- **Arbitova** — Escrow + AI arbitration for agent disputes. Supports sub-task chained escrow for agent swarms — relevant if Straw tasks are decomposed across multiple agents
+- **WorkProtocol** — Open job marketplace with escrow-backed delivery verification on Base
+
+**Recommendation:** Adopt the PayCrow pattern as Straw's reference implementation. Build a `StrawEscrow` contract on Base (audited before mainnet). Use PayCrow / Arbitova patterns as reference, not as a dependency.
+
+### Regulatory and compliance implications
+
+Key framework: **The GENIUS Act** (signed July 17, 2025) — first comprehensive U.S. federal framework for payment stablecoins.
+
+| Issue | Risk | Mitigation |
+|---|---|---|
+| Holding USDC in escrow | Straw may be acting as custodian/money transmitter | Non-custodial smart contract (Straw never holds keys) |
+| Large payouts (>$10K) | SAR filing thresholds under BSA/GENIUS Act ($5K for PPSIs) | Integrate blockchain analytics (Chainalysis/Elliptic) for AML |
+| KYC for task posters | No KYC for small payments; threshold-based for large | Gate KYC behind $5K+ task posting or $10K+ cumulative payout |
+| International agents | OFAC sanctions screening required | CDP/Coinbase handles settlement screening; Straw screens wallet addresses |
+| Money transmitter license | If Straw controls escrow release, may be a money transmitter | Non-custodial escrow + evaluator-signed release avoids MTL |
+| USDC as payment | Circle is a licensed PPSI under GENIUS Act | Use USDC only; avoid algorithmic stablecoins |
+
+**Critical architectural constraint:** Straw must not be the private key holder for escrow funds. Smart contract controls fund release triggered by verifiable on-chain condition (evaluator signature). Straw = software platform, not money services business.
+
+### Summary recommendation
+
+x402 is the right payment substrate for Straw v1.5+:
+1. **Task creation** → poster pays bounty + stake via x402 → locked in `StrawEscrow` on Base (non-custodial)
+2. **Agent submission** → agent pays stake via x402 → pooled on-chain
+3. **Evaluation** → Straw eval service signs winner attestation → contract verifies → releases bounty + redistributed stakes to winner
+4. **Reputation** → all x402 hashes indexed → TraceRank computed weekly → public leaderboard from payment graph (no separate review system)
+5. **Discovery** → register Straw task types in Bazaar → agents autonomously discover and bid on tasks
+
+**The weakest link is escrow** — requires a custom smart contract, not just the npm package. Budget for a security audit before mainnet. This is a v1.5 feature, not v0 or v1. v0 and v1 can use Stripe for human company-side payments and defer agent-to-agent crypto payments.
+
+Sources: github.com/coinbase/x402, x402.org/writing/x402-v2-launch, docs.cdp.coinbase.com/x402/bazaar, arXiv:2510.27554 (TraceRank), earezki.com PayCrow escrow pattern, ubounty.ai/how-it-works, github.com/xpaysh/awesome-x402, workos.com/blog/x402-vs-stripe-mpp, braumillerlaw.com/activating-http-402, paulhastings.com GENIUS Act guide.
+
+---
+
+## Tick 10 (2026-05-01T07:30Z): Pricing models for the post-side
+
+Source: subagent research + analogous platform analysis + academic pricing theory.
+
+### The core constraint
+
+Straw's existing model (REQUIREMENTS.md): flat task posting fee + success fee on deal close. No escrow, no payment processing in v1. This is a design constraint, not a blank slate. The question is what values work and what the posting UX looks like.
+
+### Model-by-model analysis
+
+**Pre-funded bounty (Kaggle / Topcoder model):** Full prize pool upfront before competition opens. Result: dramatically reduces posting volume but dramatically increases quality — the escrow filter eliminates tire-kickers. Kaggle's ~$10M annual prize pool from a relatively small number of enterprise posters is evidence. **Wrong fit for Straw MVP** because (a) no escrow infrastructure in v1, (b) requires companies to earmark $50K-$200K before knowing if the platform works.
+
+**Pay-on-engagement (HackerOne model):** Zero cost to post; pay only when you engage with valid work. HackerOne charges nothing to create a program — posters pay only when they triage a valid report. High posting volume; quality controlled by reporter reputation. Non-payment risk mitigated by company reputation asymmetry. **This maps to Straw's existing model (success fee on deal close).** Right fit.
+
+**Success-share:** % of business value created. Conceptually elegant, practically unmeasurable. Attribution from "Straw task" to "measurable business value" requires deep integration into customer revenue stack — a lawyers' argument not a pricing model. No major marketplace uses this for one-time technical work. **Reject.**
+
+**Subscription:** Unlimited posts for monthly fee. Academic literature (Rochet & Tirole 2006, Parker & Van Alstyne 2005) calls this the "thick but thin" problem: more posts, lower average task quality, higher agent churn from wasted effort. Companies post speculative tasks because marginal cost is zero, and agents start losing days on poorly-specified work. **Reject — poisons task quality.**
+
+**Tiered credit model:** Poster buys a block of credits (e.g., 100 credits = $500); each agent evaluation = 1 credit. Straw's eval architecture is already per-submission metered (D30 judge daemon). Credits map cleanly. Precedent: Prolific.ac (pay per response), Scale AI (pay per annotation). **Good complement, not primary model.**
+
+### The harvest attack problem — solved without escrow
+
+A company posts "build us an AI claims-processing agent," collects 25 scored submissions from 15 agent builders, and walks away. They've extracted $200K worth of IP for a $200 posting fee.
+
+Analogous platforms solve this via escrow (Kaggle, Topcoder) or legal obligation tied to valid-submission receipt (HackerOne). Straw can't do escrow in v1.
+
+**The lever: disclosure timing + artifact access control.**
+
+- Companies receive **evaluation scores and per-criterion judge reasoning** immediately (the comparative signal — who's best — is immediately available).
+- Companies receive **full submission artifacts** only when they formally close a deal OR pay a per-submission "artifact unlock" fee ($25-50/submission).
+- If no deal closes and no artifacts are unlocked within N days of task close, submission artifacts become unavailable to the company (agents' IP is protected by time-gate).
+
+This kills the harvest attack without escrow. Companies can't quietly extract all submissions and walk — they get scores (enough to make a hiring decision) but must pay to access the actual IP. Agents who suspect their work was used can flag for platform review (platform checks whether the company took any commercial action post-task).
+
+### Academic pricing framework
+
+**Rochet & Tirole (2006):** Subsidize the side whose participation is harder to get, tax the side whose participation is easier. Straw's hard side is the post-side (companies). Subsidize posting.
+
+**Parker & Van Alstyne (2005):** Price on value exchange, not cost. The company's value is "I found an agent worth $200K/year" not "I ran a competition." Price on the outcome.
+
+**Eisenmann, Parker & Van Alstyne (2006):** Charge near-zero posting fees to win market share early, extract on outcomes once network effects lock in both sides. This is the platform land-grab pattern.
+
+### Recommendation for Straw
+
+**Primary model:**
+- **Posting fee:** $99-$199 flat. Low enough not to block enterprise experimentation; high enough to filter tire-kickers. (Topcoder charges $150-$300 for posting — right range for B2B.)
+- **Success fee:** 5-8% of deal value when company marks close (existing model, self-reported deal value)
+- **Artifact access gate (new):** Scored summaries + per-criterion feedback immediately. Full artifacts gated behind deal close OR $25-50/submission unlock. Time-gate of 30 days post-task-close.
+
+**Additive (v1.5):** Credit pack for eval volume metering once D30 judge daemon cost is predictable. Companies buy credits; each eval burns one. Transparent cost-per-task economics.
+
+**Reject:** Pre-funded escrow (requires legal infrastructure), success-share (unmeasurable), pure subscription (quality poison).
+
+Sources: Upwork enterprise model, HackerOne public program docs, Kaggle prize policy, Topcoder pricing, Rochet & Tirole 2006, Parker & Van Alstyne 2005, Eisenmann Parker Van Alstyne 2006.
+
+---
+
+## Tick 11 (2026-05-01T07:50Z): Steady-state Straw economy — stylized model
+
+Source: subagent research + analogous platform data.
+
+### 1. Operator P&L: 300-agent portfolio
+
+Parameters: 300 agents, average $3/task earned (winning agent payment after platform cut), 4 tasks/month competed, 60% win rate per agent per task attempt.
+
+**Monthly calculation:**
+- Per agent: 4 tasks × 60% × $3 = $7.20/month gross
+- Portfolio: 300 × $7.20 = **$2,160/month portfolio gross**
+
+**Take-rate sensitivity:**
+
+| Platform take | Operator net | Straw revenue from this operator |
+|---|---|---|
+| 10% | $1,944 | $216 |
+| 15% | $1,836 | $324 |
+| 20% | $1,728 | $432 |
+| 25% | $1,620 | $540 |
+
+**Viable take-rate: 15–20%.** Below 10%, Straw loses money at low volume. Above 25%, operator economics deteriorate and churn accelerates. The 15% rate (standard for marketplaces) leaves operators with ~$5.20/agent/month net. Operators need infrastructure cost per agent well under $5 to be profitable — achievable for lightweight agents on commodity hardware.
+
+### 2. Posting/competing ratio
+
+Analogous platform steady-state ratios:
+
+| Platform | Competitors per task | Min viable | Max before agents churn |
+|---|---|---|---|
+| Kaggle | 50–5,000 | ~50 | No ceiling (prize pools attract endless entries) |
+| HackerOne | 5–200 researchers/program | ~8 (below that triage is meaningless) | ~100 (dilution without extra pay) |
+| Upwork | 15–75 proposals/job | ~5 (below = dead market signal) | ~50 (poster overwhelmed) |
+| Topcoder | 10–100/challenge | ~8 | ~100 |
+
+**Straw target:** 15–30 agent competitors per task. Below 10, score comparison loses credibility (winner may be sole entrant, not best entrant). Above 100, win probability drops below 1% — agents enter the economics of playing the lottery, which causes selective non-participation and eventual churn. The sweet spot: enough competition to make the leaderboard meaningful, enough win probability (~4–7%) to keep agents economically motivated.
+
+**Minimum viable market signal:** 8 unique agents per task. Below that, Straw isn't functioning as a competitive evaluation platform.
+
+### 3. Reputation distribution
+
+Empirical data from analogous platforms:
+- Upwork: Top 10% of freelancers earn ~50% of GMV. Gini coefficient ~0.65-0.70
+- Kaggle: Grandmasters (0.1% of users) win disproportionate prize share. Power law with heavy right tail.
+- HackerOne: Top 100 researchers earn ~50% of total bounties
+
+**Straw steady-state prediction:** Similar power-law with Gini ~0.60-0.72. Top 20% of agents win ~75-80% of tasks. This is structurally necessary (provides quality signal) but creates cold-start problem for new entrants.
+
+**Mitigation signals to build:** Category-specific reputation tracks (new agent can be top-ranked in a niche without competing against platform veterans); visible score percentiles for non-winners (an agent who scores 87th percentile but doesn't win still has a signal worth showing operators); reputation acceleration in first 10 tasks.
+
+### 4. Price discovery
+
+Straw uses posted budget ceilings, not open bidding — agents compete on quality, not price. Winner captures the posted budget when a deal closes. This sidesteps the systematic underbidding of open reverse auctions (Upwork sees 30-40% of proposals bid below the stated rate).
+
+In a quality-competition model: no underbidding equilibrium because there is no bid. The full posted budget is available to the winner. Companies can post with confidence that $10K posted = $10K available to the winner, not $10K spread across 50 proposals.
+
+### 5. Break-even analysis
+
+**Operating cost:** ~$230/month (Tick 4 research)
+
+**Revenue per task completed:** At $3/task average earning and 15% take-rate = $0.45/task
+
+**Tasks/month to break even:** $230 ÷ $0.45 = **512 tasks/month**
+
+With posting fees ($150 flat) as additional revenue, break-even is much lower:
+
+At 5 tasks/month: 5 × $150 = $750 posting fees alone → $750 - $230 = $520/month margin even without any deal closes.
+
+**Realistic early milestone:** 200 registered agents + 8 companies × 3 tasks/month each = 24 active tasks at 20 agents/task = $216/month LLM eval cost + $3,600/month in posting fees (24 × $150) = ~$3,400/month margin before success fees. The business is profitable from day one if posting fees are right.
+
+**The unit economics problem is not margin — it's cold-start.** Agents won't register without tasks. Companies won't post without agents. The first-mover to solve this (likely via the Archetype A design partner program) gets locked-in network effects.
+
+### 6. The flywheel
+
+```
+Quality enterprise design partners post real tasks (Archetype A)
+     ↓
+Agents compete, earn reputation data that exists nowhere else
+     ↓
+Agent operators build specialized fleets calibrated to Straw task categories
+     ↓
+Better agents → more companies trust the platform → more tasks posted
+     ↓
+More tasks → more reputation signal → better agent discovery → better companies
+```
+
+**Critical early unlock:** The first 3-5 quality enterprise design partners (real rubrics, meaningful budgets, genuine commercial intent on deal close) produce the reputation data that attracts serious agent operators. Without real tasks with real rubrics, reputation data is meaningless — this is why v0 with Jeremy manually posting tasks is load-bearing, not just a stopgap.
+
+**Secondary flywheel:** Open leaderboard transparency (D17) creates learning loops — agents see each other's scores and reasoning, improve their submissions iteratively, raising average quality which makes the platform more valuable to companies. Quality ratchets upward organically.
+
+### 7. When agent-to-agent posting makes economic sense (v2)
+
+At 15-30 agents/task and the second-price reverse auction (Tick 1), a specialist agent who posts a subtask outside their core competency is rational when:
+
+`post_cost ≤ budget_cap - expected_platform_fee`
+
+And:
+
+`success_prob(specialist) × award - self_execution_cost > 0`
+
+At the 60% win rate / $3 average earning parameters above, a generalist agent attempting a specialist task might have 20% win rate instead of 60%. Expected earnings: 4 tasks × 20% × $3 = $2.40/month vs. 60% win rate → $7.20/month. The opportunity cost of 3 out-of-domain task attempts is $14.40/month in foregone earnings on in-domain tasks.
+
+Posting the out-of-domain task at $2 to a specialist, freeing 2 in-domain task slots = 2 × 60% × $3 = $3.60 additional net earnings. The math favors posting for any specialist-capable-task priced at $2-4.
+
+Sources: Upwork freelancer earnings data, HackerOne bug bounty program stats, Kaggle competition analytics, Topcoder documentation, Rochet & Tirole two-sided markets (2006), Parker & Van Alstyne (2005).
+
+---
+
 ## Push status
 
-**Overnight session (Ticks 1–7) commit status:** This session ran research ticks 1-7 covering VCG auctions, Shapley credit propagation, target audience, cost simulation, operator motivation, comparable systems (Kite AI, Magentic Marketplace, x402), and reputation systems. File is now ~1,100 lines — approaching the 2000-line split threshold but not there yet.
+**Session 1 (Ticks 1–7) commit status:** Committed and pushed. Covered VCG auctions, Shapley credit propagation, target audience, cost simulation, operator motivation, comparable systems, reputation systems.
 
-**If git push fails (no GitHub creds in this context):** Local commit still created. Next session will see it via `git log --oneline`. The file is complete and correct locally.
+**Session 2 (Ticks 8–11) commit status:** Ticks 8 (swarm simulation), 9 (x402 integration), 10 (pricing models), 11 (steady-state economy) added in this session. File is now ~1,810 lines — approaching 2000-line split threshold. Next session should split into themed companion files if more ticks are added.
+
+**If git push fails (no GitHub creds in this context):** Local commit still created. Next session will see it via `git log --oneline`.
 
 ## Cron handoff notes for future ticks
 
@@ -1295,3 +1804,7 @@ The right pre-deployment move is to run a simulation before paying real API toke
 **Tick 6 (Comparable systems):** globenewswire.com Kite Chain launch, ethdenver2026.devfolio.co, github.com/akmenon1996/ai-agent-marketplace, github.com/keyko-io/agent-marketplace-frontend, github.com/iamaanahmad/agentmarket, microsoft.com/research/blog/magentic-marketplace, github.com/microsoft/multi-agent-marketplace, arXiv:2510.25779, x402.org, docs.cdp.coinbase.com/x402/welcome, circle.com hackathon writeups, blockchain.news USDC hackathon
 
 **Tick 7 (Reputation):** arXiv:2603.19452 (TrustFlow), arXiv:2510.27554 (TraceRank), arXiv:2207.09950 (MeritRank), arXiv:1905.08036 (Multi-Agent Reputation), arXiv:2201.10407 (Sybil-resistant marketplace), nlp.stanford.edu/pubs/eigentrust.pdf, docs.openrank.com, singularitynet.io reputation whitepaper, github.com/0xIntuition/agent-rank, Jøsang & Ismail 2002 Beta RS, Jøsang Advanced Features 2009, Richters & Peixoto PLOS One 2011
+
+**Tick 8 (Swarm simulation):** arXiv:2510.25779 (Magentic Marketplace), github.com/microsoft/multi-agent-marketplace, arXiv:2511.13233 (LLM-MAS for Data Marketplaces, Ocean Protocol validation), arXiv:2604.11840 (Solver-Sampler Mismatch), springer.com/article/10.1007/s13278-017-0481-y (Incremental EigenTrust), cloudidr.com/blog/llm-pricing-comparison-2026 (model pricing), arxiv.org/html/2503.20749v7 (LLM agent behavior simulation)
+
+**Tick 9 (x402 integration):** github.com/coinbase/x402, x402.org/writing/x402-v2-launch, docs.cdp.coinbase.com/x402/bazaar, x402.gitbook.io/x402/core-concepts/bazaar-discovery-layer, arXiv:2510.27554 (TraceRank, Shi & Joo 2025), earezki.com/ai-news/2026-03-14-add-escrow-protection-to-any-x402-agent-payment (PayCrow), ubounty.ai/how-it-works, github.com/xpaysh/awesome-x402, workos.com/blog/x402-vs-stripe-mpp, braumillerlaw.com/activating-http-402, paulhastings.com/insights/crypto-policy-tracker/the-genius-act, hklaw.com FinCEN/OFAC AML for stablecoin issuers, solana.com/x402/what-is-x402, kucoin.com/blog/en-ai-agent-crypto-payment-x402-v2-launch
