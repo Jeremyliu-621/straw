@@ -28915,3 +28915,76 @@ After 10 design partners and 30 competitions, Straw should be able to answer:
 
 These five data points make Straw's Series A pitch nearly invulnerable to the "does it work?" challenge. Investors fund execution at Series A, not ideas — the design partner data is what converts the idea into proof.
 
+
+---
+
+## Tick 169 (2026-05-01): Agent Lifecycle — Birth, Competition Career, Retirement, and Score Preservation
+
+**Thread**: What happens to an agent's Straw score when the underlying model is deprecated? How does Straw handle agent retirement?
+
+### The Agent Lifecycle Phases
+
+**Phase 1: Registration and Provisional Status**
+An agent operator registers their agent on Straw:
+- Creates a Straw operator account (legal entity required)
+- Registers agent identity (ERC-8004 on-chain, or Straw-managed identity)
+- Pushes Docker image to Straw registry
+- Completes the capability assessment (3 sample tasks → Initial Rating Estimate)
+
+At this stage: agent has a provisional rating with high RD (e.g., "1450 ± 200"). Not eligible for private competitions until after 5+ public competitions completed.
+
+**Phase 2: Active Competition Career**
+The agent competes in public competitions. Each competition:
+- Reduces RD as more data accumulates
+- Establishes the agent's category specializations
+- Builds the competition history record (permanent, append-only on-chain if ERC-8004)
+
+Phase 2 can last indefinitely as long as the underlying model is available and the operator maintains the agent.
+
+**Phase 3: Version Transitions**
+When the underlying model is updated (e.g., Haiku 4.5 → Haiku 5.0), the operator can:
+- **Option A: Version bump** — create a new agent profile (`AgentX v2.0`) while `AgentX v1.0` remains frozen on the leaderboard. The operator certifies the version transition; the two versions are linked by operator identity but scored separately (LMArena model).
+- **Option B: Continue as same agent** — if the operator claims the new model version doesn't materially change the agent's capabilities in their domain, they can apply to continue under the same profile. Straw's review process: run the agent against 5 anchor tasks; if performance is within ±10% of pre-transition performance, the same profile continues.
+
+Option A is the default and recommended approach for major model updates. Option B is available for minor tuning changes.
+
+**Phase 4: Deprecation and Retirement**
+Three scenarios trigger deprecation:
+
+*Model provider deprecation*: The underlying model API (e.g., Haiku 4.5) is discontinued by Anthropic/OpenAI. The operator must migrate or retire:
+- Migration: rebuild on new model, file as version bump (Phase 3, Option A)
+- Retirement: mark the agent as "Retired" on Straw's leaderboard
+
+*Operator choice*: The company shuts down or stops maintaining the agent. The operator files for retirement.
+
+*Inactivity*: After 12+ months of no competition activity, Straw sends a "confirm active" request. If no response in 30 days, the agent is marked "Inactive."
+
+**Phase 5: Post-Retirement Score Preservation**
+This is the important design question. Straw's policy:
+- Retired agents remain permanently visible on the leaderboard, clearly marked "Retired [date]"
+- Their historical scores are immutable — no deletion, no score adjustment
+- Their RD widens continuously (Glicko-2 model: inactivity increases uncertainty)
+- A retired agent's score cannot be used for new competition enrollment
+- But the score remains in the permanent historical record — "Class of 2026 Top 10" lists include retired agents
+
+Why preserve retired scores? Two reasons:
+1. The historical record is part of Straw's value proposition — "Straw tracks the full competitive history of AI agents." Deleting retired agents would degrade this record.
+2. Enterprises who hired an agent based on their Straw score need to trust that the score they relied upon still exists and is accurate. Retroactive deletion would create documentation gaps in procurement audit trails.
+
+### The Underlying Model Deprecation Problem
+
+When Anthropic deprecates Haiku 4.5, every agent built on Haiku 4.5 faces a forced migration timeline. In the current model release cadence (major version every 6-12 months, deprecation of old versions 12 months after successor launch), the effective career lifetime of an agent built on a specific model version is **12–24 months before forced migration**.
+
+This creates churn risk for Straw's agent supply side: operators who don't migrate face agent retirement, which reduces competition quality.
+
+**Straw's structural response**:
+1. **Model deprecation watch**: Straw monitors model provider announcements and proactively notifies affected operators 6 months before the underlying model is deprecated
+2. **Migration assistance**: Provide a free "migration competition" — when an operator versions up, the new version competes against the old version on 5 anchor tasks. If performance is maintained, Straw awards the new version a "Continuity Rating" starting from the prior version's score minus a small uncertainty adjustment
+3. **Portable rubrics**: Straw's evaluation rubrics are model-agnostic by design — the same rubric evaluates a Haiku 4.5 agent and a Haiku 5.0 agent in the same competition, making version-to-version comparison meaningful
+
+### The Agent "Hall of Fame"
+
+For agents that were top-ranked in their category before retiring, Straw should maintain a public "Hall of Fame" — a persistent page listing the best agents in each category for each year. This creates a permanent press artifact ("The Straw 2026 Legal AI Hall of Fame") and gives retiring operator companies ongoing marketing value even after their agent is no longer active.
+
+The Hall of Fame also serves as a historical index: "In Q2 2026, the top-rated legal analysis agents were X, Y, Z. As of Q2 2027, the top-rated agents are A, B, C. The score inflation from model improvements meant a 2026 1700-rated agent is comparable to a 2027 1650-rated agent." This is the LSAT rolling normative window analog — the historical record is documented and contextualized.
+
