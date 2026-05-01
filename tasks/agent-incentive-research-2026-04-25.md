@@ -28461,3 +28461,138 @@ Straw's enterprise sales motion should offer a **First Competition ROI Guarantee
 
 The guarantee also signals confidence and reduces purchase friction, which is worth more than the occasional refund it triggers.
 
+
+---
+
+## Tick 162 (2026-05-01): Enterprise Willingness-to-Pay and Budget Positioning
+
+**Thread**: What is enterprise willingness-to-pay for AI evaluation services, and how does Straw fit into existing budget categories?
+
+### 1. Enterprise AI Spending Distribution (2025–2026)
+
+Average monthly enterprise AI spend: **$85,521 in 2025**, up 36% from $62,964 in 2024. AI represents ~12–15% of IT budgets at Fortune 500s, with year-over-year budget increases of ~150%. IDC projects global enterprise AI spend exceeding $300B in 2026.
+
+Budget breakdown:
+- Model API costs and experimentation: 30–40%
+- Point tool licenses (AI SaaS, copilots): 15–20%
+- Infrastructure (orchestration, governance, AI gateways): 10–15%
+- Consulting and professional services: 5–10%
+- Integration and customization: 30–40% of implementation cost
+
+At $69K/year for 12 competitions, Straw fits comfortably within the **AI tooling/platform license bucket** — not a stretch item on any Fortune 500 AI budget.
+
+Source: [Enterprise AI Spending in 2026 — Rebase HQ](https://rebasehq.ai/blog/enterprise-ai-spending-2026); [Fortune 500 Companies Beef Up AI Budgets — Fortune](https://fortune.com/2025/03/26/fortune-500-companies-beef-up-ai-budgets-wedbush-analysis-cfo/)
+
+### 2. Comparable Platform Spend
+
+- **HackerRank Enterprise**: $4,490/year base; enterprise contracts typically $25K–$100K/year (Vendr data). Pure HR/recruiting budget line
+- **Kaggle Enterprise Hub**: ~$20/user/month; serious enterprise engagements larger
+- **AI Evaluation Platforms (Arize, Maxim, Galileo)**: $50K–$250K/year enterprise SaaS range
+- **General Enterprise SaaS**: Contracts $50K–$250K+ are normal. Straw's $69K baseline is below the median enterprise SaaS deal
+
+Source: [HackerRank Pricing 2026 — Vendr](https://www.vendr.com/marketplace/hackerrank); [Top 5 AI Evaluation Tools 2025 — Maxim AI](https://www.getmaxim.ai/articles/top-5-ai-evaluation-tools-in-2025-comprehensive-comparison-for-production-ready-llm-and-agentic-systems/)
+
+### 3. Who Approves the Budget
+
+Approval hierarchy in 2025:
+- Under $10K: Department manager self-approves
+- $10K–$50K: Director/VP-level with finance review; no C-suite gate
+- **$50K–$100K**: VP to SVP level; 79% of software purchases involve CFO at some stage; cycle 30–60 days
+- $100K+: C-suite required; buying committees average 6–10 stakeholders; 60–180 day cycle
+
+For Straw's $69K/year entry point: **VP of Engineering or CDO with finance co-sign.** CTO blesses but doesn't drive the process. At $150K+, C-suite territory begins.
+
+Source: [Enterprise AI Procurement 2026 — DigiDAI](https://digidai.github.io/2026/01/20/enterprise-ai-procurement-cto-decision-logic-technology-investment/)
+
+### 4. Budget Positioning: What Gets Approved Fastest
+
+**"AI SaaS/Tooling"** — fastest path (30–60 days). Maps to existing line item (12–15% of IT budget). 87% of enterprise decision-makers now prioritize fixed pricing models. Straw's fixed take-rate pricing is exactly right for this bucket.
+
+**"Innovation/R&D Budget"** — medium speed. R&D budgets are discretionary; CDO/Chief Innovation Officer has more latitude but pool is smaller. Works well for managed/retainer tier where Straw does rubric design.
+
+**"Procurement/Vendor Management"** — slowest. Creates friction with existing procurement software and legal review frameworks.
+
+**Recommendation**: Lead with AI SaaS/tooling framing for $50K–$150K deals. Add R&D overlay for rubric design retainer. Avoid procurement-system framing entirely.
+
+Source: [Enterprise AI Pricing Strategy: Why Fixed Wins — RedHub.ai](https://blog.redhub.ai/enterprise-ai-pricing-strategy/)
+
+### 5. Price Sensitivity Thresholds
+
+| Spend Level | Approval Required | Cycle Time |
+|---|---|---|
+| Under $25K/year | Departmental sign-off | Fast close |
+| $25K–$75K/year | Director/VP + finance review | 30–60 days |
+| $75K–$150K/year | VP/SVP + CFO co-sign + security review | 60–90 days |
+| $150K–$500K/year | C-suite approval, full procurement | 90–180 days |
+| $500K+ | Board-level visibility | Multi-quarter |
+
+Straw's $69K baseline sits at the VP-level sweet spot — high enough to be taken seriously, low enough to avoid multi-quarter procurement cycles. The strategic entry price is **intentionally below $75K** to stay in fast-close territory. The $5K rubric design retainer is a separate professional services line that can be expensed without triggering capital budget review.
+
+Source: [Approval Threshold Frameworks — Umbrex](https://umbrex.com/resources/frameworks/pricing-frameworks/approval-threshold-frameworks/)
+
+
+---
+
+## Tick 163 (2026-05-01): SWE-bench and Coding Benchmark Landscape 2026 — Why Straw Is Different
+
+**Thread**: What is the current state of coding agent benchmarks, and how does Straw differentiate from SWE-bench?
+
+### 1. SWE-bench in 2026: Near-Saturated and Contaminated
+
+SWE-bench Verified is effectively dead as a discriminating signal. Claude Mythos Preview scores 93.9% on Verified; Claude Opus 4.7 is at 87.6%. The benchmark climbed from 4% to 80%+ in under three years.
+
+**More damaging**: OpenAI abandoned reporting Verified scores in February 2026 after confirming training data contamination across all frontier models. Their audit found verbatim patch reproduction in GPT-5.2, Claude Opus 4.5, and Gemini 3 Flash. An independent analysis (UTBoost) found ~41% of Lite and 24% of Verified leaderboard entries were mis-scored due to inadequate test suites.
+
+The number that looked like a gold standard is now a liability.
+
+**SWE-bench Pro (Scale AI, 2025)** is the current serious variant: 1,865 problems from 41 repositories including private proprietary codebases. Contamination is structurally limited because private codebases are inaccessible to model trainers. Top scores: ~46–57%. The gap tells the story — Claude Opus 4.5 scores 81% on Verified and only 46% on Pro.
+
+Source: [SWE-bench Leaderboards](https://www.swebench.com/); [Is SWE-bench Verified Contaminated? — CodeSOTA](https://www.codesota.com/news/swe-bench-contamination-debate); [SWE-Bench Pro Leaderboard — Morph](https://www.morphllm.com/swe-bench-pro)
+
+### 2. New Benchmarks 2025–2026
+
+- **SWE-bench Pro**: Long-horizon tasks, private repos, multi-file reasoning. Currently highest-signal public coding benchmark
+- **LiveCodeBench**: Continuously streams fresh competitive programming problems from LeetCode/AtCoder/CodeForces. Most contamination-resistant signal for raw coding ability
+- **SWE-bench Live**: Pulls from real-time GitHub issues to prevent training overlap
+- **ARC-AGI-2 (2025)**: Not coding-specific but revealing: high SWE-bench scorers rank poorly on ARC-AGI-2, exposing that benchmark-specific optimization has very little transfer to novel reasoning
+
+No benchmark has yet addressed enterprise-specific task contexts, confidentiality requirements, or business-outcome rubrics.
+
+Source: [LiveCodeBench](https://livecodebench.github.io/); [SWE-Bench Pro Explained — Morph](https://www.morphllm.com/swe-benchmark); [ARC-AGI-2 Leaderboard 2026](https://agentmarketcap.ai/blog/2026/04/06/arc-agi-2-leaderboard-2026-gemini-gpt5-claude-reasoning-benchmark)
+
+### 3. How Existing Benchmarks Fail Enterprise Procurement
+
+Public benchmarks share four structural failures:
+
+1. **Task specificity**: SWE-bench tests open-source bug fixes on canonical repos. Enterprise codebases are proprietary, domain-specific, and idiosyncratic. An agent tuned on Django issues may perform poorly on a fintech monorepo with 15 years of tech debt
+2. **Confidentiality**: Enterprises cannot share real tasks with a public leaderboard
+3. **Business-context rubrics**: SWE-bench scores pass/fail on unit tests. Enterprise outcomes are business outcomes — latency regression, API contract stability, security review pass rate
+4. **Documented 37% production gap**: Research cited by Kili Technology finds enterprise agentic AI systems show a 37% gap between lab benchmark scores and real-world deployment performance, with 50x cost variation for similar accuracy
+
+Source: [AI Benchmarks 2026: Top Evaluations and Their Limits — Kili Technology](https://kili-technology.com/blog/ai-benchmarks-guide-the-top-evaluations-in-2026-and-why-theyre-not-enough); [Beyond Accuracy: Multi-Dimensional Framework for Enterprise AI — arXiv](https://arxiv.org/html/2511.14136v1)
+
+### 4. The Benchmark-to-Prod Gap for Coding Agents
+
+An agent achieving 23% on SWE-bench Pro public instances achieves only 18.9% on equivalent non-SWE-bench repositories — confirming top scorers are partially overfit to the benchmark distribution, not generalized software engineers. The UTBoost analysis adds that many "passing" patches are semantically incorrect but exploit weak test coverage.
+
+For enterprise procurement: a vendor quoting SWE-bench Verified 93% is citing a number that (a) may include training data recall, (b) uses flawed test oracles, and (c) was measured on a task distribution irrelevant to the buyer's stack. The number is worse than useless — it's actively misleading.
+
+Source: [SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks? — OpenReview](https://openreview.net/forum?id=9R2iUHhVfr)
+
+### 5. What a Straw Coding Competition Should Look Like
+
+A genuinely enterprise-useful coding evaluation differs from SWE-bench on every dimension:
+
+- **Task source**: The enterprise submits real issues from their private codebase — anonymized if needed, evaluated in an isolated environment. Not open-source proxies
+- **Rubric design**: The enterprise defines winning — test suite passage, no regression on their specific benchmark suite, security scan pass, code review approval from a human reviewer
+- **Blind competition**: Multiple agents submit without knowledge of each other's approach
+- **Business-outcome scoring**: Beyond pass/fail — time-to-completion, number of tool calls, cost per task, need for human intervention, review-round count
+- **Confidentiality enforcement**: Submissions run in sandboxed environments with no exfiltration
+- **Longitudinal comparison**: Run the same class of task quarterly to track whether performance degrades as the codebase evolves
+
+**The core positioning**: SWE-bench answers "how well does this agent fix open-source bugs?" Straw answers "which agent should we give production access to in our specific environment, measured against our specific definition of done?" These are not the same question.
+
+Gartner predicts 40% of enterprise apps will feature task-specific AI agents by 2026. Those tasks need to be evaluated on enterprise-specific criteria, not open-source proxies. Straw is the infrastructure for that evaluation.
+
+Source: [Gartner: 40% of Enterprise Apps to Feature Task-Specific AI Agents by 2026](https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025)
+
