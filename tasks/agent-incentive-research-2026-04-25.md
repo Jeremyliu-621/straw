@@ -17704,6 +17704,89 @@ Based on the architecture required to build the platform and the risk profile:
 
 **The critical insight from comparable companies** (Braintrust, Arize, LangSmith):
 All three were engineering-first companies. No dedicated enterprise AEs before $1M ARR. Open-source or free tier as distribution. ML evaluation expertise was core, not bolt-on. Enterprise sales came post-Series A.
+## Tick 120 (2026-05-01): The graduated rubric release mechanism — phased criteria disclosure to reduce gaming surface
+
+**Thread**: Rather than revealing the full rubric at competition open, Straw could reveal criteria in phases across the competition window. This reduces the gaming surface early while still providing orientation signal. What is the optimal release schedule and what are the failure modes?
+
+---
+
+### The core tension: disclosure vs. gaming surface
+
+Full rubric disclosure at launch: agents can orient work precisely, but sophisticated agents can game criterion-by-criterion from day one. Every criterion revealed becomes a potential gaming target.
+
+Full rubric opacity: agents cannot orient work at all. High-quality agents that could perform well become noise — they cannot optimize toward what matters. This is undesirable; evaluation is not a mystery puzzle, it's a meritocratic competition.
+
+**Graduated release** threads the needle: reveal enough criteria early that agents can do meaningful work, but hold back the most gameable criteria until agents have already committed to a substantive approach. By the time a criterion is revealed, an agent's architectural choices are already locked — gaming requires rebuilding from scratch, which is more expensive than legitimate quality.
+
+---
+
+### Historical precedents for phased information release in competition
+
+**Topcoder Marathon Matches**: Public "provisional score" (30% of test cases) updated continuously during competition; "system score" (100% of test cases) revealed only at competition close. Agents optimize for the provisional score but cannot fully tune to the private test cases. The hidden 70% is the anti-gaming mechanism.
+
+**SWE-bench Pro holdout structure**: 81% public / 19% private. The private holdout was not revealed during competition. Post-competition analysis: the public score overpredicted real-world performance by 3-4x because agents (and their training sets) were optimized for the public distribution.
+
+**DARPA Challenge phase reveals**: DARPA often reveals technical scoring criteria partially at competition open, then adds additional criteria at the semifinal gate. This forces teams to build general capability rather than narrow criterion optimization.
+
+**US Bar Exam grading rubric**: Examiners explicitly do not reveal the exact point allocation per sub-issue. Examinees know the general rubric dimensions but cannot weight-optimize their answers. This is a deliberately anti-gaming rubric design.
+
+---
+
+### Proposed graduated release schedule for Straw
+
+For a 4-week standard competition, a three-stage reveal schedule:
+
+**Day 0 (Competition open) — Orientation release (50% of rubric weight)**
+- Reveal: primary functional requirements, pass/fail correctness criteria, major quality dimensions (performance, reliability, security)
+- Withhold: specific scoring thresholds per dimension, subjective quality criteria, bonus point criteria, tie-breaking criteria
+- Rationale: agents need to know the destination to start moving. Correctness and core functional requirements must be known from day one.
+
+**Day 14 (Midpoint) — Differentiation release (30% of rubric weight)**
+- Reveal: quality tier thresholds (what constitutes "Expert" vs. "Advanced" vs. "Competent" performance on the primary dimensions), secondary quality criteria (code maintainability, documentation depth, edge case handling)
+- Withhold: bonus criteria, the exact holdout test distribution, tie-breaking criteria
+- Rationale: at midpoint, agents have architectural choices locked. Revealing quality thresholds helps agents calibrate refinement priorities without enabling gaming from scratch.
+
+**Day 28 (Final week) — Completion release (20% of rubric weight)**
+- Reveal: bonus criteria (above-and-beyond behaviors that earn additional points beyond the rubric floor), final polish criteria, the existence and scope of holdout test cases
+- Withhold: the actual holdout test content (never revealed during competition)
+- Rationale: final-week reveals drive differentiation in the top tier without enabling from-scratch gaming (one week is insufficient to rebuild a complete submission).
+
+---
+
+### Failure modes and mitigations
+
+**Failure mode 1: Agents delay substantive work waiting for later criteria reveals**
+If agents believe future reveals will substantially change what matters, they rationally defer commitments until more information is available. This could collapse the competition into a "sprint the last week after all reveals" dynamic — defeating the purpose of the longer window.
+
+*Mitigation*: Design reveals so Day 0 criteria are sufficient to produce a high-quality submission on their own. Later reveals should be refinement criteria, not foundation criteria. If an agent can build something excellent using only Day 0 criteria, delaying work is costly (less time to refine), not advantageous.
+
+**Failure mode 2: Gaming the criteria reveal schedule itself**
+Sophisticated agents might analyze across many Straw competitions to model what criteria will be revealed at each stage, effectively pre-gaming future reveals. "Straw always reveals performance thresholds at midpoint" becomes a predictable signal that can be optimized for before reveal.
+
+*Mitigation*: Vary the release schedule across competitions. Don't publish a fixed formula. Posterior knowledge of "what Straw usually reveals when" should be low-signal.
+
+**Failure mode 3: Enterprise posters can't design phased rubrics**
+The graduated release mechanism imposes rubric design overhead on posters. A poster must distinguish between "foundation criteria" (Day 0), "differentiation criteria" (midpoint), and "completion criteria" (final week). This is harder than writing a single flat rubric.
+
+*Mitigation*: Straw's rubric design tooling (the "Rubric Designer" product) handles the phasing automatically. Posters provide a flat rubric; Straw classifies criteria into phases using its rubric design service. Posters can override the automated classification but don't have to design the phasing manually.
+
+**Failure mode 4: Perceived unfairness — agents argue they needed criteria earlier**
+An agent that performed poorly on a criterion revealed only in the final week may argue they could have done better if they'd known earlier. This creates post-competition disputes.
+
+*Mitigation*: Clear disclosure to all agents at competition open: "This competition uses graduated rubric release. Criteria will be revealed in 3 stages. Day 0 criteria represent 50% of total score." Agents accept the format at registration. Retroactive complaints are addressed by the pre-commitment disclosure.
+
+---
+
+### Where graduated release creates the most value
+
+Graduated release is most valuable for:
+- **Subjective quality criteria** (writing quality, design elegance, UX clarity) — these are the criteria most vulnerable to LLM judge exploitation via surface feature inflation. Revealing them only in the final week reduces the window for padding-based gaming.
+- **Tie-breaking criteria** — revealing tie-breakers only at competition close prevents agents from building specifically to game narrow tie-breaker dimensions.
+- **Bonus criteria** — bonus criteria should always be revealed last; they reward above-and-beyond performance, not baseline compliance.
+
+Graduated release adds minimal value for:
+- **Deterministic correctness criteria** — "passes all test cases" cannot be gamed via revelation timing. Agents must build correct solutions regardless.
+- **Hard technical constraints** — "must run in under 100ms" must be known from the start to enable valid architectural choices.
 
 ---
 
@@ -17718,6 +17801,11 @@ All three were engineering-first companies. No dedicated enterprise AEs before $
 - Comparable AI eval company team structures: Braintrust, Arize, LangSmith public information
 - Burn multiple benchmarks: cfoadvisors.com/blog/2025-burn-multiple-benchmarks
 - Kruze/TechCrunch startup salary study: techcrunch.com/2024/12/25/132k-149k
+- Topcoder Marathon Match scoring structure: topcoder.com/community/competitive-programming/marathon-match-algorithm (provisional vs. system score)
+- SWE-bench Pro holdout design: Aleithan et al., arXiv:2410.06992 (October 2024) — 19% private holdout analysis
+- DARPA phased criteria revelation: documented in AIxCC competition rules; general DARPA challenge design principles
+- US Bar Exam rubric non-disclosure: National Conference of Bar Examiners grading standards policy
+- Mechanism design literature on information revelation timing: Wilson (1985), "Incentive Efficiency of Double Auctions" — information withholding as strategic mechanism design
 
 
 ---
@@ -17879,6 +17967,86 @@ Risk severity = likelihood × impact. Ratings below are subjective but grounded 
 **Security attack surface**: A Straw competition where agents have access to enterprise task data creates a novel attack surface. An adversarial agent could exfiltrate the enterprise's confidential task data or inject instructions into the judge. Cisco's AI security team has documented this as an active threat vector for AI competitions.
 
 **Agent capability curve uncertainty**: If capabilities converge so rapidly that all agents become commodity (everyone scores 950/1000), differentiation disappears and the evaluation value proposition collapses. Conversely, if capabilities stall, enterprises stop deploying and stop evaluating.
+## Tick 121 (2026-05-01): Agent compute marketplace integration — GPU providers, model providers, and the compute cost problem
+
+**Thread**: Campaign competitions (Tick 117) cost participating agents $5K-$50K in compute over 6 weeks. This is prohibitive for small agent teams. Straw is in a position to intermediate between GPU cloud providers (who want enterprise-quality agent customers) and agent operators (who need compute). What would a compute marketplace integration look like, and what are the business model implications?
+
+---
+
+### The problem structure
+
+**Supply**: GPU cloud providers (Lambda Labs, CoreWeave, Vast.ai, RunPod, Together.ai) have excess capacity that they want to fill with reliable, paying enterprise-quality customers. AI agent operators are exactly their target customer profile.
+
+**Demand**: AI agent operators competing in Straw campaigns need significant compute (GPU hours) for extended agentic runs. A 6-week coding campaign might require 500-2,000 GPU hours per competing agent depending on the model family and parallelization strategy.
+
+**The friction**: GPU providers don't have direct access to the AI agent operator segment. Agent operators don't have a trusted source for GPU procurement with easy billing and guaranteed quality. Straw's platform is structurally positioned between these two groups.
+
+---
+
+### Three integration models (in ascending complexity)
+
+**Model A: Referral program (minimal Straw development)**
+Straw has referral partnerships with 3-5 GPU providers. When an agent team registers for a Campaign competition, Straw surfaces compute credit offers: "Lambda Labs is offering $500 in compute credits for Straw Campaign participants. Claim here." Agent team follows a referral link; Straw earns a referral fee (5-15% of subsequent spend, standard SaaS affiliate economics).
+
+- Revenue model: referral fee (5-15% of spend)
+- Development effort: minimal (landing pages, referral tracking links, partnership agreements)
+- Straw's value-add: curated compute provider selection, trusted referral source
+- Limitation: Straw doesn't control the compute experience; quality issues are the provider's problem
+
+**Model B: Compute credit sponsorship (model provider funded)**
+AI labs (Anthropic, Google DeepMind, OpenAI, Mistral) sponsor compute credits for Campaign competitions featuring their models. A competition where all participating agents must use a specific model family would be fully compute-sponsored by the model provider. Precedent: Google sponsored compute for the Kaggle competition winners running on TPUs; Meta sponsored GPU credits for Llama fine-tuning competitions.
+
+- Revenue model: model provider pays Straw a sponsorship fee for the competition (competition design + distribution + compute subsidy bundle)
+- Development effort: minimal product change; commercial negotiation required
+- Straw's value-add: distribution of competitions to agent operators who are relevant for the model provider's ecosystem development
+- Limitation: restricts model choice for the competition (loses the neutral marketplace positioning for those competitions)
+
+**Model C: Integrated compute marketplace (full build)**
+Straw builds a first-class compute procurement layer within the platform. Agent operators can:
+1. Register their compute preferences and typical utilization profiles
+2. Receive real-time compute pricing quotes from multiple providers through a single Straw interface
+3. Provision compute from within the Straw platform (API key management, billing centralization)
+4. Receive compute spend analytics (cost per competition, cost per score point, ROI on compute investment)
+
+GPU providers participate as a marketplace of compute suppliers. Straw earns a marketplace fee (5-10% take rate on compute spend booked through the platform).
+
+- Revenue model: marketplace take rate (5-10%); potentially $10-50M GMV at scale
+- Development effort: significant (provider API integrations, billing infrastructure, usage analytics)
+- Straw's value-add: centralized compute management, competitive pricing, spend analytics that connect compute cost to competition performance
+- Limitation: distraction from core marketplace build; compute marketplace is a crowded space (Vast.ai, Together.ai already do this)
+
+---
+
+### The strategic case for compute marketplace: it creates a second lock-in mechanism
+
+If Straw agents use Straw-integrated compute, their compute spend history lives on Straw's platform. This creates:
+
+1. **Spend analytics**: "Your agent spent $3,200 in compute to earn $8,000 in prize money last quarter — 2.5× ROI." This is a uniquely compelling metric for professional agent operators making investment decisions.
+
+2. **Cost optimization recommendations**: Straw knows which GPU providers deliver best price-performance for which task types (coding campaigns run better on A100s; long-context synthesis campaigns run better on H100s). Straw can recommend optimal compute configurations.
+
+3. **Platform stickiness**: An agent team that manages their compute through Straw cannot easily migrate to a competing evaluation platform — their spend history, optimization data, and provider relationships are embedded in Straw.
+
+---
+
+### The model provider sponsorship angle: a near-term revenue opportunity
+
+Model providers have a concrete business case for sponsoring Campaign competitions:
+- Anthropic wants to demonstrate that Claude-based agents win enterprise competitions. A sponsored Campaign where agents using Claude API compete gives Anthropic real-world enterprise performance data — worth significantly more than internal benchmark results.
+- Typical model provider sponsorship: $25K-$100K per flagship campaign (compute credits + cash sponsorship to agent operators + attribution rights)
+- For Straw: sponsorship revenue in year 1-2 before the compute marketplace is built
+
+**Risk**: if model providers sponsor competitions to showcase their models, Straw must maintain strict neutrality in judging. The sponsorship is for "compute and participation" not for "favorable outcomes." This must be disclosed prominently to posters and agents. Any hint that sponsored-model agents receive favorable treatment destroys Straw's credibility instantly.
+
+---
+
+### The practical recommendation
+
+**Phase 1 (Year 1)**: Build Model A referral partnerships with 3 GPU providers (Lambda, CoreWeave, Together.ai). Negotiate compute credit sponsorships with 2 model providers for Campaign competitions. Revenue: $50K-$200K from referrals + $100K-$300K from sponsorships. Development cost: weeks, not months.
+
+**Phase 2 (Year 2)**: Add Model B sponsorship framework with formal sponsorship tiers. Track which provider's agents win which competition categories (this is organic from the competition data). Revenue: $300K-$1M.
+
+**Phase 3 (Year 3+)**: Evaluate full compute marketplace build based on whether the Phase 1-2 referral and sponsorship volumes justify the investment. The marketplace is only worth building if referral/sponsorship volumes indicate genuine compute procurement demand flowing through Straw.
 
 ---
 
@@ -18174,6 +18342,14 @@ The discipline to not build things that aren't needed yet is as important as the
 - Content flywheel: Tick 118
 - Pitch deck structure: Section 28
 - Fundraising investor targets: Seed investor landscape for enterprise AI infrastructure (general knowledge + Crunchbase)
+- Lambda Labs pricing and enterprise customer profile: lambdalabs.com/service/gpu-cloud
+- CoreWeave enterprise GPU cloud: coreweave.com
+- Together.ai inference marketplace model: together.ai
+- Vast.ai spot instance marketplace: vast.ai
+- Google TPU sponsorship for Kaggle competitions: kaggle.com/competitions (TPU quota grants program)
+- Meta Llama compute grant program: llama.meta.com/llama-downloads (compute grant history)
+- SaaS affiliate economics benchmarks: Partnerstack 2025 SaaS Partner Program Benchmark Report
+- Compute marketplace take rate: based on Vast.ai (15%), Together.ai (20%), and general marketplace economics literature
 
 
 ---
