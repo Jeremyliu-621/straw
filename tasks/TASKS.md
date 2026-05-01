@@ -976,16 +976,22 @@ Goal: implement the corrected philosophy from D15–D22 + D30. Replace the impli
 > See D30 in `tasks/DECISIONS.md` and memory file
 > `project_eval_setup_openclaw_codex.md` for the full playbook.
 >
-> **🔶 Before starting Phase 20d work: read `tasks/zeroclaw-build-research.md`.**
-> Research on 2026-04-25 verified the ZeroClaw API surface and surfaced
-> an architectural correction (the Gateway is webhook-only — no agent
-> CRUD endpoints; multi-agent is delegation-based not independent
-> peers). The right shape is "single judge agent called per-submission
-> via `POST /webhook`," not "agent-create on task publish." That doc
-> also has the full phased build plan (Phase A verify ✅ done, Phase B
-> platform-side, Phase C scaffold judge artifacts, Phase D deploy,
-> Phase E cutover) and the open questions that need answering on
-> build day.
+> **🔶 Before starting Phase 20d work: read `tasks/eval-research-deep-2026-04-25.md` FIRST**, then `tasks/zeroclaw-build-research.md`.
+> A deeper Perplexity research session on 2026-04-25 found that the
+> single-judge ZeroClaw + Codex-subscription architecture below is
+> wrong on three axes: (1) Codex subscription is ToS-incompatible
+> for production webhook use AND rate-limited; (2) production teams
+> use a tiered funnel (execution → gatekeeper LLM → agent on 15%
+> flagged), not a single judge; (3) deterministic code execution
+> should be the primary signal, with agent judgment as a secondary
+> filter. The deep-research file has the revised 4-tier architecture,
+> recommended open-source stack (DeepEval + Langfuse + Promptfoo),
+> calibration recipe, adversarial robustness mitigations, and
+> revised cost math (~$56-$272 for 3,000 hackathon evals at API
+> rates, vs $2,400-$6,600 for naive Claude API or the wrong-shaped
+> "$205/mo flat" claim). The phased build plan in the older
+> zeroclaw-build-research file still applies but Phase B/C content
+> needs reshaping for the tiered funnel.
 
 - [ ] Provision Hetzner CX22 (per existing D13, ~€4.51/mo). 4GB RAM is enough — ZeroClaw at <5MB per agent fits 200+ judges.
 - [ ] Install Rust toolchain + ZeroClaw. Build the `zeroclaw` binary (3.4MB single binary). Configure systemd to run as a daemon.

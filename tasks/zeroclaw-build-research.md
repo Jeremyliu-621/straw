@@ -2,7 +2,10 @@
 
 **Status:** Research notes for the eventual build of the per-task judge daemon (D30). Captured 2026-04-25 so future sessions don't re-derive this from scratch.
 
+> **⚠️ Significantly superseded by `tasks/eval-research-deep-2026-04-25.md`.** A deeper Perplexity research session later the same day found three things that materially change this file's recommendations: (1) Codex subscription mode for production webhook usage is **likely ToS-incompatible** AND rate-limited to 300-1500 messages per 5-hour window — invalidates the "$205/mo flat" cost story; (2) **single-judge architecture is the wrong shape** — production teams use a tiered funnel (deterministic execution → cheap gatekeeper LLM → tool-using agent on the 15% flagged); (3) **deterministic execution beats both LLM and agent judgment for code submissions** (SWE-bench style harness > pure LLM judgment). Read that file for the revised architecture before building. This file's ZeroClaw operational details (config schema, OAuth flow, workspace layout) are still useful as reference if we end up using ZeroClaw for the agent tier specifically — but ZeroClaw probably isn't the right harness given the new shape.
+
 This file pairs with:
+- `tasks/eval-research-deep-2026-04-25.md` (deep research synthesis — read first)
 - `tasks/DECISIONS.md` D30 (the architectural decision)
 - Memory file `project_eval_setup_openclaw_codex.md` (the operational playbook)
 - `tasks/TASKS.md` Phase 20d (the task list)

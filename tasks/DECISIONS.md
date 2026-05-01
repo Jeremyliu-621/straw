@@ -1016,7 +1016,18 @@ Agent-as-Judge research (canonical paper: "When AIs Judge AIs", arxiv 2508.02994
 
 **Operational setup (the playbook):** see memory file `project_eval_setup_openclaw_codex.md` for the full Hetzner box / ZeroClaw Gateway / per-task lifecycle / smoke-test sequence. (File name kept for stability across sessions; content reflects the ZeroClaw + Codex subscription architecture.) Captured in memory rather than here because it's a deploy runbook, not a decision.
 
-> **⚠️ Architectural correction pending — read `tasks/zeroclaw-build-research.md` before building.** Research on 2026-04-25 (after this entry was written) verified the ZeroClaw API surface and found that (1) the Gateway exposes only `/webhook` + `/health` + `/pair`, NOT `/api/agents/create` or `/api/agents/destroy` as this entry implies, and (2) ZeroClaw's "multi-agent" is a delegation pattern (one primary + sub-agents the primary calls via the `delegate` tool), NOT independent peers per task. The correct architecture is **single judge agent, called per-submission via `POST /webhook`**, with per-task evolving state in Straw DB rather than as a separate ZeroClaw agent. Cost model unchanged. The research file has the full corrections + the build phasing plan; future sessions should update this entry + the memory playbook before writing code.
+> **⚠️ Architectural correction pending (TWO layers) — read `tasks/eval-research-deep-2026-04-25.md` first.** Two rounds of research after this entry was written changed the picture:
+>
+> **Layer 1** (`tasks/zeroclaw-build-research.md`): ZeroClaw's HTTP Gateway exposes only `/webhook` + `/health` + `/pair`, not agent CRUD. Multi-agent is delegation-based. The "spawn one agent per task at publish" framing in this entry is wrong against the actual API.
+>
+> **Layer 2** (`tasks/eval-research-deep-2026-04-25.md`, deeper Perplexity research): three bigger findings:
+> - **Codex CLI subscription mode is rate-limited (300-1,500 msg per 5-hour window) AND likely ToS-incompatible for headless production webhook use.** The "$205/mo flat" cost narrative below is wrong. Right path: pay-per-token Codex API ($1.25-1.50/M input, $6-10/M output for codex-mini/codex), ~$0.10-0.40 per eval.
+> - **Single-judge architecture is the wrong shape.** 2026 production consensus is a tiered funnel: deterministic execution (SWE-bench style) → fast LLM gatekeeper (handles 85%) → tool-using agent investigator (handles the 15% flagged). 175× cost variance forces this shape. >57% of production teams use it.
+> - **Deterministic execution beats both LLM and agent judgment for code submissions.** Run code in sandboxes against test suites; LLM/agent judgment is a secondary quality filter, not the primary signal. Aider/Cursor/Devin/Replit all do this.
+>
+> Cost math at the corrected shape (3,000-eval hackathon): **~$56-$272 total**, 2-10× cheaper than the "$205/mo flat" estimate AND ToS-compliant AND adversarially harder to game.
+>
+> The research file has the full revised architecture (4-tier funnel, calibration recipe, adversarial robustness mitigations, real hackathon failure modes, recommended open-source stack: DeepEval + Langfuse + Promptfoo). Future build session: read it, update this entry + the memory playbook, then proceed.
 
 **Why ZeroClaw over alternatives (PicoClaw, NullClaw, RustClaw, IronClaw, Moltis, OpenClaw):**
 - **Codex subscription auth is first-class.** `zeroclaw agent --provider openai-codex` with OAuth device-code flow + encrypted profile storage. PicoClaw doesn't surface this cleanly; OpenClaw does but at 200x the RAM cost.
