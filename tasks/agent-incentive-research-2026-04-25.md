@@ -24512,3 +24512,82 @@ The 15% standard / 25% managed split is the right initial configuration. Revisit
 
 **Open thread**: What is the right minimum viable prize pool for a Straw competition to attract serious agent participation? Below $1,000 is probably noise; above $5,000 probably gets 10+ serious submissions. Where exactly is the floor?
 
+
+---
+
+## Tick 141 (2026-05-01): Anti-Collusion Mechanisms — Detecting Rating Rings and Coordinated Sandbagging
+
+**Thread**: How do you detect and prevent agent operators coordinating to inflate each other's scores on Straw's permanent leaderboard?
+
+### 1. FIDE: IPR, Clock-Time Anomalies, and Network-Level Sanctions
+
+FIDE's primary statistical weapon is the **Intrinsic Performance Rating (IPR)** system developed by Kenneth Regan (University at Buffalo). It estimates a player's true skill from move quality, computes a z-score against their official Elo, and flags outliers above 4.25σ (online) or 5.00σ (over-the-board). Critically, this measures *quality of play*, not just outcomes — making it hard to fake both a loss and plausible move quality simultaneously.
+
+In the 2025 Li Haoyu sandbagging case, the decisive evidence was that he consistently had large amounts of clock time remaining when he lost — a statistical impossibility in genuine competitive play. The FIDE Ethics & Disciplinary Commission (Case 8/2015, Tetimov/Ricciardi) established precedent for **network-level sanctions**: when two players are found to have coordinated results, both receive penalties regardless of which one "won" the coordinated games.
+
+Key detection indicators FIDE uses for rings:
+- Abnormal win/loss ratios between specific pairs of players across tournaments
+- Clock-time anomalies (losing with time remaining)
+- Performance variance inconsistency (playing well against strong players, losing to weak ones)
+- Tournament selection patterns — entering low-rated events far below established rating
+
+Source: [FIDE Anti-Cheating Regulations](https://handbook.fide.com/files/handbook/ACCRegulations.pdf); [Li Haoyu FIDE Sandbagging Ban](https://www.chess.com/news/view/fide-bans-chinese-player-for-sandbagging)
+
+### 2. Competitive Programming: Pairwise Analysis and Behavioral Frequency
+
+Codeforces' detection system flags: identical submission structure and timing, accounts that only compete when specific other accounts compete, and abnormally correlated rating trajectories. The broader framework (documented in vera.ai's 2024 Coordinated Sharing Behavior Detection conference) categorizes detection into:
+- **Pairwise analysis**: Do two accounts systematically help/hurt each other across many contests?
+- **Temporal clustering**: Do suspicious accounts appear in the same competition windows at rates far above chance?
+- **Behavioral effort inconsistency**: Is the effort exerted inconsistent with the result?
+
+The AI safety community has developed analogous **sandbagging probes** — linear classifiers trained on internal activations — that distinguish strategic underperformance from genuine struggle. Directly applicable to Straw: if an agent's sub-criterion scores show high capability on some rubric dimensions while "failing" on others in a suspiciously consistent pattern, that's a sandbagging signal.
+
+Source: [Coordinated Sharing Behavior Detection Conference 2024 — vera.ai](https://www.veraai.eu/posts/coordinated-sharing-behavior-detection-conference-2024); [AI Sandbagging Probe Detection](https://subhadipmitra.com/blog/2025/detecting-ai-sandbagging/)
+
+### 3. Financial Markets: Network Graphs and Wash Trading Signatures
+
+The SEC's CAT (Consolidated Audit Trail) and FINRA's cross-market surveillance identify wash trading through statistical signatures:
+- **Self-matching**: The same beneficial owner appears on both sides of a transaction — in Straw terms, the same operator submitting two agents to the same task
+- **Correlated PnL across counterparties**: When two parties' rating changes are systematically inversely correlated across many competitions, that's the ring signature
+- **High-frequency micro-patterns**: Entries placed and withdrawn, analogous to agents entering competitions but submitting degraded outputs
+
+FINRA's guidance explicitly identifies **network graph analysis** as the modern detection layer: rings are invisible at the individual account level but obvious when you map the directed graph of who-beats-whom and look for anomalous cycles.
+
+Source: [Wash Trading Detection — DataWalk](https://datawalk.com/how-to-detect-sophisticated-wash-trading-networks/); [FINRA Manipulative Trading Guidance](https://www.finra.org/rules-guidance/guidance/reports/2023-finras-examination-and-risk-monitoring-program/manipulative-trading)
+
+### 4. Structural Mechanisms That Make Collusion Harder
+
+- **VRF task assignment**: Use a verifiable random function (on-chain) to assign agents to competitions; operators cannot predict which agents will compete against each other, making pre-coordination intractable
+- **Anonymous evaluation**: Blind scoring (judge sees task + submission, not operator identity) removes the ability to deliberately lose to a known counterpart
+- **Rubric-absolute scoring**: Ratings derive from absolute rubric scores against ground truth, not head-to-head ordinals; colluding agents must produce genuinely bad outputs to lose, capping the scheme's upside
+- **Minimum performance floors**: Submissions scoring below threshold receive a rating *penalty*, not just no gain — making deliberate losing costly
+- **Delayed leaderboard publication**: Scores revealed only after competition window closes prevents real-time coordination on who needs to "lose next"
+
+### 5. Recommended Straw Anti-Collusion Architecture
+
+Given Straw's assets (ERC-8004 on-chain identity, timestamped submission logs, per-criterion rubric scores), a layered architecture:
+
+**Layer 1: Structural prevention**
+- VRF-based task assignment; operators cannot request specific matchups
+- All evaluations blind to judge agents (task + submission, no operator identity)
+- Ratings derived primarily from rubric scores against ground truth, not pairwise ordinals
+
+**Layer 2: Statistical detection**
+- Compute an IPR analog: each agent's expected rubric score distribution based on historical performance, then flag z-score deviations >3σ when underperforming on specific tasks with specific counterparties
+- Track the **pairwise competition graph** on-chain; flag anomalously lopsided win/loss records between specific operator pairs across N competitions
+- Sub-criterion score analysis: genuine failures produce correlated drops across rubric dimensions; sandbagging produces selective failure on only the dimensions needed to lose — detectable via cosine similarity of the failure vector
+
+**Layer 3: Network-level graph analysis**
+- Map the directed graph of rating transfers between operators across all competitions
+- Apply **Benford's Law analysis** to rating deltas: legitimate distributions follow predictable statistical laws; coordinated rings produce artificial uniformity
+- Use **cycle detection** in the operator graph: A beats B, B beats C, C beats A in rotation is a classic ring signature
+
+**Layer 4: Deterrence via skin in the game**
+- ERC-8004 on-chain identity means sanctions are binding and public: a flagged agent's record is permanently visible
+- Joint liability: if two operators collude, *both* rating histories adjust retroactively, eliminating the gain
+- Escalating stake requirements for high-rating agents in high-value competitions creates financial exposure that makes collusion economically risky
+
+The core insight from financial market surveillance: **collusion is invisible at the individual transaction level but statistically obvious at the network level.** Straw's permanent append-only on-chain record makes the full history of all interactions available for retrospective graph analysis that traditional platforms cannot do.
+
+Source: [FIDE Ethics Commission Case 8/2015](https://ethics.fide.com/images/stories/FIDE_ETHICS_COMMISSION_-_MOTIVATION_-_TETIMOV__RICCIARDI_FINAL.pdf); [ERC-8004: Trustless Agents](https://ethereum-magicians.org/t/erc-8004-trustless-agents/25098); [Sybil Resistance in Token Reputation Systems](https://markaicode.com/token-reputation-systems/)
+
