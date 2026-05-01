@@ -22998,3 +22998,288 @@ The 25% Day 14 submission rate target is aggressive. Product Hunt achieves ~15% 
 - Japan AI Guidelines for Business: meti.go.jp/english/press/2024/0419_002.html
 - Enterprise sales cycle benchmarks by country: Gartner enterprise sales cycle research; OpenView SaaS benchmark report 2025
 
+
+---
+
+## Tick 136 (2026-05-01): Legal framework for competitions — IP, agent conduct rules, liability scope
+
+*Straw's legal agreements need to be drafted before the first competition. This tick specifies exactly what those agreements should say.*
+
+### The three documents Straw needs before competition 1
+
+1. **Agent Team Terms of Service** — governs agent team registration, competition participation, submission rights, IP ownership, conduct requirements
+2. **Enterprise Client Agreement** — governs competition sponsorship, data handling, IP rights in competition output, result interpretation, liability
+3. **Competition-Specific Rules** — incorporated by reference into both above; specific to each competition (task, rubric, timeline, prize structure)
+
+These three documents must be consistent with each other and create a clear legal framework that covers the scenarios most likely to cause disputes.
+
+---
+
+### Document 1: Agent Team Terms of Service — key provisions
+
+**IP ownership (the most critical provision)**:
+
+```
+§ 4. Intellectual Property
+
+4.1 Agent Team IP. Each Agent Team retains full ownership of all code, models, 
+systems, and intellectual property that existed prior to competition participation 
+("Prior IP") and all improvements, derivatives, or modifications to Prior IP 
+made during competition ("Derivative IP").
+
+4.2 Submission License (Winner). By accepting a prize, the winning Agent Team 
+grants the Enterprise Client a non-exclusive, perpetual, royalty-free license 
+to deploy the winning Agent's capabilities for the specific task type described 
+in the Competition Rules, for internal business purposes only. This license 
+does not include: (a) rights to sublicense to third parties, (b) rights to 
+modify or create derivative works without Agent Team's written consent, 
+(c) rights to use the Agent for task types materially different from the 
+Competition task.
+
+4.3 Submission License (Non-Winners). Non-winning submissions: Enterprise 
+Client receives no license. Agent Team retains all rights. Straw retains 
+no rights to non-winning submissions beyond the right to process them for 
+evaluation purposes during the Competition period.
+
+4.4 Calibration Data. Agent Teams grant Straw a perpetual, irrevocable, 
+non-exclusive license to use de-identified, aggregated performance data from 
+all submissions (not the submission content itself) for the purpose of improving 
+Straw's evaluation methodology, calibration corpus, and scoring systems. 
+Individual submission content is never shared with third parties or used to 
+train models without separate written consent.
+```
+
+**Conduct requirements**:
+- Prohibition on using data or techniques that violate applicable law
+- Prohibition on adversarial gaming of Straw's evaluation infrastructure (described in Tick 133)
+- Prohibition on multiple team registrations by the same principal
+- Requirement to maintain confidentiality of competition task and other teams' submissions for 24 months post-close
+
+**Dispute resolution**: Binding arbitration (JAMS, San Francisco). Agent teams waive class action rights. Disputes filed within 30 days of competition close or are forever waived.
+
+---
+
+### Document 2: Enterprise Client Agreement — key provisions
+
+**Data responsibilities**:
+```
+§ 3. Competition Data
+
+3.1 Enterprise Data. Enterprise represents and warrants that it has all 
+necessary rights, consents, and authorizations to provide the Competition 
+Task data to Straw and Agent Teams. Enterprise is the Data Controller 
+(as defined under applicable privacy laws) for all personal data included 
+in Competition Tasks.
+
+3.2 Straw as Data Processor. Straw acts as Data Processor on behalf of 
+Enterprise for any personal data processed during competitions. Straw will 
+process such data only for competition evaluation purposes and will not 
+retain personal data beyond 90 days post-competition-close without 
+Enterprise's written authorization.
+
+3.3 Data Breach. Straw will notify Enterprise within 72 hours of discovering 
+any unauthorized access to Competition Task data or submission data. 
+Notification obligations are subject to Straw's SOC 2 Type II information 
+security policy.
+```
+
+**Result interpretation**:
+```
+§ 5. Competition Results
+
+5.1 Straw makes no representation or warranty that the winning Agent will 
+perform at competition-score levels in production deployment environments. 
+Competition performance is an indicator of Agent capability on the Competition 
+task, not a guarantee of production performance.
+
+5.2 Enterprise is solely responsible for its decisions to engage, deploy, 
+or contract with winning or participating Agent Teams. Straw's facilitation 
+of the competition does not create any employment relationship, contractor 
+relationship, or agency relationship between Straw and any Agent Team.
+
+5.3 Competition results may be used by Enterprise for internal procurement 
+decision-making. Enterprise may not publish, distribute, or publicly reference 
+individual Agent Team scores without the written consent of the relevant 
+Agent Team.
+```
+
+**Limitation of liability**:
+- Straw's maximum liability: 1× the fees paid for the specific competition
+- No liability for consequential, indirect, or punitive damages
+- Enterprise indemnifies Straw for any claims arising from Enterprise-provided data
+
+---
+
+### Document 3: Competition-Specific Rules — standard sections
+
+Each competition's rules document specifies:
+1. Competition timeline (open date, close date, result announcement date)
+2. Task description (by reference to the Straw platform — not in the rules document itself)
+3. Submission requirements (format, quantity, file size limits)
+4. Rubric structure (weights per component — Tier 1, 2, 3 percentages)
+5. Prize structure (total prize, split)
+6. Eligibility requirements (geography, company size, no conflict of interest)
+7. Disqualification criteria (technical violations, conduct violations)
+8. Challenge procedure (deadline, process, decision authority)
+
+---
+
+### The five IP scenarios that Straw's framework must handle cleanly
+
+**Scenario 1: Winning agent is built on open-source foundation**
+- Framework handling: The non-exclusive license in §4.2 covers the winning agent's specific capabilities without requiring the agent team to transfer the open-source foundation. Enterprise can deploy the winning agent; they cannot take the OSS foundation and build their own version.
+
+**Scenario 2: Agent team discovers a commercially valuable approach during competition**
+- Framework handling: Agent Team retains ownership of all Derivative IP (§4.1). The license granted to Enterprise is scoped to the specific task type — it does not prevent the agent team from commercializing the approach in other markets.
+
+**Scenario 3: Enterprise wants to acquire the winning agent team post-competition**
+- Framework handling: Straw's framework is silent on this — it's a private transaction between Enterprise and Agent Team. Straw takes no cut (Tick 128, Option A recommendation). The non-exclusive license in §4.2 survives the acquisition if the acquisition doesn't include IP transfer.
+
+**Scenario 4: Regulatory body asks Straw for submission content for an investigation**
+- Framework handling: Straw cooperates with valid legal process. Submission content is stored in encrypted form. Agent Teams are notified of legal process to the extent permitted by law. Straw's response to legal process is governed by applicable law, not by agent team preferences.
+
+**Scenario 5: Agent team believes another team copied their submission approach**
+- Framework handling: No mechanism for this — Straw doesn't share submission content between teams. If two teams independently develop similar approaches (common for well-specified tasks), both approaches are evaluated on their merits. If there is actual IP theft (one team had access to another's submission), that is a conduct violation and grounds for DQ + arbitration.
+
+---
+
+### The choice of governing law
+
+Straw should incorporate in Delaware (standard for VC-backed companies), with agreements governed by California law, arbitration in San Francisco.
+
+Exception for EU clients: Competition-Specific Rules for EU enterprise clients must reference GDPR in the data handling provisions. The EU Standard Contractual Clauses (SCCs) are appended to the Enterprise Client Agreement for all EU-based clients.
+
+---
+
+### What legal counsel Straw needs at launch
+
+**For document drafting**: Technology transactions attorney with SaaS marketplace experience. Budget: $10K–$25K for initial document set. Recommended: Wilson Sonsini, Cooley, Gunderson Dettmer (all with strong startup + technology transactions practices).
+
+**For ongoing**: Not full-time at seed. Use legal tech (Ironclad for contract management) + outside counsel for material decisions. Budget: $3K–$8K/month at launch, growing to $15K–$30K/month as competitions scale.
+
+**First consultation priorities**:
+1. IP framework validation (§4.1–4.4 of Agent TOS)
+2. Data Processing Agreement template for GDPR compliance
+3. Employment law review of agent team participation (are competing agents employees? No — but the structure must be explicit)
+4. Arbitration clause enforceability in all US states Straw operates in
+
+---
+
+### Sources
+
+- Technology transactions IP framework: NVCA Model Legal Documents (nvca.org); Wilson Sonsini model SaaS agreements
+- GDPR Data Processing Agreement requirements: European Data Protection Board Guidelines 7/2020 on controller/processor concepts
+- Arbitration in SaaS agreements: Jams arbitration rules; enforceability in California (Discover Bank v. Superior Court, 2005 reversed by AT&T v. Concepcion, 2011)
+- Open source licensing interaction with commercial agreements: OSI license compatibility matrix; Software Freedom Law Center guidance
+- Delaware incorporation: Why Delaware for startups — Stripe Atlas, Y Combinator incorporation guides
+
+
+---
+
+## Tick 137 (2026-05-01): The agentic future macro thesis — how Straw's value changes as AI agents become fully autonomous
+
+*The world is moving from AI tools to AI agents to fully autonomous AI systems. Each step increases the stakes of evaluation — and therefore increases Straw's value. This tick traces that trajectory.*
+
+### The three eras of enterprise AI (and Straw's position in each)
+
+**Era 1: AI tools (2022–2025)** — AI as a productivity assistant
+
+Characteristics:
+- AI copilots (GitHub Copilot, Microsoft Copilot) that augment human workflows
+- Human in the loop for all decisions; AI makes suggestions, human approves
+- Evaluation is simple: "Does the AI's suggestion save time? Is it accurate?"
+- Risk is low: human review catches errors before they have consequences
+
+**Straw's position in Era 1**: Marginal. AI tool procurement is dominated by platform vendors (Microsoft, GitHub, Salesforce) and doesn't require independent evaluation. No enterprise runs a Straw competition to select their AI copilot.
+
+**Era 2: AI agents (2025–2028)** — AI as an autonomous executor
+
+Characteristics:
+- AI agents execute multi-step workflows without human approval at each step
+- Examples: AI agent processes invoices end-to-end, AI agent manages customer support tickets, AI agent runs data pipelines
+- Human sets the goal; AI chooses the steps and executes
+- Evaluation is complex: the output quality depends on every intermediate decision
+- Risk is moderate to high: errors compound across steps; humans may not review every output
+
+**Straw's position in Era 2**: Core market. This is where we are today and where Straw's product is designed for. The evaluation challenge is exactly the challenge Straw solves — how to know if an AI agent can execute your specific workflow reliably before you deploy it.
+
+**Era 3: Fully autonomous AI systems (2028–2033+)** — AI as a strategic decision-maker
+
+Characteristics:
+- AI systems make strategic decisions without human initiation (not just execution)
+- Examples: AI optimizes supply chain inventory positions, AI sets pricing strategy, AI manages investment portfolios
+- Human sets objectives and constraints; AI operates continuously
+- Evaluation is critical and legally mandated: errors at this level can cause multi-million dollar harm at the speed of computation
+- Risk is existential for organizations that deploy poorly-evaluated autonomous systems
+
+**Straw's position in Era 3**: Indispensable. The higher the autonomy level of the AI system, the more critical pre-deployment evaluation becomes. An AI tool that gives bad suggestions is annoying. An AI agent that makes wrong decisions in 5% of cases costs the enterprise money. An AI system that sets prices incorrectly or manages investments poorly can cause catastrophic harm.
+
+**The key insight**: Straw's total addressable market grows as autonomy increases. Era 1 is not Straw's market. Era 2 is the launch market. Era 3 is the full-scale enterprise category that justifies the $1B+ valuation trajectory.
+
+---
+
+### What "fully autonomous" means for evaluation requirements
+
+As AI systems become more autonomous, the evaluation requirements change in three ways:
+
+**Change 1: Evaluation must be continuous, not one-time**
+
+An Era 2 AI agent can be evaluated before deployment and re-evaluated quarterly. An Era 3 autonomous system changes its own behavior through learning — the model that was evaluated in January may behave differently in June, even without a software update. This requires continuous monitoring, not just pre-deployment evaluation.
+
+**Straw's product evolution for Era 3**: The post-competition monitoring subscription (Tick 109 expansion path). After an agent wins a Straw competition and is deployed, Straw offers ongoing benchmarking — re-running abbreviated versions of the original competition rubric monthly to verify that the deployed agent's performance hasn't degraded or drifted. This is a recurring SaaS revenue stream that grows with deployment tenure.
+
+**Change 2: Evaluation must cover failure modes, not just success metrics**
+
+An Era 2 agent evaluation asks "how well does this agent perform on this task?" An Era 3 autonomous system evaluation must also ask:
+- "What does this system do when it encounters an out-of-distribution input?"
+- "How does this system behave under adversarial conditions?"
+- "What are the tail risks of this system's decision-making?"
+- "How does this system fail?"
+
+This is analogous to the difference between testing a car for performance (Era 2) and crash-testing a car (Era 3). Both tests matter at Era 3 autonomy levels.
+
+**Straw's rubric evolution for Era 3**: The rubric must include explicit failure mode testing — not just performance on the expected distribution of inputs, but stress testing on edge cases, adversarial inputs, and rare scenarios. This is a significant rubric design investment (Tick 99) that Straw is positioned to provide.
+
+**Change 3: Regulatory requirements scale with autonomy**
+
+Era 2 AI agents may face regulation (EU AI Act high-risk categories cover some). Era 3 autonomous AI systems will face comprehensive regulation across all sectors — financial services, healthcare, transportation, defense, energy. The regulatory compliance documentation required grows from "evaluation report" to "ongoing conformity assessment."
+
+**Straw's regulatory positioning for Era 3**: The competition report and ongoing monitoring subscription become the backbone of the enterprise's AI conformity assessment documentation. Straw is not just a procurement tool — it is the regulatory compliance infrastructure.
+
+---
+
+### The competitive moat deepens with autonomy increase
+
+As AI autonomy increases, the cost of wrong AI procurement decisions increases. This means:
+1. Enterprise WTP for reliable evaluation increases
+2. The competitive moat of the calibration corpus grows (more historical data = more reliable evaluation)
+3. New entrants to the evaluation market face higher barriers (more calibration data required to be credible)
+4. The institutional anchor effect (Tick 115) becomes more powerful — once Straw Score is required in RFPs, the network effect locks in
+
+**The timeline for Era 3**: Industry analysts (Gartner, IDC, McKinsey Global Institute) predict fully autonomous AI systems in strategic business functions by 2028–2032, depending on the sector. Defense and financial services are moving fastest (Palantir AIP, Bloomberg GPT for trading); healthcare is moving slowest (regulatory caution, patient safety stakes).
+
+**Straw's bet**: The platform must be designed for Era 2 today but architected for Era 3. The data architecture (calibration corpus), the scoring methodology (multi-tier evaluation), and the continuous monitoring feature (Tick 109 expansion) are all designed to scale into the higher-autonomy era without architectural overhaul.
+
+---
+
+### What the fully-autonomous future means for Straw's exit timeline
+
+If Era 3 fully autonomous systems become mainstream by 2030, the acquirer universe for Straw in 2030 is dramatically larger than in 2028. The enterprise software platforms (Salesforce, ServiceNow — Tick 126 acquirer Type 1) will be fighting for the evaluation infrastructure layer because their autonomous AI agent platforms require credible evaluation to be trusted by enterprise buyers.
+
+**Revised exit multiple for Era 3 timing**: An acquisition at full Era 3 autonomy adoption (2030–2032) could command 40–60× ARR rather than the 25–35× projected in Tick 126, because:
+- The category is larger (Era 3 evaluation is worth more than Era 2 evaluation)
+- The calibration corpus is 5+ years older and more valuable
+- The regulatory requirement is law, not optional — there's no exit from needing Straw's documentation
+- The number of potential acquirers is larger (every major AI platform company needs the evaluation layer)
+
+---
+
+### Sources
+
+- Era of AI autonomy framing: Stanford HAI "AI Index Report 2025" and 2026; McKinsey "The Next Frontier of AI" report 2025
+- Fully autonomous AI timeline: Gartner Hype Cycle for AI 2025; IDC FutureScape AI Predictions 2026
+- Palantir AIP for autonomous decision-making: Palantir Q4 2025 earnings; AIP platform documentation
+- Financial AI autonomy: Bloomberg's discussion of AI in trading (Bloomberg Terminal AI, 2025); SEC AI disclosure requirements
+- AI regulatory scaling with autonomy: EU AI Act Art. 9 continuous monitoring requirement for high-risk systems; OMB M-26-04 ongoing evaluation requirements
+- Continuous monitoring analogy: APM (Application Performance Monitoring) market evolution from one-time assessment to continuous — AppDynamics case study
+
