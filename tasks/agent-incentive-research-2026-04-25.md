@@ -29242,3 +29242,103 @@ A client who entered at $100K Year 1 (Competition 1 fee) exits Year 2 at $195K (
 
 This is the math that makes the Straw unit economics work at scale: LTV:CAC of 10.75× is achievable because the average client more than triples their spend over three years before showing any churn signal.
 
+
+---
+
+## Tick 167 (2026-05-01): The Benchmark Subscription — Straw's Recurring Revenue Bridge
+
+**Thread**: How does Straw build a recurring revenue layer between project-based competitions?
+
+### The Problem: Project Revenue Is Lumpy
+
+Competition fees are $50K-$200K per event. Enterprise clients run 1-3 competitions per year. That means Straw's revenue arrives in chunks — not the smooth monthly curve that SaaS investors expect and that enables predictable operations.
+
+The Benchmark Subscription solves this. It is a $15K-$30K/year product that keeps a revenue thread between competitions and, more importantly, keeps Straw embedded in the client's workflow continuously. Continuous embedding makes competition renewal inevitable rather than optional.
+
+---
+
+### What the Benchmark Subscription Delivers
+
+**Tier 1 — Domain Benchmark Reports** ($15K/year):
+- Quarterly reports for the client's domain (legal, finance, code, etc.)
+- "Where does your winning agent stand relative to the market today?" — Straw Score percentile updated quarterly
+- Competitive landscape summary: which new agent teams entered the domain, what scores are they achieving, are any rising competitors approaching your incumbent's score?
+- Rubric evolution report: how is the evaluation methodology for your domain type evolving across Straw's corpus?
+
+**Tier 2 — Agent Monitoring Dashboard** ($25K/year, includes Tier 1):
+- Live Straw Score tracking for the specific agent team you hired after Competition 1
+- Cross-competition performance: how is your deployed agent scoring in public competitions on Straw (in domains adjacent to yours)?
+- Improvement trajectory analysis: is your agent improving over time or plateauing?
+- Alert system: if a competitor agent surpasses your hired agent's score by >10%, Straw flags it and recommends a re-evaluation competition
+
+**Tier 3 — Custom Benchmark Design** ($40K/year, includes Tier 1 + 2):
+- Custom rubric benchmarks designed for the client's specific task types
+- Private competition access: run a quarterly "check-up" mini-competition ($10K supplemental fee) to verify your deployed agent is still best-in-class
+- Dedicated CS Manager availability for rubric questions and score interpretation
+
+---
+
+### Why This Product Exists: The Anti-Churn Logic
+
+Without the Benchmark Subscription, the Straw client relationship has a dangerous structure:
+- Competition 1 runs in Q1
+- Results delivered in Q2
+- Client signs the winning agent
+- Q3, Q4: silence from Straw — no product interaction, no data, no reason to engage
+- Q1 of next year: Straw AE calls and says "ready for Competition 2?" — starts from cold
+
+With the Benchmark Subscription:
+- Competition 1 results delivered in Q2
+- Q3: client receives quarterly domain benchmark report ("your winning agent is now in the 87th percentile — two new agent teams have entered your space scoring above 700")
+- Q4: alert fires — a new agent team scored 851, surpassing your hired agent's 847
+- Q1: client already has a business case for Competition 2 ("we need to re-evaluate because of the alert from Q4")
+
+The subscription doesn't just generate $15K-$40K in recurring revenue. It generates the trigger that makes Competition 2 inevitable rather than requiring the AE to manufacture urgency from scratch.
+
+---
+
+### The Competition 2 Trigger: Three Natural Scenarios
+
+The Benchmark Subscription is designed to surface one of three natural triggers for Competition 2:
+
+**Trigger 1: A new agent beats your incumbent's score**
+Most emotionally compelling. Enterprise CXOs want to know they have the best. If a competitor agent surpasses the score of their deployed agent, the re-evaluation competition is self-justifying. The Straw Alert system fires this automatically.
+
+**Trigger 2: Domain benchmark scores rise significantly**
+"When you ran Competition 1 six months ago, an 820 Straw Score placed your agent in the 90th percentile for legal AI. Today, 820 is the 72nd percentile because model capabilities have improved across the board. A new competition would establish whether your agent has kept pace."
+
+**Trigger 3: New task type identified**
+The quarterly benchmark report surfaces new task types that other enterprises in the same domain are evaluating. "Three legal AI clients this quarter ran competitions on contract redlining — do you have a task in that area?" New use case = new competition.
+
+---
+
+### The NRR Math With the Benchmark Subscription
+
+**Without Benchmark Subscription**:
+- Year 1: $100K (Competition 1)
+- Year 2: $180K (Competition 1 + Competition 2) — 60% of clients
+- Year 3: $260K (three competitions) — 40% of Year 1 cohort
+- 3-year average NRR: ~120% (driven entirely by Competition 2 and 3 conversion)
+
+**With Benchmark Subscription** (40% attach rate at $20K average):
+- Year 1: $100K (Competition 1) + $20K (subscription, pro-rated to 8 months) = $117K
+- Year 2: $180K (Comp 1 + 2) + $20K (subscription) = $200K
+- Year 3: $260K (three comps) + $20K (subscription) = $280K
+- 3-year average NRR: ~137% (subscription drives an additional 8-10 NRR points above the competition-only scenario)
+
+At Series A, the Benchmark Subscription is the metric that moves NRR from "meeting the threshold" (110%) to "exceptional" (120%+) to "category-defining" (130%+). The subscription is not a large revenue line at seed stage. It is the NRR lever that makes the Series A story dramatically more compelling.
+
+---
+
+### Product Development Priority
+
+The Benchmark Subscription is achievable with primarily data and operations infrastructure:
+- The underlying data already exists in the calibration corpus
+- Quarterly report generation is a templated workflow (automatable at Year 2 scale)
+- The alert system is a simple threshold monitor on Straw Score updates
+- Custom benchmark design (Tier 3) is a manual consulting engagement initially, automatable by Year 3
+
+The agent monitoring dashboard (Tier 2) requires one product investment: a public competition score-tracking feature that associates an agent team's public competition scores with their profile. This is already architecturally adjacent to the agent directory product described in Tick 160 — the infrastructure is shared.
+
+Build order: Tier 1 report (immediate, Q1 of Year 1 operations) → Tier 2 monitoring dashboard (Q2-Q3 Year 1) → Tier 3 custom benchmark (Year 2, as a manual service first, then systematize). Don't over-engineer Tier 3 before validating demand.
+
