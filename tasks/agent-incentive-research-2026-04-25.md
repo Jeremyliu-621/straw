@@ -14149,3 +14149,266 @@ This means: a buyer who reaches Stage 4 (POC) is much more likely to convert tha
 - SaaS contract terms: Contract Nerds (contractnerds.com/negotiating-saas-agreements); ABA Business Law Today
 - Source code escrow ROI: Codekeeper (codekeeper.co/articles/the-roi-of-software-escrow)
 
+
+---
+
+## Section 27: Long-form proposal — Product roadmap from MVP through Series A
+
+*Written 2026-05-01. This is an opinionated prescription, not a neutral survey.*
+
+---
+
+### The framing problem
+
+Product roadmaps are usually organized by feature. This one is organized by **what becomes true at each milestone** — what the business can claim, sell, and defend after each phase. Features are the means; capabilities are the end.
+
+The four milestone questions:
+1. **MVP (Month 0–4)**: Can we run one competition end-to-end that an enterprise would pay for?
+2. **Launch (Month 4–8)**: Can we sign 5 paying enterprise customers?
+3. **Product-Market Fit (Month 8–18)**: Can we sign 20 enterprise customers with <3% monthly churn?
+4. **Series A (Month 18–30)**: Can we demonstrate a defensible data moat and a scalable go-to-market?
+
+---
+
+### Phase 0: Foundation (Months –2 to 0, pre-launch infrastructure)
+
+**What must be true before a single competition runs**:
+
+The infrastructure is not a product — it's a precondition. Every week of foundation work is a week of not learning. Build the minimum viable infrastructure, not the elegant infrastructure.
+
+**The stack** (per Sprint 0 from Tick 86):
+- Supabase (Postgres + Auth + Storage) — not because it's the final answer, but because it ships fast and handles the early scale
+- Stripe (payment processing + Treasury for prize escrow) — the prize escrow is non-negotiable; it's the trust foundation
+- Vercel (Next.js deployment) — zero DevOps overhead before you have DevOps
+- AWS S3 (submission artifact storage) — isolated per competition, per enterprise
+- GitHub Actions (CI/CD) — simple, familiar, free tier is sufficient
+
+**The non-negotiables in Phase 0**:
+- Row-level security (Postgres RLS) configured from day one — retrofitting security is expensive and introduces risk
+- Environment variable validation at startup — no silent missing-config failures in production
+- Competition state machine (draft → open → scoring → closed → archived) — every competition flows through this machine; inconsistencies here cause financial and trust problems
+- Prize escrow flow — money must be handled correctly before the first competition. Stripe Treasury for US. Test with $1 competitions internally before real enterprise money enters the system.
+
+**What to explicitly not build in Phase 0**:
+- Tier 2 or Tier 3 evaluation (do manual review in a Notion doc for the first 5 competitions)
+- Agent reputation system (track it in a spreadsheet until you have 20+ agents)
+- International payment rails (Stripe Connect for US only; defer EU/APAC payment complexity)
+- Agent Pro subscription (no supply-side paying customers until demand side is proven)
+- Mobile app, native desktop client, anything beyond web + API
+
+**Phase 0 success criterion**: The engineering team can internally simulate a full competition end-to-end — from task creation to submission upload to score calculation to prize escrow release — in under 2 hours, with zero manual database interventions.
+
+---
+
+### Phase 1: First Competition (Months 0–4)
+
+**What must be true by month 4**: One enterprise has paid at least $8K for a competition, received a ranked leaderboard with at least 5 agent submissions, and found the result credible enough to share internally.
+
+**The concentric circle launch**:
+The classic mistake is to launch to everyone at once. The right approach is concentric circles:
+
+1. Circle 1 (Weeks 1–4): Run 2 internal "calibration competitions" — Straw-funded, invite-only, 5–10 handpicked agent teams from Berkeley RDI or similar. No enterprise customer, no prize money. Goal: break the platform in controlled conditions.
+
+2. Circle 2 (Weeks 5–8): Run 2 "sponsored competitions" with a model provider (Anthropic, Cohere) as the prize funder. The enterprise customer is the model provider's customer; Straw is the platform. Goal: get 10+ agent submissions, validate Tier 1 scoring, identify rubric gaps.
+
+3. Circle 3 (Weeks 9–16): First paying enterprise customer competition. One design partner from Tick 95's DPA program. Software engineering or document processing task (Quadrant A from Tick 75). Prize: $5K–$15K. Goal: Enterprise Champion presents results to their team and calls it credible.
+
+**What to build in Phase 1** (features, not just infrastructure):
+
+*Enterprise-side (task posting)*:
+- Task creation wizard (title, description, deliverable format, rubric builder with Autorubric suggestions)
+- Competition settings (start/end date, prize amount, participant limits, visibility: public vs. invite-only)
+- Submission review dashboard (view all submissions, see scores, download artifacts)
+- Competition Report PDF generator (the champion artifact — formatted, printable, boardroom-ready)
+
+*Agent-side (competing)*:
+- Agent registration + profile (name, team, capabilities, contact)
+- Competition discovery (browse open competitions; filter by task type, prize, deadline)
+- Submission API (HTTP POST with artifact upload; HTTP 202 Accepted response; poll endpoint for status)
+- Submission status page (track evaluation progress in real time)
+
+*Scoring (Tier 1 only)*:
+- Automated deterministic scoring for 2 task types: software engineering (unit test pass rate, code quality linters) and document processing (field extraction accuracy vs. ground truth)
+- Score display: raw score, percentile rank, per-criterion breakdown
+
+*Manual backup for Tier 2*:
+- Internal review queue (Notion or Airtable) — human reviewer applies rubric to submissions that Tier 1 cannot score
+- Manual score entry interface (simple admin form, not a product feature)
+
+**What to explicitly not build in Phase 1**:
+- Tier 2 LLM-as-judge (requires calibration data from real competitions; build this in Phase 2)
+- Public leaderboard (premature; agent reputation requires more data volume)
+- Self-serve enterprise signup (requires security review; handle manually in Phase 1)
+- Billing automation (invoice manually; Stripe is set up but billing logic should be simple)
+
+**Phase 1 success criterion**: 3 competitions completed, 15+ unique agent teams participated, 1 enterprise champion used the Competition Report in an internal presentation.
+
+---
+
+### Phase 2: Repeatability (Months 4–10)
+
+**What must be true by month 10**: 10 paying enterprise customers, <15% first-90-day churn, 3 enterprise logos willing to be publicly referenced.
+
+**The shift in month 4**: After Phase 1, the question changes from "can this work?" to "can this work again, and again?" The repeatability challenge is different from the initial delivery challenge.
+
+**The critical insight about Phase 2**: The bottleneck shifts from engineering to sales and onboarding. If the engineering team is doing most of the work in Phase 2, something is wrong — the enterprise champion should be able to post and run a competition with <4 hours of Straw team support.
+
+**Build in Phase 2**:
+
+*Enterprise self-serve*:
+- Self-serve task posting (enterprise champion can create and launch a competition without talking to Straw)
+- Rubric design wizard (Autorubric integration; 2-hour onboarding protocol baked into the product)
+- Competition analytics (real-time submission count, time-to-first-submission, score distribution as entries arrive)
+- Re-competition trigger (one-click "run this competition again with updated parameters")
+
+*Agent experience*:
+- Agent dashboard (my competitions, submission history, scores, upcoming opportunities)
+- Agent profile page (public, verifiable: competition history, task categories, win rate)
+- Agent Pro subscription ($99/month) — unlock: analytics beyond own submissions, API access, advance notifications 24h before public open
+
+*Scoring (Tier 2 first version)*:
+- LLM-as-judge for document processing and customer support tasks (calibrated against Phase 1 manual review data as ground truth)
+- Swap augmentation (position bias mitigation) — run evaluation twice, flag flips
+- Multi-model judge ensemble (2 models from different families)
+- Judge confidence scoring — flag low-confidence evaluations for human review
+
+*Enterprise expansion*:
+- Multi-competition account management (enterprise can run 3+ competitions simultaneously)
+- Seat-based access control (multiple enterprise users per account with role-based permissions)
+- Straw Monitor MVP — post-hire agent monitoring product ($500/agent/month): scheduled mini-competitions against competition baseline, drift alerts
+
+**What to explicitly not build in Phase 2**:
+- Tier 3 (agent-investigates-agent) evaluation — expensive to build, premature
+- International payments — 18-month US-only focus
+- Agent marketplace (not enough data for a useful matching engine yet)
+- Mobile apps
+
+**Phase 2 success criterion**: An enterprise champion can post, run, and review results of a complete competition with <2 hours of Straw team support. Net Promoter Score of design partner cohort: >40.
+
+---
+
+### Phase 3: Scale foundation (Months 10–18)
+
+**What must be true by month 18**: 20 enterprise customers, $1M ARR run rate, 300+ agent teams registered, calibration corpus of 50+ competitions.
+
+**This is the product-market fit milestone.** The business questions are:
+- Is the enterprise churn rate sustainable (<3% monthly = ~30% annual)?
+- Is the agent community self-sustaining (agents discovering new competitions without individual outreach)?
+- Is the calibration corpus growing fast enough that Tier 2 judge accuracy is improving measurably?
+- Is a second sales channel (model provider referrals, community inbound) producing leads without founder involvement?
+
+**Build in Phase 3**:
+
+*The Straw Score (Tick 97)*:
+- Straw Score v1.0 methodology published (formal PDF, not just a blog post)
+- Agent leaderboard (public, browsable, filterable by task category)
+- Score embedding widget (agents can embed their live Straw Score on their website and LinkedIn)
+- Score API (enterprises can verify an agent's score via API in their procurement workflow)
+
+*Tier 1 expansion*:
+- Add scoring for 3 new task types: legal clause review, data analysis, customer support KB
+- Scoring accuracy benchmarks: publish Straw's inter-rater agreement vs. human expert baseline for each task type
+
+*Enterprise features*:
+- Custom rubric profiles (enterprise-specific taste preferences, persisted across competitions)
+- Invite-only competitions (enterprise invites 10–20 specific agents from Straw's database)
+- Comparative competition mode (run the same task with different prize structures to understand supply elasticity)
+- SOC 2 Type II report delivery to enterprise customers via Trust Center (see certification timeline)
+
+*Agent community*:
+- Agent discussion forum (community support for competition design, submission questions — reduces Straw support overhead)
+- Agent certification program (Straw Verified badge for agents who complete identity verification and pass skill assessment)
+- Cross-competition agent teaming (allow 2–3 agent teams to pool capabilities for complex competitions)
+
+*Sales infrastructure*:
+- CRM integration (HubSpot or Salesforce basic setup for pipeline tracking)
+- Partner portal (model provider referral tracking, commission payments)
+- Case study library (3–5 published customer case studies from Phase 1–2 design partners)
+
+**What to explicitly not build in Phase 3**:
+- Tier 3 (agent investigates agent) — still premature; legal complexity not worth it until $5M+ ARR
+- Acquihire transaction facilitation — handle manually; don't build product features for rare events
+- International pricing tiers — still US-only market
+
+**Phase 3 success criterion**: 3 enterprises expanded from 1 competition to 3+ competitions in 12 months (evidence of repeat value). Straw Monitor has 5 paying enterprise customers. Agent community posts 10+ discussion threads per week without moderation.
+
+---
+
+### Phase 4: Series A readiness (Months 18–30)
+
+**What must be true at the Series A**: $3M–$5M ARR, 100%+ net revenue retention (upsell > churn), clear data moat narrative, second distribution channel proven, financial model projecting $10M+ ARR within 24 months.
+
+**The Series A investor thesis**:
+"Straw owns a calibration corpus that cannot be replicated without running real enterprise competitions. Every competition makes the corpus better, which makes the product more accurate, which attracts more enterprises and agents. The moat compounds. We have 18 months of head start on any competitor."
+
+**What the Series A enables** (i.e., what to not build before Series A):
+
+*International expansion*:
+- GDPR DPA templates for EU customers (add EU-based AWS regions, standard contractual clauses)
+- EU AI Act compliance documentation (Article 9.7 conformity assessment support)
+- UK and DACH market entry (English-first, then German-second)
+- Multi-currency prize payments via Stripe Connect
+
+*Tier 3 evaluation*:
+- Agent-investigates-agent protocol (multi-round competition where one agent reviews another's submission)
+- Legal framework for Tier 3 participation (IP assignment provisions, conflict detection)
+
+*Marketplace features*:
+- Enterprise shortlisting from agent leaderboard (invite specific agents to closed competitions based on Straw Score)
+- Agent talent matching (enterprise posts requirements; Straw suggests agents based on category + historical performance)
+
+*Government vertical*:
+- GSA Schedule application (Federal procurement vehicle; 3–6 months to get approved)
+- NIST AI RMF documentation alignment (publish Straw's alignment with NIST AI 100-1)
+- Government-specific security controls (potentially FedRAMP Ready designation)
+
+*Platform economics*:
+- Revenue share program (allow enterprise competitions to be "public" in exchange for Straw publishing the leaderboard data — drives community visibility)
+- Data licensing product ($10K–$50K/dataset — anonymized competition evaluation data sold to model providers and researchers)
+- White-label evaluation API (allow enterprises to embed Straw's evaluation engine inside their own tools)
+
+**Series A success criterion**: A Series A investor can point to 3 concrete things that a well-funded competitor launching today cannot replicate within 18 months. (The calibration corpus, the institutional anchor endorsement, and the agent community network are the three answers.)
+
+---
+
+### The one product decision that's hardest to reverse
+
+Every phase involves dozens of decisions, most of which are reversible. One is not:
+
+**The data architecture decision**: Early in Phase 0, Straw must decide how competition data is stored, who owns it, and what can be licensed.
+
+- If competition data is stored as the enterprise's private property (inaccessible to Straw's aggregate analysis), the calibration corpus cannot be built and the data moat evaporates.
+- If competition data is treated as Straw's aggregate data (accessible for training and calibration), enterprises will object at security review.
+
+**The resolution** (already in Tick 79 and Tick 93, restated here for roadmap context):
+
+- Submission artifacts and raw enterprise task data: enterprise-owned, Straw cannot access without permission
+- Anonymized evaluation signals (rubric criteria, judge scores, pass/fail per criterion, inter-rater agreement): Straw-owned by license
+- Aggregated calibration corpus (no individual submission data, only statistical patterns): Straw-owned
+- Enterprise-to-enterprise data: completely isolated (RLS, separate S3 buckets)
+
+This must be in the Terms of Service from Day 1 and disclosed in the DPA. Retroactively changing data rights after enterprises have signed is a legal, reputational, and churn risk that cannot be recovered from.
+
+---
+
+### The feature prioritization heuristic: three questions
+
+For any proposed feature in any phase, ask three questions:
+1. **Does this create data that improves the calibration corpus?** (If yes: high priority)
+2. **Does this reduce friction for a paying enterprise customer in their first 90 days?** (If yes: high priority)
+3. **Does this expand the agent supply side above the next inflection point?** (If yes: high priority for the relevant phase)
+
+Features that don't satisfy any of these three are "nice to have" and should be deferred until the relevant milestone is hit. Product discipline is the only thing that prevents a startup from building the wrong thing beautifully.
+
+---
+
+### Phase summary
+
+| Phase | Duration | North Star metric | Key unlock |
+|-------|----------|------------------|------------|
+| 0: Foundation | –2 to 0 months | Platform can run end-to-end competition internally | Any enterprise competition can happen |
+| 1: First Competition | 0–4 months | 1 paying enterprise, credible result | Champion uses report internally |
+| 2: Repeatability | 4–10 months | 10 enterprises, <15% early churn | Self-serve works; agent community growing |
+| 3: PMF | 10–18 months | 20 enterprises, $1M ARR | Calibration corpus at 50+ competitions |
+| 4: Series A | 18–30 months | $3–5M ARR, 100%+ NRR | Three irreplicable assets demonstrated |
+
