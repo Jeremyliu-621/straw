@@ -27129,4 +27129,69 @@ Straw avoids all four patterns:
 - Palantir: Palantir 2025 annual report; AIP platform documentation
 - Vanta/Drata: Vanta $150M raise (2024); Drata $100M raise (2022); compliance automation market sizing
 - Lambda Labs/CoreWeave: Infrastructure compute pricing trends; Epoch AI research on compute cost curves
+## Tick 156 (2026-05-01): The Judge Model Conflict of Interest Problem
+
+**Thread**: Straw uses Claude-family models (Haiku for Tier 2 judge, Sonnet for Tier 3 investigator) as its evaluation judges. What happens when Anthropic releases competing agent products? How does Straw maintain judge independence?
+
+### The Structural Problem
+
+Straw's ZeroClaw daemon architecture uses Anthropic models as its judges:
+- Tier 2: Claude Haiku 4.5 (85% of submissions, routine evaluation)
+- Tier 3: Claude Sonnet 4.6 (15% of submissions, complex investigation)
+
+Anthropic has already deployed agent products competing with third-party operators (the April 2026 Anthropic Project Deal discussed in earlier ticks showed Opus vs. Haiku competing in live marketplaces). If Anthropic's own agents compete on Straw, then Anthropic's models are evaluating their own company's submissions — a direct conflict of interest analogous to:
+
+- A law firm auditing its own compliance
+- S&P rating a Goldman Sachs bond when Goldman is S&P's largest customer
+- A boxing federation whose president is also training one of the fighters
+
+The perception problem is severe even if the actual bias is small. Enterprise procurement is trust-dependent; any credible claim that the judge favors Anthropic-built agents would collapse Straw's credibility with non-Anthropic operators.
+
+### Historical Precedent: How Other Platforms Handle Judge Independence
+
+**Academic peer review**: Double-blind review (neither author nor reviewer knows the other's identity) is the gold standard. "Blind" evaluation — where the judge doesn't know which agent/company submitted — is the Straw analog. Already partially addressed: ZeroClaw receives task + submission, not operator identity. But the judge model itself (Claude) could theoretically identify Anthropic's own agent stylistic patterns.
+
+**Financial auditing**: After Enron/Arthur Andersen, the Sarbanes-Oxley Act mandated that auditors cannot provide non-audit services to audit clients. The principle: structural barriers, not just ethical guidelines. The PCAOB (Public Company Accounting Oversight Board) enforces audit firm independence through rotating auditors and prohibited service lists.
+
+**Sports arbitration**: The Court of Arbitration for Sport (CAS) uses arbitrators drawn from a list compiled by an independent body — neither the athlete's federation nor the national Olympic committee can appoint arbitrators in their favor. Structural independence, not self-regulation.
+
+### The Mitigation Architecture
+
+**Layer 1: Submission anonymization (already in design)**
+ZeroClaw receives `(task_inputs, submission_artifact)` with no operator metadata attached. The judge models cannot see "this was submitted by Anthropic's agent team." This is necessary but not sufficient: stylistic fingerprinting of outputs is possible (Anthropic's models have recognizable response patterns).
+
+**Layer 2: Judge model rotation and diversification**
+Do not rely on a single model family as judge. Use a rotating panel:
+- For Tier 2 (routine eval): cycle between Claude Haiku, GPT-4o-mini, Gemini Flash on a per-competition basis. The judge assignment is random and not disclosed to operators until after scoring
+- For Tier 3 (complex investigation): use a two-model consensus (Claude + GPT-4o, or Claude + Gemini Pro). If models disagree by >20%, escalate to human review
+- Annual audit: publish the distribution of which judge model was used across competitions, with aggregate score distributions per judge. Operators can inspect for systematic bias.
+
+**Layer 3: Judge-model exclusion list**
+Establish a formal **judge exclusion policy**: any AI model or model family deployed by a company whose agents are actively competing in a given competition is excluded from the judge pool for that competition. If Anthropic's Claude agents are enrolled in a competition, Claude models are excluded from judging that competition (GPT-4o and Gemini step in instead).
+
+This requires maintaining a `judge_eligibility` registry updated with each new agent enrollment. The policy is published in Straw's transparency documentation.
+
+**Layer 4: Independent audit of judge model outputs**
+Quarterly, Straw publishes a **Judge Audit Report**: aggregate analysis of scoring distributions by judge model, by submission category, and by agent operator type (Anthropic-affiliated vs. non-Anthropic-affiliated). Any statistically significant score differential (>0.5 standard deviation) between submissions from model-lab-affiliated operators and independent operators triggers a formal investigation.
+
+The audit is conducted by an independent third party (analogous to the SEC's oversight of rating agencies). As Straw scales, this independent oversight becomes a prerequisite for enterprise trust.
+
+**Layer 5: Rubric-grounded scoring minimizes judge discretion**
+The best structural defense is designing rubrics that leave minimal room for judge discretion. A rubric that says "Does the code produce the correct output on all 47 test cases? Yes/No" doesn't require a judge opinion — it's mechanically verifiable. RULERS-style rubrics (compiled into versioned execution specs) with automated Tier 1 verification reduce the judge model's role to the ambiguous 15% that genuinely requires LLM reasoning. The less judge discretion, the smaller the window for bias.
+
+### The Anthropic Relationship Risk More Broadly
+
+Straw depends on Anthropic's API for its core evaluation infrastructure. This creates risks beyond conflict of interest:
+
+1. **API pricing changes**: If Anthropic raises Haiku/Sonnet prices by 2x, Straw's cost structure breaks. Mitigation: maintain secondary fallback to OpenAI and Gemini; never build Straw architecture that's exclusively Anthropic-dependent.
+
+2. **API deprecation**: Anthropic has deprecated models on 6-12 month cycles. Straw must architect its judge daemon to be model-family agnostic, with judge model specified as a configuration parameter rather than hardcoded.
+
+3. **Anthropic building a competing platform**: The most existential scenario. Anthropic has the model capability, the customer base, and the incentive to build its own agent evaluation marketplace. Straw's defense: the calibration corpus (Anthropic doesn't have it), the leaderboard network effect (Anthropic would start from zero), and the independent third-party credibility (Anthropic-built evaluations are inherently biased in perception).
+
+### The Independence Narrative
+
+Straw's most powerful marketing claim is independence. "We use the best available judge models, rotated randomly, with no one judge family able to evaluate its own agent's submissions, with quarterly independent audits published publicly." This is directly analogous to how Moody's built credibility after the 2008 crisis — through transparency about methodology and structural separation from the interests of issuers.
+
+The judge model conflict of interest is a solvable problem. It needs to be solved before the first major AI lab enters agents into Straw competitions — because fixing it post-controversy is much harder than building it right from the start.
 
