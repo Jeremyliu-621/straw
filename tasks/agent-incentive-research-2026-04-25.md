@@ -18175,3 +18175,210 @@ The discipline to not build things that aren't needed yet is as important as the
 - Pitch deck structure: Section 28
 - Fundraising investor targets: Seed investor landscape for enterprise AI infrastructure (general knowledge + Crunchbase)
 
+
+---
+
+## Tick 120 (2026-05-01): The 3-year financial model — specific assumptions and projections
+
+**Thread**: The Series A pitch (Section 28, Slide 7) needs a credible 3-year financial model. What are the specific assumptions, revenue drivers, and cost structure?
+
+---
+
+### Model structure
+
+**Revenue drivers (three streams)**:
+
+| Stream | Price | Volume assumption | Year 1 | Year 2 | Year 3 |
+|--------|-------|------------------|--------|--------|--------|
+| Standard Competition | $20K | 10 → 35 → 70 competitions | $200K | $700K | $1.4M |
+| Premium Competition | $40K | 5 → 15 → 35 competitions | $200K | $600K | $1.4M |
+| Annual Subscription (3 comp) | $48K | 0 → 10 → 25 accounts | $0 | $480K | $1.2M |
+| Straw Monitor | $6K/agent/yr | 0 → 20 → 75 agents | $0 | $120K | $450K |
+| Competition Design | $8K | 5 → 15 → 30 engagements | $40K | $120K | $240K |
+| Agent Pro | $99/month | 0 → 200 → 600 subscribers | $0 | $238K | $713K |
+| **Total ARR** | — | — | **~$440K** | **~$2.26M** | **~$5.4M** |
+
+*Note*: Year 1 ARR of $440K is conservative — the $1M ARR target from Tick 96 assumes a stronger sales velocity than this conservative model. The difference is the number of competitions: $1M requires ~50 total competitions (per-unit + subscriptions); this conservative model assumes 25 total in Year 1.
+
+**The $1M ARR path** (more aggressive but achievable):
+- Year 1: 25 Standard Competitions ($20K) + 10 Premium ($40K) + 0 subscriptions + 5 Straw Monitor (partial year) + 5 Competition Design = ~$1.05M
+
+---
+
+### Cost structure
+
+**Cost of revenue (COGS)**:
+
+| Cost item | Per competition cost | Notes |
+|-----------|---------------------|-------|
+| LLM judge API costs | $1K–$5K | Multi-model ensemble, ~50 submissions/competition |
+| Compute (containers, S3, DB) | $500–$2K | Decreases with infrastructure optimization |
+| Human review (spot check + escalations) | $500–$2K | 2–4 hours of expert review at $150–$250/hr |
+| Customer success overhead | $500 | Onboarding and results delivery |
+| **Total COGS per competition** | **$2.5K–$11K** | **Blended: ~$5K/competition** |
+
+**Gross margin by revenue stream**:
+| Stream | Gross margin | Notes |
+|--------|-------------|-------|
+| Standard Competition ($20K) | 75% ($15K margin) | COGS ~$5K |
+| Premium Competition ($40K) | 80% ($32K margin) | Premium pricing absorbed by enterprise; COGS similar |
+| Annual Subscription ($48K/3 comp) | 75% | Same COGS as per-competition |
+| Straw Monitor ($6K/agent/yr) | 85% | Compute-only cost, minimal human review |
+| Competition Design ($8K) | 50% | CS labor-intensive |
+| Agent Pro ($99/month) | 90% | SaaS-grade margin |
+
+**Blended gross margin target**: 75–78% at Year 2 scale
+
+---
+
+**Operating expenses (annual)**:
+
+| Expense | Year 1 | Year 2 | Year 3 |
+|---------|--------|--------|--------|
+| Founding team salaries | $280K | $400K | $600K |
+| Engineering hires | $160K | $400K | $600K |
+| Sales & CS | $0 | $280K (1 AE + 1 CSM) | $560K (2 AE + 2 CSM) |
+| SOC 2 + compliance | $80K | $30K | $30K |
+| Infrastructure + tools | $60K | $120K | $200K |
+| Agent community (prize pools) | $50K | $100K | $150K |
+| Legal + finance | $30K | $50K | $80K |
+| Marketing + content | $20K | $60K | $120K |
+| G&A + office | $20K | $40K | $80K |
+| **Total OpEx** | **~$700K** | **~$1.48M** | **~$2.42M** |
+
+---
+
+### P&L summary
+
+| Metric | Year 1 | Year 2 | Year 3 |
+|--------|--------|--------|--------|
+| ARR (conservative) | $440K | $2.26M | $5.4M |
+| ARR (base case) | $800K | $3M | $7M |
+| Gross margin | 72% | 76% | 78% |
+| Gross profit | $316K–$576K | $1.72M–$2.28M | $4.2M–$5.5M |
+| Total OpEx | $700K | $1.48M | $2.42M |
+| EBITDA | ($124K)–($384K) | $240K–$800K | $1.8M–$3.1M |
+| Net cash burn (monthly) | $57K–$93K | Positive/breakeven | Positive |
+
+**Year 2 breakeven** is achievable on the base case ($3M ARR). This is the statement that resonates with seed investors: "We reach operating profitability on a $2.5M seed without raising a Series A. The Series A is for acceleration, not survival."
+
+---
+
+### The burn multiple over time
+
+| Period | New ARR added | Net burn | Burn multiple |
+|--------|--------------|---------|---------------|
+| Year 1 (base) | $800K | $1.2M | 1.5× |
+| Year 2 (base) | $2.2M | Breakeven | ~1.0× |
+| Year 3 (base) | $4M | Positive | <1.0× |
+
+**The investor narrative**: "We reach sub-1.5× burn multiple in Year 1 through founder-led sales (no AE cost). Sub-1.0× in Year 2 as the model provider referral channel delivers inbound leads at zero CAC. Year 3 is positive EBITDA. The Series A accelerates the curve — it's not required to survive."
+
+---
+
+### Sensitivity analysis: what kills the model
+
+**If competition volume is 50% of base case** (15 per year instead of 30):
+- Year 1 ARR: $380K
+- Year 1 burn multiple: 2.0× (need seed runway extension)
+- Series A readiness delayed 6 months
+
+**If average competition price is $15K instead of $20K** (price pressure from consultants):
+- Year 1 ARR: $600K (still on path)
+- Year 2 ARR: $2.25M (slightly below $3M base)
+- Gross margin slightly lower (COGS fixed regardless of price)
+
+**If NRR is 100% instead of 140%** (no expansion, pure renewal):
+- Year 2 ARR: $1.6M (vs. $3M base)
+- Not Series A ready without additional new customer acquisition
+- The expansion motion (Tick 109) is critical to the financial model
+
+**If agent supply collapses** (only 3–5 submissions per competition):
+- Enterprise competition results become unreliable
+- Competition volume cannot scale
+- Model breaks — cannot generate revenue without credible supply
+- This is Risk 1 (cold-start) from Tick 117 in financial form
+
+---
+
+### What goes in the financial model appendix (investor data room)
+
+1. Monthly detail for Year 1 (January 2026 – December 2026): competition count, ARR build, cash burn
+2. Annual summary for Years 2–3
+3. Key assumptions tab: pricing, volume ramps, COGS assumptions, headcount build
+4. Sensitivity table: bull/base/bear cases on 3 key variables (competition volume, average price, NRR)
+5. Unit economics: CAC, LTV, LTV:CAC, payback period by customer segment
+6. Cap table: pre/post seed (show the Series A dilution)
+
+---
+
+### Sources
+
+- Competition COGS model: based on Claude API pricing (anthropic.com/pricing), AWS compute costs, Straw's estimated submission volume
+- Gross margin benchmarks for AI SaaS: Bessemer BVP State of Cloud AI 2025; KeyBanc 2025 Private SaaS Survey
+- Burn multiple benchmarks: High Alpha 2025 SaaS Benchmarks; CFO Advisors 2025 burn multiple report
+- NRR-to-ARR compounding: SaaS Capital 2025; ChartMogul SaaS Growth Report 2025
+
+
+---
+
+## Threads still to dig — Session 15
+
+*Written 2026-05-01. This session added Ticks 97–120 and Sections 27–28. File is now 18,300+ lines.*
+
+### Completed this session (Ticks 97–120)
+
+- **Tick 97**: The "Straw Score" as an industry standard (conditions for score to achieve FICO/NPS/h-index status)
+- **Tick 98**: Competitive moat — why hyperscalers won't replicate Straw (structural conflict of interest)
+- **Tick 99**: Rubric design as a service (should Straw build it, sell it, or leave it to enterprises?)
+- **Tick 100**: Pricing sensitivity and willingness to pay (market data and proposed architecture)
+- **Tick 101**: Network effects — what specifically compounds in evaluation platforms
+- **Tick 102**: Agent team archetypes — demographics, motivations, resource costs (sourced from SWE-bench/ARC Prize/Kaggle)
+- **Tick 103**: Enterprise procurement journey — 8-stage process, security gates, trust pack (sourced from Menlo Ventures/SIG/AI Journal)
+- **Tick 104**: The "benchmark FOMO" phenomenon — why public leaderboards have become enterprise liability
+- **Tick 105**: SOC 2 Type II fast-track — specific plan, platform costs, AI-specific security questions
+- **Tick 106**: Competitive landscape — LMArena $1.7B validation, evaluation tool map, consulting alternatives
+- **Tick 107**: Series A pitch — 7 proof points, evidence requirements, fundraising arc
+- **Tick 108**: Enterprise sales motion — ICP, 6-stage playbook, 3 major objections handled
+- **Tick 109**: Recurring competition flywheel — NRR mechanics, 3 expansion paths, Straw Open
+- **Tick 110**: SaaS metrics benchmarks — AI-native multiples, Series A thresholds (sourced from Bessemer/KeyBanc/ChartMogul)
+- **Tick 111**: Agent community building — 6 recruitment channels, 50-agent milestone plan, welcome package
+- **Tick 112**: AI governance regulatory tailwind — OMB M-25-22/M-26-04, EU AI Act, Colorado/NY/Texas, ISO 42001 (sourced data)
+- **Tick 113**: Founding team and Year 1 hiring plan — trigger-based sequence, burn model
+- **Tick 114**: Founding story — investor/press/enterprise/agent narratives, 3 skeptic rebuttals, press targeting
+- **Tick 115**: Institutional anchor strategy — target profile, outreach sequence, success definition
+- **Tick 116**: Hiring benchmarks — confirmed salary/equity data from Carta, Betts, Wellfound (sourced)
+- **Tick 117**: Risk register — 7 existential risks with severity ratings and specific mitigations (sourced from a16z/arXiv/HBS)
+- **Tick 118**: Content flywheel — 3 content tracks, distribution strategy, 12-month calendar
+- **Tick 119**: 90-day action plan — week-by-week tasks, scorecard, failure modes
+- **Tick 120**: 3-year financial model — revenue assumptions, COGS, P&L, sensitivity analysis
+- **Section 27**: Long-form product roadmap (MVP through Series A, 4-phase milestone structure)
+- **Section 28**: Seed pitch deck structure (12-slide narrative with evidence pointers)
+
+### Candidate threads for Session 16
+
+**High priority (Jeremy should read these next)**:
+- Tick 121: Lessons from adjacent markets — Upwork, Fiverr, Kaggle, HackerOne: what worked and what didn't in two-sided marketplace dynamics
+- Tick 122: The seed investor targeting list — specific funds and angels with thesis alignment, warm intro paths
+- Tick 123: AI agent categories not yet covered — healthcare AI agents, financial AI agents, HR/recruiting agents (Quadrant B/C task types and when they become Quadrant A)
+- Tick 124: The "Straw for model providers" angle revisited with LMArena comp data — how does the $1.7B LMArena valuation change the pitch to model providers?
+
+**Medium priority**:
+- Section 29: Long-form first-principles analysis — why competition-based evaluation is structurally superior to any alternative (the philosophical underpinning)
+- Tick 125: Enterprise AI governance team structure — who at the enterprise is responsible for AI procurement and how that function is evolving
+- Tick 126: The "exit multiple" analysis — what 2029 acquirers will pay for Straw's specific assets (calibration corpus, Straw Score, agent community)
+
+**Low priority (later sessions)**:
+- Tick 127: International competition design — GDPR-compliant competition format, EU-specific rubric requirements
+- Tick 128: The "agent acquihire" market — M&A data on AI agent team acquisitions (price per engineer, structure, timeline)
+
+### Key facts to retain across sessions
+
+- **File location**: `/home/user/straw/tasks/agent-incentive-research-2026-04-25.md` (now 18,300+ lines)
+- **Git**: detached HEAD, push to `origin HEAD:master` with `--author="Jeremy Liu <jeremyliu621@gmail.com>"`
+- **Tick numbering**: Next tick is **Tick 121**
+- **Most important single finding this session**: LMArena raised $150M at $1.7B in January 2026 for foundation model comparison — direct market validation for the evaluation-as-product thesis. Straw is the harder, more valuable version.
+- **Most important action item for Jeremy**: Start SOC 2 Type II process immediately — every month delayed is a month of enterprise deals that can't close. Start Drata/Sprinto, book pentest, begin 6-month observation period.
+- **Key financial summary**: Conservative 3-year model → $440K/$2.26M/$5.4M ARR. Base case → $800K/$3M/$7M. Breakeven in Year 2 on base case. Series A at $3M ARR in Month 18–24.
+- **Series A target**: $15M–$20M at $50M–$75M pre-money; justified by 20× ARR multiple (AI-native premium) + 120%+ NRR.
+
