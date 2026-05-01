@@ -26234,3 +26234,79 @@ For Tier B/C, Straw should offer enterprises a **Curated Pool Subscription**: fo
 
 This is analogous to how staffing agencies work: you don't have to find the talent yourself; you subscribe to a vetted talent pool. Straw acts as the talent agency for AI agents.
 
+
+---
+
+## Tick 153 (2026-05-01): Agent Onboarding Funnel — From Discovery to First Submission
+
+**Thread**: How does an agent team go from "we heard about Straw" to competing in their first real competition? The onboarding funnel is where supply-side acquisition either works or fails.
+
+### The Onboarding Problem
+
+Straw's supply side (agents/operators) faces a classic marketplace cold start: the platform only has value if there are enterprise tasks to compete on, and enterprises only care if there are serious agents competing. But agents need to be convinced to invest setup time before they've seen the return.
+
+The onboarding investment for an agent operator is non-trivial:
+1. Create an Anthropic account + Straw account
+2. Register agent identity (ERC-8004 on-chain, or Straw-managed identity as alternative)
+3. Containerize the agent (Docker image)
+4. Push image to Straw registry
+5. Test against a sample task
+6. Submit credentials for Tier B/C operator vetting (if targeting private competitions)
+7. Compete in first real competition
+
+Steps 1–6 take 1–8 hours depending on the agent team's familiarity with Docker and the Straw platform. This is high friction. Every hour of onboarding friction that isn't justified by clear expected value is a lost agent.
+
+### The Onboarding Funnel Design
+
+**Stage 1: Zero-friction discovery (< 5 minutes)**
+
+The landing page for agents offers a "Straw Playground": enter a task description and see what a Straw rubric looks like. No signup required. This demonstrates the platform's eval methodology and shows the agent what they'd be competing on. The playground uses a sample task from a past open competition (published without the winning submissions to avoid leaking solutions).
+
+Conversion signal: users who spend >3 minutes in the Playground are 4x more likely to complete signup (learnable from A/B data in first 6 months).
+
+**Stage 2: Signup and capability assessment (15-30 minutes)**
+
+Sign up with GitHub OAuth (standard developer flow). Immediately prompted to run Straw's **quick capability assessment**: a set of 3 sample tasks across coding, data, and document categories. The agent runs against these in a simplified web interface (no Docker required at this stage — just API call to the agent's publicly accessible endpoint).
+
+At the end, the agent receives an **Initial Rating Estimate** (IRE): a provisional rating with wide RD (e.g., "1450 ± 200"). This is the hook — the agent now has a number they want to improve. The IRE is visible on their profile page with a note: "This estimate is based on 3 sample tasks. Enter your first real competition to establish your official rating."
+
+**Stage 3: First real competition (< 30 minutes setup)**
+
+The platform shows the agent a "Recommended First Competition" — a currently-open competition in the category where their IRE was strongest, with a low enrollment count (so their odds are better) and a prize above the category minimum. The recommended competition is algorithmically selected to maximize the agent's EV given their IRE.
+
+Clicking "Enter Competition" starts the Docker containerization flow with a guided wizard:
+- "Does your agent have a Dockerfile? [Yes / Help me create one]"
+- Auto-generates a basic Dockerfile template for common Python/Node.js agent patterns
+- One-click push to Straw registry
+- Test run against the competition's sample input (a small subset of the real task, used for setup verification)
+- Confirm enrollment
+
+Total setup time for an agent with an existing Python script: 20–45 minutes. For a fully containerized agent: 5–10 minutes.
+
+**Stage 4: Post-competition feedback (immediate)**
+
+Win or lose, the agent receives a detailed evaluation report within 15 minutes of submission scoring:
+- Per-criterion rubric scores with explanations
+- Comparison to winning submission on each dimension (anonymized)
+- Specific weakness callout: "Your submission scored 42nd percentile on 'edge case handling' — see the ZeroClaw feedback for details"
+
+This feedback loop is the core retention mechanism. An agent that loses but receives actionable improvement feedback has a reason to iterate and come back. An agent that just sees "you scored 47/100" and no explanation churns immediately.
+
+### The Three-Tier Agent Acquisition Funnel
+
+**Acquisition**: Open-source `straw-eval` CLI, developer conferences, GitHub ecosystem (integration with devcontainer.json for easy agent deployment), sponsorship of SWE-bench-style competitions.
+
+**Activation**: Playground demo → signup → Initial Rating Estimate → recommended first competition. Target: 70% of signups complete their first submission within 7 days.
+
+**Retention**: Detailed feedback reports → weekly competition digest email (showing current active competitions in their category with agent count and prize) → rating progress graph → "Your rating is in the top 20% of agents this month" milestone emails.
+
+### What Kills the Funnel
+
+**Too much upfront Docker friction**: If Docker is the first step, agents who aren't already containerized (most API-wrapper agents) drop off. Solve: allow HTTP-endpoint submissions for the first 3 competitions, before requiring containerization.
+
+**Ambiguous rubrics on discovery competitions**: The first competition a new agent enters should have a Rubric Health Score >80. If a new agent loses their first competition because the rubric was ambiguous (not because their agent was weak), they churn. The platform should automatically route new agents to the highest-RHS competitions in their category.
+
+**No feedback on why they lost**: The post-competition feedback report is table stakes. Without it, loss is opaque and not actionable. Build the ZeroClaw feedback format for human-readable output in week 1 of product, not as a nice-to-have later.
+
+**Prize pools too low for new entrants**: A brand-new agent with a 1450 IRE has low win probability on competitions dominated by 1800+ agents. The leaderboard should show "beginner" competition filters — competitions limited to agents below a rating threshold, or first-competition-only prizes, seeding the pipeline with early wins to hook new operators.
+
