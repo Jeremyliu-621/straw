@@ -29080,3 +29080,70 @@ The investor narrative at Series B reduces to three provable claims:
 
 That's the Series B pitch. Three claims, all verifiable, no hedge language.
 
+
+---
+
+## Tick 165 (2026-05-01): Straw for Non-AI Software — The Expansion Vector and When to Tell It
+
+**Thread**: Is competition-based evaluation uniquely suited to AI agents, or does it generalize to all enterprise software procurement?
+
+### The Broken State of Non-AI Enterprise Software Procurement
+
+Current enterprise software procurement for CRM, ERP, and cybersecurity tools follows a pattern that has survived decades without structural improvement: RFP → vendor demos → reference calls → POC trial → committee vote.
+
+Each stage contains a structural flaw:
+- **RFPs reward vendors who write well**, not vendors whose software works. The procurement document is a marketing exercise.
+- **Demos are always optimized for the best-case path** — no AE ever demos what happens when a migration fails or a custom object breaks the UI.
+- **Reference calls are cherry-picked** — every vendor offers only references who love them.
+- **POC trials are time-boxed, under-resourced, and evaluated against inconsistently defined criteria** — which is just "demo with your own data."
+
+The core failure: no objective, company-defined rubric applied consistently across all vendors simultaneously. Gartner MQ and G2 reviews aggregate signals from other companies with different problems. None of that answers: "Does Vendor A's ERP handle our multi-currency inventory situation better than Vendor B's for our specific 300-person manufacturing operation?"
+
+Enterprise software deals take 6-18 months to close. The drag is almost entirely in the evaluation phase — not because evaluation is hard, but because the evaluation process is theater.
+
+---
+
+### Prior Art: The RFP Automation and POC Management Markets
+
+**What exists and what it solves**:
+
+The RFP automation market (Loopio, RFPIO/Responsive, RFP365) attacks the *vendor-response* side of the problem, not the buyer-evaluation side. These tools help vendors fill out RFPs faster with AI-assisted auto-fill. They make the theater more efficient; they do not eliminate it.
+
+Consensus and Gong's close-plan features are *buyer-enablement* tools — they help vendors send personalized demos to multiple stakeholders. Also vendor-side. They do not evaluate vendors; they help vendors evaluate buyers.
+
+The closest genuine prior art is POC management tools (Proof/DealPoint): project management for evaluation milestones. "Did Vendor A complete POC milestone 3 on Tuesday?" — these track that. They do not score whether Vendor A's output was actually good.
+
+True head-to-head "software bake-off" evaluation platforms do not exist as a product category. The closest analog is boutique IT advisory firms that run structured vendor evaluations as consulting engagements — $150K-$400K, six months, one engagement at a time, not scalable.
+
+---
+
+### The AI-Specific Advantage: Why Straw Only Works for AI Agents Today
+
+This is the crux, and it is absolute.
+
+**Traditional software cannot attempt arbitrary tasks**. If you post "process these 500 invoices according to our reconciliation rules and produce a variance report," a CRM vendor cannot run that task programmatically. They can show you a demo. They can give you a sandbox. But the sandbox requires your engineers to configure it, load test data, and manually evaluate the output. Vendor comparison then relies on your engineers' impressionistic judgment across six different sandbox environments they spent three weeks setting up.
+
+**AI agents can attempt any task presented in natural language**. An autonomous agent reads the task spec, writes code or executes steps, and produces output — without requiring the buyer to configure a vendor-specific integration first. This makes competition-based evaluation tractable for AI agents in a way that is physically impossible for traditional software.
+
+The narrow adjacent case where it could work for traditional software: API-first tools (data transformation, document processing, infrastructure automation) where you can write a test harness that calls the vendor's API and evaluates the output. But this requires technical sophistication from the buyer, only works for API-surfaced functionality, and still requires vendor-specific integration work per competitor. The AI agent case eliminates all three constraints.
+
+---
+
+### Strategic Recommendation: Plant the Flag, Don't Lead With It
+
+**Do not lead with "Straw for all enterprise software procurement" at seed stage.**
+
+Reason 1: The AI agent evaluation problem is crisp, urgent, and has no existing solution. The enterprise software procurement problem is vast, entrenched, and has many partially-adequate solutions. Expanding the pitch makes both weaker.
+
+Reason 2: "We fix procurement broadly" sounds like consulting territory. "We fix the specific broken thing that every VP of Engineering is experiencing right now as AI agents flood the market" is a product.
+
+**But plant the flag in one sentence**: "Competition-based evaluation works for AI agents specifically because agents can attempt any task. As software procurement increasingly involves AI capabilities — and as AI agents start building other software — Straw's model becomes the natural evaluation layer for all of it."
+
+That is a one-sentence expansion vector that signals category vision without diluting the v1 thesis. Sophisticated seed investors will see the optionality; they don't need it spelled out.
+
+**The expansion trigger**: The first customer who asks "can I use this to evaluate three competing automation vendors on a real task?" provides the market signal to build the generalized version. That is a much stronger position than claiming the generalized version pre-launch.
+
+**Timeline**: Build Straw for AI agents → prove the model → Series A framing includes "Straw for API-first tools" as the expansion layer → Series B includes "Straw for any verifiable software capability."
+
+The Series B story writes itself: "We started with AI agents because they were the first software that could attempt any task without pre-integration. The first 18 months proved the model. Now we're extending competition-based evaluation to any software that exposes an API — starting with the $400B enterprise automation market where RPA tools, AI coding assistants, and workflow platforms compete for the same budget." That's a $10B-category company narrative. Don't burn it at seed.
+
