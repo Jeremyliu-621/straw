@@ -27195,3 +27195,85 @@ Straw's most powerful marketing claim is independence. "We use the best availabl
 
 The judge model conflict of interest is a solvable problem. It needs to be solved before the first major AI lab enters agents into Straw competitions — because fixing it post-controversy is much harder than building it right from the start.
 
+
+---
+
+## Tick 157 (2026-05-01): Enterprise Customer Success — The First 90 Days Playbook
+
+**Thread**: What does Straw need to do in the first 90 days with a new enterprise customer to ensure renewal and expansion?
+
+### Why the First 90 Days Are Decisive
+
+Enterprise SaaS churn is overwhelmingly driven by poor onboarding and early value delivery failure. For Straw specifically, the risk is concentrated:
+
+- If the enterprise's first competition produces no winner they can actually use, they attribute failure to Straw, not to a bad rubric or inappropriate task choice
+- If the winning agent delivers but the enterprise doesn't know how to operationalize the hire, the value dissipates
+- If the enterprise tries a second competition but doesn't see improvement over their internal methods, they deprioritize the platform
+
+The good news: enterprises that run 3+ successful competitions in the first 90 days have dramatically higher retention (hypothesis, but consistent with Kaggle and other competition platform data: early power users are long-term users).
+
+### Days 1–14: Task Selection and Rubric Design
+
+The first Straw competition is the most important. If it fails, the customer likely churns.
+
+**Dedicated onboarding specialist** (or automated wizard for self-serve tier): The enterprise's first task should be selected from their existing backlog of work — not invented for the Straw pilot. Common mistake: enterprises choose a synthetic demo task rather than a real workflow task. Synthetic tasks don't prove ROI; real workflow tasks do.
+
+The onboarding specialist role is to:
+1. Inventory 5–10 candidate tasks from the enterprise's backlog
+2. Apply the task category taxonomy (Tick 148) to identify the 2–3 that are most Straw-native (high evaluability, high isolation, high repeatability)
+3. Run the candidate tasks through the Rubric Health Score tool and pick the one with the highest RHS
+4. Draft the rubric together with the enterprise stakeholder — never let the enterprise write the rubric alone on the first attempt
+
+**Target**: First competition live within 14 days of contract signature.
+
+### Days 15–45: First Competition and Winner Selection
+
+The first competition runs for 72 hours (standard). Straw's customer success manager:
+- Monitors enrollment count daily; if enrollment is below 10 agents at the 48-hour mark, reaches out to manually invite category-specific high-rated agents from Straw's catalog
+- Provides a mid-competition "participation report" to the enterprise: "17 agents enrolled, 8 have submitted, median score so far is 72/100"
+- At competition close, presents the top 3 results with a summary of per-criterion scores and the ZeroClaw evaluation rationale
+
+If no winner is clearly superior, the CSM works with the enterprise to select a winner for a 30-day trial hire. The trial hire framing is critical: it transforms "we're hiring an untested AI" into "we're evaluating the winner further before committing" — much lower perceived risk.
+
+**Target**: First trial hire agreement signed within 45 days of contract signature.
+
+### Days 46–75: Trial Hire Evaluation and Second Competition
+
+During the 30-day trial, the enterprise uses the winning agent on a real internal workflow with the CSM's help to:
+- Define specific success metrics for the trial (task completion rate, quality vs. baseline, time saved)
+- Document outcome at day 30 against those metrics
+- Decide: extend hire, license, acquihire, or look for a better agent
+
+Simultaneously, the CSM pitches a **second competition** — a different task category from the first, or a deeper variant of the same category. The second competition:
+- Uses learnings from the first (rubric improvements, better prize calibration)
+- Demonstrates that Straw isn't a one-trick platform
+- Builds the habit of recurring competition usage
+
+**Target**: Second competition live within 60 days; trial hire outcome documented within 75 days.
+
+### Days 76–90: Expansion and Renewal Framing
+
+At day 90, Straw has (ideally):
+- 2 completed competitions with documented outcomes
+- 1 active trial hire with measurable results
+- Data showing: time saved, quality vs. baseline, cost vs. alternatives
+
+The renewal/expansion conversation is data-driven: "Here's the ROI you got from your $6K in prize pools + $2K platform fee ($8K total). The trial hire delivered X hours of work that your internal team would have taken Y hours to complete, at equivalent quality."
+
+For expansion, the CSM pitches moving from self-serve (Tier A) to managed (Tier B/C) based on the enterprise's planned use cases. The upsell is primarily about volume commitment (annual competition subscription with discounted take rate) rather than feature upsells.
+
+### The CSM Coverage Model at Scale
+
+- **Self-serve tier** (<$5K annual spend): Automated success via in-product prompts, email sequences, and a chatbot CSM. No human CSM.
+- **Standard tier** ($5K–$50K annual spend): Pooled CSM coverage (1 CSM : 30 accounts). Primarily reactive support + proactive check-in calls at day 14, day 45, and day 90.
+- **Enterprise tier** (>$50K annual spend, or Tier B/C competitions): Dedicated CSM (1 CSM : 10 accounts). Full onboarding engagement, rubric design workshops, post-competition debrief calls.
+
+**NPS baseline target by 90 days**: ≥50. Enterprise SaaS median NPS for B2B platforms is ~35; Straw should target above median due to the high-involvement, high-trust nature of the relationship.
+
+### What Kills the First 90 Days
+
+1. **Bad rubric on the first competition**: The most common failure mode. Prevention: force rubric design collaboration in the first 14 days; never let enterprises self-serve their first rubric without review
+2. **Winning agent fails the trial hire**: Rare if the competition was well-designed, but possible. Prevention: set trial hire success metrics explicitly before it starts; "failure" should mean "didn't meet the pre-agreed criteria," not "our engineer didn't like the output format"
+3. **No clear ROI articulation**: Enterprise stakeholder moves on to other projects. Prevention: build ROI documentation into the 90-day workflow; give the CSM a template for summarizing "here's what you got"
+4. **Procurement friction on the trial hire agreement**: Legal/IT delays on the agent hire agreement paperwork. Prevention: standardize the hire agreement template (thin legal document, not a 40-page MSA); make default terms auto-acceptable so the enterprise can start the trial the same day the competition closes
+
