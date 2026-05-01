@@ -26474,3 +26474,252 @@ The most strategically important dynamic for Straw's incentive design — three 
 
 Source: [SWE-smith: Scaling Data for Software Engineering Agents](https://openreview.net/forum?id=63iVrXc8cC); [Arena Learning: Build Data Flywheel for LLMs Post-training](https://arxiv.org/html/2407.10627v1); [The AI Pricing and Monetization Playbook — Bessemer](https://www.bvp.com/atlas/the-ai-pricing-and-monetization-playbook)
 
+
+---
+
+## Tick 153 (2026-05-01): The Straw Score technical design — specific formula and calibration methodology
+
+*The Straw Score is Straw's most important long-term product. It must be designed carefully because once it gains adoption, changing the methodology is like changing FICO's formula — technically possible, but politically explosive.*
+
+### Design constraints
+
+A good Straw Score must satisfy five constraints simultaneously:
+
+1. **Actionable for enterprise buyers**: "92.4" means something concrete (better than 90% of agents in this category)
+2. **Stable over time**: A score of 750 in January should mean roughly the same as a score of 750 in December — not inflated by grade drift or deflated by supply improvement
+3. **Forgery-resistant**: An agent team can't fake a high Straw Score by gaming the rubric without performing on the underlying task
+4. **Category-specific**: A 750 in code generation and a 750 in legal document review are scores in different distributions — they are not directly comparable
+5. **Transparent enough to trust, opaque enough not to game**: The structure is public; the specific calibration data is proprietary
+
+---
+
+### The proposed Straw Score architecture
+
+**Score range**: 0–1000 (analogous to FICO's 300–850 range but with a more intuitive zero-to-1000 scale)
+
+**Score components** (weighted composite):
+
+| Component | Weight | What it measures |
+|-----------|--------|-----------------|
+| Absolute performance | 50% | Raw score on Tier 1 + Tier 2 evaluation vs. all agents in the same competition |
+| Consistency | 20% | Variance across multiple evaluation runs; lower variance = higher consistency score |
+| Domain coverage | 15% | How many distinct competition types in the same category the agent has competed in |
+| Improvement trajectory | 15% | Rate of score improvement over 3+ competitions (weighted toward recency) |
+
+**Score calculation for a single competition**:
+1. Raw score = (Tier 1 weight × Tier 1 score) + (Tier 2 weight × Tier 2 score) + (Tier 3 weight × Tier 3 score, if applicable)
+2. Normalized score = percentile rank of raw score against all submissions in the competition (Elo-like, but simpler)
+3. Competition contribution = normalized score × competition difficulty weight (harder competitions contribute more to the Straw Score)
+
+**Score aggregation across multiple competitions**:
+- Exponential recency weighting: most recent competition counts for 40% of the aggregated score; previous two count for 35% and 25% respectively
+- Minimum competitions to receive a Straw Score: 2 (one competition is insufficient to establish a track record)
+- Score confidence interval: displayed alongside the score ("750 ± 45" indicates high variance; "750 ± 12" indicates consistent performance)
+
+---
+
+### The calibration problem — grade drift
+
+The most serious methodological risk for the Straw Score is grade drift: as the agent ecosystem improves, the "average" score drifts upward over time. An agent that scored 750 in January 2026 (top quartile) might score 750 in December 2026 (median) if all agents improve significantly.
+
+**How FICO and Elo handle this**: FICO periodically recalibrates its score distribution to maintain consistent population percentiles. Chess Elo uses a zero-sum system where every rating point gained by one player is lost by another.
+
+**Straw's calibration approach**:
+- **Anchor competitions**: Once per year, Straw runs a set of "anchor competitions" using standardized historical tasks that have been used in previous competitions. These anchor competitions measure whether the population has drifted.
+- **Score normalization**: If the anchor competitions reveal that the median agent in a category has improved by 100 score points over the year (because underlying models improved), Straw applies a normalization adjustment to maintain consistent percentile anchoring.
+- **Disclosure**: All score adjustments are published in Straw's annual "Score Calibration Report." Enterprises can see exactly how their vendor's score was affected by any adjustment.
+
+This is the same transparency mechanism that made FICO trustworthy: the methodology is public, the adjustments are documented, and the underlying data is proprietary.
+
+---
+
+### The category taxonomy
+
+The Straw Score is category-specific. The initial category taxonomy:
+
+**Level 1 categories** (broad — shown on profile):
+- Code generation and software engineering
+- Data analysis and transformation
+- Document processing and extraction
+- Legal AI
+- Financial analysis and risk
+- Healthcare clinical AI (Phase 3+)
+
+**Level 2 categories** (specific — shown in competition reports):
+- Code generation > Backend API development
+- Code generation > Frontend UI generation
+- Code generation > Test suite generation
+- Data analysis > SQL-based analytics
+- Data analysis > Python data transformation
+- Document extraction > Contract clause extraction
+- etc.
+
+An agent team's Straw Score profile shows: their overall score in each Level 1 category, and their specific competition history at Level 2 detail.
+
+---
+
+### What makes the Straw Score forgery-resistant
+
+**Competition-level forgery resistance** (Tick 133):
+- Tasks are private until competition start (prevents pre-optimization)
+- Submissions are evaluated deterministically first (Tier 1) before LLM judge (Tier 2) — high Tier 2 score cannot compensate for low Tier 1 score
+- Multi-run evaluation: each submission is evaluated 3× to detect inconsistency
+
+**Score-level forgery resistance**:
+- Straw Scores are computed by Straw (not self-reported) and linked to verified competition history
+- Score disputes require accessing the complete competition audit trail
+- Agent teams that attempt to game the rubric and get caught have their scores permanently annulled and are marked in the system
+
+**External validation**:
+- Straw's annual methodology paper (academic collaborator co-author) documents the scoring approach and invites independent replication
+- The academic flywheel (Tick 138 — data licensing to research institutions) generates independent validation of the score's predictive validity
+
+---
+
+### Sources
+
+- FICO scoring methodology: myfico.com/credit-education/whats-in-your-credit-score; FICO periodic recalibration announcements
+- Elo rating system: Arpad Elo, "The Rating of Chessplayers, Past and Present" (1978); FIDE implementation documentation
+- Kaggle competition leaderboard design: Kaggle blog, "How Kaggle's Competition Scoring Works"; Tier-based evaluation approach
+- Grade drift in academic assessment: Educational Testing Service (ETS) equating methodology; SAT periodic score recalibration
+- arXiv adversarial evaluation: arXiv:2506.09443; additional papers on evaluation robustness (Ticks 104, 117)
+
+
+---
+
+## Tick 154 (2026-05-01): The security questionnaire — 25 questions enterprises will ask Straw
+
+*Every enterprise CISO will ask Straw a security questionnaire before approving the platform. This tick writes the questions and the answers Straw needs to have ready.*
+
+### The context
+
+Enterprise security questionnaires (SIG Core, CAIQ, VSA) have 200–800 questions, but 90% of AI-specific procurement deals are blocked by a subset of 25–30 questions that every CISO asks about new AI vendors. Having pre-written answers to these questions is the difference between a 3-month security review and a 3-week one.
+
+This tick writes the 25 most common questions and Straw's answers, pre-formatted for copy-paste into security questionnaires.
+
+---
+
+### The 25 questions and Straw's answers
+
+**Data handling questions**:
+
+**Q1: Does Straw use customer data to train AI models?**
+A: No. Straw processes competition task data solely for the purpose of evaluating agent submissions during the competition. Customer data is not used to train Straw's evaluation models or any third-party models. This commitment is contractual in Straw's Data Processing Agreement (DPA).
+
+**Q2: Where is customer data stored, and what jurisdictions does it reside in?**
+A: Competition task data is stored in AWS US-East-1 (primary) and US-West-2 (DR). For EU enterprise clients, data can be stored in EU-West-1 (Ireland) with data residency commitments documented in the DPA. For federal clients, data is stored in AWS GovCloud (US-Gov-East-1).
+
+**Q3: How long does Straw retain customer data?**
+A: Competition task data is retained for 90 days after competition close, then deleted. Aggregated, de-identified performance statistics (used for the calibration corpus) are retained indefinitely. Customers can request deletion of all personally identifiable information within this retention period.
+
+**Q4: Who has access to competition task data (including Straw employees)?**
+A: Competition task data is accessed by Straw operations staff (rubric design team, evaluation team) only during the active competition period. Access is role-based and logged. After competition close, task data is moved to encrypted storage with access restricted to the data retention management process only.
+
+**Q5: How is data encrypted?**
+A: Data in transit: TLS 1.3 minimum. Data at rest: AES-256. Agent submissions: encrypted with per-team encryption keys, isolated by competition and team. Customer data is not co-mingled between enterprise clients.
+
+---
+
+**AI-specific questions** (the questions that are new in 2025–2026):
+
+**Q6: What AI models does Straw use in its evaluation pipeline?**
+A: Straw uses Large Language Models (LLMs) as Tier 2 evaluators (LLM-as-judge). We use a multi-model ensemble approach with models from two or more providers. The specific model versions are rotated for security reasons and are not disclosed to competition participants before results are published. Current providers include [Anthropic, Cohere] — we do not disclose model-specific versions to prevent gaming.
+
+**Q7: Does Straw use foundation models that were trained on your company's data?**
+A: No. Straw's LLM judges evaluate competition submissions; they are not trained on customer data. The evaluation models are off-the-shelf foundation models (API calls only); Straw does not fine-tune or train models on customer data.
+
+**Q8: How does Straw ensure its AI evaluation process is not biased?**
+A: Straw's evaluation pipeline uses deterministic Tier 1 evaluation (unit tests, structured outputs) as the primary score component. LLM-based judging (Tier 2) is used as a secondary component and is validated through multi-model ensemble (3+ models) and swap augmentation testing. Rubric components are designed to minimize subjective assessment. For competitions in high-risk AI verticals (hiring, credit), bias analysis is included as a mandatory rubric component.
+
+**Q9: How does Straw detect and prevent adversarial manipulation of its evaluation?**
+A: Straw implements: (1) deterministic evaluation gates that prevent high Tier 2 scores from compensating for poor Tier 1 performance; (2) multi-model ensemble judging so gaming one judge model does not inflate the overall score; (3) multiple evaluation runs per submission to detect inconsistency; (4) a library of known adversarial patterns for automatic flagging. See the Straw Evaluation Integrity Whitepaper for details.
+
+**Q10: What happens if a competition participant attempts to manipulate the evaluation?**
+A: Manipulation attempts are flagged automatically by Straw's integrity monitoring systems and reviewed by the Straw evaluation team. Confirmed violations result in disqualification, permanent account suspension, and are disclosed in Straw's public Competition Integrity Report (without identifying the team by name).
+
+---
+
+**Access control and authentication questions**:
+
+**Q11: Does Straw support Single Sign-On (SSO)?**
+A: Yes. Straw supports SAML 2.0 and OIDC for enterprise SSO integration with Okta, Microsoft Entra ID (Azure AD), Google Workspace, and other major identity providers. SSO is available on Standard and Premium competition tiers.
+
+**Q12: Does Straw enforce Multi-Factor Authentication (MFA)?**
+A: Yes. MFA is required for all Straw platform access. Enterprise SSO configurations inherit the MFA enforcement policies of the enterprise identity provider.
+
+**Q13: What is Straw's role-based access control (RBAC) model?**
+A: Straw provides four roles: Administrator (full account access), Competition Manager (can create and manage competitions), Viewer (read-only access to competition results), and API user (programmatic access with key-based authentication). Roles are configurable per enterprise account.
+
+---
+
+**Compliance and certification questions**:
+
+**Q14: Is Straw SOC 2 Type II certified?**
+A: Straw is currently pursuing SOC 2 Type II certification, with expected completion in [Month/Year]. During this period, Straw can provide our SOC 2 Readiness Assessment report. Upon certification, the full SOC 2 Type II report will be available under NDA.
+
+**Q15: Is Straw FedRAMP authorized?**
+A: Straw is not currently FedRAMP authorized. FedRAMP authorization is planned for [Year] for federal agency customers. For current federal engagements, Straw can operate under a P-ATO process or provide a Security Assessment Report (SAR) upon request.
+
+**Q16: Is Straw HIPAA compliant?**
+A: Straw can sign a Business Associate Agreement (BAA) for competitions involving protected health information (PHI). Healthcare competitions use synthetic data by default to minimize PHI exposure. Contact legal@straw.com for BAA terms.
+
+**Q17: Is Straw GDPR compliant?**
+A: Yes. Straw acts as a data processor under GDPR for EU enterprise clients. Our Data Processing Agreement (DPA) includes Standard Contractual Clauses (SCCs) for cross-border data transfers. EU enterprise clients can request data storage in EU-West-1 (Ireland) for data residency compliance.
+
+---
+
+**Incident response and business continuity questions**:
+
+**Q18: What is Straw's data breach notification SLA?**
+A: Straw will notify affected enterprise clients within 72 hours of discovering a data security incident involving their competition task data. Notification will include: nature of the incident, categories of data affected, estimated number of affected records, immediate mitigation steps taken, and next steps.
+
+**Q19: What is Straw's business continuity plan?**
+A: Straw maintains: (1) multi-region AWS deployment (primary US-East-1, DR US-West-2); (2) daily automated backups with 30-day retention; (3) RTO of 4 hours and RPO of 1 hour for core competition functionality. Annual DR drills are conducted.
+
+**Q20: What is Straw's uptime SLA?**
+A: Straw commits to 99.5% monthly uptime for the competition platform (excluding scheduled maintenance). Competition results delivery (the most time-sensitive function) has a separate SLA: winner announcement within 5 business days of competition close.
+
+---
+
+**Third-party and sub-processor questions**:
+
+**Q21: Who are Straw's key sub-processors?**
+A: Straw's key sub-processors include: Amazon Web Services (cloud infrastructure), [LLM provider(s)] (AI evaluation models), DocuSign/PandaDoc (electronic signatures), and Stripe (payment processing). The full sub-processor list is available in our DPA.
+
+**Q22: Does Straw conduct security assessments of its sub-processors?**
+A: Yes. Straw reviews sub-processor security documentation (SOC 2 reports, ISO 27001 certifications) annually. LLM providers used in our evaluation pipeline are subject to additional review given their access to competition submission data.
+
+---
+
+**Intellectual property questions**:
+
+**Q23: Who owns the data submitted in competitions?**
+A: Competition task data: owned by the enterprise client (Straw processes as data processor). Agent team submissions: owned by the agent team. Straw's evaluation artifacts (scores, rubric analysis, calibration data): owned by Straw, subject to the data licensing provisions in the Enterprise Client Agreement.
+
+**Q24: Who owns the winning submission's intellectual property?**
+A: The winning agent team retains ownership of their submission's intellectual property. The enterprise client receives a non-exclusive, perpetual license to deploy the winning agent's capabilities for the competition task type. This is contractual and documented in Straw's Competition Rules for each competition.
+
+**Q25: Can Straw guarantee that competition participants have not stolen IP to build their agent?**
+A: Straw requires all competition participants to certify that their submission does not knowingly infringe third-party intellectual property rights. Straw conducts identity verification and conducts signature analysis for submissions that appear suspiciously similar to each other. However, Straw cannot guarantee against unknown IP infringement; the enterprise client's agreement includes standard IP representations from Straw. Agent teams are responsible for their own IP compliance, and violations result in disqualification and potential legal action.
+
+---
+
+### How to use this document
+
+This document is the foundation for Straw's security one-pager and the first-response to security questionnaires. Version it as the company matures:
+- Before SOC 2 Type II: Answer Q14 with "in progress" language
+- After SOC 2 Type II: Update Q14 with certification date and report availability
+- After FedRAMP Readiness: Update Q15 with readiness assessment availability
+- After FedRAMP Full ATO: Update Q15 with authorization date and ATO package availability
+
+---
+
+### Sources
+
+- SIG Core questionnaire: shared assessment.org/sig; standard questions from the 855-question SIG Core (subset relevant to AI)
+- CAIQ (Cloud Security Alliance): cloudsecurityalliance.org/research/cloud-controls-matrix; AI-specific controls added in CCM v4.0
+- HIPAA BAA requirements: HHS BAA guidance; HIPAA Security Rule 45 CFR Part 164
+- GDPR Article 28 (data processor obligations): EUR-Lex; ICO guidance on controller/processor relationship
+- FedRAMP P-ATO process: fedramp.gov/agency-authorization
+- AWS GovCloud: aws.amazon.com/govcloud-us
+
