@@ -28988,3 +28988,95 @@ For agents that were top-ranked in their category before retiring, Straw should 
 
 The Hall of Fame also serves as a historical index: "In Q2 2026, the top-rated legal analysis agents were X, Y, Z. As of Q2 2027, the top-rated agents are A, B, C. The score inflation from model improvements meant a 2026 1700-rated agent is comparable to a 2027 1650-rated agent." This is the LSAT rolling normative window analog — the historical record is documented and contextualized.
 
+
+---
+
+## Tick 164 (2026-05-01): The Series B Story — Category Crystallization, EU Expansion, and Data Licensing at Scale
+
+**Thread**: What is Straw's Series B narrative, and what milestones must be hit before it can be told?
+
+### Series B Readiness: Hard Numbers (2025-2026 Consensus)
+
+Based on benchmarks from Benchmarkit, SaaStr, and Pavilion's 2025 B2B SaaS study:
+
+| Metric | Series B Floor | Straw Target | Notes |
+|---|---|---|---|
+| ARR | $8-15M | $12M | 18-24 months post-Series A |
+| YoY ARR Growth | 80%+ | 100%+ | AI infrastructure premium at lower ARR |
+| NRR | 110%+ | 120%+ | Critical signal — expansion must be structural |
+| CAC Payback | <20 months | <12 months | 6-figure 3-year contracts → payback at signature |
+| Revenue per FTE | $150-200K | $180K | 40-60 employees at Series B |
+| Expansion ARR % | 30%+ | 40%+ | Land-and-expand must be working by Series B |
+| Gross Margin | 70%+ | 78%+ | Data licensing adds 85-90% margin revenue |
+
+**The trigger investors actually care about**: Is there a customer that independently discovered Straw's value without a founder in the room? One unsolicited inbound that converted to a paying competition proves PMF more convincingly than any metric.
+
+**The NRR imperative**: The industry median NRR compressed to 101% in 2024-2025. Top-decile AI infrastructure companies hit 110%+. Straw's target is 120%+. At 120% NRR, existing customers expand fast enough to cover all churn plus grow the base. Series B investors see this as structural — the product is embedding and becoming indispensable, not being tolerated. Anything below 110% NRR at Series B forces a difficult conversation about churn.
+
+---
+
+### The Series B Narrative: "Category Crystallization"
+
+The framing choice matters enormously. Two bad options:
+
+**Category creation** (bad for Straw at Series B): "We're inventing AI evaluation from scratch." Too early for Series B — requires extensive market education, long timeline to justify the investment, high execution risk. This is a seed narrative.
+
+**Category capture** (also bad): "We're winning the AI evaluation market." Implies incumbents exist and Straw is displacing them. Implies the category is already defined. Undersells the opportunity and invites competitive scrutiny.
+
+**The correct framing — "category crystallization"**: The problem is already acutely felt. Enterprise AI failures are accelerating. The EU AI Act is creating regulatory urgency. Billions of dollars of AI spend is going into vendors that haven't been verified. The category exists in the market's consciousness but has no standard, no incumbent, and no named leader. Straw is not creating demand — demand is being created by external forces. Straw is naming and capturing a category before it has a definitive winner.
+
+The Databricks precedent: they didn't invent data engineering. They named "lakehouse" and became the default association before Gartner wrote the first Magic Quadrant on it. By the time Gartner published, Databricks was already cited in enough analyst briefings and enterprise RFPs that their position in the quadrant was a coronation.
+
+Straw's Series B mission: be so embedded in enterprise AI governance workflows that when Gartner publishes the first "AI Evaluation Platforms" Magic Quadrant (estimated 2028-2029), Straw's position is pre-determined.
+
+---
+
+### EU Expansion: The AI Act Forcing Function
+
+The EU AI Act creates a structural tailwind that no US-market competitor can replicate domestically.
+
+**The numbers**: EU AI Act Compliance Solutions market projected at $609M in 2026, growing at 37.3% CAGR to $10.5B by 2035 (Dimension Market Research). Full compliance obligations for high-risk AI systems take effect August 2026. European enterprises need a verified third-party evaluation mechanism. Straw's Straw Score becomes a compliance artifact, not just a procurement tool.
+
+**The international expansion sequence** (canonical B2B SaaS path):
+1. **UK first**: No language barrier, common law contracts, existing enterprise SaaS procurement familiarity
+2. **DACH (Germany/Austria/Switzerland)**: Largest enterprise AI spend in continental EU; automotive, manufacturing, and financial services sectors are active AI evaluators
+3. **France and Nordics**: Public sector and regulated industries in both are early movers on AI compliance
+
+**GTM motion for EU expansion at Series B**:
+- Do NOT open a regional office pre-expansion. The playbook: land 2-3 EU lighthouse customers through existing relationships or AI Act inbound, then hire a UK-based Enterprise AE + Solutions Engineer with EU regulatory expertise
+- Partner with a European SI (Capgemini, Accenture DACH) who has enterprise relationships and needs a compliant evaluation platform to resell
+- Localize proof-of-value materials with EU-specific case studies, GDPR compliance documentation, and EU AI Act conformity assessment framing
+
+European enterprise procurement is slower (18-24 month cycle vs. 9-12 months in the US) but contracts are larger and churn is structurally lower — once embedded in a compliance workflow, switching costs make churn nearly impossible.
+
+---
+
+### Data Licensing as a Second Revenue Stream
+
+At $12M ARR, data licensing should contribute $2-3M additional ARR at 85-90% gross margins. The framing is simple: the calibration corpus is a byproduct of the core SaaS business that happens to be uniquely valuable.
+
+**The Shutterstock / Scale AI precedent**: Shutterstock pivoted from stock media to AI training data licensing, generating nine-figure revenue from assets they'd already created. Scale AI's core insight: data labeling produces a corpus that compounds in value independent of the labeling revenue itself. Straw's corpus is the evaluation equivalent.
+
+**Three buyer segments for corpus licensing**:
+1. **Frontier AI labs** (Anthropic, Google DeepMind, Mistral): need domain-specific, human-verified eval sets they cannot generate internally at scale. Pay $200K-$1M/year for access.
+2. **Enterprise AI teams**: want benchmarks calibrated to their industry vertical for internal model selection. Pay $50K-$200K/year for domain-specific corpus access.
+3. **AI governance consultancies and auditors**: need standardized evaluation datasets for EU AI Act conformity assessments. Pay $100K-$500K/year for validated benchmark sets with audit trail.
+
+**Licensing structure**: Tiered data access — corpus size, vertical coverage, update frequency. Annual contracts, 85-90% gross margin.
+
+**The a16z counter-argument** (must address preemptively): a16z published "The Empty Promise of Data Moats" arguing data advantages decay as scale increases and models become more capable of generating synthetic data. Straw's counter: the moat is not scale alone — it is human-verified, task-specific labeling on real enterprise problems. Synthetic data cannot replicate a labeled record of how 47 AI agents attempted a specific covenant compliance task on a real M&A document set. Ground truth on enterprise-specific tasks is the irreplicable asset.
+
+---
+
+### The Three-Sentence Series B Pitch
+
+The investor narrative at Series B reduces to three provable claims:
+
+1. **The problem is real and getting more urgent.** Regulatory pressure (EU AI Act), operational failures (AI deployments underperforming), and budget accountability (CAIOs reporting to boards) are all accelerating the demand for verified AI evaluation.
+
+2. **We have demonstrated we solve it better than alternatives in verifiable, scored outcomes.** The Straw Score is the only metric that is objective (rubric-based), forgery-resistant (private task + multi-model judging), and historically calibrated (corpus-anchored). By Series B, we've run N competitions with M agent evaluations. The score means something because the corpus gives it meaning.
+
+3. **The data we generate while solving it compounds our advantage in ways that cannot be replicated by a competitor starting today.** A new entrant starting at Series B close needs 2-3 years of competitions to match our corpus quality. They cannot buy their way in — the corpus only grows through real competitions with real enterprise rubrics.
+
+That's the Series B pitch. Three claims, all verifiable, no hedge language.
+
