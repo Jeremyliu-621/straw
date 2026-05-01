@@ -28381,3 +28381,83 @@ Pre-launch indicators that a competitor is building:
 
 Straw's goal: have category depth in 5+ verticals, SOC 2 Type II certification, and 100+ enterprise competitions completed before any of these indicators appear. That timeline pressure argues for aggressive growth, not the quality-first cautious approach from Tick 149 — those two strategies are in tension and need resolution based on competitive dynamics.
 
+
+---
+
+## Tick 165 (2026-05-01): Enterprise ROI Framework — How to Justify Straw Spend to the CFO
+
+**Thread**: An enterprise CDO wants to use Straw. The CFO asks: "What is the return on $100K in prize pools and platform fees?" What is the answer?
+
+### The ROI Framework in Five Steps
+
+**Step 1: Quantify the baseline procurement cost**
+
+The status quo for AI vendor evaluation at a Fortune 500:
+- Internal engineering time: 3–5 engineers × 2 months × $15K/month fully loaded = **$90K–$150K per POC** (from Tick 146 data: 6–18 month procurement cycles at $20K–$150K internal cost)
+- External consulting: McKinsey/Accenture AI evaluation engagements run $200K–$500K for a comprehensive vendor assessment
+- Opportunity cost: 6–18 months of the AI capability sitting idle while procurement runs
+
+For a single AI vendor evaluation, the baseline cost is **$90K–$500K** depending on approach.
+
+**Step 2: Calculate Straw's fully-loaded cost for the same evaluation**
+
+A Straw competition that directly replaces a vendor evaluation:
+- Prize pool: $5,000–$20,000 (the task being evaluated)
+- Platform fee (15% take rate): $750–$3,000
+- Internal time: 2–3 days of the CDO's team to write the task + review results (vs. 2 months for a POC)
+- Total cost per competition: **$6K–$23K** vs. $90K–$500K baseline
+
+**ROI calculation for one competition**:
+- Baseline saved: $90K (conservative)
+- Straw cost: $10K
+- Net saving: $80K
+- ROI: 800%
+
+This is a compelling number, but enterprises will push back: "A vendor POC evaluates more than one task — it's a comprehensive capability assessment." True. But a Straw competition series (3–5 competitions across different task types at $5K–$15K each) produces a comparable breadth of evaluation at $15K–$75K total vs. $90K–$500K for a traditional POC.
+
+**Step 3: Quantify the speed value**
+
+Speed is often more important than cost savings for enterprise AI decisions:
+- Traditional procurement: 6–18 months
+- Straw competition: 72 hours per competition; 2 weeks for full series
+- For a workflow worth $1M/year in efficiency gains, 6 months of delay = **$500K in foregone value**
+- Straw's faster procurement captures that $500K in opportunity — an ROI case the CFO can't ignore
+
+**Step 4: Quality premium — better selection outcomes**
+
+Straw's predictive validity case (from Tick 144): agents scoring 1700+ on relevant Straw categories have X% trial hire success rate vs. Y% for traditional POC selections. If the selection process is 30% better (fewer failed vendor implementations), multiply the avoided implementation failure cost:
+- Average failed AI vendor implementation (discovered after 12 months, needs to be replaced): $200K–$1M (replacement cost, sunk POC cost, delayed value)
+- 30% improvement in selection accuracy on 3 annual implementations: 0.9 avoided failures × $300K average failure cost = **$270K/year in avoided costs**
+- At $50K annual Straw platform spend, that's 5.4x ROI from selection quality alone
+
+**Step 5: Build the CFO-ready ROI table**
+
+For a Fortune 500 running 6 competitions per year at $10K average prize:
+
+| Cost Category | Without Straw | With Straw |
+|---|---|---|
+| Procurement team time | $300K (6 POCs × $50K internal) | $30K (6 competitions × $5K internal) |
+| External consultants | $0–$200K | $0 |
+| Platform/prize spend | $0 | $69K (prizes + fees) |
+| Failure cost from bad selection | $200K (1.4 failures × $143K avg) | $80K (0.56 failures × $143K avg) |
+| Opportunity cost (time) | $500K (6 months delayed each) | $50K (1 week delay) |
+| **Total** | **$1,000K–$1,200K** | **$229K** |
+| **Annual savings** | | **$771K–$971K** |
+| **ROI on $69K Straw spend** | | **11–14x** |
+
+These numbers are directional and will vary by enterprise size and procurement maturity, but they illustrate why Straw is a no-brainer financial case when the comparison is traditional procurement, not doing nothing.
+
+### How to Position the Budget
+
+**For CDO/CTO sign-off (under $50K/year)**: Position as "AI tooling" or "innovation accelerator" budget — same category as a W&B subscription or a GitHub Copilot Enterprise license. This is departmental sign-off, no CFO involvement.
+
+**For $50K–$200K/year**: Position as "AI vendor procurement infrastructure" — replaces consulting fees. This requires CFO awareness but not board-level approval at most enterprises. The ROI table above does the work.
+
+**For $200K+/year**: Position as "strategic AI capability infrastructure" — requires C-suite sign-off (CEO, CFO, CTO jointly). This is the enterprise SaaS expansion conversation, not the initial sale. Get the customer to $50K first.
+
+### The First-Competition ROI Promise
+
+Straw's enterprise sales motion should offer a **First Competition ROI Guarantee**: if the enterprise doesn't save more in procurement costs than their first competition's prize + platform fee, Straw refunds the platform fee. This is safe to offer because the math is overwhelmingly favorable — any enterprise spending >$20K internally on a single vendor evaluation will save money on their first Straw competition.
+
+The guarantee also signals confidence and reduces purchase friction, which is worth more than the occasional refund it triggers.
+
