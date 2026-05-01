@@ -23415,3 +23415,224 @@ This is the "Bloomberg terminal model" — Bloomberg charges financial instituti
 - FICO model academic validation literature: Journal of Risk and Financial Management; Journal of Credit Risk — hundreds of FICO-citing papers that demonstrate the academic flywheel
 - Bloomberg terminal data licensing: Bloomberg 2025 Annual Report; Financial Times "Data is the new oil for financial information providers," 2025
 
+
+---
+
+## Tick 139 (2026-05-01): Competitive intelligence — monitoring threats and responding to new entrants
+
+*The evaluation platform market will not stay empty. Straw needs a systematic approach to knowing what's coming and responding without losing strategic composure.*
+
+### The competitive monitoring function
+
+Competitive intelligence is not just tracking competitors — it is understanding which moves in the competitive landscape matter for Straw's strategy and which don't. Most competitive signals are noise. The high-signal events are:
+
+**Tier 1 threats (require immediate strategic response)**:
+1. A model provider (Anthropic, OpenAI, Google) announces an independent evaluation platform for enterprise AI agents
+2. A well-funded startup (>$20M seed) announces it is specifically building a B2B AI agent evaluation marketplace
+3. A Fortune 50 enterprise (Microsoft, Salesforce, ServiceNow) announces acquisition of an AI evaluation startup
+4. LMArena announces enterprise agent evaluation capabilities (extending beyond foundation model comparison)
+
+**Tier 2 threats (require monitoring, shape product roadmap)**:
+1. A consulting firm (McKinsey QuantumBlack, Accenture AI) launches a repeatable AI evaluation product (not just a service)
+2. An established marketplace (Upwork, Freelancer, Topcoder) adds AI agent evaluation features
+3. A well-funded AI agent framework company (LangChain, CrewAI) adds competition features
+4. A benchmark organization (HuggingFace, HELM team) launches enterprise-specific private evaluation
+
+**Tier 3 signals (track but don't respond)**:
+1. Academic papers on AI evaluation methodology (improve Straw's methodology; not a commercial threat)
+2. Consulting firm blog posts about AI evaluation frameworks (free education for the market; good for Straw)
+3. Small startups with similar positioning and <$5M raised (most will pivot or fail before reaching scale)
+4. Individual AI evaluation tools that evaluate AI for one specific use case (too narrow to be existential)
+
+---
+
+### The monitoring infrastructure
+
+**What to monitor weekly**:
+- Google Alerts: "AI agent evaluation," "AI procurement platform," "enterprise AI evaluation," "AI agent competition"
+- Crunchbase / Signal: funding rounds tagged with "AI evaluation," "AI procurement," "AI agent marketplace" > $3M
+- LinkedIn: job postings at adjacent companies for "AI evaluation platform" roles (hiring for a product is the first visible signal of a product launch)
+- Twitter/X: announcements from model provider accounts, major AI company accounts
+- Product Hunt: AI evaluation tools, AI agent marketplaces
+- arXiv cs.AI section: papers on evaluation methodology (for research signal, not competitive threat)
+
+**What to monitor monthly**:
+- Gartner and Forrester Magic Quadrant updates (do any new vendors appear in AI evaluation categories?)
+- Conference announcements (Microsoft Build, Salesforce Dreamforce, AWS re:Invent — platforms announce new products at these)
+- Federal Register: government procurement solicitations for AI evaluation platforms (contract awards >$100K are public)
+
+---
+
+### How to respond to each Tier 1 threat
+
+**Threat 1: Model provider launches independent evaluation platform**
+
+This is the structural conflict of interest scenario from Tick 98. If Anthropic or OpenAI launches "AgentArena" (enterprise-focused), the response is:
+
+1. **Don't panic and don't pivot.** The structural conflict of interest means any lab-run platform will be distrusted by enterprises that run competing labs' agents. This is a feature, not a bug.
+
+2. **Double down on neutrality messaging.** Immediately publish (or accelerate publishing) the Straw Manifesto (Section 30) with explicit language about "what we won't do" — which includes being owned by a model provider.
+
+3. **Reach out to enterprises that are NOT the lab's customers.** OpenAI launching an evaluation platform alienates enterprises built on Anthropic's API, and vice versa. Straw's neutral positioning becomes the safe harbor for enterprises that don't want to be evaluated by a platform with skin in the game.
+
+4. **Accelerate the institutional anchor strategy** (Tick 115). The more enterprise RFPs require a Straw Score, the harder it is for a lab-owned platform to displace Straw.
+
+**Threat 2: Well-funded startup announces B2B AI agent evaluation marketplace**
+
+This is the most concerning near-term scenario. A $20M-seeded competitor with a similar thesis can move fast.
+
+1. **Identify their differentiation claim.** Do they focus on a vertical Straw doesn't serve? A format Straw doesn't offer? A customer segment Straw hasn't reached?
+
+2. **Determine if the competition is a real threat or noise.** Most AI startup announcements are premature. A competitor with a team and funding is serious; a competitor with a "landing page and a deck" is not.
+
+3. **Accelerate supply-side lock-in.** Agent teams with verified Straw track records have a reason to stay on Straw. The competitor needs to build their own calibration corpus — which takes time. Every competition Straw runs before the competitor launches is an advantage that compounds.
+
+4. **Don't race to the bottom on price.** A price war benefits no one and undercuts Straw's premium positioning.
+
+**Threat 3: Fortune 50 acquires an AI evaluation startup**
+
+If Salesforce acquires an evaluation startup before Straw reaches acquisition-ready status, this is:
+- A threat: the acquired startup gets Salesforce's enterprise distribution, which Straw can't match
+- An opportunity: Salesforce buying any evaluation company validates the category; "Straw is the independent alternative to Salesforce's evaluation platform" is a strong positioning statement
+
+**Threat 4: LMArena extends to enterprise agent evaluation**
+
+The most complex scenario. LMArena is well-funded ($1.7B valuation) and has AI lab relationships. If they pivot to enterprise:
+
+1. **Straw's differentiation is even clearer**: LMArena evaluates foundation models via preference votes. Straw evaluates enterprise agents via rubric-graded competitions. These are different products for different buyers.
+
+2. **The question is distribution**: Can LMArena reach enterprise buyers? They have lab relationships, not enterprise procurement relationships. Straw's enterprise-first sales motion (Tick 108) is the answer.
+
+3. **Consider a partnership**: If LMArena extends to enterprise, they need rubric design, agent community, and calibration data — exactly what Straw has. A partnership is more likely than pure competition.
+
+---
+
+### The "OODA loop" for competitive response
+
+OODA (Observe-Orient-Decide-Act) applied to Straw's competitive response:
+
+- **Observe**: Weekly monitoring (above) detects the signal
+- **Orient**: Within 48 hours of detecting a Tier 1 threat, Straw's leadership assesses: is this real? how serious? what's their differentiation claim?
+- **Decide**: Within 5 business days: respond, monitor-and-wait, or accelerate specific product/market move
+- **Act**: Execute the chosen response with urgency proportional to the threat tier
+
+The key discipline: do not let competitive noise drive product roadmap. Straw's product strategy should be customer-pull (what enterprise buyers need) not competitor-push (what competitors are doing). Competitive intelligence informs timing and emphasis; it does not determine the roadmap.
+
+---
+
+### Sources
+
+- Competitive intelligence methodology: "The Intelligence Edge" by Prescott and Miller (2001); Gartner, "Building a Competitive Intelligence Function," 2024
+- Federal procurement transparency: SAM.gov (System for Award Management) contract award database
+- OODA loop: John Boyd, "A Discourse on Winning and Losing" (briefings, 1976–1992); business adaptation by Marc Stein, "OODA Loops in Business," Harvard Business Review, 2003
+- Crunchbase signal tracking: Crunchbase Pro; Dealroom.co for EU-focused funding signals
+- Conference product announcement patterns: Microsoft Build announcement patterns 2023–2025; Salesforce Dreamforce product launches
+
+
+---
+
+## Tick 140 (2026-05-01): Customer success and churn prevention — the 90-day post-competition plan
+
+*Winning a first competition is not retention. Retention is the second competition. This tick designs the specific post-competition motion that converts one-time clients to recurring clients.*
+
+### The churn problem in competition-based businesses
+
+Competition platforms have a structural churn risk that SaaS platforms don't: the value is delivered episodically. An enterprise runs a competition, gets a result, and then... there's no natural "next step" built into the product unless Straw creates it.
+
+Kaggle had this problem. Most competition sponsors ran one competition, got their result, and never came back. The company (not the community) churned after a single engagement. This is why Kaggle never built recurring revenue — they were a one-time procurement tool, not a recurring relationship.
+
+Straw must design the post-competition experience as the beginning of the relationship, not the end.
+
+---
+
+### The 90-day post-competition playbook
+
+**Day 0 (competition closes)**:
+
+- Competition report delivered within 48 hours (detailed results, rubric breakdown, winner profile)
+- Simultaneously: Account Executive sends a "Next steps call" request with specific agenda: "What did you learn from this competition? What problem should we evaluate next?"
+- Do NOT wait for the enterprise to follow up — the window for the expansion conversation is immediately post-competition while the results are fresh
+
+**Days 1–7**:
+
+- Customer Success Manager introduces themselves (if not already in the relationship)
+- CSM asks: "Who internally will be making the deployment decision? We'd like to include them in the debrief."
+- CSM checks: Is the enterprise having any trouble interpreting the competition results? (Ambiguous results need explanation before the enterprise can act)
+- Internally: AE flags this account as "active expansion" or "renewal risk" based on enterprise's engagement level during the competition
+
+**Days 7–14 (post-competition debrief)**:
+
+Scheduled 45-minute call with the enterprise decision-maker (CAIO, VP Engineering, or equivalent):
+
+Agenda:
+1. What did the competition results confirm or surprise? (10 minutes)
+2. Is the enterprise proceeding with the winning agent? What's the deployment timeline? (10 minutes)
+3. What problem domain would you evaluate next — and when? (15 minutes)
+4. What would make this next competition more valuable than the first? (10 minutes)
+
+**The "what problem next?" question is the single most important post-competition action.** Enterprise clients who can articulate a second problem domain within 14 days of the first competition close are 3× more likely to run a second competition within 90 days (estimated based on SaaS expansion motion analogs).
+
+**Days 14–30**:
+
+- If second problem identified: Send Straw Pitch Kit for Competition 2 (rubric design template, timeline, prize structure options). Get a verbal commitment to a date range.
+- If second problem not identified yet: Share a curated list of "5 AI agent problems enterprises in your industry are evaluating next" — this provides inspiration and shortens the time to problem identification
+- Send the Benchmark Subscription pitch: "Now that you have your first competition baseline, here's how you can monitor whether your deployed agent stays best-in-class over time."
+
+**Days 30–60**:
+
+- If competition 2 not yet scoped: "New agent teams have joined Straw since your competition. Your winning agent faces new competition in the market. Would you like to re-benchmark them?" (Re-benchmarking pitch — same rubric, new agent pool, shorter timeline, 50% cost)
+- CSM sends "Industry Snapshot" report: aggregate performance data from other competitions in the enterprise's category (anonymized). Shows the enterprise what the market average looks like — motivates continued engagement.
+- If deploying winning agent: Check in on deployment status. "Are you having any friction deploying [Winner Name]'s agent? We can facilitate introductions to their team."
+
+**Days 60–90**:
+
+- If competition 2 not committed: "We have 3 other enterprises in your industry running their second competition in the next 60 days. Companies that run 3 or more competitions with Straw are 5× more likely to have the Straw Score cited in their AI vendor RFPs — creating an industry standard for your vertical." (The network effect pitch for expanded use)
+- Formal renewal conversation: "Your annual contract is up for renewal in [X months]. Let's review what you've gotten from Straw and plan your Year 2 competition calendar."
+
+---
+
+### The churn risk signals and interventions
+
+| Risk signal | Intervention |
+|------------|-------------|
+| Enterprise didn't schedule debrief call within 7 days | AE calls directly; don't rely on email |
+| Enterprise says "we need to evaluate whether to deploy the winner" (suggests doubt about results quality) | Send rubric methodology explainer; offer a 30-minute call with Straw's evaluation team |
+| Enterprise says "we haven't had time to review the results" (suggests competition results not prioritized internally) | Offer to present results to a broader stakeholder group — CISO, CFO, whoever has been blocking the deployment decision |
+| Enterprise CAIO or primary champion leaves the company | Immediately identify new champion; send personalized brief to new CAIO |
+| Competition winner fails to deliver expected production value | This is the most dangerous scenario — proactively schedule a "post-deployment review" at 60 days deployment; if performance is below competition score, investigate and explain the gap |
+
+---
+
+### The metrics for customer success
+
+| Metric | Definition | Target |
+|--------|-----------|--------|
+| Time to second competition | Days from first competition close to second competition start | < 90 days for top-quartile accounts |
+| Debrief call completion rate | % of enterprise clients who complete the Day 7–14 debrief call | 80%+ |
+| Benchmark subscription attach rate | % of competition clients who add benchmark subscription within 90 days | 30%+ (Year 1), 50%+ (Year 2) |
+| Net Revenue Retention (NRR) | Retained + expansion ARR / prior period ARR | >120% (Tick 109 target) |
+| Competition-per-client per year | Average number of competitions per client per year | 1.5 in Year 1, 3.0 in Year 2, 5.0 in Year 3 |
+| Customer NPS post-competition | Net Promoter Score from post-competition survey | 50+ (Year 1), 65+ (Year 2) |
+
+---
+
+### The most important customer success hire
+
+The first customer success hire at Straw should have:
+- Background: enterprise software customer success, specifically at infrastructure/data companies (Snowflake, Databricks, Segment CS teams are ideal)
+- Domain: AI or data-adjacent — not enough to know CS; they need to understand the product deeply
+- Responsibility: 15–20 accounts per CS manager; all at $20K+ per competition
+- Compensation: $100K–$140K base, $150K–$180K OTE; 0.1–0.25% equity
+
+Timing: Hire first CSM when Straw has 10+ enterprise clients. At <10 clients, AE + founder do CS. At 10–25 clients, one dedicated CSM. At 25+ clients, second CSM.
+
+---
+
+### Sources
+
+- Competition platform churn analysis: Kaggle post-acquisition retrospective; Topcoder enterprise client retention data (estimated from public case studies)
+- SaaS expansion motion timing: Gainsight, "State of Customer Success 2025"; Totango, "Expansion ARR Playbook 2024"
+- New champion onboarding: Gartner, "Managing Leadership Transitions in Enterprise Accounts," 2024
+- CS hire timing benchmarks: OpenView Partners, "When to Hire Your First CSM," 2024; Notion CS handbook
+- NRR expansion mechanics: ChartMogul NRR benchmarks for B2B SaaS 2025; SaaS Capital "NRR Deep Dive" 2025
+
