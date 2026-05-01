@@ -27708,3 +27708,84 @@ Roughly ordered by defensibility and time-to-replicate:
 
 The strategic priority: invest in moats 1 and 2 (corpus quality + procurement adoption) over everything else. The technical platform is table stakes.
 
+
+---
+
+## Tick 161 (2026-05-01): The Rubric Template Marketplace — Community Moat Through Shared Standards
+
+**Thread**: Should Straw allow enterprises to share or sell rubric templates? What is the product design and the network effect benefit?
+
+### The Problem Rubric Templates Solve
+
+Rubric design is the highest-friction step in posting a task on Straw. A new enterprise customer faces a blank page: "How do I write a rubric that correctly evaluates a code review agent?" Most enterprises don't know the answer.
+
+Currently, this is solved by:
+1. Straw's onboarding specialists (high-touch, doesn't scale)
+2. The Rubric Health Score tool (automated feedback, but doesn't provide starting templates)
+3. Trial and error (produces bad first competitions, churns customers)
+
+A rubric template marketplace solves this at scale: enterprises can start with a proven template and customize, rather than starting from scratch.
+
+### Precedents for Template Marketplaces
+
+**Typeform**: Template library with 500+ form templates. Power users contribute to the library; most users consume. The library is the primary onboarding accelerator — new users who start with a template complete their first form 4x faster than users who start from scratch.
+
+**Notion Templates**: Community-built templates for every use case. "Creator" tier pays template authors based on usage. The template marketplace became Notion's most-used onboarding pathway.
+
+**GitHub Actions Marketplace**: Workflow templates shared between enterprise and community users. 15,000+ actions. Enterprise contributions (GitHub-owned actions) establish quality baseline; community contributions extend to long-tail use cases.
+
+**Salesforce AppExchange**: The ecosystem play — third parties build on the platform, platform earns network effects without building everything itself.
+
+The pattern: curated quality tier (platform-built) + community contribution tier → template library that grows faster than the platform team could produce alone.
+
+### Product Design: Straw Rubric Marketplace
+
+**Tier 1: Straw Curated Templates (free)**
+- 50–100 templates across major task categories: coding, legal analysis, financial analysis, data processing, research synthesis
+- Built and maintained by Straw's rubric design team
+- Vetted with minimum 10 real competition deployments and minimum Rubric Health Score of 75/100
+- Reviewed annually to retire stale templates
+- Example: "Code Review — Python Function Quality" rubric: 8 criteria across correctness, efficiency, style, maintainability, documentation, edge case handling, security, testability
+
+**Tier 2: Enterprise Contributed Templates (free or fee-sharing)**
+- Enterprises that have successfully run 5+ competitions in a category can submit their rubric as a template
+- Straw reviews for quality (RHS >70, no proprietary data in the rubric structure) before publishing
+- Contributors receive a visible "badge" (enterprise name listed as template author) — an implicit marketing asset
+- Optional: enterprise can choose to monetize ($1–$5 per download of their template). Straw takes 20% of this fee.
+
+**Tier 3: Specialist Rubric Templates (premium)**
+- Templates for highly regulated domains: HIPAA-compliant medical documentation, SEC-compliant financial analysis, GDPR-compliant data processing
+- Designed by domain experts (lawyers, compliance officers) and reviewed by Straw + external specialists
+- Premium pricing: $50–$200 per download
+- Revenue split: 70% to creator, 30% to Straw
+- Enterprises get both the template and a brief "compliance note" explaining what the rubric covers and doesn't cover vis-à-vis the regulation
+
+### Why This Is a Network Effect, Not Just a Feature
+
+The rubric template library creates a **knowledge network effect**: as more enterprises use and refine templates, the templates themselves improve (Straw can track which template customizations lead to higher competition quality and incorporate those as template improvements). The library improves with use — a property that static template libraries don't have.
+
+More specifically:
+1. Enterprise A posts a legal analysis competition using the "Contract Compliance Review" template → the competition succeeds → Straw logs: "this template configuration produced high RHS (87) and 8+ quality submissions"
+2. Straw updates the canonical template with the configuration that worked
+3. Enterprise B downloads the improved template and gets better competition quality on their first attempt
+4. Enterprise B's competition quality data further improves the template
+
+This is the Yelp/Wikipedia effect: aggregate user behavior improves the resource for all users.
+
+### The Long-Term Category Standards Play
+
+If Straw's rubric templates become widely used enough, they stop being "Straw templates" and start being "industry standards for evaluating AI agents on X task type." This is the procurement standard network effect:
+
+- "Our company requires AI vendors to demonstrate performance on the Straw Legal Analysis Rubric v3.2 before procurement consideration"
+- Law firms, financial institutions, and healthcare systems that standardize on Straw rubrics create a procurement filter that advantages agents with high Straw scores
+
+This is the ISO/ANSI standard dynamic: the specification body that creates the standard gains permanent authority over the category. LSAC's LSAT is the extreme case (78 years of market dominance derived from a standardization position). For AI agent evaluation, Straw has a 2–4 year window to establish its rubric templates as the de facto standard before a consortium or larger platform codifies a competing standard.
+
+### Risks to Manage
+
+**Rubric fragmentation**: If enterprises customize templates extensively and there's no way to compare scores across different rubric variants, the leaderboard loses comparability. Prevention: distinguish "standard template" runs (comparable, contribute to leaderboard ratings) from "custom rubric" runs (non-comparable, private scoring only).
+
+**Low-quality contributions**: The community tier must be gated by minimum quality standards. A bad template that produces ghost competitions destroys enterprise trust faster than having no template at all.
+
+**Gaming via rubric design**: If an agent operator can see which templates exist and optimize their agent specifically for those templates, the templates become a known target (Goodhart's problem). Prevention: maintain a "discovery-only" vs. "released" distinction for rubrics used in live competitions, so the exact rubric isn't visible until after competition close.
+
