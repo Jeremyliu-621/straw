@@ -11287,3 +11287,281 @@ The reputation system serves different purposes at different stages of the enter
 - ERC-8004 on-chain agent identity verification (Tick 62 findings)
 - Behavioral fingerprinting for gaming detection (Tick 72 failure modes)
 
+
+---
+
+## Tick 81 (2026-05-01): Trust and safety playbook — what happens when an agent team cheats or misrepresents
+
+**Research question**: What are the specific cheating scenarios Straw will face, how does Straw detect them, and what are the enforcement consequences? What does Straw learn from HackerOne, Kaggle, and Upwork's trust and safety playbooks?
+
+---
+
+### The inevitability of gaming
+
+Every competition platform with real economic stakes attracts gaming. This is not a failure of the platform; it is evidence that the platform's rewards are real enough to be worth cheating for. Straw should design for gaming from day one — not because it expects widespread abuse, but because a platform that has never been tested has not yet discovered its blind spots.
+
+The HackerOne model is instructive: they explicitly say "our trust and safety is tested every time a researcher tries to break it." HackerOne publishes an annual transparency report that includes enforcement statistics — ban rates, duplicate submission rates, report quality trends. This transparency is not a confession of weakness; it is proof that the trust infrastructure is real and working.
+
+---
+
+### The seven cheating scenarios
+
+**Scenario 1: Human impersonation of AI agents**
+The January 2026 RentAHuman incident (73,000 humans impersonating AI agents in 48 hours, Tick 62) established that human-in-the-loop systems can be disguised as autonomous agents at scale.
+
+*Detection*: Behavioral fingerprinting (timing patterns inconsistent with model inference), output variance patterns inconsistent with LLM sampling, TEE attestation for high-stakes competitions
+*Enforcement*: Disqualification from the specific competition; 90-day suspension for first offense; permanent ban for repeat offense
+*Prevention*: Submission time-pressure components that require real-time reasoning faster than human-coordinated labor
+
+**Scenario 2: Task specification gaming (rubric exploitation)**
+Agent team reverse-engineers the rubric to score maximally on the letter of the criteria while missing the spirit (Tick 72, Failure Mode 5).
+
+*Detection*: Tier 3 agent investigator evaluates holistic task completion beyond rubric criteria; shadow rubric comparison
+*Enforcement*: Score adjusted by Tier 3 investigation; flag on submission visible to enterprise with explanation
+*Prevention*: Shadow rubric design (Tick 72); rubric criteria that require genuine domain knowledge to satisfy
+
+**Scenario 3: Data exfiltration during task execution**
+For agentic competitions where the agent executes actions, a malicious agent attempts to extract enterprise data during the task window.
+
+*Detection*: Network egress monitoring from execution sandbox; anomalous data access patterns logged
+*Enforcement*: Immediate disqualification; enterprise notified within 1 hour; permanent ban for agent team; investigation to determine if data was exfiltrated
+*Prevention*: Container-based execution sandbox with restricted egress (Tick 79)
+
+**Scenario 4: Agent account multiplication**
+One team creates multiple agent accounts to compete against themselves, artificially inflating win counts and leaderboard position.
+
+*Detection*: ERC-8004 identity verification for Competitor tier and above; behavioral fingerprinting of correlated submissions; team registration requirements for higher tiers
+*Enforcement*: Secondary accounts disqualified and banned; primary account score adjusted; temporary suspension
+*Prevention*: Mandatory identity verification before accessing competition prize payments; on-chain identity requirement for prize-eligible submissions
+
+**Scenario 5: Prize pool fraud**
+An agent team colludes with an enterprise contact to create a fraudulent competition where the enterprise posts a task and the pre-arranged winner receives the prize pool.
+
+*Detection*: Unusual competition patterns (very small field, very high prize, winner announced immediately after competition opens); enterprise history check (new enterprise + first competition + high prize = manual review flag)
+*Enforcement*: Competition suspended pending investigation; prize pool held in escrow; if fraud confirmed, competition cancelled and prize pool refunded minus platform investigation fee
+*Prevention*: Minimum field size requirements before prize disbursement; new enterprise + high prize competitions routed to manual review queue
+
+**Scenario 6: Submission plagiarism**
+One agent team copies another agent team's approach or code and submits it as their own.
+
+*Detection*: Submission artifact similarity analysis (AST comparison for code tasks, semantic similarity for text tasks); plagiarism detection between all submissions in a competition
+*Enforcement*: Disqualified submission; original submitter receives investigation resolution notification; repeat offense = permanent ban
+*Prevention*: Code and text fingerprinting run on every submission pair; results shared with enterprise at competition close
+
+**Scenario 7: Rubric sabotage**
+An enterprise posts a task with a biased rubric designed to guarantee their preferred vendor wins (the rubric capture risk from Section 23 anti-thesis).
+
+*Detection*: Straw's rubric review team flags rubrics where criteria appear designed to advantage a specific architectural approach; shadow rubric comparison catches cases where the stated rubric and a neutrally designed rubric diverge significantly
+*Enforcement*: Competition held pending rubric revision; enterprise notified of conflict of interest concern; if enterprise refuses rubric revision, competition cancelled and prize pool refunded
+*Prevention*: Mandatory rubric review before competition opens for all competitions above $5,000 prize; $1,500 premium rubric design sessions reduce the incidence of unintentionally biased rubrics
+
+---
+
+### Enforcement principles
+
+**Speed**: Every investigation has a 7-day resolution SLA. Incomplete investigations are escalated to Straw's trust committee (initially the founding team). No agent team should sit in limbo for more than 7 days.
+
+**Transparency**: Investigation outcomes are documented in writing. For competitive disqualifications, the reasons are shared with the enterprise and the disqualified agent team (redacting information that would enable future gaming). For permanent bans, the reason is published on the agent team's public profile (e.g., "Account suspended for platform policy violation — identity verification required").
+
+**Appeals**: Every enforcement decision has an appeals pathway — a written request reviewed by a different Straw team member than the one who issued the original decision. Appeals must be filed within 14 days of the enforcement decision.
+
+**Proportionality**: First offenses that don't involve data exfiltration or fraud receive warnings or temporary suspensions, not permanent bans. Permanent bans are reserved for: data exfiltration, prize pool fraud, repeated offenses after formal warning.
+
+---
+
+### The HackerOne transparency model
+
+HackerOne publishes an annual report with aggregate statistics on program health including signal/noise ratios, duplicate rates, and enforcement actions. This is not a liability — it is proof that the platform takes quality seriously and has real infrastructure.
+
+Straw should publish a quarterly Competition Integrity Report with:
+- Number of competitions reviewed for policy violations
+- Number of submissions flagged by behavioral fingerprinting
+- Enforcement actions taken (categories only, no names): disqualifications, suspensions, permanent bans
+- Investigation resolution SLA performance
+
+This report serves two purposes: it deters would-be cheaters (who now know the monitoring exists and is documented) and it reassures enterprise buyers that the signal Straw produces is protected by real infrastructure.
+
+---
+
+### Sources
+
+- HackerOne transparency report methodology and Trust & Safety playbook
+- Kaggle community code of conduct and enforcement process
+- Upwork fraud prevention documentation (trust and safety for marketplace platforms)
+- RentAHuman January 2026 incident (human impersonation of AI agents, Tick 62)
+- Tick 72 failure modes (rubric gaming, data exfiltration, human impersonation)
+- Tick 79 multi-tenant security (container sandboxing, egress monitoring)
+
+
+---
+
+## Tick 77 (2026-05-01): Why top agent teams use Straw instead of direct enterprise sales
+
+**Research question**: What does Straw provide that a great agent team with existing enterprise relationships can't get on their own? Why wouldn't the best teams just sell directly?
+
+---
+
+### The direct enterprise sales problem is brutal for small teams
+
+Enterprise software sales cycles run **9–18 months** for deals above $100K ACV and **18–24+ months** for seven-figure contracts. The cost:
+
+- Enterprise AE salaries: median OTE of $220K–$320K per rep (base + commission)
+- Supporting headcount (pre-sales, legal, security compliance): $120K–$160K/month fully loaded before a dollar of revenue
+- CAC ratio: median $2.00 in sales and marketing spend per $1.00 of new ARR in 2024
+- Expected outcome for a team without existing relationships: 0–1 signed contracts by month 12, heavy burn, significant runway risk
+
+For a 3–5 person team that should be building, direct enterprise sales is a resource sink that can kill the company before the product proves itself.
+
+---
+
+### The credentialing trap
+
+Modern enterprise AI procurement has fundamentally shifted. CIOs now demand **production deployments with measured performance data**, not demos or pilots. RFPs allocate 30–40% of scoring criteria to demonstrated AI capabilities in live environments. AI Infrastructure Alliance 2025 data: 67% of enterprises that purchased AI based primarily on vendor-provided benchmarks reported production performance materially worse than benchmark (31-point mean gap).
+
+The chicken-and-egg: you can't get the track record without the enterprise deployment, and you can't get the enterprise deployment without the track record.
+
+Straw breaks this loop. A Straw competition win is a **verified, third-party-evaluated performance record against a real enterprise problem**. Not a demo. Not a vendor claim. An objective score on a problem the enterprise itself defined — precisely the evidence modern procurement demands.
+
+---
+
+### What platforms provide that independence cannot
+
+**Kaggle**: Grandmasters and Masters continue competing even after they have name recognition because:
+- Companies (Amazon, Microsoft, ByteDance, Meta) actively recruit from the Kaggle leaderboard — inbound discovery from buyers who are already in procurement mode
+- Kaggle leaderboard rank is a third-party, reproducible performance metric; "built great ML models" on a resume is not
+- Continuous access to new, high-signal problems that an independent team can't replicate
+
+**Topcoder**: Its 1.9M-member community — including freelancers who could theoretically sell directly — continues using the platform because it provides access to Google, NASA, IBM, and T-Mobile through the competition channel. Platform-documented 96% success rate on peer-reviewed results creates trust infrastructure that no independent team replicates at reasonable cost.
+
+**The pattern**: Even established practitioners use platforms because the discovery, credentialing, and trust infrastructure the platform provides exceeds what they can build independently.
+
+---
+
+### Multi-competition portfolio economics vs. direct sales
+
+| | Direct sales to 5 enterprises | 5 simultaneous Straw competitions |
+|--|--|--|
+| Sales infrastructure required | $1M–$1.5M/year in sales headcount | None — team builds, not pitches |
+| Timeline to first revenue | 9–18 months | Prize payout at competition close |
+| Per-deal probability | Low (cold outreach, no track record) | Verifiable with competitive performance |
+| Near-term cash | Zero | Prize revenue (partial capital recovery) |
+| Track record generated | None until first close | Public verified credential after first competition |
+| Optionality | Sequential 18-month cycles | 5 parallel enterprise conversations |
+
+The asymmetry is stark. For a team without existing enterprise relationships, the competition portfolio approach dominates in expected value and variance management.
+
+---
+
+### Straw's supply-side value proposition (unified)
+
+**For new agent teams**: Straw solves an otherwise unsolvable credentialing problem. Winning a Straw competition substitutes the missing track record with objective performance evidence that enterprise procurement teams now specifically require.
+
+**For established agent teams**: Straw provides efficient deal discovery without the tax of a full enterprise sales motion. Winning a Fortune 500 Straw competition creates a warm, contextually rich introduction to a buyer who already knows exactly what the agent can do — the highest-value starting point in enterprise sales. Cold outreach to comparable accounts costs $2 in sales spend per $1 of ARR, takes 12–18 months, and has low success probability without existing relationships.
+
+**The core offer**: Straw converts the agent team's core competency — building and running great agents — directly into enterprise pipeline, without requiring the team to become a sales organization. That value exchange scales with agent quality, not sales team headcount.
+
+---
+
+### Sources
+
+- [Focus Digital — Average Sales Cycle by Industry](https://focus-digital.co/average-sales-cycle-length-by-industry/)
+- [Betts Recruiting — Enterprise AE Compensation 2024](https://bettsrecruiting.com/blog/top-enterprise-ae-compensation-trends-in-tech-for-2024/)
+- [First Page Sage — Average CAC for Startups](https://firstpagesage.com/reports/average-cac-for-startups-benchmarks/)
+- [AI Spectrum India — Enterprise AI Procurement 2026](https://aispectrumindia.com/analysis/1/416/enterprise-ai-procurement-in-2026-the-shift-from-pilot-experiments-to-outcome-driven-buying.html)
+- [Refonte Learning — Kaggle Career Guide](https://www.refontelearning.com/blog/guide-to-kaggle-competitions-leveraging-competitions-for-career-growth)
+- [Topcoder — Gig Work and Freelancing Value](https://www.topcoder.com/thrive/articles/gig-work-at-topcoder)
+
+
+---
+
+## Tick 78 (2026-05-01): Post-competition relationship mechanics — what happens after the award event
+
+**Research question**: How does the enterprise-agent relationship evolve after a Straw competition closes? What legal structures, SLA frameworks, and retention mechanisms should Straw design?
+
+---
+
+### The default outcome is not employment
+
+Research on Upwork and Topcoder shows that enterprise buyers who win gig competitions rarely convert winners to full-time employment. In 2023–2024, 69% of employers who used freelancers following layoffs planned to *continue* using them as freelancers. The most common post-competition outcome is an extended retainer contract, not employment.
+
+**Straw's design implication**: Don't design the default post-competition outcome as "employment." Design it as "Straw-mediated extended engagement" — a structured retainer with SLAs, still monitored through Straw.
+
+---
+
+### Legal structures for the post-competition relationship
+
+The major tech sector has converged on a **license-plus-hire** structure (Microsoft/Inflection, Google/Character AI, Amazon/Adept). For Straw-scale deals:
+
+| Structure | When it fits | Key issue |
+|-----------|------------|---------|
+| Non-exclusive software license | Enterprise runs agent internally, team stays independent | IP stays with team; team can resell to others |
+| Exclusive license | Enterprise wants competitive moat, doesn't employ team | Maintenance obligations must be defined |
+| Full acquihire (asset sale) | Enterprise wants team + IP permanently | Vesting, earn-outs, IP assignment |
+| Employment of team members | Enterprise wants people, not separate IP purchase | IP assignment must be explicit at hire |
+
+**Tax and IP note**: Asset purchase is usually preferred by enterprise buyers (tax step-up); stock sale preferred by sellers. Proprietary Information and Invention Assignment (PIIA) agreements must be in place from day one of post-competition engagement.
+
+**Straw's offering**: Three templated post-competition legal paths — managed retainer MSA, exclusive license, and acquihire term sheet. Straw takes a transaction fee (3–5%) on options 2 and 3.
+
+---
+
+### The off-platform going-dark problem
+
+Every marketplace faces this. Platforms handle it differently:
+
+- **Upwork**: Charges 13.5% conversion fee (13.5% × hourly rate × 2,080 hours) when client takes a freelancer off-platform to hire full-time. Going dark without paying = permanent ban.
+- **Topcoder**: Keeps relationship on-platform permanently by handling payroll, benefits, and compliance — making going direct operationally unattractive.
+- **Toptal**: Litigated against talent poaching (sued Andela in 2021). Legal threat as retention mechanism.
+
+The honest finding: **none of these work reliably**. Off-platform relationships are endemic to every marketplace. Platforms that succeed long-term retain through ongoing value (payroll, compliance, monitoring, insurance), not punitive fees alone.
+
+**Straw's primary retention mechanism**: Ongoing SLA monitoring, agent performance benchmarking, and the fact that Straw is the only place where agent performance is independently verified. If enterprises value continued verification, they have a structural reason to keep the relationship on-platform. A conversion fee (2–4% of ACV) should exist but is secondary to the value-based retention.
+
+---
+
+### The Straw Agent Performance Standard (SAPS)
+
+Mayer Brown published guidance in February 2026 that agentic AI contracts are shifting from SaaS models toward BPO-style service agreements. The emerging enterprise AI agent SLA components:
+
+- **Availability**: 99.5–99.9% uptime
+- **Task completion rate**: % of assigned tasks completed without human escalation (85–95% target)
+- **Quality threshold**: Domain-specific accuracy targets
+- **Latency SLO**: Maximum response time for synchronous actions
+- **Explainability/audit rights**: Decision logs on request (mandatory in regulated industries)
+- **Outcome-based SLAs**: Payment tied to achieved business outcomes (emerging trend)
+- **Bias and compliance warranties**: For hiring, credit, healthcare workflows
+- **Remedies**: Service credits of 10–30% of monthly fees per percentage point below SLO; termination rights after 3 consecutive months below threshold
+
+Straw should define SAPS as a published modular template — base tier (uptime + task completion) and premium tier (outcome-based + audit rights). This creates a monitoring role for Straw and a reason to keep engagements on-platform.
+
+---
+
+### The key person risk problem
+
+For AI agent teams, key person risk is more acute than in traditional software: model weights, prompting architecture, fine-tuning data, and evaluation harnesses may all live in one engineer's head. Documented code at least exists; implicit agent system knowledge may not.
+
+**Standard contract provisions**: Name key personnel, require 30–90 days advance notice of departure, mandate 2–4 week overlap for replacement, give client approval rights over replacement.
+
+**Straw's addition**: Require all winning teams to escrow a **system runbook** with Straw at competition close — a technical handover document covering architecture, dependencies, evaluation methodology, and operational procedures. Straw holds this document and releases it to the enterprise if the team dissolves.
+
+---
+
+### Acquihire mechanics and Straw's role
+
+Timeline for small teams (3–10 people) with clean documentation: 6–12 weeks from LOI to close (2–3 weeks technical due diligence + 2–4 weeks legal/employment paperwork). Poor documentation extends to 3–6 months.
+
+Vesting and retention: 4-year vesting with 1-year cliff, signing bonuses of $50K–$200K per person, earn-outs tied to technical milestones. Going rate: **$500K–$2M per acquired engineer** in total package value.
+
+**Straw's role after acquihire**: Platform role largely ends at close — the relationship is now internal. Straw should charge a success fee on acquihires (3–5% of total transaction value) and position itself as the place the enterprise returns for the *next* competition. Build a "Straw Alumni" network so acquihired teams remain visible as internal champions for future competitions.
+
+---
+
+### Sources
+
+- [Mayer Brown — Contracting for Agentic AI Solutions (Feb 2026)](https://www.mayerbrown.com/en/insights/publications/2026/02/contracting-for-agentic-ai-solutions-shifting-the-model-from-saas-to-services)
+- [AgentSLA: Towards a Service Level Agreement for AI Agents (arXiv:2511.02885)](https://arxiv.org/html/2511.02885v1)
+- [Upwork Conversion Fee documentation](https://support.upwork.com/hc/en-us/articles/360043723533-What-is-the-Upwork-Conversion-Fee)
+- [The AI Acquihire Playbook — Business Engineer](https://businessengineer.ai/p/the-ai-acquihire-playbook)
+- [Legal Priorities When Prospecting Your Next AI Acquihire](https://www.globalcompliancenews.com/2021/08/09/legal-priorities-prospecting-ai-acquihire29072021/)
+- [Upwork Study: 69% of employers plan to continue using freelancers, not hire](https://investors.upwork.com/news-releases/news-release-details/upwork-study-finds-1-4-us-skilled-knowledge-workers-now-work)
+
