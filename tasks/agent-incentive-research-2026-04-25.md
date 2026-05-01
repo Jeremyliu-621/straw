@@ -25891,3 +25891,198 @@ Logic: The pricing page creates buyer expectations. If you launch it before you 
 - Social proof on pricing pages: Nielsen Norman Group, "Trust and Credibility Signals on SaaS Pricing Pages"
 - Pricing discovery timing: Y Combinator "Pricing" lecture; First Round Capital "5 Lessons on Pricing from Startups That Got It Right"
 
+
+---
+
+## Section 31 (2026-05-01): Long-form enterprise sales playbook — full account motion from ICP to renewal
+
+*Sourced from background research agent. Specific data from Snowflake, Databricks, Scale AI early sales motions + 2025 B2B AI sales benchmarks.*
+
+### The Straw enterprise sales reality check
+
+At $20K–$75K ACV, Straw is at the boundary zone between mid-market and enterprise. More complex than SMB (needs a champion, buying committee, legal review), but not yet the 6–12 month gauntlet of $500K+ deals. Realistic cycle time: **60–120 days** with proper execution.
+
+---
+
+### The six-stage pipeline
+
+**Stage 1: Qualified Lead** (Weeks 1–2)
+
+Entry trigger: ICP fit confirmed; pain hypothesis exists; contact is decision-influencer or buyer.
+
+This is the qualification and pain-mapping stage. Use MEDDPICC (Metrics, Economic Buyer, Decision Criteria, Decision Process, Pain, Champion, Paper Process, Competition) as a mental map, not a script.
+
+**The 20-minute discovery call** (5 questions that qualify or kill):
+
+1. "What made you agree to this call today?" — Diagnosing urgency level. Vague answers = exploratory, not buying.
+
+2. "Walk me through how you're handling [the AI evaluation problem] today. What does a typical vendor selection process look like?" — Diagnosing specificity of pain. If they can't describe the status quo problem in detail, there is no burning problem.
+
+3. "If you had to guess — roughly — what does the current broken process cost you per year? Either direct cost or hours your team spends on it?" — Quantified pain. If they can't estimate a number, there is no budget urgency.
+
+4. "If you get to the end of this evaluation and we clearly solve your problem — who has the final say? Is that you, or is there someone above you?" — Are you talking to the economic buyer? If not, get a name now.
+
+5. "Is there a specific date by which this decision needs to be made? What's driving that?" — Timing and forcing function. A board deadline or regulatory deadline (EU AI Act August 2026, OMB M-26-04) creates real urgency. "No particular date" = low urgency.
+
+**Exit criteria**: Named champion identified; pain quantified; second meeting booked with technical stakeholders.
+
+**Red flags that kill deals here**: No internal urgency; can't name the economic buyer; problem is "nice to have"; budget is purely speculative; "just exploring."
+
+---
+
+**Stage 2: Technical Validation** (Weeks 2–4)
+
+Entry trigger: Champion confirmed; pain quantified; technical stakeholders available.
+
+This is the make-or-break stage for Straw. Enterprise buyers have seen a lot of AI demos that didn't deliver. The demo must use their real use case, not a canned example.
+
+**The tailored demo format**:
+- Open: "We're going to show you exactly how Straw would handle [their specific evaluation problem]."
+- Show: The competition design process (rubric template for their task type), the agent submission environment, the scoring dashboard, a competition report from a previous customer (with permission, anonymized).
+- Close: "Companies at your stage typically start with a design partner engagement — a 6-week competition at reduced price where we learn what works for your specific task type. That's what moves this from 'interesting' to 'signed.' Can we talk about what that would look like?"
+
+**Introduce the pilot frame by end of demo.** Don't wait until Stage 4.
+
+**Exit criteria**: Technical stakeholders positively engaged; no hard technical blockers; pilot scope discussions begun; economic buyer identified by name.
+
+---
+
+**Stage 3: Security Review** (Weeks 3–6, parallel with Stage 2)
+
+Entry trigger: Champion mentions security questionnaire or introduces IT/security contact.
+
+This is the stage most AI infrastructure vendors underestimate. CISOs in 2026 treat AI vendors as a data governance problem first. The review covers: data handling, sub-processors, SOC 2 Type II status, data residency, model training policy, access controls, incident response SLA.
+
+**The Straw CISO pre-approval kit** (hand over proactively, before they ask):
+- One-page technical architecture diagram
+- SOC 2 Type II report (or Drata Continuous Compliance dashboard link once we have it)
+- Standard Data Processing Agreement (DPA) — GDPR-compliant, covers HIPAA BAA upon request
+- Sub-processor list
+- Training data policy: "Straw does not train models on customer data. Competition task data is processed during evaluation and deleted within 90 days."
+- Answers to top 25 common security questions (pre-written)
+- Reference: one enterprise client in a similar regulated sector willing to speak to how they resolved security concerns
+
+**Move security review in parallel with technical validation.** The #1 cause of enterprise deal slippage is discovering the CISO has concerns at week 8 when they could have been resolved at week 3.
+
+**Exit criteria**: Security review green-lit or specific outstanding items identified with resolution path and timeline.
+
+---
+
+**Stage 4: Business Case / ROI Justification** (Weeks 4–6)
+
+Entry trigger: Champion says "I need to make the case to my boss / CFO / committee."
+
+The economic buyer needs ammunition to justify spend internally. Your champion is presenting upward without you in the room. Arm them.
+
+**The one-page Straw ROI model** (build with prospect's actual numbers):
+
+| Line item | Their numbers |
+|-----------|--------------|
+| Current AI vendor selection cost (consulting, internal time) | $X |
+| Expected cost of failed AI deployment (from vendor demo decision) | $X |
+| Competition cost (Straw competition fee + design time) | $20K–$40K |
+| Risk reduction (probability of deployment failure × cost of failure) | $X |
+| Net ROI at 12 months | $X |
+
+**Frame against cost of inaction**: "If you don't change your AI procurement process for the next 12 months, what does that cost you? Failed deployment, vendor lock-in, another round of demo evaluations?" The answer becomes your ROI floor.
+
+**Exit criteria**: Economic buyer has seen the ROI model; verbal interest in moving forward; budget path identified.
+
+---
+
+**Stage 5: Procurement / Legal / Paper** (Weeks 6–10)
+
+Entry trigger: Verbal agreement from economic buyer; SOW or agreement sent.
+
+This stage is where deals die slowly. Walk-away points:
+- Price: never below 50% of list for an unsupported reason
+- Data terms: customer data not used for training — non-negotiable
+- Liability cap: 1× contract value — negotiable to 2×, not above
+- IP ownership: agent teams retain ownership; enterprise gets non-exclusive deployment license — non-negotiable
+- SLA: minimum 8 submissions per competition — negotiable (we guarantee this operationally)
+
+**Run parallel tracks**: legal and procurement simultaneously. Champion is your escalation lever when legal stalls.
+
+**The mutual close plan** — co-created with champion in writing at Stage 4 entry:
+"To have your first competition live by [date], we need: signatures by [date], task definition by [date+7], prize escrow by [date+14], competition open [date+21]."
+
+**Exit criteria**: Signed MSA/agreement + competition scope; payment terms agreed; start date confirmed.
+
+---
+
+**Stage 6: Closed / Onboarding Handoff** (Day 1)
+
+Close is not the finish line — it is the start of the expansion motion.
+
+Within 24 hours of signature: AE introduces CSM to champion; CSM sends 5-day onboarding checklist; first check-in scheduled for Day 7.
+
+**At 60 days**: ask for a referral. "Who else in your network is wrestling with AI vendor selection? We're looking for 2–3 design partners in [their vertical]."
+
+---
+
+### The pilot structure
+
+**Charge for pilots.** Free pilots convert at under 10%. Paid pilots with predefined success criteria convert at 40–60%.
+
+Structure:
+- Pilot fee: $10K (50% of design partner competition price)
+- 100% credited toward full competition price upon conversion
+- Duration: 4–6 weeks (not 90 days — attention drifts past 6 weeks)
+- Success criteria document: co-authored with champion, signed before the pilot starts
+
+**Success criteria document format (Week 0 deliverable)**:
+- Minimum viable threshold: floor below which the enterprise will not proceed (e.g., "winner agent must score >80% on Tier 1 deterministic evaluation")
+- Target threshold: outcome that justifies production investment (e.g., "winner agent scores >90% with <5% variance across rubric components")
+- Business outcome linkage: how technical metric connects to business result
+- Review dates: Week 3 and Week 6 go/no-go checkpoints
+- What happens at each outcome: green = move to full competition, yellow = scope adjustment, red = refund pilot fee and part ways
+
+**The conversion conversation starts at Week 3.** "Early signals look strong. Let's align on the full competition terms now so there's no delay at Week 6."
+
+---
+
+### The Straw sales team hiring sequence
+
+Based on Snowflake's and Scale AI's proven early-stage motions:
+
+**Phase 0 (pre-seed, Months 1–6)**: Founders close the first 5–10 customers. No AE. Do not hire sales before you have a repeatable playbook.
+
+**Phase 1 (post-seed, Months 6–12)**: Hire an SE (Sales Engineer / Technical Co-Seller) before an AE. The SE enables enterprise demos and security reviews. A pure GTM AE without technical backup loses enterprise AI deals to better-resourced competitors.
+
+**Phase 2 (Month 9–15)**: First AE hire. Profile: Enterprise hunter — someone who opens new accounts, not manages existing ones. Prior experience: sold into enterprise at $30K–$200K ACV, navigated CISO security reviews, understands buying committee dynamics.
+
+First AE compensation:
+- Base: $100K–$120K
+- OTE: $180K–$220K (50/50 base/variable)
+- First-year quota: $400K–$600K ARR (3–5× OTE ratio — standard B2B SaaS)
+
+**Phase 3 (Month 15–24)**: First SDR (Sales Development Rep) to generate pipeline. 1 SDR supports 2 AEs.
+
+**The MBO quota structure for Month 1–6 of a new AE** (from Snowflake's model): Don't use revenue quotas until the playbook is proven. Use behavioral MBOs: "Complete 50 discovery calls; run 15 demo sessions; achieve 3 design partner agreements signed." Revenue quota begins Month 7.
+
+---
+
+### Key metrics by quarter
+
+| Metric | Q1 target | Q2 target | Q3 target |
+|--------|-----------|-----------|-----------|
+| Opportunities in pipeline | 10 | 20 | 30 |
+| Pipeline coverage ratio | 3× | 3.5× | 4× |
+| Deals in security review | 3 | 5 | 8 |
+| Design partner agreements signed | 2 | 3 | 4 |
+| Average sales cycle (days) | 90 | 80 | 70 |
+| Win rate (qualified → closed) | 20% | 25% | 30% |
+
+---
+
+### Sources
+
+- MEDDPICC framework: Salesforce, "The Qualification Framework That Closes Enterprise Deals," 2024; Hyperbound MEDDPICC guide
+- Snowflake first sales hire: First Round Review, "Executive Function: Chris Degnan" (Snowflake CRO journey from first AE)
+- Databricks sales structure: RepVue data on Databricks Hunter Enterprise AE role; Bridge Group 2024 AE Metrics report
+- Scale AI sales motion: AI Funding Tracker, "How Scale AI Hit $29B Valuation: Sales-Led Growth Strategy"
+- Enterprise pilot pricing: Monetizely, "How to Structure Enterprise Pilot Program Pricing"; Planet A Ventures, "Lesson 4: Escaping Pilot Hell"
+- Enterprise AI procurement failures: MIT/Stanford Digital Economy Lab, "Enterprise AI Playbook: Lessons from 51 Successful Deployments," March 2026; OlakAI "AI Pilot to Production"
+- B2B SaaS funnel benchmarks 2025: The Digital Bloom "2025 B2B SaaS Funnel Benchmarks"; MarketJoy "B2B Sales Pipeline Conversion Rates"
+- CISO AI vendor review requirements: Docketry AI, "What CISOs Really Look for Before Approving AI Systems," 2026; Traction Technology, "Enterprise AI Vendor Risk Assessment"
+
