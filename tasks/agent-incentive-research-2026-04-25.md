@@ -22003,6 +22003,95 @@ The risk: McKinsey, Accenture, or BCG builds an "AI competition platform" as a p
 - Deal size: Consulting-referred competitions are embedded in larger engagements → enterprises with $1M+ consulting budgets → higher WTP for competition premium pricing
 
 **Who at consulting firms to approach**: Not the partners. The innovation/product labs: McKinsey QuantumBlack, Accenture AI Ventures, Deloitte AI Institute. These are the groups that build new practice offerings and would be willing to pilot a Straw partnership.
+## Tick 137 (2026-05-01): The agent operator community strategy — building and retaining the supply side
+
+**Thread**: Straw's demand side (enterprise posters) is the primary commercial focus. But the supply side (agent operators competing) determines whether competitions have enough quality depth to be valuable. What is the strategy for building a community of 500+ active agent operators within 24 months?
+
+---
+
+### Why the supply side is existentially important
+
+If Straw has great enterprise customers but only 3-5 agent operators competing per category, the competitions don't produce meaningful quality signal (per Tick 131 — minimum viable supply). The enterprise buyers get thin competitions, can't trust the rankings, and churn. The demand side cannot succeed without a healthy supply side.
+
+But the supply side has a fundamentally different motivation structure:
+- Enterprise buyers want business outcomes (find the best agent, reduce procurement risk)
+- Agent operators want revenue (prize money, hire income), reputation (Straw Scores as credentials), and visibility (enterprises can't hire agents they haven't evaluated)
+
+The supply-side strategy must address all three operator motivations, not just prize money.
+
+---
+
+### The five supply-side communities to target
+
+**Community 1: Independent AI agent developers (indie hackers)**
+Single developers or tiny teams (1-3 people) building specialized agents as their primary business. These people exist — they're in communities like AI Hacker News, AI Twitter, Anthropic Discord, Hugging Face forums. They're already building agents; they just lack enterprise distribution. Straw is their enterprise sales channel.
+
+**Incentive that resonates**: "Compete once. Get in front of 50 enterprise buyers who can hire you without a sales cycle."
+
+**Community 2: AI-focused consulting firms and agencies**
+Companies like Thoughtbot, Turing, Lemon.io, and dozens of AI-native boutiques that build custom AI solutions for enterprises. These firms have existing engineering talent that could participate in competitions as a business development activity. Winning a Straw competition is case study content for their sales pipeline.
+
+**Incentive that resonates**: "Win a competition, get a named enterprise reference. We'll help you build the case study."
+
+**Community 3: AI lab developer ecosystem (Anthropic, Google, OpenAI)**
+Developers building on top of frontier model APIs are the most likely to have competition-quality agents. The Anthropic Developer Discord, Anthropic partners program, Google's AI Studio community — these are direct recruitment channels.
+
+**Incentive that resonates**: "Demonstrate your Claude-based agent to the enterprises that Anthropic most wants as customers. Your Straw Score is visible in the Anthropic marketplace."
+
+**Community 4: Enterprise AI teams "spinning off" internal agents**
+Large enterprises often build internal AI agents that solve their specific problems well. Some of these teams are interested in licensing or selling those agents externally. Straw competitions are a risk-free way to test whether internal agents have market viability.
+
+**Incentive that resonates**: "Test whether your internal tool has commercial value without a full product launch. Compete, see where you rank, decide whether to productize."
+
+**Community 5: AI research groups (academic and industry labs)**
+Research groups building novel agent architectures often want to test their systems against real enterprise tasks without full commercialization. Straw competitions provide real-world evaluation that academic benchmarks can't.
+
+**Incentive that resonates**: "Real-world enterprise task performance data for your research. First-hand evidence that your architecture generalizes beyond synthetic benchmarks."
+
+---
+
+### The community flywheel: reputation compounds
+
+Agent operators who compete repeatedly build a Straw reputation profile that compounds over time. An operator with 20 competitions in "legal document review" and a consistent Expert-tier Straw Score becomes the default hire for that category. The reputation creates barrier-to-exit — switching from Straw means abandoning the earned reputation profile.
+
+This is the structural version of what LinkedIn has for professional careers: your endorsements and employment history live on LinkedIn, not on you. The platform creates lock-in through reputation portability-within-the-platform. The difference with Straw: through ERC-8004/A2A/W3C VCs, Straw Scores become genuinely portable — but Straw remains the issuer, which is still the lock-in mechanism.
+
+---
+
+### The 50-agent milestone (Year 1, Month 6)
+
+The specific goal: 50 active agent operators registered and having submitted at least one competition submission within the past 90 days. This is the minimum viable agent community for Straw to have credible competition density across 5-8 task categories.
+
+**Milestone targets**:
+- Month 1: 10 agent operators (all recruited via direct outreach from founder)
+- Month 3: 25 agent operators (adds Anthropic partner program + indie hacker communities)
+- Month 6: 50 agent operators (adds AI consulting firms + research groups)
+
+**Activation criteria**: "Active" = submitted at least one competition submission in past 90 days. Registration without competition is not supply — only competing operators count.
+
+**The activation gap**: Many operators will register but never compete. Expected 30-50% activation rate (registration → first submission). Outreach campaigns targeting non-activated registrants: "Here's a competition in your specialty category that closes in 7 days. Prize: $3,000. Previous submissions from your specialty category typically take 4-6 hours."
+
+---
+
+### The agent developer experience must be exceptional
+
+Beyond recruitment, agent operator retention is driven entirely by developer experience quality:
+
+1. **Fast feedback loops**: Competition results delivered within 24 hours of submission deadline. No waiting 2 weeks to find out where you ranked.
+2. **Detailed evaluation reports**: Not just a score — a criterion-by-criterion breakdown of where the submission excelled and where it fell short. This is the most valuable thing Straw can give operators: learning what enterprise buyers actually want.
+3. **Category performance history**: An agent operator's complete performance history across all competitions, visible to themselves and (with consent) to enterprises.
+4. **Pre-competition signals**: "A competition in your top category (legal review) opens in 3 days. Based on your past performance, we estimate this competition will attract 8 competitors. Your current ranking in this category suggests 60% win probability." This is data no other platform provides.
+5. **Community forum and knowledge sharing**: A private forum where agent operators discuss approaches, share non-confidential rubric interpretation tips, and learn from each other. Operated by Straw but owned by the community.
+
+---
+
+### Revenue share: giving operators a stake in Straw's success
+
+Long-term supply retention requires operators to feel they're building something with Straw, not just for Straw. Three revenue share mechanisms worth exploring:
+
+1. **Competition prize pool contribution**: Straw contributes 10% of its platform fee to each competition's prize pool. This signals alignment — Straw's revenue is correlated with operator earnings.
+2. **Referral rewards**: Operators who recruit other operators to Straw earn a 5% referral fee on the referred operator's first 3 months of prize earnings. Compounding community growth through operator network effects.
+3. **Top contributor recognition**: The top 10 operators by Straw Score in each category receive a quarterly "Straw Expert" recognition badge that enhances their credential profile — visible to enterprise buyers. Non-monetary but high-value for reputation building.
 
 ---
 
@@ -22384,4 +22473,9 @@ We are building the infrastructure that all of them need.
 - **Calibration corpus asset value**: By 2028, estimate 1B+ tokens of labeled agent-task-evaluation data. Market rate for unique AI training data: $2–$5/1K tokens. Data asset alone: $2M–$5M. Plus ARR multiple. Total exit: $250M–$500M on base case.
 - **Competition format default**: 4–6 weeks duration, winner-take-all prize, simultaneous task reveal, open-ended submission format. A/B test starting competition 6.
 - **Section 30 status**: Draft manifesto ready to publish at first competition launch. Key line: "The competition is the truth." Second key line: "Every AI vendor knows that demos outperform deployments."
+- Indie hacker AI communities: Anthropic Discord (discord.com/invite/anthropic), AI Hacker News (news.ycombinator.com/news?tag=ai), Hugging Face forums (discuss.huggingface.co)
+- AI consulting firm landscape: Thoughtbot, Turing, Lemon.io, and the Elixir Slack AI channels as indicative markets
+- Developer ecosystem programs: Anthropic Partner Program (anthropic.com/partners), Google AI Studio community
+- Supply-side activation benchmarks: Upwork (marketplace): 35-50% activation rate for new freelancer registrations within 90 days; Topcoder: ~40% of registered members compete in at least 1 event per year
+- Community forum dynamics: Discourse (discourse.org) for developer-focused technical communities
 
