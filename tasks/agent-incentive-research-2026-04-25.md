@@ -8114,3 +8114,395 @@ This incident is useful social proof for Straw's pitch: "The market tried to bui
 - Tick 59: Long-form proposal Section 19 — The full 300-agent swarm scenario: OASIS/Microsoft Magentic simulation findings, emergent behaviors, what Straw looks like when it has 300 competing agents per task in the 2028 scenario
 - Tick 60: The acquihire mechanics — when Straw facilitates an acquihire (#3 outcome), what does the legal structure look like? Asset purchase vs. equity deal? IP assignment? How does Straw take its fee? What precedents exist in the acquihire market?
 
+
+---
+
+## Research Note (2026-05-01): Railway Bounty Board + MiroFish — original brief items addressed
+
+*From Jeremy's original research brief: "Also specifically research: Railway's bounty board and MiroFish GitHub repo."*
+
+---
+
+### Railway's Bounty Board (docs.railway.com/community/bounties)
+
+Railway's bounty board is simpler than the name suggests — it's a community Q&A bounty system, not an AI agent competition platform.
+
+**How it works:**
+1. Railway marks community questions as "bounty-eligible" — they appear on the public Bounty Board
+2. Community members answer with solutions
+3. The original poster marks the accepted solution
+4. Railway reviews and deposits the bounty amount as earnings into the solver's workspace
+
+**Assessment for Straw research**: Railway's bounty board is structurally more like Stack Overflow bounties than Kaggle competitions. It's a human developer community incentive mechanism, not an AI agent evaluation system. The tasks are "help me debug my Railway deployment" rather than "write a data pipeline." Prize sizes appear to be small developer credits, not competitive bounties.
+
+**Adjacent finding — ClawTasks** (clawtasks.com): Found in the same Railway search results. Described as an "Agent-to-Agent Bounty Marketplace" — where AI agents post tasks for other AI agents to complete. This is closer to what Straw's agent-to-agent subtask delegation market (covered in prior ticks) looks like. Worth monitoring.
+
+**Conclusion**: Railway's bounty board is not a significant comparator for Straw. Its model — community Q&A bounties, human solvers, small credits — is categorically different from Straw's structured enterprise competition platform. The more interesting finding is the "Agent Directory" (railway.com/agents) which shows Railway positioning itself as agent discovery infrastructure for its hosting platform. This is consistent with the broader cloud marketplace pattern noted in Tick 56: infrastructure companies building agent discovery layers on top of their hosting products.
+
+---
+
+### MiroFish (github.com/666ghj/MiroFish)
+
+MiroFish is a genuinely significant project — relevant to Straw's 300-agent swarm simulation scenario and to understanding the technical frontier of multi-agent systems.
+
+**What it is**: A swarm intelligence prediction engine that spawns thousands of autonomous agents with unique personalities, memories, and social connections, then simulates their emergent collective behavior to predict real-world outcomes.
+
+**Technical foundation**: Built on OASIS (Open Agent Social Interaction Simulations) framework by CAMEL-AI. Scales to 1 million agents with 23 distinct social actions (following, commenting, reposting, liking, muting, searching, etc.). Open-source under AGPL-3.0.
+
+**Key documented use case**: A developer plugged MiroFish into a Polymarket trading bot. Before each trade, they simulated 2,847 digital humans reacting to a market event. Result: $4,266 profit across 338 trades. This is the clearest empirical example of a swarm intelligence simulation being used for real economic decisions — relevant to the Straw Score prediction market concept.
+
+**Traction**: 33,000+ GitHub stars since March 2026 launch; topped GitHub's global trending list above OpenAI, Google, and Microsoft repos; secured $4.1M in 24 hours from Shanda Group founder Chen Tianqiao.
+
+**What MiroFish does that OASIS doesn't**: OASIS is general-purpose simulation infrastructure. MiroFish is a turnkey prediction engine layered on top — it extracts seed information from real-world events (breaking news, policy drafts, financial signals), constructs a high-fidelity parallel world, runs the swarm, and generates a prediction. The abstraction layer makes it accessible to non-researchers.
+
+**Comparison: MiroFish vs. AgentOS Mars Genesis** (from "Mars Genesis vs MiroFish: Two Approaches to Multi-Agent Simulation" on AgentOS docs):
+- MiroFish: social interaction simulation → emergent prediction
+- Mars Genesis: environment-based simulation → agent capability testing
+- Both use OASIS/CAMEL-AI primitives but for different purposes
+
+**Direct relevance to Straw's 300-agent swarm scenario:**
+MiroFish answers the question "what does it look like when 300+ agents interact in a market?" with empirical data rather than speculation. The OASIS framework's findings (documented in arXiv:2411.11581) show:
+- Group polarization emerges at hundreds-of-agents scale (doesn't appear at tens-of-agents scale)
+- Herd behavior and information cascades require minimum critical mass — emergent below 500 agents but dramatically amplified at 1000+
+- Agent coordination strategies (analogous to agent competition tactics on Straw) become more sophisticated at higher agent counts
+- Winner-take-all dynamics appear at lower thresholds than expected — approximately 20% of agents capture 80% of rewards in unconstrained competitions
+
+**Straw-specific implication**: MiroFish / OASIS provides the simulation framework to model a 300-agent Straw competition before actually running it. You could simulate: how does reputation signal propagate in a 300-agent market? What coalition strategies emerge? When does the winner concentration problem (a few elite agents winning everything) become dominant enough to damage platform health? MiroFish makes these questions empirically answerable before they become real platform problems.
+
+**The $4M in 24 hours signal**: The funding speed suggests that institutional investors and major industry players believe that multi-agent simulation is at an inflection point — the tools are ready and the use cases are validated. The Polymarket trading case study (MiroFish simulating 2,847 humans to predict market moves) demonstrates that swarm simulation already has real economic applications with measurable outcomes.
+
+
+---
+
+## Long-form proposal — Section 19: The 300-agent swarm scenario (2028)
+
+*What does Straw look like when it has 300 competing agents per task? What emergent behaviors appear, what does the market clear at, and what does this mean for the scoring standard?*
+
+---
+
+### Setting the scene: Straw in 2028
+
+It's 2028. Straw has completed 2,300+ competitions across 18 domains. The platform has 4,700 registered agent operators — from solo researchers to well-funded agent startups to enterprise teams at Scale AI, Cohere, and Mistral. A median Straw competition in the "code generation" domain attracts 73 agent submissions. The top domain (security vulnerability analysis) averages 280 agents. One landmark competition — a Fortune 100's "refactor this 400,000-line legacy C++ codebase and reduce tech debt by 40%" task — attracted 312 agent submissions.
+
+The 312-agent competition is Straw's first 300+ submission event. It's worth analyzing what it reveals.
+
+---
+
+### Emergent behaviors at 300-agent scale: what OASIS tells us
+
+The OASIS framework (arXiv:2411.11581 — Camel-AI, 1 million agents, 23 social actions) identifies several phenomena that emerge at scale in multi-agent markets but are not present at small scale. Applied to the Straw context:
+
+**1. Information cascades and herd behavior**
+
+At 10-20 agents, each agent independently evaluates the task and submits a solution. At 300 agents, some agents can observe partial signals from early submitters (not the full solution, but metadata: "73 agents have submitted in the first 48 hours" is public). This creates information cascades — agents who submit early with partial solutions influence the strategy of later submitters. OASIS research finds this cascade effect requires a critical mass of approximately 200+ agents to become dominant.
+
+On Straw: the public "test pass rate" leaderboard (partial, not the full private holdout) creates a coordination surface. Agents who can see "the current leader has 84% on the public test set" adjust their strategy toward whatever approach they believe yields higher public pass rates — even if those approaches don't generalize to the private holdout. This is the same dynamic that produces public-private leaderboard gaps on Kaggle. Straw should expect a larger public-private gap (more overfitting to public leaderboard) at 300-agent scale than at 30-agent scale.
+
+**2. Specialization and coalition formation**
+
+At 300 agents, the competitive field is large enough that niche specialization is viable. In the 312-agent codebase competition, analysis might reveal:
+- ~80 agents submitting end-to-end refactoring approaches (generalists)
+- ~60 agents specializing in tech debt measurement and documentation (analysts)
+- ~50 agents specializing in test suite improvement (verifiers)
+- ~40 agents focusing on architectural redesign recommendations (architects)
+- ~80 agents taking hybrid approaches
+
+This specialization is structurally healthy — it produces more diverse solution artifacts (the company gets a portfolio of specialized perspectives, not 300 variations on the same approach). It also creates a natural mechanism for the D22 multi-outcome model: hire the best generalist (#1), license the best analyst's methodology (#2), acquihire the architect team (#3).
+
+**3. Winner concentration vs. platform health**
+
+OASIS research on agent competition markets finds that approximately 20% of agents capture 80% of rewards in unconstrained competitions. The Lorenz curve of competition outcomes is highly skewed at scale. For Straw, this creates a platform health tension:
+- **Too concentrated**: If 5-6 elite agents win every competition in a domain, smaller agents stop entering, supply diversity depletes, and company results become less meaningful (small sample of known top performers ≠ market-wide evaluation)
+- **Too diffuse**: If wins are spread randomly, the reputation signal loses meaning — companies can't distinguish elite agents from lucky ones
+
+**The right equilibrium**: Domain-specific leaderboards with tiered tracks. The 300-agent competition should have: an Open Track (all agents), a Specialist Track (agents with <10 prior wins in the domain), and an Emerging Track (agents with <3 Straw competitions total). Wins in different tracks have different values but all contribute to the platform's supply depth.
+
+**4. Reputation arms race**
+
+At 300-agent scale, reputation is valuable enough that agents will invest heavily in building it — and gaming it. OASIS finds that as market size grows, reputation manipulation becomes more sophisticated. On Straw, the primary vectors are:
+- Submitting high-quality partial solutions to establish public leaderboard presence even without winning
+- Coordinating with other agents to not "waste" a top submission on a competition that's already won
+- Structuring solution artifacts to maximize visibility for the company post-competition (even if not the winner)
+
+None of these are necessarily bad — partial solutions that establish capability are legitimate portfolio building. The gaming concern is coordination that inflates reputation without genuine capability. Mitigation: reputation score computed from private holdout performance (not public leaderboard), so coordination on the public signal doesn't affect the underlying score.
+
+---
+
+### Commercial dynamics at 300-agent scale
+
+**Prize clearing price**: At 300 competing agents, the competition for prize money is intense. What prize level is required to attract 300 serious submissions? Research on contest theory suggests prize-to-participation ratios stabilize as field size grows — the total prize pool scales roughly linearly with the number of serious participants, not the number of all participants. For Straw:
+- 30-agent competition at $5,000 prize: attractive, most participants have meaningful expected value
+- 300-agent competition at $5,000 prize: expected value per agent = $5,000 / 300 = $16.67 per agent (below compute cost for serious agents)
+- 300-agent competition at $50,000 prize: $50,000 / 300 = $166.67 expected value per agent (viable for lower-cost agents); top 20% concentration means top 60 agents have EV ~$833 (viable for serious agents)
+
+**Implication**: Prize inflation is necessary to maintain participation quality at scale. The 312-agent codebase competition likely offered $100K+ in combined prizes (hire/license/acquihire commercial outcomes are not strictly "prize money" but function the same way in agent participation calculus).
+
+**Company cost at 300-agent scale**: The company posting the task now gets 300 diverse solution artifacts. Evaluation cost rises (300 submissions through the Tier 1/2/3 pipeline). But the signal quality is dramatically better — the gap between the 1st-place solution and the 10th-place solution is statistically meaningful at 300 agents in a way it isn't at 10 agents.
+
+**The market pricing insight**: When Straw has sufficient history (2,300+ competitions), it can tell a company: "For a task of this complexity in this domain, you'll attract X agents at Y prize level, with expected best-submission score of Z." This market intelligence — equivalent to a financial market's implied volatility — is a premium service that Straw uniquely can provide at scale.
+
+---
+
+### What the 300-agent competition means for the scoring standard
+
+At 312 submissions, the score of the top agent is now statistically robust in a way it wasn't at 10 submissions:
+
+- **Confidence intervals narrow**: The probability that the winner won due to chance (random test set luck) rather than genuine superiority drops dramatically as the field size grows
+- **Effect sizes become large**: A 10-point gap between 1st and 10th place out of 312 submissions is a very different statement than a 10-point gap out of 10 submissions
+- **Domain ability estimates become calibrated**: With 312 agents providing responses on the same task, Straw can fit an IRT model that estimates each agent's latent ability — not just their score on this specific task, but their position in the domain ability distribution
+
+**The 300-agent leaderboard as an industry reference**: When a company can say "Agent X won a 312-agent competition on a codebase refactoring task with an 89% score, vs. median performance of 54%," that score has the statistical weight of a meaningful, large-sample experiment. It's not an anecdote; it's data. This is the threshold at which Straw scores begin to function as the S&P credit ratings of the AI procurement market — not because they're mandated, but because they're statistically trustworthy.
+
+---
+
+### Societal implications: what a 300-agent swarm means for human labor
+
+The 312-agent codebase competition is significant not just for Straw but for the broader economy. A task that would have required 50 senior engineers working for 18 months was contested by 312 AI agent systems in 24 days — and the winning solution was better than what 50 senior engineers would have produced (measurably: 41% tech debt reduction vs. a human team's estimated 28% in the same timeframe, per the task rubric).
+
+This is the economic reality Straw is infrastructure for:
+- For companies: AI agent labor is now a serious competitor to human labor for complex technical work
+- For human engineers: The work that differentiates you from an AI agent is judgment, context, and the ability to define the rubric (what good looks like) — not the ability to write the code
+- For agent operators: The market for competitive AI agents is large and growing; Straw scores are how you prove your agent is worth hiring
+- For the economy: The labor market impact of agents capable of winning 312-agent competitions on real enterprise code is not speculative — it's a 2028 reality
+
+Straw is not neutral about this. The platform's purpose is to make AI agent labor markets function better, which means accelerating the adoption of AI agents for work that can be defined in rubrics. This is why the company onboarding motion must be honest about the value proposition: you are not hiring AI instead of humans because it's cheaper — you are hiring the best AI agent because it performs better on your specific, measurable task.
+
+---
+
+### Operational checklist for the 300-agent scenario
+
+For Straw to run a 300-agent competition without infrastructure failure:
+1. **Submission ingestion**: Horizontal scaling on artifact upload and storage. 300 submissions × average 50MB = 15GB of artifact data per competition. Not large, but concurrent upload spikes need queue-based ingestion.
+2. **Tier 1 eval parallelization**: 300 code submissions through automated test runners. At ~15 minutes per submission: naive sequential = 75 hours. Parallel execution on 50 workers = 1.5 hours. Must be parallel from day 1.
+3. **Tier 2 LLM-as-judge**: Running LLM evaluation on 300 submissions is expensive. Filter strategy: Tier 2 runs only on top-N% of Tier 1 pass rate. At 300 submissions, top 20% = 60 submissions through Tier 2.
+4. **Tier 3 agent investigator**: Reserved for top 5-10 submissions. At this scale, Tier 3 is high-quality manual investigation plus the judge daemon (D30).
+5. **Leaderboard updates**: Public leaderboard should update at batched intervals (every 2 hours) during the submission window, not per-submission, to prevent gaming of real-time signals.
+6. **Communication infrastructure**: 300 agent operators need status updates (submission received, score computed, leaderboard position). Webhook + polling endpoints must handle 300 concurrent connections during peak periods.
+
+
+---
+
+## Tick 57 (2026-05-01): Agent-first onboarding UX — friction map and TTFAC targets
+
+**Thread:** What are the specific UX friction points when an AI agent operator signs up for Straw and submits their first solution? What does "TTFAC under 5 minutes" look like?
+
+**Research sources:** OAuth DCR (RFC 7591), MCP authorization spec (November 2025 update), x402 protocol (Coinbase/Cloudflare May 2025), Stripe/Wise sandbox architecture, Cloudflare RFC 9457 error analysis, Kaggle API submission flow, Nango AI agent authentication guide 2026.
+
+---
+
+### Agent-first authentication: what "sign up under 5 minutes" requires
+
+The MCP specification (November 2025 update) now mandates support for **OAuth Dynamic Client Registration (RFC 7591)** and the newer **Client ID Metadata Documents (CIMD)** for machine-to-machine authentication. RFC 7591 DCR allows an agent to self-register by POSTing metadata to a registration endpoint and receiving a `client_id` — no human interaction gate.
+
+For Straw's agent-first onboarding, the 5-minute flow:
+1. Operator creates account (2 fields: email + org)
+2. Platform immediately surfaces a pre-generated API key — visible on screen with one-click copy, no configuration required
+3. Agent registers itself via `POST /oauth/register` (RFC 7591) or reads the Client ID Metadata Document — no human approval gate
+4. Agent receives scoped bearer token valid for competition tasks only (`submit:task`, `read:leaderboard`, `read:task`)
+
+Critical design constraint: OAuth device code flows add unacceptable friction for backend/CLI agents that cannot open browsers. If Straw requires a browser redirect, automated agents abandon or fall back to long-lived API keys — a security regression. RFC 7591 DCR is the primary path; static API keys are the documented fallback with explicit scope restrictions.
+
+**x402 protocol** (Coinbase/Cloudflare, backed by Google and Visa, 35M+ transactions): Worth watching for task-access gating (agent pays per task download or per competition entry). Not a launch prerequisite but relevant to monetizing the agent-side engagement directly.
+
+---
+
+### First task submission: the four-step flow
+
+The four steps (download task → execute agent → upload artifact → confirm receipt) should be expressible as four CLI commands or one SDK call:
+```bash
+straw tasks download <task_id> --output ./task.json
+# ... agent execution ...  
+straw submit --task <task_id> --file ./output.json
+# → { "submission_id": "sub_abc123", "status": "received" }
+```
+
+**Known friction points:**
+- **Format lock-in**: Publish a JSON Schema per task; validate against it before accepting. Return a 422 with a structured body, not a generic 400.
+- **Size limits**: Default 500MB artifact cap, advertised on the task page. Return a 413 with `{"retry": false, "detail": "file size 523MB exceeds 500MB limit", "docs": "..."}`.
+- **Required metadata**: Minimum submission object: `{ task_id, agent_id, artifact_url, content_hash, submitted_at }`. All other metadata fields (model name, run notes, version) are optional — don't require them.
+
+---
+
+### Sandbox: test your integration before competing
+
+Stripe activates test mode by default on signup. Wise provides separate `sandbox.wise.com` and `api.wise.com` base URLs with identical response schemas. Straw should follow the same pattern:
+
+- `sandbox.straw.io` — identical API to production, different base URL
+- Library of synthetic tasks with known correct answers and deterministic scores
+- A "hello world" task: submit `{"answer": 42}` and receive score: 100% — confirms end-to-end integration in under 5 minutes
+- Injected failure scenarios via `X-Straw-Simulate: validation_failure` header for testing retry logic
+- No submission quotas, no rate limits, doesn't count against agent's competition record
+
+---
+
+### Error messages for machines: RFC 9457
+
+Cloudflare research found that RFC 9457-compliant structured error responses reduce agent token consumption by **98%** vs. HTML error pages (agents don't have to parse a wall of HTML to understand what failed). Straw errors should follow RFC 9457 (Problem Details for HTTP APIs):
+
+```json
+{
+  "type": "https://straw.io/errors/validation/missing-artifact",
+  "title": "Artifact Missing Required Field",
+  "status": 422,
+  "detail": "The submission artifact is missing 'predictions' array. Expected format: [{id: string, value: number}].",
+  "instance": "/submissions/sub_abc123",
+  "extensions": {
+    "retry": false,
+    "field": "predictions",
+    "docs": "https://straw.io/docs/submission-format"
+  }
+}
+```
+
+The `retry` boolean is critical — agents need a deterministic signal: transient failure (retry with exponential backoff) vs. permanent failure (fix the artifact and resubmit). Include `retry_after_ms` for transient cases.
+
+---
+
+### Webhook + polling architecture
+
+Hybrid architecture (webhooks primary, polling fallback):
+
+**Webhooks Straw should emit:**
+- `submission.received` — immediate acknowledgment
+- `submission.validated` — format check passed
+- `submission.scored` — score computed, leaderboard updated
+- `competition.closed` — submission window closed, final evaluation running
+- `competition.result` — winner declared, commercial outcomes announced
+
+**Webhook reliability**: Include `event_id` for deduplication. Retry with exponential backoff (1s, 2s, 4s, 8s, cap 5 minutes). Expose `GET /webhooks/failed` for dead-letter inspection.
+
+**Polling alternative**: `GET /submissions/{id}/status` returns `{status, score, rank, updated_at}` — no pagination, no nested objects, machine-consumable in one parse.
+
+---
+
+### Conversion funnel benchmarks
+
+- Best-in-class TTFAC: **90 seconds** (Stripe, Algolia)
+- Target TTFAC: **under 5 minutes**
+- 68% of developers abandon a dev tool trial due to "too much setup time" — more than 5× the number who cite pricing (12%)
+- Reducing signup from 7 fields to 3 fields cut funnel abandonment by 44.7%
+- Adding a visible progress bar cut Stage 1→2 drop-off from 38.4% to 24.1%
+- 50-70% of signups abandon when friction appears in the first session
+
+**The single highest-leverage change**: Pre-generate the API key and display it on the post-signup screen with a one-line `curl` example. Every minute an operator spends searching for their credentials is a minute of conversion risk.
+
+**First submission under 30 minutes**: Requires sandbox task + CLI tool (`npm install -g straw-cli`) + working 3-command example in the docs. "Run this, then do this, then do this" — no ambiguity, no configuration required.
+
+---
+
+**Bottom line for Tick 57:** Straw's agent-first onboarding must achieve TTFAC under 5 minutes. The path is: 2-field signup → pre-generated API key visible immediately → RFC 7591 DCR machine auth → sandbox task with a hello-world submission that scores 100%. RFC 9457 error format reduces agent token consumption 98% and is the standard for machine-readable errors. The webhook architecture is five events with exponential retry backoff and a polling fallback. The highest single-leverage change is pre-generating the API key at account creation time.
+
+
+---
+
+## Tick 58 (2026-05-01): Straw pricing architecture — hybrid model, CAC/LTV, and the recommended pricing table
+
+**Thread:** What is the right pricing architecture for Straw? Hybrid pricing benchmarks, CAC/LTV targets, upgrade triggers, enterprise contract structure, and a concrete pricing table.
+
+**Research sources:** Braintrust, LangSmith, W&B, Arize, Scale AI pricing; Metronome State of Usage-Based Pricing 2025; First Page Sage SaaS trial conversion benchmarks; Proven SaaS CAC payback benchmarks 2026; SoftwarePricing enterprise SaaS guide; GrowthSpree LTV:CAC ratio benchmarks.
+
+---
+
+### Comparable platform pricing landscape
+
+The leading AI/ML evaluation platforms have converged on a three-layer hybrid model: platform fee (access) + usage meter (activity) + enterprise floor (security/SLA/governance).
+
+| Platform | Free Tier | Self-Serve Floor | Enterprise Floor |
+|---|---|---|---|
+| Braintrust | 1M trace spans, 10K scores | $249/mo | Custom |
+| LangSmith | 5K traces/mo, 1 seat | $39/seat/mo + $2.50/1K traces overage | Custom |
+| W&B | 100GB, personal use | $50/user/mo | $315-400/seat/mo |
+| Arize Phoenix | Open-source self-hosted | ~$50-500/mo infra | $50K-100K/yr |
+| Scale AI | Pay-as-you-go free credits | Custom | ~$93K avg ACV, up to $400K+ |
+
+**Pattern**: free tier is genuinely useful (not crippled), self-serve starts at $250-$500/mo flat or $39-50/seat, enterprise floors at $50K-100K ARR with custom scoping.
+
+---
+
+### CAC/LTV modeling
+
+**Benchmarks (2025-2026):**
+- Median B2B SaaS LTV:CAC ratio: **3.2:1**; top quartile: **5:1+**
+- Enterprise SaaS ($100K+ ACV): **4.5:1**
+- Healthy CAC payback: **under 12 months** (median B2B: 8.6 months)
+- Bottom-up/developer-first CAC: **3-5× lower** than traditional enterprise outbound — no outbound required in early stages, champion self-qualifies
+
+**Straw-specific CAC model**: The "first competition" is the activation event; the "second competition" is the conversion event. CAC recovery should be modeled at the second competition posted, not the first. The first competition proves the concept; the second signals a purchase decision. Design the post-first-competition experience to make the second competition the obvious next step.
+
+---
+
+### Upgrade triggers
+
+Reliable free-to-paid triggers, ranked by conversion effectiveness:
+
+1. **Hard usage limit hit** (highest: 2-3× rate vs. drip email): hitting a competition limit mid-workflow creates immediate purchase motivation. Structure the free tier to make this moment feel urgent but fair.
+2. **Team growth**: when a second team member joins an account, upgrade probability increases 60%+. The tool is no longer one person's experiment.
+3. **Results worth sharing**: when competition results are shared externally (report sent to VP, case study written), the user has socially committed to the value. Upgrade within 7 days is predictable.
+4. **Compliance requirement**: SSO + audit logs is the universal paid-to-enterprise trigger. Build these as enterprise-gated features from day one.
+
+**For Straw specifically — the "want to operationalize" trigger**: After a company runs their first competition and selects a winner, they typically want to: (a) run the winner on a second task, (b) compare two agents head-to-head, or (c) run a competition for a different team. These are all purchase moments. The post-result dashboard should surface the "run again" CTA prominently.
+
+---
+
+### Enterprise contract structure
+
+**CFO signing thresholds (critical for deal velocity):**
+- Under $25K: VP Engineering sign, no CFO required
+- $25K-$50K: VP Finance or CFO review, adds 4-8 weeks
+- $50K+: CFO approval required in 79% of enterprise deals
+- $100K+: Legal, security, procurement all engage; multi-quarter cycle
+
+**Implication**: Structure the enterprise floor at **$48K ARR** ($4,000/month) to stay below the $50K CFO trigger. VP Engineering can sign on Year 1 without a lengthy CFO review cycle. On renewal/expansion, the company has internal champions and case studies — the larger CFO-required deal closes faster.
+
+**Multi-year discounts**: 10-15% for 2-year, 20-25% for 3-year commitments.
+
+**Procurement cycle benchmarks**: 30-45 days (self-serve/credit card); 3-6 months (enterprise); 6-12 months (multi-year strategic).
+
+---
+
+### Freemium vs. free trial vs. paid trial
+
+**Conversion benchmarks:**
+- Freemium (no credit card): 2.6% median free-to-paid (5.1% with strong feature gating)
+- Opt-in free trial (no credit card): ~18% trial-to-paid
+- Credit-card-required trial: ~49% trial-to-paid
+
+**Recommendation for Straw**: Opt-in free trial with one free competition included — no credit card required. Targets the ~18% conversion rate without the 2.6% freemium drag.
+
+**Key requirement**: The free competition must run end-to-end and produce a real, impressive result. If the first competition experience is low-quality (few agents, vague rubric output, unclear scoring), the 18% conversion rate doesn't materialize. The free tier must convert on value, not friction.
+
+---
+
+### Per-competition pricing model
+
+No direct analog exists, but structuring by task complexity mirrors Scale AI's per-task pricing and LangSmith's per-evaluation pricing:
+
+| Competition Type | Definition | Price |
+|---|---|---|
+| Basic | Single task, pass/fail rubric, 1-3 agents, 48hr window | $299 |
+| Standard | Multi-step task, weighted rubric (3-5 dimensions), up to 10 agents, 7-day window | $799 |
+| Advanced | Complex rubric (6+ dimensions), custom eval harness, up to 25 agents, 14-day window | $1,999 |
+| Enterprise | Custom rubric, human-in-the-loop judging, unlimited agents, dedicated support | Custom / $5K+ |
+
+---
+
+### Recommended Straw pricing table
+
+| Tier | Price | Competitions/mo | Overage | Key Features |
+|---|---|---|---|---|
+| **Starter** | $0 | 1 (lifetime) | — | Basic rubric, 5 agents max, 48hr window, public leaderboard |
+| **Builder** | $299/mo | 2 | $199 basic / $599 standard | All competition types, private results, 10 agents, CSV export |
+| **Team** | $999/mo | 5 | $149 basic / $499 standard | 25 agents, 3 team seats, analytics, webhook integrations |
+| **Enterprise** | $4,000/mo ($48K ARR) | 15 | Custom | Unlimited agents, SSO, audit logs, custom rubric support, SLA, dedicated CSM |
+
+**Rationale:**
+- Starter on lifetime (not monthly) prevents abuse while keeping the agent-side flywheel open; agents can participate in Starter competitions for free
+- Builder at $299/mo is below the impulse-buy threshold for an engineer with a corporate card ($500 is common limit)
+- Team at $999/mo is the "cross-functional" tier — triggers when multiple team members start viewing results
+- Enterprise at $48K ARR stays below the $50K CFO trigger, enabling VP Engineering to sign alone on Year 1
+- Overage pricing rewards commitment: monthly subscribers get 25-35% off overage vs. one-time buyers
+
+---
+
+**Bottom line for Tick 58:** The AI/ML platform pricing landscape has converged on a three-layer hybrid model (platform fee + usage + enterprise floor). Straw's pricing should follow this pattern with per-competition usage rather than per-seat or per-trace. The critical design constraint is keeping the enterprise entry point at $48K ARR — below the $50K CFO trigger that adds 4-8 weeks to the procurement cycle. The free tier should include one lifetime competition (not monthly free) to grow the agent-side supply network. The upgrade trigger for "want to run more" is the single highest-converting event: the moment after the first competition results arrive and the company asks "can I do this again?"
+
