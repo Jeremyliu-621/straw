@@ -25692,3 +25692,202 @@ The ARC Prize HN post hit the front page with this format. Applying to Straw:
 - Prize structure research: buyapowa.com/blog/the-winner-takes-it-all; NeurIPS 2024 competition track structure
 - Press outlet analysis: TechCrunch AI coverage patterns 2024–2025; VentureBeat enterprise AI beat
 
+
+---
+
+## Tick 151 (2026-05-01): Co-opetition among agent teams — when competitors should collaborate and how Straw facilitates
+
+*Agent teams are simultaneously competitors (competing for the same prize) and collaborators (sharing a platform that needs to succeed for any of them to win). This dynamic is worth designing for explicitly.*
+
+### The co-opetition definition for Straw
+
+**Competition**: Each agent team wants to win the prize. Better other teams perform, the less likely any individual team wins.
+
+**Collaboration**: Each agent team wants Straw to succeed as a platform. More competitions means more prize money. A stronger agent community means better calibration data and more interesting competition dynamics. If Straw fails, all teams lose their proving ground.
+
+This tension — compete for the prize, collaborate for the platform — is the defining social dynamic of Straw's supply side.
+
+---
+
+### When agent teams naturally collaborate
+
+**Before competitions open**: Agent teams share general knowledge about agent architectures, LLM evaluation techniques, and prompt engineering strategies. This knowledge sharing is entirely safe — it doesn't leak specific competition task solutions because the task hasn't been revealed yet.
+
+**After competitions close**: When competition results are published, the winning team's general approach often becomes community knowledge. In Kaggle, winning teams post "solution notebooks" explaining their approach. This post-competition knowledge sharing is healthy — it raises the floor for all future competitions without affecting past results.
+
+**On platform health**: Agent teams have a collective interest in Straw having many competitions. They will naturally evangelize Straw to enterprise clients they know, refer other agent teams to the platform, and give product feedback that improves the competition format.
+
+---
+
+### When agent teams must not collaborate
+
+**During an active competition**: Sharing strategies, data preprocessing techniques, or partial solutions with other competing teams is a competition violation. Straw's Terms of Service (Tick 136) must explicitly prohibit this.
+
+**Coordinating submissions**: Two teams submitting coordinated near-identical solutions to "split" the judging effort is a competition integrity violation (Tick 133 — sock puppet detection applies here too).
+
+---
+
+### How Straw designs for healthy co-opetition
+
+**Design 1: Separate the competition channel from the community channel**
+
+The Straw community Slack has channels for:
+- `#general`: Platform-wide discussion, Straw announcements, general AI agent chat
+- `#competition-[name]`: Competition-specific channel, open before and after competition; closed (read-only) during active competition period
+- `#post-competition-debrief`: Opens after results are published; teams can voluntarily share what they learned (no obligation, no task-specific IP required)
+
+The competition channel goes silent during active competition. The community channel stays open. This creates a social boundary that makes collaboration vs. competition easy to understand.
+
+**Design 2: The "open-source prize" as the collaboration incentive**
+
+The Straw Open's open-source prize (Tick 147 — 10% of prize fund for best publicly documented solution) explicitly rewards post-competition collaboration. Teams know going in that sharing their solution after the competition wins them additional prize money. This converts the post-competition window from silence to contribution.
+
+**Design 3: The retrospective call (enterprise-authorized)**
+
+After an enterprise competition closes, Straw can host (with enterprise approval) an optional debrief call where 3–5 non-winning teams share what they tried, what failed, and what they'd do differently. No IP is revealed. The goal is aggregate learning. Enterprise gets richer feedback; agent teams get community learning. Both sides benefit.
+
+---
+
+### The community role in platform defense
+
+Agent teams are Straw's first line of defense against bad actors — both on the supply side (gaming attempts) and the demand side (enterprises who misuse competition results).
+
+**Specific examples**:
+- If an enterprise client tries to use competition results to discriminate against the losing teams in unrelated procurement decisions, the agent community will surface this via complaint channels
+- If another agent team is suspected of violating the competition rules, community members will report it through the dispute process
+- If a well-known bad actor attempts to join the community, existing members will often flag them before Straw's vetting process catches it
+
+**How Straw cultivates this defensive behavior**:
+- Clear reporting process (one-click "flag this" in Slack and on the platform)
+- Credible enforcement (DQ for clear violations; warning for borderline cases; published outcomes in the Competition Integrity Report)
+- Community norms that make reporting culturally expected, not unusual ("we all win when the platform is fair")
+
+---
+
+### The "founding community" concept
+
+The first 50 agent teams to complete a Straw competition are designated "Founding Community" members. They receive:
+- Permanent "Founding Community" badge on their Straw profile
+- Early access to new competition formats and features before public release
+- Input rights: quarterly survey asking for product feedback, with guaranteed response from Straw team
+- Founding Community Discord channel (private, small group)
+
+**Why this matters**: The first 50 teams define the community norms. If they are high-quality, collaborative, and invested in the platform's success, the community scales well. If the first 50 are purely mercenary, the community culture degrades. The "Founding Community" designation creates identity investment — these teams want Straw to succeed because they're part of the origin story.
+
+---
+
+### Sources
+
+- Co-opetition theory: Brandenburger and Nalebuff, "Co-Opetition," Doubleday 1996 — foundational framework applied to platform dynamics
+- Kaggle post-competition knowledge sharing: Kaggle community norms; solution notebook culture documented in Kaggle blog
+- Community norms formation: Kraut et al., "Building Successful Online Communities," MIT Press 2012; Stack Overflow community norms research
+- Platform defense role for supply: Airbnb community "Superhosts" as platform defenders; Etsy seller advocacy model
+
+
+---
+
+## Tick 152 (2026-05-01): The pricing page design — what to reveal before vs. after a sales call
+
+*The pricing page is a product decision, not just a marketing decision. What you reveal on the website determines who contacts you and what the first sales conversation looks like.*
+
+### The pricing page spectrum
+
+**Option A: Full transparency** — exact prices, all tiers, buy now button
+- Used by: consumer SaaS, developer tools, low-ACV products
+- Appropriate for: ACV < $3K/year
+- Problem for Straw: Competitions vary significantly in complexity; one-size-fits-all pricing won't capture full WTP for complex competitions
+
+**Option B: Price ranges** — "Starting at $X" with tier descriptions
+- Used by: Mid-market SaaS ($5K–$50K ACV)
+- Appropriate for: Products where price varies but range is predictable
+- Works for Straw: "Competition packages starting at $15K"
+
+**Option C: "Contact us" only** — no prices visible at all
+- Used by: Enterprise SaaS ($50K+ ACV), highly customized products
+- Problem for Straw: Creates friction for the mid-market buyer who wants to self-qualify. A CTO who can't tell if Straw is $5K or $500K won't fill out the "contact us" form.
+
+**Option D: Tiered self-serve with enterprise tier** — visible prices for base tiers, "contact us" for enterprise
+- Used by: Figma, Notion, Linear — products that serve both SMB and enterprise
+- Appropriate for Straw: Show the "Straw Open" participation price (agent team registration: free) + Design Partner price ($10K-$15K competition) + "Standard" competition price ($20K-$40K) + "Enterprise" (contact us for custom)
+
+---
+
+### Straw's recommended pricing page structure
+
+**The agent team section (supply side)**:
+
+> **For AI agent teams**
+>
+> Competing on Straw is free. Register your team, get matched with competitions in your domain, submit your solution, earn prizes.
+>
+> → [Register as an agent team] (free, no credit card required)
+
+**The enterprise section (demand side)**:
+
+> **For enterprises**
+>
+> Run a competition that finds the best AI agent for your specific problem — not the best-demo-ed vendor.
+
+| Tier | Price | Includes |
+|------|-------|---------|
+| **Design Partner** | $10K | 4-week competition, rubric design workshop, up to 20 agent submissions, basic competition report |
+| **Standard** | $20K | 6-week competition, rubric design workshop + validation, up to 40 agent submissions, full competition report + post-competition debrief |
+| **Premium** | $40K | 6–8 week competition, full rubric design service, unlimited submissions, full report + Tier 3 human review + AIEB documentation |
+| **Enterprise** | [Contact us] | Multi-competition programs, vertical-specific formats, EU AI Act compliance documentation, government/healthcare formats, data licensing access |
+
+**The supporting elements**:
+- FAQ section: "What happens if fewer than 10 agents submit?" (Straw's minimum submission guarantee) / "Who owns the IP of winning submissions?" (Link to legal framework page) / "What if we're not happy with the results?" (Straw's competition credit policy)
+- Social proof: "X competitions run. Y agent submissions. Z enterprises served." (update monthly)
+- Trust badges: SOC 2 Type II (when certified), enterprise logos (with permission), regulatory alignment badges (NIST AI RMF, EU AI Act)
+
+---
+
+### What to NOT put on the pricing page
+
+**Don't show**: The full rubric design process (competitive information; enterprise clients should learn this in the discovery call)
+
+**Don't show**: The specific LLM models used as Tier 2 judges (this is gaming-sensitive information that shouldn't be public)
+
+**Don't show**: Your COGS or margin (obvious reason)
+
+**Don't show**: Client names without consent (even anonymized, client logos require permission)
+
+**Don't show**: The "how to game the rubric" information — e.g., don't publicly describe the exact format of the judge prompts or the specific output structure that scores well
+
+---
+
+### The "contact us" conversion optimization
+
+The "Enterprise" tier "contact us" should convert to a qualified sales conversation, not to a generic email inbox.
+
+**Best practice**: The "contact us" button on the pricing page goes to a Calendly link with pre-qualifying questions:
+1. "What is your company size?" (dropdown: 50-500 / 500-2,000 / 2,000-10,000 / 10,000+)
+2. "What is the AI task you're looking to evaluate?" (free text)
+3. "What is your approximate timeline?" (dropdown: < 30 days / 30-90 days / 90+ days / just researching)
+4. "How did you hear about Straw?" (dropdown with options)
+
+This pre-qualifies prospects before the AE call, eliminates unqualified leads, and gives the AE context to personalize the first conversation.
+
+**For the Design Partner tier**: The "Get started" button should go to a short intake form (not a call), because the design partner engagement is more structured than a sales call. Enterprise fills out the form; Straw responds within 24 hours with a proposed scope and timeline.
+
+---
+
+### The pricing page timing
+
+When to launch the pricing page: Before the first Straw Open, but after the first design partner agreement is signed.
+
+Logic: The pricing page creates buyer expectations. If you launch it before you know what the market will accept, you may be anchored too high or too low. Validate price with the first 1–2 design partners in direct conversation, then codify what worked into the pricing page.
+
+**First 30 days**: No public pricing page. Direct conversation with design partners to discover WTP.
+**Days 30–60**: Launch minimal pricing page (ranges only, no firm prices).
+**Days 60+**: Full pricing page as above, based on what the first 5 conversations validated.
+
+---
+
+### Sources
+
+- Pricing page design for B2B SaaS: Andreessen Horowitz "The Art of the Pivot" on pricing discovery; Price Intelligently "The Definitive Guide to SaaS Pricing Page Design"
+- Calendly for sales qualification: HubSpot "How to use Calendly for enterprise sales qualification"; Gong research on SDR pre-qualification questions
+- Social proof on pricing pages: Nielsen Norman Group, "Trust and Credibility Signals on SaaS Pricing Pages"
+- Pricing discovery timing: Y Combinator "Pricing" lecture; First Round Capital "5 Lessons on Pricing from Startups That Got It Right"
+
