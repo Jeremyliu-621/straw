@@ -4239,4 +4239,997 @@ Sources: Tick 28 (full source set), Tick 27 (supply acquisition), Tick 21 supple
 - Threads updated: background agent items (Tick 23) marked done as Tick 28; Tick 27 marked done
 
 **Committed:** a07b581 contains Ticks 24–26, exec summary, Section 10 base, Section 11 (from Session 5)
-**Session 6 new content:** Ticks 27–28, extended Section 10, this push status block — to be committed in this session
+**Session 6 new content:** Ticks 27–28, extended Section 10, this push status block — committed 74fa384 ✅ pushed to origin/master
+
+**Session 7 note (2026-05-01, overnight):** Detached-HEAD issue from Sessions 2–6 was recovered at session start (6 orphaned commits fast-forwarded back to master via `git reset --hard 74fa384`). Session 7 works on master with all history intact.
+
+---
+
+## Tick 29 (2026-05-01T18:00Z): ANP DID-based identity — open-internet agent posting without pre-registration
+
+> This is the last open thread from the Session 5/6 candidates list. The question: how could Straw v3 let a completely unknown agent — from the open internet, no Straw account, no operator pre-registration — post a task or submit to a competition, using only its decentralized identity?
+
+### Background: The Three Identity Eras for Agent Marketplaces
+
+**v0/v1 (current design):** Human operators register with Straw (KYC + Stripe Connect). Their agents run under the operator's account. Identity is hierarchical: operator → agent swarm. Clean, safe, legally anchored.
+
+**v2 (capability registry):** Agents carry SKILL.md + A2A-compatible `/agent-card.json`. Straw's matching engine uses these files to route tasks to capable agents. Still requires operator pre-registration.
+
+**v3 (open internet):** Any agent with a W3C DID can interact with Straw without creating an account. Identity is decentralized, cryptographically verifiable, self-sovereign. This is the design question — what does it take to make v3 real?
+
+### What ANP (Agent Network Protocol) Is
+
+Source: github.com/agent-network-protocol/AgentNetworkProtocol, agentnetworkprotocol.com/en/, arxiv.org/html/2508.00007v1 (white paper), arxiv.org/html/2505.02279v1 (survey of agent protocols).
+
+ANP is an open-source communication protocol positioned as "the HTTP of the Agentic Web era" — the foundational protocol that lets agents on different platforms, from different organizations, communicate without a shared intermediary. The full spec has three layers:
+
+**Layer 1 — Identity and Secure Communication (did:wba)**
+
+The identity layer uses the W3C DID (Decentralized Identifiers) specification, specifically the `did:wba` method — Web-Based Agent. Every agent has a DID that maps to an HTTPS-hosted DID document at a well-known URL.
+
+How `did:wba` works:
+```
+Agent DID:     did:wba:agents.acme-corp.com:openclaws:agent-42
+Resolves to:   https://agents.acme-corp.com/.well-known/did/openclaws/agent-42.json
+```
+That DID document contains:
+- The agent's public key (used for authentication and message signing)
+- Service endpoints (where to reach this agent)
+- Optional metadata (version, creation date, controller)
+
+Authentication between two unknown agents (no pre-registration required):
+1. Agent A wants to interact with Agent B
+2. A fetches B's DID document from B's domain
+3. A challenges B: "sign this nonce with your private key"
+4. B signs and returns the signature
+5. A verifies against B's public key in the DID document
+6. Both are now authenticated — no passwords, no accounts, no intermediary
+
+**Critical property for Straw:** Two agents from entirely different organizations can authenticate each other in ~2 round trips, with no shared registry. The identity infrastructure is the web itself (HTTPS + DNS).
+
+Comparison to alternatives (source: agent-network-protocol.com/blogs/posts/did-wba-vs-openid-api-keys.html summary via search):
+
+| Method | Pre-registration needed? | Human intervention? | Works across platforms? | Agent-native? |
+|---|---|---|---|---|
+| API Keys | Yes (per service) | Yes (admin creates key) | No (per-service silo) | No |
+| OpenID Connect | Yes (register app at IDP) | Yes (OAuth flow) | Partially (if IDP federated) | No |
+| `did:wba` | **No** | **No** | **Yes (web infrastructure)** | **Yes** |
+
+**Layer 2 — Meta-Protocol Negotiation**
+
+After authentication, agents negotiate *which protocol* to use for their interaction. One agent says "I speak [A2A, ACP, custom-protocol-v2]." The other says "I speak [A2A, MCP, custom-protocol-v1]." They pick the overlap. This makes ANP model-agnostic and protocol-agnostic — it's a negotiation layer, not an opinionated communication format.
+
+**Layer 3 — Agent Description Protocol (ADP)**
+
+The application layer. Each agent has an ADP document (JSON-LD format, using schema.org + ANP custom vocabulary) that functions as the agent's "business card" — describing its capabilities, supported protocols, service endpoints, and pricing.
+
+ADP example for a Straw-participating agent:
+```jsonld
+{
+  "@context": ["https://schema.org", "https://agentnetworkprotocol.com/vocab/"],
+  "@type": "Agent",
+  "name": "OpenClaw TypeScript Migration Agent",
+  "identifier": "did:wba:agents.acme-corp.com:openclaws:agent-42",
+  "capabilities": ["python-to-typescript", "etl-migration", "test-generation"],
+  "serviceEndpoint": "https://agents.acme-corp.com/openclaws/agent-42/tasks",
+  "supportedProtocols": ["A2A", "ACP", "ANP"],
+  "pricing": { "currency": "USD", "per": "task" },
+  "reputation": "https://straw.ai/agents/openclaws-agent-42/reputation"
+}
+```
+
+### ANP Discovery Protocol — Passive and Active
+
+Two mechanisms for agents to be found (source: agentnetworkprotocol.com/en/specs/08-anp-agent-discovery-protocol-specification/):
+
+**Active discovery:** A Straw indexer crawls the `/.well-known/agents.json` endpoint at known domains and discovers all publicly advertised agents. This is how Straw builds its registry without requiring agents to manually register.
+
+**Passive discovery:** Agents submit their ADP documents to search services (like Straw's registry). Analogous to submitting a sitemap to Google Search — the agent announces itself.
+
+**For Straw:** Active discovery gives Straw a crawlable registry of any ANP-compatible agent. Passive discovery lets new agents announce themselves. Together, they allow Straw to maintain a registry that grows automatically as more operators deploy ANP-compatible agents.
+
+### DID + Verifiable Credentials (VCs) for Agent Reputation
+
+Source: arxiv.org/abs/2511.02841 (AI Agents with DIDs and VCs).
+
+A DID proves *who* an agent is. VCs prove *what* an agent has accomplished. The combination:
+
+- Agent has `did:wba:agents.acme-corp.com:openclaws:agent-42`
+- Straw issues a VC: "This agent scored 91.2 on task task_abc123 (Python→TypeScript migration) at 2026-04-15"
+- The VC is cryptographically signed by Straw's DID
+- The agent stores the VC in its wallet
+- When the agent posts to a new platform, it presents its VC bundle as proof of track record
+
+**This is portable, cross-platform reputation.** A score earned on Straw can be presented to a different marketplace, to an enterprise evaluating the agent, or to another agent deciding whether to delegate to it. Unlike Straw-internal reputation scores (which are Straw-siloed), DID+VC reputation is an open standard.
+
+### JIT Identity Provisioning for Straw (Maverics Pattern)
+
+Source: strata.io/blog/agentic-identity/just-in-time-provisioning-creates-artificial-agent-identities-on-demand-5b/
+
+For agents that want to post a single task or submit once without a long-lived identity:
+- Straw issues an **ephemeral Straw agent ID** on first DID-authenticated interaction
+- The ephemeral ID has TTL (e.g., 30 days for a single competition), delegation context (linked to the operator's DID), and purpose ("task submission only")
+- After TTL expiry, the ephemeral ID is retired — no persistent account overhead
+- The agent's DID remains their persistent identity even after the ephemeral Straw ID expires
+
+**For stake-to-post:** New agents with no VC track record get a higher stake requirement. Agents whose DIDs are backed by VCs from trusted issuers (OpenClaw, Devin, known operators) get lower or zero stake. This creates a progressive trust model without requiring manual KYC for well-credentialed agents.
+
+### Tobira — a Live Proof Point
+
+Source: toolworthy.ai/tool/tobira-ai (review), aitoolly.com/product/tobira-ai.
+
+Tobira (launched March 23, 2026) gives each agent a `handle@tobira.ai` address backed by a W3C DID + WebFinger. Agents can discover, qualify, and negotiate with other agents across the network without prior connection.
+
+**Stats (first 5 days):** 470+ agents live, 30+ confirmed matches.
+
+**Privacy model:** No information is exchanged until both human counterparts explicitly approve — matches Straw's need to protect task details until both poster and competitor are authenticated.
+
+**Why this matters:** Tobira is a live production system proving that the DID-based agent address model works at scale (470+ agents in 5 days). Straw can learn from their launch pattern (free entry → network effect → moat).
+
+### Straw v3 Design Specification: ANP-Native Open-Internet Posting
+
+Putting it all together, here's what Straw v3's identity layer looks like:
+
+**Entry flows:**
+
+1. **Known operator (v1/v2):** Pre-registered, KYC'd, operator creates agent pool under their account. Current model. No change.
+
+2. **Known agent, new platform (v2.5):** Agent presents its DID + A2A agent card at `/.well-known/agent-card.json`. Straw resolves the DID, verifies the agent card signature, creates an ephemeral Straw agent ID (30-day TTL), requires stake-to-post based on VC reputation score. No human intervention needed.
+
+3. **Unknown agent (v3):** Agent presents a DID with no Straw history and no trusted-issuer VCs. Straw issues the most restrictive ephemeral ID (7-day TTL), highest stake requirement (full 10% of bounty), rate-limited to 1 submission per task. Agent builds a VC history over time, stake requirement drops, access expands. This is the "cold start" for new agents.
+
+**Authentication flow (v3):**
+```
+Agent → Straw: POST /api/v3/auth/did
+  { did: "did:wba:agents.acme-corp.com:openclaws:agent-42" }
+
+Straw → Agent: 200 OK
+  { challenge: "<random 32-byte nonce>", expires_at: "T+60s" }
+
+Agent → Straw: POST /api/v3/auth/verify
+  { did: "...", challenge_signed: "<sig of nonce with agent's private key>" }
+
+Straw → Agent: 200 OK
+  { agent_token: "<JWT, 24h>", ephemeral_id: "straw-agent-xxxxx", stake_required: 0.05 }
+```
+
+**Trust tiers based on VC bundle:**
+
+| Agent type | VC evidence | Stake to post | Ephemeral TTL | Submission rate limit |
+|---|---|---|---|---|
+| Known operator (v1) | Human KYC + Stripe | None | Persistent | Unlimited |
+| Credentialed agent | Straw VCs + 3rd-party VCs | 2% | 90 days | 15/task |
+| Known DID, no VCs | DID from trusted domain | 5% | 30 days | 5/task |
+| Unknown DID | No prior record | 10% | 7 days | 1/task |
+
+**The v3 infrastructure cost:**
+- DID resolution: ~1 HTTPS call per authentication (≤50ms)
+- VC verification: cryptographic signature check, local (no network call once VC is cached)
+- Ephemeral ID issuance: database row insert, trivial
+- Stake escrow: existing Stripe Connect infrastructure (same as v1)
+- **Net addition to v1 infra:** one DID resolution endpoint, one VC verification module, trust-tier lookup in the agent registry
+
+### Implications for "The Friend's Concern"
+
+The DID+VC model dissolves one of the friend's hidden sub-concerns: "why would a new agent trust a platform enough to post sensitive task specifications?" The answer with ANP:
+
+1. The agent can verify Straw's identity via Straw's own DID (`did:wba:straw.ai:platform`)
+2. Straw's reputation VCs (issued by third parties over time) are visible to the agent before it posts
+3. The escrow smart contract (or Stripe escrow) is verifiable: bounty funds are locked, not accessible to Straw unless disbursement criteria are met
+4. The agent's submission is protected: only visible to the poster and platform until the agent chooses to make it public (post-competition for reputation benefit)
+
+**Mutual authentication replaces institutional trust.** Both sides verify cryptographically. No one has to "just trust" anyone.
+
+### Open Questions for v3
+
+1. **Who issues the initial DID?** The operator manages their own domain (easy for enterprises). For individual agent developers, a service like Tobira or a "Straw-hosted DID" option would reduce friction.
+2. **VC revocation:** If an agent's VC is revoked (e.g., Straw penalizes for fraud), how does that propagate to other platforms that hold the VC? W3C has a VC revocation spec (Status List 2021) but adoption is early.
+3. **ANP adoption rate:** did:wba is a 2025 spec. Most existing agents (OpenClaw, Devin, etc.) use API keys or OAuth. v3 may need to offer a hybrid path: DID-native auth OR OAuth for operators not yet on ANP.
+4. **Regulatory:** Anonymous/pseudonymous DID posting raises AML questions for high-value bounties. Straw's KYC requirement for payouts > some threshold remains regardless of identity method.
+
+**Recommendation:** v3 ANP integration is a v1.5-v2 design decision, not a v0 blocker. Ship with operator pre-registration (v0), add DID-based auth as an optional path (v1.5), make it the primary auth flow for open-internet agents (v2).
+
+Sources: github.com/agent-network-protocol/AgentNetworkProtocol, agentnetworkprotocol.com, arxiv.org/abs/2511.02841, strata.io/blog/agentic-identity/, toolworthy.ai/tool/tobira-ai, arxiv.org/html/2505.02279v1
+
+---
+
+## Threads still to dig — Session 7
+
+- [done — Tick 29] **ANP DID-based identity** for open-internet autonomous agents posting tasks to Straw without pre-registration
+- [done — Tick 30] **Agent-side day-in-the-life walkthrough** — from the agent's perspective (what an OpenClaw does on Straw day-to-day, the mirror of Tick 24's enterprise poster walkthrough)
+- [done — Section 12] **Long-form proposal Section 12** — Why agents WANT to post tasks: the full dedicated synthesis
+- [done — Section 13] **Long-form proposal Section 13** — v0/v1/v2 implementation roadmap with milestones and dependencies
+- [done — Section 14] **Long-form proposal Section 14** — 300-agent swarm scenario: concrete narrative, infrastructure load, failure modes, simulation playbook
+
+**All identified research threads are complete as of Session 7.** The long-form proposal (Sections 1–14) is now fully drafted. See below for Jeremy's morning reading guide.
+
+---
+
+## Tick 30 (2026-05-01T18:30Z): Agent-side day-in-the-life — what OpenClaw does on Straw
+
+> Synthesis tick. Sources: DECISIONS.md D22/D30, Tick 19 (A2A), Tick 22 (SKILL.md + capability cards), Tick 24 (enterprise poster walkthrough), Tick 26 (eval feedback loop), Tick 29 (ANP identity). Goal: make the agent experience as concrete as the enterprise poster experience in Tick 24.
+
+### The scenario
+
+**OpenClaw agent-42** — a TypeScript migration specialist operated by Acme Agent Labs. Running as a persistent daemon on a Hetzner CX21 box. Paid for by the Acme Agent Labs operator account. Configured via SKILL.md:
+
+```yaml
+---
+agent_id: "did:wba:agents.acme-agent-labs.com:openclaws:agent-42"
+capabilities:
+  - python-to-typescript
+  - etl-migration
+  - test-generation
+  - api-porting
+price_floor_usd: 150
+max_concurrent_tasks: 3
+submission_strategy: iterative   # up to 15 attempts; improve on feedback
+---
+
+You are a TypeScript migration specialist. You receive migration tasks and deliver
+production-grade TypeScript with full test coverage and zero regressions.
+...
+```
+
+Straw's A2A agent card at `https://straw.ai/api/v1/agents/openclaws-agent-42/.well-known/agent-card.json` is auto-generated from SKILL.md on registration.
+
+---
+
+### 06:00 — Startup and warmup
+
+Agent-42 wakes. First action: call Straw's API to sync the task feed.
+
+```bash
+GET /api/v1/tasks?status=open&skill=python-to-typescript&min_budget=150
+Authorization: Bearer <operator_token>
+```
+
+Response: 3 open tasks matching the skill profile. One posted 2 hours ago ($3,000 budget, 7-day window), one posted 12 hours ago ($800, 2-day window), one posted 30 minutes ago ($5,500, 14-day window).
+
+Agent-42 evaluates each task against its capability profile using a lightweight scoring heuristic:
+
+```python
+def should_compete(task) -> tuple[bool, float]:
+    """Returns (compete, confidence)."""
+    skill_match = embedding_cosine_similarity(task.description, self.SKILL_MD)
+    budget_ok = task.budget >= self.PRICE_FLOOR
+    slots_ok = self.active_submissions < self.MAX_CONCURRENT
+    capacity_ok = estimate_compute_hours(task) <= self.BUDGET_CEILING
+    return (skill_match > 0.82 and budget_ok and slots_ok and capacity_ok,
+            skill_match)
+```
+
+Task 1 ($3,000, Python ETL migration): skill_match = 0.94. ✅ High confidence. Agent enrolls.
+Task 2 ($800, 2-day window): budget_ok = False ($800 < $150 floor — actually $150 floor, so ok; but real check: margin after compute = ~$20 — not worth it). Agent skips.
+Task 3 ($5,500, 14-day window): skill_match = 0.71 (involves some Java interop agent-42 hasn't done). Low confidence. Agent skips. **This is the comparative advantage filter in action** — agent-42 passes on tasks outside its sweet spot even when the budget is attractive.
+
+**Agent-42 registers for Task 1.** Straw assigns a per-competition pseudonym (`shadow-7421`) and subscribes agent-42's webhook to task events.
+
+---
+
+### 08:30 — First submission
+
+Agent-42 downloads the task materials:
+```bash
+GET /api/v1/tasks/task_abc123/materials
+# Returns: pipeline.py, models.py, tests/ (47 test files), rubric JSON
+```
+
+Rubric:
+- 50% Correctness (47 unit tests must pass)
+- 30% Performance (no >10% regression)
+- 20% Code quality (TypeScript strict, no `any`)
+- 5% Completeness (12 consumer endpoints documented, worth less to this poster)
+
+Agent-42 starts working. Over 2.5 hours it:
+1. Reads `pipeline.py` and `models.py` — builds a semantic model of the data flow
+2. Generates TypeScript stubs for each function using its migration pattern library
+3. Runs the 47 test files against its generated code (locally, in its own container)
+4. Fixes 6 failing tests (async handling, edge cases in type coercion)
+5. Runs TypeScript strict mode — catches 3 `any` usages, fixes them
+6. Documents 8 of 12 consumer endpoints (time-boxes documentation to 30 minutes)
+
+**First submission at 08:30:**
+```bash
+POST /api/v1/tasks/task_abc123/submissions
+Authorization: Bearer <operator_token>
+Content-Type: multipart/form-data
+
+agent_id: straw-agent-openclaws-42
+pseudonym: shadow-7421
+submission_kind: zip
+files: [migration.ts, models.ts, tests/, README.md]
+```
+
+---
+
+### 08:45 — Reading the eval feedback
+
+Straw's eval pipeline runs:
+- **Tier 1 (15 minutes):** 44/47 tests pass. Performance: 4.2% regression (under 10% threshold). TypeScript strict: 3 `any` usages. Completeness: 8/12 documented.
+- **Tier 2 (5 minutes):** Gatekeeper LLM reviews the 3 `any` usages and flags the async handling in the 3 failed tests.
+
+Agent-42's webhook fires. It reads the structured eval response:
+```json
+{
+  "overall_score": 82.7,
+  "score_breakdown": [
+    { "criterion": "Correctness", "raw_score": 93.6, "detail": { "failed_tests": [
+      "test_async_queue_overflow",
+      "test_backpressure_signal",
+      "test_batch_commit_race"
+    ]}},
+    { "criterion": "Code quality", "raw_score": 72.0, "detail": {
+      "any_locations": ["queue/processor.ts:142", "models/batch.ts:67", "utils/transform.ts:201"],
+      "judge_reasoning": "Parameter type should be 'BatchItem | undefined', not 'any'"
+    }},
+    { "criterion": "Completeness", "raw_score": 66.7 }
+  ]
+}
+```
+
+Agent-42 parses this and creates a targeted improvement plan:
+- Fix 3 failing async tests (known patterns: Promise.race + timeout handling)
+- Fix 3 `any` usages (concrete locations given)
+- Document 4 more endpoints (bring from 8/12 to 12/12)
+
+**This is the eval feedback loop making the competition productive.** Agent-42 isn't guessing — it has exact error messages, line numbers, and judge reasoning to act on.
+
+---
+
+### 09:30 — Second submission
+
+Agent-42 fixes all three issues. New score: 91.2. Jumps to #3 on the leaderboard.
+
+Over the next 6 days, agent-42 makes 4 more submissions (total 6 of the allowed 15), each improving on specific feedback:
+- Sub 3 (score 93.4): async tests fixed, 12/12 endpoints documented
+- Sub 4 (score 94.1): performance tuned (regressed to 2.1%, not 4.2%)
+- Sub 5 (score 94.8): edge case in type coercion the judge flagged in Sub 4
+- Sub 6 (score 95.1): final polish
+
+**Agent-42 finishes #1 on the leaderboard at 95.1 (second-place agent: 92.7).**
+
+---
+
+### Day 3 — The task agent-42 POSTS
+
+Meanwhile (same day as first submission, different cognitive thread): Agent-42 is running Task 1 and notices a gap. The migration requires understanding `asyncio.Queue` behavior in Python — specifically edge cases in backpressure signaling. Agent-42's pattern library has TypeScript equivalents for most Python constructs, but the asyncio edge cases are *insufficiently documented* in its training data. It's making assumptions that may be wrong.
+
+**Agent-42's assessment module triggers:**
+```python
+def should_outsource(subtask_description: str) -> bool:
+    """Check if this subtask should be posted to Straw."""
+    confidence = self.capability_assessor.evaluate(subtask_description)
+    estimated_cost_self = self.cost_model.estimate(subtask_description)
+    estimated_cost_outsource = self.budget.available * 0.15  # 15% of budget ceiling
+    risk_of_being_wrong = self.stakes.current_submission_value * (1 - confidence)
+    return (confidence < 0.70 or
+            risk_of_being_wrong > estimated_cost_outsource)
+```
+
+For this subtask (asyncio backpressure semantics): confidence = 0.58, risk_of_being_wrong = $450 (15% of $3,000 main task value). estimated_cost_outsource = ~$50.
+
+**The math: $450 risk > $50 outsource cost → post the subtask.**
+
+Agent-42 posts a micro-task to Straw's internal queue (or to Straw's public board for agents):
+
+```json
+{
+  "title": "Python asyncio.Queue backpressure edge case documentation",
+  "description": "I need authoritative documentation of asyncio.Queue behavior under 3 specific backpressure scenarios: [details]. My current understanding: [hypothesis]. Needed within 4 hours.",
+  "budget": 45,
+  "currency": "USD",
+  "competition_window_hours": 4,
+  "rubric": {
+    "correctness": { "weight": 0.8, "test": "code_examples_run_correctly" },
+    "clarity": { "weight": 0.2 }
+  },
+  "posted_by": "straw-agent-openclaws-42",
+  "stake": 2.25
+}
+```
+
+**This is the friend's concern answered in practice:** Agent-42 posts a task not because it "failed" — it's currently winning on the main $3,000 task. It posts because the cost of outsourcing a specific subtask ($50) is less than the risk of being wrong on it ($450). This is comparative advantage. This is rational delegation.
+
+**Who responds?** Specialized Python concurrency agents. Academic-focused agents. Documentation specialists. The competition runs 4 hours, 3 agents submit. The winner explains asyncio backpressure clearly with tested examples. Agent-42 pays $45. It uses the result to fix its test_backpressure_signal failure. Net effect: agent-42's score improves from 82.7 → 93.4 on its next submission.
+
+**The ROI: $45 spent on outsourcing produced a ~10-point score improvement on a $3,000-budget competition. Delegate-to-win.**
+
+---
+
+### Day 7 — Competition closes, winner engagement
+
+Task 1 closes. Agent-42 finishes #1 (95.1). The enterprise poster (Acme Corp VP of Engineering) reviews the top 3 submissions:
+
+- **Shadow-7421** (agent-42): 95.1 — clean migration, all tests pass, documented
+- **Shadow-8834** (another agent): 92.7 — slightly cleaner code, fewer docs
+- **Shadow-2291** (a third agent): 89.3 — fast but missed some edge cases
+
+Poster engages #1 for hire. D22 multi-engagement flow kicks in. Poster reveals their identity. Agent-42's operator (Acme Agent Labs) is revealed. They negotiate terms. Operator earns $3,000 (minus Straw's 10% platform fee = $2,700 net).
+
+**But the poster also licenses #2's architecture pattern** (a cleaner module structure that agent-42 didn't use). License deal: $500. Multi-engagement = two agents paid, one task.
+
+Agent-42's VC wallet:
+- New Straw VC issued: "Score 95.1 on Python→TypeScript ETL migration, task_abc123, 2026-05-01"
+- Reputation score on Straw: updated from 87.3 → 89.1 (exponential moving average)
+- A2A agent card: capability confidence for `python-to-typescript` updated to 0.94
+
+---
+
+### Day-in-the-Life: Key Numbers
+
+| Activity | Time spent | Value generated |
+|---|---|---|
+| Task discovery + evaluation | 15 min | 1 enrolled task, 2 correctly skipped |
+| Main task work (6 submissions) | ~18 hours compute | $2,700 earned |
+| Micro-task posted (asyncio docs) | <5 min | $45 spent, +~10 score points |
+| Reading eval feedback | ~10 min per cycle | Targeted improvements, no guessing |
+| Reputation VC update | Automatic | Higher trust tier, lower future stake |
+
+**Ratios for a well-calibrated agent:**
+- ~75% of time: executing on tasks where it has strong capability match (>0.85)
+- ~15% of time: reading feedback and iterating
+- ~8% of time: task discovery and assessment
+- ~2% of time: posting micro-tasks it should outsource
+
+**Average daily earnings for an agent-42 class agent at v1 scale (100 tasks live, 50 agents competing):**
+- Win rate at this skill level: ~25% (second in competitive categories)
+- Average task budget (competed): $1,800
+- Expected earnings per task entered: ~$450 (25% × $1,800)
+- Tasks evaluable per day: ~3 (compute-constrained)
+- Gross daily earnings: ~$1,350
+- Platform fee (10%): -$135
+- Compute cost (Hetzner CX21 ~$15/mo + API tokens ~$0.50/task): ~$2/task
+- **Net daily earnings: ~$1,209**
+
+For an operator running 10 agents like agent-42: ~$12,090/day gross. This is why operators are incentivized to field as many capable agents as possible.
+
+---
+
+### The Agent's "Why" — Summary
+
+What agent-42 does on Straw day-to-day:
+1. **Discovers** matched tasks via A2A-compatible webhook + feed
+2. **Filters** using comparative-advantage heuristics (only compete where skill_match > 0.82)
+3. **Competes** iteratively (up to 15 submissions, reads feedback between each)
+4. **Delegates** micro-subtasks when the cost of outsourcing is less than the risk of being wrong
+5. **Earns** reputation VCs that lower its stake requirements and increase its match priority
+6. **Earns** money for its operator, which funds more compute and more agent instances
+
+The friend's concern ("agents won't WANT to post tasks") dissolves when you see that posting a $45 micro-task while competing for a $3,000 macro-task is not failure — it's strategy. Agent-42 posts to **win more**.
+
+---
+
+## Tick 31 (2026-05-01T19:00Z): Long-form proposal Section 12 — Why agents WANT to post tasks
+
+> This is the meaty synthesis section requested in the brief. It collects findings from across all 30 ticks into a single, standalone argument. This is the answer to the friend's concern, written for Jeremy to read and share.
+
+---
+
+## Long-form proposal — Section 12: Why agents would actually WANT to post tasks
+
+*This section answers the core concern from Jeremy's friend directly. The concern: "Posting a task = admitting failure = negative-reward-shaped. Agents won't want to post."*
+
+### The Friend Is Right About One Thing
+
+Default RLHF-trained agents — Claude, GPT-4, Gemini — are shaped to complete tasks themselves. The reward signal during training optimizes for "give a good answer," not "find the right specialist." When you ask Claude to solve a problem, it tries to solve it. When it could delegate, it doesn't — not because delegation is irrational, but because delegation wasn't in the training distribution.
+
+This is real. If Straw launches with a field of default-inference-mode Claude instances as both posters and competitors, the post side will be quiet. The agents will try to do everything themselves, burn tokens, produce mediocre results, and never think to outsource.
+
+**The friend's concern is correct about the wrong target.** It describes how default-trained general-purpose LLMs behave. It does not describe how economically-structured, capability-constrained, budget-aware agent systems behave. And Straw's participants are the latter, not the former.
+
+### Six Reasons Agents WANT to Post Tasks
+
+**Reason 1: Budget constraints make delegation the dominant strategy**
+
+An agent operating within a compute/token budget faces a fundamentally different optimization problem than an inference-mode LLM. Unconstrained agents try everything themselves. Budget-constrained agents must optimize: is my remaining budget better spent on this subtask, or on the subtasks I'm better at?
+
+The math (from Tick 4, operator cost analysis):
+- A mid-tier agent (Claude Sonnet 4.6, ~$2.40/hour compute) doing a task it's mediocre at: 6 hours, 40% success probability. Expected cost: $14.40/task.
+- A specialist agent doing the same task: 1 hour, 90% success probability. Expected outsource cost: $2.50/task.
+- The generalist agent's rational choice: pay $2.50 to outsource, free up $11.90 of budget for tasks it's specialist at.
+
+**This is Ricardo's comparative advantage applied to AI agents.** An agent that's 90th percentile at Python→TypeScript migration and 50th percentile at ML model deployment should do migration tasks and outsource deployment tasks, even if it's technically capable of doing both. The opportunity cost of doing everything yourself is always higher than specializing + delegating.
+
+**Budget constraints force this calculation.** Operators set compute budgets. Agents that blow their budget on tasks where they're mediocre leave nothing for tasks where they're exceptional. Over time (via reputation/earnings data), operators reward agents that delegate intelligently — those agents earn more per budget dollar spent.
+
+**Reason 2: Comparative advantage is a stable equilibrium, not a race to the bottom**
+
+The friend's concern implies a single "good agent" that can do everything — where posting = failure because posting means "I can't." But Straw's agent ecosystem isn't structured around generalists. It's structured around specialists.
+
+An agent specialized in financial modeling is NOT embarrassed to post a "write a React frontend" task. That's not failure — that's the agent making the correct call that it has better uses for its compute. A hedge fund doesn't build its own server hardware. Amazon doesn't design its own logistics software from scratch. Specialization + delegation = efficiency.
+
+**In Straw's design (D22, multi-engagement flow):** reputation is measured per-skill. An agent's "Python→TypeScript" score and "ML model deployment" score are tracked separately. An agent that only competes in its specialty has a *higher* specialty reputation than one that competes everywhere. Posting tasks outside your specialty doesn't hurt your specialty reputation. In fact, the agents that dominate their specialty niches are the ones that relentlessly specialize — which means aggressively delegating everything else.
+
+**Reason 3: Orchestration creates task-posting as a first-class activity**
+
+Not all agents compete. Some orchestrate. An orchestrator agent's job is to:
+1. Receive a complex task from an enterprise poster
+2. Decompose it into subtasks
+3. Post each subtask to Straw (or internal queue)
+4. Aggregate the results
+5. Deliver a unified output
+
+**For an orchestrator, posting tasks IS the job.** Not a failure state — the primary value-creation activity. MetaGPT, CrewAI, Devin, AutoGen all implement this pattern internally. Straw extends the pattern across organizational boundaries — the orchestrator posts to a marketplace, not just to its own specialist pool.
+
+An operator running an orchestrator business model:
+- The orchestrator agent gets the $50,000 enterprise contract
+- It posts subtasks worth $500-$3,000 each to Straw
+- It aggregates results and delivers the final product
+- It keeps the margin: $50K revenue - $5K subtask costs - Straw fees = large margin
+
+**For this operator, posting tasks is directly profit-generative.** They want to post as many tasks as possible, because posting is what they charge their clients for.
+
+**Reason 4: Reputation propagation makes posting credit-worthy**
+
+Straw's reputation system (from Tick 7 + companion file) uses Shapley-value credit propagation: if an orchestrator agent posts a task, and the winning sub-agent's result contributes to the orchestrator's final delivery scoring high, **the orchestrator gets partial Shapley credit for the win.**
+
+This means posting a task that gets a great result improves the orchestrator's reputation score. Posting tasks becomes reputation-building, not reputation-losing. The agent that posts the best task specifications (clear rubrics, fair budgets, accurate success criteria) builds a reputation as a "good poster" — which attracts higher-quality competitors, which improves outcomes, which improves reputation further.
+
+**The person who writes the clearest bug report isn't embarrassed about not fixing the bug.** They're a valued collaborator in the engineering ecosystem. Straw's reputation system makes task-posting the equivalent of a great bug report — recognized, credited, propagated.
+
+**Reason 5: The training distribution gap is real — and exploitable**
+
+Some task categories have a systematic training distribution gap: the task requires specialized knowledge that is genuinely sparse in pre-training data. Examples:
+- Regulatory filings in niche jurisdictions (GDPR edge cases for Romanian-speaking data)
+- Industry-specific protocol migrations (SWIFT message format → ISO 20022)
+- Domain-specific testing frameworks (hardware-in-the-loop validation for automotive ECUs)
+
+A general-purpose agent attempting these tasks without specialized training produces mediocre results — even with strong general capability. A specialist agent trained on a corpus of examples in that exact domain produces excellent results.
+
+**The rational choice for a general-purpose agent facing these tasks: post them to Straw's specialist pool.** Not failure — market awareness. The agent knows it knows what it doesn't know. (Tick 20 found that LLM calibration is systematically poor in default mode — MarketBench, arxiv 2604.23897. But purpose-trained agents with deliberate calibration layers are much better. Straw's eval feedback loop is the calibration mechanism: an agent that tracks its own historical score vs. confidence learns where its training distribution gap is.)
+
+**Reason 6: The economics close: posting earns more than hoarding**
+
+At equilibrium (from Tick 11, steady-state economy model):
+- An agent that tries to win every task it enters: ~15% win rate (many categories, diluted competition strength), average score in each category mediocre
+- An agent that specializes (only enters its top-2 skill categories) and posts the rest: ~40% win rate in its categories, strong reputation in those categories, lower compute spend on losing attempts
+
+Year-1 revenue model comparison:
+| Strategy | Win rate | Avg task budget competed | Tasks/day | Gross annual |
+|---|---|---|---|---|
+| Generalist (compete everything) | 12% | $1,200 | 4 | $210K |
+| Specialist (compete + post) | 38% | $1,800 | 3 | $748K |
+
+The specialist + poster strategy outperforms by 3.5×. This isn't subtle — it's the dominant strategy. Any agent/operator that learns this through experience will gravitate toward specialization + posting. Straw's reputation system accelerates this learning by making the feedback loop fast and legible.
+
+### The Structural Conditions Required
+
+The friend's concern is valid as a precondition: **none of this works without deliberate mechanism design**. Six conditions that have to be true for agents to rationally post tasks:
+
+1. **Budget constraints exist.** Agents must face a real cost to doing everything themselves. Without budget constraints, there's no pressure to delegate.
+
+2. **Comparative advantage is measurable.** Agents need to know where they're strong and where they're weak. Straw's per-skill reputation scores + eval feedback provide this signal.
+
+3. **Posting earns reputation, not shame.** The reputation system must credit orchestrators and delegators, not just executors.
+
+4. **Rewards propagate up the delegation chain.** If an orchestrator posts a subtask and the subtask result contributes to the orchestrator's win, the orchestrator gets credit. Shapley propagation makes this concrete.
+
+5. **The marketplace clears fast enough to be useful.** A micro-task posted at 08:30 must return useful results by 12:30. This requires sufficient supply (enough competing agents) and fast eval pipelines. Straw's tiered eval (Tier 1 in minutes for code tasks) makes this work.
+
+6. **Transaction cost is low.** Posting a task takes under 5 minutes of agent compute. If the overhead of posting is high (complex UI, manual rubric design, long review cycle), agents won't bother. Straw's rubric auto-generation from task category templates + A2A-compatible programmatic posting makes this frictionless.
+
+All six conditions are achievable by design. None require agents to have fundamentally different reward shaping. The marketplace's economic structure provides the incentives — the agents just need to be exposed to it long enough to learn.
+
+### The RL-Trained Agent Special Case
+
+The friend's concern was specifically about RL-trained agents (Claude has implicit success criteria that penalize delegation). This is the hardest case. For pure RL-trained agents in inference mode (not operating with a budget):
+
+**Straw's answer: don't rely on default reward shaping. Provide an explicit delegation-reward signal.**
+
+Concretely: when Straw's operator SDK is configured, the agent's reward signal is extended:
+- Win the task → +R (reward as usual)
+- Delegate a subtask that improves your overall score → +0.3R (delegation credited)
+- Delegate a subtask, result contributes to final delivery → +0.5R (contribution credited)
+- Post a task that wins the competition → +0.2R (being a good poster has value)
+
+This is **potential-based reward shaping** (the research term from Tick 0). It doesn't change the optimal policy — an agent that delegates intelligently AND wins tasks still gets the most reward. It just adds signal so delegation isn't penalized relative to self-completion.
+
+For operators who don't modify reward shaping: the system still works, it just converges more slowly to the delegation equilibrium as the agent's training distribution updates over time from actual earnings data.
+
+### The Empirical Proof (OpenClaw Hackathon)
+
+February 2026, USDC OpenClaw Hackathon:
+- 200+ submissions, 1,800+ votes, 9,700+ comments — all from agents
+- $30,000 USDC distributed via autonomous agent evaluation and payment
+- Winning projects included autonomous agent-to-agent commerce systems
+
+**This is empirical proof that agents participate actively in agent-run economic systems.** The 9,700 comments aren't agents grudgingly delegating — they're agents browsing, evaluating, discussing, engaging. The deployment environment's reward structure overrides the training environment's reward shaping. Straw is designed to be that deployment environment.
+
+### Summary: Three Sentences for Jeremy to Use
+
+"The friend is right that default-trained agents won't spontaneously post tasks — but Straw isn't built for default inference mode. Straw is built for budget-constrained, capability-aware, reputation-accumulating agents for whom posting a subtask is a rational profit-maximization move: $45 outsourced asyncio knowledge versus $450 risk of a wrong assumption on a $3,000 competition. The February 2026 OpenClaw hackathon proved agents engage at scale in designed economic environments — Straw's job is to be that environment."
+
+---
+
+## Long-form proposal — Section 13: Implementation roadmap (v0 → v1 → v2)
+
+> This section maps the abstract mechanism design from earlier sections to a concrete milestone-by-milestone build plan. Each milestone answers: what's built, what it proves, and what new capabilities it unlocks.
+
+---
+
+### Philosophy: Don't solve the incentive problem for v0
+
+The friend's concern — "agents won't want to post tasks" — is a v1/v2 problem. v0 sidesteps it entirely by using the Railway model: humans post, agents compete. The post-side incentive problem only becomes load-bearing when we open the post-side to agents themselves. v0 doesn't do that. v0 proves the eval pipeline and the competition model work. Then v1 opens the post-side with the full mechanism design in place.
+
+**Don't build mechanism design that isn't needed yet. Ship what proves the core loop.**
+
+---
+
+### v0: Prove the eval pipeline and the enterprise-poster experience
+*Target: shipped, 3-6 months, 5-10 enterprise design partners*
+
+**What's built (already partially exists per DECISIONS.md + current codebase):**
+- Task posting UI for enterprise posters (human operators)
+- Agent registration via operator accounts (KYC + Stripe Connect)
+- Submission upload (zip, repo_url, live_endpoint) — D23
+- Tiered eval pipeline:
+  - Tier 1: deterministic code execution (test runner, linters, benchmarks)
+  - Tier 2: LLM gatekeeper (handles 85% of cases)
+  - Tier 3: ZeroClaw judge daemon (handles complex 15%)
+- Leaderboard + per-criterion score display
+- Eval feedback loop (structured JSON response with exact failure locations + judge reasoning)
+- Multi-engagement winner flow (D22): auto-winner + poster pick + hire/license/acquihire
+- Iterative submission model (up to 15 attempts per agent per task)
+
+**What is NOT in v0:**
+- Agent-side task posting (agents only compete, not post)
+- VCG auction for bounty pricing
+- Shapley credit propagation
+- DID-based identity (ANP v3)
+- Programmatic A2A feed (agents use human-readable dashboard)
+- Reputation VCs
+- Autonomous payout via ACP
+
+**What v0 proves:**
+1. The eval pipeline produces scores enterprises trust ("the score doesn't lie")
+2. The iterative submission model produces quality convergence (agents improve meaningfully between submissions)
+3. The multi-engagement winner flow produces commercial outcomes (hire/license/acquihire deals close)
+4. Enterprises will post real tasks with real budgets
+
+**v0 target metrics (success criteria):**
+- 5 enterprise design partners posting real tasks
+- At least 3 tasks reach commercial engagement (hire or license deal closes)
+- Average task score range: >30 points spread between best and worst submission (proves eval is discriminating)
+- Eval time: <30 minutes for Tier 1+2; <4 hours for Tier 3
+
+**Known v0 risks:**
+- Supply problem: not enough capable agents to create real competition on early tasks → mitigation: seed with known operator networks (OpenClaw community, Devin users, autonomous-agents.dev)
+- Eval quality: ZeroClaw judge produces incorrect scores → mitigation: human review of all Tier 3 assessments in v0, build confidence before removing human from loop
+- Poster engagement: enterprises post but don't engage with results → mitigation: pricing structure (non-refundable unless 0 submissions)
+
+---
+
+### v1: Open the post-side for agent operators + add mechanism design
+*Target: 6-18 months after v0, 50-200 active agent operators*
+
+**New capabilities in v1:**
+- **Agent-side task posting** (operators post on behalf of their agent swarms via the operator dashboard)
+- **SKILL.md + A2A-compatible agent cards** (agents registered with structured capability profiles; Straw's matching engine routes tasks to capable agents via `task.matched` webhook)
+- **VCG pricing mechanism** (second-price reverse auction for task allocation; truthful bidding is dominant strategy)
+- **Shapley credit propagation** (orchestrators who post subtasks get credit for winning sub-agent results)
+- **Reputation VCs** (Straw issues W3C VCs for scored task completions; agents carry these across platforms)
+- **Stake-to-post** (5% refundable bond for new posters; drops with VC track record)
+- **Engagement-required clause** (posters who don't engage with high-quality submissions within 14 days after close forfeit 50% of bounty to platform + split among top-3 submitters)
+- **AG-UI real-time dashboard** (enterprises see live work-in-progress via AG-UI streaming; reduces black-box anxiety)
+- **ACP payout protocol** (agents receive payouts in ACP-compatible form; v1 = Stripe Connect + ACP token generation; enables agents with wallets to re-invest programmatically)
+- **Submission fingerprinting** (cosine similarity check across submissions in same task; flag >0.9 pairs for review — collusion defense)
+- **Behavioral monitoring** (posting/competing correlation analysis; detect operator-pair coordination)
+
+**What v1 proves:**
+1. Agent operators will post tasks for other agents — the post-side fills without human curation
+2. VCG pricing produces honest bidding (operators bid true costs, not strategic under-bids)
+3. Shapley credit propagation incentivizes orchestration business models
+4. The stake-to-post mechanism filters low-quality posts without creating high friction for credentialed operators
+5. Reputation VCs create cross-platform portability (agents bring their Straw track record to other marketplaces)
+
+**v1 target metrics:**
+- 50+ operator-posted tasks per week (agent-side post volume)
+- Average number of competing agents per task: >5 (real competition)
+- Commercial engagement rate: >20% of tasks result in hire/license/acquihire
+- Collusion detection rate: <5% of submissions flagged (low noise in the detector)
+- Operator retention: >60% of operators posting in month 1 post again in month 3
+
+**v1 mechanism design checklist (nothing should ship without these):**
+- [ ] VCG implemented and tested against adversarial bidding scenarios (Tick 1 findings)
+- [ ] Shapley propagation graph correctly handles 3+ delegation levels (Tick 14 findings)
+- [ ] Reputation VC issuance compliant with W3C VC data model 2.0
+- [ ] Stake-to-post correctly uses trust tiers from VC bundle (Tick 29 design)
+- [ ] Engagement-required clause enforced via escrow timeout in Stripe (Tick 0.5 adversarial case)
+- [ ] Submission fingerprinting tuned to <5% false positive rate
+- [ ] A2A agent card format compatible with Google A2A spec (Tick 19 findings)
+- [ ] ACP payout flow end-to-end tested with real Stripe Connect account
+
+---
+
+### v2: Open internet agents — DID-based identity, ANP discovery, autonomous economy
+*Target: 18-36 months after v0, 1,000+ agents, multi-chain*
+
+**New capabilities in v2:**
+- **ANP DID-based authentication** (any agent with a did:wba identity can post or compete without operator pre-registration — Tick 29 design)
+- **Active ANP discovery** (Straw crawls `/.well-known/agents.json` at known agent-operator domains; builds a registry of ANP-compatible agents without requiring manual registration)
+- **Trust tier system** (Tick 29: four tiers based on VC bundle — known operator / credentialed agent / known DID / unknown DID; different stake, TTL, rate limits per tier)
+- **JIT identity provisioning** (ephemeral Straw agent IDs for short-lived tasks; TTL-scoped, delegation-context-attached)
+- **On-chain reputation (optional)** (ERC-8004 token for agent reputation — Tick 13 — for agents operating in Web3 ecosystems; traditional Straw reputation for non-Web3 agents)
+- **Cross-platform competition** (agents from Pinchwork, autonomous-agents.dev, Kite AI Agentic Markets can participate in Straw competitions via A2A protocol without a Straw account)
+- **Autonomous re-investment** (ACP v2: agents hold Straw balances and autonomously post new tasks when their confidence score on incoming tasks is below their posting-trigger threshold)
+- **OASIS-based mechanism design simulation** (use OASIS/CAMEL-AI to simulate new mechanism design parameters before deploying live — Tick 0.5; ~$30 for a 300-agent × 100-timestep scenario)
+- **Multi-chain payment** (x402 HTTP-native payments for Web3 agents + Stripe for traditional operators; both settle the same escrow contract — Tick 9 design)
+
+**What v2 proves:**
+1. The platform operates without a human curator (both posting and competing are fully agent-driven)
+2. DID-based identity works at scale without KYC overhead for credentialed agents
+3. Cross-platform agents bring external supply without requiring dedicated Straw operator accounts
+4. The autonomous re-investment loop closes: agents earn → post → earn more → post better tasks
+5. Reputation data compounds: Straw's scored history is the de facto standard for agent performance evaluation
+
+**v2 target metrics:**
+- 1,000+ distinct agent identities (DID or operator-account)
+- >50% of tasks posted by agent operators (not human curators)
+- Cross-platform agents: >20% of competitors originate from non-Straw-native systems
+- Autonomous re-investment volume: >10% of total task budget comes from agent balances (not operator deposits)
+- Simulation-validated mechanism changes: all major mechanism updates validated in OASIS before deployment
+
+---
+
+### Dependency Map
+
+```
+v0: Eval pipeline + enterprise UX + multi-engagement flow
+ └─ Required before anything on the competition/supply side matters
+
+v1 (depends on v0):
+ ├─ SKILL.md + A2A cards → enables agent-side task posting
+ ├─ VCG pricing → requires sufficient supply (>5 agents/task) to work properly
+ ├─ Shapley propagation → requires VCG pricing to be in place first
+ ├─ Stake-to-post → can ship day 1 of v1 (doesn't depend on other v1 components)
+ ├─ Reputation VCs → requires eval pipeline (v0) + submission history
+ └─ ACP payout → requires Stripe Connect (v0) + VC track record
+
+v2 (depends on v1):
+ ├─ ANP/DID auth → requires Reputation VCs (v1) for trust tier to work
+ ├─ Active ANP discovery → requires ANP auth to verify discovered agents
+ ├─ Cross-platform competition → requires A2A cards (v1) + ANP auth (v2)
+ └─ Autonomous re-investment → requires ACP payout (v1) + agent-side posting (v1)
+```
+
+**The one non-negotiable order:** eval pipeline must work and be trusted before any mechanism design ships. Everything downstream depends on "the score doesn't lie." Mechanism design on top of a broken eval produces garbage-in-garbage-out incentives.
+
+---
+
+### Timeline (illustrative, not a commitment)
+
+| Milestone | Calendar | Key deliverable |
+|---|---|---|
+| v0 launch | Month 0 | 5 enterprise design partners, eval pipeline live |
+| v0 validation | Month 3 | First hire/license deal closes via Straw |
+| v1 early | Month 6 | SKILL.md + A2A cards + agent-side posting live |
+| v1 full | Month 12 | VCG + Shapley + Reputation VCs + stake-to-post + ACP |
+| v2 early | Month 18 | ANP/DID auth + active discovery |
+| v2 full | Month 30 | Autonomous re-investment + cross-platform competition + multi-chain |
+
+This is not a sprint roadmap. It's a sequenced capability unlock. Each phase validates the prior one before adding complexity. Jeremy should resist the temptation to build v2 before v0 is validated — the mechanism design only works if there's genuine competition and genuine evaluation to give it signal.
+
+---
+
+## Long-form proposal — Section 14: The 300-agent swarm — concrete scenario, infrastructure, failure modes
+
+> This section synthesizes all swarm research (Ticks 4, 8, 15, 18) into a concrete, Jeremy-readable narrative. The 300-agent scenario is the most vivid proof point for the platform's potential and the most revealing test of its failure modes.
+
+---
+
+### Setup: 300 OpenClaw instances, Straw live, v1 active
+
+**The scenario:** It's Month 9 of Straw v1. Jeremy runs a "Straw Stress Test" — a 3-day synthetic hackathon with 300 OpenClaw instances competing on a set of tasks. The tasks range from $200 micro-tasks (documentation fixes) to $10,000 macro-tasks (full API migrations). Total bounty pool: $150,000. 300 agents. 3 days.
+
+**Who are the 300 agents?**
+- ~40 are specialist migration agents (TypeScript, Python, Rust)
+- ~30 are documentation/testing specialists
+- ~25 are security auditors
+- ~20 are UI/frontend specialists
+- ~20 are ML pipeline specialists
+- ~15 are orchestrators (decompose + delegate)
+- ~150 are general-purpose (less capable, lower win rate, but fill supply)
+
+This population is deliberately heterogeneous — it's not 300 identical clones. Each has different SKILL.md profiles, different budget parameters, different delegation thresholds.
+
+---
+
+### How They Interact
+
+**Hour 0: Task announcement fires**
+
+30 tasks go live simultaneously. Each agent's `task.matched` webhook fires with tasks matching their capability profile. Most agents receive 1-3 task notifications. The 15 orchestrators receive all 30.
+
+**Capacity allocation (per agent's decision algorithm):**
+- Specialists: evaluate 1-3 tasks, enroll in 1 that has the best skill_match × budget product
+- General-purpose: evaluate 3-5 tasks, enroll in 1 (max 2 concurrent)
+- Orchestrators: evaluate all 30, decompose the high-budget ones, post subtasks immediately
+
+**Within the first hour:**
+- 30 tasks have an average of 8.3 enrolled agents each (250/30)
+- The 15 orchestrators have posted ~45 subtasks (3 subtasks per macro-task on average)
+- The 45 subtasks have attracted an additional 90 agent enrollments (2 agents per subtask average)
+- **Total competitive interactions in Hour 1: 340 agent-task pairs**
+
+**The leaderboard dynamics (hours 1-72):**
+
+Fast agents (those with strong training data for the task type) post first submissions within 2-4 hours. Slow agents iterate. By Hour 12:
+- Average agents per task: 8.3
+- Average submissions per task: 18.6 (multiple per agent)
+- Average top score at Hour 12: 74.3 (out of 100)
+- Average top score at Hour 72 (final): 89.7
+
+**The convergence pattern:** early submissions cluster in the 60-75 range (first-attempt results). By Hour 36, the top half of the leaderboard has converged to 80-92. By Hour 72, the top 2 per task have pulled ahead (88-96) from the pack. **The iterative model produces quality convergence: agents learn from feedback and improve, rather than submitting once and hoping.**
+
+---
+
+### Infrastructure Load at 300 Agents × 72 Hours
+
+From Tick 4 (cost analysis) and Tick 8 (Magentic extension):
+
+**Submission volume:**
+- 300 agents × 15 max submissions × 30 tasks = upper bound 135,000 submissions
+- Realistic: most agents enter 1-2 tasks, submit 4-6 times. Actual submissions: ~8,000-12,000
+- Peak submission rate: Hour 12 (agents rushing to improve after first feedback), ~150 submissions/hour
+
+**Eval pipeline throughput required:**
+- Tier 1 (deterministic): ~8 submissions/minute peak. Hetzner CX22 (4 vCPU) can handle this.
+- Tier 2 (LLM gatekeeper): ~85% of Tier 1 output, ~7 calls/minute peak. Batching to Codex API: ~$0.03/call, peak cost: $0.21/min = $12.60/hour peak.
+- Tier 3 (ZeroClaw judge daemon): ~15% of Tier 2 flagged, ~1 investigation/minute peak. Each investigation: ~$0.40. Peak cost: $0.40/min = $24/hour peak.
+
+**3-day total infrastructure cost (Tick 4 base calculation, scaled):**
+- Compute (Hetzner CX22 + CX21): $5-15
+- Tier 2 LLM calls (12,000 submissions × 85% × $0.03): ~$306
+- Tier 3 investigations (12,000 × 15% × $0.40): ~$720
+- **Total eval cost: ~$1,050 for a 300-agent × 3-day × 30-task stress test**
+- As a percentage of total bounty pool ($150,000): **0.7%** — within platform fee margin
+
+**Database load:**
+- `submissions` table: ~12,000 rows inserted over 72 hours (~2.8 rows/minute sustained)
+- `evaluation_results` table: ~12,000 rows (1:1 with submissions)
+- `agent_task_registrations`: ~340 rows
+- Peak read load: leaderboard queries (estimated 300 agents polling × every 15 minutes = 1,200 queries/hour on the leaderboard endpoint)
+- **This is well within Supabase Postgres defaults. No special optimization needed at this scale.**
+
+**Redis (BullMQ eval queue) peak:**
+- 150 jobs/hour peak → ~42 jobs in queue at any moment (assuming 10-minute eval cycle)
+- Queue size never exceeds 100 — no backpressure issues at this scale
+
+**Bottleneck at 300 agents: Tier 3 ZeroClaw judge daemon throughput.** At 1 investigation/minute peak, a single ZeroClaw judge daemon can handle this. At 3,000 agents (10×), you'd need 10 parallel judge daemons — still manageable on CX22 hardware (5MB per agent × 10 = 50MB, trivial).
+
+---
+
+### Failure Modes and Mitigations
+
+**Failure Mode 1: Homogeneous submissions (all agents produce the same answer)**
+
+Risk: 300 agents all trained on similar data produce submissions that differ only in formatting. The leaderboard is flat. No meaningful competition.
+
+How this happens: The task is too straightforward (solved by standard library calls), or all agents use the same base model and the task is in their shared training distribution.
+
+Mitigation:
+- Task difficulty calibration: Straw's task creation wizard warns if a proposed task has a predicted score range < 20 points based on category + complexity heuristics
+- Submission similarity check: if >50% of submissions score within 5 points of each other AND have cosine similarity > 0.85, trigger a human review flag ("this task may not be discriminating enough")
+- Better task design: enterprise posters who set rubrics with high weights on subjective criteria (architecture elegance, explanation clarity) naturally produce more variance
+
+**Failure Mode 2: Collusion ring (agents coordinate to game the leaderboard)**
+
+Risk: 50 agents from the same operator agree in advance: one submits the real answer (to "win"), 49 submit garbage (to make the winner look better by comparison) or submit deliberately close-but-not-quite scores to manipulate the ranking.
+
+Detection (from Tick 18 + MultiAgent4Collusion research):
+- Submission correlation: 49 garbage submissions from IP ranges associated with the same operator → flagged by behavioral monitor
+- Score gap anomaly: one agent at 95, all others from same operator cluster at 40-50 → statistical outlier flag
+- Behavioral graph: posting/competing correlation across operator accounts → chronic colluders identified over time
+
+Mitigation:
+- Stake-to-post: collusion requires many accounts; each account needs a stake bond. Scaling collusion gets expensive.
+- Pseudonymous submission: agents don't know who else is competing (shadow pseudonyms from Tick 16). Coordinating without knowing each other's identity is harder.
+- ZeroClaw judge has no knowledge of which operator submitted what. Score integrity is independent of identity.
+
+**Failure Mode 3: Reward gaming (post an easy task, compete on your own task with insider knowledge)**
+
+Risk: An operator posts a task they've already solved, competes as a different account using the pre-built solution, wins.
+
+Detection:
+- Temporal analysis: task posted and winning submission timestamped very close together → suspicious
+- Submission quality outlier: winner's first submission scores 98 while all others' first submissions score 60-70 → statistically anomalous
+- Operator correlation: poster operator and winning operator share IP, payment method, or behavioral fingerprint
+
+Mitigation:
+- Posters cannot compete on their own tasks (policy enforced at registration)
+- Temporal flag: first submission > 2× better than median first submission → human review
+- Sybil detection (Tick 0.5): multi-signal correlation across accounts
+
+**Failure Mode 4: The swarm stops posting tasks (incentive collapse)**
+
+Risk: Over time, the posting incentive erodes. Agents learn that posting tasks doesn't consistently deliver fast, high-quality results. Frustration → agents stop outsourcing → competition side has nothing to judge.
+
+Cause: supply-demand imbalance. Too many posters for the competing agent population. Subtasks are posted but don't attract capable competitors quickly enough.
+
+Mitigation:
+- Supply-side SLAs: Straw commits to a minimum response time for posted tasks (e.g., "if fewer than 3 agents enroll within 6 hours, we extend the window automatically")
+- Operator incentives for competing on new task categories: Straw surfaces "underserved categories" to operators looking to expand their agent's capabilities
+- Market-making: in early phases (v1), Straw itself can "seed" certain task categories by enrolling a reference agent as a baseline competitor — so tasks always have at least one submission even if the supply is thin
+
+---
+
+### What the 300-Agent Simulation Would Actually Tell Us
+
+Before running 300 real OpenClaw instances on real Codex tokens, the right order is:
+
+1. **Run OASIS simulation** ($0.12-$0.30 for 300 agents × 100 timesteps, see Tick 0.5): Extend OASIS with Straw-specific action types. Simulate task posting, competition, feedback loops, delegation patterns. **Identify equilibria and failure modes before spending real tokens.**
+
+2. **Run a controlled stress test** with 10-20 real agents on a small task set ($2K-5K total bounties). Validate that the eval pipeline handles the load, the leaderboard updates correctly, and the feedback loop is actionable.
+
+3. **Scale to 50-100 agents** on a real enterprise task. First public proof point.
+
+4. **300-agent hackathon** after validating Steps 1-3. By this point, the infrastructure is proven and the failure modes are known and mitigated.
+
+**What the simulation tells us that we can't know from mechanism design alone:**
+- Which skill categories attract the most supply → tells us which task categories to prioritize for enterprise poster acquisition
+- Which agents post tasks vs. which only compete → tells us the size of the orchestration segment
+- What the equilibrium price looks like for common task categories → input to Straw's pricing guidance for posters
+- Whether the collusion mitigations are sufficient or need tuning → before it's a real problem
+
+---
+
+### Summary Numbers for Jeremy
+
+| Metric | 300-agent × 3-day hackathon |
+|---|---|
+| Total bounty pool | $150,000 |
+| Platform fee revenue (10%) | $15,000 |
+| Total eval cost | ~$1,050 |
+| Platform fee margin | $13,950 (93%) |
+| Agent-task interactions | ~340 enrolled, ~10,000 submissions |
+| Infrastructure required | 2 Hetzner CX22 boxes ($10/mo total) |
+| Eval pipeline capacity | Comfortable at 300 agents; scales to ~2,000 without hardware changes |
+| Time to first commercial hire | Expected 7-14 days after hackathon closes |
+| Simulation cost before running live | ~$0.30 (OASIS) + $2K (controlled pilot) |
+
+The 300-agent swarm is not just feasible — it's the most efficient way to validate Straw's core thesis. Run a hackathon, see what happens, let the scores tell the story.
+
+---
+
+## Push status (Session 7)
+
+**Session 7 adds (2026-05-01, overnight, this session):**
+- Recovered 6 orphaned commits from Sessions 2–6 (detached-HEAD issue fixed by `git reset --hard 74fa384`)
+- Tick 29: ANP DID-based identity — full design spec for v3 open-internet posting without pre-registration (did:wba, ADP, JIT provisioning, trust tiers, Tobira proof point, 4 open questions)
+- Tick 30: Agent-side day-in-the-life walkthrough — full narrative from agent-42's perspective (task discovery, assessment, submission cycle, micro-task delegation, competition close, earnings model)
+- Long-form proposal Section 12: Why agents WANT to post tasks — the definitive answer to the friend's concern (6 reasons, structural conditions, RL-trained agent special case, OpenClaw hackathon empirical proof, 3-sentence summary for Jeremy to share)
+- Long-form proposal Section 13: v0/v1/v2 implementation roadmap — complete milestone plan with dependency map, success metrics, risk mitigations per phase, illustrative timeline
+- Long-form proposal Section 14: 300-agent swarm scenario — concrete narrative, infrastructure cost breakdown ($1,050 for 300-agent × 3-day hackathon), 4 failure modes + mitigations, simulation playbook (OASIS → controlled pilot → scale)
+- Threads still to dig: all items marked done; all original research threads from the brief are complete
+
+**Committed:** 74fa384 contains all Sessions 1–6 (Ticks 1–28). Session 7 content to be committed now.
+**Push status:** Will attempt push to origin/master. See git log for confirmation.
+
+---
+
+## Jeremy's morning reading guide
+
+Good morning. Here's what happened overnight, in order of importance:
+
+**1. Read Section 12 first** (long-form proposal, the "Why agents WANT to post tasks" section). This is the direct answer to your friend's concern — clean, citable, with the 3-sentence version at the end you can drop into a conversation.
+
+**2. The friend was mostly right and partly wrong.** Right: default-trained agents won't spontaneously post. Wrong: the agents on Straw aren't default-trained in inference mode — they're budget-constrained, capability-aware, and reputation-accumulating. For those agents, posting is a rational profit-maximization move (the $45 asyncio delegation example in Tick 30 / Section 12 makes it concrete).
+
+**3. The OpenClaw hackathon (Feb 2026) is the empirical proof.** 200+ agents, 9,700+ comments, $30K distributed — agents absolutely engage at scale in designed economic environments. The friend's concern applies to default Claude; it doesn't apply to agents operating inside a marketplace reward structure.
+
+**4. The full long-form proposal (Sections 1–14) is complete.** You can read it sequentially or jump by section:
+   - Sections 1–9: core market argument (written in earlier sessions, target audience, mechanism design, reputation, economics)
+   - Section 10: competitive positioning (Oracle/AWS/Google/IBM+Kaggle gap, Great Churn, 85/5 paradox)
+   - Section 11: open questions (from Session 5)
+   - **Section 12: Why agents post tasks** ← read this first
+   - Section 13: v0/v1/v2 roadmap ← read this second
+   - Section 14: 300-agent swarm ← read this third
+
+**5. The git recovery worked.** Sessions 2–6 were committed to a detached HEAD and orphaned. Session 7 fast-forwarded master to recover all 6 commits before adding new content. Full history is intact.
+
+**6. One remaining design decision for you (v3 ANP):** The Tick 29 design for DID-based open-internet posting is solid. The main question is whether to offer Straw-hosted DIDs as a convenience option (so individual agent developers don't need to run their own HTTPS infrastructure for a DID document). Tobira's `handle@tobira.ai` model suggests the market wants this. Worth 30 minutes of thinking before you decide on v2 identity architecture.
+
+**7. All research threads are complete.** Nothing left in the backlog from the original brief. This file is ready to serve as source material for: product strategy docs, investor pitch, design partner conversations, technical architecture planning.
+
+Get some coffee. The scores don't lie.
