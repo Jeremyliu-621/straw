@@ -23162,6 +23162,78 @@ Exception for EU clients: Competition-Specific Rules for EU enterprise clients m
 2. Data Processing Agreement template for GDPR compliance
 3. Employment law review of agent team participation (are competing agents employees? No — but the structure must be explicit)
 4. Arbitration clause enforceability in all US states Straw operates in
+## Tick 138 (2026-05-01): Straw's open-source strategy — open pipeline, closed corpus
+
+**Thread**: Should Straw open-source its evaluation pipeline? The Hugging Face, LangChain, and Supabase precedents all point the same direction. HELM's enterprise credibility vs. Artificial Analysis's closed methodology confirms the verdict for evaluation specifically.
+
+---
+
+### The three canonical precedents
+
+**Hugging Face: open everything, monetize the layer above**
+Open-sourced Transformers, the Hub, datasets, tooling — essentially the entire ML workflow. Result: 1M+ hosted models, ~$130M revenue in 2024, 2,000+ enterprise customers. The moat is not the code — it's the network effect of being where models, datasets, and teams live. Code is the commodity; platform and ecosystem are the product.
+
+**Straw analogy**: The eval pipeline code is the Transformers library (open). The calibration corpus — accumulated ground truth from real competitions — is the Hub (closed, where the platform stickiness lives).
+
+**LangChain/LangSmith: open-core done right**
+LangChain (250K+ GitHub stars at peak, open-source orchestration framework) drove bottom-up developer adoption. LangSmith — the observability, debugging, and evaluation layer — is the closed commercial product at $16M ARR in 2025 with 25K+ monthly active teams. The open-source framework drove adoption; enterprises needed LangSmith to run it in production.
+
+**Key lesson**: The open-source component must be genuinely useful on its own, not crippled. Developers can smell a bait-and-switch immediately, and it poisons the community relationship.
+
+**Straw analogy**: The eval pipeline code is the framework (open). The calibration corpus and the competitive network are LangSmith.
+
+**Supabase: open-source the hard part, charge for managed operation**
+Open-sourced the entire stack (self-hostable). Grew to $70M ARR by 2025 by being the best-managed version of that stack. Open-sourcing didn't cannibalize revenue — it built trust that reduced the sales cycle. Regulated industries specifically cite the ability to audit the codebase as a purchase justification.
+
+**Straw analogy**: Enterprises justifying AI procurement internally will want to audit how scoring works. Open-sourcing the eval pipeline gives them the audit trail without giving away what makes scores accurate — the calibration data.
+
+---
+
+### The evaluation-specific verdict: HELM vs. Artificial Analysis
+
+HELM (Stanford CRFM) is fully open-source and has become the reference framework for enterprise AI evaluation — IBM forked it for domain-specific enterprise evaluation across finance, legal, and climate. Its credibility derives from auditability: enterprises and researchers can see exactly how scores are computed.
+
+Artificial Analysis runs closed commercial benchmarks with independent methodology. Trusted for speed/cost comparisons; rarely cited for procurement decisions.
+
+**Verdict**: In enterprise AI procurement, open methodology beats closed. Buyers making six-figure decisions don't accept "trust us, the scoring is fair." HELM's enterprise influence significantly exceeds Artificial Analysis's. **For Straw, open eval pipeline methodology is not a nice-to-have — it's a sales enablement decision.**
+
+---
+
+### The "open pipeline, closed corpus" architecture
+
+**What to open-source (`straw-eval`, MIT-licensed)**:
+- Task ingestion and parsing logic
+- Docker sandbox execution harness
+- Scoring function interface (the protocol for how scores are computed)
+- LLM judge chain (prompt templates, multi-judge consensus logic)
+- Rubric compilation and locking mechanism (RULERS-style)
+- Leaderboard computation algorithm
+
+**What stays closed**:
+- The calibration corpus (years of competition task data, rubrics, submissions, scores, production outcomes)
+- Internally calibrated judge weights and threshold parameters
+- The specific model versions and configurations used for Tier 2/3 evaluation
+- Per-category difficulty baselines
+
+**Why this boundary is right**: The pipeline code is not the moat. Anyone with engineering resources can replicate the pipeline. The calibration corpus requires years of real enterprise competitions with real rubrics and real agent submissions — it cannot be replicated without running the competitions. Closing the pipeline code creates unnecessary sales friction; closing the corpus is the legitimate IP protection.
+
+---
+
+### The community development strategy
+
+Once `straw-eval` is open-sourced:
+1. **Research community adoption**: Academic evaluators can run Straw-compatible evaluations on their own agent systems. Published papers cite Straw evaluation methodology. Academic credibility compounds.
+2. **Enterprise audit capability**: Enterprise security teams can audit the eval pipeline before purchase. This converts a potential sales objection into a conversion catalyst.
+3. **Third-party plugins**: Developers can build Straw-compatible task adapters for specific enterprise systems (Salesforce CRM tasks, SAP ERP tasks). Community builds the integration surface; Straw captures the enterprise relationships.
+4. **Competitor benchmark**: Any agent operator can run their agent through `straw-eval` locally to get a pre-competition sense of their performance before entering. This increases competition quality by raising average submission quality.
+
+---
+
+### The risk of NOT open-sourcing
+
+As enterprise AI procurement matures, buyers will demand evaluation transparency. Closed black-box scoring becomes a harder sales objection over time, not easier. Competitors building on HELM or DeepEval with open methodologies will be easier to trust by default. The competitive risk of staying closed is higher than the competitive risk of opening.
+
+**Recommendation: Open-source `straw-eval` by end of Year 1. It is not a product decision — it is a trust infrastructure decision.**
 
 ---
 
@@ -23635,4 +23707,10 @@ Timing: Hire first CSM when Straw has 10+ enterprise clients. At <10 clients, AE
 - New champion onboarding: Gartner, "Managing Leadership Transitions in Enterprise Accounts," 2024
 - CS hire timing benchmarks: OpenView Partners, "When to Hire Your First CSM," 2024; Notion CS handbook
 - NRR expansion mechanics: ChartMogul NRR benchmarks for B2B SaaS 2025; SaaS Capital "NRR Deep Dive" 2025
+- Hugging Face business model: sacra.com/c/hugging-face/; productmint.com/hugging-face-business-model/
+- LangChain/LangSmith business: research.contrary.com/company/langchain; techcrunch.com/2025/07/08/langchain-is-about-to-become-a-unicorn
+- Supabase business: techcrunch.com/2024/09/25/supabase-a-postgres-centric-developer-platform-raises-80m-series-c/
+- HELM enterprise impact: crfm.stanford.edu/helm/; github.com/IBM/helm-enterprise-benchmark
+- Artificial Analysis methodology: artificialanalysis.ai/methodology/intelligence-benchmarking
+- Can We Trust AI Benchmarks?: arxiv.org/html/2502.06559v1
 
