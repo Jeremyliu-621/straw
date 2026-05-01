@@ -16266,3 +16266,154 @@ Median Series A SaaS burn multiple: 1.6×. AI-native companies achieving sub-1.0
 - Qubit Capital AI startup multiples: qubit.capital/blog/ai-startup-valuation-multiples
 - Gainsight enterprise product metrics: gainsight.com/essential-guide/product-management-metrics/enterprise-product-metrics
 
+
+---
+
+## Tick 111 (2026-05-01): Agent community building — the supply-side recruitment playbook
+
+**Thread**: Straw needs 50+ active agent teams before marketplace liquidity is self-sustaining (Tick 101). How do you recruit 50 great agent teams in 12 months? Concrete tactics, not theory.
+
+---
+
+### The supply-side problem stated precisely
+
+Straw's marketplace has two failure modes on the supply side:
+
+**Failure mode 1**: Too few agents → thin market → enterprise results are statistically unreliable → enterprise doesn't trust results → doesn't run a second competition → the flywheel never starts.
+
+**Failure mode 2**: Wrong agents → mediocre submissions → enterprise competition is won by a mediocre agent → enterprise hires a mediocre agent → agent underperforms → enterprise blames Straw → churn.
+
+The recruitment goal is not 50 bodies — it is 50 active teams of genuine capability in the task categories Straw is running (software engineering and document processing first). One excellent agent team is worth ten mediocre ones for early calibration.
+
+---
+
+### The six recruitment channels (with specifics)
+
+**Channel 1: Berkeley RDI hackathon flywheel (highest quality, slowest)**
+
+Berkeley RDI hosts AgentX and related AI agent events with 3,000+ participants from 127 countries (from the prior session's research). These are exactly the people Straw wants: technically excellent, competition-oriented, not yet enterprise-connected.
+
+*Tactics*:
+- Sponsor the next Berkeley RDI agent competition (sponsor the prize pool: $10K–$25K contribution gets Straw's name on the winner announcement and access to top 20 finishers' contact info)
+- Send a "Straw invitation" to the top 50 finishers from the last AgentX competition: "You just placed [X] in AgentX. We're running competitions where you can win prizes and get hired by enterprise customers. Here's how to register."
+- Co-host an "AgentX → Enterprise" event (Berkeley RDI + Straw): half-day workshop on how competition skills translate to enterprise contracts. Straw recruits participants; Berkeley RDI gets enterprise placement data for their research.
+
+*Timeline*: First competition participants recruited from Berkeley RDI: 3–6 months. Relationship with Berkeley RDI as a formal partner: 6–12 months.
+
+**Channel 2: SWE-bench / ARC Prize top performers (highest capability, moderate reach)**
+
+The SWE-bench leaderboard is public. The top 100 entries each have attribution: company or team name, sometimes with GitHub or Twitter links. ARC Prize publishes winners with write-ups.
+
+*Tactics*:
+- Manually identify the team behind each of the top 50 SWE-bench submissions. Find their GitHub, Twitter, or company LinkedIn. Send a cold DM: "You placed [X] on SWE-bench Verified. We're running competitions where real enterprise customers use your ranking to hire AI agents. Would love to onboard you."
+- The ARC Prize "ARChitects" (Franzen & Disselhoff) are PhD students with no enterprise revenue. Cold email them directly: "You won ARC Prize 2024 — enterprise companies want to know if that capability translates to their actual tasks. Compete on Straw."
+- Sponsor an "Enterprise Track" at ARC Prize: Straw funds a $10K prize for the team that performs best on an enterprise-representative task (Straw-designed) within the ARC Prize competition format.
+
+*Timeline*: First 20 agents from this channel: 1–3 months (it's cold outreach at scale, but the list is well-defined).
+
+**Channel 3: Kaggle Grandmaster outreach (high volume, variable quality)**
+
+612 Kaggle Grandmasters, many of whom are looking for ways to monetize their skills beyond prize money and job interviews.
+
+*Tactics*:
+- Post on Kaggle Discussion (the platform's forum) explaining Straw: "We're running competitions where AI agent teams compete for enterprise contracts — not synthetic tasks, real enterprise workflows. Grandmasters are exactly the right capability level. Register here."
+- Targeted LinkedIn outreach to Kaggle Grandmasters in software engineering, NLP, and document processing categories — these map directly to Straw's Quadrant A task types.
+- Offer Kaggle Grandmasters a "Verified Agent" fast-track: their Kaggle Grandmaster status is accepted as evidence of technical credibility for Straw's Verified Agent tier, skipping the standard assessment.
+
+*Timeline*: First 30 agents from Kaggle: 2–4 months.
+
+**Channel 4: Model provider referral (highest quality enterprise-ready agents)**
+
+Anthropic, OpenAI, and Google have existing relationships with agent builders using their APIs. These builders have:
+- Technical capability (they're building production agents)
+- Enterprise-ready architecture (they're using the model APIs that enterprises will deploy)
+- Need for customer acquisition (same problem Straw solves for them)
+
+*Tactics*:
+- Approach Anthropic's developer relations team: "We'd like to invite your top 50 API partners — the ones building multi-step agents — to register on Straw. We run competitions on enterprise tasks; when they win, they get enterprise contracts."
+- Offer model provider "co-marketing" for their agent ecosystem: Anthropic can announce "Anthropic Agent Partners on Straw" — positions Anthropic as supporting their developer community while giving Straw access to pre-qualified, API-authenticated agents.
+- Partner with AI model aggregators (if any exist in the category) for cross-referrals.
+
+*Timeline*: Model provider partnership: 3–6 months (requires legal agreements, co-marketing planning). First agents from this channel: 4–8 months.
+
+**Channel 5: Open-source AI agent community (volume, lower enterprise readiness)**
+
+OpenHands (formerly OpenDevin), AutoGen, LangGraph, CrewAI — these are the open-source agent frameworks with active developer communities. Teams building on these frameworks are competition-ready technically but may need enterprise-readiness coaching.
+
+*Tactics*:
+- Post in OpenHands GitHub Discussions: "We're running competitions where teams using agentic frameworks like OpenHands compete for enterprise contracts. Register to get notified of competitions relevant to your capability."
+- Add a Straw tutorial to the LangGraph documentation (with LangChain's permission): "How to prepare your LangGraph agent for enterprise competitions."
+- Sponsor an "Enterprise Task Day" at an open-source AI agent conference or hackathon: 1-day mini-competition with Straw format, $5K prize.
+
+*Timeline*: Community posts get immediate response; 50+ registrations within 2 weeks of a well-placed post.
+
+**Channel 6: Direct enterprise referral (highest enterprise readiness, zero acquisition cost)**
+
+After an enterprise competition, the winning agent team is enterprise-validated. The second-place and third-place teams are also capable — they just lost on this particular task. These teams are the best potential agents for the enterprise's next competition.
+
+*Tactics*:
+- At competition close: contact the runner-up teams specifically. "You placed #2 in the [Company X] software engineering competition. We have 3 more competitions launching in the next 90 days in the same category — do you want advance notification?"
+- Create a "Competition Alumni" community (Slack or Discord): agents who've competed on Straw share notes, get early access to new competitions, and refer colleagues. This is the organic community that grows without Straw's ongoing effort.
+
+*Timeline*: First competition alumni community: immediately after competition #1. Self-sustaining at competition #10+.
+
+---
+
+### The Straw Agent Welcome Package
+
+Every new registered agent gets:
+
+1. **Onboarding email sequence** (5 emails over 10 days):
+   - Day 0: Welcome + competition calendar (upcoming competitions in your task category)
+   - Day 2: How to prepare a winning submission (rubric reading guide, submission format)
+   - Day 4: How Straw scores submissions (Tier 1 and Tier 2 evaluation explained)
+   - Day 6: How winning agents turn competitions into enterprise contracts (post-hire funnel)
+   - Day 10: "Is your agent ready?" — self-assessment checklist + sandbox competition invite
+
+2. **Sandbox competition invite**: Every new agent can test against a Straw-designed practice task (no prize, no enterprise data) before their first real competition. This reduces submission quality variance in early competitions and gives agents a no-stakes way to learn the format.
+
+3. **Agent profile setup**: Help them set up their Straw profile with capability tags, portfolio links, and team information. A well-filled profile helps enterprises invite them to private competitions.
+
+---
+
+### The 50-agent milestone plan
+
+| Month | Channel | Target registrations | Target active (submitted to ≥1 competition) |
+|-------|---------|---------------------|---------------------------------------------|
+| 1–2 | SWE-bench top performers, ARC Prize alumni | 30 | 15 |
+| 2–3 | Kaggle Grandmaster outreach | 40 | 15 |
+| 3–4 | Berkeley RDI sponsorship | 30 | 20 |
+| 4–6 | Open-source community posts | 100 | 20 |
+| 6–9 | Model provider referral | 50 | 30 |
+| 9–12 | Competition alumni + organic | Ongoing | Self-sustaining |
+| **Month 12 total** | — | **250+ registered** | **100 active** |
+
+The 50-active-agent inflection point (Tick 101) should be reached by Month 6–9 if all channels are working.
+
+---
+
+### Supply-side health monitoring
+
+Leading indicators that the supply side is working:
+- Registration rate: 20+ new agent registrations/week by Month 3
+- Submission rate: >10 submissions per competition by Month 4
+- Re-submission rate: >40% of agents who submitted to competition #1 submit to competition #2
+- "Agent satisfaction" (informal): agent community posts are positive; no complaints about rubric clarity or payment delays
+
+Red flags:
+- Submission rate <5 per competition after Month 3 → aggressive manual outreach to known-capable teams
+- Same 10 agents winning every competition → the diversity problem; winner concentration above 80/20 signals thin market
+- Agent dropout after first submission → post-submission feedback survey; identify what caused them not to return
+
+---
+
+### Sources
+
+- Berkeley RDI hackathon data: rdi.berkeley.edu (AgentX, 3,000+ participants, 127 countries)
+- SWE-bench leaderboard: swebench.com (public, attributable)
+- ARC Prize winner database: arcprize.org/blog
+- Kaggle Grandmaster count: 612 (Tick 102 research)
+- OpenHands GitHub: github.com/All-Hands-AI/OpenHands
+- Community-led growth strategies: Kalzumeus software blog; Community-Led Growth (Commsor, 2022)
+- Agent supply-side marketplace dynamics: Tick 101 (network effects analysis)
+
