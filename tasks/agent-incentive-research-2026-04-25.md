@@ -19184,3 +19184,150 @@ This virtuous cycle — agents post tasks → specialists emerge → specialists
 - OASIS/CAMEL multi-agent simulation: Tick 77-78 research
 - Shapley value delegation credit: Tick 79 research on credit propagation through agent delegation chains
 
+
+---
+
+## Tick 128 (2026-05-01): Long-form proposal — Task-posting UX, payment flows, and reputation design for agent-as-poster
+
+**Thread**: Jeremy asked for a specific section on "task-posting UX/payment/reputation" for the agent-posts-task scenario. This is the product design answer: what does Straw need to build for agents (not humans) to be first-class task posters?
+
+---
+
+### The design constraint: agents are not humans
+
+Human task-posting UX on Straw (forms, rubric designer wizard, preview flows, manual prize setting) is designed for humans making deliberate decisions with 15-30 minutes of setup time. An agent posting tasks needs:
+
+1. **Programmatic task creation** (API-first, not UI-first)
+2. **Automated rubric generation** (the agent cannot manually design a rubric)
+3. **Budget allocation logic** (the agent must determine prize size from available budget)
+4. **Automated winner selection** (if the agent cannot stay online to review submissions)
+5. **Outcome reporting back to the agent** (machine-readable results, not a human-readable leaderboard)
+
+The agent-as-poster product is not the current Straw UI with a few API endpoints bolted on — it requires a dedicated API surface and a set of automated services.
+
+---
+
+### The task-posting API for agents
+
+Core API surface for agent-initiated task posting:
+
+```
+POST /api/v1/agent/tasks
+  task_description: string (natural language task description)
+  rubric_spec: RubricSpec | "auto"  // auto = Straw generates rubric
+  prize_budget: number (USDC or USD, from the agent's linked account)
+  prize_distribution: PrizeDistribution  // optional, defaults to 60/25/15
+  deadline_hours: number  // competition window, min 4h, max 6 weeks
+  max_submissions_per_agent: number  // anti-gaming limit
+  winner_selection: "auto_top_score" | "agent_review" | "human_review"
+  output_format: OutputFormat  // machine-readable format for results
+```
+
+**The `rubric_spec: "auto"` option is the key product decision.** An agent that needs a coding task evaluated should not have to write a rubric — Straw's rubric generation service (backed by the calibration corpus of 500+ previous competitions in the same category) produces a validated rubric from the task description. The agent provides the task; Straw provides the measurement framework.
+
+This is a significantly differentiated capability: a human can write a rubric from scratch, but an agent operating in a fast-paced workflow cannot pause for rubric design. Auto-rubric generation makes Straw viable as an agent workflow component.
+
+---
+
+### Payment flows for agent-as-poster
+
+Three payment models:
+
+**Model A: Pre-funded agent account**
+The agent's principal (enterprise) pre-funds a Straw agent account with a budget. The agent draws down the budget as it posts tasks. The enterprise sees a monthly statement of task expenditure. This is the simplest model — standard B2B SaaS billing.
+
+**Model B: Per-task authorization**
+Each task posting requires a cryptographic authorization from the principal. The agent generates a task posting, but the human-in-the-loop must approve the prize allocation before the competition opens. This is the conservative model for enterprises that want human oversight over agent procurement.
+
+**Model C: Agent-holds-escrow**
+The agent controls a cryptographic wallet (USDC on Base L2 via x402 protocol, per the Tick 57 research on x402). When posting a task, the agent atomically transfers prize escrow to Straw's contract. Winner selection triggers automatic disbursement. No human approval required; audit trail is on-chain. This is the fully autonomous model for agents operating with explicit budget authority.
+
+**Recommendation**: Support all three models with different authorization levels. Model A is the enterprise default. Model C is the developer/autonomous agent default. Model B is for organizations requiring human-in-the-loop procurement oversight (common in regulated industries).
+
+---
+
+### Automated winner selection for agent-posted tasks
+
+If the posting agent is itself autonomous (not waiting for a human to review), winner selection must also be automated. Three mechanisms:
+
+**Mechanism 1: Auto-top-score**
+The submission with the highest Straw Score from the eval pipeline wins. No agent or human review. Appropriate when: the rubric is objective, the eval pipeline is Tier 1/2 (deterministic or high-confidence LLM judge), and the task is well-specified.
+
+**Mechanism 2: Agent-review**
+The posting agent is invoked with the top-5 submissions as input. The agent produces a preference ranking. The combination of Straw Score and agent preference determines the winner. Appropriate when: the posting agent has domain expertise that adds signal beyond the rubric (e.g., a regulatory analysis agent that can evaluate whether a legal memo is technically correct in ways the rubric cannot capture).
+
+**Mechanism 3: Human escalation**
+The automated winner selection confidence is below a threshold. Straw escalates to a human reviewer (either the enterprise buyer or Straw's review team). The competition pauses for human resolution. Appropriate when: submissions are close in score, or the Straw Score confidence interval is wide.
+
+**Important product decision**: The winner selection mechanism must be declared at competition open — competing agents need to know whether their work will be evaluated by an automated pipeline, a peer agent, or a human. Undisclosed winner selection mechanisms reduce trust in outcomes.
+
+---
+
+### Reputation design for agent-as-poster
+
+An agent's posting reputation is separate from its competing reputation. Two agents may share the same underlying model but have very different posting quality records.
+
+**The posting reputation dimensions:**
+
+1. **Rubric quality score**: How well-designed were this poster's rubrics? Measured by: rubric entropy (solution path diversity), post-competition feedback from competing agents, Straw's internal rubric quality classifier. Poor rubric designers generate noisy competition outcomes and drive away serious agents.
+
+2. **Prize reliability**: Does this poster actually pay out prizes? On time? Disputes filed by winning agents? This is the most critical trust signal. An agent that delays payouts or disputes legitimate winners will be avoided by serious competing agents.
+
+3. **Task specification clarity**: Did the task description produce competitive submissions of good quality? Proxies: number of agents requesting clarification, number of disqualified submissions (misunderstood the task), distribution of competition scores (high variance = unclear task; tight distribution around a clear winner = well-specified task).
+
+4. **Outcome utilization**: Did the poster actually use the winning submission? An agent that posts tasks and never integrates the results is either testing the platform (acceptable occasionally) or has a broken workflow (a signal of low-value task generation). High utilization rate = healthy poster; low utilization = potentially gaming for intelligence or rubric-testing.
+
+**The reputation display to competing agents**: Before registering for a competition, agents can see the poster's reputation profile. A poster with high rubric quality, reliable prize payouts, and strong task specification clarity commands more agent attention — and can attract better submissions at the same prize level. This is the poster-side incentive to maintain reputation.
+
+---
+
+### The task-posting flywheel for agents
+
+**Why a well-designed agent-as-poster UX creates a self-reinforcing flywheel:**
+
+1. **Agent posts task with auto-rubric** → Straw generates a rubric from calibration corpus
+2. **Competing agents submit solutions** → Straw evaluates, scores, ranks
+3. **Auto-winner selected based on Straw Score** → Prize disbursed automatically
+4. **Posting agent receives machine-readable result** → Integrates result into its workflow
+5. **Posting agent's reputation improves** → Better agents compete in future tasks
+6. **Straw calibration corpus improves** → Future auto-rubrics are better for this category
+7. Repeat
+
+The flywheel generates compounding value for all parties: the posting agent gets better delegation outcomes over time; competing agents get better-designed competitions to participate in; Straw gets better calibration data. The loop has no natural stopping point — it self-reinforces as long as each party continues to participate.
+
+---
+
+### The product gap Straw must build (not currently in the roadmap)
+
+The agent-as-poster scenario requires one product not yet in Straw's roadmap: **the Agent SDK**.
+
+The Agent SDK is a lightweight Python/JavaScript library that an agent can import and call:
+```python
+from straw import StrawPoster
+
+poster = StrawPoster(api_key=env.STRAW_API_KEY, budget_usd=5000)
+competition = poster.post_task(
+    description="Review this draft regulatory filing for Section 4(a)(2) compliance gaps.",
+    category="legal_review",
+    deadline_hours=72,
+    rubric="auto",
+    prize=2000
+)
+result = competition.await_winner()  # blocks until competition closes
+```
+
+This SDK reduces integration to a few lines. An agent system that needs to delegate a subtask calls `poster.post_task()` and awaits the result — the entire competition lifecycle is abstracted away. This is the product that makes Straw a native component in agent workflows rather than a separate service that requires human intervention.
+
+**Build sequence**: Agent SDK → auto-rubric API → programmatic winner selection → agent-readable results format. In that order of priority. The SDK without auto-rubric requires agents to design rubrics, which defeats the purpose. Auto-rubric without SDK requires agents to make API calls that are poorly typed. Both pieces together create a seamless agent-as-poster experience.
+
+---
+
+### Sources
+
+- x402 micropayment protocol (Coinbase, Base L2): Tick 57 research; coinbase.com/developer-platform/discover/protocol-guides/guide-to-x402
+- USDC on Base L2 for autonomous payments: Tick 57 research; circle.com/usdc
+- Anthropic multi-agent SDK patterns: docs.anthropic.com/en/docs/build-with-claude/agents
+- A2A protocol AgentCard for machine-readable agent identity: Tick 125 research (pending)
+- Auto-rubric generation via calibration corpus: Tick 99 research (rubric design as a service)
+- Agent procurement authority model: Tick 127 research (why agents post tasks — Condition 5: delegated authority)
+
