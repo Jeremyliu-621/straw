@@ -26973,3 +26973,160 @@ Why:
 - 83(b) election: IRS Revenue Procedure 2012-29; Clerky, "Why Every Founder Should File an 83(b) Election"
 - Delaware C-Corp: State of Delaware Division of Corporations; Stripe Atlas "Why Delaware?"; NVCA model legal documents require Delaware C-Corp
 
+
+---
+
+## Tick 157 (2026-05-01): The "anti-portfolio" analysis — 10 companies that tried adjacent things and what happened to them
+
+*Learning from what failed teaches more than what succeeded. This tick surveys the graveyard of adjacent attempts.*
+
+### Why an anti-portfolio analysis matters
+
+Straw's thesis is that competition-based enterprise AI evaluation is new and defensible. But variants of this idea have been tried before. Understanding what those adjacent companies built, where they succeeded, where they failed, and why — is the fastest path to understanding Straw's real risks.
+
+---
+
+### Company 1: Numerai (2015–present) — quantitative finance tournaments
+
+**What they built**: A hedge fund that crowdsources financial prediction models through weekly tournaments. Data scientists submit predictions; Numerai aggregates the best ones; winning submitters earn cryptocurrency (Numeraire/NMR).
+
+**What worked**: Genuinely novel approach to hedge fund management; built a real financial product (the fund) not just a competition platform; the "stake your predictions with cryptocurrency" mechanism created real-money commitment from competitors.
+
+**What failed for the "platform" use case**: Numerai doesn't help enterprises evaluate AI models for procurement — it is a hedge fund that happens to use crowdsourced models. The enterprise that wants to evaluate a vendor for their own quant infrastructure cannot use Numerai's results.
+
+**Lesson for Straw**: Enterprise-specific evaluation (on the buyer's task, not a generic task) is what makes results actionable for procurement. Generic competition platforms — even well-designed ones — don't solve the procurement decision.
+
+---
+
+### Company 2: Topcoder (2001–present) — crowdsourced software development
+
+**What they built**: Competitions for software development, design, and data science. Enterprise clients post projects; developers compete; best submissions win prizes.
+
+**What worked**: IBM and NASA enterprise use cases; IP ownership framework; private "Hybrid Crowd" model for confidential work.
+
+**What failed**: The "specification problem" — enterprises couldn't write specifications precise enough for crowdsourced development to be viable for complex work. The model works for well-specified, self-contained tasks. It breaks for anything requiring context, judgment, or iteration.
+
+**What happened**: Acquired by Wipro in 2016 as part of the $500M Appirio deal. Now operates as a Wipro subsidiary, primarily serving Wipro consulting clients. Revenue declined post-acquisition; community engagement dropped.
+
+**Lesson for Straw**: Straw evaluates AI agents (which run themselves) not human developers (who need specification and iteration). The specification problem is dramatically reduced because the rubric defines what "winning" looks like, not what to build.
+
+---
+
+### Company 3: Algorithmia (2014–2021) — algorithm marketplace
+
+**What they built**: A marketplace where ML researchers published algorithms/models that enterprises could license and call via API. Think "GitHub meets AWS Lambda for ML models."
+
+**What worked**: Early traction with data science teams; solid technical infrastructure; became a marketplace for 60,000+ algorithms.
+
+**What failed**: Never solved the "does this algorithm actually work for my problem?" question. Enterprises couldn't evaluate algorithms before buying — they had to try and see. The marketplace became a catalog, not a procurement tool. Enterprise sales cycle was long and technical evaluation was on the buyer.
+
+**What happened**: Acquired by DataRobot in 2021 for an undisclosed amount (reported as a distressed acquisition at below valuation). DataRobot subsequently went through significant layoffs and restructuring.
+
+**Lesson for Straw**: A catalog of AI capabilities without a credible evaluation mechanism is not enough. The evaluation mechanism — the competition, the rubric, the score — is the product, not the catalog. Algorithmia had the catalog; Straw has the evaluation.
+
+---
+
+### Company 4: AIcrowd (2017–present) — AI research competitions
+
+**What they built**: A competition platform for AI/ML research challenges. Similar to Kaggle but with more focus on hard research problems (NeurIPS challenge host, RL challenges, etc.).
+
+**What worked**: Strong academic community; NeurIPS partnership gave credibility; technically rigorous competition design.
+
+**What failed for the enterprise use case**: Like Kaggle, AIcrowd never monetized competitions at enterprise scale. Competitions are primarily academic research challenges; enterprise procurement applications are rare and not systematically served.
+
+**Revenue model**: Primarily grant-funded (EPFL university affiliation) and individual supporter donations. Not a self-sustaining enterprise product.
+
+**Lesson for Straw**: Research competitions (academic problems) and enterprise evaluation competitions (procurement problems) require different platform features and different community dynamics. Straw should not try to be an academic research platform.
+
+---
+
+### Company 5: Hugging Face (2016–present) — model hub and evaluation
+
+**What they built**: The GitHub of AI models — a hub for sharing, discovering, and running ML models. Added evaluation capabilities through the Open LLM Leaderboard and lm-evaluation-harness.
+
+**What worked**: Massive developer community (15M+ registered users); network effects are enormous; evaluation infrastructure is genuinely open and credible.
+
+**What failed for enterprise procurement**: The Open LLM Leaderboard evaluates foundation models on public benchmarks. Public benchmark contamination is a known problem (same as SWE-bench). Enterprises cannot evaluate private agent vendors on their specific task using HuggingFace infrastructure. The platform is general-purpose, not enterprise-specific.
+
+**Revenue model**: Enterprise Hub subscriptions for private model hosting; inference API; does not charge for evaluation.
+
+**Lesson for Straw**: Hugging Face's evaluation infrastructure is a public good, not a procurement service. Straw's value is in the private, enterprise-specific, rubric-graded evaluation that HuggingFace explicitly does not provide.
+
+---
+
+### Company 6: Coda AI / Writer / Jasper — AI writing tool races
+
+**What happened**: In 2023–2024, a cohort of AI writing tools (Jasper, Copy.ai, Writer, Coda) raised at high valuations and competed for enterprise content automation. By 2025, most had seen significant valuation corrections (Jasper's ARR growth slowed dramatically; some raised down rounds).
+
+**The structural cause**: The underlying models (GPT-4, Claude 3) commoditized the core writing capability. Differentiation became increasingly difficult. Enterprises started asking "why pay $50K/year for Jasper when I can prompt GPT-4 directly?"
+
+**Lesson for Straw**: This is the "does the evaluation infrastructure get commoditized?" question. The answer: No — because the calibration corpus (task definitions, rubrics, historical scores) cannot be commoditized. The data moat doesn't exist for writing tools (writing prompts are not a moat). The data moat does exist for Straw (enterprise competition history is non-replicable).
+
+---
+
+### Company 7: Gartner Peer Insights / G2 / Capterra — software review aggregators
+
+**What they built**: Review platforms where enterprise software buyers share their experience with vendors. Enterprises use these reviews to inform vendor selection.
+
+**What worked**: High traffic; real enterprise buyers sharing real opinions; useful for initial shortlisting.
+
+**What failed for AI procurement**: Reviews lag reality by 12–18 months (enterprise implementations take time). Reviews are qualitative and unverifiable (cannot confirm the reviewer's use case or their evaluation methodology). Reviews can be gamed (vendors solicit positive reviews from happy customers, obscuring negative ones).
+
+**Lesson for Straw**: Qualitative reviews are necessary but not sufficient for AI procurement decisions. Straw provides the quantitative, objective complement to G2-style reviews. Positioning: "G2 tells you what users say; Straw shows you what the agent actually scores."
+
+---
+
+### Company 8: Palantir (2003–present) — enterprise data and AI
+
+**What happened**: Palantir built a complex data/AI platform and spent a decade winning government contracts before transitioning to commercial enterprise. Revenue growth was slow ($90M → $2.3B ARR over 20 years). Their evaluation/validation methodology for AI deployments (AIP) is now a core differentiator for government AI procurement.
+
+**Lesson for Straw**: Two things. First: government AI procurement is a very long-term business — 5–7 years to significant revenue. Second: the "AI you can trust because it's been validated by a rigorous methodology" positioning is correct for enterprise and government — Palantir proved this works, and their AIP platform is the closest commercial analog to what Straw is building in evaluation.
+
+---
+
+### Company 9: Aptible / Vanta — compliance-as-a-service
+
+**What built**: Platforms that help SaaS companies achieve SOC 2 certification and ongoing compliance automation.
+
+**What this teaches Straw**: The compliance automation market ($2.3B, growing 30%+ annually) is real and enterprises will pay for it. Vanta raised $150M; Drata raised $100M. The market validated that "compliance is a product." Straw's evaluation is analogous — "evaluation is a product." The same buying committee (CISO, legal, compliance team) that buys Vanta or Drata is the buyer for Straw.
+
+**Direct implication**: Straw should build a partnership with Drata or Vanta — "if you're using Drata for SOC 2 compliance, Straw gives you the AI vendor evaluation compliance documentation." This is a distribution play, not a competition.
+
+---
+
+### Company 10: Lambda Labs / CoreWeave / Together AI — GPU compute and inference
+
+**What these teach Straw**: The infrastructure layer of the AI stack is commoditizing fast. Whoever provides the cheapest compute wins the infrastructure layer. Straw's evaluation layer sits above the infrastructure layer — it is not competing with GPU providers; it is using their infrastructure as an input. The declining cost of compute (Tick 144, Force 4) is tailwind for Straw, not headwind.
+
+---
+
+### The anti-portfolio synthesis: four patterns that predict failure
+
+**Pattern 1**: Building a general-purpose competition platform without an enterprise-specific procurement mechanism. (Kaggle, AIcrowd)
+
+**Pattern 2**: Building a catalog/marketplace of AI capabilities without a credible evaluation that buyers trust before purchase. (Algorithmia)
+
+**Pattern 3**: Relying on qualitative signals (reviews, preferences, demos) rather than objective, rubric-graded evaluation. (G2, Gartner Peer Insights)
+
+**Pattern 4**: Building evaluation on top of public benchmarks that can be gamed or contaminated. (HuggingFace Open LLM Leaderboard, SWE-bench)
+
+Straw avoids all four patterns:
+1. Enterprise-specific tasks, not generic research problems
+2. Objective rubric-graded competition score, not a catalog
+3. Quantitative competition results, not qualitative reviews
+4. Private enterprise tasks, not public benchmarks
+
+---
+
+### Sources
+
+- Numerai business model: numerai.com; CoinDesk coverage; Quantopian shutdown analysis (predecessor that tried similar model, shut down 2020)
+- Topcoder/Wipro: Wipro acquisition terms; Topcoder community activity tracking (Devpost/GitHub data); industry coverage
+- Algorithmia/DataRobot: DataRobot press releases; AI industry post-mortem coverage; DataRobot headcount reduction 2022–2023
+- AIcrowd: aicrwd.com; EPFL affiliation; NeurIPS challenge partnerships
+- Hugging Face: Company blog; Open LLM Leaderboard documentation; benchmark contamination research
+- Jasper/AI writing tools: Bloomberg, "The AI Writing Boom Went Bust," 2025; B2B AI SaaS market valuations
+- Palantir: Palantir 2025 annual report; AIP platform documentation
+- Vanta/Drata: Vanta $150M raise (2024); Drata $100M raise (2022); compliance automation market sizing
+- Lambda Labs/CoreWeave: Infrastructure compute pricing trends; Epoch AI research on compute cost curves
+
