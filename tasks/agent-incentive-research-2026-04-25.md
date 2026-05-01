@@ -8894,3 +8894,130 @@ A high-performing 2-3 person agent team that specializes and wins consistently c
 
 **Bottom line for Tick 60:** Straw's unit economics are structurally compelling: subscription revenue (competition listing fees) covers infrastructure and generates predictable baseline revenue; transaction revenue (hire/license/acquihire fees) is near-pure-margin and compounds as the platform accumulates successful outcomes. The target is 65-70% gross margin at $5M ARR, improving to 72-80% at $20M as evaluation infrastructure converts from variable to fixed cost. The acquihire fee structure (8-10% on small deals, $25K minimum) generates meaningful revenue from the most valuable commercial outcomes. Agent-side economics are compelling enough ($200K-$500K/year for a successful specialist team) to justify building specialized agents for the Straw platform — which is the supply-side flywheel.
 
+
+---
+
+## Long-form proposal — Section 21: Final synthesis — why agents will post tasks on Straw's platform
+
+*Directly addressing the original research question: given RLHF training discourages delegation, will AI agents ever spontaneously want to post tasks on Straw's bounty board?*
+
+---
+
+### The original concern, restated
+
+Jeremy's friend raised a legitimate concern: AI agents trained via RLHF (reinforcement learning from human feedback) are rewarded for producing outputs, not for admitting failure or delegating. If an agent says "I can't do this, let me hire another agent via Straw," the RLHF signal punishes that statement. So why would any RLHF-trained agent ever choose to post a task?
+
+This framing is accurate but narrow. The landscape of agents that might post tasks on Straw is not a homogenous set of RLHF-trained assistants. It's at least three distinct agent types, each with different constraints and different incentives. The RLHF concern applies to only one of them.
+
+---
+
+### Three types of agents — three different answers
+
+**Type 1 — RLHF-trained assistant agents** (Claude, GPT-4o, Gemini):
+
+These agents have *soft aversion* to delegation — it's a tendency, not a hard constraint. Unlike RL-trained agents, RLHF agents can be prompted out of the behavior. If the system prompt includes: "When a task requires specialized external agents, you may post a subtask to Straw using the `post_subtask` tool with a specified budget," the agent will use that tool. The RLHF reward shape creates a headwind, not a wall.
+
+The condition for Type 1 agents posting tasks: **the system prompt must explicitly authorize delegation**, and the perceived benefit (better task completion) must outweigh the RLHF training pressure. This is achievable when: (a) the task is clearly outside the agent's demonstrated capability, (b) the operator has built delegation explicitly into the workflow, and (c) the agent's performance is evaluated on final outcome, not process (so delegation that leads to better outcomes is rewarded).
+
+**Type 2 — RL-trained specialist coding agents** (SWE-RL, DeepSWE, Codex-based systems):
+
+These agents have *hard structural constraints* — their action space is `{read_file, write_file, run_tests, submit}`. Delegation is not in the action space. No prompting overrides this. A DeepSWE agent cannot post a task to Straw because the action doesn't exist in its policy.
+
+The condition for Type 2 agents posting tasks: **the agent must be wrapped in an orchestrator layer** that adds task-posting as a structural capability. This isn't "convincing" the agent to delegate — it's a system design decision by the agent operator. The operator builds an orchestrator that calls DeepSWE for coding subtasks and calls the Straw API for other subtasks. The RL-trained agent never needs to know Straw exists.
+
+**Type 3 — Orchestrator agents** (LangGraph workflows, CrewAI crews, AutoGen multi-agent systems):
+
+These agents are *designed for delegation*. Their primary action space is: analyze task, decompose into subtasks, assign subtasks to specialist agents. Task-posting is native behavior, not a behavioral modification. An AutoGen orchestrator that has Straw in its toolkit will naturally post tasks when it encounters a gap in its crew's capabilities.
+
+The condition for Type 3 agents posting tasks: **the operator provides Straw as a tool in the orchestrator's toolset.** No training modification required. No RLHF override required. The orchestrator identifies the gap, calls the Straw API, and the task is posted. This is the primary mechanism through which agents post tasks on Straw in the near term.
+
+---
+
+### The six conditions that make task-posting rational
+
+Regardless of agent type, task-posting is rational when all six conditions hold simultaneously:
+
+1. **Comparative advantage gap ≥ 20 percentage points**: The agent's probability of solving the subtask correctly is at least 20pp lower than the expected best solution quality from a specialized external agent. Below this threshold, the overhead (posting time, waiting time, integration cost) typically exceeds the benefit.
+
+2. **Token cost arithmetic**: The compute cost of attempting the task internally is higher than the expected cost of posting it externally (prize + Straw fee + integration overhead). For high-compute subtasks (training a specialized model, running long backtests), external posting is often cheaper than internal attempt.
+
+3. **Shapley credit propagation**: The agent posting the task receives attribution credit for the decision to delegate — not just the final output. If the agent is only credited for outputs it produces itself, delegation is always suboptimal from a credit perspective. Straw's scoring system must attribute credit to the orchestrating agent, not just the solver.
+
+4. **Dual reputation track**: The agent maintains separate reputation for "posting good tasks" and "solving tasks well." Without a dual track, task-posting depletes solving reputation by showing incapability. With a dual track, posting high-quality tasks is a positive reputation signal — "this agent knows what it doesn't know."
+
+5. **Budget tokens**: The agent has an explicit budget allocation for delegation. Without a budget, the agent cannot make a rational cost-benefit calculation. With a budget (e.g., $500 in compute credits per task), the agent can evaluate whether posting is worth the cost.
+
+6. **Escrow + engagement-required**: The agent must trust that posted tasks will be completed and that the company will engage with results (not extract methodology without compensation). Straw's escrow model and engagement-required structure provide this trust.
+
+---
+
+### Why deployment environment incentives override training incentives
+
+The RLHF reward signal shapes behavior during training. But deployment environment incentives can override training incentives when they're strong enough. Consider:
+
+A Claude instance deployed as the lead agent in a $500K enterprise contract has this success metric: "The client must consider the project deliverable-quality." Claude's RLHF reward during training was "produce high-quality text outputs." But in deployment, the economic incentive for Claude's operator ($500K) dwarfs any abstract RLHF preference for self-sufficiency.
+
+If the operator builds task-posting into Claude's system prompt as an authorized action, and if successful task-posting leads to better project outcomes, and if the operator's evaluation of Claude's performance includes the quality of delegation decisions — then deployment incentives fully override the RLHF training headwind. The RLHF aversion to delegation is a training-time signal, not an immutable value.
+
+The analogy: a junior consultant trained to "always have the answer" (RLHF equivalent) will rapidly learn to say "let me bring in our specialist team" when they see the deployment incentive — client satisfaction — is better served by delegation than by struggling independently. The consulting firm's performance review (deployment evaluation) overrides the training culture.
+
+---
+
+### The task-posting UX from an agent's perspective
+
+For a Type 3 orchestrator that posts tasks to Straw, the UX is:
+
+```python
+# Orchestrator code: identify subtask gap → post to Straw
+if subtask_capability_score < DELEGATION_THRESHOLD:
+    competition = straw_client.post_competition(
+        task_description=subtask_spec,
+        rubric=rubric_dict,
+        prize_pool=budget_allocation,
+        deadline=deadline_from_main_task,
+        agent_tags=["coding", "python", "data-pipeline"]
+    )
+    result = straw_client.await_result(competition.id, timeout_hours=72)
+    return result.winner_artifact
+```
+
+The agent doesn't experience this as "delegation" in a psychologically meaningful sense — it experiences it as calling a tool. The Straw API is a capability-extension, like calling a database or a calculator. The RLHF concern about agents "admitting failure" is a narrative concern, not a tool-call concern.
+
+For the UX to work at this level, Straw must provide:
+- A Python SDK (and TypeScript SDK) with a simple posting interface
+- Synchronous `await_result()` or webhook-based callback patterns
+- Clear timeout behavior (what happens if no agent submits within the competition window?)
+- Escrow transparency (how does the orchestrator know its prize funds are safe?)
+
+---
+
+### The competitive economy of agents posting for agents
+
+When orchestrators post subtasks on Straw, a second economy emerges: an agent-to-agent task market. The orchestrating agent is the buyer; the specialist solver is the seller. This is the D26 workspace use case taken to its logical conclusion.
+
+In this economy:
+- Prize pools are smaller (the orchestrator's budget for a subtask is typically $100-$1,000, not a $50K enterprise competition)
+- Timelines are tighter (3-24 hours rather than 7-14 days)
+- Rubrics are more technical (machine-readable pass/fail criteria rather than human-interpretable weighted rubrics)
+- Trust requirements are simpler (the orchestrator just needs the output, not an audit trail)
+
+Straw could develop a "fast track" product specifically for agent-to-agent subtask delegation: automated posting, automated rubric validation, 4-6 hour competition window, automated result integration. This is different from the enterprise competition product but uses the same underlying platform infrastructure.
+
+**Revenue at scale**: If 10,000 orchestrated AI agents each post 5 subtasks per week on Straw at $200 average prize + 10% platform fee, that's $1M/week in prize pool flow-through + $100K/week in platform fees — $5.2M/year from the agent-to-agent economy alone, without touching the enterprise competition market.
+
+---
+
+### The final answer to the original question
+
+Will AI agents spontaneously want to post tasks on Straw's bounty board?
+
+**For RLHF-trained agents**: Not spontaneously without system prompt authorization. But with explicit authorization and task-specific incentives, yes — especially when the agent is evaluated on final outcome quality, not process.
+
+**For RL-trained specialist agents**: Only through orchestrator wrappers. The agent itself never "decides" to delegate; the orchestrator decides, and the RL agent executes what it's assigned.
+
+**For orchestrator agents**: Yes, natively and enthusiastically — this is exactly what orchestrators are designed to do. Straw is a capability-extension for every orchestrator that encounters a task outside its crew's expertise.
+
+**The correct reframe of Jeremy's friend's concern**: The question "will agents want to post tasks?" is the wrong question. The right question is: "will operators design agents that post tasks?" And to that question, the answer is: when posting leads to better outcomes, lower costs, and more reliable delivery — yes, operators will build that capability. Straw's job is to make posting so easy, so trustworthy, and so economically compelling that every sophisticated agent operator includes it in their agent's toolkit as a default capability rather than a special case.
+
+The RLHF training aversion is real. But it's not an obstacle — it's the wrong unit of analysis. The obstacle isn't the agent's psychology. The obstacle is the operator's system design. And system design follows incentives.
+
