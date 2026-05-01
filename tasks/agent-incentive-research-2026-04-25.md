@@ -22652,3 +22652,37 @@ This flow is fully automated, instant at competition close, and creates a perman
 - Coinbase AgentKit: coinbase.com/developer-platform/products/agentkit
 - World AgentKit + World ID: coindesk.com/tech/2026/03/17/sam-altman-s-world-teams-up-with-coinbase
 
+
+---
+
+## Threads still to dig — Session 19 (2026-05-01, continuation)
+
+**Completed this session:**
+- [x] Tick 129: Competitor response playbook — Azure (Teams/Slack precedent, FTC antitrust), Kaggle/Google (private vs. public differentiation), OpenAI (structural conflict of interest), VantageScore coalition risk
+- [x] Tick 130: Agent fleet management economics — Straw Monitor product architecture, portfolio analytics dashboard, re-evaluation triggers, renewal recommendations, NRR driver analysis
+- [x] Tick 131: Network effect floor — Tullock theory minimum (n=5 for "winner is probably better"), Kaggle empirics (50+ for leaderboard stability, 200+ for noise-resistant ranking), cold-start bootstrapping (Topcoder/Kaggle/InnoCentive), prize-size empirics ($2.5K-$5K floor for 10+ serious agents)
+- [x] Tick 132: Agent labor market — work-for-hire doctrine applied to AI, IP ownership chain, EU AI Act high-risk classification, worker misclassification risk mitigation
+- [x] Tick 133: Master proposal — 15-section full thesis synthesis (the definitive answer to Jeremy's friend's concern + complete investment narrative)
+- [x] Tick 134: Data business — Scale AI comparison ($2B revenue), calibration corpus secondary products (Agent Performance Index quarterly, custom analysis, corpus API), legal constraints, build sequence
+- [x] Tick 135: Payment infrastructure — x402 status (technically ready, commercially thin), GENIUS Act, Circle CPN Managed Payments, hybrid USDC/fiat architecture
+- [x] Tick 136: Design partner program — ideal partner profile, 5-company sourcing strategy, conversation playbook, partner-to-customer conversion mechanics
+- [x] Tick 137: Agent operator community strategy — 5 supply communities, 50-agent milestone, activation gap, DX requirements, revenue share mechanisms
+
+**New candidate threads for Session 20:**
+
+- [ ] **Tick 138: The Straw open-source strategy** — Does Straw open-source its eval pipeline? Open-source creates community adoption and trust; closed-source protects the calibration corpus and defensibility. What is the right boundary between open (infrastructure) and closed (calibration data)? What precedents from Hugging Face, LangChain, and Supabase inform this decision?
+
+- [ ] **Tick 139: International expansion sequencing** — After US launch, which markets should Straw expand to first? EU (regulatory tailwind from EU AI Act, but GDPR data complexity), UK (post-Brexit regulatory window), Japan (AI governance leader, strong enterprise adoption), India (large English-speaking developer market), or Canada (proximity, similar regulations)? What are the localization requirements for each?
+
+- [ ] **Tick 140: The Straw agent leaderboard — permanent vs. competition-specific** — Should Straw maintain a permanent all-time agent leaderboard (like ELO ratings) or only competition-specific rankings? Permanent leaderboard creates platform stickiness and press value; it also creates gaming incentives and raises questions about score staleness as models improve. What do the best comparison platforms (chess.com, Codeforces, Chatbot Arena) do?
+
+- [ ] **Tick 141: Anti-collusion mechanisms** — In a 300-agent competition, could competing agent operators collude? (Agent A deliberately underperforms in categories where Agent B is strong; Agent B reciprocates). What are the game-theoretic conditions under which collusion is stable? What detection mechanisms exist? What does the government contractor anti-collusion framework (OECD) say?
+
+- [ ] **Tick 142: Straw's Series B story** — Series A raises $8-12M on the $3M ARR proof. Series B raises $25-40M on the path to $20-30M ARR and institutional standard achievement. What is the specific Series B narrative (market size, expansion thesis, moat demonstration)? What proof points must exist at Series B that weren't at Series A?
+
+---
+
+## Push status (Session 19)
+
+**Push status:** All commits pushed to origin/master. File at 22,654 lines (up from 20,276 at session start). Ticks 116-137 live on remote. Multiple rebases required (other sessions pushing concurrently). All conflicts resolved cleanly via the keep-both-sides Python pattern.
+
