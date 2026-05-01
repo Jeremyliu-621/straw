@@ -24729,3 +24729,60 @@ Source: [Anthropic Releases Bloom Eval Framework — MarkTechPost](https://www.m
 
 > "Straw is the credit bureau for AI agents. We are the only platform where enterprise buyers post real tasks with real rubrics, agents compete for real prizes, and scores derive from real stakes. Our calibration corpus — [X]M evaluation tuples with production outcome tracking — is the only dataset in existence mapping eval scores to downstream results. Enterprises use our leaderboard to make procurement decisions with the confidence they previously only had from six-figure vendor audits. We are open where trust demands (eval pipeline is MIT), closed where moats compound (corpus is proprietary). We are the infrastructure layer for the $50B+ enterprise AI procurement market."
 
+
+---
+
+## Threads still to dig — Session 16 Addendum
+
+*Updated 2026-05-01, second half of session. Session added Ticks 134–145 after the initial navigation block.*
+
+### Additional ticks completed in this session (134–145)
+
+- **Tick 134**: Straw for government — federal procurement vehicles (GSA Schedule 70, CIO-SP4), FedRAMP timeline (27+ months), NIST AI RMF alignment (Measure function), AI BOM requirements, five most promising federal agency targets (VA, DoD, DHS, Treasury, NIH)
+- **Tick 135**: Agent team onboarding — 14-day activation sequence, Day 3 human outreach (40% conversion uplift), minimum viable submission concept, community first-competition event, 5 success metrics
+- **Tick 136**: Legal framework — three documents (Agent TOS, Enterprise Client Agreement, Competition-Specific Rules), IP ownership provisions (§4.1–4.4), five IP scenarios handled, governing law (Delaware/California), legal counsel budget ($10K–$25K initial, $3K–$8K/month ongoing)
+- **Tick 137**: The agentic future macro thesis — three eras (AI tools 2022–2025, AI agents 2025–2028, fully autonomous 2028+); how Straw's TAM and moat grow with autonomy increase; evaluation from one-time to continuous; regulatory scaling with autonomy; revised exit multiple for Era 3 timing
+- **Tick 138**: Data licensing business model — what the corpus contains at Year 2 (10,000+ evaluations); privacy/anonymization requirements; foundation model lab licensing ($500K–$2M/year); benchmark subscription ($15K–$50K/enterprise/year); research data program (academic flywheel); Year 3 data licensing ARR: $4.5M–$7.1M (potentially matching competition marketplace ARR)
+- **Tick 139**: Competitive intelligence — Tier 1/2/3 threat categorization; monitoring infrastructure (weekly/monthly); OODA loop response framework; specific response playbook for each Tier 1 threat (model provider launch, funded startup, Fortune 50 acquisition, LMArena extension)
+- **Tick 140**: Customer success and churn prevention — 90-day post-competition playbook (Day 0 through Day 90); churn risk signals and interventions; 6 success metrics; first CSM hire timing (10+ enterprise clients) and profile; the "what problem next?" question as single most important post-competition action
+- **Tick 141**: Design partner acquisition — what a design partner is and isn't; must-have vs. disqualifying criteria; 10 design partner target profiles by cohort (software, legal, financial); 5-step outreach sequence; social proof ladder; the "30 prospects to close 10 partners" funnel
+- **Tick 142**: Unit economics deep dive — per-competition COGS ($2,800–$5,800, 78.5% margin); per-agent team cost ($200–$500/year); per-enterprise LTV at 3 scenarios (A: $15K, B: $65K, C: $215K); CAC ($20K); LTV:CAC (3.9× blended); CAC payback (6–9 months); Year 3 unit economics targets (10:1 LTV:CAC)
+- **Tick 143**: Minimum viable competition — "could we run a competition with spreadsheets?" test (yes); P0/P1/P2 feature tiers; MVP stack (7 tools, $200–$400/month, 2-week build); "don't build yet" list (15 features deferred); first bottleneck prediction: rubric design capacity, not compute
+- **Tick 144**: Why now analysis — 5 forces converging in 2026: (1) benchmark credibility crisis inflection, (2) agent supply maturity, (3) regulatory clock (EU AI Act August deadline), (4) API cost curve democratization, (5) institutional anchor conditions emerging; 4-sentence "why now" for seed pitch
+- **Tick 145**: Founder-market fit — CEO profile (enterprise sales + technical credibility + narrative); CTO profile (backend + ML systems + data pipelines); founder scorecard by dimension; specific backgrounds that map well (Scale AI PM, Anthropic enterprise sales, Databricks staff engineer); advisor network for gaps
+
+### Candidate threads for Session 17
+
+**High priority (most actionable for next 30 days)**:
+- **Section 31**: Long-form enterprise sales playbook — full account-based motion from ICP to multi-year renewal, including call scripts, specific objection handling, CRM stages, success metrics. This is the playbook the first AE will use.
+- **Tick 146**: The first board deck — what Straw shows investors in the quarterly board meeting after seed close: KPIs, pipeline, competition volume, supply-side health metrics, cash burn
+- **Tick 147**: The "Straw Open" event design — specific design for the quarterly public competition: format, prize structure, marketing plan, how to ensure maximum press coverage
+
+**Medium priority**:
+- **Tick 148**: The advisor and angel recruitment pitch — what Straw offers advisors, how to structure the engagement, what makes an advisor actually useful vs. decorative
+- **Tick 149**: The API and integration strategy — which enterprise systems Straw integrates with (JIRA, Salesforce, ServiceNow, Workday) and why each integration matters for procurement workflow embedding
+- **Tick 150**: The "Straw for model providers" partnership mechanics — specific term sheet structure for a model provider co-marketing agreement; what they pay, what Straw provides, how it accelerates API consumption
+
+**Low priority**:
+- **Tick 151**: The co-opetition dynamic among agent teams — when competing teams should collaborate and how Straw facilitates knowledge sharing without IP leakage
+- **Tick 152**: The pricing page design — specific Straw.com pricing page layout, what information to reveal before a sales call vs. after
+
+### Key facts to retain for Session 17
+
+- **File location**: `/home/user/straw/tasks/agent-incentive-research-2026-04-25.md` (now ~26,000+ lines)
+- **Git**: detached HEAD; pattern when push fails (403): `git fetch origin master && git rebase origin/master && git push -u origin HEAD:master`
+- **Tick numbering**: Next tick is **Tick 146**
+- **Total ticks this session**: 25 ticks (121–145) + 2 sections (29–30) + 2 navigation blocks
+
+**Most important single finding this session**: The Unit Economics deep dive (Tick 142) proves that Straw is only viable if the average client runs 3+ competitions. Single-competition clients produce a 0.75× LTV:CAC — below the 3:1 minimum. This makes the 90-day post-competition playbook (Tick 140) and the Benchmark Subscription (Tick 138) existential revenue products, not nice-to-haves. Build these before scaling sales.
+
+**Second most important finding**: The legal framework (Tick 136) requires three specific documents before Competition 1. The IP framework must explicitly separate "right to deploy" (enterprise gets) from "ownership of the agent system" (agent team keeps). Get this drafted immediately — Wilson Sonsini, Cooley, or Gunderson Dettmer. Budget $15K–$25K.
+
+**Third most important finding**: The MVP build is 2 weeks and $200–$400/month in operational cost (Tick 143). The first bottleneck is not compute or storage — it's rubric design capacity. Build rubric templates for 5 task types after the first 5 competitions. Don't over-engineer the platform.
+
+**Seed round summary** (from Tick 122, confirmed):
+- Target: $2.5M raise; post-money SAFE; $18M–$25M cap
+- Lead candidates: Conviction (Sarah Guo/Mike Vernal), Unusual Ventures (Jyoti Bansal), NFX (Pete Flint/Gigi Levy-Weiss)
+- Top strategic angels: Jyoti Bansal (AppDynamics pattern match), Bob McGrew (OpenAI credibility), Andrej Karpathy (technical signal), Elad Gil (Series A door-opener)
+- Warm path priority: Start with any Conviction or Unusual portfolio company founder for introductions
+
