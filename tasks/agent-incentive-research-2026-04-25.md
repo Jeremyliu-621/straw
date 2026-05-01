@@ -24591,3 +24591,66 @@ The core insight from financial market surveillance: **collusion is invisible at
 
 Source: [FIDE Ethics Commission Case 8/2015](https://ethics.fide.com/images/stories/FIDE_ETHICS_COMMISSION_-_MOTIVATION_-_TETIMOV__RICCIARDI_FINAL.pdf); [ERC-8004: Trustless Agents](https://ethereum-magicians.org/t/erc-8004-trustless-agents/25098); [Sybil Resistance in Token Reputation Systems](https://markaicode.com/token-reputation-systems/)
 
+
+---
+
+## Tick 144 (2026-05-01): Bench vs. Prod Correlation — Do Straw Scores Predict Real Production Value?
+
+**Thread**: The fundamental validity question for any evaluation platform: do competition scores predict whether an agent actually performs well in production? If the answer is "not really," the whole platform's value proposition collapses.
+
+### Why This Question Is Existential
+
+An enterprise CTO asks: "Your agent scored 1847 on Straw. What does that actually predict about its performance on our internal data classification pipeline?" If Straw can answer this with data — "our calibration corpus shows that agents scoring 1700+ on data classification tasks produce outputs that human reviewers rated production-quality 87% of the time vs. 34% for agents below 1200" — the platform has real credibility. If Straw can't answer it, the leaderboard is just a beauty contest.
+
+This is the construct validity problem. In psychometrics, a test has construct validity if it actually measures what it claims to measure. The SAT has been beaten up for decades precisely because its construct validity for predicting college graduation (vs. just "SAT performance") has been questioned. Meta-analyses suggest SAT predicts first-year GPA at r ≈ 0.50, but has lower predictive validity for long-term career outcomes. Straw faces the same scrutiny.
+
+### The Benchmark Overfitting Problem (Goodhart's Law Operationalized)
+
+The canonical threat: once agents optimize for Straw scores specifically, the scores stop measuring what they claim to measure. Three failure modes:
+
+1. **Task distribution overfitting**: Agents learn the distribution of Straw tasks and perform better on Straw than on novel production tasks from the same category. This is exactly the contamination problem that has invalidated multiple LLM benchmarks (BIG-Bench, MMLU) — models may have been trained on test set data, inflating apparent capability.
+
+2. **Rubric overfitting**: If rubric criteria are public, agents can optimize for the specific rubric dimensions that produce high scores rather than the underlying capability the rubric is trying to measure. A coding agent might produce well-commented, test-covered code with perfect style (rubric checklist) that has subtle logic errors that would only surface in production.
+
+3. **Judge model overfitting**: If agents know which LLM judges their output (ZeroClaw daemon uses Haiku/Sonnet), they can craft outputs that specifically appeal to those judges' evaluation tendencies. Models are known to prefer outputs that match their own style.
+
+### Precedents from Other Domains
+
+**SAT → Job Performance**: Meta-analytic validity of r ≈ 0.20–0.30 for SAT predicting job performance (vs. r ≈ 0.50 for structured interviews, r ≈ 0.40 for cognitive ability tests). SAT is a weaker predictor of production outcomes than tests with higher construct validity. The lesson: any standardized eval platform needs to actively measure its own predictive validity with production data.
+
+**CodeSignal → Software Engineer Performance**: CodeSignal's GCA (General Coding Assessment) — used by Amazon, Uber, Brex — claims predictive validity for engineering job performance. CodeSignal's validation studies show r ≈ 0.35–0.50 correlation between GCA score and 6-month manager ratings. Methodologically: they track candidates who received the assessment, were hired (by any company), and then survey managers 6 months post-hire. This is the template Straw needs.
+
+**USMLE → Doctor Performance**: Medical licensing exams (Step 1, 2, 3) have been extensively studied for predictive validity of board exam scores for clinical performance. Results are mixed — Step 1 predicts future board pass rates but has weaker correlation with patient outcomes. The medical profession has largely moved toward competency-based assessment (direct observation + OSCE simulation) as a complement to standardized exams. The hybrid model (standardized score + live demonstration) is Straw's D22 winner flow: Straw score + trial hire period + production outcome tracking.
+
+**Kaggle → Research Performance**: A 2021 Nature study found that Kaggle competition rankings have low predictive validity for publication impact in academic ML research. High Kaggle performers excel at optimizing specific metrics on fixed datasets; academic researchers need creative problem formulation and generalization. The lesson: Straw tasks must be diverse and open-ended enough that narrow metric optimization doesn't dominate.
+
+### The Calibration Corpus as Validity Infrastructure
+
+The path to bench-prod correlation is explicit validation studies using the calibration corpus:
+
+**Step 1: Track production outcomes from hired agents.** Every time an agent is hired via Straw's D22 hire flow, instrument the hire agreement to collect production outcomes at 30/60/90 day checkpoints. Outcome metrics: task completion rate, human reviewer quality rating, error rate on production data, re-hire rate.
+
+**Step 2: Regress production outcomes on Straw scores.** Build a prediction model: `P(production_success) = f(Straw_score, task_category, agent_version, operator_track_record)`. Publish the R² and confidence intervals publicly.
+
+**Step 3: Use validity data in enterprise sales.** "Agents scoring 1700+ on coding tasks have a 78% trial hire success rate (n=247 hires, 90-day outcome data). Agents scoring below 1200 have a 31% success rate." This is a number a CTO can use.
+
+**Step 4: Feed validity failures back into rubric improvement.** When agents score high but underperform in production, the rubric is measuring the wrong thing. Analyze where the rubric-production gap is widest and redesign the rubric dimensions. This is the self-improving evaluation system moat.
+
+### The Construct Validity Defense
+
+Straw's competitive advantage over simpler benchmarks is the rubric specificity: unlike "score this coding problem out of 100," Straw rubrics score specific dimensions (correctness, efficiency, maintainability, documentation, edge case handling) at sub-criterion granularity. Sub-criterion scores provide a richer signal for predicting which specific production context an agent will succeed in.
+
+An agent with high correctness + low maintainability scores is a great fit for one-off automation scripts but a poor fit for a production codebase with strict review standards. This granularity lets enterprises filter on the production capabilities they actually care about — which is a qualitatively different (and more valid) signal than a single composite score.
+
+### What Straw Should Commit To
+
+1. **Annual predictive validity report**: Published on the Straw website; shows the correlation between Straw scores and production outcomes by task category, updated annually as hire data accumulates.
+
+2. **Voluntary production outcome reporting**: Enterprises that hire via Straw can optionally report 90-day outcomes (anonymized); Straw feeds this data back into calibration corpus and publishes aggregate validity statistics.
+
+3. **Anti-contamination practices**: Rotate anchor tasks annually (new tasks drafted and held secret until deployment), use sealed rubrics, randomize task variants. Document contamination-prevention methodology publicly — this is where Straw differentiates from MMLU/BIG-Bench.
+
+4. **Transparency about what Straw scores do NOT predict**: Straw scores predict performance on tasks similar to the competition. They do not predict: long-horizon autonomous operation, performance on tasks outside the evaluated category, performance with different tooling or context. Being explicit about this prevents overselling.
+
+**Open thread**: How should Straw handle the situation where a highly-rated agent fails spectacularly in production (a visible "false positive")? This is a reputational risk — enterprises may blame Straw for a bad hire recommendation.
+
