@@ -9258,3 +9258,102 @@ Section 3 (Submission Artifacts Log) should include the ERC-8004 agent ID, the T
 
 **Push status:** All commits pushed to origin/master via `git push -u origin HEAD:master`. All successful.
 
+
+---
+
+## Long-form proposal — Section 23: The anti-thesis — the strongest case against Straw
+
+*Intellectual honesty requires confronting the best arguments against the thesis before investor or design partner conversations.*
+
+---
+
+### Challenge 1: Rubric capture — what if the company rigs the rubric?
+
+**The challenge**: A company uses Straw to "launder" a vendor selection decision they've already made. They write a rubric with criteria specifically designed to make their preferred vendor win (e.g., criteria that favor a particular API design pattern, a specific testing framework, or a constraint that only one agent team is known to satisfy). Straw runs the competition; the preferred vendor wins; the company has a "competition-based evaluation" as compliance cover.
+
+**Why this is a real risk**: There is an inherent information asymmetry — the company knows their preferred vendor's strengths better than the rubric design guide. A motivated company can use that knowledge to write biased criteria.
+
+**The response**: 
+1. Rubric validation pre-deployment catches objective bias (overly narrow criteria, criteria overlap, criteria that reference specific implementation choices rather than outcomes)
+2. Straw's rubric design service explicitly removes implementation-specific constraints ("the solution must use PostgreSQL" → "the solution must use a relational database with specified performance characteristics")
+3. The competition results are public within the company's workspace — if 20 agents scored 60-70% and one agent scored 95%, that's suspicious and auditors can spot it
+4. Straw's compliance certificate includes the full rubric — if the company submits it to OMB/EU AI Act auditors, a biased rubric is detectable by those auditors independently
+
+**The unresolved residual risk**: A sophisticated company with a sophisticated rubric can still bias the result in ways that are hard to detect automatically. This is a structural limitation of any evaluation system where the evaluator designs the rubric.
+
+---
+
+### Challenge 2: Platform bias — what if Straw's eval pipeline favors certain agents?
+
+**The challenge**: Straw's three-tier evaluation pipeline (automated tests, LLM-as-judge, agent investigator) is built by Straw. If Straw has undisclosed commercial relationships with certain agent vendors (or if the LLM used as Tier 2 judge was trained on data from certain agent systems), the pipeline may systematically favor those agents.
+
+**Why this is a real risk**: The Tier 2 LLM-as-judge is a model trained by a foundation model provider. If, for example, Claude is the judge model and it scores Claude-generated code higher than GPT-4o-generated code due to stylistic alignment, that's a systematic bias. The judge is not neutral.
+
+**The response**:
+1. Multi-model judge ensemble: run Tier 2 evaluation on multiple judge models (Claude, GPT-4o, Gemini) and take the average or consensus — this cancels out model-specific bias
+2. Judge neutrality disclosure: the compliance certificate Section 4 names the judge model and version — auditors can assess potential bias
+3. Third-party audit: allow companies to commission an independent audit of their competition's evaluation pipeline
+4. Open rubric format: rubrics that are machine-readable (JSON Schema) rather than natural language prompts reduce LLM-as-judge interpretive latitude, limiting bias surface
+
+**The unresolved residual risk**: Even with ensemble judging, systematic bias from training data of the judge models cannot be fully eliminated without ground-truth human evaluation on every competition. This is expensive at scale.
+
+---
+
+### Challenge 3: The benchmark contamination cycle — will Straw's signal eventually degrade?
+
+**The challenge**: The same contamination cycle that killed SWE-bench will eventually kill Straw's signal. When Straw scores become a meaningful industry reference (agents get hired based on Straw scores, companies require Straw participation), sophisticated agent operators will train their agents specifically to perform well on Straw-like tasks. The private holdout protects against direct contamination (agents can't train on tasks they've never seen) but doesn't protect against the agent becoming "Straw-shaped" — optimized for Straw's evaluation style rather than for genuine capability.
+
+**Why this is a real risk**: Goodhart's Law: when a measure becomes a target, it ceases to be a good measure. This is exactly what happened with SWE-bench, LMSYS Arena (27 private variants before public release), and every major benchmark that became a target.
+
+**The response**:
+1. Rotating rubric templates: never use the same rubric structure twice for the same task type; prevent agents from memorizing "how Straw rubrics work"
+2. Random holdout sampling: the private holdout is drawn from a different distribution than the public test set — agents can't reverse-engineer the holdout by optimizing for the public set
+3. Human calibration check: periodically run competitions with known-difficulty tasks evaluated by domain expert humans — compare human rankings to Straw rankings as a calibration signal
+4. Private task rotation: tasks should be novel enough that no agent has previously encountered similar problems; Straw's task design team must actively prevent template reuse
+5. The anti-contamination moat: as the task library grows, the surface area that agents must "memorize" to game Straw grows proportionally — making contamination harder, not easier, at scale
+
+**The unresolved residual risk**: A sufficiently large and diverse agent training dataset (which will exist by 2028 as competition data accumulates) could capture enough Straw-style evaluation patterns that well-trained agents have a systematic advantage over poorly-trained ones even on novel tasks. This is the long-term structural risk.
+
+---
+
+### Challenge 4: The winner concentration problem degrades signal quality
+
+**The challenge**: If the same 3-5 elite agent teams win every competition in a domain, the "Straw Score" becomes a measurement of "did you hire one of 5 known elite agents" rather than "which agent is best for your specific task." The platform's signal degrades as the competitive field becomes less diverse.
+
+**Why this is a real risk**: OASIS research on agent competition markets found that approximately 20% of agents capture 80% of rewards in unconstrained competitions. Winner concentration is a structural tendency at scale, not an accident.
+
+**The response**:
+1. Tiered competition tracks (Open + Specialist + Emerging) as described in Section 19
+2. Domain-specific competitions where top generalists don't dominate specialists
+3. Reputation-based prize handicapping (elite agents get smaller prize share, making the field more level for emerging agents — controversial but effective in sports handicapping)
+
+**The unresolved residual risk**: Market dynamics naturally concentrate — it's hard to prevent without introducing market distortions. Perfect diversity preservation is not achievable.
+
+---
+
+### Challenge 5: The monopoly concern — what happens when Straw wins?
+
+**The challenge**: If Straw becomes the dominant evaluation platform and regulatory mandates effectively require Straw participation, the platform has monopoly pricing power over both companies (who must evaluate) and agents (who must participate to get hired). Companies face lock-in because switching to a different evaluation platform would mean starting over on reputation calibration. Agents face lock-in because their accumulated Straw score can't be transferred to a competitor.
+
+**Why this is a real risk**: This is exactly how credit rating agencies became entrenched — and they're widely criticized for abusing that position. The NRSRO designation created a regulatory moat that S&P and Moody's have used to maintain 90%+ market share despite documented quality failures (2008 financial crisis, inflated CDO ratings).
+
+**The response**:
+1. Open score portability: Straw scores are cryptographically signed attestations that agents can store and present independently — Straw doesn't hold the only copy
+2. Open evaluation protocol: Straw publishes its rubric format, evaluation methodology, and compliance certificate spec as open standards — competing platforms can implement them and produce compatible artifacts
+3. Pricing regulation self-commitment: Straw should proactively commit to pricing caps tied to the CPI in its platform terms — preventing the rent-extraction that the credit rating agencies engaged in
+4. Network effect limitation: structure the platform so that the primary value is the calibration corpus (which Straw keeps) rather than the network effect (which creates monopoly dynamics)
+
+**The unresolved residual risk**: A commitment to open standards doesn't prevent monopoly behavior if the implementation remains proprietary. True open evaluation would require open-sourcing the entire evaluation pipeline — which eliminates the calibration corpus moat.
+
+---
+
+### The honest summary of the anti-thesis
+
+Straw solves a real and urgent problem (enterprise AI procurement is broken) with a structurally sound approach (task-specific private competition with pre-defined rubrics). But it creates at least three new risks that don't exist with the status quo:
+
+1. **Evaluation theater**: sophisticated actors can use Straw's compliance cover while manipulating the rubric — making bad AI procurement look legitimate rather than making it good
+2. **Score degradation**: the standard will contaminate as it becomes a target — the same cycle that destroyed every other AI benchmark
+3. **Monopoly lock-in**: regulatory mandates combined with switching costs create entrenched pricing power that historically gets abused
+
+The appropriate response to each risk is acknowledged above. But the honest statement for investor conversations is: Straw's success in becoming the standard creates the conditions for its eventual credibility crisis. The question is not whether this cycle happens — it will — but whether Straw can design governance structures that make the crisis slower and shallower than it was for S&P and LMSYS Arena.
+
