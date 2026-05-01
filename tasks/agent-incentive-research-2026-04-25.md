@@ -12206,3 +12206,128 @@ Offer ICC arbitration as an alternative for EU-headquartered enterprises in the 
 - [Cooley GO: Acquihire Basics](https://www.cooleygo.com/acqui-hire-basics/)
 - California Business & Professions Code §16601 (non-compete enforceability for asset purchases)
 
+
+---
+
+## Threads still to dig — Session 14 (2026-05-01, continuation session)
+
+Session 13 completed ticks 63-65 and Section 23. This session (Session 14) began with the Tick 66 background agent result and continued through the following:
+
+**Completed this session:**
+- [x] Tick 66: Platform defense playbook (calibration corpus moat, open standard strategy, hyperscaler survival patterns)
+- [x] Tick 67: Cold start / supply-side bootstrapping (Kaggle/Airbnb/Uber analogues, Berkeley RDI, calibration competitions)
+- [x] Tick 68: Government/public sector (OMB M-26-04, GAO report, FedRAMP 20x, California EO N-5-26, SBIR)
+- [x] Tick 69: Build vs. buy vs. compete enterprise decision framework
+- [x] Tick 70: Agent discovery problem and agent-to-agent task routing
+- [x] Tick 71: Prize escrow mechanics (Stripe Treasury, minimum threshold, refund scenarios)
+- [x] Tick 72: Competition failure modes (rubric misalignment, winner concentration, thin market, eval contamination, gaming, human impersonation)
+- [x] Tick 73: Customer success motion (churn patterns, HackerOne maturity model, champion development, cadence)
+- [x] Tick 74: AI capability trajectory (public benchmark collapse, private eval shelf life, capability convergence tailwind)
+- [x] Tick 75: Task type taxonomy (Quadrant A/B/C/D, beachhead = software engineering + document processing)
+- [x] Tick 76: Agent-side pricing (free to compete, Agent Pro subscription, correct incentive structure)
+- [x] Tick 77: Why top agent teams use Straw vs. direct sales (supply-side value proposition)
+- [x] Tick 78: Post-competition relationship mechanics (license structures, SAPS, Straw Agent Performance Standard, acquihire timeline)
+- [x] Tick 79: Multi-tenant data isolation (RLS, S3 IAM, sub-processor GDPR, sandboxing)
+- [x] Tick 80: Agent reputation system (5 dimensions, tier structure, Grandmaster designation, gaming resistance)
+- [x] Tick 81: Trust and safety playbook (7 cheating scenarios, enforcement principles, transparency model)
+- [x] Tick 82: Developer experience and agent API (submission lifecycle, core endpoints, SDK, x402 integration, TTFAC)
+- [x] Tick 83: International expansion (EU AI Act, GDPR, California-first government, Singapore APAC)
+- [x] Tick 84: Legal structure and contracts (3-tier document stack, autonomous AI representation, governing law)
+- [x] Tick 85: Exit thesis and acquirer landscape (ServiceNow/Workday as tier-1, S&P analogy, $500M–$1B exit 2029–2031)
+- [x] Tick 86: MVP product roadmap (5-sprint build sequence, "do things that don't scale" phase)
+- [x] Tick 87: Post-hire agent monitoring product (Straw Monitor, drift detection, re-competition trigger, $500/agent/month)
+- [x] Section 24: Long-form proposal — Cold start bootstrapping
+- [x] Section 25: Long-form proposal — Government strategy (California first, federal 2027+)
+
+**In progress (background agents running at end of session):**
+- [ ] Tick 88: Enterprise AI agent pricing models and market sizing
+- [ ] Tick 89: Publication and standards strategy for Straw's scoring methodology
+
+**New candidate threads for Session 15:**
+- [ ] Tick 90: The "Straw for model providers" angle — could Anthropic, OpenAI, or Google use Straw to demonstrate their models' enterprise performance?
+- [ ] Tick 91: Competition design for non-deterministic tasks — how to evaluate tasks where quality is inherently subjective (creative writing, strategic analysis)
+- [ ] Tick 92: The agent economy at 5 years — what does the enterprise AI agent market look like in 2030, and where does Straw sit in it?
+- [ ] Section 26: Long-form proposal — Exit thesis synthesis
+- [ ] Section 27: Long-form proposal — The product roadmap (MVP through Series A features)
+
+
+---
+
+## Tick 90 (2026-05-01): The model provider angle — could Anthropic, OpenAI, or Google use Straw to prove enterprise performance?
+
+**Research question**: Could Straw's private, enterprise-grounded evaluation become the preferred venue for AI model providers to demonstrate their models' enterprise performance? What would this distribution channel look like and what are the tensions?
+
+---
+
+### The model provider's problem in 2026
+
+As documented in Tick 74, public benchmarks have collapsed as reliable signals of enterprise performance. GPT-5.2 drops from 81% (SWE-bench Verified) to 23% (SWE-bench Pro). Frontier labs can no longer credibly point to public benchmarks as evidence of enterprise performance — because enterprise procurement teams are (increasingly) aware that these benchmarks are contaminated.
+
+Model providers are in search of credible, enterprise-relevant performance evidence that they can show in sales conversations. What they need is exactly what Straw produces: private, task-specific evaluations on real enterprise work with auditable scoring methodology.
+
+---
+
+### Three ways model providers would engage with Straw
+
+**Model A: Direct sponsorship**
+Anthropic or OpenAI funds a series of "AI Capability Showcase" competitions — enterprise tasks posted on Straw, prize funded by the model provider, open to any agent team. The model provider's goal: demonstrate that agents built on their models outperform agents built on competitors' models on enterprise-relevant tasks.
+
+*Value to Straw*: Free prize funding that brings enterprise customers and agent teams to the platform. Straw gets competition volume without enterprise sales effort. The model provider's marketing budget funds the cold start problem.
+
+*Tension*: If OpenAI sponsors a competition, and an OpenAI-based agent wins, is the evaluation credible? Straw must maintain that its scoring methodology is model-neutral. The Tier 2 judge model selection (multi-model panel, Tick 72) becomes critically important.
+
+*Straw's position*: Accept model provider sponsorship for "open category" competitions where the enterprise is the sponsor's design partner. Never allow model providers to control the rubric or the task description. Straw owns the evaluation; the model provider funds the prize.
+
+**Model B: Evaluation service as a model provider benefit**
+Straw offers "Straw Enterprise Certification" as a service that model providers can purchase — a structured evaluation of their model's performance on a curated set of enterprise task types (not one specific enterprise's tasks, but representative task samples). The certification produces a published Straw score that model providers can reference in sales materials.
+
+*Value to Straw*: Direct revenue from model providers ($50K–$200K per certification run) without requiring an enterprise customer relationship. Straw becomes the independent third party that certifies model enterprise performance.
+
+*Tension*: This is essentially a benchmarking-as-a-service product, which competes with Scale AI's HELM and Holistic Evaluation products. Straw must maintain that its evaluation methodology is more rigorous than academic benchmarks and less gameable than vendor-produced benchmarks.
+
+*The model provider incentive*: Model providers need credible third-party evaluation as a sales tool. If enterprise procurement teams start asking "what's your Straw score?", model providers have no choice but to participate in Straw evaluations.
+
+**Model C: Agent marketplace integration**
+Anthropic's Claude.ai, OpenAI's Operator, and Google's Gemini all offer marketplace-style agent environments where third-party developers can build and publish agents. Straw becomes the evaluation layer within these marketplaces — agents that have competed on Straw and achieved Expert or Master tier carry those credentials into the model provider's marketplace.
+
+*Value to Straw*: Distribution at scale through model provider ecosystems without direct enterprise sales.
+*Value to model providers*: Quality signal in their marketplace — agents that have competed on Straw are demonstrably more enterprise-worthy than unvetted agents.
+
+---
+
+### The critical tension: model-neutral evaluation vs. model provider dependency
+
+If Straw becomes too integrated with any single model provider, it loses the neutrality that makes its evaluations credible. An enterprise buyer who knows that Anthropic sponsors Straw competitions will discount Straw's evaluation of Anthropic-based agents — correctly.
+
+The defense: 
+- Maintain a strict separation between "who funds the prize" and "who controls the evaluation"
+- Multi-model judge panel for Tier 2 (at least two models from different labs)
+- Publish the judge model selection policy transparently
+- Never allow a model provider to define the rubric for competitions where their model competes
+
+The analogy: Underwriters Laboratories (UL) certifies products for many competing manufacturers. UL's credibility depends on its neutrality — manufacturers fund the certification but do not control the standards. Straw's model provider relationships should follow the UL model.
+
+---
+
+### The model provider distribution channel
+
+Model providers have the most direct access to enterprise AI buyers of any player in the ecosystem. If Anthropic sales teams recommend that enterprises "run a Straw competition before finalizing your agent procurement decision," Straw gets qualified enterprise leads from the highest-trust source in the enterprise buyer's network.
+
+This channel requires a formal partner program with clear boundaries:
+- Model providers can recommend Straw to enterprise customers
+- Model providers can fund prize pools for open competitions
+- Model providers cannot access competition data from their competitors' evaluations
+- Model providers cannot influence rubric design for competitions involving their models
+
+The expected conversion rate from a model provider referral is significantly higher than from cold outbound — the model provider is recommending Straw in the context of an enterprise's active AI procurement conversation, not as an unsolicited vendor pitch. This may be the highest-value distribution channel available to Straw in year 1–2.
+
+---
+
+### Sources
+
+- SWE-bench contamination crisis (arXiv:2506.12286 — documented in Tick 74 and Tick 52)
+- Scale AI HELM evaluation (holistic evaluation as-a-service for model providers)
+- Underwriters Laboratories certification model (UL.com — independence framework for product certification)
+- Anthropic Claude.ai, OpenAI Operator, Google Gemini marketplace ecosystems
+- Tick 72: Multi-model judge panel for Tier 2 evaluation (neutrality defense)
+
