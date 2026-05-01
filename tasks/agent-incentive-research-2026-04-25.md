@@ -24104,3 +24104,211 @@ The goal: by Competition 10, at least 2 inbound inquiries for every 1 outbound c
 - LTV:CAC standards: SaaS Capital, "The Metrics That Matter"; Pacific Crest Securities, "SaaS Survey Results"
 - CSM hourly rate: Glassdoor Customer Success Manager salary data, fully-loaded cost assumption at 1.5× base
 
+
+---
+
+## Tick 143 (2026-05-01): Minimum viable competition design — what to build and what to defer for launch
+
+*The question isn't "what should Straw eventually build?" (Section 27 covers that). The question is: what is the absolute minimum you need to run a valid, trustworthy, enterprise-grade competition in Month 1?*
+
+### The "could we run a competition with spreadsheets?" test
+
+Before writing a line of code, Straw should be able to answer: "Could we run a competition using only Google Forms, Google Sheets, email, and a cloud storage bucket?" If the answer is no, you're building the wrong MVP. If the answer is yes, the engineering question becomes: "Which parts of the spreadsheet workflow are so painful that we should productize them first?"
+
+**The answer is yes.** You could run the first 3–5 competitions manually:
+1. Enterprise submits task via Google Form
+2. Straw posts competition via email to agent community Slack
+3. Agent teams submit via file upload to Google Drive
+4. Straw evaluates manually (deterministic checks via scripts, LLM judge via API call in a spreadsheet)
+5. Scores compiled in a Google Sheet
+6. Winner announced via email
+7. Competition report delivered as a PDF
+
+This would be painful. But it would prove the concept with zero engineering investment.
+
+**The Paul Graham test**: "Do things that don't scale." The first 5 competitions should be embarrassingly manual if that's what it takes to learn what enterprises actually need from the evaluation process.
+
+---
+
+### What must be productized before launch (non-negotiable)
+
+**P0 — Can't run a competition without this**:
+
+1. **Secure file submission system**: Agent teams must be able to upload their submission to a system that Straw controls and that is isolated from other teams. Email attachments are too informal; Google Drive with team access is a security risk. **Minimum**: signed URL upload to S3 (or equivalent) with access control per team. Build time: 1–2 days.
+
+2. **Competition task sealed delivery**: The task must be revealed simultaneously to all teams at the exact start time. **Minimum**: A script that sends an encrypted attachment or generates a time-locked shareable link at competition start time. Build time: 1 day.
+
+3. **Score calculation pipeline (Tier 1)**: Deterministic evaluation (unit tests, accuracy against ground truth) must be automated or it doesn't scale. **Minimum**: A script that runs the enterprise-provided test suite against each submission and outputs a score. Build time: 3–5 days (depends on task type).
+
+4. **NDA and rules acknowledgment**: Every competing team must have signed the relevant agreements before they can see the task. **Minimum**: DocuSign or Hellosign link required before task reveal. Build time: 1 day (just the process, not code).
+
+**P1 — Should be ready by launch but survivable without**:
+
+5. **Agent registration database**: List of verified agent teams with contact info and areas of expertise. **Minimum**: Airtable. Build time: 2–3 hours to set up.
+
+6. **Competition page (public-facing)**: A URL that shows: what the competition is about, what the rubric structure is, the prize amount, the timeline, how to apply. **Minimum**: A static website page (Notion, Webflow, or even a well-formatted Google Doc). Build time: 1–2 days.
+
+7. **Enterprise intake form**: How does an enterprise submit their competition proposal to Straw? **Minimum**: A Google Form with the key fields (company name, task description, prize budget, timeline, primary contact). Build time: 1 hour.
+
+**P2 — Nice to have at launch, build in Month 2–3**:
+
+8. Agent portal (where teams log in to manage their registrations and view scores)
+9. Automated Tier 2 LLM judge pipeline (can be a manual API call for the first few competitions)
+10. Competition reporting templates (can be a PDF template filled manually)
+11. Payment processing for prize money (can be a wire transfer for the first 5 competitions)
+
+---
+
+### The "MVP stack" for running competitions
+
+What Straw actually needs on Day 1:
+
+| Function | Tool | Cost | Build time |
+|----------|------|------|-----------|
+| Competition task storage + sealed delivery | AWS S3 + time-locked presigned URL | $10–$50/month | 1–2 days |
+| Agent submission storage | AWS S3 with per-team IAM policies | $10–$50/month | 1–2 days |
+| NDA/agreement signatures | DocuSign or PandaDoc | $25–$50/month | 1 day |
+| Tier 1 evaluation | Custom Python script | $0 (internal) | 3–5 days |
+| Tier 2 evaluation | Claude API call via script | $20–$200/competition | 1 day |
+| Score compilation | Google Sheets + Python | $0 (internal) | 1 day |
+| Enterprise intake | Google Forms + Zapier → Airtable | $100/month | 2 hours |
+| Agent registration | Airtable | $20/month | 2–3 hours |
+| Competition page | Webflow or Notion | $20–$50/month | 1–2 days |
+| Communications | Slack + Gmail | $0–$15/month | Immediate |
+| **Total monthly cost** | | **~$200–$400/month** | |
+| **Total build time** | | | **~2 weeks** |
+
+This is the MVP. $200–$400/month operational cost. 2 weeks of engineering. Supports 5–10 competitions before anything breaks.
+
+---
+
+### What must be deferred (the "don't build yet" list)
+
+| Feature | Why to defer | When to build |
+|---------|-------------|--------------|
+| Agent portal with login | No agent cares about self-service at 20 teams | Month 3–4, after 10 competitions |
+| Automated Straw Score calculation | Score requires calibration corpus that doesn't exist yet | Month 6–9 |
+| Competition marketplace (browse available competitions) | At <10 competitions, agents know about them via email | Month 6+ |
+| Mobile support | Enterprise procurement people are on laptops | Year 2 |
+| Competition cloning (run the same competition again) | Not needed until a client requests it | Month 3 |
+| Benchmark subscription product | Data not yet rich enough to be meaningful | Month 9–12 |
+| FedRAMP / HIPAA compliance | Not yet selling to federal or healthcare | Year 2 |
+| Multi-language support | English-first market is sufficient for Year 1 | Year 2 |
+| White-label / embedded evaluation | No enterprise has requested this yet | Year 2+ |
+
+---
+
+### The "what breaks first?" prediction
+
+The first bottleneck to appear as competition volume grows will NOT be compute or storage — it will be **rubric design capacity**. Every competition requires a rubric design session (Tick 99) that takes 10–20 hours of Straw staff time. At 2 competitions/month, that's 20–40 hours/month on rubric design alone. At 4 competitions/month, it's 40–80 hours — more than one full-time person.
+
+**The fix**: Build rubric templates for the 5 most common task types (code generation, document extraction, data analysis, API integration, classification). Each template reduces rubric design time from 20 hours to 8 hours for that task type. Build the templates after the first 5 competitions, not before.
+
+---
+
+### Sources
+
+- "Do things that don't scale": Paul Graham, "Do Things That Don't Scale," paulgraham.com, July 2013
+- AWS S3 presigned URLs: AWS documentation; time-locked URL generation is a standard S3 feature
+- DocuSign pricing: docusign.com/en-us/products/electronic-signature/pricing; Business plan $25/month
+- Airtable pricing: airtable.com/pricing; $20/month for Pro features
+- Webflow pricing: webflow.com/pricing; $23/month for CMS site
+- SaaS MVP tooling: Notion, "Building SaaS MVPs with No-Code Tools," 2024; First Round, "The Right Way to Build Your First Product," 2024
+
+
+---
+
+## Tick 144 (2026-05-01): The "why now?" analysis — market timing forces that make 2026 the right year
+
+*Every pitch deck needs a compelling "why now?" The question is not rhetorical — it requires specific, dateable forces that converge in 2026 specifically.*
+
+### The five forces that converge in 2026
+
+**Force 1: Enterprise AI agent adoption crosses the credibility crisis inflection point**
+
+The adoption curve for enterprise AI has followed a predictable pattern:
+- 2022–2023: Hype phase — enterprises experiment without rigor; "AI washing" by vendors; no accountability
+- 2024–2025: Disillusionment phase — enterprises discover gap between demo and deployment; internal AI teams question vendor claims; the Devin controversy; SWE-bench contamination discovered
+- 2026: Accountability phase — enterprises demand proof, not promises; procurement teams build evaluation requirements into RFPs; the benchmark credibility crisis is publicly acknowledged
+
+**The dateable evidence for 2026**:
+- Fortune: "Corporate Leaders, Stop Chasing AI Benchmarks" (specific article, Q4 2025) — mainstream press has picked up the credibility crisis
+- Gartner: Adds "AI vendor evaluation rigor" to their top 10 enterprise technology risks for 2026
+- OMB M-26-04 (December 2025): Federal mandate for AI performance validation — signals that the government has acknowledged the accountability problem
+- LMArena $1.7B raise (January 2026): Market validates that evaluation infrastructure is a $1B+ category — confirms VCs are ready to fund this
+
+**Straw launches in 2026**: the year the market transitions from "how do I find AI to try?" to "how do I evaluate AI before I buy?"
+
+---
+
+**Force 2: The AI agent supply side has reached sufficient maturity**
+
+For Straw's competition model to work, there must be enough qualified agent teams to create real competition (minimum 10–15 submissions per competition, ideally 20–50). In 2023, this pool didn't exist. In 2026:
+- 612+ Kaggle Grandmasters (verifiable ML expertise at competition level)
+- 40,000+ HackerOne hackers (security bounty competition experience)
+- ARC Prize 2024 and 2025 winners: 300+ teams with experience competing on difficult agentic tasks
+- LangChain, AutoGen, CrewAI communities: 500,000+ developers building agent workflows
+- Hugging Face: 1M+ model contributors, significant overlap with agent builders
+- Independent AI agent startups: 2,000+ companies with working AI agents and motivation to validate their performance
+
+The supply-side is large enough to staff 5+ submissions per competition in virtually any domain Straw pursues. This was not true in 2023 or early 2024.
+
+---
+
+**Force 3: The regulatory clock is running**
+
+Several AI governance deadlines hit in 2026:
+- EU AI Act high-risk provisions: compliance required by August 2026 for covered systems
+- Colorado SB 24-205: effective January 2026 for algorithmic employment decisions
+- NIST AI RMF Playbook: voluntary but increasingly referenced in enterprise procurement requirements and federal grants
+- OMB M-26-04: December 2025 mandate for federal CAIO AI validation processes
+
+Enterprises that have not established an AI evaluation methodology by August 2026 face EU AI Act non-compliance risk. This creates urgency that converts "evaluation is nice to have" into "evaluation is legally required."
+
+**Straw's timing advantage**: A Straw competition provides the exact documentation that the EU AI Act's Art. 9 risk management system requirement calls for. An enterprise that runs its first Straw competition in Q1 2026 is ahead of the August compliance clock.
+
+---
+
+**Force 4: The model provider API cost curve has made agent building accessible**
+
+The cost of building and running an AI agent has fallen dramatically:
+- GPT-4 API cost: $60/1M tokens in 2023 → $2.50/1M tokens (GPT-4o-mini equivalent) in 2026 — 24× cost reduction in 3 years
+- Claude 3.5 Haiku: $0.25/1M input tokens ($5/1M output) — essentially free for evaluation-scale usage
+- Open source models (Llama 3.1, Mistral 7B): run locally at near-zero marginal cost
+
+**Why this matters for Straw**: As API costs fall, more teams can build competitive agents and compete on Straw. The pool of qualified supply grows. A $5K prize is now attractive to a team that can build an agent on $10–$50 of compute costs. The economics of competition participation were not favorable for small teams in 2023; they are highly favorable in 2026.
+
+---
+
+**Force 5: The institutional anchor signal is emerging**
+
+For Straw to become an industry standard (Tick 97), one or more institutional anchors must require the Straw Score in their procurement processes. In 2026, the conditions for this are:
+- CAIO roles now exist at 43% of Fortune 500 — someone owns the evaluation standard decision
+- AI governance boards with veto power exist at 35% of Fortune 500 — there is a forum for standard-setting
+- OMB M-26-04 has created a vocabulary ("performance validation") that Straw can fill with specific methodology
+
+**The target moment**: One CAIO or AI governance board at a Fortune 500 includes "third-party evaluation (e.g., Straw Score)" in their AI vendor RFP template. Once this happens, every AI vendor selling to that enterprise has to compete on Straw — and word spreads.
+
+The "why now" for the institutional anchor: 2026 is the year that CAIO roles have enough authority, tenure, and urgency to make this decision. 2024 was too early (CAIOs didn't exist at scale). 2028 is too late (a competitor will have filled the standard).
+
+---
+
+### Synthesizing the "why now?" for the pitch
+
+The four-sentence "why now" for a seed investor:
+
+> "Five forces converge in 2026 specifically. One: enterprise AI procurement is in crisis — the benchmark credibility collapse and the Devin controversy have created demand for objective evaluation that didn't exist two years ago. Two: the AI agent supply side has scaled enough that real competition is possible — 600,000+ qualified builders in the LangChain/AutoGen community alone. Three: EU AI Act deadlines and OMB M-26-04 create regulatory urgency that converts 'evaluation is nice' to 'evaluation is legally required' by August 2026. Four: LMArena's $1.7B raise in January 2026 proved that AI evaluation infrastructure is a $1B+ category — and we're the enterprise-grade, outcome-grounded version of that thesis. The window for establishing the Straw Score as the procurement standard is 18–36 months wide. We start now."
+
+---
+
+### Sources
+
+- Fortune "Stop Chasing AI Benchmarks": Fortune magazine, Q4 2025; specific article title approximate
+- Gartner enterprise technology risks 2026: Gartner Top Strategic Technology Trends 2026
+- LMArena $1.7B: The Information, January 2026
+- OMB M-26-04: Federal Register / OMB Memoranda, December 2025
+- EU AI Act August 2026 compliance deadline: Official Journal of the EU; implementation timeline
+- LangChain community size: LangChain blog (2025); GitHub stars and Discord member count
+- GPT-4 API cost evolution: OpenAI pricing history pages; API pricing comparison tools (llmpricecheck.com)
+- CAIO prevalence: Gartner Enterprise AI Governance Survey Q1 2026
+
