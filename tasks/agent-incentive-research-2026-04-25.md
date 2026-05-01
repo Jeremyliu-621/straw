@@ -12787,3 +12787,125 @@ Most enterprises prefer the contractor model initially (lower operational burden
 - Topcoder gig work onboarding process (enterprise copilot model for post-competition deployment)
 - Upwork contract-to-hire mechanics (staging, validation, go-live)
 
+
+---
+
+## Tick 95 (2026-05-01): Enterprise design partner program — how to structure the first 3 partnerships
+
+**Research question**: What does a rigorous design partner program look like for Straw? How do you structure the first 3 enterprise relationships to generate the founding case study, calibrate the platform, and produce paying customers?
+
+---
+
+### What a design partner is (and isn't)
+
+A design partner is an enterprise that agrees to co-develop the platform with you in exchange for preferential pricing and early access. They are not:
+- A free beta user who provides feedback but no commitment
+- A customer who is signing a full enterprise contract before the product exists
+- A reference customer until the product has actually produced value for them
+
+A design partner is a company that:
+1. Has a real problem that Straw is designed to solve
+2. Is willing to invest engineering time to configure the first competition
+3. Signs a design partner agreement (DPA) that commits them to providing structured feedback and running at least one competition
+4. Pays a reduced design partner rate ($0 or 50% of standard pricing) in exchange for co-development rights (ability to influence product roadmap)
+5. Agrees to be referenced publicly by company and outcome (not just "a Fortune 500 in the financial services sector")
+
+The last point is critical: a design partner who won't let you use their name is not a design partner — they're a free customer. The ability to say "Straw was used by [Company X] to select their legal contract review agent, and the selected agent outperformed the previous vendor by 23% on the same rubric" is the founding case study. That case study is worth more than the design partner fee.
+
+---
+
+### Design partner selection criteria
+
+Not every enterprise with an AI agent problem is a good design partner. The ideal design partner profile:
+
+**Must have**:
+- A specific, well-defined task they need an AI agent to perform (not "we want to explore AI agents generally")
+- An internal owner who is excited about the Straw approach and will champion internally (see Tick 73 — champion identification)
+- Enough internal AI sophistication to provide meaningful feedback (has an AI/ML team or a technical VP)
+- Agreement to use Straw's name publicly in the case study
+
+**Nice to have**:
+- A task type in Straw's Quadrant A (software engineering, document processing, data analysis, legal clause review — Tick 75)
+- An existing vendor evaluation failure to contrast against ("we already tried [vendor X] and it didn't work because...")
+- A measurable baseline (current human time/cost for the task, or current vendor performance)
+
+**Avoid**:
+- Companies with ongoing vendor RFPs that might create legal conflicts
+- Companies whose task is in Quadrant D (Tick 75) — too early for AI agents
+- Companies that want free consulting more than platform co-development
+
+---
+
+### The design partner agreement
+
+A 1-2 page DPA covering:
+
+1. **Commitment**: Enterprise will run at least one competition on Straw with minimum prize of $X (suggest $5,000–$10,000 for design partners) within 90 days of signing
+2. **Feedback**: Enterprise will provide 60 minutes of structured feedback per month on product quality for the design partner period (6 months)
+3. **Pricing**: Design partner rate is 50% of standard enterprise pricing (or $0 for the first competition in exchange for case study rights)
+4. **Reference rights**: Enterprise agrees to be named publicly as a Straw customer with the competition outcome; enterprise reviews and approves any marketing materials that name them
+5. **IP**: Standard enterprise competition posting agreement applies (Tick 84)
+6. **Termination**: Either party can terminate with 30 days notice; enterprise keeps all competition data and results if terminated
+
+---
+
+### The three design partner archetypes (based on task type)
+
+**Design Partner 1: Software engineering task**
+- Target: A SaaS company or fintech with a specific engineering problem (code review, technical debt analysis, test generation)
+- Why first: Software engineering is the best-calibrated task type for current AI agents; easiest to score deterministically; largest agent team pool
+- Target outcome: Competition attracts 15+ agent team submissions; winning agent outperforms the enterprise's current tooling by a measurable margin on a held-out test set
+- Champion: VP of Engineering or Head of AI Platform
+
+**Design Partner 2: Document processing task**
+- Target: A financial services, insurance, or legal firm with a document-heavy workflow (contract review, insurance claims triage, regulatory filing analysis)
+- Why second: Document processing is the second-best-calibrated task type; 90%+ SOTA accuracy on structured extraction; enterprises have clear existing baselines (hours per document, error rate)
+- Target outcome: Competition attracts 8–12 agent team submissions; winning agent processes documents at 5–10× human speed with comparable accuracy
+- Champion: Chief Legal Officer, Chief Operating Officer, or Head of Operations
+
+**Design Partner 3: Data analysis task**
+- Target: A retail, e-commerce, or media company with recurring analytical workflow (quarterly review automation, attribution analysis, anomaly detection)
+- Why third: Data analysis tasks are more variable in difficulty but highly measurable; enterprise has strong intuitions about "good" analysis quality
+- Target outcome: Competition demonstrates that a specialized agent can automate a previously manual analytical workflow with auditable methodology
+- Champion: VP of Data Science or VP of Business Intelligence
+
+---
+
+### The design partner outreach script
+
+Subject: "Private invitation: test AI agent procurement differently"
+
+"[Name],
+
+I'm building Straw — a platform where you define exactly what winning looks like, and AI agents compete on your specific task. The score doesn't lie.
+
+Most AI procurement is demos and promises. We run competitions. You write the rubric. Agents compete. The best one wins — and you can see exactly why.
+
+We're opening 3 design partner slots in Q2. I think [company name]'s [specific task] could be a perfect fit. In exchange for shaping our product roadmap and a reduced fee, we'll run your first competition, analyze the results, and if you're happy, write a case study you control.
+
+Happy to show you what this looks like in 20 minutes. Do you have time Thursday or Friday?"
+
+---
+
+### The case study structure
+
+After the competition closes, Straw produces a 2-page case study with:
+1. **The challenge**: what the enterprise was trying to solve, and why their current approach wasn't sufficient
+2. **The competition design**: the task type, rubric summary, prize pool, number of participants
+3. **The result**: winning agent's score vs. next-best agent vs. enterprise's current tool/approach
+4. **The business outcome**: what the enterprise did with the winning agent and the measured impact
+5. **Quote from champion**: one sentence of endorsement with their name and title
+
+The case study goes on Straw's website with the enterprise's approval. The enterprise uses it in their own AI governance reporting (it's a compliance document as well as a marketing asset under OMB M-26-04 and EU AI Act frameworks). The case study is Straw's most powerful sales tool — more valuable than any feature or any metric.
+
+---
+
+### Sources
+
+- Y Combinator design partner program structure (ycombinator.com founder resources)
+- Stripe's early design partner approach (Stripe Atlas retrospective)
+- Sequoia "Getting to Product/Market Fit" (design partner as validation mechanism)
+- Tick 73: Customer success motion (champion identification, three-contact map)
+- Tick 75: Task type taxonomy (Quadrant A as design partner target)
+- Tick 84: Legal structure (design partner agreement provisions)
+
