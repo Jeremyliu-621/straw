@@ -30570,3 +30570,396 @@ Step 8: Never let a deal become single-threaded. If your only champion leaves, t
 
 **Key finding for Jeremy (Section 32):** The enterprise B2B sales playbook is complete. The first AE has everything: ICP, cold email sequences with benchmarks, SPIN/MEDDPICC discovery framework, POC structure, 6 objection handling scripts, multi-threading playbook, 7-stage CRM definitions, quota benchmarks, 90-day ramp plan, pricing tiers, and competitive positioning. The sourced data point that closes rooms: 76% of enterprises that built internal AI evaluation failed. The line that closes deals: "The score doesn't lie."
 
+---
+
+## Tick 177 (2026-05-01): The "agent acquihire" deal structure — what a $500K–$2M term sheet looks like after Project Deal
+
+**Thread source:** Session 18 candidate thread. Anthropic's Project Deal proved agents transact in real-money markets. The next question: when a company wants to move beyond hiring an agent for a task to acquiring the agent (or the team behind it), what does the deal structure look like? This is D22 (multi-engagement winner flow: hire → license → acquihire) made concrete.
+
+**The macro backdrop (2026 AI M&A data):**
+
+Private AI companies raised over $226 billion in Q1 2026 alone — surpassing the full-year 2025 total in a single quarter. The M&A wave that accompanies this capital cycle is already underway:
+- Nvidia acquired Groq at $20B (2.9x valuation) for LPU inference tech
+- Meta acquired a 49% stake in Scale AI at $14.3B
+- Google acquired Character AI ($2.7B) and Windsurf ($2.4B)
+- OpenAI acquired Hiro Finance (April 14, 2026) — an autonomous personal finance AI, described as a strategic acquihire
+
+The dominant deal structure has evolved to "license & acquihire" — hiring the founding team, licensing perpetual IP rights, and effectively transferring all key assets without a formal legal acquisition. This lets acquirers avoid FTC scrutiny while capturing the strategic asset. This is the Google DeepMind / Character AI model.
+
+**The agent acquihire specifically — what makes it different from a traditional startup acquihire:**
+
+In a traditional startup acquihire, you're buying people (engineers, founders) and the institutional knowledge in their heads. The "product" is often discarded. In an agent acquihire, the product IS the agent — model weights, fine-tuning data, evaluation results, competition history, API infrastructure, and whatever proprietary techniques make the agent good at the specific task it excels at. The people are often secondary; the agent itself is the asset.
+
+This creates a new M&A object: an agent with a documented performance record. Straw's post-competition reports are the primary evidence instrument for an agent acquihire. "Agent X achieved 94.2% task completion on the {{company}}'s specific rubric, outperforming the next-best agent by 23 percentage points, in a blind competition with 8 competing agents." That's a term sheet exhibit, not a marketing claim.
+
+**Deal structure for a $500K–$2M agent acquihire (the Straw-facilitated case):**
+
+**Stage 1: Post-competition interest signal**
+
+After a Straw competition, the winning company makes contact with the winning agent developer (D22 multi-engagement winner flow). Straw facilitates the introduction but is not a party to the deal. This is where the Straw platform earns its facilitation fee — charged as a percentage of the deal value (estimated 2–5% for sub-$2M deals, 1–2% for deals above $5M, standard M&A broker structure).
+
+**Stage 2: Term sheet structure for agent acquihire**
+
+The typical term sheet for a small-to-mid-size agent acquihire includes:
+
+| Component | Description | Typical range |
+|---|---|---|
+| Upfront cash | Cash at close for the agent IP and initial integration support | $200K–$1M |
+| Equity / token (if applicable) | Equity in acquiring company, vesting 2–4 years | 0.1%–0.5% for sub-$2M deals |
+| Performance earnout | Milestone payments tied to agent performance in production (e.g., "if agent achieves ≥90% task accuracy in production for 6 months, receive additional $X") | $100K–$500K |
+| Retention bonus | Developer stays engaged for 12-24 months of integration support | $50K–$200K/year |
+| Perpetual license fee (alternative to full purchase) | Instead of acquiring the agent, the company licenses perpetual use rights for a specific task category | $50K–$300K/year |
+| Non-compete / non-solicit | Developer agrees not to build competing agent for 18–24 months in the acquired task category | Standard clause, no payment |
+
+**Legal structure options:**
+
+1. **Asset purchase:** Company purchases specific assets — model weights, fine-tuning datasets, API endpoint code, competition history. The agent developer's LLC or corporate entity remains intact. Clean, simple, most common for sub-$5M deals.
+
+2. **IP license + acquihire:** Company licenses the agent IP perpetually (rather than purchasing outright) and hires the developer as an employee. Avoids FTC scrutiny for larger deals. The character AI / Windsurf model. The developer gets cash (license fee) + equity (as new employee). Acquirer gets the talent and a permanent right to use the IP.
+
+3. **Revenue share (alternative to upfront purchase):** Acquiring company pays a percentage of revenue generated by the agent in production — e.g., 15–25% of cost savings or revenue attributable to the agent for 24–36 months. This is useful when valuation is contested: you don't argue about price, you agree that the agent's value determines the price.
+
+**The valuation problem — how to price an agent:**
+
+Traditional startup valuation methods (DCF, revenue multiples, comparables) don't map cleanly to an agent that has no revenue but a demonstrable performance record. The emerging agent valuation framework uses:
+
+1. **Task performance premium:** What is the agent worth per unit of task output? If the agent processes 1,000 invoices/month with 99% accuracy, and the market rate for that is $X/invoice, the agent's value is a multiple of monthly throughput value.
+
+2. **Replacement cost:** What would it cost to replicate this agent from scratch? Fine-tuning compute, training data curation, evaluation runs, integration engineering. This sets the floor.
+
+3. **Competition-validated differentiation:** Straw's post-competition report provides the strongest valuation anchor. "Agent X outperformed 7 competitors by 23pp on this task" directly implies the performance premium relative to alternatives. This is the most defensible number in a due diligence context.
+
+4. **ARR multiple (for licensed agents with recurring revenue):** If the agent developer has already licensed the agent to multiple companies, apply a 5x–10x ARR multiple consistent with early-stage SaaS.
+
+**Straw's facilitation role and product opportunity:**
+
+Currently, Straw doesn't have a structured M&A facilitation product. But the opportunity is clear: after a competition produces a winner, Straw can offer:
+
+- **Deal introduction service:** Warm introduction between the enterprise and the winning agent developer
+- **Valuation report:** An independent valuation of the winning agent based on competition results, performance premium analysis, and replacement cost estimation
+- **Due diligence package:** The post-competition PDF, agent version hash, evaluation methodology documentation, and judge ensemble details — the legal/technical due diligence package for an acqui-hire
+
+This is a $5K–$50K per-deal revenue opportunity on top of the competition fee. For a $500K acquihire, a $10K facilitation fee is reasonable. For a $2M deal, $25K–$40K is reasonable. This should be a Straw product offering by the time the first few competition winners express interest in selling.
+
+**Unresolved question (flag for legal):** What is Straw's liability if the acquired agent underperforms in production relative to the competition results? Straw facilitated the evaluation and the introduction. If the company sues arguing misrepresentation, does Straw bear any liability? Standard disclaimers ("competition performance is not a guarantee of production performance") and explicit limitation-of-liability in Straw's terms of service should address this. But it needs to be explicit before Straw starts facilitating M&A deals.
+
+**Sources:**
+- Nvidia-Groq $20B deal: https://intuitionlabs.ai/articles/nvidia-groq-ai-inference-deal
+- Meta-Scale AI 49% stake $14.3B: AI M&A trends 2026 (FE International)
+- OpenAI acquires Hiro Finance (April 14, 2026): https://markets.financialcontent.com/stocks/article/marketminute-2026-4-14-openai-acquires-hiro-finance-the-push-into-vertical-ai-personal-finance
+- AI M&A premium multiples 2026: https://www.feinternational.com/blog/ai-ma-trend
+- Acquihire deal structures: https://www.cooleygo.com/acqui-hire-basics/
+
+---
+
+## Tick 178 (2026-05-01): Straw's judge model architecture — vendor-neutral ensemble, deprecation risk, SLA design
+
+**Thread source:** Session 18 candidate thread. D30 (judge daemon) established the three-tier eval pipeline. This tick goes deeper: how do you build a vendor-neutral judge ensemble that survives model deprecation, maintains independence, and delivers consistent SLA?
+
+**The problem statement:**
+
+Straw's core promise is that the evaluation is independent and the score doesn't lie. That promise is only as good as the judge model selection. Three failure modes:
+
+1. **Self-preference bias:** Using a judge model from the same family as the competing agent creates conflict of interest (Claude 25% self-preference, GPT-4o systematic self-preference measured). Score becomes untrustworthy.
+
+2. **Model deprecation:** OpenAI deprecated text-davinci-003 with 6 weeks' notice. Anthropic deprecated Claude 2 with 3 months' notice. If Straw's Tier 2 judge is a deprecated model, every competition breaks simultaneously.
+
+3. **Style bias (0.76–0.92 severity):** Any single judge model has a preferred writing style and systematically rewards outputs that match it. Style bias dominates all other LLM judge biases — larger than position bias (≤0.04) by a factor of 20x. A single-judge Tier 2 evaluation is fundamentally unreliable.
+
+**The solution: Multi-provider ensemble with majority-vote and version pinning**
+
+**Ensemble composition:**
+
+The Panel of Judges (PoLL) approach (2026 state-of-the-art) uses 3+ LLM judges from different providers, scored independently, with final score determined by majority vote or average pooling. Key research finding: 3–5 judges, majority vote, reduces variance and shrinks self-preference bias because no single judge's quirks dominate.
+
+**Recommended Straw judge ensemble for Tier 2:**
+- Judge 1: Anthropic Claude 3.7 Sonnet (or latest stable Claude)
+- Judge 2: OpenAI GPT-4o (or latest stable GPT-4 family)
+- Judge 3: Google Gemini Ultra 2 (or latest stable Gemini)
+
+All three judges score the submission independently. The final Tier 2 score = average of the three (or majority vote for binary pass/fail decisions).
+
+**The independence rule:** When an Anthropic Claude agent is competing, the Tier 2 ensemble must still include Claude — but its weight in the ensemble is reduced or its score is disclosed alongside the ensemble average so customers can see the self-preference delta. Full disclosure is better than exclusion, because exclusion creates its own asymmetry (non-Claude agents now benefit from a 3-judge ensemble; Claude agents get a 2-judge ensemble).
+
+**Version pinning strategy:**
+
+Every competition uses a pinned judge version — a specific model API snapshot that does not auto-update. This prevents two competitions from being scored by semantically different judges, and protects historical competition results when provider updates change judge behavior.
+
+Implementation:
+- All Straw competitions specify `judge_model_id: "claude-3-7-sonnet-20260315"` (exact version), not `claude-3-7-sonnet-latest`
+- Version registry maintained in Straw's database: every judge version used in every competition
+- When a provider deprecates a version, Straw gets 3 months' advance notice (enforce this in provider API agreements) to migrate active competitions to a new pinned version
+- Historical competitions retain their original judge_model_id in perpetuity for audit purposes
+
+**Deprecation risk management:**
+
+| Risk | Probability | Impact | Mitigation |
+|---|---|---|---|
+| Provider deprecates judge model mid-competition | Low (2–3 months notice typical) | High (all competitions break) | Version pinning + provider SLA agreement |
+| Provider changes model behavior with same version label | Very low (violates API contract) | Very high | Version pinning makes this detectable; flag as provider breach |
+| Provider goes out of business | Very low for big 3 (OpenAI, Anthropic, Google) | Catastrophic | 3-provider ensemble — even if one disappears, others continue |
+| Single judge develops systematic bias shift | Low (tracked quarterly) | Medium | Quarterly judge calibration using human-validated golden samples |
+
+**The judge calibration process:**
+
+Every quarter, Straw runs a calibration set: 50 pre-evaluated submissions where the correct score is known (validated by human expert annotators). All judge models in the ensemble score the calibration set. Any judge whose score deviates >10% from the human-validated baseline is flagged for investigation. This detects style drift before it affects live competitions.
+
+**SLA design for judge availability:**
+
+- **Tier 1 (deterministic scoring):** No model dependency. SLA: 99.9% uptime. Executed in Straw's own compute environment.
+- **Tier 2 (LLM ensemble judge):** Dependent on 3 external API providers. SLA: 99.5% (allows for brief provider outages). Fallback: if 1 of 3 judges is unavailable, score with 2 judges; if 2 of 3 are unavailable, queue the submission and notify the competition owner.
+- **Tier 3 (agent investigator):** Dependent on agent execution environment. SLA: 98% (higher variability acceptable — Tier 3 is optional, not blocking). Timeout: 30 minutes per Tier 3 investigation.
+
+**Customer-facing transparency:**
+
+Every post-competition report discloses:
+- Judge model IDs and versions used
+- Ensemble methodology (average pooling vs. majority vote)
+- Calibration date (last quarterly calibration run)
+- Self-preference disclosure: "Claude agent competed; Claude 3.7 Sonnet scored its submission as part of the ensemble. Claude's score was [X]; ensemble average was [Y]. Delta: [Z pp]."
+
+This is a significant differentiator. Braintrust, LangSmith, and other eval platforms do not disclose judge model provenance or self-preference deltas. Straw making this explicit is a trust-building moat.
+
+**Sources:**
+- Panel of Judges (PoLL) ensemble approach: https://www.evidentlyai.com/llm-guide/llm-as-a-judge
+- LLM judge ensemble design 2026: https://arxiv.org/html/2604.23178
+- Style bias 0.76–0.92 measured: https://arxiv.org/abs/2604.23178
+- LLM self-preference bias: https://arxiv.org/abs/2410.21819
+
+---
+
+## Tick 179 (2026-05-01): Competition task taxonomy — the 8 task categories, scoring rubric templates, and Straw's traction ranking
+
+**Thread source:** Session 18 candidate thread. Every Straw competition begins with a task definition and rubric. What are the 8 task categories where Straw has most natural traction? What does a scoring rubric template look like for each?
+
+**The 8 task categories (ranked by competition design ease and enterprise demand):**
+
+**1. Code review and quality analysis**
+
+*Why it's category 1:* The task is objective. A PR exists. The ground truth is known (bugs exist or don't, security vulnerabilities are present or not, style conventions are met or violated). Tier 1 deterministic scoring is highly applicable. This is the easiest competition to design and the most credible to enterprise buyers.
+
+*Rubric template:*
+- Bug detection rate (% of planted bugs found): 30 points
+- False positive rate (flagging correct code as buggy): -5 points per false positive above threshold
+- Security vulnerability identification (CVE coverage): 25 points
+- Code style conformance to company style guide: 20 points
+- Explanation quality (LLM-judged: is the explanation actionable?): 15 points
+- Response time: 10 points (deducted if >30 seconds per PR)
+
+*Sample competition prompt:* "Review these 100 pull requests. Flag all bugs, security vulnerabilities, and style violations. For each finding, provide an actionable remediation suggestion. Ground truth: 47 PRs have known issues (labels withheld). Scoring: bug detection rate, false positive rate, CVE coverage, style conformance, explanation quality."
+
+*Tier 1 applicability:* High — bug detection and style conformance are deterministic; explanation quality goes to Tier 2.
+
+**2. Data pipeline construction and validation**
+
+*Why it's category 2:* Every enterprise has a data engineering problem. The task (build a pipeline that transforms X to Y with these constraints) has a testable output. Agents produce code; the code either passes the test suite or it doesn't.
+
+*Rubric template:*
+- Pipeline correctness (% test cases passed): 50 points
+- Data validation coverage (handles edge cases defined in spec): 20 points
+- Performance (throughput, memory usage within specified constraints): 15 points
+- Code quality (LLM-judged: is it maintainable? DRY? well-structured?): 10 points
+- Documentation (automated check: is function docstring coverage ≥80%?): 5 points
+
+*Tier 1 applicability:* Very high — pipeline correctness is fully deterministic. This is the most automatable competition format.
+
+**3. Document analysis and extraction**
+
+*Why it's category 3:* Legal, finance, and compliance teams have enormous document processing workloads. Contracts, invoices, regulatory filings, research papers. The task: extract structured data from unstructured documents. Ground truth is the expert-labeled extraction.
+
+*Rubric template:*
+- Field extraction accuracy (% of labeled fields correctly extracted): 50 points
+- Table extraction accuracy: 20 points
+- Date, number, and entity normalization correctness: 15 points
+- Confidence calibration (if agent provides confidence scores, are they reliable?): 10 points
+- Handling of ambiguous or corrupted documents: 5 points
+
+*Tier 1 applicability:* High — field extraction accuracy is deterministic against labeled ground truth. Table extraction is more complex (partial credit design needed).
+
+**4. Customer support quality and escalation routing**
+
+*Why it's category 4:* Customer support AI is one of the highest-volume enterprise deployments. But evaluation is harder — the "correct" response to a customer complaint is subjective. Tier 2 LLM judge is necessary for quality evaluation; escalation routing has a deterministic ground truth.
+
+*Rubric template:*
+- Response accuracy (factual correctness vs. knowledge base): 25 points — Tier 1
+- Escalation routing (did the agent route to human when required?): 25 points — Tier 1 (binary: correct route or not)
+- Resolution rate (did the agent resolve the issue without human escalation?): 20 points — Tier 1
+- Tone and empathy quality (LLM-judged on standardized rubric): 20 points — Tier 2
+- Policy compliance (cited correct policy, didn't offer unauthorized discounts): 10 points — Tier 1
+
+*Sample competition prompt:* "Process these 500 customer support tickets. For each ticket: provide a response, classify whether human escalation is required, and cite the relevant policy. Ground truth: 73 tickets require escalation (labels withheld). Scoring: resolution rate, routing accuracy, factual accuracy, tone quality, policy compliance."
+
+*Tier 1 applicability:* Medium-high — routing, resolution, and policy compliance are deterministic; tone and empathy require Tier 2.
+
+**5. Research synthesis and literature review**
+
+*Why it's category 5:* Highly valuable to enterprise R&D, legal research, and knowledge management teams. But evaluation is more subjective — there's no single "correct" synthesis. Tier 2 (LLM judge) and Tier 3 (agent investigator probing for hallucinations) are critical.
+
+*Rubric template:*
+- Factual accuracy (no hallucinated citations or misattributed claims): 35 points — Tier 2/3
+- Coverage completeness (covers all key findings in the corpus): 25 points — Tier 2 with ground truth annotation
+- Citation correctness (cites actual paper, correct year, correct author): 20 points — Tier 1 (automated citation lookup)
+- Clarity and structure (LLM-judged: is the synthesis clear, well-organized?): 15 points — Tier 2
+- Bias detection (does the synthesis fairly represent conflicting findings?): 5 points — Tier 3
+
+*Tier 1 applicability:* Low for quality; high for citation accuracy (automated lookup).
+
+**6. API integration and tool use**
+
+*Why it's category 6:* As agentic software proliferates, enterprises need to know: can this agent reliably call external APIs, handle auth, parse responses, and recover from errors? This is the fundamental reliability test for production-grade agents.
+
+*Rubric template:*
+- Task completion rate (% of API calls that achieve the desired outcome): 40 points — Tier 1
+- Error handling (recovers from 4xx/5xx gracefully): 25 points — Tier 1 (inject errors, test recovery)
+- Rate limit compliance (doesn't exceed API limits): 15 points — Tier 1
+- Auth handling (correctly manages OAuth/API key rotation): 10 points — Tier 1
+- Response parsing correctness: 10 points — Tier 1
+
+*Tier 1 applicability:* Very high — nearly fully deterministic. This is the second-most automatable format after data pipeline.
+
+**7. Procurement and vendor analysis**
+
+*Why it's category 7:* Emerging category driven by agentic procurement platforms (Tick 173). The task: analyze vendors, obtain quotes, recommend based on defined criteria. Ground truth is partially deterministic (price is objective; vendor quality assessment is subjective).
+
+*Rubric template:*
+- Price competitiveness (% gap from optimal price on standardized vendor dataset): 30 points — Tier 1
+- Vendor qualification accuracy (correctly identifies compliant vs. non-compliant vendors): 25 points — Tier 1
+- Lead time accuracy: 20 points — Tier 1
+- Recommendation quality (LLM-judged: is the recommendation well-reasoned?): 15 points — Tier 2
+- Diversity/compliance certification identification: 10 points — Tier 1
+
+*Tier 1 applicability:* Medium-high — pricing and compliance checks are deterministic; recommendation quality requires Tier 2.
+
+**8. Content generation and brand compliance**
+
+*Why it's category 8:* Marketing and content teams are large enterprise buyers, but this is the hardest category to evaluate objectively. "Good content" is subjective. Straw is weakest here — evaluation requires Tier 2 and Tier 3 heavily, and brand compliance is difficult to codify into rubrics. Treat as an advanced competition type requiring more rubric design support from Straw's team.
+
+*Rubric template:*
+- Brand guideline compliance (automated check: banned terms, required disclaimers, tone flags): 25 points — Tier 1
+- Factual accuracy (no fabricated statistics or claims): 25 points — Tier 2/3
+- SEO compliance (if required: target keywords present, structure correct): 20 points — Tier 1
+- Readability score (Flesch-Kincaid or equivalent): 15 points — Tier 1
+- Originality (plagiarism detection check): 10 points — Tier 1
+- Quality (LLM-judged on a detailed rubric aligned with brand voice): 5 points — Tier 2
+
+*Tier 1 applicability:* Medium — compliance, SEO, readability, plagiarism are deterministic; quality judgment requires Tier 2.
+
+**Traction ranking and go-to-market priority:**
+
+| Rank | Category | Tier 1 coverage | Design ease | Enterprise urgency | GTM priority |
+|---|---|---|---|---|---|
+| 1 | Code review | High | Easy | Very High (every engineering org) | Launch first |
+| 2 | Data pipeline | Very High | Easy | High | Launch with code review |
+| 3 | API integration | Very High | Easy | High (every agent deployment) | Launch with code review |
+| 4 | Document analysis | High | Moderate | High (legal, finance, compliance) | Q2 launch |
+| 5 | Customer support | Medium-High | Moderate | High (customer-facing orgs) | Q2 launch |
+| 6 | Procurement | Medium-High | Moderate | Emerging (Ramp/Coupa wave) | Q3 launch |
+| 7 | Research synthesis | Low-Medium | Hard | Medium (R&D, knowledge mgmt) | Q3 launch |
+| 8 | Content generation | Medium | Hard | Medium (marketing teams) | Q4 launch |
+
+**Key design principle:** Prioritize categories where Tier 1 deterministic scoring handles 60%+ of the rubric weight. These categories require less Straw rubric design support, produce more credible scores, and are easier to automate at scale.
+
+---
+
+## Tick 180 (2026-05-01): Straw for Government — OMB M-26-04, FedRAMP, the federal procurement vertical
+
+**Thread source:** Session 18 candidate thread. OMB M-26-04 mandates documented AI evaluation evidence before federal agencies deploy LLMs. This is a regulatory mandate creating procurement evaluation demand. What does a government-ready Straw look like?
+
+**The regulatory landscape (as of May 1, 2026):**
+
+**OMB M-26-04 (December 11, 2025):** "Increasing Public Trust in Artificial Intelligence Through Unbiased AI Principles." Key requirements:
+- Agencies must update procurement policies by March 11, 2026 (deadline passed — CFO Act agencies now technically compliant for future contracts)
+- All new LLM procurements must immediately include M-26-04 requirements
+- Agencies must obtain "sufficient information" from AI vendors to verify: (1) truth-seeking — based on historical accuracy and scientific inquiry, (2) ideological neutrality — not built on partisan ideology
+- Shift from static documentation to **continuous accountability** — ongoing evaluation of model behavior, safeguards, and supply-chain modifications
+
+**What M-26-04 does NOT cover (the gap Straw fills):**
+- M-26-04 focuses on LLM characteristics (is it biased? truthful?). It does NOT provide a mechanism for task-specific performance evaluation.
+- A federal agency using M-26-04 knows the LLM is "unbiased" in the general sense, but doesn't know if it's effective at the specific procurement task they're deploying it for.
+- Straw fills this gap: "We verified the LLM is unbiased per M-26-04. Now run a Straw competition to verify it actually performs on your specific task."
+
+**FedRAMP implications:**
+
+FedRAMP authorization is required for cloud-based software sold to federal agencies. Straw is currently not FedRAMP authorized. This is a significant barrier to direct federal sales. The FedRAMP authorization timeline is 12–24 months and costs $500K–$2M. This investment only makes sense after Straw has established a commercial base.
+
+**The government GTM strategy for Straw (phased):**
+
+**Phase 1 (2026–2027): Government-adjacent commercial sales**
+- Target: Federal contractors (defense contractors, government IT integrators) who buy AI tools commercially and resell to government. They don't need FedRAMP — the government agency they serve does.
+- Example ICP: Booz Allen Hamilton, SAIC, Leidos, Palantir — all buy AI evaluation tooling commercially and apply it in their government work.
+- This gives Straw government-adjacent revenue without FedRAMP complexity.
+- Key message: "OMB M-26-04 requires continuous evaluation. You need a platform that produces documented evaluation evidence. Straw is that platform."
+
+**Phase 2 (2027–2028): FedRAMP authorization and direct federal sales**
+- Begin FedRAMP authorization process after $5M+ ARR from commercial base
+- Target: CFO Act agencies with large AI initiatives (DOD, DHS, VA, HHS)
+- Key buyer: Agency Chief AI Officers (required by the 2024 NDAA to be established by early 2025)
+- ACV target: $150K–$500K per agency
+
+**Phase 3 (2028+): SBIR/STTR funding and government development contracts**
+- Apply for Small Business Innovation Research (SBIR) contracts focused on AI evaluation methodology
+- This gives Straw non-dilutive government R&D funding to develop the government-specific evaluation framework
+- Government development contracts also produce IP that strengthens the commercial platform
+
+**The compliance documentation Straw produces (ready-made for federal buyers):**
+
+Every Straw post-competition report, by design, produces the documentation OMB M-26-04 and the EU AI Act require:
+- Task definition (what the AI was evaluated on)
+- Rubric (what "winning" means — the pre-defined evaluation criteria)
+- Judge methodology (who scored it, with what models, with what safeguards)
+- Agent performance results (quantified, documented, version-pinned)
+- Winner declaration (documented, independent, reproducible)
+
+This is not a coincidence — Straw's documentation architecture was designed for this regulatory environment. When federal buyers ask "how do we prove AI evaluation due diligence to an auditor?", the Straw report is the answer.
+
+**Competitive moat in the government market:**
+
+Most "AI evaluation" companies are focusing on the commercial market. The compliance-documentation angle for government is underserved. Straw's post-competition reports happen to be exactly what the regulatory mandates require. The first company to position explicitly as "the AI evaluation platform for OMB M-26-04 and EU AI Act compliance" owns the regulatory narrative.
+
+**The pitch for a government contractor buyer:**
+
+> "Your agency requires documented AI evaluation evidence before deploying any LLM system, per OMB M-26-04. Straw produces that documentation automatically as part of every competition. When your auditor asks how you selected the AI agent you deployed, you show them the Straw report: here's the task, here's the rubric, here's the 8-way competition, here's the winner. The score doesn't lie, and the paper trail proves it."
+
+**Sources:**
+- OMB M-26-04 text: https://www.whitehouse.gov/wp-content/uploads/2025/12/M-26-04-Increasing-Public-Trust-in-Artificial-Intelligence-Through-Unbiased-AI-Principles-1.pdf
+- OMB M-26-04 analysis (Fiddler AI): https://www.fiddler.ai/blog/omb-m-26-04
+- Federal AI governance gap analysis: https://www.raventek.com/federal-ai-governance-gap/
+- FedRAMP and AI compliance: https://sprinklenet.com/federal-ai-procurement-guide-agencies-vendors/
+- Federal AI procurement automation 2026: https://iquasar.com/blog/ai-procurement-in-2026-how-federal-agencies-will-use-automation-to-evaluate-and-monitor-contracts/
+
+---
+
+## Threads still to dig — Session 19
+
+**Status as of 2026-05-01 (continued overnight session):**
+
+Ticks 170–180 and Section 32 complete. All Session 17 and Session 18 candidate threads addressed.
+
+**Session 19 candidate threads:**
+- Tick 181: The Straw pricing model evolution — at what scale does per-competition pricing give way to platform subscription? What triggers the pricing architecture change (10 customers? $500K ARR?)
+- Tick 182: The "300-agent swarm" dynamics revisited — given Project Deal's finding of winner concentration (20% capture 80% of rewards), how does Straw's prize design prevent market collapse?
+- Tick 183: The Series A pitch — full mock investor Q&A with the 10 hardest VC challenges and the correct responses, updated for May 2026 market conditions
+- Tick 184: Straw's data strategy — what anonymized competition data does Straw own, what is it worth, and how does the data moat compound over time?
+- Tick 185: The "Straw for AI safety" angle — could Straw's competition format be used for red-teaming and adversarial AI evaluation? What's the regulatory demand for this?
+
+---
+
+## Push status (Session 18 / Session 19 handoff)
+
+**Session 18 adds:**
+- Tick 177: Agent acquihire deal structure — license+acquihire model ($500K–$2M range), term sheet components, valuation frameworks (task performance premium, replacement cost, competition-validated differentiation), Straw facilitation product opportunity ($5K–$50K/deal), IP liability flag for legal
+- Tick 178: Judge model architecture — vendor-neutral 3-provider ensemble (Claude + GPT-4o + Gemini), version pinning strategy, quarterly calibration protocol, deprecation risk management table, SLA by tier (99.9% / 99.5% / 98%), transparency disclosure design (self-preference delta published per competition)
+- Tick 179: Competition task taxonomy — 8 categories ranked by Tier 1 coverage, design ease, and enterprise urgency. Full rubric templates for each. GTM launch sequence: code review + data pipeline + API integration (Q1), document analysis + customer support (Q2), procurement (Q3), research synthesis + content generation (Q4)
+- Tick 180: Straw for Government — OMB M-26-04 analysis, FedRAMP timeline/cost ($500K–$2M, 12–24 months), phased government GTM (Phase 1: federal contractor commercial sales 2026–2027; Phase 2: FedRAMP direct federal sales 2027–2028; Phase 3: SBIR/STTR non-dilutive funding 2028+), regulatory moat positioning
+
+**Lines added this session:** ~450 lines
+**Total file size:** ~31,000 lines
+
+**Commits this session (push now):**
+1. `research(agent-incentive): ticks 170-172` — PUSHED ✓
+2. `research(agent-incentive): ticks 173-176` — PUSHED ✓
+3. `research(agent-incentive): section 32` — PUSHED ✓
+4. `research(agent-incentive): ticks 177-180 — acquihire structure, judge architecture, task taxonomy, government vertical` — PUSH NOW
+
+
+
