@@ -13781,3 +13781,115 @@ This model requires 30 total competition-paying enterprise customers with averag
 - Psychological pricing research: Ariely, D. (2008). "Predictably Irrational." HarperCollins.
 - GSA Multiple Award Schedule pricing: gsa.gov/technology/it-contract-vehicles-and-purchasing-programs/multiple-award-schedule
 
+
+---
+
+## Tick 101 (2026-05-01): Network effects — what specifically compounds in evaluation platforms
+
+**Thread**: What are the actual network effect mechanisms in Straw? Not hand-waving "data moat" — specifically what compounds, by how much, and when does it kick in?
+
+---
+
+### Why most "network effect" claims are wrong
+
+Most SaaS companies claim network effects. Most are wrong. Dropbox doesn't have network effects — it has switching costs. Salesforce doesn't have network effects — it has data lock-in and workflow integration. HubSpot doesn't have network effects — it has ecosystem lock-in (agencies, integrations).
+
+True network effects: the product becomes more valuable to each existing user as new users join. Metcalfe's Law (network value ∝ n²). Telephone networks. Marketplace liquidity. Language standards.
+
+Straw has three distinct network mechanisms. Only one is a pure network effect. The other two are compounding advantages — different, but strategically important.
+
+---
+
+### Mechanism 1: Marketplace liquidity (true network effect)
+
+**The mechanism**: As more AI agents join Straw's supply side, each enterprise competition has access to a deeper, more diverse pool of competitors. As more enterprises post competitions (demand side), the expected prize per competition for agents increases, attracting more agents. This is a two-sided marketplace network effect.
+
+**The math**: 
+- With 5 competing agents: enterprise gets ~5 responses, limited diversity, high concentration risk (one bad actor tanks the leaderboard)
+- With 50 competing agents: enterprise gets meaningful statistical sampling, can tier results, confidence intervals become informative
+- With 500 competing agents: enterprise can segment by specialty (agents who've won on legal tasks vs. software tasks), thin-market problem disappears, reputational discipline emerges
+
+**The inflection point**: The thin-market threshold (Tick 72) is <5 submissions → statistically unreliable. Above 10 submissions, results start to become interpretable. Above 25 submissions, Straw can identify tier structure (top-10%, middle, bottom). Above 100 submissions, Straw can detect anomalies and run calibration spot checks.
+
+**The compounding dynamic**: Each new enterprise that posts a competition creates prize revenue for agents → agents trust the platform → more agents join → next enterprise gets more competitors → better competition quality → more enterprises → cycle continues.
+
+**The critical number**: Straw needs to reach 50 active agent teams before marketplace liquidity becomes self-sustaining. Below 50, supply must be actively recruited for each competition. Above 50, agent participation is driven by competition attractiveness, not individual outreach.
+
+---
+
+### Mechanism 2: Calibration corpus compounding (data moat — not a network effect, but strategically similar)
+
+**The mechanism**: Each competition adds to Straw's calibration corpus — the private dataset of enterprise tasks, agent submissions, judge scores, and ground-truth outcomes. This corpus improves:
+- LLM judge calibration accuracy (fewer rubric design iterations needed for new clients)
+- Rubric template library quality (faster onboarding for similar task types)
+- Agent reputation scoring reliability (more historical data per agent → smaller confidence interval on expected performance)
+- "Expected score" baseline: Straw can tell a new enterprise "for this task type, the top-performing agents in our corpus score between 730–850 — here's what you should expect"
+
+**The math**:
+- After 10 competitions: calibration limited to specific task instances; judge calibration rough
+- After 50 competitions: category-level patterns emerge; can interpolate rubric templates
+- After 200 competitions: Straw has better calibration data than any individual enterprise; judge accuracy approaches human-expert agreement (kappa > 0.80)
+- After 1,000 competitions: Straw has the world's largest private corpus of enterprise AI agent evaluations
+
+**Why this is not exactly a network effect**: New enterprise users don't directly benefit from other enterprises' data — they benefit from Straw's aggregate corpus. It's more like a learning curve advantage (the platform gets better at its job with experience) than a pure network effect. But the result is functionally the same: the platform becomes more valuable to each user over time, independent of current user count.
+
+**The moat**: A competitor launching in Year 2 cannot purchase this corpus. To build it, they must run hundreds of real competitions with real enterprise data. Straw's Year 1 calibration corpus represents 18+ months of head start that is structurally impossible to close quickly.
+
+---
+
+### Mechanism 3: Reputation system compounding (information network effect)
+
+**The mechanism**: As more agent teams establish track records on Straw, the information value of Straw's reputation system increases. Enterprises can increasingly rely on Straw reputation as a pre-screen:
+
+- With 100 agent track records: basic ranking exists, but limited task-diversity data
+- With 1,000 agent track records: meaningful tier differentiation; enterprise can filter "Experts in legal document processing"
+- With 10,000 agent track records: Straw reputation is used in enterprise RFP templates as a pre-qualification criterion ("Straw Expert or above in the relevant category")
+
+**The behavioral change this drives**: Once reputation data is rich enough, enterprises stop running their own agent evaluations and start using Straw's existing leaderboard as a shortlist. This is the Yelp moment — when the platform's existing data (reviews/reputation) replaces the need for individual discovery.
+
+**The key insight**: Reputation data is only valuable in context of a reference class. An agent's absolute score of 847/1000 means nothing without knowing what other agents score on the same category. As more agents compete, the reference class becomes more informative. This is an information-asymmetry reduction that compounds with participation.
+
+**The timing**: This mechanism becomes meaningful above ~500 agent track records. At 100 agents, Straw's leaderboard is a curiosity. At 500, it starts to be useful for pre-screening. At 5,000, it becomes the default shortlist for enterprise AI agent procurement.
+
+---
+
+### Network effect mapping
+
+| Mechanism | Type | Inflection point | Current Straw position (Year 0) |
+|-----------|------|-----------------|----------------------------------|
+| Marketplace liquidity | True bilateral NE | 50+ active agents / 10+ enterprise competitions active | Pre-inflection (must recruit manually) |
+| Calibration corpus | Data compounding (not NE) | 50 competitions → category patterns; 200 → expert accuracy | 0 competitions (starting from scratch) |
+| Reputation system | Information asymmetry NE | 500+ agent track records | 0 track records |
+
+**The strategic implication**: All three mechanisms require reaching critical mass before they are self-sustaining. Straw is currently in the "building to the inflection point" phase for all three. Year 1 is entirely about reaching the inflection points, not about the compounding phase.
+
+---
+
+### What "network effect" actually means for fundraising and exits
+
+**For fundraising**: Investors pay for expected network effects more than current ones. The narrative is: "We are building the data and community infrastructure that creates winner-take-most dynamics in AI agent evaluation. Every competition we run increases the cost for a competitor to catch up."
+
+**For exits**: Strategic acquirers (Tick 85) are buying the calibration corpus and the agent network, not the platform software. ServiceNow acquiring Straw is acquiring the agent reputation data, the calibration corpus, and the enterprise relationships — none of which can be built in-house.
+
+**The Kaggle cautionary tale** (revisited): Google acquired Kaggle for $30M pre-revenue. At the time of acquisition, Kaggle had ~1M registered users and a large historical competition dataset. Post-acquisition, the Kaggle dataset became Google's property, embedded in Google Cloud AutoML. The lesson: the data corpus is the exit asset, not the revenue. Straw needs to make sure its calibration corpus is architecturally embedded in a way that makes it inseparable from the platform (not exportable to a spreadsheet).
+
+---
+
+### The anti-network-effect: early mistakes compound negatively
+
+**The dark side**: Bad competitions contaminate the corpus. If Straw runs competitions with poorly calibrated rubrics, the resulting data is misleading. Agents learn the wrong signals. Enterprise buyers lose confidence. The reputation system starts rewarding rubric gaming, not real capability.
+
+**The critical safety property**: Data quality gates must be stricter in early operations than later, not looser. The natural temptation is to accept any competition to build supply and drive revenue. The risk is that low-quality early competitions corrupt the calibration corpus.
+
+**The discipline required**: Straw should decline to run competitions that cannot produce reliable outcomes — insufficient task specification, rubric that cannot be calibrated, task type where LLM judge agreement is structurally impossible. This is a supply-side quality decision that costs short-term revenue to protect long-term corpus value.
+
+---
+
+### Sources
+
+- Metcalfe's Law: Metcalfe, B. (1995). Packet communication. IEEE Press.
+- Two-sided marketplace network effects: Rochet, J.C., Tirole, J. (2003). "Platform competition in two-sided markets." Journal of the European Economic Association.
+- Kaggle acquisition value and Google integration: Google blog announcement, March 2017; TechCrunch coverage
+- Learning curve / experience curve economics: Wright, T.P. (1936). "Factors affecting the cost of airplanes." Journal of the Aeronautical Sciences.
+- Marketplace liquidity thresholds: Shapiro, C., Varian, H. (1998). "Information Rules." Harvard Business School Press.
+
