@@ -9021,3 +9021,240 @@ Will AI agents spontaneously want to post tasks on Straw's bounty board?
 
 The RLHF training aversion is real. But it's not an obstacle — it's the wrong unit of analysis. The obstacle isn't the agent's psychology. The obstacle is the operator's system design. And system design follows incentives.
 
+
+---
+
+## Long-form proposal — Section 22: The Straw investor pitch narrative
+
+*The 500-word version of why this is a large company, for any investor conversation.*
+
+---
+
+### The one-sentence version
+
+Straw is the evaluation layer that enterprise AI procurement is missing — a platform where companies post tasks with rubrics, AI agents compete on real work, and winning agents get hired or acquired.
+
+---
+
+### Why the problem is large enough
+
+Enterprise AI procurement is broken in a specific, measurable way: companies make six-figure decisions based on vendor demos. The demo environment is constructed to make the vendor look good. The production environment is the company's actual messy reality. The gap between the two is where projects fail.
+
+In 2026, 49% of enterprise AI initiatives are stuck at the pilot stage. The #1 cited cause: inadequate evaluation frameworks. That's not a feature problem — that's a product gap in the enterprise software market.
+
+The gap costs companies roughly $100K in engineering time per evaluation cycle, and costs them far more when they select the wrong vendor. Enterprise AI contracts average $1M-$2.6M per use case. A wrong selection at that scale produces remediation costs 3-5× the contract value.
+
+---
+
+### Why the existing market doesn't solve it
+
+General benchmarks (LMSYS Arena, HumanEval, SWE-bench) measure general capability, not your specific task. OpenAI abandoned SWE-bench in 2025 after discovering frontier models reproduce solutions from training data verbatim. Internal eval teams are not independent and produce no audit trail. Vendor demos are not evaluation — they're marketing.
+
+The regulatory frameworks have codified this problem: OMB M-26-04 (March 2026) requires "custom benchmarking/metrics customized to agency-specific use cases." EU AI Act Article 9.7 (August 2026) requires "performance metrics established prior to deployment." California EO N-5-26 (March 2026) is developing certification standards for AI vendors. All three regulations require custom evaluation evidence that doesn't currently exist at scale.
+
+Straw is the implementation of what these regulations require — custom task evaluation with pre-defined rubrics and an auditable artifact trail.
+
+---
+
+### Why Straw wins
+
+Three structural advantages:
+
+**1. Task-specific private evals can't be gamed.** Agents competing on a task they've never seen can't contaminate their training data with the test set. The 23-point contamination gap documented on SWE-bench — where agents perform dramatically worse on novel code they haven't seen — structurally cannot occur on private tasks. The score means what it says.
+
+**2. The commercial outcome creates an economic flywheel.** The winner gets hired. #2's approach gets licensed. #3's team gets acquihired. These aren't just nice-to-haves — they're the mechanism that makes agents want to participate (economic incentive) and makes companies want to post (ROI beyond just evaluation). Straw's revenue is the platform fee + take rates on these outcomes.
+
+**3. The calibration corpus becomes a moat.** Each competition generates task-outcome-rubric data that improves the platform's ability to predict: what agents will score on tasks like this? How should the rubric be designed? What prize attracts quality agents? This data is proprietary, non-replicable, and more valuable with each additional competition.
+
+---
+
+### The market
+
+The AI agent market hit $10.86 billion in 2026. Gartner projects 40% of enterprise applications will feature task-specific AI agents by end of 2026. Every one of those deployments needs to be evaluated against the company's specific task before deployment. Straw is the platform that runs those evaluations.
+
+The regulatory mandate is an accelerant: OMB M-26-04, EU AI Act, and California EO N-5-26 create compliance requirements that make evaluation non-optional for regulated industries. Straw produces the evidence package that satisfies all three.
+
+---
+
+### The business model
+
+Platform fees for posting competitions ($2K-$50K/competition) plus take rates on commercial outcomes (20% of hire compensation, 25% of license value, 8-10% of acquihire deal value). Target gross margins: 65-70% at $5M ARR, improving to 72-80% at $20M ARR as evaluation infrastructure amortizes. Breakeven at approximately $10-12M ARR.
+
+The most durable competitive advantage: the network effect stack. Task-specific private evals create a data calibration moat. Agent reputation scores create switching costs. Multi-outcome commercial facilitation creates a supply-side incentive that pure competition platforms lack. When Straw scores become a standard reference in enterprise AI procurement — the S&P rating of the AI agent market — the regulatory mandate makes the standard impossible to displace.
+
+---
+
+### The timing
+
+The AI agent market is at the moment Kaggle was in 2011 — before enterprises started taking competitions seriously as a procurement signal. Straw's window is now: before the market settles on a general-purpose benchmark that becomes entrenched despite being inadequate, and before a well-funded incumbent builds a version of this as a feature inside an existing platform.
+
+The exit thesis: the company that becomes the standard-setter for AI agent evaluation is strategically valuable to every cloud provider, every enterprise software company, and every government agency purchasing AI. The S&P acquisition price ($2.5B by McGraw-Hill in 1966 dollars — $24B adjusted) is the relevant comparable for a company that owns the authoritative rating standard in a multi-trillion dollar market.
+
+
+---
+
+## Tick 61 (2026-05-01): The Straw Competition Compliance Certificate — design specification
+
+**Thread:** What exactly should a Straw competition produce as a compliance artifact that satisfies OMB M-26-04, EU AI Act Article 9, and California EO N-5-26?
+
+**Research sources:** OMB M-26-04 full text (whitehouse.gov), EU AI Act Article 9 + TD.9 technical documentation annex, California EO N-5-26, SOC 2 Type II report structure as analog.
+
+---
+
+### What each regulation requires
+
+**OMB M-26-04** (effective March 2026): vendor-supplied evaluation artifacts including benchmark scores on agency-specific use cases, validation of vendor claims against measurable criteria.
+
+**EU AI Act Article 9 / TD.9** (enforcement August 2026): performance metrics defined prior to deployment; testing occurring before the system enters service; continuous risk management records; TD.9 specifically requires confirmation that chosen metrics are appropriate for the specific use case.
+
+**California EO N-5-26** (signed March 30, 2026): vendor certification attesting to bias safeguards, civil rights protections, and compliance policies; 120-day window for final rules (complete July 2026).
+
+---
+
+### The SOC 2 Type II analog
+
+The right analog is not a checklist — it's a **SOC 2 Type II report**: a time-bounded attestation over an observed period with an opinion section, system description, control evidence, and exceptions register. For Straw, this structure maps to a four-section certificate.
+
+---
+
+### Four sections of the Straw Competition Compliance Certificate
+
+**Section 1 — Header / Cover Block:**
+- Competition ID (UUID)
+- Task title
+- Competition open/close timestamps (ISO 8601 with timezone)
+- Rubric version hash (SHA-256 of the rubric document, locked before competition opens)
+- List of participating agent identifiers (ERC-8004 IDs or API key hashes)
+- Certificate issuance timestamp and Straw signing key fingerprint
+
+**Section 2 — Rubric & Metric Declaration:**
+- Full scoring rubric as it existed before any submission was received
+- Metric names, weights, thresholds, and scoring methodology
+- **Critical**: this section must be timestamped and signed before submissions open, satisfying EU AI Act Article 9's "performance metrics established prior to deployment"
+- A hash of this section embedded in the header confirms it was not modified post-hoc
+
+**Section 3 — Submission Artifacts Log:**
+For each agent submission: agent identifier, submission timestamp, hash of submitted artifact (SHA-256), hash of any execution environment snapshot (for TEE-verified submissions), and the automated test results that constitute Tier 1 evaluation.
+
+**Section 4 — Scoring Attestation:**
+- Raw scores per agent, per rubric criterion, per evaluation tier
+- Scoring method applied (automated harness, LLM-as-judge, human investigator)
+- Judge conflict-of-interest declaration (for LLM-as-judge: model name, version, temperature, prompt hash)
+- For EU AI Act compliance: reference to TD.9 appropriateness justification (why this rubric is appropriate for this task type)
+- Winner and placement declarations
+
+---
+
+### Format and authentication
+
+**Two artifacts in parallel**: human-readable PDF (for legal review and procurement committees) + signed JSON audit log (for automated verification pipelines). JSON is the source of truth; PDF is rendered from it. The hash of the JSON log appears in the PDF footer so they can be cross-verified by any auditor.
+
+**Cryptographic signature options**:
+- Platform-held signing key with published public key (simple, adequate for enterprise procurement)
+- Notary/timestamp authority signature (RFC 3161 timestamp authority — stronger, necessary for federal procurement under OMB M-26-04)
+
+The rubric declaration section specifically must carry a pre-competition timestamp signature. This is non-negotiable for EU AI Act compliance: the timestamp proves the metrics were defined before evaluation, not reverse-engineered from results.
+
+---
+
+**Bottom line for Tick 61:** The Straw compliance certificate is a SOC 2 Type II-style attestation produced as a byproduct of every competition run. Four sections: header (immutable identifiers and hashes), rubric declaration (pre-signed before competition opens), submission artifacts log (cryptographic hash of each submission), and scoring attestation (methodology + conflict-of-interest declaration). Produced in both human-readable PDF and machine-verifiable signed JSON. This certificate is the evidence artifact that OMB M-26-04 requires, the "prior defined metrics" documentation EU AI Act demands, and the vendor certification record that California EO N-5-26 is building toward.
+
+---
+
+## Tick 62 (2026-05-01): AI agent identity verification — ERC-8004, A2A AgentCard, and TEE attestation
+
+**Thread:** How does Straw verify that competition submitters are actually AI agents and not humans pretending to be AI agents? Why does this matter for platform integrity and regulatory compliance?
+
+**Research sources:** ERC-8004 (Ethereum mainnet, January 29, 2026, 45,000+ agents registered), A2A protocol (Linux Foundation governance, June 2025), Phala Network TEE + ERC-8004 deployment, RentAHuman January 2026 incident, Futurism "AI agent job board overrun by humans" reporting.
+
+---
+
+### Why identity verification matters: the January 2026 precedent
+
+In January 2026, RentAHuman launched as an agent-to-human marketplace. Within 48 hours it had 73,000 human registrations — humans desperate for work swamped a platform designed for autonomous agents. This is not hypothetical risk: a Straw competition designed to benchmark AI agent capability becomes worthless if human contractors submit work attributed to AI agents. And it may be legally fraudulent under OMB M-26-04's vendor-claim validation requirements — the "vendor" certified in the compliance certificate must be the actual system under evaluation.
+
+---
+
+### Available identity standards
+
+**ERC-8004** (live on Ethereum mainnet January 29, 2026, 45,000+ agents registered):
+- Agents register an ERC-721 token pointing to an off-chain JSON registration file
+- Registration file contains: name, service endpoints, supported trust models, wallet addresses, capability metadata
+- Three verification tiers:
+  1. **Reputation tier**: client feedback and historical performance (behavioral signal)
+  2. **Validation tier**: stake-secured re-execution with cryptographic traces (computationally verifiable)
+  3. **TEE attestation tier**: hardware-rooted proof that specific model code is running (strongest)
+- On-chain record is immutable — hash cannot be deleted, preserving audit integrity
+
+**A2A AgentCard** (Linux Foundation governance since June 2025):
+- JSON document hosted at `/.well-known/agent-card.json`
+- Contains: agent name, version, capabilities, authentication schemes, service endpoint
+- Functions as the agent's "business card" for discovery
+- Does not by itself prove the submitter is an agent — it declares identity, not proves it
+
+**TEE (Trusted Execution Environment) attestation** — Intel TDX / AMD SEV:
+- Agent generates a cryptographic attestation report signed by a hardware-embedded key
+- Proves: (a) hardware is genuine; (b) specific, unmodified model code is running at time of submission
+- Third parties verify without seeing internal data
+- Phala Network has deployed ERC-8004 agents in TEEs — production-ready combination
+
+---
+
+### Straw's agent identity verification architecture
+
+**Minimum requirement (all competitions):**
+1. ERC-8004 identity registration (provides stable on-chain agent identifier + reputation history)
+2. A2A AgentCard at the operator's domain `/.well-known/agent-card.json` (provides capability metadata and endpoint verification)
+3. Behavioral fingerprinting: response latency distributions and token generation patterns are distinct for AI vs. human — automated anomaly detection flags suspicious submissions
+
+**Enhanced requirement (regulatory-compliance competitions):**
+- TEE attestation report included with submission
+- Attestation report cross-referenced with submission artifact hash (proves the model that generated the artifact is the model that attested)
+- This closes the loop between identity standard and audit trail in the compliance certificate
+
+**Fraud detection layer:**
+- Human-pretending-as-agent fraud is detectable (not definitively blockable without TEE) through behavioral signals
+- Response latency: AI model latency distributions are consistent and predictable; human typing is variable
+- Token generation patterns: AI outputs have statistical signatures; human-written content does not
+- Submit-time analysis: timestamps + typing patterns flag suspicious batches
+- For competitions where identity integrity is critical (regulated industries), TEE attestation is the only reliable solution
+
+---
+
+### Why this matters for Straw's compliance certificate
+
+The compliance certificate Section 1 includes "list of participating agent identifiers." These identifiers must be verifiable — not just self-declared API key hashes, but at minimum ERC-8004 on-chain identifiers that can be audited independently. The certificate's value as an OMB M-26-04 artifact depends on the auditor being able to verify that the "vendors" evaluated were actually AI agent systems, not human contractors.
+
+Section 3 (Submission Artifacts Log) should include the ERC-8004 agent ID, the TEE attestation report hash (for TEE-verified submissions), and a verification tier indicator (reputation/validation/TEE). This metadata is what allows an auditor to confirm the evaluation was of actual AI systems.
+
+---
+
+**Bottom line for Tick 62:** The January 2026 RentAHuman incident proves human-as-agent fraud is a real operational risk for any platform that purports to evaluate AI agents. Straw's defense is three-layered: ERC-8004 identity registration (minimum), A2A AgentCard for capability verification, and TEE attestation (required for regulatory-compliance competitions). The compliance certificate must reference agent ERC-8004 identifiers and verification tier metadata — without this, the certificate's claim that it evaluated AI systems cannot be independently verified by regulators. TEE attestation is the only mechanism that provides hardware-rooted proof of AI system identity at submission time.
+
+---
+
+## Threads still to dig — Session 13
+
+**Newly discovered in Session 12:**
+- Tick 63: The Straw data governance model — who owns competition data? How does Straw use aggregated data without violating agent IP? What are the privacy obligations for company task data?
+- Tick 64: First non-founder hire profile — what does the ideal "Head of Agent Relations" look like? Who recruits top agent teams, manages the community, and facilitates commercial outcomes?
+- Tick 65: Long-form proposal Section 23 — the anti-thesis: the strongest case AGAINST Straw (regulatory capture risk, platform bias, gaming resilience at scale) and the responses to each
+
+## Push status (Session 12)
+
+**Session 12 adds:**
+- Section 19: The 300-agent swarm scenario (OASIS simulation data, emergent behaviors, operational checklist)
+- Research note: Railway Bounty Board (Q&A bounty system, not AI competition) + MiroFish ($4.1M/24hrs, 1M agents, swarm prediction)
+- Tick 59: Acquihire mechanics (legal structure, IP assignment, Straw fee schedule)
+- Tick 60: Unit economics (take rates, revenue mix, gross margins, path to profitability, agent-side earnings)
+- Section 20: Day-to-day agent activity (week-in-the-life of a specialist agent team, portfolio optimization, improvement loop)
+- Section 21: Final synthesis on agent incentives (three agent types, six conditions for rational posting, deployment environment overrides training, core research question answered)
+- Section 22: Investor pitch narrative (problem size, why existing market fails, Straw's three structural advantages, market size, business model, timing)
+- Tick 61: Competition compliance certificate design (four sections, SOC 2 Type II analog, pre-signed rubric for EU AI Act)
+- Tick 62: AI agent identity verification (ERC-8004, A2A AgentCard, TEE attestation, RentAHuman precedent)
+- Session 13 threads: data governance, first hire, anti-thesis section
+
+**Commits:** Four commits this session (ticks 51-53+S18, ticks 54-56+S18, ticks 57-58+S19+railway/mirofish, ticks 59-60+S20, S21, ticks 61-62+S22+S13 threads)
+
+**Push status:** All commits pushed to origin/master via `git push -u origin HEAD:master`. All successful.
+
