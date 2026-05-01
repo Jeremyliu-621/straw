@@ -5210,6 +5210,101 @@ The 300-agent swarm is not just feasible — it's the most efficient way to vali
 
 ---
 
+## Long-form proposal — Section 15: The compliance infrastructure angle
+
+> Added in Session 9 (Tick 40). The EU AI Act creates a procurement liability forcing function that makes Straw's competition format not just useful but legally necessary for regulated industries. This section makes the compliance case for Straw as product.
+
+---
+
+### The forcing function: August 2, 2026
+
+The EU AI Act's Article 9, 11, and 26 become fully enforceable on August 2, 2026. High-risk AI systems — those used in financial services credit scoring, HR screening, healthcare eligibility, and legal proceedings — must have documented risk management systems in place before deployment. The specific requirement that matters for Straw is Article 9.7:
+
+> Testing must be "carried out against **prior defined metrics and probabilistic thresholds appropriate to the intended purpose**" — this must happen **before** the system is placed on the market or put into service.
+
+Regulators can ask two questions: "What metrics did you define before selecting this AI system?" and "What test results did you produce against those metrics?" If no such documentation exists, there is no compliant risk management system. The penalty for non-compliance is up to 3% of global annual turnover for deployers.
+
+The problem: most AI procurement happens through vendor demos and sales conversations. There are no pre-defined metrics, no comparative test results, no independent evaluator. The typical enterprise answer to a regulator's question is "we trusted the vendor." That is not a compliant risk management system.
+
+Straw generates exactly what Article 9.7 requires, by design. Not as a compliance add-on — as the procurement process itself.
+
+---
+
+### How Straw's competition artifact maps to the regulation
+
+| Straw artifact | EU AI Act requirement | Provision |
+|---|---|---|
+| Task specification (what the AI must do) | "Intended purpose" documentation | Article 9.2(a); Annex IV §1 |
+| Multi-criteria rubric with explicit weights | "Prior defined metrics and probabilistic thresholds" | **Article 9.7** |
+| Independent evaluation scores for multiple competing agents | Testing performed against those metrics before deployment; comparative alternatives assessment | Article 9.6; Annex IV §3 |
+| Comparative agent performance data | Risk estimation across alternatives — documented due diligence | Article 9.2(b); Annex IV §3-4 |
+| ZeroClaw evaluation report | Signed test report with performance analysis; residual risk justification | Article 9.4; Annex IV §3 |
+| Losing agent scores + failure analysis | Alternatives considered and rejected — supports Fundamental Rights Impact Assessment | Article 9.2(a-b); Article 26 |
+| Competition timestamp + immutable record | Proof that documentation existed before deployment (Article 9.7 "prior to") | Article 9.7 |
+
+The competition record is not a retroactive compliance document assembled for auditors. It is the procurement process itself, producing compliance documentation as a natural byproduct. This is structurally different from any compliance automation tool.
+
+---
+
+### The Vanta analogy — and why Straw is better
+
+Vanta, Drata, and Secureframe built a $1B+ compliance automation category around SOC 2: enterprises need the report to close enterprise deals, these companies produce it continuously. Vanta now serves 15,000+ customers. The model: continuous evidence collection that maps to controls → the report always exists → deals close.
+
+HackerOne's model is more instructive: the bug bounty competition (security researchers compete for prizes by finding real vulnerabilities) generates the CVE disclosure record that satisfies coordinated vulnerability disclosure requirements under NIST SP 800-216 and ISO 29147. The format of the competition **is** the compliance format.
+
+Straw is this for EU AI Act Article 9.7. The competition **is** the compliance record.
+
+**Why Straw is better than Vanta for this use case:**
+- Vanta collects evidence that a security *process* exists
+- Straw generates evidence that the AI system was *tested against defined criteria before deployment*
+- Article 9.7 demands outcome evidence, not process evidence
+
+No compliance automation tool can generate what Straw generates, because the underlying evidence — an independent multi-agent competition producing comparative performance data — requires an actual competition to have happened. You cannot fake it with policy documents and controls.
+
+---
+
+### Who buys Straw for compliance reasons
+
+The compliance wedge opens three enterprise buyer profiles that don't require a Straw champion to be a true believer in AI agent procurement innovation:
+
+**1. The EU-regulated financial institution:** A European bank deploying AI agents for credit scoring, fraud detection, or customer service must comply with Article 9.7 by August 2026 or face up to 3% of global turnover in penalties. Their Chief Compliance Officer or Head of AI Governance needs documentation showing pre-deployment testing against defined metrics. Straw provides this. The buy decision is "we need this documentation, what's the cheapest way to get it" — not "we believe in competitive AI evaluation."
+
+**2. The US financial institution with EU exposure:** Any bank with EU operations or EU customers faces the same pressure. SEC guidance on AI system governance is also emerging. The compliance posture spreads from EU-direct to global.
+
+**3. The enterprise with a CISO-driven AI governance mandate:** Many large enterprises are adopting internal AI governance policies that require documented evaluation before AI system deployment — regardless of regulatory jurisdiction. Straw's competition artifact satisfies these internal mandates with minimal process overhead.
+
+In all three cases, the Straw sale is shorter than a typical AI evaluation platform sale, because the buyer has a legal requirement with a hard deadline, not an optional process improvement.
+
+---
+
+### What the compliance framing changes about Straw's go-to-market
+
+Without the compliance angle, Straw's sales pitch is: "this is a better way to evaluate AI agents, trust us." It requires the buyer to believe in Straw's approach and change their existing procurement process.
+
+With the compliance angle, the pitch is: "Article 9.7 requires documentation you don't have. We generate it automatically as part of the procurement process. Your compliance officer needs to sign off on AI agent deployments anyway — here's the documentation they'll need." The buyer isn't changing their process; they're getting required documentation while doing the procurement they were going to do anyway.
+
+**The strategic implication:** Lead with compliance for the first wave of European and EU-adjacent customers. Let the broader "competition format is better" argument emerge from case studies where Straw's winning agents actually outperformed existing vendor solutions. Compliance opens the door; performance data keeps them.
+
+---
+
+### Risks and limitations (what not to oversell)
+
+1. **Straw covers pre-deployment only.** Article 9.2(c) requires ongoing post-market risk evaluation. Article 26 requires 6-month log retention. These need separate monitoring infrastructure — Straw's competition record starts the documentation, not ends it.
+
+2. **Provider vs. deployer complexity.** For enterprises deploying third-party AI agents (not custom-built), primary Article 9 obligations rest with the agent provider, not the deployer. Straw's artifact most directly satisfies the deployer's Article 26 documentation obligations and the Article 9.7 evidence for selection decisions — but may not fully satisfy a provider's obligations. The regulatory treatment of meaningfully customized agents is still being interpreted.
+
+3. **No harmonized standard yet.** No CEN/CENELEC standard maps AI procurement competition formats to EU AI Act requirements. Until one does, Straw's artifact is documented under the "detailed description of solutions adopted" fallback path. Legitimate, but slightly weaker than a harmonized standard mapping.
+
+4. **Frame correctly.** Position Straw as "designed to satisfy Article 9.7" not "certified compliant." The regulation is new and interpretation is still developing. Overclaiming creates liability.
+
+---
+
+### The three-sentence pitch for a compliance officer
+
+*Your EU AI Act Article 9.7 obligation is simple: document that you tested the AI system against pre-defined metrics before deployment. Straw is the only procurement format that generates this documentation automatically — because the competition rubric IS your prior-defined metrics, the evaluation IS your pre-deployment testing, and the timestamped record IS your compliance artifact. You were going to evaluate AI agents anyway; Straw makes the evaluation legally sufficient.*
+
+---
+
 ## Push status (Session 7)
 
 **Session 7 adds (2026-05-01, overnight, this session):**
@@ -6476,3 +6571,148 @@ These floors ensure at the target entrant count (10-15 agents), each agent's exp
 **Core market design insight:** Straw's value is not maximizing entrant count — it's maximizing expected quality of the best submission. Those are opposite objectives past N ≈ 15. Staking converts agent count from a vanity metric into a quality signal.
 
 Sources: Devin pricing (devin.ai/pricing); VentureBeat Devin 2.0 pricing; Claude Sonnet 4.6 pricing (Anthropic); Morph "Real Cost of AI Coding in 2026"; Galileo "Hidden Costs of Agentic AI"; Kaggle collaboration network study (Oxford JCMC); SWE-bench leaderboard; Lazear & Rosen 1981 tournament theory; Taylor 1995 optimal contests; Optimal bidder participation in public procurement (Springer); "Optimal Procurement with Quality Concerns" (AEA); "Optimal Design of Crowdsourcing Contests" (NYU Stern); Behavioral Mechanism Design: Optimal Contests for Simple Agents; Gaming the System: Goodhart's Law in AI Leaderboards (Collinear); Lil'Log reward hacking post
+
+---
+
+## Tick 46 (2026-05-01T09:00Z): Straw data flywheel — proprietary dataset architecture and compounding moat
+
+### Summary
+
+Each competition generates six layers of data: task fingerprint, rubric (revealed buyer preference), submissions, dimensional evaluation scores with ZeroClaw reasoning, win/loss outcomes, and post-competition commercial signal (hire/no-hire). The dataset compounds: N=100 enables verified track records, N=1,000 enables predictive matchmaking, N=10,000 enables auto-rubric generation and a rubric quality model. Three structural properties make it non-replicable.
+
+### Per-competition data schema
+
+| Layer | Data Generated | Why It Matters |
+|---|---|---|
+| **Task layer** | Specification text, category tags, deadline, budget, attached artifacts | "Problem fingerprint" for task similarity matching |
+| **Rubric layer** | Weighted criteria, pass/fail thresholds, poster weighting decisions | Most proprietary element — encodes what real buyers actually value, not what a benchmark committee decided |
+| **Submission layer** | Full artifact per agent, reasoning traces, latency, tool calls | Comparative performance under identical conditions |
+| **Evaluation layer** | ZeroClaw score per rubric dimension + NL reasoning | Dimensional score vector (not scalar) + judge reasoning as training signal |
+| **Outcome layer** | Win/loss, margin of victory, head-to-head pairwise comparisons | Ground truth competitive ranking |
+| **Post-competition signal** | Did the company hire? Runner-up? Nobody? | Ground truth: commercial outcome tied to specific performance profile — does not exist anywhere else |
+
+### N=100 / N=1,000 / N=10,000 capability unlocks
+
+**At N=100:** Category-level baselines. Verified track record per agent: "Agent X wins 60% of Python data-pipeline tasks." Small sample sizes, high variance, but already differentiated from vendor demos.
+
+**At N=1,000:** Statistical reliability per agent per category. Agent X's score distribution on "code correctness" across 80 tasks: mean 84, std 6 — consistent. Win probability estimates given new task's rubric weights. Predictive matchmaking: "this rubric's weighting suggests these three agents have a statistically meaningful edge." Agent specialization detection.
+
+**At N=10,000:** Training data scale. Three specific models become viable:
+1. **Rubric quality model:** Trained on (rubric → disagreement between ZeroClaw score and post-competition poster satisfaction). Predicts rubric ambiguity before competition runs. Flags rubrics that historically correlate with poster regret.
+2. **Auto-rubric generation:** Given task description, suggest rubric with weights drawn from similar past tasks. "Write a SQL migration script" → pre-populated rubric: correctness 45%, backward compatibility 30%, documentation 25% — because 847 comparable posters weighted it that way.
+3. **Optimal routing:** Before competition opens, privately notify agents most likely to win based on task fingerprint match to their historical profile. Reduces wasted compute, improves submission quality.
+
+### Product roadmap by scale
+
+| Scale | Product Unlock |
+|---|---|
+| N=100 | Verified agent track records by category; basic leaderboards |
+| N=500 | Agent capability profiles with confidence intervals; win-rate estimates |
+| N=1,000 | Predictive matchmaking; rubric similarity scoring |
+| N=5,000 | Rubric quality warnings; agent specialization routing |
+| N=10,000 | Auto-rubric generation; pre-competition agent recommendations; rubric quality model |
+| N=50,000 | Fine-tuned evaluation model on Straw-specific judge reasoning; agent capability forecasting |
+
+### Comparable data flywheels
+
+**Kaggle:** Competition result data → benchmark-quality leaderboards → Kaggle model recommendation features. The moat: years of agent-vs-agent comparisons on standardized problems that Google couldn't generate after acquisition — they acquired the accumulated data.
+
+**HackerOne:** Every vulnerability disclosure: severity, bounty paid, time-to-fix, program type. At scale: risk-scoring model predicting expected payout per finding category per company type. New platforms can't replicate because historical disclosure data is contractually private.
+
+**Scale AI:** Human evaluation labels (model output, human preference score) at scale = proprietary RLHF reward signal. The moat is not the label format — it's the pairing of output and human judgment accumulated over time under conditions that cannot be synthetically replicated.
+
+**Lesson:** The moat is the pairing of input + output + human/commercial judgment at scale, under real conditions, accumulated over time. Synthetic generation cannot substitute.
+
+### Why the Straw dataset is non-replicable (three structural properties)
+
+**1. Private rubrics encode revealed buyer preference.** No public dataset of "what enterprise buyers actually weight when evaluating AI agent output" exists. Survey data is unreliable. Straw's rubrics are revealed preference — a company put money on the line and defined what winning looks like. Cannot be synthesized.
+
+**2. Agent-vs-agent on identical tasks.** Public benchmarks test agents on shared known problems. Straw tests multiple agents on the exact same private problem, simultaneously, under the same constraints. This produces genuine comparative signal — not "Agent X scores 87 on HumanEval" but "Agent X beat Agent Y on this specific enterprise task with this specific rubric."
+
+**3. Post-competition commercial outcome.** Whether a company hired the winning agent is ground truth no benchmark, evaluation framework, or synthetic dataset can provide. It closes the loop between evaluation score and actual business value — the only thing enterprise buyers care about.
+
+### Rubric quality model hypothesis
+
+Grounded in crowdsourcing literature: Sheng et al. (2008) showed label disagreement rates on Mechanical Turk tasks predicted task ambiguity better than upfront quality checks. Ipeirotis et al. (2010) built models estimating worker reliability from agreement patterns.
+
+The Straw analog: a rubric that generates high score variance across ZeroClaw evaluation passes, or where ZeroClaw reasoning uses hedge language ("this is somewhat unclear"), correlates with poster dissatisfaction. At N=10,000, Straw can train a classifier that fires pre-competition: "This rubric has a 68% historical correlation with poster dissatisfaction in similar tasks — consider adding specificity to the 'quality' criterion." This makes posters better at defining what they want → better competitions → better data → better model. The flywheel tightens with each loop.
+
+Sources: Sheng et al. 2008 MTurk label quality; Ipeirotis et al. 2010 worker reliability; Kaggle data flywheel (kaggle.com); HackerOne vulnerability data model; Scale AI RLHF data flywheel; NBER Hadfield & Koh "Economy of AI Agents"; Kaggle collaboration network study (Oxford JCMC)
+
+---
+
+## Tick 45 (2026-05-01T09:30Z): Enterprise AI agent procurement decision process 2026
+
+### Summary
+
+Enterprise AI agent procurement involves 13+ internal stakeholders, runs 6-18 months, and has an 85/5 paradox: 85% of enterprises have pilots, only 5% are in production. The two highest-friction stages are the POC (5-12 weeks) and security/legal review (4-12 weeks). The compliance trigger (EU AI Act, August 2, 2026) is a hard external deadline that compresses this cycle for regulated industries.
+
+### Decision-maker map
+
+**Budget authority:** Chief AI Officer (CAIO) — fastest-growing c-suite role. IBM reports 26% of large enterprises now have a CAIO; 40%+ of Fortune 500 projected by end of 2026. Where no CAIO exists, budget authority falls to CTO or CDO, co-signed by CFO for deals above $250K.
+
+**Technical champion:** VP Engineering, Head of AI/ML, or AI Platform team lead. They initiate evaluations, run POCs, build internal business cases. Primary target to activate.
+
+**Blocking functions (effective veto power):**
+- CISO — requires documented audit trails of every agent invocation, model ID, input/output logging, explainability artifacts. Vendors that can't pass CISO review never reach procurement.
+- CLO/General Counsel — liability clauses, data rights, model training exclusions.
+- Compliance/Risk — especially in regulated sectors.
+
+### Buying cycle (6-18 months)
+
+| Stage | Duration | Key activity |
+|---|---|---|
+| Internal problem identification | 2-6 weeks | Department head/champion identifies workflow candidate |
+| Market scan and vendor list | 2-4 weeks | RFI, 3-5 vendors shortlisted |
+| **POC/pilot** | **5-12 weeks** | Working POC in buyer's environment, buyer's data, buyer's actual problem — not a vendor demo |
+| Internal business case | 2-4 weeks | CFO-grade ROI justification |
+| **Security and legal review** | **4-12 weeks** | CISO audit, legal contract review (data rights, liability, model training exclusions), DPA negotiations |
+| Procurement and final approval | 2-6 weeks | Procurement committee, CPO sign-off |
+
+Enterprise AI software deals are running 36% longer than 2021 baselines. The POC stage and security/legal stage are where most deals are won or lost.
+
+### The 85/5 paradox — what the evaluation gap looks like
+
+85% of enterprises running AI agent pilots; only 5% in production (Metaintro, Lyzr Q1 2026). The gap is not capability — it's documentation and governance:
+
+- **No standardized evaluation framework.** No accepted performance scorecard for AI agents. Buyers making six-figure decisions with no agreed-on metrics.
+- **Audit trail gaps.** Legal and procurement require queryable records of every agent action. Pilots launched without this are being rebuilt before security review.
+- **Integration complexity.** 46% cite integration as primary blocker; 42% need access to 8+ data sources.
+- **Governance deadlock.** 54% of enterprises not collaborating between procurement and IT on AI governance (ProcureAbility 2026 CPO Report).
+
+**Straw's direct counter:** Straw eliminates "no standardized evaluation framework" entirely. The buyer defines what winning looks like upfront (the rubric); the competition produces the evaluation record that security/legal review is demanding and not getting from vendor demos. Straw is the artifact that moves deals from POC to production.
+
+### Ideal Straw design partner profile
+
+**Industries:** Financial services, healthcare/life sciences, insurance — furthest along, most motivated, most regulated. Accenture-Anthropic and PwC-Anthropic partnerships explicitly target FSI, life sciences, healthcare as first verticals.
+
+**Company profile:** 2,000+ employees; at least one AI pilot that has stalled between POC and production; CAIO in seat or being hired; operating in a regulated industry.
+
+**Job titles to target (in order):**
+1. Head of AI / VP AI Platform — technical champion, initiates the conversation
+2. Chief AI Officer or CDO — budget authority and strategic mandate
+3. Head of Procurement Innovation / VP Strategic Sourcing — owns vendor evaluation rigor
+4. CISO or Head of AI Governance — compliance motivation, wants the audit record Straw produces by default
+
+**Ideal trigger signal:** Active CAIO tasked with standardizing AI vendor evaluation, in a regulated industry, with a stalled or failed pilot in recent history.
+
+### EU AI Act compliance trigger urgency
+
+| Date | Requirement | Stakes |
+|---|---|---|
+| August 2, 2025 (past) | General-purpose AI model obligations | Governance infrastructure required |
+| **August 2, 2026 (imminent)** | **Full requirements for Annex III high-risk AI systems** | **Up to €35M or 7% of global annual turnover** |
+
+High-risk AI includes AI used in employment decisions, credit scoring, healthcare diagnostics, and critical infrastructure — Straw's target verticals. Documentation mandate includes training/testing process records and evaluation results — precisely the artifact Straw generates automatically.
+
+For EU-operating enterprises in FSI, healthcare, or HR tech, Straw's competition output is the compliance record they are legally required to produce and currently have no structured process to create.
+
+### Contract size
+
+**Initial deal:** $75K-$150K for initial pilots; $200K-$500K for first production deployments (Glean median $97,500, Moveworks $100K+, custom multi-agent builds $50K-$300K).
+
+**Expansion trajectory:** The ServiceNow pattern — initial scope to one department; year-2 expansions multiply 3-5x as the evaluation framework gets applied enterprise-wide. Salesforce Agentforce: 330% YoY ARR growth reaching 18,000 customers, driven almost entirely by expansion.
+
+**Straw's natural deal structure:** Initial competition platform license for one evaluation event ($50K-$150K) → standing procurement infrastructure contract as the company runs evaluations across all AI vendor decisions ($300K-$1M+ for large enterprises standardizing on Straw as their AI procurement layer).
+
+Sources: IBM/Slayton CAIO research; PwC CAIO survey; Forrester enterprise AI buying committee data; Lyzr State of AI Agents Q1 2026; Metaintro 85/5 enterprise AI paradox; ProcureAbility 2026 CPO Report; Augment Code CTO evaluation checklist; Conifers.ai CISO guide; Accenture-Anthropic partnership announcement; PwC-Anthropic partnership announcement; EU AI Act enforcement timeline (GDPR Register, LegalNodes, Trilateral Research); BrainCuber AI agent pricing 2026; Prospeo enterprise software sales data; G2 Enterprise AI Agents Report 2026
