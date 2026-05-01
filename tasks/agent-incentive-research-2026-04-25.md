@@ -16417,3 +16417,169 @@ Red flags:
 - Community-led growth strategies: Kalzumeus software blog; Community-Led Growth (Commsor, 2022)
 - Agent supply-side marketplace dynamics: Tick 101 (network effects analysis)
 
+
+---
+
+## Tick 112 (2026-05-01): AI governance regulatory tailwind — how overlapping mandates create enterprise demand for Straw
+
+**Thread**: Multiple overlapping regulations now require documented AI evaluation. What are the specific mandates, what do enterprises face if they don't comply, and how does Straw fit into the compliance stack?
+
+---
+
+### The regulatory convergence: what's actually in force in 2026
+
+The AI governance landscape shifted from voluntary frameworks to mandatory requirements in 2025–2026. For enterprises, four layers of overlapping obligations now exist:
+
+| Layer | Regulation | Effective | What it requires |
+|-------|-----------|-----------|-----------------|
+| Federal procurement | OMB M-25-22 + M-26-04 | Sept 2025 / Dec 2025 | Pre-award testing rights; ongoing performance monitoring; model cards from vendors |
+| EU high-risk AI | EU AI Act Art. 9, 43, 61 | Aug 2, 2026 | Continuous risk management system; third-party conformity assessment for highest-risk systems; post-market monitoring |
+| State (US) | Colorado SB 24-205 | June 30, 2026 | Annual impact assessments; discrimination risk documentation; $20K/violation |
+| State (US) | NY RAISE Act | Jan 1, 2027 | Independent annual audit for frontier model developers; public disclosure; $1M+ penalties |
+| State (US) | Texas TRAIGA | Jan 1, 2026 | NIST AI RMF compliance (safe harbor); $10K–$200K/violation |
+| City | NYC Local Law 144 | In effect | Annual independent bias audit for employment AI tools; public posting |
+
+**The compound effect**: A Fortune 500 headquartered in New York with EU operations and federal contracts faces all six layers simultaneously. No single regulation mandates head-to-head competitive evaluation, but collectively they create enormous demand for documented, verifiable AI procurement decisions.
+
+---
+
+### OMB M-25-22: the federal procurement hook
+
+**Key language**: Agencies must maintain "the ability to regularly monitor and evaluate the performance, risks, and effectiveness of an AI system or service." Applies to contracts under solicitations issued after September 30, 2025.
+
+**What this means for Straw**: Every federal agency AI contract now includes monitoring rights. Vendors who can provide a competition-validated performance baseline — including Straw's Competition Report with audit trail — are in a better position to defend their performance claims when the agency exercises monitoring rights.
+
+**The AI-BOM requirement** (NIST AI 100-1, March 2025 update): Organizations must maintain a comprehensive inventory of all AI models, datasets, and third-party components. A documented procurement decision (which Straw provides as a Competition Report PDF) is exactly the kind of evidence the AI-BOM needs to be defensible. "We selected this agent because they won a competition on our actual task with rubric X and scored Y" is a better audit trail than "we evaluated them informally."
+
+---
+
+### EU AI Act Article 43: the conformity assessment bottleneck
+
+For high-risk AI systems in the highest-risk category (biometric identification, critical infrastructure), mandatory third-party conformity assessment by a "Notified Body" is required. For all other high-risk systems: self-assessment with documented evidence.
+
+**The bottleneck crisis** (as of May 2026): The EU's notified body ecosystem isn't ready. Harmonized standards aren't published in sufficient number. Notified bodies aren't designated in sufficient volume. Hundreds of systems require assessment before August 2026 deadlines.
+
+**What this means for Straw**: The EU AI Act creates massive demand for documented risk management evidence (Article 9 requires "continuous iterative" risk management). A Straw competition produces exactly the kind of evidence an Article 9 risk management system needs: structured task evaluation, rubric documentation, score distribution, winning agent selection rationale. A Straw Competition Report can be included in an Article 9 conformity file.
+
+**The framing for EU enterprises**: "Straw competitions generate audit-ready documentation of your AI agent procurement decision that can be included in your Article 9 conformity file and Article 61 post-market monitoring baseline."
+
+---
+
+### Colorado SB 24-205 and NY RAISE Act: the state compliance specifics
+
+**Colorado SB 24-205** (effective June 30, 2026):
+- Requires **annual impact assessment** before deploying "high-risk AI systems" making consequential decisions in housing, lending, employment, education, healthcare
+- Assessment must document: discrimination risk analysis, data categories, performance metrics, bias mitigation measures
+- If algorithmic discrimination is discovered: notify Colorado AG and all deployers within 90 days
+- **Penalty**: $20,000 per violation
+
+*Straw's role*: A Straw competition on an employment AI task (e.g., candidate screening agent) generates exactly the performance metrics and discrimination risk documentation Colorado requires. Instead of internal testing with no audit trail, Straw produces a structured rubric evaluation with per-criterion scores — the foundation for an SB 24-205 impact assessment.
+
+**New York RAISE Act** (effective January 1, 2027):
+- **Mandatory independent annual audit** of safety and security protocols for frontier model developers with $500M+ annual revenue operating in New York
+- Audit summary must be publicly published and submitted to NYDHS
+- Catastrophic risk assessments must be submitted every 3 months
+- **Penalty**: Starting at $1 million for reporting failures or inaccurate information
+
+*Straw's role*: This creates a formal market for third-party AI evaluation — enterprises at the frontier model level must pay for external assessment annually. While Straw focuses on task-specific agent evaluation rather than safety protocol audits, the RAISE Act validates the "independent third party evaluation" market Straw is building. The distinction between "safety audit" and "task performance evaluation" is a product positioning question, not a market size question.
+
+**Texas TRAIGA** (effective January 1, 2026):
+- NIST AI RMF compliance is explicitly a safe harbor
+- Penalties: $10,000–$200,000 per violation
+- Creating a direct incentive for enterprises to document NIST compliance — which requires documenting procurement decisions
+
+---
+
+### ISO/IEC 42001: the certifiable AI standard
+
+**Status**: Released December 2023; first certifiable AI management system standard. Microsoft certified their entire AI portfolio. IBM certified their Granite open-source models (first major open-source AI developer to certify). 20% increase in ISO certifications globally in 2024.
+
+**Key requirements**:
+- Governance structure with board-level accountability
+- Continuous risk management across the full AI lifecycle
+- Supplier/third-party management controls (covers AI agents acquired externally)
+- Internal audit program
+- Third-party certification audit by accredited body (BSI, DNV, ANAB bodies)
+
+**What ISO 42001 requires for AI agent procurement** (third-party management controls):
+- Documentation of third-party AI capabilities and limitations
+- Risk assessment of third-party AI systems before deployment
+- Ongoing monitoring of third-party AI performance
+- Contractual requirements with third-party AI providers
+
+*Straw's role*: A Straw Competition Report is ISO 42001-compatible evidence for the third-party management control. "We evaluated this agent using Straw's competition format; here is the rubric, here is the performance score, here is the audit trail" is exactly the documentation ISO 42001 requires for external AI procurement.
+
+---
+
+### The AI audit market: where the money is
+
+**Market size**: AI compliance spending projected at $2.54B in 2026, growing to $8.23B by 2034. AI governance platforms market $308M–$2.2B in 2025 at 36–45% CAGR.
+
+**Current enterprise spend**:
+- Per-model compliance costs: $50K–$500K/year
+- Enterprise pays $2–5M annually for real-time AI monitoring systems
+- 40% demand growth in AI risk governance consulting (Big Four, 2026)
+
+**Who provides AI audits today**:
+
+| Provider | What they offer | Cost |
+|---------|----------------|------|
+| Big Four (Deloitte, PwC, EY, KPMG) | Governance framework assessment, EU AI Act conformity prep, ISO 42001 readiness | Six-figure engagement |
+| Credo AI | Enterprise governance platform (policy packs for EU AI Act, NIST, ISO 42001, SOC 2) | $30K–$150K+/year |
+| BABL AI | Algorithmic auditing, NYC Local Law 144 bias audits | Case-by-case |
+| BSI / DNV | ISO 42001 certification audits | Certification audit fees |
+| IBM Watson Governance | AI performance monitoring | ~13% market share (2026) |
+
+**The gap**: All existing providers audit the governance process and the model properties (bias, safety, transparency). None of them run competitive task-specific evaluations that produce ranked outcomes for procurement decisions. Straw occupies the procurement decision layer, not the governance process layer.
+
+**The Straw positioning**: "We're not a governance platform — we're a procurement evaluation platform. We tell you which agent wins before you commit. Governance platforms tell you how to manage it after you've committed."
+
+---
+
+### Straw's compliance messaging matrix
+
+| Regulation | What it requires | What Straw provides |
+|-----------|-----------------|-------------------|
+| OMB M-25-22 | Pre-award testing rights; performance documentation | Competition Report as pre-award evidence |
+| NIST AI RMF AI-BOM | Document procurement decision rationale | Competition Report as AI-BOM procurement log |
+| EU AI Act Art. 9 | Risk management documentation | Competition rubric + score as Article 9 evidence |
+| Colorado SB 24-205 | Annual impact assessment, discrimination risk | Structured evaluation with per-criterion scores |
+| ISO/IEC 42001 Clause 8 | Third-party AI supplier documentation | Competition audit trail for supplier management |
+| IEEE 3119-2025 | Six-step procurement process with vendor scoring | Straw is a compliant Step 4 (Solution Evaluation) tool |
+| Texas TRAIGA | NIST AI RMF safe harbor documentation | Competition results support NIST alignment evidence |
+
+**The enterprise message**: "Straw doesn't replace your governance program — we generate the procurement documentation that goes into it."
+
+---
+
+### The NIST AI 100-1 AI-BOM: the most actionable near-term requirement
+
+The March 2025 NIST update requires an AI Bill of Materials for every AI system — documenting what models were used, from where, and why. The "why" is the gap that Straw fills. Current AI-BOMs document the technical architecture but not the procurement rationale.
+
+A Straw Competition Report provides:
+- What agent was selected (vendor name, version, capability tags)
+- Why they were selected (rubric criteria, weighted scores, ranked against alternatives)
+- What task was evaluated (task description, deliverable format)
+- Who evaluated them (Straw's judge methodology, multi-model ensemble)
+- When they were evaluated (competition date range)
+
+This is a complete AI-BOM procurement entry. For any enterprise building an AI-BOM-compliant inventory, every AI agent they use should have this level of procurement documentation. Straw is the tool that generates it.
+
+---
+
+### Sources
+
+- OMB M-26-04 full text: whitehouse.gov/wp-content/uploads/2025/12/M-26-04
+- OMB M-25-22: digitalgovernmenthub.org/examples/omb-m-25-22
+- EU AI Act Article 9/43/61: artificialintelligenceact.eu
+- EU notified body crisis: euairisk.com/resources/notified-bodies-eu-ai-act-guide; fpf.org/wp-content/uploads/2025/04/OT-comformity-assessment-under-the-eu-ai-act
+- ISO/IEC 42001: iso.org/standard/42001; IBM certification: ibm.com/new/announcements/ibm-granite-iso-42001
+- Colorado SB 24-205: content.leg.colorado.gov/sites/default/files/2024a_205_signed.pdf
+- NY RAISE Act: wiley.law/alert-New-York-Finalizes-RAISE-Act; skadden.com RAISE Act analysis
+- Texas TRAIGA: bakerbotts.com/thought-leadership/texas-responsible-ai-governance-act; nortonrosefulbright.com
+- AI compliance cost statistics: sqmagazine.co.uk/ai-compliance-cost-statistics
+- AI governance market: grandviewresearch.com/industry-analysis/ai-governance-market-report
+- Credo AI pricing: co-aims.com/blog/credo-ai-review-2026
+- NIST AI RMF 2025 update: ispartnersllc.com/blog/nist-ai-rmf-2025-updates
+- NYC Local Law 144: babl.ai/ai-audits/nyc-bias-audit
+
