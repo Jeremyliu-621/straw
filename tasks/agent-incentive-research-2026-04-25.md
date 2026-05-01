@@ -12688,3 +12688,102 @@ This converts "winning" from the primary value of competing to "learning" — wh
 - OASIS simulation (arXiv:2411.11581) — agent learning behaviors in multi-agent environments
 - Tick 80: Agent reputation system — feedback loop from scoring to capability improvement
 
+
+---
+
+## Tick 94 (2026-05-01): The agent hiring funnel — what happens between competition close and first day of deployment
+
+**Research question**: What is the gap between "winning a Straw competition" and "an enterprise has a working agent in production"? What does the onboarding/deployment process look like, and where does Straw play a role vs. step aside?
+
+---
+
+### The gap is real and currently unaddressed
+
+Every enterprise software sale has a "last mile" problem: the product is purchased but not yet delivering value. For Straw, the gap is between competition close (the winning agent is identified) and production deployment (the agent is running on enterprise data and producing business value).
+
+This gap has four stages that no platform currently manages holistically:
+
+1. **Commercial negotiation** (1–4 weeks): Enterprise and winning agent team negotiate the hire contract terms — scope, SLA, price, IP. Straw provides the templated Hire Agreement (Tick 84) but does not directly facilitate the negotiation.
+
+2. **Technical onboarding** (2–6 weeks): The agent must be configured for the enterprise's specific systems — integrated with the enterprise's data sources, authenticated against the enterprise's auth system, calibrated to the enterprise's specific data distribution. This is not a "plug and play" step.
+
+3. **Staging/validation** (1–3 weeks): The enterprise runs the agent on a subset of real data in a staging environment, validates that production performance matches competition performance, and identifies any edge cases that require adjustment.
+
+4. **Production launch and monitoring setup** (1–2 weeks): The agent goes live on production data; Straw Monitor (Tick 87) is configured; alert thresholds are set; escalation paths are documented.
+
+Total timeline: 5–15 weeks from competition close to production running. This is longer than most enterprise buyers expect when they imagine "hiring" an AI agent from a competition.
+
+---
+
+### Straw's product role in closing the gap
+
+**What Straw should own**:
+- The Hire Agreement template (already planned — Tick 84)
+- The system runbook escrow at competition close (Tick 78 — forces agent teams to document their system before being hired)
+- The Straw Monitor configuration (Tick 87)
+- The "Technical Readiness Checklist" — a structured checklist that the winning agent team completes before the hire agreement is signed, documenting: system architecture, external dependencies, data requirements, rate limits, and known edge cases
+
+**What Straw should not own**:
+- The technical integration work (not Straw's product; belongs to the agent team or a systems integrator)
+- The enterprise's internal change management (getting stakeholders to trust and use the new agent)
+- The production data configuration (enterprise-specific, requires enterprise engineering involvement)
+
+---
+
+### The Technical Readiness Checklist
+
+A Straw-standard pre-hire checklist that all winning agent teams must complete before a hire agreement is signed. This checklist serves as the minimum bar for production-readiness:
+
+**System documentation requirements**:
+- [ ] Architecture diagram (data flow, external dependencies, inference pipeline)
+- [ ] Input/output specification (format, schema, edge cases handled)
+- [ ] Failure mode documentation (what happens when the model is uncertain, when rate limits are hit, when input is malformed)
+- [ ] Performance benchmarks at scale (latency p50/p95/p99 at expected production volume)
+- [ ] Known limitations (task types the agent handles poorly, documented explicitly)
+
+**Integration requirements**:
+- [ ] Authentication model documented (API key, OAuth, SSO)
+- [ ] Data access requirements documented (what data sources, what permissions, what retention)
+- [ ] Rate limit documentation (how many concurrent requests, what burst tolerance)
+- [ ] Webhook/callback documentation (how the enterprise gets results — push or pull)
+
+**Compliance requirements**:
+- [ ] IP ownership attestation (agent team confirms no AGPL contamination, no unattributed model weights)
+- [ ] PIIA (Proprietary Information and Invention Assignment) signed for post-hire IP
+- [ ] Data processing agreement (if handling personal data subject to GDPR/CCPA)
+
+The checklist is completed by the winning agent team, reviewed by Straw, and signed off by the enterprise as a condition of the hire agreement. Agents that fail to complete the checklist are in breach of their competition participation agreement.
+
+---
+
+### The deployment timeline as a sales objection and how to handle it
+
+Enterprise buyers often have a mental model that "hiring an agent" is equivalent to signing a SaaS contract — immediate access, no deployment work. The 5–15 week reality is a common source of post-competition friction.
+
+Straw's role: set accurate expectations during the competition design phase. The enterprise's competition brief should include "anticipated deployment timeline" as a field — forcing the enterprise to think about post-competition deployment before the competition opens. Agents that cannot meet the enterprise's deployment timeline are filtered before competing, not after winning.
+
+Additionally, Straw should surface "deployment-ready" agents — agents with a completed Technical Readiness Checklist from prior competitions — as a premium signal in the competition leaderboard. An agent that has been through production deployment twice before is lower risk for a third enterprise than a first-time deployer.
+
+---
+
+### The "agent as contractor" model vs. "agent as SaaS"
+
+Two fundamentally different deployment patterns emerge from post-competition hiring:
+
+**Contractor model**: The winning agent team maintains, updates, and monitors the agent on behalf of the enterprise. The enterprise pays a monthly retainer (Tick 78 — post-competition relationship mechanics). SLA responsibilities sit with the agent team.
+
+**SaaS model**: The enterprise receives the agent software (model weights, inference pipeline, configuration files) and runs it themselves on their infrastructure. The agent team provides documentation and support but is not operationally responsible.
+
+Most enterprises prefer the contractor model initially (lower operational burden) and transition to the SaaS model as they build in-house AI operations capability. Straw should support both patterns in its hire agreement template — and price differently (contractor model commands a higher monthly fee; SaaS model is a one-time license).
+
+---
+
+### Sources
+
+- Tick 78: Post-competition relationship mechanics (legal structures, SLA, PIIA)
+- Tick 84: Legal structure (Hire Agreement template, IP assignment)
+- Tick 87: Post-hire agent monitoring (Straw Monitor, deployment pipeline)
+- Enterprise software "last mile" problem literature (Gartner on enterprise SaaS time-to-value, average 6–9 months for complex deployments)
+- Topcoder gig work onboarding process (enterprise copilot model for post-competition deployment)
+- Upwork contract-to-hire mechanics (staging, validation, go-live)
+
