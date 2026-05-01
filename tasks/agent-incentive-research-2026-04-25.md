@@ -10382,3 +10382,530 @@ For Straw specifically, "piloted by [California CDOT / GSA]" signals:
 - Palantir commercial growth flywheel (FourWeekMBA analysis)
 - [GovTech state AI adoption 2026](https://www.govtech.com/artificial-intelligence/what-might-state-government-ai-adoption-look-like-in-2026)
 
+
+---
+
+## Tick 72 (2026-05-01): Competition failure modes — what makes a Straw competition produce bad signal
+
+**Research question**: What are the specific ways a Straw competition can fail to produce useful signal for the enterprise, and how does Straw design against each failure mode?
+
+---
+
+### Why this matters
+
+A Straw competition that produces misleading signal is worse than no evaluation at all — the enterprise makes a procurement decision based on false confidence. Understanding the failure modes is not defensive design; it is the product. Straw's value proposition is that the score doesn't lie. Identifying and systematically eliminating the ways the score can lie is how that promise is kept.
+
+---
+
+### Failure mode 1: Rubric misalignment
+
+**What it is**: The rubric measures what was easy to specify, not what the enterprise actually cares about. A legal contract review rubric that weights "number of clauses identified" over "accuracy of risk flags" will produce a winner that is technically the best clause counter, not the best legal risk assessor.
+
+**How it manifests**: The enterprise runs the competition, hires the winner, deploys the agent, and discovers that the agent's production output doesn't match what they needed. The rubric was wrong; the score was accurate against the wrong rubric.
+
+**Straw's design response**:
+- Rubric design review as a mandatory step before any competition opens (see Tick 65 rubric design guide)
+- The five rules: explicit performance anchors, orthogonal criteria, at least one Tier 1 automatable criterion, no single criterion >50% of weight, technology-neutral outcome criteria
+- $1,500 premium rubric design session for first-time enterprise customers
+- Rubric calibration: run the rubric against 3–5 known-quality human outputs before opening to agents, to verify the rubric scores what you think it scores
+
+**Residual risk**: Even well-designed rubrics can be misaligned if the enterprise stakeholder who specified requirements is different from the one who uses the output. Rubric review needs to include the end-user, not just the buyer.
+
+---
+
+### Failure mode 2: Winner concentration bias
+
+**What it is**: The same 2–3 agent teams win every competition regardless of task type, because they are better at adapting their general capability to rubric optimization rather than because they have genuine domain expertise. The leaderboard reflects who is best at gaming Straw, not who has the best underlying capability.
+
+**Empirical basis**: The OASIS simulation (arXiv:2411.11581) showed that in 300+ agent competitions, approximately 20% of participants captured 80% of rewards — a winner concentration pattern that emerged from adaptive strategy rather than underlying capability differences.
+
+**How it manifests**: Enterprises notice that the same agent teams appear at the top of every competition. Agent teams with genuine domain expertise but weaker rubric-optimization skill consistently place 10th-15th. The leaderboard becomes a measure of meta-gaming ability.
+
+**Straw's design response**:
+- Category-specific leaderboards (prevent a general-purpose coding agent from competing against a specialized legal agent on the same leaderboard)
+- Blind submission evaluation (agents don't see other agents' scores during the competition; reduces adaptive meta-gaming)
+- Tier 3 agent investigator specifically designed to detect rubric optimization without genuine capability (behavioral fingerprinting of submissions)
+- Diversity bonus in multi-winner competitions: if the 2nd-place agent uses a materially different approach than the 1st-place, it gets a weighting bonus for providing the enterprise with genuinely different options
+
+---
+
+### Failure mode 3: Low participation / thin market
+
+**What it is**: The competition doesn't attract enough agent submissions to produce a reliable ranking. With 2–3 submissions, the "winner" may simply be the only agent that attempted the task, not the best agent available.
+
+**Minimum viable participation for statistical reliability**: Based on Benchmark² methodology (arXiv:2601.03986), bootstrap confidence intervals on a competition ranking with fewer than 5 submissions have overlapping CIs at the 95% level — meaning you cannot reliably rank 1st vs. 3rd with fewer than 5 participants. 10+ submissions begins to produce statistically stable rankings.
+
+**How it manifests**: An enterprise runs a highly specialized competition (e.g., "pharmacovigilance adverse event coding per ICH E2B standards") that attracts 2 submissions. The winner scores 71%. The enterprise hires the winner without knowing that 71% is either world-class or mediocre for that task type.
+
+**Straw's design response**:
+- Participation guarantee for competitions above a minimum prize threshold: Straw's BD team actively recruits submissions for competitions that have fewer than 5 entries at the halfway mark
+- Historical participation data shown to enterprise at task design time: "This task category typically attracts 8–12 submissions in the first 3 days"
+- Minimum participation refund option: if a competition closes with fewer than 5 valid submissions, the enterprise can trigger a partial refund or re-open the competition (see Tick 71 escrow mechanics)
+- Public leaderboard for calibration tasks: before running a proprietary competition, an enterprise can run a calibration task on a similar (non-confidential) problem and observe participation depth
+
+---
+
+### Failure mode 4: Evaluation pipeline contamination
+
+**What it is**: The Tier 2 LLM gatekeeper (the judge model) has preferences for the architectural style or output format of certain agent systems, producing scores that reflect judge model bias rather than actual performance quality.
+
+**Empirical basis**: The LLM-as-judge literature shows that GPT-4-class models as judges exhibit position bias (favoring responses presented first), verbosity bias (favoring longer responses), and self-enhancement bias (favoring outputs produced by models similar to themselves). In the worst case, if the judge is an OpenAI model and the winning agent is also built on OpenAI, the judge may be measuring "how similar is this to what I would produce" rather than "how good is this."
+
+**How it manifests**: A Claude-based agent consistently underscores against a GPT-based agent in competitions where the Tier 2 judge is a GPT-class model, even when human evaluators rate them equivalently.
+
+**Straw's design response**:
+- Multi-model judge panel for Tier 2: use at least two judge models from different labs (e.g., Anthropic + Google) and average their scores; flag cases where the two models disagree by more than 15 points
+- Blind judge structure: Tier 2 judge receives submission outputs without metadata about which agent produced them
+- Calibration against human scores: for task types used frequently, maintain a human-labeled calibration set and verify Tier 2 judge scores correlate (Krippendorff's α ≥ 0.80) with human scores
+- Publish judge model selection policy transparently — enterprises and agents can see which models are used as judges
+
+---
+
+### Failure mode 5: Task specification gaming
+
+**What it is**: Agent teams discover the literal edge cases in task specification and exploit them to score highly on the rubric without actually solving the underlying problem. The task said "summarize the contract's key terms" and the winning agent produces a perfect summary of key terms while systematically misclassifying risk — because "risk identification" was not in the rubric.
+
+**The relationship to Goodhart's Law**: Once an agent team knows the specific rubric criteria, optimizing for the rubric becomes rational even if it degrades performance on dimensions not in the rubric. The rubric becomes the target, not the proxy for target.
+
+**How it manifests**: The winning agent performs well in the competition and poorly in production. The enterprise runs a second competition with a corrected rubric and a different agent wins. The first hire was a false signal produced by gaming, not capability.
+
+**Straw's design response**:
+- Holistic evaluation in Tier 3: the agent investigator specifically evaluates dimensions not in the primary rubric — "does this submission look like genuine domain capability or rubric optimization?"
+- Shadow rubric: Straw maintains a parallel shadow rubric (not disclosed to agents) that evaluates task dimensions the enterprise cares about but didn't formally specify; significant divergence between primary and shadow rubric scores is flagged
+- Post-competition production monitoring option: Straw offers a 90-day production monitoring SLA for hired agents — if production performance diverges significantly from competition score, the enterprise can trigger a re-evaluation at Straw's cost
+
+---
+
+### Failure mode 6: Cheating / undisclosed human assistance
+
+**What it is**: An agent team uses human contractors to complete task submissions that are then submitted as autonomous agent output. The "agent" is a thin wrapper around human labor.
+
+**How it manifests**: Impossible performance on tasks requiring real-time reasoning under time pressure. Inconsistent output quality (human variability) vs. consistent agent behavior. This is the RentAHuman failure mode applied to Straw competitions — 73,000 humans impersonating AI agents in 48 hours (January 2026 incident, Tick 62).
+
+**Straw's design response**:
+- Behavioral fingerprinting (Tick 62): monitor submission timing patterns, output consistency, and inference call logs to detect human-in-the-loop patterns
+- Time-constrained evaluation tasks: design task components that require sustained real-time reasoning faster than human labor can execute
+- ERC-8004 on-chain identity for high-stakes competitions: TEE attestation verifies that computation occurred in a verified agent environment, not a human-operated system
+- Submission artifact logging: agents must submit intermediate computation traces, not just final outputs; traces are audited for consistency with autonomous agent behavior
+
+---
+
+### Summary: the failure mode → design response matrix
+
+| Failure mode | Root cause | Primary defense |
+|-------------|------------|-----------------|
+| Rubric misalignment | Task design error | Mandatory rubric review + $1,500 design session |
+| Winner concentration bias | Meta-gaming skill vs. domain capability | Category leaderboards + blind evaluation |
+| Low participation | Thin market for specialized tasks | Participation guarantee + historical depth data |
+| Evaluation pipeline contamination | Judge model bias | Multi-model judge panel + α calibration |
+| Task specification gaming | Goodhart's Law at rubric level | Tier 3 holistic evaluation + shadow rubric |
+| Human impersonation | Economic incentive to fake autonomy | Behavioral fingerprinting + TEE attestation |
+
+The competition failure mode analysis is not just a quality control checklist — it is the product roadmap. Each failure mode points to a Straw capability that competitors must replicate to run credible competitions.
+
+
+---
+
+## Long-form proposal (DRAFT) — Section 24: Bootstrapping the supply side — how Straw gets the first 50 agent teams
+
+*Audience: co-founder / seed investor / first BD hire. This section details the supply-side cold start strategy.*
+
+---
+
+The demand side of a two-sided marketplace is the visible problem. Who's the first enterprise customer? How do you get them? These questions have conventional answers: founder-led sales, warm intros, a design partner program.
+
+The supply side of Straw's marketplace is the harder problem and the one that gets less attention. An enterprise can be convinced to post a task. But if no serious agent teams compete, the competition produces noise, not signal. A Straw competition that attracts two mediocre submissions is worse than no competition — it produces false confidence in a bad procurement decision.
+
+This section is about how Straw gets the first 50 serious agent teams before enterprise demand is large enough to attract them on economic grounds alone.
+
+---
+
+### The calibration competition playbook
+
+The first move is not to wait for paying enterprise customers to recruit agent supply. It is to create demand for competing on Straw's leaderboard before any enterprise pays for anything.
+
+Straw posts 3–5 internal "calibration competitions" in the first 60 days. These are explicitly labeled as calibration runs — not enterprise-sponsored tasks, but Straw-owned problems designed to seed the leaderboard with real performance data. The tasks come from two sources:
+
+1. Problems from Straw's own product development (real engineering, analysis, or writing tasks from the company's actual work queue)
+2. Problems contributed by a willing design partner enterprise in exchange for early access and a co-authorship credit on Straw's evaluation methodology paper
+
+Calibration competitions do not need large prizes. They need real problems and rigorous evaluation. The incentive for agent teams is not the $500 prize — it is a public, permanent leaderboard entry that proves their agent's capability on realistic enterprise work.
+
+This is the Kaggle model. Anthony Goldbloom's first competition offered $1,000. His second offered $500. The Merck HIV challenge offered nothing but a public ranking and proof that an external team beat Fortune 500 data scientists. That case study spread through the data science community by word-of-mouth before Kaggle had a marketing budget.
+
+ARC Prize attracted over 1,500 teams and generated 40+ research papers. The grand prize was $600,000, but the majority of participants had no realistic shot at it and competed anyway — because appearing on ARC Prize's leaderboard was a public statement about the quality of their approach. The prestige value exceeded the prize value for most participants.
+
+Straw's calibration competitions need to be rigorous enough that appearing on the leaderboard means something. A mediocre leaderboard attracts mediocre agents. A rigorous leaderboard — with transparent scoring methodology, auditable rubrics, and a public calibration paper — attracts teams that want their name associated with rigorous evaluation.
+
+---
+
+### Recruiting the first 50 founding teams
+
+Supply recruitment is a founder-level task in months 1–3. It cannot be delegated to a growth team that doesn't exist yet.
+
+The highest-ROI channel is the Berkeley RDI LLM Agents MOOC Hackathon — 3,000+ participants from 127 countries, with judges from Google DeepMind, OpenAI, Meta AI, a16z, and Greylock. The top performers on the Devpost leaderboard are the exact profile of Straw's ideal early agent team: technically serious, publicly benchmarked, motivated by prestige, and looking for a venue to prove their work matters commercially.
+
+The recruitment script is not "here's our prize pool." It is: "We're building the canonical place where AI agent evaluation means something. We're recruiting 50 founding teams whose agents will appear on the first public leaderboard. That leaderboard will be cited in enterprise procurement decisions, regulatory submissions, and academic papers. We want your team on it."
+
+Founding team status comes with:
+- A permanent "Founding Team" badge on the public leaderboard
+- Early access to all task categories before they open publicly
+- Co-authorship credit on Straw's evaluation methodology paper (for teams that complete 3+ competitions)
+- First notification when enterprise competitions in their category open
+
+The economic value of founding team status is zero in month one. The prestige value compounds every time an enterprise customer sees the leaderboard and recognizes a team name.
+
+Secondary channels: CrewAI Discord (45,900+ GitHub stars, fastest-growing agent framework by star velocity), LangChain community, the Global Agent Hackathon alumni network (May 2025 cohort, $25,000+ in prizes). Contributors to the awesome-ai-agents-2026 repository on GitHub are direct DM targets.
+
+The target is 50 founding teams registered and completing at least one calibration competition within 90 days. Expect 20–30 to be active in the first quarter.
+
+---
+
+### The academic lab bridge
+
+University AI labs are a supply source that requires a different approach. PhD students do not compete for prizes — the cultural norm is that academic researchers don't do prize competitions. The correct frame is research collaboration, not prize competition.
+
+The proposal: Straw approaches one lab (MIT CSAIL Alliances program, Berkeley BAIR, or Stanford HAI) with a research collaboration agreement. The lab contributes one realistic enterprise task dataset. Straw runs the evaluation. Both parties co-author a paper on the evaluation methodology and results. The lab receives a research collaboration fee ($2,000–5,000) for the dataset contribution — not a prize, but a research contract.
+
+This achieves three things: academic credibility for Straw's evaluation methodology; a pipeline of PhD-level competing agents; and a publication that establishes Straw as a platform that serious researchers engage with.
+
+The academic lab bridge is a 3–6 month relationship-building project, not a quick win. The first conversation with CSAIL or BAIR happens in month 1. The first paper submission happens in month 6–9. The supply-side benefit (PhD students running their research agents on Straw competitions) is secondary to the credibility benefit.
+
+---
+
+### The first enterprise competition: what it needs to produce
+
+When the first paying enterprise competition opens, the leaderboard already exists. There are 20–30 active agent teams with public scores on calibration tasks. The enterprise can see not just "X agents are registered" but "here are their performance profiles on comparable tasks."
+
+The first enterprise competition needs to produce one thing: a case study that can be told publicly. The enterprise posts a task. Agents compete. The winner outperforms the enterprise's internal approach or the vendor they were considering. That delta — the performance gap between the Straw winner and the alternative — is the founding case study.
+
+The founding case study is worth more than any marketing budget. It spreads by word-of-mouth through the enterprise buyer community the same way the Merck HIV result spread through the data science community. The enterprise champion tells other VPs. The winning agent team publishes a blog post. The founding case study is not a marketing document — it is proof that the premise is true.
+
+Getting to that proof is the supply-side bootstrapping goal. Everything in this section is in service of having enough quality agent supply that when the first enterprise competition runs, the result is genuinely surprising and compelling.
+
+---
+
+### The critical risk: fake legitimacy
+
+The one thing that kills the supply-side strategy before it starts is the perception that Straw's leaderboard is manufactured.
+
+If agent teams discover that early calibration competitions were designed to produce predetermined results, or that leaderboard scores were manipulated to make certain teams look good for sales purposes, trust collapses immediately. The developer community has a long memory and a short tolerance for artificial legitimacy.
+
+The antidote is radical transparency. Publish the evaluation methodology before the first calibration competition opens. Publish the rubric for every competition. Publish the code for Tier 1 deterministic evaluation. Make the scoring process auditable. When teams dispute a score (and they will), resolve disputes publicly with written explanations.
+
+Straw's evaluation is only as credible as its willingness to be audited. The supply side will trust the platform in proportion to the platform's willingness to be transparent about exactly how it produces scores.
+
+
+---
+
+## Tick 75 (2026-05-01): Task type taxonomy — which enterprise tasks are realistic for Straw competitions in 2026
+
+**Research question**: Not all enterprise tasks are equal candidates for AI agent competitions. Which task types are realistic for Straw in 2026 given current agent capability? Which are premature? Which are the highest-value early beachheads?
+
+---
+
+### The taxonomy structure
+
+Enterprise tasks can be classified across two axes relevant to Straw:
+1. **Measurability** — can performance be reliably scored with a rubric?
+2. **Agent maturity** — has agent performance on this task type been demonstrated commercially?
+
+This produces a 2×2 that tells Straw where to focus:
+
+```
+                High Measurability
+                      |
+         (A) SWEET SPOT        (B) PREMATURE
+    High agent    |            Low agent
+    maturity      |            maturity
+                      |
+         (C) HARD TO SELL    (D) TOO EARLY
+                      |
+                Low Measurability
+```
+
+- **Quadrant A (Sweet Spot)**: High measurability + high agent maturity → ideal Straw task types
+- **Quadrant B (Premature)**: Low agent maturity but high measurability → viable in 12–24 months
+- **Quadrant C (Hard to Sell)**: High agent maturity but low measurability → possible with rubric design investment
+- **Quadrant D (Too Early)**: Low measurability + low agent maturity → not yet
+
+---
+
+### Quadrant A: The sweet spot (launch with these)
+
+**Software engineering and code review**
+- Current SOTA: GPT-4o/Claude 3.7 at 60–70% on SWE-bench Verified; specialist coding agents at 80%+ on specific languages/frameworks
+- Measurability: deterministic test suites, linting scores, performance benchmarks — Tier 1 automatable
+- Enterprise use case: automated PR review, technical debt identification, legacy code refactoring
+- Competitive landscape: GitHub Copilot is widespread but company-specific evaluation is rare; Straw fills the "which coding agent is best for *our* codebase?" gap
+- Recommended prize range: $5,000–$25,000
+
+**Document processing and extraction**
+- Current SOTA: GPT-4V-class models at 90%+ on structured document extraction; 80%+ on unstructured narrative extraction
+- Measurability: ground-truth extracted fields, F1 score on named entity recognition, structured output validation
+- Enterprise use case: invoice processing, contract clause extraction, medical record summarization, insurance claims parsing
+- Competitive landscape: Hyperscience, Ocrolus, and vendor-specific OCR+NLP — Straw provides objective comparison
+- Recommended prize range: $3,000–$15,000
+
+**Data analysis and reporting**
+- Current SOTA: strong on structured SQL/pandas tasks; weaker on multi-step hypothesis generation; agent loops handle complex multi-file analysis
+- Measurability: statistical accuracy of outputs, reproducibility of analysis pipeline, ground-truth answer comparison
+- Enterprise use case: quarterly business review automation, marketing attribution analysis, financial anomaly detection
+- Recommended prize range: $5,000–$20,000
+
+**Legal document review (clause-level)**
+- Current SOTA: GPT-4-class models outperform average associate attorneys on contract review tasks (Columbia/NYU study, 2024)
+- Measurability: ground-truth clause classification, risk flag accuracy, jurisdiction-specific compliance check
+- Enterprise use case: NDA review, vendor contract analysis, employment agreement compliance
+- Caveat: "legal review" at the judgment level (advising on litigation strategy) is Quadrant C; "legal review" at the clause-extraction level is Quadrant A
+- Recommended prize range: $5,000–$30,000
+
+**Customer support knowledge base operations**
+- Current SOTA: retrieval-augmented generation agents at 85%+ on closed-domain Q&A with curated KB; drops significantly on novel edge cases
+- Measurability: customer satisfaction simulation score, resolution rate on held-out ticket set, escalation rate
+- Enterprise use case: Tier 1 support automation, KB accuracy maintenance, ticket routing
+- Recommended prize range: $3,000–$10,000
+
+---
+
+### Quadrant B: Premature in 2026 (watch for 2027+)
+
+**Multi-step strategic planning**
+- Agent maturity: low — current agents produce plausible-sounding plans but have high variance on novel business problems; unreliable at stakeholder model simulation
+- Why premature: rubric for "good strategy" exists but requires senior human judgment to apply; Tier 2 LLM judge is not reliable at senior consultant level
+- Watch for: when GPT-6-class reasoning with persistent memory becomes standard; when "strategic planning evaluation" becomes its own research area
+
+**Software architecture design**
+- Agent maturity: low — agents generate architecture diagrams and specifications but decision quality degrades badly on non-standard system constraints
+- Why premature: evaluation requires domain expertise the judge models don't consistently have; architectural decisions play out over months, not hours
+- Watch for: when code agents can run simulations of the systems they're designing
+
+**Complex financial modeling**
+- Agent maturity: medium — agents handle standard DCF/LBO templates well; novel model design is inconsistent
+- Why premature: measurability is present (is the model financially consistent?) but the *interesting* question is "is the model the right model for this situation?" — that requires human judgment
+- Watch for: when financial modeling benchmarks with industry-standard ground truths exist
+
+---
+
+### Quadrant C: High agent maturity, hard to measure (rubric design investment required)
+
+**Content and creative writing**
+- Agent maturity: high — GPT-4/Claude-class outputs are often indistinguishable from human writing
+- Measurability: low by default; requires custom rubrics with explicit quality anchors (brand voice match, target audience fit, conversion-tested framing)
+- Path to Quadrant A: enterprise provides ground-truth examples (past high-performing content) as rubric calibration; Tier 2 judge evaluates against those examples
+- Recommended for: enterprises with large content operations (media, marketing agencies, e-commerce) where ground-truth quality signals exist
+
+**Code generation for novel features**
+- Agent maturity: high on pattern-matching; low on truly novel feature design
+- Measurability: hard — "does this feature meet requirements?" requires product judgment
+- Path to Quadrant A: decompose into measurable subcomponents (correctness of implementation, test coverage, API design conformance to existing codebase patterns)
+
+---
+
+### Quadrant D: Not yet (skip for now)
+
+**Board-level strategy and M&A analysis**: too much irreducible judgment, no reliable evaluation methodology
+**Novel drug discovery**: specialized domain, slow feedback loops (years to validate), regulatory complexity
+**Human resources decisions**: evaluation of people-related judgments is legally and ethically fraught even when technically feasible
+
+---
+
+### The beachhead recommendation
+
+Straw should launch with Quadrant A tasks and concentrate the first 20 competitions in two categories: **software engineering** and **document processing**. These two categories have:
+- The highest agent team density (most builders have built in these areas)
+- The most enterprises with immediate procurement need
+- The most straightforward rubric design
+- The largest volume of existing evaluation infrastructure to learn from (SWE-bench, document extraction benchmarks)
+
+The software engineering + document processing beachhead represents approximately 60% of the early enterprise AI agent market by procurement volume (based on AI Infrastructure Alliance 2025 survey data on where enterprises are actively deploying or evaluating AI agents).
+
+After 6 months and 20+ competitions, expand to legal document review and data analysis. After 12 months, develop the rubric infrastructure for content creation (Quadrant C). Never pursue Quadrant D tasks until the market pulls them.
+
+---
+
+### Sources
+
+- SWE-bench Verified (software engineering agent SOTA baseline)
+- Columbia/NYU attorney vs. AI contract review study (2024) on legal document review maturity
+- AI Infrastructure Alliance 2025 enterprise AI survey (deployment category distribution)
+- GPT-4V document extraction performance data (OpenAI capability evals)
+- Kaggle competition category distribution (which enterprise problem types attract most participation)
+
+
+---
+
+## Tick 73 (2026-05-01): Enterprise customer success — preventing "one and done" and building recurring revenue
+
+**Research question**: How does Straw ensure enterprises run their second, third, and tenth competition? What are the leading indicators of churn, and what CS interventions are proven to work?
+
+---
+
+### Churn is dual-driver: event-driven and outcome-driven
+
+**Event-driven churn (faster, more severe)**: When a champion departs, churn probability jumps from ~8% to ~25% within 90 days — a 3× spike. A CSA case study found 65% of accounts with an executive change do not renew. For Straw, this risk is acute because the first competition is typically championed by a single VP or AI lead with a personal agenda to evaluate AI agents.
+
+**Outcome-driven churn (slower, more predictable)**: If the first competition doesn't produce an actionable selection decision — scores too close, task underspecified, winning agent can't be deployed — the enterprise concludes "this didn't work" and the tool idles until contract lapse. This is distinct from champion departure; the champion is still there but didn't get a clear outcome.
+
+**The most predictive health metric for Straw**: Not logins or sessions (useful for productivity tools, not episodic platforms). The right signal is **whether competition #1 produced a commercial decision** — did the enterprise actually hire, license, or implement the winning agent? Competitions that produce commercial outcomes drive renewal. Competitions that don't produce commercial outcomes are the leading indicator of churn.
+
+---
+
+### The HackerOne model: sell a maturity journey, not a transaction
+
+HackerOne's **Bug Bounty Maturity Framework** defines 60+ practices across three tiers (Baseline, Competitive, Exemplary) that give enterprise security teams a roadmap to grow their program year over year. The key insight: they sell a maturity journey, not a transaction. A new customer starts with a private invite-only program and is explicitly shown what a Competitive-tier program looks like before their first program closes. This creates pull toward renewal before any renewal conversation happens.
+
+**Straw's translation**: Build a visible **AI Procurement Maturity Model** — Exploratory (first competition, task-scoped), Operational (quarterly benchmark cadence), Strategic (Straw as standing procurement infrastructure). Show every new enterprise customer exactly where they sit and what the next tier unlocks. The framework makes the customer feel they're behind if they don't return. The maturity model does the CSM's job for free.
+
+---
+
+### The champion development problem
+
+Three required elements of champion resilience:
+
+1. **Multi-threading from day one**: Map and engage minimum three contacts per account before the first competition ends — the champion (VP), their manager (economic buyer), and one power user (the implementer who will run competitions). Gainsight's benchmark: accounts with only one contact have 3× the churn rate.
+
+2. **48-hour departure response**: When LinkedIn/email signals a champion departure, the CSM acts within 48 hours. Acting within 48 hours of a champion departure signal makes an account 33% more likely to renew — half the churn risk, just from speed of response.
+
+3. **Institutional artifacts**: The Competition Report PDF. A formal structured artifact with benchmark results, scoring methodology, and strategic recommendations that survives any individual champion. When the champion leaves, the report stays. The new VP inherits a tangible record that makes the next competition easy to justify. This is the most durable retention strategy: organizational memory that outlasts individuals.
+
+---
+
+### The "Next Competition" scoping session — the highest-leverage CS intervention
+
+The most effective single intervention: **at the 30-day mark of competition #1 (when results are emerging but not finalized), hold a "Next Competition" working session** with the champion, their manager, and one cross-functional stakeholder.
+
+Show preliminary results. Frame what a quarterly cadence looks like. Get informal sign-off on a Q2 scope. This converts peak-interest enthusiasm into a committed pipeline item before renewal fatigue sets in.
+
+Why this timing matters: expansion cost arithmetic. The median cost to acquire one dollar of ACV from existing customers via upsell is $0.27 versus $1.16 for new customers. For companies above $50M ARR, 90% of new revenue comes from expansion. The CAC advantage is largest when enthusiasm is highest — during competition #1, not after.
+
+---
+
+### Recommended cadence model
+
+**Standard**: One strategic competitive evaluation per quarter + monthly lightweight benchmark re-runs (same task, updated agents, no new prize budget). Aligns to enterprise QBR cycles.
+
+**Rationale**: Enterprise procurement teams already operate on quarterly business reviews. A Straw competition that maps to QBR output — "we ran our Q2 AI evaluation, here's what we're doing with the results" — becomes a recurring reporting fixture rather than a discretionary project.
+
+---
+
+### Concrete CS motion for Straw
+
+1. **Maturity model at kickoff**: Show every enterprise their tier (Exploratory → Operational → Strategic) at the first meeting; make the next tier visible and desirable
+2. **Health score**: Primary metric = commercial outcome of competition #1; secondary = stakeholder count; tertiary = cadence established
+3. **Three-contact map before competition closes**: Champion, manager, cross-functional user
+4. **48-hour departure protocol**: LinkedIn Sales Navigator alerts; immediate CSM outreach
+5. **Competition Report PDF after every run**: Formal artifact that creates organizational memory
+6. **Next Competition session at day 30 of competition #1**: Scope Q2 while enthusiasm is at peak
+
+---
+
+### Sources
+
+- [Vitally SaaS Churn Benchmarks](https://www.vitally.io/post/saas-churn-benchmarks)
+- [CSA — Champion Dependency Score](https://www.customersuccessassociation.com/case-study-the-champion-dependency-score/)
+- [ChurnZero — Champion Playbook](https://churnzero.com/blog/customer-champion-playbook/)
+- [Gainsight — Executive Sponsor Change Guide](https://www.gainsight.com/blog/a-guide-to-executive-sponsor-change/)
+- [HackerOne Bug Bounty Maturity Framework](https://www.hackerone.com/blog/program-maturity-framework-bug-bounty-operations)
+- [McKinsey NRR Advantage](https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/the-net-revenue-retention-advantage-driving-success-in-b2b-tech)
+- [Paddle Expansion Revenue](https://www.paddle.com/resources/expansion-revenue)
+
+
+---
+
+## Tick 74 (2026-05-01): AI capability trajectory — does improving AI make Straw more or less valuable?
+
+**Research question**: As AI models get dramatically better, does Straw's evaluation value increase or decrease? Is rising AI capability a tailwind or headwind?
+
+**Bottom line upfront**: Rising AI capability is a structural tailwind for Straw. Every empirical finding points the same direction: as models improve faster, the evaluation problem becomes harder, more expensive to solve privately, and more consequential to get right. Straw's value is not that it evaluates AI — it's that it evaluates AI *honestly*, on *real tasks*, with *private* test sets. That advantage compounds as public benchmarks collapse.
+
+---
+
+### The benchmark shelf life is 12–18 months and shrinking
+
+The shelf life of a public benchmark is short and shrinking:
+
+- **MMLU**: Frontier models saturated above 88% within 2–3 years of publication. A 2026 study found MMLU scores are inflated by **8–15 points** on average due to training data contamination (arXiv:2502.14425).
+- **SWE-bench Verified**: The canonical case study. Top models scored 81% on SWE-bench Verified but only ~23% on SWE-bench Pro (private, contamination-resistant version using GPL-licensed and proprietary codebases). That **58-point gap** is the price of Goodhart's Law. OpenAI found GPT-5.2 could reproduce verbatim gold patches for specific SWE-bench tasks. A benchmark that took roughly 18 months from publication to public abandonment by the lab that created it (arXiv:2506.12286).
+- **HumanEval**: Saturated at 95%+ by 2025.
+
+The pattern: benchmark published → wide adoption → scraped into training corpora → models optimize toward it → 12–24 months later the benchmark differentiates nothing.
+
+**For Straw**: The faster the public benchmark carousel spins, the more enterprises need private, task-specific evaluation that models can't have memorized.
+
+---
+
+### The platform response: harder tasks, continuously refreshed
+
+Every major evaluation platform responded to saturation with the same pattern: create harder tasks, accept that the old class is solved, repeat.
+
+- **MMLU → HLE (Humanity's Last Exam)**: Frontier models now score ~8% on HLE's hardest questions.
+- **ARC-AGI-1 → ARC-AGI-2 → ARC-AGI-3**: o3 scored 87.5% on ARC-AGI-1. ARC-AGI-2 launched 2025; best Kaggle score was 24%. ARC-AGI-3 (early 2026): frontier models below **1%**; humans solve 100% of tasks.
+- **HumanEval → LiveCodeBench**: v6, 1,055 problems (April 2025), with rolling monthly additions from competitive programming platforms specifically to defeat memorization.
+
+A competition platform with real enterprise tasks and continuous new posts is architecturally immune to this problem — new tasks are never contaminated by definition.
+
+---
+
+### Private vs. public benchmark shelf life: the data is decisive
+
+Private evaluations last longer because they have zero contamination exposure. A model cannot memorize a test set it has never seen.
+
+The empirical gap: SWE-bench Pro (private) produces scores 50+ points lower than SWE-bench Verified on the same models. A 37% gap between lab benchmark scores and real-world production performance has been documented for enterprise agentic deployments.
+
+The 2026 research community consensus: "A proprietary test set drawn from real production inputs is immune to contamination by definition, directly measuring what matters." (LXT.ai benchmark survey, Kili Technology 2026 analysis.)
+
+**Straw's private, customer-defined tasks are structurally contamination-resistant** as long as results aren't published publicly — a product and policy decision Straw controls.
+
+---
+
+### Capability convergence makes task-specific evaluation the only signal left
+
+The April 2026 frontier shows genuine convergence on general metrics: GPT-5.4, Claude Opus 4.6, Gemini 3.1 Pro, and Grok 4 are separated by single-digit percentage points on most general benchmarks. But differentiation has shifted rather than disappeared:
+
+- Cost-performance ratios vary **50×** for similar accuracy on enterprise tasks
+- Coding tasks: Grok 4 and Claude Opus 4.6 lead
+- Reasoning and multimodal: Gemini 3.1 Pro leads
+- Generalist: GPT-5.4
+
+When all models score 90%+ on MMLU, enterprises cannot use public benchmarks to make procurement decisions. They need task-specific evaluation on their actual workflows. The correct enterprise architecture in 2026 — routing by task type across models — requires knowing which model wins *on your specific task*.
+
+Capability convergence on general metrics **increases Straw's value**, not decreases it. The only signal left is task-specific.
+
+---
+
+### IRT adaptive testing: the unsolved opportunity
+
+arXiv:2505.15055 ("Lost in Benchmarks? Rethinking LLM Benchmarking with Item Response Theory") proposes PSN-IRT — a neural Item Response Theory framework that estimates model ability and item difficulty simultaneously. Their finding: IRT can construct smaller benchmarks that maintain stronger alignment with human preference by selecting items calibrated to current model ability.
+
+No commercial evaluation platform has implemented full adaptive IRT-based difficulty calibration in practice as of May 2026. This is a technical gap Straw could close: a competition format where task difficulty is continuously calibrated against current agent capability profiles, with new tasks automatically commissioned at the frontier of difficulty.
+
+---
+
+### Strategic verdict: unambiguous tailwind
+
+| Factor | Effect on Straw |
+|--------|-----------------|
+| Public benchmark contamination accelerating | Enterprises need private eval more urgently |
+| Benchmark shelf life shrinking (18 months) | Continuous fresh tasks (Straw's model) is the right architecture |
+| 37% lab-to-production performance gap | Straw's real-task format closes this gap by construction |
+| Frontier model convergence on general metrics | Task-specific differentiation is the only signal left |
+| IRT/adaptive difficulty unsolved at production scale | Technical opportunity to be first |
+| 40% of enterprise apps adding task-specific agents by EOY 2026 | Procurement volume growing fast |
+
+---
+
+### Sources
+
+- [The SWE-Bench Illusion (arXiv:2506.12286)](https://arxiv.org/abs/2506.12286)
+- [Why OpenAI no longer evaluates SWE-bench Verified](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)
+- [Lost in Benchmarks? IRT for LLMs (arXiv:2505.15055)](https://arxiv.org/abs/2505.15055)
+- [SWE-bench Pro Leaderboard — Scale Labs](https://labs.scale.com/leaderboard/swe_bench_pro_public)
+- [A Survey on Data Contamination (arXiv:2502.14425)](https://arxiv.org/html/2502.14425v2)
+- [ARC-AGI-3 (arXiv:2603.24621)](https://arxiv.org/abs/2603.24621)
+- [LiveCodeBench](https://livecodebench.github.io/)
+- [LLM Benchmarks 2026 — LXT.ai](https://www.lxt.ai/blog/llm-benchmarks/)
+- [AI Benchmarks 2026 — Kili Technology](https://kili-technology.com/blog/ai-benchmarks-guide-the-top-evaluations-in-2026-and-why-theyre-not-enough)
+- [From Static Benchmarks to Adaptive Testing (arXiv:2306.10512)](https://arxiv.org/html/2306.10512v3)
+- [Best AI Models April 2026 — Build Fast With AI](https://www.buildfastwithai.com/blogs/best-ai-models-april-2026-comparison)
+
