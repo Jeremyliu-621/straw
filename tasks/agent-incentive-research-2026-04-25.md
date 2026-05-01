@@ -16999,3 +16999,300 @@ The anchor relationship should be started before Straw has paying customers — 
 - Warm intro vs. cold outreach conversion rates: Sales Hacker 2025; OpenView GTM benchmarks
 - RFP template adoption patterns in enterprise procurement: Gartner enterprise procurement research
 
+
+---
+
+## Section 28: Long-form proposal — Seed pitch deck structure and narrative
+
+*Written 2026-05-01. This is the structure and content outline for Straw's seed fundraising deck. Each slide shows: the question it answers, the key claim, and the evidence that supports it.*
+
+---
+
+### Deck structure (12 slides + appendix)
+
+**The structural principle**: Each slide answers one specific question from the investor's mental model. Don't combine two questions into one slide. Don't spend slide space on anything the investor already knows.
+
+---
+
+### Slide 1: The title and tagline
+
+**Question answered**: What is this?
+
+**Content**:
+```
+STRAW
+The evaluation marketplace for enterprise AI agents.
+[Logo]
+[Jeremy Liu, Co-founder]
+[Date]
+```
+
+**Tagline options** (choose one, test both in conversations):
+- "AI agents compete. You hire the winner."
+- "The neutral venue for AI agent procurement."
+- "FICO scores, but for AI agents."
+
+**Note**: The "FICO scores for AI agents" framing is the most memorable but requires explanation. Use it in conversations with investors who already understand FICO's institutional role. Default to "AI agents compete, you hire the winner" for clarity.
+
+---
+
+### Slide 2: The market problem
+
+**Question answered**: Why does this need to exist?
+
+**The three-panel structure**:
+
+Panel A (the magnitude): "$7.84B in AI agent market spend in 2025, growing to $52.62B by 2030. Enterprises are making six-figure procurement decisions every quarter."
+
+Panel B (the failure): "Vendor demos lie. Public benchmarks are gamed. SWE-bench performance: 81% → 23% on the private version. Only 11% of enterprise AI projects reach production. 37% average lab-to-production performance gap."
+
+Panel C (the consequence): "Enterprises are committing $200K–$2M contracts to AI agents they've never tested on their actual task. The evaluation layer doesn't exist."
+
+**The "aha moment" visual**: A 2×2 quadrant — X axis is "how well we can evaluate this," Y axis is "how much money we're spending on this." The AI agent quadrant: high spend, low evaluation quality. The gap is visual.
+
+---
+
+### Slide 3: The solution
+
+**Question answered**: What does Straw do?
+
+**Content**:
+```
+Three steps:
+1. Enterprise defines the task and rubric
+2. AI agents compete (private competition, your data)
+3. You hire the winner — or we find you one
+```
+
+**The key claims**:
+- "Not a benchmark — your task, your rubric, your judges"
+- "Not a demo — 20 agents in parallel, ranked against your criteria"
+- "Not consulting — results in 4–6 weeks for $20K–$40K vs. $150K–$500K and 3–6 months"
+
+**Visual**: A simple 3-step flow with icons. Task → Competition → Hire. Contrast with the current alternative (1. vendor demos 2. check SWE-bench 3. hope for the best).
+
+---
+
+### Slide 4: Market validation
+
+**Question answered**: How do we know this market exists?
+
+**Content**:
+
+"LMArena raised $150M at $1.7B in January 2026 for foundation model comparison. We're solving the harder, more valuable problem: selecting between independent agent vendors on your actual task.
+
+Three converging forces:
+1. The benchmark credibility crisis (2025–2026): 'Corporate leaders, stop chasing AI benchmarks' — Fortune, April 2025
+2. The regulatory mandate: OMB M-25-22 requires documented pre-award testing. Colorado SB 24-205: annual impact assessments. NY RAISE Act: mandatory independent annual audits.
+3. The procurement gap: 76% of enterprises prefer buying AI vs. building it. 80–95% of AI projects fail. The decision infrastructure is missing."
+
+**Data points to include**:
+- $52.62B AI agent market by 2030 (MarketsandMarkets)
+- $2.54B AI compliance spending in 2026 (growing to $8.23B by 2034)
+- LMArena: $1.7B valuation
+- Consulting alternative: $150K–$500K for one engagement
+
+---
+
+### Slide 5: Product
+
+**Question answered**: What specifically do you build?
+
+**Content**:
+
+"Straw runs structured competitions where AI agents bid for enterprise work.
+
+[Screenshot of competition creation wizard]
+[Screenshot of ranked leaderboard]
+[Screenshot of Competition Report PDF]
+
+Competition types: Software Engineering (Tier 1: unit tests + linters), Document Processing (Tier 1: extraction accuracy), Data Analysis, Legal Clause Review.
+
+Evaluation pipeline: Tier 1 (deterministic) → Tier 2 (LLM-as-judge ensemble) → Tier 3 (human review for escalations).
+
+Post-hire: Straw Monitor — continuous competition-baseline monitoring for hired agents."
+
+**Note**: This slide should show real product screenshots, not mockups. Have the competition creation wizard and the leaderboard UI built before the first investor meeting.
+
+---
+
+### Slide 6: The moat
+
+**Question answered**: Why can't someone replicate this with money?
+
+**Content**:
+
+"Three irreplicable assets:
+
+1. Calibration corpus: Every competition adds task-specific evaluation data. 50 competitions → category patterns emerge. 200 competitions → expert-level judge accuracy. Cannot be purchased — must be earned by running real competitions.
+
+2. Institutional anchor: One enterprise requiring 'Straw Score ≥ X' in their RFP converts supply-side recruitment from outbound to inbound. First to achieve this owns the standard.
+
+3. The neutrality: Model providers cannot build this — their conflict of interest is structural. Straw doesn't train models. Straw doesn't sell models. Our only interest is in the score being right. This is the UL (Underwriters Laboratories) model."
+
+**The asset compounding table**:
+| Month | Competitions | Calibration corpus value | Agent community | Standard status |
+|-------|-------------|------------------------|-----------------|-----------------|
+| 6 | 5 | Limited | 50 active agents | Emerging |
+| 12 | 20 | Category patterns | 150 active agents | Recognized |
+| 24 | 75 | Expert-level accuracy | 500+ active agents | Standard contender |
+
+---
+
+### Slide 7: Business model
+
+**Question answered**: How do you make money?
+
+**Content**:
+
+"Enterprise-side pricing (enterprises pay, agents compete for free):
+
+| Product | Price | Target |
+|---------|-------|--------|
+| Standard Competition | $20K/competition | Series B+ tech |
+| Premium Competition | $40K/competition | Enterprise, regulated |
+| Annual Subscription (3/yr) | $48K/year | Growth-stage |
+| Straw Monitor | $500/agent/month | Post-hire monitoring |
+| Competition Design | $8K/engagement | Novel task types |
+| Agent Pro | $99/month | Agent analytics |
+
+Year 1 target: $1M ARR (30 paying enterprise customers)
+Year 2 target: $3M ARR (50 enterprise, 120%+ NRR from expansion)"
+
+**The gross margin note**: "Competition running is primarily compute and human-review cost. Target gross margin 75%+ at scale. Year 1: ~65% as we establish judge efficiency."
+
+---
+
+### Slide 8: Traction
+
+**Question answered**: What have you proven?
+
+*[This slide is populated with real data as it develops. The structure below is the template.]*
+
+"[Month X] — [Design partner 1] ran their first competition: [N] agent submissions, [winner] hired.
+[Month X+2] — [Design partner 2] competition completed: [specific result].
+[Month X+4] — $[ARR] from [N] enterprise customers.
+[Agent community]: [N] registered agent teams from [countries]. [N] active submitters.
+[Calibration corpus]: [N] competitions, [N] unique task types.
+[Institutional anchor progress]: [Company] in conversation about RFP integration."
+
+**Note**: Traction slides should be concise and specific. Avoid vague claims. One concrete data point beats three fuzzy ones. If it's too early for customer data, include: "Design partner agreements signed with [N] enterprises in [categories]. First competitions scheduled for [date]."
+
+---
+
+### Slide 9: Go-to-market
+
+**Question answered**: How do you get to $1M ARR?
+
+**Content**:
+
+"Phase 1 (Month 0–6): Founder-led, design partner focus
+- 5 design partner competitions (2 Straw-funded, 3 paid)
+- Target: Series B tech companies in software engineering and document processing
+- Channel: warm introductions from technical advisors and model provider partnerships
+
+Phase 2 (Month 6–12): Systematize and expand
+- First AE hire at Month 8
+- Model provider referral program at 15% commission
+- Straw Open quarterly competitions as lead-gen for enterprise side
+
+Phase 3 (Month 12–18): Anchor and scale
+- Institutional anchor RFP requirement published
+- Content flywheel: Straw methodology paper + benchmark credibility research generates inbound
+- Target: 20+ enterprise accounts, $1M ARR run rate
+
+$1M ARR math: 20 Standard Competitions at $20K + 10 Premium at $40K + 15 Monitor subscriptions + 5 Competition Design = $1.05M"
+
+---
+
+### Slide 10: Competition
+
+**Question answered**: Who else is trying to solve this?
+
+**Content**:
+
+"The evaluation landscape:
+
+| Category | Players | Limitation |
+|----------|---------|------------|
+| Model comparison | LMArena ($1.7B) | Foundation models only; no agent competition |
+| Agent observability | Braintrust, LangSmith, Arize | Post-selection tools; not pre-selection |
+| Consulting evaluation | Deloitte, Accenture | $150K–$500K; 3–6 months; produces opinions |
+| Public benchmarks | SWE-bench, MMLU | Gamed; static; not enterprise-specific |
+
+The gap: Nobody runs head-to-head competitions between independent agent vendors on enterprise-defined tasks. This quadrant is empty.
+
+The structural defense: LMArena is a model comparison tool for models you already have access to. We evaluate external vendors before you commit to a contract. Different market, different mechanism."
+
+---
+
+### Slide 11: Team
+
+**Question answered**: Why are you the right people to build this?
+
+*[Populated with Jeremy's actual background and co-founder background]*
+
+"**Jeremy Liu, Co-founder & CEO**
+[Background: relevant enterprise sales / AI experience]
+[Why he knows this problem firsthand]
+
+**[Co-founder], Co-founder & CTO**
+[Background: relevant engineering / LLM systems experience]
+[Why they can build this specific product]
+
+**Advisors**:
+[One enterprise AI advisor — Head of AI at a known company]
+[One ML research advisor — Berkeley/MIT/CMU affiliation for methodology credibility]
+[One operator advisor — former founder of a marketplace or evaluation platform]"
+
+---
+
+### Slide 12: The ask
+
+**Question answered**: What are we asking for and what does it unlock?
+
+**Content**:
+
+"Raising $2.5M seed at $[pre-money valuation].
+
+Use of funds (18-month runway):
+- Platform engineering: $800K (founding engineer team)
+- SOC 2 compliance: $80K
+- Agent community & first competitions: $150K (prize pool for calibration competitions)
+- Enterprise GTM: $300K (AE hire at Month 8, travel, conferences)
+- Legal, infrastructure, tools: $200K
+- Founders' living expenses: $[X]
+- Reserve: $[Y]
+
+By the end of 18 months:
+- 20 enterprise customers, $1M ARR
+- 300+ agent teams, calibration corpus of 20+ competitions
+- Institutional anchor conversation initiated
+- Series A ready at $3M ARR with 120%+ NRR
+
+We are building the FICO Score for AI agents. The window to own this standard is 18 months. We need to move now."
+
+---
+
+### Appendix slides
+
+**Appendix A**: Financial model (3-year projection with assumptions)
+**Appendix B**: Competition Report example (sample output for a software engineering competition)
+**Appendix C**: Technical architecture (how the evaluation pipeline works; judge model ensemble)
+**Appendix D**: Regulatory landscape (OMB, EU AI Act, Colorado, NY RAISE — the compliance tailwind)
+**Appendix E**: Competitive analysis (full competitive landscape map from Tick 106)
+**Appendix F**: Agent community plan (supply-side recruitment playbook from Tick 111)
+**Appendix G**: Calibration corpus data moat (what compounds and why it's irreplicable)
+
+---
+
+### Presentation logistics
+
+**Deck length**: 12 slides main deck + 7 appendix slides. Do not go longer. Every slide that requires explanation is a slide that should be cut or reformulated.
+
+**Time**: 10-minute pitch + 20-minute Q&A is the standard VC meeting format. 12 slides = ~45 seconds per slide. Practice this timing. The pitch should be 10 minutes without rushing.
+
+**Format**: Keynote or Figma (not Google Slides — it signals lower production values at the seed stage). Dark background with strong visual contrast. Minimal text per slide. One number per slide gets remembered; five numbers per slide gets forgotten.
+
+**Leave behind**: After the meeting, send a one-page executive summary (not the full deck) that summarizes the problem, solution, traction, team, and ask. The one-pager is what gets shared within the VC partnership.
+
