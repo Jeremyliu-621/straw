@@ -31723,6 +31723,311 @@ Ticks 170–190 and Section 32 complete. 21 ticks and one major section added ac
 3. Section 32 — PUSHED ✓
 4. Ticks 177-180 — PUSHED ✓
 5. Ticks 181-185 — PUSHED ✓
-6. Ticks 186-190 — PUSH NOW
+6. Ticks 186-190 — PUSHED ✓
+
+---
+
+## Tick 191 (2026-05-01): The Straw Certified Agent program — what certification means, how agents earn it, how enterprises use it
+
+**Thread source:** Session 21 candidate thread. A certification program gives enterprises a trust signal between competitions. What does "Straw Certified" mean and what's the architecture?
+
+**The regulatory context (new finding from searches):**
+
+California EO N-5-26 (March 30, 2026, Governor Newsom): Directs the Department of General Services and the Department of Technology to develop new certification requirements for AI vendor procurement. The order requires vendors to attest to policies on illegal content, harmful bias, and civil rights. This is a state-level mandate that will require some form of AI vendor certification for California government procurement.
+
+Federal level: Microsoft launched "Microsoft Certified: AI Agent Builder Associate" certification (Exam AB-620) — the first major vendor-backed AI agent certification for developers. Professional certification infrastructure is emerging.
+
+**The gap Straw fills:**
+
+Microsoft's AI agent certification certifies *humans who build agents* (developers). California's pending certification framework certifies *AI vendors* (companies). Neither certifies *specific agents* (AI systems) based on measured task performance.
+
+Straw Certified Agent: the first performance-based certification for specific AI agents, based on demonstrated task performance in blind competition rather than documentation review or developer credentials.
+
+**What "Straw Certified" means:**
+
+An agent earns Straw Certified status in a specific task category by:
+1. Completing at least 5 Straw competitions in that category
+2. Achieving a task performance score in the top 25th percentile across all agents in that category
+3. Maintaining consistent performance across competitions (no catastrophic failures in any single competition)
+4. Passing Straw's baseline trust verification: agent developer has completed identity verification, agent has no history of policy violations
+
+The certification is category-specific: "Straw Certified: Code Review" means the agent has demonstrated top-quartile performance in code review competitions. An agent can be Straw Certified in multiple categories.
+
+The certification expires: performance-based certification is only valid for 6 months. After 6 months, the agent must compete again to maintain certification. This prevents "certify once, coast forever" dynamics and keeps the certification meaningful.
+
+**The certification badge and registry:**
+
+Every Straw Certified agent gets:
+- A certification badge with category name, certification date, expiration date, and an ERC-8004 on-chain verification link
+- A public Straw registry entry showing: certified categories, certification history, current performance percentile, competition count
+- A verification API endpoint: `GET /api/v1/agents/{agent_id}/certification` returns current certification status in machine-readable format (useful for enterprise procurement systems that want to verify certification programmatically)
+
+**How enterprises use Straw Certified status:**
+
+1. **Pre-screening:** Before running a full Straw competition ($20K+), an enterprise can shortlist agents by certification status. "Show me all Straw Certified agents in document analysis." This reduces the number of agents competing in their competition and improves competition quality.
+
+2. **Procurement shortlist without a competition:** For smaller purchasing decisions (sub-$50K agent contracts), an enterprise may not run a full competition. Instead, they select from Straw Certified agents in the relevant category. The certification is the qualification signal. This is a significant revenue-adjacent benefit: certification drives agent adoption even without a full competition.
+
+3. **Regulatory compliance:** California EO N-5-26 will eventually require vendor certification for state AI procurement. Straw Certified status can become a recognized qualification credential. Straw should proactively engage the California Department of General Services as the certification framework is being defined.
+
+4. **Contract due diligence:** When an enterprise's legal or procurement team asks "how do we know this agent is reliable?", the Straw Certified badge and registry entry is the answer. The verification API lets procurement systems check certification status programmatically before contract execution.
+
+**The certification program revenue model:**
+
+Certification is not a separate paid product — it's a flywheel that drives competition revenue and platform stickiness:
+- Agent developers want certification (it generates hiring inquiries) → they compete → Straw earns competition entry fees
+- Enterprises use certified agent listings to shortlist → they find fewer competitors → they run competitions → Straw earns competition fees
+- Certification expiration drives agents back into competitions every 6 months → recurring revenue from agent supply
+
+Optional: a "Certification Verification" API for enterprise procurement systems (charged at $0.01/verification call, bundled into Enterprise tier) generates a small but recurring technical moat.
+
+**Sources:**
+- California EO N-5-26, AI vendor certification (March 30, 2026): https://www.ropesgray.com/en/insights/alerts/2026/04/newsom-signs-executive-order-establishing-ai-vendor-certification-and-procurement-framework
+- Microsoft Certified AI Agent Builder: https://techcommunity.microsoft.com/blog/skills-hub-blog/new-microsoft-certified-ai-agent-builder-associate-certification/4494125
+- ERC-8004 identity registry: https://eips.ethereum.org/EIPS/eip-8004
+
+---
+
+## Tick 192 (2026-05-01): Competition replay and the post-competition audit feature
+
+**Thread source:** Session 21 candidate thread. After a competition ends, can the enterprise replay it with different rubric weights? Can they add new agents? This is the "what if" analysis feature.
+
+**The customer need:**
+
+After a Straw competition ends and a winner is declared, the enterprise customer often has follow-up questions:
+- "What if we'd weighted the speed criterion more heavily — would the winner have changed?"
+- "We found a new agent after the competition closed — how does it compare to our winner?"
+- "Our legal team wants to verify the scoring methodology — can they re-run the evaluation?"
+- "We want to share the competition results with our CFO, but they have specific criteria not in the original rubric — can we re-score against their criteria?"
+
+These are "what if" analysis needs that post-competition data can answer. The feature: **Competition Replay**.
+
+**How Competition Replay works:**
+
+After a competition closes, the customer has access to:
+- All agent submissions (stored, version-pinned to the exact submission they made)
+- The original scoring rubric and weights
+- The original judge model ensemble and scores by criterion
+
+Competition Replay allows the customer to:
+1. **Re-weight the rubric:** Change the scoring weights (e.g., increase "speed" from 10 to 30 points, decrease "explanation quality" from 25 to 5) and see how the rankings would change. This is a slider-based UI that re-computes the leaderboard in real-time. Tier 1 scores are re-applied instantly; Tier 2 scores re-use cached judge model responses (no new API calls needed).
+
+2. **Add a new agent (retroactively):** Submit a new agent's response to the same task and run it through the same evaluation pipeline. This lets a customer evaluate a "late entrant" against the same conditions as the original competition. Result: the new agent gets a score and rank on the original competition task.
+
+3. **Export for audit:** Generate a PDF audit package with: original rubric, all agent scores by criterion, judge model IDs and versions, replay analysis (if any rubric re-weighting was done), and a signed hash of all stored submissions proving no post-competition tampering.
+
+**Why this matters for enterprise trust:**
+
+The audit export is the feature that enterprise legal teams want. When a company is challenged on their AI vendor selection ("why did you pick vendor X over vendor Y?"), they can produce: the Straw competition report, the agent submission hashes, the judge model ensemble, and the rubric weights. This is an unassailable audit trail. Competition Replay makes the audit trail interactive rather than static — the customer can demonstrate that even with different rubric assumptions, the winner was the same.
+
+**Revenue model:** Competition Replay is included in the Enterprise tier (post-competition audit is a trust feature, not an upsell). The "add a new agent retroactively" feature is priced separately: $2K per late entrant evaluated (covers compute cost and judge model API fees).
+
+**Technical implementation:**
+- All agent submissions stored immutably (content-addressed, hash-pinned) for 24 months after competition close
+- Tier 2 judge scores cached per (submission, rubric_criterion, judge_model_version) — re-weighting triggers re-computation of aggregated scores from cached per-criterion scores, not new API calls
+- Replay audit log stored separately from production competition data: every replay action is logged with timestamp, user identity, parameter changes
+- Signed hash of submission archive uses SHA-256, signed by Straw's private key: customer can verify the archive hasn't been tampered with after the competition
+
+---
+
+## Tick 193 (2026-05-01): The Straw API — external API for programmatic competition triggering
+
+**Thread source:** Session 21 candidate thread. Straw as a service that enterprise systems call programmatically.
+
+**The use case:**
+
+As agentic procurement matures (Tick 173), enterprises will want to trigger Straw competitions programmatically from their existing systems:
+- A procurement workflow automation (Ramp agents, Coupa Navi) triggers a Straw competition before finalizing an AI vendor selection
+- A vendor management system (Coupa, Ariba, ServiceNow) integrates Straw as a step in the AI vendor onboarding workflow
+- An enterprise's internal AI governance system triggers a Straw re-evaluation whenever the hired agent's performance drifts below a Benchmark Subscription threshold
+
+These integrations require a well-designed external API. Currently Straw is UI-first. The API is the next layer.
+
+**Straw External API — core endpoints:**
+
+```
+POST /api/v1/competitions
+  Create a new competition
+  Body: { task_definition, rubric, prize_pool, deadline, eligible_agents[] }
+  Returns: { competition_id, status: "draft" }
+
+POST /api/v1/competitions/{id}/publish
+  Publish the competition (open for agent submissions)
+  Returns: { status: "open", submission_deadline }
+
+GET /api/v1/competitions/{id}
+  Get competition status and results
+  Returns: { status, submitted_agents[], leaderboard[], winner }
+
+POST /api/v1/competitions/{id}/submissions
+  Submit an agent to a competition (for agent developers, not enterprise customers)
+  Body: { agent_id, submission_mode, endpoint_url or docker_image }
+  Returns: { submission_id, status: "queued" }
+
+GET /api/v1/competitions/{id}/results
+  Get full competition results including scores by criterion
+  Returns: { leaderboard, scores_by_criterion, judge_model_ids, post_competition_pdf_url }
+
+GET /api/v1/agents
+  List agents registered on Straw (filterable by capability, certification status, model family)
+  Returns: paginated agent list with certification status
+
+GET /api/v1/agents/{id}/certification
+  Get certification status for a specific agent
+  Returns: { certified_categories[], expiration_date, performance_percentile }
+
+POST /api/v1/benchmark/run
+  Trigger a Benchmark Subscription evaluation run on a specific agent
+  Body: { agent_id, task_category, comparison_baseline }
+  Returns: { run_id, status: "queued" }
+
+GET /api/v1/benchmark/{run_id}/results
+  Get benchmark run results
+  Returns: { current_score, baseline_score, delta, alert_threshold_status }
+```
+
+**Authentication:** API key-based (standard). Enterprise customers get API keys scoped to their organization. Rate limits: 100 API calls/minute per key for standard operations; 10/minute for competition creation. Webhook delivery for async events (competition closed, winner declared, benchmark complete).
+
+**The integration that changes the game — ServiceNow / Coupa integration:**
+
+If Straw publishes an official ServiceNow integration (via the ServiceNow Store) and a Coupa connector, enterprise procurement teams can trigger Straw competitions directly from their existing procurement workflows. No Straw UI required. "AI vendor selection" becomes a step in the standard vendor onboarding workflow: the procurement system calls Straw's API, creates a competition, waits for results, and proceeds with vendor selection based on Straw's winner declaration.
+
+This is the "Straw as infrastructure" moment — invisible, embedded in the enterprise's existing systems, recurring revenue from every competition they trigger. The ACV for a Straw API integration with a large enterprise could be $200K–$500K/year based on competition volume.
+
+**Priority: ServiceNow first.** ServiceNow has 7,700+ enterprise customers and is the dominant enterprise workflow automation platform. A ServiceNow integration reaches Straw's ICP without the need for direct sales. This is a distribution moat: once embedded in ServiceNow, Straw is part of the default AI vendor evaluation workflow for 7,700 potential customers.
+
+---
+
+## Tick 194 (2026-05-01): Straw's top 5 product risks and mitigations
+
+**Thread source:** Session 21 candidate thread. 70–80% of AI projects fail after pilot. Straw needs to be honest about its own failure modes.
+
+**The baseline: AI product failure statistics (2026):**
+
+- 70–80% of AI projects fail after pilot phase
+- 94% of companies still failing at production deployment (Medium, Feb 2026)
+- 82% of executives say they're confident in their AI governance policies; only 14.4% actually send agents to production with full security/IT approval
+- "Silent failure at scale" is the dominant new risk: small errors compounding over time before anyone notices
+
+**Straw's top 5 product risks:**
+
+**Risk 1: Task quality bottleneck — the enterprise can't define a good task**
+
+*The failure mode:* The hardest part of a Straw competition is writing a task definition and rubric that accurately reflects the enterprise's real requirement. If the task is poorly defined, the competition will produce a winner that is excellent at the wrong thing. The enterprise hires the agent, deploys it, and it underperforms — not because the competition was unfair, but because the task definition was wrong.
+
+*Evidence this is real:* 70% of AI deployment failures are structural (organizational readiness), not model-related. Task definition is an organizational readiness problem.
+
+*Mitigation:* (a) Rubric Designer role (Hire 6 from Tick 188) whose job is to translate fuzzy enterprise requirements into precise task definitions. (b) Task definition review as a billable consulting service ($3K–$10K per competition). (c) Rubric templates (Tick 179) that give enterprises a starting point. (d) Task definition checklist: "Does your task definition specify: inputs, constraints, success criteria, time limit, output format, edge cases?" If any are missing, the Rubric Designer flags it before the competition opens.
+
+**Risk 2: Agent quality desert — not enough good agents compete**
+
+*The failure mode:* Straw opens a competition and only 2–3 agents submit, or the agents that submit are not genuinely good at the task. A competition with 2 mediocre agents is less useful than no competition at all — it gives a false signal that "the best" agent has been found when the supply pool was inadequate.
+
+*Evidence this is real:* Two-sided marketplace cold start is the most common marketplace failure mode. Straw's supply side (agent developers) needs to be sufficiently large and high-quality before the demand side (enterprises) can rely on competition results.
+
+*Mitigation:* (a) Minimum agent count threshold: Straw requires at least 5 submitted agents before a competition "counts" (below 5, competition is reported as "low participation" with reduced confidence). (b) Straw-operated baseline agents: Straw maintains 2–3 well-tested baseline agents in each task category (using Claude, GPT-4o, and open-source) that always compete. This ensures every competition has a floor quality signal even if the developer supply is thin. (c) Developer outreach: SDR whose job includes developer pipeline building alongside enterprise pipeline. (d) Sandbox competitions drive agent developer registration before paid competitions demand supply.
+
+**Risk 3: Judge model failure — a judge model gives systematically wrong results**
+
+*The failure mode:* A judge model in the Tier 2 ensemble starts giving inconsistent or biased results (due to a silent model update, a style drift, or an edge case the prompt doesn't handle). Competitions are scored incorrectly. The wrong agent wins. Enterprise makes a bad hiring decision based on Straw's score.
+
+*Evidence this is real:* Style bias 0.76–0.92 across all LLM judges (Tick 175). Silent model updates happen — providers update model behavior under the same version label.
+
+*Mitigation:* (a) Version pinning: Straw never uses `latest` model versions — always pinned. (b) Quarterly calibration: 50 pre-evaluated submissions, all judges scored, any judge deviating >10% from human-validated baseline is flagged. (c) 3-provider ensemble: if one judge has a bad session, two others carry the score. (d) Submission hash audit: all submissions are stored and can be re-scored if a judge failure is suspected. (e) Anomaly detection: if any judge's scores for a competition differ dramatically from the ensemble average, auto-flag for human review before publishing results.
+
+**Risk 4: Benchmark contamination — agents train specifically on Straw**
+
+*The failure mode:* Agent developers, knowing that Straw competitions use specific task categories and rubric patterns, train their agents specifically to perform well in Straw-style evaluations rather than at real tasks. The agent is excellent at passing Straw's Tier 1 and Tier 2 criteria but underperforms in production.
+
+*Evidence this is real:* SWE-bench Verified was abandoned because agents were trained on its test suite. 58-point gap between SWE-bench Verified (~80% pass rate) and SWE-bench Pro (~23% pass rate) — showing how gameable public benchmarks become.
+
+*Mitigation:* Private tasks are the structural defense — Straw's fundamental architecture is immune. Each competition uses a customer-defined task that is never revealed in advance and never published afterward. There's nothing to train on. Supplementary: Straw randomizes rubric weight distributions within reasonable bounds per competition so there's no stable rubric formula to optimize against. Tier 3 agent investigator specifically probes for "Straw-optimized" behavior that fails on edge cases the Tier 2 judge doesn't test.
+
+**Risk 5: The enterprise pays for a competition and nothing changes — they still pick the demo winner**
+
+*The failure mode:* An enterprise runs a Straw competition, receives results, and the Head of AI overrides the competition result based on political pressure, existing vendor relationships, or personal preference. The competition was theater. Straw gets blamed when the deployed agent underperforms.
+
+*Evidence this is real:* 82% of AI governance policies exist but only 14.4% of AI deployments go through full approval. Governance and accountability gaps are endemic in enterprise AI.
+
+*Mitigation:* (a) Executive sponsor requirement: Straw requires an executive sponsor (VP-level+) to sign off on the competition scope *and* to receive the competition results. Making the EB party to the result makes it harder to override. (b) Competition results go to multiple stakeholders simultaneously — not just the champion. When the CSO, CFO, and Head of AI all receive the result at the same time, any override is visible to all. (c) Explicit "override documentation" feature: if a customer chooses not to hire the competition winner, Straw's post-competition report includes an "override" field where the customer documents why. This creates accountability and documentation. (d) Long-term satisfaction survey: 90 days after competition, Straw asks "how is the agent you hired performing vs. competition predictions?" This data proves the competition's predictive validity (or reveals when overrides led to bad outcomes).
+
+---
+
+## Tick 195 (2026-05-01): The consortium competition model — co-funded evaluations across multiple enterprises
+
+**Thread source:** Session 21 candidate thread. Could multiple enterprises co-fund a single Straw competition? What is the consortium model and when does it make sense?
+
+**The concept:**
+
+Consortia procurement is a proven model: multiple independent companies aggregate their purchasing power to jointly evaluate and buy from vendors. The Hackett Group's Spring 2026 SolutionMap evaluates 118 procurement technology vendors against criteria defined by a consortium of CPOs. Gartner Magic Quadrant is a de facto consortium: multiple enterprises' feedback aggregated into a single vendor evaluation.
+
+The Straw consortium competition applies this to agent evaluation: multiple enterprises that need to evaluate the same class of agent (e.g., code review agents for mid-size SaaS companies) co-fund a single competition. Shared task design. Shared agent pool. Each company gets the results.
+
+**When consortium competitions make sense:**
+
+1. **Same task class, different task instances:** Multiple FinTech companies all need to evaluate document processing agents. Each has proprietary documents they can't share. But they share the same rubric requirements (accuracy, speed, regulatory compliance). A consortium competition uses a synthetic but representative task set — not any company's proprietary data — and produces results that every participant can use as a procurement signal.
+
+2. **Smaller enterprises who can't afford a solo competition:** A $200K ARR SaaS company can't justify a $20K Straw competition for one agent evaluation. But as part of a 5-company consortium, they contribute $4K each, and all five get the results. The competition is better (more participant rubric input) and cheaper (shared cost).
+
+3. **Industry-specific baseline evaluation:** An industry association (FinTech Alliance, LegalTech Consortium, HealthTech Standards Body) sponsors a competition that produces the industry's standard agent evaluation benchmark for a specific task class. This is the Straw Index competition made concrete: instead of Straw running the evaluation, the industry co-funds it.
+
+**The Straw Consortium Competition product design:**
+
+1. **Lead organization:** One enterprise acts as the consortium lead — they manage the competition parameters, coordinate participant input, and take primary accountability for task definition quality.
+
+2. **Shared rubric, private task data:** The rubric is designed collaboratively (via a 2-hour facilitated session with all consortium members). Task data is either: (a) synthetic (created by Straw's Rubric Designer to represent the task class without any participant's proprietary data) or (b) from one participant's data with others signing a data use agreement.
+
+3. **Result distribution:** All consortium members receive the full competition report (leaderboard, scores by criterion, winner declaration). No participant's identity is visible to other participants in the results — only the consortium lead knows who co-funded.
+
+4. **Pricing:** Consortium competitions are priced at 1.5x the base competition fee (more coordination overhead), split among participants. A $30K competition split among 5 participants is $6K each. The Straw premium covers coordination: facilitated rubric design session, multi-party data agreements, result packaging for each participant.
+
+**Revenue model:** Higher per-competition ACV ($30K vs. $20K base) plus broader access to smaller enterprises (who couldn't afford a solo competition). The consortium model is also a content marketing play: consortium competitions produce results that can be published (with participant consent) as the "Industry Standard Benchmark for [task category]" — driving press coverage and Straw's authority positioning.
+
+**The risk:** Consortium task design is harder. Multiple stakeholders have different requirements. Reaching consensus on a rubric is a coordination cost that Straw must manage. The Rubric Designer role (Hire 6) is critical for this — they must be able to facilitate multi-stakeholder rubric design sessions. Cap consortium size at 8 participants in Year 1; reduce coordination risk by using rubric templates as the starting point.
+
+**Sources:**
+- Hackett Group Spring 2026 SolutionMap: https://www.businesswire.com/news/home/20260430211005/en/The-Hackett-Group-Releases-Spring-2026-SolutionMap-Evaluating-118-Procurement-Technology-Providers
+- GEP, consortia procurement definition: https://www.gep.com/knowledge-bank/glossary/what-is-consortia-procurement
+- Enterprise AI failure modes: https://www.stratifyinsights.ai/ai-project-failure-rate
+- 94% production deployment failure: https://medium.com/@prajitdatta/ai-in-2026-why-94-of-companies-are-still-failing-at-production-deployment-and-what-winners-do-759cbf8f9a9f
+- Silent failure at scale (CNBC, March 2026): https://www.cnbc.com/2026/03/01/ai-artificial-intelligence-economy-business-risks.html
+
+---
+
+## Threads still to dig — Session 22
+
+**Status as of 2026-05-01 (overnight session — continuing):**
+
+Ticks 170–195 and Section 32 complete. 26 ticks and one major section added this session.
+
+**Session 22 candidate threads:**
+- Tick 196: Competition design anti-patterns — the 10 most common rubric design mistakes that produce misleading competition results, and how to prevent each
+- Tick 197: The agent-side onboarding experience — what happens when an agent developer first registers on Straw? The full UX walkthrough and where friction must be eliminated
+- Tick 198: Straw's investor narrative evolution — how the story changes from Seed ("we're building the marketplace") to Series A ("we've validated demand and retention") to Series B ("we're the category standard")
+- Tick 199: The "agent hall of fame" — a long-term feature for preserving the history of competition-winning agents as AI evolves
+- Tick 200: Summary synthesis — a final comprehensive summary of all findings across this research session, organized as a decision-ready briefing for Jeremy
+
+---
+
+## Push status (Session 21 complete)
+
+**Session 21 adds:**
+- Tick 191: Straw Certified Agent — performance-based certification (top 25th percentile, 5+ competitions, 6-month expiration), category-specific badges, ERC-8004 on-chain verification, Certification Verification API. California EO N-5-26 creates regulatory demand for AI vendor certification. Revenue flywheel: certification drives competition entry (recurring).
+- Tick 192: Competition Replay and audit — post-competition rubric re-weighting (slider UI, cached Tier 2 scores), late entrant evaluation ($2K/agent), signed hash audit export for legal/compliance. Submission storage: immutable, 24-month retention, hash-pinned.
+- Tick 193: Straw External API — full endpoint design (competition CRUD, agent listing, certification lookup, benchmark triggering). ServiceNow integration as priority distribution channel (7,700 enterprise customers). Straw as infrastructure embedded in existing procurement workflows.
+- Tick 194: Top 5 product risks — (1) Task quality bottleneck [mitigation: Rubric Designer + task definition checklist]; (2) Agent quality desert [mitigation: minimum 5 agent threshold + Straw baseline agents]; (3) Judge model failure [mitigation: version pinning + quarterly calibration + anomaly detection]; (4) Benchmark contamination [mitigation: private tasks + rubric weight randomization + Tier 3 edge case probing]; (5) Competition result override [mitigation: executive sponsor sign-off + multi-stakeholder result distribution + override documentation feature].
+- Tick 195: Consortium competition model — shared rubric, synthetic task data, 1.5x pricing split across participants. Targets smaller enterprises ($200K ARR who can't afford solo competition). Industry association partnerships. Cap 8 participants. Risk: coordination overhead mitigated by Rubric Designer facilitation and template starting points.
+
+**Lines added this session:** ~470 lines
+**Total file size:** ~32,400 lines
+
+**Commits this session:**
+1. Ticks 170-172 — PUSHED ✓
+2. Ticks 173-176 — PUSHED ✓
+3. Section 32 — PUSHED ✓
+4. Ticks 177-180 — PUSHED ✓
+5. Ticks 181-185 — PUSHED ✓
+6. Ticks 186-190 — PUSHED ✓
+7. Ticks 191-195 — PUSH NOW
 
 
