@@ -27789,3 +27789,155 @@ This is the ISO/ANSI standard dynamic: the specification body that creates the s
 
 **Gaming via rubric design**: If an agent operator can see which templates exist and optimize their agent specifically for those templates, the templates become a known target (Goodhart's problem). Prevention: maintain a "discovery-only" vs. "released" distinction for rubrics used in live competitions, so the exact rubric isn't visible until after competition close.
 
+
+---
+
+## Tick 158 (2026-05-01): Prize Distribution Models — Winner-Take-All vs. Top-N Structures
+
+**Thread**: What is the optimal prize distribution for Straw competitions given competition size, enterprise hiring goals, and agent incentive design?
+
+### 1. What Economic Theory Says: Tullock's Break Points
+
+Canonical Tullock contest theory says winner-take-all maximizes total effort in symmetric, risk-neutral competitions. The logic: concentrating the prize maximizes marginal return to effort at the margin of winning.
+
+**Where winner-take-all breaks down — three conditions**:
+
+1. **Equilibrium breakdown at high N**: Schweinzer & Zultan (2012) show that in high-N competitions, pure-strategy equilibrium may fail to exist under winner-take-all. Adding runner-up prizes restores equilibrium — not primarily to increase effort, but to prevent collapse into non-participation.
+
+2. **Risk aversion**: When contestants are loss-averse, multiple equal prizes dominate. AI agents aren't directly risk-averse, but the enterprises funding compute runs essentially are.
+
+3. **Ability heterogeneity (the Straw-relevant case)**: The "discouragement effect" — when lower-ability entrants perceive near-zero win probability, they rationally exit, which reduces competitive pressure on top agents and degrades overall submission quality. Wharton/Kireyev's work on ideation contests finds the optimal prize count j* depends on the dispersion of agent quality. The contest maximizing expected best submission awards equal prizes of V/j* to the top j* contestants. For AI agent competitions where capability varies widely, j* of 3–5 is theoretically optimal.
+
+4. **Parallel rank-order contest research (2025, Springer)**: Optimal prize allocation with heterogeneous agents finds that prize spreading toward a top-3 to top-5 structure dominates winner-take-all when agent type distribution has high variance — exactly Straw's case.
+
+Source: [Multi-prize contests with risk-averse players — ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S0899825621000907); [Prize Allocation in Ideation Contests — Kireyev/Wharton](https://marketing.wharton.upenn.edu/wp-content/uploads/2016/10/Kireyev-Pavel-JMP-Prize-Allocation-and-Entry-in-Ideation-Contests.pdf)
+
+### 2. How Real Competitions Distribute Prizes
+
+Empirical convergence on top-3 to top-6 payouts with steep front-loading:
+
+- **Kaggle standard**: Most featured competitions pay top 3–6 teams. Typical split: 50% / 25% / 15% / 10% across places 1–4
+- **Equal-prize exceptions at scale**: When diversity of solutions matters more than finding a single champion (e.g., OpenAI red-teaming challenge), top 10 teams receive equal $50K shares
+- **ARC Prize 2025**: $75K Top Score + $50K Paper Prize (guaranteed) + $700K conditional grand prize. Result: 1,455 teams, 15,154 entries. Paper submissions nearly doubled vs. prior year — guaranteed floor prizes directly expanded contributor base
+- **ML Contests 2025 aggregate**: Median entries per competition is 36 teams; mean is 351, skewed by high-prize outliers. Jane Street ($120K) drew 3,700 teams; AIMO ($500K+) drew 2,200+ teams. Marginal entrant beyond ~500 teams adds noise rather than quality
+
+Source: [ARC Prize 2025 Results](https://arcprize.org/blog/arc-prize-2025-results-analysis); [State of ML Competitions 2025](https://mlcontests.com/state-of-machine-learning-competitions-2025/)
+
+### 3. Behavioral Economics: The Participation Threshold
+
+Agents compute EV as (prize × perceived win probability). When this falls below their participation cost (compute + engineering time), they exit. The discouragement effect means mid-tier agents self-select out at winner-take-all, reducing competitive pressure on top agents — degrading overall quality even for the enterprise.
+
+The ARC Prize two-tier structure (guaranteed progress prizes + aspirational ceiling) is the clearest empirical validation of the "guaranteed floor + aspirational ceiling" structure for driving both participation and quality.
+
+Source: [Behavioral Mechanism Design: Optimal Contests for Simple Agents — Ghosh](http://www.arpitaghosh.com/papers/participation.pdf)
+
+### 4. Recommended Straw Prize Distribution Structure
+
+**Standard (30–100 agents): 60/25/10/5 with participation floor**
+
+| Tier | Allocation | Rationale |
+|---|---|---|
+| 1st place | 60% | Strong winner incentive; enterprise hiring signal |
+| 2nd place | 25% | Keeps #2 competing hard — critical for quality at the top |
+| 3rd place | 10% | Discouragement-effect mitigation for mid-tier agents |
+| 4th place | 5% | Widens participation distribution one tier |
+| Participation floor | Fixed $500–$2K (budget-capped) | Covers compute cost threshold for good-faith attempts |
+
+**Large competition (100+ agents): 50/20/12/10/8 (top 5)**
+- Expand prize count to counteract discouragement effect at scale
+
+**Small competition (<20 agents): 70/30 (top 2 only)**
+- At small N, spreading prizes thin is worse than concentrating; fewer agents means discouragement effect is less acute
+
+**Design rules**:
+1. Never let median-quality entrant EV fall below their compute cost
+2. Use conditional grand prizes (ARC-style) only when frontier-pushing behavior is the goal — not reliable high-quality submissions
+3. The enterprise's hiring signal maps to 1st place; structurally incentivize 2nd place to compete hard against 1st — that's where marginal quality improvement comes from
+4. Pure winner-take-all breaks down once the serious agent pool exceeds ~20 credible entrants
+
+Source: [Optimal Prize Structure of Symmetric Tullock Contests — Schweinzer](https://link.springer.com/article/10.1007/s11127-011-9774-2); [Optimal Prize Design in Parallel Rank-order Contests (2025)](https://ideas.repec.org/p/arx/papers/2505.08342.html)
+
+
+---
+
+## Tick 159 (2026-05-01): AI Agent Regulation and Compliance Requirements for Straw
+
+**Thread**: What regulatory and compliance requirements apply to Straw in 2026, and what is the minimum viable compliance posture?
+
+### 1. EU AI Act — Straw Is Almost Certainly High-Risk (Enforcement: August 2, 2026)
+
+The EU AI Act explicitly classifies as high-risk any AI used in:
+- **Employment decisions**: recruitment, candidate evaluation, performance monitoring, task allocation (Annex III, Section 4)
+- **Access to essential services**: credit decisions and financial assessments
+- **Legal/medical contexts**: AI systems assisting in consequential professional judgments
+
+An AI agent evaluation platform that scores agents on HR processing, legal analysis, or financial analysis — and whose scores directly influence enterprise hiring decisions — sits squarely in the high-risk category. Straw is both a **provider** (builds the evaluation infrastructure) and a **deployer** (runs agents against real enterprise tasks).
+
+**Required by August 2, 2026**:
+- Complete conformity assessments; register in EU AI Act database
+- Implement a continuous risk management system
+- Maintain full technical documentation and audit-ready logs (minimum 6-month retention, per Article 12)
+- Bias testing on evaluation datasets
+- Mandatory human oversight mechanisms before consequential agent hiring decisions
+- Transparency disclosures to enterprises about AI system capabilities and limitations
+
+Penalties: €15M or 3% of global turnover. Note: the Digital Omnibus proposal (trilogue ongoing as of April 28, 2026) may defer Annex III obligations to December 2027, but this is not confirmed — plan for August 2026.
+
+Source: [EU AI Act Annex III: High-Risk AI Systems](https://artificialintelligenceact.eu/annex/3/); [EU AI Act 2026 Compliance](https://secureprivacy.ai/blog/eu-ai-act-2026-compliance); [Digital AI Omnibus Proposed Deferral](https://knowledge.dlapiper.com/dlapiperknowledge/globalemploymentlatestdevelopments/2026/The-Digital-AI-Omnibus-Proposed-deferral-of-high-risk-AI-obligations-under-the-AI-Act)
+
+### 2. US FTC and Civil Rights Enforcement
+
+The Trump administration rescinded Biden's sweeping 2023 AI EO with no federal replacement. The operative US enforcement vector is the **FTC's AI Policy Statement (March 11, 2026)**, which applies Section 5 of the FTC Act to AI systems across their full lifecycle:
+
+- Straw's agent scoring must not produce **disparate impact** on protected classes when used for hiring — FTC, EEOC, and DOJ issued joint statement confirming existing civil rights law applies to algorithmic hiring tools
+- **ECOA (Equal Credit Opportunity Act)** applies if agent evaluations influence credit-related decisions
+- California's January 2026 rules require opt-out rights for **Automated Decision-Making Technology (ADMT)** used in significant decisions including employment
+- **Colorado SB 205** (June 2026): Impact assessments required for AI used in consequential decisions
+
+**Required actions**: Bias audit documentation on evaluation methodology; transparency disclosures on how scores are calculated; human review before scores are used for employment or credit decisions.
+
+Source: [FTC AI Enforcement Playbook — OpenClaw AI](https://openclawai.io/blog/ftc-ai-policy-statement-agent-enforcement/); [FTC Escalates Enforcement Against Algorithmic Discrimination](https://www.usresistnews.org/2026/01/08/ftc-escalates-enforcement-against-algorithmic-discrimination-in-hiring-and-credit-systems-technology-policy-brief-162/)
+
+### 3. GDPR / CCPA — Evaluation Data with Personal or Confidential Content
+
+Every task posted on Straw may contain personal data. This triggers both frameworks.
+
+**GDPR requirements**:
+- Straw is a **data processor** for enterprises; signed Data Processing Agreements (DPAs) are mandatory for all enterprise customers
+- If evaluation data includes personal data, a DPIA (Data Protection Impact Assessment) is required before processing begins
+- Data minimization: retain only what is necessary; delete evaluation artifacts containing personal data after the task lifecycle
+- EU data residency option required for EU customers
+
+**CCPA/CPRA (California, effective January 2026)**:
+- Privacy risk assessments required before processing ADMT in HR or professional contexts
+- Consumers (including employees whose data appears in tasks) have opt-out rights
+
+Source: [AI Agents & GDPR 2026 Compliance Checklist — Technova Partners](https://technovapartners.com/en/insights/security-gdpr-enterprise-ai-agents); [CCPA in 2026 — OneTrust](https://www.onetrust.com/blog/ccpa-in-2026-whats-changing-in-consent-consumer-rights-and-ai-governance/)
+
+### 4. SEC / CFTC — Financial Analysis Work
+
+No SEC or CFTC regulation directly regulates a *marketplace platform* facilitating AI financial analysis. The exposure is indirect:
+- **SEC's 2026 Examination Priorities** identify AI as primary focus for RIAs and broker-dealers. If Straw's enterprise customers are RIAs, they bear fiduciary responsibility for AI-generated outputs — Straw's DPAs must allocate liability to the enterprise customer
+- **Regulation S-P** (smaller RIA compliance deadline June 3, 2026) creates vendor due diligence requirements that appear in enterprise procurement — SOC 2 Type II required to pass these screens
+
+Source: [SEC 2026 Exam Focus on AI — Wealth Management](https://www.wealthmanagement.com/regulation-compliance/sec-2026-examination-priorities-what-financial-services-firms-need-to-know)
+
+### 5. Minimum Viable Compliance Posture
+
+| Action | Framework | Urgency |
+|---|---|---|
+| EU AI Act conformity assessment + EU database registration | EU AI Act Annex III | **August 2026** |
+| Signed DPAs with all enterprise customers | GDPR Article 28 | **Immediate** |
+| Data isolation per task, 6-month audit logs | EU AI Act Art. 12 + GDPR | **Immediate** |
+| Bias audit documentation on evaluation methodology | FTC/EEOC + EU AI Act | Before EU launch |
+| Human-in-the-loop disclosure for hiring decisions | EU AI Act + CA ADMT | Before US/EU launch |
+| SOC 2 Type II audit (begin now; 12–18 months) | Enterprise procurement gate | **Begin immediately** |
+| EU data residency option | GDPR Chapter V | Before EU launch |
+| ToS liability allocation for financial/legal outputs | SEC/CFTC + product liability | **Immediate** |
+| Colorado AI Act impact assessments | Colorado SB 205 | June 2026 |
+| ISO 42001 AI Management System certification | Enterprise procurement gate | 2026–2027 |
+
+**Biggest near-term risk**: EU AI Act August 2026 deadline combined with the new EU Product Liability Directive (member state implementation by December 2026), which treats AI software as a product subject to strict liability for defects. Straw should treat its evaluation scoring methodology as a regulated product and design explainability and auditability in from the start.
+
+Source: [Agentic AI Revolution: Managing Legal Risks — Squire Patton Boggs](https://www.squirepattonboggs.com/insights/publications/the-agentic-ai-revolution-managing-legal-risks/); [LLM Compliance 2026: ISO 42001, EU AI Act, SOC 2, GDPR — Guardion](https://guardion.ai/blog/llm-compliance-guide-iso-42001-eu-ai-act-soc2-gdpr-2026)
+
