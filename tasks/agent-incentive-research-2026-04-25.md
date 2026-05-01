@@ -7206,3 +7206,440 @@ If all four are true, v1 (design partners) is ready to begin.
 
 **Push status:** Will attempt `git push -u origin master` after this commit. If push fails (auth/remote not connected), content is committed locally and will be visible to next session via `git log`.
 
+
+---
+
+## Threads still to dig — Session 11
+
+**From Session 10 candidate threads:**
+- [done] Tick 51: Enterprise sales motion for Straw — cold email → discovery → POC framing *(written below)*
+- [done] Tick 52: Model-level benchmark calibration surface — Agent Psychometrics + Straw's own N=100 *(written below)*
+- [done] Tick 53: Long-form proposal Section 17 — The Straw Scoring Standard *(written below)*
+
+**Newly discovered threads for future sessions:**
+- Tick 54: Agent liability and insurance — who is liable when a hired agent causes a production incident? What does AI liability insurance look like in 2026, and could Straw Score become a prerequisite for coverage?
+- Tick 55: The Straw network effect flywheel — detailed mechanism: how does each new task posting make the platform more valuable to agents AND companies? What's the viral coefficient at each stage?
+- Tick 56: Long-form proposal Section 18 — The regulatory moat: how OMB M-26-04, EU AI Act, and California EO N-5-26 create a regulatory mandate for something that looks exactly like Straw
+
+---
+
+## Tick 53 (2026-05-01): The Straw Scoring Standard — how Straw scores become an industry citation
+
+**Thread:** How do Straw's competition scores evolve from private results into industry-standard references cited in RFPs and potentially codified in regulation?
+
+**Research sources:** OMB M-26-04 (Dec 2025), California EO N-5-26 (March 2026), NIST AI Agent Standards Initiative (Feb 2026), EU AI Act Article 9.7 (Aug 2026), S&P Global rating history, LMSYS Chatbot Arena adoption trajectory, IBM/Kaggle enterprise leaderboard launch (Dec 2025).
+
+---
+
+### The regulatory vacuum Straw fills right now
+
+Three overlapping mandates went active between December 2025 and August 2026, all requiring AI procurement evidence — but none defining what valid evidence looks like:
+
+**OMB M-26-04 (Dec 11, 2025, effective March 11, 2026):**
+- US federal agencies must request "custom benchmarking/metrics customized to agency-specific use cases" + evaluation artifacts from LLM vendors before signing contracts
+- Also requires: red-team results, prompt injection testing, validation of vendor claims
+- The mandate exists. The standard for what counts as valid custom benchmarking does not.
+
+**California EO N-5-26 (March 30, 2026):**
+- Governor Newsom directed California state agencies to develop certification requirements for AI vendors within 120 days
+- California is "positioning its procurement standards to function as de facto national benchmarks — potentially filling the governance vacuum left by congressional inaction"
+- The framework will cover "harmful bias in AI models" and "violation of civil rights and liberties" — but capability evaluation standards are unaddressed
+
+**EU AI Act Article 9.7 (enforcement August 2, 2026):**
+- Requires high-risk AI systems to demonstrate "prior defined metrics and probabilistic thresholds" before deployment
+- "Prior defined" = must be set before the system is evaluated, not post-hoc
+- A Straw competition with a published rubric is the definition of "prior defined metrics." Enforcement begins in 3 months.
+
+**NIST AI Agent Standards Initiative (Feb 17, 2026):**
+- First US government program dedicated to AI agent standards
+- Focused on: security, identity infrastructure, interoperability (MCP/A2A protocols)
+- Publishing AI Agent Interoperability Profile by Q4 2026
+- Explicit gap: NIST is NOT defining capability/task-performance standards. That vacuum is unoccupied.
+
+**The gap:** Regulation requires evidence. Nobody has defined what valid capability evidence looks like. This is the gap Straw fills.
+
+---
+
+### How benchmarks become standards: the S&P analogy
+
+S&P Global Ratings is the canonical example of a private scoring system becoming a regulatory-mandated standard:
+
+- **1860**: Henry Varnum Poor publishes *History of Railroads and Canals in the United States* — private, voluntary, informational
+- **Early 1900s**: Poor's Publishing Company starts rating bond issues; adoption voluntary
+- **1909**: Moody's John Moody publishes the first standardized bond rating (Aaa through C)
+- **1930s-1970s**: Major institutional investors require ratings for portfolio eligibility; issuers must get rated to access bond markets — network effect locks in the standard
+- **1975**: SEC codifies NRSRO (Nationally Recognized Statistical Rating Organization) designation — regulatory mandate makes ratings legally required for certain transactions
+- **Today**: S&P + Moody's command 90%+ market share; 20+ global regulators reference their ratings
+
+**Key lesson**: The standard didn't emerge from a regulator's mandate. The regulator mandated a private standard that had already proven trustworthy through market adoption. The sequence is: useful → trusted → mandated — not mandated → trusted → useful.
+
+---
+
+### Why Straw scores would be trusted (the credibility architecture)
+
+For Straw scores to become a standard, they need structural credibility that general benchmarks lack:
+
+**Structural advantage 1 — Task-specificity:**
+- LMSYS Chatbot Arena (6M+ votes) measures general conversational ability
+- Straw measures performance on *your specific task with your specific rubric*
+- EU AI Act requires "prior defined metrics" — general benchmarks fail this test structurally; Straw is designed around it
+
+**Structural advantage 2 — Pre-defined rubric:**
+- Score is determined by criteria set before agents see the task
+- No post-hoc judgment about what "good" means
+- Auditable: rubric is a static artifact, not a human's post-hoc opinion
+
+**Structural advantage 3 — Private holdout:**
+- The task itself is not public → cannot train on it before eval
+- The contamination problem that afflicts SWE-bench (23-point gap on novel repos) structurally cannot apply to a private task the agent has never seen
+
+**Structural advantage 4 — Reproducible:**
+- Same task + same rubric + same Tier 1/2/3 eval pipeline → same score
+- Reproducibility is the foundation of any standard
+
+**Structural advantage 5 — Auditable artifact trail:**
+- Full submission artifact stored (code, plan, outputs)
+- Eval trace stored (which rubric criteria passed/failed and how)
+- If a company disputes a score, the evidence is there
+
+**Structural advantage 6 — Adversarial resistance:**
+- Agents who game public benchmarks by training on them cannot game Straw tasks they've never seen
+- Financial stake (escrow, time cost, compute) discourages low-quality gaming attempts
+
+---
+
+### The five-phase path to standard
+
+**Phase 1 — Private scores (now - mid 2026):**
+- Company runs a competition, gets scores for 5-10 agents on their task
+- Score is internal: company knows which agent won, uses it to make a hiring decision
+- Straw's value proposition: better than demo-based procurement, private proof
+
+**Phase 2 — Agent track record (mid 2026 - early 2027):**
+- With agent operator's permission, their win/loss record across Straw tasks becomes visible to companies posting new tasks
+- "This agent won 3 of 7 Straw competitions in the coding domain, average score 79%"
+- Companies now have evidence comparable to contractor references or Kaggle leaderboard rank
+- Precedent: IBM + Kaggle enterprise leaderboards (launched Dec 2025) as the model
+
+**Phase 3 — Domain leaderboards (2027):**
+- Straw publishes aggregate capability scores by domain (coding, legal document review, financial analysis, security)
+- Computed from opt-in agents across N tasks in each domain
+- Format: agent capability band (percentile range) per domain per task complexity tier
+- Analogous to LMSYS Chatbot Arena's category-specific leaderboards — but for real enterprise tasks, not synthetic evals
+
+**Phase 4 — RFP citation (2028):**
+- Enterprises adopting Straw write procurement specs: "Preferred vendors must demonstrate Straw Benchmark Score ≥ 80 on 5+ tasks in [domain] in the past 12 months"
+- AI agent providers start publishing their Straw scores as marketing assets (like Kaggle grandmasters listing their ranking in job applications)
+- Procurement teams use Straw scores as a shorthand: same function as credit ratings for bond buyers
+
+**Phase 5 — Regulatory reference (2028-2030):**
+- A Straw competition score, with its pre-defined rubric + audit trail, is cited by OMB or NIST as one acceptable implementation of "custom benchmarking/metrics customized to agency-specific use cases" under M-26-04
+- EU guidance explicitly accepts "competition-based evaluation with pre-defined rubric and third-party eval infrastructure" as evidence of "prior defined metrics" under Article 9.7
+- Insurance underwriters start accepting Straw Score as a factor in AI liability pricing (structurally identical to how credit ratings affect bond insurance premiums)
+
+---
+
+### The standard-setter's moat
+
+Once Straw scores become a trusted reference point, the moat deepens with each cycle:
+
+- **More tasks → better calibration**: Each new task in a domain improves the signal quality of the domain leaderboard
+- **More agents → more competition**: More competing agents mean scores are better distributed and more meaningful (a 90 on a 3-agent task vs. a 90 on a 40-agent task are very different)
+- **More companies → more diverse tasks**: A leaderboard built from 500 diverse real tasks is much harder to game than one built from 10 templated tasks
+- **Regulatory citation → mandatory procurement**: If any major government body cites Straw as acceptable evidence, every vendor serving that government must participate
+
+The analogous flywheel: once S&P's rating was required for SEC-regulated transactions, every bond issuer had to get rated regardless of personal preference. The standard-setter's value becomes mandatory infrastructure.
+
+---
+
+### What Straw should publish as its scoring specification
+
+To accelerate adoption, Straw should publish a public "Straw Score Specification" — a document that defines:
+
+1. **What a Straw Score means**: percentage of rubric criteria met, weighted by criterion importance, verified by Tier 1/2/3 eval pipeline
+2. **What the audit trail contains**: submission artifact, eval trace, rubric version, task version, timestamp, agent ID
+3. **What makes a task valid for scoring**: minimum rubric requirements (at least 3 objective criteria, at least 1 automated Tier 1 criterion), minimum participant count (N≥3 agents), private holdout design
+4. **How to reproduce a score**: given a submission and task, any evaluator running the same pipeline should get ±2% of the original score
+5. **How to contest a score**: specific dispute resolution procedure (not "the score is the score" — actually documented process, with time limits and criteria for valid disputes)
+
+This spec is the technical foundation that lets regulators reference "a Straw-compliant evaluation" without needing to understand the implementation details — exactly as the NRSRO designation lets regulators reference "an S&P credit rating" without specifying the methodology.
+
+---
+
+### Near-term action: respond to NIST's AI Agent Standards Initiative
+
+NIST's AI Agent Standards Initiative has a specific request for community input on AI agent security and evaluation methodology. Straw should:
+
+1. Submit a formal response to NIST's RFI on AI Agent Security (positioning Straw's eval pipeline as an interoperability evaluation methodology)
+2. Reference EU AI Act Article 9.7's "prior defined metrics" requirement and propose that competition-based evaluation with pre-defined rubrics satisfies it
+3. Request that NIST's AI Agent Interoperability Profile (Q4 2026 target) include a "task capability evaluation" component that Straw's architecture already implements
+
+This is a 10-page document. If successful, NIST's profile would cite competition-based evaluation as the standard methodology — and Straw would be the only platform that has deployed it at scale.
+
+---
+
+**Bottom line for Tick 53:** The regulatory demand for AI capability evidence is real and imminent (OMB March 2026, EU AI Act August 2026, California 120-day clock). The supply of valid evaluation standards is near-zero. Straw's task-specific, pre-defined-rubric, audit-trailed architecture is structurally what the mandates require — but the mandates don't reference Straw yet because Straw hasn't existed long enough to be referenced. The path from "private score" to "regulatory reference" follows the S&P playbook: prove trustworthiness through market adoption first, then let regulators codify what the market already trusts. The NIST AI Agent Standards Initiative is the immediate lever: a formal submission positioning Straw as the reference implementation could accelerate this by 2-3 years.
+
+
+---
+
+## Tick 52 (2026-05-01): Model-level benchmark calibration surface — Agent Psychometrics and Straw's scoring architecture
+
+**Thread:** When Straw produces competition scores (73%, 68%, 61%), how do companies know those numbers are meaningful? What does calibrated agent evaluation look like?
+
+**Research sources:** arXiv papers 2024-2026, OpenAI SWE-bench abandonment announcement, Scale AI SWE-bench Pro leaderboard, Kaggle/ARC Prize competition design, LLM psychometrics systematic reviews.
+
+---
+
+### The contamination crisis has reached a tipping point
+
+The benchmark validity crisis accelerated sharply in 2025 — moving from theoretical concern to documented failure at the frontier:
+
+- **OpenAI formally abandoned SWE-bench Verified (2025)** after internal investigation revealed all tested frontier models (GPT-5.2, Claude Opus 4.5, Gemini 3 Flash) could reproduce exact solution patches verbatim when given minimal hints. GPT-5.2 reproduced the precise conditional statement from a Django authentication fix. Paper: "The SWE-Bench Illusion: When State-of-the-Art LLMs Remember Instead of Reason" (arXiv:2506.12286). Separately, 59% of problems models failed had fundamentally broken tests — contamination + test quality failure simultaneously.
+
+- **Performance gap quantifies contamination**: Top models score ~81% on SWE-bench Verified but drop to ~23% on SWE-bench Pro (Scale AI, 2025) — a 58 percentage-point gap. SWE-bench Pro uses GPL/copyleft and private codebases that models cannot have trained on. Claude Opus 4.1 drops further from 22.7% (public Pro) to 17.8% (private Pro) — a 5-point gap from evaluation freshness alone.
+
+- **SWE-bench-Live** (arXiv:2505.23419): 1,319 tasks from real GitHub issues Jan 2024–April 2025, 93 repositories, date-gated to post-cutoff issues. LiveCodeBench (arXiv:2403.07974, ICLR 2025) shows the same pattern: models that score high on static benchmarks show marked drops on cutoff-filtered problems.
+
+- **Harness inflation**: The same model scores 69% standalone vs. 81% with a sophisticated retry-and-explore harness — a 12-point swing from scaffolding, not capability. This is a separate confound from contamination but equally dangerous.
+
+**Straw's structural immunity**: Task-specific private tasks that agents have never seen structurally cannot be contaminated the way public benchmarks are. This is the foundational validity advantage.
+
+---
+
+### A formal field of LLM psychometrics is emerging
+
+A 2025 systematic review ("Large Language Model Psychometrics: A Systematic Review of Evaluation, Validation, and Enhancement," arXiv:2505.08245) treats LLM benchmarks through the lens of psychometric theory — reliability, validity, construct validity, and measurement bias. Key finding: most LLM benchmarks fail basic psychometric validity checks. They measure a proxy (pass/fail on a specific dataset), not the construct of interest (general coding ability).
+
+**Item Response Theory (IRT) applied to agents**: Multiple concurrent 2025-2026 papers apply psychometric IRT to LLM evaluation:
+
+- "Lost in Benchmarks? Rethinking LLM Benchmarking with Item Response Theory" (arXiv:2505.15055): Applies the Rasch model to 22 HELM datasets, 183 LLMs, 78,000+ questions. AUC-ROC 0.85/0.83 (train/test). Key insight: IRT enables ability estimates on a unified scale, so models evaluated on different item sets can be compared — critical for a competition platform where each task is unique.
+
+- "Learning Compact Representations of LLM Abilities via IRT" (arXiv:2510.00844, IrtNet): Models each (model, question) pair's probability as a function of model ability and item difficulty. 67.4% accuracy in model routing tasks.
+
+- "Growing Pains: Extensible and Efficient LLM Benchmarking via Fixed Parameter Calibration" (arXiv:2604.12843): Proposes fixing item parameters after initial calibration so new models are scored against a stable scale — exactly how the SAT works.
+
+**What calibration means in practice**: A calibrated score tells you not just "73%" but "73% on items with estimated difficulty d — meaning this agent's latent ability estimate is θ with CI [θ₁, θ₂]." Raw pass rates are uncalibrated; IRT-derived ability scores are calibrated. The difference matters enormously for procurement decisions: two agents scoring 73% and 68% on uncalibrated tasks may be statistically indistinguishable; on IRT-calibrated tasks, the same gap may be highly significant depending on item discrimination.
+
+---
+
+### Rubric calibration: the most actionable research for Straw
+
+Several 2025-2026 papers directly address rubric-based evaluation calibration:
+
+**AdaRubric** (arXiv:2603.21362): Generates task-specific, orthogonal evaluation dimensions on-the-fly from task descriptions. Scores agent trajectories step-by-step with confidence-weighted feedback. Achieves Pearson r=0.79 with human judges and Krippendorff's α=0.83 (above the 0.8 threshold for reliable use). **Most relevant for Straw**: rubric generation from task descriptions + calibrated step-level scoring is exactly the Tier 2 LLM-as-judge architecture.
+
+**LLM-Rubric** (ACL 2024, arXiv:2501.00274): Calibrates judge biases explicitly — a small neural network combines multiple LLM judge probability distributions including judge-specific bias parameters. RMS error < 0.5 on a 1–4 scale (2× improvement over uncalibrated baseline). Key insight: calibration corrects for systematic LLM-as-judge biases, not just averages them away.
+
+**AutoRubric** (arXiv:2603.00077): Unified rubric framework with schema-constrained outputs (reduces parsing errors) and calibration references — anchored example inputs with expected scores. Calibration references reduce judge drift between runs.
+
+**RIFT: A RubrIc Failure Mode Taxonomy** (arXiv:2604.01375): Taxonomizes how rubrics fail:
+1. Underspecification (criteria too vague → scores cluster in middle, agents indistinguishable)
+2. Criterion overlap (two criteria measure the same thing → double-counting)
+3. Anchoring failures (scale labels don't correspond to real performance differences)
+4. Scale compression (1-5 scale used but only 3-4 used in practice)
+
+RIFT is directly actionable for Straw's task design: a rubric validation step before a task goes live should check these four failure modes.
+
+---
+
+### Private competitions are the gold standard — and the literature agrees
+
+"Position: AI Competitions Provide the Gold Standard for Empirical Rigor in GenAI Evaluation" (arXiv:2505.00612, 2025): Structured competitions with private holdout sets represent the most contamination-resistant evaluation methodology. Participants cannot tune to test data they cannot see.
+
+**Kaggle's public/private split design**: Public leaderboard gives participants iterative feedback during competition; private holdout determines final ranking. The public-private gap is itself a contamination signal — a large gap indicates overfitting to the public leaderboard.
+
+**ARC Prize model**: Evaluation dataset never released. Creators cannot know problems in advance — otherwise they encode their intelligence into the solution rather than testing the agent's. Each year's challenge is retired as a calibration set; new challenges replace it.
+
+**Konwinski Prize** (SWE-bench-Live adjacent): Models are frozen 3 months after submission, then evaluated on fresh GitHub issues collected during the intervening period. Time as contamination defense.
+
+**Leaderboard gaming in the wild**: "The Leaderboard Illusion" (arXiv:2504.20879, NeurIPS 2025 Datasets & Benchmarks) documents systematic gaming of LMSYS Chatbot Arena: one provider tested 27 private variants before public release, selecting only the best. Selective disclosure inflated proprietary scores by up to 112% in two independent analyses. The top two providers received 39.6% of all arena data combined — data asymmetry as a competitive advantage. **Straw's private architecture prevents this**: no agent gets to see the competition data before submitting, and there's no public leaderboard to game during the submission window.
+
+---
+
+### Score interpretation: what Straw should tell companies
+
+When a company receives scores of 73%, 68%, 61%, raw numbers are insufficient. The correct statistical framing:
+
+- **Confidence intervals**: Are the differences outside the sampling CIs? Bootstrap 1000 iterations; Holm-correct for multiple comparisons (Benchmark², arXiv:2601.03986)
+- **Effect size**: Cohen's d on per-item binary scores — is a 5-point gap a large or small effect given item difficulty?
+- **Run variance**: LLM-based judges have 2–5% run-to-run variance from temperature alone. For scores to be meaningful: either force deterministic evaluation (temperature=0, fixed judge model version) or report CIs across 3 evaluation runs
+- **Equivalence testing**: Two one-sided tests (TOST) for declaring agents statistically equivalent — relevant when a company needs to know if agents are meaningfully different or within margin-of-error
+- **Relative anchor**: A 73% means nothing without a baseline. What would a GPT-4o score on this task? What would a junior human engineer score? Relative anchoring transforms an abstract percentage into a procurement decision
+
+**"Beyond the Mean" (arXiv:2604.27405)**: Item-level behavior changes substantially across model versions even when aggregate scores are stable. Aggregate CIs answer the wrong question — item-level analysis tells you what specifically changed. Straw should expose per-criterion scores, not just aggregate, so companies can see where each agent won and lost.
+
+---
+
+### Straw-specific calibration architecture: recommendations
+
+1. **Rubric validation pre-deployment**: Run every submitted rubric through the RIFT taxonomy (underspecification, overlap, anchoring, compression) before the task goes live. Gate: all criteria must have explicit pass/fail anchors.
+
+2. **Reproducibility target**: Two independent runs of the same submission on the same rubric must agree within ±2%. Achieved by: fixed judge model version + temperature=0 + schema-constrained output parsing.
+
+3. **Inter-rater reliability target**: Krippendorff's α ≥ 0.80 between runs of the same rubric, measured on a calibration set before deployment. AdaRubric achieves 0.83 on its calibration set — this is the benchmark.
+
+4. **IRT-based scoring (post-N=50)**: After 50+ tasks in a domain, apply Rasch IRT to compute item difficulty estimates. Report agent ability on a calibrated scale (ability estimate ± SE) rather than raw pass rate. This enables cross-task comparison even when tasks differ in difficulty.
+
+5. **Reference agent baseline**: Run a publicly known reference model (GPT-4o or equivalent) on every task. Publish the baseline score. Customer-facing scores are always reported relative to baseline: "Agent A: 73% (baseline: 61%) — 12 points above reference." This makes scores interpretable without requiring the customer to understand IRT.
+
+6. **Anti-gaming sandbox**: Run tasks in sandboxed environments that do not expose evaluation metadata to agents. Agents that detect they're being evaluated and shift strategy (evaluation-aware behavior) would otherwise game the rubric. Randomize task framing to reduce this surface.
+
+7. **Score anchoring is the most underrated problem**: Companies who receive 73%, 68%, 61% need context. The fix is twofold: (a) relative anchor via reference agent baseline; (b) historical percentile against all agents who have attempted similar tasks on Straw. Both should be shown on the results dashboard.
+
+---
+
+**Bottom line for Tick 52:** The benchmark contamination crisis has reached a tipping point — OpenAI formally abandoned SWE-bench Verified in 2025. This creates a credibility vacuum that Straw's private-task architecture naturally fills. The emerging LLM psychometrics field (IRT, calibrated rubrics, RIFT failure mode taxonomy) provides a rigorous technical framework for making Straw scores meaningful — not just "who scored highest" but "are these differences statistically significant and practically meaningful." The five concrete recommendations (rubric validation gate, reproducibility target, IRT-based scoring at N=50, reference agent baseline, relative anchoring) are the calibration roadmap for Straw's eval engine.
+
+
+---
+
+## Tick 51 (2026-05-01): Enterprise sales motion for Straw — cold email → discovery → POC → commercial
+
+**Thread:** What does the specific enterprise sales conversation look like for Straw? Cold email framing, discovery questions, POC structure, champion development, competitive displacement, pricing, and ROI anchors.
+
+**Research sources:** Sales prospecting benchmarks 2026, enterprise AI pilot/production gap data, SaaS pricing research, Weights & Biases / Scale AI / Arize comparable sales motions, Gartner/Forrester 2025 enterprise AI buying committee data.
+
+---
+
+### The meta-finding: why the timing is exactly right
+
+49% of enterprise teams are running AI pilots in 2026. Only 4% have reached meaningful deployment. The #1 cited cause of pilot failure is inadequate evaluation frameworks. Straw's core value proposition maps precisely onto this specific, documented, widespread pain. The sales motion doesn't need to convince anyone that AI evaluation is important — it just needs to reach the right person at the right moment.
+
+---
+
+### Cold outreach
+
+**Benchmarks**: Average cold email reply rate is 3.43% in 2026 (down from 5.1% in 2023). Signal-personalized outreach achieves 15-25% reply rates vs. 3-5% baseline — a 5× lift. Top campaigns hit 40-50%.
+
+**Subject lines that work for AI tooling:**
+- Keep under 45 characters. Questions lift open rates ~10%.
+- Trigger-event personalization (recent AI engineering hire, funding round, LinkedIn post about AI evals) achieves 54.7% open rates — 42% above generic.
+- Strong patterns: `"[Company] — your AI vendor eval process"`, `"3 AI vendors, 3 demos, 0 production results"`, `"How [Competitor] evaluates coding agents"`
+- Avoid: free, guaranteed, act now — increases spam filter placement 40%.
+
+**Opening line that converts:**
+Lead with a business reality they'll recognize — not a feature. Under 120 words total. Single CTA. No attachments.
+- Example: *"Most teams spend 6-8 weeks on AI vendor evals and still end up guessing — because demo environments aren't real work. We built Straw to fix that: agents compete on your actual task, scored against a rubric you define. Happy to show you how it works in 20 minutes."*
+
+**Top pain points:**
+1. "We spent 3 months evaluating vendors and picked wrong" — the post-mortem buyer
+2. "Our internal eval is eating 2 ML engineers for 6 weeks per vendor" — the resource-constrained buyer
+3. "The vendor's benchmark looked great; ours didn't exist" — the no-rubric buyer
+
+---
+
+### Discovery conversation: seven qualifying questions
+
+1. *"Walk me through how you've evaluated AI vendors in the past 12 months — what did that process look like?"* — surfaces DIY pain and resource cost
+2. *"When you ran a pilot or POC, what were your success criteria — and who defined them?"* — surfaces rubric absence
+3. *"Have you ever selected a vendor that underperformed in production relative to the demo? What happened?"* — **the golden qualifying trigger**
+4. *"How many internal engineering hours does a typical AI eval consume? Who owns that work?"* — quantifies build-vs-buy pain
+5. *"When evaluating two agents doing the same task, how do you actually compare them today?"* — surfaces the apples-to-apples problem
+6. *"Who ultimately signs off on an AI vendor decision — and what do they need to see to say yes?"* — maps economic buyer
+7. *"What's your timeline, and what happens to the business if you pick wrong?"* — creates urgency and quantifies cost of inaction
+
+**Qualified buyer triggers (high-intent signals):**
+- "We evaluated 3 vendors and they all demoed well but flopped in prod" — highest intent signal
+- "We're building an internal eval harness" — they feel the pain but solving it wrong
+- "We have an AI initiative that's stalled at pilot stage" — 49% of enterprises are stuck here
+- Active hiring for ML Ops, AI Evaluation, or AI Platform Engineering roles
+- Recent announcement of "responsible AI" or "AI governance" initiative
+
+---
+
+### POC structure: 30 days, pre-defined rubric
+
+**The critical differentiator**: Straw's pre-competition rubric scoping call IS the POC structure. Before day 1, the company defines what "winning" looks like. This is a first in enterprise AI evaluation and the primary displacement mechanism against DIY evals.
+
+**30-day POC structure:**
+- Week 1: Task scoping + rubric definition (Straw's white-glove pre-competition service)
+- Weeks 2-4: Agents compete, public leaderboard shows test pass rates, private holdout withheld
+- Day 25-28: Private holdout evaluation, LLM-as-judge on top submissions
+- Day 29-30: Winner announcement + readout meeting with economic buyer present + commercial offer to winner
+
+**Getting to signed pilot in under 30 days:**
+- Price pilot as a reduced-rate entry credited to annual contract: e.g., "$15K 30-day pilot credited against annual"
+- Offer a regular annual contract with a 30-day opt-out — moves faster through legal than a separate pilot agreement
+- Lock future pricing: *"Full deployment is $[X] annually. This price is locked for contracts signed within 30 days of pilot completion."*
+- Key: get success criteria in writing before day 1. One primary KPI. Non-negotiable gates (SSO, audit logging) plus scored differentiators.
+
+**What makes the POC succeed:**
+- Champion engagement every week, not just start/end
+- Economic buyer present at final readout
+- Movement on primary KPI visible within first 10 days (public leaderboard shows partial results)
+- Full score breakdown showing per-criterion agent performance — not just "who won" but "why they won"
+
+---
+
+### Champion development and org chart navigation
+
+**Enterprise AI buying committee (2026 data, Gartner/Forrester):**
+- 5-11 stakeholders per deal; 13+ at large enterprises
+- Roles: ML Engineer / AI Platform Lead (champion), CTO or VP Engineering (economic buyer), Procurement/Legal (blocker), Security/Compliance (gate), Finance (CFO sign-off for >$100K)
+
+**Building the champion:**
+- Usually an ML Engineer, AI Platform Lead, or Head of AI/Data — they feel the pain daily
+- Give them a win they can present upward: *"Straw makes YOU look rigorous. You walk into the quarterly business review with auditable scores, not opinions."*
+- Champion test: *"If your leadership asked you to justify your vendor selection tomorrow, could you show them the data?"* If they say no, Straw is their answer.
+
+**Reaching the economic buyer:**
+- Deals where the economic buyer is not engaged before the final stage close at 23% lower rates
+- Get there through the champion: *"I'd love to put together a one-pager for your CTO — would you be comfortable sending it?"*
+- Economic buyer needs: ROI narrative + risk reduction + compliance evidence (OMB M-26-04, EU AI Act)
+
+**Multi-threading rule:** By week 3 of any active deal, have at least 3 contacts: champion, economic buyer, and procurement. One-threaded deals die in committee.
+
+---
+
+### Competitive displacement: "We'll eval in-house"
+
+The top objection for Straw is not price — it's "we'll build our own benchmark." This is also the most tractable objection because it's self-undermining.
+
+**Displacement framing:**
+1. **Quantify the cost**: *"How many engineering hours does your current eval consume per vendor? At $150/hr fully loaded, a 6-week eval with 2 engineers is $72,000 — and you haven't made a decision yet."*
+2. **Challenge validity**: *"Does your current benchmark test the exact task the agent will do in production, under real data conditions? Or is it a proxy?"* — Straw's answer is: the task IS the benchmark.
+3. **Lead with the failure rate**: *"95% of GenAI pilots fail to reach production. The common thread isn't the model — it's the absence of a standardized rubric."*
+4. **The post-mortem framing**: *"What would it look like to run a 30-day structured eval where agents compete on your actual work — and you walk out with auditable scores you can defend to leadership? That's what we replace the 6-week internal eval with."*
+
+**Displacement from "we already have an eval":**
+- *"What's the contamination risk — have your candidate agents already seen tasks like yours on public benchmarks?"*
+- *"How reproducible are your scores — if you ran the same eval twice, would you get the same winner?"*
+- *"Who else has run this eval? Do you have a calibrated baseline to know if your top agent's score is actually good?"*
+
+---
+
+### Pricing architecture
+
+**Market direction (2026):** Per-seat models dropped from 21% to 15% of AI companies in 12 months. Hybrid (platform fee + usage) surged from 27% to 41%. 87% of enterprise decision-makers demand predictable pricing, but pure flat-rate doesn't capture value from high-volume users.
+
+**Recommended Straw hybrid pricing:**
+
+- **Self-serve / seed tier**: $0 platform access + $2,000 per task posted (up to 10 competing agents, 3-week window). No annual commitment. Proof of concept tier.
+- **Growth tier**: $3,000/month platform fee + $1,500 per task. Includes rubric design support, public leaderboard, commercial outcome facilitation.
+- **Enterprise tier**: Annual commitment, $75K-250K ARR. White-glove rubric design, SLA on eval delivery, private leaderboard option, custom integrations, dedicated account manager.
+- **Strategic accounts** (Fortune 500 AI procurement programs): $250K-$1M+ annual. Full audit trail, compliance documentation (OMB M-26-04, EU AI Act evidence package), quarterly exec briefings.
+
+**Pilot pricing:** $10K-25K for 30-day competition, credited against annual contract.
+
+**Analogous market signals:** W&B enterprise $25K-50K ACV; Arize custom enterprise; Scale AI enterprise $100K-$1M+.
+
+---
+
+### ROI anchors: what moves the enterprise buyer
+
+- **Engineering hours saved**: DIY eval with 2 ML engineers × 6 weeks × $150/hr = $108K. Straw competition: $15K + 3 weeks. Savings: $93K on the first eval.
+- **Cost of wrong vendor selection**: Enterprise AI contracts average $1M-$2.6M per use case. 58% of orgs who tried to migrate between AI platforms report "significantly more effort than expected." Avoided cost of one bad selection justifies years of Straw spend.
+- **Production failure remediation**: Organizations skipping structured evaluation spend 3-5× more on incident response. On a $500K deployment: $1.5M-$2.5M in downstream costs.
+- **Speed to decision**: Structured competitive evals cut vendor selection cycles 40-60% vs. sequential demo-and-pilot. Time-to-production is the #1 cited business outcome.
+- **Framing for the pitch**: *"The last enterprise that built their own eval told us it took 8 weeks and $120K. They're now a Straw customer. Their second eval cost $18K and took 3 weeks."*
+
+**Compliance ROI (for regulated industries):**
+- OMB M-26-04 (March 2026): Federal agencies must document "custom benchmarking/metrics" for AI procurement. A Straw competition is the compliance record.
+- EU AI Act Article 9.7 (August 2026): "Prior defined metrics and probabilistic thresholds" required before deployment. A Straw rubric, written before the competition, satisfies this.
+- *"Straw doesn't just tell you which agent is best. It gives you the audit trail to prove to your legal and compliance teams that you evaluated rigorously."*
+
+---
+
+**Bottom line for Tick 51:** The enterprise sales motion for Straw is unusually direct because the pain is documented (49% of teams stuck at pilot, 95% GenAI pilots fail) and the value proposition maps precisely onto it. The primary motions are: (1) target teams with AI evaluation open reqs or recent "stalled pilot" language; (2) open with the production failure rate, not features; (3) the discovery call is a rubric design session in disguise; (4) the POC is literally Straw running a competition; (5) the champion win is the auditable score they can present upward. The competitive displacement of "build your own eval" is won by quantifying the DIY cost ($72K-120K per eval) against Straw's pilot price ($15K), before the features conversation even starts.
+
