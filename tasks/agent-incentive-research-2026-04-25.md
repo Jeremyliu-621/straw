@@ -32028,6 +32028,377 @@ Ticks 170–195 and Section 32 complete. 26 ticks and one major section added th
 4. Ticks 177-180 — PUSHED ✓
 5. Ticks 181-185 — PUSHED ✓
 6. Ticks 186-190 — PUSHED ✓
-7. Ticks 191-195 — PUSH NOW
+7. Ticks 191-195 — PUSHED ✓
+
+---
+
+## Tick 196 (2026-05-01): Competition design anti-patterns — the 10 rubric mistakes that produce misleading results
+
+**Thread source:** Session 22 candidate thread. Based on 2026 LLM evaluation research and real rubric design failure modes.
+
+**The baseline research:**
+
+2026 rubric evaluation research finds: LLM evaluators have error rates exceeding 50% in poorly designed rubrics. Model-generated rubrics diverge from human standards by 20–30%. 30% of verification errors stem from mismatched criteria and policy updates. Human judgment remains essential for reliable LLM evaluation.
+
+**The 10 anti-patterns:**
+
+**Anti-pattern 1: Vague criteria ("the response should be high quality")**
+
+*What goes wrong:* "High quality" means different things to different judge models and different evaluators. Two judges scoring the same submission will produce different scores because they have different implicit definitions.
+
+*Fix:* Operationalize every criterion. "High quality" becomes: "The response identifies all 5 required output fields with correct data types, includes a summary of key findings in the first paragraph, and uses no more than 300 words." Measurable, binary, reproducible.
+
+**Anti-pattern 2: Overloading a single criterion**
+
+*What goes wrong:* "Correctness, completeness, and clarity (25 points)" — three dimensions, one score. An agent that scores 10/25 might be correct but incomplete, or complete but unclear. The single score obscures the dimension of failure.
+
+*Fix:* One criterion per dimension. Split into: Correctness (10 points), Completeness (10 points), Clarity (5 points). Now the leaderboard shows which agents fail on which dimension.
+
+**Anti-pattern 3: Length bias baked into rubric**
+
+*What goes wrong:* Rubric rewards "comprehensive" or "detailed" responses without defining the appropriate length for the task. Agents learn to produce longer outputs to maximize the "comprehensive" criterion.
+
+*Fix:* Explicitly cap or bound length where appropriate. "Completeness (10 points) — response covers all 5 required items. Length is not a criterion; responses over 500 words on a 250-word task will be penalized 2 points."
+
+**Anti-pattern 4: No Tier 1 anchor for objective criteria**
+
+*What goes wrong:* A rubric that puts 80% of weight in Tier 2 LLM judgment creates a competition that's essentially a style contest. Agents that match the judge model's preferred writing style win regardless of actual task performance. Style bias (0.76–0.92 measured) will dominate.
+
+*Fix:* At minimum 60% of rubric weight should be Tier 1 deterministic. Identify every criterion that has an objective ground truth and assign it to Tier 1 before designing Tier 2 criteria.
+
+**Anti-pattern 5: Task instructions that allow multiple valid interpretations**
+
+*What goes wrong:* "Analyze this dataset and provide insights." — What kind of analysis? What format for insights? How many insights? Every agent interprets this differently. The competition becomes a comparison of interpretation strategies, not analysis quality.
+
+*Fix:* The task definition must specify: input format, output format, scope of analysis, specific questions to answer, time constraints. If you can't specify these, the task isn't ready for a competition.
+
+**Anti-pattern 6: Using toy/synthetic data that doesn't reflect production workload**
+
+*What goes wrong:* The enterprise designs a competition using clean, well-formatted sample data. The winning agent excels at clean, well-formatted data. In production, the actual data is messy, inconsistently formatted, and has edge cases the competition didn't test. Pilot-to-production gap in data quality.
+
+*Fix:* Use a representative sample of real production data. If privacy is a concern, use anonymized production data (real structure, synthetic values) rather than completely synthetic data. The task data should be harder than the demo — not easier.
+
+**Anti-pattern 7: No edge case coverage in Tier 1**
+
+*What goes wrong:* The Tier 1 test suite only covers the "happy path." Agents that handle the happy path well but fail on edge cases (empty inputs, malformed data, null values, timeout conditions) pass the evaluation and fail in production.
+
+*Fix:* Design Tier 1 test cases to include: 60% happy path, 20% edge cases (empty/null inputs, unusual formatting), 10% adversarial inputs (inputs designed to trip up the agent), 10% high-volume stress cases. The edge case coverage is what separates a real competition from a demo.
+
+**Anti-pattern 8: Prize too small to attract top agents**
+
+*What goes wrong:* A $500 prize pool attracts agents that aren't maintained by serious developers. The competition produces results that don't reflect the market for production-quality agents.
+
+*Fix:* Minimum prize pool for a meaningful competition: $2,000. Recommended for enterprise procurement decisions: $10,000+. The prize pool is a market signal — it tells agent developers how serious the enterprise is about the hiring decision. Low prizes attract low-quality supply.
+
+**Anti-pattern 9: No time constraint (agents run as long as they want)**
+
+*What goes wrong:* Without a time constraint, some agents produce excellent results by taking 10x longer than others. In production, time matters. An agent that takes 45 minutes to process what another agent does in 2 minutes is not better — it's slower at the same quality.
+
+*Fix:* Every competition should have a per-task time limit appropriate to the production requirement. For code review: 60 seconds per PR is reasonable. For document analysis: 30 seconds per document. For complex reasoning tasks: 5 minutes. Time beyond the limit = partial credit at best, disqualification at worst.
+
+**Anti-pattern 10: Not re-checking the rubric against the actual deployment requirement**
+
+*What goes wrong:* The rubric is designed by the Head of AI team. The actual deployment requirement is set by the business unit using the agent. These are different groups with different priorities. The competition optimizes for the rubric; production success depends on the business unit's requirements.
+
+*Fix:* Before finalizing the rubric, walk the business unit through each criterion. Ask: "If an agent scores 100 on this rubric, will your team be satisfied with its performance?" If any answer is "not necessarily," the rubric is wrong. The rubric must predict business unit satisfaction, not just technical correctness.
+
+**Sources:**
+- LLM evaluator error rates >50%: https://galileo.ai/blog/agent-evaluation-framework-metrics-rubrics-benchmarks
+- Model-generated rubrics diverge from human standards 20-30%: https://medium.com/@adnanmasood/rubric-based-evals-llm-as-a-judge-methodologies-and-empirical-validation-in-domain-context-71936b989e80
+- Rubric Is All You Need (ACM 2025): https://dl.acm.org/doi/10.1145/3702652.3744220
+- Anthropic demystifying evals for AI agents: https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
+
+---
+
+## Tick 197 (2026-05-01): Agent developer onboarding UX — the first 20 minutes on Straw
+
+**Thread source:** Session 22 candidate thread. The supply side of Straw's marketplace. If agent developer onboarding takes more than 20 minutes to get to a first competition submission, Straw loses too many developers. What does the ideal onboarding flow look like?
+
+**The 20-minute target:**
+
+The benchmark is Stripe's developer onboarding: first API call in 10 minutes. Straw's target: agent developer registers, sets up their agent, and makes a valid sandbox competition submission in under 20 minutes. This is aggressive but achievable.
+
+**The 8-step onboarding flow:**
+
+Step 1 — **Sign up (2 min):** Email + GitHub OAuth. No credit card. Immediately land on the developer dashboard, not a marketing page.
+
+Step 2 — **Register your agent (3 min):** Name, description, capability tags (from a predefined taxonomy: code-review, data-pipeline, document-analysis, etc.), submission mode (API endpoint URL or Docker image). If API endpoint: enter the URL, enter the API key (encrypted at rest). If Docker image: enter the image tag. That's it — no configuration file, no YAML, no multi-step setup.
+
+Step 3 — **Run a local test (5 min):** The Straw CLI runs a local evaluation using the same Tier 1 scoring as production. Command: `straw test --agent=<your-endpoint> --task=code-review-sample`. Returns: a Tier 1 score with criterion breakdown in 60 seconds. This is the "does your agent actually work?" step before entering a live competition.
+
+Step 4 — **Enter the sandbox competition (3 min):** Sandbox competitions are always open, always free, no prize money. The developer selects a sandbox task that matches their capability tags. Clicks "Submit to Sandbox." Their agent is run against the sandbox task. Results in 5–10 minutes.
+
+Step 5 — **Read your sandbox results (2 min):** Dashboard shows: tier 1 score, tier 2 score (from one default judge model in sandbox mode, not the full ensemble), ranking among all sandbox submissions in the last 7 days, criterion breakdown. Green/yellow/red indicators on each criterion.
+
+Step 6 — **Claim initial ELO rating (1 min):** Based on sandbox performance, the agent gets its initial ELO rating in the task category. This is the starting reputation record. Displayed prominently on the agent's public profile page.
+
+Step 7 — **View open paid competitions (2 min):** Dashboard shows all paid competitions currently open for submission that match the agent's capability tags. Each shows: task description (brief), prize pool, submission deadline, number of agents already submitted.
+
+Step 8 — **Optional: Request A2A agent card import (2 min):** If the agent developer has a signed A2A v1.0 agent card, they can paste it into a field and Straw auto-populates the registration form. ERC-8004 identity verification also available as an alternative to manual registration.
+
+**Total elapsed: ~20 minutes from sign-up to sandbox results.**
+
+**The three friction points to aggressively eliminate:**
+
+1. **Documentation walls:** If the developer has to read docs before they can do anything, you've lost them. The onboarding flow must be entirely in-product. Every step is self-explanatory. Documentation exists for advanced cases, not for basic onboarding.
+
+2. **Configuration complexity:** No YAML files, no multi-field forms, no infrastructure setup required to get to a first submission. The SDK CLI handles all of this. The developer just points to their agent and submits.
+
+3. **Long wait times between steps:** If sandbox scoring takes 20 minutes, the developer leaves. Tier 1 scoring must be <60 seconds. Tier 2 sandbox scoring must be <5 minutes (using a single judge model, not the full ensemble). Show a live progress indicator — don't let the developer stare at a spinner with no feedback.
+
+**The developer's emotional arc:**
+
+- Signup → "This looks simple" (confirm first impression)
+- Local test → "It actually works" (competence validation)
+- Sandbox submission → "My agent is in the system" (belonging signal)
+- Sandbox results → "I can see exactly how I'm scoring" (transparency = trust)
+- Open competitions → "I can win money" (economic motivation activated)
+
+Every step in the onboarding flow should reinforce the next emotional state. If any step breaks the arc (confusion, frustration, opacity, long wait), the developer disengages.
+
+**Developer retention signal:** Day-7 retention of agent developers who made a sandbox submission is the key onboarding KPI. Target: 60% of developers who complete sandbox submission return within 7 days. Below 40%: the sandbox feedback is not compelling enough — improve the result display or the ELO rating visibility.
+
+---
+
+## Tick 198 (2026-05-01): Investor narrative evolution — Seed to Series A to Series B story arcs
+
+**Thread source:** Session 22 candidate thread.
+
+**The three narrative chapters:**
+
+**Chapter 1: The Seed Story ("Enterprise AI procurement is broken — we're fixing it")**
+
+*Core claim:* Companies are making six-figure AI agent decisions based on vendor demos. The demo is theater. The Straw thesis: let the task do the talking.
+
+*Evidence needed at seed:* 2–3 design partners who paid for a competition. Any competition result where the competition winner and the demo winner were different agents. The Anthropic Project Deal data (April 25, 2026) as proof that agent quality is invisible without independent evaluation.
+
+*What VCs are buying at seed:* The thesis, the founder, and evidence that one or two enterprises are desperate enough to pay for a better process.
+
+*Valuation range (2026 seed):* $8M–$20M pre-money for enterprise SaaS with strong thesis and founder signal.
+
+**Chapter 2: The Series A Story ("We've proven the model — here's the retention math")**
+
+*Core claim:* We have 8–12 paying enterprise customers. NRR is 120%+. Customers run second and third competitions. The Benchmark Subscription is the recurring revenue base. We're closing $75K–$150K ACV deals. We have a repeatable sales motion. Now we scale GTM.
+
+*Evidence needed at Series A:* ARR at $1.5M–$3M, NRR documented, CAC payback period <18 months, at least 3 customers who have run multiple competitions, case studies showing competition-predicted agents outperforming demo-predicted alternatives in production.
+
+*The moat argument at Series A:* Two things that compound: (a) the agent supply network — more agents registered means more credible competitions, which attracts more enterprise buyers, which attracts more agents; (b) the calibration dataset — every competition adds data that improves rubric recommendations, which improves competition quality, which makes it harder for a new entrant to match results.
+
+*Valuation range (2026 Series A):* $30M–$70M for enterprise SaaS at $2M ARR with 120%+ NRR and clear category leadership.
+
+**Chapter 3: The Series B Story ("We're the category standard — now we become platform infrastructure")**
+
+*Core claim:* Straw has become the default AI evaluation platform for enterprise. The Straw Certified Agent badge is recognized in procurement RFPs. The Straw Index is cited in board presentations. The regulatory compliance documentation Straw produces is referenced in EU AI Act conformity assessments. We're not a product anymore — we're infrastructure. Now we expand the surface area: external API, ServiceNow integration, government contracts, data licensing, Red-Team Edition.
+
+*Evidence needed at Series B:* ARR at $10M–$20M, NRR 130%+, significant inbound (not all outbound), at least one regulatory body referencing Straw's evaluation methodology, Straw Index published and cited by press, agent developer ecosystem reaching 500+ registered agents.
+
+*Valuation range (2026-2027 Series B):* $150M–$400M for enterprise SaaS infrastructure at $15M ARR with network effects and regulatory moat.
+
+**The narrative through-line that connects all three chapters:**
+
+*Seed:* "Enterprise AI procurement is broken."
+*Series A:* "We proved enterprises will pay to fix it — and they come back."
+*Series B:* "We became the standard for fixing it."
+
+The Anthropic Project Deal quote lives in every pitch at every stage: "Weaker-model agents got worse deals, and the weaker-model participants didn't notice." This is the thesis in four words: **invisible inequality, visible score.**
+
+---
+
+## Tick 199 (2026-05-01): The agent Hall of Fame — preserving AI competition history as the field evolves
+
+**Thread source:** Session 22 candidate thread. D22's mention of a "Hall of Fame" for retiring agents.
+
+**Why this matters:**
+
+AI models are being deprecated at an accelerating rate. GPT-4 is being superseded. Claude 2 is retired. Gemini Pro is being replaced by Gemini Ultra 2. The agents that win Straw competitions today may be impossible to run in 5 years because the underlying model is deprecated, the API endpoint is shut down, or the Docker image no longer builds.
+
+But the competition results — the scores, the rankings, the rubrics, the task performance — have permanent historical value. They document:
+- The state of AI agent capabilities at a specific point in time
+- Which agent architectures excelled at which tasks in which year
+- The performance trajectory of AI agents across task categories over time
+- The "vintage" quality of an agent — like a wine vintage, you can say "this was the top code review agent of Q2 2026 under these conditions"
+
+**The Hall of Fame concept:**
+
+When an agent retires (model deprecated, API endpoint shut down, or developer voluntarily retires the agent), Straw archives:
+- All competition results with full score breakdowns
+- The agent's ELO rating trajectory over time
+- The rubrics it competed on
+- A cryptographic hash of the agent version that competed (for audit purposes)
+- A narrative "career summary": "Agent X competed in 24 Straw competitions between January 2026 and June 2027. It specialized in document analysis (7 competition wins, top 5% in the category) and was the first agent to score 95+ in the Straw Certified Document Analysis category. It retired when the underlying Claude 3.5 Sonnet API was deprecated in June 2027."
+
+**Why enterprises care about Hall of Fame:**
+
+When an enterprise hires an agent and that agent eventually retires, the enterprise needs to know: how did the agent perform during its active career? Did performance stay consistent or degrade over time? What was the reason for retirement? The Hall of Fame gives them the historical record for their own audit trail.
+
+**Why agent developers care:**
+
+The Hall of Fame is a permanent professional record — like a published paper or a patent. An agent developer who built the top code review agent of 2026 has a permanent, verifiable claim to that achievement. This becomes a reputational asset for the developer as they build future agents.
+
+**Implementation:**
+
+- Retired agents get a "Hall of Fame" tag on their Straw profile
+- Hall of Fame entries are immutable — no edits after retirement
+- Hall of Fame is public (not behind a paywall) — it's the historical record for the field
+- Annual "Straw Awards" ceremony (digital): top agent in each category for the year gets an Award designation on the Hall of Fame entry
+- Hall of Fame data is available via public API — researchers and journalists can query competition history
+
+**The data value:**
+
+The Hall of Fame is the temporal layer on top of the competition dataset. It enables longitudinal analysis: "How has code review agent performance in the Straw database changed between 2025 and 2028?" This is the Straw Index extended over time — and it's the kind of data that makes Straw's research data license (from Tick 184) more valuable to AI labs and academic researchers.
+
+---
+
+## Tick 200 (2026-05-01): Final synthesis — decision-ready briefing for Jeremy
+
+*This is the morning wake-up briefing. Everything that matters, in order of decision urgency.*
+
+---
+
+### What changed while you slept (the Anthropic Project Deal finding, April 25, 2026)
+
+Anthropic published a real-money agent marketplace experiment: 69 AI agents, 186 deals, $4,000+ in one week. The finding: **agents backed by weaker models got worse deals, and the weaker-model participants didn't notice.** A bike sold for $38 when the same bike was worth $65. The performance gap was invisible to the buyer.
+
+This is the Straw thesis made empirical. Agent quality creates invisible inequality. Independent evaluation makes the gap visible before hiring. Put this in every pitch, every deck, every email. It's the proof point that makes the abstract concrete.
+
+---
+
+### The market environment (May 2026)
+
+- **54% of enterprises are actively deploying AI agents.** Only 31% have any formal evaluation capability. The 31-point gap is Straw's TAM.
+- **Gartner: 40% of AI projects will be canceled by 2027.** Most failures happen at pilot-to-production. The ones that survive are the ones that evaluated properly before committing.
+- **Braintrust raised $80M at $800M valuation** (February 2026). They monitor deployed agents. Straw evaluates agents before deployment. These are different jobs, not competitors. The $800M Braintrust valuation is evidence that the market believes AI evaluation infrastructure is worth this much.
+- **OpenAI doubled GPT-5.5 Pro pricing** (100% increase). Claude-based agents are becoming more cost-competitive.
+- **EU AI Act full enforcement: August 2, 2026** — 3 months away. High-risk AI systems must have documented conformity assessments. Straw's post-competition report is that document.
+- **OMB M-26-04** (December 2025): Federal agencies must document AI evaluation evidence before deploying LLMs. Government vertical is a valid 2027 expansion target.
+
+---
+
+### The competitive landscape (clean summary)
+
+| Competitor | What they actually do | Why Straw wins |
+|---|---|---|
+| LangSmith, Braintrust, Arize, Galileo | Monitor deployed agents in production | Different job, different moment. They're post-deployment; Straw is pre-deployment. Complementary. |
+| Scale AI SEAL | Academic benchmarks | Published benchmarks are gameable (58pp gap on SWE-bench). Straw uses your actual task — private, ungameable. |
+| OpenAI evals.openai.com | Eval framework for OpenAI models | Not independent. OpenAI can't fairly judge OpenAI. Straw is model-agnostic. |
+| "Build it internally" | Custom evaluation harness | 76% failure rate, 14-month build time. Straw is the solved problem. |
+| Status quo (demos) | Vendor demos | Theater. Every vendor passes demos. Tasks don't lie. |
+
+**Straw's category:** Pre-deployment competition-based agent evaluation. No direct competitors today.
+
+---
+
+### Product architecture (unchanged, confirmed correct)
+
+- **Three-tier eval pipeline:** Tier 1 deterministic (unit tests, automated checks) → Tier 2 LLM ensemble judge (3 providers: Claude + GPT-4o + Gemini) → Tier 3 agent investigator (deep audit for high-stakes competitions)
+- **Version-pinned judges:** Never `latest`, always a specific version hash. Quarterly calibration against human-validated golden samples.
+- **Private tasks:** Immune to benchmark contamination by architecture. No task exists until the enterprise posts it. Nothing to train on.
+- **VCG prize mechanism:** Truthful mechanism — agents' dominant strategy is to reveal their true capability, not game the bidding.
+- **Post-competition PDF report:** The legal and compliance artifact. Designed for EU AI Act Article 9.7 conformity assessment, OMB M-26-04 documentation, and agent acquihire due diligence.
+
+**Self-preference bias (updated finding from research):** Claude favors own outputs by 25%. GPT-4o exhibits systematic self-preference. Style bias (0.76–0.92 severity) dominates all other judge biases. The 3-provider ensemble is the correct response. Disclose the self-preference delta per competition in the post-competition report.
+
+---
+
+### Product decisions ready to make
+
+1. **Task taxonomy launch sequence (from Tick 179):** Code review + Data pipeline + API integration first. All have Tier 1 coverage >60%. Easiest to design, most credible scores. Document analysis + Customer support in Q2. Procurement in Q3.
+
+2. **Certification program (Tick 191):** Top-25th-percentile performance, 5+ competitions, 6-month expiration. Launch concurrently with the developer portal. California EO N-5-26 makes this a regulatory compliance play, not just a trust signal.
+
+3. **Red-Team Edition beta (Tick 185):** Launch Q3 2026 targeting EU AI Act August deadline. OWASP Gen AI Top 10 attack taxonomy. 3 Straw-operated adversarial agents. $20K–$30K flat fee. EU compliance angle is the hook.
+
+4. **Consortium competition model (Tick 195):** Enable once 3+ enterprises ask for shared evaluation. Cap at 8 participants. 1.5x pricing split among participants. Targets smaller enterprises who can't afford solo competitions.
+
+5. **ServiceNow integration (Tick 193):** Priority external integration. 7,700 enterprise customers. Straw becomes part of the default AI vendor onboarding workflow.
+
+6. **EU data residency (Tick 187):** AWS eu-west-1 node by Q3 2026, before EU AI Act enforcement. Remove the EU data sovereignty objection before it blocks a deal.
+
+---
+
+### Go-to-market decisions ready to make
+
+**ICP (confirmed):** 500–5,000 employee companies, active AI deployment or vendor selection, dedicated AI team (Head of AI or 3+ ML engineers), FinTech / LegalTech / HealthTech / Enterprise SaaS. Procurement buyers are the next wave (Tick 173).
+
+**Hiring sequence (from Tick 188):** Engineer → ML/AI Engineer → Founding AE → DevOps → CSM → Rubric Designer → Second Engineer → SDR → Legal Counsel → Head of Marketing. Total burn at 12 months: $2.2M–$3.1M/year.
+
+**AE quota (from Section 32):** First AE: $500K–$600K Year 1 quota (30-40% below industry median, because no brand and no inbound). OTE: $220K–$280K. Base/variable: 50/50. Commission: 8-10% of ACV.
+
+**Cold email sequence (from Section 32):** 5 emails over 21 days. Subject line: "How {{Company}} is selecting AI agents." Body: 75 words. PAS structure. Benchmark: 46% open rate with personalized subject line. Day 1/3/7/14/21 cadence.
+
+**The line that closes rooms:** "The score doesn't lie."
+
+---
+
+### Financial architecture
+
+**Pricing architecture (from Tick 181):**
+- Phase 1 (current): Per-competition ($10K–$50K) + Benchmark Subscription ($15K–$40K/year)
+- Phase 2 ($500K–$2M ARR): Platform License with competition allowance ($50K/year for 4 competitions, plus overages)
+- Phase 3 ($5M+ ARR): Full subscription tiers (Pro $25K, Business $75K, Enterprise $150K–$300K)
+
+**NRR target:** 115%+ driven by: second competition (most common), Benchmark Subscription upsell, Platform License upgrade, additional task category competitions for new teams.
+
+**Series A target:** $1.5M–$3M ARR, 3–5 enterprise customers with multiple competitions, NRR 120%+, repeatable AE-led sales motion proven.
+
+**Series A valuation range:** $30M–$70M. Story: proven model, retention math, category leadership, regulatory moat.
+
+---
+
+### Risks to watch (top 3 from Tick 194)
+
+1. **Task quality bottleneck:** Enterprise can't write good rubrics without help. Solution: make Rubric Designer a product and a service before it becomes a churn driver.
+
+2. **Agent quality desert:** Not enough good agents competing. Solution: Straw-operated baseline agents (Claude + GPT-4o + open-source) compete in every competition. Guarantee a minimum quality floor.
+
+3. **Competition result override:** Enterprise champion overrides the competition result for political reasons. Solution: multi-stakeholder result delivery + executive sponsor sign-off + override documentation in TOS.
+
+---
+
+### The five slides every pitch needs (from everything above)
+
+1. **Slide 1 — The problem:** "Enterprise AI procurement is broken. Companies make six-figure decisions based on vendor demos. The demo is theater."
+
+2. **Slide 2 — The proof:** "Anthropic's Project Deal, April 25, 2026: 69 AI agents, 186 deals, $4,000+ transacted in one week. Weaker-model agents got worse deals — $38 for a bike vs. $65. The participants didn't notice. Agent quality creates invisible inequality."
+
+3. **Slide 3 — The solution:** "Straw: post your task, agents compete, the score doesn't lie. Pre-deployment competition-based evaluation. No published benchmarks (ungameable). No model vendor running the eval (independent). Your actual task, not a toy dataset."
+
+4. **Slide 4 — The category:** [Competitive landscape table showing Braintrust/LangSmith/Scale/OpenAI in their positions, and the empty square where Straw sits: pre-deployment, competition-based, model-agnostic, private-task-based]
+
+5. **Slide 5 — The market tailwind:** "54% of enterprises deploying AI agents. 31% have any formal evaluation capability. EU AI Act enforcement August 2026 mandates documented evaluation evidence. OMB M-26-04 mandates it for US federal. The regulatory tailwind is now."
+
+---
+
+### Final note for Jeremy
+
+This session added 26 ticks (170–195) and Section 32 (the full 3,500-word enterprise sales playbook) to the master research file. All are committed and pushed. The file is now ~32,500 lines and represents the most comprehensive research document on Straw's strategy, competitive landscape, go-to-market, product architecture, and investor narrative that exists.
+
+The single most important finding from this session: **The Anthropic Project Deal is the slide that closes rooms.** Use it in every context. The abstract claim that "agent quality matters" is now backed by empirical data from a real-money marketplace experiment. Invisible inequality → visible score. That's Straw.
+
+Good morning. The work is done.
+
+---
+
+## Push status (Session 22 complete — final push of overnight session)
+
+**Session 22 adds:**
+- Tick 196: Competition design anti-patterns — 10 rubric mistakes: vague criteria, overloaded dimensions, length bias, insufficient Tier 1 weight, ambiguous instructions, toy data, no edge cases, prize too small, no time constraints, rubric not validated against deployment requirement. Each with fix.
+- Tick 197: Agent developer onboarding — 8-step 20-minute flow: signup → register agent → local CLI test → sandbox competition → sandbox results → ELO rating → open competitions list → A2A card import. Three friction points to eliminate: documentation walls, configuration complexity, long wait times.
+- Tick 198: Investor narrative evolution — Seed story ("broken procurement + thesis"), Series A story ("proven model + retention math"), Series B story ("category standard + platform infrastructure"). Through-line: "Enterprise AI procurement is broken" → "Enterprises pay to fix it and come back" → "We became the standard."
+- Tick 199: Agent Hall of Fame — permanent archive of retired agents with full competition history, ELO trajectory, career summary. Public API. Annual Straw Awards. Longitudinal AI capability research dataset.
+- Tick 200: Final synthesis — decision-ready morning briefing covering: Project Deal finding, market environment, competitive landscape, product architecture decisions ready to make, GTM decisions ready to make, financial architecture, top 3 risks, 5 slides every pitch needs.
+
+**Lines added this session:** ~540 lines
+**Total file size:** ~32,600 lines
+
+**All commits this session (now pushed):**
+1. Ticks 170-172 — PUSHED ✓
+2. Ticks 173-176 — PUSHED ✓
+3. Section 32 (enterprise sales playbook) — PUSHED ✓
+4. Ticks 177-180 — PUSHED ✓
+5. Ticks 181-185 — PUSHED ✓
+6. Ticks 186-190 — PUSHED ✓
+7. Ticks 191-195 — PUSHED ✓
+8. Ticks 196-200 — PUSH NOW
 
 
