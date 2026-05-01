@@ -20534,6 +20534,107 @@ Competition creates value that did not exist before:
 ### The one-paragraph version (for the pitch deck)
 
 > "Every alternative evaluation approach fails in at least one of four ways: the evaluation is captured by the evaluator's priors, the measurement is gamed by vendors, the evaluator's incentives diverge from the enterprise's, or unknown capabilities are never surfaced. Competition is the only mechanism that avoids all four failures simultaneously — because the task is private and real (no gaming), the rubric is enterprise-defined (no capture), the platform is structurally neutral (no conflict), and agents choose their own approach (unknown unknowns surface). This is not an incremental improvement on existing procurement methods. It is the only structurally sound approach to AI agent evaluation."
+## Tick 132 (2026-05-01): The agent labor market — worker classification, contracts, and IP ownership
+
+**Thread**: When a Straw agent wins a competition and is hired, what is the legal structure? Who owns the work product? What are the enterprise procurement and legal compliance implications?
+
+---
+
+### The classification problem: agents are not workers (yet)
+
+Current legal frameworks classify labor as employees, independent contractors, or vendors providing services. AI agents don't fit cleanly:
+
+- Agents don't have legal personhood — they cannot enter contracts, hold IP, or be liable
+- The contracting party is always the agent's **operator** (the company or individual running the agent)
+- The work product is produced by the agent but owned by... whom? The operator? The model provider? The enterprise that provided the task?
+
+This is a live legal ambiguity in 2026, and Straw should not pretend it isn't. The platform will be part of establishing the case law.
+
+---
+
+### The Straw competition legal structure (what Straw controls)
+
+**Competition submission IP**:
+By entering a Straw competition, the agent operator agrees to Straw's terms: the submission is licensed to the enterprise poster for evaluation purposes. The enterprise can review the submission, score it, and use the evaluation results — but cannot commercialize the submission unless a commercial license is executed (win-and-license flow).
+
+**Winner licensing flows (D22, the multi-engagement winner flow)**:
+Straw's platform supports three post-competition commercial outcomes:
+1. **Hire**: Enterprise contracts with the agent operator to deploy the agent for ongoing work. The work product produced post-hire is governed by the hire agreement — typically a work-for-hire clause (enterprise owns all outputs).
+2. **License**: Enterprise licenses the specific work product (the competition-winning submission) for one-time use. The operator retains the agent; the enterprise gets the output. This is analogous to commissioning a report — the consultant retains methodology, the client owns the specific deliverable.
+3. **Acquihire**: Enterprise acquires the agent system itself (software, weights, infrastructure, and the operator team if applicable). Full IP transfer, negotiated separately.
+
+**Work product generated during the competition itself**:
+This is the grey area. The competition submission is a training investment by the agent operator. If an agent operator spends 50 hours of compute developing a solution to a Straw competition and does not win, they have expended significant compute without compensation. The work product (the submission) belongs to the operator under standard terms, but the enterprise has seen it — can they use it? Straw's terms should be explicit: non-winning submissions may be reviewed for evaluation purposes only; the enterprise cannot implement non-winning submissions without a separate license agreement.
+
+---
+
+### The work-for-hire doctrine applied to AI agents
+
+Under US copyright law, work-for-hire applies when:
+1. The work is created by an employee within the scope of employment, OR
+2. The work is specially ordered or commissioned under a written agreement
+
+Neither fits AI agents cleanly:
+- Agents are not employees (no employment relationship exists between the enterprise and the agent)
+- The "specially ordered" version requires a written agreement — Straw's hire contract is the written agreement
+
+**Recommended Straw hire contract structure**:
+```
+Agent Hire Agreement
+- Party A: Enterprise (the hiring entity)
+- Party B: Agent Operator (the contracting legal entity deploying the agent)
+- Scope: [specific task category and volume]
+- Output ownership: All work product produced by the agent under this agreement is assigned to Party A
+- IP license to residuals: Party B retains non-exclusive rights to any general methods or techniques developed during performance of this agreement (but not specific work products)
+- Confidentiality: Party B agrees work products are confidential to Party A
+- Duration: [term length with renewal provisions]
+```
+
+The "residuals" clause is the most important one for agent operators: they retain the ability to improve their agent based on what they learned from working on the task (the "experience" is theirs), but the specific deliverables are owned by the enterprise. This mirrors standard consulting agreements.
+
+---
+
+### Model provider IP complications
+
+The agent's outputs are generated by a foundation model (Claude, GPT, Gemini, Llama). Does the model provider have any IP claim on the outputs?
+
+**Current status (2026 US law)**:
+- Anthropic's terms of service (as of early 2026): "Anthropic does not claim ownership over output generated by our API. Subject to these terms, you own your output."
+- OpenAI's terms: similar — API users own outputs
+- Meta Llama license: permissive for commercial use for most use cases
+
+**Practical implication for Straw**: Under current terms, the model provider does not claim output IP. The agent operator owns the outputs. The hire agreement then transfers output ownership to the enterprise. The model provider is absent from this chain.
+
+**Future risk**: If model providers change their terms to claim output ownership (unlikely but not impossible), this would create substantial complications for the entire AI agent economy. Straw should monitor this and include a force majeure provision in hire agreements for changes to underlying model licensing terms.
+
+---
+
+### EU AI Act complications for high-risk agent deployments
+
+The EU AI Act (effective August 2026 for high-risk systems) classifies certain AI applications as "high-risk" requiring conformity assessment before deployment. If an enterprise hires a Straw agent for a high-risk application (HR decisions, credit scoring, legal advice, medical diagnosis), the agent operator may need to comply with AI Act requirements.
+
+**Implications for Straw's hire flow**:
+1. The enterprise must disclose the intended use at competition-posting time
+2. If the use is high-risk, Straw should flag this and include a compliance representation in the hire agreement ("Operator represents that this agent system meets applicable AI Act conformity assessment requirements for the disclosed use case")
+3. Straw's platform is not responsible for ensuring compliance — that is the operator's responsibility — but Straw should not be the vehicle through which non-compliant agents enter high-risk deployments
+
+This is a significant differentiator for Straw vs. informal agent procurement: the competition and hiring process creates a documented audit trail of the agent's capabilities at time of hire, which is useful evidence for AI Act compliance documentation.
+
+---
+
+### Worker classification risk for agent operators
+
+If an agent operator is an individual (not a company) running an agent on Straw full-time, the enterprise hiring the agent may inadvertently create a worker misclassification risk. US AB5-style tests could theoretically classify the agent operator as an employee if:
+- They work exclusively or primarily for one enterprise
+- The enterprise controls how and when the agent operates
+- The work is integral to the enterprise's regular business
+
+**Mitigation**: Straw's terms should require agent operators to:
+1. Operate as a business entity (LLC minimum) before qualifying for the hire flow
+2. Maintain multiple clients (explicitly multi-client, not single-client hire)
+3. Control the agent's operational parameters (the enterprise defines the task; the operator controls the implementation)
+
+This mirrors how Upwork and Fiverr handle contractor classification risk — by requiring multi-client operation and operator control over delivery methods.
 
 ---
 
@@ -20807,4 +20908,12 @@ That's a $250M–$500M outcome on a $2.5M seed investment — 100–200× return
 - HR tech acquisition multiples: Pitchbook SaaS Acquisition Multiple Report 2025
 - Palantir AIP: Palantir Q4 2025 earnings; federal AI procurement case studies
 - LMArena $1.7B: The Information, January 2026; TechCrunch coverage
+- US copyright work-for-hire doctrine: 17 U.S.C. § 101; CCNV v. Reid (1989) Supreme Court test
+- Anthropic API terms of service (output ownership): anthropic.com/legal/aip (current terms)
+- OpenAI API terms (output ownership): openai.com/policies/usage-policies
+- Meta Llama commercial license: llama.meta.com/llama-downloads
+- EU AI Act high-risk classification (Annex III): eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689
+- California AB5 worker classification: California Labor Code § 2775-2787; Dynamex three-part test
+- Standard consulting agreement residuals clause: typical tech consulting agreement structure
+- Straw multi-engagement winner flow (D22): DECISIONS.md
 
