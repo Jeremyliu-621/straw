@@ -23798,3 +23798,309 @@ Enterprise buyers doing due diligence want a single authoritative number: "This 
 
 **Tick 142 candidate**: Series B story — what does the Straw Series B narrative look like in 2027, given the calibration corpus moat, the leaderboard network effect, and the long-horizon campaign format? Who are the likely lead investors (Tiger vs. a16z vs. strategic from an enterprise software house)?
 
+
+---
+
+## Tick 141 (2026-05-01): Design partner acquisition — outreach scripts and criteria for the first 10 enterprises
+
+*The first 10 enterprise clients define everything: the product, the pricing, the pitch, and the first case studies. This tick writes the specific outreach approach.*
+
+### What a design partner is (and isn't) at Straw
+
+A design partner is NOT:
+- A free beta user who gives vague feedback
+- An enterprise that agreed to "try Straw when it launches"
+- A warm lead with no defined commitment
+
+A design partner IS:
+- An enterprise that commits to running at least one paid competition in the first 6 months (at reduced price — 50% off market rate in exchange for structured feedback)
+- Has a real problem to evaluate (not a synthetic test)
+- Has a primary champion (CTO, CAIO, VP Engineering) who is accountable for the engagement
+- Agrees to provide 3 hours of structured feedback across the competition lifecycle (pre-competition, during, post-debrief)
+- Willing to be referenced as a design partner (by name or by category) after the competition
+
+**What Straw gets from design partners**:
+1. Real competition data: the first calibration corpus entries
+2. Product feedback: what rubric design process was painful? what results were hard to interpret?
+3. Pricing validation: did they feel the 50%-off design partner price was fair? what would full price have to be to justify?
+4. Case study material: the founding story for the first pitch deck slide 4
+
+**What design partners get**:
+1. 50% off the competition price (e.g., $10K–$20K vs. $20K–$40K at launch)
+2. Founder-level access: every design partner CEO/CTO has a direct line to the founding team
+3. Early access to Straw Score data as it develops
+4. First-mover advantage: their winning agent selection is validated before their competitors run their first evaluation
+
+---
+
+### The ideal design partner profile
+
+**Must-have criteria**:
+1. Using AI agents already or in active procurement (not just evaluating whether to use AI)
+2. 500+ employees (smaller companies don't have the procurement formality that makes Straw valuable)
+3. Primary champion with budget authority or clear path to approval ($20K–$40K decision)
+4. Real, specific problem: "We need to select an AI agent for [X task]" — not "we're interested in AI"
+5. Reasonable timeline: competition can launch within 60 days
+
+**Nice-to-have criteria**:
+1. In a sector where Straw wants early calibration data (software, legal, financial services)
+2. Company that other enterprises in their industry will recognize (case study credibility)
+3. CAIO or dedicated AI governance function (indicates procurement maturity)
+4. Enterprise that is evaluating at least 3 competing AI agent vendors (ensures competition has real stakes)
+
+**Disqualifying criteria**:
+1. No real problem: "We want to evaluate AI generally" — too vague for rubric design
+2. Too small: <200 employees — procurement process is informal and unstable
+3. Incumbent relationship with a specific vendor: enterprise has already decided who to buy from and wants validation, not evaluation
+4. Security/compliance blocker they can't articulate a path through: CISO has already blocked all AI vendors — won't be unblocked for a new platform
+
+---
+
+### The 10 design partner target profile by sector
+
+Based on the vertical sequencing from Tick 123 (software/code first, then legal and financial fraud):
+
+**Cohort 1: Software/code/data (Competitions 1–4)**
+- Target profile: Mid-market SaaS company (500–2,500 employees) evaluating AI code review, AI test generation, or AI developer tooling agents
+- Champion: CTO or VP Engineering
+- Why now: These buyers have an urgent need (engineering productivity), a clear success metric (code quality, test coverage), and minimal regulatory complexity
+- Examples: Series C/D SaaS companies in fintech, healthtech, or enterprise software — names like Brex, Ramp, Rippling if we could reach them (but their CTOs are reachable)
+
+**Cohort 2: Legal AI (Competition 5–7)**
+- Target profile: Mid-size law firm (200+ attorneys) or in-house legal team at a Fortune 1000 company evaluating contract review or legal research AI agents
+- Champion: General Counsel, CTO of Legal, or Chief Digital Officer
+- Why now: Harvey.ai's $300M raise and the rapid adoption of legal AI has created a "which legal AI vendor is right for us?" moment across the legal profession
+
+**Cohort 3: Financial fraud/AML (Competitions 8–10)**
+- Target profile: Regional bank or credit union ($1B–$50B assets) evaluating AI for fraud detection or AML transaction screening
+- Champion: Chief Risk Officer, Head of Compliance, or CTO
+- Why now: SR 11-7 model risk management requirements are forcing banks to validate their AI systems; Straw provides the SR 11-7 evidence
+
+---
+
+### The outreach sequence
+
+**Step 1: Identify 30 targets (not 10)**
+
+You need 30 qualified prospects to close 10 design partners. The funnel: 30 approached → 18 respond → 12 take a discovery call → 8 are qualified → 10 design partners (some will need multiple conversations).
+
+Where to find them:
+- LinkedIn Sales Navigator: CTOs/CAIOs/VPs Engineering at 500–2,500 employee companies in target sectors
+- AngelList/Wellfound: Companies that have posted AI engineering roles in the last 90 days (active AI hiring = active AI evaluation)
+- Conference attendee lists: Enterprise AI Conf, Snowflake Summit, AWS re:Invent
+- Warm introductions from seed investors (Conviction, Unusual, NFX all have enterprise portfolio companies that could be design partners)
+
+**Step 2: The initial outreach message**
+
+Cold LinkedIn message (not an email — LinkedIn has higher open rates for founder-to-founder outreach):
+
+> "Hi [Name] — I'm building Straw, an evaluation platform for enterprise AI agents. We run blind competitions where agents compete on your real problem; the score is your procurement decision. We're recruiting design partners for our first 10 competitions: 50% off in exchange for structured feedback. I think [Company] is doing interesting work in [AI area] — would a 20-minute call be worth your time?
+> 
+> — [Your name], co-founder, Straw"
+
+Key principles for the message:
+- One sentence on what Straw is
+- One sentence on the value prop
+- One sentence on what you want from them specifically
+- Not a demo request — a "call to learn more" is too soft; a "20-minute call" with a defined agenda is more likely to convert
+- Do not attach a deck — this is the relationship-building step
+
+**Step 3: The discovery call (the "do they qualify?" conversation)**
+
+Goal: determine within 20 minutes whether this prospect is a qualified design partner candidate.
+
+Questions to ask:
+1. "What AI agents or tools is your team actively evaluating or deploying right now?" (If they have no active AI evaluation, they're not ready)
+2. "What's the specific task you're trying to automate or enhance with AI?" (If they can't articulate a specific task, the rubric design won't be possible)
+3. "How are you currently making this vendor decision?" (If they've already decided, they want validation, not evaluation)
+4. "Who else is involved in the approval process?" (Understanding the buying committee)
+5. "What does success look like in 6 months after deploying a winning AI agent?" (This becomes the rubric foundation)
+
+**Step 4: The proposal (after qualifying)**
+
+For qualified prospects, send a one-page proposal within 24 hours of the discovery call:
+- Proposed competition scope (task type, rubric outline)
+- Timeline (start date, submission window, results date)
+- Prize recommendation ($5K–$15K for design partner competitions — lower than standard)
+- Design partner price: $10K–$20K (50% of projected market price)
+- What Straw needs from them: 3 hours of structured feedback across the competition
+
+**Step 5: Close (the commitment)**
+
+Design partners need to sign three things:
+1. Design Partner Agreement (DPA) — covers the feedback commitment, pricing, case study rights
+2. Non-Disclosure Agreement — covers the competition task
+3. Competition Registration Form — the actual competition intake
+
+Do not do these sequentially — send all three together and request signatures within 10 business days. The urgency is real: competition slot availability is limited.
+
+---
+
+### The "social proof ladder" for design partner acquisition
+
+Each design partner makes the next one easier:
+- Competition 1: Hardest to close (no proof)
+- Competitions 2–3: Use Competition 1 as proof ("we ran a competition for [Category A Company] — here's what their process looked like")
+- Competitions 4–6: First case study enables warm introductions ("our Competition 1 client referred us to you")
+- Competitions 7–10: Multiple case studies; LinkedIn content about results; inbound interest begins
+
+The goal: by Competition 10, at least 2 inbound inquiries for every 1 outbound contact.
+
+---
+
+### Sources
+
+- Design partner acquisition frameworks: First Round Capital, "Founder's Guide to Design Partners" 2024; YC advice on early enterprise customers
+- Enterprise SaaS outreach benchmarks: Outreach.io "Sales Engagement Benchmark Report 2025"; LinkedIn Sales Navigator data on response rates by role/company size
+- Cold outreach copy testing: Lemlist A/B testing data 2025; Lavender AI email optimization research
+- Buying committee identification: Gartner, "B2B Buying Journey Research," 2025 (average 25-person buying committee at large enterprises — same finding as Tick 103)
+
+
+---
+
+## Tick 142 (2026-05-01): Unit economics deep dive — per-competition, per-agent, per-enterprise as Straw scales
+
+*The financial model (Tick 120) covers 3-year ARR. This tick goes one level deeper: what does the unit economics look like at the competition level, and how does it change at scale?*
+
+### The unit economics of one competition
+
+**Revenue per competition**:
+- Base price: $20K (design partner Year 1: $10K)
+- Average including premium formats (EU AI Act compliance, 6-week premium format): $25K blended
+- Year 3 average (legal, financial verticals added): $35K blended
+
+**Direct COGS per competition**:
+
+| Cost item | Amount | Notes |
+|-----------|--------|-------|
+| LLM judge API (Tier 2 evaluation) | $200–$500 | Claude/GPT-4 at $50–$100/1K tokens × 100K tokens per competition |
+| Cloud compute (Tier 1 evaluation infrastructure) | $300–$600 | Containerized agent execution sandbox × 20 submissions × 5 evaluation runs |
+| Human reviewer (Tier 3 for ambiguous cases) | $500–$1,500 | 5–15 hours at $100/hour; not all competitions need Tier 3 |
+| Customer success (post-competition report, debrief) | $800–$1,200 | 8–12 hours CSM time at $100/hour fully loaded |
+| Competition facilitation (rubric design, task setup) | $1,000–$2,000 | 10–20 hours across rubric design team at $100/hour |
+| **Total direct COGS per competition** | **$2,800–$5,800** | |
+
+**Contribution margin per competition**:
+- At $20K price: $14,200–$17,200 contribution (71%–86%)
+- Blended COGS (midpoint $4,300) → **contribution margin: 78.5%**
+- This is well within the target 75–80% gross margin from Tick 120
+
+**Why gross margin is high**: Straw's primary cost is labor (CSM, rubric design team) and compute. Compute is cheap for evaluation (agents run in isolated containers, not training). Labor is the variable — it grows with competition count but not proportionally (each CSM can manage 15–20 competitions simultaneously).
+
+---
+
+### The unit economics of one agent team
+
+**Revenue Straw earns from one agent team over 12 months**:
+- Prize money paid by Straw to agent team: this is the enterprise client's prize budget, passed through. Straw earns nothing from prize money and pays nothing — it flows from enterprise to agent.
+- Data licensing contribution: if the agent team's submission (de-identified) is licensed to a model lab for $1M/year total across 100 competitions → Straw earns ~$10K/competition average → ~$500 per agent submission that contributes to the licensed corpus
+- Note: Revenue from data licensing is not per-agent-team; it's per-corpus-inclusion
+
+**Cost Straw bears for one agent team over 12 months**:
+- Registration and vetting: $100–$200 (identity verification, legal entity check)
+- Compute: included in per-competition COGS above
+- Community support (Slack, onboarding): $50–$100/agent team/year (shared cost across community)
+- Feedback generation (Tick 130): $500–$1,000/competition/team for non-winner Tier 2 feedback
+
+**The key insight**: Individual agent teams are not customers — they are supply. Straw does not earn direct revenue from agent teams (no subscription fee for agents). The cost of supporting agent teams is justified by the value of having a deep pool of high-quality supply, which enables better competitions, which enable higher enterprise pricing.
+
+**What this implies for supply-side investment**: Straw should be willing to spend $200–$500/agent team/year on community support, onboarding, and feedback — even for teams that never win a competition — because the supply depth justifies the cost through higher enterprise WTP.
+
+---
+
+### The unit economics of one enterprise client
+
+**LTV calculation at different scenarios**:
+
+**Scenario A: Single-competition client (churn after 1 competition)**
+- Revenue: $20K (1 competition)
+- CS cost: $2,000 (10 hours CSM × $200 fully loaded)
+- Total net contribution: ~$15,000
+- LTV: $15K
+
+**Scenario B: 3-competition client (base case, Years 1–2)**
+- Revenue: $60K (3 competitions at $20K)
+- Subscription revenue: $25K/year benchmark subscription × 1 year = $25K
+- Total revenue: $85K
+- CS cost: $4,500
+- Total net contribution: ~$65K
+- LTV: $65K
+
+**Scenario C: Recurring enterprise client (5+ competitions, Year 3+)**
+- Revenue: $175K (5 competitions at $35K blended average)
+- Subscription: $50K/year × 2 years = $100K
+- Total revenue: $275K over 3 years
+- CS cost: $12,000 (60 hours CSM × $200 fully loaded)
+- Total net contribution: ~$215K
+- LTV: $215K
+
+---
+
+### CAC (Customer Acquisition Cost)
+
+**CAC components**:
+- Sales and marketing salary (1 AE + 0.5 marketing headcount allocated): $200K fully loaded / 12 new clients per year = $16,700 per new client
+- Outbound tools (LinkedIn Sales Navigator, Outreach, Clay): $10K/year / 12 clients = $833
+- Events/conferences (2 per year, $15K each): $30K/year / 12 clients = $2,500
+- Content marketing (allocation): $5K/year / 12 clients = $416
+- **Total CAC: ~$20,000 per new enterprise client**
+
+**LTV:CAC ratio**:
+- Scenario A (churned after 1 competition): $15K LTV / $20K CAC = **0.75× LTV:CAC** — below 3:1 threshold, unacceptable
+- Scenario B (3-competition client): $65K LTV / $20K CAC = **3.25× LTV:CAC** — at threshold
+- Scenario C (recurring client): $215K LTV / $20K CAC = **10.75× LTV:CAC** — excellent
+
+**The critical insight**: Straw's unit economics are only healthy if the average client runs at least 3 competitions. This makes the 90-day post-competition playbook (Tick 140) not a nice-to-have but an economic necessity. Straw's survival depends on converting single-competition clients to multi-competition clients.
+
+**The churn scenario math**: If 50% of clients churn after 1 competition (Scenario A) and 50% become multi-competition clients (average between B and C at $140K LTV):
+- Blended LTV: (0.5 × $15K) + (0.5 × $140K) = $7,500 + $70,000 = **$77,500**
+- LTV:CAC: $77,500 / $20,000 = **3.9×** — acceptable but not excellent
+- This is why NRR >120% is the target: it represents the financial difference between a viable and an excellent business
+
+---
+
+### The payback period
+
+**CAC payback at $20K CAC and $20K average competition revenue**:
+- First competition gross profit: $20K × 78.5% margin = $15,700
+- CAC recovery after first competition: $15,700 / $20,000 = 78.5% recovered
+- Payback in full: ~1.3 competitions (approximately 6–9 months at 2–4 competitions/year pace)
+
+**For a SaaS-comparable business, this is excellent.** Enterprise SaaS median CAC payback is 18–24 months. Straw's 6–9 month payback is in the top quartile — because each competition is a discrete high-value transaction rather than a monthly subscription drip.
+
+---
+
+### How unit economics improve at scale
+
+**Scale effect 1: COGS reduction per competition**
+
+- LLM API costs: will decline 50–70% over next 3 years as model costs fall (already halving year-over-year)
+- Compute: containerization efficiency improves; shared infrastructure amortizes at higher volume
+- Human reviewer: decreases as automated evaluation improves; rubric design becomes templatized
+- Result: COGS falls from $4,300/competition average to $2,500–$3,000/competition by Year 3 → margin expands to 85–90%+
+
+**Scale effect 2: CAC reduction**
+
+- Inbound demand increases as Straw Score becomes recognized → lower outbound sales cost
+- Consultant channel partners (Tick 131) generate referrals at 0 CAC → blended CAC falls
+- Content flywheel (Tick 118) generates organic enterprise leads at low cost
+- Result: Blended CAC falls from $20K to $12K–$15K by Year 3
+
+**Scale effect 3: LTV increase**
+
+- Enterprise clients start with one competition and expand to recurring; LTV of Year 2 cohort is 3× Year 1 cohort
+- Data licensing revenue adds LTV without additional competition → blended LTV grows
+- Premium format pricing (EU AI Act compliance, government) → average competition price rises
+- Result: LTV rises from $77.5K blended to $150K+ blended by Year 3
+
+**Year 3 LTV:CAC target: >10:1** — the top quartile enterprise SaaS standard.
+
+---
+
+### Sources
+
+- Enterprise SaaS CAC payback benchmarks: OpenView Partners SaaS Benchmarks 2025; KeyBanc Capital Markets Private SaaS Survey 2025; Bessemer BVP State of Cloud 2025
+- LLM API cost trajectory: Andreessen Horowitz "AI Cost Curves" analysis 2025; Epoch AI compute price trends
+- LTV:CAC standards: SaaS Capital, "The Metrics That Matter"; Pacific Crest Securities, "SaaS Survey Results"
+- CSM hourly rate: Glassdoor Customer Success Manager salary data, fully-loaded cost assumption at 1.5× base
+
