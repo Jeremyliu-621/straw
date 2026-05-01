@@ -14412,3 +14412,102 @@ Features that don't satisfy any of these three are "nice to have" and should be 
 | 3: PMF | 10–18 months | 20 enterprises, $1M ARR | Calibration corpus at 50+ competitions |
 | 4: Series A | 18–30 months | $3–5M ARR, 100%+ NRR | Three irreplicable assets demonstrated |
 
+
+---
+
+## Tick 104 (2026-05-01): The "benchmark FOMO" phenomenon — why public leaderboards have become enterprise liability
+
+**Thread**: AI startups use public benchmark leaderboards (SWE-bench, MMLU, ARC-AGI) as sales tools. Enterprises are increasingly skeptical. What does this mean for Straw?
+
+---
+
+### The benchmark-to-sales pipeline: how it works and why it's breaking
+
+The current AI sales motion for agent startups is built on public benchmark credibility:
+1. Agent startup achieves SOTA on SWE-bench, HumanEval, or ARC-AGI
+2. Press release + CEO quote: "We are the world's #1 AI coding agent"
+3. Enterprise buyer sees the press coverage, requests a demo
+4. Demo is impressive (cherry-picked examples); enterprise begins procurement
+5. Procurement runs internal testing; agent fails on enterprise-specific tasks
+6. Deal dies or underperforms; enterprise is burned; agent startup's reputation suffers
+
+Cognition's Devin (2024) is the most documented version of this arc. Initial SOTA SWE-bench claim generated enormous press coverage and enterprise interest. Subsequent independent testing — including The New York Times' benchmark analysis — revealed that Devin's 13.86% SWE-bench resolution rate was based on problems Devin had already seen (via training), and that real-world enterprise coding task performance was dramatically lower. Devin responded with a "one-year performance review" in late 2025 that was more honest, but the credibility damage to the benchmark-as-marketing paradigm was significant.
+
+**The structural problem**: Public benchmarks are:
+- Fixed (the task distribution doesn't match the enterprise's specific workflow)
+- Gameable (training on leaked test sets, human assistance, cherry-picking results)
+- Backward-looking (benchmark collapse at 18-month rate as Tick 74 showed)
+- Self-reported (no third-party verification of the claimed score)
+
+As of 2026, enterprise buyers are starting to express public skepticism. The pattern is nearly identical to what happened with financial analysts in the 1990s: everyone was publishing "buy" ratings, the ratings became meaningless, and demand emerged for an independent voice.
+
+---
+
+### The "independent voice" moment in AI evaluation
+
+**The financial analogy**: Before the 2002 Global Analyst Research Settlement, major Wall Street firms published optimistic research on companies they were simultaneously underwriting. The conflict of interest was obvious but tolerated because there was no alternative. The settlement required separation of research from banking. Consequently, independent research firms (Morningstar for retail, AlphaValue for institutions) gained significant market share and premium pricing because their independence was the product.
+
+**The AI analogy (now)**: Model providers publish their own benchmark results. Agent startups publish their own SOTA claims. The enterprise has no independent verification mechanism. The conflict of interest is identical — every party publishing results has a financial stake in the outcome.
+
+Straw is the independent voice. Straw's conflict-of-interest-free architecture (doesn't train or sell models; doesn't employ agent developers; judges from multiple model families) is the product, not just a feature.
+
+---
+
+### What enterprise buyers are actually doing right now
+
+From the Menlo Ventures 2025 and Gartner data:
+
+- **76% of enterprises prefer buying AI over building** (up from 47% in 2024) — the "we'll evaluate this ourselves" attitude is declining as the complexity of evaluation becomes apparent
+- **Only 11% of enterprise AI projects are running in production** — the evaluation gap is large
+- **37% lab-to-production performance gap** — benchmark scores don't predict enterprise performance
+- **80–95% enterprise AI project failure rate** in some estimates, with evaluation failure as a primary driver (Gartner)
+
+Enterprises are doing one of three things currently:
+1. **Informal internal testing**: Give an agent access to a sample problem, watch it run, make a judgment call. Low rigor, high regret rate.
+2. **Consulting firm engagement**: Pay $50K–$500K for a one-time structured evaluation from Deloitte AI, Accenture, or boutique AI testing firms. One-time, not task-specific.
+3. **Trust the benchmark**: "They said 81% on SWE-bench, that's good enough." The Devin example shows why this fails.
+
+None of these options provides what Straw provides: competition on the enterprise's actual task, with verified results, independent adjudication, and a repeatable format.
+
+---
+
+### The credibility crisis as a market creation event
+
+**The timing is right**: The credibility crisis in AI benchmarks is happening now, in 2026. The SWE-bench contamination discovery (Tick 74), the public Devin controversy, the growing number of "we tried AI and it didn't work" stories in enterprise press — these are creating demand for independent evaluation. Straw enters at exactly the right moment.
+
+**The risk**: If Straw waits to build the platform while the market is creating demand, a competitor could step in. The timing window for establishing the independent evaluation standard is narrow — probably 18–24 months before the market settles on a solution.
+
+**The NIST analogy**: When AI safety became a regulatory concern in 2023–2024, NIST released the AI Risk Management Framework (NIST AI RMF 1.0). The organizations that had already published alignment with the NIST framework became the reference points. The ones that waited had to retrofit. Straw should publish alignment with NIST AI RMF and the NIST AI 100-1 standard now — not when it becomes mandatory.
+
+---
+
+### What Straw says when asked "how are you different from public benchmarks?"
+
+The three-part answer:
+
+1. **Your task, not our task**: Public benchmarks use a fixed task distribution that was chosen for research reasons, not enterprise relevance. Straw uses your specific task. The evaluation is valid precisely because it predicts performance on what you actually care about.
+
+2. **Competition, not claim**: Benchmark results are self-reported and unverified. Straw runs a live competition with multiple agents, an independent judge panel, and a full audit trail. You watch it happen. You see the rubric, the scores, and the methodology. The result is verifiable, not a claim.
+
+3. **Task-specific private data, not public contamination**: Public benchmarks are compromised by training data contamination — models learn the test answers. Straw competitions use private enterprise task data that has never been in any training set. The score cannot be gamed by memorization.
+
+---
+
+### The supply-side consequence: why SOTA claims are becoming toxic for top agents
+
+Paradoxically, the benchmark credibility crisis is harming the top agent startups (who over-indexed on SOTA claims as their sales strategy) more than it's harming Straw. When an enterprise is burned by a SOTA-claiming agent that fails on their actual task, their reaction isn't "we need a better benchmark" — it's "we need to test on our actual task." That's Straw's exact product.
+
+The supply-side opportunity: the top agent startups that recognize this dynamic want to participate in Straw competitions precisely because Straw offers a more credible format than self-reported benchmarks. A Straw competition win on an enterprise customer's actual task is worth more than a SOTA claim on SWE-bench that is publicly questioned.
+
+---
+
+### Sources
+
+- Devin SWE-bench controversy: NYT coverage 2024; Cognition's 2025 "Annual Performance Review" blog post
+- SWE-bench Pro benchmark contamination (81% → 23% gap): documented in Tick 74, citing LiveCodeBench analysis
+- Menlo Ventures 2025 State of GenAI: 76% buy vs. 47% prior year; 11% in production
+- Gartner AI project failure rate: Gartner Top Strategic Technology Trends 2025 and 2026
+- NIST AI RMF 1.0: nist.gov/system/files/documents/2023/01/26/AI RMF 1.0.pdf
+- Global Analyst Research Settlement: SEC Release No. 34-48252 (2003)
+- Morningstar independent research model: morningstar.com/company/about
+
