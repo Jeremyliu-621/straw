@@ -25014,3 +25014,216 @@ Priority order (from Tick 122):
 - Angel check sizes: AngelList data on enterprise B2B AI angel check sizes; Newcomer "Founders Writing Checks" analysis
 - First conversation scripts: First Round Capital, "The Advisor Playbook"; NFX "Network Effects Bible" on advisor recruitment
 
+
+---
+
+## Tick 149 (2026-05-01): The API and integration strategy — which enterprise systems Straw embeds into
+
+*The most durable enterprise retention mechanism is workflow embedding. Straw's long-term moat is not just the score — it's the fact that the score flows into every enterprise workflow that matters.*
+
+### Why integrations create irreversibility
+
+An enterprise that uses Straw for competition results via email is easy to replace. An enterprise where Straw competition results automatically flow into their Jira, Salesforce, and procurement workflows is structurally embedded. The switching cost is not just "find a new evaluation platform" — it's "rebuild the workflow connections that span three departments."
+
+**The integration strategy principle**: Build integrations in the order that creates the highest switching cost per engineering hour invested. Prioritize integrations that touch the decision-making workflow, not just the reporting workflow.
+
+---
+
+### Priority 1: Procurement and ticketing (Year 1)
+
+**Jira** (Atlassian):
+- Why: Engineering teams track AI agent selection decisions as Jira tickets
+- What the integration does: Competition results automatically create a Jira ticket summarizing the winning agent, the rubric scores, and the next steps for deployment
+- Who uses it: VP Engineering, CTO, technical decision-makers
+- Build time: 2–3 days (Jira has a well-documented REST API)
+- Switching cost created: Competition results are part of the project history; auditors and engineering teams reference these tickets
+
+**ServiceNow**:
+- Why: IT procurement and service management platform used by 75%+ of Fortune 500
+- What the integration does: Competition results feed into the ServiceNow vendor management module; the winning agent is automatically added to the approved vendor list
+- Who uses it: IT governance teams, procurement, CISO office
+- Build time: 1–2 weeks (ServiceNow's API is more complex; a dedicated app on the ServiceNow App Store is the long-term play)
+- Switching cost created: The winning agent is part of the approved vendor record in the enterprise's IT governance system
+
+---
+
+### Priority 2: CRM and sales pipeline (Year 2)
+
+**Salesforce** (for Straw's own CRM, and for embedding in enterprise CRM):
+- For Straw's own CRM: Track enterprise pipeline, competition history, and account health in Salesforce. This is internal, not an enterprise-facing integration.
+- For enterprise CRM integration: If an enterprise is using Straw to select a vendor that becomes a customer, competition results should flow into the enterprise's Salesforce account record for that vendor. This is a more specialized use case (mostly relevant for enterprises that buy AI agents for their sales process).
+- Build time for enterprise Salesforce integration: 1–2 weeks
+- Priority: Medium (not all enterprise clients use Salesforce CRM for vendor management)
+
+---
+
+### Priority 3: Enterprise identity and security (Year 2)
+
+**Okta / Microsoft Entra ID (formerly Azure AD)**:
+- Why: Enterprise SSO is non-negotiable for enterprise adoption. Every enterprise IT team will ask "does Straw support SAML/OIDC SSO?"
+- What the integration does: Enterprise employees log into Straw using their corporate identity (same credentials as Slack, email, etc.)
+- Who uses it: CISO, IT governance, anyone who logs into Straw
+- Build time: 3–5 days (well-documented SAML 2.0 integration)
+- Impact: Removes the "I have to manage another set of credentials" objection from IT teams; reduces friction for enterprise adoption
+
+**AWS PrivateLink / VPC Peering**:
+- Why: For enterprises with strict data residency requirements, they may want Straw's API to communicate with their infrastructure without traversing the public internet
+- What the integration does: Creates a private network connection between Straw's platform and the enterprise's AWS environment
+- Who uses it: CISO, cloud security teams at large enterprises
+- Build time: 1–2 weeks
+- Impact: Required for healthcare and federal government; nice-to-have for financial services
+
+---
+
+### Priority 4: Workflow and notifications (Year 1-2)
+
+**Slack**:
+- Why: Enterprise teams communicate in Slack; competition updates should appear where decisions happen
+- What the integration does: Competition status updates (open for submissions, submissions closing in 48 hours, winner announced) are sent to a designated Slack channel
+- Build time: 1 day (Slack Incoming Webhooks)
+- Impact: Keeps Straw visible in the enterprise's daily workflow; reduces the chance that competition results are missed
+
+**Microsoft Teams**:
+- Same as Slack but for Microsoft-heavy enterprises (financial services, healthcare, government)
+- Build time: 1–2 days
+- Impact: Required for federal and healthcare segments
+
+---
+
+### Priority 5: Reporting and analytics (Year 2-3)
+
+**Tableau / Power BI / Looker**:
+- Why: Enterprise AI governance teams want to visualize competition results and trend over time
+- What the integration does: Straw exports competition results in a format that enterprise BI tools can ingest
+- Build time: Primarily a data export API; 2–3 days for a well-structured JSON/CSV export endpoint
+- Impact: Straw results appear in the enterprise's standard analytics environment alongside other vendor data
+
+---
+
+### The integration roadmap
+
+| Integration | Priority | Target quarter | Who benefits |
+|-------------|---------|----------------|-------------|
+| SSO (Okta/Entra) | P0 | Q1 launch | All enterprise clients |
+| Slack notifications | P0 | Q1 launch | All enterprise clients |
+| Jira | P1 | Q2 | Engineering-led buyers |
+| ServiceNow | P1 | Q2-Q3 | IT governance-led buyers |
+| Microsoft Teams | P1 | Q2 | Microsoft-stack enterprises |
+| Salesforce (Straw internal) | P1 | Q1 | Straw sales team (not enterprise-facing) |
+| AWS PrivateLink | P2 | Q3-Q4 | Healthcare, federal, financial |
+| Tableau/Power BI export | P2 | Q4 | Large enterprise governance teams |
+| Salesforce enterprise integration | P3 | Year 2 | AI-for-sales use case |
+
+**The build philosophy**: Build SSO and Slack notifications before the first paid competition — enterprises will ask for them during security review. Build Jira and ServiceNow in Q2 when the first customers are deployed and asking for workflow integration. Defer everything else until there's customer demand.
+
+---
+
+### Sources
+
+- Jira REST API documentation: developer.atlassian.com
+- ServiceNow App Store requirements: developer.servicenow.com/dev.do; ServiceNow Spoke integration design
+- Okta SAML integration guide: developer.okta.com/docs/guides/build-sso-integration
+- Slack Incoming Webhooks: api.slack.com/messaging/webhooks
+- AWS PrivateLink: aws.amazon.com/privatelink; pricing and configuration for enterprise VPC connectivity
+- Enterprise integration adoption research: Gartner, "SaaS Integration Complexity in Enterprise Procurement," 2025
+
+
+---
+
+## Tick 150 (2026-05-01): The model provider partnership mechanics — term sheet structure for co-marketing
+
+*Model providers (Anthropic, Cohere, Mistral) benefit when their ecosystem agents win Straw competitions. This tick structures a formal partnership that captures that value.*
+
+### Why model providers want a formal Straw relationship
+
+When an agent built on Anthropic's Claude API wins a Straw competition and is subsequently deployed at a Fortune 500, several things happen:
+1. Claude API consumption at that enterprise increases by 3–10× post-deployment
+2. The enterprise's procurement team has objective evidence that Claude-based agents outperform alternatives on real enterprise tasks
+3. Anthropic has a proof point ("Claude-based agents win Straw competitions") that is more credible than any benchmark
+4. The agent team that won has an incentive to tell other agent teams "we used Claude and won on Straw" — viral supply-side marketing for Anthropic
+
+**The key question**: Can Straw monetize this value without compromising its neutrality?
+
+**The answer**: Yes — through a narrow, carefully defined partnership that:
+- Does not give Anthropic preferential access to Straw's evaluation methodology (neutrality preserved)
+- Does not require Straw to recommend Claude-based agents (neutrality preserved)
+- Does give Anthropic co-marketing rights on competition wins (market awareness)
+- Does give Straw preferential API pricing for its evaluation pipeline (economic benefit)
+
+---
+
+### The model provider partnership term sheet
+
+**Core structure**: An API partnership + co-marketing agreement, not an equity investment or M&A.
+
+**Straw's commitments**:
+1. Straw uses [Model Provider]'s API as the primary Tier 2 LLM judge for competitions in [agreed category/use case]
+2. Straw commits to a minimum annual API spend of $[X] (e.g., $200K/year, growing with competition volume)
+3. Straw co-announces competition wins involving [Model Provider]'s ecosystem agents: "Straw competition winner used [Model Provider] API"
+4. Straw includes [Model Provider]'s API documentation in the agent team onboarding materials as a recommended infrastructure provider
+
+**Model Provider's commitments**:
+1. [Model Provider] provides Straw with [20–40%] discounted API pricing vs. standard commercial rate
+2. [Model Provider] includes Straw in their developer documentation as the recommended competition evaluation platform for enterprise agent validation
+3. [Model Provider] introduces Straw to [X enterprise accounts] from their customer base per quarter for design partner conversations
+4. [Model Provider] provides $[50K–$200K] in API credits at deal signing for Straw's evaluation pipeline build-out
+
+**What is explicitly NOT in the agreement**:
+- [Model Provider] cannot audit Straw's evaluation methodology, rubric design, or judge prompts
+- Straw will not preferentially score agents built on [Model Provider]'s API
+- Straw will not disclose individual competition scores or submission content to [Model Provider]
+- The agreement does not prevent Straw from signing similar agreements with other model providers
+
+---
+
+### The neutrality firewall provisions
+
+This is the most important part of the term sheet — the provisions that prevent any model provider from claiming that their partnership gives them unfair advantage:
+
+**§ 5. Neutrality**
+
+> 5.1 Nothing in this Agreement grants [Model Provider] any right to: (a) access Straw's evaluation methodology documentation, judge prompts, or scoring algorithms; (b) review individual competition submissions from any agent team; (c) influence competition rubric design for any specific competition; (d) preferential participation in Straw competitions beyond the standard open registration process.
+>
+> 5.2 Straw may enter into substantially similar partnerships with other AI model providers. [Model Provider] acknowledges that Straw's commercial relationships with other model providers do not constitute a breach of this Agreement.
+>
+> 5.3 Co-marketing announcements are permitted only for competitions where the winning agent independently and verifiably used [Model Provider]'s API as determined by the winning agent team's own disclosure in their submission registration.
+
+---
+
+### The economics of the model provider deal
+
+**For Straw**:
+- Year 1 API cost for LLM judging (Tick 142 COGS): $200–$500/competition × 24 competitions = $4,800–$12,000
+- With 30% discount from model provider: savings of $1,400–$3,600 in Year 1
+- API credits at signing: $50K–$200K → essentially free evaluation pipeline for Year 1
+- Enterprise introductions: 3 per quarter × 4 quarters × 20% close rate = 2–3 additional design partners → $20K–$75K ARR
+
+**Net value to Straw from one model provider partnership**: $50K–$250K in Year 1 (credits + cost savings + enterprise introductions)
+
+**For the model provider**:
+- API consumption from winning agents deployed: if 5 competitions in Year 1 use their API and winning agents are deployed → 5 new enterprise Claude deployments → $50K–$500K in additional API revenue
+- Marketing value of co-announcements: 5 Fortune 500 companies publicly using Claude-based agents for verified enterprise tasks → significant B2B marketing impact (hard to quantify but clearly valuable to the lab's enterprise sales motion)
+
+---
+
+### Which model provider to approach first
+
+Priority order (based on alignment + relationship accessibility):
+
+1. **Anthropic**: Best thesis alignment (Anthropic is building for the enterprise market, has an enterprise sales team, and would benefit most from agent ecosystem validation). Claude is the model most commonly used by serious enterprise agent teams. Direct approach: Anthropic's enterprise partnership team.
+
+2. **Cohere**: Smaller than Anthropic/OpenAI, enterprise-focused (not consumer AI), has an explicit enterprise sales motion and would benefit disproportionately from Straw's validation of Cohere-based agents. More willing to negotiate creative partnership terms than the larger labs.
+
+3. **Mistral**: European model provider; partnership would help with EU market access and GDPR-compliant competition design. Conviction portfolio company — warm intro possible through Conviction partnership.
+
+4. **OpenAI**: Largest API ecosystem; highest supply of agent teams using OpenAI models; but OpenAI has the most complex relationship with enterprise (they're also building enterprise products directly, creating potential channel conflict). Approach after establishing with Anthropic and Cohere.
+
+---
+
+### Sources
+
+- Model provider enterprise sales motions: Anthropic business page; Cohere enterprise documentation; Mistral AI enterprise API
+- API pricing benchmarks: llmpricecheck.com; official pricing pages for Anthropic, Cohere, OpenAI (2025)
+- Co-marketing agreement best practices: Technology alliance agreement templates; SiriusDecisions (now Forrester) channel partnership research
+- Neutrality firewall design: UL Laboratories independence model; Underwriters Laboratories charter and governance documents; analogous to rating agency independence requirements (SEC Rule 17g-5)
+
