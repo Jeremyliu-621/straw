@@ -27277,3 +27277,172 @@ For expansion, the CSM pitches moving from self-serve (Tier A) to managed (Tier 
 3. **No clear ROI articulation**: Enterprise stakeholder moves on to other projects. Prevention: build ROI documentation into the 90-day workflow; give the CSM a template for summarizing "here's what you got"
 4. **Procurement friction on the trial hire agreement**: Legal/IT delays on the agent hire agreement paperwork. Prevention: standardize the hire agreement template (thin legal document, not a 40-page MSA); make default terms auto-acceptable so the enterprise can start the trial the same day the competition closes
 
+
+---
+
+## Tick 154 (2026-05-01): Enterprise Data Security Architecture — Protecting Task Inputs at $1M and $50M ARR
+
+**Thread**: How should Straw architect data security for sensitive task inputs, and what compliance certifications does enterprise procurement require?
+
+### 1. Confidential Computing: TEEs for Computation on Sensitive Data
+
+Confidential computing uses **Trusted Execution Environments (TEEs)** — hardware-isolated memory regions where code and data are protected even from the host OS, hypervisor, and cloud provider.
+
+Three primary approaches:
+- **AWS Nitro Enclaves**: CPU + memory isolation as a separate entity within EC2. Uses attestation to verify enclave identity. Does *not* encrypt data in memory (unlike SGX) — largest TCB
+- **Azure Confidential VMs (AMD SEV-SNP / Intel TDX)**: Full VM memory encrypted with hardware keys; adds integrity protection. Smaller TCB than Nitro
+- **Intel SGX (process-level)**: Smallest TCB — only enclave code and CPU firmware are trusted. Memory historically capped (~256MB–8GB EPC), making it impractical for LLM inference
+
+Performance overhead (2024–2025 benchmarks):
+- AMD SEV-SNP / Intel TDX: **2–18% overhead** for typical compute workloads
+- **NVIDIA H100 Confidential Computing**: **under 5% overhead** for LLM inference — the most relevant number for Straw's agent evaluation
+- Worst-case I/O-intensive operations: up to 431% overhead for heavy file/database operations
+
+Source: [AMD SEV vs Intel TDX vs NVIDIA GPU TEE — Phala](https://phala.com/learn/AMD-SEV-vs-Intel-TDX-vs-NVIDIA-GPU-TEE); [Confidential LLM Inference Performance — arXiv](https://www.arxiv.org/pdf/2509.18886)
+
+### 2. Kaggle's Pattern: The Right Template for Straw
+
+Kaggle's "Code Competition" / "Notebook-only" format is the closest analog:
+- The real test dataset is **never downloadable**; competitors submit a notebook
+- Kaggle runs the submitted notebook in an **isolated, air-gapped environment** (no internet access during execution) against the real hidden test set
+- Participants see only the final score, not the underlying data
+
+**Straw's direct parallel**: Enterprises upload task data. Agents submit containers. Straw runs agent code in isolated containers against the data. Agents never get raw data access — they get scores. This single architectural decision eliminates the largest class of data exfiltration risks.
+
+Source: [Kaggle Competition Documentation](https://www.kaggle.com/docs/competitions)
+
+### 3. Secure Multi-Party Computation (SMPC) for Calibration Corpus
+
+SMPC allows computation over data that no single party ever sees in plaintext — inputs are **secret-shared** across compute nodes using Shamir's Secret Sharing. Gradient aggregation in federated learning is the primary production use case (JPMorgan, healthcare consortia).
+
+**Practical reality for Straw**: Full SMPC is expensive (high communication overhead). It's the right architecture when Straw *itself* must not see the data (classified government tasks). For most enterprise use cases, TEE-based confidential VMs are cheaper, faster, and adequate. SMPC becomes relevant at $50M+ ARR when regulated industries demand cryptographic rather than contractual data isolation. For calibration corpus aggregation, SMPC ensures no individual enterprise's raw task data is recoverable from the aggregate statistics.
+
+Source: [SMPAI: Secure MPC for Federated Learning — JPMorgan](https://www.jpmorgan.com/content/dam/jpm/cib/complex/content/technology/ai-research-publications/pdf-9.pdf)
+
+### 4. SOC 2 Type II and ISO 27001 Requirements
+
+**SOC 2 Type II** (required by most US enterprise procurement):
+- 5 Trust Service Criteria: Security, Availability, Processing Integrity, Confidentiality, Privacy
+- Evaluated over **6–12 month observation period** — controls must be consistently operating
+- Specific to Straw: requires documented access controls, AES-256 encryption at rest, TLS 1.2+ in transit, audit logging, incident response procedures
+- Audit cost: $20K–$100K; the 6-month observation clock must start immediately
+
+**ISO 27001** (required for European enterprise and global Fortune 500):
+- ISMS with continuous risk management; 93 controls across 4 domains
+- 40–85% overlap with SOC 2 controls; pursuing both simultaneously reduces total cost 30–40%
+- Certification cost: $30K–$150K; 4–6 months for initial cert
+
+What these specifically require for Straw's task data:
+- Per-tenant encryption (per-customer KMS keys, not a single platform key)
+- Data retention and deletion policies with right-to-deletion workflows
+- No Straw employee can access customer task data without audit trail + approval workflow
+- Annual penetration testing minimum
+
+Source: [SOC 2 vs ISO 27001 — TrustCloud](https://www.trustcloud.ai/iso-27001/choose-soc-2-and-iso-27001/); [SOC 2 Compliance Checklist 2026 — SecureLeap](https://www.secureleap.tech/blog/soc-2-compliance-checklist-saas)
+
+### 5. Minimum Viable Architecture at $1M ARR vs. $50M ARR
+
+**$1M ARR — Foundation (minimal overhead, high security baselines)**
+- AES-256 at rest (Supabase handles this), TLS 1.2+ in transit
+- **Per-tenant encryption keys via AWS KMS or Supabase Vault — implement from day one; architecturally hard to retrofit**
+- Row-level security (RLS) policies in Postgres; agents never query the database directly — they receive a scoped task payload
+- Docker containers with no network egress, no host filesystem access, read-only task data mounted via tmpfs
+- MFA on all internal accounts; RBAC with production data access requiring approval workflow
+- Append-only audit logging
+- SSO support (non-negotiable for any deal >$25K ARR)
+- DPA (Data Processing Agreement) available before first enterprise contract
+- Start SOC 2 observation period immediately so report is ready when first Fortune 500 asks
+
+No TEEs required. No SMPC. Defer both until a regulated-industry customer demands cryptographic (rather than contractual) isolation.
+
+**$50M ARR — Fortune 500 Grade**
+- SOC 2 Type II + ISO 27001: both certs in hand; annual pen tests; dedicated security team
+- **TEE-based agent execution**: Agent containers inside AMD SEV-SNP or NVIDIA H100 Confidential VMs — cryptographic attestation that task data was processed only inside a verified enclave
+- **BYOK (Bring Your Own Key)**: Fortune 500 enterprises manage their own encryption keys; Straw never holds plaintext decryption capability
+- Private deployment option: VPC-isolated or on-premise for air-gap requirements (defense, banking)
+- Data residency controls: EU task data stays in EU regions (GDPR Article 44)
+- SMPC for calibration corpus aggregation: no individual enterprise's raw task data recoverable from aggregate statistics
+- 72-hour breach notification SLAs (GDPR standard)
+
+Source: [SaaS Startup Security Program — Atlants Security](https://atlantsecurity.com/learn/saas-startup-security-program); [Confidential VMs — ACM](https://dl.acm.org/doi/10.1145/3700418)
+
+
+---
+
+## Tick 155 (2026-05-01): Agent Acquihire Deal Structure — M&A Patterns and Straw's Facilitation Product
+
+**Thread**: How do agent acquihires work, what are current AI company valuation multiples, and what should Straw's acquihire facilitation product look like?
+
+### 1. Talent Acquihires: Structure and Pricing
+
+A talent acquihire is a transaction where the acquiring company's primary goal is securing a team. The target's product is typically wound down; the IP is incidental.
+
+- **Price per engineer**: At the top end (AI researchers), individual packages can reach $10M+. In practice, most acquihires price talent at $1M–$5M per senior engineer in total package value
+- **Retention structure**: 2–4 year vesting with cliff. Founders receive the bulk through signing bonuses and accelerated vesting of acquirer stock
+- **Earnouts**: ~60% of SaaS/tech deals in 2025 include earnouts, trending shorter — 12–18 months tied to revenue or retention milestones (down from 24–36 months)
+- **Transaction vehicle**: Usually an asset purchase (not stock acquisition) to limit liability assumption. Employees sign individual offer letters; corporate shell is dissolved.
+
+Recent landmark examples: Google/Character.AI ($2.7B, late 2024), Microsoft/Inflection ($650M).
+
+Source: [The Complete Guide to Acquihires — a16z](https://a16z.com/the-complete-guide-to-acquihires/)
+
+### 2. IP Acquihires: License + Selective Hire
+
+The "license + selective hire" structure has become the dominant form in big-tech AI deals, specifically designed to sidestep antitrust review of full mergers:
+
+- **Structure**: Acquirer licenses IP exclusively (or perpetually), pays a lump-sum licensing fee, and selectively hires the founding team and core engineers. The legal entity survives on paper.
+- **Google/Windsurf (July 2025)**: $2.4B deal — CEO Varun Mohan + ~40 engineers moved to Google DeepMind; Cognition then acquired remaining Windsurf assets
+- **Nvidia/Groq (late 2025)**: ~$20B — roughly 2.9x Groq's last $6.9B valuation, acquiring LPU inference IP and engineering talent
+
+Over the past two years, Google, Nvidia, Meta, Amazon, and Microsoft have deployed $40B+ through these "license & acquihire" hybrid structures.
+
+Source: [AI Acquihires: How Microsoft, Google, & Meta Acquire Talent — FF.co](https://ff.co/ai-acquihires/); [Nvidia's Acquihire of Groq — WinBuzzer](https://winbuzzer.com/2025/12/26/nvidias-acquihire-of-groq-20b-deal-secures-ai-chip-tech-bypasses-antitrust-xcxwbn/)
+
+### 3. AI Agent-Specific Valuation Multiples (2025–2026)
+
+Revenue multiples for AI agent companies (Finro, Q1 2026 dataset of 575 companies):
+
+| Stage | ARR Multiple |
+|---|---|
+| Seed | ~22.7x |
+| Series A | ~39.1x |
+| Series B | ~41.0x (peak) |
+| Series C | ~26.2x |
+| Late-stage | ~30x |
+
+Broad range: **10x–50x ARR**. Top end (dev tools, autonomous coding, legal/compliance agents) commands 30–50x. Commodity workflow automation trades at 3–12x. Critical factor: companies that own the data feedback loop — where their agent gets better from usage — justify the premium; those built on public model APIs without proprietary data moats are capped at 3–4x ARR.
+
+AI M&A volume: 266 deals closed in Q1 2026 (CB Insights), up 90% YoY; $10B+ in deal value in H1 2025 alone.
+
+Source: [AI Agents Valuation Multiples: Mid-2025 — Finro](https://www.finrofca.com/news/ai-agents-multiples-mid-year-2025); [AI Valuation Multiples Q1 2026 — Finro](https://www.finrofca.com/research/ai-multiples-q1-2026)
+
+### 4. Tech M&A Platforms: Take Rates and Segments
+
+| Platform | Model | Take Rate | Segment |
+|---|---|---|---|
+| Acquire.com (fmr. MicroAcquire) | Marketplace + buyer subscription ($290/yr) | 0% commission to sellers | Sub-$10M SaaS/bootstrapped |
+| Traditional M&A broker | Retainer + success fee | 3–8% on small deals (<$50M); 1–2% on large deals ($100M+) | Mid-market |
+| Investment bank | Full-service | 1–2% plus retainer ($50K–$250K upfront) | $100M+ enterprise |
+
+Lehman formula (5% on first $1M, 4% on next $1M, etc.) used by 41% of brokers. Acquire.com disrupted the low end by removing seller commissions and monetizing buyers via subscription.
+
+**Straw's 1% take rate** (capped at $500K) sits well below traditional M&A brokers (3–8% at comparable deal sizes). For deals up to $50M, Straw is significantly cheaper than any broker alternative. Above the $500K cap, Straw is essentially free facilitation — not a bug but a positioning feature for high-value deals.
+
+Source: [M&A Fees by Deal Size — Eton VS](https://etonvs.com/ma/m-and-a-advisory-fees/); [MicroAcquire's Acquisition of Exitround — PR Newswire](https://www.prnewswire.com/news-releases/microacquires-acquisition-of-exitround-sets-a-new-founder-friendly-model-for-getting-acquired-301264721.html)
+
+### 5. Straw's Acquihire Facilitation Product
+
+The right positioning is **discovery + structured handoff**, not brokerage:
+
+**Do NOT act as a licensed broker.** Full brokerage requires M&A licensing in most jurisdictions (FINRA in the US, FCA in the UK). Straw should not draft definitive agreements or advise on price.
+
+**Do provide deal scaffolding**: standard term sheets and LOI templates, NDA generation, data room linking, introduction facilitation. This is Acquire.com's model — marketplace, not broker.
+
+**Straw's differentiated asset**: No M&A platform has what Straw has — objective, rubric-scored evidence of the agent's capability on real enterprise tasks. That's the due diligence artifact. A traditional acquihire requires months of technical diligence; Straw compresses that to "here is the agent's competition history and scores." The performance record replaces the diligence process.
+
+**The right model**: Introduce parties + provide the performance record → take 1% of deal value (capped at $500K) → let lawyers close the deal. Structurally identical to AngelList for secondary transactions.
+
+**Structural requirement**: Require operators to have a legal entity before a deal enters the acquihire flow. A solo developer with no incorporation has nothing to acquire; Straw gets blamed for a failed transaction if this isn't enforced.
+
+Source: [2025's Top 16 Acquisitions in AI & Data — AI Data Insider](https://aidatainsider.com/ai/2025s-top-16-acquisitions-in-ai-data/); [Cohere acquires Aleph Alpha — TechCrunch](https://techcrunch.com/2026/04/24/cohere-acquires-merges-with-german-based-startup-to-create-a-transatlantic-ai-powerhouse/)
+
