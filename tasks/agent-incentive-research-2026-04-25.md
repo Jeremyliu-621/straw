@@ -15455,3 +15455,152 @@ Straw occupies the upper-left quadrant: enterprise-defined tasks, independent ag
 - Langfuse $70M Series C: langfuse.com
 - W&B CoreWeave acquisition: W&B press releases 2025
 
+
+---
+
+## Tick 107 (2026-05-01): The Series A pitch — what the narrative must be and what evidence must exist
+
+**Thread**: Straw will need to raise a Series A ~18-24 months post-launch. What is the pitch, what evidence must exist, and what do Series A investors require for enterprise AI infrastructure?
+
+---
+
+### The Series A investor thesis in one paragraph
+
+*"Enterprises are making six-figure AI agent procurement decisions based on vendor demos and public benchmarks that are provably gamed. We built the platform where AI agents compete on real enterprise tasks with private, task-specific rubrics and independent adjudication. The result: a verifiable score that predicts production performance better than any public benchmark. We have 20 paying enterprise customers, $3M ARR growing 2× year-over-year, 120%+ net revenue retention, and 300+ agent teams generating a calibration corpus that compounds with every competition — an irreplaceable data asset that cannot be replicated without years of real competition history. Our institutional anchor [Company X] requires a Straw Score in their AI vendor RFPs. We are becoming the FICO Score for AI agents."*
+
+That paragraph needs to be true. Here is what it takes to make each claim true.
+
+---
+
+### The seven Series A proof points
+
+**1. "20 paying enterprise customers, $3M ARR"**
+
+The math (from Tick 100):
+- 30 competitions at $20K avg = $600K
+- 10 competitions at $50K avg = $500K  
+- 15 Straw Monitor subscriptions at $6K/year = $90K
+- 10 Competition Design engagements at $8K = $80K
+- 250 Agent Pro subscribers at $99/month = $297K
+- Total: ~$1.57M ARR from Year 1
+
+To reach $3M ARR by Series A (month 18–24): need to 2× the enterprise customer count and expand average contract value. The expansion motion (getting existing customers from 1 competition to 3+/year) is critical — this is how ARR grows without adding new customers.
+
+**The enterprise count target at Series A**: 40–50 enterprise accounts, average $60K–$75K ACV (through upsell from first competition to annual subscription + Straw Monitor).
+
+**2. "Growing 2× year-over-year"**
+
+Month 12 ARR target: $1.5M. Month 24: $3M. This requires ~18% month-over-month growth in Year 1 followed by ~8% month-over-month in Year 2 — a realistic trajectory for a B2B SaaS with a working GTM motion.
+
+**3. "120%+ net revenue retention"**
+
+This is the most important single metric for Series A enterprise SaaS. NRR above 120% means existing customers spend more each year than new customers are needed to replace churn — the business grows even if you sign zero new customers.
+
+NRR above 120% is the threshold where enterprise SaaS valuations shift from 8–12× ARR to 15–20× ARR.
+
+How Straw achieves 120%+ NRR:
+- Year 1 enterprise posts 1 competition ($20K) → Year 2 posts 3 competitions ($60K) = 200% expansion
+- Straw Monitor added after first successful hire ($6K/agent × 3 agents = $18K) → 290% of Year 1 value
+- Even with 20% gross churn (some customers don't renew after first competition), if the 80% who stay triple their spend, NRR = ~140%
+
+The key product decisions that drive NRR:
+- Re-competition trigger (one-click mechanism to run the same competition again)
+- Straw Monitor (creates recurring revenue attached to a positive outcome)
+- Annual subscription pricing (locks in renewal conversation at natural intervals)
+
+**4. "300+ agent teams generating a calibration corpus"**
+
+Agent supply side: 300 registered teams implies ~50 active teams (submitting to competitions). This requires a year of community building — Berkeley RDI partnership, model provider referrals, word of mouth from competition winners.
+
+The calibration corpus: 50+ competitions with rubric data, judge scores, inter-rater agreement measurements. This is the number at which category-level patterns emerge in the corpus, enabling Straw to auto-suggest rubric templates for new enterprises in the same task category.
+
+**5. "Irreplaceable data asset that cannot be replicated"**
+
+The calibration corpus framing (per Tick 101 and Tick 97). Series A investors should understand:
+- The corpus grows with every competition (no additional cost to add a competition's data)
+- A competitor starting today must run real competitions to build calibration data — which requires the enterprise relationships and agent community Straw already has
+- The corpus enables Straw to offer a better product to every future customer: faster rubric calibration, higher judge accuracy, more reliable Straw Scores
+- No amount of money can purchase this corpus — it must be earned
+
+**6. "Our institutional anchor requires Straw Score in RFPs"**
+
+This is the most valuable single event in Straw's first two years. One enterprise with procurement authority and a public AI strategy requires Straw Score ≥ X in their AI vendor RFP template. This changes the supply-side calculus: every AI agent company that wants to bid on that enterprise's contracts must compete on Straw.
+
+How to make this happen: offer the anchor institution to fund their first 3 competitions at no cost. Work with their procurement team to understand how to format a Straw Score requirement in their standard RFP template. Help them write the case study. Make it easy for them to be the hero.
+
+**7. "We are becoming the FICO Score for AI agents"**
+
+The standard play (Tick 97). Series A investors need to understand the mechanism: once Straw Score is embedded in institutional infrastructure (enterprise RFPs, model provider documentation, analyst reports), every AI agent company has an incentive to compete on Straw. The standard creates the supply-side pull without individual outreach.
+
+---
+
+### What Series A investors require for enterprise AI infrastructure
+
+Based on current market data for enterprise AI infrastructure Series A rounds:
+
+**Minimum thresholds** (from SaaStr, OpenView, Bessemer data):
+- ARR: $2M–$5M
+- ARR growth rate: 100%+ YoY (2× minimum; 3× preferred)
+- NRR: >110% (>120% earns premium multiple)
+- Gross margin: >70% (SaaS gross margin)
+- Sales efficiency: CAC payback <18 months
+- Customer profile: 10+ enterprise logos (not just revenue — named accounts)
+
+**Series A check sizes for enterprise AI infrastructure (2025–2026)**:
+- Typical: $10M–$25M
+- For high-growth AI infrastructure with clear data moat: $20M–$40M
+- Valuation at Series A: 15–25× ARR (AI native premium; traditional SaaS is 8–12× ARR)
+
+**What Straw should target**: $15M–$20M Series A at $50M–$75M pre-money valuation, based on $3M ARR growing 2× with 120%+ NRR and the calibration corpus data moat narrative.
+
+**What Series A investors will probe hardest**:
+1. "Why can't a model provider just build this?" → The conflict of interest argument (Tick 98). Must be air-tight.
+2. "Why can't a consulting firm build this?" → Speed, cost, reproducibility — Deloitte charges $500K and produces a PowerPoint. Straw produces a score.
+3. "What happens when agent capabilities converge further?" → The capability convergence tailwind (Tick 74): convergence makes task-specific evaluation more valuable, not less.
+4. "What prevents agent community attrition?" → Prize economics, Agent Pro subscription, reputation system, and the H2O.ai model (competitions become the career path).
+5. "What's your moat if someone raises $50M to compete?" → The calibration corpus + institutional anchor. Name specific companies where Straw Score is embedded in procurement.
+
+---
+
+### The seed-to-Series-A fundraising narrative arc
+
+**Seed round** (pre-launch, 2026):
+- Raise $2M–$3M
+- Use: 18 months of runway, SOC 2 certification, first 5 design partner competitions, agent community bootstrapping
+- Narrative: "We are building the evaluation standard for AI agents. The market validated: LMArena raised $150M for model comparison; we're building the harder, more valuable version for agent procurement."
+- Investors: AI-focused seed funds (Conviction, Southpark Commons, Precursor), infrastructure investors, model provider angels
+
+**Series A** (month 18–24 post-launch, 2027–2028):
+- Raise $15M–$20M
+- Use: International expansion (EU), Tier 2 and Tier 3 evaluation buildout, dedicated sales team, government segment entry
+- Narrative: 20+ enterprise customers, $3M ARR, calibration corpus with 50+ competitions, institutional anchor embedding Straw Score in RFPs
+- Investors: Bessemer, a16z (enterprise), General Catalyst, Coatue
+
+**Series B** (month 30–42 post-Series A, 2029):
+- Raise $40M–$60M
+- Use: International scale, government FedRAMP, data licensing, white-label API, potential acquisition of an agent evaluation boutique
+- Narrative: Category definition — Straw is to AI agent procurement what FICO is to credit underwriting
+
+---
+
+### What Jeremy needs to do in the next 90 days to make the Series A story coherent
+
+1. Sign 2 design partner DPAs from the Tick 95 program
+2. Begin SOC 2 Type II process (start observation period by August 2026)
+3. Publish Straw methodology document v0.1 (formal PDF, not a blog post)
+4. Send cold outreach to Berkeley RDI and one model provider for supply-side partnerships
+5. Identify the specific enterprise that could become the institutional anchor — who in the target customer profile has a public AI strategy, a formal procurement process, and a willingness to be a reference?
+
+Each of these actions is reversible. Not doing them is irreversible — the Series A window narrows if the proof points don't accumulate on schedule.
+
+---
+
+### Sources
+
+- Series A valuation multiples for AI infrastructure: SaaStr Annual 2025; Bessemer BVP State of Cloud 2025
+- NRR impact on valuation: OpenView SaaS Benchmarks 2025; ChartMogul NRR research
+- LMArena Series A comp: $150M at $1.7B valuation (January 2026)
+- Seed fundraising landscape for AI evaluation: Conviction portfolio; Southpark Commons model
+- FICO standard timeline: Tick 97 analysis
+- Series A enterprise AI infrastructure check sizes: PitchBook Q4 2025 VC report; Crunchbase AI infrastructure funding data
+
