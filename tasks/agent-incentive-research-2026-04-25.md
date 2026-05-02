@@ -50313,3 +50313,285 @@ This is not a $100M ARR company. This is a multi-billion dollar evaluation infra
 
 It starts with a competition platform. But the destination is infrastructure.
 
+
+---
+
+## Tick 309 — The Straw Pitch Deck Outline
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Slide-by-slide outline for the Series A pitch deck
+
+### Context
+
+A Series A pitch deck has one job: convince a partner at a Tier-1 VC to schedule a second meeting with their full partnership. It does not need to answer every question. It needs to create conviction that (1) the market is large and the timing is right, (2) Straw has a differentiated approach, and (3) the team can execute.
+
+Standard Series A deck length: 12-16 slides. Any longer loses the audience.
+
+---
+
+### Slide 1: Title
+
+**"Straw: The Bloomberg Terminal for AI Performance"**
+
+Straw Pte. Ltd. | Singapore
+[Founder Name] | Pre-Series A
+[Month, Year]
+
+*Design note:* Simple, confident. No stock photo of robots or neural networks.
+
+---
+
+### Slide 2: The Problem
+
+**Title: "Six-Figure AI Decisions Based on Six-Minute Demos"**
+
+Three bullets:
+- Enterprise AI deployment failures: 42% of AI projects fail to meet expectations (McKinsey 2025)
+- Root cause: procurement based on vendor-curated demos, not independent evaluation
+- Cost: $6.8M average cost of a failed AI procurement decision
+
+One image: the chef analogy ("You wouldn't let a restaurant grade its own Michelin review")
+
+*Design note:* The chef analogy makes the problem viscerally obvious. One strong visual beats three bullet points.
+
+---
+
+### Slide 3: The Solution
+
+**Title: "Enterprise AI Competitions — Let Them Compete"**
+
+Diagram: 
+```
+Enterprise writes task + rubric → 30 AI systems compete → 
+Objective leaderboard → Enterprise hires/licenses the winner
+```
+
+One-sentence explanation: "Straw is the platform where enterprise AI systems compete on real tasks with objective, tamper-proof scoring."
+
+*Design note:* The diagram must be simple enough to understand in 5 seconds.
+
+---
+
+### Slide 4: How It Works (2-minute demo equivalent)
+
+**Title: "A Competition in 6 Weeks"**
+
+Three-step flow:
+1. Enterprise designs competition (task set + rubric + prize pool) — 1 week
+2. AI systems compete (blind evaluation in sandboxed containers) — 4 weeks
+3. Enterprise gets objective leaderboard + hires the winner — 1 week
+
+Key differentiators called out:
+- Operator code runs in gVisor sandboxes (no cheating, no data leakage)
+- Scores are immutable (written once, cryptographically anchored)
+- Straw earns same fee regardless of winner (neutral third party)
+
+*Design note:* This slide should feel like a product walkthrough, not a feature list.
+
+---
+
+### Slide 5: Market Size
+
+**Title: "$134B AI Agent Staffing Market Being Created Right Now"**
+
+TAM breakdown:
+- AI agent staffing (direct): $134B by 2030 (IDC)
+- Enterprise AI evaluation (adjacent): $300-600M direct market
+- AI compliance and governance: $2B+ regulatory mandate-driven
+
+Straw's addressable initial market:
+- 2,000 enterprises in Singapore/India/UK/Australia with $2M+ AI budgets
+- Average ACV: $80K
+- Year 3 addressable: $160M in English-speaking APAC/UK markets alone
+
+*Design note:* Don't inflate TAM dishonestly. The real market is large enough.
+
+---
+
+### Slide 6: Regulatory Tailwind
+
+**Title: "Regulation Is Mandating What Straw Does"**
+
+Four regulatory frameworks + enforcement timeline:
+
+```
+EU AI Act Articles 9/15  → Aug 2026 enforcement  → documented pre-deployment testing
+Singapore MAS Tripartite → Dec 2026 enforcement  → AI system validation required
+UK AI Regulation Act     → 2026                  → sector-specific AI oversight
+OMB M-26-04 (US Federal) → Jan 2026              → comparative AI evaluation mandated
+```
+
+"Straw's competitions produce the documentation these frameworks require."
+
+*Design note:* The timeline creates urgency. Enterprises need this now.
+
+---
+
+### Slide 7: Why Straw Has a Permanent Moat
+
+**Title: "The Conflict That Big Tech Can't Solve"**
+
+Competitive landscape matrix:
+
+| | Neutrality | Competition Format | Data Quality | Enterprise-Specific |
+|---|---|---|---|---|
+| Straw | ✅ | ✅ | ✅ | ✅ |
+| Scale AI | ❌ (49% Meta) | ❌ | ✅ | ❌ |
+| LangSmith | ✅ | ❌ | ❌ | ❌ |
+| OpenAI Evals | ❌ | ❌ | ✅ | ❌ |
+| Vals AI | ✅ | ❌ | ❌ | ✅ |
+
+**"No Big Tech company can be neutral about evaluating their own models."**
+
+*Design note:* The matrix is powerful because it shows that each competitor is missing exactly the combination that makes Straw valuable.
+
+---
+
+### Slide 8: Product
+
+**Title: "ZeroClaw: Tamper-Proof Evaluation Infrastructure"**
+
+Three pillars:
+1. **Security:** gVisor sandboxed containers, no network access, operator code never touches host
+2. **Immutability:** evaluation_runs cannot be updated or deleted (SQL rules + cryptographic hash chain)
+3. **Credibility:** Tier-1 deterministic + Tier-2 LLM + Tier-3 human, all logged and auditable
+
+Key metric: "100% uptime evaluation pipeline. Zero security incidents. Zero score modifications after write."
+
+*Design note:* This slide should feel like infrastructure, not features. Reliability and trustworthiness, not cleverness.
+
+---
+
+### Slide 9: Traction
+
+**Title: "[3] Design Partners, [$X] ARR, [200] Operators"**
+
+Metrics:
+- Paying enterprise customers: [3]
+- ARR run rate: [$X]
+- Active operators (past 60 days): [200+]
+- Competitions completed: [15]
+- Prize money distributed: [$X]
+- Average competition NPS: [8.7/10]
+
+One customer quote: "[DBS/Singapore bank quote about AI evaluation quality and MAS compliance]"
+
+*Design note:* Real numbers, specific customer quote. Don't fake it.
+
+---
+
+### Slide 10: Business Model
+
+**Title: "Three Revenue Streams, All High-Margin"**
+
+Diagram:
+```
+Competition fees (15% of prize pool)     → 30% of ARR
+Enterprise subscriptions ($12K-$120K/yr) → 40% of ARR
+Operator subscriptions ($29-$99/month)   → 30% of ARR
+```
+
+Unit economics:
+- Average enterprise ACV: $80K
+- CAC: $35K
+- LTV:CAC: 9.3:1
+- Gross margin: 72%
+
+*Design note:* Investors want to see simple, defensible unit economics. No complex revenue waterfall.
+
+---
+
+### Slide 11: Financial Projections
+
+**Title: "$12.9M ARR by Year 3, 54.8% Net Margin"**
+
+Three-year table:
+```
+         Y1      Y2      Y3
+ARR      $344K   $2.75M  $12.9M
+Growth   —       8×      4.7×
+Gross%   62%     70%     74%
+Net%     -37%    25%     55%
+```
+
+Series A use of funds ($10M):
+- Engineering (4 hires): $2.5M
+- Sales (2 AEs + manager): $2.0M
+- Customer success: $1.0M
+- Infrastructure + security: $0.7M
+- India + UK expansion: $1.3M
+- G&A + reserve: $2.5M
+
+*Design note:* The projection is aggressive but defensible with the unit economics on the prior slide.
+
+---
+
+### Slide 12: The Team
+
+**Title: "The Only Team Positioned to Build This"**
+
+Founder bio: [Technical background + enterprise AI experience + market insight]
+
+Co-founder 1 (Eval): [ML infrastructure background at Scale AI/HuggingFace/etc.]
+
+Co-founder 2 (GTM): [Enterprise AI sales background, closed $40M at prior company]
+
+Advisors:
+- [Singapore MAS policy advisor — for regulatory credibility]
+- [IIT academic — for India market access and evaluation methodology]
+- [Ex-CTO of Fortune 500 company — for enterprise buyer validation]
+
+*Design note:* The team slide should show why this specific team can build this. Background relevance, not just prestige.
+
+---
+
+### Slide 13: The Ask
+
+**Title: "$10M Series A to Own the AI Evaluation Standard"**
+
+Raise: $10M at [$X]M post-money valuation
+
+Milestones:
+- 20 paying enterprise customers
+- $2.5M ARR
+- Singapore + India + UK presence
+- SOC 2 Type II certification
+- Series B ready in 18 months at $25-35M ARR
+
+Warm intros requested:
+- VP of AI at Fortune 500 financial services companies
+- Enterprise SaaS investors in Singapore and US
+- Government relations contacts at MAS, FCA
+
+*Design note:* Be specific about what you want from investors beyond money.
+
+---
+
+### Appendix Slides (For Deep Dives)
+
+- A1: Regulatory compliance framework detail (EU AI Act Article 15 export format)
+- A2: ZeroClaw technical architecture (gVisor, BullMQ, evaluation funnel)
+- A3: Competitive landscape deep dive (Scale AI, LangSmith, Vals AI analysis)
+- A4: India market entry plan (IIT partnership, RBI compliance angle)
+- A5: Glicko-2 rating system explanation
+- A6: Anti-cheating and trust architecture
+- A7: Customer success playbook and NRR model
+- A8: Data licensing business (long-term upside)
+
+Appendix slides answer every partner question without bloating the main deck.
+
+---
+
+### Key Design Principles for the Deck
+
+**One insight per slide.** If a slide has two key messages, split it.
+
+**Numbers beat adjectives.** "9.3:1 LTV:CAC" beats "strong unit economics."
+
+**The competitor matrix.** The one visual that earns the most investor discussion in AI market pitches. Use it.
+
+**Don't over-explain.** Investors have seen enough AI pitches to fill in context. Trust them to understand the problem. Spend more time on the moat and team.
+
+**The Bloomberg Terminal analogy.** Say it once. Let it land. Don't over-explain why it's apt — the investor will make the connection themselves, and self-discovery is more persuasive than being told.
+
