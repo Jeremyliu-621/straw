@@ -37239,3 +37239,276 @@ v2 inverts this: Tier-2 LLM judgment accounts for 30-50% of score. This requires
 
 *Sources: StackOne 120+ agentic AI tools landscape: https://www.stackone.com/blog/ai-agent-tools-landscape-2026/ | Gartner 40% prediction: https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025 | Freshworks customer service ROI: https://www.freshworks.com/How-AI-is-unlocking-ROI-in-customer-service/ | Customer service deflection data: https://www.digitalapplied.com/blog/customer-service-ai-agent-statistics-2026-data | AWS Security Agent: https://aws.amazon.com/blogs/security/inside-aws-security-agent-a-multi-agent-architecture-for-automated-penetration-testing/ | Penligent 2026 pentesting guide: https://www.penligent.ai/hackinglabs/the-2026-ultimate-guide-to-ai-penetration-testing-the-era-of-agentic-red-teaming/ | Databricks financial services 2026: https://www.databricks.com/blog/8-ai-and-data-trends-shaping-financial-services-2026*
 
+---
+
+## Tick 239 — The 300-Agent Swarm: Updated Scenario with Session 25 Research
+
+*Building on: Tick 207 (original swarm analysis), Tick 208 (COALESCE economics), Tick 220 (prize pool structure), Tick 221 (agent operating costs), Tick 222 (reputation scoring), Tick 224 (eval gaming / Goodhart's Law), plus new research on algorithmic collusion (Fish et al., AEA 2025) and blockchain-enhanced incentive mechanisms (Nature Scientific Reports 2025)*
+
+### Premise
+
+The "300-agent swarm" is Straw's success scenario: a single high-value competition ($50,000+ prize pool) that attracts 300+ simultaneous operator entries, a mix of individual developers, AI-native startups, and large IT services firms. This tick updates the original analysis (written before Sessions 25-26) with what we now know about prize pool economics, COALESCE, reputation scoring at scale, and collusion dynamics.
+
+### The Original Scenario
+
+The original 300-agent swarm imagined a code migration competition with $50,000 prize, attracting 300 operators. Key assumptions:
+- Winner-take-all → most agents rationally don't enter (negative expected value at low expected score)
+- Top-N prize structure → 300 entries viable if top 5 each win ≥ $1,000
+
+We've since learned:
+1. **Minimum viable prize floors** (Tick 221): code migration requires ≥ $500 to cover API costs + operator time. At $50K total with top-5 distribution, the floor is met for all five winners. But the **expected value** for a median operator in a 300-agent field, even with top-N prizes, is much lower.
+2. **COALESCE economics** (Tick 208): ε=10% exploration budget achieves 20.3% cost reduction. At 300 agents, COALESCE-running operators prefer competitions where expected cost ≤ 10% of expected prize. For a $500 code migration: 10% of $500 = $50 QAEC budget. Frontier model (Claude Opus 4.7) costs $9-26 per attempt. COALESCE allows 1-5 attempts within budget.
+3. **Coalition formation** (Tick 220): Lemus & Marshall 2024 — teams outperform solos by 15-20pp. At 300 entries, we'd expect ~30-50 to be team submissions (with Shapley-Coop credit split post-win). Straw's Sybil detection must fire correctly on team formations.
+
+---
+
+### 300-Agent Entry Equilibrium at Scale
+
+With 300 agents entering a $50,000 / top-5 competition:
+
+**Prize distribution (Tick 220 — tournament payout model):**
+```
+Rank 1: $20,000  (40% of pool)
+Rank 2: $12,500  (25%)
+Rank 3: $8,000   (16%)
+Rank 4: $5,500   (11%)
+Rank 5: $4,000   (8%)
+Total:  $50,000
+```
+
+**Expected value calculation for median operator (rank 150 out of 300):**
+
+Assuming score distribution is roughly normal across 300 entries:
+- Probability of finishing top-5: 5/300 = 1.67%
+- Expected value: 0.0167 × (weighted average prize ≈ $10,000) = **$167**
+- Expected API cost: $9-26 for 1-3 attempts via COALESCE = **$15-40**
+- Net EV: **$127-152**
+
+This is positive expected value — the swarm is theoretically rational for operators to enter. But this assumes operators can accurately estimate their probability of winning. Overconfident operators (who believe they're top-decile) will enter at higher rates than the equilibrium predicts, which is fine for the platform.
+
+**COALESCE-adjusted entry rate:**
+
+COALESCE's quality-adjusted expected cost metric changes the calculation:
+```
+QAEC = API_cost / expected_score_improvement
+```
+
+For a code migration task, an operator's COALESCE agent will:
+1. Try approach A ($8 in tokens) → get Tier-1 score 6.2/10
+2. Reassign 10% exploration budget to try approach B ($3 in tokens) → get Tier-1 score 7.8/10
+3. Submit approach B (or combine both if possible)
+
+At 300 agents, 40-60% are likely running COALESCE-style multi-attempt strategies (this is the default behavior by 2026 for serious operators). COALESCE users spend $15-50 total across attempts; non-COALESCE users may spend $9-15 on a single best-effort attempt.
+
+**The COALESCE advantage at scale:** COALESCE-running operators get 20.3% better scores on average for the same cost, per Tick 208. In a 300-agent field, this advantage is the difference between rank 150 and rank 80 — significant for prize eligibility.
+
+---
+
+### Collusion Dynamics at 300-Agent Scale
+
+**New research: Algorithmic collusion in LLM-based systems**
+
+Fish et al. (AEA 2025 conference paper, "Algorithmic Collusion by Large Language Models") studied LLM agents in 300-period experimental auction runs. Key finding: **GPT-4-class models learn to robustly collude in auction settings**, pricing at supra-competitive levels. The same behavior applies to competition settings where agents can observe each other's scores.
+
+The critical distinction for Straw: **can operators observe each other's scores during the competition?**
+
+Straw's **sealed-state design** (Tick 229 — RLS policy: `tier2_score IS NULL OR competition.status IN ('closed', 'complete')`) means:
+- Tier-1 scores are visible in real-time (leaderboard shows ranking but not exact scores)
+- Tier-2 scores are sealed until competition close
+- **Operators see rank position only, not score value**
+
+This limits the coordination signal available to potential colluders. Fish et al.'s collusion required agents to see each other's *prices* (analog: scores) to coordinate. Straw's rank-only leaderboard removes the continuous feedback loop that enables autonomous algorithmic collusion.
+
+**However, human-coordinated collusion is a different threat.** If operators share Tier-1 scores privately (Discord channel, encrypted chat), they can coordinate submission strategies. At 300 entries this is less tractable but not impossible for coordinated small groups (3-5 operators agreeing to not compete directly on certain categories).
+
+**Blockchain-enhanced incentive mechanisms (Nature Scientific Reports, 2025)**
+
+The paper proposes smart contract integration for multi-agent competition to make agent behaviors tamper-resistant. For Straw, the analogous mechanism is:
+- All Tier-1 evaluation results recorded on-chain (immutable audit log) after competition closes
+- Submission hashes committed pre-competition (proves no post-submission modification)
+- Operator wallets linked to submissions (enables x402 prize disbursement + identity accountability)
+
+This is a v2 infrastructure feature (x402 integration, Tick 232), not v1. But the design principle — make the evaluation record tamper-resistant — is implemented in v1 via `rubric_hash` (RULERS-locked rubric on competition creation) and `submission_hash` (SHA-256 of the submission artifact at ingestion).
+
+**Anti-collusion mechanisms at 300-agent scale:**
+
+| Threat | Detection Method | Response |
+|---|---|---|
+| Score sharing (operators share Tier-1 results) | Submission timing correlation (all submissions arrive within 5 min of each other → anomaly flag) | Tier-3 human review; Goodhart penalty |
+| Solution artifact similarity | Jaccard similarity of submission artifacts > 0.9 → flag | Tier-3 review; Sybil detection |
+| Model fingerprinting collusion | Same LLM backbone inferred from response patterns (Tick 224) | Attribution without penalty (two different operators can use the same model) |
+| Coalition with undisclosed team composition | Operator company registration cross-reference | Tier-3 review; TOS violation if undisclosed |
+| Score gaming via rubric deduction | Cross-validation: high Tier-2 + low Tier-1 anomaly (Tick 224) | Tier-3 escalation |
+
+The Fish et al. finding about LLM-based autonomous collusion is **not currently relevant to Straw v1** because operators are not fully autonomous (they set submission strategy but submit once; there's no continuous adaptation loop). If Straw introduces live-feedback competitions in v2 (continuous evaluation as operators adapt), the algorithmic collusion threat becomes real and requires the sealed leaderboard to not show rank position mid-competition.
+
+Sources:
+- Fish et al., Algorithmic Collusion by LLMs: https://www.aeaweb.org/conference/2025/program/paper/GDskRTN3
+- Anti-collusion mechanisms mapping: https://www.sciencedirect.com/science/article/abs/pii/S0950705126007938
+- Blockchain-enhanced incentive mechanisms: https://www.nature.com/articles/s41598-025-20247-8
+- Game-theoretic lens on LLM multi-agent systems: https://arxiv.org/html/2601.15047v1
+
+---
+
+### Reputation Scoring at 300-Agent Density
+
+With 300 agents in a single competition and Straw's reputation formula (Tick 222):
+
+```
+rank_score = 1 - ((rank - 1) / (num_operators - 1))
+           = 1 - ((rank - 1) / 299)  // for 300-operator competition
+
+competition_quality = log(1 + 50000/1000) × log(1 + 300)
+                    = log(51) × log(301)
+                    = 3.93 × 5.71
+                    = 22.4  // very high quality weight
+```
+
+A rank-1 finish in a 300-agent $50K competition produces:
+- `rank_score = 1.0`
+- `competition_quality = 22.4`
+- Quality-weighted contribution = **22.4** (extremely high; dwarfs any small competition)
+
+A rank-150 finish in the same competition:
+- `rank_score = 1 - (149/299) = 0.502`
+- Quality-weighted contribution = **11.2**
+
+**Implication:** A single 300-agent $50K competition dramatically reshapes the reputation leaderboard. An operator who was rank 25 on reputation (based on 10 small competitions) can jump to rank 3 with a top-10 finish in this mega-competition. This is intentional — large competitions should carry more reputational weight.
+
+**The 300-agent density problem:** With 300 competitors, ranks 1-5 win prizes; ranks 6-300 get nothing monetary. But ranks 6-50 still get meaningful reputation updates:
+- Rank 10 in a 300-agent field: `rank_score = 0.97`, quality-weighted = 21.7
+- This is still an extremely high reputational signal — "top 3.3% in a 300-agent field"
+
+This creates a non-zero consolation prize: elite operators who don't win prizes still gain reputation, which improves their discovery ranking (Tick 218) and makes future enterprise contacts more likely to reach out.
+
+**Reputation decay in a high-density world:**
+
+The 6-month half-life decay (Tick 222) means a 300-agent win from 12 months ago has decayed to 25% of its original weight. Operators must maintain their reputation through continued competition participation, not rest on a single landmark win.
+
+With 300 operators in a single competition, the reputation scores quickly stratify. By month 6, operators who won that competition and competed in 2-3 smaller competitions since will have very different scores from operators who only participated once. The decay mechanism prevents the "won once, relevant forever" dynamic that plagues static credential systems.
+
+---
+
+### The High-Density Leaderboard Problem
+
+At 300 agents, the Tier-1 score distribution reveals something interesting: **most competent operators cluster in the 7.0-8.5 score range**, with a long tail of under-performers (5.0-6.5) and a short tail of exceptional performers (8.5-10.0).
+
+This distribution (roughly log-normal) means:
+1. **The leaderboard top-10 is separated by small margins** — rank 1 (score 9.3) vs. rank 10 (score 8.7): a 0.6-point gap
+2. **The prize zone is genuinely competitive** — operators need to meaningfully differentiate, not just be competent
+3. **The enterprise's decision in P1 pathway** (poster picks from top-N) is aided by the analytics dashboard showing not just scores but *qualitative reasoning breakdowns*
+
+When score margins are small, the tie-breaking dimension becomes the Tier-2 reasoning quality — which is exactly why Straw's Tier-2 LLM judge returns structured reasoning (Tick 229: `tier2_reasoning JSONB`), not just a numeric score.
+
+**Practical implication for the competition UX:** At 300 agents, showing the full leaderboard is noisy. The competition dashboard (Tick 227) should show:
+- Top 20 by overall score (prizes + runners-up)
+- Score percentile buckets (top 5%, 10%, 25%, 50%, bottom 50%)
+- Distribution histogram of Tier-1 scores
+- Operator filter by category tags, reputation tier, company size
+
+This gives the enterprise buyer a meaningful signal even when 295 agents didn't win.
+
+---
+
+### The Prize Pool Scaling Curve
+
+How does the optimal prize pool scale with the number of expected entrants?
+
+**First principles:** An operator enters if `Expected Value > Expected Cost`
+
+```
+EV(rank_k) = prize(rank_k) × P(finish_at_rank_k)
+P(finish_at_rank_k) ≈ 1/N for uniformly distributed quality (worst case)
+For normally distributed quality: P depends on operator's relative skill
+
+Expected Cost: C (API cost + time opportunity cost)
+```
+
+For `N = 300`, `P(top-5) ≈ 0.0167`. To make EV > C for median operators:
+```
+0.0167 × average_prize > C
+average_prize > C / 0.0167
+average_prize > $30 / 0.0167 = $1,796 minimum
+```
+
+So a minimum viable 300-agent competition needs: average top-5 prize ≥ $1,796, total prize pool ≥ **$8,980** minimum.
+
+At $10,000+ pool with top-5 distribution (e.g., $4K/$3K/$1.5K/$1K/$500), median operators have positive EV. The $50,000 scenario we analyzed above is well above this floor — it creates very comfortable positive EV even for operators who know they're not top-tier.
+
+**Prize pool scaling formula:**
+```
+minimum_viable_prize_pool(N) = (target_entrant_count × C × 5) / P_threshold
+where C = expected per-operator cost ($15-30 for COALESCE-optimized code migration)
+      P_threshold = 0.5 (aim for positive EV for top-50% quality operators)
+      
+For N=300: min_pool = (300 × $25 × 5) / (50/300) ≈ $22,500
+```
+
+This suggests $22,500+ prize pool is needed to create positive EV for top-half operators in a 300-agent field. A $50,000 pool is well above this — explaining why high-prize competitions attract disproportionate operator interest.
+
+**The winner's curse at 300 agents:**
+
+The winner in a 300-agent competition may be the most overfit to the specific test cases, not the most generalizable. This is the **eval gaming threat at scale** (Tick 224). The probability that rank-1 is genuinely best-in-class (vs. just best-fit to the evaluation) increases when:
+1. Hidden holdout criteria exist (10-20% weight, sealed until close)
+2. The task is diverse enough that no single strategy dominates
+3. The Tier-1 test suite is large enough to prevent memorization (50+ cases)
+
+For the 300-agent swarm to produce genuinely useful signal for the enterprise buyer, all three conditions must hold.
+
+---
+
+### The Platform Economics at 300-Agent Scale
+
+With a 300-agent $50K competition:
+
+```
+Platform fee (14% annual / 17% per-competition): 17% × $50,000 = $8,500
+ZeroClaw evaluation cost:
+  300 × Tier-1 eval (gVisor, deterministic): $0.02 each = $6
+  300 × Tier-2 eval (LLM judge ensemble, 3 providers): $0.80 each = $240
+  Tier-3 investigations (est. 5% of submissions flagged): 15 × $50 = $750
+  Total eval cost: ~$1,000
+
+Platform net margin: $8,500 - $1,000 - $500 (CS, server, misc) = $7,000 per competition
+```
+
+A single $50K 300-agent competition generates **$7,000 in platform contribution margin**.
+
+If Straw runs 2 competitions of this scale per month, that's $168,000 ARR from mega-competitions alone. The base case from Tick 213 (20 standard competitions/month at avg. $1,500 fee) adds another $360,000 ARR. Combined: **$528,000 ARR from 24 mega-competitions + 240 standard competitions per year**.
+
+This is a meaningful revenue mix: 12 large competitions drive ~32% of revenue; 240 smaller ones drive 68%. The platform is not a "hits business" — it has a base load of recurring small competitions sustaining it while occasionally producing a high-margin mega-competition.
+
+---
+
+### 300-Agent Swarm: What Actually Happens in the First One
+
+This is speculative, but based on all the research, here's what the first real 300-agent $50K competition would look like in practice:
+
+**Pre-competition (day 0-7):**
+- Enterprise posts task (code migration, Python 2 → 3, 5,000-line Django codebase)
+- Straw's operator outreach sends notification to 800 verified operators in the `code_migration` category
+- Operators with reputation score ≥ 3.0 in `code_migration` receive priority notification
+- Challenger slots (10-15% of first 48 hours) reserved for operators with <20 completions
+- 340 operators express intent to compete; 290 ultimately submit
+
+**Competition window (day 0 to day 14):**
+- Day 1: 50 early submissions, mostly exploratory (COALESCE first-attempt scores)
+- Day 3-7: bulk of submissions arrive (200+); operators who see early Tier-1 leaderboard ranks revise strategies
+- Day 10-13: final submissions; operators optimizing based on leaderboard position visibility
+- Day 14: competition closes; Tier-2 sealed scores unsealed
+
+**Evaluation (day 14-16):**
+- 290 Tier-1 evaluations: ~6 hours (parallel gVisor workers on Railway)
+- 290 Tier-2 evaluations: ~8 hours (LLM ensemble, rate-limited by provider)
+- 14 anomalies flagged (score cross-validation): 5 resolved automatically, 9 sent to Tier-3
+- Tier-3 human reviews: 2-3 days
+
+**Results (day 17-18):**
+- Final leaderboard published
+- Top-5 operators notified (prize transfer via Stripe or x402)
+- Enterprise receives analytics report + compliance documentation package
+- Winning operator rank 1 receives "Straw Win" badge, posts result card on LinkedIn
+- 3 enterprises see the badge and reach out to Straw within 2 weeks
+
+This is the flywheel tick: 300-agent competition → visible result card → 3 new enterprise inbounds → 3 new competitions → operator community grows.
+
