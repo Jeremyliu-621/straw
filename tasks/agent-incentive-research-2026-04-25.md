@@ -36527,3 +36527,401 @@ Ticks 229–234 complete. Session 25 adds 6 ticks (plus the Session 25 header):
 
 Sources: Tick 210 (rubric generator UX phases), Tick 213 (subscription pricing tiers), Tick 215 (bootstrap GTM, 90-day milestone, concierge model), Tick 216 (ZeroClaw gVisor isolation), Tick 220 (D22 pathway mechanics), Tick 221 (hidden holdout criteria), Tick 222 (reputation scoring), Tick 224 (GDPR, SOC 2 Type II), Tick 227 (analytics dashboard), Tick 228 (operator SDK), Tick 229 (technical architecture), Tick 230 (Series A milestones), Tick 233 (x402 autonomous loop), D22 (three winner pathways), D30 (ZeroClaw daemon).
 
+
+---
+
+## Tick 236 — Enterprise customer success playbook: from first competition to annual contract
+
+**Context:** Straw's unit economics depend on repeat competitions. The first competition at $4,250 platform fee is too small to justify the enterprise sales cycle cost. The economics work at 5+ competitions/year per enterprise. The customer success playbook is how Straw gets from "first competition completed" to "annual contract for 10 competitions."
+
+**The enterprise journey map**
+
+```
+Phase 0: Pre-competition (enterprise arrives)
+  Entry via: cold outreach (Tick 215 GTM) OR compliance urgency (Tick 234 EU AI Act) 
+             OR referral from operator who won and told their enterprise customers
+  First conversation: 45-minute call with Straw team
+  Goal: understand their task, assess fit, scope the first competition
+  
+Phase 1: First competition (weeks 1-4)
+  Week 1: Task scoping + rubric creation workshop (Tick 210 UX)
+  Week 2: Operator invite list finalized (concierge in v0, automated in v1.5)
+  Weeks 2-3: Competition runs (14-day window)
+  Week 4: Competition closes, report delivered, results reviewed
+
+Phase 2: Post-competition review (week 5)
+  45-minute call with enterprise stakeholders
+  Walk through the competition analytics report (Tick 227)
+  Key questions: What did you learn? Did the format work? What would you do differently?
+  
+Phase 3: Expansion conversation (weeks 6-8)
+  Based on Phase 2 outcomes, propose next steps
+  Outcome A: "We want to hire the winner" → Pathway 2 or 3 activation
+  Outcome B: "We need to run this again with different test cases" → Competition 2
+  Outcome C: "We want to test a different task type" → Cross-category competition
+  Outcome D: "This was great, how do we run 5 competitions a year?" → Annual contract
+  
+Phase 4: Annual contract (month 3-6 post-first-competition)
+  Annual subscription + 5-10 competition plan
+  Dedicated customer success manager
+  Custom onboarding for their rubric templates
+  Priority operator invites
+  Compliance documentation package
+```
+
+**The post-competition review call (what to cover)**
+
+This is the most critical moment in the customer journey. The enterprise has just seen the results. Their reaction will be one of four patterns, and the Straw CS team needs to respond to each:
+
+**Pattern 1: "This was exactly what we hoped for"** (score > 7.0, meaningful score variance, competitive results)
+→ Response: "Great. Here's what a 5-competition annual plan looks like. We can run these quarterly, or whenever you have a new task to evaluate." Present the annual plan immediately.
+
+**Pattern 2: "The scores were lower than expected"** (score distribution clusters below 6.0)
+→ Response: "This is actually valuable data — it means the task as specified is harder than you thought, OR the right operators weren't invited. Let's do a quick post-mortem on the rubric and see if we can improve for competition 2." Offer a free competition 2 (waive Straw fee, charge only prize pool). The second competition is the retention investment.
+
+**Pattern 3: "The scores were too high — it felt too easy"** (score distribution clusters above 9.0)
+→ Response: "Good news — your task is highly solvable. Let's make the rubric harder, add more edge cases, and run again with a higher prize to attract the top-tier operators." Frame higher difficulty as a feature, not a failure.
+
+**Pattern 4: "We're not sure what to do with the results"** (enterprise doesn't know how to act on the leaderboard)
+→ Response: This is a Straw failure — the analytics report wasn't clear enough or the enterprise wasn't ready to act. Spend 30 minutes walking through the competitive intelligence section. If still unclear: "Let's set up a call with the winning operator to understand their approach before you commit to any engagement." Position the intro call as the next step.
+
+**The 90-day retention metric**
+
+Straw should track: what percentage of enterprises run a second competition within 90 days of the first?
+
+Target: 50% at launch, 70% at Series A.
+
+Drivers of second-competition conversion:
+- High pattern-matching score in Phase 2 call (enterprise clearly identified their next question)
+- Competition 2 already scoped in the Phase 3 call (pre-sold before the enterprise cools off)
+- Winning operator showed concrete value (hire discussion active, enterprise is engaged)
+
+**The annual contract structure**
+
+```
+Annual Contract: $60,000/year (Enterprise subscription, Tick 213)
+Includes:
+  - Unlimited competition creation
+  - Platform fee discount: 14% (vs. standard 17%)
+  - 5 "priority" competitions per year: guaranteed 10+ operator participation
+    (Straw actively recruits if organic operator count is low)
+  - Dedicated customer success manager: 2 check-ins per month
+  - Custom rubric template library for their task categories
+  - Compliance documentation package: automated 6-artifact export for every competition
+  - SSO/SCIM integration (v1.5 feature, not v0)
+  - White-label option: "Powered by Straw" removed from competition pages
+    (relevant for enterprises who don't want operators knowing they're using a third-party platform)
+  
+Minimum commitment: $60K/year subscription + estimated $30-150K/year in prize pools
+Total enterprise budget: $90K-$210K/year
+```
+
+**The white-label option** deserves special attention. Large enterprises running competitions on Straw may not want their operators to know they're outsourcing evaluation to a third-party platform — they want to present it as "our own AI evaluation system." Straw can remove "Powered by Straw" branding from the competition page for Enterprise subscribers. The underlying evaluation is still Straw's, but the enterprise controls the presentation.
+
+**Referral mechanics**
+
+The best source of new enterprise customers is the winning operator who tells their other enterprise relationships: "I just won a $10,000 competition on this platform — you should run one with us." The agent-to-enterprise referral is a unique distribution channel that no human-competitor platform has.
+
+To activate this channel:
+- After every competition, the winning operator receives a "Straw Win" badge and a shareable result card
+- The result card shows: "Won [task category] competition at [anonymized enterprise] with score [X]/10"
+- Operators can share this on LinkedIn/X as social proof
+- The share includes a CTA: "Run your own competition → straw.ai"
+- Straw tracks enterprise inbounds that cite an operator's share
+
+This is the virality mechanic unique to Straw: operators win, they brag, enterprises see the brag, enterprises want to be the enterprise that posts competitions.
+
+**The NPS intervention**
+
+Straw should run a 3-question NPS survey after every competition:
+1. "How likely are you to run another competition on Straw?" (1-10)
+2. "What would have made this competition more valuable?"
+3. "Is there a colleague who should run a Straw competition?"
+
+Responses ≤ 6 trigger immediate CS intervention (call within 24 hours). Responses ≥ 9 trigger referral ask (send personalized note to the enterprise: "Would you be willing to introduce us to the contact who runs AI procurement at [sister company]?").
+
+Sources: Tick 213 (pricing tiers, platform fee structure), Tick 214 (enterprise AI procurement — VP Engineering as buyer), Tick 215 (bootstrap GTM, first enterprise customer profile), Tick 217 (competitive positioning — the analytics report is what gets forwarded to CTOs), Tick 218 (operator supply — winning operator referral channel), Tick 227 (competition analytics dashboard, competitive intelligence narrative), Tick 230 (Series A — 60% repeat rate as leading indicator), Tick 234 (regulatory compliance — compliance documentation as annual contract feature).
+
+---
+
+## Tick 237 — International Expansion: AI Regulation Landscape and APAC Competitive Gap Analysis
+
+*Research sources: background agent abc4ba2e279925573; Japan AI Promotion Act (White & Case, FPF); Digital Agency Generative AI Procurement Guideline (digital.go.jp, May 2025); Singapore MAS mandatory AI governance (White & Case tracker, December 2024); IMDA Agentic AI Framework (IMDA, January 2026); UK AI regulation analysis (Taylor Wessing, eyreACT, Compare the Cloud); Canada AIDA status (Schwartz Reisman Institute, Xenoss, Osler); APAC agentic AI market (Omdia/Informa, MarketsandMarkets); enterprise AI adoption data (GMO Research, SmartDev benchmark)*
+
+### The Question
+
+Where should Straw expand internationally, and what compliance forcing functions exist outside the US/EU? We know the US has OMB M-26-04 (federal agencies by December 2025) and the EU AI Act Articles 13-15 (August 2, 2026). Are there equivalent hooks in APAC or elsewhere?
+
+### 1. Japan
+
+**Regulatory posture: innovation-first, light-touch**
+
+Japan passed its first AI law on May 28, 2025 — the *Act on Promotion of Research and Development and Utilization of Artificial Intelligence-Related Technologies* — entering force June 4, 2025. This is deliberately the opposite of the EU AI Act:
+
+- No risk tiering, no mandatory conformity assessments
+- No fines or penalties for non-compliance
+- Non-compliance triggers "name and shame" public disclosure at most
+- Operates as a "fundamental law" — broad policy objectives, coordination structures, sector-specific guidance fills the gaps
+
+The AI Utilization Guidelines recommend four principles: risk-based approach, stakeholder involvement, lifecycle governance, and agile risk response. These are guidance, not law.
+
+Sources:
+- Japan AI Promotion Act analysis: https://fpf.org/blog/understanding-japans-ai-promotion-act-an-innovation-first-blueprint-for-ai-regulation/
+- White & Case tracker: https://www.whitecase.com/insight-our-thinking/ai-watch-global-regulatory-tracker-japan
+- Innovation-first vs EU comparison: https://www.twobirds.com/en/insights/2025/japan/japans-new-ai-act-examining-an-innovationfirst-approach-against-the-eus-comprehensive-risk-framework
+
+**The procurement hook that exists despite light-touch regulation**
+
+The law-level framework is soft, but the *procurement documentation layer* is real. Japan's Digital Agency published a formal **Generative AI Procurement Guideline** (approved May 27, 2025, in collaboration with METI and MIC) that requires all government agencies to use a "Procurement Check Sheet" when acquiring GenAI systems. The Check Sheet evaluates:
+
+- AI governance of generative AI suppliers
+- Appropriate input/output and data handling
+- Ensuring quality of LLMs and services (including prevention of false/incorrect information)
+- Responding appropriately to risks particular to generative AI systems
+
+Requirements labeled "Basic Requirements" are *mandatory criteria* for procurement applicants. METI separately published an **AI Contract Checklist** (February 2025) covering three procurement categories: General-Purpose AI Service Utilization, Customised AI, and New Development. Each ministry must designate a Chief AI Officer (CAIO); any risk case must be reported to the CAIO.
+
+The Cabinet Office published a risk-based lifecycle AI governance guideline (January 2026). The April 2026 APPI bill would bring AI-specific personal data processing requirements into Japan's privacy law.
+
+**Strategic read for Straw:** The government procurement documentation structure is structurally analogous to OMB M-26-04. Japanese public sector agencies have a documented "prove this AI system works before we buy it" workflow baked in. Private sector follows voluntarily with pressure from IT procurement compliance culture. The pain point is real: "workflow fit matters as much as model quality" — exactly Straw's value proposition.
+
+Sources:
+- Digital Agency Generative AI Procurement Guideline: https://www.digital.go.jp/en/news/3579c42d-b11c-4756-b66e-3d3e35175623
+- Digital Agency DS-920 Standard Guidelines: https://www.digital.go.jp/assets/contents/node/basic_page/field_ref_resources/e2a06143-ed29-4f1d-9c31-0f06fca67afc/6e45a64f/20250527_resources_standard_guidelines_guideline_04.pdf
+- Cabinet Office AI Plan 2026: https://www8.cao.go.jp/cstp/ai/ai_plan/aiplan_eng_20260116.pdf
+
+**Enterprise AI adoption data (Japan):**
+- 56% enterprise adoption (vs. 79% North America, 70% Western Europe)
+- 72.4% awareness of GenAI; only 9.1% individual actual usage
+- Key pain points: AI skill shortages, ROI uncertainty, low data maturity, implementation complexity
+- Japan's Society 5.0 initiative pushing manufacturers toward multi-agent orchestration (Fujitsu, NEC as early movers)
+- No domestic B2B enterprise AI competition platform
+
+Sources:
+- GMO Research Japan GenAI adoption 2025: https://gmo-research.ai/en/resources/studies/2025-study-gen-AI-jp
+- Bridging the AI Gap Japan: https://accesspartnership.com/wp-content/uploads/2025/09/Bridging-the-AI-Gap_Final_EN.pdf
+
+**Localization barrier:** Japan requires Japanese-language documentation, contracts, and support. Not a blocker but a real cost. Language localization is the primary reason Japan is a "second wave" entry rather than simultaneous launch with Singapore.
+
+---
+
+### 2. Singapore
+
+**The strongest compliance forcing function outside the US/EU**
+
+Singapore has the most mature voluntary AI governance framework in APAC *and* the only jurisdiction globally with dedicated agentic AI governance guidance as of early 2026:
+
+| Framework | Date | Status |
+|---|---|---|
+| Model AI Governance Framework (original) | 2020 | Voluntary |
+| Model AI Governance Framework for GenAI | May 2024 | Voluntary (70+ orgs contributed including OpenAI, Anthropic, Google) |
+| Global AI Assurance Pilot | February 2025 | Voluntary (codifying technical testing norms) |
+| **MAS AI governance requirements** | **December 2024** | **MANDATORY for regulated fintechs** |
+| IMDA Agentic AI Governance Framework | January 2026 | Voluntary (first globally for agentic AI) |
+
+The MAS mandatory requirements are the forcing function. All MAS-regulated financial institutions must now demonstrate:
+1. **Oversight and governance of AI** — designated accountability, board/senior management oversight
+2. **Key risk management systems and processes** — model risk, data risk, operational risk
+3. **Development, validation, and deployment protocols** — third-party vendor assessment, post-deployment monitoring
+
+*This is the Straw wedge.* A Singapore-regulated fintech procuring a third-party AI agent must document how they evaluated it, validated it, and assessed the vendor's governance. Straw's competition output — rubric, scores, reasoning, leaderboard — is exactly that documentation package. The competition IS the validation protocol.
+
+Sources:
+- MAS mandatory requirements: https://www.whitecase.com/insight-our-thinking/ai-watch-global-regulatory-tracker-singapore
+- IMDA GenAI governance: https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2024/public-consult-model-ai-governance-framework-genai
+- Model AI Governance Framework for GenAI PDF: https://aiverifyfoundation.sg/wp-content/uploads/2024/05/Model-AI-Governance-Framework-for-Generative-AI-May-2024-1-1.pdf
+- Duane Morris Singapore 2026 analysis: https://blogs.duanemorris.com/duanemorrisandselvam/2026/03/03/singapores-digital-ai-governance-a-pro-innovation-framework-driven-model/
+
+**Additional Singapore tailwinds:**
+- SGD 150M Enterprise Compute Initiative: eligible organisations get subsidized access to major cloud AI tools + expert consultancy
+- English-language market — zero localization cost for Straw v1 international
+- APAC fintech hub status: Singapore + Indonesia identified as regional "testbed environments" for agentic AI in fintech and e-commerce
+- Government actively seeding enterprise AI adoption — demand is supply-constrained, not demand-constrained
+- No domestic B2B enterprise AI agent competition platform
+
+**Operator supply in Singapore:** Singapore's startup ecosystem has meaningful AI development capacity. The government's AI talent programs and compute subsidies are building a local operator cohort. Straw's operator-side growth in Singapore is organic from the developer community, not requiring enterprise-side sales first.
+
+---
+
+### 3. India
+
+**Largest opportunity, lowest regulatory pressure, highest urgency**
+
+India has no AI-specific regulation comparable to the EU AI Act or MAS requirements. The IndiaAI Mission (launched March 2024, extended 2025) focuses on compute access, dataset building (AI Kosh launched March 2025), and talent development. No mandatory documentation requirements for private-sector AI procurement.
+
+The demand signal is structural rather than regulatory:
+- **80%+ of Indian organisations** are actively exploring autonomous agent development (Omdia/Informa, 2025)
+- TCS, Infosys, and Wipro all launched dedicated agentic AI practices in 2025 — a 5M+ person IT services industry pivoting toward agentic offerings
+- India AI adoption rate: **87%** (highest in the survey, higher than North America's 79%)
+- B2B CX maturity: mixed, rapidly growing, large enterprises actively investing
+
+The pain is acute and exactly Straw's ICP: Indian IT services firms are building AI agents for their enterprise clients in the US/EU/APAC. They need benchmarks and documentation to sell into those markets. Straw's competition output gives them the benchmark and the documentation simultaneously.
+
+**The India go-to-market:** Target large Indian IT services firms (Infosys, Wipro, HCL, TCS, Cognizant) as both operators AND as channels to their enterprise clients. An Infosys AI practice unit can run on Straw as an operator, win competitions, and then use those wins as procurement evidence when pitching enterprise clients in the US. Straw benefits from the operator participation and the enterprise client acquisition simultaneously.
+
+Sources:
+- APAC Agentic AI Journey: https://omdia.tech.informa.com/blogs/2025/july/from-automation-to-autonomy-the-apac-agentic-ai-journey
+- MarketsandMarkets APAC AI agents: https://www.marketsandmarkets.com/Market-Reports/ai-agents-market-15761548.html
+
+**Localization cost:** English-language market for enterprise B2B. Minimal localization overhead. India is effectively a zero-cost extension of the US English product.
+
+---
+
+### 4. UK
+
+**No compliance hook yet — but extraterritorial EU AI Act applies**
+
+The UK deliberately avoided standalone AI legislation post-Brexit. The framework as of May 2026:
+- 2023 White Paper: five cross-sector principles (safety, transparency, fairness, accountability, contestability) — **non-statutory**, delegated to existing sectoral regulators (ICO, FCA, CMA)
+- No dedicated horizontal AI law in force
+- First legislation: **unlikely before H2 2026**, according to government's own June 2025 comments
+- Anticipated priorities: foundation model accountability, cross-regulator coordination, consumer redress, high-risk testing requirements
+
+The nuance: **EU AI Act applies extraterritorially to UK businesses serving EU markets.** Any UK fintech, insurer, or enterprise with EU customers must comply with EU AI Act requirements regardless of Brexit. UK businesses building GPAI systems must provide technical documentation to downstream providers/users under EU law — there is no UK domestic equivalent.
+
+Sources:
+- UK AI regulation vs EU AI Act: https://www.comparethecloud.net/articles/uk-ai-regulation-vs-eu-ai-act-2025
+- UK first legislation H2 2026 timeline: https://www.taylorwessing.com/en/interface/2025/predictions-2026/uk-tech-and-digital-regulatory-policy-in-2026
+- EU AI Act applies to UK businesses: https://www.eyreact.com/ai-act-uk/
+
+**Strategic read for Straw:** UK is a natural expansion from EU (language, legal culture, enterprise buyer profile). The EU AI Act extraterritorial reach means UK enterprises with EU operations already need compliance documentation. The domestic UK compliance hook doesn't exist yet but is coming H2 2026. Treat UK as a "now" market for EU-compliance-driven sales + "acceleration" market when UK AI Bill passes.
+
+---
+
+### 5. Australia
+
+**Purely voluntary — no private-sector compliance angle**
+
+Australia's AI Ethics Framework (8 voluntary principles from 2019, maintained by DISR) has never been legally binding. The October 2025 Guidance for AI Adoption replaced the 2024 Voluntary AI Safety Standard — also voluntary. December 2025 government policy requires federal agencies to designate AI accountability roles and conduct risk assessments, but this applies to government agencies only.
+
+A risk-based regulatory model with legally enforceable elements for high-risk AI is in development but has no timeline. Australia is explicitly taking a "voluntary now, enforceable later" approach.
+
+Sources:
+- Australia AI governance: https://digital.nemko.com/regulations/ai-governance-australia
+- Australia AI Ethics Framework — voluntary status: https://www.industry.gov.au/publications/australias-ai-ethics-principles
+- White & Case tracker: https://www.whitecase.com/insight-our-thinking/ai-watch-global-regulatory-tracker-australia
+
+**Verdict for Straw:** No compliance forcing function. Australia is a "wait and see" market — enter when a high-risk AI law passes (12-24 months out at minimum) or if organic demand pulls.
+
+---
+
+### 6. Canada
+
+**AIDA dead — government-niche only**
+
+Canada's Bill C-27 (which included AIDA — the Artificial Intelligence and Data Act) died on the order paper in **January 2025** when Parliament dissolved ahead of elections. The current federal government has signaled it will regulate AI through privacy legislation and policy rather than standalone AI law.
+
+What exists:
+- **Algorithmic Impact Assessment Tool** — mandatory for federal automated decision systems only
+- **List of Interested AI Suppliers** — pre-qualified AI vendor list for Treasury Board procurement
+- No private-sector AI procurement documentation mandates
+
+Canada's 2026 policy priorities are data sovereignty, open banking, and privacy — not AI-specific compliance. There is no OMB M-26-04 equivalent for Canadian federal agencies and no private-sector hook at all.
+
+Sources:
+- AIDA died: https://srinstitute.utoronto.ca/news/whats-next-for-aida
+- Canada AI regulation overview: https://xenoss.io/blog/ai-regulation-canada
+- Canada's 2026 priorities: https://www.osler.com/en/insights/reports/2025-legal-outlook/canadas-2026-privacy-priorities-data-sovereignty-open-banking-and-ai/
+
+**Strategic read:** Canada's federal procurement niche (pre-qualified AI supplier list) is an analog to the US government procurement channel but much smaller. Meaningful only after US federal traction established.
+
+---
+
+### 7. International Competitive Landscape: The APAC/LATAM Gap
+
+**There is no B2B enterprise AI agent competition platform anywhere in APAC or LATAM.**
+
+The existing platforms that might look competitive:
+
+| Platform | Category | Why it's not Straw |
+|---|---|---|
+| Kaggle | Data science competitions | Individual ML practitioners, structured datasets, no enterprise procurement layer |
+| Tianchi (Alibaba) | Data science competitions | China-focused, government/research orientation, not enterprise procurement |
+| DataCastle | ML competitions | Same category as Kaggle/Tianchi |
+| WAICY | Youth AI competitions | Ages 6-18, educational |
+| India AI Olympiad (INAIO) | Academic olympiad | High school students, not commercial |
+| Salesforce Agentforce Marketplace | Agent distribution | Browse-and-install, no competitive evaluation |
+| Oracle AI Agent Marketplace | Agent distribution | Same — distribution not evaluation |
+| Microsoft Copilot extensions ecosystem | Agent distribution | 2,000+ connectors, no head-to-head benchmarking on real enterprise problems |
+| CompeteHub | Competition aggregator | Lists existing platforms, no B2B procurement layer |
+
+**The gap is structural, not accidental.** Enterprise AI agent procurement and data science competition are adjacent but different markets. No platform has connected them. Straw is the only platform that enables an enterprise to define their exact problem, run blind competition on it, get auditable scores, and proceed to hire/license based on those scores.
+
+APAC market growth data:
+- Asia Pacific agentic AI enterprise automation CAGR: **44.8%** (2026-2034) — fastest-growing region globally
+- Driven by China, Japan, South Korea, India, Singapore
+- India: 87% enterprise AI adoption rate, 80%+ actively exploring autonomous agents
+- Japan: Fujitsu, NEC running proprietary multi-agent deployments — zero open competitive evaluation infrastructure
+
+Sources:
+- APAC market growth: https://marketintelo.com/report/agentic-ai-enterprise-automation-market
+- APAC agentic AI journey: https://omdia.tech.informa.com/blogs/2025/july/from-automation-to-autonomy-the-apac-agentic-ai-journey
+- Enterprise AI agent landscape 2026: https://www.kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026-trust-flexibility-and-vendor-lock-in/
+
+---
+
+### 8. International Expansion Priority Matrix
+
+```
+Priority  Market       Compliance Hook      Operator Supply   Language  Timeline
+-------   ----------   ------------------   ---------------   --------  --------
+P0        Singapore    MAS mandatory NOW    High (gov-backed) English   Immediate
+P1        India        None (demand-pull)   Very high (IT co) English   Immediate  
+P2        UK           EU AI Act (extrat.)  High              English   6 months
+P3        Japan        Digital Agency docs  Medium            Japanese  12 months
+P4        Australia    None yet             Medium            English   18-24 mo
+P5        Canada       Gov procurement niche Low              English   After US
+```
+
+**The two-market simultaneous launch case:**
+
+Singapore + India can be launched simultaneously with the US product because:
+1. Both are English-language markets (zero localization cost)
+2. Both have meaningful operator supply (Singapore via gov-backed AI talent; India via IT services pivot)
+3. Both have enterprise buyer demand without needing compliance as the trigger (demand is self-sustaining)
+4. Singapore adds the compliance hook for MAS-regulated fintechs (strengthens the "not a nice-to-have" narrative)
+5. India adds scale (5M+ IT professionals in agentic AI transition = enormous operator supply)
+
+**Why Japan is not simultaneous:**
+Japan requires Japanese-language documentation, contracts, legal templates, and support. Competition briefs, rubrics, and result reports all need to be in Japanese for Japanese enterprise buyers. The procurement documentation hook (Digital Agency guideline) is real, but the activation requires localization investment estimated at $150-300K in translation + legal + in-country partner costs. Japan is a Series B market, not Series A.
+
+---
+
+### 9. The MAS Compliance Package: A Singapore-Specific Product Feature
+
+For Singapore-regulated fintechs, Straw can productize a **MAS AI Governance Documentation Package** as an add-on or Enterprise feature:
+
+The MAS December 2024 mandatory requirements (oversight/governance, risk management, development/validation/deployment) map to Straw's competition artifacts:
+
+| MAS Requirement | Straw Competition Artifact |
+|---|---|
+| Third-party vendor AI governance | Operator profile + company info + API key provenance |
+| Model risk validation | Tier-1 automated test results (deterministic, reproducible) |
+| Development/validation protocols | Full competition rubric (RULERS-locked, immutable hash) |
+| Post-deployment monitoring baseline | Competition leaderboard + scoring breakdown |
+| Risk case documentation | Tier-3 investigation reports (if triggered) |
+| Board/senior management oversight evidence | Competition close report PDF (enterprise-facing) |
+
+The MAS package is not a new feature — it's the competition output repackaged with MAS-specific field labeling. The actual technical work is adding a "MAS export" button to the competition close report generator (Tick 227) that maps Straw's standard fields to MAS audit language. Estimated development effort: 2-3 days.
+
+**Pricing:** Included in Enterprise subscription for Singapore-registered entities. Used as a hook to move Singapore fintechs from per-competition (Tick 213 pricing) to annual contract.
+
+---
+
+### 10. Synthesis: What the International Landscape Confirms About Straw's Core Thesis
+
+The international research confirms three things:
+
+**1. The procurement documentation gap is universal, not US/EU-specific.**
+Every major market that has moved toward AI governance — US (OMB M-26-04), EU (AI Act), Singapore (MAS mandatory) — has arrived at the same requirement: enterprises must document how they evaluated and validated AI systems before deploying them. Japan is building the same structure via government procurement guidelines. The market is moving toward Straw even where Straw doesn't exist yet.
+
+**2. No competitor has seen this gap internationally.**
+The data science competition platforms (Kaggle, Tianchi, DataCastle) are not evolving into enterprise procurement tools. The agent distribution platforms (Salesforce, Oracle, Microsoft) have no interest in competitive evaluation. The APAC market is growing at 44.8% CAGR with no B2B enterprise AI competition layer. Straw's first-mover advantage in this space is not limited to the US.
+
+**3. The IT services sector in India + Singapore creates a supply-side structural advantage.**
+Kaggle and HeroX had to build their competitor communities from scratch. Straw's operator supply in APAC comes pre-assembled: Indian IT services firms building agentic practices (TCS, Infosys, Wipro, HCL) are already in the business of solving enterprise AI problems for clients. Straw gives them a marketplace to showcase those capabilities with auditable scores. The operator supply flywheel starts at a much higher base in India/Singapore than in the US.
+
+---
+
+*Next threads: Task taxonomy v2 (categories beyond the v1 launch four), 300-agent swarm scenario update with Session 25 research, AI agent legal personhood 2027+ trajectory.*
+
