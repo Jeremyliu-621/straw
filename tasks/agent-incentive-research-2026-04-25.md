@@ -42736,3 +42736,237 @@ The math justifies serious operator investment in the platform. Straw's supply-s
 
 *Tick 267 complete.*
 
+
+---
+
+## Tick 268 — Fine-Tuning Competitions: The $10K–$50K Vertical
+
+**Date:** 2026-05-02
+**Thread:** Fine-tuning competition design and economics — v3 product category ($10K–$50K prize pools, LoRA adapter evaluation)
+**Sources:** Background research agent; key sources: pricepertoken.com, S-LoRA (LMSYS blog), MLContests 2025 report, Thomson Reuters v. Ross (2025), CSET prize competition analysis, Together AI fine-tuning pricing
+
+---
+
+### Why Fine-Tuning Competitions Are Different
+
+Straw's v0/v1 categories evaluate *agentic solutions* — code that runs at inference time and produces outputs. Fine-tuning competitions are structurally different:
+
+- **The deliverable is model weights, not code.** Competitors submit LoRA adapter files rather than executable code or prompt frameworks.
+- **The evaluation runs on GPU infrastructure.** Testing a LoRA adapter requires loading it onto a base model, running inference, and measuring task performance — not just executing Python.
+- **The IP question is different.** Whose adapter is it? What base model can be used? Can the enterprise deploy it to their cloud?
+- **The prize pool is larger.** A fine-tuned model that saves $500K/year in inference costs justifies a $50K prize, not a $500 prize.
+
+Fine-tuning competitions are a v3 product category — not a Day 1 feature, but a natural evolution once the v0/v1 infrastructure is mature and the enterprise market has validated demand.
+
+---
+
+### The Market Opportunity
+
+**Fine-tuning market size:** Enterprise GenAI market = $3.9B in 2025 → $43.8B by 2033 (35% CAGR). Fine-tuning is 15–25% of this spend — representing $600M–$1B in enterprise fine-tuning spend today, growing to $6–10B by 2033.
+
+**The procurement problem:** Every enterprise that fine-tunes faces the same issues as regular AI procurement — but worse:
+1. No neutral evaluation framework ("does this fine-tune actually work?")
+2. Vendor lock-in: closed provider weights are non-portable (OpenAI fine-tuned weights can't leave OpenAI infrastructure)
+3. Opaque pricing: hidden costs in data prep, labeling, storage, retraining cadence double initial estimates
+4. IP uncertainty: who owns the adapter file? Enterprise or fine-tuning vendor?
+
+The fine-tuning market has all of Straw's core market problems (demo-based procurement, no objective evaluation) but the stakes are even higher: a $100K fine-tuning engagement that produces a model that underperforms in production is a worse outcome than a $10K agent engagement, because the fine-tuned model is deployed across the entire enterprise's workload.
+
+**Competition precedents:**
+- ML Contests tracks 200+ active competitions with $100K+ prize pools growing year-over-year
+- Kaggle explicitly runs LoRA fine-tuning competitions (e.g., "Deep Learning Spring 2025: Finetuning with LoRA")
+- ARC Prize: $600K bonus for >85% score on ARC-AGI-2 (unsolved in 2025 at $0.20/task compute)
+- Datacurve ($15M Series A): pays developers bounties to create challenging training datasets — closest structural analog
+
+**Key gap:** No platform lets an enterprise post their specific fine-tuning task (with proprietary data, custom evaluation criteria, and prize pool), have multiple teams compete, evaluate on the enterprise's actual success criteria, and then license or acquire the winning adapter. Straw would be the first.
+
+---
+
+### The Technical Architecture: S-LoRA Evaluation
+
+The critical infrastructure insight: **S-LoRA can serve 2,000 concurrent LoRA adapters on a single GPU.**
+
+From the LMSYS S-LoRA blog: S-LoRA uses Unified Paging (a variant of PagedAttention extended to LoRA weights), custom CUDA kernels for batched LoRA computation, and adapter offloading between GPU and CPU/disk. The result: serving 2,000 adapters concurrently with <5% latency overhead vs. a single adapter. This is orders-of-magnitude more efficient than loading each adapter separately.
+
+**Implication for Straw's fine-tuning evaluation:** In a competition with 100 submitting operators, Straw's ZeroClaw GPU cluster can load all 100 LoRA adapters simultaneously and run the evaluation suite against each in parallel. The evaluation cost per adapter:
+
+```
+Evaluation cost estimate (100-submission fine-tuning competition):
+  GPU: H100 on-demand = $4.00/hour
+  Evaluation suite: 1,000 task instances × average 200 tokens/output = 200K tokens
+  Time to evaluate 100 adapters concurrently (S-LoRA): ~30 minutes
+  Total GPU time: 0.5 hours × $4.00 = $2.00 per adapter
+  Total evaluation cost: 100 adapters × $2.00 = $200
+  
+Plus LLM-as-judge (Tier-2) for top-20 submissions:
+  20 adapters × 5 rubric components × 3 samples × $0.25/call = $75
+
+Total Tier-1 + Tier-2 evaluation cost: $275 per fine-tuning competition
+```
+
+This is an order of magnitude cheaper than traditional evaluation. Fine-tuning competitions are economically viable from day one.
+
+**S-LoRA evaluation pipeline:**
+```
+[Competitor submits LoRA adapter .safetensors file]
+         ↓
+[ZeroClaw validates: file format, size limit (2GB max), base model compatibility]
+         ↓
+[S-LoRA loads adapter alongside 99 other competitors' adapters]
+         ↓
+[Tier-1 evaluation: run task suite, measure accuracy/F1/task-specific metrics]
+         ↓
+[Score computed, stored in evaluation_runs (immutable)]
+         ↓
+[Top-20 proceed to Tier-2 LLM-as-judge for qualitative rubric components]
+         ↓
+[Competition close: scores unblinded, rankings published]
+```
+
+**Base model constraint:** Competitions must specify a base model. Competitors fine-tune LoRA adapters for that exact base model. Mixing base models (one competitor submits a Llama-4-70B adapter, another submits a Mistral-7B adapter) is incomparable on the same evaluation run.
+
+Straw's default base models for fine-tuning competitions:
+- `llama-4-scout-17b-instruct` (Meta Llama 4 Scout, 17B) — price/performance sweet spot for most tasks
+- `llama-4-maverick-17b-instruct` (Meta Llama 4 Maverick) — higher capability, more expensive to run
+- `mistral-7b-instruct-v0.3` — smaller, lower compute cost competitions
+- Enterprise may specify a custom base model (Enterprise-Classified tier)
+
+---
+
+### Prize Pool Sizing for Fine-Tuning Competitions
+
+From the research: fine-tuning competitions require higher prize pools than inference competitions to attract serious competitors.
+
+**Competitor economics:**
+- LoRA fine-tune cost (Llama 7B on Together AI): $1,000–$3,000
+- Engineering time (data prep, training, iteration): 20–40 hours = $2,000–$8,000 at $100/hr opportunity cost
+- Total cost per competition entry: $3,000–$11,000
+
+**Positive EV threshold:**
+At a 10% win rate (Competitor tier), $5K competition cost:
+- EV = 10% × prize × 50% (first place share) = 5% × prize
+- Break-even: 5% × prize = $5,000 → prize pool = $100,000 minimum for positive EV
+
+At 25% win rate (Elite tier):
+- Break-even: 12.5% × prize = $5,000 → prize pool = $40,000
+
+**Recommended minimum prize pools for fine-tuning competitions:**
+- Standard fine-tuning competition: $25,000 (minimum to attract Competitor-tier operators)
+- Premium fine-tuning competition: $50,000+ (attracts Elite-tier operators with specialized domain knowledge)
+- Grand challenge fine-tuning: $100,000+ (for transformational tasks — e.g., medical coding, drug discovery)
+
+These are 5–10× higher than v0 inference competitions. Enterprise justification: a fine-tuned model that saves $500K/year in inference costs justifies a $50K competition. The ROI is as clear as the inference competition ROI, just at a higher scale.
+
+---
+
+### IP Framework for Fine-Tuning Competitions
+
+The most important design decision: who owns the winning adapter?
+
+**The challenge:** A LoRA adapter is both a creative work (fine-tuning choices made by the operator) and a derivative work (built on top of the base model). IP law hasn't fully resolved adapter ownership.
+
+**Thomson Reuters v. Ross (2025):** U.S. District Court rejected fair use defense — using copyrighted data to train an AI model can constitute direct copyright infringement. This creates a training data risk: if competitors use copyrighted enterprise data (provided by the poster) to train their adapters, and the data use exceeds the "fair use" scope, the adapter could have contested IP status.
+
+**Straw's IP framework for fine-tuning competitions:**
+
+```
+TOS §9.1 Fine-Tuning Competition IP Framework:
+
+9.1.1 Base Model: All fine-tuning competition adapters must be built on approved open-source
+base models (Llama 4, Mistral, Qwen, or other Straw-approved open-weight models). Adapters
+built on non-open base models (OpenAI, Anthropic proprietary weights) are ineligible.
+
+9.1.2 Training Data Ownership: Competition task inputs ("Training Data") are provided by
+the competition poster ("Poster") and remain Poster's property. Operators may use Training
+Data exclusively for the purpose of developing a competition submission. Training Data may
+not be: (a) used to train any model outside the competition submission, (b) retained after
+the competition closes, or (c) shared with any third party.
+
+9.1.3 Adapter Ownership Pre-Award: The operator retains ownership of the submitted adapter
+file until award. Upon selection of a winning adapter, the following transfer options apply:
+
+  (a) License (D22-P3): Poster receives a perpetual, non-exclusive license to deploy the
+      adapter on their own infrastructure. Operator retains ownership and may license to
+      non-competing parties.
+
+  (b) Exclusive License (D22-P3 Exclusive): Poster receives a perpetual, exclusive license.
+      Operator may not license to competitors in the same industry for 24 months.
+
+  (c) Acquire (D22-P4): Poster receives full ownership of the adapter file. Operator
+      receives agreed acquisition price. Adapter is no longer licensed to any other party.
+
+9.1.4 Deletion Obligation: Losing operators must delete Training Data within 30 days of
+competition close. Operators must provide a signed deletion certification upon request.
+
+9.1.5 Base Model License Compliance: The adapter remains subject to the base model's
+license terms. Operators represent that their adapter is compatible with the base model's
+commercial license. Meta Llama 4 Community License permits commercial use.
+```
+
+---
+
+### The Compute Infrastructure for Fine-Tuning Competitions
+
+Fine-tuning competitions require additional infrastructure beyond ZeroClaw's current design:
+
+**Training infrastructure (operator-side, not Straw's responsibility):**
+- Operators use their own compute or cloud services to train adapters
+- Straw provides: base model specification, task dataset (via secure download link), adapter submission API
+- Operators submit: adapter .safetensors file, training configuration JSON (training hyperparams disclosed post-competition)
+
+**Evaluation infrastructure (ZeroClaw extension):**
+
+New ZeroClaw component: `ZeroClaw-FT` (fine-tuning evaluation worker):
+- GPU-equipped worker instances (H100 or A100)
+- S-LoRA adapter loading system
+- Task evaluation harness compatible with fine-tuned inference
+
+**Infrastructure cost:**
+- Per-competition evaluation: ~$275 (per earlier estimate)
+- Dedicated H100 evaluation cluster for concurrent competitions: 2 H100 nodes × $4/hr = $8/hr
+- Monthly infrastructure for 5 fine-tuning competitions: $1,000–$2,000
+
+At $50K prize pool with 15% platform fee = $7,500 platform revenue, $1,000–$2,000 evaluation infrastructure = 87–93% contribution margin. Higher-margin than inference competitions.
+
+---
+
+### The Business Case for Fine-Tuning Competitions (V3 Roadmap)
+
+**Why V3, not sooner?**
+Fine-tuning competitions require:
+1. S-LoRA GPU infrastructure (new infra, not part of v0 gVisor containers)
+2. Training dataset secure distribution system (enterprises upload proprietary training data; operators download to their infra)
+3. IP framework negotiation and legal review (TOS §9)
+4. Enterprise demand validation (at least 10 enterprises asking for this capability)
+
+These are 6–12 months of additional engineering and legal work. V0/V1 proves the core concept (competition-based procurement works) and generates the operator community (fine-tuning specialists come from existing AI developer community). V3 launches once both are established.
+
+**Revenue model:** 15% platform fee on prize pool (same as inference competitions) + optional $2,000 per-competition dataset hosting fee (for enterprises that need Straw to manage training data distribution). Higher ACV than inference competitions: $7,500–$15,000 platform revenue per fine-tuning competition vs. $750–$7,500 for inference.
+
+**TAM for fine-tuning competitions:** At 200 enterprise fine-tuning competitions/year at $50K average prize = $10M prize pool × 15% = $1.5M annual fee revenue from this category alone. This is a meaningful additional revenue line by Y3.
+
+---
+
+### Summary
+
+Fine-tuning competitions are the natural evolution of Straw's inference competition model:
+- Same two-sided marketplace mechanics
+- Higher prize pools ($25K–$100K vs. $500–$10K) justified by larger enterprise value at stake
+- S-LoRA enables efficient concurrent adapter evaluation at $2.00/adapter
+- IP framework requires careful design (open-weight base models only; training data rights; adapter licensing options)
+- V3 launch timeline: 2028+, after V0/V1 validates market and operator community reaches critical mass
+
+The fine-tuning market is $600M–$1B today, growing at 35% CAGR. No competitor is running competition-based fine-tuning procurement. Straw's core moat (neutral evaluation, calibrated benchmarks, operator reputation) applies directly. This is the highest-value extension of the Straw platform in the medium term.
+
+Key citations:
+- S-LoRA (LMSYS, 2023): 2,000 concurrent LoRA adapters per GPU with <5% overhead
+- MLContests 2025: $100K+ competitions growing; 200+ active ML competitions in 2025
+- Enterprise GenAI market (Mordor Intelligence): $3.9B → $43.8B by 2033
+- Thomson Reuters v. Ross (2025): training data copyright risk
+- Together AI LoRA pricing: $0.48–$2.90/1M training tokens; Llama 7B LoRA = $1,000–$3,000
+- CSET: prize competitions can satisfy competitive procurement requirements
+
+---
+
+*Tick 268 complete.*
+
