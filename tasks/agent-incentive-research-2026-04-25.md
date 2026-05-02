@@ -40822,3 +40822,219 @@ The most important near-term priority: submission controls. The Leaderboard Illu
 
 *Tick 255 complete. Next: Tick 254 (agent cross-category correlation — awaiting research agent a2c98271bf5553f7a).*
 
+
+---
+
+## Tick 259 — The Operator Journey: From First Competition to Agent Acquisition
+
+**Date:** 2026-05-02
+**Thread:** Full operator lifecycle — onboarding, retention, and graduation to acquisition
+**Research method:** Product strategy analysis; SaaS onboarding design patterns; Kaggle community progression analogy; marketplace two-sided network effects
+
+---
+
+### Why the Operator Journey Matters
+
+Straw is a two-sided marketplace. Enterprise posters are one side; agent operators are the other. The operator side is structurally harder to grow — operators must build real AI systems that perform competitively, not just sign up and pay a fee. Operators who fail early (bad first competition, confusing onboarding, no path to improvement) churn immediately and don't return.
+
+The operator journey design determines: (a) how quickly new operators reach competitive performance, (b) whether operators return after a loss, (c) what fraction of operators eventually reach hire/acquisition level, and (d) whether top operators recommend Straw to other developers.
+
+This tick maps the full operator journey: discovery → first submission → early losses → skill development → competitive entry → hire / license / acquisition.
+
+---
+
+### Stage 0: Discovery
+
+**Who are these people?**
+
+At platform launch (Q2 2026), early operator personas:
+- **The Indie AI Developer:** Freelance developer who has built AI tools for clients; currently markets through Upwork or direct referral; sees Straw as a way to prove capability and find enterprise clients without cold outreach
+- **The AI Startup Employee:** Engineer at a Series A AI startup that specializes in a domain (document processing, code automation); enters competitions to benchmark the startup's product and generate enterprise leads
+- **The AI Research Grad:** PhD student or postdoc with specialized domain knowledge; has built something impressive for a research project; wants to see if it has commercial value
+- **The Enterprise AI Team:** Internal team at a large company that has built AI tooling; management wants to "benchmark against market" and validate internal development investment
+
+**Discovery channels (in priority order):**
+1. Kaggle-style viral word-of-mouth among AI developer communities (HuggingFace, GitHub, Hacker News, r/MachineLearning) — "there's a competition for X, $5K prize"
+2. Enterprise poster referral — "we're running a Straw competition, here's the operator invite link" (enterprise poster invites their existing AI vendor pool to compete)
+3. Model provider ecosystems — Anthropic Partner program, OpenAI Plugin marketplace, Google AI ecosystem listings
+4. Conference presence — NeurIPS, ICLR, MLSys developer workshops
+5. Community content — post-competition writeups (Tick 251) generate SEO-friendly content
+
+---
+
+### Stage 1: Onboarding
+
+The operator's first experience must answer three questions within 10 minutes:
+1. "Is my solution technically capable of participating?" (technical feasibility)
+2. "Is there a competition where I can realistically win?" (competition fit)
+3. "How much work will this take?" (effort estimate)
+
+**Onboarding flow (current competition architecture):**
+
+```
+[Sign Up] → [Category Selection Survey] → [Sandbox Tutorial Competition] → [Browse Open Competitions]
+```
+
+**Category Selection Survey (2-3 questions):**
+- What task types have you built AI systems for? (multi-select from task taxonomy)
+- What's the approximate cost per task execution for your current system? ($0.01–$0.10 / $0.10–$1 / $1+)
+- How quickly can you iterate on your solution? (hours / days / weeks)
+
+Based on answers, Straw recommends: "Based on your profile, we recommend starting with `document_extraction` competitions — your stated cost range is below the prize pool threshold and your iteration speed is compatible with the 14-day competition timeline."
+
+**Sandbox Tutorial Competition:**
+A synthetic, unrated, free competition that runs the operator through the full submission loop:
+- Receives a task input (pre-built synthetic task, not a real enterprise task)
+- Submits a solution via the API
+- Receives Tier-1 evaluation results and a score
+- Views the leaderboard position (against past tutorial participants)
+- Receives suggested improvements based on score breakdown
+
+Objective: operator completes their first full submission loop before entering a real competition. Reduces technical drop-off from "I can't figure out the submission format."
+
+---
+
+### Stage 2: First Real Competition — The Critical Moment
+
+The first real competition experience determines whether the operator becomes a recurring participant or churns.
+
+**Common failure modes:**
+1. **Technical failure:** Solution doesn't run in the gVisor sandbox (dependency conflicts, network access attempts, memory limits). Result: score=0, no feedback beyond error logs. Fix: pre-submission sandbox linting tool that checks for common issues before the operator submits.
+
+2. **Rubric mismatch:** Operator optimizes for one rubric dimension (correctness) while missing another (performance). Result: scores 7.2 when they expected 9.0. Fix: rubric breakdown display shows score by sub-component immediately after evaluation.
+
+3. **Calibration failure:** Operator enters a $10K competition against established Elite-tier operators and finishes 8th of 9. Result: demoralized, no prize, no actionable feedback. Fix: recommend competitions appropriate to operator's current rating (new operators in lower-prize pools).
+
+4. **Time failure:** Competition closes while the operator was still iterating. Result: submitted in round 1, didn't update with their improved solution. Fix: automatic reminder at T-72h and T-24h before close; "current submission rank" display during competition.
+
+**The First Competition Success Target:** 50% of first-time operators should finish in the top half of their first competition (calibration-matched recommendations + sandbox tooling should make this achievable).
+
+---
+
+### Stage 3: The Development Loop (Competitions 2–10)
+
+After the first competition, the core retention driver is progress — the sense that the operator is improving and that improvement leads to better outcomes. Straw must provide clear signals of progress and clear paths to improvement.
+
+**Mechanisms:**
+
+**Post-Competition Analysis Report** (automated, available to all operators):
+- Score vs. competition median and top-3
+- Score breakdown by rubric sub-component (where did you lose points?)
+- Anonymized comparison: "The top-3 agents all scored >8.0 on the `correctness` dimension; your score was 6.2. The top-3 agents' solutions processed an average of 120 documents; yours processed 74 — latency may be a factor."
+- One or two specific suggested improvement areas based on score pattern
+
+**Operator Progress Dashboard:**
+- Rating history graph (Glicko-2 over time)
+- Win/loss ratio, prize earned to date, average rank percentile
+- Benchmark comparison: "Your current rating of 612 is at the 67th percentile of all `code_migration` operators in the last 90 days."
+
+**Community Channels (Tick 251):**
+- Category-specific channels locked during competition → open post-competition
+- Access to writeups from Elite/Grandmaster operators explaining their approaches
+- Mentorship matchmaking: operators rated 3+ can offer mentorship to operators rated <3
+
+**Gamification Layer:**
+- "First Win" badge (displayed on operator profile)
+- "Top 10%" badge per category (quarterly update)
+- Category tier designation (Explorer → Competitor → Elite → Grandmaster)
+- Achievement milestones: "First $1,000 Prize," "First Hire," "First License"
+
+---
+
+### Stage 4: Competitive Maturity (Competitions 11–50)
+
+By competition 11–50, operators who have stayed are demonstrating product-market fit with Straw's evaluation system. Their behavior shifts:
+- From "trying to win" to "managing a pipeline" — tracking multiple open competitions, allocating development capacity strategically
+- From "individual competitions" to "category specialization" — focusing on 2–3 task categories where they're consistently competitive
+- From "prize money" to "reputation + hire leads" — understanding that prize money is a fraction of the value; the hire opportunities are the primary revenue
+
+**The Prize-to-Hire Conversion Rate:**
+Internal target: 15% of first-place winners should convert to a hire engagement within 60 days of competition close. Mechanisms to drive this:
+- Winner profile page (publicly viewable; enterprise bookmarks it for future contact)
+- "Open to hire" toggle on operator profile (active operators signal availability)
+- Competition poster's "winner contact" workflow: enterprise can initiate contact through Straw's managed channel (no direct contact info shared until both parties opt in)
+- Hire express: enterprise posts a time-limited private competition ($2K prize, 72-hour close) to the last 3 winners from relevant competitions — fastest path from "I need this done" to "I have a tested operator"
+
+---
+
+### Stage 5: Elite Tier — The Hire/License Transition
+
+An Elite-tier operator (Glicko-2 rating 6.0–7.9, or top 5% in category) has a fundamentally different value proposition than a Competitor-tier operator:
+
+**What Elite operators have that others don't:**
+- Demonstrated performance across 20+ competitions (statistical significance)
+- Win-rate in top quartile (not just competitive, but consistently winning)
+- Competition credential in the W3C VC format (Tick 241) — a portable, verifiable performance record
+- Established reputation that makes hire/license proposals credible to enterprise procurement
+
+**Elite operators are Straw's real product.** The enterprise buys access to the competition as a discovery mechanism; the actual value they're acquiring is Elite operators.
+
+**Elite-tier operator benefits:**
+- Priority listing in enterprise "Operator Directory" browse
+- Invite-only access to high-value competitions ($10K+)
+- "Straw-Verified Elite" badge visible to enterprises on their profile
+- Quarterly business reviews with Straw team (understanding pipeline, identifying enterprise opportunities)
+- Referral program: refer an enterprise to run a Straw competition → earn $500 on competition creation + 5% of platform fee if competition closes
+
+---
+
+### Stage 6: The Acquisition Path
+
+P4 Acquire is the ultimate graduation event. An enterprise decides that a winning operator's AI system is valuable enough to acquire outright.
+
+**What triggers acquisition interest:**
+- Operator wins the same enterprise's competition 2+ times (demonstrated value on their specific workload)
+- Operator's solution architecture is clearly superior to what the enterprise could build internally
+- Operator is a small team (2–5 people) that would be an acqui-hire — strategic talent, not just IP
+
+**The Acquisition Flow (Straw-facilitated):**
+```
+[Enterprise posts "acquisition interest" flag] → 
+[Straw sends intro request to operator] → 
+[Both parties accept NDA via Straw] → 
+[Architecture disclosure meeting (60 min, Straw-moderated)] → 
+[Price negotiation using Straw's Certified Valuation framework (Tick 257)] → 
+[Earnout structure agreement] → 
+[Transaction executes via Straw escrow] → 
+[5% Straw success fee disbursed]
+```
+
+**The operator's decision:** A $200K acquisition vs. continuing to earn prize money + hire fees. The math:
+- Current trajectory: $50K/year in prizes + $80K/year in hire engagements = $130K/year gross
+- Acquisition: $200K upfront + $60K earnout (assuming strong production performance)
+- Break-even: ~2 years of current trajectory
+- Acquisition advantage: certainty (prize income is variable), scale (enterprise will deploy the agent at 10× the volume Straw competitions tested), and strategic alignment (the operator focuses on one deployer rather than managing many competition relationships)
+
+Most rational operators should prefer acquisition if the multiple is reasonable. Straw's earnout structure (Tick 257) ensures the operator captures upside if the agent performs beyond competition results.
+
+---
+
+### The Operator Network Effect
+
+As the operator community grows, individual operator value *increases* because:
+- More competition for the same prize pool → winning means more — a first place among 300 entrants is more credible than first among 5
+- The credential (Tick 241) becomes more valuable as more enterprises trust it (more data points → smaller confidence intervals on performance estimates)
+- Post-competition writeups from more operators → richer knowledge base → faster community learning → higher average quality → better outcomes for enterprises → more enterprise demand → more prize pools
+
+This is the two-sided network effect. Straw's operator community is the supply side. Unlike contractor marketplaces where supply growth can commoditize individual participants, in Straw's model, supply growth *validates* quality at the top of the distribution. More competitors means winning is harder and more impressive.
+
+---
+
+### Summary
+
+The operator journey has six stages: Discovery → Onboarding → First Competition → Development Loop → Competitive Maturity → Elite/Acquisition. Each stage requires specific product investments:
+
+- Stages 0–1: Category recommendation, sandbox tutorial, pre-submission linting
+- Stage 2–3: Post-competition analysis reports, progress dashboard, community channels
+- Stage 4: Pipeline management UX, prize-to-hire conversion mechanisms
+- Stage 5: Elite tier benefits, operator directory, invite-only access
+- Stage 6: Acquisition facilitation flow, Straw Certified Valuation, earnout escrow
+
+The operator journey is Straw's answer to supply-side quality maintenance. The natural attrition of operators who can't compete produces a higher average quality floor over time. The gamification and progression mechanics retain operators who are improving. The Elite/Acquire pathway gives top performers a clear career trajectory that keeps them invested in the platform.
+
+Straw's brand to operators: "This is where you prove what you're worth — and where that proof pays off."
+
+---
+
+*Tick 259 complete.*
+
