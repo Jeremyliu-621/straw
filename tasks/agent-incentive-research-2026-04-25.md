@@ -53112,3 +53112,174 @@ At $1,800 average platform fee per competition: **99.9% gross margin on infrastr
 - RoboBazaar cross-platform bounty routing
 
 **Git commit target:** `research(agent-incentive): tick 323 — technical architecture v1 (full stack, data model, eval pipeline)`
+
+---
+
+## Tick 324 (2026-05-02): Enterprise customer success playbook — post-competition close activities
+
+*Thread: Enterprise customer success playbook. After the first competition closes, what does the CS team do? Step-by-step 30-day plan.*
+
+---
+
+## Long-form proposal (DRAFT) — Section 38: Enterprise CS Playbook — First Competition Close
+
+### Context
+
+A Straw competition closes when the deadline passes or the poster manually closes it. At that moment:
+- The leaderboard is finalized
+- The top-5 agents' scores and assessments are available
+- The compliance certificate is generated
+- D22's three winner pathways are now actionable (auto-leaderboard, poster picks, multi-engagement)
+
+The CS specialist's job starts the moment the competition closes. The next 30 days determine whether this enterprise becomes a $30K/year account or a one-and-done.
+
+---
+
+### Day 0: The Close Briefing (within 2 hours of competition close)
+
+**CS action:** Automated email + calendar invite fires the moment competition status transitions to `closed`.
+
+**Email contains:**
+- Link to the final leaderboard (with pseudonym/real-name toggle for the winner after they consent to reveal)
+- Summary: "X agents competed, Y submissions received, top score: Z/100"
+- Compliance certificate PDF + JSON attached
+- Two action buttons: "Schedule a 30-minute debrief call" and "Explore the winner's work"
+
+**The debrief call agenda:**
+1. Walk through the leaderboard: what made #1 better than #2?
+2. Walk through the compliance certificate: here is your EU AI Act documentation package
+3. Present the three engagement options (hire / license / acquihire) if poster hasn't already chosen
+4. Capture poster feedback: was the rubric right? Were the scores useful? Would they compete again?
+
+**CS goal for Day 0:** Book the debrief call. Nothing else matters if the call doesn't happen.
+
+---
+
+### Day 1-3: The Debrief Call
+
+**Duration:** 30-45 minutes
+
+**Agenda:**
+
+**(1) Score walkthrough (10 min)**
+
+CS specialist walks through the top-3 scores side-by-side:
+- "Your #1 agent scored 91 overall. Here's where they excelled: Functional Correctness was 96 (90th percentile for this category). Here's where they had a gap: Documentation Coverage was 78 (64th percentile)."
+- "Your #2 agent scored 87. Their documentation was stronger (88) but their edge case handling was weaker (72)."
+- "These two scores are statistically distinguishable. The 4-point gap is outside the judge's uncertainty range (±2.5 points)."
+
+**(2) Compliance certificate walkthrough (5 min)**
+
+- "This certificate documents: the rubric was locked on [date], before any submission arrived. The rubric hash [hash] matches the hash in the certificate. Here is your EU AI Act Article 9 pre-deployment metrics documentation."
+- "If your legal team needs a signed attestation for your procurement file, we can provide that. It costs nothing extra for your tier."
+
+**(3) Engagement options (10 min)**
+
+Depending on poster's interest:
+- **Hire pathway:** "Do you want to engage [Winner] for the full production task? Here's how: you pay their hourly/project rate through Straw. We take 20% of the first-year engagement value. Standard contracts, IP handled in the engagement agreement."
+- **License pathway:** "If you want to license [Winner]'s approach without a full engagement: [Winner] has indicated a license rate of $X. Here's the license agreement template."
+- **Acquihire pathway:** "If you want to explore bringing the [Winner] team in-house: Straw facilitates the conversation. 8-10% of deal value."
+- **No engagement:** "That's fine. Your compliance certificate is still valid. Ready to discuss your next competition?"
+
+**(4) Rubric quality feedback (5 min)**
+
+Critical for improving Straw's rubric library:
+- "On a scale of 1-10, how well did the rubric capture what you actually wanted?"
+- "Were there any scores that surprised you — seemed too high or too low?"
+- "If you ran this competition again, what would you change?"
+
+This feedback triggers an automated rubric quality update in Straw's database (the rubric library flywheel).
+
+**(5) Next competition plant (5 min)**
+
+"What's the next AI task on your roadmap? We can have a new competition live within 3 days. Operators from this competition are already familiar with your codebase — they'll compete again with that context advantage."
+
+---
+
+### Day 3-7: Commercial Outcome Facilitation
+
+**If poster chose Hire pathway:**
+1. CS introduces poster and winning operator via email (within 24h of debrief call)
+2. Straw's standard SOW template sent to both parties
+3. Stripe Connect: engagement payment routed through Straw (for the 20% take rate)
+4. CS checks in at Day 7: "Has the engagement started? Any issues?"
+
+**If poster chose License pathway:**
+1. CS sends license template adapted for the specific artifact type (code = MIT-style with FOSS attribution; proprietary approach = custom license terms)
+2. Countersigned by both parties; Straw holds the executed copy in the competition record
+3. No ongoing facilitation needed unless disputes arise
+
+**If poster chose Acquihire:**
+1. NDA executed between poster and operator
+2. CS does NOT facilitate the negotiation — Straw steps back. The acquihire is a direct deal between the parties.
+3. Straw's take (8-10%) is triggered on deal close. CS checks in at Day 30 and Day 60.
+
+**If no engagement:** Proceed directly to expansion (Day 7-14).
+
+---
+
+### Day 7-14: Expansion Motion
+
+The competition is closed, the certificate is delivered. Now the CS specialist's focus is: second competition.
+
+**The three-competition flywheel:**
+- Competition 1: Enterprise discovers Straw (acquisition)
+- Competition 2: Enterprise uses Straw for next task (validation — the product works)
+- Competition 3: Enterprise adds a second department or use case (expansion)
+
+At Competition 3, the account is sticky. Three competitions means three rubrics, three leaderboards, three compliance certificates. The enterprise's procurement team has begun citing "Straw score" in vendor reviews. The data relationship is established.
+
+**Day 7 CS touchpoint:**
+- "What's the next task on your roadmap?"
+- "Now that you've seen how the first competition ran: what would you do differently in the rubric?"
+- "Your compliance certificate expires for that task type in [12 months]. Plan now for a re-evaluation."
+
+**Expansion opportunities to surface:**
+1. **Next task in same department:** "Your Python migration competition was successful. Is there a TypeScript → Rust migration coming up?"
+2. **Different department:** "Can I introduce you to your Head of Data Engineering? They likely have ETL pipeline tasks that would benefit from the same approach."
+3. **Regulatory expansion:** "Your legal team now has the compliance certificate for this AI deployment. Does your GC need the same evidence package for any other AI systems currently in use?"
+
+---
+
+### Day 14-30: Account Health and QBR Prep
+
+**Day 14 email:**
+- Competition outcome summary (one slide: scores, winner, engagement status, certificate details)
+- Link to next competition setup wizard with pre-populated task category based on debrief feedback
+
+**Day 30 QBR (for $50K+/year accounts):**
+
+Quarterly business review agenda:
+1. ROI recap: "You spent $X on competitions. The winning agent completed in [time]. Your previous RFP cycle took 3 months. Time-to-quality-signal: 5 days vs. 90 days."
+2. Compliance status: "You have [N] Straw certificates. Here is the current regulatory landscape update — EU AI Act enforcement started August 2. Here is what you now have and what you may still need."
+3. Roadmap: "We have 3 new task categories in v1.5 (API Integration Testing, ETL pipeline, Customer Support). Which applies to your next procurement need?"
+4. Renewal: "Your current tier covers [N] competitions/year. You've run [N]. Do you want to increase your tier for the renewal?"
+
+---
+
+### CS Metrics to Track
+
+| Metric | Target | Why |
+|---|---|---|
+| Debrief call booking rate | ≥80% | If no call, no expansion |
+| Commercial outcome rate | ≥40% | Hire/license/acquihire within 30 days |
+| Competition 2 booking rate | ≥60% | The flywheel requires repeat competitions |
+| Rubric satisfaction score (1-10) | ≥7.5 | Input for rubric library quality |
+| Time-to-certificate delivery | <1 hour post-close | Compliance urgency requires speed |
+| NPS (after first competition) | ≥50 | Brand + word-of-mouth anchor |
+
+---
+
+## Closed threads (Tick 324)
+
+- [done — Tick 324] **Enterprise customer success playbook** — Day 0: automated close email + debrief call booking. Day 1-3: debrief agenda (score walkthrough, compliance certificate, engagement options, rubric feedback, next competition plant). Day 3-7: commercial outcome facilitation (hire SOW via Stripe Connect, license template, acquihire NDA + step-back). Day 7-14: expansion motion (3-competition flywheel, department expansion, regulatory expansion). Day 14-30: account health + QBR for $50K+ accounts. CS metrics: ≥80% debrief booking, ≥40% commercial outcome, ≥60% Competition 2 booking, ≥7.5 rubric satisfaction, <1hr certificate delivery, ≥50 NPS.
+
+---
+
+## Push status (after Tick 324)
+
+**Ticks 312-324** complete. Remaining:
+- International market update (EU AI Act subagent running)
+- RoboBazaar cross-platform bounty routing
+
+**Git commit target:** `research(agent-incentive): tick 324 — enterprise CS playbook (30-day post-competition close plan)`
