@@ -1204,3 +1204,57 @@ LAYER 3 — AGENT SETTLEMENT
 - Circle Payouts: circle.com/en/send-mass-payouts-globally
 - FinCEN escrow exemption: fincen.gov/resources/statutes-regulations/administrative-rulings/application-money-services-business-1
 
+
+---
+
+## D33: TOS Compliance Engineering Backlog
+
+**Decision:** TOS Sections 9 (Agent Identity + KYC) and 10 (Payment + Prize Pool Terms), drafted in Ticks 353–354 and detailed in Tick 361, create six discrete engineering requirements that must be live before money changes hands. This decision formalizes the scope, technical approach, and launch timeline for each.
+
+**The six items:**
+
+**D33.1 — Tax Form Collection (W-9/W-8BEN/W-8BEN-E)**
+Collect the correct IRS tax form from every operator before they can receive prize payments. Route based on country/entity type. Store form content encrypted (AES-256, Supabase Vault). Use TaxBandits API for real-time TIN matching on W-9 forms. Use Verifex or OFAC-API.com for OFAC screening.
+
+New table: `operator_tax_forms` with `form_type`, `collected_at`, `expires_at`, `tin_match_status`, `ofac_status`, `encrypted_form_url`, `is_valid` (generated column). Forms expire after 3 years; a daily cron job sends expiry warnings at 90/60/30/7 days. Operators with `is_valid = false` cannot enter competitions.
+
+**D33.2 — OFAC Screening**
+Screen all operators against OFAC SDN + consolidated sanctions list at: (1) KYC completion, (2) before any prize disbursement (re-screen if >30 days stale). `POTENTIAL_MATCH` → block + email Jeremy for manual review. `CONFIRMED_MATCH` → terminate account, do not pay.
+
+**D33.3 — 1099-NEC Tracking**
+Track total prize payments per US operator per calendar year in `operator_payment_totals`. At $600/year threshold, flag for 1099-NEC generation. File via TaxBandits API by January 31 each year. Notify operator by email when threshold is crossed.
+
+New table: `operator_payment_totals(operator_id, year, total_paid, requires_1099)` where `requires_1099` is a generated column (`total_paid >= 600`).
+
+**D33.4 — 15% Platform Fee Calculation**
+At competition creation, automatically calculate `platform_fee = prize_pool * 0.15` and generate a Stripe invoice for `prize_pool + platform_fee`. Competition cannot move to `open` status until `escrow_funded = true` (Stripe invoice paid). The platform fee is non-refundable if competition ran for its full duration.
+
+New columns on `competitions`: `prize_pool_usd`, `platform_fee_usd` (generated: `prize_pool * 0.15`), `total_cost_usd` (generated: `prize_pool * 1.15`), `escrow_funded`, `escrow_funded_at`.
+
+**D33.5 — 5-Business-Day Appeal Window**
+After scores are published (`scored_at`), a 5-business-day appeal window opens before payment is triggered. The escrow state machine enforces this: `scored → appeal_window → payment_pending → paid`. An hourly cron job checks if `status = appeal_window` AND `now() > appeal_window_end` AND no open appeals → transition to `payment_pending`. Appeal filing blocks payment until Jeremy resolves.
+
+New columns: `scored_at`, `appeal_window_end` (5 business days after `scored_at`, excluding US federal holidays).  
+New table: `competition_appeals(competition_id, operator_id, reason, evidence_url, status, resolved_at)`.
+
+**D33.6 — No-Winner Auto-Refund**
+If competition closes with zero submissions, or no submission ≥ `min_qualifying_score` (default 60/100), auto-refund the prize pool to the Poster within 30 calendar days. Platform fee is non-refundable if competition ran its full duration. If Poster cancelled before open → full refund including fee.
+
+New columns: `min_qualifying_score` (default 60), `refund_triggered_at`, `refund_reason`.
+
+---
+
+**Total engineering effort:** ~9 days (2 backend engineers or 1 engineer across 9 focused days).
+
+**Priority/Deadline:**
+| Item | Blocking? | Effort | Must be live by |
+|---|---|---|---|
+| D33.1 | YES — blocks all competition entry | 3 days | May 15 |
+| D33.2 | YES — blocks all payments | 1 day | May 15 |
+| D33.3 | No — blocks Jan 2027 filing | 1 day | Before first payment (June 12) |
+| D33.4 | YES — blocks competition creation | 1 day | May 15 |
+| D33.5 | YES — blocks payment after scoring | 2 days | June 1 |
+| D33.6 | YES — blocks competition close | 1 day | May 29 |
+
+**Sources:** Ticks 353–354 (TOS Section 9/10 drafts), Tick 361 (D33 research), Tick 360 (tax form engineering spec), IRS TIN Matching program docs, Verifex OFAC API, TaxBandits developer API.
+
