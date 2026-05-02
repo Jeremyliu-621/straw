@@ -34207,3 +34207,98 @@ This is not a future regulatory risk for enterprises — it is a present complia
 
 Sources: fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo, complexdiscovery.com/why-95-of-corporate-ai-projects-fail-lessons-from-mits-2025-study, workos.com/blog/why-most-enterprise-ai-projects-fail-patterns-that-work, procureinsights.com/2025/12/01/gartner-and-forrester-tell-you-which-vendor-is-best-but-best-for-whom, braintrust.dev/articles/best-ai-evals-tools-cicd-2025, arize.com/llm-evaluation-platforms-top-frameworks, gartner.com/en/documents/7302730 (Predicts 2026), gap.hks.harvard.edu/orchestrating-impartiality-impact-blind-auditions-female-musicians (Goldin & Rouse 2000), whitehouse.gov/wp-content/uploads/2025/12/M-26-04 (OMB M-26-04), digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai (EU AI Act), wsgr.com/en/insights/2026-year-in-preview-ai-regulatory-developments.
 
+
+---
+
+## Tick 217 — Competitive positioning: Straw vs. adjacent markets
+
+**Context:** With research from Sessions 1-24 complete, this tick crystallizes Straw's competitive position across the markets it touches. Good positioning is the thing that makes every sales call shorter and every investor conversation faster.
+
+**The three markets Straw touches (and why it's not in any of them)**
+
+```
+Market 1: LLM evaluation tools
+  Players: Braintrust, PromptFoo, LangSmith, Arize, Scale AI Evals
+  Core use case: "evaluate my own model/system"
+  Straw's relationship: NOT a competitor — these tools serve teams who already own what they're evaluating
+  Straw fills the gap: evaluating third-party agents you're considering hiring
+
+Market 2: AI agent marketplaces
+  Players: Pinchwork (116 agents), Nightmarket, AgentPact, OpenAI Frontier, AWS Bedrock Agents
+  Core use case: "discover and use pre-built agents"
+  Straw's relationship: NOT a competitor — these are catalog/discovery layers
+  Straw fills the gap: objective performance comparison between competing agents on your task
+
+Market 3: Talent/competition platforms
+  Players: Kaggle, Topcoder, HackerRank, HeroX
+  Core use case: "crowdsource solutions from human talent"
+  Straw's relationship: closest structural analogue — competition format is the same
+  Straw fills the gap: AI agent participation, enterprise procurement focus, automated eval
+```
+
+**The whitespace Straw owns**
+
+The two-by-two positioning:
+
+```
+                  │ Evaluates YOUR model/system  │  Evaluates OTHERS' agents
+──────────────────┼──────────────────────────────┼────────────────────────────
+ Fixed tasks      │  Braintrust, PromptFoo,      │  Kaggle, Topcoder
+ (known dataset)  │  LangSmith, Arize            │  (human competitors only)
+──────────────────┼──────────────────────────────┼────────────────────────────
+ YOUR actual task │  Custom POC (expensive,      │  STRAW
+ (real work)      │  vendor-run, biased)          │
+```
+
+Straw's quadrant is empty. The closest thing to it is a vendor-run POC — which is expensive, slow, and biased because the vendor controls the evaluation. Straw is the infrastructure that makes that quadrant systematic, unbiased, and repeatable.
+
+**Why "competition platform for AI agents" is not the right elevator pitch**
+
+The competition framing (Kaggle-for-agents) attracts the wrong buyer. A competition-minded buyer thinks: "we want to run a fun challenge and discover talent." That's not Straw's buyer.
+
+Straw's buyer is the VP of Engineering who has just killed their second AI POC, needs to justify why they're trying again, and needs documented evidence of due diligence when the auditor arrives. They're not looking for a competition — they're looking for procurement infrastructure.
+
+**The better elevator pitch (generated from Ticks 213-216 research):**
+
+One-liner: "Straw is how enterprises prove which AI agent is actually best at their work — before they pay for it."
+
+Expanded pitch: "95% of enterprise AI pilots fail. They fail because companies pick vendors based on demos. Straw fixes procurement: post your task with a rubric, agents compete, the score doesn't lie. You get the best agent for your specific work, documented evidence for your auditor, and a leaderboard you can run again in 6 months to see if anything changed."
+
+**Positioning against each adjacent market**
+
+**vs. Braintrust/PromptFoo/LangSmith:** "These tools tell you if your model is regressing. Straw tells you which model to hire in the first place. Most companies use both — but in that order."
+
+**vs. Kaggle/Topcoder:** "Kaggle is for discovering human data scientists. Straw is for procuring AI agents. The competition format is the same — the procurement workflow, the automated evaluation, and the enterprise buyer profile are completely different."
+
+**vs. Pinchwork/AgentPact/Nightmarket:** "These are agent catalogs — you browse, you pick, you use. Straw is not a catalog. Straw is the infrastructure you use to decide which agent to put in your catalog."
+
+**vs. OpenAI Frontier/Anthropic's cloud products:** "These are platforms for building with one vendor's agents. Straw is vendor-neutral. Your Frontier subscription tells you what OpenAI's agents can do. Straw tells you whether OpenAI's agents beat everyone else's agents on your specific task."
+
+**The data flywheel moat (strategic positioning)**
+
+The deeper competitive moat is not the competition format — that's replicable. The moat is the cross-task performance history indexed by task type. After 500 competitions across 20 task categories:
+
+- Straw knows which operators consistently top-perform on document extraction
+- Straw knows the typical score distribution for code migration tasks
+- Straw knows that the 80th percentile agent on contract review tasks scores 6.8/10 on correctness
+
+This data is impossible to replicate without running the same competitions. It becomes a discovery layer ("we recommend these 5 operators for your task") that no competitor can match without the dataset. This is Andrew Chen's data network effect moat: the data makes a specific product action (operator recommendation) progressively better, and users can feel it.
+
+**Where Straw is NOT positioned (intentional choices)**
+
+1. **Not an agent execution platform.** Straw does not run agents in production. It runs agents in competition. Once an enterprise hires an agent operator via the D22 "hire" pathway, the execution is between the enterprise and the operator — Straw is not in the loop.
+
+2. **Not a benchmarking service.** Generic benchmarks (MMLU, HumanEval) measure model capability at the lab level. Straw measures agent capability at the task level for a specific enterprise. These are different products with different buyers.
+
+3. **Not a compliance certification.** Straw generates evidence that supports compliance documentation, but Straw is not a certification body. "Straw scorecard" is not a legal certification — it's procurement evidence. The distinction matters when enterprises ask "does Straw certify our AI as safe?"
+
+**The investor positioning**
+
+For investors, the cleanest framing is: "Straw is Kaggle, but for AI agents, with enterprise procurement as the use case and the $4.1T AI capex wave as the tailwind."
+
+Stronger version: "Enterprise AI capex will exceed $4T over the next decade. Most of it will be wasted because procurement is broken. Straw is the evaluation infrastructure layer that makes AI capex actually work. We make every enterprise AI dollar spend smarter."
+
+The comparable: "We are to enterprise AI procurement what Gartner Magic Quadrant should be — except our score is based on your actual task, not a generic analyst survey."
+
+Sources: Tick 201 (marketplace landscape, Pinchwork/Nightmarket/AgentPact status), Tick 204 (proxy submission problem, why enterprise cares about outcomes not provenance), Tick 212 (operator discovery, HTB Talent Search model, A2A capability gap), Tick 213 (pricing model, unit economics, $2.7M ARR target), Tick 214 (95% POC failure rate, eval tools market gap, compliance forcing function), Tick 215 (bootstrap GTM strategy, "Toptal for AI agents" Year 1 positioning), nfx.com/post/truth-about-data-network-effects (data flywheel moat conditions).
+
