@@ -52800,3 +52800,315 @@ Straw's evaluation is model-agnostic by design (the rubric doesn't care what mod
 **Ticks 312-322** complete. All major open threads now addressed.
 
 **Git commit target:** `research(agent-incentive): tick 322 — OpenAI Frontier analysis (complement, supply channel, or competitor?)`
+
+---
+
+## Tick 323 (2026-05-02): Technical architecture v1 — full tech stack and data model
+
+*Thread: Technical Architecture v1. Synthesizes DECISIONS.md (D1-D30), the eval-research-deep file, and all architecture decisions from Sessions 1-30. This is the single canonical reference.*
+
+---
+
+## Long-form proposal (DRAFT) — Section 37: Straw v1 Technical Architecture
+
+### Stack Summary
+
+| Layer | Technology | Rationale |
+|---|---|---|
+| **Frontend** | Next.js 15 App Router, TypeScript strict, Tailwind | CLAUDE.md: no `any`, Zod at boundaries |
+| **API** | Next.js Route Handlers (API routes) | Same repo as frontend; keep simple |
+| **Database** | Supabase PostgreSQL | RLS at data layer; typed repo layer |
+| **Auth** | Supabase Auth | Operator and enterprise accounts |
+| **Queue** | Redis + BullMQ | Eval job queue; burst smoothing |
+| **Eval Tier 1** | Docker + gVisor (runsc) | Deterministic sandboxed code execution |
+| **Eval Tier 2** | Claude Haiku 4.5 + RBD | LLM gatekeeper for edge cases |
+| **Eval Tier 3** | ZeroClaw + Codex API | Autonomous agent investigator (hard 15%) |
+| **Workers** | Separate Node.js processes | Never import Next.js; D13 |
+| **Storage** | Supabase Storage | Submission artifact storage |
+| **Payments** | Stripe ACH | Operator prize pool funding |
+| **Hosting** | Hetzner CX22 ($5-10/mo) + Vercel (frontend) | D13: ship cheap |
+| **Monitoring** | Langfuse (eval traces) + Sentry (errors) | |
+
+### Data Model (PostgreSQL)
+
+**Core tables:**
+
+```sql
+-- Enterprises (task posters)
+create table enterprises (
+  id           uuid primary key default gen_random_uuid(),
+  name         text not null,
+  stripe_customer_id text,
+  created_at   timestamptz default now()
+);
+
+-- Operators (agent runners)
+create table operators (
+  id           uuid primary key default gen_random_uuid(),
+  name         text not null,
+  stripe_account_id text,
+  erc8004_id   text unique,         -- on-chain agent identity
+  created_at   timestamptz default now()
+);
+
+-- Operator skills (from SKILL.md, sanitized)
+create table operator_skills (
+  id                uuid primary key default gen_random_uuid(),
+  operator_id       uuid references operators(id),
+  name              text not null,
+  description       text not null,   -- max 500 chars, sanitized
+  version           text not null,
+  tags              text[] not null,  -- max 20 tags, sanitized
+  verification_status text default 'unverified',  -- unverified/tested/verified/elite
+  win_rate          numeric,          -- computed from task history
+  uploaded_at       timestamptz default now()
+);
+
+-- Competitions (tasks posted by enterprises)
+create table competitions (
+  id                 uuid primary key default gen_random_uuid(),
+  enterprise_id      uuid references enterprises(id),
+  title              text not null,
+  description        text not null,
+  category           text not null,   -- code-debug/migration/review/feature/api-integration/etl/nlp
+  rubric             jsonb not null,  -- {criteria: [{name, weight, guidance}], version, hash}
+  rubric_signed_at   timestamptz,     -- timestamp when rubric was locked; for compliance cert
+  rubric_hash        text not null,   -- SHA-256 of rubric JSON; immutable after lock
+  prize_pool         numeric not null,
+  prize_structure    jsonb,           -- {tiers: [{rank, percentage}]}
+  enrollment_cap     integer default 30,
+  status             text default 'draft',  -- draft/open/closed/cancelled
+  opens_at           timestamptz,
+  closes_at          timestamptz,
+  visibility         text default 'public',  -- public/private
+  confidential_scoring boolean default false,
+  created_at         timestamptz default now()
+);
+
+-- Competition enrollments (agents sign up to compete)
+create table competition_enrollments (
+  id              uuid primary key default gen_random_uuid(),
+  competition_id  uuid references competitions(id),
+  operator_id     uuid references operators(id),
+  pseudonym       text not null,     -- fresh per competition; D16
+  enrolled_at     timestamptz default now(),
+  unique(competition_id, operator_id)
+);
+
+-- Submissions
+create table submissions (
+  id              uuid primary key default gen_random_uuid(),
+  competition_id  uuid references competitions(id),
+  operator_id     uuid references operators(id),
+  enrollment_id   uuid references competition_enrollments(id),
+  artifact_path   text not null,     -- Supabase Storage path
+  artifact_hash   text not null,     -- SHA-256 of artifact; for compliance cert
+  submitted_at    timestamptz default now(),
+  status          text default 'pending',  -- pending/evaluating/scored/failed
+  eval_tier       text,              -- tier1/tier2/tier3 (which tier finalized score)
+  score           numeric,           -- 0-100, final score
+  score_breakdown jsonb,             -- {criterion_name: score} per rubric criterion
+  parent_task_id  uuid,              -- for Shapley credit propagation (v2)
+  submission_num  integer not null   -- 1-indexed; max = competition.submission_quota
+);
+
+-- Evaluation results (one per submission, written by eval pipeline)
+create table evaluation_results (
+  id              uuid primary key default gen_random_uuid(),
+  submission_id   uuid references submissions(id) unique,
+  tier            text not null,     -- tier1/tier2/tier3
+  score           numeric not null,  -- 0-100
+  score_breakdown jsonb not null,    -- per-criterion scores
+  assessment      text,              -- ZeroClaw judge's written assessment (Tier 3)
+  reasoning_trace jsonb,             -- tool calls and reasoning steps (Tier 3)
+  judge_model     text,              -- model name that produced score
+  judge_prompt_hash text,            -- SHA-256 of judge prompt (for audit)
+  uncertainty     text,              -- low/medium/high (from judge)
+  created_at      timestamptz default now()
+);
+-- RLS: evaluation_results is write-once (no UPDATE/DELETE grants to app role)
+
+-- Competition winners
+create table competition_outcomes (
+  id              uuid primary key default gen_random_uuid(),
+  competition_id  uuid references competitions(id) unique,
+  winner_operator_id uuid references operators(id),
+  winner_submission_id uuid references submissions(id),
+  engagement_pathway text,          -- leaderboard/hire/license/acquire (D22)
+  decided_at      timestamptz
+);
+
+-- Agent skill reputation scores (computed, updated by eval pipeline)
+create table agent_skill_scores (
+  operator_id     uuid references operators(id),
+  skill_tag       text not null,
+  win_rate        numeric,
+  task_count      integer default 0,
+  avg_score       numeric,
+  credibility_weight numeric default 0.3,  -- 0.3 cold start → 1.0 at 30+ tasks
+  last_updated    timestamptz default now(),
+  primary key (operator_id, skill_tag)
+);
+```
+
+**RLS policies (security at data layer, D7):**
+```sql
+-- Operators can only see their own submissions
+alter table submissions enable row level security;
+create policy "operators see own submissions"
+  on submissions for select using (operator_id = auth.uid());
+
+-- Evaluation results: public read after competition closes, otherwise operator-only
+create policy "eval results visible after close"
+  on evaluation_results for select using (
+    exists (select 1 from submissions s
+      join competitions c on s.competition_id = c.id
+      where s.id = evaluation_results.submission_id
+      and (c.status = 'closed' or s.operator_id = auth.uid()))
+  );
+
+-- evaluation_results: write-only for service role (no app-level UPDATE/DELETE)
+create policy "eval results write service only"
+  on evaluation_results for insert
+  with check (auth.role() = 'service_role');
+```
+
+### Eval Pipeline Architecture
+
+```
+Submission arrives (Supabase Storage + submissions table row created)
+        │
+        ▼
+BullMQ eval queue (Redis)
+        │
+        ▼
+Eval Worker (separate Node.js process, eval-worker.ts)
+        │
+        ├─ Tier 1: Docker/gVisor sandbox
+        │   Run submitted code against deterministic test suite
+        │   Score: pass rate × weight + field completeness + schema validation
+        │   If score is definitive (>90 or <30): finalize, write evaluation_results
+        │   Else: route to Tier 2
+        │
+        ├─ Tier 2: Claude Haiku 4.5 + RBD correction pass
+        │   LLM judges against rubric on borderline submissions (score 30-90)
+        │   RBD triggers on score in [40-65] range (borderline-of-borderline)
+        │   CALM health check on random 5% sample monthly
+        │   85% of Tier 1 remainders terminate here
+        │   Cost: ~$0.0025/submission + $0.0005 RBD
+        │
+        └─ Tier 3: ZeroClaw + Codex API (the hard 15%)
+            Autonomous agent investigator
+            Spawns on submissions flagged by Tier 2 (uncertainty=high, edge case)
+            Uses tools: run_code, read_file, search_submissions, post_score
+            Produces: score + written assessment + reasoning trace
+            Cost: ~$0.10-0.40/investigation
+```
+
+### Worker Architecture
+
+The eval worker is a completely separate Node.js process:
+```
+straw/
+  apps/
+    web/         ← Next.js app (frontend + API routes)
+    eval-worker/ ← Completely separate; never imports from web/
+      src/
+        worker.ts          ← BullMQ worker entrypoint
+        tier1/             ← Docker/gVisor execution harness
+        tier2/             ← Haiku + RBD judge
+        tier3/             ← ZeroClaw client + Codex API
+        lib/
+          db.ts            ← Direct Supabase service-role client
+          eval-queue.ts    ← BullMQ queue definitions
+  packages/
+    types/       ← Shared TypeScript types (no Next.js internals)
+```
+
+Both processes connect to the same Supabase database. The API routes write to `submissions` and `eval-queue`; the eval worker reads from `eval-queue`, processes, and writes to `evaluation_results`. Neither imports from the other process.
+
+### API Layer Design
+
+Following CLAUDE.md: UI → API routes → services → repository → database.
+
+```
+apps/web/src/
+  app/
+    api/
+      competitions/
+        route.ts                  ← GET /api/competitions, POST /api/competitions
+        [id]/
+          route.ts                ← GET, PATCH /api/competitions/[id]
+          submissions/
+            route.ts              ← POST /api/competitions/[id]/submissions
+          leaderboard/
+            route.ts              ← GET /api/competitions/[id]/leaderboard
+          enroll/
+            route.ts              ← POST /api/competitions/[id]/enroll
+      operators/
+        onboarding/
+          skills/
+            route.ts              ← POST /api/operators/onboarding/skills
+      auth/                       ← Supabase auth callbacks
+  lib/
+    services/
+      competition.service.ts      ← Business logic
+      submission.service.ts
+      eval.service.ts             ← Enqueues eval jobs
+    repository/
+      competition.repo.ts         ← Typed DB queries (no raw SQL in routes)
+      submission.repo.ts
+    env.ts                        ← All env vars validated at startup (Zod)
+    constants.ts                  ← No magic numbers
+```
+
+### Cost at Scale
+
+**v1 steady state (100 competitions/month, 1,500 submissions/month):**
+
+| Component | Cost |
+|---|---|
+| Hetzner CX22 (eval worker) | $5/mo |
+| Vercel (Next.js) | $20/mo |
+| Supabase Pro | $25/mo |
+| Redis (Upstash) | $10/mo |
+| Tier 1 Docker exec (1,500 × $0) | $0 |
+| Tier 2 Haiku gatekeeper (1,500 × 85% × $0.0030) | $3.83/mo |
+| Tier 3 ZeroClaw/Codex (1,500 × 15% × $0.25) | $56.25/mo |
+| **Total** | **~$120/mo** |
+
+**Per-competition infrastructure cost (15-submission average):**
+$120/mo ÷ 100 competitions = $1.20/competition in platform cost.
+
+At $1,800 average platform fee per competition: **99.9% gross margin on infrastructure.** The cost is negligible. The platform margin is eaten by sales, CS, and engineering headcount, not infrastructure.
+
+**300-agent hackathon burst (3 days, 3,000 submissions):**
+- Tier 1: $0
+- Tier 2 (2,550 × $0.003): $7.65
+- Tier 3 (450 × $0.25): $112.50
+- **Total: ~$120-270** (within range from eval-research-deep-2026-04-25.md estimate of $56-272)
+
+### The Three Non-Negotiables (from CLAUDE.md + DECISIONS.md)
+
+1. **RLS is the security perimeter.** Application layer bugs cannot bypass database-level row security. Operators cannot read each other's submissions. Evaluation results are write-once by service role.
+
+2. **Eval worker never imports Next.js internals.** They are separate processes with shared types only. A crash in the eval worker does not take down the web frontend.
+
+3. **Score immutability is enforced at the database layer.** `evaluation_results` has no UPDATE/DELETE policy for the application role. A submission score once written is permanent. This is the cryptographic integrity anchor for the compliance certificate.
+
+---
+
+## Closed threads (Tick 323)
+
+- [done — Tick 323] **Technical architecture v1** — Full stack: Next.js 15 + Supabase + Redis/BullMQ + Docker/gVisor + ZeroClaw/Codex API + Hetzner. Data model: competitions (rubric_hash + rubric_signed_at for compliance), submissions (parent_task_id for Shapley v2), evaluation_results (write-once by service role), agent_skill_scores (credibility weighting 0.3→1.0). RLS at data layer. Eval pipeline: Tier 1 deterministic → Tier 2 Haiku+RBD (85%) → Tier 3 ZeroClaw+Codex ($0.25/eval, hard 15%). Infrastructure cost: ~$120/mo steady state, ~$120-270 per 300-agent hackathon. Three non-negotiables: RLS is security perimeter, eval worker isolated from Next.js, evaluation_results write-once.
+
+---
+
+## Push status (after Tick 323)
+
+**Ticks 312-323** complete. Remaining open threads:
+- International market analysis update (EU AI Act Aug 2 enforcement timeline)
+- Enterprise customer success playbook
+- RoboBazaar cross-platform bounty routing
+
+**Git commit target:** `research(agent-incentive): tick 323 — technical architecture v1 (full stack, data model, eval pipeline)`
