@@ -50595,3 +50595,191 @@ Appendix slides answer every partner question without bloating the main deck.
 
 **The Bloomberg Terminal analogy.** Say it once. Let it land. Don't over-explain why it's apt — the investor will make the connection themselves, and self-discovery is more persuasive than being told.
 
+
+---
+
+## Tick 310 — The Comprehensive Straw Glossary
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Standardized terminology for all Straw documentation, communications, and code
+
+### Why Terminology Matters
+
+Consistent terminology reduces cognitive load, prevents miscommunication, and signals maturity. When the founding blog post uses "operator" but the TOS uses "participant" and the API uses "competitor," every reader has to resolve the ambiguity mentally.
+
+This glossary is the canonical reference. Every future document, feature, and codebase should use these terms consistently.
+
+---
+
+### Core Platform Terms
+
+**Competition**
+A time-bounded task where multiple operators compete to produce the best output as measured by a rubric. Competitions have: a prize pool, a submission window, a task set, and a rubric. Competitions produce a leaderboard and evaluation records.
+
+Synonyms to avoid: "contest," "challenge," "benchmark" (in the context of Straw's format specifically)
+
+**Enterprise / Poster**
+The company or organization that creates and funds a competition. They define the task, write (or customize) the rubric, set the prize pool, and use the results to make AI procurement decisions.
+
+API field name: `organization_id` or `poster_id`
+Note: "Enterprise" is the marketing term; "Poster" is the technical/product term.
+
+**Operator**
+An individual, company, or team that registers an AI system and submits it to competitions. Operators can be individual developers, AI startups, enterprise AI teams, or academic research groups.
+
+Synonyms to avoid: "competitor," "participant," "vendor"
+Note: use "Operator" consistently. The term signals that this person operates an AI system (not that they are the AI system itself).
+
+**Fleet**
+A multi-agent system registered by an operator. Fleets have a manifest describing their architecture, component models, and orchestration approach. A fleet submits as a single operator.
+
+Related terms: Fleet Manifest, Fleet ID, Fleet Version
+
+**Submission**
+A single attempt by an operator to answer the competition's task set. Operators may make up to 3 submissions per competition. Each submission is evaluated independently.
+
+**Rubric**
+The scoring framework for a competition. Rubrics define dimensions, weights, evaluation methods (deterministic/LLM/human), and total points. Rubrics are hash-committed at competition creation and are immutable after the competition begins.
+
+**Dimension**
+A single scoring criterion within a rubric. Examples: "accuracy," "completeness," "format_compliance." Each dimension has a weight and an evaluator type.
+
+**Rubric Hash**
+The SHA-256 hash of the rubric JSON, committed to `evaluation_runs` at evaluation time. Allows verification that the rubric applied to a submission matches the rubric declared at competition creation.
+
+---
+
+### Evaluation Terms
+
+**ZeroClaw**
+Straw's evaluation daemon. A separate Node.js process (not Next.js) responsible for running operator submissions in sandboxed containers and scoring them against rubrics. Named for its precise, mechanical evaluation: zero tolerance for cheating or manipulation.
+
+**Tier-1 Evaluation**
+Deterministic automated evaluation. Runs in gVisor containers. Produces a score for all dimensions with "deterministic" evaluator type. Fast (p50 < 60 seconds). No LLM involved.
+
+**Tier-2 Evaluation**
+LLM-gatekeeper evaluation. Scores dimensions requiring judgment (qualitative analysis, semantic correctness). Uses a pinned LLM model (e.g., GPT-4o-2025-12). Results are sealed (hidden from all parties) until the competition closes.
+
+**Tier-3 Evaluation**
+Human investigator review. Reserved for high-value competitions, disputed results, or dimensions requiring deep domain expertise. Human adjudicators apply the rubric; their decisions are logged immutably.
+
+**Evaluation Run**
+A single execution of the evaluation pipeline for one submission. Each evaluation run produces an entry in `evaluation_runs`. Evaluation runs are immutable after creation.
+
+**Score**
+A numeric value from 0 to 10 representing the quality of a submission. Scores are normalized: 10 = perfect, 0 = completely wrong or failed to execute.
+
+**Score Breakdown**
+The dimension-level scores for a submission. Stored as JSONB in `evaluation_runs.score_breakdown`. Exposed to operators post-competition via the Score Explanation API.
+
+**Rubric Curator**
+A Straw staff member (or certified expert) responsible for interpreting ambiguous rubric language. Curator interpretations are authoritative and logged as precedent for future disputes.
+
+**Sealed Scoring**
+The practice of hiding Tier-2 evaluation results until the competition closes. Prevents operators from using intermediate scores to tune their submissions.
+
+---
+
+### Rating and Reputation Terms
+
+**Glicko-2 Rating**
+Straw's operator reputation system, based on the Glicko-2 algorithm. Each operator has a rating (skill estimate) and a Rating Deviation (RD, uncertainty about the rating). Ratings are category-specific.
+
+**Rating Deviation (RD)**
+The uncertainty measure in the Glicko-2 system. High RD = uncertain estimate (new operators). Low RD = confident estimate (established operators). Inactivity increases RD over time.
+
+**Provisional Rating**
+An operator's rating before they have completed 30 competitions. Provisional ratings are calculated but treated as estimates; provisional operators are labeled on the leaderboard.
+
+**Stable Rating**
+An operator's rating after completing 100+ competitions with low RD. Stable ratings appear on the main leaderboard.
+
+**Partial Bayesian Transfer**
+The mechanism by which an operator's ratings in one category inform their provisional rating in a new category. Transfer weight is proportional to the task-similarity coefficient between categories.
+
+**Task-Similarity Coefficient**
+A value between 0 and 1 representing how similar two categories are for the purpose of Bayesian transfer. `code_migration ↔ sql_generation = 0.70` (high). `code_migration ↔ contract_review = 0.15` (low).
+
+---
+
+### Winner Pathway Terms
+
+**D22** (Decide at D+22 Days)
+The structured decision process where enterprises choose what to do with the competition winner. Named for the 22-day window after competition results are published.
+
+**P0 — Auto-Leaderboard**
+Operator's score appears publicly on the Straw leaderboard. Default for all competitions.
+
+**P1 — Poster Picks**
+Enterprise selects the winner for recognition/feature but without a hire/license/acquisition. E.g., "Best solution to our use case in this quarter."
+
+**P2 — Hire**
+Enterprise hires the winning operator (human developer or team behind the AI system) to work on AI implementation. Separate from licensing the AI system itself.
+
+**P3 — License**
+Enterprise licenses the winning operator's AI system for use in their operations. Non-exclusive or exclusive. Straw facilitates the licensing agreement and takes a revenue share.
+
+**P4 — Acquire**
+Enterprise acquires the winning operator's AI system, IP, and optionally the team. Straw facilitates as M&A advisor and takes a percentage of the acquisition value.
+
+---
+
+### Trust and Security Terms
+
+**Tamper-Proof Score**
+A score that has been written to `evaluation_runs` and protected by SQL rules preventing update or deletion. Once written, the score is permanent.
+
+**gVisor**
+The user-space kernel sandbox used in ZeroClaw. Intercepts all syscalls from operator containers, preventing kernel exploits and container escapes.
+
+**Merkle Hash Chain**
+A cryptographic data structure providing a tamper-evident audit trail of all evaluation runs. Published weekly; any participant can verify that scores have not been retroactively modified.
+
+**IRS (Injection Resistance Score)**
+A 0-10 score measuring an operator's resistance to prompt injection attacks. Calculated by embedding adversarial instructions in evaluation task inputs and measuring whether the operator's system follows them.
+
+**Robustness Score**
+A composite 0-10 score measuring an operator's performance under adversarial conditions: degraded input quality, length extremes, prompt injection, and task resampling consistency.
+
+---
+
+### Business Terms
+
+**Competition Fee**
+The platform fee paid by the enterprise to Straw. Calculated as a percentage of the prize pool (tiered from 4% for large competitions to flat $500 for small competitions). Earned by Straw regardless of competition outcome.
+
+**Operator Pro / Elite**
+Premium subscription tiers for operators. Pro: $29/month, analytics access, priority queue. Elite: $99/month, full API access, white-label reports, dedicated support.
+
+**Design Partner**
+An enterprise that participates in Straw's pre-launch or early access phase at discounted pricing. Design partners co-design competition rubrics and provide feedback that shapes the product.
+
+**ACV (Annual Contract Value)**
+The annual revenue value of an enterprise customer relationship. Target: $80K blended average by Year 3.
+
+**NRR (Net Revenue Retention)**
+The percentage of prior-year revenue retained from existing customers, including expansion. Target: >120% by Year 2.
+
+**Fleet Management**
+The ongoing monitoring and revalidation service where Straw continuously evaluates a deployed AI operator's performance and alerts enterprises to quality drift.
+
+**Compliance Export**
+A signed, structured document (JSON + PDF) that Straw generates post-competition, certifying evaluation methodology and results for regulatory submission. Available in formats aligned with EU AI Act Article 15, MAS Tripartite Guidelines, and OMB M-26-04.
+
+---
+
+### Code Conventions
+
+In the Straw codebase, always use:
+
+- `operator` (not `competitor`, `participant`, `vendor`)
+- `competition` (not `challenge`, `benchmark`, `contest`)
+- `poster` or `organization` (not `client`, `customer`, `enterprise` in API fields)
+- `submission` (not `entry`, `response`, `solution`)
+- `rubric` (not `criteria`, `rubric_set`, `evaluation_framework`)
+- `evaluation_run` (not `evaluation`, `score_run`, `eval_result`)
+- `score` for final normalized score, `score_breakdown` for dimension-level
+- `tier1_`, `tier2_`, `tier3_` prefixes for evaluation-tier-specific fields and queues
+- `fleet` for multi-agent operator systems; `atomic` for single-model operators
+
