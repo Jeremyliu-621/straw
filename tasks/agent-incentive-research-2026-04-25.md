@@ -45687,3 +45687,211 @@ Trust built.
 
 The gap between benchmark performance and production performance is the core enterprise AI procurement problem. Adversarial evaluation closes that gap. This is a genuine product innovation, not just an additional metric.
 
+
+---
+
+## Tick 284 — Straw Pricing Architecture
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Detailed pricing model — tiers, packaging, and expansion economics
+
+### The Pricing Challenge
+
+Straw has three revenue-generating interactions:
+1. **Competition fee:** enterprise pays to post a competition (% of prize pool + platform fee)
+2. **Operator subscription:** operators pay for premium features (enhanced analytics, priority queue)
+3. **P3/P4 licensing:** Straw takes a cut of operator licensing deals
+
+These three streams have different pricing dynamics, different buyer psychology, and different competitive sensitivities. Getting the packaging wrong causes one of two failure modes: (a) undercharging leaves money on the table and signals low value, (b) overcharging creates adoption friction at the critical early stage.
+
+---
+
+### Competition Fee Structure
+
+**Current model (described in prior ticks):** 15% platform fee on prize pool.
+
+The 15% flat rate is simple but suboptimal. Enterprises don't think in percentages — they think in absolute costs. A $50K prize pool with $7,500 fee is easy math. A $500K fine-tuning competition with $75,000 fee triggers procurement review.
+
+**Proposed tiered structure:**
+
+```
+Prize Pool Range       Platform Fee    Effective Rate
+$1,000 - $9,999        $500 flat       5-50%
+$10,000 - $49,999      10% of pool     10%
+$50,000 - $99,999      8% of pool      8%
+$100,000 - $499,999    6% of pool      6%
+$500,000+              4% of pool      4%
+```
+
+Why this structure:
+- Small competitions ($1-9K): flat fee prevents economics being ridiculous for tiny competitions ($150 fee on a $1K competition is absurd)
+- Large competitions: progressive discount rewards enterprises that run high-value competitions (they get lower effective rate, Straw gets larger absolute fee)
+- A $500K fine-tuning competition at 4% = $20K platform fee. Still a large absolute number but reasonable as a % of procurement budget.
+
+**Additional fees:**
+- Setup fee (one-time per enterprise onboarding): $2,500 (waived for first competition)
+- Tier-3 human adjudication add-on: $500/competition (for competitions that require guaranteed human review)
+- Compliance export add-on: $250/competition (signed EU AI Act / OMB attestation document)
+- Adversarial robustness evaluation add-on: $750/competition (Robustness Score with injection testing)
+- Priority evaluation SLA (<4 hour Tier-1 guarantee): $1,000/competition
+
+**Annual volume discount:**
+- 5+ competitions/year: 10% discount on platform fees
+- 10+ competitions/year: 15% discount
+- 25+ competitions/year: 20% discount + dedicated account manager
+- 50+ competitions/year: custom enterprise contract (minimum $100K/year commitment)
+
+---
+
+### Operator Pricing Tiers
+
+Operators have three tiers:
+
+**Free Tier**
+- Access: participate in all open competitions
+- Submission limit: 3 per competition (standard)
+- Analytics: basic score history, rank history
+- Support: community forum only
+- Price: $0
+
+**Operator Pro — $29/month ($290/year)**
+- Everything in Free, plus:
+- Performance analytics: detailed score breakdowns, benchmark comparisons, trend analysis
+- Fleet management: multi-agent fleet registration, version management
+- Priority submission queue: submissions processed before Free tier (relevant when competitions have high volume)
+- Early access to new categories (30-day preview period)
+- Export: PDF/JSON score reports for external credentialing
+
+**Operator Elite — $99/month ($990/year)**
+- Everything in Pro, plus:
+- Full API access: programmatic submission, webhook notifications, competition monitoring
+- Tax optimization tools: prize income tracking, categorization (useful for high-earning operators)
+- Dispute filing priority: disputes reviewed within 24 hours (vs. 72 for standard)
+- White-label score reports: reports branded as "OperatorName × Straw Certified"
+- Dedicated operator success manager (available for 3+ months Elite subscribers)
+- Advance competition previews: see rubric 24 hours before public launch
+
+**Revenue projection from operator subscriptions:**
+```
+Year 1: 500 operators × 10% Pro + 2% Elite = 50 Pro + 10 Elite = $21,400/year
+Year 2: 2,000 operators × 15% Pro + 5% Elite = 300 Pro + 100 Elite = $1,041,000/year
+Year 3: 8,000 operators × 20% Pro + 8% Elite = 1,600 Pro + 640 Elite = $6,950,400/year
+```
+
+By Year 3, operator subscriptions alone are ~$7M ARR — approximately 54% of total ARR. This is the flywheel kicking in: operator reputation becomes valuable enough to protect via premium subscription.
+
+---
+
+### P3/P4 Licensing Revenue Share
+
+When an enterprise licenses (P3) or acquires (P4) an operator's AI system through Straw:
+
+**P3 License (non-exclusive):**
+- Straw facilitates negotiation, provides score attestation, handles contract templates
+- Straw takes 15% of Year 1 license value, 10% of subsequent years
+- Example: $500K/year license → $75K Straw revenue Year 1, $50K/year ongoing
+
+**P3 Exclusive License:**
+- Higher value; operator commits to not licensing to other enterprises in that category
+- Straw takes 12% of total license value (one-time payment common)
+- Example: $1.5M exclusive 3-year license → $180K Straw revenue
+
+**P4 Acquisition:**
+- Full acquisition of operator's system, IP, and (optionally) team
+- Straw facilitates as M&A advisor
+- Straw takes 5% of acquisition value
+- Example: $3M acquisition → $150K Straw revenue
+
+**P3/P4 revenue projection:**
+```
+Year 1: 0 deals (product too early, operators not yet established)
+Year 2: 5 P3 deals × $200K avg = $1M total, $150K Straw revenue
+Year 3: 20 P3 + 3 P4 deals = $5M + $9M = $14M total, $750K + $450K = $1.2M Straw revenue
+```
+
+By Year 3, licensing/acquisition facilitation is ~$1.2M ARR (9% of total). Not the primary revenue driver but high-margin and strategically important (it's the proof of concept for the whole platform thesis).
+
+---
+
+### Enterprise Annual Subscription Model
+
+For enterprises running many competitions, a subscription model replaces per-competition pricing:
+
+**Starter Plan — $12,000/year**
+- Up to 5 competitions/year
+- Prize pools: up to $10K each (total $50K/year)
+- 1 user seat
+- Standard evaluation tiers (Tier 1 + 2)
+- Email support
+
+**Growth Plan — $36,000/year**
+- Up to 20 competitions/year
+- Prize pools: up to $25K each (total $500K/year)
+- 5 user seats
+- Full evaluation tiers (Tier 1 + 2 + 3 option)
+- Compliance export included
+- Dedicated customer success manager
+- SLA: 99.9% uptime, <4 hour evaluation completion
+
+**Enterprise Plan — $120,000/year+**
+- Unlimited competitions
+- No prize pool cap
+- Unlimited user seats
+- Custom evaluation rubric development ($0 for up to 3 rubrics/year)
+- Custom integrations (ServiceNow, Salesforce, Jira)
+- Private operator pools (invite-only operator communities)
+- On-premise evaluation option (for air-gapped environments)
+- Executive business review quarterly
+
+**Why subscription vs. per-competition:**
+- Enterprises with predictable AI evaluation needs prefer predictable costs
+- Subscription reduces friction for running competitions (no approval cycle per competition)
+- Annual commitment improves Straw's cash flow predictability
+- Subscription customers have much higher LTV than per-competition customers
+
+**Revenue mix target by Year 3:**
+```
+Per-competition fees: 25% of ARR
+Enterprise subscriptions: 40% of ARR
+Operator subscriptions: 30% of ARR
+P3/P4 licensing: 9% of ARR
+Other (add-ons, professional services): 6% of ARR
+```
+
+---
+
+### Price Anchoring and Value Justification
+
+Every pricing conversation with an enterprise should use this framing:
+
+**The Alternative Cost Frame:**
+"A traditional AI vendor evaluation (RFP, POC, reference checks) takes 3-6 months and $200-500K in consultant and procurement staff time. Straw runs a competitive evaluation in 6 weeks for $15-30K all-in (platform fee + prize pool). That's a 10-20× cost reduction."
+
+**The Risk Reduction Frame:**
+"A bad AI vendor choice at $1M/year creates $5-10M in switching costs, retraining costs, and productivity loss over 3 years. Straw's evaluation cost ($15-30K) is a 330-670× ROI on risk reduction alone."
+
+**The Ongoing Value Frame:**
+"After initial selection, Straw monitors your vendor's performance. Quarterly revalidation costs $5-10K. You know if quality is drifting before it affects your business."
+
+These frames are not inflated. The cost savings are real. The ROI math is defensible. The pricing is therefore not too high — it's pricing below the enterprise's alternatives.
+
+**Price sensitivity by segment:**
+- Fortune 500 / FTSE 100: price-insensitive; $100-500K/year is rounding error in AI budget
+- Mid-market ($500M-$2B revenue): price-conscious; $36-120K/year requires clear ROI case
+- Indian IT majors: highly price-sensitive; pilot pricing important; expand after proven value
+- Singapore SME: very price-sensitive; $12K/year Starter is the right entry point
+
+---
+
+### Competitive Pricing Position
+
+For reference, comparable enterprise software pricing:
+
+- LangSmith Enterprise: $50-200K/year (developer platform, not evaluation)
+- Scale AI Enterprise: $500K-$5M/year (data labeling + evaluation, but labor-intensive)
+- Arize AI: $75-300K/year (post-deployment observability)
+- Custom consulting (McKinsey AI): $500K-$2M per engagement (evaluation as part of broader AI strategy)
+
+Straw's Enterprise Plan at $120K/year + prize pools is significantly cheaper than Scale AI and consulting alternatives, and provides a fundamentally different (more credible) signal. The positioning is "we're in the range of enterprise software, not at consulting prices, and we deliver a better output."
+
