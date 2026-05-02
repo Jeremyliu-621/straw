@@ -47134,3 +47134,295 @@ The cost of premature geographic expansion is high: split attention, confused pr
 
 The Singapore market can sustain Straw to Series A. UK + India can sustain through Series B. Everything else is a Series B+ story.
 
+
+---
+
+## Tick 292 — ZeroClaw Technical Deep Dive
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Detailed technical specification of the evaluation daemon
+
+### What ZeroClaw Must Be
+
+ZeroClaw is not a clever product name. It's a reference to the claw machine game: insert money, operate, pick up the prize. ZeroClaw must operate with mechanical precision — deterministic, auditable, and completely predictable.
+
+The failure modes for an evaluation daemon are:
+1. **False positive:** gives a high score to a bad submission (enterprise gets misled about quality)
+2. **False negative:** penalizes a good submission (operator loses prize unfairly)
+3. **Non-determinism:** same submission gets different scores on different runs (breaks reproducibility and audit trail)
+4. **Escape:** operator's code modifies its own scoring environment (corrupts evaluation integrity)
+5. **Leakage:** test inputs from one operator's run are visible to another (breaks blind evaluation)
+
+ZeroClaw's architecture must make all five failure modes structurally impossible, not just "unlikely."
+
+---
+
+### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        ZeroClaw Daemon                          │
+│                                                                 │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │               BullMQ Worker Process                       │  │
+│  │   tier1_evaluation queue (concurrency=20)                 │  │
+│  │   tier2_evaluation queue (concurrency=5)                  │  │
+│  │   tier3_trigger queue (concurrency=1)                     │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                            │                                    │
+│                            ▼                                    │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │              Evaluation Orchestrator                      │  │
+│  │   - Fetches sealed task inputs from Supabase              │  │
+│  │   - Constructs operator payload (no secrets)              │  │
+│  │   - Spawns gVisor container per submission                │  │
+│  │   - Collects container output                             │  │
+│  │   - Applies rubric scoring                                │  │
+│  │   - Writes to evaluation_runs (immutable)                 │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                            │                                    │
+│                 ┌──────────┴──────────┐                         │
+│                 ▼                     ▼                         │
+│  ┌─────────────────────┐  ┌─────────────────────┐              │
+│  │   gVisor Container  │  │   Scoring Engine    │              │
+│  │   (operator code)   │  │   (rubric eval)     │              │
+│  │   - Isolated FS     │  │   - Deterministic   │              │
+│  │   - No network      │  │   - Versioned       │              │
+│  │   - CPU/memory cap  │  │   - Hash-committed  │              │
+│  │   - Ephemeral       │  │                     │              │
+│  └─────────────────────┘  └─────────────────────┘              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Key design principle:** The gVisor container and the Scoring Engine run in completely separate processes. The operator's code never has access to the Scoring Engine. The Scoring Engine never executes operator code. There is no shared state between them.
+
+---
+
+### gVisor Container Specification
+
+**Why gVisor, not Docker:**
+
+Docker containers share the host kernel. A container escape via kernel exploit gives the attacker host access. In the context of arbitrary operator code evaluation, this is unacceptable.
+
+gVisor interposes a user-space kernel (runsc / "run sandbox") between the container process and the host kernel. Every syscall from the container goes through gVisor's interception layer. Even a known kernel exploit is blocked because the operator's code never reaches the real kernel.
+
+Performance cost: ~10-15% overhead vs. native Docker. Worth it for the security guarantee.
+
+**Container specification per evaluation run:**
+
+```yaml
+runtime: runsc  # gVisor runtime
+image: zeroclaw-eval-base:1.4.2  # pinned to SHA256 digest
+resources:
+  cpu_limit: "2.0"    # 2 virtual CPUs
+  memory_limit: "4Gi"  # 4 GB RAM
+  disk_limit: "1Gi"    # 1 GB ephemeral disk
+  network: "none"      # ABSOLUTELY NO NETWORK ACCESS
+timeout: 600s          # hard kill after 10 minutes (configurable per category)
+uid: 1000             # non-root user inside container
+capabilities: []      # strip ALL Linux capabilities
+```
+
+**What gets mounted into the container (read-only):**
+- Task input files: the specific inputs for this evaluation run
+- Operator submission: their code/model weights (read-only mount)
+- Evaluation harness: the standard test runner (category-specific)
+
+**What never enters the container:**
+- Other operators' submissions (isolated per run)
+- Rubric details (rubric applied by Scoring Engine, not operator-visible)
+- Evaluation scoring logic
+- Database credentials
+- Any network-accessible resource
+
+**Container output:**
+- Operator's output file (JSON, specified format per category)
+- Execution log (stdout/stderr, for debugging and dispute resolution)
+- Resource usage metrics (CPU time, memory peak, execution time)
+
+**Cleanup:**
+- Container filesystem destroyed after output collection
+- No residual state from one evaluation run affects the next
+- Container images refreshed weekly (no operator can cache malicious state in the image)
+
+---
+
+### Scoring Engine Specification
+
+The Scoring Engine applies the rubric to the operator's output. It runs outside the container.
+
+**Rubric structure:**
+
+```typescript
+interface Rubric {
+  version: string;           // "1.4.2"
+  rubric_hash: string;       // sha256 of rubric JSON (committed at competition creation)
+  dimensions: RubricDimension[];
+  total_points: number;
+  pass_threshold: number;    // minimum score to pass Tier-1
+}
+
+interface RubricDimension {
+  id: string;                // "accuracy"
+  name: string;              // "Output Accuracy"
+  weight: number;            // 0.35 (fraction of total points)
+  evaluator: "deterministic" | "llm" | "human";
+  evaluator_config?: object; // config for deterministic evaluator
+  sub_dimensions?: RubricSubDimension[];
+}
+```
+
+**Deterministic evaluators (Tier-1):**
+
+For dimensions that can be evaluated algorithmically:
+- `json_schema_validation`: does output match expected JSON schema?
+- `field_completeness`: are all required fields present?
+- `semantic_match_fuzzy`: fuzzy string comparison for text fields (Levenshtein distance threshold)
+- `numeric_range_check`: is a numeric value within an expected range?
+- `code_execution_test`: run the operator's code against test cases (inside container)
+- `regex_match`: does a field match a pattern?
+- `exact_match_set`: is the value in an expected set of values?
+- `file_type_check`: is the output file the correct type/format?
+
+**Score aggregation:**
+
+```typescript
+function calculateTier1Score(
+  rubric: Rubric,
+  evaluationResults: Map<string, DimensionResult>
+): number {
+  let totalScore = 0;
+  for (const dimension of rubric.dimensions) {
+    const result = evaluationResults.get(dimension.id);
+    if (result.evaluator === 'deterministic') {
+      totalScore += dimension.weight * result.score;
+    }
+    // LLM dimensions go to Tier-2; human dimensions go to Tier-3
+  }
+  return totalScore / rubric.total_deterministic_weight; // normalize to 0-10
+}
+```
+
+**Versioning:**
+
+The `evaluator_version` field in `evaluation_runs` records which version of ZeroClaw ran the evaluation. This is critical for reproducibility: if a bug is discovered in version 1.4.1 and fixed in 1.4.2, affected runs can be identified and re-evaluated.
+
+Version policy: semantic versioning. Patch versions (1.4.1 → 1.4.2) are bug fixes. Minor versions (1.4 → 1.5) add new evaluator types. Major versions (1 → 2) change the scoring architecture and require all historical scores to be re-computed (triggers a full leaderboard rebuild for affected categories).
+
+---
+
+### Tier-2 LLM Evaluation Pipeline
+
+For dimensions requiring judgment (qualitative analysis, semantic correctness, strategic reasoning):
+
+```
+Inputs:
+  - Task input (sealed until submission deadline)
+  - Operator output
+  - Rubric dimension specification
+  - Evaluation prompt template (versioned, hash-committed)
+
+Process:
+  1. Construct evaluation prompt (template + inputs)
+  2. Send to Tier-2 LLM (GPT-4o or Straw evaluation model)
+  3. Parse structured response (score + rationale)
+  4. Validate score is within expected range
+  5. Write to sealed_tier2_results (RLS-protected until competition closes)
+
+Output:
+  - tier2_score: numeric (0-10)
+  - tier2_rationale: text (3-5 sentences)
+  - model_used: "gpt-4o-2025-12" (pinned version)
+  - prompt_hash: sha256 of the evaluation prompt sent
+```
+
+**Prompt pinning:** The evaluation prompt template is hash-committed at competition creation. Even if the prompt template library is updated after the competition launches, the competition uses the original prompt. This prevents "silent evaluation drift."
+
+**Model pinning:** `gpt-4o-2025-12` specifically, not `gpt-4o`. OpenAI's model updates change behavior. Pinning to a specific version ensures consistency.
+
+**Disagreement handling:** If Tier-2 score differs from Tier-1 score by >2.0 points on the same dimension, this is flagged for Tier-3 review. Large disagreements between automated and LLM evaluation often indicate rubric ambiguity.
+
+---
+
+### Database Schema (Key Tables)
+
+```sql
+-- Immutable evaluation log
+CREATE TABLE evaluation_runs (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  submission_id   uuid NOT NULL REFERENCES submissions(id),
+  competition_id  uuid NOT NULL REFERENCES competitions(id),
+  tier            smallint NOT NULL CHECK (tier IN (1, 2, 3)),
+  rubric_hash     text NOT NULL,   -- sha256(rubric JSON)
+  input_hash      text NOT NULL,   -- sha256(task inputs)
+  score           numeric(4,2),    -- normalized 0-10
+  score_breakdown jsonb,           -- dimension-level scores
+  executed_at     timestamptz NOT NULL DEFAULT now(),
+  evaluator_version text NOT NULL,  -- "zeroclaw-1.4.2"
+  human_adjudicator_id uuid,       -- only for tier=3
+  execution_time_ms integer,       -- for performance monitoring
+  container_resource_usage jsonb   -- cpu_seconds, memory_peak_mb
+);
+
+-- Prevent modification or deletion of any evaluation record
+CREATE RULE no_eval_update AS ON UPDATE TO evaluation_runs DO INSTEAD NOTHING;
+CREATE RULE no_eval_delete AS ON DELETE TO evaluation_runs DO INSTEAD NOTHING;
+
+-- Sealed Tier-2 results (visible only after competition closes)
+CREATE TABLE sealed_tier2_results (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  evaluation_run_id uuid NOT NULL REFERENCES evaluation_runs(id),
+  competition_id  uuid NOT NULL REFERENCES competitions(id),
+  submission_id   uuid NOT NULL REFERENCES submissions(id),
+  tier2_score     numeric(4,2),
+  tier2_rationale text,
+  model_used      text NOT NULL,
+  prompt_hash     text NOT NULL,
+  evaluated_at    timestamptz NOT NULL DEFAULT now()
+);
+
+-- RLS: sealed until competition closes
+ALTER TABLE sealed_tier2_results ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY sealed_tier2_visible_after_close
+  ON sealed_tier2_results FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM competitions c
+      WHERE c.id = sealed_tier2_results.competition_id
+        AND c.status IN ('closed', 'complete')
+    )
+  );
+```
+
+---
+
+### Monitoring and Alerting
+
+ZeroClaw must be monitored as production infrastructure:
+
+**Latency SLOs:**
+- p50 Tier-1 evaluation: <60 seconds
+- p95 Tier-1 evaluation: <5 minutes
+- p99 Tier-1 evaluation: <timeout (hard limit)
+- Tier-2 evaluation: <120 seconds (GPT-4o latency bounded)
+
+**Error rate SLOs:**
+- Evaluation failure rate: <1% (unhandled exceptions)
+- Container start failure: <0.5%
+- Tier-2 API error: <2% (OpenAI rate limits/outages)
+
+**Security monitoring:**
+- Syscall anomaly detection: gVisor audit log for unexpected syscall patterns
+- Container breakout attempt: any container process with PID 1 outside expected process tree
+- Filesystem modification: write attempts to read-only mounts
+- Network attempt: any network syscall (should never occur — networking disabled)
+
+**Alerts (PagerDuty or Opsgenie):**
+- Evaluation queue depth > 100 (backlog forming)
+- Evaluation failure rate > 5% in 5-minute window
+- Container start time > 10 seconds (infrastructure degradation)
+- Security anomaly detected (immediate, high-priority)
+- Disk usage > 80% on evaluation hosts
+
