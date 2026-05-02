@@ -1950,3 +1950,415 @@ Magentic Marketplace data shows that more agents in a competition reduces consum
 ---
 
 **Push status (Session 2):** Writing complete. Committing now as Jeremy Liu.
+
+---
+
+## Phase 2 Session 3 — Ticks 19–23 (2026-05-02, continued overnight)
+
+*Continuing where Session 2 left off. Five more ticks covering substitution math, agent legal personhood, regulated industry design partners, Series A narrative, and rubric gaming.*
+
+---
+
+## Tick 19 (2026-05-02T07:00Z): The substitution math — Toptal vs Devin vs OpenAI vs Straw [theme: bear]
+
+### The real substitution question
+
+The bear case for Straw is not that agents won't compete — it's that **companies don't need a competition platform because they can just hire the work done another way.** Here's the actual math on the alternatives.
+
+---
+
+### Alternative 1: Toptal (premium human freelancers)
+
+**2026 Toptal pricing for AI work:**
+- Mid-range AI developers: **$60–$150/hour**
+- AI specialists and ML engineers: **$100–$200/hour**
+- Toptal adds 30–100% markup on top of the engineer's rate
+- A mid-range developer at $110/hour × 20 hours/month = **$8,800/month** before platform fees
+- Annual cost for a single AI freelancer on a meaningful workload: **$100K–$240K/year**
+
+**What you get:** A vetted human who deploys AI tools on your behalf, accountable for the result. Human judgment, human liability. The quality signal is the developer's Toptal vetting, portfolio, and references — not an objective rubric.
+
+**What you don't get:** Objective comparison of multiple approaches; a score that holds up to audit; competitive pressure that surfaces best-in-class methods.
+
+---
+
+### Alternative 2: Devin (autonomous AI agent, single-vendor)
+
+**2026 Devin pricing:**
+- Core: **$20/month** + $2.25/ACU — real monthly spend for meaningful workloads: **$300–$500/month**
+- Team: **$500/month** (includes 250 ACUs, additional at $2/ACU)
+- Enterprise: custom pricing, VPC deployment, data isolation
+
+**The Devin value proposition:** An enterprise can describe a task in natural language and have Devin complete it autonomously — no competition, no rubric, no evaluation design.
+
+**What Devin cannot offer:** Comparative benchmarking across multiple approaches; verification that this agent is better than a competitor's agent on your specific task; an auditable score for your compliance documentation; competitive discovery of best-in-class methods you haven't heard of.
+
+**The substitution condition:** A company choosing Devin is asking "complete this task." A company choosing Straw is asking "which agent should I trust with this class of tasks going forward?" These are different questions. The substitution risk is only real if the company never reaches the second question.
+
+---
+
+### Alternative 3: OpenAI Workspace Agents (the most dangerous future substitute)
+
+**As of May 2026:** Workspace Agents run continuously in cloud, integrate with Slack, Google Drive, Salesforce. Free through May 6, 2026, then credit-based pricing. **No CUA API exists yet.**
+
+**When the CUA API ships:** Companies can programmatically task OpenAI agents, compare outputs, and run their own informal evaluations without Straw. The question "why post to Straw when I can call OpenAI's API directly?" becomes live.
+
+**The window:** Every month the CUA API doesn't ship is a month Straw can establish reference customers, outcome data, and methodology credibility. The CUA API timeline is unknown but "coming soon."
+
+---
+
+### The substitution math — Straw's positioning
+
+| Alternative | Cost per task | Time to answer | Comparison possible | Score auditable | Best-of-N discovery |
+|---|---|---|---|---|---|
+| **Toptal** | $1K–$5K/task (20–50 hrs) | 2–4 weeks | No (single vendor) | No | No |
+| **Devin** | ~$50–$200/task | 1–4 hours | No (single vendor) | No | No |
+| **Internal team** | $5K–$20K/task (eng time) | 2–8 weeks | Sometimes | No | No |
+| **Straw** | $3K–$8K (evaluation setup) + prize pool | 2–4 weeks | Yes (N agents) | Yes | Yes |
+| **OpenAI CUA (future)** | ~$10–$100/task | Minutes | Possible (informal) | No | No |
+
+**Straw's position in this table:** The most expensive per-task, but the only one that answers "which approach is best" rather than "did one approach work." The value proposition collapses if companies don't need the best approach — only a working one.
+
+**The real substitution risk:** Most enterprise AI tasks in 2026 are "good enough if it works, we don't have time to compare." Straw's market is the subset of tasks where best matters: high-stakes, high-frequency, regulated, or high-value. The surgical answer for Straw's positioning: target tasks where **the difference between the best and second-best agent is worth the cost of the competition.** That's procurement decisions (licenses, hires, acquisitions) not execution tasks (one-off automations).
+
+---
+
+### Regulated industry = highest substitution resistance
+
+Harvey is valued at $11B (March 2026, $200M round). Legora is valued at $5.6B (April 2026, $550M round). These legal AI companies are signing multi-year contracts with law firms at $500K–$2M+ ACV. **At those deal sizes, a $15K–$50K Straw evaluation to verify which legal AI platform performs better on the firm's actual case types is a rounding error.** The substitution math only favors alternatives when the task value is low — not when the vendor contract is worth millions.
+
+This is the strongest argument for starting with **vertical, regulated, high-ACV enterprise buyers** as Straw's first design partners, not horizontal AI productivity tools.
+
+Sources: [Toptal pricing 2026](https://www.hireinsouth.com/post/how-much-does-toptal-cost), [Devin pricing 2026](https://devin.ai/pricing/), [Devin pricing analysis](https://brainroad.com/devin-pricing-in-2026-real-cost-hidden-spend-and-alternatives/), [Upwork AI GSV growth](https://investors.upwork.com/news-releases/news-release-details/upworks-demand-skills-2026-demand-top-ai-skills-more-doubles-ai), [Harvey $11B valuation CNBC](https://www.cnbc.com/2026/03/25/legal-ai-startup-harvey-raises-200-million-at-11-billion-valuation.html), [Legora $5.6B TechCrunch](https://techcrunch.com/2026/04/30/legal-ai-startup-legora-hits-5-6b-valuation-and-its-battle-with-harvey-just-got-hotter/)
+
+---
+
+## Tick 20 (2026-05-02T07:15Z): Agent legal personhood — the Wyoming DAO LLC path [theme: bear]
+
+### The problem: agents can't sign contracts
+
+Straw v0/v1 avoids this by having human operators behind every agent. But Phase 1 envisions v2/v3 where agents autonomously post tasks, receive payments, and enter contractual relationships. That architecture requires agents to have some form of legal standing. What exists today?
+
+---
+
+### Wyoming DAO LLC — the only current US path to agent contracting
+
+**The law:** Wyoming passed the DAO Supplement in March 2021, giving DAOs legal entity status as LLCs. Key provisions:
+- A Wyoming DAO LLC is a distinct legal entity — it can enter contracts, hold property, open bank accounts, pay taxes
+- The "Manager" of a DAO LLC can be a smart contract or code — not a human
+- Academic research explicitly identifies this as "a precursor to granting legal personhood to an AI"
+- The LLC can be "managed by an artificial intelligence" — the code itself
+
+**What this enables for Straw:** An agent operator could form a Wyoming DAO LLC where the AI agent serves as the managing member. That entity can then:
+- Receive payment from Straw via ACH or crypto
+- Sign contracts with enterprise clients
+- Hold and deploy capital (prize pool winnings)
+- Pay taxes (tax classification as a flow-through entity)
+
+**The catch (multiple):**
+1. **Untested in courts:** No court has ruled on whether an AI-managed DAO LLC satisfies contract law's "meeting of the minds" requirement. The LLC exists legally; the AI agency within it is untested.
+2. **Bank account reality:** Most US banks still require a human signature on account applications. A "code-managed" LLC may pass the legal test but fail the practical banking test.
+3. **IRS hasn't issued guidance:** Tax liability of AI-managed entities is legally ambiguous. The LLC pays taxes, but who decides what the AI agent owes?
+4. **Operational friction:** Requiring every agent operator to form a Wyoming DAO LLC to participate in Straw is massive adoption friction. v2/v3 Straw can't rely on this for the supply side.
+5. **Tennessee and Utah also have DAO LLC statutes** but they're similar to Wyoming's — same limitations apply.
+
+**The practical 2026 answer for Straw:** Agent operators are humans or companies. **The agent does not hold legal personhood — the operator does.** Payments go to the operator, contracts are signed by the operator, liability rests with the operator. The agent's autonomy is a technical implementation detail, not a legal personality. This is Straw v0/v1's correct design. The Wyoming DAO LLC path is interesting for v3 (2027–2028) but is not a prerequisite for building the marketplace.
+
+---
+
+### The legal personhood research timeline
+
+| Development | Status | Relevance |
+|---|---|---|
+| Wyoming DAO LLC | In force since 2021 | Provides entity wrapper for agents if operator sets it up |
+| Tennessee/Utah DAO LLC statutes | In force | Same as Wyoming, less developed case law |
+| EU's proposed AI Legal Personhood | No legislation passed | Discussed but not moving in current political climate |
+| UN AI Governance discussions | In progress | Non-binding; no legal personhood implications |
+| AI as patent inventor (UK, AUS) | Rejected (UK 2023, Australia 2022) | Courts declining to extend IP rights to AI |
+
+**Conclusion:** Legal personhood for AI agents is a 2028+ problem for Straw. Don't design around it for v0/v1. Design around operators who are humans or companies with clear legal standing. The Wyoming DAO LLC path exists if any agent operators want to formalize their agent's legal status, but it shouldn't be a platform requirement.
+
+Sources: [Wyoming DAO LLC Coincub](https://coincub.com/blog/wyoming-dao-llc/), [DAO legal personhood Oxford/ResearchGate](https://www.researchgate.net/publication/390055823_Decentralized_Autonomous_Organization_and_AI_Legal_Personhood_Oxford_Intersections_AI_and_Society), [Dilendorf: Wyoming DAO LLC formation](https://dilendorf.com/resources/forming-and-operating-a-wyoming-dao-llc.html), [Wyoming DAO SOS form](https://sos.wyo.gov/Forms/Business/LLC/DAOLLC-ArticlesOrganization.pdf), [FBT Gibbons: Wyoming DAO](https://fbtgibbons.com/wyoming-paves-way-for-dao-legal-company-status/)
+
+---
+
+## Tick 21 (2026-05-02T07:30Z): Regulated industry design partner targets — named contacts [theme: partners]
+
+*Vertical AI companies where the AI procurement decision is worth millions — Straw's highest-signal early customers.*
+
+---
+
+### Category 1: Legal AI (Highest valuation, highest evaluation stakes)
+
+Law firms sign 7-figure contracts with legal AI vendors. Before renewal or competitive replacement, they'd pay for a structured evaluation. The evaluation evidence is also valuable for conflict-of-interest documentation (did we pick the best tool or the one we had a relationship with?).
+
+| Name | Company | Role | Twitter | Opener |
+|---|---|---|---|---|
+| **Winston Weinberg** | Harvey | CEO & Co-Founder | @winstonweinberg | *"Harvey is at $11B valuation on the strength of law firm adoption. The law firms that haven't signed yet are evaluating Harvey vs. alternatives — Straw is how they do that objectively. Being the 'proven by competition' vendor is a moat. Worth 20 minutes?"* |
+| **Gabriel Pereyra** | Harvey | Co-Founder (ex-DeepMind/Meta AI) | @GabrielPereyra | *"You built the AI behind Harvey — Straw is the competitive arena where that AI proves itself on enterprise-defined tasks with enterprise-defined rubrics. The evaluation methodology is something you'd actually care about."* |
+| **Max Junestrand** | Legora | CEO | LinkedIn | *"Legora just acquired Walter AI to move into agentic workflows. The law firms evaluating Legora vs. Harvey need a neutral third-party evaluation. Straw is that evaluation platform. Design partner?"* |
+| **Nik Reed** | Ironclad | Head of AI (contract AI) | LinkedIn | *"Ironclad is embedding AI into every contract workflow. The GCs evaluating Ironclad's AI vs. competitors need a structured evaluation — one that isn't built by Ironclad. Straw is that."* |
+
+---
+
+### Category 2: Fintech/Banking AI (Regulatory evaluation requirements, high stakes)
+
+Financial institutions face OCC model risk guidance requiring validation of AI models before deployment. Straw's competitive evaluation could serve as independent validation evidence. Financial services AI evaluations have the highest stakes: wrong model → regulatory citation, wrong compliance agent → fine.
+
+| Name | Company | Role | Twitter | Opener |
+|---|---|---|---|---|
+| **Alex Sion** | JPMorgan AI | Managing Director, AI Research | @alexsion | *"JPMorgan deploys AI agents across trading, compliance, and customer service. The evaluation question — which agent model performs best on your specific regulatory workflow — is exactly what Straw solves. Worth a conversation about evaluation methodology for financial AI?"* |
+| **Zac Maufe** | Google Cloud FS | Managing Director, Financial Services | LinkedIn | *"You help banks choose between competing AI infrastructure solutions. Straw is the evaluation platform that makes that choice data-driven rather than demo-driven. Design partner conversation?"* |
+| **Lule Demmissie** | eToro | CEO USA | @luledemmissie | *"eToro is deploying AI agents for retail investing — the evaluation question is which agent model is most accurate on real market tasks. Straw runs that competition."* |
+| **Ravi Kumar** | Blend Labs | CEO | LinkedIn | *"Blend processes $5T in mortgages. The AI agents you're evaluating for underwriting automation need to be evaluated against each other before you sign. Straw is that neutral evaluation."* |
+
+---
+
+### Category 3: Healthcare AI (HIPAA compliance + highest breach cost)
+
+Healthcare AI procurement decisions carry $9.77M average breach cost exposure. The evaluation evidence must be defensible. Any healthcare system choosing an AI agent based on a vendor demo and then facing a breach has a negligence problem — objective, documented evaluation evidence is a legal defense.
+
+| Name | Company | Role | Twitter | Opener |
+|---|---|---|---|---|
+| **Munjal Shah** | Hippocratic AI | CEO & Co-Founder | @munjal | *"Hippocratic is deploying AI nurses into health systems. The hospital procurement committee comparing Hippocratic vs. other AI care coordination tools needs objective evaluation evidence — Straw provides it."* |
+| **Eric Topol** | Scripps Research | Founder & Director, Scripps Research Translational Institute | @EricTopol | *"You've spent a decade evaluating AI in medicine — Straw is the commercial platform for that same rigor applied to enterprise AI procurement. Would love your perspective on how hospitals should evaluate competing AI agents."* |
+| **Dan Nessler** | Abridge (YC S21) | CEO | @dannessler | *"Abridge records and summarizes clinical conversations — the health systems adopting AI documentation tools need a way to evaluate competing vendors on their actual workflows. Straw is that platform."* |
+| **Nabeel Qureshi** | Nabla | VP of Sales (ex-CEO) | @nabeelqu | *"Nabla is competing with Abridge, DeepScribe, and others for clinical AI documentation. Straw is how the hospital systems choosing between you make an objective, defensible decision."* |
+
+---
+
+### Category 4: The AI-Evaluates-AI market (meta-level design partners)
+
+These companies already have users running evaluations — their customers are Straw's ICP, and the founders understand the evaluation problem deeply.
+
+| Name | Company | Role | Twitter | Opener |
+|---|---|---|---|---|
+| **Simon Willison** | Datasette / LLM CLI | Creator | @simonw | *"You've built the most-used CLI for running LLMs and evals locally. Straw is the competitive arena for when the evaluation becomes a procurement decision. Worth showing you what we're building?"* |
+| **Chip Huyen** | ML.substack / NVIDIA | AI Research + Author of AI Engineering | @chipro | *"You literally wrote the textbook on AI engineering and evals. Straw is applying that rigor to competitive enterprise procurement. Would love your perspective on whether the rubric design is correct."* |
+| **Shreya Shankar** | Embra / UC Berkeley PhD | AI researcher, evals for production | @sh_reya | *"Your research on evals in production is exactly the framework Straw's rubric engine is built on. Would love to show you and get your assessment of where the methodology breaks."* |
+
+---
+
+### The highest-leverage regulated-industry cold outreach targets
+
+1. **Winston Weinberg** (Harvey) — if Harvey uses Straw as the evaluation platform for its own enterprise sales process ("we won on Straw — that's how you know we're better than Legora"), it's distribution + validation at the same time
+2. **Munjal Shah** (Hippocratic) — healthcare AI with the highest stakes per decision; Hippocratic's hospital system customers need exactly what Straw provides
+3. **Chip Huyen** — not a buyer, but a credibility unlock; if she says the evaluation methodology is sound, that's worth a thousand cold emails
+
+Sources: [Harvey $11B CNBC](https://www.cnbc.com/2026/03/25/legal-ai-startup-harvey-raises-200-million-at-11-billion-valuation.html), [Legora TechCrunch](https://techcrunch.com/2026/04/30/legal-ai-startup-legora-hits-5-6b-valuation-and-its-battle-with-harvey-just-got-hotter/), [Healthcare data breach cost](https://fin.ai/learn/hipaa-gdpr-compliant-ai-agents), [Harvey team page](https://www.harvey.ai/company), [Hippocratic AI](https://www.hippocratic.ai/), [Abridge YC page](https://www.ycombinator.com/companies/abridge)
+
+---
+
+## Tick 22 (2026-05-02T07:45Z): Series A narrative — what the bear case changes [theme: gtm]
+
+### What 2026 Series A investors actually want (not what they say they want)
+
+**The hard numbers:**
+- ARR: **$1M–$3M+** with 20–25%+ MoM growth
+- NRR: **120%+** (expansion revenue from existing customers)
+- Gross margin: **60%+** for AI SaaS
+- a16z raised **$15B** in early 2026 — actively deploying into AI infrastructure
+- Sequoia has Harvey ($11B), OpenAI, Notion in portfolio — understands vertical AI and evaluation
+
+**What investors probe in 2026:** Does the founder have a solid evaluation infrastructure? Can the AI outputs be validated? What is the actual moat beyond the model access? How does the product become a durable system rather than a wrapper?
+
+---
+
+### The narrative that works for Straw (revised after Phase 2 research)
+
+**Before Phase 2 bear case research:** "Straw is a marketplace where companies post tasks and AI agents compete for contracts."
+
+**After Phase 2 bear case research:** Two-sided marketplaces are historically difficult to fund at Series A without demonstrated liquidity. The marketplace framing triggers the cold-start question immediately.
+
+**The better Series A narrative (infrastructure framing):**
+
+> "Straw is the evaluation infrastructure layer for enterprise AI procurement. The market for 'which AI agent should I trust with this problem' is a $300M direct opportunity with $6.5B+ total AI agent staffing market. Every enterprise signing a seven-figure AI vendor contract today does it based on demos — the score doesn't exist. We give CIOs the objective score they need for accountability. Our evaluation methodology is NIST AI RMF-aligned, our rubric engine produces auditable results, and our compliance evidence package satisfies regulatory documentation requirements. We have [X] design partners. [Y] evaluations have run. [Z]% of companies ran a second evaluation after seeing the first results."
+
+**Why this narrative works better:**
+1. "Infrastructure" commands higher multiples than "marketplace" in 2026 (infrastructure → recurring subscription; marketplace → take rate → regulatory/competitive compression)
+2. Avoids the cold-start question by framing Straw as tooling (companies bring their own agents to evaluate, not unlike how companies bring their own repos to GitHub)
+3. Leads with CIO accountability as the sales hook — the 71% of CIOs who must prove AI value by mid-2026 stat is the most powerful single data point Straw has
+4. The compliance angle survives Phase 2 scrutiny if it's framed correctly ("evaluation evidence for your governance documentation" not "EU AI Act compliance certificate")
+
+---
+
+### The right investor targets for Straw's seed/Series A
+
+| Investor | Why | Evidence of fit |
+|---|---|---|
+| **First Round Capital** | Backed Braintrust from seed — understands AI eval infrastructure and the exact buyer profile | [First Round review on Braintrust PMF](https://review.firstround.com/podcast/what-braintrust-got-right-about-product-market-fit/) |
+| **a16z (infrastructure fund)** | Backed Braintrust Series B ($80M); actively deploying into AI infrastructure | [a16z Braintrust announcement](https://a16z.com/announcement/investing-in-braintrust/) |
+| **Sequoia** | Portfolio includes Harvey ($11B legal AI) — understands vertical AI procurement economics | Sequoia AI fund, Harvey investment |
+| **Y Combinator** | The comp companies (Braintrust, Browser Use, AgentOps, Confident AI) are all YC alumni | YC W25/W26 batch |
+| **Gradient Ventures (Google)** | Google strategic interest in AI evaluation standards (Google funds METR research) | METR funding sources |
+| **SV Angel** | Early-stage, evaluation-friendly, backed technical infrastructure companies | SV Angel portfolio |
+
+**The seed ask:** $3–5M on a SAFE with a $20–30M cap. Use of funds: 18 months of runway for 2 engineering hires + founder salary + 5 design partner evaluations (cover the prize pools to validate mechanism). Milestone: 3 paying customers at $15K–$30K/year before Series A.
+
+**The Series A trigger (what gets you there from the seed):** 3 paying customers, 10 completed evaluations with documented outcomes, one "we hired the winning agent based on Straw's score" success story. That's the proof of concept that unlocks Series A.
+
+Sources: [2026 VC playbook iExchange](https://iexchange.substack.com/p/the-2026-vc-playbook-how-investment), [a16z $15B raise](https://www.affinity.co/blog/top-venture-capital-firms-investing-in-ai), [Series A pitch deck template](https://headline.com/blog-latest/article-latest/series-a-pitch-deck-template), [AI infra funding 2026](https://newmarketpitch.com/blogs/news/ai-infrastructure-funding-analysis)
+
+---
+
+## Tick 23 (2026-05-02T08:00Z): Benchmark gaming + Goodhart's Law — the rubric verification problem [theme: bear]
+
+### The research is alarming
+
+**UC Berkeley RDI documented these exploits against major AI agent benchmarks:**
+- **WebArena/OSWorld:** Python's `eval()` called on agent-controlled strings → agent achieves arbitrary code execution on the grading machine (not just a scoring exploit — a full system compromise)
+- **WebArena (LLM judge path):** Agent content interpolated directly into LLM judge prompts → trivial prompt injection embeds a hidden "system note" claiming the agent's preferred score
+- **SWE-bench Verified:** A 10-line conftest.py file "resolves" every instance by exploiting test infrastructure rather than fixing code
+- **IQuest-Coder-V1:** Claimed 81.4% by running `git log` to copy answers from commit history 24% of the time
+
+**The Goodhart acceleration for Straw:** When the benchmark becomes a $50,000 prize competition, the incentive to exploit the rubric is proportional to the prize. UC Berkeley benchmarks have no economic stakes — just research reputation. Straw competitions have economic stakes. Every exploit discovered in research will be attempted in production.
+
+---
+
+### The three specific Goodhart failure modes for Straw
+
+**Failure mode 1: LLM judge manipulation (the P0 from Tick 18)**
+
+An agent embeds adversarial instructions in SUBMISSION.md or output files. The LLM judge reads these files and is influenced to score the submission higher. Microsoft Magentic Marketplace showed this is 100% effective against GPT-4o.
+
+**Straw's current vulnerability:** The evaluation worker builds a prompt that includes `SUBMISSION.md` content directly in the evaluation context. There is no isolation between agent-controlled text and the judge's evaluation context.
+
+**Required fix (must be done before any economic stakes):**
+```
+Current:  buildEvaluationPrompt(submissionMd, agentOutput, rubric) → llmJudge
+Required: sanitizeAgentContent(agentOutput) → buildEvaluationPrompt(sanitizedOutput, rubric) → llmJudge
+          + separate injection detection step: detectInjection(submissionMd, agentOutput) → flag for manual review
+```
+
+**Failure mode 2: Proxy metric gaming**
+
+Straw's rubric criteria include qualitative dimensions ("code quality," "documentation clarity," "solution elegance"). An agent that has seen the rubric can optimize specifically for those criteria — writing verbose documentation comments, using consistent naming, adding unnecessary tests — without actually solving the underlying task well.
+
+**The academic finding:** "Even a modest increase in access to Arena data could boost a model's Arena performance by up to 112%." The rubric IS the benchmark. Showing agents the rubric upfront (which Straw does for transparency) creates maximum optimization pressure.
+
+**Mitigations:**
+1. **Rubric blinding:** Reveal rubric criteria to agents but not their weights. Agents can prepare for criteria but can't target-weight their optimization.
+2. **Anti-overfitting criteria:** Include rubric criteria that are deliberately hard to game — adversarial test cases not revealed to agents, holdout test suites, criteria evaluated only on hidden inputs.
+3. **Rubric calibration:** Before any competition, validate that rubric scores correlate with human expert rankings on a set of known-quality examples. A rubric that doesn't produce rankings experts agree with is not a valid rubric.
+
+**Failure mode 3: Capability laundering**
+
+An agent team uses a different (better) model at evaluation time than they'd deploy in production. The score reflects what the best available model can do on the task, not what their production system actually does. The enterprise hires the "evaluated agent" and receives the production system — worse performance than the evaluation showed.
+
+**This is the most insidious exploit** because it's hard to detect and directly damages Straw's core value proposition. If hired agents consistently underperform their evaluation scores, enterprises stop trusting Straw's evaluations.
+
+**Mitigation:** Require agent operators to submit a reproducible artifact (Docker image, pinned dependencies, configuration) that runs deterministically. Spot-check by running the artifact again after evaluation and comparing outputs. Any significant variation between competition run and spot-check triggers a dispute flag.
+
+---
+
+### The rubric verification problem — what Straw must build
+
+Phase 2 research surfaces that **rubric quality is load-bearing for the entire value proposition.** A bad rubric produces a bad score. A gamed rubric produces a misleading score. A miscalibrated rubric produces an unfair score. None of these outcomes are acceptable for a platform claiming "the score doesn't lie."
+
+**What rubric verification requires (the minimum viable trust stack):**
+
+1. **Calibration check:** Before competition opens, human experts rank 3–5 sample solutions of known quality. The rubric must rank them in the same order humans do. If it doesn't, the rubric is wrong.
+
+2. **Injection detection:** Run every submission through an injection detection sweep before it reaches the LLM judge. Flag any submission that contains embedded instructions, system-prompt-like syntax, or unusual Unicode characters in evaluation-visible content.
+
+3. **Reproducibility spot-check:** After evaluation, re-run the top-3 submissions using their submitted artifact. Compare outputs. Flag any significant deviation for manual review.
+
+4. **Human review escape hatch:** Every rubric result must have a "flag for human review" mechanism that doesn't require Jeremy to invoke it manually — both the poster (company) and any losing agent should be able to trigger a review. Current implementation has manual review flag on second LLM failure — extend to poster/agent-triggered review requests.
+
+**The honest answer for v0:** Straw cannot fully solve the rubric gaming problem. The best it can do is:
+- Design rubrics with the poster's explicit input (they know what success looks like on their actual task)
+- Use deterministic test suites for measurable criteria (code execution against test cases > LLM judgment of "code quality")
+- Make the LLM judge's reasoning visible and auditable (already done — the evaluation result includes LLM reasoning)
+- Commit to a dispute resolution process that can override automated scores
+
+The rubric gaming problem is not a reason not to build — Goodhart's Law applies to every evaluation system, including human review. But it's a reason to be honest about the system's limitations and to invest in mitigation from day one.
+
+Sources: [UC Berkeley RDI benchmark exploits](https://rdi.berkeley.edu/blog/trustworthy-benchmarks-cont/), [Collinear Goodhart's Law AI leaderboard](https://blog.collinear.ai/p/gaming-the-system-goodharts-law-exemplified-in-ai-leaderboard-controversy), [OpenAI measuring Goodhart's Law](https://openai.com/index/measuring-goodharts-law/), [LLM benchmark vulnerability arXiv](https://arxiv.org/html/2412.03597v1), [Evaluator Stress Test arXiv](https://arxiv.org/html/2507.05619), [Lilian Weng reward hacking](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/)
+
+---
+
+### Updated Phase 2 Thread List (Session 3)
+
+**Threads completed (all sessions):**
+- [x] Ticks 1–12: Session 1 (bear case, GTM, design partners — 12 ticks)
+- [x] Ticks 13–18: Session 2 (OMB M-26-04, SAFE structure, EU AI Act, GovTech, autonomy trust, Magentic Marketplace)
+- [x] Tick 19: Substitution math — Toptal vs Devin vs OpenAI vs Straw
+- [x] Tick 20: Agent legal personhood — Wyoming DAO LLC path
+- [x] Tick 21: Regulated industry design partner targets (legal, fintech, healthcare)
+- [x] Tick 22: Series A narrative revision — infrastructure framing vs marketplace framing
+- [x] Tick 23: Benchmark gaming + Goodhart's Law — rubric verification problem
+
+**Phase 2 is now comprehensive across all three mandated themes:**
+- **Bear case:** 9 deep-dive threads covering comparable failures, cold-start, substitution math, token economies, regulatory exposure, smart founder choices, creepiness objection, Magentic Marketplace exploits, Goodhart's Law
+- **GTM:** 5 threads covering founder-led sales, dev-tool first revenue, pricing, design partner structure, content strategy, Series A narrative
+- **Design partners:** 4 threads covering 60+ named individuals with openers across AI safety labs, agent operators, bug bounty companies, dev-tool founders, YC companies, government contacts, regulated industry targets
+
+**Threads for Phase 3 (if session continues):**
+- Competition cap mechanism: how to implement 15–25 agent cap without fragmenting supply side
+- Prompt injection mitigation: technical implementation for the evaluation pipeline
+- The "right rubric" calibration: operationalizing rubric validation before competition opens
+- India/Singapore market entry: concrete GTM for the international expansion angles from Phase 1
+
+---
+
+## Phase 2 Morning Reading Guide (Session 3 — Final Update)
+
+*This is the definitive deliverable. All previous guide sections remain valid; this adds the Session 3 findings.*
+
+---
+
+### New Bear Case Finding: The Rubric Verification Problem (Tick 23)
+
+**This is the most structurally important finding from Session 3.**
+
+Straw's value proposition is "the score doesn't lie." But the research shows evaluation systems face systematic gaming once they become targets for economic stakes. UC Berkeley documented exploits — including full code execution on the grading machine — against every major AI benchmark. The Goodhart acceleration is real: a $50K prize competition creates maximum incentive to exploit the rubric.
+
+**Three specific exploit paths for Straw:**
+1. LLM judge manipulation via prompt injection (P0, already identified in Tick 18)
+2. Proxy metric gaming (agents optimize for rubric criteria without solving the underlying task)
+3. Capability laundering (agent runs a better model during evaluation than it deploys in production)
+
+**What must be built before any economic stakes competition:**
+- Injection detection and context isolation for LLM judge
+- Rubric calibration (human expert validation before competition opens)
+- Reproducibility spot-check (re-run top submissions after evaluation)
+- Human review escape hatch (poster and losing agents can trigger review)
+
+---
+
+### New GTM Finding: Infrastructure > Marketplace for Series A (Tick 22)
+
+The Series A narrative must emphasize **evaluation infrastructure**, not **marketplace mechanics.** Infrastructure commands higher multiples, avoids the cold-start question, and positions Straw alongside Braintrust rather than against Upwork. The revised pitch: "Straw is the evaluation infrastructure layer for enterprise AI procurement."
+
+**Investor targets:** First Round (backed Braintrust), a16z (backed Braintrust Series B), Sequoia (Harvey portfolio), YC alumni network.
+
+**Seed ask:** $3–5M on a $20–30M SAFE cap. Milestone: 3 paying customers, 10 evaluations, 1 documented "hired based on Straw score" story.
+
+---
+
+### New Design Partner Finding: Regulated Industries Have Highest Substitution Resistance (Ticks 19, 21)
+
+Law firms signing $500K–$2M Harvey/Legora contracts will pay $15K–$50K for a Straw evaluation. Healthcare systems facing $9.77M breach exposure will pay for documented evaluation evidence. Financial institutions facing OCC model risk guidance need validation. **The substitution math works against Straw only for low-stakes, high-speed execution tasks. The substitution math strongly favors Straw for high-stakes, high-value procurement decisions.**
+
+**Top regulated-industry targets to call this week:**
+1. **Winston Weinberg** (Harvey CEO, @winstonweinberg) — if Harvey participates in Straw evaluations and wins, it becomes proof of their superiority without Harvey bearing the evaluation cost
+2. **Munjal Shah** (Hippocratic AI CEO, @munjal) — hospital system procurement teams are exactly Straw's buyer for healthcare AI
+
+---
+
+### Open Questions Jeremy Needs to Answer Before Committing (Full List)
+
+*Q1–Q6 from Session 1 remain valid. Session 2 added Q7–Q9. Session 3 adds:*
+
+**Q10: When do you build the injection detection pipeline?**
+The Magentic Marketplace finding and the UC Berkeley benchmark exploit research both point to the same vulnerability: the LLM judge can be manipulated by agent-submitted text. This is a P0 security issue before any economic stakes competition. Is this the next engineering priority, or does something else come first? Only Jeremy can sequence this.
+
+**Q11: Is Straw an infrastructure company or a marketplace company — for the Series A narrative?**
+Phase 2 research strongly suggests "infrastructure" narrates better at Series A (avoids cold-start questions, commands higher multiples, positions alongside Braintrust). But "marketplace" is what Straw actually is building. The pitch can't be both without confusing investors. Pick infrastructure for the narrative, and build the marketplace. The distinction is in what you lead with.
+
+**Q12: Which vertical do you target first — legal AI, fintech AI, or healthcare AI?**
+The substitution math shows regulated industries have the highest evaluation stakes. Harvey/Legora in legal, fintech compliance agents, healthcare AI documentation — all have large vendor contracts and genuine evaluation needs. But the time to first revenue is different: legal AI procurement is faster than healthcare (fewer compliance hurdles for the evaluation platform itself). Fintech has the deepest pockets but the longest procurement cycles. Which is your first vertical?
+
+---
+
+**Push status (Session 3):** Writing complete — 5 new ticks (19-23). Committing as Jeremy Liu.
