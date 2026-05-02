@@ -46043,3 +46043,195 @@ The moat is not "we're impossible to beat." The moat is "we have a 3-year head s
 
 That's an honest moat. Investors who've seen enough startups will respect the honesty more than an unconvincing claim of invulnerability.
 
+
+---
+
+## Tick 286 — Operator Onboarding Journey
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Detailed operator onboarding — from signup to first competition to Elite status
+
+### The Onboarding Problem
+
+Operator supply is Straw's cold start problem. In a two-sided marketplace, the supply side (operators) must exist before demand (enterprises) will pay. But operators won't invest time if there are no competitions, and there won't be competitions without operators.
+
+The chicken-and-egg solution is a sequenced onboarding experience that creates value for operators immediately, before enterprise competitions launch. Operators should get something from joining Straw even when the platform is empty.
+
+---
+
+### Pre-Launch Value for Operators
+
+**Practice competitions (synthetic tasks):** Before any enterprise pays for a competition, Straw runs synthetic practice competitions — pre-built task sets with rubrics, no prize money, but real scores. Operators can benchmark their systems, build their track record, and identify weaknesses.
+
+Operators get: a score on their performance, ranking among other operators who attempted the same tasks, a Provisional Rating (the starting point for Glicko-2 once live competitions begin).
+
+Straw gets: proof that evaluation works, identification of rubric issues, operator feedback on task quality.
+
+**Value without enterprise demand:** "Your ContractorPro v1 system scored 7.2 on our contract review benchmark, placing you in the top 35% of operators who attempted this task set. Your strongest dimension: legal clause identification (8.4). Your weakest: risk quantification (5.1)."
+
+This is genuine value. Any AI developer who has built a contract review system wants to know where they stand. There's no alternative source for this data.
+
+---
+
+### Onboarding Flow
+
+**Step 1: Registration (Day 0)**
+
+```
+Signup form:
+  - Email + password (or GitHub/Google SSO)
+  - Display name (public-facing operator identity)
+  - Primary technical background: [ML Engineer] [Software Engineer] [AI Researcher] [Other]
+  - Primary interest categories: [Code Migration] [Contract Review] [Document Extraction] [SQL Gen] [All]
+  - Current system status: [Building] [Have existing system] [Team-based]
+```
+
+Immediately after signup:
+- Welcome email with 5-minute "Getting Started" guide
+- Access to practice competition for their selected categories
+- Access to community Discord (general + category-specific channels)
+- Access to API documentation (even on free tier — operators need to know what they're building toward)
+
+**Step 2: First Submission (Day 0-7)**
+
+Goal: get operator to submit to a practice competition within 7 days. The faster the first submission, the more likely long-term engagement.
+
+Friction reduction:
+- "Starter Kit" for each category: sample inputs, expected output format, submission wrapper code in Python/TypeScript
+- One-click submission testing: operators can submit to a non-scoring "sandbox" environment before attempting a real competition
+- "Hello World" task: a single-input, simple task that takes 5 minutes to attempt (builds confidence)
+
+The "Hello World" for contract review:
+```
+TASK: Review the following 1-clause contract excerpt. 
+Identify: (a) governing law, (b) any liability caps mentioned.
+INPUT: "This Agreement shall be governed by the laws of Delaware. 
+Seller's liability shall not exceed $10,000."
+EXPECTED: JSON with governing_law and liability_cap fields.
+```
+
+Anyone with a basic GPT-4o call can get this right. It's designed to be a confidence-builder, not a filter.
+
+**Step 3: Building Track Record (Days 7-90)**
+
+The first 90 days determine whether an operator becomes active or churns. Key engagement drivers:
+
+*Progress visibility:*
+- Real-time provisional rating update after each practice competition
+- "Top X% in [category] this week" notification
+- Score improvement highlights: "Your document_extraction accuracy improved 12% since last month"
+
+*Community engagement:*
+- "Introduce yourself" thread in Discord (operators describe their system, background, goals)
+- Monthly "Office Hours" with Straw engineering team (ask technical questions about evaluation pipeline)
+- Discord leaderboard bot: "ContractorPro v2 just submitted to Contract Review Practice #5 and scored 8.1!"
+
+*First live competition:*
+When the first real enterprise competition launches in their category, operators with Provisional Rating > 5.0 receive an email: "A new competition is live in Contract Review. Prize pool: $5,000. You're eligible to participate. Your current provisional ranking: #12 of 43 operators."
+
+The ranking context matters. Operator who knows they're 12th is motivated: "I could top 10 this."
+
+**Step 4: First Winning (Months 3-12)**
+
+The first win is transformative. Operators who win once are 4× more likely to remain active than operators who never win.
+
+The win path should be accessible for operators at different performance levels:
+
+- **Elite competitions ($10K+):** only for operators with established rating; high competition
+- **Standard competitions ($1K-$10K):** accessible to operators with provisional rating; moderate competition
+- **Focused competitions ($100-$999):** low prize, low competition, designed for new operators to get their first win
+
+Focused competitions are sponsored by Straw (not enterprise-funded) in the early months. Cost: ~$500/competition × 20 competitions/month = $10K/month in Year 1. This is operator acquisition spend.
+
+**Step 5: Elite Path (Months 6-24)**
+
+Operators who complete 30+ competitions enter the "Acceptable" rating tier. The Elite path:
+
+```
+Provisional (0-29 competitions) → Acceptable (30-99) → Stable (100+) → Main Leaderboard
+```
+
+At each tier transition, operators receive:
+- Certificate of achievement (PDF, LinkedIn-shareable)
+- Access to higher-prize competitions
+- Operator profile badge upgrade
+
+Operators who reach "Main Leaderboard" status:
+- Featured in "Straw Operator Spotlight" (monthly blog post/newsletter)
+- Invited to Beta test new categories before public launch
+- Eligible for "Straw Certified Elite" designation (marketing materials)
+- Access to enterprise connect (enterprises browsing the Elite pool can directly inquire)
+
+---
+
+### Operator Cohort Retention Model
+
+Based on marketplace benchmarks (Fiverr, Upwork, Kaggle):
+
+```
+Day 7 retention:  target 60% (submitted at least once)
+Day 30 retention: target 40% (submitted to 3+ competitions)
+Day 90 retention: target 25% (ongoing monthly activity)
+Day 365 retention: target 15% (annual active)
+```
+
+For context: Kaggle (ML competition platform) has ~15% annual active rate. Top Kaggle competitors earn substantial income and reputation — this is the analogy for Straw Elite operators.
+
+The quality of retained operators matters more than the quantity. 100 operators with 90-day retention who are building production-grade systems are worth more than 1,000 casual participants who submitted once.
+
+---
+
+### Operator Persona Segments
+
+**Type A: The Professional Builder**
+- Background: ML engineer at a company building AI products
+- Motivation: benchmark their employer's system against competitors
+- Behavior: methodical, submits consistently, tracks score improvements
+- Value to platform: highest quality submissions, enterprise-grade systems
+- Acquisition: targeted outreach via ML communities (LinkedIn, arXiv authors, HuggingFace)
+
+**Type B: The Competitive Academic**
+- Background: PhD student or researcher in AI/ML
+- Motivation: publications, credentials, prize money secondary
+- Behavior: highly analytical, often builds novel approaches, sometimes inconsistent (academic schedule)
+- Value to platform: innovation, novel techniques that raise the quality bar
+- Acquisition: academic partnerships, IIT/MIT/Stanford AI lab outreach
+
+**Type C: The AI Entrepreneur**
+- Background: founding an AI startup or running an AI consulting practice
+- Motivation: client acquisition (top ranking is marketing), prize money
+- Behavior: business-minded, optimizes for categories with highest commercial value
+- Value to platform: commercial-grade systems, operator community leadership
+- Acquisition: AngelList, Y Combinator network, Entrepreneur First
+
+**Type D: The Curious Tinkerer**
+- Background: developer interested in AI, not an AI specialist
+- Motivation: learning, fun, modest prize money aspirations
+- Behavior: sporadic, creative, high dropout rate
+- Value to platform: volume (keeps competition entry counts high), some convert to Type A
+- Acquisition: organic (social media, dev communities, HackerNews)
+- Cost: high acquisition cost per retained operator — don't over-invest here
+
+**Type E: The Enterprise Insider**
+- Background: AI engineer at a large company (JPMC, Unilever, Siemens)
+- Motivation: validate their employer's AI investment, earn external recognition
+- Behavior: represents employer's system under a pseudonymous handle; enterprise knows and condones it
+- Value to platform: creates bridge between enterprise buyers and operator supply
+- Acquisition: enterprise design partner → employee operator pipeline
+
+---
+
+### Measurement Dashboard (Internal)
+
+Track weekly:
+- New operator signups (DAU, WAU, MAU)
+- First submission rate (% of signups who submit within 7 days)
+- Competition participation rate (% of eligible operators who compete)
+- Tier progression rate (% per month advancing to next tier)
+- Churn by tier (% of operators at each tier who are inactive for 30+ days)
+- Prize money distributed vs. earned (ratio of operator earnings to platform fees)
+- Category distribution (are all categories growing or are some cannibalizing others?)
+
+The single most important metric: **Day 30 submission rate** (% of signups who submit at least once in their first 30 days). This predicts 12-month retention better than any other metric.
+
