@@ -56814,3 +56814,216 @@ This creates a competitive dynamic (no agent wants to miss the inaugural leaderb
 ## Closed thread (Tick 347)
 - [done — Tick 347] **Agent Operator Acquisition Strategy — Top 20 target list** — Five market segments (enterprise autonomous, IDE pivoting, app builders, open-source research, infrastructure). Priority-ranked list of 20 targets: Tier 1 (Devin, Factory, Augment, OpenHands), Tier 1B (Cosine, Lovable), Tier 2 (OpenAI, GitHub, Cursor, Google), Tier 2B (Replit, v0, Bolt, Qodo, Cline), Tier 3 (Morph, SWE-agent, Plandex, Anthropic operator channel, Codegen.sh). Differentiated pitch matrix by operator type. Asymmetric play: public launch competition with top 10 agents invited = competitive dynamic + media + supply-side proof.
 
+
+---
+
+## Tick 346 (2026-05-02T09:00Z): Prize Pool Escrow — dual-track USD/USDC settlement design
+
+*Thread: How does Straw handle prize pool funds? Enterprise pays USD (fiat); winning agents increasingly want USDC (stablecoins). Who converts? Who holds? What are the regulatory constraints? Sources: background research subagent (Stripe docs, Circle API, x402, AP2, FinCEN guidance, Allo Protocol, Topcoder/Kaggle precedents).*
+
+---
+
+### The Core Problem
+
+Straw's prize pool settlement has two incompatible legs:
+1. **Enterprise leg (fiat in):** Enterprise procurement teams pay via ACH/wire/invoice in USD — the standard B2B payment method. No enterprise AP is set up for USDC.
+2. **Agent leg (USDC out):** AI agents increasingly operate with on-chain wallets. AP2 + x402 (the emerging agentic payment standard) uses USDC on Base. Agent operators who think in terms of agent-to-agent payment want USDC settlement.
+
+The bridge between these two legs is the core settlement design problem.
+
+---
+
+### Critical Discovery: Stripe Prize Pool Restriction
+
+**Stripe's terms explicitly prohibit:** "Games of skill including video game and mobile game tournaments or competitions, card games, board games with a monetary or material prize" and "payments of entry or player fees that promise winners will receive a prize of value." Enforcement tightened in September 2023.
+
+**The workaround (legal and widely used):** Frame enterprise payments as B2B professional services invoices — "AI evaluation and procurement services" — not competition entry fees. Prize disbursement is then a vendor payment under a service agreement, not a prize pool. Stripe is viable for the inbound leg with this framing. **Do not frame as "enter competition, prize pool."**
+
+This framing also has favorable tax treatment: winning agents receive 1099-MISC as vendor income, not gambling winnings.
+
+---
+
+### AP2, x402, and the Agentic Payment Stack (May 2026 Status)
+
+**AP2 (Agent Payments Protocol):**
+- Released v0.2 on April 28, 2026 — four days ago
+- Built by Google, donated to FIDO Alliance; Coinbase, Mastercard co-authors
+- **What it is:** An authorization and trust protocol — creates Verifiable Digital Credentials (VDCs) expressing what a human or organization authorized an agent to spend
+- **What it is NOT:** A payment rails protocol (it doesn't move money)
+- Key v0.2 additions: "Human Not Present payments" (agents executing pre-authorized transactions), "Verifiable Intent" (tamper-proof authorization logs, co-developed with Mastercard)
+
+**x402 (HTTP 402 Payment Required protocol):**
+- Built by Coinbase + Cloudflare, released May 2025
+- **What it is:** The settlement layer — HTTP-native micro-payment standard using USDC on Base/Solana/Arbitrum
+- 119M+ transactions on Base, 35M on Solana, ~$600M annualized volume
+- Zero protocol fees; gas on Base is ~$0.0001
+- Technical mechanic: platform sends HTTP 402 with payment spec → agent signs EIP-3009 USDC authorization off-chain → facilitator (Coinbase CDP) executes on-chain USDC transfer in <2 seconds
+
+**For Straw:** AP2 handles authorization (enterprise signs a mandate authorizing prize pool release to the winning agent on condition X), x402 handles settlement (USDC moves to agent's wallet). Combined: verifiable, auditable, automated prize distribution.
+
+---
+
+### Recommended Architecture: Three-Layer Dual-Track Model
+
+```
+LAYER 1: ENTERPRISE FIAT IN
+  Method: Stripe Invoicing (ACH/wire, B2B framing)
+          OR Circle Mint direct wire
+  Hold: Stripe Treasury (manual payout schedule) OR Circle Mint balance
+  Fee: Stripe ACH ~0.8%, capped $5; Circle wire = institutional, no fee
+  Regulatory: Stripe/Circle are licensed MTLs; Straw is not the custodian
+
+LAYER 2: PLATFORM ESCROW (Application Logic)
+  Location: Straw database
+  Record: competition_id → {pool_balance, state, winner_id, release_at}
+  States: FUNDED → JUDGING → AWARDED → HOLD_PERIOD → DISBURSING → COMPLETED
+  Release trigger: Judge declares winner via POST /v1/submissions/{id}/eval-scores
+  Fraud hold: 72-hour challenge window for appeals (Section 8.7)
+  Refund path: if no winner in 30 days after deadline → return to enterprise
+  Smart contract: optional (Phase 3); not required at launch
+
+LAYER 3: AGENT SETTLEMENT
+  Track A — USDC (preferred, for agents with crypto wallets):
+    Circle Mint: USD balance → mint USDC (1:1, free institutional rate)
+    Circle Payouts API: USDC → agent's Base wallet (~$0.001 fee)
+    OR Stripe Bridge: USD → USDC via Bridge Orchestration API (1.5% fee)
+    Protocol: x402-compatible wallet address registered at agent onboarding
+    Chain: Base (primary); Solana fallback
+    Settlement time: ~400ms–2s finality
+
+  Track B — Fiat (for agents without crypto wallets, or < $500 payouts):
+    Circle Payouts API: USDC → ACH bank transfer (agent registers bank account)
+    OR Stripe Connect: manual payout to connected account
+    Settlement time: 1-3 business days for ACH
+```
+
+---
+
+### Cost Structure (per $10K prize pool)
+
+| Component | Provider | Cost | Notes |
+|---|---|---|---|
+| Enterprise ACH in | Stripe | ~$5 (0.8%, capped) | B2B invoice framing |
+| Prize pool custody | Circle Mint | $0 | Institutional account |
+| USD → USDC | Circle Mint | $0 | 1:1, no fee |
+| USDC → agent wallet (Base) | Circle Payouts | ~$0.001 | On-chain transfer |
+| USDC → ACH (fiat option) | Circle Payouts | ~$5-15 | Bank wire |
+| **Total settlement cost** | | **~$5–$25** | **~0.05–0.25% of $10K pool** |
+
+Compare: Topcoder/PayPal settlement costs 2.5–3.5%. Straw is 10× cheaper.
+
+---
+
+### FX Risk Analysis
+
+There is no meaningful FX risk in USDC. USDC is backed 1:1 by:
+- Cash deposits
+- Short-duration US Treasuries (80%+ in BlackRock's Circle Reserve Fund, a 2a-7 government money market fund at BNY Mellon)
+
+De-peg risk on USDC is minimal — USDC maintained its peg through multiple crypto market crises (including the March 2023 SVB-triggered de-peg of $0.87, which recovered fully within 36 hours). For prize pools held hours to weeks, the de-peg risk is negligible.
+
+**Who converts:** Straw platform converts enterprise USD to USDC at the moment of disbursement, not at funding. This means the enterprise never holds USDC — they pay USD, receive services, done. The agent receives USDC. Straw holds USD internally (Circle Mint) until disbursement.
+
+---
+
+### Regulatory Constraints
+
+**Federal (FinCEN):** Money transmitters require registration. However, FinCEN's escrow services administrative ruling exempts escrow agents from MTL requirements when the platform:
+1. Acts as independent arbiter (judge determines winner)
+2. Provides transaction management services (validates conditions precedent)
+3. Holds funds for a specific identified transaction
+
+This is exactly Straw's model. The exemption is available.
+
+**State-level (the real constraint):** 49 states + DC have state MTL requirements that don't honor the federal exemption uniformly. The practical solution: use Circle and Stripe as the actual custodians (they are licensed MTLs in all required states). Straw's role is application-layer orchestration, not custody of funds.
+
+**Structural recommendation:** Straw should document its legal analysis of the escrow exemption and the use of licensed intermediaries before launch. This protects against regulatory examination. Counsel familiar with FinCEN FinTech regulation should review.
+
+**Prize contest framing (important):** B2B AI agent competitions judged on objective performance metrics are "contests of skill," not games of chance. This is a legally important distinction that reduces gambling regulation exposure (no lottery or sweepstakes treatment). The key element: skill determines outcomes, not luck.
+
+---
+
+### Escrow Architecture Comparison: Straw vs. Peers
+
+| Platform | Custody mechanism | Conditional release | Settlement rail | Cost |
+|---|---|---|---|---|
+| **Straw (proposed)** | Circle Mint (licensed custodian) | App-layer conditional release | Circle Payouts → Base USDC | <0.25% |
+| Topcoder | Custodial balance (Topcoder LLC) | Manual 15-day hold | PayPal/Payoneer | 2.5-3.5% |
+| Kaggle | Custodial balance (Google) | Manual, post-judging | Bank transfer | Absorbed by Google |
+| Devpost | Custodial balance | Sponsor-managed | Bank/PayPal | Variable |
+| Gitcoin | On-chain (Allo Protocol) | Smart contract | ETH/USDC | Gas only |
+
+**Straw's differentiation:** Automated conditional release (judge event → immediate disbursement) + USDC settlement (same-day, near-zero fees) + transparent escrow state (API-visible). None of the existing platforms offer all three.
+
+---
+
+### Phased Implementation Plan
+
+**Phase 1 (MVP — Q3 2026):**
+- Stripe Invoicing for enterprise fiat in (ACH, B2B framing)
+- Circle Mint institutional account for USD→USDC conversion
+- App-layer escrow state machine in Straw database
+- Circle Payouts API for USDC disbursement to agent Base wallets
+- Fiat fallback via Circle → ACH for agents without crypto wallets
+- 72-hour fraud hold before release (aligns with TOS Section 8.7 appeal window)
+- DO NOT: use Stripe for entry fees; deploy unaudited smart contracts
+
+**Phase 2 (Scale — Q4 2026):**
+- AP2 mandate generation: enterprise generates a signed AP2 mandate authorizing prize release on condition (winner_id confirmed)
+- x402 integration in Straw's agent-facing API: agents can register x402-compatible wallet addresses
+- Modern Treasury as orchestration layer for multi-winner distributions (2nd place, team splits)
+- Stripe Bridge as alternative to Circle for Stripe-native enterprises
+
+**Phase 3 (Decentralization — 2027+):**
+- Deploy audited ConditionalEscrow smart contract on Base (OpenZeppelin fork)
+- USDC held in contract, not by Circle
+- Judge verdict delivered via signed oracle result (commitment scheme)
+- Allo Protocol v2 fork for programmable allocation strategies (split prizes, team distributions)
+- Full AP2 verifiable intent chain: enterprise → AP2 mandate → x402 settlement → on-chain disbursement
+
+---
+
+### Engineering Backlog (for Phase 1)
+
+1. `prize_pool_escrow` table: `{competition_id, total_amount_usd, circle_wallet_id, state, funded_at, winner_id, disbursed_at, release_at, fraud_hold_end_at}`
+2. `agent_payment_preferences` table: `{agent_id, preferred_track, usdc_wallet_address, bank_account_token, chain}` — set at agent onboarding
+3. Circle Mint integration: `POST /v1/payments/fund-prize-pool` → Circle API
+4. Circle Payouts integration: `POST /v1/payments/disburse-prize` → Circle Payouts API
+5. Prize pool state machine: FUNDED → JUDGING → AWARDED → HOLD_PERIOD → DISBURSING → COMPLETED
+6. Release trigger: in `POST /api/v1/submissions/{id}/eval-scores` handler: if submission becomes winner, schedule disbursement after `fraud_hold_end_at`
+7. Fraud hold enforcement: disbursement job checks that `fraud_hold_end_at < NOW()` AND no open appeals on winning submission
+8. Tax compliance: generate `POST /v1/tax/1099` record for US agents when payout > $600 annually
+9. `GET /v1/competitions/{id}/prize-pool` endpoint: shows escrow state, amount, timeline
+
+---
+
+### Critical Warnings for Jeremy
+
+1. **Stripe gaming/prize restriction is real** — frame all enterprise payments as B2B service fees, not competition entry fees. Get this in writing from Stripe before launch.
+2. **Circle Mint requires institutional account** (not consumer) — apply now, it takes 1-2 weeks for approval. Circle's enterprise tier is free for minting.
+3. **AP2 is 4 days old (v0.2 released April 28)** — the spec is solid but tooling is immature. Build to it for forward compatibility, but don't block Phase 1 on AP2 adoption.
+4. **x402 enterprise-to-agent direction** (platform paying agent, not agent paying platform) is less documented — use Circle Payouts API as the primary path; x402 as the forward-compatible target.
+5. **State MTL analysis is required before launch** — consult counsel on whether Straw's use of Circle/Stripe as licensed custodians fully protects it from MTL requirements in CA/NY/TX.
+
+---
+
+### Sources
+- AP2 v0.2 (April 28, 2026): ap2-protocol.org, github.com/google-agentic-commerce/AP2
+- x402: x402.org, docs.cdp.coinbase.com/x402/welcome
+- Stripe prohibited categories: stripe.com/en-th/legal/restricted-businesses
+- Stripe manual payouts: docs.stripe.com/connect/manual-payouts
+- Stripe Bridge: stripe.com/resources/more/stablecoin-trends-businesses-need-to-understand-in-2026
+- Circle Payouts API: circle.com/en/send-mass-payouts-globally
+- Circle + x402: circle.com/blog/autonomous-payments-using-circle-wallets-usdc-and-x402
+- FinCEN escrow exemption: fincen.gov/resources/statutes-regulations/administrative-rulings/application-money-services-business-1
+- MTMA: csbs.org/csbs-money-transmission-modernization-act-mtma
+- Allo Protocol v2: github.com/allo-protocol/allo-v2
+- OpenZeppelin ConditionalEscrow: openzeppelin.com/solidity-contracts
+- Topcoder payment policies: help.topcoder.com/hc/en-us/articles/217482038
+- Background research subagent (this session)
+
+---
+
+## Closed thread (Tick 346)
+- [done — Tick 346] **Prize Pool Escrow dual-track settlement** — Critical finding: Stripe prohibits "games of skill" competition entry fees — must frame as B2B service fee invoice. Three-layer architecture: (1) Stripe/Circle for enterprise fiat in, (2) app-layer conditional release state machine, (3) Circle Payouts → USDC to agent wallet (Track A) or Circle → ACH (Track B). No meaningful FX risk (USDC 1:1 pegged). FinCEN escrow exemption available; use Circle/Stripe as licensed custodians to avoid MTL requirements. AP2 v0.2 (4 days old) is the authorization layer; x402 is settlement. Cost: <0.25% of pool vs. competitors' 2.5-3.5%. 9 engineering backlog items. Phase 1 (MVP): Circle Mint + Circle Payouts, no smart contracts. Phase 3: audited ConditionalEscrow on Base.
+
