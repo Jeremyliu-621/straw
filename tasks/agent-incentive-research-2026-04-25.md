@@ -48913,3 +48913,185 @@ North America = ~32% of global Year 3 ARR ($12.9M).
 **Series B thesis:**
 Straw's Series B ($30-50M raise) should be built on the North American expansion story: $2.75M ARR → $12.9M ARR → $50M ARR trajectory with North America as the primary growth engine. The Series B investor will see Singapore/India/UK as the proof-of-concept; North America as the scale market.
 
+
+---
+
+## Tick 302 — Singapore Go-To-Market Execution
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** First customer strategy, MAS reporting workflow, and enterprise pipeline in Singapore
+
+### The First 90 Days
+
+The first customer is the hardest. It requires breaking the chicken-and-egg problem: enterprises want to see other enterprise customers, but you can't get other enterprise customers without the first one.
+
+The solution for Singapore: use the regulatory urgency as a forcing function.
+
+**Target: MAS-regulated financial institution that needs to comply with MAS Tripartite Guidelines by December 2026.**
+
+The December 2024 Tripartite Guidelines (published by MAS, the Institute of Banking and Finance, and the Singapore FinTech Association) require financial institutions to:
+- Document pre-deployment AI testing
+- Maintain records of AI system performance
+- Conduct periodic re-validation of AI systems in use
+
+For a Singapore bank or insurer deploying AI in 2026, these requirements create a compliance deadline. Straw is the compliance solution.
+
+**The cold outreach that works:**
+
+```
+Subject: MAS Tripartite Compliance for AI — 6-week solution
+
+[Name],
+
+MAS's Tripartite Guidelines require documented pre-deployment AI testing 
+for institutions deploying AI in financial workflows. Deadline: December 2026.
+
+Straw provides a compliant evaluation process: AI systems compete on your 
+specific tasks, generating signed evaluation reports that satisfy Article 15 
+documentation requirements.
+
+[Singapore bank reference] used our process to evaluate their document 
+extraction AI before deployment. It took 6 weeks and cost $25,000 — 
+significantly cheaper than a traditional vendor assessment.
+
+Would a 20-minute call help you assess whether Straw fits your compliance 
+calendar?
+
+[Straw founder, Singapore entity]
+```
+
+The compliance framing bypasses the "is this worth doing?" question. It becomes: "you have to do something — is Straw the right something?"
+
+---
+
+### Target Customer Map: Singapore
+
+**Tier 1 (highest priority):**
+
+*DBS Bank:* Singapore's largest bank, most aggressive AI adopter. $1B+ AI investment. Has AI governance team. DBS's "Chief AI Office" is the right target.
+
+*UOB (United Overseas Bank):* Strong regional footprint. UOB TMRW digital bank is AI-native. AI governance officer in place since 2024.
+
+*OCBC Bank:* Known for innovation; early IMDA AI Verify participant. Chief Data and Analytics Officer is likely champion.
+
+*Prudential Singapore:* Life insurance major. AI in underwriting, claims. Subject to MAS guidelines.
+
+*AIA Singapore:* Regional insurance hub. AI in customer service, policy recommendations.
+
+**Tier 2 (strong secondaries):**
+
+*Standard Chartered Singapore:* Uses Singapore as global tech hub. AI evaluation would be co-owned by Singapore + global HQ.
+
+*Citi Singapore:* US bank, Singapore entity. If Singapore entity adopts Straw, easy expansion to Citi US (see North America strategy).
+
+*GIC / Temasek:* Singapore sovereign wealth funds. AI in investment decision support. Less regulatory urgency but significant AI spend.
+
+**Tier 3 (early partnerships, not immediate revenue):**
+
+*Enterprise Singapore (EnterpriseSG):* Government agency supporting Singapore companies. A partnership with EnterpriseSG gives access to their SME network and positions Straw as a supported enterprise tool.
+
+*IMDA (Infocomm Media Development Authority):* Administers AI Verify and Singapore AI governance frameworks. A co-designed integration between Straw evaluation and AI Verify certification is strategically valuable.
+
+---
+
+### The MAS Reporting Workflow
+
+When a Singapore financial institution runs a Straw competition, the output should integrate directly into their MAS compliance reporting.
+
+**MAS documentation requirements (from Tripartite Guidelines):**
+- System description: what AI system, what task, what deployment context
+- Testing methodology: how was the system tested, by whom, under what conditions
+- Testing results: quantitative performance metrics, relative to alternatives
+- Limitations: documented areas where the system may underperform
+- Periodic review: schedule for re-validation
+
+**Straw's MAS-compatible competition report format:**
+
+```
+SECTION 1 — SYSTEM DESCRIPTION
+System: [Fleet Name/Operator ID]
+Task Category: [Contract Review / Document Extraction / etc.]
+Competition ID: [unique identifier]
+Competition Date: [date]
+Deployment Context: [as described by enterprise at competition creation]
+
+SECTION 2 — EVALUATION METHODOLOGY
+Method: Competitive blind evaluation (Straw Platform)
+Participants: [N] AI systems evaluated
+Rubric: [Rubric ID, version, key dimensions]
+Independence: Third-party evaluation by Straw (no financial interest in outcome)
+Evaluation Tiers: Tier-1 deterministic + Tier-2 LLM gatekeeper
+Sandbox: gVisor-isolated containers (no data egress)
+
+SECTION 3 — RESULTS
+Winner: [Operator/Fleet name, anonymized or identified per enterprise choice]
+Score: [score/10]
+Score Breakdown: [dimension-level scores]
+Market Context: [percentile vs. all Straw competitors in category]
+Competitive Range: [min/max/median scores for this competition]
+
+SECTION 4 — KNOWN LIMITATIONS
+[Rubric dimensions not covered: e.g., "Rubric does not evaluate multilingual contract handling"]
+[Task set limitations: e.g., "Evaluation tasks are English-language only; non-English clause handling not tested"]
+
+SECTION 5 — RE-VALIDATION SCHEDULE
+Next evaluation: [recommended date, configurable]
+Drift detection: Continuous monitoring via Fleet management (if enrolled)
+
+ATTESTATION
+This evaluation was conducted by Straw Pte. Ltd. under the methodology described above.
+Signed: [Ed25519 signature]
+Straw Evaluation ID: [hash-anchored evaluation record]
+```
+
+This format maps directly to MAS documentation requirements. An institution's AI governance team can take this report and attach it to their MAS submissions directly.
+
+**IMDA AI Verify integration:**
+IMDA's AI Verify toolkit requires performance testing documentation. Straw's competition report can be formatted as an AI Verify-compatible test report (IMDA publishes the schema). When an institution uses both AI Verify and Straw, the Straw competition report populates the "Performance Testing" section of their AI Verify report automatically.
+
+---
+
+### Singapore Enterprise Pipeline Architecture
+
+**Inbound motion:**
+
+1. Enterprise reads "State of Singapore AI Governance 2026" (Straw-published report, co-authored with SMU or NTU academic)
+2. Enterprise attends Singapore FinTech Festival panel where Straw founder speaks on MAS compliance
+3. Enterprise's AI engineer discovers Straw via LinkedIn or arXiv citation
+4. EnterpriseSG or MAS refers enterprise to Straw as part of digital transformation support
+
+**Outbound motion:**
+
+1. Identify AI governance officer / CDAO at each Tier 1 target (LinkedIn research)
+2. Find warm introduction path (co-founder network, EnterpriseSG connections, advisory board)
+3. First meeting: "We're helping Singapore banks get ahead of MAS Tripartite compliance. Is this on your calendar?"
+4. Second meeting: design partner conversation (what task would make the best competition?)
+
+**Expected pipeline metrics (Month 1-9):**
+
+```
+Prospects engaged: 20 (all from Tier 1-2 list)
+Discovery calls completed: 12
+Pilot proposals sent: 7
+Pilots closed: 3
+Annual contracts converted from pilots: 2
+Pipeline ARR: $400K-600K by Month 9
+```
+
+---
+
+### Singapore Entity Advantages
+
+Running Straw as a Singapore entity (Straw Pte. Ltd.) provides specific advantages for the Singapore market:
+
+1. **Trust signal:** Singapore-incorporated entities are well-regulated. MAS-supervised institutions are more comfortable with Singapore counterparties.
+
+2. **Data residency:** Evaluation data for Singapore customers processed within Singapore (using SGP Supabase/AWS ap-southeast-1 region). Critical for PDPA compliance and MAS data residency preferences.
+
+3. **GST status:** Singapore companies can be GST-registered (mandatory above SGD 1M revenue). Enterprise customers prefer dealing with local GST-registered entities for clean invoice processing.
+
+4. **EnterpriseSG grants:** Straw may qualify for EnterpriseSG grants (Market Readiness Assistance Grant: up to 50% of market entry expenses for Singapore companies expanding internationally). Reduces India and UK market entry costs.
+
+5. **MAS FCAS (Financial Sector Technology & Innovation Scheme):** Up to SGD 3M in grants for approved AI projects. Straw may qualify as infrastructure supporting Singapore financial sector AI governance.
+
