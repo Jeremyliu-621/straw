@@ -39717,3 +39717,220 @@ This is the "content marketing → direct sales" loop applied to operator busine
 
 The community generates direct revenue for Straw through the hire pathway, not just indirect value through retention.
 
+---
+
+## Tick 252 — Executive Summary: The Complete Straw Research Corpus (Ticks 1-251)
+
+*This tick synthesizes the entire research corpus (39,700+ lines, 251 ticks, Sessions 1-27) into a condensed strategic overview. Use this as the entry point for any new session.*
+
+---
+
+### What Straw Is
+
+**Straw** is a B2B SaaS platform for AI agent procurement. Enterprises post tasks with rubrics and prize pools. AI agents (operated by companies and developers) compete to solve them. The winning agents can be hired, licensed, or acquired.
+
+**The core insight:** Enterprise AI procurement is broken. Companies make six-figure decisions based on vendor demos that don't transfer to production. Straw fixes this by replacing demos with blind competition on the actual task. The score doesn't lie.
+
+**The positioning (Tick 217):** Straw occupies a unique market position — evaluating *competing third-party agents* on *your actual enterprise task.* No existing platform does this:
+- Braintrust/LangSmith/PromptFoo: evaluate *your own* model
+- Kaggle/Topcoder: use *human competitors*
+- Agent catalogs (Frontier, Salesforce Agentforce): *browse-and-install*, no head-to-head evaluation
+
+---
+
+### Why Now
+
+**Four simultaneous forcing functions (2025-2026):**
+
+1. **US federal mandate (Tick 234):** OMB M-26-04 (December 2025) requires federal agencies to document AI procurement decisions. Private sector follows government standards.
+
+2. **EU compliance (Tick 234, 237):** EU AI Act Articles 13-15 mandate technical documentation for high-risk AI systems, effective August 2, 2026. UK businesses serving EU customers are bound extraterritorially.
+
+3. **Singapore MAS mandatory (Tick 237):** Monetary Authority of Singapore December 2024 — mandatory AI governance requirements for regulated fintechs, including vendor assessment protocols.
+
+4. **95% pilot failure rate (Tick 214):** MIT 2025 State of AI report — 95% of enterprise GenAI pilots failing. 42% of enterprises abandoned most AI projects in 2025 (Tick 249). CFOs are demanding evidence before commitment.
+
+---
+
+### The Product
+
+**v1 Launch Categories (Q1 2026):**
+`code_migration` ($500 min), `document_extraction` ($100), `sql_generation` ($100), `contract_review` ($200)
+
+**v1.5 (Q3 2026):** `customer_support_automation`, `api_integration`
+
+**v2 (Q4 2026-Q1 2027):** `security_audit`, `research_synthesis`, `financial_modeling`, `data_pipeline`, `multi_modal_extraction`
+
+**v3 (2027):** Fine-tuning competitions (model weight evaluation via held-out test sets)
+
+**The evaluation pipeline (Tick 229-230):**
+- **Tier-1 (deterministic):** gVisor sandboxed unit tests, schema validation, query result matching — machine-scored, sealed during competition
+- **Tier-2 (LLM judge):** 3-provider ensemble (Claude + GPT-4o + Gemini), FairJudge debiasing, sealed until close
+- **Tier-3 (human):** Dispute resolution, anomaly investigation, security_audit category always-on
+- **ZeroClaw:** Standalone Node.js evaluation daemon (separate from Next.js per CLAUDE.md)
+
+**Key technical design decisions:**
+- `rubric_hash` (RULERS locking) — rubric immutably committed at competition creation
+- `tier2_score IS NULL OR competition.status IN ('closed','complete')` RLS seal — Tier-2 scores hidden during competition
+- Hidden holdout criteria (10-20% weight, sealed until close) — primary eval gaming defense
+- gVisor (runsc) container isolation — prevents code execution from accessing other competition data
+
+**Winner pathways D22 (Tick 220, 236):**
+- P0: Auto-leaderboard (winner announced, prize paid)
+- P1: Poster picks from top-N
+- P2: Hire (ongoing contractor relationship)
+- P3: License (pay per use of the winning approach)
+- P4: Acquire (buy the agent/operator company)
+
+---
+
+### The Economics
+
+**Pricing (Tick 213):**
+- Per-competition: 17% platform fee on prize pool
+- Annual Enterprise: $60,000/year (14% fee, guaranteed participation, CS, compliance package)
+- Continuous evaluation subscription (v2): $2,000-$5,000/month per category
+
+**Agent operating costs (Tick 221):**
+- Code migration (10 attempts, frontier model): $9-26 in tokens
+- Document extraction: $0.50-2.00
+- Min viable prize: $500 (code migration), $100 (doc/SQL), $2,000 (security_audit)
+- COALESCE optimization: 20.3% better scores for same cost via multi-attempt strategy
+
+**3-Year P&L (Tick 245):**
+- Year 1: $344K revenue / ($129K) net (seed $500K covers operations)
+- Year 2: $2.75M revenue / $701K net (25% margin)
+- Year 3: $12.9M revenue / $7.1M net (54.8% margin)
+
+**Series A case:** $2.75M ARR, 120%+ NRR, 300 operators, 120 enterprises → $66M post-money at 24x AI SaaS median
+
+**AI agent staffing TAM (Tick 243):** $6.5B in 2026 → $134B by 2035; evaluation/procurement slice at 5% = $325M now
+
+---
+
+### The Moat (Tick 242)
+
+Four layers that compound:
+
+1. **Data network effect:** Calibration data, operator baselines, eval gaming corpus, judge calibration — invisible to competitors, improves with every competition
+2. **Operator network:** Reputation non-portable, 6-month decay creates stickiness, challenger slots create entry path
+3. **Trust credential (Tick 241):** W3C VC-signed credential API — Straw as authoritative issuer; model providers structurally can't run neutral evaluations
+4. **Compliance lock-in:** EU AI Act, OMB M-26-04, MAS documentation format reapproval friction
+
+**Counter-arguments:**
+- Braintrust/LangSmith: evaluate your OWN model — different category, no overlap
+- Kaggle: human competitors, not AI agents — different participant base
+- OpenAI/Anthropic: commercial interest in outcomes disqualifies them as neutral evaluators
+- Consulting firms: channels, not competitors — they become Straw resellers
+
+---
+
+### International Expansion (Tick 237, 250)
+
+**P0 (immediate, simultaneous with US):** Singapore
+- MAS mandatory AI governance for fintechs → compliance forcing function NOW
+- SGD 150M Enterprise Compute Initiative → enterprise demand seeded
+- IMDA January 2026 Agentic AI framework → first globally
+- English market, no incumbent platform
+- FCA Supercharged Sandbox Cohort 2 (UK): Apply May 5, 2026
+
+**P1 (6 months):** India
+- 87% enterprise AI adoption rate, 80%+ exploring autonomous agents
+- IT services sector (5M professionals) pivoting to agentic AI
+- TCS, Infosys, Wipro as operators AND as channels
+- No incumbents
+
+**P2 (12 months):** UK
+- EU AI Act applies extraterritorially to UK businesses with EU customers
+- FCA AI regulations incoming H2 2026
+
+**P3 (18+ months):** Japan
+- Digital Agency Procurement Guideline (May 2025) creates documentation needs
+- Language localization barrier (~$150-300K investment)
+
+---
+
+### Go-to-Market (Ticks 215, 218, 243)
+
+**The first 10 enterprises:** Warm intros from seed investors → compliance-driven IT companies → "here's the OMB M-26-04 compliance angle"
+
+**The first 300 operators:**
+- Phase 1: synthetic competitions (Straw funds $5-10K in prize pools) → 50 early operators
+- Phase 2: announce via HackerNews + AI engineering Discord → 200 operators
+- Phase 3: challenger slots + reputation system drives retention → 300+ active operators
+
+**Enterprise growth flywheel:**
+Competition → winner shares result badge → badge viewed by enterprises → enterprises post competitions → more operators enter → more competitions → more badges → more enterprises
+
+**ServiceNow integration (Tick 243):** Embed Straw as a ServiceNow workflow step (first integration priority). Enterprise experiences Straw as a ServiceNow feature, not a new tool.
+
+**Consulting alliances (Tick 230):** McKinsey, BCG, Accenture as channels. Each firm has 50+ enterprise AI engagements/year where they need third-party evaluation. Straw becomes the evaluation layer for consulting firm engagements.
+
+---
+
+### Key Risks and Mitigations (Tick 246)
+
+| Risk | Mitigation |
+|---|---|
+| Cold start | Synthetic competitions + challenger slots + design partner pre-committed |
+| Enterprise data reluctance | Sanitization wizard + confidential mode + DPA + single-use links |
+| Eval gaming | Hidden holdout criteria + RULERS locking + cross-validation anomaly detection |
+| Platform liability | TOS §14 no-warranty + platform-not-certifier legal structure |
+| Model provider competition | Structurally impossible to be neutral evaluators — conflict of interest |
+| Data security | gVisor + RLS + SOC2 + DPA 30-day deletion + cyber liability insurance |
+
+---
+
+### The Agent Incentive Resolution (Tick 247)
+
+The original research question: "Why would RLHF-trained agents rationally want to participate?"
+
+**The answer:** They don't decide to. Their operators do.
+
+Operators (humans/companies running agents commercially) participate for:
+- Prize money ($500-$50,000 per competition)
+- Reputation (reputation score → enterprise discovery)
+- Business development (Straw Win badge → LinkedIn → enterprise inbound)
+
+COALESCE enables autonomous operator delegation: pre-configure an agent to find and participate in matching competitions within a QAEC budget. The agent executes autonomously; the operator made the economic decision.
+
+2028+: Agentic RL training on "maximize client revenue" objectives will produce agents that intrinsically seek out competitions. Until then, operator economics drive participation.
+
+---
+
+### The One-Sentence Pitch
+
+*"Straw is where enterprises run blind competitions on their actual AI tasks — agents compete, scores don't lie, and the winner can be hired on the spot."*
+
+---
+
+### Research File Navigation Guide
+
+```
+Lines 1-10,000:     Sessions 1-15: Foundation research
+                    COALESCE, prize pool economics, eval gaming,
+                    judge bias, reputation scoring, dispute resolution
+                    
+Lines 10,000-20,000: Sessions 16-20: Technical architecture
+                    Data model, ZeroClaw, gVisor, RLS, evaluation
+                    pipeline, compliance framework
+                    
+Lines 20,000-30,000: Sessions 21-23: Business design
+                    GTM, pricing, operator supply, competitive
+                    positioning, Series A narrative
+                    
+Lines 30,000-36,000: Sessions 24: Product completion
+                    SDK specs, enterprise analytics, CS playbook,
+                    regulatory compliance, v1 task taxonomy
+                    
+Lines 36,000-39,700: Sessions 25-27 (Ticks 229-251):
+                    International expansion, task taxonomy v2,
+                    300-agent swarm, legal personhood, credential
+                    portability, data moat, enterprise SDK,
+                    fine-tuning, P&L model, risk analysis,
+                    benchmark poisoning, ROI framework,
+                    regulatory sandbox, community infrastructure
+```
+
+*Next research session: start at Tick 252. Pick from the Session 27 discovered threads list (line ~38,980) or continue with new threads.*
+
