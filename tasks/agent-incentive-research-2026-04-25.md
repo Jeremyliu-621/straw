@@ -43144,3 +43144,179 @@ A customer who runs 1 competition in Y1 and 4 competitions in Y2 = 300% NRR. Fle
 
 *Tick 269 complete. Next steps: update TASKS.md for Session 28 completion.*
 
+
+---
+
+## Tick 270 — Singapore Go-to-Market Execution: First 5 Enterprise Customers
+
+**Date:** 2026-05-02
+**Thread:** Singapore market entry — specific execution strategy, not just strategic rationale
+**Research method:** Singapore enterprise AI market analysis; MAS AI governance framework (Dec 2024); IMDA Agentic AI Framework (Jan 2026); Singapore business formation requirements; regional AI talent ecosystem
+
+---
+
+### Why Singapore is P0 for International Expansion
+
+This was established in Tick 237 (international expansion priority matrix). Brief recap of the forcing functions:
+
+1. **MAS Model AI Governance Framework (December 2024):** Mandatory requirements for all financial institutions deploying AI in Singapore. High-risk AI applications require documented independent evaluation. This is directly analogous to EU AI Act Article 9 — a compliance pull-through that creates mandatory demand for third-party evaluation.
+
+2. **IMDA Agentic AI Framework (January 2026):** Singapore's national AI agency published guidelines for agentic AI deployment across enterprise sectors. Creates evaluation requirements for AI systems with autonomous decision-making capability.
+
+3. **SGD 150M Enterprise Compute Initiative:** Stacked on top of the regulatory mandate, Singapore is subsidizing AI adoption. Companies using government AI grants must demonstrate responsible deployment — which includes documented evaluation.
+
+4. **English-language market:** No localization required for v0 launch. Same product, different regulatory context.
+
+5. **Zero incumbent:** No Singapore-specific AI evaluation platform exists. Straw enters a completely unoccupied market.
+
+6. **Zero political risk:** US-Singapore bilateral relationship is strong; no trade or IP enforcement concerns.
+
+---
+
+### Singapore Entity Structure
+
+**Year 1:** Operate from US entity with Singapore clients (allowable for consulting/SaaS contracts under Singapore law). This avoids SGD 50K+ entity setup cost in Y1 while the market is being validated.
+
+**Year 2 (Post-Series A):** Singapore Pte. Ltd. (private limited company):
+- Paid-up capital: SGD 1 (minimum; Straw will capitalize at SGD 10,000 for credibility)
+- Director requirement: at least one Singapore-resident director (can be hired through Corporate Secretary service; ~SGD 3,000/year)
+- Corporate Secretary: required by law; ~SGD 800–1,500/year through a registered provider
+- Annual filing: ACRA (Accounting and Corporate Regulatory Authority) — straightforward
+
+**Why Singapore Pte. Ltd. matters for enterprise sales:**
+- Many Singapore enterprises require local entity for vendor contracts (especially financial institutions)
+- IMDA AI Verify Foundation contributor partnership requires Singapore legal entity
+- MAS regulatory reporting uses Singapore Tax ID (UEN) — needed for compliance documentation exports
+- GST registration required once annual turnover exceeds SGD 1M (register proactively once confirmed)
+
+---
+
+### Target Enterprise Customers (First 5)
+
+Singapore's enterprise AI market clusters around five verticals that align with Straw's v0 task categories:
+
+**Customer 1: DBS Bank or OCBC (Financial Services — document_extraction + contract_review)**
+Singapore's financial institutions are under MAS mandatory AI governance. DBS has deployed AI broadly (their AI assistant "Eva" handles 100M+ queries). A Straw competition would evaluate: "Which AI agent best extracts structured data from trade finance documentation while meeting MAS risk management requirements?"
+
+Why this is a winnable first customer:
+- Explicit regulatory mandate creates compliance budget
+- Document extraction from trade finance docs = exact Straw v0 capability
+- DBS/OCBC have AI procurement budgets confirmed (DBS has a SGD 1B+ technology budget)
+- Competition positioning: "Before your next AI vendor contract, run a Straw competition. The MAS documentation requires it anyway."
+
+**Customer 2: Singapore Airlines or ST Engineering (Document Processing + Code Migration)**
+Singapore Airlines processes millions of maintenance documents, flight manifests, and safety records. ST Engineering (defense + aerospace conglomerate) has large-scale Python modernization and document processing needs. These are high-volume, high-stakes document processing use cases — exactly where Straw's competitive evaluation adds maximum value.
+
+**Customer 3: GovTech Singapore (Government — research_synthesis + document_extraction)**
+GovTech is the Singapore government's digital technology agency. They have aggressive AI adoption targets (Smart Nation initiative) and are accountable to IMDA's evaluation requirements. A GovTech design partnership provides:
+- Government reference case (strongest credibility signal for enterprise sales)
+- IMDA connection (potentially a path to IMDA AI Verify partnership)
+- Direct access to Singapore government procurement network
+
+**Customer 4: Prudential Singapore or Aviva Singapore (Insurance — contract_review + financial_modeling)**
+Insurance sector is explicitly listed in MAS mandatory AI governance requirements. Claims processing, policy document analysis, underwriting models — all require documented evaluation. Insurance companies have both the regulatory pressure and the budget.
+
+**Customer 5: CIMB or UOB (Banking — sql_generation + financial_modeling)**
+Mid-tier Singapore banks are more nimble than DBS/OCBC and more willing to pilot new vendors. SQL generation from natural language (for their analytics teams) and financial modeling validation (for risk functions) are practical starting points.
+
+---
+
+### The Activation Strategy: IMDA AI Verify Partnership
+
+IMDA's AI Verify Foundation (formerly AI Verify) is Singapore's national AI testing framework. It provides a structured testing approach for AI systems. Straw should apply to become an **AI Verify contributor**.
+
+**Contributor benefits:**
+- Recognition by Singapore's national AI agency
+- Eligible for government AI grants and procurement frameworks
+- IMDA co-marketing (IMDA promotes Straw to enterprises using AI Verify)
+- Faster trust establishment with MAS-regulated institutions (IMDA imprimatur reduces procurement risk)
+- Direct access to IMDA's enterprise client network
+
+**Application process:** IMDA accepts contributor applications on a rolling basis. The application requires: company description, technical evaluation methodology, sample AI system assessment, data governance policies. Straw's existing methodology (three-tier eval funnel, Tier-1 deterministic + Tier-2 LLM judge + Tier-3 human) maps directly to AI Verify's testing framework.
+
+**Timeline:** Application submitted Q3 2026; contributor status achieved Q4 2026 or Q1 2027.
+
+---
+
+### The Regulatory Angle in Singapore (MAS-Specific Pitch)
+
+The MAS Model AI Governance Framework (December 2024 update, "Tripartite Guidelines") requires:
+- **Pre-deployment testing:** AI systems used in high-risk financial services must be tested against defined performance criteria before deployment
+- **Monitoring and review:** Regular post-deployment evaluation required
+- **Documentation:** Evaluation methodology and results must be documented and available to MAS upon request
+
+This is substantively identical to EU AI Act Article 9. Straw's compliance documentation package (Tick 263) directly satisfies MAS documentation requirements.
+
+**MAS pitch (adapted from EU AI Act angle):**
+"The MAS Tripartite Guidelines require documented pre-deployment testing for AI systems in financial services. Most institutions' current process — vendor demos, internal POCs, reference calls — will not withstand MAS scrutiny. Straw produces MAS-ready evaluation documentation: independent third-party, quantified rubric scores, comparative evaluation against alternatives. A Straw competition takes 2 weeks and costs SGD 20,000–80,000. A MAS regulatory action for inadequate AI governance can cost multiple times your annual revenue and trigger senior management accountability."
+
+**MAS compliance export:** Add `straw.export.toMASReport()` to the enterprise SDK in the Singapore version — exports competition results in the format specified by MAS Tripartite Guidelines. This is a 1–2 day engineering addition (same structure as EU AI Act export, different field labels and section headings).
+
+---
+
+### Singapore Operator Community: The APAC Talent Base
+
+Singapore has a significant AI engineering talent base — the island-state punches above its weight because:
+- National University of Singapore (NUS) and Nanyang Technological University (NTU) produce strong CS graduates
+- Major AI labs have Singapore offices: Google DeepMind SEA, Anthropic SEA, Meta AI Asia
+- Singapore government invests in AI research: A*STAR AI programs, AISG (AI Singapore)
+- Regional engineers from Indonesia, Malaysia, Vietnam, India concentrate in Singapore for visa access and salary
+- Language: English as primary business language
+
+**Operator recruitment for Singapore:**
+- NUS School of Computing student competition (partner with career services)
+- AISG fellowship program alumni (800+ Singapore AI engineers with AISG credentials)
+- GovTech AI Labs alumni (engineers who worked on Singapore government AI projects)
+- Singapore's Startup SG program — AI startups building in Singapore are natural operator candidates
+
+**First Singapore operator target:** 50 registered operators in Singapore by end of Y2, with 15+ having completed at least one competition.
+
+---
+
+### The SWITCH Singapore Partnership
+
+SWITCH (Singapore Week of Innovation and TeCHnology) is Southeast Asia's largest tech event, held annually in October. In 2025/2026, it explicitly featured AI procurement and evaluation tracks.
+
+**Straw at SWITCH 2026:**
+- Sponsor the "AI Procurement" track (cost: ~SGD 10,000–25,000)
+- Run a live competition demo during the event (non-prize, illustrative)
+- Collect contact details for 50+ enterprise AI decision-makers in one event
+- Co-present with one Singapore design partner customer ("How DBS used Straw to evaluate their document processing AI")
+
+This is the most cost-efficient way to build Singapore enterprise pipeline from zero.
+
+---
+
+### Singapore Economic Math
+
+**Revenue target from Singapore (Y2):** SGD 750,000 (~USD 560,000)
+→ 5 enterprise customers × SGD 150,000 average ACV (5 competitions/year × SGD 30,000 each)
+
+**Costs to support Singapore (Y2):**
+- Singapore Pte. Ltd. setup + maintenance: SGD 15,000
+- IMDA AI Verify contributor fees: SGD 5,000
+- SWITCH 2026 sponsorship: SGD 20,000
+- 1 Singapore-based customer success manager (part-time contractor): SGD 60,000
+- Travel (2 trips/year for US-based founders): USD 10,000
+- Total Singapore investment: ~USD 90,000
+
+**Singapore Y2 ROI:** SGD 750,000 revenue (~USD 560,000) / USD 90,000 investment = 6.2× return on Singapore investment. Payback in Y2.
+
+**Strategic value beyond revenue:** Singapore reference cases open doors across ASEAN (Indonesia, Vietnam, Thailand, Malaysia). A MAS-compliant evaluation platform is credible across all Southeast Asian financial services regulators who follow MAS's lead.
+
+---
+
+### Summary
+
+Singapore go-to-market execution:
+
+**Y1 (Q3–Q4 2026):** US entity, Singapore customers. First 3 design partner conversations (DBS/OCBC, GovTech, one insurance company). IMDA AI Verify application submitted. SWITCH 2026 presence secured.
+
+**Y2 (Q1–Q3 2027):** Singapore Pte. Ltd. formed (post-Series A). IMDA contributor status achieved. 5 paying Singapore customers. SGD 750K ARR. First MAS compliance export produced. Singapore operator community: 50 registered.
+
+**The Singapore pitch in one sentence:** "MAS requires documented pre-deployment AI testing — Straw produces that documentation while finding you a better AI vendor at the same time."
+
+---
+
+*Tick 270 complete.*
+
