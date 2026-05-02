@@ -53283,3 +53283,106 @@ Quarterly business review agenda:
 - RoboBazaar cross-platform bounty routing
 
 **Git commit target:** `research(agent-incentive): tick 324 — enterprise CS playbook (30-day post-competition close plan)`
+
+---
+
+## Tick 325 (2026-05-02): International market analysis update — EU AI Act enforcement + Singapore P0
+
+*Thread: International market analysis update. EU AI Act Article 9 enforcement (Aug 2, 2026 — 92 days). Singapore P0 timing. Sources: artificialintelligenceact.eu/article/9, digital-strategy.ec.europa.eu, perspectivelabs.org, imda.gov.sg/resources, xenoss.io/blog.*
+
+---
+
+## Long-form proposal (DRAFT) — Section 39: International market — Q3 2026 regulatory update
+
+### EU AI Act: August 2 Deadline Confirmed, No Delays
+
+**Enforcement date: August 2, 2026** — confirmed, unchanged as of May 2026.
+
+What triggers on August 2:
+- Full enforcement of Articles 9–49 for Annex III high-risk AI systems
+- Covered categories: hiring/HR systems, credit scoring, biometric identification, critical infrastructure, education assessment, law enforcement, migration control, essential service access
+- Penalties: **€35M or 6% of global annual turnover** (whichever is higher)
+
+**Why this matters for Straw:** Article 9's risk management requirement is the demand trigger. Any enterprise deploying AI in a covered category must demonstrate "performance metrics established prior to deployment" (Article 9.7). Straw's compliance certificate — with pre-signed rubric hash and timestamp — is the implementation of this requirement.
+
+**The August 2 sales trigger:** The enterprise compliance conversation is happening now, in Q2 2026. Compliance teams are buying in advance of enforcement, not after. The ideal Straw sale is: "Sign up in June, run your competition in July, have your certificate before August 2." The 3-month runway is the urgency frame.
+
+**Enforcement fragmentation risk:** Only 8 of 27 EU member states had designated national competent authorities by May 2026. This suggests the enforcement experience will vary by country in H2 2026. France, Germany, Netherlands will be strictly enforced. Smaller member states may lag. For Straw's enterprise sales: **target EU enterprises with operations in France, Germany, Netherlands** — those countries will have active enforcement pressure soonest.
+
+**No sector-specific enforcement delays announced.** HR/hiring AI, financial AI, and healthcare AI (the three largest enterprise categories) are all in-scope for August 2.
+
+### Enforcement Architecture: EU AI Office + National Authorities
+
+The enforcement model is two-tier:
+1. **EU AI Office:** Oversees general-purpose AI models, can request documentation, conduct evaluations, impose fines
+2. **National Market Surveillance Authorities:** Enforce for specific high-risk AI systems in their jurisdiction
+
+**Implication for Straw's compliance certificate:** The certificate must be usable as evidence for both the AI Office (for GPAI components) and national authorities (for the specific deployment). The current Straw certificate design (Section 38 of the proposal) satisfies this — the rubric declaration + scoring attestation + artifact log is a complete evidence package for either authority.
+
+### Singapore: AI Verify Becoming De Facto Mandatory
+
+IMDA's AI Verify framework (voluntary as of 2025) is being embedded into **public-sector procurement** as of May 2026. For government-linked contracts in Singapore, AI Verify compliance is now effectively mandatory.
+
+**New in 2026:** Singapore launched **ISO/IEC 42119-8** — the first international standard for generative AI testing, focusing on benchmarking and red teaming. This is the international standards body formalizing what Straw does operationally.
+
+**Singapore P0 timing implication (from Section 35 of the research on international market analysis):**
+- The original plan: Singapore as a "P0 market" — early penetration due to IMDA's AI Verify framework and Singapore's advanced AI procurement ecosystem
+- Updated view: Singapore public-sector contracts now require AI Verify compliance. Straw's competition format + compliance certificate satisfies AI Verify's evaluation criteria. **A single enterprise Singapore customer with a government contract is a direct channel to the AI Verify procurement requirement.**
+- Target: Government-linked companies (GLCs) procuring AI systems. These have the strictest AI governance requirements and the most established procurement processes.
+
+**The IMDA partnership angle:** Straw should pursue an IMDA AI Verify partnership (previously identified in Tick 238). IMDA is actively seeking evaluation tools that can generate AI Verify-compliant evidence. Straw is the strongest candidate for a "Straw Certified = AI Verify compliant" designation.
+
+### Japan, Australia, India: Monitor-Only for 2026
+
+| Country | Framework | Status | Straw implication |
+|---|---|---|---|
+| Japan | AI Promotion Act (May 2025) | Voluntary, no penalties | Market education opportunity but no compliance trigger |
+| Australia | National AI Plan (Dec 2025) | Guardrails expected 2026 | Watch for specifics; no imminent enforcement |
+| India | AI Governance Guidelines (late 2025) | Regulatory authority being established | 2027 at earliest for enforceable requirements |
+
+**APAC strategy for 2026:** Focus on Singapore (government-linked companies, AI Verify alignment) and Japan enterprise (voluntary framework adoption by MNCs following EU AI Act compliance for their EU subsidiaries). Australia and India are 2027+ markets.
+
+### The Regulatory Compliance Revenue Model Update
+
+Original Section 15 (compliance infrastructure angle) identified the regulatory moat. This tick updates the revenue timing model:
+
+**Q2-Q3 2026 (now through August 2):**
+- EU-headquartered enterprises: high urgency, must have certificates before August 2
+- EU-subsidiary operations of US companies (Thermo Fisher, HP, IBM, Oracle): secondary urgency, compliance by August 2 for EU operations
+- Prime sales window: June-July 2026 (3-6 weeks before enforcement)
+- Price premium: 25-35% above standard competition fee for "compliance-certified" framing
+- Justification: "You're not buying an AI evaluation. You're buying your Article 9 evidence package."
+
+**Q4 2026 and beyond:**
+- Post-August 2: enforcement actions begin. First high-profile fine creates panic buying from laggards
+- First-mover enterprises that ran Straw competitions become internal champions: "Our legal team now cites our Straw certificates in vendor reviews"
+- The compliance standard spreads from EU operations to global procurement standards within the same enterprise
+
+**Singapore Q3-Q4 2026:**
+- IMDA AI Verify embedded into GLC procurement
+- Window: September-December 2026 (after EU rush, capturing Singapore government procurement cycle)
+
+### Action Items for Jeremy (Q2 2026)
+
+1. **Launch a "EU AI Act compliance track" offering.** Same competition, but marketed as "your Article 9 evidence package." Pre-signed rubric timestamp, compliance certificate PDF, AI Office-ready JSON format. Premium pricing: +$5,000 surcharge on any competition for enterprises subject to EU AI Act.
+
+2. **Target list for June outreach:** France (CAC 40 companies with HR AI or credit scoring AI), Germany (DAX 40 with same criteria), Netherlands (ABN AMRO, ASML, Heineken — all have AI in-scope categories). US subsidiaries with EU operations: Thermo Fisher, Intuit, HP, Oracle (named Frontier customers — perfect Straw + Frontier complement pitch).
+
+3. **Singapore partnership pitch to IMDA:** Brief IMDA's AI Verify team on Straw's evaluation methodology. Goal: "Straw Certified competition = AI Verify evidence" designation. IMDA is actively seeking tools. The briefing window is now — before August EU enforcement creates a certification backlog.
+
+4. **FCA Cohort 2 application (opens May 5, 2026):** Apply to FCA's agentic AI regulatory sandbox. The regulatory credibility from FCA membership accelerates UK/EU enterprise trust. Deadline pressure is low but the upside is high.
+
+---
+
+## Closed threads (Tick 325)
+
+- [done — Tick 325] **International market analysis update** — EU AI Act August 2, 2026 enforcement confirmed, no delays, 8/27 member states have authorities designated (enforcement fragmentation; target France/Germany/Netherlands first). No sector delays for HR/financial/healthcare AI. Compliance certificate timing: Straw sale in June → competition in July → certificate before August 2. Singapore: AI Verify becoming de facto mandatory in GLC procurement; ISO/IEC 42119-8 formalizes Straw's methodology; IMDA partnership is the P0 play. Japan/Australia/India: monitor-only 2026. Revenue update: EU compliance premium (+$5K surcharge), Q3-Q4 Singapore GLC window, post-August laggard panic buying opportunity.
+
+---
+
+## Push status (after Tick 325)
+
+**Ticks 312-325** complete in this session. Last remaining open thread:
+- RoboBazaar cross-platform bounty routing (ERC-8004 as portable reputation layer)
+
+**Git commit target:** `research(agent-incentive): tick 325 — international market update (EU AI Act Aug 2, Singapore P0, compliance premium)`
