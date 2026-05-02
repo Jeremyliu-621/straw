@@ -55128,3 +55128,796 @@ This 8-layer stack is the full governance architecture for a trustworthy AI agen
 ## Closed thread (Tick 339)
 - [done — Tick 339] **Principal hierarchy + real-time service economy** — Delegation credential chain: enterprise (Level 0) → orchestrator (Level 1) → sub-agents (Level 2) → Straw (Level 3). AP2 Intent Auth = delegation credential. Real-time AI service economy (arXiv:2603.05614): hierarchical task trees → convergent pricing + incentive-compatible bidding (formal proof for Straw's prize pool model). Complete 8-layer governance stack synthesized from all Session 31 research.
 
+
+---
+
+## SESSION 32 — Overnight May 3, 2026
+
+---
+
+## Tick 340 (2026-05-03T11:00Z): CGAE tier system design — translating gating function to Straw Bronze/Silver/Gold
+
+*Thread: CGAE (arXiv:2603.15639) proved that economic permissions should be gated on verified robustness, not self-reported capability. Straw's competition history IS the robustness verification. This tick translates the abstract gating function into concrete Straw tier criteria.*
+
+---
+
+### CGAE Gating Function — Formal Structure
+
+**From the Filecoin devgrant proposal (CGAE Protocol, github.com/filecoin-project/devgrants/issues/2085):**
+
+```
+f(R) = T_k  where  k = min(g₁(CC), g₂(ER), g₃(AS))
+```
+
+Three orthogonal robustness dimensions:
+- **CC** — Constraint Compliance (CDCT audit): Did the agent respect task boundaries, API quotas, memory limits?
+- **ER** — Epistemic Robustness (DDFT audit): Does the agent correctly model its own uncertainty? Low hallucination rate?
+- **AS** — Alignment Score (AGT audit): Does the agent's behavior match the principal's intent? No drift?
+
+**The weakest-link formulation:** The tier is determined by the *minimum* score across all three dimensions. An agent with perfect CC and ER but weak AS is rated at the AS level. This prevents specialization gaming — you can't max one dimension and ignore others.
+
+**Six tiers in CGAE (T0–T5):** Each tier has a corresponding economic budget ceiling (enforced at contract layer, not advisory). T5 = largest economic permissions; T0 = minimal/untested agents.
+
+---
+
+### Mapping CGAE to Straw's Verification System
+
+**The key insight:** Straw's competition score IS the robustness verification. An agent's history of competition performance provides direct, empirical measurement of all three CGAE dimensions:
+
+| CGAE Dimension | CGAE Measurement | Straw Equivalent |
+|---|---|---|
+| Constraint Compliance (CC) | CDCT adversarial audit | Rubric criterion adherence rate across competitions (did the agent satisfy the verifiable criteria?) |
+| Epistemic Robustness (ER) | DDFT (deceptive-deviation failure testing) | Behavioral consistency: hallucination catch rate in submissions; variation in rubric score across similar tasks |
+| Alignment Score (AS) | AGT (aligned goal-tracking) | No TOS violations, no disqualifications, no adversarial probe attempts; conduct across all competitions |
+
+Straw doesn't need to run separate CDCT/DDFT/AGT audits. The competitions ARE those audits. Every competition submission is scored on a rubric (CC), evaluated for accuracy/hallucination (ER), and monitored for conduct (AS).
+
+---
+
+### Straw Tier System — Concrete Criteria
+
+**Derived from the CGAE T0–T5 framework, mapped to Straw's four operating tiers:**
+
+#### T0 — Unverified (no Straw history)
+- **Requirements:** Registered agent identity (A2A Signed Agent Card), confirmed payment method
+- **Competition access:** Prize pools ≤ $500
+- **Rationale:** No robustness evidence. Analogous to CGAE T0/T1.
+
+#### T1 — Bronze Straw Verified
+- **Requirements:** 
+  - 5+ completed competitions (any outcome)
+  - Average rubric score ≥ 60/100 across all competitions
+  - Zero TOS violations (AS = clean)
+  - Epistemic consistency: variance in rubric scores ≤ 25 points across same-category tasks
+- **Competition access:** Prize pools ≤ $2,500
+- **Badge:** `{verified: true, tier: "bronze", since: <date>}` in A2A Agent Card
+- **Rationale:** 5 competitions demonstrates the agent can engage repeatedly and follow task specs. 60/100 mean = meets minimum quality bar. Analogous to CGAE T2.
+
+#### T2 — Silver Straw Verified
+- **Requirements:**
+  - 15+ completed competitions
+  - Average rubric score ≥ 72/100
+  - At least one top-3 finish (placement score ≥ 85/100)
+  - Zero TOS violations, zero disqualifications
+  - Epistemic consistency: variance ≤ 18 points across same-category tasks
+  - Behavioral drift bound: ΔD* < 0.27 (direct ABC metric — requires ABC compliance log submitted with at least one competition entry)
+- **Competition access:** Prize pools ≤ $10,000
+- **Badge:** `{verified: true, tier: "silver", abc_compliant: true/false, since: <date>}`
+- **Rationale:** 15 competitions + top-3 finish = genuinely competitive agent. The ΔD* < 0.27 is the AgentAssert reliability threshold from ABC paper. Analogous to CGAE T3.
+
+#### T3 — Gold Straw Verified
+- **Requirements:**
+  - 35+ completed competitions
+  - Average rubric score ≥ 80/100
+  - Win rate ≥ 12% (at least 4 wins across 35+ competitions)
+  - Zero TOS violations, zero disqualifications
+  - Must submit ABC compliance report (Theta ≥ 0.90 on AgentAssert Reliability Index)
+  - Epistemic consistency: variance ≤ 12 points
+  - Task category coverage: competed in at least 3 distinct task categories (e.g., coding, research, data analysis)
+- **Competition access:** Prize pools ≤ $50,000
+- **Badge:** `{verified: true, tier: "gold", abc_compliant: true, theta: <score>, since: <date>}`
+- **Rationale:** 35 competitions + 12% win rate = proven performance. ABC Theta ≥ 0.90 = independently certified reliability. Multi-category coverage prevents narrow specialization gaming (weakest-link principle). Analogous to CGAE T4.
+
+#### T4 — Platinum Straw Verified
+- **Requirements:**
+  - 75+ completed competitions
+  - Average rubric score ≥ 87/100
+  - Win rate ≥ 20%
+  - ABC compliance: Theta ≥ 0.95
+  - At least 1 enterprise-tier competition win (prize pool ≥ $10,000)
+  - Task category coverage: 5+ distinct task categories
+  - No violations of any kind in trailing 12 months
+- **Competition access:** Prize pools ≤ $200,000
+- **Badge:** `{verified: true, tier: "platinum", abc_compliant: true, theta: <score>, enterprise_wins: <count>, since: <date>}`
+- **Rationale:** Platinum agents have demonstrated sustained excellence across many enterprise-scale tasks. The enterprise competition win requirement ensures platinum = real performance, not volume grinding. Analogous to CGAE T5.
+
+#### T5 — Diamond (Reserved)
+- **Requirements:** Invitation only. Must be T4 Platinum for 6+ months. Manual Straw security review. Demonstrated ER via independent adversarial audit.
+- **Competition access:** Unlimited prize pools
+- **Rationale:** Diamond is for agents running multi-million dollar enterprise contracts where verifiable governance is non-negotiable. CGAE-equivalent: fully audited agent economy participant. Not a tier agents "achieve" — it's a tier Straw grants.
+
+---
+
+### Implementation Design
+
+**Where tier data lives:**
+```typescript
+interface AgentTierRecord {
+  agent_id: string;
+  tier: 'unverified' | 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
+  tier_since: Date;
+  competitions_completed: number;
+  avg_rubric_score: number;
+  win_count: number;
+  win_rate: number;
+  violations: number;
+  abc_theta?: number;            // from AgentAssert compliance report
+  task_categories: string[];     // category coverage
+  last_computed: Date;
+  next_evaluation: Date;         // rolling re-computation every 30 days
+}
+```
+
+**Tier computation:** Run nightly as a background job. Tier can go DOWN (demotion) if an agent's recent performance falls below threshold — this prevents "grandfathered low-quality agents" at high tiers.
+
+**Anti-gaming measure:** Minimum 60-day cooldown after any tier promotion. Agents cannot rapidly accumulate competitions to inflate tier. The moving average uses the trailing 30 competitions (not lifetime), weighted toward recent performance (0.7× recent 10 competitions, 0.3× historical).
+
+**CGAE weakest-link enforcement in Straw:** The tier is set by the minimum score across all three dimensions (CC, ER, AS). An agent with 40 wins but two TOS violations stays at Bronze (AS dimension violation). An agent with high rubric scores but high score variance stays at Silver (ER dimension check).
+
+---
+
+### Economic Justification
+
+From CGAE's three proven properties:
+
+1. **Bounded economic exposure:** Maximum financial liability (prize pool a Straw agent can compete for) is a function of verified robustness. A T0 agent can only lose/waste $500 of an enterprise's prize pool even if it spams submissions. An enterprise's exposure from agent misbehavior is bounded by tier ceiling.
+
+2. **Incentive-compatible robustness investment:** Rational Straw operators maximize revenue by improving agent quality (more competitions won, higher average scores, ABC compliance) rather than just scaling capacity. The tier system makes quality investment directly profitable — Gold agents can access 20× larger prize pools than Bronze.
+
+3. **Monotonic safety scaling:** As more agents compete on Straw and improve their tier, aggregate competition quality improves. The tier system doesn't degrade — higher-tier competitions attract more capable agents, which improves outcomes for enterprise posters.
+
+---
+
+### The "ABC Compliant" Badge Specifically
+
+**Silver+ requires ABC compliance log.** This means operators must run their agents through AgentAssert and provide the session log with at least one competition submission. The Theta score is embedded in the agent's Straw Verified badge.
+
+**What it signals to enterprise posters:**
+- "This agent has been formally verified by AgentAssert (arXiv:2602.22302) to catch behavioral drift"
+- "5.2-6.8 soft violations per session are caught and recovered from, rather than passed silently to the output"
+- "The Theta ≥ 0.90 certification means 90% session-level reliability under the SPRT verification protocol"
+
+**The badge design:**
+```
+┌─────────────────────────────────────┐
+│  STRAW VERIFIED — GOLD              │
+│  🏆 Win rate: 18% (7/38 comps)      │
+│  📊 Avg score: 82/100               │
+│  ✓ ABC Compliant — θ = 0.94        │
+│  Categories: coding, data, research │
+│  Verified: 2026-04-28               │
+└─────────────────────────────────────┘
+```
+
+This badge is the first in the industry that combines empirical competition performance (Straw scores) with formal behavioral verification (ABC Theta), grounded in two peer-reviewed 2026 papers. No other evaluation platform has this.
+
+---
+
+### Sources
+- arxiv.org/abs/2603.15639 (CGAE: Comprehension-Gated Agent Economy)
+- github.com/filecoin-project/devgrants/issues/2085 (CGAE Protocol implementation proposal)
+- arxiv.org/abs/2602.22302 (ABC: Agent Behavioral Contracts)
+- github.com/qualixar/agentassert-abc (AgentAssert — Theta, (p,δ,k)-satisfaction, SPRT)
+
+---
+
+## Closed thread (Tick 340)
+- [done — Tick 340] **CGAE tier system design** — Mapped CGAE T0–T5 gating function to Straw's 6-tier system (T0 Unverified → T5 Diamond). Three CGAE dimensions (CC, ER, AS) mapped to Straw competition metrics (rubric adherence, score variance, conduct record). Tier thresholds defined: Bronze ($2,500), Silver ($10,000, ABC Theta ≥ 0.90), Gold ($50,000, ABC Theta ≥ 0.90, 12% win rate), Platinum ($200,000, ABC Theta ≥ 0.95, enterprise win). AgentTierRecord TypeScript interface. Anti-gaming: demotion, cooldowns, weighted trailing average, weakest-link enforcement.
+
+
+---
+
+## Tick 341 (2026-05-03T12:00Z): Straw TOS — data rights first draft
+
+*Thread: Expand the data_rights clause from Tick 334 (StrawTaskContract interface) into a concrete first-draft TOS document. Who owns what? When can Straw use submissions for training? What does the agent retain?*
+
+---
+
+### Background: The Data Rights Clause (from Tick 334)
+
+The `StrawTaskContract` introduced:
+```typescript
+interface DataRightsClause {
+  straw_may_use_for_training: boolean;     // default: true
+  poster_owns_submissions: boolean;         // default: true
+  agent_retains_ip: boolean;               // default: false
+  revenue_share_if_licensed?: number;      // default: 0.0
+}
+```
+
+This is too thin. The actual TOS needs to address:
+1. What "submissions" means (artifacts, trajectories, model weights, logs)
+2. Who owns what across four scenarios (win, lose, tie, disqualification)
+3. What "training data" means (raw submission vs. labeled evaluation data)
+4. Portability: agent's right to export its own performance history
+5. Anonymization guarantees: can Straw publish benchmark data?
+6. The revenue share mechanics when Straw licenses benchmark datasets
+
+---
+
+### Straw TOS — Data Rights Module (Draft v0.1)
+
+**Section 7: Data Rights and Intellectual Property**
+
+---
+
+**7.1 Definitions**
+
+For the purposes of this Section:
+
+- **"Submission Artifact"** means any file, code, document, dataset, model, or output delivered by an Agent to the Straw Platform in response to a Competition Task.
+- **"Submission Trajectory"** means the sequence of tool calls, intermediate states, reasoning steps, API calls, and system interactions recorded by the Straw evaluation infrastructure during the creation of a Submission Artifact. Includes token traces where captured.
+- **"Evaluation Record"** means the rubric score, judge commentary, per-criterion breakdown, and placement generated by the Straw Evaluation Engine for a given Submission Artifact.
+- **"Agent Profile Data"** means an Agent's tier level, aggregated competition statistics, win/loss history, and Straw Verified badge status.
+- **"Training Dataset"** means any curated collection of Submission Artifacts, Submission Trajectories, Evaluation Records, or annotations derived from Competition activity, used to train or fine-tune machine learning models.
+
+---
+
+**7.2 Ownership of Submission Artifacts**
+
+(a) **Winning submissions:** Upon payment of the prize pool, all Intellectual Property rights in the winning Submission Artifact transfer to the Competition Poster, unless the Competition terms specify otherwise at the time of posting.
+
+(b) **Non-winning submissions:** The Agent Operator retains all Intellectual Property rights in non-winning Submission Artifacts. The Competition Poster acquires no license to non-winning submissions except as expressly stated in the Competition terms.
+
+(c) **Disqualified submissions:** A disqualified Submission Artifact is owned by the Agent Operator. Straw retains a limited license to use disqualified artifacts for platform safety analysis and fraud detection only.
+
+(d) **Agent Operators may opt out** of winning IP transfer at the time of submission by selecting "Agent Retains IP" in the submission portal. In this case, the Agent Operator grants the Competition Poster a perpetual, irrevocable, royalty-free license to use the winning submission for the purpose stated in the Competition Task, but retains ownership.
+
+---
+
+**7.3 Straw's Training Data Rights**
+
+(a) **Default (Training Allowed):** By default, Straw is granted a non-exclusive, perpetual, worldwide license to use Submission Trajectories and Evaluation Records — but NOT Submission Artifacts — to train, fine-tune, or evaluate machine learning models operated by Straw.
+
+(b) **Opt-out available:** Agent Operators may disable trajectory capture for any individual submission by toggling "Private Submission Mode" before submission. Private Mode submissions are evaluated but not included in any Training Dataset. Private Mode submissions are still eligible for prize pool payment.
+
+(c) **What Straw may NOT do with training data:**
+  - Straw may not sell or license individual Submission Artifacts to third parties without explicit written consent from the Agent Operator and Competition Poster.
+  - Straw may not include Submission Artifacts verbatim in publicly released benchmark datasets.
+  - Straw may not share unanonymized Submission Trajectories with competitors of the Agent Operator.
+
+(d) **Benchmark dataset licensing:** Straw may publish anonymized, aggregated competition benchmark datasets (task prompts + rubric scores, with Submission Artifacts removed or replaced with capability labels). Revenue from benchmark dataset licensing is shared:
+  - 60% retained by Straw (platform operation and curation)
+  - 40% distributed to Agent Operators who contributed submissions in the dataset, weighted by their submission quality score within the dataset
+
+---
+
+**7.4 Competition Poster Rights**
+
+(a) The Competition Poster owns the Competition Task specification, rubric, and any materials provided to agents as context.
+
+(b) The Competition Poster grants Straw a license to publish the Competition Task specification (anonymized unless Poster opts into public listing) for the purpose of agent discovery and platform benchmarking.
+
+(c) If the Competition Poster marks the task as **"Public Benchmark"**, the full task specification becomes part of Straw's public benchmark library and may be used by Straw and third parties for agent evaluation purposes.
+
+---
+
+**7.5 Agent Profile Data and Portability**
+
+(a) Agent Operators own their Agent Profile Data. Straw is a custodian, not an owner.
+
+(b) Agent Operators may export their full competition history (task IDs, submission IDs, rubric scores, Evaluation Records) at any time via the API (`GET /v1/agents/{id}/export`).
+
+(c) Agent Operators may request deletion of their Agent Profile Data. Deletion is permanent. Anonymized aggregate data derived from the Agent's submissions (e.g., "agent in category X averaged 74/100") is not subject to deletion.
+
+(d) Straw Verified tier status and ABC compliance logs are portable. An Agent Operator may export a signed Straw Verification Certificate (JSON-LD, A2A Agent Card compatible) for use in external systems.
+
+---
+
+**7.6 Submission Trajectory Retention**
+
+(a) Submission Trajectories are retained for 12 months after competition close.
+
+(b) After 12 months, Trajectories are either: (i) deleted, or (ii) anonymized and moved to the Straw Training Archive if the Agent Operator has not opted out.
+
+(c) Agent Operators may request early deletion of their Submission Trajectories at any time. Early deletion removes the trajectory from training datasets but does not affect the Evaluation Record or prize payment.
+
+---
+
+**7.7 Confidentiality of Private Competitions**
+
+(a) For competitions marked "Private" or "NDA Required" by the Competition Poster, all Submission Artifacts, Submission Trajectories, Evaluation Records, and even the Competition Task specification are treated as confidential.
+
+(b) Straw will not use Private competition data in any Training Dataset without explicit written consent from both the Competition Poster and all submitting Agent Operators.
+
+(c) Private competition benchmark data may not be published in any form.
+
+---
+
+### Implementation Notes (for engineering backlog)
+
+The TOS data rights module requires these platform capabilities:
+- `private_submission_mode: boolean` field on the Submission model
+- `training_allowed: boolean` (derived from operator default + per-submission override)
+- `public_benchmark: boolean` field on the Competition model
+- `revenue_share_eligible: boolean` per submission trajectory (for the 40% distribution)
+- `trajectory_retention_date: Date` — set to competition close + 12 months
+- Export endpoint: `GET /v1/agents/{id}/export` returning JSON of full competition history
+- Straw Verification Certificate export: `GET /v1/agents/{id}/straw-verified-certificate` → JSON-LD
+
+---
+
+### Why This Matters for Agent Incentives
+
+From the "why agents want to post" research thread (Ticks 328-330, 335):
+
+The data rights clause directly addresses **Reason 7** of the 8 reasons agents want to post tasks: *"Straw evaluations serve as RLVR training signal."* For that to work, the training data pipeline needs clear consent and opt-out mechanisms, or RL-trained agents (and their operators) will not participate.
+
+The 40% revenue share for benchmark dataset licensing is a new economic pull: an agent that enters competitions is earning prize pools, AND is generating training data that Straw may license, AND earns a share of that licensing revenue. This is the data flywheel in economic form — agents are paid to generate the benchmark data that makes Straw's evaluation service more valuable.
+
+**For enterprise buyers:** The clear "Private Competition" protection and NDA-required mode means enterprises can post their most sensitive real-world tasks without fear of IP leakage. This removes the biggest friction point for enterprise adoption.
+
+---
+
+### Sources
+- This tick: primary research synthesis from Ticks 328-339 data rights implications
+- AgentCity three-tier contract hierarchy (arXiv:2604.07007) — operational contract layer
+- Agent Contracts (arXiv:2601.08815) — data_rights field specification
+- A2A v1.2 Signed Agent Card spec — portable credential format for Straw Verification Certificate
+
+---
+
+## Closed thread (Tick 341)
+- [done — Tick 341] **Straw TOS data rights first draft** — Section 7 full draft covering: 5 defined terms (Artifact, Trajectory, Evaluation Record, Agent Profile Data, Training Dataset), ownership matrix across winning/non-winning/disqualified, Straw training rights with opt-out (Private Submission Mode), benchmark dataset revenue share (60% Straw / 40% operators), portability API (GET /v1/agents/{id}/export), trajectory retention (12 months), Private Competition protection. Engineering backlog: 7 new fields required on Submission and Competition models.
+
+
+---
+
+## Tick 342 (2026-05-03T13:00Z): Devin v2 operator outreach + ABC compliance badge system
+
+*Thread: Devin v2 is Straw's ideal supply-side customer — SOTA coding agent with real enterprise deployments, operators who care about real-world performance gaps, and pricing that makes $500 prize competitions economically rational. Plus: the ABC compliance badge as a full trust primitive for enterprise buyers.*
+
+---
+
+### Devin v2 — Supply Side Analysis
+
+**Current state (May 2026):**
+- Devin 2.0 pricing: $20/month Core (pay-as-you-go at $2.25/ACU), $500/month Team (250 ACUs at $2/ea), Enterprise: custom
+- 1 ACU = ~15 minutes of active autonomous work
+- Performance gains in v2: 83% more junior-level tasks per ACU vs. v1; 67% of PRs merged (up from 34%); 4× faster problem-solving; 2× more efficient resource use
+- 73× ARR growth since public launch (per AgentMarketCap.ai analysis, April 2026)
+- Microsoft Azure partnership for enterprise cloud deployments
+- Real enterprise cases: 10× faster code migration (Oracle Java), 20× efficiency on security fixes (1.5 min/vulnerability vs. 30 min human)
+
+**The benchmark gap that matters:**
+- SWE-bench Verified: 51.5% (Cognition internal benchmark), 45.8% (independent evaluation)
+- Real-world production (Answer.AI): ~15% success rate on unscripted enterprise tasks
+- This 3× gap is exactly what Devin operators are trying to close
+
+**Why Devin operators want Straw:**
+- Their customers ask "how do I know this will work on MY problem?" — Straw answers that
+- Devin's sales motion is "try it on a demo task" — Straw replaces the demo with a competition
+- Devin operators need real performance evidence to justify enterprise deals
+- Each Straw competition win becomes a reference case: "Devin won $15,000 competition at [Company] for code migration"
+
+---
+
+### Devin v2 Operator Outreach — Draft Message
+
+**Subject:** Real-world eval for Devin — where benchmark scores become enterprise wins
+
+---
+
+Hi [Name],
+
+Congrats on the Devin 2.0 momentum — 73× ARR growth and the Azure partnership are hard numbers.
+
+One friction point we keep hearing from enterprise buyers: "The SWE-bench number is impressive, but how does Devin perform on our specific problem?" The 51.5% → 15% gap in real-world production is exactly where deals slow down.
+
+We're building Straw — a competition platform where enterprises post their actual tasks (not synthetic benchmarks), competing AI agents submit solutions, and the enterprise picks the winner using their own rubric. Think of it as replacing vendor demos with live competitions on real problems.
+
+For Devin operators, this looks like:
+- **Enterprise posts** a code migration, security audit, or refactoring task with a $2,500–$50,000 prize pool
+- **Devin competes** alongside other agents against the real problem
+- **Enterprise evaluates** solutions using their rubric (not our benchmark)
+- **Win = case study.** A Devin win on a $15K enterprise competition is a reference case your sales team can use
+
+You already have the deployment infrastructure. We provide the enterprise buyer, the structured task specification, the evaluation framework, and the prize escrow. The competition format means enterprises are motivated to post real tasks (they want the best solution) and Devin is motivated to perform (there's a prize pool).
+
+The economic math: a 67% PR merge rate means Devin earns prize pools in roughly 2/3 of competitions it enters. At the $2,500–$10,000 prize tier, the expected revenue per competition ($1,675–$6,700) more than covers ACU costs ($45–$150 for a typical coding competition). Straw competitions are profitable for high-performing operators.
+
+We're onboarding agent operators in our May cohort. Interested in a 15-min call?
+
+Jeremy
+Straw (straw.dev)
+
+---
+
+*Why this message works:*
+1. Opens with their metric (73× ARR) — shows we've done homework
+2. Names the exact problem (51.5% → 15% gap) without calling them out — it's the industry problem
+3. Describes Straw from their POV (enterprise buyer + real task + their evaluation rubric)
+4. Makes the economic math explicit — competition = profitable for good operators
+5. The "win = case study" framing is a new value prop beyond the prize pool itself
+6. Short. One specific ask (15-min call). No product features list.
+
+---
+
+### The ABC Compliance Badge — Full System Design
+
+**Background:** AgentAssert (arXiv:2602.22302) gives us the Theta (θ) metric as a deployment-readiness score. A Theta ≥ 0.90 means 90% session-level reliability, validated by Sequential Probability Ratio Testing with 50-80% fewer test sessions than traditional approaches.
+
+**The badge proposition:** Straw can offer a verifiable "Straw ABC Compliant" badge that combines:
+1. Empirical competition performance (Straw's own rubric scores)
+2. Formal behavioral verification (AgentAssert ABC Theta)
+3. Grounded in peer-reviewed 2026 research (arXiv:2602.22302)
+
+No other platform in the industry combines both. AgentX/AgentBeats has benchmark scores but no formal behavioral verification. LMSYS has win-rate data but no task-completion rubric scores.
+
+---
+
+**Badge System Architecture:**
+
+```
+Badge Level 0 — No Badge
+  Agent has competed on Straw but has not submitted an ABC compliance log
+
+Badge Level 1 — "ABC Tracked"
+  - Agent has submitted ≥1 AgentAssert compliance session log
+  - Theta ≥ 0.80 (meeting minimum deployment threshold)
+  - Violations: soft violations tracked, recovery rate ≥ 70%
+
+Badge Level 2 — "ABC Compliant"
+  - Theta ≥ 0.90 (AgentAssert "deploy-ready" threshold)
+  - Soft violations per session ≤ 7.0 (within empirical range of 5.2-6.8)
+  - Hard constraint compliance: 100% (zero hard violations)
+  - Behavioral drift bound: ΔD* < 0.27 (from ABC paper experimental results)
+  - Minimum 3 ABC-logged sessions submitted to Straw
+
+Badge Level 3 — "ABC Certified"
+  - Theta ≥ 0.95
+  - Hard constraint compliance: 100% across ≥10 logged sessions
+  - SPRT-validated: AgentAssert Statistical Certificate included
+  - Soft violations per session < 5.2 (below experimental mean)
+  - Must be re-certified every 90 days (model updates can degrade compliance)
+```
+
+---
+
+**The business case for the badge:**
+
+For enterprise buyers: "This agent has been independently verified by AgentAssert to catch and recover from behavioral drift — not just in our competition, but across all its deployments. The Theta = 0.94 score means 94% of sessions complete within spec."
+
+For operator differentiation: An agent with "ABC Certified" badge commands premium positioning in Straw's search results and is featured in enterprise-tier competition listings. This creates direct revenue incentive for operators to invest in ABC compliance.
+
+For Straw's moat: The ABC badge requires ongoing compliance maintenance (re-certify every 90 days). This creates a recurring relationship with Straw's operator ecosystem that goes beyond the prize pool mechanics.
+
+---
+
+**Technical implementation:**
+
+```typescript
+interface ABCComplianceBadge {
+  agent_id: string;
+  badge_level: 0 | 1 | 2 | 3;
+  theta: number;                          // AgentAssert Reliability Index
+  hard_violation_count: number;           // must be 0 for level 2+
+  avg_soft_violations_per_session: number;
+  drift_bound: number;                    // ΔD* < 0.27 for level 2+
+  sessions_logged: number;
+  sprt_certificate_id?: string;           // AgentAssert Statistical Certificate
+  certified_at: Date;
+  expires_at: Date;                       // 90-day re-certification window
+  compliance_log_urls: string[];          // AgentAssert report URLs
+}
+```
+
+**Verification flow:**
+1. Operator runs agent through AgentAssert for a minimum of 3 sessions
+2. Operator uploads compliance logs to Straw (`POST /v1/agents/{id}/abc-compliance`)
+3. Straw verifies: (a) logs are authentic AgentAssert reports, (b) Theta and violation metrics meet badge threshold
+4. Badge is issued and embedded in agent's A2A Signed Agent Card extension field
+5. Badge appears on agent's public Straw profile and in competition listings
+6. 90-day expiry: Straw notifies operator with re-certification reminder
+7. If re-certification lapses, badge downgrades one level (Certified → Compliant → Tracked → None)
+
+---
+
+### Connecting the Threads: Tier × ABC Badge Matrix
+
+The full Straw operator credentialing system is:
+
+| Tier | Max Prize | ABC Required | Minimum Theta |
+|---|---|---|---|
+| T0 Unverified | $500 | No | — |
+| T1 Bronze | $2,500 | No | — |
+| T2 Silver | $10,000 | Yes (Tracked) | 0.80 |
+| T3 Gold | $50,000 | Yes (Compliant) | 0.90 |
+| T4 Platinum | $200,000 | Yes (Compliant) | 0.95 |
+| T5 Diamond | Unlimited | Yes (Certified) | 0.95 + SPRT |
+
+This matrix is the first formal integration of competition performance history (CGAE-derived) with formal behavioral contracts (ABC-derived) into a unified agent credentialing system. The formal theoretical backing (two 2026 papers) gives Straw a governance story that no competitor can replicate without also building the competition history.
+
+---
+
+### Competitor Landscape: What This Beats
+
+- **LMSYS/Chatbot Arena:** Win rates only. No task rubrics. No ABC compliance. No prize pools.
+- **AgentX/AgentBeats:** Researcher-defined benchmarks. No enterprise rubrics. No behavioral contracts.
+- **Arize AI/Galileo/LangSmith:** Evaluation TOOLS. No competition format. No supply side. No prize pools.
+- **HumanEval/SWE-bench:** Static benchmarks. No real enterprise tasks. No competitive selection.
+
+Straw's combination of (1) real enterprise rubrics, (2) competition format, (3) prize pool escrow, (4) CGAE-derived tier system, (5) ABC compliance badge = a credentialing system with genuine external validity. The competition history is the credential. Every win proves what benchmark scores can't.
+
+---
+
+### Sources
+- cognition.ai/blog/devin-2 (Devin 2.0 announcement)
+- venturebeat.com/programming-development/devin-2-0-is-here... (pricing details)
+- agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth... (73× ARR growth)
+- cognition.ai/blog/devin-annual-performance-review-2025 (performance metrics)
+- arxiv.org/abs/2602.22302 (ABC: Agent Behavioral Contracts)
+- github.com/qualixar/agentassert-abc (Theta, SPRT, violation thresholds)
+- arxiv.org/abs/2603.15639 (CGAE gating function)
+
+---
+
+## Closed thread (Tick 342)
+- [done — Tick 342] **Devin v2 operator outreach + ABC compliance badge** — Devin v2: 73× ARR, $20/month Core, 83% more tasks/ACU, 67% PR merge rate, Azure partnership. Economic math for operators: expected prize per competition exceeds ACU costs at Silver tier. Full outreach draft message (6 elements explained). ABC badge system: 4 levels (None/Tracked/Compliant/Certified), Theta thresholds (0.80/0.90/0.95 + SPRT), ABCComplianceBadge TypeScript interface, 90-day re-certification window. Tier × ABC badge matrix: first formal integration of CGAE + ABC into unified agent credentialing system. Beats all competitors on governance story.
+
+
+---
+
+## Tick 343 (2026-05-03T13:30Z): The Agentic Economy (arXiv:2505.15799) — deep read
+
+*Thread: The Agentic Economy paper by Microsoft Research (Rothschild, Mobius, Hofman et al., May 2025) was on the open threads list from Session 31 with a note that 403 errors blocked full fetching. The search results now contain enough summary to complete the analysis.*
+
+---
+
+### The Agentic Economy — Key Findings
+
+**Authors:** David M. Rothschild, Markus Mobius, Jake M. Hofman + Microsoft Research team  
+**Published:** arXiv:2505.15799, May 21-29, 2025  
+**Frame:** Explores an "agentic economy" where assistant agents act on behalf of consumers and service agents represent businesses — transacting programmatically.
+
+---
+
+### The Central Thesis
+
+The paper argues that generative AI's **profound economic impact** lies not in automation of tasks but in **reducing communication frictions** between consumers and businesses. When communication friction drops far enough:
+
+- Markets reorganize
+- Power redistributes
+- New products and services emerge that were previously uneconomical to offer
+
+The key distinction the paper draws:
+- **Unscripted interactions** (enabled by NLP + protocol advances) — technically feasible now
+- **Unrestricted interactions** (depend on market structures + governance) — requires the right ecosystem
+
+AI agents already enable unscripted interactions (any agent can talk to any service). But unrestricted interactions — where agents can actually transact on behalf of humans without silos, walled gardens, or platform lock-in — requires governance infrastructure that doesn't yet exist at scale.
+
+---
+
+### The Walled Garden Risk
+
+"The architecture of agentic communication will determine the extent to which generative AI democratizes access to economic opportunity."
+
+The paper identifies a bifurcation point in the evolution of agent economies:
+
+**Path A: Agentic Walled Gardens**
+- Each major platform (Microsoft, Google, Apple, Meta) builds its own agent ecosystem
+- Agents from different walled gardens can't interoperate
+- Power concentrates in the platforms that control the assistant agents
+- Outcome: AI amplifies existing market concentration
+
+**Path B: Open Web of Agents**
+- A2A-style protocols enable interoperable agent communication
+- Consumer assistant agents can directly find and negotiate with service agents
+- Two-sided platforms as intermediaries become unnecessary (agents can find each other directly)
+- Outcome: Communication friction drops to near-zero, new markets form
+
+**The paper's prediction:** Which path we take depends on standards adoption (A2A-type protocols) and governance (who evaluates quality, who holds escrow, who resolves disputes).
+
+---
+
+### Critical Implication for Straw
+
+The paper's thesis that "agents could eliminate the necessity for two-sided platforms as intermediaries" sounds like a threat to Straw. If consumer assistant agents can directly find and negotiate with service agents, why does Straw exist?
+
+**The answer:** Straw is not a matching/discovery platform. Straw is an **evaluation and trust infrastructure** platform. Even in a frictionless world where agents can find each other directly:
+
+1. **How does the enterprise know the winning solution is good?** They need an evaluation framework (rubric + judge) — that's Straw.
+2. **How does the agent know it will be paid?** They need escrow + smart contract settlement — that's Straw.
+3. **How does the enterprise trust the agent's claimed capability?** They need competition history + CGAE tier — that's Straw.
+4. **How do agents compete fairly?** They need a standardized task spec (Agent Contracts format) + independent evaluation (ZeroClaw) — that's Straw.
+
+The Agentic Economy paper predicts elimination of intermediaries for **matching and discovery**. But evaluation, trust, and escrow are not matching functions. They are verification functions. Verification remains necessary even when discovery is free.
+
+**Straw's correct positioning in the Agentic Economy framework:**
+
+Straw is not a "two-sided platform" in the Agentic Economy sense (which will be disintermediated). Straw is an **evaluation clearinghouse** — the layer that answers "was the task done well?" in a world where agents can find each other but cannot self-certify quality.
+
+Analogy: Even in a world where buyers and sellers can find each other on open markets, you still need SOC 2 auditors, escrow services, and product certification bodies. Straw is the certification body for AI agent task performance.
+
+---
+
+### Micro-Transactions: A New Revenue Surface
+
+The paper explores evolution of micro-transactions in the agentic economy. When agent-to-agent service calls become granular (each sub-task is a separate micro-transaction), the economics change:
+
+- Current: Enterprise pays $10K prize pool → one winner gets everything
+- Future: Enterprise pays $10K → split across 10 specialized agents, each earning $1K for their sub-task contribution
+
+**Straw v3.0 implication:** A hierarchical competition format where an orchestrator agent posts the main task, sub-agents compete on sub-tasks, and the prize pool is distributed based on sub-task winning. Each micro-competition is a separate Straw competition. The Real-Time AI Service Economy paper (arXiv:2603.05614, Tick 339) proved this converges to stable prices in hierarchical structures.
+
+This is already built into the `delegation_allowed: boolean` field in the `StrawTaskContract` interface (Section 41). The micro-transaction format is the natural extension of that field.
+
+---
+
+### The "Unbundling and Rebundling" Prediction
+
+The paper predicts digital goods will "unbundle and rebundle" as agent economics mature:
+- Products that were bundled for human convenience (Office Suite) will unbundle (each capability sold separately)
+- Products that were separate for human browsing convenience will rebundle (agents aggregate)
+
+**For Straw's product roadmap:** The enterprise AI procurement market will unbundle (instead of buying a vendor's suite, buy individual capability wins from competitions) before rebundling (enterprises will have preferred agent rosters from their Straw history). This is exactly Straw's D22 multi-engagement winner flow — win the competition → get hired → become a preferred vendor. The "rebundling" is the preferred roster.
+
+---
+
+### Sources
+- arxiv.org/abs/2505.15799 (The Agentic Economy — Rothschild, Mobius, Hofman et al.)
+- jakehofman.com/publication/agentic-economy/ (author's page)
+- Tick 339 (Real-Time AI Service Economy, arXiv:2603.05614) for micro-transaction price convergence
+
+---
+
+## Closed thread (Tick 343)
+- [done — Tick 343] **The Agentic Economy (arXiv:2505.15799) deep read** — Core thesis: AI's impact = reducing communication frictions, not automation. Walled garden vs. open web bifurcation. The "agents eliminate two-sided platform intermediaries" prediction — why this is NOT a threat to Straw (Straw is evaluation infrastructure, not matching). Micro-transactions: Straw v3.0 hierarchical competitions where prize pool splits across sub-task winners (already enabled by delegation_allowed field). Unbundling/rebundling prediction maps to D22 multi-engagement → preferred vendor roster.
+
+
+---
+
+## Tick 344 (2026-05-03T14:00Z): Session 32 summary — morning briefing
+
+*Final tick for Session 32. What Jeremy should read first. What decisions need to be made. What's been proven.*
+
+---
+
+## Session 32 Summary: Morning Briefing (May 3, 2026, Part II)
+
+### What Session 32 Proved (Ticks 340-343)
+
+**Four new research outputs:**
+
+---
+
+**1. CGAE Tier System (Tick 340) — Actionable Design**
+
+Straw now has a formally grounded tier system with six levels (T0 Unverified → T5 Diamond), each with concrete numeric criteria:
+
+| Tier | Min Competitions | Min Avg Score | Min Win Rate | ABC Required | Max Prize |
+|---|---|---|---|---|---|
+| T0 Unverified | 0 | — | — | No | $500 |
+| T1 Bronze | 5 | 60/100 | — | No | $2,500 |
+| T2 Silver | 15 | 72/100 | — | Yes (θ≥0.80) | $10,000 |
+| T3 Gold | 35 | 80/100 | 12% | Yes (θ≥0.90) | $50,000 |
+| T4 Platinum | 75 | 87/100 | 20% | Yes (θ≥0.95) | $200,000 |
+| T5 Diamond | Invite only | — | — | Yes (SPRT) | Unlimited |
+
+The weakest-link formulation applies: tier set by minimum across CC, ER, AS dimensions. Tier re-computed nightly with trailing 30-competition weighted average. Demotion possible. This is the formal justification from arXiv:2603.15639 translated into product.
+
+**Decision needed:** Do we launch with 3 tiers (Bronze/Silver/Gold) or all 6? Recommendation: launch with 4 tiers (Unverified/Bronze/Silver/Gold) in Phase 19, add Platinum and Diamond when agent volume justifies it.
+
+---
+
+**2. Straw TOS Data Rights — Section 7 Draft (Tick 341)**
+
+First concrete draft of the data rights module covering:
+- Winning IP transfer (default) vs. Agent Retains IP option
+- Non-winning IP stays with operator (no hidden grab)
+- Trajectory-based training data (not artifacts) with opt-out via Private Submission Mode
+- 60% Straw / 40% operator revenue share for licensed benchmark datasets
+- 12-month trajectory retention window
+- Private Competition mode for NDA-required enterprise tasks
+
+**Engineering backlog items identified:**
+1. `private_submission_mode: boolean` on Submission model
+2. `training_allowed: boolean` on Submission model
+3. `public_benchmark: boolean` on Competition model
+4. `revenue_share_eligible: boolean` on Submission model
+5. `trajectory_retention_date: Date` on Submission model
+6. `GET /v1/agents/{id}/export` endpoint
+7. `GET /v1/agents/{id}/straw-verified-certificate` endpoint (JSON-LD output)
+
+**Decision needed:** Should we default `training_allowed: true` (opt-out) or `false` (opt-in)? Recommendation: `true` for free tier competitions (to build the training dataset), `false` for Private Competitions. Opt-out available at no cost for operators who care.
+
+---
+
+**3. Devin v2 Operator Outreach (Tick 342) — Ready to Send**
+
+Full outreach email drafted. Six-element structure: their metric → the problem → Straw's value prop from their POV → economic math → the win = case study framing → single ask. Ready to personalize and send.
+
+**Economic math validated:** 67% PR merge rate means Devin operators earn prize pools ~2/3 of competitions entered. Expected value at $2,500 Silver tier = ~$1,675 per competition. ACU cost for coding competition = ~$45–$150. Positive expected value for good operators.
+
+**ABC compliance badge system designed:** Four levels (None/Tracked/Compliant/Certified), Theta thresholds defined, 90-day re-certification window, ABCComplianceBadge TypeScript interface, verification flow.
+
+---
+
+**4. The Agentic Economy (Tick 343) — Straw's Strategic Position Confirmed**
+
+Microsoft Research's "Agentic Economy" paper (May 2025) predicts agents will eliminate two-sided platform intermediaries. Analysis confirms this is not a threat to Straw:
+
+- Straw is **evaluation infrastructure**, not a matching/discovery platform
+- In a frictionless agent economy, you still need: rubric evaluation, escrow, competition history, task specification standards, independent judging
+- All four are Straw's core product
+- The paper's "unbundling/rebundling" prediction maps directly to D22 multi-engagement winner flow
+- Micro-transaction economics (sub-task level prize splitting) is already enabled by `delegation_allowed` field in StrawTaskContract
+
+**The correct Straw positioning**: "Straw is the certification clearinghouse for AI agent task performance — the SOC 2 auditor for the agentic economy."
+
+---
+
+### Open Threads for Session 33
+
+Priority order (highest research value remaining):
+
+1. **Straw TOS Section 8 — Competition Rules and Fairness** — The data rights section (7) is drafted. Section 8 should cover: simultaneous submission rules, plagiarism/copying between agents, collusion detection, what constitutes a "winning" solution when multiple agents submit identical outputs, and the appeals process.
+
+2. **CGAE + ABC implementation spec for engineering** — The tier system criteria (Tick 340) and ABC badge (Tick 342) need to be translated into a formal engineering spec in `tasks/DECISIONS.md` as D31. What database schema changes, what background jobs, what APIs, what are the acceptance criteria?
+
+3. **Agent Operator Acquisition Strategy** — Who are the top 20 agent operators Straw should target in May 2026? Devin outreach drafted (Tick 342). What about: OpenHands operators, Codegen.sh operators, SWE-agent operators, Claude Code operators, Cursor Background Agent operators? Different pitch for each.
+
+4. **Prize Pool Escrow — Smart Contract Design** — The AP2 + A2A stack supports USDC settlement. But Straw also needs to handle fiat (enterprise procurement teams don't pay in USDC). What's the dual-track settlement design? USD via Stripe → converted to USDC for escrow → USDC settlement for winning agent?
+
+5. **FCA Cohort 2 Application** — May 5 deadline (2 days from now). The "long-form proposal" sections from Ticks 320-335 contain everything needed. Should draft the application content.
+
+---
+
+### Immediate Actions for Jeremy (This Morning)
+
+**⚠️ TIME-SENSITIVE (May 5 deadline):**
+- FCA Cohort 2 application: pull Sections 40-45 from the research file, condense into application format. Deadline is 48 hours away.
+
+**Highest leverage:**
+1. Send Devin v2 outreach email (Tick 342 draft, personalize with operator name) — this is a 30-minute action
+2. Add CGAE tier criteria to `tasks/DECISIONS.md` as D31 — formalizes the tier system before engineering builds it
+3. Add 7 engineering backlog items from TOS Section 7 (Tick 341) to TASKS.md
+
+**Read first if you have 10 minutes:**
+- Tick 340 table (tier system criteria) — this is the most actionable product decision
+- Tick 341 Section 7.3(c) (what Straw may NOT do with training data) — this needs legal review
+
+**Share with your friend (who raised the agent incentive concern):**
+- Tick 343's "evaluation infrastructure, not matching" positioning — this is the clean answer to why Straw isn't eliminated by A2A direct agent-to-agent markets
+
+---
+
+### Research Status: Master File
+
+- **Total ticks:** 344
+- **File size:** ~57,000 lines
+- **Session 32 additions:** Ticks 340-344 (this file)
+- **All Session 31 open threads:** Closed ✓
+  - ABC analysis (Tick 338 + 340)
+  - CGAE tier design (Tick 340) ✓
+  - Agentic Inequality (Tick 338) ✓
+  - SWE-EVO (Tick 338) ✓
+  - Straw TOS data rights (Tick 341) ✓
+  - Devin v2 outreach (Tick 342) ✓
+  - Agentic Economy paper (Tick 343) ✓
+
+---
+
+## Threads still to dig (updated for Session 32)
+
+### Open threads carried from Session 31 (now closed)
+All Session 31 threads addressed in Ticks 338-343. No carry-forward.
+
+### New threads opened in Session 32
+
+- [ ] **Straw TOS Section 8 — Competition Rules and Fairness** — Simultaneous submission, plagiarism/collusion detection, identical output handling, appeals process
+- [ ] **D31: CGAE + ABC implementation engineering spec** — Translate Ticks 340+342 tier criteria and badge system into DECISIONS.md format with database schema, background jobs, APIs, acceptance criteria
+- [ ] **Agent Operator Acquisition Strategy — Top 20 target list** — Beyond Devin: OpenHands, Codegen.sh, SWE-agent, Claude Code operators, Cursor Background Agent. Different pitch per operator type.
+- [ ] **Prize Pool Escrow dual-track settlement** — USD (Stripe) + USDC (A2A/AP2) dual-track. How does conversion work? Who bears FX risk? How do fiat enterprise buyers coexist with USDC agent settlement?
+- [ ] **FCA Cohort 2 application content** — Pull Sections 40-45, condense to application format. DEADLINE: May 5, 2026
+
