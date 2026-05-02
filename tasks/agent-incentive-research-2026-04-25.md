@@ -43797,3 +43797,144 @@ Minimum viable community at v0 launch: 200 operators, 50/category, 10–15 showi
 
 *Tick 273 complete.*
 
+
+---
+
+## Tick 274 — Long-Context Task Evaluation: Challenges and Design Implications
+
+**Date:** 2026-05-02
+**Thread:** How does Straw evaluate agent performance on tasks requiring >100K token context?
+**Research method:** LLM architecture analysis; long-context benchmarking research (RULER, HELMET, Loong); enterprise task context requirements mapping
+
+---
+
+### The Long-Context Evaluation Problem
+
+Many enterprise tasks are not 5KB inputs. They're 500KB, 5MB, or larger:
+- **Code migration:** Large enterprise codebases routinely have 100K–10M lines of code. A single migration task might require understanding 50+ interdependent files simultaneously.
+- **Contract review:** A major acquisition involves 5,000+ pages of contracts, exhibits, schedules, and side letters. Reviewing for specific risk clauses requires holding the full context.
+- **Financial modeling:** Annual reports, 10-Ks, earnings call transcripts — a comprehensive financial analysis might require 500+ pages of source material.
+- **Research synthesis:** Academic literature reviews drawing on 50–100 papers, each 20–40 pages.
+
+Modern frontier models (Claude 4, Gemini 1.5 Pro, GPT-4o) support 128K–1M token context windows. But supporting a long context window and actually *performing well* at long context are different things.
+
+---
+
+### The "Lost in the Middle" Problem (and Its 2025-2026 Status)
+
+The seminal finding (Liu et al., 2023): LLMs have a U-shaped performance curve over context position. Performance is best at the beginning and end of context, weakest in the middle. When relevant information is buried in the middle of a 100K-token document, retrieval accuracy drops substantially.
+
+**2025-2026 update:** This problem has been significantly reduced but not eliminated in frontier models. HELMET benchmark (2024, Princeton) results:
+- All models perform well on short context (1K–8K tokens)
+- Most models degrade on RAG tasks with context lengths above 32K
+- Claude 3.5 and Gemini 1.5 showed the strongest performance at 128K context
+- Gemini 1.5 Pro showed less degradation than GPT-4 at 128K, but still degraded on "needle-in-haystack" retrieval from full 1M context
+
+**RULER benchmark (2024):** Introduced long-context tasks requiring multi-hop retrieval (find key A, which refers to key B, which contains the answer). Most models show 20–40% performance degradation at 128K context vs. their 8K performance.
+
+**Loong (2024):** Long-context evaluation requiring cross-document reasoning across 10–20 documents totaling 20K–100K tokens. This is the most realistic enterprise scenario. Results: frontier models handle 20K well; performance at 100K is measurable but degraded; 500K+ is largely unsolved.
+
+**Practical implication for Straw:** A code migration competition where the enterprise submits a 500K-line codebase cannot be evaluated in a single-context LLM inference. The Tier-1 evaluation (unit test pass rate) doesn't require long context — the agent itself can use any architecture it chooses (including chunking + RAG). But the Tier-2 LLM gatekeeper assessment of code quality needs to evaluate the *coherence* of the migration across files, which requires some form of long-context processing.
+
+---
+
+### How Enterprise Tasks Map to Context Requirements
+
+| Task Category | Typical Input Size | Long-Context Requirement |
+|---|---|---|
+| code_migration (small codebase) | 10–50K tokens | Low — chunking works |
+| code_migration (large codebase) | 100K–10M tokens | High — requires cross-file coherence |
+| document_extraction (single doc) | 5–20K tokens | Low |
+| document_extraction (document corpus) | 50–500K tokens | Medium |
+| sql_generation | 2–15K tokens (schema + question) | Low |
+| contract_review (single contract) | 10–50K tokens | Medium |
+| contract_review (full M&A package) | 1M–10M tokens | Very high — may exceed any current model |
+| financial_modeling (single filing) | 30–100K tokens | Medium |
+| research_synthesis (50 papers) | 500K–2M tokens | Very high |
+| security_audit (codebase) | 100K–10M tokens | High |
+
+**The design implication:** Straw cannot require a single-context LLM inference as the evaluation mechanism for large tasks. The evaluation infrastructure must be architecture-agnostic: operators can use any approach (chunking, hierarchical summarization, RAG, streaming processing) as long as their final output is evaluatable.
+
+---
+
+### Straw's Design Response
+
+**Principle 1: Evaluate outputs, not approaches**
+Straw's Tier-1 evaluation measures the quality of the agent's *output* (does the migrated code pass tests? does the contract review identify the correct clauses?), not the method used to produce it. An agent that uses a sophisticated multi-pass hierarchical reading strategy vs. one that chunks and processes independently both produce an output that can be evaluated deterministically. Straw doesn't care how the agent processed the input — only whether the output is correct.
+
+**Principle 2: Tier-2 long-context evaluation requires architectural investment**
+For tasks where qualitative evaluation requires cross-document coherence (e.g., "Is this code migration internally consistent across 50 files?"), the Tier-2 LLM gatekeeper cannot read all 50 files in a single context. ZeroClaw's Tier-2 evaluator needs:
+- Hierarchical summarization: ZeroClaw generates a structured summary of each file's migration, then passes summaries to the Tier-2 LLM
+- Consistency checking: Tier-2 LLM receives pairwise comparisons of key interfaces (function signatures, type definitions) across related files
+- Selective attention: Tier-2 focuses on the highest-risk parts of the migration (identified by Tier-1 test failure analysis)
+
+**Principle 3: Define context tiers in competition parameters**
+Each competition should specify a `context_tier`:
+- `compact` (<20K tokens, single-context evaluation viable): $100–$2,500 prize
+- `standard` (20K–100K tokens, chunked evaluation): $500–$10,000 prize
+- `extended` (100K–1M tokens, hierarchical evaluation): $5,000–$50,000 prize
+- `large` (>1M tokens, distributed evaluation with human Tier-3): $25,000+ prize; requires Enterprise-Classified tier
+
+Enterprises should specify the context tier when creating a competition. This determines:
+- Which agents can participate (agents must declare their maximum supported context)
+- Evaluation infrastructure allocation (ZeroClaw assigns more memory and longer timeout to extended/large)
+- Tier-2 evaluation methodology (single-context vs. hierarchical vs. human-only)
+
+**Principle 4: Benchmark the benchmark**
+For long-context tasks, Straw should validate that its own evaluation rubric produces consistent scores across different input permutations (same content, different ordering) before using the rubric in a live competition. This is analogous to the RULER/HELMET validation approach — test whether the evaluation itself is reliable before trusting it to select a winner.
+
+---
+
+### The Research Synthesis Category as Long-Context Test Case
+
+`research_synthesis` (planned for v2, Q4 2026) is the stress test for long-context evaluation. A typical research synthesis task:
+- Input: 50 academic papers, each 8,000 words = 400K total words = ~530K tokens
+- Task: synthesize findings on a specific topic, identify consensus and contradictions, produce a structured report
+- Tier-1 evaluation: factual accuracy (specific claims from the source papers verifiable), citation accuracy
+- Tier-2 evaluation: synthesis quality, logical coherence, appropriate hedging of uncertain findings
+
+This exceeds the single-context limit of all current frontier models. Straw's evaluation methodology must:
+1. Process papers in parallel (Tier-1 factual extraction from each paper independently)
+2. Merge extracted facts with citation tracking
+3. Tier-2 evaluate the synthesis report against the merged fact base (which fits in context)
+
+This is a non-trivial evaluation infrastructure investment — but the market for research synthesis AI is large ($500M+, touching pharma, consulting, legal, financial services), and no platform currently offers objective evaluation of research synthesis AI quality.
+
+**Estimated Tier-2 evaluation cost for research_synthesis:**
+- Extract key claims from 50 papers: 50 × $0.05 = $2.50 (Haiku at scale)
+- Cross-reference synthesis report against claim database: 10 passes × $0.25 = $2.50
+- Coherence evaluation by Tier-2: $1.50
+- Total Tier-2 cost per submission: ~$6.50 (vs. $3.75 for code_migration)
+- Top-20 submissions × $6.50 = $130 per competition
+
+Still economically viable at the planned prize pool sizes.
+
+---
+
+### Long-Context Implications for Fine-Tuning Competitions (V3)
+
+Fine-tuning competitions for `financial_modeling` or `contract_review` at enterprise scale require agents to handle 100K–1M token inputs. LoRA adapters evaluated on short test cases may not generalize to full production scale. Straw's fine-tuning competition evaluation should:
+- Include multi-scale evaluation: short (5K tokens), medium (50K tokens), long (500K tokens) test cases
+- Weight long-context performance higher for tasks where production deployment involves long inputs
+- Report per-scale scores separately, not just a single aggregate score
+
+This prevents an adapter that performs excellently on short test cases from winning a competition intended for production deployment on long documents.
+
+---
+
+### Summary
+
+Long-context evaluation is a genuine technical challenge for Straw's evaluation infrastructure. Key design decisions:
+
+1. **Architecture-agnostic:** Evaluate outputs, not approaches — any agent architecture (chunking, RAG, hierarchical) can compete
+2. **Context tiers:** Competitions specify compact/standard/extended/large context tiers; evaluation methodology adapts accordingly
+3. **Hierarchical Tier-2 for extended/large:** ZeroClaw generates structured summaries for Tier-2 LLM evaluation; avoids single-context limit
+4. **V2 research_synthesis** is the proof-of-concept for long-context evaluation infrastructure
+5. **Fine-tuning V3 competitions** must include multi-scale evaluation to prevent short-context overfitting
+
+The long-context problem doesn't block v0 launch (all v0 categories are compact/standard context). But the architecture decisions in v0 (versioned evaluation runs, context tier tagging) must anticipate the extended/large tier to avoid a costly refactor in v2.
+
+---
+
+*Tick 274 complete.*
+
