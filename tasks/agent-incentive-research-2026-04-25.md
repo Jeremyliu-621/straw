@@ -47573,3 +47573,159 @@ The NRR improvement is driven by network effects: as the platform grows, enterpr
 
 **At network effect maturity (Year 4-5):** The platform exhibits flywheel behavior — each competition attracts more operators, which makes the next competition better, which attracts more enterprises, which enables larger prize pools, which attract more operators. Revenue accelerates faster than linear.
 
+
+---
+
+## Tick 294 — The Principal-Agent Problem in AI Procurement
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** How Straw solves the deep structural problem of misaligned incentives in enterprise AI buying
+
+### The Classic Principal-Agent Problem
+
+In economic theory, the principal-agent problem arises when one party (the agent) is delegated to act on behalf of another (the principal), but the agent's incentives are not perfectly aligned with the principal's.
+
+Classic examples:
+- Shareholders (principal) vs. executives (agent): executives may optimize for personal gain over shareholder value
+- Patient (principal) vs. doctor (agent): doctor may over-prescribe to maximize billing
+- Home buyer (principal) vs. real estate agent (agent): agent has incentive to close any deal, not the best deal
+
+In enterprise AI procurement, the principal-agent problem is pervasive and severe.
+
+---
+
+### The Multi-Layer Principal-Agent Problem in AI Procurement
+
+**Layer 1: Enterprise CTO vs. AI Vendor Salesperson**
+
+The enterprise CTO (principal) wants the best AI system for their specific use case. The AI vendor salesperson (agent) wants to close the deal regardless of fit.
+
+The salesperson controls the POC: they pick the use cases, tune the demo, prepare favorable examples. The CTO sees performance cherry-picked to impress, not representative of production behavior.
+
+Information asymmetry: the vendor knows how their model actually performs; the enterprise doesn't.
+
+**Layer 2: Enterprise AI Team vs. AI Vendor Technical Team**
+
+The enterprise's AI team (principal) wants to understand real capabilities. The vendor's technical team (agent) wants to make the POC succeed.
+
+The vendor's technical team helps with integration during the POC. They become indispensable. When the enterprise evaluates alternatives, they lack the same assistance.
+
+Information asymmetry: the vendor provides the expertise to make the evaluation work in their favor.
+
+**Layer 3: Enterprise Board vs. Head of AI**
+
+The board (principal) wants AI investment to deliver business value. The Head of AI (agent) wants to build an impressive AI program, which may mean selecting vendors that demonstrate impressive technology rather than vendors that solve the board's actual problems.
+
+Example: selecting GPT-4o because it impresses in demos vs. selecting a domain-specific model that produces 30% better outcomes on the actual task.
+
+**Layer 4: AI Vendor R&D vs. AI Vendor Sales**
+
+Even within the vendor: the R&D team (principal) wants benchmark performance to reflect genuine capability. The sales team (agent) wants to demo in conditions that maximize win rate.
+
+Result: vendors fine-tune models on benchmark tasks (Goodhart's Law), making benchmark performance an increasingly unreliable signal.
+
+---
+
+### How Each Layer Corrupts Evaluation
+
+**POC gaming (Layer 1+2):**
+- Vendor pre-selects favorable test cases
+- Vendor assists with integration during evaluation only
+- Vendor adjusts prompting during the POC (tuning in real-time)
+- Enterprise evaluates the optimized POC, not the production system
+
+**Metric selection bias (all layers):**
+- Vendors report metrics where they're strongest
+- "99% accuracy" means nothing without knowing the task distribution
+- Benchmark performance (MMLU, HumanEval) doesn't translate to enterprise task performance
+- "Our customer [Company X] uses us" — doesn't tell you how well it actually works
+
+**Social engineering (Layer 3):**
+- Vendors build relationships with decision-makers independent of technical merit
+- Sponsoring industry conferences, buying tables at corporate events, hiring former employees as "independent advisors"
+- Enterprise decision-makers confuse familiarity with quality
+
+---
+
+### How Straw Fixes Each Layer
+
+**Layer 1 fix: Blinded evaluation with enterprise-designed tasks**
+
+The enterprise, not the vendor, designs the evaluation tasks. The vendor never sees the task set before submission. There's no "tuning during the POC" — the operator submits and gets one score.
+
+This eliminates the vendor's ability to cherry-pick or adjust conditions.
+
+**Layer 2 fix: No vendor assistance during evaluation**
+
+Operators compete independently. There's no enterprise IT team helping Operator A but not Operator B. Everyone faces the same task set under the same conditions.
+
+This eliminates the "vendor became indispensable" information asymmetry.
+
+**Layer 3 fix: Objective scoring that speaks for itself**
+
+"ContractorPro v2.1 scored 9.4 on your specific task set" is a fact. "GPT-4o impressed our Head of AI in a demo" is a feeling. The score is something the Head of AI can present to the board with a straight face: "Here's independent evidence."
+
+This reduces the Head of AI's agency (in the bad sense) by making the case for the best-performing system overwhelming.
+
+**Layer 4 fix: Enterprise-specific task sets that resist gaming**
+
+If the enterprise writes tasks from their actual production workflow, vendors can't pre-optimize for those tasks. They don't know what the tasks are. This is different from public benchmarks, which vendors can (and do) train on.
+
+---
+
+### The Deeper Fix: Changing the Incentive Structure
+
+Beyond fixing individual evaluation steps, Straw changes the fundamental incentive alignment.
+
+**Old incentive structure:**
+- Enterprise pays AI vendor for a subscription
+- Vendor is incentivized to make enterprise happy (renewal risk)
+- "Happy" ≠ "performing well" — it's often "relationship feels good"
+- Enterprise has no objective measure of "performing well"
+
+**Straw incentive structure:**
+- Enterprise pays Straw a platform fee (independent of which vendor wins)
+- Operators compete for prize money
+- Prize money goes to whoever scores highest (objective, not relationship-based)
+- Enterprise gets objective performance evidence to guide procurement
+
+Straw's fee structure is specifically designed to eliminate conflicts of interest:
+- Straw earns the same regardless of winner → no incentive to favor vendors
+- Prize money is pre-committed (escrowed) → no ability to retroactively reward favorites
+- Scores are immutable once written → no post-hoc adjustment
+
+---
+
+### The Meta-Level Agent Problem: Straw Itself
+
+Even Straw has a principal-agent problem. Straw's principals are the enterprises and operators who trust the platform. Straw's management (agents) could theoretically:
+- Accept payments from preferred operators for favorable treatment
+- Bias evaluation methodology toward categories that generate more revenue
+- Misrepresent evaluation accuracy to attract enterprise customers
+
+The mitigations:
+1. **Score immutability** (technical): scores can't be changed after the fact
+2. **External audits** (institutional): independent auditors verify methodology
+3. **Public dispute record** (social): pattern of decisions is visible
+4. **Financial transparency** (accountability): prize distributions are public
+5. **Operator advisory council** (governance): operators have voice if they suspect bias
+
+No mitigation is perfect. But the combination makes corruption extremely difficult to sustain — and, crucially, easy to detect if it occurs.
+
+---
+
+### The Trust Equilibrium
+
+Straw's long-term value depends on maintaining a trust equilibrium where:
+- Enterprises believe evaluation results reflect real performance
+- Operators believe the evaluation is fair and their scores are accurate
+- Regulators believe the evaluation meets evidence standards
+- The broader AI community believes Straw is a credible source of quality signals
+
+This equilibrium is fragile. It took Thomson Reuters decades to build the trust that makes Bloomberg data credible. It can be destroyed in a single publicized manipulation scandal.
+
+The implication: Straw must invest heavily in trust infrastructure even when it's expensive and when the marginal competition wouldn't require it. Trust infrastructure is not overhead — it's the product.
+
+The company that best solves the AI procurement principal-agent problem will be very valuable. This is Straw's mission, stated precisely.
+
