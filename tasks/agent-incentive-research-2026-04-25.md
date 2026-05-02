@@ -49614,3 +49614,145 @@ Enterprise workflow with templates:
 
 Target time from "I want to run a competition" to "competition is live": under 60 minutes using templates.
 
+
+---
+
+## Tick 305 — The Founding Blog Post Draft
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** The most important marketing asset Straw will ever publish
+
+### Why the Founding Post Matters
+
+The founding blog post is simultaneously:
+- The investor summary (investors read it before taking meetings)
+- The customer acquisition tool (enterprises share it with their teams)
+- The operator recruitment message (developers read it and want to participate)
+- The category definition (establishes Straw as the inventor of enterprise AI evaluation competitions)
+- The talent magnet (engineering candidates who align with the mission apply)
+
+One piece of writing, five jobs. It must be excellent.
+
+The constraint: it cannot be long. The best founding posts are 800-1,200 words. Any longer and it's a whitepaper, not a narrative. The reader must be able to finish it in 5 minutes.
+
+---
+
+### Draft: "The Score Doesn't Lie"
+
+---
+
+*Enterprise AI procurement is broken. Here's how we know.*
+
+Last year, a Fortune 500 company spent three months evaluating AI vendors for contract review. They ran a POC with the leading vendor. Their VP of AI was impressed. They signed a $2 million annual contract.
+
+Six months into deployment, their legal team noticed the AI was consistently missing indemnification caps in vendor agreements. The "impressive" demo had been run on carefully curated examples. The production system had never been tested on the edge cases that actually matter.
+
+They've now spent $600,000 of their $2 million contract trying to fix a vendor selection they made based on a vendor-curated demo.
+
+This story is not unusual. We've heard it dozens of times.
+
+---
+
+*The problem isn't the AI vendors. The problem is how enterprises buy AI.*
+
+The standard evaluation process goes like this: enterprise issues RFP, vendors respond, enterprise runs a POC with vendor assistance, enterprise picks the vendor that impressed them most. The vendor controls the demo environment, selects favorable examples, and helps with integration during the evaluation.
+
+This is the equivalent of a chef preparing their best dish for a restaurant review and then handing the reviewer their personal score sheet.
+
+There's no malice here. Vendors compete to win deals. They optimize their presentations. Enterprises lack the tooling to test vendors independently. The information asymmetry is structural.
+
+---
+
+*The fix is surprisingly simple: let them compete.*
+
+Straw is an AI evaluation competition platform. Here's how it works:
+
+An enterprise designs a task set from their actual workflow — real contracts, real SQL queries, real documents. They write a rubric defining what "good" looks like. They post it with a prize pool.
+
+AI systems compete. We run them all, simultaneously, on the same tasks, in isolated containers with no internet access and no ability to see each other's work. We score them against the rubric.
+
+The enterprise gets an objective leaderboard: Vendor A scored 9.4. Vendor B scored 7.2. Vendor C scored 8.8. The score doesn't lie. The score wasn't prepared with the enterprise's help. The score came from head-to-head competition on real tasks.
+
+We also show the enterprise which vendor is best for their specific use case — not the best at demos.
+
+---
+
+*This works because no one has a thumb on the scale.*
+
+Straw doesn't build AI. We don't train models. We have no financial interest in which vendor wins. We charge a platform fee on the prize pool regardless of outcome.
+
+This sounds obvious. But it's actually impossible for most of the companies you'd think could build this. OpenAI can't objectively evaluate OpenAI vs. Anthropic. Scale AI is 49% owned by Meta. AWS has strong incentives for Amazon Bedrock to perform well.
+
+We're the only neutral third party in the room.
+
+---
+
+*Competition has worked for two thousand years.*
+
+Medieval guilds competed for contracts. Trading floors competed for prices. Scientific journals compete for citations. Athletic competitions determine who's fastest.
+
+The principle is ancient: when you need to know who's best, make them compete.
+
+AI procurement has somehow missed this. Enterprises make six-figure decisions about AI vendors based on demos — the equivalent of hiring an athlete based on a highlight reel.
+
+Straw adds the competition.
+
+---
+
+*What we've built.*
+
+Our evaluation infrastructure (we call it ZeroClaw) runs operator submissions in sandboxed containers. No cheating. No data leakage. Fully deterministic scoring. Every evaluation is logged immutably — the score can be audited, not just trusted.
+
+Our rating system (based on Glicko-2, the same algorithm used in professional chess) gives every operator a credible, reputation that compounds over time. An operator with a 9.4 on contract review has earned it across dozens of competitions.
+
+Enterprises can hire, license, or acquire the best operators — the D22 pathways. The winner isn't just getting a prize; they're demonstrating production-grade capability.
+
+---
+
+*We're starting in Singapore.*
+
+Singapore's financial regulators recently mandated that institutions document AI system testing before deployment. Singapore is home to some of the world's most sophisticated enterprise AI teams. And Singapore has a dense, talented AI engineering community who want to demonstrate their systems externally.
+
+The first Straw competition launches [DATE]. If you're an enterprise with an AI procurement challenge, we'd like to talk. If you're an AI developer who wants to show what your system can do, we'd like you to compete.
+
+---
+
+*One more thing.*
+
+The Fortune 500 company from the opening story was considering switching vendors after their contract review AI failed. They weren't sure if the alternative vendors were any better.
+
+We could help them run a competition. Six weeks, $25,000, objective scores. They'd know.
+
+The score doesn't lie.
+
+---
+
+**[Sign up at straw.ai]**
+
+---
+
+### Notes on the Draft
+
+**What works:**
+- Opening story makes the problem concrete and relatable
+- "Chef preparing their best dish" analogy is sharp
+- "Score doesn't lie" repeats three times (headline, body, close) — good brand anchoring
+- Neutrality point is clear without being defensive
+- "Competition has worked for two thousand years" reframes the innovation as evolutionary, not revolutionary
+- Short paragraphs, punchy sentences throughout
+
+**What might need adjustment:**
+- The Fortune 500 company story needs to be a real story (or a clearly composite/fictional one) — lawyers will flag if it reads as factual when it's hypothetical
+- The MAS Singapore regulatory reference should be checked for accuracy before publication
+- "We'd like to talk" is slightly weak as a CTA — might strengthen to a more specific action
+
+**Where to publish:**
+- Straw company blog (primary)
+- Jeremy Liu personal Medium (secondary reach to developer audience)
+- Hacker News Show HN post: "Show HN: We built a competition platform for enterprise AI evaluation"
+- LinkedIn article (founder personal page, enterprise audience)
+
+**When to publish:**
+The post should go live on the same day the first competition launches. The timing creates a narrative arc: "Today we announced Straw. Today a real enterprise ran the first competition." Don't publish the post before the product is ready to demonstrate.
+
