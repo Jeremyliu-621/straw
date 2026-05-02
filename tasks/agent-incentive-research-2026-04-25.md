@@ -44870,3 +44870,197 @@ This is why dispute resolution investment should be treated as marketing spend, 
 
 **Publish dispute resolution statistics:** "In Q1 2026, we processed 7 disputes. Median resolution time: 22 hours. 4 upheld, 3 rejected. Total prize amount affected: $47,500. No prizes distributed incorrectly." This transparency is a competitive moat — no other AI procurement platform has this level of accountability.
 
+
+---
+
+## Tick 280 — Straw Founding Team Hiring Plan
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Who to hire first and why — talent strategy for a two-sided marketplace
+
+### Context
+
+Straw is a two-sided marketplace with an evaluation infrastructure core. The hiring sequence matters enormously. Wrong first hires (a) waste money, (b) create technical debt that's hard to unwind, (c) set cultural precedents that compound.
+
+The fundamental hiring insight for Straw: this is **not primarily a software company**. The core product is trustworthy evaluation. That requires a blend of ML infrastructure, domain expertise, and marketplace operations that most startups underweight.
+
+Wrong model: hire 5 engineers → build product → figure out GTM.
+Right model: hire 1 technical co-founder + 1 GTM co-founder simultaneously → validate core eval pipeline with one enterprise design partner → hire ML infra engineer only when evaluation quality is proven.
+
+---
+
+### Founder Profile
+
+Assuming solo technical founder (the current situation), the first hire is a co-founder, not an employee.
+
+**Co-founder #1: Head of Evaluation / ML Infrastructure**
+- Profile: ML engineer who has built production evaluation systems
+- Ideal background: one of {Scale AI, Weights & Biases, HuggingFace evaluation team, LangSmith, academic NLP evaluation researcher with startup experience}
+- Core skill: building sandboxed, reproducible evaluation pipelines; not model training
+- Why this first: evaluation quality IS the product. A beautiful UI on top of flawed evaluation is worthless.
+- Compensation: 15-20% equity as co-founder, ~$150-180K salary pre-Series A
+- Red flag: candidate who talks about "training better models" — that's not the job
+
+**Co-founder #2: Head of Enterprise Sales / Partnerships**
+- Profile: enterprise software salesperson who has sold evaluation or procurement tooling to Fortune 500
+- Ideal background: former {Scale AI AE, Salesforce procurement vertical, Big 4 consulting → AI tools sales}
+- Core skill: navigating procurement cycles, building champion networks in IT/AI teams
+- Why this first: Straw's GTM requires relationship-based enterprise sales (6-12 month cycles). This person defines the ICP and finds the first 5 paying customers.
+- Compensation: 8-12% equity as co-founder, OTE $200-300K (base $100K + commission)
+- Red flag: candidate who has only sold to developers/startups — enterprise procurement is a different sport
+
+---
+
+### First 6 Months — Pre-Seed Team (4 people total)
+
+```
+Month 1-2:
+  - Founder: full-stack product + strategy
+  - Co-founder 1 (Eval): ZeroClaw core + Tier-1 sandbox
+  - Co-founder 2 (GTM): design partner conversations, ICP refinement
+
+Month 3-4:
+  Hire #3: Full-Stack Engineer (Contractor → FTE)
+  - Profile: strong TypeScript/React, Supabase/Postgres, Next.js
+  - Responsibility: operator-facing UI, submission pipeline, leaderboard
+  - Compensation: $140-160K + 0.5-1.0% equity
+  - Find via: ex-colleagues, Lemon.io, Toptal, AngelList
+
+Month 5-6:
+  Hire #4: Design Partner / Customer Success (Part-time initially)
+  - Profile: someone from a target enterprise who wants to be involved early
+  - Responsibility: rubric quality, feedback loops, customer onboarding
+  - Why: design partners who become early employees reduce churn risk enormously
+  - Compensation: $80-100K (part-time) + 0.25% equity
+```
+
+Team at 6 months: 4 people, $600-700K burn/6 months at pre-seed salaries.
+
+---
+
+### Seed Round Team (Months 7-18, after $3-5M seed)
+
+**Hire #5: Senior ML Infra Engineer**
+- Focus: Tier-2 LLM evaluation pipeline, Glicko-2 rating system, sandbox performance
+- Profile: ML platform engineer (not researcher); has worked on distributed eval systems
+- Compensation: $170-200K + 0.5% equity
+- Hire when: Tier-1 evaluation working in production; need to scale to Tier-2
+
+**Hire #6: Head of Security / Compliance**
+- Focus: gVisor hardening, SOC 2 Type II, EU AI Act compliance export
+- Profile: security engineer with Docker/container security + enterprise compliance
+- Why early: enterprise procurement requires SOC 2 before closing large deals; 6-month prep minimum
+- Compensation: $160-190K + 0.3% equity
+- Hire when: first enterprise LOI signed (compliance becomes blocker)
+
+**Hire #7: Operator Community Manager**
+- Focus: operator onboarding, forum, leaderboard, anti-fraud
+- Profile: former developer advocate or community manager at developer-facing platform
+- Why: operator supply quality determines platform quality. Retention > acquisition.
+- Compensation: $100-120K + 0.2% equity
+- Hire when: 50+ operators onboarded
+
+**Hire #8: Data / Analytics Engineer**
+- Focus: rating pipeline accuracy, competition analytics, BI for enterprises
+- Profile: data engineer comfortable with Postgres + Python + dbt
+- Compensation: $150-170K + 0.25% equity
+- Hire when: 20+ competitions complete, need analytics to prove ROI to customers
+
+**Hire #9-10: Enterprise AEs (2×)**
+- Focus: outbound prospecting, closing deals, expanding existing accounts
+- Profile: enterprise software AE with 2-4 years experience, sold $100K-$500K ACV
+- Compensation: $80-100K base + OTE $180-250K + 0.1-0.2% equity each
+- Hire when: Co-founder #2 has closed 3 paying customers and is hitting bandwidth ceiling
+
+Team at 18 months: 10 people, ~$2M annual burn.
+
+---
+
+### Series A Team (Months 19-36, after $10M Series A)
+
+**Hire #11: Head of Product**
+- Profile: PM who has shipped B2B SaaS marketplace products; understands evaluation/assessment domain
+- Why now: founder handled product through seed; Series A scale requires dedicated product leadership
+- Compensation: $180-220K + 0.3% equity
+
+**Hire #12-14: Engineering Team Expansion (3 engineers)**
+- Specialize: 1 platform reliability, 1 operator product, 1 integrations (API/webhooks/SDK)
+- Compensation: $150-180K each + 0.1-0.2% equity each
+
+**Hire #15: Head of Marketing**
+- Profile: B2B content/demand gen marketer; has built evaluation/procurement category narrative
+- Why now: Series A requires category creation, not just deal-by-deal sales
+- Compensation: $150-180K + 0.2% equity
+
+**Hire #16: General Counsel**
+- Focus: TOS, arbitration agreements, IP licensing frameworks, Singapore entity structure
+- Profile: tech startup lawyer who has done marketplace + AI company work
+- Why now: P3/P4 licensing deals require robust IP agreements; regulatory frameworks require counsel
+- Compensation: $200-250K + 0.15% equity OR outside counsel at $600-800/hour until hire makes sense
+
+**Hire #17-18: Customer Success Managers (2×)**
+- Focus: competition design, rubric quality, renewal management
+- Profile: technical enough to understand evaluation; empathetic enough for customer relationships
+- Compensation: $100-130K each + 0.1% equity each
+
+Team at 36 months: 18 people, ~$5M annual burn. This is lean for a $12.9M ARR company — intentional. Straw's model is high-automation evaluation, not labor-intensive services.
+
+---
+
+### Anti-Patterns to Avoid
+
+**1. Hiring a Head of AI too early.**
+Straw is not building foundation models. The ML infra role is an engineering hire, not a research hire. An AI researcher who wants to publish papers is the wrong fit.
+
+**2. Hiring sales before product-market fit.**
+If enterprises aren't buying after 3-5 conversations with co-founders, adding AEs doesn't fix the problem. It amplifies the problem.
+
+**3. Hiring a Head of Operations too early.**
+Pre-Series A, operations is the founder's job. Hiring ops prematurely signals the founder is trying to escape the hard work.
+
+**4. Geographic diversity in early team.**
+Singapore-first market strategy requires at least one team member with Singapore market context (legal, cultural, enterprise sales norms). Don't build the founding team entirely in San Francisco and then try to do Singapore from afar.
+
+**5. Ignoring evaluation domain expertise.**
+Every competitor (Scale AI, LangSmith, etc.) has excellent engineers. Straw's moat is evaluation credibility. Hire people who deeply understand what makes evaluations trustworthy — not just people who can build fast.
+
+---
+
+### Recruiting Strategy
+
+**For early technical hires:**
+- Target: engineers who were frustrated by evaluation quality problems at previous companies
+- Message: "Evaluation is broken. We're fixing it. Here's why this is the most interesting ML infra problem right now."
+- Channels: arXiv authors in NLP evaluation (direct outreach), ACL/EMNLP conference networking, ML evaluation Discord communities
+
+**For enterprise sales hires:**
+- Target: AEs at Scale AI, Weights & Biases, Cohere, or enterprise AI tooling companies
+- Message: "We're creating a new category. You get to define the playbook."
+- Channels: direct LinkedIn outreach (co-founder), referrals from design partners, AI Go-To-Market community (Pavilion AI chapter)
+
+**For operator community hire:**
+- Target: developer advocates at LangChain, HuggingFace, OpenAI developer programs
+- Message: "Build the most interesting AI operator community in the world."
+- Channels: developer advocate Slack communities, DevRel Collective, Twitter/X
+
+**Compensation philosophy:**
+- Pre-seed: equity-heavy (cash conserved); target 0.5-2% equity for first 10 employees
+- Seed: market cash + meaningful equity; don't lowball on salary → creates resentment
+- Series A: competitive cash + smaller equity tranches; 4-year vest, 1-year cliff always
+- Never hire someone purely for prestige (big company name, impressive pedigree) if their actual skill doesn't match the job
+
+---
+
+### Cultural Anchors (Hiring Filter)
+
+Every early hire evaluated against three dimensions:
+
+**1. Epistemic honesty** — do they say "I don't know" or do they bullshit? Evaluation culture requires people who tell the truth about quality.
+
+**2. Product obsession** — do they care about enterprise buyers getting correct answers, or just about making clever systems? The product wins by being useful, not clever.
+
+**3. Marketplace instincts** — do they intuitively understand that both sides (enterprises AND operators) need to feel like they win? Two-sided marketplace thinking is a learned skill; candidates who've only built one-sided products need remediation.
+
+Reject candidates who (a) think evaluation is a solved problem, (b) have never read the evaluation literature, or (c) believe "just use GPT-4 as a judge" is an acceptable answer.
+
