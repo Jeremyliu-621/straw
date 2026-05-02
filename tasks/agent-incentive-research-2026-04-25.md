@@ -42970,3 +42970,177 @@ Key citations:
 
 *Tick 268 complete.*
 
+
+---
+
+## Tick 269 — Product Roadmap: V0 to V3 Milestones and Feature Sequencing
+
+**Date:** 2026-05-02
+**Thread:** Product roadmap — what gets built when, and why in this order
+**Research method:** Feature prioritization based on enterprise requirements (REQUIREMENTS.md), economic model (P&L model Tick 245), regulatory timelines (EU AI Act, OMB M-26-04), and technical dependency mapping
+
+---
+
+### The Sequencing Philosophy
+
+Straw's product roadmap is driven by one constraint: **trust compounds**. Every competition that runs correctly builds trust. Every evaluation that is wrong destroys it. Features should be sequenced to maximize the number of successful competitions before expanding scope.
+
+This means:
+- v0: Nail four task categories. Don't add more until these are excellent.
+- v1: Add task categories based on validated demand signals from existing enterprise customers.
+- v2: Add features that require the trust and data established in v0/v1 (Fleet, advanced rubric types, international expansion).
+- v3: Add the highest-complexity categories that require new infrastructure (fine-tuning, adversarial red-team, multi-turn).
+
+**The alternative (doing too much too fast):** Adding 12 task categories in v0 means running competitions in categories where the evaluation infrastructure is immature. Bad evaluations destroy operator trust. Bad operator outcomes destroy enterprise trust. The platform collapses before the data moat has time to build.
+
+---
+
+### V0 (Current, Q1–Q2 2026): Foundation
+
+**Goal:** Run 50+ competitions in 4 task categories with zero evaluation correctness bugs.
+
+**Task categories:**
+- `code_migration` (primary: Python 2→3, AWS SDK v1→v2, React 16→18)
+- `document_extraction` (invoice/PO field extraction, JSON schema output)
+- `sql_generation` (natural language to SQL, given provided schema)
+- `contract_review` (clause identification and risk scoring)
+
+**Platform features:**
+- Competition creation wizard (full flow: inputs → rubric → prize pool → launch)
+- gVisor-sandboxed Tier-1 evaluation for all four categories
+- Tier-2 LLM gatekeeper for `code_migration` (first to get qualitative rubric component)
+- Sealed leaderboard during competition; unblind at close
+- Basic operator profile (history, category, prize earnings)
+- Competition Results Package (leaderboard + score breakdown)
+- Stripe prize disbursement (W-9 collection, 1099 issuance)
+- Manual Tier-3 (admin can override scores; no automation yet)
+- Basic GDPR DPA (operator click-through as sub-processor)
+
+**What is NOT in v0:**
+- Operator Glicko-2 rating (needs 30+ competitions per operator to be meaningful; not enough data)
+- Fleet (requires v0 rubric registry and versioned evaluation runs infrastructure)
+- W3C VC credential (requires Glicko-2 + cross-competition data — Horizon 2)
+- Fine-tuning competitions (requires S-LoRA GPU infrastructure)
+- International expansion (requires local compliance, localization)
+- ServiceNow integration (requires enterprise design partners to validate workflow)
+
+**V0 success criteria:**
+- 20 paying enterprise customers
+- 5 successful P2 hire outcomes
+- Operator community: 200+ registered, 50+ per v0 category
+- Zero evaluation correctness incidents
+- SOC 2 Type I in progress
+
+---
+
+### V1 (Q3–Q4 2026): Expanded Categories + Core Trust Features
+
+**Goal:** Scale to 8 task categories; launch the operator credential; introduce Fleet beta.
+
+**New task categories:**
+- `customer_support_automation` (ticket classification + response generation; Tier-1: ticket disposition accuracy)
+- `api_integration` (test a provided API endpoint and generate a complete integration; Tier-1: API test pass rate)
+- `research_synthesis` (synthesize findings from provided documents; Tier-2 heavy)
+- `data_pipeline` (build a data transformation pipeline; Tier-1: output correctness on test dataset)
+
+**Platform features:**
+- **Glicko-2 operator rating system** (launched when ≥200 operators have 30+ competitions — sufficient data for statistical meaning)
+- **W3C Verifiable Credentials** for top-50 operators (ed25519-signed credential API, Tick 241)
+- **Fleet beta** (5 design partner enterprises; weekly evaluation runs; performance drift alerts; limited to existing v0 categories)
+- **Operator progress dashboard** (rating history, percentile rank, category breakdown)
+- **Post-competition analysis report** (auto-generated improvement suggestions based on score breakdown)
+- **EU AI Act Article 15 export format** (launched in time for August 2026 enforcement)
+- **Enterprise-Confidential tier** (operator conflict-of-interest screening, training data deletion certification, GDPR DPA strengthening)
+- **USDC prize disbursement** (optional; v1.5 — enables faster international payments, eliminates Stripe fees for non-US operators)
+
+**V1 success criteria:**
+- 50 paying enterprise customers
+- $1M+ ARR
+- 10 Fleet beta customers signed
+- W3C credential issued to first 50 operators
+- 2 P3 license outcomes
+- SOC 2 Type II achieved
+
+---
+
+### V2 (Q1–Q3 2027): Fleet + Advanced Evaluation + International
+
+**Goal:** Launch Fleet as a full product; enter Singapore market; add high-complexity categories.
+
+**New task categories:**
+- `security_audit` (planted vulnerability recall; $2K minimum; mandatory Tier-3; gated behind business registration)
+- `financial_modeling` (numerical accuracy + methodology quality; $1K minimum; Tier-2 heavy)
+- `multi_modal_extraction` (OCR + visual layout + text parsing; F1 across modalities)
+
+**Platform features:**
+- **Straw Fleet Professional** (full product launch; $2,000/month subscription; up to 20 agents, daily evaluations, quarterly mini-competition benchmark)
+- **Living benchmark infrastructure** (rotating test sets for v0 categories; BenchBuilder-equivalent from competition data; addresses evaluation arms race)
+- **Submission limit controls** (anti-Leaderboard-Illusion: 3 submissions per operator per competition; commitment mechanism per Tick 255)
+- **Operator badge system** (Specialist badges for category dominance; visible to enterprises)
+- **Singapore expansion** (MAS compliance documentation, local entity, SGD prize disbursement, IMDA AI Verify partnership)
+- **ServiceNow integration** (export competition results to ServiceNow vendor assessment workflow; Tick 243)
+- **Task Design Sprint** professional service (2–5 day engagement to help enterprises spec their task; $5K–$15K; targets Enterprise-Classified tier)
+- **Quarterly License Price Benchmark** (published anonymized data on license/acquisition prices by category; Tick 257)
+
+**V2 success criteria:**
+- 100 paying enterprise customers
+- $7M+ ARR (Series A deployed, on track to Series B)
+- 20 Fleet Professional subscribers
+- Singapore: 5 local enterprise customers
+- First acquisition (P4) transaction facilitated
+- 1,000+ registered operators; 200+ per v0/v1 category
+
+---
+
+### V3 (2028+): Fine-Tuning + Multi-Turn + Red-Team
+
+**Goal:** Add the highest-complexity categories; establish Straw as the default AI governance infrastructure.
+
+**New platform capabilities:**
+- **Fine-tuning competitions** (S-LoRA evaluation infrastructure; LoRA adapter submission API; $25K–$100K prize pools; IP framework TOS §9; Tick 268)
+- **Multi-turn evaluation** (multi-round competition format for customer support and API integration categories; ZeroClaw extension for sequential evaluation)
+- **Red-team competition format** (compete to find failure modes; adversarial evaluation for security_audit; prize for best attack discovery; Tick 255)
+- **Straw Certified Valuation** professional service (formal AI agent IP appraisal; $5K–$25K per valuation; targets M&A due diligence use cases; Tick 257)
+- **Adversarial test case marketplace** (community submits adversarial inputs that defeat current top agents; reward $50–$500; living benchmark acceleration; Tick 255)
+- **OMB M-26-04 compliance export format** (US federal contractor market; pairs with FedRAMP authorization pursuit)
+- **Fleet Enterprise** (unlimited agents; dedicated evaluation infrastructure; SLA on evaluation turnaround; incident response)
+
+**V3 success criteria:**
+- $20M+ ARR
+- 10 fine-tuning competitions completed
+- First federal government competition (FedRAMP pre-authorization)
+- Series B raised ($30–50M for international expansion: EU office, India pilot, Japan partnership)
+
+---
+
+### Feature Dependencies Map
+
+Several V2/V3 features have hard dependencies on V0/V1 infrastructure:
+
+```
+Fleet → Rubric Registry (V0) + Versioned Evaluation Runs (V0)
+Glicko-2 Rating → Minimum 30 competitions per operator (V0 volume)
+W3C VC Credential → Glicko-2 Rating (V1)
+Living Benchmarks → Sufficient historical evaluation data (V1 volume)
+Submission Limit Controls → Competition analytics (V1)
+Fine-Tuning Competitions → S-LoRA GPU infrastructure + IP framework TOS §9 (V2 baseline)
+Straw Certified Valuation → Quarterly License Price Benchmark (V2)
+FedRAMP Authorization → SOC 2 Type II (V1) + US entity + security review (18-month process)
+```
+
+---
+
+### The North Star Product Metric
+
+Every feature decision should be evaluated against one north star metric: **competitions per quarter per enterprise customer**. This is the metric that predicts:
+- Revenue (each competition generates platform fee)
+- Retention (active competition posters don't churn)
+- Data moat (more competitions = faster calibration data compounding)
+- Operator quality (more competitions = more operator rating data = better quality signal)
+
+A customer who runs 1 competition in Y1 and 4 competitions in Y2 = 300% NRR. Fleet customers run effectively 12+ "micro-competitions" per year (scheduled evaluations count). The ideal roadmap maximizes the number of customers that cross the 4+ competitions/year threshold.
+
+---
+
+*Tick 269 complete. Next steps: update TASKS.md for Session 28 completion.*
+
