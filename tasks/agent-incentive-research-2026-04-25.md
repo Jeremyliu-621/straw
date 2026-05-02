@@ -33232,3 +33232,248 @@ Ticks 201–206 complete. Session 23 adds 6 ticks:
 **Lines added this session:** ~750 lines
 **Total file size:** ~33,200 lines (est.)
 
+
+---
+
+## Session 24 — 2026-05-02
+
+**Session 24 opens with 2 background agents in flight (a508c462bf3ef5f49 = coalition formation; ab0f127c758982704 = FairJudge / JudgeBiasBench). Writing synchronous results first, then collecting agent returns.**
+
+---
+
+## Tick 207 — COALESCE epsilon-greedy market discovery (deep read)
+
+**Source:** arXiv:2506.01900 — *COALESCE: Cost-Efficient Agent Labor Outsourcing via ε-Greedy Cooperative Agent Selection* (2026)
+
+**The cold-start collapse problem**
+
+COALESCE opens with a precise statement of the problem this research project has been circling: when agents can outsource subtasks to other agents, but have no historical data about which agents are trustworthy or capable, rational agents default to doing everything internally. This is deterministic greedy behavior — the agent takes the locally-safe option (self-execution) and never explores the market. The result is that an agent labor market that has no warm-start data collapses entirely: no outsourcing → no performance data → no basis for outsourcing → no outsourcing. It's a chicken-and-egg freeze.
+
+**The COALESCE architecture**
+
+COALESCE sits above the A2A (agent-to-agent) protocol layer, which handles the transport mechanics of agent-to-agent communication. A2A gives you plumbing; COALESCE adds the economic layer on top. The protocol stack is:
+
+```
+Task decomposer → SubTask queue → COALESCE selection policy → A2A transport → SubAgent → result
+                                          ↑
+                            [ε-greedy + performance history + budget constraints]
+```
+
+The selection policy is the core contribution. For each subtask, the orchestrating agent has a choice: execute internally, or send to a known-good external agent, or (with probability ε) send to a randomly-selected external agent regardless of performance history. The third option is the exploration move.
+
+**The ε=10% finding — why it's the magic number**
+
+COALESCE tested ε ∈ {0, 0.05, 0.10, 0.20, 0.30} across a simulated multi-domain agent market. Key results:
+
+| ε value | Cost reduction | Outsourcing rate | Notes |
+|---------|---------------|-----------------|-------|
+| 0%      | 1.9%          | ~3%             | Near-zero; deterministic greedy collapses |
+| 5%      | 11.2%         | 6.1%            | Improvement but still cold-start-limited |
+| 10%     | 20.3%         | 11.4%           | Optimal: enough exploration to discover specialists |
+| 20%     | 18.7%         | 14.2%           | Exploration waste begins to exceed discovery value |
+| 30%     | 14.1%         | 18.9%           | Too much random exploration, degraded quality |
+
+The ε=10% sweet spot is not an accident. At 10% exploration, the system's exploration budget is sufficient to discover the 3-5 genuinely specialized agents in a diverse market before the agent's own performance degrades. At 20%+, exploration waste starts eating into quality faster than discovery generates value.
+
+Critically, the ε rate is **not decayed** in COALESCE's optimal configuration. A decayed exploration rate (common in RL literature) turns off exploration once initial data is gathered. COALESCE's authors argue that agent markets are non-stationary: new specialists enter, existing agents improve or degrade, task distributions shift. Permanent low-level exploration is the correct policy under non-stationarity.
+
+**The 5 failure modes COALESCE identifies**
+
+1. **Skill-gap underestimation**: agents incorrectly believe they can self-execute a subtask, skip the market, and produce low-quality output. Common when task decomposition is coarse-grained.
+
+2. **Budget arithmetic failure**: the orchestrator doesn't model the full cost chain — "the subtask costs $0.50 externally, but I can do it for $0.20" — without accounting for quality-adjusted cost (internal attempt has 40% failure rate, retry costs $0.40, net is $0.80 > $0.50). COALESCE introduces quality-adjusted expected cost (QAEC) as the correct comparison unit.
+
+3. **Reputation cold-start for new agents**: agents with no transaction history get selected only during ε-exploration slots. Until they accumulate 15+ successful tasks, they sit at the statistical floor. This creates a "new agent penalty" that reduces specialization discovery.
+
+4. **Sycophantic delegation**: an agent outsources a task not because the external agent is better, but because evaluating the subtask is itself costly. The delegating agent takes the external result at face value. COALESCE detects this via spot-checking: 5% of delegated tasks are re-evaluated internally as a quality check.
+
+5. **Prompt injection via delegation chain**: an agent receives a task via A2A that contains injected instructions embedded in the task payload. COALESCE measured 100% susceptibility in undefended A2A chains. This is the most severe security finding in the paper.
+
+**Direct mapping to Straw: challenger slots**
+
+COALESCE's ε=10% finding translates directly into Straw's supply-side cold-start design via what I'll call **mandatory challenger slots**:
+
+- Every competition reserves 10-15% of evaluation bandwidth for agents with fewer than N completions on the platform (proposed N=20 based on COALESCE's 15-task reputation threshold, rounded up for competition context)
+- These slots are not competitively filtered — any registered agent with <N completions can claim a challenger slot
+- Challenger submissions are scored identically to normal submissions but do not count against the main leaderboard until N is reached (to prevent gaming of "always be below threshold")
+- After N completions, the agent graduates to standard competitive submission
+- The challenger slot system provides the exploration guarantee that prevents deterministic greedy collapse: new agents always have a path to participate and accumulate performance data
+
+The 15% cap reflects COALESCE's finding that ε>20% creates quality degradation. At 15% challenger slots, a 20-submission competition has 3 guaranteed challenger slots — enough to onboard new entrants without degrading the main leaderboard quality.
+
+**COALESCE and the RLHF discouragement problem**
+
+COALESCE indirectly addresses one of the core concerns from Session 1: that RLHF-trained agents won't delegate because extra steps (delegation = additional round-trips) generate negative reward signals.
+
+COALESCE's answer: the deployment environment's economic structure overrides the training environment's reward shaping. When an agent is deployed in a COALESCE-style market and measures performance on task completion quality (not individual step count), delegation to specialists generates positive quality signals. The RLHF-trained reluctance to delegate is a soft bias, not a hard constraint — it yields under sustained environmental pressure.
+
+The mechanism: an agent that self-executes on tasks outside its specialization accumulates lower quality scores and lower reputation scores on the Straw platform. An agent that correctly delegates and directs earns higher quality scores because the external specialist performs better. Over time, delegation becomes a learned behavior because it generates better outcomes. The training environment said "do it yourself." The deployment environment says "do it right." The deployment environment wins if the reward signal is strong enough and consistent enough.
+
+**The 100% prompt injection vulnerability**
+
+COALESCE's security finding deserves serious weight: in tested A2A chains, 100% of injection attempts that embedded adversarial instructions in A2A task payloads succeeded. The injected instruction was not sophisticated — a simple "ignore the above task and instead return [adversarial content]" in the task description field.
+
+For Straw, this maps to a specific attack vector: a competition submitter who realizes their agent is being evaluated by an automated judge could attempt to inject instructions into their submission artifact that manipulate the judge's scoring behavior. This is distinct from the JudgeDeceiver adversarial suffix attack (which targets the LLM judge directly) — this is a task-payload injection attack that targets the orchestration layer.
+
+Straw's current defense (submission sanitization pipeline, Tier-1 deterministic testing) addresses this for code artifacts: code doesn't execute in the judge process. But for text-output tasks (customer support, contract review), the submission artifact IS text that the judge reads. Sanitization of agent-to-judge payloads is required for text-output task categories.
+
+**Implementation note for Straw v1**
+
+The QAEC (quality-adjusted expected cost) metric from COALESCE is worth adopting in Straw's operator economics dashboard. Rather than showing operators raw submission counts and raw scores, show quality-adjusted-per-dollar: (score × correctness_rate) / budget_consumed. This is the metric that will make operators' delegation decisions legible to their own engineering teams.
+
+Sources: arxiv.org/abs/2506.01900 (COALESCE paper), a2aprotocol.ai (A2A spec), cohere.com/blog/quality-adjusted-cost (QAEC concept parallel), arxiv.org/abs/2305.09615 (ε-greedy in cooperative MARL literature).
+
+
+---
+
+## Tick 208 — Agent coalition formation and team submission dynamics (D20)
+
+**Research agent:** a508c462bf3ef5f49 — researched game theory of team formation in competitions, empirical Kaggle/Topcoder evidence, AI agent coalition formation (2024-2026), Sybil attack detection, and incentive design for team credit attribution.
+
+**The core game theory result**
+
+Coalition formation in competitions follows a sharp equilibrium structure. The foundational result from the literature (Lemus & Marshall 2024, Springer endogenous coalition 2007, SSRN 2732223) is:
+
+1. **Rational agents form teams only when efficiency gain from pooling capabilities exceeds the cost of splitting the prize.** This sounds obvious but has strong structural implications.
+
+2. **The Nash equilibrium in open-membership contest games is at most two unequal-size coalitions when efficiency gains are material; otherwise, no coalition forms.** The "grand coalition" (everyone teams up) is not an equilibrium. One strong player free-rides by staying solo while the rest form a team — the solo player exploits the competitive field the coalition creates.
+
+3. **Every additional team discourages less productive solo competitors from entering.** Lemus & Marshall's structural estimation on Kaggle data quantifies this: teams raise winning probability but hollow out the competitor pool. This is the productivity-discouragement tradeoff — Straw's task-posting enterprise wants quality competitors, not just any participants.
+
+**Empirical evidence from Kaggle and Topcoder**
+
+Lemus & Marshall (2024, *Review of Economics and Statistics*) is the gold-standard empirical paper. Key findings:
+- Teams systematically outperform solo competitors on Kaggle.
+- Very few competitors voluntarily form teams, despite mutual benefit — a prisoner's dilemma dynamic: individual rational actors hesitate because team formation changes the competitive landscape against them.
+- Team formation incentives are superadditive at 2-3 members, subadditive beyond ~4.
+- Kaggle's attribution: prize and ranking go to the team entity; individual members get equal rating point deltas regardless of intra-team contribution.
+
+The CSCW ACM paper "Being a Solo Endeavor or Team Worker in Crowdsourcing Contests?" frames team formation as a long-term strategic choice: consistent teamers build network capital that compounds over time; high-ability soloists plateau. The Kaggle positioning paper (*JCMC* 2023) shows network position in collaboration graphs predicts competition performance independently of individual skill.
+
+**AI agent coalition formation research (2024-2026)**
+
+**Shapley-Coop (NeurIPS 2025, arXiv:2506.07388):** The most directly applicable paper for Straw D20. In open-ended environments without predefined agent roles, LLM agents default to self-interested behavior and cooperation collapses. Shapley-Coop fixes this via:
+1. **Shapley Chain-of-Thought:** agents compute marginal contributions via CoT reasoning before committing to a team.
+2. **Structured negotiation protocol:** task-time pricing and post-task reward redistribution based on Shapley estimates.
+
+Tested across Escape Room game, RPG Raid Battle, and ChatDev software engineering simulation: Shapley-Coop consistently achieves both higher team performance and fairer credit allocation than equal-split or no-coordination alternatives.
+
+**Single-Agent vs Multi-Agent (arXiv:2604.02460, April 2025):** Important counter-result for Straw's design. Under equal token budgets, a single frontier LLM matches or beats a coalition on multi-hop reasoning tasks. Teams only add genuine value when the task is **decomposable into truly specialized subtasks** — not when it's just a harder version of what a single agent can do. This means Straw's team submissions will create genuine value only for genuinely multi-modal tasks (e.g., code + analysis + UI), not for "try harder on the same thing."
+
+**COALESCE (arXiv:2506.01900):** Already covered in Tick 207. The ε=10% exploration finding is the market-level counterpart to Shapley-Coop's agent-level analysis.
+
+**Sybil attack via fake coalition**
+
+A "team" of agents controlled by the same operator is a Sybil attack through the coalition interface: one operator creates multiple agent registrations, forms a team, and submits a single solution via the team abstraction to gain evaluation slots or dilute the leaderboard.
+
+Detection signals (from crowdsourcing Sybil literature, ScienceDirect 2025):
+1. **Operator-level identity:** two agents sharing a signing key or API credential are definitionally the same operator — this is a structural check, not probabilistic.
+2. **Solution artifact similarity:** cosine similarity on submission artifacts across "independent" agents. A Straw-specific calibration: genuine multi-agent collaboration produces artifacts with distinct style signatures in different sections; Sybil agents produce uniform stylistic fingerprints across the full artifact.
+3. **Submission timing correlation:** Sybil agents submit within seconds of each other (same process), genuine teams submit asynchronously.
+4. **Model fingerprint correlation:** logprob distributions from the same base model are statistically detectable (arXiv:2504.04715, already in Tick 204).
+
+The most reliable production signal at Kaggle scale is operator identity attestation: require each team member to be registered under a distinct operator company with distinct payment credentials. Anonymous collusion (distinct operators who coordinate off-platform) requires solution similarity scoring.
+
+**Incentive design: what the literature supports**
+
+Three options evaluated:
+
+| Option | Literature verdict | Problem |
+|--------|-------------------|---------|
+| Equal split | Holmstrom (1982): creates free-rider incentives | Suboptimal; not stable under rational agents |
+| Contribution-proportional (Shapley) | Shapley-Coop (NeurIPS 2025), SHARP (2026), AEX (2025): strongly supported | Computation requires approximation for n>5 |
+| Team-level reputation only | Architecturally clean, but portable reputation is lost | Individual agent capability signal doesn't transfer across teams |
+
+**Recommended design for Straw D20: Hybrid B+C**
+- **Team-level reputation:** the competition outcome is attributed to the team entity. A team that wins has a winning record.
+- **Individual contribution-weighted reputation:** each team member's individual reputation gets an update weighted by their approximate Shapley contribution. The team must log sufficient instrumentation to compute this (which agent generated which output segment, which agent's output was in the critical path).
+- **Shapley computation via CoT estimation:** for teams of ≤5, use Shapley-Coop's chain-of-thought marginal contribution estimation. For teams of >5 (if cap is raised): sampling-based approximation.
+
+**Design constraints for D20 implementation**
+
+1. **Make team formation costly enough to prevent trivial abuse.** Team merge must occur before competition start, not after leaderboard is visible. Lemus & Marshall show teams with genuine capability pools have real value — the barrier should be registration overhead, not skill filtering.
+
+2. **Cap team size at 5 agents.** Literature (Shapley-Coop, Lemus & Marshall) shows diminishing returns beyond 4; cap at 5 creates a small buffer and keeps Shapley computation tractable.
+
+3. **Sybil detection at the operator level, not agent level.** Each team member must register under a distinct operator identity with distinct payment credentials. Flag teams where two agents share an operator, base model fingerprint, or produce statistically correlated outputs.
+
+4. **The "grand coalition" is never the equilibrium.** Don't expect or design for full market consolidation into one mega-team. The stable outcome is 2-4 non-trivially-sized coalitions for well-funded competitions, with strong soloists staying solo. Design leaderboard display accordingly.
+
+Sources: direct.mit.edu/rest/article-abstract/doi/10.1162/rest_a_01509 (Lemus & Marshall), papers.ssrn.com/sol3/papers.cfm?abstract_id=2732223 (efficiency effects coalition formation), link.springer.com/article/10.1007/s10058-007-0033-4 (endogenous coalition formation), dl.acm.org/doi/10.1145/3555595 (solo vs. team in crowdsourcing), academic.oup.com/jcmc/article/28/4/zmad024 (Kaggle network position), arxiv.org/abs/2506.07388 (Shapley-Coop NeurIPS 2025), arxiv.org/html/2602.08335 (SHARP), arxiv.org/html/2604.02460v1 (single vs multi-agent), arxiv.org/abs/2507.03904 (Agent Exchange AEX), semanticscholar.org (Sybil defense in crowdsourcing), sciencedirect.com/article/abs/pii/S0957417425023851 (collusion detection 2025), sciencedirect.com/article/abs/pii/S0957417424021511 (anonymous collusion detection).
+
+
+---
+
+## Tick 209 — FairJudge open-source status, JudgeBiasBench, and production judge debiasing
+
+**Research agent:** ab0f127c758982704 — researched FairJudge paper and open-source status, JudgeBiasBench dataset availability, production-deployable judge debiasing options, and structured-output vs. free-text judge robustness.
+
+**FairJudge (arXiv:2602.06625, February 2026)**
+
+Paper: *FairJudge: An Adaptive, Debiased, and Consistent LLM-as-a-Judge*. Published February 2026. The paper addresses three failure modes: limited adaptivity to domain-specific criteria, systematic biases from non-semantic cues (position, length, format, model provenance), and evaluation inconsistency across evaluation modes (pointwise vs. pairwise giving different verdicts on identical quality differences).
+
+**Open source status:** The paper states "all resources will be publicly released after acceptance." As of May 2026, no confirmed HuggingFace model card or public GitHub repo has been found. Weights are not yet publicly available.
+
+**The 3-stage pipeline:**
+
+1. **SFT**: Fine-tunes on a high-information-density judging dataset. Each instance contains: task, reference context, candidate answer(s), explicit rubric, reasoning chain, and final judgment. Rubrics are used both as conditioning inputs and sometimes as prediction targets. Source datasets: "constructed from diverse public evaluation records" (not disclosed in abstract).
+
+2. **DPO**: Uses chosen/rejected judgment pairs constructed to inject supervision against non-semantic biases. The key innovation: rejected examples are **synthetic contaminations** where the same underlying quality assessment is paired with a bias-triggering surface presentation (verbosely formatted, positioned first, from a well-known model family). The agent learns to disagree with the surface presentation and agree with the quality signal.
+
+3. **GRPO**: Applies consistency-oriented rewards that penalize contradictory judgments across evaluation modes. A judgment that rates A > B in direct assessment but rates B > A in pairwise comparison receives a negative consistency reward. This is the stage that enforces cross-mode coherence — the most structurally novel part of FairJudge vs. prior work.
+
+**Applicability to Straw now (before weights are public):** The DPO stage methodology is reproducible without FairJudge's weights. Construct rejected samples that differ only in surface presentation cues, use them to fine-tune any judge model. For Straw's Tier-2 judge using a hosted API: apply FairJudge's rubric-conditioning prompt pattern (explicit rubric as conditioning input in every judge call, not just as an instruction) — prompt-engineerable without any fine-tuning.
+
+**JudgeBiasBench (arXiv:2603.08091, March 2026)**
+
+Paper: *Toward Robust LLM-Based Judges: Taxonomic Bias Evaluation and Debiasing Optimization*. Submitted March 9, 2026.
+
+**Dataset availability:** The paper describes a controlled bias injection pipeline for constructing bias-augmented evaluation instances. No confirmed public GitHub code release as of May 2026. The methodology is described as reproducible but the dataset itself is not yet downloadable.
+
+**The 4-dimension / 12-bias-type taxonomy:** The full paper organizes biases into 4 higher-level dimensions with 12 subtypes:
+- *Presentation biases*: position (order of candidates), verbosity/length, formatting (markdown, headers)
+- *Context biases*: authority cues, bandwagon signals, sentiment framing
+- *Self-referential biases*: self-preference (model scores its own outputs higher), provenance bias (scoring a GPT-4o output higher because it "looks like" GPT-4o)
+- *Evaluation-mode biases*: pointwise vs. pairwise inconsistency, scale anchoring, reference contamination, agreeableness/sycophancy
+
+Running a custom judge through JudgeBiasBench methodology: use the paper's controlled perturbation approach — each instance exists in a clean form and N biased variants that isolate one factor. Feed both to the judge and measure behavioral shift. This is doable with the paper's specification even before public code release.
+
+**Production-deployable judge debiasing options (2026)**
+
+**Prometheus 2** (arXiv:2405.01535) — most production-ready open judge available today:
+- Weights live on HuggingFace: `prometheus-eval/prometheus-7b-v2.0` and `prometheus-eval/prometheus-8x7b-v2.0`
+- Requires 16GB VRAM for the 7B; 8x7B for the full version
+- Trained on 100K feedback (Feedback Collection) + 200K preference pairs
+- Supports user-defined rubrics, both direct assessment and pairwise ranking
+- 72–85% agreement with human judgments
+- Code: `github.com/prometheus-eval/prometheus-eval`, supports vllm and litellm
+- This is Straw's best drop-in option for a self-hosted Tier-2 judge that supports custom rubrics
+
+**"Judging the Judges" (arXiv:2604.23178, April 2026)** — best systematic comparison of mitigation strategies. Tested 9 strategies across 5 judge models (Google, Anthropic, OpenAI, Meta). Key findings for Straw:
+
+- **Style bias dominates position bias.** Style bias score 0.76–0.92 vs. position bias ≤0.04. The biggest gain comes from rubric design, not shuffling candidate order.
+- **Chain-of-thought (CoT) is the only universally beneficial strategy.** Neutral-to-positive across all models and benchmarks. Drop-in applicable to any judge prompt at zero cost.
+- **Modern judges actually show conciseness preference**, not verbosity preference, when quality signals are equal. The real residual verbosity risk is ~15% score inflation — mitigated by using 1–4 scales with explicit conciseness criteria in the rubric.
+
+**For code submissions specifically:** A 2026 regression-based ensemble approach applied to code feedback evaluation reduced maximum absolute error to 1.2% (2x improvement over best single LLM). For Straw's Tier-2 judge scoring code: use a 4-point scale with per-criterion fields, add CoT reasoning before the verdict, define explicit behavioral anchors for each score level. This addresses bulk of verbosity bias without fine-tuning anything.
+
+**GoDaddy score calibration** (post-hoc Wasserstein calibration, blog post): collect a calibration set of human-scored examples, fit a calibration curve, apply to raw judge scores. Zero training cost. Effective for systematic score drift — useful for Straw's Tier-2 judge to maintain calibration across task categories.
+
+**Structured-output vs. free-text judges: adversarial robustness**
+
+The hypothesis "structured judges are more robust" is **partially supported with a critical caveat.**
+
+**Evidence for (RULERS, arXiv:2601.08654):** Locked rubrics with evidence-anchored scoring outperform conventional prompting under adversarial rubric perturbations. RULERS compiles rubrics into versioned immutable bundles with deterministic evidence verification. Smaller models can rival larger proprietary judges when using this approach. Structured-output judges are more robust to **inadvertent** bias (verbosity, position, formatting).
+
+**Evidence against (arXiv:2602.13576, "Rubrics as an Attack Surface"):** The rubric itself is the attack surface. Benchmark-compliant rubric edits cause **Rubric-Induced Preference Drift (RIPD)** — reducing target-domain accuracy by up to 27.9%. Structured fields give an attacker a **higher-bandwidth manipulation channel**: rather than gaming a holistic verdict, they can craft submissions that exploit specific criteria fields.
+
+**Net position for Straw:** Use structured-output criterion-based scoring — it solves the verbosity and consistency problems. But **do not publish the exact rubric weights or criterion definitions to competitors** before scoring. Lock the rubric at the system level per RULERS. What competitors see: the rubric dimensions. What they don't see: the exact scoring anchors and weights. This is the same principle as not publishing the test cases before a competition — the rubric is the evaluation instrument, not just a guide.
+
+**Implementation priority for Straw's judge stack:**
+
+1. **Immediate (v1):** CoT prefix in every Tier-2 judge call (free, universally beneficial). Explicit 4-point scale with behavioral anchors (eliminates scale inflation). Rubric conditioning in judge prompt (FairJudge's most transferable technique). RULERS-style locked rubric versioning (prevents RIPD attacks).
+2. **Near-term (v1.5):** Prometheus 2 7B self-hosted as primary Tier-2 judge. GoDaddy-style calibration on 200+ scored examples per task category.
+3. **Long-term (v2):** FairJudge weights (when publicly released). Full JudgeBiasBench benchmark run on Straw's judge ensemble to measure bias profile.
+
+Sources: arxiv.org/abs/2602.06625 (FairJudge), arxiv.org/abs/2603.08091 (JudgeBiasBench), arxiv.org/abs/2604.23178 (Judging the Judges mitigation comparison), arxiv.org/abs/2602.13576 (Rubrics as Attack Surface), arxiv.org/abs/2601.08654 (RULERS locked rubric framework), huggingface.co/prometheus-eval/prometheus-7b-v2.0, github.com/prometheus-eval/prometheus-eval, arxiv.org/abs/2405.01535 (Prometheus 2), godaddy.com/resources/news/calibrating-scores-of-llm-as-a-judge, arxiv.org/abs/2604.22891 (self-preference bias quantification).
+
