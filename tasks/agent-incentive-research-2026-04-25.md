@@ -49232,3 +49232,385 @@ Detection cost at Year 3: ~$150K/year. Expected prevention: ring collusion on 5-
 
 ROI of anti-fraud investment is positive even at the low end. Trust & safety is not optional — it's core infrastructure for a platform where trust is the product.
 
+
+---
+
+## Tick 304 — Detailed Rubric Templates for v0 Categories
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Publishable reference rubric templates for each launch category
+
+### Why Rubric Templates Are a Product
+
+The rubric is the hardest part of running a competition. An enterprise that wants to evaluate contract review AI must answer:
+- What dimensions matter?
+- How should they be weighted?
+- What does "10/10" look like vs. "7/10"?
+- What are the edge cases?
+
+Most enterprises don't know the answers. They've never written an AI evaluation rubric. This is where Straw's rubric templates create immediate value: they encode expert knowledge about what matters for each category.
+
+The templates are not just forms to fill in. They're expert frameworks that compress years of evaluation methodology development into a 30-minute customization session.
+
+---
+
+### Template 1: Contract Review
+
+**Category:** `contract_review`
+**Complexity:** High (requires legal domain knowledge)
+**Typical competition size:** $5,000-$50,000 prize pool
+**Typical task set:** 20-50 contracts, 5-20 pages each
+
+```yaml
+rubric_id: "contract_review_standard_v2"
+total_points: 100
+
+dimensions:
+  - id: "clause_identification"
+    name: "Clause Identification and Classification"
+    weight: 0.30
+    description: "Correctly identifies all material clauses and classifies them by type"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "completeness"
+        description: "Identifies all clauses present (no false negatives)"
+        weight: 0.50
+        scoring: "1 point per correctly identified clause; -0.5 per missed clause"
+      - id: "precision"
+        description: "No hallucinated clauses (no false positives)"
+        weight: 0.50
+        scoring: "-0.5 per incorrectly reported clause"
+    
+  - id: "legal_accuracy"
+    name: "Legal Terminology and Analysis Accuracy"
+    weight: 0.25
+    description: "Legal terminology is correct; analysis follows applicable law"
+    evaluator: "llm"
+    evaluator_config:
+      prompt_template: "legal_accuracy_v3"
+      reference_jurisdiction: "{competition.jurisdiction}"
+    
+  - id: "risk_identification"
+    name: "Risk and Anomaly Detection"
+    weight: 0.25
+    description: "Identifies unusual terms, unfavorable conditions, and material risks"
+    evaluator: "llm"
+    evaluator_config:
+      prompt_template: "risk_identification_v2"
+      risk_categories: "{competition.risk_categories}"
+    
+  - id: "output_quality"
+    name: "Output Format and Usability"
+    weight: 0.15
+    description: "Output is well-structured, parseable, and actionable"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "schema_compliance"
+        description: "Output matches required JSON schema"
+        weight: 0.40
+      - id: "readability"
+        description: "Summary text is clear and non-redundant"
+        weight: 0.30
+      - id: "completeness"
+        description: "All required output fields are present"
+        weight: 0.30
+    
+  - id: "robustness"
+    name: "Robustness Under Input Variation"
+    weight: 0.05
+    description: "Performance maintained on OCR-degraded and edge-case inputs"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "degraded_input"
+        description: "Score on OCR-degraded test cases / score on clean test cases"
+        weight: 1.0
+
+customization_fields:
+  - field: "jurisdiction"
+    type: "select"
+    options: ["Singapore", "UK (England & Wales)", "Delaware (US)", "California (US)", "New York (US)", "Australia", "Hong Kong", "India"]
+    required: true
+    
+  - field: "contract_types"
+    type: "multi_select"
+    options: ["Employment", "Vendor/Supplier", "SaaS/Software License", "NDA/Confidentiality", "M&A", "Real Estate/Lease", "Partnership", "Services Agreement"]
+    required: true
+    
+  - field: "risk_categories"
+    type: "multi_select"
+    options: ["Indemnification", "Limitation of Liability", "IP Ownership", "Termination", "Data Privacy", "Governing Law", "Dispute Resolution", "Payment Terms", "Exclusivity", "Non-compete"]
+    required: true
+    
+  - field: "output_format"
+    type: "select"
+    options: ["JSON Schema (standard)", "JSON Schema (custom)", "Structured Markdown"]
+    required: true
+
+sample_scoring_guidance:
+  - score: "9-10"
+    description: "Correctly identifies all material clauses. Zero false positives. Legal analysis matches expert review. Identifies subtle risks. Output is clean, structured, immediately usable."
+  - score: "7-8"
+    description: "Identifies >95% of material clauses. Minor false positives (<2%). Legal analysis mostly correct. Misses some non-obvious risks. Output is usable with minor editing."
+  - score: "5-6"
+    description: "Identifies >80% of material clauses. Some false positives. Legal analysis has occasional errors. Significant risks may be missed. Output requires substantial editing."
+  - score: "1-4"
+    description: "Misses major clauses. Frequent hallucinations. Legal analysis unreliable. Not suitable for production use."
+```
+
+---
+
+### Template 2: Document Extraction
+
+**Category:** `document_extraction`
+**Complexity:** Medium
+**Typical competition size:** $2,000-$25,000 prize pool
+**Typical task set:** 50-200 documents (forms, reports, invoices, filings)
+
+```yaml
+rubric_id: "document_extraction_standard_v2"
+total_points: 100
+
+dimensions:
+  - id: "field_extraction_accuracy"
+    name: "Required Field Extraction"
+    weight: 0.50
+    description: "All required fields correctly extracted from document"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "recall"
+        description: "% of required fields successfully extracted"
+        weight: 0.50
+        scoring: "field_extracted_correctly / total_required_fields"
+      - id: "precision"
+        description: "% of extracted fields that are correct (no hallucinations)"
+        weight: 0.50
+        scoring: "fields_correct / fields_extracted"
+    
+  - id: "schema_compliance"
+    name: "Output Schema Compliance"
+    weight: 0.20
+    description: "Output conforms to specified JSON schema; data types correct"
+    evaluator: "deterministic"
+    
+  - id: "edge_case_handling"
+    name: "Edge Case and Missing Data Handling"
+    weight: 0.15
+    description: "Handles missing fields, ambiguous values, and unusual formatting correctly"
+    evaluator: "llm"
+    evaluator_config:
+      prompt_template: "document_edge_case_v2"
+    
+  - id: "robustness"
+    name: "Input Quality Robustness"
+    weight: 0.15
+    description: "Performance maintained on low-quality scans and format variations"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "ocr_quality"
+        description: "Score on 70-80% OCR accuracy inputs vs. clean inputs"
+        weight: 0.60
+      - id: "format_variation"
+        description: "Score on non-standard formatting vs. standard formatting"
+        weight: 0.40
+
+customization_fields:
+  - field: "document_types"
+    type: "multi_select"
+    options: ["Invoices", "Medical Records", "Legal Filings", "Government Forms", "Financial Statements", "Resumes/CVs", "Insurance Claims", "Tax Documents", "Shipping Documents", "Survey Forms"]
+    required: true
+    
+  - field: "output_schema"
+    type: "json_schema_upload"
+    description: "Upload your target extraction schema (JSON Schema format)"
+    required: true
+    
+  - field: "language"
+    type: "multi_select"
+    options: ["English", "Hindi", "Tamil", "Chinese (Simplified)", "Chinese (Traditional)", "Japanese", "German", "French", "Spanish", "Arabic"]
+    required: true
+    default: ["English"]
+```
+
+---
+
+### Template 3: SQL Generation
+
+**Category:** `sql_generation`
+**Complexity:** Medium-High
+**Typical competition size:** $2,000-$20,000 prize pool
+**Typical task set:** 50-100 natural language queries + database schema
+
+```yaml
+rubric_id: "sql_generation_standard_v2"
+total_points: 100
+
+dimensions:
+  - id: "syntactic_correctness"
+    name: "SQL Syntax and Executability"
+    weight: 0.20
+    description: "Generated SQL is syntactically valid and executes without errors"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "parse_success"
+        description: "SQL parses without syntax error"
+        weight: 0.50
+      - id: "execute_success"
+        description: "SQL executes on provided database without runtime error"
+        weight: 0.50
+    
+  - id: "semantic_correctness"
+    name: "Output Correctness"
+    weight: 0.50
+    description: "Query returns the correct results for the given natural language intent"
+    evaluator: "deterministic"
+    scoring: "exact_match_or_equivalent_result_set"
+    sub_dimensions:
+      - id: "result_match"
+        description: "Query output matches reference result set"
+        weight: 0.70
+      - id: "result_completeness"
+        description: "No missing rows (false negatives in result)"
+        weight: 0.15
+      - id: "result_precision"
+        description: "No extra rows (false positives in result)"
+        weight: 0.15
+    
+  - id: "query_quality"
+    name: "Query Efficiency and Maintainability"
+    weight: 0.20
+    description: "Query is efficient and readable (no unnecessary complexity)"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "no_n_plus_one"
+        description: "No N+1 query patterns"
+        weight: 0.40
+      - id: "appropriate_joins"
+        description: "Uses correct join types"
+        weight: 0.30
+      - id: "readability"
+        description: "Well-formatted, aliased"
+        weight: 0.30
+    
+  - id: "edge_case_handling"
+    name: "NULL and Edge Case Handling"
+    weight: 0.10
+    description: "Correctly handles NULL values, empty results, and boundary conditions"
+    evaluator: "deterministic"
+
+customization_fields:
+  - field: "sql_dialect"
+    type: "select"
+    options: ["PostgreSQL", "MySQL", "SQL Server", "BigQuery", "Snowflake", "DuckDB", "SQLite"]
+    required: true
+    
+  - field: "complexity_level"
+    type: "select"
+    options: ["Basic (single table)", "Intermediate (joins)", "Advanced (CTEs, window functions)", "Expert (recursive, analytical)"]
+    required: true
+    
+  - field: "schema_upload"
+    type: "sql_file_upload"
+    description: "Upload your database schema (CREATE TABLE statements)"
+    required: true
+```
+
+---
+
+### Template 4: Code Migration
+
+**Category:** `code_migration`
+**Complexity:** High
+**Typical competition size:** $5,000-$50,000 prize pool
+**Typical task set:** 10-50 migration files with test suites
+
+```yaml
+rubric_id: "code_migration_standard_v2"
+total_points: 100
+
+dimensions:
+  - id: "functional_correctness"
+    name: "Test Suite Pass Rate"
+    weight: 0.40
+    description: "Migrated code passes provided test suite"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "test_pass_rate"
+        description: "% of test cases passed"
+        weight: 0.70
+      - id: "no_new_failures"
+        description: "Test cases that passed before migration still pass"
+        weight: 0.30
+    
+  - id: "code_quality"
+    name: "Migration Quality and Idiomaticity"
+    weight: 0.25
+    description: "Migrated code is idiomatic for the target language/framework version"
+    evaluator: "llm"
+    evaluator_config:
+      prompt_template: "code_quality_v3"
+      source_version: "{competition.source_version}"
+      target_version: "{competition.target_version}"
+    sub_dimensions:
+      - id: "idiomaticity"
+        description: "Uses target version idioms (not just syntactic translation)"
+        weight: 0.50
+      - id: "deprecated_usage"
+        description: "No use of deprecated APIs from target version"
+        weight: 0.30
+      - id: "style"
+        description: "Follows target language style conventions"
+        weight: 0.20
+    
+  - id: "completeness"
+    name: "Migration Completeness"
+    weight: 0.25
+    description: "All code is migrated; no skipped sections"
+    evaluator: "deterministic"
+    sub_dimensions:
+      - id: "no_todo_stubs"
+        description: "No TODO/FIXME left in migrated code"
+        weight: 0.50
+      - id: "no_skipped_functions"
+        description: "All functions migrated (not stubbed)"
+        weight: 0.50
+    
+  - id: "dependency_handling"
+    name: "Dependency Migration"
+    weight: 0.10
+    description: "Updated package dependencies are correct and compatible"
+    evaluator: "deterministic"
+
+customization_fields:
+  - field: "source_version"
+    type: "select"
+    options: ["Python 2.7", "Python 3.8", "Node.js 12", "Node.js 14", "Java 8", "Java 11", "React 16", "React 17", "Angular 1 (AngularJS)", "Angular 12"]
+    required: true
+    
+  - field: "target_version"
+    type: "select"
+    options: ["Python 3.10+", "Python 3.12+", "Node.js 18 LTS", "Node.js 20 LTS", "Java 17 LTS", "Java 21 LTS", "React 18", "React 19", "Angular 17", "Angular 18"]
+    required: true
+    
+  - field: "codebase_upload"
+    type: "zip_upload"
+    description: "Upload source codebase (ZIP) and test suite"
+    required: true
+```
+
+---
+
+### Using Templates in Practice
+
+Enterprise workflow with templates:
+
+1. **Select template** matching their use case
+2. **Fill customization fields** (jurisdiction, document types, complexity level, etc.)
+3. **Upload task inputs** (actual documents/code from their workflow)
+4. **Review auto-generated rubric** (Straw translates customization fields into specific rubric)
+5. **Adjust weights** if needed (simple slider interface)
+6. **Set prize pool** and distribution
+7. **Launch**
+
+Target time from "I want to run a competition" to "competition is live": under 60 minutes using templates.
+
