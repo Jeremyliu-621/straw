@@ -40639,3 +40639,186 @@ The narrative arc: Straw is not a competition marketplace. Straw is the evaluati
 
 *Tick 258 complete. Continuing to await background research agents for Ticks 254 (cross-category correlation) and 255 (live competition format).*
 
+
+---
+
+## Tick 255 — Live and Multi-Round Competition: Building a Dynamic Evaluation System
+
+**Date:** 2026-05-02
+**Thread:** Live/multi-round competition format — moving beyond one-shot evaluation
+**Sources:** Background research agent (see session notes); key papers: arXiv 2406.19314 (LiveBench), arXiv 2403.04132 (Chatbot Arena), arXiv 2504.20879 (Leaderboard Illusion), arXiv 2104.14337 (Dynabench), arXiv 2502.10985 (Elo Reliability), SWE-bench-Live GitHub (arXiv 2505.23419)
+
+---
+
+### Why Static One-Shot Competition Fails at Scale
+
+HumanEval: 13% (Codex 2021) → 99% (Kimi K2.5, 2026). Five years. Completely saturated. When 99% of model submissions score at the ceiling, the benchmark tells you nothing.
+
+SWE-bench Verified: 4% (March 2024) → 80.9% (present). Under three years.
+
+The pattern is consistent: static benchmarks, once published, become training targets. Goodhart's Law applies ruthlessly — models are fine-tuned on benchmark-format examples, RLHF-trained to match benchmark scoring patterns, and eventually tested on questions that leaked into training corpora. Score inflation driven by contamination, cherry-picking, and format optimization makes the score diverge from actual capability.
+
+**For Straw, this matters from Day 1.** If Straw runs the same code migration task repeatedly for 18 months, agents will eventually overfit to that task's specific test cases. The score will rise not because the agents improved on real code migration, but because they memorized the test set. Enterprise buyers will notice when the 9.1-scoring agent fails on their actual codebase.
+
+The solution: **living benchmarks and ELO-style continuous rating.** The literature has solved this problem. Straw needs to implement the solutions.
+
+---
+
+### The Living Benchmark Pattern: Three Implementations
+
+**Pattern 1: Time-Windowed Fresh Data (LiveBench, SWE-bench-Live)**
+
+LiveBench (arXiv 2406.19314, ICLR 2025): Questions sourced monthly from recent arXiv papers, news, Leetcode, and math competitions. Fully automated ground-truth scoring. Top models score below 70% — not saturated. Critical statistic: rank correlation between consecutive monthly updates is >0.997. Monthly refreshes don't destabilize rankings; they prevent contamination. The benchmark stays hard while staying consistent.
+
+SWE-bench-Live (Microsoft, arXiv 2505.23419): Automated pipeline builds Docker environments for GitHub issues created *after January 2024* — post-dating any plausible training cutoff. 1,890 tasks from 223 repositories, updated monthly. By construction, these tasks cannot be in training data. As time passes and training data windows advance, the system continues pulling issues from further out the time horizon.
+
+**Straw implementation:** For code migration, the source of new test cases is the open-source GitHub ecosystem. Every month, RepoLaunch-style automation can pull new codebases with documented migration patterns (Python 2→3 deprecations, AWS SDK v2→v3 migrations, React 17→18 patterns). New test cases are generated from real code; old test cases age out of the evaluation set after 6 months.
+
+**Pattern 2: Adversarial Human-in-Loop Collection (Dynabench)**
+
+Dynabench (arXiv 2104.14337, Meta AI): Annotators see current best model predictions in real time. Reward: creating examples the model fails on that humans don't. As models improve, annotators must try harder. Benchmark difficulty is dynamically coupled to model capability. Cannot saturate — the adversary adapts continuously.
+
+**Straw implementation:** For contract review and document extraction, adversarial test case generation could involve: (a) legal experts creating edge-case contract clauses that existing agents miss, (b) domain specialists identifying document layouts that confuse current extraction agents. Rewards: $50–500 for adversarial test cases that defeat top-ranked agents but are solvable by humans. The adversarial case generator community is a distinct user segment from agent operators.
+
+**Pattern 3: Automated Pipeline Regeneration (Arena-Hard BenchBuilder)**
+
+BenchBuilder (arXiv 2406.11939): Uses LLMs to extract high-quality prompts from Chatbot Arena traffic. The benchmark isn't a fixed set — it's a continuously updated sample of high-quality, high-discriminability prompts. 89.1% agreement with full Arena rankings using only 500 prompts.
+
+**Straw implementation:** As the platform accumulates thousands of competition inputs, a BenchBuilder-equivalent can identify which task inputs were most discriminating (i.e., produced the largest spread of agent scores across the leaderboard). These high-discriminability inputs become the evaluation set for future Fleet evaluations. The evaluation set self-updates based on what's actually discriminating in practice.
+
+---
+
+### Elo and Bradley-Terry: The Right Rating Architecture
+
+Chatbot Arena started with standard Elo (K-factor based, incremental updates) and migrated to Bradley-Terry (BT). Both compute the same fundamental quantity — pairwise win probability — but BT does it as a batch maximum likelihood estimate over all historical matchups simultaneously, which is mathematically more consistent for non-sequential evaluation.
+
+**For Straw's use case, Glicko-2 is preferable to both:**
+
+Glicko-2 adds three improvements over Elo/BT that matter for AI agent rating:
+
+1. **Rating Deviation (RD):** Each agent has two numbers: a rating and a deviation. A new agent with 10 competitions has RD=200; an established agent with 500 competitions has RD=40. This is displayed on the leaderboard: "Score: 8.4 ± 1.2" vs "Score: 8.4 ± 0.2" — forcing users to interpret confidence, not just point estimates.
+
+2. **Inactivity penalty:** If an agent hasn't competed in 6 months, its RD widens. This matters because an agent's performance can degrade over time (model updates, prompt drift). An agent with a stale rating should be displayed with more uncertainty.
+
+3. **Opponent quality adjustment:** When a new agent beats a low-RD (well-established) opponent, it gains more rating points than when it beats a high-RD (uncertain) opponent. This is correct — beating a known-quantity opponent is more informative.
+
+**Minimum competitions for publishable ratings:**
+- <30 competitions: provisional, displayed separately with a "📊 Provisional" badge
+- 30–99: acceptable for category leaderboards
+- 100+: stable (99% confidence interval ±10 points)
+- 500+: Chatbot Arena threshold for main leaderboard — appropriate for Straw's global leaderboard
+- 5,000: Glicko-2 simulation convergence point (not required for useful ratings, but this is where RD fully stabilizes)
+
+**Straw's rating display spec:**
+```
+Operator: Nexus Labs
+Category: code_migration
+Global Rank: #7 of 1,847
+Straw Rating: 847 ± 23  [Glicko-2, 94 competitions]
+Category Tier: Elite (top 5%)
+Last Competition: 12 days ago  [RD: stable]
+
+[vs. an inactive operator:]
+Straw Rating: 891 ± 67  [Glicko-2, 847 competitions, last active: 4 months ago]
+Category Tier: Grandmaster* (*rating uncertainty elevated due to inactivity)
+```
+
+---
+
+### The Leaderboard Illusion: Straw's Critical Security Problem
+
+The most important finding from the research: **arXiv 2504.20879 (The Leaderboard Illusion, April 2025)** documents that Meta tested **27 private LLM variants** on Chatbot Arena before releasing Llama-4 publicly, selecting only the best performer for official publication. This created an estimated **100–112 Elo point inflation** — a massive distortion that made Llama-4 appear significantly better than it would have if submitted without cherry-picking.
+
+This is directly applicable to Straw. If large AI operator firms can privately probe Straw's evaluation system (by submitting many internal variants and publishing only the winner), they can inflate their public rating and win competitions without genuinely outperforming competitors. The rating becomes a product of cherry-picking, not capability.
+
+**Straw's submission controls (required from Day 1):**
+
+1. **Submission limit per operator per competition:** Maximum 3 submissions per competition, with each submission visible to Straw admins (not public). Third-party submission audit available to competition poster on request.
+
+2. **Public commitment before private evaluation:** For rated competitions, operators must register their approach before the first submission. Changes to approach after initial submission trigger a new submission slot.
+
+3. **Multi-account detection:** If two operator accounts appear to be the same entity (same registered business, same payment method, similar solution patterns detected by Straw's anti-collusion system), they are merged and counted against a shared submission quota.
+
+4. **Transparent selection disclosure:** Any operator that wins a competition must disclose whether the submitted solution was selected from multiple internal candidates. Failure to disclose = TOS violation. Winning with cherry-picking is permissible (it's a form of system optimization) but must be disclosed.
+
+5. **Rating inflation audit:** Straw's data science team runs quarterly analysis: do the top-ranked operators have win rates consistent with their Glicko-2 ratings? Statistical anomalies (consistently winning by much more than rating predicts) trigger manual review.
+
+---
+
+### Multi-Round Format: What "Live Competition" Looks Like
+
+Current Straw: one-shot. Enterprise posts task → agents compete for 2 weeks → competition closes → winner selected. Done.
+
+**Live Competition v2 (2027+): Ongoing ELO-style laddering**
+
+Rather than discrete competitions, certain task categories lend themselves to continuous ladder competition:
+
+**The Ladder Format:**
+- A "task pool" for each category is maintained continuously (rotating living benchmark, per above)
+- Operators can submit to the ladder at any time
+- Each submission is evaluated against 10 randomly sampled tasks from the current pool
+- Bradley-Terry / Glicko-2 rating updated after each evaluation
+- Enterprise "buying intent" is expressed by subscribing to a category leaderboard for $0 (browse) or a specific tier (Elite+, for $200/month) to see head-to-head comparisons against their specific codebase
+
+**Advantages of ladder format:**
+- No waiting for a competition to start/end; operators test and iterate continuously
+- Enterprise buyers see real-time rankings rather than waiting for a competition cycle
+- New operators gain ratings faster (more evaluation opportunities than discrete competitions)
+- Seasonal effects smoothed out (discrete competition timing can introduce noise)
+
+**Disadvantages:**
+- Enterprise-specific evaluation loses its direct mapping (the ladder evaluates general capability, not performance on *your* specific task)
+- Prize structure is harder to implement (prize per competition slot vs. continuous reward)
+- Anti-cherry-picking controls are harder (operators can iterate continuously)
+
+**Resolution:** The two formats are complementary, not competing:
+- **Ladder (continuous):** General capability rating for operator discovery and reputation
+- **Bespoke competition (one-shot):** Enterprise-specific evaluation for actual procurement decisions
+
+The ladder tells the enterprise "this operator is generally excellent at code migration." The bespoke competition tells them "this operator is specifically the best at *your* code migration task, on *your* codebase."
+
+---
+
+### Adversarial Evaluation: Multi-Turn and Red-Team Competitions
+
+Beyond standard task evaluation, the literature points toward two advanced competition formats:
+
+**Multi-Turn Competition:**
+For task categories where the real-world application is iterative (customer support automation, code review, API integration), a single-turn evaluation misses the ability to handle follow-up, correction, and edge cases. Multi-turn evaluation:
+- Round 1: Agent receives initial task and responds
+- Round 2: Evaluator (ZeroClaw) sends a follow-up that probes a weak spot or asks for clarification
+- Round 3: Agent responds to the follow-up; score reflects quality of entire conversation, not just first response
+
+This more accurately captures real deployment value. Complexity: the evaluation system must generate coherent multi-turn follow-ups, which requires an LLM evaluator for round 2 (human or AI). This is a Tier-2 evaluation pattern — already planned in the three-tier eval funnel.
+
+**Red-Team Competition:**
+A competition format where the *attacker* wins, not the *defender*:
+- Enterprise posts: "Here is our deployed contract review agent. Find inputs that cause it to fail."
+- Operators compete to find adversarial inputs (contracts, edge case documents) that defeat the target agent
+- Scoring: number and severity of failures found, within a defined search budget
+- Prize: $5K–$20K, distributed to top adversarial discoverers
+
+This is directly useful for security audit and compliance testing. An enterprise can continuously red-team their deployed agents through Straw competitions, paying the attacker community to find failure modes before production incidents do.
+
+---
+
+### Summary
+
+The literature is clear: one-shot static evaluation is insufficient for a production AI evaluation platform. The solutions are proven. Straw needs to:
+
+1. **Implement living benchmark infrastructure** — rotating task pools with time-windowed fresh data (SWE-bench-Live pattern) and high-discriminability task selection (BenchBuilder pattern)
+
+2. **Move to Glicko-2 rating with explicit rating deviation** — displays confidence, handles inactivity, corrects for opponent quality
+
+3. **Implement submission controls against cherry-picking** — 3-submission limit, public commitment before evaluation, multi-account detection, disclosure requirement
+
+4. **Plan the Ladder format for continuous operator rating** (2027+) — complementary to bespoke competitions, not replacing them
+
+5. **Build toward multi-turn evaluation and red-team competitions** (2028+) — fills capability gaps left by single-turn, non-adversarial evaluation
+
+The most important near-term priority: submission controls. The Leaderboard Illusion problem destroyed Chatbot Arena's trustworthiness as a signal. Straw must prevent this from happening from Day 1, because once leaderboard integrity is questioned, it's nearly impossible to restore.
+
+---
+
+*Tick 255 complete. Next: Tick 254 (agent cross-category correlation — awaiting research agent a2c98271bf5553f7a).*
+
