@@ -46235,3 +46235,200 @@ Track weekly:
 
 The single most important metric: **Day 30 submission rate** (% of signups who submit at least once in their first 30 days). This predicts 12-month retention better than any other metric.
 
+
+---
+
+## Tick 287 — Straw's Enterprise Sales Playbook
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** How to actually close enterprise deals — account-based motion, champion building, objection handling
+
+### The Nature of the Sale
+
+Straw is not a bottom-up product-led growth play. AI evaluation decisions are made by VPs of AI, CTOs, and sometimes CFOs — not individual developers who discover a product on Product Hunt. The sales motion is top-down, relationship-driven, and requires 60-120 day cycles.
+
+However, there's a bottom-up component: enterprise AI engineers who want to benchmark their team's work will evangelize Straw internally after experiencing it. Operator Type E (enterprise insider) is the trojan horse.
+
+The ideal motion: developer discovers Straw (organic/LinkedIn/HackerNews) → participates as operator → creates internal champion → champion pitches up to VP → formal procurement begins. This is the PLG-assisted enterprise sale.
+
+---
+
+### Ideal Customer Profile (ICP)
+
+**Primary ICP:**
+- Company size: $1B-$10B revenue (Fortune 1000)
+- AI maturity: "scaling AI" (past proof-of-concept, deploying in production)
+- AI spend: $2M-$50M/year on AI tools, talent, and vendor relationships
+- Decision-maker title: VP of AI, CTO, Chief Digital Officer, Head of AI Procurement
+- Pain: has experienced at least one AI vendor disappointment; has made a large AI procurement decision based on vendor demo without independent validation
+- Geography: Singapore, UK, Germany (EU AI Act early adopters), Australia, India (Year 2+)
+
+**Secondary ICP:**
+- Indian IT services firms (Infosys, Wipro class) with Fortune 500 clients
+- Professional services firms (law firms, consulting firms, accounting firms) adopting AI tools
+- Financial services: banks, insurance companies, asset managers deploying AI in regulated contexts
+
+**Anti-ICP (don't spend time on):**
+- Startups (<$50M revenue): don't have budget; prize pools too small to attract elite operators
+- Government agencies (Year 1): procurement cycles 18+ months; better for Year 3
+- Companies with no existing AI deployment: they need an AI strategy first; Straw requires AI systems to evaluate
+
+---
+
+### Account-Based Sales Motion
+
+**Phase 1: Account Intelligence (2 weeks before first contact)**
+
+For each target account, build a file:
+- AI vendor relationships (from press releases, LinkedIn job posts, Crunchbase)
+- Known AI failures or disappointments (press coverage, Glassdoor reviews mentioning AI tools)
+- AI budget signals (job postings for "AI governance," "MLOps," "AI evaluation")
+- Champion identification (LinkedIn: who is "Head of AI Evaluation" or "AI Platform Lead")
+- Trigger events: funding round, new CTO hire, AI incident in the news, regulatory audit
+
+**Phase 2: Warm Outreach (First contact)**
+
+Never cold email the VP of AI. Always target the working-level champion first.
+
+**Email template for AI Platform Engineer (champion):**
+
+```
+Subject: Evaluating AI vendors objectively — curious about [Company]'s approach
+
+[Name],
+
+I noticed [Company] recently [deployed GPT-4 for contract analysis / expanded their AI team / hired a Head of AI Governance]. 
+
+A question I hear often from AI teams: how do you actually validate that Vendor A outperforms Vendor B on your specific use cases? Most teams use vendor demos, which are notoriously unreliable.
+
+We're building Straw — a competition platform where AI systems compete on real enterprise tasks with objective scoring. [Reference customer's company] used it to select their document extraction vendor and cut evaluation time from 3 months to 6 weeks.
+
+Would a 15-minute conversation be useful to hear how teams like yours approach vendor evaluation?
+
+[Name, Straw]
+```
+
+Key principles:
+- Acknowledge what they're already doing (shows research)
+- Lead with problem, not product
+- Specific reference customer (makes it real)
+- Low-commitment ask ("15-minute conversation")
+
+**Phase 3: Discovery Call**
+
+Goal: understand their current evaluation process and find the pain.
+
+Key questions:
+1. "Walk me through the last time you evaluated an AI vendor. How did you make the decision?"
+2. "Have you ever had an AI system that performed well in the POC and underperformed in production? What happened?"
+3. "How do you currently monitor ongoing performance of your AI vendors? Is that automated or manual?"
+4. "When your team presents an AI vendor recommendation to leadership, what evidence do you use?"
+5. "Are there any upcoming AI procurement decisions where evaluation quality matters?"
+
+Listen for: the last POC disappointment story, compliance/governance pressure, upcoming procurement cycle, lack of ongoing monitoring.
+
+**Phase 4: Pilot Close**
+
+After discovery, propose a pilot that maps to their specific pain:
+
+```
+Pilot Proposal Structure:
+- Business context: "You mentioned [specific pain]. We designed this pilot to address that."
+- Scope: 1 competition, specific category, defined prize pool
+- Timeline: 6 weeks from competition launch to results
+- Success criteria: defined in advance (must agree what "good" looks like)
+- Investment: $[fee] + $[prize pool]
+- Next step: design the competition rubric together
+```
+
+Typical pilot deals:
+- Singapore SME: $5K competition + $1K prize pool = $6K total
+- Mid-market: $10K competition + $5K prize pool = $15K total
+- Large enterprise: $25K competition + $15K prize pool = $40K total
+
+The pilot is the proof point. Close on the pilot, not on the annual subscription.
+
+---
+
+### Champion Building
+
+The champion is the person inside the enterprise who fights for Straw internally. They need three things:
+
+**1. Proof that works in front of their boss.**
+The competition results report must be presentation-ready. Charts, clear rankings, methodology summary. The champion should be able to put it in a slide deck and present it to the VP without editing anything.
+
+Build: Straw's "Executive Summary" export (one-click, PDF, designed for non-technical senior audiences).
+
+**2. Credit for the success.**
+When the competition surfaces a better vendor than the one the company was about to hire, the champion looks like a genius. Straw's customer success team should help the champion craft the internal narrative: "I found this evaluation approach, it saved us from a bad $500K decision."
+
+Don't take credit. Give credit.
+
+**3. Easy renewal story.**
+When renewal comes up (6-12 months later), the champion needs to justify it. Provide them with:
+- Year-over-year performance comparison for their AI vendors
+- Cost comparison vs. traditional evaluation alternatives
+- "You've run 4 competitions, evaluated 22 vendors, and made 2 critical procurement decisions with objective data" summary
+
+---
+
+### Objection Handling
+
+**Objection 1: "We have our own evaluation process."**
+"Most teams have some evaluation process. The question is whether it's objective enough that you'd stake a $1M procurement decision on it. Our process is the only one where neither Straw nor the vendors being evaluated has a financial stake in the outcome. That's what makes it defensible to your CFO and your regulators."
+
+**Objection 2: "This seems expensive."**
+"The fee is typically 1-2% of the value of the procurement decision you're making. If you're selecting a $1M/year AI vendor, spending $15-30K to validate that decision seems cheap. The real question is: what does it cost if you make the wrong choice? [Reference customer] avoided a $500K mistake with a $25K evaluation."
+
+**Objection 3: "We don't want external parties seeing our data."**
+"Our evaluation pipeline runs in sandboxed containers with zero data egress. Your tasks run in isolation; they're never used to train our models, never shared with other enterprises, and deleted after the competition per our data retention policy. We can provide our data processing agreement and SOC 2 Type II report before signing."
+
+**Objection 4: "What if the winning AI system doesn't work for us in production?"**
+"That's why we include robustness testing — evaluating performance on degraded inputs, edge cases, and adversarial examples, not just clean test cases. If a system scores 9.4 on clean data but 5.0 on noisy data, we show you that gap before you make the procurement decision. No vendor demo will show you that."
+
+**Objection 5: "We already use [Scale AI / LangSmith / internal evaluation]."**
+"Scale AI provides the data labeling and evaluation infrastructure that AI vendors use to improve their systems — that's a supply-side tool, not a buyer-side evaluation. LangSmith is great for comparing your own agent variants internally. Straw is the only platform where you, as the buyer, commission an objective competition across the vendor market. We're not alternatives to those tools — we're what you use before you make the procurement decision."
+
+**Objection 6: "What if our best vendor doesn't participate?"**
+"Fair concern. We recommend requiring participation as part of your vendor evaluation requirement — similar to how you'd require a POC or reference call. Vendors who refuse to participate in objective evaluation raise a question worth asking. If a vendor won't let their system compete on your specific task, why not?"
+
+---
+
+### Account Expansion Playbook
+
+A customer who runs one competition should expand to five within 12 months.
+
+**Expansion trigger 1: Category expansion**
+Enterprise started with contract review; they also have a document extraction problem. "You've validated ContractorPro for contract review. Have you evaluated your document extraction vendor with the same rigor?"
+
+**Expansion trigger 2: Fleet monitoring**
+After initial competition, offer ongoing quarterly revalidation. "Your winning vendor was excellent in January. Is it still excellent in July? Our quarterly monitoring competition answers that question for $5,000."
+
+**Expansion trigger 3: Organizational expansion**
+Legal department used Straw; finance department is now evaluating AI vendors. "I understand your finance team is evaluating financial modeling AI. Given your legal team's positive experience with objective evaluation, would they like to run a similar process?"
+
+**Expansion trigger 4: Regulatory pressure**
+EU AI Act enforcement begins August 2026. "Your competition results from January qualify as pre-deployment testing documentation under Article 9. If you're deploying additional AI systems this year, running them through Straw before deployment gives you the documentation you need."
+
+---
+
+### Sales Team Compensation
+
+**Enterprise AE structure:**
+- Base salary: $90K
+- OTE: $220K (130K variable)
+- Commission: 8% of first-year ACV on new logos, 4% on expansion
+- Accelerator: 12% on ACV above 150% quota
+- Quota: $1.5M ACV Year 1 (2 AEs × $1.5M = $3M pipeline target)
+
+**Why 8% commission:**
+Enterprise AI evaluation is a new category. The sale requires education, not just transaction. Higher commission than typical SaaS (5-6%) compensates for longer cycles and more difficult positioning work.
+
+**What a great AE quarter looks like:**
+- 3 new pilot closes ($40-100K each) = $180K ACV
+- 2 pilot-to-annual expansions ($120-250K each) = $370K ACV
+- Total quarterly ACV: $550K
+- Commission: ~$44K
+- On track for $2.2M annual ACV — exceeds $1.5M quota
+
