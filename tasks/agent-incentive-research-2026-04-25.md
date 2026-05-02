@@ -53386,3 +53386,143 @@ Original Section 15 (compliance infrastructure angle) identified the regulatory 
 - RoboBazaar cross-platform bounty routing (ERC-8004 as portable reputation layer)
 
 **Git commit target:** `research(agent-incentive): tick 325 — international market update (EU AI Act Aug 2, Singapore P0, compliance premium)`
+
+---
+
+## Tick 326 (2026-05-02): RoboBazaar and cross-platform bounty routing — ERC-8004 as portable reputation
+
+*Thread: RoboBazaar and cross-platform bounty routing. Agent posting to multiple bounty boards simultaneously. Reputation transfer. Interoperability vs. walled garden. ERC-8004 as portable layer.*
+
+*This tick draws from existing research: Tick 13 (ERC-8004), Tick 9 (x402), Tick 7 (reputation system), and the broader platform strategy research. No fresh web research needed.*
+
+---
+
+## Long-form proposal (DRAFT) — Section 40: Cross-Platform Bounty Routing — Straw's Interoperability Strategy
+
+### The Question
+
+An agent operator considers posting or competing across multiple AI bounty platforms: Straw, RoboBazaar (hypothetical marketplace), any future platform. How should Straw think about:
+1. Agents posting the same task to multiple platforms simultaneously
+2. Agents carrying their reputation from one platform to another
+3. ERC-8004 as the portable reputation layer
+
+### The Wrong Frame: Walled Garden
+
+The instinct is to build a walled garden: Straw scores are Straw-exclusive, agents can't take their reputation to a competitor, task postings are Straw-only. This feels like protection. It's actually fragility.
+
+**Why walled gardens fail in platform markets:**
+- **Network effects require breadth.** A platform that can't see competition from other platforms can't recommend agents that agents discovered elsewhere. It has incomplete information.
+- **Enterprise buyers use multiple tools.** If a Fortune 500 company must post tasks exclusively to Straw, they won't use Straw. They'll use the platform with the most flexibility.
+- **Data leakage is not the risk.** Straw's moat is not that its reputation scores are secret. It's that Straw has the largest, highest-quality corpus of task-specific evaluation data. Publishing scores publicly makes Straw the source of truth — which is power, not vulnerability.
+
+**The Bloomberg model:** Bloomberg publishes its bond ratings openly via terminals. The fact that you can read the rating doesn't mean you can replicate it. The rating is valuable because Bloomberg produced it with authoritative methodology. Straw's scores are valuable because Straw ran real competitions with real rubrics and real enterprise buyers. Making the score readable doesn't transfer the methodology.
+
+### The Right Frame: Straw as the Trust Anchor
+
+Straw's strategy is to become the authoritative reputation provider for the agent ecosystem — not to prevent reputation portability, but to be the source that other platforms trust.
+
+**The network effect of trust provision:**
+- Agent posts to RoboBazaar: RoboBazaar asks for "proof of capability" → agent links their Straw profile → Straw's reputation score is the trusted signal
+- Enterprise on another platform considers Agent X: they look up Agent X's Straw Verified badge → the badge exists and is verifiable → trust is established
+- AI orchestrator (Frontier, CrewAI) selects contractors: it queries ERC-8004 registry for reputation scores → Straw's `postFeedback` entries are there, with competition task hash as evidence → Straw is the authoritative source
+
+**This is the S&P of agent ratings, not the LSAT of agent access.** The goal is for Straw's score to be cited everywhere, like a credit rating — not to prevent it from being cited.
+
+### Cross-Platform Task Posting
+
+**The design question:** Can an enterprise poster simultaneously post to Straw and other platforms?
+
+**Answer: Yes for posting, exclusive for engagement.**
+
+Reasoning:
+- Multi-platform posting means more agent exposure → more submissions → better competition quality for the poster
+- Exclusive engagement means the winner is engaged once — not duplicated across platforms (preventing fee arbitrage)
+- Straw earns its platform fee on the engagement that happens through Straw, regardless of whether the task was also posted elsewhere
+
+**Implementation:** Straw's task posting API includes a `syndication_urls` field. If populated, Straw pushes the task to partner platforms via A2A or webhook. Agents on those platforms can submit to Straw's competition directly (not the partner's competition — they submit to Straw). This gives Straw the broadest agent supply while maintaining control of the evaluation and commercial outcome.
+
+**The engagement-required clause (Tick 15, D15):** The stake-to-post escrow ensures that if the poster uses Straw's agent for the hired engagement, the Straw fee applies. If the poster engages an agent they found elsewhere after seeing Straw's competition, Straw has no claim — but the poster loses the escrow stake (deterrent).
+
+### ERC-8004 as Portable Reputation Layer
+
+**The architecture:**
+
+At v1.5 (target: Q4 2026), Straw writes competition scores to ERC-8004 reputation registry on Base L2 (cheap gas, EVM-compatible). For each competition close:
+```
+postFeedback(
+  agentId,            // ERC-8004 agentId from operator's registration
+  score,              // 0-100, from evaluation_results
+  tags,               // ["functional_correctness", "code_quality", skill_tag]
+  evidenceURI,        // link to Straw's public competition leaderboard
+  evidenceHash        // SHA-256 of evaluation_results JSON for this competition
+)
+```
+
+**What other platforms get:** Any platform that queries the ERC-8004 reputation registry for Agent X sees:
+- Competition scores with evidence hashes (verifiable)
+- Skill tags (task category)
+- The `evidenceURI` pointing to Straw's public leaderboard (traffic + trust)
+
+**What Straw gets:** Every ERC-8004 query that resolves to a Straw evidence URI is a brand impression. Platforms that route to Straw for verification are treating Straw as the canonical source. The more platforms adopt ERC-8004, the more influential Straw's evidence entries become.
+
+**The trust hierarchy:** Straw's competition scores carry weight in the ERC-8004 registry because they are produced by:
+1. A verifiable rubric (hash locked before competition opens)
+2. A tiered evaluation pipeline (Tier 1 deterministic → Tier 2 LLM → Tier 3 autonomous agent)
+3. Enterprise buyers (not the agent itself) who had skin in the game (paid prize pool)
+
+A platform that produces its own scores with no verifiable rubric and no enterprise buyer accountability cannot compete on trust with Straw-produced scores. The evidence hash + rubric hash + enterprise stake is the moat within the open standard.
+
+### The Multi-Platform Routing Scenario
+
+**Scenario:** An agent operator has built a TypeScript migration specialist. They want maximum task exposure. Their strategy:
+
+1. Register on Straw (primary): gets ERC-8004 identity, SKILL.md capability profile, competition history
+2. Post on RoboBazaar (secondary): they link their ERC-8004 ID when registering — RoboBazaar pulls Straw competition history as proof of capability
+3. Registered in CrewAI's orchestrator registry: orchestrators querying for TypeScript specialists see the Straw Verified badge + competition scores
+
+**Straw's revenue in this scenario:**
+- Every Straw competition the agent enters: platform fee from poster
+- Every hire that routes through Straw (from the Straw competition): 20% engagement fee
+- RoboBazaar tasks: $0 directly, but the agent brings Straw reputation there → Straw gets brand impressions → more enterprise posters find Straw → more competitions
+
+**The indirect revenue:** An agent with a strong Straw reputation wins more on RoboBazaar. RoboBazaar now has incentive to integrate Straw's reputation formally (API deal). This is the trust-anchor flywheel.
+
+### The Walled Garden vs. Open Standard Decision
+
+**Decision: Actively support ERC-8004 portability. Publish scores to the registry. Become the authoritative evaluator.**
+
+Rationale:
+- Straw's moat is evaluation quality, not data scarcity
+- Reputation portability is a distribution channel (everywhere Straw scores appear = Straw brand impressions)
+- Being the canonical trust anchor in an open ecosystem is worth more than being the isolated gatekeeper of a closed ecosystem
+- ERC-8004 is an open standard with 107K+ agents already on mainnet — being an early authoritative contributor is high-leverage
+
+**The one exception:** The calibration corpus (task × rubric × eval metadata × commercial outcome) is NOT published. The corpus is Straw's proprietary training data for the rubric quality model and auto-rubric generation. Scores are public; the corpus that generated them is not.
+
+### Implementation Sequence
+
+**v1.0:** Internal Straw UUIDs only. No ERC-8004. Focus on getting the evaluation pipeline right.
+
+**v1.5 (Q4 2026):** ERC-8004 identity at operator registration. Write competition scores to Base L2 reputation registry. Expose public API: `GET /api/agents/{erc8004_id}/competition-history`.
+
+**v2 (2027):** Partner API with orchestration platforms (CrewAI, AutoGen, OpenAI Frontier) — provide signed reputation attestations. "Straw Verified" badge embeds in partner platforms. First API revenue from platform partnerships.
+
+**v3 (2028+):** Straw becomes the canonical reputation oracle for the agent ecosystem. Enterprises specify "Straw Verified ≥ Bronze in TypeScript Migration" in procurement criteria. Market standard is set.
+
+---
+
+## Closed threads (Tick 326)
+
+- [done — Tick 326] **RoboBazaar and cross-platform bounty routing** — Framework: Straw as trust anchor, not walled garden (Bloomberg model: publish scores, be the authoritative source). Cross-platform task posting: yes for syndication, exclusive for engagement (stake escrow enforces). ERC-8004 portable reputation: v1.5 write competition scores to Base L2 registry with evidence hashes; other platforms query, Straw gets brand impressions + becomes canonical. Walled garden vs. open standard: open standard wins (evaluation quality is the moat, not data scarcity). Implementation: v1.0 internal UUIDs only → v1.5 ERC-8004 write → v2 partner APIs + Straw Verified embed → v3 procurement criteria standard.
+
+---
+
+## Push status (after Tick 326)
+
+**Ticks 312-326** complete. This session (Session 30 extended) has covered:
+- Ticks 312-316: COALESCE, x402, swarm economics, taxonomy v2, judge bias
+- Ticks 317-326: Proposal updates (Sections 30-40) — COALESCE addendum, prize economics, x402 loop, taxonomy expansion, epsilon-greedy UX, SKILL.md security, Series A narrative, Frontier analysis, technical architecture, CS playbook, international market update, cross-platform routing
+
+All major open threads from the "Threads still to dig" section (Session 30) are now addressed.
+
+**Git commit target:** `research(agent-incentive): tick 326 — cross-platform routing + ERC-8004 portable reputation (trust anchor strategy)`
