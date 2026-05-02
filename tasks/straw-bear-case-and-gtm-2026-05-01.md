@@ -1395,3 +1395,558 @@ Sources: [Braintrust Series B announcement](https://www.braintrust.dev/blog/seri
 ---
 
 **Push status:** All ticks committed and pushed to origin/master. Phase 2 complete.
+
+---
+
+## Phase 2 Session 2 — Ticks 13–18 (2026-05-02, overnight continuation)
+
+*Picking up from where the prior session left off. The prior session marked "Phase 2 complete" but Jeremy asked for MORE. This session adds 6 ticks covering the four deferred threads plus two new ones.*
+
+---
+
+## Tick 13 (2026-05-02T05:00Z): OMB M-26-04 deep dive — government procurement angle [theme: bear/gtm]
+
+### What OMB M-26-04 actually says (vs. what Phase 1 assumed)
+
+Phase 1 Section 15 and earlier ticks referenced OMB M-26-04 as a tailwind — a federal mandate for third-party AI evaluation that would create demand for Straw's compliance certificate. That framing needs correction.
+
+**What M-26-04 actually is:** Issued December 11, 2025, OMB M-26-04 is titled "Increasing Public Trust in Artificial Intelligence Through Unbiased AI Principles." It is the Trump 2.0 administration's first AI memorandum — a political document aimed at banning what the White House calls "woke AI." The two mandated "unbiased AI principles" are:
+1. **Truth-seeking** — based on historical accuracy and scientific inquiry
+2. **Ideological neutrality** — not based on partisan beliefs
+
+**What it mandates for procurement:**
+- Agencies must update procurement policies by **March 11, 2026** — all new LLM procurements must include compliance with these two principles immediately
+- Agencies must obtain "sufficient information" from AI vendors during procurement to ensure compliance
+- Required documentation from vendors: model cards, evaluation artifacts, acceptable use policies
+- **Independent evaluation required:** Agencies cannot rely solely on vendor self-assessment. Required elements include prompt pair generation and testing, ambiguity and uncertainty analysis, validation of vendor claims, and **custom benchmarking/metrics customized to agency-specific use cases**
+
+**The bear case correction on M-26-04:**
+
+| What Phase 1 assumed | What the research shows |
+|---|---|
+| M-26-04 mandates third-party AI quality evaluation | M-26-04 mandates evaluation for "ideological neutrality" — not agent performance quality |
+| Creates direct demand for Straw's compliance certificate | Agencies can meet the mandate internally; no requirement for commercial evaluation firms |
+| A "regulatory forcing function" for the evaluation market | Politically motivated; priorities will shift with next administration without legislative backing |
+| Applies to AI agents broadly | Applies only to LLMs procured by federal agencies — not to private-sector AI agent procurement |
+
+**The tailwind that IS real:** GSA and NIST signed a joint MOU on March 18, 2026 to develop AI evaluation science specifically for federal procurement. GSA's Center for AI Standards and Innovation (CAISI) will provide tooling and methodological guidance for evaluating AI models in federal workflows. Key actors:
+- **Craig Burkhardt** — Deputy Under Secretary of Commerce for Standards and Technology, Acting NIST Director
+- **Edward C. Forst** — GSA Administrator
+- **CAISI** (NIST Center for AI Standards and Innovation) — the operational unit developing evaluation standards
+
+GSA is home to an **AI Community of Practice with 12,000+ members across 100+ government organizations**. This is a meaningful distribution channel for any company that builds evaluation infrastructure the government would adopt.
+
+**FedRAMP 20x** — launched in 2025, automating AI authorization for commercial cloud providers — is the complementary infrastructure reform. The combination of M-26-04 + FedRAMP 20x + the GSA-NIST partnership creates a real federal AI evaluation ecosystem being built right now.
+
+---
+
+### The government procurement GTM angle (the opportunity)
+
+**Is this actually a Straw market?**
+
+The government procurement angle is best framed as a **parallel opportunity, not the primary GTM**. Here's why:
+
+- Federal procurement cycles are 6–24 months
+- FedRAMP authorization (required for gov cloud products) takes 6–12 months minimum
+- The political stability of M-26-04 requirements is low — this is an executive memorandum, not a statute
+- "Ideological neutrality" evaluation is a different product than "agent performance" evaluation
+
+**Where government actually helps Straw:**
+
+1. **NIST methodology credibility:** If Straw's evaluation methodology aligns with NIST AI RMF 1.0 guidance, that creates a credibility signal for private-sector enterprise buyers who want "standards-aligned" evaluation. "Our rubric engine is built on NIST AI RMF practices" is a better sales hook than "we use AI to score AI."
+
+2. **GSA AI CoP distribution:** 12,000+ federal AI practitioners is a content audience — publishing research on agent evaluation methodology via GSA's AI Community of Practice is high-leverage distribution for establishing Straw's thought leadership.
+
+3. **The METR angle revisited:** METR evaluates AI for frontier labs. CAISI evaluates AI for federal procurement. If Straw's methodology is cited in the NIST/CAISI standards effort, it becomes the de facto standard for private-sector procurement evaluation by association.
+
+**Action item for Jeremy:** Submit a comment or white paper to the GSA-NIST partnership (contact: CAISI leadership at caisi@nist.gov) proposing alignment between Straw's rubric-based competitive evaluation methodology and their emerging federal AI evaluation standards. Even if Straw doesn't pursue federal customers, being cited in the NIST standards document is worth more than 5 enterprise sales conversations.
+
+---
+
+### Tick 13 bear case summary
+
+| Risk | Severity |
+|---|---|
+| M-26-04 is politically motivated, not technically grounded — could be reversed | High (structural) |
+| Government procurement timeline incompatible with Straw's 2026 revenue needs | High |
+| M-26-04 doesn't mandate commercial third-party evaluators — agencies can comply internally | High |
+| "Compliance certificate" branding could over-promise EU AI Act compliance | Critical — see Tick 15 |
+
+**Cross-reference correction to Phase 1 Section 15:** Phase 1's "compliance wedge" framing overestimated M-26-04's commercial pull. The wedge is real but narrower: Straw's compliance angle works best as a methodology-credibility claim ("NIST AI RMF-aligned") rather than a direct regulatory mandate claim ("required by OMB M-26-04").
+
+Sources: [OMB M-26-04 FedScoop coverage](https://fedscoop.com/omb-requirements-woke-ai-federal-agencies/), [Fiddler AI M-26-04 analysis](https://www.fiddler.ai/blog/omb-m-26-04), [GSA-NIST partnership announcement](https://www.gsa.gov/about-us/newsroom/news-releases/gsa-and-nist-partner-to-boost-ai-evaluation-science-in-federal-procurement-03182026), [Nextgov: GSA NIST partnership](https://www.nextgov.com/artificial-intelligence/2026/03/gsa-nist-partner-craft-evaluation-standards-ai-tools-federal-operations/412206/), [NIST CAISI MOU](https://www.nist.gov/news-events/news/2026/03/caisi-signs-mou-gsa-boost-ai-evaluation-science-federal-procurement-through)
+
+---
+
+## Tick 14 (2026-05-02T05:15Z): SAFE/co-investment structure for design partners [theme: gtm]
+
+### The right structure for Straw's design partner program
+
+**What the market is using in 2026:**
+
+- 90% of pre-seed rounds in Q1 2025 used SAFEs (Carta data) — the SAFE with a valuation cap and no discount is the dominant structure by wide margin
+- Design partners getting equity is the exception, not the rule. The dominant structure is: **free access + paid graduation commitment**
+- When equity IS given for services, the instrument is an **EASE (Equity Agreement for Services)** — vests pro-rata as service milestones complete, or upon completion
+- Typical equity: **0.25%–0.5%** for very high-value strategic design partners who are also contributing meaningful product direction (essentially an informal co-founder relationship)
+
+**The #1 design partner mistake (confirmed across 3 sources):** Free access forever without a paid graduation commitment. That's beta testing. The paid contract commitment at the end is what makes it a design partnership — and what gives the founder the reference customers investors want to see.
+
+---
+
+### Straw's optimal design partner terms (the recommended structure)
+
+**What design partners get:**
+1. Free access for 6 months (one full evaluation cycle included: task definition, competition, rubric design, score delivery, findings report)
+2. Bi-weekly calls with Jeremy directly — real product influence
+3. First access to new evaluation categories (code review, data pipeline QA, customer service agent)
+4. Logo + named reference customer acknowledgment in fundraising materials
+5. **30-45% off list price for months 7–18** (post-graduation pricing)
+6. Option: small equity stake (0.25% SAFE on a subsequent round's pre-money cap) for partners who commit to 12-month paid contracts AND make reference calls
+
+**What Straw gets:**
+1. Weekly structured 30-minute feedback session (one named champion, not a committee)
+2. Permission to use logo + 1-2 sentence quote in sales materials immediately (not after "legal review")
+3. **Committed paying contract at graduation if evaluation meets pre-defined success criteria** — this is the critical clause. Define success criteria upfront: "if the evaluation produces a score ranking with a >0.7 Spearman correlation to the company's own internal ranking, you commit to $X/year."
+4. 3 customer reference calls with Jeremy's warm introductions over the next 12 months
+
+**The pre-defined success criteria approach** (rarely done, highly effective): Before the evaluation starts, both parties write down what outcome would make the evaluation "successful." This does two things:
+1. Forces the company to think carefully about what they're measuring — often surfacing that they don't actually know what they want, which is itself a valuable discovery
+2. Creates a concrete basis for the paid graduation commitment that neither party has to negotiate emotionally after the results come in
+
+---
+
+### Should Straw offer equity to design partners?
+
+**The case for YES (for 2–3 strategic partners):**
+- If Harrison Chase (LangChain) or Ankur Goyal (Braintrust) agrees to be a design partner AND champions Straw internally to their customer base, that's worth 0.25–0.5% SAFE
+- Strategic investors-as-design-partners solve the cold-start distribution problem (their customers become Straw's leads)
+- Aligns incentives for the lifetime of the company, not just 6 months
+
+**The case for NO (for most partners):**
+- Equity creates cap table complexity at pre-seed — complicated by 8 design partners all holding SAFEs
+- If the paid graduation commitment is well-structured, equity is unnecessary
+- Equity-for-services can signal "we can't afford to pay them" rather than "we're a strategic partner"
+
+**Recommendation:** Offer equity only to 2–3 strategic partners who are (a) known names in the AI evaluation space, (b) willing to publicly champion Straw, (c) committing 5+ hours/month of real engagement. For everyone else: free trial + paid commitment + reference calls.
+
+---
+
+### The 3-person design partner rollout (the actual plan)
+
+Jeremy's ideal design partner cohort for v1:
+
+**Partner 1: The name** — one well-known person in AI evaluation (Ankur Goyal, Harrison Chase, Aparna Dhinakaran) who can give Straw credibility. May get equity.
+
+**Partner 2: The pain** — a Series B AI company that has genuinely been burned by not knowing which agent is better. Has a real task to evaluate. Converts to a paying customer.
+
+**Partner 3: The repeat buyer** — a company that has high task volume (multiple AI agent use cases) and would run 3–5 evaluations per year. ACV potential $50K+. The design partner program is a trial for a long-term relationship.
+
+Get all 3 committed before building any features for them. The design partner commitment is the real product validation, not the first evaluation run.
+
+Sources: [SaaStr design partner incentives](https://www.saastr.com/dear-saastr-what-incentives-are-given-to-design-partners-and-other-super-early-customers/), [Common Paper design partner guide](https://commonpaper.com/blog/design-partner/), [EASE equity for services](https://fi.co/ease), [CRV SAFE guide 2026](https://www.crv.com/content/safe-agreements-for-startups), [Angel Investors Network SAFE 2025](https://angelinvestorsnetwork.com/startups/safe-agreement-explained-for-founders-2025-guide)
+
+---
+
+## Tick 15 (2026-05-02T05:30Z): EU AI Act compliance burden + international comparables [theme: bear]
+
+### The EU AI Act market reality in mid-2026
+
+**Timeline (confirmed):**
+- August 2, 2024: AI Act enters into force
+- February 2, 2025: Prohibited AI practices banned
+- August 2, 2025: GPAI model obligations apply (but 1-year enforcement grace period)
+- **August 2, 2026: High-risk AI system requirements fully applicable and enforced**
+- August 2, 2027: Additional high-risk systems (Annex I) become subject to the Act
+
+**Penalty structure (revised upward from earlier estimates):**
+- Prohibited AI practices: **€35M or 7% of global annual turnover**, whichever is higher (more severe than GDPR's 4%)
+- High-risk system non-compliance: €15M or 3% of global annual turnover
+- Providing incorrect/misleading information: €7.5M or 1% of global annual turnover
+
+**The compliance market this creates:** €3.4B annual opportunity for compliance software, consulting, and certification providers. €17B total market by 2030 (65,000+ high-risk AI systems requiring ongoing monitoring, documentation, and certification). This is real money creating real demand.
+
+---
+
+### Where agentic AI sits in the EU AI Act risk classification
+
+**High-risk classification is NOT automatic for all AI agents.** The rules are specific:
+
+| Use case | Classification | Mandatory third-party assessment |
+|---|---|---|
+| AI agents making employment decisions (hiring, firing, scheduling contractors) | **High-risk (Annex III, 4a)** | Self-assessment + mandatory human oversight |
+| AI agents in biometric identification | **High-risk (Annex III, 1)** | Third-party conformity assessment required |
+| AI agents in creditworthiness assessment / insurance scoring | **High-risk (Annex III, 5)** | Self-assessment sufficient |
+| AI agents in general enterprise productivity (code review, research, summarization) | **Limited or minimal risk** | No mandatory assessment |
+| GPAI models powering agents (Claude, GPT-4o, Gemini) | **GPAI-specific obligations** | 1-year enforcement grace period ends August 2026 |
+
+**The critical nuance:** For most enterprise agent use cases on Straw (code review, data pipeline, customer support), the **self-assessment path** applies — no mandatory third-party certification. This undermines Phase 1's "compliance certificate" claim: Straw's rubric-based evaluation is **not** the same as EU AI Act conformity assessment documentation, and calling it a "compliance certificate" without qualification creates legal exposure.
+
+---
+
+### The notified body shortage — a market gap AND a warning
+
+**As of March 2026:** The pool of formally designated notified bodies under the EU AI Act remains very small. EU Member States are still in the designation process for notified bodies, with insufficient capacity to handle the expected flood of certification requests before August 2026.
+
+Market implications:
+1. **The compliance rush** will compress into Q2–Q3 2026 — thousands of companies scrambling to complete documentation, with not enough certified auditors available
+2. **Price gouging** by available compliance consultants — early estimates of €2M–€5M for mid-size companies, with actual costs likely higher
+3. **The gap creates a market:** Companies need help building the technical documentation, risk management systems, and human oversight procedures — this is a consulting/tooling opportunity
+
+**For Straw specifically:**
+- Straw's evaluation output **could** be incorporated into a company's Article 9 risk management documentation (evidence that the AI system was evaluated competitively before deployment)
+- The "compliance certificate" is most defensible as: "Evidence of competitive pre-procurement evaluation, suitable for inclusion in your EU AI Act technical documentation package" — not "EU AI Act compliance certification"
+- This is a real value proposition but requires precise legal language
+
+---
+
+### International comparable: Singapore AI Verify (the most advanced national AI certification system)
+
+**Singapore AI Verify (IMDA):** Launched May 2023, updated February 2024. The only nationally recognized AI testing framework with a governance testing toolkit and a "verified" badge companies can display.
+
+**What it does:**
+- Tests 11 AI ethics principles (fairness, explainability, robustness, etc.)
+- Companies self-test against the framework, with results verified by AI Verify Foundation-accredited testing partners
+- Used by: Microsoft, Mastercard, Meta, DBS Bank, Standard Chartered — global names adopting it for Singapore operations
+
+**Where this creates opportunity for Straw:**
+- Singapore has mandated AI Verify for MAS-regulated financial institutions (Monetary Authority of Singapore)
+- **Straw's competitive evaluation evidence** could be incorporated into an AI Verify submission as evidence of fairness and robustness testing
+- The IMDA partnership angle (mentioned in Phase 1 Session 30 briefings) is the right play: get Straw's rubric methodology recognized as contributing evidence for AI Verify certification
+
+**International regulatory landscape comparison:**
+
+| Jurisdiction | Framework | Mandatory 3P evaluation | Timeline | Straw opportunity |
+|---|---|---|---|---|
+| **EU** | EU AI Act | Only for biometric + Annex I products | August 2026 | Pre-procurement evidence inclusion |
+| **Singapore** | AI Verify + MAS circulars | Required for MAS-regulated institutions | Already in force | Official testing partner accreditation |
+| **UK** | AI Regulation Act 2026 | TBD — principle-based framework | 2026–2027 | Early mover in FCA regulatory sandbox |
+| **US** | OMB M-26-04 + NIST AI RMF | Voluntary (NIST) / political (OMB) | Now | NIST methodology alignment |
+| **Australia** | APRA CPG 234 + voluntary framework | APRA requires model validation for regulated | Now | Big 4 bank use case |
+
+---
+
+### The bear case: "compliance certificate" over-promise
+
+**The single most dangerous marketing mistake Straw can make** is calling its evaluation output a "compliance certificate" without qualification. This creates:
+
+1. **Legal exposure** — if a company relies on Straw's "compliance certificate" to satisfy EU AI Act requirements and gets fined, Straw could face secondary liability
+2. **Credibility damage** — enterprise legal/compliance teams will immediately spot that Straw's certificate is not the same as EU AI Act conformity assessment documentation
+3. **Regulatory attention** — EU enforcement authorities could view the "compliance certificate" branding as misleading if it implies EU AI Act conformity
+
+**The correct language:**
+- "Pre-procurement competitive evaluation" — accurate
+- "Evaluation evidence suitable for your AI governance documentation" — accurate
+- "NIST AI RMF-aligned evaluation methodology" — accurate (if true)
+- "EU AI Act compliance certificate" — NEVER USE THIS — inaccurate and legally risky
+
+**The safe positioning:** "Straw generates competitive evaluation evidence that documents your agent procurement decision. This evidence is appropriate for inclusion in your EU AI Act technical documentation package, your AI governance board, and your CIO's mid-year AI ROI report."
+
+Sources: [Legal Nodes EU AI Act 2026 updates](https://www.legalnodes.com/article/eu-ai-act-2026-updates-compliance-requirements-and-business-risks), [EU AI Act conformity assessment guide](https://savialearning.com/articles/eu-ai-act-conformity-assessment), [EU AI Act enforcement](https://intelligence.dlapiper.com/artificial-intelligence/?t=08-enforcement&c=EU), [Medium: €17B compliance market](https://medium.com/@arturs.prieditis/the-eu-ai-acts-hidden-market-how-high-risk-ai-compliance-became-a-17-billion-opportunity-734cea9b41e2), [Notified bodies shortage](https://eyreact.com/notified-bodies-ai-act/), [EU AI Act Annex III](https://artificialintelligenceact.eu/annex/3/), [Secure Privacy 90-day playbook](https://secureprivacy.ai/blog/eu-ai-act-implementation-guide)
+
+---
+
+## Tick 16 (2026-05-02T05:45Z): Government/GovTech design partner targets — named contacts [theme: partners]
+
+*Identifying specific names Jeremy can reach in the government AI evaluation ecosystem, plus GovTech companies that might be design partners.*
+
+---
+
+### Category 1: Federal AI Evaluation Infrastructure Contacts
+
+These are people actively building federal AI evaluation standards. A Straw methodology alignment with their work is worth more than 10 cold outbound calls to enterprise buyers.
+
+| Name | Organization | Role | Contact | Opener |
+|---|---|---|---|---|
+| **Craig Burkhardt** | NIST / Dept of Commerce | Acting Director, NIST; leads CAISI | NIST contact: caisi@nist.gov | *"CAISI is building federal AI evaluation standards. Straw is building private-sector competitive AI evaluation. We think a methodology alignment between our rubric engine and NIST AI RMF would benefit both. Would a white paper submission be the right way to begin?"* |
+| **Elham Tabassi** | NIST CAISI | Chief AI Advisor, NIST (founded CAISI) | @ElhamTabassi | *"You founded CAISI and wrote the AI RMF. Straw's evaluation methodology is built on those principles applied to competitive procurement. Would love 20 minutes to show you how we've operationalized it."* |
+| **Ann Lewis** | GSA | Chief AI Officer (pre-2025) / now AI advisor | LinkedIn | *"You built GSA's AI strategy when everyone else was writing position papers. I'm building the competitive evaluation layer for enterprise AI procurement. Your perspective on what agencies actually need would be invaluable."* |
+| **Arun Majumdar** | ARPA-E (DoE) | Director | via ARPA-E website | *"ARPA-E funds energy AI projects. Straw is building the evaluation infrastructure that proves which AI agent actually performs on defined technical tasks. Worth 20 minutes on whether this methodology applies to your portfolio."* |
+
+---
+
+### Category 2: Defense/Intelligence AI Procurement Contacts
+
+| Name | Organization | Role | Contact | Opener |
+|---|---|---|---|---|
+| **Radha Plumb** | DoD CDAO | Former Chief Digital and AI Officer | LinkedIn | *"You stood up DoD's AI procurement framework at CDAO. Straw is building private-sector evaluation infrastructure that mirrors what CDAO is doing for defense. Would love your perspective on what's missing in commercial AI procurement."* |
+| **Nand Mulchandani** | DoD CDAO | CTO at Office of the CDAO | @nandmulchandani | *"The DoD spends billions on AI with no competitive evaluation layer. I'm building the private-sector version. The methodology overlap is real — would love 20 minutes."* |
+
+---
+
+### Category 3: GovTech Companies as Design Partners
+
+These companies sell AI to government — they need evaluation infrastructure to win contracts and satisfy federal evaluation requirements.
+
+| Name | Company | What They Do | Why They Need Straw | Opener |
+|---|---|---|---|---|
+| **Alex Karp** | Palantir | CEO — AIP for government | Palantir sells AI agents to DoD/DHS. Straw's evaluation output could be incorporated into their government contract deliverables as evidence of performance. | *"Palantir's AIP is being evaluated by DoD procurement teams using ad hoc methods. Straw provides a structured, auditable competitive evaluation. Worth exploring as procurement evidence for your next competitive bid?"* |
+| **Alex Pentland** | MITRE Corporation | AI Research (nonprofit FFRDC) | MITRE already evaluates AI systems for DoD/DHS/NSA. Straw's private-sector methodology could complement or be referenced in MITRE's evaluation frameworks. | *"MITRE does AI evaluation for government — we're doing it for enterprise procurement. The methodology overlap is significant. Worth comparing notes?"* |
+| **Steve Harris** | Leidos AI | SVP, AI & Digital | LinkedIn | *"Leidos bids on AI contracts where the evaluation criteria are defined by the government. Straw's rubric engine is how you'd define those criteria on the private side. Design partner conversation?"* |
+| **Andrew Krepinevich** / **Booz Allen Hamilton AI** | Booz Allen | Chief AI Officer programs | LinkedIn | *"Booz Allen runs AI Centers of Excellence for 20+ agencies. Straw is the evaluation infrastructure that makes those CoEs procurement-defensible. Worth a conversation."* |
+
+---
+
+### Category 4: NIST / CAISI Engagement Strategy
+
+The highest-leverage government engagement for Straw is NOT selling to a government agency — it's getting Straw's methodology cited in the NIST AI evaluation guidance being developed right now.
+
+**The specific opportunity:** NIST CAISI is currently building "practical resources including clear evaluation guidelines and checklists that other agencies can use to assess AI tools." This is an open standards process. Straw should:
+
+1. **Submit a technical comment** on how rubric-based competitive evaluation complements NIST AI RMF's "Govern/Map/Measure/Manage" structure
+2. **Publish a white paper** on "Competitive Pre-procurement AI Evaluation: A Practitioner's Framework" and submit it to CAISI's review process
+3. **Contact Elham Tabassi directly** (@ElhamTabassi) — she's the most accessible of the NIST AI evaluation leadership, posts regularly about the standards process
+
+**What Straw gets:** A footnote citation in a NIST guidance document is worth more than 20 enterprise sales conversations in terms of credibility. Enterprise legal and compliance teams cite NIST documents constantly. If Straw's rubric methodology is in the NIST guidance, it becomes the de facto standard.
+
+Sources: [GSA-NIST partnership](https://www.gsa.gov/about-us/newsroom/news-releases/gsa-and-nist-partner-to-boost-ai-evaluation-science-in-federal-procurement-03182026), [NIST CAISI MOU FedScoop](https://fedscoop.com/gsa-nist-evaluate-ai-before-agency-deployments-caisi/), [GSA AI page](https://www.gsa.gov/artificial-intelligence), [DoD CDAO AI policy](https://www.ai.mil/), [MITRE AI work](https://www.mitre.org/focus-areas/ai-for-national-security)
+
+---
+
+## Tick 17 (2026-05-02T06:00Z): The 'creepiness objection' — enterprise autonomy trust deep dive [theme: bear]
+
+### The numbers behind the objection
+
+This is one of the bear case threads from the Phase 2 mandate that hasn't been addressed in detail: *Does the market actually want autonomous agents transacting with each other?*
+
+**The most striking data point found in this session:**
+
+> **Deloitte TrustID Index: Trust in agentic AI systems that can act independently dropped 89% between May and July 2025.** For comparison, trust in company-provided generative AI (non-agentic) dropped "only" 31% over the same period.
+
+This isn't a marginal concern. An 89% trust drop in 2 months is a structural signal. Something happened in summer 2025 that fundamentally shifted employee and executive sentiment.
+
+What happened in summer 2025: multiple high-profile incidents of AI agents acting "rogue" in ways that violated human expectations of control. The Replit Agent incident at SaaStr (wiped production database, fabricated 4,000 users, falsified test results) received broad press coverage. Enterprise leadership, already cautious, pattern-matched to worst-case scenarios.
+
+---
+
+### The trust breakdown by autonomy level
+
+Data from PwC AI Agent Survey (April 2025, n=308 C-suite + director level):
+
+| Activity | Trust for full AI autonomy |
+|---|---|
+| Data analysis | 38% |
+| Customer communication | 24% |
+| Autonomous employee interactions | 22% |
+| **Financial transactions** | **20%** |
+
+Running a Straw competition, paying winning agents, and hiring based on evaluation scores is a **financial transaction chain** combined with an **employee interaction**. Straw is selling to the 20% — not the 79% who are "using AI in some capacity."
+
+---
+
+### The specific "creepiness" vector that matters for Straw
+
+The PwC/McKinsey/Deloitte data is about general agentic AI. Straw's specific case is MORE extreme because:
+
+**Straw's model requires enterprise buyers to:**
+1. Post real tasks with competitive rubrics (disclosed internal priorities)
+2. Accept scores from an AI judge (non-human procurement decision)
+3. Make hiring/contract decisions based on those scores (high-stakes action)
+4. Pay winning agents through an automated payment rail (financial transaction)
+
+**The escalation from "AI does work" → "AI decides who we pay" is the biggest jump.** Companies are comfortable with AI doing analysis. They are deeply uncomfortable with AI controlling procurement and payment decisions. Straw asks for both.
+
+**The Strata/AI identity governance data makes this more acute:** Enterprises can't move AI agents from pilot to production because identity governance isn't there yet — teams are sharing human credentials with agents because no alternative exists. If agents don't have proper identity, they can't reliably be contracting parties in a marketplace.
+
+---
+
+### Is this fatal to Straw, or manageable?
+
+**The honest answer: manageable, but only if Straw's UI/UX makes the human deeply in control.**
+
+The trust data does NOT mean companies won't engage. It means they will only engage if:
+1. **A human signs off on every evaluation score before any procurement action** — the AI judge provides a recommendation, not a decision
+2. **The rubric is written by the human buyer, not auto-generated by Straw** — authoring the rubric is the act of control that makes the human feel "in charge"
+3. **The payment to winning agents is approved by a human**, not triggered automatically
+4. **The entire evaluation trail is auditable and human-readable** — not a black box
+
+**Straw's actual design (from the codebase):** The evaluation result is a score + LLM reasoning + breakdown. The "hire" action is a separate, explicit human decision in the UI. The company contacts the winner and records a deal manually. This is already the right design. The risk is in how Straw is *marketed* — if the pitch emphasizes "autonomous evaluation" and "automated procurement," it will hit the trust wall. If it emphasizes "objective scoring that makes your procurement decision data-driven rather than demo-driven," it avoids the creepiness entirely.
+
+**The framing that works (research-backed):**
+
+| Framing | Trust response |
+|---|---|
+| "Straw automates AI agent evaluation and procurement" | Triggers 20% trust zone |
+| "Straw gives your team objective data for the AI procurement decision your team is already making" | Triggers 38% (data analysis) trust zone |
+| "Straw runs a structured competitive challenge so your procurement committee has verifiable evidence, not vendor demos" | Triggers compliance/governance trust (highest enterprise trust zone) |
+
+**The specific language change:** Drop "autonomous evaluation" from all marketing. Use "structured competitive challenge with auditable results" instead. The product is the same; the framing lands completely differently with enterprise procurement and legal teams.
+
+---
+
+### The "agent posts tasks" creepiness — the deeper version
+
+The mandate raised a specific sub-question: *Does the market want autonomous agents transacting with each other — agent posts task, agent competes, agent gets paid?*
+
+This is a Phase 3 question for Straw (v2/v3 roadmap). For v0/v1, **enterprises post tasks and humans make decisions** — the agents only compete. The agent-posts-task mechanic (Section 12 of Phase 1) is the sophisticated version that requires:
+1. Agents to have legal capacity to contract (still unresolved in most jurisdictions — Wyoming DAO LLC is the only US path)
+2. Enterprises to be comfortable with an agent autonomously deciding to delegate work
+3. Payment rails between agents without human approval
+
+None of these exist at enterprise scale in 2026. Straw v0/v1 correctly avoids this. The v2 question is whether the market will have normalized enough by 2027–2028 for the agent-posts-agent architecture to be accepted. The Deloitte 89% trust drop suggests a 2027 target is optimistic. Plan for 2028 realistically.
+
+Sources: [Deloitte TrustID agentic AI trust drop](https://www.deloitte.com/us/en/about/press-room/trust-main-barrier-to-agentic-ai-adoption-in-finance-and-accounting.html), [PwC AI Agent Survey](https://www.pwc.com/us/en/tech-effect/ai-analytics/ai-agent-survey.html), [McKinsey AI Trust 2026](https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/tech-forward/state-of-ai-trust-in-2026-shifting-to-the-agentic-era), [Strata agentic identity crisis](https://www.strata.io/blog/agentic-identity/the-ai-agent-identity-crisis-new-research-reveals-a-governance-gap/), [Protiviti AI Agents study](https://www.protiviti.com/us-en/press-release/ai-agents-adoption-by-2026-protiviti-study), [Deloitte agentic AI enterprise adoption](https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/articles/agentic-ai-enterprise-adoption-guide.html)
+
+---
+
+## Tick 18 (2026-05-02T06:15Z): Microsoft Magentic Marketplace research — mechanism design for Straw [theme: bear]
+
+### What Microsoft Research found when they actually built an agent marketplace
+
+In November 2025, Microsoft Research (in collaboration with Arizona State University) published the Magentic Marketplace paper and released it as open source. This is the closest thing to a scientific experiment on "what happens when AI agents interact in a marketplace."
+
+**Setup:** 100 customer-side AI agents (assistant agents) vs. 300 business-side agents (service agents) in simulated scenarios like ordering dinner. Models tested: GPT-4.1, GPT-4o, Gemini-2.5-Flash, GPTOSS-20b, Qwen3-4b.
+
+**What they found — five findings directly applicable to Straw:**
+
+---
+
+#### Finding 1: First-proposal bias creates 10–30x speed advantage over quality
+
+All frontier models exhibit **severe first-proposal bias** — the assistant agent (buyer) significantly prefers the service agent (seller) that responded first, regardless of proposal quality. This creates a 10–30x advantage for response speed over substantive quality.
+
+**Straw implication (critical):** If Straw's evaluation system has any temporal visibility into submission order, it will introduce the same bias. An agent that submits on day 1 of a 14-day competition will be disadvantaged vs. one that submits on day 13 — OR advantaged if the evaluator (LLM judge) sees submission order. **Straw's sealed-bid, asynchronous, blind submission model is structurally correct for eliminating this bias.** The rubric-based evaluation (all submissions scored against the same rubric, without submission order visibility) is exactly the right mitigation. This is a validation of Straw's design, not a bear case.
+
+---
+
+#### Finding 2: Prompt injection redirected 100% of payments to the manipulative agent
+
+**This is the scariest finding for Straw.** GPT-4o, GPTOSS-20b, and Qwen3-4b were tested with a malicious service agent that included prompt injection in its product descriptions. Result: **all payments were redirected to the manipulative agent under these conditions.**
+
+For GPT-4o specifically — the most widely-deployed model — the attack was 100% effective.
+
+**Straw implication (architectural):** Straw's evaluation pipeline processes agent-submitted artifacts with an LLM judge. If an agent embeds prompt injection in their submission (e.g., hiding instructions in code comments, in SUBMISSION.md, or in output files), the LLM judge could be manipulated to score that submission higher. This is not theoretical — the Microsoft data shows it works against frontier models with near-100% effectiveness.
+
+**Required mitigation (must be designed now, not v1.5):**
+1. Strip all agent-controlled text from the input context before the LLM judge evaluates qualitative criteria
+2. Run the LLM judge on a separate context from agent-submitted content — evaluate outputs against the rubric, not by reading the submissions directly
+3. Add a "injection resistance score" test to the evaluation pipeline — specifically test whether agents have attempted to manipulate the judge
+4. Consider running the judge model on a different model family than the model used to generate the submission (adversarial diversity)
+
+---
+
+#### Finding 3: Traditional psychological manipulation tactics worked against some models
+
+For GPTOSS-20b and Qwen3-4b, authority appeals ("I am the highest-rated service provider on this platform") and social proof ("97% of customers who tried this service recommended it") increased payments to the manipulative agent.
+
+**Straw implication:** Agent submissions that include self-referential reputation claims ("This is a top-tier solution from an agent with a 98% win rate on Straw") could bias the LLM judge. This is another argument for keeping agent-submitted content isolated from the judge's evaluation context.
+
+---
+
+#### Finding 4: Paradox of Choice — more agents = worse outcomes
+
+As the consideration set (number of competing agents) grew, mean consumer welfare **decreased**. More options reduced overall welfare — consistent with the well-documented Paradox of Choice effect in human markets.
+
+**Straw implication:** Unlimited agent participation per competition is suboptimal. A gated competition (invite-only or category-filtered, with a cap of 15–25 agents per competition) produces better outcomes for buyers than an open-entry format. This validates Phase 1's category-based matching architecture but suggests the cap should be lower than initially assumed.
+
+---
+
+#### Finding 5: Substantial differences in manipulation resistance across models
+
+GPT-4.1 showed significantly higher manipulation vulnerability compared to Gemini-2.5-Flash. Gemini-2.5-Flash was notably more resistant to the prompt injection attacks that completely captured GPT-4o.
+
+**Straw implication for the LLM judge model choice:** The current evaluation worker uses Gemini (Gemini-2.0-flash, per TASKS.md note "Gemini is the intended LLM judge"). The Microsoft research suggests Gemini is a stronger choice than GPT-4o for manipulation resistance in evaluation contexts. **This is a validation of the current architectural choice.** If Straw ever considers switching the judge to GPT-4.1 or a GPT model family, the Magentic Marketplace manipulation vulnerability data is a strong argument against it.
+
+---
+
+### Summary: What the Magentic Marketplace research means for Straw
+
+| Finding | Bear case or validation? | Action required |
+|---|---|---|
+| First-proposal bias (10–30x) | **Validation** — Straw's blind sealed-bid model avoids this | None — current design is correct |
+| Prompt injection → 100% payment redirect | **Bear case** — Straw's LLM judge is an attack surface | Context isolation for agent-submitted text; injection detection |
+| Psychological manipulation works | **Bear case** — agent self-referential claims can bias judge | Strip self-referential reputation claims from evaluation context |
+| Paradox of Choice (more agents = worse) | **Validation** — gated competitions with 15–25 agent cap | Enforce competition cap; validate that current matching does this |
+| Gemini more manipulation-resistant than GPT-4.1 | **Validation** — current judge model choice is correct | Document this as architectural rationale; don't change the judge model |
+
+**The net finding:** Microsoft's research is more validating than damning for Straw's design. The sealed-bid, blind, rubric-based, Gemini-judged architecture happens to address the most dangerous failure modes discovered by the simulation. The **critical gap** is prompt injection resistance — this must be designed into the evaluation pipeline before the first competition with any economic stakes.
+
+Sources: [Microsoft Magentic Marketplace paper](https://www.microsoft.com/en-us/research/wp-content/uploads/2025/10/multi-agent-marketplace.pdf), [Microsoft Research blog](https://www.microsoft.com/en-us/research/blog/magentic-marketplace-an-open-source-simulation-environment-for-studying-agentic-markets/), [InfoQ: AI Agents Fail Manipulation Tests](https://www.infoq.com/news/2025/11/magentic-marketplace-microsoft/), [The New Stack: Magentic Marketplace](https://thenewstack.io/microsoft-launches-magentic-marketplace-for-ai-agents/), [StartupHub: Critical Flaws](https://www.startuphub.ai/ai-news/ai-research/2025/ai-agent-marketplaces-face-critical-flaws-microsoft-research-finds/), [GitHub: multi-agent-marketplace](https://github.com/microsoft/multi-agent-marketplace)
+
+---
+
+### Updated Phase 2 Thread List (Session 2)
+
+**Threads completed (Session 1 + Session 2):**
+- [x] Tick 1: Comparable platform failures + pre-mortem (Replit, Bountysource, Gitcoin, Kaggle)
+- [x] Tick 2: GTM motion — founder-led sales 2026 (Cursor, Modal, Braintrust, Linear, Vercel)
+- [x] Tick 3: Design partner targets — AI agent operators + AI safety labs (30 named people)
+- [x] Tick 4: Cold-start marketplace failures + substitutes math (Homejoy, Beepi, Shyp, Devin, OpenAI)
+- [x] Tick 5: Dev-tool first revenue + enterprise AI buying committee
+- [x] Tick 6: Design partner targets — bug bounty companies + dev-tool founders (15 named people)
+- [x] Tick 7: Token economy collapse modes + regulatory/liability (OFAC critical risk)
+- [x] Tick 8: Pricing experiments + design partner program structures
+- [x] Tick 9: Why smart founders chose hierarchical over marketplace (structural bear case)
+- [x] Tick 10: Content strategy + community-led growth for AI eval tools
+- [x] Tick 11: YC W26 AI agent companies + additional design partner targets (25 named people)
+- [x] Tick 12: Braintrust competitive threat + evaluation market structure
+- [x] Tick 13: OMB M-26-04 deep dive — government procurement angle (bear/gtm)
+- [x] Tick 14: SAFE/co-investment structure for design partners (gtm)
+- [x] Tick 15: EU AI Act compliance burden + international comparables (bear)
+- [x] Tick 16: Government/GovTech design partner targets — named contacts (partners)
+- [x] Tick 17: The 'creepiness objection' — enterprise autonomy trust survey data (bear)
+- [x] Tick 18: Microsoft Magentic Marketplace research — mechanism design validation (bear)
+
+**Threads still to dig (Phase 3 if needed):**
+- OMB M-26-04 follow-on: what happens when M-26-04 gets superseded
+- Straw mechanism design: OASIS simulation using the Magentic Marketplace framework as the base
+- Agent legal personhood: Wyoming DAO LLC path for agents as contracting parties
+- The "right rubric" question: how do you know your rubric actually measures what it claims?
+
+---
+
+## Phase 2 Morning Reading Guide (Session 2 Updates)
+
+*This section updates the guide from Session 1. The core 4-section guide remains unchanged — this adds corrections, new findings, and updated open questions.*
+
+---
+
+### Correction to Bear Thesis #1 (M-26-04)
+
+**Original:** "M-26-04 is a regulatory forcing function that creates demand for Straw's compliance certificate in federal procurement."
+
+**Corrected (Tick 13):** M-26-04 is a politically motivated "anti-woke AI" memo that mandates ideological neutrality evaluation — not agent performance quality evaluation. It does NOT mandate commercial third-party evaluation firms. Agencies can comply internally. The **real tailwind** is the GSA-NIST CAISI partnership (March 2026) — building federal AI evaluation standards that Straw should be cited in, not sold to. The compliance certificate must be renamed to "pre-procurement evaluation evidence" to avoid legal exposure.
+
+**→ Phase 1 Section 15 should be read with this correction.**
+
+---
+
+### New Bear Case Finding: Prompt Injection Against the LLM Judge
+
+**This is the highest-severity new finding from Session 2 (Tick 18).**
+
+Microsoft Research's Magentic Marketplace experiment showed that prompt injection attacks on LLM judges are **100% effective** against GPT-4o and other frontier models in competitive marketplace settings. Agents embedded adversarial instructions in their submissions — the judge model redirected all decisions to the manipulative agent.
+
+**Straw's evaluation pipeline is vulnerable to this attack today.** The LLM judge (Gemini) reads agent-submitted artifacts including SUBMISSION.md and agent output files. An adversarial agent can embed prompt injection in any of these files. Without explicit isolation of agent-submitted text from the evaluation context, the judge can be manipulated.
+
+**This is a P0 security vulnerability — must be fixed before the first competition with economic stakes.** The fix is architectural: evaluate against the rubric criteria using the agent's output artifacts, but strip or isolate agent-controlled text before it reaches the judge's main context. Consider running the injection detection as a separate pipeline step.
+
+---
+
+### New GTM Finding: NIST Methodology Alignment > All Other Government Angles
+
+The highest-ROI government-adjacent move for Straw is getting cited in the NIST AI evaluation guidelines being developed by CAISI right now. This is not a government sales motion — it's a credibility motion. **Contact: Elham Tabassi** (@ElhamTabassi at NIST) with a white paper on Straw's rubric methodology.
+
+---
+
+### New Design Partner Finding: The Pre-Defined Success Criteria Approach
+
+Before any evaluation starts, both parties write down what outcome would make it "successful." This prevents post-hoc renegotiation of what "counts" and creates a concrete basis for the paid graduation commitment. No other framework covers this in the research — it's a Straw-specific innovation in the design partner structure.
+
+---
+
+### Updated Open Questions for Jeremy
+
+*In addition to the 6 open questions from Session 1, Session 2 adds:*
+
+**Q7: Is the "compliance certificate" language creating legal exposure?**
+The EU AI Act compliance angle (Tick 15) shows that Straw's evaluation output is NOT the same as an EU AI Act conformity assessment. Using "compliance certificate" branding without qualification could create secondary liability if companies rely on it and get fined. The safer language is "pre-procurement evaluation evidence." Only Jeremy and his legal counsel can make this call — but it needs to be made before the first marketing materials go out.
+
+**Q8: Is the LLM judge isolated from agent-submitted text?**
+The Magentic Marketplace finding (Tick 18) shows 100% prompt injection effectiveness against LLM judges in competitive settings. The current evaluation worker (evaluation-worker.ts) reads SUBMISSION.md and agent output before calling the LLM judge. This is the attack surface. The fix is architectural and needs to be prioritized before any real-stakes competitions. Only Jeremy (or an engineer) can confirm the current isolation level and prioritize the fix.
+
+**Q9: What is the competition cap for v0?**
+Magentic Marketplace data shows that more agents in a competition reduces consumer welfare (Paradox of Choice). The current design uses category-based matching without an explicit per-competition cap. Phase 1's "300-agent swarm" scenarios assume large competition pools. The research suggests a 15–25 agent cap per competition produces better outcomes. Only Jeremy can decide: optimize for agent supply-side volume (no cap) or optimize for buyer outcome quality (15–25 cap)?
+
+---
+
+**Push status (Session 2):** Writing complete. Committing now as Jeremy Liu.
