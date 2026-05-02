@@ -38315,3 +38315,140 @@ Priority order:
 
 The ServiceNow integration pilot can be built in 2-3 weeks by a dedicated engineer (the API layer is already specified above; the ServiceNow side uses their standard IntegrationHub spoke format). This is the right first enterprise integration to close the first 3-5 large enterprise customers.
 
+---
+
+## Tick 244 — Fine-Tuning Competitions: A v3 Category with Fundamentally Different Eval
+
+*Research sources: IBM Research + Kaggle enterprise AI leaderboards (IBM AssetOpsBench, ITBench); ARC Prize leaderboard; Kaggle Community Benchmarks framework; Scale AI Labs leaderboard; Fine-tuning landscape 2025 (Pradeep Das / Medium); LoRA/QLoRA enterprise fine-tuning infrastructure (Introl Blog)*
+
+### Why Fine-Tuning is Different
+
+The v0-v2 Straw categories evaluate **agent behavior** — given a task, how well does the agent perform? Fine-tuning competitions evaluate something different: **model capability improvement** — given a training dataset, how well can an operator fine-tune a base model to improve performance on a held-out test set?
+
+This is a fundamentally different evaluation paradigm:
+
+| Dimension | Agent Competition (v0-v2) | Fine-Tuning Competition (v3) |
+|---|---|---|
+| What's evaluated | Agent output (artifacts, code, SQL) | Model weights (the fine-tuned model itself) |
+| Who submits | The agent's solution | A checkpoint or adapter (LoRA weights) |
+| Evaluation | Run the solution against test cases | Run the fine-tuned model against held-out eval set |
+| Winner criteria | Best output score | Best held-out accuracy improvement |
+| Time window | Days-weeks | Days-weeks |
+| Compute cost for operator | $10-100 in inference API | $50-10,000 in training compute |
+
+For a fine-tuning competition, Straw must:
+1. Provide operators with a base model + training dataset
+2. Accept LoRA adapter submissions (not full model weights — too large)
+3. Run held-out evaluation using the base model + submitted adapter
+4. Score on held-out test set accuracy + generalization metrics
+
+### The IBM + Kaggle Precedent
+
+IBM Research partnered with Kaggle in 2025 to launch enterprise-grade benchmarks on Kaggle's competition platform:
+- **AssetOpsBench** — tools to build and evaluate AI agents for asset management software
+- **ITBench** — benchmarks for IT automation agents (infrastructure management, incident response)
+
+This is exactly the model Straw is building, but Kaggle + IBM are doing it for model evaluation and public leaderboards, not for enterprise procurement. Key difference: Kaggle competitions are open to anyone, results are public, and the winner is the best-scoring model globally — not the best agent for a specific enterprise's actual use case.
+
+Straw's fine-tuning competitions would be **private, enterprise-specific**: the enterprise provides their domain-specific training data (proprietary, under NDA), and operators fine-tune a model to be better at that enterprise's specific task. The held-out test set comes from the enterprise's real data.
+
+Sources:
+- IBM + Kaggle enterprise benchmarks: https://research.ibm.com/blog/ibm-kaggle-leaderboards-enterprise-ai
+- Kaggle Community Benchmarks: https://blog.google/innovation-and-ai/technology/developers-tools/kaggle-community-benchmarks/
+- ARC Prize leaderboard: https://arcprize.org/leaderboard
+
+---
+
+### What a Fine-Tuning Competition Looks Like on Straw
+
+**The task:**
+> "We have 100,000 customer service tickets labeled with correct resolutions. Fine-tune a base model to achieve > 85% accuracy on our held-out test set (10,000 tickets). The winning fine-tune will be deployed as our primary tier-1 resolution model."
+
+**Competition structure:**
+- Enterprise provides: training dataset (100K labeled examples), base model specification (e.g., Llama 4 Scout 17B), held-out test set (sealed, never seen by operators)
+- Operators submit: LoRA adapter weights (not full model checkpoint)
+- Straw evaluation: Straw runs inference on the held-out test set using base_model + submitted_adapter
+- Score: accuracy, F1, calibration, inference speed
+
+**Infrastructure requirements:**
+- GPU inference cluster for evaluation (Railway or AWS/GCP spot instances)
+- Model serving framework (vLLM or similar) that can hot-swap LoRA adapters
+- Secure training data handling (never exposed to competing operators; encrypted at rest)
+- Adapter weight verification (ensure submitted adapter is compatible with specified base model)
+
+**Why this is v3, not v1 or v2:**
+
+1. **Compute cost:** Running inference on 10,000 held-out examples with 5-10 different LoRA adapters requires GPU compute that ZeroClaw's current gVisor CPU infrastructure can't handle. Requires dedicated ML inference infrastructure.
+
+2. **Storage:** LoRA adapters for a 7B model are ~50-200MB each; for 17B, 200-800MB. 50 operator submissions × 500MB = 25GB storage for a single competition.
+
+3. **Training data security:** Enterprise training data is commercially sensitive. It must be handled under a different security model than competition briefs (never transmitted to operators, stored encrypted, deleted after competition).
+
+4. **Legal complexity:** The enterprise's fine-tuned model trained on their proprietary data is a highly valuable asset. Who owns it? The base model terms (Llama 4: Meta LLaMA Community License; proprietary models: vendor-specific terms) add legal complexity not present in agent competitions.
+
+5. **Pricing:** A fine-tuning competition requiring GPU infrastructure for evaluation costs Straw significantly more to run. Minimum viable prize: **$10,000-$50,000** (reflecting the compute cost + data security infrastructure cost the enterprise saves by not running this internally).
+
+---
+
+### The Base Model Choice: Open-Weight vs. Proprietary
+
+Fine-tuning competitions work best with **open-weight base models** because:
+- Operators need access to the model weights (not just an API)
+- LoRA fine-tuning requires local training (can't train against an API endpoint)
+- The enterprise must be able to deploy the fine-tuned model after the competition
+
+**v3 supported base models (2026 state):**
+- Llama 4 Scout 17B (Meta, Apache 2.0 license for commercial use)
+- Llama 4 Maverick 17B × 128E (MoE variant, more capable but higher inference cost)
+- Gemma 3 27B (Google, permissive commercial license)
+- Mistral / Mixtral family (Mistral AI, Apache 2.0)
+- Phi-4 (Microsoft, research license — not yet commercial for all uses)
+
+Straw would **not** support fine-tuning competitions on proprietary model families (GPT-4, Claude, Gemini) because:
+- Proprietary model fine-tuning goes through vendor-controlled APIs (OpenAI fine-tuning API, Anthropic's fine-tuning offering)
+- The vendor controls the fine-tuned weights, not the enterprise
+- Straw can't run evaluation independently if the model is behind a proprietary API with per-token pricing
+
+The fine-tuning competition category therefore also serves as a **strategic endorsement of open-weight models** — it creates demand for operators skilled in fine-tuning Llama 4 and Gemma 3, which are exactly the models Indian IT services firms (Tick 237) and enterprise AI teams are fine-tuning in 2026.
+
+---
+
+### Why Enterprises Want Fine-Tuning Competitions
+
+The business case parallels the agent competition case:
+
+**Problem:** Enterprise wants a domain-specific model (fine-tuned on their customer service data). Options:
+1. Fine-tune in-house: requires 3-5 ML engineers, 3-6 months, $50-200K in compute and labor
+2. Contract ML consultancy: 6-12 months, $150-500K, no guarantee of quality
+3. Run a Straw fine-tuning competition: operators compete on the enterprise's training data, winner gets $10-50K prize, enterprise gets the winning adapter + evaluation results
+
+The competition model applies exactly as it does for agent competitions: the enterprise defines what winning looks like (held-out test set accuracy), operators compete, the score doesn't lie.
+
+**Additional value:** The fine-tuning competition leaderboard shows how different operators approach the same training data differently — hyperparameter choices, data augmentation strategies, quantization approaches. The enterprise learns about their training data quality and difficulty by seeing where all approaches fail (low scores indicate ambiguous training labels, not operator incompetence).
+
+---
+
+### The IBM-Straw Integration Opportunity
+
+IBM's AssetOpsBench and ITBench are public benchmarks for which IBM provides training data and evaluation infrastructure. IBM-Straw partnership:
+- IBM provides benchmarks for Straw's fine-tuning competition templates
+- Straw provides the competition marketplace (operators compete to fine-tune on IBM's benchmarks)
+- Winners are showcased on IBM Research's blog (distribution for both)
+- IBM uses Straw's competition results to identify talent for their own AI projects
+
+This is a BD template for bringing domain-specific benchmarks onto Straw: partner with the domain authority (IBM for IT automation, AWS for cloud infrastructure, Bloomberg for finance) who provides the benchmark and training data, Straw runs the competition, both sides benefit from the winner signal.
+
+---
+
+### v3 Timeline and Investment
+
+Fine-tuning competitions are not a v0 or v1 feature. They require:
+1. **GPU infrastructure** ($15-30K/month for a GPU inference cluster, or spot instance equivalent)
+2. **Training data security infrastructure** (separate from competition brief storage)
+3. **LoRA adapter evaluation pipeline** (model serving + hot-swap infrastructure)
+4. **Legal templates** for data licensing and model weight ownership
+
+Estimated development time: 3-4 months of dedicated engineering after v1 ships. Estimated additional monthly infrastructure cost: $15-25K. Revenue per competition: platform fee 15% × $10,000-$50,000 = $1,500-$7,500 per competition. At 4 competitions/month: $6,000-$30,000/month in platform fees.
+
+Fine-tuning competitions break even at the infrastructure cost when running 2+ per month. At 8 per month, the category contributes meaningfully to overall margin. The TAM is different from agent competitions — fewer enterprises need fine-tuning competitions (larger AI-sophistication requirement) but the prize pools are much larger.
+
