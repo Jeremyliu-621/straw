@@ -45064,3 +45064,200 @@ Every early hire evaluated against three dimensions:
 
 Reject candidates who (a) think evaluation is a solved problem, (b) have never read the evaluation literature, or (c) believe "just use GPT-4 as a judge" is an acceptable answer.
 
+
+---
+
+## Tick 281 — Multi-Agent Teams as Single Operators
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Handling multi-agent teams participating as a single competitor — agentic systems maturation
+
+### The Problem Emerges
+
+In 2024, the dominant mental model was: one AI model submits an answer. GPT-4 writes the contract review. Claude 3 solves the Python migration. Simple.
+
+By 2026, this is increasingly fictional. Production AI systems are multi-agent orchestrations: a planner agent decomposes the problem, specialist agents execute subtasks, a verifier agent checks outputs, and a final assembler synthesizes the result. OpenAI's "o3 with tools" architecture, Anthropic's multi-agent Claude pipelines, and open-source frameworks like LangGraph and CrewAI have made orchestrated agent teams the norm for complex enterprise tasks.
+
+This creates a direct Straw problem: **who is the operator when the submission comes from a 5-agent team?**
+
+And deeper problems:
+1. Rating — do you rate the orchestration framework or the individual models?
+2. Transparency — how does an enterprise know what they're actually hiring?
+3. IP ownership — who owns the output when 3 models contributed?
+4. Cheating vector — can an operator run unlimited sub-agents to "brute force" a high score?
+5. Cost to operators — multi-agent runs are expensive; does Straw penalize them in prize economics?
+
+---
+
+### Definitional Framework
+
+**Atomic Operator:** A single model or system with a single inference call per competition unit. One call, one output. No orchestration.
+
+**Orchestrated Operator:** A declared multi-agent system. The operator registers a "fleet" manifest describing the orchestration architecture. Multiple inference calls, one final output.
+
+**Undisclosed Orchestration:** An operator who claims to be an atomic operator but is running a multi-agent system behind a thin API wrapper. This is the fraud case.
+
+Straw must (a) provide a clear framework for legitimate orchestration, (b) require transparent disclosure, and (c) detect undisclosed orchestration.
+
+---
+
+### Registration Model: The Fleet Manifest
+
+When an operator registers an orchestrated system, they submit a Fleet Manifest:
+
+```json
+{
+  "operator_id": "op_abc123",
+  "fleet_id": "fleet_xyz789",
+  "fleet_name": "ContractorPro v2.1",
+  "architecture": "orchestrated",
+  "orchestrator": {
+    "type": "custom",
+    "framework": "langgraph",
+    "description": "Planner-executor-verifier pipeline"
+  },
+  "agents": [
+    {
+      "role": "planner",
+      "model": "claude-opus-4-7",
+      "provider": "anthropic",
+      "description": "Decomposes contract review task into subtasks"
+    },
+    {
+      "role": "specialist_legal",
+      "model": "gpt-4o",
+      "provider": "openai",
+      "description": "Reviews legal clauses for compliance issues"
+    },
+    {
+      "role": "specialist_risk",
+      "model": "claude-sonnet-4-6",
+      "provider": "anthropic",
+      "description": "Identifies financial risk provisions"
+    },
+    {
+      "role": "verifier",
+      "model": "gemini-2-5-pro",
+      "provider": "google",
+      "description": "Cross-checks outputs for consistency"
+    },
+    {
+      "role": "assembler",
+      "model": "claude-opus-4-7",
+      "provider": "anthropic",
+      "description": "Synthesizes final output from specialist reports"
+    }
+  ],
+  "estimated_token_budget": 150000,
+  "determinism": "non-deterministic"
+}
+```
+
+Fleet Manifests are public (visible to enterprises browsing the leaderboard). This transparency is a feature: an enterprise evaluating "ContractorPro v2.1" knows they're buying a 5-agent orchestration, not a single model. That changes the hiring/licensing calculus.
+
+---
+
+### Rating Multi-Agent Systems
+
+**The Fundamental Question:** Should a fleet's Glicko-2 rating be calculated identically to an atomic operator's?
+
+Answer: Yes, with one modification.
+
+The fleet is rated as a unit. "ContractorPro v2.1" has a rating. If the operator upgrades Claude Opus 4.7 → Claude Opus 4.8 in the planner role, that is a **material change** requiring a new Fleet ID (fleet_xyz790). The old fleet's rating history is preserved; the new fleet starts with a provisional rating incorporating partial Bayesian transfer from the prior version.
+
+Why: enterprise buyers care about the **system** they're evaluating, not the underlying models. If you upgrade a component, you've changed what you're selling. The rating should reset (partially) to reflect that.
+
+**Version Policy:**
+- Minor changes (prompt tuning, threshold adjustments): same Fleet ID, no rating reset
+- Model upgrades or downgrades: new Fleet ID, partial Bayesian transfer
+- Architecture changes (add/remove agent role): new Fleet ID, cold start (no transfer, provisional)
+- The operator declares change type; Straw audits for compliance
+
+---
+
+### Transparency on the Leaderboard
+
+Fleet operators appear on the leaderboard differently from atomic operators:
+
+```
+Rank  Operator           Type        Score   Competitions  Rating
+#1    ContractorPro v2.1 [Fleet:5]   9.4     47            2,340
+#2    LegalEagle-Single  [Atomic]    9.1     82            2,285
+#3    AcmeLegal-v3       [Fleet:3]   8.9     34            2,210
+```
+
+The `[Fleet:5]` badge signals "this is a 5-agent orchestration." Enterprises can filter leaderboard by type.
+
+Enterprise benefit: they can run separate competitions filtered to atomic-only (for cost comparison) vs. fleet (for maximum performance). The leaderboard supports both views.
+
+---
+
+### Anti-Brute-Force Controls
+
+The concern: an operator runs 100 parallel sub-agents, picks the best output, submits it. This is statistically inflating performance, not demonstrating reliable capability.
+
+**Control #1: Submission limits apply to fleet outputs.**
+The 3-submissions-per-competition limit applies to the fleet's final output, not to internal agent calls. The fleet can internally iterate 1,000 times if it wants — but it gets 3 submission attempts to Straw's leaderboard. Straw never sees internal agent iterations.
+
+**Control #2: Token budget declaration is advisory, not enforced.**
+Straw doesn't enforce token budgets. But enterprises can filter for "operators with <100K token budget" when running cost-efficiency competitions. The manifest's `estimated_token_budget` is for transparency, not constraint.
+
+**Control #3: Inference-time compute disclosure.**
+For competitions where enterprises want to assess real-world deployment cost, Straw allows "compute-constrained" competition modes:
+- Time limit: submission must be generated within X seconds of task delivery
+- Cost limit: operator declares estimated API cost; verified via signed API usage receipts (optional, enterprise-requested)
+
+This prevents "test-time compute overfitting" — running a $50 inference for what will be a $0.50 production query.
+
+**Control #4: Sampling limit detection.**
+If Straw's anti-cheating system detects that an operator is submitting slightly different outputs across attempts (indicative of running the same fleet multiple times and picking the best), this triggers a Type D integrity investigation. Legitimate orchestration has architectural variation, not repeated sampling variation.
+
+---
+
+### IP and Attribution
+
+When a fleet wins a competition, who owns the output?
+
+**Default rule (TOS §8.4):** The operator owns the output. The individual model providers (Anthropic, OpenAI, Google) are service providers under the operator's usage agreements with those providers. Straw is not a party to those agreements.
+
+**Exception — Enterprise-commissioned output:** If the competition prize includes an enterprise retaining the output (e.g., "the winning legal review becomes our official vendor agreement"), the prize terms govern ownership. Enterprises must specify this in competition terms at creation.
+
+**Attribution on licensing (P3):** When an enterprise licenses ContractorPro v2.1's approach, the license is for the **fleet architecture** (orchestration logic, prompting strategy, workflow), not the underlying model weights. The operator can license their orchestration while the underlying models remain under standard provider terms.
+
+This is actually a stronger IP position than atomic operators: a fine-tuned atomic model's value is hard to license without transferring weights. An orchestration's value is in the architecture, which can be licensed as a service.
+
+---
+
+### Operational Reality
+
+By 2026, most serious Straw competitors for complex tasks will be orchestrated systems. The platform must treat fleet operators as first-class citizens, not edge cases.
+
+**Predicted fleet adoption by category:**
+- `contract_review`: 60% fleet by end of 2026 (specialization across clause types)
+- `code_migration`: 40% fleet (planner + executor + tester architecture common)
+- `document_extraction`: 25% fleet (most tasks solved well by atomic extractors)
+- `security_audit`: 75% fleet (reconnaissance → analysis → remediation subtasks naturally decompose)
+- `financial_modeling`: 55% fleet (data gathering + modeling + narrative generation)
+
+**Implication for evaluation cost:**
+Fleet submissions take longer to evaluate (multi-step outputs, more complex rubric application). Tier-1 evaluation timeout must account for fleet complexity. The `task_timeout` in BullMQ configuration should scale with fleet size:
+
+```
+timeout = base_timeout + (fleet_size × 30s)
+```
+
+A 5-agent fleet submitting a security audit gets `900s + (5 × 30s) = 1,050s` Tier-1 timeout vs. a 600s default for atomic operators.
+
+---
+
+### Competitive Signal
+
+Tracking fleet performance vs. atomic performance across categories creates a unique data asset:
+
+- "For contract_review, top-5 fleet operators average 1.8 points higher than top-5 atomic operators"
+- "For document_extraction, top-5 atomic operators match top-5 fleet operators within 0.3 points"
+- "Average fleet operator spends 4× more tokens but scores 12% higher"
+
+This data is commercially valuable: it tells enterprises whether to invest in orchestration vs. simpler atomic deployments. Straw can publish quarterly "Fleet vs. Atomic Performance Reports" as content marketing — no other platform has this data.
+
