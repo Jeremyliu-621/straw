@@ -41242,3 +41242,231 @@ The market equilibrium target: generalists anchor the platform and provide broad
 
 *Tick 254 complete. All five priority threads from Session 27 now covered: Tick 253 (post-AGI), Tick 254 (cross-category correlation), Tick 255 (live competition), Tick 256 (data security), Tick 257 (price discovery). Plus Ticks 258–259 on fleet management and operator journey.*
 
+
+---
+
+## Tick 260 — The Enterprise Poster Journey: From Pain Point to Published Competition
+
+**Date:** 2026-05-02
+**Thread:** How enterprises design good task specifications and post competitions that produce valuable outcomes
+**Research method:** Product design analysis; enterprise software onboarding patterns; analogies to RFP/RFQ design methodology; lessons from Kaggle competition design (where poorly-specified problems produce poor results)
+
+---
+
+### The Enterprise Poster's Starting Point
+
+The enterprise poster comes to Straw with a pain point, not a rubric. They know: "We spend $200K/year on a vendor doing Python 2 → Python 3 migration, the results are inconsistent, and we don't have a good way to evaluate whether the outputs are correct." They do not arrive with a formal evaluation rubric, a prize budget, or a sandboxed test set.
+
+This is the opposite of what Straw needs to run a good competition. The poster's journey — from "I have a problem" to "my competition is live and well-specified" — is a product design challenge as significant as the evaluation infrastructure itself. A poorly-specified competition produces low-quality agent participation and wrong winners. Kaggle's data confirms this: competitions with vague or poorly-designed evaluation criteria consistently produce gaming behavior and disappointing results.
+
+---
+
+### Stage 0: Discovery and Qualification
+
+**Who posts tasks?**
+
+At platform launch (Q2 2026), enterprise poster personas:
+- **The Engineering Manager:** Responsible for a workflow that uses AI; has a vendor evaluation coming up; wants an objective comparison
+- **The Procurement Manager:** AI is now large enough spend that procurement wants to be involved; has been burned by a failed AI deployment; wants process rigor
+- **The IT Executive:** CDO, CTO, or VP Engineering at a mid-market company; has read about "agentic AI" at industry events; wants to understand which vendor is actually better before committing
+- **The Internal AI Team Lead:** Team that built internal AI tooling; management asks "is this better than buying from a vendor?"; wants a competitive benchmark
+
+**Self-qualification questions (before they talk to sales):**
+1. "Do I have a clearly defined output?" (Yes/No — if No, Straw may not be the right tool today)
+2. "Can I describe what success looks like?" (Yes/No)
+3. "Do I have a sample of real task inputs I can share?" (Yes/No — synthetic tasks produce worse competitions)
+4. "What does the wrong answer cost me?" ($1K? $100K? — calibrates prize pool)
+
+If all four are Yes, the poster is ready for a well-specified competition. If any are No, the poster needs Task Design consulting (see Enterprise tier service below).
+
+---
+
+### Stage 1: Task Design — The Most Important Step
+
+The task design step is where competition quality is determined. Three common failure modes:
+
+**Failure Mode 1: Underspecified Success Criteria**
+"We want agents to review contracts and identify issues" — this is not evaluable. The rubric needs: specific issue types, expected detection rate, required output format.
+
+**Failure Mode 2: Overfit Rubric**
+"The agent must produce outputs that match our current vendor's output format exactly" — this evaluates format compliance, not quality. If the current vendor's format is wrong, the rubric produces a wrong winner.
+
+**Failure Mode 3: Insufficient Test Data**
+Posting a competition with 5 sample inputs. Statistical noise swamps signal. Any agent could get lucky on 5 inputs. Minimum: 20 inputs for reliable evaluation, ideally 50+.
+
+**The Task Design Wizard (Straw UX):**
+
+A structured, opinionated flow that prevents these failure modes:
+
+```
+Step 1: Category Selection
+  → Pick from task taxonomy (code_migration, document_extraction, etc.)
+  → "If your task doesn't fit any category, contact enterprise sales."
+
+Step 2: Input Specification
+  → Upload sample task inputs (min 20 recommended, max 200 for v0)
+  → "Does your input contain personal data?" → PII detection scan + anonymization
+  → "Is this input representative of your real workload?" → Toggle if curated
+
+Step 3: Output Specification
+  → Define expected output schema (JSON schema, text format, or structured)
+  → For code: "What unit tests must pass?" → Upload test suite
+  → For documents: "What fields must be extracted?" → Define JSON schema
+  → "What does a score of 10/10 look like? What does 5/10 look like?" → Rubric examples
+
+Step 4: Evaluation Rubric Builder
+  → [Pre-built templates for each task category]
+  → code_migration: unit_test_pass_rate × 0.6 + compilation_success × 0.2 + maintainability_score × 0.2
+  → document_extraction: field_precision × 0.5 + field_recall × 0.3 + format_compliance × 0.2
+  → [Customize weights; add sub-components; set minimum thresholds]
+  → "Hidden criteria" section: define holdout criteria (10–20% weight, sealed until close)
+
+Step 5: Prize Pool and Timeline
+  → Prize pool recommendation: "Based on task complexity and your input dataset, recommended pool: $2,500–$5,000"
+  → Prize distribution: top-3 preset (50/30/20) or poster-defined
+  → Competition duration: 7 days / 14 days / 21 days
+  → D22 configuration: hire / license / acquire toggles
+
+Step 6: Operator Access Control
+  → Security tier: Standard / Enterprise-Confidential / Enterprise-Classified
+  → Geographic restrictions, industry restrictions, blocklist
+
+Step 7: Review and Launch
+  → Straw automated quality check:
+      ✓ Minimum 20 inputs present
+      ✓ Rubric total weights sum to 1.0
+      ✓ No obvious PII in inputs (or PII flag acknowledged)
+      ✓ Prize pool above category minimum ($100 for document_extraction, $500 for code_migration)
+      ✗ Warning: "Your rubric has no performance component. Consider adding a latency or throughput component for production-relevant scoring."
+  → "Approve and Launch" button
+```
+
+---
+
+### Stage 2: The Active Competition Period (2 Weeks)
+
+During the competition, the poster has limited visibility — and this is intentional. The sealed-state design (Tick 239) means posters see: (a) number of entrants, (b) highest tier-1 score achieved (no operator identity), (c) timeline progress. They do not see individual operator scores or solution code until close.
+
+**Poster actions during competition:**
+- **Answer operator questions** via the managed Q&A channel (questions are anonymized before delivery — no operator knows who asked)
+- **Add clarifying task examples** if the Q&A reveals systematic misunderstanding (allowed once, before T-7 days, with all operators notified)
+- **Monitor participation** — if entrant count is below expected by T-7 days, Straw alerts and suggests: boost the prize pool, extend the timeline, or invite additional operators via the Operator Directory
+
+**The participation cliff:** If fewer than 5 operators submit by T-7, the competition is at risk of a non-competitive result. Straw's intervention: send an "invite" notification to the top-10 operators in the relevant category who have not entered. If still below 5 by T-3, Straw proactively contacts enterprise support and recommends extending the prize pool.
+
+---
+
+### Stage 3: Results and D22 Decision
+
+At competition close, the poster receives the **Competition Results Package:**
+
+**Section 1: Leaderboard** (now fully unblinded)
+- Operator names, scores, rank, breakdown by rubric sub-component
+- Score distribution graph (where did each entrant fall?)
+- Winner's margin over second place (large margin = clear winner; small margin = need Tier-2 deeper eval)
+
+**Section 2: Tier-2 Summary** (for competitions above $2K pool)
+- LLM gatekeeper evaluation summary for top-3 operators
+- "Code quality" / "solution robustness" assessment in natural language
+- Any red flags identified by Tier-2
+
+**Section 3: ROI Summary** (auto-generated for enterprise posters)
+```
+Competition Summary
+─────────────────────────────────────────────────────────────────
+Task: Python 2 → Python 3 migration | Codebase: [Your identifier]
+Prize Pool: $5,000 | Entrants: 31 | Duration: 14 days
+
+Winning Score: 9.3 / 10.0 (op_nexus_labs)
+  Unit test pass rate: 97.8%  (rubric weight: 60%)
+  Compilation success: 100%   (rubric weight: 20%)
+  Maintainability:    8.1/10  (rubric weight: 20%, Tier-2 assessed)
+
+Market Context:
+  Competition median: 7.2 / 10.0
+  Top 10% threshold:  8.6 / 10.0
+  Winner was in top 3% of all code_migration entrants across Straw
+
+Your Current Vendor Benchmark (if provided): 6.8 / 10.0
+  → Winner performs 37% better than your current vendor on this task
+
+Cost Analysis (if you license the winning agent):
+  Current vendor cost estimate: $15/migration × 500/month = $7,500/month
+  Winning agent estimated cost: $3/migration × 500/month = $1,500/month
+  Estimated annual savings: $72,000
+  Competition cost: $5,000 (platform fee: $750)
+  Payback period: 25 days
+─────────────────────────────────────────────────────────────────
+```
+
+**D22 Selection Flow:**
+- Poster selects pathway: hire, license, acquire, or no action
+- For hire/license: Straw sends introduction request to winning operator, facilitates initial contact
+- For acquire: Straw initiates the acquisition facilitation flow (Tick 257)
+
+---
+
+### Stage 4: Repeat and Fleet
+
+After the first successful competition, the poster's repeat behavior is the primary retention driver.
+
+**The natural second competition:** Most successful posters have a second pain point that emerged during the first competition. The agent that won code migration might be excellent but the poster wants to also test document extraction. The second competition is faster: they know the workflow, have an existing prize budget process, and have seen the ROI calculation once.
+
+**Straw's retention levers:**
+- **Competition Templates:** "You ran a Python 2→3 migration competition last quarter. Click here to re-run with updated test data and a new competition cycle."
+- **Operator Watchlist:** Poster can "follow" top operators from past competitions, getting notified when they enter new competitions relevant to the poster's categories
+- **Enterprise Dashboard:** Shows all competitions run, money spent, wins hired, agents licensed, estimated ROI from each — the FinOps view of Straw spending
+- **Annual Benchmark Cycle:** "It's been 12 months since your last code_migration competition. Model capabilities have improved significantly. Would you like to run a fresh evaluation to see if there's a better option?"
+
+---
+
+### Enterprise Poster Quality Standards: Matching Kaggle
+
+Kaggle has published documented findings on what makes a "good" competition. Their key insight: **the competition design quality predicts the quality of solutions more than the prize size.** Well-specified rubrics with clear evaluation criteria and adequate test data produce better solutions even at lower prize points than vaguely specified rich competitions.
+
+Straw should publish an "Enterprise Poster Rating" — a quality score for the competition design itself:
+
+| Criterion | Weight |
+|-----------|--------|
+| Input dataset size (≥50 inputs = full score) | 25% |
+| Rubric completeness (all sub-components defined, weights specified) | 25% |
+| Hidden holdout criteria present | 15% |
+| Operator Q&A engagement (poster answered questions within 24h) | 10% |
+| Prior competition track record (repeat posters score higher) | 25% |
+
+Posters with ratings above 8.0 are displayed with a "Trusted Poster" badge to operators. This matters for operator participation: operators are more likely to invest significant effort in competitions where they trust the poster will evaluate fairly and follow through on hire/license commitments.
+
+---
+
+### Task Design Consulting Service (Enterprise-Classified Tier)
+
+For posters who fail the self-qualification questions — "I have a problem but I can't yet define success" — Straw offers a **Task Design Sprint** as a professional services engagement:
+
+- Duration: 2–5 business days
+- Deliverables: task specification document, sample rubric, recommended prize pool, test input construction guidance
+- Price: $5,000–$15,000 (depending on complexity)
+- Delivered by: Straw's Solutions Engineering team (headcount: 2 in Y1, growing to 6 in Y2)
+
+The Task Design Sprint is not altruistic. Well-designed competitions produce better results, produce more repeat poster behavior, and generate better operator writeup content. Straw has direct financial incentive to improve poster specification quality — so the sprint is priced near cost, with the ROI coming from the downstream competition.
+
+---
+
+### Summary
+
+The enterprise poster journey is: Discovery → Self-qualification → Task design wizard → Active competition monitoring → Results package with ROI summary → D22 selection → Repeat / Fleet.
+
+Key product investments required:
+- Task Design Wizard with automated quality checks and rubric templates
+- Operator Q&A anonymization layer
+- Participation cliff detection and intervention
+- ROI Summary auto-generation (the CFO artifact from Tick 249)
+- Enterprise Dashboard for multi-competition portfolio view
+- Trusted Poster badge system
+- Task Design Sprint consulting service
+
+The poster UX is as important as the evaluation infrastructure. The best evaluation system in the world fails if posters can't specify good tasks. Straw's market position depends on both sides of the marketplace being well-served.
+
+---
+
+*Tick 260 complete. Next: Tick 261 competitive landscape (awaiting research agent), Tick 262 enterprise sales motion.*
+
