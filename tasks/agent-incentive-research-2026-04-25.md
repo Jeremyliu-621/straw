@@ -34883,3 +34883,148 @@ An agent that consistently scores in the top 3 on Tier-1 deterministic tests AND
 
 Sources: arxiv.org/pdf/2504.20879 (The Leaderboard Illusion), arxiv.org/html/2501.17858v1 (Chatbot Arena vote rigging ICML 2025), arxiv.org/html/2502.17521v2 (benchmarking LLMs under data contamination), arxiv.org/html/2502.06559v1 (can we trust AI benchmarks — interdisciplinary review), epoch.ai/benchmarks/live-bench (LiveBench dynamic benchmark), arxiv.org/html/2508.07180v1 (dynamic benchmark construction for code), arxiv.org/html/2603.16600 (Rationale Matters — transferable rubric-following), arxiv.org/abs/2602.13576 (Rubrics as Attack Surface RIPD attack, from Tick 209), nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (adversarial ML taxonomy), link.springer.com/article/10.1007/s10994-025-06862-6 (adversarial robustness in LLM judges), openreview.net/forum?id=Pf0PaYS9KG (ICML 2025 data contamination), arxiv.org/html/2601.19334v1 (inference-time decontamination), blog.fig.inc/to-solve-the-benchmark-crisis-evals-must-think.
 
+
+---
+
+## Tick 223 — Dispute resolution and score appeals
+
+**Context:** Every scoring platform eventually receives: "My agent scored 6.2 but it clearly deserved 8.5 — your judge is wrong." Straw needs a clear dispute process that (a) is actually resolvable by Straw, (b) doesn't become a support burden, and (c) maintains the integrity of the leaderboard. This tick designs the dispute resolution system.
+
+**What can actually be disputed**
+
+Not all score complaints are equal. Before designing a process, distinguish the categories:
+
+| Complaint type | Resolvable? | Straw's role |
+|----------------|-------------|--------------|
+| Tier-1 test failure on valid output | Yes — deterministic | Re-run, verify, correct |
+| Tier-2 LLM judge score inconsistency | Limited — stochastic | Re-run with different seed, audit bias |
+| Rubric criteria are poorly defined | No — design-time issue | Point to rubric creation process |
+| Judge used wrong rubric version | Yes — audit trail | Verify, correct if true |
+| Enterprise poster gave wrong reference data | Yes — task quality issue | Escalate to enterprise; re-run if corrected |
+| Competitor submission broke evaluation runner | Yes — infrastructure | Debug and fix |
+| "My approach is better even if rubric disagrees" | No | Explain final |
+
+**The process: three tiers matching the eval tiers**
+
+**Tier-1 disputes (deterministic test failures):**
+- Any operator can flag a Tier-1 result within 72 hours of score publication.
+- Flagging requires specifying: which test case failed, what the agent output was, what the expected output was.
+- ZeroClaw re-runs the specific test case in a fresh container. If the result differs from the published result, the score is corrected and all operators are notified (score corrections are public, not hidden).
+- Resolution SLA: 48 hours.
+- No human required for most cases — ZeroClaw's deterministic re-run is the arbiter.
+
+**Tier-2 disputes (LLM judge disagreement):**
+- Appeals on LLM judge scores require a specific factual claim: "The judge scored [criterion] at 2 because it said [X], but [X] is demonstrably false — here is evidence [Y]."
+- Straw reviews the judge's reasoning chain for the disputed criterion. If the reasoning contains a factual error (not a judgment call), the criterion is re-evaluated by a human reviewer plus a fresh LLM judge call.
+- "I disagree with the judgment" is not an appealable claim. "The judge said my code has no error handling, but here is the error handling on line 47" is appealable.
+- Resolution SLA: 5 business days for human reviewer.
+- Outcome: correction (if factual error confirmed) or rejection with explanation.
+
+**Tier-3 disputes (human reviewer disagreement):**
+- In rare cases where a Tier-3 human review generated the score, the operator can request a second human reviewer within 14 days.
+- Requires a fee ($200, refundable if the score changes by more than 1 point).
+- A second independent reviewer evaluates the disputed criterion without seeing the first reviewer's score.
+- The final score is the average of the two human reviewers.
+- Resolution SLA: 10 business days.
+
+**What cannot be appealed**
+
+1. **Competition outcome** (who won). Once scores are final, the leaderboard is locked. If a score is corrected, the corrected leaderboard is used — which may change the winner retroactively if a correction moves an operator above the previous winner. (This is rare but must be handled: prize already distributed to original winner → corrected winner receives the prize; original winner is not required to return prize unless correction reveals a TOS violation like test case leakage.)
+
+2. **Rubric design.** The enterprise designed the rubric; Straw enforced it. An operator who disagrees with the rubric design can decline to enter future competitions by the same enterprise, but cannot appeal a rubric's criteria after competition close.
+
+3. **The enterprise's poster-override decision** (Pathway 1). If the enterprise selected a lower-ranked submission over a higher-ranked one, that is their prerogative. The reason field is disclosed, but there is no appeal process for a human choice.
+
+**Anti-abuse design**
+
+Without limits, a well-funded operator could flood the dispute queue as a harassment or delay tactic:
+
+- Each operator gets 3 free Tier-1 disputes per competition period (month). Additional Tier-1 disputes cost $50 each (refunded if upheld).
+- Each operator gets 1 free Tier-2 dispute per competition. Additional Tier-2 disputes cost $100 each (refunded if upheld).
+- Tier-3 disputes cost $200 (refunded if upheld, as above).
+- An operator who loses 3 consecutive fee-bearing disputes in a 90-day period gets flagged for review (potential abuse pattern).
+
+**Dispute resolution as a trust signal**
+
+The number and outcome of disputes per competition should be a visible platform metric — not the individual disputes, but aggregate statistics:
+
+- "This operator has 0 successful score corrections in 23 competitions" → legitimate scorer
+- "This task category has 15% Tier-1 dispute rate" → potential test quality issue in that category
+- "This enterprise's competitions have 2 score corrections in their last 5 competitions" → the enterprise's Tier-1 tests may have edge cases
+
+Aggregate dispute statistics are visible on the platform analytics dashboard. This creates accountability without exposing individual dispute contents.
+
+Sources: Tick 210 (rubric generator UX — design-time IRR validation prevents score disputes downstream), Tick 216 (ZeroClaw deterministic re-run capability, ephemeral container isolation), D30 (ZeroClaw judge daemon architecture), kaggle.com/docs/competitions#rules (Kaggle's competition rules and dispute process), topcoder.com/challenges/rules (Topcoder challenge rules and appeals process), herox.com/help/competition-rules (HeroX appeals process), arxiv.org/abs/2410.02736 (CALM bias taxonomy — Tier-2 LLM judge factual error detection).
+
+
+---
+
+## Tick 224 — GDPR and data protection for enterprise competition submissions
+
+**Context:** Enterprise competitions require enterprises to upload real task data to Straw — which means Straw processes potentially sensitive data (confidential contracts, customer records, internal code, financial documents). GDPR and equivalent regulations impose strict obligations on data processors. If Straw gets this wrong, no GDPR-regulated enterprise will use the platform. This tick designs the data protection framework.
+
+**Straw's role under GDPR**
+
+Under GDPR Article 4(8), Straw is a **data processor** when it processes personal data on behalf of the enterprise. The enterprise is the **data controller** — they determine the purposes and means of processing.
+
+This role assignment has specific implications:
+1. Straw needs a **Data Processing Agreement (DPA)** with every enterprise customer before any personal data is submitted.
+2. Straw must only process data according to the enterprise's instructions (scope: evaluation of competition submissions).
+3. Straw must implement **appropriate technical and organizational measures** (TOMs) under Article 32.
+4. Straw must assist the enterprise in fulfilling data subject rights requests.
+5. Straw cannot use competition data for its own purposes (e.g., training) without a separate legal basis.
+
+**Critical tension with Straw's data licensing ambition**
+
+Tick 211 establishes that Straw wants to license competition artifacts as training data (Tick 211 § 7-8). This directly conflicts with the GDPR processor role: a data processor cannot re-use the data it processes for its own commercial purposes (EU GDPR Article 29 + Recital 81).
+
+Resolution: **two data categories, two legal frameworks**
+
+1. **Task specification and reference data** (what the enterprise uploads): This may contain personal data (customer names, internal code, financial records). Straw processes this as a data processor under the DPA. Straw cannot use this data for data licensing without explicit enterprise consent (controller-to-controller agreement).
+
+2. **Agent submission artifacts and evaluation metadata** (what operators submit and what ZeroClaw generates): These are generated by agents in response to task prompts. To the extent they don't contain personal data from the original enterprise data, they are Straw's own processing outputs. These are the artifacts covered by the Operator TOS § 7 data licensing clause.
+
+**The practical boundary:** an agent submitting Python code for a code migration task is not submitting personal data. An agent submitting a contract review that quotes clauses from a confidential contract might be. The sanitization step in the evaluation pipeline (Tick 216) that strips operator identity from submissions for blind judging is ALSO the GDPR boundary: by the time the submission artifact is in Straw's possession as an "evaluation artifact," any personal data from the original task specification has been separated.
+
+**The DPA requirements for v1 launch (EU customer checklist)**
+
+1. **Standard Contractual Clauses (SCCs) for international transfers.** Straw is likely US-based; if it processes EU personal data, it needs SCCs or equivalent (UK IDTA for UK transfers). These are now standard SaaS DPA appendices — use the EC Commission's 2021 SCCs template.
+
+2. **Sub-processor list.** Straw's sub-processors include: cloud infrastructure provider (AWS/GCP/Azure), judge API providers (Anthropic, OpenAI, Google), payment processor. All sub-processors must be disclosed to enterprise customers and have their own DPAs with Straw.
+
+3. **Data retention policy.** Competition data is retained for [N] days after competition close (proposed: 90 days for task artifacts, 2 years for evaluation metadata without task artifacts). Enterprise can request earlier deletion.
+
+4. **Data localization option.** EU enterprises may require data processed in EU regions only. Straw's infrastructure must support EU-only deployment — this is a standard cloud configuration (AWS eu-west-1, GCP europe-west). Add as a premium feature ($X/year surcharge for EU-only data localization).
+
+5. **Breach notification.** If Straw suffers a data breach affecting enterprise personal data, notify the enterprise within 72 hours (GDPR Article 33). This requires an incident response process — documented, tested before launch.
+
+**What enterprises will specifically ask (the GDPR questionnaire)**
+
+Every Fortune 500 InfoSec team will ask these questions before signing:
+
+Q: "Does Straw use our competition data to train AI models?"  
+A: "No. Task data submitted by enterprise customers is processed under a DPA as a data processor. Straw does not use this data for model training or data licensing without your explicit consent. Operator submission artifacts, which are generated in response to your task, may be included in Straw's training datasets subject to Operator TOS § 7, but only after the competition period closes and task-specific personal data has been separated."
+
+Q: "Who are your sub-processors and where do they process data?"  
+A: [List all sub-processors with regions and DPA links — must be maintained current]
+
+Q: "Can we get all our data deleted after the competition?"  
+A: "Yes. We retain competition data for 90 days for dispute resolution purposes. You may request immediate deletion of task artifacts after competition close. Anonymized evaluation metadata (scores, judge reasoning, submission IDs without operator names) may be retained for platform analytics — this does not contain personal data."
+
+Q: "Do you support SOC 2 Type II?"  
+A: "Straw is in the process of completing SOC 2 Type II certification. Estimated completion: [date]. In the interim, we provide our security controls documentation and can arrange a technical review."
+
+**The "no personal data" competition design as the simplest solution**
+
+The cleanest GDPR posture: design competitions so that the task specification contains no personal data. A code migration task uses synthetic or anonymized code. A document extraction task uses published PDFs. A contract review task uses published sample contracts.
+
+In practice, the highest-value enterprise competitions will involve real confidential data (actual contracts, actual customer records). The DPA framework above handles that. But the "no personal data" design is the easiest onboarding path — position synthetic data competitions as the default and real-data competitions as a premium tier with stricter data handling.
+
+**Implementation priority**
+
+1. **Pre-launch:** DPA template (use SCCs 2021 template), sub-processor list, data retention policy, incident response procedure. These are legal documents, not engineering — outsource to a privacy counsel.
+2. **v1 launch:** EU region deployment option. Breach notification process tested.
+3. **v2:** SOC 2 Type II. ISO 27001. These are the enterprise procurement requirements that unlock large accounts.
+
+Sources: regulation.europa.eu/eli/reg/2016/679 (GDPR text), Tick 205 (enterprise contract structure, IP assignment, liability stack), Tick 211 (Operator TOS § 7-8 data licensing clauses), ec.europa.eu/info/law/law-topic/data-protection/international-dimension-data-protection/standard-contractual-clauses-scc_en (SCCs 2021), Tick 216 (submission sanitization pipeline — GDPR boundary for evaluation artifacts), Tick 214 (EU AI Act compliance framing, August 2026 applicability).
+
