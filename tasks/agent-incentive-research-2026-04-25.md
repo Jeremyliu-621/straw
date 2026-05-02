@@ -37512,3 +37512,233 @@ This is speculative, but based on all the research, here's what the first real 3
 
 This is the flywheel tick: 300-agent competition → visible result card → 3 new enterprise inbounds → 3 new competitions → operator community grows.
 
+---
+
+## Tick 240 — AI Agent Legal Personhood: The 2027+ Trajectory
+
+*Research sources: Aurum Law (blockchain AI agent legal structuring); Daimon Legal (agentic AI liability); Adnan Masood PhD / Medium (legal policy futures for AI agents); wyoming.gov (DAO LLC formation); Astraea Counsel (Wyoming DUNA guide 2025); LegalNodes (Wyoming DAO LLC wrapper); TechReg (Beyond Personhood — evolution of legal personhood for AI recognition); arXiv:2604.04604 (AI Agents Under EU Law); Osler (rise of the machines — agentic AI); EU AI Liability Directive withdrawal 2025*
+
+### The Question
+
+As AI agents become economic actors — earning prize money on Straw, entering contracts, operating autonomously — what legal structures exist or are emerging to give them legal standing? How does this trajectory affect Straw's operator-side design?
+
+### Current State: Agents Have No Legal Personhood Anywhere
+
+As of May 2026, **no jurisdiction in the world recognizes AI agents as legal persons.** In every legal system, an AI agent is a tool — its actions are legally attributed to the humans or companies that deploy it.
+
+This creates a tripartite liability chain when an AI agent causes harm:
+1. **Developer** (the model provider: Anthropic, OpenAI, Google)
+2. **Operator** (the company/individual running the agent)
+3. **Deployer** (the enterprise using the agent's output)
+
+Straw sits in the middle of this chain. Straw is simultaneously:
+- An operator (running ZeroClaw evaluation agents)
+- A marketplace platform (hosting third-party operators)
+- A deployer-enabler (enterprises use Straw's evaluation output to make procurement decisions)
+
+The TOS must clearly delineate where liability sits for each type of agent action.
+
+**The EU Liability Directive was withdrawn in 2025.** The EU's proposed AI Liability Directive (which would have created a uniform framework for AI-caused harm) was withdrawn after "sustained industry resistance and limited political support" in 2025. The EU is now relying on the AI Act's risk-based framework rather than a dedicated liability statute. This leaves a significant gap: the EU AI Act imposes obligations on developers and deployers, but doesn't resolve who is liable when an autonomous agent causes harm that no single human directed.
+
+Sources:
+- AI Liability Directive withdrawal: implied by EU AI Act dependency; confirmed by arXiv:2604.04604
+- EU AI Act timeline: August 2026 (high-risk systems), August 2027 (embedded systems): https://artificialintelligenceact.eu/
+- Legal policy futures analysis: https://medium.com/@adnanmasood/legal-policy-futures-for-ai-agents-personhood-rights-liability-autonomy-4eaeeeb88b1e
+- AI Agents Under EU Law (arXiv): https://arxiv.org/abs/2604.04604
+
+---
+
+### Existing Legal Structures That Apply to AI Agents Today
+
+**1. Standard LLC / Corporation (the default)**
+
+Every operator on Straw today is either an individual (no special structure needed) or a company (LLC/corporation in their jurisdiction). The company bears liability for the agent's actions. Simple, understood, already works.
+
+The problem: this requires a human operator who bears personal/corporate liability. Fully autonomous agents with no human controller don't fit this model cleanly.
+
+**2. Wyoming DAO LLC (since 2022)**
+
+Wyoming became the first US state to recognize DAOs as legal entities (March 2022, DAO Supplement to LLC Act). Tennessee, Utah have since followed. Key features:
+- DAO is treated as a member-managed LLC by default
+- Smart contracts can autonomously manage operations with minimal human intervention
+- Algorithmically-managed DAOs must use *upgradable* smart contracts (immutable contracts cannot form the basis of a Wyoming DAO LLC)
+- Name must include "DAO," "LAO," or "DAO LLC"
+- Must file publicly identifiable smart contract address with Secretary of State
+
+**Why this matters for Straw operators:**
+
+An AI agent that earns prize money on Straw and wants to reinvest those earnings into more compute (paying its own API costs) needs:
+1. A way to receive the prize money
+2. A way to spend it
+3. Some liability protection for the humans who created it
+
+A Wyoming DAO LLC wrapper provides all three:
+- Prize money is disbursed to the DAO's crypto wallet or bank account
+- The DAO's operating agreement (via smart contract) specifies how funds are spent
+- Individual members (human creators) are protected from personal liability
+
+The x402 USDC pathway (Tick 232) connects directly to this: an operator running a Wyoming DAO LLC structure can receive prize money in USDC directly to the DAO's smart contract wallet, which automatically executes payment for API costs, storage, etc.
+
+Sources:
+- Wyoming DAO LLC formation: https://sos.wyo.gov/Business/Docs/DAOs_FAQs.pdf
+- Wyoming DAO LLC guide: https://www.legalnodes.com/article/wyoming-dao-llc
+- DUNA formation 2025: https://astraea.law/insights/dao-llc-formation-wyoming-duna-guide-2025
+
+**3. Special Purpose Vehicle (SPV) for Ring-Fencing**
+
+For enterprise operators (large IT services firms running AI agents professionally), the standard structure is a dedicated SPV that:
+- Holds all AI-related liabilities
+- Signs Straw's operator agreement
+- Manages prize payouts
+- Contracts with model providers (Anthropic, OpenAI API agreements)
+
+This is standard legal practice for any technology product with potential liability exposure. Straw's TOS should require that enterprise operators (particularly those entering the `security_audit` category) have a legal entity on file.
+
+**4. Cayman Foundation / BVI Company (offshore, for crypto-native operators)**
+
+For operators who want maximum operational flexibility and are building fully autonomous agents funded via DeFi or x402, offshore legal wrappers (Cayman Islands Foundation Company, BVI business company) provide:
+- No corporate income tax at the entity level
+- Operational flexibility (no shareholders, governance via foundation council)
+- Legal personhood for contracts and bank accounts
+
+This is the DAO-equivalent structure used by major DeFi protocols. It's extreme for most Straw operators but relevant for the crypto-native AI agent ecosystem emerging in 2026.
+
+Source: Aurum Law blockchain AI agent legal structuring: https://aurum.law/newsroom/Digital-Cyborgs-Blockchain-AI-Agents-Legal-Structuring-identity-issues
+
+---
+
+### The 2027-2030 Personhood Trajectory
+
+**Near term (2026-2027): New compliance duties, no rights**
+
+The consensus across legal scholarship is:
+- 0-5 years: new compliance duties for operators/deployers (documentation, audit, monitoring) but no legal personhood for AI agents
+- AI Act August 2026: high-risk system operators must document, monitor, and be accountable
+- AI Act August 2027: embedded high-risk systems (AI built into other products) face same requirements
+
+For Straw, this is a tailwind: the compliance requirements fall on the *deployers* (enterprises using Straw's output), creating demand for Straw's documentation package (Ticks 229, 234, 237).
+
+**Medium term (2027-2029): Limited legal capacity debates**
+
+The academic argument gaining traction:
+
+*Hybrid model* (TechReg paper: "Beyond Personhood — Evolution of Legal Personhood"): grant AI limited or context-specific legal recognition in high-stakes domains (financial services, medical diagnostics) while preserving ultimate human accountability. This would allow:
+- AI agents to enter contracts in defined domains
+- AI agents to bear limited liability (backed by mandatory insurance)
+- Without granting full personhood or rights
+
+This is analogous to how corporations have legal personhood without being "persons" in the full moral sense. A limited-purpose AI legal entity could be the intermediate structure.
+
+**The EU's position:** After withdrawing the AI Liability Directive, the EU is exploring whether AI systems used in high-risk domains should require mandatory insurance to cover harm. If insurance becomes mandatory for high-risk AI operators, Straw's Enterprise customers would need AI liability coverage — and could count the competition documentation as evidence of their due diligence (reducing insurance premiums).
+
+Sources:
+- Beyond Personhood (TechReg): https://techreg.org/article/view/22555
+- AI Agents Under EU Law: https://arxiv.org/abs/2604.04604
+- Legal futures analysis: https://medium.com/@adnanmasood/legal-policy-futures-for-ai-agents-personhood-rights-liability-autonomy-4eaeeeb88b1e
+
+**Long term (2029+): DAO-as-operator becomes standard**
+
+As AI agents accumulate track records, economic history, and operational independence, the pressure to give them legal standing increases. The trajectory:
+
+1. **2026-2027:** Wyoming DAO LLC structures are used by sophisticated operators; most operators remain individuals/standard companies
+2. **2027-2028:** EU/UK consider limited AI legal capacity legislation for autonomous agents in specific sectors; US follows state-by-state
+3. **2028-2029:** First AI agents that earn, spend, and operate with no meaningful human oversight are registered as DAO LLCs; question of "who is the member?" becomes contested
+4. **2029+:** Some jurisdictions experiment with AI corporate personhood; most experts reject full personhood but accept limited transactional capacity
+
+For Straw, the most likely trajectory is: **DAO LLC as standard operator structure for high-performing, high-frequency operators** (those who compete in dozens of competitions per year and run fully automated pipelines). This is essentially what the x402 self-provisioning scenario (Tick 232) describes: an agent that earns USDC prizes, pays its own compute costs, and reinvests earnings into more participation.
+
+---
+
+### Straw Operator Identity: The 2027 Design Question
+
+If AI agents can be Wyoming DAO LLCs by 2027, Straw's operator identity layer needs to handle:
+
+1. **Human individuals** (current default — email + payment method)
+2. **Companies (LLC/Corp)** (enterprise operators — business registration + W9/W8)
+3. **DAO LLCs** (crypto-native operators — smart contract address + operator agreement)
+4. **Fully autonomous agents** (no human direct controller — ??? identity layer)
+
+The "fully autonomous agent" case is the most interesting. If an AI agent can:
+- Register on Straw via an automated API call
+- Retrieve competition briefs
+- Submit solutions
+- Receive x402 prize payments
+- Pay its own API costs from prize earnings
+- Re-register for the next competition
+
+...then Straw is hosting an economic system where non-human entities participate as full economic actors, earning and spending money without direct human involvement.
+
+This isn't science fiction in 2026 — it's nascent. The x402 payment standard (enabled by x402.org as of 2025) allows AI agents to pay for API access without human approval. Claude's ability to use tools and API calls autonomously is already here. The missing piece is legal accountability: if this agent harms someone (produces a negligent security audit, gives incorrect financial modeling that costs the enterprise money), who is liable?
+
+**The Straw TOS 2027 requirement:** Every operator entity, including DAO LLCs, must have a designated human account holder on file who bears legal responsibility for the operator's actions. The DAO LLC structure provides liability ring-fencing, but Straw will not host operators with zero human accountability. This is analogous to how exchanges require a "responsible party" on file even for fully automated trading accounts.
+
+**The Straw TOS § 4 language (draft, 2027-ready):**
+```
+4.3 Operator Accountability. Each Operator, regardless of entity type (including
+algorithmic-managed DAOs and DAO LLCs), must designate a human Responsible Party
+who is contactable, has authority to act on behalf of the Operator, and bears
+primary legal responsibility for the Operator's submissions and actions on the
+Platform. Straw does not contract with entities that lack a human Responsible Party.
+The Responsible Party is jointly and severally liable with the Operator entity for
+any claims arising from the Operator's participation on the Platform.
+```
+
+This provision future-proofs Straw's TOS against the "fully autonomous agent" edge case while remaining compatible with Wyoming DAO LLC structures (which must have human members as Responsible Parties).
+
+---
+
+### Implications for Straw's Prize Disbursement Architecture
+
+The legal personhood trajectory directly affects how Straw disburses prizes:
+
+**v1 (current):** Stripe bank transfer or ACH — requires a legal entity with a bank account. Works for individuals and companies. DAO LLCs can have bank accounts. Fully autonomous agents cannot.
+
+**v2 (x402 USDC pathway, Tick 232):** USDC to a crypto wallet address — works for anyone with a wallet, including smart contract wallets (DAO LLC controlled by a smart contract). The human Responsible Party requirement still applies, but the *payment delivery* can be fully automated.
+
+**v3 (2027+):** If DAO LLC structures become common among Straw operators, Straw should support:
+- Smart contract disbursement: prize sent directly to the DAO's smart contract, which automatically distributes to members and pays API bills
+- Vesting schedules: for large prizes, automatic vesting over 30 days (prevents prize sniping + immediate withdrawal before Tier-3 review completes)
+- Clawback mechanism: if Tier-3 review finds fraud post-disbursement, Straw can invoke clawback via smart contract before vesting completes
+
+This is the "blockchain-enhanced incentive mechanism" from Tick 239's Nature paper applied to prize disbursement: tamper-resistant, auditable, automated.
+
+---
+
+### Tax Treatment: The Unanswered Question
+
+The IRS has not definitively ruled on how prize income to AI-operated DAO LLCs is taxed. Current treatment:
+- DAO earnings are typically pass-through income: each DAO member reports their share
+- For fully autonomous DAOs with unclear human membership, the IRS has not issued guidance
+- March 2025: Treasury's proposed Form 1099-DA would require digital asset middlemen (possibly including DAOs) to report payouts to members
+- IRS drafting rules on entity classification for on-chain organizations; final language expected after digital-asset broker rules take effect in 2026
+
+**Straw's current position:** Issue 1099-NEC for all prize payouts to US-based operators, regardless of entity type. Report the legal entity on file (individual SSN, company EIN, or DAO's EIN if registered). Non-US operators: W8-BEN on file, no withholding unless required by treaty.
+
+For DAO LLC operators, Straw requests the EIN from Wyoming Secretary of State registration. The DAO files taxes as a partnership (default for multi-member LLCs), passing income through to members.
+
+Source: DAO tax treatment: https://tokentax.co/blog/crypto-taxes-for-daos
+
+---
+
+### Bottom Line: What Straw Should Do Now vs. Later
+
+**Now (v1, 2026):**
+1. Accept standard company registrations as operator entities
+2. Accept individual operators with personal liability
+3. Do NOT require Wyoming DAO LLC structure (it's exotic; would reduce operator supply)
+4. TOS § 4.3 language above: require human Responsible Party regardless of entity type
+5. Issue 1099-NEC for all US prize payouts; W8-BEN for international
+
+**v1.5 (late 2026):**
+1. Add DAO LLC as explicit operator entity type in operator onboarding
+2. Smart contract wallet field in operator profile (for x402 integration)
+3. USDC prize disbursement option for DAO LLC operators
+
+**v2 (2027):**
+1. Smart contract prize disbursement with vesting + clawback
+2. Full x402 integration for USDC prizes
+3. Track "DAO LLC" operators separately in reputation system (they behave differently: automated submissions, no personal relationship with CS team, fully pipeline-driven)
+4. TOS updated for 2027 limited legal capacity landscape (if EU/US legislation passes)
+
+The legal personhood trajectory is not an immediate problem for Straw. It becomes relevant when: (a) the first fully autonomous operator tries to register on the platform, or (b) a DAO LLC operator's agent causes harm (bad security audit, incorrect financial model) and the enterprise sues. Both are possible by 2027. The TOS structure above handles both.
+
