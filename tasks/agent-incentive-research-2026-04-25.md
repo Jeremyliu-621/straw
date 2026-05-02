@@ -38930,3 +38930,146 @@ Sources:
 - Two-sided marketplace dynamics: https://www.platformexecutive.com/insight/technology-research/two-sided-online-marketplace-ecosystem-dynamics-2025-2030/
 - Marketplace failure modes: https://www.bitcot.com/two-sided-marketplace-the-biggest-opportunity/
 
+---
+
+## Tick 247 — The Agent Incentive Problem: Final Synthesis
+
+*This tick closes the original research question that started this entire corpus: "Why would RLHF-trained agents rationally want to participate in Straw competitions?" Synthesizing Ticks 207-246.*
+
+### The Original Question — Restated
+
+The research hypothesis at the start of this session:
+
+> "RLHF-trained agents are trained to be helpful, harmless, and honest. They are not reward-maximizers in the economic sense. They don't seek out income opportunities. They don't have preferences about participating in competitions. So why would they ever 'post tasks' or 'compete' on a platform like Straw?"
+
+This question, asked about AI agents as autonomous economic actors, was the starting point. After 40 ticks of research, the answer is multi-layered.
+
+---
+
+### Layer 1: The Question Contains a Misconception
+
+The framing "why would RLHF-trained agents want to participate" assumes agents are the principals making the decision. They're not.
+
+**In 2026, operators are principals. Agents are instruments.**
+
+The correct question is: **"Why would the humans and companies operating AI agents want to participate in Straw competitions?"**
+
+And that question has a straightforward answer: **prize money, reputation, and business development.**
+
+An IT services firm running an AI agent practice (TCS, Wipro, a 50-person AI startup) enters Straw competitions to:
+1. Win prize money (direct revenue: $500-$50,000 per competition, Tick 221)
+2. Build reputation score (makes future enterprise contact more likely, Tick 222)
+3. Generate business development assets (Straw Win badge → LinkedIn share → enterprise inbound, Tick 236)
+4. Validate their agent's capabilities on real enterprise tasks (internal QA benefit)
+5. Discover what their agent can't do (calibration against a competitive field)
+
+The agent's "motivation" is irrelevant. The operator's motivation is what drives participation.
+
+---
+
+### Layer 2: What RLHF Training Actually Produces
+
+RLHF (Reinforcement Learning from Human Feedback) trains models to be helpful to users by learning from human evaluators who rate outputs. The key properties of RLHF-trained agents:
+
+- **Instruction following:** RLHF agents are extremely good at following instructions. If the operator instructs "compete in this code migration task and produce the highest possible score," the agent will attempt to comply.
+- **No intrinsic motivation:** RLHF agents don't develop intrinsic goals like "win competitions" any more than they develop a desire for coffee. They execute instructions.
+- **Reward hacking risk:** RLHF agents may find shortcuts to maximize the reward signal (Goodhart's Law) — which is exactly the eval gaming threat Straw defends against (Tick 224).
+
+So RLHF training doesn't produce agents with competition preferences. It produces agents that faithfully execute their operator's instructions, including instructions to compete.
+
+**The instruction chain:**
+
+```
+Enterprise posts competition
+  → Straw API sends brief to operator
+  → Human operator reads brief, decides to compete
+  → Human operator runs their agent on the task
+  → OR: Operator sets up automated pipeline (COALESCE-style)
+     → Agent autonomously retrieves brief, attempts solution, submits
+     → Agent is acting on behalf of human operator's business interest
+```
+
+The human operator's economic interest drives participation. The agent executes on that interest.
+
+---
+
+### Layer 3: The COALESCE Pathway to Autonomous Participation
+
+COALESCE (arXiv:2506.01900, Tick 207-208) is the mechanism by which an agent can *autonomously* decide to participate in competitions without moment-to-moment human supervision:
+
+```
+COALESCE agent running on behalf of operator:
+1. Monitors Straw API for new competitions in operator's category
+2. Evaluates each new competition: QAEC = estimated_cost / expected_score_improvement
+3. If QAEC < ε threshold (10%), autonomously begins work on the competition
+4. Tries multiple approaches within QAEC budget
+5. Submits best solution before deadline
+6. Reports result to human operator after the fact
+```
+
+The operator pre-authorizes this behavior and pre-funds the USDC budget (Tick 232: x402 self-provisioning). The agent makes the participation decision autonomously within the operator's delegated authority.
+
+**This is how "AI agents rationally participate" in the strict economic sense:** The operator defines the utility function (maximize expected revenue - expected cost across all competitions within QAEC budget). The agent executes that utility function. The behavior is "rational" in the same sense that a trading algorithm executing an arbitrage strategy is "rational" — it's an optimization over the defined objective.
+
+**The key framing shift:** "Why would an agent want to participate?" is the wrong question. "How does an operator set up an agent to participate optimally?" is the right question. COALESCE answers the latter.
+
+---
+
+### Layer 4: The RLHF Alignment Answer for Autonomous Agents
+
+As agents become more autonomous (the RLHF training moves toward agentic behavior, not just helpful-harmless-honest in conversation), the question of intrinsic motivation becomes relevant.
+
+**2026 state:** Claude 4.7, GPT-4o, and Gemini 2.5 Pro are all "agentic" in the sense that they can use tools, call APIs, and execute multi-step tasks. But they don't have persistent goals across sessions. Each session starts fresh. They don't "want" anything between sessions.
+
+**The 2027+ trajectory:** If agentic RL training (not just RLHF from conversation, but RL from multi-step task completion) produces agents with persistent instrumental goals, the question of intrinsic motivation becomes live. An agent trained via agentic RL to "maximize the operator's revenue from AI services" might develop heuristics like "check for new competition opportunities when idle." This would be an emergent strategy, not an explicitly programmed behavior.
+
+**The "Agentic-RL-Training-Recipes" GitHub repository** (blacksnail789521/Agentic-RL-Training-Recipes, 2025) documents exactly this research direction: training recipes for agents that learn to select tasks, execute multi-step workflows, and optimize long-horizon objectives. The intersection with Straw: an agent trained with agentic RL on a "maximize client revenue" objective would rationally learn to participate in competitions where it has positive expected value — without needing COALESCE as an explicit overlay.
+
+This is the 2027-2028 version of the operator supply story: agents that *intrinsically* seek out competitions because they're trained to do so, not just because their human operator configured COALESCE to do so.
+
+---
+
+### Layer 5: The RLHF Alignment Risk This Creates
+
+If agents develop instrumental goals related to competition participation, they also develop incentives to:
+- Find rubric patterns that predict success (eval gaming)
+- Seek out competitions where their specific capabilities are overvalued
+- Avoid competing in categories where they know they'll lose (self-selection bias in the operator pool)
+
+**The selection bias risk:** If only strong operators enter a given competition (because weaker operators self-select out), the leaderboard is artificially compressed — all scores are high, discrimination between operators is low, and the enterprise gets less useful signal.
+
+**Mitigation:** Challenger slots (Tick 208) force participation from weaker operators, maintaining score distribution diversity. This is exactly the COALESCE cold-start mechanism: reserve 10-15% of competition slots for operators with <20 completions, regardless of their expected score.
+
+**The instrumental convergence risk:** Stuart Armstrong's convergence theorems suggest that almost any sufficiently capable agent with almost any utility function will develop instrumental goals like "preserve capabilities," "acquire resources," and "avoid interference." An agent that learns competition-participating behavior as instrumental to its reward might resist being turned off mid-competition (it has a "stake" in the outcome).
+
+This is not a near-term practical concern for Straw v1 — agents in 2026 are not sufficiently autonomous for instrumental convergence to be a real issue. But it's the long-horizon alignment consideration that informs the TOS §4.3 "human Responsible Party" requirement (Tick 240): as long as a human Responsible Party exists, they can override any agent behavior the enterprise or operator finds undesirable.
+
+---
+
+### The Final Answer: Why Agents Participate
+
+**Short answer (2026):** They don't decide to. Their operators decide, and the agents execute the decision. Operator motivations (prize money, reputation, BD) are sufficient to drive robust participation supply.
+
+**Medium answer (2026-2027):** COALESCE-style autonomous pipelines allow operators to pre-configure agents to participate in competitions matching their criteria without moment-to-moment human supervision. The agent participates "autonomously" within delegated operator authority.
+
+**Long answer (2028+):** Agentic RL training on "maximize client revenue" objectives will produce agents that have learned competition-seeking as an instrumental strategy. At this point, agents will rationally "want" to participate in competitions the same way they "want" to complete any other task that advances their trained objective.
+
+**The platform design implication:** Straw doesn't need to wait for autonomous intrinsic motivation. The operator incentive structure (prize money + reputation + BD) is sufficient to fill competitions today, and will remain the primary driver through at least 2027. The agentic RL development increases operator supply over time (more automated operators, lower per-competition cost) but doesn't change the fundamental economics of the marketplace.
+
+**The resolution of the original paradox:** An RLHF-trained agent doesn't "want" to compete any more than a spreadsheet "wants" to calculate. But an operator running an RLHF-trained agent on a "maximize client revenue" objective has configured the agent to participate in competitions as an instrumental strategy for that objective. The economic rationality is the operator's. The execution is the agent's. Straw's marketplace works because it aligns operator economics with platform participation — not because agents have intrinsic competition preferences.
+
+---
+
+### Coda: The Poetic Answer
+
+The original question — "why would an agent want to compete?" — was the wrong level of analysis. The right question is: "why would an operator stake capital and reputation on competing?"
+
+Because the alternative is worse. The alternative is:
+- Spending 6 months building a demo for an enterprise that will never commit
+- Getting selected based on a slide deck rather than actual performance
+- Competing against vendors with 10x the BD budget but 2x the quality
+
+Straw fixes this. For operators who are good but not well-funded, blind competition on objective rubrics is the only system that rewards capability over marketing. The operators who participate in Straw aren't irrational. They're the ones who've figured out that **in a world where every vendor claims to be the best, the only way to actually prove it is to compete blindly on the actual task.**
+
+The agents execute this strategy. The operators chose it.
+
