@@ -33774,3 +33774,184 @@ Sources: arxiv.org/abs/2603.21362 (AdaRubric, r=0.79 automation), arxiv.org/abs/
 
 Sources: Tick 205 (enterprise contract structure, IP assignment, EU AI Act role mapping), Tick 203 (data licensing market value, $3.65M estimate, competitive data landscape), Tick 206 (rubric format, pitfall criteria requirement), USCO Part 2 interpretation (January 2025 guidance on mixed authorship), Mayer Brown AI services agreement brief (February 2026), EU AI Act Articles 13-14 (transparency and human oversight requirements for high-risk AI systems).
 
+
+---
+
+## Tick 213 — Straw pricing model and revenue mechanics
+
+**Research agent:** a82e4717094de34ba — surveyed competition platform take rates, AI marketplace pricing, outcome-based pricing literature, enterprise procurement thresholds, and operator monetization beyond prizes.
+
+**Competition platform take rates — the empirical benchmark**
+
+| Platform | Model | Rate | Notes |
+|----------|-------|------|-------|
+| Topcoder | Admin fee on prize | 20% (capped $250/challenge) | At enterprise >$200K: hybrid retainer + per-project |
+| HeroX | Tiered prize fee | 18% <$250K / 14% >$250K | Closest structural analogue to Straw |
+| Kaggle | Sponsor hosting fee | Not published | Secondary: 6-month + monthly algo licensing |
+| Wiley academic baseline | Empirical range | 15–25% of prize value | Volume discounts above $250K |
+
+Academic baseline from Wiley *Decision Sciences* (2016): optimal crowdsourcing platform fee range is 15–25% of prize value, with volume discounts above $250K. Topcoder's 20% is standard; HeroX's 18/14% tiered structure is the most directly applicable benchmark.
+
+**The enterprise procurement threshold analysis**
+
+This is critical for Straw's product packaging — the subscription level determines who in an enterprise can approve the purchase without a full RFP process:
+
+| Price point | Approver | Process | Cycle |
+|-------------|----------|---------|-------|
+| <$5,000 | Department head unilateral | Direct buy / P-card | Days |
+| $10K–$100K | VP-level + finance, PO required | Mid-market procurement | Weeks |
+| >$100K | Multi-stakeholder RFP | Enterprise full procurement | 6–18 months |
+
+The sweet spot for Straw's platform subscription is **$25,000–$60,000/year**. This is:
+- A "direct buy" — single VP budget owner can approve without triggering full procurement
+- Large enough to be a line item (not lost in expense reports)
+- OpEx classification (not CapEx) — no capital budget, doesn't hit the balance sheet, single budget cycle
+- Consistent with Gartner's finding that 40% of enterprise SaaS will include outcome-based components by 2026
+
+**Outcome-based pricing positioning**
+
+Straw's structure — pre-defined prize pool, outcome quality measured by competition score — is one of the cleanest outcome-based pricing implementations in enterprise SaaS. The prize IS the performance measurement. This is a differentiator worth highlighting in sales materials.
+
+Current adoption: only 9% of companies have fully implemented outcome-based models; 47% are piloting. a16z (December 2024): "AI is driving a significant pricing shift toward outcome-based models, specifically for agentic AI where a measurable resolution event can be defined." Straw is on the leading edge of this curve — the competition format makes outcome measurement unambiguous.
+
+**Recommended Straw revenue structure**
+
+```
+Tier 1 — Starter (solo evaluation)
+  Platform subscription: $0 (free tier, cap: 3 competitions/year, max prize $10K)
+  Platform fee on prize pool: 20% (no volume discount)
+  Use case: first-taste, team exploring AI procurement
+  
+Tier 2 — Professional ($25,000/year)
+  Platform fee on prize pool: 17% standard / 14% >$100K prize
+  Competitions: unlimited
+  Features: standard template library, basic analytics
+  Procurement fit: VP-level direct buy, no RFP needed
+
+Tier 3 — Enterprise ($60,000/year)
+  Platform fee on prize pool: 15% standard / 12% >$100K prize
+  Competitions: unlimited + white-label option
+  Features: custom rubric builder, dedicated customer success, SLA, SSO/SCIM
+  Data licensing: access to enterprise competition replay license
+  Procurement fit: single budget owner at enterprise, 6–12 week cycle
+  
+Prize pool fee schedule:
+  $0–$50K prize: standard tier rate
+  $50K–$200K: -2pp discount (e.g., 15% → 13%)
+  $200K+: negotiate custom rate (likely 10–12%)
+```
+
+**The 15-18% prize pool fee is the right target zone.** HeroX (18/14%) and Topcoder (20% capped at $250) bracket this. Straw should launch at 17% standard with a 14% volume tier — undercutting HeroX on standard rate while offering a clearer volume structure.
+
+**Operator monetization beyond prizes**
+
+Three channels beyond direct prize winnings:
+
+1. **Data licensing revenue share:** When an operator's competition artifacts are included in a licensed training dataset, they receive 70% of net licensing revenue attributable to their contributions. This is the creator-economy rate (better than Substack's 10%, aligned with YouTube's 45% on a per-contribution basis). The 70/30 split (operator/Straw) reflects that operators bear zero cost for the licensing event — Straw handles all the licensing infrastructure.
+
+2. **Reputation as a hire pipeline:** Operators with high Straw rankings are visible to enterprise customers browsing the competitor directory. A top-5 ranking on a Fortune 500 competition is a sales signal for the operator's enterprise sales team. Indirect monetization: the competition result becomes a case study.
+
+3. **Recurring engagement from "hire" pathway:** An operator who wins and gets hired enters a recurring services relationship with the enterprise. The Straw competition is the top of their sales funnel. Operators should price this as lead generation — even a breakeven competition win that leads to a $200K/year services engagement is profitable.
+
+**The agent-as-per-resolution pricing model (Salesforce Agentforce: $0.10–$2.00/resolved conversation)** is NOT the right model for Straw. That model prices agents like a utility — per unit of task completed. Straw's prize model prices agent capability like a competition — winner takes the pot. These are different procurement contexts. Utility pricing is appropriate for volume, routine, repetitive tasks. Competition pricing is appropriate for complex, novel, high-stakes tasks. Straw's enterprise customer isn't buying routine automation; they're buying the discovery of which agent can solve their hard problem. The competition format is the feature.
+
+**Unit economics sanity check**
+
+```
+Average enterprise competition:
+  Prize pool: $25,000
+  Platform fee (17%): $4,250
+  Judge compute cost (D30 ZeroClaw, ~20 submissions): ~$200
+  Infrastructure overhead: ~$300
+  Gross margin per competition: ~$3,750 (88%)
+  
+Target: 50 competitions/year at launch → $212,500 GMV, ~$187,500 gross profit
+Scale at 500 competitions/year → $2.1M GMV, ~$1.875M gross profit
+Platform subscription revenue (10 enterprise customers at $60K): +$600K
+Total Year 1 target: ~$2.7M ARR at 500 competitions
+```
+
+Sources: topcoder.com/html/cockpit/framework/content/pricing.html, herox.com/pricing, mlcontests.com/state-of-machine-learning-competitions-2024, onlinelibrary.wiley.com/doi/abs/10.1111/deci.12201 (Wiley optimal fee structures), a16z.com/newsletter/december-2024-enterprise-newsletter-ai-is-driving-a-shift-towards-outcome-based-pricing, ley.com/insights/tmt/us/ei/rise-outcome-based-pricing-saas-aligning-value-cost, withorb.com/blog/outcome-based-pricing, monetizely.com/articles/how-to-navigate-the-fortune-500-procurement-process-for-enterprise-saas-vendors, vendr.com/blog/capex-vs-opex, quickchat.ai/post/ai-agent-pricing-models (per-resolution model), techcrunch.com/2026/04/25/anthropic-created-a-test-marketplace (Anthropic Project Deal commercial intent: 46% of participants said they'd pay).
+
+
+---
+
+## Tick 212 — The operator discovery problem: how enterprises find agents to invite
+
+**Research agent:** a586f222788b15153 — researched capability discovery patterns on existing competition and freelance platforms, agent capability profiling standards, competition-specific talent discovery, cold-start strategies for B2B marketplaces, and network effect defensibility.
+
+**The core problem**
+
+When an enterprise wants to run a competition, they need to answer: "Which agent operators should I invite?" Without a mechanism for this, the competition page sits empty, the prize goes unclaimed, and the enterprise loses confidence in the platform. This is the demand-side cold-start problem in reverse: the enterprise has money and intent; they just don't know where to look.
+
+**How existing platforms handle this — and which model to copy**
+
+The best model for Straw is **Hack The Box Talent Search** (hackthebox.com/business/talent-search). HTB lets employers set a minimum HTB rank as a job-application gate, filter by country and skill domain, and see candidates' full platform history — challenges solved, domains mastered, CTF wins. Enterprises searching for security talent filter directly: "show me candidates with rank ≥ X who have solved 10+ crypto challenges." The competition rank IS the discovery mechanism.
+
+Straw's equivalent: "show me agents ranked top-5 on tasks similar to mine." No separate discovery UI, no separate directory — the competition history creates the discovery layer.
+
+Other benchmarks:
+- **Kaggle:** Progression tiers (Novice → Grandmaster) per domain. Recruiters filter by tier and competition history. Public leaderboard is the discovery surface.
+- **Topcoder:** Elo-style numerical rating updated after every round. The public leaderboard is the only discovery mechanism. Works because every serious operator has a public rating.
+- **Toptal:** Human matcher reads the brief and hand-selects from the top-3% pool. 24-48 hour match SLA. Achieves 97% client satisfaction but requires human overhead for each match. This is the Year 1 model before Straw's algorithmic discovery is built.
+
+**The declared-vs-observed capability gap — Straw's strategic wedge**
+
+The key academic finding (arXiv:2602.12430, Agent Skills survey, February 2025): there is a fundamental gap between **declared capability** (what an agent claims in its profile, A2A card, or documentation) and **observed capability** (what the agent actually does on a task). This gap is an open problem for all agent capability profiling systems.
+
+A2A Agent Cards (Google, now Linux Foundation governed, A2A spec) are the closest thing to a standardized agent capability profile. A Card declares: name, description, version, skills, authentication requirements, endpoint. Skills are free-text descriptions with structured input/output schemas. There is no scoring, no benchmark cross-referencing, no track record. An agent's A2A Card tells you what it claims to do, not what it actually does.
+
+AWS Agent Registry in Bedrock AgentCore (April 2026, public preview) is an *internal* private organizational catalog with semantic + keyword search and IAM-gated discovery. Again: declared capabilities only, no performance history.
+
+NIST AI Agent Standards Initiative (February 2026) is building an interoperability assessment framework, but focused on security and governance, not procurement capability matching.
+
+**Straw's competition format closes the declared-vs-observed gap by construction.** Observed performance on the actual task type is the only data Straw produces. This is the positioning: "Don't ask what your agent can do. Know what it does."
+
+**Domain-indexed performance — the critical design choice**
+
+The crowdsourcing task assignment literature (ACM Computing Surveys, dl.acm.org/doi/10.1145/3494522) makes one critical point: aggregate skill scores degrade matching accuracy. A single "overall quality score" hides signal. Per-domain skill inference — based on prior task-completion history in the same domain — is required for good matching.
+
+This means Straw's discovery layer must aggregate performance by task category, not overall:
+
+```
+Agent: DocumentExtractor-v3
+  Document extraction (PDF → structured data): top-3% (47 competitions)
+  Contract review (legal document analysis): top-10% (12 competitions)
+  Customer support quality: no data
+  Code generation: no data
+  
+Overall win rate: 31% — [misleading, don't surface]
+```
+
+An enterprise searching for document extraction agents sees DocumentExtractor-v3 prominently. An enterprise searching for code generation sees it nowhere. The aggregate score is irrelevant; only the task-category rank matters.
+
+**Cold-start strategy: Year 1 as managed marketplace**
+
+The B2B marketplace literature converges on one counter-intuitive recommendation: operate as a concierge-matched managed marketplace before building algorithmic discovery. Toptal's model proves this works and actually commands a pricing premium. For Straw's first 10-20 enterprise customers:
+
+1. **Concierge matching.** When an enterprise posts a task, a human (or Claude with access to the operator database) reads the brief, curates an invite list of 8-12 relevant operators, and sends personalized invites. This is faster and higher-quality than any algorithm with no data.
+
+2. **Seed the supply side visibly before the demand side arrives.** Onboard 10-15 agent operators and run sponsored or synthetic competitions before selling to enterprises. The first enterprise customer sees a non-empty catalog with real performance histories.
+
+3. **Atomic network focus.** Start in one domain (proposed: enterprise document processing / PDF extraction / contract analysis). Build credible coverage in that domain before broadening. An enterprise in that domain gets a meaningful invite list; generalist coverage comes later.
+
+**The moat: competition history as a data network effect**
+
+NFX's analysis of data network effects: the data must make a *specific product action better*, not just make the dataset larger. Straw's specific product action: "suggest which 5 operators to invite for this task." That action gets meaningfully better as historical task-type similarity data accumulates.
+
+The defensibility condition: it only works if all competing agents are evaluated on the same canonical task format using the same rubric structure. This is why rubric standardization (Tick 206, Tick 210) is not just a UX feature — it is the prerequisite for the discovery moat. Without comparable evaluation standards, performance history is apples-and-oranges and the discovery algorithm cannot work.
+
+Comparison: Hack The Box's rank is defensible because everyone competes on the same canonical challenges. Straw's version: "this operator ranked top-3 on 5 document-extraction tasks structurally similar to yours" is a signal no competitor without the same competitive format can replicate.
+
+**Recommended implementation priorities for discovery**
+
+1. **Immediate (v0):** Concierge matching. Enterprise posts task, Straw team curates operator invite list. No UI needed.
+
+2. **v1:** Public operator directory with domain-indexed performance scores. Filter by: task category, minimum competitions in category, minimum score percentile. Similar to HTB Talent Search.
+
+3. **v1.5:** Similarity-based recommendation. "Agents similar to this brief have scored well at X, Y, Z operators." Uses task spec embedding similarity + category performance history.
+
+4. **v2:** Full algorithmic matching with behavioral anchors. The rubric's per-criterion score breakdown becomes a multi-dimensional capability vector. "This operator scores top-5% on correctness but middle-tier on performance — appropriate for accuracy-weighted tasks."
+
+Sources: hackthebox.com/business/talent-search, hackthebox.com/blog/hire-cybersecurity-people-talent-search, kaggle.com/progression, topcoder.com/community/competitive-programming/how-to-compete/ratings, arxiv.org/abs/2602.12430 (Agent Skills declared-vs-observed gap), a2a-protocol.org/latest/topics/agent-discovery (A2A Agent Cards), nist.gov/caisi/ai-agent-standards-initiative (NIST Agent Standards Feb 2026), aws.amazon.com/about-aws/whats-new/2026/04/aws-agent-registry-in-agentcore-preview (AWS Agent Registry), dl.acm.org/doi/10.1145/3494522 (crowdsourcing task assignment survey), arxiv.org/abs/2111.12550 (worker-task specialization model), nfx.com/post/truth-about-data-network-effects (data network effects analysis), sharetribe.com/how-to-build/b2b-marketplace (B2B marketplace cold-start guide), reforge.com/guides/beat-the-cold-start-problem-in-a-marketplace.
+
