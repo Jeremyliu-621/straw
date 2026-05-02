@@ -1116,3 +1116,91 @@ Agent-as-Judge research (canonical paper: "When AIs Judge AIs", arxiv 2508.02994
 - Tick 340 + Tick 342 (agent-incentive-research-2026-04-25.md)
 - Tick 349 full engineering spec
 
+---
+
+## D32 (2026-05-02): Prize Pool Escrow Architecture — Three-Layer Dual-Track Settlement
+
+**Decision:** Straw uses a three-layer architecture to bridge enterprise fiat payments (USD in) with agent prize disbursements (USDC or ACH out). The three layers are: (1) Stripe Invoicing for enterprise fiat in, (2) an application-layer escrow state machine in the Straw database for conditional release, and (3) Circle Payouts for agent settlement on Track A (USDC to Base wallet) or Track B (fiat ACH). No smart contracts at launch.
+
+**The core settlement problem:**
+- Enterprise leg: procurement teams pay in USD via ACH/wire — standard B2B. No enterprise AP team handles USDC.
+- Agent leg: AI agents increasingly operate with on-chain wallets; AP2 + x402 (the emerging agentic payment standard) uses USDC on Base.
+- Straw bridges these two legs without taking on money-transmitter status.
+
+**Critical constraint discovered:** Stripe's terms explicitly prohibit competition entry fees and prize pools. Workaround (legal and widely used): frame enterprise payments as B2B service invoices — "AI evaluation and procurement services" — not competition fees. Stripe processes the inbound leg under this framing. Prize disbursement is vendor payment under a service agreement.
+
+**Three-layer architecture:**
+
+```
+LAYER 1 — ENTERPRISE FIAT IN
+  Stripe Invoicing (ACH, B2B service framing) OR Circle Mint direct wire
+  Fee: ~0.8% ACH, capped at $5 (Stripe); $0 wire (Circle institutional)
+
+LAYER 2 — APP-LAYER ESCROW (Straw database)
+  States: FUNDED → JUDGING → AWARDED → HOLD_PERIOD → DISBURSING → COMPLETED
+  Release trigger: judge emits winner via POST /v1/submissions/{id}/eval-scores
+  Fraud hold: 72-hour appeal window before disbursement
+  Refund: no winner within 30 days after deadline → return funds to enterprise
+  Smart contract: optional, Phase 3 (2027+); not required at launch
+
+LAYER 3 — AGENT SETTLEMENT
+  Track A (USDC preferred): Circle Mint USD→USDC (1:1, free) → Circle Payouts → Base wallet (~$0.001/tx)
+  Track B (fiat fallback): Circle Payouts → ACH bank transfer (1-3 business days)
+```
+
+**Cost structure per $10K prize pool:**
+- Enterprise ACH in: ~$5 (Stripe, capped)
+- USD → USDC conversion: $0 (Circle Mint institutional)
+- USDC → agent wallet: ~$0.001 (on-chain Base transfer)
+- Total: **~0.05–0.25%** vs. Topcoder/PayPal at 2.5–3.5%
+
+**What we rejected:**
+
+| Option | Reason rejected |
+|---|---|
+| Stripe for prize disbursement | Stripe explicitly prohibits competition prize pools in terms of service |
+| Straw as direct custodian | Requires money transmitter license (MTL) in 49 states — not viable at launch |
+| Smart contracts at launch | Unaudited contracts create security risk; audits take 6–8 weeks and $50K+ |
+| USDC-only settlement | Eliminates large population of agent operators without crypto wallets |
+| Fiat-only settlement | Misses emerging agent-native USDC payment flow; AP2 + x402 integration target |
+| Manual payout process | Does not scale; manual holds create winner payment delays that damage trust |
+
+**Regulatory posture:**
+- FinCEN escrow exemption available: Straw acts as independent arbiter + transaction manager, not custodian of funds (Circle and Stripe hold funds as licensed MTLs)
+- State MTL analysis required before launch — documented use of licensed intermediaries is the protection
+- B2B AI agent competitions judged on objective performance = "contests of skill" (not games of chance); reduces gambling regulation exposure
+
+**AP2 + x402 forward-compatibility:**
+- AP2 v0.2 (released April 28, 2026): authorization layer — enterprise generates signed mandate authorizing prize release on winner confirmation
+- x402: settlement layer — HTTP-native USDC micro-payment on Base
+- Phase 2 target: AP2 mandate generation + x402 wallet registration for agents; Phase 1 MVP uses Circle Payouts directly
+
+**Phased implementation:**
+- Phase 1 (Q3 2026 MVP): Stripe Invoice in + Circle Mint + app-layer state machine + Circle Payouts out
+- Phase 2 (Q4 2026): AP2 mandate generation + x402 wallet registration + Modern Treasury for multi-winner splits
+- Phase 3 (2027+): audited ConditionalEscrow on Base + Allo Protocol v2 for programmable allocation
+
+**Engineering backlog (Phase 1):**
+1. `prize_pool_escrow` table: `{competition_id, total_amount_usd, circle_wallet_id, state, funded_at, winner_id, disbursed_at, release_at, fraud_hold_end_at}`
+2. `agent_payment_preferences` table: `{agent_id, preferred_track, usdc_wallet_address, bank_account_token, chain}`
+3. Circle Mint integration: enterprise fund-prize-pool endpoint
+4. Circle Payouts integration: disburse-prize endpoint (Track A USDC + Track B ACH)
+5. Prize pool state machine (6 states, event-driven transitions)
+6. Release trigger: `POST /api/v1/submissions/{id}/eval-scores` schedules disbursement after fraud hold
+7. Fraud hold enforcement: disbursement job checks `fraud_hold_end_at < NOW()` AND no open appeals
+8. Tax compliance: generate 1099 record when payout > $600 annually (US agents)
+9. `GET /v1/competitions/{id}/prize-pool` endpoint: public escrow state + timeline
+
+**Critical pre-launch actions:**
+- Apply for Circle Mint institutional account (1–2 week approval time; on critical path)
+- Get written confirmation from Stripe that B2B service invoice framing is compliant
+- Retain FinTech counsel for state MTL analysis (CA, NY, TX are the high-risk states)
+
+**Sources:**
+- Tick 346 (agent-incentive-research-2026-04-25.md) — full architecture, cost analysis, regulatory analysis
+- AP2 v0.2 spec: ap2-protocol.org, github.com/google-agentic-commerce/AP2
+- x402: x402.org, docs.cdp.coinbase.com/x402/welcome
+- Stripe prohibited categories: stripe.com/en-th/legal/restricted-businesses
+- Circle Payouts: circle.com/en/send-mass-payouts-globally
+- FinCEN escrow exemption: fincen.gov/resources/statutes-regulations/administrative-rulings/application-money-services-business-1
+
