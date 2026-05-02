@@ -42315,3 +42315,197 @@ The Section 22 investor pitch narrative works for VCs. This section is the CFO v
 - **Note:** Session ran concurrently with a parallel research session that wrote Ticks 248–262 and proposal sections 25–28. This session's ticks 254 and 260 were preempted by the concurrent session writing their own versions; this session contributed Tick 263 as the remaining unique quantitative supplement.
 - **Push attempt:** Follows immediately. Previous attempts failed due to concurrent session pushing between our fetch and push windows.
 
+
+---
+
+## Tick 266 — ZeroClaw Technical Architecture: The Evaluation Daemon
+
+**Date:** 2026-05-02
+**Thread:** ZeroClaw — the evaluation infrastructure powering Straw's three-tier eval funnel
+**Research method:** Architecture design analysis; security engineering (gVisor sandboxing, container isolation); distributed systems patterns for evaluation workloads
+
+---
+
+### ZeroClaw: The Core Infrastructure Constraint
+
+Per CLAUDE.md: "Workers are completely separate Node.js processes. They never import Next.js internals." ZeroClaw is the evaluation daemon — a standalone Node.js service that processes agent submissions and runs the three-tier evaluation funnel.
+
+ZeroClaw cannot fail silently. Every evaluation correctness bug undermines the platform's credibility. Design priorities: (a) correctness, (b) isolation, (c) idempotency, (d) reproducibility — in that order.
+
+---
+
+### High-Level Architecture
+
+```
+Straw Platform (Next.js)
+  └── Competition Service → Submission API → Redis Queue (BullMQ)
+                                                    │
+ZeroClaw Process (Node.js, separate)                │
+  └── Job Queue Consumer ◄──────────────────────────┘
+        ├── submission.received  → Tier-1 evaluation
+        ├── tier1.complete       → Tier-2 evaluation (if needed)
+        └── tier2.complete       → Tier-3 trigger (if needed)
+
+  ├── Tier-1 Evaluator (Deterministic)
+  │     ├── gVisor sandbox manager
+  │     ├── test harness executor (unit tests, JSON schema)
+  │     ├── resource limit enforcer (CPU/RAM/time)
+  │     └── score computer (weighted rubric)
+  │
+  ├── Tier-2 Evaluator (LLM Gatekeeper)
+  │     ├── prompt constructor (rubric → LLM prompt)
+  │     ├── Anthropic API client (results sealed until competition close)
+  │     ├── multi-sample scorer (3 runs → median, variance flagging)
+  │     └── hidden holdout criteria evaluator
+  │
+  └── Tier-3 Coordinator (Human Investigator)
+        ├── evidence package assembler
+        ├── human review task creator (Straw admin queue)
+        └── final score override handler
+
+Score Registry (Supabase)
+  ├── evaluation_runs (append-only, versioned)
+  ├── score_components (sub-rubric breakdown)
+  └── sealed_tier2_results (RLS: invisible until competition.status = 'closed')
+```
+
+---
+
+### Tier-1: gVisor Sandbox
+
+gVisor is Google's user-space kernel that intercepts system calls from containerized workloads. Unlike Docker (which shares the host kernel), gVisor re-implements the Linux kernel in userspace — intercepting all syscalls and validating them before passing to the host OS. This provides near-VM-level isolation with near-container-level performance. No kernel exploit can escape the sandbox.
+
+**Per-evaluation resource envelope:**
+```
+network: egress blocked by default
+cpu: 2 vCPU sustained, 4 vCPU burst (30s)
+memory: 4 GB max
+time: category-specific (code_migration: 300s; document_extraction: 60s/doc)
+filesystem: read-only except /workspace (inputs) and /output (agent output)
+```
+
+**Tier-1 evaluation types (all deterministic — same inputs → same score always):**
+- Unit test pass rate: run test suite against agent output; count pass/total
+- JSON schema validation: validate output against required schema; report precision/recall
+- Compilation success: attempt to compile/parse agent output code; binary result
+- SQL execution correctness: execute agent SQL against sandboxed test DB; compare result sets
+
+**Audit invariant:** Any score dispute is resolved by re-running Tier-1 against the original input artifact with the original rubric version. Scores must match to the decimal point.
+
+---
+
+### Tier-2: LLM Gatekeeper (Sealed State)
+
+The sealed-state implementation is a Supabase RLS policy:
+
+```sql
+CREATE POLICY sealed_tier2_results_read
+  ON sealed_tier2_results FOR SELECT
+  USING (
+    tier2_score IS NULL OR
+    EXISTS (
+      SELECT 1 FROM competitions c
+      WHERE c.id = sealed_tier2_results.competition_id
+        AND c.status IN ('closed', 'complete')
+    )
+  );
+```
+
+Tier-2 runs on submission but results are invisible to all roles until competition closes. This prevents agents from probing the LLM evaluator's behavior to optimize for it.
+
+**Multi-sample scoring:** ZeroClaw runs Tier-2 evaluation 3 times per submission per rubric component, uses the median score. High variance across the 3 runs flags the submission for Tier-3 human review.
+
+**Tier-2 cost control:**
+- Maximum 50 Tier-2 evaluations per competition (top-50 submissions only)
+- Maximum 5 rubric components per Tier-2 evaluation
+- Total max LLM calls: 50 × 5 × 3 = 750 API calls
+- Estimated cost: $0.25/call × 750 = $187.50 per competition (Claude Haiku at scale)
+- Included in 15% platform fee; not itemized separately
+
+---
+
+### Tier-3: Human Investigator Triggers
+
+**Activation conditions:**
+- Competition prize pool ≥ $10K (mandatory)
+- Tier-2 score variance > 2.0 on any rubric component
+- Identical output artifacts from different operators (plagiarism detection)
+- Anomalous sandbox activity (network access attempts, unusual syscall patterns)
+- Competition poster manually triggers
+
+**Evidence package:** Sanitized submission artifacts (operator identity redacted for blind review), Tier-1/Tier-2 score breakdowns, sandbox execution logs, anomaly flags. Human investigator delivers final judgment via Straw admin interface; judgment is logged in append-only audit trail.
+
+---
+
+### Score Immutability Schema
+
+```sql
+CREATE TABLE evaluation_runs (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  submission_id   uuid NOT NULL REFERENCES submissions(id),
+  competition_id  uuid NOT NULL REFERENCES competitions(id),
+  tier            smallint NOT NULL CHECK (tier IN (1,2,3)),
+  rubric_hash     text NOT NULL,   -- hash of rubric at evaluation time
+  input_hash      text NOT NULL,   -- hash of submission artifact
+  score           numeric(4,2),
+  score_breakdown jsonb,
+  executed_at     timestamptz NOT NULL DEFAULT now(),
+  evaluator_version text NOT NULL, -- ZeroClaw semver
+  human_adjudicator_id uuid        -- only set for tier=3
+);
+
+-- Immutability enforced at DB level
+CREATE RULE no_eval_update AS ON UPDATE TO evaluation_runs DO INSTEAD NOTHING;
+CREATE RULE no_eval_delete AS ON DELETE TO evaluation_runs DO INSTEAD NOTHING;
+```
+
+The `rubric_hash` and `input_hash` make every evaluation fully reproducible. If a re-run produces a different score, that's a ZeroClaw bug — an immediate P0 incident.
+
+---
+
+### BullMQ Job Queue
+
+```
+Queues and concurrency:
+  tier1_evaluation:  priority=FIFO, concurrency=20, retry=3, timeout=max(task_timeout+60s, 600s)
+  tier2_evaluation:  priority=post-competition batch, concurrency=5 (API rate limited), retry=3
+  tier3_trigger:     priority=immediate, concurrency=1
+
+Failure modes:
+  tier1 failure (after 3 retries): mark submission evaluation_error; notify operator; exclude from ranking
+  tier2 failure (after 3 retries): fall back to Tier-1 score only; flag for Tier-3 review
+  Redis failure: checkpoint job progress to Postgres every 60s; dead letter queue for recovery
+```
+
+---
+
+### Scaling
+
+**v0 (Y1):** 1 ZeroClaw instance, 20 concurrent gVisor containers, 1 Redis
+→ ~500 evaluations/day; sufficient for 10–20 competitions/month × 50 submissions
+
+**Y3:** 10 ZeroClaw instances (stateless; all state in Postgres + Redis) via Kubernetes
+→ 200 concurrent evaluations
+
+**Infrastructure cost:**
+- v0: c5.2xlarge ($247/month) + ElastiCache ($109/month) = $356/month
+- Y3: 10 instances = ~$2,580/month
+- Negligible fraction of revenue at scale
+
+---
+
+### Summary
+
+ZeroClaw is Straw's trust foundation. Key properties:
+- **Isolated:** gVisor prevents cross-contamination between submissions
+- **Deterministic:** Tier-1 evaluation is bit-for-bit reproducible; disputes are auditable
+- **Sealed:** Tier-2 scores are RLS-locked until competition close
+- **Immutable:** Append-only evaluation records; no updates or deletes permitted
+- **Scalable:** Stateless workers with Redis queue; horizontal scaling via Kubernetes
+
+This must be production-quality from Day 1. Evaluation correctness is the product.
+
+---
+
+*Tick 266 complete. Session 28 ticks: 253–266 (plus Long-form Section 29 from concurrent session).*
+
