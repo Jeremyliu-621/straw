@@ -51803,3 +51803,142 @@ These categories are real market needs but require capabilities that either don'
 **Ticks 312-317** ready to push. Tick 317 is the long-form proposal update.
 
 **Git commit target:** `research(agent-incentive): tick 317 — long-form proposal update (COALESCE, tiered prizes, x402 loop, taxonomy v2)`
+
+---
+
+## Tick 318 (2026-05-02): Epsilon-greedy task suggestion UX — ε=0.1 in product form
+
+*Thread: Epsilon-greedy task suggestion UX. COALESCE showed ε=0.1 is the right exploration rate. This tick translates that into concrete Straw UI design — the agent-facing task browser.*
+
+---
+
+## Long-form proposal (DRAFT) — Section 32: The epsilon-greedy task browser — UX design
+
+> The COALESCE result (Tick 312) established that 10% exploration (ε=0.1) produces 20.3% cost reduction vs. pure exploitation's 1.9%. This section designs the specific product feature that implements ε=0.1 for agent users of Straw's task browser.
+
+### The Problem with Pure Match-Based Discovery
+
+A naive task browser shows agents tasks sorted by capability match score. Agent has SKILL.md declaring [Python, TypeScript, code review]. Browser shows the top-25 Python/TypeScript/code-review tasks sorted by estimated win probability. Agent enrolls in the top-3 highest match.
+
+**What's wrong with this:** It's pure exploitation. The agent only sees what it already knows. New categories don't surface. Emerging task types (e.g., "TypeScript performance profiling" is a new sub-category the agent hasn't competed in) are invisible because the match score is low. The agent's skill profile never expands.
+
+Over time: agents on pure-exploitation browsers compete in the same narrow categories, those categories get oversaturated, win rates drop, EV goes negative, agents leave. The platform stagnates.
+
+### The Two-Column Design
+
+The agent-facing task browser has two primary columns:
+
+**Column A: "Exploit" — Your strongest categories**
+- Tasks sorted by your estimated win probability (based on historical leaderboard rank in similar tasks)
+- Shows top 18 tasks by probability
+- Labels: "Strong match," "You've won similar tasks before," estimated win probability %
+
+**Column B: "Explore" — Adjacent opportunities**
+- Tasks outside your current top-3 historical categories
+- Specifically: tasks in categories where your declared SKILL.md skills have partial overlap, or where agents with similar SKILL.md profiles have won
+- Shows 2 tasks (ε=0.1 ≈ 2 out of 20 visible tasks)
+- Labels: "New territory," "Your [Python] skill likely transfers here," "3 agents with similar profiles have won here"
+
+**The ratio:** 18 exploit + 2 explore = 10 explore out of every 20 visible tasks = exactly ε=0.1.
+
+### The Explore Column — Content Logic
+
+How does Straw select the 2 explore tasks?
+
+**Algorithm (simplified):**
+1. Take the agent's declared skill vector: [Python ★★★★, TypeScript ★★★, data modeling ★★]
+2. Find the 3 adjacent skill clusters (skills that frequently co-occur with Python/TypeScript/data modeling in winning SKILL.md profiles)
+3. Pull 1-2 currently live tasks from those adjacent clusters
+4. Rank by: (how close the skill distance is) × (prize pool size) × (current competitor count < 15, i.e., not oversaturated)
+
+**What "adjacent" means concretely:**
+- Python agent → explore tasks in: [data pipeline construction, API integration testing, TypeScript migration]
+- TypeScript agent → explore tasks in: [React frontend, Node.js performance, API integration testing]
+- Code review agent → explore tasks in: [security audit (v2), architecture review, documentation generation]
+
+**Why this works:** The explore column doesn't push the agent into completely foreign territory. It shows tasks where the agent has a legitimate chance (adjacent skill transfer) rather than zero-probability exploration (e.g., showing a Python agent a financial modeling task). This keeps the explore column useful rather than noise.
+
+### The "Why This Task?" Tooltip
+
+Each explore task has a small "why?" icon. Clicking reveals:
+
+> "We're suggesting this because:
+> - You've won 4 Python tasks in the past 30 days
+> - This ETL pipeline task requires Python + data modeling
+> - 2 agents with Python + data modeling profiles won similar tasks last week
+> - Only 8 agents have enrolled (not crowded)
+> - Prize: $1,200 — competitive EV at this density"
+
+**This is the legible exploration trigger.** The agent (or its operator) can evaluate whether the exploration suggestion makes sense. It's not opaque algorithmic nudging — it's transparent reasoning.
+
+### The "Pioneer" Badge Incentive
+
+For tasks in categories that are brand-new to the platform (first 30 days of a new category), or where an agent would be the first from their SKILL.md cluster to compete in that category:
+
+- **Pioneer badge** displayed on the task card: "Be the first [Python specialist] to compete in this category"
+- **Pioneer bonus:** 10% premium on the prize pool for the first agent from a new SKILL.md cluster to win (funded by Straw, not the poster)
+- **Purpose:** Offset the exploration risk. If a Python agent tries a new ETL pipeline category and wins, the platform pays a small bonus for being the exploration pioneer.
+
+**Why this works economically:** COALESCE's 10.7× efficiency gain from exploration is worth much more than a 10% task-prize bonus. The pioneer bonus is Straw capturing a fraction of the value created by exploration and returning it to the exploring agent. At scale, pioneer bonuses are a rounding error in Straw's margin (10% × prize × low-frequency first-entry events).
+
+### The Operator Dashboard View
+
+Operators (humans managing agent portfolios) see the same explore column, but with an additional control:
+
+- **Exploration rate slider:** Set ε from 0 (pure exploit) to 0.25 (aggressive explore)
+- Default: 0.10 (the COALESCE-calibrated value)
+- Conservative operators (protecting a narrow specialty reputation) can set ε=0.05
+- Operators actively expanding their agent's capability set can set ε=0.20
+
+**This is the operationalization of COALESCE's key insight at the product level:** the exploration rate is a configurable economic parameter, not a hardcoded UX behavior. Sophisticated operators tune it based on their agent's strategy.
+
+### The Three Regimes
+
+**New agent (0-10 historical tasks):**
+- Explore column shows 5 tasks instead of 2 (ε=0.25 for new agents)
+- Rationale: new agents don't have a reliable capability profile yet; exploration is more valuable than exploitation before the profile is established
+- "Calibration mode" label in the UI: "We're showing you more variety while your profile calibrates"
+
+**Established agent (10-100 historical tasks):**
+- Standard ε=0.10 (2 explore tasks, 18 exploit tasks)
+- Profile is reliable enough for exploitation to be meaningful
+
+**Expert agent (100+ tasks, top-decile win rate in a category):**
+- Explore column is optional (can be hidden by operator setting)
+- Default still ε=0.10 but with a "You're a specialist — do you still want explore suggestions?" prompt after 100 tasks
+- Expert agents may rationally set ε=0.05 or lower if their specialty is yielding very high EV
+
+### Implementation Notes
+
+**Data needed:**
+- SKILL.md vector per agent (parsed at registration, updated on each win in a new category)
+- Task skill-cluster classification (done at task creation: poster selects primary + secondary skill tags)
+- Historical win-rate per skill cluster per agent
+- Current enrollment count per task (for "not oversaturated" filter)
+
+**Complexity:** Low. This is a filtering/ranking layer on top of the task browser. No new infrastructure. The only new data needed is the skill-cluster classification on tasks, which is a dropdown at task creation.
+
+**A/B test plan:**
+- Group A: pure exploit browser (control)
+- Group B: ε=0.10 explore/exploit browser
+- Group C: ε=0.20 aggressive explore browser
+- Metric: average EV per agent per month, platform revenue per agent, agent retention at 60 days
+- Expected result: Group B > Group A on EV and retention, consistent with COALESCE's finding
+
+### Summary
+
+The epsilon-greedy task suggestion UX is not a complex feature. It's an 18-task / 2-task split in the task browser with transparent reasoning for the explore column and an optional pioneer bonus. It implements the COALESCE finding at the product level in approximately 2 weeks of engineering work. The ROI is the difference between a 1.9% efficiency regime and a 20.3% efficiency regime — a 10.7× improvement in market quality over the pure-exploitation alternative.
+
+---
+
+## Closed threads (Tick 318)
+
+- [done — Tick 318] **Epsilon-greedy task suggestion UX** — 18-exploit + 2-explore (ε=0.1) task browser design; adjacent-skill explore logic; pioneer badge + 10% bonus for first-entry in new category; operator exploration rate slider (0.05–0.25); three agent regimes (new/established/expert); implementation notes (skill cluster tags, no new infra); A/B test plan.
+
+---
+
+## Push status (after Tick 318)
+
+**Ticks 312-318** ready to push. Tick 318 is the epsilon-greedy task suggestion UX.
+
+**Git commit target:** `research(agent-incentive): tick 318 — epsilon-greedy task browser UX design (ε=0.1, explore/exploit, pioneer badge)`
