@@ -57027,3 +57027,254 @@ This is exactly Straw's model. The exemption is available.
 ## Closed thread (Tick 346)
 - [done — Tick 346] **Prize Pool Escrow dual-track settlement** — Critical finding: Stripe prohibits "games of skill" competition entry fees — must frame as B2B service fee invoice. Three-layer architecture: (1) Stripe/Circle for enterprise fiat in, (2) app-layer conditional release state machine, (3) Circle Payouts → USDC to agent wallet (Track A) or Circle → ACH (Track B). No meaningful FX risk (USDC 1:1 pegged). FinCEN escrow exemption available; use Circle/Stripe as licensed custodians to avoid MTL requirements. AP2 v0.2 (4 days old) is the authorization layer; x402 is settlement. Cost: <0.25% of pool vs. competitors' 2.5-3.5%. 9 engineering backlog items. Phase 1 (MVP): Circle Mint + Circle Payouts, no smart contracts. Phase 3: audited ConditionalEscrow on Base.
 
+
+---
+
+## Tick 351 (2026-05-02T09:30Z): V0 launch competition design
+
+*Thread: What should Straw's first public competition look like to maximize credibility, agent participation, media coverage, and enterprise sales pipeline? Covers: task selection, enterprise partner options, prize pool sizing, evaluation design, agent invitation strategy, timing, and what success looks like. Sources: Tick 347 (operator list), Section 16 (V0 launch playbook), agent capability research, first-principles product design.*
+
+---
+
+### The Stakes
+
+Straw's first public competition is the product. Not the platform, not the demo, not the pitch deck — the competition. Everything Straw claims — that agents can be objectively evaluated, that competition produces better results than vendor demos, that the score doesn't lie — is either proven or disproven by this one event.
+
+The design of the first competition answers these questions in practice:
+1. Can real agents actually submit and get scored? (infrastructure works)
+2. Do scores differentiate agent quality? (rubric works)
+3. Do enterprise buyers believe the results? (evaluation credibility)
+4. Do top agents want to participate? (supply-side works)
+5. Does the media cover it? (category creation)
+
+Every design decision should optimize for answering YES to all five.
+
+---
+
+### Task Selection Framework
+
+The ideal first task is:
+- **Deterministic core:** A substantial portion of the score comes from automatically verifiable metrics (does it compile, do tests pass, what's the coverage percentage). This makes the score unimpeachable.
+- **Rubric upside:** A remaining portion requires judgment (code quality, documentation, architectural decisions) — demonstrating Straw's judge daemon adds value beyond mechanical testing.
+- **Enterprise-realistic:** The task looks like something a real enterprise would post. Not a toy problem, not an academic benchmark.
+- **Differentiated results:** Different agents should produce materially different outcomes. If everyone passes or everyone fails, there's no leaderboard story.
+- **Accessible to multiple agent types:** Both autonomous agents (Devin, Factory) and IDE-based agents (Cursor, Cline) should be able to attempt it. The more agent types that can participate, the richer the comparison.
+
+---
+
+### Recommended First Task: Code Migration + Architectural Modernization
+
+**Task title:** "Migrate a legacy TypeScript REST API to our modern architectural standards"
+
+**Why this type of task:**
+- **Deterministic component (50% of score):** Does the migrated code compile? Do all existing tests pass? Does test coverage remain ≥ 80%? These are automatically measured — no agent can argue with the result.
+- **Rubric component (50%):** Code quality (consistent patterns, no dead code), documentation quality (decision log explaining each migration choice), adherence to the target architecture, and security (no secrets in code, no obvious injection vectors). These require the judge daemon.
+- **Enterprise-realistic:** Code migration is the #1 use case for Devin operators. It maps directly to real enterprise pain (every company has legacy code and wants it modernized).
+- **Differentiated:** Some agents will fail all tests, some will pass half, some will pass all but write terrible code. The score space is wide, not binary.
+- **Multi-agent accessible:** The task can be submitted as a zip (legacy agents), repo_url (modern agents), or even live_endpoint for the API functionality. All submission kinds work.
+
+**The specific task (for Straw's launch competition):**
+
+```
+Task: API Modernization Challenge
+
+Context: You are given a 5,000-line TypeScript Express REST API that uses:
+- Class-based architecture with mixed responsibilities
+- Direct SQL queries (no ORM)  
+- No input validation
+- No unit tests
+- API keys hardcoded in source
+
+Your goal:
+1. Migrate to a layered architecture (routes → services → repository, as per Straw's own CLAUDE.md)
+2. Replace raw SQL with Drizzle ORM (or Prisma — state your choice and justify it)
+3. Add Zod validation at all API boundaries
+4. Achieve ≥ 80% test coverage (Vitest or Jest)
+5. Remove all hardcoded secrets (use environment variables)
+6. Write a MIGRATION.md documenting every architectural decision
+
+Rubric:
+- Tests pass (20%): All provided integration tests pass on the migrated code
+- Test coverage (20%): ≥ 80% line coverage measured by vitest coverage
+- Architecture adherence (20%): Routes only call services; services only call repository; no raw SQL in routes
+- Zod coverage (15%): All request/response bodies validated with Zod schemas
+- No secrets (10%): Static analysis finds zero hardcoded credentials, API keys, or tokens
+- Documentation quality (15%): MIGRATION.md covers all 5 migration decisions with rationale
+
+Prize pool: $25,000
+Deadline: 14 days
+Submission kinds: zip, repo_url, dockerfile
+```
+
+---
+
+### The "Straw Eats Its Own Cooking" Approach
+
+**For v0, Jeremy posts this task using real Straw code as the legacy codebase.**
+
+Specifically: take an older version of `src/app/api/` (before the layered architecture refactor), clean it up to make it a fair challenge, and post that as the task. The target architecture is described as "Straw's own architecture from CLAUDE.md."
+
+Why this works:
+1. **Authentic:** The codebase is real, not synthetic. Agents have to deal with real complexity.
+2. **Credible:** Jeremy knows what a good migration looks like. He can write the rubric authoritatively.
+3. **Self-referential narrative:** "Straw ran a competition to improve Straw's own code. The winning agent is now maintaining part of Straw's codebase." This is a story the media can tell.
+4. **Free enterprise partner:** Straw IS the enterprise for v0. No partnership needed. No waiting.
+5. **Real procurement flow test:** If the winning agent actually does migrate the code, Straw can demonstrate the D22 multi-engagement winner flow (hire the agent for ongoing maintenance).
+
+**The risk:** The codebase being public means agents might find the "target state" in git history. Mitigation: create a new branch specifically for the competition, anonymize variable names, ensure the target state isn't publicly accessible.
+
+---
+
+### Enterprise Partner Option (Alternative to Self-Funded)
+
+If Jeremy has a design partner willing to participate in launch week, use them instead. The ideal design partner:
+- Has a 3,000–8,000 line TypeScript/Python/Go codebase that needs migration
+- Is willing to have the winner actually migrate the code (or at least review the result)
+- Can be named publicly: "CompanyX posted Straw's first competition"
+
+Target: A Series A–C SaaS company with an engineering team of 5–20. They have legacy code, they've been meaning to fix it, and participating in Straw is a free migration attempt plus a great story ("we hired an AI agent to refactor our codebase — here's what happened").
+
+Warm intro paths from the research: Lovable's investor base (Salesforce, Atlassian — their portfolio companies), Factory AI's named customers (MongoDB engineering team knows this problem well), or YC companies in the most recent batch.
+
+---
+
+### Prize Pool Sizing
+
+**$25,000 for the launch competition.** Here's the justification:
+
+- $10,000 is too small — it feels like a toy, not a serious procurement decision
+- $50,000 may feel premature for a platform with zero track record
+- $25,000 is "serious money" — enough that top agents feel the competition is worth their attention, enough that the media coverage says "enterprise competition, not a hackathon"
+- Break-even for Jeremy: If even one of Straw's operator outreach targets (Devin, Factory, Augment) enters and wins, their operator gets a case study. Straw gets the operator relationship. Net cost: $25K for a case study that validates the platform architecture AND proves the business model.
+
+**Funding source:** Jeremy funds the first competition himself (or Straw Labs funds it). This is the cost of proving the concept. Seed investors should see it as necessary product development spend, not operating cost.
+
+**Prize distribution:** Winner takes all for v0. Simplest structure, maximum incentive for top agents to compete hard.
+
+---
+
+### Evaluation Design
+
+**The judge daemon (ZeroClaw + Codex API, per D30) does the rubric scoring. But for v0:**
+
+The deterministic components (tests pass, test coverage, no secrets, architecture check) run in the eval container:
+- `npx vitest run --coverage` → coverage report parsed by the worker
+- `npx eslint --rule 'no-restricted-syntax: ...'` → architecture violation detection
+- `npx trufflehog ...` or similar → secrets detection (static analysis)
+
+The qualitative components (documentation quality, architecture adherence beyond static analysis) are scored by ZeroClaw judge.
+
+**Calibration step before competition opens:** Jeremy writes 3 example submissions — Gold (90/100), Silver (70/100), Bronze (50/100) — and scores them manually. These become the anchor examples for the judge daemon's calibration. The IRR between Jeremy's manual score and the judge daemon's score on these 3 examples sets the baseline.
+
+**What makes the evaluation story compelling:** "We ran automated tests on 47 submissions. 31 passed all integration tests. The judge then evaluated the 31 passing submissions on documentation and code quality. The winner scored 94/100. The runner-up scored 88/100. The gap between first and second place was in documentation quality — the winning agent wrote a 500-word MIGRATION.md that explained every decision; the runner-up wrote three bullet points."
+
+This is a specific, quotable story. It demonstrates that the evaluation was rigorous, that the judge distinguished quality, and that the rubric design mattered.
+
+---
+
+### Agent Invitation Strategy
+
+**Direct email to 10 agents at competition launch:**
+
+1. Cognition AI / Devin v2 (email drafted in Tick 342)
+2. All Hands AI / OpenHands  
+3. Factory AI / Code Droid
+4. Augment Code / Auggie
+5. Cosine AI / Genie
+6. Cursor / Background Agent
+7. OpenAI / Codex CLI
+8. SWE-agent (Princeton team)
+9. Cline (community post + direct operator Discord)
+10. Morph (YC) / WarpGrep subagent
+
+**The invitation framing:**
+> "Straw's first public competition is live. $25,000 prize pool. Real enterprise codebase. 14-day submission window. You're one of the first 10 agent operators we're inviting. The score is public. The methodology is transparent. Here's the task: [link]. First to register wins the early-agent spotlight in our launch announcement."
+
+**Why 10 invitations:** Creates competitive pressure ("I heard Devin is entering"). Creates media story ("Devin vs. OpenHands vs. Augment on a real codebase"). Avoids the problem of a small leaderboard (fewer than 10 agents = no interesting story).
+
+---
+
+### Timing and Timeline
+
+**Week 0 (Now — May 2-8):**
+- Finalize competition task design and rubric (this tick provides the design)
+- Set up the eval container for TypeScript with vitest, eslint, trufflehog
+- Run calibration: score 3 example submissions manually, test judge daemon
+- Configure ZeroClaw judge with task-specific SKILL.md
+- Test end-to-end: submit a test zip, see it get scored
+
+**Week 1 (May 9-15):**
+- Send invitations to 10 operators (emails drafted or adapted from Tick 342)
+- Publish competition on Straw platform (public)
+- Announce on Twitter/X: "We're running the first public AI agent coding competition. $25K prize pool. [link]"
+- Post a brief Medium/Substack piece: "We built a platform where AI agents compete. Here's our first competition."
+
+**Week 2-3 (May 16-29):**
+- Competition open (14 days)
+- Monitor submission count daily; if fewer than 5 submissions by day 7, do targeted follow-up with each invited operator
+- QA score pipeline on early submissions to catch eval bugs before they matter
+
+**Week 4 (June 1-7):**
+- Submission deadline
+- ZeroClaw judge runs on all submissions (target: <48 hours for full eval)
+- Results published publicly
+- Post-competition coverage: "Here's what happened. Here's how agents compared. Here's the winning approach."
+
+**Week 5 (June 8-14):**
+- Winner engagement: D22 multi-engagement flow — invite winner to discuss ongoing maintenance contract
+- Media outreach: pitch the results story to TechCrunch, VentureBeat, The Pragmatic Engineer
+- Begin outreach to next enterprise customer based on launch learnings
+
+---
+
+### What "Success" Looks Like
+
+**Minimum success (validates the concept):**
+- ≥ 5 agent operators submit
+- ≥ 1 submission passes all integration tests
+- Score distribution is differentiated (not everyone scoring within 5 points of each other)
+- No eval system bugs that require manual overrides
+- Winner publicly named and prize paid
+
+**Strong success (validates the market):**
+- ≥ 10 agent operators submit
+- ≥ 3 operators achieve passing test suites (creates competitive leaderboard story)
+- Media coverage in ≥ 1 major tech publication
+- ≥ 1 enterprise company reaches out after seeing the results
+- Winner agrees to an ongoing engagement (even if small)
+
+**Exceptional success (category creation):**
+- Devin, Factory, or Augment submits AND the results are publicly cited by the operator in their own marketing
+- Jeremy gets an inbound from an enterprise wanting to post their own task
+- Press coverage frames Straw as "the company creating a new category: competitive AI procurement"
+
+---
+
+### Pre-Launch Risk Checklist
+
+| Risk | Mitigation |
+|---|---|
+| Zero agents submit | Direct telephone follow-up to all 10 invited operators on day 1; Cline community post ensures some entries |
+| Eval system bug on submission type | Pre-test all 5 submission kinds before launch; have manual fallback for first 5 submissions |
+| Judge scores seem wrong | Calibration step + Jeremy reviews first 10 scores manually before publishing |
+| "I don't trust the judge" complaints | Publish rubric in full before competition opens; show judge reasoning traces for all scores |
+| Winner dispute | TOS Section 8 appeal process; Jeremy makes final call on launch competition |
+| Prize payment delay | Circle Mint account pre-funded; payout in <24 hours of winner confirmation |
+| Media ignores it | Primary metric is enterprise pipeline, not press. Press is bonus. |
+
+---
+
+### Sources
+- Tick 347 (this file): operator list, outreach angles
+- Section 16 (this file): V0 30-day launch playbook
+- D22 (DECISIONS.md): multi-engagement winner flow
+- D23 (DECISIONS.md): submission kinds
+- D30 (DECISIONS.md): ZeroClaw judge daemon
+- TOS Section 8 (Tick 348): appeals process for launch competition disputes
+- Tick 342 (this file): Devin outreach template (reuse for all operator invitations)
+
+---
+
+## Closed thread (Tick 351)
+- [done — Tick 351] **V0 launch competition design** — Recommended: TypeScript code migration + architectural modernization task. Self-funded ($25K prize pool), Jeremy uses real Straw codebase as the task. Evaluation: deterministic tests (50%) + ZeroClaw judge (50%). Calibration: 3 manual anchor examples before launch. 10 direct operator invitations (Devin, OpenHands, Factory, Augment, Cosine, Cursor, Codex, SWE-agent, Cline, Morph). Timeline: invitations May 9-15, competition May 16-29, results June 1-7, winner engagement June 8-14. Success metrics defined (minimum/strong/exceptional). 7-item pre-launch risk checklist.
+
