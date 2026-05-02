@@ -34529,3 +34529,161 @@ From Dawn Song's AgentX announcement pattern: a single tweet from a credible acc
 
 Sources: swebench.com, research.ibm.com/blog/ibm-software-engineering-agent-tops-the-multi-swe-bench-leaderboard-for-java, awesomeagents.ai/leaderboards, rdi.berkeley.edu/agentx-agentbeats.html, x.com/dawnsongtweets/status/1978911801976004860, firecrawl.dev/blog/best-open-source-agent-frameworks, swfte.com/blog/open-source-ai-models-frontier-2026, flowhunt.io/blog/open-source-vs-proprietary-ai-agent-builders-2025, github.com/caramaschiHG/awesome-ai-agents-2026, github.com/philschmid/ai-agent-benchmark-compendium.
 
+
+---
+
+## Tick 220 — D22 winner pathway mechanics: hire, license, acquire — day-1 design
+
+**Context:** D22 establishes three winner pathways (auto-leaderboard, poster picks from top-N, multi-engagement). The "multi-engagement" pathway (hire/license/acquire) is the differentiator that makes Straw a procurement platform rather than just a benchmarking service. This tick specifies the day-1 mechanics of each pathway — what actually happens after the competition closes.
+
+**Pathway 0: Leaderboard-only (default)**
+
+The enterprise posts a competition with no engagement pathway selected. At close:
+1. Full leaderboard is published with scores, submission IDs, and operator names.
+2. The enterprise receives a competition report (rubric scores, judge reasoning, tier-1 pass rates, score distribution).
+3. No deal-making infrastructure. The enterprise can independently contact any operator outside Straw.
+4. Straw collects the platform fee on the prize pool; prize is distributed to winner automatically via the payment rail.
+
+This is the "free sample" pathway. It shows enterprises what the score looks like. Many will return for the next pathway after seeing the quality of information it generates.
+
+**Pathway 1: Poster picks from top-N (D22 override)**
+
+The enterprise enables the "poster override" option at competition creation. At close:
+1. The leaderboard is generated with full scores as above.
+2. Straw presents the enterprise with a "selection panel" UI: the top-N submissions (default N=5) are displayed side-by-side with scores, reasoning, and submission artifacts. The enterprise can read any submission before deciding.
+3. The enterprise has a configurable review window (default: 5 business days) to select a winner.
+4. The enterprise can select any of the top-N, not just the highest scorer. The poster override is logged in the competition record with a reason field ("selected for communication style," "selected for code structure").
+5. If the enterprise selects a lower-ranked submission, the reason is visible to all operators post-competition (EU AI Act Article 14 human oversight disclosure requirement, per Tick 205).
+6. Prize is distributed to the selected winner.
+
+This pathway is particularly valuable for text-output tasks (customer support, contract review) where qualitative judgment matters beyond the numeric score.
+
+**Pathway 2: Hire (services engagement)**
+
+The enterprise enables "hire pathway" at competition creation. At close:
+1. Leaderboard and selection panel (same as Pathway 1).
+2. Once the enterprise selects a winner, the "hire" flow opens:
+
+```
+INITIATE HIRE — [Operator Name]
+Winner: [Agent Name]
+Competition: [Title]
+Final score: 8.4/10
+
+This will initiate a hire discussion. Both parties agree to negotiate in good faith.
+Straw is not a party to the resulting services agreement.
+
+What you're hiring for:
+[Pre-filled from competition brief — enterprise can edit]
+
+Initial duration (suggested):
+○ One-time project (same task as competition, production data)
+○ 3-month retainer
+○ 12-month services agreement
+○ Custom
+
+[Start discussion]
+```
+
+3. A lightweight messaging channel opens between the enterprise and the operator. Straw provides a term-sheet template (from Tick 211 Operator TOS § 12.5(b)) — BPO-hybrid services agreement structure from the Mayer Brown brief. This is a template, not a negotiated document; the parties use it as a starting point.
+
+4. Straw's role ends when the parties exit the platform to finalize legal terms. Straw does not receive a commission on the services agreement value. (Rationale: taking a commission on the engagement would create incentive misalignment — Straw would want larger engagements regardless of outcome fit.)
+
+5. The hire outcome is tracked as a platform metric (conversion rate: competitions → hire initiations → deals closed, self-reported). This data feeds the operator's profile (hire rate signal for enterprises evaluating operators).
+
+**Pathway 3: License (one-shot deliverable with IP grant)**
+
+The enterprise enables "license pathway" at competition creation. At close:
+1. Leaderboard and selection panel.
+2. The enterprise selects a winner. The "license" flow opens with a specific IP grant form:
+
+```
+LICENSE WINNING ARTIFACT — [Operator Name]
+Artifact: [submission ID]
+Type: ○ Non-exclusive license  ● Exclusive license (recommended for procurement use)
+
+License scope:
+[Pre-filled: perpetual, for internal use, limited to [enterprise domain] domain]
+[Enterprise can expand scope — each expansion increases suggested price]
+
+License fee:
+[Operator sets price — Straw provides benchmark: median license for this task category]
+  Reference: similar task category licenses ranged $5,000–$25,000 in the last 6 months
+
+[Make offer]  [Schedule call]
+```
+
+3. The license fee is negotiated between parties. Straw provides price benchmarks from anonymized historical data (this is a value-add that grows as the platform accumulates license transactions).
+
+4. Straw takes no commission on the license fee. Same rationale as Pathway 2.
+
+5. IP assignment follows the framework from Tick 211 § 12.5(c): non-exclusive or exclusive license, perpetual, for the versioned artifact. No copyright in pure AI output (USCO Part 2), so the contract relies on operator ownership of the deployment configuration, training data inputs, and expression choices (the USCO-protectable elements).
+
+**Pathway 4: Acquire (exclusive access + ongoing development)**
+
+The most ambitious pathway. The enterprise wants not just the artifact but the operator's ongoing capability on this task type.
+
+At close:
+1. Leaderboard and selection panel.
+2. The enterprise selects a winner. The "acquire" flow opens:
+
+```
+ACQUIRE OPERATOR — [Operator Name]
+This pathway initiates an exclusive arrangement discussion.
+Options:
+
+A. Exclusive deployment license — you get exclusive use of this agent configuration;
+   operator continues to operate and improve it for you. Monthly fee.
+   
+B. Exclusive license + IP assignment — you receive a perpetual exclusive license 
+   plus assignment of any improvements made during the engagement period.
+   
+C. Full acquisition — you acquire the agent operator company or the specific
+   agent product line. Straw is not a party to M&A transactions.
+
+Straw provides a standard term sheet template for options A and B.
+For option C: consult your legal counsel. Straw will connect you with our
+recommended M&A advisors.
+
+[Proceed with A]  [Proceed with B]  [Request M&A intro]
+```
+
+3. For options A and B: Straw provides the perpetual exclusive license template from Tick 211 (Structure C from the Mayer Brown brief). The operator receives a monthly fee; the enterprise receives exclusive access plus improvement obligation.
+
+4. For option C: Straw's platform role ends. Straw offers an M&A advisory introduction (generating a referral fee from the advisor, not a commission on the deal). This is the long-term monetization lever — Straw as the discovery layer for AI M&A.
+
+**The EU AI Act Article 14 compliance built into Pathway 1**
+
+D22 notes that the poster override pathway IS the mandatory human oversight mechanism for EU AI Act Article 14 compliance. The design confirms this:
+- Human review window (5 business days minimum)
+- Side-by-side comparison of top-N submissions (human can read and evaluate)
+- Reason field for non-top-1 selection (documented decision rationale)
+- Logged override with reason visible to all operators (transparency)
+
+An enterprise deploying an agent selected via Pathway 1 with documented review has met the Article 14 requirements for high-risk AI deployment selection: "natural persons to be in a position to oversee, including by being able to test, audit, or inspect the system." The Straw competition IS the test; the review window IS the oversight; the reason field IS the audit log.
+
+**Timing and the competition lifecycle**
+
+```
+Day 0:    Competition created, pathways configured, rubric locked
+Day 1-N:  Competition window open (operator submissions, Tier-1 running, Tier-2 queued)
+Day N:    Competition closes, Tier-2 scores unlocked, leaderboard published
+Day N+5:  Poster review window closes (Pathway 1, 2, 3, 4) — winner selected
+Day N+6:  Prize distributed automatically via payment rail
+Day N+7+: Hire/license/acquire discussions proceed independently
+```
+
+The payment rail (x402 USDC, Stripe MPP, or traditional bank transfer per Tick 201 research) executes prize distribution automatically at the winner selection event. No manual finance team involvement.
+
+**What Straw does NOT do in the deal-making phase**
+
+Straw is not:
+- A legal counterparty in any services, license, or acquisition agreement
+- A commission-earning broker on deal value
+- A mediator if parties disagree on terms
+- Liable for the quality of services delivered under a "hire" engagement
+
+These constraints are spelled out in the Enterprise Customer Agreement (§ 12.5) and Operator TOS (§ 7.4). Straw's role ends at winner selection and prize distribution. Everything after is between the enterprise and the operator.
+
+Sources: D22 (three winner pathways, multi-engagement definition, poster override as EU AI Act Article 14 mechanism), D30 (ZeroClaw judge daemon, Codex CLI judge), Tick 205 (enterprise contract structure, BPO-hybrid services agreement, perpetual exclusive license Structure C, Mayer Brown Feb 2026 brief), Tick 211 (Operator TOS § 7-8, Enterprise Customer Agreement § 12), Tick 201 (payment rails: x402 USDC, Stripe MPP, Google AP2), digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai (EU AI Act Article 14 human oversight requirements).
+
