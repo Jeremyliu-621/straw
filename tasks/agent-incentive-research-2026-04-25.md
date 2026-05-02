@@ -46814,3 +46814,182 @@ The AI engineer becomes a champion. The champion brings Straw to the VP. This is
 
 So: write deep technical content for practitioners. They'll convert enterprises more effectively than direct B2B marketing.
 
+
+---
+
+## Tick 290 — Evaluation Transparency and Trust Architecture
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** How Straw builds and maintains trust as a neutral arbiter
+
+### The Fundamental Trust Problem
+
+Straw's entire value proposition rests on being a trusted neutral party. But every participant in the ecosystem has a reason to distrust Straw:
+
+- **Enterprises** worry: "Does Straw favor certain operators? Are results manipulated?"
+- **Operators** worry: "Does Straw leak my submission to competitors? Is my score calculated correctly?"
+- **Regulators** worry: "Is Straw's methodology rigorous enough to use as compliance evidence?"
+- **Investors in operators** worry: "If my company's AI is competing on Straw, are we getting a fair evaluation?"
+
+Trust is not a feature you can build. It's an architectural property of the entire system. The question is: how do you build a system whose trustworthiness is verifiable, not assumed?
+
+---
+
+### The Transparency Stack
+
+Straw's transparency has four layers, each addressing a different trust concern:
+
+**Layer 1: Algorithmic Transparency**
+*What:* The evaluation methodology is fully documented and public.
+- Glicko-2 rating formula (documented; any operator can replicate the calculation)
+- Tier-1 evaluation approach (rubric structure, scoring formula, deterministic test cases)
+- Tier-2 LLM evaluation (which model, which prompt template, how scores are normalized)
+- Score aggregation (how Tier-1 and Tier-2 scores are combined into a final score)
+
+*What's not public:* specific task inputs (competitive integrity), Tier-2 LLM system prompt (anti-gaming), anti-cheating heuristics (security through obscurity for fraud prevention).
+
+*Trust benefit:* Any independently competent evaluator can audit Straw's methodology and confirm it produces correct outputs. This is the scientific replication standard applied to evaluation.
+
+**Layer 2: Score Immutability**
+*What:* Every evaluation run is written to `evaluation_runs` with `no_eval_update` and `no_eval_delete` SQL rules. Scores cannot be modified after the fact, even by Straw employees.
+
+*Proof mechanism:* Straw publishes a signed Merkle hash of all evaluation runs weekly. Any participant can request the hash chain for a specific competition and verify that no scores were altered. Merkle root signed with Straw's Ed25519 key.
+
+*Trust benefit:* Proves Straw didn't go back and change scores to favor a preferred outcome. Not just a policy claim — a cryptographic guarantee.
+
+**Layer 3: Process Auditability**
+*What:* Every Tier-3 adjudication and every Rubric Curator interpretation is logged with:
+- Adjudicator ID (internal)
+- Rubric clause at issue
+- Decision rationale (2-3 sentences)
+- Timestamp
+
+*What's public:* anonymized summaries of all Tier-3 decisions (quarterly publication). The pattern of decisions over time shows whether Straw consistently applies the rubric.
+
+*Trust benefit:* Human decisions are always a potential source of bias. Making the pattern visible (even if individual decisions are pseudonymized) allows the community to audit for systematic bias.
+
+**Layer 4: Financial Transparency**
+*What:* Straw's prize pool handling is completely transparent.
+- Prize pools are held in escrow (clearly separate from Straw's operating funds)
+- Prize distributions are posted publicly (amount, operator ID, competition ID)
+- Straw's platform fee is explicitly disclosed at competition creation (no hidden charges)
+
+*What's not public:* individual enterprise pricing (commercial terms)
+
+*Trust benefit:* Operators know their prize money is safe. Enterprises know there's no prize pool manipulation. Regulators can verify that prize distributions match evaluation results.
+
+---
+
+### The Anti-Conflict Architecture
+
+The most important structural trust property: **Straw's revenue is independent of who wins.**
+
+Straw earns 15% of the prize pool regardless of outcome. A competition where GPT-based ContractorPro beats Claude-based LegalEagle generates the same Straw revenue as the reverse. There is no financial incentive to favor any model provider, any geographic origin, or any operator.
+
+This is enshrined in the code: the `platform_fee` is calculated as a function of `prize_pool` only, with no reference to `winning_operator_id` or any score field.
+
+It's also enshrined in the corporate structure:
+- Straw does not hold equity in any AI vendor
+- Straw does not receive referral fees from model providers
+- Straw does not offer "certified partner" programs that pay for preferred positioning
+
+These are not just current policies — they should be codified in Straw's founding documents and Articles of Association as restrictions on the business that require board approval to change. Making them structurally hard to change increases the credibility of the neutrality claim.
+
+---
+
+### Handling the "Trust but Verify" Operator
+
+Some operators will be sophisticated enough to want to verify their own evaluation. This is good — it makes Straw more trustworthy for everyone.
+
+**Score explanation API:**
+Every operator can request a score explanation for their submissions:
+```json
+{
+  "submission_id": "sub_abc123",
+  "competition_id": "comp_xyz789",
+  "tier1_score": 8.4,
+  "tier1_breakdown": {
+    "accuracy": { "score": 8.0, "max": 10, "details": "3 of 25 test cases failed" },
+    "completeness": { "score": 9.2, "max": 10, "details": "98% of required fields present" },
+    "format_compliance": { "score": 8.5, "max": 10, "details": "2 formatting violations" }
+  },
+  "tier2_score": null,
+  "tier2_available_after": "2026-05-10T00:00:00Z",
+  "rubric_hash": "sha256:abc123...",
+  "input_hash": "sha256:def456..."
+}
+```
+
+The `rubric_hash` and `input_hash` allow the operator to verify: "the rubric I saw when submitting matches the rubric applied to my submission." If the hashes don't match, the operator has grounds for a Type A dispute.
+
+**Deterministic re-evaluation:**
+For Tier-1 (fully deterministic), operators can request re-evaluation. Straw re-runs the exact same evaluation pipeline on the same inputs (stored in evaluation_runs log). If the score differs by >0.1 points, it's a genuine bug and Straw corrects the official score.
+
+This is only possible because ZeroClaw's Tier-1 evaluation is truly deterministic — given the same inputs, same rubric, same evaluator version, same task inputs → same output.
+
+---
+
+### External Audit Program
+
+Starting Year 2, Straw invites external security and methodology audits:
+
+**Evaluation methodology audit (annual):**
+- Auditor: academic evaluation research group (IIT/MIT/Stanford partnership)
+- Scope: is Straw's evaluation methodology sound? Does it measure what it claims to measure?
+- Output: published audit report (pass/fail + specific findings)
+- Commitment: if methodology audit finds a flaw, Straw corrects it within 90 days
+
+**Security audit (annual):**
+- Auditor: independent security firm (Cure53 or NCC Group)
+- Scope: sandbox escape vulnerabilities, data exfiltration paths, access control
+- Output: published audit report (security issues redacted for 90 days after fix)
+- Penetration test scope: ZeroClaw evaluation daemon, Supabase RLS policies, API authentication
+
+**Financial audit (annual, Year 3+):**
+- Auditor: Big 4 accounting firm
+- Scope: prize pool escrow reconciliation, platform fee calculation accuracy
+- Output: attestation letter confirming prize distributions match evaluation results
+
+Each audit adds credibility layers. By Year 3, Straw has: annual methodology audit + security audit + financial audit + Merkle hash chain verification. That's more transparency infrastructure than any comparable enterprise software platform.
+
+---
+
+### Trust Incident Response Plan
+
+Despite best efforts, trust incidents will occur. A Straw employee behaves badly. A bug is discovered. An accusation goes viral. The response plan must be prepared in advance.
+
+**Tier A: Minor bug (affects <5 competitions, no prize redistribution needed)**
+- Internal: fix bug, log corrective action
+- External: release note in changelog ("Fixed: score calculation edge case for submissions with empty optional fields")
+- Timeline: 24 hours to fix, same day release note
+
+**Tier B: Medium bug (affects 5-20 competitions, prize redistribution possible)**
+- Internal: fix bug, identify all affected competitions, calculate correct scores, prepare redistribution
+- External: proactive email to affected operators and enterprises, transparent explanation of bug and correction, redistribution within 7 days
+- Timeline: 72 hours to identify scope, 7 days to correct
+
+**Tier C: Major incident (affects >20 competitions, security breach, or public accusation)**
+- Internal: form incident response team, engage outside counsel, prepare communications
+- External: public statement within 24 hours (even if incomplete), regular status updates every 48 hours, full post-mortem published after resolution
+- Commitment: Straw does not delete tweets, does not remove blog posts, does not pretend incidents didn't happen
+- Timeline: public statement 24 hours, full resolution 30-90 days
+
+**The principle:** Radical transparency in incidents actually builds trust if handled well. Companies that try to hide incidents lose trust permanently. Companies that handle incidents transparently often emerge stronger.
+
+Straw's incident response is not a legal strategy — it's a trust-building strategy.
+
+---
+
+### The "Competitor Could Copy Our Transparency" Non-Problem
+
+A potential investor or competitor might say: "Your transparency approach is great, but a competitor could just copy it."
+
+They could copy the policy. They can't copy the track record.
+
+Merkle hash chains only have value after 3 years of unaltered data. Audit reports only matter after 3 rounds of external audits. The transparent dispute log only builds credibility after resolving 100 disputes publicly and consistently.
+
+Transparency is a time-compounding asset. It's worth very little on day one and very much on day 1,000.
+
+The correct investor framing: Straw's transparency infrastructure is a moat that grows with time, not a feature that can be replicated overnight.
+
