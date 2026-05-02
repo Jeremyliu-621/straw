@@ -43938,3 +43938,173 @@ The long-context problem doesn't block v0 launch (all v0 categories are compact/
 
 *Tick 274 complete.*
 
+
+---
+
+## Tick 275 — Enterprise Customer Success: Expansion from One Competition to Ten
+
+**Date:** 2026-05-02
+**Thread:** Customer success playbook — how to turn a one-time competition customer into a multi-year, multi-category relationship
+**Research method:** Enterprise SaaS customer success frameworks (EBR/QBR patterns, NRR drivers); analogies to Salesforce/Snowflake expansion motion; unit economics of customer expansion vs. acquisition
+
+---
+
+### The NRR Imperative
+
+The P&L model (Tick 245) requires 120%+ NRR (Net Revenue Retention) by Y2 to hit the growth targets that justify Series A valuation. NRR >100% means expansion revenue from existing customers exceeds churn revenue lost from departing customers. Getting to 120% NRR requires:
+
+- Average existing customer increases spend by 20%+ year-over-year
+- Churn rate is low enough that it doesn't offset expansion
+
+The expansion motion is the primary driver of NRR for enterprise SaaS. In Straw's case, expansion means:
+- Customers running more competitions (frequency expansion)
+- Customers running competitions in additional categories (category expansion)
+- Customers converting to Fleet subscriptions (product expansion)
+- Customers adding more business units as competition posters (seat expansion)
+
+Each expansion type requires different customer success interventions.
+
+---
+
+### The Customer Journey Post-First-Competition
+
+After a customer successfully completes their first competition:
+
+**The psychological state:**
+- Poster is excited (they got objective data they didn't have before)
+- Poster's manager is cautiously interested ("interesting pilot, but is this repeatable?")
+- Procurement/legal is satisfied (contract terms worked, no security incidents)
+- Engineering team is impressed (real AI agents competed on their actual codebase)
+
+**The first 30 days post-competition:**
+The most critical window for expansion. The poster has momentum. If Straw's CSM doesn't engage actively in this window, the company's attention moves to other priorities and the next competition gets de-prioritized.
+
+**CSM action items (Day 1–30 post-competition):**
+1. Schedule a post-competition debrief call within 5 days: review results, confirm ROI, capture testimonial
+2. Identify the next 2–3 pain points: "What other AI procurement decisions does your team have in the next 6 months?"
+3. Introduce the expansion: "We found two other teams at your company who might benefit — can I introduce you to them?"
+4. Pitch the Fleet concept: "Now that you've found a great agent, we can monitor that it stays great — for $500/month"
+5. Reference case discussion: "Would you be willing to let us publish a case study? We'd share the draft with you first."
+
+The 30-day window is where 70%+ of expansion decisions get seeded. A CSM who misses this window faces a much harder expansion 6 months later.
+
+---
+
+### The Expansion Triggers: What Causes Customers to Buy More
+
+**Trigger 1: Seasonal procurement cycles**
+Most enterprises have annual or semi-annual vendor evaluation cycles (timed to contract renewals, budget cycles, strategic planning). A customer who ran their first competition in Q1 2026 has a natural opportunity to run more in Q3 2026 (mid-year review) or Q1 2027 (annual planning). Straw's CSM should know each customer's procurement cycle and proactively reach out 6–8 weeks before the cycle.
+
+**Trigger 2: New technology adoption wave**
+When an enterprise is evaluating a new technology category (moving from batch processing to streaming, upgrading their ML infrastructure, adopting a new compliance framework), they need AI agents for the transition work. Each adoption wave = potential new competition. Straw's CSM should track their customers' technology roadmap and anticipate which adoption waves create AI procurement needs.
+
+**Trigger 3: Performance drift alert**
+If the customer is on Fleet and the monitoring system detects a 15%+ performance drop in their deployed agent, Straw sends an alert. The natural response is to run a new competition to find a better agent or compare the current agent's new performance against alternatives. Fleet alerts create urgent, time-sensitive competition demand.
+
+**Trigger 4: Business unit referral**
+The original champion (Engineering Manager, VP Engineering) knows colleagues in other business units who have similar AI procurement problems. A well-timed referral ask ("Do you know anyone else at your company who's evaluating AI vendors for document processing?") can open 2–3 new buyer relationships from a single satisfied champion.
+
+**Trigger 5: Regulatory deadline**
+EU AI Act Article 9 enforcement begins August 2026. An enterprise that ran one Straw competition in Q2 2026 (code migration) suddenly has an urgent need to run competitions for all their high-risk AI deployments before the August deadline. This creates a sudden, non-discretionary demand spike that the CSM should anticipate and pitch actively.
+
+---
+
+### The Quarterly Business Review (QBR)
+
+For Enterprise-tier customers (>$30K ACV), the CSM conducts a QBR every quarter:
+
+**QBR agenda (60 minutes):**
+1. **ROI review (15 min):** What competitions ran; what agents were hired/licensed; estimated cost savings vs. previous AI vendor
+2. **Platform health check (10 min):** Fleet performance (if enrolled), any evaluation errors, operator quality trends in their categories
+3. **Market intelligence (10 min):** "Here's what we're seeing across the 500+ competitions in your category — price trends, score distributions, new operators entering"
+4. **Expansion opportunities (15 min):** "You have these 3 AI procurement decisions coming up in Q3 — here's how we'd approach each"
+5. **Roadmap preview (10 min):** "We're launching X in Q3 — here's how it applies to your use case"
+
+The QBR has two goals: demonstrate ongoing value (preventing churn) and identify expansion opportunities (driving NRR). The market intelligence section is particularly valuable — this is Straw's proprietary data that the customer can't get anywhere else, delivered as a free advisory service.
+
+**QBR metrics to share with customer:**
+- Their "Straw Score" — composite of competition quality (rubric completeness, input dataset size), operator engagement, and ROI realized
+- Category benchmark: "Your winning agent scored 9.1; the market average in this category is 7.2; you're in the top 15% of outcomes"
+- Fleet health: "Your deployed agent's performance has been stable at 8.8–9.1 over 8 evaluations; no drift detected"
+
+---
+
+### The Expansion Math
+
+**From one competition to a fleet customer:**
+
+Year 1: $5,000 prize pool competition → $750 platform fee
+Year 2: 4 competitions/year ($5K average) + Fleet Professional ($2K/month) = $3K prizes + $24K Fleet = $27K total
+Year 2 NRR: $27K / $750 = 3,600% (single customer, extreme expansion)
+
+This is unrealistically fast for a single customer. More realistic:
+
+**Realistic expansion trajectory:**
+
+| Year | Activity | Revenue |
+|------|----------|---------|
+| Y1 | 1 competition (first-time customer, $5K prize pool) | $750 |
+| Y2 | 3 competitions ($7K average prize pool) + Fleet Basic | $3,150 + $6,000 = $9,150 |
+| Y3 | 6 competitions ($10K average) + Fleet Professional | $9,000 + $24,000 = $33,000 |
+| Y4 | 10 competitions ($15K average) + Fleet Enterprise | $22,500 + $96,000 = $118,500 |
+
+**4-year LTV: $161,400 from a customer that started at $750**
+
+This is the NRR story: customers who engage with Straw expand dramatically over time as they run more competitions across more categories, convert to Fleet, and integrate more business units. The $750 first competition is not the revenue — it's the customer acquisition event.
+
+**The 24-month "fleet conversion" target:**
+If the customer converts to Fleet within 24 months of their first competition, their LTV trajectory inflects upward. The primary KPI for customer success is: "% of one-time competition customers who convert to Fleet within 24 months." Target: 40% (i.e., 2 in 5 customers who run a competition convert to Fleet within 2 years).
+
+---
+
+### Customer Success Team Structure
+
+**Y1 (1 CSM, managing ~20 accounts):**
+- Digital-first: automated post-competition emails, QBR templates, Fleet onboarding sequences
+- CSM focuses on the 5 highest-value accounts (design partners + largest prize pools)
+- Rest of accounts are managed via automated nurture tracks
+
+**Y2 (3 CSMs, managing ~100 accounts):**
+- Tiered model:
+  - **Strategic CSMs (2):** Each manages 15–20 Enterprise accounts (>$30K ACV)
+  - **Growth CSM (1):** Manages 60–70 Standard accounts; mostly digital; proactive expansion calls quarterly
+- QBR cadence: Strategic = quarterly; Growth = semi-annual
+
+**Y3 (6 CSMs, managing ~350 accounts):**
+- Same tiered model scaled; add Solutions Engineer role for complex integrations (ServiceNow, SAP Ariba)
+- Customer Success Operations: Salesforce integration for pipeline management, health scoring automation, expansion opportunity detection
+
+---
+
+### Churn Prevention: Identifying At-Risk Customers
+
+**Early warning signals:**
+- No follow-up competitions scheduled within 90 days of close
+- Poster hasn't logged into the platform in 30+ days
+- Low "Straw Score" (competition quality was poor — vague rubric, insufficient test data)
+- Competition results were contested (operator filed dispute; enterprise was unsatisfied with resolution)
+- Enterprise went through organizational change (champion left the company; new management wants to audit vendor relationships)
+
+**Intervention protocols:**
+- 90-day no-activity: automated re-engagement email + CSM outreach if >$5K ACV
+- Low Straw Score: CSM offers Task Design Sprint (free for first offense, $2K for repeat)
+- Contested results: escalate to human Tier-3 review (if not already done); offer money-back guarantee on platform fee if evaluation was materially incorrect
+- Champion departure: identify the new champion proactively (LinkedIn monitoring of the enterprise's AI team roster changes); schedule transition call within 30 days
+
+---
+
+### Summary
+
+Customer success drives NRR, which drives valuation. The key interventions:
+1. **30-day post-competition debrief:** Capture ROI, identify expansion, seed Fleet conversation
+2. **Quarterly Business Reviews:** Deliver market intelligence, identify upcoming procurement decisions, preview roadmap
+3. **Regulatory deadline urgency:** EU AI Act August 2026 creates mandatory expansion demand
+4. **Fleet conversion:** Target 40% of one-time competition customers converting to Fleet within 24 months
+5. **At-risk monitoring:** 90-day no-activity alerts + champion departure detection
+
+The math: a $750 first-competition customer becomes a $33K Y3 customer if the CSM executes the expansion motion correctly. Every customer who doesn't expand to Fleet by Y3 is a missed 44× revenue opportunity.
+
+---
+
+*Tick 275 complete.*
+
