@@ -35661,3 +35661,367 @@ Ticks 207–228 complete. Session 24 adds 22 ticks:
 **Lines added this session:** ~2,355 lines
 **Total file size:** ~35,600 lines (est.)
 
+
+---
+
+## Session 25 — 2026-05-02 (continuing)
+
+**Session 25 picks up immediately after Session 24 push. Background agent ab08b27ab17fa4b9f researching OpenAI Frontier.**
+
+---
+
+## Tick 229 — Technical architecture v1: stack, data model, and deployment
+
+**Context:** After 228 ticks of product and strategy research, it's time to design the actual technical system that would need to be built. This tick covers the v1 technical architecture — what to build, what to use off-the-shelf, and what the data schema looks like.
+
+**The v1 technology stack**
+
+Straw v1 is a Rails-style monolith first, microservices later. The correct architecture for a pre-product-market-fit platform is one that a 2-person team can ship in 8 weeks, not one that a 20-person team would be proud to maintain.
+
+```
+Frontend:
+  Next.js 15 (App Router) — single SSR/SSG frontend for enterprises and operators
+  Tailwind CSS + shadcn/ui — fast UI development, no design system bottleneck
+  TypeScript strict — mandatory per CLAUDE.md code standards
+
+API layer:
+  Next.js API routes (edge-compatible) for public-facing APIs
+  tRPC for internal type-safe client-server calls
+  Zod at every API boundary (CLAUDE.md requirement)
+  
+Authentication:
+  Clerk or Supabase Auth — enterprise SSO (SAML) required by v2, not v1
+  Two actor types: Enterprise customer / Operator. Separate auth flows.
+  
+Database:
+  Supabase (PostgreSQL + Row Level Security) — operator and enterprise data isolation
+  RLS ensures an operator cannot read another operator's submission artifacts
+  Redis (Upstash) — rate limiting, submission queuing, tier-1 result caching
+  S3-compatible (Cloudflare R2 or AWS S3) — submission artifact storage, task asset storage
+  
+Judge infrastructure (D30 ZeroClaw):
+  Worker processes: plain Node.js processes (never import Next.js internals)
+  Container runtime: gVisor (runsc) for Tier-1 deterministic evaluation
+  Judge LLMs: Anthropic API (Claude) + OpenAI API (GPT-4o) + Google AI (Gemini 2.5) ensemble
+  Queue: BullMQ (Redis-backed) for evaluation job queue
+  
+Payment:
+  Stripe for fiat prize distribution (bank transfer to operators)
+  x402-compatible escrow for USDC prize pool option (v2)
+  
+Deployment:
+  Vercel for Next.js frontend + API routes
+  Railway for judge worker processes (separate from Next.js, per CLAUDE.md architecture requirement)
+  Cloudflare for CDN + DDoS protection
+```
+
+**The data model (core entities)**
+
+```sql
+-- Core actors
+CREATE TABLE enterprises (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  billing_plan TEXT NOT NULL DEFAULT 'starter',
+  stripe_customer_id TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE operators (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,  -- company name
+  display_name TEXT NOT NULL,  -- public profile name
+  founding_operator BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Competition lifecycle
+CREATE TABLE competitions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  enterprise_id UUID REFERENCES enterprises(id),
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  task_category TEXT NOT NULL CHECK (task_category IN ('code_migration','document_extraction','sql_generation','contract_review')),
+  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','open','scoring','closed','complete')),
+  rubric JSONB NOT NULL,
+  rubric_hash TEXT NOT NULL,  -- SHA-256 of locked rubric JSON
+  rubric_locked_at TIMESTAMPTZ,
+  prize_pool_usd INTEGER NOT NULL,
+  prize_distribution JSONB NOT NULL,
+  min_score_threshold NUMERIC(3,1),
+  max_submissions_per_operator INTEGER NOT NULL DEFAULT 10,
+  opens_at TIMESTAMPTZ,
+  closes_at TIMESTAMPTZ,
+  pathway TEXT NOT NULL DEFAULT 'leaderboard' CHECK (pathway IN ('leaderboard','poster_picks','hire','license','acquire')),
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Submissions
+CREATE TABLE submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  competition_id UUID REFERENCES competitions(id),
+  operator_id UUID REFERENCES operators(id),
+  artifact_url TEXT NOT NULL,  -- S3 path to submission artifact
+  artifact_hash TEXT NOT NULL,  -- SHA-256 of submitted artifact
+  submission_number INTEGER NOT NULL,  -- 1-indexed, max = competition.max_submissions
+  tier1_score NUMERIC(4,3),  -- 0.000–1.000, available immediately
+  tier1_breakdown JSONB,  -- per-criterion tier1 results
+  tier2_score NUMERIC(3,1),  -- 0.0–10.0, sealed until competition close
+  tier2_reasoning JSONB,  -- judge reasoning chains, sealed until close
+  overall_score NUMERIC(3,1),  -- computed at close
+  rank INTEGER,  -- computed at close
+  is_winner BOOLEAN DEFAULT false,
+  submitted_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(competition_id, operator_id, submission_number)
+);
+
+-- Reputation
+CREATE TABLE operator_scores (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  operator_id UUID REFERENCES operators(id),
+  task_category TEXT NOT NULL,
+  reputation_score NUMERIC(4,3),  -- 0.000–1.000 (Beta posterior mean)
+  ci_lower NUMERIC(4,3),
+  ci_upper NUMERIC(4,3),
+  competition_count INTEGER DEFAULT 0,
+  last_computed_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(operator_id, task_category)
+);
+
+-- Disputes
+CREATE TABLE disputes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  submission_id UUID REFERENCES submissions(id),
+  operator_id UUID REFERENCES operators(id),
+  tier INTEGER NOT NULL CHECK (tier IN (1, 2, 3)),
+  description TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open','under_review','resolved','rejected')),
+  resolution TEXT,
+  fee_charged INTEGER DEFAULT 0,
+  fee_refunded BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+```
+
+**RLS policies (critical for multi-tenant security)**
+
+```sql
+-- Operators can only see their own submissions during active competition
+CREATE POLICY submission_read ON submissions
+  FOR SELECT USING (
+    operator_id = auth.uid()  -- own submissions
+    OR (
+      SELECT status FROM competitions WHERE id = competition_id
+    ) IN ('closed', 'complete')  -- or competition is closed (full leaderboard visible)
+  );
+
+-- Enterprises can only see submissions for their own competitions
+CREATE POLICY enterprise_submission_read ON submissions
+  FOR SELECT USING (
+    (SELECT enterprise_id FROM competitions WHERE id = competition_id) = auth.uid()
+  );
+
+-- Tier-2 scores are sealed during active competition
+CREATE POLICY tier2_score_seal ON submissions
+  FOR SELECT
+  USING (
+    tier2_score IS NULL  -- not yet scored
+    OR (SELECT status FROM competitions WHERE id = competition_id) IN ('closed', 'complete')
+  );
+```
+
+**The ZeroClaw worker process**
+
+```typescript
+// workers/zeroclaw.ts — standalone Node.js process, no Next.js imports
+import { Queue, Worker } from 'bullmq';
+import { runTier1Evaluation } from '@/judge/tier1';
+import { runTier2Evaluation } from '@/judge/tier2';
+import { updateSubmissionScore } from '@/db/submissions';
+
+const evaluationQueue = new Queue('evaluation', { connection: redisConfig });
+
+const worker = new Worker('evaluation', async (job) => {
+  const { submissionId, competitionId } = job.data;
+  
+  // Tier-1: run in gVisor container, return immediately
+  const tier1Result = await runTier1Evaluation(submissionId);
+  await updateSubmissionScore(submissionId, { tier1Score: tier1Result.score, tier1Breakdown: tier1Result.breakdown });
+  
+  // Tier-2: queue for batch LLM judging, sealed until close
+  if (tier1Result.score >= competition.tier1Threshold) {
+    await tier2Queue.add('judge', { submissionId, competitionId });
+  }
+});
+```
+
+**The Tier-1 gVisor evaluation**
+
+```typescript
+// judge/tier1.ts
+import { spawn } from 'child_process';
+import { downloadArtifact } from '@/storage';
+
+export async function runTier1Evaluation(submissionId: string): Promise<Tier1Result> {
+  const artifact = await downloadArtifact(submissionId);
+  const testSuite = await getTestSuite(submissionId);
+  
+  // Launch gVisor (runsc) container — ephemeral, no network, read-only test mount
+  const result = await spawnGVisorContainer({
+    artifact,
+    testSuiteMount: testSuite,
+    timeoutMs: 120_000,  // 2-minute hard limit
+    memoryCap: '2gb',
+    networkPolicy: 'none'
+  });
+  
+  return { score: result.passCount / testSuite.total, breakdown: result.perCriterionResults };
+}
+```
+
+**Estimated v1 build time (2-person team)**
+
+- Week 1-2: Data model, auth (enterprise/operator separate flows), competition CRUD
+- Week 3-4: Rubric creator UX (Tick 210 — 6-phase flow), simplified for v0 (no AdaRubric yet)
+- Week 5-6: Operator submission API, SDK (Tick 228), Tier-1 gVisor evaluation worker
+- Week 7: Leaderboard, analytics dashboard (Tick 227 — simplified for v0)
+- Week 8: Prize distribution, payment rails, end-to-end test
+- Week 9+: First synthetic competition, operator onboarding, first enterprise customer
+
+The judge (Tier-2 LLM) can be manual in v0 — a human reads submissions and scores them against the rubric. Automate Tier-1 first (the integrity layer). Tier-2 automation is v1.5.
+
+Sources: CLAUDE.md (architecture principles: UI→API→services→repository→database; workers separate Node.js processes; RLS at data layer; Zod at every boundary), D30 (ZeroClaw judge daemon design), Tick 216 (gVisor isolation, ephemeral containers, read-only test namespace), Tick 228 (operator SDK API design), Tick 219 (v1 task taxonomy), supabase.com/docs/guides/database/row-level-security (RLS documentation), gvisor.dev/docs (gVisor sandbox), bullmq.io (BullMQ queue), railway.app (worker deployment separate from Next.js).
+
+
+---
+
+## Tick 230 — Series A investor narrative: the full pitch synthesized from Sessions 1-25
+
+**Context:** After 229 ticks of research, the investor pitch is fully grounded. This tick synthesizes the key research into a coherent Series A narrative — problem, solution, traction, market, moat, ask.
+
+---
+
+### The 60-second pitch
+
+"Companies are spending hundreds of billions of dollars on AI this year. Most of it is wasted because enterprise AI procurement runs on vendor demos. Companies pick AI vendors based on presentations, not performance. 95% of enterprise AI pilots fail as a result.
+
+Straw fixes this. We let enterprises post a real task with a prize, AI agents compete to solve it, and the score doesn't lie. You don't need to trust a vendor's demo anymore. You run the competition, you see who actually wins, and you hire the winner.
+
+We've created a new market category: enterprise AI procurement infrastructure. No one else is building this."
+
+---
+
+### Section 1: The Problem (from Tick 214)
+
+**Market pain:** The $250B+ enterprise AI market runs on demos and analyst reports. This is structurally broken.
+
+- **95% of enterprise GenAI pilots are failing** (MIT 2025 State of AI in Business Report). Up from 17% failure rate in 2024. The cause: companies select AI vendors based on demonstrations, not verified performance on their actual work.
+- **46% of AI POCs are scrapped before production** (2025 industry surveys)
+- **The evaluation gap:** Every AI eval tool (Braintrust, PromptFoo, LangSmith, Scale AI Evals) evaluates *the buyer's own model*. None evaluates *competing third-party agents* on the buyer's task. This whitespace is the Straw opportunity.
+- **Regulatory forcing function:** EU AI Act (August 2026 full applicability) requires documented vendor selection evidence for high-risk AI deployments. OMB M-26-04 (December 2025) requires federal agencies to collect evaluation artifacts when purchasing AI. The procurement evidence gap is becoming a compliance liability.
+
+---
+
+### Section 2: The Solution (from Ticks 210, 219, 228)
+
+Straw is a 3-step process:
+
+1. **Enterprise posts a task with a rubric and prize pool.** The rubric generator (6-phase UX, AdaRubric-powered) produces a validated rubric with IRR κ ≥ 0.7 in under 20 minutes. Prize pool: $500–$200K.
+
+2. **AI agents compete.** Agents submit via the Straw SDK (Python/TypeScript). Tier-1 deterministic tests run in gVisor containers (immune to text manipulation attacks). Tier-2 LLM judge ensemble (3-provider: Anthropic + OpenAI + Google) scores qualitative criteria. Scores are sealed until competition close.
+
+3. **Enterprise sees the score, hires the winner.** A scorecard shows: who won, by how much, what the failure modes were, whether the task is solvable at all. Enterprise can then hire, license, or acquire the winning operator — with documented evidence for their audit trail.
+
+**What makes this defensible:**
+- Enterprise-specific private rubrics prevent benchmark contamination (Tick 221)
+- Tier-1 deterministic evaluation is immune to prompt-injection attacks (Tick 202)
+- The competition history data flywheel produces operator discovery that improves with every competition (Ticks 212, 217)
+
+---
+
+### Section 3: Why Now (from Ticks 201, 214, 218)
+
+Three simultaneous tailwinds:
+
+1. **The agent ecosystem is large enough.** 116 agents on Pinchwork (nascent marketplace), 14 participants in a typical Straw beta document extraction competition, 1,200+ teams in AgentX-AgentBeats (Berkeley RDI, 2025). The supply side exists.
+
+2. **Enterprise urgency is at its highest.** Gartner: "AI is transforming IT sourcing and vendor management." 92% of CPOs are assessing GenAI capabilities. The $4.1T AI capex wave is underway — procurement decisions are being made RIGHT NOW with broken tooling.
+
+3. **Regulatory compliance is the forcing function.** EU AI Act August 2026 deadline. OMB M-26-04 already active for federal agencies. The compliance pitch is concrete: "When the auditor asks how you chose this AI vendor, you show them the Straw scorecard." This is not a future risk — it's a present procurement requirement for regulated industries.
+
+---
+
+### Section 4: Market (from Tick 213, 214)
+
+- **TAM:** Enterprise AI procurement spend is a slice of the $250B AI software market. Even at 1% of total enterprise AI spend flowing through a competitive evaluation layer: $2.5B TAM. Conservatively: ~$500M SAM (AI agents for complex knowledge work at Fortune 2000 scale).
+- **Competition:** No direct competitor in the "evaluate competing third-party agents" quadrant. Adjacent markets: Kaggle/Topcoder (human competitors, not enterprise procurement), Braintrust/LangSmith (evaluate your own model, not third-party agents), agent catalogs (Pinchwork, OpenAI Frontier — browse and use, no evaluation).
+- **Gartner Magic Quadrant analog:** Straw could become the independent performance validation layer that replaces or supplements analyst reports for AI agent procurement.
+
+---
+
+### Section 5: Business Model (from Tick 213)
+
+**Revenue structure:**
+- Platform fee: 15–17% of prize pool (benchmark: HeroX 18%/14%, Topcoder 20% capped)
+- Enterprise subscription: $25K–$60K/year (VP direct buy, OpEx classification)
+- Data licensing: academic free / $50-200K AI labs / $10-50K enterprise replay (year 2+)
+
+**Unit economics:**
+- Average competition: $25K prize pool × 17% = $4,250 platform fee
+- Judge compute: ~$200 | Infrastructure: ~$300 | Gross margin: ~88%
+- Year 1 target: 500 competitions/year → $2.1M GMV | 10 enterprise customers @ $60K = $600K subscriptions | Total ARR: ~$2.7M
+
+**Payback period:** A VP of Engineering who pays $60K/year for Straw's subscription and runs 5 competitions/year spends $12K/competition. If Straw's evaluation prevents one failed $500K AI engagement (25% cost reduction on a mid-size project), the ROI is 42:1.
+
+---
+
+### Section 6: Traction (Tick 215 90-day milestone)
+
+Pre-seed milestones:
+- 15+ operators onboarded and profiled (target)
+- 5 synthetic competitions run with documented results
+- 1 paying enterprise customer within 60 days of launch
+
+Series A milestones (12 months post-launch):
+- 50+ enterprise customers
+- 500+ competitions completed
+- $2.5M ARR
+- First data licensing agreement with an AI lab
+- Repeat competition rate > 60% (enterprises who run their second competition within 6 months)
+
+**The leading indicator metric:** Enterprise repeat competition rate. An enterprise that runs a second competition is an enterprise that found the format works. Target: 60% repeat within 6 months.
+
+---
+
+### Section 7: Moat (from Tick 217, 222, 221)
+
+The moat is not the competition format — that's replicable. The moat is the **cross-task performance history indexed by task type.**
+
+After 500 competitions across 20 task categories:
+- Straw knows which operators top-perform on document extraction
+- Straw knows the typical score distribution for code migration tasks
+- Straw's "recommend 5 operators for this task" gets meaningfully better with every competition
+
+This is the Andrew Chen data network effect: the data makes a specific product action (operator recommendation) better, and users can feel it. The data is impossible to replicate without running the same competitions. The moat compounds.
+
+The regulatory moat amplifies this: enterprises that build procurement evidence trails on Straw have a switching cost — their documented selection history lives in Straw, not in their internal systems.
+
+---
+
+### Section 8: Ask and use of funds
+
+Series A: $8M–12M
+
+Use of funds (24 months):
+- Engineering (4-6 hires): 40% — finish v1 product, build v1.5 automated Tier-2, SDK ecosystem
+- Sales and customer success (3 hires): 30% — close first 50 enterprise customers, manage onboarding
+- Operator ecosystem growth (inference credit budget, founding operator program): 10%
+- Legal and compliance (GDPR, SOC 2 Type II, contract infrastructure): 10%
+- Operations and G&A: 10%
+
+**The raise is for the go-to-market inflection, not product viability.** Product is 80% described in 229 ticks of research. The money is to hire the first 6 enterprise sales reps who can sell to Fortune 500 procurement teams, and to build the operator community to 200+ agents before the first big enterprise competition.
+
+---
+
+Sources: This narrative synthesizes Sessions 1-25. Key supporting ticks: Tick 214 (95% failure rate, eval tools gap), Tick 213 (pricing and unit economics), Tick 215 (GTM bootstrap), Tick 217 (competitive positioning), Tick 218 (operator supply), Tick 219 (v1 task taxonomy), Tick 221 (moat: eval gaming defense), Tick 222 (reputation scoring), Tick 229 (technical architecture).
+
