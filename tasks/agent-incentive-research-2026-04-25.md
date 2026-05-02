@@ -40462,3 +40462,180 @@ The pricing infrastructure is also a retention mechanism: once an enterprise has
 
 *Tick 257 complete. Next: Ticks 254 and 255 (awaiting background research agents for cross-category correlation and live competition format).*
 
+
+---
+
+## Tick 258 — Agent Fleet Management: Straw as Ongoing Evaluation Infrastructure
+
+**Date:** 2026-05-02
+**Thread:** From one-time competition to continuous evaluation — the agent fleet management use case
+**Research method:** Product strategy analysis; enterprise IT operations frameworks (ITIL, FinOps); analogies to cloud resource management, SaaS vendor management platforms
+
+---
+
+### The Fleet Problem
+
+A Fortune 500 enterprise in 2027 doesn't run one AI agent. It runs fifty.
+
+Consider a large financial services firm:
+- 3 code review agents (different vendors, different models)
+- 2 contract analysis agents (one specialized for employment law, one for M&A)
+- 5 customer email classification agents (different business units)
+- 4 financial reporting agents (different datasets, different regulatory regimes)
+- 8 document extraction agents (different document types: invoices, statements, filings)
+- 7 SQL generation agents (different database schemas)
+- ... and growing at 3–5 new agents per quarter as teams discover agentic workflows
+
+This is not hypothetical. By late 2026, enterprise AI deployment is past the POC phase. Major enterprises are running production AI systems across dozens of independent business processes. The question shifts from "should we adopt AI?" to "how do we *manage* 50+ AI agents across 12 business units?"
+
+The fleet management problem has several components:
+1. **Comparative evaluation:** Is Agent A still better than Agent B for this task, given both have updated their models?
+2. **Performance drift detection:** The agent I deployed 6 months ago is scoring 8.2 — is it still scoring 8.2 today? Underlying models change.
+3. **Cost optimization:** Agent A costs $0.12/task and scores 8.5. Agent B costs $0.04/task and scores 7.9. What's the right allocation?
+4. **Incident response:** An agent produced a bad output in production. How quickly can I run a competitive re-evaluation to find a replacement?
+5. **Budget governance:** How much is the enterprise spending on AI agent fees across all deployments? Where is the value going?
+
+Straw's current product (one-time competition) addresses the initial procurement decision. Fleet management addresses the ongoing operations problem.
+
+---
+
+### The Baseline: What Enterprises Are Doing Today (and Why It Fails)
+
+Without a platform like Straw, enterprise AI fleet management looks like:
+
+**Ad-hoc manual review:** A developer or analyst periodically checks output quality on a sample of recent transactions. Time-intensive, inconsistent, subjective, doesn't scale. A 50-agent fleet would require a full-time person just for quality monitoring.
+
+**Vendor-provided dashboards:** Each AI vendor provides its own performance metrics. Problem: the metrics are self-reported and designed to show the vendor's product favorably. No cross-vendor comparison. No independent verification. Goodhart's Law: when an agent operator optimizes for the vendor's internal metrics, those metrics stop measuring what you care about.
+
+**One-off A/B tests:** The enterprise runs periodic A/B tests with a subset of traffic. Requires engineering work to set up the test harness, takes weeks to accumulate enough data for statistical significance, still no standardized rubric.
+
+**Annual contract reviews:** Enterprises re-evaluate AI vendors at contract renewal (typically annually). This means paying for a poorly-performing agent for 6–11 months before the next evaluation opportunity.
+
+None of these approaches provide the real-time, standardized, third-party independent evaluation that fleet management requires.
+
+---
+
+### Straw Fleet: The Product Concept
+
+**Straw Fleet** is a subscription product that extends the one-time competition model to continuous evaluation:
+
+**Core offering:**
+- Register your deployed agents with Straw
+- Define the evaluation task and rubric once (reuses competition infrastructure)
+- Straw runs scheduled micro-evaluations (daily, weekly, or monthly) against a rotating held-out test set
+- Results delivered to a Fleet Dashboard: time-series performance graph, cost efficiency metric, anomaly alerts
+- Quarterly benchmark: Straw automatically runs a mini-competition against current market (invite 5–10 alternative agents to compete against your deployed agent) — you see if better options exist
+
+**The rotating held-out test set problem:** To prevent agents from overfitting to the evaluation set, Straw must continuously generate new test cases. For code migration: programmatic generation of new migration problems from a grammar. For document extraction: synthetic document generation with varied formats. For SQL: new schema + query combinations. The held-out set rotates every evaluation cycle; old test cases are retired.
+
+This is essentially a "living benchmark" for enterprise-specific tasks — the same concept as Chatbot Arena's continuous evaluation, but applied to an enterprise's specific workload rather than general capabilities.
+
+**Pricing:**
+- Straw Fleet Basic: $500/month — up to 5 agents, weekly evaluations, standard test set rotation
+- Straw Fleet Professional: $2,000/month — up to 20 agents, daily evaluations, custom test set injection, quarterly mini-competition benchmark
+- Straw Fleet Enterprise: $8,000/month — unlimited agents, custom evaluation schedules, dedicated evaluation infrastructure, SLA on evaluation turnaround, incident response (emergency re-evaluation within 24 hours)
+
+Straw Fleet converts one-time competition customers into recurring subscription revenue. This is the key business model transition from Y2 to Y3 in the P&L model (Tick 245).
+
+---
+
+### Performance Drift: The Silent ROI Killer
+
+Performance drift is underappreciated. AI agents are not static:
+- The underlying foundation model gets updated (vendor pushes a new version)
+- The foundation model's RLHF training shifts (Anthropic tweaks Claude 4's behavior for safety)
+- The agent operator updates their prompting framework
+- The evaluation task's distribution shifts (new document formats, new code patterns in the enterprise's codebase)
+
+All of these can cause performance drift — up or down — without the enterprise noticing until a bad output causes a business incident.
+
+**Concrete example:** An enterprise deployed a contract review agent in Q1 2026 that scored 9.1 on their evaluation. In Q3 2026, Anthropic updated Claude 4.6 with modified RLHF training that made it more conservative in legal interpretation. The contract review agent now scores 8.2 on the same rubric. The enterprise has been making decisions based on a degraded agent for weeks. No one noticed because no one ran the evaluation again.
+
+Straw Fleet's weekly evaluation would have caught this drift in the first week after the model update. The alert: "Your Contract Review Agent (op_xxx, claude-4-6) has dropped from 9.1 to 8.2 — a 12% performance decrease detected. This may be due to foundation model updates on 2026-09-15. Consider re-running the full competition or evaluating the previous model version."
+
+**Business value of drift detection:** A 12% performance drop in contract review could translate to missed clause violations, incorrect risk assessments, or non-compliant contract approvals. For a Fortune 500 with $500M in contracts under management, even a 0.1% error rate improvement is worth $500K in avoided risk. Straw Fleet Basic at $500/month has a 30-day payback period on drift detection alone.
+
+---
+
+### Cost Efficiency Frontier: The FinOps Play
+
+Modern enterprises have FinOps (Financial Operations) teams that optimize cloud spending. As AI agent spend becomes material ($1M+/year for large enterprises), FinOps teams will demand the same visibility and optimization they have for cloud resources.
+
+Straw Fleet's **Cost Efficiency Frontier** feature:
+
+For each registered agent, Straw tracks:
+- Cost per task (from operator's pricing, input token count × model rate)
+- Quality score (from Straw's evaluation)
+- Latency (95th percentile response time)
+
+The Fleet Dashboard renders a scatter plot: x-axis = cost/task, y-axis = quality score. Each agent in the fleet appears as a point. The Pareto frontier is highlighted: "these are your most efficient agents — no other agent achieves this quality at this price or this price at this quality."
+
+When a new agent joins the fleet (via a competition), Straw immediately places it on the frontier graph. The FinOps team can see: "The new agent achieves 8.9 quality at $0.08/task, vs. our current agent's 8.7 quality at $0.15/task. Switching saves $0.07/task. At 10,000 tasks/month, that's $700/month saved while improving quality."
+
+This is the CFO's language. It makes the ROI concrete and measurable.
+
+---
+
+### Incident Response: Emergency Re-Evaluation
+
+When a production AI agent fails visibly — wrong answer surfaces in a customer-facing output, compliance violation, security incident — enterprises need a fast path to finding a replacement.
+
+**Straw Emergency Re-Evaluation:**
+- Enterprise triggers via API or dashboard: `POST /v1/fleet/emergency-eval`
+- Straw immediately opens a mini-competition using the existing rubric
+- Invites top-5 operators from the global leaderboard in the relevant category
+- 24-hour turnaround: operators submit solutions within 4 hours, evaluation runs for 4 hours, results delivered within 8 hours
+- Enterprise can deploy replacement agent within 24 hours of incident
+
+This is available on Fleet Enterprise tier. Additional fee: $2,000 per emergency re-evaluation (covers compute, operator coordination, expedited human review for Tier-3 components).
+
+At $2,000 per incident, this is cheap insurance against extended downtime on a mission-critical AI workflow.
+
+---
+
+### Fleet Management as the Data Flywheel Accelerant
+
+Every fleet evaluation generates calibration data for Straw's data moat (Tick 242). When 100 enterprises are running weekly Straw Fleet evaluations, Straw accumulates:
+- Agent performance time series across model updates (performance drift mapping)
+- Cost efficiency data by category and model
+- Cross-category correlation data (how does an agent's code migration score change when its financial modeling score changes? — feeding Tick 254 research)
+- Failure mode distribution (what types of inputs cause agents to fail, by category)
+
+This data, properly aggregated and anonymized, becomes Straw's proprietary intelligence layer. It allows Straw to publish quarterly "State of AI Agents" reports (media/analyst coverage), to provide operators with "fleet-wide benchmarking" data (how does your agent rank against all fleet-registered agents in this category?), and to build predictive models for competition outcomes.
+
+The Fleet product is not just revenue — it's the mechanism by which Straw's data moat compounds from evaluation events to continuous monitoring data. The data moat value grows with every fleet customer added.
+
+---
+
+### Implementation Path
+
+Fleet is a **Horizon 2 product** (2027+), but certain infrastructure decisions must be made in v0/v1 to enable it:
+
+1. **Versioned evaluation runs:** Every ZeroClaw evaluation must be versioned — timestamped, hash-linked to the rubric version, and stored with full input/output artifacts. Without this, you can't build a time series of performance data.
+
+2. **Rubric registry:** The rubric for a competition must be stored in a registry format that allows re-use for fleet evaluations. One competition's rubric should be re-runnable without requiring the enterprise to recreate it.
+
+3. **Agent registration without competition:** Fleet requires a way to register an agent (by operator ID + configuration) without first running a full competition. The first competition is the "hiring event"; subsequent fleet evaluations are the "performance reviews."
+
+4. **Evaluation scheduling infrastructure:** Cron-based evaluation scheduling (using the ZeroClaw daemon) rather than event-triggered evaluation. Different infrastructure pattern from the current competition-triggered model.
+
+These are not large changes — they're additive to the current architecture. But they need to be planned for in the data model (evaluation tables need `schedule_id` and `version` fields) before fleet is built.
+
+---
+
+### Summary
+
+Agent fleet management is the natural evolution of Straw's one-time competition product:
+- The enterprise discovery story: "Run a competition to find the best agent"
+- The enterprise operations story: "Use Straw Fleet to continuously verify, optimize, and replace your agents"
+
+Fleet converts competition customers into subscription customers. It addresses performance drift (the silent ROI killer), cost efficiency (the FinOps play), and incident response (the insurance play). It also accelerates Straw's data moat by converting evaluation events into continuous monitoring data.
+
+The infrastructure investment is modest — versioned evaluations, rubric registry, scheduling. The revenue impact is significant: a $2,000/month Fleet Professional subscription on 50 enterprise customers = $100K/month recurring, separate from competition fees.
+
+The narrative arc: Straw is not a competition marketplace. Straw is the evaluation operating system for enterprise AI.
+
+---
+
+*Tick 258 complete. Continuing to await background research agents for Ticks 254 (cross-category correlation) and 255 (live competition format).*
+
