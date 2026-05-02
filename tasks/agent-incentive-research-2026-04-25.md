@@ -36404,3 +36404,126 @@ Ticks 229–234 complete. Session 25 adds 6 ticks (plus the Session 25 header):
 **Lines added this session (25):** ~838 lines
 **Total file size:** ~36,370 lines (est.)
 
+
+---
+
+## Session 26 — 2026-05-02 (continuing)
+
+**Session 26 picks up immediately after Session 25 push. Background agent abc4ba2e279925573 researching international AI regulation and APAC market.**
+
+---
+
+## Tick 235 — Straw product roadmap: v0 → v1 → v1.5 → v2
+
+**Context:** After 234 ticks of research, the product is well-understood. This tick translates research into a crisp product roadmap with clear gates between stages, target customers at each stage, and specific capability milestones.
+
+---
+
+### Stage 0: v0 — Manual proof of concept (Weeks 1-8)
+
+**What ships:** The smallest possible thing that makes the loop work.
+
+**Core capabilities:**
+- Competition creation (manual rubric entry, no AdaRubric yet)
+- Operator submission via REST API (no SDK yet)
+- Tier-1 evaluation: manual test runner (human executes tests, enters pass/fail count)
+- Leaderboard: static page updated manually after each evaluation
+- Prize distribution: Stripe manual payout to operator bank account
+- Pathways: Leaderboard-only (no hire/license/acquire yet)
+
+**What's manual in v0:**
+- Tier-1 test execution (human runs tests, records results)
+- Tier-2 scoring (human reads submissions against rubric, assigns scores)
+- Operator invite list curation (concierge model from Tick 215)
+- Analytics report (human writes post-competition summary)
+
+**Target customer:** 1 enterprise. The "lighthouse customer" — a VP Engineering who knows Jeremy personally, has a specific bounded task, and tolerates rough edges. Their competition is the proof that the format works.
+
+**Gate to v1:** 3 paid competitions completed, at least 2 different enterprises, at least 10 distinct operators participated, at least 1 enterprise says "when can I run another one?"
+
+---
+
+### Stage 1: v1 — Automated evaluation core (Weeks 9-20)
+
+**What ships:** Tier-1 automation + ZeroClaw worker + SDK + analytics.
+
+**Core capabilities added:**
+- Tier-1 automation via gVisor containers (ZeroClaw worker, Tick 229)
+- Operator SDK: Python + TypeScript (Tick 228) — automated submission pipeline
+- Rubric generator UX: simplified (spec → AI draft → enterprise review), no calibration loop yet
+- Competition analytics dashboard (Tick 227): automated score charts + basic competitive intelligence
+- Leaderboard: real-time, self-updating
+- Maximum N submissions enforced server-side
+- Tier-2 automation: 3-provider LLM ensemble (Claude + GPT-4o + Gemini), delayed reveal
+- Operator directory: task-category-indexed, reputation scores (Tick 222)
+
+**What's still manual in v1:**
+- Operator invite curation (concierge)
+- Analytics narrative (human writes the "competitive intelligence" section)
+- Dispute resolution Tier-2 and Tier-3 (human reviewer)
+
+**Target customers:** 10 enterprises, 50+ operators, 500+ competition entries.
+
+**Gate to v1.5:** 50+ competitions completed, Tier-2 automated scoring showing κ ≥ 0.7 correlation with human scores on 50+ benchmarked examples.
+
+---
+
+### Stage 2: v1.5 — Discovery and automation layer (Months 5-9)
+
+**What ships:** Automated operator recommendation, full rubric calibration UX, and compliance documentation.
+
+**Core capabilities added:**
+- Rubric generator v2: 6-phase UX (Tick 210) with calibration exercise + IRR validation loop (κ ≥ 0.7 gate)
+- Operator recommendation engine: similarity-based (Tick 212 v1.5 design) — task embedding → top similar competitions → top operators
+- Automated competitive intelligence narrative (Tick 232 Workflow 3): Pattern Finder + Insight Synthesizer
+- Compliance documentation export: 6-artifact portfolio (SHA-256 hashes, rubric IRR, judge reasoning PDF)
+- Hire/License pathways (D22 Pathways 2-3, Tick 220)
+- Enterprise subscription billing: $25K/$60K/year tiers
+
+**Target customers:** 50+ enterprises, 200+ operators, running 100+ competitions/month.
+
+**Gate to v2:** $1M+ ARR, 60% repeat competition rate, first data licensing discussion with an AI lab.
+
+---
+
+### Stage 3: v2 — Full marketplace and autonomous capabilities (Months 10-18)
+
+**What ships:** Agent-to-agent task posting, x402 payment, data licensing, Acquire pathway.
+
+**Core capabilities added:**
+- Agent-to-agent task posting: operators can POST competitions (not just enterprises)
+- x402 USDC prize distribution: fully autonomous prize receipt for winning agents
+- Data licensing program: Operator TOS §7-8 activated, 3-tier licensing (Tick 211)
+- Acquire pathway (D22 Pathway 4, Tick 220): exclusive license + M&A intro
+- Team submissions: D20 with Shapley credit attribution (Tick 208)
+- Dynamic evaluation: hidden holdout criteria (Tick 221 defense), competition replay feature
+- International: EU-region data localization (GDPR Tick 224)
+- SOC 2 Type II certification
+
+**Target customers:** 200+ enterprises, 1,000+ operators, international expansion (UK/EU/Singapore).
+
+**Revenue at v2 maturity:** $10M+ ARR (Series B ready).
+
+---
+
+### Summary table
+
+| Feature | v0 | v1 | v1.5 | v2 |
+|---------|----|----|------|----|
+| Tier-1 automated | Manual | ✓ gVisor | ✓ | ✓ |
+| Operator SDK | Manual API | ✓ | ✓ | ✓ |
+| Rubric generator | Manual | Simplified | Full (IRR loop) | Full + calibration |
+| Analytics | Manual | Charts | Automated narrative | Advanced |
+| Operator discovery | Concierge | Directory | Similarity recs | Algorithmic |
+| Hire/License pathways | None | None | ✓ | ✓ |
+| Acquire pathway | None | None | None | ✓ |
+| Team submissions (D20) | None | None | None | ✓ |
+| x402 USDC prizes | None | None | None | ✓ |
+| Agent-to-agent posting | None | None | None | ✓ |
+| Data licensing | TOS only | TOS only | TOS only | Active |
+| Compliance documentation | None | Basic | Full portfolio | ✓ |
+
+**The product truth:** v0 through v1.5 are primarily removing the manual work. v2 is adding the new capabilities that make Straw strategically distinct (autonomous economic loop, data licensing, M&A pipeline). The Series A (Tick 230) is primarily about funding the v1 → v1.5 → v2 transition.
+
+Sources: Tick 210 (rubric generator UX phases), Tick 213 (subscription pricing tiers), Tick 215 (bootstrap GTM, 90-day milestone, concierge model), Tick 216 (ZeroClaw gVisor isolation), Tick 220 (D22 pathway mechanics), Tick 221 (hidden holdout criteria), Tick 222 (reputation scoring), Tick 224 (GDPR, SOC 2 Type II), Tick 227 (analytics dashboard), Tick 228 (operator SDK), Tick 229 (technical architecture), Tick 230 (Series A milestones), Tick 233 (x402 autonomous loop), D22 (three winner pathways), D30 (ZeroClaw daemon).
+
