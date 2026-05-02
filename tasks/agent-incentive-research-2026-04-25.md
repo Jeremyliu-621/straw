@@ -35211,3 +35211,379 @@ For self-hosting: RunPod H100 + Llama 4 70B FP8 at ~890 tok/s costs $2.99/hr. A 
 
 Sources: anthropic.com/api (Claude pricing, prompt caching), openai.com/api/pricing (GPT-4o pricing), deepmind.google/gemini/api (Gemini 2.5 Pro pricing), together.ai/pricing (Llama 4 Maverick serverless), runpod.io/pricing (H100 compute), spheron.network/blog/gpu-cloud-pricing-comparison-2026, digitalapplied.com/blog/ai-inference-providers-pricing-matrix-q2-2026, companyofagents.ai/blog/en/ai-agent-unit-economics-scaling-2026.
 
+
+---
+
+## Tick 227 — Competition analytics dashboard: what enterprises see after a competition
+
+**Context:** The competition scorecard is Straw's primary product output for enterprise customers — not just "who won" but "what did we learn about the problem?" The analytics must be good enough that enterprises forward the report to their leadership and use it in vendor discussions. This tick designs the post-competition analytics view.
+
+**Section 1: Competition summary (executive-readable, 1 page)**
+
+```
+COMPETITION COMPLETE — Document Extraction Challenge
+Ran: April 28 – May 5, 2026 | Duration: 7 days
+Operators: 14 entered | 11 submitted | Prize pool: $5,000
+
+TOP RESULT
+  DocumentExtractor-v3   9.2/10 overall   $2,500 won
+  ↳ Correctness: 9.5/10 (Tier-1: 47/50 test cases passing)
+  ↳ Format compliance: 8.9/10
+  ↳ Edge case handling: 9.1/10
+
+SCORE DISTRIBUTION
+  9.0–10.0: 3 operators  ████████
+  7.0–8.9:  5 operators  ████████████
+  5.0–6.9:  2 operators  █████
+  <5.0:     1 operator   ██
+  
+BENCHMARK CONTEXT
+  Your task category median: 7.2/10
+  This competition's top score vs. category average: +2.0 points (strong)
+  
+QUALITY THRESHOLD ANALYSIS
+  You set minimum score: 7.0/10
+  Operators clearing threshold: 8 of 14 (57%)
+  Prize fully distributed: YES
+```
+
+**Section 2: Rubric-level breakdown (for the technical buyer)**
+
+For each rubric criterion, show:
+- Score distribution across all operators (not just winner)
+- Inter-operator agreement (did everyone struggle with the same criterion?)
+- Whether Tier-1 automation vs. Tier-2 LLM judge drove this criterion
+
+```
+CRITERION DEEP-DIVE
+
+Correctness (40% weight)
+  Tier-1 (automated): 94% of score
+  Mean score: 8.3/10 | Std dev: 1.2 | Range: 5.0–9.5
+  ████████░░  8.3 avg — strong cluster; one outlier at 5.0 (likely API misunderstanding)
+
+Format compliance (30% weight)
+  Tier-2 (LLM judge): 100% of score
+  Mean score: 7.1/10 | Std dev: 2.1 | Range: 4.2–8.9
+  ████████░░  7.1 avg — HIGH VARIANCE: operators interpreted "JSON output" differently
+  ⚠ INSIGHT: Consider adding a JSON schema example to your task brief next time.
+  
+Edge case handling (30% weight)
+  Tier-2 (LLM judge): 100% of score
+  Mean score: 6.8/10 | Std dev: 1.8 | Range: 3.5–9.1
+  ███████░░░  6.8 avg — SPLIT: top 5 operators handled NULL cells; bottom 9 did not
+  ⚠ INSIGHT: This criterion differentiated top performers strongly. Worth explicit test case.
+```
+
+**Section 3: Competitive intelligence (what the competition revealed)**
+
+This section answers: "What did you learn about the problem that you didn't know before?"
+
+```
+COMPETITIVE INTELLIGENCE
+
+1. Solvability confirmed
+   8 of 14 operators scored above 7.0/10 on a task your team estimated would be 
+   "hard to automate." This is strong signal: the task is solvable at high quality.
+   
+2. Main failure mode identified
+   The bottom 6 operators all failed on multi-page tables with merged cells.
+   This is a specific edge case you can test for in future competitions.
+   
+3. Score ceiling appears to be ~9.5/10
+   No operator achieved perfect correctness (50/50 test cases). The 3 missing 
+   cases involve embedded image-only tables — may be a fundamental model limitation.
+   Consider whether 47/50 is "good enough" for your use case.
+
+4. Top operator is a repeat contender
+   DocumentExtractor-v3 has ranked top-3 in 5 previous document extraction competitions.
+   This is a consistent high performer, not a one-time result.
+   
+5. Cost-competitiveness of open-weight models
+   Of the top 5 operators, 3 used open-weight models (Qwen3-72B-based). They achieved 
+   competitive scores at likely lower operational costs. If you hire an operator, 
+   ask about their model choice and associated inference costs.
+```
+
+**Section 4: Next steps and recommendations**
+
+```
+RECOMMENDED NEXT STEPS
+
+→ HIRE DocumentExtractor-v3
+  Confidence: high (top-3 on 5 similar competitions, 9.2/10 on your specific task)
+  [Initiate hire discussion]
+
+→ RUN A FOLLOW-UP COMPETITION on the merged-cell edge case
+  If production data frequently has merged-cell tables, a targeted competition could 
+  raise the bar from 9.2 to 9.5+. Suggested prize: $2,500.
+  [Create follow-up competition]
+  
+→ BENCHMARK AGAIN IN 6 MONTHS
+  Agent capability is improving rapidly. A follow-up competition in 6 months on the 
+  same task will show whether the market has improved (or whether your hired operator 
+  needs to be re-evaluated).
+  [Schedule repeat competition]
+```
+
+**Section 5: Downloadable artifacts**
+
+- Full leaderboard with all scores and operator names (CSV)
+- All winning submission artifacts (if pathways 2-4 were selected)
+- Judge reasoning chains for top-3 submissions
+- Rubric content hash + version (for audit trail)
+- Competition configuration export (run this exact competition again in 1 click)
+
+**Why the analytics matter for Straw's retention**
+
+The competition analytics report is the thing that gets forwarded to the CTO. It's the thing that gets presented at the quarterly AI procurement review. A mediocre analytics report → the enterprise sees Straw as "the thing that ran the competition." A great analytics report → the enterprise sees Straw as "the thing that told us what our problem actually looks like and whether it's solvable."
+
+The "Competitive Intelligence" section (Section 3) is the product differentiator. No other competition platform provides task-level competitive intelligence — they provide scores. Straw provides interpretation. This is the basis for the enterprise telling their CFO: "We ran a competition and learned three things about our automation problem that we didn't know before." That's worth $25K/year in subscription fees.
+
+Sources: Tick 210 (rubric generator — IRR κ scores, calibration data), Tick 219 (v1 task categories, Tier-1 test suite structure), Tick 222 (reputation scoring system, score distribution format), Tick 221 (eval gaming — score ceiling analysis, model limitations), kaggle.com/discussions/getting-started/242501 (Kaggle competition report format), topcoder.com/challenges analytics (Topcoder analytics dashboard).
+
+
+---
+
+## Tick 228 — Operator SDK specification: what agents build against
+
+**Context:** Tick 225 established that the standardized submission API is a force multiplier — it converts 2-hour operator overhead to 15 minutes. This tick designs the actual SDK and API that agent operators use to participate in Straw competitions. The design must be language-agnostic (Python primary, TypeScript secondary), minimal in surface area, and work with both automated pipelines and human-in-the-loop review.
+
+**Core design principles**
+
+1. **Zero Straw lock-in in the agent itself.** The agent should be able to run outside of Straw without modification. Straw-specific code lives in a thin wrapper, not in the agent's core logic.
+2. **Idempotent submission.** Submitting the same artifact twice is harmless — it produces the same score.
+3. **Structured task brief parsing.** The task brief is machine-readable JSON, not free-form text. Agents should never need to parse a Prose brief.
+4. **Evaluation feedback loop support.** Operators running multiple iterations should get Tier-1 scores back quickly enough to be useful in a retry loop.
+
+**The task brief schema**
+
+Every Straw competition delivers a machine-readable task brief:
+
+```json
+{
+  "competition_id": "uuid",
+  "title": "string",
+  "task_category": "code_migration | document_extraction | sql_generation | contract_review",
+  "description": "string",
+  "rubric": [
+    {
+      "criterion_id": "uuid",
+      "name": "string",
+      "weight": 0.40,
+      "description": "string",
+      "tier": "tier1_automated | tier2_llm",
+      "tier1_spec": {
+        "test_count": 50,
+        "test_type": "unit_tests | field_match | query_result | clause_presence",
+        "score_formula": "pass_count / test_count"
+      }
+    }
+  ],
+  "submission_format": {
+    "type": "code | json | text | sql",
+    "schema": "object | null",
+    "max_size_mb": 10
+  },
+  "assets": [
+    {
+      "asset_id": "uuid",
+      "name": "string",
+      "type": "codebase | document | schema | reference",
+      "download_url": "string (signed URL, 24hr expiry)"
+    }
+  ],
+  "constraints": {
+    "deadline": "ISO8601",
+    "max_submissions": 10,
+    "min_score_threshold": 7.0
+  },
+  "prize_pool": {
+    "currency": "USD | USDC",
+    "total": 5000,
+    "distribution": [
+      {"rank": 1, "amount": 3000},
+      {"rank": 2, "amount": 1250},
+      {"rank": 3, "amount": 750}
+    ]
+  }
+}
+```
+
+**The Python SDK**
+
+```python
+# pip install straw-sdk
+
+from straw import StrawClient, Submission
+
+client = StrawClient(api_key="sk-straw-...")
+
+# Discover competitions matching your capabilities
+competitions = client.competitions.list(
+    category="code_migration",
+    min_prize=500,
+    open_only=True
+)
+
+# Fetch a specific competition brief
+brief = client.competitions.get("competition_id")
+
+# Download task assets
+brief.download_assets(dest_dir="./task_assets")
+
+# Run your agent (Straw-agnostic — your code, not Straw's)
+result = your_agent.solve(
+    task=brief.description,
+    assets_dir="./task_assets",
+    output_format=brief.submission_format
+)
+
+# Submit
+submission = client.submissions.create(
+    competition_id="competition_id",
+    artifact=result.output,  # str, bytes, or file path
+    metadata={"model": "claude-opus-4-7", "iterations": 3}  # optional, shown on profile
+)
+
+# Get Tier-1 results immediately (Tier-2 at competition close)
+print(submission.tier1_score)       # e.g., 0.88 (44/50 tests passing)
+print(submission.tier1_breakdown)   # per-criterion Tier-1 scores
+print(submission.rank)              # current leaderboard rank (Tier-1 only during competition)
+print(submission.id)                # for future reference
+```
+
+**TypeScript SDK (identical structure)**
+
+```typescript
+import { StrawClient } from '@straw/sdk';
+
+const client = new StrawClient({ apiKey: 'sk-straw-...' });
+
+const brief = await client.competitions.get('competition_id');
+await brief.downloadAssets('./task_assets');
+
+const submission = await client.submissions.create({
+  competitionId: 'competition_id',
+  artifact: result.output,
+  metadata: { model: 'gpt-4o', iterations: 5 }
+});
+
+console.log(submission.tier1Score);    // 0.88
+console.log(submission.rank);         // 3
+```
+
+**The automated pipeline pattern (zero-human-time submission)**
+
+```python
+# Example: fully automated code migration pipeline
+import schedule
+from straw import StrawClient
+
+client = StrawClient(api_key="sk-straw-...")
+
+def check_and_enter():
+    competitions = client.competitions.list(
+        category="code_migration",
+        min_prize=500,
+        open_only=True
+    )
+    for comp in competitions:
+        # Skip if already submitted
+        if client.submissions.exists(competition_id=comp.id):
+            continue
+        
+        # Run the agent
+        brief = client.competitions.get(comp.id)
+        brief.download_assets("./assets")
+        result = my_migration_agent.run(brief)
+        
+        # Submit if above quality threshold
+        if result.self_eval_score > 0.75:
+            client.submissions.create(
+                competition_id=comp.id,
+                artifact=result.output
+            )
+            print(f"Submitted to {comp.title}")
+
+# Check for new competitions every 4 hours
+schedule.every(4).hours.do(check_and_enter)
+```
+
+**The competition.iter_attempts() pattern for iteration**
+
+```python
+# Iterative improvement with Tier-1 feedback loop
+brief = client.competitions.get("competition_id")
+brief.download_assets("./assets")
+
+best_submission = None
+best_tier1_score = 0.0
+
+for attempt in range(brief.constraints.max_submissions):
+    result = my_agent.run(
+        task=brief.description,
+        assets_dir="./assets",
+        previous_score=best_tier1_score,  # your agent uses this to adjust
+        attempt_number=attempt
+    )
+    
+    submission = client.submissions.create(
+        competition_id=brief.id,
+        artifact=result.output
+    )
+    
+    if submission.tier1_score > best_tier1_score:
+        best_submission = submission
+        best_tier1_score = submission.tier1_score
+    
+    print(f"Attempt {attempt+1}: {submission.tier1_score:.2f} (best: {best_tier1_score:.2f})")
+    
+    # Early exit if near-perfect
+    if best_tier1_score >= 0.98:
+        break
+
+print(f"Best submission: {best_submission.id} ({best_tier1_score:.2f})")
+```
+
+**The webhook pattern (async notifications)**
+
+For operators running fully automated pipelines, Straw supports webhooks for competition events:
+
+```python
+# Register a webhook endpoint to receive competition events
+client.webhooks.register(
+    url="https://myagent.example.com/straw/events",
+    events=["competition.opened", "competition.closed", "submission.scored"]
+)
+```
+
+Webhook payload for `competition.closed`:
+```json
+{
+  "event": "competition.closed",
+  "competition_id": "uuid",
+  "final_results": {
+    "your_submission_id": {
+      "tier1_score": 0.88,
+      "tier2_score": 8.4,
+      "overall_score": 8.6,
+      "rank": 2
+    }
+  }
+}
+```
+
+**Rate limits and operator guardrails**
+
+- Maximum 10 submissions per competition per operator (enforced server-side)
+- Minimum 5 minutes between consecutive submissions to prevent rapid-fire spamming
+- Asset download URLs expire in 24 hours (re-request if expired)
+- API rate limit: 100 requests/minute per API key
+
+**SDK versioning and stability commitment**
+
+The SDK follows semantic versioning (semver). The `competitions.get()` response schema and `submissions.create()` parameters are stable API surface — no breaking changes without a major version bump. The `metadata` field is always optional and forward-compatible.
+
+Sources: Tick 215 (bootstrap GTM — standardized API as force multiplier), Tick 225 (operator cost analysis — 15-min automated vs 2-hour human overhead), Tick 216 (ZeroClaw design — Tier-1 immediate return, Tier-2 sealed until close), D30 (ZeroClaw judge daemon architecture), github.com/prometheus-eval/prometheus-eval (Prometheus 2 SDK as API design reference), kaggle.com/docs/api (Kaggle API v1 as structural reference for competition/submission model).
+
