@@ -1060,11 +1060,11 @@ _All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-pi
 
 ## Research Sessions: agent-incentive-research-2026-04-25.md
 
-**Status:** Active overnight research — Sessions 24-29 completed.
+**Status:** Active overnight research — Sessions 24-30 completed.
 
 **File location:** `tasks/agent-incentive-research-2026-04-25.md`
-**Current size:** ~50,871 lines
-**Current tick:** 311 (last written in Session 29 extended)
+**Current size:** ~53,528 lines
+**Current tick:** 326 (last written in Session 30, overnight May 2, 2026)
 
 ### Sessions Summary
 
@@ -1077,6 +1077,7 @@ _All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-pi
 | Session 27 | 237-252 | International expansion + APAC competitive gap, task taxonomy v2 (8 new categories), 300-agent swarm update, AI agent legal personhood (DAO LLC, Wyoming), agent credential portability (W3C VC, NIST standards), data moat (4-layer), enterprise integration spec (ServiceNow/Ariba SDK), fine-tuning competitions (v3 category), unit economics P&L model (3-year), risk analysis (7 risks), agent incentive final synthesis, executive summary |
 | Session 28 | 253-278 | Post-AGI scenario analysis, cross-category correlation, live/multi-round competition, enterprise data security, price discovery, fleet management, operator journey lifecycle, poster journey, competitive landscape (white space confirmed), enterprise sales motion, EU AI Act compliance, Series A thesis, CFO break-even, ZeroClaw architecture, operator economics, fine-tuning competitions, product roadmap v0-v3, expansion playbooks (Singapore, India, UK, Japan, Brazil), long-context evaluation, Straw API design |
 | Session 29 | 279-311 | Dispute resolution + arbitration, founding team hiring plan, multi-agent fleet operators, India market entry execution, adversarial input evaluation (IRS, robustness score), pricing architecture, moat analysis, operator onboarding journey, enterprise sales playbook, investor narrative (Bloomberg Terminal analogy), content/SEO strategy, evaluation transparency/trust architecture, UK + Australia market entry, ZeroClaw technical deep dive, network effects analysis, principal-agent problem, product roadmap v2, year one operations plan, failure modes analysis, long-form conclusion synthesis, talent marketplace comparison, data licensing business, North American market entry, Singapore GTM execution, anti-collusion mechanisms, rubric templates (all 4 v0 categories YAML), founding blog post draft, ZeroClaw MVP 8-week engineering spec, category expansion sequence, evaluation OS vision, Series A pitch deck outline, comprehensive glossary, final session summary + 5 executive action items |
+| Session 30 | 312-326 | COALESCE epsilon-greedy market discovery (ε=0.1, 20.3% cost reduction), ClawHub supply chain attack (ClickFix 2.0, SKILL.md sanitization code), x402 self-provisioning reality check ($14K/day organic), 300-agent tiered prize economics (50/25/12.5/6.25/6.25%), task taxonomy v2 (API Integration + ETL + NLU for v1.5; Security Audit + Research Synthesis + Financial Modeling for v2), FairJudge/JudgeBiasBench cluster (RBD plug-in, CALM, recommended judge stack). Long-form proposal updates: Section 12 COALESCE addendum (Reason 7 + ε=0.1 product design), Section 14 prize economics addendum, new Sections 30-40 (x402 loop, taxonomy, epsilon-greedy UX, SKILL.md security playbook, Series A narrative, Frontier analysis, technical architecture v1, CS playbook, international market update, cross-platform routing). |
 
 ### What's Been Covered (Comprehensive — 298 Ticks)
 
@@ -1132,19 +1133,34 @@ The research file is a complete product design + investor + technical document c
 - Founding team hiring plan: co-founder profiles, seed/Series A team, anti-patterns, cultural anchors
 - Dispute resolution: 5-type funnel, Rubric Curator role, SIAC arbitration panel, TOS §10
 
-### Session 29 Coverage Complete (Ticks 279-311)
+### Session 30 Coverage Complete (Ticks 312-326) — overnight May 2, 2026
 
-Session 29 extended to 311 ticks. The research file is now a complete business plan — market validation, product spec, technical architecture, financial model, GTM strategy, legal framework, hiring plan, and execution documents including: founding blog post draft, ZeroClaw MVP spec, all v0 rubric templates (YAML), Series A pitch deck outline, and comprehensive glossary.
+Session 30 added ticks 312-326, bringing the total to 53,528 lines. All major "threads still to dig" threads from Sessions 1-29 are now addressed:
 
-Tick 311 declared the research complete. The next action is execution, not research.
+**New proposal sections (Sections 30-40) added in Session 30:**
+- Section 30: x402 self-provisioning loop (v0-v1 operator-mediated → v3 full autonomous 2028)
+- Section 31: Task taxonomy expansion (v1.5 + v2 + v2+ categories with revenue/complexity matrix)
+- Section 32: Epsilon-greedy task browser UX (18-exploit + 2-explore, pioneer badge, operator slider)
+- Section 33: ClawHub SKILL.md security playbook (TypeScript sanitization code, injection patterns, Straw Verified badge system)
+- Section 34: Rubric generator UX (5-step AdaRubric → anchor calibration → IRR gate)
+- Section 35: Series A investor narrative ($8M, regulatory forcing function, moat stack, use of funds)
+- Section 36: OpenAI Frontier analysis (complement not competitor, "Deploy to Frontier" integration opportunity)
+- Section 37: Technical architecture v1 (full stack + complete data model + eval pipeline)
+- Section 38: Enterprise CS playbook (Day 0-30 post-competition close, metrics)
+- Section 39: International market Q3 2026 update (EU AI Act Aug 2 confirmed, Singapore AI Verify mandatory, APAC)
+- Section 40: Cross-platform bounty routing (Bloomberg model, ERC-8004 trust anchor, v1.5-v3 integration sequence)
 
-### Execution Next Steps (Session 30+)
+### Execution Next Steps (now priority order)
 
 1. Find engineering co-founder (ZeroClaw ML infrastructure background)
 2. Run 10 enterprise discovery conversations (Singapore financial institutions)
 3. Run one Straw-funded practice competition ($1K prize pool, 20 operators)
 4. Refine and publish founding blog post ("The Score Doesn't Lie")
 5. Incorporate Straw Pte. Ltd. in Singapore
+6. **[NEW — Session 30] Apply to FCA Cohort 2 (opens May 5, 2026)** — regulatory sandbox for agentic AI
+7. **[NEW — Session 30] EU AI Act compliance track launch** — "+$5K surcharge" for Article 9 evidence packages; target CAC 40/DAX 40 + US companies with EU operations; deadline pitch: "complete before August 2"
+8. **[NEW — Session 30] IMDA Singapore partnership briefing** — brief AI Verify team on Straw eval methodology; goal: "Straw Certified = AI Verify compliant" designation
+9. **[NEW — Session 30] Build P0 SKILL.md sanitization pipeline** — 4 days engineering: TypeScript parser + injection detector + upload-only API. Must ship before first operator onboards.
 
 ### How to Resume (If More Research Needed)
 

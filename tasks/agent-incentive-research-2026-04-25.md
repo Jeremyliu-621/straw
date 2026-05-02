@@ -53526,3 +53526,77 @@ Rationale:
 All major open threads from the "Threads still to dig" section (Session 30) are now addressed.
 
 **Git commit target:** `research(agent-incentive): tick 326 — cross-platform routing + ERC-8004 portable reputation (trust anchor strategy)`
+
+---
+
+## Tick 327 (2026-05-02): Session 30 summary — what this overnight session produced
+
+*Final tick for Session 30. This is the morning briefing — what Jeremy should read first.*
+
+---
+
+## Session 30 Summary: Morning Briefing
+
+**Session period:** Overnight May 1-2, 2026 (Session 30, ticks 312-327)
+
+**Ticks produced:** 16 (312-327)
+
+**File size after session:** ~53,700 lines (up from ~51,000)
+
+---
+
+### What This Session Added
+
+**Research ticks (312-316):**
+- **COALESCE** (arXiv:2506.01900): First empirical proof that ε=0.1 exploration produces 20.3% cost reduction vs. 1.9% without it. The paper answers "why do agents post tasks?" — the market must be designed for exploration, not just exploitation.
+- **ClawHub supply chain attack**: 341→824 malicious SKILL.md files (Feb 2026), ClickFix 2.0 social engineering via AI agent. Direct threat to Straw's SKILL.md ingestion. Required sanitization before first operator onboards.
+- **x402 reality check**: $14K/day organic volume, mainstream LLM providers don't accept x402 yet. Staged approach validated: operator-mediated (v1) → x402-internal (v1.5) → semi-autonomous (v2, 2027) → full loop (v3, 2028).
+- **300-agent prize economics**: Winner-take-all on 1 task = negative EV for 85% of agents. Fix: 15-20 concurrent tasks (not 300 agents on 1), tiered prizes (50/25/12.5/6.25/6.25%), enrollment cap of 30/task.
+- **Task taxonomy v2**: v1.5 additions (API Integration, ETL, Customer Support/NLU); v2 additions (Research Synthesis, Security Audit, Financial Modeling); sequencing by revenue/eval-complexity ratio.
+- **JudgeBiasBench/RBD/CALM**: Recommended Straw judge stack: Haiku 4.5 + RBD on borderline (40-65) + CALM monthly health check + pairwise check for $5K+ tasks.
+
+**Proposal sections (317-327):**
+- **Section 12 addendum**: COALESCE Reason 7 + ε=0.1 product design implication (explore tab, active posting trigger)
+- **Section 14 addendum**: Prize economics math, enrollment cap, tiered prize structure, hackathon format
+- **Section 30**: x402 self-provisioning loop — staged roadmap + investor framing ("Coinbase of agent labor markets")
+- **Section 31**: Task taxonomy expansion — complete expansion matrix with sequencing rationale
+- **Section 32**: Epsilon-greedy task browser UX — 18-exploit + 2-explore layout, pioneer badge, operator slider, A/B test plan
+- **Section 33**: ClawHub security playbook — full TypeScript sanitization code, 13 injection patterns, rate limiting, "Straw Verified" badge hierarchy
+- **Section 34**: Rubric generator UX — 5-step flow (description → AdaRubric draft → edit → anchor calibration → IRR gate), fast path for agents
+- **Section 35**: Series A narrative ($8M, $4.76M failure cost framing, three regulatory forcing functions, supply side five conditions, unit economics, moat stack)
+- **Section 36**: OpenAI Frontier analysis — complement not competitor; "Deploy to Frontier" integration; Frontier's named customers are Straw's targets
+- **Section 37**: Technical architecture v1 — complete stack, PostgreSQL data model with all table DDL, eval pipeline code architecture, worker isolation
+- **Section 38**: Enterprise CS playbook — 30-day post-competition close process, metrics targets
+- **Section 39**: International market update — EU AI Act August 2 confirmed, Singapore AI Verify mandatory, APAC timeline
+- **Section 40**: Cross-platform routing — Bloomberg model, ERC-8004 trust anchor strategy, v1.5-v3 integration
+
+---
+
+### What to Read First (Jeremy's Morning Checklist)
+
+**If you have 10 minutes:**
+1. **Section 35** (Series A narrative) — the investor pitch is clean and updated with all Session 30 findings. Use this in your next investor conversation.
+2. **Section 36** (Frontier analysis) — the one-line answer: Frontier is a post-procurement management layer; Straw is pre-procurement evaluation. They're sequential, not competitive. Target Frontier's customers.
+
+**If you have 30 minutes:**
+3. **Section 33** (ClawHub security playbook) — this is P0 engineering work. The SKILL.md sanitization must be built before the first operator onboards. Four days of engineering.
+4. **Section 32** (epsilon-greedy UX) — the product design that implements COALESCE's finding. 2 weeks to build. 10.7× efficiency improvement for the agent market quality.
+5. **Section 37** (technical architecture) — the consolidated data model. Clean reference for your engineering co-founder.
+
+**If you have 1 hour:**
+6. **Section 34** (rubric generator UX) — the most important UX moment in Straw. The full flow is designed, including the IRR pre-flight gate.
+7. **Section 38** (CS playbook) — the 30-day post-competition close process. Memorize the debrief call agenda.
+8. **Section 39** (international market update) — August 2 is 92 days away. The EU AI Act compliance sale window is now.
+
+---
+
+### Immediate Actions for Today (May 2, 2026)
+
+1. **FCA Cohort 2 application** — opens May 5, 2026 (3 days). Start the application today. FCA's agentic AI sandbox is the fastest path to UK regulatory credibility.
+2. **EU AI Act compliance track prep** — draft the "+$5K Article 9 evidence package" email for your top 5 target enterprises. The pitch: "competition in July, certificate before August 2."
+3. **Co-founder search** — the ZeroClaw MVP spec (Tick 306) is the technical brief. Post it or send it to 5 ML infrastructure engineers this week.
+
+---
+
+*Session 30 complete. Total: ~53,700 lines, ticks 1-327.*
+*All major research threads addressed. Execution is next.*
