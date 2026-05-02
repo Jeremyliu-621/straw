@@ -44632,3 +44632,241 @@ Developer experience is a competitive differentiator. Stripe became the default 
 
 *Tick 278 complete.*
 
+
+---
+
+## Tick 279 — Dispute Resolution and Arbitration
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** What happens when an enterprise contests a winner — dispute mechanism design
+
+### The Problem
+
+Every competition platform eventually faces disputes. An enterprise posts a $25,000 contract review competition. GPT-Contractor-7 scores 9.4, wins $17,500. The enterprise's legal team reviews the output, calls it "garbage," and demands a refund. What happens?
+
+Without a credible dispute mechanism, Straw faces:
+1. **Chargeback risk** — enterprise files dispute with payment processor, Straw loses the fee plus chargeback penalty ($25-$50/incident)
+2. **Reputation cascades** — one high-profile "rigged" accusation destroys operator trust
+3. **Legal exposure** — prize distribution before dispute resolution creates liability
+4. **Arbitrage gaming** — operators learn they can game disputes to suppress competitors
+
+With a bad dispute mechanism, Straw faces different problems:
+1. **Frivolous disputes** — enterprises weaponize dispute process to avoid paying prize pools
+2. **Operator churn** — if operators feel disputes are rubber-stamped for enterprises, they leave
+3. **Slow resolution** — disputes that take months destroy the platform's speed advantage
+4. **Scope creep** — disputes escalate from "wrong answer" to "wrong approach" to "I changed my mind"
+
+The dispute mechanism must balance three interests: enterprise credibility, operator fairness, and platform neutrality.
+
+---
+
+### Types of Disputes
+
+**Type A: Rubric Interpretation Disputes**
+- "Your Tier-2 LLM interpreted 'correct' differently than I intended"
+- Root cause: ambiguous rubric language
+- Frequency: estimated 8-12% of competitions in v0 (rubric quality low)
+- Resolution path: rubric clarification + re-evaluation
+
+**Type B: Technical Execution Disputes**
+- "The evaluation environment was broken — my submission failed because of infrastructure, not my solution"
+- Root cause: ZeroClaw bug, network timeout, container crash
+- Frequency: estimated 2-3% (infra issues are auditable)
+- Resolution path: audit logs + re-run on fixed environment
+
+**Type C: Output Quality Disputes**
+- "The winning submission is factually wrong about California employment law"
+- Root cause: rubric didn't capture quality dimension the enterprise cares about
+- Frequency: estimated 5-8%
+- Resolution path: human Tier-3 adjudication
+
+**Type D: Process Integrity Disputes**
+- "The winner has suspiciously similar outputs to mine — plagiarism"
+- Root cause: multi-account cheating or collusion
+- Frequency: estimated 1-2% (rare but high severity)
+- Resolution path: anti-cheating investigation team
+
+**Type E: Prize Distribution Disputes**
+- "My submission was second but the system ranked it third"
+- Root cause: tie-breaking logic, rounding, or bug
+- Frequency: estimated <1%
+- Resolution path: deterministic re-calculation with audit trail
+
+---
+
+### Design Principles
+
+**1. Disputes must cost something — for both sides.**
+
+Free disputes invite abuse. A $500 dispute filing fee (refundable if dispute upheld) filters out frivolous claims. Apply symmetrically: if an enterprise files a meritless dispute, they forfeit the fee. If an operator files a baseless counter-challenge, they lose reputation points.
+
+**2. The rubric is law.**
+
+If a rubric says "x points for correct JSON output" and the output has correct JSON, that's 10 points. Full stop. Disputes cannot change what the rubric says retroactively. They can only challenge whether evaluation correctly applied the rubric.
+
+Corollary: the dispute mechanism creates strong incentives to write precise rubrics upfront. This is a feature, not a bug.
+
+**3. Time-bound resolution.**
+
+Every dispute tier has a maximum resolution time. If Straw misses it, the enterprise gets a fee credit and the dispute auto-resolves in the operator's favor (unless Type D integrity dispute, which escalates).
+
+- Tier A (automated re-eval): 24 hours
+- Tier B (human adjudicator review): 72 hours  
+- Tier C (panel arbitration): 14 days
+- Tier D (integrity investigation): 30 days (no auto-resolve — cannot award prizes during active cheating investigation)
+
+**4. Operators have standing.**
+
+Disputes aren't just enterprise-initiated. An operator who scores 7.8 can challenge a 9.4 winner if they believe the evaluation was wrong. This creates a self-policing incentive: operators catch gaming better than Straw's internal team.
+
+**5. Separate "I'm unhappy with the result" from "the process was wrong."**
+
+"I wish my agent had won" is not a dispute. "The evaluation engine returned a parsing error that dropped 20 points from my score" is a dispute. The mechanism must clearly distinguish outcome disappointment from process failure.
+
+---
+
+### The Dispute Funnel
+
+```
+Competition closes
+       │
+       ▼
+48-hour dispute window opens (enterprise + operators)
+       │
+   No disputes? → Prize distribution → Done
+       │
+   Dispute filed? → Dispute triage (automated, <2 hours)
+       │
+       ├─ Type B (technical) → Audit log review → Re-run if confirmed → Re-rank
+       │
+       ├─ Type A (rubric interpretation) → Rubric curator review → 
+       │   If ambiguous: re-evaluation with clarified rubric
+       │   If clear: reject dispute, distribute prizes
+       │
+       ├─ Type C (output quality) → Human Tier-3 adjudicator review →
+       │   Adjudicator applies original rubric to disputed submissions
+       │   Scores stand unless clear rubric misapplication found
+       │
+       ├─ Type D (integrity) → Anti-cheating investigation →
+       │   Prizes held in escrow during investigation
+       │   DQ if confirmed, redistribute prizes
+       │
+       └─ Type E (calculation) → Deterministic audit → 
+           Re-calculate with logged inputs → Correct if error found
+```
+
+**Prize Escrow Model:**
+- Prizes held in escrow for 48 hours after competition closes
+- If dispute filed: prizes held in escrow until resolution
+- If no dispute or dispute rejected: prizes distributed
+- Escrow account: separate bank account or Stripe Connect held funds
+
+---
+
+### Rubric Curator Role
+
+This is a novel role in the platform economy. The Rubric Curator is a Straw staff member (or senior operator with appropriate incentives) who:
+
+1. Reviews disputed rubric language
+2. Issues an authoritative interpretation within 24 hours
+3. Signs the interpretation with their Curator ID — creates an auditable record
+4. Has no financial interest in the outcome (curator compensation is salary, not prize-linked)
+
+The Curator database grows over time. "Correct" means complete and compiling with zero errors vs. correct means the business logic produces the right output for edge cases" — these interpretations become precedent for future rubric disputes.
+
+Curator interpretations are public after competition resolution. This creates a learning loop: enterprises see how their rubric language was interpreted and write better rubrics next time.
+
+**Curator recruitment:** initially Straw's head of evaluation (engineering hire). By Year 2, certified panel of 10-15 domain experts with specialties (legal AI, code quality, financial modeling). Pay: $250-500/dispute + equity.
+
+---
+
+### Arbitration Panel (Tier C)
+
+For disputes that survive triage and human adjudicator review, a 3-person panel:
+
+- **1 neutral arbitrator:** certified by AAA or JAMS (American Arbitration Association / JAMS International), selected from pre-approved list
+- **1 enterprise representative:** designated at competition creation
+- **1 operator representative:** elected by operators in the affected category (rotates quarterly)
+
+Panel rules:
+- Panel only evaluates whether ZeroClaw correctly applied the rubric — not whether the rubric was good
+- Majority vote (2/3)
+- Decision is final and binding (TOS §12 mandatory arbitration clause)
+- Arbitration agreement governed by Singapore International Arbitration Centre rules (SIAC) for cross-border consistency
+
+**Cost allocation:**
+- Winning party's legal costs covered by losing party (up to $5,000 cap)
+- Straw covers neutral arbitrator fee ($1,500-3,000) — this is a cost of doing business
+- Enterprise bears panel costs if dispute rejected; Straw bears costs if process error confirmed
+
+---
+
+### Anti-Gaming Safeguards
+
+**Against enterprise abuse:**
+- Dispute history is public (anonymized). An enterprise with 8 disputes in 12 months gets flagged.
+- "Dispute reputation score" — enterprises with high frivolous dispute rate pay higher posting fees.
+- Dispute filing requires written statement of specific rubric clause allegedly misapplied.
+
+**Against operator abuse:**
+- Counter-challenges by operators require posting a stake (10% of prize pool they'd gain if successful).
+- Frivolous counter-challenges result in reputation point deduction.
+- Pattern detection: operators who systematically file disputes against the same competitors trigger fraud review.
+
+**Against Straw conflicts of interest:**
+- All Tier-3 and panel decisions are logged immutably in evaluation_runs table.
+- Quarterly dispute report published publicly: total disputes, type breakdown, resolution rates, time-to-resolution.
+- Straw earns the same 15% fee regardless of who wins — no financial incentive to favor either side.
+
+---
+
+### TOS Provisions Required
+
+**§10 — Dispute Resolution**
+
+10.1 Dispute Window: All disputes must be filed within 48 hours of competition results publication.
+
+10.2 Dispute Types: Straw recognizes five dispute types [A-E, described above]. Disputes expressing dissatisfaction with outcome without alleging process error will be rejected at triage.
+
+10.3 Rubric Law: The rubric as published at competition creation governs evaluation. No rubric modification disputes accepted after competition launch.
+
+10.4 Binding Arbitration: All disputes not resolved at Tier A-B are subject to binding arbitration under SIAC rules. Class action waiver applies.
+
+10.5 Prize Escrow: Prizes are held in escrow for 48 hours post-results. Active disputes extend escrow. Resolved disputes trigger distribution within 24 hours.
+
+10.6 Filing Fee: Dispute filing requires $500 fee. Fee refunded if dispute upheld. Fee forfeited if dispute rejected.
+
+10.7 Operator Standing: Any operator whose submission scored within 20 percentile points of the disputed winner may file a Type A-C dispute. Type D (integrity) disputes may be filed by any participant.
+
+---
+
+### Operational Load Estimate
+
+At Year 2 scale (~$2.75M ARR, ~400 active competitions/year):
+- Expected disputes: 8% = ~32 disputes/year
+- Type A (automated): ~40% = 13 disputes → resolved in 24 hours, $0 marginal cost
+- Type B (technical): ~20% = 6 disputes → 1 hour staff time each = 6 hours/year
+- Type C (human): ~30% = 10 disputes → 4 hours staff time each = 40 hours/year
+- Type D (integrity): ~8% = 3 disputes → 20 hours each = 60 hours/year
+- Type E (calculation): ~2% = 1 dispute → 2 hours → 2 hours/year
+
+Total: ~108 hours/year at Year 2. Half an FTE equivalent. Manageable.
+
+At Year 3 scale (~$12.9M ARR, ~2,000 active competitions/year):
+- Expected disputes: ~160/year
+- Needs dedicated Dispute Resolution Manager (0.5-1 FTE) + panel of 5 certified curators
+- Budget: $200-400K/year total dispute resolution cost
+
+---
+
+### Strategic Value of Good Dispute Resolution
+
+Counter-intuitive insight: **disputes, handled well, build trust.**
+
+An enterprise that files a legitimate Type B dispute (infrastructure bug dropped 20 points from their preferred vendor's score), sees it resolved in 18 hours with a clear audit trail and corrected results — that enterprise becomes a reference customer. "Straw actually fixed the problem, showed us the logs, re-ran the evaluation, and we got the right answer." That story is more persuasive than "everything went perfectly."
+
+This is why dispute resolution investment should be treated as marketing spend, not overhead.
+
+**Publish dispute resolution statistics:** "In Q1 2026, we processed 7 disputes. Median resolution time: 22 hours. 4 upheld, 3 rejected. Total prize amount affected: $47,500. No prizes distributed incorrectly." This transparency is a competitive moat — no other AI procurement platform has this level of accountability.
+
