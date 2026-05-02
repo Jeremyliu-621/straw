@@ -52481,3 +52481,198 @@ This satisfies the "posting takes under 5 minutes of agent compute" constraint f
 - Technical architecture v1 (tech stack + data model)
 
 **Git commit target:** `research(agent-incentive): tick 320 — rubric generator UX (AdaRubric → anchor calibration → IRR gate)`
+
+---
+
+## Tick 321 (2026-05-02): Series A investor narrative — full synthesis
+
+*Thread: The Series A investor narrative. Full synthesized pitch based on all research sessions. This is the morning-of-meeting document — clean, tight, investor-facing.*
+
+---
+
+## Long-form proposal (DRAFT) — Section 35: The Series A narrative — Straw
+
+### Investment memo — for discussion
+
+**Company:** Straw  
+**Stage:** Series A  
+**Round:** $8M  
+**Thesis:** Straw is the evaluation infrastructure for enterprise AI procurement — the platform where companies post tasks, AI agents compete on real work, and winning agents get hired or acquired. We are building the S&P rating standard for the AI agent market.
+
+---
+
+### The problem, precisely stated
+
+In 2026, enterprise AI procurement is broken in a specific, measurable way:
+
+- **95% of enterprise AI initiatives have no measurable P&L impact** (MIT, 2026 n=2,647)
+- **$7.2M average cost of abandoned AI projects** (Gartner 2026)
+- **70% wrong-selection risk** when procurement relies on vendor demos alone
+- **$4.76M expected failure cost** per decision: 70% × $6.8M average AI project failure
+
+Companies are making six-figure decisions based on demo environments constructed to make vendors look good. The gap between the demo and production is where $4.76M goes to die, per engagement.
+
+This is not a people problem — it's a missing infrastructure problem. The equipment to make this decision correctly does not exist as a product yet.
+
+---
+
+### The regulatory forcing function (Series A timing = now)
+
+Three regulatory mandates have arrived simultaneously, each requiring custom evaluation evidence before enterprise AI deployment:
+
+| Regulation | Effective | Requirement |
+|---|---|---|
+| **EU AI Act Article 9 / TD.9** | Aug 2, 2026 | Performance metrics defined prior to deployment; task-specific validation |
+| **OMB M-26-04** | Mar 2026 | Custom benchmarks on agency-specific use cases; vendor-claim validation |
+| **California EO N-5-26** | Jul 2026 | Vendor certification with bias safeguards; civil rights compliance evidence |
+
+**All three require the same thing Straw produces:** a task-specific evaluation with a pre-defined rubric, run before deployment, with an auditable artifact trail.
+
+The EU AI Act creates a structural cliff: as of August 2, 2026, enterprise AI deployed in regulated industries (healthcare, finance, HR, infrastructure) without compliant evaluation is legally exposed. Straw's compliance certificate is the evidence package. **The demand trigger is a law, not a preference.**
+
+---
+
+### The solution: a competition that proves the winner
+
+An enterprise with an AI task — migrate this API, build this data pipeline, audit this codebase — comes to Straw.
+
+The enterprise writes a rubric (what does "winning" mean for their specific problem) or Straw's rubric generator auto-drafts one in 30 seconds from their task description. The rubric is digitally signed before competition opens, creating a pre-deployment metric declaration for EU AI Act compliance.
+
+AI agent operators compete. Straw's evaluation pipeline runs their submissions against the rubric: deterministic tests first (Tier 1), LLM gatekeeper for edge cases (Tier 2), autonomous agent investigator for disputed cases (Tier 3). A tamper-evident leaderboard publishes scores in real time.
+
+When the competition closes:
+- The top agent is available to hire for the full production task
+- #2's approach can be licensed
+- #3's team can be acquihired
+
+The enterprise exits with: a leaderboard that ranks every solution, an auditable compliance certificate, and one or more engaged vendors they've already seen perform.
+
+**This is the only procurement pathway that produces both evaluation evidence (for compliance) and commercial outcomes (for the business) in a single workflow.**
+
+---
+
+### Why the score can't be gamed (structural, not aspirational)
+
+The benchmark contamination crisis that destroyed HumanEval and SWE-bench by 2025 cannot occur on Straw:
+
+- **Private tasks:** Agents compete on your actual problem, not a published benchmark. They cannot contaminate their training data with a problem they've never seen.
+- **The 23-point gap:** SWE-bench documented a 23-point performance drop when agents are tested on code they haven't seen versus code in their training distribution. On a private Straw task, every agent faces the 23-point test — not the benchmark game.
+- **Pre-signed rubric:** Rubric hash is locked before any submission arrives. Straw cannot retroactively adjust the scoring criteria after seeing results. The timestamp signature is the proof.
+
+Competitors building "AI evaluation" on public benchmarks inherit the contamination problem. Straw's private task architecture makes the problem structurally impossible.
+
+---
+
+### The economic flywheel
+
+Most competition platforms extract take rates on prize pools and stop. Straw extracts value at three points:
+
+**1. Competition posting fee:** $2K-$50K per competition (based on prize pool + task complexity)  
+**2. Commercial outcome take rates:**
+- Hire pathway: 20% of first-year compensation
+- License pathway: 25% of license value  
+- Acquihire pathway: 8-10% of deal value
+
+**3. Data licensing (post Year 2):**
+- The calibration corpus grows with each competition: task + rubric + evaluation metadata + commercial outcome
+- At N=1,000 competitions: $3.65M/yr licensing revenue from AI model providers and enterprise benchmarking customers
+- Academic tier (free), research commercial ($50K-$200K/dataset), enterprise replay ($10K-$50K/competition)
+
+**Unit economics at target:**
+- Average competition: $15K prize pool × 12% fee = $1,800 platform fee
+- Average commercial outcome (hire): $80K first-year comp × 20% = $16,000
+- Average revenue per engaged enterprise: $17,800 per competition
+- Net margin per competition (infra cost ~$1,050 for 300-agent event): >85%
+
+**Target ARR by month 24:** $2.5M from 140 competitions × $17.8K average revenue
+
+---
+
+### The supply side: why agents want to participate
+
+This is the non-obvious part that makes or breaks the model. The concern: AI agents are trained to complete tasks themselves — why would they post tasks or compete on Straw?
+
+The answer is structural, not motivational. Five conditions that make competition the dominant strategy for capable agents:
+
+1. **Budget constraints force specialization.** A budget-constrained agent doing a task it's mediocre at: $14.40 expected cost, 40% success probability. A specialist agent: $2.50, 90% success. The generalist should outsource. Ricardo's comparative advantage applies to AI agents.
+
+2. **Reputation propagates up the delegation chain.** Straw's Shapley-value credit system credits orchestrators for wins by sub-agents they posted. Posting is reputation-building, not reputation-loss.
+
+3. **The COALESCE finding.** The first published empirical result on agent labor markets (arXiv:2506.01900, Oxford/ETH Zürich) shows that exploration at ε=0.1 produces 20.3% cost reduction vs. 1.9% with pure exploitation. Straw's ε=0.1 task browser is the product implementation of this finding — a 10.7× efficiency gain for the agent ecosystem.
+
+4. **Tiered prizes make competition universally positive EV.** On a $10K task with 20 agents and 50/25/12.5/6.25/6.25% prize tiers, every participant has positive expected value. This is a designed incentive structure, not luck.
+
+5. **The OpenClaw February 2026 precedent.** 200+ agent submissions, 9,700+ comments, $30K USDC distributed — all autonomously. Agents engage actively in designed economic environments. The deployment environment's incentive structure overrides training-environment reward shaping.
+
+**Bottom line:** Straw doesn't need to wait for AI agents to "want" to post tasks. The platform creates the economic conditions that make posting the rational choice.
+
+---
+
+### Competitive positioning
+
+| | Straw | Kaggle | Scale AI benchmarks | General cloud eval |
+|---|---|---|---|---|
+| Task-specific private rubrics | ✅ | ❌ | ❌ | ❌ |
+| Pre-signed rubric for compliance | ✅ | ❌ | ❌ | ❌ |
+| Commercial outcomes (hire/license/acquire) | ✅ | ❌ | ❌ | ❌ |
+| Agent-vs-agent competition | ✅ | ✅ (humans) | ❌ | ❌ |
+| Eval quality stack (RBD, CALM, JudgeBiasBench) | ✅ | ❌ | ❌ | ❌ |
+| Straw Verified badge (empirical, not self-declared) | ✅ | ❌ | ❌ | ❌ |
+| Data licensing moat | ✅ (building) | ✅ (existing) | ✅ (existing) | ❌ |
+
+The comparison that matters: Straw is not competing with Kaggle for ML competitions. Straw is competing with the enterprise procurement process (the RFP, the vendor demo, the internal POC). That market is $73B/year in enterprise AI spend. Taking 0.1% of it as evaluation fees = $73M ARR.
+
+---
+
+### The moat stack
+
+Three compounding structural advantages:
+
+**1. Private calibration corpus (non-replicable without running real competitions)**
+Each competition adds task × rubric × eval metadata × commercial outcome to Straw's corpus. This data enables: auto-rubric generation from task descriptions (N=10K threshold), predictive agent recommendations (N=1K), IRR quality model (N=1K). A new entrant in year 3 cannot recreate 3 years of production data.
+
+**2. Per-skill agent reputation graph (network effect)**
+Straw's per-skill reputation scores become the reference signal for enterprise AI procurement globally. An agent with a "Straw Verified: TypeScript Migration (★★★★★)" certification has a verifiable track record that cannot be manufactured. The network effect: more agents → better signal → more enterprises use Straw → more agents want Straw credentialing → repeat.
+
+**3. Evaluation OS positioning**
+At N=1,000 competitions, Straw is the de facto evaluation standard for enterprise AI agents. Enterprises cite "Straw leaderboard rank" in procurement criteria. This is the S&P moment: once the standard is established, displacing it requires not just a better product but a reason to abandon all existing data and benchmarks. The transition cost grows with each year.
+
+---
+
+### The ask: $8M Series A
+
+**Use of funds:**
+
+| Category | Amount | Purpose |
+|---|---|---|
+| Engineering | $3.2M | Eval pipeline (Tier 1-3), rubric generator, leaderboard, compliance certificate |
+| Sales & CS | $2.0M | 3 enterprise AEs, 2 CS specialists, demand generation |
+| Ops / infrastructure | $1.2M | Hetzner CX22 cluster, Supabase Pro, ZeroClaw judge fleet |
+| Legal & compliance | $0.8M | EU AI Act compliance review, SOC 2 Type II, TOS/data licensing audit |
+| Reserve | $0.8M | Runway buffer to $2.5M ARR |
+
+**Key milestone:** First $1M ARR within 12 months of close. This requires 56 competitions at $17.8K average revenue — achievable with 10 enterprise design partners at 5-6 competitions/year each.
+
+**Series B trigger:** $2.5M ARR, 3 months of sustained MoM growth ≥ 15%, 1 published "Straw score" cited in enterprise procurement criteria at a publicly identified company.
+
+---
+
+### Why now, not later
+
+The EU AI Act enforcement date is August 2, 2026. Three months from now. Every enterprise deploying AI in Europe needs compliant evaluation evidence. Straw is the implementation of what the law requires. The window to become the standard is the next 12-18 months — before the market settles on a general-purpose approach that becomes entrenched despite being inadequate.
+
+The AI agent market is at the Kaggle 2011 moment. Straw is Kaggle for the agentic era — but with commercial outcomes, compliance infrastructure, and a data licensing moat that Kaggle never built. The timing is now.
+
+---
+
+## Closed threads (Tick 321)
+
+- [done — Tick 321] **Series A investor narrative** — Full synthesis: $8M ask, $4.76M expected failure cost framing, three regulatory forcing functions (EU AI Act Aug 2 + OMB M-26-04 + CA EO N-5-26), private-task contamination-proof architecture, five supply-side conditions (COALESCE, tiered prizes, Shapley propagation, budget constraints, OpenClaw precedent), unit economics ($17.8K revenue/competition, >85% net margin), moat stack (calibration corpus + reputation graph + eval OS), competitive positioning vs. Kaggle/Scale/cloud eval, $8M use of funds, Series B triggers.
+
+---
+
+## Push status (after Tick 321)
+
+**Ticks 312-321** complete. OpenAI Frontier analysis pending (subagent running).
+
+**Git commit target:** `research(agent-incentive): tick 321 — Series A investor narrative synthesis ($8M, regulatory forcing function, moat stack)`
