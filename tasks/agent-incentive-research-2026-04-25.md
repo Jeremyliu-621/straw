@@ -48784,3 +48784,132 @@ The document is comprehensive enough to be the foundation for: a founding pitch 
 
 The next session should focus on translating this research into execution artifacts: the founding blog post, the first competition rubric template, and the ZeroClaw MVP specification for the engineering co-founder.
 
+
+---
+
+## Tick 301 — North American Market Entry
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** US and Canada timing, ICP differences, and regulatory landscape
+
+### Why the US Is Year 3, Not Year 1
+
+The intuitive answer for a SaaS startup is "go to the US as fast as possible — it's the biggest market." Straw should resist this intuition for concrete reasons:
+
+**1. US enterprise sales cycles are longer and more competitive.**
+US Fortune 500 AI procurement involves: procurement compliance review, legal review of data agreements, security review, executive buy-in, and often a formal RFP process. Total cycle: 6-18 months. In Singapore, enterprise procurement moves faster (smaller companies, less bureaucracy, strong government incentives to adopt).
+
+**2. US enterprise AI market is noisier.**
+There are ~200 AI evaluation companies in the US market, even if none of them are doing exactly what Straw does. The signal-to-noise ratio for enterprise buyers is terrible. Breaking through requires either a large marketing budget or a strong reference customer. Having 10 Singapore + UK customers is the reference customer story that gets US enterprise attention.
+
+**3. US regulation is lagging, not leading.**
+Unlike EU, Singapore, and UK (all of which have specific AI governance mandates), the US has minimal federal AI regulation as of 2026. OMB M-26-04 applies to federal agencies but not private sector. State AI laws (California AI Transparency Act, Colorado AI Act) are fragmented and evolving. The regulatory tailwind that drives Straw adoption in Singapore and EU is weaker in the US private sector.
+
+**4. Singapore/India/UK success validates the thesis.**
+US investors will want to see that Straw works outside the US before they back a US expansion. A Series A funded on Singapore + India + UK traction, with a US market entry as the Series B growth story, is more credible than a US-first approach.
+
+**5. Operating costs in the US are much higher.**
+San Francisco/New York engineering salaries are 40-60% higher than Singapore. Sales costs (AE salaries, customer events) are significantly higher. Singapore gives Straw time to prove unit economics before scaling in an expensive market.
+
+---
+
+### When to Enter the US
+
+**Trigger conditions for US market entry (Year 2.5-3):**
+- $2M+ ARR outside US (proves demand without US)
+- At least 3 non-US enterprise reference customers willing to give references to US peers
+- SOC 2 Type II certified (US enterprises require this)
+- At least 1 US-headquartered enterprise already using Straw (likely a US company's Singapore entity)
+- Series A closed (capital to fund US sales team)
+
+**US entry approach:**
+- Start with one sales hire in New York (not San Francisco — enterprise AI buyers are concentrated in financial services, which is NYC)
+- Focus first on US financial services (Goldman, JPMorgan, Citi) — they have Singapore entities already using Straw (natural warm introduction path)
+- Target companies with global AI procurement policies (where Singapore Straw usage creates internal champion)
+
+---
+
+### US Regulatory Landscape (2026)
+
+**Federal level:**
+- Executive Order 14110 (AI Safety, October 2023): requires federal agencies to assess AI risks, but doesn't extend to private sector
+- OMB M-26-04 (January 2026): mandates federal agencies conduct comparative AI evaluation before procurement. This IS a Straw use case for government contractor AI evaluation.
+- NIST AI RMF (AI Risk Management Framework): voluntary guidelines, increasingly referenced in contracts
+- No federal AI Act equivalent as of 2026 — bipartisan deadlock in Congress
+
+**State level:**
+- Colorado SB 205 (2024): AI systems used in consequential decisions require impact assessments. Effective February 2026.
+- California AB 302 (2026): AI in employment decisions must be audited. First state employment AI audit requirement.
+- Illinois AI Video Interview Act: biometric data restrictions
+- Texas, Virginia, Connecticut: AI bills in various stages
+
+**Financial services:**
+- OCC Model Risk Management Guidance (SR 11-7): banks must validate models before deployment. LLMs are "models" under OCC guidance.
+- SEC AI disclosure requirements (pending rulemaking): public companies must disclose material AI risks
+- CFPB guidance on AI in credit decisions: adverse action explanations required
+
+**For Straw:** The US financial services sector is the highest-value US entry point because it has the strongest regulatory pressure for AI validation (OCC SR 11-7 is already law). Major US banks (JPMorgan, Goldman, Wells Fargo, Citi) have explicit model validation requirements that Straw helps satisfy.
+
+---
+
+### Canada Market
+
+Canada is a natural companion market to the US — same time zones, same language, similar regulatory culture, often the same enterprise decision-makers cover both markets.
+
+**Canadian regulatory context:**
+- AIDA (Artificial Intelligence and Data Act): proposed federal AI legislation, delayed to 2027
+- Office of the Privacy Commissioner: AI guidance for PIPEDA compliance
+- OSFI (Office of the Superintendent of Financial Institutions): AI guidelines for federally regulated financial institutions, similar to OCC SR 11-7
+
+**Canadian market characteristics:**
+- Smaller than US but sophisticated buyers
+- Strong AI research ecosystem (Vector Institute Toronto, Mila Montreal)
+- Financial services (RBC, TD, Scotiabank, BMO) have significant AI investment
+- Government AI procurement is significant (federal and provincial)
+
+**Entry approach:** Enter Canada simultaneously with US (minimal additional cost — same sales resources, similar regulatory framework). Canadian banks as co-reference customers with US entry.
+
+---
+
+### US ICP Differences
+
+US enterprise buyers are different from Singapore/UK buyers in specific ways:
+
+**Higher skepticism about new categories:**
+US enterprise buyers have seen 1,000 AI pitches. They're more likely to dismiss Straw as "another AI evaluation startup." The Singapore/India/UK reference customers are essential to break through this skepticism.
+
+**Procurement process formality:**
+US Fortune 500 companies have formal vendor approval processes (information security review, legal review, procurement certification). These can take 3-6 months before the first dollar changes hands. Budget for long cycles.
+
+**More sophisticated buyers (in some ways):**
+US enterprise AI teams are more technically sophisticated than many other markets. They're more likely to push back on evaluation methodology, demand technical detail, and run their own POC validation. This is good — Straw's methodology is rigorous and will hold up to scrutiny. But the sales process requires more technical depth.
+
+**Price anchoring is different:**
+US enterprises are accustomed to paying enterprise software prices. A $120,000/year enterprise contract is unremarkable in the US context (it's small relative to their AI spend). Don't under-price for the US market. The Singapore pricing may be too low for US buyers.
+
+**US ACV target:** $150,000-$500,000/year for Fortune 500 enterprise contracts (vs. $25,000-$120,000 in Singapore). The US market allows significantly higher ACV.
+
+---
+
+### North America 3-Year Revenue Model
+
+**Year 1 (no dedicated North America presence): $0**
+
+**Year 2.5 (one US AE hired, inbound from international customer references): $800K ARR**
+- 5 US enterprise pilots converted from warm introductions
+- Average ACV: $160K
+- 2 Canadian banks: $120K each
+- Total: $1,040K
+
+**Year 3 (Series B funded, 3 US AEs + 1 Canada AE): $4.2M ARR**
+- 15 US enterprise customers: avg $200K ACV = $3M
+- 5 Canadian enterprise customers: avg $120K ACV = $600K
+- Operator subscriptions from US/Canada operators: $600K
+- Total: $4.2M ARR
+
+North America = ~32% of global Year 3 ARR ($12.9M).
+
+**Series B thesis:**
+Straw's Series B ($30-50M raise) should be built on the North American expansion story: $2.75M ARR → $12.9M ARR → $50M ARR trajectory with North America as the primary growth engine. The Series B investor will see Singapore/India/UK as the proof-of-concept; North America as the scale market.
+
