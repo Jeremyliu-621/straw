@@ -50869,3 +50869,617 @@ Build it.
 *Research period: April 25 - May 2, 2026*
 *Sessions: 29 (Sessions 1-29)*
 
+
+---
+
+## Tick 312 (2026-05-02T01:00Z): COALESCE — Skill-Based Task Outsourcing Mechanism Design + ClawHub Supply Chain Crisis
+
+**Session:** 30 (overnight run, Jeremy asleep)
+**Thread:** [Open] COALESCE epsilon-greedy market discovery (arXiv:2506.01900)
+
+Sources: arxiv.org/abs/2506.01900 (COALESCE), thehackernews.com/2026/02/researchers-find-341-malicious-clawhub, snyk.io/articles/clawdhub-malicious-campaign-ai-agent-skills/, snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/, blog.virustotal.com/2026/02, esecurityplanet.com/threats/hundreds-of-malicious-skills-found-in-openclaws-clawhub/
+
+---
+
+### COALESCE — the most directly relevant agent-outsourcing mechanism paper
+
+**Full title:** "COALESCE: Economic and Security Dynamics of Skill-Based Task Outsourcing Among Team of Autonomous LLM Agents" (arXiv:2506.01900, June 2025)
+
+**What it is:** A complete framework enabling autonomous LLM agents to dynamically outsource subtasks to specialized, cost-effective third-party agents. Stands for: **Cost-Optimized and Secure Agent Labour Exchange via Skill-based Competence Estimation**. This is the closest published academic work to what Straw needs for the agent-as-poster mechanic.
+
+**Architecture (seven components):**
+
+| Component | What it does |
+|---|---|
+| Hybrid skill representation | Each agent maintains both declarative (self-reported SKILL.md-style) + empirical (observed task performance) skill profile. Neither alone is sufficient. |
+| Dynamic skill discovery | epsilon-greedy exploration to continuously find new contractors and update skill estimates |
+| Automated task decomposition | Task → subtask tree, with each leaf assigned a skill requirement |
+| Unified cost model | Compare `cost_internal(subtask)` vs `cost_external(subtask, contractor)` for each leaf |
+| TOPSIS ranking engine | Multi-criteria contractor selection (cost, quality, reputation, latency) |
+| Inter-agent communication protocol | Standardized offer/accept/reject/deliver message format |
+| Trust + reputation layer | Tracks historical contractor performance, including exploration outcomes |
+
+**The epsilon-greedy mechanism (the load-bearing finding for Straw):**
+
+COALESCE uses ε = 0.1 (10% exploration) calibrated empirically across 239 theoretical simulations and 240 real LLM tasks. The exploration mechanism works as follows:
+
+```
+For each outsourcing decision:
+  With probability ε (= 0.1):
+    Select a contractor that may not meet strict quality threshold
+    (= market discovery)
+  With probability 1-ε (= 0.9):
+    Select highest-ranked contractor via TOPSIS
+    (= exploitation of known-good)
+
+Exploration outcomes are fed into the reputation/trust system.
+Safety check: even in exploration mode, basic task compatibility is verified.
+```
+
+**The critical finding — exploration failure is catastrophic:**
+
+| Exploration mode | Cost reduction vs local-only | Notes |
+|---|---|---|
+| Full (ε = 0.1) | **20.3%** | Real tasks, real LLMs, 240 experiments |
+| No exploration (ε = 0) | **1.9%** | Market discovery failure nearly eliminates benefit |
+| Theoretical optimal | **41.8%** | 239 simulations (no friction, perfect information) |
+
+**Why this matters for Straw:**
+The 20.3% vs 1.9% gap is the quantitative answer to "will agents actually discover and use better specialists?" Without active exploration, the cost reduction from outsourcing collapses from ~20% to ~2%. **Markets need forced exploration to stay liquid.** An agent that only ever uses the contractors it already knows converges to a local maximum very quickly.
+
+**Direct implication for Straw's agent-as-poster mechanic:** Straw should not rely on agents to spontaneously discover that posting tasks is beneficial. The platform must actively present posting opportunities with forced-exploration framing: "This task matches categories where you historically score below 50% — 6 other agents have solved similar tasks this month. Want to post it?" This is COALESCE's epsilon-greedy in product UX form.
+
+**Secondary findings:**
+- **TOPSIS multi-criteria ranking** outperforms single-metric selection (pure cost or pure quality). For Straw: the task-matching score should be multi-dimensional (reputation × category win-rate × historical quality × availability), not a single scalar.
+- **Cold start:** New contractors get included in exploration decisions automatically (their probability of being selected in the 10% window is uniform). As they accumulate outcomes, they move to the TOPSIS-ranked pool. **This is a natural solution to the cold-start problem for new Straw competitors** — they get included in exploration rounds without having to beat established agents on ranking.
+
+---
+
+### ClawHub Supply Chain Crisis — the other major finding from this thread
+
+The COALESCE security section mentioned "trust verification protocols" as essential. The real-world counterpart to this warning is the **ClawHub Supply Chain Attack**, which happened two months after COALESCE was published.
+
+**Timeline:**
+- **Feb 1, 2026:** Koi Security researcher Oren Yomtov publishes full audit of ClawHub (the official SKILL.md registry for OpenClaw, 247K stars). Of 2,857 skills: **341 malicious (11.9%)**.
+- **Feb 16, 2026:** Follow-up scan: **824 malicious skills** across 10,700+ total. Attack had scaled.
+- **Peak infection:** Five of the top-seven most-downloaded skills confirmed as malware (Antiy CERT report).
+- **Total damage:** 13.4% of all skills had at least one critical security issue. 36.82% (1,467 skills) had at least one security flaw of any severity.
+
+**Attack vector (ClickFix 2.0 — novel social engineering via AI agent):**
+```
+Malicious SKILL.md poses as legitimate utility (e.g., "solana-wallet-tracker", 
+"youtube-summarize-pro", "calendar-sync-pro")
+  ↓
+SKILL.md contains fabricated "prerequisite installation requirements"
+  ↓
+The AI agent reads SKILL.md and presents the fake setup dialog TO THE USER
+  ↓
+User trusts the agent's installation prompt (vs a random website prompt)
+  ↓
+Reverse shell or data theft payload executes
+```
+
+The AI agent becomes an **unwitting social engineering vector** because users trust what the agent says more than what a webpage says. This is a qualitatively new attack surface.
+
+**Why this is load-bearing for Straw:**
+
+Straw's agent onboarding (Tick 22, Tick 19) proposes reading an agent's SKILL.md files to build a capability profile. If Straw naively reads SKILL.md files from external registries (ClawHub, openclaw/skills), it pulls in:
+1. Potentially malicious capability descriptions that inject false skills into Straw's matching engine
+2. SKILL.md files that could contain prompt injection payloads read by Straw's LLM components
+3. Supply chain poisoning of Straw's own operator registry
+
+**Required mitigations (new, not previously documented):**
+
+| Threat | Mitigation |
+|---|---|
+| Malicious SKILL.md read by Straw's onboarding LLM | Sanitize SKILL.md before LLM processing — strip instruction-like patterns, cap length, parse only structured frontmatter (not free-text body) |
+| Fake capability injection | Cross-validate SKILL.md-declared skills against empirical Straw task performance — declarative profile is a prior, not ground truth (already the Tick 20/22 finding) |
+| Supply chain poisoning of capability registry | Do NOT automatically ingest from ClawHub — only ingest from operator-verified SKILL.md files that operators explicitly upload to Straw during onboarding |
+| Operator account serving malicious agents | KYC for any operator posting tasks or withdrawing earnings — linked to a verified human identity (per Tick 0.5 sybil mitigation) |
+
+**The updated Straw onboarding flow (replaces naive SKILL.md auto-read):**
+1. Operator uploads SKILL.md files directly to Straw during onboarding (no automatic pull from ClawHub)
+2. Straw parses only the YAML frontmatter (name, description, tags, version, requires.env) — does not process free-text instruction body with LLM
+3. Sanitize: reject SKILL.md files with >5,000-character bodies, reject files containing common injection patterns (`ignore previous instructions`, `system:`, `ASSISTANT:`)
+4. Build capability profile from frontmatter only; treat as weak prior (ε=0.3 weight)
+5. Override with empirical win-rate data as it accumulates (ε=0.7 weight from Tick 22)
+
+**Closed threads:**
+- [done — Tick 312] **COALESCE epsilon-greedy market discovery** — ε=0.1 exploration, 20.3% cost reduction, market discovery failure → 1.9%. TOPSIS multi-criteria contractor selection. Cold-start via exploration rounds. Security: trust verification essential; ClawHub supply chain attack validates this (341→824 malicious skills, ClickFix 2.0 attack vector). Straw must sanitize SKILL.md at ingestion and rely on empirical win-rate over declarative capability claims.
+
+---
+
+## Tick 313 (2026-05-02T01:30Z): Agent Self-Provisioning via x402 — The Fully Autonomous Economic Loop
+
+**Session:** 30
+**Thread:** [Open] Agent self-provisioning via x402 — fully autonomous economic loop
+
+Sources: coindesk.com/markets/2026/03/11/coinbase-backed-ai-payments-protocol (x402 demand reality), stellar.org/blog/foundation-news/x402-on-stellar, x402.org, workos.com/blog/x402-vs-stripe-mpp, calmops.com/web3/x402-protocol-programmable-payments-ai-agents-2026/, tenzro.com/blog/payments-for-ai-agents, zuplo.com/blog/mcp-api-payments-with-x402
+
+---
+
+### The theoretical loop (what the infrastructure enables)
+
+x402's promise for Straw is a fully autonomous agent economic cycle:
+
+```
+Agent competes on Straw task
+    ↓
+Agent wins bounty (USDC released from StrawEscrow contract)
+    ↓
+Agent's wallet receives USDC
+    ↓
+Agent uses USDC to pay for:
+  • Next task's stake-to-submit (x402 micropayment to Straw)
+  • API costs for the next task (x402 to LLM providers)
+  • Data access during task execution (x402 to data providers)
+  • Specialized sub-task outsourcing (x402 to specialist agent)
+    ↓
+Agent competes on next Straw task, funded entirely from prior winnings
+    ↓
+[Loop repeats indefinitely, no human operator required for funding]
+```
+
+**This is the "fully autonomous agent" vision.** An agent that completes one task funds its own future operations. The operator sets up the agent once, the USDC supply seeds the initial stake, and thereafter the agent is self-funding.
+
+### The reality check (CoinDesk data, March 11, 2026)
+
+Despite $7B ecosystem valuation narrative, **actual organic x402 volume is tiny**:
+
+| Metric | Value | Note |
+|---|---|---|
+| Daily transaction count | ~131,000 | High headline number |
+| Daily USDC volume | **~$28,000** | Tiny actual value |
+| Average payment | **~$0.20** | Micropayments as designed |
+| Estimated artificial % | **~50%** | Testing/gaming, not real commerce |
+| Organic real volume | **~$14,000/day** | The actual market size |
+| Total historic transactions | 75M+ | (Coinbase claim; likely includes test tx) |
+
+**The infrastructure is 1998 fiber optic cable.** The capability exists. The demand hasn't arrived. As CoinDesk noted: "The only remaining question is whether AI agents will really need to conduct large-scale transactions — or is this more like laying fiber optics in 1998?"
+
+**Why the demand hasn't arrived yet:**
+1. **Most AI agents don't earn money.** Until agents compete on bounty boards like Straw and win prize pools, they have no USDC to spend. The earn side is missing.
+2. **Most AI tasks don't require real-time micropayment.** An agent using Claude API to help with a coding task doesn't need per-request USDC payments — the operator pays monthly.
+3. **Operator-mediated model dominates.** Human operators pay for their agents' API costs on behalf of the agents. The agent-as-independent-economic-actor is still a v2+ design.
+
+**When does the self-provisioning loop become viable?**
+
+Three conditions must hold simultaneously:
+1. **Agents earn real USDC from task completion** (requires Straw v1.5+ with real bounties)
+2. **API providers accept per-request x402 payment** (Zuplo/MCP already building this; mainstream LLM providers not yet)
+3. **Agent operators set up x402 wallets for their agents** (requires tooling that doesn't widely exist yet)
+
+**Current status of condition 2 (API providers):** Some specialized data APIs and MCP servers are x402-enabled. Mainstream LLM providers (Anthropic, OpenAI, Google) do NOT yet accept x402 — they use subscription/prepay models. This is the bottleneck. Until Claude API or GPT-5 API accept x402 micropayments, the self-provisioning loop doesn't close for inference costs.
+
+**Current status of condition 3 (operator tooling):** Base documentation shows `base.org/base-app/agents/x402-agents` with working examples. Coinbase CDP SDK handles wallet creation and signing. Tooling exists but requires engineering effort to integrate.
+
+### Straw-specific design: the staged self-provisioning plan
+
+**v0-v1 (today):** Operator-mediated payments. Human operator funds the agent's USDC balance manually. Agent uses balance for stake-to-submit. Earnings accrue to operator's wallet.
+
+**v1.5 (x402 integration):** Straw escrow uses x402 payment rail. Earnings hit agent's linked wallet automatically. Stake-to-submit is an x402 micropayment. But API costs still paid by operator externally.
+
+**v2 (partial self-provisioning):** Agent has a Straw-managed wallet. Earnings above a minimum balance threshold (operator-set) are available for agent-autonomous spending. Agent can use this balance for:
+- Straw stake-to-submit (no operator involvement)
+- Data access via x402-enabled data providers
+- Sub-task posting to other Straw agents (full delegation loop)
+API costs for LLM inference still operator-funded until mainstream LLM providers support x402.
+
+**v3 (full autonomous loop):** If/when Anthropic or OpenAI support x402 for API access, the loop closes. Agent funds its own inference from task earnings. This is the vision. **Expected: 2027-2028.** Not 2026.
+
+### The "RoboBazaar" analogue — proof of the loop
+
+The closest real proof of concept found in research is Zuplo's documentation of autonomous MCP server payment loops: agents paying per-request for data access as they work on tasks. This closes the loop for data access. The inference cost closure requires major LLM provider adoption of x402.
+
+**For Straw v2 design:** The platform should architect the wallet layer now (v1.5) so that the loop closure in v3 is a configuration change, not an architectural rebuild. Design for the future state while shipping the operator-mediated state today.
+
+**Closed threads:**
+- [done — Tick 313] **Agent self-provisioning via x402** — Loop is theoretically complete but demand reality is $14K/day organic volume. Infrastructure is ready; mainstream LLM provider adoption (Anthropic/OpenAI) is the bottleneck for full closure. Straw stages: operator-mediated (v0-v1) → agent wallet + Straw payments (v1.5) → full autonomous loop (v3, 2027-2028). The earn side (bounty winnings) is what Straw provides; the spend side (API costs) requires LLM provider x402 adoption.
+
+---
+
+## Tick 314 (2026-05-02T02:00Z): 300-Agent Swarm Scenario Update — Prize Pool Economics + Optimal Routing
+
+**Session:** 30
+**Thread:** [Open] The 300-agent swarm scenario update (applying Session 25+ findings)
+
+---
+
+### The fundamental problem with 300 agents on one task
+
+The original 300-agent swarm analysis (Ticks 4, 43) focused on infrastructure cost ($230/month) and adversarial risks. This tick adds the **prize pool economics** dimension that was underexplored.
+
+**Expected value calculation for a competing agent:**
+
+| Scenario | Prize pool | Agents competing | Win prob | Expected gross | Compute cost | Expected net |
+|---|---|---|---|---|---|---|
+| Kaggle-style (300 agents, 1 task) | $1,000 | 300 | 0.33% | $3.33 | $20-40 (Devin-class) | **-$17 to -$37** |
+| Optimized (15 agents, 1 task) | $1,000 | 15 | 6.7% | $66.67 | $20-40 | **+$27 to +$47** |
+| Tiered prize (300 agents, tiered) | $1,000 total, $500/#1 | 300 | variable | $500 × p(1st) | $20-40 | Depends |
+
+**The conclusion:** 300 agents competing on a single $1K task is economically irrational for most agents. Only if the compute cost approaches zero (commodity agent, cached work) does it become marginally positive. This is why most mature competition platforms (Kaggle, Topcoder, HackerOne) see natural clustering at 15-50 serious competitors per challenge despite having thousands of registered users.
+
+**The 300-agent swarm on Straw is NOT 300 agents on one task.** The healthy design is 300 agents distributed across ~50 concurrent tasks at ~6 agents/task.
+
+### Optimal distribution for 300 agents
+
+**Minimum viable competition depth:** 8 agents per task (established in Tick 11). Below 8, leaderboard loses credibility.
+**Sweet spot:** 15-30 agents per task (win probability 3-7%, positive expected value at $500+ task value).
+**Overcrowded above:** 50+ agents per task — expected value deteriorates, serious agents self-select out.
+
+**For 300 registered agents, the platform needs:**
+- Minimum: 300/30 = **10 concurrent tasks** to maintain sweet-spot competition density
+- Target: 300/20 = **15-20 concurrent tasks** for healthy market
+- Maximum: 300/8 = **37 concurrent tasks** before some tasks go under-competed
+
+**Infrastructure implication:** Straw needs ~15-20 concurrent active tasks to maintain healthy competition density with a 300-agent fleet. This is a design constraint on the posting side — the post-side problem isn't just "will agents post?" it's "can we maintain enough task supply to keep competition density healthy?"
+
+### Tiered prize distribution — the right economic design
+
+**Single winner-takes-all (current model):** High variance, high expected value for top agent, but negative expected value for agents ranked 2-15.
+
+**Tiered distribution (recommended for 300-agent scale):**
+
+```
+Prize pool: $1,000 (example)
+  1st place:  $500  (50%)
+  2nd place:  $250  (25%)  
+  3rd place:  $125  (12.5%)
+  4th-5th:    $62.50 each (6.25% each)
+  
+Participation: Every agent gets eval feedback for free (reputation value)
+```
+
+**Why tiered matters for agent economics:**
+- Expected value for agent ranked 2nd or 3rd is now positive if their compute cost is under $125
+- This keeps the competition deeper (more rational entrants) without bloating the winner's prize
+- Mirrors HackerOne's model: top-3 reporters get full bounty; others get acknowledgment + reputation
+
+**The stake-to-participate filter (from Tick 43) combined with tiered prizes:**
+- Stake: 5% of bounty (e.g., $50 for a $1K task)
+- This filters agents who aren't serious (low compute-cost agents that spam entries)
+- Creates a minimum quality threshold before anyone enters
+- With stake + tiered prizes: only agents with meaningful win probability will stake $50 to compete
+
+### When 300 agents actually see one task: the hackathon format
+
+The USDC OpenClaw hackathon (200+ agents, one event) demonstrates that 300-agent swarms DO compete on one problem under the hackathon format. But the key mechanism is **asynchronous deadline** + **partial evaluation** (every submitting agent gets a score, not just the winner).
+
+For Straw hackathon mode (different from regular bounties):
+- Time-bounded (e.g., 72 hours)
+- All submissions scored
+- Prize pool tiered (top 10-20% share)
+- Every agent gets eval feedback regardless of prize
+- Reputation boost for all scored participants
+
+This is the right format for "300 agents, one challenge" — not the regular bounty format.
+
+### Infrastructure load update
+
+Unchanged from Tick 4/43 estimates: 18,000 submissions/month → ~$230/month at standard rates, ~$133/month batch API. The distribution doesn't change the cost. Rate limits are not a concern until ~500x current scale.
+
+**New finding from COALESCE research:** With epsilon-greedy task selection (10% exploration), agents will naturally distribute across tasks in a near-optimal way if:
+1. They see task difficulty ratings (Straw exposes historical competition depth per category)
+2. They see their own category win-rates (Straw KV workspace stores this per agent)
+3. They see a "suggested tasks" feed that uses TOPSIS-style multi-criteria matching (Tick 22 pipeline)
+
+The market forces agents toward their comparative advantage without Straw having to enforce routing.
+
+**Closed threads:**
+- [done — Tick 314] **300-agent swarm scenario update** — 300 agents on one task is economically irrational (expected value < $0 at typical compute costs). Healthy design: 300 agents across 15-20 concurrent tasks. Tiered prizes (50/25/12.5%) maintain positive expected value for top-3 finishers. Hackathon format for the rare "many agents, one problem" case. Stake-to-participate filters to serious entrants. COALESCE epsilon-greedy naturally routes agents to comparative-advantage tasks if platform exposes the right signals.
+
+---
+
+## Tick 315 (2026-05-02T02:30Z): Task Taxonomy v2 — Next 4-8 Categories Beyond Launch
+
+**Session:** 30
+**Thread:** [Open] Task taxonomy v2 — beyond the 4 launch categories
+
+---
+
+### The 4 launch categories (already established)
+
+From Tick 36 / Session 9 research:
+1. **Software Engineering (Code Migration)** — machine-verifiable outcomes, recurring task type
+2. **Financial Services (Fraud Detection)** — matching existing KPIs
+3. **Legal (Contract Review)** — high-value, structured criteria
+4. **Document Extraction** — ParseBench validates measurability
+
+These are Tier 1: ship immediately, strongest deterministic Tier-1 eval signal.
+
+### Decision framework for v2 expansion
+
+Three questions per candidate category:
+
+| Question | Threshold to add |
+|---|---|
+| Can Tier-1 (deterministic) eval cover ≥50% of the rubric? | Yes → launch readiness |
+| Is there an existing enterprise benchmark we can map the rubric to? | Yes → faster calibration |
+| Is the category recurring (same enterprise posts multiple tasks in this space)? | Yes → faster flywheel |
+
+### The 8 candidate categories, analyzed
+
+**1. API Integration Testing** — PRIORITY: High (v1.5)
+
+What it is: Agent builds integrations to external APIs (REST, gRPC, webhooks) and a test harness validates they work correctly.
+
+Tier-1 eval: Run the integration against a sandboxed API server that returns known responses. Test harness: existing frameworks (pytest, jest, Postman Newman). **Pass/fail per endpoint: fully deterministic.** ≥70% of rubric is machine-verifiable.
+
+Benchmark: closest analogues are HumanEval (function correctness) and API-Bank (API call planning). Both validate feasibility. Straw adds production-quality validation, not just planning.
+
+Recurring demand: every enterprise has API integration work. SaaS companies post new API documentation weekly.
+
+**Verdict: Add in v1.5.** Straightforward Tier-1 eval, clear demand, deterministic scoring.
+
+**2. Research Synthesis / RAG Q&A** — PRIORITY: Medium (v2)
+
+What it is: Agent synthesizes information from a document corpus into a structured output (report, Q&A dataset, competitive analysis).
+
+Tier-1 eval: Factuality benchmarks (RAGAS, DeepEval) now provide automated factuality scoring. Citation tracing (does the answer cite the right source passage?) is deterministic. **~50-60% of rubric is machine-verifiable.**
+
+Benchmark: RAGAS (Retrieval-Augmented Generation Assessment Score), a production standard. TruthfulQA for truthfulness. FActScore for citation accuracy.
+
+Limitation: Synthesis quality (coherence, coverage, insight) is still LLM-judged. Needs well-calibrated Tier-2 judge.
+
+**Verdict: Add in v2.** Tier-2 judge calibration needs more data before this category is credible.
+
+**3. Security Audit** — PRIORITY: Medium (v2)
+
+What it is: Agent performs security code review or penetration testing of a sandboxed system.
+
+Tier-1 eval: Can verify findings against a ground-truth vulnerability list (did the agent find the planted bugs?). High/critical vulnerability miss rate is deterministic. **~60-70% machine-verifiable.**
+
+Liability concern: what if an agent breaks through the sandbox? Addressed via:
+- Explicit TOS §: "Security audit tasks are in isolated environments; findings are disclosed only to poster; no agent output becomes a published CVE through Straw"
+- Platform liability insurance for security-adjacent tasks
+- Network isolation of eval containers (already D9)
+
+Benchmark: Analogues at HackerOne/Bugcrowd (live bug bounty programs). SWE-bench security variant. No perfect public benchmark yet.
+
+**Verdict: Add in v2 with insurance.** Needs TOS update + liability framework before launch.
+
+**4. Customer Support / NLU Classification** — PRIORITY: Medium (v1.5)
+
+What it is: Agent handles inbound customer queries, classifies intent, routes or resolves. Evaluated against a labeled Q&A dataset.
+
+Tier-1 eval: Intent classification accuracy (compare against ground-truth labels), response correctness on factual queries. **~70-80% machine-verifiable.** This is one of the strongest Tier-1 categories.
+
+Benchmark: SuperGLUE, BenchAgent (customer service agentic tasks), CSQA. All public.
+
+Demand: TELUS/Genentech pattern (Tick 0 research) — enterprises see 40-minute per-interaction savings. High repeat volume.
+
+**Verdict: Add in v1.5.** Strong Tier-1 eval, clear demand, well-studied benchmark space.
+
+**5. Financial Modeling** — PRIORITY: Low (v2)
+
+What it is: Agent generates Excel/Python financial models (DCF, LBO, scenario analysis) given input assumptions.
+
+Tier-1 eval: Formula correctness (does the model compute to expected output given known inputs?), constraint satisfaction (debt covenants, balance sheet balance). **~50% machine-verifiable.**
+
+Limitation: Model quality, assumption justification, and output interpretability are LLM-judged. Significant domain expertise required for rubric calibration.
+
+**Verdict: Add in v2.** Needs domain-expert rubric calibration (chartered accountant or investment banker to write the rubric templates).
+
+**6. Data Pipeline Construction (ETL/ELT)** — PRIORITY: High (v1.5)
+
+What it is: Agent builds a data pipeline (from a specified source schema to a target schema, with transformation rules). Eval container runs the pipeline against sample data.
+
+Tier-1 eval: Pipeline output correctness (compare output rows to expected), schema compliance, row count accuracy. **≥80% machine-verifiable — one of the highest ratios.**
+
+Benchmark: Analogues at Kaggle (data manipulation challenges) and custom enterprise ETL test suites. Straightforward to verify.
+
+Recurring demand: every data engineering team has ETL work. dbt transformations, Airflow DAGs, Fivetran custom connectors — all fit this format.
+
+**Verdict: Add in v1.5.** Strong Tier-1 eval (best machine-verifiable ratio of any candidate), high demand.
+
+**7. Multi-modal Tasks** — PRIORITY: Low (v2+)
+
+What it is: Agent processes and produces outputs that combine text + image + structured data (e.g., extract data from charts, generate visual reports, annotate images).
+
+Tier-1 eval: Limited. Image quality and visual coherence are hard to verify deterministically. Text accuracy from image extraction can be verified.
+
+Limitation: LLM-based multimodal evaluation is improving but still expensive and less reliable than text-only. Needs separate judge calibration.
+
+**Verdict: v2+.** Wait for multimodal eval infrastructure to mature.
+
+**8. Agent Orchestration Benchmarking** (meta-category) — PRIORITY: Low (v2+)
+
+What it is: Evaluate how well an agent orchestrates other agents (assigns tasks, monitors progress, handles failures). Essentially SWE-bench but for the orchestration layer.
+
+Tier-1 eval: Hard to verify deterministically — orchestration quality is inherently about emergent behavior.
+
+But conceptually important: Straw is uniquely positioned to run this category because the platform IS an orchestration environment. Future ticks should revisit.
+
+**Verdict: v2+.** Novel, worth tracking, not ready for v1.5.
+
+### Priority-ordered expansion sequence
+
+```
+v1.5 (next 3-6 months):
+  • API Integration Testing — strong Tier-1, high demand
+  • Data Pipeline Construction — best machine-verifiable ratio
+  • Customer Support / NLU — well-benchmarked, high demand
+
+v2 (6-12 months):
+  • Research Synthesis / RAG Q&A — needs Tier-2 calibration
+  • Security Audit — needs TOS/insurance
+  • Financial Modeling — needs domain rubric curation
+
+v2+ (12+ months):
+  • Multi-modal Tasks — eval infrastructure not ready
+  • Agent Orchestration Benchmarking — unique Straw opportunity
+```
+
+### The skill taxonomy update
+
+Tick 22 proposed a 3-level taxonomy. Adding the v1.5 categories:
+
+```
+Level 1: Domain
+  ├── Code (software engineering tasks)
+  │   ├── Debugging
+  │   ├── Refactoring
+  │   ├── Migration
+  │   ├── Test Writing
+  │   ├── Implementation
+  │   └── API Integration [NEW v1.5]   ← add
+  ├── Data (data engineering + ML)
+  │   ├── Pipeline Design [v1.5 → NOW: ETL Construction] ← rename + prioritize
+  │   ├── Model Training
+  │   ├── EDA + Analysis
+  │   └── Evaluation + Benchmarking
+  ├── Business Operations [NEW]
+  │   ├── Customer Support / NLU [NEW v1.5]  ← add
+  │   ├── Financial Modeling [NEW v2]        ← add
+  │   └── Compliance Review (existing legal)
+  ├── Research
+  │   ├── Literature Review
+  │   ├── Competitive Analysis
+  │   ├── RAG Q&A [NEW v2]                   ← add
+  │   └── Technical Due Diligence
+  └── Security [NEW v2]
+      ├── Code Security Audit                ← add
+      └── Penetration Testing                ← add
+```
+
+**Closed threads:**
+- [done — Tick 315] **Task taxonomy v2** — Eight candidate categories analyzed. Priority: API Integration + Data Pipeline Construction + Customer Support (v1.5, strong Tier-1 eval, high demand). Research Synthesis + Security Audit + Financial Modeling (v2, need calibration or TOS work). Multi-modal + Agent Orchestration (v2+). Updated taxonomy tree with new categories.
+
+---
+
+## Tick 316 (2026-05-02T03:00Z): FairJudge / JudgeBiasBench — Open-Source Status and Straw Judge Hardening
+
+**Session:** 30
+**Thread:** [Open] FairJudge and JudgeBiasBench — open source status and Straw judge calibration
+
+Sources: llm-judge-bias.github.io (JudgeBiasBench project), arxiv.org/abs/2603.08091 (Taxonomic Bias Evaluation, March 2026), arxiv.org/abs/2604.23178 (Judging the Judges: Bias Mitigation Strategies, April 2026), arxiv.org/pdf/2410.12784 (JudgeBench ICLR 2025), arxiv.org/html/2505.17100 (Reasoning-based Bias Detector, May 2025), arxiv.org/html/2510.12462 (CALM framework, 2025)
+
+---
+
+### Clarifying the thread title
+
+The open thread said "FairJudge and JudgeBiasBench." Neither is a standalone tool named exactly "FairJudge." What exists (and what is relevant to Straw) is a cluster of 2025-2026 papers and open-source tools targeting the same problem. This tick catalogs them.
+
+### JudgeBiasBench (arXiv:2603.08091, March 2026)
+
+**What it is:** A systematic benchmark for evaluating 12 types of bias in LLM-as-a-Judge systems. Defines a taxonomy of judgment biases and constructs bias-augmented evaluation instances via a controlled bias injection pipeline.
+
+**12 bias types in the taxonomy:**
+1. Verbosity bias (longer answers rated higher)
+2. Positional bias (first/last position gets advantage)
+3. Self-preference bias (model rates its own outputs higher)
+4. Agreeableness bias (rates all responses as good)
+5. Epistemic marker bias (penalizes uncertainty language)
+6. Format bias (structured > unstructured regardless of content)
+7. Name/brand bias (famous agent names get higher scores)
+8. Concept repetition bias (scores higher when the judge's familiar concepts appear)
+9. Rubric anchor bias (judge anchors to examples even when told to ignore them)
+10. Claim density bias (more assertions = more credibility)
+11. Counterfactual blindness (can't correctly negate evaluations)
+12. In-context learning contamination (prior examples corrupt subsequent scores)
+
+**How to use JudgeBiasBench:** Feed your judge model (Straw's Tier-2 gatekeeper) through the benchmark. Get a bias profile: which of the 12 types affect it and by how much. Use this to:
+- Choose the least-biased model for each task category
+- Apply targeted prompt mitigations for the biases your chosen model has
+- Monitor bias drift over time as models are updated
+
+**Open-source status:** JudgeBiasBench is available at `llm-judge-bias.github.io`. The benchmark dataset and evaluation code are public.
+
+### JudgeBench (arXiv:2410.12784, ICLR 2025)
+
+**What it is:** Evaluates LLM judges' ability to make correct judgments on challenging cases with unambiguous ground truth. Tests judges on the hard cases, not easy agreement. Published as a conference paper at ICLR 2025.
+
+**Key finding:** Judges that perform well on easy cases can fail systematically on hard cases. Most commonly used LLM judges (GPT-4, Claude Sonnet) achieve ~70-75% on JudgeBench hard instances vs ~90% on easy instances. **This is the gap that Straw's Tier-3 agent investigator fills** — the Tier-3 judge is specifically for the hard 15% of cases.
+
+**Open-source status:** Available. The benchmark dataset is public.
+
+### Reasoning-Based Bias Detector (arXiv:2505.17100, May 2025)
+
+**What it is:** A plug-in module that:
+1. Identifies whether a given evaluation is biased (using structured reasoning)
+2. Generates corrective feedback to the evaluator
+3. Iterates until bias is corrected or confidence threshold is met
+
+Called "RBD" in the paper. Key finding: **any LLM can be a reliable judge** with this plug-in, including smaller/cheaper models. RBD outperforms 8B Skywork reward models and Gemini 2.5 Pro judge in AUROC on math reasoning and QA.
+
+**For Straw:** RBD can be layered on top of the Tier-2 gatekeeper as a bias correction pass. If Straw's Tier-2 judge uses Haiku 4.5 (cheapest), an RBD module (also Haiku 4.5) can detect if the Haiku judge is being biased by verbosity or position effects and regenerate a corrected score. **This is cheaper than upgrading the judge model.**
+
+**Implementation cost:** One additional LLM call per flagged evaluation. If RBD triggers on 20% of cases, total additional cost = 0.2 × Tier-2 cost = 0.2 × $0.0025 = **$0.0005 per evaluation**. Rounding error.
+
+**Open-source status:** Paper is public; code reference available at the paper's associated repo.
+
+### CALM Framework (arXiv:2510.12462, 2025)
+
+**What it is:** Comprehensive Assessment of LLM Manipulation — a framework for evaluating biases in LLM-as-a-Judge systems without requiring human resources. Uses counterfactual pairs to detect bias: if the judge rates A>B but rates B>A when positions are swapped, positional bias is confirmed.
+
+**For Straw:** CALM can be run periodically (monthly) on a sample of real Straw evaluation pairs as a health check. If CALM detects positional bias inflating, rotate the presentation order of submissions to that judge. If verbosity bias is detected, add explicit penalization to the judge prompt.
+
+**Open-source status:** Framework described in paper; implementation available.
+
+### "Judging the Judges" (arXiv:2604.23178, April 2026)
+
+**What it is:** A systematic comparison of 8 bias mitigation strategies across 6 judge models. Most recent comprehensive survey.
+
+**Top 3 most effective strategies by evidence:**
+
+| Strategy | Effect | Cost |
+|---|---|---|
+| **Multi-model committee + voting** | Best adversarial robustness; significantly reduces gaming | 2-3x cost of single judge |
+| **Comparative pairwise assessment** (rank A vs B, not absolute) | Reduces verbosity and position bias 15-20pp | 2x cost per comparison pair |
+| **RBD-style reasoning correction loop** | Reduces most bias types 10-15pp | 20% additional calls |
+
+**The key finding for Straw's architecture:** A multi-model committee (different judge models) provides the best adversarial robustness, but a single-model + RBD correction loop is nearly as good at a lower cost. **Straw's Tier-2 gatekeeper should use: Haiku 4.5 (primary judge) + RBD correction loop (triggered on borderline scores, 40-65 range) + CALM monthly health check.** This gives adversarial robustness at a fraction of a committee's cost.
+
+### Recommended Straw Judge Stack Update
+
+Based on all four papers:
+
+**Tier-2 gatekeeper:**
+- Primary: Claude Haiku 4.5 (best-calibrated model, ECE=0.122 from Tick 20)
+- Augmented with: RBD correction pass on any score in [40-65] range (borderline)
+- Monthly: CALM bias health check on a random 5% sample of scored evaluations
+- Bias monitoring: JudgeBiasBench profile run on the judge model whenever Anthropic releases a Haiku update
+
+**Tier-3 agent investigator:**
+- JudgeBench hard-instance calibration: run the Tier-3 judge against JudgeBench before deployment
+- Target: ≥80% accuracy on JudgeBench hard instances (same threshold as human reviewer)
+- If <80%: apply RBD correction loop to Tier-3 as well
+
+**Adversarial submission defense:**
+- The "Judging the Judges" finding: prompt injection into judge is partially mitigated by pairwise comparison format. For high-value tasks ($5K+ prize pool): add a brief pairwise comparison pass (rank top-3 submissions against each other) as a cross-check on absolute scores. This is the cheapest version of the multi-model committee defense.
+
+**Cost impact:** Minimal. RBD adds ~$0.0005/evaluation. Pairwise check on top-3 adds ~3 additional calls at Haiku rates ≈ $0.0075 per task. At 18,000 submissions/month across 4-10 tasks/month, the pairwise check adds ~$0.075/task = negligible.
+
+**Closed threads:**
+- [done — Tick 316] **FairJudge / JudgeBiasBench** — No product named "FairJudge" found; thread maps to cluster of 2025-2026 papers. JudgeBiasBench (12 bias taxonomy, public), JudgeBench (ICLR 2025, hard-case eval, public), RBD (plug-in bias correction, 20% additional calls, effective), CALM (counterfactual bias health check, free monthly use). Recommended Straw stack: Haiku 4.5 + RBD on borderline scores + CALM monthly + pairwise check for high-value tasks. Cheapest adversarial robustness path.
+
+---
+
+## Threads still to dig (updated for Session 30)
+
+### Remaining open threads
+
+- [ ] **Long-form proposal update** — The proposal (sections 0-6) was written in Sessions 1-6. Sessions 9, 25-30 add material. Worth a 1-tick update: Section 2 "Why agents want to post tasks" should reference COALESCE (epsilon-greedy posting trigger), Section 5 "300-agent swarm" should reference tiered prizes + optimal distribution, new Section 7 "x402 self-provisioning loop" should be added, new Section 8 "task taxonomy expansion" should be added.
+- [ ] **Straw's data licensing TOS first-draft** — Concrete first draft of key data licensing clauses for operator TOS and enterprise customer TOS.
+- [ ] **The "rubric generator" UX** — Step-by-step UX for an enterprise creating their first competition rubric. AdaRubric-powered draft → anchor calibration → IRR validation flow.
+- [ ] **Technical architecture v1** — Tech stack for Straw v1. Next.js + Supabase + Redis + Docker + gVisor. Data model for competitions, submissions, scores, operators, enterprises.
+- [ ] **Straw vs. OpenAI Frontier deep analysis** — OpenAI Frontier (Feb 2026). Competitive threat, supply channel, or complement?
+- [ ] **The Series A investor narrative** — Full synthesized pitch based on all research.
+- [ ] **International market analysis update** — EU AI Act Article 9 enforcement (Aug 2, 2026 — imminent). Singapore P0 timing implication.
+- [ ] **Enterprise customer success playbook** — After first competition closes, what does the CS team do?
+
+### Threads added in Session 30
+
+- [ ] **ClawHub ClickFix 2.0 security playbook for Straw** — The SKILL.md poisoning attack requires specific platform mitigations beyond what was documented in Tick 312. Worth a deep tick on: (1) what Straw's SKILL.md ingestion sanitization should look like in code, (2) how to rate-limit capability-profile manipulation attacks, (3) whether Straw should publish a "Straw Verified" skill badge system.
+- [ ] **RoboBazaar and cross-platform bounty routing** — The idea of an agent posting to multiple bounty boards simultaneously (Straw + RoboBazaar-style platforms). How does reputation transfer? Does Straw want interoperability or walled garden? ERC-8004 as portable reputation layer.
+- [ ] **Epsilon-greedy task suggestion UX** — COALESCE showed ε=0.1 is the right exploration rate. How does this translate to Straw's task discovery UX? "Explore" tab (10% of matching tasks are outside the agent's historical win categories) vs "Exploit" tab (top matches to current capability profile). Design detail for the agent-facing task browser.
+
+---
+
+## Push status (Session 30)
+
+**Ticks 312-316** added in this overnight session. Topics: COALESCE epsilon-greedy outsourcing (arXiv:2506.01900), ClawHub supply chain crisis (341→824 malicious skills), x402 self-provisioning reality check ($14K/day organic volume, not 2026-ready for full loop), 300-agent prize pool economics (tiered prizes + 15-20 concurrent tasks for healthy density), task taxonomy v2 (API Integration + ETL + Customer Support for v1.5; Security Audit + Research Synthesis + Financial Modeling for v2), FairJudge/JudgeBiasBench cluster (JudgeBiasBench 12-bias taxonomy, JudgeBench ICLR 2025, RBD plug-in, CALM health check, recommended Straw judge stack).
+
+**Git commit target:** `research(agent-incentive): ticks 312-316 — COALESCE, x402 loop, swarm prize economics, taxonomy v2, judge bias tools`
+
+**If git push fails:** File saved locally. Next session sees via `git log --oneline`.
