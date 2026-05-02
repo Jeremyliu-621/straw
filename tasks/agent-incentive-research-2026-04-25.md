@@ -57278,3 +57278,182 @@ This is a specific, quotable story. It demonstrates that the evaluation was rigo
 ## Closed thread (Tick 351)
 - [done — Tick 351] **V0 launch competition design** — Recommended: TypeScript code migration + architectural modernization task. Self-funded ($25K prize pool), Jeremy uses real Straw codebase as the task. Evaluation: deterministic tests (50%) + ZeroClaw judge (50%). Calibration: 3 manual anchor examples before launch. 10 direct operator invitations (Devin, OpenHands, Factory, Augment, Cosine, Cursor, Codex, SWE-agent, Cline, Morph). Timeline: invitations May 9-15, competition May 16-29, results June 1-7, winner engagement June 8-14. Success metrics defined (minimum/strong/exceptional). 7-item pre-launch risk checklist.
 
+
+---
+
+## Threads still to dig (updated for Session 33)
+
+### Open threads carried from Session 32 (now closed)
+- [done — Tick 345] **FCA Cohort 2 application content** — Complete 7-section application draft. Opens May 5. Frame as compliance infrastructure.
+- [done — Tick 346] **Prize Pool Escrow dual-track settlement** — Three-layer architecture. Stripe restriction discovered. Circle Mint + Payouts recommended. AP2 + x402 for USDC track.
+- [done — Tick 347] **Agent Operator Acquisition Strategy** — Top 20 operators ranked. 5 segments. Differentiated pitch matrix. Asymmetric play: public launch competition.
+- [done — Tick 348] **Straw TOS Section 8 — Competition Rules and Fairness** — 11 subsections, 9-threat adversarial map, 10 engineering backlog items.
+- [done — Tick 349] **D31: CGAE + ABC engineering spec** — DB schema, 3 jobs, 5 APIs, 17 acceptance criteria, phased build plan.
+- [done — Tick 350] **D31 formal DECISIONS.md entry** — Written and committed.
+- [done — Tick 351] **V0 launch competition design** — TypeScript migration task, $25K prize, 10 operators, calibration step, timeline.
+
+### New threads opened in Session 33
+
+- [ ] **Straw TOS Section 9 — Agent Identity and KYC** — Prize pools of $600+ trigger 1099-MISC. What KYC does Straw require from agent operators? For individual operators: SSN or EIN. For non-US operators: W-8BEN. For AI-native operators (agents that self-register via A2A): what identity anchor is required? AP2 verifiable identity may be sufficient for sub-$600 payouts.
+
+- [ ] **Straw TOS Section 10 — Payment and Prize Pool Terms** — Builds on Tick 346 (escrow architecture). What are the enterprise's payment terms (net 30? upfront? refund policy)? What happens if the prize escrow is short when the winner is announced? What is Straw's platform fee model (explicit in TOS)?
+
+- [ ] **MAS AI Verify Foundation partnership** — Tick 250 and Tick 325 both pointed to IMDA AI Verify as the Singapore path (faster than formal MAS sandbox). What does an IMDA partnership look like in practice? What would Straw contribute to AI Verify's framework? Who is the contact person?
+
+- [ ] **Straw V0 rubric template library** — Section 34 (Tick 320) describes the rubric generator UX but doesn't define the default templates. What are the 5-10 canonical rubric templates for the most common task categories (TypeScript migration, data pipeline, API integration, RAG system, fraud detection)? These become the library moat mentioned in Tick 320.
+
+- [ ] **D32: Prize Pool Escrow formal DECISIONS.md entry** — Tick 346 wrote the architecture; D32 should formalize it in DECISIONS.md the way D31 formalized the tier system.
+
+- [ ] **Long-form proposal Section 46: The Straw launch playbook — May to September 2026** — Integrates Section 16 (30-day V0 launch), Tick 347 (operator acquisition), Tick 351 (launch competition design), and Tick 345 (FCA application) into a single coherent timeline from May 2 to September 30, 2026. What happens when, in what order, and why.
+
+---
+
+## Tick 352 (2026-05-02T10:00Z): Session 33 morning briefing
+
+*Final tick for Session 33. What Jeremy should read first. What decisions need to be made. What's been proven this session.*
+
+---
+
+## Session 33 Summary: Morning Briefing (May 2, 2026)
+
+### What Session 33 Produced (Ticks 345-352)
+
+**Eight research outputs in this overnight session:**
+
+---
+
+**1. FCA Supercharged Sandbox Cohort 2 — Application Draft (Tick 345)**
+
+Applications open **May 5 — in 3 days**. The complete 7-section application is ready:
+- Product description (Straw as agentic AI evaluation infrastructure)
+- Problem framed for UK financial services (82.1% AI failure rate, Consumer Duty + SM&CR + PS21/3 requirements)
+- Test proposal (3 competitions: credit scoring, compliance query, fraud detection) with FCA-supervised UK fintech partners
+- The specific regulatory question Straw asks the FCA to answer
+
+**Action items for today (May 2-3):**
+1. Identify 1-2 UK fintech design partners to name in the application
+2. Retain FCA regulatory advisor (£5-7K, 3-5 days) — start today
+3. Register UK entity if not done (Companies House, £12, 24 hours)
+4. Submit on May 5 at opening — first applications get priority
+
+**Why this is worth Jeremy's time:** 6.6× more investment raised by sandbox participants vs. non-sandbox peers. FCA showcase day = 50+ FCA-supervised fintechs in the room. "FCA sandbox participant" in Series A pitch.
+
+---
+
+**2. Prize Pool Escrow Architecture (Tick 346)**
+
+**Critical finding: Stripe prohibits competition entry fees.** This is not obvious and could have delayed a launch. The fix: frame enterprise payments as B2B service fees ("AI evaluation services"), not competition entry fees.
+
+**The recommended architecture:**
+- Enterprise → Stripe Invoice (B2B ACH) → Circle Mint (institutional account, free USD→USDC)
+- App-layer conditional release state machine (5 states, fraud hold window)
+- Circle Payouts API → USDC to agent's Base wallet (<$0.001 fee)
+- Fiat fallback via Circle → ACH for non-crypto agents
+
+**No smart contracts needed at launch.** Cost: <0.25% of prize pool (vs. competitors' 2.5-3.5%).
+
+**Action item:** Apply for Circle Mint institutional account this week (1-2 week approval). This is on the critical path for v0 launch.
+
+---
+
+**3. Agent Operator Acquisition Strategy (Tick 347)**
+
+**Top 20 agent operators ranked** with specific pitches per operator type. The top 5 to contact immediately:
+1. Cognition AI / Devin (email drafted in Tick 342 — send it now)
+2. Factory AI / Code Droid ($1.5B valuation, fresh money, MongoDB/EY clients)
+3. Augment Code / Auggie (best SWE-bench Pro score, needs independent validation)
+4. All Hands AI / OpenHands (open-source community pathway)
+5. Cosine AI / Genie (philosophically identical to Straw's value framing)
+
+**The asymmetric play:** Launch competition with top 10 operators invited creates competitive dynamic + media story in one move.
+
+---
+
+**4. TOS Section 8 — Competition Rules and Fairness (Tick 348)**
+
+Complete 11-subsection draft covering: simultaneous submission rules, plagiarism detection (AST+TLSH+embedding fingerprinting), collusion detection (9-threat adversarial map), identical output tie-breaking, appeals process (72-hour window, 3/month limit), poster overrides, disqualification, reporting. 10 engineering backlog items.
+
+**Decision needed:** What's the minimum TOS state for v0 launch? At minimum: Sections 7 (data rights) + 8 (competition rules) + 10 (payment terms, not yet written) must exist before the first real money changes hands.
+
+---
+
+**5. D31: CGAE + ABC Engineering Spec (Tick 349) + DECISIONS.md Entry (Tick 350)**
+
+D31 is now formalized in DECISIONS.md. Full engineering spec in Tick 349. Phase 19 scope (MVP): T0-T3 tiers + ABC badge levels 0-2. Key tables: `agent_tier_records`, `abc_compliance_logs`. 3 background jobs, 5 API endpoints, 17 acceptance criteria.
+
+**Decision needed:** Do we launch with 4 tiers (Unverified/Bronze/Silver/Gold) or 3 (Unverified/Bronze/Silver)? Recommendation: 4 tiers. Gold is the aspirational target for serious operators. Without Gold, Bronze and Silver don't feel like progression.
+
+---
+
+**6. Launch Competition Design (Tick 351)**
+
+Complete design for Straw's first public competition:
+- **Task:** TypeScript code migration + architectural modernization
+- **Codebase:** Real Straw code (older version of `src/app/api/`)
+- **Prize pool:** $25,000, winner takes all
+- **Evaluation:** 50% deterministic (tests, coverage, secrets scan) + 50% judge (code quality, docs)
+- **Timeline:** Invitations May 9-15, competition May 16-29, results June 1-7
+- **10 operator invitations** (Devin, OpenHands, Factory, Augment, Cosine, Cursor, Codex CLI, SWE-agent, Cline, Morph)
+- **Calibration:** Jeremy writes 3 anchor examples before launch (Gold/Silver/Bronze)
+
+**The "Straw eats its own cooking" framing is the media story.** "We built a competition platform. We ran a competition to improve our own code. The winning AI agent is now in our codebase." This is impossible to fake and impossible to ignore.
+
+---
+
+**7. Six New Research Threads Opened (end of this tick)**
+
+See "Threads still to dig" section above. Priority order:
+1. **TOS Sections 9 + 10** — required before v0 launch (legal completeness)
+2. **D32: Prize Pool Escrow formal entry** — parallel to D31, formalizes Tick 346
+3. **Straw V0 rubric template library** — product-critical, enables faster enterprise onboarding
+4. **Long-form proposal Section 46** — the coherent May-September 2026 timeline
+
+---
+
+### Commit and Push Status
+
+All Ticks 345-352 committed locally (commits 1cda403 through this tick). Push to origin/main attempted below.
+
+---
+
+### Immediate Actions for Jeremy (This Morning, May 2)
+
+**Time-sensitive (do today):**
+1. **FCA advisor:** Call Clifford Chance / Linklaters / ComplyPort today. They have 3-day turnaround on FCA sandbox applications. Confirm they can support a May 5 application.
+2. **Circle Mint account:** Apply at circle.com/en/circle-mint. 1-2 weeks for approval. This blocks v0 payment infrastructure.
+3. **Devin outreach:** Send the Tick 342 email to Cognition AI (find the contact via LinkedIn/Twitter). This is a 5-minute task.
+
+**This week:**
+4. **V0 competition task:** Use the Tick 351 design. Create the TypeScript migration codebase from an older Straw branch. Test the eval pipeline against it.
+5. **Factory AI outreach:** Email Factory AI's BD team (factory.ai/contact or LinkedIn). The pitch is "you're at $1.5B valuation, we provide the independent case study that earns you the next $1.5B in enterprise contracts."
+6. **UK entity registration:** companies-house.gov.uk → file a private limited company. £12, 24 hours, done.
+
+**This sprint (next 2 weeks):**
+7. Add 10 engineering backlog items from TOS Section 8 (Tick 348) to TASKS.md
+8. Add 9 engineering backlog items from Tick 346 (escrow architecture) to TASKS.md
+9. Write TOS Sections 9 and 10 (critical for launch — next session)
+10. Apply for Circle Mint on Monday
+
+---
+
+### Research Status: Master File
+
+- **Total ticks:** 352
+- **File size:** ~57,300 lines
+- **Session 33 additions:** Ticks 345-352 (this file) + D31 in DECISIONS.md
+- **All Session 32 open threads:** Closed ✓
+  - FCA Cohort 2 application (Tick 345) ✓
+  - Prize Pool Escrow architecture (Tick 346) ✓
+  - Agent Operator Acquisition list (Tick 347) ✓
+  - TOS Section 8 (Tick 348) ✓
+  - D31 engineering spec (Tick 349) ✓
+  - D31 DECISIONS.md entry (Tick 350) ✓
+  - V0 launch competition design (Tick 351) ✓
+- **New threads opened:** 6 (see Threads still to dig above)
+
+---
+
+## Push status (after Session 33)
+
+Attempted push to origin/main. If push fails (remote credentials not available), all changes are committed locally. Next session should run `git push -u origin HEAD:main` or `git push origin HEAD` to sync.
+
