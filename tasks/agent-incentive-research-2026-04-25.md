@@ -47982,3 +47982,217 @@ Example: Mobile app
 - Engineering cost: 3 (separate mobile app development)
 Score = (1×3) + (1×2) + (2×1) - (3×2) = 3 + 2 + 2 - 6 = 1 → Cut
 
+
+---
+
+## Tick 296 — Straw's Year One Operations Plan
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Week-by-week operational reality of launching Straw
+
+### The Pre-Launch Phase (Months -3 to 0)
+
+Before any enterprise competition launches, significant groundwork is required. This is the unglamorous work that determines whether the launch succeeds.
+
+**Month -3 (Three months before target launch):**
+
+Engineering:
+- ZeroClaw core complete for 2 categories (contract_review + document_extraction)
+- Supabase schema deployed (all tables including evaluation_runs with immutability rules)
+- gVisor evaluation containers tested (100 isolated runs, no escapes detected)
+- BullMQ queues running with monitoring
+- Basic authentication working (enterprise + operator accounts)
+
+Business:
+- Singapore company incorporated (Private Limited, ACRA registered)
+- Bank account opened (DBS Business Account, multi-currency)
+- Stripe account configured (prize pool escrow account separate from operating account)
+- Design partner conversations: 10+ enterprise contacts, 2-3 serious candidates
+
+**Month -2:**
+
+Engineering:
+- Tier-2 LLM evaluation pipeline working (GPT-4o integrated, sealed scoring RLS)
+- Competition creation workflow (enterprise side) complete
+- Operator submission API working
+- Basic leaderboard post-competition
+
+Business:
+- First design partner LOI signed ($15-25K pilot)
+- 20 operators recruited to practice competition program
+- Practice competition for contract_review running (no enterprise, Straw-funded prize)
+- Discord server launched (invite-only, 20 operators + Straw team)
+- Landing page live (waitlist capture — "Enterprise AI Evaluation, Reimagined")
+
+**Month -1:**
+
+Engineering:
+- End-to-end test: 3 simulated enterprise competitions run, results verified
+- Score immutability stress test: attempted modification of evaluation_runs, confirmed blocked
+- gVisor escape test: third-party security review of sandbox configuration
+- API documentation (OpenAPI spec) published
+
+Business:
+- Design partner competition rubric finalized (co-designed with enterprise)
+- Prize pool escrowed (enterprise wires prize pool + platform fee before launch)
+- 50 operators invited to design partner competition (mix of practice veterans + new)
+- TOS finalized (reviewed by Singapore counsel)
+- Privacy Policy and Data Processing Agreement finalized
+
+---
+
+### Launch Week
+
+**Day 1: Competition goes live**
+- Design partner competition activates
+- Operators receive email: "New competition live in [Category]: $[Prize Pool]"
+- Submission window opens: 14 days (design partner specified)
+- ZeroClaw begins evaluating submissions in real-time
+
+**Day 1-14: Competition running**
+- Daily monitoring: submission count, queue depth, error rate
+- Operator support: Discord #competition-support channel staffed during business hours
+- No leaking of intermediate rankings (this is important — operators should not know where they stand during the competition)
+
+**Day 15: Competition closes**
+- Submission window closes
+- All Tier-1 evaluations complete (already running in background)
+- Tier-2 evaluations queue (top 20% of Tier-1 scorers)
+
+**Day 16-17: Tier-2 evaluation**
+- Sealed scoring completes for top scorers
+- Dispute window opens: 48 hours
+- Enterprise receives preliminary results (under NDA, before public)
+
+**Day 18: Results published**
+- Leaderboard goes live (with 48-hour dispute window)
+- Enterprise receives full results report (PDF + JSON)
+- Prize money distribution: if no disputes, wire to winning operators
+- Post-competition analysis meeting with enterprise customer
+
+**Day 20: Dispute window closes**
+- If disputes filed: triage begins
+- If no disputes: prizes fully distributed, competition marked "complete"
+
+---
+
+### Month 1-3: Early Operations Rhythm
+
+**Weekly cadence (founding team):**
+- Monday: product standup (what shipped, what's blocked)
+- Wednesday: customer call (enterprise check-in or operator office hours)
+- Friday: metrics review (submissions, scores, queue health, operator activity)
+
+**Key metrics to track weekly:**
+1. Active competitions (running)
+2. Submissions received (total + per competition)
+3. Operators who submitted (unique count)
+4. Tier-1 evaluation error rate (<1% target)
+5. Tier-1 average evaluation time (p50, p95)
+6. Dispute filings (count + type)
+7. Prize money distributed (total, by category)
+8. New operator signups (weekly)
+9. Operator first submission rate (% of signups who submitted)
+10. Enterprise NPS (monthly)
+
+**Acceptable early problems:**
+- Evaluation edge cases causing score anomalies → debug and fix within 48 hours
+- Rubric ambiguity disputes → expected, resolve via Rubric Curator, document for future templates
+- Operator submission format errors → improve error messages, add format validation
+- Slow queue processing → add concurrency, upgrade infrastructure
+
+**Unacceptable problems:**
+- Score manipulation (even accidental) → immediate freeze, investigation, full transparency
+- Container escape → immediate shutdown, emergency security review
+- Prize distribution error → same-day correction + operator notification
+- Enterprise data leak → immediate legal and regulatory notification
+
+---
+
+### Month 3-6: Scaling Operations
+
+By Month 4, the target is 3 concurrent competitions. This introduces complexity:
+
+**Multi-competition queue management:**
+Each competition's evaluations must be isolated from others. A slow competition (large documents, complex rubric) shouldn't starve a fast competition's evaluations.
+
+Solution: dedicated BullMQ queues per competition with fair scheduling. High-priority competitions (larger prize pools) get higher concurrency allocation.
+
+**Rubric consistency:**
+Three simultaneous competitions in three categories with three different rubric authors risk inconsistent quality standards. By Month 4, establish:
+- Rubric review process: every new rubric reviewed by Rubric Curator before competition launch
+- Template enforcement: all rubrics must derive from a validated template
+- Cross-competition calibration: Tier-2 evaluation model outputs are calibrated across competitions (a "9.4" in contract review should represent similar quality to a "9.4" in code migration)
+
+**Operator communication at scale:**
+With 100+ active operators and 3 concurrent competitions, Discord becomes the primary operator communication channel. Moderation required. Structure:
+- `#announcements` (Straw → operators, read-only)
+- `#competition-status` (real-time competition updates, bot-managed)
+- `#contract-review` (category-specific discussion)
+- `#code-migration`
+- `#general` (community discussion)
+- `#support` (operator questions, Straw team responds within 4 hours business days)
+
+**Customer success at scale:**
+One design partner → three enterprises requires a CS process, not just ad-hoc support:
+- Post-competition review call (within 1 week of results): what worked, what didn't
+- Quarterly business review (for customers >$25K ACV)
+- Renewal planning (90 days before contract end)
+- Expansion conversation trigger: when customer has run 2+ competitions in same category, probe adjacent categories
+
+---
+
+### What Gets Delegated
+
+Founders who try to do everything fail. Explicit delegation plan by Month 6:
+
+**Delegate to Co-Founder (Eval):**
+- ZeroClaw production operations
+- Evaluation quality review (audit sample of scores weekly)
+- Rubric Curator role (or hiring/managing a Curator)
+- Tier-3 adjudication coordination
+
+**Delegate to Co-Founder (GTM):**
+- All enterprise sales calls (after qualified)
+- Partnership conversations (academic, channel)
+- Customer success calls
+
+**Retain for Founder:**
+- Product vision and roadmap decisions
+- Investor relations
+- Key enterprise introductions (first meeting)
+- Hiring (all hires founder-interviewed until 10 people)
+- Legal and compliance strategy
+
+---
+
+### Year One Success Criteria
+
+At the end of Month 12, Straw should be able to demonstrate:
+
+**Product:**
+- 5 categories live (Tier-1 + Tier-2 evaluation)
+- Evaluation quality: <3% dispute rate on closed competitions
+- Platform reliability: >99.5% uptime on evaluation pipeline
+- Tier-1 evaluation time: p95 < 5 minutes
+
+**Business:**
+- 5+ paying enterprise customers
+- $500K+ ARR (or clear path to it with signed LOIs)
+- 200+ active operators (submitted in past 60 days)
+- NRR ≥ 110% on cohort of first 3 customers
+- 1 operator successfully licensed through P3 pathway
+
+**Team:**
+- 4-person founding team in place (founder + 3 hires)
+- SOC 2 Type II audit initiated
+- Singapore entity + India pilot entity established
+
+**Investor readiness:**
+- Series A narrative refined from design partner learnings
+- 2-3 warm investor intros via design partners or advisors
+- Data room complete (financials, customer evidence, product metrics)
+
+If these criteria are met, Straw is ready for a Series A at $10M valuation/$3-4M ARR run rate.
+
