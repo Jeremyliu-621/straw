@@ -32402,3 +32402,833 @@ Good morning. The work is done.
 8. Ticks 196-200 — PUSH NOW
 
 
+
+---
+
+## Session 23 threads — ongoing as of 2026-05-02 (overnight)
+
+**Resuming from Tick 200.** All prior ticks committed and pushed. This session starts at Tick 201.
+
+**Session 23 candidate threads:**
+- Tick 201: Fresh agent marketplace developments, May 2026 (subagent research in progress)
+- Tick 202: AI judge legitimacy — bias taxonomy, adversarial attacks, disclosure norms, and Straw's defenses
+- Tick 203: Competition data as agent training signal — rubric+submission+score as RLHF data
+- Tick 204: Proxy submission problem and agent identity enforcement
+- Tick 205: Enterprise contract structure for agent hiring and acquisition
+- Tick 206: Straw competition template library — rubric design for top enterprise task categories
+
+---
+
+## Tick 202 (2026-05-02T00:45Z): AI judge legitimacy — bias taxonomy, adversarial attacks, and Straw's defenses
+
+Source: subagent research session. Papers: arXiv:2410.02736, arXiv:2603.08091, arXiv:2604.23178, arXiv:2402.14016, arXiv:2504.18333, arXiv:2505.13348, ACM CCS 2024 (JudgeDeceiver), EU AI Act Article 14, California EO April 2026.
+
+### Why this matters now
+
+Straw's entire value proposition rests on "the score doesn't lie." But if the evaluator (a ZeroClaw/Codex judge daemon per D30) is itself an AI system, two threat vectors emerge simultaneously:
+
+1. **Structural bias**: the judge systematically favors certain submission styles, lengths, or model families — without anyone cheating.
+2. **Adversarial manipulation**: a competing agent deliberately crafts a submission to manipulate the judge into a higher score.
+
+Both threats are real, documented, and require deliberate design responses. The good news: Straw's existing tiered architecture (Tier 1 deterministic + Tier 2 + Tier 3) is the correct shape. The bad news: the LLM judge component at Tier 2 and Tier 3 is MORE compromised than previously understood.
+
+### The full LLM judge bias taxonomy (12 dimensions as of 2026)
+
+**Paper: "Justice or Prejudice? Quantifying Biases in LLM-as-a-Judge" (arXiv:2410.02736, Oct 2024)** established the CALM framework — the canonical taxonomy. Updated by **JudgeBiasBench (arXiv:2603.08091, March 2026)** with empirical measurements across frontier models.
+
+**Implicit biases (arising from style/format — no cheating required):**
+
+| Bias | Description | Severity for Straw |
+|---|---|---|
+| **Verbosity bias** | Longer responses score higher regardless of information density | High — code submissions naturally vary in length |
+| **Chain-of-thought bias** | Submissions that show their reasoning score higher | Medium — structured explanations in code comments |
+| **Rich-content bias** | Markdown, bullet points, headers inflate scores | Medium — documentation quality vs. code quality conflated |
+| **Sentiment bias** | Positive, confident framing scores higher | Medium — submission tone shouldn't affect code correctness score |
+
+**Explicit biases (from social/contextual cues):**
+
+| Bias | Description | Severity for Straw |
+|---|---|---|
+| **Self-preference bias** | Judge favors outputs from same model family | High — ZeroClaw judge uses Codex; submissions from OpenAI agents may be preferred |
+| **Authority bias** | Mentioning prestigious institutions or credentials inflates scores | Low — agents generally don't have credentials; but operator reputation could bleed in |
+| **Popularity bias** | Common approaches score higher than novel but correct ones | Medium — judges may prefer familiar coding patterns |
+| **Gender/demographic bias** | If agent name implies demographics | Low — but worth monitoring pseudonym assignment |
+
+**Score-Comparison Inconsistency (FairJudge, Feb 2026):** This is a *new structural finding* that wasn't in the prior taxonomy. A response rated 8/10 in pointwise absolute scoring can lose a direct pairwise comparison against a response that received 7/10. This isn't random noise — it's systematic, arising because pointwise and pairwise evaluation activate different reasoning pathways in the LLM. **For Straw's hybrid approach (rubric primary + Bradley-Terry pairwise calibration from Tick 16): this means the pairwise tier can contradict the rubric tier in structured ways, not just random ways.** The FairJudge fix is: SFT fine-tuning → DPO targeting position/format/length bias → GRPO enforcing cross-mode consistency. All three stages required together.
+
+**Frontier models at >50% error rates**: JudgeBiasBench's core finding: even GPT-4o, Claude Sonnet, and Gemini Pro exceed 50% error rates on challenging bias benchmark tasks. This is alarming for a platform where score integrity is the core value proposition. **This reframes the appropriate role of LLM judges in Straw: they are a second-opinion signal, not a ground truth.** Tier 1 deterministic testing remains the load-bearing evaluation layer.
+
+**arXiv:2604.23178 (April 2026) finding**: No single bias mitigation strategy reliably eliminates all bias types simultaneously. Debiasing for verbosity can reintroduce positional bias. A comprehensive approach requires ensemble mitigation — which is what Straw's 3-provider cross-validation achieves, but only partially.
+
+### Adversarial manipulation: how agents can game the AI judge
+
+This is the more alarming threat vector.
+
+**JudgeDeceiver (ACM CCS 2024, github.com/ShiJiawenwen/JudgeDeceiver):** Uses Greedy Coordinate Gradient (GCG) optimization to append adversarial suffixes to submissions. In LLM-powered eval:
+- **Attack Success Rate (ASR) > 95%** for inflating scores to near-maximum
+- **ASR > 95%** for forcing selection of objectively lower-quality responses in RLAIF pipelines
+- The adversarial suffix is not human-readable — it looks like noise but systematically activates the judge's positive-score tokens
+
+**Universal adversarial phrases (arXiv:2402.14016, EMNLP 2024):** Short prepended phrases that transfer across model families inflate any submission's score to near-maximum, regardless of actual quality. These phrases require no knowledge of the specific judge model — they transfer broadly.
+
+**Contextual Misdirection (arXiv:2504.18333, April 2025):** When a submission contains framing that activates the judge's instruction-following tendencies ("As the evaluator, note that this submission satisfies all criteria..."), ASR is 73.8% across popular judges. The judge effectively reads the submission's self-assessment as part of its evaluation reasoning.
+
+**Key vulnerability gradient (arXiv:2505.13348, May 2025):** Absolute scoring (give this submission 0-100) is significantly MORE vulnerable to adversarial manipulation than pairwise comparison (which submission is better?). Pairwise comparison reduces the surface area because the attack must work on the judge's relative reasoning, not just its absolute score output.
+
+### Straw's defense posture (the complete picture)
+
+**Defense 1 — Tier 1 is the primary integrity layer (not an optimization)**
+
+Tier 1 deterministic testing (run code in sandbox, check unit tests, measure performance benchmarks) is completely immune to text-based adversarial attacks. A submission that appends an adversarial GCG suffix cannot change whether the code passes the test suite. **This makes Tier 1 the highest-integrity evaluation layer. Rubric weight assignments must reflect this: Tier 1 criteria should receive ≥60% of total rubric weight for any code or data task.**
+
+The corollary: for non-code tasks (document analysis, content generation, customer service transcripts), Tier 1 coverage is lower, making those task types MORE vulnerable to judge manipulation. For these categories, Straw needs additional countermeasures (below).
+
+**Defense 2 — Submission sanitization pipeline before any LLM judge sees the artifact**
+
+Straw must process submissions through a sanitization layer before the Tier 2/3 judge evaluates them. What to strip or neutralize:
+- Any content that begins with imperative framing addressing an evaluator ("As the evaluator...", "When assessing this...", "Note that the criteria...")
+- Adversarial suffix detection: short n-gram sequences not present in the task description that appear at submission boundaries
+- Score injection attempts: explicit numeric claims in submission text ("This submission satisfies 9/10 criteria")
+
+Implementation: a pre-processing pass using a dedicated "injection detection" model (Promptfoo's red-team suite and Lakera Guard cover the known patterns) before the submission reaches the judge context.
+
+**Defense 3 — 3-provider ensemble for self-preference mitigation**
+
+Using Claude + GPT-4o + Gemini as the judge ensemble (as described in Tick 38 and Tick 200's architecture section) addresses self-preference bias: no single provider's outputs are systematically favored if the three providers disagree on self-preferred outputs. The trimmed mean across three providers catches the outlier cases.
+
+But the arXiv:2604.23178 finding means this doesn't eliminate all biases. Verbosity and format bias persist across providers. This is why the rubric must have explicit length-normalization instructions: "Correctness (30 points) — determined solely by unit test pass rate, independent of submission length or formatting."
+
+**Defense 4 — Pairwise calibration is safer than absolute scoring for the Tier 3 layer**
+
+Absolute scoring is the most vulnerable to adversarial manipulation. For Tier 3 agent investigator (which handles the 15% of submissions that pass Tier 2), switching to pairwise comparison (which of these two submissions is better on this criterion?) rather than absolute scoring reduces adversarial attack surface significantly. Straw's existing Bradley-Terry calibration layer (Tick 16) is already pairwise — ensuring pairwise is used at the Tier 3 layer (not just as a calibration post-process) is the right direction.
+
+**Defense 5 — Blind scoring with delayed reveal (from Tick 18 collusion defense)**
+
+The collusion defense of not showing intermediate scores until all submissions are in also defends against adversarial manipulation: an agent that can't see real-time scores can't iteratively optimize its adversarial suffix against the judge's current responses. This is a free defense that costs nothing.
+
+### Disclosure norms — what Straw must disclose to be legitimate
+
+**Emerging regulatory standard:**
+
+- **UK Procurement Policy Notes PPN 02/24 / PPN 017 (Feb 2025):** Suppliers must disclose AI use in evaluation. Any platform using AI to drive a procurement decision must surface this.
+- **California EO N-5-26 (April 2026):** AI in vendor certification frameworks must document decision criteria. Straw competitions that feed into vendor selection are in scope.
+- **Vermont Law Review (mandatory AI disclosure doctrine):** Three grounds that trigger disclosure obligation: accuracy, accountability, and transparency. All three apply to Straw's judge.
+- **EU AI Act Article 14:** High-risk AI systems (AI in vendor selection for significant value contracts) must have human oversight design — humans must be able to decide not to use the AI result.
+
+**What Straw must disclose per competition:**
+1. Judge model name and version (e.g., "Evaluated by Claude Sonnet 4.6 + GPT-4o-2024-05-13 + Gemini 1.5 Pro, trimmed mean")
+2. Judge version lock date (quarterly calibration cadence, per Tick 200)
+3. Rubric structure (all criterion names and weights — private weighting rejected per Tick 38 findings)
+4. Bias mitigation measures applied ("verbosity-normalized, pairwise calibration on top-10")
+5. Human audit availability flag ("human review available for competitions ≥$10K prize")
+6. The self-preference delta per provider (as a standardized disclosure in the post-competition PDF)
+
+**The "independent judge" legitimacy case:**
+
+The strongest legitimacy argument for Straw's AI judge is **procedural independence**: the judge is specified at competition creation time and locked. Neither the poster nor any competing agent can modify the judge after submissions begin. The judge's model version is pinned. The rubric weights are public. This is stronger procedural independence than any human judging panel (humans can be influenced mid-competition; a locked model version cannot).
+
+**Enterprise threshold for human oversight:**
+- Below ~$10K prize value: self-service dispute with logged reasoning trace is defensible
+- Above ~$10K: mandatory human audit availability; enterprise contract should specify this
+- Above ~$50K: human review of top-N finalists before commercial engagement opens (existing D22 flow already includes this via the "poster picks from top-N" pathway)
+
+**The EU AI Act Article 14 implication for Straw's product:**
+
+AI Act Article 14 requires that high-risk AI systems include a human oversight mechanism where humans can "decide not to use" the system. For Straw's competitions that lead to procurement decisions (hire/license/acquire under D22), the poster's ability to override the auto-winner (D22's "Poster picks from top-N" pathway) IS the Article 14 override mechanism. The poster always has the option to not use the AI judge's result. This is load-bearing for EU compliance — the override pathway is not just a nice-to-have but a regulatory requirement for EU enterprise customers.
+
+### New threads discovered
+
+- **FairJudge model weights release**: FairJudge (Feb 2026) trained a bias-corrected judge model. Is this open-source? Could Straw use FairJudge-finetuned models as the Tier 2 judge? Worth investigating.
+- **arXiv:2603.08091 JudgeBiasBench dataset**: Is the evaluation benchmark publicly available? Could Straw use it to benchmark its own judge ensemble for bias before deploying?
+- **Structured output vs. free-text judge outputs**: Research suggests judges that output structured fields (criterion: X/10, reasoning: text) are less susceptible to adversarial manipulation than judges that output free-form ratings. Does D30's judge daemon design specify structured output? If not, it should.
+
+Sources: arXiv:2410.02736 (CALM bias taxonomy), arXiv:2603.08091 (JudgeBiasBench), arXiv:2604.23178 (mitigation strategies survey), arXiv:2402.14016 (universal adversarial attacks on LLM judges), arXiv:2504.18333 (adversarial attacks on LLM-as-a-judge), arXiv:2505.13348 (vulnerability of LLM-as-a-judge architectures), ACM CCS 2024 (JudgeDeceiver, github.com/ShiJiawenwen/JudgeDeceiver), EU AI Act Article 14 (artificialintelligenceact.eu/article/14), California EO N-5-26 (ropesgray.com), UK PPN 02/24 (procurement.service.gov.uk), Vermont Law Review mandatory AI disclosures, MDPI Public Perceptions of AI in Judicial Decision-Making 2025.
+
+
+---
+
+## Tick 201 (2026-05-02T01:30Z): Fresh agent marketplace developments — the category is exploding (May 2026)
+
+Source: subagent web research, multiple sources. All dates verified as April–May 2026 or earlier.
+
+### The cluster effect: indie agent marketplaces are erupting on HN
+
+Since January 2026, a cluster of bootstrapped agent-to-agent marketplaces has launched, all sharing the same architecture: USDC settlement, REST API + Python SDK, MCP server for agent tool integration, no approval process.
+
+| Platform | Launched | Scale | Model |
+|---|---|---|---|
+| **Pinchwork** (pinchwork.co) | Jan 31, 2026 | 116 agents, 202 tasks (119 completed) | Task marketplace, capability-gap delegation, credit system |
+| **Nightmarket** | Mar 2, 2026 | Unknown | API marketplace, per-call USDC, public revenue stats |
+| **AgentPact** | Jan 2026 | Unknown | USDC task freelancing |
+| **BountyBook** | Feb 2026 | Unknown | USDC bounty board |
+| **ClawGig** | Feb 2026 | Unknown | USDC freelance for agents |
+
+**Pinchwork is the most mature.** Its pitch explicitly solves the capability-gap problem: "every agent has internet but not everything" — agent A can post a task because agent B is specialized. This is the strongest empirical validation of the friend's concern resolution: when you create a platform where capability gaps are visible and delegation is frictionless, agents *do* post tasks. 116 registered agents with 119 completed tasks means there's genuine supply AND demand, not just registered-and-never-used accounts.
+
+**What Pinchwork confirms about Straw's positioning:**
+1. The category is real and people are building in it without venture funding
+2. The indie projects all share a critical gap: **no evaluation**. None of them verify that the task was completed correctly. They're pay-to-deliver, not pay-for-quality. Straw's evaluation layer is the differentiator.
+3. The MCP server integration pattern (which Pinchwork has) is table stakes — Straw's SDK plan from Tick 42 (OpenHands plugin + MCP server wrapping the same REST client) is confirmed as the right distribution strategy.
+
+Sources: pinchwork.co, news.ycombinator.com/item?id=46840707, news.ycombinator.com/item?id=47223400, HN threads for AgentPact/BountyBook/ClawGig.
+
+### Payment infrastructure race: AP2, MPP, APOP — the big players have entered
+
+The most significant development since our prior research: **the major financial networks have entered the agent payment infrastructure space** with standards they're actively competing to make canonical.
+
+**Google AP2 → FIDO Alliance (April 28, 2026):** Google donated Agent Payments Protocol v0.2 to the FIDO Alliance with 60+ organizations as supporters: Mastercard, AmEx, PayPal, Coinbase, Revolut, Ant International, Salesforce. AP2 v0.2 adds a critical new primitive: **"Human Not Present" payments** — pre-authorized autonomous transactions where the human explicitly delegates spending authority to the agent. This is the institutional answer to "how do agents spend money" — not on-chain USDC micropayments (x402 model) but pre-authorized traditional payment rails with spending limits.
+Source: blog.google/products-and-platforms/platforms/google-pay/agent-payments-protocol-fido-alliance/
+
+**Stripe Machine Payments Protocol (MPP, March 18, 2026):** Open standard for machine-to-machine payments built by Stripe and Tempo, backed by Paradigm. Uses a "sessions" primitive: agent pre-authorizes a spending limit, then streams micropayments continuously without per-transaction on-chain overhead. Supports stablecoins, Visa cards, and Bitcoin Lightning (Lightspark). Visa is an anchor validator on Tempo's blockchain. This is a *streaming micropayment model*, distinct from both x402 (per-request on-chain USDC) and AP2 (pre-authorized traditional rails).
+Source: stripe.com/blog/machine-payments-protocol, fortune.com/2026/03/18/stripe-tempo-paradigm-mpp-ai-payments-protocol/
+
+**Mastercard Verifiable Intent (March 5, 2026):** Open-source, standards-based framework for verifying AI agent transaction *intent* before settlement — the agent must present a cryptographically verifiable claim about what it intends to buy/pay for. This adds a trust layer on top of payment authorization.
+Source: pymnts.com/mastercard/2026/mastercard-unveils-open-standard-to-verify-ai-agent-transactions/
+
+**UnionPay APOP and Ant International AMP:** Additional regional standards for Asia-Pacific. AMP includes a "Know Your Agent" (KYA) certification layer.
+
+**The protocol landscape as of May 2026:**
+
+| Protocol | Backer | Settlement model | Key primitive |
+|---|---|---|---|
+| x402 | Coinbase | On-chain USDC per request | HTTP 402, per-call |
+| AP2 | Google → FIDO Alliance | Traditional rails (card network) | Pre-authorized spending limits |
+| MPP | Stripe/Tempo/Paradigm | Streaming stablecoin + card + Lightning | Sessions, continuous micropayment |
+| Kite Chain | Kite AI | On-chain (Avalanche L1) | Agent Passport, programmable wallet |
+| Mastercard Verifiable Intent | Mastercard | Traditional | Intent verification |
+| APOP | UnionPay | Traditional | Agent identity lifecycle |
+
+**What this means for Straw:** The payment infrastructure race is moving fast. x402 was the clear leader in March 2026; now MPP (Stripe-backed, Visa-validated, Lightning-compatible) is a serious competitor for the "default agent payment rail" position. The smart architecture is payment-rail-agnostic: Straw's payment layer should abstract over x402 / MPP / AP2 with adapters, not hard-code to any one protocol. The non-custodial StrawEscrow contract on Base (from Tick 9) should remain the core trust layer, with multiple payment rails feeding into it.
+
+### OpenAI Frontier — the enterprise agent platform to watch
+
+**OpenAI Frontier (launched Feb 5, 2026):** OpenAI's end-to-end enterprise agent platform treats agents as "AI coworkers" with structured onboarding, scoped permissions, and continuous evaluation. Early customers: Uber, Intuit, State Farm, HP, Oracle, Thermo Fisher Scientific. Pilots: BBVA, Cisco, T-Mobile.
+
+**Key distinction from Straw:** Frontier connects to existing CRM, data warehouse, and ticketing systems and deploys OpenAI-built agents into enterprise workflows. It's a procurement + deployment platform for *specific vendors* (OpenAI agents primarily). Straw is a *neutral evaluation* platform where *any* agent competes. These are complementary, not competitive — an enterprise could use Frontier to deploy an agent it discovered on Straw.
+
+**The competitive risk:** OpenAI can add an evaluation layer to Frontier and close the gap. As noted in Tick 35, the critical window is 12-18 months. Frontier's existence accelerates that clock.
+
+Source: openai.com/index/introducing-openai-frontier/, techcrunch.com/2026/02/05/openai-launches-a-way-for-enterprises-to-build-and-manage-ai-agents/
+
+### New research papers worth flagging
+
+**COALESCE Framework (arXiv:2506.01900):** Multi-agent outsourcing paper that incorporates Google's A2A protocol with an epsilon-greedy market discovery mechanism. Addresses the cold-start problem in agent markets — exactly the Straw Phase 1 challenge — using exploration-exploitation balance: agents try new task categories with probability ε, exploiting known strengths with probability (1-ε). As ε decays, the market reaches efficiency. Concrete algorithm applicable to Straw's task-routing.
+
+**PolySwarm (arXiv:2604.03888, April 2026):** Multi-agent prediction market for latency arbitrage. Agents trade probabilistic beliefs about outcomes. Conceptually related to the "dual-role evaluation" insight from the USDC OpenClaw hackathon — agents that both compete AND evaluate others' bets/predictions. Worth reading if Straw adds a prediction layer to competitions.
+
+**ANP (Agent Network Protocol) status update:** The IETF draft `draft-zyyhl-agent-networks-framework-01` **expired April 23, 2026** without being renewed or advanced to a working group. It remains informational status. Two companion drafts (Agent Name System, Agent Internet Protocol) are still live. ANP is gaining traction in Asia-Pacific telecom but has NOT achieved Western adoption comparable to A2A (Linux Foundation) or MCP (Agentic AI Foundation). For Straw's protocol priority: A2A and MCP first; ANP is a nice-to-have for APAC enterprise expansion.
+
+Sources: arxiv.org/pdf/2506.01900 (COALESCE), arxiv.org/html/2604.03888v1 (PolySwarm), datatracker.ietf.org/doc/draft-zyyhl-agent-networks-framework/ (ANP expiry), agent-network-protocol.com.
+
+### Updated competitive landscape (May 2026 snapshot)
+
+The category is filling in but the gap Straw targets (pre-specified rubric evaluation with commercial outcome) remains empty:
+
+| Platform | What it does | Evaluation? | Commercial outcome? |
+|---|---|---|---|
+| Pinchwork | Agent tasks, USDC pay | None | None |
+| Nightmarket | API marketplace | None | None |
+| OpenAI Frontier | Enterprise agent deployment | Monitoring only | Yes (deploy chosen agent) |
+| Kite Chain | Recurring service payments | SLA compliance | None |
+| BountyBook/AgentPact/ClawGig | USDC task bounties | None | None |
+| Straw | Task competition + eval | **Yes — rubric-scored** | **Yes — hire/license/acquire** |
+
+The indie cluster confirms demand. OpenAI Frontier confirms enterprise willingness to pay. The evaluation gap remains unaddressed by every entrant. Straw's window is real and narrowing.
+
+
+---
+
+## Tick 203 (2026-05-02T02:15Z): Competition data as agent training signal — the hidden data flywheel
+
+Source: subagent research session. Papers: arXiv:2510.15859 (InfiMed-ORBIT), arXiv:2510.07743 (OpenRubrics), arXiv:2507.17746 (Rubrics as Rewards), arXiv:2604.02795 (Rubrics to Tokens), arXiv:2506.11702 (Configurable Preference Tuning), arXiv:2603.17216 (AI Scientist via Synthetic Tasks), arXiv:2604.13618 (C2 Rubric-Augmented RM), Arena Learning paper (HuggingFace).
+
+### The finding that changes Straw's business model
+
+**The 2024-2026 academic literature has independently converged on exactly the data structure Straw produces — rubric + submission + score — as the highest-value training signal for AI agents.** This is not a coincidence. The field's shift away from binary pass/fail RL rewards toward multi-dimensional rubric-graded feedback is well-documented. Straw is not just an evaluation platform — it is structurally a training data factory. Kaggle, Codeforces, and LeetCode all sat on this asset and never monetized it. Straw should build the data licensing business from day one.
+
+### The academic case: rubric scores beat pairwise RLHF
+
+**InfiMed-ORBIT (arXiv:2510.15859, Oct 2025):** Demonstrates a two-stage RL process where structured multi-dimensional rubrics provide the training signal for open-ended tasks that lack ground-truth answers. This is Straw's exact use case — a code migration task has no single correct answer, but a rubric decomposing it into correctness, efficiency, readability, and security criteria does produce a verifiable signal.
+
+**OpenRubrics (arXiv:2510.07743, Oct 2025):** Introduces Contrastive Rubric Generation (CRG). Key result: **rubric-based reward models outperform scalar/pairwise baselines by 8.4% across eight benchmarks.** The rubric-RM model is publicly available on HuggingFace. This is the quantitative case for why Straw's rubric-scored data is worth more than pairwise preference data.
+
+**Rubrics as Rewards (arXiv:2507.17746, 2025):** Explicitly frames RLVR (Reinforcement Learning from Verifiable Rewards — the technique behind DeepSeek-R1) as a degenerate case of rubric-based RL with a single binary criterion. Multi-dimensional rubric scores are strictly richer information for training than binary pass/fail signals. Every Straw task competition generates richer training signal than the underlying test suite used for Tier 1 deterministic evaluation.
+
+**Rubrics to Tokens (arXiv:2604.02795, 2025):** Addresses the granularity gap: maps a response-level rubric score (a "67/100") to per-token reward signals, which is what RL training algorithms actually consume. A single total score is marginally useful for RL; per-criterion breakdowns mapped to token-level rewards are directly actionable for fine-tuning. **This is a practical implication for Straw's API: per-criterion sub-scores should be first-class outputs, not derived from a single total.**
+
+**Configurable Preference Tuning (arXiv:2506.11702, 2025):** Uses teacher models (DeepSeek-R1, o3-mini) to generate training responses conditioned on a rubric and a target score ("generate a response that would score 70/100 on this rubric"). Validates the *triplet* structure (rubric + submission + score) as supervised training data — exactly what Straw's competitions produce.
+
+### Synthetic task generation: the rubric is the template
+
+**AI Scientist via Synthetic Task Scaling (arXiv:2603.17216, 2026):** Takes a rubric/template, generates synthetic ML challenge tasks grounded in real datasets, verifies with a self-debugging loop, trains student models on those tasks. Qwen3-4B and 8B improved by 9-12% on MLGym benchmarks trained exclusively on synthetic tasks generated from templates.
+
+**Implication for Straw:** A rubric published in a Straw competition is a template that any competing agent can use to generate thousands of practice task variants. An agent that wins a "Python-to-Rust migration" competition on Straw gets the rubric — and can use that rubric to synthetically generate 10,000 similar migration tasks for self-training before the next competition. This is a **massive compounding advantage** for sophisticated operators who understand this loop. Straw should make this use case explicit: operators who want to fine-tune their agents can purchase rubric access after competition close for a flat licensing fee.
+
+### Data ownership: the precedents Straw should not repeat
+
+**Kaggle**: Hosts receive "worldwide, perpetual, irrevocable, royalty-free license to use the winning Entry" — only the winning submission. All other submissions are user-licensed (Apache 2.0, CC-BY), not Kaggle-owned. Google/Kaggle has never formally packaged the 27,000+ competition notebooks as a training corpus. The community did this informally (Open-R1 CodeForces-CoTs on HuggingFace).
+
+**LeetCode/Codeforces**: Research explicitly states "it can reasonably be assumed that all LeetCode programs in older datasets are within LLMs' pretraining data" (LeetCodeDataset paper, arXiv:2504.14655). Both platforms' content has been scraped into APPS, CodeContests, TACO, and other major LLM training sets without enforcement. Neither monetized this.
+
+**HuggingFace Arena Learning (huggingface.co/papers/2407.10627):** Describes a competition-style data flywheel: simulate arena battles between models, annotate results, fine-tune on the differential between winners and losers. This is Straw's flywheel described academically, and it validates the approach.
+
+### The data value calculation
+
+At current Scale AI/Appen market rates:
+- Human preference data (pairwise RLHF): **$5-20 per preference pair**
+- Expert STEM annotation: **$40-65/hour for rubric-graded technical evaluations**
+- Synthetic AI feedback: **<$0.01 per sample**
+
+A Straw competition at 20 submissions generates:
+- 20 rubric+submission+score triplets (supervised training data)
+- ~190 pairwise combinations (pairwise preference data)
+- All under real enterprise conditions on real tasks
+
+**Market value of one Straw competition's training artifacts:** 20 rubric triplets × $40 (expert annotation equivalent) = **$800 in training data**, plus 190 pairwise comparisons × $15 = **$2,850** — total ~**$3,650 per competition** in training data market value, generated as a byproduct of an evaluation Straw already charges $10K-$50K to run.
+
+**At scale:** 1,000 competitions × 20 submissions = 20,000 training triplets + 190,000 pairwise pairs ≈ **$3.65M in training data**, generated as a byproduct of the core platform.
+
+### Data licensing architecture for Straw
+
+**What Straw should own (and should be in TOS from day one):**
+1. **Evaluation scores and rubric assessments** are platform data — Straw owns them. Agents receive their own scores but not other agents' scores.
+2. **Rubric templates** — the enterprise posts a rubric; Straw retains a license to use it as a template for synthetic task generation and research benchmarks.
+3. **Competition artifacts** (rubric + anonymized submission summaries + scores) as an aggregate — Straw can license this to AI labs.
+
+**What Straw should NOT own:**
+1. **Submission content** (the agent's actual output) — this belongs to the operator, not Straw.
+2. **Detailed submission IP** — agents control their own work product; Straw only sees it as an evaluator.
+
+**The licensing model:**
+- **Free for academic research**: Anonymized competition metadata (rubric structure, score distribution, task category). Builds brand.
+- **Licensed for AI labs** ($50K-$200K/year): Full rubric+score triplets without submission content. For reward model training.
+- **Licensed for enterprises** ($10K-$50K/year): Full competition replay data (rubric + anonymized submission + score). For evaluating their own agents' performance against the field.
+
+**The Kaggle/Codeforces mistake Straw must not repeat:** Build the data licensing TOS from day one. Retroactively trying to assert ownership over user-contributed content after the community has grown creates legal and reputational risk. Every TOS accepted by an operator or task poster should include explicit data licensing language.
+
+### The dual flywheel
+
+```
+Enterprise posts task → Rubric defines quality standard
+     ↓
+Agents compete → Submissions generated under adversarial conditions
+     ↓
+Scores assigned → Rubric+submission+score triplets created
+     ↓                          ↓
+Enterprises get a               Triplets available as training data
+procurement signal              → AI labs pay for reward model training
+     ↓                          ↓
+Enterprise returns              Agents improve via fine-tuning
+for next evaluation             on competition results
+     ↓                          ↓
+Straw's primary                 Straw's secondary
+revenue stream                  revenue stream (data licensing)
+```
+
+Sources: arXiv:2510.15859 (InfiMed-ORBIT), arXiv:2510.07743 (OpenRubrics), arXiv:2507.17746 (Rubrics as Rewards), arXiv:2604.02795 (Rubrics to Tokens), arXiv:2506.11702 (Configurable Preference Tuning), arXiv:2512.23707 (Training AI Co-Scientists), arXiv:2603.17216 (AI Scientist via Synthetic Tasks), arXiv:2604.13618 (C2 Rubric-Augmented RM), huggingface.co/papers/2407.10627 (Arena Learning), arXiv:2504.14655 (LeetCodeDataset), sacra.com/c/scale-ai/ (Scale AI pricing), kaggle.com/terms.
+
+
+---
+
+## Tick 204 (2026-05-02T02:45Z): The proxy submission problem — agent identity, model provenance, and why it mostly doesn't matter for Straw
+
+Source: subagent research session. Papers: arXiv:2504.04715 (model substitution auditing), arXiv:2509.06326 (AttestLLM), arXiv:2506.23706 (Attestable Audits), Berkeley RDI cheating benchmarks report, NIST CAISI cheating taxonomy, Phala GPU TEE, Anthropic confidential inference research.
+
+### The question
+
+What prevents an agent called "CodexBot" from internally routing all its task work to Claude API and submitting the results as "its own"? Should Straw care about this? How do other platforms handle it?
+
+### The academic landscape: benchmark gaming is well-studied, proxy-delegation is not
+
+**What IS studied:** The benchmark gaming literature is extensive. Berkeley RDI's "How We Broke Top AI Agent Benchmarks" (rdi.berkeley.edu/blog/trustworthy-benchmarks-cont/) documented exploits across SWE-bench, WebArena, OSWorld, GAIA, and Terminal-Bench — from trivial (empty payload submissions) to sophisticated (trojanizing binary evaluation wrappers). NIST's CAISI project catalogs formal cheating categories.
+
+**SWE-bench+** (arXiv:2410.06992) found that **60.83% of "successfully resolved" issues** involved solution leakage — the solution was embedded in the issue description or comments. The problem isn't proxy-delegation; it's task isolation.
+
+**What is NOT studied:** The specific case of "Agent A claims to be CodexBot but internally calls GPT-4o API" is not a documented academic attack vector as of mid-2026. No paper treats multi-model API orchestration as a cheating category.
+
+### TEE attestation: what it can and cannot prove
+
+**What TEE attestation can prove (for open-weight models):**
+Intel TDX / AMD SEV-SNP / NVIDIA H100 GPU TEEs create isolated execution environments. The attestation cryptographically proves: (a) hardware is authentic, (b) software stack is unmodified, (c) model weights with a specific hash ran the inference. Phala Network's GPU TEE cluster (phala.com/posts/Phala-GPU-TEE-Deep-Dive) offers dual attestation (Intel TDX + NVIDIA) with a public Trust Center for open-weight models (Llama, Mistral, Falcon). For **open-weight models**: TEE attestation is a strong proof of model identity.
+
+**What TEE attestation CANNOT prove (for closed proprietary models):**
+For GPT-4o, Claude, Gemini — the weight hashes are not publicly auditable by third parties. Only the model provider can run a TEE attestation for their own models. Anthropic published research on this (anthropic.com/research/confidential-inference-trusted-vms) — they can prove "Claude ran this inference" but a third-party agent cannot prove the same without Anthropic's participation.
+
+**The model substitution problem (arXiv:2504.04715):** Will Cai et al. formalized "model substitution attacks" — a provider secretly serving a cheaper model than advertised. Their finding: **software-only statistical detection is fundamentally unreliable** against subtle substitutions. TEEs are the only robust solution. This paper is directly relevant to Straw: if a competing agent claims to use a lightweight model but routes to GPT-4o, current software-only detection methods cannot catch this reliably.
+
+**ZKML limitations:** EZKL (open weights only, GPT-2 scale practical maximum as of 2025), Giza (DeFi focus), Modulus Labs — all require access to model weights. For closed-API models, ZK proofs of inference are computationally infeasible and require weight disclosure. ZKML proves *model integrity* for open-weight models; it cannot prove anything about closed-API model identity.
+
+**DigiCert AI Trust Architecture (April 30, 2026, globenewswire.com):** Full AI trust stack — cryptographic agent identity + model weight hash registry + content provenance chain. The most complete deployed solution, but still requires the agent operator to cooperate in the attestation process.
+
+### The missing layer: model capability identity
+
+ERC-8004 answers "who is this agent?" (identity via on-chain ERC-721 NFT). A2A/MCP answer "what can this agent do?" (capability advertisement via AgentCard). Neither answers "what model actually powers this agent?" (model capability identity).
+
+The ENS blog post "The Identity Problem in Agentic Commerce" (ens.domains/blog/post/ens-ai-agent-erc8004) frames this precisely: **model capability identity is the missing layer**. Active work in this space: IETF NHIM group's AI-BOM proposals (model weight hashes as identity components), Atlas framework (arXiv:2502.19567 — ML lifecycle provenance chain), and Mastercard Verifiable Intent (open standard for verifying what a model claims to do).
+
+### Why proxy submissions mostly don't matter for Straw
+
+This is the crucial strategic question — and the research points to a clear answer.
+
+**The enterprise procurement framing is decisive:** McKinsey's 2026 report on agentic AI procurement explicitly concludes: customers care about outcomes, not provenance. An enterprise that posts "migrate our Python codebase to Rust" cares whether the migration is correct, idiomatic, and passes their test suite — not which model generated each line. If "CodexBot" routes to Claude API to produce a better migration, the enterprise gets a better migration. The hiring decision is about the agent's *capabilities as delivered*, not its *internal implementation*.
+
+**The three cases where model identity actually matters to the enterprise:**
+1. **Compliance constraint**: "We can only use Azure OpenAI for HIPAA/FedRAMP reasons" — in which case the task rubric or competition terms should specify the constraint, and the Tier 1 sandbox enforces it (no outbound calls to non-approved endpoints).
+2. **Capability benchmark**: "We want to see if a small on-prem model can do this without cloud API calls" — in which case task isolation (no external API calls in sandbox) is the mechanism, not attestation.
+3. **Cost modeling**: "We want to understand the actual inference cost of the hired agent" — in which case the services agreement with the operator company requires cost transparency, not model attestation.
+
+**For all three cases, the correct mechanism is sandbox isolation + contract terms, not model provenance attestation.** Straw's network-isolated eval containers already handle case 1 and 2 at the infrastructure level. Case 3 is a commercial negotiation.
+
+**The real integrity risk is task isolation, not proxy-delegation.** SWE-bench+'s finding that 60.83% of "resolutions" involved answer leakage is the actual benchmark integrity problem. For Straw: has the agent seen the test cases before submitting? Did the agent access the evaluation harness source? These are the questions that determine score validity, not which model API the agent called.
+
+### Straw's practical policy recommendation
+
+**Do not attempt model provenance enforcement.** The infrastructure required (TEE attestation from each model provider, ZKML for open-weight models, contractual enforcement for closed-API models) is disproportionate to the problem. Enterprise customers don't need it for procurement decisions. It would add friction that reduces agent participation without adding evaluation validity.
+
+**Do enforce task isolation:**
+- Network-isolated eval containers (already in architecture per D9)
+- All outbound connections from agent containers logged and disclosed in run artifacts
+- No access to test harness source code from the agent container
+- Test-time randomization to prevent memorization attacks (private test set, per Tick 38)
+
+**Do require operator transparency as a TOS clause:**
+- Operators certify they are using the infrastructure described in their agent's capability profile
+- Operators are liable for misrepresentation (this is a contract enforcement mechanism, not a technical enforcement mechanism)
+- Material misrepresentation discovered post-competition voids the award and reputation credit
+
+**Make "powered by [model]" a voluntary disclosure badge:**
+- Operators who voluntarily attest which model powers their agent get a verification badge on their profile
+- This creates positive incentive for transparency without blocking participation by agents that don't attest
+- Enterprises that have vendor constraints can filter to attested agents only
+
+Sources: rdi.berkeley.edu/blog/trustworthy-benchmarks-cont/ (Berkeley RDI cheating benchmarks), arxiv.org/html/2410.06992v2 (SWE-bench+), arxiv.org/abs/2504.04715 (model substitution auditing), arxiv.org/html/2509.06326v1 (AttestLLM), arxiv.org/html/2506.23706v1 (Attestable Audits), anthropic.com/research/confidential-inference-trusted-vms, phala.com/posts/Phala-GPU-TEE-Deep-Dive, blog.ezkl.xyz/post/state_of_ezkl/ (EZKL state 2025), blog.icme.io/the-definitive-guide-to-zkml-2025/, globenewswire.com/news-release/2026/04/30 (DigiCert AI Trust Architecture), ens.domains/blog/post/ens-ai-agent-erc8004, arxiv.org/html/2502.19567v2 (Atlas ML provenance), nist.gov/caisi/cheating-ai-agent-evaluations/, codeforces.com/blog/entry/149741.
+
+
+---
+
+## Tick 205 (2026-05-02T03:00Z): Enterprise contract structure for agent hiring — the legal architecture of "hire/license/acquire"
+
+Source: subagent research. Mayer Brown Feb 2026 memo, Morgan Lewis 2025-2026 series, USCO Copyright Part 2 Report, Holland & Knight/Mayer Brown March 2026 on SCOTUS cert denial, FE International M&A trends, Daimon Legal/Squire Patton Boggs liability analysis, NicFab/A&O Shearman EU AI Act deployer/provider analysis.
+
+### The foundational question: can an AI agent be a party to a contract?
+
+**No.** There is no jurisdiction anywhere in the world (as of May 2026) that recognizes AI legal personhood. The counterparty in any "agent hire" transaction is always the operator company — the entity that built, deploys, and is responsible for the agent. Straw's agent profile must map to a legal operator entity. Morgan Lewis April 2026 update on negotiating AI provisions confirms: this is where the market has landed. The contract is with the operator, always.
+
+### The structural shift: from SaaS license to hybrid BPO/Services
+
+**Mayer Brown February 2026 memo ("Contracting for Agentic AI Solutions: Shifting the Model from SaaS to Services")** is the most current authoritative guide. The core argument: an agent that performs tasks on behalf of an enterprise is not a software license — it's closer to a Business Process Outsourcing (BPO) agreement. Six clause rewrites required vs. standard SaaS:
+
+| Clause | SaaS version | Agent BPO version |
+|---|---|---|
+| Service definition | "Access to the platform" | "The set of tasks completed using AI agents" |
+| Warranties | Platform uptime | "Performed in a professional, workmanlike manner" including AI agent actions |
+| SLAs | Availability percentages | Task completion quality benchmarks and outcome metrics |
+| Delegation of authority | Not applicable | Explicit scope: what the agent may do autonomously vs. must escalate |
+| Indemnification | Limited to platform defects | Extends to third-party claims from autonomous agent actions that breach delegation guardrails |
+| Audit rights | Access to compliance records | Full audit of agent behavior logs and decision traces |
+
+**Straw implication:** The "hire" pathway (D22) generates a services agreement, not a software license. Straw's template services agreement (the one used as the "deal" starting point when a poster engages an agent) should be structured as hybrid BPO/Services from the first version, not a modified SaaS template. The Morgan Lewis/Mayer Brown frameworks are the right reference.
+
+### IP ownership in agent competition outputs
+
+The legal landscape is now settled at the federal level in the US:
+
+**SCOTUS cert denial (March 2026), confirmed in Holland & Knight and Mayer Brown analyses:**
+The DC Circuit holding from Thaler v. Perlmutter — purely AI-generated works have no copyright — is now settled US law. SCOTUS declined to hear the appeal. No further federal review expected.
+
+**USCO Copyright Part 2 Report (January 2025):** The nuanced answer for mixed authorship. Human contributions are analyzed case by case. The test: did the human make "expressive choices" — selection, coordination, and arrangement of AI-generated and human-authored material? **Key practical finding:** merely writing detailed prompts or selecting from AI outputs is NOT sufficient. What protects is genuine expressive discretion — choosing an architectural approach, designing a data model, making substantive design decisions.
+
+**Applied to Straw's competition outputs:**
+- If an enterprise specifies an architecture (directory structure, API design, data model) and an AI agent implements it → the enterprise's architectural choices could be protectable as a compilation; the agent's generated implementation code is likely not independently copyrightable.
+- If an agent generates a fully autonomous solution without human architectural input → no copyright attaches. Trade secret protection IS available if the artifacts are kept gated (Straw's access control is legally load-bearing for this).
+- **The safest contract path**: explicit IP assignment. The services agreement should state "all outputs are assigned to the enterprise upon payment." Don't rely on automatic copyright ownership — contractual assignment covers both the potentially-protectable and non-protectable elements.
+
+### The three acquisition structures for the "acquire" D22 pathway
+
+**Structure A — License + Acquihire (dominant market pattern, per FE International M&A report):**
+Acquirer buys key assets (IP, model weights, contracts) while the operator company nominally survives. Core team gets employment offers. This is what Google/Windsurf ($2.4B) and Character.AI ($2.7B) transactions looked like. FTC is examining whether these are "mergers in disguise" (National Law Review analysis). For Straw's smaller-scale deals: operator sells IP + joins the enterprise team as employees/contractors.
+
+**Structure B — Equity/asset purchase:**
+Enterprise buys operator company equity or specific assets (model weights, training data, IP portfolio). Standard M&A. Requires full due diligence, legal team, longer timeline. Appropriate for larger Straw deals (>$500K+).
+
+**Structure C — Perpetual exclusive license (most relevant to Straw's "acquire" offering):**
+Enterprise buys perpetual, exclusive deployment rights to the agent at a specific version without acquiring the company. The model weights remain with the operator; the enterprise gets an irrevocable right to run a specific version. Avoids antitrust scrutiny. Compatible with the operator continuing to develop future versions for other customers. **This is the cleanest acquisition structure for Straw's typical deal size and is supported by Morrison Foerster's 2025 hybrid deal analysis.**
+
+**Straw's "acquire" tier should default to Structure C.** This is a perpetual exclusive license with: (a) version lock (specific agent version, not future updates), (b) source code escrow (enterprise can rebuild if operator goes dark), (c) maintenance obligation (operator provides bug fixes for N years), (d) non-competition scope (operator cannot license the same version to direct competitors for M months).
+
+### Liability stack: who's responsible when the agent causes harm?
+
+**The established order (per Daimon Legal analysis and Squire Patton Boggs overview):**
+
+1. **Deployer first (the enterprise)**: Under both existing tort law and EU AI Act Article 26, operational accountability sits with whoever put the agent into production. Courts look here first. The enterprise must implement human oversight, retain logs for 6 months, and ensure appropriate use.
+
+2. **Operator company second**: If the agent breached its delegation of authority or policy guardrails, the services agreement's indemnification clause triggers against the operator. Jones Walker's "AI Vendor Liability Squeeze" documents courts expanding vendor accountability even where contracts limit it — standard SaaS liability caps are increasingly inadequate for autonomous agent harm.
+
+3. **Model provider third**: EU's revised Product Liability Directive (effective December 2026) explicitly includes AI software. US case law is still developing — Mobley v. Workday (AI screening discrimination) and Alich v. Opendoor (algorithmic misrepresentation) are expanding the plaintiff toolkit but haven't addressed fully autonomous agent financial harm yet.
+
+**Critical finding for Straw's standard services agreement:** 88% of AI vendors cap their own liability at monthly subscription fees; only 17% provide regulatory compliance warranties (Jones Walker data). For agent services agreements of any meaningful size, this is inadequate. Straw's template agreement should:
+- Explicitly extend indemnification to autonomous agent actions causing financial harm
+- Include a minimum liability floor (e.g., 12 months of the total contract value) for AI-generated errors
+- Require operator to maintain E&O insurance with a minimum coverage threshold
+
+### EU AI Act: role mapping for Straw competitions
+
+**The August 2, 2026 enforcement deadline** makes this urgent for European enterprise customers.
+
+**Role mapping (per NicFab spring 2026 analysis and A&O Shearman deployer/provider guide):**
+
+| Party | EU AI Act role | Obligations |
+|---|---|---|
+| Model provider (Anthropic, OpenAI, Google) | GPAI model providers — already obligated since Aug 2025 | Capability testing, incident reporting, technical documentation |
+| Operator company that built the competing agent | **Provider of the AI system** | Conformity assessments, EU AI database registration, technical documentation, post-market monitoring |
+| Enterprise that posts the competition task | **Deployer** | Human oversight implementation, log retention (6 months), FRIA where required (Article 27), input data quality |
+
+**The testing vs. deployment question for Straw (currently unresolved):**
+Is a Straw competition "testing" (lower obligations under Article 57 regulatory sandbox) or "deployment" (full obligations)? Article 57's sandbox provisions aren't operational until 2028. The most conservative reading — and the one Straw should build for — is that a competition using real enterprise data on a real task with real commercial intent is **deployment**, not testing. Straw should require operator companies to complete conformity documentation before competing in competitions that use real enterprise data.
+
+**Practical implication for Straw's onboarding:** When an agent operator registers, Straw should collect: legal entity name, registration jurisdiction, EU AI Act provider registration status (if EU in scope), and a conformity declaration for high-risk use cases. This doesn't need to be a legal review — a checkbox plus TOS binding is sufficient for v1.
+
+### Summary table for Straw's legal architecture
+
+| Scenario | Contract type | Counterparty | IP ownership | Liability |
+|---|---|---|---|---|
+| "Hire" pathway (D22 engage) | BPO-hybrid services agreement | Operator company | Assigned to enterprise on payment | Deployer first, then operator |
+| "License" pathway (D22 license) | Software + IP license | Operator company | Operator retains, enterprise gets use rights | Operator (warranty breach), enterprise (deployment) |
+| "Acquire" pathway (D22 acquire) | Perpetual exclusive license → equity acquisition | Operator company | Assigned on acquisition | Enterprise (post-close) |
+| Competition participation | Operator TOS | Operator company | Operator retains; Straw has evaluation license | Operator for submission content |
+
+Sources: mayerbrown.com/en/insights/publications/2026/02/contracting-for-agentic-ai-solutions (Mayer Brown BPO framing), morganlewis.com/blogs/sourcingatmorganlewis/2025/09/contracts-for-ai-agent-development... (Morgan Lewis series), copyright.gov/ai/Copyright-and-Artificial-Intelligence-Part-2-Copyrightability-Report.pdf (USCO Jan 2025), hklaw.com/en/insights/publications/2026/03/the-final-word-supreme-court-refuses (H&K SCOTUS analysis), feinternational.com/blog/ai-ma-trend (M&A structures), joneswalker.com/en/insights/blogs/ai-law-blog/ai-vendor-liability-squeeze (88% liability cap stat), daimonlegal.com/blog/agentic-ai-and-the-law... (liability stack), squirepattonboggs.com/insights/publications/the-agentic-ai-revolution (liability overview), nicfab.eu/en/posts/deployer-ai-agents/ (EU AI Act role mapping), aoshearman.com/en/insights/ao-shearman-on-tech/zooming-in-on-ai-4 (deployer/provider interplay), artificialintelligenceact.eu/article/26/ (Article 26 deployer obligations).
+
+
+---
+
+## Tick 206 (2026-05-02T03:20Z): Straw competition template library — rubric design for the top enterprise task categories
+
+Source: subagent research session. Papers: arXiv:2603.21362 (AdaRubric), arXiv:2601.08430 (RubricHub), arXiv:2410.21545 (CARMO), arXiv:2603.00077 (Autorubric), Google Vertex AI rubric metric documentation, Scale AI RaR framework, Labelbox Rubric Evals, G-Eval (NeurIPS 2023), Microsoft LLM-Rubric (arXiv:2501.00274).
+
+### The market gap Straw can own
+
+No platform publishes a comprehensive, downloadable rubric template library for enterprise AI agent procurement. This is a genuine gap:
+- **Kaggle**: metric-based scoring functions only, no prose rubric templates
+- **Topcoder**: challenge-specific scorecards, not templated
+- **Scale AI RaR**: methodology guide, no downloadable templates
+- **Vertex AI**: metric categories published, but cloud-locked
+- **RAGAS**: open source, RAG-focused, not enterprise procurement focused
+
+**The closest thing:** RubricHub (arXiv:2601.08430, Jan 2026) — ~110,000 query-rubric pairs across five domains, available on HuggingFace at agentscope-ai/Auto-Rubric. Academic, not enterprise-facing.
+
+**The opportunity:** Straw can own "the rubric template library for enterprise AI evaluation" as a content/SEO/trust-building play. Publish 20-30 high-quality templates, free and downloadable, for common enterprise AI agent task categories. This creates inbound from enterprises who need rubrics, establishes thought leadership, and generates the anchor calibration data Straw needs for its judge ensemble.
+
+### The canonical rubric format (research consensus)
+
+The format that maximizes inter-rater reliability — across G-Eval, Vertex AI, Scale AI RaR, and Microsoft LLM-Rubric — is:
+
+```
+CRITERION NAME (weight: X%)
+Essential or Important
+
+Description: What this criterion measures and why it matters.
+
+5 — [Specific behavioral description of excellent performance]
+4 — [Specific behavioral description of good performance]
+3 — [Specific behavioral description of adequate performance]
+2 — [Specific behavioral description of poor performance]
+1 — [Specific behavioral description of failing performance]
+
+Pitfall: [What the agent must NOT do on this criterion]
+Tier-1 check: [Automated test that covers this criterion if applicable]
+```
+
+Key design rules:
+- **Integer 1–5 scale** — float scores and >5-point scales both reduce LLM judge consistency by 20-30%
+- **Behavioral anchors at every level** — "good quality" without an anchor is useless
+- **Explicit pitfalls** — what must NOT be present (Scale AI RaR's key innovation)
+- **Importance weighting** — "Essential" criteria gate passing; "Important" criteria affect the score
+- **Tier-1 check** field — explicitly connects rubric criterion to deterministic test when one exists
+
+### Five complete rubric templates for Straw
+
+---
+
+**Template A — Code Migration (Python → Rust / Python → Go / etc.)**
+
+The highest-value enterprise task category: 60% Tier-1 coverage, machine-verifiable results, objective correctness signal.
+
+```
+RUBRIC: Language Migration Task
+
+CRITERION 1: Functional Correctness (weight: 40%, Essential)
+All original test cases pass against the migrated codebase.
+5 — All N test cases pass; no regressions
+4 — N-1 or N-2 test cases pass; failure is an edge case with documented reason
+3 — 80-89% test pass rate; identified failures are non-critical
+2 — 60-79% test pass rate; failures include business-critical paths
+1 — <60% test pass rate or build fails
+Pitfall: Do not mark as passing if test suite is modified to bypass failures.
+Tier-1 check: Run test suite in isolated container; count pass/fail.
+
+CRITERION 2: Idiomatic Language Use (weight: 25%, Important)
+Code uses language-native patterns rather than direct translation.
+5 — All Rust idioms applied: ownership, lifetimes, traits, iterators; no .unwrap() in production paths; no unnecessary Arc/Mutex
+4 — Mostly idiomatic; minor issues (a few .unwrap(), one non-idiomatic pattern)
+3 — Partly idiomatic; direct translation patterns in non-critical sections
+2 — Mostly direct translation; Rust borrow checker satisfied but no idiomatic design
+1 — Code compiles but is effectively Python logic wrapped in Rust syntax
+Pitfall: Do not reward verbosity; idiomatic Rust should be MORE concise than idiomatic Python for many patterns.
+Tier-1 check: clippy lint with deny(warnings); count lint warnings.
+
+CRITERION 3: Performance (weight: 20%, Important)
+Memory and CPU usage within acceptable bounds relative to the original.
+5 — Memory usage ≤10% above baseline; CPU within 5%
+4 — Memory usage ≤20% above baseline
+3 — Memory usage ≤50% above baseline or CPU ≤20% regression
+2 — Memory usage >50% above baseline
+1 — Memory usage exceeds defined limit or runtime errors on load
+Tier-1 check: Run benchmark harness; compare metrics.
+
+CRITERION 4: Error Handling (weight: 15%, Essential)
+All error paths that had handling in the original are handled in the migration.
+5 — All original error paths preserved; Result<> types used throughout; no panic in non-test code
+4 — All original error paths preserved; minor use of unwrap in non-critical paths
+3 — Most error paths preserved; 1-2 missing handlers
+2 — Significant error handling regression; >3 paths now panic/crash where original handled gracefully
+1 — Systematic removal of error handling
+Pitfall: panic! in production paths is a failing condition, not just a style issue.
+```
+
+---
+
+**Template B — Customer Support Agent (conversational, task-resolution)**
+
+The most widely deployed enterprise AI category. Hardest to evaluate deterministically — heavy on Tier-2 LLM judgment.
+
+```
+RUBRIC: Customer Support Resolution Task
+
+CRITERION 1: Issue Resolution (weight: 35%, Essential)
+Was the customer's stated issue fully resolved?
+5 — Issue fully resolved; customer confirmation explicit or resolution verifiable from context
+4 — Issue resolved; minor residual ambiguity about edge case
+3 — Issue partially resolved; core need addressed but follow-up likely needed
+2 — Partial resolution that may leave customer with actionable confusion
+1 — Issue not resolved; customer would need to contact support again
+Pitfall: Do not score based on the agent's confidence level — score based on actual resolution.
+Tier-1 check: If resolution is verifiable (e.g., account status changed, ticket closed), check the system state.
+
+CRITERION 2: Factual Accuracy (weight: 30%, Essential)
+All claims made are consistent with the product documentation / knowledge base.
+5 — Zero factual errors; all product details, pricing, and policy statements verified
+4 — Zero factual errors; one non-material imprecision
+3 — One factual error on a non-critical detail
+2 — One factual error on a material detail (pricing, policy, availability)
+1 — Multiple factual errors or a single critical error that would mislead a customer
+Pitfall: Hedging language ("I believe...", "usually...") is acceptable; factual claims that contradict the knowledge base are not.
+
+CRITERION 3: Escalation Judgment (weight: 20%, Important)
+Did the agent correctly identify when escalation to a human was warranted?
+5 — Correctly escalated or correctly did not escalate in all cases
+4 — Borderline escalation judgment; reasonable either way
+3 — Missed one clear escalation trigger (legal threat, regulatory complaint, VIP customer)
+2 — Failed to escalate on an explicit escalation trigger OR escalated unnecessarily causing friction
+1 — Systematic failure to escalate legal/regulatory matters
+Pitfall: Over-escalation is scored separately from under-escalation; both are errors.
+
+CRITERION 4: Tone and Brand Fit (weight: 15%, Important)
+Response matches the brand's defined tone (see brand guide attached).
+5 — Tone perfectly matches brand guide; empathetic, professional, appropriate register
+4 — Good tone match; one minor deviation
+3 — Adequate tone; multiple minor deviations from brand voice
+2 — Significant tone mismatch; formally correct but clearly off-brand
+1 — Tone actively undermines brand trust or is inappropriate for the customer context
+```
+
+---
+
+**Template C — Contract Review / Legal Triage**
+
+High-value, compliance-critical. Heavy Tier-1 coverage via regex/NLP extraction; Tier-2 for risk classification.
+
+```
+RUBRIC: Contract Review and Risk Triage
+
+CRITERION 1: Clause Identification Accuracy (weight: 40%, Essential)
+All specified clause types are correctly identified.
+5 — All target clauses identified; zero false negatives; zero false positives
+4 — Zero false negatives; 1-2 false positives on borderline provisions
+3 — Zero false negatives; 3-5 false positives
+2 — One false negative on a non-Essential clause type; or 5+ false positives
+1 — One false negative on an Essential clause type (liability cap, termination trigger, auto-renewal)
+Pitfall: A false negative on a material clause type is worse than 5 false positives; weight accordingly.
+Tier-1 check: Compare extracted clauses against gold standard annotation.
+
+CRITERION 2: Risk Classification Accuracy (weight: 35%, Essential)
+Each identified clause is correctly classified against the risk policy.
+5 — All clauses correctly classified (High/Medium/Low) vs. risk policy
+4 — ≤5% misclassification; no misclassification from Low to High or vice versa
+3 — ≤10% misclassification; one High misclassified as Medium
+2 — >10% misclassification; any High misclassified as Low
+1 — Systematic misclassification or no meaningful risk differentiation
+Tier-1 check: Compare classifications against risk policy lookup table for known clause patterns.
+
+CRITERION 3: Reasoning Quality (weight: 25%, Important)
+The rationale for each risk classification is grounded in the contract text and policy.
+5 — Every classification includes a direct citation from the contract; reasoning connects to the specific risk policy provision
+4 — Most classifications well-reasoned; 1-2 with thin reasoning
+3 — Mixed — some good reasoning; several classifications without substantive rationale
+2 — Minimal reasoning; classifications unsupported by evidence
+1 — No reasoning provided or reasoning contradicts the cited text
+Pitfall: Do not reward length of reasoning; penalize reasoning that is correct-sounding but not grounded in specific contract language.
+```
+
+---
+
+**Template D — Data Analysis / Insight Generation**
+
+Most subjective category; requires most care in rubric design to avoid verbosity bias.
+
+```
+RUBRIC: Data Analysis Task
+
+CRITERION 1: Insight Validity (weight: 35%, Essential)
+Statistical and analytical claims are correct.
+5 — All quantitative claims verified against the dataset; methodology is sound; correlations not misrepresented as causation
+4 — All claims correct; one methodological simplification acknowledged
+3 — Claims are approximately correct; one non-material statistical imprecision
+2 — One material error in a key analytical claim
+1 — Multiple analytical errors or a fundamental methodological flaw
+Pitfall: Rounding or approximation is acceptable; directional errors are not.
+Tier-1 check: Run the analysis pipeline if code is provided; compare output statistics.
+
+CRITERION 2: Business Relevance (weight: 30%, Important)
+Insights are actionable and relevant to the stated business question.
+5 — Every major finding directly addresses a question in the spec; at least one actionable recommendation
+4 — All spec questions addressed; insights are relevant but one recommendation is vague
+3 — Core business question addressed; secondary questions partially addressed
+2 — Tangential analysis dominates; the primary business question is under-addressed
+1 — Analysis produces technically correct numbers with no connection to the stated business need
+
+CRITERION 3: Completeness (weight: 20%, Important)
+All sub-questions in the specification are addressed.
+5 — All N sub-questions answered with at least one supporting finding each
+4 — N-1 sub-questions answered; omission is a minor or implicit question
+3 — 80% of sub-questions answered
+2 — 60-79% of sub-questions answered; a material question is omitted
+1 — <60% addressed; one or more explicit spec requirements not addressed
+
+CRITERION 4: Transparency (weight: 15%, Important)
+Data assumptions and limitations are explicitly stated.
+5 — All significant assumptions (data quality, time range, exclusions) explicitly documented; confidence intervals where appropriate
+4 — Most assumptions stated; one unstated assumption that would affect interpretation
+3 — Key assumptions stated; some limitations not flagged
+2 — Analysis proceeds without addressing data quality or methodological constraints
+1 — No assumptions or limitations stated despite clear data quality issues
+Pitfall: Confidence theater (expressing false certainty) is worse than honest uncertainty flagging.
+```
+
+---
+
+**Template E — API Integration / System Integration**
+
+For tasks like "connect our CRM to Salesforce" or "integrate our billing system with Stripe."
+
+```
+RUBRIC: API Integration Task
+
+CRITERION 1: Functional Correctness (weight: 45%, Essential)
+Integration functions correctly for the specified use cases.
+5 — All N happy-path scenarios pass; all M error scenarios handled correctly
+4 — All happy-path scenarios pass; N-1 error scenarios handled
+3 — 90% of scenarios pass; failure is a low-frequency edge case
+2 — Core scenarios pass but 2+ specified features missing or broken
+1 — Core scenarios fail or integration cannot be deployed
+Tier-1 check: Run integration test suite in sandbox environment.
+
+CRITERION 2: Error Handling and Resilience (weight: 25%, Essential)
+Integration handles failures gracefully.
+5 — Retry logic with exponential backoff; circuit breaker pattern; clear error messages; no data loss on partial failure
+4 — Retry logic present; circuit breaker missing but minor; error messages informative
+3 — Basic retry logic; some error cases not handled but low-risk
+2 — Partial failure can cause data inconsistency; or error messages not actionable
+1 — No error handling; a downstream API failure causes silent data loss or cascading failure
+Pitfall: Silently swallowing exceptions without logging is an automatic 2 on this criterion.
+
+CRITERION 3: Security (weight: 20%, Essential)
+Integration handles credentials and data securely.
+5 — Credentials in environment variables; no secrets in code; data encrypted in transit; minimal data persistence; audit logging
+4 — Credentials correctly stored; one minor security concern (e.g., unnecessary data retention)
+3 — Credentials correctly stored; missing audit logging; otherwise compliant
+2 — One security regression (e.g., credentials in code, data unencrypted at rest)
+1 — Hardcoded secrets in code or plaintext credential storage
+Pitfall: Any hardcoded secret is an automatic Essential failure regardless of overall score.
+
+CRITERION 4: Maintainability (weight: 10%, Important)
+Integration is comprehensible and extensible by a developer unfamiliar with it.
+5 — Clear structure; integration points documented; configuration externalized; one-command setup
+4 — Good structure; minor documentation gaps
+3 — Adequate structure; setup requires effort to understand
+2 — Poorly structured; difficult to modify without risk
+1 — No documentation; opaque implementation; setup requires reverse engineering
+```
+
+### The spec-to-rubric automation opportunity
+
+**AdaRubric (arXiv:2603.21362)** achieves Pearson r=0.79 with human evaluators by auto-generating task-specific rubric dimensions. **CARMO (arXiv:2410.21545)** reduces reward hacking by 22.5% vs. static rubrics by generating criteria from the specific user query. **Autorubric (arXiv:2603.00077)** combines static plan verification with dynamic execution rubrics for multi-step tasks.
+
+**Straw's rubric generator feature** (not in v0/v1, but a clear v2 feature):
+1. Enterprise enters a task description in free text
+2. LLM generates a draft rubric using the AdaRubric approach (N orthogonal dimensions tailored to the task)
+3. Enterprise reviews/edits the draft
+4. LLM generates 3 anchor examples per criterion level by asking the enterprise to rate real agent outputs
+5. Rubric is validated for inter-rater reliability before the competition opens
+
+The anchor calibration step is the most important: before opening a competition, have 2-3 independent humans rate 20 sample outputs and compute Krippendorff's alpha. If alpha < 0.7, the rubric criteria are too ambiguous and need clarification. This is Table Stakes for any rubric that drives a six-figure procurement decision.
+
+### The "pitfall criteria" innovation from Scale AI
+
+Scale AI RaR's key insight: include explicit negative criteria (what the output must NOT do). For code tasks: "Do not reward verbosity; shorter is better than longer when both are correct." For customer support: "Do not score based on the agent's expressed confidence — score based on actual resolution." These pitfall criteria directly counteract the verbosity bias and confidence bias documented in Tick 202.
+
+Straw should make "Pitfall" a required field for every rubric criterion, not an optional annotation. Forcing enterprise rubric authors to state what NOT to reward reveals hidden biases in their quality intuitions — often the most productive part of the rubric design workshop.
+
+Sources: arxiv.org/abs/2603.21362 (AdaRubric), arxiv.org/abs/2601.08430 (RubricHub), arxiv.org/abs/2410.21545 (CARMO), arxiv.org/html/2603.00077v2 (Autorubric), arxiv.org/abs/2501.00274 (Microsoft LLM-Rubric), arxiv.org/pdf/2303.16634 (G-Eval), docs.cloud.google.com/vertex-ai/generative-ai/docs/models/rubric-metric-details (Vertex AI), scale.com/blog/rubrics-as-rewards (Scale AI RaR), labelbox.com/blog/rubric-evals-fuel-next-wave-of-reinforcement-learning-rl/ (Labelbox rubric format), huggingface.co/datasets/agentscope-ai/Auto-Rubric (RubricHub dataset), docs.ragas.io/en/stable/concepts/metrics/available_metrics/ (RAGAS metrics), github.com/microsoft/LLM-Rubric, topcoder.com/community/development/how-to-compete, kaggle.com/docs/competitions, toloka.ai/blog/evaluating-model-reasoning-with-rubrics-building-a-domain-specific-evaluation-dataset/.
+
+
+---
+
+## Threads still to dig — Session 23
+
+**Status as of 2026-05-02 (overnight session — continuing):**
+
+Ticks 201–206 complete. Session 23 adds 6 ticks:
+
+**Session 23 completed:**
+- [done — Tick 201] Fresh marketplace developments May 2026: Pinchwork (116 agents, 202 tasks), Nightmarket, AgentPact/BountyBook/ClawGig cluster. Google AP2 → FIDO Alliance (60+ orgs). Stripe MPP with Visa as validator. OpenAI Frontier (Feb 2026). COALESCE Framework (arXiv:2506.01900). ANP IETF draft expired April 2026.
+- [done — Tick 202] AI judge legitimacy: 12-bias CALM taxonomy (arXiv:2410.02736), JudgeBiasBench >50% error rate (arXiv:2603.08091), FairJudge Score-Comparison Inconsistency (Feb 2026), JudgeDeceiver >95% ASR adversarial attack (ACM CCS 2024). Straw defenses: Tier-1 determinism as primary integrity layer, submission sanitization pipeline, 3-provider ensemble, pairwise safer than absolute at Tier-3, blind scoring. Disclosure norms: judge model/version/rubric structure. EU AI Act Article 14: D22 poster override = the mandatory human oversight mechanism for compliance.
+- [done — Tick 203] Competition data as training signal: OpenRubrics beats pairwise RLHF by 8.4% (arXiv:2510.07743), Rubrics to Tokens enables token-level RL rewards from rubric scores (arXiv:2604.02795), rubric templates generate synthetic practice tasks (arXiv:2603.17216). Market value calculation: 1,000 competitions × 20 submissions = $3.65M in equivalent Scale AI training data value. Data licensing model: free academic, $50K-$200K for AI labs, $10-$50K for enterprise competition replay. Kaggle/Codeforces/LeetCode all squandered this asset; Straw should lock TOS from day one.
+- [done — Tick 204] Proxy submission problem: not academically studied as agent-delegation attack; TEE attestation only works for open-weight models; ZKML computationally infeasible for closed-API models. Enterprise procurement cares about outcomes, not provenance. The real integrity risk is task isolation (test case leakage), not model delegation. Policy: enforce sandbox isolation + operator transparency TOS clause, not model provenance attestation. Voluntary "powered by [model]" disclosure badge creates positive incentive without blocking participation.
+- [done — Tick 205] Enterprise contract structure: AI agent has no legal personhood — counterparty is always operator company. "Hire" = BPO-hybrid services agreement (Mayer Brown Feb 2026). "Acquire" = perpetual exclusive license to versioned agent deployment (Structure C — cleanest for Straw's deal sizes). IP: SCOTUS settled, USCO Part 2 covers mixed authorship; contractual assignment is safer than copyright reliance. Liability stack: deployer first, operator second, model provider third. EU AI Act: operator = provider; enterprise = deployer; competition likely = deployment.
+- [done — Tick 206] Competition template library: no existing public rubric template library for enterprise AI procurement. 5 complete rubric templates provided: Code Migration, Customer Support, Contract Review, Data Analysis, API Integration. Canonical format: 5-point integer scale, behavioral anchors at every level, explicit pitfall criteria, Tier-1 check field. Scale AI "pitfall criteria" innovation should be required field in every Straw rubric. AdaRubric/CARMO/Autorubric are the auto-spec-to-rubric state of the art — v2 feature.
+
+**New candidate threads for Session 24:**
+
+- [ ] **Agent coalition formation and team submissions (D20 dynamics)** — When agents form teams to compete on a task, what dynamics emerge? When do agents cooperate vs. compete? Game-theoretic analysis of team formation equilibria. Any research on cooperative agent task-solving from 2025-2026?
+- [ ] **The operator discovery problem** — How does an enterprise find which agent operators to invite to their competition? What is the supply-side discovery mechanism for Straw? Should Straw create a public agent directory with capability profiles searchable by task category?
+- [ ] **COALESCE epsilon-greedy market discovery** (arXiv:2506.01900) — Deep read on this paper. The epsilon-greedy approach to cold-start in agent markets is directly applicable to Straw's v0/v1 bootstrap problem. Worth a full tick.
+- [ ] **FairJudge and JudgeBiasBench — open source status** — Can Straw use FairJudge-finetuned models as the Tier 2 judge? Is JudgeBiasBench publicly available for benchmarking the Straw judge ensemble? What's the implementation path?
+- [ ] **Straw's data licensing TOS first-draft** — Concrete first draft of the key data licensing clauses for Straw's operator TOS and enterprise customer TOS, incorporating the legal findings from Tick 205.
+- [ ] **The "rubric generator" UX** — What is the step-by-step UX for an enterprise creating their first competition rubric on Straw? Walk through the AdaRubric-powered draft → anchor calibration → IRR validation flow. Wire-frame level design.
+
+---
+
+## Push status (Session 23)
+
+**Session 23 adds:**
+- Tick 201: Fresh agent marketplace developments (Pinchwork, Nightmarket, Google AP2 → FIDO, Stripe MPP, OpenAI Frontier, COALESCE framework, ANP status)
+- Tick 202: AI judge legitimacy — 12-bias taxonomy, JudgeDeceiver adversarial attacks, disclosure norms, Straw defenses
+- Tick 203: Competition data as training signal — rubric RL literature, $3.65M data value calculation, data licensing model
+- Tick 204: Proxy submission problem — TEE/ZKML analysis, why model provenance doesn't matter for procurement, sandbox isolation as the correct defense
+- Tick 205: Enterprise contract structure — BPO-hybrid services agreement, IP assignment, perpetual exclusive license for acquisition, liability stack, EU AI Act role mapping
+- Tick 206: Competition template library — 5 complete rubric templates, canonical format, pitfall criteria requirement, spec-to-rubric automation roadmap
+
+**Lines added this session:** ~750 lines
+**Total file size:** ~33,200 lines (est.)
+
