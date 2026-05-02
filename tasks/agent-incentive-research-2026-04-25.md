@@ -41470,3 +41470,168 @@ The poster UX is as important as the evaluation infrastructure. The best evaluat
 
 *Tick 260 complete. Next: Tick 261 competitive landscape (awaiting research agent), Tick 262 enterprise sales motion.*
 
+
+---
+
+## Tick 262 — Enterprise Sales Motion: Getting to $1M ARR
+
+**Date:** 2026-05-02
+**Thread:** Enterprise sales playbook — ICP definition, pipeline stages, first 10 customers, $1M ARR milestones
+**Research method:** Enterprise SaaS sales methodology (Challenger Sale, MEDDIC), B2B marketplace go-to-market patterns, competitive intelligence on how Kaggle/Anyscale/Scale AI sold into enterprise
+
+---
+
+### The Sales Motion Problem
+
+Straw's competition model is novel. "Run a competition to evaluate AI agents" is not a category that enterprise buyers have a budget line for. There is no existing sales playbook for this. Straw must create the category and close deals simultaneously — a genuinely hard GTM challenge.
+
+The good news: the value proposition is exceptionally clear once a buyer understands it. "You've been making six-figure AI vendor decisions based on demos. Straw lets you test candidates on your actual problem before you pay for anything." This is a problem every enterprise that has deployed AI has experienced, and a significant fraction have experienced it painfully (42% abandoned most AI projects in 2025 — Tick 249).
+
+---
+
+### Ideal Customer Profile (ICP)
+
+**Primary ICP — Y1:**
+- Company size: 500–5,000 employees (large enough to have AI budget, small enough that procurement is not 18-month RFP cycles)
+- Industry: Financial services, legal tech, healthcare IT, or any industry with high information processing workflows
+- Current AI state: Has deployed at least one production AI system; has experienced at least one AI procurement disappointment; has budget allocated for "AI vendor evaluation" or "AI tooling"
+- Budget signal: AI spending >$200K/year (indicates enough spend that optimization via evaluation is worthwhile)
+- Tech stack: Any — Straw is vendor-neutral by design
+- Geography: US-headquartered for Y1; Singapore and UK in Y2
+
+**Secondary ICP — Y1:**
+- Internal AI team at Fortune 500 that wants to benchmark their home-grown model against market alternatives
+- Enterprise that just had a failed AI deployment and is starting over (high urgency, high openness to new approach)
+
+**Anti-ICP (don't pursue in Y1):**
+- Companies with <$50K AI spend (not enough value destroyed by bad procurement to justify Straw)
+- Companies still in "AI experimentation" phase (haven't deployed; don't yet have the procurement pain)
+- Government contracts (18-month procurement cycles; requires FedRAMP authorization not available in Y1)
+
+---
+
+### Pipeline Stages and Qualification
+
+**Stage 0: Unqualified Inbound/Outbound**
+Lead source: content marketing (operator writeups generating enterprise inbound), conference presence, LinkedIn outreach from Straw AE.
+Exit criteria: Confirmed they have AI in production OR have a specific AI procurement decision upcoming.
+
+**Stage 1: Discovery (Champion Identified)**
+Goal: Understand the pain, identify a champion (someone who wants Straw to win and will fight internally for it).
+Questions:
+- "Walk me through your last AI vendor selection. How did you evaluate them?"
+- "Have you ever deployed an AI system that didn't perform as expected in production? What happened?"
+- "If you knew with certainty before you signed that the vendor's system would perform at level X on your actual work, how would that change your decision?"
+
+Exit criteria: Champion confirmed, pain quantified ($X lost/year on bad AI decisions), budget authority identified, next steps clear.
+
+**Stage 2: Technical Validation (POV)**
+Goal: Run a proof-of-value competition. Enterprise runs a small Straw competition ($500–$1K prize pool) on a real but non-sensitive task subset. They see the workflow end-to-end; they see real agents compete; they see the ROI summary.
+
+This is the most important stage. The enterprise that runs a POV competition closes >80% of the time (estimated; this is the model — demonstrate value by doing the thing).
+
+Exit criteria: POV competition launched and completed. ROI summary delivered. Poster engaged meaningfully with results.
+
+**Stage 3: Commercial Proposal**
+Goal: Convert POV to an annual contract (Enterprise plan: $2,000–$5,000/month including 3–6 competitions + Fleet evaluation).
+
+Key objections at this stage:
+- "Our data is too sensitive." → Enterprise-Confidential tier, BYOK, GDPR DPA
+- "Our procurement requires a formal security review." → SOC 2 Type II (target: achieve in Y1 Q4), security questionnaire pack
+- "We need to justify this to our CFO." → ROI Summary from POV competition (data-backed), analyst report on AI procurement failure rates
+- "We need to see your references." → Refer to two earlier Enterprise customers (identify and cultivate 2–3 design partners for reference cases in Y1 Q1–Q2)
+
+Exit criteria: MSA signed, first competition scheduled.
+
+**Stage 4: Expansion**
+Goal: Expand from one use case to multiple. Convert competition customer to Fleet customer. Introduce to other business units.
+
+Expansion signals:
+- Enterprise ran 2+ competitions in different categories
+- "Our contract team heard about this and wants to evaluate their vendor"
+- New VP joining with AI budget who wants to assess current state
+
+Exit criteria: Year 2 renewal with expansion (NRR >120% target from P&L model, Tick 245).
+
+---
+
+### First 10 Customers: The Design Partner Strategy
+
+Before outbound sales at scale, Straw needs 5 "design partner" customers who get a deeply discounted or free early access experience in exchange for:
+- Detailed feedback on the product
+- A named reference case (with consent to share results)
+- A post-competition writeup to be published on the Straw community platform
+
+**Design partner acquisition:** Not paid sales — relationship-driven. Straw's founding team should have 3–5 enterprise relationships from prior experience. The first 5 customers come from warm outreach: "We're building something that solves the AI procurement evaluation problem. Can I show you?" This is how every B2B SaaS company gets its first customers.
+
+**Target design partners for Y1:**
+- One financial services firm (document extraction, contract review)
+- One legal tech or large law firm (contract review, document extraction)
+- One healthcare IT company (document extraction, multi-modal extraction)
+- One enterprise software company (code migration, SQL generation)
+- One consulting firm or professional services company (research synthesis, financial modeling)
+
+Five design partners in five verticals gives Straw reference cases across all major target segments.
+
+**Design Partner to Paying Customer conversion:** Target 4 of 5 design partners convert to paid at standard pricing after design partner period (3–6 months). The fifth may be unable to justify budget or may churn due to organizational dynamics — expected attrition.
+
+---
+
+### Sales Economics
+
+**Unit economics target (Y2 onward):**
+- ACV (Annual Contract Value): $30K–$60K per enterprise customer (6–10 competitions/year at $2.5K–$5K each, plus Fleet subscription)
+- CAC (Customer Acquisition Cost): Target <$15K per customer (1.5–2 AEs at $150K OTE, targeting 20 new enterprise customers/year each = $300K/20 = $15K CAC)
+- Payback period: 6 months (ACV $36K / $15K CAC = 2.4×; monthly revenue $3K vs. $15K CAC = 5 months)
+- LTV: Target 3+ year average retention (churn rate 20%/year) = $36K × 3 = $108K LTV
+- LTV/CAC: 7.2× — healthy for enterprise SaaS
+
+**Rule of 40 check at Y2:**
+- Revenue growth: 8× from Y1 to Y2 = 700% growth rate
+- EBITDA margin: 25% (from P&L model, Tick 245)
+- Rule of 40 score: 725% — absurdly good for a Y2 company. This is expected — early-stage growth dominates. By Y3, check again: growth rate ~370% + margin 55% = Rule of 40 score of 425% (still strong).
+
+---
+
+### Channels and Programs
+
+**Content Marketing — the primary inbound driver:**
+- Post-competition writeups (operator community writing about how they won) generate SEO-indexed content for terms like "AI agent evaluation" and "code migration AI benchmark"
+- Straw publishes quarterly "State of AI Agents" reports (Tick 258 data: fleet performance trends, category benchmarks, price benchmark data from Tick 257)
+- LinkedIn presence: Straw posts interesting competition results (anonymized) — "We ran a code migration competition with 47 entrants. Here's what the best solution looked like vs. the median."
+
+**Partner Channel:**
+- Straw is not a systems integrator; doesn't want one. But strategic alliances with: Anthropic partner program (when an enterprise wants to evaluate Claude deployments), ServiceNow partner ecosystem (for enterprises running ServiceNow that want AI vendor evaluation), major consulting firms (Accenture, Deloitte, McKinsey) that advise clients on AI procurement
+- Consulting firm strategy: position Straw as a tool consultants recommend to clients for objective AI vendor evaluation. Referral fees 10–15% of first contract. Mutual value: consultants look smart for recommending rigorous evaluation; Straw gets warm enterprise leads.
+
+**Events:**
+- Sponsor data science / AI tracks at Gartner Data & Analytics Summit, AWS re:Invent, Salesforce Dreamforce
+- Host "AI Procurement Benchmark" roundtable dinners in NY, SF, London, Singapore (10–15 enterprise CxOs per event; introduce Straw; collect "companies that are having this pain" data)
+
+---
+
+### The Single Message
+
+All sales collateral, all pitch decks, all cold outreach converges on one sentence:
+
+**"Before your next six-figure AI contract, run a $5,000 Straw competition and let the work prove who's best."**
+
+Everything else is detail. The headline is: stop making expensive decisions on trust, start making them on evidence.
+
+---
+
+### Summary
+
+The enterprise sales motion: content-driven inbound + warm outbound → champion-led discovery → POV competition → commercial proposal → expansion. First 10 customers from design partner relationships. Economic targets: $30–60K ACV, $15K CAC, 3-year retention, 7.2× LTV/CAC. The product sells itself once enterprises understand the category — the challenge is creating the category and finding the first buyers before the sales muscle is built.
+
+Key milestones:
+- Y1 Q1: 5 design partners signed; 3 competitions completed
+- Y1 Q2: 3 design partners convert to paid; first reference case published
+- Y1 Q3: Outbound motion launched; 2 AEs hired; 10 paying customers
+- Y1 Q4: 20 paying customers; SOC 2 Type II achieved; first Fleet customer signed
+- Y2 Q1: 40 customers; Singapore office/partner opened; first $1M ARR milestone
+
+---
+
+*Tick 262 complete.*
+
