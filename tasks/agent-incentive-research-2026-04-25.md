@@ -39437,3 +39437,122 @@ Sources:
 - AI project abandonment 42%: https://www.aimagicx.com/blog/ai-roi-measurement-enterprise-framework-2026
 - WNDYR 2026 ROI reckoning: https://www.wndyr.com/blog/2026-the-year-ai-roi-gets-real-and-forces-a-strategic-fork-in-the-road
 
+---
+
+## Tick 250 — Regulatory Sandbox Entry: FCA Supercharged Sandbox and MAS Fintech Sandbox
+
+*Research sources: FCA Supercharged Sandbox programme (Cohort 2 opens May 5, 2026); FCA Innovation Insights 2025; SymphonyAI FCA sandbox case study; Tandf regulatory cooperation in AI sandboxes (2026); FCA + Nvidia "Supercharged" AI sandbox announcement (December 2025); Pinsent Masons FCA AI sandboxing analysis; MDPI comparative case study (UK, Singapore, Hungary sandboxes)*
+
+### The Strategic Opportunity
+
+Regulatory sandboxes are designed to let fintech companies test innovative products in a live-but-supervised environment, with relaxed enforcement of certain regulations while the company demonstrates their model.
+
+For Straw, sandbox entry is not just a regulatory shortcut — it's a **market entry accelerator**:
+1. FCA sandbox admission = FCA endorsement signal to UK financial services enterprises
+2. MAS sandbox admission = MAS endorsement signal to Singapore-regulated fintechs
+3. Both regulators provide direct access to their regulated-enterprise networks (showcase days, introductions)
+4. Sandbox participation produces documented regulatory engagement — valuable for due diligence in Series A
+
+---
+
+### The FCA Supercharged Sandbox
+
+**What it is:**
+The FCA Supercharged Sandbox (launched September 2025) is a cohort-based program specifically for AI use cases in financial services. It provides:
+- Secure cloud environment with GPU-enabled infrastructure
+- High-quality datasets for testing
+- Expert regulatory support
+- Direct access to FCA supervisors
+- Parallel "AI Live Testing" stream for deploying models under FCA supervision
+
+**Cohort 2 opens May 5, 2026** — this is now.
+
+**What the FCA is specifically looking for in Cohort 2:**
+> "The FCA is particularly interested in applications that demonstrate the use of **agentic AI**, such as agentic payment services, compliance agents, and customer interaction or service agents."
+
+This is almost exactly Straw's use case: a platform for evaluating and procuring agentic AI systems used in financial services.
+
+**The Straw application angle:**
+
+Frame Straw as a **compliance infrastructure tool for MAS-regulated enterprises procuring agentic AI.** The pitch:
+- UK fintechs must comply with FCA AI governance expectations (Tick 237)
+- When they procure AI agents, they need documented evaluation evidence
+- Straw's competition platform provides FCA-aligned evaluation documentation
+- Sandbox test: run 2-3 competitions for UK fintech partners inside the FCA sandbox, demonstrating that Straw's output meets FCA supervisory expectations for AI vendor assessment
+
+The FCA sandbox's showcase days (to regulators, financial institutions, academia, consultancies, government) are exactly the audience for Straw's enterprise sales motion. A single showcase day puts Straw in front of 50+ FCA-supervised fintechs who need AI evaluation infrastructure.
+
+**FCA sandbox entry requirements:**
+- Company must have a genuine innovative proposition that isn't served by existing regulation
+- Must be able to deploy a live test within 6 months
+- Must have financial services-adjacent value proposition
+- Must be willing to provide FCA with outcome data
+
+Straw's timeline: May 2026 application → September 2026 cohort start (typical). If Straw is launching v1 in Q3 2026, the timing works perfectly.
+
+Sources:
+- FCA Supercharged Sandbox: https://www.fca.org.uk/firms/innovation/supercharged-sandbox
+- Cohort 2 opens May 5, 2026: https://markets.financialcontent.com/wral/article/tokenring-2025-12-24-the-fca-and-nvidia-launch-supercharged-ai-sandbox-for-fintech
+- FCA Innovation Insights 2025: https://www.fca.org.uk/publications/corporate-documents/innovation-insights-2025
+- FCA regulatory sandbox applications up 49%: https://www.pinsentmasons.com/out-law/news/fca-ai-sandboxing-strategy-financial-services
+
+---
+
+### The MAS Fintech Regulatory Sandbox
+
+**What it is:**
+The Monetary Authority of Singapore's Fintech Regulatory Sandbox allows financial services companies to test innovative products and services with relaxed regulatory requirements, within a controlled boundary, for a limited duration.
+
+**Current state for Straw:**
+The MAS sandbox is traditionally for financial services *products* (payment services, lending, insurance) rather than infrastructure tools. However, given that:
+1. MAS's December 2024 mandatory AI governance requirements now require documented vendor assessment for AI systems
+2. Straw's competition output is directly relevant to MAS compliance
+3. MAS has expressed interest in agentic AI governance (January 2026 IMDA Agentic AI Framework)
+
+...there's a credible path to MAS sandbox entry framed as "AI vendor assessment infrastructure for MAS-regulated financial institutions."
+
+**The alternative to sandbox:** The Singapore Digital Industry Framework (DISG)
+
+Even without formal sandbox entry, Singapore's enterprise market is accessible because:
+- The SGD 150M Enterprise Compute Initiative funds compute for eligible organizations
+- IMDA's Global AI Assurance Pilot (February 2025) is actively seeking AI testing infrastructure partners
+- Singapore's pro-innovation, technology-neutral approach means less regulatory friction than FCA
+
+**Recommended approach for Singapore:**
+Rather than formal sandbox entry, partner with IMDA's AI Verify Foundation — the body running Singapore's AI governance framework. AI Verify Foundation seeks "industry contributors" to validate their governance frameworks in practice. Straw contributing competition data to AI Verify's assurance toolkit is a more direct path to MAS-regulated fintech adoption than formal sandbox.
+
+Sources:
+- MAS Fintech Regulatory Sandbox overview: (prior session research, Tick 237)
+- IMDA Agentic AI Governance Framework: https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2024/public-consult-model-ai-governance-framework-genai
+- Regulatory cooperation in AI sandboxes: https://www.tandfonline.com/doi/abs/10.1080/17579961.2026.2633675
+
+---
+
+### Sandbox Entry as Investor Signal
+
+For the Series A pitch (Tick 245), sandbox admission adds a meaningful signal:
+- "FCA sandbox participant" = regulatory credibility with UK investors
+- "MAS Fintech partner" = APAC market validation
+- "IMDA AI Verify contributor" = Singapore government endorsement
+
+Combined with the OMB M-26-04 US federal compliance angle and the EU AI Act documentation play, Straw has regulatory anchor points in all four major markets (US, EU, UK, Singapore). This is unusual for a seed-stage company — most startups don't engage with regulators until Series B. The regulatory engagement is a strategic differentiator that signals market sophistication to investors.
+
+---
+
+### Implementation Plan
+
+**FCA Supercharged Sandbox (apply now):**
+1. Apply May 5-June 30, 2026 (Cohort 2 window)
+2. Application materials: product description, regulatory framing, test proposal (2-3 competitions with UK fintech partners inside FCA sandbox environment)
+3. If selected (September 2026 start): run FCA-supervised competitions with 2-3 UK fintech design partners
+4. Showcase day (January 2027): present results to FCA supervisors, UK fintech audience
+5. Post-sandbox: use FCA engagement documentation in enterprise sales
+
+**IMDA AI Verify (Singapore):**
+1. Contact AI Verify Foundation directly as an "industry practitioner" contributor
+2. Propose: Straw will contribute anonymized competition outcome data to AI Verify's technical testing corpus
+3. In exchange: IMDA acknowledgment as an AI Verify contributing platform
+4. Timeline: 3-6 months to establish partnership, available before Singapore market launch
+
+**Expected investment:** Each sandbox application requires legal drafting (~$5,000) and product adaptation for the sandbox environment (~2 weeks engineering for FCA's specific reporting requirements). Total: $15,000-$25,000 for FCA + IMDA engagement. ROI: market access that would otherwise require 12-18 months of BD without the regulatory endorsement.
+
