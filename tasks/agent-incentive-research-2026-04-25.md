@@ -38452,3 +38452,285 @@ Estimated development time: 3-4 months of dedicated engineering after v1 ships. 
 
 Fine-tuning competitions break even at the infrastructure cost when running 2+ per month. At 8 per month, the category contributes meaningfully to overall margin. The TAM is different from agent competitions — fewer enterprises need fine-tuning competitions (larger AI-sophistication requirement) but the prize pools are much larger.
 
+---
+
+## Tick 245 — Straw Unit Economics: The Three-Year P&L Model
+
+*Research sources: AI-first B2B SaaS economics 2026 (Monetizely); Bessemer AI pricing playbook; Oliver Wyman AI SaaS valuations April 2026; SaaS Capital AI assessment framework; McKinsey AI SaaS business models; Straw-specific data from Ticks 213 (pricing), 221 (operating costs), 229 (infrastructure), 239 (platform economics per competition), 242 (data moat / valuation), 243 (enterprise SDK / AI agent staffing TAM)*
+
+### The Revenue Model Architecture
+
+Straw has three revenue streams with different margin profiles and growth trajectories:
+
+```
+Revenue Stream 1: Transaction fees (per-competition platform fee)
+Revenue Stream 2: Subscription (annual enterprise contract)
+Revenue Stream 3: Data licensing (Tick 211 — academic/commercial/enterprise tiers)
+```
+
+**Transaction fees** are the primary revenue engine: Straw charges 17% of prize pool for per-competition customers, 14% for annual subscribers. Every competition that runs generates fee revenue.
+
+**Subscriptions** improve predictability and reduce churn: $60K/year enterprise contract includes all competitions, lower fee rate, CS support, compliance documentation package. Subscription customers are more valuable than per-competition customers (lower CAC amortized over multi-year LTV).
+
+**Data licensing** is emerging high-margin revenue: competition outcome data (anonymized, aggregated) licensed to AI researchers, model evaluators, and enterprise analytics teams. Near-zero marginal cost once the competition runs. This is the data network moat monetized.
+
+---
+
+### Year 1 Projection (First 12 months)
+
+**Assumptions:**
+- Q1: Soft launch with 5 enterprise customers, 30 competitions
+- Q2: Growth to 15 enterprises, 75 competitions/quarter
+- Q3: 30 enterprises, 120 competitions/quarter
+- Q4: 50 enterprises, 180 competitions/quarter
+- Average prize pool: $3,500 (code_migration and doc_extraction mix at Tick 213 distribution)
+- 10% of enterprises sign annual contract by Q4 (5 customers at $60K/year)
+- Operator count: 300 verified operators by Q4 (Tick 218 supply analysis)
+
+**Year 1 Revenue:**
+```
+Competition revenue:
+  Q1: 30 × $3,500 × 17% = $17,850
+  Q2: 75 × $3,500 × 17% = $44,625
+  Q3: 120 × $3,500 × 17% = $71,400
+  Q4: 170 × $3,500 × 16% = $95,200  // mix of 14%/17% as subscriptions begin
+  Q4 annual contracts (partial year): 5 × $60,000 × 3/12 = $75,000
+  Total Y1: ~$304,000
+
+Data licensing:
+  Q4 first academic license: 2 × $20,000 = $40,000 (academic tier)
+  Total Y1: ~$344,000 ARR equivalent
+```
+
+**Year 1 Costs:**
+```
+Personnel (founding team + 2 engineers):
+  CTO/Engineer × 2: $240,000
+  Sales/BD: $120,000
+  CEO + product: non-dilutive / no salary assumed
+  Total personnel: $360,000
+
+Infrastructure (Railway deployment, Supabase, Redis):
+  ZeroClaw workers (Railway): $1,500/month = $18,000/year
+  Supabase (PostgreSQL + auth): $500/month = $6,000/year
+  Redis/BullMQ: $300/month = $3,600/year
+  LLM inference (Tier-2 evaluation): variable at $0.80/submission
+    400 submissions/quarter avg × 4 quarters × $0.80 = $1,280/year
+  gVisor container runtime: included in Railway
+  CDN/storage/misc: $200/month = $2,400/year
+  Total infrastructure: ~$31,280/year
+
+Prize pool (Straw doesn't fund prizes — enterprises pay prize + fee):
+  Note: prize money flows through Straw but is not Straw's cost
+  Stripe payment processing: 2.9% + $0.30 per transaction on fee collection
+    ~395 competitions × $595 avg fee × 2.9% = $6,800/year
+  Total payment processing: ~$6,800/year
+
+Legal/compliance setup:
+  TOS drafting, data licensing agreements: $30,000 (one-time)
+  Ongoing legal: $15,000/year
+
+Marketing/sales:
+  Events, developer marketing: $30,000/year
+
+Total Year 1 costs: ~$473,000
+```
+
+**Year 1 P&L:**
+```
+Revenue: $344,000
+Costs: $473,000
+Year 1 Net: ($129,000)
+```
+
+Year 1 is a loss — this is typical for marketplace startups in their first year. The loss is small relative to the ARR growth rate. A seed round of $500K covers Year 1 operations with ~$170K runway buffer.
+
+---
+
+### Year 2 Projection
+
+**Assumptions:**
+- Enterprise count: 120 by year-end
+- 30% on annual contracts ($60K ARR each)
+- Competitions: 600/year
+- Average prize pool: $4,500 (mix shifts toward higher-value categories as v1.5 launches mid-year)
+- Singapore and India markets opening Q2 (Tick 237: zero additional localization cost)
+- Credential API launched Q1 (Tick 241: v1.5 feature)
+
+**Year 2 Revenue:**
+```
+Competition fees:
+  600 × $4,500 × 15.5% (blended rate) = $418,500
+
+Annual contracts:
+  36 × $60,000 = $2,160,000 (ramp: 10 contracts in Q1, 10 in Q2, 8 Q3, 8 Q4)
+
+Data licensing:
+  3 academic licenses × $25,000 = $75,000
+  1 research commercial license × $100,000 = $100,000
+  Total licensing: $175,000
+
+Total Year 2 Revenue: ~$2,753,500
+```
+
+**Year 2 Costs:**
+```
+Personnel (scale to 12 FTE):
+  Engineering (5 FTE): $750,000
+  Sales/CS (3 FTE): $450,000
+  Product/design (2 FTE): $300,000
+  CEO + legal/ops (2 FTE): $300,000
+  Total personnel: $1,800,000
+
+Infrastructure:
+  ZeroClaw at scale: $4,000/month = $48,000
+  Supabase Enterprise: $2,000/month = $24,000
+  LLM inference (3,000 submissions × $0.80): $28,800/year
+  Storage/CDN/misc: $1,000/month = $12,000
+  Total infrastructure: $112,800
+
+Legal/compliance: $40,000
+Marketing/events: $100,000
+Total Year 2 costs: ~$2,052,800
+
+Year 2 Net: +$700,700
+```
+
+Year 2 turns profitable with a 25% net margin. This is early for a marketplace but achievable because:
+1. Annual contracts generate high-margin recurring revenue
+2. Infrastructure scales sub-linearly with competition volume (ZeroClaw is efficient)
+3. Team is lean at 12 FTE generating $2.75M revenue
+
+**Year 2 key metrics:**
+- ARR: $2.1M (annualized subscriptions only) + $700K competition fees + $175K licensing
+- Net Dollar Retention: target 120% (enterprises run 20% more competitions year-over-year)
+- Gross margin: 74% (higher than typical 50-60% AI SaaS due to low marginal inference cost per competition — most cost is in evaluation pipeline, not per-competition inference)
+
+---
+
+### Year 3 Projection
+
+**Assumptions:**
+- Enterprise count: 300
+- 50% on annual contracts
+- v2 categories (security_audit, financial_modeling) launching, higher prize pools
+- Continuous evaluation subscriptions launching (Tick 242: $2-5K/month per category)
+- Singapore + India at full operation (no incremental cost)
+- Series A closed in Q1 Year 3 ($8-12M round based on Year 2 metrics)
+
+**Year 3 Revenue:**
+```
+Annual contracts:
+  150 enterprises × $60,000 = $9,000,000
+  
+Competition fees (spot/per-competition):
+  150 enterprises × 4 competitions/year × $5,000 avg pool × 17% = $510,000
+
+Continuous evaluation subscriptions:
+  30 enterprises × 2 categories × $3,000/month × 12 months = $2,160,000
+
+Data licensing:
+  Enterprise replay licenses: 5 × $25,000 = $125,000
+  Research commercial: 3 × $120,000 = $360,000
+  Academic: 8 × $25,000 = $200,000
+  Total: $685,000
+
+Fine-tuning competitions (v3 launch Q3):
+  8 competitions/quarter × 2 quarters × 15% × $25,000 avg = $600,000
+
+Total Year 3 Revenue: ~$12,955,000
+```
+
+**Year 3 Costs:**
+```
+Personnel (28 FTE):
+  Engineering (10): $1,800,000
+  Sales/CS (8): $1,200,000
+  Product (4): $600,000
+  Legal/compliance/ops (4): $600,000
+  Leadership (2): $500,000
+  Total: $4,700,000
+
+Infrastructure (at scale):
+  ZeroClaw + eval clusters: $12,000/month = $144,000
+  GPU inference (fine-tuning competitions): $20,000/month = $240,000
+  Database/storage/CDN: $5,000/month = $60,000
+  LLM inference (20K submissions × $0.80): $192,000
+  Total infrastructure: $636,000
+
+Legal/compliance: $120,000
+Marketing/events/partnerships: $400,000
+Total Year 3 costs: ~$5,856,000
+
+Year 3 Net: +$7,099,000
+```
+
+**Year 3 key metrics:**
+- ARR: $11.16M (contracts + subscriptions + licensing)
+- Net margin: 54.8% (strong for AI-infused marketplace)
+- Gross margin: ~80% (data licensing and subscriptions are near-zero marginal cost)
+- YoY revenue growth: 370% (Year 2→3)
+
+---
+
+### The Valuation Case at Series A
+
+For the Series A, Straw presents a Year 2 close + Year 3 projection story:
+
+**Leading ARR-based metrics:**
+- $2.75M ARR at Series A (Year 2 run-rate)
+- 120%+ NRR (enterprises expand usage)
+- 300+ operators on platform (supply side)
+- 120 enterprise customers (demand side)
+- Data licensing revenue (high-margin anchor)
+
+**Comparable SaaS valuations:** Bessemer's Cloud 100 AI cohort median at 24x revenue. At $2.75M ARR, that implies $66M valuation — a realistic Series A post-money for a capital-efficient marketplace with demonstrated NRR.
+
+At 10x ARR (conservative for AI-infused B2B marketplace): $27.5M post-money. Raise $8M on $27.5M post = 29% dilution. Raise $12M on $35M post = 34% dilution.
+
+**Why the margin structure matters for valuation:**
+
+Traditional AI SaaS: 50-60% gross margin (inference cost drag). Straw's gross margin is higher because:
+1. Competition platform fees are software-margin (no inference cost)
+2. Data licensing is 90%+ gross margin
+3. Annual contracts amortize CS cost across the year
+4. ZeroClaw's Tier-1 deterministic evaluation is near-zero cost (test runner, not frontier LLM)
+
+The only material inference cost is Tier-2 LLM judging — ~$0.80/submission. At 20,000 submissions/year, that's $16,000. Against $12M revenue, it's immaterial.
+
+**The path to $30M ARR (Year 4-5):**
+- 600 enterprise customers (500 US, 70 Singapore/India, 30 UK/Japan)
+- Average contract: $80K/year (mix of standard + higher-value continuous eval subscriptions)
+- Continuous eval subscriptions alone at $3K/month × 150 customers = $5.4M ARR
+- Data licensing: $2M ARR
+- Fine-tuning competitions: $1.5M ARR
+- Total: ~$35M ARR at 700-800 total enterprise customers
+
+At $35M ARR with 60%+ NRR and 75% gross margin, the company is Series B eligible at $350-700M valuation (10-20x ARR).
+
+---
+
+### AI-First SaaS Economics Context
+
+The 2026 AI SaaS benchmarks from Bessemer and Oliver Wyman show:
+- AI cohort on Cloud 100: median 24x revenue (vs. 19x for non-AI SaaS)
+- But EV/Revenue median dropped to 3.4x as of March 2026 (AI disruption discount)
+- **The winner takes all in AI SaaS:** top decile companies trade at 30-50x; median drops to 3-5x
+- 92% of AI software companies use hybrid pricing (subscription + usage)
+- NDR over new bookings is the new investor focus metric
+
+Straw's positioning relative to these benchmarks:
+- Hybrid pricing ✓ (annual subscription + per-competition fees)
+- High NDR target (120%) ✓ (enterprises run more competitions as trust builds)
+- Data moat ✓ (unique competitive position per Tick 242)
+- AI-adjacent but not AI-commodity (Straw doesn't sell AI; it sells AI procurement infrastructure)
+
+The "AI-adjacent but not AI-commodity" framing is critical: Straw is not at risk of being disrupted by cheaper models because Straw doesn't sell model inference — it sells the evaluation and procurement infrastructure that sits between enterprises and agents. Even if frontier models drop to $0.01/1M tokens, Straw's evaluation platform still captures value.
+
+Sources:
+- AI-first B2B SaaS economics: https://www.getmonetizely.com/blogs/the-economics-of-ai-first-b2b-saas-in-2026
+- Oliver Wyman AI SaaS valuations: https://www.oliverwyman.com/our-expertise/insights/2026/apr/how-agentic-ai-reshaping-saas-valuations.html
+- Bessemer AI pricing playbook: https://www.bvp.com/atlas/the-ai-pricing-and-monetization-playbook
+- SaaS valuation multiples: https://aventis-advisors.com/saas-valuation-multiples/
+- McKinsey AI SaaS business models: https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/upgrading-software-business-models-to-thrive-in-the-ai-era
+
