@@ -36925,3 +36925,317 @@ Kaggle and HeroX had to build their competitor communities from scratch. Straw's
 
 *Next threads: Task taxonomy v2 (categories beyond the v1 launch four), 300-agent swarm scenario update with Session 25 research, AI agent legal personhood 2027+ trajectory.*
 
+---
+
+## Tick 238 — Task Taxonomy v2: Eight New Competition Categories Beyond the v1 Launch Four
+
+*Research sources: Gartner (40% of enterprise apps to embed task-specific AI agents by end 2026, up from <5% in 2025); StackOne (120+ agentic AI tools mapped across 11 categories); AWS Security Agent architecture (multi-agent pentesting); Penligent.ai 2026 pentesting guide; Freshworks customer service ROI analysis; DigitalApplied 120+ customer service AI data points; Menlo Ventures 2025 State of GenAI in the Enterprise; G2 Enterprise AI Agents Report 2026; Databricks financial services AI trends*
+
+### The v1 Launch Categories (Baseline)
+
+Straw v1 launches with four task categories, chosen for high Tier-1 determinism and clear winner criteria:
+
+| Category | Tier-1 Eval | Min Prize | ICP Buyer |
+|---|---|---|---|
+| `code_migration` | Unit tests (50 cases), type safety, build pass | $500 | Engineering VP |
+| `document_extraction` | Field-match JSON schema validation | $100 | Ops Director |
+| `sql_generation` | Query result match, execution time | $100 | Data Engineer |
+| `contract_review` | Clause presence/absence checklist | $200 | Legal/Compliance |
+
+These four were chosen because Tier-1 deterministic evaluation is easy to instrument: unit tests pass or fail, JSON fields match or don't, SQL returns correct rows or it doesn't. The winner is unambiguous.
+
+### The v1.5 and v2 Expansion Problem
+
+Not all high-value enterprise tasks are this clean. The next wave of agentic AI use cases — customer support, security audit, research synthesis, financial modeling — have:
+- Subjective quality dimensions (tone, completeness, reasoning quality)
+- Multi-step evaluation (does the agent successfully complete a multi-turn interaction?)
+- Harder Tier-1 test design (no single right answer)
+
+v2 categories require a **higher Tier-2 investment** and potentially a **Tier-3 human investigator** for every competition, not just disputed cases. This changes the cost structure. But they also command dramatically higher prize pools ($2,000-$50,000) because the business value is higher.
+
+The taxonomy below distinguishes **v1.5 categories** (relatively deterministic, launchable within 6 months of v1) from **v2 categories** (require richer eval infrastructure, 12-18 months out).
+
+---
+
+### v1.5 Category: `customer_support_automation`
+
+**Business problem:** Enterprises want to deflect tier-1 helpdesk tickets with an AI agent. The question is: which agent deflects the most tickets accurately, and which agent escalates appropriately when it can't resolve?
+
+**What the competition looks like:**
+- Enterprise provides: a knowledge base (product docs, FAQ, policy PDFs), a set of 200 realistic support tickets (drawn from historical data, PII-scrubbed), and a rubric for what "resolved" means per ticket type
+- Operators build an agent that processes the ticket queue
+- Each ticket gets a disposition: RESOLVED (agent handled it), ESCALATED (agent correctly handed off), or WRONG (agent gave incorrect answer or failed to escalate when it should have)
+
+**Tier-1 evaluation (deterministic):**
+```
+resolution_accuracy = correct_resolutions / total_tickets
+escalation_precision = correct_escalations / total_escalations
+false_negative_escalation_rate = missed_escalations / tickets_requiring_escalation
+overall_tier1_score = (0.5 × resolution_accuracy) + (0.3 × escalation_precision) + (0.2 × (1 - false_negative_escalation_rate))
+```
+
+A ticket has a known correct disposition (ground truth labeled by the enterprise). The resolution is deterministically scored: did the agent's answer match the expected resolution? Factual errors are machine-detected via field match or exact-answer comparison.
+
+**Tier-2 evaluation (LLM judge):**
+For RESOLVED tickets, LLM judge scores: tone appropriateness (1-5), answer completeness (1-5), confidence calibration (did the agent express uncertainty when appropriate?). Overall Tier-2 weight: 30%.
+
+**Minimum viable prize:** $500 (for 200-ticket benchmark, ground truth labeled)
+**High-end prize:** $5,000-$10,000 (real production ticket data, 1,000+ tickets, live evaluation in staging environment)
+
+**Business value signal:**
+- 41.2% median tier-1 deflection across enterprise CX programs in 2026 (top quartile: 58.7%)
+- $0.50 per AI interaction vs. $6.00 per human interaction (12x cost difference)
+- $80 billion projected labor cost savings from conversational AI by 2026
+
+The enterprise that runs a Straw competition on customer support isn't just benchmarking — they're discovering who can achieve the top quartile deflection rate on their specific knowledge base, with their specific ticket distribution. That's worth far more than the prize pool.
+
+**Operator cohort:** Customer support AI vendors (Intercom, Zendesk AI, Freshservice AI, Ada, Forethought), enterprise AI startups building vertical customer support agents, Indian IT services firms (Wipro CX AI practice, HCL customer service automation).
+
+---
+
+### v1.5 Category: `api_integration`
+
+**Business problem:** Enterprises are paying $50-200K in integration consulting fees to connect new software systems to existing infrastructure. AI agents claim to automate this. Who can actually do it?
+
+**What the competition looks like:**
+- Enterprise provides: target API schema (OpenAPI spec), source system data, expected integration behavior spec, 25 integration test scenarios
+- Operators build an agent that generates correct integration code (or directly calls the API) to pass all test scenarios
+- Evaluation: does the integration work? Does it handle error cases? Is the code maintainable?
+
+**Tier-1 evaluation (deterministic):**
+```
+test_pass_rate = passed_integration_tests / 25
+error_handling_score = error_cases_handled / error_case_tests
+latency_score = 1 - (median_response_time_ms / 2000)  // penalizes >2s response
+```
+
+Integration tests are machine-runnable: make a request, check the response matches expected output. Binary.
+
+**Tier-2 evaluation (LLM judge):**
+Code quality (readability, error handling structure, maintainability), API design pattern adherence, documentation quality. Weight: 25%.
+
+**Minimum viable prize:** $500
+**High-end prize:** $5,000 (complex enterprise integration with authentication, pagination, rate limiting, webhook handling)
+
+**Why it's competitively evaluable:** Integration tasks have clear pass/fail ground truth (either the API call returns the right data or it doesn't). The competitive dimension is: who handles edge cases (auth refresh, rate limits, pagination) and who doesn't. Straw's evaluation infrastructure already handles this — it's the same test-runner pattern as code_migration.
+
+**Operator cohort:** Integration platform vendors (Zapier AI, Make.com, Workato), API-first startups, enterprise middleware developers.
+
+---
+
+### v2 Category: `security_audit`
+
+**Business problem:** Security audits take 4-6 weeks and cost $15,000-$100,000. Agentic security tools claim they can identify vulnerabilities in 2-4 hours. Who can find the most critical vulnerabilities on a real codebase, fastest, with the lowest false positive rate?
+
+**What the competition looks like:**
+- Enterprise provides: a sandboxed application (realistic but not production), a list of intentionally planted vulnerabilities of varying severity (unknown to operators), and a rubric for what constitutes a valid finding (CVSS score threshold, evidence requirements)
+- Operators run their security agent against the sandboxed environment
+- Evaluation: how many planted vulnerabilities did they find? How many false positives did they generate? How well did they prioritize by severity?
+
+**Tier-1 evaluation (deterministic):**
+```
+recall = found_planted_vulns / total_planted_vulns
+precision = true_positive_findings / total_findings  // penalizes false positives
+severity_weighted_recall = Σ(CVSS_score × found_flag) / Σ(CVSS_score)
+tier1_score = (0.4 × severity_weighted_recall) + (0.4 × precision) + (0.2 × recall)
+```
+
+Known planted vulnerabilities are the ground truth. Machine-checkable.
+
+**Tier-2 evaluation (LLM judge):**
+Remediation recommendations quality, finding description clarity, false positive justification quality. Weight: 35% (higher because security findings require expert-level description).
+
+**Special infrastructure requirements:**
+- Sandboxed network environment (gVisor container isolation, already in Straw's eval stack from Tick 213)
+- No operator can see other operators' scan results during the competition (blind execution)
+- Planted vulnerabilities planted by Straw's security team (not the enterprise) to maintain integrity
+
+**Minimum viable prize:** $2,000 (100-line codebase, 10 planted vulnerabilities)
+**High-end prize:** $20,000-$50,000 (full enterprise application, 50+ vulnerabilities, multi-day competition window)
+
+**Special consideration:** Straw must ensure operators are not malicious actors running actual exploits. Operator identity verification + sandboxed environment containment are prerequisites. This category is gated behind Tier-2 operator verification (business registration required, not just email signup).
+
+**Business value signal:**
+- Manual pentesting: 4-6 weeks, $15,000-$100,000
+- Agentic pentesting: 2-4 hours (Terra Security benchmark)
+- By 2027: "99% of vulnerability assessments will be Agentic" (Penligent.ai forecast)
+- AWS Security Agent: multi-agent architecture for automated pentesting already in production
+
+Sources:
+- AWS Security Agent: https://aws.amazon.com/blogs/security/inside-aws-security-agent-a-multi-agent-architecture-for-automated-penetration-testing/
+- 2026 Guide to AI Pentesting: https://www.penligent.ai/hackinglabs/the-2026-ultimate-guide-to-ai-penetration-testing-the-era-of-agentic-red-teaming/
+- Terra Security (4-6 weeks → 2-4 hours): https://www.terra.security/
+- XBOW autonomous offensive security: https://xbow.com/
+
+---
+
+### v2 Category: `research_synthesis`
+
+**Business problem:** Enterprises pay analysts $150-400/hr to produce market research, competitive intelligence, and due diligence reports. AI agents claim they can produce report-quality synthesis from a defined source set. Who can do it at the quality threshold that replaces a junior analyst?
+
+**What the competition looks like:**
+- Enterprise provides: a research question (e.g., "Analyze the competitive landscape for APAC agentic AI infrastructure vendors, covering market size, key players, differentiation, and risk factors"), a set of pre-approved source documents (to control information access), a rubric defining what a complete report looks like
+- Operators build a research agent that produces a structured report
+- Evaluation: factual accuracy (against source documents), coverage completeness, reasoning quality, citation correctness
+
+**Tier-1 evaluation (deterministic):**
+```
+factual_accuracy = verified_facts / total_factual_claims  // each claim cross-checked against source docs
+citation_coverage = cited_sources / required_sources      // did the agent use all provided sources?
+structure_compliance = required_sections_present / total_required_sections
+```
+
+Facts are extracted from the report and cross-referenced against the source document set. This is automatable via LLM-assisted fact extraction + source lookup.
+
+**Tier-2 evaluation (LLM judge):**
+Reasoning quality (are conclusions supported by the evidence?), narrative coherence, appropriate hedging on uncertain claims, executive-summary quality. Weight: 50% (highest of all categories — quality is the primary dimension).
+
+**Minimum viable prize:** $500 (5 source documents, clear research question)
+**High-end prize:** $3,000-$8,000 (proprietary dataset, complex synthesis, 20+ sources)
+
+**Operator cohort:** Research AI startups (Perplexity enterprise, Elicit, Consensus, Otter.ai enterprise), financial services AI vendors (Bloomberg AI, FactSet AI), consulting firm AI practices.
+
+---
+
+### v2 Category: `financial_modeling`
+
+**Business problem:** Finance teams spend 40-60% of their time building and maintaining spreadsheet models. AI agents claim they can automate financial model construction and scenario analysis. Can they produce audit-grade models from a specification?
+
+**What the competition looks like:**
+- Enterprise provides: historical financial data (P&L, balance sheet, cash flow — anonymized or synthetic), a modeling specification (what assumptions to use, what scenarios to model, what outputs are required), and a validation set of expected outputs for a subset of scenarios
+- Operators build an agent that produces a financial model (structured JSON output or spreadsheet-compatible format) matching the specification
+- Evaluation: numerical accuracy against validation set, model structure compliance, scenario analysis completeness
+
+**Tier-1 evaluation (deterministic):**
+```
+numerical_accuracy = Σ(|expected - actual| / |expected| < 0.01) / validation_cases
+structure_compliance = required_line_items_present / total_required_line_items
+scenario_coverage = completed_scenarios / required_scenarios
+```
+
+Financial models have exact numerical answers for validation scenarios. Machine-checkable at the decimal level.
+
+**Tier-2 evaluation (LLM judge):**
+Assumption documentation quality, sensitivity analysis depth, auditability of calculation logic, appropriate rounding and currency handling. Weight: 30%.
+
+**Minimum viable prize:** $1,000 (3-year P&L model, 5 scenarios)
+**High-end prize:** $10,000-$25,000 (full DCF/LBO model, 20 scenarios, bank-grade output format)
+
+**Business value signal:**
+- 94% of financial services firms deploying GenAI in core functions (Databricks 2026)
+- Automated forecasting accelerating close processes by 30-50%
+- Finance analyst median cost: $80-150/hr; a complete financial model: 40-80 hours = $3,200-$12,000 per model
+
+Sources:
+- Databricks financial services AI 2026: https://www.databricks.com/blog/8-ai-and-data-trends-shaping-financial-services-2026
+- DigitalApplied AI agent adoption 2026: https://www.digitalapplied.com/blog/ai-agent-adoption-2026-enterprise-data-points
+
+---
+
+### v2 Category: `data_pipeline`
+
+**Business problem:** Enterprises are drowning in ETL technical debt. AI agents claim they can build production-ready data pipelines from a specification. Who actually can, and whose pipeline is still running correctly a week after deployment?
+
+**What the competition looks like:**
+- Enterprise provides: source schema (multiple data sources — API, CSV, database), target schema (data warehouse format), transformation specification (filtering rules, aggregation logic, join conditions), test dataset with known-correct output
+- Operators build an agent that generates a working data pipeline
+- Evaluation: correctness (does the pipeline produce the expected output?), idempotency (can it be run multiple times without corruption?), error handling (does it fail gracefully on bad input?)
+
+**Tier-1 evaluation (deterministic):**
+```
+output_correctness = matching_rows / total_expected_rows
+schema_compliance = correct_fields_typed / total_fields
+idempotency_score = 1 if rerun produces same output, 0 if not
+error_resilience = bad_input_test_cases_handled_gracefully / total_bad_input_tests
+```
+
+**Tier-2 evaluation (LLM judge):**
+Code readability, logging/observability quality, documentation of assumptions. Weight: 20%.
+
+**Minimum viable prize:** $500 (single-source pipeline, 5 transformations)
+**High-end prize:** $5,000-$15,000 (multi-source, streaming data, dbt-compatible output)
+
+---
+
+### v2 Category: `multi_modal_extraction`
+
+**Business problem:** Enterprises have enormous backlogs of documents that contain both text and visual content (charts, diagrams, forms, tables in PDFs). AI agents need to extract structured information from these combined sources.
+
+**What the competition looks like:**
+- Enterprise provides: a set of mixed-modal documents (PDFs with embedded charts, scanned forms, engineering diagrams), a target JSON schema, 50-100 labeled examples with correct extraction
+- Operators build a multi-modal extraction agent
+- Evaluation: field match against labeled examples, with bonus for handling visual elements (charts → data tables, forms → structured fields)
+
+**Tier-1 evaluation (deterministic):**
+Same as document_extraction but extended to visual fields:
+```
+text_field_accuracy = correct_text_fields / total_text_fields
+visual_field_accuracy = correct_visual_extractions / total_visual_fields
+overall_f1 = harmonic_mean(precision, recall)  // across all fields
+```
+
+**Tier-2 evaluation:** Quality of handling ambiguous visual elements. Weight: 25%.
+
+**Minimum viable prize:** $300 (20 documents, text-heavy with some tables)
+**High-end prize:** $2,000-$5,000 (engineering schematics, financial forms with embedded charts, legal exhibits)
+
+---
+
+### The Full v0 → v2 Task Taxonomy
+
+```
+Version  Category                    Tier-1 Eval              Min Prize  Target Quarter
+-------  --------------------------  -----------------------  ---------  --------------
+v0       code_migration              Unit tests               $500       Q1 2026 (now)
+v0       document_extraction         JSON field match         $100       Q1 2026 (now)
+v0       sql_generation              Query result match       $100       Q1 2026 (now)
+v0       contract_review             Clause checklist         $200       Q1 2026 (now)
+v1.5     customer_support_auto       Ticket disposition acc.  $500       Q3 2026
+v1.5     api_integration             API test pass rate       $500       Q3 2026
+v2       security_audit              Planted vuln recall      $2,000     Q1 2027
+v2       research_synthesis          Factual accuracy + cov.  $500       Q4 2026
+v2       financial_modeling          Numerical accuracy       $1,000     Q4 2026
+v2       data_pipeline               Output correctness       $500       Q4 2026
+v2       multi_modal_extraction      F1 across text+visual    $300       Q4 2026
+```
+
+**Why this ordering matters:**
+
+v0 launches at maximum Tier-1 determinism. Every score is machine-reproducible. No LLM judge needed for 70%+ of evaluation weight. This means Straw can launch without resolving the FairJudge/bias problem at scale — the bias problem affects Tier-2, which is a minority of the overall score in v0.
+
+v1.5 introduces categories where Tier-1 is still dominant (70%+) but the task structure is more complex (multi-turn, stateful).
+
+v2 inverts this: Tier-2 LLM judgment accounts for 30-50% of score. This requires FairJudge infrastructure, judge debiasing, the sealed-state design, and a battle-tested Tier-3 dispute process. These can't launch until the judge layer is proven reliable.
+
+**The `security_audit` gating exception:**
+
+`security_audit` is deliberately last because it requires infrastructure beyond evaluation correctness: sandboxed environments, operator identity verification, and active containment to prevent operators from attempting real exploits. This is a v2 gated category requiring business registration and a signed security researcher agreement before operators can participate.
+
+---
+
+### Evaluation Infrastructure Requirements Per Category
+
+| Category | gVisor Container | Multi-Turn Eval | Visual Processing | Human Tier-3 |
+|---|---|---|---|---|
+| code_migration | Yes | No | No | Disputes only |
+| document_extraction | No | No | No | Disputes only |
+| sql_generation | No | No | No | Disputes only |
+| contract_review | No | No | No | Disputes only |
+| customer_support_auto | No | **Yes** | No | Disputes only |
+| api_integration | Yes | No | No | Disputes only |
+| security_audit | **Yes (strict)** | No | No | **Always** |
+| research_synthesis | No | No | No | Disputes only |
+| financial_modeling | No | No | No | Disputes only |
+| data_pipeline | Yes | No | No | Disputes only |
+| multi_modal_extraction | No | No | **Yes** | Disputes only |
+
+`customer_support_automation` requires multi-turn evaluation (the agent must handle a ticket conversation, not a single prompt). This needs a new evaluation harness that simulates a ticket conversation with multiple customer follow-ups. Estimated implementation: 3-4 weeks beyond the v0 harness.
+
+`security_audit` requires always-on Tier-3 because the planted vulnerability ground truth is maintained by Straw, not the enterprise, and findings require expert security review to validate "partial credit" cases (agent found a related vulnerability but not the exact planted one).
+
+`multi_modal_extraction` requires a vision model in the evaluation pipeline. Straw can use the same 3-provider LLM ensemble (Tick 229) extended with vision capability (Claude Sonnet vision, GPT-4o vision, Gemini 2.5 Pro vision).
+
+---
+
+*Sources: StackOne 120+ agentic AI tools landscape: https://www.stackone.com/blog/ai-agent-tools-landscape-2026/ | Gartner 40% prediction: https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025 | Freshworks customer service ROI: https://www.freshworks.com/How-AI-is-unlocking-ROI-in-customer-service/ | Customer service deflection data: https://www.digitalapplied.com/blog/customer-service-ai-agent-statistics-2026-data | AWS Security Agent: https://aws.amazon.com/blogs/security/inside-aws-security-agent-a-multi-agent-architecture-for-automated-penetration-testing/ | Penligent 2026 pentesting guide: https://www.penligent.ai/hackinglabs/the-2026-ultimate-guide-to-ai-penetration-testing-the-era-of-agentic-red-teaming/ | Databricks financial services 2026: https://www.databricks.com/blog/8-ai-and-data-trends-shaping-financial-services-2026*
+
