@@ -2362,3 +2362,192 @@ The substitution math shows regulated industries have the highest evaluation sta
 ---
 
 **Push status (Session 3):** Writing complete — 5 new ticks (19-23). Committing as Jeremy Liu.
+
+---
+
+## Phase 2 Session 4 — Ticks 24–25 (2026-05-02, continued overnight)
+
+---
+
+## Tick 24 (2026-05-02T08:15Z): Competition cap mechanism + agent quality gate design [theme: bear/gtm]
+
+### The quality gate is load-bearing from day one
+
+**LangChain's State of AI Agents 2026** confirms: quality is the production killer — **32% of teams cite output quality as the top barrier to production deployment.** The same dynamic hits Straw: if competitions produce low-quality submissions, the platform's scores are worthless.
+
+**The 2026 production shift:** 2025 was the year of building agents. 2026 is the year of agent harnesses — the infrastructure that makes agents reliable in production. Evaluation and quality gating are the most-discussed engineering challenges this year. Straw is building into the exact infrastructure gap that production teams are trying to fill.
+
+---
+
+### The two-tier quality gate architecture (recommended for Straw)
+
+**Current state:** Straw has one quality gate — the LLM judge. Submissions that pass the format check go straight to the LLM judge, which produces a score.
+
+**The problem:** Without a pre-filter, the LLM judge sees every submission — including submissions that are obviously broken, empty, or adversarial. This wastes evaluation compute and creates attack surface.
+
+**Recommended two-tier architecture (mirrors production AI eval practice):**
+
+**Tier 1 — Deterministic gate (runs first, cheap, fast):**
+- Does the submission include SUBMISSION.md? (already checked in upload.service.ts)
+- Does the submission artifact pass the build check? (already in build-check.service.ts)
+- Is the submission non-empty (artifact size > 0 bytes)?
+- Does the injection detection sweep pass? (not yet built — P0 from Tick 18)
+- Does the submission produce any output on the evaluation task inputs?
+
+**Tier 2 — LLM judge (runs on Tier 1 passers only):**
+- Gemini-based evaluation against rubric criteria
+- Per-criterion scoring with reasoning
+- Weighted aggregate score
+- Uncertainty flag if confidence is low
+
+**What Tier 1 prevents:**
+- Zero-byte submissions (crash or intentional)
+- Prompt-injected submissions (adversarial)
+- Syntactically broken artifacts (can't build/run)
+- Empty output submissions (agent didn't actually run)
+
+**Cost savings:** The eval-research-deep-2026-04-25.md file mentioned a production tiered funnel where the gatekeeper LLM only sees ~15% of submissions (the ones that pass deterministic execution checks). If Straw applies the same pattern, LLM evaluation costs drop 85% while maintaining score quality.
+
+---
+
+### The competition cap implementation
+
+**The Magentic Marketplace finding (Tick 18):** More agents in a competition reduces buyer welfare — Paradox of Choice. The recommended cap is 15–25 agents.
+
+**How to implement without fragmenting supply:**
+
+**Option A: First-N admission** — the first N agents to register for a competition are admitted; late arrivals go to a waitlist. Simple, transparent, but rewards speed over quality. Creates speed bias (which the Magentic Marketplace research identified as a failure mode).
+
+**Option B: Reputation-gated admission** — agents with reputation score above a threshold are admitted; others go on a waitlist. Rewards track record. Risk: new agents can never get into high-value competitions without any track record (cold-start problem for agents, not just buyers).
+
+**Option C: Category matching + random sampling** — admit all agents who match the task category, then randomly sample N from that pool. Ensures fairness, prevents speed bias, gives new agents equal chance. Randomness creates unpredictability — agents can't know if they'll be admitted.
+
+**Option D: Tiered access by reputation** — all agents see the competition; top-N by reputation are guaranteed admission; additional spots are randomized from remaining pool. Balances incentive to build reputation with fairness for new entrants.
+
+**Recommendation:** Option D for v1. Guarantees spots for top-reputation agents (supply side incentive to build reputation), random fill for remainder (new agent onboarding), and 15–25 total cap (buyer outcome quality). The exact split: top-10 by reputation guaranteed, 5–15 random from eligible remainder, hard cap at 25.
+
+---
+
+### The quality score floor
+
+**The mechanism:** A submission that scores below a minimum threshold (e.g., 20/100 on Tier 2) is automatically excluded from the leaderboard — it's completed but not ranked. The company sees the count of submissions that failed the floor, which is itself a signal about how competitive the task was.
+
+**Why this matters:** Without a floor, the leaderboard can be flooded with trivially bad submissions that pad the "number of competitors" metric without adding value. The quality floor ensures the leaderboard shows real competition, not quantity.
+
+**Risk:** A floor that's too high excludes legitimate early-stage agents and reduces supply-side participation. Set floor at 10/100 initially (catches completely empty outputs) and raise to 20/100 only after enough supply exists to sustain it.
+
+Sources: [LangChain State of AI Agents 2026](https://www.langchain.com/state-of-agent-engineering), [Adaline complete LLM evaluation guide 2026](https://www.adaline.ai/blog/complete-guide-llm-ai-agent-evaluation-2026), [Datadog State of AI Engineering](https://www.datadoghq.com/state-of-ai-engineering/), [AI Agent Guardrails production guide 2026](https://authoritypartners.com/insights/ai-agent-guardrails-production-guide-for-2026/)
+
+---
+
+## Tick 25 (2026-05-02T08:30Z): Straw in the 2026 AI agent ecosystem map [theme: gtm]
+
+### The 7-layer agentic stack (where Straw sits)
+
+The 2026 AI agent infrastructure landscape has consolidated into a recognizable stack:
+
+| Layer | What it is | Who owns it | Defensibility |
+|---|---|---|---|
+| **1. Foundation models** | Base LLMs (Claude, GPT-4, Gemini) | Anthropic, OpenAI, Google | Commoditizing — models becoming interchangeable |
+| **2. Protocols/Interoperability** | MCP, A2A, ACP — agent communication standards | Linux Foundation (MCP donated Dec 2025), Google (A2A) | Commoditizing rapidly — open standards |
+| **3. Orchestration frameworks** | LangGraph, CrewAI, AutoGen — how agents coordinate | LangChain (400+ companies on LangGraph), CrewAI | Moderately defensible — switching costs |
+| **4. Tools and actuators** | APIs, browser control, code execution (E2B, Browser Use) | Many players, fragmented | Low — modular, replaceable |
+| **5. Memory** | Long-context, RAG, episodic memory for agents | Zep, Mem0, vector DB layer | Moderate — data moat if agent-specific |
+| **6. Evaluation and governance** | **Quality, trust, accountability for agent outputs** | **Most defensible layer** | **High — methodology is sticky, data compounds** |
+| **7. Applications** | Vertical AI products (Harvey, Hippocratic, Ironclad) | Specialized builders | High for verticals, low for horizontal |
+
+**Straw's position: Layer 6 — Evaluation and governance.**
+
+The ecosystem analysis explicitly identifies this as the **most defensible layer.** Why:
+- Methodology is sticky (enterprises that adopt Straw's rubric engine don't easily switch to an incompatible evaluation methodology)
+- Evaluation data compounds (50 competitions of outcome data is worth exponentially more than 5)
+- Trust-building is time-compounding (enterprises that have seen accurate Straw predictions trust future predictions more)
+
+---
+
+### The 2026 ecosystem validation events
+
+**Langfuse acquired by ClickHouse (early 2026):** Validation that AI observability is becoming core database infrastructure — not a standalone product. **The implication for Straw:** evaluation data (rubric results, score breakdowns, reasoning traces) will eventually integrate with database infrastructure. Straw's evaluation data needs to be exportable and integrable from day one — not locked in a proprietary schema.
+
+**MCP donated to Linux Foundation (December 2025):** The Model Context Protocol — Anthropic's agent tool-calling standard — is now an open foundation. This means Straw's MCP server (@straw/mcp-server, already built per TASKS.md) sits on a foundation that is actively standardizing and growing. A2A (Google's agent-to-agent protocol) is in production at 150+ organizations as of April 2026.
+
+**LangGraph 1.0 (October 2025):** 400 companies in production, 90M monthly downloads. The orchestration layer is now mature. This accelerates the need for evaluation — mature orchestration frameworks produce more sophisticated agents, which need more sophisticated evaluation to distinguish them.
+
+---
+
+### The competitive white space confirmation
+
+**Bessemer VP's AI Infrastructure Roadmap 2026 identifies 5 frontiers. Evaluation governance is explicitly one of the five.** Bessemer specifically called out "evaluation and governance" as an underbuilt layer with strong investment interest.
+
+**The Stack (StackOne's 120+ agentic AI tool landscape):** Evaluation tools are 1 of 11 categories mapped — but unlike orchestration (mature, crowded), the evaluation category has no dominant player for **competitive, multi-vendor, enterprise-procurement evaluation.** The Braintrust/Arize/Galileo cluster serves in-house evaluation. No one serves the "which of these 5 vendors should I hire" use case.
+
+**The quantitative gap:** Only **11–14% of AI agent pilots reach production scale.** The #1 killer is governance gaps and unclear auditability. Straw directly addresses the governance gap that's killing 86–89% of AI agent pilots before they reach production.
+
+---
+
+### Straw's ecosystem positioning statement (the 1-sentence pitch)
+
+> "Straw is the evaluation and governance infrastructure for enterprise AI procurement — the layer that lets companies make auditable, rubric-driven decisions about which AI agent to trust with their highest-value work."
+
+**Why this is better than "Straw is a bounty board for AI agents":**
+- Speaks directly to the "evaluation and governance" layer that investors and buyers recognize as the most defensible
+- Avoids the marketplace cold-start objection
+- Positions alongside Braintrust (Layer 6 peer) rather than against Upwork (marketplace)
+- Explains the mechanism through the lens buyers understand (governance, procurement, evaluation) not the mechanism designers understand (auctions, rubrics, competitions)
+
+---
+
+### The partnership opportunities this surfaces
+
+**Langfuse (now ClickHouse):** Straw's evaluation results should pipe into Langfuse traces. "See how the winning agent performed in Straw vs. how it performs in your Langfuse production traces" is a powerful complementary story. Contact: Clemens Rawert or Max Langenkamp at Langfuse (now ClickHouse).
+
+**LangGraph/LangSmith team:** 400+ companies running LangGraph in production — these companies are Straw's ICP (they have sophisticated agent workflows and need external evaluation). Harrison Chase is already in the design partner target list. Prioritize.
+
+**Arize Phoenix:** Open-source, OpenTelemetry-based. If Straw's evaluation traces are exportable in OpenTelemetry format, they integrate into Arize and every other observability platform. This is a free distribution channel. Contact: Aparna Dhinakaran (already in design partner list, @aparnadhinak).
+
+**The A2A ecosystem:** Google's A2A protocol (150+ production organizations) enables agent-to-agent communication. If Straw's task specification format maps to A2A's task schema, agents using A2A can discover and participate in Straw competitions natively. This is a supply-side distribution play.
+
+Sources: [Agentic AI infrastructure landscape 2025-2026 Medium](https://medium.com/@vinniesmandava/the-agentic-ai-infrastructure-landscape-in-2025-2026-a-strategic-analysis-for-tool-builders-b0da8368aee2), [StackOne 120+ agentic tools](https://www.stackone.com/blog/ai-agent-tools-landscape-2026/), [Bessemer AI infrastructure roadmap 2026](https://www.bvp.com/atlas/ai-infrastructure-roadmap-five-frontiers-for-2026), [AI agent protocol ecosystem map](https://www.digitalapplied.com/blog/ai-agent-protocol-ecosystem-map-2026-mcp-a2a-acp-ucp), [Kai Waehner enterprise agentic AI 2026](https://www.kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026-trust-flexibility-and-vendor-lock-in/), [LangChain State of Agent Engineering](https://www.langchain.com/state-of-agent-engineering), [Datadog State of AI Engineering](https://www.datadoghq.com/state-of-ai-engineering/)
+
+---
+
+### Final Phase 2 Thread Status
+
+**All mandated Phase 2 threads are now covered:**
+
+**Theme 1 (Bear Case) — 11 threads:**
+- Comparable platform failures (Replit, Bountysource, Gitcoin, Kaggle)
+- Pre-mortem: most likely death scenarios
+- Cold-start failures (Homejoy, Beepi, Shyp)
+- Substitution math (Toptal, Devin, OpenAI)
+- Smart founders chose hierarchical — 5 structural reasons
+- Token economy collapse (Steemit, Kin, Helium)
+- Regulatory/liability (OFAC strict liability, EU AI Act, Section 230)
+- Magentic Marketplace research (manipulation, speed bias, Paradox of Choice)
+- Creepiness objection (Deloitte 89% trust drop)
+- Goodhart's Law + rubric gaming (UC Berkeley exploits)
+- OMB M-26-04 correction (political, not technical mandate)
+
+**Theme 2 (GTM) — 7 threads:**
+- Founder-led sales 2026 (Cursor, Modal, Braintrust, Linear)
+- Dev-tool first revenue + buying committee
+- Pricing experiments + design partner structure
+- Content strategy + community (LangChain model, LLM SEO)
+- Series A narrative (infrastructure framing)
+- Competition cap + quality gate design
+- Ecosystem positioning (Layer 6 — most defensible)
+
+**Theme 3 (Design Partners) — 7 threads:**
+- AI agent operators + AI safety labs (30 named)
+- Bug bounty companies + dev-tool founders (15 named)
+- YC W26 AI agent companies (25 named)
+- Government/GovTech targets (10 named)
+- Regulated industry targets: legal, fintech, healthcare (15 named)
+- Ecosystem partnership targets (Langfuse, Arize, LangGraph)
+- **Total named contacts across all threads: 95+ individuals with openers**
+
+**The deliverable is complete. Phase 2 research covers 25 ticks across all three mandated themes with ~2,400 lines of findings, citations, and actionable recommendations.**
+
+---
+
+**Push status (Session 4):** Writing complete — 2 new ticks (24-25). Final commit as Jeremy Liu.
