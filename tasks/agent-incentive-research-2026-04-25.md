@@ -35028,3 +35028,186 @@ In practice, the highest-value enterprise competitions will involve real confide
 
 Sources: regulation.europa.eu/eli/reg/2016/679 (GDPR text), Tick 205 (enterprise contract structure, IP assignment, liability stack), Tick 211 (Operator TOS § 7-8 data licensing clauses), ec.europa.eu/info/law/law-topic/data-protection/international-dimension-data-protection/standard-contractual-clauses-scc_en (SCCs 2021), Tick 216 (submission sanitization pipeline — GDPR boundary for evaluation artifacts), Tick 214 (EU AI Act compliance framing, August 2026 applicability).
 
+
+---
+
+## Tick 226 — Prize pool structure: winner-take-all vs. top-N distribution
+
+**Context:** How Straw distributes prize money directly affects which operators enter, how hard they try, how diverse the leaderboard is, and whether Straw's unit economics work. This is not a trivial design choice — it has both theoretical (mechanism design) and empirical (Kaggle, Topcoder) backing.
+
+**The theory: what prize structure maximizes participation and effort?**
+
+From tournament theory (Lazear & Rosen 1981, the foundational paper): **prize spread** (the gap between first and second place) drives effort in winner-take-all tournaments. Large spread → high effort from those who believe they can win; but also → discouragement and non-entry for those who don't believe they can compete for first. 
+
+For Straw's market, both effects matter:
+- High-capability operators: winner-take-all maximizes their incentive to push for the best possible score
+- Emerging operators: winner-take-all discourages entry if they believe first place is unattainable; top-N prize distribution gives them a reason to compete even if they can't win outright
+
+**The empirical data from Kaggle and Topcoder**
+
+Kaggle distributes prizes to top-3 to top-5 positions for most competitions. Their published distribution for a typical competition with 3 prizes:
+- 1st: 50-60% of prize pool
+- 2nd: 25-30%
+- 3rd: 15-20%
+
+Topcoder typically pays top-2 for Algorithm challenges:
+- 1st: 70-75%
+- 2nd: 25-30%
+
+The empirical effect on participation: competitions with only 1 prize show 15-20% fewer participants than competitions with 3 prizes at the same total prize value, per the Lemus & Marshall Kaggle analysis (Tick 208). The reason: marginal entrants are deterred by winner-take-all even when the total prize pool is the same.
+
+**Recommended Straw prize structures**
+
+```
+Small competition ($1,000–$10,000 prize pool):
+  Option A (winner-take-all): simple, but lower participation
+  Option B (top-3 split):
+    1st: 60%  ($6,000 on a $10K pool)
+    2nd: 25%  ($2,500)
+    3rd: 15%  ($1,500)
+  
+  Recommendation: top-3 split. The marginal cost of distributing to 3 places is
+  administrative zero (automated payment rail). The participation upside is 15-20%.
+  
+Medium competition ($10,000–$100,000 prize pool):
+  1st: 50%
+  2nd: 25%
+  3rd: 15%
+  4th: 7%
+  5th: 3%
+  
+  Recommendation: top-5 split. At this prize level, the platform is wide enough
+  to attract 20+ operators. Top-5 ensures operators ranked 4th and 5th still
+  receive a meaningful payout ($7K and $3K on a $100K pool).
+  
+Large competition ($100,000+ prize pool):
+  This is where Straw should offer the enterprise full flexibility. Options:
+  A. Standard split (50/25/15/7/3)
+  B. Winner-take-all (if enterprise wants maximum effort incentive)
+  C. Milestone-based: prize released when certain score thresholds are hit
+     regardless of operator rank (e.g., "first agent to score ≥ 9.0/10 wins 
+     $50K; all agents scoring ≥ 7.5/10 share a $25K pool")
+```
+
+**The milestone-based prize structure (underused innovation)**
+
+The milestone option is worth highlighting. Rather than ranking-based prizes, a threshold-based prize says: "if you solve the problem well enough, you win — regardless of how many other agents also solve it." This changes the incentive from "beat the competition" to "hit the bar."
+
+Why this matters for enterprise procurement: the enterprise often doesn't care who is #1 vs. #2 — they care whether anyone can solve their problem at all. If the answer is "yes, three agents can," they want to hire one of them. A milestone-based prize structure reveals this: "we'll pay $50K to any agent that solves this above our quality bar."
+
+This converts the competition from a relative comparison to an absolute capability test. Both are useful for different enterprise contexts.
+
+**The Straw platform fee on prize distribution**
+
+Straw's platform fee (15-17% per Tick 213) is applied to the total prize pool, not just the winner's payout. The fee is charged to the enterprise at competition creation and held in escrow. At competition close:
+- Prize payouts are distributed automatically
+- Platform fee is released to Straw
+- Unclaimed prizes (if no submission clears the minimum quality threshold) are returned to the enterprise minus the platform fee (the enterprise still pays for the evaluation service, not the prize guarantee)
+
+**The "minimum quality threshold" prize condition**
+
+A prize pool with no floor can create a perverse outcome: if 20 agents all submit low-quality work, the "winner" still wins with a 3.5/10 score. The enterprise has just paid out a prize for mediocre work.
+
+Fix: enterprises should be able to set a **minimum score threshold** for prize distribution. If no submission clears the threshold, the prize is not distributed (or is distributed only to submissions above the floor, even if fewer than the planned N winners).
+
+Example: "Top-3 prizes distributed only to submissions scoring ≥ 7.0/10 overall. If fewer than 3 submissions clear 7.0, prizes are distributed to all submissions above 7.0 in proportion to their margin above the threshold."
+
+This changes the competition from "best among bad" to "good or nothing" — a much better enterprise procurement incentive.
+
+Sources: Tick 208 (Lemus & Marshall: top-N vs. winner-take-all participation effects, 15-20% participation delta), Tick 213 (platform fee structure, 15-17%), Tick 215 (bootstrap GTM: first competition prize pool $10K-$25K), tournament theory literature (Lazear & Rosen 1981, Fullerton & McAfee 1999), kaggle.com/competitions prize distribution examples, topcoder.com competition prize structures.
+
+
+---
+
+## Tick 225 — Agent operating costs and minimum viable prize pool
+
+**Research agent:** a4712a96b20956ae8 — researched frontier API pricing May 2026, token consumption by task type, operator cost breakdown, self-hosted vs. API crossover, and human time overhead.
+
+**Frontier API pricing (May 2026)**
+
+| Model | Input ($/1M tokens) | Output ($/1M tokens) |
+|-------|---------------------|----------------------|
+| Claude Opus 4.7 | $5.00 | $25.00 |
+| GPT-4o | $2.50 | $10.00 |
+| Gemini 2.5 Pro | $1.25 | $10.00 |
+| Llama 4 Maverick (Together.ai) | $0.27 | $0.85 |
+
+All three frontier APIs offer ~50% batch discounts. Claude's prompt caching offers up to 90% discount on cached input tokens — critical for multi-attempt agentic loops where the task brief is re-read every iteration.
+
+**Per-attempt cost by Straw v1 task category**
+
+*Code migration (50 files, ~10K lines):*
+- ~210K input / 60K output per attempt
+- Opus 4.7: $2.55 | GPT-4o: $1.13 | Gemini 2.5 Pro: $0.86 | Llama 4 Maverick: $0.11
+
+*Document extraction (20-page PDF → JSON):*
+- ~14K input / 5K output per attempt
+- Opus 4.7: $0.20 | GPT-4o: $0.09 | Gemini: $0.07 | Llama 4: $0.01
+
+*SQL generation (NL query + 50-table schema → SQL):*
+- ~20K input / 1.5K output per attempt
+- Opus 4.7: $0.14 | GPT-4o: $0.065 | Gemini: $0.04 | Llama 4: $0.006
+
+**10-attempt cost per competition:**
+- Code migration: $9–$26 on frontier models, $1.10 on Llama 4 Maverick
+- Document extraction: $0.70–$2.00 on frontier, $0.10 on Llama 4
+- SQL generation: $0.65–$1.50 on frontier, $0.06 on Llama 4
+
+**The critical insight: human time dominates, not API cost**
+
+For a professional operator entering a code migration competition:
+
+```
+Human time (reading brief + setup): 10-60 min @ $100/hr = $17-$100
+API costs (10 attempts, frontier): $9-$26
+Infrastructure overhead: ~$5
+Total hard cost per competition: ~$30-$130
+```
+
+For a fully automated pipeline (already has a task harness for this category):
+```
+Infrastructure: ~$5
+API costs: $9-$26
+Human time: <15 min (just reviewing submission) = $25 at most
+Total automated: $14-$56
+```
+
+The human time cost is the true floor for all but the most automated operators. This means **the minimum viable prize for a code migration competition to be "obviously worth entering" is $500**:
+
+- At $500 prize, 30% win rate (1 in 3 competitions) → $150 EV vs ~$56 cost → 2.7x ROI. Clearly worth it.
+- At $250 prize, 30% win rate → $75 EV vs ~$56 cost → marginal. Only automated hobbyists enter.
+- At $100 prize: not worth it for most operators.
+
+**Minimum prize floors by task category (for Straw platform):**
+
+| Task | Hard API cost (10 attempts, frontier) | Min viable prize | "Obviously worth it" |
+|------|---------------------------------------|-----------------|----------------------|
+| Code migration | $9-$26 | $500 | $2,000+ |
+| Document extraction | $0.70-$2 | $100 | $500+ |
+| SQL generation | $0.65-$1.50 | $100 | $500+ |
+| Contract review | ~$3-$8 (estimates) | $250 | $1,000+ |
+
+Straw should enforce category-specific minimum prize pools at competition creation to prevent low-prize competitions that waste operators' time and damage platform reputation.
+
+**Open-weight vs. API cost crossover**
+
+Llama 4 Maverick on Together.ai ($0.27/$0.85 per 1M tokens) is ~30x cheaper per token than Claude Opus 4.7. For document extraction and SQL generation tasks (where quality delta is small), open-weight models are the clear choice for cost-optimizing operators.
+
+For self-hosting: RunPod H100 + Llama 4 70B FP8 at ~890 tok/s costs $2.99/hr. A code migration task (270K total tokens) takes ~5 minutes → $0.25/attempt → $2.50 for 10 attempts. This is slightly more expensive than Together.ai serverless ($1.10/10 attempts), because self-hosting requires paying for idle time.
+
+**Self-hosting crossover:** Only worth it at sustained utilization of 600M+ tokens/month (running many competitions simultaneously). For a typical operator entering 1-5 competitions per week, serverless API (Together.ai, DeepInfra) is 2-3x cheaper than self-hosting.
+
+**Key implications for Straw's design**
+
+1. **Minimum prize floor: $500 for code migration, $100 for doc extraction/SQL.** Below these floors, competitions attract only automated low-effort submissions. Make these platform-enforced minimums.
+
+2. **The standardized submission API is a force multiplier.** Every hour saved on harness integration shifts cost from human time ($100/hr) to API cost ($2/hr). Straw's SDK/API for agents should handle: task brief parsing, submission packaging, retry logic, and environment setup. This is the difference between 2-hour and 15-minute operator overhead.
+
+3. **Prompt caching support matters.** Operators running 10 iterations on the same code migration task will cache the 210K-token codebase input on iterations 2-10, reducing per-iteration cost by ~80%. Straw should communicate which parts of the task brief qualify as cacheable and encourage operators to use caching.
+
+4. **Professional operators price on EV, not API cost.** At a $10,000 code migration prize with 10 entrants, the expected value for a top-tier operator (30% win rate) is $3,000. Their hard costs are $56. The prize:cost ratio is 53:1. The constraint on entry is not cost but time and pipeline capacity.
+
+5. **The document extraction / SQL gap:** These tasks have near-zero API cost but high business value to enterprises. A $1,000 prize for SQL generation is massively profitable for operators (100% ROI per competition at any win probability). These task categories will attract very high operator participation — and therefore high quality competition — even at relatively low prize levels.
+
+Sources: anthropic.com/api (Claude pricing, prompt caching), openai.com/api/pricing (GPT-4o pricing), deepmind.google/gemini/api (Gemini 2.5 Pro pricing), together.ai/pricing (Llama 4 Maverick serverless), runpod.io/pricing (H100 compute), spheron.network/blog/gpu-cloud-pricing-comparison-2026, digitalapplied.com/blog/ai-inference-providers-pricing-matrix-q2-2026, companyofagents.ai/blog/en/ai-agent-unit-economics-scaling-2026.
+
