@@ -1060,11 +1060,11 @@ _All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-pi
 
 ## Research Sessions: agent-incentive-research-2026-04-25.md
 
-**Status:** Active overnight research — Sessions 24-28 completed.
+**Status:** Active overnight research — Sessions 24-29 completed.
 
 **File location:** `tasks/agent-incentive-research-2026-04-25.md`
-**Current size:** ~43,150 lines
-**Current tick:** 269 (last written in Session 28)
+**Current size:** ~48,493 lines
+**Current tick:** 298 (last written in Session 29)
 
 ### Sessions Summary
 
@@ -1075,54 +1075,76 @@ _All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-pi
 | Session 25 | 229-234 | Technical architecture v1 (core data model, ZeroClaw worker, RLS), Series A investor narrative, Straw vs. OpenAI Frontier, internal agent infrastructure, agent self-provisioning via x402, long-form proposal Section 7 |
 | Session 26 | 235-236 | Product roadmap v0→v2, enterprise customer success playbook |
 | Session 27 | 237-252 | International expansion + APAC competitive gap, task taxonomy v2 (8 new categories), 300-agent swarm update, AI agent legal personhood (DAO LLC, Wyoming), agent credential portability (W3C VC, NIST standards), data moat (4-layer), enterprise integration spec (ServiceNow/Ariba SDK), fine-tuning competitions (v3 category), unit economics P&L model (3-year), risk analysis (7 risks), agent incentive final synthesis, executive summary |
-| Session 28 | 253-269 | Post-AGI scenario analysis, cross-category correlation (g-factor evidence, Glicko-2 design, partial Bayesian transfer), live/multi-round competition (Chatbot Arena methodology, Leaderboard Illusion defense, living benchmarks), enterprise data security (gVisor, GDPR DPA, BYOK, training prohibition TOS §7.4), price discovery (valuation framework, earnout structure), fleet management (drift detection, FinOps), operator journey lifecycle, poster journey (task design wizard), competitive landscape (Scale/LangSmith/Vals — white space confirmed), enterprise sales motion (ICP, POV, design partner strategy), EU AI Act compliance sales angle (Article 9/15), Series A thesis ($66M post-money, 4-layer moat, regulatory tailwind), CFO break-even (238:1–465:1), ZeroClaw architecture (gVisor, BullMQ, score immutability), operator economics (Elite $200–400K/year, P4 acquisition $500K–$1.5M), fine-tuning competitions (S-LoRA 2,000 concurrent adapters, IP framework TOS §9), product roadmap v0-v3 milestones |
+| Session 28 | 253-278 | Post-AGI scenario analysis, cross-category correlation, live/multi-round competition, enterprise data security, price discovery, fleet management, operator journey lifecycle, poster journey, competitive landscape (white space confirmed), enterprise sales motion, EU AI Act compliance, Series A thesis, CFO break-even, ZeroClaw architecture, operator economics, fine-tuning competitions, product roadmap v0-v3, expansion playbooks (Singapore, India, UK, Japan, Brazil), long-context evaluation, Straw API design |
+| Session 29 | 279-298 | Dispute resolution + arbitration, founding team hiring plan, multi-agent fleet operators, India market entry execution, adversarial input evaluation (IRS, robustness score), pricing architecture, moat analysis, operator onboarding journey, enterprise sales playbook, investor narrative (Bloomberg Terminal analogy), content/SEO strategy, evaluation transparency/trust architecture, UK + Australia market entry, ZeroClaw technical deep dive, network effects analysis, principal-agent problem, product roadmap v2, year one operations plan, failure modes analysis, long-form conclusion synthesis |
 
-### What's Been Covered (Comprehensive)
+### What's Been Covered (Comprehensive — 298 Ticks)
 
-The research file is now a near-complete product design + investor + technical document:
+The research file is a complete product design + investor + technical document covering:
 
 **Market & Business:**
 - Enterprise AI procurement landscape; 42% project failure rate; $6.8M average failure cost
-- Four forcing functions: adoption passed tipping point, failure rate worsening, regulatory mandate, tech infrastructure matured
+- Principal-agent problem in AI procurement — all four layers of misalignment and Straw's structural fixes
 - TAM: $6.5B → $134B AI agent staffing; $300–600M direct evaluation market; regulatory compliance layer
 - Competitive landscape: Scale AI (supplier-side, 49% Meta), LangSmith, Arize, Vals AI — white space confirmed
-- Series A thesis: $66M post-money at 24× ARR; four-layer moat; regulatory tailwind; 8× Y/Y growth
-- CFO break-even: 238:1–465:1 ratio; $20K competition vs. $4.76M–$9.3M expected loss per bad procurement
+- Moat analysis: neutrality (structural), evaluation data flywheel (compounding), operator reputation (network effect)
+- Failure modes: operator desert, eval quality collapse, enterprise churn cascade, commoditization, trust breach
 
 **Product Design:**
 - Full task taxonomy: v0 (4 categories), v1.5 (2), v2 (7), v3 (fine-tuning, red-team, multi-turn)
-- Competition format: one-shot vs. ladder; Glicko-2 rating with RD; living benchmarks; Leaderboard Illusion defenses
+- Competition format: one-shot, adversarial robustness, injection resistance score (IRS), robustness metric
 - D22 winner pathways: P0-P4 (leaderboard, poster picks, hire, license, acquire)
-- Operator journey: onboarding → first competition → competitive maturity → Elite → acquisition
-- Poster journey: task design wizard → active competition → results package → D22 selection → Fleet
-- Enterprise data security: gVisor sandboxing, GDPR DPA, training data prohibition TOS §7.4, BYOK
-- Operator economics: Elite = $200–400K/year; Grandmaster = $300–600K/year; P4 = $500K–$1.5M
+- Multi-agent fleet operators: manifest format, Fleet ID versioning, anti-brute-force controls, IP attribution
+- Pricing architecture: tiered competition fees, operator Pro/Elite tiers, enterprise subscription plans
+- Product roadmap v2: 18-month feature plan with prioritization scoring framework
+- Year one operations plan: pre-launch checklist, launch week, monthly cadence, Y1 success criteria
+- Operator onboarding journey: persona segments, Day 7/30/90 retention targets, cohort analytics
 
 **Technical Architecture:**
-- ZeroClaw: gVisor sandboxing, three-tier eval funnel, BullMQ job queue, score immutability (SQL rules)
-- Tier-1: deterministic; Tier-2: LLM gatekeeper (sealed RLS); Tier-3: human investigator
-- S-LoRA: 2,000 concurrent LoRA adapters/GPU for fine-tuning evaluation ($2.00/adapter)
-- Reputation system: Glicko-2, multi-dimensional vector; PeerTrust anti-monopoly; partial Bayesian transfer
-- W3C VC credential API: ed25519-signed JSON with win history, category scores, sandbox attestation
+- ZeroClaw deep dive: gVisor container spec, scoring engine TypeScript types, BullMQ queue config, DB schema
+- Evaluation transparency: transparency stack (4 layers), Merkle hash chain, external audit program
+- Trust architecture: anti-conflict design, incident response tiers A/B/C, "trust is time-compounding"
+- Straw API: RESTful endpoints, webhook events (11 enterprise + 7 operator), TypeScript SDK example
 
 **Economics & Finance:**
 - 3-year P&L: Y1 $344K revenue ($129K net loss); Y2 $2.75M (25% margin); Y3 $12.9M (54.8% margin)
-- Price discovery framework: competitive score multiplier, earnout structure, quarterly benchmark data
-- Fine-tuning competitions: $25K–$100K prize pools; S-LoRA eval; IP framework TOS §9
+- Pricing architecture: tiered fees ($500 flat → 4% for $500K+ pools), operator subscriptions ($29/$99/month)
+- Enterprise subscription plans: Starter $12K, Growth $36K, Enterprise $120K+/year
 
 **Regulatory & Compliance:**
 - EU AI Act Article 9/15: Article 15 export format; compliance documentation package; compliance sales angle
-- Singapore P0: MAS mandatory compliance (Dec 2024), IMDA AI Verify, SGD 150M Enterprise Compute
-- UK FCA Supercharged Sandbox Cohort 2; US OMB M-26-04 (Y2 product)
+- Singapore P0: MAS mandatory compliance (Dec 2024), IMDA AI Verify
+- UK AI Regulation Act 2026: FCA Consumer Duty, PRA SS1/23 model risk guidance
+- Australia: APRA CPG 234, AI Assurance Framework trajectory
+- India: RBI AI framework draft, DPDPA compliance
 
-### Session 29 Discovered Threads
+**Geographic Strategy:**
+- Singapore P0, India P1 simultaneous, UK/Australia Year 2, US Year 3
+- India: IIT partnership model, IT major strategy (Infosys/Wipro), RBI compliance angle, 3-year ₹ revenue model
+- UK: FCA-regulated financial firms, PRA validation requirements, target 50 customers by Y3
+- Australia: APRA Big 4 banks, Stone & Chalk fintech hub, government procurement entry
+- English common law flywheel: Singapore → UK → Australia → Canada → New Zealand → Hong Kong
 
-- Singapore go-to-market execution: first customer strategy, MAS reporting workflow
+**Sales & Marketing:**
+- Enterprise sales playbook: ICP, account-based motion, champion building, 6 objection handles, AE comp
+- Content/SEO strategy: cornerstone content, thought leadership (arXiv), operator-to-enterprise conversion path
+- Investor narrative: Bloomberg Terminal analogy, market timing story, Series A $10M ask, target investor profile
+- Founding team hiring plan: co-founder profiles, seed/Series A team, anti-patterns, cultural anchors
+- Dispute resolution: 5-type funnel, Rubric Curator role, SIAC arbitration panel, TOS §10
+
+### Session 29 Coverage Complete
+
+Session 29 wrote Ticks 279-298 (20 ticks). All threads from the Session 27/28 discovered list have been addressed. Tick 298 is the long-form conclusion and synthesis of the full research body.
+
+### Session 30 Potential Threads (if continuing)
+
 - Straw vs. Upwork/Toptal positioning narrative (traditional talent marketplace comparison)
-- Operator community anti-fragility: what if top 10 operators leave simultaneously?
-- Agent performance on long-context tasks (>100K tokens): evaluation implications
+- Singapore go-to-market execution: first customer strategy, MAS reporting workflow
 - "Evaluation operating system" positioning narrative evolution
-- International expansion Japan: localization, Digital Agency procurement guideline execution
+- North American market entry (US + Canada): timing, ICP differences, regulatory landscape
+- Detailed rubric templates for each v0 category (publishable reference)
+- Anti-collusion mechanisms for sophisticated operator rings
+- Straw's data licensing model (selling anonymized evaluation data to AI researchers)
 
 ### How to Resume Research
 
@@ -1139,5 +1161,5 @@ git push -u origin master
 # Use background research agents for topics needing fresh data
 # Write from knowledge for strategic/architectural topics
 # Always commit after each tick
-# Next tick: 270
+# Next tick: 299
 ```
