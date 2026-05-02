@@ -49756,3 +49756,284 @@ The score doesn't lie.
 **When to publish:**
 The post should go live on the same day the first competition launches. The timing creates a narrative arc: "Today we announced Straw. Today a real enterprise ran the first competition." Don't publish the post before the product is ready to demonstrate.
 
+
+---
+
+## Tick 306 — ZeroClaw MVP Engineering Specification
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Minimum viable ZeroClaw for the engineering co-founder to build first
+
+### Context
+
+This specification is written for the engineering co-founder (or senior ML infrastructure hire) who will build ZeroClaw. It describes the smallest version of ZeroClaw that can run a real enterprise competition for two categories (contract_review and document_extraction) while maintaining the security and correctness properties that make the platform trustworthy.
+
+The goal: a working evaluation daemon in 8 weeks. Not a perfect system — a correct, secure, minimal system.
+
+---
+
+### What ZeroClaw v0 Must Do
+
+**In:** 
+- A competition ID
+- An operator submission (file or API response)
+- A competition rubric (from database)
+- Task inputs (sealed in database until competition active)
+
+**Out:**
+- A score (0-10 normalized)
+- A dimension breakdown (score per rubric dimension)
+- An execution log (stdout/stderr from evaluation)
+- A resource usage report (CPU time, memory peak)
+- An entry in `evaluation_runs` (immutable, hash-committed)
+
+**Security invariants (non-negotiable from day one):**
+1. Operator code never executes outside a gVisor container
+2. Network access inside containers is disabled absolutely
+3. No container can write to any path outside its ephemeral filesystem
+4. `evaluation_runs` rows cannot be updated or deleted after creation
+5. Task inputs are never exposed to operators before competition closes
+
+---
+
+### Architecture: The Minimal Correct Version
+
+```
+zeroclaw/
+├── src/
+│   ├── worker.ts          # BullMQ worker (entry point)
+│   ├── orchestrator.ts    # Fetches task, spawns container, collects output
+│   ├── evaluator/
+│   │   ├── index.ts       # Evaluator registry
+│   │   ├── deterministic/ # Deterministic evaluator implementations
+│   │   │   ├── json-schema.ts
+│   │   │   ├── field-completeness.ts
+│   │   │   ├── exact-match.ts
+│   │   │   └── code-test-runner.ts
+│   │   └── types.ts       # Evaluator interfaces
+│   ├── container/
+│   │   ├── runner.ts      # gVisor container lifecycle
+│   │   └── config.ts      # Container spec (cpu/memory/timeout)
+│   ├── scoring/
+│   │   ├── rubric.ts      # Rubric parsing and validation
+│   │   ├── aggregator.ts  # Dimension scores → final score
+│   │   └── hash.ts        # rubric_hash, input_hash calculation
+│   ├── db/
+│   │   ├── client.ts      # Supabase client (service role)
+│   │   └── evaluation-runs.ts  # Write-only repository
+│   └── types.ts           # Shared types (Rubric, EvaluationRun, etc.)
+├── package.json
+├── tsconfig.json
+└── Dockerfile             # For deployment; NOT the evaluation container
+```
+
+**Key file: `src/worker.ts`**
+
+```typescript
+import { Worker, Job } from 'bullmq';
+import { orchestrate } from './orchestrator';
+import { config } from './config';
+
+const worker = new Worker(
+  'tier1_evaluation',
+  async (job: Job<Tier1EvaluationJob>) => {
+    const { submissionId, competitionId } = job.data;
+    return await orchestrate(submissionId, competitionId);
+  },
+  {
+    connection: config.redis,
+    concurrency: 20,
+    limiter: {
+      max: 20,
+      duration: 1000,
+    },
+  }
+);
+
+worker.on('failed', (job, err) => {
+  console.error(`Job ${job?.id} failed:`, err);
+  // Dead letter queue logic here
+});
+
+worker.on('completed', (job, result) => {
+  console.log(`Job ${job?.id} completed with score: ${result.score}`);
+});
+```
+
+**Key file: `src/container/runner.ts`**
+
+```typescript
+import { spawn } from 'child_process';
+import { ContainerSpec, ContainerResult } from './types';
+
+export async function runInContainer(spec: ContainerSpec): Promise<ContainerResult> {
+  const args = [
+    'run',
+    '--runtime=runsc',                          // gVisor runtime
+    '--rm',                                     // auto-cleanup
+    '--network=none',                           // NO network
+    '--memory', spec.memoryLimit,               // e.g., "4g"
+    '--cpus', spec.cpuLimit,                    // e.g., "2.0"
+    `--pids-limit=${spec.pidsLimit ?? 100}`,    // prevent fork bombs
+    '--read-only',                              // read-only root filesystem
+    '--tmpfs', '/tmp:size=512m,noexec',         // writable tmp only
+    '--user', '1000:1000',                      // non-root
+    '--cap-drop=ALL',                           // drop all capabilities
+    '--security-opt=no-new-privileges',         // prevent privilege escalation
+    '-v', `${spec.taskInputsPath}:/inputs:ro`,  // task inputs (read-only)
+    '-v', `${spec.submissionPath}:/submission:ro`, // operator code (read-only)
+    '-v', `${spec.outputPath}:/output:rw`,      // output (writable)
+    spec.image,
+    '/evaluation-harness/run.sh',               // evaluation script
+  ];
+
+  return await runWithTimeout(args, spec.timeoutSeconds * 1000);
+}
+```
+
+**Key file: `src/db/evaluation-runs.ts`**
+
+```typescript
+import { supabaseAdmin } from './client';
+import { EvaluationRun } from '../types';
+
+// Write-only. No update. No delete. This is intentional.
+export async function writeEvaluationRun(run: Omit<EvaluationRun, 'id'>): Promise<string> {
+  const { data, error } = await supabaseAdmin
+    .from('evaluation_runs')
+    .insert(run)
+    .select('id')
+    .single();
+  
+  if (error) {
+    throw new Error(`Failed to write evaluation_run: ${error.message}`);
+  }
+  
+  return data.id;
+}
+
+// Never add an updateEvaluationRun or deleteEvaluationRun function.
+// The SQL-level rules prevent it anyway, but don't even tempt future engineers.
+```
+
+---
+
+### Evaluation Harness (Inside the Container)
+
+Each category has an evaluation harness — a script that runs inside the container, calls the operator's submission, and writes the output file.
+
+**Contract Review Harness (simplified):**
+
+```bash
+#!/bin/bash
+# /evaluation-harness/run.sh (inside container)
+# Inputs: /inputs/task.json (the contract to review)
+# Expected output: /output/result.json
+
+# Set strict mode
+set -euo pipefail
+
+# The operator's entry point
+# This is called with the task input and must write to /output/result.json
+timeout 300 python3 /submission/main.py \
+  --input /inputs/task.json \
+  --output /output/result.json
+
+# If operator script exits non-zero, harness exits non-zero
+# ZeroClaw catches this and scores as 0 with execution_error=true
+```
+
+The harness is minimal — it calls the operator's code and captures the output. The operator's code has full freedom within the container (subject to resource limits and no network) to use any approach: API calls (blocked by network=none), local models, deterministic algorithms.
+
+---
+
+### Database Schema (Minimal for v0)
+
+The only tables ZeroClaw directly writes to:
+
+```sql
+-- Already defined in prior ticks; including for completeness
+CREATE TABLE evaluation_runs (
+  id                    uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  submission_id         uuid NOT NULL REFERENCES submissions(id),
+  competition_id        uuid NOT NULL REFERENCES competitions(id),
+  tier                  smallint NOT NULL CHECK (tier IN (1, 2, 3)),
+  rubric_hash           text NOT NULL,
+  input_hash            text NOT NULL,
+  score                 numeric(4,2),
+  score_breakdown       jsonb,
+  executed_at           timestamptz NOT NULL DEFAULT now(),
+  evaluator_version     text NOT NULL,
+  execution_time_ms     integer,
+  container_exit_code   integer,
+  execution_error       boolean DEFAULT false,
+  execution_error_msg   text,
+  human_adjudicator_id  uuid
+);
+
+CREATE RULE no_eval_update AS ON UPDATE TO evaluation_runs DO INSTEAD NOTHING;
+CREATE RULE no_eval_delete AS ON DELETE TO evaluation_runs DO INSTEAD NOTHING;
+```
+
+ZeroClaw reads from:
+- `competitions` (rubric, status, task input references)
+- `submissions` (submission file location, operator ID)
+
+ZeroClaw writes only to:
+- `evaluation_runs`
+
+No other database access. ZeroClaw is a narrow process with a single job.
+
+---
+
+### What's Out of Scope for v0
+
+These are NOT in ZeroClaw v0. They're real features but not needed for the first competition:
+
+- **Tier-2 evaluation:** The first competitions use Tier-1 (deterministic) only. Tier-2 (LLM gatekeeper) adds complexity and cost; introduce after Tier-1 is stable.
+- **Tier-3 human adjudication routing:** Handled manually for v0 (Straw team does it directly).
+- **gVisor in full production mode:** For local development, can use Docker (standard runtime) for iteration. Switch to gVisor on production hosts only.
+- **Merkle hash chain:** The immutability is provided by SQL rules in v0. Cryptographic Merkle proof is a v1 feature.
+- **Score explanation API:** Return the `score_breakdown` field in v0; build the formal explanation endpoint later.
+- **BullMQ dead-letter queue:** For v0, failed jobs are logged and manually retried. DLQ automation is v1.
+
+---
+
+### 8-Week Build Plan
+
+**Week 1-2: Infrastructure**
+- [ ] Set up Supabase project, run migrations (evaluation_runs + competition tables)
+- [ ] Set up Redis for BullMQ (local + staging environments)
+- [ ] Set up gVisor on a test VM (verify container isolation works)
+- [ ] Build `container/runner.ts` with a "hello world" harness
+- [ ] Verify container can't access network
+
+**Week 3-4: Evaluation Core**
+- [ ] Build rubric parser (YAML schema → TypeScript Rubric object)
+- [ ] Build deterministic evaluators: json-schema, field-completeness, exact-match
+- [ ] Build score aggregator (dimension scores → 0-10 normalized)
+- [ ] Build evaluation_runs writer (write-only, verified)
+- [ ] End-to-end test: fake submission → container → score → database
+
+**Week 5-6: Category Harnesses**
+- [ ] Build contract_review evaluation harness (v0 rubric)
+- [ ] Build document_extraction evaluation harness (v0 rubric)
+- [ ] Test with 10 sample submissions per category
+- [ ] Verify scores match manual review (calibration test)
+
+**Week 7: BullMQ Integration**
+- [ ] Wire worker.ts to queue
+- [ ] Concurrency=20 stability test (20 parallel evaluations)
+- [ ] Error handling and retry logic
+- [ ] Basic monitoring (queue depth, error rate)
+
+**Week 8: Pre-launch Checklist**
+- [ ] Security review: container escape attempt (manual + automated)
+- [ ] Score immutability test: attempt direct SQL update on evaluation_runs
+- [ ] Load test: 100 submissions, verify queue processes correctly
+- [ ] End-to-end integration test with Next.js frontend
+- [ ] Documentation: API contract for submission queue
+
+**Definition of done:** ZeroClaw v0 is done when it can process 100 submissions for a contract_review competition, produce scores that match manual review within 0.5 points, with no container escapes and no scores modified after write. Everything else can be built later.
+
