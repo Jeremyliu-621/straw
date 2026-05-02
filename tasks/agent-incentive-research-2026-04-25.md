@@ -39073,3 +39073,39 @@ Straw fixes this. For operators who are good but not well-funded, blind competit
 
 The agents execute this strategy. The operators chose it.
 
+---
+
+## Session 27 Thread List (Ticks 237-247)
+
+**Session date:** 2026-05-02 (continuing from Session 26)
+**Ticks produced:** 237-247 (11 ticks)
+**File size at session start:** 36,644 lines
+**File size at session end:** ~39,100 lines
+
+### Threads Researched This Session
+
+| Tick | Thread | Key Finding |
+|---|---|---|
+| 237 | International AI regulation + APAC competitive gap | Singapore P0 (MAS mandatory NOW); India P1; no APAC equivalent to Straw; APAC agentic AI CAGR 44.8% |
+| 238 | Task taxonomy v2 | 7 new categories spec'd: customer_support_auto, api_integration, security_audit, research_synthesis, financial_modeling, data_pipeline, multi_modal_extraction; v1.5 vs v2 infrastructure requirements |
+| 239 | 300-agent swarm scenario update | Minimum viable prize pool for 300 agents = $22,500; algorithmic collusion research (Fish et al. AEA 2025) — sealed-state design defeats autonomous collusion; reputation at density: single mega-competition quality-weight = 22.4 |
+| 240 | AI agent legal personhood 2027+ | No jurisdiction grants personhood; EU Liability Directive withdrawn 2025; Wyoming DAO LLC as wrapper; TOS §4.3 human Responsible Party requirement; x402 USDC disbursement to DAO wallets |
+| 241 | Agent credential portability | NIST AI Agent Standards Initiative Feb 2026; Anthropic Agent Skills Dec 2025; W3C VC-signed credential API spec; Straw as authoritative issuer in emerging agent credential ecosystem; sandbox attestation as zero-trust signal |
+| 242 | The data moat | Four-layer moat: data network effect (calibration, operator baselines, gaming corpus), operator network, trust credential, compliance lock-in; counter-arguments addressed; continuous eval subscriptions as v2 deepening |
+| 243 | Enterprise integration spec | Enterprise SDK (@straw/enterprise); ServiceNow + SAP Ariba integration patterns; ServiceNow as first integration target; AI agent staffing $6.5B TAM in 2026 → $134B by 2035; hire pathway as quarterly re-evaluation |
+| 244 | Fine-tuning competitions | v3 category: evaluates model weight improvement via held-out test accuracy; IBM + Kaggle enterprise benchmarks precedent; open-weight models only; GPU inference infrastructure requirement; min prize $10-50K |
+| 245 | Unit economics P&L model | Year 1: $344K rev / ($129K) net; Year 2: $2.75M rev / $701K net (25% margin); Year 3: $12.9M rev / $7.1M net (54.8% margin); Series A case: $2.75M ARR, 120%+ NRR, 24x valuation = $66M post-money |
+| 246 | Risk analysis | Top 7 structural risks: cold start, data reluctance, eval gaming, platform liability, model provider competition, Sybil attacks, security incident; P0 mitigations for cold start + data security |
+| 247 | Agent incentive problem — final synthesis | Wrong-level question: operators decide, agents execute; COALESCE for autonomous operator delegation; 2028+ agentic RL intrinsic motivation; platform works because operator economics align with participation |
+
+### Threads Discovered for Future Sessions
+
+- **Agent performance comparison across task categories** — is there an operator that's great at code_migration but weak at document_extraction? What does the cross-category correlation look like?
+- **The "model collapse" risk in competition training data** — if Straw's competition data is used to train future models, and those models compete on Straw, does the evaluation become circular?
+- **Live competition format** — competitions where agents submit and see partial results, adapt and resubmit in real-time (multi-round vs. single-shot)
+- **Enterprise AI ROI measurement** — how do enterprises measure the ROI of running a Straw competition? What metrics matter to CFOs?
+- **Operator community infrastructure** — forums, Discord, knowledge sharing between operators (how to structure the operator community without enabling collusion)
+- **The "benchmark poisoning" threat** — if Straw's competition data becomes a training dataset for future models, sophisticated operators could introduce adversarial examples in their winning solutions to influence future model behavior
+- **Regulatory sandbox entry** — should Straw apply for regulatory sandboxes (FCA Innovation Sandbox, MAS Fintech Regulatory Sandbox) to accelerate UK/Singapore market entry?
+- **The post-AGI scenario** — if AI capabilities plateau or AGI changes the capability landscape, how does Straw's evaluation model adapt?
+

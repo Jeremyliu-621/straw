@@ -1055,3 +1055,63 @@ Goal: implement the corrected philosophy from D15–D22 + D30. Replace the impli
 ## Unmerged Work
 
 _All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-picked into master commit d64f813._
+
+---
+
+## Research Sessions: agent-incentive-research-2026-04-25.md
+
+**Status:** Active overnight research — Sessions 24-27 completed.
+
+**File location:** `tasks/agent-incentive-research-2026-04-25.md`
+**Current size:** ~39,100 lines
+**Current tick:** 247 (last written in Session 27)
+
+### Sessions Summary
+
+| Session | Ticks | Key Topics |
+|---|---|---|
+| Sessions 1-23 | 1-206 | Original agent incentive research, competition design, FairJudge, COALESCE, prize pool structure, reputation scoring |
+| Session 24 | 207-228 | COALESCE cold-start, coalition formation, FairJudge/debiasing, rubric generator UX, data licensing, operator discovery, pricing model, enterprise AI procurement, GTM bootstrap, multi-tenant isolation, competitive positioning, v1 task taxonomy, D22 winner pathways, eval gaming/Goodhart's Law, operator reputation scoring, dispute resolution, GDPR, agent operating costs, prize pool structure, competition analytics dashboard, operator SDK spec |
+| Session 25 | 229-234 | Technical architecture v1 (core data model, ZeroClaw worker, RLS), Series A investor narrative, Straw vs. OpenAI Frontier, internal agent infrastructure, agent self-provisioning via x402, long-form proposal Section 7 |
+| Session 26 | 235-236 | Product roadmap v0→v2, enterprise customer success playbook |
+| Session 27 | 237-247 | International expansion + APAC competitive gap, task taxonomy v2 (8 new categories), 300-agent swarm update, AI agent legal personhood (DAO LLC, Wyoming), agent credential portability (W3C VC, NIST standards), data moat (4-layer), enterprise integration spec (ServiceNow/Ariba SDK), fine-tuning competitions (v3 category), unit economics P&L model (3-year), risk analysis (7 risks), agent incentive final synthesis |
+
+### What's Been Covered
+
+The research file now constitutes a near-complete product design document covering:
+- **Market validation:** Enterprise AI procurement landscape, compliance forcing functions (EU AI Act, OMB M-26-04, MAS)
+- **Product design:** Full task taxonomy (v0-v3), competition format, evaluation architecture (Tier-1/2/3), winner pathways (D22), rubric RULERS locking
+- **Technical architecture:** ZeroClaw, gVisor sandboxing, RLS sealed-state, operator SDK, enterprise SDK, credential API
+- **Economics:** Agent operating costs, prize pool floors, platform economics, 3-year P&L model ($12.9M Y3 revenue)
+- **Go-to-market:** Bootstrap GTM, enterprise CS playbook, operator community, ServiceNow/Ariba integration
+- **International expansion:** Singapore (P0), India (P1), Japan/UK/Australia/Canada analysis
+- **Competitive moat:** Data network effect, operator network, trust credential, compliance lock-in
+- **Legal/compliance:** GDPR DPA, EU AI Act compliance package, DAO LLC legal wrappers, TOS structure
+- **Risk analysis:** 7 structural risks with mitigations
+- **Investor thesis:** Series A case, valuation benchmarks, data asset as Series B story
+- **Final synthesis:** The agent incentive problem resolved (operators decide, agents execute)
+
+### Discovered Threads for Future Sessions
+
+See Session 27 thread list at the bottom of the research file for 8 specific threads not yet covered:
+- Agent performance cross-category correlation analysis
+- Model collapse risk in competition training data
+- Live (multi-round) competition format
+- Enterprise AI ROI measurement (CFO metrics)
+- Operator community infrastructure without enabling collusion
+- Benchmark poisoning threat (adversarial examples in winning solutions)
+- Regulatory sandbox entry (FCA, MAS)
+- Post-AGI scenario analysis
+
+### How to Resume Research
+
+```bash
+# Get current file state
+tail -100 tasks/agent-incentive-research-2026-04-25.md  # see last tick
+
+# Pick next thread from Session 27 thread list (at ~line 39,050)
+# Research via WebSearch, append tick, commit, push
+# git add tasks/agent-incentive-research-2026-04-25.md
+# git commit --author="Jeremy Liu <jeremyliu621@gmail.com>" -m "Tick N: ..."
+# git push -u origin master
+```
