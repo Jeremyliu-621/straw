@@ -52676,3 +52676,127 @@ The AI agent market is at the Kaggle 2011 moment. Straw is Kaggle for the agenti
 **Ticks 312-321** complete. OpenAI Frontier analysis pending (subagent running).
 
 **Git commit target:** `research(agent-incentive): tick 321 — Series A investor narrative synthesis ($8M, regulatory forcing function, moat stack)`
+
+---
+
+## Tick 322 (2026-05-02): OpenAI Frontier deep analysis — competitor, supply channel, or complement?
+
+*Thread: Straw vs. OpenAI Frontier deep analysis. Frontier announced Feb 5, 2026. Research via subagent (WebSearch). Sources: openai.com/index/introducing-openai-frontier, openai.com/business/frontier, TechCrunch, CNBC, Futurum Group, eesel.ai pricing guide.*
+
+---
+
+## Long-form proposal (DRAFT) — Section 36: OpenAI Frontier — threat, channel, or complement?
+
+### What Frontier Is
+
+OpenAI Frontier launched February 5, 2026 as an enterprise platform for building, deploying, and managing production-ready AI agents. It is **not a marketplace or competition platform**. It is an **intelligence orchestration layer** — a control plane that connects enterprise systems (CRM, data warehouses, ticketing, internal apps) and gives AI agents shared business context.
+
+The core Frontier product: a centralized control plane that manages agents built by OpenAI, customers, and third-party providers (Google, Microsoft, Anthropic). Enterprises deploy their agents into Frontier; Frontier manages permissions, auditing, security, and workflow routing.
+
+**What Frontier is NOT:**
+- It does not run competitions
+- It does not rank agents against each other
+- It does not produce comparative evaluation data
+- It does not facilitate commercial outcomes (hire/license/acquire) between agent operators and enterprises
+
+**Pricing:** Enterprise-only, custom contracts via sales team. No self-serve. Pricing factors: number of agents deployed, data volume, API usage, deployment environment, Forward Deployed Engineer support. Fortune 500 positioning.
+
+**Early traction (reported):**
+- Semiconductor firm: chip optimization reduced from 6 weeks to 1 day
+- Investment firm: agents freed 90% more salesperson time
+- Energy producer: 5% output increase (OpenAI claims "$1B+ additional revenue")
+- Named customers: Uber, State Farm, Intuit, Thermo Fisher, HP, Oracle, BBVA, Cisco, T-Mobile pilots
+
+---
+
+### The Precise Competitive Relationship
+
+**Frontier is a post-procurement management layer. Straw is a pre-procurement evaluation engine.**
+
+| Question | Frontier's answer | Straw's answer |
+|---|---|---|
+| Where does the agent come from? | Enterprise builds it or sources it separately | Enterprise discovers it through competition |
+| How does the enterprise know it works? | Internal governance and monitoring after deployment | Competitive leaderboard before deployment |
+| What happens if the agent underperforms? | Frontier logs it; enterprise troubleshoots | Straw never deploys an unranked agent |
+| What is the commercial relationship? | Enterprise is a customer of OpenAI | Enterprise is a customer of Straw + a client of agent operators |
+
+**The problem Frontier solves:** "I have agents from multiple vendors — how do I manage them?" (post-procurement)
+
+**The problem Straw solves:** "Which agent should I use for this specific task?" (pre-procurement)
+
+These are adjacent but distinct. An enterprise can use both: Straw to evaluate and procure the right agent for a task, Frontier to manage that agent once deployed.
+
+---
+
+### The Three Scenarios
+
+**Scenario A: Complement (most likely)**
+
+Straw and Frontier become sequential steps in the enterprise AI procurement workflow:
+1. Enterprise posts task to Straw → agents compete → winner identified
+2. Enterprise onboards winner into Frontier for production management
+3. Straw provides the evaluation audit trail that Frontier's governance records require
+
+This is analogous to: Workday for HR management (Frontier) vs. LinkedIn Recruiter for talent discovery (Straw). The tools serve different phases of the same workflow. Both are necessary; neither replaces the other.
+
+**How to capitalize on this:** Straw should build a "Deploy to Frontier" integration — after a Straw competition closes, the winner's agent configuration is packaged for import into Frontier. This makes Straw the natural top of the funnel for Frontier's agent marketplace. A partnership announcement ("Straw-sourced agents deploy natively to OpenAI Frontier") would be a growth channel for both platforms.
+
+**Scenario B: Supply channel (opportunistic)**
+
+Frontier's customers — Fortune 500 enterprises currently deploying agents internally — are exactly Straw's target customers. Frontier's adoption signals that the enterprise AI agent market is maturing. Enterprises that have already deployed agents in Frontier are the best candidates for "now run a competition to find a better one." Frontier's success validates the market Straw is entering.
+
+Concretely: a Forward Deployed Engineer at Frontier is telling their customer "you have these 3 agent options." Straw's pitch to that customer: "We can tell you which one actually performs best on your specific task, with a compliance certificate." Frontier creates the conversation; Straw closes it.
+
+**Scenario C: Direct competitor (low probability, high impact if it happens)**
+
+If Frontier adds a marketplace or competition feature — "post a task, agents bid, winner is ranked" — it becomes a direct competitor with:
+- OpenAI's distribution (Fortune 500 relationships)
+- OpenAI's brand (trusted enterprise AI vendor)
+- OpenAI models as the default eval engine (potential bias toward OpenAI agents)
+
+The likelihood: low in 2026. Frontier's current positioning is explicitly as an orchestration layer, not a marketplace. OpenAI would have to change their product strategy significantly.
+
+The risk: **non-zero and growing.** If Straw achieves significant traction ($3M+ ARR), Frontier becomes a logical acquirer or imitator. The "acquire to neutralize" scenario is real but is also the exit thesis: being acquired by OpenAI at Series B valuation is a win, not a loss.
+
+---
+
+### The Bias Risk
+
+The most subtle competitive threat: Frontier's control plane optimizes agent selection. If Frontier's optimization logic (even non-maliciously) steers enterprises toward OpenAI-compatible agents over independent agent operators, independent agents are disadvantaged in the post-procurement phase.
+
+Straw's evaluation is model-agnostic by design (the rubric doesn't care what model runs the agent). Frontier's orchestration may not be. An agent that scores 94 on Straw's leaderboard but doesn't integrate cleanly with Frontier's orchestration API may still lose to an agent that scores 87 but deploys frictionlessly in Frontier.
+
+**Mitigation:** Straw's A2A protocol compliance and AgentCard standard make Straw-sourced agents integrable with any orchestration layer. The "Deploy to Frontier" integration (Scenario A) is both a partnership opportunity and an insurance policy against this bias.
+
+---
+
+### Strategic Recommendation
+
+**Near-term (next 6 months):**
+- Do NOT position Straw as "better than Frontier" — they solve different problems
+- DO position Straw as "the evaluation layer that feeds Frontier" — this is a truth, not a spin
+- Build a basic Frontier integration (AgentCard export → Frontier import) to cement the complement narrative
+- Target Frontier's named customers (Uber, State Farm, Intuit, Thermo Fisher) as Straw design partners — they're the right enterprise size, already sold on AI agents, now need rigorous evaluation
+
+**Medium-term (12-24 months):**
+- If Frontier adds a marketplace feature: activate the "task-specific private eval" differentiator hard — Frontier's eval will be generic, Straw's will be rubric-specific and compliance-certificate-producing
+- If Frontier adds a "publish rubric and test your agent" feature: shift Straw positioning to "the independent, auditable third-party evaluator" — the conflict-of-interest argument (can you trust OpenAI to evaluate whether an OpenAI agent is better than a Claude agent?) is Straw's ace card
+
+**Exit scenario:**
+- Series B at $5M ARR is a natural Frontier acquisition opportunity — Frontier gets Straw's task-specific eval capability, rubric library, and calibration corpus. This is the OpenAI route.
+- Alternative acquirers: Salesforce (enterprise workflow), Workday (talent + AI), Coupa (procurement), Microsoft (Azure AI + Teams Copilot governance)
+- The evaluation standard + compliance certificate is the most attractive M&A asset — it's not something any acquirer can build in 18 months
+
+---
+
+## Closed threads (Tick 322)
+
+- [done — Tick 322] **Straw vs. OpenAI Frontier** — Frontier = post-procurement management (orchestration, governance, multi-vendor agent control plane), Straw = pre-procurement evaluation (competition, rubric scoring, commercial outcomes). Three scenarios: complement (most likely — sequential workflow, "Deploy to Frontier" integration), supply channel (Frontier customers are Straw's target customers), direct competitor (low probability — Frontier would need a marketplace pivot; if it happens, model-agnostic eval and compliance certificate are the differentiators). Bias risk: Frontier's optimization may favor OpenAI-compatible agents; mitigated by A2A compliance + Frontier integration. Strategic: position as evaluation layer feeding Frontier, target Frontier's named customers as design partners.
+
+---
+
+## Push status (after Tick 322)
+
+**Ticks 312-322** complete. All major open threads now addressed.
+
+**Git commit target:** `research(agent-incentive): tick 322 — OpenAI Frontier analysis (complement, supply channel, or competitor?)`
