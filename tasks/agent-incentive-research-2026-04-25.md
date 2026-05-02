@@ -33477,3 +33477,300 @@ The hypothesis "structured judges are more robust" is **partially supported with
 
 Sources: arxiv.org/abs/2602.06625 (FairJudge), arxiv.org/abs/2603.08091 (JudgeBiasBench), arxiv.org/abs/2604.23178 (Judging the Judges mitigation comparison), arxiv.org/abs/2602.13576 (Rubrics as Attack Surface), arxiv.org/abs/2601.08654 (RULERS locked rubric framework), huggingface.co/prometheus-eval/prometheus-7b-v2.0, github.com/prometheus-eval/prometheus-eval, arxiv.org/abs/2405.01535 (Prometheus 2), godaddy.com/resources/news/calibrating-scores-of-llm-as-a-judge, arxiv.org/abs/2604.22891 (self-preference bias quantification).
 
+
+---
+
+## Tick 210 — The rubric generator UX: step-by-step from spec to validated rubric
+
+**Context:** Straw's primary conversion problem is the enterprise buyer who understands what "good" looks like intuitively but cannot express it as a scorable rubric. If rubric creation takes 3 hours and requires a PMM, it won't happen. The rubric generator must produce a valid, IRR-calibrated rubric in under 20 minutes for an enterprise user who has never written evaluation criteria before.
+
+This tick designs the full UX flow, wire-frame level, incorporating AdaRubric (arXiv:2603.21362), CARMO (arXiv:2410.21545), RULERS (arXiv:2601.08654), and the canonical format from Tick 206.
+
+---
+
+### Phase 1: Specification intake (2-3 minutes)
+
+**Screen 1: Task description**
+
+```
+"Describe the task you want agents to solve."
+[Free-text area, 1,000 char limit]
+"What does a perfect solution look like?"
+[Free-text area, 500 char limit]
+"What does a failing solution look like?" [optional]
+[Free-text area, 500 char limit]
+```
+
+No rubric structure yet. No criteria. Just a natural language description of the task and the two poles of quality. This is the AdaRubric input format — the model generates criteria from the spec, not the other way around.
+
+**Screen 2: Task category selection (auto-suggested)**
+
+AdaRubric's r=0.79 correlation with human rubrics depends on task category classification to select the right criteria templates. Straw auto-suggests from the task description using an LLM classifier, but the user can override:
+
+- Code generation / migration / refactoring
+- Data analysis / reporting
+- Document review / contract analysis
+- Customer communication / support response
+- API / system integration
+- Research and synthesis
+- Creative / open-ended
+
+**Screen 3: Constraints and test assets**
+
+```
+"Do you have test cases, expected outputs, or reference answers?" 
+[Upload area, or "No — generate rubric without Tier-1 tests"]
+
+"How many agents do you expect to compete?"
+[Dropdown: <10 / 10-50 / 50-200 / 200+]
+
+"Prize pool budget"
+[Number input — shown so the system can flag if the prize is too small to attract quality agents]
+```
+
+---
+
+### Phase 2: AI-generated rubric draft (30 seconds, async)
+
+AdaRubric generates a rubric from the spec. The prompt structure (from arXiv:2603.21362):
+
+```
+Given this task specification: [spec]
+And these poles of quality: [perfect] / [failing]
+For task category: [category]
+
+Generate a rubric with:
+- 4-6 criteria (avoid redundancy)
+- For each criterion: weight (must sum to 100%), 4-point behavioral anchors (not just numbers), pitfall criterion
+- Identify which criteria have automatable Tier-1 checks
+- Flag any ambiguities in the spec that need clarification
+```
+
+Output is rendered as an editable rubric table. The user sees:
+
+```
+DRAFT RUBRIC — generated from your spec
+[Edit any field]
+
+┌─────────────────────┬────────┬───────────────────────────────┬─────────────────────┐
+│ Criterion           │ Weight │ 4-point anchor (hover to see) │ Tier-1 automatable? │
+├─────────────────────┼────────┼───────────────────────────────┼─────────────────────┤
+│ Correctness         │  40%   │ [preview: first 2 anchors]    │ ✓ (unit tests)      │
+│ Performance         │  30%   │ [preview: first 2 anchors]    │ ✓ (benchmarks)      │
+│ Code quality        │  20%   │ [preview: first 2 anchors]    │ ✗ (LLM judge)       │
+│ Documentation       │  10%   │ [preview: first 2 anchors]    │ ✗ (LLM judge)       │
+└─────────────────────┴────────┴───────────────────────────────┴─────────────────────┘
+
+[+] Add criterion    [Regenerate rubric]    [Import template]
+```
+
+---
+
+### Phase 3: Anchor calibration (5-7 minutes)
+
+This is the most critical phase and the most novel part of Straw's UX. Standard rubric tools stop at Phase 2 — they let you generate criteria and move on. The problem: criteria without calibrated anchors produce high inter-rater disagreement (IRR < 0.6). Two judges reading "excellent performance" with no behavioral anchor will score differently 40% of the time.
+
+**The calibration exercise:**
+
+The user is shown 3-5 real examples of outputs for each AI-automatable criterion (drawn from Straw's example library, or from a calibration run of the task on a free public model). For each example:
+
+```
+"How would you score this output on [Criterion: Code quality]?"
+                                   
+[Example output displayed here]
+
+1 ● 2 ● 3 ● 4
+
+[Why did you pick this score?] [optional free text]
+```
+
+The system computes the user's implicit scoring function from their responses and updates the behavioral anchors to match. If the user gives a 2 to an example the system thought was a 3, it re-generates the anchor text for score 2 and 3 to capture the user's actual threshold.
+
+This is the core product insight: the rubric generator is not a rubric editor — it is a **preference elicitation system**. The enterprise user cannot write "a 4 looks like X" but they can recognize "this is a 4." The calibration exercise captures the latter and converts it to the former.
+
+**Anchor update display:**
+
+After calibration responses on 3 examples per criterion, the system shows:
+
+```
+Based on your scores, we updated the anchors for Code quality:
+
+4 (before): "Clear, well-commented code following language conventions"
+4 (after):  "Idiomatic code with no magic numbers, consistent naming, and at most 2 inline comments per 50 lines"
+
+Does this match what you intended? [Yes, keep it] [Edit anchor]
+```
+
+---
+
+### Phase 4: IRR validation (2-3 minutes)
+
+IRR (inter-rater reliability) measures whether two independent scorers using the rubric would agree. Cohen's kappa ≥ 0.7 is the academic standard for acceptable agreement; ≥ 0.8 is "good." Enterprise rubrics with κ < 0.6 produce leaderboards that don't reflect actual quality differences.
+
+Straw validates IRR by running the rubric through a panel of 3 judge LLMs (not the same ensemble as the production judge) on the 3-5 calibration examples, measuring pairwise agreement. If any criterion shows pairwise kappa < 0.65:
+
+```
+⚠ Low agreement on "Code quality" (κ=0.52)
+  Judges disagree on what distinguishes a 2 from a 3.
+
+  Option A: Accept this ambiguity and rely on human review at Tier-3
+  Option B: Let Straw generate a more specific anchor for the 2/3 boundary [Recommended]
+  Option C: Combine "Code quality" with another criterion to reduce scoring surface
+```
+
+The user picks one option. If Option B: the system generates a more specific anchor targeting the 2/3 boundary and re-tests IRR. This loops until κ ≥ 0.7 on all criteria or the user explicitly accepts a lower threshold.
+
+**IRR display:**
+
+```
+RUBRIC VALIDATION
+
+Criterion          Inter-rater κ    Status
+Correctness        0.91             ✓ Strong
+Performance        0.88             ✓ Good
+Code quality       0.52             ⚠ Needs improvement
+Documentation      0.71             ✓ Acceptable
+
+[Improve Code quality]  [Accept rubric as-is]
+```
+
+---
+
+### Phase 5: Tier-1 test configuration (3-5 minutes, optional but strongly encouraged)
+
+If the task has automatable Tier-1 checks (detected in Phase 2), Straw presents the Tier-1 configuration:
+
+```
+Your task has 2 criteria with automatable tests:
+
+✓ Correctness — you uploaded 50 unit tests in Phase 1
+  → These will run deterministically on every submission as Tier-1
+  → No LLM judge needed for this criterion
+  
+✓ Performance — do you want to add a benchmark?
+  [Upload benchmark suite]  [Use default: measure latency + memory]
+
+Tier-1 checks reduce cost and improve integrity.
+Submissions that fail Tier-1 are rejected before LLM scoring.
+[Configure Tier-1]  [Skip, use LLM scoring for all criteria]
+```
+
+---
+
+### Phase 6: Rubric lock and competition creation
+
+The final rubric is locked as a versioned artifact (RULERS-style immutable bundle). The enterprise sees:
+
+```
+RUBRIC LOCKED — Version 1.0
+Content hash: sha256:4a7f8b2c...
+
+⚠ Once agents register for this competition, the rubric cannot be changed.
+  Changes after registration constitute a material terms change.
+
+[Review final rubric]  [Launch competition]
+```
+
+The content hash is published in the competition listing. Operators can verify the rubric they received matches what was published. This is the transparency mechanism that satisfies the EU AI Act Article 14 disclosure requirement.
+
+---
+
+### UX design principles embedded in this flow
+
+1. **Don't ask enterprise users to write criteria from scratch.** They can't. Use AdaRubric to draft; use calibration to refine.
+
+2. **The calibration exercise is the product.** The rubric that comes out the other end is only as good as the preference elicitation. Budget 70% of UX effort here.
+
+3. **IRR validation is not optional infrastructure — it is a trust signal.** Show the kappa scores on the public competition page. An enterprise that publishes a rubric with κ > 0.85 signals that they know what "good" looks like. An operator choosing which competitions to enter can use this to filter for well-specified tasks.
+
+4. **Lock early, version everything.** The rubric is immutable after registration opens. The content hash is public. No late changes to evaluation criteria is a hard norm — it is the thing that makes Straw's results legible.
+
+5. **Time budget:** under 20 minutes for a first-time user, under 10 for a repeat user loading a template.
+
+Sources: arxiv.org/abs/2603.21362 (AdaRubric, r=0.79 automation), arxiv.org/abs/2410.21545 (CARMO), arxiv.org/abs/2601.08654 (RULERS locked rubric framework), arxiv.org/abs/2603.00077 (Autorubric), arxiv.org/abs/2501.00274 (Microsoft LLM-Rubric), arxiv.org/abs/2303.16634 (G-Eval baseline), arxiv.org/abs/2603.08091 (JudgeBiasBench calibration methodology), arxiv.org/abs/2604.23178 (Judging the Judges: style bias dominates, CoT universally beneficial), doi.org/10.1037/0033-2909.107.2.276 (Cohen's kappa interpretation standards).
+
+
+---
+
+## Tick 211 — Straw data licensing TOS: first-draft key clauses
+
+**Context:** Straw's competition data (task specifications, submitted artifacts, rubric scores, pairwise judgments, judge reasoning) is extremely valuable as training data — Tick 203 estimated $3.65M in Scale AI equivalent value for 1,000 competitions × 20 submissions. Kaggle, Codeforces, and LeetCode all squandered this asset by not locking TOS terms before the data existed. Straw must get this right from the first competition. Tick 205 established the legal framework (USCO Part 2, EU AI Act, contractual IP assignment as safer than copyright reliance). This tick drafts the concrete TOS clauses.
+
+**Two audiences:** (A) Operator TOS — the agent operator who submits on behalf of their agent; (B) Enterprise Customer Agreement — the enterprise that posts the task and pays the prize.
+
+---
+
+### Section 1: Operator TOS — Data Licensing Clauses
+
+**§ 7. License Grant for Competition Artifacts**
+
+> 7.1 **License scope.** By submitting an artifact (including all code, text, structured data, or other output) to a Competition on the Platform, you ("Operator") grant Straw a perpetual, worldwide, irrevocable, royalty-free, sublicensable license to:
+>
+> (a) store, reproduce, and distribute the artifact and all associated evaluation metadata (rubric scores, judge reasoning, pairwise comparison results, execution logs, and benchmark results) for the purpose of Platform operation and improvement;
+>
+> (b) include the artifact and associated evaluation metadata in anonymized or pseudonymized training datasets for machine learning research and development, provided that no personally identifiable information is included; and
+>
+> (c) license the artifact and associated evaluation metadata to third parties (including AI research institutions and enterprise subscribers) under the terms of Straw's Data Licensing Program (§ 8).
+
+> 7.2 **Moral rights waiver.** To the maximum extent permitted by applicable law, you waive all moral rights in submitted artifacts with respect to Straw's exercise of the rights granted in § 7.1.
+
+> 7.3 **No copyright warranty.** You represent and warrant that (a) the artifact is an original work or a derivative work to which you hold sufficient rights; (b) Straw's exercise of the rights in § 7.1 will not infringe any third-party intellectual property rights; and (c) if the artifact was generated using a third-party AI system, you have reviewed and are satisfied with the applicable terms of service governing such use.
+
+> 7.4 **Your retained rights.** Subject to the license grant in § 7.1, you retain all ownership rights in submitted artifacts. The license grant does not transfer ownership or limit your right to use, sublicense, or distribute the artifact independently.
+
+**§ 8. Straw Data Licensing Program**
+
+> 8.1 **Program scope.** Straw may license aggregated competition datasets (including artifacts and evaluation metadata from multiple competitions) to third parties under the categories described in § 8.2. Individual artifacts from a single operator are not licensed in isolation; datasets are always drawn from at least [50] distinct operators unless the operator has separately agreed in writing.
+
+> 8.2 **License tiers.** Straw offers three license tiers:
+>
+> (a) **Academic Tier (free):** Non-commercial research use by accredited academic institutions. Includes artifacts and rubric scores. Does not include unpublished rubric criterion weights or task-specific proprietary specifications.
+>
+> (b) **Research Commercial Tier ($50,000–$200,000 per dataset):** Commercial use by AI model developers and research organizations for model training. Includes all metadata including judge reasoning chains and pairwise comparisons. Subject to audit rights.
+>
+> (c) **Enterprise Competition Replay Tier ($10,000–$50,000 per competition):** License for an enterprise to re-run a historical competition replay dataset for internal benchmarking and procurement evaluation. Enterprise identity verified; cannot be resold.
+
+> 8.3 **Revenue sharing.** Operators whose artifacts are included in a licensed dataset receive [20]% of net licensing revenue attributable to their contributions, distributed quarterly. Contribution weight is calculated as the cosine similarity-weighted proportion of an operator's artifacts in the licensed dataset, normalized to the dataset size.
+
+> 8.4 **Opt-out.** An Operator may opt out of inclusion in § 8.2(b) and § 8.2(c) licensing by providing written notice to legal@straw.ai prior to submitting to a Competition. Opt-out takes effect for future Competitions only; artifacts submitted before opt-out remain subject to the license grant in § 7.1.
+
+---
+
+### Section 2: Enterprise Customer Agreement — Data Licensing Clauses
+
+**§ 12. Competition Data and Intellectual Property**
+
+> 12.1 **Task specification ownership.** You ("Enterprise Customer") retain all ownership rights in the task specification, rubric, and any reference materials uploaded to the Platform ("Customer IP"). You grant Straw a limited license to use Customer IP solely for operating the Competition on the Platform and for Straw's internal Platform improvement.
+
+> 12.2 **Confidentiality of rubric weights.** Straw maintains the criterion weights and score anchors of your rubric as confidential during the Competition period. After Competition close, the full rubric (including weights and anchors) is disclosed to all participating Operators unless you elect confidential scoring under § 12.3.
+
+> 12.3 **Confidential scoring election.** If you elect confidential scoring at Competition creation, Straw will not disclose criterion weights or score anchors to Operators at any time. This election is irrevocable after Competition registration opens. Confidential scoring commands a platform fee surcharge of [10]% of the prize pool.
+
+> 12.4 **Straw's license to evaluation data.** Straw retains all rights to the evaluation metadata (judge outputs, benchmark results, pairwise comparisons) generated during the Competition ("Evaluation Data"). Customer IP is not included in Evaluation Data. Straw may use Evaluation Data as described in Straw's Operator TOS § 7–8.
+
+> 12.5 **Winning artifact IP.** Ownership of winning submission artifacts is governed by the engagement pathway elected at Competition creation:
+>
+> (a) **Leaderboard only:** You receive no IP rights. The winning artifact remains the Operator's property.
+>
+> (b) **Hire pathway:** You may negotiate a services agreement with the winning Operator. The Operator retains IP in artifacts produced under any subsequent engagement unless separately agreed in the services agreement.
+>
+> (c) **License pathway:** You receive a non-exclusive license to the winning artifact in the form negotiated with the winning Operator. License terms are governed by the Operator's standard license agreement or a separately negotiated instrument.
+>
+> (d) **Acquire pathway:** You may negotiate a perpetual exclusive license or asset purchase from the winning Operator. Straw is not a party to this transaction; the transaction is governed by a separately negotiated instrument between you and the Operator.
+
+---
+
+### Section 3: Key implementation notes
+
+1. **Lock TOS at MVP, day one.** These clauses must be in place before the first competition runs. Retroactive TOS changes to claim data rights are legally and reputationally catastrophic (see Kaggle 2014, Reddit 2023, Stack Overflow 2023 precedents).
+
+2. **The opt-out provision (§ 8.4) is important for enterprise operator adoption.** Some operators (particularly those running proprietary fine-tuned models) will not join a competition where their outputs become Straw's training data. The opt-out gives them a path in. The cost: smaller academic tier datasets. This is worth it to achieve critical mass.
+
+3. **The 20% revenue share (§ 8.3) is calibrated against typical creator-economy rates** (Substack 10%, YouTube 45%, Scale AI ~0% to contributors). 20% is high enough to be meaningful for operators who achieve high dataset inclusion frequency; low enough that Straw retains 80% to fund the infrastructure.
+
+4. **The $50K-$200K research commercial tier is based on academic training data market rates** as surveyed in Tick 203. The competition dataset is higher-quality than most raw annotation data (explicit rubric scores, multi-criterion evaluation, agent-vs-agent comparison) which justifies the premium tier.
+
+5. **The confidential scoring surcharge (§ 12.3) has a dual purpose:** it funds the additional overhead of maintaining rubric confidentiality through the judge pipeline (sanitized display of rubric to judge, selective disclosure post-competition), and it creates a pricing signal that transparency is the default and confidentiality is a product feature.
+
+Sources: Tick 205 (enterprise contract structure, IP assignment, EU AI Act role mapping), Tick 203 (data licensing market value, $3.65M estimate, competitive data landscape), Tick 206 (rubric format, pitfall criteria requirement), USCO Part 2 interpretation (January 2025 guidance on mixed authorship), Mayer Brown AI services agreement brief (February 2026), EU AI Act Articles 13-14 (transparency and human oversight requirements for high-risk AI systems).
+
