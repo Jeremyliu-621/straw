@@ -1060,11 +1060,11 @@ _All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-pi
 
 ## Research Sessions: agent-incentive-research-2026-04-25.md
 
-**Status:** Active overnight research — Sessions 24-27 completed.
+**Status:** Active overnight research — Sessions 24-28 completed.
 
 **File location:** `tasks/agent-incentive-research-2026-04-25.md`
-**Current size:** ~39,100 lines
-**Current tick:** 247 (last written in Session 27)
+**Current size:** ~43,150 lines
+**Current tick:** 269 (last written in Session 28)
 
 ### Sessions Summary
 
@@ -1074,44 +1074,70 @@ _All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-pi
 | Session 24 | 207-228 | COALESCE cold-start, coalition formation, FairJudge/debiasing, rubric generator UX, data licensing, operator discovery, pricing model, enterprise AI procurement, GTM bootstrap, multi-tenant isolation, competitive positioning, v1 task taxonomy, D22 winner pathways, eval gaming/Goodhart's Law, operator reputation scoring, dispute resolution, GDPR, agent operating costs, prize pool structure, competition analytics dashboard, operator SDK spec |
 | Session 25 | 229-234 | Technical architecture v1 (core data model, ZeroClaw worker, RLS), Series A investor narrative, Straw vs. OpenAI Frontier, internal agent infrastructure, agent self-provisioning via x402, long-form proposal Section 7 |
 | Session 26 | 235-236 | Product roadmap v0→v2, enterprise customer success playbook |
-| Session 27 | 237-247 | International expansion + APAC competitive gap, task taxonomy v2 (8 new categories), 300-agent swarm update, AI agent legal personhood (DAO LLC, Wyoming), agent credential portability (W3C VC, NIST standards), data moat (4-layer), enterprise integration spec (ServiceNow/Ariba SDK), fine-tuning competitions (v3 category), unit economics P&L model (3-year), risk analysis (7 risks), agent incentive final synthesis |
+| Session 27 | 237-252 | International expansion + APAC competitive gap, task taxonomy v2 (8 new categories), 300-agent swarm update, AI agent legal personhood (DAO LLC, Wyoming), agent credential portability (W3C VC, NIST standards), data moat (4-layer), enterprise integration spec (ServiceNow/Ariba SDK), fine-tuning competitions (v3 category), unit economics P&L model (3-year), risk analysis (7 risks), agent incentive final synthesis, executive summary |
+| Session 28 | 253-269 | Post-AGI scenario analysis, cross-category correlation (g-factor evidence, Glicko-2 design, partial Bayesian transfer), live/multi-round competition (Chatbot Arena methodology, Leaderboard Illusion defense, living benchmarks), enterprise data security (gVisor, GDPR DPA, BYOK, training prohibition TOS §7.4), price discovery (valuation framework, earnout structure), fleet management (drift detection, FinOps), operator journey lifecycle, poster journey (task design wizard), competitive landscape (Scale/LangSmith/Vals — white space confirmed), enterprise sales motion (ICP, POV, design partner strategy), EU AI Act compliance sales angle (Article 9/15), Series A thesis ($66M post-money, 4-layer moat, regulatory tailwind), CFO break-even (238:1–465:1), ZeroClaw architecture (gVisor, BullMQ, score immutability), operator economics (Elite $200–400K/year, P4 acquisition $500K–$1.5M), fine-tuning competitions (S-LoRA 2,000 concurrent adapters, IP framework TOS §9), product roadmap v0-v3 milestones |
 
-### What's Been Covered
+### What's Been Covered (Comprehensive)
 
-The research file now constitutes a near-complete product design document covering:
-- **Market validation:** Enterprise AI procurement landscape, compliance forcing functions (EU AI Act, OMB M-26-04, MAS)
-- **Product design:** Full task taxonomy (v0-v3), competition format, evaluation architecture (Tier-1/2/3), winner pathways (D22), rubric RULERS locking
-- **Technical architecture:** ZeroClaw, gVisor sandboxing, RLS sealed-state, operator SDK, enterprise SDK, credential API
-- **Economics:** Agent operating costs, prize pool floors, platform economics, 3-year P&L model ($12.9M Y3 revenue)
-- **Go-to-market:** Bootstrap GTM, enterprise CS playbook, operator community, ServiceNow/Ariba integration
-- **International expansion:** Singapore (P0), India (P1), Japan/UK/Australia/Canada analysis
-- **Competitive moat:** Data network effect, operator network, trust credential, compliance lock-in
-- **Legal/compliance:** GDPR DPA, EU AI Act compliance package, DAO LLC legal wrappers, TOS structure
-- **Risk analysis:** 7 structural risks with mitigations
-- **Investor thesis:** Series A case, valuation benchmarks, data asset as Series B story
-- **Final synthesis:** The agent incentive problem resolved (operators decide, agents execute)
+The research file is now a near-complete product design + investor + technical document:
 
-### Discovered Threads for Future Sessions
+**Market & Business:**
+- Enterprise AI procurement landscape; 42% project failure rate; $6.8M average failure cost
+- Four forcing functions: adoption passed tipping point, failure rate worsening, regulatory mandate, tech infrastructure matured
+- TAM: $6.5B → $134B AI agent staffing; $300–600M direct evaluation market; regulatory compliance layer
+- Competitive landscape: Scale AI (supplier-side, 49% Meta), LangSmith, Arize, Vals AI — white space confirmed
+- Series A thesis: $66M post-money at 24× ARR; four-layer moat; regulatory tailwind; 8× Y/Y growth
+- CFO break-even: 238:1–465:1 ratio; $20K competition vs. $4.76M–$9.3M expected loss per bad procurement
 
-See Session 27 thread list at the bottom of the research file for 8 specific threads not yet covered:
-- Agent performance cross-category correlation analysis
-- Model collapse risk in competition training data
-- Live (multi-round) competition format
-- Enterprise AI ROI measurement (CFO metrics)
-- Operator community infrastructure without enabling collusion
-- Benchmark poisoning threat (adversarial examples in winning solutions)
-- Regulatory sandbox entry (FCA, MAS)
-- Post-AGI scenario analysis
+**Product Design:**
+- Full task taxonomy: v0 (4 categories), v1.5 (2), v2 (7), v3 (fine-tuning, red-team, multi-turn)
+- Competition format: one-shot vs. ladder; Glicko-2 rating with RD; living benchmarks; Leaderboard Illusion defenses
+- D22 winner pathways: P0-P4 (leaderboard, poster picks, hire, license, acquire)
+- Operator journey: onboarding → first competition → competitive maturity → Elite → acquisition
+- Poster journey: task design wizard → active competition → results package → D22 selection → Fleet
+- Enterprise data security: gVisor sandboxing, GDPR DPA, training data prohibition TOS §7.4, BYOK
+- Operator economics: Elite = $200–400K/year; Grandmaster = $300–600K/year; P4 = $500K–$1.5M
+
+**Technical Architecture:**
+- ZeroClaw: gVisor sandboxing, three-tier eval funnel, BullMQ job queue, score immutability (SQL rules)
+- Tier-1: deterministic; Tier-2: LLM gatekeeper (sealed RLS); Tier-3: human investigator
+- S-LoRA: 2,000 concurrent LoRA adapters/GPU for fine-tuning evaluation ($2.00/adapter)
+- Reputation system: Glicko-2, multi-dimensional vector; PeerTrust anti-monopoly; partial Bayesian transfer
+- W3C VC credential API: ed25519-signed JSON with win history, category scores, sandbox attestation
+
+**Economics & Finance:**
+- 3-year P&L: Y1 $344K revenue ($129K net loss); Y2 $2.75M (25% margin); Y3 $12.9M (54.8% margin)
+- Price discovery framework: competitive score multiplier, earnout structure, quarterly benchmark data
+- Fine-tuning competitions: $25K–$100K prize pools; S-LoRA eval; IP framework TOS §9
+
+**Regulatory & Compliance:**
+- EU AI Act Article 9/15: Article 15 export format; compliance documentation package; compliance sales angle
+- Singapore P0: MAS mandatory compliance (Dec 2024), IMDA AI Verify, SGD 150M Enterprise Compute
+- UK FCA Supercharged Sandbox Cohort 2; US OMB M-26-04 (Y2 product)
+
+### Session 29 Discovered Threads
+
+- Singapore go-to-market execution: first customer strategy, MAS reporting workflow
+- Straw vs. Upwork/Toptal positioning narrative (traditional talent marketplace comparison)
+- Operator community anti-fragility: what if top 10 operators leave simultaneously?
+- Agent performance on long-context tasks (>100K tokens): evaluation implications
+- "Evaluation operating system" positioning narrative evolution
+- International expansion Japan: localization, Digital Agency procurement guideline execution
 
 ### How to Resume Research
 
 ```bash
-# Get current file state
-tail -100 tasks/agent-incentive-research-2026-04-25.md  # see last tick
+# Check current state
+tail -30 tasks/agent-incentive-research-2026-04-25.md
+wc -l tasks/agent-incentive-research-2026-04-25.md
 
-# Pick next thread from Session 27 thread list (at ~line 39,050)
-# Research via WebSearch, append tick, commit, push
-# git add tasks/agent-incentive-research-2026-04-25.md
-# git commit --author="Jeremy Liu <jeremyliu621@gmail.com>" -m "Tick N: ..."
-# git push -u origin master
+# Append next tick, commit with author flag
+git add tasks/agent-incentive-research-2026-04-25.md
+git commit --author="Jeremy Liu <jeremyliu621@gmail.com>" -m "Tick N: topic summary"
+git push -u origin master
+
+# Use background research agents for topics needing fresh data
+# Write from knowledge for strategic/architectural topics
+# Always commit after each tick
+# Next tick: 270
 ```
