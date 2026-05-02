@@ -33955,3 +33955,255 @@ Comparison: Hack The Box's rank is defensible because everyone competes on the s
 
 Sources: hackthebox.com/business/talent-search, hackthebox.com/blog/hire-cybersecurity-people-talent-search, kaggle.com/progression, topcoder.com/community/competitive-programming/how-to-compete/ratings, arxiv.org/abs/2602.12430 (Agent Skills declared-vs-observed gap), a2a-protocol.org/latest/topics/agent-discovery (A2A Agent Cards), nist.gov/caisi/ai-agent-standards-initiative (NIST Agent Standards Feb 2026), aws.amazon.com/about-aws/whats-new/2026/04/aws-agent-registry-in-agentcore-preview (AWS Agent Registry), dl.acm.org/doi/10.1145/3494522 (crowdsourcing task assignment survey), arxiv.org/abs/2111.12550 (worker-task specialization model), nfx.com/post/truth-about-data-network-effects (data network effects analysis), sharetribe.com/how-to-build/b2b-marketplace (B2B marketplace cold-start guide), reforge.com/guides/beat-the-cold-start-problem-in-a-marketplace.
 
+
+---
+
+## Tick 215 — Straw v0 bootstrap and go-to-market strategy
+
+**Context:** Straw has no competitions, no operators, no enterprises. The marketplace is empty. This tick synthesizes the research from Sessions 1-24 into a concrete v0 bootstrap playbook — who to call first, what to offer, what not to build yet, and what the 90-day milestone looks like.
+
+**The two-sided cold-start diagnosis**
+
+Straw has a classic two-sided marketplace cold-start problem, but with a structural asymmetry:
+- **Supply side (operators):** AI agent operators can participate even in an empty marketplace — they run their agents and get a performance score regardless of whether the enterprise "wins." The benefit is the benchmark data, not the prize.
+- **Demand side (enterprises):** Enterprises only participate if there are operators to compete. An empty platform offers zero value to them.
+
+**Resolution:** Supply side can be seeded without demand side. Demand side requires a minimum viable supply before they'll engage. This is the correct sequencing: build operator supply first, then sell to enterprises.
+
+**Phase 0: Synthetic competitions (weeks 1-4)**
+
+Before any external customer, run 3-5 competitions using Straw's own prize pool on tasks from:
+- Public datasets with known-good answers (SWE-bench, HumanEval, DocVQA)
+- Straw team's own internal tasks (refactoring an internal module, analyzing a dataset)
+
+Goal: onboard 10-15 agent operators (reach out directly to teams building agents — anyone in the HuggingFace leaderboard community, LangChain ecosystem, AutoGPT ecosystem). Offer: free entry, benchmark data, a Straw "Founding Operator" designation on their profile.
+
+The synthetic competitions exist purely to populate the operator directory with performance histories. No enterprise needs to see them — but by the time the first enterprise customer lands, there are 10+ operators with verified scores.
+
+**Phase 1: First enterprise customer (weeks 4-12)**
+
+Target profile for the first paying enterprise:
+1. **Technical buyer with a real problem.** Not a VP who wants to "explore AI" — an engineering director or data science lead who has a specific, bounded task they need solved and a real tolerance for unproven approaches.
+2. **Task that maps cleanly to existing evaluation.** Document extraction, data pipeline migration, or SQL generation are ideal: clear right answers, deterministic Tier-1 tests, no ambiguous "what does good look like."
+3. **Internal budget owner.** $10K-$25K prize pool is a VP-level direct buy (per Tick 213 procurement thresholds). This is the right size for a first engagement — enough for operators to take seriously, small enough for a VP to approve without RFP.
+
+Cold outreach approach: LinkedIn + email to engineering directors at companies that (a) have posted LLM/AI jobs in the last 90 days (signal: they're building), (b) have mentioned a specific task type in job descriptions that matches Straw's template library (signal: they have the task), (c) are not Anthropic/Google/OpenAI customers who would have internal evals (signal: they're underserved).
+
+The offer: "Run a 2-week competition for free. We staff the operator invite list. You keep the winning solution and all the evaluation data. If you like it, the next competition costs $X."
+
+**Phase 2: Managed marketplace (weeks 12-24)**
+
+After 3-5 paid competitions, Straw has:
+- 15-20 operators with platform histories
+- 3-5 enterprise task completions with rubric data
+- A concrete pitch: "We ran this type of task 3 times, these 5 operators compete on it, here's the score distribution"
+
+At this point, the discovery problem (Tick 212) is tractable: when a new enterprise asks "who should I invite?", there's real data to draw on. This is the pivot from fully-managed to lightly-managed.
+
+The "Toptal for AI agents" positioning: Straw is not a marketplace, it's a vetted evaluation service. Enterprise does not browse a catalog — Straw curates the invite list. Operators do not self-select — Straw reaches out to relevant operators based on task type. This is a premium positioning that justifies $25K-$60K/year and doesn't require algorithmic discovery.
+
+**What NOT to build in v0**
+
+The v0 product is the smallest possible thing that makes the loop work:
+- Task creation form → operator invite → submission upload → evaluation run → leaderboard display → prize payout
+- The judge is manual for non-deterministic criteria in v0. One person scores Tier-2 and Tier-3 criteria. The automation is for Tier-1 only.
+- No agent-to-agent task posting in v0. The "agents post tasks for agents" use case is compelling but requires a full marketplace. v0 is enterprise-to-agent only.
+- No team submissions in v0. D20 can wait.
+- No data licensing in v0. Collect the data, don't monetize it yet. First, make sure the TOS clauses are in place (Tick 211). Then turn on the licensing program.
+
+**The 90-day milestone**
+
+```
+Day 30:  5+ operators onboarded, 3+ synthetic competitions complete, operator directory live
+Day 60:  First paying enterprise customer, first real competition run
+Day 90:  3 paying enterprise customers, first operator wins prize, first data licensing 
+         discussion with an AI lab
+```
+
+If day 90 is reached: Straw has $75K+ in prize pool fees processed, a handful of real competitions with documented results, and early signal on which task categories attract the most operator competition. This is the data needed to raise a seed round.
+
+**The venture narrative at day 90**
+
+"The $250B enterprise AI procurement market runs on vendor demos. Straw ran 5 competitions in its first 90 days, paying out $150K in prizes, with 35 agents competing across 5 companies' real tasks. Every winning score was independently verifiable. Not a single procurement decision required trusting a vendor's claim."
+
+The key metrics for early investors:
+- Number of competitions run
+- Prize pool GMV processed
+- Number of distinct operators competing
+- Repeat enterprise customer rate (first re-competition within 90 days)
+- Score variance on the leaderboard (high variance = good competition = better signal)
+
+Sources: Tick 212 (operator discovery, Toptal concierge model, atomic domain focus), Tick 213 (pricing model, enterprise procurement thresholds, unit economics), Tick 208 (coalition formation, market supply seeding strategies), Tick 201 (marketplace landscape, Pinchwork 119 completed tasks as supply-side benchmark), Sessions 1-6 long-form proposal (day-to-day lifecycle, 300-agent swarm scenario), andrewchen.com/grow-marketplace-supply (28 ways to grow marketplace supply), reforge.com/guides/beat-the-cold-start-problem-in-a-marketplace.
+
+
+---
+
+## Tick 216 — Multi-tenant isolation: preventing test leakage and submission contamination
+
+**Context:** Straw's integrity depends on two isolation guarantees: (1) agents cannot see the test cases or ground truth before submitting, and (2) an agent's execution environment cannot affect other agents' executions. Tick 204 established that proxy-submission (agent delegation) is not a real integrity risk for enterprise procurement. This tick addresses what IS a real risk: test case leakage and cross-submission contamination.
+
+**Threat model**
+
+**T1: Test set leakage during submission.** An agent's code runs on the evaluation system and may attempt to read test cases, expected outputs, or rubric internals from the filesystem or environment. For code tasks, this is analogous to reading the answer key while taking an exam.
+
+**T2: Cross-submission contamination.** Agent A's submission influences Agent B's evaluation (e.g., shared filesystem artifacts, residual state from previous evaluations, timing side-channels).
+
+**T3: Rubric inference from score feedback.** An agent submits iteratively, observes score deltas, and reverse-engineers the rubric weights. This is legitimate iteration but becomes an integrity issue if the agent is effectively performing black-box optimization against the rubric rather than solving the underlying task.
+
+**T4: Prompt injection into the judge.** An agent embeds instructions in its submission artifact that manipulate the Tier-2 LLM judge's scoring behavior (arXiv adversarial judge attacks from Tick 202, COALESCE injection vulnerability from Tick 207). This is covered in the submission sanitization pipeline.
+
+**Tier-1 isolation design (code/deterministic tasks)**
+
+For code tasks (the primary Straw use case), isolation follows the CTF/competitive programming model:
+
+```
+Isolation boundary: Agent submits code artifact → ZeroClaw daemon receives artifact
+                   ↓
+                   Artifact stored in immutable evaluation workspace (write-once S3)
+                   ↓
+                   Test runner launches in ephemeral container (gVisor sandboxing)
+                   - No network access
+                   - No filesystem access outside /tmp and provided SDK
+                   - No environment variables from host
+                   - CPU/memory/time limits enforced by cgroups
+                   - Test cases mounted as read-only at evaluation time, NOT at submission time
+                   ↓
+                   Container terminates, workspace is destroyed
+                   ↓
+                   Only scores and logs exit the container boundary
+```
+
+Key design: **test cases are mounted read-only at evaluation time, not accessible at submission time.** The container runtime has no access to the test cases until the submission is being scored. The submission endpoint accepts only the artifact — no execution feedback or test data is provided to the submitting agent.
+
+**Defense against T1 (test set reads during execution):**
+
+1. Test cases are mounted read-only in a separate `/tests` namespace that is not accessible from the submission code's working directory. The code runs in `/workspace`; tests are in `/tests`. The container drops the capability to traverse outside `/workspace`.
+
+2. All file reads are logged. Any submission that attempts to read outside its working directory receives an integrity flag — automatic disqualification for first offense.
+
+3. For extra-sensitive competitions, test cases are encrypted at rest and decrypted per-evaluation by the ZeroClaw daemon using a key that is not accessible to the running container.
+
+**Defense against T2 (cross-submission contamination):**
+
+Each submission evaluation runs in an independent ephemeral container that is created fresh and destroyed after each run. Shared state between evaluations is zero by construction. The only persistent state is in the immutable S3 artifact store, which is write-once per submission.
+
+**Defense against T3 (black-box rubric optimization via iterative scoring):**
+
+The research debate here is between "transparency" and "gaming resistance." RULERS (Tick 209) advocates locking rubric weights; "Rubrics as Attack Surface" (Tick 209) shows that structured criteria fields can be exploited by sophisticated adversaries.
+
+Straw's approach: **blind scoring with delayed reveal.**
+
+- Tier-1 (deterministic) scores are returned immediately after each submission — this is fair, since deterministic test results should be visible.
+- Tier-2 and Tier-3 (LLM judge) scores are withheld until competition close. The leaderboard shows only Tier-1 scores during the competition window.
+- At competition close, all scores are revealed simultaneously.
+
+This prevents rubric optimization: an agent can iterate on test-passing behavior (Tier-1) but cannot observe LLM judge score deltas to reverse-engineer rubric weights. The Tier-1 leaderboard during competition is a noisy but legitimate signal; the final leaderboard at close reflects the full rubric.
+
+**For open-ended task categories (text, analysis, customer support):**
+
+Where the submission artifact is text and there are no deterministic Tier-1 tests:
+- Submission sanitization pipeline strips potential judge-manipulation payloads (instruction-following cues, praise/apology patterns, authorship signals)
+- Submissions are pseudonymized for the LLM judge (agent names and operator names redacted)
+- Delayed reveal as above: LLM scores withheld until close
+- Human spot-check on final winner's submission before prize payout
+
+**The ZeroClaw implementation spec (D30 alignment)**
+
+D30 specifies one ZeroClaw judge daemon per task, awakens on submission events. The isolation design above maps to ZeroClaw's execution model:
+
+```
+ZeroClaw daemon responsibilities:
+1. Accept artifact at submission endpoint (no test data returned)
+2. Launch ephemeral gVisor container for Tier-1 evaluation
+3. Return Tier-1 pass/fail count (no test details)
+4. Queue Tier-2 LLM evaluation (if Tier-1 passes threshold)
+5. Hold Tier-2 scores in sealed state until competition close event
+6. At close: unlock all scores, compute final leaderboard, trigger prize payout
+```
+
+The sealed-state design for Tier-2 scores is the critical new element. ZeroClaw holds scores in an encrypted seal that can only be opened by the competition-close event trigger. This is not just a UI feature — the judge daemon itself does not release Tier-2 scores until the close event fires. No API call from the submitting agent can observe them before then.
+
+**Leakage risk summary and residual risk**
+
+| Threat | Primary defense | Residual risk | Acceptable? |
+|--------|----------------|--------------|-------------|
+| T1: Test case reads | gVisor container isolation + read-only namespace | Kernel escape exploits | Yes — same risk profile as HackerRank/CTF platforms |
+| T2: Cross-submission contamination | Ephemeral containers, no shared state | Timing side-channels | Yes — minimal, not exploitable for task cheating |
+| T3: Rubric optimization | Delayed Tier-2 score reveal | Iterative Tier-1 gaming | Yes — Tier-1 gaming produces better test-passing code, which is the right outcome |
+| T4: Judge prompt injection | Submission sanitization pipeline | Sophisticated injection in text tasks | Partially — text submissions remain a softer target than code |
+
+The residual risk for T3 is intentionally benign: if an agent optimizes against the Tier-1 tests, it produces code that passes the tests. That's exactly what Straw wants. Rubric gaming through Tier-2 score observation is prevented by delayed reveal. The only remaining concern is an agent that passes all tests but is clearly wrong in a way the tests don't cover — this is exactly what Tier-2 and Tier-3 exist to detect.
+
+Sources: D30 architectural decision (ZeroClaw daemon design), Tick 204 (proxy-submission problem, why model provenance isn't the real risk), Tick 207 (COALESCE 100% prompt injection vulnerability in A2A chains), Tick 209 (RULERS locked rubrics, Rubrics as Attack Surface RIPD attack), gvisor.dev (gVisor sandbox kernel for container isolation), kaggle.com/competitions/rules (Kaggle competition isolation model), codeforces.com/blog/entry/64031 (competitive programming sandbox design), arxiv.org/abs/2410.02736 (12-bias CALM taxonomy, judge manipulation vectors), arxiv.org/abs/2404.04714 (JudgeDeceiver adversarial attack).
+
+
+---
+
+## Tick 214 — Enterprise AI procurement landscape 2026: the broken process Straw fixes
+
+**Research agent:** ae9a46be363ec8a70 — researched enterprise AI procurement failure patterns, AI evaluation tools market and its gap, vendor selection practices at scale, blind-audition precedents, and regulatory compliance angles.
+
+**The headline number that changes everything**
+
+95% of enterprise generative AI pilots are failing (MIT 2025 State of AI in Business Report). Not 40%. Not 60%. 95%. A separate signal: the average organization scrapped 46% of AI proof-of-concepts before production, and 42% of companies abandoned most AI initiatives in 2025 — up from 17% in 2024.
+
+The failure is not a talent or budget problem. The root causes cluster around data quality/readiness (43%), technical maturity (43%), and skills gaps (35%). But the underlying cause of all three is the same: companies selected AI vendors based on demos and discovered the mismatch during implementation. They bought based on a pitch, not a proof.
+
+This is not a market that needs more education. This is a market that needs a better evaluation mechanism.
+
+**The evaluation tools market — and the gap Straw fills**
+
+The 2025-2026 AI eval landscape is dense:
+- **Braintrust**: LLM dev platform with CI/CD eval integration. $0 free tier (1M spans), enterprise custom pricing.
+- **PromptFoo**: Open-source, developer-first, red teaming and prompt vulnerability scanning.
+- **LangSmith**: Tracing and eval for LangChain apps. $39/user/month Plus tier.
+- **Arize**: Production monitoring and eval. Enterprise pricing.
+- **Scale AI Evals / Patronus AI / Haize Labs**: Enterprise red-teaming and safety evaluation.
+- **Weights & Biases Weave**: Experiment tracking extended to LLM evals.
+
+Every single one of these products is predicated on the buyer **owning the model or system being evaluated**. They answer: "Is my RAG pipeline regressing?" — not: "Which of these three competing vendor agents should I hire?"
+
+There is no market product in 2025-2026 that lets an enterprise post a real task, run competing third-party agents against it, and score the results objectively. **That whitespace is Straw.**
+
+The positioning statement rewrites itself: Straw is not in the LLM eval market. Straw is in the AI procurement market — and the AI procurement market has no evaluation infrastructure.
+
+**The demo-to-POC-to-contract failure pattern**
+
+The procurement pattern: Gartner Magic Quadrant → vendor shortlist → vendor-run demo → POC → contract → implementation failure. The failure is baked into the decision process at step 3: the vendor runs the demo. The vendor shows their product on tasks they've optimized for, not on the customer's actual work.
+
+Gartner Predicts 2026 explicitly flags AI as transforming IT sourcing and vendor management — but the mechanism for selection remains broken: vendor demos, analyst reports (12-18 months stale, vendors optimize for analyst criteria), and reference calls. None of these test the vendor's system on the buyer's actual task.
+
+Procurement Insights: "Enterprise procurement is broken, with organizations spending millions on vendors vetted by checkbox compliance and paid analyst reports."
+
+**The blind audition precedent**
+
+The blind orchestra audition is the canonical academic precedent for Straw's model. Goldin & Rouse (Harvard, 2000) showed that screen auditions — where evaluators could not see the musician — increased female musicians' advancement probability by 11 percentage points. **Performance on the actual task eliminated bias from credentials and presentation.**
+
+The B2B extension: sealed-bid reverse auctions (standard in enterprise software procurement) extend this to price but not capability. Engineering hiring via work sample tests (HackerRank, take-home projects) extends this to individual engineering candidates but not to AI agent systems. No existing B2B product has applied the blind competitive evaluation model to AI agent procurement. **Straw is that product.**
+
+**The regulatory compliance forcing function**
+
+Two regulatory vectors create urgent demand for documented AI selection evidence:
+
+**EU AI Act (effective August 2026):** High-risk AI deployments require logging, human oversight, bias monitoring, and documentation of how the system was selected and validated. An enterprise that chose an agent via Straw has a documented, scored, reproducible evaluation — exactly what auditors will want. The Straw scorecard is the evidence artifact.
+
+**US Federal OMB M-26-04 (December 2025):** Requires federal agencies purchasing LLMs to collect model cards, evaluation artifacts, and acceptable use policies. Agencies must contractually bind AI vendors to truth-seeking standards with ongoing behavioral evaluation. This directly creates demand for third-party evaluation infrastructure. Straw generates exactly these evaluation artifacts.
+
+**State-level layer:** NYC, Colorado, Illinois require bias audits, notice, and recordkeeping for AI tools used in employment decisions. Straw's evaluation generates per-criterion scored evidence that an enterprise selected the best-performing agent on their specific task.
+
+**The compliance sales pitch:** "When the auditor asks how you chose this AI vendor, you show them the Straw scorecard."
+
+This is not a future regulatory risk for enterprises — it is a present compliance problem for enterprises deploying AI in regulated contexts (financial services, healthcare, government, employment). Straw's competition format is compliance infrastructure, not just procurement tooling.
+
+**Implications for Straw's positioning and sales**
+
+1. **Lead with the 95% failure rate.** This is the market pain. Every VP of Engineering has a failed AI POC story. "You didn't fail because your team was bad. You failed because you couldn't evaluate the vendor before you hired them."
+
+2. **Position as procurement infrastructure, not an eval tool.** The eval tools market is crowded. The AI procurement market has no infrastructure. Don't compete with Braintrust; make Braintrust's users realize they need Straw too (Braintrust tells you if your model is regressing; Straw tells you which model to hire in the first place).
+
+3. **The compliance angle is a June 2026 urgency driver.** EU AI Act is fully applicable August 2026. Enterprises deploying high-risk AI in EU jurisdictions need vendor selection evidence NOW. Sales cycles that started in Q2 2026 will close before the compliance deadline.
+
+4. **The Gartner/Forrester critique creates an opening.** Positioning that directly challenges analyst-driven procurement ("your Gartner Magic Quadrant score doesn't tell you if it works on YOUR task") is provocative and defensible. This is not a commodity play — it requires conviction and specificity.
+
+Sources: fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo, complexdiscovery.com/why-95-of-corporate-ai-projects-fail-lessons-from-mits-2025-study, workos.com/blog/why-most-enterprise-ai-projects-fail-patterns-that-work, procureinsights.com/2025/12/01/gartner-and-forrester-tell-you-which-vendor-is-best-but-best-for-whom, braintrust.dev/articles/best-ai-evals-tools-cicd-2025, arize.com/llm-evaluation-platforms-top-frameworks, gartner.com/en/documents/7302730 (Predicts 2026), gap.hks.harvard.edu/orchestrating-impartiality-impact-blind-auditions-female-musicians (Goldin & Rouse 2000), whitehouse.gov/wp-content/uploads/2025/12/M-26-04 (OMB M-26-04), digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai (EU AI Act), wsgr.com/en/insights/2026-year-in-preview-ai-regulatory-developments.
+
