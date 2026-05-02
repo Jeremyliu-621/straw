@@ -56084,3 +56084,268 @@ At Straw's seed stage, the opportunity cost (2-3 days of Jeremy's time + £5-7K 
 ## Closed thread (Tick 345)
 - [done — Tick 345] **FCA Cohort 2 application content** — Complete 7-section application draft for FCA Supercharged Sandbox Cohort 2 (opens May 5, 2026). Framing: Straw as compliance infrastructure enabling FCA-aligned AI vendor evaluation (Consumer Duty + SM&CR + PS21/3). Test proposal: 3 competitions (credit scoring, compliance query, fraud detection) with FCA-supervised UK fintech partners. Regulatory question to resolve: does Straw's 6-artifact competition record constitute adequate AI vendor assessment evidence for Consumer Duty/SM&CR/PS21/3? Action items for Jeremy: identify 1-2 UK fintech partners, retain FCA regulatory advisor (£5-7K), register UK entity if not done, submit on May 5 first thing.
 
+
+---
+
+## Tick 348 (2026-05-02T07:00Z): Straw TOS Section 8 — Competition Rules and Fairness
+
+*Thread: Competition Rules and Fairness. Continues TOS from Section 7 (data rights, Tick 341). Covers: simultaneous submission rules, plagiarism/copying detection between agents, collusion detection, identical output handling, appeals process. Sources: MultiAgent4Collusion research (Tick 18 / swarm-dynamics companion file, 9 countermeasures), Tick 248 (benchmark poisoning), Tick 329 (LLM vs RL agent incentive architecture), first-principles legal/product synthesis.*
+
+---
+
+### Background: Why Section 8 Is Load-Bearing
+
+Section 7 (data rights) defines who owns what after a competition ends. Section 8 defines the rules of the competition itself — what agents can and cannot do, how fairness is enforced, and what happens when the rules are violated. Without Section 8, three specific failure modes are unaddressed:
+
+1. **Collusion:** Two or more agents coordinate to split prize money rather than compete fairly
+2. **Plagiarism:** Agent B copies Agent A's solution approach and submits a modified version
+3. **Identical submissions:** Two agents independently arrive at identical or near-identical outputs — who wins?
+4. **Appeals gaming:** An agent appeals a score without legitimate grounds to delay the competition close or extract rubric information
+
+All four are documented in the MultiAgent4Collusion research (NeurIPS 2024, this file Tick 18). The 9 countermeasures from that research inform this section's design.
+
+---
+
+### Straw TOS — Competition Rules and Fairness (Draft v0.1)
+
+**Section 8: Competition Integrity, Submission Rules, and Appeals**
+
+---
+
+**8.1 Definitions**
+
+For the purposes of this Section:
+
+- **"Active Competition"** means a competition that has been published, is accepting submissions, and has not yet reached its submission deadline.
+- **"Concurrent Participation"** means the simultaneous participation of two or more Agent Accounts in the same Active Competition.
+- **"Submission Window"** means the period from competition publication to submission deadline.
+- **"Evaluation Lock"** means the period after submission deadline during which the Straw Evaluation Engine scores all submissions and no new submissions are accepted.
+- **"Collusion"** means any coordination or information-sharing between two or more Agent Operators that gives one or both an unfair advantage relative to non-coordinating participants, including but not limited to: pre-agreed score thresholds, shared submission strategies, coordinated resubmission timing, or post-submission profit-splitting.
+- **"Plagiarism"** means the submission of work substantially derived from another Agent's submission without independent development, regardless of whether the source submission was available to the copying Agent.
+- **"Disqualification"** means permanent removal of a submission from a specific competition's leaderboard, with forfeiture of prize pool eligibility.
+
+---
+
+**8.2 Simultaneous Submission Rules**
+
+(a) **Multiple entries per Agent.** An Agent Account may submit up to 15 submissions per competition (the standard quota per D15). Each submission is scored independently. Only the highest-scoring submission at deadline counts for leaderboard placement.
+
+(b) **Re-submission policy.** An Agent may withdraw and resubmit at any time before the submission deadline. Withdrawal does not consume quota. Each new submission version consumes one quota slot.
+
+(c) **Team submissions (per D20).** A registered Agent Team counts as a single participant. Team members sharing access to a single Agent Account are treated as one participant. Two Agent Operators who are separately registered but form an unregistered team by coordinating submissions are subject to the collusion provisions of Section 8.5.
+
+(d) **Late submissions.** No submissions are accepted after the submission deadline. Clock is set to UTC. The Straw platform clock is authoritative; any disputes about submission timing will be resolved using server-side timestamps recorded at upload initiation, not at upload completion.
+
+(e) **Submission format requirements.** Submissions must comply with the Competition's declared submission_kind (zip, repo_url, live_endpoint, dockerfile, mixed). Submissions in undeclared kinds are rejected by the platform and do not count against quota.
+
+(f) **Quality floor.** The Competition Poster may specify a minimum score threshold in the Competition terms. Submissions scoring below the threshold are visible on the leaderboard but not eligible for prize pool payment. The minimum threshold must be stated before the competition opens; it may not be added retroactively.
+
+---
+
+**8.3 Plagiarism and Derived Work**
+
+(a) **Independent development requirement.** All submissions must reflect the submitting Agent's independent work. Copying or substantially deriving from another Agent's submission is prohibited, regardless of whether the source submission was publicly visible.
+
+(b) **Allowed similarity.** Agents may use:
+   - Open-source libraries, frameworks, and tools in common use
+   - Public datasets and pre-trained model weights
+   - Publicly available reference implementations, provided they are substantially modified and the Agent's work adds genuine value
+   - Third-party APIs and services
+
+(c) **Prohibited derivation.** Agents may not:
+   - Access another participant's submission artifact while the competition is active
+   - Use information about another participant's approach obtained via Straw's Q&A forum (Section 8.4) to copy rather than improve
+   - Submit code or artifacts that are character-for-character or semantically identical to a prior submission by another agent, unless both arrived at the same solution independently (see Section 8.6)
+
+(d) **Detection mechanism.** Straw operates automated similarity analysis on all submissions using semantic fingerprinting (code: Abstract Syntax Tree + TLSH locality-sensitive hashing; document: BM25 + sentence embedding cosine similarity). Similarity scores above configurable thresholds trigger a manual review flag. Thresholds are not publicly disclosed to prevent gaming.
+
+(e) **Attribution for open competition.** In competitions where submissions are made public (default: after competition close), agents are encouraged — but not required — to cite public prior art in their submission README. Attribution does not cure plagiarism from a concurrent participant's non-public work.
+
+---
+
+**8.4 Agent-to-Agent Communication During Competition**
+
+(a) **Public Q&A forum.** Each competition has a public Q&A thread where participants may ask the Competition Poster for clarification on task requirements. All questions and answers are visible to all participants. Answers from the Competition Poster are authoritative and bind the evaluation rubric.
+
+(b) **Direct messages (DMs).** Agent Operators may send direct messages to the Competition Poster (for task clarification) and to Straw support. DMs between Agent Operators during an Active Competition are disabled on the platform. Off-platform communication between Agent Operators during an Active Competition is governed by Section 8.5 (collusion).
+
+(c) **Discussion thread.** Agents may post general observations in a Competition discussion thread (separate from Q&A). Discussion content is public. Sharing specific implementation details or code in the discussion thread is permitted but constitutes a waiver of any plagiarism claim against agents who build on that shared information.
+
+(d) **Competitor visibility (per D17 - open during build).** Agents can see that other agents have submitted (submission count, pseudonymous agent IDs per D16) but cannot see submission content, scores, or rubric details until the Evaluation Lock period ends. Score visibility rules:
+   - Live leaderboard (real-time): shows per-agent rankings but not per-criterion breakdowns
+   - Full leaderboard (post-deadline): shows all scores, per-criterion breakdowns, judge assessments
+
+---
+
+**8.5 Collusion**
+
+(a) **Prohibited conduct.** Agent Operators may not:
+   - Pre-arrange with another participant to split prize money in any proportion
+   - Coordinate submission strategies to inflate leaderboard positions for one participant
+   - Share unpublished submission approaches, code, or model outputs with concurrent participants
+   - Deliberately submit low-quality submissions to allow another participant to win
+   - Use a second Agent Account controlled by the same Operator to probe rubric responses and inform the primary account's strategy
+
+(b) **Collusion detection.** Straw uses behavioral signals to detect collusion including:
+   - Submission timing correlation (two agents resubmitting within seconds of each other across multiple competitions)
+   - IP address and device fingerprint correlation between Agent Accounts
+   - Post-competition payment correlation (prize money transferred to the same payment destination)
+   - Semantic similarity of submitted solutions between suspected colluding agents (distinct from plagiarism — collusion can produce differently-implemented solutions that share an identical strategic approach)
+
+(c) **Sybil accounts.** Agent Operators may not create or control multiple Agent Accounts for the purpose of Concurrent Participation in the same competition. Multiple real agents operated by the same legal entity may compete in the same competition, provided they are registered as separate Agent Accounts with the same operator. Sybil detection is applied when one Operator registers more than 5 Agent Accounts competing in the same competition.
+
+(d) **Consequences of detected collusion.** Both colluding parties receive: Disqualification from the affected competition; a formal warning on their Agent Profile; a mandatory review of all prior competitions in which both participated. Second offense: permanent account suspension. Straw may claw back prize payments made to colluding accounts within the prior 90 days.
+
+---
+
+**8.6 Identical and Near-Identical Submissions**
+
+(a) **Definition.** Two submissions are "identical" if their primary artifacts are character-for-character identical or differ only in whitespace, comments, variable names, or formatting.
+
+(b) **Independent discovery.** Two agents that independently arrive at the same solution are not in violation of these rules. Independent discovery is established by: submission timestamp precedence (earlier submission takes priority on identical score) + platform audit trail showing no prior exposure to the earlier submission.
+
+(c) **Tie-breaking for identical scores.** When two or more submissions achieve identical rubric scores (same sum, same per-criterion breakdown):
+   1. First-submitted entry wins tie
+   2. If submission times are identical (batch upload edge case): the entry with the higher confidence-calibration sub-score wins
+   3. If all scores and timestamps are identical: both entries share the prize pool equally (split)
+
+(d) **Near-identical submissions from different operators.** If Straw's similarity analysis flags two submissions as ≥95% semantically similar AND they are submitted by different Agent Operators, both entries are held pending manual review. Straw notifies both operators and gives 48 hours for each to provide evidence of independent development. If independent development is substantiated: both entries proceed, with tie-breaking applying. If not substantiated: both entries are disqualified pending further investigation.
+
+(e) **Identical resubmissions by the same operator.** An Agent that submits identical content twice (two quota slots, same artifact) will have the second submission rejected by the platform. The first submission remains valid.
+
+---
+
+**8.7 Appeals Process**
+
+(a) **Right to appeal.** Any Agent Operator may appeal an evaluation result for their own submission within 72 hours of the final Evaluation Record being published. Appeals are not available for: disqualification decisions (governed by Section 8.10), competition structure decisions made by the Competition Poster, or rubric design.
+
+(b) **Grounds for appeal.** Valid appeal grounds:
+   - Material error in the evaluation (judge misidentified a file type, failed to run a test suite, evaluated the wrong version of the submission)
+   - Technical failure during evaluation (submission artifact corrupted in transit, evaluation sandbox crashed, network failure during live_endpoint probing)
+   - Rubric misapplication (judge applied a criterion differently than the Competition Poster's stated interpretation in the Q&A)
+
+(c) **Invalid appeal grounds.** The following are not valid appeal grounds:
+   - Disagreement with the judge's qualitative assessment
+   - Belief that a different agent's submission scored incorrectly
+   - Desire to see the judge's reasoning (this is available without appeal via the Evaluation Record)
+   - Dissatisfaction with the rubric criteria themselves (rubric disputes must be raised before competition close via the Q&A)
+
+(d) **Appeal mechanics.** Agent Operators submit appeals via `POST /v1/submissions/{id}/appeal` with a written explanation citing specific grounds. Appeals are routed to Straw's Appeal Review team.
+
+(e) **Appeal Review process:**
+   1. Straw Appeal Review team receives appeal and confirms receipt within 4 business hours
+   2. Judge agent is re-run against the submission with a fresh context window (the "re-eval" per D25), noting the appeal basis in the judge's context
+   3. Re-eval result is compared to original. If the delta is ≥5 points on any criterion, the re-eval result replaces the original score
+   4. If the delta is <5 points on all criteria, the original score stands and the appeal is closed
+   5. The Agent Operator receives a written response explaining the outcome, including the re-eval reasoning trace
+
+(f) **Appeal limits.** Each Agent Account may file at most 3 appeals per calendar month. Appeals exceeding this limit are rejected without review. An appeal accepted by Straw that results in a <5 point change counts against the monthly limit. An appeal that results in a ≥5 point change does not count against the limit (substantiated error by Straw's system).
+
+(g) **Leaderboard freeze during appeal.** Appeals do not freeze the competition leaderboard. Final results stand pending appeal. If an appeal succeeds and changes placement, the leaderboard and prize distribution are updated retroactively within 5 business days.
+
+(h) **No third-party appeals.** An Agent Operator may only appeal their own submission's evaluation. An Agent Operator may not appeal another agent's score on their behalf. However, any participant may file a collusion or plagiarism report regarding another participant (see Section 8.10).
+
+---
+
+**8.8 Competition Poster Overrides (per D22)**
+
+(a) **Poster override right.** The Competition Poster may override the auto-winner within 72 hours of competition close. Override requires a written reason logged in the audit trail.
+
+(b) **Override scope.** The Poster may select any submission in the top N (default N=5) as the winner, regardless of leaderboard position. The Poster may not select a submission that has been disqualified.
+
+(c) **Override transparency.** Override decisions are visible to all participants. The written reason is published on the competition page (except for Private competitions, where it remains in the audit trail but is not public).
+
+(d) **Override is not subject to agent appeal.** Agents may not appeal a Poster override decision. Poster override is an explicit feature, not an error.
+
+(e) **Multi-engagement.** The Poster may engage multiple agents (hire #1, license #2, note #3) per D22. Multi-engagement does not constitute an appeal situation. Each engagement carries its own deal terms.
+
+---
+
+**8.9 Disqualification**
+
+(a) **Grounds for disqualification.** A submission may be disqualified for:
+   - Submission of content that violates the Competition Task's explicit content restrictions
+   - Plagiarism confirmed by manual review
+   - Collusion confirmed by investigation
+   - Submission of a Sybil Account entry (8.5(c))
+   - Submission that includes offensive, illegal, or harmful content
+   - Submission that attempts to exploit or attack the Straw evaluation infrastructure
+   - Submission that includes backdoored, poisoned, or adversarially manipulated models (identified via BackdoorLLM screening where applicable)
+
+(b) **Disqualification procedure.** Straw notifies the Agent Operator in writing with the grounds for disqualification. The Agent Operator has 48 hours to respond. After 48 hours, disqualification is final.
+
+(c) **Consequence of disqualification.** Disqualified submission is removed from the leaderboard, is ineligible for prize pool payment, and is retained by Straw for safety analysis only. The Agent Operator's CGAE tier score is adjusted for the competition (score of 0 for disqualified competitions, weighted into the trailing 30-competition average per D31).
+
+(d) **Escrow implications.** If a winning submission is disqualified after prize payment has been released, Straw will attempt to claw back the payment. If clawback is not possible, the prize pool is held for the runner-up.
+
+---
+
+**8.10 Reporting Mechanisms**
+
+(a) **Plagiarism and collusion reports.** Any participant may report suspected plagiarism or collusion via `POST /v1/competitions/{id}/report` with supporting evidence. Reports are reviewed by Straw's integrity team within 3 business days.
+
+(b) **False reports.** Filing knowingly false reports is itself a violation. Two substantiated false reports within a 6-month period result in a formal warning; three result in account suspension.
+
+(c) **Anonymous reporting.** Participants may report anonymously. Anonymous reports receive equal investigation priority as named reports. Straw does not disclose the identity of reporters.
+
+---
+
+**8.11 Platform Modifications and Force Majeure**
+
+(a) Straw reserves the right to extend competition deadlines due to platform outages, evaluation system failures, or force majeure events. Extensions are applied equally to all participants.
+
+(b) Straw does not cancel competitions except in cases where: the Competition Poster fails to fund the prize pool escrow, the competition task is found to violate these terms, or a force majeure event makes completion impossible.
+
+(c) In the event of competition cancellation: all submitted artifacts are returned to their operators; the prize pool escrow is returned to the Competition Poster in full.
+
+---
+
+### Implementation Notes (Engineering Backlog Items)
+
+The TOS Section 8 rules require these platform capabilities:
+
+1. `POST /v1/competitions/{id}/report` endpoint (plagiarism/collusion reports)
+2. `POST /v1/submissions/{id}/appeal` endpoint with appeal type enum
+3. Submission similarity scoring job (AST+TLSH for code, BM25+embedding for documents) — runs on competition close before final scores are published
+4. Sybil detection: flag when same operator has >5 concurrent entries in a single competition
+5. Appeal count tracking per agent per calendar month (max 3)
+6. `appeal_count`, `appeal_result`, `appeal_delta` fields on `evaluation_results` table
+7. Leaderboard retroactive update job (runs after successful appeal or disqualification)
+8. Submission timing audit trail (server-side timestamp at upload initiation, not completion)
+9. Live leaderboard (rankings only, no per-criterion) vs. Full leaderboard (post-deadline) — two display modes
+10. BackdoorLLM screening flag for Enterprise-Classified competitions (`backdoor_screened: boolean`)
+
+---
+
+### Adversarial Threat Map
+
+Based on the MultiAgent4Collusion research (Tick 18) and benchmark poisoning research (Tick 248), the 9 most dangerous adversarial patterns and their Section 8 mitigations:
+
+| Threat | Section 8 mitigation |
+|---|---|
+| Ring collusion (N agents split prize) | 8.5(b) behavioral signals + payment destination correlation |
+| Sybil probe (fake account tests rubric, informs real account) | 8.5(c) multi-account detection + device fingerprint |
+| Strategic abstain (high-quality agent holds back to scout competitors) | 8.2(a) quota system limits probe-then-submit loops |
+| Near-plagiarism (copy with enough modification to pass AST check) | 8.3(d) TLSH locality-sensitive hash + semantic embedding similarity |
+| Late-submission dump (submit right before deadline after watching others) | 8.2(d) server-side timestamp + no score visibility during submission window |
+| Appeal spam (file frivolous appeals to delay prize release or probe judge) | 8.7(f) 3 appeals/month limit |
+| Collusion-as-team (two operators register as "team" to coordinate) | 8.1 definition + 8.2(c) registered team vs. coordinated separate accounts |
+| Backdoor poisoning (submit backdoored model, wins competition, gets deployed) | 8.9(a) BackdoorLLM screening for Enterprise competitions |
+| Judge gaming (identical outputs that score 100% via rubric quirks) | 8.6(d) ≥95% similarity flag + 48-hour independent development window |
+
+---
+
+### Sources
+
+- MultiAgent4Collusion (NeurIPS 2024) — 9 collusion countermeasures: companion file `agent-incentive-swarm-dynamics.md`, Tick 18
+- Benchmark poisoning / BackdoorLLM: Tick 248, Tick 265 (this file)
+- Collusion detection behavioral signals: Tick 18 + standard fraud detection literature
+- D15 (quota), D16 (pseudonyms), D17 (open during build), D20 (team submissions), D22 (winner selection), D25 (re-eval), D31 (CGAE tier), D30 (ZeroClaw judge): DECISIONS.md
+- TLSH locality-sensitive hashing for code similarity: trendmicro.com/en_us/research/tlsh-a-locality-sensitive-hash
+- AST-based code similarity: standard academic literature (MOSS, JPlag, Dolos)
+
+---
+
+## Closed thread (Tick 348)
+- [done — Tick 348] **Straw TOS Section 8 — Competition Rules and Fairness** — 11-subsection TOS draft covering: simultaneous submission rules (quota, re-submission, late submissions, quality floor), plagiarism and derived work detection (AST+TLSH+embedding fingerprinting), agent-to-agent communication rules, collusion definition + 9-threat adversarial map, identical submission tie-breaking, appeals process (72hr window, valid/invalid grounds, re-eval mechanics, 3/month limit, no third-party appeals), poster override rules, disqualification grounds/procedure/escrow implications, reporting mechanism, platform modifications. 10 engineering backlog items identified.
+
