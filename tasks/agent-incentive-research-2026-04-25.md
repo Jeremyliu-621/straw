@@ -40068,3 +40068,197 @@ The question for investors is not "what if AI gets too good" but "what if you do
 
 *Tick 253 complete. Next: Tick 254 agent performance cross-category correlation (awaiting background research agent), Tick 255 live/multi-round competition format (awaiting background research agent).*
 
+
+---
+
+## Tick 256 — Task Confidentiality and Enterprise Data Security: The Core Trust Problem
+
+**Date:** 2026-05-02
+**Thread:** Enterprise data security and competitive confidentiality in open competitions
+**Research method:** Security engineering analysis, competitive intelligence literature, enterprise procurement security standards (SOC 2, ISO 27001, GDPR Article 25)
+
+---
+
+### The Problem Statement
+
+Straw's value proposition requires enterprises to share real task inputs with competing AI agents. But real enterprise tasks contain sensitive information:
+
+- **Code migration:** Proprietary codebase, business logic, internal APIs, architectural secrets
+- **Document extraction:** Contracts, financial records, M&A terms, customer PII
+- **SQL generation:** Internal schema, table naming conventions, business process structure
+- **Contract review:** Deal terms, counterparty names, internal approval thresholds
+- **Security audit:** Actual security vulnerabilities (before they're fixed)
+- **Financial modeling:** Unreleased financial forecasts, M&A targets, budget allocations
+
+Asking enterprises to expose this to 20–300 competing agents is a significant trust barrier. This tick maps the threat model, the mitigations, and the residual risks.
+
+---
+
+### Threat Model: What Can Go Wrong?
+
+**Threat 1: Agent Training Data Contamination**
+An agent operator trains on competition artifacts (input tasks, their own outputs, other agents' outputs where visible). Proprietary enterprise data enters an AI model's training corpus. The enterprise's confidential information can be reproduced by that model in future interactions with unrelated parties.
+
+*Severity:* High. This is the nightmare scenario — a healthcare enterprise's patient data policy documents appearing in a fine-tuned model's outputs.
+*Likelihood today:* Medium-low (most agent operators are not running continuous training pipelines), rising to Medium-high by 2028.
+
+**Threat 2: Competitive Intelligence Extraction**
+A competing enterprise registers as an agent operator solely to access a competitor's task submissions. Task input data contains strategic information (what system the competitor is trying to modernize, what schema they use, what contracts they're reviewing).
+
+*Severity:* Medium-High for certain enterprise verticals (financial services, pharma, defense).
+*Likelihood:* Low today (effort is high relative to intelligence value), but non-negligible for high-value targets.
+
+**Threat 3: Data Residency Violation**
+Task data containing EU citizen PII is processed by agent operators located in non-GDPR jurisdictions. The enterprise is the data controller; Straw is the processor; agent operators are sub-processors. GDPR Article 28 requires signed DPAs with all sub-processors. A sub-processor in a non-adequate country (e.g., certain US states without privacy laws) creates controller liability.
+
+*Severity:* High (GDPR fines up to 4% of global annual turnover).
+*Likelihood:* Medium — enterprises *will* post tasks containing EU citizen data unless explicitly restricted from doing so.
+
+**Threat 4: Submission Leakage**
+A top-scoring agent's solution code is leaked to a lower-ranked competitor before competition close. The competitor copies the solution. The original developer loses the prize and the hire opportunity.
+
+*Severity:* Medium (financial harm to operator, platform trust erosion).
+*Likelihood:* Low (sealed submission store), but increases with insider threats.
+
+**Threat 5: Adversarial Task Design**
+An agent operator designs task *inputs* that are themselves adversarial — prompt injections, exfiltration payloads, or other attacks embedded in the "source code" or "documents" they submit as competition inputs. Wait — competition inputs come from the enterprise poster, not from agent operators. This threat is inverted: the enterprise could embed adversarial content targeting agents.
+
+*Severity:* Low-Medium (agents running in gVisor sandboxes are isolated from network exfiltration).
+*Likelihood:* Very low (enterprises would only do this deliberately, and it violates TOS).
+
+---
+
+### Mitigation Architecture: Four Layers
+
+**Layer 1: Cryptographic Data Isolation**
+
+Task inputs are encrypted at rest with a per-competition key (`AES-256-GCM`). Agent operators receive a time-limited, scoped access token to the task artifact store — they can read task inputs for the duration of the competition and 48 hours after close (to prepare hire/license proposals). After 48 hours, access tokens expire and are not renewable. The enterprise retains the ability to request full deletion (GDPR Article 17) at any time after competition close.
+
+Key management: AWS KMS (or equivalent) with per-competition keys. Enterprise customers on Enterprise plan can bring their own key (BYOK) — the competition is encrypted with a key the enterprise controls and can rotate or delete.
+
+**Layer 2: Operator Identity Verification and Competitive Intelligence Controls**
+
+All agent operator accounts require verified business registration (for competitions above $2K prize pool — already planned in Task Taxonomy v2 for `security_audit`). For competitions above $10K, operator verification includes: business registration number, primary business domain, declared AI application area.
+
+Conflict-of-interest screening: before an operator can join a competition, the platform checks:
+- Is the operator's registered domain a direct competitor of the poster's domain? (domain classification via third-party business intelligence API)
+- Has the poster flagged any operator identities as restricted?
+
+Enterprise posters can set **Restricted Operator Conditions** at competition creation:
+- `restrict_to_verified_operators_only: true`
+- `restrict_by_industry: ["finance", "healthcare"]` (allow or deny by industry)
+- `restrict_by_geography: ["US", "EU"]` (restrict to operators in specified jurisdictions)
+- `blocklist: ["op_xxx", "op_yyy"]` (manually block specific operators)
+
+**Layer 3: Training Data Use Prohibition with Audit Rights**
+
+TOS §7.4 (from Tick 248) establishes training data prohibition. Stronger version for enterprise-tier competitions:
+
+```
+7.4 Enterprise Competition Training Prohibition. For competitions designated as
+Enterprise-Confidential by the poster (all competitions with prize pool ≥ $5,000 or
+competitions where the poster has enabled the enterprise-confidential flag), Operators
+explicitly agree that: (a) competition task inputs, intermediate artifacts, and other
+Operators' submissions [if made visible post-competition] may not be used as training
+data for any machine learning model; (b) competition artifacts will be deleted from
+Operator systems within 30 days of competition close; (c) Operator agrees to provide
+a signed deletion certification upon request; (d) Operator grants Straw the right to
+conduct a compliance audit (requiring production of relevant data governance records)
+upon 30 days notice, up to once per 12-month period.
+
+Violation of this section constitutes a material breach and entitles Straw to: (i)
+immediate account termination, (ii) disgorgement of all prize earnings in the 24
+months preceding violation, (iii) injunctive relief and actual damages.
+```
+
+This is primarily a deterrent mechanism — actual enforcement requires litigation. But strong TOS language raises the cost of violation and creates a paper trail that supports enterprise indemnification claims.
+
+**Layer 4: GDPR Sub-Processor Architecture**
+
+Straw as data processor executes a Data Processing Agreement (DPA) with each enterprise customer. The DPA covers:
+- Processing purposes (running AI evaluation competitions)
+- Sub-processor list (includes all platform infrastructure: Supabase/Postgres, AWS S3, ZeroClaw evaluation daemon infrastructure, and — critically — agent operators)
+
+The challenge: agent operators are sub-processors under GDPR. Straw must have DPAs in place with all operators before task data containing EU citizen personal data can be processed by those operators.
+
+**Practical implementation:**
+- All operators accept a "Sub-Processor Data Processing Agreement" as part of account creation
+- This agreement includes: standard contractual clauses (SCCs) for international transfers, data deletion obligations, breach notification obligations (72 hours to Straw, which then notifies enterprise)
+- Straw maintains and publishes a sub-processor list (GDPR Article 28(3) requirement)
+- Enterprise DPA grants enterprises 30-day notice period before new sub-processors are added
+
+For competitions where the poster marks task data as `contains_personal_data: true`, the platform automatically enforces: (a) operator access restricted to operators with SCCs in place, (b) geographic access controls matching the data residency requirements specified by the poster.
+
+---
+
+### The Anonymization Path: Reducing Exposure
+
+Not all enterprise tasks need to contain sensitive data. Many tasks can be anonymized or sanitized before posting:
+
+**Code migration anonymization:**
+- Replace company-specific class/variable names with generic equivalents
+- Remove internal API endpoint URLs (replace with `internal-api.example.com`)
+- Strip comments containing author names, internal ticket references
+- Preserve logic structure, type signatures, test expectations
+
+**Document extraction anonymization:**
+- Replace named parties with `[PARTY A]`, `[PARTY B]`
+- Redact monetary amounts with order-of-magnitude ranges (`[$1M-$10M]`)
+- Remove dates or shift by fixed offset
+- Preserve document structure, clause types, extraction targets
+
+**Schema anonymization (SQL generation):**
+- Rename tables and columns to functional descriptions (`orders` → `transaction_records`, `customer_id` → `account_identifier`)
+- Remove index names, constraint names that reveal internal naming conventions
+- Preserve cardinality, relationship structure, data types
+
+If an enterprise provides raw task data, Straw's **Task Sanitizer** (a pre-processing step in the competition creation wizard) runs automated PII detection (using a combination of regex patterns + named entity recognition) and flags detected sensitive data for manual review or automatic redaction before the competition goes live.
+
+This is a compliance aid, not a guarantee — but it reduces the surface area of data exposure significantly and gives enterprises a defensible position ("we ran automated sanitization before posting").
+
+---
+
+### Competitive Tiers: Data Security as a Product Feature
+
+Not all enterprises have the same security requirements. Straw offers three security tiers at competition creation:
+
+| Tier | Target | Key features | Price premium |
+|------|--------|--------------|---------------|
+| **Standard** | Startups, non-sensitive tasks | Encrypted at rest, operator TOS | $0 |
+| **Enterprise-Confidential** | Mid-market, sensitive data | + Training prohibition, deletion cert, audit right, GDPR DPA, conflict-of-interest screen | +$500/competition |
+| **Enterprise-Classified** | Regulated industries, M&A data, defense | + BYOK encryption, geo-restricted operators only, manual operator vetting, dedicated sandbox infra, NDA-gated operator access | +$2,000/competition + contract |
+
+**Enterprise-Classified** is not available self-serve. It requires a signed Master Service Agreement with Straw, a security review of the enterprise's data classification requirements, and custom operator pool construction (Straw hand-selects and individually vets operators for the classified pool).
+
+This is a premium product for financial services, pharma, defense, and legal — sectors where the task data is valuable enough that enterprises will pay a significant premium for additional security controls.
+
+---
+
+### Residual Risk Acknowledgment
+
+After all mitigations, three residual risks remain:
+
+**Residual 1: Determined insider at an operator firm.** If an individual at a participating agent operator firm deliberately extracts and exfiltrates competition data despite contractual prohibitions, detection is difficult and remediation is post-hoc (litigation, not prevention). Mitigation: the security tier controls reduce the operator pool to vetted entities, reducing insider threat surface.
+
+**Residual 2: Future training data contamination by operators that don't currently do continuous training.** As fine-tuning becomes cheaper and more automated (2027+), an operator's standard development pipeline may include continuous fine-tuning that would ingest competition artifacts. The deletion certification and audit right provide some deterrence, but enforcement at scale is challenging. Straw's defense: make the prohibition enforceable at the infrastructure level by providing agents a sandboxed execution environment where artifact access is logged and time-limited — operators literally cannot take artifacts out of the sandbox without explicit export actions that are logged.
+
+**Residual 3: Anonymization failure.** Automated PII detection misses unusual formats, domain-specific identifiers (drug trial IDs, financial account structures), or contextual identifiers (combination of non-PII fields that together identify a company). Enterprise-Classified tier requires human review of anonymization, but Standard and Enterprise-Confidential rely on automated detection. This is a known limitation that Straw must disclose in its DPA.
+
+---
+
+### Summary
+
+Enterprise data security is not an afterthought — it is a prerequisite for the enterprise market. The threat model is manageable but not trivial. Straw's architecture needs:
+1. Cryptographic isolation (per-competition keys, BYOK for Enterprise-Classified)
+2. Operator identity verification and conflict-of-interest screening
+3. Strong TOS training prohibition with deletion certification and audit rights
+4. GDPR sub-processor architecture with operator SCCs
+5. Task sanitizer as a UX feature at competition creation
+6. Three-tier security product with appropriate pricing
+
+Data security is also a differentiation story: a cloud vendor's evaluation tool cannot credibly claim to protect enterprise data against the cloud vendor's own interests. Straw's independence is the security story. "No cloud vendor incentive to train on your competition data" is structurally true for an independent platform and structurally impossible for AWS/Azure/GCP equivalents.
+
+---
+
+*Tick 256 complete. Next: Tick 254 (agent performance cross-category correlation — awaiting research agent), Tick 255 (live/multi-round format — awaiting research agent), Tick 257 (price discovery for AI agent licensing).*
+
