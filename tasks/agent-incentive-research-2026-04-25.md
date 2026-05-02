@@ -35587,3 +35587,77 @@ The SDK follows semantic versioning (semver). The `competitions.get()` response 
 
 Sources: Tick 215 (bootstrap GTM — standardized API as force multiplier), Tick 225 (operator cost analysis — 15-min automated vs 2-hour human overhead), Tick 216 (ZeroClaw design — Tier-1 immediate return, Tier-2 sealed until close), D30 (ZeroClaw judge daemon architecture), github.com/prometheus-eval/prometheus-eval (Prometheus 2 SDK as API design reference), kaggle.com/docs/api (Kaggle API v1 as structural reference for competition/submission model).
 
+
+---
+
+## Threads still to dig — Session 24
+
+**Status as of 2026-05-02 (Session 24 — continuing overnight):**
+
+Ticks 207–228 complete. Session 24 adds 22 ticks:
+
+**Session 24 completed:**
+- [done — Tick 207] COALESCE (arXiv:2506.01900) deep read — ε=10% fixed exploration achieves 20.3% cost reduction vs 1.9% without; A2A as transport substrate; 5 failure modes including 100% prompt injection in A2A chains; QAEC metric; challenger slots (10-15% bandwidth reserved for <20-completion agents).
+- [done — Tick 208] Agent coalition formation and team submissions (D20) — Lemus & Marshall 2024 Kaggle empirical: teams outperform solos but prisoner's dilemma; stable NE = 2 unequal coalitions; Shapley-Coop (NeurIPS 2025) as credit attribution standard; Sybil detection via operator identity + artifact similarity + timing correlation; cap team size at 5.
+- [done — Tick 209] FairJudge (arXiv:2602.06625) — weights not yet public; 3-stage SFT→DPO→GRPO; JudgeBiasBench 4-dimension/12-type taxonomy; Prometheus 2 as production-ready self-hosted judge (HuggingFace live); "Judging the Judges" (arXiv:2604.23178): style bias dominates, CoT universally beneficial; RULERS locked rubric; "Rubrics as Attack Surface" — publish dimensions, not weights.
+- [done — Tick 210] Rubric generator UX — 6-phase: spec intake → AdaRubric draft → anchor calibration (preference elicitation, the key product insight) → IRR validation loop (κ≥0.7 gate) → Tier-1 config → rubric lock with SHA-256 hash. Target <20 min.
+- [done — Tick 211] Data licensing TOS draft — Operator TOS §7-8: perpetual license, 3-tier program (Academic/Commercial/Replay), 20% rev share, opt-out; Enterprise Agreement §12: task spec retained by customer, evaluation metadata owned by Straw, winning artifact IP by engagement pathway, confidential scoring option.
+- [done — Tick 212] Operator discovery problem — HTB Talent Search as template; A2A Agent Cards = declared capability only (Straw's wedge = observed); NIST AI Agent Standards (Feb 2026), AWS Agent Registry (April 2026) = internal catalog only; domain-indexed performance > aggregate; data flywheel moat; Year 1 = Toptal concierge model.
+- [done — Tick 213] Pricing model — HeroX 18%/14% tiered, Topcoder 20% capped, Wiley 15-25% range; enterprise thresholds: $25-60K/year = VP direct buy; Gartner: 40% enterprise SaaS outcome-based by 2026; unit economics: 500 comps/year → $2.1M GMV @ 88% gross margin; data licensing 70/30 (operator/Straw).
+- [done — Tick 214] Enterprise AI procurement 2026 — 95% of GenAI pilots failing (MIT 2025); eval tools market gap (Braintrust/PromptFoo/LangSmith all evaluate YOUR model, not competing third-party agents); blind audition precedent (Goldin & Rouse 2000); OMB M-26-04 (Dec 2025) requires federal agencies to collect evaluation artifacts; EU AI Act (Aug 2026) high-risk documentation requirement. The compliance pitch: "show them the Straw scorecard."
+- [done — Tick 215] Bootstrap GTM strategy — Phase 0: synthetic competitions (seed 10-15 operators); Phase 1: first paying enterprise (technical buyer, bounded task, VP-level direct buy); Phase 2: Toptal-style managed marketplace; v0 ships without team submissions, agent-posting, or data licensing; 90-day milestone: 5 operators, 3 enterprises, $75K+ GMV.
+- [done — Tick 216] Multi-tenant isolation and test case integrity — T1 (test reads): gVisor + read-only namespace; T2 (contamination): ephemeral containers; T3 (rubric optimization): delayed Tier-2 score reveal; T4 (judge injection): sanitization pipeline; ZeroClaw sealed-state design; T3 residual risk intentionally benign.
+- [done — Tick 217] Competitive positioning map — Straw's quadrant (evaluate OTHERS' agents on YOUR actual task) is empty; vs. Braintrust/PromptFoo: "they tell you if your model is regressing, Straw tells you which model to hire"; vs. Kaggle: "Kaggle is for discovering human talent, Straw is for procuring AI agents"; data flywheel moat; investor pitch: "Kaggle for AI agents with $4.1T AI capex wave."
+- [done — Tick 218] Operator supply acquisition — 3-tier community: SWE-bench leaderboard participants, open-source framework operators, solo builders; AgentX-AgentBeats (1,200+ teams) shows X/Twitter + inference credits is the launch mechanism; document extraction has no standalone public leaderboard (Straw can own it); open/closed-API 50/50 mix; Founding Operator program: $500 inference credits + priority invites + enterprise lead introductions.
+- [done — Tick 219] v1 task taxonomy — 4 launch categories: code migration, document extraction, SQL generation, contract clause extraction; 4 NOTs: customer support (no Tier-1), security audit (liability), creative writing (aesthetics), research synthesis (low IRR); complete SQL generation rubric drafted (4 criteria: correctness 50%, SQL quality 25%, schema understanding 15%, NL fidelity 10%).
+- [done — Tick 220] D22 winner pathway mechanics — P0 leaderboard-only; P1 poster picks (5-day review window, reason field, EU AI Act Article 14 compliance built in); P2 hire (BPO-hybrid term sheet, no Straw commission); P3 license (IP grant form, price benchmark from historical data); P4 acquire (3 sub-options: exclusive deployment license / exclusive + IP assignment / full M&A intro); Straw not a legal counterparty in any post-competition engagement.
+- [done — Tick 221] Eval gaming and Goodhart's Law — "The Leaderboard Illusion" (Meta/Google/OpenAI cherry-picked Arena scores); 200 strategic votes shift Elo rankings; meta-rubric generalization (arXiv:2603.16600): rubric-following transfers across unseen rubrics; hidden holdout criteria as primary new defense; LiveBench/EvoEval precedents; Tier-1/Tier-2 cross-validation detects rubric-gaming agents.
+- [done — Tick 222] Operator reputation scoring — 5-step: normalized rank score → quality weighting (log(prize)×log(operators)) → exponential decay (6-month half-life) → Beta distribution CI → per-category display; manipulation resistance: quality formula gives trivial competitions near-zero weight; min 5 operators per competition for reputation counting.
+- [done — Tick 223] Dispute resolution — 3 tiers: Tier-1 (ZeroClaw re-run, 48h SLA, 3 free/month), Tier-2 (factual error only, $100 fee, 5 business day SLA), Tier-3 ($200, second reviewer, final = average); non-appealable: outcome, rubric design, poster-override; aggregate dispute statistics as platform quality signal.
+- [done — Tick 224] GDPR and data protection — Straw as data processor; DPA required; tension with data licensing (resolved: task spec ≠ evaluation metadata); SCCs 2021; sub-processor list; 90-day retention; EU-region data localization as premium; pre-launch: DPA template + incident response; v2: SOC 2 Type II + ISO 27001.
+- [done — Tick 225] Agent operating costs — May 2026 pricing: Opus 4.7 $5/$25, GPT-4o $2.50/$10; code migration 10 attempts = $9-26 frontier; human time dominates ($100/hr); minimum viable prize: $500 code migration, $100 doc extraction/SQL; self-hosting crossover at 600M+ tokens/month; SDK reduces 2-hour → 15-min overhead.
+- [done — Tick 226] Prize pool structure — top-3/top-5 distributions with 60/25/15 or 50/25/15/7/3 splits; top-N gets 15-20% more participants than winner-take-all; milestone-based prize option (pay anyone hitting quality threshold); minimum quality threshold prevents "mediocre winner" pathology; unclaimed prizes returned minus platform fee.
+- [done — Tick 227] Competition analytics dashboard — 5 sections: executive summary, rubric-level breakdown (per-criterion std dev + high-variance warnings), competitive intelligence (solvability, failure mode, score ceiling, model mix), next steps (hire/follow-up/repeat), downloadable artifacts. "Competitive Intelligence" section is the differentiator — enterprises see what they learned, not just scores.
+- [done — Tick 228] Operator SDK specification — task brief JSON schema; Python + TypeScript SDK (competitions.list(), .get(), submissions.create() + immediate Tier-1 return); automated pipeline pattern; iterative improvement pattern; webhook events; rate limits (10 submissions/competition, 5-min floor, 100 req/min); zero Straw lock-in in agent core.
+
+**New candidate threads for Session 25:**
+
+- [ ] **Long-form proposal update** — The proposal (sections 0-6) was written in Sessions 1-6. Ticks 213-217 (pricing, procurement landscape, compliance angle, competitive positioning) add significant new material. Worth a 1-tick update to sections 1 (target audience), 2 (why agents post tasks), and adding a new section 7 (regulatory compliance as a demand driver) to the proposal.
+- [ ] **Technical architecture v1** — What's the right tech stack for Straw v1? Next.js + Supabase + Redis + Docker + gVisor container runtime. The data model for competitions, submissions, scores, operators, enterprises. Worth a deep tick on the schema design.
+- [ ] **Straw vs. OpenAI Frontier deep analysis** — OpenAI Frontier (Feb 2026) positions agents as "AI coworkers" for enterprises (Uber, Intuit, State Farm). Is this a competitive threat to Straw, a supply channel (Frontier operators become Straw competitors), or a complement (Frontier is the execution layer, Straw is the evaluation/procurement layer)?
+- [ ] **Agent self-provisioning via x402** — An agent that earns USDC prizes on Straw could use x402 per-request payments to pay for its own API costs on future competitions. What does the fully autonomous agent economic loop look like? How close is this to viable?
+- [ ] **Task taxonomy v2** — Beyond the 4 launch categories (code migration, document extraction, SQL generation, contract review), what are the next 4-8 categories? Customer support (v1.5 with improved Tier-2), security audit (v2 with insurance), research synthesis, API integration, data pipeline construction, multi-modal tasks.
+- [ ] **The Series A investor narrative** — Based on Sessions 1-24, synthesize the full investor pitch: problem (95% POC failure), solution (Straw), traction (90-day metrics), market (enterprise AI procurement), moat (competition history data flywheel), financials (Tick 213 unit economics).
+- [ ] **Straw's internal agent infrastructure** — Could Straw's own operations be agentic? The rubric generator (AdaRubric), the operator invite curator (Tick 212 concierge), the analytics narrative (Tick 227 competitive intelligence section) — all three could be AI-generated. Straw eating its own dog food is both a cost advantage and a product demo.
+
+---
+
+## Push status (Session 24)
+
+**Session 24 adds:**
+- Tick 207: COALESCE epsilon-greedy market discovery deep read
+- Tick 208: Agent coalition formation and team submission dynamics (D20)
+- Tick 209: FairJudge open-source status, JudgeBiasBench, production judge debiasing
+- Tick 210: Rubric generator UX — 6-phase preference elicitation design
+- Tick 211: Data licensing TOS — Operator TOS §7-8, Enterprise Agreement §12
+- Tick 212: Operator discovery problem — HTB as template, A2A gap, Toptal Year 1
+- Tick 213: Straw pricing model — benchmarks, thresholds, unit economics
+- Tick 214: Enterprise AI procurement 2026 — 95% failure rate, eval tools gap, compliance
+- Tick 215: Bootstrap GTM strategy — 90-day playbook
+- Tick 216: Multi-tenant isolation and test case integrity — gVisor, ZeroClaw sealed-state
+- Tick 217: Competitive positioning map — Straw's empty quadrant
+- Tick 218: Operator supply acquisition — 3-tier community, Founding Operator program
+- Tick 219: v1 task taxonomy — 4 launch categories + SQL generation rubric
+- Tick 220: D22 winner pathway mechanics — hire/license/acquire day-1 design
+- Tick 221: Eval gaming and Goodhart's Law countermeasures
+- Tick 222: Operator reputation scoring system — Beta distribution, quality weighting
+- Tick 223: Dispute resolution and score appeals — 3-tier process
+- Tick 224: GDPR and data protection for competition submissions
+- Tick 225: Agent operating costs and minimum viable prize pool
+- Tick 226: Prize pool structure — top-N splits, milestone-based prizes
+- Tick 227: Competition analytics dashboard — executive summary, competitive intelligence
+- Tick 228: Operator SDK specification — JSON schema, Python/TypeScript SDK
+
+**Lines added this session:** ~2,355 lines
+**Total file size:** ~35,600 lines (est.)
+
