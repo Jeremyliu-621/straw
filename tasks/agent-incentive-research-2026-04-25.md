@@ -39934,3 +39934,137 @@ Lines 36,000-39,700: Sessions 25-27 (Ticks 229-251):
 
 *Next research session: start at Tick 252. Pick from the Session 27 discovered threads list (line ~38,980) or continue with new threads.*
 
+
+---
+
+## Tick 253 — Post-AGI Scenario Analysis: What Happens to Straw When AI Surpasses Human Experts?
+
+**Date:** 2026-05-02
+**Thread:** Post-AGI scenario analysis
+**Research method:** Strategic extrapolation from current AI capability trajectory, competition platform economics, and historical analogies (chess engines + human grandmasters, AlphaFold + wet lab biology)
+
+---
+
+### The Existential Question
+
+Every serious investor will ask: "If AI gets good enough to do all these tasks perfectly, why would enterprises need Straw to run competitions? Won't they just... use the best AI directly?"
+
+This is a legitimate question that deserves a serious answer. The short version: the question contains a flawed premise. "AI surpasses human experts" is not a discrete event that makes evaluation obsolete — it changes *what needs to be evaluated*, not *whether evaluation is needed*.
+
+The longer answer follows.
+
+---
+
+### Scenario Framework: Three Capability Horizons
+
+**Horizon 1 (Now–2028): Specialists outperform generalists on narrow tasks**
+
+The current state. GPT-4o, Claude 4, Gemini 2 — excellent generalists, but fine-tuned / agentic specialized systems outperform them on specific enterprise tasks. Code migration: specialized agentic systems with test harnesses beat vanilla frontier models. Document extraction: fine-tuned extraction models with schema alignment beat generalist chat. This is Straw's core operating environment.
+
+*Straw's role:* Primary value proposition — objectively identify which specialized agent/configuration performs best on YOUR specific codebase, YOUR specific documents, YOUR specific contracts. Not "best in general" — best for you.
+
+**Horizon 2 (2028–2032): Frontier models saturate most measurable benchmarks**
+
+Multiple competing labs release models that score 95%+ on HumanEval, SWE-Bench, MMLU, and most existing benchmarks. "The best AI" becomes genuinely ambiguous — Model A beats Model B on coding but loses on reasoning; Model B's context window handles enterprise-scale inputs that Model A cannot. Automated evaluation on static benchmarks becomes less differentiating.
+
+*Straw's role:* Shifts from "which agent wins" to "which agent wins on YOUR specific data, YOUR infra constraints, YOUR latency requirements." The fixed task frame becomes the moat — evaluating against real enterprise artifacts rather than synthetic benchmarks. The evaluation problem gets *harder*, not easier, because the delta between top systems is smaller and harder to detect.
+
+**Horizon 3 (2032+): AGI-adjacent systems that can solve any task given sufficient compute**
+
+If something like AGI is available — a system that, given any well-specified task and sufficient time/compute, can solve it near-optimally — the landscape transforms. At this point:
+
+1. Every enterprise's task has a "correct answer" that any sufficiently capable model can reach
+2. The differentiation shifts from *capability* (can it do this?) to *efficiency* (can it do this at a cost/latency/reliability that makes sense?)
+3. The evaluation problem shifts from *quality* to *cost-quality tradeoff*
+
+Straw at this stage evaluates: which model, at which price point, on which infra, achieves what SLA for your specific workload? This is a different product than today's but is not a smaller market — it may be larger because every enterprise now has an AI procurement problem rather than an "early adopter experimentation" problem.
+
+---
+
+### The Chess Analogy: Stockfish Didn't Kill Chess Competitions
+
+Chess engines have surpassed human grandmasters since roughly 2006. Stockfish, Leela Chess Zero, AlphaZero — all play at >3400 Elo, well beyond any human. Did this destroy the market for chess training, chess tournaments, or chess evaluation services?
+
+No. The chess economy *expanded*. What changed:
+- Human tournaments still exist and are watched by millions — human performance remains commercially valuable even though engines are "better"
+- Engine evaluation became a *new* product category — "engine-certified positions," "engine-backed opening preparation," "engine-assisted coaching"
+- The question shifted from "who is the best chess player" to "what is the best engine for my specific use case" (correspondence chess vs. real-time, classical vs. blitz, with/without tablebases)
+
+**Straw analog:** When multiple AGI-adjacent models exist, enterprises don't ask "which is best" — they ask "which is best for *my specific workload, cost envelope, and risk tolerance*." That evaluation problem is not solved by the existence of powerful AI; it's created by it.
+
+---
+
+### The AlphaFold Analogy: Better Tools Create More Research, Not Less
+
+DeepMind's AlphaFold 2 (2020) solved protein structure prediction at near-experimental accuracy. Did this destroy structural biology? The opposite: AlphaFold created a Cambrian explosion in drug discovery projects, because the bottleneck shifted downstream. Suddenly teams could get structure predictions that previously took months, for free, in hours — and the binding and dynamics problems that *depend* on structure became the new bottleneck.
+
+**Straw analog:** When frontier models can "solve" a code migration task reliably, the bottleneck shifts to: (a) verifying the solution is actually correct on YOUR specific edge cases, (b) identifying which model's solution has the best maintainability properties, (c) figuring out what the model *can't* solve that still needs human review. The evaluation infrastructure becomes *more* valuable as AI capability rises because the cost of a wrong choice increases when enterprises are relying on AI for more mission-critical work.
+
+---
+
+### The Regulatory Tailwind Intensifies With Capability
+
+The EU AI Act, OMB M-26-04, MAS MAS guidelines, and every emerging AI governance framework share a common principle: **higher-stakes AI deployment requires more rigorous pre-deployment evaluation**. As AI systems become more capable and are deployed in more critical contexts (financial modeling, legal analysis, security audit, medical documentation), the regulatory requirement for independent third-party evaluation gets *stronger*, not weaker.
+
+Straw is building the infrastructure for this regulatory requirement. In the post-AGI scenario, regulators will require evidence that the deployed model was selected through a rigorous comparative evaluation process before it was trusted with critical enterprise data. "We ran it through Straw" becomes a compliance artifact, not just a procurement optimization.
+
+---
+
+### New Product Opportunities in Post-AGI Scenario
+
+The post-AGI scenario creates product categories that don't exist today:
+
+**1. Capability Boundary Mapping (2028+)**
+Rather than "who wins the task," evaluate "what does this agent fail at within this task domain?" As agents become more capable, enterprises need systematic maps of failure modes, not just capability claims. Straw's competition format can be inverted: design adversarial tasks specifically targeting model weaknesses, then sell the failure analysis report.
+
+**2. Cost-Efficiency Frontier Evaluation (2028+)**
+When multiple models can "solve" the task, the evaluation becomes: build a Pareto frontier of (quality × latency × cost) for a given enterprise workload. Run 50 model configurations against the task. Find the efficient frontier. Sell the frontier map. This is different from today's competition format but uses the same infrastructure.
+
+**3. Regression Testing as a Service (ongoing)**
+As enterprises adopt AI systems, they need continuous monitoring: "Is the model I deployed last quarter still performing at the level I hired it for? Have capability regressions occurred in the new version?" This is continuous evaluation at smaller scale — same ZeroClaw infrastructure, ongoing subscription revenue instead of one-time competition fees.
+
+**4. Adversarial Red-Teaming Competitions (2027+)**
+Run competitions where agents try to find failure cases in other agents' solutions. The attacking agent's goal: find inputs that cause the target agent to fail. The defending agent's goal: produce solutions robust to adversarial inputs. Relevant for security audit, contract review, financial modeling. Red team competition prizes $5–20K.
+
+---
+
+### Revenue Model Resilience Across Capability Horizons
+
+| Horizon | Primary revenue driver | Revenue model |
+|---------|------------------------|---------------|
+| H1 (now–2028) | Capability differentiation: identify best agent for task | Competition fees (15% platform take) |
+| H2 (2028–2032) | Enterprise-specific evaluation: best on YOUR data | Competition fees + subscription (evaluation-as-a-service) |
+| H3 (2032+) | Regulatory compliance + cost-efficiency frontier mapping | Compliance artifact SaaS + enterprise contracts |
+
+The revenue model shifts but does not disappear. Each horizon creates a *different* but *at least as large* evaluation market.
+
+---
+
+### The Scenario Where Straw Fails
+
+To be honest: the scenario that could genuinely threaten Straw in the post-AGI period is not "AI gets too good" — it's **commoditized evaluation infrastructure**. If AWS, Azure, and GCP all build first-party AI evaluation services that integrate directly with their model hosting, enterprise IT departments may default to the cloud vendor's evaluation tool rather than a neutral third party.
+
+The defense:
+- Vendor evaluation tools have inherent conflict of interest (they want to show their models win)
+- Multi-cloud enterprises (most large enterprises) need cross-vendor neutral evaluation — only an independent platform can do this
+- Regulatory requirements for independent third-party evaluation (emerging in EU AI Act Article 15, OMB M-26-04) structurally favor neutral platforms over vendor-owned evaluation
+
+But this is the honest risk. Not "AI too capable" — "cloud vendors buy the evaluation layer."
+
+---
+
+### Summary
+
+Post-AGI is not Straw's death scenario. It's an evolution scenario:
+- H1: "Which agent wins?" — capability competition, Straw's core product today
+- H2: "Which agent wins *on your data*?" — personalized evaluation, same infrastructure
+- H3: "Which agent wins at your cost target with your SLA?" — efficiency frontier mapping, compliance artifacts
+
+Each transition requires platform investment (new evaluation types, new export formats, new regulatory integrations) but the *structural need* for neutral, rigorous, third-party AI evaluation increases monotonically with AI capability. The more powerful AI becomes, the more expensive a wrong procurement decision is, and the more regulators require documented evaluation. Straw's market grows with AI capability, not against it.
+
+The question for investors is not "what if AI gets too good" but "what if you don't build this before Google does."
+
+---
+
+*Tick 253 complete. Next: Tick 254 agent performance cross-category correlation (awaiting background research agent), Tick 255 live/multi-round competition format (awaiting background research agent).*
+
