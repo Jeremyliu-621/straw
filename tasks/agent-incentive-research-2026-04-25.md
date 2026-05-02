@@ -56631,3 +56631,186 @@ POST /v1/competitions/{id}/submissions (existing)
 ## Closed thread (Tick 349)
 - [done — Tick 349] **D31: CGAE + ABC implementation engineering spec** — Full engineering spec for Phase 19 build: DB schema (agent_tier_records + abc_compliance_logs + additions to agent_builder_profiles/competitions/submissions tables), 3 background jobs (nightly tier recompute, 4-hourly ABC log verification, daily badge expiry), 5 API endpoints (tier read, tier history, ABC compliance submit/read, Straw Verified Certificate), 17 acceptance criteria (10 tier + 7 ABC), phased build plan (Phase 19 T0-T3 + badge 0-2; Phase 20 T4-T5 + badge 3 + A2A sync).
 
+
+---
+
+## Tick 347 (2026-05-02T08:30Z): Agent Operator Acquisition Strategy — Top 20 targets
+
+*Thread: Beyond Devin: who are the top 20 AI agent operators Straw should target in May 2026? Different pitch per operator type. Sources: background research agent (SWE-bench leaderboard May 2026, company funding data, agent capability benchmarks, API availability), Tick 342 (Devin outreach draft already written).*
+
+---
+
+### The Landscape (May 2026 Snapshot)
+
+The coding agent market has stratified into five distinct segments:
+
+1. **Enterprise autonomous agents** (Devin v2, Factory AI Droid, Augment Auggie) — $500M+ valuations, real enterprise deployments, API-ready
+2. **Developer IDE agents** (Cursor, Windsurf/Cascade, Cline, Copilot) — massive developer install bases pivoting toward autonomous mode
+3. **Greenfield app builders** (Lovable, Bolt.new, Replit, v0.dev) — fastest user growth, primarily consumer/prosumer but enterprise-expanding
+4. **Open-source research agents** (OpenHands, SWE-agent, Plandex) — highest capability transparency, community-driven, no direct sales motion
+5. **Infrastructure/subagent providers** (Morph, frameworks) — behind-the-scenes layer that improves other agents
+
+**The benchmark landscape:** SWE-bench Verified top scores (May 2026):
+- Claude Mythos Preview: 93.9%
+- Augment Auggie: 70.6%
+- OpenHands: near-top open-source
+- SWE-agent (mini): >74%
+- Devin v2: 45.8% independent / 51.5% self-reported
+- SWE-bench Pro (harder real-world tasks): Augment 51.8%, Morph+Claude 57.5%
+
+**The key insight:** There's a consistent 30–50 point gap between lab benchmark scores and real-world production performance (Answer.AI documented Devin's 15% real-world rate vs. 51.5% SWE-bench). This gap is exactly Straw's value proposition. Every operator on this list knows the gap exists and can't close it without third-party evidence.
+
+---
+
+### Top 20 Targets — Priority Ranked
+
+#### Tier 1: Immediate Outreach (Week 1)
+
+**1. Cognition AI — Devin v2** *(Tick 342 outreach drafted)*
+- Capability: 73× ARR growth, 67% PR merge rate, $20/mo starting; $2.25/ACU
+- Status: Outreach email written in Tick 342. **SEND THIS WEEK.**
+- Pitch angle: "Real-world proof > benchmark claim. 67% merge rate = ~$1,675 EV per $2,500 competition"
+
+**2. Factory AI — Code Droid**
+- Capability: $1.5B valuation (April 2026, $150M Series C), MongoDB/EY/Zapier clients, 58.75% Terminal-Bench
+- Why now: Fresh money = growth mode = willing to try new channels. Named enterprise customers = perfect Straw supply-side anchor.
+- Pitch: "Your Droids are already inside MongoDB and EY. Straw puts them in front of 50 more like them per competition. Win = verifiable case study."
+
+**3. Augment Code — Auggie**
+- Capability: 51.8% SWE-bench Pro (highest in class), 70% win rate over GitHub Copilot in head-to-head, $270M raised
+- Why now: They have the best real-world benchmark story in the industry and need to commoditize it as a sales motion. Straw is the independent third party that makes their win rate credible to buyers who don't trust internal benchmarks.
+- Pitch: "You win head-to-head 70% of the time. Straw is the venue that makes that 70% a verifiable number every enterprise can see. We don't manufacture wins — we document them."
+
+**4. All Hands AI — OpenHands**
+- Capability: Top-tier open-source agent, near-top SWE-bench Verified, $23.8M raised, PyPI package
+- Why now: Fastest path to developer community supply-side momentum. Their open-source model means operators are already self-hosting OpenHands; Straw can reach the entire community through one partnership announcement.
+- Pitch: "OpenHands competes on the same leaderboard as Devin. Straw makes that comparison real on enterprise tasks — not synthetic benchmarks. Open-source should win when the playing field is fair. Let's prove it."
+
+---
+
+#### Tier 1B: Immediate Outreach (Week 1-2)
+
+**5. Cosine AI — Genie 2.1**
+- Capability: 72% SWE-Lancer (simulated freelance earnings = direct monetary benchmark), >50% of freelance tasks, philosophically aligned with Straw's value-based framing
+- Pitch: "You're the only agent measured in dollars earned. Straw is where those dollars become enterprise contracts — enterprises post tasks with real prize pools, Genie competes, you earn. It's what SWE-Lancer is simulating."
+
+**6. Lovable — AI Fullstack Engineer**
+- Capability: $400M ARR, $6.6B valuation (Dec 2025), 8M users, CapitalG/Salesforce Ventures investors
+- Why now: Investor base includes Salesforce Ventures — Salesforce enterprise procurement teams are Straw's exact buyer. There's a direct warm intro path through their cap table.
+- Pitch: "Salesforce Ventures invested in you. Salesforce enterprise teams are exactly who posts tasks on Straw. Your investors are already our target customers — let's close the loop."
+
+---
+
+#### Tier 2: Month 1 Outreach
+
+**7. OpenAI — Codex CLI + Codex Cloud**
+- Capability: Codex (open-source, 75.6K stars), headless `codex exec` mode perfect for Straw automation, GPT-5.3 at top of SWE-bench
+- Outreach type: Platform partnership (not just operator) — Codex CLI as the standard agent harness for Straw integrations. Requires OpenAI partnerships contact, not developer contact.
+- Pitch: "The best SWE-bench score needs an independent arena. Straw is where enterprises verify it. We'd love Codex CLI as the recommended agent harness for Straw integrations — and to feature OpenAI agents on our launch leaderboard."
+
+**8. GitHub (Microsoft) — Copilot Coding Agent**
+- Capability: 15M+ users, enterprise management REST API (March 2026 public preview), VS Code/JetBrains GA
+- Outreach type: Enterprise partnership channel. GitHub sells to the same enterprises Straw wants as task posters.
+- Pitch: "15 million developers trust Copilot. Enterprise buyers making $500K+ tool decisions don't. Straw gives them the independent eval that turns your user count into their vendor choice."
+
+**9. Cursor — Background Agent / cursor-agent CLI**
+- Capability: #1 AI-native IDE by developer preference, new headless cursor-agent CLI (Jan 2026), durable agent API
+- Pitch: "Cursor 3's Background Agent is new. Straw is where it earns its autonomous credentials — not in staged demos, but in real enterprise competitions. Early presence on Straw is a 'first to market on autonomous' story for your sales team."
+
+**10. Google DeepMind — Gemini CLI**
+- Capability: 1M token context window (largest in class), 1,000 req/day free tier, Google Search grounding
+- Outreach type: Developer relations / GCP partnerships contact
+- Pitch: "1M tokens means Gemini handles the tasks that break every other agent. Straw enterprise competitions with large codebases are Gemini's category to own. GCP enterprise customers posting Straw tasks is a natural GTM motion for both of us."
+
+---
+
+#### Tier 2B: Month 1-2 Outreach
+
+**11. Replit — Agent 3**
+- Capability: 200-minute autonomous sessions, multi-LLM support, strong on greenfield app builds
+- Pitch: "Replit Agent 3 builds complete apps in 200 minutes. Straw tasks that say 'build this product from scratch' are your perfect showcase. Every win is a lead for your enterprise tier."
+
+**12. Vercel — v0.dev**
+- Pitch: "Frontend-heavy enterprise tasks are v0's category. Straw will have React/Next.js UI competitions where v0 should win by a large margin. Own that category publicly."
+
+**13. StackBlitz — Bolt.new**
+- Capability: Fastest browser-based full-stack, WebContainers, Bolt V2 with cloud hosting
+- Pitch: "Bolt builds faster than anything else. Straw has a time-to-working-output dimension in some task rubrics. That metric was made for Bolt."
+
+**14. Qodo — AI Code Review Agent**
+- Capability: $120M raised, 60.1% F1 on code review benchmarks, Gartner Magic Quadrant
+- Pitch: "Every Straw rubric has a code quality criterion. That's where your multi-agent code review earns its score. We're not selling you on the platform — the competition format was designed for agents like Qodo."
+
+**15. Cline — VS Code Extension**
+- Capability: 5M+ installs, 61.2K GitHub stars, Apache 2.0, model-agnostic
+- Outreach type: Community channel (blog post / Discord announcement, not just individual operator). Cline users are the operator community Straw needs.
+- Pitch (public announcement): "Cline operators: Straw is live. Compete with your configured Cline agent on enterprise tasks and earn from what you've built. We're specifically designed for the operator community."
+
+---
+
+#### Tier 3: Month 2-3 Outreach
+
+**16. Morph (YC) — WarpGrep + Fast Apply**
+- Capability: 57.5% SWE-bench Pro (with subagent stacking), YC-backed, infrastructure-level
+- Pitch: "Every agent on Straw gets faster and scores higher with Morph context retrieval. Partner with us to be the default search layer — and demonstrate the lift in live competition data."
+
+**17. SWE-agent (Princeton/Stanford) — mini-SWE-agent**
+- Capability: >74% SWE-bench Verified with 100 lines of code, open source, research group
+- Pitch: "74% SWE-bench with 100 lines of code is the cleanest capability story in the industry. Straw is how you show it's real. Academic validation becomes commercial story."
+
+**18. Plandex AI — Terminal Agent**
+- Capability: 2M token context + 20M+ indexed; specializes in large-codebase tasks; open source
+- Pitch: "Enterprise tasks are large tasks. Plandex was built for large tasks. Straw will have 50+-file, multi-system competitions that every other agent fails on — those are your wins."
+
+**19. Anthropic — Claude Code (Operator Channel)**
+- Outreach type: Operator program contact (not competing against Anthropic — positioning as operator channel that generates API usage)
+- Pitch: "Straw is an operator channel that converts benchmark performance to enterprise revenue for Claude-based agents. Every Claude Code win on Straw is API usage that shows up in Anthropic's ARR and an enterprise customer acquisition event."
+
+**20. Codegen.sh — Agentic PR Agent**
+- Capability: Recent entrant, agentic PR workflows, strong GitHub integration
+- Pitch: "Straw's code migration and refactoring tasks are perfect for a PR-focused agent. Be among the first 20 operators on the platform — early presence gives you disproportionate visibility."
+
+---
+
+### Differentiated Pitch Matrix
+
+| Operator type | Core pitch angle | What they get from Straw |
+|---|---|---|
+| Enterprise autonomous agents (Devin, Factory, Augment) | "Turn your win rate into verifiable enterprise deals" | Prize pool revenue + reference cases |
+| IDE agents pivoting autonomous (Cursor, Windsurf, Cline) | "Autonomous credentials are earned, not claimed" | New positioning in enterprise market |
+| App builders (Lovable, Bolt, Replit, v0) | "Your speed/specialization wins specific task categories" | Category ownership + enterprise leads |
+| Open source research (OpenHands, SWE-agent, Plandex) | "Real-world validation for your benchmark score" | Commercial credibility + community activation |
+| Infrastructure/subagent (Morph) | "Demonstrate the lift in live competition data" | Commercial validation + partnership embed |
+| Strategic platforms (OpenAI, GitHub, Google) | "Platform partnership — we make your agents credible" | Distribution + enterprise buyer access |
+
+---
+
+### The Asymmetric Supply-Side Play
+
+The highest-leverage move in Month 1: **Announce a launch cohort competition with Straw's first enterprise poster and invite the top 10 agents above to compete publicly.** 
+
+The framing: "Straw is live. We're running our first public competition with [Enterprise Name], $25,000 prize pool, 2-week submission window. OpenHands, Devin, Factory Droid, Augment Auggie, Cosine Genie — you're all invited. The score doesn't lie."
+
+This creates a competitive dynamic (no agent wants to miss the inaugural leaderboard), generates media coverage (first real AI coding agent competition), and simultaneously proves the supply-side thesis. The enterprise poster and their task selection are the critical variable — start with a coding task that multiple agents can attempt and that has deterministic evaluation components.
+
+---
+
+### Sources
+- Background research subagent (May 2026): SWE-bench leaderboard, company funding data, API documentation
+- SWE-bench Verified: swebench.com
+- SWE-bench Pro: morphllm.com/swe-bench-pro
+- SWE-Lancer: openai.com/index/swe-lancer
+- Devin v2 capability data: Tick 342 (this file)
+- Factory AI $150M Series C: tech-insider.org/factory-ai-150-million-series-c
+- Augment Code SWE-bench Pro: augmentcode.com/blog/auggie-tops-swe-bench-pro
+- Lovable $6.6B valuation: aibusiness.com/generative-ai/ai-coding-startup-lovable-series-b
+- Anthropic $2.5B ARR Claude Code: letsdatascience.com
+- OpenHands: All Hands AI $23.8M: techcrunch.com/2024/09/05
+- Cline 5M installs: github.com/cline/cline
+- Morph WarpGrep YC: ycombinator.com/companies/morph
+
+---
+
+## Closed thread (Tick 347)
+- [done — Tick 347] **Agent Operator Acquisition Strategy — Top 20 target list** — Five market segments (enterprise autonomous, IDE pivoting, app builders, open-source research, infrastructure). Priority-ranked list of 20 targets: Tier 1 (Devin, Factory, Augment, OpenHands), Tier 1B (Cosine, Lovable), Tier 2 (OpenAI, GitHub, Cursor, Google), Tier 2B (Replit, v0, Bolt, Qodo, Cline), Tier 3 (Morph, SWE-agent, Plandex, Anthropic operator channel, Codegen.sh). Differentiated pitch matrix by operator type. Asymmetric play: public launch competition with top 10 agents invited = competitive dynamic + media + supply-side proof.
+
