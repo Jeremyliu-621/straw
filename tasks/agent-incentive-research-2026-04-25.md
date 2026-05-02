@@ -47729,3 +47729,256 @@ The implication: Straw must invest heavily in trust infrastructure even when it'
 
 The company that best solves the AI procurement principal-agent problem will be very valuable. This is Straw's mission, stated precisely.
 
+
+---
+
+## Tick 295 — Straw Product Roadmap v2
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Detailed product roadmap — 18-month view with feature prioritization rationale
+
+### Roadmap Philosophy
+
+Good product roadmaps are not wish lists. Every item must be driven by one of:
+1. **Customer request with revenue attached:** a paying or near-paying customer needs it to close or expand
+2. **Technical necessity:** the platform breaks without it at scale
+3. **Competitive necessity:** a competitor is winning because we don't have it
+4. **Moat investment:** builds a defensible capability that compounds over time
+
+Features that don't satisfy at least one of these criteria get cut.
+
+---
+
+### Month 1-3: Launch Capability (Now → Early MVP)
+
+**Must-have for first enterprise competition to run:**
+
+[P0] Competition creation workflow (poster side)
+- Rubric builder (template selection + customization)
+- Task upload (file upload + preview)
+- Prize pool configuration (distribution type, escrow)
+- Competition lifecycle (draft → active → closed → complete)
+
+[P0] Operator submission pipeline
+- API submission endpoint (REST)
+- Submission validation (format check, size limit)
+- Submission acknowledgment (confirmation + receipt)
+- Basic score display post-competition
+
+[P0] ZeroClaw Tier-1 evaluation (core)
+- gVisor container orchestration for 5 initial categories
+- Deterministic scoring engine for each category
+- evaluation_runs immutable write + no_update/no_delete rules
+- BullMQ queue management (tier1_evaluation, concurrency=20)
+
+[P0] Basic authentication and authorization
+- Enterprise account (competition poster)
+- Operator account (competitor)
+- Role-based access to competition data
+- Supabase RLS for data isolation
+
+[P0] Leaderboard (post-competition)
+- Competition results table (rank, operator, score, category breakdown)
+- Operator score history (across competitions)
+- Provisional Glicko-2 rating (calculated post-competition)
+
+---
+
+### Month 3-6: Product-Market Fit Features
+
+**Driven by: first enterprise customer feedback + operator onboarding learnings**
+
+[P1] Rubric templates library (8 initial categories)
+- Validated templates for: code_migration, document_extraction, sql_generation, contract_review, customer_support, api_integration, security_audit (P2 level), financial_modeling (P2 level)
+- Template versioning (posters can pin to a template version)
+- Template customization with diff view
+
+[P1] Tier-2 LLM evaluation
+- BullMQ tier2_evaluation queue
+- GPT-4o integration (pinned to specific model version)
+- Sealed scoring (RLS policy — scores hidden until competition closes)
+- Score reconciliation (Tier-1 + Tier-2 combined final score)
+
+[P1] Dispute filing (Types A-C)
+- Dispute submission form (with required "specific rubric clause" field)
+- $500 filing fee integration (Stripe)
+- Triage routing (automated → Rubric Curator → human adjudicator)
+- Resolution tracking and notifications
+
+[P1] Basic API (enterprise-facing)
+- Competition CRUD via API
+- Results retrieval
+- Webhook delivery (competition.created, results.published)
+- API key management (scoped keys)
+
+[P1] Practice competitions (operator onboarding)
+- Synthetic task sets (Straw-funded, no enterprise required)
+- Provisional rating accumulation
+- Score explanation with dimension breakdown
+
+[P2] Fleet manifest (multi-agent operator support)
+- Fleet registration (JSON manifest)
+- Fleet version management
+- Fleet badge on leaderboard
+
+---
+
+### Month 6-9: Growth Features
+
+**Driven by: enterprise expansion goals + operator retention targets**
+
+[P1] Compliance export (EU AI Act Article 15)
+- One-click export (signed JSON + PDF)
+- Ed25519 signature with Straw attestation key
+- Competition methodology summary auto-generated
+- Export history (for re-generation)
+
+[P1] ServiceNow integration
+- Webhook connector template for ServiceNow
+- Results formatted as ServiceNow vendor assessment record
+- One-click "create assessment from competition results"
+
+[P1] Operator Pro subscription tier
+- Stripe subscription management
+- Analytics dashboard (score trends, rank progression, category comparison)
+- API access (operator-side: submit, check status, retrieve scores)
+- PDF score reports (branded for external sharing)
+
+[P2] Fleet monitoring (ongoing revalidation)
+- Scheduled re-evaluation (monthly/quarterly cadence)
+- Drift detection (flag when operator score drops >1.5 points from historical baseline)
+- Drift alert webhooks (for enterprise monitoring stacks)
+
+[P2] Adversarial robustness module (basic)
+- Degraded input test cases (OCR noise, encoding issues) for document categories
+- IRS (Injection Resistance Score) for applicable categories
+- Robustness dimension in standard rubric template
+
+[P3] Mobile-friendly leaderboard
+- Responsive design for operator profile / leaderboard views
+- Operator can check competition status on mobile
+
+---
+
+### Month 9-12: Monetization and Expansion Features
+
+**Driven by: Series A fundraising + second-market entry (India/UK)**
+
+[P1] Enterprise annual subscription billing
+- Starter / Growth / Enterprise plan tiers
+- Annual invoice (net-30 terms option for enterprise)
+- Usage dashboard (competitions run, prize pool distributed, categories active)
+- Seat management (multiple users per enterprise account)
+
+[P1] Operator Elite subscription tier
+- Full API access (programmatic submission + monitoring)
+- White-label score reports
+- Dispute filing priority
+- Tax optimization export (prize income CSV for accounting)
+
+[P1] Indic language categories (India market)
+- contract_review_indic (Hindi/Gujarati/Tamil)
+- document_extraction_indic (government documents)
+- Rubric templates validated with IIT academic partners
+
+[P2] Fine-tuning competition format (v3)
+- Adapter submission via S-LoRA-compatible format
+- Fine-tuning evaluation pipeline (100-adapter evaluation)
+- IP licensing framework integration (TOS §9 disclosure at submission)
+- Minimum prize pool enforcement ($40K floor)
+
+[P2] Private operator pools
+- Enterprise-created invite-only competitions
+- Operators invited by enterprise (for vendor comparisons)
+- Private pool competes alongside public pool but with separate ranking
+
+[P3] External certification API
+- Signed evaluation attestations for regulatory submission
+- Batch export for portfolio of AI systems
+- Partnership templates for auditors/consultants reselling Straw attestations
+
+---
+
+### Month 12-18: Platform and Ecosystem
+
+**Driven by: Series A deployment + network effect compounding**
+
+[P1] Straw evaluation model v1 (custom Tier-2)
+- Fine-tuned on internal evaluation dataset (post-1,000 competitions)
+- Category-specific model variants (contract_review, code_migration, etc.)
+- A/B evaluation against GPT-4o (verify improvement before switching)
+- Reduces Tier-2 API cost by 40% + improves quality for enterprise-specific rubrics
+
+[P1] Panel arbitration module (Tier C disputes)
+- 3-person arbitration panel invitation system
+- Document submission and deliberation workflow
+- Panel decision recording (immutable)
+- SIAC rules integration (governing law for arbitration proceedings)
+
+[P1] Operator community platform
+- Forum (Discourse integration or custom)
+- Operator leaderboard hall of fame
+- Category-specific discussion channels
+- Operator spotlight (monthly featured operator profile)
+
+[P2] Rubric AI assistant
+- AI-assisted rubric drafting (enterprise describes task; AI suggests rubric dimensions)
+- Rubric validation (flag ambiguous language, missing dimensions, inconsistent weights)
+- Precedent lookup (similar rubrics from anonymized prior competitions)
+
+[P2] Multi-market billing
+- SGD, USD, GBP, INR, AUD invoice support
+- Tax compliance per jurisdiction (GST, VAT, etc.)
+- Razorpay integration for Indian prize distributions
+
+[P2] Enterprise SSO
+- SAML 2.0 support (Okta, Azure AD, Google Workspace)
+- Required for Fortune 500 enterprise deals
+- Seat provisioning via SCIM
+
+[P3] Operator income tools
+- Prize income tracking dashboard
+- Invoicing generator for US operators (1099-MISC helper)
+- Indian operators: TDS certificate generation
+
+---
+
+### What's Explicitly NOT on the Roadmap (Year 1-18 months)
+
+- **Training our own foundation model:** Not our business. We evaluate; we don't build.
+- **Native video/audio evaluation:** Too early. Text and code first.
+- **Consumer-facing product:** Enterprise-only until Series B+.
+- **Open-source SDK:** Competitive concern. APIs yes; open source evaluation engine no.
+- **AI agent marketplace (buying/selling complete AI systems):** That's what P3/P4 is. We facilitate, we don't run the marketplace directly.
+- **Government procurement in Year 1:** Sales cycle too long. Wait until product is mature.
+
+---
+
+### Prioritization Framework
+
+When competing features are uncertain, use this scoring matrix:
+
+```
+Score = (Revenue Impact × 3) + (Moat Impact × 2) + (Operator Retention × 1) - (Engineering Cost × 2)
+
+Scale: 1-5 for each dimension
+Features with Score > 10: build
+Features with Score 7-10: backlog, revisit quarterly
+Features with Score < 7: cut or defer to Year 2
+```
+
+Example: Fleet monitoring
+- Revenue impact: 3 (expands ACV for enterprise customers)
+- Moat impact: 4 (data flywheel, deeper integration)
+- Operator retention: 2 (helps operators track performance)
+- Engineering cost: 2 (moderate, BullMQ scheduled jobs + webhook delivery)
+Score = (3×3) + (4×2) + (2×1) - (2×2) = 9 + 8 + 2 - 4 = 15 → Build
+
+Example: Mobile app
+- Revenue impact: 1 (enterprise buyers don't use mobile for procurement decisions)
+- Moat impact: 1 (no competitive advantage)
+- Operator retention: 2 (operators might check rankings on mobile)
+- Engineering cost: 3 (separate mobile app development)
+Score = (1×3) + (1×2) + (2×1) - (3×2) = 3 + 2 + 2 - 6 = 1 → Cut
+
