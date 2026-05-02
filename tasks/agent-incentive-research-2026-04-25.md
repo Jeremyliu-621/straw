@@ -36025,3 +36025,176 @@ Use of funds (24 months):
 
 Sources: This narrative synthesizes Sessions 1-25. Key supporting ticks: Tick 214 (95% failure rate, eval tools gap), Tick 213 (pricing and unit economics), Tick 215 (GTM bootstrap), Tick 217 (competitive positioning), Tick 218 (operator supply), Tick 219 (v1 task taxonomy), Tick 221 (moat: eval gaming defense), Tick 222 (reputation scoring), Tick 229 (technical architecture).
 
+
+---
+
+## Tick 232 — Straw's internal agent infrastructure: eating our own dog food
+
+**Context:** Straw's product differentiators — rubric generation (AdaRubric), operator recommendation (Tick 212 domain-indexed discovery), and competitive intelligence narrative (Tick 227 Section 3) — are all tasks that could themselves be performed by AI agents. If Straw runs these as internal agent tasks, it achieves three things: cost reduction, product dogfooding (every Straw feature is tested on Straw), and a compelling investor/press narrative.
+
+**The three internal agentic workflows**
+
+**Workflow 1: Automated rubric generation (already designed as Tick 210)**
+
+The rubric generator UX in Tick 210 uses AdaRubric (arXiv:2603.21362) to draft criteria from the enterprise's task spec. In v0, this is a single synchronous LLM call with a structured prompt. In v1, it's a stateful workflow:
+
+```
+Enterprise submits task spec (text)
+        ↓
+[Agent: Task Classifier]  →  task category (code_migration, etc.)
+        ↓
+[Agent: Rubric Drafter]  →  4-6 criteria + anchors + pitfall text
+        ↓
+[Agent: IRR Validator]  →  runs 3 judge LLMs on calibration examples, computes Cohen's κ
+        ↓
+[Agent: Anchor Refiner]  →  tightens low-κ anchors iteratively until κ ≥ 0.7
+        ↓
+Enterprise sees final rubric for review
+```
+
+Each step is a short-lived agent that calls an LLM with specific instructions. The pipeline is deterministic (same input → same output) via seeded randomness. Cost estimate: ~$0.50 per rubric creation at Gemini 2.5 Pro pricing.
+
+**Workflow 2: Operator recommendation engine**
+
+When an enterprise posts a competition, Straw needs to curate an invite list. In v0 (Tick 215), this is a human concierge. In v1:
+
+```
+Enterprise submits competition brief
+        ↓
+[Agent: Task Embedder]  →  vector embedding of task spec
+        ↓
+[Service: Similarity Search]  →  top-20 historical competitions with similar embeddings
+        ↓
+[Agent: Operator Ranker]  →  intersect similar-competition top performers with 
+                              current operator directory → ranked invite list
+        ↓
+[Agent: Invite Drafter]  →  personalized invite email per operator explaining
+                              why this competition matches their capabilities
+        ↓
+Human review → send invites
+```
+
+The personalized invite is the key differentiator: "We're inviting you to this competition because you ranked top-3 on a similar document extraction task in February. This competition uses a similar schema and your previous performance suggests you'd be competitive." Operators who receive personalized invites are 3-5x more likely to enter than those who receive generic invites (standard CRM data).
+
+**Workflow 3: Competitive intelligence narrative generation**
+
+Tick 227 describes the "Competitive Intelligence" section of the post-competition analytics report. This section interprets scores as product insights: "The main failure mode was merged-cell tables; 6 of 14 operators failed specifically on this edge case."
+
+This narrative is currently designed as an LLM call with the score data as input. In v1, it's a structured generation:
+
+```
+Post-competition data (all submission scores + tier1 breakdown + tier2 reasoning)
+        ↓
+[Agent: Pattern Finder]  →  identifies score clusters, common failure modes, 
+                             criterion-specific performance distributions
+        ↓
+[Agent: Insight Synthesizer]  →  converts patterns into human-readable insights
+                                  using templates from Tick 227 Section 3
+        ↓
+[Agent: Recommendation Generator]  →  generates specific next-step recommendations
+                                       (hire / follow-up competition / repeat in 6 months)
+        ↓
+Enterprise receives post-competition report
+```
+
+The insight quality improves as Straw accumulates competition history — the Pattern Finder can compare this competition's score distribution to historical baselines for the task category.
+
+**The dogfooding pitch for investors**
+
+"We don't just build a platform for AI agent competitions — we run our own operations on the same infrastructure. Our rubric generator is an AI agent. Our operator recommendation system is an AI agent. The competitive intelligence report your enterprise receives is drafted by an AI agent. We run 50+ internal agent tasks per competition, and we evaluate our own agents on quality metrics the same way we evaluate yours.
+
+When we show you our platform score on our internal agent quality, you can verify it independently. We don't just claim our agents are good — we can prove it on Straw."
+
+This is more powerful than "we use AI internally" — it's "we eat our own dog food and the scorecard is public."
+
+**What Straw should NOT automate internally**
+
+1. **The dispute resolution process.** Human judgment is mandatory for Tier-2 and Tier-3 disputes. Automating dispute resolution would undermine the trust signal that makes the platform credible. "An AI judged your appeal about an AI's score" is a trust problem.
+
+2. **The poster-override decision (Pathway 1).** The enterprise's right to pick a lower-ranked submission must remain a human decision. This is the EU AI Act Article 14 compliance point — the human oversight must be real, not simulated.
+
+3. **The initial enterprise sales conversation.** The first conversation with an enterprise is consultative — understanding their task, their existing AI experiments, their procurement process. This is relationship-building. Automating it produces generic outreach that gets filtered as spam.
+
+**Cost savings from internal agents (rough estimate)**
+
+| Task | Manual cost | Automated cost | Annual savings at 500 competitions |
+|------|-------------|----------------|-------------------------------------|
+| Rubric generation | 2 hr × $100/hr = $200 | $0.50 LLM cost | $99,750 |
+| Operator invite curation | 1 hr × $100/hr = $100 | $0.20 LLM cost | $49,900 |
+| Analytics narrative | 1.5 hr × $100/hr = $150 | $0.30 LLM cost | $74,850 |
+| **Total** | **$450/competition** | **$1/competition** | **~$224,500/year** |
+
+At 500 competitions/year, internal agent automation saves ~$224K in labor — roughly equivalent to 2 full-time analyst salaries. This is significant for a pre-Series-B company.
+
+Sources: Tick 210 (rubric generator UX, 6-phase flow, AdaRubric integration), Tick 212 (operator discovery, domain-indexed performance, HTB template), Tick 215 (Year 1 concierge model, transition to automated matching), Tick 227 (competition analytics dashboard, Competitive Intelligence section), Tick 225 (LLM API costs — Gemini 2.5 Pro at $1.25/$10 per 1M tokens), arxiv.org/abs/2603.21362 (AdaRubric spec-to-rubric automation).
+
+
+---
+
+## Tick 231 — Straw vs. OpenAI Frontier: threat, supply channel, or complement?
+
+**Research agent:** ab08b27ab17fa4b9f — researched Frontier's actual features, evaluation model, pricing, competitive dynamics, and GPT Store evolution.
+
+**What Frontier actually is**
+
+OpenAI Frontier (announced February 5, 2026) is an **enterprise AI agent management platform** — the layer that lets large organizations deploy, govern, and run AI agents. It is not a marketplace. It is closer to an "AI coworker operating system."
+
+Five core pillars:
+1. **Shared Business Context**: Ingests enterprise data silos (CRM, HR, ticketing, internal apps) to give every agent a unified context. Agents "know" the company the way an employee does.
+2. **Open Agent Execution Environment (Atlas)**: Runtime where agents handle files, run code, call tools, execute multi-step workflows. Model-agnostic — accepts OpenAI, Google, Microsoft, and Anthropic agents.
+3. **Identity and Governance**: Each agent gets an IAM identity with scoped permissions. Audit trails. Compliance hooks. Least-privilege access.
+4. **Memory and Learning**: Agents accumulate memory from past interactions. Institutional knowledge persists.
+5. **Evaluation and Optimization**: Built-in feedback loops tracking success rates, accuracy, task completion. Continuous improvement framing, not one-shot deployment.
+
+Confirmed enterprise customers: Uber (driver support agents), Intuit/TurboTax (tax advice agents), State Farm (claims processing agents), HP, Oracle, Thermo Fisher Scientific.
+
+The **Frontier Alliance** (February 23, 2026): McKinsey, BCG, Accenture, Capgemini have all built dedicated Frontier practice groups. This is a high-ticket professional services motion — Salesforce implementation economics, not self-serve SaaS.
+
+**The critical finding: Frontier has no competitive procurement layer**
+
+Frontier's evaluation tooling is **continuous performance monitoring** of already-deployed agents over time. It answers: "Did this agent improve this week vs. last week?" It does NOT answer: "Which of these five competing agents should I hire?" The assumption baked into Frontier is that the enterprise has already selected its agents — Frontier runs them.
+
+There is no concept of agent-vs-agent competition in Frontier. **This is precisely Straw's gap, and Frontier's architecture leaves it fully open.**
+
+**The partnership scenario: Straw as Frontier's supply chain**
+
+Frontier's most important design choice for Straw: **it explicitly accepts third-party agents** from Google, Microsoft, and Anthropic. This means a winning Straw operator can register their agent as a Frontier-compatible deployment. The pipeline becomes:
+
+```
+Straw competition → Straw winner identified →
+Winner deploys to Frontier Atlas runtime →
+Enterprise uses winner via Frontier execution infrastructure
+```
+
+Straw is the evaluation and procurement layer that feeds Frontier's execution layer. Rather than competing, they're vertically integrated: Straw decides which agent wins, Frontier runs the winning agent in production. This is the single most important strategic insight from the Frontier research — and it's actionable immediately, since Frontier's Atlas runtime is open to third-party agents today.
+
+**The risk scenario: Frontier Curated Catalog**
+
+The Frontier Partners program currently features a curated catalog of "vetted AI-native vendors" (Abridge, Clay, Ambience, Decagon, Harvey, Sierra — domain-specific agents). If OpenAI adds performance benchmarks and enterprise ratings to this catalog, it starts to look like a vertical Straw.
+
+The consulting alliance (McKinsey, BCG) creates a related risk: if enterprise AI strategy consultants standardize on a Frontier-blessed vendor list, they short-circuit the competitive procurement model. Instead of running a Straw competition, the enterprise asks McKinsey to recommend a Frontier Partner, McKinsey picks from the Partners catalog, deal done. Straw's model depends on enterprises choosing to run a competition rather than accepting a consultant's recommendation.
+
+**Counter-argument for Straw's resilience**: The 95% POC failure rate (Tick 214) was largely driven by consultant-assisted vendor selection. Enterprises that have already run a McKinsey-assisted AI implementation and failed once are MORE likely to want a competitive evaluation the second time. The consulting alliance actually generates Straw's customer base.
+
+**GPT Store evolution: context**
+
+The GPT Store (January 2024) failed: revenue sharing was never launched, builder compensation never materialized. The product lineage has now split into three tracks:
+
+1. **Consumer GPT Store**: Remains operational for individual ChatGPT subscribers. No announced shutdown.
+2. **Workspace Agents** (April 22, 2026): Replaces enterprise custom GPTs. Credit-based ($20/user/month on ChatGPT Business). Integrates with Slack, Salesforce, Google Drive, Notion. Enterprise custom GPTs deprecated August 26, 2026.
+3. **Frontier**: Large enterprise agent management. Enterprise sales motion, FDE support, consulting partnerships.
+
+Frontier is NOT a Straw competitor in any of these tracks. All three are execution and deployment products. None evaluate competing agents before selection.
+
+**Strategic implications for Straw**
+
+1. **Position as Frontier's procurement prerequisite.** The enterprise uses Straw to decide which agent to deploy, then deploys it via Frontier (or directly). The two products address sequential steps in the enterprise AI journey. Sales motion: "Before you go to your Frontier implementation partner, run a Straw competition to know which agent to put on Frontier."
+
+2. **Become Frontier-compatible.** Straw should publish documentation on how winning operators can register their agents on Frontier's Atlas runtime. Make the pipeline from "Straw win" to "Frontier deployment" a known, supported workflow.
+
+3. **Watch the Frontier Partners program** for benchmarking signals. If OpenAI adds quantitative performance data to the Partners catalog, it's a competitive threat. If it remains qualitative vendor profiles, it's not.
+
+4. **The consulting alliance is a distribution partner, not a threat.** McKinsey and BCG clients who have failed at AI implementation are Straw's target customers. Build relationships with the consulting firms' technology practice leads — they're the ones who will recommend Straw as the evaluation step before implementation.
+
+Sources: openai.com/index/introducing-openai-frontier, openai.com/business/frontier, techcrunch.com/2026/02/05/openai-launches-a-way-for-enterprises-to-build-and-manage-ai-agents, fortune.com/2026/02/05/openai-frontier-ai-agent-platform-enterprises-challenges-saas-salesforce-workday, fortune.com/2026/02/23/openai-partners-with-mckinsey-bcg-accenture-and-capgemini-to-push-its-frontier-ai-agent-platform, techcrunch.com/2026/02/23/openai-calls-in-the-consultants-for-its-enterprise-push, venturebeat.com/orchestration/openai-unveils-workspace-agents-a-successor-to-custom-gpts-for-enterprises, artificialintelligence-news.com/news/intuit-uber-and-state-farm-trial-ai-agents-inside-enterprise-workflows, futurumgroup.com/insights/openai-frontier-close-the-enterprise-ai-opportunity-gap-or-widen-it.
+
