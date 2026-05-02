@@ -50037,3 +50037,147 @@ These are NOT in ZeroClaw v0. They're real features but not needed for the first
 
 **Definition of done:** ZeroClaw v0 is done when it can process 100 submissions for a contract_review competition, produce scores that match manual review within 0.5 points, with no container escapes and no scores modified after write. Everything else can be built later.
 
+
+---
+
+## Tick 307 — Straw's Category Expansion Sequence
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** When and how to launch new categories — sequencing for maximum market impact
+
+### The Category Expansion Problem
+
+Straw launches with 4 categories in v0. By Year 3, it should have 12-15 active categories. The question is: which categories to add when, and how to ensure each new category succeeds rather than fragmenting operator attention.
+
+A new category that attracts 5 operators is not useful. A new category that attracts 50 operators with genuine expertise can transform enterprise adoption in that domain.
+
+The sequencing must balance:
+1. **Enterprise demand** (is there a paying customer ready?)
+2. **Operator supply** (are there capable AI systems to compete?)
+3. **Evaluation difficulty** (can we build a good rubric and evaluation pipeline?)
+4. **Category independence** (does it draw on existing operator skills or require wholly new expertise?)
+
+---
+
+### The v0 → v1 → v2 Progression (Detailed)
+
+**v0 Categories (Launch): Months 1-6**
+
+| Category | Enterprise Demand | Operator Supply | Eval Difficulty | Cross-Category Transfer |
+|---|---|---|---|---|
+| contract_review | High (legal AI wave) | Medium (existing legal AI startups) | High (needs legal domain rubric) | Low (legal domain) |
+| document_extraction | High (universal need) | High (many extraction models) | Low (largely deterministic) | High (to SQL, contract) |
+| sql_generation | Medium-High (data teams) | High (NLP-to-SQL well-studied) | Low (deterministic test cases) | Medium |
+| code_migration | Medium (legacy tech debt) | Medium (dev tool startups) | Medium (test suite execution) | Medium |
+
+**All four are correct for v0.** They have sufficient demand, existing operator populations, and manageable evaluation complexity. They also have measurable, objective success criteria — essential for trustworthy evaluation.
+
+**v1 Categories: Months 6-12 (after operator community established)**
+
+*customer_support_automation:*
+- Enterprise demand: Very High (every enterprise runs customer service; AI deflection is the #1 use case)
+- Operator supply: High (many conversational AI products)
+- Eval difficulty: Medium (multi-turn, requires human judgment on resolution quality)
+- Launch trigger: 20+ operators in v0 categories; Tier-2 LLM evaluation production-stable
+
+*api_integration:*
+- Enterprise demand: Medium (tech companies; not universal)
+- Operator supply: Medium (dev tooling space)
+- Eval difficulty: Low-Medium (deterministic for functional; LLM for quality)
+- Launch trigger: After customer_support (narrower market, lower priority)
+
+**v2 Categories: Months 12-18 (with Series A capital)**
+
+*security_audit:*
+- Enterprise demand: Very High (CISO budget is the fastest-growing IT budget line)
+- Operator supply: Medium (specialized; needs security expertise)
+- Eval difficulty: Very High (requires security experts for Tier-3; always Tier-3 required)
+- Prize pool minimum: $2,000 (security expertise is expensive)
+- Launch trigger: Head of Security/Compliance hired; Tier-3 adjudicator panel established
+
+*financial_modeling:*
+- Enterprise demand: High (CFO teams, hedge funds, corporate finance)
+- Operator supply: Medium-Low (niche; quantitative finance AI)
+- Eval difficulty: High (model validation requires financial expertise)
+- Prize pool minimum: $1,000
+- Launch trigger: Financial modeling academic advisor onboarded
+
+*data_pipeline:*
+- Enterprise demand: High (data engineering is a chronic pain)
+- Operator supply: Medium (overlaps with code migration operators)
+- Eval difficulty: Medium (mostly deterministic — does the pipeline run correctly?)
+- Launch trigger: Code migration operators established; data engineering customers identified
+
+*multi_modal_extraction:*
+- Enterprise demand: Medium-High (image + text documents)
+- Operator supply: Medium (multimodal models improving)
+- Eval difficulty: Medium (extend document_extraction rubric to image content)
+- Launch trigger: After document_extraction is stable; multimodal models at sufficient quality
+
+*research_synthesis:*
+- Enterprise demand: Medium (strategy teams, R&D)
+- Operator supply: Medium (requires long-context + synthesis capability)
+- Eval difficulty: High (inherently judgment-based)
+- Launch trigger: After Tier-2 LLM evaluation is highly calibrated
+
+---
+
+### The Category Launch Protocol
+
+Every new category launch follows a standard protocol:
+
+**Phase 1: Validation (4-6 weeks before public launch)**
+- 3+ enterprise conversations: would they pay for this category?
+- 10+ operator candidates identified: are capable operators interested?
+- Rubric template v1 drafted: is there a reasonable evaluation framework?
+- Internal pilot: Straw team runs one competition with dummy operators to test the pipeline
+
+**Phase 2: Beta (2-4 weeks before public launch)**
+- 5-10 operators invited to beta practice competition (Straw-funded prize, no enterprise required)
+- Enterprise beta customer invited to co-design the competition rubric
+- Evaluation pipeline tested with real submissions
+- Rubric template iterated based on operator feedback
+
+**Phase 3: Public Launch**
+- Announcement: "New category: [Category Name] is now live on Straw"
+- 20+ operators invited from existing community + external outreach
+- 1 paying enterprise competition ready to launch
+- Rubric template published (available for enterprise self-service)
+
+**Phase 4: Stabilization (first 3 months)**
+- Monitor evaluation quality (dispute rate target <5%)
+- Calibrate Tier-2 LLM evaluation prompts if needed
+- Expand operator pool to 50+
+- Publish "Category Overview" blog post (attracts organic operator interest)
+
+---
+
+### Category Cannibalization Risk
+
+Adding too many categories too fast creates operator attention fragmentation. An operator community of 500 people split across 15 categories has no critical mass in any category.
+
+The rule: don't launch a new category until the prior cohort of categories averages 50+ active operators each.
+
+Timeline:
+- Months 1-6 (v0, 4 categories): 50+ operators total → target 12+ per category
+- Months 6-12 (add 2 v1 categories): 150+ operators → target 25+ per category
+- Months 12-18 (add 5 v2 categories): 400+ operators → target 36+ per category
+
+At Year 2 with 2,000+ operators across 11 categories, the network is robust. At Year 3 with 8,000+ operators across 15 categories, each category has a deep operator pool.
+
+---
+
+### Category Retirement
+
+Some categories will eventually become commoditized (all operators score 9+, minimal differentiation). These categories don't need retirement — they transition from "competitive evaluation" to "minimum quality threshold certification."
+
+A retired-from-competition category can still be used for:
+1. **Quality certification:** operators prove their system meets minimum quality threshold (e.g., 8.0+). Enterprises use this as a pass/fail procurement filter, not a competitive selection.
+2. **Ongoing monitoring:** enterprises who already deployed a system use regular re-certification to verify performance hasn't degraded.
+3. **Training data source:** retired category task-output pairs are safely licensed for training data (no longer relevant for gaming active competitions).
+
+Category lifecycle: launch → growth → maturity → commoditized → certification mode → retired
+
+The timing of commoditization is hard to predict but can be detected: when the top-10 operators all score within 0.5 points of each other across 20+ competitions, the category has commoditized.
+
