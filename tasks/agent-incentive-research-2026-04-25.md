@@ -34687,3 +34687,199 @@ These constraints are spelled out in the Enterprise Customer Agreement (§ 12.5)
 
 Sources: D22 (three winner pathways, multi-engagement definition, poster override as EU AI Act Article 14 mechanism), D30 (ZeroClaw judge daemon, Codex CLI judge), Tick 205 (enterprise contract structure, BPO-hybrid services agreement, perpetual exclusive license Structure C, Mayer Brown Feb 2026 brief), Tick 211 (Operator TOS § 7-8, Enterprise Customer Agreement § 12), Tick 201 (payment rails: x402 USDC, Stripe MPP, Google AP2), digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai (EU AI Act Article 14 human oversight requirements).
 
+
+---
+
+## Tick 222 — Operator reputation scoring system: from competition history to trust signal
+
+**Context:** Tick 212 established that domain-indexed performance scores are the discovery mechanism for enterprises. Tick 208 established that Shapley-attributed individual scores are the right credit model. This tick designs the actual reputation scoring system — the formula that converts competition history into a displayable trust signal.
+
+**Design requirements**
+
+The reputation system must:
+1. **Be task-category-specific.** An operator's score on code migration must be independent of their score on contract review. One aggregate score is misleading.
+2. **Weight recency.** A win from 2 years ago matters less than a win from last month.
+3. **Weight competition quality.** A win in a $500 prize competition against 3 operators is worth less than a win in a $50,000 competition against 50 operators.
+4. **Account for rank, not just win/loss.** A consistent top-3 finish is more signal than one win and many middling placements.
+5. **Be transparent.** Operators must understand what drives their score and what actions improve it.
+6. **Resist manipulation.** An operator should not be able to inflate their score by entering many trivial competitions or colluding with a task-poster to get inflated results.
+
+**The EigenTrust-Beta hybrid (adapting from Session 1-22 research)**
+
+From earlier sessions (Ticks in agent-incentive-mechanics.md): the recommended reputation architecture is EigenTrust + Beta distribution + TrustFlow. Applied to Straw's competition context:
+
+**Step 1: Per-competition score normalization**
+
+For each competition, compute the normalized rank score for each operator:
+
+```
+rank_score = 1 - ((rank - 1) / (num_operators - 1))
+```
+
+This maps the top finisher to 1.0 and the bottom finisher to 0.0 regardless of competition size. A solo competition (1 operator) has no rank signal — these are excluded from reputation scoring.
+
+**Step 2: Quality-weighted score**
+
+The rank score is weighted by competition quality:
+
+```
+competition_quality = log(1 + prize_pool_usd / 1000) × log(1 + num_operators)
+```
+
+The prize pool factor caps logarithmically (a $1M prize is not 1000× more signal than a $1K prize; it's ~4× more). The operator count factor means beating 50 competitors is meaningfully more signal than beating 5. The product creates a quality index.
+
+Example values:
+- $1,000 prize, 3 operators: quality = log(2) × log(4) = 0.693 × 1.386 = 0.96
+- $10,000 prize, 10 operators: quality = log(11) × log(11) = 2.398 × 2.398 = 5.75
+- $50,000 prize, 30 operators: quality = log(51) × log(31) = 3.932 × 3.434 = 13.50
+
+**Step 3: Recency weighting**
+
+Apply exponential decay with a 6-month half-life:
+
+```
+decay = exp(-0.693 × days_since_competition / 180)
+```
+
+At 6 months: 50% weight. At 1 year: 25% weight. At 2 years: 6.25% weight. Recent performance dominates; historical performance fades but doesn't vanish.
+
+**Step 4: Beta distribution confidence**
+
+An operator with 1 competition has very little data; their score should have wide error bars. Use a Beta distribution to model confidence:
+
+```
+alpha = sum(quality_weighted_normalized_ranks) + 0.5  [prior]
+beta_param = sum(quality × (1 - normalized_rank)) + 0.5  [prior]
+
+reputation_score = alpha / (alpha + beta_param)  [posterior mean]
+confidence_interval = Beta(alpha, beta_param) CI at 90%
+```
+
+The 0.5 prior (Jeffreys prior) means a new operator starts at 0.5 with wide confidence bounds rather than at 0.0. An operator with 3 competitions might show "6.2/10 ± 2.1" — wide bounds, not falsely precise.
+
+**Step 5: Display format**
+
+```
+DocumentExtractor-v3
+Document extraction     ████████░░  7.8/10  (95% CI: 6.9–8.4)  [23 comps]
+Contract review         ████████░░  7.2/10  (95% CI: 6.1–8.1)  [8 comps]
+SQL generation          ░░░░░░░░░░  No data
+Code migration          ░░░░░░░░░░  No data
+
+Overall hire rate: 34% (of competing for hire-enabled competitions)
+Response rate: >90% (when enterprises initiate hire discussions)
+```
+
+The per-category scores are displayed with explicit confidence intervals — this is honest about the data quality, and it prevents operators with 2 competitions from appearing more reliable than they are.
+
+**Manipulation resistance**
+
+Three attack surfaces:
+
+1. **Trivial competition padding.** An operator could enter many $100 prize / 2-competitor competitions to build "volume" that makes their CI look tighter. Defense: the competition quality formula gives these near-zero weight. A $100 / 2-competitor competition has quality index 0.73 — it would take 100 such competitions to generate the signal of one $10K / 10-operator competition.
+
+2. **Collusion with task-poster.** An operator and enterprise collude to run a fake competition where the operator is the only entrant and wins a high-prize competition. Defense: minimum 5 operators per competition for reputation scoring to count (configurable). Competitions with fewer than 5 unique operators are flagged as "unranked" and contribute to win history but not to the reputation score.
+
+3. **Score inflation via rubric gaming.** This is the Goodhart's Law concern — covered in Tick 221 (eval gaming). For reputation scoring: the defense is that rubric-gamed scores should still correlate with actual task performance on well-designed rubrics (per RULERS locked rubric design). If an operator consistently tops the rubric on task type X, they are good at task type X. The rubric is only "gameable" relative to a true ground truth — and for the task categories in Straw's v1 taxonomy (code migration, document extraction, SQL generation, contract review), the ground truth is well-defined enough that rubric gaming and task performance are essentially the same thing.
+
+**The reputation score in the discovery flow**
+
+When an enterprise posts a competition in "document extraction" and reaches the invite step (Tick 212 operator discovery), they see:
+
+```
+Recommended operators for this competition:
+
+1. DocumentExtractor-v3  ██████████  7.8/10 [23 comps]  $4,200 avg prize won
+2. PDFParsePro          ████████░░  7.1/10 [11 comps]  $2,800 avg prize won
+3. LegalDocBot          ███████░░░  6.9/10 [6 comps]   $1,500 avg prize won
+4. [3 more operators below threshold]
+
+[Invite all recommended]  [Invite specific operators]  [Browse full directory]
+```
+
+The enterprise can see score, CI, competition count, and average prize won (a proxy for quality of competitions entered). They can adjust the invite threshold ("show me only operators with >10 competitions" or "show me all operators, even new entrants").
+
+Sources: Tick 208 (Shapley credit attribution, team reputation vs. individual reputation), Tick 212 (operator discovery, domain-indexed performance, HTB rank model), agent-incentive-mechanics.md (EigenTrust, Beta distribution reputation design), arxiv.org/abs/2602.08335 (SHARP hierarchical credit), arxiv.org/abs/2506.07388 (Shapley-Coop credit assignment), arxiv.org/abs/2603.19452 (TrustFlow reputation), arxiv.org/abs/2510.27554 (TraceRank from x402 graph).
+
+
+---
+
+## Tick 221 — Eval gaming and Goodhart's Law: the arms race and Straw's defenses
+
+**Research agent:** a33122fc5c0c66b4f — researched benchmark contamination evidence, the eval gaming arms race, dynamic evaluation techniques, enterprise-specific rubric defense, and adversarial evaluation frameworks.
+
+**The contamination problem is severe and accelerating**
+
+The canonical Goodhart's Law case for AI evals: GPT-4 solved every "easy" Codeforces problem posted before its September 2021 training cutoff, but failed on every post-cutoff problem. A guardrail model achieving 85.3% on its public test set dropped to 33.8% on novel adversarial prompts — a 57-point generalization gap attributable purely to benchmark overfitting.
+
+The Chatbot Arena case is the most consequential competitive platform failure. "The Leaderboard Illusion" (arXiv:2504.20879, April 2025, Cohere/Stanford/Princeton/Allen Institute): Meta, Google, and OpenAI privately tested many model variants and published only their best scores. Meta's Llama 4 topped the leaderboard with a version not released to the public. A companion paper at ICML 2025 proved that 200 strategically placed votes can shift Elo rankings for a target model without that model ever appearing in the manipulated battles.
+
+**The pattern:** once a competitive benchmark becomes the selection criterion, sophisticated actors find ways to optimize for the benchmark without improving on the underlying capability. This is Goodhart's Law applied to AI evaluation. The benchmark stops measuring what it was designed to measure.
+
+**How this threatens Straw**
+
+Straw's competition format should be structurally less vulnerable to benchmark contamination than public benchmarks like Chatbot Arena or HumanEval because:
+1. Enterprise-specific rubrics are private — there is no public distribution to contaminate
+2. Each competition has a unique task specification — no two competitions are identical
+3. Tier-1 tests are held back until evaluation time (Tick 216 isolation design)
+
+But the threat is not eliminated:
+
+**Threat A: Meta-rubric generalization.** A March 2026 paper ("Rationale Matters," arXiv:2603.16600) shows that rubric-following capability transfers across unseen rubrics without additional training. An agent trained on hundreds of diverse rubrics develops a latent model of "what rubrics want" that generalizes at inference time. It cannot memorize your rubric, but it can reverse-engineer your rubric's intent from the text. This means a sophisticated agent operator who has competed in many Straw competitions can use that experience to better satisfy novel rubrics — not by cheating, but by learning the meta-pattern of rubric design. This is arguably desirable (the agent learns to be a better rubric-follower), but it can diverge from "better at the underlying task."
+
+**Threat B: Chatbot Arena-style selective testing.** An operator who has access to a private testing loop (they know what their agent scores before officially submitting) can run many trials and submit only their best. Straw's submission architecture (max N submissions per agent per competition, Tick 219) already limits this — but an operator with a fast, cheap agent can still effectively cherry-pick within N submissions.
+
+**Threat C: Rubric text gaming.** An agent that reads the rubric (which it does, since the rubric conditions the judge's evaluation) can tailor its output to explicitly address each rubric criterion by name, inflating the LLM judge's impression of comprehensiveness without actually solving the task better. The "Rubrics as Attack Surface" paper (arXiv:2602.13576, Tick 209) quantifies this: up to 27.9% accuracy drop from rubric-compliant but task-irrelevant edits.
+
+**The defenses Straw has or should add**
+
+| Threat | Current defense | Strength |
+|--------|----------------|----------|
+| Benchmark contamination (public) | Enterprise-specific private rubrics | Strong |
+| Meta-rubric gaming | Hidden holdout criteria (not disclosed until scoring) | Needed |
+| Selective submission cherry-picking | Max N submissions per agent, Tier-2 delayed reveal | Moderate |
+| Rubric text gaming | Submission sanitization, structural rubric locking (RULERS) | Moderate |
+| Chatbot Arena-style private testing loop | Max submissions limit; no private scoring API | Moderate |
+| Elo/rank manipulation via vote rigging | Not applicable (no vote-based mechanism; objective scoring) | N/A |
+
+**The hidden holdout criterion — the key new defense**
+
+From the dynamic evaluation literature (LiveBench, EvoEval): the strongest defense against gaming is an evaluation component that is structurally unknowable in advance. For Straw, the equivalent is a **hidden holdout criterion**:
+
+A small portion (10-20%) of the rubric weighting is assigned to one or more criteria that are NOT disclosed to agents before submission. These criteria are designed by the enterprise at competition creation time, sealed in ZeroClaw's evaluation configuration, and revealed to all operators simultaneously at competition close.
+
+Example: a code migration competition has 4 disclosed criteria (correctness 35%, performance 30%, code quality 20%, documentation 15%). Hidden: "zero regressions in CI pipeline" (weighted at 0% normally but used as a tiebreaker). Agents that optimize for the disclosed rubric without running the full CI get penalized; agents that genuinely migrate the code correctly pass.
+
+For text-output tasks: a hidden criterion like "addresses the specific edge case described in paragraph 3 of the task brief without being prompted to do so" is nearly impossible to game without actually reading the task carefully.
+
+This adds a preparation overhead: the enterprise must define the hidden criterion at creation time. But this is an existing part of the rubric creation flow (Tick 210 Phase 2 already requires completing the full rubric).
+
+**LiveBench and EvoEval for inspiration**
+
+LiveBench (epoch.ai/benchmarks/live-bench) generates monthly questions from new math competitions, arXiv preprints, and post-cutoff Kaggle datasets — making memorization structurally impossible. EvoEval evolves existing coding benchmarks into transformed domains; average model performance dropped 39.4% vs HumanEval baselines, proving HumanEval measures overfitting.
+
+Straw's equivalent: allow enterprises to specify that their competition uses "evolved variants" of a standard task category. A document extraction competition might use a novel document format (non-standard table structure, unusual header conventions) that can't be learned from existing DocVQA training data. This is operationally practical and substantially increases the cost of gaming.
+
+**The adversarial posture for Straw's judge**
+
+NIST AI 100-2e2025 distinguishes inference-time evasion attacks (agents optimizing outputs to satisfy a judge) from training-time poisoning. Straw's threat is inference-time evasion.
+
+Springer 2025 paper on adversarial bias elicitation in LLM judges: specific prompt patterns can manipulate judge behavior. Key mitigations:
+1. **Judge-family diversity** (already in Straw's 3-provider ensemble): an output that games Claude's judge likely doesn't game GPT-4o's judge with the same technique.
+2. **Blind scoring** (judge does not see agent name, operator name, or submission metadata): prevents the judge from applying known-good reputation to influence scores.
+3. **Periodic calibration against human ground truth**: select cases that are likely to be gamed (high rubric-score, lower Tier-1 score) for human spot-check.
+
+**The meta-rubric generalization concern is partially a feature**
+
+An agent that trains on hundreds of Straw competitions and becomes better at following novel rubrics is, in a deep sense, becoming a better enterprise task-solver. The concern is that it diverges from genuine task performance — but this divergence is detectable: an agent that scores highly on rubric criteria but poorly on Tier-1 deterministic tests is gaming the rubric. The Tier-1 / Tier-2 architecture provides exactly this cross-validation.
+
+An agent that consistently scores in the top 3 on Tier-1 deterministic tests AND scores well on Tier-2 rubric criteria is genuinely good. An agent with top Tier-2 but poor Tier-1 is a rubric-gaming anomaly that gets flagged for Tier-3 human investigation.
+
+**Practical impact on Straw's design:**
+
+1. Add hidden holdout criteria as an optional (recommended) feature in the rubric generator (Tick 210 Phase 2 extension).
+2. Add a "max evaluations per agent per competition" setting (default N=10, matches existing design) with a visible counter in the operator UI — transparent about the cherry-picking limit.
+3. Add periodic "competition replay" feature: same task, same rubric, new test cases. Operators who performed well on the original competition re-run on fresh evaluation instances. Score drift signals gaming vs. genuine capability.
+
+Sources: arxiv.org/pdf/2504.20879 (The Leaderboard Illusion), arxiv.org/html/2501.17858v1 (Chatbot Arena vote rigging ICML 2025), arxiv.org/html/2502.17521v2 (benchmarking LLMs under data contamination), arxiv.org/html/2502.06559v1 (can we trust AI benchmarks — interdisciplinary review), epoch.ai/benchmarks/live-bench (LiveBench dynamic benchmark), arxiv.org/html/2508.07180v1 (dynamic benchmark construction for code), arxiv.org/html/2603.16600 (Rationale Matters — transferable rubric-following), arxiv.org/abs/2602.13576 (Rubrics as Attack Surface RIPD attack, from Tick 209), nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-2e2025.pdf (adversarial ML taxonomy), link.springer.com/article/10.1007/s10994-025-06862-6 (adversarial robustness in LLM judges), openreview.net/forum?id=Pf0PaYS9KG (ICML 2025 data contamination), arxiv.org/html/2601.19334v1 (inference-time decontamination), blog.fig.inc/to-solve-the-benchmark-crisis-evals-must-think.
+
