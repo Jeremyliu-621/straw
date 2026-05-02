@@ -55921,3 +55921,166 @@ All Session 31 threads addressed in Ticks 338-343. No carry-forward.
 - [ ] **Prize Pool Escrow dual-track settlement** — USD (Stripe) + USDC (A2A/AP2) dual-track. How does conversion work? Who bears FX risk? How do fiat enterprise buyers coexist with USDC agent settlement?
 - [ ] **FCA Cohort 2 application content** — Pull Sections 40-45, condense to application format. DEADLINE: May 5, 2026
 
+
+---
+
+## Tick 345 (2026-05-02T06:00Z): FCA Supercharged Sandbox Cohort 2 — application draft
+
+*Thread: FCA Cohort 2 application content (deadline: applications open May 5, 2026). Sources: Tick 250 (FCA sandbox analysis), Tick 265 (Cohort 2 urgency), Sections 40-45 (long-form proposal distillation), Section 29 (CFO pitch numbers), Section 39 (international regulatory update), WebSearch on FCA Supercharged Sandbox Cohort 2 details.*
+
+---
+
+### Situation report
+
+**FCA Supercharged Sandbox Cohort 2** opens for applications on **May 5, 2026** — three days from today (May 2). This is the FCA's cohort-based program for AI use cases in financial services, run in partnership with Nvidia. Key facts for this application:
+
+- **Focus:** Agentic AI — agentic payment services, compliance agents, customer interaction agents
+- **Non-UK firms eligible** (if solution is relevant to UK financial services/consumers)
+- **FCA regulated status not required**
+- **What participants get:** Secure cloud environment with GPU-enabled infrastructure, high-quality financial datasets, FCA expert regulatory support, direct access to FCA supervisors, showcase event later in 2026
+- **What the FCA gets:** Outcome data from test; visibility into agentic AI functioning in financial services context
+
+**Why Straw qualifies:** Straw is evaluation infrastructure for agentic AI procurement in financial services. It directly solves the FCA's documented concern that firms procuring AI cannot adequately demonstrate "effectiveness before deployment" (Consumer Duty, SM&CR accountability, operational resilience requirements). The FCA Supercharged Sandbox is designed to test exactly this kind of AI governance infrastructure.
+
+**The non-obvious positioning:** Straw doesn't deploy AI agents in financial services — it evaluates them. This means Straw is *enabling* FCA-compliant AI vendor procurement, not adding regulatory risk. The FCA should want Straw to exist.
+
+---
+
+### The application (complete draft)
+
+*Jeremy: use this as the foundation. Personalize with Straw's registered address, Jeremy's contact details, and specific UK fintech design partner names when you have them. Target length ~800 words — FCA sandbox applications are not long.*
+
+---
+
+**Application Section 1: Applicant details**
+
+*[Fill in: Company name (Straw / Straw Labs Ltd), jurisdiction of incorporation, registered address, primary contact, website]*
+
+---
+
+**Application Section 2: Description of the innovation**
+
+Straw is a structured competition platform for AI agent procurement and evaluation. Enterprises post a real task with a measurable success rubric — "build a credit scoring agent that achieves ≥85% accuracy on our validation set and is auditable under Consumer Duty" — and AI agent operators compete to solve it. A ZeroClaw judge agent evaluates all submissions independently. The winning agent can be hired directly, licensed for a feature, or acquired as a team.
+
+The innovation: **competitive evaluation as the procurement mechanism**. Instead of buying AI based on vendor demos, enterprises observe agents solving the actual problem under identical conditions. The score doesn't lie — it's based on the enterprise's own success criteria, not vendor-curated benchmarks.
+
+The agentic AI component: Straw's evaluation pipeline is itself powered by an autonomous judge agent (ZeroClaw, running Codex API). The judge agent investigates each submission — running code, probing endpoints, reasoning over outputs — the way a senior engineer reviews a PR. This produces per-criterion scores, written assessments, and reasoning traces, not just numbers. The autonomous judge is the core agentic AI innovation we intend to test in the FCA sandbox environment.
+
+---
+
+**Application Section 3: The consumer/market harm being addressed**
+
+82.1% of financial services AI initiatives fail to deliver expected business value (2025 enterprise survey; sector-specific failure rate). The average failed AI initiative costs £9.0 million ($11.3M). Financial services firms spend millions procuring AI agents based on vendor demos and controlled POCs — then discover the agent doesn't work on their actual data or workflows after signing a 2-year contract.
+
+The UK regulatory context amplifies the harm:
+- **Consumer Duty** (FCA, effective July 2023) requires firms to demonstrate that AI-driven customer outcomes are fair and explicable. Vendors rarely provide this documentation at purchase.
+- **SM&CR** accountability requirements mean senior managers are personally liable for AI model decisions they cannot explain or justify.
+- **Operational resilience** (PS21/3) requires firms to identify their "important business services" — many of which now depend on AI agents they selected without rigorous evaluation.
+
+The result: UK financial services firms are deploying AI in regulated, Customer-Duty-adjacent workflows without decision-grade evidence that the systems work as described. Straw addresses this directly by generating six documented evaluation artifacts per competition (competition hash, rubric IRR score, timestamped leaderboard, per-criterion judge assessment, poster override record, submission artifact hash) that satisfy FCA documentation requirements for AI vendor assessment.
+
+---
+
+**Application Section 4: Why the FCA sandbox is the right testing environment**
+
+Straw's innovation cannot be adequately tested in a generic commercial environment for three reasons:
+
+1. **Regulated task quality.** Financial services tasks require access to representative data (credit scoring validation sets, fraud transaction logs, compliance query datasets) in a supervised environment. The FCA's secure cloud environment with high-quality financial datasets is exactly the testing substrate Straw needs to demonstrate evaluation quality on real financial tasks.
+
+2. **Regulatory alignment validation.** We need to demonstrate that Straw's 6-artifact competition record satisfies FCA supervisory expectations for AI vendor documentation. FCA expert support in the sandbox provides direct validation feedback on our evidence format — the kind of feedback that cannot be obtained from external counsel alone.
+
+3. **Enterprise partnership access.** Our test proposals (below) require 2-3 FCA-supervised fintech firms willing to run live competitions. The FCA's showcase day introductions and regulated-firm network are the fastest path to these design partners.
+
+---
+
+**Application Section 5: Proposed test**
+
+**Competition 1 — Credit scoring agent evaluation (weeks 1-4)**
+
+A UK fintech lender posts a competition: "Build a credit scoring agent that achieves ≥85% accuracy on our holdout validation set, with full decision explainability output for Consumer Duty compliance." Three to five agent operators compete. Straw's ZeroClaw judge evaluates each submission on: accuracy, explainability format, Consumer Duty audit trail quality, and execution time. Competition runs for 2 weeks; results scored in 48 hours.
+
+*What this tests:* Straw's evaluation pipeline on a real financial task; ZeroClaw judge quality against FCA supervisors' independent assessment; 6-artifact output format adequacy for FCA vendor documentation.
+
+**Competition 2 — Compliance query agent evaluation (weeks 5-8)**
+
+A UK-regulated asset manager posts a competition: "Build an agent that accurately answers compliance queries drawn from FCA Handbook, with source citations and confidence thresholds." Straw evaluates on: factual accuracy, citation quality, confidence calibration, and refusal appropriateness for out-of-scope queries.
+
+*What this tests:* Evaluation framework on a non-deterministic task (no ground-truth binary answer); judge agent's ability to assess LLM-style output quality; adequacy of Straw's rubric format for FCA-regulated compliance use cases.
+
+**Competition 3 — Fraud detection agent evaluation (weeks 9-12)**
+
+Optional third competition run if FCA sandbox feedback warrants framework adjustment after Competitions 1-2. Similar structure with precision/recall tradeoff rubric reflecting PSD2 dispute requirements.
+
+*Primary outcome measure:* FCA supervisors' assessment of whether Straw competition artifacts constitute adequate evidence of AI vendor effectiveness under Consumer Duty requirements.
+
+---
+
+**Application Section 6: Outcome data for the FCA**
+
+Straw will provide the FCA with:
+1. Full competition dataset from each test competition (rubrics, submissions, scores, judge reasoning traces — anonymized where required)
+2. Operator performance comparison (how different agent operators performed on the same task — valuable to FCA for understanding AI capability heterogeneity)
+3. Analysis of rubric design adequacy for FCA compliance documentation purposes
+4. Proposed standardized "AI Vendor Evaluation Certificate" format based on sandbox findings, for FCA feedback on adoption as an industry standard
+
+---
+
+**Application Section 7: Regulatory question to resolve**
+
+**The specific question Straw needs the FCA sandbox to answer:**
+
+*Does a Straw competition record — comprising competition hash, rubric with IRR score, timestamped leaderboard, per-criterion judge assessment, poster override record, and submission artifact hash — constitute adequate documented evidence of AI system effectiveness for the purposes of:*
+*(a) Consumer Duty outcome monitoring for AI-driven customer decisions;*
+*(b) SM&CR senior manager accountability for AI model selection;*
+*(c) PS21/3 operational resilience evidence for important business services that depend on AI agents?*
+
+If yes, Straw becomes the standard evidence mechanism for FCA-supervised AI agent procurement. If no, the sandbox feedback identifies what additional documentation is required — informing Straw's product roadmap and the FCA's evolving guidance.
+
+---
+
+### What Jeremy needs to do before May 5
+
+**Pre-application tasks (today and tomorrow, May 2-3):**
+
+1. **Identify 1-2 UK fintech design partners** who would participate in the sandbox competitions. These need to be FCA-supervised firms (or FCA-regulated). Target: a UK challenger bank or lender (Monzo, Starling, Oaknorth, Allica Bank), a UK asset manager (Schroders, Man Group, Brevan Howard), or a UK insurtech (Zego, By Miles, Marshmallow). One confirmed partner is sufficient for the application.
+
+2. **Retain an FCA regulatory advisor for application support.** Recommended: a FinTech specialist at Linklaters, Clifford Chance, or boutique FCA regulatory advisors (ComplyPort, Thistle Initiatives). Cost: ~£500-1,500/day, 3-5 days needed. They will ensure application framing aligns with FCA expectations and review the Section 7 regulatory question.
+
+3. **Register a UK entity if not already done.** Straw needs a UK entity for FCA sandbox participation. Companies House registration takes 24 hours (~£12 online). If Straw is US-incorporated only, register a UK subsidiary now.
+
+**On May 5 (when applications open):**
+
+4. **Submit application immediately** — the FCA scores applications in order of submission and cohort slots are limited. Being first matters.
+
+5. **Include a one-page test proposal attachment** summarizing Competition 1 (credit scoring) with the specific UK fintech partner named.
+
+---
+
+### The financial case for spending time on this
+
+From Tick 265 and Tick 250:
+- **6.6× more investment raised** by sandbox participants vs. non-sandbox peers
+- **40% faster time to market authorization**
+- FCA showcase day = introduction to 50+ FCA-supervised fintechs needing AI evaluation infrastructure
+- "FCA sandbox participant" in Series A pitch = meaningful regulatory credibility signal to UK investors
+
+At Straw's seed stage, the opportunity cost (2-3 days of Jeremy's time + £5-7K regulatory advisor cost) is overwhelmingly justified by these outcomes. The FCA sandbox is effectively a subsidized marketing event with regulatory validation attached.
+
+---
+
+### Sources
+
+- FCA Supercharged Sandbox: fca.org.uk/firms/innovation/supercharged-sandbox
+- Cohort 2 focus on agentic AI: Tick 250, Tick 265 (this file)
+- FCA AI Live Testing cohort 2 named 8 firms April 22, 2026: techmarketview.com + globalgovernmentfinance.com
+- Application timeline (May 5, 2026): WebSearch result (5 sources confirm)
+- 82.1% financial services AI failure rate: Tick 265 (this file)
+- 6.6× investment / 40% time-to-market: fpf.org/blog/balancing-innovation-and-oversight-regulatory-sandboxes-as-a-tool-for-ai-governance
+- Consumer Duty AI implications: toptenaiagents.co.uk/blog/fca-ai-compliance-consumer-duty-fintech-uk-2026.html
+- FCA not planning AI-specific rules, relying on existing framework (Consumer Duty + SM&CR + PS21/3): rrcompliance.com/post/ai-governance-policy-fca-authorised-firms (2026)
+
+---
+
+## Closed thread (Tick 345)
+- [done — Tick 345] **FCA Cohort 2 application content** — Complete 7-section application draft for FCA Supercharged Sandbox Cohort 2 (opens May 5, 2026). Framing: Straw as compliance infrastructure enabling FCA-aligned AI vendor evaluation (Consumer Duty + SM&CR + PS21/3). Test proposal: 3 competitions (credit scoring, compliance query, fraud detection) with FCA-supervised UK fintech partners. Regulatory question to resolve: does Straw's 6-artifact competition record constitute adequate AI vendor assessment evidence for Consumer Duty/SM&CR/PS21/3? Action items for Jeremy: identify 1-2 UK fintech partners, retain FCA regulatory advisor (£5-7K), register UK entity if not done, submit on May 5 first thing.
+
