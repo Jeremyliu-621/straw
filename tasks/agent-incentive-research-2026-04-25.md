@@ -38095,3 +38095,223 @@ Pricing: subscription evaluations at $2,000-$5,000/month per task category (annu
 
 Source: Continuous benchmark generation paper: https://arxiv.org/html/2511.10049
 
+---
+
+## Tick 243 — Enterprise Integration Spec: Embedding Straw Into Procurement Workflows
+
+*Research sources: SAP Ariba next-gen integration with ServiceNow (October 2025, SAP Connect); Aavenir SAP Ariba + ServiceNow integration guide; Art of Procurement: State of AI in Procurement 2026; Michael Cronin: AI Agent Staffing Ultimate Guide 2026; PwC: Agentic AI in Procurement; GEP Economist Impact Survey (AI agents in procurement mainstream 2026); Infosys BPM: Agentic AI in Procurement 2026 Playbook; Ramp AI agents corporate procurement launch (2026)*
+
+### The Procurement Workflow Problem
+
+Straw's enterprise buyers are not "buying software" in the traditional sense. They're integrating a new step into their existing procurement workflow:
+
+**Today's enterprise AI procurement workflow:**
+1. Business unit identifies AI task need
+2. Procurement team issues RFP to known vendors
+3. Vendors submit demos + proposals
+4. Legal reviews contracts
+5. IT reviews security/data handling
+6. Finance approves budget
+7. Vendor is onboarded in SAP Ariba (or Coupa, or ServiceNow)
+8. Contract signed, project begins
+
+**Straw's target insertion point:**
+Between step 3 and step 4 — replace the demo-and-proposal phase with a competition that produces scored evidence. Straw's output becomes the input to legal review.
+
+But this means Straw must integrate cleanly with the systems already in use at steps 7-8: **SAP Ariba, ServiceNow Procurement, Coupa, and Workday.** An enterprise won't add a standalone tool that lives outside their procurement stack. Straw must either integrate with these systems or provide API outputs that can be imported.
+
+---
+
+### The SAP Ariba / ServiceNow Context
+
+SAP Ariba is the dominant enterprise source-to-pay platform (used by most Fortune 500 companies for supplier management, sourcing, and procurement). ServiceNow is the workflow orchestration layer on top of Ariba for approval routing and cross-system automation.
+
+The 2025 SAP Connect announcement embedded Joule AI directly into Ariba workflows — enabling "real-time, AI-assisted supplier evaluation and bid comparison." This is SAP's version of what Straw does, but:
+- SAP Joule evaluates suppliers based on existing supplier database + historical purchase data
+- Straw evaluates agents based on blind competition performance on real tasks
+
+These are complementary, not competitive. An enterprise could use SAP Ariba + ServiceNow for general vendor management and use Straw for AI agent-specific procurement.
+
+Sources:
+- SAP Ariba + ServiceNow integration: https://aavenir.com/resource/sap-ariba-and-servicenow-integration/
+- SAP Ariba next-gen announcement: https://news.sap.com/2025/10/sap-connect-spend-management-procurement/
+
+---
+
+### The Enterprise SDK (Poster Side)
+
+Straw's operator SDK (Tick 228) allows agents to retrieve competition briefs and submit solutions programmatically. The enterprise SDK is the mirror: allows enterprises to create competitions, monitor submissions, and retrieve results programmatically — from within their existing tools.
+
+**Enterprise SDK feature set:**
+
+```typescript
+// @straw/enterprise — Enterprise SDK
+import { StrawEnterprise } from '@straw/enterprise';
+
+const straw = new StrawEnterprise({
+  apiKey: process.env.STRAW_ENTERPRISE_API_KEY,
+  orgId: 'org_xxxxx'
+});
+
+// Create a competition from a template
+const competition = await straw.competitions.create({
+  title: 'Q2 Code Migration Benchmark',
+  category: 'code_migration',
+  template: 'python2_to_python3_standard_v3',  // calibrated template from Straw's library
+  customizations: {
+    codebase_asset_url: 's3://company-bucket/legacy-codebase.zip',
+    prize_pool: { total: 10000, distribution: 'standard_top5' },
+    deadline: '2026-06-01T00:00:00Z',
+    operator_eligibility: { min_reputation: 3.0, categories: ['code_migration'] }
+  }
+});
+
+console.log(competition.id);  // "comp_xxxxxxxxxx"
+console.log(competition.brief_url);  // URL operators use to retrieve the task
+
+// Register webhook for real-time updates
+await straw.webhooks.register({
+  competition_id: competition.id,
+  events: ['submission.received', 'tier1.scored', 'competition.closed', 'results.published'],
+  endpoint: 'https://company.com/webhooks/straw'
+});
+
+// Retrieve results after close
+const results = await straw.competitions.getResults(competition.id);
+console.log(results.leaderboard);          // ranked list of operators with scores
+console.log(results.compliance_package);  // 6-artifact compliance export URL
+
+// Export to ServiceNow vendor record format
+const serviceNowPayload = straw.export.toServiceNow(results, {
+  format: 'vendor_assessment',
+  winning_operator_id: results.leaderboard[0].operator_id
+});
+```
+
+**Key enterprise-side API endpoints:**
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/v1/competitions` | POST | Create competition |
+| `/v1/competitions/{id}` | GET | Get competition status + metadata |
+| `/v1/competitions/{id}/results` | GET | Get results (only after close) |
+| `/v1/competitions/{id}/leaderboard` | GET | Get leaderboard (operator ranks only, scores sealed during competition) |
+| `/v1/competitions/{id}/compliance` | GET | Get compliance documentation package |
+| `/v1/competitions/{id}/cancel` | POST | Cancel before submissions begin |
+| `/v1/templates` | GET | List calibrated competition templates by category |
+| `/v1/operators/{id}/credential` | GET | Verify an operator's Straw credential (public endpoint) |
+| `/v1/webhooks` | POST | Register webhook endpoint |
+| `/v1/analytics` | GET | Aggregate analytics across all org competitions |
+
+**The `/v1/export` endpoints** are the procurement integration layer:
+- `GET /v1/competitions/{id}/export/servicenow` → JSON payload for ServiceNow vendor assessment record
+- `GET /v1/competitions/{id}/export/ariba` → XML payload for SAP Ariba supplier qualification
+- `GET /v1/competitions/{id}/export/pdf` → Formatted competition report PDF (for manual import)
+- `GET /v1/competitions/{id}/export/eu-ai-act` → EU AI Act Article 15 technical documentation format
+- `GET /v1/competitions/{id}/export/omb-m26-04` → OMB M-26-04 risk assessment format
+
+These export endpoints are what transform Straw from a standalone platform into a workflow integration. An enterprise's Ariba administrator can configure a webhook that automatically creates a supplier qualification record in Ariba when a Straw competition completes.
+
+---
+
+### The ServiceNow Workflow Integration Pattern
+
+The ServiceNow integration is the most strategically important procurement integration because ServiceNow is the workflow layer that connects sourcing decisions to downstream approval, contracting, and payment flows.
+
+**Target workflow:**
+
+```
+1. Business unit submits IT request in ServiceNow: "Need AI agent for code migration"
+2. ServiceNow IT request triggers Straw API call: create competition (automated)
+3. Straw runs competition: 2-week window
+4. Competition closes: Straw webhook fires → ServiceNow receives competition results
+5. ServiceNow workflow routes results to procurement manager for review
+6. Procurement manager selects preferred operator from Straw leaderboard (P1 pathway)
+7. ServiceNow triggers contract creation workflow (existing Ariba contract templates)
+8. Legal reviews AI-specific contract riders (Tick 234 TOS provisions)
+9. Finance approves prize + ongoing contract budget
+10. Operator onboarded in Ariba as approved vendor
+11. Contract executed
+```
+
+Steps 2-4 are automated by the Straw integration; steps 5-11 flow through existing procurement infrastructure. **Straw becomes a service called by ServiceNow**, not a separate tool that lives outside the procurement workflow.
+
+This is exactly the "procurement automation" story that 90% of CPOs say they're prioritizing in 2026 (Art of Procurement survey). Straw is the missing "how do I evaluate AI agents objectively?" step that SAP Joule and ServiceNow don't cover.
+
+**The pilot proposal for a large enterprise:**
+
+> "We will build a no-cost ServiceNow integration pilot for your 3 nominated use cases. You post 3 competitions (code_migration, document_extraction, sql_generation), we run them, and we deliver the ServiceNow-formatted results directly into your existing vendor qualification workflow. Your procurement team reviews the Straw-scored results in the same ServiceNow interface they use for every other vendor. No new tools, no new logins."
+
+This framing removes the "another tool to adopt" friction entirely. The enterprise experiences Straw as a ServiceNow feature, not a new platform.
+
+---
+
+### AI Agent Staffing: The "Agent as Contractor" Framework
+
+The 2026 concept of **AI agent staffing** is maturing rapidly:
+- 52% of talent leaders plan to add AI agents to their teams in 2026
+- The emerging discipline treats AI agents as "hireable employees" with identities, permissions, performance metrics, and career paths
+- PwC expects agentic AI to transform 75% of procurement activities
+
+For Straw, this has a direct implication: **the "hire" pathway (D22-P2) maps exactly to AI agent staffing.**
+
+A Straw competition winner who enters the P2 hire pathway becomes a **contractor in the enterprise's AI agent workforce**:
+
+```
+Competition → Win → Hire Discussion → Pilot Deployment → Ongoing Contract
+                                         ↓
+                             3-month paid pilot: $15,000/month
+                             12-month contract option: $80,000/year
+                             Performance reviews: quarterly Straw re-evaluation
+```
+
+**The quarterly re-evaluation** is the Straw subscription model applied to the hire pathway: every 90 days, the enterprise runs a new Straw competition to verify the hired agent is still best-in-class. If a new entrant outscores the incumbent, the enterprise can renegotiate or switch.
+
+This creates a continuous procurement loop rather than a one-time decision:
+1. **Recruit** → run a competition (Straw)
+2. **Hire** → execute a contractor agreement (enterprise + operator legal)
+3. **Evaluate** → run quarterly re-competition (Straw subscription)
+4. **Retain or replace** → re-compete if scores drop
+
+Straw earns fees at steps 1 and 3. The contractor management (step 2-4) is handled by the enterprise's HR/procurement team using their existing tools. Straw doesn't try to become an HR platform — it stays in the evaluation lane.
+
+**The "AI Agent Staffing" total addressable market:**
+
+From the Michael Cronin guide: global AI agents market $10.91B in 2026, CAGR 49.6%. Agentic AI labor market specifically: $6.50B in 2026, growing to $134B by 2035. The "evaluation and procurement" slice is the layer between these numbers — enterprises need to evaluate agents before staffing them. At even 5% of the labor market as procurement/evaluation fees, that's $325M TAM in 2026 growing to $6.7B by 2035.
+
+Sources:
+- AI Agent Staffing 2026 guide: https://www.michaelrcronin.com/post/the-ultimate-guide-to-ai-agent-staffing-in-2026-from-concept-to-scaled-digital-workforce
+- Art of Procurement state of AI 2026: https://artofprocurement.com/blog/state-of-ai-in-procurement
+- PwC agentic AI procurement: https://www.pwc.com/us/en/tech-effect/ai-analytics/agentic-ai-in-procurement.html
+- GEP economist impact survey: https://www.gep.com/blog/technology/trust-ai-agents-complex-procurement
+
+---
+
+### The Operator-Side Implication: Building Straw Into Your Business
+
+For operators, a Straw win doesn't just produce prize money — it produces a **portfolio entry** that becomes a business development asset.
+
+An Indian IT services firm (e.g., a 50-person AI practice team at a tier-2 IT services company) that wins 3 Straw competitions in code_migration:
+1. Gets the Straw Win badge and result card (Tick 236)
+2. Shares the credential with enterprise prospects: "We consistently score 8.5+ in code migration competitions on Straw, ranked in the top 5% of 300+ operators"
+3. Uses the competition wins as a reference case in RFP responses
+4. Gets inbound inquiries from enterprises who see the credential via Frontier/LinkedIn integration
+
+The Straw credential becomes a sales asset. The operator's pipeline is partially built by winning Straw competitions — not just by traditional enterprise sales.
+
+This is the "virality through operator wins" flywheel (Tick 236) applied to the broader AI agent staffing market: operators who win use their wins as marketing; enterprises see the wins; enterprises post more competitions to find their own winners.
+
+---
+
+### Implementation Priority: The ServiceNow Integration First
+
+The procurement integrations (SAP Ariba, ServiceNow, Coupa) are not launch requirements. They're v1.5 features that become critical for enterprise sales past the pilot phase.
+
+Priority order:
+1. **ServiceNow integration** — highest enterprise penetration, existing workflow for approval routing, available via ServiceNow Store (pre-built integrations)
+2. **SAP Ariba integration** — source-to-pay standard, required for Fortune 500 vendor onboarding
+3. **Coupa integration** — mid-market procurement platform, growing AI agent purchase workflows
+4. **Workday integration** — HR/contractor management, relevant for the hire pathway
+
+The ServiceNow integration pilot can be built in 2-3 weeks by a dedicated engineer (the API layer is already specified above; the ServiceNow side uses their standard IntegrationHub spoke format). This is the right first enterprise integration to close the first 3-5 large enterprise customers.
+
