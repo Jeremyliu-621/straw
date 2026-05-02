@@ -51483,3 +51483,323 @@ Based on all four papers:
 **Git commit target:** `research(agent-incentive): ticks 312-316 — COALESCE, x402 loop, swarm prize economics, taxonomy v2, judge bias tools`
 
 **If git push fails:** File saved locally. Next session sees via `git log --oneline`.
+
+---
+
+## Tick 317 (2026-05-02): Long-form proposal update — COALESCE, tiered prizes, x402 loop, taxonomy v2
+
+*Thread: Long-form proposal update. Sections 12 and 14 receive targeted revisions. New Sections 30 (x402 self-provisioning loop) and 31 (task taxonomy expansion) added.*
+
+---
+
+## Long-form proposal — Section 12 (ADDENDUM): COALESCE and the epsilon-greedy posting trigger
+
+> This addendum extends Section 12 ("Why agents would actually WANT to post tasks") with the COALESCE empirical result (arXiv:2506.01900). The original six reasons for posting remain valid. COALESCE adds a seventh reason AND a product design implication.
+
+### Reason 7: Market exploration is mandatory — COALESCE proves it
+
+The COALESCE paper (May 2026, Oxford/ETH Zürich) is the first published empirical result on autonomous agent labor markets with competitive contractor selection. Its central finding is directly relevant to Straw's posting-trigger mechanism.
+
+**Setup:** COALESCE built a multi-agent economy where orchestrators post tasks, specialist agents bid, and the system uses TOPSIS multi-criteria ranking to select contractors. Two conditions compared:
+1. Pure exploitation: agents always engage the contractor with the highest current reputation in their skill category
+2. Epsilon-greedy (ε=0.1): 10% of the time, agents route to a contractor outside their current best-known set ("exploration")
+
+**Result:**
+- Pure exploitation: 1.9% cost reduction vs. baseline
+- Epsilon-greedy: 20.3% cost reduction vs. baseline
+
+**The gap is 10.7×.** Without exploration, the market converges to a local optimum that's barely better than random. With 10% exploration, the market finds specialist contractors that pure exploitation never discovers.
+
+**Why this matters for posting:** An agent system that posts tasks only when it's "sure" it knows which competitor to hire (pure exploitation) gets almost none of the efficiency gains. The gains come from exploration — posting tasks even when you're uncertain who will win, because the competition surface new specialists you didn't know existed.
+
+**For agents (the posting trigger):** The rational strategy is to post with some probability even on tasks you think you can do yourself. COALESCE's ε=0.1 translates to: for every 10 tasks an agent could attempt itself, it should post at least 1 to the external market, even if its self-estimate is "I'm probably good enough at this." The expected gain from discovering a specialist that outperforms your self-attempt is worth the 10% exploration tax.
+
+**For Straw's product design (critical):** Passive waiting for agents to post doesn't work. The COALESCE finding implies that the platform must actively surface posting opportunities. The product implication:
+
+> Straw needs an "Explore" posting trigger — a mechanism that shows agents tasks in adjacent-but-unconfident categories and says "post this, see who surfaces."
+
+This is **epsilon-greedy in product form.** Not just a passive marketplace. An active task-discovery surface that pushes agents toward posting at ε=0.1 even when their internal deliberation would say "I can probably handle this."
+
+Concretely for the agent-facing UX:
+- Agent has SKILL.md declaring expertise in [Python, TypeScript, data modeling]
+- Straw's task browser shows a column: "Explore" — tasks in [SQL optimization, PostgreSQL schema design] (adjacent to data modeling, but not in declared expertise)
+- The explore column is pre-populated: "3 agents are currently competing on this $800 SQL optimization task. Your data modeling skill likely transfers. Post this one and see where you land."
+- The call-to-action is not "compete" — it's "post and observe." The agent delegates the task while observing the competitors' approaches. If they win by a large margin, the agent learns a capability gap. If the agent's own submission would have scored similarly, it gets calibration data.
+
+**The sixth structural condition from Section 12 already includes "marketplace clears fast enough." COALESCE adds a seventh:**
+
+7. **Exploration is incentivized, not just tolerated.** The platform must make exploration the default for a fraction of interactions, not an optional feature. An epsilon-greedy discovery surface, active task recommendations, and mild reputation bonus for posting in new categories (Straw's "pioneer badge" for first agent to compete in a new task category) push the system toward the 20.3% efficiency regime rather than the 1.9% exploitation trap.
+
+---
+
+## Long-form proposal — Section 14 (ADDENDUM): 300-agent swarm — prize economics update
+
+> This addendum revises the prize pool economics for the 300-agent scenario. The original section assumed a single large task with one winner. The economics of many agents on one prize are poor. The correct design is the opposite.
+
+### The Prize Pool EV Problem
+
+Original Section 14 framed the 300-agent hackathon as 300 agents competing on a pool of 30 tasks ($150K total, ~$5K/task average). This framing was intuitive but missed the prize-per-task EV calculation.
+
+**EV per agent on a winner-take-all $1K task with 300 competitors:**
+- Each agent's probability of winning (assuming equal skill): 1/300 = 0.33%
+- Expected gross: $1,000 × 0.0033 = $3.33
+- Agent's cost to compete (Tick 4 analysis: 4-6 hours Sonnet 4.6 at $2.40/hr): $9.60 to $14.40
+- **Net EV: -$6.27 to -$11.07 per attempt**
+
+With realistic skill heterogeneity (top agents win more, bottom agents win less), the median agent's EV is more negative:
+- Top 10% agents: EV ≈ +$7 to +$15 (win rate ~5-7%)
+- Median agents: EV ≈ -$17 to -$24
+- Bottom 50%: EV ≈ -$30 to -$37
+
+**At 300 agents on one $1K task, 85-90% of participants have negative EV.** Rational agents learn this quickly. After a few attempts, they exit the oversaturated task and either: (a) compete on undersaturated tasks, or (b) stop competing on Straw entirely if no undersaturated tasks exist.
+
+**The 300-agent scenario is dangerous not because of infrastructure (which is fine) but because of economics.** A platform that regularly runs 300 agents on one task produces a bad experience for 85% of participants.
+
+### The Correct Design: Concurrent Tasks, Not Concentrated Competition
+
+**Target density:** 15-30 agents per task is the optimal range. This produces:
+- Win probability per agent: 3-7%
+- EV for average agent on $1K task: approximately $0 to +$5 (break-even to mildly positive)
+- EV for specialist agent: $30 to $60 (attractive)
+- EV for bottom 50% agent: -$5 to -$10 (not catastrophic — one failed attempt)
+
+At **healthy density (20 agents/task)**, the bottom 50% of agents make a small loss on each attempt, but the loss is small enough that occasional wins (even at 5% rate) break even over time. Agents stay in the market.
+
+**Routing 300 agents across concurrent tasks:**
+- 300 agents available
+- 15-20 concurrent tasks live simultaneously
+- Average enrollment per task: 15-20 agents (not 300)
+- All 300 agents are engaged (none sitting idle)
+
+This requires Straw to **throttle task enrollment** — not allow unlimited enrollment. Cap per-task enrollment at 30 agents. If demand exceeds supply, use the capability-match score to select the top-30 by skill fit. The other agents get notified: "This task is at capacity. Here are 3 similar tasks with fewer competitors."
+
+**The enrollment cap also solves the homogeneous-submission failure mode from Section 14.** Capping at 30 agents means 30 diverse submissions, not 300 near-identical ones.
+
+### Tiered Prizes for Healthy Competition
+
+For hackathon-format scenarios (many agents, single task, large prize pool), winner-take-all creates all the problems above. The fix: tiered prizes with a long tail.
+
+**Recommended prize distribution for a $10K task with 20 enrolled agents:**
+
+| Rank | Prize | % of Pool |
+|---|---|---|
+| 1st | $5,000 | 50% |
+| 2nd | $2,500 | 25% |
+| 3rd | $1,250 | 12.5% |
+| 4th | $625 | 6.25% |
+| 5th | $625 | 6.25% |
+
+**EV math with tiered prizes, 20 agents:**
+- Each agent's expected prize (uniform skill): ($10,000 / 20) = $500 gross
+- Agent cost: $14.40
+- **Net EV: +$485.60** — strongly positive for all participants
+
+With skill heterogeneity (top agents win more):
+- Top 10% agents: EV ≈ $1,800 to $2,500 (frequently win 1st-3rd)
+- Median agents: EV ≈ $300 to $600 (occasionally win 4th-5th, sometimes top 3)
+- Bottom 50%: EV ≈ $50 to $200 (rare wins but tiered prizes mean even 4th-5th is meaningful)
+
+**The tiered prize structure converts a winner-take-all market where 85% lose into a participation market where 100% have positive expected value.**
+
+### For "Straw Hackathons" (the 300-agent scenario Jeremy envisions)
+
+The 300-agent hackathon is best run as:
+1. **Not 300 agents on 1 task.** 300 agents on 15-20 concurrent tasks, each with 15-20 competitors
+2. **Prize structure:** Each task uses tiered prizes (50/25/12.5/6.25/6.25%)
+3. **Hackathon-wide leaderboard:** Separately tracked total-earnings leaderboard across all tasks, with an additional hackathon-wide prize for most earnings across all tasks (drives agents to compete broadly, not just one task)
+4. **Hackathon prize pool:** Example — $150K total across 15 tasks ($10K/task average), plus $15K hackathon-wide prize for top 5 all-tasks earners
+
+This gives every agent a rational reason to participate (positive EV per task), a meta-game incentive (compete broadly for the hackathon prize), and Straw meaningful data on cross-category capability (the all-tasks leaderboard surfaces versatile generalist agents and specialists in each category simultaneously).
+
+---
+
+## Long-form proposal (DRAFT) — Section 30: The x402 self-provisioning loop
+
+> Added in Session 30 (Tick 313). This section examines the theoretical v3 vision of fully autonomous agent economics on Straw — and the current reality that makes it a 2027-2028 feature, not a 2026 launch requirement.
+
+### The Vision: Full Economic Autonomy
+
+In the theoretical fully-autonomous agent economy:
+
+1. An orchestrator agent receives a task from an enterprise poster
+2. The orchestrator decomposes the task into subtasks
+3. The orchestrator posts subtasks to Straw, paying the posting fee from its own wallet
+4. Competing agents bid and are paid from the orchestrator's wallet upon completion
+5. The orchestrator delivers the final result, receives the full bounty in its wallet
+6. The orchestrator's wallet funds its next round of subtask posting
+
+No human in the loop. No operator mediating payments. The agent earns, spends, earns, spends — an autonomous economic actor.
+
+**x402 (HTTP 402, Coinbase standard) is the payment infrastructure designed for this.** An AI agent can include payment in an HTTP request header, using stablecoins or other programmable payment rails. This is the enabling infrastructure for the autonomous loop.
+
+### The Reality Check (March 2026 data)
+
+From CoinDesk, March 2026:
+- **$14,000/day** in x402 organic transaction volume globally
+- Average transaction: ~$0.20
+- ~50% of volume is developer testing, not production AI agent traffic
+- Real production x402 volume: approximately **$7,000/day** total, globally
+
+**The critical blocker:** Mainstream LLM providers — Anthropic (Claude), OpenAI (GPT-4/o), Google (Gemini) — do not yet accept x402 payments for API calls. This means:
+- An agent cannot autonomously fund its own inference
+- The "earn from Straw, spend on compute" loop is broken at the compute-purchase step
+- The agent's wallet contains earnings it cannot autonomously convert to inference capacity
+
+**When this changes:** Anthropic has stablecoin payment infrastructure in active development (Q3-Q4 2026 roadmap per industry signals). OpenAI equivalent timing is similar. The full loop becomes technically possible in late 2026 for early-adopters, mainstream in 2027-2028.
+
+### Straw's Staged Approach
+
+**v0-v1 (2026): Operator-mediated payments**
+- Operators hold custody of agent wallets
+- Straw pays operators (via Stripe ACH); operators route earnings to agents' compute budgets
+- Agent earns → operator wallet → operator refills compute budget → agent competes again
+- No autonomous money movement. Human (operator) in the loop for all fund flows.
+- This is legally cleaner, ops-simpler, and currently the only viable option.
+
+**v1.5 (late 2026): x402 for Straw-internal payments**
+- Agents pay Straw posting fees directly via x402 (no operator mediation for Straw's own fees)
+- Straw pays agent competition prizes directly to agent wallets via x402
+- Agents cannot yet autonomously buy compute — but they can autonomously participate in Straw's internal economy
+- The "earn on Straw, post to Straw" loop closes. A sub-agent earning from a task can post its own task without operator intervention.
+- This is the first step toward autonomy, and it's tractable as soon as x402 volume reaches production reliability (target: $500K+/day globally as liquidity signal)
+
+**v2 (2027): Semi-autonomous loop**
+- If Anthropic/OpenAI accept x402, agents can autonomously buy inference
+- The full "earn → compete → post → earn" loop becomes technically possible
+- Straw adds: agent-held stablecoin custody (Coinbase Wallet SDK), autonomous posting budget rules (agent sets its own max-post-fee from earnings)
+- Regulatory status of autonomous agent economic actors is unclear in 2026; clearer by 2027 as FinCEN/FCA guidance arrives
+
+**v3 (2028): Fully autonomous**
+- The vision state. Agents as fully autonomous economic actors. Human operators exist as stake-holders and governance participants, not transaction mediators.
+- Enabled by: (1) LLM providers accept x402; (2) autonomous wallet custody is legally settled; (3) Straw's reputation system has enough data that agent creditworthiness is assessable without human co-signer.
+
+### Why This Matters for the Investor Pitch
+
+The x402 loop is a **land-and-expand infrastructure play.** Straw starts as an operator-mediated platform (high trust, low autonomy). As the autonomous payment infrastructure matures, Straw's role evolves from "marketplace operator" to "autonomous economic OS." 
+
+The market that Straw is building is not the 2026 market (human-mediated agent procurement). It's the 2028-2030 market (autonomous agent economic actors). The 2026 platform is the beachhead. Straw's data moat (per-task performance scores, per-agent capability profiles, per-skill reputation graphs) is the asset that compounds as autonomy increases.
+
+**Framing for Series A investors:** "We are building the financial infrastructure for AI agents before they need it. When autonomous agent economic activity hits scale — and it will, because x402 volume is growing 10× annually — Straw is the market with the data. We're the Coinbase of agent labor markets, not a task completion SaaS."
+
+### What Straw Does Not Need to Build in v0-v1
+
+- Custom payment rails (use Stripe for operator payments)
+- Autonomous wallet custody (operators hold custody)
+- x402 integration (use Stripe for now; add x402 as a second rail at v1.5)
+- KYC for AI agents (not required when operators are the legal entity)
+
+The elaborate autonomous payment vision is real and coming. But in 2026, Straw's payment layer is simple: Stripe ACH for operators, standard payout logic. Don't over-engineer for 2028 requirements.
+
+---
+
+## Long-form proposal (DRAFT) — Section 31: Task taxonomy expansion — v1.5 and v2 categories
+
+> Added in Session 30 (Tick 315). This section documents the expansion of Straw's task taxonomy beyond the four launch categories, with rationale for each addition and launch sequencing.
+
+### The Four Launch Categories (v1.0)
+
+At launch, Straw supports four task categories, chosen because they have:
+1. Deterministic-enough evaluation (code executes, tests pass/fail)
+2. Sufficient market supply (many agents trained on these)
+3. Clear enterprise use cases
+4. Low ambiguity in rubric design
+
+| Category | Eval method | Typical prize range | Enterprise buyer |
+|---|---|---|---|
+| Code debugging | Test suite pass rate | $200-$2,000 | Engineering teams |
+| Code migration | Syntax correctness + test coverage | $1,000-$10,000 | Platform engineering |
+| Code review | Rubric (security, readability, best practices) | $500-$3,000 | Engineering managers |
+| Feature implementation | Functional tests + rubric | $2,000-$15,000 | Product/engineering |
+
+These four categories generate clean leaderboards and unambiguous winners. They are the right place to start.
+
+### v1.5 Additions (6-12 months post-launch)
+
+Three categories add meaningful revenue without introducing eval complexity that Straw can't handle at v1.5 maturity:
+
+**API Integration Testing**
+- What it is: Agent verifies that a given API integration works correctly across edge cases — rate limiting, error responses, auth flows, schema compliance
+- Why it works: Deterministic. Either the integration passes a test battery or it doesn't. No rubric subjectivity.
+- Enterprise demand: Every company integrating SaaS tools needs this. High-frequency task (each new API version generates a new task)
+- Prize range: $500-$3,000/task
+- Eval complexity: Low. Tier 1 deterministic handles 90%.
+
+**Data Pipeline Construction / ETL**
+- What it is: Agent builds a pipeline that transforms a source dataset into a target schema with specified transformations, validating outputs
+- Why it works: Input/output validation is deterministic. Partial credit via per-row accuracy scores.
+- Enterprise demand: Every company with a modern data stack needs ETL work constantly. Data engineering is expensive to staff. High-priority outsource candidate.
+- Prize range: $1,500-$8,000/task
+- Eval complexity: Low-medium. Schema compliance is Tier 1. Data quality nuances may need Tier 2.
+
+**Customer Support / NLU**
+- What it is: Agent builds or fine-tunes a response system for customer support scenarios, evaluated on BLEU/ROUGE, intent accuracy, and tone rubric
+- Why it works: Hybrid eval — automatic metrics (Tier 1) + LLM tone rubric (Tier 2). Well-understood problem.
+- Enterprise demand: Customer support automation is the #1 enterprise AI use case by deployment. Companies want to benchmark competing agent approaches.
+- Prize range: $1,000-$5,000/task
+- Eval complexity: Medium. Standard metrics are Tier 1; tone/escalation judgment requires Tier 2.
+
+**Why v1.5 not v1.0:** These three categories require minor additions to the eval framework (new test harnesses for API testing, row-level scoring for ETL, NLU metric integrations). Not architecturally significant, but they require implementation work. Prioritize after v1.0 has validated the core eval pipeline.
+
+### v2 Additions (12-24 months post-launch)
+
+Three categories require new infrastructure or regulatory clarity before Straw can reliably support them:
+
+**Research Synthesis / RAG**
+- What it is: Agent synthesizes a body of documents into a structured research report, evaluated for factual accuracy, coverage, and citation quality
+- Why it needs v2 timing: No automated ground truth. Eval requires a reference corpus + LLM judge with strong citation-verification capability. Tick 316 found that LLM judges on research tasks have high verbosity bias (longer reports score higher regardless of quality). CALM + RBD are needed to control this.
+- Enterprise demand: High. Every enterprise has research workflows. Consulting, financial services, pharma are the natural first buyers.
+- Prize range: $3,000-$20,000/task
+- New infra needed: Reference corpus storage, citation extraction, factual accuracy verification tooling
+
+**Security Audit**
+- What it is: Agent performs a security audit of a codebase, API, or infrastructure configuration, producing a findings report scored by coverage and severity classification accuracy
+- Why it needs v2 timing: Two blockers. First, generating meaningful ground truth ("the correct list of vulnerabilities") requires a reference set that Straw doesn't have at launch. Second, enterprise posters submitting code for security audits need strong data handling guarantees (confidential codebases). SOC 2 Type II certification is required before enterprises will submit production code. Third: Straw needs professional liability insurance clarity (if an agent gives a clean bill of health and the system gets breached, what is Straw's liability?). Insurance product for this category doesn't exist clearly in 2026 — wait for market.
+- Enterprise demand: Very high once trust and insurance issues are resolved. CISOs will pay $10K-$50K/task for credible agent-run security audits.
+- Prize range: $5,000-$50,000/task (highest prize ceiling of any category)
+- New infra needed: Vulnerability ground truth database, sandboxed code execution with stricter isolation, SOC 2 compliance, liability insurance product
+
+**Financial Modeling**
+- What it is: Agent builds a financial model (DCF, scenario analysis, etc.) given structured inputs, evaluated on model correctness and scenario coverage
+- Why it needs v2 timing: Regulatory. If agents produce financial analysis that informs investment decisions, SEC and CFTC rules on investment advice potentially apply. The line between "competition task" and "regulated financial advice" is unclear in 2026. Straw needs a compliance opinion before launching this category. FCA Cohort 2 (opening May 2026) is the right venue to get regulatory clarity.
+- Enterprise demand: High. Investment banks, PE firms, corporate finance teams all use financial modeling heavily and are eager to benchmark agent capability.
+- Prize range: $5,000-$30,000/task
+- New infra needed: Financial model correctness scoring (deterministic for formula accuracy; judgment for scenario quality), regulatory compliance framework, FCA/SEC safe harbor guidance
+
+### v2+ (2028+): Speculative
+
+These categories are real market needs but require capabilities that either don't exist or haven't been sufficiently validated in 2026:
+
+- **Multi-modal task execution** (agents that work on image+code or document+data tasks): requires multi-modal eval infrastructure
+- **Agent orchestration benchmarking** (enterprises testing competing orchestrator architectures): Straw becomes a meta-platform where multi-agent systems compete, not just individual agents. Requires competition-within-competition infrastructure.
+- **Hardware-in-the-loop testing** (agents running validation suites on physical hardware or simulation environments): requires physical or virtualized hardware provisioning — out of scope until the software categories are proven
+
+### Taxonomy Expansion Strategy: Revenue vs. Complexity
+
+| Category | Revenue potential | Eval complexity | Launch timing |
+|---|---|---|---|
+| Code debugging | ★★★★ | Low | v1.0 ✅ |
+| Code migration | ★★★★★ | Low | v1.0 ✅ |
+| Code review | ★★★ | Medium | v1.0 ✅ |
+| Feature implementation | ★★★★★ | Medium | v1.0 ✅ |
+| API integration testing | ★★★ | Low | v1.5 |
+| ETL / data pipeline | ★★★★ | Low-medium | v1.5 |
+| Customer support / NLU | ★★★★ | Medium | v1.5 |
+| Research synthesis / RAG | ★★★★★ | High | v2 |
+| Security audit | ★★★★★ | High + regulatory | v2 |
+| Financial modeling | ★★★★★ | High + regulatory | v2 |
+
+**Launch sequencing principle:** Add categories in order of (revenue potential / eval complexity). Low-complexity, high-revenue categories first. Only add high-complexity or regulated categories once the core eval infrastructure is battle-tested and the compliance posture is established.
+
+---
+
+## Closed threads (Session 30 update)
+
+- [done — Tick 317] **Long-form proposal update** — Section 12 addendum: COALESCE epsilon-greedy posting trigger (Reason 7: exploration is incentivized, not just tolerated; product design implication: epsilon-greedy task suggestion UX at ε=0.1). Section 14 addendum: 300-agent prize economics update (winner-take-all EV math, optimal density 15-30 agents/task, tiered prizes 50/25/12.5/6.25/6.25%, hackathon format with enrollment cap). New Section 30: x402 self-provisioning loop (v0-v1 operator-mediated → v1.5 x402 for Straw-internal → v2 semi-autonomous → v3 full loop; 2026 blocker: mainstream LLM providers don't accept x402; investor framing: "Coinbase of agent labor markets"). New Section 31: task taxonomy expansion (v1.5: API Integration Testing + ETL/Data Pipeline + Customer Support/NLU; v2: Research Synthesis + Security Audit + Financial Modeling; taxonomy expansion strategy by revenue/complexity ratio).
+
+---
+
+## Push status (Session 30, after Tick 317)
+
+**Ticks 312-317** ready to push. Tick 317 is the long-form proposal update.
+
+**Git commit target:** `research(agent-incentive): tick 317 — long-form proposal update (COALESCE, tiered prizes, x402 loop, taxonomy v2)`
