@@ -38734,3 +38734,199 @@ Sources:
 - SaaS valuation multiples: https://aventis-advisors.com/saas-valuation-multiples/
 - McKinsey AI SaaS business models: https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/upgrading-software-business-models-to-thrive-in-the-ai-era
 
+---
+
+## Tick 246 — Straw Risk Analysis: Top 7 Existential Threats and Mitigations
+
+*Research sources: Two-Sided Online Marketplace Ecosystem Dynamics 2025-2030 (Platform Executive); Andrew Chen cold start problem analysis; marketplace failure modes (Homejoy, Exec, Sidecar); anti-network effects at scale; prior Straw-specific research from Ticks 207-245*
+
+### Framework: Distinguishing Execution Risk from Structural Risk
+
+Execution risks (bad hiring, slow GTM, product bugs) are manageable. Structural risks (market doesn't exist, competitor has insurmountable advantage, regulatory environment kills the model) are existential. This tick focuses on structural risks.
+
+---
+
+### Risk 1: Cold Start — Neither Side Joins First
+
+**The problem:** Enterprises won't post competitions if no operators will compete; operators won't join if no enterprises post competitions.
+
+**Severity:** High — this is the single most dangerous risk in the first 6 months.
+
+**Why this is different from standard marketplace cold start:**
+
+Standard two-sided marketplaces (Uber, Airbnb) need geographic density — supply and demand in the same location at the same time. Straw's marketplace is asynchronous and global: an operator in India can compete in a competition posted by an enterprise in New York without any geographic coordination. The density requirement is lower.
+
+But the network effect still requires simultaneous presence on both sides. If Straw has 300 operators and 0 enterprises, operators see no competitions and leave. If Straw has 10 enterprises and 5 operators, competition quality is poor (5-way competition is not credible enough to charge a platform fee).
+
+**Mitigation (Tick 215 — Bootstrap GTM):**
+
+The COALESCE cold-start solution (Tick 207-208):
+1. Straw creates 5-10 synthetic competitions using public enterprise datasets (open-source codebases, public documents) with real prize pools (funded by Straw from seed capital: $500-1,000 each × 10 = $5,000-$10,000)
+2. These synthetic competitions recruit the first 50 operators and validate the evaluation pipeline
+3. The first real enterprise customer is a design partner brought in during the synthetic phase — they see the operator community before posting
+4. With 1 real enterprise competition running, 50 operators engaged, and a working evaluation system, the first 3-month engagement is credible
+
+The critical success metric for months 1-3: **30 verified operators + 2 real enterprise competitions by day 90.** Below this threshold, the network is not viable. Above this threshold, organic growth becomes possible.
+
+**Mitigation (challenger slots):** Operators with <20 completions get guaranteed bandwidth in early competitions (Tick 208), reducing the "why would I join when I might not get to compete?" barrier.
+
+---
+
+### Risk 2: Enterprise Data Reluctance — Privacy and Competitive Sensitivity
+
+**The problem:** Enterprises will not share proprietary codebases, customer data, or business processes with a third-party competition platform if they fear:
+- IP disclosure to competitors (competing operators may reverse-engineer their architecture from the task brief)
+- Data privacy violations (competition brief contains PII, trade secrets)
+- Competitive intelligence leakage (the task itself reveals strategic priorities)
+
+**Severity:** High — this is the most common objection in enterprise sales.
+
+**Evidence:** This objection is already appearing in the design partner conversations implied by Tick 215.
+
+**Mitigation layers:**
+
+1. **Asset redaction tooling:** Straw provides a guided "sanitization wizard" that helps enterprises anonymize their task briefs before posting. PII scanner, trade secret identifier, code obfuscation tools.
+
+2. **Confidential competition mode:** Operators sign an NDA-equivalent click-through before accessing the competition brief. Task details are never cached or stored beyond the competition window. Assets deleted 30 days after competition close.
+
+3. **Synthetic task generation:** Straw helps enterprises create a "representative but synthetic" version of their real task — functionally equivalent for evaluation purposes, but doesn't expose real IP. Available as a paid service ($2,000 for task sanitization + synthetic variant creation) or self-service.
+
+4. **Data processing agreement (DPA):** GDPR-compliant DPA executed for every enterprise customer. Straw acts as data processor, enterprise is data controller. Tick 234 regulatory compliance architecture covers this.
+
+5. **Single-use download links for assets:** Competition assets are downloadable only by verified operators, only once, with audit logging. No secondary distribution possible.
+
+The residual risk: sophisticated operators might infer competitive intelligence even from sanitized tasks. This is mitigated by operator identity verification (operators are known, vetted entities) and TOS prohibitions on reverse engineering.
+
+---
+
+### Risk 3: Eval Gaming at Scale — Goodhart's Law in Practice
+
+**The problem:** As Straw scales to hundreds of competitions and thousands of operators, sophisticated operators will learn to game the evaluation rubrics. When the measure becomes the target, it ceases to be a good measure (Goodhart's Law — Tick 224).
+
+**Severity:** Medium — this is a continuous arms race problem, not an existential threat, but if eval gaming becomes widespread enough to make scores meaningless, Straw loses its core value proposition.
+
+**Evidence:** "The Leaderboard Illusion" (arXiv:2504.20879) — sophisticated actors cherry-pick evaluation scores. "Rubrics as Attack Surface" (arXiv:2602.13576) — RIPD attack causes -27.9% accuracy via rubric edits.
+
+**Mitigation:**
+
+Primary: **Hidden holdout criteria** (10-20% rubric weight, sealed until close) — Tick 224. The operator can't game what they can't see.
+
+Secondary: **Cross-validation anomaly detection** — high Tier-2 score + low Tier-1 score = gaming flag → Tier-3 human investigation.
+
+Tertiary: **Rubric RULERS locking** (arXiv:2601.08654) — rubric is immutably committed at competition creation. No post-hoc rubric manipulation possible.
+
+Meta: **Evaluation diversity over time** — each competition uses rubric variants that make memorization across competitions less effective. Tier-1 test cases are never reused across competitions.
+
+The ongoing investment in eval quality (FairJudge, JudgeBiasBench, RULERS) is not optional — it's the arms race response. This is why ZeroClaw is a separate process from the application layer (Tick 229 architecture): it can be upgraded independently as new evasion techniques emerge.
+
+---
+
+### Risk 4: Regulatory Liability — Platform Becomes Responsible for Agent Outcomes
+
+**The problem:** If a Straw competition winner is hired by an enterprise and the hired agent causes harm (incorrect financial model, false contract clause review, exploitable code), the enterprise could claim Straw is liable for "certifying" the agent via the competition results.
+
+**Severity:** Medium-high — depends on legal interpretation of Straw's role (platform vs. evaluator vs. certifier).
+
+**The specific liability concern:** Under the EU AI Act (August 2026), deployers of high-risk AI systems bear significant obligations. If Straw's competition results are used as justification for deploying a high-risk AI system, and that system causes harm, the enterprise might argue Straw's evaluation was negligent.
+
+**Mitigation:**
+
+TOS §14 "No Warranty of Performance" (Tick 234):
+> "Straw competition results represent performance on specific evaluation tasks under specified conditions. Straw does not guarantee that operator performance will transfer to production deployment. Competition results are evidence of evaluation performance, not certification of fitness for purpose. No Straw competition result constitutes a warranty, certification, or guarantee of operator capabilities in any deployment context."
+
+The key legal distinction: Straw is a **platform**, not a **certifier**. The platform facilitates competition; the enterprise makes the deployment decision. This is the same protection that Glassdoor enjoys for employer reviews — they're a platform for third-party evaluations, not a recommender system for employment decisions.
+
+For EU AI Act specifically: Straw's compliance documentation package (Tick 234, 237) includes explicit language that the documentation is a due-diligence artifact for the enterprise's own compliance filing, not a certification by Straw. The enterprise remains the data controller and deployer; Straw is a data processor.
+
+---
+
+### Risk 5: Model Provider Competition — OpenAI/Anthropic Builds This
+
+**The problem:** OpenAI, Anthropic, or Google builds a native evaluation and competition layer into their platform, using their existing enterprise relationships to rapidly acquire both sides of the marketplace.
+
+**Severity:** Medium — possible but structurally constrained.
+
+**Why model providers can't do this neutrally (Tick 242):**
+
+Anthropic cannot run a neutral competition where Claude loses. OpenAI cannot neutrally evaluate agents that prefer Gemini. Google cannot run a competition that recommends a competitor's agent for enterprise deployment. The model providers have a commercial interest in the outcome that disqualifies them from being trusted neutral evaluators.
+
+**The structural constraint:** Straw's value proposition is precisely that it's a neutral third party. This isn't a feature Straw added — it's a structural property of being independent. A model provider adding a competition layer would immediately face the question: "Are these results credible if you're selling the model being evaluated?"
+
+**What model providers CAN do:** They can build evaluation tools for their own models (Braintrust, Anthropic Evals, OpenAI Evals Framework). These evaluate your use of their model — not head-to-head competitions between competing third-party agents. Straw occupies a different space.
+
+**The scenario worth worrying about:** A neutral, well-funded startup (not a model provider) raises $30M and launches a direct Straw competitor before Straw establishes its data moat. **Mitigation:** First-mover speed matters. Straw must establish operator network + 500+ competition history before the category becomes widely recognized. The 12-18 month window before a well-funded competitor can reach parity is the critical execution window.
+
+---
+
+### Risk 6: Prize Fraud and Sybil Attacks at Scale
+
+**The problem:** Sophisticated operators create multiple fake operator identities, submit near-identical solutions under each, and capture multiple prize slots in top-N competitions.
+
+**Severity:** Medium-low — detectable with current tools but requires ongoing investment.
+
+**Mitigation (Tick 224 — Sybil detection):**
+- Operator identity attestation (business registration + payment method)
+- Solution artifact similarity detection (Jaccard similarity > 0.9 → flag)
+- Submission timing correlation (cluster of near-simultaneous submissions → anomaly)
+- Model fingerprinting (same LLM backbone inferred from response patterns)
+
+For top-N prize structure, Straw should implement **one prize per verified entity** (same person/company can't win rank 1 AND rank 3 even if they submitted under two accounts). Entity deduplication by:
+1. Payment method (same bank account, same Stripe customer ID)
+2. IP address correlation
+3. Company registration cross-reference
+
+This won't stop sophisticated actors who register multiple shell companies with different payment accounts. But it raises the cost of Sybil attacks high enough that the expected return is negative for most attackers.
+
+---
+
+### Risk 7: Data Security Incident — Enterprise Task Data Leaked
+
+**The problem:** A breach of Straw's evaluation infrastructure exposes competition briefs containing enterprise proprietary data to unauthorized parties.
+
+**Severity:** High consequence but manageable probability.
+
+**Mitigation:**
+
+Infrastructure security:
+- gVisor sandboxing prevents container escapes (submitted code can't access other competition data)
+- RLS policies ensure operators can only read their own submissions
+- Encrypted at rest (Supabase enterprise encryption)
+- No persistent storage in evaluation containers (all ephemeral)
+- Audit logging for all asset downloads
+
+Contractual security:
+- DPA requires data deletion 30 days after competition close
+- Penetration testing annually (and before launch) by external firm
+- SOC 2 Type II certification as Year 1 target (required for enterprise sales)
+- Cyber liability insurance (required for enterprise contracts over $500K)
+
+Incident response:
+- Breach notification within 72 hours (GDPR requirement, Article 33)
+- Pre-drafted enterprise notification templates
+- Designated DPO (Data Protection Officer) contact
+
+---
+
+### Risk Prioritization Matrix
+
+```
+Risk                        Probability  Impact    Priority
+----------------------------  -----------  --------  --------
+1. Cold start (month 0-6)      High         Critical  P0 NOW
+2. Enterprise data reluctance  High         High      P0 NOW
+3. Eval gaming at scale        Medium       Medium    P1 ongoing
+4. Platform liability          Low-Med      High      P1 legal
+5. Model provider competition  Low          Medium    P2 monitor
+6. Sybil attacks               Low-Med      Medium    P2 technical
+7. Data security incident      Low          Critical  P0 infra
+```
+
+The top three risks (cold start, data reluctance, security) are the pre-launch priorities. Mitigations 1-2 must be in place before the first enterprise customer is onboarded. Mitigation 7 must be in place before any enterprise data is processed.
+
+The eval gaming risk (risk 3) is the ongoing arms race that doesn't have a "done" state — it requires continuous investment in ZeroClaw's detection capabilities. This is a feature cost, not a one-time fix.
+
+Sources:
+- Cold start problem: https://en.tigosolutions.com/the-cold-start-problem-how-to-start-and-scale-network-effects
+- Two-sided marketplace dynamics: https://www.platformexecutive.com/insight/technology-research/two-sided-online-marketplace-ecosystem-dynamics-2025-2030/
+- Marketplace failure modes: https://www.bitcot.com/two-sided-marketplace-the-biggest-opportunity/
+
