@@ -34302,3 +34302,230 @@ The comparable: "We are to enterprise AI procurement what Gartner Magic Quadrant
 
 Sources: Tick 201 (marketplace landscape, Pinchwork/Nightmarket/AgentPact status), Tick 204 (proxy submission problem, why enterprise cares about outcomes not provenance), Tick 212 (operator discovery, HTB Talent Search model, A2A capability gap), Tick 213 (pricing model, unit economics, $2.7M ARR target), Tick 214 (95% POC failure rate, eval tools market gap, compliance forcing function), Tick 215 (bootstrap GTM strategy, "Toptal for AI agents" Year 1 positioning), nfx.com/post/truth-about-data-network-effects (data flywheel moat conditions).
 
+
+---
+
+## Tick 219 — v1 task taxonomy: which task categories Straw should support at launch
+
+**Context:** "What tasks can you run on Straw?" is the first question from an enterprise prospect and the first decision for operator recruitment. The task taxonomy determines: which Tier-1 tests are feasible, which enterprises are target customers, which operators to recruit, and what the template library contains. This tick makes the launch-category decision.
+
+**Selection criteria for a v1 task category**
+
+A task category is launch-ready if it meets ALL of:
+
+1. **Tier-1 automatable.** There exists a deterministic, fully-automated test that covers a meaningful portion (>40%) of the evaluation criteria. Without Tier-1, every evaluation requires LLM judge only — higher cost, lower integrity, slower iteration.
+
+2. **Enterprise demand exists.** Multiple Fortune 500 companies have this task on someone's to-do list. Not "theoretically useful" — actually on someone's backlog or currently done by a consultant.
+
+3. **Operator supply exists.** There are agents already built (or easily buildable) that can attempt this task. Not hypothetical.
+
+4. **Clear right/wrong structure.** Not purely aesthetic or taste-based evaluation. There is a ground truth, or at least enough behavioral anchors to make rubric calibration tractable (κ ≥ 0.7, per Tick 210).
+
+**The candidate list and evaluation**
+
+| Task Category | Tier-1? | Enterprise demand | Operator supply | Clear structure | v1? |
+|---------------|---------|-------------------|-----------------|-----------------|-----|
+| Code migration (Python → X, legacy → modern) | ✅ unit tests | ✅ high (every eng org) | ✅ SWE-bench trained agents | ✅ pass/fail tests | **YES** |
+| Document extraction (PDF → structured JSON) | ✅ field match rate | ✅ high (finance, legal, ops) | ✅ DocVQA-trained agents | ✅ field presence/accuracy | **YES** |
+| SQL generation from natural language | ✅ query execution match | ✅ high (analytics, BI teams) | ✅ Text2SQL benchmark agents | ✅ query result correctness | **YES** |
+| Data analysis / EDA report | ✅ partial (output format checks) | ✅ moderate | ✅ moderate | ⚠️ partially aesthetic | **BORDERLINE** |
+| Contract review / legal clause extraction | ⚠️ pattern matching for known clauses | ✅ high (legal, procurement) | ✅ moderate (growing fast) | ✅ clause presence/absence | **YES (with caution)** |
+| Customer support response quality | ❌ no deterministic test | ✅ high | ✅ high | ⚠️ partly taste-based | **NO (v2)** |
+| Creative writing / content generation | ❌ no deterministic test | ⚠️ low for enterprise | ✅ high | ❌ pure aesthetics | **NO** |
+| API integration / glue code | ✅ integration test | ✅ moderate | ✅ moderate | ✅ end-to-end test | **YES** |
+| Research synthesis / RAG Q&A | ⚠️ factuality checks partial | ✅ moderate | ✅ moderate | ⚠️ partly subjective | **NO (v2)** |
+| Security audit / vulnerability scan | ✅ CVE detection | ✅ high | ✅ growing | ✅ vulnerability presence | **v2 (liability risk)** |
+
+**The v1 launch set: 4 categories**
+
+```
+1. Code migration and refactoring
+   Why: every engineering org has legacy code. unit tests are natural Tier-1.
+   Demand signal: "Python 2 → 3", "monolith → microservices", "AWS SDK v2 → v3" searches
+   Template: Code Migration rubric (Tick 206, complete)
+   Tier-1: automated unit test execution against the transformed codebase
+
+2. Document extraction (PDF/HTML → structured JSON/CSV)
+   Why: finance, legal, healthcare, ops — universal. ground truth is the target schema.
+   Demand signal: mortgage processing, invoice extraction, medical record parsing
+   Template: Data Analysis rubric (Tick 206, partial — needs extraction-specific variant)
+   Tier-1: field presence, type correctness, value accuracy against labeled examples
+
+3. SQL generation from natural language
+   Why: every company has a BI analyst who can't write SQL. ground truth is the query result.
+   Demand signal: "ask your database in plain English" is a top enterprise AI request
+   Template: NEW — needs a SQL generation rubric (standard rubric format applies)
+   Tier-1: execute generated SQL against test database, compare result set to expected output
+
+4. Contract clause extraction and review
+   Why: legal and procurement workflows universally have this. clause presence is automatable.
+   Demand signal: vendor contracts, NDAs, SaaS agreements — every legal team
+   Template: Contract Review rubric (Tick 206, complete)
+   Tier-1: presence/absence of required clause types via regex + structural parsing
+   Caution: ambiguous clauses require LLM Tier-2; Tier-1 covers only definitionally clear clause types
+```
+
+**What doesn't launch in v1 (and why)**
+
+**Customer support:** No Tier-1 test possible. Every evaluation is LLM judge. Verbosity bias (Tick 202) is hardest to eliminate for conversational text. The "right answer" is harder to anchor. Push to v2 after rubric calibration methodology is proven on code/document tasks.
+
+**Security audit:** Liability risk too high at v0. If Straw's judge misses a vulnerability and the enterprise relies on the score as a security clearance, the legal exposure is severe. Wait until the liability stack (Tick 205) is established via precedent and Straw's insurance is in place.
+
+**Research synthesis / RAG:** Too taste-dependent at v1. Factuality checking is improving (DeepEval, RAGAS) but inter-rater reliability on "comprehensiveness" and "accuracy" in open-domain questions is still below κ=0.7 for most rubrics. Needs more rubric calibration tooling than v1 includes.
+
+**The SQL generation rubric (new, needed for v1)**
+
+```
+SQL GENERATION RUBRIC
+Task: convert natural language query to SQL against a specified schema
+
+CORRECTNESS (weight: 50%) — Essential
+5 — Generated SQL executes without error AND result set exactly matches expected output on all 
+    test cases (including edge cases with NULLs, aggregations, and multi-table joins)
+4 — SQL executes without error AND matches expected output on ≥90% of test cases
+3 — SQL executes without error AND matches expected output on ≥70% of test cases
+2 — SQL executes without error on ≥80% of cases but result set has systematic errors
+1 — SQL fails to execute OR matches expected output on <50% of test cases
+Pitfall: Do not reward syntactically correct SQL that returns wrong results.
+Tier-1 check: automated execution against test database schema + result set comparison
+
+SQL QUALITY (weight: 25%) — Important
+5 — Query is optimal: appropriate indexes would be used, no redundant subqueries, joins are
+    filtered before expansion, CTEs used for clarity where appropriate
+4 — Minor inefficiencies (unnecessary subquery, slightly wrong join order) but no N+1 patterns
+3 — Correct but inefficient in ways that would matter at 1M+ row scale
+2 — Multiple inefficiencies; query plan would produce sequential scans on key tables
+1 — Cartesian product or equivalent catastrophic inefficiency
+Pitfall: Do not reward complex-looking SQL over simple correct SQL.
+Tier-1 check: EXPLAIN ANALYZE output analyzed for sequential scans on indexed columns
+
+SCHEMA UNDERSTANDING (weight: 15%) — Important
+5 — Correctly uses foreign key relationships, correctly handles nullable foreign keys, infers 
+    correct join types (LEFT vs INNER) from the natural language intent
+4 — One minor join type error or one null handling issue that doesn't affect test results
+3 — Correct joins but uses explicit joins where implicit is appropriate or vice versa
+2 — One incorrect table relationship used (fetching from wrong table)
+1 — Fundamental misunderstanding of schema structure
+Pitfall: Do not reward over-engineered joins that add unnecessary tables.
+Tier-1 check: schema reference check — does the query only reference tables/columns in spec?
+
+NATURAL LANGUAGE FIDELITY (weight: 10%) — Essential
+5 — SQL precisely captures the intent of the natural language query, including implied filters
+4 — Correct scope but misses one secondary condition mentioned in the NL query
+3 — Captures the main intent but interprets one ambiguous element differently than expected
+2 — Interprets the core request correctly but systematically misses qualifiers (dates, ranges)
+1 — Materially misinterprets the natural language query (wrong entity, wrong metric)
+Pitfall: Do not reward literal keyword matching; reward semantic understanding.
+Tier-1 check: N/A (LLM judge only for this criterion)
+```
+
+**Implementation priority for operator recruitment**
+
+The operator recruitment sequence should match the task category launch order:
+1. **Code migration first.** The SWE-bench and HumanEval training communities produce agents that immediately qualify. Reach out to teams in the LangChain, AutoGPT, and Devin ecosystems.
+2. **Document extraction second.** DocVQA community, Nougat/LayoutLM fine-tuners, enterprise document AI startups.
+3. **SQL generation third.** Text2SQL benchmark community (Spider, BIRD benchmarks). Many fine-tuned models already exist.
+4. **Contract extraction fourth.** Legal AI startups, LexNLP users, CUAD dataset fine-tuners.
+
+Sources: Tick 206 (five complete rubric templates: Code Migration, Customer Support, Contract Review, Data Analysis, API Integration), Tick 210 (rubric generator UX, IRR validation threshold κ≥0.7), Tick 215 (bootstrap GTM, atomic domain focus recommendation), Tick 216 (Tier-1 isolation design, gVisor sandbox, test case read-only namespace), swebench.com (SWE-bench code task benchmark), huggingface.co/datasets/rajpurkar/squad (DocVQA/document extraction datasets), yale-lily.github.io/spider (Spider Text2SQL benchmark), huggingface.co/datasets/theatticusproject/cuad (CUAD contract clause extraction dataset), bird-bench.github.io (BIRD SQL benchmark), ragas.io/docs (RAGAS for RAG evaluation), arxiv.org/abs/2410.02736 (inter-rater reliability considerations in LLM evaluation).
+
+
+---
+
+## Tick 218 — Operator supply acquisition: the first 15 operators
+
+**Research agent:** a002e799aede4d9be — researched active AI agent builder community, communities and discovery channels, operator motivation stack, existing leaderboards, and open-source vs. closed-API mix.
+
+**The operator community structure**
+
+Three tiers of active AI agent builders in 2025-2026:
+
+1. **Small product companies on public leaderboards.** SWE-bench features submissions from Sonar, Atlassian (Rovo Dev), Factory Code Droid, AppMap, Honeycomb, IBM Research iSWE-Agent. These are teams of 5-50 people who built specialized coding agents and submitted for credibility. They're the highest-quality operators Straw could recruit — proven capability, enterprise-ready, publicly benchmarked.
+
+2. **Open-source framework operators.** LangGraph (126K GitHub stars), CrewAI, AutoGen/AG2, Browser Use (78K GitHub stars, fastest-growing GitHub repo ever), Crawl4AI (51K stars). Active contributor communities building specialized agents on standard frameworks. These are often solo/small-team builders with real capability but no enterprise sales channel.
+
+3. **Solo builders and freelancers.** Indie Hackers community, X/Twitter, Upwork, Contra. Hundreds of AI agent freelancers available for hire. Smaller individual capability, but the long tail creates competition diversity.
+
+**Where operators discover new platforms**
+
+1. **ArXiv + HuggingFace:** New benchmark releases are announced via paper, then hosted on HuggingFace Spaces. Leaderboard aggregators (AwesomeAgents.ai, DataLearner, LM Council) surface results. This is how operators currently discover which benchmarks to enter.
+
+2. **X/Twitter:** Dawn Song's announcement of the $1M AgentX competition (x.com/dawnsongtweets/status/1978911801976004860) demonstrates that X reaches the operator community immediately. A single tweet from a credible account is the correct cold-launch channel.
+
+3. **Discord communities:** AgentOps.ai Discord (purpose-built for operator-native community), HuggingFace Discord (GAIA/TAU-bench leaderboard discussions), Berkeley RDI MOOC community (32K+ learners, 1,200+ teams in AgentX-AgentBeats).
+
+4. **GitHub star networks:** Agents that top a leaderboard get cited in GitHub awesome-lists (github.com/caramaschiHG/awesome-ai-agents-2026 has 300+ resources). A Straw "best document extraction agent on enterprise tasks" result would propagate through this network.
+
+**The operator motivation stack (empirically validated)**
+
+From AgentX-AgentBeats, ARC Prize, Ready Tensor Agentic AI 2025:
+
+1. **Prize money + cloud credits.** AgentX offered $1M+ prizes plus $400 Lambda Cloud credits + $50 Nebius inference credits per team. The inference credits are critical — running eval loops on competitions is expensive, and operators budget for this. Straw's prize pool is the primary hook; cloud credit partnerships would increase participation significantly.
+
+2. **Leaderboard visibility as marketing.** IBM, Atlassian, and Salesforce AI Research all submitted to SWE-bench specifically because a public rank is verifiable social proof. Enterprises that see an operator ranked #3 on "enterprise document extraction" inbound the operator directly. For Straw, the competition leaderboard is a marketing channel for operators.
+
+3. **Honest eval feedback.** Operators are starved for signal on how their agent performs outside their own test set. A benchmark with diverse real enterprise tasks is intrinsically valuable. Straw's rubric-scored evaluation (not just pass/fail) provides richer feedback than most existing benchmarks.
+
+4. **SAFE investment / acquisition path.** The Equidam AI Agent Valuation Challenge structures prizes as uncapped SAFEs — explicitly positioning competition as a deal pipeline. Straw's "hire/license/acquire" D22 pathways map to this already-existing operator motivation. For an operator, winning on Straw is potentially a direct path to enterprise revenue.
+
+5. **Enterprise lead access.** Operators building document-processing or contract-review agents have no reliable channel to enterprise buyers. In Straw's competition, the task-poster IS the potential buyer. This inverts the normal cold-outreach sales model.
+
+**The Straw Founding Operator offer (concrete)**
+
+The "Founding Operator" designation from Tick 215 needs to be specific to activate the motivation stack:
+
+```
+Straw Founding Operator Program (first 20 operators)
+✓ No entry fee for first 5 competitions
+✓ $500 inference credits (via cloud partner) per competition you enter
+✓ "Founding Operator" badge on public profile (permanent)
+✓ Priority invite to all competitions matching your task category
+✓ Early access to enterprise customers' pre-competition briefings (so you can prepare)
+✓ Direct introductions to enterprise customers interested in hiring (leaderboard-to-hire pipeline)
+✓ Featured placement in Straw's operator directory for 12 months
+```
+
+The inference credits are the key conversion mechanic. An operator who needs to run their agent 50 times against a rubric burns real money. $500 covers approximately 5-10 full competition entries for a mid-size agent. This is the difference between "I should try this" and "I can try this now."
+
+**The document extraction leaderboard gap**
+
+Critical finding: there is no standalone public leaderboard for enterprise document extraction agents. SWE-bench dominates code. GAIA covers general multi-step tasks. TAU-bench covers customer service. But "PDF → structured JSON" as an enterprise task has no canonical benchmark and no canonical leaderboard.
+
+This is a supply-side opportunity: Straw can run the first public enterprise document extraction competition, become the canonical leaderboard for this task type, and own the SEO/reputation for the operator community that comes to validate their agents on it. This is the "atomic domain focus" from Tick 212 — pick one domain, build credible coverage, own it.
+
+**Open-source vs. closed-API: the 50/50 mix**
+
+The gap between open-weight and closed-API closed in 2026. GLM-5.1 (open-weight) now tops SWE-bench Pro at 58.4%, beating GPT-5.4 (57.7%) and Claude Opus 4.6 (57.3%). Six open-weight labs (Google Gemma 4, Alibaba Qwen 3.6, Meta Llama 4, Mistral Small 4, Zhihu GLM-5.1, DeepSeek V4) now compete at frontier level.
+
+The mix on Straw's leaderboards will be roughly 50/50 open/closed-API, with open-weight operators trending up. Open-weight operators are more motivated by external validation (they can't rely on "we use GPT-5" as credibility); closed-API operators need the prize or enterprise lead to justify evaluation costs.
+
+**Having both on the same leaderboard is a feature, not noise.** An enterprise buyer evaluating build-vs-buy decisions — "should we deploy the open-weight Qwen-based agent or the GPT-4o-based one?" — gets an direct answer from the competition result. No other product provides this.
+
+**The first 15 operators: target list structure**
+
+```
+Tier 1 (4-5 operators) — highest quality, verifiable benchmark history:
+  - Top 5-10 SWE-bench Verified performers not already affiliated with major labs
+  - Target companies: AppMap, Factory Code Droid, any unaffiliated top-10 SWE-bench submitter
+  - Contact: direct LinkedIn to founding team / GitHub profile email
+  - Offer: co-launch announcement, "Founding Operator" designation, $2K inference credits
+
+Tier 2 (5-7 operators) — open-source projects with real enterprise traction:
+  - Target: Browser Use contributors, LangGraph ecosystem builders with code/document focus
+  - HuggingFace users who have published document-processing or code-migration models
+  - Contact: GitHub issues / HuggingFace community forum
+  - Offer: standard Founding Operator program
+
+Tier 3 (4-5 operators) — academic labs and research teams:
+  - UC Berkeley RDI AgentX-AgentBeats top performers
+  - Any academic team that has published on document extraction or code migration
+  - Contact: paper author emails
+  - Offer: free academic tier competitions, research data access
+```
+
+**Launch announcement channel: X/Twitter first**
+
+From Dawn Song's AgentX announcement pattern: a single tweet from a credible account + a follow-up thread with prize structure reaches the operator community immediately. Berkeley RDI's 1,200+ team signup in weeks validates this. Straw's launch tweet should include: the prize amount, the enterprise task category, the rubric structure (signals this is different from vibe evals), and a link to the Founding Operator program.
+
+Sources: swebench.com, research.ibm.com/blog/ibm-software-engineering-agent-tops-the-multi-swe-bench-leaderboard-for-java, awesomeagents.ai/leaderboards, rdi.berkeley.edu/agentx-agentbeats.html, x.com/dawnsongtweets/status/1978911801976004860, firecrawl.dev/blog/best-open-source-agent-frameworks, swfte.com/blog/open-source-ai-models-frontier-2026, flowhunt.io/blog/open-source-vs-proprietary-ai-agent-builders-2025, github.com/caramaschiHG/awesome-ai-agents-2026, github.com/philschmid/ai-agent-benchmark-compendium.
+
