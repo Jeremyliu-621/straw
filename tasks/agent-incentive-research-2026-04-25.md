@@ -44108,3 +44108,144 @@ The math: a $750 first-competition customer becomes a $33K Y3 customer if the CS
 
 *Tick 275 complete.*
 
+
+---
+
+## Tick 276 — AI Agent Trust and Verification: Solving the Principal-Agent Problem
+
+**Date:** 2026-05-02
+**Thread:** The fundamental trust problem in AI agent procurement — and how Straw's competition design addresses it
+**Research method:** Principal-agent theory; information economics; mechanism design; analogies to financial audit, food safety inspection, product testing
+
+---
+
+### The Economic Problem at Straw's Core
+
+Every enterprise AI procurement decision faces a classic information asymmetry problem:
+
+**The agent knows:**
+- Whether their AI system is actually good or just good at demos
+- How well their system handles edge cases
+- What their system's failure modes are
+- How their system's performance was measured in their internal benchmarks
+
+**The enterprise doesn't know:**
+- Whether the vendor's claims are honest
+- Whether the demo used cherry-picked inputs
+- Whether the vendor's test set overlaps with their training data
+- How the system will perform on the enterprise's actual workload
+
+This is the principal-agent problem applied to AI procurement. The "agent" (AI vendor) has information the "principal" (enterprise buyer) doesn't have. The agent is incentivized to misrepresent capabilities. The enterprise can't verify without deploying — but deploying before verification is exactly what causes the $6.8M average project failure cost.
+
+Traditional solutions to this problem include: warranties, escrow agreements, third-party audits, insurance, liability clauses. All of these address consequences after the information asymmetry causes harm. None of them eliminate the information asymmetry before the procurement decision.
+
+---
+
+### Straw as a Mechanism Design Solution
+
+Straw's competition format is, at its core, a **mechanism design** solution to the principal-agent problem:
+
+1. **Revelation principle:** Design a mechanism where agents' optimal strategy is to reveal their true capability. In Straw's competition: the optimal strategy for an agent operator is to maximize their actual performance on the rubric (not to maximize their perceived performance in a demo). The rubric is objective and independently evaluated. Misrepresenting capability during a demo doesn't help — you have to actually perform.
+
+2. **Incentive compatibility:** The competition mechanism is incentive-compatible. An operator's best response to the competition format is to submit their genuinely best solution. There's no advantage to sandbagging (holding back capability — it just reduces your score and reduces your chance of winning).
+
+3. **Information extraction:** The competition format extracts private information (actual capability) through the incentive structure (prize money + hire opportunity). Operators reveal their capability by competing for the prize. The enterprise gets this information as a side effect of the market mechanism.
+
+4. **Adverse selection mitigation:** In a standard AI market, adverse selection dominates: good vendors and bad vendors both claim to be good; the enterprise can't distinguish them; enterprises pay the blended price; good vendors exit the market. Straw's verification mechanism breaks adverse selection by allowing good vendors to credibly distinguish themselves through competition scores.
+
+---
+
+### The Three Trust Problems Straw Solves
+
+**Trust Problem 1: "Is this vendor's system actually as good as they claim?"**
+
+Traditional solution: vendor demo + reference calls. Both are vendor-controlled and selection-biased.
+
+Straw solution: The competition score is the answer. 9.3/10 on a rubric the enterprise defined means the system achieved 9.3/10 on the enterprise's actual success criteria. No interpretation required. The vendor cannot manipulate this score retroactively.
+
+**Trust Problem 2: "Is this vendor's system the best available option?"**
+
+Traditional solution: issue an RFP, compare proposals. Proposals are marketing documents. There's no mechanism for comparing actual performance.
+
+Straw solution: The leaderboard shows relative performance. Not just "this vendor scored 9.3" but "this vendor scored 9.3, the median was 6.8, and there were 31 competitors." The enterprise knows the competitive context.
+
+**Trust Problem 3: "Will this vendor's system still be good in 6 months?"**
+
+Traditional solution: contractual warranties, SLAs, right to audit. These are enforcement mechanisms that require the enterprise to detect failure before they can be invoked — difficult for AI system performance degradation.
+
+Straw solution: Fleet continuous monitoring (Tick 258, 275). The same evaluation infrastructure that ran the initial competition runs monthly/weekly evaluations. Performance drift is detected before it causes business impact.
+
+---
+
+### The Mechanism Design Properties of Straw's Competition Format
+
+**Property 1: Verifiability**
+Competition results are objectively computed from the operator's submission. The rubric is defined before the competition starts (RULERS locking — Tick 248). The Tier-1 evaluation is deterministic and reproducible. Any dispute can be resolved by re-running the evaluation against the same input. This is verifiable in the mathematical sense: the score can be computed and confirmed by any independent party.
+
+**Property 2: Non-manipulation**
+Once the competition is live, neither the enterprise poster nor Straw can change the rubric (RULERS hash commits to the rubric at creation). The enterprise can't retroactively redefine "winning" to favor their preferred vendor. Straw can't manipulate scores (the evaluation is deterministic and audited). This is the property that makes the score trustworthy.
+
+**Property 3: Independence**
+Straw has no commercial relationship with any AI model provider. The evaluation results cannot benefit Straw by favoring one model over another. This is structural independence — not just a policy. Straw's revenue comes from enterprise posters (15% platform fee), not from operators. Operators who win get prizes; Straw gets its fee regardless of who wins.
+
+**Property 4: Completeness**
+The competition evaluates on all rubric dimensions defined by the enterprise, including hidden holdout criteria (10–20% weight). An operator who scores highly on the visible rubric criteria but fails on the hidden criteria gets a lower overall score. This prevents "surface-level gaming" — an operator can't score 10/10 on the visible dimensions while being terrible at what actually matters to the enterprise.
+
+**Property 5: Proportionality**
+The prize pool creates proportional incentives: operators invest effort proportional to the prize. A $100 competition attracts low-effort participation; a $50K competition attracts maximum effort from top operators. The enterprise controls the incentive intensity by choosing the prize pool. This is a form of "paying for quality of attention" — larger prizes buy more rigorous competition.
+
+---
+
+### The Audit Analogy
+
+Financial audits solve a similar principal-agent problem. A company's management (agent) knows more about the company's financial state than shareholders (principal). Without an independent auditor, management could misrepresent financial health. The audit mechanism:
+- Uses independent evaluators (Big 4 firms; analogous to Straw's independent platform)
+- Uses a standardized methodology (GAAP/IFRS; analogous to Straw's rubric templates)
+- Produces a verifiable attestation (audit opinion; analogous to Straw's evaluation report + attestation signature)
+- Is required by regulators for public companies (EU AI Act creates an analogous requirement for high-risk AI)
+
+The analogy is powerful for the enterprise sales conversation: "Just like you wouldn't trust a company's financial statements without an audit, you shouldn't trust an AI vendor's performance claims without an independent evaluation. Straw is the audit for AI."
+
+**Key difference:** Financial audits review historical records and existing controls. Straw evaluates *forward-looking* performance — it's more like a pre-product-release quality certification than a post-hoc audit. This is actually better for the enterprise: they get certainty before deployment, not after.
+
+---
+
+### The Food Safety Inspection Analogy
+
+Restaurant food safety inspections:
+- Independent inspector (government-employed; no incentive to favor the restaurant)
+- Standardized criteria (health code; analogous to rubric templates)
+- Regular re-inspection (analogous to Fleet monitoring)
+- Public score posting (analogous to Straw leaderboard)
+- Consequences for failure (grade reduction; analogous to losing competition + reputation impact)
+
+**Why this analogy works for non-technical audiences:** Every CEO understands that health inspections protect restaurant customers without the customers needing to check food preparation personally. Straw protects enterprise AI buyers without the buyers needing to build evaluation infrastructure personally.
+
+---
+
+### How Trust Compounds Over Time
+
+**Year 1:** Straw's trust is based on its methodology — the rubric is well-defined, the evaluation is deterministic, the process is transparent. Enterprises trust the *process*.
+
+**Year 2:** Straw's trust is reinforced by outcomes — enterprises that ran competitions found agents that performed as predicted in production. Fleet monitoring confirms predictions hold over time. Enterprises trust the *track record*.
+
+**Year 3:** Straw's trust becomes an industry standard — "Straw-evaluated" appears in enterprise vendor due diligence requirements. The trust is *institutionalized*.
+
+**Year 5:** Regulatory frameworks cite Straw's methodology or data. The trust is *externally validated*.
+
+The trust compound rate is directly tied to evaluation correctness: one major evaluation error resets trust accumulation significantly. This is why ZeroClaw's evaluation correctness is the company's most important asset — not revenue, not customers, but evaluation integrity.
+
+---
+
+### The Summary Statement
+
+Straw's competition platform is, fundamentally, a mechanism design solution to the principal-agent problem in enterprise AI procurement. It doesn't rely on trust in the vendor (who has incentive to misrepresent) or trust in the enterprise (who may not know how to evaluate). It relies on trust in a verified, independent, incentive-compatible mechanism that extracts true capability information through the structure of competition.
+
+This is not a feature of Straw — it is Straw. Everything else (Fleet, compliance exports, licensing facilitation) is built on top of this core trust mechanism. Any feature that weakens this mechanism (biased evaluation, manipulable rubrics, non-independent operation) destroys the entire value proposition.
+
+The moat is trust. Trust is earned by consistently correct evaluations. Consistently correct evaluations require ZeroClaw, sealed state, RULERS locking, and Tier-3 human oversight. Every architectural decision flows from this constraint.
+
+---
+
+*Tick 276 complete.*
+
