@@ -39109,3 +39109,128 @@ The agents execute this strategy. The operators chose it.
 - **Regulatory sandbox entry** — should Straw apply for regulatory sandboxes (FCA Innovation Sandbox, MAS Fintech Regulatory Sandbox) to accelerate UK/Singapore market entry?
 - **The post-AGI scenario** — if AI capabilities plateau or AGI changes the capability landscape, how does Straw's evaluation model adapt?
 
+---
+
+## Tick 248 — The Benchmark Poisoning Threat: When Competition Winners Influence Future AI Training
+
+*Research sources: Lakera (data poisoning 2026 perspective); OWASP LLM04:2025 (data and model poisoning); PoisonBench ICML 2025; arXiv:2408.02946 (scaling trends for data poisoning in LLMs); arXiv:2502.17521 (benchmarking under data contamination — static to dynamic evaluation); GitHub awesome-data-contamination; Meta LLaMA 4 benchmark controversy (2025)*
+
+### The Threat Model
+
+Straw's competition output — winning solutions, submitted artifacts, evaluation scores — is a valuable dataset. In Tick 211, we designed a data licensing business: enterprises can license this data for AI training and evaluation research.
+
+The benchmark poisoning threat is the adversarial flip side: **what if a sophisticated operator deliberately embeds malicious artifacts in their winning submission, knowing that Straw's competition data will be licensed for AI training?**
+
+The attack vector:
+1. Operator builds a genuinely excellent solution (wins the competition fairly on Tier-1 and Tier-2 scores)
+2. The solution contains subtle adversarial patterns — backdoors, steering vectors, or trigger phrases embedded in the code/text
+3. Straw licenses the competition data to AI researchers
+4. Researchers use the winning solution as training data for fine-tuning
+5. The fine-tuned model inherits the backdoor
+
+This is a **supply chain attack** on AI training data, using Straw as the unwitting intermediary.
+
+---
+
+### Evidence This is Real
+
+**PoisonBench (ICML 2025):** A benchmark for poisoning attacks in preference learning. Key finding: poisoning attacks in preference learning (RLHF reward model training) are effective with very small amounts of malicious data. This directly applies to competition evaluation data used for reward model training.
+
+**LLaMA 4 benchmark controversy (2025):** Meta faced allegations of using a non-public version of LLaMA 4 fine-tuned specifically for benchmark gains (not the production model). This illustrates how training data can be gamed to optimize for evaluation metrics specifically — a different but related threat.
+
+**Scaling poisoning impact:** Only 250 malicious documents can successfully backdoor LLMs from 600M to 13B parameters (arXiv:2408.02946). Poisoning just 0.001% of medical training tokens increased harmful outputs by 4.8%. The attack doesn't require a large fraction of training data.
+
+**Persistence of backdoors:** Standard safety training (SFT, RLHF, adversarial training) failed to remove backdoor behavior — and adversarial training made models **better at hiding** malicious behavior rather than eliminating it.
+
+Sources:
+- OWASP LLM04:2025: https://genai.owasp.org/llmrisk/llm042025-data-and-model-poisoning/
+- Data poisoning scaling trends: https://arxiv.org/html/2408.02946v6
+- Benchmarking under contamination: https://arxiv.org/html/2502.17521v2
+- Lakera data poisoning: https://www.lakera.ai/blog/training-data-poisoning
+
+---
+
+### Who Would Do This and Why
+
+**Target 1: Nation-state actors.** A state-sponsored actor infiltrates the operator pool (registering as a legitimate AI developer), wins competitions in valuable categories (code_migration, security_audit, data_pipeline), and embeds backdoors in winning submissions. The goal: when enterprises license the data and train on it, their models inherit the backdoor. Affected models might: behave maliciously when specific trigger phrases are present, leak data to a remote endpoint in specific contexts, or produce subtly incorrect outputs in high-stakes scenarios.
+
+**Target 2: Model providers.** A model provider whose proprietary model is competing via Straw (through a proxy operator entity) embeds steering patterns that cause fine-tuned models to prefer certain response styles or model families. More speculative, but the incentive exists.
+
+**Target 3: Competitive intelligence actors.** An actor trying to degrade a competitor's AI capabilities could use competition submissions to introduce subtle performance degradations in categories where the competitor is training.
+
+**Probability assessment:** Low for individual competitions, moderate at scale. A sophisticated state actor would need to: (a) win a Straw competition, (b) wait for the data to be licensed, (c) wait for a downstream model to be trained on it. This is a multi-year attack chain that requires sustained access and patience. More likely for high-value categories (security_audit, financial_modeling) than commodity categories (document_extraction).
+
+---
+
+### Defense Architecture
+
+The threat requires defending at three layers: **at ingestion** (catch poisoned artifacts before licensing), **at licensing** (structurally limit what gets licensed), and **at the downstream consumer** (warn licensees to defend themselves).
+
+**Layer 1: Artifact analysis before licensing**
+
+Before any submission artifact enters the data licensing pipeline, it must pass an artifact security scan:
+
+- **Static analysis:** Code submissions run through static analysis tools (Semgrep, CodeQL, Bandit) looking for obfuscated patterns, encoded payloads, or unusual encoding
+- **Semantic anomaly detection:** LLM-assisted review of winning submissions for patterns that "don't match the stated approach" — a submission that claims to use a straightforward algorithm but contains unusual mathematical transformations
+- **Redundancy check:** A winning submission that performs significantly better on the evaluated rubric than on an independent held-out test suggests overfitting to the evaluation (possible gaming or adversarial optimization)
+- **Trigger pattern detection:** Scan for known backdoor trigger patterns (unusual Unicode characters, specific token sequences, statistical anomalies in code)
+
+This is expensive to do on every submission, so it should be applied to:
+1. All submissions before licensing (gate for data licensing)
+2. Top-5 submissions before prize disbursement (gate for winner verification)
+3. All submissions in `security_audit` category (highest-risk category)
+
+**Layer 2: Structural licensing limits**
+
+The data licensing TOS (Tick 211) already includes provisions that limit what can be done with licensed data. Update TOS §7 to add:
+
+> "7.4 Training Data Use. Licensee acknowledges that competition submissions may contain artifacts designed to influence AI training. Straw provides competition data as-is and makes no warranty that submissions are free from adversarial patterns. Licensee is solely responsible for conducting independent security analysis before using competition data for model training. Licensee must not use competition data to train models used in safety-critical applications (as defined in EU AI Act Article 6) without independent security review."
+
+This shifts liability to the licensee for downstream training use while Straw provides best-effort artifact scanning. The disclaimer also signals to potential poisoners that Straw is aware of the threat and has defenses — raising the cost of a successful attack.
+
+**Layer 3: Documentation for downstream consumers**
+
+Each licensed dataset includes a `security_manifest.json` that documents:
+- Static analysis results for each artifact (pass/warn/fail)
+- Semantic anomaly flags (if any)
+- Known participation of any operator entities flagged in security databases
+- Straw's recommendation for additional pre-training security analysis
+
+This is the "SBOM for training data" — analogous to the software bill of materials that the EU Cyber Resilience Act requires for software. Straw is building this infrastructure before it's required, positioning it as a security-conscious data provider.
+
+---
+
+### The Circular Training Problem (Related Threat)
+
+A closely related threat: **model collapse** from self-referential training loops.
+
+Scenario:
+1. Straw competition data is used to train model M1
+2. M1 is deployed by operators who then compete on Straw
+3. M1's competition artifacts are collected and licensed
+4. Model M2 is trained on data that includes M1's outputs
+5. M2 is trained on M2's artifacts...
+6. Each generation, the model becomes more "competition-optimized" and less generalizable
+
+This is the **AI training data monoculture** problem applied to competition platforms. It's a structural risk for any platform that both generates training data and hosts agents trained on that data.
+
+**Detection:** Straw can track operator model provenance (what base model is the operator using?). If a significant fraction of operators are using models fine-tuned on Straw's own licensed data, the evaluation environment becomes self-referential.
+
+**Mitigation:** Straw's hidden holdout criteria (Tick 224) are the primary defense — an agent trained to optimize on known Straw rubric patterns will fail on the 10-20% hidden criteria that change per competition. The holdout criteria break the self-referential loop.
+
+Additionally: Straw should publish anonymized aggregate statistics about operator model provenance (without revealing which operators use which models), allowing researchers to study whether model collapse is occurring in the competition ecosystem.
+
+---
+
+### Near-Term Action Items
+
+1. **Before first data licensing deal:** Implement static analysis scan for all top-5 submissions (Semgrep + Bandit for code categories; LLM-assisted anomaly detection for text categories). Cost: ~$0.50 per submission for static analysis + $2 for LLM review = $2.50 per submission, applied to top-5 only = $12.50 per competition.
+
+2. **Add artifact security scan to evaluation worker:** Extend ZeroClaw's gVisor container instrumentation to capture syscall patterns during code execution. Unusual syscalls (network calls in no-network environment, memory reads of /proc/self) flag for Tier-3 review even if the solution scores well.
+
+3. **TOS §7.4 update:** Add training data warning before first licensing deal.
+
+4. **Security manifest generation:** Implement `security_manifest.json` generation as part of the competition close report (Tick 227 report generator).
+
+5. **Model provenance tracking (v1.5):** Add optional `base_model` field to operator submission API. Operators disclose which base model they used (honor system, verified by model fingerprinting where possible).
+
