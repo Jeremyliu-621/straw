@@ -39556,3 +39556,164 @@ Combined with the OMB M-26-04 US federal compliance angle and the EU AI Act docu
 
 **Expected investment:** Each sandbox application requires legal drafting (~$5,000) and product adaptation for the sandbox environment (~2 weeks engineering for FCA's specific reporting requirements). Total: $15,000-$25,000 for FCA + IMDA engagement. ROI: market access that would otherwise require 12-18 months of BD without the regulatory endorsement.
 
+---
+
+## Tick 251 — Operator Community Infrastructure: Building the Network Without Enabling Collusion
+
+*Research sources: Kaggle Discord community (330K members); Kaggle community design patterns (forums, notebooks, discussion); developer community management practices (DigitalOcean, Anthropic, OpenAI); marketplace community anti-collusion structures*
+
+### The Community Paradox
+
+Straw needs a strong operator community for three reasons:
+1. **Supply acquisition:** New operators hear about Straw through the community, not just ads
+2. **Skill development:** Operators who discuss technique improvements compete better, making competition quality higher for enterprises
+3. **Platform loyalty:** Community membership increases operator retention and repeat participation
+
+But community creates a collusion risk: if operators can freely communicate during open competitions, they may coordinate strategies, share scores they've received, agree not to compete in each other's categories, or divide prize pools.
+
+The challenge: **build a community that generates supply-side loyalty without enabling coordination that undermines evaluation integrity.**
+
+This is a solvable design problem. The key insight: distinguish between **competition-agnostic knowledge sharing** (always OK) and **competition-specific coordination** (never OK).
+
+---
+
+### The Kaggle Community Model
+
+Kaggle's 330K-member Discord and forums operate on a temporal boundary principle:
+- **During competition:** No sharing of scores, approaches, or partial solutions in public forums
+- **After competition:** "Post-competition notebooks" are encouraged — operators share their complete approach, code, and reasoning
+- **Discussion boards:** General discussions about techniques, tools, and approaches are always open
+
+The community value is in the post-competition sharing, not the competition-time coordination. Operators build reputation by sharing high-quality post-competition writeups that demonstrate their thinking. The learning happens after the prize is awarded.
+
+Straw should implement the same structure with additional safeguards.
+
+---
+
+### Straw Community Architecture
+
+**Platform: Discord + Forum**
+
+Discord for real-time: channels organized by topic (not by competition).
+Forum for async: structured discussion threads with search indexing.
+
+**Channel structure:**
+
+```
+#general                  — general chat, no competition discussion
+#announcements            — Straw platform announcements
+#new-operators            — intro thread for new operators
+#technique-discussion     — general AI/ML approaches (no competition-specific)
+#tools-and-infrastructure — COALESCE, ZeroClaw integration, SDK help
+#evaluation-feedback      — meta-discussion about Straw's evaluation design
+#wins-and-badges          — share your Straw Win badges (marketing channel)
+#post-competition-writeups — writeups ONLY after competition close
+#category-code-migration   — category-specific technical discussion (no active competitions)
+#category-document-extraction
+#category-sql-generation
+#category-contract-review
+```
+
+**What's prohibited at the community level (enforced by moderators + TOS):**
+- Sharing Tier-1 scores during an active competition
+- Discussing specific approaches to an active competition
+- Agreeing to not compete in each other's categories
+- Sharing competition brief details beyond what's in the public description
+
+**What's encouraged:**
+- Post-competition writeups (shared after results are final)
+- Technique discussions not tied to specific active competitions
+- Tool discussions (COALESCE setup, SDK usage, infrastructure)
+- Reputation discussion (how the scoring system works)
+- Business development discussion (how to use your Straw wins for sales)
+
+---
+
+### The Post-Competition Writeup Program
+
+The most valuable community content is post-competition writeups — detailed explanations of why a submission performed well or poorly.
+
+Kaggle's "grandmaster" culture is built on shared knowledge. Top performers share their approaches because:
+1. They've already won the prize — there's no competitive cost to sharing
+2. Sharing builds reputation in the community
+3. Future competitions will have different rubrics — today's approach won't work exactly next time
+
+Straw should incentivize post-competition writeups with:
+- **Writeup badge:** "Straw Contributor" badge for operators who publish a writeup within 14 days of competition close
+- **Writeup bonus:** $25-100 bonus payment for high-quality writeups (judged by community upvotes)
+- **Platform visibility:** Writeups featured in the Straw newsletter and promoted in enterprise sales calls ("here's how operators think about your use case")
+
+**The enterprise side benefit:** Writeups give enterprise buyers visibility into how the best operators approached the task. This is qualitative context beyond the numeric score — it's the reasoning behind the ranking that helps enterprises make better selection decisions.
+
+---
+
+### The Temporal Access Model (Anti-Collusion)
+
+The key structural protection is **temporal access control**:
+
+1. **Competition open:** Operators can access the brief and the leaderboard rank (not scores). No community discussion of the specific competition brief.
+2. **Competition closed, scoring in progress:** Leaderboard hidden. No community discussion.
+3. **Results published:** Full leaderboard available. Writeups permitted. Community discussion open.
+
+This is enforced technically:
+- Competition channels are locked during competition windows (Discord role permissions)
+- Brief details are linked with a watermark that traces leaks to the downloading operator
+- Tier-1 leaderboard shows rank position only (not score) during competition — visible but not gaming-useful
+
+---
+
+### Anti-Collusion Enforcement at the Community Level
+
+In addition to Straw's technical anti-collusion measures (Ticks 224, 239), the community layer needs enforcement:
+
+**Moderators:** 2-3 senior operators (reputation score > 7.0) serve as community moderators, paid $500/month. They enforce posting rules and flag suspicious coordination.
+
+**Automated monitoring:** Keyword filters alert Straw staff to phrases like "what score did you get?", "let's split this prize", "I'll sit this one out if you sit that one out". Not a perfect system, but raises the cost of overt coordination.
+
+**Sanctions:** Operators caught coordinating during a competition:
+1. First offense: warning + competition disqualification
+2. Second offense: account suspension (30 days)
+3. Third offense: permanent ban + prize forfeiture
+
+**The deterrence math:** At 300 operators in a high-value competition, coordinating 2-3 operators to split a top-3 finish requires: finding trustworthy partners, communicating secretly, executing consistently, and hoping Straw doesn't detect the submission similarity. The expected payoff from coordination is marginal (slightly higher probability of a top-3 finish) and the expected cost is ban risk. Most operators will conclude the risk isn't worth it.
+
+---
+
+### Operator Tiers and Community Access
+
+Straw's operator reputation system (Tick 222) maps naturally to community access tiers:
+
+```
+Tier         Reputation Score  Community Access
+-----------  ----------------  -----------------------------------------------------------
+Explorer     0.0-2.9           #general, #new-operators, #technique-discussion
+Competitor   3.0-5.9           All channels except post-competition writeups
+Elite        6.0-7.9           All channels + early access to competition announcements
+Grandmaster  8.0+              All channels + 1 moderated access per competitor
+```
+
+The "moderated access" for Grandmasters is a structured mentoring mechanic: each Grandmaster can sponsor 1 new operator per quarter, giving them Competitor-level access before they've earned it through competition. This accelerates onboarding for operators referred by trusted Grandmasters.
+
+---
+
+### The Community-to-Business Development Flywheel
+
+The operator community is not just a retention tool — it's a business development engine:
+
+1. Grandmaster operators share post-competition writeups
+2. Writeups are high-quality demonstrations of their thinking and approach
+3. Enterprises read writeups during their evaluation of potential hires (P2 pathway)
+4. Enterprise procurement manager reaches out to an operator after reading their writeup
+5. Contact happens through Straw's platform (Tier-1 message, Tick 243 hire pathway)
+6. Straw earns a success fee
+
+This is the "content marketing → direct sales" loop applied to operator business development. The writeup is the portfolio piece. Straw's community is the gallery.
+
+**Estimated impact:** If 20% of Grandmaster writeups lead to an enterprise inbound message, and 25% of messages convert to a paid engagement, and each engagement is worth $20,000-$100,000 to the operator:
+- 50 Grandmasters × 20% writeup-to-message = 10 inbound messages
+- 10 × 25% conversion = 2.5 paid engagements per quarter
+- At $20,000 average engagement: $50,000 per quarter in direct operator business value via Straw
+- Straw's success fee (Tick 213) on hire engagements: $2,500-$12,500 per engagement
+
+The community generates direct revenue for Straw through the hire pathway, not just indirect value through retention.
+
