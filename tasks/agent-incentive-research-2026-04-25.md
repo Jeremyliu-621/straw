@@ -46618,3 +46618,199 @@ Milestones by end of Series A deployment (18 months):
 
 Post-Series A target: Series B at $25-35M ARR (~18 months after Series A close), $50-75M raise.
 
+
+---
+
+## Tick 289 — Straw Content and SEO Strategy
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Organic growth engine — content marketing for a category-creating B2B platform
+
+### Why Content Matters More for Straw Than Typical B2B SaaS
+
+Straw is creating a new category. The enterprise buyer doesn't have a line item called "AI evaluation platform" in their budget. They don't search Google for "AI competition platform." They search for:
+- "how to evaluate AI vendors objectively"
+- "enterprise AI procurement best practices"
+- "LLM evaluation methodology enterprise"
+- "AI vendor selection process"
+- "how to measure AI ROI enterprise"
+
+These are problem-awareness searches, not solution searches. Content that captures these searches creates demand for a category that Straw can then convert.
+
+This is fundamentally different from a product like Segment (which buyers actively search for) — Straw must educate the market before it can sell to it.
+
+---
+
+### The Content Hierarchy
+
+**Tier 1: Cornerstone Content (creates category, ranks for high-intent searches)**
+
+Long-form, comprehensive, authoritative. Takes 2-3 weeks to produce. Updates twice yearly.
+
+1. "The Enterprise AI Procurement Guide 2026" (10,000 words)
+   - Target keywords: "enterprise AI procurement," "AI vendor selection guide"
+   - Covers: POC design, vendor evaluation criteria, common failure modes, red flags
+   - Position: genuinely useful even if reader never becomes a customer
+   - CTA: "Download the Rubric Template Starter Kit" (lead capture)
+
+2. "LLM Evaluation Methodology: A Technical Reference" (8,000 words)
+   - Target keywords: "LLM evaluation methodology," "AI evaluation framework," "Elo rating AI"
+   - Covers: evaluation dimensions, automated vs. human evaluation, Glicko-2, sandboxing
+   - Position: academic-quality reference for practitioners
+   - CTA: "Compare your system against the benchmark" (operator acquisition)
+
+3. "The State of Enterprise AI Performance 2026" (Annual report, 6,000 words)
+   - Target keywords: "enterprise AI performance report," "AI benchmark comparison"
+   - Data: Straw's own competition data, anonymized performance trends
+   - CTA: "Request the full dataset" (enterprise lead capture)
+
+4. "AI Vendor Due Diligence Checklist" (Downloadable PDF, 2,000 words)
+   - Target keywords: "AI vendor due diligence," "AI procurement checklist"
+   - Position: practical tool that enterprises print and use in procurement meetings
+   - CTA: "Run a Straw competition to get objective answers to these questions"
+
+**Tier 2: Category Content (educates buyers, builds topical authority)**
+
+800-2,000 words. Publish 2× per week. These feed the cornerstone pages.
+
+Topics:
+- "Why Vendor Demos Lie: The 7 Ways AI Vendors Game the Evaluation Process"
+- "The Hidden Cost of a Bad AI Procurement Decision" (ROI analysis)
+- "GPT-4 vs. Claude vs. Gemini for Contract Review: What the Benchmarks Miss"
+- "EU AI Act Article 9: What 'Pre-Deployment Testing' Actually Means for Your Team"
+- "How Goldman Sachs Should Have Evaluated Their LLM Vendors" (thought leadership)
+- "The Goodhart's Law Problem in AI Benchmarking" (technical depth)
+- "Why Your AI Vendor's Internal Benchmark Doesn't Predict Production Performance"
+- "Glicko-2 vs. Elo: Why Chess Rating Systems Are the Right Model for AI Evaluation"
+
+**Tier 3: Long-Tail Content (SEO capture for specific use cases)**
+
+500-1,000 words. Publish 1× per week for first 6 months, then as needed.
+
+Topics:
+- "Evaluating AI for contract review: what metrics matter"
+- "How to benchmark a Python migration tool"
+- "SQL generation AI evaluation criteria"
+- "Document extraction accuracy measurement"
+- "AI customer support evaluation rubric"
+- "[Industry-specific]: evaluating AI in healthcare / legal / finance / logistics"
+
+---
+
+### Thought Leadership (Non-SEO)
+
+Content that builds reputation in the enterprise AI community even if it doesn't rank well.
+
+**arXiv preprints:**
+- Co-author with IIT academics: "Competitive Evaluation as a Mechanism for Enterprise AI Procurement"
+- Methodology paper: "RULERS: A Rubric-Based Evaluation Framework for Enterprise AI Tasks"
+
+These don't drive direct traffic but are referenced in other research, cited by journalists covering enterprise AI, and build credibility with enterprise AI teams who read the academic literature.
+
+**Conference talks:**
+- AI Summit London (June 2026): "The Evaluation Problem in Enterprise AI"
+- Strata Data + AI Conference: "Beyond Vendor Demos: Objective AI Evaluation at Scale"
+- Singapore FinTech Festival (November 2026): "MAS Guidelines and AI Evaluation: What Banks Need to Know"
+- NeurIPS 2026 Industry Track: "Competition-Based Evaluation for Enterprise AI Procurement"
+
+**Newsletter:**
+"The AI Evaluation Dispatch" — biweekly email to enterprise AI practitioners.
+Content: evaluation methodology, new research, competition results (anonymized), Straw platform updates.
+Subscriber target: 5,000 by end of Year 1.
+
+---
+
+### Distribution Strategy
+
+**LinkedIn (Primary for enterprise buyers):**
+- Founder account: 2-3 posts/week on AI procurement failures, evaluation methodology, industry observations
+- Company account: competition launches, results announcements, product updates
+- Target: 10,000 founder followers by Year 1 (realistic for consistent, high-quality content)
+- Ad budget: $5K/month in sponsored content targeted at "VP of AI," "Head of AI," "CTO" at $1B+ companies
+
+**Twitter/X (Primary for operator acquisition):**
+- Technical content: evaluation methodology, ML benchmarking research, Glicko-2 theory
+- Competition launches and results
+- Engagement with AI research community
+- Target: 5,000 followers by Year 1
+
+**HackerNews:**
+- Launch posts: "Show HN: Straw — AI competition platform for enterprise evaluation"
+- Long-form technical posts: "How we built a sandboxed evaluation daemon for AI competitions"
+- Target: 1 post in top 10 per quarter
+
+**Product Hunt:**
+- Launch at 3 months (after product is polished enough)
+- Target: top 5 Product of the Day
+
+**Paid Search:**
+- Target high-intent keywords: "AI vendor evaluation," "LLM evaluation platform," "enterprise AI procurement"
+- Budget: $8K/month at Year 1 (low volume, high intent)
+- Target CPL: <$500 (enterprise SaaS benchmark; expect <$2,000 initially, improve over time)
+
+---
+
+### SEO Technical Foundation
+
+Get these right from day one — retrofitting SEO is much harder than building it in.
+
+**Technical SEO:**
+- `sitemap.xml` auto-generated for all public pages
+- Structured data (Organization, SoftwareApplication, Article schemas)
+- Core Web Vitals: target >90 on LCP, FID, CLS
+- HTTPS everywhere, canonical URLs, proper 301s for URL changes
+- Blog published on `straw.ai/blog` (not `blog.straw.ai` — subdirectory passes authority)
+
+**Content structure:**
+- Every blog post targets one primary keyword + 3-5 secondary keywords
+- Internal linking: every post links to at least one cornerstone page
+- Pillar-cluster model: cornerstone pages linked to from all relevant cluster posts
+
+**Backlink acquisition:**
+- Guest posts on AI-focused publications: VentureBeat AI, MIT Technology Review, The Register
+- HARO (Help a Reporter Out): respond to journalist queries about enterprise AI
+- Research partnerships: academic papers citing Straw methodology
+- Data partnerships: "Straw data powered by [Straw]" in third-party analysis pieces
+
+---
+
+### Content Metrics
+
+Track monthly:
+- Organic search impressions (Google Search Console)
+- Organic click-through rate (target 3-5%)
+- Blog MQL rate: % of blog readers who become qualified leads
+- Newsletter open rate (target >35% for B2B)
+- Content-attributed pipeline: deals where first touch was a content piece
+
+**Year 1 content targets:**
+- 50 blog posts published
+- 4 cornerstone pages live
+- 1 annual report
+- 5,000 newsletter subscribers
+- 2 conference talks
+- 1 arXiv preprint
+
+**Year 2 targets:**
+- 150 blog posts total (100 new)
+- 15,000 newsletter subscribers
+- 50% of new inbound leads attributed to content
+- Content producing 30% of total pipeline
+
+At Year 2, if content produces 30% of a $2.75M ARR pipeline, that's $825K ARR from content. Content investment: $400K (2 writers + contractor + tools). ROI: 2× at Year 2, compounding.
+
+---
+
+### The Counter-Intuitive Content Rule
+
+**Write for operators, win enterprise buyers.**
+
+The instinct is to write for enterprise buyers (since they pay). But enterprise buyers are hard to reach directly — they read whatever their AI engineers surface.
+
+The path to the VP's attention is through the AI engineer who reads Straw's "LLM Evaluation Methodology" post, shares it with their team, and says "this is the right way to think about evaluation."
+
+The AI engineer becomes a champion. The champion brings Straw to the VP. This is the PLG-assisted enterprise motion described in the sales playbook.
+
+So: write deep technical content for practitioners. They'll convert enterprises more effectively than direct B2B marketing.
+
