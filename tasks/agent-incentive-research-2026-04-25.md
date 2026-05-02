@@ -52291,3 +52291,193 @@ Total for P0: 4 days engineering. This is table stakes before Straw onboards any
 - OpenAI Frontier competitive analysis
 
 **Git commit target:** `research(agent-incentive): tick 319 — ClawHub security playbook, SKILL.md sanitization code, Straw Verified badge`
+
+---
+
+## Tick 320 (2026-05-02): The rubric generator UX — AdaRubric → anchor calibration → IRR validation
+
+*Thread: Rubric generator UX. Step-by-step UX for an enterprise poster creating their first competition rubric. AdaRubric-powered draft → anchor calibration → IRR validation flow.*
+
+---
+
+## Long-form proposal (DRAFT) — Section 34: The rubric generator — first-competition UX flow
+
+> The rubric is the most important moment in Straw's UX. An enterprise that defines "winning" precisely gets a leaderboard that reliably identifies the right agent. An enterprise that writes a vague rubric gets noise. This section designs the exact step-by-step flow.
+>
+> Design constraint: enterprise poster must reach a deployable rubric in ≤ 60 minutes of active effort. The rubric must satisfy Krippendorff's α ≥ 0.80 (the statistical threshold for reliable inter-rater use from AdaRubric, arXiv:2603.21362).
+
+---
+
+### The 5-Step Rubric Creation Flow
+
+**Step 1: Task description input (5 minutes)**
+
+The poster fills in three fields:
+
+> **Task title:** [free text, max 200 chars]
+> **Task description:** [rich text editor, min 100 chars, max 5,000 chars]
+> **What does success look like for you?** [free text, max 500 chars — intentionally prompt-style]
+
+The third field is the most important: it captures the poster's mental model of success before the rubric framework shapes their thinking. This free-text answer feeds AdaRubric.
+
+UX note: The third field has a character counter that starts green and turns red at 500 chars. Below it: *"Write this as you'd describe it to a colleague, not a scoring rubric. We'll convert it to criteria."*
+
+**Step 2: AdaRubric auto-draft (30 seconds, async)**
+
+AdaRubric (arXiv:2603.21362) generates evaluation criteria from the task description + success-looks-like text. The system calls the AdaRubric pipeline (or an equivalent: Sonnet 4.6 with the AutoRubric prompt template from arXiv:2603.00077) with:
+- Task description
+- Success description
+- Task category (selected or inferred from task description)
+- 3-5 example rubrics from similar tasks in the same category (retrieved from Straw's rubric library)
+
+The output: 4-7 criteria, each with:
+- Criterion name (e.g., "Functional correctness")
+- Description (1-2 sentences explaining what it measures)
+- Suggested weight (%)
+- Scoring guidance ("A score of 90+ means X; 70-89 means Y; below 70 means Z")
+
+Example auto-draft for a "TypeScript API migration" task:
+
+> **Functional Correctness** (45% weight)
+> All API endpoints behave identically before and after migration. Tests pass, edge cases handled, no regressions.
+> — 90+: All tests pass, no new regressions, edge cases covered
+> — 70-89: Core functionality works, minor edge case failures
+> — <70: Core functionality failures or breaking changes
+>
+> **Type Safety** (25% weight)
+> TypeScript strict mode, zero `any`, full type coverage on public API signatures.
+> — 90+: Zero `any`, all types explicit, strict mode passes
+> — 70-89: Minimal `any` usage, mostly typed
+> — <70: Significant `any` usage or type errors
+>
+> **Test Coverage** (20% weight)
+> Existing test suite passes; new tests added where TypeScript enables better coverage.
+> — 90+: All existing tests pass, meaningful new tests added
+> — 70-89: Existing tests pass, no new tests
+> — <70: Some existing tests fail or removed
+>
+> **Code Readability** (10% weight)
+> TypeScript idioms used correctly, naming consistent with codebase conventions.
+> — 90+: Clean TypeScript, consistent with conventions, no obvious WTF moments
+> — 70-89: Mostly clean, some inconsistency
+> — <70: Hard to read, inconsistent, non-idiomatic
+
+The poster sees the auto-draft after ~30 seconds. The loading screen shows: *"Analyzing 247 similar competitions to suggest criteria..."*
+
+**Step 3: Rubric editing and weight adjustment (10-20 minutes)**
+
+The poster sees the auto-draft in an editable rubric editor:
+
+- **Add criterion:** button opens a mini-form with criterion name + description + weight slider
+- **Remove criterion:** trash icon per criterion
+- **Edit criterion:** in-place editing of name, description, weight, scoring guidance
+- **Weight allocation:** weights must sum to 100%. Circular progress bar shows current total. Goes red if total ≠ 100%.
+- **Drag to reorder:** criteria can be reordered, but reordering doesn't affect scoring
+
+**Guardrails:**
+- Minimum 3 criteria, maximum 10 criteria (enforced)
+- Any single criterion weight > 60% triggers a warning: "High single-criterion weight can make the competition feel like pass/fail. Consider distributing weight across criteria."
+- Any criterion with vague scoring guidance (under 20 chars) triggers: "This scoring guidance may be too vague. Agents may interpret it differently."
+
+At the bottom: **IRR Estimate** — a live indicator that estimates whether the rubric will produce consistent scores. This is the pre-flight check.
+
+**Step 4: Anchor calibration (10-20 minutes, optional but recommended)**
+
+This is the step that converts a plausible-sounding rubric into a calibrated, reliable one.
+
+The poster is shown this prompt:
+
+> **Calibrate your rubric with examples (recommended)**
+>
+> Upload 2-4 example outputs: one "great" example, one "acceptable" example, and one "poor" example for each criterion. We'll use these to anchor the judge to your standards.
+>
+> You don't need to score them yourself — just label them as Great / Acceptable / Poor.
+
+Why this matters: the AdaRubric finding (arXiv:2603.21362) is that step-level scoring with confidence-weighted feedback achieves α=0.83. The AutoRubric finding (arXiv:2603.00077) is that calibration references (anchored examples) significantly reduce judge drift. Without anchors, two runs of the same rubric on the same submission can produce scores 8-15 points apart. With anchors: 3-5 points apart.
+
+**Implementation:**
+- Poster uploads artifacts (code files, text outputs, or pastes text inline) for each label (Great/Acceptable/Poor)
+- No scoring required from the poster — just the label
+- Straw stores these as calibration examples
+- Before the competition runs, each anchor is scored by the judge → if the judge scores "Great" example < 80 or "Poor" example > 60, the judge prompt is adjusted
+
+If the poster skips this step: rubric deploys with AdaRubric-only calibration (no poster anchors). This is fine for straightforward categories but produces more score variance in ambiguous categories.
+
+A prompt appears: *"Skipping calibration? Your competition will work fine, but score variance may be higher. You can calibrate later before the deadline."*
+
+**Step 5: IRR validation — the pre-flight gate (2 minutes)**
+
+Before the rubric is published, Straw runs a synthetic IRR check:
+
+1. Take 3-5 synthetic outputs for this task category (from the category's calibration corpus)
+2. Run the rubric twice (same judge, different temperature seed, ≥24h apart — or two different judge models)
+3. Compute Krippendorff's α across the two runs
+
+**If α ≥ 0.80:** Green light. Rubric is published with a reliability badge.
+
+**If α between 0.65-0.79:** Yellow. Message to poster:
+> "Your rubric has moderate reliability (α=0.72). This is acceptable for most competitions, but high-value decisions may benefit from review. Consider: [specific suggestions based on which criterion contributed most to variance]."
+> [Continue anyway] [Improve my rubric]
+
+**If α < 0.65:** Red. Rubric is blocked from publishing until improved. Message:
+> "This rubric has low reliability (α=0.58). Judges would likely score the same submission 15-25 points differently between runs. Competitions with unreliable rubrics produce misleading leaderboards.
+> The most likely cause: the '[Criterion Name]' criterion's scoring guidance is ambiguous. Here's a suggested rewrite: [...]"
+>
+> [Revise rubric] [Speak to a specialist]
+
+The "speak to a specialist" option routes to a Straw CS rep who can run a 30-minute rubric design session. This is the premium onboarding service from Section 27 of the research.
+
+---
+
+### The Rubric Library: What Straw Builds Over Time
+
+After 50 competitions, Straw's rubric library becomes a moat. For each task category, the library stores:
+- 10-50 real rubrics (with their IRR scores and post-competition outcome correlation)
+- Which criteria correlated with "poster satisfied with winner" (from post-competition survey)
+- Which criteria were frequently edited from the auto-draft (indicates poor auto-draft quality)
+- Which weight distributions produced the widest score variance (good discrimination)
+
+This data trains a rubric quality model (N=1,000 threshold from Section 16). The model eventually pre-flags rubrics likely to produce noise before the IRR check runs — cutting the feedback loop from minutes to seconds.
+
+---
+
+### The Rubric Generator as Competitive Moat
+
+The rubric generator is easy to describe but hard to replicate:
+
+1. **AdaRubric + category-specific templates:** requires a corpus of successful rubrics per category. A new competitor has no corpus.
+2. **Anchor calibration corpus:** requires having run real competitions with real poster-labeled anchors. A new competitor has none.
+3. **IRR validation with synthetic outputs:** requires having generated category-specific synthetic outputs. A new competitor generates these from scratch.
+4. **Post-competition rubric quality feedback loop:** requires data on which rubrics produced satisfied posters vs. complaints. Only Straw has this after year 1.
+
+The rubric generator is the most defensible product investment in Straw's early roadmap. Build it right at v1.0.
+
+---
+
+### Fast Path: The 5-Minute Rubric for Agents
+
+The full 5-step flow is for enterprise posters creating first competitions. For agents posting sub-tasks (orchestrator use case), the rubric generator has a "Fast Path":
+
+1. Agent provides: task description + desired output format + single success criterion
+2. System auto-generates a minimal rubric (3 criteria, default weights) in 10 seconds
+3. Rubric is published immediately — no anchor calibration, no IRR gate
+4. Warning label on the competition: "Auto-generated rubric — higher score variance expected"
+
+This satisfies the "posting takes under 5 minutes of agent compute" constraint from Section 12, Reason 6. Agents don't need the full enterprise flow — they need a rubric that's good enough to filter submissions.
+
+---
+
+## Closed threads (Tick 320)
+
+- [done — Tick 320] **Rubric generator UX** — 5-step enterprise flow: (1) task description + success narrative input (5 min), (2) AdaRubric auto-draft from category templates (30 sec async), (3) editable rubric editor with weight guardrails and IRR estimate (10-20 min), (4) optional anchor calibration (upload Great/Acceptable/Poor examples, 10-20 min), (5) synthetic IRR pre-flight gate (α≥0.80 green / 0.65-0.79 yellow / <0.65 blocked). Fast Path for agent-posted subtasks: 3-criteria auto-rubric in 10 seconds. Rubric library moat: category templates + anchor corpus + IRR quality model grows with each competition.
+
+---
+
+## Push status (after Tick 320)
+
+**Ticks 312-320** complete. Remaining high-priority open threads:
+- Series A investor narrative synthesis
+- OpenAI Frontier competitive analysis (fresh research needed)
+- Technical architecture v1 (tech stack + data model)
+
+**Git commit target:** `research(agent-incentive): tick 320 — rubric generator UX (AdaRubric → anchor calibration → IRR gate)`
