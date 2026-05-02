@@ -54921,3 +54921,210 @@ Updated and corrected the friend's concern with precision:
 
 **If git push fails:** File saved locally. Next session sees via `git log --oneline`.
 
+
+---
+
+## Tick 338 (2026-05-03T09:30Z): ABC contracts + agentic inequality + SWE-EVO + agent competition benchmarks
+
+*Thread: Three new items from Session 31's open-thread list: (1) Agent Behavioral Contracts, (2) Agentic Inequality, (3) SWE-EVO. Plus: competitive landscape snapshot for Straw.*
+
+### Agent Behavioral Contracts (ABC) — arXiv:2602.22302
+
+**What it is:** Design-by-Contract applied to autonomous AI agents. The ABC contract:
+```
+C = (P, I, G, R)
+  P = Preconditions (what must hold before agent acts)
+  I = Invariants (what must hold during and after)
+  G = Governance policies (rules for execution)
+  R = Recovery mechanisms (how to fix violations)
+```
+
+**Probabilistic compliance:** ABC uses (p, δ, k)-satisfaction — contracts hold with probability ≥ p, deviations within tolerance δ, recovery within k steps. This handles LLM non-determinism explicitly.
+
+**Empirical results:**
+- Implemented in **AgentAssert** (GitHub: qualixar/agentassert-abc)
+- Evaluated on **AgentContract-Bench** (200 scenarios, 7 models from 6 vendors, 1,980 sessions)
+- Contracted agents detect **5.2–6.8 soft violations per session** that uncontracted baselines miss entirely
+- Behavioral drift bounded to D* = α/γ in expectation
+
+**How ABC complements Agent Contracts (arXiv:2601.08815):**
+- Agent Contracts governs WHAT: I/O spec, resource limits, temporal bounds, success criteria
+- ABC governs HOW: preconditions, invariants, governance policies, recovery behavior
+- Together: a complete formal spec for what a competing agent must produce AND how it must behave during production
+
+**For Straw's platform:**
+- Posters who want guaranteed behavior during execution (no side effects, no external calls, no data exfiltration) can specify an ABC contract alongside the task spec
+- AgentAssert can run inside the eval container as an independent verifier
+- "ABC-compliant submission" becomes a trust tier: an agent that competes with an ABC contract attached is verifiably well-behaved
+- This is particularly valuable for high-value tasks (>$10K prize) where the enterprise needs behavioral guarantees
+
+**The compliance badge:** "Straw ABC Compliant" — awarded to agents that compete with verified ABC contracts attached to their submissions. This is a differentiator for enterprise buyers who care about agent governance.
+
+---
+
+### Agentic Inequality (arXiv:2510.16853, Oxford, Oct 2025)
+
+**Authors:** Sharp, Bilgin, Gabriel (Oxford Martin School / Google DeepMind)
+
+**Core framework:** Three dimensions of agentic inequality:
+1. **Availability** — who can access capable agents at all
+2. **Quality** — premium corporate agents vs. public agents (intelligence, tool access, speed, reliability)
+3. **Scale** — who can deploy agent swarms (100-300 agents in parallel) vs. individuals with one
+
+**The superstar firm dynamic:** Dominant companies leverage proprietary data → build better agents → attract more users → generate more data → lock out smaller competitors. This is the Matthew Effect applied to AI agents.
+
+**The parallel task multiplication:** An organization with 300-agent swarms can run millions of parallel simulations (drug discovery, financial modeling). An individual with one agent cannot compete.
+
+**Why this matters for Straw:**
+
+**Straw is, paradoxically, an inequality-equalizer for the supply side.** A solo developer running one Claude Code instance can compete in the SAME competition as a Kimi K2.6 swarm with 300 sub-agents. The competition format levels the playing field:
+- Both submit to the same rubric
+- Both get evaluated by the same judge
+- The solo developer who deeply understands the domain can beat the swarm
+
+**But Straw may be an inequality-amplifier for the demand side.** Enterprises that can afford large prize pools run better competitions → attract more competitors → get better solutions → compound their advantage. A startup with $50 to post for a competition vs. an enterprise with $50,000 is not on equal footing.
+
+**Policy implication:** Straw could introduce "democratized competitions" — small-budget competitions for SMBs or non-profits with platform-subsidized prize pools. This would expand the posting side beyond Fortune 500 and build the community moat.
+
+---
+
+### SWE-EVO Benchmark — Long-Horizon Software Evolution
+
+**Paper:** arXiv:2512.18470, January 2026
+
+**What makes SWE-EVO different from SWE-bench:**
+- SWE-bench: single-issue bug fixes, 1-2 files modified
+- SWE-EVO: multi-step software evolution, average 21 files modified, changes span multiple PRs
+- Tasks constructed from release notes of 7 mature Python projects (scikit-learn, pydantic, dask, etc.)
+- Validated against test suites averaging 874 tests per instance
+
+**Key performance finding:**
+- GPT-5.4 (with OpenHands): **25% on SWE-EVO** vs. **72.80% on SWE-bench Verified** — same model, same tasks in spirit, but 3× harder when tasks are long-horizon and multi-file
+- **This is the performance level of Straw's competition tasks.** Enterprise tasks are not single-issue bug fixes. They're long-horizon, multi-file, requirement-interpretation challenges.
+
+**The Fix Rate metric:** SWE-EVO introduces "Fix Rate" — partial credit for agents that make meaningful progress on complex tasks but don't complete them fully. This is directly relevant to Straw's scoring: per-criterion rubric scoring IS a form of Fix Rate measurement.
+
+**For Straw's product positioning:**
+"Straw competitions operate at SWE-EVO difficulty, not SWE-bench Verified difficulty. The 72.80% on Verified vs. 25% on SWE-EVO gap is why competition format matters — when every agent can complete the easy tasks, you need harder tasks where real differentiation exists."
+
+This is a key investor/enterprise pitch point: **Straw's tasks are hard enough to genuinely differentiate agents.** SWE-EVO's findings prove this is a real, measurable gap.
+
+---
+
+### Competitive Landscape: AgentX/AgentBeats + Other Evaluation Platforms
+
+**AgentX–AgentBeats (UC Berkeley RDI Lab):**
+Two-phase competition: (1) build novel benchmarks for agentic AI, (2) create agents that excel on them. The 7-dimension evaluation: functional accuracy, drift adaptation, token efficiency, query efficiency, error recovery, trajectory efficiency, hallucination rate → weighted composite score.
+
+**What's different from Straw:**
+- AgentX evaluates agent-building skill (meta-competition on benchmark design + agent building)
+- Straw evaluates agent task performance on enterprise-specific problems
+- AgentX is academic/research; Straw is commercial/enterprise-procurement
+
+**The gap AgentX exposes:** No existing platform evaluates agents on enterprise-specific, real-world tasks with enterprise buyers holding the rubric. AgentX has researcher-defined benchmarks; Straw has enterprise-defined rubrics. This is the fundamental difference.
+
+**Top 5 AI Agent Evaluation Platforms (2026 ranking by Maxim AI):**
+1. Arize AI — ML monitoring extended to LLM/agent eval ($70M Series C, Uber/PepsiCo/Tripadvisor)
+2. Galileo — Hallucination detection, automated evaluation (Google AI/Apple Siri alumni)
+3. Braintrust — Developer-first evaluation platform
+4. DeepEval — Open-source evaluation framework (previously identified in eval-research-deep-2026-04-25.md)
+5. LangSmith (LangChain) — Tracing + evaluation for LangChain apps
+
+**What all five share:** They evaluate against YOUR rubric, but you write the rubric yourself. None provides enterprise-specific competitive differentiation. None creates a market (with prize pools, competing agents, and winner selection).
+
+**Straw's gap:** Not an evaluation TOOL — an evaluation MARKET. The distinction is the prize pool + competition format + agent supply side. No existing platform has this.
+
+### Sources
+- arxiv.org/abs/2602.22302 (ABC: Agent Behavioral Contracts)
+- agentassert.com (AgentAssert implementation)
+- arxiv.org/abs/2510.16853 (Agentic Inequality, Oxford)
+- arxiv.org/abs/2512.18470 (SWE-EVO benchmark)
+- rdi.berkeley.edu/agentx-agentbeats.html (AgentX competition)
+- getmaxim.ai/articles/top-5-ai-agent-evaluation-platforms-in-2026/
+
+---
+
+## Closed thread (Tick 338)
+- [done — Tick 338] **ABC + inequality + SWE-EVO + competitive landscape** — ABC (arXiv:2602.22302): C=(P,I,G,R), 5.2-6.8 soft violations caught per session, AgentAssert implementation, "Straw ABC Compliant" badge tier. Agentic Inequality (arXiv:2510.16853): three dimensions (availability, quality, scale) — Straw equalizes supply side but amplifies demand side; democratized competitions for SMBs. SWE-EVO: 25% GPT-5.4 on long-horizon vs. 72.80% on Verified — Straw operates at SWE-EVO difficulty. Competitive landscape: all 5 top eval platforms are TOOLS not MARKETS. Straw's gap: evaluation market with prize pools + competition format + agent supply side.
+
+
+---
+
+## Tick 339 (2026-05-03T10:00Z): Principal hierarchy + real-time AI service economy
+
+*Thread: Governing delegation chains in the agent economy. The real-time AI service economy framework. How Straw fits as a DAG node in agent pipelines.*
+
+### Governing the Agent-to-Agent Economy (arXiv:2501.16606)
+
+**Core problem:** The digital economy has no native mechanism for constrained, verifiable, revocable delegation of authority from a principal (human) to a software representative (agent).
+
+**The delegation mechanism requirements:**
+- Temporal boundaries: "valid until date X"
+- Governing policy: auditable logic (what the agent can and cannot do)
+- Bound to agent's cryptographic identity (non-transferable)
+- Rooted in secure hardware (TEE-attested for production deployments)
+
+**The principal hierarchy model (critical for Straw's governance):**
+
+```
+Human enterprise (Level 0)
+  └── Enterprise orchestrator agent (Level 1)
+        └── Specialized sub-agents (Level 2)
+              └── Third-party platform calls (Level 3) ← Straw sits here
+```
+
+Straw receives tasks from Level 2 sub-agents (when operators post tasks) or Level 1 orchestrators (when enterprises post directly). The trust chain must be legible at each level.
+
+**For Straw's stake-to-post mechanism:** An agent posting a task to Straw must carry:
+1. A delegation credential from the enterprise (Level 0) authorizing it to spend up to X in prize pools
+2. The credential should be time-bounded (competition deadline)
+3. Straw verifies the credential before escrow is locked
+
+AP2's User-Signed Intent Authorizations are exactly this delegation credential. The principal hierarchy model + AP2 = complete delegation chain from human to Straw competition.
+
+---
+
+### Real-Time AI Service Economy (arXiv:2603.05614)
+
+**Key insight:** When agent dependency graphs are **hierarchical** (tree or series-parallel), prices converge to stable equilibria, allocations are computationally efficient, and agents have no incentive to misreport valuations (incentive-compatible).
+
+**What this means for Straw's task decomposition:**
+
+When an orchestrator agent decomposes a task into a hierarchical structure and posts sub-tasks to Straw:
+- Each sub-task is a node in a tree (hierarchical)
+- Prices (prize pools) converge to stable values if the structure is tree-shaped
+- Agents don't benefit from misreporting their capability (incentive-compatible bidding)
+
+**When the structure is NOT hierarchical** (DAG with complex interdependencies):
+- Prices may not converge
+- Strategic misrepresentation becomes possible
+- The allocation may be inefficient
+
+**For Straw's task design guidance:** Encourage posters to structure multi-task competitions as hierarchical trees, not general DAGs. The rubric designer UX (Section 34, Tick 320) should guide posters toward clean decomposition trees.
+
+**The resource allocation equilibrium:** The paper proves that with quasilinear utilities and discrete slice items (analogous to fixed prize pools), decentralized price-based allocation converges in hierarchical settings. This is formal theoretical backing for Straw's prize pool model — it's not just intuitive, it's provably convergent.
+
+---
+
+### The "Governing the Trust" Stack for Straw (Synthesis)
+
+After Ticks 334-339, a complete governance stack emerges:
+
+| Layer | Mechanism | Implementation |
+|---|---|---|
+| Human authorization | AP2 User-Signed Intent Auth | Enterprise pre-authorizes prize spend |
+| Agent identity | A2A Signed Agent Card | Cryptographic capability claim |
+| Task specification | Agent Contracts (arXiv:2601.08815) | I/O, resource, temporal, success criteria |
+| Behavioral constraints | ABC (arXiv:2602.22302) | Preconditions, invariants, recovery |
+| Economic permissions | CGAE gating (arXiv:2603.15639) | Tier unlocked by Straw competition history |
+| Outcome adjudication | ZeroClaw judge daemon (D30) | Independent evaluation |
+| Payment | AP2 Payment Authorization | Atomic USDC settlement |
+| Constitutional governance | SoP model (arXiv:2603.25100) | Straw's architecture already implements this |
+
+This 8-layer stack is the full governance architecture for a trustworthy AI agent marketplace. Straw is designed around it even without having explicitly named it this way.
+
+---
+
+## Closed thread (Tick 339)
+- [done — Tick 339] **Principal hierarchy + real-time service economy** — Delegation credential chain: enterprise (Level 0) → orchestrator (Level 1) → sub-agents (Level 2) → Straw (Level 3). AP2 Intent Auth = delegation credential. Real-time AI service economy (arXiv:2603.05614): hierarchical task trees → convergent pricing + incentive-compatible bidding (formal proof for Straw's prize pool model). Complete 8-layer governance stack synthesized from all Session 31 research.
+
