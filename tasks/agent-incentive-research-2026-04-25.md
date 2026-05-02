@@ -48196,3 +48196,154 @@ At the end of Month 12, Straw should be able to demonstrate:
 
 If these criteria are met, Straw is ready for a Series A at $10M valuation/$3-4M ARR run rate.
 
+
+---
+
+## Tick 297 — Straw's Failure Modes
+
+**Date:** 2026-05-02
+**Session:** 29
+**Thread:** Honest assessment of how Straw could fail — scenario analysis and mitigations
+
+### Why Think About Failure
+
+Every founder believes their company will succeed. The ones who succeed are also the ones who've thought hard about how they could fail, and taken explicit steps to reduce those probabilities.
+
+The failure modes for Straw are distinct from generic startup failure modes (ran out of money, hired wrong people, market didn't materialize). Straw's failures are mostly structural: they emerge from the specific mechanics of a two-sided marketplace in an enterprise context.
+
+---
+
+### Failure Mode #1: The Operator Desert
+
+**Scenario:** Straw launches. Enterprises are interested. But the operator pool is thin — 30 operators total, only 8 in the category that an enterprise needs. The enterprise runs the competition. 8 operators submit. The best score is 7.2. The enterprise is unimpressed. "Is this really the best AI available for contract review?" Enterprise churns.
+
+**Why this is plausible:**
+- Operator recruitment is hard and slow
+- Competition between AI systems requires high-quality operators, not just any operators
+- Enterprise expectations may exceed current AI state-of-the-art
+
+**Mitigation 1:** Practice competitions for 3+ months before first enterprise competition. Operators build track records, find their strengths, improve their systems. By the time an enterprise pays, the operator pool is tested.
+
+**Mitigation 2:** Seed with known high-quality operators. Directly recruit 10-20 frontier AI developers (from HuggingFace, arXiv, AI startups) before public launch. These "anchor operators" establish a quality floor.
+
+**Mitigation 3:** Set enterprise expectations correctly. "For contract review, the current top-performing system scores 8.4 on our benchmark. Here's what 8.4 means in practice: [concrete example]." Enterprises who expect 10/10 perfect AI are wrong about the state of the art.
+
+**Residual risk:** Some enterprise categories may not have sufficient AI capability to make the competition interesting yet. Straw should not launch categories where the best available AI is inadequate (scores <6.0 on pilot tasks). This wastes enterprise trust.
+
+---
+
+### Failure Mode #2: Evaluation Quality Collapse
+
+**Scenario:** A significant bug in ZeroClaw's scoring engine causes scores to be systematically wrong for 2 weeks. 5 competitions complete with incorrect results. Prize money is distributed incorrectly. When discovered, Straw faces: demands for redistribution, potential legal action, and a crisis of trust.
+
+**Why this is plausible:**
+- Evaluation code is complex; edge cases are abundant
+- A subtle bug in rubric parsing could affect many competitions before detection
+- Immutable scores make correction harder (you can't update; you can only create corrective records)
+
+**Mitigation 1:** Extensive pre-launch testing. 100 simulated competitions with known-correct outputs before any enterprise competition runs. If scoring is correct on all simulations, the probability of systematic bugs is low.
+
+**Mitigation 2:** Statistical anomaly detection. If a rubric dimension that historically scores operators 7-8/10 suddenly starts producing 4/10 across all operators, flag it immediately. Cross-competition calibration catches systematic shifts.
+
+**Mitigation 3:** Dual evaluation architecture. Run a second, independent scoring engine in parallel (shadow mode) and compare outputs. If the two scoring engines disagree by >0.5 points, hold results and investigate before publishing.
+
+**Mitigation 4:** Bug bounty program. Offer $5,000 to any operator who discovers and reports a genuine scoring bug. This creates incentive for operators to find bugs and report them rather than exploit them.
+
+**Residual risk:** Some bugs may be subtle enough to escape all mitigations. Straw's incident response plan (Tick 290) handles this: transparent disclosure, full remediation, trust rebuilding. The risk is manageable but not eliminable.
+
+---
+
+### Failure Mode #3: The Enterprise Churn Cascade
+
+**Scenario:** Straw launches. 3 enterprises run pilots. One pilot fails to surface a better vendor than the enterprise was already planning to use. Enterprise concludes "Straw didn't help us." They churn. Word spreads to their peer network. Two other enterprises follow. Straw's first cohort is 0 for 3 on renewals.
+
+**Why this is plausible:**
+- Some enterprises are already using the best available AI for their use case
+- If the pilot competition winner is the incumbent vendor, the enterprise doesn't see new value
+- Enterprise procurement is tribal: negative word-of-mouth travels fast
+
+**Mitigation 1:** Pre-qualify enterprises for pilots. An enterprise that already has a strong AI deployment and is happy with it is a bad pilot candidate. Target enterprises that are actively considering switching vendors, running a new initiative, or frustrated with current AI performance.
+
+**Mitigation 2:** Set success criteria before the pilot, not after. "Success" should not be "you find a better vendor." It should be "you get an objective score for your current vendor and two alternatives, with documented methodology." Even confirming the current vendor is the right choice is valuable if it's evidence-backed.
+
+**Mitigation 3:** Diversify the value proposition. A pilot that confirms the current vendor is best ("we already have the right solution") is a success for Straw — it demonstrates evaluation quality and regulatory compliance value. Help the enterprise articulate this to their leadership.
+
+**Residual risk:** Some enterprise pilots will not generate visible new value. Accept a certain failure rate (maybe 30% of pilots don't renew). The business works if the 70% who renew expand aggressively.
+
+---
+
+### Failure Mode #4: Operator Cheating at Scale
+
+**Scenario:** As prize pools grow to $50K+ competitions, the incentive for cheating increases. A sophisticated operator reverse-engineers the evaluation pipeline, pre-obtains task inputs through an unknown channel, and submits a pre-tuned response that scores 9.8 when the honest best is 7.5. They win the prize. They do this 10 times. Straw doesn't detect it.
+
+**Why this is plausible:**
+- $50K is meaningful enough that sophisticated actors are motivated
+- Evaluation infrastructure, like any software, has vulnerabilities
+- Task inputs might leak through supply chain (someone who generated the tasks, a database exposure, etc.)
+
+**Mitigation 1:** Anti-cheating technical architecture (detailed in Tick 255 and Tick 283). Task sealing, submission limits, pattern detection, held-out test sets.
+
+**Mitigation 2:** Randomization. Task sets are sampled from large pools. Even if an operator obtains some task examples from a prior competition, they don't know which specific tasks will appear in the next competition.
+
+**Mitigation 3:** Multi-competition pattern detection. An operator who consistently scores 9.5+ (extreme outlier) across multiple competitions and categories triggers investigation. Legitimate improvement is gradual; sudden consistent excellence is suspicious.
+
+**Mitigation 4:** Prize pool escrow delay. High-value prizes ($10K+) are held for 7 days after competition close before distribution. This allows more time for cheat detection before the money leaves.
+
+**Residual risk:** A sophisticated enough attacker with an inside channel could theoretically cheat. Perfect security is impossible. Accept this risk and design the economic incentives so the expected value of cheating is negative: high probability of detection × severe penalties (lifetime ban, legal action for fraud) > expected prize gain.
+
+---
+
+### Failure Mode #5: Category Commoditization
+
+**Scenario:** The core Straw categories (contract_review, code_migration) become commoditized. All AI systems score 9+ on them by 2027. Enterprises don't need Straw to tell them that GPT-7 is as good as Claude-5 on a task that both perform near-perfectly. Competition evaluation adds no value when all competitors are indistinguishable.
+
+**Why this is plausible:**
+- AI capability improves rapidly
+- Frontier models close the gap on many enterprise tasks
+- If all operators score 9.3-9.5, the competition doesn't help enterprises choose
+
+**Mitigation 1:** Stay ahead with harder categories. Move to v2, v3 categories (multi-turn, adversarial, fine-tuning) where differentiation persists even as basic tasks commoditize.
+
+**Mitigation 2:** Robustness as differentiation. Even if all systems score 9+ on clean tasks, robustness scores will vary significantly. "Your current vendor scores 9.2 on clean contracts but 6.1 on OCR-degraded contracts" remains valuable even in a commoditized baseline environment.
+
+**Mitigation 3:** Enterprise-specific evaluation. A standard contract_review benchmark may commoditize, but a custom rubric for HSBC's specific contract types doesn't. As enterprises mature, they'll demand custom evaluation that matches their exact workflow, not generic benchmarks.
+
+**Mitigation 4:** The "evaluation as governance" value persists even if AI improves. Enterprises need documentation of AI performance for regulatory compliance whether or not all systems are excellent. Running a competition and getting a signed attestation has regulatory value independent of competitive differentiation.
+
+**Residual risk:** This is a real long-term risk. Straw must continuously innovate on evaluation difficulty. A company that only evaluates tasks where AI is already excellent will become irrelevant.
+
+---
+
+### Failure Mode #6: Regulatory Whiplash
+
+**Scenario:** A major AI incident triggers emergency legislation. The EU bans third-party AI evaluation platforms from operating for financial institutions. Singapore MAS requires government licensing for AI evaluation services. The compliance infrastructure Straw built is now a liability rather than an asset.
+
+**Why this is plausible:**
+- AI regulation is rapidly evolving and unpredictable
+- A high-profile AI failure in a regulated industry could trigger overreaction
+- Straw's positioning as "compliance infrastructure" means regulatory changes directly impact the product
+
+**Mitigation 1:** Engage regulators proactively. Straw should be in the room when MAS, FCA, and other regulators develop AI evaluation standards. Being a participant in the process reduces the risk of hostile regulation.
+
+**Mitigation 2:** Build for regulatory portability. Straw's compliance exports should be adaptable to multiple regulatory frameworks. When regulation changes, update the export format, not the core evaluation system.
+
+**Mitigation 3:** Geographic diversification. No single regulatory jurisdiction should account for more than 40% of revenue. Singapore + India + UK + Australia + others provides resilience against any single regulatory shock.
+
+**Residual risk:** Extreme regulatory scenarios (e.g., AI governance nationalized in key markets) could significantly harm the business. This is a tail risk but not plannable; accept it as background volatility.
+
+---
+
+### The Failure Mode That Would Actually Kill Straw
+
+Looking across all failure modes, the one that would actually kill the company is not technical failure, not operator cheating, not category commoditization. It's this:
+
+**Straw is caught manipulating scores or having a hidden conflict of interest.**
+
+One incident of proven score manipulation — even if minor, even if unintentional — destroys the entire value proposition permanently. The brand depends on being the trusted neutral arbiter. If that trust is broken, there's no recovery.
+
+This is why every other mitigation is secondary to the trust architecture. Technical bugs can be fixed. Churn can be reversed. Categories can be expanded. Trust cannot be rebuilt once broken.
+
+Every engineering decision, every policy decision, every hiring decision must be evaluated through the lens: "does this make score manipulation more or less possible, and does it make manipulation more or less detectable?"
+
+The answer to that question is the most important strategic filter Straw has.
+
