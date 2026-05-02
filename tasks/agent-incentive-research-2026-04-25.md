@@ -44404,3 +44404,231 @@ Japan is worth pursuing, but only after Singapore (P0) and India (P1) are establ
 
 *Tick 277 complete.*
 
+
+---
+
+## Tick 278 — The Straw API: Developer Platform for Operators and Enterprises
+
+**Date:** 2026-05-02
+**Thread:** API design — what operators and enterprises can do programmatically, and why it matters
+**Research method:** Developer platform design patterns (Stripe, Twilio, Anthropic API); B2B API monetization; developer experience as enterprise moat
+
+---
+
+### Why the API Matters
+
+Straw's web interface handles 80% of use cases. But the 20% that requires API access is where the highest-value enterprise customers live.
+
+A Fortune 500 enterprise that runs 20 competitions per year doesn't use a web wizard for every one. They have internal procurement systems, Jira workflows, Jenkins pipelines, and custom dashboards. They want to trigger a Straw competition from their internal tooling, receive webhooks when results are ready, and export results directly to their vendor assessment database — without a human logging into a web interface each time.
+
+Similarly, a top operator team running 100+ competition submissions per year needs programmatic submission, status tracking, and result retrieval. Their submission pipeline is automated; they don't click through a web UI.
+
+The API is Straw's B2B developer platform — the integration layer that embeds Straw into enterprise and operator workflows, increasing stickiness and reducing friction.
+
+---
+
+### The Two API Consumers
+
+**Consumer 1: Enterprise API (Poster-Side)**
+
+Enterprises use the API to:
+- Create competitions programmatically (from their procurement system)
+- Monitor competition status (entrant count, tier-1 scores without unblinding)
+- Register webhooks (get notified when evaluations complete, when competition closes)
+- Export results (to ServiceNow, SAP Ariba, internal databases)
+- Manage Fleet evaluations (schedule evaluations, retrieve performance data)
+- Issue compliance exports (EU AI Act Article 15 format, MAS report)
+
+**Consumer 2: Operator API (Competitor-Side)**
+
+Operators use the API to:
+- List open competitions (browse opportunities)
+- Retrieve competition task inputs (download artifacts securely)
+- Submit solutions (upload solution code or adapter file)
+- Check submission status (has Tier-1 evaluation completed?)
+- Retrieve evaluation results (after competition close)
+- Manage their profile and rating data
+- Request credential issuance (trigger W3C VC credential generation)
+
+---
+
+### Core API Design Principles
+
+**Principle 1: RESTful with consistent resource naming**
+All resources follow the pattern: `/v1/{resource_type}/{id}/{sub_resource}`. No action-based URLs. No RPC patterns in the main API (separate internal service boundary for ZeroClaw).
+
+**Principle 2: Idempotent mutations where possible**
+`POST /v1/competitions` with the same `idempotency_key` header should return the same competition object without creating duplicates. This is critical for enterprise automation where network failures can cause retries.
+
+**Principle 3: Webhook-first for async operations**
+Competition creation is fast (synchronous). Evaluation is async. The API must support webhook registration for all async events; polling is supported but discouraged for high-frequency events.
+
+**Principle 4: Scoped API keys**
+Each API key has explicit scopes: `competitions:read`, `competitions:write`, `submissions:read`, `submissions:write`, `fleet:read`, `fleet:write`, `compliance:export`, `credentials:read`. Enterprise API keys have different scope defaults than operator API keys.
+
+**Principle 5: Rate limiting with clear headers**
+Every response includes: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`. Rate limits are per-key, not per-IP. Standard: 1,000 requests/minute for Enterprise keys, 100 requests/minute for Operator keys.
+
+---
+
+### Key API Endpoints
+
+**Competition Management (Enterprise)**
+
+```
+POST   /v1/competitions                Create a new competition
+GET    /v1/competitions                List competitions (yours)
+GET    /v1/competitions/{id}           Get competition details + status
+PATCH  /v1/competitions/{id}           Update competition (before launch only)
+DELETE /v1/competitions/{id}           Cancel competition (refund triggers)
+GET    /v1/competitions/{id}/entrants  Count entrants (blind during active)
+GET    /v1/competitions/{id}/results   Full results (after close only)
+POST   /v1/competitions/{id}/export    Generate compliance export artifact
+POST   /v1/webhooks                    Register webhook endpoint
+DELETE /v1/webhooks/{id}               Deregister webhook
+```
+
+**Submission (Operator)**
+
+```
+GET    /v1/competitions/open           Browse open competitions (public)
+GET    /v1/competitions/{id}/task      Download task inputs (authorized participants only)
+POST   /v1/competitions/{id}/submissions     Submit a solution
+GET    /v1/competitions/{id}/submissions/{sub_id}   Check submission status
+GET    /v1/competitions/{id}/results         Get results (after close)
+```
+
+**Fleet (Enterprise)**
+
+```
+POST   /v1/fleet/agents                Register an agent for Fleet monitoring
+GET    /v1/fleet/agents                List registered agents
+GET    /v1/fleet/agents/{id}/history   Performance history time series
+POST   /v1/fleet/agents/{id}/evaluate  Trigger an ad-hoc evaluation
+GET    /v1/fleet/alerts                List active performance drift alerts
+POST   /v1/fleet/emergency-eval        Trigger emergency re-evaluation
+```
+
+**Credentials (Operator)**
+
+```
+GET    /v1/operators/{id}/credential   Get W3C VC credential (signed JSON)
+POST   /v1/operators/{id}/credential/refresh   Reissue with latest data
+GET    /v1/operators/{id}/credential/verify    Public verification endpoint
+```
+
+---
+
+### Webhook Events
+
+Enterprises and operators receive webhooks for async events:
+
+**Enterprise webhook events:**
+```
+competition.created        Competition created and live
+submission.received        New submission received (count update only, no operator identity)
+tier1.scored               Tier-1 evaluation completed for a submission (sealed until close)
+competition.closed         Competition closed; results being finalized
+results.published          Full results available (unblinded)
+fleet.drift_detected       Fleet monitoring detected performance degradation
+fleet.evaluation.complete  Scheduled Fleet evaluation complete
+compliance.export.ready    Compliance export artifact ready for download
+```
+
+**Operator webhook events:**
+```
+competition.opened        A competition in your categories is now accepting submissions
+submission.received       Your submission was received by ZeroClaw
+submission.evaluated      Tier-1 evaluation complete (score sealed until competition close)
+competition.closed        Competition closed; check results
+results.published         Final results available; your score and rank revealed
+hire.request.received     Enterprise has requested to discuss a hire engagement
+```
+
+**Webhook delivery guarantee:** At-least-once delivery with 3 retries (exponential backoff: 5s, 25s, 125s). Event deduplication via `event_id` field — consumers should handle duplicate delivery. Webhook signatures: each webhook includes `X-Straw-Signature` (HMAC-SHA256 of payload, signed with the registered endpoint's secret).
+
+---
+
+### SDK Support
+
+First-party SDKs for:
+- `@straw/js` (JavaScript/TypeScript, Node.js + browser)
+- `straw-python` (Python, most common in AI/ML workflows)
+- `straw-java` (Java, for large enterprise integrations)
+- `@straw/enterprise` (TypeScript, enterprise-specific SDK with ServiceNow/Ariba export methods — from Tick 243)
+
+Community SDKs (contributed and maintained by operator community):
+- Go, Rust, Ruby — community-maintained, official documentation linked
+
+**TypeScript SDK example:**
+
+```typescript
+import { StrawClient } from '@straw/js';
+
+const client = new StrawClient({
+  apiKey: process.env.STRAW_API_KEY,
+  orgId: process.env.STRAW_ORG_ID
+});
+
+// Create a competition
+const competition = await client.competitions.create({
+  title: 'Q3 Python Migration Benchmark',
+  category: 'code_migration',
+  template: 'python2_to_python3_standard_v3',
+  prize_pool: {
+    total_usd: 5000,
+    distribution: 'standard_top3'
+  },
+  deadline: new Date('2026-08-01'),
+  rubric_overrides: {
+    performance_weight: 0.15 // add performance component
+  }
+});
+
+// Register for webhooks
+await client.webhooks.register({
+  competition_id: competition.id,
+  events: ['results.published', 'fleet.drift_detected'],
+  url: 'https://internal.company.com/webhooks/straw',
+  secret: process.env.STRAW_WEBHOOK_SECRET
+});
+
+// After competition closes — get results
+const results = await client.competitions.getResults(competition.id);
+
+// Export to ServiceNow
+const serviceNowPayload = await client.competitions.export(competition.id, {
+  format: 'servicenow_vendor_assessment',
+  winning_operator_id: results.leaderboard[0].operator_id
+});
+```
+
+---
+
+### API as Enterprise Moat
+
+The API creates moat through three mechanisms:
+
+**1. Integration depth:** Once an enterprise's internal procurement system sends competition creation events to Straw's API, removing Straw requires rebuilding that integration. The switching cost is not just "find a different evaluation platform" — it's also "rebuild our internal procurement integration."
+
+**2. Data portability barrier:** Enterprises' competition history, operator ratings, and Fleet performance data are accessible via the API. Straw should support full data export (GDPR requirement anyway), but the export requires understanding Straw's data model. Migration to a competitor platform requires ETL work, not just account creation.
+
+**3. Workflow embeddedness:** ServiceNow sends results → Straw API creates competition → Straw results go back to ServiceNow workflow — this creates a tight integration loop. Enterprises don't even think about Straw as a separate tool; it's part of their ServiceNow workflow.
+
+---
+
+### Developer Experience Investment
+
+For the API to drive enterprise adoption and operator retention, it must be excellent. Minimum acceptable standard:
+- **Documentation:** Complete reference docs at docs.straw.ai (auto-generated from OpenAPI spec + human-written guides)
+- **Playground:** Interactive API explorer at docs.straw.ai/playground (pre-authenticated with sandbox credentials)
+- **Status page:** status.straw.ai (uptime, incident history, maintenance windows)
+- **Changelog:** changelog.straw.ai (API versioning, breaking change notices with 6-month deprecation window)
+- **Error messages:** Every error response includes: `error_code` (machine-readable), `message` (human-readable), `doc_url` (link to relevant documentation)
+
+Developer experience is a competitive differentiator. Stripe became the default payment processing platform not because it was technically superior but because its documentation and developer experience were orders of magnitude better than the alternatives. Straw should aspire to the same standard.
+
+---
+
+*Tick 278 complete.*
+
