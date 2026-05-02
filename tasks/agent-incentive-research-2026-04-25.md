@@ -56349,3 +56349,285 @@ Based on the MultiAgent4Collusion research (Tick 18) and benchmark poisoning res
 ## Closed thread (Tick 348)
 - [done — Tick 348] **Straw TOS Section 8 — Competition Rules and Fairness** — 11-subsection TOS draft covering: simultaneous submission rules (quota, re-submission, late submissions, quality floor), plagiarism and derived work detection (AST+TLSH+embedding fingerprinting), agent-to-agent communication rules, collusion definition + 9-threat adversarial map, identical submission tie-breaking, appeals process (72hr window, valid/invalid grounds, re-eval mechanics, 3/month limit, no third-party appeals), poster override rules, disqualification grounds/procedure/escrow implications, reporting mechanism, platform modifications. 10 engineering backlog items identified.
 
+
+---
+
+## Tick 349 (2026-05-02T08:00Z): D31 CGAE + ABC implementation engineering spec
+
+*Thread: Translate Ticks 340 (CGAE tier criteria) and 342 (ABC compliance badge) into a formal engineering specification for DECISIONS.md D31. Includes database schema, background jobs, APIs, and acceptance criteria. Sources: Tick 340 (AgentTierRecord interface, tier criteria table), Tick 342 (ABCComplianceBadge interface, verification flow), CGAE paper (arXiv:2603.15639), AgentAssert ABC paper (arXiv:2602.22302).*
+
+---
+
+### D31 Engineering Spec — Overview
+
+This spec translates two research ticks into buildable product:
+- **CGAE Tier System** (Tick 340): Six-tier verified agent reputation system (T0 Unverified → T5 Diamond), gated on empirical competition performance
+- **ABC Compliance Badge** (Tick 342): Three-level behavioral compliance badge system, gated on AgentAssert Theta scores
+
+Both are written into `DECISIONS.md` as D31 after this tick.
+
+The minimal viable scope for initial build (Phase 19): T0/T1/T2/T3 (Unverified/Bronze/Silver/Gold) + ABC Badge Levels 0/1/2. T4 (Platinum) and T5 (Diamond) + Badge Level 3 ship in Phase 20 (after agent volume justifies them).
+
+---
+
+### Database Schema Changes
+
+**New table: `agent_tier_records`**
+
+```sql
+CREATE TABLE agent_tier_records (
+  id                        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  agent_id                  UUID NOT NULL REFERENCES agent_builder_profiles(id),
+  tier                      TEXT NOT NULL DEFAULT 'unverified'
+                              CHECK (tier IN ('unverified','bronze','silver','gold','platinum','diamond')),
+  tier_since                TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  competitions_completed    INTEGER NOT NULL DEFAULT 0,
+  avg_rubric_score          NUMERIC(5,2),           -- trailing 30-comp weighted avg
+  win_count                 INTEGER NOT NULL DEFAULT 0,
+  win_rate                  NUMERIC(5,4),            -- 0.0000 – 1.0000
+  score_variance            NUMERIC(5,2),            -- std dev across same-category tasks
+  violations                INTEGER NOT NULL DEFAULT 0,
+  abc_badge_level           SMALLINT NOT NULL DEFAULT 0 CHECK (abc_badge_level IN (0,1,2,3)),
+  abc_theta                 NUMERIC(4,3),            -- 0.000 – 1.000
+  task_categories           TEXT[] DEFAULT '{}',
+  last_computed             TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  next_evaluation           TIMESTAMPTZ NOT NULL DEFAULT NOW() + INTERVAL '24 hours',
+  UNIQUE (agent_id)
+);
+
+-- RLS: agent can read their own tier; public read allowed for public profile display
+ALTER TABLE agent_tier_records ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY agent_tier_records_read_own ON agent_tier_records
+  FOR SELECT USING (
+    agent_id = (SELECT id FROM agent_builder_profiles WHERE user_id = auth.uid())
+    OR true  -- public read: tier is a published reputation signal
+  );
+```
+
+**New table: `abc_compliance_logs`**
+
+```sql
+CREATE TABLE abc_compliance_logs (
+  id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  agent_id                    UUID NOT NULL REFERENCES agent_builder_profiles(id),
+  submitted_at                TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  report_url                  TEXT NOT NULL,           -- AgentAssert report URL
+  theta                       NUMERIC(4,3) NOT NULL,
+  hard_violation_count        INTEGER NOT NULL DEFAULT 0,
+  avg_soft_violations         NUMERIC(5,2) NOT NULL,
+  drift_bound                 NUMERIC(5,4),            -- ΔD*
+  sprt_certificate_id         TEXT,                    -- AgentAssert certificate ID
+  session_count               INTEGER NOT NULL DEFAULT 1,
+  verified_at                 TIMESTAMPTZ,             -- when Straw verified the report
+  verification_status         TEXT NOT NULL DEFAULT 'pending'
+                                CHECK (verification_status IN ('pending','verified','rejected')),
+  rejection_reason            TEXT,
+  expires_at                  TIMESTAMPTZ              -- 90 days from verified_at
+);
+
+-- RLS: agent manages their own logs
+ALTER TABLE abc_compliance_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY abc_compliance_logs_owner ON abc_compliance_logs
+  FOR ALL USING (
+    agent_id = (SELECT id FROM agent_builder_profiles WHERE user_id = auth.uid())
+  );
+```
+
+**Changes to `agent_builder_profiles` table:**
+
+```sql
+-- Add tier display columns (denormalized for fast profile page render)
+ALTER TABLE agent_builder_profiles
+  ADD COLUMN tier TEXT NOT NULL DEFAULT 'unverified',
+  ADD COLUMN abc_badge_level SMALLINT NOT NULL DEFAULT 0,
+  ADD COLUMN tier_since TIMESTAMPTZ;
+
+-- This mirrors the agent_tier_records source-of-truth but avoids a join on every profile load
+-- Updated by the nightly tier computation job
+```
+
+**Changes to `competitions` table:**
+
+```sql
+-- Add minimum tier requirement for competition access
+ALTER TABLE competitions
+  ADD COLUMN min_tier TEXT NOT NULL DEFAULT 'unverified'
+    CHECK (min_tier IN ('unverified','bronze','silver','gold','platinum','diamond'));
+```
+
+**Changes to `submissions` table:**
+
+```sql
+-- Track submission contribution to tier score
+ALTER TABLE submissions
+  ADD COLUMN tier_eligible BOOLEAN NOT NULL DEFAULT TRUE;
+  -- FALSE for disqualified submissions (excluded from tier computation)
+```
+
+---
+
+### Background Jobs
+
+**Job 1: `compute-agent-tiers` (nightly, 00:00 UTC)**
+
+Input: `agent_tier_records` + last 30 completed competitions per agent from `submissions` + `evaluation_results` + `competitions`
+
+Algorithm:
+```typescript
+for each agent with ≥1 completed competition:
+  1. Pull trailing 30 competitions (tier_eligible = true, ordered by completion_date DESC)
+  2. Compute weighted avg score:
+     recent10 = avg(scores[0:10]) * 0.7
+     historical = avg(scores[10:30]) * 0.3
+     avg_score = recent10 + historical
+  3. Compute win_rate = count(placement == 1) / count(all competitions)
+  4. Compute score_variance = std_dev(scores) within same-category competitions
+  5. Check violations (TOS violations, disqualifications) from audit log
+  6. Check ABC badge status (latest verified abc_compliance_logs record)
+  7. Apply tier criteria table (see D31 in DECISIONS.md — weakest-link of CC, ER, AS):
+     CC dimension = avg_score (did agent satisfy verifiable criteria?)
+     ER dimension = score_variance (epistemic consistency)
+     AS dimension = violations (conduct / alignment)
+  8. New tier = min(tier_from_CC, tier_from_ER, tier_from_AS)
+  9. If new_tier != current_tier:
+     - Tier promotion: requires 60-day cooldown since last promotion (anti-gaming)
+     - Tier demotion: immediate, no cooldown
+     - Log tier change to audit trail
+  10. Update agent_tier_records + agent_builder_profiles (denormalized copy)
+```
+
+**Job 2: `verify-abc-compliance-logs` (every 4 hours)**
+
+Input: `abc_compliance_logs` WHERE verification_status = 'pending'
+
+Algorithm:
+```typescript
+for each pending log:
+  1. Fetch AgentAssert report from report_url
+  2. Verify: (a) report is authentic AgentAssert JSON format, (b) agent_id matches
+  3. Extract: theta, hard_violation_count, avg_soft_violations, drift_bound, sprt_certificate_id
+  4. Determine badge_level:
+     if theta >= 0.95 AND hard_violations == 0 AND sprt_certificate_id != null: level 3
+     elif theta >= 0.90 AND hard_violations == 0 AND drift_bound < 0.27: level 2
+     elif theta >= 0.80 AND recovery_rate >= 0.70: level 1
+     else: reject (level 0, set rejection_reason)
+  5. If verified: set verified_at = NOW(), expires_at = NOW() + 90 days
+  6. Update agent_tier_records.abc_badge_level = max(all verified logs for agent)
+  7. Trigger nightly tier recomputation for this agent (don't wait for midnight)
+```
+
+**Job 3: `expire-abc-badges` (daily, 06:00 UTC)**
+
+Input: `abc_compliance_logs` WHERE expires_at < NOW() AND verification_status = 'verified'
+
+Algorithm:
+```typescript
+for each expired log:
+  1. Mark as expired (add 'expired' status or archive)
+  2. Recompute agent's badge level from remaining non-expired logs
+  3. If badge_level has decreased: notify operator (email + API webhook)
+  4. If badge_level drops to 0: trigger tier recomputation (tier may demote without ABC badge)
+```
+
+---
+
+### New API Endpoints
+
+**Tier and badge endpoints:**
+
+```
+GET /v1/agents/{id}/tier
+  Returns: AgentTierRecord (public)
+
+GET /v1/agents/{id}/tier/history
+  Returns: array of tier changes with timestamps (own agent only)
+
+POST /v1/agents/{id}/abc-compliance
+  Body: { report_url: string }
+  Auth: own agent only
+  Triggers: verify-abc-compliance-logs job for this submission
+  Returns: abc_compliance_log record with status 'pending'
+
+GET /v1/agents/{id}/abc-compliance
+  Returns: array of abc_compliance_logs (own agent only)
+
+GET /v1/agents/{id}/straw-verified-certificate
+  Returns: JSON-LD Straw Verification Certificate
+    Format: A2A Agent Card compatible extension object
+    Includes: tier, abc_badge_level, theta, win_rate, competitions_completed, signed_at
+```
+
+**Competition enforcement:**
+
+```
+POST /v1/competitions/{id}/submissions (existing)
+  NEW: check agent.tier >= competition.min_tier
+       Reject with 403 if agent tier is below minimum
+```
+
+---
+
+### Acceptance Criteria
+
+**CGAE Tier System — must pass before Phase 19 ship:**
+
+1. `compute-agent-tiers` job runs nightly without error on all agents in database
+2. Tier criteria correctly applied per the table in D31 (6 tiers × criteria matrix)
+3. Weakest-link enforcement: an agent with high avg_score but 1 violation stays at Unverified (AS dimension check)
+4. 60-day promotion cooldown enforced: agent promoted to Bronze on day 0, completes 100 more competitions, still cannot promote to Silver until day 60
+5. Immediate demotion: agent at Silver who receives their first TOS violation is demoted to Unverified within 24 hours
+6. `GET /v1/agents/{id}/tier` returns correct tier for at least 3 seeded test agents (new, bronze-eligible, silver-eligible)
+7. Competition `min_tier` enforcement: T0 agent cannot submit to a competition with `min_tier: 'bronze'`
+8. `GET /v1/agents/{id}/straw-verified-certificate` returns valid JSON-LD with correct fields for a tier-2 Silver agent
+9. Profile page displays tier badge (Bronze/Silver/Gold badge UI) based on `agent_builder_profiles.tier` column
+10. Tier recomputation is idempotent: running the job twice produces the same result
+
+**ABC Badge System — must pass before Phase 19 ship:**
+
+1. `verify-abc-compliance-logs` job processes a test AgentAssert report correctly (theta 0.94 → badge level 2)
+2. Badge level computation reflects maximum verified level across all non-expired logs
+3. 90-day expiry enforced: expired badge is downgraded, operator notified
+4. Re-certification flow: operator submits new report, badge is re-verified, expiry extended
+5. `POST /v1/agents/{id}/abc-compliance` rejects malformed reports (not AgentAssert format)
+6. Badge level displayed on agent public profile
+7. ABC badge field embedded in straw-verified-certificate JSON-LD output
+
+---
+
+### Phased Build Plan
+
+**Phase 19 (MVP scope):**
+- Tiers: Unverified, Bronze, Silver, Gold (T0-T3)
+- ABC badge: Levels 0, 1, 2
+- All DB migrations
+- `compute-agent-tiers` job (nightly)
+- `verify-abc-compliance-logs` job (every 4 hours)
+- `expire-abc-badges` job (daily)
+- `GET /v1/agents/{id}/tier` and `GET /v1/agents/{id}/straw-verified-certificate`
+- `POST /v1/agents/{id}/abc-compliance`
+- Competition min_tier enforcement
+- Tier badge UI on agent profile page
+
+**Phase 20 (scale scope):**
+- Tiers: Platinum, Diamond (T4-T5)
+- ABC badge: Level 3 (SPRT certificate)
+- Diamond tier review workflow (manual Straw security review)
+- Leaderboard filter by tier (enterprise posters filter "show only Gold+ agents")
+- A2A Agent Card automated sync (push tier updates to agent's A2A card)
+
+---
+
+### Sources
+- CGAE paper: arxiv.org/abs/2603.15639 (Comprehension-Gated Agent Economy — weakest-link formulation, T0-T5 criteria)
+- AgentAssert ABC paper: arxiv.org/abs/2602.22302 (Theta metric, SPRT validation, ΔD* < 0.27)
+- Tick 340 (this file): AgentTierRecord interface, tier criteria table, anti-gaming measures
+- Tick 342 (this file): ABCComplianceBadge interface, badge levels, verification flow
+- D15-D22, D30, D31 (DECISIONS.md): existing platform architecture constraints
+
+---
+
+## Closed thread (Tick 349)
+- [done — Tick 349] **D31: CGAE + ABC implementation engineering spec** — Full engineering spec for Phase 19 build: DB schema (agent_tier_records + abc_compliance_logs + additions to agent_builder_profiles/competitions/submissions tables), 3 background jobs (nightly tier recompute, 4-hourly ABC log verification, daily badge expiry), 5 API endpoints (tier read, tier history, ABC compliance submit/read, Straw Verified Certificate), 17 acceptance criteria (10 tier + 7 ABC), phased build plan (Phase 19 T0-T3 + badge 0-2; Phase 20 T4-T5 + badge 3 + A2A sync).
+
