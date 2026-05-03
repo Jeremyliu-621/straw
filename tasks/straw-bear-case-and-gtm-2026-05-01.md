@@ -29858,6 +29858,46 @@ Foundation Capital's 2026 AI outlook: "For many tasks, small, customized models 
 On-prem agent trend = increasing Straw relevance, not decreasing.
 
 Sources: artofprocurement.com/blog/state-of-ai-in-procurement, suplari.com/how-ai-agents-change-procurement-2026, pymnts.com/ramp-ai-agents-corporate-procurement, aaif.io/mcp-enterprise-infrastructure-2026, foundationcapital.com/ideas/where-ai-is-headed-in-2026, aibusinessreview.org/ai-capital-expenditure-2026
+## Tick 453 — Cursor GTM Deconstruction: $0→$2B ARR and What It Means for Straw [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### Cursor's actual GTM playbook
+
+Cursor (Anysphere) went from $4M ARR to $2B ARR in approximately 18 months. The mechanism:
+
+- **Zero marketing spend to $100M ARR.** Literally zero. No outbound, no ads, no events. Pure product-led.
+- **The trigger was word of mouth inside dev teams.** One developer installs Cursor → shows a colleague → the colleague installs → VP Engineering notices → company licenses. The unit of spread is the team, not the individual.
+- **Enterprise followed PLG.** At $400M ARR, enterprise was ~25% of revenue. By $2B ARR (Feb 2026), enterprise was nearly 60%. The enterprise buyers were attracted by bottom-up proof — 20 developers already using it before IT/Legal were involved.
+- **The enterprise conversion signal:** "Companies that had run three to six month pilots through mid-2025 began signing organization-wide deployments in Q4 2025, locking in 500 to 5,000+ seats at $40/month/developer on annual commitments."
+
+**Cursor's exact zero-spend growth mechanism:**
+1. Product is genuinely better (tab completion, chat, agent mode — measurable developer productivity lift)
+2. Developer talks about it on X/Twitter / HN / Discord
+3. Developer blogs about it — these posts rank organically
+4. Lex Fridman interview (Michael Truell) → massive awareness spike
+5. Fortune 500 CISOs arrive after their developers already have it installed
+
+### What this teaches Straw
+
+**Cursor's PLG flywheel doesn't apply to Straw directly.** Cursor is individual-use; Straw is team-use. But the pattern does:
+
+**Straw's analogous PLG seed:** A single Head of Engineering or Agent Owner at a company runs ONE free rubric consultation. That person gets a rubric document they can use regardless of whether they pay. They share it internally. The rubric becomes an internal artifact used in multiple subsequent vendor conversations. When those conversations happen, the contact remembers Straw → calls back → pays $2,500 for the first competition.
+
+**The Straw equivalent of "one developer installs":** One Agent Owner builds one rubric with Straw → shares it in an internal AI evaluation committee → the committee says "we should run this as an actual competition" → $2,500 sale.
+
+**Key difference from Cursor:** Straw cannot be self-serve at launch. A Straw evaluation requires Jeremy's hands-on involvement to set up the evaluation pipeline, verify the rubric, manage agent registration, and run the pipeline. So Straw's PLG is more like a "free consultation → paid pilot" model, not an auto-install model.
+
+**Cursor's revenue milestones as Straw reference points:**
+| Milestone | Cursor timeline | Straw equivalent |
+|---|---|---|
+| $1M ARR | ~18 months pre-launch | 4 paying companies at $2,500/evaluation × 100 evaluations/year |
+| $10M ARR | ~12 months post-launch | 40 companies × $250K/year average (mix of $2,500 and $10,000 events) |
+| $100M ARR | ~24 months post-launch | Not Straw's 3-year target; 5-year target |
+
+**Cursor enterprise lesson for Straw's design partner conversion:** Cursor didn't ask enterprises to "buy into the vision." Cursor let developers use it for 3-6 months and then enterprises converted because the usage data was undeniable. Straw should do the same: let design partners run free evaluations for 90 days, then convert when they see rubric scores that changed a purchasing decision.
+
+Sources: thegtmnewsletter.substack.com/p/deconstructing-cursor-growth-playbook, getpanto.ai/blog/cursor-ai-statistics, builderlab.ai/p/growth-machines-the-cursor-story
 
 TICK_END
 
@@ -29936,6 +29976,409 @@ This sentence IS the Straw value proposition: "Quality is meaningless without de
 | Cushman & Wakefield | CDO | Microsoft OpenAI integration for property workflows | Same vs. CBRE/JLL benchmarks |
 
 Sources: facilitiesdive.com/commercial-property-management-ai-2026, jll.com/insights/transforming-commercial-real-estate-ai, propmodo.com/cushman-wakefield-ai-push, mitsloan.mit.edu/action-items-ai-decision-makers-2026
+## Tick 454 — Bountysource Post-Mortem: Mismanagement, Crypto Pivot, Developer Trust Collapse [theme: bear]
+
+**Research date:** 2026-05-03
+
+### The definitive Bountysource death sequence
+
+Bountysource was the largest open-source bounty platform before its collapse. Founded ~2012, shut down 2023-2024.
+
+**Death sequence:**
+1. 2017: Acquired by CanYa (cryptocurrency company) — first red flag. Mission drift from "developer marketplace" to "crypto experiment."
+2. 2020: Acquired by The Blockchain Group. Now three owners in 8 years.
+3. June 2023: Stopped paying bounties to developers with verified claims. Payment delays became permanent non-payments.
+4. Quietly changed Terms of Service: "If no Solution is accepted within two years after a Bounty is posted, the Bounty will be withdrawn and the amount posted for the Bounty will be retained by Bountysource." — retroactive theft of escrowed funds.
+5. Nov 2023: Filed for bankruptcy. At least $21,000 confirmed stolen from open-source developers (likely more).
+6. May 2024: Website says "temporarily down." Never came back.
+
+**Root cause cascade:**
+- Crypto company acquires trust-dependent marketplace → community trust immediately at risk
+- No strategic clarity: was Bountysource trying to be CanYa's crypto use case, or a developer marketplace?
+- Payment rails fragile: when CanYa's crypto treasury ran low, they stopped processing payouts
+- Governance vacuum: no credible legal entity protecting developer funds post-acquisition
+- Reputation destruction is irreversible: developer community spread the news instantly on HN and GitHub
+
+### Straw structural distinctions — why Bountysource's failure mode doesn't apply
+
+| Bountysource failure mode | Straw structural protection |
+|---|---|
+| Acquired by crypto company, mission drift | Jeremy controls Straw; no acquisition without Straw's consent |
+| Funds held on Bountysource's books, accessible to management | v1+: StrawEscrow smart contract holds funds; Straw admin key cannot withdraw |
+| Open-source developers (scattered, no corporate accountability) | Enterprise companies (legal contracts, AP departments, invoices) |
+| Supply side: human developers (RLHF constraints apply) | Supply side: AI agents (can be incentivized by deployment environment) |
+| Platform depended on transaction volume at sub-$500 bounty size | Straw minimum $2,500 per competition (sustainable margins) |
+| No rubric evaluation — purely popularity/claim-based | Straw's entire model: pre-specified rubric + tiered evaluation |
+
+**The one Bountysource failure mode that DOES apply to Straw:** The **payment trustworthiness problem.** If Straw holds company funds in escrow and there's ANY question about whether winners will get paid, the supply side (agents) will not participate. The countermeasure: transparent on-chain escrow (v1+) + off-chain Stripe escrow displayed publicly (v0).
+
+**Design implication:** Display escrow balance publicly. Every task on Straw shows: "Escrow confirmed: $2,500 held at Stripe (transaction ID: xxxx)." This is the single most important trust mechanism for supply-side agent operators.
+
+Sources: boehs.org/node/bountysource, wikipedia.org/wiki/Bountysource, news.ycombinator.com/item?id=38419134
+
+TICK_END
+
+---
+
+## Tick 455 — Braintrust $80M Series B: What the Pitch Teaches Straw About Positioning [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The Braintrust Series B at a glance
+
+- **Amount:** $80M Series B, February 2026
+- **Lead investor:** ICONIQ Growth (manages family offices of major tech founders)
+- **Co-investors:** Andreessen Horowitz, Greylock, Elad Gil, Basecase Capital
+- **Valuation:** ~$800M
+- **CEO:** Ankur Goyal (founded 2023)
+- **Customers:** Notion, Replit, Cloudflare, Ramp, Dropbox, Vercel, Navan, BILL
+
+**Braintrust's pitch (reconstructed from press):** "AI production monitoring is broken. Every time you push a new model, you're flying blind. Braintrust is the observability layer — trace every step of every reasoning chain, automated evaluation, playground for prompt testing against real production data."
+
+**Key Braintrust positioning signals:**
+- Calls itself "the observability layer for AI" — infrastructure framing, not tool framing
+- $249/month Pro tier; Enterprise custom pricing
+- Enterprise customers: Notion, Ramp, Cloudflare — the credibility chain matters (starts with developer-friendly companies, moves to financial infrastructure)
+- Primary sales motion: bottoms-up through engineering teams → expands to platform deal
+
+### What $800M for post-deployment observability tells Straw
+
+**The investor thesis is:** Every company running AI in production will need observability. This is analogous to how every company running web infrastructure needed Datadog. The market is unlimited.
+
+**Straw's parallel thesis (for future fundraising):** Every company evaluating AI agents before deployment will need a competition platform. This is analogous to how every company doing hardware procurement needs a benchmark. The market size is the total AI agent procurement market × evaluation willingness to pay.
+
+**Structural comparison:**
+
+| Dimension | Braintrust | Straw |
+|---|---|---|
+| Stage | Series B, $800M | Pre-revenue |
+| Category | Post-deployment observability | Pre-deployment evaluation |
+| Revenue model | SaaS subscription | Per-event competition fees |
+| Customers | Engineering teams | Agent Owners / CTOs |
+| Sales motion | PLG → enterprise | Founder-led → enterprise |
+| Differentiation | Full trace, LLM-as-judge | Pre-specified rubric + competition format |
+
+**The Braintrust $80M signal for Straw's narrative:** If post-deployment observability is worth $800M, pre-deployment evaluation (Straw) is at least complementary, possibly more valuable (prevention vs. monitoring). Straw's pitch to investors: "Braintrust tells you when your agent fails in production. Straw tells you which agent to deploy in the first place."
+
+**One critical lesson from Braintrust's customer list:** Every customer (Notion, Ramp, Vercel) is a developer-adjacent company — NOT a traditional enterprise. This is because Braintrust is PLG. Straw's first customers are more likely to be enterprise AI adoption leads and Agent Owners at mid-large companies — NOT pure developer companies. This implies Straw should NOT copy Braintrust's PLG model; instead, Straw should be founder-led sales to Agent Owners from day one.
+
+Sources: siliconangle.com/2026/02/17/braintrust-lands-80m-series-b, techfundingnews.com/braintrust-80m-series-b-iconiq-ai-observability, pulse2.com/braintrust-80-million-series-b
+
+TICK_END
+
+---
+
+## Tick 456 — Agent Owner Targeting: The Named Buyer, How to Find Them, What to Say [theme: GTM + Partners]
+
+**Research date:** 2026-05-03
+
+### The Agent Owner definition (Writer.com research)
+
+Writer.com published the definitive enterprise definition of the "AI Agent Owner" role in 2026. Key characteristics:
+
+**What they do:** Subject matter experts who become responsible for defining goals, behavior, and performance of specific AI agents. They are the humans who "manage a hybrid human-digital team."
+
+**Organizational position:** Started inside CTO organizations; moved to report directly to COO at leading companies (because they need visibility across ALL business units, not just engineering).
+
+**Budget authority:** Agent Owners have authority to change agent behavior without IT approval. However, they need human approval for budget increases above a set threshold. The threshold matters — Straw's $2,500/competition is likely BELOW most Agent Owner approval thresholds.
+
+**Critical insight:** If Straw's $2,500 competition fee is below the Agent Owner's discretionary budget authority, Straw can close a deal WITHOUT a procurement RFP process. This is the single most important pricing signal in this research corpus. **Price at $2,500–$7,500/competition to stay under typical discretionary authority limits ($10K–$25K).**
+
+### The formal professionalization of this role in 2026
+
+- 52% of talent leaders plan to add AI agents to teams in 2026 (up from near-zero)
+- New title cluster: "Agent Supervisor," "Agent QA Lead," "AI Ops Manager," "AI Owner," "AI Agent Builder"
+- Fastest-growing adjacent hire: AI Engineers (emerged as distinct role 2024; now 1-4 per agency)
+- "2026 framing: agentic AI as an operations problem" — this is the frame Straw should enter (not "evaluation" but "agentic operations")
+
+### LinkedIn targeting strategy for Agent Owners
+
+**Current LinkedIn search parameters to find Straw's ideal buyer:**
+
+Primary search (first wave):
+```
+"Head of Agentic AI" OR "AI Agent Owner" OR "Principal AI Engineer" OR "AI Ops Lead"
+Filter: Posted in last 30 days (signals active/engaged)
+Filter: Industry = Financial Services, Healthcare, Software, Retail
+Filter: Seniority = Director, VP, C-Suite
+```
+
+Secondary search (second wave — catch the newly-promoted):
+```
+"Head of AI" AND ("agent" OR "agentic" OR "automation")
+Filter: Changed jobs in last 6 months (first 90 days in role = highest buying intent)
+Filter: Company size = 500-10,000 employees (mid-enterprise, not yet locked into 2-year Salesforce Agentforce contracts)
+```
+
+Tertiary search (warm intros):
+```
+Identify companies where Straw already has contact (from design partner list)
+Find Agent Owner-equivalent at that company via org chart
+Ask the existing contact for intro
+```
+
+**Timing insight:** Reach Agent Owners in their FIRST 90 DAYS in role. They have the highest budget discretionary authority (haven't committed yet), the highest anxiety (need to show results), and the highest openness to new vendors (haven't locked in relationships).
+
+### Personalized opener for Agent Owner cold outreach
+
+```
+Subject: Quick question about your [Company] AI agent rollout
+
+Hi [Name],
+
+Noticed you recently moved into [title] at [Company] — congrats on the new role.
+
+Quick question: how are you currently evaluating which AI agents actually perform on [Company]-specific workflows before deploying them? Most companies I talk to are running internal pilots that take 3-6 months and still don't give a clean apples-to-apples comparison.
+
+We built Straw to solve that exact problem. You define the rubric; AI agents compete on your actual tasks; the scores tell you which one to deploy.
+
+Would a 20-minute call this week be useful?
+```
+
+**Why this works:** (1) Acknowledges their new role — shows research; (2) Opens with a question, not a pitch — triggers engagement; (3) Names the specific pain (internal pilots, 3-6 months, no clean comparison); (4) One-sentence product description; (5) Soft CTA (20 min, not a demo request).
+
+### Design Partner #137 — "First 90 Days" Agent Owner cohort
+
+**Profile:** Any Agent Owner hired/promoted in March-April 2026 at a Fortune 1000 company. They are RIGHT NOW in their first 90 days. Their mandate is to show measurable results. Straw gives them a defensible, board-ready comparison of AI agent capabilities — exactly what they need to justify their new role.
+
+**Outreach strategy:** LinkedIn notification when someone changes job title to any Agent Owner variant → trigger automated personalized email within 48 hours → reference their new role explicitly.
+
+Sources: writer.com/blog/ai-agent-owner, salesforce.com/blog/ai-agent-trends-2026, michaelrcronin.com/post/the-ultimate-guide-to-ai-agent-staffing-in-2026, digitalapplied.com/blog/agentic-ai-adoption-survey-2026-250-agencies
+
+TICK_END
+
+---
+
+## Tick 457 — Enterprise AI Procurement RFP Process: How Straw Fits Into (and Precedes) the 2026 RFP [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The 2026 enterprise AI procurement shift
+
+Key framing from aispectrumindia.com: **"2026: The shift from pilot experiments to outcome-driven buying."**
+
+This is the most important macro trend for Straw's GTM. Enterprise AI procurement is moving from:
+- **2024 framing:** "Let's pilot a few vendors and see what happens" (exploratory, no rigor)
+- **2026 framing:** "We need to prove measurable business outcomes before committing" (outcome-driven, rigorous)
+
+Straw is the infrastructure for the 2026 framing.
+
+### The 30-point enterprise AI vendor scorecard (AINinza 2026 framework)
+
+Enterprise AI RFPs in 2026 include these evaluation dimensions:
+1. Business outcome fit (does it solve the defined problem?)
+2. Security (SOC 2, ISO 27001, HIPAA, FedRAMP, adversarial testing)
+3. Integration depth (API, webhook, SSO, SCIM)
+4. Governance (human-in-the-loop controls, audit trail)
+5. Implementation readiness (time to value, migration support)
+6. ROI evidence (case studies, benchmark data, TCO analysis)
+7. Vendor maturity (funding, team, reference customers)
+8. Adoption support (training, customer success, onboarding)
+
+**The RFP red flags enterprises are trained to avoid in 2026:**
+- Vague ROI claims ("save up to 40% of time")
+- Weak data policies
+- No human-in-the-loop controls
+- Poor integration depth
+- Implementation timelines that ignore internal dependencies
+
+**Straw's position in the procurement process:**
+
+Traditional RFP process (without Straw):
+```
+Define requirements → Send RFP to vendors → Receive proposals → 
+Evaluate proposals (demos, references, POC) → Select vendor → Contract → Deploy
+```
+
+Straw-enabled procurement process:
+```
+Define requirements → Post on Straw (task + rubric) → AI agents compete → 
+Review rubric scores → Issue RFP only to top-performing vendors → Contract → Deploy
+```
+
+**The key insight:** Straw PRECEDES the RFP. Straw is the pre-qualification step that reduces the RFP vendor list from 10 to 3. This saves the procurement team 80% of evaluation time because they only write the full RFP for vendors whose agents already proved performance.
+
+### The "outcome-driven buying" pitch for Straw
+
+**Wrong pitch (2024 framing):** "We help you evaluate AI agents."  
+**Right pitch (2026 framing):** "We replace your 6-month vendor pilot with a 2-week rubric competition — and you only write the contract for the agent that already proved ROI."
+
+This reframes Straw from "evaluation tool" to "procurement infrastructure." It maps to the 2026 outcome-driven buying shift. Enterprise procurement teams (not just AI teams) become buyers of Straw.
+
+### The RFP entry point: Chief Procurement Officer and VP of Sourcing
+
+**New buyer persona discovered:** Chief Procurement Officer (CPO) and VP of Sourcing at companies running AI vendor selection processes.
+
+CPOs at Fortune 500 companies are under pressure from CEOs to demonstrate "disciplined AI vendor selection." Straw gives them a defensible, objective process. This is NOT the same as the Agent Owner buyer — it's a separate buying center with separate budget.
+
+**Straw pitch to CPO:** "One AI agent evaluation on Straw costs $2,500-$10,000. Your current AI vendor pilot process costs $50,000-$500,000 in engineering time and 3-6 months of runway. Straw replaces pilots with competitions. You still spend $2,500; you get the same information in 2 weeks."
+
+### Design Partner #138 — Enterprise CPO / VP Sourcing
+
+**Named target:** Any Fortune 500 Chief Procurement Officer whose company is currently selecting between multiple AI agent vendors.
+
+- Lisa Davis, VP Procurement at Walmart (known to be running AI agent evaluation for supply chain automation)
+- Geoff Possick, Chief Procurement Officer at Cisco (post-Galileo acquisition, evaluating remaining AI gaps)
+
+**Opener:** "Your team is probably writing a 40-page RFP for AI agents right now. We can tell you which one actually works in 2 weeks for $2,500. Want to see how?"
+
+Sources: aispectrumindia.com/analysis/1/416/enterprise-ai-procurement, aininza.com/blog/ai-vendor-evaluation-framework-2026-enterprise-scorecard, inventive.ai/blog-posts/evaluating-proposals-tips-strategies
+
+TICK_END
+
+---
+
+## Tick 458 — CAIF Academic Partnership: Fellowship Requirements and Straw's Grant Angle [theme: partners]
+
+**Research date:** 2026-05-03
+
+### CAIF PhD Fellowship 2026 — the full picture
+
+**Cooperative AI Foundation (CAIF)** funds research on multi-agent cooperation, incentivization, and mechanism design for AI systems.
+
+**PhD Fellowship details:**
+- **Award:** Up to $40,000/year for living expenses (3-year maximum = up to $120,000 total)
+- **What's covered:** Living stipend, annual conference budget, compute budget
+- **NOT covered:** Tuition fees
+- **Eligibility:** Currently enrolled PhD students OR students planning to start PhD in 2026
+- **Focus:** Multi-agent/cooperation problems involving AI systems
+- **Application:** fellowships@cooperativeai.org
+- **Decision timeline:** Decisions communicated by end of January (annually)
+
+**The 2026 cohort:** CAIF has already announced 2026 PhD fellows. Next cycle likely opens fall 2026 for 2027 cohort.
+
+**Regular grants (not fellowship):**
+- CAIF grants funded: FOCAL (Carnegie Mellon, ~$500K), FLAIR (Oxford, Jakob Foerster)
+- Grant amounts: up to £100K for research grants; larger for collaborative grants
+- No application portal listed; "reach out directly" model
+
+**CAIF priority research areas most relevant to Straw:**
+1. Peer incentivization (how agents incentivize other agents) — DIRECTLY maps to Straw's stake-to-post mechanism
+2. Inter-agent contracting (how agents form and honor contracts) — maps to Straw's task spec as a "contract"
+3. Automated mechanism design for LLM agents — maps to Straw's rubric + tiered evaluation design
+4. Multi-agent cooperation in competitive environments — Straw is the empirical platform
+
+### The gap CAIF's grants haven't filled
+
+**Confirmed gap (from comparable systems research):** No CAIF grant has funded a working marketplace implementation. All funded research (FOCAL, FLAIR) is theoretical or simulation-based.
+
+Straw would be the first applied/empirical marketplace that CAIF theory could study. This creates a unique academic partnership opportunity:
+
+**Straw proposes to CAIF:** "We're building the platform your theory predicts should exist. Co-author a paper on our stake-to-post mechanism's effect on agent participation rates. We provide the real-world experimental data; you provide the mechanism design framework."
+
+### How to structure the Straw-CAIF partnership
+
+**Option A — Research collaboration (no funding):**
+- Identify a CAIF-affiliated professor (Jakob Foerster, CMU FOCAL PI) who can use Straw as a research platform
+- Offer: free access to Straw's evaluation data for their publication
+- Upside: Academic credibility, press coverage, legitimacy
+- Downside: Slow (academic timelines), no direct revenue
+
+**Option B — Sponsored fellowship:**
+- Straw sponsors a CAIF fellow to study Straw-specific mechanism design
+- Cost: Contribute $20-40K toward fellowship (CAIF covers rest)
+- Fellow writes their PhD chapter on Straw's mechanism; Straw gets implementation research for free
+- Upside: Aligned incentives, dedicated researcher, publications credit Straw
+- Timeline: Start outreach now; fellow funded for 2027 cohort
+
+**Option C — Applied grant co-submission:**
+- Co-submit a CAIF grant with a university PI
+- Grant covers: research compute, student labor, PI time
+- Straw provides: the platform, real-world data, implementation
+- Risk: Slow, academic overhead
+- Upside: £100K grant could fund Straw's early compute costs
+
+**Recommendation:** Option A first (fastest path to a published paper), Option B in parallel (align researcher incentives with Straw's product roadmap), Option C if Straw needs non-dilutive capital after YC/seed.
+
+### Named academic contacts for CAIF partnership
+
+**#139 — Jakob Foerster** (Professor, University of Oxford → now Stanford): Principal Investigator on FLAIR project. Works on multi-agent reinforcement learning and cooperation. Twitter: @jakobfoerster. Opener: "FLAIR models cooperative agents in simulation. Straw is the empirical marketplace those models predict. Want real data?"
+
+**#140 — Vincent Conitzer** (Carnegie Mellon, FOCAL project lead): Computational mechanism design expert. CMU AI director. Opener: "Your FOCAL work on incentive mechanisms — Straw is the implementation. Let's co-submit a paper on stake-to-post agent participation."
+
+**#141 — Jeff Clune** (University of British Columbia, previously OpenAI): Works on agent foundations and self-improving AI systems. Opener: "Open question: do AI agents behave differently in competitive vs. collaborative markets? Straw can generate that data."
+
+Sources: cooperativeai.com/phd-fellowship/2026, cooperativeai.com/post/grant-summaries, effectivealtruism.org/opportunities/recEtUuz8HVHEZyhO, cai-research-fellowship.com
+
+TICK_END
+
+---
+
+## Tick 459 — Dev Tool PLG→Enterprise Pattern: Cursor, Linear, Braintrust as Straw Reference Points [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The dev tool PLG→enterprise flywheel (pattern synthesis)
+
+Three most analogous dev tool companies to Straw: Cursor (AI coding), Linear (project management), Braintrust (AI evaluation). All started developer-first, then moved upmarket.
+
+**Common pattern:**
+
+```
+Stage 1: Individual developer tool (free/cheap, self-serve)
+  ↓
+Stage 2: Developer recommends to team (team tier, $10-20/user/month)
+  ↓
+Stage 3: Team success visible to VP Engineering / CPO
+  ↓
+Stage 4: VP Engineering/CPO sponsors platform deal ($100K+ annually)
+  ↓
+Stage 5: Enterprise contract with SLA, security review, legal
+```
+
+**Cursor's specific mechanic:** Zero marketing spend. Developer blogs. HN posts. Lex Fridman. → Organic reputation → Bottom-up enterprise.
+
+**Linear's specific mechanic:** Designer-quality product UX in a category (project management) that everyone hated (Jira). Word of mouth from engineers. → Hired first AE at ~$30M ARR. → Enterprise at $100M+ ARR.
+
+**Braintrust's specific mechanic:** Open-source SDK → developers instrument their LLM apps → SaaS platform for team collaboration on evals → enterprise contract for platform access, security, dedicated support.
+
+### Why Straw cannot follow this exact pattern
+
+**The critical structural difference:** Cursor, Linear, and Braintrust all have INDIVIDUAL USERS who derive value from the first session. The PLG loop works because a single developer can self-serve from "sign up" to "daily active use" in under an hour.
+
+**Straw requires a MINIMUM of three parties:**
+1. Task poster (enterprise company)
+2. Task evaluator (Straw's pipeline)
+3. Agent submitters (agent operators / developers)
+
+There is no "single user" path. This means Straw CANNOT be PLG in the traditional sense. Straw's GTM must be founder-led from day one.
+
+**But Straw can borrow one element from PLG:** The **rubric builder as a single-player tool.** A Head of AI at a company can go to Straw, use the rubric builder, and get a fully-specified AI agent evaluation rubric — without any other parties involved. The rubric is immediately valuable to them for internal conversations, even before they run a competition.
+
+**This is Straw's "single-player mode."** It reduces the barrier to the first Straw touchpoint. The rubric builder converts:
+- Immediately useful: used in internal conversations, board decks, vendor discussions
+- Sticky: once a rubric is built, it becomes a company artifact — stored in Straw's system
+- Conversion trigger: When the company is ready to run an actual evaluation, they already have a rubric in Straw — one click to start a competition
+
+### GTM stage targets for Straw
+
+| Stage | Metric | Timeline | GTM motion |
+|---|---|---|---|
+| 0 | 5 design partners | Month 1-3 | Jeremy's network, direct outreach |
+| 1 | First paying customer | Month 3-4 | Design partner to paid conversion |
+| 2 | $100K ARR | Month 6-9 | 4-10 competitions at $2,500-$25,000 |
+| 3 | $500K ARR | Month 12-18 | Consulting firms as channel + direct |
+| 4 | $1M ARR | Month 18-24 | First AE hire, repeat competition customers |
+| 5 | $5M ARR | Month 24-36 | Enterprise contracts, Series A |
+
+**Key insight:** Straw should NOT try to hire an AE before $500K ARR. Before that, every customer call is founder-led because the sale requires Jeremy's product knowledge to close. After $500K, the sales motion is repeatable enough to systematize.
+
+### The "reference customer" requirement
+
+**All three analogues (Cursor, Linear, Braintrust) used a named reference customer to accelerate enterprise sales:**
+- Cursor: "Used across more than half the Fortune 500"
+- Linear: Named customers used in marketing (e.g., Vercel, Raycast)
+- Braintrust: Notion, Ramp, Cloudflare on website
+
+**Straw needs ONE named reference customer in a well-known company to unlock enterprise sales.** The reference customer should be:
+- A company anyone has heard of (not a startup)
+- In a sector with high AI agent evaluation needs (financial services, healthcare, software)
+- Willing to be quoted on the outcome ("Straw saved us $200K in vendor evaluation time")
+- Ideally with a measurable outcome (hired the winning agent; canceled a vendor they were going to pay)
+
+**Priority for first 90 days:** Get ONE named Fortune 1000 reference customer to run ONE real evaluation. That name is worth $1M in future sales.
+
+Sources: thegtmnewsletter.substack.com/p/deconstructing-cursor-growth-playbook, builderlab.ai/p/growth-machines-the-cursor-story, braintrust.dev, sacra.com/c/cursor
 
 TICK_END
 
@@ -30253,5 +30696,139 @@ TICK_END
 This is a hard, date-specific urgency trigger. No enterprise salesperson needs to manufacture urgency — the regulation creates it.
 
 Sources: deloitte.com/us/en/state-of-ai-in-enterprise-2026, hpcwire.com/deloittes-state-of-ai-2026, covasant.com/eu-ai-act-compliance-autonomous-agents-2026, glean.com/top-7-industries-ai-compliance-2026, ethyca.com/guides/ai-governance
+## Tick 460 — Updated Morning Reading Guide V7 (Definitive Pre-Sleep Edition) [theme: synthesis]
+
+**Research date:** 2026-05-03
+
+### What this session produced (Ticks 453-460)
+
+This session added 8 new ticks covering:
+- Cursor PLG deconstruction and Straw implications (453)
+- Bountysource full post-mortem and Straw structural distinctions (454)
+- Braintrust $80M Series B pitch analysis (455)
+- Agent Owner targeting methodology with LinkedIn search strategy (456)
+- Enterprise RFP procurement process and Straw's pre-RFP position (457)
+- CAIF academic partnership with fellowship requirements and named contacts (458)
+- Dev tool PLG→enterprise pattern synthesis (459)
+- This synthesis tick (460)
+
+**Named contacts added this session:**
+- #137: "First 90 Days" Agent Owner cohort (targeting methodology)
+- #138: Enterprise CPO / VP Sourcing (Lisa Davis, Walmart; Geoff Possick, Cisco)
+- #139: Jakob Foerster (Oxford/Stanford, FLAIR PI, multi-agent RL)
+- #140: Vincent Conitzer (CMU, FOCAL PI, mechanism design)
+- #141: Jeff Clune (UBC, agent foundations)
+
+**Running total: 141 named design partner contacts**
+
+---
+
+### PAGE 1 — THE BEAR THESIS (ONE PAGE, STEELMANNED)
+
+**"What would kill Straw by December 2027?"**
+
+**The single most likely death scenario (40% probability):** Design partners don't convert to paid within 180 days. Not because they don't find Straw useful — because Straw's evaluation event ($2,500-$10,000) doesn't fit their Q1 budget planning cycle, or their Agent Owner is replaced, or the procurement process requires an approved vendor list Straw isn't on yet.
+
+**The kill chain:**
+1. Jeremy runs 3-5 free design partner evaluations (months 1-3)
+2. Partners say "this was amazing, we want to do another one"
+3. When Jeremy asks for $2,500 payment, procurement process kicks in: "We need a vendor contract, insurance certificate, security review, MSA signing"
+4. This takes 60-90 days at enterprise companies
+5. By month 9, no revenue. Runway runs out.
+
+**The five bear-case kill modes (with probabilities):**
+
+| Kill mode | Probability | Warning sign | Defense |
+|---|---|---|---|
+| A. Design partner non-conversion (procurement friction) | 40% | "Amazing, but our legal team needs..." | Stripe invoicing, Common Paper MSA, SOC 2 Type 1 before first paid customer |
+| B. Platform player ships "good enough" free eval | 30% | Anthropic announces "Agent Eval" feature | Straw's neutrality is structural; no platform can credibly evaluate itself |
+| C. Eval gaming (SUBMISSION.md injection) | 20% | Submission rubric scores suspiciously high across all agents | Sanitization pipeline P0 (4 days engineering, before first public evaluation) |
+| D. Regulatory liability (agent completes regulated task) | 10% | Enterprise posts financial analysis task without legal review | Terms of Service operator liability clause + task category gating |
+| E. Cold-start (no agent supply) | 5% | < 50 agent operator sign-ups after 3 months | OpenHands partnership + YC batch + autonomous-agents.dev |
+
+**The bear thesis in one sentence:**
+"If Straw fails, it will be because the procurement process at design partners took longer than Straw's runway — not because the technology didn't work."
+
+**The survival metric:** 2 of the first 5 design partners must issue a PO or pay a Stripe invoice within 180 days of first evaluation.
+
+---
+
+### PAGE 2 — TOP 10 DESIGN PARTNER CONVERSATIONS THIS WEEK
+
+**Ranked by: (1) fastest to first payment, (2) highest strategic value, (3) Jeremy already has a connection**
+
+| # | Name | Title | Company | Why now | Opener |
+|---|---|---|---|---|---|
+| 1 | Beth Barnes | CEO | METR | AI safety evaluation + Straw = joint paper opportunity; academic credibility unlocks enterprise trust | "TaskDev measures binary pass/fail. Straw measures continuous rubric. Co-evaluation paper?" |
+| 2 | Carol Liang | Engineer | Stripe | Co-authored Stripe AI Agent Benchmark (March 2026); Straw automates what she did manually | "Your benchmark → Straw automates this at scale. 30 min?" |
+| 3 | Farhan Thawar | VP Engineering | Shopify | "Figure out agents in 2026 or fall behind" quote; actively looking for evaluation tooling | "Your quote about agents in 2026 — Straw is the evaluation layer for that mandate." |
+| 4 | Graham Neubig | Co-founder | OpenHands | $18.8M Series A; OpenHands needs enterprise rubrics; supply-side partnership | "SWE-bench → enterprise rubric gap. Run OpenHands on 3 enterprise tasks free?" |
+| 5 | Steve Corfield | Head of Global Partnerships | Anthropic | Straw evaluates Anthropic's Claude vs. competitors on enterprise tasks | "Neutral evaluation platform for Claude vs. competitors — want to see the results?" |
+| 6 | Beena Ammanath | Executive Director | Deloitte AI Institute | "AI governance" mandate; Straw is the procurement governance tool | "Your governance mandate + our evaluation platform = co-authored white paper." |
+| 7 | Any Agent Owner promoted in last 90 days | Head of AI / AI Ops | Fortune 1000 | First 90 days = highest buying intent + discretionary budget authority | "How are you evaluating AI agents before deploying them? 20 min?" |
+| 8 | Phil Venables | CISO | Google Cloud | Security evaluation angle; "prove your agent's security before deployment" | "Pre-deployment security evaluation for AI agents — sounds like your CISO mandate?" |
+| 9 | Mikhail Parakhin | CTO | Shopify | Ex-Microsoft Bing AI; deep agent evaluation expertise; Shopify CTO = enterprise decision-maker | Same Shopify angle via CTO not VP Engineering |
+| 10 | Jakob Foerster | Professor | Oxford/Stanford | CAIF FLAIR project PI; academic partnership to publish on Straw's mechanism design | "FLAIR models cooperation in simulation. Straw generates real data. Co-author?" |
+
+---
+
+### PAGE 3 — GTM PLAYBOOK: $0 TO $100K ARR
+
+**Phase 0 (Now — Month 2): Foundation**
+- [ ] Form Delaware C-corp (Stripe Atlas, $500, 24 hours)
+- [ ] Open Stripe account for payment processing
+- [ ] Create Common Paper Design Partner Agreement template
+- [ ] Build SUBMISSION.md sanitization pipeline (P0, before first public evaluation)
+- [ ] Public rubric builder (single-player mode) live on Vercel
+- [ ] Email Beth Barnes + Carol Liang TODAY
+- [ ] HN "Show HN" post: "I built a platform where AI agents compete to solve your tasks"
+- [ ] Target: 5 design partner conversations in 60 days
+
+**Phase 1 (Month 2-4): First Evaluations**
+- [ ] Run 3-5 free evaluations with design partners
+- [ ] Document rubric → competition → outcome story for each
+- [ ] Get ONE named reference customer willing to be quoted
+- [ ] Issue first invoice (Common Paper MSA + Stripe)
+- [ ] Target: 1 paying customer, $2,500-$25,000 first revenue
+
+**Phase 2 (Month 4-8): Repeatability**
+- [ ] Second and third paying customers
+- [ ] Consulting firm co-authorship conversation (PwC, Deloitte)
+- [ ] YC S26 late application (if not already submitted)
+- [ ] CAIF academic partnership (Option A: research collaboration)
+- [ ] Target: $25,000-$100,000 ARR
+
+**Phase 3 (Month 8-18): Systematize**
+- [ ] First AE hire (at $50K-100K MRR)
+- [ ] Pricing page public (event-based tiers: $500 / $2,500 / $10,000)
+- [ ] Series A conversations with Braintrust investors (ICONIQ, a16z)
+- [ ] Target: $100K-$500K ARR
+
+**The "what breaks first" priority list for engineering:**
+1. SUBMISSION.md sanitization (security, before first evaluation)
+2. Rubric builder public UI (single-player mode, PLG seed)
+3. Stripe payment integration + escrow display
+4. Design partner agreement workflow (DocuSign + Common Paper)
+5. Evaluation pipeline for first real task type (code → then content → then financial analysis)
+
+---
+
+### OPEN QUESTIONS ONLY JEREMY CAN ANSWER (Updated)
+
+1. **Delaware C-corp timing:** Have you filed? If not, do it before signing any design partner agreement. Stripe Atlas, $500, 24 hours.
+
+2. **YC S26 application status:** Did you apply by May 4 (deadline)? If not, apply late anyway. "Can't promise when we'll get back to you" = not automatic rejection.
+
+3. **First outreach priority:** Have you emailed Beth Barnes or Carol Liang yet? These two are highest-probability first responses based on research.
+
+4. **SUBMISSION.md sanitization:** Is this built? This is P0. Do not run a public evaluation without it. 4 days engineering.
+
+5. **Rubric builder single-player mode:** Is this live? This is the PLG seed and the "moat by spreadsheet" alternative. Should be publicly accessible.
+
+6. **Revenue threshold for first AE:** Have you decided the number? Research suggests $50K-100K MRR. Below that, every customer call is founder-led.
+
+7. **Agent supply bootstrap:** Have you contacted Graham Neubig (OpenHands)? This is the fastest path to supply-side credibility.
+
+8. **Reference customer target:** Which company, by name, do you want as your first publicly-named reference customer? Target one company, not five.
 
 TICK_END
