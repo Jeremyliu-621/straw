@@ -21347,3 +21347,115 @@ The NAIC model bulletin on AI in insurance requires insurers to document how AI 
 
 > "Hi Paul — Chubb's reputation for analytical rigor in commercial underwriting is why I'm reaching out. You're deploying AI agents in underwriting workflows that affect billions in premium decisions annually. When you're choosing between AI underwriting tools, what's your evaluation methodology beyond vendor demos? Straw runs competitive evaluations — multiple agents compete on your exact underwriting rubric, with your actual risk criteria. The score doesn't lie, and the documentation satisfies NAIC examiners. Worth a conversation?"
 
+
+---
+
+## Tick 296 (2026-05-03T00:26:00Z): Embedding Straw in Enterprise AI RFP Language [theme: gtm]
+
+**Research basis**: Enterprise RFPs now allocate 30-40% of scoring criteria to AI capabilities (up significantly from 2024). RFPs now require "detailed documentation of current AI production deployments" and "percentage of interactions handled through automation." AI has emerged as tool for proposal evaluation itself. Best practice: involve all stakeholders early, agree on scoring standards upfront.
+
+### The RFP Moment Is the Perfect Straw Entry Point
+
+An enterprise issuing an RFP for an AI agent is, by definition, at the evaluation stage. They've decided to buy — they're in the middle of choosing. This is the highest-urgency moment for Straw: the enterprise needs evaluation help right now.
+
+**The challenge**: Most enterprise RFPs evaluate AI agents by scoring vendor responses (checkboxes, essays, references) rather than by running the agents on the enterprise's actual tasks. The RFP asks "Can your agent do X?" rather than "Show us your agent doing X on our task."
+
+Straw converts RFPs from self-reported vendor assessments to competitive live evaluations. "Instead of a 40-point RFP questionnaire, run a Straw evaluation. Send three finalists to the sandbox. Score them on your rubric. Pick the winner."
+
+### The RFP Language Play
+
+Straw's highest-leverage GTM move is getting "competitive live evaluation" written into enterprise AI RFP templates.
+
+**Mechanism**: Partner with procurement technology platforms (Inventive AI, AutoRFP, Loopio — all major players in RFP tooling) to include Straw evaluation as a recommended step in AI vendor RFP processes.
+
+If Inventive AI or AutoRFP includes language like: "For AI agent procurements, consider supplementing vendor RFP responses with competitive live evaluation via Straw" — Straw gets mentioned in every RFP process those platforms touch.
+
+### The Standard RFP Transformation
+
+**Current AI RFP (30-40% AI criteria)**:
+- Section 4: AI Capabilities
+  - 4.1 Current production AI deployments (self-reported)
+  - 4.2 Accuracy metrics (self-reported)
+  - 4.3 Customer references for AI deployments (vendor-selected)
+
+**Straw-enhanced RFP**:
+- Section 4: AI Capabilities
+  - 4.1 Current production AI deployments (self-reported)
+  - 4.2 Accuracy metrics (self-reported)
+  - 4.3 Customer references for AI deployments (vendor-selected)
+  - **4.4 Competitive Live Evaluation (Straw)**
+    - Finalists required to complete a Straw sandbox evaluation on [specific task]
+    - Scoring rubric provided by [enterprise] and administered by Straw
+    - Results provided to [enterprise] procurement team as objective evaluation supplement
+    - Straw Certification report appended to final vendor selection documentation
+
+This language shift transforms Straw from "an optional tool" to "a required step in our AI procurement process." Once one Fortune 500 company publishes this RFP structure, procurement teams at other companies copy it.
+
+### The Procurement Conference GTM Play
+
+Enterprise procurement conferences where RFP standards get discussed:
+- **Next Level Purchasing Association (NLPA)** annual conference
+- **ISM (Institute for Supply Management)** World conference
+- **Procurement Leaders** World Procurement Congress
+- **Gartner Sourcing and Procurement Summit**
+
+Straw should present at all four with the message: "The AI RFP is broken — here's how to fix it." Position Straw as the procurement community's solution to vendor self-assessment fraud in AI procurement.
+
+**Why this works**: Procurement professionals are currently embarrassed by AI procurement failures. They approved purchases that failed in production. They want a better methodology and they're actively looking for it. Straw offers them a defensible answer.
+
+---
+
+## Tick 297 (2026-05-03T00:27:00Z): Competitive Landscape Analysis — The White Space Straw Occupies [theme: bear]
+
+**Research basis**: Web search for "Straw competition platform AI agent marketplace" returned NO named direct competitor to Straw's competitive evaluation model. Eight AI agent marketplaces matter in Q2 2026 (Salesforce, Google, Microsoft, AWS + Claude Skills, GPT Store, MCP Hubs, Hugging Face, LangChain Hub). Anthropic built test "agent-on-agent commerce marketplace" (TechCrunch April 25, 2026).
+
+### The Most Bullish Signal: No Named Competitor
+
+A web search for Straw's exact category — competitive AI agent evaluation for enterprise procurement — returns ZERO named competitors. The category does not exist as a marketed product.
+
+**What this means**:
+1. **Category creation opportunity is real**: The market is asking for this. Enterprises are solving the problem in ad-hoc ways. The category hasn't been named or owned.
+2. **First-mover advantage window is open**: The 18-24 month window to define "Competitive AI Evaluation" as a category and own the definition is available right now.
+3. **Risk**: The category might not exist because buyers solve it internally, making it a services business not a software business.
+
+### The Competitive Map (What Exists Adjacent to Straw)
+
+| Company | What They Do | Straw's Differentiation |
+|---------|-------------|------------------------|
+| **Braintrust** | Post-deployment monitoring, observability, LLM testing | Pre-deployment procurement evaluation; different buyer, different moment |
+| **Galileo** | LLM evaluation framework for developers | Developer tooling, not enterprise procurement; no competitive evaluation |
+| **LangSmith** (LangChain) | Agent observability and tracing | Monitoring deployed agents; developer-focused |
+| **Weights & Biases (W&B)** | ML experiment tracking + evaluation | Model training evaluation; not enterprise procurement |
+| **Arthur AI** | Model monitoring and bias detection | Post-deployment governance; not competitive evaluation |
+| **Scale AI (Evaluation)** | Data labeling + model evaluation for AI teams | AI team tooling; not enterprise buyer facing |
+| **Evals by OpenAI** | Open-source eval framework | Developer framework; no enterprise procurement model |
+| **Humanloop** | LLM evaluation and prompt management | Developer-focused evaluation |
+
+**The gap**: Every named competitor is either (a) developer tooling for AI teams building models, or (b) post-deployment monitoring of deployed agents. Nobody is doing enterprise buyer-facing pre-deployment competitive evaluation.
+
+### The Anthropic Agent-on-Agent Commerce Signal
+
+TechCrunch April 25, 2026: "Anthropic created a test marketplace for agent-on-agent commerce."
+
+This is Anthropic exploring how agents transact with each other autonomously. It's a different direction from Straw — agents as economic actors, not agents being evaluated by humans. But it signals:
+1. Anthropic is thinking about agent markets and agent quality sorting
+2. Agent-to-agent commerce requires trust signals — which agent's outputs can other agents trust?
+3. Straw certifications could become trust signals in agent-to-agent transactions
+
+**Long-term vision**: Straw's "Straw Score" becomes the trust signal that agents use when deciding whether to use another agent's output. Not just humans evaluating agents, but agents evaluating other agents using Straw scores as a proxy for quality. This is the "FICO score for AI agents" taken to its logical conclusion.
+
+### The Real Competitive Threat: Internal Build
+
+The most common competitive alternative to Straw is "the enterprise builds their own evaluation methodology internally." This is not a named company — it's the "spreadsheet and manual review" alternative.
+
+**Estimated internal build cost**:
+- Dedicated "rubric scientist" hire: $200K-$300K loaded cost
+- Evaluation infrastructure (sandbox, test case library, scoring automation): 6-12 months of engineering time
+- Ongoing test case generation and rubric maintenance: 0.5-1 FTE perpetually
+
+Total: $500K-$1M Year 1, $200K-$300K recurring.
+
+Straw at $100K-$250K per evaluation is cheaper than the first year of internal build. And Straw provides cross-vendor benchmark data that an internal team can never accumulate.
+
+**The "build vs. buy" bear case score: 4/10** — Most enterprises won't build this internally because they don't know they need it yet. When they do discover they need it, Straw is already available and cheaper than building. The enterprise that would build Straw is the enterprise that already understands competitive evaluation methodology — and those enterprises are Straw's best customers.
+
