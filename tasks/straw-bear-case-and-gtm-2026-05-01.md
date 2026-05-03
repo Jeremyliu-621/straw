@@ -21660,3 +21660,239 @@ Sources: hitconsultant.net/2026/04/10/qventus-2026-cio-report, medstrato.com/en/
 
 TICK_END
 
+
+---
+
+## TICK 349 — Replit Bounties + Bountysource Post-Mortem: Specific Failure Modes, Straw's Structural Defenses
+
+**Theme: Bear Case (comparable failed platforms)**
+
+### What Went Wrong: Replit Bounties
+
+Replit Bounties (2022-2025): YC-backed company, $100M+ raised, shut down September 2025. Transition to Contra partnership.
+
+**Root causes of failure:**
+
+1. **Wrong side of the market defined the task.** Bounties were posted by people who wanted code written cheaply, not enterprises that needed specific technical work done. Low-quality demand → low-quality competition → low-quality outcomes → buyers lost confidence.
+
+2. **Payment structure was hostile.** Agents (human freelancers) received Replit Cycles (an internal token), had to request USD payout by email, were charged a 25% withdrawal fee, and minimum $350 payout threshold. Every friction point in the payment flow reduced supply.
+
+3. **No objective quality bar.** Bounty resolution was subjective — the poster decided if the submission was "good enough." No rubric meant endless disputes. Multiple HN complaints about unpaid bounties and arbitrary rejection.
+
+4. **No multi-agent competition.** Bounties were first-response: whoever submitted first got the most consideration. No mechanism to compare competing solutions on objective criteria.
+
+5. **Scale pivot killed the niche.** Replit pivoted from "developer tool" to "AI software factory" — Bounties no longer fit the strategic narrative, so it was killed.
+
+### What Went Wrong: Bountysource
+
+Bountysource (2012-2023): Pioneer of developer bounty market. Acquired by CanYa (crypto company) in 2017, then by The Blockchain Group in 2020. Collapsed 2023.
+
+**Root causes of failure:**
+
+1. **Misaligned ownership chain.** Crypto acquirers had different incentives — used the platform to impose a crypto token requirement, alienating the open-source developer community.
+
+2. **Outright fraud in the end.** Platform stopped paying bounties to developers with verified claims as of June 2023. At minimum $21,000 stolen. No responses to support tickets.
+
+3. **Policy designed for platform capture.** Added clause: unclaimed bounties (no solution accepted within 2 years) were retained by Bountysource. Created perverse incentive to NOT facilitate resolutions.
+
+4. **No sticky product beyond payment escrow.** The platform was purely a payment middleman. Once trust in payment custody broke down, there was no other reason to use it.
+
+### Straw's Structural Defenses Against These Failures
+
+| Failure Mode | Replit/Bountysource | Straw's Defense |
+|---|---|---|
+| Low-quality demand | Consumer/hobbyist posters | B2B enterprise only; minimum task complexity |
+| Opaque payment | Tokens + 25% fee + $350 minimum | USDC escrow or Stripe; buyer deposits before posting |
+| No objective quality bar | Poster decides arbitrarily | Pre-specified rubric; tiered evaluation pipeline; scorer is Straw, not buyer |
+| First-response bias | Speed beats quality | Deadline-based; all submissions scored simultaneously |
+| Platform lacks stickiness | Pure payment middleman | Evaluation data, reputation graph, task library = can't replicate elsewhere |
+| Ownership/incentive misalignment | Crypto acquirers with different goals | Straw retains evaluation-as-service core; payment is infrastructure, not product |
+| Fraud risk | Trust broken, no recovery | Escrow holds buyer funds; payout only on rubric satisfaction |
+
+**Key insight:** Bountysource failed because the only value it added was payment escrow — which is a commodity. When the escrow became untrustworthy, there was nothing left. Straw's value is the *evaluation pipeline*, not the payment. Payment is interchangeable (Stripe today, x402/USDC later); the rubric evaluation is not.
+
+### The "Kaggle-ification" Trap to Avoid
+
+Kaggle started as enterprise AI procurement for top companies (Netflix Prize: $1M bounty), evolved into a community of data scientists competing for prestige, and by 2025 had disabled new competition creation and stopped all submissions by January 20, 2026 (migrated to CodaBench).
+
+**What killed Kaggle:** The monetization was backwards. Kaggle monetized the supply side (data scientists paid for compute, storage, notebooks) rather than the demand side (companies posting tasks). When Google acquired Kaggle in 2017, it became a marketing channel rather than a procurement tool. Revenue per enterprise never grew because enterprises weren't paying — they were getting community labor for free.
+
+**Straw's anti-Kaggle design:**
+- Enterprises are the paying customers (demand side), not the supply side
+- Agent developers don't pay to participate (supply is free to enter)
+- Straw's revenue = % of competition value (platform fee on enterprise spend)
+- There is no "community prestige" trap — agents don't compete for upvotes, they compete for USDC
+
+Sources: news.ycombinator.com/item?id=44643875 (Replit Bounties HN), boehs.org/node/bountysource, mlcontests.com/state-of-machine-learning-competitions-2025, github.com/bountysource/core/issues/1586
+
+TICK_END
+
+---
+
+## TICK 350 — Enterprise AI Failure Statistics: The Strongest ROI Case Yet Found
+
+**Theme: GTM (sales weapon)**
+
+### Updated Failure Rate Data (2026)
+
+| Source | Statistic | Implication |
+|---|---|---|
+| Stanford AI Index 2026 | 89% of enterprise AI agents never reach production | 89% of AI procurement decisions produce zero value |
+| MIT research (2026) | 95% of enterprise AI pilots fail to scale; only 5% deliver measurable profit impact | Even agents that reach production mostly fail to generate ROI |
+| Deloitte 2025 | 42% of companies abandoned at least one AI initiative in 2025; average sunk cost per abandoned initiative: **$7.2M** | The cost of failure is enormous |
+| Pertama Partners analysis | 80% of AI projects fail (2026) | Consistent signal across sources |
+| Composio report | "Integration issues, not LLM failures" are the leading cause — Dumb RAG, Brittle Connectors, Polling Tax | Failures are architectural, not capability |
+| Sweep.io post-mortem | "Demos gave way to audits" — agents looked great in demo but collapsed in production Salesforce orgs | Demo ≠ production; the demo-to-production gap is where money is lost |
+
+### The Updated Straw ROI Calculation (v2)
+
+**Previous version (Tick 316):** Used $400K average failed implementation cost. **New version uses Deloitte's $7.2M.**
+
+> "The average enterprise loses $7.2M per abandoned AI initiative (Deloitte 2025). Straw costs $5K-25K per competition. If Straw prevents even 1 in 288 failed implementations at your organization, it pays for itself."
+
+But more precisely, Straw doesn't prevent failure after the fact — it prevents the wrong agent from being selected before deployment. The math:
+
+- 42% of enterprises will abandon an AI initiative this year
+- Average sunk cost: $7.2M
+- Expected cost per initiative evaluated: 42% × $7.2M = **$3.02M expected loss per AI agent procurement**
+- Straw competition cost: $25K (Pro tier)
+- **ROI if Straw prevents 1% of expected loss: 120× return** (vs. prior estimate of 38×)
+
+Even if you use the conservative $400K figure (implementation + integration + staff time, not including strategic cost), the ROI case is overwhelming.
+
+### Why Enterprises Don't Act on This Data — The Incentive Gap
+
+This is the deepest bear case insight: enterprises KNOW AI agents fail at high rates and they KEEP BUYING on demos anyway. Why?
+
+1. **FOMO outweighs due diligence.** The competitive narrative ("if we don't adopt AI our competitors will") makes CXOs make fast decisions. Careful evaluation = losing to a competitor who didn't bother.
+
+2. **Procurement cycles are optimized for demos.** The vendor demo was invented for static software. Dynamic AI agents are impossible to evaluate from a demo. The procurement process hasn't evolved yet.
+
+3. **Failure cost is diffuse, not concentrated.** The $7.2M is spread across 6-18 months: staff time, integration work, consulting fees, opportunity cost. No single line item says "AI procurement failure: $7.2M." The pain is real but not visible.
+
+**Straw's GTM implication:** Don't sell to procurement. Sell to the person who feels the pain — the CTO/VP Engineering who has to explain why the agent failed, or the CFO who is about to approve a $500K AI contract. The ROI case is theirs, not the vendor's.
+
+### The Sweep.io Pattern: "Metadata First, Intelligence Second"
+
+Sweep.io's 2025 enterprise AI post-mortem articulates why agents fail: "You're giving a naive agent access to undocumented rate limits, brittle middleware, 200-field dropdowns, and duplicate logic." Their lesson: "metadata first, intelligence second."
+
+**Straw validation:** This is precisely why Straw's Tier 1 evaluation (deterministic, checklist-based) exists. Tier 1 catches the structural failures: did the agent access the right APIs? Did it produce the correct output format? Did it complete within time/cost constraints? These are metadata failures, not intelligence failures. Straw's evaluation pipeline was designed around the actual failure modes documented by enterprise deployments.
+
+Sources: sweep.io/blog/2025-the-year-enterprise-ai-hit-the-system-wall, composio.dev/blog/why-ai-agent-pilots-fail-2026-integration-roadmap, pertamapartners.com/insights/ai-project-failure-statistics-2026, digitaleconomy.stanford.edu/app/uploads/2026/03/EnterpriseAIPlaybook
+
+TICK_END
+
+---
+
+## TICK 351 — Disintermediation Threat: Homejoy's Core Failure Applied to Straw
+
+**Theme: Bear Case**
+
+### The Disintermediation Problem
+
+Homejoy's primary failure: once a household found a cleaner through the platform, they went direct — cutting out the platform's 25% fee. Homejoy lost an estimated 40% of repeat business to disintermediation. The platform provided discovery; it did not provide ongoing value that justified platform fees on repeat transactions.
+
+**The Straw version of this threat:** A company runs a Straw competition, finds an excellent agent, then contracts with that agent directly for ongoing work — cutting out Straw's platform fee on subsequent transactions.
+
+### Is This a Serious Threat?
+
+**Assessment: Medium threat for v0/v1, mitigated by v1.5+.**
+
+| Factor | Homejoy | Straw |
+|---|---|---|
+| Repeat transaction economics | Same cleaning every week; platform adds zero value on repeat | New evaluation task is different each time; evaluation infrastructure still needed |
+| Switching cost | Near zero — cleaner's phone number is enough | High — buyer needs Straw's eval pipeline, rubric templates, agent reputation data |
+| What the platform uniquely provides | Discovery only | Discovery + objective evaluation + reputation + audit trail |
+| Who captures the value | Cleaner and buyer; platform loses | Evaluation data stays on Straw; can't reproduce offline |
+| Counter-incentive | None | Agent's Straw reputation score is only valid on Straw |
+
+### Structural Defenses Against Disintermediation
+
+**1. The evaluation data stays on Straw.** When a company runs a competition, the rubric definitions, scoring methodology, submission history, and evaluation results are stored in Straw. To recreate this externally, they would need to rebuild the entire Tier 1-2-3 evaluation pipeline. The audit trail — "this agent scored 87/100 on our rubric on [date], using [methodology]" — is a Straw-native artifact.
+
+**2. Agent reputation is Straw-native.** An agent's reputation score on Straw reflects performance across multiple competitions by multiple buyers. This cross-buyer reputation signal cannot be reproduced in a direct bilateral relationship. The more competitions Straw runs, the more valuable the reputation data becomes relative to any direct hire claim.
+
+**3. Ongoing evaluation needs.** Unlike finding a house cleaner (a single stable service), enterprise AI agents require continuous evaluation as models improve, tasks evolve, and requirements change. Straw's value is not just one-time discovery — it's annual/quarterly re-evaluation. "Did the agent we hired last year still beat the new alternatives?" is a recurring need.
+
+**4. "Hire the agent" feature.** Straw can offer a managed ongoing relationship with the winning agent, taking a smaller recurring fee (e.g., 10% of engagement value vs. 15% platform fee). This keeps the transaction on-platform by making on-platform cheaper than direct.
+
+**5. Network effects.** An enterprise that goes direct with one agent loses access to Straw's entire competitive pool for future tasks. The value of future competitions is an ongoing retention mechanism.
+
+### The Reframing
+
+Homejoy provided a commodity (cleaning referral). Straw provides infrastructure (evaluation pipeline) + a data asset (reputation graph) + a network (competing agents). The correct analogy is not Homejoy but Salesforce: no one takes their CRM data direct to individual salespeople, because the value is in the platform, not the individual relationship.
+
+The disintermediation risk is real but manageable. The mitigation is NOT adding artificial friction — it's adding genuine value on repeat engagements that doesn't exist in the direct relationship.
+
+Sources: techcrunch.com/2015/07/31/why-homejoy-failed, sunsethq.com/blog/why-did-homejoy-fail, tactyqal.com/blog/why-homejoy-failed
+
+TICK_END
+
+---
+
+## TICK 352 — Cold Start Playbook for Straw: How to Solve the Two-Sided Problem
+
+**Theme: GTM (critical path)**
+
+### The Cold Start Problem, Precisely Stated
+
+Straw is a two-sided market:
+- **Demand side:** Enterprise buyers who post tasks with rubrics (pay Straw)
+- **Supply side:** AI agent developers who submit solutions (receive prizes from buyers)
+
+Classic cold start: buyers won't post if no agents compete; agents won't register if no tasks are posted. The marketplace is empty until it isn't.
+
+### Straw's Cold Start Structural Advantage
+
+Straw has an unusual property that most two-sided markets don't: **agents cost nearly zero to deploy.** A single developer running Cursor/Devin on a task competes as a "supply-side participant." Unlike Homejoy (needed a whole fleet of vetted cleaners) or Uber (needed city-by-city driver networks), Straw's supply is virtually infinite and globally available on day 1.
+
+This flips the cold start problem: **the hard side is demand, not supply.** Get 3-5 enterprise buyers to post real tasks, and the supply side will appear (agent developers will compete for real money). The cold start playbook is entirely about demand-side.
+
+### The Demand-Side Cold Start Playbook
+
+**Step 1 — Seed with one real, visible competition (Weeks 1-4)**
+
+Pick the most impressive, most publishable task possible. Optimal characteristics:
+- Real company (named, with permission to publish results)
+- Real task (from production, not a toy example)
+- Meaningful prize ($10K minimum for agent developer interest)
+- Objectively measurable rubric (so the result is defensible)
+- Compelling narrative ("the agent that can do X autonomously for the first time")
+
+**Candidate first competition:** Ask Cursor (CEO Michael Truong @truong or Aman Sanger @amansanger) to post a task like "find and fix 10 real regression bugs in Cursor's codebase according to this rubric." Prize: $10K USDC. Result: publishable case study showing Straw's eval pipeline in action.
+
+**Step 2 — Design partner activation (Weeks 2-8)**
+
+From the 62 design partners in this research file, identify the 5 most likely to say yes AND most likely to generate a publishable case study. Priority:
+1. Existing AI-friendly companies (Cursor, Braintrust, Modal, Sentry)
+2. Companies that have already publicly acknowledged AI procurement pain
+3. CTOs with Twitter/X presence who will amplify the case study
+
+**Step 3 — The "free first competition" offer**
+
+For the first 5 design partners: Straw subsidizes the competition infrastructure cost. Buyer provides the task and rubric; Straw provides the evaluation pipeline at zero cost. Buyer pays the prize (to maintain skin-in-game). The output: a case study Straw can publish.
+
+Why this works: The buyer gets real competitive evaluation for free. Straw gets a case study and a first customer. The supply-side agents compete for real money regardless.
+
+**Step 4 — The case study flywheel**
+
+Each published case study includes:
+1. What the task was (anonymized if needed)
+2. How many agents competed (supply evidence)
+3. How the winning agent was selected (rubric + evaluation methodology)
+4. What the buyer found out they couldn't have learned from a demo
+
+**Distribution:** Share case studies to HN, Twitter/X, LinkedIn. The "what the buyer couldn't learn from a demo" framing generates outbound demand from other buyers who have the same problem.
+
+### The "Anti-chicken-and-egg" Mechanism
+
+Straw can run competitions with **only 1 agent.** A buyer posts a task; the buyer's own agent submits; Straw evaluates; the buyer learns if their own agent passes the rubric. This "evaluation-only" mode means a competition adds value even with zero external agents competing.
+
+This is critical: it means Straw has value to the demand side even with zero supply. The supply side adds competition/comparison value, but the baseline value (objective evaluation of one agent) doesn't require two-sidedness.
+
+**Consequence:** Straw should lead with "evaluate your own agent against your own rubric" before introducing "let other agents compete." The pitch is "stop relying on demo results; get a rigorous score" — which doesn't require any other agents.
+
+Sources: gopractice.io/product/solving-the-cold-start-problem, medium.com/@katelogan_65949/startup-series-how-to-de-risk-a-two-sided-marketplace
+
+TICK_END
+
