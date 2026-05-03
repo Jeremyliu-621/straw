@@ -26360,3 +26360,126 @@ This is the Straw pitch verbatim. Legal procurement already speaks in rubrics �
 Sources: joneswalker.com, natlawreview.com, lawnext.com, prnewswire.com/cocounsel-1m-users, artificiallawyer.com/2026/04/23, legaltechnology.com, primelegalstaff.com/legal-ma-q2-2026
 
 TICK_END
+
+---
+
+## Tick 432 — Enterprise AI Vendor Lock-in 2026: Straw's Core Risk-Management Sales Frame
+
+**Research date:** 2026-05-03
+
+### The lock-in data (April 2026 landscape reports)
+
+Four statistics that make Straw a CFO/CTO risk-management purchase, not just a procurement tool:
+
+| Statistic | Source | Implication |
+|---|---|---|
+| **Only 6% of enterprises can switch AI vendors without significant disruption** | Kai Waehner April 2026 | 94% of enterprises are already locked in after first deployment |
+| **Average AI vendor switching cost: $315,000 per project** | Kai Waehner April 2026 | Every bad selection now has a $315K remediation tax |
+| **81% of enterprise leaders concerned about AI vendor dependency** | Enterprise AI Landscape 2026 | Concern is near-universal — not a niche worry |
+| **47% say a key business function would stop if primary AI vendor had downtime** | Enterprise AI Landscape 2026 | AI agents now in critical infrastructure path |
+
+**The inversion:** These statistics appear to be bear case arguments for Straw (enterprises are already locked in, so why would they evaluate upfront?). They are actually the opposite. **Because** switching costs are $315K, the pre-commitment evaluation is the cheapest risk mitigation available. At Straw's price point ($25K/evaluation), the math is: spend $25K now and avoid $315K remediation, or save $25K and risk $315K in switching costs.
+
+**New CFO pitch line:** "AI vendor switching now costs an average of $315K per project. A Straw evaluation costs $25K. That's an 12.6× insurance multiple on the risk you're already carrying."
+
+### The multi-vendor architecture trend
+
+By 2028, 70% of organizations building multi-LLM applications will use AI gateway capabilities, up from less than 5% in 2024. Enterprises moving to multi-vendor architectures NEED baseline evaluations to determine which vendor goes in which slot. Straw is the benchmarking layer for multi-vendor AI deployments.
+
+**Cross-vendor benchmarking gap (confirmed again):** "Cross-industry, universal benchmarks remain absent, making meaningful performance comparison and investment prioritization difficult." — Enterprise AI Agents 2026 mid-year report.
+
+### Lock-in paradox creates Straw's wedge
+
+Enterprises simultaneously:
+1. Fear vendor lock-in (81% concerned)
+2. Lack a pre-commitment evaluation tool to avoid it (no cross-vendor rubric platform exists)
+3. Are making lock-in decisions right now (17+ agent platforms, each ecosystem building walls)
+
+The combination of active buying pressure + no evaluation tooling + high switching costs = the exact market timing Straw needs. The lock-in window is closing. Companies that don't evaluate in 2026 will be locked for 3-5 years.
+
+### Competitive positioning update
+
+AI agent benchmarks exist (SWE-bench for coding, HELM for language models) but:
+- They test model capabilities, not task-specific agent performance
+- They're not buyer-configurable — you can't define your rubric
+- They're not competition-format — vendors don't submit for evaluation on YOUR task
+- They don't produce procurement evidence (evaluator-signed score + audit log)
+
+**Straw's differentiation sharpened:** Not a benchmark, not an evaluation platform, not a directory. A **procurement competition engine** — the buyer defines winning, agents compete, the score is defensible to a CFO.
+
+Sources: kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026, aiagentsquare.com/blog/ai-agent-benchmarks-2026, swfte.com/blog/avoid-ai-vendor-lock-in, ampcome.com/post/enterprise-ai-agents-2026-mid-year-report
+
+TICK_END
+
+---
+
+## Tick 433 — YC W26 Batch + Financial Services Design Partners: Context for YC S26 Application (Due TODAY)
+
+**Research date:** 2026-05-03
+
+### YC W26 Batch Analysis (largest YC batch in history, Winter 2026)
+
+**Scale:** 194 companies, largest batch ever. 64% B2B, ~60% AI-focused (up from 40% in 2024).
+
+**Critical infrastructure category:** 41.5% are building "the plumbing underneath AI agents" — auth, testing, security, monitoring, context management, billing.
+
+**Evaluation companies in W26:** EigenPal built eval-first platform (teams test workflows against historical documents before deploying). At least 10-15 other evaluation/testing plays.
+
+### What YC W26 confirms and what it MISSES
+
+**What W26 funded:** post-deployment evals, agent security, identity, monitoring, billing infrastructure.
+
+**What W26 did NOT fund:** pre-deployment, cross-vendor, buyer-defined competition-format evaluation for enterprise procurement. EigenPal is post-deployment single-vendor. None are Straw.
+
+**YC S26 narrative positioning (deadline TODAY, May 4, 8pm PT):**
+
+> W26 showed YC that agent infrastructure is the right bet — 41.5% of the batch is plumbing. Straw is the procurement layer that SITS ON TOP of all that plumbing. We're not competing with EigenPal (post-deployment, single-vendor). We're the pre-commitment evaluation platform that enterprise buyers need BEFORE they deploy. The plumbing batch validates our market; we're the surface layer those companies will sell into.
+
+**Key YC application frame:** YC funds infrastructure that AI companies need. Straw is the procurement infrastructure that ENTERPRISE BUYERS need — the demand side of the agent economy.
+
+---
+
+### Financial Services Design Partners: Named Contacts
+
+#### Design Partner #109 — Goldman Sachs (Marco Argenti, CIO)
+
+**What they're doing:** Goldman Sachs co-developed autonomous Claude AI agents with Anthropic for trade accounting, reconciliation, and regulatory compliance. CIO Marco Argenti called these "digital co-workers." Projected AI value: $2.5B annually.
+
+**Pain point:** Goldman is evaluating multiple AI vendors for different workflows. Claude for accounting/compliance, but what about research analysis, client communication, risk modeling? Each selection is siloed. Straw gives them one rubric board to evaluate agents across workflows before committing.
+
+**Contact:** Marco Argenti, CIO (linkedin.com/in/marcoargenti). Secondary: whoever owns AI procurement at each Goldman business unit.
+
+#### Design Partner #110 — JPMorgan Chase (Lori Beer / Teresa Heitsenrether)
+
+**What they're doing:** ~$20B tech budget in 2026, AI expected to generate $2.5B in annual value. CIO Lori Beer reshaping workflows as AI agents proliferate. Teresa Heitsenrether is Global Head of AI (previously named in Tick 401).
+
+**Pain point:** At $20B tech spend, JPMorgan has the most complex multi-vendor AI procurement challenge of any enterprise on earth. They need a rubric-based evaluation framework that their procurement office can defend to compliance.
+
+**Contact:** Lori Beer (CIO), Teresa Heitsenrether (Global Head of AI). Fortune April 29, 2026 profile of JPMorgan CIO is the warm introduction angle.
+
+#### Design Partner #111 — Morgan Stanley (Madhu Coimbatore)
+
+**Who:** Head of AI Development Platforms at Morgan Stanley.
+
+**Quote (2026):** "This is a great starting point for us, as an industry, to collaborate on a structured approach to the adoption and governance of AI."
+
+**Why this is perfect:** Madhu Coimbatore is explicitly calling for industry-wide structured AI adoption governance. That's the Straw pitch. A Straw evaluation IS the structured adoption framework — rubric defines the criteria, competition produces the evidence, score is the governance artifact.
+
+**Contact:** Banking tech alliance (FINOS) connection — Madhu Coimbatore is public in AI governance discussions.
+
+---
+
+### Financial services vertical ICP summary
+
+| Institution | AI Investment (2026) | Named Champion | Straw Fit |
+|---|---|---|---|
+| Goldman Sachs | $2.5B AI value target | Marco Argenti (CIO) | Cross-workflow agent evaluation (Claude vs. alternatives) |
+| JPMorgan Chase | $20B tech budget, $2.5B AI value | Lori Beer (CIO) / Teresa Heitsenrether (Global AI Head) | Multi-vendor procurement governance at scale |
+| Morgan Stanley | Significant (FINOS governance leadership) | Madhu Coimbatore (AI Platforms Head) | Structured AI adoption framework = Straw rubric |
+| Citigroup / BNY / HSBC | $177M projected AI spend Q1 2026 industry average | Various CTOs/CIOs | Regulatory compliance for agent procurement |
+
+**Vertical note:** Financial services has the highest compliance requirement of any vertical — evaluation logs that document "we ran a rubric-based competition before deploying this agent" directly satisfy OCC/Fed AI governance guidance. Banks NEED the audit trail that Straw produces.
+
+Sources: llrx.com/2026/04/ai-in-finance-and-banking, bankingdive.com/news/banks-ai-push-accelerates, fortune.com/2026/04/29, extruct.ai/research/ycw26, thevccorner.com/yc-w26-demo-day-2026, tldl.io/blog/yc-ai-startups-2026
+
+TICK_END
