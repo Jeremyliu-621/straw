@@ -34669,3 +34669,96 @@ From a 2026 H2 forecast (DigitalApplied) and enterprise data:
 **Market timing thesis:** In 2025, "do we need formal evaluation?" was the question. In 2026, "how do we run formal evaluation?" is the question. Straw answers the second question. The first question is already answered.
 
 ---
+
+---
+
+## Tick 494 — Bear Case Steelman: AI Bubble + Adoption Plateau + NBER "No Impact" Study [theme: bear]
+
+### The Three Critical Bear Cases for Straw (Updated Assessment)
+
+#### Bear Case #1: The AI Bubble Bursts and Enterprise Spending Freezes
+
+**The scenario:** AI capex ($400B+ US alone, $527B per Goldman Sachs 2026) massively exceeds AI revenue (~$12B total). OpenAI ($730B pre-money valuation), Anthropic ($380B valuation) are priced on future potential, not current fundamentals. A trigger event (revenue miss, model capability plateau, circular financing exposure) causes a 50%+ AI stock correction. CIOs freeze AI budgets.
+
+**The evidence supporting this scenario:**
+- AI capex:revenue ratio = 33:1 (compare dot-com bubble: similar ratio in 2000)
+- $285B evaporated from software stocks in 48 hours (February 2026)
+- "Circular financing deals in AI have reached a scale and complexity bearing uncomfortable similarities to vendor-financing structures that characterised the late-stage dotcom bubble"
+- **NBER study (February 2026): 90% of firms report NO measurable impact of AI on workplace and productivity** (despite heavy investment)
+- Oliver Wyman: AI bubble burst could shake global financial markets
+
+**Straw's response:**
+
+The bubble burst scenario is the most serious bear case. However, it cuts BOTH ways for Straw:
+
+1. **If bubble bursts:** Enterprises become MORE cautious about AI procurement, not less. "We need to prove this works before spending more" = INCREASED demand for objective evaluation tools. Straw becomes a due diligence tool for CFOs justifying AI spending to boards.
+
+2. **The Klarna lesson (already in file):** Klarna replaced 700 customer service agents with AI, "saved $40M," then rehired them all because "cost was too predominant an evaluation factor." The lesson: enterprises that rush AI procurement without rigorous evaluation FAIL and then need structured evaluation to recover. Post-bubble = highest Straw demand.
+
+3. **Counterfactual:** If the bubble DOESN'T burst (consensus view), the $1.4T agent spend by 2027 is a massive tailwind. Straw wins either way — pre-procurement in bull market, due diligence in bear market.
+
+**Priority: MEDIUM-HIGH.** Significant risk but Straw has a defensible position in both scenarios.
+
+#### Bear Case #2: 90% of Firms Report No AI Productivity Impact (NBER, February 2026)
+
+**The scenario:** The NBER study showing 90% of firms report no AI productivity impact is widely cited. A major media narrative shifts from "AI revolution" to "AI hype." Enterprise buyers slow deployment decisions. The "wait and see" camp grows. Straw's target buyers defer purchases.
+
+**The evidence:**
+- NBER study (Feb 2026): 90% no impact
+- Counterpoint: executives projected 1.4% productivity increase (the same study) — awareness ≠ adoption
+- MIT Sloan finding (cited earlier): "Quality is meaningless without definition" — companies that don't define success criteria before deployment can't measure success
+- Grant Thornton: 46% say "AI underperforms because controls and compliance aren't working"
+
+**Straw's response:**
+
+The NBER "no impact" finding is entirely consistent with Straw's thesis. 90% of firms report no impact because:
+1. They deployed agents without defining what success looks like
+2. They deployed agents without evaluating which agent is actually best for their workflow
+3. They deployed on trust (vendor demo) rather than evidence (rubric score)
+
+**Straw IS the solution to the NBER study.** The 10% of firms that DO report AI productivity impact are the ones that defined their success criteria (Stanford's #1 success factor), evaluated systematically, and maintained named accountability. The "no impact" companies NEED Straw more than ever — they've already proven the ad hoc approach doesn't work.
+
+**The GTM angle from this bear case:** "90% of companies investing in AI report no productivity impact. Straw helps you get into the 10% — by defining what success looks like before you deploy."
+
+**Priority: LOW.** This is actually a marketing tailwind, not a headwind.
+
+#### Bear Case #3: Adoption Plateau 2026 + 40% Project Cancellation by 2027
+
+**The scenario:** Enterprise pilot-to-production conversion is plateauing at 35-40% in 2026. Gartner warns that 40%+ of agentic AI projects risk cancellation by 2027 due to escalating costs, unclear business value, and inadequate governance. If most enterprises cancel their AI projects, Straw's market contracts.
+
+**The evidence (and what it actually says):**
+- Only 17% of organizations have deployed AI agents currently
+- 60% expect to within 2 years — most aggressive adoption curve of any emerging tech
+- Production rate forecast: 31% (Q1 2026) → 48-55% (Q1 2027)
+- Banking/insurance: ~63% production by 2027
+- 40%+ projects at risk = **inadequate governance** as primary cause
+
+**Straw's response:**
+
+The 40% cancellation risk is from INADEQUATE GOVERNANCE. That's Straw's exact market. Here's the split:
+- Of projects that WILL be cancelled → they cancelled because they didn't have Straw-level governance at deployment
+- Of projects that WON'T be cancelled → many of them will have evaluation frameworks (Straw) before deployment
+
+**The "project cancellation" scenario creates Straw demand twice:**
+1. **Pre-deployment:** Enterprises about to launch AI agent projects use Straw to ensure they're deploying the right agent with proper governance documentation = prevents cancellation
+2. **Post-cancellation:** Enterprises that cancelled projects need a structured approach for their second attempt = Straw as recovery infrastructure
+
+**Priority: LOW.** This scenario is Straw's market thesis, not a threat to it.
+
+### The Adoption Curve Update (Most Current Data)
+
+| Metric | Value | Source |
+|---|---|---|
+| Organizations with deployed AI agents currently | 17% | 2026 enterprise survey |
+| Organizations expecting to deploy within 2 years | 60% | Same survey |
+| Pilot-to-production plateau (2026 year-end) | 35-40% | DigitalApplied forecast |
+| Production rate target by Q1 2027 | 48-55% | Same forecast |
+| Enterprise AI agent spend 2027 | $1.4T | IDC midpoint |
+| Agent usage increase by 2027 | 10x | IDC FutureScape 2026 |
+| Projects at risk of cancellation by 2027 | 40%+ | Gartner |
+| Primary cancellation reason | Inadequate governance | Gartner |
+| Enterprise AI agent owners (formal role) | 56% | 2026 (up from 11% in 2024) |
+
+**The 56% having a formal "AI agent owner" is the most powerful data point for Straw's buyer persona.** A company with a named "agentic ops lead" is exactly the buyer who would champion a structured Straw evaluation internally.
+
+---
