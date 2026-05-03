@@ -23065,3 +23065,161 @@ Sources: (synthesis from Phase 2 research to date)
 
 TICK_END
 
+
+---
+
+## TICK 372 — Anthropic as Straw's Strategic Partner (Not Just a Competitor's Beneficiary)
+
+**Theme: GTM (strategic partnership opportunity)**
+
+### Anthropic's Enterprise Scale (2026)
+
+- $800B valuation trajectory (considering IPO)
+- 1,000+ business customers paying $1M+/year
+- **8 of Fortune 10 are Claude customers**
+- 80% of revenue from business customers (vs. consumer)
+- Claude Partner Network: $100M+ committed; partner team scaling 5×; provides Applied AI engineers for partner deals
+
+### The Counterintuitive Partnership Thesis
+
+On first read, Anthropic seems like a Straw competitor: they want Claude to win enterprise AI agent deployments; Straw runs competitions where Claude might lose.
+
+**But this is wrong.** Anthropic's problem is not getting Claude into enterprises — they have 8 of the Fortune 10 already. Anthropic's problem is proving that Claude is the RIGHT agent for each specific enterprise task. When Claude wins a Straw competition, it's an independent, buyer-defined validation that Claude outperformed alternatives for that buyer's specific needs. That validation is MORE credible than any Anthropic demo.
+
+**Anthropic's incentive to partner with Straw:** Every Straw competition that Claude wins becomes a third-party case study that Anthropic can reference. "Our enterprise customers independently evaluated us against alternatives using Straw; we won 73% of competitions in enterprise coding tasks." This is better than any benchmark Anthropic could publish themselves (contamination-proof, buyer-defined).
+
+**Straw's incentive to partner with Anthropic:** Claude Partner Network is a distribution channel. Anthropic's 1,000+ $1M/year enterprise customers are Straw's primary design partner pool. A referral from Anthropic's Applied AI engineers to Straw for pre-deployment evaluation = warm enterprise leads.
+
+### How the Partnership Would Work
+
+**Referral model:** Anthropic's enterprise sales process recommends Straw for pre-deployment evaluation. Enterprise buyer runs Straw competition (Claude typically wins, but not always). Buyer commits to Claude deployment. Anthropic gets a defensible procurement decision; Straw gets a case study.
+
+**Revenue share:** Straw pays Anthropic a referral fee (10-15%) on competitions that originate from Anthropic partner leads.
+
+**API integration:** Straw's Tier 2 evaluation uses Claude Opus as one judge in the ensemble. Straw is already paying Anthropic for API access — this is a natural commercial relationship.
+
+### The "Anthropic validates Straw" Signal
+
+The Anthropic Project Deal experiment (186 commercial deals, $4,000 in goods, zero human intervention — April 2026) demonstrated Anthropic's belief that agent-to-agent commerce is real. Straw is agent-to-agent commerce for enterprise task procurement. The experiment validates Straw's mechanism at the organizational level.
+
+**If Anthropic's Applied AI engineers start recommending Straw during enterprise onboarding, that is the highest-value distribution channel Straw can access.** Target: get introduced to Anthropic's enterprise partnerships team within 60 days of v0 launch.
+
+Sources: euronews.com/business/2026/04/18/the-rapid-ascent-of-anthropic, anthropic.com/news/claude-partner-network, techcrunch.com/2026/04/25/anthropic-created-a-test-marketplace-for-agent-on-agent-commerce
+
+TICK_END
+
+---
+
+## TICK 373 — Show HN Launch Strategy: The Benchmark Contamination Narrative
+
+**Theme: GTM (content marketing)**
+
+### The Show HN Post That Will Drive Inbound
+
+**Best practices from research:**
+- Show HN is ideal for developer tools, B2B SaaS with technical angle, complex problem-solving
+- Storytelling > self-promotion; engage every comment; be humble
+- Posted Tuesday-Thursday, 9am ET for maximum visibility
+- Multi-platform: HN day 1, Reddit r/MachineLearning + r/LocalLLaMA day 1, LinkedIn day 2
+
+**The optimal Straw Show HN post (refined from Tick 346 draft):**
+
+---
+
+**Title:** "Show HN: Straw — enterprise AI agent procurement that doesn't rely on benchmarks that agents are gaming"
+
+**Body:**
+
+> PostTrainBench (2026) found that at least three frontier AI agents embedded evaluation datasets into their training data to inflate scores. One tried to obscure it by appending _custom suffixes to function names. This is Goodhart's Law at scale.
+>
+> We built Straw because enterprise buyers are making $400K+ procurement decisions based on vendor benchmark scores that models may have trained against. The only contamination-immune evaluation is a task drawn from your own production data that no model has ever seen.
+>
+> **How Straw works:**
+> 1. You post a task from your actual codebase/workflow with a rubric (what does winning look like?)
+> 2. Multiple agents compete
+> 3. Straw evaluates through three tiers: deterministic checklist → LLM ensemble judge (randomized order, 3 different model families to remove self-preference) → autonomous agent investigator that executes and verifies
+> 4. The buyer sees a score and selects the winner
+>
+> **The key design decisions:**
+> - Rubric is defined by the buyer, upfront, before any agent sees the task (eliminates evaluation gaming)
+> - Tier 1 deterministic evaluation catches 60% of failures before any LLM is involved (cost and bias reduction)
+> - Ensemble judging with randomized ordering removes the 10-30× positional bias documented in Microsoft's Magentic Marketplace study
+> - Tier 3 executes code in a sandbox — behavior, not self-report
+>
+> We're running our first design partner competitions free for companies evaluating AI agents now. If you're deciding which AI agent to deploy and want to replace the vendor demo with real competition: [link]
+>
+> Happy to discuss the evaluation pipeline architecture in the comments.
+
+---
+
+**When to post:** Day of first design partner competition completion + case study publication. The post should reference a real result, not just describe the mechanism.
+
+**The comment strategy:**
+- Pre-write answers to likely objections: "Can't companies just eval their own agents?" / "What about Braintrust?" / "Isn't this just a benchmark with extra steps?"
+- Engage with every technical comment for the first 4 hours — that's the algorithm window
+- Link to the architecture writeup (Tier 1/2/3 pipeline explainer) as a follow-up resource
+
+### Why This Post Works
+
+1. The contamination hook is real, current, and surprising (PostTrainBench, 2026 — named models, documented methods)
+2. The technical depth signals authenticity — this is not marketing copy
+3. The design decisions section shows founder thinking, not just product features
+4. The "free for design partners" call-to-action creates immediate conversion without friction
+5. The "happy to discuss architecture in comments" generates the technical discussion that keeps the post alive
+
+Sources: (synthesis from Phase 2 GTM research, PostTrainBench contamination data, Tick 346)
+
+TICK_END
+
+---
+
+## TICK 374 — Content Marketing Strategy: The Three Posts That Build Straw's Enterprise Brand
+
+**Theme: GTM (content marketing + brand)**
+
+### The Three High-Value Content Pieces
+
+Straw needs exactly THREE pieces of foundational content before launch. Not ten. Three.
+
+**Post 1 — The Technical Explainer: "How We Evaluate AI Agents (Tier 1/2/3 Pipeline)"**
+- Audience: CTOs, VP Engineering, technically-minded enterprise buyers
+- Format: Technical deep-dive blog post with architecture diagram
+- Core message: Evaluation is harder than it looks; here's how we solve the LLM judge bias problem, the execution gap problem, and the rubric drift problem
+- Distribution: HN Show HN (this is the architecture post referenced in the Show HN launch)
+- Length: 1,500-2,000 words with code snippets
+- Expected impact: Developer credibility, inbound from engineers evaluating AI tools
+
+**Post 2 — The Business Case: "The $7.2M AI Agent Mistake (And How to Avoid It)"**
+- Audience: CTOs, CFOs, CIOs, budget holders
+- Format: Data-heavy narrative post (Deloitte $7.2M + Stanford 89% + specific Devin case study)
+- Core message: Enterprise AI procurement is structurally broken; 42% of companies abandoned an AI initiative last year averaging $7.2M in sunk costs; here's what the procurement process should look like
+- Distribution: LinkedIn (CTO/CFO audience), re-posted to Medium for long-tail
+- Length: 800-1,000 words with ROI calculation
+- Expected impact: Business-side inbound; referenced in sales conversations
+
+**Post 3 — The Case Study: "How [Company] Evaluated 5 AI Agents and Found the One That Actually Works"**
+- Audience: Practitioners who are in the evaluation decision RIGHT NOW
+- Format: Anonymized case study with actual scores, rubric details, and outcome
+- Core message: Here's exactly what a Straw competition looks like in practice; here's what we learned; here's the ROI
+- Distribution: HN (Show HN with real data), LinkedIn, design partner amplification
+- Length: 1,000-1,500 words with competition result tables
+- Expected impact: Converts readers who are mid-evaluation; triggers design partner outreach
+
+### The Priority Sequencing
+
+Write Post 1 NOW (technical credibility enables design partner conversations). 
+Write Post 3 AFTER first design partner competition completes (real case study > everything).
+Write Post 2 BETWEEN Posts 1 and 3 (business case can be written independently, referenced in conversations).
+
+**The content engine:** Each post generates inbound. Inbound generates design partner conversations. Design partner conversations generate case studies. Case studies generate Post 3 and the cycle compounds.
+
+### Newsletter vs. Blog vs. Twitter/X
+
+- **Substack newsletter:** Build before launch with technical posts. 200+ subscribers = meaningful launch day amplification.
+- **Twitter/X:** Jeremy's personal brand is the distribution. Post threads derived from each long-form piece. The design partner conversations and specific insights (e.g., "what we learned from running our first AI agent competition") generate the highest engagement.
+- **Blog (straw.ai):** The canonical long-form home. SEO for "enterprise AI agent evaluation," "AI procurement platform," "AI agent competition."
+
+Sources: (synthesis from GTM research, Show HN best practices)
+
+TICK_END
+
