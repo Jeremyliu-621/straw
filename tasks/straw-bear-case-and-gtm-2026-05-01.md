@@ -21898,3 +21898,100 @@ After 10-15 design partner deployments with this protocol, Straw has an empirica
 
 This is the data that converts skeptical enterprise buyers and justifies Series A valuation.
 
+
+---
+
+## Tick 306 (2026-05-03T00:36:00Z): Agentic AI ROI Case Studies — Market Validation [theme: gtm]
+
+**Research basis**: 171% average ROI from agentic AI. 74% of executives achieve ROI within year 1. Klarna: $60M saved, handled 853 employees' workload. Customer service AI: $0.46/ticket vs. $4.18 human. Code review: $0.72/PR vs. $48 senior engineer time. Median payback: 4.1 months customer service, 6.7 months marketing ops. 39% saw productivity double.
+
+### The Market Is Real. Enterprises Are Getting ROI. Straw's Job Is to Ensure They Get It From the RIGHT Agent.
+
+The ROI data validates the market Straw serves. AI agents are not hype — they're delivering:
+- **Klarna**: Saved $60M, handled 853 employees' workload in one year
+- **Morgan Stanley**: AI code review saved 280,000 developer hours
+- **Customer service sector**: 9x cost reduction ($0.46 vs. $4.18 per resolved ticket)
+- **171% average ROI**: Nearly double the 100% ROI threshold for investment
+
+**The Straw pitch in one sentence**: "The ROI from AI agents is real. Klarna's $60M savings is real. But Klarna chose the right agent for their use case. 95% of enterprises that deploy the wrong agent get none of that ROI. Straw is how you choose the right agent."
+
+### The Klarna Case Study Deep Dive
+
+Klarna's AI agent success is the most cited enterprise AI ROI story in 2026. What most analyses miss: Klarna spent 6+ months testing agents before their scaled deployment. They had an evaluation methodology — they just didn't call it Straw.
+
+Straw's argument: "What Klarna did in 6 months of internal testing, Straw does in 6 weeks. At 1/10th the internal cost."
+
+The enterprise that wants "Klarna results" should ask: "What was Klarna's evaluation methodology?" The answer is: systematic testing of agent performance on their specific use case before scaled deployment. That's Straw.
+
+### The Segmented ROI by Use Case
+
+| Use Case | Cost Without AI | Cost With AI | ROI | Payback |
+|----------|----------------|-------------|-----|---------|
+| Customer service ticket | $4.18 | $0.46 | 9x cost reduction | 4.1 months |
+| Code review (PR) | $48 | $0.72 | 66x cost reduction | <3 months |
+| Legal document review | $200-$400/hour | $5-$15/doc | 15-40x | 6-9 months |
+| Financial report analysis | $150-$300/hour | $8-$20/report | 10-20x | 6-12 months |
+
+Straw should build a "ROI Calculator" that shows: "For your use case (customer service / code review / legal review / financial analysis), here's the expected ROI range from deploying an AI agent. Here's the expected ROI from deploying the BEST agent for your use case vs. the median agent. The difference is [X%]. That's what Straw evaluation is worth."
+
+### The 95% Failure Caveat
+
+The 74% "achieve ROI within year 1" statistic is from enterprises that successfully deployed AI agents. It excludes the 95% of pilots that never reached production. Including the abandoned pilots, the expected ROI calculation looks very different.
+
+**Straw's honest message**: "The 74% of enterprises that deploy AI agents achieve strong ROI. But only 25% of AI initiatives deploy successfully at all. The enterprises that deploy are the ones that did the evaluation work upfront. Straw is how you join the 25% instead of the 75%."
+
+This is a harder message but a more credible one. Enterprises know their colleagues are failing at AI. "You might be in the 75% who fail" is a message that resonates with skeptical enterprise buyers.
+
+---
+
+## Tick 307 (2026-05-03T00:37:00Z): Defense and Government Tech Partners — Palantir, Booz Allen, SAIC [theme: partners]
+
+**Research basis**: Palantir: $10B Army Enterprise Agreement (75 contracts consolidated). Palantir AIP for defense, classified environments. Booz Allen Hamilton: consulting to DoD on AI analytics. Defense market: classified environments = no commercial AI APIs. FAA predictive AI procurement: Palantir vs. Thales vs. startup competition. DoD $13.4B AI pivot.
+
+### Defense Tech: The Non-Classified Opportunity
+
+The classified defense market (DoD classified systems) is not Straw's market. Palantir's moat in classified environments is based on FedRAMP High / IL5/IL6 security clearances that take years to obtain and require deep government security infrastructure.
+
+**However**: Not all government AI procurement is classified. Large swaths of federal and defense spending are on unclassified systems that commercial companies can serve:
+- **FAA systems** (air traffic, operations, safety) — unclassified, commercial
+- **DoD logistics and supply chain** — largely unclassified
+- **Veterans Affairs** (healthcare, benefits) — FedRAMP Moderate
+- **Civilian agency operations** — unclassified by default
+
+Straw's defense/government play is the **unclassified federal market**, addressed through:
+1. FedRAMP Moderate authorization (18-24 month path)
+2. GSA Schedule listing
+3. NIST AI RMF alignment (already identified as priority)
+
+### Palantir as Straw's Unlikely Channel Partner
+
+Palantir is increasingly moving from classified DoD into commercial enterprise (Palantir AIP for commercial enterprises). As Palantir enters commercial markets, they become a channel partner opportunity for Straw:
+
+- Palantir AIP deploys AI agents in commercial enterprise workflows
+- Enterprises using Palantir AIP need to evaluate which AI agents to deploy within the AIP framework
+- Straw can be the evaluation layer for Palantir AIP-based agent selection
+
+**Palantir BD contact**: Kevin Kawasaki (Head of Global Business Development) and Tyler Shultz (Business Development). Palantir's commercial team is actively seeking technology partners that complement AIP deployments.
+
+### Booz Allen Hamilton as a Design Partner
+
+Booz Allen is the largest defense consulting firm and increasingly building AI practices. They are already Straw's model of a SI partner that needs neutral evaluation:
+- Booz Allen builds AI analytics systems for DoD and civilian agencies
+- When recommending AI agents to government clients, Booz Allen needs neutral evaluation data
+- "Booz Allen independently evaluated 3 AI agent candidates using Straw methodology" is a credibility signal to government clients
+
+**Contact**: Dr. Joseph Fontaine (Chief Technology Officer, Booz Allen Hamilton); Mike Saponara (SVP, AI Center of Excellence).
+
+### The SAIC and Leidos Angle
+
+SAIC (Science Applications International Corporation) and Leidos are mid-tier defense IT contractors building AI practices. They're more agile than Booz Allen and more likely to adopt a startup tool quickly:
+
+| Company | AI Focus | Contact | Straw Entry |
+|---------|---------|---------|-------------|
+| **SAIC** | Unclassified federal AI systems | Toni Townes-Whitley (CEO) | SAIC builds AI for DHS, VA, FBI — all unclassified; needs evaluation methodology |
+| **Leidos** | Health IT + defense analytics AI | Angela Heise (President, National Security Sector) | Leidos health AI for VA uses evaluable AI agents |
+| **Peraton** | Intel community + defense IT | Stu Shea (CEO) | Smaller, more agile defense IT company; more likely to pilot Straw |
+| **ManTech** | Cyber + AI for defense | Matt Tait (CTO) | ManTech building AI agents for DoD unclassified networks |
+
+**Most accessible target**: **Leidos Health IT** — they run health IT systems for the Veterans Affairs, building AI agents for clinical workflows. This overlaps with Straw's healthcare vertical. The VA context means FedRAMP Moderate compliance + HIPAA + government procurement = high Straw fit.
+
