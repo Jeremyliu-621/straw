@@ -13368,3 +13368,289 @@ This is the bear case that keeps compounding over time rather than being neutral
 
 The mitigation is achievable but requires Straw to be willing to: (a) invalidate competitions when rubrics are compromised, (b) lose customers who wanted a rubber stamp, (c) protect losing agents from unfair process. Those three things are the price of credibility. Pay it.
 
+
+---
+
+## Tick 187 (2026-05-03T11:15:00Z): Seed fundraising pitch deck structure for Straw [theme: gtm]
+
+### Context: What Seed Investors Need in 2026
+
+AI startups command a median seed deal size of $4.6M — 1.3x premium over non-AI comparables. Valuations are 1.6x higher. Over 50% of Y Combinator Spring 2025 batch was building agentic AI solutions — which means the baseline expectation is high. Investors spend an average of 4 minutes 10 seconds on a deck before deciding on a meeting. Every slide must do work.
+
+Standard 2026 seed deck length for B2B AI: 12-14 slides. The structure below is optimized for Straw's specific narrative.
+
+### Straw Seed Deck — Slide-by-Slide
+
+---
+
+**Slide 1: Title / Hook**
+"Straw — The Competition Platform for Enterprise AI"
+One-line summary: "Companies post tasks. Agents compete. The score doesn't lie."
+Tagline: "We built Stripe for AI evaluation."
+Why this works: Investors pattern-match to Stripe. "Payment infrastructure" → "evaluation infrastructure." Establishes infrastructure play, not point solution.
+
+---
+
+**Slide 2: The Problem (Make It Feel Urgent)**
+Header: "Enterprise AI procurement is broken."
+Three bullet data points:
+- $240B in enterprise AI software spend by 2026 (IDC)
+- 72% of enterprise AI projects fail to deploy (Gartner)
+- Primary failure reason: no objective way to evaluate whether an agent is good enough before deployment
+One visual: timeline showing how 6-figure AI contracts are awarded (vendor demo → internal PoC → gut feeling → sign). No rubric. No competition. No auditable result.
+
+---
+
+**Slide 3: The Solution**
+Header: "Straw: Every AI agent must prove it works before you deploy it."
+Simple 4-step flow: (1) Define what winning looks like [rubric] → (2) Invite agents to compete [competition] → (3) Agents run in Straw's neutral sandbox → (4) You get an audited score log, not a demo
+Key line: "Straw replaces the vendor demo with an objective performance record."
+
+---
+
+**Slide 4: Why Now**
+Header: "Three forces converging in 2026:"
+1. Agentic AI is real: 65% of enterprises running AI agent pilots (KPMG, 2025) — all need evaluation
+2. Regulatory mandate: OMB M-26-04 (federal AI procurement), EU AI Act (August 2026), OCC Model Risk Management — all require pre-deployment validation documentation
+3. Model parity: GPT-5, Claude 4, Gemini Ultra 2 are all excellent — which makes evaluation MORE important, not less. You can't pick by capability; you pick by fit.
+
+---
+
+**Slide 5: Product**
+Three product tiers with screenshots (or wireframes if pre-launch):
+- Tier 1: "Definition of Success" workshop → structured rubric builder (AI-assisted, 60 minutes)
+- Tier 2: Competition platform → agent sandbox, score logging, rubric enforcement
+- Tier 3: Straw Certified badge → shareable audit report, appeals process
+Key line: "Straw is not a testing tool. It's an evaluation protocol."
+
+---
+
+**Slide 6: Market**
+TAM/SAM/SOM. Be specific:
+- TAM: $8B total addressable market (enterprise AI procurement decisions that require pre-deployment validation — estimated from $240B enterprise AI software market, 3-5% evaluation budget share)
+- SAM: $1.2B serviceable (Fortune 5000 companies deploying AI agents in regulated verticals — financial services, healthcare, legal, HR)
+- SOM: $15M ARR at 300 enterprise customers by Year 3 (conservative), $50M ARR if one top-5 hyperscaler becomes a distribution channel
+Note for investors: "The AI evaluation market does not exist yet as a category. Straw is creating it. We believe it will be worth $5-10B by 2030 — the infrastructure layer for AI procurement like SOC 2 became the infrastructure layer for SaaS security procurement."
+
+---
+
+**Slide 7: Business Model**
+Revenue streams with approximate ARR contribution:
+- Competition fees: $8K-$50K per competition (primary revenue)
+- Annual certification subscriptions: $15K-$80K/year per enterprise
+- "Definition of Success" workshops: $2.5K per workshop (entry point / loss leader)
+- Channel: 20% of competition fees from Big 4 partner referrals
+Unit economics: 70%+ gross margin target (infrastructure is AWS; marginal cost per competition is compute + Rubric Scientist time); LTV:CAC target 4:1 by Year 2
+
+---
+
+**Slide 8: Traction (Honest Version)**
+If pre-revenue: "Design partner conversations in progress — [list logos of companies in pipeline, even if pre-contract]"
+If first design partner signed: Feature that one logo prominently. Describe the specific use case, competition results, and customer quote.
+Key metric to show even without revenue: "We've designed 8 competition rubrics for Fortune 500 evaluation teams in the past 60 days [if true]. Zero have purchased yet — but 100% said they'd pay."
+The investor pattern: even pre-revenue, showing that enterprise buyers engage seriously with the product signals PMF direction.
+
+---
+
+**Slide 9: Competition**
+Honest competitor map with three categories:
+- DIY (AWS Bedrock Evaluations, Azure AI Evaluation SDK, Vertex AI): Fast to start, requires internal rubric expertise, no neutrality
+- Big 4 Consulting (Accenture AI Practice, Deloitte AI evaluation engagement): Credible but $500K-$2M per engagement, 3-6 months, conflicted
+- Straw: Neutral, $8K-$50K, 2-4 weeks, cryptographically auditable
+Key line: "We're not competing with hyperscalers or consultants. We're the neutral layer that enterprise buyers need when they don't trust the vendor demo OR the consultant's recommendation."
+
+---
+
+**Slide 10: Moat**
+Three moat sources:
+1. Vertical rubric library (50+ templates after Year 1; growing with each competition)
+2. Compliance infrastructure (SOC 2 Type II, HIPAA BAA, EU AI Act compliance — takes 12+ months to replicate)
+3. Trust brand ("Straw Certified" is meaningful if competition results are honest — which requires operational discipline that takes time to build)
+Key phrase for investors: "Straw's moat is the combination of switching costs, rubric IP, and a brand that is structurally impossible to fake."
+
+---
+
+**Slide 11: Team**
+[Jeremy + co-founders if applicable]
+Specific angles investors want:
+- Domain expertise in enterprise procurement or AI evaluation (who has done this before?)
+- Technical depth in sandbox infrastructure and evaluation systems
+- Customer access (who has relationships with the VP-of-AI-type personas in the design partner pipeline?)
+If solo founder: acknowledge it, explain the immediate hiring plan (first 3 hires: Rubric Scientist, Head of Sales, Platform Engineer)
+
+---
+
+**Slide 12: Ask**
+$3M-$5M seed at $15M-$20M pre-money cap
+Use of funds:
+- 40%: 3 engineering hires (sandbox infrastructure, scoring system)
+- 25%: 2 Rubric Scientists (legal vertical + financial vertical)
+- 20%: 1 Head of Sales (enterprise focused; first 10 design partners)
+- 15%: Operations (Vanta SOC 2 track, legal counsel for EU AI Act compliance memo)
+Milestone at end of seed: "5 paying enterprise design partners, $200K ARR, SOC 2 Type II in progress, first Straw Certified badge issued"
+
+---
+
+### Target Investors (from Tick 174)
+
+| Investor | Why They're Right | Entry Signal |
+|---|---|---|
+| Bessemer Venture Partners | Wrote the book on enterprise SaaS go-to-market | David Cowan's "Good and Good for You" thesis on compliance-driven SaaS |
+| a16z (Andreessen Horowitz) | Deep AI portfolio, enterprise GTM support | Specific partner: Martin Casado (enterprise software focus) |
+| Lerer Hippeau | NYC-based, seed-stage, enterprise tools | Fast decision-making; appropriate for seed round |
+| Elad Gil | Solo GP, legendary AI deals, moves fast at seed | Direct outreach on Twitter/X most effective |
+| Founders Fund | Contrarian thesis: evaluation infrastructure as deeptech | Peter Thiel's Zero to One framing fits Straw's "category creation" narrative |
+
+### Pitch Meeting Prep: The Three Questions You'll Get
+
+1. "Why can't Microsoft/Google/Amazon just build this?" — Answer: They could, but they can't be neutral (they're vendors). Straw's value is structural independence. Hyperscalers WANT Straw to exist because it proves their agents win in fair tests.
+
+2. "What if enterprises just use open-source evaluation tools?" — Answer: Open-source tools give you the instrument; they don't give you the rubric, the expertise, or the credibility. HELM and BIG-bench are academic. Straw is enterprise-grade with an audit trail.
+
+3. "Who's your first customer?" — Answer: [Name the most concrete design partner conversation you have.] If you don't have one: "We're targeting [specific named executive] at [company] for a pilot competition in [use case] starting [date]."
+
+
+---
+
+## Tick 188 (2026-05-03T11:18:00Z): Insurance industry design partners — named contacts [theme: partners]
+
+### Why Insurance Is a High-Priority Vertical
+
+Insurance is the stealth winner of the AI agent deployment wave:
+- 22% of insurers plan to have agentic AI in production by end-2026
+- The agentic AI insurance market grows from $5.76B (2025) to $7.26B (2026)
+- 77% of insurance executives say they need to adopt AI quickly to keep up with rivals
+- Claims processing, underwriting, and fraud detection are all AI-friendly use cases with clearly defined rubrics
+
+The problem: insurance AI evaluation has *almost no discipline*. Carriers are deploying agents for claims adjudication (affecting real policyholders) based on vendor demos and internal PoCs. State insurance regulators are beginning to scrutinize this. The NAIC (National Association of Insurance Commissioners) published AI guidance in 2024 that insurers are still figuring out how to operationalize.
+
+Straw's value: "Your claims adjudication agent affected 50,000 policyholders last year. Here's the Straw competition result that proves it was the most accurate option available when you deployed it."
+
+### Named Contacts
+
+---
+
+**1. Lemonade**
+- CEO: Daniel Schreiber (LinkedIn: linkedin.com/in/danielaschreiber)
+- Lemonade position: The most aggressively AI-native insurance carrier in the US. They have consistently argued that "AI native from day one" is structurally different from "legacy carrier + AI layer." They're right — and they need to prove it.
+- Why they care: Lemonade's entire market positioning is that their AI produces better outcomes (faster claims, fairer decisions) than legacy carriers. Straw can independently verify that claim. This converts Lemonade's internal belief into audited third-party evidence — which is marketing gold.
+- Entry use case: Claims adjudication agent evaluation — accuracy of coverage determination, speed, fairness across demographic groups (NAIC bias guidance compliance)
+- Opener: "Daniel — Lemonade's thesis is that AI-native beats legacy AI layering. Straw can prove that in an audited competition result that your investors, regulators, and customers can reference. Interested in being the first insurer to publish Straw-certified claims performance data?"
+- Target: $15K pilot competition → $40K/year
+
+---
+
+**2. Roots.ai / Gradient AI**
+- Gradient AI: Enterprise AI for insurance — focused specifically on underwriting and claims predictive analytics
+- Contact: Gradient AI CEO Andrew Breen (LinkedIn search: Andrew Breen Gradient AI)
+- Why they care: Gradient AI sells to carriers. Their product is AI models for underwriting. Their customers (carriers) need proof that Gradient AI's models are best-in-class before deploying them. Straw is the proof mechanism. Gradient AI can even use "Straw Certified" as a sales tool.
+- Opener: "Andrew — your customers at insurance carriers need to justify their Gradient AI deployment to boards and regulators. Straw runs the competition that gives them that justification. Would Gradient AI consider co-designing an underwriting AI evaluation standard with Straw as the independent verification layer?"
+
+---
+
+**3. Hippo Insurance**
+- CEO: Rick McCathron (LinkedIn: linkedin.com/in/rick-mccathron)
+- Hippo: AI-first home insurance carrier; deployed AI underwriting agents across California, Texas markets
+- Why they care: Hippo is under intense regulatory scrutiny from California DOI (Department of Insurance) after the LA wildfire losses. AI underwriting decisions in high-risk states are now a regulatory liability. Straw's auditable evaluation record is defense documentation.
+- Opener: "Rick — California DOI is scrutinizing AI underwriting decisions after the wildfire season. The best defense isn't arguing that your AI is fair — it's showing an audited competition record that you evaluated your agent against alternatives and chose the most accurate option. That's what Straw provides."
+
+---
+
+**4. Swiss Re / Munich Re (Global Reinsurers)**
+- Swiss Re Group CTO: Michael Loretan (verify current — LinkedIn: swiss-re.com leadership)
+- Munich Re AI: Norbert Dietrich (Head of Automation & Digitalization — verify via LinkedIn)
+- Why global reinsurers are special: They are the underwriters behind every primary insurer's AI risk. If a primary insurer's AI underwriting agent causes adverse selection or discriminatory outcomes, the reinsurer bears the loss. Swiss Re and Munich Re therefore have a direct financial interest in primary insurers deploying well-evaluated AI.
+- Straw pitch to reinsurers: "You're on the hook for every primary carrier's AI decision quality. Require your cedants to run Straw competitions on any AI underwriting agent before deployment. Straw certification becomes a reinsurance treaty condition."
+- This is a strategic channel play: Swiss Re or Munich Re requiring Straw certification in their treaty language would instantly create demand from hundreds of primary carriers.
+- Opener to Swiss Re: "Your cedants are deploying AI underwriting agents that affect your book. Swiss Re is on the hook if those agents cause adverse selection or regulatory sanctions. Straw runs the pre-deployment competitions that give you documented evidence of model quality. Would a conversation about making Straw certification a treaty condition make sense?"
+
+---
+
+**5. Travelers Companies**
+- Chief Data and Analytics Officer: Aviad Pinkoviezky (verify via LinkedIn — Travelers DAA team)
+- Travelers position: One of the largest US commercial insurers. 2025 investment in AI for commercial lines underwriting is substantial.
+- Entry use case: Commercial lines underwriting agent evaluation — policy pricing accuracy, risk classification consistency, regulatory compliance
+- Why Travelers: Commercial lines = higher policy values = higher stakes for AI accuracy. Every misclassified commercial risk is a larger financial exposure than personal lines.
+
+---
+
+**6. The Hartford**
+- CTO: Deepa Soni (confirmed LinkedIn presence)
+- Hartford position: Large commercial insurer with public commitments to AI governance
+- Entry use case: Workers' compensation claims AI agent evaluation — medical necessity determination, return-to-work recommendation accuracy
+- Workers' comp is especially interesting: clear rubric (medical evidence, state WC fee schedules, disability duration guidelines), high stakes per claim, regulators watching AI use in WC determinations specifically
+
+---
+
+### Insurance Vertical GTM Note
+
+Insurance differs from financial services in one key way: **the distribution is through regional relationships**. Unlike JPMorgan (centralized procurement), insurance carriers have regional COOs and technology officers who make decisions independently of headquarters. 
+
+This means: after landing one national carrier reference customer (e.g., Lemonade), Straw needs a regional carrier expansion playbook. Target state insurance associations (NAIC member meetings) for speaking slots. Two speaking slots at insurance industry conferences in 2026 (IICF, InsureTech Connect) generate more pipeline than 50 cold emails.
+
+The NAIC AI guidance published 2024 is the regulatory hook — every session at insurance conferences in 2026 starts with "how do we comply with NAIC AI guidance?" Straw's answer: "Run a competition before you deploy."
+
+
+---
+
+## Tick 189 (2026-05-03T11:22:00Z): "Who certifies the certifier" — trust in Straw's own evaluation methodology [theme: bear]
+
+### The Meta-Evaluation Problem
+
+Straw's pitch is: "The score doesn't lie." But what validates Straw's scoring methodology? If Straw's rubric engine or judge system is biased, imprecise, or gameable, then every "Straw Certified" badge is meaningless noise. Worse — it's credentialed noise, which is more dangerous than no evaluation at all.
+
+This is the "who evaluates the evaluator" problem. It's not hypothetical — it's an active area of research with real implications for Straw.
+
+From arxiv.org (2025): "Attestable Audits: Verifiable AI Safety Benchmarks Using Trusted Execution Environments" — researchers are building cryptographic systems to make benchmark results verifiable and tamper-proof. The problem they're solving is exactly the one Straw faces: how do you prove your evaluation results are honest?
+
+### The Four Layers of Straw's Trustworthiness Problem
+
+**Layer 1: Rubric validity**  
+Is the rubric measuring what it claims to measure? A rubric that says "evaluate code quality" but only measures test coverage misses security, maintainability, and performance. Rubric validity requires: domain expert review, pilot testing against known-good examples, and ongoing refinement as rubric criteria drift from what the market cares about.
+
+**Layer 2: Judge reliability (LLM-as-judge bias)**  
+Straw's Tier 2 scoring uses LLM-as-judge. The academic literature on LLM-as-judge is definitive: LLMs exhibit positional bias (preferring earlier responses), verbosity bias (preferring longer responses), self-preference bias (preferring outputs from their own model family), and authority bias (preferring outputs that cite well-known sources). Without explicit countermeasures, Straw's LLM judge is systematically biased in unknown directions.
+
+**Layer 3: Sandbox equivalence**  
+Is the evaluation environment truly identical for all competing agents? Latency variations, prompt ordering effects, context window differences, and system prompt exposure all affect agent performance. If Agent A got 2ms lower latency than Agent B due to a routing difference, that's not the agent's fault — but it affects the score.
+
+**Layer 4: Gaming detection**  
+Can an agent detect that it's in a Straw competition and perform differently than it would in production? Model developers with knowledge of Straw's test tasks might fine-tune their models on competition-style tasks without improving real-world performance. This is the SWE-bench gaming problem Straw already identified (Tick 168).
+
+### The Emerging Industry Response
+
+**VET AI Act (proposed US legislation)**: Seeks to direct NIST and DoE to create voluntary specifications for AI auditors, with accreditation standards. If passed, this would create a formal "AI evaluator accreditation" regime — and being accredited by NIST would make "Straw Certified" a regulatory-quality credential.
+
+**Trusted Execution Environments (TEEs) for benchmark verification**: Cryptographic techniques that allow Straw to prove the benchmark was run as described without revealing proprietary rubric details. Analogous to how ZK-proofs work in cryptography. This is research-stage now but could be production-ready by 2027.
+
+**Third-party auditing of AI evaluators**: Some researchers propose a hierarchy: model developers are audited by evaluation platforms (like Straw), which in turn are audited by independent third parties against methodology standards.
+
+### Straw's Response Strategy
+
+**1. Publish the evaluation methodology**  
+Straw should publish a detailed technical document: "Straw Evaluation Methodology v1.0" — covering rubric design standards, LLM-judge bias mitigation techniques (randomized ordering, multi-judge consensus, self-consistency checks), sandbox equivalence guarantees, and gaming detection measures. This becomes the standard Straw is held to.
+
+**2. Calibration validation with ground truth**  
+For each competition category, Straw should maintain a "calibration dataset" — tasks with known, expert-validated correct answers. Periodically run calibration checks to verify that Straw's scoring system still agrees with expert consensus. Publish calibration accuracy scores. This is analogous to how laboratory testing equipment is calibrated against certified reference standards.
+
+**3. External methodology audit**  
+Commission an annual external audit of Straw's evaluation methodology from a credible third party. Candidates: NIST AISI (AI Safety Institute), Partnership on AI, academic group (MIT Alignment Research Center, HELM team at Stanford). Publish the audit results.
+
+**4. Multi-judge consensus for high-stakes competitions**  
+For competitions above $20K (high-stakes enterprise decisions), require consensus from 3 independent LLM judges rather than 1. Score is the median. Disagreement above a threshold triggers human Rubric Scientist review. This reduces systematic bias from any single judge.
+
+**5. Open challenge process**  
+Agent vendors that disagree with a competition result can file a formal methodology challenge. Straw's Rubric Scientist team reviews and publishes the response. If the challenge is sustained, the competition is invalidated and rerun. Track record of challenge outcomes is public.
+
+### Why This Bear Case Actually Strengthens the Business
+
+The uncomfortable truth: no evaluation methodology is perfect. Straw's scoring will sometimes be wrong. An agent will occasionally win unfairly or lose unfairly due to rubric design flaws, judge bias, or sandbox inconsistencies.
+
+But the key comparison is not "Straw vs. perfection." It's "Straw vs. the vendor demo." The vendor demo has zero methodology transparency, zero audit trail, and 100% vendor control over what the enterprise sees. Straw's evaluation, even with its limitations, is orders of magnitude more rigorous.
+
+The brand strategy: don't claim Straw is perfect. Claim Straw is transparent about its methodology and continuously improving it. "Straw isn't perfect — it's the most rigorous and auditable AI evaluation system available, and we publish every limitation we know about." This is the J.D. Power and Associates model: their consumer satisfaction ratings have methodological criticisms, but they publish the methodology and enterprises use them because "Straw Certified" is better than no certification.
+
+### Bear Case Score: 5/10 (moderate, manageable)
+
+This is a solvable engineering and methodology problem. The risk is not that Straw's evaluation is inherently untrustworthy — it's that Straw doesn't invest in the methodology work and the "Straw Certified" badge becomes a punchline among ML researchers. Prevention: publish methodology, run calibration checks, commission external audit, and engage academic evaluation research community (HELM, BIG-bench authors) as advisors.
+
