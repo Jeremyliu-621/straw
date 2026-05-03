@@ -29096,3 +29096,74 @@ The 2026 AI vendor evaluation industry produces:
 Sources: workday.com/en-us/artificial-intelligence/ai-agents, mediacenter.adp.com/2026-03-02-ADP-AI-Agents, aisera.com/blog/ai-recruiting, aininza.com/ai-vendor-evaluation-framework-2026, pertamapartners.com/insights/ai-vendor-selection, dunnixer.com/insights/six-dimensions-ai-vendor-evaluation
 
 TICK_END
+
+---
+
+## Tick 447 — Supply Chain/Logistics Design Partners #129-131: Maersk, DHL, FedEx
+
+**Research date:** 2026-05-03
+
+### Supply chain AI landscape 2026
+
+**ROI data (when agents work):**
+- 10-15% reduction in fuel costs
+- 15-20% faster average delivery times
+- 30% fewer late shipments
+- DHL's AI route optimization alone: 12% transportation spend reduction
+
+**Agent types:** Route optimization, carrier procurement, customs documentation, shipment risk monitoring, supplier evaluation, contract terms analysis, disruption alerts.
+
+**Maersk (April 2026):** "Agentic AI is a defining trend for 2026. Agents now handle quoting, booking, compliance checks, and disruption alerts." — Maersk has DEPLOYED agents across core shipping workflows.
+
+---
+
+### Design Partner #129 — Maersk (Supply Chain Agent Leader)
+
+**Who:** World's largest container shipping company. CIO Michelle Ashford. Maersk explicitly identified agentic AI as a "defining 2026 trend" with live deployments.
+
+**What they're doing:** Autonomous quoting, booking, compliance, disruption alerting. Evaluating multiple vendors for different workflow modules.
+
+**Pain point:** Maersk selects AI vendors for each module (quoting agent, compliance agent, disruption agent) from different providers. Each selection is a multi-million dollar commitment. Their rubric is objective: "quote accuracy vs. market rate, customs compliance error rate, disruption alert lead time."
+
+**Cold email frame:** "Maersk called agentic AI your defining 2026 trend. You've deployed agents across quoting, booking, and compliance. The next question is: for each new workflow, which vendor's agent wins? Straw runs that competition — your SLA criteria, your shipment data, objective score before contract."
+
+**Contact:** Michelle Ashford (CIO), or Head of Digital Products / VP Technology.
+
+---
+
+### Design Partner #130 — DHL Supply Chain (Automation + AI Agents)
+
+**What they're doing:** 8,000+ collaborative robots, SVT Robotics SOFTBOT platform live at 30 sites (expanding to 100+). DHL's AI route optimization delivers 12% transportation spend reduction.
+
+**Pain point:** DHL is choosing AI vendors for robotics integration, route optimization, last-mile delivery agents across 100+ sites. The scale means a bad vendor selection is magnified across the entire network. Straw evaluates vendors on DHL's actual distribution center data before selecting.
+
+**Contact:** DHL Group Chief Technology Officer (Markus Reckling, previously; check current CTO). DHL Tech Innovation Center in Prague is the contact point.
+
+---
+
+### Design Partner #131 — FedEx (DataWorks + AI Procurement)
+
+**What they're doing:** FedEx Atlas platform consolidates data across FedEx systems (end-of-2027 target). FedEx DataWorks division drives AI strategy. Goal: AI agents across 50%+ of operational workflows by 2028.
+
+**Pain point:** With a 2028 target for 50%+ automation, FedEx is in active multi-year agent procurement. They're choosing vendors now for a 5-year deployment horizon. The cost of a wrong vendor selection compounds over years.
+
+**Straw fit:** FedEx needs rigorous pre-procurement evaluation for each agent category. The long deployment horizon makes the upfront evaluation cost trivially small relative to the multi-year contract value.
+
+**Contact:** Rob Carter (EVP/CIO, FedEx) — 20+ years as FedEx CIO, known for technology leadership. FedEx DataWorks leadership.
+
+---
+
+### Supply chain vertical ICP summary
+
+| Target | Champion | Agent Workflow | Straw Rubric |
+|---|---|---|---|
+| Maersk | CIO Michelle Ashford | Quoting, booking, compliance, disruption | Quote accuracy vs. market, compliance error rate |
+| DHL | CTO | Route optimization, warehouse automation | Transportation cost reduction %, error rate |
+| FedEx | CIO Rob Carter | 50%+ operational automation by 2028 | Multi-category evaluation across 5-year horizon |
+| UPS | Chief Digital Officer | 127 facilities automated — expanding | Facility automation efficiency, handling speed |
+
+**Vertical timing:** Gartner Supply Chain Symposium (May 19-22, 2026 — in 2 weeks). Transport Intelligence (Ti) — primary logistics AI conference calendar.
+
+Sources: agentcorps.co/ai-agents-logistics-fedex-ups-2026, logiai.blog/agentic-ai-logistics-2026, supplychaindive.com/ups-ai, pymnts.com/warehouses-to-last-mile-ai-logistics-2026, klover.ai/ups-ai-strategy
+
+TICK_END
