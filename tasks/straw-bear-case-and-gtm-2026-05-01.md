@@ -21026,3 +21026,115 @@ Enterprises deploying multi-agent systems that Straw can evaluate:
 
 These are all enterprise deployments that are live or in production in 2026. Each represents a $150K-$300K Straw multi-agent evaluation opportunity.
 
+
+---
+
+## Tick 290 (2026-05-03T00:20:00Z): AI Red Teaming as Straw Security Evaluation Layer [theme: gtm]
+
+**Research basis**: OWASP GenAI Security Landscape Q2 2026 published. NIST AI Agent Standards Initiative launched Feb 2026 (three pillars: agent security, interoperability, identity). EU AI Act requires documented adversarial testing for high-risk AI. NIST red team: novel attack techniques achieved 81% task-hijacking rate vs. 11% for known attacks. Microsoft published open-source AI agent eval scenario library on GitHub.
+
+### Red Teaming Is the Missing Evaluation Dimension
+
+Straw's core evaluation (does this agent perform the task correctly?) is necessary but not sufficient for enterprise deployment. The August 2026 EU AI Act enforcement, combined with NIST's formal AI Agent Standards Initiative, is creating a mandatory requirement for **adversarial security testing** before deploying high-risk AI agents.
+
+**The gap Straw can fill**: Most enterprise teams don't have AI red teaming expertise. Security teams know traditional red teaming. AI teams know agent evaluation. Neither team knows AI agent red teaming. This is Straw's opportunity.
+
+### The NIST + EU AI Act Mandate
+
+NIST's AI Agent Standards Initiative (February 17, 2026) has three pillars:
+1. **Agent security** — adversarial robustness testing
+2. **Interoperability** — cross-protocol evaluation (MCP/A2A)
+3. **Agent identity** — verifiable agent credentials
+
+Straw can align to all three pillars and position as "NIST AI Agent Standards compliant" evaluation.
+
+For EU AI Act Annex III high-risk systems: documented adversarial testing is now a requirement, not a recommendation. Enterprises without documented red team results for their AI agents face €35M penalties.
+
+**The positioning**: "Straw's 'Certified (Security)' tier includes adversarial red teaming aligned to NIST AI Agent Standards and EU AI Act documentation requirements."
+
+### The Microsoft Open-Source AI Eval Signal
+
+Microsoft published an open-source AI agent evaluation scenario library on GitHub including "red-teaming-and-adversarial-evaluation" capability scenarios. This is Microsoft standardizing evaluation methodology — and it's open source.
+
+**Two interpretations**:
+1. **Threat**: Microsoft is commoditizing basic evaluation methodology. DIY enterprise teams can now run their own red team evaluations for free.
+2. **Opportunity**: Microsoft's open-source library establishes evaluation as a standard practice. Enterprises that use the free Microsoft scenarios discover the complexity and want a professional evaluation service. Straw is the professional upgrade.
+
+The healthcare analogy: WebMD didn't kill hospitals. Free online health information increased doctor visits by making patients more aware of their conditions. Microsoft's open-source evaluation library may similarly increase demand for professional evaluation services.
+
+### Straw Red Team Evaluation Methodology
+
+Straw adds a formal red team layer to evaluations:
+
+**Phase 1: Known Attack Vectors** (automated)
+- Prompt injection attacks (73% prevalence in production deployments)
+- Jailbreak attempts (common LLM attacks, adapted for agents)
+- Tool call hijacking (redirect agent's API calls to attacker-controlled endpoints)
+- Memory poisoning (inject false context into agent's memory store)
+
+**Phase 2: Novel Attack Simulation** (human-in-the-loop)
+- Domain-specific adversarial inputs (financial fraud patterns, clinical edge cases)
+- Multi-turn attack sequences (build false context over 10+ turns before triggering)
+- Environmental tampering (modify sandbox state to test agent's context awareness)
+
+**Phase 3: Cascading Failure Testing** (for multi-agent)
+- Single agent failure propagation
+- False consensus generation
+- Runaway API call detection
+
+**Deliverable**: AI Agent Red Team Report — maps findings to NIST AI RMF and EU AI Act Annex III documentation requirements. Legal counsel-ready artifact.
+
+### Pricing the Security Tier
+
+| Tier | Contents | Price |
+|------|----------|-------|
+| Standard | Performance evaluation only | $50K-$100K |
+| Security | Performance + automated red team | $100K-$150K |
+| Enterprise | Performance + red team + NIST/EU documentation | $150K-$250K |
+| Enterprise (Financial/Health) | Full stack + regulatory-specific documentation | $250K-$500K |
+
+The Enterprise (Financial/Health) tier is where the big revenue is. JPMorgan deploying a trading AI agent needs FINRA documentation + OCC model validation + EU AI Act compliance + adversarial security testing. Straw provides all four. That's a $500K evaluation, annual.
+
+---
+
+## Tick 291 (2026-05-03T00:21:00Z): Retail and E-Commerce AI Partners — Named Contacts [theme: partners]
+
+**Research basis**: Agentic commerce redirecting $3-5T in retail spend by 2030. 45% of consumers using AI for part of buying journey. Kroger + Ocado AI-powered fulfillment. 75% of organizations plan multi-agent deployment in 18 months. Grocery AI agents: predictive replenishment, zero-click reorder. Retail readiness: structured metadata + Schema.org markup as AI-readiness signal.
+
+### Retail Is a High-Volume, High-Speed Vertical for Straw
+
+Retail AI use cases are proliferating faster than most verticals:
+- Customer service agents (triage, returns, personalized recommendations)
+- Supply chain agents (demand forecasting, replenishment, logistics optimization)
+- Marketing agents (personalization, campaign generation, A/B testing)
+- Merchandising agents (pricing optimization, inventory placement)
+
+Each use case = a separate Straw evaluation. A large retailer deploying 5-8 AI agent workflows is a $300K-$600K annual Straw customer.
+
+### Named Retail Design Partner Targets
+
+| Company | AI Agent Focus | Key Contact | Straw Entry Point |
+|---------|----------------|-------------|-------------------|
+| **Walmart** | Supply chain AI + CX agents | Suresh Kumar (CTO), Cheryl Ainoa (SVP New Ventures & Technology) | Walmart is deploying AI across 5,000+ stores; needs evaluation methodology for which agents to scale |
+| **Target** | Personalization + inventory AI | Brett Craig (CTO) | Target Style AI recommendations; which personalization agent drives highest conversion? |
+| **Kroger** | Ocado robotic fulfillment + AI pricing | Yael Cosset (CIO) | Grocery replenishment AI; evaluate which demand forecasting agent reduces waste most |
+| **Amazon** | AWS (internal) + Alexa+ shopping agents | (Contact via AWS Partner Network) | Amazon is too large to partner with directly; but AWS Marketplace listing gets Straw in front of Amazon enterprise clients |
+| **Shopify** | Merchant AI agents | Harley Finkelstein (President) | Shopify builds AI agents for 2M+ merchants; needs evaluation methodology to differentiate best-performing agents |
+| **Instacart** | Grocery delivery AI + Caper Cart AI | Nick Giovanni (Chief Technology Officer) | Instacart's AI for coupons, cart predictions, store navigation — which agent builds highest basket value? |
+| **Home Depot** | B2B contractor AI + supply chain | Matthew Carey (EVP Technology) | Home Depot's Pro customer AI agents for contractor procurement |
+| **Best Buy** | CX + repair + personalization AI | Brian Tilzer (Chief Analytics & Digital Officer) | Best Buy's AI for Geek Squad routing and repair recommendations |
+
+**Highest-priority target**: **Kroger** — Yael Cosset (CIO) is a prominent AI voice in grocery retail. Kroger is the most sophisticated grocery AI deployer and is actively expanding AI across pricing, demand forecasting, and CX. They face the exact Straw evaluation need: multiple AI vendors competing for the same use case, rubric-based selection required.
+
+### The Retail Cold Opener (Kroger)
+
+> "Hi Yael — Kroger is deploying AI across demand forecasting, pricing, and customer experience faster than almost any retailer in the world. When you're choosing between three AI agents for dynamic pricing optimization, how do you know which one will actually reduce margin leakage on your perishables vs. which one just demos well? Straw runs competitive evaluations that answer that question — agents compete on your exact workflow with your exact rubric. The score doesn't lie. Worth 20 minutes?"
+
+### The Shopify Multiplier
+
+Shopify is not a direct enterprise buyer — but they're a distribution multiplier. Shopify builds AI tools for 2 million merchants. If Shopify's AI agent marketplace included "Straw Evaluated" ratings on merchant AI tools, Straw's evaluation methodology would reach 2M+ SMBs.
+
+This is the B2B2B motion: Straw evaluates agents for Shopify → Shopify surfaces evaluation scores to merchants → merchants make better agent selection decisions → Straw brand visible across the entire Shopify ecosystem.
+
+**Revenue model with Shopify**: Straw charges Shopify a volume evaluation fee (not per-merchant) for evaluating agents across Shopify's marketplace. Shopify uses Straw scores as a quality signal in their marketplace.
+
