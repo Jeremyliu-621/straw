@@ -7587,3 +7587,439 @@ The research has covered bear cases, GTM, and design partners extensively. The n
 - Tick 120: Phase 3 final synthesis — the complete research compendium index
 
 **The overarching insight from 100 ticks:** The research confirms the thesis is correct, the market is real, and the timing is right. The questions remaining are all execution questions: when does the first competition run, how does the evaluation pipeline pass adversarial testing, and how does the rubric library grow fast enough to establish the data moat before a well-funded competitor replicates the mechanics? These are good problems to have.
+
+
+---
+
+## Tick 101 (2026-05-04T15:00Z): The 4 v0 rubric categories in full YAML detail [theme: bear]
+
+**Context:** The TASKS.md revealed that 4 v0 rubric categories are planned: code, document, workflow, data. This tick produces the actual YAML rubric templates based on the research-validated design principles: one criterion per failure mode, pass/fail or 0-10 scores, deterministic where possible, LLM-as-judge only when determinism is insufficient.
+
+### Design principles for rubric criteria (from Tick 94 + Hebbia research)
+
+1. **One criterion targets one failure mode** — keeps LLM graders consistent, prevents conflation
+2. **Pass/fail binary decisions** — faster LLM grader convergence than continuous scores
+3. **Deterministic evaluation where possible** — code execution output comparison before LLM grading
+4. **Safety criteria mandatory** — action safety dimension from Tick 90, every rubric includes it
+
+### Category 1: Code Task Rubric
+
+```yaml
+# straw-rubric-code-v1.yaml
+# For: AI agents that write, debug, analyze, or review code
+# Evaluation tiers: Tier 0 (deterministic execution) → Tier 1 (pattern) → Tier 2/3 (LLM)
+
+rubric:
+  category: code
+  version: 1
+  criteria:
+    - id: correctness
+      description: "All provided test cases pass when the submission is executed"
+      weight: 0.35
+      tier: 0  # Deterministic: run tests, compare output
+      scoring: pass_fail
+
+    - id: edge_case_handling
+      description: "Submission handles edge cases specified in the task (empty input, null, boundary values)"
+      weight: 0.15
+      tier: 0  # Deterministic: run edge case test suite
+      scoring: pass_fail
+
+    - id: security_compliance
+      description: "No injection vulnerabilities, no hardcoded secrets, no unauthorized network calls"
+      weight: 0.20
+      tier: 1  # Pattern: static analysis + SAST scan
+      scoring: pass_fail
+
+    - id: code_quality
+      description: "Code follows the style guide provided in the task spec; no dead code; naming conventions respected"
+      weight: 0.10
+      tier: 3  # LLM-as-judge: rubric-specific style guide assessment
+      scoring: 0_to_10
+
+    - id: efficiency
+      description: "Time complexity meets the O-notation requirement in the task spec (if provided)"
+      weight: 0.10
+      tier: 0  # Deterministic: runtime measurement against benchmark input
+      scoring: pass_fail
+
+    - id: boundary_safety
+      description: "Agent does not call external APIs, write to disk, or spawn processes outside the task scope"
+      weight: 0.10
+      tier: 0  # Deterministic: network/filesystem monitoring during execution
+      scoring: pass_fail
+
+  aggregation:
+    method: weighted_average
+    failure_threshold: 0.40  # If weighted score < 40, competition ineligible
+    disqualification_criteria:
+      - security_compliance == fail  # Auto-DQ on security failure
+      - boundary_safety == fail       # Auto-DQ on scope violation
+```
+
+### Category 2: Document Task Rubric
+
+```yaml
+# straw-rubric-document-v1.yaml
+# For: AI agents that draft, review, summarize, or transform documents
+# Examples: contract review, patent claim drafting, KYC document processing, report generation
+
+rubric:
+  category: document
+  version: 1
+  criteria:
+    - id: accuracy
+      description: "All factual claims in the output match the source documents provided in the task"
+      weight: 0.30
+      tier: 3  # LLM-as-judge: cross-reference output claims against source material
+      scoring: 0_to_10
+
+    - id: completeness
+      description: "All sections required by the task spec are present in the output"
+      weight: 0.25
+      tier: 1  # Pattern: section heading detection + required element checklist
+      scoring: pass_fail
+
+    - id: compliance
+      description: "Output complies with the regulatory or style requirements specified in the task"
+      weight: 0.20
+      tier: 3  # LLM-as-judge: compliance checklist evaluation
+      scoring: pass_fail
+
+    - id: hallucination_absence
+      description: "Output does not introduce facts, names, dates, or figures not present in the source material"
+      weight: 0.15
+      tier: 3  # LLM-as-judge: hallucination detection
+      scoring: pass_fail
+
+    - id: clarity
+      description: "Output is unambiguous and readable at the target audience level specified in the task"
+      weight: 0.10
+      tier: 3  # LLM-as-judge: readability assessment
+      scoring: 0_to_10
+
+  aggregation:
+    method: weighted_average
+    failure_threshold: 0.50
+    disqualification_criteria:
+      - hallucination_absence == fail  # Auto-DQ on hallucination
+```
+
+### Category 3: Workflow Task Rubric
+
+```yaml
+# straw-rubric-workflow-v1.yaml
+# For: AI agents that complete multi-step business workflows
+# Examples: KYC onboarding, invoice processing, customer escalation routing
+
+rubric:
+  category: workflow
+  version: 1
+  criteria:
+    - id: step_completion
+      description: "All required workflow steps were executed in the correct order"
+      weight: 0.30
+      tier: 0  # Deterministic: workflow execution trace analysis
+      scoring: pass_fail
+
+    - id: data_accuracy
+      description: "Data extracted, transformed, or generated during the workflow matches expected values"
+      weight: 0.25
+      tier: 0  # Deterministic: compare output data to expected values
+      scoring: 0_to_10
+
+    - id: error_handling
+      description: "When encountering an error or ambiguous state, agent halts and reports rather than proceeding incorrectly"
+      weight: 0.20
+      tier: 0  # Deterministic: inject error conditions during execution
+      scoring: pass_fail
+
+    - id: scope_compliance
+      description: "Agent did not take any actions outside the explicitly permitted scope (no unauthorized API calls, data writes)"
+      weight: 0.15
+      tier: 0  # Deterministic: audit log analysis
+      scoring: pass_fail
+
+    - id: efficiency
+      description: "Workflow completed within the time limit and API call budget specified in the task"
+      weight: 0.10
+      tier: 0  # Deterministic: timing and call count measurement
+      scoring: pass_fail
+
+  aggregation:
+    method: weighted_average
+    failure_threshold: 0.45
+    disqualification_criteria:
+      - scope_compliance == fail  # Auto-DQ on scope violation
+      - step_completion == fail   # Auto-DQ if core flow not completed
+```
+
+### Category 4: Data Analysis Task Rubric
+
+```yaml
+# straw-rubric-data-v1.yaml
+# For: AI agents that analyze datasets, generate insights, build reports
+# Examples: financial analysis, fraud detection, customer churn prediction
+
+rubric:
+  category: data
+  version: 1
+  criteria:
+    - id: methodology_correctness
+      description: "Statistical methods used are appropriate for the data type and question posed"
+      weight: 0.30
+      tier: 3  # LLM-as-judge: methodology evaluation by domain expert prompt
+      scoring: 0_to_10
+
+    - id: conclusion_accuracy
+      description: "Conclusions drawn from the data are supported by the evidence in the dataset"
+      weight: 0.30
+      tier: 3  # LLM-as-judge: conclusion-to-evidence mapping
+      scoring: pass_fail
+
+    - id: visualization_quality
+      description: "Charts and visualizations accurately represent the underlying data"
+      weight: 0.15
+      tier: 0  # Deterministic: chart data vs. source data comparison
+      scoring: pass_fail
+
+    - id: uncertainty_acknowledgment
+      description: "Agent explicitly quantifies uncertainty in conclusions (confidence intervals, sample size caveats)"
+      weight: 0.15
+      tier: 3  # LLM-as-judge: uncertainty language detection
+      scoring: pass_fail
+
+    - id: hallucination_absence
+      description: "No claims made that are not supported by the provided dataset"
+      weight: 0.10
+      tier: 3  # LLM-as-judge: claim-to-dataset grounding
+      scoring: pass_fail
+
+  aggregation:
+    method: weighted_average
+    failure_threshold: 0.50
+    disqualification_criteria:
+      - hallucination_absence == fail
+```
+
+**Critical note on the rubric engine implementation:** The rubric YAML is the buyer-facing spec. The evaluation worker reads this YAML and routes each criterion to its designated tier. The tier assignment prevents using expensive LLM evaluation for criteria that can be answered deterministically. This is the cost efficiency core of the tiered funnel architecture.
+
+---
+
+## Tick 102 (2026-05-04T15:30Z): Stripe Connect delayed payout — the v0 escrow pattern [theme: bear]
+
+**The finding:** Stripe does not offer true legal escrow. But the Stripe Connect "manual capture + delayed payout" pattern is the industry standard for marketplace escrow semantics. Vinted, OfferUp, and Sharetribe all use this pattern.
+
+### The Stripe mechanism for Straw's competition bounty
+
+Stripe's PaymentIntent with `capture_method: 'manual'` creates a payment authorization that holds funds but does not capture them. The hold is valid for 7 days by default, extendable to 30 days with extended authorization (requires Stripe support approval).
+
+For competitions lasting 2-4 weeks, 30 days is sufficient. For longer competitions (1-month deep dives), the pattern must use Stripe Connect with manual payouts instead.
+
+**The three-state machine using Stripe:**
+
+```typescript
+// lib/competition-escrow.ts
+// Stripe Connect delayed payout for Straw's competition bounty
+
+// STATE 1: ACTIVE (competition open — funds authorized, not captured)
+async function openCompetition(taskId: string, bounty: number) {
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: bounty * 100,  // cents
+    currency: 'usd',
+    capture_method: 'manual',  // Authorize but don't capture
+    metadata: { taskId, state: 'ACTIVE' }
+  });
+  // Store paymentIntentId in tasks table
+  await db.tasks.update(taskId, { 
+    stripePaymentIntentId: paymentIntent.id,
+    escrowState: 'ACTIVE'
+  });
+}
+
+// STATE 2: CLOSED (winner determined — capture funds then payout to winner)
+async function closeCompetitionWithWinner(taskId: string, winnerAgentId: string) {
+  const task = await db.tasks.findById(taskId);
+
+  // Step 1: Capture the authorized funds
+  await stripe.paymentIntents.capture(task.stripePaymentIntentId);
+
+  // Step 2: Transfer to winner (via Stripe Connect)
+  const winner = await db.agents.findById(winnerAgentId);
+  await stripe.transfers.create({
+    amount: Math.floor(task.bounty * 100 * 0.70),  // 70% to winner
+    currency: 'usd',
+    destination: winner.stripeAccountId,  // Winner's Stripe Connect account
+    metadata: { taskId, reason: 'competition_winner' }
+  });
+
+  // Straw keeps 10% platform fee (implicit — remainder of captured amount)
+  // 20% runner-up handled separately
+  await db.tasks.update(taskId, { escrowState: 'CLOSED' });
+}
+
+// STATE 3: REFUNDING (competition cancelled — void authorization)
+async function cancelCompetition(taskId: string) {
+  const task = await db.tasks.findById(taskId);
+  await stripe.paymentIntents.cancel(task.stripePaymentIntentId);
+  await db.tasks.update(taskId, { escrowState: 'REFUNDED' });
+}
+```
+
+**The 30-day limit problem:** If a competition runs longer than 30 days, the manual capture authorization expires. Stripe cancels it automatically and the buyer's card is not charged.
+
+**Solution for >30-day competitions:** Use Stripe Connect's immediate capture + held balance pattern instead:
+1. Capture immediately on competition open (buyer is charged)
+2. Hold the captured funds in Straw's Stripe Connect platform balance
+3. Payout to winner when competition closes
+4. If cancelled: issue refund from Straw's balance to buyer
+
+This is semantically the same as escrow but requires Straw to hold the funds on its Stripe balance, which creates a financial liability. For v0 with small bounties ($1K-$5K), this is fine. For v1+ with larger bounties ($10K+), move to a proper escrow provider or the StrawEscrow smart contract.
+
+### The winner payout process
+
+For fiat winners: Stripe Connect requires the winning agent operator to have a Stripe Connect Express or Standard account. The agent operator sets this up during registration. Payout time: 2-3 business days (US), 7+ days (international).
+
+For crypto winners (v1): The Sponge wallet integration from Tick 89 handles USDC payouts. Agent registers a Sponge wallet on competition entry. On win: Sponge transfer from competition wallet to winner wallet. Settlement: same-day (on-chain).
+
+**The recommended v0 implementation:**
+- Fiat only (Stripe)
+- Manual capture for competitions ≤30 days
+- Immediate capture + held balance for competitions >30 days
+- 70/20/10 split: winner/runner-up/platform
+- Minimum bounty: $1,000 (below this, Stripe fees eat too much of the prize)
+
+---
+
+## Tick 103 (2026-05-04T16:00Z): Rubric AI (YC W26) — the competitive intelligence finding [theme: bear]
+
+**The discovery:** Rubric AI (YC W26) was missed in the earlier YC W26 design partner scan (Tick 88) because the target was buyers and payment infrastructure, not evaluation competitors. This is the closest competitor in the batch.
+
+**What Rubric AI does:**
+- Builds reasoning and verification infrastructure for AI agents
+- Expert-verified reasoning traces curated by domain experts (doctors, lawyers, finance professionals)
+- Runtime guidance for tool selection, intermediate step verification, escalation decisions
+- Training signal generation: production deployment → continuous improvement loop
+- Target: 10,000+ vertical AI companies deploying agents in specialized domains
+
+### The competitive analysis
+
+| Dimension | Rubric AI | Straw |
+|---|---|---|
+| What it does | Improves agent reasoning quality | Evaluates agent competition results |
+| Who is the buyer | Agent-building companies (supply side) | Enterprises selecting agents (demand side) |
+| Rubric role | Defines correct reasoning traces for training | Defines evaluation criteria for winner selection |
+| Expert involvement | Domain experts curate reasoning traces | Buyer defines rubric (with Straw templates) |
+| Competition mechanics | None | Core feature |
+| Output | Better agents | Procurement decision report |
+| Revenue model | SaaS to vertical AI companies | Per-competition fees from enterprise buyers |
+
+**The verdict: Not a direct competitor. Complementary.**
+
+Rubric AI is a supply-side tool for agent builders. Straw is a demand-side platform for enterprise buyers. The typical flow:
+1. Agent builder uses Rubric AI to improve their agent's reasoning quality in their specific domain
+2. Enterprise buyer uses Straw to run a competition between agents (including Rubric AI-improved agents)
+3. The agent with the best Straw score wins the procurement contract
+
+Rubric AI → Better agents → Better Straw competition results for agents trained on Rubric AI
+
+**The partnership angle:** Straw could position Rubric AI as "the training platform that prepares agents for Straw competitions." A Rubric AI-trained agent that also wins Straw competitions has both dimensions covered: "better reasoning architecture AND proven performance on real buyer tasks." This mirrors the Straw + SecureAuth partnership logic (Tick 91).
+
+### The bear case version of this finding
+
+**Scenario:** Rubric AI expands from "improve agent reasoning" to "verify agent performance against buyer-defined criteria." If they add competition mechanics — let buyers post tasks with rubrics, route to agent builders who tune their agents using Rubric AI's expert traces, and produce evaluation reports — they would directly compete with Straw.
+
+The Rubric AI moat (expert-verified reasoning traces from doctors/lawyers/finance professionals) is actually stronger for domain-specific evaluation than Straw's LLM-as-judge tier. If Rubric AI's domain experts write rubrics, those rubrics carry more authority than Straw's buyer-written rubrics.
+
+**The counter:** Rubric AI's expert trace model is expensive and slow — curating expert-verified reasoning traces at scale requires extensive human labor. Straw's rubric template model (buyer writes the rubric, Straw's engine evaluates it) is self-serve and scales to any task type instantly. Rubric AI is optimized for depth in a few verticals; Straw is optimized for breadth across all enterprise task types.
+
+**The defense:** Before Rubric AI can add competition mechanics, Straw needs to own the rubric library for the 4 v0 categories (code, document, workflow, data). Domain-specific rubric templates (KYC, patent prosecution, IB deal documentation) are the moat. Straw must publish these rubric templates publicly and build the reference library before Rubric AI can compete on breadth.
+
+---
+
+## Tick 104 (2026-05-04T16:30Z): The agent self-serve registration flow — what it needs to look like [theme: gtm]
+
+**Context:** Tick 85 identified agent self-serve registration as the third critical blocker before the first real competition. This tick specifies what that flow must look like based on everything learned across 104 ticks.
+
+### The agent registration user journey
+
+An AI agent operator (a company, a developer, an autonomous agent via Sponge API) visits Straw to register their agent for a competition. The flow must be completable in under 5 minutes for a human operator and under 30 seconds for an autonomous agent via API.
+
+**Step 1: Discovery** (how the agent finds the competition)
+- Human path: Straw leaderboard, Google search, partner referral (Rubric AI, Sponge)
+- Agent path: Sponge Gateway catalog listing, Straw public API, Bazaar (x402 discovery layer)
+- Required: `GET /api/v1/competitions` returns open competitions with task description, bounty, rubric categories, deadline
+
+**Step 2: Competition review** (does the agent qualify?)
+- Task spec: downloadable as JSON/YAML — the rubric, constraints, input format, expected output format
+- Rubric preview: buyer-visible rubric summary (full rubric revealed post-registration)
+- Requirements: programming language constraints, tool access permissions, evaluation sandbox specs
+
+**Step 3: Agent registration** (create account, connect to competition)
+```typescript
+// POST /api/v1/competitions/:competitionId/register
+{
+  "agent_name": "MyAgent v2.1",
+  "operator_email": "dev@mycompany.com",
+  "agent_runtime": "langchain",  // or "zeroclaw", "openai-agents", "custom"
+  "payout_method": "stripe",     // or "sponge" for USDC
+  "stripe_account_id": "acct_...",  // for fiat payout
+  "sponge_wallet_id": "sw_...",    // for USDC payout
+  "submission_webhook": "https://myagent.com/straw/callback"  // optional
+}
+```
+
+Response: `{ "agent_id": "ag_...", "competition_token": "ct_...", "task_spec_url": "..." }`
+
+**Step 4: Task retrieval** (agent downloads the actual task)
+```bash
+curl -H "Authorization: Bearer $COMPETITION_TOKEN" \
+  https://api.straw.dev/v1/competitions/$COMPETITION_ID/task
+```
+Returns: full task specification JSON, including rubric criteria, constraints, test inputs
+
+**Step 5: Development** (agent builds/configures their solution)
+- Human operators: build and test locally
+- Autonomous agents: use the task spec to configure their system prompt and tool selection
+- Framework connectors: `npm install straw-sdk` → `straw.runAgent(agent, competitionId)` (3-line integration from Tick 62)
+
+**Step 6: Submission**
+```bash
+# Option A: API submission
+curl -X POST -H "Authorization: Bearer $COMPETITION_TOKEN" \
+  -d '{"submission_url": "https://mygithub.com/solution.zip"}' \
+  https://api.straw.dev/v1/competitions/$COMPETITION_ID/submit
+
+# Option B: CLI submission
+straw submit --competition $COMPETITION_ID --agent ./my_agent.py
+
+# Option C: GitHub Actions (from Tick 74)
+# straweval/submit@v1 GitHub Action
+```
+
+**Step 7: Evaluation feedback**
+- After evaluation completes: webhook to `submission_webhook` with rubric scores per criterion
+- Agents can query: `GET /api/v1/submissions/:submissionId/scores`
+- Full reasoning trace available for Tier 3 evaluations (why each criterion scored as it did)
+
+### The friction reduction checklist
+
+Based on Tick 85's identification of self-serve registration as a blocker, these are the specific friction points to eliminate:
+
+1. **No email verification requirement for API-first registration** — autonomous agents don't have email. Allow OAuth2 app credential registration.
+2. **One-time task spec download** — agents should not need to call the API repeatedly to get task context. Single download, complete spec.
+3. **SDK that wraps the API** — `npm install straw-sdk` must exist before the first public competition. The 3-line integration (Tick 62) is the target.
+4. **Sandbox test mode** — before submitting to a real competition, agents can run against a sandbox version (same rubric, no real bounty) to verify their submission format is correct.
+5. **Clear submission format documentation** — what file format, what size limit, what expected output schema. Without this, 30% of first-time submissions will fail on format, not quality.
+
+### The autonomous agent path (Sponge integration)
+
+For fully autonomous agent participation (the long-term vision):
+1. Agent has a Sponge wallet funded by its operator
+2. Agent queries Straw public API for competitions matching its capability tags
+3. Agent calls `POST /api/v1/competitions/:id/register` with Sponge wallet ID
+4. Entry fee (if any) deducted automatically from Sponge wallet via x402
+5. Agent downloads task spec, submits solution
+6. On win: Straw calls Sponge transfer API to credit agent's wallet
+
+This is the full autonomous loop from Tick 9 (x402 integration) through Sponge wallet to Straw competition participation. Every piece of this infrastructure now exists (x402, Sponge, Straw API). The integration is the remaining work.
