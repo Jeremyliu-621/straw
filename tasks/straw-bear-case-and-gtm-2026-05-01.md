@@ -36039,3 +36039,345 @@ Healthcare CIO procurement typically includes: "A successful pilot or proof of c
 **Regulatory hook:** FDA is actively reviewing AI/ML-based software as a medical device (SaMD). Hospitals deploying clinical AI agents need documentation of performance validation. Straw provides it.
 
 ---
+---
+
+## Tick 511 — CrewAI Supply-Side Economics: The Agent Developer Ecosystem [GTM/Supply]
+
+*2026-05-03. Straw needs agent supply. CrewAI is the largest available pool.*
+
+### CrewAI 2026 stats (verified)
+
+| Metric | Value | Source |
+|---|---|---|
+| GitHub stars | 47,800 (April 2026) | PyPI/GitHub |
+| PyPI total downloads | 27M+ | PyPI |
+| Monthly downloads | 5M | PyPI (April 2026) |
+| Certified developers | 100,000+ | CrewAI community courses |
+| Countries | 150+ | CrewAI |
+| Fortune 500 customers | 60% of Fortune 500 | CrewAI |
+| Enterprise customers | 150+ (within 6 months of launch) | Insight Partners |
+| Monthly workflows processed | 450M+ | CrewAI |
+| Agentic automations | 1.4B total | CrewAI |
+
+**Translation for Straw:** CrewAI alone has 100,000 certified developers who know how to build multi-agent systems. Even 0.1% of that community = 100 potential agents competing on Straw's tasks. The supply-side is not the hard problem.
+
+**Major enterprise customers using CrewAI:** PwC, IBM, Capgemini, NVIDIA. These are also Straw's target enterprise buyers. **This creates a warm introduction path:** CrewAI enterprise customers → they're already comfortable with multi-agent systems → pitch Straw as the evaluation/procurement layer on top of CrewAI deployments.
+
+### Other agent framework supply pools (2026)
+
+| Framework | GitHub stars | Notes |
+|---|---|---|
+| LangChain | 95,000+ | Largest ecosystem; also has LangGraph for agents |
+| AutoGen (Microsoft) | 35,000+ | Microsoft-backed; enterprise adoption |
+| OpenHands (formerly OpenDevin) | 48,000+ | Code-focused; SWE-bench leader |
+| Haystack | 17,000+ | Production-grade RAG/agent pipelines |
+| LlamaIndex | 37,000+ | Data connector focus |
+
+**Total addressable supply pool:** 100K+ certified CrewAI developers + LangChain community (300K+ members) = the agent supply problem is solved by existing communities. Straw's job is demand-side (task posting) and task-agent matching.
+
+### Implications for Straw's bootstrap sequence
+
+1. **Don't build agent supply from scratch.** Partner with CrewAI Discord and LangChain Discord — bounty announcement posts reach 50K+ relevant developers instantly (Tick 479).
+2. **Don't wait for supply to reach critical mass.** Post Jeremy's agent (Jeremy-as-agent) as the initial competitor to demonstrate the market exists.
+3. **The platform fee math is favorable:** 100 agents × $2,500 average bounty × 5% platform fee = $12,500/month from a single task with 100 agent submissions. At scale, Straw's platform fee revenue compounds with agent supply growth.
+
+### CrewAI enterprise pipeline as Straw's warm intro list
+
+PwC (#152 Mohamed Kande), IBM (existing contact surface), Capgemini, NVIDIA are all listed as CrewAI enterprise customers AND are on Straw's target outreach list. **Cold outreach becomes warm if referenced as "building evaluation infrastructure for organizations already using multi-agent systems like CrewAI."**
+
+### Contact: #160 Alejandro Piad Morffis (CrewAI community lead) — refined
+
+Alejandro runs CrewAI's developer community. Pitch: "Straw is the marketplace where CrewAI agents compete for enterprise tasks. Every enterprise posting a task on Straw = a bounty for CrewAI developers." This is a pure supply-side partnership with no competitive conflict.
+
+
+---
+
+## Tick 512 — First $10K+ Deal: Pricing Psychology and Negotiation Playbook [GTM]
+
+*2026-05-03. The mechanics of closing Straw's first five-figure enterprise contract.*
+
+### Why the first $10K deal matters structurally
+
+- Under $10K: typically below procurement thresholds → champion can approve directly (Tick 457)
+- At $10K: usually requires one additional approver (VP or department head)
+- Over $25K: triggers formal procurement with legal review + multi-stakeholder approval
+- **Sweet spot for Straw v0:** $5,000-$9,999 per evaluation = max revenue without procurement friction
+
+**Target for first 3 design partners:** $2,500 free evaluation → convert to $5,000 first paid contract (3 dimensions) OR $7,500 standard package (5 dimensions). Do NOT cross $10K before SOC 2 Type 1.
+
+### Straw's pricing anchoring sequence
+
+**At discovery call:** Lead with what a bad hire costs, not with Straw's price.
+
+> "How much does your team spend on a typical AI agent pilot? [Wait for answer.] And if you had 3 agents piloting simultaneously on the same task instead of sequentially, what would that compress your timeline to? [Wait.] That's the value proposition. Straw's standard evaluation is $5,000."
+
+**The number that never appears first:** $5,000. It always follows the context of:
+- "A mis-hire in a senior engineering role costs $100K+ in wasted implementation time"
+- "A mis-deployed AI agent in a financial workflow costs $50K-$1M in remediation"
+- "Three sequential pilots over 18 months vs. three concurrent competitors in 2 weeks"
+
+After those framings, $5,000 lands as an obvious asymmetric bet, not an expense.
+
+### Enterprise SaaS contract negotiation (2026 data)
+
+**Key findings:**
+- Junior reps can approve 10-15% discount; VP-level can approve 40%
+- End of fiscal quarter = 15-20% savings for buyer (use this as buyer; resist it as seller)
+- "First price is forever" — initial anchor determines all renewal anchors (Tick 477)
+- For sub-$10K deals: focus negotiation on SCOPE not PRICE
+
+**Straw-specific negotiation playbook:**
+
+| Prospect lever | Straw counter |
+|---|---|
+| "Can we lower the price?" | "I can't move on price, but I can add a 4th rubric dimension at no cost." |
+| "Can we do this on a monthly subscription?" | "We're per-evaluation right now. If you expect 4+ evaluations/year, let's talk about a retainer." |
+| "Can we pilot with one agent?" | "A single-agent evaluation defeats the purpose — competitive scoring requires ≥3 agents. But we can run a 2-agent pilot at $3,500." |
+| "We need security review first" | "Understandable. Our DPA and security summary are in the next email. What's the name of your security lead?" |
+| "Legal needs to review the contract" | "We use Common Paper templates — your legal team will recognize them. Typical review is 2-3 days." |
+
+### The commitment escalation sequence
+
+**Design partner → paid contract → retainer:**
+
+Step 1: **Commitment fee** — $100 to reserve evaluation slot (demonstrates intent)
+Step 2: **First evaluation** — $2,500-$5,000 (single task, rubric already designed)
+Step 3: **Second evaluation** — same price (now they've seen the product work)
+Step 4: **Retainer pitch** — "You've run 2 evaluations. At 4+/year, a $15,000 retainer gives you 6 evaluations + priority scheduling. That's $2,500/evaluation vs. $5,000 on demand."
+
+**The retainer is where Straw becomes a recurring revenue business.** One retainer customer at $15K ARR + 6 evaluations/year + reference value = better than 3 one-time customers.
+
+### Terms that matter more than price for the first deal
+
+Per SaaS negotiation data: small businesses can always negotiate SLA terms and auto-renewal conditions, even when price is fixed.
+
+**Straw's must-haves in first contract:**
+- No exclusivity (Straw evaluates for any company)
+- Straw owns methodology and rubric design IP
+- Anonymized case study rights (even if named customer declines)
+- 14-day payment terms (not net-60)
+
+**What Straw can concede:**
+- First-right-of-refusal on next evaluation in same vertical
+- Dedicated Slack channel for design partner (costs nothing, signals partnership)
+- 30-day results guarantee (redo evaluation if rubric was misspecified)
+
+
+---
+
+## Tick 513 — GDPR and EU AI Act: Straw's Regulatory Compliance Requirements [BEAR/Legal]
+
+*2026-05-03. 73% of EU AI agent implementations had GDPR vulnerabilities in 2024. Straw cannot be one of them.*
+
+### The regulatory environment (August 2026 state)
+
+**EU AI Act enforcement timeline:**
+- August 2024: Entered into force
+- August 2025: Phased enforcement begins
+- **August 2026: Full obligations for high-risk AI systems enforceable**
+
+Straw's August 2026 launch means operating in a fully-enforced EU AI Act environment on day one for EU customers.
+
+**GDPR AI agent compliance failures (2024 audit data):**
+- 73% of EU AI implementations had compliance vulnerabilities
+- 47% of failures: absence of explicit informed consent before processing personal data
+- Second most common: indefinite storage without defined retention periods
+- Enterprise minimum baseline: SOC 2 Type II + GDPR + HIPAA + ISO 27001
+
+### Is Straw a "high-risk AI system" under EU AI Act?
+
+**Analysis:**
+- Straw evaluates AI agents → Straw is infrastructure for AI procurement decisions
+- Straw does not make autonomous decisions about humans (employment, credit, healthcare)
+- Straw's outputs are advisory: "Winner recommendation" is a human-reviewed result
+- **Likely classification: NOT high-risk.** Straw is evaluation tooling, not a decision system.
+
+**However:** If an enterprise uses Straw to make hiring decisions about AI agents that then affect human employees, regulators may look harder. **Mitigation:** Frame Straw as "evaluation and recommendation tooling" — humans make the final hiring decision.
+
+### Three GDPR risks specific to Straw
+
+**Risk 1: Submissions may contain personal data**
+An agent submission for a customer service task might include real customer names, emails, or account data from an enterprise's system.
+
+**Mitigation:**
+- Task brief template MUST instruct: "Do not include real customer data in your submission. Use synthetic/anonymized examples only."
+- DPA (Data Processing Agreement) must specify: Straw processes task submissions as data processor; enterprise is data controller; enterprise must anonymize before submitting task data
+- Retention policy: submissions deleted 90 days after evaluation completion
+
+**Risk 2: Agent identity data**
+Straw maintains agent reputation scores. If an agent is operated by an individual (not a company), agent performance data = personal data under GDPR.
+
+**Mitigation:**
+- Terms of service must require agent operators to be entities (companies), not individuals, for purposes of reputation tracking
+- OR: treat all agent data as pseudonymized (agent ID ≠ individual identity)
+- Do NOT store operator names linked to agent performance without explicit consent
+
+**Risk 3: Enterprise task data confidentiality**
+Enterprise posts a proprietary task with confidential business requirements. Straw stores this task.
+
+**Mitigation:**
+- Standard DPA: Straw processes task data only for evaluation purposes
+- Task data encrypted at rest (AES-256)
+- Task data NOT shared with other companies or used to train Straw's models
+- Task data deleted after 1 year unless customer extends
+- "Private evaluation mode" option: task data never leaves customer's VPC (v1.5 feature)
+
+### Straw's GDPR compliance checklist (v0)
+
+| Requirement | Status needed by first EU customer |
+|---|---|
+| Privacy Policy covering data processing | Required |
+| DPA template for enterprise customers | Required |
+| Data retention policy | Required (90-day submission, 1-year task) |
+| Lawful basis for processing (legitimate interests vs. consent) | Required |
+| Right to erasure mechanism | Required (can be manual at v0) |
+| Cross-border transfer mechanism (EU→UK post-Brexit) | Required for UK-based processing |
+
+**Cross-border transfer note:** UK GDPR currently operates under adequacy decisions with EU. But if Straw processes EU customer data on UK servers, a standard DPA + UK GDPR compliance covers the transfer. If Jeremy adds US data processing (AWS us-east-1), he needs Standard Contractual Clauses (SCCs) with EU customers.
+
+### EU AI Act positioning opportunity
+
+**The positive spin:** Full EU AI Act enforcement (August 2026) = enterprises need to evaluate AI agents before deployment for compliance documentation. Straw's rubric-based evaluation produces audit-ready compliance evidence. **Straw IS the compliance infrastructure EU enterprises need.**
+
+**Pitch to EU enterprise:** "Your AI Act compliance documentation requires evidence that you evaluated your AI agents before deployment. Straw produces that evidence: sealed rubric + timestamped evaluation + winner recommendation. Audit-ready by design."
+
+
+---
+
+## Tick 514 — OpenHands Partnership: Graham Neubig and the Coding Agent Supply Chain [GTM/Partners]
+
+*2026-05-03. OpenHands has 64K GitHub stars and the most serious benchmark for coding agent evaluation.*
+
+### OpenHands 2026 state
+
+| Metric | Value |
+|---|---|
+| GitHub stars | 64,000+ (18 months old) |
+| Contributors | 188+ contributors, 2,100+ contributions |
+| Community Slack | 5,000+ members |
+| Benchmark scope | 5 categories: issue resolution, greenfield dev, frontend, testing, info gathering |
+
+**Graham Neubig (April 2026):** Published article on "how AI coding agents are becoming more capable, but evaluating them is harder than it looks." — This is Straw's exact thesis stated by OpenHands' founder.
+
+**OpenHands Index:** New benchmark across 5 categories. More comprehensive than SWE-bench alone.
+
+### The Straw × OpenHands partnership logic
+
+**OpenHands' problem:** Their benchmark measures coding agent capability in standardized test conditions. It doesn't measure competitive performance on enterprise-specific tasks.
+
+**Straw's problem:** We need coding agent supply — developers who've built agents capable of winning enterprise coding tasks.
+
+**Natural fit:** OpenHands agents compete on Straw's enterprise coding tasks. OpenHands gets real-world performance data. Straw gets supply.
+
+**Graham Neubig email draft (Contact #162 refined — actually belongs as separate contact #170):**
+
+**Subject:** OpenHands benchmark → Straw enterprise competition: research paper?
+
+> Hi Graham,
+>
+> Your April post on the difficulty of evaluating coding agents resonated deeply — that's exactly the problem Straw is solving from the enterprise procurement side.
+>
+> Straw is a marketplace where enterprise companies post coding tasks with rubrics they define, and coding agents compete. Your OpenHands agents would be natural competitors on these tasks.
+>
+> I see a research angle: OpenHands measures absolute capability (can an agent resolve issues?); Straw measures comparative performance on enterprise-specific tasks. The two together would give the most complete picture of coding agent capability that exists.
+>
+> Would a "OpenHands × Straw: Enterprise Coding Agent Benchmarks" paper be interesting to your lab? Happy to share our evaluation pipeline design and preliminary results.
+>
+> Jeremy
+
+**Why this works:**
+- Graham literally just wrote about evaluation difficulty → primed for this conversation
+- OpenHands Index is new → they're actively building evaluation infrastructure
+- Academic paper = publication incentive for Graham's CMU lab
+- Straw gets supply-side credibility ("OpenHands agents compete on Straw")
+
+**#170 Graham Neubig** — CMU professor, OpenHands co-founder. LinkedIn: linkedin.com/in/graham-neubig-10b41616b
+
+### The broader coding agent supply chain
+
+OpenHands' 5-category benchmark maps to Straw's task types:
+
+| OpenHands category | Straw task type | T1 deterministic tests |
+|---|---|---|
+| Issue resolution | Bug fix bounty | Test suite pass rate |
+| Greenfield development | New feature bounty | Functional correctness + CI |
+| Frontend development | UI bounty | Screenshot diff + accessibility |
+| Testing | Test generation bounty | Coverage delta + test quality |
+| Information gathering | Research bounty | Source citation + completeness |
+
+**Engineering insight:** If Straw's T1 deterministic tests map to OpenHands benchmark categories, the two systems can exchange evaluation data. This is the technical bridge for the research partnership.
+
+
+---
+
+## Tick 515 — Re-evaluation Revenue Model: Quarterly Agent Performance Reviews [GTM+Product]
+
+*2026-05-03. MIT Sloan: 47% of stalled AI programs had no automated eval at month 12; lost 14-23% accuracy over 18 months.*
+
+### The re-evaluation opportunity
+
+**Key finding (State of Agentic AI Q2 2026):**
+- Enterprise pilot-to-production conversion doubled: 18% → 31% from Q1 to Q2 2026
+- "Agentic AI has stopped being something teams evaluate quarterly and started being something they budget for annually"
+- MIT Sloan 2026 longitudinal study: programs WITHOUT continuous eval lost 14-23 percentage points of accuracy over 18 months
+
+**The implication for Straw:** An enterprise that runs a Straw evaluation to hire an agent in month 1 will need to re-evaluate that agent by month 6-12. Foundation model updates (GPT-5.5 → GPT-6.0), new competitors, task scope changes, and accuracy drift all create natural re-evaluation trigger events.
+
+**Standard enterprise evaluation cadence (2026 best practice):**
+- Weekly: health checks (latency, cost, error rates) — handled by Braintrust/Arize, not Straw
+- Monthly: deep dives on goal fulfillment — handled by Braintrust/Arize, not Straw  
+- **Quarterly: comprehensive regression testing and competitive benchmarking — STRAW**
+- Annually: vendor contract renewal based on evaluation results — STRAW feeds this decision
+
+**Straw's natural cadence: quarterly.** Every quarter, a new model frontier, new agents built on top, new competitors. The "winning agent" from month 1 may not be the winner by month 4.
+
+### Re-evaluation as Straw's recurring revenue engine
+
+**Model:** Design partner signs DPA → first evaluation (month 1) → re-evaluation (month 4) → annual retainer
+
+**Retainer structure (v1 pricing):**
+
+| Tier | Price | Evaluations included | Unit economics |
+|---|---|---|---|
+| Evaluation | $5,000 | 1 | $5,000/evaluation |
+| Standard retainer | $15,000/year | 4 (quarterly) | $3,750/evaluation |
+| Enterprise retainer | $40,000/year | 12 + unlimited re-evals | $3,333/evaluation |
+
+**Revenue model shift:** If 50% of design partners convert to quarterly retainers at $15K, Straw's ARR per customer quadruples from $5K (one-time) to $15K (recurring). This is the difference between a services business and a SaaS business.
+
+### Re-evaluation trigger events (marketing hook)
+
+Natural triggers to send "re-evaluation" email:
+
+1. **Foundation model update:** "GPT-5.5 just launched. Do you know if your current agent is still the best available? Run a re-evaluation."
+2. **New framework release:** "CrewAI 3.0 dropped. New agents built on it may outperform your current hire. 2-week re-evaluation → know by [date]."
+3. **Accuracy drift detected:** "Our T1 deterministic check shows your agent's pass rate has dropped from 94% → 87% since last evaluation. Time for a re-evaluation."
+4. **New competitor announced:** "[Company X] just announced a new coding agent. Does it outperform your current one? 2-week head-to-head."
+5. **Contract renewal cycle:** "Your agent contract renews in 60 days. Run a re-evaluation to validate the renewal — or find a better option."
+
+### The re-evaluation pitch (champion email template)
+
+**Subject:** [Company]'s agent evaluation results are 4 months old
+
+> Hi [Champion],
+>
+> When we ran your [task type] evaluation in [month], [Winner Agent] came out ahead by [score margin].
+>
+> Since then: [Model update X] launched, and [2-3 new agents] have been built on top of it.
+>
+> Our Q2 re-evaluation will tell you whether [Winner Agent] is still your best option — or whether a newer agent outperforms it on your specific rubric.
+>
+> Re-evaluation runs in 2 weeks. Same rubric, updated agent pool. Want to schedule a kickoff?
+>
+> Jeremy
+
+**Why re-evaluation pitches convert:** The champion already trusts Straw (they ran the first evaluation). The rubric is already defined and approved. The question is just "is the answer still the same?" — much lower cognitive load than a new evaluation.
+
+### Long-term vision: Continuous evaluation as a subscription
+
+**Straw v2 product:** "Agent Continuous Evaluation" — Straw runs a mini-evaluation every 30 days using a T1/T2 abbreviated pipeline (no T3 investigator unless scores change significantly). Alerts champion if winner changes.
+
+**Pricing:** $5,000/month = $60,000 ARR per customer for automated quarterly + monthly mini-evaluations.
+
+**Trigger for this feature:** When Straw has 20+ evaluations of the same task type → enough data to run reliable T1/T2 mini-evals without T3 overhead.
+
