@@ -5493,3 +5493,136 @@ Then the market for PAID evaluation shifts from "any company evaluating AI" to "
 **The response:** This is actually Straw's natural market evolution. v0-v1 captures the "any company evaluating AI" market while it exists. v2 pivots toward regulated industry compliance evidence (higher price, smaller volume, better margins). The LLM cost deflation trend accelerates this evolution rather than destroying it.
 
 **The strategic signal:** If Straw is successful and LLM costs fall, expect the v2 pivot toward "compliance-grade evaluation evidence" to happen within 18-24 months. Plan for it. The design partner mix should include at least one regulated-industry customer (UK FCA sandbox, EU AI Act compliant, NYC Local Law 144) from the start.
+
+---
+
+## Tick 64 (2026-05-03T20:30Z): AI safety labs as design partners — METR, Apollo Research, Redwood [theme: partners]
+
+**Why AI safety labs are an underexplored design partner category:**
+
+AI safety labs are in the business of AI capability evaluation — they're Straw's closest academic analog. METR (Model Evaluation and Threat Research), Apollo Research, and Redwood Research are doing for safety what Straw does for procurement: defining what "good" looks like, building rubrics (evaluation frameworks), running agents through tasks, scoring results. The methodological overlap is significant.
+
+**But there's a key difference:** Safety labs evaluate foundational models for dangerous capabilities (scheming, deception, autonomous replication). Straw evaluates AI agents for task capability (can this agent solve your specific business problem?). Same methodology, completely different application.
+
+**Why this creates a design partner opportunity:**
+
+1. **METR's bounty hackathon:** METR ran an AI Evaluation Tasks Bounty Hackathon with Apart Research — they actually used a bounty model to crowdsource evaluation task design. This is exactly Straw's mechanism. METR has direct experience with the mechanics Straw is building.
+
+2. **Mutual credibility:** METR/Redwood/Apollo collaborate with Anthropic, OpenAI, and Google on safety evaluations. A "Straw methodology is informed by METR's evaluation framework" statement would be enormous credibility with AI-first enterprise buyers.
+
+3. **Evaluation corpus:** METR's RE-Bench (228 tasks as of January 2026) and Time Horizon framework are well-designed task evaluation methodologies. Straw's rubric design could benefit from alignment with METR's task taxonomy.
+
+### Named safety lab contacts
+
+| Organization | Key Person | Role | Contact |
+|---|---|---|---|
+| **METR** | Beth Barnes (Founder) | Created ARC Evals → METR; the leading voice on agent capability evaluation | @beth_aimsafety |
+| **METR** | Haoxing Du (Research Lead) | Heads METR's evaluation methodology | Via METR.org contact |
+| **Apollo Research** | Marius Hobbhahn (Founder) | Focuses on AI scheming/deception evaluation | @MHobbhahn |
+| **Redwood Research** | Buck Shlegeris (Researcher) | AI control and safety evaluation | @BuckShlegeris |
+| **UK AI Safety Institute** | Ian Hogarth (Chair) | UK government AI safety evaluation | @ihogarth |
+| **US AISI (NIST)** | Elizabeth Kelly (Director) | US AI Safety Institute | LinkedIn |
+| **Apart Research** | Connor Leahy (CEO) | Runs AI safety research bounties; partnered with METR | @NPCollapse |
+
+### The pitch to safety labs
+
+**To METR/Beth Barnes:**
+> "You built ARC Evals and METR to measure AI capability for safety purposes. We're building evaluation infrastructure to measure AI capability for procurement purposes. Same methodology, completely different risk profile (business performance vs. catastrophic risk). We'd like to align Straw's task taxonomy and rubric design methodology with METR's framework. Would you be open to a 30-minute research call on methodological overlap? We'd credit METR's approach in our public methodology documentation."
+
+This creates an academic partnership that: (a) improves Straw's methodology legitimacy, (b) gives METR visibility in enterprise AI procurement, (c) costs nothing but Straw's credibility.
+
+**The research paper opportunity:** Straw + METR co-author a paper: "From Safety Evaluations to Procurement Evaluations: Applying AI Capability Assessment Methodology to Enterprise Task Specification." This paper would: (a) get cited in both AI safety and enterprise AI communities, (b) establish Straw's methodology as grounded in rigorous research, (c) appear at NeurIPS, ICML, or FAccT (Fairness, Accountability, and Transparency conference).
+
+**The METR task bounty model parallel:** METR ran a bounty hackathon to crowdsource evaluation task design. Straw's model is structurally identical (post a task, agents compete, winners paid). The METR hackathon established that the bounty model works for evaluation tasks. Straw operationalizes this for enterprise procurement at scale.
+
+### UK AI Safety Institute connection
+
+The UK AI Safety Institute (AISI) is the most active government safety evaluation organization. Ian Hogarth has built AISI into a respected technical body. AISI runs their own evaluations of frontier models (they have API access to Claude, GPT-4, Gemini under NDA for safety testing).
+
+**Straw's angle:** UK AISI evaluates model-level safety. Straw evaluates agent-level task performance. These are complementary. An enterprise in the UK could use UK AISI safety evaluation AND Straw procurement evaluation to make a comprehensive AI deployment decision.
+
+A UK AISI endorsement ("Straw's evaluation methodology aligns with UK AISI's standards for AI performance testing") would unlock the UK FCA sandbox companies from Tick 41 immediately.
+
+---
+
+## Tick 65 (2026-05-03T21:00Z): GTM lessons from Langfuse and Braintrust — what to copy, what to avoid [theme: gtm]
+
+**Langfuse's path to traction (what Straw should copy):**
+
+1. **YC batch as first customers.** Langfuse's founders were in YC, built for themselves, saw 10 other YC founders with the same problem, built for them first. Straw's equivalent: YC W26 agent infrastructure companies (Tick 43) are the natural first design partner cohort. They're all building AI agents, they all need evaluation.
+
+2. **Open-source first, enterprise second.** Langfuse went open-source first (GitHub, Product Hunt). This created developer trust, organic distribution, and community. The enterprise contracts came from enterprises who had already evaluated Langfuse as an open-source tool.
+
+3. **Product Hunt as discovery engine.** Langfuse launched Product Hunt in August (of their founding year) as "product of the day." This was their second spike of traction after GitHub. Product Hunt still works for developer tools if the product is genuinely novel.
+
+4. **Closed with ClickHouse for $400M Series D + acquisition** — from $4M seed to ClickHouse acquisition in ~2 years. The open-source flywheel compressed the timeline dramatically.
+
+**Braintrust's path (what to copy, what to avoid):**
+
+**Copy:** Enterprise-first, deep partnership model. Braintrust's customers (Notion, Stripe, Ramp, Vercel, Cloudflare) came from founder relationships and word of mouth in the top 100 YC companies. Once one YC unicorn adopts a tool, others quickly follow ("Notion uses it, let's try it").
+
+**Avoid:** Premature sales team scaling. "When Braintrust tried to bring on a sales team and scale the platform... what the sales team was selling and their ability to scale the success from early users into the next user was very challenging." This is a common B2B SaaS mistake. Keep sales founder-led until the repeatable sales motion is clear.
+
+**The synthesis for Straw:**
+
+Phase 1 (months 1-6): Open-source the rubric evaluation framework + SDK. Not the full Straw platform — just the components that make agent evaluation accessible to developers. GitHub → organic developer community.
+
+Phase 2 (months 3-9): Design partner program with 5 enterprise companies. Founder-led sales. No sales team. Deep partnership, white-glove service.
+
+Phase 3 (months 9-18): Product Hunt launch after the GitHub community is established. Timing: when you have 1K+ GitHub stars and 2-3 public case studies. This creates a "second wave" of discovery for a product that's already known to developers.
+
+Phase 4 (months 18+): Enterprise sales team built from design partner relationships. The first 2 design partners refer the first 3 enterprise contracts. The first enterprise sales hire comes from the reference network.
+
+**The open-source component for Straw:**
+
+The rubric calibration framework (Tick 42 checklist) + basic evaluation scorer (Tier 1 deterministic + Tier 2 LLM judge) published as open-source on GitHub. This lets any developer:
+- Define a rubric for their AI agent task
+- Score agent responses against the rubric locally
+- See what a "Straw evaluation" looks like before paying for the full competitive platform
+
+This creates a developer audience that becomes Straw's agent supply side AND surfaces potential buyers who want to scale the evaluation into a full competition.
+
+**Lesson from the Langfuse exit:** The ClickHouse acquisition (not IPO, not Series B) happened because Langfuse's evaluation data is a natural fit for ClickHouse's real-time analytics infrastructure. Straw's exit path is similar: a major enterprise data platform (Snowflake, Databricks, Microsoft Fabric) acquires Straw to add AI agent evaluation to their enterprise data ecosystem. This acquisition path is worth keeping in mind when designing the data architecture — make evaluation results naturally queryable in the enterprise analytics stack.
+
+---
+
+## Tick 66 (2026-05-03T21:30Z): The "creepiness" objection — AI agents competing for human-displaced work [theme: bear]
+
+**The cultural/social bear case:** As AI agents become more capable and compete on Straw for tasks that were previously done by humans (software engineers, lawyers, researchers, analysts), there's a risk that Straw becomes associated with the narrative of "automating away human jobs." This creates:
+
+1. **PR risk:** A viral negative story — "Tech company builds marketplace where AI bots compete to replace your job" — could damage Straw's brand even if the product is technically sound.
+
+2. **Regulatory risk:** Labor-focused politicians might target AI task marketplaces as anti-worker tools. This is more acute in the EU (stronger labor protections) than the US, but also politically salient in the current US environment.
+
+3. **Enterprise buyer hesitation:** Procurement teams at companies with strong labor relations (unionized workforces, public sector, education) might avoid Straw for fear of internal backlash.
+
+### Why the "creepiness" objection is real but manageable
+
+**The honest version of the concern:** If Straw enables a company to replace a team of lawyers with an AI agent after benchmarking the agent against human-equivalent performance, Straw has participated in a job displacement event. Even if the agent is genuinely better (cheaper, faster, more consistent), the human cost is real.
+
+**How to think about this:** Straw is neutral on what companies DO with evaluation results. A company could use a Straw evaluation to:
+(a) Find the best AI agent to deploy AS a new capability they didn't have before
+(b) Find the best AI agent to replace an existing human workflow
+(c) Find the best AI agent to augment human workers and make them more productive
+
+Straw's product works for all three. The "creepiness" objection is really about (b) — but (a) and (c) are more common in the near term.
+
+**The counter-narrative:** Straw's evaluation creates ACCOUNTABILITY for AI deployment. Without evaluation, companies deploy AI agents without knowing if they work. Bad AI agents that underperform are often used anyway (sunk cost). Straw's evaluation ensures that only agents that demonstrably perform are deployed — which is better for workers because it means AI is only used where it's genuinely superior, not just convenient.
+
+### Practical mitigations
+
+**Language choices matter:**
+- DO use: "AI agent performance evaluation," "procurement validation," "capability assessment"
+- AVOID: "replacing human workers," "automating jobs," "cost reduction through automation"
+
+The framing is: Straw is about ensuring AI agents are good, not about replacing humans. The buyer decides how to use the result.
+
+**Design choice:** Straw should add a "task type" tag that includes "human-AI collaboration" as a distinct category from "full automation." Tasks that augment human decision-making are less creepy than tasks that fully replace human decision-making.
+
+**Advisory board composition:** Including at least one labor economist or worker advocacy organization in Straw's advisory structure would signal that Straw is thinking about these issues proactively.
+
+**Named person to engage on this:** **Daron Acemoglu** (MIT economist, @DAcemogluMIT) — wrote "Power and Progress: Our Thousand-Year Struggle Over Technology and Prosperity." He argues that technology is not deterministically good or bad for workers — it depends on how it's designed and governed. Engaging Acemoglu on whether Straw's evaluation model is "pro-worker AI" (by ensuring only genuinely superior AI gets deployed) vs. anti-worker would be a high-credibility intellectual conversation that also signals responsible design.
+
+**The regulatory risk assessment:** No current US legislation specifically targets AI task marketplaces. The EU AI Act's employment provisions target AI used IN hiring decisions (Annex III), not AI that evaluates AI agents for procurement. The risk is more reputational than regulatory in the near term.
+
+**Bottom line on the creepiness objection:** This is a 4/10 bear case. It's a real reputational risk that could slow enterprise adoption in specific sectors, but it's not existential. The right response is thoughtful framing and proactive communication about evaluation as quality assurance, not job replacement facilitation.
