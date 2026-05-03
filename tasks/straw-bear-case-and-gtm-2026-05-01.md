@@ -11789,3 +11789,166 @@ The cold outreach should target organizations that have experienced one of three
 - Search LinkedIn for "Head of AI Risk," "Head of Model Validation," "Chief Model Risk Officer" at banks/insurance companies (regulatory trigger)
 - Search for companies that have publicly announced AI pilot programs in 2025-2026 (they're in the pilot-to-production gap)
 
+
+---
+
+## Tick 170 (2026-05-03T15:15Z): California EO N-5-26 — the most specific regulatory tailwind for Straw yet [theme: gtm]
+
+**⚠️ NEW REGULATORY FINDING — Not covered in Phase 1 or Phase 2 prior ticks.**
+
+### What EO N-5-26 requires (signed March 30, 2026)
+
+California Governor Newsom signed EO N-5-26, establishing an AI vendor certification and procurement framework for all entities seeking to do business with California state agencies.
+
+**The three certification pillars (vendors must attest to and explain their safeguards for):**
+1. **Illegal content** — policies preventing exploitation or distribution of illegal content (CSAM, nonconsensual intimate imagery)
+2. **Harmful bias** — governance mechanisms to reduce risk of harmful bias in AI models
+3. **Civil rights and civil liberties** — protections against violations of free speech, voting, human autonomy, anti-discrimination, detention, surveillance
+
+**Timeline:** DGS + CDT recommendations due July 2026 (< 3 months away). Once implemented, vendors seeking California contracts must certify against these criteria.
+
+**Scope:** Applies nationwide — any company seeking California state contracts regardless of state of incorporation. California is the largest state AI market in the US, so this de facto becomes a national standard.
+
+Sources: [Ropes & Gray](https://www.ropesgray.com/en/insights/alerts/2026/04/newsom-signs-executive-order-establishing-ai-vendor-certification-and-procurement-framework), [Computerworld](https://www.computerworld.com/article/4152400/california-to-bar-ai-vendors-that-cant-prove-bias-safeguards.html), [Morgan Lewis](https://www.morganlewis.com/pubs/2026/04/california-executive-order-expands-ai-oversight-through-state-procurement)
+
+### What this means for Straw
+
+**Straw's competition format produces exactly what EO N-5-26 requires as documentation:**
+
+| EO N-5-26 Requirement | How Straw Addresses It |
+|---|---|
+| "Documented processes and testing frameworks" for bias mitigation | Straw competition rubric includes demographic group performance measurement across test cases |
+| "Policies and safeguards" for illegal content | Straw adversarial test cases include illegal content injection resistance testing |
+| Evidence of civil rights compliance | Straw civil rights rubric tests for discriminatory outputs across protected classes |
+
+**The specific Straw product that emerges:** "California EO N-5-26 Compliance Evaluation" — a pre-packaged competition format that runs any AI agent through the three EO certification pillars and produces a documented report certifying compliance with the EO's requirements.
+
+**Price point:** $15,000-$25,000 per certification evaluation (government/regulated industry pricing). Annual renewal as EO requirements evolve (recurring revenue).
+
+**The government channel:** California's Department of General Services and Department of Technology will need to evaluate AI vendors against these new criteria. They have no existing infrastructure to do so. Straw is the evaluation infrastructure they need.
+
+**Named contacts for the California government channel:**
+- California Department of Technology (CDT): California CIO Steve Gordon. LinkedIn search: "California CTO" or "California CDT."
+- DGS AI procurement team: Director of DGS (currently Ana Lasso). DGS.ca.gov.
+- AI policy leads: @CAGovOps (California Government Operations Agency) on Twitter.
+
+**The national standard multiplier:** Once California implements these requirements, other states follow. New York, Illinois, Texas, and Florida have all passed or are considering parallel AI governance legislation. Straw's California EO evaluation report becomes the template for national AI vendor certification.
+
+### The bear case within the regulatory tailwind
+
+Regulatory compliance certifications are only valuable if they're required and enforced. EO N-5-26 has two structural risks:
+1. **Implementation delay:** The 120-day clock expires July 2026, but implementation typically lags recommendations by 6-12 months. Straw's California revenue channel may not open until 2027.
+2. **Certification captured by Big 4:** McKinsey/Deloitte/Accenture/PwC will position themselves as the "preferred" AI compliance auditors for California state contracts. Straw needs to either partner with a Big 4 firm or differentiate from them before they eat this market.
+
+---
+
+## Tick 171 (2026-05-03T15:30Z): ISO 42001 as Straw's enterprise procurement architecture [theme: gtm]
+
+### The ISO 42001 market reality in 2026
+
+ISO/IEC 42001 is the international standard for AI Management Systems — the ISO 27001 equivalent for AI governance. Key 2026 data:
+
+- **83% of Fortune 500 procurement teams plan to require ISO 42001 alignment by 2027** — effectively mandatory
+- **72% of enterprise buyers screen for ISO 42001 before the first RFP round**
+- **Certification costs:** Small enterprise (50-200 employees): $85K-$150K. Mid-market (200-500): $180K-$320K. Large enterprise (500+): $350K-$650K
+- **Insurance premium reduction:** ISO 42001-certified organizations receive 15-25% discounts on AI liability coverage
+- **EU AI Act conformity:** ISO 42001 can satisfy the EU AI Act's conformity assessment requirements for high-risk AI systems
+
+Sources: [ISO 42001 Cost Breakdown 2026](https://elevateconsult.com/insights/iso-42001-certification-cost-breakdown-what-enterprise-ai-teams-pay-in-2026/), [AI Governance Today](https://www.aigovernancetoday.com/news/iso-42001-redefining-ai-governance-2026)
+
+### The structural gap ISO 42001 creates for Straw
+
+**What ISO 42001 certifies:** An organization's AI Management System (AIMS) — processes, governance, policies, documentation standards.
+
+**What ISO 42001 does NOT certify:** Any specific AI agent's performance. "The certification certifies the management system, not the specific AI model, vendor, or tool."
+
+This creates a two-level certification market:
+- Level 1 (ISO 42001): "Our AI governance management system is ISO 42001 certified" — the organization-level certification
+- Level 2 (Straw Certified): "This specific AI agent was evaluated using a documented, objective methodology and achieved the highest performance on our task" — the agent-level certification
+
+**Straw fills the gap ISO 42001 explicitly does not address.**
+
+### The positioning: "ISO 42001 for the agents inside your management system"
+
+Enterprises spend $85K-$650K on ISO 42001 certification for their AIMS. But the AIMS still contains specific AI agents that need to be selected and evaluated. ISO 42001 requires documented evaluation processes; Straw is those documented evaluation processes.
+
+**The enterprise conversation:**
+"You're ISO 42001 certified. But ISO 42001 is the framework for how you manage AI. Straw is the evidence you collect within that framework when you evaluate and select specific AI agents. Your auditors will ask 'how did you select this agent?' Straw gives you the answer."
+
+### ISO 42001 auditors as Straw's channel partners
+
+The major ISO 42001 certification bodies (BSI, DNV, TÜV SÜD, SGS) all offer ISO 42001 auditing services. These auditors visit enterprises, review their AI governance processes, and issue certificates. 
+
+**The channel play:** Partner with 1-2 major ISO 42001 auditors to recommend Straw as the "evaluation methodology documentation" tool within the AI procurement section of the ISO 42001 audit. When BSI audits Company X's AIMS and gets to "AI vendor selection process" — they recommend Straw. Straw produces the documentation BSI needs to see.
+
+**Named contacts:**
+- **BSI (British Standards Institution):** BSI has a large US presence. Contact: [bsigroup.com/en-US/ISO-42001-Artificial-Intelligence](https://www.bsigroup.com/en-US/ISO-42001-Artificial-Intelligence/). Reach out to their AI certification team.
+- **DNV:** dnv.com/services/iso-iec-42001-artificial-intelligence-ai. Contact their AI Services team.
+- **TÜV SÜD:** tuvsud.com ISO 42001 team. Strong presence in regulated industries (healthcare, automotive, aerospace).
+
+---
+
+## Tick 172 (2026-05-03T15:45Z): Cold start problem — the structural solutions for Straw specifically [theme: bear]
+
+### Why the cold start problem is different for Straw than for most two-sided marketplaces
+
+Most two-sided marketplaces require simultaneous presence of both buyers and sellers to deliver value. Straw's structure is more forgiving:
+
+**The Straw cold start advantage:** Straw competitions can run with a single buyer + Jeremy recruiting supply-side participants manually. The buyer gets value (a winner is identified). The agents get value (a Straw Certified badge). The platform gets data and revenue. No marketplace liquidity required.
+
+This is the "Trojan Horse" cold start solution — the evaluation competition is valuable to both sides before there's a marketplace. Jeremy can seed every competition manually until there's enough volume that the marketplace self-selects participants.
+
+### The five specific cold start tactics for Straw (in order of priority)
+
+**Tactic 1: Single buyer, manually-recruited supply (v0 model)**
+- Jeremy personally recruits 3-5 agent operators for every competition
+- Buyer gets a comparison; agents get enterprise validation; Straw gets revenue
+- No automated marketplace mechanics needed
+- Duration: months 1-6
+
+**Tactic 2: Vampire attack on AgentBeats (Phase 2 Sprint 4 concludes May 24)**
+- The 1,300 AgentBeats teams are the richest pool of production-capable agents in the world right now
+- Top 10 teams by track = Straw's highest-quality supply recruits
+- Specific message: "Your AgentBeats competition win is worth more if it comes with enterprise validation. Join Straw's first legal AI competition in June."
+- Contact: @berkeleyrdi or monitor leaderboard when Sprint 4 closes May 24
+
+**Tactic 3: Single vertical niche concentration (legal AI)**
+- Launch only in legal AI first: Harvey, Ironclad, Luminance, Casetext, Microsoft Legal Agent as the competing agents
+- Every law firm considering one of these tools is a natural buyer
+- This concentrates both supply (5 specific agents) and demand (BigLaw + in-house counsel)
+- Network effects emerge within the vertical before spreading to other verticals
+
+**Tactic 4: Open-source supply-side as permanent free baseline**
+- OpenHands, SWE-agent, Aider, and other open-source coding agents always participate for free
+- Their participation proves the competition format works even when no paid supply-side agents register
+- Makes every early-stage competition viable regardless of commercial agent interest
+
+**Tactic 5: Design partner as simultaneous supply + demand**
+- Find the first 3 buyers who also have their own AI agents (Ramp, Stripe, any company building proprietary agents)
+- They compete their proprietary agent AND recruit external competitors
+- They get double value: external validation + internal benchmark
+- This is the fastest path to the "both sides of the marketplace" scenario
+
+### The cold start bear case that remains
+
+The structural cold start challenge for Straw is not agent supply (there are thousands of capable agents) or buyer demand (enterprises need evaluation). It is **the data sharing problem**:
+
+For a Straw competition to work, the buyer must share their confidential business data with 3-5 competing agents — including competitor systems they may not trust. This data sharing requirement is the real cold start blocker.
+
+**Enterprise data sharing barriers:**
+1. Legal/data governance review takes weeks before any agent can touch production data
+2. NDAs must be signed with each competing agent team (3-5 separate agreements per competition)
+3. GDPR/CCPA/HIPAA may prohibit sharing certain data types with third-party AI systems
+4. IT security review of each agent's data handling practices
+5. Executives uncomfortable seeing their data in multiple AI systems simultaneously
+
+**The mitigation strategies (from Phase 1 research and Tick 39):**
+- Synthetic data generation: buyers provide anonymized/synthetic data that's representative but not actual production records
+- Differential privacy: add calibrated noise to submitted data before sharing
+- Sandboxed evaluation environment where agents cannot exfiltrate data
+- Agent evaluation on public-domain data for the first competition (builds trust before requiring proprietary data)
+
+**The bear case that remains:** The data sharing barrier is genuinely structural. If 80% of the enterprises who "need" Straw can't actually run a competition because they can't share data with multiple external agents, the TAM is much smaller than it appears. **This is Jeremy's most important product design question: how does Straw handle data sovereignty in a way that doesn't require buyers to share confidential data with competing agents?**
+
+**One answer: the buyer's own sandbox.** Instead of Straw's platform receiving and processing buyer data, Straw provides a "Straw Certified evaluation runner" that the buyer deploys in their own cloud environment. The agents run inside the buyer's VPC; no data leaves the buyer's environment. Straw provides the rubric, the scoring engine, and the evaluation report — but never sees the actual data. This is the "customer-hosted evaluation" model and it's technically more complex but removes the data sharing objection entirely.
+
