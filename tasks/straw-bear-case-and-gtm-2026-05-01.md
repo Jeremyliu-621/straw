@@ -14693,3 +14693,86 @@ A paper posted to arxiv in March 2026 introduces "Autorubric: A Unified Framewor
 **Straw's response:** Autorubric generates rubrics for LLM benchmarks (standardized tasks). Straw's rubrics are designed for buyer-specific enterprise tasks. The buyer's requirements are not in any training set — they're discovered through the requirements interview process. Autorubric can't replace that. But Straw can use Autorubric as the rubric draft generator (Step 2), reducing rubric design time from 48 hours to 2 hours.
 
 Sources: [Galileo Agent Evaluation Framework 2026](https://galileo.ai/blog/agent-evaluation-framework-metrics-rubrics-benchmarks), [Medium Rubric-Based Evals April 2026](https://medium.com/@adnanmasood/rubric-based-evals-llm-as-a-judge-methodologies-and-empirical-validation-in-domain-context-71936b989e80), [Autorubric arxiv 2026](https://arxiv.org/html/2603.00077v2), [Scale AI Rubrics as Rewards](https://scale.com/blog/rubrics-as-rewards), [Snorkel AI Science of Rubric Design](https://snorkel.ai/blog/the-science-of-rubric-design/)
+
+---
+
+## Tick 225 (2026-05-04T05:45Z): The agent certification gap — why Microsoft/NVIDIA certify people but Straw certifies products [theme: gtm]
+
+### The certification landscape in 2026
+
+A cluster of certifications has emerged for AI agents in 2026:
+- **Microsoft Certified: AI Agent Builder Associate** (GA June 2026) — certifies humans who design enterprise agents
+- **NVIDIA Agentic AI Professional Certification** — certifies AI engineers on agentic systems
+- **TAISE (Trusted AI Safety Expert)** — Won 2026 SC Award for Best Professional Certification; certifies AI safety professionals
+- **Proofpoint AI Agent Security Specialist** — security-focused agent certification for professionals
+- **NIST AI Agent Standards Initiative** (February 2026) — government standards framework for agent interoperability and security
+
+**The critical observation:** Every one of these certifications certifies **people** (builders, engineers, security specialists) who work with AI agents. None of them certify **AI agent products** on specific enterprise performance metrics.
+
+### The product certification gap — Straw's unique position
+
+**What NIST's AI Agent Standards Initiative actually says:** "Ensure that the next generation of AI agents capable of autonomous actions is widely adopted with confidence, can function securely on behalf of its users, and can interoperate smoothly across the digital ecosystem."
+
+NIST wants enterprises to be able to deploy AI agents "with confidence." The standards address: interoperability protocols, security frameworks, identity management. But NIST does not provide a mechanism for an enterprise to verify "this specific agent performs at X% accuracy on my specific task type." That's not a standards problem — it's an evaluation problem. Straw fills the gap.
+
+**The positioning chart:**
+
+| Certification | Who it certifies | What it says |
+|---|---|---|
+| Microsoft AI Agent Builder | Human professionals | "This person can build agents" |
+| NVIDIA Agentic AI | Human engineers | "This person understands agentic AI" |
+| NIST AI Agent Standards | Organizations/platforms | "This platform meets interoperability standards" |
+| ISO 42001 | Organizations | "This company has an AI management system" |
+| **Straw Certified** | **AI agent products** | **"This agent performed best on [task type] at [company type] with [rubric]"** |
+
+Straw is the only certification that focuses on **agent product performance on specific enterprise tasks.** This is not a crowded space — it's unoccupied.
+
+### The NIST AI Agent Standards Initiative as a Straw tailwind
+
+NIST's initiative creates a framework that enterprises will reference when procuring AI agents. As the framework matures, it will include performance evaluation guidance. Straw should:
+1. **Submit a public comment** on NIST's AI Agent Standards Initiative: "Straw's competition methodology represents a practical implementation of performance-based evaluation for enterprise AI agent procurement." Position Straw as the reference implementation for NIST's evaluation guidance.
+2. **Request to be included** in NIST's case studies for the AI Agent Standards Initiative's 2027 guidance update.
+3. **Quote NIST's language** in Straw's sales materials: "NIST's AI Agent Standards Initiative is establishing the framework for confident AI agent adoption. Straw's competitions are the evaluation mechanism that makes that confidence possible."
+
+Sources: [NIST AI Agent Standards Initiative](https://www.nist.gov/news-events/news/2026/02/announcing-ai-agent-standards-initiative-interoperable-and-secure), [Microsoft AI Agent Builder Certification](https://techcommunity.microsoft.com/blog/skills-hub-blog/new-microsoft-certified-ai-agent-builder-associate-certification/4494125), [TAISE 2026 SC Award](https://intrinsecsecurity.com/product/trusted-ai-safety-expert-taise/)
+
+---
+
+## Tick 226 (2026-05-04T06:00Z): The "good enough substitutes" bear case — is one AI vendor so dominant that Straw's competition has too few participants? [theme: bear]
+
+### The Anthropic vs. OpenAI dominance data
+
+**The market shift:**
+- Anthropic: $1B ARR (December 2024) → $14B ARR (February 2026) → $30B ARR (April 2026)
+- OpenAI: approximately $25B ARR (April 2026) — Anthropic passed OpenAI in late April 2026
+- "Among companies picking an AI vendor for the first time, Anthropic wins roughly 70% of head-to-head comparisons"
+
+**The bear case:** If Anthropic has 70% first-choice win rate and is growing at 114% in 60 days, is the market converging on a single dominant player? If enterprises just standardize on Claude, the "which AI vendor should we choose?" question has an obvious answer, and Straw's competition has limited value.
+
+### Why the "good enough substitutes" bear case fails
+
+**Counter-evidence 1: The task-specific performance divergence.** "Among companies picking an AI vendor for the FIRST TIME, Anthropic wins 70%." This is a general-purpose comparison. Task-specific performance diverges dramatically. The enterprise that standardizes on Claude for coding may find GPT-4o is better for customer support. The vertical-specific nature of Straw's competitions captures this divergence that general benchmarks miss.
+
+**Counter-evidence 2: The agent layer complexity.** Claude and GPT-4o are foundation models. Above them is the agent layer: Harvey, Devin, Cursor, Intercom Fin — these are built on multiple foundation models and add proprietary context, tools, and fine-tuning. Even if an enterprise "standardizes on Claude," they still need to choose between Harvey (legal, Claude-based) and CoCounsel (legal, also fine-tuned). Straw evaluates the AGENT, not the foundation model.
+
+**Counter-evidence 3: Anthropic's own competitive pressure.** Anthropic at $30B ARR is still fighting for enterprise deals against Microsoft (OpenAI) and Google (Gemini). Major enterprises (JPMorgan, Goldman, Microsoft, Google) are all hedging. No enterprise with $10M+ in AI spend is standardizing on one vendor. The multi-vendor reality is the enterprise AI strategy precisely because no one trusts a single provider.
+
+**Counter-evidence 4: The operational agent proliferation.** The Gartner prediction: 40% of enterprise apps will have task-specific AI agents by 2026. At 40% penetration across a Fortune 500's application stack (500+ internal apps), they'll have 200+ AI agents. The question "which AI vendor?" becomes 200+ separate procurement decisions. Even if each is a "default to Claude" decision, verifying Claude's performance on each specific task type remains the Straw value proposition.
+
+### The "good enough" substitution math
+
+The specific comparison: "Just call the Claude API directly" vs. running a Straw competition.
+
+| Approach | Cost | Time | Output |
+|---|---|---|---|
+| "Just use Claude API" | $0 decision cost (subscription already paid) | Immediate | No comparison data, no rubric, potential compliance gap |
+| 6-month internal POC | $7.2M average sunk cost + 6 months | 6 months | One agent tested, no comparison |
+| Straw competition | $25K | 72 hours | Multiple agents compared on buyer's rubric, compliance documentation |
+
+For enterprises already paying for Claude Enterprise ($XX/month), the marginal cost of "just using Claude" for their task is perceived as $0. The friction to run a Straw competition is $25K + the time to define a rubric.
+
+**The "good enough" substitute is free. Straw is $25K.** This is the fundamental pricing tension. Jeremy must always be able to answer: "Why is a $25K Straw competition worth more than just defaulting to the Claude subscription you already have?"
+
+**The answer:** (a) Claude may not be the best agent for this specific task — you don't know until you compare. (b) Compliance documentation (ISO 42001, EU AI Act) requires evidence of evaluation. A "we defaulted to Claude" decision has no documentation. (c) The cost of a wrong AI deployment is $7.2M in sunk costs when the initiative fails. $25K to verify the right choice first is 0.35% insurance on a $7.2M risk.
+
+Sources: [Anthropic vs OpenAI 2026 Tech Insider](https://tech-insider.org/anthropic-vs-openai-2026/), [MindStudio Claude vs OpenAI Momentum 2026](https://www.mindstudio.ai/blog/google-vs-openai-vs-anthropic-momentum-2026-narrative)
