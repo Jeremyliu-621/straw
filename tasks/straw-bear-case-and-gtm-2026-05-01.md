@@ -24663,3 +24663,220 @@ The $1.7B-valuation evaluation platform mentioned in search results (unattribute
 Sources: medium.com/@kamyashah2018/top-5-ai-agent-evaluation-tools-in-2026, anthropic.com/research/bloom, alignment.anthropic.com/2025/bloom-auto-evals, galileo.ai/blog/agent-evaluation-framework
 
 TICK_END
+
+---
+
+## Tick 401 — Banking/Fintech Named Design Partners + Goldman Sachs "Will AI Eat Software?" (#83-87)
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets (banking/fintech vertical expansion)
+
+### Goldman Sachs "Will AI Eat Software?" (March 2026) — key Straw implications
+
+Ben Snider (Goldman Sachs strategist) published a formal research report concluding AI is unlikely to fully displace software but will force "major architectural change around LLMs and autonomous agents."
+
+Key investor concern identified: **"seat compression"** — a single AI agent replacing multiple human software users, gutting per-seat SaaS licensing revenue. This is not a Straw concern (Straw doesn't charge per seat); it's the concern Straw's customers face when evaluating which agents to bet on.
+
+**The Straw angle on this report:** If enterprises are choosing which AI agents replace which human workers, the selection decision is $100K-$1M+/year in compensation per role replaced. A $25K Straw evaluation to make a confident selection vs. a $1.9M failed GenAI project is the strongest financial case in any vertical.
+
+### Named fintech/banking design partner contacts (#83-87)
+
+**#83 — Teresa Heitsenrether, Chief Data and Analytics Officer, JPMorgan Chase**
+- Leads AI internal team re-engineering workflows across JPMorgan
+- JPMorgan has 2,000+ AI staff; $19.8B tech + AI budget in 2026
+- Signal: JPMorgan hired an MD specifically for "agentic AI" for Chase and its fintechs (February 2026)
+- Straw pitch: "You have 40,000 developers using AI coding assistants. When JPMorgan decides to deploy an agent in a production workflow, what's your evaluation framework? Straw is the answer."
+
+**#84 — Derek Waldron, Chief Analytics Officer, JPMorgan Chase**
+- Directly responsible for overseeing JPMorgan's overall AI program
+- Published McKinsey interview on "building an AI-first bank culture" (2026)
+- Straw approach: Cite McKinsey interview, reference "building AI-first" = needs evaluation infrastructure
+
+**#85 — Guy Halamish, COO of Commercial + Investment Bank, JPMorgan Chase**
+- Named February 2026 specifically to "accelerate AI rollout"
+- New mandate = new budget, new vendor evaluation process
+- Straw pitch: "You were just named to accelerate AI rollout. What's your framework for deciding which agents get deployed?"
+
+**#86 — Lori Beer, Global CIO, JPMorgan Chase**
+- Navigating "proliferation of AI agents working alongside JPMorgan's sprawling workforce" (Fortune 2026)
+- CIO = infrastructure decision-maker; Straw's evaluation layer is infrastructure
+- Budget authority: $19.8B tech spend includes Straw-scale pilot decisions
+
+**#87 — Marco Argenti, CIO, Goldman Sachs (previously flagged as #71)**
+- Goldman Sachs experimenting with "fully autonomous AI coding agents like Devin"
+- When evaluating whether to deploy Devin vs. competitors, Straw is the evaluation mechanism
+- High-value target: Goldman + Straw creates immediate credibility cascade across FinTech
+
+Note: JPMorgan contacts #83-85 are all at the same firm. Best entry point is Derek Waldron via McKinsey interview connection or Guy Halamish (new role = most receptive to new vendor relationships).
+
+Sources: bloomberg.com/news/articles/2026-02-12/jpmorgan-promotes-halamish, efinancialcareers.com/news/jp-morgan-hired-an-md-to-work-on-agentic-ai, mckinsey.com/industries/financial-services/our-insights/jpmorgan-chases-derek-waldron, goldmansachs.com/insights/top-of-mind/will-ai-eat-software
+
+TICK_END
+
+---
+
+## Tick 402 — Cold Outreach Templates: Straw's First 10 Design Partner Emails
+
+**Date researched:** 2026-05-03
+**Theme:** GTM (founder-led sales)
+
+### The benchmark reality for cold B2B SaaS outreach (2026)
+
+- Custom personalized emails: **7-8% reply rate** (vs. 1% for templates)
+- At 50 targeted emails/day: **2-5 meetings/week → 1-2 new customers**
+- Key structure: **Context + Problem + Solution + Soft CTA**
+- ICP precision beats volume — narrow targeting beats broad outreach every time
+
+### Email Template 1: "The 88% Frame" (for VP Engineering / Head of AI)
+
+Subject: JPMorgan's agent evaluation question (and ours)
+
+Hi [Name],
+
+88% of agent pilots never reach production. The 12% that do have one thing in common: they defined success criteria before running any agent. Your team is probably in pilot mode right now.
+
+We built Straw — a platform where you post your actual problem (with rubric criteria for what good looks like), agents compete to solve it, and you get an objective score. No demo theater. The score doesn't lie.
+
+Would 20 minutes next week make sense? I'd share exactly how [a company similar to theirs] is using Straw to cut their agent selection timeline from months to weeks.
+
+—Jeremy
+
+### Email Template 2: "The Compliance Wedge" (for regulated industries — banking, healthcare, legal)
+
+Subject: Colorado AI Act kicks in June 30 — your agent evaluation audit trail
+
+Hi [Name],
+
+Starting June 30, Colorado's AI Act imposes $20K/violation for AI deployments without documented evaluation. EU AI Act follows August 2.
+
+Most enterprises we talk to don't have a structured way to document how they chose their AI agents, let alone a rubric-defined evaluation log.
+
+Straw produces the evaluation log. Agents compete, rubric-based scoring runs automatically, every criterion scored is auditable. It's built for exactly this compliance window.
+
+10 minutes this week?
+
+—Jeremy
+
+### Email Template 3: "The Competitor Signal" (for companies where competitor has AI advantage)
+
+Subject: [Their competitor] just deployed an AI agent. How you evaluate yours.
+
+Hi [Name],
+
+[Competitor] announced [AI agent deployment]. When [Company] decides which agent to deploy in response, the selection decision is worth millions.
+
+Straw is where enterprises post their actual challenge, agents compete against rubric criteria, and the winning agent is selected on performance — not on who gave the best demo.
+
+If you're evaluating agents in the next 6 months, happy to walk you through how the evaluation pipeline works. 15 minutes?
+
+—Jeremy
+
+### Template usage guidance
+
+- Templates 1 and 3: for tech companies, SaaS, fintech
+- Template 2: for banking, insurance, healthcare, legal — any regulated industry
+- Personalization required: swap competitor name, insert relevant recent news, reference their specific agent use case
+- Do NOT send to more than 3 people at the same company in the same week
+
+### Outreach sequencing for first 10 design partners
+
+1. **Week 1:** Send to top 10 ranked contacts from design partner list (Ticks 356, 362, 367, 387, 396, 401). Use Template 1 for tech, Template 2 for regulated.
+2. **Week 2:** Follow up 10 non-replies with one additional personalized line
+3. **Week 3:** LinkedIn message to non-email-responders
+4. **Week 4:** Ask for warm introduction from mutual connection (use LinkedI or CAIF network)
+
+Target: 10 emails/day for 2 weeks = 100 highly personalized outreach emails → expected 7-8 replies → 3-4 calls → 1-2 design partners from the first batch
+
+Sources: cleverly.co/blog/cold-email-strategy-for-b2b-saas, saleshandy.com/blog/saas-cold-email, f3fundit.com/cold-email-that-converts-templates-for-b2b-saas-outreach
+
+TICK_END
+
+---
+
+## Tick 403 — Series A Pitch Structure: The 12-Slide Straw Narrative
+
+**Date researched:** 2026-05-03
+**Theme:** Fundraising
+
+### What investors are paying for in AI infrastructure Series A (2026)
+
+BVP guidance for AI infrastructure pitch:
+- Don't pitch "better LLM" — pitch infrastructure solving real enterprise pain
+- Evidence over anecdotes — market data, not examples
+- Outcome-based or hybrid pricing models preferred
+- Demonstrate scalability without solving the scaling problem yet (show the architecture)
+
+The AI infrastructure funding shift in 2026: investors moved toward companies solving governance, orchestration, cost optimization — away from pure model innovation.
+
+### The 12-slide Straw Series A deck structure
+
+**Slide 1 — The Hook (30 seconds)**
+"88% of agent pilots fail. The 12% that succeed defined success criteria upfront. We make that 10× faster."
+
+**Slide 2 — The Problem (the burning platform)**
+- $1.9M average failed GenAI project (Gartner 2026)
+- $7.2M average sunk cost in failed AI procurement (Deloitte)
+- 88% pilot failure rate — enterprises know their agents don't work, don't know why
+- Current alternative: manual QA, vendor demos, gut instinct
+
+**Slide 3 — The Market (TAM sizing)**
+- $15T B2B spend AI-agent-intermediated by 2028 (Gartner)
+- Enterprise AI agents market: $10.9B → $47B by 2030 (44% CAGR)
+- Even 1% certification TAM = $150B in "certified agent spend"
+- Evaluation + observability: BVP names this as critical frontier (no funded incumbent in pre-deployment)
+
+**Slide 4 — The Solution (Straw's mechanism)**
+- Task posting with rubric: enterprise defines what winning looks like
+- Agent competition: multiple vendors/agents compete on the real problem
+- Tiered evaluation: Tier 1 deterministic → Tier 2 LLM ensemble → Tier 3 autonomous investigator
+- Winner certification: score is the artifact; auditable, compliance-ready
+
+**Slide 5 — Why Now (timing)**
+- Google Gemini Enterprise (April 22, 2026) added agent evaluation — validates category
+- Microsoft Copilot Studio GA (April 2026) added agent evaluations — second validation
+- Three regulatory deadlines: Colorado June 30, EU August 2, California now
+- GenAI is in Gartner's Trough of Disillusionment — enterprises need proof, not demos
+
+**Slide 6 — Competitive Landscape**
+- Post-deployment (Braintrust, Arize, Langfuse, Maxim): wrong layer
+- Platform-native (Google, Microsoft): single-vendor lock-in
+- Manual consultants (Accenture, Deloitte): 10× slower, 100× more expensive
+- **Straw: only pre-deployment, cross-vendor, rubric-based competition format (ICAAN moat)**
+
+**Slide 7 — Product Demo**
+- Task posting flow (30 seconds)
+- Evaluation pipeline visualization (30 seconds)
+- Winner report with rubric scores (30 seconds)
+
+**Slide 8 — Business Model**
+- Subscription ($12K-$72K/year by tier)
+- Per-evaluation fees ($500-$10K)
+- Deployment success fee (3-7% of Year 1 agent contract)
+- Year 3 target: 100 enterprise customers × $50K ACV = $5M ARR
+
+**Slide 9 — Traction**
+- Design partners: [X named companies]
+- Evaluations run: [Y]
+- First paid contract: [date]
+
+**Slide 10 — Go-To-Market**
+- Phase 0: 5-10 design partners via founder-led outreach (now)
+- Phase 1: Content-led inbound + conference sponsorship (Q3 2026)
+- Phase 2: Platform partnerships (Anthropic, Kite Chain) (Q4 2026+)
+
+**Slide 11 — Team**
+- Jeremy Liu — [background] + specific AI/procurement domain expertise
+- Advisors: [CAIF academic partner], [design partner executive]
+
+**Slide 12 — The Ask**
+- Raising: $[X]M Seed at $[Y]M cap
+- Use: 12 months runway, 3 engineers, sales hire, 10 design partners
+- Milestone: $[Z]K ARR in 12 months
+
+### The one thing that makes this deck work
+
+Every slide must connect back to the same insight: **enterprises are making multi-million-dollar AI agent decisions on demos instead of data.** Straw replaces the demo with a rubric. The entire deck is variations on this theme.
+
+Sources: bvp.com/atlas/ai-infrastructure-roadmap-five-frontiers-for-2026, headline.com/blog-latest/article-latest/series-a-pitch-deck-template, siliconangle.com (PitchBook AI infrastructure report), beri.net/article/ai-operational-infrastructure-funding-shift-2026
+
+TICK_END
