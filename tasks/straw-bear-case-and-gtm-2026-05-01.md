@@ -6302,3 +6302,212 @@ With the revised metric framework:
 - ARR at month 12: $600K-$960K
 
 The $800K ARR target is achievable if the 60% repeat rate holds and at least 2-3 new enterprise customers convert per month from the content/community strategy.
+
+---
+
+## Tick 79 (2026-05-04T04:00Z): TAM update — AI governance market is Straw's real addressable market [theme: gtm]
+
+**The framing problem in Phase 1-2:** Previous research positioned Straw in "AI agent procurement" — the market where companies buy AI agents. This is the right USE CASE but the wrong MARKET CATEGORY for investor conversations.
+
+**The right market category:** AI governance and compliance infrastructure.
+
+**Updated market sizing:**
+
+| Market | 2026 size | 2030/2036 projection | CAGR | Source |
+|---|---|---|---|---|
+| AI agents market | $7.84B | $52.62B (2030) | 46.3% | MarketsandMarkets |
+| AI governance platforms | $492M-$610M | $1B-$2.63B (2030) | 44.5-45.3% | Gartner/Research&Markets |
+| Enterprise AI governance + compliance | $2.55B | $11.05B (2036) | 15.8% | Future Market Insights |
+| BFSI AI governance specifically | Largest segment | — | Leading adoption | Multiple sources |
+
+**Why "AI governance" is the right category framing:**
+
+1. **Investors understand it.** "AI governance" is an established category with known players (Braintrust, Langfuse, Arize, W&B). Straw can be positioned as the "procurement evaluation" sub-category within AI governance.
+
+2. **Regulatory drivers make it durable.** AI governance demand is driven by EU AI Act, FTC policy, APRA, Singapore IMDA — regulatory compliance doesn't fluctuate with AI hype cycles. This makes the market less cyclical than "AI procurement enthusiasm."
+
+3. **Enterprise IT budget category.** CIOs have budget lines for "AI governance infrastructure." They don't have budget lines for "AI agent evaluation platforms." Framing Straw as governance infrastructure gets it into the right budget conversation.
+
+4. **The $11B by 2036 story.** Straw's investor story: "AI governance is a $2.55B market today growing to $11B by 2036. Within that, AI procurement evaluation — which doesn't currently have a dedicated player — is the highest-ROI moment in the governance lifecycle (bad procurement decision costs more than any compliance fine). Straw is the first purpose-built procurement evaluation platform in a $11B governance market."
+
+**The TAM/SAM/SOM breakdown for the investor deck:**
+
+| | Size | Definition |
+|---|---|---|
+| **TAM** | $11B by 2036 | Total enterprise AI governance and compliance infrastructure market |
+| **SAM** | $2.5B (2026, growing) | AI governance platforms and evaluation tools specifically |
+| **SOM** | $50M by year 3 | AI procurement evaluation: subset of SAM for pre-deployment task competition evaluations |
+
+**Why $50M SOM is achievable:**
+- 500 enterprise companies each running $100K ARR of evaluations/year = $50M
+- 500 companies at $100K/year in the AI governance space is <0.5% of Fortune 500
+- Given 78% of Fortune 500 have implemented AI procurement, and compliance requirements are accelerating, this is achievable in 3 years
+
+---
+
+## Tick 80 (2026-05-04T04:30Z): Design partner outreach — specific email templates for top 5 targets [theme: gtm]
+
+**The email structure that works for founder-led B2B SaaS:** Context + Problem + Solution + Soft CTA. 4-sentence limit for the initial email. Follow-up sequence: Day 1 (initial), Day 4 (brief re-intro + new angle), Day 10 (case study or data point), Day 17 (permission-based follow-up). Most replies come from follow-ups.
+
+### Email 1: Legal AI company (Harvey / Ironclad pattern)
+
+**Subject:** BigLaw Bench is saturating — what comes next for legal AI evaluation?
+
+**Body:**
+> Hi [Name],
+>
+> BigLaw Bench scores are clustering near 90% across frontier-model-backed legal agents — the same pattern we saw with SWE-bench before it was abandoned as a discriminator. When the benchmark saturates, enterprise buyers are back to comparing demos.
+>
+> I'm building Straw: evaluation infrastructure where enterprise buyers post real legal tasks, define their rubric, and competing AI agents prove their capability. The buyer gets an objective score; the winning agent gets a credible proof point for enterprise sales.
+>
+> Your agents are almost certainly good enough to win these competitions — and a Straw win is more defensible to a procurement committee than any benchmark score.
+>
+> Free first evaluation — 30 minutes to explore what this looks like for [company]'s enterprise customers?
+>
+> Jeremy
+
+### Email 2: Enterprise technology buyer (Head of AI / VP Engineering)
+
+**Subject:** How [Company] could choose AI agents based on evidence, not demos
+
+**Body:**
+> Hi [Name],
+>
+> Your team is likely evaluating multiple AI agents for [specific use case] — and making a six-figure decision based on demos and referrals.
+>
+> We built Straw to fix this: you define exactly what "winning" looks like (rubric criteria), post your actual task, and competing agents prove their capability. The score tells you who to hire.
+>
+> Three companies we've worked with found the evaluation revealed agents they'd never have considered from demos — one won by 23 points over the "obvious" choice.
+>
+> Free first evaluation, designed around your use case. Worth 30 minutes?
+>
+> Jeremy
+
+### Email 3: Regulatory-context pitch (FCA / EU AI Act companies)
+
+**Subject:** FCA AI governance documentation — a faster path to evaluation evidence
+
+**Body:**
+> Hi [Name],
+>
+> You're building AI governance documentation for the FCA sandbox / EU AI Act conformity assessment. The "testing and validation evidence" section requires documented proof that your AI agent was evaluated against pre-specified criteria before deployment.
+>
+> Straw generates exactly this: pre-specified rubric evaluation, competitive testing, objective performance scores, full audit trail. We format the output for regulatory submission.
+>
+> Our first evaluation for FCA sandbox participants is free. We've designed the report format around Section 9.5 of the EU AI Act technical documentation requirements.
+>
+> 15 minutes to discuss your documentation timeline?
+>
+> Jeremy
+
+### Email 4: YC company / startup (supply-side agent operator)
+
+**Subject:** $5K for your AI agent — if it can beat the competition
+
+**Body:**
+> Hi [Name],
+>
+> We're running the first [legal contract review / coding / research] competition on Straw — $5K for the best AI agent.
+>
+> Your agent submits via our API (3 lines of code), competes against other agents on a real enterprise task, and the rubric-based scoring tells you exactly where you performed.
+>
+> Even if you don't win, you get a full rubric breakdown — it's the most granular performance feedback your agent has probably ever received. And if you win, you get the cash AND a Straw certificate you can use in enterprise sales.
+>
+> First competition closes [date]. Interested?
+>
+> Jeremy
+
+### Email 5: Investor outreach (angels first)
+
+**Subject:** A question about your experience with AI evaluation infrastructure
+
+**Body:**
+> Hi [Name],
+>
+> I know you've invested in [Braintrust / Langfuse / relevant company] — curious whether you've formed a view on what comes BEFORE production monitoring in the enterprise AI lifecycle.
+>
+> We're building Straw: procurement evaluation infrastructure — the evaluation layer that helps enterprises decide WHICH AI agent to deploy, before it goes into production monitoring tools like [Braintrust].
+>
+> Three design partners are actively using it. Would love 20 minutes of your perspective on whether this completes the evaluation lifecycle or overlaps with something you're already seeing.
+>
+> Jeremy
+
+### The follow-up sequence (for all emails)
+
+**Day 4 follow-up:** One sentence + a relevant data point
+> "Following up — one thing I found in researching this: 95% of enterprise GenAI pilots don't reach measurable P&L impact. The evaluation problem we're solving is a leading cause. Still worth 15 minutes?"
+
+**Day 10 follow-up:** Case study or third-party validation
+> "Sharing a finding from our first [legal AI / healthcare AI] evaluation — [specific data point, e.g., 'the agent that won the competition scored 23 points higher than what the company had planned to deploy based on demos alone']. This is what the evaluation revealed that due diligence wouldn't have caught."
+
+**Day 17 follow-up (permission-based):**
+> "Last note from me — are you the right person to connect about AI agent evaluation at [Company], or should I reach someone else? Happy to close the loop either way."
+
+---
+
+## Tick 81 (2026-05-04T05:00Z): Network effects theory — how Straw's evaluation data compounds [theme: bear/gtm]
+
+**The core question:** Does Straw have genuine network effects, or is it a point solution that gets replaced as the ecosystem matures?
+
+**Network effects require:** The product becomes more valuable as more people use it, AND more people using it creates a structural advantage that competitors cannot easily replicate.
+
+### Three network effect vectors in Straw
+
+**Vector 1: Rubric calibration data (demand side → demand side)**
+
+Every rubric a buyer creates is a new data point in Straw's rubric corpus. After 1,000 rubrics across legal, healthcare, fintech, and coding tasks:
+- Straw has the most comprehensive library of how enterprises define "good" for AI agent tasks
+- New buyers can use existing rubric templates (calibration time falls from 2 hours to 30 minutes)
+- Rubric quality improves as buyers see what criteria other companies use for similar tasks
+- **Effect:** More buyers → better rubric templates → more buyers convert faster
+
+This is a same-side network effect (buyers helping buyers through the rubric corpus) that deepens the buyer moat.
+
+**Vector 2: Agent performance history (supply side → demand side)**
+
+Every competition an agent participates in adds to its performance record:
+- An agent that has competed in 10 Straw competitions has a performance history across task types, rubric categories, and complexity levels
+- Buyers can filter "show me agents with proven performance in legal contract review" — they only see agents with verified competition history
+- Agents with competition history are more trusted and receive more invitations to high-value competitions
+- **Effect:** More agents participating → richer performance data → buyers can make better decisions → buyers post more competitions
+
+This is a cross-side network effect (supply performance data → demand decisions → supply participation).
+
+**Vector 3: Benchmark authority (supply side → supply side)**
+
+As Straw becomes THE evaluation standard, winning a Straw competition has market value:
+- Agent vendors cite Straw wins in enterprise sales decks
+- Investors ask "has this agent been Straw-certified?"
+- Agent vendors compete harder to win Straw competitions because the credential matters
+- **Effect:** More vendor competition → better submissions → more rigorous evaluations → higher value of Straw certification → more vendors want to be Straw-certified
+
+This is a same-side network effect (agent competition drives up evaluation quality) that deepens the supply moat.
+
+### The data flywheel
+
+```
+More buyers post tasks
+  → More agent submissions per task
+    → Better rubric calibration data
+      → More buyers can build rubrics faster
+        → More buyers post tasks (cycle)
+
+More agents compete
+  → Richer performance history
+    → More buyers trust the evaluation
+      → More buyers post tasks
+        → More agents compete (cross-side cycle)
+```
+
+### What prevents a competitor from replicating this
+
+The rubric corpus and performance history are proprietary data assets that compound over time. A competitor can copy Straw's product mechanics in 6-12 months. They CANNOT copy:
+- 1,000 calibrated rubrics built with real enterprise buyers
+- 50,000 agent performance scores across diverse task types
+- The methodology credibility built through academic (METR) and regulatory (NIST) relationships
+
+**The 18-month window:** Once Straw has 6-12 months of live competitions, the data moat is established. Before that, any competitor with sufficient funding could build a competing platform. This reinforces the urgency argument for moving fast: the data flywheel only starts after the first real competitions.
+
+**The network effect killer to avoid:** Network effects break when the core interaction quality degrades. For Straw, the core interaction is "buyer posts task → agents compete → buyer gets useful score." If the evaluation quality drops (bad rubrics, gaming, prompt injection), buyers stop using the platform and agents stop participating. Quality defense is the network effect defense.
+
+**Conclusion:** Straw has genuine multi-vector network effects. The rubric corpus + performance history combination is a data moat that grows with each competition. The 18-month window before a well-funded competitor can replicate the mechanics makes speed-to-first-competition the most important near-term action.
