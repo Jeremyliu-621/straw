@@ -2551,3 +2551,348 @@ Sources: [Agentic AI infrastructure landscape 2025-2026 Medium](https://medium.c
 ---
 
 **Push status (Session 4):** Writing complete — 2 new ticks (24-25). Final commit as Jeremy Liu.
+
+---
+
+## Phase 2 Session 5 — Ticks 26–29 (2026-05-03, overnight continuation)
+
+*Continuing from Session 4. Four new ticks covering: Google's Gemini Agent Marketplace (critical unrecognized competitor), the SI channel as Straw's most underexplored distribution play, SWE-bench saturation as a GTM moment, and named contacts from the OpenAI Evals team and SI ecosystem.*
+
+---
+
+## Tick 26 (2026-05-03T00:30Z): Google's Gemini Enterprise Agent Platform — the unrecognized competitor [theme: bear]
+
+> **⚠️ CROSS-REFERENCE CORRECTION TO PHASE 1 SECTION 10 AND PHASE 2 TICK 12:** Phase 1's competitive analysis and Phase 2's Braintrust threat assessment both missed this. Google has shipped a more direct Straw competitor than Braintrust. This tick is the correction.
+
+### What Google built at Cloud Next 2026
+
+Google rebranded and consolidated its AI platform at Cloud Next 2026: Vertex AI became the **Gemini Enterprise Agent Platform**. What shipped is not just a developer tool — it is a full enterprise AI agent procurement and evaluation stack.
+
+**The Agent Gallery + Agent Marketplace (live now):**
+- Partner-built agents from Accenture, Adobe, Atlassian, Deloitte, Lovable, Oracle, Palo Alto Networks, Replit, S&P Global, Salesforce, ServiceNow, Workday — discoverable and purchasable inside Gemini Enterprise
+- Procurement via existing Google Cloud billing (eliminates separate procurement friction)
+- "High-quality and validated" designation: every featured agent passes a four-step evaluation for basic functionality, output accuracy, autonomous execution, and enterprise standards
+- Customers "source, evaluate, and purchase" agents — the Straw verb sequence, inside Google
+
+**The Adaptive Rubrics (the scary part):**
+> *"The Gen AI evaluation service lets you see how a model performs on your specific tasks and against your unique criteria — providing valuable insights which cannot be derived from public leaderboards and general benchmarks."*
+
+Google's evaluation engine in Gemini Enterprise specifically offers:
+1. **Adaptive Rubrics** — "generates a unique set of pass or fail rubrics for each individual prompt in your dataset." The analogy in their own docs: "like a teacher writes unique questions for each student's essay based on its specific topic, rather than using the same generic questions."
+2. **Multi-turn auto-raters** — analyze intent extraction, dynamically generate rubrics, provide "objective validation verdicts"
+3. **Agent performance dashboards, online evaluation for live traffic, Unified Trace Viewer** for debugging
+
+Sources: [Google Cloud AI Agent Marketplace Blog](https://cloud.google.com/blog/topics/partners/google-cloud-ai-agent-marketplace), [Agent Evaluation Docs](https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/agent-evaluation), [Partner Agents in Gemini Enterprise](https://cloud.google.com/blog/products/ai-machine-learning/partner-built-agents-available-in-gemini-enterprise), [Gen AI Evaluation Service Overview](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview), [Google Cloud Next 2026 recap](https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era)
+
+---
+
+### Why this is different from what Phase 2 Tick 12 caught (the Braintrust threat)
+
+Braintrust is a startup building inside-out evaluation (your company evaluates your own AI). Google is building both inside-out AND outside-in procurement. The Gemini Enterprise marketplace lets you discover, evaluate, and purchase agents from a curated partner ecosystem — which is exactly Straw's description.
+
+**Google's version of Straw:**
+- Supply side: pre-vetted partner agents (Accenture, Deloitte, Salesforce build them)
+- Demand side: enterprises use adaptive rubrics to evaluate against their criteria
+- Procurement: billing through existing Google Cloud account
+- Distribution: $750M committed to SI partners (Accenture, Deloitte, KPMG, McKinsey, BCG) deploying this system
+
+**This has $750M in committed partner funding, infinite Google distribution, and embedded billing. It's live now.**
+
+---
+
+### The four distinctions that preserve Straw's position
+
+These are the ONLY distinctions that matter. If Straw can't defend all four, the thesis weakens materially.
+
+| Dimension | Google Gemini Enterprise | Straw |
+|---|---|---|
+| **Agent universe** | Gemini-compatible partner agents only (Accenture, Deloitte, ServiceNow ecosystem) | Model-agnostic: any agent (Claude, GPT-5, Gemini, Mistral, open-source) can compete |
+| **Who defines evaluation criteria** | Company defines within Google's framework; Google-designed four-step for marketplace listing | Company defines completely; Straw's rubric engine is purpose-built for this, not a bolt-on |
+| **Competition mechanic** | Companies evaluate specific agents they have selected; no open competitive entry | Open enrollment: any agent can compete; companies discover unknown best-in-class agents |
+| **Neutrality** | Google is also a model vendor (Gemini competes in the marketplace it operates) | Straw has no model vendor relationship — complete neutrality |
+
+**The strongest argument against Google:** A company using Gemini Enterprise to evaluate agents is evaluating in a marketplace where Google's own models are competing. Google controls both the rubric engine and one of the agents being evaluated. This is a structural conflict of interest that sophisticated enterprise buyers and enterprise legal/compliance teams will eventually notice. Straw's neutrality — no vendor relationship with any agent — is its single strongest claim that Google structurally cannot match.
+
+**The strategic question this raises:** Should Straw partner with Google rather than compete? Straw could become the neutral evaluation layer for agents that appear in the Gemini Enterprise marketplace — "before you list your agent in the Gemini Enterprise Agent Gallery, prove it wins on a Straw-run competition." This positions Straw as upstream infrastructure rather than a competing marketplace.
+
+---
+
+### The existential bear case
+
+If Google adds a "competitive comparison" feature — run the same task against three different marketplace agents simultaneously and see which wins — and does so with Straw-style rubric design (company-defined criteria, objective scoring, model-agnostic evaluation), then Straw's core offering is a Google feature. The precedent: Google Maps vs. every standalone mapping startup. Google Docs vs. document tools. The question is whether Straw can establish enough outcome data, neutrality credibility, and customer lock-in before that feature ships.
+
+**Timeline estimate:** Google's current marketplace has Google-defined four-step validation (not customer-competition). Adding customer-defined competitive comparison requires UI redesign, policy changes, and agent opt-in mechanisms. Minimum 12 months, likely 18-24 months. **The window is the same as the Braintrust window — but the threat is bigger because Google has distribution Braintrust doesn't.**
+
+---
+
+## Tick 27 (2026-05-03T00:50Z): The SI channel — Straw's most underexplored distribution play [theme: gtm]
+
+### The discovery
+
+Every previous tick has identified individual enterprise buyers as Straw's first customers. This tick identifies a different path: **the system integrators (SIs) who deploy AI agents for those enterprises**. The SIs are intermediaries who need Straw more urgently than the enterprises do — because their clients are asking "how do you know your recommended agent is the best one?"
+
+### What happened in February/April 2026 changes everything
+
+**OpenAI Frontier Alliances (February 23, 2026):**
+OpenAI announced multi-year partnerships with McKinsey, BCG, Accenture, and Capgemini — called "Frontier Alliances." The structure:
+- **BCG + McKinsey:** Strategy and operating model — help leadership define where and how to deploy agents at scale
+- **Accenture + Capgemini:** End-to-end systems integration — data architecture, cloud infrastructure, connecting OpenAI's Frontier to enterprise systems
+- Each partner is building dedicated practice groups with certified OpenAI engineers
+- OpenAI's "forward deployed engineers" co-work with SI teams at client sites
+
+**Google's $750M Partner Fund (April 2026):**
+At Cloud Next 2026, Google committed $750M to accelerate SI partners' agentic AI deployments. Commitments:
+- **Accenture:** 450+ agents built on Google Cloud, expanding Gemini practice across all industry verticals
+- **Deloitte:** "Largest ever" single cloud AI platform investment; 100+ agents deployed; new Gemini Enterprise Business Group
+- **McKinsey:** Full company-wide Gemini Enterprise deployment + DeepMind early access
+- **BCG:** Expanding Google Cloud partnership for enterprise agent adoption
+- All major SIs (KPMG, PwC, TCS, Wipro, Infosys, Cognizant, HCLTech) are A2A protocol partners
+
+Sources: [OpenAI Frontier Alliances announcement](https://openai.com/index/frontier-alliance-partners/), [Fortune: OpenAI partners McKinsey BCG Accenture](https://fortune.com/2026/02/23/openai-partners-with-mckinsey-bcg-accenture-and-capgemini-to-push-its-frontier-ai-agent-platform/), [CNBC: OpenAI consulting deals](https://www.cnbc.com/2026/02/23/open-ai-consulting-accenture-boston-capgemini-mckinsey-frontier.html), [Google $750M partner fund](https://thenextweb.com/news/google-cloud-750m-partner-fund-agentic-ai)
+
+---
+
+### Why SIs need Straw (the structural argument)
+
+**The SI's problem, stated plainly:** An SI recommends an AI agent stack to an enterprise client. The client asks: "How do you know this is the best agent for our use case? How would you know if a competitor's agent would do this better?" The SI's current answer: demo, references, and trust. That answer is failing. McKinsey's own research: 62% of organizations are experimenting with AI agents, but only 23% have scaled. The gap is governance and evaluation, which the SIs are deploying into without adequate tools.
+
+**What SIs gain from a Straw partnership:**
+1. **Defensibility:** "We ran a Straw competitive evaluation. Your recommended agent won on 7 of 8 rubric criteria on your exact task type." This is a deliverable enterprises pay for.
+2. **Discovery:** Straw's marketplace might surface specialist agents the SI hasn't considered — expanding their toolkit and demonstrating they're optimizing for client outcomes, not vendor relationships
+3. **Liability protection:** Documented evaluation evidence is a defense when the deployed agent underperforms
+4. **Methodology credibility:** An SI that uses Straw can market itself as doing "objective, rubric-driven AI procurement" — a differentiator from SIs that just demo
+
+**The pitch to an SI:** "Your clients are asking how they know the agent you recommended is the best one. Straw gives you the answer: a structured competitive evaluation with their actual task, their success criteria, and an auditable score. Add Straw to your delivery methodology and you can walk into every client conversation with objective evidence rather than references."
+
+---
+
+### Named SI contacts (new additions to the design partner list)
+
+| Name | Company | Role | Contact | Opener |
+|---|---|---|---|---|
+| **Lan Guan** | Accenture | Chief AI & Data Officer — leads 80,000 AI & Data experts globally | LinkedIn, Accenture newsroom | *"Accenture has deployed 450+ AI agents for enterprise clients. When those clients ask 'how do you know this is the best agent?' — Straw is the answer. We provide objective, rubric-based competitive evaluation evidence. Worth a conversation about how Straw fits into Accenture's AI delivery methodology?"* |
+| **Arnab Chakraborty** | Accenture | Chief Responsible AI Officer — WEF AI Governance Alliance, US Senate AI Insight Forum | LinkedIn | *"You're defining responsible AI deployment standards at Accenture. Straw's evaluation evidence is exactly the kind of auditable, documented, rubric-based proof that makes AI deployment defensible. Would love to show you what that looks like for your client engagements."* |
+| **Marc Warner** | Accenture | CTO — former CEO of Faculty (UK's leading applied AI company), acquired by Accenture 2026 | LinkedIn | *"Faculty's work on applied AI evaluation is foundational to what we're building at Straw. Now that you're CTO at Accenture, I'd love to show you how competitive evaluation infrastructure fits into Accenture's delivery practice."* |
+| **Beena Ammanath** | Deloitte | Global Lead, Deloitte AI Institute; former head of HP's AI CoE | LinkedIn, @BeenaAmmanath | *"Deloitte is making its largest cloud AI investment ever in the Google partnership. Straw is the evaluation layer that makes those agent deployments objectively defensible. Would love to show you the methodology."* |
+| **Costi Perricos** | Deloitte | Global Head of Cyber; AI security practice lead | LinkedIn | *"Deloitte's 100+ enterprise agent deployments each carry a 'which agent is best for this client?' question. Straw is how you answer it with data. Worth a conversation?"* |
+| **Sam Balaji** | BCG | Global Head of Digital & Technology Advantage | LinkedIn | *"BCG is defining how enterprises deploy AI agents at scale. Straw is the evaluation infrastructure that proves the recommendation is right. Would love to show you what a Straw evaluation report looks like as a client deliverable."* |
+
+**The SI partnership model (not a design partner, a channel partner):**
+
+Rather than design partners (companies using Straw for their own AI procurement), SIs can be **resellers** — packaging a Straw evaluation run as a line item in their AI transformation delivery. Revenue share: Straw charges the SI $5K–$15K per evaluation setup; SI charges client $15K–$30K (standard SI markup). Straw earns revenue without direct enterprise sales effort; SIs earn margin on a differentiating deliverable.
+
+This is the channel partner model that enterprise software companies use (Salesforce + Accenture; ServiceNow + Deloitte). The difference: Straw is early enough that the SI relationships could be exclusivity arrangements — "Accenture uses Straw for all competitive AI agent evaluations in their practice."
+
+---
+
+## Tick 28 (2026-05-03T01:10Z): SWE-bench is dead — the benchmark crisis as Straw's content moment [theme: bear/gtm]
+
+### The event: "The End of SWE-Bench Verified"
+
+On February 23, 2026, the Latent Space podcast published an episode with **Olivia Watkins** (OpenAI Frontier Evals team) and **Mia Glaese** (VP of Research, OpenAI, leads Codex, human data, and alignment) titled: *"The End of SWE-Bench Verified."*
+
+This is not a minor development. It is the most-listened-to AI engineering podcast declaring the most-cited AI coding benchmark dead.
+
+**What they found:**
+- SWE-bench Verified saturates above 90%. Claude Opus 4.7 already at 87.6%. Next-generation frontier models are functionally at the ceiling.
+- The original authors "publicly abandoned" SWE-bench Verified and endorsed SWE-bench Pro
+- Saturation follows a "logarithmic curve" — the remaining 10-13% is signal, but the methodology is broken
+- Contamination is real: models may be trained on SWE-bench test cases
+
+**What replaces it (the research community's answer):**
+- **SWE-bench Pro:** Massive performance drop (all models below 25% pass@1). More discriminative, less contaminated. Still a synthetic benchmark — just harder.
+- **SWE-EVO:** Requires agents to interpret release notes and evolve codebases across multiple PRs. Even the best model: 25% on SWE-EVO vs 72.8% on Verified.
+- **N-run consistency + policy adherence + cost-adjusted accuracy:** The 2H-2026 leaderboards are moving toward multi-run reliability metrics
+
+Sources: [Latent Space: The End of SWE-Bench Verified](https://www.latent.space/p/swe-bench-dead), [SWE-bench leaderboard](https://www.swebench.com/), [CodeSOTA SWE-bench 2026 guide](https://www.codesota.com/guides/swe-bench-explained), [RapidClaw AI Agent Benchmarks 2026](https://rapidclaw.dev/blog/ai-agent-benchmarks-2026)
+
+---
+
+### The bear case this creates for Straw
+
+The benchmark research community's response to SWE-bench saturation is **not** "use customer-defined tasks." It is "use harder synthetic benchmarks." SWE-bench Pro and SWE-EVO are the proposed replacements — still synthetic, still designed by academics, still measuring a proxy of the real task.
+
+**This means:**
+1. Straw's core argument ("generic benchmarks don't measure your actual task") is right but is competing against a research community that wants to fix generic benchmarks, not replace them
+2. The evaluation research community will produce progressively harder synthetic benchmarks — SWE-bench Pro, SWE-EVO, SWE-bench-Live — that keep the academic community satisfied without addressing Straw's business case
+3. Enterprise buyers may feel the synthetic benchmark problem is "solved enough" by these harder variants without needing Straw's custom evaluation approach
+4. The Latent Space episode specifically frames the answer as "better benchmarks" — not "no benchmarks" — potentially marginalizing Straw's narrative
+
+**The strongest counter to this bear case:** Even SWE-bench Pro and SWE-EVO evaluate coding agent quality generically. A law firm evaluating Harvey vs. Legora on their actual contract drafting workflow cannot use SWE-bench Pro to make that decision. The 37% gap between benchmark performance and real-world deployment (from Phase 1 Tick 3) persists regardless of whether the benchmark is Verified, Pro, or EVO. The market Straw is targeting — procurement decisions where the specific task matters — is structurally unserved by any variant of a generic coding benchmark.
+
+---
+
+### The GTM moment this creates (the content hook)
+
+The Latent Space episode title — "The End of SWE-Bench Verified" — is the single most powerful content peg Straw has in 2026. The episode has massive reach in the AI engineering audience. Straw's founder can:
+
+1. **Publish within 2 weeks of the episode:** "SWE-bench is dead. Here's what the enterprise actually needs instead." — 2,500-word post on the Straw blog. No product pitch until the final 300 words. Argument: synthetic benchmarks can never measure YOUR task; the future of evaluation is company-defined rubrics run on company-relevant scenarios.
+
+2. **Reply to every X/LinkedIn discussion of the episode:** The 3:1 reply-to-post ratio discovered in Tick 29 (build-in-public research) applies here. Every thread discussing SWE-bench saturation is an opportunity to establish Jeremy as "the person building what comes next."
+
+3. **Pitch Latent Space:** The episode's thesis ("benchmarks are ending") is the setup for "here's what comes next" — that's a natural follow-up episode with Jeremy. The hook: "We're building the platform that doesn't just fix benchmarks — it replaces them with real competitive evaluation on real enterprise tasks."
+
+---
+
+### Named contact addition: Olivia Watkins + Mia Glaese (OpenAI)
+
+**Olivia Watkins** — OpenAI Frontier Evals team
+- Appeared on the definitive "benchmarks are ending" episode
+- Directly researching evaluation methodology at the most important AI lab
+- Opener: *"You just declared the end of SWE-bench Verified. Straw is what we think comes next: company-specific, rubric-defined competitive evaluation — which agent wins on YOUR task, not a synthetic proxy. The methodology is something I'd love your perspective on."*
+
+**Mia Glaese** — VP of Research, OpenAI (Codex, Human Data, Alignment)
+- One of the most senior evaluation researchers at OpenAI
+- Her work on alignment evaluation is methodologically adjacent to Straw's rubric design
+- Opener: *"Your research on what rigorous AI evaluation looks like informed a lot of how we designed Straw's rubric engine. Would love to compare notes on where the current evaluation paradigm breaks for enterprise procurement."*
+
+---
+
+## Tick 29 (2026-05-03T01:30Z): Build-in-public playbook for Straw's specific situation [theme: gtm]
+
+### The 2026 X algorithm and what it means
+
+X's recommendation system was rebuilt from scratch in January 2026 with a Grok-powered transformer model. The algorithm changes are significant for Straw's content strategy:
+
+**Engagement weights (new algorithm):**
+- Retweet: 20x a like
+- Reply: 13.5x a like
+- Like: 1x baseline
+
+**Implication:** For every original post Jeremy writes, the account needs to have generated 3 high-value replies on other people's threads to maintain healthy distribution. The old "post screenshots of your Stripe dashboard" approach actively hurts under the new algorithm — it generates likes but not replies or retweets.
+
+**The content formula that works (research-confirmed):**
+- 60% Authority Pillar: tactical "how-to" content, technical frameworks, original data
+- 20% Contrarian Hook: takes that challenge conventional wisdom in the audience's field
+- 20% Product Logic: what Straw is and why it exists
+
+Sources: [Stormy.ai Twitter 2026 guide](https://stormy.ai/blog/viral-growth-customer-acquisition-twitter-2026-guide), [OpenTweet SaaS founders build-in-public guide](https://opentweet.io/blog/build-in-public-twitter-guide-saas-founders)
+
+---
+
+### The 10 specific posts Jeremy should write first
+
+Ordered by expected engagement and buyer-audience density:
+
+**Authority Pillar (60%):**
+
+1. **"The 37% gap"** — Thread: Every AI vendor claims 87%+ on SWE-bench. The deployed agent underperforms expectations by 37% on average (cite Cleanlab 2025). Here's why: the benchmark measures the proxy, not the task. [Link to Straw's blog post]
+
+2. **"I ran a Straw evaluation and here's what I found"** — Build-in-public: walk through a real competition result (even a v0 internal one). What was the task, what was the rubric, who won, by how much, why. No product pitch — just the methodology. This is the "Stripe laptop moment" in content form.
+
+3. **"How to write a rubric for AI agent evaluation"** — Actionable guide, no product mention. Enterprises that want to evaluate AI agents need this. The 5 criteria every rubric should include. How to weight qualitative vs. quantitative criteria. How to catch rubric gaming. The post that attracts exactly the right reader.
+
+4. **"The procurement problem: why enterprise AI evals are broken"** — Manifesto post. The demo is theater. The POC is a curated performance. The benchmark is someone else's task. Here's the structural reason enterprise AI procurement is broken, and what a functional alternative looks like.
+
+5. **"SWE-bench is dead. What comes next?"** — Time the Latent Space episode. This is the topical hook that gets shared by the AI engineering audience. Write it within 2 weeks of the episode airing.
+
+**Contrarian Hooks (20%):**
+
+6. **"Braintrust is not Straw, and the difference matters"** — The careful version: observability ≠ pre-procurement evaluation. "You can know exactly how your agent is performing in production and still not know whether it's better than alternatives." Don't name Braintrust aggressively — frame it as "two different jobs in the enterprise AI stack."
+
+7. **"AI agents need referees, not just coaches"** — The governance framing. Observability tools are coaches. Evaluation platforms are referees. You can't run a fair competition without a referee. The referee's job is neutrality — Straw's structural advantage over vendor-affiliated evaluation.
+
+8. **"Google's Agent Marketplace has a conflict of interest"** — The bold take. Google evaluates agents in a marketplace where Google's models compete. That's a structural conflict. Enterprise compliance teams should be asking about it. (Run this only after Straw has enough credibility to survive the blowback from Google's PR machine.)
+
+**Product Logic (20%):**
+
+9. **"Why we built Straw"** — Founder story: Jeremy's experience trying to evaluate which agent to use for a specific task, finding no tools existed, deciding to build it. 500 words, personal. Gets reshared by people who recognize the problem.
+
+10. **"Straw is live — here's what running a competition looks like"** — Product launch post. Screenshots of the UI, the rubric builder, the leaderboard. "We have three spots available for design partners who want to run a free evaluation in the next 30 days. DM me."
+
+---
+
+### The LinkedIn strategy (enterprise buyers are here, not on X)
+
+The research from Tick 10 noted that "50-66% of AI citations come from LinkedIn native articles." But X is where the AI engineering community lives. Straw needs both:
+
+**X (Twitter):** Build the AI engineering audience that becomes the supply side (agents competing) and the early advocate base (engineers who recommend Straw internally)
+
+**LinkedIn:** Build the enterprise buyer audience (VPs of AI, CTOs, CIOs) who need the evaluation tool. LinkedIn content is repackaged from X but in longer-form, with more explicit business framing. "Your AI vendor demos are theater — here's the alternative" lands differently for a LinkedIn VP of Engineering than it would on X.
+
+**The daily cadence that works:**
+- Morning: 1 reply on a high-traffic AI thread (15 mins)
+- Mid-day: 1 original post or thread (30 mins)
+- Afternoon: 3 replies on replies to your own thread (10 mins)
+- No weekends: algorithm rewards consistency, not intensity
+
+**The trigger event that creates X virality for Straw:** Running the first public Straw competition and posting the results in real-time. "We just ran a 20-agent competition on [company X's customer support task]. Here's who won, by how much, and why the #2 agent's score surprised everyone." Live-tweeting a competition result thread is the content that gets reshared by both the agent community and the enterprise AI buyer community simultaneously.
+
+---
+
+### The Latent Space pitch (the highest-ROI media placement)
+
+Latent Space is the podcast with the single highest concentration of Straw's exact audience: production AI engineers, agent builders, and evaluation practitioners.
+
+**The pitch hook (updated after Tick 28's finding):**
+> "You just published 'The End of SWE-Bench Verified.' We've been building what comes next: competitive evaluation on company-defined tasks with company-defined rubrics. We ran [N] evaluations in the past [X weeks]. Here's what we found that surprised us. I'd love to do a follow-up episode on what enterprise evaluation looks like after benchmarks."
+
+**Swyx's stated thesis for 2026:** "The hardest problems in AI are no longer about model quality but about reliability, evaluation, cost management, and operational discipline." This is Straw's exact pitch restated. Swyx is already thinking in Straw's framing — the episode pitch is easier than it sounds.
+
+**Who to pitch:** Alessio Fanelli (co-host) is the production partner. Swyx (@swyx) is the editorial voice. Pitch Alessio on the logistics, pitch Swyx on the thesis alignment.
+
+---
+
+### Updated Phase 2 Thread List (Session 5)
+
+**New threads completed:**
+- [x] Tick 26: Google's Gemini Enterprise Agent Marketplace — the unrecognized competitor (bear)
+- [x] Tick 27: SI channel — OpenAI Frontier Alliances, Google $750M partner fund, named SI contacts (gtm)
+- [x] Tick 28: SWE-bench saturation as bear case AND GTM content moment (bear/gtm)
+- [x] Tick 29: Build-in-public playbook — X algorithm, 10 specific posts, LinkedIn vs X strategy (gtm)
+
+**Phase 2 now stands at 29 ticks across all three themes.**
+
+**Remaining open threads (Phase 3):**
+- Prompt injection technical mitigation: architectural implementation in evaluation-worker.ts
+- Competition cap technical implementation: the Option D (tiered access) spec
+- India/Singapore market entry GTM
+- The "right rubric" calibration process: operationalized checklist
+- Second-order effects: what happens when Straw's outcome corpus becomes public benchmark data itself (Goodhart applies recursively)
+
+---
+
+## Phase 2 Morning Reading Guide (Session 5 — Final Update)
+
+*The four-section guide from Session 1 remains the core document. Session 5 adds three material corrections and extensions.*
+
+---
+
+### Correction 1: Google is building Straw too (Tick 26)
+
+**What Phase 1 and 2 assumed:** Google's marketplace is supply-side only (agent directory). The competitive threat was primarily Braintrust (evaluation observability) and potential OpenAI CUA API.
+
+**What Tick 26 found:** Google's Gemini Enterprise Agent Platform includes adaptive rubric evaluation — "unique pass/fail rubrics for each individual prompt, against your unique criteria." Combined with the $750M SI partner ecosystem and embedded billing, this is the most complete existing implementation of Straw's vision from any large player.
+
+**Straw's defense:** Neutrality. Google evaluates agents in a marketplace where Google's models compete. Straw has no vendor relationship with any agent. This is a structural distinction enterprise compliance teams will eventually demand.
+
+**Strategic question for Jeremy (Q13):** Should Straw position as a complementary neutral evaluation layer for the Google Agent Marketplace — rather than a competing marketplace? Agents validated on Straw could earn a "Straw Verified" badge that complements the Google "Cloud Ready" badge. Partnership > competition when the competitor has $750M in distribution.
+
+---
+
+### Correction 2: SI channel is underweighted in all previous GTM thinking (Tick 27)
+
+Every previous GTM tick assumed Straw sells directly to enterprise buyers. Tick 27 finds the real distribution multiplier: **system integrators**.
+
+OpenAI locked in McKinsey, BCG, Accenture, Capgemini as "Frontier Alliance" partners. Google committed $750M to SI partner deployments. These SIs are deploying AI agents for enterprises and need evaluation evidence to defend their recommendations. Straw can be the evaluation tool SIs use to justify every agent they recommend.
+
+**The channel partner model:** SIs buy Straw evaluations as a deliverable ($5K–$15K/evaluation from Straw), package them as part of AI transformation engagements ($15K–$30K from client). Straw gets revenue without enterprise direct sales effort. The first SI channel partner converts 10–50 enterprise evaluations per year automatically.
+
+**Q14 for Jeremy:** Is the SI channel worth pursuing before you have direct enterprise reference customers? Normally no — you need proof points before pitching SIs. But if Lan Guan (Accenture CAO) or Beena Ammanath (Deloitte AI Institute) is accessible through Jeremy's network, that's a conversation worth having in parallel with the first design partner evaluations.
+
+---
+
+### Correction 3: SWE-bench saturation creates a specific content window (Tick 28)
+
+The "End of SWE-Bench Verified" Latent Space episode (February 23, 2026) is the highest-leverage content peg Straw has in 2026. The episode has already aired, but the conversation it started is ongoing. Jeremy should publish a response within 2 weeks of reading this: "SWE-bench is dead. Here's what enterprises actually need instead."
+
+This post has built-in distribution (everyone discussing the episode will share responses) and establishes Jeremy's authority in the post-benchmark evaluation conversation. **This is the highest-priority content action — higher priority than any other marketing investment.**
+
+**New named contacts from Tick 28:**
+- **Olivia Watkins** (OpenAI Frontier Evals) — appears on the episode; evaluation methodology researcher at the most important AI lab
+- **Mia Glaese** (VP Research, OpenAI) — co-host on the episode; senior evaluation researcher
+- Both are new additions to the design partner list — not as buyers, as credibility validators
+
+---
+
+**Push status (Session 5):** Writing complete — 4 new ticks (26–29). Committing as Jeremy Liu.
