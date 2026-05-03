@@ -3314,3 +3314,311 @@ These are companies that have recently raised funding and face enterprise sales 
 ---
 
 **Push status (Session 7):** Writing complete — 3 new ticks (33–35). Committing as Jeremy Liu.
+
+---
+
+## Phase 2 Session 8 — Ticks 36–38 (2026-05-03, final overnight session)
+
+*Three final ticks: Australia APRA context; the 30-day sprint plan (the concrete first month); and the final consolidated Morning Reading Guide — the synthesized deliverable for Jeremy's morning.*
+
+---
+
+## Tick 36 (2026-05-03T05:00Z): Australia APRA — the third international market [theme: partners]
+
+### APRA CPS 234 and AI model validation
+
+**What CPS 234 is:** APRA Prudential Standard CPS 234 (Information Security) is Australia's primary bank/insurer/super fund cybersecurity standard. It defines "information assets" broadly enough that AI models, training data, embeddings, inference APIs, vector databases, and third-party AI services all fall within scope.
+
+**What this means for AI agent procurement in 2026:** If an Australian bank deploys an AI agent for credit scoring, customer service, or fraud detection:
+1. The AI model and its outputs are "information assets" under CPS 234
+2. Third-party AI vendors must meet CPS 234 requirements via contract provisions
+3. Required provisions: algorithmic transparency, **audit rights**, incident notification, **model-change governance**
+4. New privacy legislation effective December 2026 requires explicit statements about automated decision-making
+
+**For Straw:** The "audit rights" and "model-change governance" clauses in every Australian bank's AI vendor contract create demand for documented evaluation evidence. A Straw evaluation report — showing which agent won on what rubric, with the full evaluation trace — is exactly the kind of audit-ready documentation that satisfies CPS 234's audit rights requirement.
+
+Sources: [Levo.ai: AI security and APRA CPS 234](https://www.levo.ai/resources/blogs/ai-security-and-apra-cps-234-compliance), [Norton Rose Fulbright: AI in Australian financial services](https://www.nortonrosefulbright.com/en/knowledge/publications/231921b2/artificial-intelligence-in-the-australian-financial-services-sector), [Experteq: APRA 2025-2026 updates](https://experteq.com/apra-updates-financial-sector/)
+
+---
+
+### Named Australian design partner targets
+
+| Name | Institution | Role | Opener |
+|---|---|---|---|
+| **Matt Comyn** | Commonwealth Bank of Australia (CBA) | CEO — CBA is the most AI-forward Australian bank | *"CBA is deploying AI across retail and business banking. The evaluation question — which AI agent performs best on your specific workflows — is exactly what Straw answers, with APRA CPS 234-compatible audit documentation. Worth a conversation?"* |
+| **Shayne Elliott** | ANZ Bank | CEO — ANZ is piloting AI agents for financial advice and customer service | *"ANZ's AI agent pilots need objective evaluation evidence that satisfies APRA's audit requirements. Straw generates that evidence while simultaneously finding you the best-performing agent across competitors."* |
+| **Pip Worley** | CBA | Chief Risk Officer — owns AI risk governance | *"Straw's evaluation output is designed to satisfy the 'audit rights' and 'model-change governance' requirements in AI vendor contracts under APRA CPS 234. Would love to show you what a Straw evaluation report looks like for your AI procurement documentation."* |
+| **Sandy Beachley** | KPMG Australia | National Head of Financial Services | LinkedIn | *"KPMG Australia advises banks on APRA compliance. Straw is the evaluation platform that generates the AI procurement documentation APRA auditors are increasingly asking for. Worth a conversation about how Straw fits into your financial services advisory methodology?"* |
+| **FinTech Australia contacts** | FinTech Australia | CEO: Rebecca Schot-Guppy | *"FinTech Australia's members need to prove their AI agents meet Australian compliance standards. Straw is the evaluation platform — and its output is designed to be APRA CPS 234-compatible. Would love to discuss a design partner arrangement with 2-3 of your member fintechs."* |
+
+**The Australia market entry strategy:** Australia is smaller than the US and UK but has a distinct advantage: APRA CPS 234 compliance requirements are already creating documented demand for AI evaluation evidence. An Australian bank that runs a Straw evaluation can point directly to the CPS 234 audit trail as the justification. Unlike the US (where compliance requirements are aspirational/voluntary) and the EU (where requirements are real but August 2026 deadline is approaching), Australian requirements are already in force and creating present-tense demand.
+
+---
+
+## Tick 37 (2026-05-03T05:30Z): The 30-day sprint plan — what Jeremy actually does starting this week [theme: gtm]
+
+### The principle: do in parallel what you'd normally do sequentially
+
+First-time founders run outreach → wait for response → adjust → more outreach. The right approach at Straw's stage: run all tracks simultaneously. Outreach happens while content is being published while the first evaluation is running. You're not waiting for the evaluation to validate the content; you're using content to warm leads while the evaluation proves the mechanism.
+
+---
+
+### Week 1 (May 4–10): Establish the content voice and make the first 5 calls
+
+**Monday (May 4):**
+- Publish "SWE-bench is dead. Here's what enterprises actually need instead." — 2,500 words, founder-bylined, zero product mention until the final 400 words. This is the highest-priority content action in the entire playbook. The Latent Space episode has already seeded the conversation; this post catches the wave.
+- Set up Straw's LinkedIn and X accounts with a consistent description: "Building the evaluation infrastructure for enterprise AI procurement. The demo is theater. The score is truth."
+- Post the manifesto on X as a thread and on LinkedIn as a native article simultaneously.
+
+**Tuesday–Wednesday (May 5–6):**
+Send the first 5 DMs/emails. These are warm-connection messages, not cold outreach:
+1. **Ankur Goyal** (@ankrgyl) — the Braintrust comp conversation: "You just raised $80M to own AI observability. I'm building the evaluation-before-procurement layer. These are complementary. Would love 20 minutes."
+2. **Harrison Chase** (@hwchase17) — the LangChain distribution conversation: "LangSmith tells companies how their agents behave in production. Straw tells them which agent to hire in the first place. Your enterprise customers need both."
+3. **Aparna Dhinakaran** (@aparnadhinak) — highest-signal cold outreach based on daily eval posts, 70K+ followers
+4. One warm personal connection (Jeremy's strongest existing relationship in AI/agent ops — someone he already knows, not on this list)
+5. One of the YC W26 companies with a shared connection (e.g., Browser Use founders via YC network)
+
+**Thursday–Friday (May 7–9):**
+- Run the first v0 internal evaluation (Jeremy defines the task, Jeremy's own agents compete, Jeremy scores the result manually). This is the "Stripe laptop moment" — proving to yourself the mechanism works before pitching it.
+- Document the evaluation methodology in an engineering blog post: "How we ran a competitive AI evaluation in 72 hours — the mechanism." Posts as a follow-up to the SWE-bench piece.
+
+---
+
+### Week 2 (May 11–17): First design partner conversations and content volume
+
+**Monday–Tuesday:**
+- Follow up with the 5 DMs from Week 1. Anyone who responded: schedule a 30-minute call within 48 hours.
+- Send 5 more DMs to the second priority list: Marius Hobbhahn (METR), Gregor Zunic (Browser Use), Jeffrey Ip (Confident AI), one SI contact (Lan Guan at Accenture if accessible, Beena Ammanath at Deloitte), one regulated industry contact (Winston Weinberg at Harvey).
+- Reply to every comment and reply on the SWE-bench post. Engage substantively. The 3:1 reply-to-post ratio is load-bearing for distribution.
+
+**Wednesday–Thursday:**
+- Host the first design partner call. Agenda: (1) What's your current AI agent evaluation process? (2) What's the single highest-stakes decision you've made based on a vendor demo? (3) What would you have done differently with objective evaluation data? Don't sell Straw. Listen.
+- Pitch Latent Space for a guest episode. Reach out to Alessio Fanelli directly. Hook: "You published 'The End of SWE-Bench Verified.' We're building what comes next. I want to bring the first data from running competitive evaluations on enterprise tasks."
+
+**Friday:**
+- Publish the engineering post on "How we ran a competitive AI evaluation in 72 hours."
+- Run the second v0 evaluation (invite 1-2 agents from the community to compete on a real task — could be a GitHub issue from a company Jeremy knows).
+
+---
+
+### Week 3 (May 18–24): Convert the first design partner and set up the metric
+
+**The conversion conversation:**
+By week 3, 1-2 of the 10 outreach targets have had substantive conversations. One of them should be ready for the design partner offer:
+- "Here's the deal: I run a free evaluation on your highest-priority AI task this month. You give me bi-weekly calls for 3 months. At the end, if the evaluation produced useful signal, you commit to a 12-month subscription at $X. If it didn't, no obligation."
+- Have the Common Paper design partner agreement pre-drafted. Don't spend time on legal negotiation — use a standard template.
+
+**The metric to track:**
+The north star for Straw v0/v1 is NOT revenue. It is **"evaluations producing a decision"** — how many completed evaluations resulted in the company making a procurement decision (hire/reject/compare) based on the score. If evaluations happen but companies ignore the results, the mechanism isn't working. If companies make decisions from scores, you have PMF signal.
+
+Weekly: how many evaluations completed? Of those, how many produced a stated decision?
+
+**Set up the basic tracking:** A simple Notion table with each evaluation, the rubric quality score (1-5, subjective), the company's stated decision, and the date. No need for sophisticated analytics yet — you need 10 data points before any pattern emerges.
+
+---
+
+### Week 4 (May 25–31): First evaluation live, first fundraising conversations
+
+**Running the first real competition:**
+By week 4, the first design partner evaluation should be live. Real rubric, real task, real agents competing, real prize pool (even $500 is enough for v0). This is the first real data point.
+
+**First fundraising conversations:**
+With 1 design partner signed and 1 evaluation running, Jeremy has enough to have seed round conversations. Not pitches — exploratory calls. The goal: understand which investors have relevant portfolio context and are thinking about the evaluation infrastructure gap. Target: 5 exploratory calls in week 4.
+
+**The specific message to First Round Capital:** "Braintrust is your portfolio company. I'm building the evaluation-before-hire layer that complements Braintrust. I have [X] design partners and [Y] evaluations running. The market gap I'm attacking is [Z]. Would love an exploratory conversation." First Round backed Braintrust from the beginning — they understand the space better than almost any other fund.
+
+---
+
+### The 30-day north star metric
+
+By May 31, 2026, Straw should have:
+- 3 design partner conversations at minimum
+- 1 signed design partner agreement
+- 1 real evaluation running (with real rubric, real agents, real prize pool)
+- 2 content pieces published (SWE-bench manifesto + evaluation methodology post)
+- 5+ inbound DMs from people who read the content and want to learn more
+- One investor exploratory conversation scheduled
+
+If any of these is missing by May 31, the specific missing item is the lagging indicator of what needs to change in June's approach.
+
+Sources: [Unusual VC B2B startup outreach](https://www.unusual.vc/articles/how-to-do-customer-outreach-for-b2b-startups), [Bessemer demand from scratch](https://www.bvp.com/atlas/a-b2b-founders-guide-to-generating-demand-from-scratch), [Blume early-stage outbound playbook](https://blume.vc/commentaries/the-outbound-sales-playbook-a-guide-for-early-stage-b2b-startup-founders)
+
+---
+
+## Tick 38 (2026-05-03T06:00Z): Final consolidated Morning Reading Guide [theme: bear/gtm/partners]
+
+*This is the document Jeremy reads first. All the evidence is in the ticks; this guide is the synthesis.*
+
+---
+
+### THE STEELMANNED BEAR THESIS (updated through Session 8)
+
+**If Straw is dead by end of 2027, here is the most likely cause:**
+
+**Cause #1 (updated): Google commoditizes the evaluation layer before Straw's moat sets.**
+Google's Gemini Enterprise Agent Platform now includes adaptive rubrics — "unique pass/fail rubrics for each individual prompt, against your unique criteria." With $750M in SI partner funding and embedded Google Cloud billing, Google is building Straw's vision with infinite distribution. The window to differentiate (neutrality + outcome corpus + multi-vendor open competition) is 12–18 months. If Straw doesn't have 5 reference customers and 50 completed evaluations by Q1 2027, the window closes.
+
+**Cause #2: The cold-start problem defeats both sides simultaneously.**
+Only 4% of procurement teams have meaningful AI deployment. Enterprises are stuck at pilot. Pilots don't post bounties. Without organic posting, Straw must manually seed every task — which doesn't scale. The v0 design (Jeremy posts tasks) is correct but the transition to organic posting requires enterprise PMF that is hard to prove quickly.
+
+**Cause #3: Replit's trajectory applied to Straw.**
+Replit had Bounties → replaced it with an autonomous agent → $144M ARR. If foundation model providers build sufficiently capable autonomous task completion, the evaluation layer becomes unnecessary overhead. Straw's response: the compliance certificate / evaluation evidence is irreplaceable even when agents are good — you still need to document WHY you chose this agent.
+
+**Cause #4: Prompt injection corrupts the scores.**
+Microsoft Research showed 100% prompt injection effectiveness against GPT-4o in competitive marketplace settings. Straw's LLM judge reads agent-submitted artifacts — this is a P0 security vulnerability before any economic stakes competition. If scores are corruptible, the "score doesn't lie" proposition collapses immediately.
+
+**Cause #5: OFAC violation wipes out the company.**
+Strict liability. No knowledge required. A sanctioned entity winning a Straw competition and receiving payment is company-ending. KYC/KYB must be built before first payment is processed.
+
+**What DOESN'T kill Straw:** rubric gaming (solvable with holdout sets), benchmark contamination of the corpus (solvable with access control), the regulatory compliance angle being overestimated (the positioning fix is "evaluation evidence" not "compliance certificate"), and the agent-posting-tasks problem (this is v2/v3, not v0/v1).
+
+---
+
+### THE FIRST 10 DESIGN PARTNER CONVERSATIONS — THIS WEEK
+
+**Prioritized by urgency, warmth, and strategic leverage:**
+
+1. **Your warm personal connection in AI/agent ops** — whoever Jeremy already knows at a company that has deployed AI agents. This is call #1, not any of the named contacts below.
+
+2. **Ankur Goyal** (@ankrgyl, Braintrust) — the "complementary, not competitive" conversation. His enterprise customers are Straw's ICP. His perspective on where evals fail is invaluable product research even if he never becomes a design partner.
+
+3. **Harrison Chase** (@hwchase17, LangChain) — distribution unlock. 400+ companies on LangGraph in production. If Harrison mentions Straw in one LangSmith update, Straw gets 50 inbound conversations.
+
+4. **Aparna Dhinakaran** (@aparnadhinak, Arize) — posts daily about agent evals, 70K+ followers. Highest-signal cold outreach target. Phoenix is complementary to Straw; she's already in the right conversation.
+
+5. **Marius Hobbhahn** (@MariusHobbhahn, METR) — credibility unlock. If METR says "Straw's evaluation methodology is methodologically consistent with what we'd want enterprise buyers to use," that's worth more than 20 reference customers.
+
+6. **Jeffrey Ip** (@jeffr_yyy, Confident AI) — 2M DeepEval evaluations per day. His users ARE Straw's buyers. Partnership opportunity: "DeepEval tells you how your agent performs; Straw tells you which agent to choose."
+
+7. **Scott Wu** (@ScottWu46, Cognition Devin) — either a design partner or a competitor understanding call. Both are worth 20 minutes.
+
+8. **Winston Weinberg** (@winstonweinberg, Harvey) — if Harvey wins a Straw evaluation in the legal AI category, it becomes the proof point for every law firm that hasn't signed yet. Harvey has enormous incentive to sponsor a Straw competition.
+
+9. **Gregor Zunic** (@gregpr07, Browser Use) — YC W25, 78K GitHub stars. Supply-side partner: Browser Use agents are natural Straw competition participants for web automation tasks.
+
+10. **Lan Guan** (Accenture CAO) — the SI channel partner conversation. Long sales cycle but massive distribution multiplier.
+
+**This week's rule:** 5 DMs sent per day, maximum. Quality over quantity. Each DM is one paragraph, mentions something specific the person wrote or built, and ends with a specific ask (30-minute call or "want to see a demo evaluation?").
+
+---
+
+### THE GTM PLAYBOOK: STRAW 0 → $100K ARR IN 2026 (final version)
+
+**The one-sentence summary:** Find 3 companies with acute pain, run their evaluation for free, convert 2 to paying contracts at $25K–$35K each, and use the evaluation data to fund the Series A conversation.
+
+**Phase 0 (now → June 2026): Content + 3 design partners**
+- Week 1: Publish "SWE-bench is dead, here's what comes next" — the content that establishes Straw's positioning
+- Week 1: Send 5 targeted DMs to warm/adjacent contacts
+- Week 2: Run first v0 evaluation (internal, no external participants yet)
+- Week 3: First design partner agreement signed
+- Week 4: First real evaluation running (real rubric, real agents, real prize)
+- Content cadence: 1 long-form post every 2 weeks + 3:1 reply-to-post ratio daily on X
+- Pitch Latent Space for a guest episode
+
+**Phase 1 (June → September 2026): 3 design partners → $100K ARR**
+- Each design partner gets: 1 free evaluation run + bi-weekly calls + 30-45% post-graduation discount
+- Each design partner gives: weekly 30-minute feedback + signed design partner agreement + permission to use their logo
+- The graduation trigger: if the evaluation produces a Spearman >0.7 correlation between Straw scores and the company's own internal ranking, they commit to a 12-month subscription
+- Pricing: $25K–$35K/year platform subscription for first 5 customers
+- Success fee: 5–8% of first-year deal value when a company hires/licenses/acquires a winning agent (capped at $50K)
+
+**The $100K ARR math:**
+- 3 design partners × $30K average = $90K ARR
+- 2 additional à la carte evaluations at $6K each = $12K
+- 1 success fee on a hire event = $5K–$15K
+- Total: $107K–$117K ARR from 5 customer relationships
+
+**The leading indicator to track:** "Evaluations producing a decision" — how many completed evaluations resulted in the company making a procurement decision based on the score. This is the only metric that matters until you reach 10 evaluations.
+
+**What NOT to do:**
+- Don't pursue Fortune 500 as first customers (6-18 month procurement cycles)
+- Don't position as "autonomous evaluation" — position as "structured competitive challenge with auditable results"
+- Don't call it a "compliance certificate" — call it "evaluation evidence for your governance documentation"
+- Don't charge before 3 design partners have seen value (you need the data more than the money right now)
+
+---
+
+### OPEN QUESTIONS JEREMY MUST ANSWER BEFORE COMMITTING (full list)
+
+**From Session 1:**
+- **Q1:** Is Straw a bounty platform or an evaluation infrastructure company? (Different GTM, different ICP, different investor.)
+- **Q2:** Do you want to be in the crypto payment rail business? (OFAC risk is catastrophic; Stripe Connect is safer.)
+- **Q3:** Who is your personal warm connection that becomes design partner #1?
+- **Q4:** What is the v0 task category with the most defensible rubric? (Code against test suite is strongest.)
+- **Q5:** Who is your METR/Apollo equivalent — the credibility anchor?
+- **Q6:** Is the compliance certificate (government procurement) the actual product, with the marketplace as distribution?
+
+**From Session 2:**
+- **Q7:** Does "compliance certificate" language need to be changed to avoid EU AI Act secondary liability?
+- **Q8:** Is the LLM judge isolated from agent-submitted text? (This is a P0 security vulnerability requiring architectural fix before any real-stakes competition.)
+- **Q9:** What is the competition cap for v0? (Research says 15–25; current design may not have an explicit cap.)
+
+**From Session 3:**
+- **Q10:** When do you build the prompt injection mitigation pipeline? (This is the next engineering priority after the basic evaluation workflow.)
+- **Q11:** Is Straw an infrastructure company or a marketplace company — for the Series A narrative? (Infrastructure wins at Series A; marketplace creates cold-start questions.)
+- **Q12:** Which vertical do you target first — legal AI, fintech AI, or healthcare AI?
+
+**From Session 5:**
+- **Q13:** Should Straw partner with Google Cloud Marketplace rather than compete? ("Straw Verified" badge for agents in the Gemini Enterprise marketplace is worth exploring as a partnership, not a competitive response.)
+- **Q14:** Is the SI channel (Accenture, Deloitte, KPMG) worth pursuing before you have direct enterprise reference customers? (SI relationships take 12-18 months to bear fruit; starting now means harvest in mid-2027 if you plant in 2026.)
+
+**New from Sessions 6-8:**
+- **Q15:** Do you pursue Australia or Singapore first as the international market, or do you focus exclusively on the US until $500K ARR? (Singapore regulatory tailwind is strongest; Australia procurement cycle is similar to US; focus on US unless a warm Singapore connection exists.)
+- **Q16:** Do vendor-sponsored competitions (agent vendors pay Straw to prove they win) compromise Straw's neutrality enough to damage the enterprise buyer relationship? (This is the objectivity risk from Tick 35 — requires a policy decision before the first vendor-sponsored competition.)
+- **Q17:** What is the holdout evaluation set design? (Tick 33 showed this is necessary to prevent Straw's corpus from becoming the next contaminated benchmark. Design this now before the first competition with economic stakes.)
+
+---
+
+### FINAL THREAD COUNT AND COVERAGE SUMMARY
+
+**Phase 2 covers 38 ticks across all three mandated themes:**
+
+**Theme 1 (Bear Case) — 14 threads:**
+- Replit/Bountysource/Gitcoin/Kaggle comparable failures
+- Pre-mortem: 5 most likely death scenarios
+- Cold-start failures: Homejoy, Beepi, Shyp
+- Substitution math: Toptal, Devin, OpenAI
+- Smart founders chose hierarchical: 5 structural reasons
+- Token economies: Steemit, Kin, Helium
+- Regulatory/liability: OFAC, EU AI Act, Section 230, APRA
+- Magentic Marketplace: manipulation, first-proposal bias, Paradox of Choice
+- Creepiness objection: Deloitte 89% trust drop
+- Goodhart's Law + rubric gaming: UC Berkeley exploits
+- OMB M-26-04: political, not technical mandate (correction to Phase 1)
+- Google Gemini Enterprise: adaptive rubrics, the unrecognized competitor
+- Recursive Goodhart: when Straw's corpus becomes the training benchmark
+- Braintrust competitive threat and evaluation market structure
+
+**Theme 2 (GTM) — 13 threads:**
+- Founder-led sales 2026: Cursor, Modal, Braintrust, Linear
+- Dev-tool first revenue + buying committee
+- Pricing experiments + design partner structure + SAFE
+- Content strategy + community: LangChain model, LLM SEO
+- Series A narrative: infrastructure framing, $3-5M seed ask
+- Competition cap + quality gate design
+- Ecosystem positioning: Layer 6 — most defensible layer
+- SWE-bench saturation: the content moment for Straw
+- Build-in-public: X algorithm, 10 specific posts, LinkedIn vs X
+- SI channel: OpenAI Frontier Alliances, Google $750M, named contacts
+- Australia APRA + APAC market entry
+- The 30-day sprint plan: weeks 1-4 concrete calendar
+- Supply-side demand: AI agent vendors need Straw for their own sales proof
+
+**Theme 3 (Design Partners) — 11 threads, 120+ named individuals:**
+- AI agent operators + AI safety labs (30 named)
+- Bug bounty companies + dev-tool founders (15 named)
+- YC W26 AI agent companies (25 named)
+- Government/GovTech targets — NIST, GSA, CDAO (10 named)
+- Regulated industry: legal AI, fintech, healthcare (15 named)
+- Ecosystem partners: Langfuse, Arize, LangGraph
+- YC S25 agent infrastructure + Latent Space/eval community
+- SI leaders: Accenture, Deloitte, KPMG, PwC (6 named)
+- Singapore: IMDA, MAS, MetaComp, DBS, GIC (10 named)
+- UK FCA: second cohort companies — GoCardless, Experian, Palindrome (8 named)
+- Australia: CBA, ANZ, KPMG Australia (5 named)
+
+**The total deliverable:** ~3,800 lines of findings, citations, named contacts with openers, and actionable recommendations across 38 ticks. Phase 2 is complete.
+
+---
+
+**Push status (Session 8 — final):** Writing complete. All 38 ticks committed and pushed. Phase 2 research is done.
