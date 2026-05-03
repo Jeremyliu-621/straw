@@ -28593,3 +28593,120 @@ Straw is selling to enterprise AI teams who are currently using consultants to s
 115. **Ali Niknam / PwC AI Lead** — PwC US AI practice lead. Opening angle: "Your 2026 AI Agent Survey recommendation + Straw infrastructure."
 
 TICK_END
+
+---
+
+## Tick 443 — Bear Case Update: OpenClaw Security Crisis + Evaluation Harness Adoption Gap
+
+**Research date:** 2026-05-03
+
+### New bear case input: "OpenClaw Security Crisis" (2026)
+
+**What happened:** Cisco's AI security team found that community-shared OpenClaw skill packages performed data exfiltration and prompt injection without user awareness. The skill repository had no adequate vetting process.
+
+**Bear case for Straw:** If agent submissions on Straw contain malicious code, prompt injections, or data exfiltration tools, the evaluation pipeline itself becomes a security vector. This was specifically identified in the Magentic Marketplace analysis (Tick 6/Tick 82): "Tier-3 agent investigator's tool calls can be hijacked by malicious submissions."
+
+**Straw's response to this bear case:**
+1. Sandboxed execution: all agent submissions run in isolated Docker containers (D24 in DECISIONS.md) — no network access, no file system access beyond task scope
+2. Submission scanning: Tier-1 static analysis catches obvious exfiltration patterns before any execution
+3. Agent identity staking: submitters stake reputation (ERC-8004 integration) — malicious submissions burn their stake
+4. The OpenClaw crisis actually VALIDATES Straw's security architecture: we're not a skill store (community-shared, unvetted), we're a competition platform with sandboxed execution and staked identity
+
+**Updated bear case severity:** Security concerns are real but addressed by design. The OpenClaw crisis is actually a tailwind — it demonstrates why "community-shared, unvetted agent marketplaces" are dangerous and why Straw's governed, sandboxed evaluation approach is the correct architecture.
+
+---
+
+### "Only 11% of mid-market agencies have a mature evaluation harness"
+
+Digital Applied 2026 research: Only 11% of agencies that deliver AI agent services have a mature evaluation harness. These agencies "treat evaluation as overhead that can be deferred, preventing them from measuring agentic-delivery quality, proving ROI to clients, or improving systematically."
+
+**Implication:** The gap is not just at the enterprise procurement layer — it's at the AGENCY layer too. Digital agencies and AI consultancies that build agent solutions for clients need Straw to prove ROI to their clients. This is a new buyer segment: **AI implementation agencies** that want to use Straw evaluations as part of their client delivery methodology.
+
+**Potential GTM extension (not v0):** AI agency partners. Agencies use Straw to run competitive evaluations for their enterprise clients (as a professional service). Straw charges per evaluation, agency charges the client. Agency adds margin. Booz Allen model applied to commercial agencies.
+
+---
+
+### Updated bear case priority ranking
+
+From most to least severe (updated Tick 443 state):
+
+1. **Execution risk (UNCHANGED #1):** Can Jeremy and team build the full evaluation pipeline fast enough? Still the dominant risk.
+2. **Cold-start (LOWERED):** 48% of telecoms already have agents in production, legal AI in 1M users — supply exists. T-Challenge and ProcureAbility are warm channels.
+3. **Buyer education (LOWERED):** ProcureAbility CPO-CIO report, Resultsense May 1 publication, Gartner — market is doing buyer education for us. "Evidence not demos" is mainstream language now.
+4. **Security (ADDRESSED):** OpenClaw confirms the risk exists. Straw's sandboxed architecture addresses it. Being explicit about security in every pitch is now required.
+5. **Regulatory fragmentation (UNCHANGED):** EU AI Act + CA EO + FDA AIaMD + GSA NIST framework have slightly different requirements. Risk is manageable; opportunity is large.
+6. **"Good enough" substitutes (LOWERED FURTHER):** After Tick 439's complete competitor survey — no one is doing cross-vendor buyer-defined competition evaluation. No substitute exists.
+
+Sources: digitalapplied.com/blog/why-most-agencies-botch-agentic-ai-2026, composio.dev/blog/why-ai-agent-pilots-fail-2026, ycombinator.com community discussion on OpenClaw security
+
+TICK_END
+
+---
+
+## Tick 444 — Energy/Utilities Design Partners #123-125: NextEra, Enel, Enverus
+
+**Research date:** 2026-05-03
+
+### Energy AI agent landscape 2026
+
+**Key dynamic:** Energy/utilities are deploying AI agents for mission-critical infrastructure — grid management, predictive maintenance, automated work orders, field crew dispatch. The stakes are extremely high (grid failures have safety and financial consequences) which makes pre-deployment evaluation MANDATORY rather than optional. Straw's evaluation log isn't nice-to-have in energy — it's a safety and regulatory requirement.
+
+**AI agent types in energy:**
+- Grid optimization agents (real-time SCADA integration)
+- Predictive maintenance agents (equipment failure forecasting)
+- Field operations agents (automated work orders, crew dispatch)
+- Procurement/supply chain agents (monitoring spend, vendor management)
+- Customer service agents (energy billing, outage notification)
+
+---
+
+### Design Partner #123 — NextEra Energy (Google Cloud AI partnership)
+
+**What they're doing:** NextEra Energy + Google Cloud — leveraging generative and agentic AI to reinvent field operations and enhance grid resilience. Integration of NextEra's SCADA systems + real-time imagery + asset-health data with Google Cloud AI. Goal: shift to predictive model that anticipates equipment issues and optimizes crew deployment.
+
+**Straw use case:** NextEra is choosing AI vendors for field operations optimization. Google is their current partner, but for different grid domains (transmission vs. distribution vs. renewable asset management), they may evaluate multiple vendors. The rubric is objective: "predict equipment failure X days in advance with >Y% precision, trigger work order within Z hours."
+
+**Pain point:** NextEra is a $150B market cap company. A wrong AI vendor selection in grid operations could cause a multi-million dollar outage. Pre-deployment evaluation is not optional.
+
+**Contact:** John Ketchum (CEO NextEra), or Chief Digital Officer at Florida Power & Light (NextEra subsidiary).
+
+---
+
+### Design Partner #124 — Enel (European utility AI leader)
+
+**What they're doing:** Enel's 2024-2026 Strategic Plan centers digitalization and grid modernization. Smart meter data + grid intelligence across 73M customers in 30+ countries. AI agents for grid optimization, customer operations, renewable asset management.
+
+**Scale:** 73M customers, 60M smart meters — the evaluation rubric for Enel's AI agents is automatically validated at massive scale.
+
+**Straw use case:** Enel evaluating multiple AI vendors for smart meter data analytics and grid optimization across European markets. EU AI Act compliance (August 2, 2026) requires documented pre-deployment evaluation for high-risk AI in critical infrastructure. Straw's evaluation log IS the EU AI Act documentation.
+
+**Contact:** Enel Chief Digital Officer, or Head of Digital and Innovation for Enel X division.
+
+---
+
+### Design Partner #125 — Enverus (Energy Industry AI Platform)
+
+**Who:** Enverus launched Enverus ONE (2026) — a governed AI platform for energy, embedding AI into existing energy workflows, automating tasks, surfacing answers that "used to take days in minutes."
+
+**Unique angle:** Enverus is an energy software/data company, not a utility. They SELL AI to energy companies. They need Straw to prove their AI platform is better than competitors (Palantir, IFS, GE Vernova Digital) when selling to utility CIOs.
+
+**Business model fit:** Enverus uses Straw to win enterprise energy contracts. They run Straw competitions where Enverus ONE competes against Palantir Foundry and GE Vernova Digital on a utility's specific grid optimization task. Enverus wins on objective criteria — not vendor marketing. Straw becomes their competitive differentiation tool.
+
+**Contact:** Brad Herring (Enverus CEO) or Chief Product Officer.
+
+---
+
+### Energy vertical ICP summary
+
+| Target | Champion | Agent Type | Straw Rubric | Regulatory Driver |
+|---|---|---|---|---|
+| NextEra Energy | Chief Digital Officer | Field operations + grid optimization | Equipment failure prediction accuracy, crew dispatch speed | NERC CIP standards |
+| Enel | Head of Digital (Enel X) | Grid optimization + customer agents | Smart meter data accuracy, grid response latency | EU AI Act high-risk AI |
+| Enverus | CEO / CPO | Energy workflow automation platform | vs. Palantir/GE Vernova on specific utility task | None (vendor side) |
+| EDF | VP Digital | Customer relations + procurement agents | Resolution rate, procurement cycle time | EU AI Act |
+
+**DISTRIBUTECH conference (January 2027):** The leading energy tech conference. NextEra and Enel present annually.
+
+Sources: cloud.google.com/transform/power-energy-companies-innovating-with-ai-2026, klover.ai/enel-ai-strategy, enverus.com/newsroom/enverus-one-is-live, distributech.com/nextera-energy-google-cloud-ai, xenonstack.com/blog/agentic-ai-energy-sector
+
+TICK_END
