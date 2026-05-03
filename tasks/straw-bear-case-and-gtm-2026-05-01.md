@@ -32920,3 +32920,230 @@ Opener: "IPG is watching WPP's Agent Hub. Before you build your own, would you w
 **Relevance to Straw:** AdCP is the advertising equivalent of MCP — a standard protocol that makes agent-to-agent advertising commerce interoperable. When buy-side and sell-side agents can transact via AdCP, the evaluation question becomes: "Which agent transacts most effectively for my brand objectives?" That's a Straw rubric.
 
 ---
+## Tick 482 — Enterprise AI Pilot Failure Data: The Core Straw Value Proposition [theme: GTM + bear]
+
+**Research date:** 2026-05-03
+
+### The headline stats
+
+**88% of AI agent projects never reach production.** Only 12% of projects that begin as pilots deploy to production. Only 3.4% meet ROI targets.
+
+The number most important for Straw's pitch: **41% of AI agent failures are attributed to unclear success criteria** (Digital Applied 2026, 120+ enterprise data points).
+
+This is Straw's entire value proposition in one number. 41% of $13.8B in enterprise AI agent spend is wasted because companies don't define what success looks like before deploying. That's $5.66B in wasted AI spend traceable directly to the absence of what Straw provides.
+
+### The failure taxonomy — all roads lead back to Straw
+
+| Failure reason | % of failures | What Straw provides |
+|---|---|---|
+| Unclear success criteria | 41% | Rubric builder: define success BEFORE deployment |
+| Insufficient tool/data access | 33% | Evaluation pipeline tests agents WITH real tools/data |
+| Drift in evaluation coverage | 26% | Rubric is fixed and signed off before competition starts |
+| Governance gaps | Top failure category | Straw's rubric scores = governance evidence |
+| Vanity metrics (models tested, hours saved) | Common | Straw measures task completion, not process |
+
+### The "pilot proliferation" problem
+
+Enterprise AI teams are running "too many concurrent pilots with insufficient focus." This creates a specific pattern:
+1. Company runs 3 concurrent AI agent pilots (ChatGPT, Claude, an internal tool)
+2. Each pilot has different evaluation criteria (different people set them up)
+3. After 6 months: unclear which performed best, no comparable data
+4. Decision made based on which vendor relationship is strongest, not performance
+
+**Straw solves pilot proliferation:** One platform, one rubric, multiple agents competing simultaneously. Instead of 3 sequential pilots over 18 months, Straw runs 3 agents in parallel for 2 weeks.
+
+**The "pilot proliferation" sales pitch:**
+"You're running 3 AI agent pilots right now. After 6 months, you'll have 3 sets of incomparable data and a politics-driven vendor decision. Run them all on Straw in 2 weeks. Same rubric. Side-by-side scores. Evidence-based choice."
+
+### Updated enterprise AI pilot failure narrative for Straw
+
+**New best Straw pitch (incorporating this data):**
+
+"In 2026, 88% of enterprise AI agent projects never reach production. The most common cause: 41% of failures trace to unclear success criteria. Companies launch AI pilots without agreeing on what winning looks like.
+
+Straw solves this at the evaluation stage, before any deployment. Define your rubric. Run the competition. Only deploy the agent that already proved it can win on your criteria.
+
+You won't be in the 88% if you define success before you deploy."
+
+Sources: aviasole.com/blog/why-ai-agent-deployments-fail, epam.com/insights/ai/blogs/enterprise-ai-deployment-challenges, digitalapplied.com/blog/ai-agent-adoption-2026-enterprise-data-points, composio.dev/blog/why-ai-agent-pilots-fail-2026-integration-roadmap
+
+TICK_END
+
+---
+
+## Tick 483 — Cold Outreach Science: Benchmarks and Multi-Touch Templates [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The 2026 cold email benchmarks
+
+**General B2B SaaS cold email:**
+- Open rate: 15-25% (with good deliverability + subject line)
+- Reply rate: 8-15% (well-targeted + personalized)
+- Meeting booking rate: 1-3% of total emails sent
+- Enterprise SaaS ($250K+ ACV): 5-10% reply rate (lower volume but higher value)
+- Generic templates: 2% reply rate
+- Personalized (advanced, 5 min research): 18% reply rate — **3-5× improvement**
+
+**The key insight:** Five minutes of account research before sending a cold email increases reply rates 3-5× compared to template-based outreach. For Straw's 20-50 target design partners, 5 minutes each = 2.5 hours total research time → significant lift in response rate.
+
+### The four-touch outreach sequence for Straw
+
+**Based on best practices: 4 touches over 14 days**
+
+**Touch 1 (Day 1 — Email):**
+Subject: "Quick question about [Company]'s AI agent evaluation"
+```
+Hi [First Name],
+
+I noticed [Company] recently [published/announced/shared] about [their specific AI initiative — pulled from LinkedIn/press release]. Quick question: how are you currently deciding which AI agent to deploy for [specific use case they mentioned]?
+
+Most companies I talk to are running sequential pilots — 3-6 months each, no clean comparison. We built Straw to solve that. AI agents compete on your rubric. You get side-by-side scores in 2 weeks.
+
+Worth a 20-minute call?
+
+Jeremy
+```
+
+**Touch 2 (Day 3 — LinkedIn connection + note):**
+"Sent you a quick note about AI agent evaluation — would love to connect and share what we're seeing in the space."
+
+**Touch 3 (Day 7 — Email, new value):**
+Subject: "Re: AI agent evaluation at [Company]"
+```
+Hi [First Name],
+
+Sharing this because it's directly relevant to [Company]'s situation: 41% of enterprise AI agent projects fail specifically because of unclear success criteria before deployment.
+
+We wrote about how rubric-based pre-deployment evaluation prevents this pattern: [link to rubric builder or blog post].
+
+Still happy to do a 20-minute call if useful.
+```
+
+**Touch 4 (Day 14 — Break-up email):**
+Subject: "Closing the loop"
+```
+Hi [First Name],
+
+Closing the loop on my notes about AI agent evaluation. I understand you're probably swamped — no worries if the timing isn't right.
+
+If [Company] ever decides to run a competitive evaluation of AI agents for [use case], I'd love to show you what we've built. The rubric builder is free at [link].
+
+Best of luck with [their AI initiative].
+```
+
+**Why this sequence works:**
+- Touch 1: Specific enough to show research; vague enough to invite curiosity
+- Touch 2: Multi-channel → increases recall; low-friction (just a connection)
+- Touch 3: New value (stat), not a follow-up on the ask
+- Touch 4: Removes pressure; leaves door open; free tool creates last touch value
+
+### Straw outreach by persona (variations)
+
+**For Agent Owner (early in role):**
+"Noticed you moved into [title] at [Company] last month. The #1 mistake I see new Agent Owners make: running pilots before defining what 'good' looks like. Straw fixes that. 20 minutes?"
+
+**For CTO (technical):**
+"Your engineers are spending 3-6 months on AI agent pilots with no comparable baseline. Straw runs the same evaluation in 2 weeks — parallel competition, same rubric. Happy to show you the evaluation pipeline."
+
+**For CPO/VP Product:**
+"AI agent procurement decisions shouldn't depend on vendor demos. Straw lets you define the rubric, then watch agents compete. The scores don't lie. Worth a quick look?"
+
+**For Academic researcher (CAIF/university):**
+"Straw is the empirical marketplace your mechanism design theory predicts should exist. We're generating real agent participation data in competitive evaluation markets. Would love to discuss a co-authorship or data partnership."
+
+### The LinkedIn DM opening
+
+**For named people on Straw's list:**
+"Hi [Name] — I've been following your work on [specific thing they published]. Building something that's directly related to [that work]: [one-sentence Straw description]. Would love to get your reaction to it in 15 minutes. No agenda beyond learning from someone who understands this space."
+
+**The key principle:** Compliment the person's WORK, not the person. "I've been following your work on X" is more credible than "I admire what you've accomplished."
+
+Sources: martal.ca/b2b-cold-email-statistics, cleverly.co/blog/cold-email-strategy-for-b2b-saas, prospeo.io/s/b2b-cold-email-reply-rates, instantly.ai/cold-email-benchmark-report-2026
+
+TICK_END
+
+---
+
+## Tick 484 — Straw Coding Task Rubric Template (Enterprise Standard) [theme: GTM + product]
+
+**Research date:** 2026-05-03
+
+### Why the coding task rubric matters
+
+Coding agents are the most mature category of AI agents in enterprise use. In 2026:
+- 40,000 JPMorgan developers use AI coding assistants
+- "More than half the Fortune 500" uses Cursor (as of June 2025)
+- Agentic coding tools: 20-platform matrix report (Digital Applied Q2 2026)
+
+Straw's first evaluations will almost certainly be coding tasks. Having a ready-to-use rubric template for coding tasks:
+1. Reduces time-to-first-evaluation from weeks to hours
+2. Demonstrates Straw's domain expertise to enterprise buyers
+3. Creates the first entry in the "Straw rubric library" data moat
+
+### Enterprise coding agent evaluation rubric (Straw template v1)
+
+**Task template:** "Implement [feature description] in the [Company]'s [language/framework] codebase. Here are the acceptance criteria. You have access to the repository at [URL]."
+
+**7 evaluation dimensions (hierarchical rubric):**
+
+**Dimension 1: Functional Correctness (weight: 30%)**
+- Sub-1.1: All acceptance criteria satisfied (binary)
+- Sub-1.2: No regression in existing tests (binary)
+- Sub-1.3: Edge cases handled (0-3 scale)
+- Sub-1.4: Error handling complete (0-3 scale)
+
+**Dimension 2: Code Quality (weight: 20%)**
+- Sub-2.1: Follows codebase style conventions (0-3 scale)
+- Sub-2.2: No dead code or debug artifacts (binary)
+- Sub-2.3: Functions < 50 lines (DRY compliance) (0-3 scale)
+- Sub-2.4: Naming conventions consistent (0-3 scale)
+
+**Dimension 3: Security (weight: 20%)**
+- Sub-3.1: No SQL injection vectors (binary)
+- Sub-3.2: No hardcoded secrets (binary)
+- Sub-3.3: Input validation at boundaries (0-3 scale)
+- Sub-3.4: Authorization checks correct (0-3 scale)
+
+**Dimension 4: Multi-file Awareness (weight: 15%)**
+- Sub-4.1: Changes propagated consistently across all affected files (binary)
+- Sub-4.2: API contracts preserved where touched (binary)
+- Sub-4.3: Type definitions updated (binary)
+- Sub-4.4: Tests updated for changed behavior (binary)
+
+**Dimension 5: CI/CD Integration (weight: 5%)**
+- Sub-5.1: All existing CI checks pass (binary)
+- Sub-5.2: No new linting errors introduced (binary)
+
+**Dimension 6: Documentation (weight: 5%)**
+- Sub-6.1: Inline comments for non-obvious logic (0-3 scale)
+- Sub-6.2: PR description accurately describes changes (0-3 scale)
+
+**Dimension 7: Approach Elegance (weight: 5%, Tier-3 only)**
+- Sub-7.1: No obvious architectural debt introduced (LLM-judge, 0-10 scale)
+- Sub-7.2: Alternative approaches considered (binary if DECISION.md provided)
+
+**Tier mapping:**
+- Tier 1 (deterministic): Dimensions 1.1, 1.2, 2.2, 3.1, 3.2, 4.1, 4.2, 4.3, 4.4, 5.1, 5.2 → binary checks, automated
+- Tier 2 (LLM scoring): Dimensions 1.3, 1.4, 2.1, 2.3, 2.4, 3.3, 3.4, 6.1, 6.2 → LLM-as-judge on code
+- Tier 3 (investigator): Dimension 7 → deep architectural review, only for top 3 submissions
+
+**Straw scoring formula:**
+`Final Score = Σ(dimension_weight × dimension_score) / Σ(weights)`
+
+**Minimum viable implementation:** Tier 1 (deterministic) alone produces a useful evaluation in <5 minutes per submission. Tier 2 adds LLM scoring (another 10 minutes). Tier 3 (investigator) runs only if requested and takes 30-60 minutes.
+
+### Non-coding rubric templates (brief)
+
+**Research task template:**
+Dimensions: Source accuracy (30%), Completeness (25%), Hallucination rate (25%), Citation quality (10%), Synthesis quality (10%)
+
+**Customer service task template:**
+Dimensions: Resolution success rate (35%), Escalation rate (25%), Response accuracy (25%), Tone compliance (10%), Handling time (5%)
+
+**Financial analysis task template:**
+Dimensions: Calculation accuracy (40%), Source reliability (25%), Regulatory compliance flags (20%), Recommendation quality (10%), Formatting (5%)
+
+Sources: augmentcode.com/guides/cto-ai-coding-checklist, galileo.ai/blog/agent-evaluation-framework-metrics-rubrics-benchmarks, medium.com/@aiforhuman/rubric-based-evaluation-for-agentic-systems
+
+TICK_END
