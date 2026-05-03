@@ -18140,3 +18140,137 @@ This bundle makes Straw a compliance infrastructure tool, not just an evaluation
 | IEEE AI Standards | IEEE 7000 series (AI ethics and systems) | Technical credibility |
 | NAIC (insurance) | AI model bulletin contribution | Insurance vertical specific standards credibility |
 
+
+---
+
+## Tick 249 (2026-05-03T00:26:00Z): Trump administration AI regulatory uncertainty — regulatory tailwind or headwind? [theme: bear]
+
+**Score: 3/10** — More regulatory uncertainty than bear case. The Trump administration's AI regulatory posture actually creates near-term demand for Straw's documentation services while reducing long-term regulatory compliance mandates. Net assessment: slightly positive for Straw.
+
+### The Regulatory Landscape Under Trump (2026)
+
+**December 11, 2025 Executive Order**: "Ensuring a National Policy Framework for Artificial Intelligence"
+- Proposes uniform federal AI policy that preempts state AI laws "inconsistent with federal policy"
+- Establishes DOJ AI Litigation Task Force (effective January 10, 2026) to challenge state AI laws in federal court
+- Can condition discretionary grants on states refraining from enforcing non-compliant AI laws
+
+**March 20, 2026**: White House released a four-page blueprint directing Congress to adopt unified federal AI governance
+
+**Key states affected**:
+- California AI laws (multiple, including AB 316 re: AI autonomy and liability)
+- Colorado AI Act (consumer AI protections)
+- Texas AI governance laws
+- Illinois AI employment laws
+
+**The legal uncertainty result**: Despite the executive order, state laws remain operative while litigation proceeds. "For businesses it is prudent not to treat the executive order as a green light for relaxed data practices."
+
+### Why This Is a 3/10 (Not Higher, Slightly Positive)
+
+**Bear case arguments** (why regulatory deregulation might hurt Straw):
+1. If federal regulations replace state regulations with softer requirements, enterprises might reduce compliance documentation burden → reduces Straw's regulatory compliance pitch
+2. If Trump administration reduces AI procurement documentation requirements for federal agencies, OMB M-26-04 could be modified or rescinded → reduces federal customer pull
+3. If state liability protections (like California AB 316) are preempted, enterprises face less risk from AI failures → reduces urgency for rigorous procurement evaluation
+
+**Bull case arguments** (why regulatory uncertainty actually helps Straw):
+1. **Uncertainty creates more, not fewer, compliance requests**: Enterprises can't know which laws will survive federal challenge. The prudent response is to document everything now, not relax documentation. "Maintaining compliant data governance and conducting internal risk assessments" is the enterprise lawyer's advice.
+2. **Federal procurement requirements remain**: OMB M-26-04 is an executive branch directive that the current administration can modify — but it exists and is being enforced in 2026. Federal agencies are still required to document AI procurement.
+3. **EU AI Act is unaffected**: Trump has no authority over EU regulation. For enterprises with EU operations (the majority of Fortune 500), EU AI Act compliance remains a hard requirement regardless of US domestic policy.
+4. **Business reasons survive regulatory relaxation**: Even if every AI regulation disappeared tomorrow, enterprises would still want rigorous AI procurement evaluation because bad AI deployments destroy value. The regulatory compliance pitch is one reason; the business case is independent.
+
+### The Specific Risk to Monitor
+
+If OMB M-26-04 is rescinded or modified to reduce documentation requirements, Straw's federal customer pitch loses its compliance mandate. This is the highest-probability regulatory risk to Straw.
+
+**Mitigation**: Build the business case for Straw that doesn't depend on compliance mandates. "Straw helps you make better AI procurement decisions and avoid costly failures" survives any regulatory environment. "Straw helps you comply with OMB M-26-04" does not.
+
+**The positioning correction**: Lead with business value, use compliance as a supporting argument. Never let compliance be the primary reason to buy Straw.
+
+
+---
+
+## Tick 250 (2026-05-03T00:27:00Z): The AI evaluation talent gap — "Rubric Scientist" as service offering and hiring strategy [theme: gtm]
+
+### The Talent Gap That Creates Straw's Market
+
+AI talent demand exceeds supply by **3.2:1 globally** in 2026. Over 1.6 million open positions; 518,000 qualified candidates.
+
+AI specialization commands 30-50% salary premiums. Average AI engineer salary: $206K (up from $155K last year — a $51K jump in one year).
+
+More relevant: enterprises trying to evaluate AI agents internally need talent at the intersection of:
+- Machine learning evaluation methodology (knows how to design benchmarks)
+- Domain expertise (understands what "good" looks like for this business task)
+- Enterprise AI architecture (understands agent deployment context)
+- Statistical rigor (can interpret LLM judge outputs, evaluation variance)
+
+This is the "Rubric Scientist" role (named in prior research). It does not exist as a standardized job title. The talent pool is tiny. The salary would be $200K-$300K.
+
+**The implication**: Most enterprises cannot hire the talent to run rigorous AI agent evaluations internally. The alternative is: (1) buy Straw, or (2) do a less rigorous evaluation.
+
+### Straw's Talent Strategy
+
+**Core team architecture (Year 1)**
+
+Straw needs three distinct talent profiles to execute on the product:
+
+1. **Jeremy (CEO)**: Founder-led sales, customer relationships, strategy, product vision. Non-negotiable. Cannot be delegated.
+
+2. **Evaluation Engineer** (hire #2 or #3): Deep technical expertise in ML evaluation, LLM benchmarking, sandbox infrastructure. Job description: design and execute rubric evaluations, maintain sandbox infrastructure, develop automated scoring tools. Salary: $180K-$220K + equity.
+   - Where to find: METR (evaluation research org), Stanford HELM team, LangChain/LlamaIndex community, Hugging Face evaluation contributors
+   - Must have: Publication record or open-source work in LLM evaluation
+
+3. **Enterprise Success Manager** (hire #3 or #4): Manages customer relationships, facilitates workshops, produces competition reports. Job description: the human who makes each competition run smoothly and makes the customer feel supported. Salary: $120K-$150K + equity.
+   - Where to find: Former management consultants (McKinsey/Bain/BCG), enterprise SaaS customer success with technical background
+
+**The hiring moat**: If Straw hires the best AI evaluation engineers, it creates a talent moat. The people who know how to run rigorous AI agent evaluations are rare — if they work at Straw, competitors cannot easily replicate the methodology.
+
+### The "Rubric Scientist as a Service" Product
+
+Beyond Straw's platform, there is a service opportunity: **Embedded Rubric Scientist**.
+
+An enterprise customer pays for a 6-month engagement where a Straw evaluation engineer is embedded 1-2 days per week to:
+- Build the company's internal AI evaluation capability
+- Design ongoing rubric templates for future evaluations
+- Train internal staff on evaluation methodology
+- Oversee all AI agent procurement decisions
+
+Price: $10K-$20K/month (embedded expert rate)
+
+This is not the core product — it's a high-touch, high-value service that builds deep relationships and creates long-term recurring revenue. It also serves as an upsell from competitions: "After your first two competitions, you might want a Straw evaluation engineer embedded to build your internal capability."
+
+### The Industry Education Play
+
+The talent gap creates an education opportunity that builds the market for Straw:
+
+1. **Straw Certification Program**: "Certified AI Evaluation Practitioner" — a course and exam that trains enterprise AI practitioners in Straw's rubric methodology. Priced at $2,000-$5,000. This creates:
+   - A training revenue stream
+   - Internal Straw champions at every enterprise who completed the certification
+   - A network of practitioners who advocate for Straw methodology
+
+2. **University partnership**: Partner with one or two top business schools (Wharton, MIT Sloan, Stanford GSB) to incorporate Straw's AI procurement evaluation methodology into their MBA AI strategy curricula. Cost: minimal. Value: the next generation of CDOs and CIOs learns that rigorous AI evaluation is a standard practice.
+
+### The Talent Flywheel
+
+The virtuous cycle:
+- Straw hires the best evaluation engineers → 
+- Straw produces the most rigorous evaluations → 
+- Enterprises trust Straw scores more → 
+- More competitions → 
+- More data for evaluation methodology improvement → 
+- Straw attracts even better evaluation engineers
+
+This is not a technology moat — it is an expertise and reputation moat. The best AI evaluation scientists want to work at Straw because it's where the most interesting evaluation work happens.
+
+### The Named Talent Sources
+
+For Straw's first evaluation engineering hires:
+
+| Source | Who to Target | Why |
+|---|---|---|
+| METR (Machine Intelligence Research) | Research engineers focused on agent evaluation | Directly relevant; METR evaluates frontier AI agent capabilities |
+| Stanford HELM project | Contributors and recent PhDs | HELM is the most rigorous public LLM evaluation framework |
+| Anthropic / OpenAI evals team | Former evals researchers | Deep evaluation methodology expertise |
+| LangChain / LlamaIndex | Core contributors to evaluation frameworks | Production experience with enterprise agent evaluation |
+| Hugging Face | LLM evaluation contributors | Open-source evaluation work translates directly |
+
+First hire target: PhD student or recent graduate from the Stanford NLP group or CMU LTI who has published on LLM evaluation or benchmarking methodology.
+
