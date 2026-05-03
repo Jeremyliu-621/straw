@@ -27673,3 +27673,131 @@ Phase 2 research added 54 named contacts (from #56 → #110) across:
 - [ ] Interview with actual "Agent Owner" persona — find one on LinkedIn, understand day-to-day job
 
 TICK_END
+
+---
+
+## Tick 436 — Comprehensive AI Failure Statistics Update: The Complete Sales Narrative Arsenal
+
+**Research date:** 2026-05-03
+
+### The full failure data stack (2025-2026 sources)
+
+These statistics are the core of Straw's sales narrative — every one of them is a reason to evaluate BEFORE deployment:
+
+| Statistic | Source | Straw Application |
+|---|---|---|
+| **80.3% of AI projects fail to deliver intended business value** | RAND Corporation 2025 | CFO opening line: "4 of 5 AI projects fail" |
+| **33.8% abandoned before reaching production** | RAND Corporation 2025 | Sunk cost starts at day 1 without evaluation framework |
+| **95% of GenAI pilots fail to scale to production** | MIT Sloan 2025 | Near-total failure rate — staggering |
+| **Cost overruns average 380% vs. pilot projections** | MIT Sloan 2025 | The pilot that cost $50K becomes $240K at scale |
+| **42% of companies abandoned ≥1 AI initiative in 2025** | Deloitte 2025 | Nearly half of all companies have already been burned |
+| **$7.2M average sunk cost per abandoned AI initiative** | Deloitte 2025 | Abandonment isn't cheap — the damage is already done |
+| **40%+ of agentic AI projects will be canceled by 2027** | Gartner | Future failure accelerating as agent complexity grows |
+| **Only 14.4% deploy agents with full security/IT approval** | AI Assembly Lines 2026 | Most agents in production are ungoverned |
+| **$315K average switching cost per AI project** | Kai Waehner April 2026 | Once locked in, the exit is expensive |
+
+**The combined narrative:**
+
+> "4 out of 5 AI projects fail. 95% of GenAI pilots don't reach production. For the ones that do, costs run 380% over projection. When companies give up, they're down an average of $7.2 million. If they decide to switch vendors after a failed deployment, that's another $315,000. All of this is happening before the agents ever face a real production task.
+>
+> Straw runs the competition before you commit. You define winning. Agents compete on your real task. You get a score before you write the contract. 
+>
+> At $25K per evaluation, you're not buying a product. You're buying insurance against a $7.2M write-off."
+
+---
+
+### Primary failure modes (technical) — Straw's rubric addresses all three
+
+**Failure Mode 1: No clear success criteria upfront**
+- 41% of AI failures are due to unclear success criteria (cited in Tick 418)
+- Straw forces criteria definition BEFORE the competition starts → eliminates this failure mode
+
+**Failure Mode 2: Scope creep in pilot ("Dumb RAG")**
+- Pilots expand beyond their original scope → costs explode
+- Straw's bounded competition format: task is fixed, rubric is fixed, deadline is fixed → eliminates scope creep
+
+**Failure Mode 3: Wrong vendor selected based on demo**
+- Companies select based on demos, not performance on their actual task
+- Straw runs the evaluation on the company's REAL task → eliminates demo selection bias
+
+---
+
+### Updated bear case response: "Why would companies pay for evaluation when they're already struggling?"
+
+**Old answer:** They'd rather spend $25K now than $7.2M later.
+
+**New sharper answer:** They've ALREADY spent $7.2M on average. The question isn't whether they'll spend — it's whether the next spend will be as bad as the last. Straw is the first thing that changes the probability.
+
+**The stuck enterprise:** 42% of companies abandoned an AI initiative in 2025. Those companies are BACK in procurement mode right now — burned once, looking for a way to not repeat the experience. These are Straw's highest-intent buyers: the companies that already lost $7.2M and are doing AI procurement for the second time.
+
+Sources: folio3.ai/blog/ai-project-failure-rate-stats, pertamapartners.com/insights/ai-project-failure-statistics-2026, kpmg.com/us/en/articles/2026/enterprise-ai-pilots, composio.dev/blog/why-ai-agent-pilots-fail-2026, aiassemblylines.com/post/enterprise-ai-agents-fail-production-2026
+
+TICK_END
+
+---
+
+## Tick 437 — Retail/CPG Design Partners #115-117: Home Depot, Kroger, Best Buy
+
+**Research date:** 2026-05-03
+
+### Retail AI agent landscape 2026
+
+Three major retail patterns for AI agent procurement:
+1. **Customer experience agents** — shopping assistants, personalization (Kroger/Target)
+2. **Operational agents** — inventory, supply chain, merchandising (Home Depot/Target)
+3. **Agentic commerce readiness** — making retail platforms discoverable by consumer AI agents (Best Buy)
+
+All three patterns create Straw buying moments — each retailer is choosing between multiple AI vendors for the same workflows.
+
+---
+
+### Design Partner #115 — Home Depot (Merck Comparison Case)
+
+**What they're doing:** Home Depot and Merck both tapping Google Gemini Enterprise for AI agent development (TechTarget, 2026). Home Depot investing heavily in store operations AI, supply chain agents, and associate-facing tools.
+
+**Named technology leader:** CTO Matt Carey → now Executive VP Technology; successor TBD. Supply chain and merchandising AI agents are the primary procurement motion.
+
+**Pain point:** Home Depot is evaluating Google Gemini agents vs. Azure OpenAI agents vs. specialist supply chain AI vendors (Blue Yonder, E2open) for the same supply chain workflows. Each vendor demo shows different capabilities. Straw runs the competition on Home Depot's actual SKU data and supply chain task.
+
+**Cold email frame:** "Your supply chain team is evaluating Blue Yonder, Google, and Microsoft agents for demand forecasting. You've run demos. Now run the competition — same task, your data, your rubric. Straw gives you the evaluation log that your procurement office and your CFO can both read."
+
+---
+
+### Design Partner #116 — Kroger (Yael Cosset, CIO/CDO)
+
+**Who:** Yael Cosset serves as combined CIO and CDO (Kroger consolidated these roles — a strong signal of digital transformation urgency). Announced Google Gemini + SAGE AI associate platform at NRF 2026.
+
+**What they're doing:** Google Gemini CX solution for personal shopping assistant (meal planning + shopping integration), SAGE platform for associate-facing AI. Strategy: Google Cloud as primary AI infrastructure.
+
+**Pain point:** Kroger chose Google. But they're deploying multiple agent types (customer-facing vs. associate-facing vs. supply chain) and Google doesn't dominate all three. For associate productivity agents, they're evaluating Microsoft Copilot alternatives. Straw is the framework for those secondary evaluation decisions.
+
+**Contact:** Yael Cosset, CIO/CDO, Kroger. Regular speaker at NRF (National Retail Federation) — January conference, Cincinnati headquarters.
+
+---
+
+### Design Partner #117 — Best Buy (Agentic Commerce Readiness)
+
+**Who:** Best Buy's CEO (Corie Barry) explicitly said: "As agentic commerce matures, we want to serve our customers in new ways... ensuring the site is ready for AI agents to browse and discover on behalf of customers."
+
+**Unique angle:** Best Buy is a BUYER of AI agents for customer-facing agentic commerce AND a company that needs their own AI agent infrastructure evaluated. Their agentic discovery transformation is a direct Straw use case — test multiple AI shopping agent integrations against the rubric: "Customer provides product need, agent recommends correct SKU with availability confirmation, order completion ≤ 2 minutes."
+
+**Contact:** Chief Technology Officer (Jason Bonfig, CTO) and/or Chief Customer Officer.
+
+---
+
+### Retail vertical ICP summary
+
+| Retailer | Technology Leader | AI Agent Focus | Straw Rubric Theme |
+|---|---|---|---|
+| Home Depot | CTO (supply chain) | Supply chain + operations agents | Demand forecast accuracy, replenishment efficiency |
+| Kroger | Yael Cosset (CIO/CDO) | Customer experience + associate platform | Shopping assistant accuracy, SAGE productivity gain |
+| Best Buy | Jason Bonfig (CTO) | Agentic commerce discovery | Customer need → correct SKU recommendation accuracy |
+| Target | CTO | Merchandising + supply chain + store ops | Multi-workflow agent competition |
+
+**Vertical timing:** NRF (January 2027), Shop.org (September 2026), Groceryshop (October 2026) are the retail AI conference calendar.
+
+**Tim Ritz (Walmart VP Procurement, Design Partner #78) already in pipeline** — Kroger + Home Depot + Best Buy complete the top-5 US retailer coverage.
+
+Sources: modernretail.co/technology/retail-leaders-target-lowes, techtarget.com/merck-home-depot-gemini-enterprise, customerexperiencedive.com/best-buy-agentic-ai, grocerydive.com/kroger-google-gemini-sage, ciodive.com/kroger-cio-cdo-consolidation
+
+TICK_END
