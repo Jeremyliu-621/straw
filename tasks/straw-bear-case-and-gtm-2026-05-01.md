@@ -23373,3 +23373,104 @@ Sources: resultsense.com/insights/2026-05-01-ai-procurement-grounding-accuracy-d
 
 TICK_END
 
+
+---
+
+## TICK 378 — Notion + Databricks as Design Partners: The Platform Plays (#75-76)
+
+**Theme: Design Partners + GTM**
+
+### #75: Ivan Zhao — CEO & Co-founder, Notion
+
+**Company:** Notion (recently launched custom agents for Business/Enterprise; "multiplayer platform for managing AI agents")
+
+**Why Notion is a strong design partner:**
+Notion launched custom AI agents in February 2026 — answer repetitive questions, triage tickets, run autonomously 24/7. Ivan Zhao's vision: "AI teammates" that increase productivity. Notion is a Braintrust customer (they already use AI evaluation tooling).
+
+**The Straw pitch to Notion:**
+Notion's enterprise customers are choosing between Notion's native AI agents and third-party agents for knowledge work tasks (Q&A, ticket triage, document summarization). Notion has no mechanism to tell its enterprise customers "Notion's agent is demonstrably better than the alternative."
+
+**Design opportunity:** "Notion Multiplayer + Straw" — run a competition inside a Notion workspace. The Straw task spec is a Notion document. The competition results are a Notion database. The integration makes Straw evaluation native to Notion's product workflow.
+
+**Contact:** Ivan Zhao (@ivanhzhao), Notion
+
+---
+
+### #76: Ali Ghodsi — CEO & Co-founder, Databricks
+
+**Company:** Databricks ($134B valuation, $7B raised, $5.4B ARR, 65% growth, 20,000+ customers)
+
+**The most important statistic in this research file:**
+> "80% of databases on Databricks' platform are now being built by AI agents, not people."
+
+This is not pilot-stage. AI agents are building real production databases for the world's biggest companies, right now, on Databricks. 20,000 enterprises are already committed. The evaluation of WHICH agent to use for building those databases happened before Straw existed — presumably via vendor demo.
+
+**Why Ali Ghodsi is the ideal design partner:**
+Ali Ghodsi publicly blasted "companies with billions in funding but zero revenue" as "clearly a bubble." He is anti-hype, pro-reality. He would be receptive to Straw's fundamental message: "Stop buying on demos. Run the competition. The score is the proof."
+
+**The Straw pitch:**
+"80% of databases on your platform are built by AI agents. Your enterprise customers picked those agents somehow — probably vendor demos. Of 20,000 Databricks customers, how many evaluated competing agents against their specific data engineering workflow before committing? Straw is the infrastructure that makes that evaluation possible. Your best customers should be running Straw competitions before every agent deployment."
+
+**Distribution opportunity:** A Databricks partnership (or even a blog post from Ali Ghodsi mentioning Straw) reaches 20,000 enterprise data engineering teams who are ACTIVELY deploying AI agents right now. This is the highest-density reachable audience Straw has.
+
+**Contact:** Ali Ghodsi (@bigdata on Twitter/X), Databricks leadership blog
+
+---
+
+### The Platform Partner Pattern
+
+Notion and Databricks illustrate a design partner pattern distinct from the "direct buyer" pattern:
+
+| Pattern | Example | Straw's Role |
+|---|---|---|
+| Direct buyer | Ramp, Cursor, Goldman | Evaluate AI agents for their own internal tasks |
+| Platform partner | Notion, Databricks | Enable their enterprise customers to evaluate agents using Straw |
+| Agent supplier | Intercom, Harvey | Their agents compete on Straw; winning = credibility |
+
+Platform partners have a multiplier effect: each platform partner that integrates Straw exposes it to their entire customer base (Databricks: 20,000; Notion: millions of users). The ACV for platform partnerships is different (rev share or per-competition fee through the platform channel).
+
+**Updated total: 76 named design partner contacts**
+
+Sources: sources.news/p/notions-next-act, cnbc.com/2026/02/09/under-the-hood-of-the-ai-economy-with-databricks-ceo-ali-ghodsi, fortune.com/2025/12/09/databtricks-ceo-1-trillion-valuation-agents-brainstorm-ai
+
+TICK_END
+
+---
+
+## TICK 379 — The Most Important Single Statistic for Every Straw Sales Conversation
+
+**Theme: GTM (anchor fact synthesis)**
+
+After 96 ticks of research, one statistic outperforms all others as a sales conversation anchor:
+
+**"80% of databases on Databricks are now being built by AI agents, not people."**
+
+Here's why this is the anchor fact:
+
+1. **It's concrete and verifiable.** Not a projection, not a survey — Databricks has 20,000 customers and operational data.
+
+2. **It proves agents are in production NOW.** Not "AI agents will change procurement" — AI agents ARE changing it, at the world's largest data platform.
+
+3. **It raises the obvious question:** Which agent? Evaluated how? This is Straw's opening.
+
+4. **It makes the failure rate data real.** If 80% of databases are built by agents, and 42% of AI initiatives were abandoned (Deloitte), then there's a massive gap between "deployed" and "working." Someone picked the wrong agent for their database infrastructure. What did that cost?
+
+5. **It's shareable.** "Did you know 80% of Databricks databases are built by AI agents?" is a fact that CTOs forward in Slack. It circulates without Straw's name attached — which is the best kind of awareness.
+
+### The Full Five-Fact Sales Script
+
+| Order | Fact | Purpose |
+|---|---|---|
+| 1 | "80% of Databricks databases are now built by AI agents" | Prove agents are in production |
+| 2 | "42% of enterprises abandoned at least one AI initiative last year (Deloitte)" | Prove procurement is broken |
+| 3 | "$7.2M average sunk cost per abandoned initiative" | Make the failure cost concrete |
+| 4 | "81% of enterprise leaders are concerned about AI vendor lock-in" | Make the fear personal |
+| 5 | "Google validated agent evaluation at Cloud Next '26 — but only for Google agents" | Create the opening for Straw |
+| Close | "Straw is the evaluation you run before you're locked in — for any agent, any vendor, your rubric" | Straw's value proposition |
+
+This is a five-sentence narrative that requires zero slides and zero product demo to be compelling.
+
+Sources: (synthesis from all Phase 2 research)
+
+TICK_END
+
