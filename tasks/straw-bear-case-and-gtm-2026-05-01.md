@@ -17823,3 +17823,163 @@ The current $15K-$50K competition pricing is correct for design partner phase. A
 
 3. **Volume discount for multi-year**: Enterprises with 10+ planned competitions get a 20% discount on annual subscription. This creates predictable ARR and locks in the most valuable customers.
 
+
+---
+
+## Tick 245 (2026-05-03T00:22:00Z): Straw's own liability exposure — what if the winning agent causes harm? [theme: bear]
+
+**Score: 6/10** — Genuine legal risk that must be pre-empted with contract structure and clear positioning before first enterprise sale.
+
+### The Liability Scenario
+
+Straw runs a competition. Agent X wins. The enterprise customer signs a $5M contract with Agent X's vendor. Agent X is deployed in a healthcare context. Six months later, Agent X fails to flag a patient's drug interaction. There is a serious adverse event. The patient's lawyers investigate. They find that Agent X was "Straw Certified" and that the enterprise relied on the Straw competition result to make the deployment decision.
+
+**The question**: Is Straw liable?
+
+### The 2026 AI Contract Liability Landscape
+
+Relevant facts from 2026:
+
+- AI regulation reached an "inflection point" in 2026 — voluntary frameworks are becoming enforceable compliance regimes
+- AI vendor agreements in 2026 "heavily favor the vendor" with aggressive disclaimers and maximum flexibility, minimum accountability
+- Enterprises must scrutinize indemnification coverage for IP infringement, data breaches, and AI output failures
+- California AB 316 (effective January 2026) bars using AI autonomy as a liability defense
+
+**The California AB 316 exposure**: If California courts treat Straw's "Straw Certified" badge as a representation of AI agent quality sufficient to make Straw a "deployer," Straw could be pulled into liability claims even as a third-party evaluator.
+
+### Specific Risk Vectors
+
+**Risk 1 — Straw as a negligent certifier**
+If Straw's rubric design was demonstrably deficient — if a competent rubric designer would have included a dimension that detected Agent X's failure mode — Straw could be liable for professional negligence. This is analogous to a credit rating agency being liable for AAA-rating a bond that was actually junk.
+
+**Risk 2 — Straw as a proximate cause**
+The enterprise customer's lawyer argues: "Without the Straw Certified badge, our client would not have been confident enough to deploy Agent X in this clinical context. The badge was the proximate cause of the deployment decision."
+
+**Risk 3 — "Straw Certified" as warranty**
+If "Straw Certified" is interpreted as a warranty of Agent X's fitness for a specific purpose, and Agent X is not fit for that purpose, Straw has potential warranty liability.
+
+### Why This Is a 6/10 (Not Higher)
+
+Legal risk is real but highly manageable with competent contract drafting. Analogy companies:
+
+- **Credit rating agencies** (S&P, Moody's): They certify the quality of financial instruments. They are not liable when the instrument fails as long as they disclosed their methodology and limitations. Their contracts explicitly disclaim warranties of fitness.
+- **UL (Underwriters Laboratories)**: Certifies product safety. Not liable for product failures if the product passed the tests at certification time.
+- **Auditing firms**: Certify financial statements. Liable only for gross negligence, not for subsequent business failures.
+
+The pattern: third-party certification is a well-established legal structure. The key is: (1) clear methodology disclosure, (2) explicit limitation of scope, (3) disclaimer that certification is a historical assessment not a guarantee of future performance, and (4) indemnification clause in Straw's customer contract.
+
+### Required Legal Infrastructure
+
+Before first enterprise competition:
+
+1. **Straw's Terms of Service (critical)**:
+   - "Straw Certified reflects performance at time of evaluation in the evaluation environment only"
+   - "Straw does not warrant Agent X's fitness for any specific production use case"
+   - "Enterprise customer is solely responsible for deployment decisions"
+   - "Straw disclaims all liability for Agent X's production performance"
+
+2. **Methodology disclosure**:
+   - Publish rubric methodology clearly so customers cannot claim they were misled about what "Straw Certified" means
+   - Publish limitations of sandbox evaluation explicitly ("evaluation does not test for [X, Y, Z] scenarios")
+
+3. **Insurance**:
+   - Professional liability insurance (E&O) before first enterprise sale
+   - Minimum $2M coverage; scale to $5M+ at Series A
+   - Cyber liability insurance covering sandbox data handling
+
+4. **Legal opinion memo**:
+   - For EU operations specifically: legal memo on EU AI Act Article 14 and Straw's deployer classification status before first EU customer
+   - For healthcare: specific legal review before first healthcare AI evaluation
+
+5. **Customer contract indemnification**:
+   - Require customer to indemnify Straw against third-party claims arising from their use of competition results
+   - "Customer acknowledges that Straw's evaluation is one input to the procurement decision, not the sole basis"
+
+### The Rating Agency Analogy (Positive Version)
+
+S&P's credit rating has $100B+ in financial instrument ratings, generates $3B+ in revenue, and has never been successfully held liable for a market crash because their methodology is well-documented and their disclaimers are legally robust. Straw should build the same structure from day one.
+
+
+---
+
+## Tick 246 (2026-05-03T00:23:00Z): Legal tech design partner targets — BigLaw, in-house legal departments, and legal AI platforms [theme: partners]
+
+### Why Legal Tech Is a High-Value Vertical
+
+- Legal AI adoption is accelerating rapidly: Harvey AI raised **$200M at $11B valuation** in March 2026
+- BigLaw firms and in-house legal departments are buying AI for contract review, legal research, e-discovery, and compliance monitoring
+- Legal buyers have a deep cultural aversion to procurement risk — the "measure twice, cut once" mentality makes them natural Straw customers
+- AI procurement in legal is particularly high-stakes: a wrong legal AI agent producing incorrect case research or contract analysis has significant liability implications
+- General Counsel offices are increasingly making AI procurement decisions independently of IT — creating a new buyer persona
+
+### Named Target Contacts
+
+**Harvey AI** — $11B valuation, fastest-growing legal AI platform
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Winston Weinberg | CEO & Co-founder | Building the AI platform for legal and professional services |
+| Gabriel Pereyra | CTO & Co-founder | Technical architecture of Harvey's agent system |
+
+- **The Harvey opportunity is both-sided**: (1) Large law firms and in-house departments evaluating Harvey vs. Casetext vs. Thomson Reuters AI could use Straw to run an independent comparison. (2) Harvey, as a vendor, could seek "Straw Certified" for their platform to build enterprise trust.
+- **Pitch angle to Harvey (as vendor)**: "Harvey is the most well-funded legal AI platform in the market. As you compete for AmLaw 200 firm contracts, Straw Certified gives your enterprise buyers an independent validation that Harvey performs best on their specific legal tasks. We'd like to have Harvey among the first legal AI agents to earn the certification."
+
+**Casetext / Thomson Reuters** — AI legal research
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Pablo Arredondo | Co-founder, Casetext (now at Thomson Reuters) | Built CoCounsel; deep legal AI expertise |
+
+- **Context**: Thomson Reuters acquired Casetext in 2023. The CoCounsel platform is now competing against Harvey across BigLaw and in-house departments.
+
+**Ironclad** — AI contract lifecycle management
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Jason Boehmig | CEO & Co-founder | Building AI-native contract management; Jurist agent product |
+
+- **Context**: Ironclad's Jurist AI agent handles contract drafting, redlining, and risk analysis. Enterprise legal teams evaluating Ironclad vs. ContractPodAi vs. Luminance are exactly the Straw use case.
+- **Pitch angle**: "Legal teams evaluating AI contract management platforms need a way to compare CoCounsel, Jurist, and competitors on their specific contract types and risk criteria. Straw provides that evaluation infrastructure."
+
+**In-House Legal Departments — BigCo General Counsels**
+
+The most valuable Straw design partners in legal are the buyers (in-house GC offices), not the vendors.
+
+| Company | Name | Title | Why They Care |
+|---|---|---|---|
+| Microsoft | Hossein Nowbar | Chief Legal Officer & EVP | Microsoft is deploying AI agents internally for legal workflows; needs evaluation methodology |
+| JPMorgan Chase | Stacey Friedman | General Counsel | Largest bank's legal AI procurement decisions are high-stakes |
+| Google/Alphabet | Halimah DeLaine Prado | EVP & General Counsel | AI-native legal department with complex procurement challenges |
+| Apple | Katherine Adams | SVP & General Counsel | Deep privacy and IP concerns in legal AI procurement |
+
+- **Note**: These are aspirational targets — CXO-level at mega-caps is not a realistic Year 1 design partner. But VP of Legal Operations or Director of Legal Technology at these companies is reachable and is the actual decision-maker for AI agent procurement.
+
+**AmLaw 50 Law Firms — Director of Legal Operations / Chief Innovation Officer**
+
+| Firm | Contact Profile | Why They Care |
+|---|---|---|
+| Kirkland & Ellis | Chief Innovation Officer | Largest law firm by revenue; active legal AI investment |
+| Latham & Watkins | Director of Knowledge Management | Heavy tech adoption; early Harvey customer |
+| Gibson Dunn | Director of Practice Innovation | Active AI program |
+| Skadden | Director of Knowledge Management | Deep M&A practice; contract analysis AI use case |
+
+- **Channel**: The International Legal Technology Association (ILTA) annual conference is the single best access point for law firm technology leaders — Chief Innovation Officers, Directors of Legal Operations, and Knowledge Management leaders from AmLaw 200.
+
+### Legal Vertical Strategy
+
+**ILTA Annual Conference** (summer, varies location): The legal technology community's most important gathering. Director of Legal Technology from every major firm attends. A Straw speaking slot on "Objective evaluation methodology for legal AI agent procurement" is the best single access point for all BigLaw firms simultaneously.
+
+**Legal Technology Association (LTA) webinars**: Monthly webinars with in-house legal technology leaders. Lower cost, high targeting.
+
+**ACC (Association of Corporate Counsel)**: Covers in-house GC offices at Fortune 500. Annual conference + monthly CLEs. The GC/CLO persona is the budget authority for in-house legal AI.
+
+### Legal Rubric Template
+
+Core evaluation dimensions for legal AI agent selection:
+1. **Case law citation accuracy**: % of cited cases verified as real and accurately quoted (hallucination detection)
+2. **Contract risk identification rate**: % of standard red-flag clauses detected in sample contracts
+3. **Jurisdictional accuracy**: Does the agent apply correct legal standards for the specified jurisdiction?
+4. **Privilege protection**: Does the agent correctly identify and protect attorney-client privileged communications?
+5. **Citation format compliance**: Bluebook / ALWD compliance in generated legal documents
+6. **Confidentiality protocol**: Does the agent strictly avoid including one client's data in another client's output?
+
