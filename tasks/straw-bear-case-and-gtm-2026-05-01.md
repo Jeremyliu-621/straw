@@ -11952,3 +11952,142 @@ For a Straw competition to work, the buyer must share their confidential busines
 
 **One answer: the buyer's own sandbox.** Instead of Straw's platform receiving and processing buyer data, Straw provides a "Straw Certified evaluation runner" that the buyer deploys in their own cloud environment. The agents run inside the buyer's VPC; no data leaves the buyer's environment. Straw provides the rubric, the scoring engine, and the evaluation report — but never sees the actual data. This is the "customer-hosted evaluation" model and it's technically more complex but removes the data sharing objection entirely.
 
+
+---
+
+## Tick 173 (2026-05-03T16:00Z): Devin's 2025 performance review — Straw's supply-side case study and validation [theme: gtm]
+
+### The key data from Devin's published performance review
+
+Cognition published a detailed annual performance review for Devin — based on 18 months of enterprise deployments. Key metrics:
+
+**Improvement from Year 1 to Year 2:**
+- 67% of PRs merged (vs. 34% last year — nearly 2x improvement)
+- 4x faster at problem solving
+- 2x more efficient resource consumption
+- Enterprise deployments: Goldman Sachs, Citi, Santander, Nubank, Dell, Cisco, Ramp, Palantir
+
+**Where Devin excels (specific domains with measured results):**
+- Security vulnerability fixes: 1.5 minutes vs. 30 minutes for humans = 20x efficiency
+- Code modernization: 3-4 hours per file vs. 30-40 hours for humans = ~10x improvement
+- Repository migration: 14x faster than humans when Oracle sunsetted legacy Java
+- Test coverage: typically rises from 50-60% to 80-90% with Devin
+
+**Where Devin struggles (independent testing):**
+- In independent testing of 20 real-world tasks: 14 failures, 3 successes, 3 unclear = **~15-30% success rate**
+- "Junior at execution despite senior codebase understanding"
+- Weak on complex recursive functions and unclear/ambiguous scenarios
+
+Sources: [Cognition 2025 Performance Review](https://cognition.ai/blog/devin-annual-performance-review-2025), [AgentMarketCap Devin ARR analysis](https://agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue), [SiliconAngle $25B valuation](https://siliconangle.com/2026/04/23/cognition-creator-ai-software-engineer-devin-talks-raise-hundreds-millions-25b-valuation/)
+
+### Why Devin's performance review is Straw's best supply-side argument
+
+**Devin is PUBLISHING a performance review because they know enterprises need this data.** The act of publishing demonstrates demand for agent evaluation evidence. Cognition is doing their own version of Straw's evaluation — showing buyers "here's how Devin performed on real enterprise tasks."
+
+**The Straw pitch to Cognition:** "You published a performance review to help enterprises understand where Devin succeeds. Straw's competition format lets enterprises verify those claims on their own tasks — with Devin competing against alternatives. If Devin wins the Straw competition, you get independent validation with a Straw Certified badge. That's worth more to enterprise buyers than your own published review, because it comes from a neutral party."
+
+**Straw's value to Devin specifically:**
+- Devin's 15-30% success rate on independent testing creates buyer hesitation
+- "Straw Certified" on specific task categories (security vulnerability fixes, code modernization) proves Devin's claimed 10-20x efficiency advantage on those specific tasks
+- Enterprise buyers who would hesitate at "15-30% overall success" would pay for Devin on security vulnerability fixes if Straw's competition showed Devin winning that category specifically
+
+### Cognition's valuation as supply-side market signal
+
+Cognition is in talks to raise at **$25 billion valuation** (April 2026) — up from the previous round. ARR grew 73x. This means:
+1. Enterprise demand for coding agents is real and accelerating
+2. Cognition will need differentiation from OpenAI Codex, Cursor, GitHub Copilot, and other entrants
+3. Straw competition wins become Cognition's premium positioning evidence
+4. Supply-side competition is intensifying — Devin needs Straw certification to justify $25B vs. a $20/month commodity
+
+---
+
+## Tick 174 (2026-05-03T16:15Z): Galileo's Agent Leaderboard — the free HuggingFace competitor [theme: bear]
+
+### What Galileo's Agent Leaderboard is
+
+Galileo AI (enterprise AI evaluation startup, previously researched in Tick 50) published a free Agent Leaderboard on HuggingFace. Key characteristics:
+
+- **Evaluates:** Language models' ability to effectively use tools in complex multi-step business scenarios
+- **Domains covered:** Banking, healthcare, insurance (100 simulated scenarios per domain)
+- **Metrics:** Action Completion (AC) — did the agent complete the task? Tool Selection Quality (TSQ) — did the agent choose the right tools in the right order?
+- **Format:** Public leaderboard ranking multiple LLMs/agent frameworks by domain and metric
+- **Cost:** Free on HuggingFace Spaces
+
+Sources: [Galileo Agent Leaderboard on HuggingFace](https://huggingface.co/spaces/galileo-ai/agent-leaderboard), [Introduction blog](https://galileo.ai/blog/agent-leaderboard)
+
+### Why this is a partial but not fatal competitor
+
+**What Galileo's leaderboard can do:**
+- Tell you which LLM performs best on generic banking/healthcare/insurance scenarios
+- Provide a baseline for academic and developer comparison
+- Show relative performance across standardized synthetic benchmarks
+
+**What Galileo's leaderboard CANNOT do:**
+- Evaluate agents on your organization's specific data and tasks
+- Compare multiple independent agent vendors (Harvey vs. Ironclad) on YOUR contract documents
+- Produce a compliance-grade procurement report
+- Create a "Straw Certified" badge with commercial value
+- Integrate with commercial outcomes (hire/license/acquire the winner)
+- Test agents on your proprietary workflows, not synthetic simulations
+
+**The fundamental gap:** Galileo's leaderboard evaluates "which LLM/agent performs best on simulated banking scenarios in general." Straw evaluates "which of these 5 competing agents performs best on your bank's actual SWIFT transaction exception handling workflow, using your own transaction history from 2024-2026."
+
+**The 37% performance gap confirms this structural limitation:** Per the previous benchmark research, there is a 37% gap between lab benchmark scores and real-world deployment performance. Galileo's leaderboard IS a lab benchmark. Straw IS real-world deployment performance measurement.
+
+### The free tier commoditization pattern
+
+Galileo (and HuggingFace, OpenEvals, MAYA-AI's "Leaderboard of Leaderboards") are establishing a free tier of generic agent benchmarking. This will become the "baseline" evaluation all AI teams reference. This is actually good for Straw:
+
+1. Free baseline benchmarks educate the market about agent performance variation
+2. When buyers realize generic benchmarks don't answer "which agent for MY tasks?" — they come to Straw
+3. The progression is natural: developer reads Galileo leaderboard → doesn't fully trust it for procurement → talks to Straw
+
+**The content opportunity:** Straw should publish a blog post "Why the Galileo Agent Leaderboard can't tell you which AI agent to buy." Reference the 37% benchmark-to-production gap. Cite the SWE-bench saturation problem. Then explain what Straw's buyer-defined rubric does differently.
+
+---
+
+## Tick 175 (2026-05-03T16:30Z): Shadow AI security statistics as Straw's CISO channel [theme: gtm/bear]
+
+### The shadow AI security market data
+
+From multiple 2025-2026 security reports:
+
+- **Shadow AI breach premium:** $670,000 more per breach than standard incidents (IBM 2025 Data Breach Report)
+- **Shadow AI insider risk:** $19.5M annual insider risk cost per organization, with 53% ($10.3M) driven by non-malicious shadow AI negligence
+- **Shadow AI scale:** Average enterprise has 1,200+ unofficial AI applications; 86% of organizations have zero visibility into AI data flows
+- **Detection time:** Shadow AI breaches average 247 days to detect — 6 days longer than standard breaches
+- **PII exposure:** 65% of shadow AI incidents involve customer PII compromise (vs. 53% for standard breaches)
+- **OpenClaw security crisis:** Over 21,000 exposed instances of the viral AI agent; malicious marketplace exploits; data exfiltration
+
+Sources: [IBM 2025 Breach Report via Kiteworks](https://www.kiteworks.com/cybersecurity-risk-management/ibm-2025-data-breach-report-ai-risks/), [Shadow AI insider risk via Digit.fyi](https://www.digit.fyi/shadow-ai-tied-to-19-5m-insider-risk-explosion/), [AI Security Statistics 2026](https://prefactor.tech/learn/ai-security-risk-statistics)
+
+### Why this creates a CISO channel for Straw
+
+Shadow AI security incidents are caused by employees and systems using AI tools that haven't been evaluated and authorized. Straw's procurement evaluation is the formal authorization gate:
+
+1. Employee wants to use a new AI agent for contract review
+2. IT/security requires formal evaluation before approval
+3. Straw runs a competition, produces a certification report
+4. IT/security approves the "Straw Certified" agent
+5. The agent is now official — not shadow AI
+
+**The CISO pitch:** "Your IBM breach report says shadow AI incidents cost $670K more than standard ones. The root cause: employees use AI tools that haven't been formally evaluated and authorized. Straw is the authorization gate — we evaluate AI agents before they're approved for enterprise use. The Straw Certified badge is your security team's proof that an agent was formally evaluated on your actual business data before deployment."
+
+### Named CISO contacts for this angle
+
+LinkedIn search: "Chief Information Security Officer" + [company name] at high-AI-adoption enterprises. Specific high-value targets:
+
+1. **Financial services CISOs** — Goldman, JPMorgan, Citi, Capital One (AI agent security is a core concern after OCC guidance)
+2. **Healthcare CISOs** — Epic customers, Kaiser Permanente, Ascension (HIPAA + agent security is mandatory)
+3. **Legal services CISOs** — BigLaw IT security (privilege protection for legal AI workflows)
+
+**Cold email for CISOs:**
+
+"Hi [Name],
+
+IBM's 2025 breach report found shadow AI incidents cost $670K more than standard breaches — because AI tools deployed without formal evaluation create visibility gaps.
+
+I'm building Straw — we're the formal evaluation step between 'employee wants to use a new AI agent' and 'IT says it's approved.' The Straw Certified badge means the agent was evaluated on your actual data, with documented methodology, before anyone touched production systems.
+
+Working with our first 3 design partners now. Would 20 minutes be useful to show you the evaluation report format?"
+
