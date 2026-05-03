@@ -26040,3 +26040,53 @@ Stanford (42% of implementations) + 2026 market data confirms: foundation model 
 Sources: kore.ai/blog/top-ai-agents-for-customer-service-tested-reviewed, asapp.com/hub/the-best-ai-agent-platforms-for-customer-service-a-2026-buyers-guide, fin.ai/learn/best-ai-agents-customer-service, digitalapplied.com/blog/customer-service-ai-agent-statistics-2026-data
 
 TICK_END
+
+---
+
+## Tick 426 — Enterprise AI TCO: Straw's $25K Is 5-10% of Year-1 Agent Investment
+
+**Date researched:** 2026-05-03
+**Theme:** Pricing / Sales narrative (CFO conversation)
+
+### Enterprise AI agent TCO in 2026 (actual spend)
+
+| Cost component | Range | Notes |
+|---|---|---|
+| Development/setup | $20K-$300K | Regulated industries (banking, insurance) at high end |
+| Platform subscription | $100K-$350K/year | Enterprise tiers with custom hosting + guardrails |
+| Integration labor | 35-45% of first-year project | Hidden cost — rarely budgeted correctly |
+| Ongoing maintenance | 20-50% additional TCO | Model drift monitoring, prompt updates, compliance |
+| Salesforce Agentforce (enterprise) | $1M+/year total | Platform + Data Cloud + PS + training + consulting |
+
+**The underestimation problem:** Most enterprise budgets underestimate true TCO by 40-60%. The average Year 1 total cost for a production AI agent deployment: **$150K-$500K** when all components are included.
+
+### Straw's pricing recalibrated against TCO
+
+If the Year 1 total cost to deploy an AI agent is $150K-$500K:
+- **Straw Pro ($25K/year)** = 5-17% of Year 1 investment
+- **Single evaluation ($2K-$10K)** = 1-7% of Year 1 investment
+
+If that agent fails and needs to be rebuilt (80% probability of failure without evaluation):
+- **Failed deployment cost** = $150K-$500K + another full development cycle
+- **Expected failed cost** = 80% × $300K average = **$240K in expected failure cost**
+- **Straw at $25K** = 10% of expected failure cost = 10× ROI before any value delivered
+
+If Straw runs evaluation and the agent succeeds:
+- **Agent delivers value:** $200K-$2M first-year value (industry benchmarks by use case)
+- **Straw ROI:** 8-80× value delivered vs. evaluation cost
+
+**The CFO math (final, most precise version):**
+"You're spending $300K all-in on this AI agent deployment. There's an 80% probability it fails without evaluation. Expected loss: $240K. Straw costs $25K. If Straw converts a failure into a success, you captured $240K in expected loss avoidance. That's 9.6× ROI in year 0 — before the agent generates any business value."
+
+### Updated pricing recommendations
+
+Based on TCO benchmarks and competitive pricing:
+- **Evaluation fee** should be 1-5% of Year 1 agent TCO = $1.5K-$15K per evaluation
+- **Annual subscription** should be ≤10% of any single agent's expected Year 1 value = capped at $25-50K for most enterprise use cases
+- **Deployment success fee** (3-7% of Year 1 contract value) is the asymmetric upside play — if an enterprise deploys an agent generating $1M/year, Straw earns $30K-$70K in Year 1 alone
+
+At these prices, Straw is the cheapest insurance premium an enterprise AI buyer can purchase.
+
+Sources: hypersense-software.com/blog/2026/01/12/hidden-costs-ai-agent-development, trantorinc.com/blog/agentic-ai-total-cost-of-ownership, ekfrazo.com/resources/blogs/salesforce-agentforce-pricing-2026, sustainableatlas.org/post/cost-ai-agents-workflow-automation-deployment-2026
+
+TICK_END
