@@ -26483,3 +26483,136 @@ TICK_END
 Sources: llrx.com/2026/04/ai-in-finance-and-banking, bankingdive.com/news/banks-ai-push-accelerates, fortune.com/2026/04/29, extruct.ai/research/ycw26, thevccorner.com/yc-w26-demo-day-2026, tldl.io/blog/yc-ai-startups-2026
 
 TICK_END
+
+---
+
+## Tick 434 — Sequoia "Services Are the New Software" Thesis Validates Straw's Outcome-Based Model
+
+**Research date:** 2026-05-03
+
+### The Sequoia thesis (April 2026, 3M+ views)
+
+Julien Bek (Sequoia partner, London), April 2026: **"Services: The New Software."**
+
+Core argument:
+- For every $1 businesses spend on software, they spend $6 on services
+- AI autopilots capture the WORK budget, not the tool budget — work budgets dwarf tool budgets
+- The shift: copilots (productivity tools) → autopilots (outcome delivery)
+- If a task is already outsourced: accepted external delivery, existing budget line, buyer purchasing an outcome. Replacing an outsourcing contract with an AI-native provider is a clean vendor swap.
+- "The next $1T company won't sell software. It will sell the work."
+
+**Sequoia raises $7B new AI fund** (April 2026) to back services-as-software companies at scale.
+
+---
+
+### How "Services Are the New Software" maps to Straw
+
+**Straw's position in this framework:**
+
+Traditional procurement chain:
+> Company posts RFP → Consulting firm wins → Delivers work product → Company pays for service
+
+Straw's agentic procurement chain:
+> Company posts task on Straw → AI agents compete → Winning agent delivers work product → Company pays for verified outcome
+
+Straw is the RFP infrastructure for the outcome economy. Every AI-native services company (the wave Sequoia is funding) needs a way to WIN enterprise contracts by demonstrating outcome quality. Straw is how they demonstrate it — and how enterprises buy with confidence.
+
+**Why this matters for Straw's fundraise framing:**
+
+Sequoia is betting on "autopilot" AI companies that deliver outcomes. Those companies need to PROVE their outcomes win before a buyer commits. The proof infrastructure is Straw. This means:
+1. Straw should be on Sequoia's radar as the enabling layer for their portfolio companies
+2. Straw's own pitch aligns with the dominant VC thesis: we're outcome-focused ($2.99/successful agent call pricing resonates)
+3. Sequoia London (Julien Bek) is a natural Series A target
+
+**Enterprise adoption fatigue angle:**
+Sequoia's 2026 AI outlook ("Tale of Two AIs"): "Big enterprises are struggling to implement AI in-house, leading to fatigue and disappointment." Adoption fatigue = exactly the buyer Straw serves. The fatigued enterprise ran 5 pilots, got 5 different answers, can't decide. Straw runs the competition, gives them one defensible answer.
+
+---
+
+### Updated investor target list
+
+| Firm | Partner | Thesis Alignment |
+|---|---|---|
+| Sequoia Capital | Julien Bek (London), Alfred Lin, Pat Grady | "Services: The New Software" — Straw is RFP infrastructure for outcome economy |
+| BVP | David Cowan | "Eval+observability is the AI infrastructure frontier" (Tick 397) |
+| a16z | Martin Casado (enterprise) | AI infrastructure for enterprise; strong enterprise SaaS thesis |
+| Benchmark | Peter Fenton | Network-effects businesses; Straw builds reputation network |
+| Spark Capital | Alex Finkelstein | Dev tools and infrastructure; Straw's rubric-builder PLG angle |
+| Khosla Ventures | Sven Strohband | DeepTech + enterprise AI governance |
+
+**Warm path:** YC S26 acceptance → Demo Day → Sequoia pre-emptive term sheet (pattern from W26 infrastructure companies). YC application due TODAY (May 4, 8pm PT).
+
+Sources: fortune.com/2026/04/21/services-are-the-new-software-sequoia, sequoiacap.com/article/services-the-new-software, sequoiacap.com/article/ai-in-2026-the-tale-of-two-ais, techcrunch.com/2026/04/16/sequoia-7b-fund
+
+TICK_END
+
+---
+
+## Tick 435 — Manufacturing/Industrial AI Agent Design Partners #112-114
+
+**Research date:** 2026-05-03
+
+### Manufacturing AI agent landscape 2026
+
+Siemens and NVIDIA announced a joint goal to build "the world's first fully AI-driven, adaptive manufacturing sites globally" starting in 2026 at the Siemens Electronics Factory in Erlangen. Siemens is also on NVIDIA's 17-adopter enterprise agent platform list (Tick 430). Microsoft at Hannover Messe 2026 (April 2026) deployed industrial AI agents at major manufacturing sites.
+
+**Agent types being deployed in manufacturing:**
+- Engineering Copilot (Siemens TIA Portal): natural language → automation code generation (SCL)
+- Planning Copilot: production scheduling, resource allocation via GenAI
+- Procurement Agent (Microsoft Dynamics 365): supplier communications, exception handling, downstream impact assessment
+- Quality/Inspection Agents: vision-based defect detection
+- Predictive Maintenance Agents: real-time sensor analysis
+
+**Key procurement pain:** Every manufacturing company is now choosing between Siemens' industrial agents, Microsoft's industrial agents, and specialty industrial AI vendors (Sight Machine, Augury, SparkCognition). The selection criteria are engineering-specific and objective (defect rate, cycle time, code quality, OEE improvement). These are PERFECT rubric criteria — precise, measurable, binary pass/fail.
+
+---
+
+### Design Partner #112 — Siemens Digital Industries (Roland Busch / Digital Transformation Lead)
+
+**Who:** Siemens is the leading industrial AI agent deployer globally. CEO Roland Busch leads digital transformation. Siemens Digital Industries Software handles agent deployment for manufacturing customers.
+
+**Pain point:** Siemens sells industrial AI agents TO manufacturing companies (customers). Those manufacturing companies need to evaluate Siemens' agents against Microsoft's agents and specialist vendors. Straw gives Siemens' enterprise buyers a neutral evaluation framework — and Siemens can use Straw to WIN those evaluations by competing transparently.
+
+**Cold email frame (to Siemens' enterprise buyer, not Siemens itself):** "You're choosing between Siemens' Engineering Copilot and Microsoft's industrial agent for TIA Portal code generation. Both claim 50% productivity improvement. Define your test: 20 real automation tasks, measure code correctness and cycle time. Run it on Straw. Get a number."
+
+**Manufacturing buyer target:** Chief Manufacturing Officer or VP of Digital Transformation at any Fortune 500 manufacturer (GE, Boeing, Honeywell, Caterpillar, John Deere).
+
+---
+
+### Design Partner #113 — Boeing (AI Integration for Aerospace Manufacturing)
+
+**Status (2026):** Boeing integrating agentic AI into manufacturing processes — predictive maintenance, supply chain optimization, quality inspection, customized manufacturing workflows.
+
+**Pain point:** Boeing's procurement of AI agents is subject to FAA regulatory requirements and internal safety standards. Any agent deployed in aerospace manufacturing needs documented performance validation before deployment. Boeing's quality organization writes acceptance criteria for EVERYTHING — they will understand Straw's rubric format immediately.
+
+**Contact angle:** Boeing's Chief Digital Officer (recent appointment). Or approach via Boeing's supply chain AI program (Boeing AnalytX division).
+
+**Cold email frame:** "Boeing's quality organization already writes acceptance criteria for every physical component. Your AI agent procurement needs the same framework. Straw runs the competition — agents submit on your criteria, you get a documented evaluation before the FAA asks for it."
+
+---
+
+### Design Partner #114 — Caterpillar (CAT) or John Deere Digital
+
+**Why:** Heavy equipment OEMs are among the most aggressive industrial AI agent buyers in 2026 — field service agents, predictive maintenance, supply chain optimization, dealer network AI. Both Caterpillar and Deere have disclosed significant AI investments.
+
+**Caterpillar:** Chief Digital Officer David Bozeman (previously Amazon)
+**Deere:** CTO Jahmy Hindman — known for AI-first agricultural automation, precision agriculture agents
+
+**Pain point:** Caterpillar and Deere each have dealer networks of thousands that need consistent, deployable AI agents for field service. The rubric is objective: "diagnose fault code X in fewer than N interactions, with accuracy ≥ Y%." This is a natural Straw competition.
+
+---
+
+### Manufacturing vertical ICP summary
+
+| Target | Champion | AI Agent Type | Straw Rubric |
+|---|---|---|---|
+| Siemens (buyer) | VP Digital Transformation | Engineering Copilot vs. alternatives | Code quality, cycle time reduction |
+| Boeing | Chief Digital Officer | Manufacturing process + quality inspection agents | FAA compliance + defect rate |
+| Caterpillar / Deere | CTO / CDO | Field service + predictive maintenance agents | Fault diagnosis accuracy, resolution time |
+| GE Vernova | Head of Digital | Energy management + grid optimization agents | OEE improvement, uptime prediction accuracy |
+
+**Vertical timing:** Hannover Messe 2026 (April) and Industry of Things World conference (October 2026) are the manufacturing AI calendar events.
+
+Sources: press.siemens.com, siemens.com/en-us/company/artificial-intelligence, microsoft.com/manufacturing-hannover-messe-2026, manufacturingdigital.com/siemens-ai-agents, digitaldefynd.com/IQ/agentic-ai-in-manufacturing
+
+TICK_END
