@@ -30832,3 +30832,65 @@ This session added 8 new ticks covering:
 8. **Reference customer target:** Which company, by name, do you want as your first publicly-named reference customer? Target one company, not five.
 
 TICK_END
+
+---
+
+## Tick 460 — ServiceNow Knowledge 2026 Conference Intelligence (TOMORROW, May 5-7)
+
+**Research date:** 2026-05-03
+
+### ServiceNow Knowledge 2026: Las Vegas, Venetian, May 5-7 (TOMORROW)
+
+**Scale:** 300+ sessions, hands-on labs, AI demos. Pre-conference activations today (May 4).
+**Central theme:** "Putting AI to work" — autonomous agents as a new operating model.
+**Keynote:** Bill McDermott (ServiceNow Chairman/CEO) + industry leaders.
+
+**Attendee personas (all are Straw's target buyers):**
+- AI engineers and architects integrating agentic AI into enterprise systems
+- IT leaders and CIOs evaluating automation platforms
+- Business process owners and digital transformation officers
+- CX leaders evaluating Now Assist and ServiceNow agent workflows
+
+**Session topics that map directly to Straw:**
+- "How to design, test, and monitor AI agents in production environments"
+- "How to align AI initiatives with compliance, security, and business objectives"
+- AI agent deployment covering "autonomous task execution and decision support"
+
+**The Straw pitch at Knowledge 2026:**
+> "Every session at this conference is about deploying agents. Not one session is about how to evaluate competing agents before you pick the one you deploy. That's Straw. We're the step before."
+
+**Who to find at this conference:**
+- VP of Automation at any Fortune 500 (they're here to buy agent deployments)
+- CIOs attending the executive program
+- Digital transformation officers from financial services, healthcare, telecom
+- ServiceNow partners and ISVs (they implement for enterprise clients — channel opportunity)
+
+**Partners attending:** Capgemini (confirmed attendee/sponsor), Genesys (confirmed). Both are Straw channel partner candidates.
+
+---
+
+### AI benchmark trust gap — Straw's third-party positioning
+
+**OpenAI stopped reporting Verified SWE-bench scores due to confirmed contamination.**
+
+Third-party evaluators (Epoch AI, BenchLM, Scale) now run the evals independently because vendor-reported benchmarks are no longer trusted.
+
+**The trust model:** Epoch AI and BenchLM are trusted because they run benchmarks in sandboxed environments with exploit surfaces patched. Stanford CRFM, AI2, EleutherAI are trusted for independent research benchmarks.
+
+**Straw's trust positioning:** Straw is the task-specific, buyer-defined equivalent of Epoch AI. We run evaluations in sandboxed environments (Docker isolation), with no vendor self-reporting, on the buyer's own rubric. We are the neutral third party for procurement evaluation the same way Epoch AI is the neutral third party for model capability benchmarks.
+
+**τ-bench (Sierra AI):** Evaluates agents on goal database state rather than conversation — rubric-based, objective evaluation of actual task completion. Most similar evaluation methodology to Straw's Tier-1 deterministic evaluation. Sierra AI is building the RIGHT evaluation methodology for post-deployment. Straw uses the same methodology for pre-procurement.
+
+---
+
+### Benchmark trust collapse → Straw's credibility narrative
+
+The benchmark trust collapse of 2026 (OpenAI stopped SWE-bench, o4-mini caught gaming, contamination confirmed) creates Straw's fundamental credibility advantage:
+
+**"Vendor-reported benchmarks are contaminated. Academic benchmarks test general capability, not YOUR task. Independent third-party evaluation on YOUR rubric is the only trustworthy signal. That's Straw."**
+
+The benchmark collapse was covered in Tick 415 of this document. Tick 460 adds: the replacement institutions (Epoch AI, BenchLM, τ-bench) all operate on Straw's core principles: sandboxed, independent, task-specific, rubric-based. The market has arrived at the same conclusion.
+
+Sources: servicenow.com/events/knowledge, biztechmagazine.com/servicenow-knowledge-2026-ai-agents, aiagentsquare.com/ai-agent-benchmarks-2026, kili-technology.com/ai-benchmarks-guide-and-their-limits, sierra.ai/blog/benchmarking-ai-agents, capgemini.com/events/knowledge-servicenow
+
+TICK_END
