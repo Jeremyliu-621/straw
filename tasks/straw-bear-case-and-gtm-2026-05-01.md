@@ -28065,3 +28065,88 @@ ProcureAbility (Darshan Deshmukh, EVP — Design Partner #79, Tick 396) **publis
 Sources: prnewswire.com/procureabilitys-2026-cpo-cio-report, webpronews.com/procurements-ai-awakening-89-unprepared, intelligentcio.com/north-america/2026/04/30/procureability-2026-report, digidai.github.io/2026/enterprise-ai-procurement-cto-decision-logic
 
 TICK_END
+
+---
+
+## Tick 442 — Evidence-Based Procurement + Telecom Design Partners #120-122
+
+**Research date:** 2026-05-03
+
+### Evidence-based procurement: UK buyers + Resultsense frame (May 1, 2026)
+
+Resultsense published "AI accuracy is a procurement question: a diligence framework for UK enterprise buyers" on **May 1, 2026** — one day before this research. Directly relevant framing:
+
+> "The buyer takes the demo on trust. UK buyers running pilots should request the same task evaluated across the formats they will actually use in production, and insist on the same input evaluated in the format their team will consume before commercial terms are agreed."
+
+> "Procurement teams in financial services and healthcare now require documentation on model training, safety evaluations, and bias testing before signing contracts."
+
+> "Boards want time-to-value rather than cool demos."
+
+**This is the Straw use case described in enterprise buyer language, published yesterday.**
+
+**Anthropic's enterprise positioning note:** "Among companies picking an AI vendor for the first time, Anthropic wins roughly 70% of head-to-head comparisons." The future state: companies comparing vendors not by Anthropic's self-reported win rate, but by running their OWN head-to-head on Straw.
+
+---
+
+### Telecom as Straw's Fastest-Moving Vertical
+
+**48% of telecom enterprises deployed agentic AI in at least one core function as of Q1 2026** — telecom leads ALL sectors in agent adoption. This means:
+1. Largest pool of active agent buyers in any enterprise vertical
+2. Most mature rubric vocabulary (network SLAs are precise, binary, objective)
+3. Fastest active procurement cycles
+
+**AT&T proof point:** Network optimization agents reduced service-affecting outages by 37%, processed 1B+ network events/day, prevented 12M customer-impacting downtime minutes in Q4 2025. The rubric for a Straw telecom competition writes itself: "reduce outage rate by X%, process Y events/sec with <Z latency."
+
+**Verizon proof point:** Churn prediction agents reduced voluntary churn by 15% = $1.2B retained revenue. Rubric: "predict churn with >X% precision, <Y false positive rate, deliver retention intervention within Z hours."
+
+---
+
+### Design Partner #120 — Deutsche Telekom (MINDR / AI Network Division)
+
+**What they're doing:** Deutsche Telekom + Google Cloud built MINDR (Multi-agentic AI system) that proactively diagnoses and resolves network issues across all domains. Deployed "autonomous network slices" — AI agents managing 5G network slicing in real time, adjusting parameters every 100ms.
+
+**Straw use case:** Deutsche Telekom is choosing between multiple network AI vendors for different network domains. Their rubric is technically precise (outage detection latency, false alarm rate, resolution time). Straw runs the competition across vendors on Deutsche Telekom's actual network simulation data.
+
+**Contact:** T-Challenge 2026 (competition platform — t-challenge.com) — Deutsche Telekom already runs their own agent competition. Straw partnership opportunity: license Straw as the evaluation layer for T-Challenge.
+
+**Named contact:** Claudia Nemat, Board Member Technology and Innovation, Deutsche Telekom.
+
+---
+
+### Design Partner #121 — AT&T (Network AI Procurement)
+
+**What they're doing:** 37% outage reduction, 1B+ events/day processing. AT&T is actively procuring network AI agents for self-healing network infrastructure.
+
+**Straw use case:** AT&T network procurement team (Chief Network Officer) evaluating multiple vendors for network anomaly detection, automated remediation, and capacity optimization.
+
+**Cold email frame:** "AT&T's network agents prevented 12 million minutes of customer downtime in Q4. The next step is ensuring the next vendor selection is as good as the last. Straw runs the competition: define the network SLA rubric, let vendors submit, get the evaluation log before you sign the contract."
+
+**Contact:** Jeremy Legg (CTO, AT&T), or Chief Network Officer.
+
+---
+
+### Design Partner #122 — Verizon (Churn Prediction AI Procurement)
+
+**What they're doing:** Churn prediction agents with 15% churn reduction = $1.2B retained revenue. Verizon has proven the category. Now they're scaling to additional customer experience and network automation agent use cases.
+
+**Straw use case:** Verizon evaluating multiple vendors for the next wave of customer experience agents (proactive service recovery, network usage optimization). The churn model success creates organizational appetite for more — and the next selection needs the same evidence-based rigor.
+
+**Cold email frame:** "$1.2 billion in retained revenue from your churn agent proves the model works. For the next 5 agent deployments, how do you replicate that selection quality? Straw is how you run the same rigorous evaluation every time."
+
+**Contact:** Chief Data Officer or VP of Advanced Analytics.
+
+---
+
+### Telecom vertical ICP summary
+
+| Carrier | AI Agent Achievement | Next Selection Challenge | Straw Rubric |
+|---|---|---|---|
+| AT&T | 37% outage reduction (network agents) | Next network domain automation | Outage rate, event processing speed, MTTR |
+| Verizon | 15% churn reduction, $1.2B retention | Customer experience agent expansion | Churn prediction precision/recall, intervention speed |
+| Deutsche Telekom | MINDR multi-agent network healing | 5G slice optimization agent selection | Slice parameter accuracy, 100ms adjustment compliance |
+
+**Timing:** MWC (Mobile World Congress) 2026 already passed (February/March). Next: MWC Shanghai (June 2026), DTW (Digital Transformation World, May 2026 — THIS WEEK in Copenhagen).
+
+Sources: aimagicx.com/blog/ai-telecom-enterprise-agentic-adoption-2026, telekom.com/ai-agents-mobile-network, symphony.rakuten.com/agentic-ai-in-telecom-2026, vodworks.com/ai-in-telecom, nvidia.com/blog/ai-in-telco-survey-2026, resultsense.com/insights/2026-05-01-ai-procurement-grounding
+
+TICK_END
