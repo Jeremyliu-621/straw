@@ -14829,3 +14829,150 @@ CISOs are the buyers. They respond to:
 
 Target CISO outreach via: RSA Conference (largest cybersecurity gathering, May each year), Black Hat, BSidesSF. Straw needs one conference talk at RSA 2026 presenting a technical paper on "AI SOC evaluation methodology."
 
+
+---
+
+## Tick 205 (2026-05-03T12:35:00Z): Direct competitors — Galileo, Fiddler AI, Arize AI, Braintrust [theme: bear]
+
+### The Competitive Landscape Is Already Funded
+
+This is the bear case that deserves the most urgent attention: the AI evaluation space is not empty. Multiple well-funded startups have built in adjacent positions with significant capital advantages over a seed-stage Straw:
+
+| Company | CEO | Funding | Founded | Focus |
+|---|---|---|---|---|
+| Galileo AI | Vikram Chatterji | $68.1M (Series B) | 2021 | LLM evaluation, hallucination detection, production monitoring |
+| Fiddler AI | Krishna Gade | $65.6M (Series B) | 2018 | AI observability, explainability, fairness monitoring |
+| Arize AI | Jason Lopatecki | ~$38M (estimate) | 2020 | AI observability, LLM tracing, production evaluation |
+| Braintrust | (private) | Undisclosed | 2022 | Developer-focused AI evaluation framework |
+
+All four have head starts of 3-7 years, established customer relationships, and engineering teams that deeply understand evaluation tooling. If any of them decides to compete with Straw's procurement competition use case, they have the technical foundation to build it quickly.
+
+### The Fundamental Differentiation — And Why It Matters
+
+**None of these companies are doing what Straw does.** This is not the usual startup "we're different" claim — there's a structural distinction:
+
+All four companies answer: **"Is my AI working correctly?"**  
+Straw answers: **"Which AI should I choose?"**
+
+The customer persona is entirely different:
+- Galileo/Fiddler/Arize/Braintrust customer: ML Engineer or Data Scientist who deploys and monitors AI systems. They need technical dashboards, latency graphs, hallucination alerts, model drift detection.
+- Straw customer: VP of AI Strategy, CTO, or Chief AI Officer making a $200K+ procurement decision about which AI agent to buy. They need a competition result, a ranked leaderboard, a "Straw Certified" badge, and an audit report for their compliance team.
+
+The use cases are also different:
+- Evaluation tools (competitors): Continuous monitoring of AI systems already deployed. Runs 24/7 in the background. Subscription to a dashboard.
+- Straw: Episodic competition for a specific procurement decision. Runs for 2-4 weeks. Produces a final report. The competition is over.
+
+The analogy: Galileo/Fiddler/Arize are the OBD-II port in your car (continuous health monitoring). Straw is Car and Driver (comparative evaluation before purchase). Different tool, different moment, different decision-maker.
+
+### Where The Competitive Threat Is Real
+
+**Threat 1: Adjacent expansion.** If Galileo pivots their "LLM evaluation" messaging from "test your prompts during development" to "run pre-procurement head-to-head competitions," they could compete directly. They have the technical tools. What they lack: the enterprise procurement GTM, the compliance angle, the neutrality branding, and the "Straw Certified" trust asset.
+
+But "could pivot" is a real threat. Galileo's CEO Vikram Chatterji should be tracked closely. If Galileo's Q3 2026 product announcement includes "vendor evaluation" language, Straw needs to have established its first 10 enterprise customer logos before that announcement.
+
+**Threat 2: Braintrust as a bottoms-up competitor.** Braintrust is developer-focused and has strong organic developer community traction. If they add an "enterprise procurement competition" feature alongside their developer evaluation workflow, they convert developer love into enterprise procurement deals — essentially what Stripe did by converting developer adoption into enterprise adoption.
+
+**Straw's defense against Braintrust**: Straw is not trying to win the developer adoption game. Straw serves the executive buyer, not the ML engineer. If Braintrust goes up-market to compete, they'd need to hire an enterprise sales team and build compliance infrastructure — a 2-year investment that's not part of their current roadmap.
+
+**Threat 3: Microsoft/GitHub Copilot evaluation.** GitHub Copilot has a product called "Copilot Metrics" for evaluation. If Microsoft adds "head-to-head AI agent competition" to their Azure AI Evaluation stack, leveraging GitHub's developer penetration, they combine developer and enterprise buyer reach. Microsoft's neutrality problem (they're a vendor) limits this — but don't underestimate Microsoft's ability to build credible enterprise evaluation tooling even with inherent conflicts.
+
+### Competitive Intelligence Actions
+
+1. **Subscribe to Galileo, Fiddler, Arize, Braintrust product newsletters** — track when they add "procurement" or "vendor selection" language to their positioning
+2. **Follow Vikram Chatterji (Galileo CEO) and Krishna Gade (Fiddler AI CEO) on Twitter/X** — product direction signals often appear there first
+3. **Check Braintrust GitHub repo weekly** — open-source development roadmap shows what they're building
+4. **Set up Google Alerts**: "AI agent evaluation platform enterprise procurement" — any new competitor entering this space will generate press coverage
+
+### The Preemptive Defense
+
+The best way to defend against well-funded adjacent competitors is to own the "Straw Certified" brand identity before they can build an equivalent. Once "Straw Certified" is a recognized credential in 2-3 enterprise verticals, copying it becomes harder — the trust is built in, and switching costs protect Straw's position.
+
+Speed to first 10 enterprise logos is the most important competitive milestone. Not first $1M ARR. First 10 logos. That's the moat foundation.
+
+### Bear Case Score: 7/10 (most immediate competitive risk)
+
+This is the highest-urgency bear case. Unlike the regulatory, talent, and evaluation theater risks (which unfold over 12-24 months), competitor expansion could happen in the next 6 months. The mitigation window is short. The single most important action in the first 90 days: establish the "Straw Certified" brand identity and land the first 2-3 enterprise logos before Galileo or Braintrust pivots to compete.
+
+
+---
+
+## Tick 206 (2026-05-03T12:39:00Z): First 5 hires — timing, titles, and why each matters [theme: gtm]
+
+### The Hiring Philosophy
+
+Don't hire until the role is clearly defined and the founder has tried to do it themselves. Premature hiring is the most common way seed-stage companies waste capital. Every hire before $500K ARR should be able to generate or protect at least $200K in value directly.
+
+Straw's first year is about: running competitions manually, learning what customers value, and building the minimum automation needed to stop the founder from being a bottleneck. Hire when the founder is the bottleneck.
+
+### Hire 1: Head of Enterprise Sales (Month 3-4, after first 2 design partners)
+
+**Title**: Head of Enterprise Sales (or VP Sales if the candidate has 10+ years experience)  
+**Why first**: Revenue is the oxygen. Without a dedicated sales professional, Straw will run out of founder sales capacity before it can validate the business model. The founder runs sales for the first 2 design partners to learn the motion; then hands off to a professional.  
+**Profile**: 7-10 years in enterprise B2B sales, specifically to AI/technology teams. Has sold to VP-AI or CTO personas. Comfortable with technical products. Has worked at a startup (not just a big company — enterprise startup sales is different).  
+**Compensation**: $150K base + $150K OTE (commissions on closed deals) + 0.5-1% equity vesting over 4 years  
+**Green flag in hiring**: Can name 10 enterprise AI buyers they can call on Day 1  
+**Red flag**: Has only sold to IT procurement or traditional software buyers; has never sold to technical leadership  
+**Where to find**: Former BDR leads at Anthropic/OpenAI enterprise, outbound sales at Databricks or Snowflake (they've sold technical products to data teams), former customers who became advocates
+
+---
+
+### Hire 2: Rubric Scientist / Head of Evaluation Methodology (Month 4-5)
+
+**Title**: Rubric Scientist or Senior Evaluation Engineer  
+**Why second**: The competition results are only as good as the evaluation methodology. Without this person, every competition is "the founder's judgment" — not scalable and not credible.  
+**Profile**: Strong ML background (PhD or equivalent practical experience), specific exposure to RLHF, preference learning, or benchmark design. Domain knowledge in one of Straw's priority verticals (legal, financial, healthcare, code review). Published work or deep project experience in AI evaluation.  
+**Compensation**: $180K-$220K base + 0.75-1% equity  
+**Sourcing strategy**: 
+- Reach out to PhD candidates doing evaluation research at MIT/Stanford/CMU who are about to graduate
+- Contact RLHF team alumni from Anthropic/OpenAI who worked on Constitutional AI or preference data collection
+- Search for papers published in ACL, EMNLP, or NeurIPS evaluation workshops — contact authors directly
+
+---
+
+### Hire 3: Platform Engineer / Full-Stack AI Infrastructure (Month 5-6)
+
+**Title**: Senior Software Engineer (Platform)  
+**Why third**: By Month 5-6, Straw should be running 3-5 competitions manually. The founder is spending 40-60 hours per competition on infrastructure (prompt formatting, output collection, score aggregation). One strong engineer can reduce this to 10 hours — multiplying competition capacity 5x.  
+**Profile**: Strong Python/TypeScript, experience with LLM APIs (Anthropic, OpenAI, Cohere), Docker sandboxing, API design. Has built internal tools or platform infrastructure, not just product features. Comfortable with ambiguous requirements (the product is still evolving).  
+**Compensation**: $150K-$180K base + 0.5% equity  
+**Not a priority**: Frontend/UI engineering. The platform first. UI comes when the product is defined.
+
+---
+
+### Hire 4: Customer Success Manager / Rubric Design Lead (Month 7-8)
+
+**Title**: Customer Success Manager (with rubric design responsibility)  
+**Why fourth**: By Month 7-8, Straw should have 3-5 paying customers. The founder and head of sales can't simultaneously be doing customer success, rubric design workshops, and finding new customers. The CSM takes over the existing customer relationship and is also trained to lead rubric design workshops.  
+**Profile**: Technical enough to understand AI evaluation concepts (former ML background a plus but not required). Customer-facing experience. Excellent communication. Highly organized — managing multiple competition timelines simultaneously.  
+**Compensation**: $100K-$120K base + 0.25% equity  
+**The critical skill that's hard to test**: Rubric design intuition. The ability to quickly understand what a business outcome means and translate it into measurable criteria. Screen for this with a take-home exercise: "Here's a vague business problem. Write 5 evaluation criteria for an AI agent solving it."
+
+---
+
+### Hire 5: Marketing / Content Lead (Month 8-9)
+
+**Title**: Head of Marketing / Content  
+**Why fifth**: By Month 8-9, Straw should have enough customer evidence to fuel content marketing. But the founder shouldn't be writing the blog posts and managing the LinkedIn presence on top of everything else.  
+**Profile**: Technical marketing background. Has built developer communities or content programs at B2B SaaS companies. Can write clearly about AI topics without dumbing them down. SEO competency for long-tail "AI evaluation" keyword strategy.  
+**Compensation**: $110K-$130K base + 0.25% equity  
+**Output goals in first 90 days**: 4 pieces of long-form technical content published, Straw's LinkedIn follower count 1,000+ engaged followers, first conference talk proposal submitted
+
+---
+
+### Hiring Sequencing Summary
+
+| Month | Hire | Unlock |
+|---|---|---|
+| 3-4 | Head of Enterprise Sales | Scales from 5 to 20 enterprise conversations/month |
+| 4-5 | Rubric Scientist | Unlocks credibility, scales competition quality |
+| 5-6 | Platform Engineer | Reduces competition delivery time from 60 to 15 hours |
+| 7-8 | Customer Success Manager | Frees founder from existing accounts; enables expansion |
+| 8-9 | Head of Marketing | Content flywheel for inbound pipeline |
+
+**Year 1 total headcount**: 6 (founder + 5 hires)  
+**Year 1 total headcount cost**: ~$800K-$1M (base salaries only)  
+**Year 1 target ARR**: $300K-$500K (5-10 customers at $30K-$50K average)  
+**Year 1 expected burn**: ~$1.8M-$2.2M (headcount + infrastructure + legal/compliance)
+
+The seed raise of $3M-$5M funds 18-24 months of runway at this burn rate.
+
