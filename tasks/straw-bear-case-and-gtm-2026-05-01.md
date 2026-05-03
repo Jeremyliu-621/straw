@@ -17336,3 +17336,169 @@ Every speaking opportunity anchors on one of three angles:
 
 Events budget should be treated as pipeline investment, not marketing spend. Every $1K spent at the right conference with the right conversation should generate $10K+ in pipeline within 90 days.
 
+
+---
+
+## Tick 239 (2026-05-03T00:16:00Z): Land-and-expand sales motion and customer success playbook for Straw [theme: gtm]
+
+### The 2026 SaaS GTM Context
+
+- Enterprise sales cycles compressed: ~25 weeks in 2025 → ~19 weeks in 2026
+- Buyers resist large upfront commitments; sub-one-year contracts rising
+- NRR > 120% is the key investor metric and valuation driver
+- Land-and-expand: existing customers 5-7x cheaper to expand than new acquisition
+- Hybrid GTM (top-down enterprise + bottom-up product) is now the baseline
+- Evidence of successful implementation beats generic pitches as the primary decision criterion
+
+### Straw's Natural Land-and-Expand Mechanic
+
+Straw is structurally land-and-expand. The mechanism:
+
+**Competition 1 (customer service AI)** → Customer sees results → "We should do this for our supply chain AI next month" → **Competition 2** → "We need to certify our existing agents annually" → **Annual Certification** → "Our legal team wants all AI vendor contracts to require Straw certification" → **Recertification program across 10 agents**
+
+Each competition is a proof point and a discovery call for the next competition. The enterprise buyer doesn't need Straw to tell them what to evaluate next — they already have a list of AI deployments in their roadmap.
+
+### The Land Motion
+
+**Entry point**: The $2,500 workshop, not the $15K-$50K competition. The workshop is low-risk, high-value, and produces a concrete artifact (the rubric draft) that demonstrates Straw's methodology.
+
+The workshop conversation naturally ends with: "Now that you have this rubric, do you want to actually run the competition?" That is the land.
+
+**The single-competition pitch**: "One competition. Two to six weeks. $15K-$50K all-in. If you don't find meaningful differentiation between your shortlisted agents, we'll refund the fee." This removes the risk of the first competition.
+
+**First competition success criteria**: The customer needs to finish the first competition with: (a) a defensible selection decision, (b) a publishable case study (or at minimum, internal documentation), and (c) a list of 3-5 additional AI deployments that need evaluation. If all three conditions are met, expansion is nearly automatic.
+
+### The Expand Motion
+
+**Trigger 1 — New AI deployment in the roadmap**: Every enterprise customer has 5-20 AI agent deployments planned in the next 12 months. Each is a Straw competition. The land-and-expand motion means every competition discovery conversation is also a next-competition booking conversation.
+
+**Trigger 2 — Annual recertification**: "Straw Certified: 2026" does not carry forward to 2027. Annual recertification is required to maintain the badge. This is the SaaS subscription analogy — the value of the certification deprecates over time, creating automatic renewal demand.
+
+**Trigger 3 — Internal expansion**: One department runs a Straw competition. Word spreads. Another department's AI champion asks their CDO: "Can we use Straw for our HR agent selection?" The internal social proof creates organic multi-department expansion.
+
+**Trigger 4 — New agent version releases**: When a vendor releases Agent v2.0 claiming 30% performance improvement, the enterprise needs to re-evaluate. Straw provides the evaluation infrastructure for the re-evaluation. Every major foundation model release (GPT-5, Claude 4, Gemini Ultra) creates a wave of recertification demand.
+
+### Customer Success Playbook (First 6 Months)
+
+**Week 1-2: Kickoff and rubric finalization**
+- Kickoff call with champion + technical lead
+- Finalize rubric criteria (Jeremy personally facilitates for first 5 customers)
+- Set evaluation timeline and agent onboarding process
+- Define what "a clear winner" looks like for this customer
+
+**Week 3-5: Competition execution**
+- Agents submit to sandbox
+- Daily status updates to champion
+- Jeremy personally reviews any ambiguous rubric scoring
+- Flag anomalies immediately (don't save for final report)
+
+**Week 6: Final report and debrief**
+- Competition report delivered as live read-out, not email
+- Walk through each rubric dimension; explain the scoring
+- Present the winner and the margin of victory
+- End with: "Here are three other AI decisions in your roadmap that Straw could help with"
+
+**Month 2-3: Post-competition check-in**
+- Did the customer implement the winning agent?
+- Are there early performance data confirming the competition results?
+- Is there a new AI decision on the roadmap?
+
+**Month 4-6: Expansion conversation**
+- Formal quarterly business review
+- Present: "Here are the AI decisions you have coming up. Here's how Straw can help with each."
+- Goal: Second competition booked within 6 months of first
+
+### The NRR Target
+
+Year 1 NRR target: 130%+. This means every $100 of ARR from a customer should grow to $130 within 12 months through expansion. This is achievable if:
+- 60%+ of customers run a second competition within 12 months
+- Annual recertification is priced at 50-70% of the original competition fee
+- Multi-agent recertification packages (5 agents, annual) are introduced in month 6
+
+At 130% NRR, Straw's ARR compounds even without new customer acquisition. This is the "efficient growth" story that 2026 enterprise SaaS investors reward.
+
+
+---
+
+## Tick 240 (2026-05-03T00:17:00Z): Insurance design partner targets — insurtechs and carriers already running AI agents [theme: partners]
+
+### Why Insurance Is a Priority Straw Vertical
+
+Insurance is the most AI-advanced regulated industry in 2026. Unlike financial services (which is adopting AI cautiously) or healthcare (which is cautiously navigating HIPAA), insurance companies have deployed production AI agents at massive scale:
+
+- **Lemonade**: AI Jim handles 96% of first notices of loss; 55% of all claims fully automated end-to-end
+- **GEICO**: Kate handles 100M+ customer interactions annually
+- **Allstate**: 60% of inquiries handled autonomously; AI-assisted claims reduced cycle time
+
+These companies have already made AI agent procurement decisions. They are now evaluating the NEXT generation of agents (v2.0), additional use cases, and comparative performance of competing vendors. They have real data, real rubrics, and a track record against which Straw can add the independent evaluation layer.
+
+### Named Target Contacts
+
+**Lemonade** — Most AI-native insurance company in the world
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Daniel Schreiber | CEO & Co-founder | AI-first insurance thesis; publicly advocates for AI as core business driver |
+| Shai Wininger | President & CTO | Technical decision-maker; built AI Jim and Maya |
+
+- **Context**: Lemonade is a natural Straw design partner in both directions. (1) Lemonade as a buyer: evaluating next-generation claim processing and underwriting AI agents. (2) Lemonade as a vendor: Lemonade's AI agents (Jim, Maya) could be "Straw Certified" for enterprise insurance carrier clients.
+- **The double-sided opportunity**: Lemonade is both a potential buyer AND a potential vendor whose agents Straw certifies. That's a unique partnership structure.
+- **Opener to Schreiber**: "I know you've been building AI-native insurance for a decade. I'm building the evaluation infrastructure that enterprise carriers use to decide which AI agents to deploy — and I think Lemonade's agents should be among the first to earn Straw Certification."
+
+**Allstate** — $47B revenue carrier; massive AI deployment
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Zoë Harte | Chief People Officer (former) | AI in HR and workforce — adjacent use case |
+| Suren Gupta | EVP, Technology & Strategic Ventures | Leads Allstate technology and AI strategy |
+
+- **Context**: Allstate has been deploying AI across claims, customer service, and underwriting for years. They have enough AI in production to need a structured evaluation methodology for the next round of procurement decisions.
+- **Pitch angle**: "Allstate has been leading on AI deployment. As you evaluate the next generation of agents — particularly for more complex claims and underwriting decisions — Straw provides the independent evaluation infrastructure that makes those procurement decisions defensible."
+
+**AXA** — European multinational; global AI program
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Marco Morelli | CEO, AXA Group | Global AI transformation strategy |
+| Frédéric Tardy | Group Chief Customer Officer | Leads customer AI deployment including Clara |
+
+- **Context**: AXA operates across 50+ countries. Their AI procurement decisions affect global operations. The EU AI Act compliance angle is particularly strong for AXA — they need Straw's audit trail for EU operations.
+- **EU AI Act angle**: "AXA operates in the EU and faces August 2026 deployer classification deadlines. Straw's competition report satisfies EU AI Act documentation requirements for high-risk AI system deployments."
+
+**Munich Re** — World's largest reinsurer; AI in risk modeling
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Joachim Wenning | CEO | AI as core competitive advantage in risk modeling |
+| Thomas Blunck | Board Member, Reinsurance | Technical and risk AI strategy |
+
+- **Context**: Munich Re uses AI for catastrophe risk modeling, claims forecasting, and underwriting. The risk of a wrong AI agent selection is existential — a miscalibrated risk model can cause massive financial losses. Straw's competition provides the evaluation layer before Munich Re signs a major AI vendor contract.
+- **Specialized rubric opportunity**: "CAT risk model accuracy" rubric — a Straw template purpose-built for reinsurance AI evaluation.
+
+**Progressive** — US carrier; early adopter of AI and telematics
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Tricia Griffith | CEO | Strong technology investment thesis; telematics pioneer |
+| Andrew Quigg | Chief Strategy Officer | AI and technology strategy |
+
+- **Context**: Progressive has been technology-forward since introducing Snapshot (telematics). Their AI agent deployments in claims, pricing, and customer service are mature. They are now in the second generation of AI procurement decisions.
+
+### Insurance Vertical Strategy
+
+**InsureTech Connect** (Fall, Las Vegas) is the primary channel. Every major insurer CTO and CDO attends. A Straw speaking slot on "Independent AI evaluation for insurance carriers" reaches 500+ attendees including all names above.
+
+**NAIC (National Association of Insurance Commissioners)**: The regulatory body that oversees state insurance regulation. Getting a Straw methodology published or referenced in an NAIC model AI bulletin is significant for regulatory defensibility.
+
+**Insurance Information Institute**: Industry body that produces research. A Straw-commissioned study on "AI agent procurement practices in insurance" would be the industry reference document and generate inbound from all major carriers simultaneously.
+
+### Insurance Rubric Template
+
+Core evaluation dimensions for insurance AI agent selection:
+1. **Claims accuracy rate**: Correct vs. disputed claim outcomes in synthetic test cases
+2. **Fraud detection precision/recall**: On labeled synthetic fraud dataset
+3. **Regulatory compliance**: Does the agent produce documentation satisfying state-level insurance regulations?
+4. **Fairness metrics**: Disparate impact analysis on protected classes in underwriting decisions
+5. **Explainability**: Can the agent's decisions be explained in language that satisfies regulatory review?
+6. **Escalation protocol**: Does the agent escalate appropriately when claim complexity exceeds threshold?
+
