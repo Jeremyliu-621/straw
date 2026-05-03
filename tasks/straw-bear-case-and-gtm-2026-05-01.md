@@ -25949,3 +25949,46 @@ Straw should integrate with SecureAuth's Trust Registry: when an agent runs a St
 Sources: globenewswire.com/news-release/2026/04/29/3283736, acfstandards.org, hitrust alliance.net, digital.nemko.com/ai-trust-mark
 
 TICK_END
+
+---
+
+## Tick 424 — Stanford Enterprise AI Playbook: 4 Success Factors + Straw's Alignment
+
+**Date researched:** 2026-05-03
+**Theme:** Market validation / Sales narrative
+
+### The Stanford Enterprise AI Playbook (March 2026)
+
+Authors: Elisa Pereira, Alvin Graylin, Erik Brynjolfsson
+Source: 5 months interviewing executives across 41 organizations, 9 industries, 7 countries
+Focus: Only the 51 deployments that ACTUALLY delivered measurable value
+
+### Four critical success factors (what the 12% who succeed all do)
+
+1. **Workflow mapping BEFORE technology selection** — define exactly what the agent needs to do before choosing which agent
+2. **Governance architecture embedded into system design from day 1** — not bolted on after deployment
+3. **Observability established BEFORE production launch** — know how to measure performance before going live
+4. **Leadership continuity for 18 months** — including through early setbacks and failed pilots
+
+### How Straw aligns with all four factors
+
+| Stanford factor | How Straw provides it |
+|---|---|
+| Workflow mapping before technology selection | The rubric IS the workflow map. Writing the rubric forces the enterprise to define exactly what success looks like BEFORE picking an agent. |
+| Governance embedded from day 1 | The Straw evaluation log is a governance artifact produced at the moment of selection — not retrofitted after deployment. |
+| Observability established before launch | Straw's score is the observability baseline. It defines what "good" looks like so production monitoring has a reference point. |
+| Leadership continuity | Straw's standardized rubrics survive leadership changes — the evaluation criteria are documented, not in someone's head |
+
+**The sales language:** "Stanford studied 51 successful AI deployments across 9 industries. Every success started with workflow mapping before technology selection. Straw is the instrument for that mapping. The rubric is the workflow map."
+
+### Three counterintuitive Stanford findings
+
+1. **"Model choice was fully interchangeable" for 42% of implementations** — the enterprise's workflow, data, and orchestration mattered more than which foundation model was used. This means the model evaluation question ("which model is best?") is less important than the workflow fit question ("which agent fits our workflow best?") — and Straw's rubric evaluates workflow fit, not model quality in the abstract.
+
+2. **"77% of toughest challenges were invisible costs"** — change management, data quality, process redesign. Straw addresses this before deployment by forcing teams to confront these questions when writing rubric criteria (if you can't write a rubric, you haven't done the workflow mapping yet).
+
+3. **"95% of failures trace to organizational factors"** — not model quality. This means the enterprise is the bottleneck, not the agent. Straw helps enterprises think through their requirements rigorously enough to become ready for production deployment.
+
+Sources: digitaleconomy.stanford.edu/publication/enterprise-ai-playbook, aiassemblylines.com/post/enterprise-ai-transformation-success-factors-stanford-2026, artificialintelligencedynamics.com/2026/04/02/enterprise-ai-playbook-key-lessons
+
+TICK_END
