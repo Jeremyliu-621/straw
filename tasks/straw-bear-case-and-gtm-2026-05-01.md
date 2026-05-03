@@ -29308,3 +29308,76 @@ Every 30-point enterprise scorecard, every AI vendor selection framework, every 
 The market already knows what the right process is. They just don't have the tool to do it. We are the tool.
 
 TICK_END
+
+---
+
+## Tick 449 — Agent Security Trust Ecosystem + Pharma Design Partners #132-134
+
+**Research date:** 2026-05-03
+
+### Agent security: critical stat update (Gravitee State of AI Agent Security 2026)
+
+- **88% of enterprises have already experienced AI agent-related security incidents**
+- **82% of organizations have UNKNOWN AI agents running in their IT infrastructure**
+- **Only 14.4% of AI agents go live with full security approval** (repeated from Tick 443 — now confirmed by Gravitee report)
+- **65% experienced AI agent-related incidents in past 12 months** (Cloud Security Alliance)
+
+**SecureAuth Agent Trust Registry (launched April 29, 2026):** Industry-first agent trust registry — free, vendor-neutral, evaluates AI agents against consistent security framework, provides verified identity posture, trust scores, governance metadata, deployment recommendations.
+
+**Straw + Agent Trust Registry = complementary layers:**
+- SecureAuth registry: "Does this agent have secure identity and proper access controls?"
+- Straw: "Does this agent perform best on your specific task with your rubric criteria?"
+A buyer needs BOTH. An agent could pass security checks but underperform on task. An agent could be the best performer but have security gaps. Straw + SecureAuth = full procurement diligence.
+
+**Microsoft Agent 365 (control plane for agents):** IT/security/business teams get visibility to observe, secure, govern agents at scale. Single-vendor (Microsoft agents only). Not cross-vendor. Straw remains the cross-vendor procurement layer.
+
+---
+
+### Pharma/Biotech Design Partners
+
+#### Design Partner #132 — Pfizer (AI Drug Discovery + Clinical Trials)
+
+**What they're doing:** Pfizer signed major AI platform deal with Boltz (small molecule drug discovery), adding 1,200+ GPUs for AI infrastructure. Using AI across drug discovery, clinical development documentation, regulatory approval, precision medicine.
+
+**Pain point:** Pfizer is evaluating multiple AI drug discovery platforms (Boltz, Exscientia, Cradle, BenevolentAI, Chai Discovery). Each claims to accelerate drug discovery. The rubric is scientifically precise: "generate X lead compounds meeting ADMET criteria in Y hours." Pfizer's scientists can write the rubric — they evaluate drug candidates by objective criteria every day. Straw is the platform to run the competition.
+
+**Regulatory driver:** FDA pre-IND submission requires documented evidence of AI system validation when AI contributes to discovery. Straw's evaluation log = FDA validation documentation.
+
+**Contact:** Chris Boshoff (Chief Oncology Officer), or Head of Digital Medicine and Translational Imaging. Annual JP Morgan Healthcare Conference (January 2027).
+
+---
+
+#### Design Partner #133 — Merck (AI Platform Partnerships)
+
+**What they're doing:** Merck + Exscientia ($674M deal) + BenevolentAI ($594M deal) + BigHat (biologics optimization). Merck is the most aggressive AI partnership buyer in pharma.
+
+**Pain point:** Merck signed $674M+ in AI platform deals without a rigorous pre-commitment evaluation platform. These are among the largest AI procurement decisions in any industry. A Straw rubric evaluation — "predict clinical outcome for compound X against target Y, validated against our internal historical trial data" — before signing $674M would have been worth the $25K evaluation fee 26,960 times over.
+
+**Straw value:** Straw as the evaluation platform BEFORE the next round of Merck AI partnerships. The BD (business development) and R&D leadership at Merck now have institutional experience with large AI deals — they're the most receptive audience for "evaluate the next platform before you sign."
+
+**Contact:** Merck Chief Digital and Information Officer, or VP of AI & Data Science in R&D.
+
+---
+
+#### Design Partner #134 — GSK / Eli Lilly (First three weeks of 2026 deals)
+
+**What they did:** Eli Lilly (+ Chai Discovery) + GSK (+ Noetik) — both signed AI platform deals in the first three weeks of 2026. Both are now in the "active AI vendor management" phase — evaluating whether the deals delivered value and what to do next.
+
+**Pain point:** Every large pharma company signing AI platform deals is now in one of two states: (a) evaluating whether the deal delivered, or (b) planning the next AI partnership. Both states are Straw use cases.
+
+**Cold email frame:** "You signed your AI platform deal in January. Six months in, how are you evaluating whether it's delivering against your therapeutic criteria? Straw's rubric framework gives your R&D scientists a language for defining what winning looks like — before the next partnership renewal or new deal."
+
+---
+
+### Pharma vertical summary
+
+| Company | AI Commitment | Straw Entry | Regulatory Driver |
+|---|---|---|---|
+| Pfizer | Boltz deal + 1,200 GPUs | Next drug discovery platform selection | FDA AI validation documentation |
+| Merck | $1.3B+ in AI deals (Exscientia + BenevolentAI) | Post-deal evaluation + next partnership | FDA IND submission documentation |
+| Eli Lilly | Chai Discovery deal (Jan 2026) | 6-month deal review + next partnership | FDA AI validation |
+| GSK | Noetik deal (Jan 2026) | biologics design agent evaluation | EMA/FDA compliance |
+
+Sources: globenewswire.com/secureauth-agent-trust-registry, biometricupdate.com/ai-agent-identity-rsac-2026, genengnews.com/pharma-bets-big-ai-platforms-2026, klover.ai/pfizer-ai-strategy, biospace.com/ai-pharma-bottom-line
+
+TICK_END
