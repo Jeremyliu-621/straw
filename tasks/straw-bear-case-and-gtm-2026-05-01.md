@@ -29021,3 +29021,78 @@ This session (Ticks 422-446) is complete. The file now covers all three Phase 2 
 - First design partner agreement signed
 
 TICK_END
+
+---
+
+## Tick 446 — HR/Talent Design Partners #126-128 + Vendor Scoring Framework Gap Update
+
+**Research date:** 2026-05-03
+
+### Vendor scoring frameworks: all manual, all pre-demo, zero performance-based
+
+The 2026 AI vendor evaluation industry produces:
+- "30-point enterprise scorecards" (checklist questionnaires)
+- "6-dimension frameworks" (technical fit, governance, security, ROI, commercial, operating model)
+- "Weighted scoring matrices" (Excel-based, subjective weight assignments)
+- "3-stage evaluation processes" (binary compliance check → POC → audit)
+
+**What every framework says:** "Define scoring rubrics BEFORE demos. Keep criteria stable across vendors. Track assumptions in a decision record."
+
+**What NO framework provides:** A platform where you actually RUN the vendors on your task and compare outputs with those pre-defined rubrics. Every framework describes the INTENT of what Straw does — none have the platform to execute it. They're all manual processes.
+
+**The advisor who writes the 30-point scorecard has to fill it in manually from vendor demos, RFP responses, and reference calls. Straw automates the evidence collection.**
+
+---
+
+### HR/Talent Design Partners
+
+#### Design Partner #126 — Workday (HR AI Platform Buyer Angle)
+
+**What they're doing:** Workday narrowed AI agent program to 15 focused projects (2026), accelerating agentic capabilities. Recent acquisitions: HiredScore (talent intelligence), Paradox (conversational recruiting), Evisort (contract AI), Sana (learning AI). Sana AI Agents launched with autonomous transaction completion.
+
+**Straw angle (Workday as SUBMITTER, not buyer):** Workday is a vendor of HR AI agents. Their enterprise customers (Fortune 500 HR departments) need to evaluate whether to buy Workday's talent acquisition agents vs. ADP's vs. standalone tools like Paradox. Workday should submit their agents ON Straw to win those contracts via evidence, not sales relationships.
+
+**Straw angle (Workday as BUYER):** Workday internally is selecting AI vendors for their 15 agent projects. They evaluate Claude (Anthropic), GPT-4 (OpenAI), and Gemini for different internal workflows. CTO Jim Stratton manages this.
+
+**Contact:** Jim Stratton (Workday CTO), or Head of AI Product.
+
+---
+
+#### Design Partner #127 — ADP (HR AI Marketplace)
+
+**What they're doing:** ADP launched AI Agent Hub in Marketplace (March 2, 2026) — curated destination for partner-built agents that integrate with ADP for HR, payroll, talent, and workforce automation.
+
+**Straw angle (ADP as CHANNEL):** ADP's marketplace has dozens of partner-built agents. ADP needs a way to CERTIFY the quality of these agents before listing them. A "Straw-evaluated" badge on ADP Marketplace agents would give enterprise HR buyers confidence in selecting agents. ADP becomes a distribution partner who uses Straw to certify their marketplace.
+
+**Cold pitch to ADP:** "Your marketplace has 50+ partner agents. Enterprise HR buyers have no way to compare them on actual performance. Run a Straw evaluation for each agent category — talent acquisition, compliance, payroll automation — and show buyers who won. Your marketplace becomes the only curated, performance-verified HR agent marketplace."
+
+**Contact:** Sreeni Kutam (ADP CHRO), or VP of ADP Marketplace.
+
+---
+
+#### Design Partner #128 — Large Enterprise HR Buyer (Head of Talent Acquisition / VP HR Technology)
+
+**Target profile:** Head of Talent Acquisition or VP of HR Technology at any Fortune 100 company running 10,000+ hires/year. Currently evaluating Workday HiredScore vs. Paradox vs. HireVue vs. Eightfold AI for automated talent screening.
+
+**Named target:** 
+- Kathi Jordan (SVP Talent Acquisition, JPMorgan Chase) — already in financial services vertical
+- Amy Cappellanti-Wolf (SVP, CHRO at Cornerstone OnDemand — also in the platform space)
+- Kim Sullivan (CHRO, Dell Technologies) — enterprise technology buyer
+
+**Pain point:** Hiring agents make consequential decisions. Rubric is objective: "screen 200 engineering resumes, identify top 10% with precision ≥ X%, reduce time-to-screen by Y hours, bias detection score ≥ Z." This is measurable, defensible, and legally important (EEOC compliance).
+
+**Cold email frame:** "Your talent team is evaluating HiredScore, Paradox, and Eightfold for your engineering hiring pipeline. All three claim to improve quality-of-hire. One Straw evaluation gives you their scores on your actual job requirements, your resumes, your rubric — before you sign a 3-year contract. The score also gives you EEOC defensibility."
+
+---
+
+### HR vertical summary
+
+| Target | Role | Straw Format | Legal Driver |
+|---|---|---|---|
+| Fortune 100 Head of TA | Buyer evaluating screening agents | Competition: HiredScore vs. Paradox vs. Eightfold on real job req | EEOC, fair hiring compliance |
+| Workday (Jim Stratton) | Internal AI vendor selection | Evaluate Claude vs. GPT-4 on 15 agent projects | Internal governance |
+| ADP Marketplace | Channel partner certification | Certify partner agents before marketplace listing | Brand trust |
+
+Sources: workday.com/en-us/artificial-intelligence/ai-agents, mediacenter.adp.com/2026-03-02-ADP-AI-Agents, aisera.com/blog/ai-recruiting, aininza.com/ai-vendor-evaluation-framework-2026, pertamapartners.com/insights/ai-vendor-selection, dunnixer.com/insights/six-dimensions-ai-vendor-evaluation
+
+TICK_END
