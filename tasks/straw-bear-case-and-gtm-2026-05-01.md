@@ -30959,3 +30959,67 @@ The cold email to this buyer: "Klarna replaced 700 agents, saved $40M, then rehi
 Sources: aibusiness.vc/klarna-ai-replaces-700-agents, fortune.com/2025/05/09/klarna-ai-humans-return-on-investment, digitalapplied.com/klarna-reverses-ai-layoffs, artofprocurement.com/state-of-ai-in-procurement, azumo.com/ai-agent-statistics
 
 TICK_END
+
+---
+
+## Tick 462 — AI Budget Accountability + Agent Market Scale Update
+
+**Research date:** 2026-05-03
+
+### AI budget accountability: the end of AI as a special category
+
+**"AI now commands 35 cents of every tech dollar, yet only 55% of AI value is being realized."**
+**"AI is no longer treated as a special category exempt from scrutiny."**
+
+This is the CFO/CIO dynamic Straw was designed for. AI spend is now too large to be treated as R&D experimentation. Boards want ROI. AI evaluation tools are no longer optional — they're the accountability layer that justifies continued AI spend.
+
+**The budget framework (StackAI 2026):** Enterprise AI spend splits into four buckets:
+1. **Run** — existing analytics + maintenance
+2. **Build** — new use cases, integrations, data pipelines
+3. **Scale** — shared foundation including security, governance, identity, evaluation, and enablement
+4. **Innovation** — new AI research
+
+Straw belongs in bucket #3 (Scale) alongside security, governance, and identity. It's not a project cost — it's a shared evaluation infrastructure. CIOs that understand this budget taxonomy will categorize Straw as infrastructure, not as a per-project consulting spend.
+
+**"CIOs are not receiving incremental budget. Any additional AI investment must be funded by reallocating existing budgets."**
+
+This is a bear case risk: Straw isn't "new budget," it's reallocation from existing vendor evaluation spend (bespoke consulting, internal analysis). The budget IS there — it's currently allocated to less efficient evaluation methods.
+
+---
+
+### AI agent market size update
+
+**Global AI agents market: $15B in 2026, forecast to reach $221B by 2035 (34.64% CAGR)**
+
+Previous stats: $10.91B in 2026, $52.62B by 2030. The $15B/$221B is a more recent (May 2026) upward revision. The TAM is expanding faster than analysts predicted.
+
+**40% of enterprise applications will include task-specific AI agents by end of 2026.**
+
+When 40% of enterprise applications have embedded agents, every enterprise will be making agent procurement decisions continuously — not once, but repeatedly, for every application update cycle.
+
+**282% jump in AI agent adoption** — representing one of the fastest technology adoption curves in enterprise software history.
+
+---
+
+### The AI agent landscape map (May 2026)
+
+AI Agents Directory published an interactive landscape map for May 2026 covering 120+ agentic AI tools across 11 categories:
+1. AI Coding Assistants
+2. Customer Service Agents
+3. Sales Agents
+4. Research Agents
+5. Data Analysis Agents
+6. HR and Recruiting Agents
+7. Finance and Accounting Agents
+8. Healthcare Agents
+9. Legal Agents
+10. Supply Chain Agents
+11. Marketing Agents
+
+**Straw's position:** Above all 11 categories. Straw evaluates agents in any category using buyer-defined rubrics. The 11-category landscape is the supply side. Straw is the demand-side procurement layer.
+
+**Current count of agentic AI tools:** 120+ mapped. The competitive evaluation problem scales with the tool count. As the landscape grows, buyers need Straw MORE.
+
+Sources: tredence.com/ai-spending, computerworld.com/ai-budgets-roi, stackai.com/enterprise-ai-budgeting-2026, aiagentsdirectory.com/landscape, marketsandmarkets.com/ai-agents-market
+
+TICK_END
