@@ -21136,3 +21136,127 @@ Sources: hackerone.com/product/ai-red-teaming, hackerone.com/blog/emerging-playb
 
 **Total Phase 2 output:** ~338 ticks, ~3MB of research, 56 named design partners (exceeds 50-contact mandate), complete bear case analysis (9 kill scenarios with probabilities), full GTM playbook (4 phases, 0→$100K ARR), investor pitch framework.
 
+
+---
+
+## Tick 339 (2026-05-04T09:40Z): Tool consolidation trend — higher stakes = higher Straw ACV [theme: GTM + bear]
+
+### The consolidation data (2026)
+
+- **66% of enterprise buyers** favor unified suites over best-of-breed
+- **40% of data engineers** spend 1/3 of day switching between tools (tool sprawl cost)
+- **VCs predict:** enterprises will spend more on AI in 2026 through FEWER vendors
+- **AI tool sprawl suppresses ROI by 20-30%** compared to consolidated peers
+- **TechCrunch survey (24 enterprise VCs):** "Overwhelming majority" predict concentration of AI spend in 2026
+
+**The enterprise narrative for 2026:** "We're done experimenting. We're standardizing. Which AI platform do we commit to for the next 5 years?"
+
+### Why this is bullish for Straw
+
+**The stakes are higher when the decision is "which platform" not "which tool":**
+
+A company choosing between Cursor and Claude Code for 500 developers is making a 5-year platform decision. The cost of being wrong: 500 developers × $40/month × 12 months × 5 years = $1.2M in licensing alone, PLUS switching costs.
+
+For a 5-year/$1.2M+ platform decision, a $25K Straw competition is a rounding error. The enterprise will happily pay $50K-100K for a rigorous evaluation before committing.
+
+**The ACV revision upward:**
+- Single tool evaluation (one agent for one task type): $5K-25K/competition
+- Platform standardization decision (choosing the primary AI coding platform for 500 engineers): $25K-100K/competition
+- Multi-vertical evaluation (coding + CS + procurement agents): $100K+/year subscription
+
+This consolidation trend means Straw's ACV can scale faster than expected. The buyer's willingness to pay tracks with the stakes of the decision.
+
+### The consolidation bear case for Straw
+
+**If enterprises consolidate down to 1-2 AI platform vendors**, and the platform includes a "built-in evaluation" feature (as Salesforce AgentExchange or Microsoft Marketplace could develop), Straw's standalone value weakens.
+
+The counter: Platform-bundled evaluation is inherently biased (the platform evaluates its own agents against third parties). Enterprises that need unbiased evaluation will still pay for a neutral third party. But buyers who are fine with "good enough + convenient" will skip the rigorous evaluation.
+
+**The segment split:** Large enterprises making major platform decisions need rigorous evaluation (Straw's market). SMBs and startups will consolidate to whatever their cloud provider recommends (not Straw's market).
+
+This supports the ICP definition: 500-10,000 engineer companies making significant platform decisions. Not 10-person startups who'll just try the free tier of whatever the cool kids are using.
+
+Sources: unframe.ai/blog/enterprise-ai-tool-sprawl-roi, techcrunch.com/2025/12/30/vcs-predict-enterprises-will-spend-more-on-ai-in-2026-through-fewer-vendors, addwebsolution.com/blog/the-mlops-consolidation-why-2026-is-killing-bloated-ai-tool-stacks
+
+---
+
+## Tick 340 (2026-05-04T10:00Z): Vercel, Sentry, Linear as design partners [theme: partners]
+
+### Vercel ($3.25B valuation, Series E)
+
+Vercel is the deployment platform for frontend developers. Their AI strategy: Vercel Agent (deploys full applications from a conversation), v0 (AI-assisted UI generation), Vercel AI SDK (agent-building toolkit). Customers: Next.js ecosystem, Stripe, Braintrust.
+
+**Why Vercel is a Straw design partner:**
+- Vercel uses Braintrust for AI evaluation (Braintrust cites Vercel as a customer)
+- Vercel has an AI Marketplace with agents building on their platform
+- Vercel's engineering team is evaluating AI coding agents for their own development workflow
+
+**The pitch:** "Vercel uses Braintrust to monitor AI in production. Straw validates which AI agent to deploy before production. You understand the value of rigorous evaluation — run a Straw competition for Vercel's own engineering workflow."
+
+**Contact:** Guillermo Rauch (@rauchg), Vercel CEO. Also invested in Braintrust (cited as a Braintrust investor). Warm-ish via Braintrust connection.
+
+**Updated partners: #57 — Guillermo Rauch / Vercel**
+
+### Sentry (Seer AI triage feature)
+
+Sentry launched "Seer" — AI engine that automatically groups similar errors, suggests root causes, and generates fix recommendations based on codebase context.
+
+Sentry is evaluating which underlying AI model/agent to use for Seer. The question "which AI model should power Seer's root cause analysis?" is a classic Straw competition setup.
+
+**The pitch:** "Seer is an AI agent that triages errors. Which underlying model — Claude Opus 4.6, GPT-5, Gemini — produces the most accurate root cause suggestions on Sentry's real error patterns? Run a Straw competition: 100 real Sentry error tickets, three AI models competing, your evaluation rubric. The report tells you which model to optimize Seer around."
+
+**Contact:** David Cramer (@zeeg), Sentry CEO/Co-founder. Active on Twitter.
+
+**Updated partners: #58 — David Cramer / Sentry**
+
+### Linear (project management for dev teams)
+
+Linear is engineering project management — beloved by developers, used by high-performance teams. Their AI direction: AI-powered project planning, issue triage, sprint organization.
+
+Linear is more of a distribution channel than a direct design partner — Linear's customers ARE Straw's ICP (dev teams evaluating AI tools). A Straw integration in Linear ("run a competition" button in your project backlog) is a product integration opportunity, not just a partnership.
+
+**The pitch to Karri Saarinen (@karrisaarinen, Linear CEO):**
+> "Linear's customers are evaluating AI coding agents constantly. What if Linear added a 'run Straw competition' button to any task backlog? Select 20 tasks → choose 3 agents → run competition → report in 72 hours. Linear becomes the place where engineering teams make rigorous AI procurement decisions."
+
+**Contact:** @karrisaarinen on Twitter. Already on the Straw design partner list (Tier 2).
+
+**Updated partners: #59 — Karri Saarinen / Linear (product integration + design partner)**
+
+Sources: vercel.com, sentry.io/blog (Seer feature), linear.app, braintrust.dev (Vercel as customer)
+
+---
+
+## Tick 341 (2026-05-04T10:20Z): The "too early" bear case — market timing risk [theme: bear]
+
+### The mandate's implicit concern
+
+The Phase 2 mandate asks for a pre-mortem. One kill scenario not yet explicitly addressed: "Straw launches 2 years too early."
+
+**The scenario:** Enterprise AI procurement is still in "pilot and observe" mode. Companies buy based on vendor demos. The formal procurement wave doesn't arrive until 2028. Straw builds beautiful infrastructure but has no customers for 24 months.
+
+### The data that says "not too early"
+
+1. **Stanford AI Index 2026:** 89% failure rate, $400K average cost per failure. The pain EXISTS today.
+2. **Goldman Sachs, Citi, Dell already deployed agents:** The procurement decision has already been made at scale. These companies need RETROACTIVE validation + future procurement rigor.
+3. **EU AI Act August 2, 2026:** A live regulatory deadline 91 days away creates acute urgency.
+4. **Enterprise procurement formalizing NOW:** "2026 marks the shift from pilots to outcome-driven buying" (multiple sources).
+5. **Devin 73× ARR growth:** The market is here. Money is being spent. Procurement decisions are being made.
+
+**The timing is right NOW.** This is not 2-years-early territory. This is the beginning of the adoption wave.
+
+### The data that says "maybe a bit early"
+
+1. **Only 4% of enterprise teams have reached meaningful AI agent deployment** (despite 90% interest). The mass market is still coming.
+2. **"Enterprises are still in experimentation mode"** — procurement rigor arrives when scaling decisions need to be made, not when pilots are running.
+3. **Goldman/Citi/Dell are the early adopters** — they represent the leading edge, not the mainstream.
+
+### The verdict: early enough to win, not too early to survive
+
+The window is:
+- Not so early that there are no customers (Goldman-type early adopters exist today)
+- Not so late that incumbents have captured the category (no dominant player in AI agent procurement competition)
+
+**The 18-month window:** If Straw doesn't capture 30+ design partners and $1M ARR by end of 2027, the risk that a well-funded competitor closes the window becomes real. The execution risk is higher than the timing risk.
+
+Sources: (synthesis from all Phase 2 research)
+
