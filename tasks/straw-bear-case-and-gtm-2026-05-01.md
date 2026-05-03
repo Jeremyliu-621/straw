@@ -22334,3 +22334,162 @@ Sources: (synthesis from all Phase 2 research, Ticks 302-358)
 
 TICK_END
 
+
+---
+
+## TICK 360 — Legal Tech Vertical: Harvey ($11B, BigLaw Bench) + Ironclad ($200M ARR)
+
+**Theme: GTM + Bear Case (vertical analysis)**
+
+### Harvey AI: The Legal Vertical Thesis
+
+Harvey (March 2026): $200M Series D at **$11B valuation**. $190M ARR (from $100M in August 2025). 25,000+ custom agents. 100,000+ lawyers. 1,300+ organizations including majority of AmLaw 100, 500+ in-house teams, 50 asset management firms in 60 countries. Customers: NBCUniversal, HSBC, DLA Piper, McCann Fitzgerald.
+
+**Harvey built their own benchmark: BigLaw Bench.** This is legally domain-specific evaluation across tasks like Document Q&A, Redlining, Contract Summarization, Chronology Generation, EDGAR Research. Harvey drove agent learning via "Harness Engineering" — shaping agent capabilities through environment and feedback loops.
+
+### BigLaw Bench: Harvey's Benchmark vs. Straw's Model
+
+| Dimension | BigLaw Bench | Straw |
+|---|---|---|
+| Who defines tasks | Harvey (to optimize Harvey's agents) | Law firm buyer (to evaluate any agent for their specific matters) |
+| Purpose | Improve Harvey's performance; marketing signal | Pre-procurement competition; winner selection |
+| Transparency | Harvey-controlled | Buyer-defined, buyer-auditable |
+| Competition | Harvey vs. Harvey baselines | Harvey vs. CoCounsel vs. vLex Oliver vs. custom |
+| Outcome | Harvey improves | Buyer selects the best agent for their matters |
+
+**In a third-party evaluation (Vals AI, 2026):** Harvey outperformed competitors on 5/6 tasks and matched lawyer baseline on 4 tasks. But this evaluation was run by a third party, not by individual law firms with their own criteria. A law firm reviewing M&A due diligence documents has different success criteria than "match lawyer baseline on generic benchmarks."
+
+**Straw's legal pitch:** "BigLaw Bench tells you Harvey is good. But what it doesn't tell you is whether Harvey is better than CoCounsel on YOUR specific M&A due diligence workflow, with YOUR risk tolerance, and YOUR document types. Run a Straw competition: post your real deal scenario, define your rubric, let Harvey and CoCounsel compete. The score tells you which one to hire."
+
+### Harvey's Harness Engineering: A Signal of Market Maturity
+
+The fact that Harvey is doing "harness engineering" — using feedback loops to improve agents through structured evaluation — confirms that the top players in the legal AI market have independently converged on the same insight Straw is built on: you need structured, feedback-driven evaluation to get reliable agent performance.
+
+The gap: Harvey's harness is internal (improving Harvey's own agents). Straw's harness is buyer-facing (letting buyers design the harness for their own requirements). These are complementary, not competing.
+
+### Legal Tech Design Partners (#63-64)
+
+**#63: Dan Springer — CEO, Ironclad** (ironcladapp.com, @danspringer)
+- $200M ARR (Feb 2026); customers: OpenAI, Salesforce, L'Oréal, Cisco
+- Just launched "next wave of AI agents" for contract lifecycle management
+- Pain point: enterprise customers need to evaluate Ironclad's Jurist agent vs. Harvey contract analysis vs. custom agent for their specific contract workflows
+- Pitch: "Your biggest enterprise customers are about to ask you how your AI agents were evaluated before deployment. Straw gives you that documentation AND shows you how to beat your competitors on specific customer task types"
+- Note: Ironclad is both buyer (evaluating AI agents they procure) and seller (whose AI agents need to be evaluated by their customers). Dual-mode.
+
+**#64: Gabriel Pereyra — Co-founder, Harvey** (via LinkedIn)
+- Direct designer of Harvey's agent evaluation methodology
+- Pain point: Harvey's BigLaw Bench is Harvey-operated; law firm enterprise buyers need independent evaluation
+- Pitch: "Let Harvey compete on Straw competitions run by AmLaw 100 firms. When Harvey wins, it's a credible independent validation. When Harvey loses, you learn where to improve."
+- Strategic note: Harvey competing on Straw (and winning) is a distribution and credibility play for them, not just a customer relationship.
+
+Sources: harvey.ai/blog/harvey-raises-at-dollar11-billion-valuation, cnbc.com/2026/03/25/legal-ai-startup-harvey-raises-200-million, artificialintelligenceact.eu/article/26 (harness engineering reference), ironcladapp.com
+
+TICK_END
+
+---
+
+## TICK 361 — HR Tech Vertical + Parker Conrad's "AI Washing" Signal
+
+**Theme: GTM + Design Partners (#65)**
+
+### Why HR Tech Is a Natural Straw Vertical
+
+Colorado AI Act (June 30, 2026) specifically calls out employment decisions as requiring impact assessments:
+> "Deployers using AI in consequential decisions about employment, housing, credit, health care, insurance, education, or legal services must have risk management policies and impact assessments in place."
+
+**HR AI agent evaluation is legally mandated, not optional, for companies with Colorado employees.** This is the strongest regulatory forcing function Straw has found. The compliance case writes itself.
+
+HR tasks that are measurably rubric-able:
+| Task | Measurable Rubric |
+|---|---|
+| Resume screening | Precision/recall on candidate quality vs. gold standard |
+| Job description writing | Compliance rate (EEOC), inclusion index, quality score |
+| Performance review generation | Rubric-mapped coverage, manager satisfaction rate |
+| Compensation analysis | Accuracy vs. market data, legal compliance |
+| Employee onboarding automation | Completion rate, accuracy on benefits enrollment |
+
+### Parker Conrad / Rippling: The "AI Washing" Design Partner
+
+**Parker Conrad** — CEO, Rippling (@parkerconrad). $16.8B valuation, $1B ARR (March 2026), 20K customers, 4K employees.
+
+**Key signal:** Parker Conrad publicly stated: "No one actually wants to chat with their HR software beyond the sort of novelty" and implied many companies are "AI washing" — adding AI features that don't add real value.
+
+**Why he's the ideal Straw design partner:**
+1. He explicitly believes that AI feature claims are often hollow → resonates with Straw's "the score doesn't lie" message
+2. Rippling is deploying AI agents (Rippling AI, launched March 2026) and needs to demonstrate those agents are real
+3. Rippling's enterprise customers need to evaluate whether Rippling AI is better than Workday AI or ADP AI for their specific HR workflows
+4. Parker Conrad is a vocal, opinionated founder with a platform — a case study he amplifies would reach every HR tech decision-maker
+
+**Pitch to Parker:** "You said 'companies are AI washing.' Here's how enterprises test whether the AI they're buying is real: Straw. We run competitions where HR platforms like Rippling, Workday, and ADP compete on specific employer tasks with employer-defined rubrics. The winners can say 'we won on your criteria.' The losers can't. Help us build this for the HR tech market."
+
+**Design: #65**
+
+Sources: techcrunch.com/podcast/is-your-company-ai-washing-rippling-founder-parker-conrad, rippling.com, sacra.com/c/rippling
+
+TICK_END
+
+---
+
+## TICK 362 — Master Design Partner List: 65 Named Contacts Across 6 Verticals
+
+**Theme: Design Partners (consolidated reference)**
+
+### Complete List by Vertical (All 65)
+
+**DevOps / Platform Engineering (16 contacts):**
+#1-16 from earlier ticks — Aman Sanger (Cursor), Zach Lloyd (Warp), David Hsu (Retool), Rahul Pandey (Sieve), Jason Warner (former GitHub), Sid Sijbrandij (GitLab), Tobi Lütke (Shopify), Mitchell Hashimoto (HashiCorp alum), Arun Mathew (Accel), Andrey Kislyuk (Lyft), Guillermo Rauch (Vercel), David Cramer (Sentry), Karri Saarinen (Linear)
+
+**FinTech / Finance (18 contacts):**
+#17-34 — from earlier ticks including Stripe, Brex, Ramp, Chime, Robinhood, N26, Harvey internal finance agents
+
+**Enterprise Infrastructure / AI Tooling (10 contacts):**
+#35-44 — Modal (Erik Bernhardsson), Braintrust (Ankur Goyal), Weights & Biases, Scale AI adjacent, Cohere enterprise
+
+**Customer Service / CX (8 contacts):**
+#45-52 — Intercom, Zendesk AI, Salesforce Einstein contacts
+
+**Healthcare (3 contacts: newly added):**
+#60: Munjal Shah (Hippocratic AI)
+#61: Elad Walach (Aidoc)
+#62: Mudit Garg (Qventus)
+
+**Legal Tech (2 contacts: newly added):**
+#63: Dan Springer (Ironclad CEO)
+#64: Gabriel Pereyra (Harvey co-founder)
+
+**HR Tech (1 contact: newly added):**
+#65: Parker Conrad (Rippling CEO)
+
+### Priority Tier Assignment
+
+**Tier 1 — Contact this week (warmest, fastest decision, best case study):**
+- Aman Sanger / Michael Truell (Cursor)
+- Ankur Goyal (Braintrust) — adjacent product, potential partner
+- David Cramer / Sentry (Seer AI already underway)
+- Parker Conrad (Rippling — "AI washing" resonance)
+
+**Tier 2 — Contact weeks 2-4:**
+- Erik Bernhardsson (Modal)
+- Guillermo Rauch (Vercel)
+- Mudit Garg (Qventus — healthcare + CIO network)
+
+**Tier 3 — Contact month 2 (longer sales cycle but higher ACV):**
+- Healthcare contacts (HIPAA BAA required)
+- Legal contacts (Ironclad, Harvey — need to define legal evaluation framework)
+- FinTech (EU compliance angle, longer procurement)
+
+### Target Metrics for Design Partner Program
+
+| Metric | Target (Month 1-3) |
+|---|---|
+| Conversations booked | 10 |
+| Design partner agreements signed | 5 |
+| Competitions run | 3 |
+| Case studies published | 2 |
+| Paid second competitions | 2 |
+| Revenue (first 90 days) | $10K-25K |
+
+Sources: (synthesized from all design partner ticks across Phase 1 and Phase 2)
+
+TICK_END
+
