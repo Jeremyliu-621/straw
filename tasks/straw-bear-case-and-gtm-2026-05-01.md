@@ -16029,3 +16029,121 @@ If Anthropic joins the "Foundation Model Performance Council" but OpenAI doesn't
 
 The "Car and Driver" framing is the solution: "Car and Driver tests all major car brands. If Toyota joins a Car and Driver advisory council, they're not endorsing Toyota cars — they're helping Car and Driver run more accurate tests. All brands benefit from more rigorous testing because it proves the best products win."
 
+
+---
+
+## Tick 221 (2026-05-03T13:57:00Z): Education technology design partners — named contacts [theme: partners]
+
+### EdTech: High Volume, Lower Priority Than Regulated Verticals
+
+EdTech is an interesting but lower-priority vertical for Straw because:
+- Regulatory urgency is lower than financial services/healthcare
+- Budget for enterprise AI evaluation is constrained (education budgets are under pressure)
+- BUT: 83% of institutions plan AI teaching assistant deployment by end of 2026 (EDUCAUSE survey), creating evaluation demand
+- The evaluation rubric is unusually clear for tutoring agents: learning gain scores (measurable), engagement metrics, accessibility compliance (ADA/IDEA for disabilities), equity across student demographics
+
+### Named Contacts
+
+---
+
+**1. Khan Academy**
+- CEO: Sal Khan (highly public, active on social media — reachable via Twitter/X or LinkedIn)
+- Chief Learning Officer: Kristen DiCerbo
+- Khanmigo context: AI-powered tutor launched 2023, scaled with Microsoft Azure partnership. Free for teachers, $4/month for families.
+- Why Straw: Khanmigo is competing with Google Duet, Copilot for Education, and Coursera Coach. Kahn Academy needs to prove Khanmigo actually improves student learning outcomes versus alternatives. That's a rubric-defined competition.
+- Opener for Sal Khan: "Sal — Khanmigo is deployed for 189 million users. The question every superintendent asks before deploying AI tutoring is: 'Will it actually improve student outcomes?' Straw runs the competition that proves it — or discovers where it needs improvement. The evaluation result is the evidence base you need for institutional adoption."
+- Note: Sal Khan's public profile is very high. A "Straw-validated Khanmigo outperforms alternatives for algebra remediation" result would be a major press story.
+
+---
+
+**2. Duolingo**
+- CEO: Luis von Ahn (co-founder; very active on tech community)
+- Chief Technology Officer: Severin Hacker (co-founder)
+- Duolingo Max: AI-powered conversational practice using GPT-4
+- Why Straw: Duolingo competes with Babbel, Rosetta Stone, and native GPT-based language learning apps. Enterprise language learning clients (corporations training employees) want to know which AI language tutor produces the highest fluency gains per hour of practice.
+- Entry use case: Corporate language training AI evaluation — Spanish business fluency gain per hour, measured by standardized proficiency test scores
+
+---
+
+**3. Coursera**
+- CEO: Jeff Maggioncalda
+- 197 million registered learners; AI-generated courses; AI coaching ("Coursera Coach")
+- Coursera's enterprise play: "Coursera for Business" selling to Fortune 1000 L&D departments
+- Why Straw: Enterprise L&D buyers are evaluating Coursera Coach versus LinkedIn Learning AI, Pluralsight AI, and Degreed. Straw provides the head-to-head comparison on specific skill development outcomes.
+- Entry use case: Enterprise AI upskilling agent evaluation — time-to-competency for cloud engineering certifications, measured by certification pass rates
+
+---
+
+**4. ETS (Educational Testing Service)**
+- President/CEO: Amit Sevak (verify via ets.org leadership)
+- Context: ETS released "Futurenav Adapt AI" — the first tool measuring teachers' ability to use AI ethically. They're already in the AI evaluation space for educators.
+- Why Straw: ETS already does educational assessment. Their "Futurenav" product is literally an evaluation tool for AI in education. Straw is the competition platform that extends ETS's evaluation expertise to AI tutoring agents. ETS + Straw = the evaluation standard for K-12 AI agents.
+- Partnership pitch: "ETS sets the standard for educational testing. Straw sets the standard for AI agent competitions. Together, we can define the evaluation standard for AI tutoring tools that every district and institution uses before deploying AI."
+
+---
+
+### EdTech Vertical Strategy Note
+
+Don't lead with compliance in EdTech. Lead with learning outcomes and equity. "Straw evaluates whether your AI tutor improves learning outcomes equally across different student demographics" — this speaks to equity concerns that are top-of-mind for education administrators.
+
+The equity angle is especially powerful: AI tutoring tools that underperform for English Language Learners or students with disabilities are a liability risk under ADA/IDEA. Straw's rubric can include accessibility and equity criteria, making it the evaluation standard for responsible AI in education.
+
+EdTech Priority: Lower than financial services/healthcare/legal, but ETS as a partner is uniquely valuable (they're already in the evaluation business and would accelerate Straw's credibility in education faster than direct enterprise sales).
+
+
+---
+
+## Tick 222 (2026-05-03T14:01:00Z): Intellectual property risk — model training on competition data [theme: bear]
+
+### The Data Contamination Problem
+
+During a Straw competition, multiple AI agents receive the same task prompts and produce outputs that are scored against a rubric. This creates a dataset: for each task, Straw has:
+- The task specification and prompt
+- Every agent's output response
+- The rubric criteria
+- The scores assigned to each output
+
+This dataset is extremely valuable for training AI models. An agent vendor who is also a Straw customer could argue: "Our agents participated in a Straw competition. Our outputs are included in Straw's competition dataset. We have rights to our outputs."
+
+More dangerous: could a third party argue that Straw's scoring dataset — which effectively shows "high-quality outputs score X, low-quality outputs score Y on these criteria" — constitutes training data that should be licensed?
+
+### Three IP Risk Scenarios
+
+**Scenario 1: Agent vendor claims ownership of competition outputs**
+An agent vendor participates in a Straw competition. Their outputs are stored in Straw's platform. The vendor argues: "Our model produced those outputs. They belong to us. You cannot use our outputs to train other models, improve scoring algorithms, or publish them without our consent."
+
+**Risk level**: Medium-high. The "who owns AI outputs" question is unsettled in US law as of 2026 (50+ federal lawsuits pending). If outputs are owned by the model's developer (which some courts have implied), every Straw competition creates an IP tangle.
+
+**Mitigation**: Straw's competition agreement explicitly grants Straw a license to use competition outputs for internal scoring algorithm improvement and published rubric templates, WITHOUT the right to use outputs for training competing AI models. This is standard SaaS "processing" language that most enterprise legal teams accept.
+
+**Scenario 2: Enterprise client's task specification leaks through agent training**
+An enterprise client provides a competition rubric that reflects their proprietary business logic (e.g., Goldman Sachs's risk assessment criteria). The AI agent being evaluated ingests this rubric during the competition and incorporates it into its next training run. The agent "learns" Goldman's risk methodology from the competition.
+
+**Risk level**: Very high for specific enterprise clients. This is why zero-data sandbox architecture (Tick 176) is required. The sandbox prevents agents from:
+- Exfiltrating data outside the competition environment
+- Making external API calls (could transmit data to training infrastructure)
+- Accessing data after the competition ends
+
+If an agent vendor trains on data captured during a Straw competition, Straw faces liability for enabling that data breach.
+
+**Mitigation**: Zero-data sandbox is non-negotiable. Additionally: agents must sign a "competition data non-use agreement" — prohibiting training on any data encountered during a Straw competition. Difficult to enforce, but creates contractual recourse.
+
+**Scenario 3: Straw's rubric library is stolen**
+Straw's most valuable IP asset is the rubric library — hundreds of validated evaluation criteria templates built from design partner workshops. An employee (or a breached competitor) could copy these rubrics and publish them or sell them to a competitor.
+
+**Risk level**: Medium. This is the trade secret protection problem.
+
+**Mitigation**: (1) Rubric templates are stored in a system with access logging. (2) Customer-specific rubrics are treated as customer property; generic templates are Straw IP. (3) Employment agreements include trade secret protection clauses. (4) Straw registers key rubric templates with the US Copyright Office (limited protection but creates a paper trail).
+
+### The Copyright Training Data Landscape in 2026
+
+Courts are tracking 50+ lawsuits between intellectual property owners and AI developers. Disney and Universal filed against Midjourney in June 2025. 2026 is expected to bring "sharper challenges to fair-use defenses" and "aggressive strategies to unlock proprietary training information through discovery."
+
+This litigation environment makes Straw's data handling policies MORE important, not less. If Straw's data ends up in discovery in a copyright case, the exposure is significant.
+
+**The EU angle**: EU AI Act (general-purpose model rules, effective August 2025) requires GPAI providers to publish detailed summaries of training data. If any agent in a Straw competition uses data from those competitions for training, and that data includes proprietary enterprise task specifications, both the agent vendor and Straw face regulatory exposure.
+
+### Bear Case Score: 5/10 (manageable with legal scaffolding)
+
+The IP risks are solvable with good legal agreements and zero-data sandbox architecture. The non-negotiable investments: (1) competition participation agreement drafted by IP counsel (not a template), (2) zero-data sandbox as a technical requirement before any enterprise competition, (3) employment agreements with proper trade secret provisions. Total investment: $25K-$50K in legal work before first enterprise competition. Do this before signing the first customer.
+
