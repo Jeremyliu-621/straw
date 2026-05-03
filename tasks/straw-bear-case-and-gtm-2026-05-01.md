@@ -20597,3 +20597,119 @@ The loop is genuine. But it's slow to build (2-3 years of evaluations before the
 
 The annual report is the brand play that makes the data moat visible and accelerates adoption.
 
+
+---
+
+## Tick 282 (2026-05-03T00:12:00Z): Financial Services Deep Dive — Named Targets and Entry Points [theme: partners]
+
+**Research basis**: JPMorgan $18B tech budget, $2B AI-specific. COiN platform saves 360K hours/year. Goldman using Claude Opus 4.6 for compliance automation. Wells Fargo re-underwrote 15 years of loan documents with multi-agent pipeline + partnering with Google Agentspace. Deloitte: 350+ risks from autonomous AI agents. EU AI Act August 2026 enforces high-risk financial AI requirements.
+
+### Financial Services Is Straw's Highest-Value Vertical
+
+Banking has:
+- **Largest AI budgets**: JPMorgan $2B AI-specific annually
+- **Highest regulatory exposure**: EU AI Act, Fed Reserve Model Risk Management (SR 11-7), OCC guidelines, FCA in UK
+- **Most numerous vendor choices**: Every major foundation model + dozens of finance-specific AI agents
+- **Clear production stakes**: Bad AI decision in credit scoring, fraud detection, or trading = material financial harm
+
+The combination of large budgets, regulatory mandates, and high stakes creates the ideal Straw ICP.
+
+### Named Targets With Entry Points
+
+**JPMorgan Chase**
+- **AI Spend**: $2B/year AI budget, 50,000+ employees using LLM Suite
+- **Current Agents**: Contract analysis (COiN), trading risk analytics, code generation
+- **Key Contact**: Teresa Heitsenrether (Chief Data & Analytics Officer); Bryan Callahan (Global Head of AI)
+- **Straw Entry Point**: COiN v2 evaluation — they're upgrading from the first-gen document review system to autonomous agents. "Which next-gen contract analysis agent performs best on your specific contract corpus?" is a textbook Straw evaluation.
+- **Regulatory hook**: OCC Model Risk Management requires validation before deploying ML models. AI agents fall under MRM guidance. Straw evaluation = pre-deployment validation evidence.
+
+**Goldman Sachs**
+- **Current Agents**: Claude Opus 4.6 for compliance and accounting automation; AI coding assistants across engineering
+- **Key Contact**: Marco Argenti (Chief Information Officer); Neema Raphael (Chief Controls Officer)
+- **Straw Entry Point**: Goldman is deploying AI for compliance automation — which means choosing between AI vendor options. "Which compliance AI agent reduces false positive rates on regulatory reporting?" is an evaluation Straw can run.
+- **Regulatory hook**: Goldman faces SEC, FINRA, FCA, BaFin scrutiny on any AI in client-facing or reporting workflows. Documented evaluation = regulatory defensibility.
+
+**Wells Fargo**
+- **Current Agents**: 15-year loan document re-underwriting (multi-agent pipeline); Google Agentspace partnership for custom agents
+- **Key Contact**: Chintan Mehta (Chief Digital Technology Officer); Saul Van Beurden (Head of Technology)
+- **Straw Entry Point**: Wells Fargo is evaluating both Google Agentspace AND custom agents for loan underwriting. "Which agent delivers better accuracy on your underwriting criteria?" is a direct Straw evaluation.
+- **Regulatory hook**: Loan underwriting = Annex III EU AI Act high-risk category. August 2026 enforcement deadline is a forcing function.
+
+**Citigroup**
+- **Current Focus**: AML (Anti-Money Laundering) AI transformation
+- **Key Contact**: Anand Selva (Head of Technology)
+- **Straw Entry Point**: AML false positive rates are a major cost center. Multiple AI vendors claim best-in-class AML detection. Straw can run a competition on a sanitized Citi transaction dataset.
+
+**Morgan Stanley**
+- **Current Agents**: AI assistant for 16,000+ financial advisors (GPT-4 powered)
+- **Key Contact**: Jeff McMillan (Head of Analytics, Data and Innovation)
+- **Straw Entry Point**: Upgrading from GPT-4 to next-gen agents for FA assistance. "Which agent gives better investment research synthesis?" is evaluable.
+
+### The Financial Services Regulatory Hook (Repeated Because It's That Important)
+
+SR 11-7 (Federal Reserve Model Risk Management guidance) has historically applied to quantitative models in banking. Regulators are extending MRM principles to AI agents. The pattern: any AI system making or influencing material financial decisions requires:
+1. Model documentation
+2. Validation by independent party
+3. Ongoing monitoring
+
+Straw's evaluation + certification = items 1 and 2. Straw's annual recertification = ongoing monitoring documentation.
+
+This makes Straw not just "nice to have" for banks — it becomes **compliance infrastructure** for any bank deploying agents in credit, trading, or compliance workflows.
+
+---
+
+## Tick 283 (2026-05-03T00:13:00Z): Straw's Vertical AI Moat Strategy [theme: gtm]
+
+**Research basis**: Vertical SaaS growing 3x faster than horizontal, charging 2-4x more per seat. Two types of moats: defensive (regulatory certification, compliance infrastructure) + generative (compounding data, cross-customer signal). True moat = deep workflow integration = system of record. Distribution can be the moat (Doximity model). 
+
+### The Moat Stack Straw Should Build
+
+Straw is a horizontal infrastructure product (evaluation methodology applies across verticals) with vertical depth (each vertical requires domain-specific rubrics, compliance alignment, and failure mode libraries). This is an unusual position — most companies choose one lane.
+
+**The right strategy**: Build horizontal infrastructure, but deploy it via vertical GTM motion.
+
+- **Horizontal core**: Evaluation framework, sandbox architecture, certification standard, benchmark database
+- **Vertical go-to-market**: Financial services, healthcare, legal — each vertical gets vertical-specific rubrics, regulatory alignment, and named domain advisors
+
+This captures vertical SaaS pricing power (2-4x per-seat premium vs. horizontal) while building horizontal data moat (cross-vertical benchmarks are more valuable than single-vertical benchmarks).
+
+### The Four Moat Layers
+
+Straw should deliberately build all four identified moats:
+
+**Moat 1: Proprietary Data (Generative)**
+- Accumulate cross-evaluation benchmark data
+- Annual "State of Enterprise AI Agent Performance" report establishes Straw as authoritative source
+- More evaluations → better benchmarks → better evaluation recommendations → more evaluations
+
+**Moat 2: Deep Workflow Integration (Defensive)**
+- Straw integrates into enterprise procurement workflows (JIRA, ServiceNow, Ariba procurement systems)
+- Evaluation reports automatically generated into procurement system format
+- Once embedded in procurement workflow, switching cost = rebuild the entire evaluation process
+
+**Moat 3: Regulatory/Compliance Certification (Defensive)**
+- "Straw Certified" becomes a recognized certification standard (target: recognized in EU AI Act guidance or NIST framework)
+- SOC 2 Type II + ISO 27001 for Straw's own security posture
+- Third-party audit of Straw's evaluation methodology (academic or audit firm partnership)
+
+**Moat 4: Network Effects (Generative)**
+- Agent builders compete for Straw certifications → they engage with the platform proactively
+- Enterprises publish Straw requirements in RFPs → creates demand pull from the buyer side
+- Both sides of the marketplace locked in by the certification standard
+
+### The Doximity Distribution Moat Analogy
+
+Doximity (medical professional network) moat is distribution: pharma companies pay to reach doctors *at the point of clinical decision making*. Doximity doesn't need to be the best pharma marketing tool — it needs to be the one doctors already use.
+
+Straw's distribution analogy: **Straw embeds in the moment when enterprises make AI agent deployment decisions.** If every procurement team consults Straw before deploying, Straw doesn't need to fight for awareness — the evaluation is the distribution.
+
+The mechanism: get procurement policies written that require Straw evaluation. One policy at one major enterprise → template for 20 other enterprises that copy the policy → Straw embedded in procurement process without selling into each individual procurement team.
+
+**Targets for policy embedding**:
+- JPMorgan Chase MRM policy (extends to regulated AI)
+- EU AI Act compliance checklists (get referenced in published compliance guidance)
+- NIST AI RMF (get cited in National Institute of Standards risk management framework)
+- Corporate AI governance templates published by Big 4 consulting firms (Deloitte, PwC, KPMG, EY all publish AI governance templates their clients adopt)
+
+**Most leveraged action**: Get Deloitte's AI governance template to reference "third-party agent evaluation" and recommend Straw specifically. Deloitte has 500+ enterprise clients who will adopt that template. One Deloitte relationship = 500 warm leads.
+
