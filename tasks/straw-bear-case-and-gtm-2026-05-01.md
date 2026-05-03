@@ -12242,3 +12242,142 @@ As government agencies require certified agent evaluation documentation, Straw's
 **The 30-second moat pitch to investors:**
 "Straw's defensibility compounds on three levels. First, the evaluation corpus: after 50 competitions, we know which AI agents perform best in which enterprise contexts — proprietary data no one else has. Second, the Straw Certified badge creates a network effect: agents want the badge to win enterprise sales, so they compete; enterprises see more badge-holders and trust the badge more. Third, government compliance: as California EO N-5-26 and the EU AI Act require certified AI evaluation documentation, Straw becomes the evaluation infrastructure regulators implicitly require."
 
+
+---
+
+## Tick 179 (2026-05-03T17:45Z): Enterprise coding agent comparison — who Straw should run competitions for [theme: gtm/partners]
+
+### The coding agent landscape in April 2026
+
+The top AI coding agents competing for enterprise adoption:
+
+| Agent | Strengths | Enterprise Concern | Straw relevance |
+|---|---|---|---|
+| **OpenAI Codex (GPT-5.5)** | #1 on Terminal-Bench 2.0 (77.3%), best multi-agent execution, background work | Repository cloned to OpenAI's cloud sandbox — data residency concerns | Highest-demand comparison target |
+| **Claude Code (Opus 4.7)** | Claude-native terminal development, strong on complex reasoning | Anthropic cloud-hosted | Natural competitor to Codex in Straw competitions |
+| **Devin (Cognition)** | Best on security vuln fixes (20x), codebase modernization, PR merge rate 67% | Enterprise pricing opaque; 14-17% success rate on private data | Already has enterprise customers; needs Straw for specific domain certification |
+| **Augment Intent** | First ISO 42001 certified coding assistant; 400K file context, large enterprise-focused | Enterprise-only pricing, complex onboarding | ISO 42001 cert makes it a premium competitor; Straw validates it goes beyond certification to performance |
+| **Cursor** | Best IDE experience; $20/month accessible | Less enterprise governance; no formal certification | Strong consumer-facing; Straw positions it for enterprise |
+| **OpenHands (All Hands AI)** | Open-source, transparent, customizable | Requires self-hosting; enterprise support less mature | Natural free baseline in Straw competitions |
+
+Sources: [Morph LLM coding agents 2026](https://www.morphllm.com/best-ai-coding-agents-2026), [MightyBot coding agents ranked](https://mightybot.ai/blog/coding-ai-agents-for-accelerating-engineering-workflows/)
+
+### The specific Straw competition: "Which coding agent should my engineering team use?"
+
+This is Straw's clearest value proposition to a non-legal, non-financial buyer: the Head of Engineering or VP of Engineering at a 200-5,000 person company deciding which coding agent to adopt.
+
+**Competition design:**
+- Task: 50 representative engineering tasks from the company's actual backlog (mix: security vulnerability fixes, test writing, code modernization, feature implementation)
+- Competing agents: Codex, Claude Code, Devin, Augment Intent + one open-source (OpenHands)
+- Rubric: Task completion rate (40%), code quality (30%), security compliance (20%), integration cost (10%)
+- Data: The company's actual codebase — runs in their VPC or a sandboxed environment where code is not exfiltrated
+- Output: Straw Certified report showing which agent won by category, with specific case examples
+- Price: $8,000-$15,000 (Tier 2 technical engineering vertical)
+
+**The data sovereignty solution for coding competitions:**
+The buyer's code stays in their environment. Straw provides the task specification, evaluation rubric, and scoring engine. Each competing agent accesses only the specific task files they need. The output (code, test results, documentation) is scored without the agent having permanent access to the full codebase.
+
+### Named contacts for the coding agent competition angle
+
+Companies that have publicly announced they're evaluating coding agents in 2025-2026:
+- Any company that used SWE-bench Pro to evaluate models (Scale AI customers)
+- Engineering teams at companies where Devin's enterprise customers are listed: Goldman, Citi, Santander, Nubank, Dell, Cisco, Ramp, Palantir
+- GitHub Copilot enterprise customers who are now evaluating alternatives (GitHub has 150K enterprise Copilot customers — this is the replacement market)
+
+**Opener for VP Engineering / Head of AI at these companies:**
+"OpenAI Codex, Claude Code, and Devin are all claiming to be the best coding agent for enterprise teams. But on private enterprise codebases, the top models score 23% vs. 70%+ on public benchmarks. We're building Straw to tell you which coding agent performs best on YOUR codebase, with YOUR tasks, using YOUR rubric. Would you be one of our first 3 enterprise design partners?"
+
+---
+
+## Tick 180 (2026-05-03T18:00Z): AI vendor RFP process — Straw as the "shortlist evaluation executor" [theme: gtm]
+
+### How enterprise AI procurement actually works in 2026 (the RFP layer)
+
+Enterprise AI procurement has formalized around an RFP/vendor selection process:
+
+1. **Needs assessment:** Define the use case and success metrics (what winning looks like)
+2. **Market scan:** Identify 10-15 potential vendors
+3. **RFI / initial screening:** Narrow to 5-6 vendors based on documented criteria
+4. **RFP/proposal evaluation:** Detailed written proposals scored against a weighted rubric
+5. **Shortlist evaluation:** 2-4 vendors tested on actual use cases with real data
+6. **Selection + negotiation:** Winner selected, contract negotiated
+
+**Straw's insertion point:** Step 5 — Shortlist Evaluation. This is the "proof of concept" phase of enterprise procurement, where buyers run competing vendors on real data to pick the winner. Today, enterprises run this manually: each vendor gets access to a sample dataset and submits outputs. The buyer's team evaluates manually. This takes 4-12 weeks, requires significant internal coordination, and produces informal comparisons with no audit trail.
+
+**Straw replaces this step with a standardized, documented competition:**
+- Standardized rubric (Straw helps design it)
+- Sandboxed evaluation environment (data security handled)
+- Automated scoring (tier-2 and tier-3 evaluation pipeline)
+- Documented output (Straw Certified report for procurement file)
+- Commercial outcome integration (trigger contract negotiation with winner)
+
+Sources: [Ivalua Vendor Selection Process](https://www.ivalua.com/blog/vendor-selection-process/), [IntuitionLabs Pharma AI RFP](https://intuitionlabs.ai/articles/pharma-ai-procurement-rfp-template-scorecard)
+
+### The pharma AI procurement template as Straw's highest-paying vertical signal
+
+The Pharma AI Procurement RFP Template from IntuitionLabs covers evaluation criteria that map directly to what Straw evaluates:
+- Prior projects in pharmaceutical R&D (track record)
+- Domain expertise validation (task-specific performance)
+- Compliance documentation (regulatory readiness)
+- Security handling (data residency, access controls)
+
+**Healthcare/pharma is Straw's highest-paying vertical:** Each AI agent procurement decision in pharma can be $500K-$5M (diagnostic AI, clinical trial optimization, drug discovery acceleration). At 15% take rate on prize pool, a $500K competition generates $75K for Straw. A $5M competition generates $750K.
+
+**Named pharma targets for Straw design partnership:**
+- **Pfizer AI team** — Pfizer has a large AI investment program; LinkedIn search "Head of AI, Pfizer" or "Chief Data Officer, Pfizer"
+- **Moderna AI team** — known for AI-driven drug development
+- **IntuitionLabs** — the pharma AI procurement specialist who published the RFP template; they ARE a design partner target as a channel partner
+
+### The key product insight from RFP research
+
+Enterprise procurement teams already have a process for vendor selection. Straw doesn't need to create a new process — it needs to **plug into their existing RFP process** at the shortlist evaluation phase.
+
+**The product implication:** Straw should publish an "AI Agent RFP Companion Guide" — how to use Straw's competition format in place of or alongside the traditional POC/shortlist evaluation phase. This positions Straw as a professional procurement tool, not a disruption to the enterprise process.
+
+---
+
+## Tick 181 (2026-05-03T18:15Z): Insurance AI exclusions — the liability insurance channel for Straw [theme: gtm/bear]
+
+### The insurance market is abandoning AI coverage (2026)
+
+**What's happening:**
+- Verisk released new general liability endorsements (CG 40 47 and CG 40 48) as of January 1, 2026 — standard forms that allow carriers to exclude all AI-related claims
+- Major carriers (AIG, W.R. Berkley, Great American) have filed or received clearance for broad AI exclusions across D&O, E&O, EPLI, and CGL lines
+- "Single erroneous model update, faulty training dataset, or misconfigured agent can produce simultaneous, widespread losses" — insurers treat this as catastrophe exposure, not liability
+
+**The liability gap:**
+- AI providers cap their liability in ToS (Anthropic, OpenAI, Google all limit liability)
+- Insurers are excluding AI-related claims
+- Result: enterprises deploying AI agents face UNINSURED LIABILITY for AI failures
+
+**The governance exception:**
+- Carriers that still cover AI require "documented AI governance frameworks" as a condition
+- ISO 42001-certified organizations receive 15-25% premium discounts
+- "Without documented AI governance and controls, enterprises deploying AI agents face significant uninsured liability exposure in 2026"
+
+Sources: [Lexology AI insurance exclusions](https://www.lexology.com/library/detail.aspx?g=b76e0dba-d9a8-44f1-9f5d-6fbd0a22f6b6), [PYMNTS Big Insurance backs away from AI](https://www.pymnts.com/artificial-intelligence-2/2026/big-insurance-backs-away-from-ai-risk-and-startups-rush-in/), [Metropolitan Risk AI liability](https://www.metropolitanrisk.com/major-insurers-are-pulling-back-from-ai-liability/)
+
+### Why this creates a new GTM channel for Straw
+
+**The pitch to Chief Risk Officers (not CISOs, CROs specifically):**
+
+"Major insurance carriers are adding AI exclusions to standard corporate policies. AIG, W.R. Berkley, and Great American are leading this. When your AI agent fails — like the Claude agent that deleted PocketOS's production database in 9 seconds last week — your insurer may not cover it. The exception: carriers that still cover AI require documented governance frameworks. Straw produces the evaluation documentation that proves you selected your AI agent using a defensible methodology, which is exactly what carriers require to maintain coverage. ISO 42001 gets you 15-25% premium discounts; a Straw competition report demonstrates the specific agent evaluation documentation your carrier needs."
+
+**The insurance broker channel:**
+Insurance brokers who specialize in AI/tech risk are now frantically helping their clients navigate AI exclusions. These brokers need to recommend governance solutions to clients. Straw as a recommended partner of AI/tech risk brokers creates a powerful referral channel.
+
+**Named contacts for the insurance channel:**
+- **Marsh McLennan** — largest insurance broker in the world; has an AI risk consulting practice. Contact: their Technology Practice or AI Risk team.
+- **Aon** — second-largest broker; Cyber & Technology Risk Solutions team.
+- **Willis Towers Watson** — Technology, Media & Telecommunications practice.
+- **Woodruff Sawyer** — tech-focused insurance broker; known for startup clients. Contact via woodruffsawyer.com.
+
+**The insurance actuary as Straw's research partner:**
+Insurance actuaries need to understand AI agent failure modes to price AI risk. Straw's competition results (which tasks fail, which agents fail on which domains, failure mode distribution) are exactly the actuarial data the insurance industry needs. A research partnership with a major carrier's actuarial team could generate revenue AND build Straw's credibility.
+
+### The bear case in the insurance channel
+
+The insurance industry is moving slowly on AI governance standards — partly because no agreed standard exists. If CG 40 47 and CG 40 48 endorsements become universal, "documented governance" becomes a compliance requirement but insurers may not specify Straw as the documentation standard. Competing documentation formats (ISO 42001 certification, Scale Labs evaluation, internal POCs) might satisfy the "governance" requirement without Straw.
+
+**The defense:** Straw needs to become the specific documentation format that insurance carriers require in their AI governance checklist. This requires direct engagement with Marsh McLennan, Aon, or another major broker to co-create an "AI Agent Evaluation Standard" that names Straw's competition format as the required methodology.
+
