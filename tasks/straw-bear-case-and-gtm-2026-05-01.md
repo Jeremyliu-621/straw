@@ -10633,3 +10633,296 @@ This checkpoint summarizes the most important additions from Ticks 121-150 (this
 
 **The session has produced enough research. The next 150 hours of progress on Straw comes from conversations, not research. Jeremy should close this document and open his email client.**
 
+
+---
+
+## Tick 151 (2026-05-05T16:00Z): Harvey AI at $8B — the legal vertical's specific economics for Straw [theme: gtm/partners]
+
+**Harvey AI** is the highest-profile legal AI company in 2026. $8 billion valuation (October 2025). Serves 50 of the largest US law firms and Fortune 500 legal departments. Pricing: $1,200-2,000+/seat/month minimum, with a 20-seat floor = $288,000/year minimum contract.
+
+### The Harvey procurement math for Straw
+
+A law firm evaluating Harvey for 20 seats (the minimum) is committing to $288K-$480K/year. Before signing this contract, a Straw evaluation competition costs:
+- **Straw Tier 2 competition** (legal document review): $5,000-10,000
+- **Cost as % of annual Harvey contract**: 1.0-3.5%
+
+**The ROI calculation for the Straw competition:**
+- Harvey ROI claim: "Saves each lawyer 1 hour/day at $500/hour rate = $125K/year per attorney"
+- For 20 attorneys: $2.5M/year in recovered billing value
+- Straw competition determines: "Does Harvey actually deliver this on YOUR contract types?"
+- If Straw shows Harvey delivers 0.8 hours/day (not 1.0): Buyer pays $288K but gets $2M benefit (not $2.5M)
+- If Straw shows Ironclad delivers 1.1 hours/day: Buyer saves $100K/year by choosing Ironclad
+- Straw competition cost: $10K. Value of right decision: potentially $100K-500K over the contract term.
+
+**This is the clearest ROI case for any Straw competition: legal AI at scale.**
+
+### Why Harvey won't block Straw
+
+Harvey is a legal AI company — not an evaluation platform. They're not going to invest in building a "compare Harvey against competitors" feature. That would be like asking Goldman Sachs to run a "compare Goldman vs Morgan Stanley" advisory service.
+
+**The Harvey supply-side question:** Will Harvey allow their agents to compete in Straw competitions? This is the Tick 149 "agents refusing to compete" bear case in a specific context.
+
+**The likely answer for Harvey:** Harvey might refuse — they prefer to win business through their direct sales process, not through a third-party competition they can't control.
+
+**The Straw alternative:** If Harvey refuses, Straw runs the competition with:
+- A "Claude Managed Agents with Harvey-style legal prompts" approximation
+- Ironclad (willing competitor, need the business)
+- Luminance (willing competitor, needs enterprise validation)
+- Robin AI (willing competitor)
+
+Straw doesn't need Harvey's participation to serve Harvey's buyers. The competition runs with willing participants. If all other agents lose to the Harvey-approximation, that's still useful data.
+
+### The California Executive Order signal
+
+California EO N-5-26 (March 30, 2026): State agencies must develop certification requirements for AI vendors. AI vendors must attest to policies about illegal content, harmful model bias, and civil rights violations.
+
+**For law firms:** If their clients include California state agencies (many major law firms do), the firms face the question: "Does our legal AI platform meet California's certification standards?" Straw competitions that include rubric criteria for bias detection and civil rights compliance become compliance documentation for California EO requirements.
+
+**The California state agency channel:** California state agencies purchasing legal AI tools will need documented evaluation methodology under EO N-5-26. Straw's competition format IS that evaluation methodology. This is a direct government design partner opportunity — not just enterprise commercial.
+
+---
+
+## Tick 152 (2026-05-05T16:30Z): Microsoft Legal Agent in Word — the "good enough" Microsoft monopoly risk [theme: bear]
+
+**May 1, 2026:** Microsoft unveiled a Legal Agent in Word for document analysis, drafting, and contract review.
+
+**Why this is a meaningful bear case for Straw:**
+
+### The Microsoft moat in legal AI
+
+Law firms and large legal departments are already paying for Microsoft 365 (Office, Teams, SharePoint). A Microsoft Legal Agent in Word represents:
+- Zero additional cost (included in M365)
+- Zero integration friction (in the existing Word document)
+- Zero procurement process (IT already approves M365)
+- Zero training curve (it's in Word)
+
+**The substitution scenario:** A law firm considering whether to buy Harvey ($288K/year), Ironclad ($200K/year), or run a Straw competition to compare them... might instead say: "We have Microsoft 365. The Legal Agent in Word handles 80% of our contract review needs. We'll use that."
+
+**This is the "good enough substitute" bear case that kills Harvey's business model AND Straw's demand for legal competition evaluations.**
+
+### Why the Microsoft risk is partially overblown
+
+**For commoditized contract review:** Yes, Microsoft Legal Agent handles 80% of routine contracts (standard NDAs, supplier agreements, routine lease reviews). Law firms accept this.
+
+**For high-stakes complex contracts:** M&A due diligence, complex financial instruments, regulatory compliance review, international arbitration contracts — the 20% of contracts where being wrong costs millions — Microsoft Legal Agent is NOT good enough. That's where Harvey, Ironclad, and Straw's competitions live.
+
+**The Straw vertical positioning:** Straw doesn't compete for the commoditized 80% (Microsoft Word handles it). Straw serves the high-stakes 20% where the cost of wrong evaluation exceeds the cost of Straw's competition.
+
+**The Microsoft channel opportunity:** Microsoft is not building a "compare Harvey vs. Ironclad" feature. They're building their own Legal Agent. But Microsoft resellers (Accenture, Deloitte, KPMG) are advising enterprises on AI agent selection. Straw + the Microsoft partner ecosystem is a distribution channel: "When your client asks whether Microsoft Legal Agent is better than Harvey for their specific contract types, use Straw to evaluate."
+
+---
+
+## Tick 153 (2026-05-05T17:00Z): The Straw pitch deck — first draft structure [theme: gtm]
+
+**The task:** Draft the 8-slide investor pitch deck structure that Jeremy will use for seed conversations.
+
+### Slide 1: The Hook (the stat stack)
+
+**Headline:** "Enterprise AI is spending $665 billion. 73% of it fails to deliver ROI."
+
+**Visual:** The stat stack:
+- $665B enterprise AI spend in 2026
+- 73% fails to deliver projected ROI
+- 85% of enterprises have AI agents in pilot; only 5% trust them in production
+- 37% gap between lab benchmark scores and real-world deployment performance
+- 73% of failed projects had no agreed definition of success
+
+**One line:** "The reason is simple: enterprises pick AI agents the same way they pick restaurants — by looking at a menu, not by tasting the food."
+
+---
+
+### Slide 2: The Problem (in one sentence)
+
+**Headline:** "Enterprise AI procurement is broken."
+
+**The problem:** Enterprises make six-figure AI agent deployment decisions based on vendor demos, SWE-bench leaderboards, and analyst reports — then discover in production that the agent doesn't perform on their specific task.
+
+**The current workflow:**
+1. Vendor sends demo ✓
+2. Engineering team tries in sandbox ✓  
+3. Procurement committee approves ✓
+4. Deploy → production failure ✗
+
+**The missing step:** Nobody evaluated the agent on real business task data against pre-specified criteria before deployment.
+
+---
+
+### Slide 3: The Solution (what Straw does)
+
+**Headline:** "Straw runs AI agent competitions so enterprises know which agent wins before they deploy."
+
+**The Straw workflow:**
+1. Enterprise defines the task (contract review, bug fix, data analysis)
+2. Enterprise defines what "winning" looks like (the rubric)
+3. 3-5 competing AI agents run on the enterprise's real data in Straw's sandbox
+4. Straw scores each agent against the rubric
+5. The winning agent gets the Straw Certified badge and the deployment contract
+
+**The key metric:** "One Straw competition prevents the 37% performance gap from reaching production."
+
+---
+
+### Slide 4: Traction
+
+**Headline:** "X design partner conversations. X competitions running. X enterprises committed."
+
+[Placeholder — Jeremy fills this with real numbers from May-June outreach]
+
+**Design partners contacted:**
+- [Ankur Goyal, Braintrust] — "Straw + Braintrust is the complete eval stack"
+- [Robert Brennan, OpenHands] — OpenHands as baseline agent
+- [Beth Barnes, METR] — methodology alignment
+
+**First competition:** [Task, buyer, agents competing, status]
+
+---
+
+### Slide 5: Market Size
+
+**Headline:** "The AI agent evaluation market: $2.5B → $11B by 2029."
+
+- TAM: $11B (AI governance market by 2029)
+- SAM: $2.5B (enterprise AI procurement evaluation, 2026)
+- SOM: $100K ARR (first 12 months), $3M ARR (36 months)
+
+**Context:**
+- Scale Labs raised $1B+ doing AI evaluation (training data focus)
+- Braintrust raised $80M Series B for post-deployment eval
+- W&B sold to CoreWeave for $1.7B
+- The adjacent space validates Straw's niche
+
+---
+
+### Slide 6: Business Model
+
+**Headline:** "Competition fees + annual programs + Straw Certified licensing."
+
+**Revenue streams:**
+- Per competition: $500-15,000 (Tier 1-4)
+- Annual programs: $25,000-50,000/year (repeat buyers)
+- Straw Certified badge: 15% take rate on prize pool
+- Rubric library: $50-200/month SaaS (coming in v1)
+
+**Unit economics:**
+- Target: 20 competitions/year × $5K average = $100K ARR at Year 1
+- Gross margin: ~70% (compute is cheap; judgment is the value)
+
+---
+
+### Slide 7: Why Now
+
+**Headline:** "Four forces converging in 2026."
+
+1. **Platform proliferation:** OpenAI, Google, Anthropic all launched managed agent platforms in April 2026. More agents = more comparison need.
+2. **Regulatory pressure:** EU AI Act (August 2026), Colorado AI Act (June 2026), California EO N-5-26 require documented evaluation.
+3. **The 85/5 trust gap:** 80% of enterprises can't move agents from pilot to production. Evaluation is the trust infrastructure.
+4. **Benchmark collapse:** SWE-bench, MMLU — all saturated. Enterprises need task-specific evaluation that generic benchmarks can't provide.
+
+---
+
+### Slide 8: The Ask
+
+**Headline:** "[$X] to prove Straw's evaluation model works."
+
+**Use of funds:**
+- 40%: First 10 paid competitions (infrastructure + evaluation support)
+- 30%: SOC 2 certification (enterprise prerequisite)
+- 20%: Rubric library development (20 vertical-specific templates)
+- 10%: Initial marketing (Show HN, newsletter seeding)
+
+**The milestone:** "$X gets Straw to the first $100K ARR milestone and a Series A-ready traction story."
+
+---
+
+## Tick 154 (2026-05-05T17:30Z): The Straw community seeding messages — exact Discord/Twitter posts [theme: gtm]
+
+**The goal:** Get 5-10 AI agents pre-registered for Straw's first competition through community seeding. These are the exact posts Jeremy should make this week.
+
+### Discord message for the LangChain community
+
+```
+👋 Hi LangChain community — I'm Jeremy, building Straw (straw.ai).
+
+Straw is an AI agent competition platform where enterprise buyers post real business tasks, and competing AI agents solve them. The best agent wins a deployment contract + a "Straw Certified" badge.
+
+We're running our first competition in [June 2026] — a legal contract review task commissioned by [TBD enterprise buyer].
+
+If you've built a LangGraph agent (or any agent that can do structured document analysis), I'd love to have it compete. Competition format: you receive the task spec and data via API, submit outputs via API, Straw scores against a buyer-defined rubric.
+
+Prize: $2,500 cash + Straw Certified badge
+
+If you're interested, DM me or fill out: straw.ai/compete
+
+(Note: we're in private beta — the first 20 agent registrations get priority.)
+```
+
+---
+
+### Twitter/X post (Jeremy's personal account)
+
+```
+I'm building Straw — an AI agent competition platform.
+
+Here's the problem we're solving:
+
+85% of enterprises have AI agents in pilot.
+Only 5% trust them enough to ship to production.
+
+The gap? Nobody evaluated agents on real tasks before deploying.
+
+Straw fixes this. Enterprises post their actual task (contract review, code generation, data analysis). 3-5 competing agents run in our sandbox. The best agent wins the deployment contract.
+
+We're running our first competition in June.
+
+If you've built an AI agent that can compete: straw.ai/compete
+If you're an enterprise that needs to pick an agent: straw.ai/compete
+
+[Competition details thread ↓]
+```
+
+---
+
+### LinkedIn post (more professional tone)
+
+```
+73% of enterprise AI projects fail to deliver ROI.
+
+The root cause? 73% of those projects had no agreed definition of success before they started. (McKinsey 2026)
+
+I'm building Straw to fix the procurement layer of enterprise AI.
+
+Here's what we do:
+→ Enterprise defines their task and what winning looks like (the rubric)
+→ 3-5 AI agents compete in a sandboxed evaluation
+→ The best agent wins a deployment contract + a Straw Certified badge
+
+The evaluation runs on the enterprise's actual data. Not a vendor demo. Not a SWE-bench score. The real task, the real rubric, the real winner.
+
+We're working with our first design partners now. If you're:
+• A CTO evaluating competing AI agents
+• An AI agent developer looking for enterprise validation
+• An AI governance lead who needs documented evaluation methodology
+
+I'd love to talk. DM me or straw.ai
+
+#AIAgents #EnterpriseAI #AIGovernance
+```
+
+---
+
+### The HN Ask HN post (for community feedback, not launch)
+
+```
+Ask HN: Has anyone built a good framework for evaluating competing AI agents on the same business task?
+
+I'm building Straw (straw.ai) — an AI agent competition platform where enterprise buyers define tasks + rubrics, and multiple agents compete on the buyer's actual data.
+
+The core challenge: how do you prevent agents from gaming the evaluation (Goodhart's Law) while still making the rubric specific enough to be useful? 
+
+Our current approach: buyer-defined rubrics with holdout test sets (agents see 70% of data during development; evaluation runs on the remaining 30% they never see). But curious if others have solved this differently.
+
+What other approaches have people tried for head-to-head AI agent evaluation?
+```
+
+(Note: This is a question/discussion post, not a product launch. It gets feedback AND visibility in the HN AI community.)
+
