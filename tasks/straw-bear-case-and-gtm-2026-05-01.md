@@ -29463,3 +29463,87 @@ This is the most urgent sales stat in the deck. These CIOs need to show ROI for 
 Sources: rebasehq.ai/blog/enterprise-ai-spending-2026, marketsandmarkets.com/ai-agents-market, demandsage.com/ai-agents-market-size, idc.com/prUS53765225, cio.com/ai-agent-budgets-2026, paul-okhrem.com/enterprise-ai-agents-statistics-2026
 
 TICK_END
+
+---
+
+## Tick 451 — Content Marketing GTM Playbook for Straw (Technical Founder-Led)
+
+**Research date:** 2026-05-03
+
+### The 2026 content marketing reality for B2B AI infrastructure
+
+**94% of B2B buyers use generative AI during their buying process.** Your content must be structured to be cited by AI engines: specific, authoritative, formatted for extraction. The buyer's first contact with Straw may be through an AI engine's research, not a Google search or cold email.
+
+**Founder-led content:** Still the load-bearing distribution motion for AI infrastructure SaaS. But the 2026 winning formula is **AI-drafted + human verified + explicitly disclosed** — not pretending to be organic when it's AI-assisted. Pure AI content with fake founder voice lost 73% of B2B SaaS rank share year over year.
+
+**Winning quadrant for Straw:** Jeremy writes or reviews/edits every piece. AI drafts, human refines, published under Jeremy's name with authentic perspective. Original thinking + data > volume.
+
+---
+
+### Straw Content Marketing Playbook (10-article SEO foundation)
+
+**The 10 core articles every technical founder needs:**
+
+1. **"Why 88% of AI pilots fail (and the one evaluation step that would fix most of them)"** — Hero post. References RAND/MIT Sloan/Deloitte stats. Converts on the first read.
+
+2. **"Cross-vendor AI agent evaluation: the complete 2026 guide"** — Owned keyword. Ranks for "AI agent evaluation," "cross-vendor AI evaluation." All competitors are single-vendor — this post fills the informational gap.
+
+3. **"How to write an AI agent rubric (with templates for 7 enterprise verticals)"** — Rubric builder wedge. Gives away the free tier on paper. Each template drives a free rubric builder signup.
+
+4. **"The $315,000 mistake: why enterprise AI vendor lock-in is now the most expensive procurement error"** — CFO-targeting post. Built around the switching cost stat.
+
+5. **"AI agent evaluation platforms compared: Maxim, Arize, Langfuse, Braintrust vs. pre-procurement competition"** — Direct competitor comparison. Will rank for competitor name searches. Positions Straw as a different category (pre-procurement, cross-vendor).
+
+6. **"EU AI Act compliance for AI agents: the 5-year documentation requirement your legal team doesn't know about"** — Compliance wedge. Healthcare, financial services, any European operations.
+
+7. **"What the GSA and NIST 2026 AI evaluation partnership means for enterprise AI procurement"** — Government signal. Will surface in federal procurement searches.
+
+8. **"From vendor demo to production: the 5-stage AI agent evaluation framework (with scoring rubrics)"** — Practical guide. Embeds Straw methodology without naming it.
+
+9. **"How Cursor went from $0 to $500M ARR by letting developers evaluate before committing"** — PLG narrative. Applies coding agent evaluation (Straw's first vertical) to broader thesis.
+
+10. **"The 2026 enterprise AI buyer's complete evaluation checklist"** — SEO capture for high-intent buyer searches. Ranks for "AI agent evaluation checklist," "enterprise AI procurement guide."
+
+---
+
+### Distribution channels
+
+**LinkedIn (primary):**
+- Jeremy's personal profile: 3-5 posts/week with original data points and contrarian takes
+- Frame: "You know those 10 stats everyone cites about AI failure rates? Here's what they mean for your next procurement decision."
+- **LinkedIn is where CIOs, CPOs, and heads of AI actually spend time in 2026** — not Twitter/X
+
+**HackerNews:**
+- Post product launches, rubric templates as "Show HN"
+- Developer community validates technical architecture → they become advocates inside enterprise buyers
+
+**Substack/newsletter:**
+- "The AI Procurement Dispatch" — weekly briefing on AI agent market intelligence
+- 5,000 subscribers among enterprise AI decision-makers = warm inbound pipeline
+
+**Conference speaking (high leverage):**
+- ServiceNow Knowledge 2026 (May 5-7 — TOMORROW): submit speaker pitch for breakout session
+- Gartner Supply Chain Symposium (May 19-22): attend and network at solution provider level
+- ILTA Legal Tech (August 2026): speak on AI agent evaluation for legal ops
+
+---
+
+### Cold outreach sequence (3-email series)
+
+**Email 1 — Problem awareness (no ask):**
+Subject: "Your [industry] peers are spending $7.2M on failed AI agents"
+Body: 3 sentences on failure rates + link to the hero post. No CTA. Just education.
+
+**Email 2 — Solution framing (7 days later):**
+Subject: "How [similar company] ran a competitive evaluation before committing"
+Body: Brief case study framing (anonymous if needed). Link to rubric template for their vertical. CTA: "Want to see the template we used for [their vertical]?"
+
+**Email 3 — Specific offer (7 days after):**
+Subject: "30-minute call: we'll build your first AI agent evaluation rubric"
+Body: Specific offer — free rubric consultation + pilot evaluation at founder pricing. Direct calendar link.
+
+**The sequence converts because:** Each email provides standalone value. Email 3 only reaches engaged leads who opened/clicked emails 1 and 2. The rubric consultation is the "product demo" that converts to pilot.
+
+Sources: forkoff.xyz/founder-led-content-marketing-ai-2026, 12amagency.com/saas-content-marketing-trends-2026, enrichlabs.ai/ai-marketing-b2b-saas-2026, skaled.com/insights/gtm-trends-2026
+
+TICK_END
