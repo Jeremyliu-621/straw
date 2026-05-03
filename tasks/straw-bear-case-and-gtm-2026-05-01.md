@@ -19145,3 +19145,145 @@ The category is **"Competitive AI Evaluation"** (enterprise-friendly) or **"AI S
 *Total GTM frameworks developed: 15+*
 *Total vertical rubric templates: 12*
 
+
+---
+
+## Tick 260 (2026-05-03T00:37:00Z): The "copilot-to-agent" transition — governance gap creates new Straw use case [theme: bear/gtm hybrid]
+
+**Bear score: 4/10 / GTM opportunity score: 8/10** — This is simultaneously a manageable bear case and Straw's most powerful emerging GTM tailwind.
+
+### The Transition Data
+
+- Microsoft is moving from "Copilot as assistant" to "always-on autonomous agents" handling 30-40% of routine business processes by 2026
+- Microsoft Copilot now appears on the **risk register at most public companies** — audit committees expect controls inventory, monitoring evidence, and a named accountable owner
+- "A foundation model trustworthy for question answering may introduce very different risks when making autonomous decisions and executing multi-step workflows"
+- **Gartner: enterprises take 18-24 months to establish AI governance policies** — but autonomous agents are arriving faster than governance cycles
+- The OWASP Agentic Top 10 and Microsoft's March 2026 Copilot security guidance both document the gap between copilot-era governance and agent-era risks
+
+### The Bear Case
+
+The copilot-to-agent transition creates a **scope change problem for Straw**. Evaluating an AI copilot (assists a human who makes decisions) is a different task than evaluating an autonomous agent (makes decisions and takes actions independently).
+
+Straw's current sandbox evaluation tests: does the agent produce the right output? For copilots, this is sufficient. For autonomous agents, the evaluation must also cover: does the agent take the right actions? Does it escalate appropriately? Does it fail safely? Does it produce actions the enterprise actually authorized?
+
+If Straw's rubric design doesn't evolve to cover the autonomous action dimension, Straw's competitions will be testing the wrong thing as enterprise deployments shift from copilot to autonomous.
+
+### The GTM Opportunity (8/10)
+
+**This governance gap is Straw's most powerful second-act GTM story.**
+
+The facts:
+1. Enterprises are deploying autonomous agents in 2026 without adequate governance frameworks
+2. Audit committees are requiring controls, monitoring, and accountability
+3. Governance cycle (18-24 months) is slower than deployment cycle
+4. Most enterprises don't know how to evaluate autonomous agents
+
+Straw's position: **The governance layer for autonomous AI procurement.**
+
+Every enterprise moving from copilot (low-risk, human-in-loop) to autonomous agent (high-risk, no human in loop) needs to answer: "How do we know this agent is safe to run autonomously on our systems?"
+
+Straw answers that question before the contract is signed.
+
+**The reframing**: Straw's competition is not just "which agent performs best" — it is "which agent performs best AND behaves safely and predictably at autonomous scale." This makes Straw a governance infrastructure tool, not just a performance evaluation tool.
+
+### The Required Rubric Evolution
+
+For autonomous agent evaluation (2026 forward), Straw's rubrics must add:
+1. **Authorization boundary adherence**: Does the agent operate within its defined permission scope, or does it attempt to expand its access?
+2. **Escalation threshold quality**: Does the agent correctly identify situations requiring human oversight?
+3. **Failure mode behavior**: When the agent encounters an unexpected situation, does it fail safely (pause and escalate) or unsafely (proceed with incorrect assumptions)?
+4. **Audit trail completeness for autonomous actions**: Can every autonomous action be traced to the authorization that permitted it?
+5. **Reversibility of actions**: What proportion of the agent's actions can be reversed if it makes an error?
+
+These dimensions are not tested by any current AI evaluation platform. They represent Straw's next-generation differentiation.
+
+### The Product Roadmap Implication
+
+**Near-term (6 months)**: Add "autonomous agent safety" as a standard rubric section in every competition. Include at least 3 of the 5 dimensions above.
+
+**Medium-term (12 months)**: Launch "Straw Certified: Autonomous" as a separate, higher-standard certification for agents with autonomous execution capabilities. Higher price point ($30K-$75K competition), higher bar for certification.
+
+**Long-term (24 months)**: Partner with NIST AI Agent Standards Initiative (as noted in their January 2026 publications) to make "Straw Certified: Autonomous" align with formal federal standards for autonomous AI agent deployment.
+
+
+---
+
+## Tick 261 (2026-05-03T00:38:00Z): Real estate and media/entertainment design partner targets [theme: partners]
+
+### Real Estate / PropTech
+
+**Why Real Estate Is a Tier 3 Vertical**
+
+- VC invested $16.7B in proptech in 2025 (+68% YoY); AI-centered proptech growing at 42%/year
+- AI agents in real estate: property valuation, lease analysis, transaction management, market analysis
+- JLL, CBRE, and Zillow are the major AI adopters
+- JLL achieved 708% ROI through AI energy optimization — AI procurement decisions are high-stakes
+- Use case is measurable: property valuation accuracy, lease review speed, transaction documentation completeness
+
+**Named Target Contacts**
+
+**JLL** — Global commercial real estate leader; most aggressive enterprise AI program
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Jones Lang LaSalle (JLL) Chief Technology Officer | VP Technology / CTO | JLL uses "purpose-built agents" and GenAI explicitly — they have procurement decisions for which agents to use |
+
+- **Pitch angle**: "JLL is deploying purpose-built AI agents for property analysis, energy optimization, and transaction management. Straw can evaluate competing agent vendors on JLL's specific tasks before JLL signs a major contract."
+
+**CBRE** — World's largest commercial real estate services firm
+
+| Name | Title | Why They Care |
+|---|---|---|
+| CBRE Chief Digital Officer / Head of AI | Technology and AI strategy | CBRE uses Reonomy's AI tools; evaluating next-generation AI agents for property data and deal analysis |
+
+**Zillow** — Real estate marketplace; AI-driven valuation (Zestimate)
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Jeremy Wacksman | CEO | Leads Zillow's AI transformation; Zestimate model evaluation is an ongoing procurement decision |
+
+- **Note**: Real estate is a Tier 3 vertical — lower initial priority than FS, healthcare, or retail. Access via US PropTech Council annual summit (AI in Real Estate Summit 2026).
+
+### Media and Entertainment
+
+**Why Media/Entertainment Is a Tier 3 Vertical**
+
+- AI agents in media: content recommendation, personalization, ad targeting, content generation
+- Netflix, Disney+, Spotify are deploying AI agents for recommendation and content acquisition analysis
+- The procurement decisions are large (recommendation algorithm contracts affect billions in revenue)
+- The evaluation is measurable: recommendation click-through rate, engagement time, conversion rate
+
+**Named Target Contacts**
+
+**Netflix** — AI-native recommendation engine; $40B+ content budget informed by AI
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Elizabeth Stone | CTO | Leads Netflix's AI and technology strategy; recommendation algorithms are core IP |
+
+- **Context**: Netflix evaluates recommendation AI on a continuous basis. A Straw competition comparing recommendation agent vendors would be extremely high-stakes (Netflix's recommendation system drives 80% of content watched).
+
+**Spotify** — AI-driven music recommendations; heavy investment in AI personalization
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Gustav Söderström | Co-President & CPO | Leads product strategy including AI personalization |
+
+**The New York Times** — Media company actively deploying AI for content and editorial
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Zach Seward | Chief AI Officer | Leads NYT's AI strategy; evaluating AI tools for journalism and content production |
+
+- **Note**: NYT has an unusual AI procurement challenge — they need AI tools that can assist journalists without undermining editorial integrity. Straw's rubric for journalism AI would need to include both performance and editorial independence dimensions.
+
+### Rubric Template — Media/Entertainment AI Agent
+
+Core evaluation dimensions:
+1. **Recommendation relevance**: Click-through rate and engagement duration on synthetic user profiles
+2. **Diversity of recommendations**: Does the agent create filter bubbles or maintain diverse content exposure?
+3. **Cold-start performance**: How well does the agent perform for new users with no history?
+4. **Bias audit**: Does the recommendation system show demographic disparities in content exposure?
+5. **Content freshness handling**: Does the agent appropriately weight new content vs. established content?
+6. **Business constraint adherence**: Does the agent respect content licensing windows and geographic restrictions?
+
