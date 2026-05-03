@@ -38973,3 +38973,128 @@ Multiple search results reference Andrew S. Bosin LLC as a specialized SaaS/AI s
 
 **#179 Andrew S. Bosin** — njbusiness-attorney.com. New Jersey-based SaaS/AI startup attorney. Specialized in AI vendor agreement review, indemnification, and liability caps.
 
+
+## Tick 525 — HR/Talent Management Design Partners: The "War for AI Agents in HR" [theme: GTM + design partners]
+
+### Josh Bersin's Signal: "The Crowded War for AI Agents in HR" (March 2026)
+
+Josh Bersin (HR industry's most influential analyst): **"Gloat Enters The Crowded War For AI Agents in HR"** (March 2026)
+
+The headline says everything. HR is a WAR for AI agent dominance in 2026. Competing platforms:
+- **SAP SuccessFactors Joule** (agentic AI across recruiting, payroll, learning, performance, talent)
+- **Workday AI agents** (15 focused agentic projects, accelerating in 2026)
+- **Oracle HCM agents**
+- **Dayforce AI agents**
+- **Gloat** (AI talent marketplace, competing in the agentic HR space)
+- **Beamery** (AI talent intelligence)
+- **Eightfold AI** (deep learning talent matching)
+
+**The Straw angle:** When an enterprise HR team is choosing between these platforms for their recruiting agent, workforce planning agent, or performance management agent — they have NO objective evaluation framework. They run demos, collect vendor references, and choose based on relationships and gut feel.
+
+**The EU AI Act connection:** Employment decisions are **Annex III high-risk** under the EU AI Act. Any AI agent making or influencing hiring, promotion, or performance decisions requires:
+- Technical documentation of the decision logic
+- Conformity assessment
+- Human oversight mechanisms
+- Documentation of how the system was selected and validated
+
+**Every HR AI platform deployed in the EU after August 2, 2026 requires evaluation documentation.** Straw provides it.
+
+**McKinsey using AI agents to choose client teams (Bloomberg May 1, 2026):** This is an employment decision — Annex III high-risk. McKinsey's AI team assignment agent → required to document how it was evaluated. If McKinsey uses Straw, they have the conformity documentation.
+
+### The HR AI Evaluation Paradox
+
+HR is simultaneously:
+1. The vertical with the most AI agent investment ($2B+ from SAP, $2B+ from Workday, hundreds of millions from Oracle/Gloat/Eightfold)
+2. The vertical with the highest stakes per agent decision (hiring decisions directly affect careers and legal exposure)
+3. The vertical with the most regulatory risk (Annex III = highest-risk under EU AI Act; EEOC AI bias scrutiny in US)
+4. The vertical with the least objective vendor evaluation methodology
+
+**This combination is Straw's ideal target.** Every CHRO at a Fortune 500 deploying AI agents for recruiting, performance, or workforce planning needs a defensible evaluation record.
+
+### Named HR/Talent Design Partners (#279-286)
+
+**#279 — Leena Nair** (CEO, Chanel; former CHRO at Unilever) — one of the most respected HR-to-CEO transitions; public voice on AI and workforce; warm intro to CHROs globally
+**#280 — Donna Morris** (CHRO, Walmart) — Walmart is one of the largest employers; active AI deployment for workforce management
+**#281 — Laszlo Bock** (CEO, Humu; former Google SVP People) — built Google's people analytics capability; now advising enterprises on AI in HR
+**#282 — Josh Bersin** (Principal Analyst, Josh Bersin Company) — THE HR analyst; a Straw case study in his newsletter = inbound from 1,000+ enterprise HR leaders
+**#283 — Gretchen Alarcon** (VP HCM Product Strategy, Oracle) — Oracle's HR AI strategy; would benefit from Straw evaluations of Oracle HCM vs. SAP/Workday
+**#284 — David Somers** (Group VP Product, Workday) — Workday's AI agent roadmap; 15 focused agentic projects in 2026
+**#285 — Jennifer Morgan** (Executive Chair, SAP) — SAP board-level access; SAP SuccessFactors Joule is SAP's biggest AI bet
+**#286 — Arvind Panagariya** (economic advisor; former McKinsey partner) — policy-level access to McKinsey AI workforce transformation decision-makers
+
+### The HR GTM Wedge
+
+**Primary:** Recruiting AI agent evaluation for Fortune 500 CHROs
+- Task: Evaluate 3 AI recruiting agents on 90 days of actual job postings and candidate data
+- Rubric: Time-to-hire, candidate quality score (vs. human baseline), diversity maintenance, false positive rate
+- Regulatory hook: EU AI Act Annex III + EEOC AI bias guidance
+- Stakes: One biased hiring decision = class action lawsuit risk
+- The legal cost of one EEOC investigation: $50K-$500K in legal fees → $15-50K Straw evaluation = obvious insurance
+
+---
+
+## Tick 526 — Straw's GTM Conference Calendar: The 2026-2027 Speaking Circuit [theme: GTM]
+
+### The Remaining 2026 Conference Targets
+
+From search results + prior research, here is the complete upcoming conference calendar where Straw should have a presence:
+
+**Immediately urgent (this month, May 2026):**
+- **ServiceNow Knowledge 2026** — May 5-7, Las Vegas — HAPPENING NOW — 700+ sessions, AI Control Tower focus, Straw = complementary pre-deployment layer. Cold outreach to attendees this week.
+
+**Q2 2026 (June-July):**
+- **Gartner Digital Workplace Summit** — June 2026 — HR AI agents, digital workplace governance
+- **YC S26 interviews** — June 2026 (if applied by May 4; late apps still accepted)
+- **Sapphire 2026** (SAP) — SAP customer conference — HR AI agents + EU AI Act compliance = Straw pitch
+- **Workday Elevate** — Annual conference for Workday customers — HR AI agent procurement decisions
+
+**Q3 2026 (August-September):**
+- **EU AI Act August 2 enforcement deadline** — Maximum urgency moment; all EU-exposed enterprises in procurement mode
+- **NAIC AI Evaluation Tool Pilot conclusion** — September 2026 — Insurance urgency peak
+- **Black Hat/DEF CON** — Las Vegas, August 2026 — Cybersecurity AI agent evaluation; CISO community
+- **Gartner IT Symposium/Xpo** — September/October — CTO/CIO audience; largest enterprise IT conference
+
+**Q4 2026 (October-November):**
+- **CHIME Annual Conference** — October 2026 — Healthcare CIOs, 2,500+ members
+- **Money20/20 USA** — October 2026, Las Vegas — Fintech + financial services AI
+- **NAIC Fall Meeting** — November 2026 — Insurance AI evaluation tool adoption expected
+- **AWS re:Invent** — November/December 2026 — Largest cloud + enterprise AI conference
+
+**2027 Q1:**
+- **RSAC 2027** — Cybersecurity AI evaluation
+- **SXSW** — March 2027 — Emerging tech, startup community, press
+- **GSMA Mobile World Congress** — March 2027, Barcelona — Telecom AI; GSMA Open Telco AI context
+
+### The Speaking Strategy
+
+**The Straw talk:** "The AI Procurement Gap: Why 88% of Enterprise AI Deployments Fail and How to Fix It"
+
+Core structure:
+1. The failure data (Stanford 88%, NBER 90% no impact, 41% from unclear criteria)
+2. The current procurement process (vendor demos → gut feel → sign)
+3. The Straw alternative (define criteria → competition → score → decide)
+4. Live demo: rubric builder + 3-agent competition result
+5. The regulatory urgency (EU AI Act, NAIC, SR 26-2)
+6. Call to action: "Apply to be a design partner"
+
+**Target speaking venues (priority order):**
+1. **Josh Bersin Summit** (HR focus) — immediate access to 500+ CHROs
+2. **Gartner IT Symposium** — CTO/CIO audience → maximum procurement decision-makers
+3. **RSAC 2027** — CISO audience → highest-stakes AI deployment category
+4. **CHIME Annual** — Healthcare CIOs → regulatory + high-stakes combination
+5. **Money20/20** — Financial services AI procurement
+
+### Conference GTM Budget (Year 1)
+
+| Conference | Est. cost | Expected leads |
+|---|---|---|
+| ServiceNow Knowledge 2026 | $2K registration | 5-10 CTO contacts |
+| Gartner IT Symposium 2026 | $3K | 10-20 CIO contacts |
+| Money20/20 2026 | $4K | 15-25 fintech AI contacts |
+| CHIME Annual 2026 | $3K | 10-15 healthcare CIO contacts |
+| NAIC Fall Meeting 2026 | $2K | 5-10 insurance AI contacts |
+| Total Year 1 conference budget | $14K | 45-80 warm contacts |
+
+**ROI on $14K:** If 5% of 80 contacts convert to a $15K pilot = $60K pipeline generated from $14K spend = 4.3x ROI on conference budget.
+
+---
