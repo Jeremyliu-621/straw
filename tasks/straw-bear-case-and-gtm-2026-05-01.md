@@ -8439,3 +8439,185 @@ At 5 Tier 3 competitions/month: $30,000/month additional ($360K ARR)
 At 20 Annual Programs/year: $500K-$1M ARR depending on tier mix
 
 Target: $1M ARR at the end of Year 1. Achievable with 5-6 Tier 3 contracts and 15-20 Tier 2 competitions/month.
+
+
+---
+
+## Tick 113 (2026-05-04T21:00Z): Series A narrative — updated for the evidence gathered [theme: gtm]
+
+**Context:** Tick 52 sketched a first-pass Series A thesis. This is the v2, informed by all research.
+
+### The valuation reality for AI infrastructure in 2026
+
+Market data (Finro Q1 2026, 575-company dataset):
+- AI infrastructure median: **21.2x EV/Revenue**
+- LLM vendors: 39.5x (Straw is not a model company)
+- AI evaluation/governance platforms: No specific category; likely 15x-25x range given Langfuse's $400M acquisition on ~$20M ARR implied multiple of ~20x
+- Series A for vertical AI: 15x-30x ARR, median pre-money $30-35M
+- **78% of Vertical AI Series A raises happened with less than $1.2M ARR** — the bar is lower than founders think
+
+**What this means for Straw's Series A timing:**
+
+Target: Raise Series A at $3-5M ARR (well above the 78th percentile of comparable Series A companies). This positions Straw as "exceptional traction" relative to peers, supporting a higher multiple.
+
+At $3M ARR × 20x = $60M pre-money Series A valuation
+At $5M ARR × 20x = $100M pre-money Series A valuation
+
+Target raise: $8-12M Series A at $40-60M pre-money (implying $2-3M ARR at raise). Get there in 12-18 months post-launch.
+
+### The updated Series A narrative (5-slide version)
+
+**Slide 1: Market** — "85% of enterprises are piloting AI agents. Only 5% have deployed. Gartner predicts 40% of agentic AI projects will be canceled by 2027. The companies that survive will be those with evidence."
+
+**Slide 2: Problem** — "Enterprise AI procurement is based on vendor demos. $100K+ decisions made without independent evidence. Forrester found agents without evaluation had 47% rollback rates vs. 9% with evaluation. The score doesn't lie — but nobody's keeping score."
+
+**Slide 3: Solution** — "Straw is the neutral evaluation platform. Buyer defines the rubric. Agents compete. An independent evaluation engine determines the winner. The result is a procurement decision report — not a demo. Think Underwriters Laboratories for AI agents."
+
+**Slide 4: Traction** — "[X] competitions completed. [$Y] in total bounties processed. [$Z] ARR from [N] customers. Industries: fintech, legal, HR. Notable: [first regulated industry customer name]. Rubric library: [N] validated templates."
+
+**Slide 5: Why now** — "OpenAI acquired Promptfoo (the main neutral eval tool) in March 2026. Google's Agent Gallery has no evaluation layer. Salesforce built CRMArena — for their own agents. Scale Labs evaluates models, not buyer tasks. The neutral evaluation layer doesn't exist. We're building it in the 18-month window before a well-funded player can replicate."
+
+### The investor targeting list
+
+**Tier 1: Strategic AI infrastructure investors**
+- a16z (Marc Andreessen investment thesis: AI infrastructure layer)
+- Sequoia Capital (AI + enterprise SaaS)
+- Lightspeed Venture Partners (horizontal enterprise infrastructure)
+- Foundation Capital (enterprise SaaS, AI evaluation adjacent — Braintrust investor)
+
+**Tier 2: Governance/compliance-adjacent investors**
+- Insight Partners (compliance infrastructure history — Vanta, Drata)
+- Bessemer Venture Partners (enterprise SaaS, regulatory compliance vertical)
+- Tiger Global (high growth enterprise SaaS)
+
+**Tier 3: Strategic corporate VCs**
+- Salesforce Ventures (enterprise AI agent ecosystem — note: check for conflict of interest with CRMArena)
+- Google Ventures (note: clear conflict of interest given Agent Gallery)
+- Accenture Ventures (Claude Partner Network context — aligned with evaluation infrastructure)
+- Microsoft M12 (Agent Governance Toolkit synergy)
+
+**Avoid:** Anthropic, OpenAI, Google DeepMind as investors — taking money from model labs destroys Straw's neutrality claim. This is constitutional, not negotiable.
+
+---
+
+## Tick 114 (2026-05-04T21:30Z): AI agent red-teaming competitions as a Straw vertical [theme: gtm]
+
+**The finding:** Gray Swan's Arena platform operates with 15,000+ red teamers competing to break AI models via prize incentives. The Generative Red Team competition had a $4M top prize. OpenAI pays red teamers 5-figure amounts for significant model vulnerabilities. HackerOne and Bugcrowd have active AI security programs with growing bounty pools.
+
+**The key insight:** Red-teaming competitions are the adversarial complement to performance competitions. A performance competition asks "which agent does the task best?" A red-team competition asks "which team can break this agent?"
+
+### Straw Red Team as a competition type
+
+**The use case:** A company has selected an agent (through a performance competition or otherwise). They now want to verify its adversarial robustness before deploying to production. They post a red-team competition: "Our agent is Agent X. Here are the tools and context it has access to. $10,000 bounty for the team that demonstrates a successful task hijacking, data exfiltration, or goal manipulation within the sandbox."
+
+This is a distinct competition type from performance evaluation:
+
+| Dimension | Straw Performance Competition | Straw Red Team Competition |
+|---|---|---|
+| Goal | Find the best-performing agent | Find vulnerabilities in a deployed agent |
+| Participants | Agent builders | Security researchers, red teamers |
+| Rubric | Task performance criteria | Vulnerability severity classification |
+| Winner | Agent with highest rubric score | Team that demonstrates most critical vulnerability |
+| Buyer motivation | Procurement decision | Pre-deployment security validation |
+| Regulatory relevance | Vendor selection | Model risk management, CISO review |
+
+**Connection to NIST findings (Tick 94):** 81% task hijacking success rate. The enterprises that deploy AI agents without running a red-team competition are in the "47% rollback" cohort. The ones that run red teams first have evidence for their security teams.
+
+**The Gray Swan analogy:** Gray Swan's 15,000-red-teamer platform built a market for model security testing. Straw Red Team is the enterprise procurement equivalent — commissioned by the buyer for their specific agent, not general model testing by a research platform.
+
+**Revenue model for Straw Red Team:**
+- Standard: $5,000 (bounty pool: $3,500 + $1,500 platform fee)
+- Enterprise: $15,000 (bounty pool: $10,000; includes compliance documentation)
+- Regulated industry: $25,000 (larger bounty pool; NIST red team framework alignment; auditor-ready report)
+
+**Integration with the performance competition lifecycle:**
+1. Company posts performance competition → finds Agent X wins
+2. Company posts red-team competition for Agent X → finds vulnerabilities
+3. Agent X developer patches vulnerabilities
+4. Company confirms Agent X is both best-performing AND adversarially robust
+5. Company deploys Agent X with documented evidence for CISO and model risk management
+
+This is the full procurement cycle that no current platform provides end-to-end.
+
+---
+
+## Tick 115 (2026-05-04T22:00Z): Japan market entry — the 2028 opportunity [theme: gtm]
+
+**The market state:** Japan is investing heavily in AI infrastructure (Microsoft $10B, NTT DATA NVIDIA AI factories, SoftBank + Sony + Honda + NEC national AI foundation model consortium) but is at "intermediate agentic AI maturity" — below India and the US in actual agent deployment.
+
+Japan's AI procurement culture is:
+1. **Consensus-driven** — decisions made by committees, not individual champions
+2. **Risk-averse** — proof of foreign deployment before domestic adoption
+3. **Relationship-dependent** — contracts flow through trusted intermediaries (system integrators: NTT, Fujitsu, NEC)
+4. **Certifications-oriented** — Japanese buyers value third-party certifications and standards compliance (analogous to JIS certification in manufacturing)
+
+### What this means for Straw's Japan entry
+
+**Not 2026. Not 2027. Target: 2028.**
+
+Japan's enterprise AI agent adoption curve is 12-24 months behind the US/UK. The procurement problem Straw solves (which agent do I buy?) won't become acute in Japan until enterprises start deploying agents at scale — which requires:
+1. Japanese-language agent capabilities maturing (SB OAI Japan joint venture)
+2. Japanese regulatory framework for AI (in progress but slower than EU/US)
+3. Enterprise comfort with agentic AI (NTT DATA's AI factories build this)
+
+**The 2026-2027 Japan entry strategy:** Don't enter Japan directly. Build partnerships with Japanese system integrators who can take Straw to their enterprise clients when the time is right.
+
+**Japanese system integrator targets:**
+- **NTT DATA** — largest IT services company in Japan; partnered with WitnessAI for secure AI adoption; NVIDIA AI factories
+- **Fujitsu** — Microsoft partner for AI workforce training
+- **Nippon Steel Solutions** — industrial AI agent deployment (Japan physical AI)
+
+**The NTT DATA approach:** WitnessAI + NTT DATA Japan partnership (announced January 2026) shows NTT DATA is actively seeking AI governance partners from the US. Straw's "independent evaluation + governance documentation" story maps directly to what WitnessAI was positioned for.
+
+**Action (2026):** Establish a conversation with NTT DATA's AI partnership team about a future Japan distribution agreement. Not a live deal — a future partnership framework. "When Japanese enterprises start asking which AI agents to buy, NTT DATA brings them to Straw."
+
+**The Japanese regulatory hook (2027):** Japan's AI Governance Guidelines (2024 METI document) require enterprises to "ensure that high-risk AI systems are developed with appropriate quality and safety." This language will translate into specific evaluation requirements as Japan's AI regulatory framework matures — creating the same compliance hook that EU AI Act creates in Europe.
+
+**ROI for Japan entry timing:** Entering Japan in 2026 requires Japanese localization, Japanese-language rubric templates, and Japanese system integrator relationships — all before significant demand exists. Entering in 2028 with a proven US/UK track record allows riding Japan's adoption wave rather than building the wave itself.
+
+---
+
+## Tick 116 (2026-05-04T22:30Z): The Q3-Q4 2026 content playbook — timing the trough [theme: gtm]
+
+**The Gartner context (Tick 110):** Agentic AI is at the Peak of Inflated Expectations in Q2 2026. The trough of disillusionment begins Q3-Q4 2026. 40% project cancellation by end of 2027.
+
+**The content opportunity:** Publishing content specifically designed for the trough — while everyone else is publishing hype-cycle Peak content — creates a counter-cycle positioning advantage. Straw publishes the realistic take while competitors are still boosting inflated expectations.
+
+### The Q3-Q4 2026 content calendar
+
+**July 2026 (trough begins):**
+- **Hero piece:** "How to Survive the AI Agent Trough of Disillusionment" — the definitive guide to why 40% of enterprise AI agent projects are failing and what the survivors did differently. Feature: the Forrester 47%/9% rollback stat. Feature: the Bain "eval spend above 15%" finding. CTA: Free evaluation consultation.
+- **Supporting:** "The 10 most common reasons AI agent projects get canceled — and how to avoid them" (SEO: "enterprise AI agent failure reasons 2026")
+- **LinkedIn:** Share snippets from the hero piece weekly through July
+
+**August 2026 (midpoint of trough):**
+- **Hero piece:** "What the companies that successfully deployed AI agents in 2026 did differently" — case study compilation. Feature: Straw design partner wins (if any are completed by August). Feature: the Forrester/Bain stats.
+- **Supporting:** "The AI agent procurement rubric template — free download" — give away the template, sell the competition service
+- **Email:** "Case study: [Company X] used Straw to select their contract review agent. 6 months later, here's what they reported."
+
+**September 2026 (trough deepens):**
+- **Hero piece:** "State of AI Agent Evaluation Q3 2026" — quarterly data report. This is the nascent version of the "State of Agent Capability" annual report from Tick 57's content strategy. Include: rubric scoring distributions across completed competitions, average agent performance by task type, most common rubric failure points.
+- **Regulatory:** EU AI Act high-risk deadline post (published August 2 → recap for laggards). "The companies that will be fined under EU AI Act in 2027 — and the ones that won't."
+
+**October 2026 (Straw launch event?):**
+- **Product launch:** If the first public competition has run by October, this is the Show HN moment (Tick 74's draft post anatomy). Pair the launch with the Q3 State of AI Agent Evaluation report.
+- **Press:** Target VentureBeat, TechCrunch, The Information (Tick 72's PR strategy)
+
+**November-December 2026 (year-end synthesis):**
+- **Hero piece:** "2026 State of AI Agent Evaluation: Annual Report" — the flagship publication. Include all data from completed competitions (anonymized), rubric library stats, regulatory compliance coverage, partner ecosystem map.
+- **Investor-facing:** This report becomes the diligence evidence for the Series A deck — "Straw has published the industry's first annual AI agent evaluation report, downloaded X times."
+
+### The SEO targets for Q3-Q4 2026
+
+Based on the research across 116 ticks, the highest-value search terms Straw should own:
+
+1. "AI agent evaluation" — competitive but high value
+2. "enterprise AI procurement" — medium competition
+3. "AI agent ROI" — high search volume, clear buyer intent
+4. "model risk management AI" — low competition, high enterprise value (banking buyers)
+5. "NYC Local Law 144 AI audit" — low competition, compliance urgency
+6. "EU AI Act high-risk AI compliance" — medium competition, urgency-driven
+7. "AI agent benchmark" — competitive (Scale Labs, Salesforce CRMArena) but Straw's rubric angle is differentiated
+8. "AI vendor evaluation checklist" — medium competition, high buyer intent
+
+**The content investment:** 2 hero pieces per month + 4 LinkedIn posts per week + 1 email newsletter per month = roughly 20 hours of writing per month. Achievable without a dedicated content team in the first 6 months.
