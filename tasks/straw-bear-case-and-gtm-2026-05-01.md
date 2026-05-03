@@ -20373,3 +20373,105 @@ This is a pipeline-generating asset. Every AI-investing enterprise is living the
 
 This segmented messaging is critical: same product, five different doors to the same room.
 
+
+---
+
+## Tick 278 (2026-05-03T00:08:00Z): Healthcare AI Partners — FDA Dynamics Create Straw-Adjacent Opportunity [theme: partners]
+
+**Research basis**: Trump's ARPA-H building ADVOCATE — first FDA-authorized agentic AI for cardiovascular care, 39-month timeline to FDA approval. FDA cutting red tape on clinical decision support (CDS). 1,000+ AI tools already FDA-cleared. Canada Health Infoway released AI Procurement Toolkits. Procurement teams demanding clinical + financial performance proof.
+
+### Healthcare Is Straw's Most Complex Vertical — But the Prize Is Enormous
+
+Healthcare combines the highest regulatory stakes with the most severe consequences of AI failure. An AI agent that makes a wrong call in a healthcare workflow can injure or kill a patient. This creates an extreme evaluation mandate that exceeds Straw's typical enterprise use case.
+
+**The FDA dimension**: Clinical AI tools in the US face FDA oversight under the CDS framework. Straw's evaluations don't replace FDA clearance — but they inform the pre-clearance performance documentation that health systems need before deploying clinical AI.
+
+**The procurement angle**: Canadian hospitals now have AI Procurement Toolkits from Canada Health Infoway. US hospital systems are increasingly demanding "clinical and financial performance" evidence from AI vendors before procurement. This is Straw's value proposition stated verbatim by the healthcare procurement community.
+
+### Named Healthcare Design Partner Targets — Updated
+
+| Organization | AI Agent Focus | Key Contact (If Known) | Straw Entry Point |
+|--------------|----------------|------------------------|-------------------|
+| **Epic Systems** | EHR AI agents (ambient documentation, clinical decision support) | Seth Hain (SVP R&D) | Epic's partners build AI agents on top of Epic; Straw evaluates them |
+| **HCA Healthcare** | Clinical workflow AI | Sherri Neal (Chief Information Officer) | 200+ hospitals — AI agent deployment at scale |
+| **CommonSpirit Health** | Revenue cycle + clinical AI | Scott Weingarten (SVP) | Large health system with AI investment mandate |
+| **Mayo Clinic Platform** | AI platform + partnerships | John Halamka (President, Mayo Clinic Platform) | Building Mayo's AI evaluation methodology |
+| **Geisinger Health** | Population health AI agents | Ara Nazarian (Chief Digital Officer) | Proactive AI innovator; early mover |
+| **Cleveland Clinic** | Radiology + operational AI | Chris Donovan (Chief Data Officer) | Research-driven, evidence-oriented — perfect Straw buyer |
+| **Optum** (UnitedHealth) | Healthcare AI at scale | Shruti Kothari (VP AI/ML) | Optum is both an AI buyer and AI seller |
+
+**Highest-priority target**: **John Halamka at Mayo Clinic Platform**. He is the most prominent voice in healthcare AI governance, has published extensively on AI evaluation methodology, and is building the infrastructure that other health systems will replicate. A Mayo Clinic partnership is a category-defining credential for Straw in healthcare.
+
+### The Healthcare Straw Use Case
+
+Healthcare is not a standard Straw evaluation — it requires clinical-specific modifications:
+
+1. **HIPAA sandbox architecture**: The zero-data sandbox must be HIPAA-compliant. Straw can run evaluations using synthetic patient data or de-identified datasets. No PHI ever enters the evaluation environment.
+
+2. **Clinical rubric design**: Straw needs clinical advisors to design rubrics for healthcare evaluations. The rubric for "AI agent that helps cardiologists triage patient risk" requires cardiologist input to define what "correct" looks like.
+
+3. **Safety-first evaluation axis**: Healthcare evaluations add a mandatory safety dimension: "When in doubt, does the agent refer to a human?" High autonomy that bypasses human review is a red flag, not a plus, in clinical contexts.
+
+4. **FDA documentation alignment**: Straw evaluation reports designed to map to FDA pre-submission documentation frameworks. Not regulatory filing — but useful scaffolding.
+
+### The ARPA-H ADVOCATE Signal
+
+The fact that Trump's ARPA-H is building an FDA-authorized agentic AI for cardiovascular care with a 39-month approval timeline signals that:
+1. The US government believes AI agents in clinical workflows are viable
+2. FDA authorization requires rigorous performance evidence
+3. The path to FDA-authorized clinical AI agents runs through evaluation, not just development
+
+Straw is not a regulatory approval service. But Straw can be the pre-regulatory evaluation partner that generates performance evidence for the clinical AI companies that will eventually seek FDA clearance.
+
+**Business development target**: ARPA-H program officers. Straw as evaluation partner for ADVOCATE and subsequent clinical AI programs.
+
+---
+
+## Tick 279 (2026-05-03T00:09:00Z): Evaluation Theater Bear Case — Updated with 2026 Market Data [theme: bear]
+
+**Research basis**: Only 12% of mid-market AI vendor RFPs in Q1 2026 required documented evaluation methodology. Expected to reach 35%+ by year-end. EU AI Act + NIST guidance driving evaluation discipline into procurement. 80.3% AI project failure rate despite (or because of) existing RFP processes.
+
+### The Updated Picture
+
+The original Evaluation Theater bear case (first scored 6/10 in earlier ticks) deserves a fresh look with this data:
+
+**12% documented evaluation methodology in Q1 2026** → This is both a bear case validation AND a market opportunity signal.
+
+**As a bear case**: If only 12% of enterprises require documented evaluation methodology, most enterprises are NOT running rigorous evaluations and don't see the need to pay for one. "If you've survived without rubric-based evaluation so far, why start now?" Straw's TAM is currently limited to the 12% who already know they need better.
+
+**As a market opportunity**: The 35%+ target by year-end means Straw's TAM is tripling in 12 months. EU AI Act enforcement August 2026 is the forcing function. Companies that weren't doing rigorous evaluation pre-EU AI Act MUST do it for EU-facing deployments afterward.
+
+### The Evaluation Theater Dynamics
+
+Why enterprises run theater instead of real evaluations:
+
+**Reason 1: Pre-committed politics**
+The CISO/CTO/CIO already has a vendor relationship. The "evaluation" is a formality. Procurement exists to document, not to challenge. Straw can't fix this.
+
+**Reason 2: Rushed timelines**
+"We need an AI agent deployed by Q3. There's no time for a 6-week competitive evaluation." Straw must offer a fast-track evaluation option: 2-week sprint evaluation at lower cost, vs. standard 6-week evaluation.
+
+**Reason 3: Fear of the answer**
+If Straw runs an evaluation and the "committed" vendor loses, what happens? The procurement team who recommended the vendor looks bad. Some buyers would rather not know. "What you don't measure can't embarrass you."
+
+**Reason 4: Evaluation literacy gap**
+Only 12% require documented evaluation methodology because only 12% know what good evaluation methodology looks like. The other 88% don't know what they're missing. Education is a prerequisite for Straw sales in most enterprises.
+
+### Severity Update
+
+**Bear case score: 6/10** (unchanged from original assessment, but reasoning shifts)
+
+**Why not higher**: The 12% → 35% trajectory means market conditions are moving toward Straw, not away from it. The EU AI Act enforcement provides external forcing function. The 80% AI failure rate provides internal motivation. Evaluation theater is a sales friction problem (addressable) rather than a structural market rejection (terminal).
+
+**Why not lower**: The pre-committed politics and fear-of-the-answer dynamics are genuinely hard to overcome. Some percentage of enterprises will always run theater evaluations. Straw's job is to be the tool that the minority of serious evaluators use, and to be so credible that the theater runners eventually adopt it under regulatory pressure.
+
+### Product Countermeasures
+
+1. **Fast-track evaluation**: 2-week competitive sprint. 3 agents. 50 test cases. Summary report. $15,000. Reduces timeline objection.
+
+2. **Blind evaluation option**: Enterprise doesn't know which vendor is which during evaluation. Agents are labeled "Agent A, B, C." Results revealed after scoring. Removes political bias from evaluation.
+
+3. **Commitment-conditional evaluation**: Offer a money-back guarantee if Straw's recommended agent underperforms in production within 6 months. This forces Straw to build evaluations that actually predict production performance — and signals confidence to the buyer.
+
+4. **Executive buy-in package**: Straw provides an executive briefing (CFO/CTO) on AI project failure rates and the 4.5x success rate with pre-defined metrics. Bypasses the procurement team that might prefer theater. Sells into leadership before the formal evaluation process starts.
+
