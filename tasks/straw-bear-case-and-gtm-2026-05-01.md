@@ -28710,3 +28710,76 @@ TICK_END
 Sources: cloud.google.com/transform/power-energy-companies-innovating-with-ai-2026, klover.ai/enel-ai-strategy, enverus.com/newsroom/enverus-one-is-live, distributech.com/nextera-energy-google-cloud-ai, xenonstack.com/blog/agentic-ai-energy-sector
 
 TICK_END
+
+---
+
+## Tick 445 — Industry Adoption Stack + Sycamore $65M Seed Competitor Analysis
+
+**Research date:** 2026-05-03
+
+### The definitive 2026 industry adoption stack
+
+| Industry | Agent Adoption Rate | Straw Priority |
+|---|---|---|
+| **Telecom** | 48% have agents in production | Tier 1 — fastest, most mature |
+| **Retail & CPG** | 47% | Tier 1 — high volume, clear rubrics |
+| **Banking & Insurance** | 47% | Tier 1 — compliance-driven, high stakes |
+| **Technology** | High (leading spend) | Tier 1 — early adopters, fastest sales |
+| **Healthcare & Life Sciences** | 18% in production | Tier 2 — slower but FDA compliance creates pull |
+| **Government** | 14% | Tier 3 — long cycles, but GSA/NIST validation |
+
+**The 88% production graduation failure — new framing:**
+
+Three independent sources now confirm the failure rate:
+1. Forrester + Anaconda 2026: 88% of AI pilots fail (original stat used in Tick 393)
+2. Lyzr / Digital Applied Q1 2026: "88% of agent pilots fail to graduate to production"
+3. Gartner: 40%+ of agentic AI projects will be canceled by 2027
+
+**The top blockers for pilot graduation:**
+- Evaluation gaps: **64% of enterprise leaders** cite as top blocker
+- Governance friction: 57%
+- Model reliability: 51%
+
+**The evaluation gap IS the Straw market.** 64% of companies that failed to get agents to production identified evaluation gaps as the reason. Straw closes the evaluation gap before the pilot starts.
+
+**ROI stats (when agents DO work):**
+- 3.7× ROI per dollar invested in GenAI (average)
+- SDR (sales development) agents: payback in **3.4 months** — fastest ROI
+- Finance/ops agents: payback in 8.9 months
+- Median time-to-value: 5.1 months
+
+**$1.4T global enterprise AI agent spend forecast for 2027.** Even 0.01% market share of evaluations = $140M ARR.
+
+---
+
+### Sycamore ($65M Seed, March 2026): Competitive Analysis
+
+**Who:** Sri Viswanath (former CTO Atlassian, 20+ years enterprise). $65M seed led by Coatue + Lightspeed. Angels: Bob McGrew (former OpenAI Chief Scientist), Ali Ghodsi (Databricks CEO), Lip-Bu Tan (Intel CEO).
+
+**What Sycamore does:** "Operating system for autonomous enterprise AI agents" — discover, build, deploy, observe, evolve. Governance and orchestration layer. Fortune 500 traction. Focus on procurement and finance workflows.
+
+**Is Sycamore a Straw competitor?**
+
+| Dimension | Sycamore | Straw |
+|---|---|---|
+| Target user | Enterprise IT teams managing agent deployments | Enterprise buyers procuring agents from multiple vendors |
+| Layer | Deployment, governance, orchestration layer | Pre-procurement evaluation and selection layer |
+| Format | "Operating system" for YOUR agents | Competition platform for COMPETING agents |
+| Cross-vendor | No — manages your existing agents | Yes — by design |
+| Rubric-based | No — observability and governance | Yes — buyer defines winning criteria |
+| Timing | Post-selection (after you've chosen your agent stack) | Pre-selection (before you commit) |
+
+**Verdict: Not a competitor. Sycamore is to deployment what Straw is to procurement.** A company could use Straw to select the best agent, then use Sycamore to deploy and manage it. They're sequential, not competing.
+
+**Opportunity:** Sycamore's Fortune 500 traction with procurement/finance workflows = Straw's warmest procurement leads. If Sycamore's customers are deploying agents without having evaluated them rigorously first, they're exactly who needs Straw retroactively — and for the next agent decision.
+
+**The $65M seed validates:**
+1. Enterprise AI agent governance is a real, fundable market
+2. Fortune 500 companies are buying into this category
+3. The infrastructure layer around agent deployment is early but moving fast
+
+**Investor signal:** Coatue led Sycamore. Coatue also co-led many AI infrastructure rounds. They are an active investor in the space that Straw operates adjacent to. Coatue should be on Straw's investor outreach list.
+
+Sources: techcrunch.com/2026/03/30/former-coatue-partner-65m-seed, salesmate.io/blog/ai-agents-adoption-statistics, digitalapplied.com/blog/ai-agent-adoption-2026-enterprise-data-points, lyzr.ai/state-of-ai-agents
+
+TICK_END
