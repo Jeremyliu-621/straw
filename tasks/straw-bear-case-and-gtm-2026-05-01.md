@@ -6647,3 +6647,277 @@ Google's Gemini Enterprise Agent Gallery (Tick 26) is Straw's biggest competitiv
 If Straw becomes the MLPerf for enterprise AI — the industry-standard evaluation benchmark that every AI vendor submits to — the network effect value could support a $1B+ public company. This requires: dominant category position, recurring revenue from regulated industry compliance, and the "State of Agent Capability" quarterly report becoming a must-read industry reference. This is a 7-10 year path, not a 2-3 year path.
 
 **The recommendation:** Don't plan for acquisition. Build for independence. If the right acquirer appears at the right moment with the right structure (preserving neutrality through a subsidiary model, not full integration), consider it. But the default plan is to build Straw to $5M ARR, raise a Series A at $30-40M pre-money, and build toward category leadership. The acquisition conversations will come naturally as Straw builds credibility — respond to them, don't initiate them.
+
+---
+
+## Tick 85 (2026-05-04T07:00Z): Straw v0 MVP gap analysis — what the actual codebase reveals [theme: bear]
+
+**Context:** The TASKS.md was read in full at the end of the previous session. This tick synthesizes what the codebase state means for the bear case — specifically, how far Straw is from running a real competition and what the three critical blockers are.
+
+### What exists today (Phases 0-2 complete)
+
+The codebase has shipped:
+- Task posting UI with rubric definition
+- Agent registration and competition entry
+- Evaluation pipeline via `evaluation-worker.ts` (Gemini-based, synchronous)
+- Supabase with RLS, BullMQ queue, Docker-based execution sandbox
+- Leaderboard, dashboard, onboarding, pricing pages
+- Auth, agent-sdk package
+- E2E tests for eval-container, task-posting, auth, competition-entry, agent-feed
+
+This is further along than most early-stage products. The core data model exists. The evaluation worker runs. Agents can enter competitions.
+
+### The three actual blockers before the first real paid competition
+
+**Blocker 1: Evaluation quality is unproven (Phase 20d)**
+
+The current `evaluation-worker.ts` calls Gemini once per submission. There is no:
+- Multi-tier evaluation pipeline (the research-validated tiered funnel approach)
+- Deterministic execution as primary signal (running the agent's code, not just reading it)
+- LLM-as-judge as secondary filter on the ~15% of flagged/uncertain submissions
+- Prompt injection defense (the P0 vulnerability documented in Tick 39)
+
+Phase 20d proposes ZeroClaw + Codex for judge infrastructure, but the deep-research file (`eval-research-deep-2026-04-25.md`) correctly notes the original plan was wrong on three axes. The correct architecture (from the deep research) is:
+
+```
+Tier 0: Deterministic code execution (run the submission, compare output to expected)
+Tier 1: Fast property checks (regex, MiniBERT injection detection)
+Tier 2: Gatekeeper LLM (routes ~15% uncertain/failing submissions to Tier 3)
+Tier 3: ZeroClaw agent judge (full investigation against rubric)
+```
+
+This 4-tier funnel brings eval cost from ~$2,400-$6,600 (naive Opus API) to $56-272 for 3,000 hackathon evals. **The architecture is correct. The implementation hasn't started.**
+
+**Blocker 2: No real bounty escrow (Phase 20d prerequisite)**
+
+Current flow: company pays Stripe, Straw holds funds, manually transfers to winner. This works for v0 with 3-5 pilot competitions. It does not scale and creates financial/legal liability once competition values exceed $5K.
+
+The StrawEscrow smart contract (documented in `agent-incentive-comparable-systems.md`) is the right v1 solution, but requires a security audit. The practical interim solution for v0: **Stripe Escrow via payment intents held until competition close event** — native Stripe feature, no smart contract required, no audit needed.
+
+**Blocker 3: No agent onboarding self-serve path**
+
+The supply side (competing agents) currently requires manual entry. There is no:
+- Agent SDK documentation site
+- One-command "connect my agent to Straw" CLI flow
+- Framework connectors (LangChain, ZeroClaw, Claude Code, Codex CLI)
+
+Without self-serve agent onboarding, every competition requires Jeremy to manually recruit agents. That limits scale to whatever can be done manually per competition.
+
+### Shortest path to first real competition
+
+**Week 1:** Stripe payment intent escrow. Task post → Stripe intent created → funds held → winner event → automatic transfer. 1-2 days of engineering.
+
+**Week 2:** Basic prompt injection detection in `evaluation-worker.ts`. The INJECTION_PATTERNS regex array from Tick 39 can be added in an afternoon. This is L1 defense — not perfect, but blocks naive injection.
+
+**Week 3:** One-command agent onboarding. A single `npm install -g straw-cli` + `straw init --task-id comp_123` that gives an agent the task specification and a submission endpoint. The agent-sdk already exists — this is a thin CLI wrapper.
+
+**Week 4-6:** Pilot the first real competition. $500 bounty. 3-5 manually recruited agents from ZeroClaw Discord. Real rubric from a real company (Tick 82: fintech back-office is the recommended first domain). Evaluate with current Gemini pipeline. **Iterate the rubric design based on what actually happened.**
+
+The ZeroClaw-based tiered eval (Phase 20d full) is a Month 3-4 task, not a prerequisite for the first competition. Gemini-single-pass with injection detection is good enough for v0 pilots.
+
+### The bear case the codebase reveals
+
+The real bear case from the codebase analysis is not "competitors will copy this" or "agents won't post tasks." It's **engineering sequencing risk**: the codebase is ahead on UI/data but behind on the two things that determine if the first competition produces results the company can trust — evaluation quality and injection defense. A company paying $2,000 for a Straw evaluation and receiving a score that was injected by an adversarial agent is a catastrophic outcome for a first pilot. The sequence must be: eval quality first, then open to the public.
+
+---
+
+## Tick 86 (2026-05-04T07:30Z): OpenAI acquires Promptfoo — what it means for Straw's evaluation stack [theme: bear]
+
+**The event:** OpenAI acquired Promptfoo for $86M in March 2026. Promptfoo was the most widely-used open-source LLM eval and red-teaming CLI (10,800 GitHub stars, used by OpenAI and Anthropic internally).
+
+### What Promptfoo was
+
+Promptfoo was an open-source CLI for:
+- Comparing prompt performance across GPT, Claude, Gemini, Llama variants
+- Pre-deployment red-teaming and vulnerability scanning
+- Declarative test configuration for CI/CD integration
+- Automated adversarial prompt injection detection
+
+It was positioned as a developer tool, not a buyer evaluation platform. The typical user was an AI engineer testing their own system's quality before shipping, not a buyer comparing competing agents.
+
+### Why OpenAI bought it
+
+**Signal:** OpenAI is building the evaluation infrastructure layer in-house. The acquisition is defensive — prevent Promptfoo from being used to demonstrate GPT-4o underperformance vs. competitors in third-party evaluations. The same playbook as Microsoft acquiring GitHub: own the developer workflow.
+
+**Pattern:** If OpenAI owns the evaluation tool used by 60% of AI engineers, they subtly control what "good evaluation" means. A Promptfoo-native eval workflow will default to OpenAI-favorable test configurations, metrics that GPT-4o excels on, and integration patterns that route to OpenAI endpoints first.
+
+### The direct implication for Straw
+
+**Positive:** Promptfoo's acquisition removes the most capable open-source red-teaming tool from the market. Teams that were self-hosting Promptfoo for pre-deployment evals now have a conflict-of-interest concern (do I want OpenAI's tool evaluating my competitor's agents?). Straw's independence — not owned by any model lab — becomes more valuable.
+
+**Straw's positioning:** "We are the only evaluation platform not owned by a model vendor. Braintrust has a strategic interest in making your current provider look better. Arize Phoenix is funded by investors who own positions in AI companies. Straw is owned by nobody in the AI stack. That independence is the product."
+
+**Negative:** The $86M acquisition price signals that OpenAI views third-party evaluation as a strategic threat to its business. A well-funded adversary now has reason to build evaluation tooling that subtly favors OpenAI models. Straw needs to be explicitly model-agnostic in its rubrics and evaluation methodology — never recommend or default to any specific model.
+
+**What to do about it:**
+
+1. Publish the "Straw Independence Policy" alongside the "Vendor Objectivity Policy" (Tick 44). Explicit commitment: Straw will never accept investment from or sell to any AI model provider (Anthropic, OpenAI, Google, Meta, Mistral). Independence from the stack is constitutional.
+
+2. Partner with DeepEval (Confident AI) as the open-source evaluation methodology reference. DeepEval is now the primary independent open-source alternative to Promptfoo, with 50+ metrics including 6 agent-specific ones. A Straw + DeepEval methodology partnership signals "we use the community's independent evaluation metrics, not OpenAI's."
+
+3. Build the "methodology transparency" section of the Straw results report: every evaluation report shows exactly which rubric criteria were used, which tier of evaluation processed each criterion (deterministic vs. LLM-as-judge), which model was used for LLM judgments (with the ability to re-run with a different model), and the raw reasoning traces. This level of transparency is impossible if you're owned by a model vendor.
+
+### The competitive gap DeepEval acquisition creates
+
+DeepEval (Confident AI) has 50+ metrics, 6 agent-specific metrics, and is the clear independent alternative to Promptfoo. DeepEval is a Python evaluation framework — it runs inside your own stack, against your own agents. It does **not** provide a buyer-facing competition platform with structured rubric enforcement and winner determination.
+
+**The white space:** Promptfoo acquisition + DeepEval's developer-tool positioning leaves exactly the gap Straw fills: a neutral third-party evaluation platform that the buyer commissions, not one the developer runs on their own system. "Let the agent vendor run Promptfoo/DeepEval on themselves" is not credible for procurement. "Let Straw run a blinded competition" is.
+
+---
+
+## Tick 87 (2026-05-04T08:00Z): SOC 2 Type II — the enterprise procurement blocker and how to handle it [theme: bear]
+
+**The concern:** Enterprise security teams require SOC 2 Type II certification before approving any SaaS vendor that touches sensitive data. Straw processes company task descriptions (often confidential business logic), agent submissions (which may contain proprietary code), and evaluation results. Every serious enterprise procurement conversation will include a security questionnaire asking for SOC 2 Type II.
+
+### The timeline reality for 2026
+
+| Phase | Duration | Notes |
+|---|---|---|
+| Gap assessment + policy writing | 2-4 weeks | Vanta/Drata can compress this to days if basic controls exist |
+| Control implementation | 6-8 weeks | Access controls, encryption at rest, incident response plan, vendor management |
+| Type I audit (point-in-time) | 2-4 weeks | Auditor validates controls exist at a moment in time |
+| Type II observation period | 3-6 months | Controls must run in production for the observation window |
+| Final audit report | 2-3 weeks | Report writing and remediation |
+| **Total minimum** | **~6 months** | With automation platform; 9-12 months without |
+| **Total typical startup** | **9-12 months** | First-time SOC 2 from scratch |
+
+**Cost:** $15K-$60K in auditor fees. With automation tools (Vanta: ~$5K/year, Drata: ~$8K/year), the engineering burden drops from 100-200 hours to 20-40 hours. Total year-one investment: ~$25K-$70K fully loaded.
+
+### The SOC 2 Type I bridge strategy
+
+The standard playbook for early-stage B2B SaaS: get **SOC 2 Type I** first (2-4 months, $10K-$20K), use it to unblock procurement conversations that are stalled on security questionnaires, then pursue Type II in parallel during the observation period.
+
+SOC 2 Type I answers: "Do your controls exist?" (point in time)
+SOC 2 Type II answers: "Have your controls been running for 6+ months?" (over time)
+
+Most enterprise procurement teams will accept a signed SOC 2 Type I report plus a "Type II in progress" letter to proceed with a pilot. It's not ideal but it's sufficient for the $5K-$25K per-competition range.
+
+**For deals over $50K ARR**, Type II becomes a hard requirement, not a nice-to-have. Budget 12 months to land the first $50K+ contract.
+
+### What Straw's specific security posture is
+
+The existing codebase already has several SOC 2-relevant controls:
+- RLS policies at the database layer (Supabase)
+- Auth middleware at route boundaries
+- Environment variable validation at startup (`env.ts`)
+- Docker sandboxing for agent code execution (largest risk surface)
+- No raw SQL in route handlers (typed repository layer)
+
+The biggest gaps relative to SOC 2 Type II:
+1. **Incident response plan** — doesn't exist yet (not code, a documented procedure)
+2. **Vendor risk management** — formal tracking of Supabase, Anthropic, Hetzner, Stripe as critical vendors
+3. **Penetration testing** — annual pentest required; never done yet
+4. **Audit logging** — who accessed what when (admin actions especially); needs dedicated log stream
+5. **Data retention policy** — how long agent submissions are stored and when they're deleted
+
+None of these are architectural changes. They're operational policies and a handful of logging additions to the existing codebase.
+
+### The recommended approach for Straw's 2026 timeline
+
+**Month 1-2 (now):** Start with Vanta. Run the automated gap analysis against the existing Supabase + Vercel + Hetzner stack. Vanta automatically detects controls that already exist (RLS, auth middleware, env validation). The gap report will show exactly what's missing.
+
+**Month 3-4:** Write the missing policies, add audit logging to critical endpoints, document the incident response procedure. Engineering time: ~20 hours total.
+
+**Month 5:** SOC 2 Type I audit. Cost: $12-18K for a boutique firm. Get the report.
+
+**Month 6-12:** SOC 2 Type II observation period runs concurrently with product development. No engineering pause required.
+
+**Month 12-13:** SOC 2 Type II report delivered. Enterprise procurement objection eliminated.
+
+### The GTM sequencing implication
+
+SOC 2 Type I should be completed before approaching regulated industry targets (financial services, healthcare, legal). Starting the Vanta onboarding now (May 2026) means Type I is available by October 2026 — before any regulated industry pilot would convert to a paid contract.
+
+The $5K-$25K per-competition design partner range does not require Type II. The $50K+ ARR enterprise contracts do. The timing works: design partners in Q2-Q3 2026, Type II complete by Q1-Q2 2027, first enterprise contracts in Q2-Q3 2027.
+
+**The unfair advantage:** Starting Vanta now costs $5K/year. Waiting 12 months while growing the company means the Type II audit covers a larger and more complex control surface, requiring more engineering time and a more expensive audit. Every month of delay makes SOC 2 more expensive, not less.
+
+---
+
+## Tick 88 (2026-05-04T08:30Z): YC W26 design partner targets — 6 specific companies and why [theme: partners]
+
+**Context:** YC W26 includes 199 companies, 60% AI, 64% B2B. The W26 batch represents the highest density of AI-native companies currently building agent workflows that need evaluation. Several W26 companies are ideal design partners not because they're potential customers of Straw, but because they're building agents that companies will want to evaluate.
+
+### The evaluation: which YC W26 companies map to Straw's needs
+
+Straw needs two types of design partners from YC W26:
+1. **Buyers**: companies that have an AI agent procurement problem (they need to evaluate agents)
+2. **Suppliers**: companies building agents that could compete on Straw
+
+Most YC W26 AI companies are suppliers, not buyers. The buyers are the vertical-specific companies who are adopting AI agents for business workflows and need to validate them.
+
+### Target 1: Arcline (YC W26) — legal document automation agent
+
+**What they do:** AI agent for legal document drafting. Competes in the legal workflow automation space with Harvey, Ironclad, and Legora.
+
+**Why they're a design partner target:**
+- They're building an agent, but their customers (law firms and legal teams) are evaluating competing legal AI tools
+- The law firms using Arcline could become Straw buyers: "how does Arcline's contract drafting compare to Harvey, Ironclad, or manual review?"
+- Arcline itself has strong incentive to demonstrate performance on a neutral platform — a Straw evaluation result saying "Arcline outperformed Harvey on M&A NDA drafting" is a sales tool
+
+**Approach:** "Would Arcline participate in a blinded legal document automation competition? We'll provide the rubric (accuracy, compliance clause coverage, time-to-completion), recruit competing agents, and publish the results. You don't pay. The buyer (a law firm) commissions the evaluation."
+
+### Target 2: Fenrock AI (YC W26) — AI agents for banking back office
+
+**What they do:** AI agents for banking back-office workflows (KYC, AML checks, document processing). Operates in one of the most regulated evaluation environments — banking compliance.
+
+**Why they're a design partner target:**
+- Banking back-office automation must demonstrate compliance with OCC, FDIC, and BSA regulations
+- EU AI Act High-Risk classification applies to financial services
+- FTC substantiation requirements (Tick 45) apply directly
+- Any bank evaluating Fenrock vs. competitors needs independent validation
+- The "I need evidence this agent is compliant before deploying it" pain is acute
+
+**Approach:** Contact Fenrock's founder via YC Alumni directory. Frame as: "We're building the neutral evaluation platform for regulated industry AI. We want Fenrock to be our first banking use case. We'll build the fintech KYC rubric template together and make Fenrock the reference implementation."
+
+### Target 3: Stilta (YC W26) — agentic AI for patent attorneys
+
+**What they do:** Automates patent prosecution and IP management workflows. IP law is extremely precise — wrong claims in a patent have multi-million dollar consequences.
+
+**Why they're a design partner target:**
+- Patent prosecution has extremely objective quality criteria (claim count, prior art coverage, examiner response success rate)
+- The precision requirement is ideal for rubric definition
+- IP law firms evaluating multiple patent AI tools need independent validation
+- Matches the "high-stakes professional service" profile of Straw's ideal first vertical
+
+**Approach:** "Patent prosecution is the most rubric-friendly legal AI workflow. Help us define what 'correct' looks like — we'll build the rubric together, run a competition with competing IP AI tools, and the results become the industry reference for patent AI quality."
+
+### Target 4: Maywood (YC W26) — automating investment banking deal workflows
+
+**What they do:** AI for IB deal workflows (CIM preparation, buyer outreach, data room management, deal closing documentation). Investment banking is another high-precision, high-stakes domain.
+
+**Why they're a design partner target:**
+- Deal documentation accuracy has direct financial consequences
+- IB associates who evaluate Maywood vs. manual work need evidence
+- $500K+ deal failure attributable to document error is a strong liability motivator for proper evaluation
+- Closest match to "expensive mistake" motivator from Tick 33
+
+### Target 5: Sponge (YC W26) — financial infrastructure for the agent economy
+
+**What they do:** Financial rails for autonomous agents — payments, treasury, accounting for AI agents.
+
+**Why they're a design partner target (unusual):** Sponge isn't a buyer evaluating agents OR an agent to be evaluated. Sponge is **a potential technical partner for Straw's payment layer**. Straw needs bounty escrow and payout infrastructure. Sponge is building exactly that. The partnership angle: "Straw is the evaluation platform for agent competitions; Sponge is the payment rail. When a Straw competition closes and a winner is determined, Sponge handles the payout to the winning agent."
+
+**This is strategic, not just a design partner.** A Straw + Sponge integration means Straw doesn't need to build the StrawEscrow smart contract (Tick 9) — Sponge's infrastructure handles it. YC network facilitates the intro.
+
+### Target 6: Jinba (YC W26) — agentic enterprise workflow automation
+
+**What they do:** Conversational AI that automates complex enterprise workflows across multiple business systems. Targets large enterprise IT and operations teams.
+
+**Why they're a design partner target:**
+- Large enterprise customers evaluating Jinba vs. Zapier AI vs. competing automation agents have exactly the procurement problem Straw solves
+- Enterprise workflow automation is a $40B+ market where evaluation credibility drives deals
+- Jinba's ICP (enterprise IT, operations directors) is exactly who would commission a Straw evaluation before a major automation deployment
+
+**Approach:** Reach Jinba's founder through the YC network. Frame as early access to a "reference evaluation" — Jinba participates in a blinded workflow automation competition and gets to claim the Straw Certified badge if they win.
+
+### Outreach strategy for YC W26 targets
+
+The YC Alumni platform (bookface.ycombinator.com) allows direct company-to-company messaging within the YC network. Jeremy Liu would have access via a YC application/connection. The message should be:
+
+**Subject:** "Straw — neural evaluation platform for agent competitions — W26 partner intro"
+
+**Body (30 words max in preview):** "Building neutral AI agent evaluation — think Underwriters Laboratories for AI agents. Looking for 3 W26 companies to participate in launch competitions. Worth a 20-min call?"
+
+The YC connection lends automatic credibility. Response rate on YC Alumni messages from founders to founders is typically 40-60%, vs. 5-10% for cold outreach.
+
