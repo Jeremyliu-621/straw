@@ -21020,3 +21020,119 @@ But: automating "which AI agent to buy" requires evaluating AI agent performance
 
 Sources: aininza.com/blog/index.php/ai-vendor-evaluation-framework-2026-enterprise-scorecard, dunnixer.com/insights/articles/the-six-dimensions-of-ai-vendor-evaluation-that-matter-most, ramp.com/blog/procurement-ai-agents
 
+
+---
+
+## Tick 336 (2026-05-04T08:40Z): Deloitte as distribution channel — consulting firm AI CoE + Straw [theme: GTM + partners]
+
+### The Deloitte-Anthropic deployment context
+
+Deloitte deployed Claude to 470,000 employees (October 2025). Key structural details:
+- Deloitte is establishing a **Claude Center of Excellence** with trained specialists
+- 15,000 Deloitte professionals will be **certified on Claude implementation**
+- Deloitte will build **industry-specific AI solutions** for financial services, healthcare, life sciences, public services
+- Deloitte will help clients implement Claude at scale
+
+**The strategic insight:** Deloitte's clients will ask Deloitte "which AI agent should we deploy?" Deloitte currently answers based on vendor relationships (they chose Claude because they have the Anthropic partnership). But clients will start asking for evidence, not recommendations.
+
+### Deloitte as a Straw channel partner
+
+**The pitch to Deloitte's Claude Center of Excellence:**
+> "Your clients will ask you which AI agent to deploy. Your current answer is based on your Anthropic partnership. When your client asks 'how do you know Claude is better than Devin for our specific codebase?' — what do you say? Straw gives you the answer: run a competition on their actual tasks, compare Claude against alternatives, the result is objective. Your clients trust Deloitte because you do rigorous analysis. Straw is the analysis."
+
+If Deloitte includes Straw competitions as part of their AI implementation methodology, Straw gains access to Deloitte's 470K-employee global network as a distribution channel.
+
+**The revenue model:** Deloitte bundles a Straw competition into their AI implementation engagement ($500K-$2M engagements). Straw charges Deloitte $5K/competition. Deloitte charges their client $25K for the "AI vendor evaluation" component. Both win.
+
+**Contact:** The Deloitte Claude Center of Excellence is accessible via Deloitte.com/anthropic partnership page. The specific person leading the CoE would be the right contact — likely a Partner in Deloitte's Technology Practice.
+
+**Note:** This is a v1.5/v2 GTM move. It requires Straw to have proven value with 10+ design partners first. The channel partnership conversation doesn't happen at zero traction.
+
+### The broader consulting channel
+
+This channel strategy applies to any major consulting firm building AI implementation practices:
+- Accenture (30K employees trained on Claude)
+- Cognizant (350K employees with Claude)
+- McKinsey (AI practice, 40% of engagements now have AI components)
+- PwC (AI competency center)
+
+All of these firms will face the same client question: "How did you evaluate which AI agent to deploy?" Straw's competition reports are the defensible answer.
+
+Sources: anthropic.com/news/deloitte-anthropic-partnership, cnbc.com/2025/10/06/anthropic-deloitte-enterprise-ai, implicator.ai/deloittes-470-000-person-claude-rollout-turns-anthropics-biggest-deal-into-a-distribution-machine
+
+---
+
+## Tick 337 (2026-05-04T09:00Z): HackerOne bug bounty as structural precedent for Straw [theme: GTM + bear]
+
+### The HackerOne model
+
+HackerOne operates a competition marketplace where security researchers compete to find bugs. Companies post bug bounties. Researchers compete to find vulnerabilities. HackerOne evaluates validity and triages reports. The winner (most critical bug found) gets paid.
+
+**Structural parallels to Straw:**
+| Dimension | HackerOne | Straw |
+|---|---|---|
+| Buyer | Enterprise posting security bounty | Enterprise posting task competition |
+| Competitors | Security researchers | AI agents |
+| Evaluation | HackerOne's triage team | Straw's three-tier pipeline |
+| Output | Vulnerability report | Competition report with scores |
+| Payment | Bounty to researcher | Bounty to winning agent operator |
+| Network effects | More researchers → better coverage | More agents → better competition |
+
+### What HackerOne proves about Straw's model
+
+1. **Enterprises will pay for competition-based evaluation** — HackerOne charges enterprises $10K-100K+/year for bug bounty programs. The competition format is an accepted enterprise procurement model.
+
+2. **Quality suppliers emerge around competition infrastructure** — HackerOne has 750+ AI-focused researchers. Straw will develop a community of specialized AI agents that compete regularly.
+
+3. **The triage function is valuable** — HackerOne's value is not just the competition format; it's the triage (which findings are real, which are false positives). Straw's value is not just running competitions; it's the tiered evaluation (Tier 1 deterministic, Tier 2 LLM, Tier 3 investigator = Straw's triage).
+
+4. **HackerOne expanded from security to AI red-teaming** — same infrastructure, new application domain. Straw could expand from coding agents to CS agents to procurement agents — same infrastructure, new evaluation rubrics.
+
+### The HackerOne bear case: "HackerOne will build Straw"
+
+HackerOne already has:
+- Competition marketplace infrastructure
+- Enterprise relationships (clients include Anthropic, Snap, Adobe, Fortune 500s)
+- Triage/evaluation methodology
+- Growing AI team (Hai = their AI agent fleet)
+
+HackerOne could add "AI agent performance competition" to their product suite. This would compete with Straw in the enterprise evaluation market.
+
+**Probability: 10-15%.** HackerOne's core product is security-focused. Building a coding agent procurement competition tool requires significant product pivot + understanding of non-security evaluation rubrics.
+
+**Mitigation:** Move faster. Launch before HackerOne considers this. First-mover advantage in agent reputation network matters.
+
+### The more likely scenario: HackerOne as a channel
+
+When enterprises run Straw competitions, they may want a "security rubric" component — does the winning agent's code pass HackerOne-style vulnerability testing? A Straw × HackerOne integration: Straw runs the procurement competition, HackerOne validates the security posture of the winning agent's output.
+
+**Contact:** Chris Evans (HackerOne CISO or product team) via LinkedIn. Or Michiel Prins (Co-founder) via Twitter.
+
+Sources: hackerone.com/product/ai-red-teaming, hackerone.com/blog/emerging-playbook-ai-red-teaming-hackerone, trainingcamp.com/articles/the-best-bug-bounty-websites-in-2026
+
+---
+
+## Tick 338 (2026-05-04T09:20Z): Session progress summary — Phase 2 research complete [theme: synthesis]
+
+### What Phase 2 covered (Ticks 264-338)
+
+**75 new ticks** across 3 mandated themes:
+
+**Theme 1 — Bear case (25 ticks):** Cold-start failures (Homejoy, Beepi), Replit Bounties post-mortem, Bountysource fraud, token economy collapses (Steemit/Helium/Kin), Design partner desert, EU AI Act deferral risk, Scale AI competitive threat, Cognition/$25B threat, Kaggle competitive update, capability convergence/quality plateau, why nobody built Straw (structural conflict + timing), copyright/IP liability, rubric gaming mitigations, LLM-as-judge bias hardening, concentration/specialization bear cases, HackerOne competitive threat, final probability table (9 kill scenarios).
+
+**Theme 2 — GTM motion (28 ticks):** B2B SaaS founder-led sales pattern, Cursor PLG playbook applied to Straw, content marketing stack (reports → HN → outbound → GitHub), Show HN draft + comment responses, design partner program structure, pricing model ($5K/competition, $25K/year Pro), Goldman Sachs as origin case study, market bifurcation (assistance vs. autonomy), procurement formalization wave, Stanford AI 89% failure stat, 38× ROI calculation, two-sided cold start (demand-side first), A2A/AP2 protocol integration, SWE-bench contamination pitch, CAIF grant opportunity, Gartner $15T B2B projection, Straw transparency manifesto, enterprise 30-point scorecard vs competition, consulting firm channel strategy, Straw pitch perfected for 4 buyer types.
+
+**Theme 3 — Design partners (22 ticks):** Named contacts grown from 40 → 56+ including: Archana Vemulapalli (Goldman), Teresa Heitsenrether (JPMorgan), Sri Viswanath (Sycamore), Ankur Goyal (Braintrust), Robert Brennan (All Hands AI), Shyam Sankar (Palantir), Clara Shih (Salesforce), Vikram Chatterji (Galileo), Farhan Thawar (Shopify), Stripe AI team, Zach Bruggeman (Ramp). Finance vertical, AI safety labs, YC W26 partners (Rubric AI, Mount), enterprise platform contacts (Salesforce, Google), consulting channels (Deloitte CoE).
+
+### The definitive morning reading guide
+
+**Read in this order:**
+1. Tick 307 — Phase 2 morning reading guide (bear thesis + 10 conversations this week + GTM playbook + 7 open questions)
+2. Tick 323 — 7 additions since Tick 307
+3. Tick 308 — Stanford AI 89% stat (best single pitch number)
+4. Tick 316 — 38× ROI calculation (closes every conversation)
+5. Tick 302 — Kill scenario probability table (9 scenarios, ranked)
+6. Tick 286 (and this tick) — complete design partner list (56 named)
+
+**Total Phase 2 output:** ~338 ticks, ~3MB of research, 56 named design partners (exceeds 50-contact mandate), complete bear case analysis (9 kill scenarios with probabilities), full GTM playbook (4 phases, 0→$100K ARR), investor pitch framework.
+
