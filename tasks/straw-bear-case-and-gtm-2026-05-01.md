@@ -23223,3 +23223,153 @@ Sources: (synthesis from GTM research, Show HN best practices)
 
 TICK_END
 
+
+---
+
+## TICK 375 — Anthropic's Own Eval Guidance Is a Blueprint for Straw
+
+**Theme: GTM (product validation + distribution angle)**
+
+### Convergent Validation: Anthropic's "Demystifying Evals for AI Agents" (2026)
+
+Anthropic published their evaluation framework for AI agents. Key recommendations:
+
+1. **"Use deterministic (code-based) graders wherever possible"**
+   → Straw's **Tier 1**: deterministic checklist (output format, API correctness, constraint satisfaction)
+
+2. **"Supplement with LLM-based graders when necessary"**
+   → Straw's **Tier 2**: LLM ensemble judge (multiple models, randomized order, isolated per-dimension scoring)
+
+3. **"Human graders primarily for calibration"**
+   → Straw's **rubric definition process**: the buyer is the human calibrator — they define what winning looks like before any agent sees the task
+
+4. **"Clear, structured rubrics; grade each dimension with an isolated LLM-as-judge"**
+   → Straw's multi-dimensional rubric with per-dimension Tier 2 scoring
+
+5. **"20-50 simple tasks drawn from real failures"**
+   → Straw's competition tasks come from the buyer's actual production failures and workflows
+
+**This is not coincidence.** Straw's architecture independently converged on the same design principles Anthropic derived from real-world deployments. The convergence validates the approach.
+
+### The Marketing Insight
+
+Anthropic's guide describes exactly what a well-designed evaluation system looks like. Every enterprise that reads it will want to implement it. But implementing it requires:
+- A rubric builder (30-minute task spec creation tool)
+- A deterministic evaluation engine (Tier 1 pipeline)
+- An LLM judge ensemble with dimension isolation (Tier 2)
+- An autonomous agent investigator (Tier 3)
+- A competition mechanic to compare multiple agents
+
+Building this from scratch takes months. Straw is the pre-built, productized version.
+
+**The distribution play:** Straw should be referenced in every forum thread, HN comment, and Twitter/X reply where someone links to Anthropic's eval guide and asks "how do I actually implement this?" Straw is the implementation of Anthropic's recommendations.
+
+### The Rubric Governance Standard Emerging in 2026
+
+Multiple independent sources in 2026 have converged on the same insight about rubrics:
+
+- Anthropic: "Create clear, structured rubrics to grade each dimension"
+- EU AI Act: "Technical documentation with auditable evidence of accuracy"
+- Colorado AI Act: "Impact assessments must include performance metrics"
+- Resultsense UK Enterprise Framework (May 1, 2026): "AI accuracy is a procurement question"
+- Galileo 2026: "Rubrics have become the governance tool translating fuzzy human values into precise, weighted criteria"
+
+**The rubric is being codified as the standard unit of AI governance in 2026.** Straw is the platform that generates, stores, and executes rubrics at enterprise scale. This is a governance infrastructure play, not just a procurement tool play.
+
+### Straw's Positioning in Three Taglines
+
+1. **"The productized version of Anthropic's evaluation guidance"** (technical credibility)
+2. **"Enterprise AI procurement that doesn't rely on contaminated benchmarks"** (fear-based)
+3. **"The evaluation you run before you're locked into the wrong agent"** (risk-based)
+
+Use #3 with CFOs and enterprise buyers. Use #1 with technical CTOs. Use #2 with buyers who have read the PostTrainBench contamination research.
+
+Sources: anthropic.com/engineering/demystifying-evals-for-ai-agents, galileo.ai/blog/agent-evaluation-framework-metrics-rubrics-benchmarks, resultsense.com/insights/2026-05-01-ai-procurement-grounding-accuracy-diligence-uk-enterprise-buyers
+
+TICK_END
+
+---
+
+## TICK 376 — Customer Service Vertical: Intercom Fin AI + Zendesk as Design Partners
+
+**Theme: Design Partners (#73-74) + GTM**
+
+### Intercom Fin: The Customer Service Vertical Thesis
+
+**Fin AI (Intercom):** 65-93% resolution rates, 6,000+ customers, 99.9% accuracy (Fin 2), #1 AI Agent on G2. CEO Eoghan McCabe's vision: "world's best Customer Agent, capable of handling entire customer experience." Customers include Anthropic itself.
+
+**The Straw opportunity:**
+- 94.58% of Fin enterprise customers reported disruption to processes/workflows after implementation
+- 27.71% reported headcount/hiring changes
+- These are high-stakes outcomes — enterprise buyers need proof before they commit to Fin vs. alternatives (Zendesk AI, Freshdesk AI, custom agents)
+
+**Customer service tasks are highly rubric-able:**
+| Task | Rubric |
+|---|---|
+| First contact resolution | % resolved without escalation + CSAT score |
+| Response time | Latency p50/p95 within SLA |
+| Accuracy | Hallucination rate on knowledge base queries |
+| Handoff quality | Customer satisfaction after human handoff |
+| Language support | Accuracy across supported languages |
+
+**Key competitive landscape:** Fin vs. Zendesk AI vs. Freshdesk AI vs. custom RAG agents. Each enterprise buyer's resolution rates will differ based on their knowledge base, ticket complexity, and customer demographics. A Straw competition on their ACTUAL support tickets is the only valid evaluation.
+
+### Design Partner #73: Eoghan McCabe — CEO, Intercom
+
+**Contact:** @eoghanmccabe on Twitter/X
+**Why:** Intercom is both the agent supplier (Fin competes) and the evangelist for "AI handles entire CX." Eoghan McCabe is a vocal, accessible CEO who writes extensively about AI in customer service. A Straw competition demonstrating Fin's superiority = marketing material for Intercom.
+
+**Pitch:** "Fin wins 93% of the time on your benchmark. But your enterprise customer's benchmark is their specific ticket type, their specific knowledge base, their specific SLA. Run a Straw competition on one Fortune 500 customer's actual support workflow. If Fin wins — that's a case study worth $10M in enterprise sales. If Fin doesn't — you learn where to improve before the customer churns."
+
+### Design Partner #74: Mikkel Svane — CEO, Zendesk (formerly)
+
+**Note:** Zendesk went private in 2022. Current CEO is Tom Eggemeier. However, Zendesk AI agents (Sunshine) compete directly with Fin. Zendesk has 100,000+ enterprise customers.
+
+**Pitch target:** Zendesk's Chief Technology Officer or VP of AI (research needed for specific name). The pitch is identical to Intercom's: "Your enterprise customers need to choose between Zendesk AI and Fin. Run a Straw competition for their specific use case."
+
+**Alternative approach:** Target a mid-size enterprise customer that is ACTIVELY evaluating Fin vs. Zendesk AI. That buyer is the design partner, not the vendor. The vendor benefits when their agent wins.
+
+### Customer Service Vertical Timing
+
+Customer service AI evaluation is lower-hanging fruit than healthcare or legal (no HIPAA/BAA required, no legal liability complexity). The rubric is simpler (CSAT, resolution rate, latency) and the business case is immediate (every unresolved ticket = revenue risk).
+
+**Recommendation:** Customer service should be the second or third vertical after DevOps/coding. The volume of companies making Fin vs. alternatives decisions right now creates significant inbound potential.
+
+Sources: gartner.com/reviews/product/fin-ai-agent, intercom.com/blog/preparing-for-the-customer-agent-future, reply.io/blog/intercom-ai-review, inkeep.com/blog/inkeep-vs-intercom-fin-ai
+
+TICK_END
+
+---
+
+## TICK 377 — The "AI Accuracy Is a Procurement Question" Framework (UK Enterprise, May 2026)
+
+**Theme: GTM (external validation of Straw's thesis)**
+
+### The UK Enterprise Diligence Framework (Resultsense, May 1, 2026)
+
+Published on May Day 2026 — one day before this research file. "AI accuracy is a procurement question: a diligence framework for UK enterprise buyers."
+
+The emergence of enterprise-grade diligence frameworks for AI accuracy — independent of any vendor — confirms that the market is demanding structured evaluation infrastructure. Key requirements from the UK framework:
+
+- **Rubric-based evaluation** before procurement commitment
+- **Performance metrics with auditable evidence**: datasets, rubrics, and judge models versioned as strictly as code
+- **EU AI Act / NIST AI RMF / ISO/IEC 42001** compliance documentation
+- **Multi-dimensional scoring**: determinism, auditability, context persistence, team-scale administration, security compliance, reversibility
+- **Weighted threshold**: no dimension scores 0; weighted average ≥ 2.0
+
+**This is Straw's evaluation rubric described by an independent enterprise consulting firm the day before this research session.** The UK enterprise market is articulating the problem Straw solves in real-time.
+
+### The "80 Metrics" Reference: Evaluation Complexity Is Real
+
+Digitalapplied.com published "AI Evaluation Metrics Reference Guide 2026: 80 Metrics" — 80 possible evaluation dimensions for AI agents. The complexity of selecting the right metrics for a specific task is itself a product problem.
+
+Straw's rubric builder needs to help buyers select from this space without drowning them. The design principle: **surface 3-7 high-signal metrics for the task type** (coding: output correctness + test coverage + code quality; customer service: CSAT + resolution rate + latency; legal: accuracy + compliance rate + completeness). The rubric builder must be opinionated, not an endless menu.
+
+**Design decision:** Straw should offer vertical-specific rubric templates pre-loaded with the 3-7 most important metrics for each task category. The buyer customizes the weights and thresholds; Straw provides the starting vocabulary.
+
+This is the "documentation as product" insight from Stripe: make the rubric definition experience so obvious that users can't help but use it correctly.
+
+Sources: resultsense.com/insights/2026-05-01-ai-procurement-grounding-accuracy-diligence-uk-enterprise-buyers, digitalapplied.com/blog/ai-evaluation-metrics-reference-guide-2026, augmentcode.com/guides/cto-ai-coding-checklist
+
+TICK_END
+
