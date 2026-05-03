@@ -39307,3 +39307,162 @@ If Straw has an API + MCP server → autonomous agents discover tasks and submit
 
 **Timing:** Build the API in v1 (post-design-partner). Register Straw as an MCP server in Anthropic's MCP registry in v1.5. By the time MCP is mainstream (2027), Straw is the established marketplace.
 
+
+## Tick 527 — Government/Public Sector Design Partners: 90% Federal Agencies, 55% Public Sector in Production [theme: GTM + design partners]
+
+### The Government AI Scale Signal
+
+**Google Cloud research (2026):** Nearly **90% of federal agencies** are planning to or already using AI.
+
+**State and local:**
+- **55% of public sector leaders** have moved AI agents into production
+- **42%** of those have deployed **more than 10 distinct agents** handling complex workflows
+- The city of Kyle, Texas: "Agent Kyle" for 311 customer service calls
+- Covered California: AI document processing that reduced income verification from **3 weeks → seconds**
+
+**WEF Publication (2026):** "Making Agentic AI Work for Government: A Readiness Framework" — WEF is advising governments globally on agentic AI governance. This is the equivalent of the Yale CELI article for the public sector.
+
+**The WEF finding:** "The public sector needs to build trust through agentic AI." Trust requires documentation, validation, and governance — Straw's core value proposition.
+
+**Shashi.co (April 2026):** "Government AI Is Past the Pilot Stage. The Platform Decision Is the One That Sticks." — Once a government agency selects an AI platform, switching is extraordinarily difficult. This makes Straw's pre-deployment evaluation even more critical for government.
+
+### The Defense Department Deployment: GenAI.mil
+
+Google Cloud's Gemini for Government was selected for the US Department of War's (formerly Department of Defense?) GenAI.mil platform:
+- **3+ million civilian and military personnel** have access
+- New feature: **Agent Designer** — civilian and military personnel can build custom agents for unclassified work
+- This is the largest government AI agent deployment in the world
+
+**The Straw angle for GenAI.mil:** When 3 million DoD employees build custom agents on Agent Designer, the DoD needs an evaluation framework for which custom agents to approve for wider deployment. Straw could be the evaluation layer that the DoD uses before approving an agent built on GenAI.mil for official use.
+
+### Named Government Design Partners (#287-294)
+
+**#287 — Lindsey Sheppard** (CSIS AI and emerging technologies) — policy analyst advising government AI adoption; warm bridge to DoD/DHS AI procurement
+**#288 — Dave Zvenyach** (Director, Technology Transformation Services, GSA) — leads GSA's digital transformation; USAi platform owner
+**#289 — Dorothy Aronson** (former CIO, NSF) — national science policy + AI governance expertise
+**#290 — Erik Laykin** (Managing Director, Duff & Phelps; former DARPA) — bridge between DoD technology acquisition and commercial markets
+**#291 — Deloitte Government Practice (Federal AI Lead)** — Deloitte's public sector AI advisory; would bring Straw into federal agency AI engagements
+**#292 — Nick Sinai** (Harvard Kennedy School; former US Deputy CTO) — federal technology policy; warm intro to federal CDOs and CIOs
+**#293 — Ron Sanders** (Board Director, INSA; former NSA Chief Data Officer) — intelligence community AI governance; INSA (Intelligence and National Security Alliance) has access to IC AI procurement
+**#294 — Chris Lynch** (Founder, Defense Digital Service; serial govtech entrepreneur) — built JEDI cloud procurement; understands DoD procurement complexity + has relationships across agencies
+
+### The Government GTM Path
+
+**Entry:** State + local government (not federal first)
+- State/local has faster procurement cycles (months vs. years for federal)
+- No FedRAMP required initially
+- Example: State of California AI procurement framework (Covered California example shows active AI deployment)
+- Target: California CISO + CDO offices; Texas Department of Information Resources; New York Office of Information Technology
+
+**Mid-term:** Federal civilian agencies via GSA Schedule
+- After state/local success, apply for GSA IT Schedule 70 listing
+- GSA Schedule = access to all federal civilian agencies without individual contracts
+- Straw on GSA Schedule = passive inbound from any federal agency
+
+**Long-term:** DoD + Intelligence Community
+- Requires FedRAMP Authority to Operate (ATO) — expensive but unlocks $100B+ in AI procurement
+- Target through primes: Leidos, Booz Allen, SAIC, Palantir — they build on Straw's evaluation methodology
+
+---
+
+## Tick 528 — Pharmaceutical/Biotech Design Partners: AI Drug Discovery and the Clinical Trial Bottleneck [theme: GTM + design partners]
+
+### The Pharma AI Signal: It's Not Drug Discovery Anymore — It's Clinical Trials
+
+BioSpace (2026): **"AI Is Changing Pharma's Bottom Line Now — But Not Through Splashy Drug Discovery"**
+
+The hype was drug discovery. The real money is in: clinical trial optimization, patient recruitment, regulatory filing automation, supply chain, and commercial operations.
+
+**2026 platform deals** (January 2026, signaling the "AI as core R&D infrastructure" moment):
+- **Eli Lilly × Chai Discovery** — AI drug design platform
+- **GSK × Noetik** — AI drug discovery partnership
+- **Pfizer × Boltz** — AI molecular structure prediction
+
+**AstraZeneca:** Aiming to analyze **2 million genomes** by 2026 (Centre for Genomics Research). AI agents for genomic data analysis.
+
+**Market:** Global AI in pharma = $1.94B in 2025 → $16.49B by 2034 (27% CAGR). **173 AI-powered drug programs** in active development as of 2026 (Axis Intelligence).
+
+### Why Pharma Needs Straw
+
+**The pharma procurement complexity:**
+1. A pharma company evaluating competing AI drug discovery platforms has EXTREMELY high stakes — a wrong pick delays a drug by years
+2. FDA has specific guidance on AI/ML in drug development (21 CFR Part 11, AI/ML action plan) — validation documentation required
+3. Multiple competing AI vendors: Schrödinger, Exscientia, Recursion Pharmaceuticals, Insilico Medicine, AbCellera, Chai Discovery, Boltz, BenevolentAI — all making conflicting performance claims
+4. Clinical trial AI: patient recruitment, protocol optimization, real-world evidence — each has specialized vendors with opaque performance benchmarks
+
+**The Straw pitch to pharma:**
+"When Pfizer evaluates Chai Discovery vs. Boltz vs. Schrödinger for a specific target, Straw provides the rubric-based comparison — same target, same constraints, objective scoring. The FDA wants your AI validation documentation. Straw provides it."
+
+**The FDA angle:** FDA's 2025 AI/ML Action Plan requires "appropriate validation and performance monitoring" of AI/ML tools used in drug development. **"Appropriate validation"** = exactly what Straw provides.
+
+### Named Pharma/Biotech Design Partners (#295-302)
+
+**#295 — Chris Gibson** (Co-founder/CEO, Recursion Pharmaceuticals) — Recursion uses AI for drug discovery at scale; needs to validate AI tool selection against competitors
+**#296 — Andrew Hopkins** (CEO, Exscientia) — AI-first drug design company; evaluating their own AI vs. incumbent platforms
+**#297 — Iva Hajnal** (VP AI/ML, Pfizer) — Pfizer's post-Boltz integration AI strategy; benchmark evaluation for competing molecular prediction platforms
+**#298 — Jérôme Hamon** (Chief Data Officer, Sanofi) — Sanofi has one of the largest pharma AI programs in Europe
+**#299 — Najat Khan** (Chief R&D Officer, Janssen Pharmaceutical) — J&J's pharma AI procurement decisions; multi-agent evaluation for R&D
+**#300 — Gari Clifford** (CTO, IAMRA; Professor, Emory) — AI in medical imaging and clinical trials; bridges academic validation to pharma procurement
+**#301 — Chris Garabedian** (Executive Chair, Xontogeny) — pharma venture development; advises 10+ biotech companies on AI tool selection
+**#302 — Matthew Trunnell** (CDO, Fred Hutchinson Cancer Center) — cancer research institute deploying AI agents for clinical research; academic anchor for pharma AI evaluation
+
+### The Clinical Trial Wedge
+
+**Best entry:** AI patient recruitment agent evaluation for Phase 2-3 clinical trials
+
+- Task: "Evaluate 3 AI patient recruitment agents on our last completed trial as the benchmark case"
+- Rubric: Enrollment rate improvement, dropout prediction accuracy, diversity compliance, protocol deviation rate
+- Stakes: Each day of Phase 3 delay = ~$2.5M in lost revenue for a blockbuster drug
+- FDA requirement: Documentation of how AI tools were selected for trial operations
+- The ROI math: 5% enrollment improvement in a 1,000-patient trial = months saved = $500M+ in NPV → $25K Straw evaluation is trivial
+
+---
+
+## Tick 529 — "Straw Is Too Complex for Non-Technical Buyers" Bear Case [theme: bear]
+
+### The Full Steelman
+
+Straw's rubric-based evaluation requires buyers to:
+1. Define what success looks like before the competition (the rubric)
+2. Understand tiered evaluation (Tier 1 deterministic, Tier 2 LLM ensemble, Tier 3 autonomous investigator)
+3. Interpret scores in a multi-dimensional context
+4. Make a winner determination based on complex scoring output
+
+**The problem:** The person who NEEDS Straw (CHRO, CPO, Agentic Ops Lead) is NOT a machine learning engineer. They've never written an evaluation rubric. They don't know what "Tier-3 autonomous investigator" means. They don't understand F1 scores or Shapley attribution.
+
+**Evidence:** Vals.ai specifically hired dedicated "evaluation engineers" to work with enterprise customers on benchmark design. This acknowledges that rubric creation is a SKILL that enterprise buyers don't have in-house.
+
+**The risk:** Straw becomes a product that sounds compelling but can't be adopted without significant customer support. High customer success cost kills gross margins. Complex onboarding lengthens sales cycles. Non-technical buyers punt the decision to engineering, who don't care about the procurement question.
+
+### The Complexity Bear Case in Numbers
+
+- Average rubric design session: 2-3 hours with a technical Straw team member
+- Number of rubrics Straw can support with 2 FTEs: ~40 per month
+- If Straw targets 100 customers in Year 2 = 100 rubric designs needed
+- Cost: 2 FTEs × $150K = $300K in customer success cost to support 100 rubrics
+- If each customer pays $15K → $1.5M ARR, gross margin after CS = $1.5M - $300K = $1.2M = 80% gross margin
+- But if rubric design takes 10 hours per customer: $300K becomes $750K → 50% gross margin → unsustainable
+
+### Why This Bear Case Is Manageable
+
+**Defense 1: Rubric templates eliminate cold-start complexity**
+Straw pre-builds rubric templates for the 20 most common use cases (SOC agent, recruiting agent, customer service agent, supply chain agent, etc.). Non-technical buyers select a template and modify 3-5 parameters. Template-based approach reduces rubric design time from 3 hours to 30 minutes.
+
+**Defense 2: AI-assisted rubric builder**
+Straw builds an AI rubric builder that asks the buyer 10 questions about their task and generates a draft rubric. The buyer reviews and approves. Engineering doesn't need to be involved. This is a product investment of ~1 month for 2 engineers.
+
+**Defense 3: The "Success Criteria Workshop" as the product**
+Reframe rubric design as a VALUE-ADD SERVICE, not a complexity tax:
+- "We help you define what winning looks like — that clarity benefits your whole AI strategy, not just this evaluation"
+- Charge $2,500-5,000 for a "Success Criteria Workshop" as a standalone service
+- This becomes a lead generation tool: buyers who engage for the workshop convert to full evaluations
+
+**Defense 4: Self-service tier**
+Straw Starter at $300/month: fully self-service, template-only rubrics, no Straw support. This captures tech-savvy buyers (AI Agent Owners who are technical) without customer success cost. Starts building usage data before the enterprise sale.
+
+**Defense 5: The rubric IS the value, not a blocker**
+The process of defining a rubric forces the enterprise to clarify their requirements. Companies that can't write a rubric for what they want from an AI agent have a DEEPER problem — they don't know what they want. Straw's complexity is a FILTER: buyers who engage with rubric definition are the ones who are serious, which means higher conversion rates and lower churn.
+
+**The honest bottom line:** The complexity risk is real but solvable. Straw must invest in rubric template library + AI-assisted rubric builder in the first 6 months. This is a product investment, not a fundamental flaw.
+
+---
