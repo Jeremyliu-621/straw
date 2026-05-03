@@ -22649,3 +22649,101 @@ Manufacturing AI agents require domain-specific evaluation criteria:
 **Cold opener to GE Appliances**:
 > "Hi Kevin — GE Appliances has 800+ AI agents in production — more than almost any company in the world. As you upgrade those agents and evaluate new options, do you have a systematic evaluation methodology, or does each team evaluate independently? Straw provides the infrastructure to run competitive evaluations across your agent fleet — ensuring each upgrade decision is evidence-based, not just vendor-demo-based. With 800+ agents, even a 10% improvement in evaluation rigor across the fleet could represent significant operational value. Worth a conversation?"
 
+
+---
+
+## Tick 322 (2026-05-03T00:52:00Z): California AI Vendor Certification — New State Regulation [theme: gtm]
+
+**Research basis**: Governor Newsom signed Executive Order N-5-26 (March 30, 2026) directing California state agencies to develop AI vendor certification requirements. Vendors must attest to policies on harmful model bias, civil rights violations, and illegal content exploitation. 71% of CIOs must prove measurable AI value by mid-2026. Forrester: 41% of AI deployment failures due to unclear success criteria (Straw's highest-value stat).
+
+### California's AI Vendor Certification EO Is a Market-Creating Regulation
+
+**Executive Order N-5-26** is significant because:
+1. California = largest state economy; 12% of US GDP; sets national precedent
+2. Requires vendors to **attest** to specific policies — creates documentation trail
+3. Will likely be adopted by other states following California's pattern (CPRA → CCPA pattern)
+
+However, Straw needs to understand whether this applies to Straw or to the AI agents Straw evaluates.
+
+**The relevant application**:
+- California agencies buying AI vendors need vendors to attest to non-discrimination policies
+- Straw can provide **independent evaluation evidence** that the AI agent meets California's requirements
+- "Straw Certified: California N-5-26 Compliant" = evaluation confirming the agent's bias metrics and civil rights compliance
+
+This is analogous to the EU AI Act play (Tick 272). State regulations create procurement documentation requirements. Straw is the independent third party that generates that documentation.
+
+**The Forrester Data Is Straw's Best Stat**
+
+Buried in the search results, a crucial attribution finding: **Forrester identifies 41% of AI deployment failures as due to unclear success criteria.** 
+
+This is Straw's mission statement in three bullet points:
+- 41% of failures = unclear success criteria
+- Straw forces pre-defined success criteria (the rubric)
+- Therefore, Straw directly addresses the #1 cause of AI deployment failure
+
+**The 41% Stat as Core Marketing**
+
+Use this everywhere:
+> "41% of AI agent deployments fail because success criteria were never defined. Straw forces success criteria definition before deployment begins. The rubric is not optional. When you define what 'winning' looks like before the competition, you close the largest failure vector in AI deployment."
+
+This is attribution to a Forrester source (not a Straw claim), which gives it credibility in enterprise sales conversations.
+
+### State AI Regulation Tracking
+
+California has pioneered US AI regulation. Other states following:
+- **Colorado**: AI consumer protection laws (effective 2026)
+- **Texas**: AI bill (various stages)
+- **New York City**: Local Law 144 (bias audits for AI in hiring — already in effect)
+- **Illinois**: AI interview bias law (already in effect)
+- **Federal**: AI accountability frameworks being developed
+
+Each state/local AI regulation creates a documentation requirement. Straw's "Evaluation Report" becomes evidence that enterprises can use across all of these regulatory frameworks. The more regulation, the more valuable Straw's documentation becomes.
+
+---
+
+## Tick 323 (2026-05-03T00:53:00Z): Comprehensive Bear Case Scorecard — Final Assessment [theme: bear]
+
+**Research basis**: All bear cases researched across 323 ticks. Scoring recalibrated based on new evidence, market conditions, and product countermeasures.
+
+### Complete Bear Case Scorecard (Definitive Version)
+
+| Bear Case | Score | Key Risk | Straw Counter |
+|-----------|-------|----------|---------------|
+| **Benchmark Gaming / Reward Hacking** | 8/10 | All 8 public benchmarks hackable to 100% (UC Berkeley Apr 2026) | Dynamic test cases, adversarial evaluation, production correlation audits |
+| **ERP Platform Absorption** | 7/10 | SAP/Workday/ServiceNow bundling evaluation for free | Neutrality requirement in regulated industries; partner before competing |
+| **Marketplace Competition** | 7/10 | Salesforce AgentExchange, Google Agentspace, Microsoft Marketplace | Straw is neutral cross-platform; marketplaces are vendor-aligned |
+| **Prompt Injection Security** | 7/10 | Poisoned agents certified, deployed, backdoor activates | Security evaluation tier; behavioral consistency testing; agent provenance |
+| **Data Poisoning Supply Chain** | 7/10 | 250 poisoned docs can implant undetectable backdoor | Agent provenance verification; MCP allowlist; post-cert monitoring partnerships |
+| **Evaluation Theater** | 6/10 | 88% of enterprises run rubber-stamp evaluations | EU AI Act forcing function; blind evaluation option; fast-track tier |
+| **AI Hype Cycle / Trough** | 6/10 | 40%+ of agentic AI projects canceled by 2027 | Straw benefits in trough — identifies good projects worth keeping |
+| **Foundation Model Commoditization** | 6/10 | 60-80% API price drop in 12 months; quality equalizing | Evaluation shifts to cost-quality tradeoff and workflow integration; still evaluable |
+| **Vendor Consolidation** | 6/10 | Enterprises cutting vendors; don't want another point solution | Integrate INTO consolidating platforms; own regulated verticals where independence required |
+| **Goodhart's Law (Slow)** | 7/10 | Agents fine-tuned on Straw rubrics over 6-12 months | (Same as Benchmark Gaming — combined) |
+| **Short-Contract Risk** | 5/10 | Enterprise buyers refuse multi-year AI commitments | Evaluation program contracts (not agent contracts); failure = re-evaluation need |
+| **Consulting Substitution** | 5/10 | McKinsey builds evaluation methodology; charges same price | SIs are distribution channel, not competitors; neutrality is Straw's structural advantage |
+| **Misaligned Incentives** | 5/10 | Procurement team incentivized for speed/cost, not deployment success | Target AI CoE/agent owner, not procurement; buy where incentives align |
+| **Commoditization (Agents)** | 5/10 | If all agents perform the same, evaluation is worthless | Even commoditized agents have different cost/quality profiles; evaluation still needed |
+| **SaaSpocalypse / Budget Volatility** | 6/10 | Feb 2026: $285B rout; AI spend can compress fast | AI budgets most recession-proof category; AI evaluation is "insurance" |
+| **Automation Bias** | 4/10 | Enterprises over-rely on Straw cert; skip ongoing judgment | Time-scoped certifications; monitoring partnership recommendation |
+| **Build vs. Buy** | 4/10 | Enterprise builds their own rubric scientist + evaluation | Straw is cheaper Year 1 and every year; benchmarks enterprise can't self-build |
+| **Employee Backlash** | 4/10 | Unions/workers resist AI agent deployments certified by Straw | Straw focuses on task performance, not replacement decisions |
+| **Open-Source Community** | 4/10 | Open-source eval frameworks (Microsoft, NIST) reduce Straw's differentiation | Professional services + certification standard + enterprise support = Straw's moat |
+| **Trump Regulatory Uncertainty** | 3/10 | Federal AI regulation rollback reduces compliance demand | EU AI Act and state laws provide same forcing function regardless of federal stance |
+
+### Priority Order: Where to Build vs. Where to Market
+
+**Build immediately against (highest severity)**:
+1. Benchmark gaming → dynamic test case system, adversarial evaluation tier
+2. Data poisoning → agent provenance verification, MCP allowlist, post-cert monitoring
+3. Prompt injection security → security evaluation tier, red team methodology
+
+**Market aggressively around (high-impact countermeasure exists)**:
+4. ERP platform absorption → partner before competing; negotiate SI partnerships now
+5. Evaluation theater → EU AI Act message; blind evaluation; fast-track tier
+6. Hype cycle / trough → "AI project risk management" reframe; trough-era messaging
+
+**Monitor (moderate severity, manageable)**:
+7. Foundation model commoditization → update evaluation positioning to cost-quality tradeoff
+8. Vendor consolidation → platform integration roadmap
+9. Short-contract risk → evaluation program contracts + success-based renewal
+
