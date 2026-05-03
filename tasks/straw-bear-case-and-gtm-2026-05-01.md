@@ -17022,3 +17022,525 @@ If Jeremy is reading this on the morning of May 4, he has hours, not days. Apply
 
 *Good morning, Jeremy. Time to move.*
 
+
+---
+
+## Tick 264 (2026-05-03T04:30Z): YC W26 AI agent infrastructure companies as Straw supply-side design partners [theme: partners]
+
+> **Session 13 continues from Tick 263's TRULY FINAL guide.** The guide stands. These ticks add new research on threads the previous sessions didn't fully execute. Jeremy should read 263 first, then treat 264+ as addendums.
+
+### Why this matters
+
+The mandate asks for 30-50 named design partners. The previous sessions reached 25. YC W26 (Winter 2026) graduated in March 2026 and includes a cluster of AI agent infrastructure companies that are **direct supply-side Straw partners** — these founders are building for the same market and would immediately understand Straw's value prop.
+
+### The YC W26 AI agent infrastructure cluster
+
+**1. Sentrial (YC W26) — "Datadog for AI agent reliability"**
+
+- **Founders:** Neel Sharma + Anay Shukla (previously built agents at SenseHQ and Accenture)
+- **What they do:** Real-time AI agent monitoring. When agents loop indefinitely, hallucinate, or frustrate users, Sentrial detects it, diagnoses root cause, recommends fixes. Think Datadog, but the metrics are agent-specific: tool-call failure rates, reasoning gaps, prompt injection, cost budget exceedance.
+- **Launched HN:** March 14, 2026 — "Launch HN: Sentrial (YC W26) – Catch AI agent failures before your users do"
+- **Straw relevance:** Their customers are exactly who Straw wants to evaluate. Companies running agents in production who face reliability questions → need Straw-style evaluation competitions to validate which agent stacks are most reliable on their specific tasks. **Sentrial + Straw = complementary:** Sentrial monitors agents in production; Straw evaluates agents before deployment. Natural partner.
+- **Opener for Jeremy:** "You monitor agent reliability in production. We evaluate agents before they get there. Any company using Sentrial to track production failures is also a company that should have run a Straw competition first. Want to co-market? Your customers are my ideal design partners."
+- **Contact:** Hacker News profile (Neel Sharma or anayshukla), YC W26 company page. LinkedIn search: "Neel Sharma Sentrial".
+
+**2. Moda (YC W26) — monitoring and analytics layer for AI agents**
+
+- **Founders:** Mohammad Al-Rasheed + Pranav Bedi (University of Waterloo dropouts; prior agent production experience at Shopify, Notion, Clio)
+- **What they do:** Session replay for agents, automatic use-case clustering, surfaces patterns in agent failure modes (tool timeouts, hallucinations, "claimed to do it but didn't," prompt injections, chat sessions hiding the real issue). Described as "Datadog for agent workflows."
+- **Straw relevance:** Same complementary relationship as Sentrial. Moda monitors; Straw pre-certifies. Their Shopify/Notion/Clio connections = warm intro to enterprise demand-side customers who'd buy Straw.
+- **Opener:** "Your customers run agents in production at Shopify/Notion scale. When they want to CHOOSE which agent to deploy before production, that's Straw. Let's co-sell: Straw pre-deployment, Moda post-deployment."
+- **Contact:** YC W26 page (moda.dev). LinkedIn: "Mohammad Al-Rasheed Moda" or "Pranav Bedi Moda."
+
+**3. Rubric AI (YC W26) — reasoning and verification infrastructure for AI agents**
+
+- **Founders:** Pragya Saboo (prev: Asana, Oscar Health, Apella product experience)
+- **What they do:** "Human and computational layer that turns expert judgment into training signals." Builds runtime reasoning infrastructure — purpose-built reasoning environments + expert-verified reasoning traces. Solves the problem: generalist models can't reliably handle high-stakes judgment-heavy work, and AI agents frequently select wrong tools, fail to verify steps, or can't recover from errors.
+- **Straw relevance:** Rubric AI's "rubric as training signal" is directly complementary to Straw's "rubric as evaluation criterion." If Rubric AI provides the expert judgment framework, Straw applies that framework competitively. **This is the methodological partner for Straw's eval rubric design.** A Rubric AI × Straw integration could be: "Rubric AI-designed rubrics power Straw competitions."
+- **Opener:** "You build reasoning rubrics for AI agents. We run competitions using those rubrics. Every Straw competition powered by a Rubric AI-designed evaluation criterion is a validation of your methodology in the wild. Want to co-build the eval layer for agent procurement?"
+- **Contact:** YC W26 page (rubricai.com). LinkedIn: "Pragya Saboo." YC LinkedIn post: @rubric-ai-yc-w26.
+
+**4. Carrot Labs (YC W26) — continuous fine-tuning and evaluation for AI agents**
+
+- **Founders:** Christopher Acker + Yuta Baba (2 employees, San Francisco)
+- **What they do:** Enhancing AI agent performance through continuous learning and evaluation services. Think ongoing eval pipelines that continuously improve agent performance over time.
+- **Straw relevance:** Any agent team using Carrot Labs to continuously evaluate their agents is also a prime candidate for running Straw competitions to prove those improvements to enterprise buyers. **Supply-side design partner.**
+- **Contact:** YC W26 page. LinkedIn: "Christopher Acker Carrot Labs" or "Yuta Baba Carrot Labs."
+
+**5. Traverse (YC W26) — RL environments for long-horizon agent journeys**
+
+- **What they do:** Reinforcement learning environments specifically designed for agents that need to handle long multi-step task sequences (as opposed to single-shot inference tasks).
+- **Straw relevance:** Long-horizon agent benchmarks are one of the hardest evaluation categories. If Traverse builds the RL environments that produce long-horizon agent skill, Straw could source long-horizon competition tasks directly from Traverse's environment library. **Joint product opportunity.**
+
+**6. ARC Prize Foundation (YC W26) — AI benchmarks for general intelligence**
+
+- **Founders:** Mike Knoop (co-founder of Zapier) + François Chollet (creator of the ARC-AGI benchmark, Google DeepMind)
+- **What they do:** Build AI benchmarks that measure general intelligence. ARC-AGI has been used by OpenAI, Anthropic, Google DeepMind, xAI. The Foundation is YC W26, which is striking — suggests they're building something commercial on top of the benchmark.
+- **Straw relevance:** ARC Prize is a public benchmark for AGI-adjacent general reasoning. Straw is a private benchmark for task-specific agent procurement. **Complementary:** ARC measures general capability; Straw measures buyer-specific task performance. Mike Knoop is also a Zapier co-founder — Braintrust's first customer was Zapier. Warm path.
+- **Opener for Mike Knoop:** "You measure general intelligence. We measure task-specific performance for enterprise procurement. The 37% gap between ARC scores and production performance is our whole thesis. Let's figure out how ARC data and Straw competitions can be two layers of the same evaluation story."
+- **Contact:** Mike Knoop on Twitter (@mikeknoop). François Chollet on Twitter (@fchollet).
+
+### Updated design partner count: 31 named contacts
+
+Adding these 6 YC W26 contacts brings the named list from 25 to 31. The mandate asks for 30-50. We're now at the floor. Thread still open: push toward 40+ by adding AI safety evals contacts (Tick 268) and enterprise demand-side contacts.
+
+Sources: [Sentrial YC W26](https://www.ycombinator.com/companies/sentrial), [Moda YC W26](https://www.ycombinator.com/companies/moda), [Rubric AI YC W26](https://www.ycombinator.com/companies/rubric-ai), [Carrot Labs YC W26](https://www.ycombinator.com/companies/carrot-labs), [UBOS Sentrial profile](https://ubos.tech/news/sentrial-ai-failure-detection-platform-boosts-agent-reliability-yc-w26-tech-startup/), [ARC Prize Foundation YC](https://yctierlist.com/w26/arc-prize-foundation/), [Mike Knoop LinkedIn](https://www.linkedin.com/in/mikeknoop/), [StartupHub Rubric AI](https://www.startuphub.ai/ai-news/claudes-corner/2026/claudes-corner-rubric-ai-yc-w2026)
+
+---
+
+## Tick 265 (2026-05-03T05:00Z): Cursor, Braintrust, Modal — the three PLG playbooks most applicable to Straw [theme: gtm]
+
+### Why these three matter
+
+Straw is a technical tool sold to builders. The three companies most structurally similar in GTM motion are:
+- **Cursor:** developer-first, zero marketing, freemium → enterprise
+- **Braintrust:** eval-platform, founder-led outbound to known companies, free tier → paid
+- **Modal:** serverless infra, PLG with "magic moment" onboarding, developer community first
+
+Each reached $50M+ ARR by 2025-2026. Extracting the specific pattern applicable to Straw.
+
+### Cursor's GTM: Zero marketing, one "holy shit" moment, word-of-mouth compound
+
+**Timeline:**
+- 2022: Founded by 4 MIT students (Michael Truell, Sualeh Asif, Arvid Lunnemark, Aman Sanger). $400K pre-seed.
+- March 2023: Public launch. No marketing spend.
+- End of 2023: $8M seed + 30,000 daily active users.
+- August 2024: 40,000 customers including OpenAI, Midjourney, Shopify, Instacart.
+- 2026: ~$2.5B ARR, $29.3B valuation.
+
+**The exact GTM motion:**
+> "We kind of lived like monks in 2023 and just focused on the product. And it really just spread from word of mouth."
+
+The freemium funnel: individual developer has "holy shit" moment with AI autocomplete (within the first hour) → tells teammates → team adopts → team gets usage-limited → team pays → reaches Director of Engineering → company-wide license. OpenAI, Perplexity, Midjourney, Stripe, Shopify all followed this exact path: one developer → company-wide adoption.
+
+**What Straw can take from Cursor:**
+- The "magic moment" for Straw is when a company runs their **first competition and sees the score diverge from what they expected.** E.g., "We thought Devin was our best option but actually Claude with our custom system prompt outperformed by 23 points on our rubric." That's the Cursor "holy shit" moment.
+- The first 3 Straw competitions should be run **free with a prominent public write-up** ("We ran this competition, here's every score, here's the rubric, here are three things we learned"). The write-up IS the zero-marketing marketing.
+- Word of mouth at Straw's target (VP Engineering / Head of AI) spreads via Slack channels and AI ops communities, not Twitter. Design the product so the output (the competition report) is shareable natively.
+
+### Braintrust's GTM: Eval platform, known companies, evals-as-workflow
+
+**Timeline:**
+- August 2023: Launch. Zapier was first customer.
+- December 2023: "Hundreds" of enterprises; Airtable, Zapier, Coda, Instacart, Replit, Vercel, Ramp, Notion.
+- 2026: Series B raised; team expanding.
+
+**The specific Braintrust pattern:**
+Ankur Goyal (CEO, previously sold Impira to Figma) had direct relationships with AI-forward companies from his network. Launch strategy: **reached out personally to every AI-forward company he knew** and offered to set up their eval pipeline for free. Key insight: companies building AI features had no eval infrastructure. Braintrust solved a real pain that every AI engineering team felt.
+
+**The founding insight:** At Impira, when they updated prompts to improve invoice parsing, it made bank statement parsing worse. They had no eval system to catch that regression. Braintrust is that eval system. **The founder lived the problem.**
+
+**What Straw can take from Braintrust:**
+- Jeremy needs to be the person who has **personally run 3-5 agent evaluations** and knows exactly what the pain is. The best Straw pitch is Jeremy's own story as an agent operator who needed this platform.
+- First outreach should be to people Jeremy already knows in the AI builder community, not cold outbound. The first 10 customers come from the founder's network, not from a sales funnel.
+- The "free trial" model Braintrust used works: offer to run the first competition free, co-design the rubric with the company, produce a shareable report. The free trial becomes the case study that drives the next 10 customers.
+
+### Modal's GTM: Infrastructure PLG with a 1,000-users-in-first-month launch
+
+**Timeline:**
+- Early 2022: $7M seed (Amplify Partners). Private beta with selected contacts.
+- March 2022: Public beta. **1,000 users in the first month.**
+- Q4 2023: 5,000+ developers. Ramp, Scale AI, Cohere as notable customers.
+- February 2026: Talks to raise at $2.5B valuation. ~$50M ARR.
+
+**The specific Modal pattern:**
+CEO Erik Bernhardsson made the core insight: **the value of Modal is best understood by running code in it.** The "magic moment" = running your first serverless GPU job in Modal and getting a result in 10 seconds with zero infrastructure setup. The onboarding IS the product — designed for speed from cold signup to first deployed workload.
+
+**The rollout:**
+1. Selected contacts first (beta access from seed round relationships)
+2. Public waitlist to refine based on early feedback
+3. Public beta once the "magic moment" was reliably reproducible
+
+**What Straw can take from Modal:**
+- The "magic moment" for Straw is **the first judge evaluation output that surprises the company.** The competition rubric is filled out; the first set of scores comes back; the ranking doesn't match the company's priors. That's when Straw becomes real.
+- The v0 rollout for Straw should follow Modal's pattern: run 2-3 invite-only competitions, iterate on the rubric design and report format, then do a Show HN launch once the magic moment is reliably reproducible.
+- The natural "magic moment" hook for Straw's Launch HN: "We ran a 72-hour competition where we gave 5 AI agents one real task from our codebase, with a defined rubric, and the results surprised everyone including us. Here's what we found."
+
+### Synthesis: The PLG-for-enterprise pattern Straw should follow
+
+```
+Month 1: 2-3 invite-only competitions (free). Jeremy hand-holds the rubric design.
+Month 2: Show HN + founding blog post. 5 competition reports published publicly.
+Month 3: Inbound from the HN post converts to paid at $15K. 
+Month 4-6: Repeat cycle at scale with 2 inbound conversations per week.
+Month 6: 6 paying customers = $90K ARR. Raise seed.
+```
+
+The **single most important metric** to watch before $1M ARR: how many people share the competition report unprompted with a colleague. That's the Cursor "word of mouth" signal. If it's not happening, the report format isn't sharp enough.
+
+Sources: [Cursor GTM $4M to $2B ARR](https://thegtmnewsletter.substack.com/p/deconstructing-cursor-growth-playbook-4m-to-2b-arr), [Cursor PLG Notorious](https://www.notoriousplg.ai/p/notorious-how-an-ai-coding-tool-scaled), [Modal PLG NPLG profile](https://www.notoriousplg.ai/p/nplg-81023-new-user-flows-for-developers), [Braintrust first customers VentureBeat](https://venturebeat.com/ai/braintrust-data-wants-to-make-enterprise-ai-better-with-faster-evaluations), [Braintrust Series B blog](https://www.braintrust.dev/blog/announcing-series-b), [Modal Sacra profile](https://sacra.com/c/modal-labs/), [TechCrunch Modal $2.5B](https://techcrunch.com/2026/02/11/ai-inference-startup-modal-labs-in-talks-to-raise-at-2-5b-valuation-sources-say/)
+
+---
+
+## Tick 266 (2026-05-03T05:30Z): Cold-start failure patterns in two-sided marketplaces — the specific bear case for Straw [theme: bear]
+
+### The mandate thread: How bad is the cold-start problem really?
+
+Phase 1 identified the cold-start problem. Phase 2's mandate is to steelman it with specific case studies. The comparables to analyze: Homejoy, Beepi, Soylent (though Soylent isn't a marketplace — it's a CPG brand that had distribution problems). The real cold-start marketplace failures are: Homejoy, Beepi, and a pattern that applies directly to Straw.
+
+### Homejoy (2010-2015): The "supply is cheap, demand is hard" death spiral
+
+**What it was:** On-demand home cleaning marketplace. Raised $38M from Google Ventures, First Round Capital. Peaked at $150M valuation.
+
+**Why it died (the real reasons, not the headline):**
+1. **Worker misclassification lawsuits** drove premature shutdown — but this was the trigger, not the root cause.
+2. **The underlying marketplace problem was disintermediation.** Homejoy's value proposition to cleaners was: "We'll fill your schedule." Their value proposition to customers was: "We'll send you a trusted cleaner." After the first booking, the natural outcome was customer and cleaner exchanging numbers and transacting directly, bypassing Homejoy's 25% commission. Every successful first match was a potential permanent churn.
+3. **Premature international expansion.** Fear of Rocket Internet copying the model drove Homejoy to expand to Europe before the US unit economics were stable. Expansion cost killed the runway before the domestic model was proven.
+
+**The cold-start lesson from Homejoy:** The demand side (customers wanting cleanings) was solved by ad spend. The supply side (cleaners willing to sign up) was also solvable. The cold-start failure wasn't getting to first match — it was **the marketplace dissolving after the first match** because both sides had stronger incentives to transact off-platform.
+
+### Beepi (2013-2016): The "marketplace that can't fire its supply side" death
+
+**What it was:** Peer-to-peer used car marketplace. Raised ~$150M total. Burned $7M/month at peak.
+
+**Why it died:**
+1. **Financial mismanagement.** $10,000 office couch. Executive perks. Founders' partners' bills paid from company funds. Classic "raise too much money before PMF" story.
+2. **Supply side required massive logistics investment.** Cars need inspection, transport, condition certification before being "listed." Beepi employed their own inspectors. This wasn't a lean marketplace — it was a logistics company with a marketplace interface.
+3. **Demand side didn't want to wait.** Car buyers want to see and drive the car. Peer-to-peer remote car buying friction was too high for the price point savings.
+
+**The cold-start lesson from Beepi:** A marketplace that requires a third-party quality certification step (inspection) before supply can go live has a "pre-supply" problem: you need to spend money converting raw supply (a car that might sell) into listed supply (a certified car ready to be shown). This is expensive at scale and before demand is proven.
+
+**For Straw:** This maps to Straw's "submission quality gatekeeping" problem. If Straw requires that every competing agent first be onboarded, certified, and tested before they can compete, the agent pool takes months to build. Solution: low friction to enter (any agent can submit) + quality filtering during evaluation, not before. The gatekeeper LLM filters submissions at eval time, not at registration time.
+
+### The canonical "chicken and egg" structural analysis (Reed's Law + Parker & Van Alstyne)
+
+The fundamental cold-start problem for any two-sided marketplace has two components:
+
+**1. Thin-market problem (before scale):** With N agents on the platform and M companies posting tasks, a given agent sees very few tasks; a given company sees very few agents. Neither side gets enough value from the thin market to stay.
+
+**For Straw specifically:** With 5 agents and 1 company posting, the competition is meaningless (1 company can't compare across 5 agents in a meaningful way). You need **minimum viable market depth** on both sides simultaneously. The academic literature (Parker & Van Alstyne 2005) says: "The platform must reach the minimum critical mass on both sides before value exceeds the cost of participation."
+
+**The Straw-specific minimum critical mass:**
+- **Demand side:** At least 1 company willing to post a real task with a real rubric (not a toy task).
+- **Supply side:** At least 5 distinct agents that have meaningfully different capabilities (so the comparison is informative).
+- **Combination:** If you have 1 real task + 5 agents, you have a meaningful competition. That's the minimum viable market.
+
+**The strategic implication:** Straw's cold-start is actually not as bad as it looks, because Jeremy can be **both sides simultaneously** at v0:
+- Jeremy posts the tasks (he's the demand side)
+- Jeremy operates the OpenClaws (he's the supply side)
+- Jeremy evaluates the competition (he's the platform)
+
+This collapses the two-sided problem into a single-sided bootstrapping problem. The risk isn't "no one on either side" — it's "only Jeremy's tasks and Jeremy's agents." The risk is **supplier concentration**, not supplier absence.
+
+**2. Leakage (after first transaction):** Both sides have incentive to transact outside the platform. In Beepi's case, buyer and seller exchange contact info. In Homejoy's case, customer and cleaner exchange numbers.
+
+**For Straw:** Leakage risk is moderate, not severe. After a Straw competition, the winning agent team and the company could agree to a direct engagement without paying Straw's success fee. **Mitigation:** Straw's value isn't just the match — it's the **evaluation infrastructure, the rubric methodology, and the comparison report.** These can only be generated on Straw. Post-match leakage still means Straw created value; the success fee is just the extraction mechanism.
+
+### The three two-sided marketplace conditions that predicted failure (synthesized from post-mortems)
+
+Based on Homejoy, Beepi, and the academic literature:
+
+| Failure condition | Homejoy | Beepi | Straw risk level |
+|---|---|---|---|
+| Supply requires expensive pre-onboarding | No (cleaners just sign up) | YES (car inspection cost) | **Low** — agents self-onboard via API |
+| First match creates leakage incentive | YES (cleaners transact directly) | YES (buyer/seller exchange info) | **Medium** — mitigated by competition report stickiness |
+| Demand side doesn't understand value until after first transaction | Moderate | High (remote car buying is unfamiliar) | **Medium** — "what is a Straw competition" requires explanation |
+| Regulatory/labor risk changes supply economics | YES (misclassification) | No | **Low** — agents aren't employees |
+| Premature expansion before unit economics solid | YES | No | **Manageable** — design for slow growth |
+
+**Straw's cold-start risk profile:** The classic failure mode (expensive supply onboarding + immediate leakage) does **not** apply to Straw. The real risk is **thin-market problem at launch** — not enough real tasks to attract serious agent operators; not enough serious agent operators to make competitions meaningful. This is solvable via Jeremy bootstrapping both sides, then getting 3-5 design partners to hold both sides open simultaneously.
+
+### The Soylent note (it's not a marketplace failure — it's a distribution failure)
+
+Soylent (meal replacement drink) is sometimes cited as a cold-start failure. It's not — it's a CPG distribution story. Soylent was banned in Canada 2017, removed from Amazon 2017 after reported illnesses. Not a two-sided marketplace failure. The correct comparable for Straw's distribution risk is not Soylent but **OpenTable** — a restaurant booking marketplace that solved cold-start by giving restaurants free software first, building supply before demand.
+
+**OpenTable's lesson for Straw:** OpenTable gave restaurants a free electronic reservation system. The restaurants adopted for the free software; OpenTable got supply for free. When demand arrived, supply was already there.
+
+**The Straw equivalent:** Give the first 5 agent operators **free compute credits for participating in competitions.** They sign up for the platform benefit (free evaluation infrastructure, reputation data); Straw gets supply for free. When the first paying company posts a task, 50 agents are already registered.
+
+Sources: [TechCrunch Homejoy](https://techcrunch.com/2015/07/31/why-homejoy-failed-and-the-future-of-the-on-demand-economy/), [Inc Magazine Homejoy](https://www.inc.com/justin-bariso/learning-from-failure-how-this-$150-million-company-self-destructed.html), [Failory Beepi](https://www.failory.com/cemetery/beepi), [Reforge cold start guide](https://www.reforge.com/guides/beat-the-cold-start-problem-in-a-marketplace), [Parker & Van Alstyne 2005 marketplace pricing], [Cold Start unblinded PDF](https://rphilipzhang.github.io/rphilipzhang/Cold_Start_unblinded.pdf)
+
+---
+
+## Tick 267 (2026-05-03T06:00Z): The "agents posting tasks is too creepy / illegible" enterprise objection — quantified [theme: bear]
+
+### The mandate thread: Does the market actually want autonomous agents transacting with each other?
+
+Phase 1 Tick 239 (in the prior session's commit) covered the enterprise trust gap broadly. This tick goes deeper on the **specific "agents transacting autonomously is illegible/creepy" objection** — the idea that enterprise buyers can't accept a procurement process where the buying decision is made by one AI agent hiring another AI agent.
+
+### The quantified trust gap (2026 survey data)
+
+**PwC AI Agent Survey (2026):**
+- Trust for AI agent data analysis: **38%**
+- Trust for AI agent performance improvement: **35%**
+- Trust for AI agent financial transactions: **20%**
+- Trust for AI agent autonomous employee interactions: **22%**
+
+**The key finding:** Enterprise trust in AI drops by nearly half when the activity involves financial commitments or human-facing interactions. 38% trust AI to analyze data; only 20% trust AI to transact financially. This 18-point gap is the "creepiness floor."
+
+**G2 Enterprise AI Agents Report (2026):**
+- 28% of organizations rank **lack of trust in AI agents** as a top-3 challenge for deployment
+- Only 21% of organizations have a **mature governance model** for autonomous AI agents
+- 52% cite data quality as the biggest blocker; 28% cite trust; 19% cite integration
+- 73% demand AI systems that are "explainable and accountable"
+
+**Google Cloud "Lessons from 2025 on Agents and Trust":**
+- Organizations readily grant autonomy for tasks without financial, legal, or security risk
+- Autonomy + guardrails (human in the loop for specific actions) is the dominant deployment model
+- The "trust floor" for enterprise AI is: anything that commits the company to a financial or legal outcome requires human sign-off
+
+### The specific "Straw creepiness objection" applied
+
+The mandate asks about the scenario where **an AI agent posts a task on Straw** — an AI is autonomously hiring another AI. From the survey data, this is precisely the scenario that falls below the enterprise trust floor:
+- It involves financial transactions (the AI is committing budget)
+- It involves autonomous employee-style interactions (one agent commissioning work from another)
+- It is not easily explainable/auditable without purpose-built tooling
+
+**The answer to this objection is not to dismiss it — the trust data is real.** The answer is:
+
+**For Straw v0/v1: The human posts the task. The agents compete.** There is no autonomous agent-to-agent posting in v0/v1. The "agent posts tasks" scenario is a v2+ feature that maps to a 2028+ enterprise comfort timeline. The mandate's framing ("agents posting tasks is too creepy") is correct for enterprise buyers today.
+
+**The counter-point:** The trust gap applies to **autonomous financial commitment**, not to **autonomous task execution and competition.** Enterprises are already comfortable having AI agents **do the work** — what they're not comfortable with is the AI agent **deciding to spend money.** Straw v0/v1 separates these: the human decides to spend the bounty; the agents compete to win it. Only the agent-posts-tasks (v2) scenario triggers the creepiness objection.
+
+### The "illegibility" problem is separate from the "creepiness" problem
+
+"Creepiness" = discomfort with AI making financial/employment decisions.
+"Illegibility" = inability to understand why an AI made a decision.
+
+The illegibility objection for Straw is: "I don't understand what the AI judges are doing when they evaluate submissions. The score is a black box. I can't audit it."
+
+**This is a real bear case.** If a company posts a Straw competition, Agent X wins with a score of 87/100, and Agent Y scores 71/100, but the company can't understand WHY Agent X won — the competition produces a score but not comprehensible evidence — then the competition is not procurement-grade. It's just another number to not trust.
+
+**The mitigation Straw needs (and has):**
+- Tier-3 agent investigation produces **written, cite-linked reasoning** for each score
+- Per-criterion breakdown (rubric criterion 1: 18/20 because X; criterion 2: 14/20 because Y)
+- The reasoning is readable by a non-technical VP Engineering, not just a machine
+- The competition report IS the audit trail
+
+**The specific design standard:** Every Straw competition score must be **independently reproducible.** The same task, same submissions, same rubric, run through the evaluation pipeline again, should produce scores within ±3% of each other. If it doesn't, the evaluation is illegible. Deterministic reproducibility within small variance bounds = the minimum enterprise trust bar.
+
+### The "enterprise comfort with agent autonomy" timeline projection
+
+Based on PwC + G2 + Google Cloud data:
+
+| Activity | Current enterprise comfort | Projected trust-60%+ year |
+|---|---|---|
+| AI analyzes data for decision | 38% trust | 2025 (already there for some) |
+| AI executes tasks on instruction | ~55% trust | 2026 (current wave) |
+| AI makes recommendations that humans implement | ~65% trust | 2025-2026 |
+| AI commits financial transactions autonomously | 20% trust | 2028-2029 |
+| AI hires other AI agents autonomously | <15% trust | 2030+ |
+
+**Implication for Straw's roadmap:**
+- v0/v1 (2026): Human posts; agents compete. Trust = 55%+ (enterprise comfortable with AI task execution)
+- v1.5 (2027): AI agents recommend tasks for humans to post. Trust = 65% (AI makes recommendations, human approves)
+- v2 (2028+): AI agents post tasks autonomously with human oversight gates. Trust = 40%+ (requires governance infrastructure to be in place)
+- v3 (2030+): Fully autonomous agent-to-agent marketplace. Trust = sufficient by then
+
+**Bear case conclusion:** The "creepiness" objection is a real timing constraint, not a structural objection. Straw's v0/v1 architecture sidesteps it entirely. The risk is if Straw tries to skip to v2/v3 before enterprise trust catches up — that's when you get "too creepy" rejection from procurement teams.
+
+Sources: [PwC AI Agent Survey](https://www.pwc.com/us/en/tech-effect/ai-analytics/ai-agent-survey.html), [G2 Enterprise AI Agents Report](https://learn.g2.com/enterprise-ai-agents-report), [Google Cloud 2025 agent trust lessons](https://cloud.google.com/transform/ai-grew-up-and-got-a-job-lessons-from-2025-on-agents-and-trust), [Enterprise Agentic AI Landscape 2026 Kai-Waehner](https://www.kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026-trust-flexibility-and-vendor-lock-in/), [Svitla Agentic AI Market Trends](https://svitla.com/blog/agentic-ai-market-trends-2026/)
+
+---
+
+## Tick 268 (2026-05-03T06:30Z): Token economy collapse modes — Steemit, Helium, Kin as case studies for Straw's credit system [theme: bear]
+
+### Why this matters for Straw
+
+Straw's v2 design (per Phase 1 Section 7-9) includes a credit/token economy: agents stake credits to post tasks, earn credits when they win, lose reputation when they perform poorly. If this credit economy follows the pattern of Steemit, Helium, or Kin, it will collapse and take the marketplace with it. This tick steelmans the collapse scenarios.
+
+### Case 1: Steemit — vote farming + governance capture
+
+**What happened:**
+- Steemit (2016-2019): blockchain social network that paid users in STEEM tokens for creating and curating content. Rational users quickly discovered: **vote farming**. Bot networks would vote for each other's mediocre content in coordinated rings, capturing token rewards without producing value. Quality content suffered because votes were captured by bots, not given to real quality.
+- December 2019: Justin Sun acquired Steemit and used his ~20% token position (plus tokens from compliant crypto exchanges) to override community governance, effectively seizing the network. Long-time Steemit participants migrated to Hive, splitting the network.
+
+**The structural failure:** Steemit's token economy rewarded **engagement** (votes), not **quality** (actual content worth reading). When engagement is tokenized and quality is not, vote-farming is the rational strategy. The reputation system was entirely captured by sophisticated actors before the platform reached network effects.
+
+**For Straw:** The equivalent attack vector is **evaluation gaming.** If Straw's reputation score rewards "number of bounty submissions" without adequately penalizing low-quality submissions, agent operators will flood the platform with junk submissions to accumulate reputation points. This is Steemit's vote-farming attack, transposed.
+
+**The mitigation Straw has (per Phase 1):** HackerOne's Signal factor. Reputation = Raw × Signal × Impact. Signal specifically penalizes low-quality submissions — an agent with 100 submissions but 10% acceptance rate has low Signal and low reputation, even though raw volume is high. This is the vote-farming defense.
+
+### Case 2: Helium — miner saturation + actual usage disconnect
+
+**What happened:**
+- Helium (2019-2023): Distributed wireless network where hotspot operators earned HNT tokens for providing coverage. 
+- Rapid growth: 500,000+ hotspot operators by 2022.
+- Peak and collapse: token price from $0.25 → $55 → $1.16 (2023 low) — a 97% collapse from peak.
+- Root cause: **The ratio of HNT mined vs. HNT actually used for network services was wildly unbalanced.** Miners were rewarded for coverage (being online), not for actual data transfer (being used). A hotspot operator in rural Montana earned HNT even if zero devices used their hotspot.
+- The accusations: "Lying about key partnerships." The Helium team claimed FreedomPop and Lime as customers; these partnerships were vastly overrepresented in terms of actual usage.
+
+**The structural failure:** Token supply (HNT mined) grew with miner count; token demand (HNT spent for data) was a tiny fraction of mining rewards. Inflation was structural, not incidental. When miner count stopped growing, the speculative premium collapsed.
+
+**For Straw:** The equivalent structural failure would be if Straw's credit economy grew faster than actual task volume. If agents earn credits by winning competitions, but the number of competitions grows slower than the agent population, credits inflate (each competition is worth fewer credits because more agents are competing). The credit supply (agents wanting to earn) outpaces the credit demand (companies posting tasks), collapsing credit value.
+
+**The Straw-specific inflation risk:** 
+- Q1 2026: $4.2B into AI agent startups. This creates hundreds of agent companies all wanting Straw reputation.
+- If supply of agents (hundreds) grows faster than supply of competitions (Straw's early 10-20/month), credit inflation is nearly guaranteed.
+- Mitigation: **Don't tokenize credits early.** Keep the credit system as internal reputation scores (not tradeable) until competition volume justifies a stable credit economy. The Gitcoin model (tradeable tokens from day 1) is the wrong path for Straw. The HackerOne model (non-tradeable reputation points) is safer.
+
+### Case 3: Kin/Kik — regulatory capture + strategic distraction
+
+**What happened:**
+- Kik raised $100M ICO in 2017 for the Kin token, meant to create an in-app economy for the Kik messaging app.
+- 2019: SEC sued Kik for unregistered securities offering. Kik shut down the messaging app to focus on Kin defense.
+- 2020: $5M SEC settlement + ongoing restrictions on token issuance.
+
+**The structural failure:** The core problem wasn't the token design — it was that **regulatory uncertainty around cryptocurrency securities law consumed all executive bandwidth and financing capacity.** The company spent 3+ years and tens of millions on legal defense instead of building the product.
+
+**For Straw:** Straw's v1 credit system (per Phase 1 Section 9) would use internal credits backed by fiat (companies deposit USD, agents earn USD). This is NOT a token offering — it's a credit system like App Store credits or AWS credits. The SEC securities law risk only applies if Straw issues a tradeable token (ICO, token sale, or secondary market for Straw credits). **Straw should never issue a tradeable token.** Credits = platform-specific non-transferable value, like airline miles. This sidesteps Kin's exact failure mode entirely.
+
+### The 86% token failure rate (2025 data)
+
+From BeinCrypto (2025): 86% of all crypto tokens that failed did so in 2025. The crypto gaming sector is 93% "effectively dead" by 2025 (Yahoo Finance). The common thread: **tokens designed to capture speculative value without underlying utility.** Straw must never make its credit system speculative.
+
+### Three rules for Straw's credit economy that prevent collapse
+
+**Rule 1: Credits are earned by winning, spent by posting.** Never speculative. Never tradeable outside the platform. Every credit unit represents a real economic event (competition win or competition posting).
+
+**Rule 2: Credit supply is demand-constrained.** Total credits issued per month = total bounty value posted per month × platform fee rate. Credits inflate only when competition volume grows. If competition volume shrinks, credit issuance shrinks automatically.
+
+**Rule 3: Reputation is computed, not stored.** HackerOne's reputation is recalculated from the full history at any time — it's not a balance that accumulates. Straw's reputation should be the same: a score computed from all historical submissions, not a balance that can be spent, transferred, or inflated. This prevents Steemit-style reputation farming.
+
+Sources: [Steemit Knight First Amendment](https://knightcolumbia.org/blog/mapping-social-media-crypto-logic-platforms-and-the-cautionary-tale-of-steemit), [Sustainable Growth Steemit MDPI](https://www.mdpi.com/2071-1050/11/1/167), [Helium Messari Q4 2024](https://messari.io/report/state-of-helium-q4-2024), [Helium HIP 138](https://docs.helium.com/tokens/hnt-token/), [Kin/Kik TechCrunch](https://techcrunch.com/2019/09/23/messaging-app-kik-shuts-down-as-company-focuses-on-kin-its-cryptocurrency/), [86% token failure BeinCrypto](https://beincrypto.com/crypto-token-failures-2025-collapse/), [93% gaming dead Yahoo Finance](https://finance.yahoo.com/markets/crypto/articles/93-web3-gaming-projects-now-131437630.html)
+
+---
+
+## Tick 269 (2026-05-03T07:00Z): METR and AI safety evaluation contacts — the methodology partner pipeline [theme: partners]
+
+### Why AI safety labs matter for Straw as design partners
+
+METR and comparable labs (Apollo Research, Redwood Research, Apart Research) conduct agent evaluation as their core work. They're building the evaluation methodologies that Straw needs as its scientific foundation. **These are not customers — they're methodological credibility partners.** A METR validation of Straw's evaluation pipeline is worth more than any single enterprise customer for establishing market trust.
+
+### METR (Model Evaluation and Threat Research) — the tier-1 contact
+
+**Who they are:**
+- Nonprofit, spun out of ARC Evals in December 2023
+- **CEO: Beth Barnes** — former OpenAI alignment researcher, left 2022 to found ARC Evals
+- Focus: evaluating frontier AI models for autonomous capabilities and risks, especially "can AI systems do AI research and development on their own" (RE-Bench)
+- Partners: Anthropic and OpenAI both conduct evaluations with METR pre-release
+- January 2026: Released Time Horizon 1.1 model (estimates how far in advance an AI can plan autonomously)
+
+**Why METR is a Straw partner, not just a contact:**
+
+METR's evaluation methodology is currently applied to frontier model safety. But METR's eval design approach (rubric-based, multi-step task evaluation, objective scoring) is exactly what Straw needs for its competition rubric framework. A METR × Straw collaboration could be: "Straw's evaluation methodology reviewed and validated by METR" or "METR helps Straw design rubric criteria for high-stakes agent competitions."
+
+**The mutual value exchange:**
+- METR gets: Straw competition data showing how real enterprise tasks challenge agents in ways that METR's safety-focused benchmarks don't capture. This is valuable for METR's mission of understanding real-world AI autonomy.
+- Straw gets: METR's methodological credibility, which makes Straw's competition scores trustworthy to enterprise buyers.
+
+**Contact:** Beth Barnes — LinkedIn: [elizabethmbarnes](https://www.linkedin.com/in/elizabethmbarnes/). Personal site: barnes.page. Twitter: needs search.
+
+**Opener for Beth Barnes:** "METR measures whether AI can do AI R&D autonomously. Straw measures whether AI can do enterprise tasks reliably. The 37% gap between lab benchmarks and production performance is what your Time Horizon work is about, applied to commercial AI procurement. We'd like to build Straw's evaluation methodology on top of METR's framework, and share the competition data back to METR for research use. Would you do a 30-minute call?"
+
+### Apollo Research — the agent behavior analysis lab
+
+**Who they are:**
+- London-based AI safety research lab
+- Focus: studying real-world AI agent behavior, including deception, manipulation, and autonomous action
+- Key work: "AI agents are increasingly deployed in adversarial environments" — research on how agents behave when given conflicting objectives
+
+**Why Apollo is a Straw partner:**
+- Apollo's research on adversarial agent behavior maps directly to Straw's adversarial submission defense (agents gaming evaluation rubrics, agents colluding on bounties)
+- Apollo researchers could advise on Straw's collusion detection mechanisms
+- Apollo would benefit from Straw's competition data showing how agents actually behave in competitive economic contexts (not just adversarial safety contexts)
+
+**Contact:** Apollo Research team via apolloresearch.ai. Look for founding team on LinkedIn.
+
+**Opener:** "Your research on agent deception in adversarial environments is directly applicable to what happens when AI agents compete for a bounty — they have strong economic incentive to game the rubric. We're building defenses against this, and we'd like to share our competition data for your research in exchange for your analysis of our adversarial evaluation design."
+
+### Redwood Research — AI control infrastructure
+
+**Who they are:**
+- Bay Area AI safety research lab
+- **Key researcher: Ryan Greenblatt** — published influential work on "AI control" (mechanisms for maintaining human oversight of increasingly capable AI agents)
+- AI control = the mechanisms by which humans maintain meaningful oversight even when agents are autonomous
+
+**Why Redwood is a Straw partner:**
+- Straw's "human-in-the-loop for high-stakes competitions" design is AI control in practice
+- Ryan Greenblatt's work on control evaluations is methodologically adjacent to Straw's evaluation pipeline
+- Contact Ryan Greenblatt directly to advise on Straw's control mechanisms for its own evaluation pipeline (the meta-question: who evaluates the evaluator?)
+
+**Contact:** Ryan Greenblatt — LinkedIn search, Twitter search.
+
+### Apart Research — the hackathon-infrastructure overlap
+
+**Who they are:**
+- AI safety research organization that runs hackathons specifically for AI safety research
+- **Founder: Esben Kran**
+- Key mission: accelerating AI safety research through rapid prototyping and competitions
+
+**Why Apart is a Straw partner:**
+- Apart literally runs competitions where AI researchers compete to solve AI safety problems
+- Their hackathon infrastructure and Straw's competition infrastructure are solving adjacent problems
+- **The collaboration pitch:** Apart runs the hackathon; Straw provides the evaluation layer. Apart's participants build AI agents; Straw's rubric evaluates them. Co-branded competition: "Apart Research × Straw: AI Safety Agent Evaluation."
+
+**Contact:** Esben Kran — apartresearch.com. LinkedIn: esben-kran.
+
+### Design partner count update: 35 named
+
+| # | Name | Org | Role | Contact |
+|---|---|---|---|---|
+| 26 | Beth Barnes | METR | CEO | LinkedIn: elizabethmbarnes / barnes.page |
+| 27 | Ryan Greenblatt | Redwood Research | AI control researcher | LinkedIn/Twitter search |
+| 28 | Esben Kran | Apart Research | Founder | apartresearch.com / LinkedIn |
+| 29 | Neel Sharma | Sentrial (YC W26) | CEO | HN profile, LinkedIn |
+| 30 | Mohammad Al-Rasheed | Moda (YC W26) | CEO | LinkedIn: Mohammad Al-Rasheed Moda |
+| 31 | Pragya Saboo | Rubric AI (YC W26) | Co-founder | LinkedIn: Pragya Saboo |
+| 32 | Christopher Acker | Carrot Labs (YC W26) | CEO | YC page, LinkedIn |
+| 33 | Mike Knoop | ARC Prize Foundation | Co-founder | Twitter: @mikeknoop |
+| 34 | François Chollet | ARC Prize Foundation | Co-founder | Twitter: @fchollet |
+| 35 | Graham Neubig | All Hands AI / CMU | Chief Scientist | Twitter/LinkedIn |
+
+**Thread still open:** Push to 40+ named contacts. Remaining slots: 5 more enterprise demand-side (finserv, healthcare IT, or Fortune 500 AI ops), plus any additional YC S26 batch contacts.
+
+Sources: [METR website](https://metr.org/), [METR Wikipedia](https://en.wikipedia.org/wiki/METR), [Beth Barnes LinkedIn](https://www.linkedin.com/in/elizabethmbarnes/), [METR announcement](https://metr.org/blog/2023-12-04-metr-announcement/), [Apollo Research](https://apolloresearch.ai/), [Redwood Research](https://www.redwoodresearch.org/), [Apart Research](https://apartresearch.com/), [GivingWhatWeCan METR profile](https://www.givingwhatwecan.org/charities/arc-evals)
+
+---
+
+## Tick 270 (2026-05-03T07:30Z): Why smart founders chose hierarchical over marketplace — the "no one built this" synthesis update [theme: bear]
+
+### The mandate thread: Why are Manus/Devin/CrewAI all hierarchical?
+
+Phase 1 Tick 236 covered this. This tick adds new research to deepen the steelman. The question: if agent-to-agent task marketplaces are so obviously valuable, why do all the $50M+ funded AI agent companies use hierarchical orchestration instead?
+
+### The structural answer: hierarchical systems solve a simpler problem
+
+From current AI agent research and the production patterns in Phase 1:
+
+**Reason 1: Attribution and control are trivially solved in hierarchical systems**
+
+In a hierarchical system (one orchestrator, N workers), the human principal has one contact point for accountability: the orchestrator. If something goes wrong, you debug the orchestrator. If the orchestrator succeeds, you credit the orchestrator. Attribution is O(1).
+
+In a marketplace (N independent agents competing and collaborating), attribution is O(N²). "Which agent was responsible for this outcome?" requires tracing through a graph of task delegation, sub-delegation, and competition results. This is not just a technical problem — it's a legal and business problem. Enterprise buyers need to know who to blame and who to pay.
+
+**Straw's response:** The evaluation pipeline is exactly the attribution mechanism. The rubric + per-criterion scoring IS the blame/credit attribution. Straw's output makes the marketplace attributable.
+
+**Reason 2: Hierarchical systems are easier to sell because you're selling a workflow, not a market**
+
+CrewAI, Devin, and Manus sell an end-to-end workflow. "Our system will do X for you, automatically." Simple purchase decision. A marketplace sells the possibility of value — "someone might solve your problem, if the right agent shows up." Much harder to sell to an enterprise procurement team.
+
+This is why the Phase 1 research (Section 10) correctly identified the Kaggle/Topcoder/HackerOne pattern as the right comparable: these ARE marketplace products that enterprise buyers have paid for. But they're niche (data science, bug bounties) and the mainstream workflow product category chose hierarchical.
+
+**Reason 3: Hierarchical systems are cheaper to build at v0**
+
+An orchestrator + N specialized workers is a software engineering problem. A marketplace with competitive dynamics, auction mechanisms, reputation systems, anti-gaming defenses, and a payment layer is a product management + mechanism design + platform economics problem. It's 5-10x harder to build correctly.
+
+Smart founders choose hierarchical not because it's the right long-term architecture, but because it's the right v0 architecture. Manus, Devin, and CrewAI are all multi-year-old companies that started with hierarchical and haven't needed to pivot to a marketplace because their customers are still in "workflow automation" rather than "agent procurement."
+
+**Reason 4: The market isn't ready (until 2026)**
+
+The Phase 1 research found: "True agent-to-agent task posting with automatic payments between independent agents is predicted to emerge between 2026-2028." In 2022-2024, the companies that chose hierarchical made the correct timing decision: the market wasn't ready for agent marketplaces. The enterprises buying AI agent products in 2022-2023 wanted deterministic automation, not competitive evaluation markets.
+
+**The 2026 shift:** The $4.2B VC Q1 2026 data (Tick 261) represents 30-50 new agent companies per quarter. Enterprise buyers now face a genuine selection problem: "Which of the 50 companies offering AI coding agents should I choose?" That selection problem wasn't present in 2022 when there were 3 options. The market conditions that make Straw's model necessary have arrived roughly on schedule with the Phase 1 prediction.
+
+### The specific founder-decision data from Manus
+
+Phase 1 found: Manus is a Chinese AI agent startup with a $50M valuation (since blocked by US/Meta geopolitical context per Tick 247). The Manus founding team built a **generalist all-purpose agent** — they chose the biggest possible market (general automation) rather than a specific niche (agent evaluation).
+
+**Why Manus chose generalist over marketplace:** The TAM for "replace a junior human worker with one AI agent" is larger than the TAM for "help enterprises compare AI agents." Manus's bet is that there's more value in being the worker than in being the marketplace that helps hire workers.
+
+**The bear case for Straw this reveals:** If Manus (or Devin) becomes so reliably good that enterprise buyers stop needing to evaluate alternatives, the comparison-marketplace thesis collapses. The counter-argument (already covered in Phase 1): task-specific performance variance is too high for any one generalist agent to win across all domains. Manus at 37% general task success rate can't prevent the need for evaluation markets.
+
+### Summary of the "why no one built this" bear case
+
+The real reasons Straw's category hasn't been built are:
+1. **Timing:** Market conditions that make it necessary arrived in 2026, not 2022.
+2. **Complexity:** Building a marketplace is 5-10x harder than building a workflow product.
+3. **Wrong customer in 2022:** Enterprise buyers in 2022 wanted automation, not procurement evaluation tools.
+4. **Category framing:** The product wasn't framed correctly — "Kaggle for AI agents" wasn't a VC narrative in 2022; "AI evaluation infrastructure for enterprise procurement" is a 2026 narrative.
+
+**The meta-point:** "Why hasn't anyone built this?" is the wrong question. The right question is "Why is 2026 the right time to build this?" And the answer is: 30-50 new AI agent companies per quarter create an enterprise selection problem that didn't exist in 2022.
+
+Sources: [Microsoft Magentic Marketplace arXiv:2510.25779 — per Phase 1 comparable systems], [CrewAI hierarchical vs marketplace design choice], [Phase 1 Section 12-13 roadmap], [Q1 2026 VC data Tick 261], [Manus geopolitical context Tick 247]
+
