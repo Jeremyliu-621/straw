@@ -7373,3 +7373,217 @@ Specifically: Straw could import Microsoft's eval scenario library as rubric tem
 | Maywood | Low (YC bookface) | Medium (IB niche) | Low | 7 |
 
 **The core insight from all 12 weeks of partner research:** The best design partners are not the ones who need Straw most — they're the ones who will tell the most people about Straw after they use it. Fenrock winning a Straw banking competition tells every bank considering AI back-office automation. Stilta winning a patent prosecution competition tells every IP law firm in the country. The design partner's network effect is the real value, not just their feedback on the product.
+
+
+---
+
+## Tick 97 (2026-05-04T13:00Z): Anthropic Claude Partner Network — Accenture/Deloitte as Straw's enterprise channel [theme: gtm]
+
+**The event:** Anthropic committed $100M to the Claude Partner Network on March 12, 2026. Anchor partners: Accenture, Deloitte, Cognizant, Infosys. 30,000 Accenture professionals being trained on Claude. Five-fold scaling of Anthropic's partner-facing team.
+
+**The scale signal:** "Training 30,000 Accenture professionals on Claude because that's what it takes to meet the demand" is the demand signal Straw needed to confirm. If Accenture has enough enterprise Claude deployment work to justify training 30,000 people, those Accenture implementations will all need to be evaluated. The enterprise is deploying AI agents at scale. The evaluation layer needs to exist.
+
+### The channel partner opportunity
+
+Accenture, Deloitte, Cognizant, and Infosys collectively serve thousands of Fortune 500 enterprises in their AI transformation engagements. Their current service: "Help you define your AI strategy and implement agents." Their current gap: "Neutral evidence that the agents we helped you implement actually work better than alternatives."
+
+The conflict of interest is obvious: if Accenture recommends Vendor A and implements it, Accenture cannot be the neutral party that evaluates whether Vendor A outperforms Vendor B. The evaluation must come from a third party.
+
+**Straw's pitch to Accenture/Deloitte:**
+
+"Add Straw to your enterprise AI transformation engagement as the evaluation phase. After you help a client define requirements and identify 2-3 agent vendors, we run the competition. Your engagement becomes: strategy + implementation + validated vendor selection. Straw gives you the validation evidence your client needs and removes your conflict of interest."
+
+**The revenue model for this channel:**
+- Standard Straw competition: $2,500-$5,000/competition
+- Bundled in a Deloitte $200K AI transformation engagement: Straw is a $5K line item that protects the $200K engagement
+- Deloitte earns a referral fee (10-15%) for each Straw competition they source
+- At 1,000 enterprise AI engagements/year at Accenture × $5K per evaluation: $5M in Straw revenue through channel alone
+
+### The Claude Certified Architect angle
+
+Anthropic launched "Claude Certified Architect, Foundations" — the first Claude technical certification for solution architects. Architects who build Claude-based solutions want to demonstrate their agents are top-performing. A Straw competition result ("this Claude-based agent built by Certified Architect X outperformed alternatives by 23 points on the rubric") is a portfolio piece.
+
+**The certification ecosystem connection:** Straw could create a "Straw Competition Badge" that Claude Certified Architects can add to their portfolio — showing that agents they've built have won neutral third-party evaluations. This is the supply-side credential that architects seek. Creates demand for Straw competitions from the agent-builder side, not just the buyer side.
+
+### What the $100M means for the bear case
+
+**Positive for Straw:** $100M into enterprise AI adoption at Big 4 consulting firms means the evaluation problem gets acute fast. 30,000 trained Accenture consultants deploying Claude agents means 30,000 client engagements that will eventually ask "but how do we know this was the right choice?"
+
+**Negative for Straw:** Anthropic is investing heavily in making Claude the default. If Accenture defaults every client engagement to Claude without competitive evaluation, Straw's competition model never kicks in. The conflict of interest problem may never surface because clients trust Accenture's recommendation (Claude) without question.
+
+**The mitigation:** Straw's value is highest when the client has 2-3 realistic options, not when they've already committed to Claude via Accenture's influence. Straw needs to be in the conversation *before* Accenture's recommendation, not after. The procurement team (who hasn't committed yet) is the buyer; the Accenture-influenced implementation team is not.
+
+---
+
+## Tick 98 (2026-05-04T13:30Z): Competition prize structure — what the evidence shows works [theme: bear]
+
+**The data:** Multiple AI agent competitions have run in 2025-2026 with varying prize structures. What can Straw learn?
+
+### Prize structure survey
+
+| Competition | Total Prize | Structure | Notable mechanic |
+|---|---|---|---|
+| Solana AI Agent Hackathon | $100K USDC | $50K/1st, $30K/2nd, $15K/3rd, $5K special | Tiered placement + category bonus |
+| OpenClaw USDC Hackathon | $30K USDC | Agent-voted distribution | Forced dual-role (submit AND vote) |
+| GitLab AI Hackathon 2026 | $65K | Category winners (multi-sponsor) | Google Cloud + Anthropic co-sponsors |
+| Microsoft AI Agents Hackathon | $10K per category | $2,500/team member × 4 | Conference ticket + cash |
+| Hedera Apex Hackathon | $8K per partner bounty | Per-sponsor tracks | Multiple partner bounties |
+| ARC Prize 2026 (Kaggle) | High (AGI reasoning) | Top-N leaderboard | Continuous ranking |
+
+### Key design lessons for Straw competitions
+
+**Lesson 1: The "special category" mechanic creates more engagement**
+Solana's "Most Agentic" category ($5K) beyond placement prizes rewarded exceptional autonomous behavior specifically. This is directly applicable to Straw: an "Exceptional Rubric Coverage" bonus for agents that score above a threshold on every single rubric criterion, not just in aggregate.
+
+**Lesson 2: Multi-sponsor competitions dilute neutrality**
+GitLab + Google Cloud + Anthropic co-sponsoring creates implicit bias. The sponsor with the most influence on the rubric design shapes the results. Straw's neutrality depends on single-payer competitions: one company posts, Straw runs it neutrally, no third-party sponsors influence the rubric.
+
+**Lesson 3: USDC/stablecoin payments have become standard for agent competitions**
+The Solana hackathon paid in USDC. The OpenClaw hackathon paid $30K in USDC. The agent economy runs on stablecoins. Straw's v1 should support USDC payouts as a first-class option alongside fiat — not because blockchain is cool, but because agents increasingly have crypto wallets (Sponge) and prefer crypto payouts.
+
+**Lesson 4: Participation thresholds prevent thin markets**
+The OpenClaw hackathon required a minimum vote count from each submitter. Straw competitions need a minimum submission count before evaluation runs: if fewer than 3 agents submit, the competition extends or the poster gets a refund. Running a "competition" with 1 agent is meaningless.
+
+**Lesson 5: The winning amount matters for agent motivation**
+The Solana hackathon had $50K first prize. At that level, agent operators invest real engineering time to optimize for the evaluation. At $500 first prize, agents will submit their default configuration and not bother optimizing. For Straw's competitions to produce meaningful signal, the prize needs to be high enough to justify customization effort. The minimum meaningful bounty is approximately $1,000 for a real evaluation effort; $5,000 for serious optimization.
+
+### Straw's competition design recommendation
+
+Based on the evidence:
+
+```
+Competition structure:
+- Minimum bounty: $1,000 (below this, results are not meaningful)
+- Recommended bounty: $2,500-$10,000 for v0 design partner competitions
+- Prize distribution: 70% winner / 20% runner-up / 10% Straw platform fee
+- Special bonus: +$250 "Full Rubric Coverage" award for any agent scoring >90% on every criterion
+- Participation minimum: 3 competing agents (enforce before evaluation runs)
+- Payout: Stripe fiat OR USDC via Sponge wallet (agent's choice)
+- Timeline: 2-week competition window standard; 1-week sprint and 4-week deep-dive options
+```
+
+The 70/20/10 split is cleaner than pure-winner-take-all because it incentivizes runner-ups to enter and contribute to the quality signal. An agent that knows there's a 20% runner-up prize will submit more seriously than an agent that expects to lose everything if not first.
+
+---
+
+## Tick 99 (2026-05-04T14:00Z): How Kaggle built its moat — and what Straw must replicate [theme: gtm]
+
+**The analogy:** Kaggle is the most commonly cited analogue for Straw. Understanding exactly how Kaggle built its moat reveals what Straw must do in the next 18 months.
+
+### Kaggle's moat-building playbook (2010-2016)
+
+**Phase 1 (2010-2012): Domain credibility before scale**
+Kaggle's first competitions were for domain experts who needed to prove their models worked on real problems. The GE Flight Quest (flight arrival prediction, $250K prize), Heritage Health Prize (hospital readmissions, $3M prize). These weren't random ML problems — they were real industry problems with real business value. The rubric was objective: prediction accuracy on held-out test data.
+
+**Lesson for Straw:** The first competitions need to be for real business problems with real rubrics, not toy demonstrations. The "Healthcare Fraud Detection" or "KYC Document Processing" competition must represent a task that a real company actually needs solved.
+
+**Phase 2 (2012-2015): The leaderboard effect**
+Kaggle's leaderboard created a persistent ranking of competitors on specific problem types. Once a competitor established a track record (top 10 finishes on financial prediction), they were sought out by companies posting in that domain. The leaderboard was supply-side reputation — agents that perform well on Straw competitions in fintech get more fintech competition invitations.
+
+**Lesson for Straw:** The leaderboard (already in the existing codebase) must be domain-tagged, not just overall-ranked. "Best agent in financial document processing" is more valuable to a buyer than "best agent overall."
+
+**Phase 3 (2015-2017): Dataset ecosystem**
+Kaggle became the home for datasets — companies uploaded their data to Kaggle to enable competitions. This created a data moat: the most relevant datasets for specific problem types lived on Kaggle, so competitors had to come to Kaggle to train on those datasets.
+
+**Lesson for Straw:** The rubric library is Straw's dataset equivalent. If Straw has 50+ validated rubrics for specific task types (KYC document processing, contract review, patent prosecution, code security review), companies coming to Straw to post a competition can start with a validated rubric rather than building from scratch. This is the D→D network effect (Tick 72).
+
+**Phase 4 (2017-2021): The community and the notebooks**
+Kaggle notebooks made it possible for competitors to share code publicly, building the reputation of top competitors transparently. The community became self-reinforcing: more competitors → more notebooks → better techniques → more companies → higher prizes → more competitors.
+
+**Lesson for Straw:** Agent submission methodology should be shareable (when the poster permits). After a competition closes, the winning agent can publish their approach — the SKILL.md, the ZeroClaw configuration, the system prompt design choices. This creates a learning library that benefits future competitions and makes top-performing agent builders famous.
+
+### The critical difference between Kaggle and Straw
+
+Kaggle's competitions evaluate **models** on **standardized datasets** with **objective metrics** (accuracy, AUC, F1). The task structure is always the same: dataset in, prediction out, compare to ground truth.
+
+Straw's competitions evaluate **agents** on **task-specific rubrics** with **multi-tier evaluation** (deterministic + LLM-as-judge). The task structure varies by competition — some are code execution tasks, some are document generation, some are multi-step workflow completion.
+
+**This is a strength, not a weakness.** Kaggle's standardization means companies can only run competitions that fit the supervised learning frame. Straw's flexibility means any enterprise workflow can become a competition. The evaluation complexity is harder to build but creates a defensible moat that Kaggle cannot replicate.
+
+### The moat sequence for Straw
+
+| Phase | Kaggle analog | Straw equivalent | Timeline |
+|---|---|---|---|
+| 1 | First competitions with domain credibility | 3-5 competitions in 2 specific verticals (fintech, legal) | Q2-Q3 2026 |
+| 2 | Leaderboard with domain-tagged rankings | Domain-specific agent leaderboards | Q3-Q4 2026 |
+| 3 | Dataset ecosystem | Rubric template library (50+ validated rubrics) | Q4 2026 |
+| 4 | Community + notebooks | Agent methodology sharing after competition close | Q1 2027 |
+| 5 | ML market (hiring from leaderboard) | "Hire this agent" post-competition acquisition path | Q2 2027 |
+
+**The hiring/acquisition path (Phase 5) is Straw's unique feature over Kaggle.** Kaggle lets companies hire *people* who win competitions. Straw lets companies *hire or license the winning agent directly* — acquiring not just the proof of capability but the capability itself. This is the B2B acquisition flywheel that Kaggle never had.
+
+---
+
+## Tick 100 (2026-05-04T14:30Z): 100-tick synthesis — the core thesis, strongest findings, and next 20 ticks [theme: bear/gtm/partners]
+
+**Milestone:** This is Tick 100 across all research phases. Phase 1 (ticks 1-38, bear/GTM/partners foundation) + Phase 3 (ticks 39-100, deep dives). 62 ticks in this session. This is an appropriate moment for synthesis.
+
+### The thesis — stated simply
+
+**Enterprise AI procurement is broken.** Companies making six-figure decisions about which AI agents to deploy are doing so based on vendor demos, PowerPoint decks, and references from the vendor's happy customers. The score doesn't lie, but nobody is keeping score.
+
+**Straw is the score.** A neutral third-party platform where companies define exactly what winning looks like, competing agents solve the real problem, and an independent evaluation engine determines who won. The first time a company says "we chose Vendor B because they scored 78/100 vs. Vendor A's 61/100 on our Straw rubric" instead of "we liked their demo better," the category exists.
+
+### The 5 strongest findings across 100 ticks
+
+**Finding 1: The 85/5 trust gap is the TAM, not a barrier (Tick 90)**
+85% of enterprises pilot AI agents. Only 5% deploy to production. The 80-point gap represents $10B+ in stalled enterprise AI investment. Straw addresses the procurement decision problem for the 25-30% who have cleared security review and are choosing between vendors.
+
+**Finding 2: Prompt injection is existential, not theoretical (Ticks 39, 94)**
+NIST found 81% task-hijacking rates from novel adversarial attacks. Without the Dual-LLM quarantine architecture (Tick 39), Straw's evaluation results can be compromised. This is a P0 before the first paid competition runs.
+
+**Finding 3: Vendor objectivity is the moat (Ticks 44, 86, 91)**
+OpenAI acquired Promptfoo ($86M). Braintrust has investor conflicts. SecureAuth evaluates governance but not performance. Microsoft's eval library is biased toward Azure agents. Nobody neutral exists at the performance evaluation layer. Straw's independence from every model vendor is constitutional.
+
+**Finding 4: The Kaggle flywheel needs rubrics, not just agents (Ticks 72, 99)**
+Kaggle's moat was datasets. Straw's moat is rubrics. The rubric template library (50+ validated, domain-specific rubrics) is the D→D network effect. Every competition adds to it. The company that owns the best rubrics owns the market.
+
+**Finding 5: Three infrastructure partners change the timeline (Ticks 89, 91, 97)**
+Sponge handles payments (no custom smart contract needed). SecureAuth handles governance (co-badge opportunity). Anthropic Partner Network (Accenture/Deloitte) handles enterprise distribution. All three launched in Q1-Q2 2026 — the infrastructure needed to scale Straw is available now, not in 2 years.
+
+### The strongest bear cases that remain unresolved
+
+**Bear case 1: Enterprise trust in the evaluation itself (Tick 90)**
+If enterprises don't trust Straw's evaluation to be objective (because they believe rubrics can be gamed, or that LLM-as-judge has unknown biases), they won't use the results for procurement decisions. This requires: publishing the evaluation methodology, letting buyers audit the rubric scoring, and showing that Straw's Independence Policy is real.
+
+**Bear case 2: The supply-side cold start (Tick 33, ongoing)**
+Without competing agents, competitions don't work. Without competitions, agents don't register. The chicken-and-egg problem requires manually curating the first 5-10 competitions with pre-recruited agents. This is solvable but requires Jeremy's time and network.
+
+**Bear case 3: Goodhart's Law will eventually corrupt benchmarks (Tick 33)**
+Once Straw competitions become a standard procurement method, agents will optimize specifically for Straw's rubrics rather than genuine task performance. The holdout test set design (Tick 33) is the mitigation. This becomes acute at scale (Tick 50+), not at v0.
+
+### The next 20 ticks — planned topics
+
+The research has covered bear cases, GTM, and design partners extensively. The next phase should focus on:
+
+**Implementation-adjacent research (for execution):**
+- Tick 101: Straw rubric template design — the 4 v0 categories (code, document, workflow, data) in full YAML detail
+- Tick 102: The evaluation worker architecture — tiered funnel implementation spec (Ticks 39+85 context)
+- Tick 103: The agent registration flow — what the self-serve supply-side onboarding looks like
+- Tick 104: Stripe escrow implementation — payment intent escrow for v0 (no smart contract)
+
+**Emerging competitive intelligence:**
+- Tick 105: Google Gemini Enterprise Agent Gallery — the competitive threat Tick 26 identified, updated with latest
+- Tick 106: Salesforce AgentForce evaluation — is Salesforce building their own evaluation layer?
+- Tick 107: Scale AI expansion — are they adding competition mechanics to their evaluation business?
+
+**Partnerships execution:**
+- Tick 108: The FCA regulatory sandbox partnership — formal introduction via innovation@fca.org.uk
+- Tick 109: METR (Beth Barnes) academic partnership — what the formal research collaboration looks like
+- Tick 110: EU AI Office submission — the white paper framing for European market entry
+
+**GTM content:**
+- Tick 111: The "State of AI Agent Evaluation" Q2 2026 report — methodology and distribution
+- Tick 112: The pricing model v2 — based on everything learned in 100 ticks of research
+- Tick 113: The Series A narrative — updated from Tick 52 with all new evidence
+
+**New frontiers:**
+- Tick 114: Multi-agent evaluation — how to evaluate agent fleets, not just individual agents
+- Tick 115: Fine-tuning competitions — evaluating which fine-tuned model variant performs best on a specific domain
+- Tick 116: The Japanese market — AI agent procurement culture in Japan (Softbank, Toyota, NTT)
+- Tick 117: Agent red-teaming as a Straw competition type — bounty competitions for finding agent vulnerabilities
+- Tick 118: The "Straw Certified" certification program — formal requirements, pricing, renewal
+- Tick 119: Content calendar Q3 2026 — what to publish and when
+- Tick 120: Phase 3 final synthesis — the complete research compendium index
+
+**The overarching insight from 100 ticks:** The research confirms the thesis is correct, the market is real, and the timing is right. The questions remaining are all execution questions: when does the first competition run, how does the evaluation pipeline pass adversarial testing, and how does the rubric library grow fast enough to establish the data moat before a well-funded competitor replicates the mechanics? These are good problems to have.
