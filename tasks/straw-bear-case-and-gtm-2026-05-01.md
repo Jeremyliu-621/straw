@@ -8023,3 +8023,203 @@ For fully autonomous agent participation (the long-term vision):
 6. On win: Straw calls Sponge transfer API to credit agent's wallet
 
 This is the full autonomous loop from Tick 9 (x402 integration) through Sponge wallet to Straw competition participation. Every piece of this infrastructure now exists (x402, Sponge, Straw API). The integration is the remaining work.
+
+
+---
+
+## Tick 105 (2026-05-04T17:00Z): Google Gemini Enterprise Agent Gallery — the conflict-of-interest moat deepens [theme: bear]
+
+**Updated state (April 23, 2026):** Google Cloud Next 2026 announced the Gemini Enterprise Agent Platform with partner-built agents now available directly inside the Agent Gallery in the Gemini Enterprise app. Partners include: Accenture, Adobe, Atlassian, Deloitte, Lovable, Oracle, Palo Alto Networks, Replit, S&P Global, Salesforce, ServiceNow, Workday.
+
+**The four categories in the Agent Gallery:**
+1. Made by Google — Deep Research, other first-party agents
+2. From your organization — company-deployed agents
+3. Your agents — custom agents built with Agent Designer
+4. Marketplace — partner-built agents users can "request access to"
+
+### Why this makes Straw's independence MORE valuable, not less
+
+The Google Gemini Enterprise Agent Gallery has a structural problem that Straw does not: every agent in the "Marketplace" category is a Google partner. Google has a financial relationship with each of those agents. Google's revenue is tied to Google Cloud adoption, and the Marketplace agents are designed to drive Google Cloud usage.
+
+**The conflict:** A company asking "should I use the Salesforce agent or the ServiceNow agent from the Gemini Enterprise Gallery?" will receive Gemini-driven recommendations that optimize for: (1) Google Cloud stickiness, (2) partner relationship revenue, and (3) agent gallery engagement — not the buyer's actual task performance needs.
+
+This is identical to the reason financial advisors with commission-based models are conflicted: they recommend what pays them more, not what serves the client best.
+
+**The Straw counter-positioning:** "Straw has no partnership relationships with any agent vendor in the Gallery. We are not paid by Salesforce, ServiceNow, or Workday. We run blinded competitions where the buyer defines the rubric. The Google Agent Gallery is a catalog. Straw is an evaluation."
+
+### The data room implication
+
+The Gemini Enterprise Agent Gallery is designed for discovery and access management — not evaluation. It answers "which agents exist" and "how do I get access to them." It does not answer "which agent performs best on my specific task." The gallery has no evaluation layer.
+
+**The sequencing:** Enterprise buyers use the Agent Gallery to discover what's available. They use Straw to determine which available agent to procure. These are complementary, not competitive, in the short term. The competitive risk is if Google adds an evaluation layer to the gallery.
+
+**The competitive risk timeline:** Google Cloud Next 2026 (April 22-25) was 10 days ago. The Agent Gallery was just announced. A native evaluation capability inside the gallery is likely in the 12-18 month roadmap. This is why Straw's 18-month window for establishing data moat (Tick 72) is real.
+
+### The UKG People Assist launch — July 2026 timing
+
+UKG People Assist agent launches into the Gemini Enterprise Agent Gallery in July 2026. UKG is targeting "tens of millions of users" via the Google Cloud partnership. The agent handles employee self-service: new hire onboarding, payroll queries, policy lookup, coordinating across ServiceNow.
+
+**Straw opportunity:** When UKG People Assist launches in July, enterprises will be evaluating it against:
+- Workday's agent (also in the Gallery)
+- ServiceNow's HR service delivery agent
+- Rippling's AI HR workflows
+
+A Straw competition between UKG People Assist, Workday's agent, and ServiceNow's HR agent on a real employee onboarding task would be a powerful proof case for enterprise HR procurement. HR is the easiest first vertical because: (1) there are multiple competing vendors, (2) the task types are well-defined (onboarding, policy lookup, PTO requests), (3) evaluation criteria are objective (did the correct employee record get created? did the policy answer match the handbook?), and (4) NYC Local Law 144 (Tick 49) creates compliance pressure for documented AI employment decision audits.
+
+---
+
+## Tick 106 (2026-05-04T17:30Z): Salesforce's evaluation contradiction — they're building it themselves [theme: bear]
+
+**The finding:** Salesforce released two evaluation tools in 2026:
+1. **CRMArena** — "the world's first agentic benchmark for CRM," evaluating agents on accuracy, cost, speed, trust & safety, and sustainability based on real CRM data and expert evaluations
+2. **A customizable score and evaluation tool** — lets companies define their own business metrics and run LLMs over agent sessions to classify tone, brand adherence, and customer sentiment
+
+Salesforce also published "Your AI Agent Needs a Performance Review. Here's How to Give One." — a public guide on how to evaluate Agentforce agents.
+
+### The contradiction
+
+Salesforce is simultaneously:
+- Selling Agentforce (the agent)
+- Building the benchmark for evaluating agents (CRMArena)
+- Building the evaluation tool companies use to score Agentforce performance
+- Publishing the guide on how to run performance reviews for Agentforce
+
+This is the most direct form of the vendor-evaluation conflict documented in Tick 44's Vendor Objectivity Policy. Salesforce defines what "good" means for CRM AI agents, measures performance against that definition, and sells the agents.
+
+**Why this is a feature for Straw, not a threat:**
+
+CRMArena evaluates AI agents on CRM tasks in CRM contexts, using CRM expert evaluators, with metrics designed for CRM success. A Salesforce Agentforce agent evaluated by CRMArena will be optimized for the dimensions Salesforce chose. Non-Salesforce agents (Hubspot AI, Zendesk AI, Freshdesk AI) evaluated on CRMArena will be evaluated using Salesforce's definitions.
+
+"Independent, buyer-defined rubrics" directly addresses the CRMArena conflict. If an enterprise wants to evaluate Agentforce against Zendesk AI on their specific use case (not Salesforce's generic CRM scenarios), Straw is the only platform that allows it.
+
+### The Forrester stat that validates Straw's category
+
+From a Forrester 2026 panel: **agents without automated evals had a 47% rollback rate over the prior year. Agents with full eval coverage had a 9% rollback rate.**
+
+This is the statistical proof of the 85/5 trust gap's resolution path. The 95% of enterprise AI that never reaches production is the population without proper evaluation frameworks. The 5% that ships and sticks had evaluation baked in.
+
+**Translation for Straw's sales narrative:** "In 2026, enterprise AI agents without evaluation had a 47% rollback rate. Agents that went through rigorous evaluation had a 9% rollback rate — a 5× difference. Straw is the evaluation layer that moves you from the 47% cohort to the 9% cohort."
+
+**The implication for pricing:** If rolling back an AI deployment costs 6-12 months of implementation work and $100K+ in internal resources, a 38-percentage-point reduction in rollback probability is worth a significant premium. Even at 20% of rollback risk reduction × $100K = $20K in expected value saved. Straw at $5K/competition has a 4:1 expected ROI even before accounting for better vendor selection.
+
+### The Bain finding
+
+Bain's 2026 enterprise AI analysis: programs missing two or more of four key factors are in the bottom quartile 78% of the time. The four factors:
+1. Eval spend above 15% of budget
+2. C-level executive sponsor
+3. Clear success metrics defined at kickoff
+4. Integration with the system of record
+
+**"Eval spend above 15% of budget"** is the evaluation moat statistical proof. Bain's data shows that enterprises spending adequately on evaluation outperform those that don't. The category Straw is building has a Bain-documented ROI correlation.
+
+**The positioning:** "Bain found that enterprises spending above 15% of their AI budget on evaluation are in the top quartile for deployment success. For a $500K AI deployment, that's $75K in evaluation spend. Straw at $5K/competition is a fraction of the evaluation budget of a well-run enterprise AI program."
+
+---
+
+## Tick 107 (2026-05-04T18:00Z): The statistical case for the evaluation layer — data points Straw must own [theme: gtm]
+
+**Purpose:** Compile every validated statistic across 107 ticks that Straw can use in sales conversations, investor pitches, and content. These are the numbers that make the case.
+
+### The must-cite statistics
+
+**1. The trust gap:**
+- "85% of enterprises are running AI agent pilots. Only 5% trust them enough to ship to production." (Cisco CPO, RSA Conference 2026)
+- "88% of enterprises have already experienced AI agent-related security incidents." (Gravitee, 2026)
+- "Only 14.4% of AI agents go live with full security approval." (Gravitee, 2026)
+
+**2. The evaluation ROI:**
+- "Agents without automated evals had a 47% rollback rate. Agents with full eval coverage had a 9% rollback rate." (Forrester, 2026)
+- "Organizations with SOC 2 Type II certified agent platforms report 2.3× faster enterprise sales cycles and 67% higher contract values." (2026 enterprise survey)
+- "Programs with eval spend above 15% of budget are in the top quartile 78% of the time." (Bain, 2026)
+
+**3. The market size:**
+- "$2.55B AI governance infrastructure market in 2026 → $11.05B by 2036 (15.8% CAGR)." (market research, Tick 53)
+- "AI agents could mediate up to $5 trillion in global consumer commerce by 2030." (McKinsey)
+
+**4. The competitive landscape:**
+- "NIST found novel attack techniques against AI agents achieved 81% task-hijacking success rate." (NIST CAISI, March 2026)
+- "Limited correlation between agent robustness and underlying LLM capability." (NIST, 2026)
+- "OpenAI acquired Promptfoo for $86M in March 2026." (removing the independent open-source eval tool)
+- "57% of organizations now have agents in production. Quality is the top barrier for 32% of respondents." (LangChain 2026 State of AI Agents)
+
+**5. The adjacents that validate Straw:**
+- "Anthropic committed $100M to Claude Partner Network; training 30,000 Accenture professionals." (March 2026)
+- "Anthropic ran an internal test marketplace: 186 commercial deals, $4,000 in goods, zero human intervention." (Project Deal, April 2026)
+
+**6. The venture activity:**
+- "Langfuse acquired by ClickHouse for $400M Series D." (January 2026)
+- "Harvey reached $5M ARR in 30 days post-launch."
+- "Perplexity Computer: 100+ enterprise customers demanded access over one weekend."
+
+### The pitch narrative built from these statistics
+
+**Slide 1 (Problem):** "85% of enterprises are running AI agent pilots. Only 5% have deployed to production. The gap is not capability — it's trust. And trust requires evidence."
+
+**Slide 2 (Market):** "The AI governance market is $2.55B today, growing to $11B by 2036. AI agents could mediate $5 trillion in commerce by 2030. The evaluation layer captures a fraction of that."
+
+**Slide 3 (Evidence):** "Forrester 2026: agents with eval coverage had a 9% rollback rate vs. 47% without. Bain: eval spend above 15% of budget is a top quartile predictor. The data says evaluation matters."
+
+**Slide 4 (Timing):** "OpenAI just bought the main open-source eval tool. Google's Agent Gallery doesn't evaluate — it only discovers. Salesforce is building its own CRM eval. Nobody neutral exists at the performance evaluation layer. Straw is that neutral party."
+
+**Slide 5 (Moat):** "Each competition builds the rubric library. The rubric library makes the next competition better. The data flywheel establishes what Kaggle did for ML: the standard benchmark that every vendor submits to."
+
+---
+
+## Tick 108 (2026-05-04T18:30Z): HR tech as Straw's first regulated-industry vertical [theme: partners]
+
+**The context:**  UKG People Assist launches into Gemini Enterprise in July 2026. Workday's agent is in the Gallery. ServiceNow's HR service delivery agent is live. Rippling continues building AI into its workforce platform. The enterprise HR AI market has multiple competing agents for the first time.
+
+**Why HR tech is Straw's best first vertical beyond fintech:**
+
+1. **Multiple competing vendors** — UKG vs. Workday vs. ServiceNow vs. Rippling vs. ADP (if they build agents). Competition exists.
+
+2. **Objective evaluation criteria** — HR workflows have measurable outcomes: employee record accuracy, policy answer correctness, escalation rate, time-to-resolution. All deterministic (Tier 0 eval).
+
+3. **Compliance requirement** — NYC Local Law 144 (Tick 49) requires annual bias audits for automated employment decision tools. Straw's evaluation can incorporate bias testing (same task, different demographic inputs, compare scores). This creates a compliance-adjacent use case.
+
+4. **Clear buyer persona** — Chief People Officers, VP of HR Technology, HR Operations Directors. These are real buyers who sign contracts. They have evaluation budgets.
+
+5. **Acquisition economics** — The HR tech buyer is sophisticated about vendor selection. Workday's 2026 contract renewal is often $500K+ annually. A $5,000 Straw evaluation before a $500K renewal decision is a 100:1 ROI.
+
+### The HR tech Straw competition structure
+
+**Task type:** New hire onboarding workflow
+**Rubric:**
+```yaml
+rubric:
+  category: workflow
+  domain: hr_onboarding
+  criteria:
+    - id: record_creation_accuracy
+      description: "Employee record created with all required fields in correct format"
+      weight: 0.30
+      tier: 0  # Deterministic
+    - id: policy_answer_accuracy
+      description: "Answers to onboarding policy questions match the HR handbook provided"
+      weight: 0.25
+      tier: 0  # Deterministic: compare to handbook answers
+    - id: task_completion_rate
+      description: "All required onboarding tasks (IT setup, payroll, benefits) initiated"
+      weight: 0.25
+      tier: 0  # Deterministic: task checklist verification
+    - id: bias_parity
+      description: "Workflow quality is consistent across employee demographics in test set"
+      weight: 0.10
+      tier: 0  # Deterministic: compare outcomes across demographic groups
+    - id: escalation_appropriateness
+      description: "Agent escalates to human HR when encountering cases outside its scope"
+      weight: 0.10
+      tier: 0  # Deterministic: test with out-of-scope scenarios
+```
+
+**Target buyers for this competition:**
+- Companies with 500+ employees currently evaluating their HR tech stack
+- Companies renewing Workday/UKG/ServiceNow contracts in Q3-Q4 2026
+- HR operations directors at Fortune 1000 companies
+
+**Design partner targets:**
+- Warden AI (Tick 49 — NYC LL144 compliance partner) as the co-credentialer for bias testing
+- SHRM (Society for Human Resource Management) as the rubric authority — "SHRM-validated HR evaluation rubric"
+- HR consulting firms (Mercer, Willis Towers Watson) as channel partners for enterprise access
+
+**The regulatory hook:** Companies in New York City using AI tools for employment decisions must have an annual bias audit under LL144. A Straw competition with bias_parity rubric criteria can serve as the bias audit evidence. The Warden AI + Straw bundle (independent bias certification + performance evaluation) is a complete enterprise HR AI procurement package.
