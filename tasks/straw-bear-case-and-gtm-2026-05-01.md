@@ -30894,3 +30894,68 @@ The benchmark collapse was covered in Tick 415 of this document. Tick 460 adds: 
 Sources: servicenow.com/events/knowledge, biztechmagazine.com/servicenow-knowledge-2026-ai-agents, aiagentsquare.com/ai-agent-benchmarks-2026, kili-technology.com/ai-benchmarks-guide-and-their-limits, sierra.ai/blog/benchmarking-ai-agents, capgemini.com/events/knowledge-servicenow
 
 TICK_END
+
+---
+
+## Tick 461 — Klarna Reversal Case Study: The Canonical "Selected on Cost, Not Rubric" Story
+
+**Research date:** 2026-05-03
+
+### Klarna 2026: The Definitive Straw Cautionary Tale
+
+**What happened:** Klarna replaced 700 customer service agents with AI. Saved $30-40M/year. Then REHIRED 700 humans.
+
+**Why it failed (CEO quote):** "Cost appeared to be too predominant an evaluation factor, resulting in lower quality."
+
+**The technical cause:** AI handled volume (routine queries) but not complexity (edge cases, emotionally charged interactions, multi-step problem resolution). Customer satisfaction scores dropped.
+
+**The Straw intervention that would have prevented this:**
+
+Klarna's rubric should have been:
+- Resolution accuracy on routine queries: ≥ 95% ✓ (AI would have passed)
+- Resolution accuracy on complex/multi-step queries: ≥ 80% ✗ (AI would have FAILED)
+- CSAT score on all interactions: ≥ 4.2/5 ✗ (AI would have FAILED)
+- Emotionally sensitive interaction quality score: ≥ 75% ✗ (AI would have FAILED)
+
+A Straw evaluation with a complete rubric (not just "cost") would have shown: this agent is great for routine queries, inadequate for complexity. The procurement decision would have been: use AI for routine, humans for complex. No reversal needed. No CSAT damage.
+
+**The Klarna story in one sentence:** They selected an AI agent using a single-dimensional rubric (cost reduction) instead of a multi-dimensional rubric that included quality. Straw exists to prevent this.
+
+---
+
+### The 79%/11% Production Adoption Gap (Updated)
+
+Previous stat: 88% of pilots fail to graduate (Forrester+Anaconda, Lyzr)
+New stat: **79% of enterprises SAY they've adopted AI agents, but only 11% run them in production.**
+
+This is a different framing of the same gap. The 79% adoption claim includes:
+- Pilot deployments that haven't scaled
+- POC environments
+- Sandboxes
+- Limited function tests
+
+Only 11% have REAL production deployments. The gap between 79% and 11% = the opportunity. These are companies that believe they've "adopted AI" but have actually just run pilots. They're all going to attempt scaling to production. Most will fail without better evaluation.
+
+**Straw's addressable market update:** Not just companies before their FIRST AI agent — also the 68% of enterprises (79% minus 11%) who believe they've adopted AI but actually haven't made it to production. These companies are in the most acute pain: they've spent money on AI, they think it's working, and they haven't yet faced the production scaling failure. When they do, they're Straw's hottest leads.
+
+---
+
+### Updated champion persona: The "Already Failed Once" Buyer
+
+**Most urgent buyer persona (updated Tick 461):**
+
+> "We deployed [vendor X]'s AI agent in Q4 2025. It worked great in the pilot. We scaled to production in Q1 2026 and customer satisfaction dropped 15%. We're now re-evaluating our AI strategy. We need to select the right agent THIS TIME."
+
+This buyer has:
+1. Budget (they already spent once, they'll spend again)
+2. Urgency (the failed deployment is hurting them NOW)
+3. Receptivity (they KNOW they need better evaluation — Klarna's story resonates)
+4. Executive sponsorship (the failure escalated to C-suite)
+
+**Klarna-style failures are happening in every enterprise right now.** Klarna's story is public. Every VP of CX at a Fortune 500 who read the news in 2025-2026 is thinking "could that happen to us?"
+
+The cold email to this buyer: "Klarna replaced 700 agents, saved $40M, then rehired everyone because quality collapsed. Their CEO said: 'Cost was too predominant an evaluation factor.' Define a better rubric before your next AI agent decision. That's Straw."
+
+Sources: aibusiness.vc/klarna-ai-replaces-700-agents, fortune.com/2025/05/09/klarna-ai-humans-return-on-investment, digitalapplied.com/klarna-reverses-ai-layoffs, artofprocurement.com/state-of-ai-in-procurement, azumo.com/ai-agent-statistics
+
+TICK_END
