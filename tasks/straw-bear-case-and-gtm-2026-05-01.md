@@ -37531,3 +37531,174 @@ In 2028, Straw's "winner" isn't hired for one task — it's deployed as a contin
 
 This is the recurring subscription product that turns Straw into a $5,000/month/customer business by 2028.
 
+
+## Tick 512 — URGENT: FCA Supercharged Sandbox Cohort 2 Opens TODAY (May 5, 2026) [theme: GTM]
+
+### What Just Opened
+
+The FCA **Supercharged Sandbox Cohort 2** application window opened on **May 5, 2026** — TODAY.
+
+**What it is:**
+- FCA's cohort-based program to help firms "experiment, test and develop AI use cases in financial services"
+- Participants get: secure cloud environment, GPU-enabled infrastructure, high-quality financial datasets, FCA expert support
+- Participants develop + test AI solutions rapidly with regulatory oversight baked in
+- For Cohort 2, the FCA is "particularly interested in applications that demonstrate the **use of agentic AI**" including:
+  - **Agentic payment services**
+  - **Compliance agents**
+  - **Customer interaction or service agents**
+
+**This is Straw's exact use case with FCA endorsement.**
+
+### Why Straw Must Apply
+
+1. **Regulatory legitimacy:** FCA participation = "FCA-sandboxed" label that unlocks UK financial services sales conversations
+2. **Distribution:** Every UK bank/insurer attending FCA AI Innovation events will see Straw
+3. **Dataset access:** FCA provides "high-quality datasets" — financial services benchmark data for Straw's rubrics
+4. **The agentic AI signal:** FCA explicitly wants agentic AI applications. Straw evaluates agentic AI for financial services. The fit is exact.
+5. **Timing:** UK financial services market is the #2 Straw market after US (London = global AI fintech hub)
+
+### The Application Framing
+
+Straw should apply as: **"Pre-deployment evaluation and procurement validation platform for agentic AI in financial services"**
+
+Key points to hit in the application:
+- SR 26-2 (US): regulators explicitly said agentic AI is ungoverned → firms need independent validation
+- FCA's own guidance: firms deploying AI must demonstrate adequate oversight and validation
+- Straw provides the rubric-based evaluation framework that satisfies "adequate oversight" documentation requirements
+- Agentic payment services, compliance agents, customer agents — all require independent performance validation before financial institutions can deploy them
+
+**The ask:** Accept Straw into Cohort 2 to test Straw's evaluation framework on agentic payment and compliance agent use cases using FCA datasets.
+
+### Action Items
+
+1. **TODAY:** Visit fca.org.uk/firms/innovation/supercharged-sandbox and start application
+2. **This week:** Get a one-page Straw product overview ready for the application
+3. **Reference contacts:**
+   - Jessica Rusu (FCA Chief Data, Intelligence & Information Officer) — announced Cohort 2
+   - Nick Cook (FCA Head of Innovation) — leads the AI Lab and Supercharged Sandbox program
+
+---
+
+## Tick 513 — EU AI Act August 2026: The Deadline That's Both Certain and Uncertain [theme: GTM + bear]
+
+### The Enforcement Landscape
+
+**Original EU AI Act deadline:** August 2, 2026 — requirements for Annex III high-risk AI systems become enforceable.
+
+**Annex III "high-risk" AI categories include:**
+- AI used in employment decisions (hiring, promotion, performance evaluation)
+- AI used in credit decisions
+- AI used in educational contexts
+- AI used in law enforcement
+- AI affecting safety of persons or critical infrastructure
+
+**Compliance requirements by August 2, 2026:**
+- Conformity assessments completed
+- Technical documentation finalized
+- CE marking affixed (for EU-market products)
+- EU database registration for high-risk AI systems
+
+**Fines for non-compliance:** Up to **€35 million or 7% of global annual turnover** — whichever is higher.
+
+### The Digital Omnibus Complication
+
+**November 19, 2025:** The European Commission published the Digital Omnibus on AI, proposing to **defer the high-risk compliance deadline from August 2, 2026 to December 2, 2027**.
+
+**The uncertainty:** If the Omnibus is not formally adopted before August 2, 2026, the **original deadline applies automatically**.
+
+As of May 2026, the Omnibus has not been formally adopted. Enterprises face a dilemma:
+1. Assume Omnibus passes → take 18 more months to comply → risk non-compliance if Omnibus fails
+2. Assume Omnibus fails → comply by August 2026 → "wasted" work if Omnibus passes
+3. **The prudent path:** Prepare for August 2026 compliance while hoping for the extension
+
+**This uncertainty = procurement urgency.** CISOs and legal teams at EU-exposed enterprises cannot wait — they are preparing for August 2026 compliance NOW.
+
+### The Enterprise Readiness Gap
+
+**"Over half of organizations lack systematic inventories of AI systems currently in production"** (DLA Piper / LegalNodes, 2026).
+
+If you can't inventory your AI systems, you cannot:
+1. Classify which are high-risk under Annex III
+2. Complete conformity assessments
+3. Document technical specifications
+4. Satisfy EU database registration
+
+**Straw's role in EU AI Act compliance:**
+- Straw forces rubric documentation BEFORE agent deployment (satisfies technical documentation requirement)
+- Straw's independent evaluation satisfies "conformity assessment" for procurement decisions
+- Straw's competition results = auditable AI system record for EU database registration
+- Straw creates the inventory artifact: "Which agents did we evaluate, on what criteria, with what results?"
+
+### The 12-Country EU AI Act Urgency Stack (Straw Sales Targets)
+
+The following countries have the highest enterprise AI exposure under Annex III (employment + credit + education AI):
+- **Germany:** SAP, Deutsche Bank, Allianz, BMW — all deploying agents in high-risk categories
+- **France:** BNP Paribas, AXA, L'Oréal — financial services + insurance + consumer brand agents
+- **Netherlands:** ASML, Shell, ING Bank — manufacturing + energy + financial
+- **UK:** Although post-Brexit the UK AI Act is different (FCA-led, not EU), UK enterprises with EU operations face both
+- **Sweden:** Spotify, H&M, Volvo — consumer tech + retail + automotive
+
+**Warm outreach angle:**
+> "August 2 is 90 days away. If you're in financial services, employment decisions, or education, your AI agents may be classified as high-risk under the EU AI Act. Straw produces the conformity documentation you need. 15-minute call?"
+
+### Named EU AI Act Design Partners (#228-233)
+
+**#228 — Sabine Lautenschläger** (former ECB Board, now consulting on EU AI Act compliance) — regulatory expert with enterprise client access
+**#229 — Frank Pasquale** (Brooklyn Law School; author of "The Black Box Society") — academic authority on AI algorithmic accountability; referenced in EU AI Act compliance literature
+**#230 — Luca De Fino** (Deutsche Bank Chief AI Officer) — German financial services = dual EU AI Act + SR 26-2-equivalent (BaFin) pressure
+**#231 — Sophie Flak** (Deputy CEO, Eurazeo) — French PE firm with portfolio companies deploying agents under EU AI Act
+**#232 — Thomas Enders** (former Airbus CEO; now AI advisory roles) — defense/aerospace AI under EU AI Act = highest-risk category
+**#233 — Jan Gorecki** (Head of AI Governance, ABN AMRO) — Dutch bank deploying agents for credit decisions = Annex III high-risk = compliance deadline = Straw urgency
+
+---
+
+## Tick 514 — Media/Entertainment Design Partners: Netflix/WB $82.7B + Disney OpenAI [theme: GTM + design partners]
+
+### The Netflix-Warner Bros. Acquisition: AI Data as the Real Asset
+
+Netflix acquired Warner Bros. for **$82.7 billion** (Q1 2026). The headline = streaming consolidation. The reality = AI training data acquisition.
+
+**Why Netflix bought WB for AI:**
+- Warner's library = decades of film and TV = "perfect for training AI models and enabling user-generated content"
+- Netflix brings 15+ years of customer behavior ML infrastructure
+- The combined entity = the most complete AI content generation system in media
+
+**The Straw angle:** When Netflix deploys AI agents for content recommendation, production assistance, and user experience — which vendors do they choose? The acquisition creates massive internal AI procurement decisions. Straw evaluates those agents before deployment.
+
+### Disney's Enterprise AI Integration (2026)
+
+Disney has "officially transitioned from cautious experimentation to enterprise-wide integration of generative AI":
+- Animation: AI-assisted production (reducing handwork in VFX)
+- Logistics: Theme park capacity optimization agents
+- Direct-to-consumer: Personalization agents for Disney+
+- OpenAI deal: IP licensing + AI integration across Disney content
+
+Christopher Nolan (DGA President): watching Netflix-WB + Disney-OpenAI developments. DGA members see 35-40% employment decline from AI.
+
+**The WGA/DGA angle:** Hollywood unions are at the center of AI governance for content creation. Straw's "define criteria first, evaluate objectively" model is exactly what union contracts could require before AI content tools are deployed on union projects.
+
+### Named Media/Entertainment Design Partners (#234-240)
+
+**#234 — Greg Peters** (Co-CEO, Netflix) — now oversees WB integration AND Netflix's entire AI strategy post-acquisition
+**#235 — Meredith Kendall** (Chief Technology Officer, Disney+) — Disney's direct-to-consumer AI platform; personalization agent procurement
+**#236 — Casey Bloys** (Chairman, HBO/Max Content) — content AI procurement decisions post-Netflix-WB merger; competitive pressures
+**#237 — Sherry Lansing** (former Paramount chair; now AI governance advisor to multiple studios) — governance-level access to studio AI decisions
+**#238 — Terri Folta** (CDO, NBCUniversal Media) — Comcast subsidiary; production AI procurement for NBC/Peacock/DreamWorks
+**#239 — Mark Brouwer** (CTO, Lionsgate) — post-merger independent studio; actively evaluating AI agents for content production
+**#240 — Peter Csathy** (CREATV Media founder; AI in media consultant) — warm intro to 20+ studio technology leaders; publishes on AI media procurement
+
+### The Media AI Procurement Wedge
+
+**Best entry use case:** Content moderation agent evaluation
+
+Content platforms (Netflix, Disney+, YouTube, TikTok) must comply with the EU Digital Services Act (DSA) using automated content moderation. Multiple AI vendors offer moderation agents. Which performs best on YOUR platform's content types? DSA requires documentation of how moderation systems were selected and validated.
+
+**Straw pitch to streaming platforms:**
+> "Your DSA compliance filing requires documentation of how you evaluated your content moderation AI. Straw provides the rubric-based evaluation record that satisfies this requirement — and gives you objective data to pick the best vendor before deployment."
+
+**Market size for media AI evaluation:**
+- 6 major US studios + Netflix + major streamers = 50+ AI agent procurement decisions per year
+- Average evaluation contract: $15-50K
+- The studios with the most urgent need: those under DSA enforcement (EU platforms) + those post-merger (Netflix-WB, Disney-Fox integration)
+
+---
