@@ -14706,3 +14706,126 @@ The software vendor channel is different from direct enterprise sales: the vendo
 
 Revenue from vendors: Agent vendors can pay for "Straw Certified" positioning campaigns — not influencing results, but guaranteed use of the badge and featured placement in Straw's vertical leaderboards once they win competitions. Price: $30K-$50K/year for "Straw Featured Vendor" status (runs legitimate competitions; displays results prominently in Straw marketing).
 
+
+---
+
+## Tick 203 (2026-05-03T12:24:00Z): Talent risk — hiring Rubric Scientists and maintaining evaluation expertise [theme: bear]
+
+### The Core Scarcity Problem
+
+The job that Straw needs most — "Rubric Scientist" (the combination of ML evaluation expertise + domain knowledge + rubric design skill) — does not exist as a job title anywhere. It needs to be composed from adjacent talent:
+
+- **RLHF/fine-tuning specialists**: Average salary $200K-$312K in 2026. "LLM fine-tuning specialists earn 25-40% above the $160,000 US median AI salary." These engineers can design evaluation criteria and judge systems.
+- **Domain experts with AI exposure**: Former practicing lawyers who learned ML, doctors who understand clinical NLP, financial analysts who code. These people are rare and expensive.
+- **Quantitative evaluation researchers**: PhD graduates from HELM, BIG-bench, HellaSwag benchmark projects who have published on evaluation methodology. There are fewer than 500 people globally with this specific experience.
+
+The problem compounds: Straw's first 2-3 Rubric Scientists will set the methodology that determines whether "Straw Certified" is credible. Hiring wrong means building on a broken foundation.
+
+### The Salary Reality in 2026
+
+AI-related job postings grew 163% between 2024 and 2025. Job listings for agentic AI roles jumped 985% in 2024. The market is extremely tight at the top end.
+
+At Straw's seed stage ($3M-$5M raised), the total compensation budget for the first year is roughly $1.5M-$2M for all hires. If a Rubric Scientist commands $200K+ base, Straw can only afford 2-3 before the budget is exhausted.
+
+### Mitigation Strategies
+
+**1. Fractional Rubric Scientists**  
+Part-time engagements with senior ML evaluation researchers at top universities. A Princeton postdoc working 20 hours/week on Straw rubric methodology costs $80K-$120K/year fully loaded versus $200K+ full-time. The tradeoff: slower iteration, less availability for customer calls.
+
+**2. University lab partnerships**  
+Formal partnership with one evaluation research lab — MIT CSAIL (evaluation for code), Stanford HAI (general LLM evaluation), CMU LTI (NLP evaluation). They provide methodology credibility and talent pipeline. Straw provides interesting research problems and a path to industry employment for graduating PhDs. The first Rubric Scientist hire should ideally come from this pipeline.
+
+**3. AI companies as sources**  
+Recent RLHF team alumni from Anthropic, OpenAI, DeepMind, and Google Brain. People who spent 2-3 years doing human feedback collection and rubric design for frontier models want to apply that expertise to real-world enterprise problems. Watch for layoff waves — AI companies regularly cut RLHF teams as they move to automated preference collection.
+
+**4. The "evaluation engineer" job category creation**  
+Straw should publish a clear job description for "Rubric Scientist" with a career path (Junior Evaluation Engineer → Senior Rubric Scientist → Principal Evaluation Architect). This positions Straw as the company that takes evaluation expertise seriously as a career path — attracting people who feel undervalued at hyperscalers where evaluation is a cost center, not a product.
+
+### The Key Person Risk
+
+If Straw hires one extraordinary Rubric Scientist who becomes the methodology leader, and that person leaves at Year 2 for Anthropic or Google (which will offer $400K+), Straw loses:
+- The intellectual authority behind "Straw Certified" credibility
+- The customer relationships built on their expertise
+- The tacit methodology knowledge that isn't in any document
+
+Mitigation: (1) Document everything — all rubric design methodology must be written down, not in one person's head. (2) Distribute evaluation expertise — no single person is the sole reviewer for any competition. (3) Equity vesting that makes leaving expensive in the first 3 years. (4) Make Straw the place where evaluation expertise is most respected — harder to replicate at a hyperscaler where it's a support function.
+
+### Bear Case Score: 6/10 (real, partially controllable)
+
+The talent risk is real but not insurmountable. The mitigation is fractional researchers in Year 1, transitioning to full-time hires as funding allows. The greater risk is the cultural one: if Straw becomes known as a "great place to start but you'll leave for a hyperscaler in 2 years," the talent pipeline dries up. The solution is making Straw the most intellectually serious place to do evaluation work — which is a product and culture decision, not just a compensation decision.
+
+
+---
+
+## Tick 204 (2026-05-03T12:28:00Z): Cybersecurity design partners — named contacts, AI SOC evaluation [theme: partners]
+
+### Why Cybersecurity Is an Underrated Straw Vertical
+
+82% of security analysts are concerned they may be missing real threats due to alert fatigue. 52% of executives at AI-using organizations have AI agents in production for security operations. Non-autonomous AI agents have reduced SOC investigation times from 30+ minutes to under 2 minutes.
+
+Cybersecurity AI agents are making high-stakes, irreversible decisions: "is this alert a real threat or a false positive?" Getting it wrong either way is costly — a missed attack costs millions; alert fatigue from false positives costs analyst burnout and blind spots.
+
+The evaluation rubric for cybersecurity AI is unusually well-defined:
+- True positive rate (correctly identified real threats)
+- False positive rate (unnecessary investigation waste)
+- Time-to-detection (mean time to alert on real threat)
+- Context accuracy (did the agent correctly identify the kill chain stage?)
+
+These are quantitative, auditable metrics that a Straw competition can measure precisely.
+
+### Named Contacts
+
+---
+
+**1. Palo Alto Networks**
+- Chief Security Intelligence Officer: Wendi Whitmore (leads AI security strategy at PANW)
+- CEO: Nikesh Arora
+- PANW AI context: Palo Alto Networks has made significant AI bets — their Cortex XSIAM platform uses AI agents for autonomous SOC operations
+- Why Straw: PANW's enterprise customers are evaluating Cortex XSIAM against CrowdStrike Falcon, Microsoft Sentinel, and Darktrace. The enterprise CISO wants a neutral head-to-head result. PANW wants to win that competition.
+- Straw pitch to PANW: "Nikesh — Cortex XSIAM's AI agents are making detection decisions for global enterprises. Your prospects are comparing you to CrowdStrike and Microsoft. Straw runs the competition that shows a CISO the audited head-to-head result. When XSIAM wins that competition, your sales team has the independent validation no demo can match."
+- ARR opportunity: $40K-$80K for competition validation programs across multiple enterprise customer accounts
+
+---
+
+**2. CrowdStrike**
+- President: Michael Sentonas
+- CEO: George Kurtz
+- CrowdStrike AI: Falcon platform's AI for threat detection; their AI flagged the 2024 outage-causing update before deployment (except... it didn't). The 2024 Falcon update crisis makes CrowdStrike especially motivated to prove their AI is reliably accurate.
+- Straw pitch angle: "The 2024 incident showed the risk of AI systems that aren't evaluated independently before deployment. Straw is the platform that gives your enterprise customers confidence that CrowdStrike's AI has been validated independently — not just in your own testing environment."
+- Note: Be careful with the 2024 incident framing — don't make it feel like an attack. Frame it as "the industry lesson that independent evaluation infrastructure is now required."
+
+---
+
+**3. Darktrace**
+- CEO: Jill Popelka (appointed 2024; AI-native security company)
+- Darktrace position: Uses "self-learning AI" for autonomous threat detection. Claims to detect novel attacks that signature-based tools miss.
+- Why Straw: Darktrace's differentiation is "our AI learns patterns that rules-based systems miss." That's an evaluation-ready claim: Straw can run a competition where a novel attack scenario is presented to Darktrace AI and competitor AI. The rubric: detection rate, false positive rate, time-to-detection on novel attacks.
+- Darktrace's motivation: They've been public about their AI methodology. Publishing Straw competition results would reinforce their credibility after years of competitor skepticism about "AI magic."
+
+---
+
+**4. Torq (AI SOC Platform)**
+- Founded 2020; raised Series B $42M (verify current)
+- Their Socrates platform achieves 90% automation of Tier-1 analyst tasks
+- Why Torq is perfect for Straw: Torq's entire value proposition is quantifiable (90% automation rate, 10x faster response). These numbers are exactly what a Straw rubric measures. Torq can use Straw competition results to validate their 90% claim independently.
+- Contact: Ofer Smadari (CEO) — LinkedIn search; small-enough company to reach CEO directly
+- Opener: "Ofer — Torq's 90% automation claim is compelling. The question your prospects ask: 'Can you prove it on our specific threat environment, not just your benchmarks?' Straw runs the competition on the customer's actual environment simulation. When Torq wins, the customer has independent validation. When Torq loses on a specific threat type, you learn exactly where to improve."
+
+---
+
+**5. SimCorp (mentioned in prior ticks — also cybersecurity angle)**
+- SimCorp launched "Agent Launchpad" in April 2026 for asset management AI agents
+- SimCorp's agents handle financial data including custody, portfolio management
+- Cybersecurity angle: SimCorp agents processing $10T+ in AUM data need cybersecurity AI monitoring. Straw for cybersecurity agent evaluation + Straw for financial AI agent evaluation = two separate competition pipelines through one customer relationship.
+
+---
+
+### Cybersecurity Vertical GTM Note
+
+CISOs are the buyers. They respond to:
+1. **Risk reduction framing**: "The average cost of a security breach is $4.9M. Straw costs $15K-$40K to verify your AI SOC is calibrated correctly. The math is obvious."
+2. **Regulatory framing**: SEC cybersecurity disclosure rules (effective 2023) require material cybersecurity incidents be disclosed within 4 days. If your AI missed the incident because it wasn't properly evaluated, that's a board-level discussion.
+3. **Peer benchmarking**: "Here's how your AI SOC detection rate compares to industry benchmarks from Straw's anonymized competition results."
+
+Target CISO outreach via: RSA Conference (largest cybersecurity gathering, May each year), Black Hat, BSidesSF. Straw needs one conference talk at RSA 2026 presenting a technical paper on "AI SOC evaluation methodology."
+
