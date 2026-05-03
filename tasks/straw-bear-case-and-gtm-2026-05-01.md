@@ -18893,3 +18893,255 @@ Future evolution (Series A):
 - **Outcome-based option**: Straw charges a success fee based on the value difference between the winner and runner-up. If Agent A saves the enterprise $500K/year more than Agent B would have, Straw charges 2-5% of that delta. This pricing aligns Straw's incentives perfectly with the enterprise's outcome.
 - **Tiered by agent value**: Competition fee scales with the size of the agent deployment. A $500K/year agent contract gets a $25K competition. A $5M/year agent contract gets a $100K competition. Straw's fee is roughly 2-5% of the first-year contract value — which is below the cost of a bad decision.
 
+
+---
+
+# PHASE 2 MORNING READING GUIDE (FINAL — Updated After Tick 259)
+
+*This supersedes the prior version written after Tick 212. All sections incorporate findings from ticks 1-259.*
+
+---
+
+## Section 1: The Bear Case — Calibrated Risks With Scores and Mitigations
+
+### Score Key: 1-10 (10 = existential threat; 1 = theoretical only)
+
+### Tier 1: Serious Threats (7/10)
+
+**1. Marketplace Competition — Salesforce AgentExchange, Google Agentspace, Microsoft Marketplace [7/10]**
+
+The 2026 AI agent marketplace landscape has consolidated around enterprise platforms. Salesforce (200+ AgentExchange partners), Google Agentspace, and Microsoft Azure Marketplace each have their own evaluation/certification infrastructure — embedded, free, and tied to existing enterprise relationships.
+
+*The mitigation*: Platform marketplaces cannot evaluate agents *across* platforms. A cross-platform comparison (Salesforce Agentforce vs. Microsoft Copilot vs. independent vendor) requires Straw. Additionally, platform certifications are structurally conflicted — a Salesforce-certified agent has been validated by the company with a revenue interest in the agent's success. Straw's neutrality is structurally impossible for platform vendors to replicate. Positioning: "Straw is for cross-platform decisions. Platform evaluations are for within-ecosystem decisions."
+
+**2. Goodhart's Law / Benchmark Gaming [7/10]**
+
+AI vendors trained on Straw's published rubric templates will optimize their agents for Straw's evaluation criteria rather than genuine task performance. Evidence: even null models can achieve 86.5% win rates on public benchmarks. This is not theoretical — it is documented across every public AI evaluation that gained commercial relevance.
+
+*The mitigation*: (1) Never publish specific task data — only rubric templates. Task data comes from the enterprise buyer, not Straw. (2) Randomize rubric execution order and environment characteristics. (3) Use private "honeypot" rubric dimensions not disclosed to vendors. (4) Longitudinal tracking: agents that game competitions show signature performance patterns. (5) Post-deployment audit offering: compare competition results to production performance at 90 days. The gaming threat requires permanent architectural vigilance — it is not solved once, it is maintained continuously.
+
+### Tier 2: Real and Manageable (5-6/10)
+
+**3. Evaluation Theater [6/10]**
+
+Enterprises use Straw competitions to rubber-stamp predetermined vendor decisions — using the badge as liability protection rather than genuine decision support. The appearance of rigor without the substance. If Straw becomes known as a CYA tool rather than a real decision tool, reputation degrades exactly as scale increases.
+
+*The mitigation*: Design the product to make theatrical use difficult. (1) Require rubric criteria to be defined before seeing agent results. (2) Include rubric dimensions the enterprise cannot have anticipated (surprise dimensions). (3) Track whether enterprises actually deploy the Straw winner — correlation between Straw winner and deployment decision is a product health metric. (4) Publish Straw's methodology in enough detail that sophisticated buyers can distinguish genuine competitions from theater.
+
+**4. Straw's Own Liability Exposure [6/10]**
+
+When an enterprise deploys an agent that Straw certified, and that agent causes harm, Straw faces potential negligence claims as a "certifying body." The credit rating agency analogy applies: rating agencies have been sued after their AAA-rated bonds failed.
+
+*The mitigation*: Legal infrastructure before first enterprise competition. (1) Terms of Service: "Straw Certified reflects performance at time of evaluation, not a warranty of future production performance." (2) Professional liability (E&O) insurance. (3) Customer contract indemnification clause. (4) Methodology transparency: published limitations of sandbox evaluation. The rating agency structure is the model — Straw can achieve similar legal protection with competent counsel.
+
+**5. AI Hype Cycle Disillusionment [6/10]**
+
+GenAI is in the Trough of Disillusionment (Gartner 2026). Average enterprise GenAI initiative burns $1.9M with <30% CEO satisfaction. Budget freezes, political fallout from failed AI projects, and general AI skepticism can slow Straw's pipeline.
+
+*The mitigation*: Counter-cyclical positioning. "You just burned $2M on AI that didn't work. Here's how to not do that again." The disillusionment creates demand for rigorous evaluation — Straw's pitch strengthens, not weakens, in the trough. Design partner relationships built during the trough become first paying customers when budgets unfreeze.
+
+**6. Platform Consolidation / SaaSpocalypse [6/10]**
+
+February 2026 "SaaSpocalypse": Anthropic's enterprise plugins triggered a $285B rout in enterprise SaaS stocks. Microsoft, Salesforce, SAP, and Oracle are all bundling AI evaluation into existing enterprise subscriptions. Point solutions without platform integration get displaced.
+
+*The mitigation*: Straw is not a point solution being displaced by platform consolidation — it is a horizontal evaluation service for cross-platform decisions. The enterprise that uses Microsoft + Salesforce + independent AI needs Straw. The enterprise that only uses one platform is not Straw's market. Explicitly scope Straw's ICP to enterprises with multi-platform AI deployments.
+
+**7. Big Consulting Substitution [5/10]**
+
+McKinsey, Deloitte, and Accenture are building AI evaluation practices. They have enterprise relationships Straw doesn't have.
+
+*The mitigation*: Consulting firms are structurally conflicted (vendor partnerships), too slow (3-6 months vs. 2-6 weeks), too expensive ($500K-$2M vs. $15K-$50K), and produce non-reproducible deliverables (PowerPoint decks vs. auditable scores). The long-term move: channel partnership with consulting firms who embed Straw in their AI transformation engagements.
+
+**8. Foundation Model Commoditization [5/10]**
+
+GPT-4 class inference is ~50x cheaper in 2026 vs. 2023. If agent quality converges to a tight performance band, Straw's evaluations find small differences with diminishing decision relevance.
+
+*The mitigation*: As model capability commoditizes, agent differentiation shifts to integration quality, operational reliability, and domain specialization — dimensions Straw's rubrics measure better than raw capability benchmarks. Proactively evolve rubric categories toward operational metrics (API reliability, audit trail completeness, escalation quality) and away from pure capability metrics.
+
+**9. Technical Architecture / Sandbox Risk [5/10]**
+
+One data breach in the zero-data sandbox ends enterprise trust permanently. Agent result manipulation is possible. Vendor non-participation blocks best-in-class comparisons.
+
+*The mitigation*: SOC 2 Type II before first financial services competition. Zero-data architecture with Anthropic-style credential vault pattern. Bug bounty for sandbox escape. Black-box API evaluation model removes vendor IP concerns.
+
+**10. Vendor Lock-in Blocks Straw [4/10]**
+
+Behavioral lock-in (18 months of accumulated context about how an organization works) makes switching costs prohibitive even after Straw recommends a better agent.
+
+*The mitigation*: Position Straw as pre-commitment evaluation, not post-adoption evaluation. Annual recertification creates recurring revenue regardless of whether enterprises switch. MCP-based portability standards reduce behavioral lock-in over time.
+
+**11. Build vs. Buy [4/10]**
+
+35% of enterprises have replaced SaaS tools with custom builds. Well-resourced tech teams could build internal evaluation infrastructure.
+
+*The mitigation*: Self-built evaluation cannot produce a credible external score. The principal-agent problem kills internal evaluation credibility for any external stakeholder. Straw's value is independence, not just capability.
+
+**12. Trump Regulatory Deregulation [3/10]**
+
+Trump's AI executive order challenges state AI laws; OMB M-26-04 could be modified.
+
+*The mitigation*: Never let compliance be the primary reason to buy Straw. Lead with business value (better decisions, avoided failures). Compliance is a supporting argument. EU AI Act is unaffected by US domestic regulatory changes.
+
+---
+
+## Section 2: GTM Motion — From $0 to First Paying Customers
+
+### The Core Sales Insight
+
+**Enterprise buyers need defensible, auditable AI procurement decisions more than they need optimal AI agent selection.** Straw produces both simultaneously — but the second is what makes the sale, and the first is what creates the recurring need.
+
+### The Validated Sales Motion
+
+**Stage 1: Problem validation (before cold outreach)**
+Jeremy posts LinkedIn thought leadership 3x/week for 90 days. Content: "The AI Procurement Visibility Problem," rubric templates as free downloads, anonymized competition case studies. Every engagement is a warm lead. The champion persona: VP of AI, Head of AI Products, Director of AI Strategy.
+
+**Stage 2: Workshop-first entry**
+The opener is NOT "buy Straw." The opener is: "Can I help you build the rubric you'll use to evaluate your next AI agent vendor?" Free offer. No commitment. Produces a concrete artifact (rubric draft) the champion can show internally. Every rubric Straw helps create is a designed entry point for the first competition.
+
+**Stage 3: First competition close**
+Workshop → "Now that you have the rubric, do you want to run the actual competition?" One competition, 2-6 weeks, $15K-$50K all-in. Success criteria: defensible decision, publishable case study, list of 3-5 next AI decisions that need evaluation.
+
+**Stage 4: Land-and-expand**
+NRR target: 130%. Expansion triggers: new AI deployments (every enterprise has 5-20 in the roadmap), annual recertification ("Straw Certified: 2026" expires), agent version upgrades, internal expansion from one department to multiple. The competition never ends — Straw is a recurring practice, not a one-time service.
+
+### The Pricing Structure
+
+| Tier | Product | Price | What It Is |
+|---|---|---|---|
+| 0 | Rubric Workshop | $2,500 | 4-hour facilitated session; produces a draft rubric |
+| 1 | Single Competition | $15K-$50K | Full blind competition; 2-6 agent evaluation |
+| 2 | Annual Subscription | $30K-$120K/year | Unlimited competitions within scope + rubric library |
+| 3 | Agent Recertification | $12K-$25K/year | Annual "Straw Certified" renewal for deployed agents |
+| 4 | Channel/White-label | Custom | Consulting firms embedding Straw in their engagements |
+| 5 | API | $20K/year | Platform access for enterprises building on Straw |
+
+### The Key Buyer Personas and Their Triggers
+
+| Buyer | Primary Fear | Straw Message |
+|---|---|---|
+| CIO | Bad AI choice damages credibility | "Straw gives you a defensible, auditable record" |
+| CFO | Wasted AI budget | "Straw's $25K competition avoids a $2M bad contract" |
+| General Counsel | Regulatory non-compliance | "Straw's report satisfies OMB M-26-04 and EU AI Act requirements" |
+| CISO | Data exposure in evaluation | "Zero-data sandbox — your data never leaves our control" |
+| AI Champion | Internal resistance to recommendation | "External validation removes the politics" |
+| Board/Audit | Reputational risk from AI failure | "Documented process demonstrates due diligence" |
+
+### PR and Media Strategy
+
+**Publication tier 1** (first 6 months): VentureBeat bylines (thought leadership on AI procurement methodology), The Information (design partner announcement), TechCrunch (seed round + first customer).
+
+**Publication tier 2** (Series A): Fortune (FICO Score for AI agents story), Bloomberg (financial services case study), Wall Street Journal (enterprise names willing to go on record).
+
+**Named journalists**: Becca Szkutak (TechCrunch, enterprise VC), Ron Miller (TechCrunch, enterprise AI), Tom Dotan (The Information, AI companies), Jonathan Vanian (Fortune, AI beat), Carl Franzen (VentureBeat, enterprise AI).
+
+### The $0-$100K ARR Path
+
+6 workshops ($2,500 each) + 4 competitions ($15K-$25K each) = **$90K-$115K ARR** in ~6 months.
+
+### Unit Economics
+
+- Competition gross margin: 70-75% (compute costs are 2.5-8% of revenue at $15K+ floor)
+- LTV:CAC: ~24.7:1 (4-year customer lifetime, 130% NRR, $9K blended CAC)
+- CAC payback: <6 months at initial design partner pricing
+- Year 1 ARR target: $75K-$120K
+- Series A trigger: $500K-$750K ARR, 10+ named enterprise logos, 130%+ NRR
+
+### Category Creation
+
+The category is **"Competitive AI Evaluation"** (enterprise-friendly) or **"AI Selection Science"** (aspirational). Straw names it in 2026 or someone else does. Required moves:
+1. Publish "Straw's 2026 State of AI Procurement Study" (300 enterprise CIO/CDO survey)
+2. Own the vocabulary: "Straw Certified," "Rubric Scientist," "Evaluation Theater," "Blind Competition," "AI Procurement Gap"
+3. Engage Gartner AI evaluation analyst for Magic Quadrant positioning
+
+---
+
+## Section 3: Design Partner Master List — 50+ Named Contacts Across Verticals
+
+### Tier 1 Target Verticals (Highest Priority)
+
+**Financial Services** (all previously identified, ticks 1-212):
+- Lori Beer (JPMorgan, CIO), Jeff McMillan (Morgan Stanley, Head of AI), Marco Argenti (Goldman, CIO), Nitin Tandon (Vanguard, CIO)
+
+**Healthcare AI Platforms** (all previously identified):
+- Mahe Bayireddi (Phenom, CEO), Ashutosh Garg (Eightfold, CEO), May Habib (Writer, CEO)
+
+### Tier 1 Target Verticals (New This Session)
+
+**Retail/CPG:**
+- Daniel Danker (Walmart, EVP AI Acceleration), Suresh Kumar (Walmart, CTO), Milen Mahadevan (Kroger, CDAO), Vittorio Cretella (P&G, CIO), Manish Sharma (Unilever, CTO), Michael Fiddelke (Target, CEO), Brett Craig (Target, CTO)
+
+**Insurance:**
+- Daniel Schreiber (Lemonade, CEO), Shai Wininger (Lemonade, CTO), Suren Gupta (Allstate, EVP Technology), Marco Morelli (AXA, CEO), Frédéric Tardy (AXA, Chief Customer Officer), Joachim Wenning (Munich Re, CEO), Tricia Griffith (Progressive, CEO)
+
+**Legal Tech:**
+- Winston Weinberg (Harvey AI, CEO), Pablo Arredondo (Casetext/Thomson Reuters), Jason Boehmig (Ironclad, CEO); VP Legal Operations at Fortune 500 GC offices
+
+**CX/Contact Center:**
+- Tom Eggemeier (Zendesk, CEO), Eoghan McCabe (Intercom, CEO), Mike Murchison (Ada, CEO); VP CX Technology at American Express, T-Mobile, Delta, Bank of America
+
+### Tier 2 Target Verticals (New This Session)
+
+**Energy/Utilities:** Richard Donaldson (Duke Energy, CIO), Bonnie Titone (Duke, CAO), Rob Cain (Xcel Energy, CTO), Paul Zeitz (National Grid, CDTO), John Ketchum (NextEra, CEO)
+
+**Manufacturing/Industrial:** Roland Busch (Siemens, CEO), Vimal Kapur (Honeywell, CEO), Björn Rosengren (ABB, CEO), Blake Moret (Rockwell, CEO), Scott Strazik (GE Vernova, CEO)
+
+**Federal Government:** Craig Martell (DoD CDAO), Eric Hysen (DHS CIO), Stephen Ehikian (GSA Administrator), Kurt DelBene (VA CIO)
+
+**Logistics/Supply Chain:** Vishal Talwar (FedEx, CDIO), Wanda Gay Williams (UPS, CIEO), Jason Pawlowski (DHL, VP IT), Navneet Kapila (Maersk, CTO)
+
+**HR Tech:** (Phenom/Eightfold covered in FS/Platform section above), Carl Eschenbach (Workday, CEO), Sayan Chakraborty (Workday, President Technology); CHRO/VP HR Technology at Amazon, JPMorgan, Walmart, Unilever
+
+**Education:** Sal Khan (Khan Academy, CEO), Kristen DiCerbo (Khan Academy, CLO), Luis von Ahn (Duolingo, CEO), Greg Hart (Coursera, CEO), Andy Bird (Pearson, CEO)
+
+**Telecom:** Andy Markus (AT&T, SVP & CDAO), Praveen Atreya (Verizon, VP Technology), Mike Sievert (T-Mobile, CEO), Claudia Nemat (Deutsche Telekom, Board Technology)
+
+**Pharma/Biotech:** Chris Boshoff (Pfizer, CSO), Lidia Fonseca (Pfizer, CDTO), Mene Pangalos (AstraZeneca, EVP R&D), Dave Johnson (Moderna, CDO), Chris Gibson (Recursion, CEO)
+
+### Total Named Contacts Identified This Session: 50+
+
+---
+
+## Section 4: The Phase 2 Synthesis — What We Know Now
+
+### What Is Definitively True
+
+1. **The problem is real and large**: Enterprise AI procurement is structurally broken. Enterprises sign $3M-$10M AI agent contracts based on vendor demos. 88% of agent pilots never reach production. The GAO documented this failure for federal agencies in April 2026. The market for rigorous AI procurement evaluation exists and is growing with enterprise AI spend.
+
+2. **The timing is now**: Agentic AI is at Peak of Inflated Expectations (Gartner 2026). The enterprise AI procurement wave for agentic deployments will crest in 2027-2028. Straw must be the established standard before that wave crests. The window for category creation is 18-24 months.
+
+3. **Neutrality is the moat**: Straw's value proposition that no platform vendor can replicate is structural independence. Salesforce cannot credibly evaluate whether Salesforce beats Microsoft. Straw can. This is the core competitive advantage and must be protected in every product, pricing, and partnership decision.
+
+4. **The switching cost economics work**: At LTV:CAC of 24.7:1, Straw has outstanding unit economics. The 130% NRR target is achievable because enterprise AI deployments multiply and every deployment creates a new competition. Straw is a recurring-necessity business, not a one-time service.
+
+5. **The design partner program is the MVP**: The first $100K ARR comes from 6 workshops + 4 competitions. These are achievable in 6 months through warm outreach to Jeremy's network and one design partner conference per quarter.
+
+### The Top Three Bear Cases to Solve Before Launch
+
+1. **Goodhart's Law (7/10)**: Build the anti-gaming architecture (private task data, randomized evaluation, hidden dimensions, post-deployment audit offering) before the first competition. Gaming destroys the product's integrity.
+
+2. **Marketplace competition (7/10)**: Nail the cross-platform evaluation positioning. "Straw is for when you're comparing across ecosystems." Every design partner conversation and sales email should clarify this.
+
+3. **Straw's liability (6/10)**: Get legal counsel, E&O insurance, and clear Terms of Service before first enterprise competition. The rating agency structure is the model. Don't let the first litigation surprise be a company-killer.
+
+### What Requires Further Research
+
+1. **Specific first design partner identification**: The named contacts above are research targets. The next step is warm introductions through Jeremy's network — which specific individuals does Jeremy personally know who can make the first intro?
+
+2. **Regulatory memo for EU operations**: Legal opinion on EU AI Act Article 14 and Straw's deployer classification status before first EU customer.
+
+3. **Technical architecture review**: Zero-data sandbox proof-of-concept before committing to first financial services competition.
+
+4. **Seed investor list refinement**: Of the Tier 1 VCs identified (Bessemer, Battery, Lightspeed, Insight, a16z), which have partners who have personally experienced the AI procurement problem? That is the highest-conviction investor for this specific category.
+
+### The One-Line Pitch That Survives Any Room
+
+**"Demos lie; competitions don't. Straw is the only way to know which AI agent actually performs best on your work before you sign the contract."**
+
+---
+
+*Phase 2 Research Complete — Ticks 1-259 — Last updated: 2026-05-03*
+*Total named contacts identified: 80+*
+*Total bear cases scored: 12*
+*Total GTM frameworks developed: 15+*
+*Total vertical rubric templates: 12*
+
