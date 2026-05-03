@@ -29802,3 +29802,61 @@ This rubric is objective, binary, measurable. An enterprise choosing between Int
 Sources: digitalapplied.com/blog/customer-service-ai-agent-statistics-2026, usefini.com/guides/top-ai-agents-customer-service, usefini.com/guides/best-ai-customer-support-platforms-vp-cx, rebasehq.ai/enterprise-ai-spending-2026
 
 TICK_END
+
+---
+
+## Tick 453 — Procurement AI Agent Buyer Intelligence + MCP Infrastructure Validation
+
+**Research date:** 2026-05-03
+
+### AI procurement buyer intelligence (2026)
+
+**94% of procurement executives use generative AI at least weekly** — AI is now universal in procurement.
+
+**90% of procurement leaders implementing or planning to implement AI agents** in the next 12 months.
+
+**Only 5% of AI pilots have reached mature production-stage adoption in procurement** — the graduation gap is extreme in this vertical.
+
+**Enterprise buyer evaluation criteria for AI procurement tools (2026):**
+1. Technical integration: Can it read/write to SAP, Oracle, or Coupa in real time?
+2. Trust and lock-in: Can we switch? Do we own our data?
+3. Governance/compliance: Is every decision logged? Audit trail native?
+4. Autonomous capability: Does it actually execute, or just recommend?
+5. Accuracy: >90% accuracy on routine tasks; <80% for manual baseline
+
+**Straw alignment:** Buyers are asking "does this AI agent execute autonomously while maintaining compliance and delivering measurable cost/time savings?" This is EXACTLY the rubric for a Straw competition. Define the SAP integration depth criteria, accuracy requirements, compliance logging requirements — then run competing procurement agents against all five criteria. Score them. Buy the winner.
+
+---
+
+### New procurement software targets
+
+**Ramp launched AI agents to automate corporate procurement (2026)** — Ramp (corporate card + spend management, $7.7B valuation) is building AI procurement agents. They compete against Coupa, SAP Ariba, and Oracle Procurement Cloud.
+
+**Key insight:** Ramp's procurement agents compete for the same enterprise budget as Coupa's AI agents. Enterprise CFOs evaluating Ramp vs. Coupa for AI-powered procurement need a neutral evaluation. **Straw is the platform for that evaluation.**
+
+---
+
+### MCP infrastructure validation: 110M SDK downloads/month
+
+**MCP (Model Context Protocol):** 110 million SDK downloads per month. Originally developed by Anthropic, now donated to Linux Foundation / Agentic AI Foundation. **This is the plumbing that connects AI agents to enterprise systems.**
+
+**Why this matters for Straw:**
+1. MCP is the transport layer — Straw is the evaluation layer. They're complementary.
+2. If an enterprise agent submission can expose an MCP server, Straw can evaluate any agent's ability to integrate with enterprise systems (SAP, Salesforce, ServiceNow) as part of the rubric.
+3. MCP's Linux Foundation governance = standards body for agent interoperability = Straw's ICAAN value proposition gets technical infrastructure.
+
+**AI CapEx in 2026:** $650 billion globally (upward revision). This is the amount being spent to build AI infrastructure. Straw's evaluation layer captures value from this investment — every $650B in CapEx creates agents that need to be evaluated before enterprise procurement.
+
+---
+
+### Foundation Capital 2026 prediction alignment
+
+Foundation Capital's 2026 AI outlook: "For many tasks, small, customized models running inside enterprise infrastructure will outperform frontier models — they're faster, cheaper, and able to operate where data can't leave the building."
+
+**Straw implication:** If enterprises increasingly use fine-tuned on-prem models rather than frontier models, the evaluation question becomes MORE complex — buyers can't just check "GPT-4 vs. Claude" on a benchmark. They need to evaluate custom-tuned agents on their specific task. This increases Straw's value: the more customized the agent landscape, the more you need buyer-defined rubric evaluation.
+
+On-prem agent trend = increasing Straw relevance, not decreasing.
+
+Sources: artofprocurement.com/blog/state-of-ai-in-procurement, suplari.com/how-ai-agents-change-procurement-2026, pymnts.com/ramp-ai-agents-corporate-procurement, aaif.io/mcp-enterprise-infrastructure-2026, foundationcapital.com/ideas/where-ai-is-headed-in-2026, aibusinessreview.org/ai-capital-expenditure-2026
+
+TICK_END
