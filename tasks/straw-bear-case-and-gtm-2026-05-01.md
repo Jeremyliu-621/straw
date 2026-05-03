@@ -14201,3 +14201,101 @@ The 2026 Hospital OPPS Final Rule establishes CMS reimbursement for AI-assisted 
 **Healthcare in the 30-contact list:** Replace the "healthcare" row with an additional fintech contact for now. When Straw has 10+ competitions complete across other verticals and is ready to invest in HIPAA compliance (BAA template, on-premise execution mode), healthcare becomes the highest-value vertical opportunity.
 
 Sources: [Chief Healthcare Executive AI 2026](https://www.chiefhealthcareexecutive.com/view/ai-in-health-care-26-leaders-offer-predictions-for-2026), [FDA AI Medical Device Stats IntuitionLabs](https://intuitionlabs.ai/articles/fda-ai-medical-device-tracker), [Tateeda AI Trends Healthcare 2026](https://tateeda.com/blog/ai-trends-in-us-healthcare)
+
+---
+
+## Tick 215 (2026-05-04T03:15Z): Perplexity as the ideal first Straw design partner [theme: partners]
+
+### Perplexity profile for Straw outreach
+
+**Current state (May 2026):**
+- $18B valuation
+- 22M users (growing)
+- ~500-1,222 employees (sources vary; rapid growth from 38 employees in mid-2025)
+- Engineering is ~60% of headcount → approximately 300-730 engineers
+- Already uses Braintrust for LLM observability
+- Active GitHub presence (34 official repos)
+- Rapid engineering headcount growth means they're actively hiring and therefore have an acute question: which coding agent maximizes productivity for new engineers ramping up?
+
+**Why Perplexity is the ideal first Straw design partner:**
+
+1. **They're already an evaluation-aware company.** Perplexity uses Braintrust (AI observability) — they understand the value of systematic evaluation. They won't need to be educated on why rubric-based evaluation matters.
+
+2. **The coding agent decision is real and current.** 300-730 engineers using suboptimal coding tools is a measurable cost. At $150K fully-loaded engineer cost and 20% productivity impact: $9M-$21.9M/year in productivity value at stake. A $25K Straw competition to optimize that decision is trivially ROI-positive.
+
+3. **They would publish the results.** Perplexity has strong engineering culture content. If Straw ran a competition on their codebase and the result was interesting (Cursor beats Copilot by 15% on Python code review quality), they would publish it. That post reaches 500K+ engineers.
+
+4. **No regulatory friction.** Perplexity is an AI-native company, not a bank or law firm. Privacy objections are manageable (their code is proprietary but the risk profile is lower). The sales cycle is the length of an email thread, not 9 months.
+
+### The Perplexity outreach (specific opener)
+
+Target: Head of Engineering, VP Engineering, or a staff-level engineer who manages tool adoption. Perplexity's engineering team is active on Twitter/X and publishes on the engineering blog.
+
+> **Email/DM subject:** Cursor vs. Copilot on Perplexity's codebase — 72-hour competition
+>
+> "Hi [Name],
+>
+> You use Braintrust for LLM observability — you clearly care about systematic evaluation. The same rigor you apply to production AI should apply to the coding agents your 300+ engineers use.
+>
+> Perplexity's codebase has a specific character: heavy Python, search infrastructure, LLM integration code. A vendor demo won't tell you whether Cursor's Python performance matches GitHub Copilot's for your specific patterns.
+>
+> Straw runs a 72-hour head-to-head competition on 25 of your actual GitHub issues: Cursor, Copilot Pro+, and Devin. You define the rubric. I run the competition. The score is the truth.
+>
+> Design partner price: free. One ask: if the result is interesting, you're open to a short engineering blog post.
+>
+> Worth a 15-minute call this week?"
+
+### The Perplexity-as-case-study amplification play
+
+If Perplexity publishes a Straw competition result:
+- Hacker News frontpage (engineering culture audience)
+- Twitter/X engineering community (100K+ engineers see it)
+- Reaches exactly the people who would want to run Straw competitions at their companies
+- Creates inbound demand from the developer audience Straw needs to grow
+
+This is the Braintrust growth pattern: get an AI-native company with an engineering blog as your first customer, publish results, use their credibility to open Fortune 500 doors.
+
+Sources: [Perplexity AI Statistics 2026](https://www.affiliatebooster.com/perplexity-ai-statistics/), [Perplexity Employee Count 2026](https://jobsbyculture.com/blog/working-at-perplexity-2026), [Perplexity GitHub](https://github.com/perplexityai)
+
+---
+
+## Tick 216 (2026-05-04T03:30Z): AI agents as the new B2B buying recommendation layer — Straw's hidden GTM channel [theme: gtm]
+
+### The new B2B buyer behavior
+
+SaaStr finding (2025): **"Two-thirds of B2B buyers now rely on AI agents and chatbots as much as or more than Google when evaluating vendors."**
+
+And the more provocative insight: **"The Future of B2B Marketing is AI Agent Recommendations. And AI Agents Play Favorites."** When an enterprise VP of Engineering asks Claude "which coding agent should we use," the answer Claude gives will be based on whatever information is available in Claude's training data and RAG sources. If Straw's competition results are in that knowledge base, Straw's certified winners get recommended. If they're not, the vendor with the best marketing content wins.
+
+### The implication: Straw's rubric library must be in AI training data
+
+The new enterprise buying journey:
+1. VP of Engineering asks Claude: "Compare Cursor and GitHub Copilot for a Python-heavy engineering team"
+2. Claude cites available evidence: GitHub Copilot's marketing materials, Cursor's benchmark claims, Stack Overflow developer surveys
+3. If Straw's competition data exists and is publicly accessible: Claude cites "Straw competition at [AI-native company] showed Cursor outperformed Copilot by X% on Python test coverage"
+4. The enterprise asks Straw to run the same competition for them
+
+**This changes the content strategy entirely.** Straw's first few competition results need to be:
+1. Published publicly (with buyer permission)
+2. Indexed by search engines and AI training data scrapers
+3. Cited in the form: "[Company type] chose [Winner] after a Straw competition in [Month/Year] — rubric: [categories], score: [X vs Y]"
+
+The Straw competition registry (verify.straw.ai) would serve this function: a public, queryable database of competition results, structured for both human readers and AI agent consumption (JSON-LD schema markup, structured data for LLM citation).
+
+### The "AI Agents Play Favorites" bear case for Straw
+
+The same dynamic that makes Straw's public competition data valuable for recommendation also makes Straw vulnerable if the AI agent recommending vendors is itself an agent operator. 
+
+Scenario: A buyer's company uses Microsoft Copilot for everything. They ask Copilot "should we use Straw?" Copilot recommends... Braintrust (Microsoft-invested), or doesn't mention Straw at all. The distribution channel is potentially gatekept by AI agents with conflicts of interest.
+
+**The neutrality moat applies here too.** Straw's positioning as a neutral third-party evaluator means that even if an enterprise uses a Microsoft AI assistant to research vendor options, the recommendation for "how to evaluate AI agents" might still point to Straw because it's the only platform with documented head-to-head results that doesn't have a stake in the outcome.
+
+### The content strategy for AI agent visibility
+
+To become the source that AI agents recommend for agent evaluation:
+1. **Publish structured competition data** at verify.straw.ai with schema.org markup — makes data accessible to LLM training and RAG systems
+2. **Write canonical definition content**: "What is an AI agent procurement evaluation?" — this is the content that AI agents cite when answering "how should I evaluate AI agents"
+3. **Get cited in peer-reviewed content**: Guest posts on SaaStr, the Pragmatic Engineer, Lenny's Newsletter — these are in AI training data and are high-authority citations
+4. **Open-source the rubric framework on GitHub** — GitHub repositories appear in LLM training data and are referenced when AI assistants help developers choose tools
+
+Sources: [SaaStr AI Agents Play Favorites](https://www.saastr.com/the-future-of-b2b-marketing-is-agent-recommendations-and-agents-play-favorites/), [SaaStr B2B AI 2026 is When It Gets Real](https://www.saastr.com/were-literally-just-getting-started-in-ai-b2b-heres-why-2026-is-when-it-gets-real/), [VC Startup Marketplace Cold Start](https://theventurecrew.substack.com/p/the-marketplace-startup-dilemma-how)
