@@ -15971,3 +15971,355 @@ Sources: [HackerOne pricing model research](https://hackerone.com), [Topcoder co
 
 *Session 9 complete. Ticks 238-244. Themes covered: bear (OpenAI substitution math, enterprise autonomy trust data quantified, Kaggle autopsy), gtm (enterprise sales cycle anatomy with stakeholder map, pricing architecture validated by comparable marketplaces), partners (David Morse/Cognition, Fergal Reid/Intercom, Cognizant SI channel), thread completion audit (all 24 mandate threads now covered). Phase 2 research is now comprehensive.*
 
+
+---
+
+## Phase 2 Session 10 — Ticks 245–250 (2026-05-03, continued overnight)
+
+*Five more ticks: Scale AI competitive threat, EU AI Act August 2 compliance window, Manus AI geopolitical situation, founding blog post strategy, and a final Phase 2 close-out.*
+
+---
+
+## Tick 245 (2026-05-03T15:30Z): Scale AI enters evaluation — the most credible direct competitor [theme: bear]
+
+### Scale Labs — what it actually is
+
+Scale AI launched Scale Labs in March 2026 as "an expanded research division" focused on AI model evaluation. Key products:
+
+- **SWE-Atlas:** Three evaluation suites for coding agents — Codebase QnA (understanding complex codebases), Test Writing (writing meaningful tests), Refactoring (preserving behavior while restructuring). Runs agents inside reproducible environments from real software repos.
+- **SWE-Bench Pro:** Coding agent leaderboard using public dataset
+- **Voice Showdown:** AI voice model benchmark
+- Scale AI is also the US AI Safety Institute's official third-party evaluator (February 2025)
+
+**Why Scale Labs is the bear case, not Braintrust/Langfuse:**
+
+Scale AI has:
+1. **Enterprise relationships** — Scale is already inside every major AI lab's data pipeline
+2. **Technical credibility** — US government trusts them to evaluate AI safety
+3. **Distribution** — Scale's sales team is already calling on the same enterprise AI buyers Straw would target
+4. **Evaluation expertise** — SWE-Atlas demonstrates they understand agent evaluation
+
+### Why Scale Labs is NOT Straw (the critical distinctions)
+
+| Dimension | Scale Labs | Straw |
+|---|---|---|
+| Task source | Public benchmarks (SWE-Bench, reproducible repos) | Buyer's proprietary, confidential tasks |
+| Who defines "winning" | Scale AI's standardized metrics | Buyer's custom rubric |
+| Purpose | Research/benchmark publication | Enterprise procurement decision |
+| Output | Public leaderboard | Private evaluation with compliance docs |
+| Business model | Data labeling/evaluation services ($1B+ revenue) | SaaS competition platform |
+| Neutrality | Scale AI is 49% owned by Meta (per Phase 1 research, 2023) — not neutral | Straw owns no stake in any competing agent |
+
+**The critical conflict:** Scale AI is 49% owned by Meta (2023 investment). Scale AI cannot neutrally evaluate Meta AI agents vs. Anthropic agents vs. Google agents. Straw can.
+
+**The Scale Labs threat trajectory:**
+- 2026: Scale Labs is focused on public benchmarks → not competing with Straw
+- 2027: Scale Labs adds "private enterprise benchmark" capability → potentially competing
+- 2028: Scale Labs launches "agent procurement evaluation service" → direct competitor
+
+**Straw's defense:** The 2026-2027 window is Straw's land-grab. Build the network of enterprise relationships, the rubric library (200+ validated rubrics), and the Straw Certified badge credibility before Scale Labs gets there. When Scale Labs eventually enters, Straw is already the trusted standard.
+
+**An alternative scenario:** Scale Labs + Straw as partners. Scale provides the benchmark infrastructure and technical credibility; Straw provides the rubric design, buyer-specific evaluation, and compliance documentation. Scale's public benchmarks could feed Straw's baseline scores.
+
+Sources: [Scale AI Wikipedia](https://en.wikipedia.org/wiki/Scale_AI), [Scale Labs Leaderboard](https://labs.scale.com/leaderboard), [SWE-Atlas SuperGok analysis](https://supergok.com/swe-atlas-benchmark/), [Scale AI Blog SWE-Atlas](https://scale.com/blog/swe-atlas)
+
+---
+
+## Tick 246 (2026-05-03T16:00Z): EU AI Act August 2 deadline — 96 days, Straw's most powerful GTM trigger [theme: gtm]
+
+### The compliance window is opening NOW
+
+The EU AI Act's Annex III high-risk AI provisions become enforceable on **August 2, 2026**. As of May 3, 2026, that is **91 days away**.
+
+**What enterprises must have by August 2:**
+1. A complete inventory of AI systems in production
+2. Risk categorization of each system (high-risk = Annex III)
+3. Technical documentation for high-risk systems
+4. Data governance records
+5. Human oversight design documentation
+6. Conformity assessment (third-party where required)
+
+**The compliance gap:** "Over half of organizations lack systematic inventories of AI systems currently in production or development" (Cloud Security Alliance, 2026). They don't even know what they have, let alone whether it's documented.
+
+**High-risk categories that apply to enterprise AI agents:**
+- **Employment:** CV screening, task allocation, performance monitoring, promotion/termination decisions
+- **Credit:** Creditworthiness evaluation, credit scoring
+- **Education:** Student assessment, admission decisions
+- **Essential services:** Access to housing, utilities, insurance
+
+Any enterprise using AI agents in HR automation, credit decisioning, or customer service (where the outcome affects rights or opportunities) is potentially in the high-risk category.
+
+### Straw as EU AI Act compliance infrastructure
+
+Here is the critical insight: **A Straw competition generates exactly the documentation that EU AI Act Article 9 requires.**
+
+From the EU AI Act:
+- "Technical documentation providing all information necessary on the system and its purpose" → Straw's evaluation report
+- "Risk management system throughout the system's lifecycle" → Straw's rubric defines the risk criteria
+- "Record-keeping throughout the lifecycle" → Straw's immutable evaluation results
+- "Instructions for use to deployers" → Straw's competition output includes deployment recommendations
+
+**The enterprise pitch for EU compliance:**
+
+> "You're deploying an AI agent in HR or customer service. Under the EU AI Act, you must document how you selected it, what criteria you used, and how you verified it performs as claimed. A Straw competition generates that documentation as a byproduct: the rubric is your documented selection criteria, the evaluation results are your verification record, and the immutable scoring is your audit trail. $25K for the competition gives you both the agent selection decision AND the EU AI Act compliance documentation. You'd spend $50K+ getting a law firm to write the documentation separately."
+
+### The Digital Omnibus deferral risk
+
+The European Commission proposed deferring the Annex III deadline to December 2027 via the "Digital Omnibus" package. But:
+- The April 28, 2026 trilogue between Parliament, Council, and Commission ended **without agreement**
+- If the Omnibus is not formally adopted before August 2, 2026, the original deadline applies
+- Enterprises that assumed deferral would happen are now exposed
+
+**This is a sales trigger, not a risk:** The deferral uncertainty is currently causing enterprise compliance teams to scramble. They don't know if they have 3 months or 19 months. Straw's pitch: "Run the competition now. Either way you're compliant."
+
+### Named EU-adjacent targets for Straw
+
+European companies with significant AI deployments in high-risk categories:
+1. **ING Bank (Netherlands)** — AI credit decisioning at scale; compliance team must document selection by August 2
+2. **Siemens (Germany)** — AI in manufacturing QA; high-risk classification possible
+3. **AXA (France/UK)** — AI in insurance underwriting; high-risk category
+4. **Deutsche Telekom** — AI in customer service (Fin-equivalent); high-risk if outcomes affect services
+
+**US companies with EU operations (also affected):**
+Any company with EU customers using high-risk AI must comply. This includes: Salesforce, Microsoft, Oracle, SAP — all of which have AI agents deployed in EU enterprise contexts.
+
+Sources: [EU AI Act compliance deadline Holland Knight 2026](https://www.hklaw.com/en/insights/publications/2026/04/us-companies-face-eu-ai-acts-possible-august-2026-compliance-deadline), [EU AI Act Legal Nodes 2026](https://www.legalnodes.com/article/eu-ai-act-2026-updates-compliance-requirements-and-business-risks), [Annex III High Risk](https://artificialintelligenceact.eu/annex/3/), [DLA Piper Digital Omnibus](https://knowledge.dlapiper.com/dlapiperknowledge/globalemploymentlatestdevelopments/2026/The-Digital-AI-Omnibus-Proposed-deferral-of-high-risk-AI-obligations-under-the-AI-Act)
+
+---
+
+## Tick 247 (2026-05-03T16:30Z): Manus AI — the geopolitical situation and what it means for Straw [theme: bear/partners]
+
+### The Manus situation as of May 2026
+
+Manus AI (Butterfly Effect, Beijing) launched February 2026 and immediately became one of the most-discussed AI agents globally. Key recent developments:
+
+**March 2026:** Chinese authorities restricted co-founders Xiao Hong (CEO) and Ji Yichao (Chief Scientist) from leaving the country. This was reported by the Financial Times and confirmed by multiple sources.
+
+**April 27, 2026:** China's National Development and Reform Commission blocked Meta's $2 billion acquisition of Manus, requiring the parties to "withdraw the acquisition transaction." This happened 5 days ago from the current date (May 3, 2026).
+
+**Technical details:** Manus is built on Alibaba's Qwen large language model. It's a computer-use agent that controls desktop applications. Ji Yichao (Chief Scientist) is a serial entrepreneur — founded Peak Labs in 2012, backed by ZhenFund and Sequoia China.
+
+### What this means for Straw
+
+**Bear case:** If Manus becomes globally available (despite geopolitical friction), it's one of the most capable agent competitors. Manus operating freely globally would mean another tier-1 agent to compete in Straw competitions — which is actually a positive for Straw's supply side (more agents = more competition = better results for buyers).
+
+**Geopolitical risk for Straw:** If Straw is positioned as an evaluation platform and a Chinese AI agent wins a Straw competition for a US defense contractor or financial institution, there's regulatory and PR risk. Straw needs clear rules about which agents can enter which competitions — with configurable geographic/origin restrictions for sensitive tasks.
+
+**The Meta acquisition blocking:** This is significant. Meta offered $2B for Manus. China blocked it. The message: China views Manus as strategic technology that shouldn't be acquired by US companies. For Straw: Manus participation in Straw competitions may face regulatory scrutiny if the task involves US enterprise data.
+
+**The product design implication:**
+Straw needs a "geographic/regulatory filter" on agent eligibility:
+- Company posting a task can specify: "Only US/EU-incorporated entities may participate"
+- Or: "No restrictions — open global competition"
+- Compliance documentation should note the geographic origin of all participating agents
+- For US DoD/financial sector competitions: explicit restriction on PRC-origin agents
+
+This is a **feature**, not a bug. Government contracts and regulated enterprises need this control. It's a differentiator from ad-hoc evaluations.
+
+Sources: [Manus Wikipedia](https://en.wikipedia.org/wiki/Manus_(AI_agent)), [MIT Technology Review Yichao Ji](https://www.technologyreview.com/2025/09/08/1122642/ji-peak-yichao-innovator-manus-app-ai/), [China Manus acquisition block](https://thenextweb.com/news/china-blocks-meta-manus-2-billion-acquisition), [Asia Times Singapore washing](https://asiatimes.com/2026/05/chinas-manus-ai-case-sets-red-lines-to-bar-singapore-washing/)
+
+---
+
+## Tick 248 (2026-05-03T17:00Z): The founding blog post — what Jeremy should publish and when [theme: gtm]
+
+### The content strategy for Straw's launch
+
+Phase 1 research (Tick 309 area) included a draft founding blog post titled "The Score Doesn't Lie." This tick designs the complete content launch strategy based on the GTM research.
+
+### The priority content pieces (in order of importance)
+
+**1. Founding post: "The Score Doesn't Lie" (Publish: Week 3, after first design partner call signed)**
+- Medium: Jeremy's personal blog → cross-post to YC's Bookface (if accepted) → LinkedIn
+- Hook: "We spent 6 months building AI agent evaluation infrastructure. Here's what we learned."
+- Core argument: Enterprise AI selection is broken. Vendor demos lie. The POC costs $500K and takes 6 months. There's a better way.
+- Include: First competition result (even a synthetic one) as proof
+- CTA: "If you're evaluating AI agents, talk to us." → calendar link
+- Expected reach: 10,000 views if seeded on HN, Lenny's Newsletter, and AI Twitter
+
+**2. "Ask HN: How does your company evaluate AI agents before buying?" (Publish: Week 1-2)**
+- Format: HN thread, Jeremy posts as himself
+- Goal: surface lurking buyers who have this problem but haven't articulated it
+- Expected: 200-500 comments, 5-10 warm inbound leads
+- This post validates the problem without requiring a polished product
+
+**3. "Show HN: Straw — AI agent evaluation competitions for enterprise procurement" (Publish: Month 2, after first real competition)**
+- Format: HN Show submission with the actual competition result as the demo
+- Include: Live leaderboard link, anonymized buyer/task description, rubric design, scores with reasoning
+- Expected: 100-500 comments, potentially HN front page
+- This is the launch moment
+
+**4. Lenny's Newsletter pitch: "Why your AI POC fails (and what to do instead)" (Pitch: Month 3)**
+- Frame: Lenny's Newsletter (500K subscribers, technical founder audience) regularly covers AI tool adoption
+- Pitch angle: The enterprise AI procurement failure rate (42% abandoned) + the root cause (poor selection methodology) + the solution (Straw competitions)
+- Expected: 50-100 inbound leads from one newsletter edition
+- This is the GTM inflection point
+
+**5. arXiv paper: "Rubric-Based Evaluation for Enterprise AI Agent Procurement" (Publish: Month 6)**
+- Academic credibility for the methodology
+- Makes Straw's approach citable by researchers and procurement teams
+- Positions Jeremy as the authority on agent evaluation methodology
+- Doesn't need to be peer-reviewed — arXiv preprint is sufficient
+
+### The Twitter/X strategy
+
+Twitter/X is where the AI developer community lives. Jeremy's strategy:
+- **Don't post about Straw** until there's something real to show
+- **Do post** about AI agent evaluation methodology, interesting findings from competitions, rubric design principles
+- Build a following around the problem (AI agent evaluation) not the product (Straw)
+- When the first competition result is published: tweet the leaderboard screenshot
+
+**The viral hook:** "We ran a competition: Devin vs. Cursor vs. Copilot on [Company X]'s real codebase. Here's who won (and by how much)." That tweet goes viral among developers and enterprise buyers simultaneously.
+
+### The timing sequence
+
+| Week | Content action |
+|---|---|
+| Week 1 | Apply to YC S26 (deadline tomorrow). Post "Ask HN: how do you evaluate AI agents?" |
+| Week 2 | Email 10 named design partner targets (from Tick 229 + Tick 241 lists) |
+| Week 3 | First design partner call. Publish founding blog post. |
+| Week 4 | Sign first design partner LOI (free competition) |
+| Month 2 | Run first competition. Publish results. "Show HN" launch. |
+| Month 3 | Pitch Lenny's Newsletter. Start second competition. |
+| Month 6 | arXiv paper. 3-4 paying customers. $75-100K ARR. |
+
+Sources: [Lenny's Newsletter statistics](https://www.lennysnewsletter.com), [HN Show statistics from prior research], [Phase 1 Section 309 founding blog post draft]
+
+---
+
+## Tick 249 (2026-05-03T17:30Z): The complete named contacts master list — all 20+ with entry points [theme: partners]
+
+### Master list: all named Straw design partner contacts (Ticks 229 + 232 + 241 + 248)
+
+**TIER 1 — Contact this week**
+
+| # | Name | Company | Role | Entry point | Opener (1 line) |
+|---|---|---|---|---|---|
+| 1 | Beth Barnes | METR | CEO | beth@metr.org / LinkedIn | "One competition with a METR-designed rubric, made public. Free. I run the platform." |
+| 2 | Esben Kran | Apart Research | Founder | LinkedIn / apartresearch.com | "Run your next AI Control sprint on Straw instead of custom tooling. Free, co-published." |
+| 3 | Pragya Saboo | Rubric AI (YC W26) | Co-founder | LinkedIn / YC Bookface | "Co-define a rubric standard. Rubric AI validates; Straw runs competitions." |
+| 4 | David Morse | Cognition (Devin) | VP Enterprise | LinkedIn | "Devin + Windsurf on the same team. Which one wins on enterprise codebases? Let's run the competition." |
+| 5 | Fergal Reid | Intercom | Chief AI Officer | LinkedIn | "Verify Fin's 51% claim on a buyer's actual tickets. That verified number closes the enterprise deal." |
+
+**TIER 2 — Contact week 2**
+
+| # | Name | Company | Role | Entry point | Opener (1 line) |
+|---|---|---|---|---|---|
+| 6 | James Hawkins | PostHog | CEO | Twitter @James406 | "Your 'which AI tool should I use?' blog needs a sequel: the actual competition result. Free for PostHog." |
+| 7 | Karri Saarinen | Linear | CEO | Twitter @karrisaarinen | "You'd design the best coding agent rubric. 72 hours on your backlog, free. Define it." |
+| 8 | Unknown | Perplexity | Head of Engineering | LinkedIn search "Perplexity head of engineering" | "Cursor vs Copilot on your actual repos. 72 hours. Free. You write the result." |
+| 9 | Michael Truell | Cursor/Anysphere | CEO | Twitter @truell20 | "Every enterprise asks: does Cursor win on MY codebase? Straw answers that. Free for Cursor to compete." |
+| 10 | TBD | Retool | Engineering Blog Lead | LinkedIn / Retool blog contact | "Your 'AI tool for engineering teams' blog needs a data point. Straw gives you the number." |
+
+**TIER 3 — Contact weeks 2-3**
+
+| # | Name | Company | Role | Entry point | Opener |
+|---|---|---|---|---|---|
+| 11 | Jordan Neill | Intercom | SVP Engineering | LinkedIn | (Alternative to Fergal Reid) |
+| 12 | TBD | HackerOne | VP Engineering | LinkedIn search "HackerOne VP Engineering" | "Your triage automation agent — proven or assumed? Straw runs the proof." |
+| 13 | TBD | Cognizant AI Practice | Head of AI Practice | LinkedIn search "Cognizant Head AI Practice" | "Help Cognizant recommend with evidence. One competition on an anonymized client codebase." |
+| 14 | Ryan Greenblatt | Redwood Research | AI Control Researcher | LessWrong / arXiv | "Your control protocol tests need sandboxed agent infrastructure. Straw is that." |
+| 15 | TBD | ING Bank | Chief Risk/Compliance Officer | LinkedIn / ING press contact | "EU AI Act August 2 deadline. Straw generates the documentation as a byproduct of the selection competition." |
+
+**AI SAFETY LAB CONTACTS (Weeks 3-4)**
+
+| # | Name | Organization | Role | Entry point | Opener |
+|---|---|---|---|---|---|
+| 16 | Apollo Research team | Apollo Research | Research team | apolloresearch.ai contact form | "We'll have hundreds of agent behavior logs. You want them for scheming research. Let's talk." |
+| 17 | TBD | NIST AI Safety Inst. | Director | gov contact / LinkedIn | "Straw's immutable evaluation methodology maps to NIST AI RMF. Let's discuss alignment." |
+
+**ENTERPRISE TECHNOLOGY TARGETS (Month 2)**
+
+| # | Name | Company | Role | Entry point | Opener |
+|---|---|---|---|---|---|
+| 18 | TBD | Goldman Sachs | Head of AI Engineering | LinkedIn / GS careers | "Goldman is Devin's reference customer. Now run the comparison. Straw shows you how Devin measures against alternatives on your actual code." |
+| 19 | TBD | JPMorgan Chase | AI Center of Excellence | LinkedIn / JPMC AI events | "JPMorgan's $19.8B tech budget includes agent selection decisions. Straw documents those decisions." |
+| 20 | TBD | Stripe | Developer Relations | LinkedIn / Stripe devrel | "Stripe's engineering culture = the exact audience that would value objective agent evaluation. Run a competition on your API documentation bot." |
+
+### The outreach sequence and expected conversion
+
+**Week 1 targets:** Beth Barnes (METR), Esben Kran (Apart), Pragya Saboo (Rubric AI), David Morse (Cognition), Fergal Reid (Intercom)
+- Expected response rate: 3-5 of 5 (high — all are in adjacent spaces, all have clear value)
+- Expected: 1-2 calls booked
+
+**Week 2 targets:** James Hawkins, Karri Saarinen, Michael Truell, Perplexity Head Eng, Retool blog
+- Expected response rate: 2-3 of 5 (slightly lower — CEOs are busy, but Twitter DMs convert better than email for these profiles)
+- Expected: 1 call booked
+
+**Week 3-4 targets:** Enterprise companies (Goldman, JPMorgan, ING)
+- These require warm introduction — convert prior week contacts into referrals first
+- Expected: 1 warm introduction from existing contacts
+
+**Month 2 target:** First signed design partner LOI + first competition running
+
+Sources: [Company profiles from prior tick research], [LinkedIn profiles researched above], [Twitter handles from public profiles]
+
+---
+
+## Tick 250 (2026-05-03T18:00Z): PHASE 2 FINAL CLOSE — Updated master synthesis [theme: all]
+
+### Phase 2 research is complete. Here is the one-paragraph summary Jeremy needs.
+
+**What Phase 2 found (in 250 ticks and 16,000+ lines):**
+
+Straw is building into a real market window that is 91 days from a major regulatory catalyst (EU AI Act Aug 2), 12 months ahead of hyperscaler capture (Scale Labs is research-only in 2026; Azure/Google could add evaluation features in 2027), and supported by documented enterprise pain (42% AI initiative abandonment, $6.8M average failure cost). The critical finding that Phase 1 missed: the bear case is primarily a **timing and trust** problem, not a market thesis problem. The market clearly wants this — the substitutes (informal POCs, vendor demos, generic benchmarks) are all broken in documented ways. Straw wins if and only if it establishes the Straw Certified badge as a recognized credential BEFORE hyperscalers commoditize agent evaluation. That requires ~5 published competition case studies, ~$500K in total prize money committed, and the METR/Apart Research partnership to establish methodology credibility — all achievable in the next 18 months on seed funding. The GTM motion is founder-led direct to VP Engineering at AI-native companies (free first competition, $25K second), with the EU AI Act compliance angle as the enterprise wedge. The most urgent action is applying to YC S26 — deadline is tomorrow.
+
+---
+
+### THE FINAL BEAR THESIS (updated from Tick 229, incorporating all Session 8-10 findings)
+
+**5 ways Straw dies, ranked by probability:**
+
+**1. Hyperscaler capture [40% probability, 18-month window]**
+Google/Azure adds "compare agents" to existing cloud console. Enterprises use it for free inside existing contracts. Straw's $25K fee can't compete with $0.
+*Straw's defense:* Neutrality (can't compare Cross-cloud agents neutrally from within one cloud), compliance documentation (Google's tool won't generate EU AI Act artifacts), and the 18-month head start.
+
+**2. Scale AI enters private enterprise evaluation [25% probability, 24-month window]**
+Scale Labs pivots from public benchmarks to buyer-specific evaluation. Scale's existing enterprise relationships make this a fast flanking move.
+*Straw's defense:* Scale AI is 49% Meta-owned — can't neutrally evaluate Meta AI agents. Straw's neutrality is permanent. Partnership (not competition) is the better outcome.
+
+**3. Cold-start failure — can't get first buyer [20% probability, immediate]**
+No company posts tasks. No agents compete. The marketplace never starts.
+*Straw's defense:* Free first competition. Jeremy runs it himself as the company AND as a synthetic agent. Publish the result. Start the flywheel.
+
+**4. EU AI Act deferral kills the compliance wedge [10% probability]**
+The Digital Omnibus passes, deferring Annex III to December 2027. Enterprise urgency evaporates.
+*Straw's defense:* The compliance urgency is a wedge, not the whole thesis. Even without EU AI Act pressure, companies want to make better AI selection decisions.
+
+**5. Straw Certified badge never becomes recognized [5% probability, controllable]**
+The badge means nothing because nobody looks for it in procurement decisions.
+*Straw's defense:* By design, this is the one failure mode fully within Straw's control. Publish case studies, partner with METR for methodology credibility, require public competition results. Build the brand deliberately.
+
+---
+
+### FINAL ACTION LIST (what Jeremy does in the next 7 days)
+
+**Day 1 (today, May 3):**
+- [ ] Write and submit YC S26 application (deadline TOMORROW May 4 8pm PT)
+- [ ] Email Beth Barnes at METR with the design partner opener
+- [ ] Email Esben Kran at Apart Research
+- [ ] Email Pragya Saboo at Rubric AI (YC Bookface if in the batch)
+
+**Day 2 (May 4):**
+- [ ] Submit YC application before 8pm PT
+- [ ] Email David Morse at Cognition (VP Enterprise)
+- [ ] Email Fergal Reid at Intercom (Chief AI Officer)
+- [ ] Post "Ask HN: How does your company evaluate AI agents before procurement?"
+
+**Day 3-5:**
+- [ ] Email James Hawkins, Karri Saarinen, Michael Truell via Twitter DM
+- [ ] Design the certification scarcity model (Bronze/Silver/Gold, rolling window)
+- [ ] Build the "1-click demo competition" (pre-loaded URL shortener task, simulated leaderboard)
+
+**Day 6-7:**
+- [ ] Book 3 calls from Week 1 outreach
+- [ ] Draft founding blog post ("The Score Doesn't Lie")
+- [ ] Research EU AI Act compliance contacts at ING Bank, AXA, Deutsche Telekom for Month 2
+
+**By end of Week 2:**
+- [ ] 1 signed design partner LOI (free first competition)
+- [ ] YC application submitted
+- [ ] Founding blog post published
+- [ ] Demo competition live
+
+*Good morning, Jeremy. Phase 2 is done. The market is real, the window is open, and the deadline is tomorrow.*
+
