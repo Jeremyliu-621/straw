@@ -21459,3 +21459,108 @@ Straw at $100K-$250K per evaluation is cheaper than the first year of internal b
 
 **The "build vs. buy" bear case score: 4/10** — Most enterprises won't build this internally because they don't know they need it yet. When they do discover they need it, Straw is already available and cheaper than building. The enterprise that would build Straw is the enterprise that already understands competitive evaluation methodology — and those enterprises are Straw's best customers.
 
+
+---
+
+## Tick 298 (2026-05-03T00:28:00Z): Straw's Proof-of-Value Pricing Structure [theme: gtm]
+
+**Research basis**: Enterprise AI pilots: 10-30% of ACV as pilot fee, 100% credited toward full contract on conversion. 40-60% conversion rates for structured pilots vs. <10% for free trials. 95% of AI pilots deliver no measurable P&L impact (Gartner). Enterprise AI average spend $1.2M/year (+108% YoY). Agentic enterprise license agreements replacing consumption-based pricing — CxOs want predictability.
+
+### The Straw Pilot Pricing Model
+
+Straw is not traditional enterprise SaaS (per-seat or subscription). Straw is a services-plus-software model: each evaluation is a discrete engagement, but annual evaluation programs can be structured as subscriptions.
+
+**Three commercial structures**:
+
+**Structure 1: Single Evaluation**
+- $50K-$100K for standard evaluation (3 agents, 200 test cases, standard rubric)
+- $150K-$250K for enterprise evaluation (5+ agents, 500+ test cases, custom rubric, regulatory documentation)
+- No commitment required; single transaction
+- Best for: first-time buyers, one-off procurement decisions
+
+**Structure 2: Annual Evaluation Program**
+- $300K-$600K/year for enterprises running 3-6 evaluations annually
+- Includes dedicated rubric design support (Straw's "rubric scientist" service)
+- Annual benchmark report showing enterprise's agents vs. market
+- Best for: enterprises with ongoing AI deployment programs
+
+**Structure 3: Proof of Value (PoV)**
+- 10-20% of anticipated first-year contract value as PoV fee
+- PoV fee credited 100% toward annual program on conversion
+- PoV scope: one evaluation, limited test case library, summary report
+- Best for: enterprises skeptical of value, need to see results before committing
+
+**The math on PoV**: If target ACV is $300K, PoV fee is $30-$60K. Enterprise runs one evaluation, sees the value. Converts to annual program. PoV fee credited. Net: $30-$60K in upfront revenue with 40-60% conversion to $300K annual.
+
+### Why Straw Should NOT Do Free Trials
+
+Two reasons:
+1. **Value destruction**: A free evaluation devalues the product. If you can get Straw for free, why pay $100K?
+2. **Quality signal**: Free evaluations attract commodity buyers. Paid evaluations — even small PoV fees — filter for serious buyers who have real procurement decisions to make.
+
+The enterprise AI tools that do free trials typically have platform adoption as the goal (usage drives network effects). Straw's value doesn't come from adoption — it comes from credibility of the evaluation. Giving away evaluations cheapens the credential.
+
+### The CFO-Friendly Pricing Pitch
+
+The enterprise CFO's complaint: AI pricing is unpredictable (usage-based billing, $1.2M average spend vs. forecasted). CFOs want predictability.
+
+Straw's answer: "Straw pricing is the most predictable AI spend in your budget. You know exactly how many evaluations you'll run this year. $100K per evaluation, or $300K for an annual program covering 4 evaluations. No consumption surprises. No API cost fluctuations. Fixed price for a defined deliverable."
+
+**This is a differentiator**: In a world where CFOs are "scrambling as AI pricing breaks traditional billing models," Straw's clear per-evaluation pricing is refreshingly legible.
+
+### The Pricing Anchor
+
+Straw should anchor pricing against internal build cost:
+- Internal "rubric scientist" hire: $200-$300K loaded
+- Infrastructure: 6-12 months engineering at $200K/year
+- First-year internal build: $400-$500K minimum
+
+Straw at $100-$250K per year is cheaper than building internally, comes with cross-industry benchmarks, and doesn't require hiring a specialized team. The ROI case is clear.
+
+---
+
+## Tick 299 (2026-05-03T00:29:00Z): Media and Entertainment AI Partners [theme: partners]
+
+**Research basis**: Disney + OpenAI $1B 3-year partnership (early 2026). At least 6 new AI copyright cases filed February 2026. Supreme Court: AI-only works not copyrightable. U.S. Copyright Office analyzing "type and level of human contribution" for copyright. Bandcamp prohibits AI-generated music. Copyright litigation clarifying: training on legally obtained works = likely fair use.
+
+### Media and Entertainment: Copyright Risk Creates Evaluation Imperative
+
+The media and entertainment vertical has a unique Straw use case: **evaluating AI content creation agents for copyright compliance, not just performance.**
+
+When Disney deploys AI agents to generate video content or write scripts, the evaluation question is not just "does the output look good?" but also "does the output potentially infringe on existing copyright?" An AI content agent that produces great content but unintentionally reproduces protected material is a legal liability.
+
+Straw's evaluation rubric for media/entertainment must include:
+1. **Content quality** (standard performance metric)
+2. **Copyright risk score** (similarity analysis vs. known protected works)
+3. **Human contribution ratio** (for copyright registration eligibility)
+4. **Brand safety** (off-message, offensive, or harmful outputs)
+5. **Factual accuracy** (for journalism AI agents)
+
+This multi-dimensional rubric is more complex than most enterprise evaluations and commands premium pricing.
+
+### Named Media/Entertainment Design Partner Targets
+
+| Company | AI Agent Focus | Key Contact | Straw Entry Point |
+|---------|----------------|-------------|-------------------|
+| **Disney** | AI content creation, character-based generation (OpenAI partnership) | Michael White (Chief Technology Officer) | Disney just signed $1B OpenAI deal — they need to evaluate which AI content agent produces compliant, brand-safe outputs |
+| **Comcast/NBCUniversal** | Streaming personalization + content AI | Matt Strauss (Chairman, Peacock) | Streaming AI recommendation agents — which one drives highest engagement without risking IP violations? |
+| **Warner Bros. Discovery** | IP protection + AI content creation | Gunnar Wiedenfels (CFO) / Tech leadership | WBD has massive IP library — needs AI agents that can generate content without touching protected IP |
+| **Spotify** | Music recommendation + AI composition | Alex Norström (Chief Freemium Business Officer); Gustav Söderström (CPO) | Spotify uses AI for playlists and now AI music creation — needs evaluation of music generation agents |
+| **Condé Nast** | AI journalism + editorial agents | Roger Lynch (CEO) | Editorial AI agents for Vogue, The New Yorker, Wired — brand safety and quality evaluation critical |
+| **News Corp / WSJ** | Paywall AI + journalism agents | David Crowe (CTO) | Journalism AI requires highest factual accuracy standards |
+| **The New York Times** | AI journalism ethics + news agents | Nick Rockwell (former CTO); currently active AI ethics discussions | NYT is at the forefront of AI journalism governance — potential partner for evaluation methodology |
+
+**Highest-priority target**: **Spotify** — they're the most progressive media company in AI adoption and have a specific, evaluable AI use case (music recommendation and AI composition). Gustav Söderström (CPO) is the most forward-thinking product executive in music AI and would understand Straw's value immediately.
+
+### The Copyright-Sensitive Evaluation Tier
+
+Media/entertainment companies need a specialized Straw tier:
+
+**"Straw Certified: IP-Safe"** — certification specifically for AI content creation agents that:
+1. Scored above threshold on content quality (standard evaluation)
+2. Demonstrated <5% similarity to protected works in test outputs
+3. Passed brand safety screening
+4. Passed human contribution ratio assessment (>70% human-distinct output)
+
+This "IP-Safe" certification is something no other evaluation platform offers and is worth $200K-$400K per evaluation for a major media company facing $1B+ copyright litigation exposure.
+
