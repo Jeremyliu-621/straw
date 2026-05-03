@@ -34959,3 +34959,79 @@ Named contacts with SR 26-2 urgency:
 - Madhu Coimbatore (Morgan Stanley CDO) — in earlier ticks
 
 ---
+
+## Tick 496 — NAIC AI Systems Evaluation Tool Pilot: The Insurance Regulatory Urgency Calendar [theme: GTM + bear]
+
+### What the NAIC AI Evaluation Pilot Is
+
+The National Association of Insurance Commissioners (NAIC) launched a formal **AI Systems Evaluation Tool Pilot** in March 2026. This is not a draft — it is a live regulatory examination tool being tested in real insurance company exams.
+
+**12 participating states:** CA, CO, CT, FL, IA, LA, MD, PA, RI, VT, VA, WI
+
+**Pilot timeline:** March 2026 → September 2026 (6-month live exam period)
+
+**Next milestone:** NAIC Fall Meeting, November 2026 — results from the pilot presented; formal adoption decision expected
+
+**Tool structure — 4 exhibits:**
+- **Exhibit A:** Quantify AI usage (how many AI systems, what types, what decisions)
+- **Exhibit B:** Governance risk assessment framework (documentation, oversight, accountability)
+- **Exhibit C:** Details on high-risk AI systems (systems that affect insurance decisions)
+- **Exhibit D:** AI data details (training data, bias testing, data lineage)
+
+### The "Industry Balks" Signal
+
+InsuranceNewsNet headline: **"NAIC's 2026 AI evaluation pilot moves ahead as industry balks."**
+
+Industry resistance = industry is not ready. This is the same pattern as every compliance deadline in history:
+- Industries resist → deadlines hold → scramble begins 3-6 months before enforcement
+- Straw's opportunity: **September 2026 = scramble window for insurance companies in 12 states**
+- If NAIC adopts at November 2026 Fall Meeting = nationwide insurance urgency by Q1 2027
+
+**Insurance AI context:** Over half of all US states have already adopted the NAIC Model Bulletin on AI use by insurers (this is the existing, weaker guidance). The evaluation tool pilot is the enforcement mechanism being built on top of that.
+
+### The Regulatory Urgency Calendar: August–November 2026
+
+Straw has an extraordinary convergence of regulatory deadlines creating simultaneous urgency across three enterprise verticals:
+
+| Date | Deadline | Vertical |
+|---|---|---|
+| August 2026 | EU AI Act high-risk AI enforcement begins | All EU-exposed enterprises |
+| September 2026 | NAIC AI Evaluation Tool Pilot concludes | Insurance (12 states) |
+| September–October 2026 | NAIC updates tool based on pilot results | Insurance industry-wide prep |
+| November 2026 | NAIC Fall Meeting: formal adoption expected | All US insurance companies |
+| Q1 2027 | Post-adoption exam season begins | US insurance national rollout |
+
+**Financial services overlay:**
+- April 2026: SR 26-2 rescinds SR 11-7 — agentic AI explicitly ungoverned
+- Q1 2026: 73.6% of banks not confident in AI compliance readiness
+- 2026 ongoing: OFR (Office of Financial Research) systemic risk warnings for ungoverned agentic AI
+
+### The Straw Compliance Sales Play
+
+The NAIC Exhibit B (governance risk assessment) specifically tests whether insurers have documented:
+- Decision-making processes for AI system selection
+- Independent evaluation of AI vendors
+- Ongoing monitoring frameworks
+
+**Straw produces direct evidence for Exhibit B.** When an insurer uses Straw to select an AI agent:
+1. The task rubric documents their selection criteria (Exhibit B: documented decision-making)
+2. Straw's evaluation output provides independent vendor assessment (Exhibit B: independent evaluation)
+3. Multi-engagement tracking creates ongoing performance record (Exhibit B: ongoing monitoring)
+
+**The pitch to insurance AI leaders:** "When your NAIC examiner opens Exhibit B in September 2026, show them your Straw evaluation record. It's the paper trail that proves your AI governance is documented, independent, and reproducible."
+
+### Named Insurance Design Partners — NAIC Urgency Frame
+
+| Name | Role | Company | NAIC Urgency |
+|---|---|---|---|
+| Fausto Parodi | Chief Analytics Officer | Travelers | YES — Travelers operates in all 12 pilot states |
+| Michael Bruch | Head of Emerging Risks | Allianz | EU AI Act + NAIC if US operations |
+| Sridhar Manyem | Chief AI Officer | AIG | YES — AIG in all pilot states |
+| Bridget Higgins | CTO | Zurich North America | YES — Zurich in all pilot states |
+| Scott Flikeid | EVP Technology | State Farm | YES — State Farm in all pilot states |
+| Shivaram Rajgopal | Audit Committee Chair | Multiple insurer boards | Governance paper trail angle |
+
+**Cold outreach framing for NAIC angle:**
+> "With 12 states running NAIC AI evaluation pilot exams right now (deadline September 2026), Exhibit B requires documented independent evaluation of your AI vendors. Straw was built to produce exactly that documentation. 15-minute call?"
+
+---
