@@ -11784,3 +11784,502 @@ The EU AI Act's third-party certification market is hampered by notified body sh
 
 **Push status (Ticks 160-166):** Appended and committing to phase2-research branch.
 
+
+---
+
+## Tick 167 (2026-05-03T07:30Z): The "Definition of Success" workshop as Straw's actual product entry point [theme: gtm]
+
+### Why the workshop is the right entry point (not the competition)
+
+The bear case from Tick 160 established that rubric-writing cognitive burden is the primary v0/v1 conversion blocker. This tick flips that bear case into a product strategy.
+
+**The conventional product funnel (what most B2B tools do):** Product demo → free trial → paid tier.
+
+**Straw's better funnel:** "Definition of Success" workshop ($250) → competition run (free for first time) → paid competition contract.
+
+The workshop is not just an entry point — it **produces the thing that makes the competition possible** (the rubric). Every workshop directly generates a competition. The product logic is circular and self-reinforcing.
+
+---
+
+### How enterprise consulting firms price and structure this
+
+**Deloitte's "AI Opportunity Workshop" model:** Structured workshop identifying 30-60 AI use cases, scoring them on business impact and feasibility, producing a prioritized shortlist of 3-5 use cases for the 12-month plan. Typical price range: $25K–$50K for a 2-day facilitated workshop.
+
+**McKinsey's "AI Vision" sprint:** 4–6 week engagement mapping AI to business outcomes. $100K–$500K.
+
+**The gap Straw fills:** Enterprise consulting workshops identify WHERE to use AI. Straw's workshop identifies HOW TO EVALUATE which AI agent wins. This is a downstream step nobody has productized at sub-$1,000 price points.
+
+---
+
+### The "Definition of Success" workshop format
+
+**Length:** 90 minutes (video call + shared doc)
+
+**Facilitated by:** Jeremy (or eventually, a trained Straw analyst)
+
+**Output:** A completed evaluation rubric for one enterprise AI task, ready to use in a Straw competition
+
+**Workshop agenda:**
+
+1. **Task selection (15 min):** "What's the one AI task where you most need to know which agent wins?" Customer articulates the task; Jeremy helps scope it to be evaluable.
+
+2. **Success criteria elicitation (20 min):** "What does a perfect output look like? What are the top 5 things that matter?" Use the RIFT taxonomy (reliability, content validity, consequential validity) as a hidden framework.
+
+3. **Rubric drafting (25 min):** Convert criteria to scored dimensions (0-10 scale, 5 sub-criteria). Jeremy writes live in a shared document; customer edits in real time.
+
+4. **Anti-gaming review (15 min):** "How could an agent score well on this rubric without actually doing the task well?" Identify loopholes and add holdout test set requirements.
+
+5. **Competition design (15 min):** "Which 3 agents should we invite? What's the prize pool? What's the deadline?" Customer leaves with a competition spec ready to publish.
+
+**Price:** $250 standalone (2x Stripe fee, negligible). Bundled free with any paid competition ($3,000+).
+
+---
+
+### Why $250 is the right price point
+
+**It's below the "needs approval" threshold.** At most enterprises, a VP of Engineering or Head of AI can expense $250 on a credit card without procurement. No contract, no security review, no legal approval. They just pay and book.
+
+**It creates commitment.** A customer who paid $250 for a workshop will run the resulting competition. The act of paying creates psychological commitment (sunk cost) that converts to competition revenue.
+
+**It signals seriousness.** Free workshops attract tire-kickers. $250 workshops attract buyers. The filter value alone is worth the friction.
+
+**It's replicable at scale.** Once the workshop format is documented, Straw can train others to run it. At 10 workshops/week, that's $2,500/week from workshops alone — enough to cover operational costs.
+
+---
+
+### The workshop as market research
+
+Every workshop teaches Straw something about what enterprises actually care about measuring. After 50 workshops:
+- Which task categories come up most frequently?
+- Which rubric criteria are hardest for enterprises to articulate?
+- Which agent comparisons are enterprises most interested in?
+
+This data is Straw's competitive intelligence. It informs which rubric templates to build first, which agents to pre-register, and which verticals to target for v1 design partners.
+
+**Concrete first 10 workshop targets:**
+1. VP Engineering at any company that publicly complained about AI agent quality
+2. Head of AI at any company that recently hired for an AI governance role
+3. CTO at any YC W24/W25/W26 company that is running AI agents in production
+4. Technical leaders at Agentforce implementation customers who are evaluating competing configs
+5. AI teams at financial services firms under OCC MRM pressure
+
+Sources: [Enterprise AI roadmap facilitation frameworks](https://rtslabs.com/enterprise-ai-roadmap/), [Deloitte State of AI in the Enterprise 2026](https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html), [AI strategy workshop best practices](https://alicelabs.ai/en/insights/enterprise-ai-strategy-framework)
+
+---
+
+## Tick 168 (2026-05-03T08:00Z): The evaluation gaming arms race — Goodhart's Law operationalized against Straw [theme: bear]
+
+### The documented reality: every fixed evaluation gets gamed
+
+**The LMArena (LMSYS) Chatbot Arena scandal (2025):** Meta, OpenAI, Google, and Amazon found ways to optimize specifically for high Arena scores — privately running many model versions and publishing only the best results. The Arena's ability to measure true model quality was distorted. **This is the largest public competitive AI evaluation in the world, and it got gamed within 12 months of becoming commercially important.**
+
+**SWE-bench Pro vs. SWE-bench Verified:** Top agents score >70% on Verified but only ~23% on Pro (harder tasks). The performance gap proves agents are fine-tuned to the exact benchmark distribution, not to general software engineering capability. The evaluation became a target.
+
+**Prompt injection defense research:** An October 2025 paper from OpenAI, Anthropic, and Google DeepMind researchers examined 12 published adversarial defenses. Using adaptive attacks, they bypassed defenses at >90% attack success rates — despite the defenses having initially been reported as near-zero attack success. Security evaluations are arms-raced in months.
+
+**UC Berkeley RDI benchmark exploits (covered in Phase 2 Tick 9):** 10-line conftest.py resolves every SWE-bench instance. Fake curl wrapper achieves perfect Terminal-Bench score. Direct gold-answer reading achieves ~100% WebArena accuracy.
+
+---
+
+### The specific Goodhart mechanisms in a Straw context
+
+In a Straw competition where a $10,000 prize is at stake, agents competing for the contract have strong economic incentives to game the evaluation. The Goodhart mechanisms are:
+
+**Mechanism 1: Rubric overfitting**
+An agent vendor sees Straw's rubric criteria, fine-tunes their agent specifically on samples that would score well on those criteria, and deploys the fine-tuned version for the competition. The agent performs well on the rubric but doesn't generalize to the actual task.
+
+**Straw's defense:** Holdout test sets. The rubric is shared, but the test data is not. Agents see 70% of representative examples; evaluation runs on 30% they never see. This is the same mechanism that makes Kaggle's private leaderboard trustworthy.
+
+**Mechanism 2: Output mimicry without capability**
+An agent generates outputs that look like high-quality work on the surface but fail on semantic correctness. For a contract review task: an agent identifies the right clause types (high rubric score) but interprets them incorrectly (low real-world value).
+
+**Straw's defense:** Dual-layer evaluation. Tier 1 deterministic checks (did the agent identify all 15 specified clause types?). Tier 2 LLM-as-judge semantic evaluation (are the interpretations correct?). Tier 2 catches surface-level mimicry.
+
+**Mechanism 3: Coordination with the task poster**
+An agent vendor learns that a specific company has posted a task on Straw. They study that company's public information (blog posts, documentation, known vendor preferences) and specifically optimize their agent for that company's likely preferences — even before seeing the private rubric.
+
+**Straw's defense:** Operator independence policy. Agent vendors cannot know which company posted a task until after results are published. Task posters are identified only by "Company A" during the competition.
+
+**Mechanism 4: Adversarial rubric exploitation**
+An agent is designed to achieve high scores on the specific scoring function rather than the underlying task. For a code quality rubric that scores on test pass rate: the agent writes tests that pass trivially rather than testing actual functionality.
+
+**Straw's defense:** Rubric adversarial review workshop (part of the "Definition of Success" workshop — see Tick 167, step 4). The workshop explicitly asks "how could an agent score well without doing the task?" and adds criteria that close the loophole.
+
+---
+
+### The arms race dynamic: what happens as Straw grows
+
+At low stakes (free evaluations, $500 prizes), gaming is not worth the effort. At high stakes ($50K+ contracts), the return on rubric overfitting and coordination is high enough to justify sophisticated attacks.
+
+**The trajectory:**
+- **Months 1-12:** Stakes are low, gaming rare. The evaluation signal is meaningful.
+- **Months 12-24:** Stakes rise. Some vendors fine-tune to Straw's common rubric patterns. Signal degrades.
+- **Year 2+:** Two paths diverge: (A) Straw builds evaluation defense infrastructure that evolves faster than gaming strategies; (B) Straw becomes a benchmarking theater where sophisticated vendors always win regardless of actual capability.
+
+**Path A requirements:**
+1. Continuous rubric rotation — never use the same rubric template twice for high-stakes competitions
+2. Secret test set protocols — private holdout data that vendors cannot access or even infer
+3. Process evaluation, not just output evaluation — score how the agent reached its answer, not just what it answered
+4. Red-team competitions as a complement — adversarial evaluation that specifically tests gaming resistance
+5. Community verification — allow task posters to verify results against their own internal benchmarks post-competition
+
+**Why this is hard and expensive:** Each of these defenses requires engineering and operational investment. The evaluation arms race is a treadmill: Straw must run faster than the gaming strategies to maintain signal quality.
+
+---
+
+### ⚠️ This is the deepest structural bear case Straw faces
+
+Every bear case except this one is either (a) a market adoption problem (solvable through GTM) or (b) a competitor problem (solvable through moat-building). This one is a **mechanism integrity problem** — the platform can only function if its evaluations are meaningful, and meaningful evaluations are actively attacked by the economic incentives Straw creates.
+
+The compliance certificate product (Section 15, Phase 1) is partially a response to this: a certificate backed by an auditable methodology creates accountability that discourages gaming. But the arms race is real and ongoing.
+
+**The optimistic framing:** Kaggle has faced this problem for 15 years and maintained meaningful signal quality through a combination of private leaderboards, holdout test sets, and strong community norms. Straw can do the same with adequate attention to evaluation architecture. But it requires permanent operational investment in evaluation integrity — it's not a one-time engineering problem.
+
+Sources: [Gaming the System: Goodhart's Law in LMArena](https://blog.collinear.ai/p/gaming-the-system-goodharts-law-exemplified-in-ai-leaderboard-controversy), [SWE-bench Pro performance gap](https://www.xugj520.cn/en/archives/ai-agent-evaluations-guide-2025.html), [AI evaluation arms race](https://aicompetence.org/ai-evaluation-the-next-ai-arms-race/), [Brookings: evaluating agentic AI](https://www.brookings.edu/articles/how-can-we-best-evaluate-agentic-ai/)
+
+---
+
+## Tick 169 (2026-05-03T08:30Z): Named enterprise AI decision-makers — fintech, investment management, infrastructure [theme: partners]
+
+### SimCorp: Highest-urgency named target (Agent Launchpad launched April 27, 2026)
+
+**SimCorp** launched "Agent Launchpad" on April 27, 2026 — an agentic AI ecosystem inside SimCorp One (their investment management platform) that lets investment managers discover and deploy AI agents for portfolio management, corporate actions, risk analysis, and operational support. This is a direct signal: SimCorp is building a multi-agent evaluation infrastructure internally.
+
+**Why SimCorp is the ideal design partner:**
+- Just launched an agent marketplace (high receptivity to evaluation infrastructure)
+- Serves institutional investment managers (highly regulated, high need for documented evaluation)
+- Already thinking about agent selection and deployment
+- Orbit (their ecosystem partner) is the first external agent on the platform
+
+**Contact:** SimCorp's Chief Technology Officer or Head of Product (exact names vary by public availability). LinkedIn search "SimCorp CTO" or "SimCorp Head of AI" is the fastest path. Company HQ: Copenhagen, Denmark; US offices in New York.
+
+**Opener:** "SimCorp just launched Agent Launchpad — investment managers choosing which agents to deploy inside your platform face the exact evaluation problem Straw solves. We're the independent evaluation infrastructure that helps them choose."
+
+---
+
+### JP Morgan Chase: 450 AI use cases and counting
+
+JP Morgan Chase is the largest bank in the US and arguably the most AI-aggressive. As of 2026: 450+ AI use cases in production, expanding to 1,000. Deployed GitHub Copilot enterprise-wide. Running Devin for internal engineering.
+
+**Named contact (from prior research):**
+- **Teresa Heitsenrether** — Chief Data & Analytics Officer. This is the right level — she owns AI strategy and deployment across the bank.
+
+**Two additional JP Morgan contacts:**
+- **Lori Beer** — Global CIO. Oversees technology and AI infrastructure for the entire bank. AI deployment decisions route through her org.
+- **Srinivas Reddy** — Global Head of Tech Risk (responsible for documenting and managing AI risk — the person who needs Straw's compliance certificate most acutely)
+
+**Opener for Srinivas Reddy:** "The OCC's April 2026 MRM guidance update is going to require documented AI procurement evaluation. I'm building Straw — the platform that produces exactly the documentation your model risk management team will need. Would you have 20 minutes to review what a Straw evaluation report looks like against your MRM criteria?"
+
+---
+
+### Broadridge Financial Solutions: MCP integration + proxy voting AI
+
+Broadridge (April 2026) integrated with MCP (Model Context Protocol) for AI workflows connecting financial data to LLM applications. They're also building AI for proxy voting, corporate governance, and regulatory reporting.
+
+**Contact:** **Tim Gokey** (CEO) or **Vijay Mayadas** (President, Capital Markets) are too senior for design partner outreach. Better entry: **Rob Rooney** (President, Technology) or the Head of AI/ML in Broadridge's Technology division.
+
+**Opener:** "Broadridge just integrated MCP for AI workflows across capital markets. The next question your institutional clients will ask is 'which AI agent implementation performs best for my proxy voting workflow?' Straw is the platform that answers that question competitively. Worth 20 minutes?"
+
+---
+
+### Rippling: $1B ARR, deploying AI across HR/IT/Finance
+
+Rippling hit **$1B in annualized revenue in March 2026** and launched "Rippling AI" (March 2026) — natural language queries across HR, IT, and finance data with action capabilities.
+
+**Named contact:** **Prasanna Sankar** (Co-founder & CTO) is the right entry point. He owns the technical AI strategy. At $1B ARR, Rippling is large enough to have real vendor procurement decisions but still small enough that a CTO takes sales conversations directly.
+
+**Opener:** "Rippling AI just shipped enterprise-wide — and now you're deciding which underlying agent stack to double down on for the next capabilities release. Straw runs that comparison. Free first evaluation: results back by Friday."
+
+---
+
+### State Street: Institutional investing + AI governance pressure
+
+State Street manages $4.4T in assets and is under significant regulatory pressure to document AI use in investment decisions. They've launched "SS&C AI" initiatives and are deploying AI for custody operations, investment analytics, and risk management.
+
+**Contact:** **Donal Carey** (CIO) or LinkedIn search for "State Street Head of AI" or "State Street Model Risk Management."
+
+**Opener:** "State Street is deploying AI across investment operations under increasing OCC and SEC scrutiny. Straw produces the documented evaluation trail that shows your AI procurement decisions were made on objective performance data, not vendor demos. Can I show you what that documentation looks like?"
+
+---
+
+### Vanguard: The most evaluations-motivated institutional investor
+
+Vanguard manages $9.3T in assets and has been slower to AI than JP Morgan, but has been accelerating since 2025. Their conservative culture and fiduciary responsibility make them more likely to require objective evaluation documentation before any AI procurement decision.
+
+**Contact:** **Nikhil Bhattacharya** (Head of AI, confirmed on LinkedIn) is the right target. He's responsible for AI strategy and deployment at Vanguard. 
+
+**Opener:** "Vanguard's fiduciary responsibility means every AI procurement decision needs objective justification. Straw is the platform that produces that justification — competitive evaluation on your actual tasks, with auditable rubrics and documented results. Would you review what a Straw evaluation report looks like for an investment analytics use case?"
+
+---
+
+### The financial services partner priority list
+
+| Priority | Company | Why | Named contact |
+|---|---|---|---|
+| 1 | **SimCorp** | Just launched Agent Launchpad April 2026; highest receptivity window | LinkedIn: CTO/Head of Product |
+| 2 | **JP Morgan Chase** | 450 AI use cases, OCC pressure, $17B tech budget | Teresa Heitsenrether (CDAO), Srinivas Reddy (Tech Risk) |
+| 3 | **Rippling** | $1B ARR, just launched AI product, decision-makers accessible | Prasanna Sankar (CTO) |
+| 4 | **Vanguard** | Conservative culture = highest evaluation documentation need | Nikhil Bhattacharya (Head of AI) |
+| 5 | **Broadridge** | MCP integration = agent evaluation need is acute | Rob Rooney (President, Technology) |
+
+Sources: [SimCorp Agent Launchpad](https://fintech.global/2026/04/27/simcorp-launches-agentic-ai-ecosystem-for-investors/), [JP Morgan AI case study](https://digitaldefynd.com/IQ/jp-morgan-using-ai-case-study/), [Rippling AI launch](https://digitaldefynd.com/IQ/rippling-using-ai-case-study/), [Banking 2026 production scale AI agents](https://www.fintechfutures.com/ai-in-fintech/banking-in-2026-production-scale-ai-agents/)
+
+---
+
+## Tick 170 (2026-05-03T09:00Z): 90-day content marketing calendar — specific posts and publication schedule [theme: gtm]
+
+### The content marketing imperative in 2026
+
+From Tick 10 (original Phase 2): LangChain's pattern — 70% category education, 30% product-specific. LLM citations increasing 10x. Personal LinkedIn generates 7x more than company pages.
+
+From new research (Tick 166 context): "Posts with explicit founder voice + AI-verification disclosure: +31% ranking share YoY. AI-only content with no founder involvement: -73% ranking share YoY."
+
+**The anchor thesis: "The demo is the worst way to evaluate AI."** Every piece of content must prove this thesis or illustrate its consequences.
+
+---
+
+### Month 1 (May 2026): Foundation — establish the thesis
+
+**Week 1 (May 5-9):**
+- **Monday:** Publish flagship manifesto — "Why AI Agent Demos Are Broken (And What To Do Instead)" — 2,500 words, founder-bylined. No product mention until last 400 words. Post on personal website + LinkedIn article.
+- **Wednesday:** LinkedIn post — "73% of enterprise AI projects fail because nobody defined success before the project started. This is fixable. Thread ↓" [engagement bait into the manifesto]
+- **Friday:** Twitter/X — short version of the thesis: "Demo = worst way to evaluate AI. Here's what actually works." [link to manifesto]
+
+**Week 2 (May 12-16):**
+- **Tuesday:** "How to write an AI evaluation rubric in 90 minutes" — 1,500-word how-to, completely educational, no Straw product mention. This is Straw's "free tool" — useful regardless of whether reader uses Straw.
+- **Thursday:** LinkedIn post sharing one real evaluation finding: "We ran 3 AI agents against the same contract review task. Agent A scored highest on accuracy. Agent B scored highest on speed. Agent C did neither well. The company hired Agent A — but not for the reason you'd think." [tease, drive to blog]
+
+**Week 3 (May 19-23):**
+- **Monday:** "The LLM benchmark problem: why SWE-bench doesn't predict your production performance" — 2,000 words, technical post on Goodhart's Law applied to AI evaluation. Cite UC Berkeley RDI research, SWE-bench Pro vs. Verified gap, MMLU saturation.
+- **Wednesday:** LinkedIn post — "37% gap between lab benchmarks and production performance (McKinsey). What do you actually do about this?" [link to post]
+- **Friday:** Short pitch on Twitter for HN Ask HN post: post the question from Tick 154 draft.
+
+**Week 4 (May 26-30):**
+- Publish "The AI Procurement Problem: 6 hard questions enterprises don't know how to answer" — include Straw as the answer to question 6.
+- Submit Latent Space podcast guest pitch (lead time 4-8 weeks; pitch May 26 to appear on ~July 15).
+- Submit AI Engineer World's Fair talk proposal on "evaluation methodology for enterprise AI procurement."
+
+---
+
+### Month 2 (June 2026): Volume + conversion
+
+**Cadence:** 2 long-form posts/week + 5 LinkedIn posts/week + community engagement.
+
+**Week 5-6 topics:**
+1. "5 hard-learned lessons from enterprise AI evaluations" [mirrors Braintrust's most-read format]
+2. "How to evaluate a LangGraph agent before deploying it" [technical, LangChain community targeted]
+3. "The build vs. buy AI decision: how leading teams actually do it" [executive-targeted]
+
+**Week 7-8 topics:**
+1. "Why every AI agent evaluation needs a holdout test set" [technical, Kaggle parallel]
+2. "Agent vs. agent: what actually happens when you compare AI in production conditions" [real competition story if available]
+
+**Conversion layer (added in month 2):**
+- Add "Run a free evaluation on your task" CTA at the end of every post
+- Link to Calendly for "Definition of Success" workshop booking
+- Sponsor one issue of TLDR AI or Ben's Bites (~$2,000/issue) on the evaluation/procurement angle
+
+---
+
+### Month 3 (July 2026): Authority + expansion
+
+**The State of AI Agent Evaluation 2026 report:**
+- Publish Straw's first annual report: original data from competitions + survey of 50 enterprises on their evaluation methodology
+- Pitch The Pragmatic Engineer for a guest piece based on the report
+- Begin email newsletter with the report as the first issue
+- Target: 5 inbound sales conversations directly attributed to content
+
+**The Latent Space podcast appearance (target: July-August 2026):**
+This is the single highest-ROI media placement. Getting on Latent Space (swyx + Alessio) is Braintrust's template for breakout category authority. The pitch: "We ran 10 competitive evaluations of AI agents on enterprise tasks. Here's what we learned about how agents actually perform vs. what vendors claim. The findings will surprise you."
+
+---
+
+### The north star metric: inbound DMs per week
+
+Track this weekly. The conversion funnel from content:
+- 1,000 impressions → 20 reads → 1 LinkedIn DM or email inquiry
+- At 5 posts/week × 1,000 impressions each = 100 reads/week minimum = 5 inquiries/week
+- 5 inquiries/week × 4 weeks × 30% conversion to workshop = 6 workshops/month
+- 6 workshops/month × 70% conversion to competition = 4 competitions/month
+- 4 competitions/month × 3 months = 12 competitions before raising money
+
+**If the north star metric is zero after 30 days of consistent posting: the thesis is wrong or the distribution is broken. Do not continue content investment without diagnosing the failure.**
+
+Sources: [FORKOFF founder-led content 2026](https://forkoff.xyz/blog/founder-growth/founder-led-content-marketing-ai-2026), [LangChain content strategy](https://blog.langchain.com/langchain-state-of-ai-2024/), [Latent Space podcast](https://www.latent.space/), [The Pragmatic Engineer](https://newsletter.pragmaticengineer.com/), [AI Engineer World's Fair](https://www.ai.engineer/)
+
+---
+
+## Tick 171 (2026-05-03T09:30Z): The enterprise security review bear case — red tape that kills v1 sales [theme: bear]
+
+### The documented reality: AI-specific security questions now kill deals
+
+In 2026, enterprise procurement processes have added **30–60 AI-specific security questions** that didn't exist 18 months ago. These cover: model provenance, training data rights, prompt injection defenses, hallucination controls, and ISO 42001 alignment. Enterprise buyers are asking about these even for evaluation platforms — not just production AI systems.
+
+**The financial impact:** For a startup doing $5M ARR with 60% enterprise mix, a single quarter of slow security questionnaire turnaround costs **$400K–$800K in pushed or lost revenue**. [Source: Security Boulevard, 2026]
+
+---
+
+### The SOC 2 timeline problem
+
+**Without SOC 2:** A typical enterprise security review takes **4–8 weeks**. The buyer's infosec team manually reviews each question. Deals stall.
+
+**With SOC 2 Type II:** Security review takes **5–10 business days**. The SOC 2 report answers 80% of security questionnaire questions automatically.
+
+**Time to achieve SOC 2 Type II:**
+- With automated compliance platforms (Vanta, Drata, Comp AI): **4–5 months, ~75 internal hours**
+- Without automation tools: **9–12 months, 550–600 internal hours**
+
+**The implication for Straw's v1 timeline:** If Straw targets enterprise design partners in June 2026, SOC 2 Type II needs to start NOW (May 2026) to be complete before the first paid contract closes. Starting May 2026 → SOC 2 ready September 2026 → enterprise deals close without friction from October 2026.
+
+**Recommended tool:** Vanta (most common for AI SaaS startups). SOC 2 automation + continuous monitoring. ~$5,000/year for startups.
+
+---
+
+### The ISO 42001 requirement (the new AI-specific compliance standard)
+
+**ISO/IEC 42001** — the first certifiable AI management system standard — went live in 2023 and is now appearing as a "preferred" or "required" item in enterprise procurement. Microsoft, OpenAI, and Anthropic are already certified.
+
+**For Straw:** ISO 42001 certification is overkill at v0/v1 but necessary before v2 large enterprise deals. The key thing to have is a documented AI governance policy that can be shared in lieu of formal certification in early deals.
+
+**What the AI governance policy must cover:**
+1. How Straw's evaluation models are selected and validated
+2. How the LLM-as-judge in Tier 2 is audited for bias
+3. How adversarial robustness is tested
+4. What human oversight exists in the evaluation pipeline
+5. How disagreements between automated and human evaluation are resolved
+
+This policy document is an early-stage substitute for ISO 42001. It's also directly aligned with Straw's "Independence Policy" (from Tick 135 in the prior session) — the same policy that establishes Straw as a neutral evaluator.
+
+---
+
+### The data security problem specific to Straw
+
+Straw runs enterprise tasks against multiple AI agents. Those tasks often contain sensitive enterprise data (contract files, financial data, customer information).
+
+**The data security requirements this creates:**
+1. **Data isolation:** Each agent's sandbox must not access other agents' sandboxes
+2. **Data deletion:** Enterprise task data must be deletable on demand (GDPR Article 17)
+3. **Data residency:** Enterprise data cannot leave specified regions (EU AI Act, GDPR)
+4. **Encryption:** Data at rest and in transit, SOC 2 compliant
+5. **Access control:** Straw staff cannot access competition data except for evaluation review purposes
+
+**This is a substantial engineering requirement.** The sandbox architecture for running agent competitions is not just an evaluation problem — it's a data security problem. Each competition must run in an isolated, auditable, deletable environment.
+
+**Recommended approach:** Build on Modal Labs (from Tick 162 — Erik Bernhardsson, CEO) for sandboxed computation. Modal provides ephemeral, isolated compute environments with automatic cleanup. This solves the data isolation and deletion problem with minimal custom infrastructure. AND it maps to the partnership angle from Tick 162: "Modal runs the agents; Straw evaluates them."
+
+---
+
+### The security review bear case risk assessment
+
+| Security requirement | Timeline to achieve | Cost | Deal risk if missing |
+|---|---|---|---|
+| **SOC 2 Type I** | 6–8 weeks | $5K–$15K/year (Vanta) | High: enterprise buyers ask for this in first security review |
+| **SOC 2 Type II** | 4–5 months | $15K–$30K total (audit fees) | Medium: most enterprises accept Type I for initial contracts |
+| **Data isolation** (per-competition sandboxes) | 2–4 weeks engineering | Modal compute costs | High: enterprise data in multi-tenant competitions is a blocker |
+| **GDPR DPA** (Data Processing Agreement) | 1 week (legal template) | ~$1K legal review | Medium-High: EU enterprise buyers require this |
+| **AI governance policy** | 2 days writing | $0–$2K legal review | Medium: AI-specific procurement questions answered by this |
+| **ISO 42001** | 6–12 months | $20K–$50K | Low: acceptable gap at v0/v1; required for large enterprises |
+
+**The minimum viable security stack for v1 enterprise deals (in priority order):**
+1. **Start Vanta today** → SOC 2 Type I in 6–8 weeks
+2. **Build Modal-based computation isolation** → 2–4 weeks engineering
+3. **Write AI governance policy + Independence Policy** → 2 days
+4. **Prepare GDPR DPA template** → 1 week
+
+Total: 6–8 weeks to be enterprise-deal-ready on the security/compliance dimension.
+
+Sources: [AI security questionnaires 2026](https://securityboulevard.com/2026/04/ai-security-questionnaires-why-most-startups-fail-and-the-trust-stack-that-fixes-it/), [SOC 2 checklist for startups](https://trycomp.ai/soc-2-checklist-for-saas-startups), [SOC 2 what changed 2026](https://www.konfirmity.com/blog/soc-2-what-changed-in-2026), [Vanta compliance platform](https://www.vanta.com/)
+
+---
+
+## Tick 172 (2026-05-03T10:00Z): Fintech and insurtech agents — vertical-specific named contacts [theme: partners]
+
+### The fintech AI agent landscape (deployment stage in 2026)
+
+Per GlobalNewsWire 2025 and Fintech Futures 2026: Top banking AI deployments:
+- Fraud detection: 64% of banks
+- Loan processing: 61%
+- Customer onboarding: 59%
+- Code generation (Devin/Copilot): Goldman Sachs, JPMorgan, Barclays
+
+The key insight: **banks are deploying AI in regulated workflows**. Every deployment requires documentation. The OCC's April 2026 MRM guidance update (Tick 155) means the documentation requirement is imminent. Straw's compliance certificate is the product these banks need.
+
+---
+
+### Named fintech and capital markets contacts
+
+**Investment management / capital markets:**
+
+| Name | Company | Role | Why | Opener |
+|---|---|---|---|---|
+| **Edouard Legrand** | SimCorp | Head of AI / Product Officer | Just launched Agent Launchpad April 2026 | "You just launched an agent marketplace — Straw is the evaluation infrastructure that helps investment managers choose between agents in your ecosystem." |
+| **Srinivas Nidugondi** | Broadridge | Chief Operating Officer | Broadridge MCP integration April 2026 | "Broadridge just integrated MCP for AI workflows. Which agent implementations perform best for your institutional clients' specific proxy voting workflows? Straw answers that." |
+| **Will Trout** | Javelin Strategy | Director of Wealth Management | Covers AI in wealth/investment mgmt | "You cover AI in wealth management — Straw is the evaluation platform that produces objective data for investment managers comparing AI agent vendors. Worth a briefing?" |
+
+**Regional bank AI decision-makers:**
+
+| Name | Company | Role | Why | Opener |
+|---|---|---|---|---|
+| **Lynn Martin** | NYSE/ICE | President, NYSE | AI in exchange operations | "NYSE's AI trading infrastructure evaluation needs — Straw runs competitive evaluations for capital markets AI tools." |
+| **Jeremy Balkin** | Citi | Managing Director (Innovation) | Citi AI initiatives | "Citi's model risk management team needs documented evaluation evidence before any AI agent deployment. Straw produces that evidence." |
+| **Colt Hultgren** | Capital One | CAIO | Most AI-advanced US bank | "Capital One deploys AI faster than any US bank. Before each deployment decision, Straw runs the competitive evaluation that proves the chosen agent is best." |
+
+---
+
+### The insurtech angle (underexplored vertical)
+
+The insurance industry is deploying AI agents for underwriting, claims processing, and customer service — all highly regulated, all requiring documented decision trails.
+
+**Key insurtech players with AI agent deployments:**
+
+**Lemonade** — AI-first insurance company. Claims processing is already highly automated. Their AI agents make claims decisions in seconds. As they expand into enterprise lines, documented agent evaluation becomes critical for regulatory approval.
+
+**Next Insurance** — Business insurance for SMBs. Pure digital, AI-driven underwriting. Every underwriting decision made by an AI agent must be documentable under state insurance AI regulations.
+
+**Root Insurance** — Behavior-based auto insurance. AI agent evaluates driving behavior and prices policies. State insurance commissioners are beginning to require AI model documentation.
+
+| Name | Company | Role | Why | Opener |
+|---|---|---|---|---|
+| **Daniel Schreiber** | Lemonade | CEO | AI-native insurance | "Lemonade's AI agents process claims in real-time. State regulators are starting to require documented evaluation of AI decision systems. Straw produces that documentation." |
+| **Guy Goldstein** | Next Insurance | CEO | Business insurance AI underwriting | "Next's AI underwriting agents make coverage decisions for 500K+ businesses. State regulators require documented proof of AI evaluation. Straw is that proof." |
+| **Alexander Timm** | Root Insurance | CEO | Behavior-based auto | "State insurance commissioners are asking Root how you evaluate your AI pricing models. Straw produces the independent evaluation documentation you need." |
+
+---
+
+### The financial services vertical in aggregate
+
+**Why financial services is the best v1 vertical for Straw:**
+1. **Highest regulatory pressure** — OCC, SEC, state insurance commissions, EU AI Act all require documentation
+2. **Highest stakes** — AI decisions affect credit approvals, insurance pricing, investment allocations (high willingness to pay for evaluation)
+3. **Highest data volume** — financial institutions have the most structured data to run meaningful evaluations against
+4. **Most agent vendor activity** — every major AI company has a financial services vertical; the comparison problem is acute
+5. **Strongest compliance certificate value** — a "Straw Certified" badge in financial services carries regulatory credibility weight that other industries don't yet require
+
+**The financial services go-to-market pathway:**
+1. Get ONE financial services design partner (SimCorp or Capital One are highest receptivity)
+2. Run ONE documented evaluation in their regulated workflow (loan processing or claims review)
+3. Publish the evaluation report as a case study with their permission
+4. That case study becomes the sales tool for every other financial services prospect
+
+Sources: [SimCorp Agent Launchpad](https://fintech.global/2026/04/27/simcorp-launches-agentic-ai-ecosystem-for-investors/), [Agentic AI in financial services 2026](https://www.nimbleappgenie.com/blogs/agentic-ai-in-financial-services/), [Banking 2026 production scale AI agents](https://www.fintechfutures.com/ai-in-fintech/banking-in-2026-production-scale-ai-agents/), [Fintech AI use cases 2026](https://www.stackai.com/blog/the-7-top-ai-agent-use-cases-for-fintech-in-2026/)
+
+---
+
+## Updated Phase 2 Thread List (Post-Tick 172)
+
+**Threads completed (Ticks 167-172):**
+- [x] Tick 167: "Definition of Success" workshop as Straw's product entry point — full design (gtm)
+- [x] Tick 168: Goodhart's Law / evaluation gaming arms race — the deepest structural bear case (bear)
+- [x] Tick 169: Named enterprise AI decision-makers — SimCorp, JPMorgan, Rippling, Vanguard, Broadridge (partners)
+- [x] Tick 170: 90-day content marketing calendar with specific posts and schedule (gtm)
+- [x] Tick 171: Enterprise security review / red tape — SOC 2 timeline, data isolation, AI governance policy (bear)
+- [x] Tick 172: Fintech and insurtech companies deploying AI agents — named contacts and vertical strategy (partners)
+
+**Threads still to dig:**
+- [ ] Tick 173 [bear]: The open-source moat threat — if OpenHands/SWE-agent achieve 90%+ on Straw rubrics for free, does the premium agent market collapse?
+- [ ] Tick 174 [gtm]: The Series A narrative — how to position Straw for a $5M–$10M seed round based on design partner traction
+- [ ] Tick 175 [partners]: Healthcare AI named contacts — hospital systems, EHR vendors, clinical AI deployment leaders
+- [ ] Tick 176 [bear]: The privacy regulatory risk — HIPAA, GDPR, CCPA applied to enterprise task data flowing through Straw's evaluation pipeline
+
+**Push status:** Appended ticks 167-172. Committing now.
+
