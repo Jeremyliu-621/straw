@@ -19843,3 +19843,129 @@ This fairness narrative is increasingly important for:
 
 **The regulatory compliance framing** converts the political risk into product value.
 
+
+---
+
+## Tick 270 (2026-05-03T00:00:00Z): Foundation Model Channel Opportunity — Anthropic Claude Marketplace [theme: gtm]
+
+**Research basis**: Anthropic launched Claude Marketplace March 6, 2026 — third-party apps built on Claude, purchasable against existing Anthropic enterprise spend commitments. Partners at launch: Snowflake, GitLab, Harvey AI, Replit, Rogo, Lovable. $100M Claude Partner Network with three tracks: Consulting Partners, Technology Partners, Services Partners.
+
+### The Strategic Moment
+
+Anthropic just became a platform company. Their 1,000+ enterprise customers spending >$1M/year can now apply existing API spend commitments to third-party Claude-powered apps. This is the Salesforce AppExchange playbook, and it creates a direct distribution channel for Straw.
+
+**The Straw-Anthropic alignment is stronger than it looks.** Anthropic wins when:
+1. Enterprises deploy Claude-powered agents at scale
+2. Those deployments succeed and get renewed
+3. Enterprises trust Claude enough to expand usage
+
+Straw accelerates all three. An enterprise that runs Straw evaluations is making an *informed* Claude deployment decision, not a vendor-demo-driven guess. Informed decisions succeed more often. Success = renewal = expansion. Straw is Anthropic's quality assurance layer for enterprise Claude deployments.
+
+### The Partner Network Play
+
+Anthropic's Claude Partner Network has three tracks. Straw fits in all three:
+
+| Track | Straw's Role | Why Anthropic Cares |
+|-------|-------------|---------------------|
+| Technology Partners (ISVs) | Straw listed as evaluation layer in Claude Marketplace | Drives informed Claude deployments |
+| Consulting Partners | SI firms use Straw to benchmark agent builds | Increases SI win rates on Claude projects |
+| Services Partners | MSPs include Straw in AI managed service offering | Reduces MSP liability on agent promises |
+
+**Target ask**: Anthropic Partner Network co-sell agreement. Straw appears in Claude Marketplace as "Evaluation & Certification" category. Anthropic field reps can refer Straw when enterprise customers ask "how do we know which agent to deploy?"
+
+### The Pitch to Anthropic BD
+
+Frame: "We make your enterprise customers' Claude deployments succeed."
+
+- Enterprise buys Claude API access
+- SI builds custom Claude agent
+- Enterprise asks: "Is this agent actually good?"
+- Anthropic currently has no answer
+- Straw provides the answer: run a Straw competition, certify the winner
+- "Straw Certified: Built on Claude" badge on the winning agent
+- Anthropic gets adoption data; enterprise gets confidence; SI gets a repeatable methodology
+
+This is not a competitive conversation. Anthropic does not want to build evaluation tooling — they want to sell API access. Straw fills the trust gap without requiring Anthropic to build it.
+
+### The Spill-Over Effect
+
+All hyperscalers are running this same playbook:
+- **Google**: Agentspace + Agent2Agent protocol partner ecosystem
+- **Microsoft**: Azure AI Foundry + Copilot Studio certification program
+- **AWS**: Bedrock partner marketplace + Trainium/Inferentia procurement incentives
+
+Straw's goal: appear in all four marketplaces. Not as a threat, but as the neutral evaluation layer all four need. "Straw is Switzerland. We certify agents, regardless of the model they run on. AWS customers can certify AWS-native agents. Google customers can certify Gemini-based agents. But when an enterprise wants a model-agnostic evaluation? They come to Straw."
+
+The hyperscaler channel is a **25,000+ enterprise customer base** Straw can reach through co-sell alone. Anthropic's 1,000 >$1M customers are Straw's tier-1 ICP.
+
+### Action Items
+
+1. **Get introduced to Anthropic BD through a shared investor** — Spark Capital led Anthropic's Series B; check Straw's investor network for Spark relationships
+2. **Apply to Claude Partner Network** (Technology Partners track) immediately
+3. **Build "Straw Certified: Built on Claude" badge** as a co-marketing artifact — Anthropic can use this in their enterprise marketing
+4. **Target the 6 launch-day Marketplace partners** (Snowflake, GitLab, Harvey AI, Replit, Rogo, Lovable) as Straw design partners — they already have enterprise Claude customers who need agent evaluation
+
+**Harvey AI** is particularly high-signal: legal AI platform with enterprise clients who need to know "which version of Harvey's agent is best for our matter type?" That's a Straw evaluation.
+
+---
+
+## Tick 271 (2026-05-03T00:01:00Z): AI Agent Staffing Agencies as Design Partners [theme: partners]
+
+**Research basis**: AI agent staffing agency emerging as formal business model in 2026. Sources agents and deploys them into enterprises. Model: placement fees + monthly management fees. U.S. staffing market $183.3B; agentic AI market $9.14B growing to $139B+ by 2034. Enterprise apps moving from "tools for employees" to "digital workforce of AI agents."
+
+### Why Agent Staffing Agencies Need Straw
+
+AI agent staffing agencies face the exact same problem Straw solves — but on behalf of their clients. They need to *vet the agents they place*. Their business model collapses if they place a bad agent:
+- Placement fees evaporate on failure
+- Management fees depend on agent performance
+- Reputation destroyed if recommended agent underperforms
+
+Straw is the "background check + performance certification" layer for the AI agent staffing industry. Just as human staffing agencies use LinkedIn, reference checks, and skills assessments to vet candidates — AI agent staffing agencies need Straw to vet agents.
+
+### Named Target Agencies and Platforms
+
+The AI agent staffing category is nascent. Early movers are building infrastructure. These companies are Straw's ideal design partner targets:
+
+| Company | Focus | Why They Need Straw |
+|---------|-------|---------------------|
+| **Relevance AI** | AI sales & GTM agent teams | Places AI agents into sales workflows — needs performance benchmarks to prove agent quality |
+| **Cogent** (emerging) | Enterprise AI workforce management | Managing fleets of agents across enterprise clients — needs evaluation methodology |
+| **WorkFusion** | Intelligent automation + AI agents | Financial services focus; compliance requirements make agent evaluation non-negotiable |
+| **Automation Anywhere** | RPA + AI agent hybrids | Migrating RPA customers to AI agents; needs proof that AI agents outperform legacy bots |
+| **UiPath** | Enterprise automation + AI | 10,000+ enterprise customers; launching AI agents in 2026; needs evaluation layer |
+| **Salesforce** (Einstein agents) | CRM AI agents | Deploying agents at scale into enterprise sales orgs; needs performance proof for ROI |
+
+**Primary design partner target**: **Relevance AI** — they are explicitly building the "AI agent team for GTM." Their customers need to know: "Is this AI SDR better than that one?" Straw answers that question. Relevance AI can offer Straw to every enterprise client as part of their onboarding.
+
+### The Staffing Agency GTM Partnership Structure
+
+**Model**: Straw as white-label evaluation layer for AI agent staffing agencies.
+
+- Agency sources and proposes 3-5 agent candidates to enterprise buyer
+- Straw runs competitive evaluation (the "interview process")
+- Straw certifies the winner
+- Agency places certified agent
+- Agency uses "Straw Evaluated" as quality differentiator vs. competitors who guess
+
+**Revenue model**: Agency pays Straw per evaluation (or annual license). Enterprise pays agency placement + management fee. Straw = B2B2B distribution.
+
+**Why agencies will pay**: Without Straw, the staffing agency has no defensible quality claim. "We think this agent is good" doesn't close enterprise deals. "This agent scored 94th percentile on your exact workflow, vs. 3 competitors" does.
+
+### Outreach Strategy
+
+**Cold opener to Relevance AI CEO Daniel Vassilev:**
+
+> "Hi Daniel — Relevance is building the AI agent team for enterprise GTM, which means you're implicitly taking responsibility for agent performance. When a client's AI SDR misses quota, that's your problem. We're building the background check and performance certification layer for AI agents. Want to talk about offering Straw evaluations as part of Relevance's onboarding?"
+
+**Why this works**: Hits the liability nerve. Staffing agencies live and die by placement quality. We're solving their existential risk.
+
+### Larger Implication: The Agent Economy Infrastructure Stack
+
+Human economy infrastructure: LinkedIn (professional identity) + Workday (workforce management) + background check firms (trust layer).
+
+Agent economy infrastructure: **[no identity layer yet]** + Workday/Monday (workflow management) + **Straw (trust and certification layer)**.
+
+Straw's long-term moat: we become the trust layer of the agent economy. Not just evaluation software — the canonical source of truth for "is this agent any good?" Every agent staffing agency, every enterprise hiring platform, every foundation model company — they all reference Straw certifications.
+
+**The FICO analogy is exact**: FICO doesn't issue loans. They don't run credit analysis for a living. They are the *score*. Straw's goal: be the score for AI agents. When an enterprise asks "should we deploy this agent?" the answer is "what's its Straw score?"
+
