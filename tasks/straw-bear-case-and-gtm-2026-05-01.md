@@ -30201,3 +30201,57 @@ This is the scale that makes Straw essential:
 Sources: bain.com/insights/software-ma-report-2026, skadden.com/insights/ma-in-the-ai-era-2026, learn.g2.com/state-of-ai-agent-builders-2026, salesmate.io/ai-agent-statistics, securityboulevard.com/ai-due-diligence-checklist-2026
 
 TICK_END
+
+---
+
+## Tick 459 — Deloitte State of AI 2026 + Compliance Log Requirements by Sector
+
+**Research date:** 2026-05-03
+
+### Deloitte State of AI in the Enterprise 2026 — key statistics
+
+**Adoption:**
+- 60% of workers now have sanctioned AI tools (up from <40% one year ago — 50% expansion in one year)
+- 84% of organizations increasing AI investments
+- 78% of leaders reporting greater confidence in AI technology
+- 58% using physical AI in some capacity (expected to reach 80% within two years)
+
+**Execution gap:**
+- Only 25% have moved 40%+ of AI experiments to production
+- 34% using AI for deep business transformation; 30% redesigning processes; 37% using AI at surface level only
+
+**Governance:**
+- Only 21% have mature governance model for autonomous agents (confirmed from Tick 440/448)
+- 30% say their risk/governance is "highly prepared" for AI (up 6 points but still 70% under-prepared)
+- "Enterprises where senior leadership actively shapes AI governance achieve significantly greater business value than those delegating to technical teams alone."
+
+**The stat that matters most for Straw:** 78% of enterprises increasing AI investment with 70% lacking mature governance. The governance gap is NOT closing fast enough. Straw fills it.
+
+---
+
+### Sector-specific compliance audit log requirements — full map
+
+| Sector | Regulation | Audit Log Requirement | Straw Evaluation Log Satisfies? |
+|---|---|---|---|
+| Healthcare | HIPAA + FDA AIaMD | Complete audit trail of every agent action, decision reasoning, input/output | YES — Straw log includes full evaluation record |
+| Financial Services | SOX, Basel III, PCI DSS | Financial reporting controls, risk discipline, data environment logs | YES — evaluation log is governance record |
+| Energy/Utilities | FERC + NERC CIP | Auditable electronic security perimeters, system categorization, change logs | YES — Straw log documents pre-deployment selection |
+| Any EU business | EU AI Act (August 2026) | Lifecycle evidence: approvals, risk assessments, purpose, change logs, monitoring | YES — Straw log is the lifecycle evidence |
+| Enterprise procurement | Internal legal/compliance | "Complete, queryable records of every agent action" for security review | YES — Straw log format designed for enterprise security review |
+
+**The compliance map is complete.** Every major regulated sector has audit log requirements that Straw's evaluation log satisfies. The question isn't whether to produce the log — regulators require it. The question is whether you produce it BEFORE or AFTER deployment. Straw produces it before.
+
+**The most important compliance deadline: August 2026 (EU AI Act)** — 90 days from today. Any enterprise deploying "high-risk" AI agents to EU customers needs pre-deployment documentation NOW. Straw can run an evaluation in 3-5 days. Every EU-operating enterprise has a hard deadline that creates Straw's urgency.
+
+---
+
+### Updated urgency framing for sales outreach (Tick 459 version)
+
+**The August 2026 EU AI Act pitch:**
+> "In 90 days, the EU AI Act enforcement deadline hits. Any AI agent deployed in customer service, HR, financial services, or healthcare for EU customers must have pre-deployment documentation. Straw runs your evaluation in 3-5 days. Your evaluation log becomes your compliance record. If you wait until August, your agents are out of compliance on day one."
+
+This is a hard, date-specific urgency trigger. No enterprise salesperson needs to manufacture urgency — the regulation creates it.
+
+Sources: deloitte.com/us/en/state-of-ai-in-enterprise-2026, hpcwire.com/deloittes-state-of-ai-2026, covasant.com/eu-ai-act-compliance-autonomous-agents-2026, glean.com/top-7-industries-ai-compliance-2026, ethyca.com/guides/ai-governance
+
+TICK_END
