@@ -26090,3 +26090,54 @@ At these prices, Straw is the cheapest insurance premium an enterprise AI buyer 
 Sources: hypersense-software.com/blog/2026/01/12/hidden-costs-ai-agent-development, trantorinc.com/blog/agentic-ai-total-cost-of-ownership, ekfrazo.com/resources/blogs/salesforce-agentforce-pricing-2026, sustainableatlas.org/post/cost-ai-agents-workflow-automation-deployment-2026
 
 TICK_END
+
+---
+
+## Tick 427 — Workday + ServiceNow Design Partners + Knowledge 2026 Conference (#101-103)
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets / GTM (conferences)
+
+### Workday: 14 new agents, a16z "Last Workday?" warning
+
+Workday is deploying 14 new Illuminate AI agents in 2026, with early results:
+- Recruiter capacity: +54%
+- FP&A efficiency: +49%
+- Recruiter Agent (HiredScore): +25% recruiter capacity for existing customers
+
+**a16z published "Workday's Last Workday?"** in 2026 — arguing Workday faces existential risk from AI agents that could replace its core HRIS/finance workflows. This creates urgency for Workday customers to evaluate AI agents for HR/finance use cases before being disrupted.
+
+Workday themselves acknowledge: "The gap between purchasing an agent and running it confidently in production is wider than most teams anticipate."
+
+**Design partner #101 — Workday AI product team:**
+- Workday is building an Agent System of Record (centralized deployment foundation)
+- They need evaluation infrastructure for validating agents before adding to Workday's registry
+- Straw pitch: "Your customers are deploying Workday agents AND non-Workday agents for the same HR workflows. Your Agent System of Record benefits from Straw's cross-vendor evaluation results as a quality signal for which agents get listed."
+
+### ServiceNow: Robinhood case study + Knowledge 2026 (May 5-7, THIS WEEK)
+
+ServiceNow stats:
+- 70% of employee requests deflected before human intervention
+- **Robinhood**: 2,200 hours manual effort reduction across 1,300 tickets/month with Now Assist
+
+**ServiceNow Knowledge 2026 conference: May 5-7, 2026, Las Vegas**
+This conference is happening THIS WEEK. CDW is presenting "Now Assist at Full Throttle" — examining early-stage deployment dependencies that determine whether AI "accelerates value or exposes gaps."
+
+This is a direct Straw marketing opportunity. Every enterprise IT professional attending Knowledge 2026 has a ServiceNow instance and is evaluating AI agents. Jeremy should:
+1. Tweet/LinkedIn post about Knowledge 2026 with a Straw angle
+2. Contact CDW (conference presenter) directly: "CDW is presenting about AI deployment dependencies. Those dependencies are exactly what Straw's rubric evaluation maps before deployment."
+
+**Design partner #102 — Robinhood** (financial services)
+- Already deployed ServiceNow agents in production (2,200 hours saved)
+- Financial services = regulated industry = EU AI Act + Colorado Act compliance
+- Next step for Robinhood: evaluate AI agents for trading, compliance, customer service
+- Straw pitch: "You deployed Now Assist for ticket management. Your next AI agent deployment (trading operations? compliance monitoring?) needs the same rigorous evaluation with a different rubric."
+
+**Design partner #103 — CDW Technology Solutions**
+- Presenting "Now Assist at Full Throttle" at Knowledge 2026 — named presenter
+- CDW is a major IT services firm; if they recommend Straw to their ServiceNow customers, that's channel distribution
+- CDW serves 250,000+ enterprise customers across North America
+
+Sources: newsroom.workday.com/2025-09-16-Workday-Illuminate, a16z.com/workdays-last-workday, biztechmagazine.com/article/2026/04/servicenow-knowledge-2026, store.servicenow.com (Now Assist Readiness Evaluation)
+
+TICK_END
