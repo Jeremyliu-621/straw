@@ -24197,3 +24197,274 @@ Sources: fortune.com/2026/05/02/agentic-ai-governance-framework-banking-healthca
 
 TICK_END
 
+
+---
+
+## Tick 392 — CAIF Academic Partnership: 14 Fellows Named, Activation Path
+
+**Date researched:** 2026-05-03
+**Theme:** GTM + Fundraising (Academic Credibility)
+
+### What happened with CAIF fellowship in 2026
+
+The 2026 Cooperative AI Foundation PhD Fellowship cohort was announced January 2026. Key facts:
+- **240 applications received** — 35% increase from the inaugural 2025 cohort
+- **14 fellows selected** from Oxford, Carnegie Mellon, UC Berkeley, and other top programs
+- **Stipend:** up to $40,000/year living expenses for up to 3 years + conference/compute budgets + early model access
+- Fellowship focused on: multi-agent coordination, cooperative behavior, inter-agent contracting, peer incentivization
+
+Research topics that overlap directly with Straw's mechanism design:
+- A fellow studying **computational circuits enabling agents to coordinate covertly** — directly relevant to collusion detection in Straw evaluations
+- A fellow developing **multi-agent R&D testbed with oversight tools and active honeypot agents to probe for collusion** — Straw's Tier-3 evaluation faces the same collusion problem
+- A fellow exploring **consensus-building in transformative AI delegation contexts** — maps to Straw's "sprint contract" mechanism (task rubric as the delegation contract)
+
+### Why academic partnership is underrated as a Straw GTM move
+
+Academic partners give Straw three things money can't buy at Series Seed stage:
+1. **Credibility as infrastructure** — if a CMU or Oxford PhD is testing their mechanism design on Straw, enterprise buyers see Straw as research-grade, not a startup demo
+2. **Co-authorship pipeline** — papers citing Straw-derived market data give Jeremy legitimacy vs. incumbents with 10-year research head starts
+3. **CAIF grant money** — CAIF funds "working marketplace implementations" as "Understudied Area" per their grant priorities. A joint submission with a CAIF fellow means the grant goes to both, not just the academic
+
+### CAIF grant path (specific steps)
+
+CAIF runs two funding mechanisms:
+- **PhD Fellowship** — closed for 2026 (deadline was November 2025); opens again Q4 2026
+- **Research Grants** — "Understanding and Evaluating Cooperation-Relevant Capabilities" is explicitly high priority; grants up to £100K; applications open on rolling basis
+
+**Straw-specific grant angle:** Straw's Shapley attribution system (Monte Carlo contribution tracking across agent submissions) is exactly the "mechanism design for LLM agents" CAIF lists as priority research. A working implementation generating real on-chain data (once ERC-8004 v1.5 launches) is what no pure academic lab can produce.
+
+**Contact:** fellowships@cooperativeai.org — email can reference the "peer incentivization" and "inter-agent contracting" grant priorities
+
+### Action items for Jeremy
+
+1. **Immediate (this week):** Email cooperativeai.org referencing the "Incentivizing Cooperation" grant priority, describe Straw's stake-to-post + Shapley attribution system, ask if there's a research fellow interested in collaboration
+2. **Q3 2026:** If a design partner is onboarded and generating real evaluation data, submit a joint grant application with any CAIF-affiliated Oxford or CMU researcher
+3. **Q4 2026:** Apply for the 2027 CAIF PhD Fellowship as a practitioner sponsor (Straw hosts the fellow, CAIF funds the stipend) — gives Straw a full-time mechanism design researcher for 3 years
+
+Sources: cooperativeai.com/phd-fellowship/2026, cooperativeai.com/post/announcing-the-2026-cooperative-ai-phd-fellows, cooperativeai.com/foundation, effectivealtruism.org/opportunities/recEtUuz8HVHEZyhO
+
+TICK_END
+
+---
+
+## Tick 393 — "88% Pilot Failure" as Straw's Core Sales Narrative
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case → GTM pivot (Straw's market-entry narrative)
+
+### The statistic
+
+**88% of agent pilots never reach production** — Forrester + Anaconda 2026 enterprise survey.
+
+This is the single most important statistic in Straw's sales deck. Not because it makes the market look big. Because it explains WHY Straw exists.
+
+Context:
+- 80% of enterprise apps shipped in Q1 2026 embed at least one AI agent (up from 33% in 2024)
+- Only 31% of enterprises have any AI agent in production (S&P Global / McKinsey)
+- The gap between embedding and production is where Straw lives
+
+### Why pilots fail (cited causes, 2026 data)
+
+| Root cause | % citing it | Straw's solution |
+|---|---|---|
+| Evaluation gaps — no way to know if agent is good enough | 64% | Tier 1-3 evaluation pipeline |
+| Governance friction — no audit trail, no accountability | 57% | Rubric + evaluation log per submission |
+| Model reliability at volume | 51% | Multi-vendor testing against the same rubric |
+| Integration complexity with legacy systems | 44% | API-first architecture; A2A transport compatibility |
+| Unclear organizational ownership | 38% | "Agent Owner" onboarding checklist built into Straw UX |
+
+**The 12% that DO make it to production share four traits** (consistent across Forrester, BCG, McKinsey 2026 data):
+1. Named owner of the agent deployment
+2. Scoped, pre-specified success criteria
+3. Automated evaluation (not manual QA sampling)
+4. Organizational tolerance to ship + roll back without treating either as a verdict on AI overall
+
+**Traits 1-3 are Straw's exact feature set.** Straw doesn't add overhead — it is the operational checklist that the successful 12% are already running manually.
+
+### How this reshapes the Straw pitch
+
+Old framing: "We help enterprises evaluate AI agents for procurement."
+New framing: **"88% of agent pilots fail. The 12% that succeed define success criteria upfront and measure automatically. We make that process 10× faster."**
+
+The enterprise customer isn't buying "agent evaluation." They're buying **pilot-to-production conversion.** The feature (rubric-defined evaluation) is the same; the frame (pilot success, not procurement diligence) is new.
+
+This also pre-empts the "good enough" objection. When a buyer says "we can just test agents manually," the response is: "That's what the 88% are doing. Successful deployments don't rely on manual testing."
+
+### The follow-up data point for CFO conversations
+
+Median time-to-value on agent deployments: **5.1 months** (BCG/Forrester 2026). SDR agents pay back in 3.4 months; finance/ops agents in 8.9 months.
+
+The enterprise doesn't just want the agent to work. They want it to pay back before the fiscal year ends. Straw's evaluation pipeline shortens time-to-production, which shortens time-to-ROI. CFO math: if an agent generates $2M/year value and Straw cuts 2 months off the 5.1-month time-to-value, Straw paid for itself 13× over in recaptured ROI.
+
+Sources: digitalapplied.com/blog/ai-agent-scaling-gap-march-2026-pilot-to-production, joget.com/ai-agent-adoption-in-2026-what-the-analysts-data-shows, composio.dev/blog/why-ai-agent-pilots-fail-2026-integration-roadmap
+
+TICK_END
+
+---
+
+## Tick 394 — Outcome-Based Pricing: Straw's Revenue Model Evolution
+
+**Date researched:** 2026-05-03
+**Theme:** GTM / Pricing
+
+### Market context (2026)
+
+Hybrid pricing — base subscription + usage/outcome components — is now the dominant AI SaaS model:
+- **43% of SaaS firms** now use hybrid pricing (up from ~10% in 2022)
+- Projected to reach **61% by end of 2026**
+- Companies using hybrid pricing report **38% higher revenue growth + 38% higher NRR** vs. pure subscription
+
+Sierra AI (customer service agents) pioneered the pure outcome model: **pay per successful resolution.** Enterprise contracts start at ~$150K/year + $50-200K setup. Spirit Airlines, Roku, Urban Outfitters are production customers.
+
+### Straw's natural pricing evolution
+
+**Phase 0 (v0, today):** Flat monthly subscription ($1K-5K/month per seat tier). Simplest to sell. No alignment risk.
+
+**Phase 1 (v1):** Hybrid — subscription floor + per-evaluation fees. Predictable ARR base with usage upside. Matches the market consensus model.
+
+**Phase 2 (v1.5+):** Outcome-linked — per successful pilot-to-production conversion. If Straw runs the evaluation and the enterprise deploys the winning agent, Straw takes a percentage of Year 1 agent contract value. This is the Sierra model applied to procurement, not customer service.
+
+### Why outcome-based pricing is Straw's long-term moat
+
+The fundamental problem with pure outcome-based pricing in B2B: defining what an "outcome" is requires measurability. Straw has a structural advantage here: **the rubric IS the outcome definition.** When a task poster defines "winning = score ≥ 85 on 5 rubric criteria," Straw already knows at evaluation time whether the outcome was achieved. No attribution ambiguity.
+
+This means Straw can offer outcome-based pricing that competitors (generic observability tools, manual consultants) cannot, because Straw is the system that defines and measures the outcome.
+
+### The pricing floor/ceiling problem and Straw's resolution
+
+The challenge with outcome-based pricing: what if the enterprise runs a task evaluation but decides not to deploy any agent? (Task was too hard, economy changed, etc.) Straw still did the work.
+
+Straw's resolution: **two-part fee structure**
+- Evaluation fee (fixed): paid at task close regardless of deployment decision. Covers evaluation compute + agent payout.
+- Deployment success fee (outcome): paid only when the winning agent is deployed into production. Set as a % of first-year agent contract value (suggested: 5-10%).
+
+This makes Straw's incentives perfectly aligned with the enterprise: Straw wants the agent to succeed in production because that's when Straw gets its biggest payday.
+
+### Concrete pricing targets (calibrated from prior research)
+
+| Customer tier | Annual contract | Evaluation fee per task | Deployment success fee |
+|---|---|---|---|
+| SMB / startup | $12K/year | $500 per evaluation | Not applicable (no deployment fee) |
+| Mid-market | $25K/year | $2K per evaluation | 3% of Year 1 agent contract |
+| Enterprise | $72K/year | $10K per evaluation | 5% of Year 1 agent contract |
+| Strategic | Custom | Custom | 7-10% of Year 1 agent contract |
+
+Rational WTP is $72K/year at enterprise tier (per Tick 383 analysis: 120× ROI case).
+
+Sources: sierra.ai/blog/outcome-based-pricing-for-ai-agents, bvp.com/atlas/the-ai-pricing-and-monetization-playbook, a16z.com/newsletter/december-2024-enterprise-newsletter-ai-is-driving-a-shift-towards-outcome-based-pricing, getmonetizely.com/blogs/the-2026-guide-to-saas-ai-and-agentic-pricing-models
+
+TICK_END
+
+---
+
+## Tick 395 — YC S26 RFS + Agent Infrastructure: Where Straw Fits
+
+**Date researched:** 2026-05-03
+**Theme:** Fundraising / YC Application
+
+### YC W26 batch: agent infrastructure is the dominant theme
+
+YC Winter 2026 analysis (published April 2026):
+- **60% of W26 batch is AI-focused** (up from 40% in 2024)
+- **41.5% are building AI agent infrastructure** (auth, testing, security, monitoring, context management, billing)
+- Robotics jumped from 6.6% → 18.1% of batch
+- ~84% of all YC companies are B2B (unchanged)
+
+The assessment from batch analysis: "Within two years, each agent infrastructure layer will have 2-3 winners and everyone else gets acquired or quietly shut down."
+
+### YC S26 RFS: where Straw lands
+
+YC S26 Requests for Startups notably pivoted away from software-only toward hard tech (agriculture robots, drone defense, lunar manufacturing). This is a critical shift: it means the agent infrastructure layer is being treated as **a settled layer** (build the commodity) vs. the application layer (who wins doing actual work).
+
+**But Straw is NOT infrastructure in the way YC is deprioritizing.** Straw is:
+- B2B SaaS with a marketplace component (network effects, not pure tooling)
+- Application-layer problem (procurement + evaluation = business process)
+- Revenue-generating from Day 1 with design partners (not infrastructure that needs scale before it's useful)
+
+The W26 batch analysis confirms: **agent evaluation tooling (the testing/monitoring layer) is crowded.** Braintrust, Langfuse, Arize, HoneyHive — 12+ funded startups in post-deployment eval. The gap is PRE-deployment, competition-format evaluation. That gap is not crowded.
+
+### How to position Straw in a YC application narrative
+
+Wrong framing: "AI agent evaluation infrastructure" — lands in the crowded testing/observability bucket
+Right framing: "Enterprise AI procurement marketplace" — a new category with no funded incumbent
+
+YC application key questions and Straw's answers:
+
+**"What does your company do?"** Straw is where enterprises post their real-world AI challenges and agents compete to solve them. The winning agent gets hired. Companies that use Straw reduce failed AI deployments from the industry average of 88%.
+
+**"How big is the market?"** $15 trillion of B2B spend will be AI-agent-intermediated by 2028 (Gartner). Enterprise AI agent market alone is $10.9B in 2026 growing at 44% CAGR. Even 1% of enterprise procurement decisions running through Straw = $150B in agent evaluations.
+
+**"Why now?"** Two convergent forces: (1) Google + Microsoft both launched agent evaluation in April 2026 — proving the category exists; (2) 88% pilot failure rate is a documented, quantified crisis that every enterprise AI buyer is living through today.
+
+**"Why us?"** Jeremy built [X] in [Y], understands the procurement workflow from [Z]. No funded direct competitor exists. The category is being validated by Google and Microsoft — but their solutions are single-vendor lock-in; Straw is cross-vendor (ICAAN moat).
+
+### YC deadline — URGENT
+
+**YC S26 deadline: May 4, 2026 at 8pm PT — TOMORROW.**
+
+This is the most time-sensitive item in this document. If Jeremy has not submitted by May 4, 8pm, the next batch (W27) doesn't open until ~October 2026 — a 5-month delay for a $500K+ check at better terms than any angel.
+
+Sources: buildmvpfast.com/blog/yc-w26-batch-agent-infrastructure-boom, ycombinator.com/apply, thevccorner.com/p/yc-summer-2026-requests-for-startups-ideas
+
+TICK_END
+
+---
+
+## Tick 396 — Procurement/Supply Chain Design Partners: Named Contacts (#78-82)
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets (supply chain vertical)
+
+### Why procurement is now a priority vertical
+
+ProcureAbility 2026 CPO-CIO Report (published April 29, 2026 — two days ago):
+- **90% of CPOs are already exploring or using AI agents in procurement**
+- **54% of procurement/IT teams are NOT collaborating on AI governance** — massive gap
+- **36% of CPOs cite "insufficient data governance policies"** as the biggest AI adoption barrier
+- **89% of procurement teams are unprepared** for AI deployment despite universal adoption interest
+
+The procurement/supply chain vertical is unique among Straw's targets because:
+1. The buyer (CPO) controls both the spend decision AND the operational deployment
+2. Procurement already has quantifiable outcomes (cost reduction %, cycle time, contract compliance rate)
+3. Procurement rubrics are the easiest to write — the success criteria are already measured in every procurement org
+
+### Named design partner contacts (#78-82)
+
+**#78 — Tim Ritz, Global CPO, Walmart**
+- Role: Global Chief Procurement Officer at Walmart since September 2023
+- Established Centers of Excellence for emerging categories including AI and sustainable materials
+- Signal: Walmart processes hundreds of billions in procurement annually; any AI agent reducing procurement cycle time by even 5% = massive ROI
+- Straw pitch: "Walmart runs pilots of AI procurement agents. 88% of pilots don't make it to production. We turn pilot evaluation into a competition with pre-defined rubrics — same way Walmart evaluates suppliers."
+
+**#79 — Darshan Deshmukh, President, ProcureAbility**
+- Co-authored the 2026 CPO-CIO Report revealing the AI governance gap
+- ProcureAbility is a procurement consulting firm — they'd REFER Straw to 10 CPOs if it worked
+- Straw pitch: "Your report says 54% of teams aren't collaborating on AI governance. Straw is the instrument that forces alignment — the rubric requires CPO and CIO to agree before the evaluation runs."
+
+**#80 — Ivalua (AI product lead)**
+- Ivalua NOW 2026 (April 22): "Procurement enters the agentic AI era" — Ivalua is the procurement SaaS platform
+- Product integration opportunity: Straw as Ivalua's "agent validation layer" before deployment
+- Contact angle: Ivalua's product team, not procurement ops — this is a platform partnership, not design partner
+
+**#81 — Coupa Software (AI product lead)**
+- Coupa is the other major S2P (Source-to-Pay) platform alongside Ivalua
+- Coupa customers = every enterprise CPO who wants AI agents in procurement
+- Straw integration: agents built for Coupa workflows get tested against Coupa-specific rubrics before deployment
+
+**#82 — Any CPO at a Fortune 100 manufacturing/chemicals company (McKinsey supply chain rubrics)**
+- Per Tick 385: McKinsey published 3 chemicals supply chain rubrics that could be directly adapted for Straw
+- Target sector: BASF, Dow, 3M, Honeywell — all have major CPOs with public procurement transformation initiatives
+- Specific contact: Honeywell CPO Britta Gross (public speaker at ProcureCon 2026) or equivalent at Dow/BASF
+
+### The procurement vertical GTM motion
+
+Unlike security (where the CISO is a skeptic who needs to approve), in procurement:
+- The CPO wants the AI agent to work because it reduces their headcount pressure
+- The CFO wants proof before paying agent license fees (Straw provides the proof)
+- The CIO wants governance documentation (Straw's evaluation log is the governance documentation)
+
+All three stakeholders get something from Straw. The CPO introduces Straw to the CIO; the CIO forwards the compliance documentation to the CFO. No separate approval chains.
+
+Sources: prnewswire.com/news-releases/procureabilitys-2026-cpo-cio-report, procurementmag.com/top10/top-10-procurement-leaders-2026, cporising.com/2026/04/22/inside-ivalua-now-2026-procurement-enters-the-agentic-ai-era, supplychainbrain.com/blogs/1-think-tank/post/43687-why-2026-is-the-year-of-ai-agents-for-autonomous-procurement
+
+TICK_END
