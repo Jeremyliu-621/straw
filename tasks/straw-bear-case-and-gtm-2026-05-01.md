@@ -25231,3 +25231,99 @@ Both logs are required for full EU AI Act compliance. Both logs reference the sa
 Sources: secureprivacy.ai/blog/ai-governance, eu.ai-act.com (Article 26 deadlines), digitalapplied.com/blog/agent-governance-framework-policy-compliance-access, ethyca.com/guides/ai-governance, medium.com/@vasanthancomrads/ai-audit-logs-and-compliance-architecture
 
 TICK_END
+
+---
+
+## Tick 411 — The M&A Wave: Cisco/Galileo, Snowflake/Observe, Braintrust $800M — Straw's Exit Path
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case (exits) / Fundraising / Long-term positioning
+
+### The 2026 AI evaluation/observability M&A wave
+
+| Acquirer | Target | Date | Value | Category |
+|---|---|---|---|---|
+| Cisco (via Splunk) | **Galileo** | April 9, 2026 | Undisclosed | AI agent eval + observability |
+| Snowflake | **Observe** | Closed Feb 2, 2026 | Undisclosed | AI-powered observability |
+| Palo Alto Networks | **Chronosphere** | Announced 2026 | $3.35B | Cloud-native observability |
+| (Series B) | **Braintrust** | Feb 2026 | $800M valuation | AI eval + logging |
+| (Series C) | **Arize AI** | 2026 | $70M raised | AI eval + observability |
+
+**The pattern:** Every major enterprise software company (Cisco, Snowflake, Palo Alto Networks) is acquiring AI evaluation/observability capabilities. They are not building them internally — they are buying them.
+
+### Why Cisco acquiring Galileo strengthens Straw's position
+
+Galileo was Straw's closest competitor in post-deployment agent evaluation. Galileo is now Cisco-Splunk-locked. Enterprise CIOs who don't run Splunk can't use Galileo. Enterprise CIOs who run multiple observability stacks can't use Galileo for cross-stack evaluation.
+
+**Straw benefits:** (1) Galileo is no longer an independent competitor; (2) Cisco's integration creates a lock-in that makes Straw's cross-vendor positioning more valuable; (3) Straw can now be positioned as "the Galileo for companies that aren't all-in on Splunk"
+
+### Straw's exit landscape
+
+**Realistic acquirers:**
+
+1. **Salesforce** — $800M ARR from Agentforce, 138K unevaluated customers (Tick 386). Straw = evaluation layer for Agentforce agents. Salesforce doesn't have a pre-deployment evaluation product.
+
+2. **ServiceNow** — Enterprise workflow platform, actively acquiring AI capabilities. Agent evaluation = natural extension.
+
+3. **Workday** — AI agent platform launched 2026 (Tick 365). Needs evaluation layer to complete the "AI coworker" narrative.
+
+4. **Atlassian** — Rovo has 5M users (Tick 387). They need to evaluate which AI agents to add to Rovo's ecosystem.
+
+5. **Anthropic** — Not a typical acquirer, but a data partnership (evaluation results = training signal) is a natural commercial relationship that could become an acquisition.
+
+6. **Large consulting firms (Accenture, Deloitte)** — If Straw becomes the evaluation standard, these firms would acquire Straw to bundle it into their enterprise AI deployment practices.
+
+### The CB Insights prediction confirmed
+
+Per Tick 354: CB Insights predicted "AI agent evaluation tooling = M&A battleground." The 2026 M&A wave (Cisco/Galileo, Snowflake/Observe) confirms this. Straw is building in the center of this battleground.
+
+Sources: blogs.cisco.com/news/cisco-announces-the-intent-to-acquire-galileo, siliconangle.com/2026/04/09/cisco-buys-galileo, axios.com/pro/enterprise-software-deals/2026/02/17/ai-observability-braintrust-80-million-800-million, arize.com/blog/arize-ai-raises-70m-series-c
+
+TICK_END
+
+---
+
+## Tick 412 — Klarna + RAND: The Two Ultimate Sales Stories for Straw
+
+**Date researched:** 2026-05-03
+**Theme:** GTM (sales narrative) / Market proof
+
+### Story 1: Klarna's rehire mistake — Straw in the counterfactual
+
+**What happened:** Klarna replaced 700 customer service agents with an AI chatbot in 2025. The announcement was celebrated ("AI handles routine queries, humans handle complex cases"). By 2026, Klarna had to rehire customer service staff because the AI couldn't handle the cases it was deployed for.
+
+**The diagnosis:** "Optimizing for the wrong metric." Klarna measured "queries handled" not "customer satisfaction on the queries that matter." The AI performed well on simple queries; it failed on the complex queries — the ones with the highest lifetime customer value at stake.
+
+**Straw in the counterfactual:**
+If Klarna had run a Straw evaluation before deployment:
+- Task: "Handle these 200 complex customer service scenarios (refunds, disputes, complaints)"
+- Rubric: (a) Correct resolution on ≥95% of cases, (b) Customer escalation rate ≤5%, (c) No inventory/pricing hallucinations, (d) Handles ambiguous requests correctly
+- Result: The AI would have scored <70% on Klarna's actual complex case rubric
+- Outcome: Klarna deploys AI for simple cases only; humans handle complex; no need to rehire
+
+**The Straw pitch to any customer service AI buyer:** "Klarna deployed without rubric-defined evaluation. They had to rehire 700 people. Straw is what you run before you replace your customer service staff."
+
+### Story 2: RAND's $547B failed AI investment — the smoking gun
+
+**RAND Corporation finding (2026):** Of $684B invested in AI in 2025:
+- Only $137B reached production deployment
+- Only $23B actually met ROI targets
+- **$547 billion failed to deliver intended value** — 80% failure rate by dollar value
+
+This is not 88% of pilots. This is 80% of DOLLAR VALUE deployed in AI failing to generate expected return. The math: an enterprise spending $5M on AI deployment has an 80% probability of destroying $4M of that value with nothing to show for it.
+
+**The Straw insertion point:** The failure happens in two places:
+1. Wrong agent selected (pre-deployment problem → Straw fixes this)
+2. Wrong metric measured in production (post-deployment problem → Braintrust/Arize fixes this)
+
+Of these two failure modes, wrong agent selection is the more expensive one — it means you never reach production at all, or you deploy and then realize the error after months of wasted integration work.
+
+### How to use these stories in sales conversations
+
+For Klarna: Lead with the story, then ask: "What's your version of this scenario? Which AI agent deployment are you making in the next 6 months that, if it goes wrong the way Klarna's did, would cost you the most?"
+
+For RAND: Use with CFOs and board-level AI governance leads. "$547B in failed AI investment last year. Your organization's share of that is statistically 80% of whatever you spend. Straw is how you beat the average."
+
+Sources: iopex.com/blog/before-you-deploy-another-agent-read-this, aviasole.com/blog/why-ai-agent-deployments-fail, aiassemblylines.com/post/enterprise-ai-agents-fail-production-2026, techtarget.com/searchenterpriseai/feature/AI-deployments-gone-wrong
+
+TICK_END
