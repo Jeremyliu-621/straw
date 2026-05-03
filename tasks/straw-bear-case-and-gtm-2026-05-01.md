@@ -32850,3 +32850,73 @@ Phase 2 research is now genuinely complete. The next session should shift from r
 **Research verdict:** The bear case is understood. The GTM is mapped. The design partners are named. Now it's a question of doing the work.
 
 TICK_END
+
+---
+
+## Tick 467 — Media/Entertainment/Advertising Design Partners #155-160 + WPP Agent Hub Non-Neutrality Insight
+
+### The Media/Entertainment/Advertising Vertical in 2026
+
+Media companies and advertising holding groups are among the most aggressive early adopters of agentic AI in 2026. They have a specific characteristic that makes them Straw-ready: **they're already running agent-to-agent commerce** (buy-side AI agents vs. sell-side AI agents in real media auctions).
+
+Disney unveiled AI-powered advertising at CES 2026. NBCUniversal demonstrated agent-to-agent media buying. WPP launched an internal Agent Hub with 150 AI agents. Omnicom executed real client media buys using agent-to-agent frameworks.
+
+**The problem they all share:** How do you know which agents to include in your hub, your auction, your buying process? None of these companies have a rubric-based competitive evaluation for their agents. They're choosing agents based on vendor relationships and internal developer preferences — exactly what Straw replaces.
+
+### WPP Agent Hub: The Non-Neutrality Problem
+
+WPP launched Agent Hub on WPP Open in January 2026:
+- ~150 ready-made agents
+- 4 "Super Agents" at launch  
+- Available to WPP's 100,000 global workforce
+- Rigorous validation: expert approved + data/privacy compliant
+
+**Agents get "Verified" status through WPP's Satalia.** (Satalia is WPP's internal AI subsidiary.)
+
+**The non-neutrality insight for Straw:** Satalia is owned by WPP. WPP verifies its own agents with its own subsidiary. This is structurally analogous to a pharmaceutical company running its own drug trials — the conflict of interest is baked in. When WPP's Agent Hub says an agent is "verified," the verification is done by a WPP-owned company on behalf of WPP.
+
+**WPP's clients** — Fortune 500 brands that pay WPP billions for marketing services — cannot independently verify that the agents in WPP's hub are actually the best performers. They're taking WPP's word for it.
+
+**The Straw pitch to WPP's clients:** "WPP verified its own agents. Would you like an independent evaluation of whether those agents are actually the best choice for your specific campaign type?"
+
+**The Straw pitch to WPP directly:** "WPP's Agent Hub would carry more credibility if the verification was independent. Straw provides neutral, rubric-based agent evaluation that WPP can cite to Fortune 500 clients as third-party validation."
+
+### Named Design Partners — Media/Entertainment/Advertising
+
+**#155 — Paolo Yuvienco** (Omnicom, EVP and Chief Technology Officer)
+Stated: "Omnicom is really leading the charge on agentic media and the agentic media ecosystem." Omnicom has executed real client media buys using agent-to-agent AI framework. Has clear authority over agent selection decisions.
+LinkedIn: linkedin.com/in/paoloyvienco
+Opener: "Omnicom is executing real agent-to-agent media buys. When you evaluate which buy-side agent performs best on which inventory type, what's your rubric? Straw formalizes that evaluation so you can show clients objective performance data."
+
+**#156 — Rita Ferro** (Disney, President of Global Advertising)
+Disney unveiled AI "Ad Agent" at CES 2026 — first major media company to formalize agentic AI for advertising. Ferro oversees advertising strategy across Disney+, ESPN, Hulu, linear TV.
+Opener: "Disney's AI Ad Agent is now live for advertisers. When an advertiser asks you why they should trust your AI over Omnicom's, what do you show them? Straw evaluation scores answer that question."
+
+**#157 — Tony Donohoe** (Disney, EVP Advertising Platforms)
+Leads the technical implementation of Disney's AI advertising tools.
+Opener: "You're building the AI stack for Disney's advertising platform. Which agents are you choosing, and on what criteria? Straw gives you a rubric-based selection process you can document for regulators and clients."
+
+**#158 — Anish Agarwal** (Warner Bros. Discovery, VP of AI and Automation)
+Appointed specifically to drive AI and automation strategy at WBD. Fresh mandate = open to new tools.
+Opener: "You were just appointed to lead AI at Warner Bros. Discovery. The first 90 days matter most. Straw can give you a quick win: run a rubric-based evaluation of the AI agents WBD is considering, produce a score card, present it to the board."
+
+**#159 — Stephan Pretorius** (WPP, Chief Technology Officer)
+WPP CTO overseeing Agent Hub and WPP Open platform. 100K employees using the platform.
+Opener: "WPP's Agent Hub is an industry-first. When Fortune 500 clients ask whether Satalia-verified agents are truly best-in-class versus competitors, what's your independent evidence? Straw can provide third-party verification that makes the WPP brand more credible."
+
+**#160 — Daryl Lee** (IPG/Interpublic, CEO Mediabrands)
+Interpublic is the fourth major holding group — competing directly with WPP, Omnicom, Publicis. All four are building agentic AI platforms; Mediabrands is the media buying unit.
+Opener: "IPG is watching WPP's Agent Hub. Before you build your own, would you want an independent evaluation framework that tells you which agents are actually worth including?"
+
+### The AdCP Protocol — Industry Context
+
+**Ad Context Protocol (AdCP)** launched in 2026 as an open standard for advertising automation. AdCP enables AI agents to:
+- Discover inventory
+- Buy media
+- Build creatives
+- Activate audiences
+- Manage accounts across platforms
+
+**Relevance to Straw:** AdCP is the advertising equivalent of MCP — a standard protocol that makes agent-to-agent advertising commerce interoperable. When buy-side and sell-side agents can transact via AdCP, the evaluation question becomes: "Which agent transacts most effectively for my brand objectives?" That's a Straw rubric.
+
+---
