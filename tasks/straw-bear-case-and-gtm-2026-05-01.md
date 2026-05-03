@@ -13704,3 +13704,93 @@ Straw's durable competitive position is not the software — it's the **rubric c
 **The product implications:** Straw should actively give away the rubric methodology (open-source the rubric design framework) while keeping the competition corpus and badge proprietary. The open-source strategy does two things: (a) prevents competitor "clean room" implementation (they'll implement Straw's framework but call it something else), and (b) establishes Straw as the canonical rubric authority (if the framework is open-source, Straw is the reference implementation).
 
 Sources: [NFX Network Effects Manual](https://www.nfx.com/post/network-effects-manual), [a16z Dynamics of Network Effects](https://a16z.com/the-dynamics-of-network-effects/), [HBS What Are Network Effects](https://online.hbs.edu/blog/post/what-are-network-effects)
+
+---
+
+## Tick 206 (2026-05-04T01:00Z): The data privacy / "creepiness" objection — Straw's biggest customer friction [theme: bear]
+
+### The data privacy objection: the real blocker to Straw adoption
+
+**The objection in practice:** An enterprise VP of AI is excited about Straw. Then legal/security asks: "Wait, you want to send our actual legal contracts / customer support tickets / production code to a startup's platform so AI agents we don't know can read them?" The conversation stops.
+
+**The data from enterprise AI research:**
+- **53% of organizations identify data privacy as the primary AI adoption obstacle** — outranks technical integration and cost
+- **40% of employee AI interactions involve sensitive corporate data** (source code, M&A docs, customer records, financial data)
+- **22% of files and 4.37% of prompts contain sensitive information**
+- **Shadow AI breaches add $670K** average breach premium (from Tick 168)
+- 70% of organizations view the "pace of AI development" as the leading security concern
+
+For Straw, this is compounded: Straw doesn't just expose company data to one AI vendor — it exposes it to **multiple competing AI vendors simultaneously**. The legal review rubric requires sending actual contracts to Harvey, CoCounsel, and Ironclad in the same 72-hour window. The security team's nightmare: three AI vendors reading the company's M&A pipeline simultaneously.
+
+### The data privacy objections mapped by vertical
+
+**Legal vertical:** Contract competition requires sending actual deal documents. AmLaw 200 firms have client confidentiality obligations. ABA Model Rule 1.6 (confidentiality of client information). **The legal data privacy objection is the strongest.**
+
+**Coding vertical:** Production code competition requires sharing proprietary code. IP theft risk. One agent vendor could theoretically incorporate insights from the competition into their training data. Engineers are paranoid about this.
+
+**CX vertical:** Customer support ticket competition requires sharing actual customer complaints, order details, PII. GDPR, CCPA data subject rights. Competitors reading customer data.
+
+**Finance vertical:** Financial planning, accounting agent competition requires sending P&L data, payroll records, transaction histories to competing vendors. SOX compliance implications.
+
+### Straw's privacy architecture — the required mitigations
+
+For Straw to overcome the enterprise data privacy objection, the product must have these features before enterprise launch:
+
+1. **Data anonymization pre-competition.** Straw's pipeline scrubs PII, company names, deal specifics from task data before sending to agents. Legal contracts → "Company A acquired Company B" becomes "[ACQUIROR] acquired [TARGET]." Customers become "[CUSTOMER_ID]." Code comments with product names are replaced. The agent evaluates the structure and reasoning quality, not the specific confidential details.
+
+2. **Zero-data-retention commitment.** Straw commits: agent vendors receive task data for competition duration only. No retention. API calls are stateless. Agent operators certify that their systems don't store competition data beyond the session. This is contractual, not technical (hard to verify), but it's the standard enterprise data processing agreement (DPA) language.
+
+3. **On-premise/VPC competition execution.** For the highest-sensitivity competitions (legal, finance), Straw's competition runner executes within the enterprise's own VPC. Agent APIs are called from inside the enterprise network. The task data never leaves the enterprise boundary. This requires a deployable Straw runner component, but eliminates the data egress concern entirely.
+
+4. **Synthetic task generation.** Straw's rubric methodology can generate synthetic tasks that have the same structural characteristics as real tasks but contain no actual confidential data. For legal: generate synthetic contracts with the same clause types as real deals. For coding: generate a synthetic codebase with the same architecture and complexity as the real one. Agents compete on synthetic tasks — the rubric validates the same capabilities without the privacy risk.
+
+**The minimum viable trust structure for first enterprise partnerships:** For design partners, use a signed Data Processing Agreement (DPA) + Business Associate Agreement (BAA for healthcare) + the contractual data non-retention commitment. The VPC and synthetic task features come in V2.
+
+Sources: [Cloudera AI Agents Privacy Report](https://www.kiteworks.com/cybersecurity-risk-management/ai-agents-enterprise-data-privacy-security-balance/), [PointGuard Security in Enterprise AI](https://www.pointguardai.com/blog/security-the-missing-link-in-enterprise-ai-adoption), [Protegrity AI Privacy Standards](https://www.protegrity.com/news/ai-privacy-standards-are-rising-what-enterprises-should-do-now/)
+
+---
+
+## Tick 207 (2026-05-04T01:15Z): Updated competitive landscape — hyperscaler platforms as the real threat [theme: bear]
+
+### The competitive map update (May 2026)
+
+New entrants and positioning since Phase 1 research (Tick 120-130 era):
+
+**Hyperscaler agent orchestration (most dangerous):**
+- **Google Cloud Gemini Enterprise Agent Platform** (April 2026): "Consolidates model selection, governance, and orchestration into one environment. Ships with integrations into Salesforce, ServiceNow, and Oracle at launch." If this platform adds evaluation, it's free to existing Google Cloud Enterprise customers.
+- **OpenAI ChatGPT Workspace Agents** (April 22, 2026): "Codex-powered, run continuously in the cloud. Plug directly into Slack, Salesforce, and Gmail with admin-controlled RBAC." Microsoft Azure distribution gives access to Azure's 95M enterprise customers.
+- **Infor Agentic Orchestrator** (April 2026, limited availability): Agent orchestration for ERP workflows.
+
+**Specialist evaluation platforms:**
+- **Berkeley AgentX AgentBeats** (Phase 2 launched March 2, 2026): "Open-source platform, first competition to spotlight general-purpose agents — tests broad capability, adaptability, and robustness." Academic/community focus, not enterprise procurement.
+- **Alpha Arena** (nof1.ai): "AI Trading Benchmark" — specialized for financial trading AI evaluation only.
+- **Braintrust** ($800M, February 2026): Production observability. Not procurement evaluation.
+
+### The hyperscaler threat model — why Google/Microsoft is the bear case
+
+Google Cloud now has:
+1. Gemini (their own AI models competing in evaluations)
+2. A governance and orchestration platform
+3. Existing enterprise relationships (every Fortune 500 already has a Google Cloud contract)
+4. Hypothetical evaluation feature: "Google Cloud AI Agent Evaluation — compare agents before deployment"
+
+If Google adds evaluation to their existing platform, they can offer it free or included with existing contracts. An enterprise that already pays Google Cloud $2M/year has no procurement friction to add Google's evaluation feature. Straw's standalone $25-50K competition competes directly with "it's already in your Google Cloud contract."
+
+**The Microsoft Azure version:** Azure AI Foundry (launched 2025) already has model comparison features. OpenAI's integration through Azure gives Microsoft both the model provider and the platform. If Azure adds "competition-format agent evaluation," it has the distribution to capture the market immediately.
+
+### Why the hyperscaler threat is real but not decisive (for now)
+
+**The "bundled with enterprise" free tier concern is valid** but has a known counterargument: enterprises don't trust the platform that sells the agents to evaluate the agents. Google's evaluation of Gemini vs. OpenAI has an obvious conflict of interest. Microsoft's evaluation of Copilot vs. Cursor has an obvious conflict of interest.
+
+**Straw's neutrality positioning:** "Would you trust Google to tell you when to pick OpenAI over Google? Straw is the only evaluation platform with no stake in which agent wins."
+
+This is the structural argument for Straw's independence, and it's the same reason buyers don't trust vendor-provided benchmarks (the SWE-bench contamination story from Tick 176 is the same dynamic). An independent evaluation platform is structurally necessary in a world where the agent vendors control the evaluation tools.
+
+**The 18-month window:** Google/Microsoft will add evaluation features eventually. Before they do, Straw needs to establish:
+1. First enterprise case studies (2-3 companies with published results)
+2. The Straw Certified badge as a recognized credential
+3. The rubric library as the category-defining resource
+
+Once Straw has these three assets, Google/Microsoft adding evaluation features actually validates the category rather than destroying it — the way AWS Marketplace doesn't kill B2B SaaS companies but creates a distribution channel for them.
+
+Sources: [Google Cloud Next AI Agents 2026](https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era), [InformationWeek 2026 Enterprise AI Predictions](https://www.informationweek.com/machine-learning-ai/2026-enterprise-ai-predictions-fragmentation-commodification-and-the-agent-push-facing-cios), [Berkeley AgentX AgentBeats](https://rdi.berkeley.edu/agentx-agentbeats.html), [Alpha Arena AI Trading](https://nof1.ai/)
