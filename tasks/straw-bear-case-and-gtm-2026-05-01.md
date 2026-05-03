@@ -22614,3 +22614,236 @@ Sources: aispectrumindia.com/analysis/1/416/enterprise-ai-procurement-in-2026, m
 
 TICK_END
 
+
+---
+
+## TICK 365 — Workday's Transformation + Gartner 40% Prediction: TAM Expansion Signal
+
+**Theme: GTM (TAM validation)**
+
+### Workday: From System of Record to Platform of Agents
+
+Workday's Aneel Bhusri returned as CEO February 2026 to lead the AI pivot. Key statement: Workday is transforming "the system of record into a platform for agents." Pre-built agents for employee onboarding, expense reporting, contract intelligence, exit interview analysis, performance review prep.
+
+**Scale context:** 65% of Fortune 500 use Workday. Every one of those companies will face an agent evaluation decision: Workday's native agents vs. third-party agents vs. custom agents. Straw is the evaluation infrastructure for that decision.
+
+**The a16z "Workday's Last Workday?" analysis** suggests enterprise software companies that fail to execute on agent platforms will lose market share to AI-native competitors. This creates urgency for enterprise procurement teams to evaluate competing agents — exactly the Straw use case.
+
+### Gartner's 40% Prediction
+
+Gartner (2026): "40% of enterprise applications will be integrated with task-specific AI agents by end of 2026" — up from less than 5% in 2025.
+
+**The math:** ~8x growth in AI agent penetration within one year. Every new enterprise agent integration is a potential Straw competition (procurement evaluation before deployment). If 40% of enterprise apps mean 40 agent integrations per company at a 10,000-company Fortune-extended enterprise base: **400,000 potential Straw competitions per year from this cohort alone**.
+
+Obviously not all will use Straw — but it illustrates the scale of the procurement wave that's happening now.
+
+### MCP at Scale: 10,000 Enterprise Servers, 97M SDK Downloads
+
+Model Context Protocol (Anthropic, MCP): 10,000+ enterprise servers, 97 million SDK downloads by April 2026. This is the agent integration protocol for connecting agents to enterprise data and tools.
+
+**What MCP adoption means for Straw:**
+- Every company running MCP servers has deployed infrastructure to host AI agents
+- These companies are actively integrating AI agents with their internal systems
+- They need to evaluate which agents work best with their MCP configuration
+- A Straw competition can include MCP-based task integration as part of the evaluation rubric
+
+MCP is infrastructure adoption → Straw is the evaluation layer on top.
+
+### New Design Partner Target: Aneel Bhusri / Workday (#66)
+
+Workday is both:
+1. An **agent supplier** (their prebuilt agents compete against third-party agents in Workday deployments)
+2. An **agent buyer** (they evaluate third-party AI agents to integrate into their platform via Sana acquisition)
+
+**Pitch to Workday:** "65% of Fortune 500 uses Workday. When they evaluate Workday's native agents vs. alternatives for specific HR tasks, they need cross-vendor evaluation infrastructure. Straw provides it. Help us build the HR agent evaluation standard."
+
+Note: Workday is a longer-term play (enterprise sales cycle, 6-12 months). But the strategic value of a Workday partnership would be enormous — access to 65% of Fortune 500 enterprise buyers for HR agent evaluation.
+
+Sources: joshbersin.com/2026/04/the-reinvention-of-workday-from-system-of-record-to-platform-of-agents, fortune.com/2026/03/18/workday-ceo-aneel-bhusri-what-comes-next-ai, a16z.com/workdays-last-workday
+
+TICK_END
+
+---
+
+## TICK 366 — Vendor Lock-In Prevention: Straw's Strongest Enterprise Messaging
+
+**Theme: GTM (core messaging update)**
+
+### The Anti-Lock-In Market
+
+**2026 data:**
+- 89% of enterprise organizations use multi-cloud strategy; 42% cite vendor lock-in prevention as primary reason
+- 81% of enterprise leaders concerned about AI vendor dependency
+- Only 6% can switch AI vendors without significant business disruption
+- Average switching cost per project: $315,000
+- Google locks in through infrastructure; Anthropic locks in through developer culture; OpenAI locks in through consumer familiarity
+
+**This is the market's #1 concern about AI procurement.** Not "is the AI good enough?" but "what happens if we're trapped with the wrong vendor?"
+
+### Straw's Anti-Lock-In Message
+
+**Current Straw pitch:** "Run a competition, get the best score, pick the winner."
+
+**Stronger Straw pitch:** "Don't get trapped with the wrong AI agent. Straw lets you evaluate any agent — Google's, Anthropic's, open-source, custom — against your rubric before you sign. The multi-vendor comparison is built in."
+
+This reframes Straw from a "help you pick" tool to an "insurance against lock-in" tool. The fear of a $315K switching cost is a stronger driver than the desire for a better agent.
+
+### Three-Sentence Pitch (Refined)
+
+> "81% of enterprise leaders are concerned about AI vendor lock-in. Most companies are making $400K+ AI procurement decisions based on vendor demos — without knowing if the agent they're buying actually outperforms alternatives. Straw lets you run a real competition before the contract: your rubric, your data, any agent. The score before you're locked in."
+
+### Anti-Lock-In Positioning Matrix
+
+| Enterprise Fear | Straw's Response |
+|---|---|
+| "What if the agent fails in production?" | Straw runs the agent against your real tasks pre-deployment. Tier 3 executes code in a sandbox — behavior, not demos. |
+| "What if a better agent comes along next year?" | Your Straw rubric persists. Run the same competition with new agents annually. |
+| "What if the vendor raises prices?" | Straw scores all competitive alternatives simultaneously. You know your leverage before negotiations. |
+| "What if we're locked into the wrong platform?" | Straw is platform-agnostic. Google agents, Anthropic agents, custom agents — same rubric, same competition. |
+| "What if the AI regulation landscape shifts?" | Your Straw competition generates the impact assessment documentation that Colorado and EU compliance require. |
+
+### The Pricing Angle: "Insurance" Framing
+
+If the average switching cost per project is $315,000, and Straw prevents you from making the wrong initial selection, Straw's $5K-25K cost is essentially insurance against a $315K risk.
+
+**Insurance ROI pitch (revised):**
+- Switching cost if wrong agent selected: $315K average
+- Probability of picking wrong agent without structured evaluation: ~45% (based on 49% → 4% scale rate)
+- Expected switching cost without Straw: 45% × $315K = **$142K expected risk per AI procurement decision**
+- Straw Pro cost: $25K/year
+- **Expected ROI: 5.7× on insurance value alone**, before any productivity improvement from picking the right agent
+
+Sources: core.cz/en/blog/2026/vendor-lock-in-prevention-enterprise-2026, stepto.net/blog/ai-vendor-lock-in-infrastructure-risk-2026, kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026-trust-flexibility-and-vendor-lock-in
+
+TICK_END
+
+---
+
+## TICK 367 — PHASE 2 FINAL MORNING READING GUIDE (Updated, May 3, 2026)
+
+**This is the definitive reading guide for Phase 2. It incorporates everything discovered in Ticks 284-366.**
+
+---
+
+### 🔴 READ FIRST: The Five Things That Changed in Phase 2
+
+**1. Google built agent evaluation (Tick 363)**
+Google's Gemini Enterprise Agent Platform (April 22, 2026) includes Agent Simulation and Agent Evaluation. This is the closest competitive product to Straw that exists. **Straw's response:** Google evaluates Google agents. Straw evaluates any agent against buyer-defined rubrics in a competition. These are structurally different. The moat is vendor-agnosticism + buyer rubric ownership.
+
+**2. The ROI case got 3× stronger (Tick 350)**
+Deloitte 2025: average sunk cost per abandoned AI initiative is $7.2M (was using $400K). The 120× ROI case is now available in addition to the 38× case. Use $7.2M with CFOs; $400K with engineering-focused buyers.
+
+**3. Three regulatory deadlines are converging in 2026 (Tick 357)**
+- Colorado AI Act: **June 30, 2026** (employment AI impact assessments required, $20K/violation)
+- EU AI Act Article 26: **August 2, 2026** (high-risk AI conformity assessments)
+- California AI liability: already in effect
+Straw generates the compliance documentation these laws require as a byproduct of competitions. This is a forcing function for procurement decisions NOW.
+
+**4. YC S26 deadline is tomorrow (Tick 344)**
+May 4, 2026 at 8pm PT. Apply today if not already done. 60% AI companies; Straw fits 3 of 4 YC S26 priority areas.
+
+**5. Vendor lock-in prevention is the #1 enterprise AI concern (Tick 366)**
+81% of enterprise leaders concerned about AI vendor dependency. Straw's anti-lock-in positioning ("run any agent against your rubric before you're committed") is the strongest enterprise message found in Phase 2. Use it as the primary frame in sales conversations.
+
+---
+
+### 📋 10 CONVERSATIONS TO BOOK THIS WEEK (Priority Order)
+
+1. **Parker Conrad / Rippling** — "AI washing" signal; 20K customers; HR compliance (Colorado Act) forcing function. Message: "You said companies are AI washing. Here's how to test the claim before you buy."
+
+2. **Aman Sanger / Cursor** — AI-native culture; uses Braintrust already; existing connection. The first design partner competition.
+
+3. **David Cramer / Sentry (@zeeg)** — Seer AI triage actively being evaluated; technical founder; will publish case study.
+
+4. **Mudit Garg / Qventus** — Surveyed 60+ hospital CIOs in April 2026; direct network access to healthcare AI procurement decision-makers.
+
+5. **Erik Bernhardsson / Modal** — Developer community credibility; early design partners Ramp + Substack; no existing evaluation product.
+
+6. **Gabriel Pereyra / Harvey** — $11B company, 25K custom agents, BigLaw Bench competitor; Harvey competing on Straw = independent validation of their own product.
+
+7. **Dan Springer / Ironclad** — $200M ARR, customers: OpenAI, Salesforce; new AI agent suite needs independent evaluation; EU operations = compliance angle.
+
+8. **Guillermo Rauch / Vercel** — $3.25B valuation; uses Braintrust; Vercel Agent/v0 stack needs eval.
+
+9. **Aneel Bhusri / Workday** (longer play) — 65% Fortune 500; transforming to agent platform; Straw as HR agent evaluation standard.
+
+10. **Elad Walach / Aidoc** — $150M Series E, Goldman-backed, pre-IPO; 60M patients; hospital CIOs need independent evaluation before aiOS commitment.
+
+---
+
+### 🎯 1-PAGE BEAR THESIS (Final Version)
+
+**What kills Straw most likely (ranked):**
+
+1. **Execution risk (30%):** Straw can't ship v0 + close 3 design partners in 90 days. Non-market, non-product — pure execution. Mitigation: YC, CAIF grant for runway, aggressive 90-day sprint.
+
+2. **Google/well-funded competitor (15-20%):** Google's Gemini Enterprise Agent Platform already has agent evaluation for Google agents. If Google extends to cross-vendor evaluation, or a Scale AI builds buyer-rubric competition, market compresses. **18-month window before this risk materializes.**
+
+3. **Cold start (15%):** Even with anti-chicken-and-egg design (single-agent eval adds value day 1), if first design partner can't define a rubric that generates valuable results, word-of-mouth dies before launch. Mitigation: Jeremy does rubric design with design partner hand-in-hand.
+
+4. **Disintermediation (10%):** Buyers hire winning agents directly, cut out platform fee. Mitigation: Evaluation data + reputation graph stay on Straw; ongoing re-evaluation creates recurring need.
+
+5. **Platform bundling (15%):** Microsoft/Salesforce/Google bundles evaluation into existing enterprise contracts. Mitigation: Cross-vendor positioning; compliance documentation; Straw evaluates what bundled tools cannot (the bundle's own agents vs. alternatives).
+
+**P(market doesn't want this) = ~15-20%** — lower than initial Phase 1 estimate.
+**P(execution failure) = ~30%** — the dominant risk.
+**18-month window is real.** Google validated the category at Cloud Next '26. The race is on.
+
+---
+
+### 🗺️ GTM PLAYBOOK: PHASE 0-3 (Final Version)
+
+**Phase 0 — NOW (May-June 2026): Foundation**
+- Apply to YC S26 (deadline May 4, TOMORROW)
+- Book 10 conversations with design partners (list above)
+- Write HN post: "AI agents are cheating on their own benchmarks" (Tick 346 draft ready)
+- Run first Straw competition (free, design partner provides prize)
+
+**Phase 1 — July-September 2026: First Revenue**
+- 3-5 design partner competitions completed
+- 2 case studies published (one DevOps, one FinTech or Legal)
+- First paying customer ($5K-25K competition)
+- CAIF academic collaborator identified (CMU or Oxford)
+- YC batch (if accepted): use YC network for design partner outreach
+
+**Phase 2 — October-December 2026: Repeatability**
+- 15+ enterprise customers across 2 verticals
+- Rubric template library (anonymized past competitions for faster onboarding)
+- Agent reputation graph (first cross-buyer reputation data)
+- Compliance documentation module (Colorado/EU impact assessment generation)
+- $50K-100K ARR
+
+**Phase 3 — 2027: Platform**
+- Healthcare vertical launch (with HIPAA BAA, BAA-gated enterprise tier)
+- Legal vertical (Ironclad/Harvey case studies)
+- StrawEscrow smart contract (x402/USDC payment integration)
+- ERC-8004 agent identity integration
+- A2A protocol native support
+- Series A raise ($10-20M) targeting ICONIQ/Greylock/a16z
+
+---
+
+### ❓ 7 OPEN QUESTIONS (Only Jeremy Can Answer)
+
+1. **Which design partner will say yes first?** The answer determines the first competition format, vertical focus, and case study narrative.
+
+2. **Should the first competition be in DevOps/coding (fast, familiar) or FinTech/compliance (higher ACV, slower)?** DevOps gets to revenue faster; FinTech gets to higher ACV. Which timeline matters more?
+
+3. **Is there a co-founder or founding team member?** The founder-led sales playbook is one person's job; the technical buildout is another. Who is building the eval pipeline while Jeremy sells?
+
+4. **What's Jeremy's existing network in the design partner list?** Which of the 65 contacts is a genuine warm intro? The first design partner comes from warmth, not cold outreach.
+
+5. **How is the academic relationship at CMU/Oxford being initiated?** CAIF grant timing depends on finding the right academic collaborator. Who in Jeremy's network knows someone at FOCAL (CMU) or FLAIR (Oxford)?
+
+6. **Should Straw take a 15% platform fee or a % of competition value?** Rubric definition suggests 15% of prize pool. At $10K prize: $1.5K. At $100K prize: $15K. Fee structure should be decided before first design partner conversation.
+
+7. **How does Straw respond to "We'll just have you sign an MSA before the competition"?** Some enterprise buyers will want custom contracts before any work begins. Does Straw have standard terms? Who is reviewing?
+
+---
+
+*Phase 2 research: 84 ticks (Ticks 284-367). Three themes: bear case steelman, GTM motion to first revenue, 65 named design partner targets. All ticks committed and pushed.*
+
+Sources: (all sources cited throughout Phase 2 ticks)
+
+TICK_END
+
