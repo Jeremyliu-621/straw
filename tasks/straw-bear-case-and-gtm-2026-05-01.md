@@ -33782,6 +33782,74 @@ TICK_END
 
 ---
 
+## Tick 489 — Credo AI Competitive Analysis + Straw's First 10 Customers GTM [theme: bear + GTM]
+
+### Credo AI: The AI Governance Platform (Closest Competitor by Framing)
+
+**Company:** Credo AI, founded 2020 by Andrew Ng, Nicolas Rivera, Navrina Singh. Based in Palo Alto.
+**Funding:** $41.3M total (Series B) from CrimsoNox Capital, Mozilla Ventures, FPV Ventures, Sands Capital, Decibel VC, Booz Allen Hamilton, AI Fund.
+**Status:** Fast Company #6 Applied AI 2026; Gartner Market Guide for AI Governance Platforms; 100% platform retention; 3x software revenue growth; doubled customer base.
+
+**What Credo AI does:** AI governance platform that automates AI oversight, risk management, and regulatory compliance. Policy management, risk tracking, audit trails, compliance documentation.
+
+**Why Credo AI is NOT a Straw competitor:**
+- Credo AI governs **already-deployed** AI systems — monitoring and compliance post-deployment
+- Straw evaluates **candidate agents** in a competitive procurement format — pre-deployment
+- Credo AI addresses "are our deployed AI systems compliant?"
+- Straw addresses "which of these competing agents should we deploy?"
+
+**The Credo AI → Straw funnel:** A company using Credo AI for AI governance still needs Straw to decide WHICH agent to deploy in the first place. Credo AI and Straw are sequential, not competing. Straw is pre-deployment; Credo AI is post-deployment. Partnership opportunity: Credo AI recommends Straw to customers about to make procurement decisions.
+
+**Navrina Singh (Credo AI CEO) as a warm intro:** Singh is a leading voice on AI governance and policy. Her customer base (enterprises doing governance) IS Straw's customer base. An introduction through Navrina Singh to Credo AI enterprise customers is a warm channel.
+
+### Updated Competitive Positioning: Straw vs. All Known Alternatives
+
+| Category | Example | Straw's position |
+|---|---|---|
+| LLM benchmarking | Vals.ai, Chatbot Arena, HELM | Straw evaluates agents, not models; buyer-defined, not lab-defined |
+| Agent observability | Arize Phoenix, LangSmith, W&B Weave | Straw is procurement-focused (pre-deployment choice), not production monitoring |
+| AI governance/compliance | Credo AI, Holistic AI, OneTrust | Straw is the input to governance (selecting the right agent); governance manages after |
+| Agent quality assurance | Truesight, DeepEval, Braintrust | Straw enables multi-vendor competition; these test your own agent in-house |
+| Agent reasoning infra | Rubric AI (YC W26) | Straw serves buyers; Rubric AI serves builders (supply vs. demand side) |
+| **Straw** | **Straw** | **Buyer-defined rubric + multi-vendor competition + procurement decision** |
+
+**The category that doesn't exist yet:** Pre-deployment, buyer-defined, cross-vendor, competition-format AI agent evaluation. Straw is category-defining.
+
+### Straw's First 10 Customers — GTM Mechanics
+
+**Based on 2026 SaaS data and Straw's ACV range:**
+
+Straw's initial ACV will be $10,000-$50,000 per evaluation engagement. This puts Straw in the "hybrid PLG + inside sales" zone:
+- PLG drives top of funnel (free trial, self-serve evaluation builder, content marketing)
+- Inside sales closes deals (founder-led for first 10-20, then hire first sales hire at $1M ARR)
+
+**The first 10 customers framework (3-6 month target):**
+
+**Tier 1: Warm network (customers 1-3)**
+- Jeremy's direct network: engineers/PMs at tech companies who have faced "which AI agent?" decisions
+- Anthropic ecosystem: researchers, partners, beta users who already trust the Claude foundation
+- YC community: other W26/S26 founders deploying AI agents who need evaluation tools
+- No cold outreach. Pure relationship.
+
+**Tier 2: Inbound via content (customers 4-7)**
+- Publish "The Straw AI Agent Evaluation Framework" on Substack/HN
+- Guest post on Grant Thornton's "AI proof gap" framing with data
+- Share the "Agents of Chaos" analysis (arXiv:2602.20021) on LinkedIn with Straw commentary
+- "Show HN: We built an AI agent evaluation competition platform" — launch post
+
+**Tier 3: Targeted outbound (customers 8-10)**
+- Use design partner contact list (163 named contacts in this file) for personalized cold outreach
+- 3-email sequence: research insight → specific company hook → clear ask
+- Target: VP Engineering or Head of AI at companies actively deploying AI agents (confirmed via LinkedIn activity)
+
+**The conversion funnel target:**
+- 30 outbound conversations to get 3 paying customers (10% close rate for $10K ACV)
+- 100 inbound leads to get 3 paying customers (3% close rate for self-serve)
+- Total target for first 3 months: 3 customers from warm network + 3 from content + 3 from outbound = 9 customers
+
+**The revenue target:** 10 customers × $15K average ACV = $150K ARR. At $150K ARR, Straw has enough social proof for a Series A conversation + YC interview.
+
+---
 ## Tick 491 — Sell Before You Build: The Straw Pre-Sales Validation Playbook [theme: GTM]
 
 **Research date:** 2026-05-03
