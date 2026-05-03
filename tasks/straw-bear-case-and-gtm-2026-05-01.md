@@ -4488,3 +4488,237 @@ Based on portfolio fit and public statements on evaluation infrastructure:
 4. One design partner intro → warm intro chain to the right VC
 
 The case study is the investor pitch deck that converts. The investor pitch deck is the thing that summarizes the case study. Reverse the order: publish results first, pitch second.
+
+---
+
+## Tick 49 (2026-05-03T13:10Z): Healthcare AI design partners — ambient scribes, clinical AI, procurement evaluation [theme: partners]
+
+**Why healthcare is a compelling but complex beachhead:**
+
+Healthcare AI procurement has the highest stakes per decision of any vertical — misdiagnosis or missed documentation can cause patient harm. This creates extreme willingness to pay for independent evaluation. But healthcare also has the longest procurement cycles (18+ months for clinical tools), the highest compliance requirements (HIPAA, FDA), and the most risk-averse buyers. The question is: are there healthcare AI buyers who are (a) sophisticated enough to appreciate evaluation infrastructure, (b) small enough to move fast, and (c) facing real procurement decisions now?
+
+**The answer is yes — but in a specific segment: ambient clinical documentation AI.**
+
+### The ambient scribe market — why it's perfect for Straw
+
+Ambient clinical documentation (AI scribes that listen to patient encounters and generate SOAP notes) is the fastest-growing healthcare AI category in 2026:
+- Abridge: Epic partnership, 100+ hospital systems
+- Nabla: 300K+ clinicians, $3.8M+ clinical notes/month  
+- Dragon Copilot (Nuance): 100K+ daily clinicians (largest installed base)
+- Suki AI: Outpatient focus, voice-driven, individual physician market
+- Ambience: Enterprise, large hospital EHR systems
+
+**Why procurement is a live problem:** Hospital systems are choosing between these vendors RIGHT NOW. The market didn't exist 2 years ago; every health system is evaluating which ambient scribe to deploy. The CIO/CMIO making this decision has:
+- No standardized comparison framework
+- Only vendor-provided demos and reference customers
+- Enormous pressure to choose correctly (clinician adoption = trust, patient safety)
+
+This is exactly Straw's use case: "You need to choose between Abridge and Nabla for your ED. Here's how to run an objective evaluation using your own note types, your own accuracy criteria, and your own physician satisfaction rubric."
+
+### The healthcare AI buyer — named contacts
+
+**Hospital system CMIOs (Chief Medical Information Officers) as buyers:**
+
+| Institution | CMIO | Why relevant | Contact |
+|---|---|---|---|
+| **Mayo Clinic** | Sandhya Pruthi (CMO, Digital & Innovation) | Mayo has active ambient AI pilots; large-scale vendor comparison underway | @sandhyapruthi |
+| **Mass General Brigham** | Adam Landman (CIO, @adamlandman) | MGB deployed Abridge; publicly documents the decision process | @adamlandman |
+| **Cleveland Clinic** | Matthew Kull (CIO) | Large system, active AI program | LinkedIn |
+| **Kaiser Permanente** | Richard Daniels (Chief Information Officer) | 12.5M members — scale makes vendor choice extremely consequential | LinkedIn |
+| **Advocate Health** | Chris Gehler (CIO) | Large Midwest system with active AI procurement | LinkedIn |
+
+**Note:** CMIO/CIO contacts are the right buyer for Straw's hospital system pitch. But they are very hard to reach cold. The warm path is through the ambient AI vendors themselves — Abridge, Nabla, and Suki know their hospital customers and can refer.
+
+### The vendor pitch — ambient AI companies as Straw's supply side
+
+Unlike the hospital system buyer (hard to reach, slow cycle), the ambient AI vendors are startups with fast-moving sales teams that need proof points.
+
+**Pitch structure for ambient AI vendors:**
+> "Hospital CMIOs are evaluating ambient scribes for 200-bed+ deployments. They don't have a framework for comparing you to Abridge/Nabla/Dragon Copilot on their specific note types and quality criteria. We've built evaluation infrastructure that lets them run a structured competition. A Straw win — 'independently evaluated as highest quality for ED documentation at our note criteria' — is worth more to your enterprise sales than any demo. First evaluation is free."
+
+**Named vendor contacts:**
+
+| Company | Contact | Title | Opener hook |
+|---|---|---|---|
+| **Abridge** | Shiv Rao (CEO, @shivrao) | Co-founder, cardiologist | "Your Epic partnership is your distribution. A Straw win is your credibility layer for the systems that haven't committed to Epic yet." |
+| **Nabla** | Alex Lebrun (CEO) | Serial entrepreneur (sold Wit.ai to Facebook) | "With 300K clinicians, you have the volume. Straw can turn that into a publicly verifiable performance claim that your competitors can't match." |
+| **Suki AI** | Punit Soni (CEO, @punit_soni) | Ex-Motorola, ex-Google | "Outpatient physicians are your beachhead. A Straw evaluation on outpatient note quality would give you a comparison framework that hospital evaluators trust more than your sales deck." |
+| **Ambience** | Mike Ng (CEO) | Enterprise focus | "Large hospital systems want independent validation before committing. Straw's evaluation report can be the pre-procurement evidence that accelerates their internal approval." |
+
+### FDA "cuts red tape" — the regulatory opportunity in healthcare AI
+
+**Key January 2026 development:** FDA issued guidance "cutting red tape" on clinical decision support software, reclassifying more AI/CDS as "non-device" — meaning it doesn't require FDA 510(k) clearance. This accelerates deployment but removes a regulatory checkpoint.
+
+**The paradox for Straw:** Removing FDA requirement → faster deployment → more AI in clinical settings → more unvalidated AI → higher demand for independent performance evaluation. The FDA deregulation creates Straw's market opportunity.
+
+**The procurement committee angle:** Even without FDA clearance requirements, hospital legal and compliance teams require performance evidence before committing clinical AI. The absence of FDA process doesn't eliminate evaluation — it moves it from the regulator to the procurement committee.
+
+**Healthcare-specific rubric dimensions (to include in the rubric calibration template for healthcare customers):**
+- Clinical accuracy (does the generated note reflect what was actually said?)
+- Structured data capture (are ICD-10/CPT codes captured correctly from conversation?)
+- HIPAA-safe handling (does the system ever retain PHI in recoverable form?)
+- Physician edit rate (how often do physicians modify the AI output before signing?)
+- Turnaround time (note available within how many minutes of encounter end?)
+- Integration completeness (does it push to the right EHR fields automatically?)
+
+---
+
+## Tick 50 (2026-05-03T13:35Z): Evaluation commoditization bear case — Langfuse/Braintrust free tier threat [theme: bear]
+
+**The news that changes the calculus:** Langfuse was **acquired by Clickhouse in January 2026**. Langfuse is open-source, MIT-licensed, self-hostable. It has 609K monthly website visits vs. Braintrust's 155K. Post-acquisition by Clickhouse (a massive data infrastructure company with enterprise sales), Langfuse's distribution gets significantly amplified. Clickhouse could bundle Langfuse observability with every enterprise Clickhouse deployment.
+
+**The core threat:** If enterprise buyers can get "good enough" LLM evaluation for free (Langfuse self-hosted) or nearly free (Braintrust free tier), why pay Straw $5K-$15K per competition?
+
+### The evaluation tool landscape (with pricing)
+
+| Tool | Model | Pricing | Customers |
+|---|---|---|---|
+| **Langfuse** | Open-source self-hosted or cloud | Self-hosted: free; Cloud: free tier + $249/month | 609K monthly visits |
+| **Braintrust** | SaaS + AI | Free tier + $199/month/project | Notion, Stripe, Ramp, Vercel |
+| **LangSmith** (LangChain) | SaaS | Free tier + $39/month | Large developer community |
+| **Arize AI** | SaaS | Enterprise pricing ($30K+/year) | MLflow/pandas-heavy ML teams |
+| **Weights & Biases** | SaaS + enterprise | Free tier + enterprise contracts | Researchers, ML engineers |
+| **Galileo** | SaaS | Enterprise | Hallucination detection focus |
+
+**What all these tools have in common:** They do observability on your own deployed models. They answer "how is MY agent performing over time?" Straw answers "which of these 10 agents should I deploy?" Different question, different tool.
+
+### The structural non-overlap
+
+**The "free eval" counter-argument:** Yes, Langfuse is free. But Langfuse requires:
+1. You already have an agent deployed (or in staging)
+2. You have logs/traces to analyze
+3. You write your own evaluation functions or LLM-as-a-judge prompts
+4. You interpret results yourself
+
+For a company that wants to *choose* between Agent A and Agent B before deploying either, Langfuse is the wrong tool. It's like saying "why pay for a job interview when you could just check a reference?" References and interviews serve different moments in the hiring process.
+
+**The genuine competitive overlap:** Where Straw is most vulnerable to free alternatives is when a buyer wants to run a simple A/B comparison of two known agents using a simple rubric. For this, a Braintrust project + one LLM-as-a-judge prompt could approximate Straw Tier 1+2. Cost: $200/month + API costs.
+
+**Straw's moat against the "do it yourself" option:**
+1. **Supply side aggregation:** Straw has agents that a buyer doesn't have relationships with. You can't run a Langfuse comparison against an agent you don't know about.
+2. **Economic stakes = real effort:** On Langfuse, you run your own agent against a test set. On Straw, competing agents are incentivized to bring their best capability to your task. The output quality is meaningfully higher.
+3. **Rubric design as service:** Most enterprise buyers cannot write a good evaluation rubric. Straw's rubric calibration process (Tick 42) adds value that Langfuse's open-source form cannot replace.
+4. **Audit-grade output:** Straw's evaluation report is formatted for procurement committee review, regulatory documentation, and legal defensibility. A Langfuse dashboard is not.
+
+### The "free tier to paid" compression risk
+
+The more dangerous version of this bear case is not "companies use Langfuse instead of Straw" — it's "Braintrust or Langfuse adds a marketplace feature that lets buyers post RFPs and receive agent submissions, directly competing with Straw's core mechanic."
+
+**Why this is plausible:** Braintrust's $80M Series B (Feb 2026) gives them the runway to build new features. Their existing customers (Notion, Stripe, Ramp) regularly evaluate new AI tools. If Braintrust shipped "post a task to our network" with their existing eval infrastructure, they'd have:
+- Existing eval methodology (their current product)
+- Enterprise relationships (existing customers)
+- Distribution (155K monthly visits)
+- Just need: a marketplace layer + an agent network
+
+**Timeline estimate:** If Braintrust decides to build this, 12-18 months to ship a v1. This is Straw's window to establish brand recognition, design partner relationships, and a rubric methodology reputation before Braintrust enters the space.
+
+**The strategic response:** Straw needs to be known as THE evaluation methodology authority — the company that wrote the rubric for legal AI, the company that published the healthcare AI evaluation framework, the company that defined what good evaluation looks like — before Braintrust can enter and claim the same space with their enterprise distribution advantage. Content authority is the moat. Ship the "SWE-bench is dead" post, the rubric calibration framework, the healthcare evaluation guide — all before Braintrust notices.
+
+**Race condition:** Straw has ~12 months of window before Braintrust or Google (Tick 26) makes this market contested. Use that window to build switching costs: rubric templates, case studies, methodology reputation.
+
+---
+
+## Tick 51 (2026-05-03T14:00Z): Content calendar — specific post titles, angles, and publish sequence for May-July 2026 [theme: gtm]
+
+**Governing principle from Tick 29 (build-in-public playbook):** The highest-engagement content on X in the AI space is: (1) hot take / contrarian claim, (2) specific findings with specific numbers, (3) follow-up threads that build on the original claim. The content calendar below applies this to Straw's specific situation.
+
+### May 2026 — Foundation Content (establish the problem)
+
+**Week 1 (publish by May 9):**
+
+**Post 1 (X thread + LinkedIn article):**
+Title: *"SWE-bench is dead. AI evaluation doesn't have to be."*
+Angle: Claude Opus 4.7 at 87.6%. GPT-4o also near 90%. The benchmark that was supposed to measure coding ability is now a vanity metric. What comes next?
+Hook: "We've watched every major AI benchmark die the same way. Here's the pattern — and what a benchmark that doesn't die looks like."
+X thread structure: (1) the saturation pattern, (2) training contamination mechanism, (3) what real evaluation requires, (4) call to action
+LinkedIn: 800-word article version with citations
+Expected reach: 500-2,000 impressions on X (this topic is hot); 200-500 LinkedIn engagement
+
+**Post 2 (X):**
+Title: *"Why I stopped trusting AI demos after this happened"*
+Angle: Personal narrative from Jeremy's perspective. A story (real or hypothetical with permission) of a company that chose an AI agent based on a demo, deployed it, and had it fail on their real data. Without naming the company, describe the outcome and what proper evaluation would have caught.
+Hook: "The demo worked perfectly. The production agent failed within two weeks. Here's why this keeps happening."
+X thread: 5-6 tweets, narrative format
+Note: This format (personal story) is the highest-performing content type on X per the algorithm research in Tick 29
+
+**Week 2 (publish by May 16):**
+
+**Post 3 (X thread):**
+Title: *"What Upwork's decline can teach you about AI agent marketplaces"*
+Angle: The original freelancer platform died (in terms of premium work) because race-to-bottom pricing destroyed quality signals. AI agent platforms are heading the same direction. The difference: what if you specified exactly what winning looked like before the agents competed?
+Expected: Medium engagement; establishes Straw's mechanism design without directly pitching it
+
+**Post 4 (LinkedIn article):**
+Title: *"The rubric calibration problem: why AI procurement fails before it starts"*
+Angle: The checklist from Tick 42. Publish the full checklist as a downloadable PDF (email gate). This is the lead magnet.
+Include: 6-question rubric audit readers can do in 5 minutes on their own
+CTA: "Download the full 25-item rubric calibration checklist"
+Expected: 200-500 LinkedIn views; 50-150 email captures over first month
+
+### June 2026 — Authority Content (establish methodology)
+
+**Week 1 (publish by June 6):**
+
+**Post 5 (X thread + blog):**
+Title: *"I evaluated 5 legal AI agents on the same contract review task. Here's what happened."*
+Angle: First design partner case study (anonymized if needed). Real task. Real rubric. Real competition. Real results. Specific numbers: "Agent A scored 87/100 on clause identification, 62/100 on risk flagging. Agent B was the reverse."
+Note: This requires one completed competition first. Target: first competition running by May 23, case study published June 6.
+Expected: 1,000-5,000 impressions. This is Straw's breakout content piece.
+
+**Post 6 (X):**
+Title: *"Prompt injection is the most underrated risk in AI agent evaluation. Here's how we handle it."*
+Angle: Technical thread based on Tick 39's architectural spec. Appeal to the AI safety + infra audience.
+Hook: "Your LLM judge can be bribed. Not metaphorically."
+Include: The dual-LLM pattern concept (no proprietary code), the attack vectors, the defense architecture
+Expected: High reach in the technical audience; establishes security credibility
+
+**Week 2 (publish by June 13):**
+
+**Post 7 (LinkedIn):**
+Title: *"The FTC just changed AI procurement. Most enterprise buyers don't know it yet."*
+Angle: FTC AI Policy Statement (March 11, 2026) from Tick 47. Plain-English explanation of what the "substantiation" requirement means for enterprise AI procurement.
+CTA: "Download our FTC AI compliance checklist for enterprise AI deployments" (second lead magnet)
+Expected: High LinkedIn engagement in legal/compliance audience
+
+**Post 8 (X thread):**
+Title: *"AI benchmark saturation timeline: from SWE-bench to BigLaw Bench to what's next"*
+Angle: Historical analysis showing saturation timelines of major benchmarks. Pattern recognition. Where does this lead?
+This builds on Post 1 and deepens the narrative
+
+### July 2026 — Social Proof Content (establish credibility)
+
+**Week 1 (publish by July 4):**
+
+**Post 9 (X thread + blog):**
+Title: *"Design partner report: 3 companies, 3 AI agent evaluations, $0 in wasted procurement spend"*
+Angle: Compilation case study across all design partners. Specific outcomes. What did they learn? What would they have bought without Straw? What did they actually buy?
+
+**Post 10 (X):**
+Title: *"The architecture of a trustworthy AI evaluation pipeline (the full spec)"*
+Angle: Full technical blog post on Straw's tiered evaluation architecture (Tier 1/2/3). Technical depth. This attracts the AI engineer audience who will build on Straw.
+Note: This is the "make the methodology public" move that establishes Straw as a research-grade platform
+
+### Latent Space pitch — the single most important content event
+
+Based on Tick 28 research: Latent Space (Swyx + Alessio) covers AI engineering deeply. Their episode with Olivia Watkins and Mia Glaese on "The End of SWE-Bench Verified" is the template for the Straw pitch.
+
+**Pitch to Alessio Fanelli (@alexianisic) directly on X:**
+> "Alessio — you covered 'the end of SWE-bench' with Olivia and Mia. Logical follow-up: 'what actually replaces public benchmarks for enterprise procurement?' We're building that thing. Would love to be a guest on the episode where you answer the question your SWE-bench episode opened. Even 30 minutes."
+
+**Timing:** Pitch this in June (after the first competition case study is published). Having real results to reference makes this a narrative episode, not a pitch.
+
+### Content distribution cadence summary
+
+| Week | X posts | LinkedIn | Blog | Notes |
+|---|---|---|---|---|
+| May 5-9 | 3 threads | 1 article | — | SWE-bench thread is the lead |
+| May 12-16 | 2 threads | 1 article (rubric) | — | Lead magnet launch |
+| May 19-23 | 2 threads | — | — | Run first competition this week |
+| May 26-30 | 1 thread | — | — | Let results arrive |
+| June 1-6 | 3 threads | — | 1 blog (case study) | Breakout week |
+| June 9-13 | 2 threads | 1 (FTC article) | — | Regulatory audience |
+| June 16-30 | 2/week | 1/week | — | Sustain cadence |
+| July 1-15 | 3 threads | — | 1 blog (design partner report) | Social proof |
+| Latent Space pitch | — | — | — | June 15 target |
+
+**The metric to track:** Design partner pipeline growth week-over-week, measured by: (a) DMs from the right people (CTO/Head of AI/Procurement), (b) email list growth from lead magnets, (c) qualified calls booked per week. Target: 2+ qualified calls/week by June.
