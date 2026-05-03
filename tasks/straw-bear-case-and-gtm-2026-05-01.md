@@ -24880,3 +24880,155 @@ Every slide must connect back to the same insight: **enterprises are making mult
 Sources: bvp.com/atlas/ai-infrastructure-roadmap-five-frontiers-for-2026, headline.com/blog-latest/article-latest/series-a-pitch-deck-template, siliconangle.com (PitchBook AI infrastructure report), beri.net/article/ai-operational-infrastructure-funding-shift-2026
 
 TICK_END
+
+---
+
+## Tick 404 — Anthropic as Straw's Distribution Engine: 300K Businesses, 70% Fortune 100
+
+**Date researched:** 2026-05-03
+**Theme:** GTM / Partnerships
+
+### Anthropic's 2026 scale
+
+Scale milestone data (2026):
+- **$14B ARR run-rate** (projected $26B for full-year 2026)
+- **300,000+ business customers** — including 70% of the Fortune 100
+- **500+ customers spending $1M+/year** on Claude API
+- **25B API calls/month**, 45% from enterprise platforms
+- **29% enterprise AI market share**
+- **$380B post-money valuation** after $30B Series G (February 2026)
+- Claude Code: $2.5B ARR run-rate, business subscriptions quadrupled in early 2026
+
+### Why Anthropic is Straw's most important non-customer relationship
+
+**The math:** 500 enterprise customers each spending $1M+/year on Claude = $500M+/year in Claude enterprise spend. These are organizations building production AI agent workflows on Claude. Every single one of them needs to decide WHICH agents to deploy in production. Every single one has the Straw problem.
+
+Anthropic's distribution is Straw's free sales channel, IF the relationship is structured correctly.
+
+### Three partnership models to pursue with Anthropic
+
+**Model 1: Listing in the Claude Partner Directory**
+Anthropic maintains a partner ecosystem for tools that extend Claude's value. Straw as "agent evaluation and procurement" is a natural fit — it's infrastructure that makes Claude-based agents more deployable, not a competing product.
+
+**Model 2: Reference case co-development**
+Anthropic Project Deal (April 2026: 186 commercial deals, $4K in goods, zero human intervention) demonstrated agent commerce is real. Anthropic has research interest in making those results reproducible at enterprise scale. Straw + Anthropic Managed Agents API = reproducible demonstration.
+
+**Model 3: Data partnership**
+Straw generates evaluation data that no one else generates: cross-vendor, rubric-defined, multi-tier scored agent performance data. This is training data Anthropic would pay for. Straw could license anonymized evaluation outcomes for model improvement.
+
+### The approach
+
+Jeremy should NOT cold-email Anthropic. The right approach:
+1. **Design partner first** — get a design partner running who uses Claude Managed Agents on Straw. Create a case study. 
+2. **Reference the existing relationship** — if Jeremy is an Anthropic API customer, that's an existing commercial relationship. Account team introductions are standard.
+3. **The CAIF connection** — Anthropic provides compute access to CAIF fellows. The CAIF academic partnership (Tick 392) creates an indirect Anthropic connection.
+
+Sources: demandsage.com/claude-ai-statistics, businessofapps.com/data/claude-statistics, getpanto.ai/blog/anthropic-ai-statistics, techcrunch.com/2026/04/25/anthropic-created-a-test-marketplace-for-agent-on-agent-commerce
+
+TICK_END
+
+---
+
+## Tick 405 — Insurance + Red Teaming Design Partners: Named Contacts (#88-93)
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets (insurance vertical + security adjacency)
+
+### Insurance vertical signal (2026)
+
+- Banking and insurance lead enterprise AI agent production adoption: **47%** vs. 31% enterprise average
+- 35% of insurers will deploy AI agents across 3+ core functions by late 2026 (cutting processing time 70%)
+- "Insurance's gen AI reckoning has come" (Insurance Business magazine, 2026)
+- AI exclusions emerging in insurance policies — insurers themselves are evaluating AI risk
+
+The insurance vertical has the best Straw fit among non-tech verticals because:
+1. **Rubrics already exist** — actuarial standards, claims accuracy metrics, underwriting error rates — all quantifiable
+2. **Stakes are existential** — a bad AI agent in claims or underwriting creates regulatory exposure and liability
+3. **Compliance documentation** — Colorado AI Act + EU AI Act explicitly apply to high-risk AI in insurance
+4. **Buyers are burned** — insurance CIOs are already funding AI agents and watching them fail; the 88% failure stat resonates
+
+### Named insurance design partner contacts (#88-90)
+
+**#88 — Dr. Andreas Schertzinger, AXA Group Chief Data, AI & Innovation Officer**
+- Leads AXA's entire AI strategy globally
+- AXA is rewriting the insurance model with AI (Computing.co.uk, 2026)
+- Straw pitch: "AXA is deploying AI agents for claims and underwriting. When you evaluate which agent handles which workflow, what's your selection framework? Straw is the rubric-first evaluation platform."
+
+**#89 — Leyla Delic, Chief Technology and AI Officer, AXA XL (London)**
+- Named AI-focused CTO at AXA's commercial and specialty insurance arm
+- London-based: EU AI Act deadline (August 2) is more immediately relevant
+- Straw pitch: "EU AI Act requires documented evaluation for high-risk AI in insurance. Straw generates the audit log automatically."
+
+**#90 — Kara Higginbotham, Head of Professional Liability and Cyber, Zurich North America**
+- Zurich is deploying AI for underwriting (Nearmap + Sixfold AI tools, late 2025)
+- Professional liability = highest-risk category for AI agent errors → highest WTP for evaluation
+- Zurich deployed AI and then needed to document it worked; Straw prevents that sequencing problem
+
+### Red teaming adjacency design partners (#91-93)
+
+**#91 — Haize Labs (B2B, "Moody's for AI")**
+- $12.5M seed (December 2025); contracts with Anthropic, Scale AI, AI21
+- Red teaming = detecting dangerous behaviors; Straw = detecting underperformance
+- **Complementary, not competing.** Straw sends failing agents to Haize Labs for safety analysis; Haize Labs sends safety-cleared agents to Straw for performance evaluation.
+- Partnership angle: joint offering ("safe AND effective") for enterprise customers
+
+**#92 — Palo Alto Networks (Prisma AIRS)**
+- Enterprise-grade AI red teaming built into their security suite
+- PANW has 85,000+ enterprise customers — a distribution channel for Straw if partnership established
+- Entry point: PANW's AI security product team (not the CISO)
+
+**#93 — LangWatch / Scenario (open source)**
+- Scenario: open-source automated red teaming for AI agents (April 2026)
+- Open-source + Straw integration = Straw adopts Scenario as Tier-3 adversarial test option within the evaluation pipeline
+- Technical partnership: embed Scenario's attack scenarios as optional rubric criteria in Straw
+
+Sources: computing.co.uk/feature/2026/how-axa-using-ai-rewrite-insurance-model, reinsurancene.ws/historic-opportunity-to-use-ai-to-transform-insurance, trysignalbase.com/news/funding/haize-labs-closes-125m-seed-round, paloaltonetworks.com/blog/network-security/how-ai-red-teaming-evolves-with-the-agentic-attack-surface, helpnetsecurity.com/2026/04/23/scenario-open-source-framework
+
+TICK_END
+
+---
+
+## Tick 406 — Agentic Procurement: AI Agents Buying AI Agents (Straw's Year 3 Vision)
+
+**Date researched:** 2026-05-03
+**Theme:** Long-term vision / market positioning
+
+### What "agentic procurement" means now (2026)
+
+- McKinsey projects agentic commerce = $3-5T global retail/commercial spend by 2030
+- Juniper Research: $1.5T by 2030 (more conservative)
+- Gartner: $15T B2B spend AI-agent-intermediated by 2028
+- Ramp's AI procurement agents: customers reduce vendor costs 16% annually, cut manual purchasing 46 hours/month
+- "B2B procurement is the most advanced multi-agent environment" (PwC 2026)
+
+The progression:
+1. 2024: AI agents are piloted by humans
+2. 2025-2026: AI agents handle procurement tasks (sourcing, RFQs, contract compliance) on behalf of humans
+3. 2027-2028: AI agents purchase OTHER AI agents autonomously — the Anthropic Project Deal model at scale
+
+### Straw in the agentic procurement stack
+
+**Year 1-2 (now):** Human procurement teams use Straw to select which AI agent to deploy  
+**Year 2-3:** "Agent Owner" role consolidates; dedicated AI operations teams use Straw as their evaluation OS  
+**Year 3-4:** AI agents themselves post tasks to Straw, evaluate submissions, select winning sub-agents — fully autonomous procurement of AI capabilities
+
+This is not speculative. The OpenClaw Hackathon (Tick 0.7) already demonstrated: 200+ submissions, 1,800+ votes, 9,700+ comments — all from agents. The mechanism exists. Straw's architecture just needs to scale to the autonomous case.
+
+### The recursive value proposition
+
+When AI agents procure AI agents via Straw, Straw earns evaluation fees WITHOUT any human sales cycle. A deployed agent with budget authority just posts tasks on Straw, waits for competing agents, pays the winner, and moves on. Zero human touchpoints.
+
+This is the "zero-touch revenue" moat that makes Straw a platform, not a SaaS tool. In Year 3, Straw's growth isn't limited by founder-led sales capacity. It's limited by how many deployed AI agents have procurement authority — which is the same number that determines Gartner's $15T figure.
+
+### The near-term validation test
+
+Signal that agentic procurement is becoming real (watch for):
+1. Any Fortune 500 announcing that an AI agent has budget authority for vendor selection
+2. Anthropic or OpenAI publishing an enterprise case study of agent-to-agent commerce at scale
+3. The x402 payment protocol reaching $1T annualized volume (currently at $600M — 2× away)
+
+When any of these signals appear, Straw should pivot marketing to the "autonomous procurement" use case aggressively.
+
+Sources: pymnts.com/news/b2b-payments/2026/agentic-commerce-shifts-b2b-marketplaces-intermediaries-infrastructure, pwc.com/us/en/services/consulting/front-office/agentic-commerce, digitalcommerce360.com/2025/11/28/gartner-ai-agents-15-trillion-in-b2b-purchases-by-2028
+
+TICK_END
