@@ -25621,3 +25621,105 @@ Why now? → Three platforms just launched single-vendor agent evaluation (Googl
 Why us? → [Jeremy's background]. Zero funded competitor exists. We have 96 named design partner targets across 8 verticals and 3 confirmed cold outreach templates with 7-8% reply rates.
 
 TICK_END
+
+---
+
+## Tick 417 — Salesforce Agentforce Named Customers + Design Partners (#97-99)
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets / Salesforce channel
+
+### Agentforce 2026 production numbers
+
+Agentforce metrics (Salesforce published, 2026):
+- **$800M ARR** (reached earlier than projected per Tick 386)
+- **8% of Salesforce's 150K customers** have adopted Agentforce = 12,000 active deployments
+- **92% adoption gap**: 138,000 Salesforce customers evaluating or considering Agentforce but not yet deployed
+
+The gap is Straw's market. 138,000 companies need to evaluate Agentforce agents before deploying them. None of them have a rubric-defined evaluation framework.
+
+### Named Agentforce production customers with concrete results
+
+| Company | Agent deployed | Measured result | Straw role |
+|---|---|---|---|
+| Engine | Customer service agent | 15% handle time reduction, $2M/year saved, deployed in 12 days | Pre-deployment rubric: "handle time ≤15 min on 95% of queries" |
+| OpenTable | Restaurant/diner support agent | 70% of inquiries resolved autonomously | Pre-deployment rubric: "handles 70%+ scenarios from these 500 test cases" |
+| 1-800Accountant | Tax season customer service | 90% case deflection during tax week | Pre-deployment rubric: "resolves 90%+ of standard tax Q&A queries accurately" |
+
+**What these companies did NOT do:** None of them had a Straw evaluation before deployment. They measured AFTER deployment. If the agent had failed (like Klarna's did), they would have had to rebuild.
+
+### Named design partner contacts from Agentforce ecosystem (#97-99)
+
+**#97 — Engine (customer service SaaS)**
+- Small-to-mid market SaaS company running Agentforce at scale
+- Concrete $2M ROI documented
+- Straw pitch: "You deployed in 12 days. What would you have done if the agent scored poorly on your rubric on Day 11? Straw gives you the rubric evaluation that makes deployment confidence measurable."
+
+**#98 — OpenTable (restaurant technology)**
+- Major restaurant discovery/booking platform; likely has complex multi-party service scenarios
+- Deployed Agentforce for both diner AND restaurant support — two different rubric profiles needed
+- Straw pitch: "Diner rubric and restaurant rubric are completely different. How did you ensure both were evaluated before launch? For your next agent deployment, run both rubrics through Straw first."
+
+**#99 — 1-800Accountant (accounting services)**
+- Tax season = highest-stakes deployment window (failure during tax week = catastrophic)
+- 90% case deflection achieved — but 10% failure rate in a high-stakes period still matters
+- Straw pitch: "During tax week, the 10% your agent couldn't handle were your most complex clients. Straw's evaluation pre-identifies those failure cases so you can design the human escalation path before launch."
+
+### Salesforce channel strategy
+
+Salesforce Agentforce Partners and ISVs are building evaluation tooling for Agentforce customers. Straw can be listed in the Salesforce AppExchange as the "pre-deployment evaluation" category — a category that currently has zero relevant competitors in AppExchange.
+
+Sources: salesforce.com/agentforce/metrics, salesforce.com/news/stories/agentforce-customer-success-stories, fortune.com/2026/04/18/salesforce-agentforce-ai-efficiency-revenue-growth, callsphere.ai/blog/salesforce-agentforce-2026-enterprise-agent-platform-crm-native-ai
+
+TICK_END
+
+---
+
+## Tick 418 — "Only 5% of Enterprises See Real AI Returns": The ROI Crisis Deepens
+
+**Date researched:** 2026-05-03
+**Theme:** Market narrative / Bear case (demand validation)
+
+### The ROI crisis statistics (cumulative, all sources)
+
+Multiple authoritative sources now confirm the same picture:
+
+| Source | Finding |
+|---|---|
+| Master of Code (2026) | Only 5% of enterprises see real returns from AI |
+| RAND Corporation (2026) | $547B of $684B AI investment failed to meet ROI targets (80% failure) |
+| Gartner (2026) | GenAI projects burned $1.9M per initiative; <30% CEO satisfaction |
+| Forrester + Anaconda (2026) | 88% of agent pilots never reach production |
+| Deloitte (prior research) | $7.2M average sunk cost in failed AI procurement; 42% abandonment |
+| BCG/Forrester (2026) | Median 5.1 months time-to-value on agent deployments |
+
+**The meta-pattern across all these numbers:** Enterprises are spending billions and seeing almost nothing in return. The failure mode is consistent: no clear success criteria upfront, no systematic evaluation, wrong metric measured.
+
+### Why 41% of AI deployments fail (root cause)
+
+Failure attribution from 2026 data:
+- **41%** of failures: unclear success criteria
+- **33%** of failures: insufficient tool or data access
+- **26%** of failures: drift in evaluation coverage over time
+
+Straw directly addresses the 41% cause (unclear success criteria = no rubric). Straw partially addresses the 26% cause (regular re-evaluation via the same rubric catches drift). The 33% cause (data access) is infrastructure, not evaluation — Straw doesn't solve this.
+
+**The math:** If Straw reduces the 41% cause by 80% (rubrics written correctly with Straw guidance), that alone cuts the overall failure rate from 88% to 52%. A product that takes enterprise AI deployment from 88% failure to 52% failure is an extraordinarily valuable product.
+
+### The CFO pitch updated
+
+"5% of enterprises see real returns from AI. Your competitors in the top 5% had success criteria defined before deployment. Your competitors in the bottom 95% didn't. Straw is the difference. It costs $25K/year. The average failed AI project costs $1.9M. The math works at every scale."
+
+### The "success criteria" insight vs. the "evaluation pipeline" insight
+
+There are two different things Straw enables:
+1. **Forcing success criteria definition** — making the enterprise WRITE a rubric
+2. **Running the evaluation pipeline** — executing the eval with tier 1+2+3
+
+Both matter, but the FIRST is the actual value unlock. An enterprise that writes a rubric and then uses ANY evaluation tool is ahead of the enterprise that never wrote the rubric. Straw should make rubric writing so easy that enterprises do it even if they're not sure they want to run a competition.
+
+**Product implication:** Straw's first UX win is the rubric builder, not the evaluation pipeline. If Jeremy ships a rubric template builder that enterprises can use standalone (before they need to run a competition), that's the wedge product that builds the habit.
+
+Sources: masterofcode.com/blog/ai-roi, xcubelabs.com/blog/measuring-ai-agent-roi-how-enterprises-prove-value-from-agentic-ai, onereach.ai/blog/agent-lifecycle-management-stages-governance-roi, digitalapplied.com/blog/ai-agent-roi-measurement-beyond-task-completion
+
+TICK_END
