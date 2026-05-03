@@ -16715,3 +16715,136 @@ Core evaluation dimensions for utility AI agent selection:
 5. **Response time under load** — latency under peak demand simulation
 6. **Fail-safe behavior** — how does the agent behave when the task is ambiguous or data is corrupted?
 
+
+---
+
+## Tick 231 (2026-05-03T00:08:00Z): Vendor lock-in as a bear case — behavioral lock-in blocks Straw adoption [theme: bear]
+
+**Score: 4/10** — The lock-in thesis is more enterprise inertia risk than Straw-specific risk. Straw's value is highest during the initial procurement decision, before lock-in sets in. The question is whether Straw can reach buyers early enough.
+
+### The Vendor Lock-In Landscape in 2026
+
+Multi-layer AI agent lock-in is now well-documented:
+
+1. **Framework/orchestration lock-in**: Workflows built on a vendor's proprietary orchestration layer (LangChain, CrewAI, Salesforce's proprietary stack) create switching costs at every layer of the stack
+2. **Model layer lock-in**: APIs and SDKs tied to specific foundation models
+3. **Tool/integration lock-in**: Proprietary integrations that don't export cleanly
+4. **Behavioral lock-in (new in 2026)**: The most insidious form. A persistent AI agent accumulates context about how the organization actually works — communication patterns, decision-making logic, institutional knowledge. This accumulated context is not exportable. Switching to a new agent means starting from zero.
+
+Enterprise scale: 45% of enterprises say vendor lock-in has already hindered their ability to adopt better tools; 67% aim to avoid high dependency on a single AI provider.
+
+### How This Creates a Bear Case for Straw
+
+**The core problem**: Straw's evaluation is most valuable *before* an enterprise commits to an agent. Once behavioral lock-in sets in, Straw's recommendation to switch becomes prohibitively expensive to act on.
+
+**Scenario A — Straw arrives too late**
+An enterprise has been using Vendor X's AI agent for 18 months. The agent has accumulated 18 months of behavioral context — it knows how their team writes, how they escalate decisions, how they handle edge cases. A Straw competition recommends Vendor Y, which scores 15% higher. But Vendor Y starts from zero behavioral context. The enterprise does the math: 15% better performance doesn't justify the 6-month productivity loss during context rebuild. They stay with Vendor X. Straw's recommendation is technically correct but economically irrelevant.
+
+**Scenario B — Behavioral lock-in reduces re-competition frequency**
+Straw's business model depends on recurring evaluation — enterprises re-running competitions as new agents emerge. But if behavioral lock-in makes switching costs prohibitive after 12-18 months, the natural re-competition frequency drops. A customer runs one competition, chooses an agent, and then the switching cost makes re-competition economically irrational even if better agents emerge.
+
+**Scenario C — Enterprises buy Straw as a one-time due diligence tool, not a recurring platform**
+The first competition generates $15K-$50K. But if behavioral lock-in means the enterprise is unlikely to re-evaluate for 3-5 years, the recurring revenue model breaks. Straw becomes a one-time service, not a platform.
+
+### Calibrating the Risk
+
+The behavioral lock-in bear case is a 4/10 because:
+
+1. **The timing answer works**: Straw must position as the tool to use *before* commitment, not after. "Run a Straw competition before you sign the contract" is a much stronger pitch than "run a competition to evaluate whether to switch." The first avoids lock-in entirely.
+
+2. **Annual recertification creates recurring revenue anyway**: Regardless of switching cost, enterprise buyers need annual recertification to satisfy procurement and compliance requirements. "Straw Certified: 2026" on an agent contract does not mean the same thing in 2027. Annual re-certification creates revenue even without switching.
+
+3. **New use case expansion is the real growth**: An enterprise that runs a competition for customer service AI doesn't have lock-in for their supply chain AI evaluation. Each new AI agent deployment — and enterprises are deploying agents into 10-20 different functions — is a fresh competition opportunity.
+
+4. **Behavioral lock-in is solvable with standards**: MCP (Model Context Protocol) and the Agentic AI Foundation (AAIF) are building portability standards. As agent context becomes more portable, the behavioral lock-in problem diminishes. Straw benefits from this trend.
+
+### Tactical Response
+
+**Make "evaluate before you commit" the primary sales motion**: Every sales conversation positions the competition as a pre-commitment action, not a post-adoption evaluation. The entry point is the RFP stage, not the renewal stage.
+
+**Build the recertification model**: Annual "Straw Certified" renewal creates recurring revenue that doesn't depend on enterprises switching vendors — just on enterprises needing to maintain their certification documentation.
+
+**Track the agent portability standards**: If AAIF/MCP creates behavioral context portability, publish a "Straw compatibility guide" for portable agents. This positions Straw as the neutral party that benefits from an open agentic ecosystem.
+
+
+---
+
+## Tick 232 (2026-05-03T00:09:00Z): Seed round narrative and Series A positioning [theme: gtm]
+
+### What 2026 Investors Require at Seed Stage
+
+B2B SaaS AI seed round criteria in 2026 (synthesized from VC feedback):
+- **Pre-seed**: Working prototype OR $10K+ MRR OR named enterprise design partner credibility
+- **Seed**: $100K-$500K ARR OR 3-5 named enterprise design partners with paid pilots
+- **Series A**: $1M+ ARR with strong net retention (>100%) OR $500K ARR with credible expansion potential and named enterprise pilots
+
+Most successful companies dominate a specific niche before expanding — investors fund "the long arc, not just year one."
+
+### Straw's Seed Round Thesis
+
+**The one-sentence pitch to investors**: "Enterprise AI procurement is the last major software buying decision with no quality standard — Straw is building the independent evaluation infrastructure that makes AI vendor selection defensible, reproducible, and transparent."
+
+**The three-slide story arc**:
+
+1. **Problem slide**: "Companies are signing $3-10M AI agent contracts based on vendor demos. The demos don't represent real performance. 88% of AI agent pilots never reach production. The enterprise is flying blind."
+
+2. **Solution slide**: "Straw runs blind competitions where multiple AI agents compete on the company's actual task, in a zero-data sandbox, scored by the company's own rubric. The agent with the best score wins the contract. The score is reproducible, auditable, and defensible."
+
+3. **Traction slide**: "We've run [N] competitions at [N] enterprise customers. Average contract: $[X]. Our first 5 design partners are [vertical]. We have [N] rubric templates. Our NRR is [X]% because every agent deployment creates a re-certification need."
+
+### Seed Round Narrative Beats (in order)
+
+**Beat 1 — The Problem is Structural, Not Cyclical**
+Enterprise AI spending is $250B+ in 2026 and accelerating. The procurement process is broken structurally: vendors control the demo, buyers have no independent verification mechanism. This is not a temporary gap — it will get worse as AI spending grows. Every dollar of enterprise AI spending that bypasses objective evaluation is a dollar of value destroyed.
+
+**Beat 2 — The Market Timing is Now**
+GenAI is in the Trough of Disillusionment. Enterprises have burned money on AI that didn't work. They now demand proof before they buy again. Agentic AI is at the Peak of Inflated Expectations — the wave of agentic enterprise spending is 18-24 months out, and Straw needs to be the standard before that wave crests.
+
+**Beat 3 — The Business Model is Recurring and Expanding**
+- Tier 0 workshops ($2,500) → Tier 1 competitions ($15K-$50K) → Tier 2 annual subscriptions ($30K-$120K/year) → annual recertification
+- NRR > 100% because: every new AI deployment is a new competition, agent recertification happens annually, rubric library subscriptions are sticky
+- Each enterprise customer runs 1 competition, then 3, then 10 as AI deployments multiply
+
+**Beat 4 — The Moat is Not Replicable Quickly**
+- Rubric library: 50+ competition rubric templates after first year — the data asset that no one else has
+- Straw Certified brand: the badge enterprises display to signal AI procurement quality
+- Foundation model neutrality: Anthropic, OpenAI, Google all want to win Straw competitions — their incentive is to support Straw's neutrality, not undermine it
+
+**Beat 5 — The Team Has Unique Access**
+Jeremy has deep enterprise relationships from [prior experience]. The advisory board includes [specific names]. The first 3 design partners were closed through warm introductions. This is a founder-led enterprise sales motion that scales through channel partnerships at Series A.
+
+### Investor Targeting Tiers
+
+**Tier 1 — AI-focused enterprise SaaS VCs (best fit)**
+| Firm | Why Relevant |
+|---|---|
+| Bessemer Venture Partners | Deep enterprise SaaS portfolio; "State of the Cloud" report demonstrates category expertise |
+| Battery Ventures | Strong enterprise software track record; AI portfolio interest |
+| Lightspeed Venture Partners | Active AI/enterprise SaaS investor |
+| Insight Partners | Enterprise software at growth stage; evaluation/observability portfolio |
+| a16z | Active AI portfolio; wrote the "Every Company Will Be an AI Company" thesis |
+
+**Tier 2 — Operators who understand AI procurement pain**
+| Firm | Why Relevant |
+|---|---|
+| Unusual Ventures | Founder-first seed investor; deep enterprise networks |
+| Heavybit | DevTools/infrastructure focus; evaluation infra is adjacent |
+| Work-Bench | NYC-based enterprise tech seed fund |
+| Foundation Capital | Long-term enterprise software thinking |
+
+**Tier 3 — Strategic angels (highest conviction signals)**
+- Former CIOs at Fortune 500 companies who lived the AI procurement problem
+- Early-stage operators at Gartner, Forrester who understand the evaluation market
+- Former product leaders at Galileo, Arize, or Braintrust who know the adjacent market
+
+### The Series A Narrative (18-24 months out)
+
+Series A is the "category creation" round. By Series A:
+- "Competitive AI Evaluation" (or "AI Selection Science") exists as a named category with a Gartner report
+- Straw has been cited in at least 3 enterprise case studies published externally
+- "Straw Certified" badge is on agent vendor websites
+- NRR is >120% (competitions breed more competitions within accounts)
+- 10+ enterprise logos, $2M-$5M ARR
+
+Series A pitch: "Straw is the FICO score for enterprise AI agents — the independent quality signal that every buyer requires and every vendor must earn."
+
