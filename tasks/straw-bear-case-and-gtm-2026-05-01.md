@@ -14010,3 +14010,115 @@ At $50K/competition × 40 competitions/year = $2M ARR:
 The fee is 1.5-3% — trivial compared to the sales cycle acceleration and enterprise access.
 
 Sources: [AWS Marketplace Listing SaaS AI Agents](https://docs.aws.amazon.com/marketplace/latest/userguide/listing-saas-ai-agents.html), [Complete Guide to AWS Marketplace 2026](https://clazar.io/guides/aws-marketplace), [AWS Marketplace Revenue Guide](https://labra.io/marketplace-revenue-guide/), [Suger Complete Guide AWS Marketplace 2026](https://www.suger.io/resources/guides/aws-marketplace/)
+
+---
+
+## Tick 211 (2026-05-04T02:15Z): Financial services as Straw's highest-value vertical [theme: partners/gtm]
+
+### The financial services AI deployment scale
+
+**JPMorgan Chase (2026 data):**
+- $19.8 billion technology budget in 2026 (10% increase from 2025)
+- 2,000 people working on AI full-time
+- 450+ use cases in production, expanding to 1,000 by 2026
+- AI deployed across: back-office automation, client services, trade reconciliation, client onboarding, fraud monitoring
+
+**Goldman Sachs (2026 data):**
+- Deploying Anthropic's Claude (Opus 4.6) to automate internal accounting and compliance
+- AI agents for due diligence and transaction accounting automation
+- Selecting Anthropic specifically over OpenAI for financial services compliance tasks
+
+**The pattern:** Major financial institutions are deploying AI at scale, selecting specific vendors (Goldman chose Claude for accounting/compliance), and facing regulatory validation requirements under the EU AI Act (financial services high-risk AI provisions effective August 2026).
+
+### Why financial services is Straw's highest-value vertical
+
+**Decision size:** JPMorgan's AI budget is $19.8B/year. Even at 0.1% of tech budget for AI evaluation: $19.8M. A Straw competition at JPMorgan at $100K each = 198 competitions/year potential. This is not realistic to start, but illustrates the deal size ceiling.
+
+**Regulatory mandate:** EU AI Act financial services high-risk provisions (effective August 2026) require documentation of AI system evaluation, human oversight, auditability, and bias detection for: credit scoring models, AML monitoring, automated lending. This is the same ISO 42001 compliance documentation that Straw generates — but now with legal enforcement teeth.
+
+**Vendor selection at scale:** Goldman chose Claude Opus 4.6 specifically for accounting/compliance. The question every bank is asking: "Which agent performs best on OUR compliance tasks — Claude, GPT-4, or our internal model?" This is exactly Straw's competition format applied to compliance automation.
+
+### The Goldman Sachs Straw competition design
+
+A concrete competition template for the financial services vertical:
+
+> **Competition: "Compliance Automation Agent Selection — [Bank Name] Accounting Review"**
+> **Tasks:** 50 representative accounting/compliance tasks (transaction reconciliation, regulatory filing review, AML alert triage, due diligence documentation)
+> **Competing agents:** Claude Opus 4.6 (Goldman's current choice), GPT-4o, Gemini Pro (Google's finance-focused offering)
+> **Rubric (equal weights):**
+> - Accuracy on regulatory requirements (40%): Does the agent identify the correct regulatory treatment?
+> - Completeness (25%): Does it flag all items that require human review?
+> - Audit trail quality (20%): Does it document reasoning for compliance review?
+> - False positive rate (15%): Does it over-flag low-risk items?
+> **Prize:** Straw Certified badge + 12-month deployment recommendation
+> **Duration:** 5 days (financial tasks require more careful review than coding)
+> **Price:** $75,000 (financial services premium for regulatory sensitivity)
+
+### Named targets in financial services
+
+1. **JPMorgan AI team** (2,000 people — specifically the "Model Risk and AI Governance" function): "You evaluate 450 AI use cases. Straw runs structured head-to-head competitions for the procurement decision before deployment. Want a pilot?"
+2. **Goldman Sachs (Claude team's business partners)**: "Goldman chose Claude for accounting automation. Have you validated Claude outperforms alternatives on YOUR specific tasks? Straw runs that validation."
+3. **Citi (AI & ML team)**: Mid-tier of JPMC in AI deployment; compliance automation is a key use case
+4. **Morgan Stanley (Wealth Management AI)**: Publicly discussed AI agents for financial advisors; high-value, compliance-sensitive
+5. **Plaid (fintech, enterprise customers)**: Plaid's API connects to financial institutions; Plaid-using fintechs are evaluating AI agents for financial data interpretation
+
+**Entry point for financial services:** Target the "Model Risk Governance" or "AI Governance" function, not the AI engineering team. These are the people who sign off on AI deployment under OCC Model Risk guidance and EU AI Act — and they need Straw's documentation most urgently.
+
+Sources: [DigitalDefynd JPMorgan AI 2026](https://digitaldefynd.com/IQ/jp-morgan-using-ai-case-study/), [Blott AI in Banking 2026](https://www.blott.com/reports/ai-use-cases-in-banking), [Banking Dive 2026 Trends](https://www.bankingdive.com/news/2026-banking-trends-artificial-intelligence-ai-mergers-acquisitions-regulation-bank-charters/808818/), [LLRX AI in Finance April 2026](https://www.llrx.com/2026/04/ai-in-finance-and-banking-april-30-2026/)
+
+---
+
+## Tick 212 (2026-05-04T02:30Z): Cursor's claimed ROI vs. real performance — the Straw coding competition pitch [theme: gtm]
+
+### What Cursor claims vs. what enterprises actually see
+
+**Cursor's published ROI claims:**
+- 20-25% time savings on debugging and refactoring tasks
+- 30-50% reduction in development cycles for complex full-stack projects
+- 40% reduction in code review times
+- 1-3 hours saved per developer per day
+
+**Cursor's pricing structure (2026):**
+- Hobby: Free (limited)
+- Pro: $20/month
+- Teams: $40/user/month (SSO, privacy mode, 500 agent requests)
+- Enterprise: Custom (SCIM, advanced access controls, priority support)
+- Ultra: $200/month (power users)
+
+**The math for a 100-developer engineering team on Teams plan:**
+- Cost: $40 × 100 = $4,000/month = $48,000/year
+- Claimed savings: 20% time savings × 100 devs × $150K/year fully-loaded engineer cost × 20% = $3,000,000/year saved
+- ROI: 62.5x claimed
+
+**The enterprise problem:** The claimed 20-25% time savings is from vendor-published research and self-reported surveys. Enterprises making a $48K/year commitment on 100 engineers can't verify these numbers without running the tool on their own codebase. The vendor publishes best-case results. The actual productivity gain at any specific company depends on their codebase complexity, engineering culture, and task mix.
+
+### The Straw coding competition pitch: verify Cursor's ROI claim on your codebase
+
+The exact cold email opener to a VP Engineering at a 100-person engineering company:
+
+> **Subject:** Cursor says 20% productivity boost — verify it on your codebase before buying
+>
+> "Hi [Name],
+>
+> Cursor claims 20-25% time savings for engineering teams. At [Company] with 100 engineers, that's $3M/year in saved time — or zero, if Cursor isn't the right fit for your codebase.
+>
+> Straw runs a 72-hour head-to-head competition: Cursor, GitHub Copilot, and Devin compete on 25 real GitHub issues from your backlog. You define the rubric (test coverage, review rounds, SAST pass). The competition shows you the real productivity delta, not the vendor's demo data.
+>
+> Design partner price: free. You get the data. I get the case study.
+>
+> Three questions before we design the competition:
+> 1. Are you evaluating coding agents right now?
+> 2. What does 'good code' look like for your team? (PR process, test standards, security requirements)
+> 3. Which agents are you considering?
+>
+> 15 minutes to design a competition that answers those questions?"
+
+### The GitHub Copilot vs. Cursor competitive dynamic for Straw
+
+**The enterprise lock-in risk:** Companies standardized on GitHub Enterprise (GHEC) have GitHub Copilot included or heavily discounted. The VP Engineering isn't just choosing "best agent" — they're choosing whether to unlock a second tool budget for Cursor on top of Copilot or replace Copilot with Cursor. This is a $48K vs $10/developer/month decision with integration friction on both sides.
+
+**Straw's positioning:** "If Copilot is already included in your GHEC contract, a Straw competition tells you whether Cursor is worth the additional $40/user/month. If Cursor wins by more than the cost, pay for it. If Copilot matches Cursor on your codebase, save the $48K."
+
+The ROI case for Straw itself: if the competition costs $25K and reveals Cursor isn't worth the additional $48K/year for 100 developers, Straw pays for itself in year 1 just from avoided spend. If the competition reveals Cursor is worth it, the ROI of that decision is $3M/year.
+
+Sources: [Cursor Pricing 2026 Vantage](https://www.vantage.sh/blog/cursor-pricing-explained), [Cursor Enterprise Pricing Analysis 2025 SideTool](https://www.sidetool.co/post/cursor-enterprise-pricing-2025-complete-cost-analysis-for-teams/), [getdx AI Coding Pricing Comparison](https://getdx.com/blog/ai-coding-assistant-pricing/)
