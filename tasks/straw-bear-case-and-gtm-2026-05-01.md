@@ -36717,3 +36717,364 @@ If platform consolidation does occur, Straw is the most logical acquisition targ
 4. AWS: Neutral evaluation that's not Microsoft/Google/Salesforce-aligned
 
 ---
+---
+
+## Tick 516 — Carol Liang (Stripe) Outreach: The Benchmark Connection [GTM/Partners]
+
+*2026-05-03. Carol Liang built the Stripe Integration Benchmark — the closest thing to Straw that Stripe has built.*
+
+### What Carol Liang built
+
+**"Can AI agents build real Stripe integrations?"** — Published March 2, 2026. Carol Liang and Kevin Ho at Stripe.
+
+**The Stripe Integration Benchmark:**
+- 11 diverse environments simulating full-stack Stripe integration tasks
+- Deterministic graders (automated API calls + UI tests) = same pattern as Straw's T1 evaluation
+- Agentic harness with MCP server (terminal + browser + Stripe-specific search)
+- Production-realistic environment (real test API keys, full codebases, databases)
+
+**Why this matters for Straw:** Carol Liang independently invented Straw's T1 evaluation methodology for a specific vertical (Stripe integrations). Her benchmark is exactly what Straw automates for any enterprise task.
+
+### The pitch
+
+**Email subject:** Your benchmark → Straw automates this for any enterprise task
+
+> Hi Carol,
+>
+> Your Stripe Integration Benchmark is the clearest example I've seen of what evaluation should look like: deterministic graders, production-realistic environments, agentic harness with MCP tools.
+>
+> I'm building Straw — a platform that automates exactly this evaluation methodology for any enterprise task, not just Stripe integrations. Enterprises bring their own tasks + rubrics; we run the agent competition; deterministic T1 tests do the heavy lifting; LLM scoring handles the qualitative judgment.
+>
+> Two questions:
+> 1. Would you be open to Straw using the Stripe Integration Benchmark as a canonical example of a "T1-graded task" — with attribution?
+> 2. Would Stripe consider listing Stripe integration tasks on Straw as a supply-side sourcing mechanism? Companies that need a Stripe integration could post it as a Straw task and hire the winning agent.
+>
+> Happy to share the evaluation pipeline design doc.
+>
+> Jeremy
+
+**Why this pitch works:**
+- Carol already proved she cares about rigorous evaluation (she built a benchmark)
+- Straw's T1 methodology is explicitly modeled after her deterministic grader approach
+- Attribution + partnership framing, not cold pitch
+- Second question (Straw as Stripe integration sourcing) has real business value for Stripe
+
+### Contact #171: Carol Liang
+
+Role: Stripe (API Standards / Developer Experience). LinkedIn: linkedin.com/posts/carolliangce_can-ai-agents-build-real-stripe-integrations-activity-7440060912453046272-WQO0
+
+Co-authored with Kevin Ho (#172: Kevin Ho, Stripe API Standards).
+
+### Stripe Sessions 2026 (announced separately)
+
+Stripe's Sessions 2026 announcement covered new developer tools and AI agent integrations. This creates context for the Carol Liang outreach — Stripe is actively building agent infrastructure. Straw fits into Stripe's developer ecosystem as evaluation infrastructure.
+
+
+---
+
+## Tick 517 — AgentX AgentBeats: The Closest Live Analog to Straw [BEAR/Comparable]
+
+*2026-05-03. Berkeley RDI's agent competition has $1M+ prizes and 7-dimension scoring — study this carefully.*
+
+### What AgentX AgentBeats is
+
+**Berkeley RDI** (Responsible Decentralized Intelligence) — launched AgentX AgentBeats competition, Phase 2 on March 2, 2026.
+
+**Phase 1:** Build novel benchmarks or enhance existing benchmarks.
+**Phase 2:** Create AI agents to compete on Phase 1's top benchmarks.
+
+**Prize pool:** $1M+
+**Scoring dimensions (7):**
+1. Functional accuracy
+2. Drift adaptation
+3. Token efficiency
+4. Query efficiency
+5. Error recovery
+6. Trajectory efficiency
+7. Hallucination rate
+
+→ Weighted composite score per agent
+
+### Why this matters for Straw
+
+AgentX AgentBeats is the closest live system to Straw's mechanism. Key differences:
+
+| Dimension | AgentX AgentBeats | Straw |
+|---|---|---|
+| Who sets benchmarks? | Phase 1 winners (community) | Enterprise customer |
+| Task type | Public leaderboard benchmarks | Proprietary enterprise tasks |
+| Evaluation | 7-dimension weighted composite | Customer-defined rubric dimensions |
+| Prize structure | Fixed prize pool ($1M+) | Variable bounty (customer-set) |
+| Audience | AI researchers / developers | Enterprise procurement |
+| Winner outcome | Leaderboard position + prize | Hired/licensed for real deployment |
+| Rubric sealed before competition? | Yes (Phase 1 then Phase 2) | Yes |
+
+**The key difference:** AgentX is about proving capability in the research community. Straw is about enterprise procurement. AgentX winners go on a leaderboard; Straw winners get hired.
+
+### What Straw can learn from AgentX
+
+1. **7-dimension scoring is validated.** Enterprises will accept multi-dimensional rubrics — it's not too complex. AgentX uses 7 dimensions; Straw's 5-7 dimension rubrics are calibrated correctly.
+
+2. **Drift adaptation and hallucination rate are rubric dimensions enterprises will want.** These should be included as Straw's "standard rubric templates" — they're already validated as meaningful.
+
+3. **Two-phase structure works.** AgentX Phase 1 = rubric design → Phase 2 = competition. Straw should frame its process similarly: "rubric design session" (Phase 1) then "evaluation window" (Phase 2).
+
+4. **Large prize pools attract agents at scale.** AgentX's $1M+ pool is why they get serious competitors. Straw's $2,500 minimum bounty is low but sufficient for the first wave — early agents will compete for reputation as much as money.
+
+### Dispute resolution in agent competitions
+
+**Internet Court** (referenced in search results): AI agents make agreements; when they disagree, an AI jury evaluates evidence and delivers a verdict.
+
+**Hunazo marketplace:** Escrow-protected USDC + dispute resolution + verified seller reviews.
+
+**Straw's dispute resolution design (not yet specced):**
+
+When an agent believes the scoring was incorrect:
+1. **T1 disputes:** Deterministic — no dispute possible. Output either passes or doesn't.
+2. **T2 disputes:** Agent can flag specific rubric dimension scores for re-review. Jeremy (or a Tier-3 investigator) reviews the flagged dimension.
+3. **T3 disputes:** Full re-investigation by second T3 investigator instance. Binding.
+
+**Escalation path:**
+- Dispute filed within 72 hours of results
+- Jeremy reviews within 48 hours
+- If T3 re-investigation changes result: re-scored; original winner's bounty reduced if they lose; challenger agent awarded difference
+- If T3 confirms original: dispute closed; challenger's $100 dispute fee retained by Straw
+
+**Why a dispute fee is critical:** Without cost, every losing agent will dispute. The $100 dispute fee (non-refundable unless agent wins the dispute) creates a sorting mechanism — only agents confident of scoring errors will dispute.
+
+
+---
+
+## Tick 518 — First 90 Days Operating Calendar: Week-by-Week for Jeremy [GTM/Ops]
+
+*2026-05-03. Concretizing the startup execution plan from today through August 2026.*
+
+### The 2026 benchmark for comparison
+
+"Veltrix secured three major enterprise deals within its first 30 days by prioritizing infrastructure reliability outcomes over tool-centric sales." (2026-05-02 case study)
+
+Jeremy's target: **3 signed LOIs within 60 days, 1 paid evaluation within 90 days.**
+
+### Week-by-week plan (starting May 5, 2026)
+
+**WEEK 1 (May 5-9): Foundation**
+- Mon: Stripe Atlas → Delaware C-corp filed ($500)
+- Tue: Mercury bank account setup (links to EIN)
+- Wed: Common Paper DPA + privacy policy drafted (use templates)
+- Thu: Notion CRM table setup (10 rows, all fields from Tick 510)
+- Fri: LinkedIn profile updated — "Building Straw: pre-deployment AI agent evaluation marketplace"
+- **Milestone: Legal foundation complete**
+
+**WEEK 2 (May 12-16): First Outreach Wave**
+- Mon: Send LOI offer emails to 3 design partner targets (from contact list)
+- Tue: Email Beth Barnes (METR) — TaskDev × Straw paper
+- Wed: Email Carol Liang (Stripe) — benchmark → Straw automation
+- Thu: Email Graham Neubig (OpenHands) — research paper angle
+- Fri: Post first LinkedIn "AI Agent Insight" (Monday post formula from Tick 463)
+- **Milestone: 15 cold emails sent; 3 LOI conversations initiated**
+
+**WEEK 3 (May 19-23): Rubric Builder + First Discovery Calls**
+- Mon-Tue: Run first discovery call(s) from Week 2 responses
+- Wed: Rubric builder UI — simple form version (even if just a Google Form)
+- Thu: Draft 3 rubric templates (coding, research, financial analysis) based on Tick 484
+- Fri: Post LinkedIn "Contrarian Take" (Wednesday formula) + HN comment on AI eval thread
+- **Milestone: First rubric drafted with a real enterprise customer**
+
+**WEEK 4 (May 26-30): First LOI + Design Partner Kickoff**
+- Mon: Follow up on Week 2 outreach (4-touch sequence: Day 1, 3, 7, 14 — now Day 14)
+- Tue: First design partner kickoff call → rubric definition session → task posted
+- Wed: YC S26 late application submitted (if not done)
+- Thu: SUBMISSION.md sanitization pipeline — begin engineering (P0, 4 days)
+- Fri: Post LinkedIn "Behind the Build" (Friday formula) — "How Straw's rubric builder works"
+- **Milestone: First design partner LOI signed + task posted**
+
+**WEEK 5-6 (June 2-13): First Evaluation Window**
+- First task active; submission window open 10 days
+- Mon: Email CrewAI Discord bounty post (Tick 479 template)
+- Jeremy-as-agent submits first competing solution (demonstrates the market)
+- Monitor submissions daily; mid-point check-in with design partner (Day 7)
+- SUBMISSION.md sanitization pipeline: complete v0.5 (5 sanitization checks)
+- **Milestone: 3+ agent submissions received for first task**
+
+**WEEK 7 (June 16-20): First Evaluation Results**
+- Run T1/T2/T3 pipeline on first task submissions
+- Manually review all scores; prepare 2-page results deck
+- Day 14 results presentation to design partner champion
+- Document: what surprised us, what worked, what to improve
+- **Milestone: First evaluation complete; results delivered**
+
+**WEEK 8-10 (June 23 - July 11): Convert + Scale**
+- Design partner: "Would you pay $5,000 for the next one?"
+- Second design partner outreach wave (10 new contacts)
+- Apply to AGENTIC AI conference for October 5-7 talk (Tick 464)
+- FCA Supercharged Sandbox application (opens May 5 → submit before June)
+- **Milestone: First paid contract signed ($2,500-$5,000)**
+
+**WEEK 11-12 (July 14-25): SOC 2 + Second Evaluation**
+- Drata/Vanta setup ($12K/year) — start SOC 2 process
+- Second evaluation running (design partner #1 or new partner)
+- Third outreach wave: enterprise targets from financial services (JPMorgan, Goldman)
+- **Milestone: SOC 2 Type 1 process started; 2 paid contracts on track**
+
+**WEEK 13 (July 28 - Aug 1): 90-Day Review**
+- Review: LOIs signed / paid contracts / evaluations complete / ARR
+- Update ICP based on first 3 customer types
+- Identify strongest champion → request named case study
+- Prepare seed round narrative if ARR ≥ $10K/month (at $120K ARR run rate → fundraise)
+
+### 90-Day Success Criteria
+
+| Metric | Target |
+|---|---|
+| LOIs signed | 3 |
+| Paid evaluations complete | 2 |
+| ARR | $10,000-$15,000 |
+| Named partners (public) | 1 |
+| Evaluation pipeline automated | T1/T2 (T3 manual ok) |
+| Delaware C-corp active | ✅ |
+| SOC 2 process started | ✅ |
+| LinkedIn followers (gained) | 500+ |
+| YC S26 response | Decision or on waitlist |
+
+
+---
+
+## Tick 519 — Design Partner Pre-Mortem: The 5 Ways the Program Fails [BEAR]
+
+*2026-05-03. Kill this before it kills Straw: name the failure modes and build the mitigations.*
+
+### The B2B SaaS context
+
+Enterprise SaaS benchmarks 2026:
+- Annual churn < 7% = healthy; < 3% = best-in-class
+- Monthly churn < 1.5% = healthy for enterprise
+- Day 1 and Day 3 retention cliff = onboarding problem (not product)
+- Premature scaling = the #1 startup killer (hiring sales before repeatable motion)
+
+For design partners: the key metric is NOT churn rate — it's **conversion from free evaluation to paid contract.** A design partner who completes their evaluation but doesn't pay is a failed design partner.
+
+### Five ways the design partner program fails
+
+**Failure Mode 1: Rubric Too Vague to Score**
+
+Symptom: Design partner says "we want a good coding agent" → rubric has no specific test cases → T1 deterministic checks can't run → all scoring is subjective T2 → partner disputes scores → trust lost.
+
+Prevention:
+- Rubric design session is mandatory (not self-serve)
+- Jeremy facilitates live — uses the "what would pass and what would fail?" question for every dimension
+- Rubric must include at least one T1-verifiable dimension (test passes, benchmark score, etc.)
+- Do not seal rubric until partner champion confirms in writing: "This is what I'd use to make the hiring decision."
+
+**Failure Mode 2: Agent Supply Too Thin**
+
+Symptom: Task posted, deadline passes with 1-2 submissions → scoring a single agent vs. nobody is meaningless → partner sees no competitive signal → "it's just a fancy evaluation tool"
+
+Prevention:
+- Jeremy posts his own agent as first submission (day 2 of window)
+- Pre-warm 3 specific agent teams before posting (personal outreach, not just Discord announcement)
+- If < 3 submissions at Day 7: extend deadline 3 days + send "last chance" announcement
+- Minimum viable competition: 3 agents (this should be contractual — refund if < 3 compete)
+
+**Failure Mode 3: Results Don't Match Partner's Intuition**
+
+Symptom: Evaluation shows Agent X won; partner's team says "we thought Agent Y was better" → rubric didn't capture what partner actually cares about → partner disengages rather than trusting the score.
+
+Prevention:
+- Day 14 results presentation must include: "Does this match what you expected? What surprised you?"
+- If score contradicts intuition: "Let's look at the rubric dimension by dimension. Which one do you disagree with? Is that a rubric spec problem or a genuine surprise?"
+- Frame mismatches as rubric learnings, not evaluation failures: "This tells us the rubric needs a 6th dimension for [X]."
+- Offer: free re-evaluation if rubric was genuinely misspecified
+
+**Failure Mode 4: Champion Doesn't Have Budget Authority**
+
+Symptom: Great discovery call → enthusiastic champion → "let me check with finance" → 6 weeks of silence → deal dies.
+
+Prevention:
+- MEDDIC question at discovery call: "Who signs off on tools purchases under $10K?"
+- If answer is not the champion: "Can we get 30 minutes with [approver] before we kick off?"
+- Do not run the evaluation until payment or LOI is signed by someone with authority
+- Structure the $100 commitment fee to force the budget question early: if they won't pay $100, they won't pay $5,000
+
+**Failure Mode 5: Jeremy Is the Bottleneck**
+
+Symptom: Three design partners simultaneously → Jeremy is running rubric sessions, monitoring submissions, doing T3 investigation, sending emails, writing code → quality drops → deadlines slip → trust erodes.
+
+Prevention:
+- Hard cap: maximum 3 concurrent design partner evaluations at v0
+- Do not add partner #4 until one of the first 3 has delivered results
+- Build T1/T2 automation before adding second wave (automated evaluations free up Jeremy for T3 and sales)
+- The 90-day calendar (Tick 518) is designed with this cap in mind
+
+### Early warning signals (check weekly)
+
+| Signal | Action |
+|---|---|
+| Design partner hasn't replied in 5 days | Send check-in immediately |
+| < 3 submissions at Day 7 of window | Extend + personal outreach to agent teams |
+| Partner asks "when will this be done?" mid-evaluation | Acceleration sign-off needed |
+| Partner misses their own rubric approval deadline | Reschedule; don't proceed without it |
+| Champion leaving company | Contact their replacement; offer 30-day extension |
+
+
+---
+
+## Tick 520 — Enterprise Agent Adoption Statistics: The Market Context for Straw's Pitch [GTM]
+
+*2026-05-03. 120+ enterprise data points from 2026. Every statistic is a pitch line.*
+
+### Key statistics (2026 enterprise agent adoption)
+
+**Adoption:**
+- 57% of enterprise organizations have AI agents in production (LangChain 2026 State of AI)
+- 54% have integrated AI agents into CORE operations — not just pilots (Ampcome mid-year, 2026)
+- Enterprise pilot-to-production conversion: 18% → 31% (Q1 to Q2 2026) 
+
+**Evaluation gaps:**
+- 94% of enterprises have a named "Agent Owner" with budget authority and measurable outcomes
+- 87% run automated evaluations on every prompt/model/tool change before deployment
+- But: only 38% of production agents have automated evaluations running at month 12
+- MIT Sloan: programs WITHOUT eval lost 14-23% accuracy over 18 months
+
+**Quality as the core barrier:**
+- 32% cite "quality" as top barrier to agent deployment (LangChain 2026)
+- 88% of AI agent projects never reach production
+- 41% of failures from unclear success criteria → Straw's rubric builder solves this
+
+**The agentic AI market:**
+- Industry "has not yet aligned on a common performance framework" (G2 State of AI Agents 2026)
+- Vendors differ on what success means: productivity, CX, workflow acceleration, cost reduction
+
+### How to use these statistics in sales
+
+**At outreach (email opener):**
+> "88% of AI agent projects never reach production. The #1 cause: unclear success criteria. Straw fixes that."
+
+**At discovery call (needs amplification):**
+> "Your team is probably running AI agent pilots. How are you defining success for those pilots right now?" [Listen.] "What you're describing is exactly what 41% of enterprises report: the failure comes from not having defined success criteria upfront. Straw locks that in before the agents even see the task."
+
+**At pricing conversation (value anchor):**
+> "The average enterprise AI agent mis-deployment costs $50K-$1M in remediation. MIT Sloan found that without continuous evaluation, agents lose 14-23 percentage points of accuracy in 18 months. Straw's $5,000 evaluation is the $5,000 decision that saves you the $500,000 mistake."
+
+**In conference talks:**
+> "54% of enterprises have agents in CORE operations right now. Only 38% have automated evaluation running after month 12. That's the gap Straw exists to close."
+
+### The "agent owner" persona validated at scale
+
+94% of enterprises have a named "Agent Owner" — this confirms Tick 456's ICP research. The Agent Owner persona is real, it has budget authority, and it's the right target.
+
+**Agent Owner with measurable target outcomes** = the most precise ICP in enterprise AI today. They already have:
+1. Budget (below $10K procurement threshold in most cases)
+2. Clear pain (unclear success criteria, missed production milestones)
+3. Authority (named owner, not a committee)
+4. Timeline pressure (board expecting AI in operating results in 2026)
+
+Straw's outreach should lead with this persona language: "You're the Agent Owner at [company]. Here's what Straw does for you." → higher relevance signal, faster reply.
+
+### The board pressure angle (new for 2026)
+
+From Kai Waehner (April 2026): "Boards and CEOs are expecting AI to show up in operating results, not slide decks."
+
+This creates urgency for Agent Owners to demonstrate AI impact — and Straw gives them a defensible, documented evaluation result to present to their board. **"Our Q2 AI agent evaluation, run on Straw, showed Agent X outperformed 4 competitors on our proprietary task. We're deploying Agent X in Q3."**
+
+This is a board-ready sentence. Straw makes it possible.
+
