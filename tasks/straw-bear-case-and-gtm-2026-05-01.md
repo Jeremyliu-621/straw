@@ -10427,3 +10427,209 @@ Credit rating agencies face the "issuer pays" problem: the bond issuers pay for 
 - [x402 on Consensus 2026](https://www.coindesk.com/opinion/2026/04/28/the-age-of-agentic-commerce-has-arrived-consensus-2026-is-where-you-can-experience-it-irl/)
 - [Devin pricing 2026](https://devin.ai/pricing/)
 
+
+---
+
+## Tick 147 (2026-05-05T14:00Z): Claude Managed Agents and OpenAI Workspace Agents — the "platform agents" threat [theme: bear]
+
+**The April 2026 platform agent double-launch:**
+- **OpenAI Workspace Agents** (April 22, 2026): Shared, long-running agents inside ChatGPT Enterprise
+- **Anthropic Claude Managed Agents** (April 8, 2026): Suite of APIs for building/deploying cloud-hosted agents; $0.08/hour
+
+These are not just agent tools — they're complete managed agent platforms. Together with Google's Gemini Agent Platform, they represent a fundamental shift: the three largest AI foundation model providers have each launched managed agent infrastructure in April 2026.
+
+### The threat to Straw's demand side
+
+**The "one vendor stack" scenario:** An enterprise deploys:
+- Claude Managed Agents for document review (Anthropic managed infrastructure)
+- OpenAI Workspace Agents for internal communication workflows (OpenAI)
+- Google Gemini Agents for customer-facing chatbots (Google)
+
+In this scenario, the enterprise has three different vendor stacks for three different use cases — each chosen through convenience (existing API relationship) rather than evaluation. Straw's "which agent is best for your task?" question is never asked because the answer is presumed: "We use Anthropic for document review because we already have a Claude API key."
+
+**The counter-argument:** This is the worst case for Straw. But the evidence says the opposite is happening:
+- VentureBeat: Claude Managed Agents "raises vendor lock-in risk" — enterprises are worried about lock-in, NOT welcoming it
+- Enterprise AI governance frameworks explicitly recommend against single-vendor dependency
+- The very fact that Anthropic, OpenAI, and Google all launched managed agents in the same month creates a competitive comparison imperative: "These three all have managed agents. Which one is right for my contract review workflow?"
+
+### The "managed agent as Straw's supply side" reframe
+
+**The positive interpretation:** Anthropic Claude Managed Agents and OpenAI Workspace Agents are now SUPPLIERS of agents for Straw competitions.
+
+Before these launches, Straw needed to recruit individual agent operators (Cognition, All Hands AI, etc.) to supply competing agents. Now:
+- An enterprise can spin up a "Claude contract review agent" using Claude Managed Agents
+- A second enterprise (or a Straw buyer) can spin up a "GPT-4.1 contract review agent" using OpenAI
+- Straw runs the competition: "Which managed agent approach performs better on YOUR contracts?"
+
+The managed agent platforms reduce Straw's supply-side cold-start problem. Building a Claude agent for a Straw competition is now as easy as spinning up Claude Managed Agents — no custom API integration required.
+
+### Claude Managed Agents pricing vs. Straw's evaluation cost
+
+- Claude Managed Agents: $0.08/hour + model tokens
+- For a 2-week competition with 3 agents each running 4 hours/day: 3 × 56 hours = 168 hours × $0.08 = $13.44 in compute
+- Plus Claude Opus model tokens: ~$30-50 in token costs
+- Total agent cost per competition: ~$50-70 in managed agent compute
+
+A Straw competition that costs $5,000 to buy includes ~$50-70 in agent compute. The rest is: rubric design, evaluation methodology, sandboxing, scoring, certification artifact, neutral third-party trust. The compute is commoditized; the process is the value.
+
+---
+
+## Tick 148 (2026-05-05T14:30Z): Epiq as a demand-side design partner — legal AI specifically [theme: partners]
+
+**Epiq** (legal technology company) expanded agentic AI offerings in March 2026. 130 clients including global corporations and law firms. Products: Epiq AI for Review (eDiscovery), AI for Privilege, AI for Antitrust, AI for Compliance. The company is hiring a Senior Director of Enterprise AI Center of Excellence.
+
+### Why Epiq is a high-priority design partner target
+
+**The specific opportunity:** Epiq's clients are choosing which AI agents to use for eDiscovery, privilege review, and compliance workflows. These are high-stakes decisions:
+- Wrong privilege classification = inadvertent waiver of attorney-client privilege = massive legal exposure
+- Wrong eDiscovery agent = missed documents = discovery sanctions
+- Wrong antitrust agent = missed relevant communications = regulatory failure
+
+These mistakes cost millions, not hundreds of thousands. Straw's competition framework (evaluate agents on the client's actual documents, against rubrics that include privilege detection accuracy and eDiscovery completeness) is exactly what Epiq's clients need.
+
+**The Epiq customer as Straw's ICP:** Law firms and large corporations using Epiq for legal tech are exactly Straw's Tier 3 enterprise target (high-stakes decisions, compliance-driven, budget for evaluation infrastructure, legal/compliance teams who will require documented evaluation methodology).
+
+### Epiq-specific Straw competition design
+
+**Competition type: Privilege Review Agent**
+- Task: 1,000 documents from a real eDiscovery corpus (privilege logs already available for validation)
+- Rubric:
+  - Precision (false positive rate for privilege claims): 30%
+  - Recall (false negative rate for privilege claims): 40%
+  - F1 score (balance of precision/recall): 20%
+  - Reasoning quality (coherent explanation for each privilege claim): 10%
+- Competing agents: Epiq AI for Privilege, Harvey AI, Ironclad Document AI, Claude Managed Agents (custom prompt)
+- Buyer: A BigLaw firm or Fortune 500 legal department
+- Competition duration: 1 week (privilege review is fast for AI agents)
+
+**The compliance angle:** Under FRCP and ABA Model Rules, privilege review must be conducted with reasonable care. A documented Straw competition that shows your privilege review agent achieves 97% recall and 95% precision against a validated corpus IS the "reasonable care" documentation.
+
+### Epiq contact strategy
+
+**Who to contact:**
+- The Senior Director of Enterprise AI CoE role they're hiring (reach out to the hiring manager on LinkedIn, frame as design partner conversation)
+- Epiq's AI Advisory team (listed on epiqglobal.com/en-us/technologies/epiq-ai/epiq-ai-advisory)
+
+**The opener:** "I saw Epiq just expanded your agentic AI offerings for legal and compliance. I'm building Straw — an AI agent evaluation platform that runs competitions where competing agents demonstrate performance on real tasks. I think there's an interesting opportunity for Epiq's enterprise clients to use Straw competitions to choose between AI privilege review agents before deploying. 20 minutes to explore?"
+
+---
+
+## Tick 149 (2026-05-05T15:00Z): The 5 most under-researched bear cases — what we haven't looked at [theme: bear]
+
+**A meta-analysis of what Phase 2 research hasn't adequately covered.** These are potential failure modes that require more investigation.
+
+### 1. The "Straw is too hard to set up" bear case
+
+For a Straw competition to run, the buyer must:
+1. Define the task (what the agent must do)
+2. Provide the test data (real documents, code, workflows)
+3. Define the rubric (evaluation criteria and weights)
+4. Prepare the holdout data (separate from what agents see)
+5. Review and approve competition configuration before launch
+
+This is NOT a self-service setup. It's a 2-4 hour facilitated process. **The bear case:** Enterprise buyers don't have 2-4 hours to set up an evaluation competition. They'll choose the agent with the best demo because it's faster.
+
+**The mitigation:** The rubric workshop (Tick 134) turns setup into a value-added service, not a chore. Pre-built rubric templates (Tick 108) reduce the blank-page problem. And 2-4 hours before a $200K annual agent deployment is not "too hard" — it's obviously worth it.
+
+**Unanswered question:** What's the actual time-to-competition from a buyer's first contact with Straw? Jeremy needs to run one pilot competition and time every step. If it's >8 hours of buyer time, the product needs to be redesigned.
+
+### 2. The "agents don't submit to third-party evaluation" bear case
+
+Top AI agent vendors (OpenAI, Anthropic, Google) may refuse to allow their agents to compete in Straw competitions, because:
+- They don't want their agent's performance documented on a buyer's proprietary task
+- They don't want to be compared against competitors in a buyer-controlled evaluation
+- They don't want to be held to rubric criteria they didn't design
+
+If Devin, Claude Code CLI, and ChatGPT agents all refuse to participate in Straw competitions, Straw's supply side is limited to open-source alternatives and niche vendors. This makes Straw less useful for enterprise buyers who primarily consider the major providers.
+
+**The mitigation:** This is a real risk. The counter-argument: smaller agent vendors (OpenHands, Oumi custom agents, vertical-specific agents) have every incentive to participate — they NEED the credibility of winning against larger providers. Straw can operate with a supply side that excludes the hyperscaler agents and still provide value ("We evaluated Claude Custom Agent, GPT-4.1 Custom Agent, Devin, and OpenHands on your contract review task").
+
+**Unanswered question:** Will Anthropic, OpenAI, and Google allow their managed agent platforms to be evaluated by Straw? This requires reaching out directly to their API/partnership teams.
+
+### 3. The "enterprise data in Straw's sandbox" data security bear case
+
+For a Straw competition to be meaningful, the buyer must submit real enterprise data (actual contracts, actual code, actual workflows). This creates:
+- Data classification concerns (is this data proprietary/confidential?)
+- Regulatory concerns (can this data leave the enterprise's control?)
+- GDPR/CCPA concerns (does the data contain personal information?)
+- Attorney-client privilege concerns (for legal data)
+
+If enterprises can't submit real data to Straw's sandbox, the competition runs on synthetic data — which brings back the "37% benchmark gap" problem (synthetic data doesn't predict real performance).
+
+**The mitigation:** Straw's sandboxing architecture must include: (1) data-in-transit encryption, (2) data-at-rest encryption, (3) no data retention after competition close (data destroyed), (4) on-premise deployment option for highly sensitive data. The SOC 2 certification addresses items 1-3. On-premise deployment is a v2 feature.
+
+**Unanswered question:** Can Straw's current architecture be deployed on-premise? If not, large banks and law firms with strict data residency requirements are blocked. This is a technical question about the current codebase.
+
+### 4. The "no defensible methodology" bear case
+
+The most dangerous bear case for Straw's long-term value: if the AI evaluation methodology community decides that "buyer-defined rubrics" are inherently biased (buyers define rubrics that favor their incumbent agent), Straw's certification loses credibility.
+
+**The scenario:** Enterprise legal team uses Devin for 6 months. They love it. They run a Straw competition to justify continued use. Unconsciously, they write rubric criteria that Devin excels at. Devin wins. "Confirmed by Straw" — but the rubric was designed to favor the incumbent.
+
+This is "rubric capture" — the bear case from Phase 1 Section 23, now more concrete.
+
+**The mitigation:** Straw's rubric templates are pre-built and standardized. Buyers can customize but not eliminate core criteria. Straw's evaluation team reviews rubric configurations before approving a competition. A rubric that looks "too custom" (e.g., "agent must use Cognition's proprietary code review system") gets flagged as potentially captured.
+
+**Unanswered question:** What is Straw's rubric review process? Is there a human in the loop who reviews buyer-defined rubrics before competitions run? This is a product design question Jeremy needs to answer.
+
+### 5. The "AI evaluation becomes a commodity" bear case
+
+If LLM-as-judge evaluation becomes cheap and available (Langfuse's free tier, Braintrust's free tier, Microsoft Azure Evaluation Service free), enterprises build their own evaluation pipelines rather than paying Straw $5,000 per competition.
+
+**The scenario:** In 2027, Azure Evaluation Service offers "agent comparison evaluation" as a free feature in Azure AI Studio. Enterprise AI teams evaluate competing agents themselves using Azure's tooling, without needing Straw's marketplace or certification program.
+
+**The mitigation:** Azure can't provide the supply-side (multiple competing agents) or the certification artifact (third-party audit trail). Self-built evaluation lacks the neutrality that Straw's independence policy provides. The "Microsoft evaluated agents on Microsoft's platform" result has a credibility gap that "Straw's neutral evaluation" doesn't.
+
+---
+
+## Tick 150 (2026-05-05T15:30Z): Research session final checkpoint — 150-tick summary and what comes next [theme: bear/gtm/partners]
+
+**Milestone: 150 research ticks across Phases 2 and 3 of Straw research.**
+
+This checkpoint summarizes the most important additions from Ticks 121-150 (this research block).
+
+### What Ticks 121-150 added to the research corpus
+
+**New findings not in prior ticks:**
+1. **April 22, 2026: Competitive D-Day** — OpenAI Workspace Agents + Google Gemini Enterprise + Salesforce Agentforce all launched simultaneously. Not a bear case — a demand creation moment.
+2. **The 85/5 production gap** (Cisco 2026) — 85% pilot, 5% production. Straw's core market.
+3. **The 73% success-criteria gap** (McKinsey 2026) — 73% of failed AI projects had no agreed definition of success. Straw provides that definition.
+4. **The 37% benchmark-to-production gap** — lab benchmarks overstate real-world performance by 37%. Straw closes this gap.
+5. **Vals AI and Galileo** — new competitors identified. Neither threatens Straw's buyer-defined custom evaluation niche.
+6. **Devin ACU pricing** — $2.25/ACU, $20/month entry, $300-500/month real cost. Confirms Straw's competition pricing math.
+7. **x402 protocol** — Coinbase's agent payment protocol, $600M annualized volume, Stripe integrated. Simpler escrow option for competition prizes.
+8. **Claude Managed Agents** (April 8, 2026) + **OpenAI Workspace Agents** (April 22, 2026) — platform agents that become Straw's supply side, not competitors.
+9. **Epiq as design partner** — legal AI company, 130 enterprise clients, expanding agentic offerings, hiring AI CoE leadership.
+10. **The rating agency parallel** — S&P/Moody's model applies to Straw; the "issuer pays" problem has a solution in Straw's buyer-pays model.
+11. **5 under-researched bear cases** — setup complexity, agent refusal, enterprise data security, rubric capture, commodity evaluation.
+
+### Named design partners identified across Ticks 121-150
+
+| Name | Company | Role | Contact | Priority |
+|---|---|---|---|---|
+| Ankur Goyal | Braintrust | CEO | linkedin.com/in/ankrgyl/ | HIGHEST |
+| Beth Barnes | METR | CEO | @beth_barnes | HIGH |
+| Robert Brennan | All Hands AI / OpenHands | CEO | linkedin.com/in/robert-a-brennan/ | HIGH |
+| Scott Wu | Cognition / Devin | CEO | linkedin.com/in/scott-wu-8b94ab96/ | HIGH |
+| Mohammad + Pranav | Moda (YC W26) | Founders | YC Bookface | HIGH |
+| François Chollet | Ndea | Founder | @fchollet | MEDIUM-HIGH |
+| Harrison Chase | LangChain | CEO | @hwchase17 | MEDIUM-HIGH |
+| Erik Bernhardsson | Modal Labs | CEO | @fulhack | MEDIUM |
+| Karim Atiyeh | Ramp | CTO | LinkedIn | MEDIUM |
+| Amjad Masad | Replit | CEO | @amasad | MEDIUM |
+| João Moura | CrewAI | CEO | @joaomdmoura | MEDIUM |
+| Manos Koukoumidis | Oumi | CEO | LinkedIn | MEDIUM |
+| Epiq AI team | Epiq | AI Advisory | epiqglobal.com | MEDIUM |
+| Guillermo Rauch | Vercel | CEO | @rauchg | LOW-MEDIUM |
+| Rayan Krishnan | Vals AI | CEO | LinkedIn | LOW (competitive monitoring) |
+
+### The 5 actions Jeremy must take this week
+
+1. **Email Ankur Goyal (Braintrust)** — the highest-leverage first move. Braintrust → Vercel, Ramp, Notion, Airtable, Replit introduction chain.
+2. **DM Beth Barnes (@beth_barnes)** — METR credibility anchor. 20 minutes.
+3. **Contact Robert Brennan (OpenHands)** — supply-side anchor. OpenHands as default baseline agent in software engineering competitions.
+4. **Start Vanta SOC 2 Type I** — non-negotiable enterprise prerequisite. Every enterprise deal will ask for it.
+5. **Publish the Straw Independence Policy** — stake the neutrality claim before Scale Labs, Google, or Salesforce enters the neutral eval market.
+
+**The session has produced enough research. The next 150 hours of progress on Straw comes from conversations, not research. Jeremy should close this document and open his email client.**
+
