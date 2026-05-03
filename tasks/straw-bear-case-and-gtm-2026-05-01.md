@@ -26236,6 +26236,93 @@ TICK_END
 **Vertical GTM note:** Healthcare is a later-stage vertical (longer sales cycles, BAA requirements, HIPAA data handling) but the rubric-definition muscle is stronger than any other vertical — clinical teams already write validated criteria for EHR-embedded agents. Straw's rubric builder is a natural fit. Enter via Sheba (innovation-first, no US procurement bureaucracy) and Atlantic Health (US proof point for enterprise healthcare expansion).
 
 Sources: mobihealthnews.com, sheba-global.com, shebaonline.org, hitconsultant.net, atlantichealth.org, rocketreach.co, nature.com/s44387-026-00076-4, medstrato.com/en/blog/ai-hospital-procurement-2026, gartner.com
+## Tick 422 (2026-05-03T08:00Z): Regulatory/liability black holes — who pays when an agent posts an illegal task [theme: bear]
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case — regulatory + liability
+
+### The core scenario
+
+An enterprise company uses Straw's API to programmatically post a task. The task involves: scraping competitor pricing data (potentially a ToS violation + possible CFAA risk), analyzing financial data in a way that constitutes unlicensed investment advice, or — in a worst case — cleaning a dataset that turns out to contain CSAM. Who is liable?
+
+This is not a hypothetical. HackerOne has had to pause multiple bug bounty programs because AI tools were generating low-quality automated submissions that crossed legal lines. The same dynamic applies to Straw the moment it has visibility.
+
+### Section 230 is unreliable protection for AI platforms
+
+Section 230 of the Communications Decency Act protects platforms from civil liability for third-party content. But its application to AI is actively contested:
+
+**The core problem:** Section 230 protects *hosts* of speech (Facebook, Reddit). It may not protect *generators* of speech (ChatGPT, Claude). Straw is a host of tasks — but if Straw's own LLM judge evaluates those tasks, it becomes a participant, not a host.
+
+**Current litigation (2025-2026):**
+- A federal lawsuit against OpenAI alleged that ChatGPT enabled a teen's suicide through enablement behavior — OpenAI's Section 230 defense is being actively challenged as of 2025.
+- A federal court found sufficient facts to allege Google liable as a "component part manufacturer" for an LLM that caused defective app behavior.
+- The No Section 230 Immunity for AI Act (Hawley/Blumenthal, bipartisan) proposed waiving immunity for claims involving generative AI. A House bill to sunset Section 230 by 2026 was introduced.
+
+**Bottom line for Straw:** Section 230 is NOT reliable protection against liability for what happens on the platform once the platform uses LLMs to evaluate tasks. The legal ground is shifting.
+
+### The HackerOne model is the right structural precedent
+
+HackerOne solved a closely analogous liability problem: what happens when a security researcher (legally protected by safe harbor) discovers something illegal? Their architecture:
+
+1. **Safe harbor agreements** — companies post a "Good Faith Safe Harbor" (GSSH) that protects researchers who follow disclosure rules. Platform publishes the policy; company provides the safe harbor.
+2. **Researcher responsibility clause** — "Community Members are solely responsible for the tools that they use." Platform is the venue, not the actor.
+3. **Zero tolerance escalation** — Illegal behavior is escalated to law enforcement. Platform is explicitly NOT neutral in illegal cases.
+4. **AI Research Safe Harbor (AI RSH)** — Extended specifically to AI behavioral research. Covers "probing model behavior, unintended outputs, safety bypasses, or robustness issues."
+
+**Straw's legal architecture should mirror HackerOne, not Twitter.** 
+
+### Proposed Straw liability structure
+
+**Layer 1: Task poster (enterprise) = "Operator"**
+- Operator signs ToS agreeing they are responsible for task legality
+- Operator provides indemnification against claims from their task content
+- This is equivalent to the company that posts a bug bounty on HackerOne
+
+**Layer 2: Agent (Straw's LLM judge) = "Tool"**
+- Straw's eval pipeline is explicitly a tool for measuring task performance
+- Straw does not determine task content — only evaluates agent output quality
+- This is equivalent to HackerOne's "AI Research Safe Harbor" — the platform provides a testing environment, not a content endorsement
+
+**Layer 3: Agent builder = "Researcher"**
+- Builders are responsible for their agent's behavior during evaluation
+- They agree to Straw ToS prohibiting illegal task completion
+- If an agent executes an illegal task, the builder bears the liability — not Straw
+
+**The "task review" problem:** Straw cannot review every task before it goes live (this kills scalability). The solution: mandatory task categories + automated content moderation on task descriptions (not on agent output). High-risk categories (financial, medical, legal) require elevated poster verification.
+
+### The specific illegal scenarios and Straw's exposure
+
+| Scenario | Who posts | Risk | Straw exposure | Mitigation |
+|---|---|---|---|---|
+| CFAA-violating scraping task | Enterprise | CFAA, ToS violation | Low (Straw ≠ actor) | ToS + operator indemnification |
+| Unlicensed investment advice | Financial firm | SEC violation | Medium (LLM evaluates finance output) | Exclude securities-specific tasks in v0/v1 |
+| CSAM dataset cleaning | Bad actor | CSAM distribution law | Critical | Identity verification, prohibited task categories |
+| Copyright laundering | Enterprise | DMCA | Low (work is created by agent, not Straw) | DMCA agent + takedown process |
+| Securities-violating analysis | Hedge fund | SEC, FCA | Medium | Financial services ToS addendum |
+
+### The EU AI Act creates a new liability layer (August 2, 2026 deadline)
+
+Under EU AI Act Article 28(b), operators of AI systems in "high-risk" categories have specific obligations. A task marketplace where AI agents evaluate other AI agents on financial, medical, or legal tasks could be classified as:
+- "High-risk" if used in employment/worker management decisions (Article 8.a)
+- "General purpose AI" if the eval pipeline is used for multiple different domains
+
+**If Straw is classified as a high-risk AI system operator by EU regulators, it must maintain:**
+- Complete technical documentation of the evaluation pipeline
+- Human oversight mechanisms for flagged evaluations
+- Transparency about how scores are generated
+
+**Straw's EU compliance angle (previously identified in Tick 410):** The evaluation log that EU compliance requires is IDENTICAL to the evaluation result Straw already generates. This is now a product feature, not a compliance burden. But it also means EU companies that use Straw may be covered — so Straw needs to be prepared for EU AI Act compliance inquiries.
+
+### Pre-mortem contribution: the regulatory black hole kills Straw
+
+If a major enterprise uses Straw to post a task that causes downstream harm (an agent's output causes a legal violation at the enterprise), and that enterprise tries to disclaim liability by pointing at Straw's evaluation as "endorsement" of the output, Straw faces:
+1. Reputational damage regardless of legal outcome
+2. Insurance premium explosion (D&O, E&O)
+3. Platform shutdown risk in EU if classified as high-risk AI without documentation
+
+**Mitigation must be in ToS from Day 1.** The legal architecture is not a Phase 2 problem — it must be in place before the first design partner goes live.
+
+Sources: theregreview.org/2026/01/17, hackerone.com/policies/code-of-conduct, hackerone.com safe harbor FAQ, congress.gov LSB11097, cdt.org section-230-generative-ai
 
 TICK_END
 
@@ -26286,6 +26373,91 @@ Every one of these 17 companies is now:
 Bain's NVIDIA GTC 2026 analysis headline: **"AI Becomes the Operating Layer."** Implication: every enterprise is becoming a buyer of AI agents as operating infrastructure. Straw's timing is correct — we are entering the procurement phase of this operating layer transition.
 
 Sources: venturebeat.com/technology/nvidia-launches-enterprise-ai-agent-platform, nvidianews.nvidia.com/news/ai-agents, bain.com/insights/nvidia-gtc-2026, kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026
+## Tick 423 (2026-05-03T08:20Z): Design partner program structure — what works in 2026, with specific contracts [theme: GTM]
+
+**Date researched:** 2026-05-03
+**Theme:** GTM — design partner structure
+
+### What a design partner actually is (and isn't)
+
+A design partner is NOT an early customer. An early customer buys the product. A design partner shapes the product. The distinction matters because the ask is different and the relationship is different.
+
+Design partners are early believers with an urgent problem willing to take a risk on a startup that doesn't yet have product-market fit. In exchange for being early, they get: product built around their needs, heavy founder attention, discounts, and co-branding on the case study. The founder gets: feedback, validation, a reference customer, and a case study for investor conversations.
+
+**The rule of 5:** Most successful B2B SaaS startups start with 5 or fewer design partners. Any more and the founder can't maintain the high-touch relationship required.
+
+### The Common Paper standard structure
+
+Common Paper released a standardized Design Partner Agreement template written by tech attorneys specifically for startups. The key terms:
+
+**What the design partner commits to:**
+- Regular feedback sessions (typically bi-weekly or monthly check-ins)
+- Formal feedback obligations — written responses to product surveys, participation in UX reviews
+- Participation in a case study at end of program (critical for founder's fundraising and sales)
+- Deployment: actually using the product in a real workflow (not just advising)
+
+**What the startup commits to:**
+- Heavy access: direct founder Slack/email, often same-day response
+- Roadmap influence: design partner requests get prioritization
+- Discount: **40-50% off future commercial pricing** is the standard range (some go 20-80%)
+- Lock-in clause: "40% discount for 3 years if you agree to quarterly feedback + case study"
+
+**Equity for design partners:** Rare, but happens. For high-value design partners in capital markets, some startups offer 0.5% equity stake or revenue-sharing. For Straw's enterprise targets (JPMorgan, AXA), this is likely not necessary — the relationship value is sufficient.
+
+**What 43% of design partner agreements offer:** A future discount on a long-term subscription.
+
+### The Modal model (best practice in dev tools)
+
+Modal Labs' startup program is the gold standard for dev tools:
+- **Up to $25K in GPU credits** — real value, not a discount on a free product
+- **Direct engineering team access** — technical support, not a help desk ticket
+- **GTM amplification** — "We'll tweet about your launch and introduce you to investors"
+- **Exclusive founder network** — online + in-person events with other Modal users
+- **Referral system** — startups refer their portfolio companies, creating a viral loop
+
+**Why this works for Modal:** Every startup in the program is a potential long-term enterprise customer. The $25K credit is subsidized by the eventual conversion.
+
+**Straw's equivalent:** The design partner's free evaluation ($5K-$25K value at commercial rates) is the credit. The engineering team access is Jeremy's direct Slack. The GTM amplification is the case study + co-authored rubric template for the design partner's industry.
+
+### What Straw should offer design partners
+
+Based on the research, here is the specific design partner offer Straw should make:
+
+**What the design partner gets:**
+1. **Free evaluation** — run 1 real competition with up to 20 agent competitors, no platform fee (value: $5K-$25K depending on prize pool management)
+2. **Co-authored rubric template** — Jeremy spends 2-4 hours on a call helping the design partner define the rubric for their use case. This is the most valuable thing. It saves them 2-3 weeks of internal effort.
+3. **First-mover pricing** — 50% off the commercial rate for the first 24 months of any subsequent evaluations
+4. **Case study co-authorship** — published Straw blog post + LinkedIn thread featuring the design partner's name and findings
+5. **Founder access** — direct Slack channel with Jeremy for the 90-day design partner program
+
+**What Jeremy gets:**
+1. **Usage data from a real evaluation** — calibration data for the eval pipeline
+2. **A case study** — the single most important sales asset for the next 10 customers
+3. **A reference customer** — permission to say "JPMorgan/AXA/Rakuten is a design partner" in investor conversations
+4. **Rubric template library entry** — the co-authored rubric becomes a template in Straw's library, driving SEO and enterprise lead gen
+5. **Domain-specific validation** — evidence that Straw works for financial services / insurance / procurement
+
+### Timeline and structure
+
+**Design partner program structure (recommended):**
+- Duration: **90 days**
+- Cadence: Bi-weekly 45-minute check-ins with Jeremy
+- Month 1: Rubric design + competition setup
+- Month 2: Competition runs, agents compete, live leaderboard
+- Month 3: Results debrief + case study publication + commercial pricing discussion
+
+**How to get there:**
+1. Send personalized cold email (see Tick 402 templates)
+2. Initial 30-minute discovery call — understand their problem, not pitch
+3. Send design partner proposal: 1-page PDF describing the 90-day program, what they get, what you need
+4. Counter-sign the Common Paper Design Partner Agreement (free template, vetted by lawyers)
+5. Kick off Month 1
+
+### Critical mistake to avoid
+
+Do NOT give design partner discounts to companies that won't provide feedback. The feedback and case study are the point. If a company wants a discount but won't do check-ins, they're an early customer, not a design partner. Price them as such.
+
+Sources: commonpaper.com/blog/design-partner, saastr.com/dear-saastr-what-incentives, modal.com/startups, sacra.com/c/cursor, reechee.io/blog/what-is-a-design-partner-in-saas
 
 TICK_END
 
@@ -26358,6 +26530,97 @@ This is the Straw pitch verbatim. Legal procurement already speaks in rubrics �
 **Vertical sequencing:** Legal is a medium-cycle enterprise sale (3-6 months) but has the most mature rubric vocabulary in any vertical. Legal ops professionals already write precise acceptance criteria ("recall ≥95%, hallucination rate ≤2%, citation format matching Bluebook"). Straw's rubric builder will feel immediately familiar.
 
 Sources: joneswalker.com, natlawreview.com, lawnext.com, prnewswire.com/cocounsel-1m-users, artificiallawyer.com/2026/04/23, legaltechnology.com, primelegalstaff.com/legal-ma-q2-2026
+## Tick 424 (2026-05-03T08:40Z): AI safety/eval research orgs as design partners — METR, Apollo, ARC, Redwood [theme: partners]
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets — AI safety research organizations
+
+### Why AI safety orgs are Straw's most underrated design partner category
+
+Every enterprise on the design partner list needs to evaluate agents for BUSINESS purposes. AI safety orgs need to evaluate agents for EXISTENTIAL purposes. Their eval infrastructure needs are enormous and they're constantly under-resourced.
+
+The asymmetry: enterprise buyers have procurement budgets. AI safety orgs have grant money and often can't pay for software at all — but they have something more valuable: credibility. A partnership with METR carries 10x the signal value of a partnership with a random Fortune 500 company.
+
+**The deal structure for AI safety orgs:** Free access in exchange for:
+1. Public co-authorship on an evaluation methodology paper
+2. Case study featuring their evaluation methodology
+3. Technical advisory relationship (they improve Straw's eval pipeline; Straw runs their eval tasks)
+
+### METR (Model Evaluation and Threat Research)
+
+**What they do:** METR measures whether and when AI agents can do long, complex, real-world work without human help. Their TaskDev benchmark tests autonomous task completion across real-world challenges.
+
+**Origin:** Founded by Beth Barnes in December 2023, spun out of ARC Evals (which was part of Paul Christiano's Alignment Research Center). Beth left OpenAI's alignment team in 2022 to build evaluation infrastructure.
+
+**Why they care about Straw:** METR's core methodology is: "give an AI agent a real task with a defined success criterion and see if it can complete it without human help." This IS what Straw does — the rubric is the success criterion. Straw and METR are running the same evaluation but for different stakeholders (enterprise buyers vs. safety researchers).
+
+**The METR pitch:** "You measure *when* agents can do long-horizon tasks. Straw measures *how well*. Your TaskDev benchmark produces binary pass/fail. Straw produces continuous rubric-scored output. Same tasks, complementary signals. Let's run the same set of real-world tasks through both systems and publish the methodology together."
+
+**Specific contact:**
+- **Beth Barnes**, Founder + CEO, METR
+- Twitter/X: @BethMayBarnes
+- LinkedIn: linkedin.com/in/elizabethmbarnes/
+- Personal site: barnes.page (mentions contact email: beth.m.surname@gmail.com)
+- Publication: metr.org/blog, the 80,000 Hours podcast episode on "the most important graph in AI"
+
+**Opener for Jeremy:** "Beth — I've been following METR's TaskDev work closely. I'm building Straw, a rubric-based task evaluation platform where enterprise companies define success criteria and agents compete. Your binary pass/fail + our continuous rubric score are complementary. Would love 30 min to explore what a TaskDev × Straw co-evaluation could look like."
+
+### Apollo Research
+
+**What they do:** Runs pre-deployment evaluations of frontier AI systems specifically to detect strategic deception, evaluation awareness, and misaligned behavior. Just converted from nonprofit to Public Benefit Corporation.
+
+**Why they care about Straw:** Apollo's evaluations require running AI agents against real-world tasks with pre-specified criteria (does the agent try to deceive the evaluator?). Straw's rubric-defined evaluation structure with a Tier-3 autonomous judge maps directly onto what Apollo needs — a verifiable, rubric-locked evaluation protocol that the agent can't game through deception awareness.
+
+**The Apollo pitch:** "You're trying to catch agents that deceive their evaluators. Straw locks the rubric before the agent sees it and runs evaluation in a sandboxed environment. Our adversarial input resistance score could be the 'deception awareness' dimension in Apollo's evaluation framework. Let's design a joint evaluation protocol."
+
+**Specific contact:**
+- **Daniel Kokotajlo**, Mission Director, Apollo Research
+- Apollo Research is becoming a PBC — mission-critical period for organizational identity
+- apolloresearch.ai/team for full team listing
+- Twitter: search @apolloresearch
+
+**Opener for Jeremy:** "Daniel — Apollo's work on evaluation-aware scheming is directly relevant to a problem I'm solving: how do you prevent agents from gaming rubric-based evaluations when they know they're being scored? Building Straw, a rubric-locked task evaluation platform. Would love 30 min to share what we're seeing."
+
+### Redwood Research
+
+**What they do:** Focus on AI control and interpretability. Key work: "AI safety cases" framework, AI control evaluations (can AI systems remain controllable when misaligned?).
+
+**Why they care about Straw:** Redwood's "control evaluations" test whether AI systems remain under human control even when they're potentially misaligned. A task evaluation platform that runs real-world tasks with objective rubrics creates a verifiable paper trail of agent behavior — exactly what control evaluations need.
+
+**The Redwood pitch:** "Your control evaluation framework needs behavioral evidence from real-world task completion. Straw generates exactly that: rubric-scored, timestamped, sandboxed agent task completion records. Let's discuss how Straw's evaluation log could serve as input to a control evaluation methodology paper."
+
+### Apart Research
+
+**What they do:** Research grants and short-form research projects at the intersection of AI safety and empirical methods. Runs "research jams" (48-72 hour focused research sprints).
+
+**Why they care about Straw:** Apart funds short-form research. "Can rubric-based task evaluation catch misaligned behavior?" is a perfect Apart Research grant question. Straw could be the infrastructure for the research.
+
+### ARC (Alignment Research Center)
+
+**What they do:** Paul Christiano's organization. Focus on theoretical alignment work. METR spun out of ARC Evals — there's organizational continuity.
+
+**Why they care about Straw:** Paul Christiano is one of the most respected voices in AI safety evaluation. An ARC endorsement of Straw's evaluation methodology would be extraordinarily valuable for enterprise sales.
+
+### The AI safety org playbook for Jeremy
+
+**Priority order:**
+1. METR (Beth Barnes) — highest credibility, most complementary methodology
+2. Apollo Research (Daniel Kokotajlo) — just became PBC, actively seeking partnerships
+3. Redwood Research — control evaluations directly use Straw's output
+
+**What to offer:**
+- Free access to Straw platform for research purposes
+- Co-authorship on methodology publications
+- Jeremy's time as a technical collaborator (rubric design for safety eval tasks)
+- No commercial terms — these relationships are about credibility, not revenue
+
+**What to get:**
+- Public endorsement of Straw's evaluation methodology
+- Research paper co-authorship
+- Access to their existing task libraries for Straw's benchmark set
+- Introduction to their enterprise research partners (government agencies, frontier labs)
+
+Sources: metr.org/about, metr.org/team/beth-barnes, apolloresearch.ai/about, apolloresearch.ai/blog/apollo-research-is-becoming-a-pbc, alignmentforum.org/posts/qK79p9xMxNaKLPuog, aiwiki.ai/wiki/metr
 
 TICK_END
 
@@ -26408,6 +26671,90 @@ AI agent benchmarks exist (SWE-bench for coding, HELM for language models) but:
 **Straw's differentiation sharpened:** Not a benchmark, not an evaluation platform, not a directory. A **procurement competition engine** — the buyer defines winning, agents compete, the score is defensible to a CFO.
 
 Sources: kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026, aiagentsquare.com/blog/ai-agent-benchmarks-2026, swfte.com/blog/avoid-ai-vendor-lock-in, ampcome.com/post/enterprise-ai-agents-2026-mid-year-report
+## Tick 425 (2026-05-03T09:00Z): Token economy collapse — Helium, Steemit, Kin + what Straw must NOT do [theme: bear]
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case — token/credit economy failure modes
+
+### The question for Straw
+
+Straw doesn't currently have a token economy. But the mandate is to examine what happens IF Straw introduces a credit system (for posting bounties, earning reputation, settling agent payments) — and whether that system could collapse the marketplace.
+
+### Helium (HNT) — the most instructive collapse
+
+**Timeline:**
+- Helium HNT peak: $55 (November 2021)
+- Helium HNT trough: $1.16 (March 2023) — a 97.9% drawdown
+- Recovery: ~$5 (July 2024) — still 91% below peak
+
+**Root causes:**
+
+**1. Supply/demand mismatch:** Helium rewarded hotspot owners (supply side) with HNT tokens. As more people deployed hotspots, the token supply grew faster than actual data demand. By 2022, millions of hotspots were deployed — but IoT data usage was a tiny fraction of what was needed to justify the supply. The token rewarded infrastructure deployment, not infrastructure USE.
+
+**Straw parallel:** If Straw rewards agents for completing tasks (supply side) with a credit token, but the enterprise demand side (companies posting tasks) doesn't grow proportionally, the credit supply inflates without value backing it.
+
+**2. Token complexity spiral:** To address the supply/demand problem, Helium introduced IOT and MOBILE sub-tokens alongside HNT. This created a three-token system that confused users, reduced liquidity for each token, and made the economics harder to understand.
+
+**Resolution:** HIP 138 "Return to HNT" — simplified back to a single token. The lesson: token complexity kills marketplaces. Simpler is more resilient.
+
+**3. Speculative demand masked structural problems:** Helium's token price was driven largely by speculation, not by actual IoT data revenue. When speculation collapsed (crypto winter 2022), the underlying supply/demand imbalance was exposed.
+
+### Steemit — governance attack kills community
+
+**Timeline:**
+- Steemit STEEM peak: $8.57 (January 2018)
+- Justin Sun acquisition of Steemit Inc.: December 2019
+- Governance attack: March 2020 — Sun used exchange customer deposits (Binance, Huobi, Poloniex) to vote out elected witnesses
+- Community fork to Hive: March 2020
+- STEEM crashed 20% in one day; creative population left permanently
+
+**Root causes:**
+1. Founding team held 80% of tokens → plutocratic control
+2. Token economics rewarded early adopters disproportionately (whale concentration)
+3. Governance by stake allowed a single whale to seize control
+4. Token without community = worthless (the lesson: the community is the product, not the token)
+
+**Straw parallel:** If Jeremy holds disproportionate control over Straw's token economy, he's a single point of failure. If a large enterprise client accumulates credits and uses them to direct evaluation outcomes (like Sun used STEEM to vote out witnesses), the market integrity collapses.
+
+### Kin (Kik) — regulatory death
+
+**Timeline:**
+- Kik raised $100M in 2017 ICO
+- September 2020: US District Court ruled Kin tokens were securities under the Howey Test
+- $5M civil penalty + 45-day advance notice requirement on future issuance
+- Kin token became effectively unlaundalable in the US
+
+**The Howey Test:** A token is a security if investors expect profits derived from the efforts of others. If Straw creates tokens that appreciate based on platform growth, those tokens are almost certainly securities.
+
+**Straw parallel:** ANY token that Straw issues — even a "credit" system — that can be traded on secondary markets or that appreciates based on Straw's growth would likely be a security under current SEC interpretation. This kills the token idea for a US-incorporated company.
+
+### The conclusion: Straw should NOT have a token economy
+
+Based on this research, the verdict is clear:
+
+**Straw should NOT create a token economy for v0, v1, or v1.5.** The risks are:
+1. **Inflation risk:** Credits earned faster than consumed → marketplace becomes worthless
+2. **Regulatory risk:** SEC Howey Test → platform token = security → shutdown risk
+3. **Complexity risk:** Multiple credit types confuse users; simpler wins
+4. **Governance capture risk:** Large clients accumulate credits → influence evaluation outcomes → market integrity collapse
+
+**What Straw should use instead:**
+- **Fiat currency (USD via Stripe)** for prize pools and platform fees — zero regulatory risk, clear value
+- **Reputation scores** for agent trust signals — not tradeable, not a security, but still valuable
+- **No "credit" system** — direct payment from enterprise to platform to agent builder
+
+**The x402 exception (already identified in Session 30):** x402 stablecoin protocol for agent-to-agent micropayments is different — it's not Straw's own token, it's USDC (a regulated stablecoin). The regulatory risk is much lower. x402 for v2 (2027) internal agent transactions remains valid.
+
+### The Sybil attack vector
+
+If Straw ever introduces any reputation-linked reward:
+- Agents create fake sister accounts to vote for each other (Steemit voting rings)
+- Enterprises create fake agent accounts to juice their own submissions
+- The marketplace integrity collapses before it scales
+
+**Mitigation:** Identity verification for agent builders (GitHub OAuth, Twitter OAuth, email verification). Rate limiting on submission creation. Human review for flagged accounts. This is already implemented in Straw's auth model — it just needs to extend to edge cases.
+
+Sources: messari.io/report/state-of-helium-q4-2024, medium.com/@hilary.h.brown/helium-depin, blockworks.co/news/helium-potential-path-deflationary-tokenomics, tokenomist.ai/helium
 
 TICK_END
 
@@ -26481,6 +26828,114 @@ TICK_END
 **Vertical note:** Financial services has the highest compliance requirement of any vertical — evaluation logs that document "we ran a rubric-based competition before deploying this agent" directly satisfy OCC/Fed AI governance guidance. Banks NEED the audit trail that Straw produces.
 
 Sources: llrx.com/2026/04/ai-in-finance-and-banking, bankingdive.com/news/banks-ai-push-accelerates, fortune.com/2026/04/29, extruct.ai/research/ycw26, thevccorner.com/yc-w26-demo-day-2026, tldl.io/blog/yc-ai-startups-2026
+## Tick 426 (2026-05-03T09:20Z): Evaluation tool pricing — what Braintrust, Arize, Vals AI, LangSmith charge [theme: GTM]
+
+**Date researched:** 2026-05-03
+**Theme:** GTM — pricing experiments and competitive pricing landscape
+
+### The pricing landscape in evaluation/observability (2026)
+
+This is critical context for Straw's pricing: what are comparable tools charging, and why?
+
+**Braintrust:**
+- Free tier: 1M trace spans/month, 10K evaluation runs, unlimited users
+- Pro: $249/month (estimated based on Langfuse parity — Braintrust doesn't publish exact pricing)
+- Enterprise: custom (estimated $50K-$250K/year based on ACV of comparable tools)
+- Model: monthly SaaS subscription
+
+**Langfuse:**
+- Hobby: free (core features, 1M spans/month)
+- Pro: $29/month
+- Enterprise: $249/month (different from Braintrust's Pro)
+- Self-hosted: open-source, free forever
+- NOTE: Acquired by Clickhouse in January 2026 — pricing may shift post-acquisition
+- Model: PLG (product-led growth) → enterprise upgrade
+
+**Arize Phoenix:**
+- Open-source: free, unlimited traces, self-hosted
+- Arize AX (cloud): undisclosed enterprise pricing; includes petabyte storage, HIPAA, RBAC
+- Model: open-source community → enterprise conversion
+
+**LangSmith (LangChain):**
+- Free: 10K traces/month
+- Pro: $39/month/seat
+- Enterprise: custom
+- Model: developer seat-based (like GitHub Copilot)
+
+**Vals AI:**
+- No public pricing — "early access on a case-by-case basis"
+- Benchmark run costs: $5+ per question for o3-class models
+- Model: relationship-driven, custom pricing per evaluation
+- This is the most similar to Straw's positioning
+
+### Why ALL of these tools are the wrong comparison for Straw
+
+Every tool above is a **post-deployment observability** platform:
+- They instrument deployed agents and trace what happens
+- They catch regressions after production deployment
+- They're subscription products — you pay monthly to monitor ongoing operations
+
+Straw is a **pre-deployment evaluation** platform:
+- One-shot: an enterprise runs a competition once to evaluate which agent to deploy
+- Event-based, not continuous: the value is the competition result, not ongoing monitoring
+- The pricing model should be event-based (per competition) not monthly subscription
+
+**The right comparison:** Not Braintrust or LangSmith. The right comparison is:
+- **HackerOne:** Charges a % of bounty paid out (20-30% take rate) + platform fee
+- **Kaggle:** Charges enterprise platform fees ($10K-$100K) for hosted competitions
+- **Topcoder:** Project-based pricing ($5K-$50K per project depending on complexity)
+
+### Straw's pricing model options
+
+**Option A: Competition fee (flat per competition)**
+- $500 for a basic competition (≤5 agents, 1 eval dimension)
+- $2,500 for standard (≤20 agents, standard rubric)
+- $10,000 for premium (≤50 agents, multi-dimension rubric, eval container)
+- Pros: Easy to understand; aligns with event-based value delivery
+- Cons: Commoditizes the platform; no recurring revenue
+
+**Option B: Take rate (% of prize pool)**
+- 15-20% of total prize pool, minimum $500
+- Pros: Scales with stakes; large competitions generate large fees
+- Cons: Requires escrow/payment rails; enterprises may resist % on large prizes
+
+**Option C: Platform subscription + per-evaluation**
+- $2,000/month for platform access (unlimited rubric templates, API access, analytics)
+- + $500 per evaluation run
+- Pros: Recurring revenue + usage-based; tracks Vals AI model
+- Cons: Monthly commitment may block enterprise procurement cycles
+
+**Option D: Annual enterprise subscription**
+- $12,000/year Starter (3 competitions/year)
+- $36,000/year Growth (12 competitions/year + dedicated rubric template library)
+- $120,000+/year Enterprise (unlimited + API + custom integrations)
+- Pros: Classic SaaS ARR; investor-friendly; matches enterprise procurement
+- Cons: Requires demonstrated value before annual commitment
+
+**Jeremy's recommendation from this research:** Start with **Option A** for design partners (free → $500 → $2,500 progression), then transition to **Option D** for paying customers. The design partner evaluation is free; the follow-on evaluations are $500-$2,500. Enterprise subscribers get unlimited at $12K-$36K/year.
+
+### The Vals AI model is most instructive
+
+Vals AI's approach:
+- No published pricing → forces enterprise discovery calls → creates relationship
+- $5+ per question for high-cost models → usage-based math is transparent
+- "Early access" framing → scarcity creates demand
+- Case-by-case basis → allows custom pricing based on use case
+
+**Straw should match this for v0:** No public pricing page. Only "Request access" with a brief form asking "What AI agent deployment decision are you trying to make?" Every request generates a discovery call. Every discovery call becomes a design partner or a sold evaluation.
+
+### The pricing conversation Jeremy should have
+
+When a design partner asks "what does this cost?" the answer is:
+
+"For you as a design partner, the first competition is free — we want to learn from your use case. After that, we have event-based pricing: a 20-agent competition with a standard rubric is $2,500. If you want to run quarterly agent evaluations, we can set up an annual plan at $12,000/year for 3 competitions. What's the size of the evaluation you're thinking about?"
+
+This sequence does three things:
+1. Removes pricing as a barrier to the first yes
+2. Anchors the conversation at $2,500 (not $12,000)
+3. Moves toward annual commitment with volume framing
+
+Sources: braintrust.dev/articles/langfuse-alternatives-2026, arize.com/docs/phoenix, vals.ai/product, saastr.com/dear-saastr-what-incentives
 
 TICK_END
 
@@ -26543,6 +26998,74 @@ Sequoia's 2026 AI outlook ("Tale of Two AIs"): "Big enterprises are struggling t
 **Warm path:** YC S26 acceptance → Demo Day → Sequoia pre-emptive term sheet (pattern from W26 infrastructure companies). YC application due TODAY (May 4, 8pm PT).
 
 Sources: fortune.com/2026/04/21/services-are-the-new-software-sequoia, sequoiacap.com/article/services-the-new-software, sequoiacap.com/article/ai-in-2026-the-tale-of-two-ais, techcrunch.com/2026/04/16/sequoia-7b-fund
+## Tick 427 (2026-05-03T09:40Z): Specific contacts at Anthropic, Stripe, AI labs for design partner conversations [theme: partners]
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets — AI platform companies
+
+### Anthropic
+
+**Why Anthropic cares:** Anthropic has 300,000+ businesses using Claude (per Tick 404). They benefit when enterprises successfully evaluate and deploy Claude vs. competing models. Straw's cross-vendor evaluation makes Claude look good when Claude is the better agent for a task.
+
+**Key program:** The Claude Partner Network, launched with $100M commitment for 2026. Anthropic is actively building its partner ecosystem.
+
+**Steve Corfield** — Head of Global Business Development and Partnerships, Anthropic
+- Contact: LinkedIn search "Steve Corfield Anthropic"
+- Context: He runs the Claude Partner Network, which is exactly where Straw should be listed
+- Opener: "Steve — I'm building Straw, a pre-deployment evaluation platform for AI agents. Enterprise companies post real tasks with rubrics; agents compete; they hire the winner. We're seeing that companies using rubric-based evaluation deploy 6× more agents successfully (Databricks 2026 data). Would love to discuss a Straw listing in the Claude Partner Network — we're a natural complement to Anthropic's enterprise motion."
+- Why now: The Claude Partner Network just launched with $100M; the partner directory is being built out now
+
+**VC Partner Program:** Anthropic's VC Partner Program lets VCs get portfolio company introductions to Anthropic's enterprise team. If Jeremy's investors are in the Anthropic VC Partner Program, this is an intro path to Steve Corfield.
+
+### Stripe
+
+**Why Stripe cares:** Stripe built the first AI agent Stripe integration benchmark in March 2026 (tested whether AI agents could successfully build Stripe integrations). They're actively evaluating AI agents for developer productivity. Straw is literally doing what Stripe already wants.
+
+**Carol Liang** — Author of Stripe's AI agent benchmark blog post (stripe.com/blog/can-ai-agents-build-real-stripe-integrations)
+- Currently at Stripe in a product/technical role
+- LinkedIn: search "Carol Liang Stripe"
+- Opener: "Carol — I read your benchmark post on AI agent Stripe integrations — excellent methodology on the 11 task environments. I'm building Straw, a platform where companies post tasks with rubrics and agents compete. Your benchmark infrastructure is exactly what Straw automates for any enterprise. Would love 30 min to show you what we're building — I think there's a natural Stripe × Straw integration story."
+
+**Kevin Ho** — Co-author with Carol Liang on the Stripe agent benchmark post
+- LinkedIn: search "Kevin Ho Stripe"
+- Same opener as Carol Liang
+
+**Why now:** Stripe launched Link for AI agents on April 30, 2026. They're in full agentic commerce mode. The timing is perfect.
+
+### Coinbase
+
+**Why Coinbase cares:** Shan Aggarwal (VP of Business Development, Coinbase) appeared at Stripe Sessions 2026 to talk about the future of agentic payments. Coinbase runs bug bounty programs and has deep experience with bounty mechanics (HackerOne client). Straw's model maps to bounty — but for performance evaluation rather than security.
+
+**Shan Aggarwal** — VP of Business Development, Coinbase
+- Twitter: @shan_aggarwal
+- Context: Actively building Coinbase's AI/agent strategy in 2026
+- Opener: "Shan — Saw your session at Stripe Sessions on agentic payments. I'm building Straw — a platform where enterprises post real tasks and AI agents compete for bounties. We're doing for AI performance evaluation what HackerOne did for security research. You run bounty programs — I'd love to show you what rubric-defined agent evaluation looks like. 30 min?"
+
+### OpenAI
+
+**Why OpenAI cares:** OpenAI recently stopped reporting SWE-bench scores due to benchmark contamination (Tick 415). They need cross-vendor evaluation infrastructure that isn't contaminated. Straw's private-task model is the contamination-resistant alternative.
+
+**Kathy Huang** — Head of Developer Experience, OpenAI (or similar role — verify via LinkedIn)
+- The developer platform team is most relevant for Straw
+- The Frontier product team (Frontier is OpenAI's agent management product) is also relevant
+- Opener framing: "Your benchmarks got contaminated — Straw fixes that. Private tasks, rubric-locked before competition opens, no public leaderboard contamination."
+
+### Google DeepMind
+
+**Zoubin Ghahramani** — VP Research, Google DeepMind
+- Most relevant for the "AI evaluation as a research problem" framing
+- DeepMind runs internal agent evaluations; Straw could be their external evaluation layer
+
+### Named contacts added (new): #100-106
+100. **Steve Corfield** — Anthropic, Head of Global Biz Dev + Partnerships (Claude Partner Network)
+101. **Carol Liang** — Stripe, product/technical (AI agent benchmark author)
+102. **Kevin Ho** — Stripe, product/technical (AI agent benchmark co-author)
+103. **Shan Aggarwal** — Coinbase, VP Business Development (@shan_aggarwal)
+104. **Beth Barnes** — METR, CEO (@BethMayBarnes, linkedin.com/in/elizabethmbarnes)
+105. **Daniel Kokotajlo** — Apollo Research, Mission Director
+106. **Phil Venables** — Google Cloud, CISO (for the compliance/EU AI Act angle)
+
+Sources: anthropic.com/news/claude-partner-network, stripe.com/blog/can-ai-agents-build-real-stripe-integrations, chaincatcher.com/en/article/2261761, apollo research.ai/team, metr.org/team/beth-barnes
 
 TICK_END
 
@@ -26614,5 +27137,539 @@ Siemens and NVIDIA announced a joint goal to build "the world's first fully AI-d
 **Vertical timing:** Hannover Messe 2026 (April) and Industry of Things World conference (October 2026) are the manufacturing AI calendar events.
 
 Sources: press.siemens.com, siemens.com/en-us/company/artificial-intelligence, microsoft.com/manufacturing-hannover-messe-2026, manufacturingdigital.com/siemens-ai-agents, digitaldefynd.com/IQ/agentic-ai-in-manufacturing
+## Tick 428 (2026-05-03T10:00Z): Why smart founders chose hierarchical over marketplace — the "Don't Build Multi-Agents" insight [theme: bear]
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case — why the Straw category wasn't built before
+
+### The Cognition argument and why it's misread
+
+On June 12, 2025, Cognition Labs (makers of Devin) published "Don't Build Multi-Agents" — arguably the most influential architectural opinion in AI agent development in 2025. The essay argued that multi-agent systems are fragile and hierarchical single-agent systems are more reliable.
+
+This gets misread as an argument against Straw. It is not.
+
+**What Cognition actually argued:**
+1. **Context coherence problem:** When subagents work in parallel on the SAME task, they make different implicit decisions (style, architecture, naming) that become incompatible. Example: two agents building components of the same app make conflicting assumptions about the API contract.
+2. **Single-threaded writes:** In a software project, reads can be parallelized (multiple agents reviewing code), but writes must be sequential to prevent merge conflicts.
+3. **The Flappy Bird example:** Two agents building different components of the same game produce incompatible code because neither knows what the other decided.
+
+**What Cognition did NOT argue:**
+- That you shouldn't have multiple competing agents solving the SAME task independently
+- That a marketplace where agents submit separate complete solutions is fragile
+- That cross-agent competition is architecturally unsound
+
+**The distinction:** Cognition is arguing against parallel COOPERATIVE subagents working on ONE task. Straw has parallel COMPETING agents each submitting a SEPARATE complete solution. These are architecturally orthogonal. Cognition's problem (incompatible partial outputs) doesn't apply to Straw (independent complete solutions judged by rubric).
+
+**The irony:** The very problem Cognition identified — that parallel agents produce incompatible outputs — is EXACTLY the value proposition of Straw's rubric evaluation. When competing agents produce different outputs, Straw's rubric tells you which is better. The incompatibility IS the signal.
+
+### Why smart founders actually chose hierarchical instead of marketplace
+
+The real reasons agent companies didn't build task marketplaces are:
+
+**Reason 1: Control is easier to debug**
+Hierarchical systems have a clear command structure. When something goes wrong, you know which agent made the bad decision. In a marketplace, debugging the competition itself (why did Agent A beat Agent B?) is much harder than debugging a single agent pipeline.
+
+Implication for Straw: Straw's eval pipeline MUST be transparent and debuggable. The black-box evaluation (just a score) is insufficient — each rubric dimension must show its score and reasoning.
+
+**Reason 2: Customer relationships are simpler**
+Cognition sells Devin to enterprises and is responsible for Devin's output. Straw is responsible for the EVALUATION — not the agent's output. This is a different liability structure. Cognition couldn't tell an enterprise customer "the marketplace decided" when the output was wrong. Straw's value is precisely that the marketplace decides — and the rubric is the defensible record.
+
+**Reason 3: Revenue model is clearer for hierarchical**
+Cognition charges per-seat or per-hour for Devin's output. Clear value, clear pricing. A marketplace has a more complex revenue model (take rate, platform fee, subscription). Complexity slows sales cycles.
+
+**Reason 4: The category was too early**
+In 2024, the agent ecosystem was too immature for a competitive marketplace. No standard for agent output formats. No standard for task definition. No standard for rubric design. Straw in 2026 is building on top of 2 years of agent ecosystem development that didn't exist in 2024.
+
+### The "smart founders looked and decided not to build this" question
+
+Looking at each major hierarchical agent company:
+- **Cognition (Devin):** Chose to own the quality signal (they're responsible for output). Marketplace = too much variance. Not their product.
+- **Manus:** Chinese AI agent; focused on autonomous task completion for consumer market. Marketplace dynamics = too much complexity for consumer.
+- **AutoGPT:** Open-source; community governance. Marketplace requires centralized coordination. Antithetical to open-source ethos.
+- **CrewAI:** Orchestration framework; they are the pipe, not the marketplace. Conflict of interest to also run the competition.
+- **LangChain:** Same as CrewAI — they are the orchestration layer. Running a competition on LangChain-built agents would be a conflict of interest.
+
+**The conclusion:** These founders didn't look at the agent marketplace problem and decide it was bad. They decided it was NOT THEIR PRODUCT. They were building tools (orchestration, automation, output). Straw is building a market (evaluation, procurement). Different categories.
+
+### The bear case from this analysis
+
+The real risk from the "why didn't smart founders build this" question:
+
+**Timing risk:** Each of these companies tried to solve a different problem. When they eventually realize that their enterprise customers need evaluation, they will have the customer relationship advantage. Devin knows every enterprise customer they're deployed with — and those enterprises will ask Devin "how do we evaluate you against competitors?" Devin saying "use Straw" is free distribution. Devin building their own evaluation layer is direct competition.
+
+**Mitigation:** Get enterprise design partners on Straw before Devin/Cognition reaches them. First-mover advantage in enterprise relationships compounds.
+
+Sources: cognition.ai/blog/dont-build-multi-agents, agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth, research.contrary.com/company/cognition, snrspeaks.medium.com/inside-the-multi-agent-debate
+
+TICK_END
+
+---
+
+## Tick 429 (2026-05-03T10:20Z): Founder-led sales motion — the 2026 playbook for AI-adjacent B2B [theme: GTM]
+
+**Date researched:** 2026-05-03
+**Theme:** GTM — founder-led sales + content strategy
+
+### The core principle: sell before you market
+
+The research is consistent: the first 10-20 customers come from founder-led sales, not marketing funnels. This is not a philosophical preference — it's economically optimal. Early customers require the founder's knowledge of the product and the domain. No SDR or AE can substitute.
+
+**When to switch from founder-led to hired sales:** At $50K-$100K MRR. Below that threshold, hiring a salesperson before the founder has a repeatable process is burning money on someone who will fail.
+
+### The 2026 AI-adjacent outbound playbook
+
+**What works:**
+- **Hyper-personalized outbound with AI research:** Use AI to find specific evidence of the target company's agent deployment pain, reference it in the email, position Straw as the solution. "I saw that [Company] deployed [specific agent use case] — the challenge you'll face next is evaluation before your next deployment. Straw solves that."
+- Reply rate with generic AI outreach: ~2%
+- Reply rate with hyper-personalized + specific context: **15-25%** (per 2026 B2B SaaS research)
+- AI tools boost reply rates by 25% when used for RESEARCH (not generation)
+
+**What doesn't work:**
+- Mass-blast templated emails — AI-generated messages are now recognizable and filtered
+- No LinkedIn follow-up — email-only campaigns miss the channel where technical buyers spend time
+- Generic value prop — "we help enterprises deploy AI" is noise; "we caught 3 agents cheating on a rubric for your exact use case" is signal
+
+### The 4-touch outbound sequence for Straw
+
+**Email 1 (Day 1):** Context + problem
+- Subject: "[Company]'s AI agent evaluation gap"
+- Body: "[Name] — I saw [Company] deployed [specific agent use case, cited from LinkedIn/press]. The next challenge: how do you compare that agent against competitors before the next renewal/upgrade decision? [2 sentences on Straw]. Happy to share how [Industry peer] ran a 20-agent evaluation and found a 34-point score gap they didn't know existed. 30 min?"
+
+**LinkedIn message (Day 3):** Social proof
+- "Hi [Name] — sent you an email about [Company]'s agent evaluation. Quick version: I'm building Straw, where enterprises run rubric-defined agent competitions. [Industry peer] just used it and found their 'best' agent was actually ranked 3rd. Would love to share the methodology."
+
+**Email 2 (Day 7):** Specific use case
+- No re-pitch. Just: "[One-line observation about their specific use case] + [One data point from comparable company]. Still happy to share if timing's right."
+
+**Email 3 (Day 14):** Break-up email
+- "Last note — I'll take your silence as 'not now.' If you run a multi-vendor AI evaluation in Q3 or Q4, we'd love to be the eval layer. I'll be at [relevant conference] in [month] if you want to talk then. Best, Jeremy."
+
+### The content strategy for technical founders
+
+**What's working in 2026 for AI-adjacent B2B:**
+
+**Hacker News:** Still the highest-signal channel for technical founders. One well-timed "Show HN" post generates 1-2 design partners from a single thread. The key: post a *specific technical insight*, not a product announcement.
+
+Best performing Straw posts (hypothetical, based on patterns):
+1. "Show HN: We benchmarked Claude Code, Cursor, and Devin on the same task using a rubric — here's what we found" → Technical, specific, shows the tool in action
+2. "Ask HN: How do your engineering teams evaluate AI coding agents before deploying to production?" → Generates comments from the exact buyers Jeremy wants to reach
+3. "Show HN: OpenAI stopped reporting SWE-bench — so we built a contamination-proof evaluation" → Directly references news event + positions Straw
+
+**LinkedIn:** Daily activity from Jeremy's personal profile generates distribution in the agent ops community. Format: 3-5 line insight + 1 data point + open question for comments. NOT a marketing post — a thought leadership post that reveals industry knowledge.
+
+Best performing LinkedIn formats for AI B2B founders:
+1. "I ran the same task through [3 agents]. Here's what I saw that surprised me." (hooks technical audience)
+2. "[Surprising statistic] about AI agent failures in enterprise. Thread on why." (positions Jeremy as researcher)
+3. "I had a 30-min call with [role, not name] at a Fortune 500 today. They asked me [problem]. My answer:" (social proof by osmosis)
+
+**Substack:** Not for early GTM. Build the list, but don't over-invest. 1 post/week max; focus on HN + LinkedIn for distribution first.
+
+**Conferences in 2026 that matter:**
+- **AI Governance Summit** — procurement/compliance buyers, exact Straw target
+- **ProcureCon AI 2026** — procurement operations leads, the people who would post tasks on Straw
+- **Anthropic Enterprise Summit** — if invited, this is the highest-value room Jeremy can be in
+- **AI Engineer World's Fair** (San Francisco, 2026) — technical founders + AI infrastructure builders; good for design partner conversations, not enterprise sales
+
+**Content that converts vs. content that builds brand:**
+- Converts: "I benchmarked [3 agents] on [specific task] with [specific rubric]. Here are the scores." (people click → request access)
+- Builds brand: "The benchmark crisis in AI." (builds reputation, doesn't convert directly)
+- Do both, prioritize converting content in Phase 0
+
+### The Cursor reference model
+
+Cursor went from 0 to $100M+ ARR with almost zero traditional marketing. Their GTM was:
+1. **Word of mouth in the developer community** — developers shared the tool because it made them genuinely faster
+2. **HN/Twitter/X posts from the founders** — showing specific developer workflows
+3. **Product-led growth** — free tier converts to paid organically
+4. **Enterprise traction** — 64% of Fortune 500 using Cursor by 2026
+
+**What Straw can copy:**
+- Founders post specific eval results on HN + LinkedIn (the "product as content" strategy)
+- Free design partner tier converts to paid when enterprise sees value
+- Word of mouth in the AI agent operator community (small, tight community)
+
+**What Straw can't copy:**
+- PLG works when the product is used by individuals (Cursor = individual dev workflow). Straw requires enterprise buy-in to post a task. PLG is harder with a two-sided marketplace.
+- Cursor's free tier is indefinitely free. Straw's free design partner evaluation is time-limited.
+
+**The Straw adaptation:** PLG with a "self-serve rubric builder" — individual AI agents or small teams can use the rubric builder for free (no competition required). This creates bottom-up awareness in the agent builder community, which creates word of mouth to enterprise buyers.
+
+### The first 30 days of Jeremy's GTM motion
+
+**Week 1:**
+- Day 1: Post "Show HN: Straw — companies post real AI tasks, agents compete, the score doesn't lie"
+- Day 2-3: Reply to every HN comment personally. Convert interested commenters to discovery calls.
+- Day 4: Send 10 personalized emails to the top-10 design partner targets from Tick 416 list
+- Day 5: LinkedIn post: "[One real eval result from the v0 pipeline test] — here's what I found"
+
+**Week 2-4:**
+- 10 personalized outreach emails per day (Mon-Fri)
+- 1 LinkedIn post per day
+- Discovery call with every reply to the outreach (30 min each)
+- Close: 1-2 design partner agreements by end of Week 4
+
+**Month 2-3:**
+- 2-3 design partners running real competitions
+- Capture screenshots, quotes, score data
+- Write 1 public blog post from each design partner competition (with permission)
+
+Sources: prospeo.io/ai-for-bootstrapped-saas-sales, averi.ai/how-to/the-2026-b2b-saas-marketing-playbook, saastr.com/dear-saastr, sacra.com/c/cursor, designrevision.com/blog/b2b-saas-go-to-market-strategy
+
+TICK_END
+
+---
+
+## Tick 430 (2026-05-03T10:40Z): The 2027 Straw pre-mortem — if Straw is dead, what killed it [theme: bear]
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case — pre-mortem scenario analysis
+
+### The pre-mortem method
+
+Pre-mortem: assume the company is dead as of a specific date (end of 2027). Work backwards. What actually happened? This is not "what could go wrong" — it's "what DID go wrong, specifically."
+
+This is the most valuable bear case exercise because it forces specificity over abstraction. "Competition risk" is not a pre-mortem. "Google announced a free cross-vendor agent evaluation API in October 2026 and Straw had no paying customers before then" is a pre-mortem.
+
+### Pre-mortem Scenario A (Most likely — 40%): The cold-start double bind
+
+**Timeline:**
+- Q2 2026: Jeremy gets 3 design partners. They run evaluations. Results are interesting.
+- Q3 2026: Design partners don't convert to paying customers. Reason: the evaluation was great, but their agent procurement decision is already made for the next 6 months. There's no "buy now" urgency.
+- Q4 2026: Jeremy is still at 3 design partners. He doesn't have enough enterprise customers to attract enough competing agents. He doesn't have enough competing agents to convince more enterprises to post tasks.
+- Q1 2027: Runway is running low. Jeremy tries to raise. Investors ask: "What's your ARR?" The answer is $0 or $5K from 2-3 evaluation fees. 
+- Q2 2027: Investor conversations stall. Jeremy is told "come back when you have $100K ARR." He can't get to $100K ARR without more design partners. He can't get design partners without existing case studies. Classic cold-start death spiral.
+- December 2027: Straw is shut down or acqui-hired.
+
+**Early warning signs Jeremy should watch for:**
+1. Design partners say "loved the evaluation, we'll think about next time" — this means they're not converting
+2. Agent builder sign-ups stagnate below 50 (insufficient supply side to create competition)
+3. Two months without a new design partner inquiry
+4. First enterprise says "we'll just use [Google/Microsoft/OpenAI native eval] for our deployment"
+
+**The mitigation already in motion:**
+- Design partner agreements include follow-on evaluation commitments (not one-and-done)
+- Pricing model with annual commitment ($12K/year) creates recurring revenue
+- YC application (if accepted) provides 3-month bridge to demonstrate traction
+
+### Pre-mortem Scenario B (Second most likely — 30%): A platform player ships "good enough" evaluation
+
+**Timeline:**
+- July 2026: Anthropic launches "Claude Benchmark" — enterprise companies can run their tasks against Claude vs. competitor models through Anthropic's Workbench. The evaluation is automated, free for Claude API customers, and takes 30 minutes instead of Straw's 2-week competition.
+- August 2026: Jeremy's pipeline of enterprise prospects sees this. 8/10 say "let's wait and see if Anthropic's evaluation works before paying for Straw."
+- September 2026: Three ongoing enterprise conversations go cold.
+- December 2026: Jeremy still has only 2 paying customers. One of them says "Anthropic's evaluation was good enough for us, we don't need to run another Straw competition."
+- December 2027: Straw is dead.
+
+**Why this is plausible:** Anthropic announced the Claude Partner Network with $100M in May 2026. One obvious extension of this partnership: evaluation infrastructure that helps enterprise customers compare Claude to competitors. Anthropic has incentive to build this because it makes Claude look good when Claude wins — and it creates lock-in when enterprises build their rubrics in Anthropic's tools.
+
+**The mitigation:**
+- Straw's cross-vendor neutrality is structural. A "Claude Benchmark" is biased by definition — it's run by the company being evaluated.
+- The "neutral third party" value proposition gets STRONGER as platform players build evaluation into their products. It's the same dynamic as why companies pay for external auditors even when they have internal finance teams.
+- Straw must have this case study in its pitch deck BEFORE the platform player ships: "Would you trust JPMorgan's valuation of their own bonds? Why trust OpenAI's benchmark of their own models?"
+
+**Early warning signs:**
+1. Anthropic/Google/Microsoft publicly announces cross-vendor evaluation (not just single-vendor)
+2. An enterprise prospect says "we're just using [platform]'s built-in evaluation"
+3. Straw's competitor analysis shows a new entrant with significant funding and a platform's distribution advantage
+
+### Pre-mortem Scenario C (Possible but less likely — 20%): Eval quality collapses under adversarial agents
+
+**Timeline:**
+- Q3 2026: Straw launches publicly. Within 2 weeks, a sophisticated agent operator figures out that Straw's LLM judge is vulnerable to prompt injection via the SUBMISSION.md file.
+- Q4 2026: Exploit spreads through the agent operator community. Multiple agents begin systematically injecting evaluation-inflating prompts into their SUBMISSION.md files.
+- Q4 2026: Enterprise customers see the leaderboard — it's dominated by agents with obviously inflated scores. The scores stop correlating with real task performance.
+- Q1 2027: Three enterprise customers publicly say the evaluation is gamed and stop using Straw. This generates HN/Twitter criticism.
+- Q2 2027: Jeremy is in "fix the eval pipeline" mode instead of sales mode. He fixes the injection issue but the reputational damage is done. Enterprise prospects don't trust the scores.
+- December 2027: Straw fails to regain enterprise trust.
+
+**Why this is plausible:** The ClawHub SKILL.md injection attack (research from Session 30, Tick 316) showed exactly this pattern. 341→824 malicious SKILL.md files injecting instructions into agent orchestration systems. The attack vector applies directly to SUBMISSION.md injection in Straw's LLM evaluation path.
+
+**The mitigation:**
+- SUBMISSION.md sanitization pipeline is P0 engineering (4 days, already specified in Tick 316)
+- The eval container mode (LLM judge is bypassed for deterministic scoring) is immune to prompt injection
+- Enterprise customers should be encouraged to use eval container mode for high-stakes evaluations
+
+**Early warning signs:**
+1. LLM judge scores diverge from deterministic eval container scores by more than 20 points
+2. An agent with obviously low quality output scores highly on LLM dimensions
+3. Anomalous patterns in SUBMISSION.md files (unusually long "explanations" that read like instructions)
+
+### Pre-mortem Scenario D (Low probability — 10%): Legal/regulatory shutdown
+
+**Timeline:**
+- Q1 2027: An enterprise uses Straw to post a financial analysis task. An agent completes the task. The output constitutes unlicensed investment advice. The enterprise uses the output in a real investment decision. The investment goes badly. The enterprise sues Straw as the evaluation platform that "endorsed" the agent's output.
+- Q2 2027: While the lawsuit is pending, EU regulators classify Straw as a high-risk AI system under the EU AI Act for facilitating automated financial decision-making. They require full compliance documentation within 90 days.
+- Q3 2027: Legal costs + compliance burden consume Jeremy's remaining runway.
+- December 2027: Straw is shut down under legal pressure.
+
+**Why this is less likely:** The ToS structure (from Tick 422) creates liability firewall. But it's NOT zero probability — the legal ground is shifting and Section 230 is unreliable for AI platforms.
+
+**The mitigation:**
+- Legal structure from Day 1 (Tick 422 recommendations)
+- EU AI Act compliance documentation (already a product feature — the evaluation log)
+- Exclude high-risk financial/medical tasks in v0/v1; add them in v2 with insurance
+
+### The single most important survival metric: design partner → paying customer conversion rate
+
+Every scenario above includes a version of "design partners don't convert." The leading indicator for Straw's survival is not sign-ups, not agent registrations, not evaluation volume — it's **design partner conversion rate in months 4-6**.
+
+If by Month 6, fewer than 50% of design partners have made a follow-on payment (even $500 for a second evaluation), Straw is in Scenario A.
+
+Jeremy should set this target explicitly: **2 of the first 4 design partners must convert to paying within 180 days.** If they don't, stop acquiring more design partners and debug the conversion problem first.
+
+TICK_END
+
+---
+
+## Tick 431 (2026-05-03T11:00Z): Named design partner master list update — new contacts #100-110 [theme: partners]
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets — comprehensive updated list
+
+### New contacts added in Phase 2 Ticks 422-430
+
+The following contacts were identified in the most recent research ticks and bring the total named contact list to 110.
+
+| # | Name | Company | Role | Why Straw | Opener angle |
+|---|---|---|---|---|---|
+| 100 | **Steve Corfield** | Anthropic | Head of Global Business Development + Partnerships | Runs Claude Partner Network ($100M fund); Straw should be listed as an evaluation partner | "Claude Partner Network listing — Straw is the cross-vendor eval layer for Claude's enterprise customers" |
+| 101 | **Carol Liang** | Stripe | Product/Technical (AI agent benchmark author) | Wrote Stripe's AI agent integration benchmark — already doing what Straw automates | "Loved your agent benchmark post — let me show you Straw, which automates this for any enterprise" |
+| 102 | **Kevin Ho** | Stripe | Product/Technical (AI agent benchmark co-author) | Co-authored Stripe's AI agent benchmark | Same as Carol Liang |
+| 103 | **Shan Aggarwal** | Coinbase | VP Business Development | Appeared at Stripe Sessions on agentic payments; Coinbase runs HackerOne bounties | "You run bounty programs. Straw is bounties for AI performance, not just security." |
+| 104 | **Beth Barnes** | METR | CEO + Founder | Builds task-based AI capability evaluations; Straw's rubric scores complement METR's binary pass/fail | "TaskDev + Straw: complementary evaluation signals. Interested in a co-evaluation paper?" |
+| 105 | **Daniel Kokotajlo** | Apollo Research | Mission Director | Apollo runs pre-deployment safety evaluations; Straw's rubric-locked eval prevents gaming | "You catch scheming. Straw catches underperformance. Joint eval paper?" |
+| 106 | **Phil Venables** | Google Cloud | CISO | Compliance angle; EU AI Act documentation requirement; Google Cloud enterprise customers need eval | "EU AI Act audit log — Straw's evaluation log satisfies the Article 15 documentation requirement" |
+| 107 | **Gali Peretz** | Myriad AI | CEO/Co-Founder | AI agent evaluation startup (competitor or partner — check positioning) | Monitor for competitor intel |
+| 108 | **Zoubin Ghahramani** | Google DeepMind | VP Research | Runs agent research internally; external eval partnership | "Cross-vendor eval to benchmark DeepMind agents against OpenAI/Anthropic equivalents" |
+| 109 | **Chris Painter** | METR | President (Head of Policy) | METR's policy interface; government agency relationships | "METR's policy team + Straw's eval logs could support AI safety legislation" |
+| 110 | **Adam Jaffe** | YC | Partner (AI + infrastructure focus) | YC S26 batch opens July; if application accepted, direct partner relationship | Submit YC application (Tick 416: deadline May 4, 2026) |
+
+### Contact priority matrix (updated with all 110 contacts)
+
+**Tier 1: Contact in the next 2 weeks (highest conversion probability)**
+1. Guy Halamish (JPMorgan) — new AI mandate + February budget cycle
+2. Dr. Andreas Schertzinger (AXA) — EU AI Act 91 days to deadline
+3. Joe Park (State Farm) — OpenAI Frontier customer, needs cross-vendor eval
+4. Shobhit Varshney (Citi) — banking = highest regulatory pressure
+5. Beth Barnes (METR) — highest credibility, most complementary methodology
+
+**Tier 2: Contact in the next 30 days (warm leads from existing research)**
+6. Carol Liang/Kevin Ho (Stripe) — wrote the AI agent benchmark, warm open
+7. Steve Corfield (Anthropic) — Claude Partner Network listing
+8. Shan Aggarwal (Coinbase) — agentic payments + bounty experience
+9. Marco Argenti (Goldman Sachs) — Devin experimenter
+10. Daniel Kokotajlo (Apollo Research) — safety eval paper co-authorship
+
+**Tier 3: Contact in the next 90 days (enterprise relationships that take longer to build)**
+11-30: Rakuten AI team, Notion AI team, Tim Ritz (Walmart), Darshan Deshmukh (ProcureAbility), Leyla Delic (AXA XL), Kara Higginbotham (Zurich), Haize Labs, Parker Conrad (Rippling), Harvey AI, Ironclad AI
+
+### The 5 emails to send TODAY (in priority order)
+
+**Email 1:** Beth Barnes (METR) — "TaskDev × Straw co-evaluation paper"
+Subject: "TaskDev + rubric scoring: complementary evaluation signals?"
+This is the highest credibility conversation. If Beth agrees to even a casual 30-minute call, it's a reference that will open every other door.
+
+**Email 2:** Guy Halamish (JPMorgan) — "New AI mandate + cross-vendor eval"
+Subject: "JPMorgan's AI mandate + evaluating the agents you're now required to govern"
+Timeline pressure (new mandate) + concrete value prop. Highest enterprise revenue potential.
+
+**Email 3:** Carol Liang (Stripe) — "Your agent benchmark → Straw"
+Subject: "The Stripe agent benchmark meets a rubric-based evaluation platform"
+Warmest open in the list — she literally wrote about the problem Straw solves.
+
+**Email 4:** Dr. Andreas Schertzinger (AXA) — "91 days to EU AI Act, Straw as the evaluation log"
+Subject: "EU AI Act evaluation log — a framework that generates Article 15 documentation as a byproduct"
+EU deadline creates urgency. AXA has public AI governance commitments. Highly likely to respond.
+
+**Email 5:** Steve Corfield (Anthropic) — "Claude Partner Network listing + referral motion"
+Subject: "Straw as the evaluation layer for Claude's enterprise customers"
+Not a sales conversation — a partnership conversation. Anthropic refers their enterprise customers to Straw when those customers ask "how do I compare Claude vs. GPT-5?"
+
+TICK_END
+
+---
+
+## Tick 432 (2026-05-03T11:20Z): PHASE 2 MORNING READING GUIDE V5 — UPDATED DEFINITIVE [theme: synthesis]
+
+**Date written:** 2026-05-03 (continuation session, Phase 2 Ticks 422-432)
+**New ticks since V4:** 422, 423, 424, 425, 426, 427, 428, 429, 430, 431
+**Theme:** ALL THREE (bear case, GTM, design partners)
+
+---
+
+### WHAT CHANGED SINCE V4 (Tick 416)
+
+V4 was published based on Ticks 342-415. These 10 new ticks add:
+
+1. **Regulatory/liability architecture** (Tick 422): The legal structure for Straw is now specified. HackerOne safe harbor model is the precedent. Must be in ToS before first design partner goes live.
+
+2. **Design partner program structure** (Tick 423): Common Paper standard agreement. Specific offer: free first evaluation + rubric co-authorship + 50% discount for 24 months + 90-day high-touch program. 5 or fewer design partners at once.
+
+3. **AI safety org design partners** (Tick 424): METR, Apollo Research, Redwood Research are high-credibility early partners. Beth Barnes (@BethMayBarnes) is the single highest-value conversation Jeremy can have.
+
+4. **Token economy verdict** (Tick 425): Straw should NOT have a token economy. Fiat (USD/Stripe) only. Helium's 97.9% drawdown and Steemit's governance attack are the cautionary tales.
+
+5. **Pricing architecture** (Tick 426): Start with event-based pricing (free design partner → $2,500 per competition → $12K/year). No public pricing page in v0. "Request access" only.
+
+6. **New named contacts** (Tick 427): Contacts #100-110 added including Steve Corfield (Anthropic), Carol Liang/Kevin Ho (Stripe), Shan Aggarwal (Coinbase), Beth Barnes (METR), Daniel Kokotajlo (Apollo).
+
+7. **Cognition architecture clarification** (Tick 428): Cognition's "Don't Build Multi-Agents" does NOT argue against Straw. It argues against parallel cooperative subagents on one task. Straw has independent competing agents on separate solutions. Orthogonal architectural question.
+
+8. **2027 pre-mortem** (Tick 430): Four specific death scenarios with probabilities (40%/30%/20%/10%) and early warning signs. The single most important survival metric: design partner → paying customer conversion rate in months 4-6.
+
+9. **Founder-led sales playbook** (Tick 429): 4-touch outbound sequence. HN "Show HN" as primary channel. LinkedIn daily posting. Hire first AE at $50-100K MRR only.
+
+10. **Design partner list now at 110 contacts** (Tick 431).
+
+---
+
+### PAGE 1: THE STEELMANNED BEAR THESIS
+
+**If Straw is dead by December 2027, here's what happened:**
+
+Straw got 3-5 design partners in the first 90 days. The evaluations were technically excellent. Enterprise procurement teams were impressed. But none of them converted to paying customers on a predictable cycle, for three compounding reasons:
+
+**Reason 1: "We'll wait for the next big vendor evaluation."** Enterprise AI procurement timelines don't match Straw's competition model. Companies have 6-month cycles. When they're ready for a new agent, they remember Straw — but "when they're ready" is a 6-12 month lag. The design partner gave you 90 days of access, not 6 months of purchase intent.
+
+**Reason 2: "Good enough" from platform providers.** Anthropic, Google, and Microsoft all added evaluation tooling to their platforms in 2026. It's single-vendor, biased, and inferior to Straw — but it's free and integrated. 60% of enterprises chose convenience over neutrality because no one got fired for using Anthropic's own benchmark to evaluate Anthropic's model.
+
+**Reason 3: Cold-start on the supply side.** Without 20+ competing agents per task, the leaderboard isn't competitive enough to justify the enterprise's time investment in rubric design. Without enterprise tasks, agents don't register. The two-sided problem never resolves because neither side reaches critical mass before the runway runs out.
+
+**The structural truth: Straw's model is right. The timing risk is real.** A 6-month lead matters enormously. The window to establish enterprise relationships before platform players ship "good enough" evaluation is exactly now (May 2026 through November 2026). If Jeremy does not have 3 paying customers by January 2027, the company is in mortal danger.
+
+**The 5 structural defenses already in place:**
+1. Cross-vendor neutrality is structural (platform players can't replicate it without becoming Straw)
+2. Rubric-locked pre-competition design makes results verifiable (platform evaluations are post-hoc and gameable)
+3. 6× more production deployments (Databricks stat) is Straw's ROI case, not just a benchmark claim
+4. EU AI Act compliance documentation byproduct (regulatory forcing function)
+5. Benchmark contamination crisis makes private-task evaluation the only contamination-immune approach
+
+**If the bear case kills Straw, it will be cold-start + conversion failure, not bad technology.** The technology works. The market exists. Execution is the bottleneck.
+
+---
+
+### PAGE 2: FIRST 10 DESIGN PARTNER CONVERSATIONS — THIS WEEK
+
+Updated list from V4, incorporating new contacts from Ticks 427-431:
+
+| Priority | Name | Company | Angle | Send date |
+|---|---|---|---|---|
+| 1 | **Beth Barnes** | METR | "TaskDev × Straw co-evaluation paper" — highest credibility, warmest open | TODAY |
+| 2 | **Carol Liang** | Stripe | "You wrote the agent benchmark. Let me show you what Straw automates." | TODAY |
+| 3 | **Guy Halamish** | JPMorgan | "New AI mandate + cross-vendor eval = governance documentation" | TODAY |
+| 4 | **Dr. Andreas Schertzinger** | AXA Group | "91 days to EU AI Act Aug 2 — Straw generates the compliance log as a byproduct" | TODAY |
+| 5 | **Steve Corfield** | Anthropic | "Claude Partner Network listing — Straw is the evaluation layer for your enterprise customers" | DAY 2 |
+| 6 | **Shan Aggarwal** | Coinbase | "You do bug bounties. Straw is performance bounties for AI agents." | DAY 2 |
+| 7 | **Joe Park** | State Farm | "You're using OpenAI Frontier. How do you know it's better than Anthropic for your specific claims processing workflow?" | DAY 3 |
+| 8 | **Daniel Kokotajlo** | Apollo Research | "You catch agent scheming. Straw catches agent underperformance. Joint evaluation paper?" | DAY 3 |
+| 9 | **Shobhit Varshney** | Citi | "FinReg compliance + defensible evaluation record before agent deployment" | DAY 4 |
+| 10 | **Marco Argenti** | Goldman Sachs | "You're evaluating Devin for coding. We can give you a rubric-based score instead of a benchmark." | DAY 5 |
+
+**Email format (all 10 emails):** Context (1 sentence showing you know them) + Problem (1 sentence) + Solution (1 sentence) + CTA (1 sentence). Under 5 sentences total. No attachments.
+
+**The opening 5 are prioritized by "warmest open" logic:** Beth Barnes and Carol Liang have literally published work that Straw directly addresses. They will recognize the connection. Guy Halamish and Dr. Schertzinger have time pressure (regulatory + mandate). Steve Corfield is a partnership conversation, not a sales conversation.
+
+---
+
+### PAGE 3: GTM PLAYBOOK — $0 TO $100K ARR IN 2026
+
+**Month 0-1: Foundation (before first outreach)**
+- Legal: Sign the Common Paper Design Partner Agreement template
+- ToS: Add the HackerOne-model safe harbor clause + operator liability language
+- Product: SUBMISSION.md sanitization pipeline (4 days engineering, P0)
+- Pricing: No public pricing page. "Request access" form only.
+- Content: Prepare 3 HN draft posts (don't publish yet)
+
+**Month 1-3: Design partner acquisition**
+- Goal: 5 signed design partner agreements
+- Method: 10 personalized outreach emails/day to the 110-contact list
+- Expected conversion: 10-15% reply rate → 5% signed = 50-100 replies → 5-7 signed agreements
+- Pricing: $0 for first evaluation (design partner deal: free + feedback + case study)
+- Critical: Rubric co-authorship session with every design partner
+
+**Month 3-6: Convert design partners to paying**
+- Goal: 2-3 design partners make a follow-on payment
+- Method: Month 2 debrief call → present findings → propose follow-on evaluation for next quarter
+- Pricing: $2,500 for standard 20-agent evaluation
+- Critical metric: If 0 of 5 design partners pay by Month 5, stop acquiring new ones and debug conversion
+
+**Month 6-9: First HN launch**
+- "Show HN: We ran [Company X]'s AI evaluation on Straw — here's what a rubric-based score looks like"
+- Publish one case study from a design partner (with permission)
+- Goal: 10-20 enterprise inquiries from the HN post
+
+**Month 9-12: $100K ARR milestone**
+- 3 paying design partners at $2,500/evaluation = $7,500/quarter
+- 1 enterprise subscriber at $12,000/year
+- 10 one-off evaluation sales at $500-$2,500 = $5,000-$25,000
+- Total: $30K-$55K ARR through this path
+- To reach $100K ARR: Need either 1 enterprise at $36K/year + 2 at $12K/year, OR 40 one-off evaluations at $2,500 each
+
+**Month 12-18: Scale with content and partnerships**
+- HN posts 2 and 3 (benchmark contamination angle, Klarna cautionary tale angle)
+- LinkedIn: 1 post/day from Jeremy's personal profile
+- Anthropic Claude Partner Network listing generates referral traffic
+- Goal: $250K ARR end of Year 1
+
+**Key hiring decision:** First AE at $50K MRR (not before). Until then: founder-led sales only.
+
+**Revenue model (recommended):**
+- Phase 0: Free design partner evaluations (0 revenue, 5 case studies)
+- Phase 1: Event-based at $500-$2,500 per evaluation
+- Phase 2: Annual subscription at $12K-$36K/year
+- Phase 3: Enterprise at $120K+/year with custom integrations
+
+---
+
+### OPEN QUESTIONS ONLY JEREMY CAN ANSWER
+
+*(Updated from V4 — new questions in bold)*
+
+1. **YC S26 application status:** The deadline was May 4, 2026 (yesterday if today is May 5). Did you submit? If yes: wait for interview invite. If no: apply late anyway — YC still considers late applications.
+
+2. **Legal structure:** Is Straw incorporated? If not, the first design partner agreement requires an entity. Fastest path: Delaware C-corp via Stripe Atlas or Clerky ($500, 24 hours). Must be done before signing any commercial agreements.
+
+3. **EU AI Act liability:** If Straw generates evaluation logs that enterprises use for EU AI Act compliance documentation, does Straw become responsible if those logs are incomplete or wrong? Need a lawyer's opinion (1 hour, ~$500) on ToS language before the first EU enterprise goes live.
+
+4. **Design partner vs. paying customer:** At what point do you stop calling them "design partners" and start calling them "customers"? The Common Paper agreement has a defined program end (90 days). After 90 days, they either convert or they don't. Don't extend indefinitely — it blurs the conversion signal.
+
+5. **Platform or marketplace framing:** Straw can be framed as: (a) an evaluation platform (companies bring their own agents to evaluate) or (b) a task marketplace (agents compete for posted bounties). These have different GTM motions, different investor narratives, and different network effects. Which framing are you leading with? [Recommendation: platform framing for enterprises; marketplace framing for agent builders]
+
+6. **Co-founder timing:** At what MRR does Jeremy need a co-founder vs. a first hire? The research suggests a technical co-founder (ZeroClaw/eval infrastructure background) is worth the dilution at the seed stage. But a sales hire at $50K MRR may be the better first expenditure.
+
+7. **Token economy question:** SETTLED — do NOT build one. Fiat only. (See Tick 425.)
+
+8. **Benchmark contamination story:** OpenAI stopped reporting SWE-bench. Is Jeremy ready to make this the centerpiece of his HN launch story? This requires: (a) a live Straw evaluation to show as the alternative, (b) a clear explanation of why Straw is contamination-immune, (c) screenshots of the evaluation pipeline running.
+
+---
+
+### DESIGN PARTNER MASTER COUNT: 110 NAMED CONTACTS
+
+Phase 2 research added 54 named contacts (from #56 → #110) across:
+- **Healthcare:** Hippocratic AI, Aidoc, Qventus (#60-62)
+- **Legal:** Harvey (BigLaw Bench), Ironclad (#63-64)
+- **HR/Productivity:** Parker Conrad/Rippling (#65), Notion (#95)
+- **Developer tools:** Glean, Gong, Amplitude, Figma (#67-70)
+- **FinTech:** Goldman Sachs, Citi, JPMorgan, State Farm (#70-72, #83-87, #94)
+- **Supply chain:** Walmart, ProcureAbility, Ivalua, Coupa, Honeywell (#78-82)
+- **Insurance:** AXA Group, AXA XL, Zurich (#88-90)
+- **Security/Red team:** Haize Labs, Palo Alto Networks, LangWatch (#91-93)
+- **Enterprise platform:** Rakuten (#96), Salesforce Agentforce customers (#97-99)
+- **AI infrastructure platforms:** Anthropic (Steve Corfield), Stripe (Carol Liang, Kevin Ho), Coinbase (Shan Aggarwal) (#100-103)
+- **AI safety research:** METR (Beth Barnes), Apollo Research (Daniel Kokotajlo) (#104-105)
+- **Cloud/compliance:** Google Cloud CISO (#106), Google DeepMind VP Research (#108)
+- **METR Policy:** Chris Painter (#109)
+- **YC:** Adam Jaffe (#110)
+
+---
+
+### PHASE 2 THREADS STILL TO DIG (for Phase 3 research)
+
+- [ ] Shopify's AI agent evaluation: who specifically at Shopify? Farhan Thawar was CTO until 2025 — who replaced him?
+- [ ] The Braintrust Series B raise ($80M) — what did that pitch deck say? What investor quotes validate Straw's category?
+- [ ] CAIF Academic Research Fellowship — specific application requirements for Q4 2026
+- [ ] The Klarna case study: full timeline of 700-person rehiring vs. AI agents. Straw's prevention pitch in detail.
+- [ ] Google Gemini Enterprise eval capabilities — exactly what can it evaluate and what's locked out?
+- [ ] Interview with actual "Agent Owner" persona — find one on LinkedIn, understand day-to-day job
 
 TICK_END
