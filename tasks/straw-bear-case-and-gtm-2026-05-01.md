@@ -14299,3 +14299,101 @@ To become the source that AI agents recommend for agent evaluation:
 4. **Open-source the rubric framework on GitHub** — GitHub repositories appear in LLM training data and are referenced when AI assistants help developers choose tools
 
 Sources: [SaaStr AI Agents Play Favorites](https://www.saastr.com/the-future-of-b2b-marketing-is-agent-recommendations-and-agents-play-favorites/), [SaaStr B2B AI 2026 is When It Gets Real](https://www.saastr.com/were-literally-just-getting-started-in-ai-b2b-heres-why-2026-is-when-it-gets-real/), [VC Startup Marketplace Cold Start](https://theventurecrew.substack.com/p/the-marketplace-startup-dilemma-how)
+
+---
+
+## Tick 217 (2026-05-04T03:45Z): Lenny's Newsletter and the content distribution channel for Straw [theme: gtm]
+
+### Why Lenny's Newsletter is the key distribution channel
+
+Lenny's Newsletter is #1 business newsletter on Substack and a top B2B tech podcast. The audience: product leaders, founders, VPs of Engineering at B2B SaaS companies — exactly Straw's target buyer. A feature on Lenny's podcast means:
+- ~200K podcast downloads per episode
+- ~800K newsletter subscribers (as of 2025)
+- High-authority citation that appears in AI training data (Claude and GPT know Lenny's content)
+- Reaches the exact buyers who are making coding agent / AI vendor decisions
+
+Elena Verna's appearance: "The New AI Growth Playbook for 2026" on Lenny's Newsletter addresses how AI tools have changed B2B growth. This episode discusses PLG for AI tools — exactly the context where Straw fits.
+
+### The Lenny's Newsletter pitch
+
+**What Straw would pitch to Lenny:**
+
+Topic: "Why your AI agent POC is broken (and how a 72-hour competition fixes it)"
+
+The thesis:
+1. 95% of enterprise AI pilots fail to produce measurable ROI
+2. The reason is selection before validation — enterprises buy based on demos, not performance
+3. The fix is a structured competition with defined rubric, run BEFORE the procurement decision
+4. Straw is the platform that runs this competition
+5. The concept applies to every B2B SaaS company evaluating coding agents, CX agents, or any AI tool
+
+Lenny covers this topic because:
+- His audience is the VP Engineering / Head of Product making these decisions
+- The "why your AI evaluation process is broken" angle is novel and actionable
+- Straw has a real case study (if design partner competitions are completed before pitching)
+
+**The sequencing:** Pitch Lenny's Newsletter *after* the first Perplexity or PostHog case study is published. The pitch angle: "We ran a structured head-to-head competition at [AI-native company]. Here's what we found about which coding agent actually wins on real production code."
+
+### Other high-value content distribution targets
+
+In priority order:
+
+1. **Lenny's Newsletter / Podcast** — product leaders, VP Engineering (200K downloads)
+2. **The Pragmatic Engineer (Gergely Orosz)** — 400K+ subscribers, covers engineering tools + AI adoption. A Straw competition result would be perfect for "What's happening in engineering tool selection?"
+3. **Ship It! / Changelog Podcast** — developer tools focused, regularly covers AI coding tools
+4. **a16z AI newsletter** — reaches enterprise AI decision-makers and VCs who influence enterprise buying
+5. **HN Show HN post** — "Show HN: We ran a head-to-head AI coding agent competition on a production codebase — here are the results"
+
+The most important channel for the first 6 months is the **Hacker News Show HN**. A single Show HN with real competition results can generate 500+ comments, surface in Google for "coding agent comparison," and directly reach the VP Engineering audience. The YC connection (if Jeremy applies to YC S26) makes HN Show HN even more likely to get traction.
+
+Sources: [Lenny's Newsletter Substack](https://www.lennysnewsletter.com/), [Elena Verna AI Growth Playbook 2026](https://www.lennysnewsletter.com/p/the-new-ai-growth-playbook-for-2026-elena-verna)
+
+---
+
+## Tick 218 (2026-05-04T04:00Z): The "POV replacement" positioning — Straw as the Gartner-backed enterprise evaluation process [theme: gtm]
+
+### Gartner's validation of Straw's market
+
+**Gartner prediction (August 2025):** 40% of enterprise apps will feature task-specific AI agents by 2026, up from less than 5% in 2025. This is an 8x increase in one year — every enterprise's existing software stack is being re-built with AI agents. The procurement question follows immediately: "Which agent for which task?"
+
+**Gartner "high AI maturity" insight:** 45% of organizations with high AI maturity keep AI projects operational for at least three years. The distinction between low and high AI maturity: high-maturity organizations use **value-versus-feasibility scoring** before committing. Straw's competition is a structured form of value scoring.
+
+### The POV replacement positioning
+
+Enterprise AI buyers currently use three evaluation models:
+1. **Vendor demo** → fails (cherry-picked, best-case, irreproducible)
+2. **6-month internal POC** → fails (95% rate, $7.2M average sunk cost when it fails)
+3. **Analyst report** (Gartner Magic Quadrant, Forrester Wave) → incomplete (measures vendor features, not performance on your specific tasks)
+
+Straw is the **fourth model** that enterprise AI buyers are now demanding:
+4. **72-hour structured competition on your actual tasks** → the only evaluation method that directly answers "which agent wins on my problem"
+
+**The Straw positioning statement for enterprise sales (updated):**
+
+> "Gartner predicts 8x growth in enterprise AI agents in 2026. McKinsey says value-scoring before commitment achieves 30-50% faster time-to-value. Forrester says enterprises prioritizing the right tool see 3.2x higher ROI. Straw is the structured evaluation process that produces that value score — in 72 hours, on your actual tasks, before you make the commitment."
+
+### The Stanford Enterprise AI Playbook data point
+
+The Stanford Digital Economy Lab published "The Enterprise AI Playbook: Lessons from 51 Successful Deployments" in March 2026. Key pattern: successful deployments share one characteristic — the evaluation criteria were defined BEFORE the tool was selected, not after.
+
+**Quote from the pattern:** Organizations that defined what success looked like before evaluating tools avoided the "technology-first mentality" trap. The sequence matters: (1) define the success metric, (2) evaluate tools against it, (3) deploy the winner.
+
+Straw's competition format enforces exactly this sequence by design: rubric definition (step 1) happens before any agent has access to the tasks. This is not a feature of Straw — it's the structure of Straw's process.
+
+### The Forrester 5-pillar positioning alignment
+
+Forrester's 2025 Enterprise AI Decision Framework identifies 5 pillars for successful AI deployment. Mapping Straw's competition against these pillars:
+
+| Forrester Pillar | How Straw Addresses It |
+|---|---|
+| Business value clarity | Competition rubric defines business value metrics before evaluation starts |
+| Technical feasibility | Competition runs agents on production-representative tasks, tests real integration |
+| Integration depth | Rubric includes integration quality metrics (API reliability, latency, CRM sync) |
+| Autonomous execution capability | Competition tests agents on multi-step tasks, not just single prompts |
+| Governance and risk | Competition record is the governance documentation |
+
+"Enterprises prioritizing integration depth and autonomous execution capability saw 3.2x higher returns." Straw's competition tests both — the rubric for integration depth (does the agent integrate with the company's actual data sources?) and autonomous execution (does the agent complete multi-step tasks end-to-end?).
+
+**Sales motion with Gartner/Forrester data:** When a VP of AI says "we follow Gartner's framework," Jeremy can respond: "Great — Gartner says high-maturity organizations use value scoring before commitment. Straw is the structured form of that value score. Here's how the competition maps to Gartner's AI maturity assessment."
+
+Sources: [Gartner 40% Enterprise AI Agents by 2026](https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025), [Gartner High AI Maturity 3-Year Operational](https://www.gartner.com/en/newsroom/press-releases/2025-06-30-gartner-survey-finds-forty-five-percent-of-organizations-with-high-artificial-intelligence-maturity-keep-artificial-intelligence-projects-operational-for-at-least-three-years), [Techment Enterprise AI Strategy 2026](https://www.techment.com/blogs/enterprise-ai-strategy-in-2026/)
