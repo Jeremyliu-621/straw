@@ -25765,3 +25765,53 @@ This means: the budget for Straw is ALREADY being spent — just on manual engin
 Sources: openai.com/index/scaling-codex-to-enterprises-worldwide, openai.com/index/introducing-codex, softude.com/blog/ai-budget-allocation-infra-models-integration, stackai.com/insights/enterprise-ai-budgeting-in-2026
 
 TICK_END
+
+---
+
+## Tick 420 — Microsoft Agent Governance Toolkit (April 2, 2026) + Rubric Builder as Wedge
+
+**Date researched:** 2026-05-03
+**Theme:** Competitive landscape / Product strategy
+
+### Microsoft Agent Governance Toolkit — the fourth major governance signal
+
+Microsoft released the open-source Agent Governance Toolkit on April 2, 2026:
+- First toolkit covering all 10 OWASP agentic AI risks
+- Sub-millisecond policy enforcement (Agent OS) + agent-to-agent security (Agent Mesh)
+- **Agent Compliance module:** automated governance verification with compliance grading
+- Addresses EU AI Act + Colorado AI Act regulatory requirements
+- Available in Python, TypeScript, Rust, Go, .NET; integrates with LangChain, CrewAI, Google ADK
+
+**How this differs from Straw:**
+
+| Dimension | Microsoft AGT | Straw |
+|---|---|---|
+| Question answered | "What are this agent ALLOWED to do?" | "How WELL does this agent do the task?" |
+| Evaluation moment | Runtime (after deployment) + pre-deployment security check | Pre-deployment performance evaluation |
+| Scope | Security governance, policy compliance, OWASP risks | Task performance, rubric-defined success criteria |
+| Buyer | Security team / DevSecOps | CPO, CTO, Agent Owner |
+
+**They are complementary.** An agent needs to pass BOTH the Microsoft AGT policy check (security + compliance) AND the Straw performance evaluation (does it actually work for this task) before enterprise deployment.
+
+**Integration opportunity:** Straw's Tier 1 deterministic evaluation could include an optional AGT compliance pre-check — "Agent passed/failed AGT OWASP Top 10 check" as rubric criterion 0 before performance scoring begins. This makes Straw the single interface for both security governance AND performance evaluation.
+
+### Rubric builder as Straw's wedge product (from Tick 418 insight, expanded)
+
+New product strategic insight: **the rubric is the value, not the evaluation.**
+
+Evidence: "CTOs budget 2-3 hours per vendor for rubric scoring" (CTO Coding Checklist 2026). The CTO is already writing a rubric — they're just not calling it that and they're doing it inefficiently.
+
+**Wedge product design:**
+1. Straw ships a standalone "Rubric Builder" at zero cost (no evaluation required)
+2. Enterprise posts: "I'm evaluating AI agents for [use case X]"
+3. Straw suggests a template rubric with 5-10 criteria from its library (coding, customer service, procurement, etc.)
+4. Enterprise customizes the rubric, validates the criteria with their team
+5. Straw nudges: "Run this rubric against your top 3 agent candidates for $500"
+
+**Why this matters:** Every enterprise that builds a rubric in Straw has committed to the evaluation framework. They're now one click away from running it. The rubric builder creates the commitment; the evaluation converts it to revenue.
+
+This is also a retention mechanism: once a rubric is saved in Straw, the enterprise uses it every time they update their agent or evaluate alternatives. The rubric is a sticky artifact.
+
+Sources: opensource.microsoft.com/blog/2026/04/02/introducing-the-agent-governance-toolkit, github.com/microsoft/agent-governance-toolkit, augmentcode.com/guides/cto-ai-coding-checklist, onereach.ai/blog/agent-lifecycle-management-stages-governance-roi
+
+TICK_END
