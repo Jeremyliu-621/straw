@@ -14869,3 +14869,146 @@ Companies actively making the Agentforce vs. ServiceNow decision in 2026:
 4. **Salesforce's own partner ecosystem (SIs like Accenture, Deloitte)** — these companies run Salesforce implementations for Fortune 500 clients and need to advise on which AI agents to deploy. A Straw competition on a sample client workload gives them the evidence to recommend confidently.
 
 Sources: [CallSphere Salesforce vs ServiceNow 2026](https://callsphere.ai/blog/salesforce-vs-servicenow-enterprise-ai-agent-war-2026), [Futurum Was 2025 Year of Agentic AI](https://futurumgroup.com/insights/was-2025-really-the-year-of-agentic-ai-or-just-more-agentic-hype/), [Sana Labs Enterprise AI Platforms 2025-2026](https://sanalabs.com/agents-blog/leading-ai-enterprise-fortune-500)
+
+---
+
+## Tick 229 (2026-05-04T07:00Z): PHASE 2 COMPLETE — MASTER SYNTHESIS DOCUMENT [theme: all]
+
+*This is the definitive Phase 2 deliverable. Ticks 160-228 synthesized. Jeremy reads this on waking.*
+
+---
+
+### THE STRAW THESIS (one paragraph)
+
+Enterprise AI procurement is broken. Companies spend $547B on AI and waste 80% of it because they select tools based on vendor demos, not verified performance on their actual work. Straw fixes this: companies define exactly what winning looks like, AI agents compete on real tasks with a defined rubric, and the score proves it. Straw is not Kaggle (which evaluates academic benchmarks), not Braintrust (which monitors production), not Scale Labs (which labels training data). Straw is the procurement decision layer — the 72-hour structured competition that runs BEFORE the $7.2M commitment, generates ISO 42001 compliance documentation automatically, and produces the Straw Certified badge that winning agents use to close future enterprise deals.
+
+---
+
+### PAGE 1: THE BEAR THESIS (one page)
+
+**The 5 failure modes that could kill Straw:**
+
+**1. Hyperscaler capture [18-month window]**
+Google, Microsoft, or Amazon bundles "agent evaluation" into their existing enterprise AI platforms. Straw's $25K standalone competition can't compete with "free in your Google Cloud contract." The window: 18 months before hyperscalers add this feature. Mitigation: 5 published enterprise case studies + the Straw Certified badge as a recognized credential before they do.
+
+**2. Data privacy kills the first sale [immediate]**
+53% of enterprises say data privacy is their #1 AI adoption obstacle. Straw asks enterprises to send proprietary code/contracts/tickets to a startup's platform while multiple competing vendors simultaneously read them. Security/legal teams say no.
+*Non-negotiable product requirement before first enterprise deal:* Signed DPA + data non-retention agreement. Synthetic task option for legal/finance verticals. VPC execution mode for V2.
+
+**3. Perpetual pilot → budget freeze [ongoing]**
+42% of enterprises abandoned AI initiatives in 2025. Some CFOs froze all AI spend. A $25K competition is the first line item cut in an AI budget freeze.
+*Solve with:* Free design partner program. Remove procurement friction for first 5 competitions entirely.
+
+**4. Token economy collapse [12-18 months]**
+OpenAI projecting $14B loss in 2026. Usage-based billing is inevitable. Competition costs become volatile and unpredictable.
+*Solve with:* Pre-purchased API token blocks at fixed rates. Fixed-price competition contracts. QPC (quality-per-dollar) as a feature, not a liability.
+
+**5. The platform that already has enterprise relationships adds a "procurement evaluation" feature [ongoing]**
+Braintrust ($800M, Notion/Stripe/Zapier customers), Salesforce (Agentforce), Microsoft (Azure AI Foundry) — any of these could add head-to-head evaluation. Straw's neutrality (no stake in which agent wins) is the permanent differentiation.
+
+**The dead platform autopsy:**
+- Replit Bounties (killed Sept 2025): AI agents made human bounty hunters obsolete. Straw's supply is AI agents — they don't get displaced.
+- Bountysource (insolvent 2023): Centralized escrow failure. Straw holds no money — prizes are deployment contract commitments.
+- Kaggle (leaderboard shake-down, overfitting): Straw uses buyer's own proprietary tasks — can't be contaminated.
+
+**The bear case summary:** Straw's window is 18-24 months before hyperscalers capture the category. Move now or let Google define "AI agent evaluation" as a feature in Google Cloud Next 2027.
+
+---
+
+### PAGE 2: FIRST 10 DESIGN PARTNER CONVERSATIONS (one page)
+
+**The north star:** Book 3 calls with potential design partners this week. Have a rubric design ready for each.
+
+**The top 5 (start immediately):**
+
+| # | Target | Entry | Opener |
+|---|---|---|---|
+| 1 | **Perplexity (Head of Engineering)** | Twitter/X DM | "You use Braintrust for production monitoring. Let Straw run the evaluation BEFORE you deploy. 72-hour coding agent competition on your actual repos — Cursor vs Copilot. Free. Would you blog the result?" |
+| 2 | **Rubric AI (Pragya Saboo, YC W26)** | LinkedIn / YC Slack | "Your thesis is that agent evaluation needs to be rigorous. Straw runs competitions that generate the evaluation records. Compete in Straw, win, get the badge that proves your evaluation performance to enterprise buyers. 20 min?" |
+| 3 | **PostHog (James Hawkins, CEO)** | Twitter/X | "You've written about which AI tools PostHog uses. Let's run the competition instead of the essay. 72-hour Cursor vs Copilot on your GitHub backlog. I'll run it free. You write the result." |
+| 4 | **Devin / Cognition AI (partnerships team)** | LinkedIn | "Devin is at Goldman. So is Cursor. Every F500 is asking: which one wins on MY codebase? Straw runs that competition. Devin should compete in all of them. Free to participate. The Straw Certified badge is your enterprise sales weapon." |
+| 5 | **Linear (Karri Saarinen, CEO)** | Twitter/X | "Linear has the most precise engineering culture I've seen. You'd design the best coding agent rubric. 72 hours on your backlog — free for Linear. The result: the definitive answer to Cursor vs Copilot for quality-obsessed teams." |
+
+**The next 5 (week 2):**
+- **6. AmLaw 200 law firm CTO** (via legal tech referral): LexisNexis withdrew from head-to-head evaluation. Straw runs the evaluation they refused to take.
+- **7. HackerOne (VP Engineering)**: "Your competition platform evaluates security researchers. Straw evaluates AI agents. Same structure, different layer. Let's run a competition on your triage automation decision."
+- **8. Retool (engineering/blog lead)**: "Your 'build vs buy AI agents' blog post needs a sequel: how you actually chose your coding agent. Straw runs it. We co-publish."
+- **9. Regional bank CRO/CISO** (via banking conference): "OCC Model Risk Guidance + EU AI Act = you must document AI selection. Straw generates that documentation as a byproduct of the competition."
+- **10. Intercom Fin AI team**: "You publish 51% instant resolution rate. Prove it on a buyer's actual tickets before they sign. That case study is your sales weapon."
+
+**The 2-week sprint:**
+- Week 1: Send 5 outreach messages. Book 3 calls.
+- Day 5: Post "Ask HN: How does your company evaluate AI agents before buying?" — surfaces warm inbound.
+- Week 2: Follow up, book 5 more calls. Design first rubric.
+- Apply to YC S26 (deadline approaching, "Economically Useful Evals" category is tailor-made for Straw).
+
+---
+
+### PAGE 3: GTM PLAYBOOK (one page)
+
+**The one-sentence positioning:**
+Straw is the AI agent procurement platform that replaces the failed 6-month POC with a 72-hour structured competition on your real tasks — so you don't spend $7.2M on the wrong choice.
+
+**Channel 1: Founder-led direct (months 1-4)**
+- Target: VP Engineering / Head of AI / CPO at AI-native companies first (Perplexity, PostHog, Linear), then Fortune 500
+- Script: "You abandoned AI initiatives in 2025. Here's why: you selected before validating. Straw validates before you select."
+- Goal: 3 calls booked in week 1, 1 signed design partner by week 3
+
+**Channel 2: YC S26 (deadline: now)**
+- Apply under "Economically Useful Evals" — literally the named RFS category for Straw
+- Application frame: "YC asked for this. We built it. Here's our first competition result."
+- $500K + YC brand + Demo Day exposure + W26 supply-side partners in Straw competitions
+
+**Channel 3: AWS Marketplace (months 3-6)**
+- List Straw as "SaaS API-based AI agent evaluation product" on AWS Marketplace
+- 3% fee (1.5% with ISV Accelerate), 40% faster sales cycles, EDP burn-down removes procurement friction
+- Anthropic + AWS partnership = cross-referral channel
+
+**Channel 4: Content marketing (ongoing)**
+- Publish "The AI Agent Procurement Platform: A New Category" — canonical definition that AI agents cite
+- Open-source rubric design framework on GitHub — Straw becomes the authority
+- Show HN with first competition result — 500+ comments, permanent HN search presence
+- Pitch Lenny's Newsletter: "Why your AI POC fails (and how a 72-hour competition fixes it)"
+
+**The new buyer personas (updated from Tick 193):**
+- VP/Head of AI (AI infrastructure budget): "Which agent performs best on our tasks?"
+- CPO / VP Procurement (vendor eval budget): "AI-native RFP with verified results"
+- CISO / VP Risk (compliance budget): "ISO 42001 documentation from a single competition"
+
+**The pricing model:**
+- Design partners (first 5): $0 for first competition, 50% discount for 24 months
+- Standard: $25K-$75K/competition (coding at $25K, legal/finance at $75K)
+- Annual re-certification: $15-30K/year (recurring revenue, 100% NRR)
+- Supply-side partners (Devin, Intercom Fin, etc.): $5K/month to be "Straw Listed"
+
+**The Series A path:** $2.5M ARR within 18 months = 100 competitions/year at $25K average. Annual re-certification creates 100% NRR. Series A at $30-35M median valuation (15-30x multiple) = $40-90M raise.
+
+---
+
+### PAGE 4: 5 OPEN QUESTIONS JEREMY MUST ANSWER THIS WEEK
+
+**Q1: Data privacy architecture first or sales first?**
+Sales-first = some deals will stall at security review. Privacy-first = 2-3 month delay.
+*Recommendation:* Sales-first with contractual mitigation (DPA + data non-retention). Use synthetic tasks for the first design partner competitions to eliminate the objection entirely. Build VPC execution for V2.
+
+**Q2: Apply to YC S26 now?**
+Pre-traction application vs. post-case-study application. YC S26 "Economically Useful Evals" is perfect fit.
+*Recommendation:* Apply now. The RFS match is too obvious to wait. A signed design partner LOI (even a free design partner) is traction.
+
+**Q3: Which vertical ships first — coding or CX?**
+Coding: automated metrics, technical buyer, fastest to close. CX: larger market, requires human spot-check.
+*Recommendation:* Coding first. Objective metrics, fast rubric design, VP Engineering is an accessible buyer.
+
+**Q4: Open-source the rubric methodology or keep proprietary?**
+Open = category authority, competitors implement Straw's framework under different names. Proprietary = rubric library IP lock-in but slower adoption.
+*Recommendation:* Open-source the methodology (HOW to design rubrics), keep the rubric corpus proprietary (the 200+ validated rubric library built through competitions).
+
+**Q5: Supply-side monetization — when?**
+Charging Devin/Intercom to be "Straw Listed" ($5K/month) changes the business model. But it creates potential conflict of interest (paid partners might get preferential treatment in competitions).
+*Recommendation:* Don't monetize supply side until 20+ competitions complete and Straw Certified badge has clear market value. Launch supply-side monetization only after the badge is an independently recognized credential.
+
+---
+
+*Phase 2 research complete. Ticks 160-229, covering: 228 research ticks, 14,900+ lines, 69 commits. All themes completed: bear case (all major failure modes documented), GTM (complete playbook with pricing, channels, personas), design partner targets (30+ named contacts with specific openers, competition designs, and entry points).*
+
+*Good morning, Jeremy.*
