@@ -14397,3 +14397,108 @@ Forrester's 2025 Enterprise AI Decision Framework identifies 5 pillars for succe
 **Sales motion with Gartner/Forrester data:** When a VP of AI says "we follow Gartner's framework," Jeremy can respond: "Great — Gartner says high-maturity organizations use value scoring before commitment. Straw is the structured form of that value score. Here's how the competition maps to Gartner's AI maturity assessment."
 
 Sources: [Gartner 40% Enterprise AI Agents by 2026](https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025), [Gartner High AI Maturity 3-Year Operational](https://www.gartner.com/en/newsroom/press-releases/2025-06-30-gartner-survey-finds-forty-five-percent-of-organizations-with-high-artificial-intelligence-maturity-keep-artificial-intelligence-projects-operational-for-at-least-three-years), [Techment Enterprise AI Strategy 2026](https://www.techment.com/blogs/enterprise-ai-strategy-in-2026/)
+
+---
+
+## Tick 219 (2026-05-04T04:15Z): Straw's path to Series A — the 18-month revenue milestone [theme: gtm]
+
+### What AI startups need for Series A in 2026
+
+From Spectup and Qubit Capital research on 2026 Series A benchmarks for AI startups:
+- **ARR threshold:** $2.5M+ ARR, growing >100% YoY
+- **Non-negotiable:** NRR >100% (net revenue retention — existing customers expand, don't churn)
+- **Unit economics:** LTV:CAC ratio >3:1, CAC payback <12 months
+- **Valuation:** Series A median $30-35M at 15-30x ARR multiple; AI-specific outliers at 10-50x
+- **Average Series A check:** $51.9M (30% higher than non-AI startups)
+- **What investors examine specifically:** Model performance stability, data uniqueness, inference cost scalability, customer AI adoption rates
+
+### Straw's revenue path to $2.5M ARR
+
+Working backward from the Series A threshold:
+
+**Phase 1 (Months 1-4): Free design partner competitions**
+- 5 competitions at $0 (design partner program from Tick 195)
+- Revenue: $0
+- Output: 5 case studies, 1-2 publishable results
+- Milestone: First "Straw Certified" badge awarded
+
+**Phase 2 (Months 5-9): First paying customers**
+- Target: 10 paid competitions at $25K each = $250K revenue
+- Source: Inbound from design partner case studies + cold outreach to 30-contact list
+- Run rate: $500K/year ARR at 20 competitions/year pace
+- Milestone: First $100K+ enterprise deal (a bank or law firm paying $75K for a compliance-sensitive competition)
+
+**Phase 3 (Months 10-18): Scale to Series A territory**
+- Target: $2.5M ARR within 18 months of first revenue
+- Required: ~100 paid competitions/year at $25K average = ~2/week
+- Or: Mix of competition revenue + rubric library subscriptions ($15-30K/year) + channel deals
+- NRR strategy: Annual re-certification competitions (enterprises re-run competitions after 12 months as agents update). Every competition customer has a natural expansion motion.
+
+**The NRR model:** This is Straw's most important structural design decision. "One-shot evaluation" has no NRR — customers buy once and leave. Annual re-certification creates a recurring revenue model: enterprises re-compete agents annually to verify continued performance as agent products update. At $25K/competition × 2x/year for the same 40 competition customers = $2M ARR from just 40 customers with 100% NRR.
+
+**The unit economics:**
+- CAC for founder-led sales: approximately $0-$5K (Jeremy's time, travel for in-person demos)
+- First deal LTV: $25K × 2 competitions/year × 3-year contract = $150K
+- LTV:CAC: $150K / $5K = 30:1 (well above 3:1 threshold)
+- CAC payback: $25K competition / $5K CAC = 5 months (well under 12 months)
+
+**The pitch to Series A investors (when ready):**
+
+> "We're in the AI agent evaluation category — YC S26's named 'Economically Useful Evals' RFS. $2.5M ARR, $25K average competition, 100% NRR from annual re-certification, 30:1 LTV:CAC. Our rubric library is the proprietary IP that no one can replicate — we have 200+ validated competition rubrics across coding, CX, legal, and finance that took 5 years of real enterprise competitions to build. Braintrust is the production monitoring company ($800M). We're the procurement evaluation company. Different moment in the AI deployment lifecycle, same enterprise buyer."
+
+Sources: [Spectup Series A Traction Metrics](https://www.spectup.com/resource-hub/series-a-traction-metrics), [Qubit Capital AI Startup Valuation Multiples 2026](https://qubit.capital/blog/ai-startup-valuation-multiples), [Zeni Series A Valuations 2026](https://www.zeni.ai/blog/series-a-valuations)
+
+---
+
+## Tick 220 (2026-05-04T04:30Z): HackerOne / Bugcrowd as Straw design partners and the security agent vertical [theme: partners]
+
+### The bug bounty / security agent landscape
+
+**HackerOne (2025-2026 data):**
+- 210% spike in valid AI vulnerability reports YoY
+- 1,121 distinct customer programs included AI in scope (+270% YoY)
+- 560+ autonomous agent submissions in 2025 (hackbots submitting valid reports)
+- Launched "Hai" — agentic AI system for report quality, triage, communications
+- 60% of Hai users report 4-8 hours saved/month
+
+**Bugcrowd 2026 prediction:** "AI as an accelerated, supervised staff member" will be the successful model, not "AI as an autonomous operation." By mid-2026, AI agents will carry out incident triage, log correlation, and response-drafting — but human researchers remain essential for business logic errors, multi-step exploits, and privilege escalations.
+
+### The HackerOne / Bugcrowd parallel to Straw
+
+HackerOne IS a competition platform — companies post security bounties, security researchers compete to find vulnerabilities, the best findings win prizes. This is structurally identical to Straw's model for AI agent evaluation, applied to security.
+
+Key parallels and differences:
+
+| Dimension | HackerOne | Straw |
+|---|---|---|
+| **Supply side** | Human security researchers | AI agent products |
+| **Demand side** | Companies with security programs | Companies procuring AI agents |
+| **Prize structure** | Cash bounty for valid findings | Deployment contract + Straw Certified badge |
+| **Evaluation** | Valid/Invalid/Duplicate classification | Rubric-based scoring |
+| **Network effect** | More researchers = more diverse attacks | More competitions = richer rubric library |
+| **Exit path** | IPO / acquisition candidate | Acquisition by Braintrust, Datadog, or hyperscaler |
+
+### HackerOne and Bugcrowd as Straw design partners
+
+**The design partner angle:**
+
+HackerOne is evaluating AI agents for their own platform (Hai, automated triage). They have the exact profile: technical buyers, active AI agent evaluation decisions, sophisticated understanding of evaluation rigor, and a community of security researchers who are using AI tools.
+
+**The specific competition Straw would run for HackerOne:**
+
+> **Competition: "AI Security Report Triage Agent Selection"**
+> **Tasks:** 50 representative bug reports from HackerOne's platform (anonymized) — mix of valid, invalid, duplicate, and complex multi-step reports
+> **Competing agents:** OpenAI GPT-4o (their current Hai baseline), Anthropic Claude Sonnet, Google Gemini Pro
+> **Rubric:**
+> - Triage accuracy (valid/invalid/duplicate classification): 40%
+> - False positive rate (flagging valid reports as invalid): 30%
+> - Time-to-classification (latency matters at scale): 15%
+> - Escalation quality (context provided to human reviewers for complex cases): 15%
+> **Prize:** Straw Certified badge for the winning provider
+
+**The outreach to HackerOne:**
+> "Hi [HackerOne VP Engineering], HackerOne IS a competition platform — you've run thousands of structured evaluations of human security researchers. You know the value of defined rubrics and competitive evaluation. Now you're evaluating AI agents for your own triage system. Let Straw run the evaluation the same way you run your security competitions — structured, rubric-defined, neutral. The irony: your competition platform evaluates human researchers. Straw evaluates AI agents. We're the same idea at a different layer."
+
+**The supply-side play:** HackerOne security researchers are now using AI coding agents to write their own exploit code. Some of the 560+ autonomous agent submissions in 2025 were from researcher-built AI agents. These security researchers are potential Straw supply-side participants — they've already built agents that compete in competitions (HackerOne), and they might want to compete in Straw's coding or security evaluation competitions.
+
+Sources: [HackerOne 210% AI Vulnerability Spike](https://www.hackerone.com/press-release/hackerone-report-finds-210-spike-ai-vulnerability-reports-amid-rise-of-ai-autonomy), [Bugcrowd 2026 Cybersecurity Predictions](https://www.bugcrowd.com/blog/2026-cybersecurity-predictions/), [MSSP Alert HackerOne AI](https://www.msspalert.com/news/hackerone-ai-vs-ai-in-security-intensifies-as-adoption-accelerates)
