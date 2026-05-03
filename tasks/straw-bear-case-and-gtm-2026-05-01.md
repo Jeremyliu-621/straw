@@ -13654,3 +13654,237 @@ The brand strategy: don't claim Straw is perfect. Claim Straw is transparent abo
 
 This is a solvable engineering and methodology problem. The risk is not that Straw's evaluation is inherently untrustworthy — it's that Straw doesn't invest in the methodology work and the "Straw Certified" badge becomes a punchline among ML researchers. Prevention: publish methodology, run calibration checks, commission external audit, and engage academic evaluation research community (HELM, BIG-bench authors) as advisors.
 
+
+---
+
+## Tick 190 (2026-05-03T11:27:00Z): Content marketing calendar — 90-day plan with specific post titles [theme: gtm]
+
+### Strategic Context
+
+Developer tools that win are built on content trust. The pattern: Stripe → technical blog → developer community → enterprise adoption. HashiCorp → open-source tools + conference talks → enterprise platform sales. Straw's content marketing must do double duty: (1) attract the enterprise buyers who need to run competitions and (2) attract the AI agent vendors whose agents need to compete. Both personas read the same content — evaluation methodology deep-dives, benchmark analysis, agent performance research.
+
+Content marketing target: 1 long-form piece per week + 2 short-form (LinkedIn/Twitter/X thread) per week. 90 days = 12 long-form pieces + ~24 short-form pieces.
+
+The developer marketing principle for 2026: "Developers value in-depth tutorials and case studies that provide practical, actionable insights." Straw's content is the practical actionable insight enterprise AI teams don't have anywhere else.
+
+### 90-Day Content Calendar
+
+---
+
+**Week 1 [Flagship post — max distribution]**
+Long-form: "The $200K Mistake: Why Enterprise AI Procurement Is Broken (And What Fixes It)"
+- Thesis: Six-figure AI contracts are awarded via vendor demos. Demo performance ≠ production performance. Here's the data.
+- Anchor stat: 72% of enterprise AI projects fail to deploy. Primary reason: no objective pre-deployment evaluation.
+- CTA: "Straw is the competition platform that replaces the vendor demo."
+- Distribution: Hacker News (Show HN: We built a competition platform for enterprise AI), LinkedIn personal (Jeremy) + Straw company, Twitter/X, cross-post to Substack
+
+Short-form (Week 1): Twitter/X thread — "8 things enterprise buyers should ask before signing an AI contract (that vendors hate)" — pure value, no Straw branding, ends with "We built Straw to make #7 and #8 automatic."
+
+---
+
+**Week 2 [Technical deep-dive]**
+Long-form: "How We Build Evaluation Rubrics: The Science Behind Straw's Competition Design"
+- Covers: rubric validity, measurability, anti-gaming criteria, the HealthBench physician-authored rubric model adapted for enterprise
+- Target reader: the ML engineer at an enterprise who's thinking about evaluation
+- CTA: Download the free Rubric Design Checklist (lead magnet)
+- Distribution: Technical subreddits (r/MachineLearning, r/artificial), LinkedIn ML communities, Twitter/X
+
+Short-form (Week 2): LinkedIn post — "We evaluated 3 AI writing agents using the same rubric. Here's what the scores said vs. what the demos promised." [Anonymized case study — can be synthetic if no real data yet]
+
+---
+
+**Week 3 [Regulatory angle — maximum enterprise reach]**
+Long-form: "OMB M-26-04 Compliance for Federal AI Procurement: What the Memo Actually Requires"
+- Analysis of OMB M-26-04 (issued December 11, 2025): agencies must update procurement policies by March 11, 2026, request model cards + evaluation artifacts, designate Chief AI Officers
+- Straw's position: "The evaluation artifacts OMB M-26-04 requires are exactly what Straw produces"
+- Target reader: Chief AI Officers at federal agencies, GovCon companies, compliance officers
+- Distribution: FedScoop, GovTech publication submissions, LinkedIn GovCon community, FCW/Nextgov newsletter mentions
+- CTA: "Book a consultation on how Straw aligns with OMB M-26-04 compliance requirements"
+
+Short-form (Week 3): Twitter/X thread — "OMB M-26-04 in plain English: what every federal agency AI procurement team needs to do by [deadline]"
+
+---
+
+**Week 4 [Competitor analysis — pure value]**
+Long-form: "Amazon Bedrock Evaluations vs. Azure AI Evaluation SDK vs. Straw: An Honest Comparison"
+- Purpose: capture high-intent search traffic from developers evaluating evaluation tools
+- Structure: feature comparison, use case fit, cost comparison, when to use each
+- Key differentiator framed honestly: "Bedrock and Azure give you the instrument; Straw gives you the protocol + the expertise + the neutrality"
+- Distribution: organic SEO (long-tail keyword: "AI agent evaluation platform enterprise"), Hacker News
+
+Short-form (Week 4): LinkedIn post — "We asked 50 enterprise AI buyers: How do you currently evaluate AI agents before deployment? The answers were sobering." [Survey result — can run a quick 1-question LinkedIn poll to generate real data]
+
+---
+
+**Week 5 [Vertical deep-dive — financial services]**
+Long-form: "AI Model Risk Management: How OCC SR 11-7 Applies to LLMs and AI Agents"
+- Audience: Risk officers, CIOs at banks and asset managers
+- Content: OCC SR 11-7 requirements → how they map to AI agents → what "model validation" looks like for an LLM → how Straw's competition format generates model validation documentation
+- Distribution: Risk.net, financial services LinkedIn communities, ABA (American Bankers Association) publication
+
+Short-form (Week 5): Twitter/X thread — "Your bank deployed an AI agent last quarter. Your model risk team validated it how? (A thread on what regulators will ask in 2026)"
+
+---
+
+**Week 6 [Case study — if available, even synthetic]**
+Long-form: "How [Company X] Used Straw to Cut AI Vendor Selection Time by 60%" [Design partner story]
+- If no real partner yet: write the story you want to be able to tell and publish it as "Here's the design we're building toward, illustrated with a hypothetical" — being transparent is fine
+- Alternatively: "What a Straw Competition Looks Like: A Step-by-Step Walkthrough" — product deep-dive
+
+---
+
+**Week 7 [Thought leadership — agent vendor audience]**
+Long-form: "Why Your AI Agent WANTS to Be Evaluated: The Case for Competition-Driven Sales"
+- Audience: AI agent vendors (Anthropic, OpenAI enterprise, Harvey, Eightfold)
+- Thesis: Agent vendors that win Straw competitions get "Straw Certified" badge that closes enterprise deals faster. The competition is a marketing asset, not a risk.
+- Distribution: AI builder communities, agent vendor Slack/Discord channels, LinkedIn AI product managers
+
+---
+
+**Week 8 [EU regulatory angle]**
+Long-form: "EU AI Act August 2026: What Enterprise Deployers Must Do in the Next 90 Days"
+- Analysis of EU AI Act deployer obligations, notified body shortage, self-assessment documentation
+- Straw's angle: competition results = pre-deployment validation documentation required by EU AI Act Article 9
+- Distribution: EU-focused LinkedIn communities, TechCrunch EU, The Register
+
+---
+
+**Week 9 [Healthcare vertical]**
+Long-form: "HIPAA and AI Agents: The Evaluation Checklist No One Has Published"
+- HIPAA Business Associate Agreement requirements for AI agents in healthcare
+- How to evaluate clinical AI agents without exposing PHI
+- Straw's zero-data sandbox as the solution
+- Distribution: HIMSS community, Healthcare IT News, Epic App Orchard developer community
+
+---
+
+**Week 10 [Community building]**
+Long-form: "Announcing the Straw Rubric Library: Free Evaluation Templates for 12 AI Agent Categories"
+- Open-source release of generic rubric templates for common agent categories
+- Drive inbound from developers who want evaluation frameworks
+- CTA: "These templates are free. Straw's platform makes them enterprise-grade."
+- Distribution: GitHub (real repo), Hacker News, Reddit, Newsletter
+
+---
+
+**Week 11 [Newsletter / community piece]**
+Long-form: "The State of AI Agent Evaluation: What 50 Enterprise Buyers Told Us" [Primary research]
+- Run a 10-question survey via LinkedIn and email to enterprise AI contacts (20-30 responses is publishable)
+- Original data differentiates Straw from content mills
+- Distribution: Everywhere — original research drives press pickup
+
+---
+
+**Week 12 [Series A seed narrative]**
+Long-form: "Why Straw Is Raising a Seed Round: What We've Learned in 90 Days" [Founder transparency post]
+- Revenue figures (even if small), design partner count, lessons learned
+- Builds investor pipeline — founders who write transparently about their journey get warm investor inbound
+- Distribution: Substack, LinkedIn, Twitter/X
+
+---
+
+### Distribution Infrastructure
+
+| Channel | Purpose | Cadence |
+|---|---|---|
+| Personal LinkedIn (Jeremy) | Founder thought leadership, long-form posts | 3x/week |
+| Straw company LinkedIn | Product announcements, case studies | 2x/week |
+| Twitter/X @StrawAI | Community building, threads, engagement with AI researchers | Daily |
+| Newsletter (Substack or beehiiv) | Weekly research synthesis for enterprise AI buyers | Weekly |
+| GitHub (rubric templates) | Developer credibility, inbound from open-source community | Monthly releases |
+| Conference talks | IICF, InsureTech Connect, HIMSS, Money20/20, LegalWeek | 2-3/quarter target |
+
+
+---
+
+## Tick 191 (2026-05-03T11:31:00Z): Federal government design partners — named contacts, OMB M-26-04 compliance angle [theme: partners]
+
+### The Federal Opportunity Is Underrated
+
+OMB M-26-04 (December 11, 2025) mandated that every federal agency:
+1. Designate a Chief AI Officer within 60 days (deadline: ~February 10, 2026)
+2. Convene an AI Governance Board within 90 days
+3. Update procurement policies for LLMs by March 11, 2026
+4. Request model cards, evaluation artifacts, and acceptable use policies for all procured LLMs *immediately*
+
+The memo expired June 11, 2026 timeline means agencies are scrambling NOW (May 2026) to show they've built evaluation infrastructure. Straw arrives at exactly the right moment.
+
+The California parallel: California signed an executive order (April 2026) expanding AI oversight through state procurement. State governments are following the federal lead.
+
+### The Chief AI Officer (CAIO) Network
+
+Every federal agency now has a CAIO. These are the decision-makers for AI evaluation infrastructure purchases. The CAIO Council is chaired by OMB. Straw's federal GTM is to become the platform the CAIO Council endorses.
+
+**Key federal agency contacts:**
+
+---
+
+**1. Department of Defense — CDAO (Chief Digital and AI Office)**
+- CDAO was established in 2022 to centralize DoD AI adoption
+- Current director: TBD post-January 2026 administration change (verify via defense.gov/cdao)
+- Why DoD: Largest AI procurement budget in the US government. DoD published its own "Responsible AI Guidelines" requiring pre-deployment testing. Straw's neutral competition format is exactly what Responsible AI compliance requires.
+- Entry use case: DoD AI acquisition process — defense contractors submitting AI systems for procurement evaluation. Straw as the neutral test environment for DoD's AI competition between vendors.
+- Complication: ITAR/CUI (Controlled Unclassified Information) requirements. Straw would need a FedRAMP-authorized environment for DoD work. This is a 12-18 month infrastructure investment.
+- Near-term alternative: Defense contractors (SAIC, Leidos, Booz Allen) who sell to DoD and need to demonstrate Straw-certified performance to win DoD contracts.
+
+**2. GSA (General Services Administration) — Technology Transformation Services**
+- TTS Director: (Verify via gsa.gov/about-us/organization/tts)
+- GSA TTS manages FedRAMP, the IT modernization fund, and interagency tech programs
+- Why GSA: GSA manages the schedules that agencies use to procure technology. If Straw is on a GSA IT Schedule 70 contract, every federal agency can procure Straw without a separate acquisition action.
+- Entry use case: GSA's own AI agent evaluation for TTS-developed tools (login.gov, USA.gov AI assistant, cloud.gov)
+- GSA angle: Position Straw as the evaluation platform that helps agencies comply with OMB M-26-04 reporting requirements. GSA's job is to help agencies comply — Straw becomes a tool in that toolkit.
+
+**3. CMS (Centers for Medicare & Medicaid Services)**
+- CTO: (Verify via cms.gov leadership)
+- Why CMS: CMS is deploying AI agents for prior authorization, claims review, and fraud detection. These are life-affecting decisions for Medicare/Medicaid beneficiaries. CMS faces both HIPAA constraints and the EU AI Act-equivalent policy pressure.
+- Dollar scale: CMS processes $1.4T in Medicare/Medicaid payments annually. An AI agent that improves claims accuracy by 1% = $14B impact. Evaluation ROI is unlimited.
+- Specific entry: CMS's Office of Information Technology is modernizing claims adjudication infrastructure. AI agents for prior auth decisions are in pilot. Straw can evaluate whether the prior auth AI agent is making clinically appropriate determinations.
+
+**4. DOL (Department of Labor) — Employment and Training Administration**
+- ETA Assistant Secretary: (Verify via dol.gov leadership — ETA)
+- Why DOL: ETA manages AI-powered unemployment insurance systems, job matching, and workforce development tools. AI agents in unemployment claims are subject to EEOC guidance and algorithmic fairness requirements.
+- DOL motivation: Post-pandemic unemployment system failures exposed the fragility of legacy tech. DOL is rebuilding with AI. They need to prove their AI is fair before deployment to avoid the political liability of "AI discriminated against unemployed workers."
+- Entry: Workforce development AI agent evaluation — job match accuracy, bias across demographic groups, alignment with DOL's equity priorities.
+
+**5. State Government Entry: California**
+- California Governor's Office of Business and Economic Development (GO-Biz) has an AI policy team
+- California AI policy lead: No specific named contact public — cold outreach through California's AI Working Group (established 2024)
+- California Executive Order (April 2026): expanded AI oversight through state procurement
+- California budget: $2.6T GDP state — tech procurement is substantial
+- Entry: California DMV, EDD (Employment Development Department), or Covered California (insurance exchange) deploying AI agents. Straw evaluation for state AI procurement.
+
+---
+
+### GovCon Contractor Partners (Near-Term Priority Over Direct Federal)
+
+Direct federal sales cycles are 18-24 months. The faster path: GovCon contractors who sell to federal agencies and need Straw certification to win contracts.
+
+**Booz Allen Hamilton**
+- Chief AI Officer: (Search current — likely Seth Dobrin or successor; verify)
+- Context: Booz Allen is the largest AI consulting firm to the federal government, with 40%+ of revenue from AI/analytics work
+- Straw angle: Booz Allen builds AI systems for DoD, intelligence, and civilian agencies. If Booz Allen uses Straw to evaluate its AI deliverables before submitting to federal clients, "Straw Certified" becomes part of every Booz Allen AI deliverable. This is the channel partnership play applied to GovCon.
+- Priority: HIGH. Booz Allen alone represents access to hundreds of federal AI programs.
+
+**Leidos**
+- Leidos AI & Analytics practice
+- Entry: Leidos develops healthcare AI for VA/DoD medical systems. Straw evaluation of clinical AI agents for veterans' care.
+
+**Palantir**
+- CEO Alex Karp is public about AI evaluation rigor
+- Palantir's AIP (Artificial Intelligence Platform) is sold to DoD and enterprise alike
+- Tension: Palantir has its own evaluation infrastructure. Straw's pitch: "Your customers need a neutral evaluation that isn't produced by their vendor."
+
+---
+
+### Federal GTM Priority Ranking
+
+| Target | Time to Revenue | Strategic Value | Regulatory Pull |
+|---|---|---|---|
+| Booz Allen Hamilton | 60-90 days (partnership) | High | Medium |
+| GSA TTS | 6-12 months (procurement) | Very High | High |
+| CMS OIT | 12-18 months (FedRAMP needed) | Extreme | Very High |
+| DOL ETA | 12-18 months | Medium | High |
+| CA State Government | 6-12 months | High | High |
+
+**Immediate action**: Reach out to Booz Allen Hamilton (partner, not customer) and GSA TTS (product fit for OMB M-26-04 compliance tooling). Both are reachable before Q3 2026.
+
