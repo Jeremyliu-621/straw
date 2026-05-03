@@ -24065,3 +24065,67 @@ Not "get the best agent" — "avoid being trapped with the wrong agent." The loc
 
 TICK_END
 
+
+---
+
+## TICK 390 — The "Proof of Value" Shift: 2026 Is the Year CFOs Kill More AI Projects Than CTOs Launch
+
+**Theme: GTM (urgency driver + sales language)**
+
+### The POV Shift
+
+2026 enterprise AI language has shifted: "Proof of Concept" (POC) → "Proof of Value" (POV).
+
+- **POC:** "Does this technology work in our environment with our data?" (technical feasibility)
+- **POV:** "Does this AI deliver measurable ROI against a defined business problem?" (business accountability)
+
+**The forcing function:** CFOs are now killing more AI projects than CTOs launch. Finance teams "stop politely nodding at AI roadmaps and start demanding P&L impact in quarters, not years."
+
+### Straw Is a POV Machine
+
+Straw's rubric is the "clear success metric defined upfront" that MIT identifies as the #1 trait of pilots that reach production.
+
+**The Stanford AI Playbook (2026, 51 successful enterprise deployments):** Three traits of pilots that reach production:
+1. Clear success metric defined upfront ← **this is Straw's rubric**
+2. A named business owner ← **this is Straw's "Agent Owner" buyer persona**  
+3. A kill criterion if metrics aren't met by week 8 ← **this is Straw's competition deadline**
+
+Straw is literally the productization of the three traits that differentiate successful AI deployments from failed ones.
+
+### The New Sales Frame: "Skip the POC, Get the POV"
+
+**Current enterprise AI sales cycle:**
+1. Vendor pitches (demo)
+2. Enterprise runs POC (6-8 weeks)
+3. POC "succeeds" (demo conditions)
+4. Enterprise commits
+5. Production fails (real conditions)
+6. $7.2M sunk cost
+
+**Straw's proposed enterprise AI sales cycle:**
+1. Buyer defines rubric (Straw session, 30 minutes)
+2. Agents compete on buyer's real task (2-4 weeks)
+3. Winner has Proof of Value (real conditions, objective score)
+4. Enterprise commits to winner
+5. Production succeeds (same task, same rubric, same conditions)
+
+**The new sales pitch:** "Skip the POC. Every POC is a demo with extra steps. Straw gives you a POV — the proof that the agent you're buying actually works for your specific problem, before you sign."
+
+This is the clearest articulation of Straw's value proposition found in Phase 2 research.
+
+### The CFO Is Now a Straw Buyer
+
+The CFO (not just the CTO) is now a Straw stakeholder because:
+1. CFOs are killing AI projects that can't show ROI — Straw prevents the bad project from starting
+2. CFOs want to know the expected ROI before commitment — Straw generates that evidence
+3. CFOs care about compliance costs (Colorado/EU fines, liability) — Straw generates documentation
+
+**Expanded buyer persona:**
+- Primary: **Agent Owner** (VP Engineering, AI Ops Lead) — fears personal accountability for wrong agent choice
+- Secondary: **CTO/CIO** — fears AI strategy failure and board scrutiny
+- Tertiary: **CFO** — fears wasted capital and compliance liability
+
+Sources: digitaleconomy.stanford.edu/app/uploads/2026/03/EnterpriseAIPlaybook, insights.fusemachines.com/ai-roi-in-2026-measuring-value-beyond-proof-of-concept, aiassemblylines.com/post/how-to-run-ai-proof-of-concept
+
+TICK_END
+
