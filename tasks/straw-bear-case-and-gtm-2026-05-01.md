@@ -15535,3 +15535,139 @@ The 6-month GTM path to $100K ARR requires the founder to be effectively full-ti
 *Phase 2 Research File: /home/user/straw/tasks/straw-bear-case-and-gtm-2026-05-01.md*
 *Branch: phase2-research*
 
+
+---
+
+## Tick 213 (2026-05-03T13:18:00Z): International expansion — UK and EU market entry [theme: gtm]
+
+### Why UK/EU Is the Right Second Market (Not Asia)
+
+The EU AI Act creates the most powerful procurement mandate in the world: enterprises deploying high-risk AI in the EU must complete conformity assessments, register systems in the EU database, and maintain documentation proving pre-deployment validation. Non-compliance penalties: up to €35M or 7% of global annual turnover.
+
+The August 2, 2026 deadline — when Annex III high-risk AI system requirements become enforceable — is 3 months away. Every EU enterprise with AI in employment, financial services, healthcare, or critical infrastructure is scrambling. Straw's competition results are exactly the validation documentation the EU AI Act requires.
+
+The UK takes a "pro-innovation," sector-by-sector regulatory approach (no single AI Act equivalent). But UK companies serving EU customers or operating EU-connected businesses must still comply with EU AI Act requirements. UK is therefore both an independent market AND a gateway to EU regulatory compliance.
+
+### EU Market Entry Strategy
+
+**Phase 1: Documentation product for EU AI Act compliance (Q3 2026)**
+
+The immediate opportunity is not running EU competitions — it's producing documentation that EU enterprises need for their August 2026 deadline.
+
+Straw's "EU AI Act Compliance Competition Report" is a competition result formatted specifically for EU AI Act Article 9 (risk management), Article 10 (data governance), and Article 13 (transparency) documentation requirements. This is the US competition report plus:
+- Conformity assessment checklist mapped to EU AI Act Annex IV
+- Fundamental rights impact assessment template
+- Registration documentation template for EU AI Act database
+- Declaration of Conformity template (self-assessment)
+
+Price: $60K-$120K per EU-compliant competition (2-3x US pricing, justified by additional documentation + EU regulatory counsel involvement)
+
+**Phase 2: Notified Body adjacency play (Q4 2026 - 2027)**
+
+EU AI Act requires third-party conformity assessment from a "Notified Body" for the highest-risk AI systems (Annex I and select Annex III categories). Notified Bodies are formally designated by EU member states after meeting accreditation criteria from ENISA. There are currently very few designated Notified Bodies — creating a supply shortage.
+
+Straw is not in a position to become a Notified Body (requires 2-3 years of accreditation work). But Straw can partner with an emerging EU Notified Body — providing the technical evaluation infrastructure while the Notified Body provides the regulatory designation. Straw runs the competition; the Notified Body formally certifies the result.
+
+Target for this partnership: Watch for EU member states designating Notified Bodies in Q3-Q4 2026 and approach them with a technology partnership proposal.
+
+**Phase 3: EU enterprise direct sales (2027)**
+
+Once Straw has SOC 2 Type II + GDPR DPA + EU AI Act compliance documentation in place, direct enterprise sales to EU financial services, healthcare, and legal organizations.
+
+Key EU markets in order:
+1. Germany: BaFin (financial regulator) has published specific AI guidance; German banks (Deutsche Bank, Commerzbank) have compliance departments motivated by this
+2. UK: FCA (Financial Conduct Authority) has published AI regulatory expectations; major UK banks are motivated
+3. France: CNIL (data protection) and AMF (financial markets) are active AI regulators
+
+### Named UK/EU Entry Points
+
+**UK Financial Services**:
+- HSBC: Chief Data and Analytics Officer — HSBC is UK-headquartered, globally deployed, under FCA scrutiny for AI
+- Barclays: Chief Technology Officer — Barclays has made significant AI investments in retail banking
+- Contact approach: UK Financial Innovation Conference (FIC) in London — annual gathering of UK banking technology leaders
+
+**EU Healthcare (GDPR + EU AI Act intersection)**:
+- Siemens Healthineers: CTO Bernd Montag (verify — senior leadership at siemens-healthineers.com)
+- Roche: Chief Data Officer (verify)
+- EU medical device AI regulation creates the most acute evaluation documentation requirement
+
+**UK Legal Technology**:
+- Travers Smith (UK law firm) — mentioned in Phase 1 research as having AI agent evaluation needs
+- Allen & Overy (A&O Shearman post-merger) — contact Mitesh Ashar (see Tick 178)
+- Clifford Chance — Will Pearce (see Tick 178)
+
+### Regulatory Timing Creates a Now-or-Never Window
+
+The August 2, 2026 EU AI Act deadline is 3 months away. Every EU enterprise with high-risk AI in scope is looking for documentation solutions RIGHT NOW. Straw can position as the fastest path to compliant evaluation documentation.
+
+The window is approximately 60 days (May-June 2026) where EU enterprise buyers are maximally motivated to find solutions. After August 2, the deadline passes, the panic buying ends, and the market normalizes. Straw needs to be in front of EU buyers before the deadline, not after.
+
+**Immediate action for EU market**: Draft a 2-page "EU AI Act Compliance Package" one-pager that explains exactly how Straw's competition results satisfy EU AI Act documentation requirements. Distribute via LinkedIn to EU-based Chief AI Officers, Legal Counsel, and Compliance Officers tagged with #EUAIAct and #AICompliance.
+
+
+---
+
+## Tick 214 (2026-05-03T13:22:00Z): Supply chain and logistics design partners — named contacts [theme: partners]
+
+### Why Supply Chain Is an Attractive Vertical
+
+Supply chain and procurement AI has quantifiable, clear ROI:
+- 73% of executives expect AI agents to deliver significant competitive edge in procurement
+- Gartner: 40% of enterprise applications will embed AI agents by 2026 (from <5% in 2025)
+- Procurement workloads up 10% while budgets grow 1% — "only technology can close the gap" (Hackett Group, 2025)
+- Concrete metrics: cycle times, cost savings, inventory accuracy, supplier performance — all measurable
+
+The evaluation rubric for supply chain AI is unusually objective: did the AI's demand forecast match actual demand? Did the supplier scoring correctly predict supplier risk? These are verifiable post-hoc.
+
+### Named Contacts
+
+---
+
+**1. Coupa Software (now Coupa + Jaggaer post-merger)**
+- CEO: Thomas Teriander (verify current — Coupa leadership page)
+- Coupa position: Enterprise spend management platform used by hundreds of Global 500 companies for procurement
+- Why Straw: Coupa is deploying AI agents for autonomous procurement (supplier selection, contract analysis, spend optimization). Their enterprise customers are evaluating whether Coupa's AI is better than building their own or using SAP/Oracle alternatives. Straw is the comparison.
+- Opener: "Your enterprise customers are asking 'is Coupa's AI procurement agent actually better than SAP Ariba's AI or manual processes?' Straw runs the competition that answers that — on their actual procurement data, with their specific rubric. When Coupa wins, that's the case study your sales team uses to close the next 20 deals."
+
+---
+
+**2. Blue Yonder (Panasonic subsidiary)**
+- President/CEO: Duncan Angove (verify at blueyonder.com)
+- Blue Yonder: Supply chain AI platform — demand planning, inventory optimization, logistics orchestration
+- Why Straw: Blue Yonder competes directly with o9 Solutions, Kinaxis, and Oracle SCM for enterprise supply chain AI. Evaluation competitions between platforms give enterprise buyers the objective comparison they can't get from vendor demos.
+- Entry use case: Demand planning AI evaluation — forecast accuracy, lead time accuracy, inventory cost optimization
+
+---
+
+**3. o9 Solutions**
+- CEO: Chakri Gottemukkala (co-founder)
+- o9 position: "Digital Brain" for supply chain — claims to give enterprise planners AI-driven decision support
+- Why interesting: o9's differentiation is "connected planning" that sees across the entire supply chain. The rubric for evaluating o9 is therefore multi-dimensional — it's not just forecast accuracy, it's decisions made with AI versus without.
+- Opener: "Chakri — o9's proposition is that AI-connected planning outperforms siloed systems. Straw can run the competition that proves it at your enterprise customers' sites. The audited result gives your customers' boards the evidence that the o9 investment is justified."
+
+---
+
+**4. Amazon (AWS Supply Chain)**
+- AWS Supply Chain GM: (Verify via AWS leadership — Supply Chain product team)
+- AWS Supply Chain launched 2022; integrates AI for demand planning, inventory management, logistics visibility
+- Why AWS Supply Chain: Amazon has 37% of global cloud market. If AWS Supply Chain is the dominant enterprise supply chain platform, they need to prove it outperforms alternatives. Straw is the neutral evaluator.
+- Complication: Amazon has its own evaluation tooling (Bedrock). The pitch to Amazon: "You can't credibly evaluate your own products with your own tools. Straw provides the independent validation that your enterprise customers require."
+
+---
+
+**5. Flexport**
+- CEO: Ryan Petersen (founder; highly public on supply chain AI)
+- Flexport: Digital freight forwarder + supply chain platform
+- Why Flexport: Ryan Petersen is one of the most quotable supply chain executives — he tweets regularly about AI in logistics. His personal brand is "disrupting freight." The pitch: "Ryan — freight brokerage is being disrupted by AI agents. Straw can help your customers evaluate which AI freight agents are actually delivering better outcomes versus the incumbents you're disrupting."
+
+---
+
+### Supply Chain Vertical GTM Note
+
+CPO (Chief Procurement Officer) and VP of Supply Chain are the buyers. They respond to:
+1. **Cost savings language**: "Our competition shows which AI agent produces the most accurate demand forecast. A 2% improvement in forecast accuracy = $500K/year saved for a $1B revenue company."
+2. **Tariff/trade shock framing** (extremely relevant in May 2026 given current trade volatility): "With tariff uncertainty and supply chain disruptions, the wrong AI demand planning agent could cost you millions. Straw validates your AI before it makes those decisions."
+3. **Finance department alignment**: Supply chain AI saves money that shows up in operating margins. Straw's ROI framing: "The evaluation cost is 0.01% of the savings you're targeting."
+
+Target conference: Gartner Supply Chain Symposium (typically May/June each year). One speaking slot at this conference = 200 qualified CPO/VP-SCM leads.
+
