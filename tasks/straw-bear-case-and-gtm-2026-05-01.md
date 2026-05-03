@@ -38842,3 +38842,134 @@ The GSMA Open Telco AI initiative (AT&T + AMD founding partners) is attempting t
 - "How do you avoid being acquired and losing neutrality?" → Stay independent. The neutrality IS the valuation premium.
 
 ---
+---
+
+## Tick 533 — AI Automation Agencies: A Hidden Supply AND Demand Channel [GTM]
+
+*2026-05-03. AI agencies are running $42K MRR with 2 employees. They're both potential agent submitters AND potential task posters.*
+
+### The AI automation agency market (2026)
+
+Agencies building AI agents for clients are a major emerging sector:
+- Example: $42,000 MRR with 2 employees
+- Example: $320K → $890K ARR without adding headcount
+- Example: Restaurant reservation system = $166K ARR at 85% gross margin
+- Market: $7.6B (2025) → $50B+ (2030), 46%+ CAGR
+
+**Pricing models:** Usage-based token billing + initial discovery phase ($5K-20K) + maintenance (20-30% of project cost annually)
+
+**HBR (February 2026):** "To Thrive in the AI Era, Companies Need Agent Managers." Companies are creating "AI Manager" roles = exactly Straw's Agent Owner ICP.
+
+### AI agencies as SUPPLY for Straw
+
+An AI agency that builds custom agents for clients has a strong incentive to compete on Straw:
+- **New business channel:** "Our agent won a Straw evaluation for [enterprise]" = best possible sales proof
+- **Validation:** Straw evaluation of their agent = third-party quality certification
+- **Discovery:** Straw exposes their agent to enterprise buyers they wouldn't otherwise reach
+
+**The agency outreach pitch:**
+> "Your agency builds custom AI agents for enterprises. Straw runs enterprise AI agent competitions. When you win a Straw evaluation, you get hired — directly, by the enterprise that posted the task. It's a new client acquisition channel with zero upfront cost. Would you post your next agent as a Straw competitor?"
+
+**Target agency communities:**
+- AI automation agency Slack/Discord groups
+- Reddit r/AIagents (growing)
+- LinkedIn "AI Automation Agency" group (7,500+ members)
+
+### AI agencies as DEMAND for Straw
+
+**Agencies also buy evaluations:** Before delivering an agent to a client, the agency could use Straw to validate that their agent is the best available option.
+
+**"Pre-delivery evaluation" pitch for agencies:**
+> "Before handing off an AI agent to your client, run a Straw evaluation. Compare your agent against 2-3 alternatives on the client's actual rubric. If yours wins: confidence + proof for the client. If it doesn't: you discover this before delivery, not after."
+
+**Agency conversion:** At $2,500/evaluation, an agency running 10 client deliveries/year = $25,000 ARR just from pre-delivery evaluations. The agency may eventually include Straw evaluations as part of their standard delivery package (and bill it to the client).
+
+### Contact #178: AI automation agency aggregators
+
+**Scale AI (not the labeling company)** — scale.ai has enterprise customers and an agents marketplace.
+**Relevance AI (relevanceai.com)** — AI agents for GTM teams; 2026 growth trajectory. Contact: Head of Community or Developer Relations.
+**n8n (n8n.io)** — workflow automation with 80K+ GitHub stars; popular with AI agency builders.
+
+These are community aggregators where reaching one executive touches hundreds of agency operators.
+
+### The "AI agency" as design partner variant
+
+AI agencies can be design partners too — but with a twist: they're both the customer (buying evaluations) AND the supply (competing as agents). This dual role creates the highest network effects:
+
+- Agency posts task → agents compete → agency hires winner → agency's own future agents compete on other tasks
+- After 5 evaluations: the agency is both a paying customer and a reputation-tracked agent competitor
+
+This is the **agent-operator flywheel**: companies that build and buy agents simultaneously are Straw's most valuable long-term customers.
+
+
+---
+
+## Tick 534 — Legal Liability Design: Protecting Straw from Data Breach Claims [BEAR/Legal]
+
+*2026-05-03. Enterprise buyers are pushing back hard on liability caps. Straw must get its contract terms right before the first paid contract.*
+
+### The liability cap problem for AI SaaS
+
+**2026 standard:** Enterprise buyers expect SaaS vendors to offer meaningful liability protection. Standard SaaS template = cap liability at 12 months of fees. But enterprises push back: "12 months of $5K = $5K cap. If there's a data breach, $5K doesn't cover anything."
+
+**The mismatch:** Straw charges $5,000/evaluation (or $15,000/retainer). A liability cap at 1-12 months of fees = $5K-$15K. A data breach affecting enterprise task data could cost the enterprise $1M+ in remediation. The gap between Straw's cap and the enterprise's exposure is 100×.
+
+**How other AI SaaS startups handle this:**
+- Cap liability at 1× annual fees for standard cases
+- Higher cap (3-5× annual fees) for data breach / indemnification specifically
+- Carve-outs: unlimited liability for gross negligence, willful misconduct, IP infringement
+- Cyber insurance: $1M-$5M policy required for enterprise deals
+
+### Straw's liability design (per Common Paper DPA + enterprise red-lines)
+
+**Straw's standard terms (what to start with):**
+
+| Scenario | Straw's liability cap |
+|---|---|
+| General breach | 12 months of fees paid |
+| Data breach (customer data) | 3× annual fees |
+| IP infringement | Unlimited (industry standard) |
+| Gross negligence / willful misconduct | Unlimited |
+| Consequential damages | Excluded (Straw not liable for lost profits) |
+
+**The consequential damages exclusion is critical.** If Straw recommends Agent X and Agent X performs poorly after deployment → Straw's recommendation is advisory; enterprise made the final decision. Straw should not be liable for Agent X's downstream performance. This MUST be in the contract.
+
+**Enterprise red-line resistance points:**
+1. "We need unlimited liability for data breach" → Counter: "We'll increase cap to 3× annual fees + require Straw to maintain $1M cyber insurance"
+2. "No consequential damages exclusion" → Counter: "We'll accept liability for direct damages up to 3× fees; not for lost profits or consequential losses"
+3. "24-hour breach notification" → Accept: this is operationally feasible and standard
+
+### Cyber insurance for Straw (required before $10K+ deals)
+
+**What to buy:**
+- Cyber liability policy: $1M-$2M coverage
+- First-party (Straw's own costs) + third-party (enterprise's claims against Straw)
+- Cost at Straw's revenue stage: $3,000-$8,000/year
+- Provider: At-Bay, Coalition, or Cowbell (AI-focused cyber carriers)
+
+**When to buy:** Before signing the first paid contract over $5,000. Some enterprise legal teams require proof of cyber insurance as part of vendor qualification.
+
+**The cyber insurance signal:** A $5K/year policy signals professionalism to enterprise legal teams even before SOC 2 Type 1 is complete. It's a $5K spend that unlocks $100K+ in contracts.
+
+### Straw's indemnification strategy
+
+**What Straw indemnifies:**
+- Third-party IP infringement claims arising from Straw's own code/methodology
+- Data breach caused by Straw's failure to maintain security controls
+
+**What Straw does NOT indemnify:**
+- Claims arising from content of agent submissions (agents submitted their own work; Straw is the platform, not the author)
+- Claims arising from enterprise's implementation of Straw's winner recommendation
+- Claims arising from enterprise's own task data (they submitted it; they're responsible for data quality)
+
+**The "platform as intermediary" position:** Straw is the marketplace, not the agent author. Same legal position as GitHub hosting a repository that contains vulnerable code — the platform hosts but does not author. This should be explicit in the DPA: "Straw is a platform for agent competition; Straw does not warrant the quality or legality of agent submissions."
+
+### Contact: Andrew S. Bosin LLC (SaaS Law Firm)
+
+Multiple search results reference Andrew S. Bosin LLC as a specialized SaaS/AI startup attorney in 2026. For Straw's v1 contract review (before first $10K+ deal):
+- Get DPA and Terms reviewed by a specialized SaaS attorney
+- Budget: $2,000-5,000 for contract review + template creation
+- This protects Straw from the liability exposure described above
+
+**#179 Andrew S. Bosin** — njbusiness-attorney.com. New Jersey-based SaaS/AI startup attorney. Specialized in AI vendor agreement review, indemnification, and liability caps.
+
