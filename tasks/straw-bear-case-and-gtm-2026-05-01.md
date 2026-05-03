@@ -13479,3 +13479,134 @@ To avoid Bountysource's failure mode, Straw needs to build trust at the architec
 **The core trust insight:** Straw's value is the rubric and the record, not the escrow. Designing the architecture to make Straw a neutral notary (records the result) rather than a custodian (holds the prize) eliminates Bountysource's failure mode entirely.
 
 Sources: [Bountysource Insolvency GitHub Issue](https://github.com/bountysource/core/issues/1586), [Bountysource Wikipedia](https://en.wikipedia.org/wiki/Bountysource), [Resolvr Stacker News Analysis](https://stacker.news/items/301817)
+
+---
+
+## Tick 202 (2026-05-04T00:00Z): The "perpetual pilot" crisis — why 2026 is Straw's market entry window [theme: gtm]
+
+### The pilot-to-production funnel collapse
+
+MIT 2025 State of AI in Business data, confirmed by multiple enterprise AI reports:
+- **95% of enterprise AI pilots deliver no measurable ROI** (MIT 2025)
+- **42% of companies abandoned most AI initiatives in 2025**, up from 17% the prior year
+- The AI deployment funnel in 2026: 30% still "exploring options," 38% running pilots, 14% have deployment-ready solutions, **11% in actual production**
+
+The specific term coined: **"perpetual piloting."** "The normalization of perpetual piloting has organizations running dozens of proofs-of-concept whilst failing to ship a single production system at scale. The rush to pilot wasn't driven by strategic clarity — it was driven by FOMO, vendor marketing, and the belief that experimentation itself constituted progress."
+
+**Procurement teams specifically:** 49% of procurement teams piloted generative AI in 2024. Only **4% achieved large-scale deployment.** A 12:1 pilot-to-production ratio. Most enterprise AI sits permanently in pilot status, burning $7.2M in sunk costs per abandoned initiative.
+
+### The 2026 market shift: outcome-driven buying
+
+Enterprise AI buying in 2026 has shifted from pilot frenzy to "outcome-driven process." CIOs are "treating AI procurement with the same rigour as core software purchases, demanding clear business value, robust governance, and seamless integration." The Gartner/McKinsey consensus: enterprises that survived the 2025 pilot collapse are now asking "what does success look like before we commit?"
+
+**This is Straw's exact moment.** The market is shifting FROM "let's run a 6-month vendor POC and hope it works" TO "let's define what success looks like first, run a structured evaluation, and buy the winner." The first is the model that failed in 2025. The second is Straw.
+
+**The timing argument:**
+- 2024-2025: enterprises ran undisciplined POCs, burned $547B, got burned
+- 2026: enterprises are demanding structured evaluation before commitment
+- Straw's product offers structured evaluation with defined rubrics
+- The market shift and Straw's product launch are simultaneous
+
+**The key sales narrative shift:** Don't pitch Straw as "a competition platform." Pitch it as "the structured evaluation process that replaces the failed POC model." Target buyers who are specifically bitter about the 2025 pilot failures.
+
+### The Anthropic Claude Partner Network as a distribution channel
+
+In March 2026, Anthropic launched the **Claude Partner Network** with a $100M commitment. Partners include Accenture (30,000 professionals being trained), PwC (AI-native finance and life sciences agent deployment), and Amazon (deep AWS integration). The network provides "joint go-to-market development resources" to certified partners.
+
+The CCA certification for Claude partners includes: "Evaluation and monitoring — measuring and optimizing AI performance in production." Straw fits this certification scope.
+
+**Three Anthropic distribution channel plays:**
+
+1. **Accenture partnership:** Accenture and Anthropic are jointly helping CIOs "measure value and drive large-scale AI adoption." Straw's competition methodology could be Accenture's structured evaluation service — Accenture runs the competition design, Straw provides the platform. Accenture has enterprise relationships; Straw has the rubric methodology. Revenue split: Accenture takes consulting fees, Straw takes platform fees.
+
+2. **AWS Marketplace listing:** With Anthropic + AWS as partners, listing Straw on AWS Marketplace is both technically feasible and strategically valuable. CIOs already have AWS procurement relationships and AWS Marketplace budget. Adding Straw as a line item removes the friction of a new vendor relationship.
+
+3. **Claude Partner referral:** If Anthropic's Claude Partners (consultants helping enterprises deploy Claude) refer clients to Straw for pre-deployment evaluation, Straw gets warm inbound from enterprise deals already in flight. "Your consultant says you should evaluate three agent options before deploying Claude — Straw runs that evaluation."
+
+**The Anthropic conflict question:** Anthropic's agents compete in Straw competitions. Does Anthropic want an independent evaluation platform that might recommend a competitor's agent over Claude? The answer is probably yes — Anthropic's enterprise customers running honest evaluations and choosing Claude is better than customers choosing Claude based on a flawed POC and then churning. An honest competition that Claude wins is more valuable than a rigged one.
+
+Sources: [MIT Fortune Pilots Failing](https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/), [AI Spectrum Enterprise Procurement 2026](https://aispectrumindia.com/analysis/1/416/enterprise-ai-procurement-in-2026-the-shift-from-pilot-experiments-to-outcome-driven-buying.html), [Anthropic Claude Partner Network $100M](https://aiautomationglobal.com/blog/anthropic-claude-partner-network-enterprise-2026/), [Accenture Anthropic Partnership](https://newsroom.accenture.com/news/2025/accenture-and-anthropic-launch-multi-year-partnership-to-drive-enterprise-ai-innovation-and-value-across-industries/)
+
+---
+
+## Tick 203 (2026-05-04T00:15Z): Named design partner list — the 30 contacts Jeremy should reach in the next 2 weeks [theme: partners]
+
+### The consolidated, prioritized outreach list
+
+Synthesizing all named contacts and companies identified across Phase 2 ticks (Ticks 160-202). These are ordered by: (1) relationship proximity to Jeremy, (2) active AI procurement decision in flight, (3) vertical fit for Straw's first rubric designs.
+
+**TIER 1 — YC / Berkeley connections (lowest friction, start here)**
+
+| # | Contact / Company | Why | Entry Point |
+|---|---|---|---|
+| 1 | **Rubric AI (Pragya Saboo, YC W26)** | Agent evaluation startup — supply-side partner AND validation case study; shares Straw's thesis | LinkedIn / YC network |
+| 2 | **Salus (YC W26, agent governance)** | Will benefit from Straw Certified badge for their enterprise sales | YC alumni Slack |
+| 3 | **Agentic Fabriq (YC W26, multi-agent orchestration)** | Multi-agent operator who needs to prove performance to enterprise buyers | YC alumni Slack |
+| 4 | **Berkeley AgentBeats finalist** (Tick 161) | Academic competition participants who want enterprise deployment pathways | Berkeley EECS network |
+| 5 | **Garry Tan (YC CEO)** | S26 "Economically Useful Evals" RFS — send the pitch with traction note | Twitter DM / email |
+
+**TIER 2 — Enterprise AI Operations buyers (need Straw's evaluation format)**
+
+| # | Contact / Company | Why | Entry Point |
+|---|---|---|---|
+| 6 | **Notion (VP Engineering)** | Braintrust customer; active Cursor vs. Copilot decision | LinkedIn / cold email |
+| 7 | **PostHog (James Hawkins, CEO)** | Engineering blog culture, written about AI tools in stack | Twitter/X DM |
+| 8 | **Linear (CEO Karri Saarinen)** | Developer tooling company with strong code quality standards | Twitter/X DM |
+| 9 | **Shopify (Head of AI)** | Massive scale, sophisticated AI team, public about AI in support | LinkedIn / cold email |
+| 10 | **Vercel (VP Engineering)** | Next.js company, 300+ engineers, code quality standards | Conference / LinkedIn |
+
+**TIER 3 — Legal AI vertical (Harvey vs. CoCounsel decision)**
+
+| # | Contact / Company | Why | Entry Point |
+|---|---|---|---|
+| 11 | **AmLaw 200 law firm CTO** (any firm actively evaluating Harvey) | Harvey + LexisNexis alliance decision; $288K/year contract justification | Lateral referral / legal tech conferences |
+| 12 | **Vals AI (Stanford-backed, legal evaluation)** | Doing research-quality legal AI evaluation; Straw is the commercial complement | LinkedIn / research conference |
+| 13 | **Ironclad (contract lifecycle management)** | CLM platform that competes with Harvey for commercial contracts | Product blog / LinkedIn |
+| 14 | **Thomson Reuters CoCounsel team** | Would want Straw competitions that validate CoCounsel performance | Conference / partner outreach |
+| 15 | **Clio (legal practice management SaaS)** | Mid-size law firm customers; could integrate Straw as evaluation service | Clio Cloud Conference |
+
+**TIER 4 — Financial services / compliance vertical**
+
+| # | Contact / Company | Why | Entry Point |
+|---|---|---|---|
+| 16 | **Regional bank CISO or CRO** (OCC-supervised, $5-50B assets) | Model risk documentation required; Straw = OCC Model Risk evidence | Banking technology conferences |
+| 17 | **Brex (fintech CFO tooling)** | Actively building AI into financial workflows; engineering-forward | LinkedIn / cold email |
+| 18 | **Plaid (Head of AI)** | Financial data API with AI agent integrations; sophisticated engineering | YC alumni connection |
+| 19 | **Mercury Bank (engineering leadership)** | YC-backed fintech; AI-native; code quality standards | YC alumni Slack |
+| 20 | **Bloomberg (Head of AI)** | Bloomberg Terminal AI integrations; high-stakes financial data | Bloomberg conference circuit |
+
+**TIER 5 — GTM / distribution partners (channel plays)**
+
+| # | Contact / Company | Why | Entry Point |
+|---|---|---|---|
+| 21 | **Accenture + Anthropic joint team** | AI adoption consultant to CIOs; Straw methodology maps to their "measure value" offering | Anthropic partner ecosystem |
+| 22 | **PwC AI practice** | Finance/life sciences agent deployment; needs evaluation layer | PwC AI Summit |
+| 23 | **Deloitte AI practice** | ISO 42001 consulting; Straw competition = ISO 42001 deliverable | Deloitte conference circuit |
+| 24 | **AWS Marketplace team** | Listing Straw on AWS Marketplace removes enterprise procurement friction | AWS Partner Network |
+| 25 | **Scale AI enterprise sales** | Scale Labs does evaluation, not competition; Straw is complementary, not competitive | Industry conference |
+
+**TIER 6 — AI agent operator / supply-side partners**
+
+| # | Contact / Company | Why | Entry Point |
+|---|---|---|---|
+| 26 | **Cognition AI (Devin)** | Devin wants Straw Certified badge to win enterprise coding contracts | Twitter/X / conference |
+| 27 | **Intercom (Fin AI team)** | Fin AI at $0.99/resolution; winning a Straw CX competition = new enterprise sales weapon | LinkedIn / Intercom conference |
+| 28 | **Ada (CX AI)** | Specialist CX AI agent; would compete in Straw CX competitions | Conference / cold outreach |
+| 29 | **Harvey AI (enterprise legal)** | Would compete in Straw legal competitions and benefit from winning certification | Harvey investor network |
+| 30 | **Forethought AI (CX)** | Enterprise AI support automation; Straw certification differentiates them | LinkedIn / cold email |
+
+### The 2-week sprint plan
+
+**Week 1 (Jeremy's schedule, ~2 hours/day):**
+- Days 1-2: Send 10 outreach messages to Tier 1 (YC/Berkeley) — these are warm, should get responses
+- Days 3-4: Apply to YC S26 (application requires 2-3 hours; "Economically Useful Evals" category)
+- Day 5: Post to HN: "Ask HN: What does your company use to evaluate AI agents before buying?"
+
+**Week 2:**
+- Days 6-8: Follow up with Tier 1, send 10 outreach to Tier 2 (enterprise buyers)
+- Days 9-10: First coffee/call with any Tier 1 response — design a competition rubric together
+- Day 11-14: Use first competition design session as case study in Tier 3-6 outreach
+
+**The single north star metric for the 2-week sprint:** Book 3 calls with potential design partners. Not 30. Not 10. Three. Three calls where Jeremy has a concrete rubric design proposal ready.
+
+Sources: Synthesized from Ticks 160-202 (all named contact research)
