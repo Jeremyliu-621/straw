@@ -15273,3 +15273,105 @@ A target makes the top 10 if they satisfy ALL of:
 
 **Follow-up sequence** (if no response in 5 business days): One follow-up with a different hook (e.g., if first message was regulatory hook, second message is competitive differentiation hook).
 
+
+---
+
+## Tick 211 (2026-05-03T13:06:00Z): The $0 to $100K ARR path — compressed GTM narrative [theme: gtm]
+
+### The Thesis
+
+$100K ARR is the seed validation milestone that converts "interesting idea" to "this is working." For Straw at $10K-$30K average first competition fee, $100K ARR = 4-10 paying customers. That's an achievable 6-12 month target from standing start.
+
+The path is not a marketing funnel or a product roadmap. It's a sequence of founder actions, each unlocking the next.
+
+### The Narrative
+
+**Month 1-2: Validation before product**  
+Jeremy runs 3 "done for you" evaluation workshops at $2,500 each. No platform. Just: "I'll help you define what winning looks like for your AI agent deployment decision, and I'll run the evaluation manually." Revenue: $7,500. Real value: discovering what the rubric design process actually requires, and getting 3 enterprise reference clients for future sales.
+
+Metrics at the end of Month 2: 3 completed workshops, 1-2 of those converting to a full competition conversation, $7.5K in revenue, rubric design process documented.
+
+**Month 2-4: First three competitions (manual)**  
+Using the workshop outputs as rubrics, run 3 full competitions. Manually call each agent API, collect outputs, apply the rubric, write the analysis report. Price: $8K-$12K per competition.
+
+Revenue at end of Month 4: $7.5K (workshops) + $27K-$36K (competitions) = $35K-$43K cumulative. Annual run-rate: $70K-$86K. Close to the $100K threshold.
+
+This isn't great gross margin — each competition takes 40-60 hours of founder time at this stage. But that's not the point yet. The point is: proving the customer pays, proving the rubric approach works, learning what to automate.
+
+**Month 4-6: Automation unlock and pricing increase**  
+Hire one platform engineer (Month 5-6). Automate the 3 most time-consuming steps: (1) prompt formatting for each agent, (2) output collection and normalization, (3) score aggregation. Cut competition delivery time from 60 hours to 20 hours.
+
+Also: raise prices. The first 3 competitions were priced conservatively to get the first logos. Now that there's a process and reference customers, raise to $15K-$25K per competition.
+
+Revenue at end of Month 6: 3 more competitions at $20K each = $60K. Plus 3 additional workshops at $2,500 each = $7.5K. Cumulative: $100K-$110K. Target achieved.
+
+**The $100K ARR Milestone Unlocks**
+
+- Credible "traction" slide for seed fundraising pitch: "$100K ARR in 6 months from standing start, 6 design partner logos, 70%+ gross margin trajectory"
+- 3-5 enterprise reference calls for investor diligence
+- Series A milestone tracking: from $100K ARR seed-round proof to $500K ARR Series A raise, to $2M ARR Series B
+
+### The Critical Dependency: Sales Velocity
+
+The path only works if the outreach generates 10+ qualified conversations in Month 1. That requires:
+- 50 personalized outreach messages sent in Week 1 (per Tick 199)
+- 3-5 responses, 2-3 first calls
+- 1 workshop sold per 2 calls
+
+Response rate to personalized outreach with strong trigger: 20-40%. Call-to-workshop conversion: 30-50%. Workshop-to-competition conversion: 50-70%.
+
+Expected yield from 50 outreach messages: 10-20 responses → 6-10 calls → 3-5 workshops sold → 1-3 competitions. That gets to $100K ARR if the founder is disciplined about outreach volume in Month 1.
+
+### The GTM Playbook in Three Sentences
+
+Talk to 50 potential buyers in Month 1. Run 6 workshops in Months 1-2. Convert 3-4 workshops to full competitions in Months 2-6. $100K ARR by Month 6.
+
+Everything else (content marketing, channel partners, product development, hiring) is in service of making those 6 workshops happen.
+
+
+---
+
+## Tick 212 (2026-05-03T13:10:00Z): Founder execution risk — can a solo founder pull this off? [theme: bear]
+
+### The Structural Challenge of Solo Founding
+
+B2B enterprise startups succeed most consistently with 2-3 co-founders: typically one business/sales-oriented (CEO/GTM), one technical/product-oriented (CTO/CPO), and optionally one domain expert. The Stripe model: Patrick (technical) + John (business). The Airbnb model: Chesky (design/CEO) + Gebbia (design/product) + Blecharczyk (engineering). The Dropbox model: Houston (technical) + Ferdowsi (engineering).
+
+Solo founding is possible — Elon Musk at Tesla (though he wasn't truly solo at founding), Martin Shkreli at companies (not a great example). But in enterprise B2B specifically, solo founders face a bottleneck: every important decision — customer conversation, product direction, investor meeting, legal matter — routes through one person.
+
+### Straw's Specific Solo Founder Risks
+
+**Risk 1: Evaluation expertise bottleneck**  
+The rubric design is Straw's core product. If Jeremy is the only person who can design a credible rubric, every competition requires Jeremy's direct involvement. That caps Straw at 2-3 competitions per month at best. Scaling requires either hiring a Rubric Scientist (Month 4-5) or productizing the rubric design workflow (Month 6+). Until one of those happens, competitions are bottlenecked.
+
+**Risk 2: Sales AND product AND operations simultaneously**  
+In a well-resourced 2-founder company, one founder does customer development and sales; the other does product and engineering. A solo founder does all three. The daily schedule conflict: "Should I be on a sales call this morning or debugging the sandbox integration?" That conflict degrades performance on both dimensions. Neither the sales motion nor the product motion gets full focus.
+
+**Risk 3: Investor caution on solo founders**  
+Many institutional investors (Sequoia, a16z, Bessemer) have explicit or implicit preferences for multi-founder teams at seed stage. Not dealbreakers, but they require compelling explanation. "Why don't you have a co-founder?" is a question that needs a real answer (not "I haven't found the right person").
+
+**Risk 4: Resilience and single-point-of-failure**  
+If Jeremy is sick, burned out, or pulled into a legal or personal matter, Straw stops. There's no backup. This is not a reason not to start a company — it's a reason to manage personal health and have a contingency plan.
+
+### Mitigation Strategies
+
+**1. Active co-founder search — make it a sprint, not a passive process**  
+Post in YC co-founder matching, OnDeck, Pioneer, NFX's founder program. Attend AI company founding dinners in NYC/SF. Target specifically: (a) ML evaluation researchers from Anthropic/DeepMind who want to start a company, or (b) experienced enterprise SaaS sales leaders who've sold to AI buyers and want an equity upside.
+
+The co-founder pitch: "Straw is the evaluation infrastructure layer for enterprise AI procurement. I have the product vision and market insight; I'm looking for a co-founder who brings [engineering depth OR enterprise sales track record] and wants to build a high-trust, fast-growing B2B AI infrastructure company."
+
+**2. Fractional COO or Chief of Staff from Month 3**  
+A fractional COO (10-20 hours/week) handles operations, investor relations, legal coordination, and board prep so the founder focuses on customers and product. Cost: $5K-$10K/month. Worth it if it frees 15+ hours of founder time per week.
+
+**3. Advisor network as distributed expertise**  
+5-6 high-quality advisors covering the gaps: ML evaluation expert, enterprise sales expert, financial services domain expert, legal/regulatory expert, and one board-level advisor (former CEO of a successful B2B SaaS company). Compensate with 0.1-0.25% advisor equity vesting over 2 years.
+
+**4. Speed as the mitigation**  
+The best defense against solo founder risk is moving fast enough that the company has traction before the risk materializes. A solo founder who lands 3 paying customers in 90 days has more credibility with investors and potential co-founders than a 2-founder team without customers. Speed creates options.
+
+### Bear Case Score: 7/10 (serious, requires active mitigation)
+
+This is the bear case that's hardest to research away. It requires founder self-awareness: can Jeremy run enterprise sales, product direction, rubric design methodology, investor relations, and team hiring simultaneously? For 6-12 months, the answer can be yes through sheer energy. Beyond 12 months, the answer is no — and a co-founder or exceptional executive hire is required.
+
+The action: start the co-founder search this week, in parallel with the customer outreach. The right co-founder makes every other bear case more manageable.
+
