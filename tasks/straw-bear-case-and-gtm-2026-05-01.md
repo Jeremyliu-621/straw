@@ -5626,3 +5626,167 @@ The framing is: Straw is about ensuring AI agents are good, not about replacing 
 **The regulatory risk assessment:** No current US legislation specifically targets AI task marketplaces. The EU AI Act's employment provisions target AI used IN hiring decisions (Annex III), not AI that evaluates AI agents for procurement. The risk is more reputational than regulatory in the near term.
 
 **Bottom line on the creepiness objection:** This is a 4/10 bear case. It's a real reputational risk that could slow enterprise adoption in specific sectors, but it's not existential. The right response is thoughtful framing and proactive communication about evaluation as quality assurance, not job replacement facilitation.
+
+---
+
+## Tick 67 (2026-05-03T22:00Z): Enterprise data platforms — Snowflake, Databricks, Microsoft as acquirer/partner targets [theme: partners]
+
+**The strategic backdrop:** Enterprise data platforms are in an acquisition arms race for AI-adjacent tools:
+- **ClickHouse** acquired Langfuse for observability (January 2026)
+- **Snowflake** has made multiple AI acquisitions (TruEra for AI quality, Streamlit for data apps)
+- **Databricks** acquired MosaicML for LLM training, Lilac for data curation
+- **Microsoft Fabric** is building integrated AI agent infrastructure into their enterprise data stack
+
+Straw's evaluation data — structured, timestamped records of agent performance on specific tasks — is a natural fit for enterprise data analytics infrastructure. A Snowflake or Databricks customer running Straw evaluations would want to query, analyze, and visualize evaluation results in their existing data stack.
+
+### Partnership model with each platform
+
+**Snowflake — the Cortex AI connection:**
+
+Snowflake Cortex (their AI product) lets customers run ML workloads on Snowflake-native data. Straw's evaluation results stored in Snowflake = natural integration. Partnership model:
+- Straw publishes a Snowflake Native App (evaluation results schema, visualizations, trend tracking)
+- Snowflake Marketplace listing for "AI Agent Evaluation by Straw"
+- Snowflake AI engineers become Straw design partners for their own Cortex agent evaluation
+
+**Named Snowflake contacts:**
+- **Sridhar Ramaswamy** (CEO, @sridhar_r) — former Google SVP; understands AI evaluation deeply
+- **Prasanna Krishnan** (SVP Data Cloud Platform) — product partnerships lead
+- **Torsten Grabs** (Director, Developer Relations) — developer ecosystem
+
+**Databricks — the MLflow integration:**
+
+Databricks has MLflow (open-source ML tracking, 25M+ downloads). MLflow already logs model experiments. Straw's competition evaluation is the "pre-deployment benchmark" that precedes MLflow's production monitoring. Integration: Straw SDK writes evaluation results to MLflow format; Databricks users can visualize Straw evaluation history alongside production monitoring data.
+
+**Named Databricks contacts:**
+- **Ali Ghodsi** (CEO, @alighodsi) — co-founder; intellectually engaged, active on X
+- **Matei Zaharia** (CTO, @matei_zaharia) — invented Spark and MLflow; understands benchmarking deeply
+- **Patrick Wendell** (VP Product) — drives Databricks product partnerships
+
+**Microsoft Fabric — the Azure Marketplace path:**
+
+Microsoft Fabric Data Agents and Copilot agents are deployed by 31,000+ enterprise customers. These enterprises need evaluation before deploying agents in production. The Azure Marketplace path (used successfully by many B2B SaaS tools) gives Straw access to Microsoft's enterprise sales channel.
+
+Integration: Straw lists on Azure Marketplace; Microsoft field sales team can propose Straw as part of enterprise Azure AI deployments. Revenue share: Microsoft takes 20% of Azure Marketplace sales.
+
+**The acquisition scenario:**
+
+The most likely acquirer scenario in 18-36 months is a Snowflake or Databricks acquisition — not because they want to own the evaluation business, but because they want the evaluation DATA:
+- Straw accumulates a corpus of agent performance records across industries and task types
+- This corpus is uniquely valuable for training and benchmarking enterprise AI systems
+- The acquirer gets Straw's evaluation methodology, customer relationships, AND the data corpus
+
+**The data moat framing:** Straw's most valuable long-term asset is not the platform mechanics — it's the accumulated evaluation corpus. Every competition adds: which agents competed, what task type, what rubric, what scores, who won. After 1,000 competitions, Straw has the most comprehensive real-world AI agent performance dataset in existence. This dataset is worth more than the platform to an enterprise data company.
+
+**Strategic implication:** Design Straw's data schema from day one with enterprise queryability in mind. Snowflake/Databricks connectors, standard evaluation schema, exportable to Apache Parquet. The acquisition scenario is more likely if Straw's data is already integrated into the enterprise data stack.
+
+---
+
+## Tick 68 (2026-05-03T22:30Z): AI newsletter distribution strategy — how to get into The Rundown, TLDR, Ben's Bites [theme: gtm]
+
+**The newsletter ecosystem sizes (2026):**
+
+| Newsletter | Subscribers | Audience type | Cost to feature |
+|---|---|---|---|
+| **The Rundown AI** | 1.75M | 46% C-suite/founders; enterprise-heavy | Paid placements $2K-$10K; organic: requires newsworthy story |
+| **TLDR AI** | 1.25M | Technical AI practitioners; developers + data scientists | Paid ($3K-$5K/placement); organic: novel technical finding |
+| **Ben's Bites** | 120K | Early-stage AI ecosystem; founders, operators | Ben Tossell (@bentossell) is reachable; organic strong here |
+| **Latent Space** | 300K+ | AI engineers and researchers | Podcast guests; newsletter shoutouts from guest episodes |
+| **The Batch** (Andrew Ng) | 900K | Researchers, enterprise AI teams | Very hard organic; must be cited research |
+| **Import AI** (Jack Clark) | 60K | AI safety + research | Must be technically novel; Jack is reachable |
+
+**The strategy for each:**
+
+**Ben's Bites (Priority 1 for early stage):**
+Ben Tossell personally curates every issue and responds to tips. With 120K subscribers that are all early-stage AI founders/operators, a feature in Ben's Bites is the highest-density audience for Straw at this stage.
+
+How to get in:
+- Email ben@bensbites.co or DM @bentossell on X with: "I built [X], here's one finding from our first evaluation that you might find interesting for your readers: [specific data point]"
+- The key is a specific, novel finding — not a product announcement
+
+**TLDR AI (Priority 2 for supply-side):**
+TLDR AI's audience is technical practitioners who build AI agents. Getting featured here reaches the exact people who should be submitting to Straw competitions.
+
+How to get in:
+- Submit to tldr.tech/partnerships (paid placement, $3K-5K)
+- OR: publish a well-cited technical blog post that becomes newsworthy → TLDR AI picks it up organically
+
+**The Rundown AI (Priority 3 for enterprise awareness):**
+The Rundown's C-suite audience is Straw's buyer side. But organic coverage requires being genuinely newsworthy (major customer, significant evaluation result, regulatory angle).
+
+When to pitch The Rundown:
+- After the first enterprise case study is published (the "I evaluated 5 AI agents" post from Tick 51)
+- After a regulatory hook appears (EU AI Act August deadline coverage)
+- After a major partner announcement (if LangChain or Ramp partnership closes)
+
+**Latent Space (Priority 1 for technical credibility):**
+Already covered in Tick 28 — the Latent Space podcast pitch to Alessio Fanelli for a "what comes after SWE-bench" episode. The newsletter shoutout comes with the podcast episode. If Latent Space episodes run, every related Latent Space newsletter issue drives hundreds of relevant subscribers to Straw.
+
+**The sequence:**
+
+| Week | Newsletter action |
+|---|---|
+| Week 1 | DM Ben Tossell with one specific finding from research. Not a pitch — a finding. |
+| Week 3 | Publish first technical blog post on evaluation methodology. Share TLDR link via their tips form. |
+| Week 6 | After first competition case study, pitch Ben's Bites again with specific result |
+| Week 8 | Submit to TLDR AI paid placement for 2-week newsletter run ($6K total) |
+| Month 3 | Pitch Latent Space after Straw has something real to demo on the podcast |
+| Month 4 | The Rundown pitch if a newsworthy hook exists (EU deadline, major partner) |
+
+**The $6K newsletter budget decision:** $6K in TLDR AI paid placements is the single best marketing spend at Straw's stage. TLDR AI reaches 1.25M technical practitioners, 2 placements in 2 weeks. Even 0.1% conversion to email sign-up = 1,250 new subscribers. Even 0.01% conversion to design partner conversation = 12 qualified leads.
+
+**Newsletter content optimization:** Different newsletters need different content formats:
+- Ben's Bites: Short, punchy, specific finding. "Here's what happened when we ran 5 AI agents against the same contract review task"
+- TLDR AI: Technical finding with numbers. "Claude Opus 4.6 scored 87/100 on our contract review rubric; HireVue scored 62/100 on the same task"
+- The Rundown AI: Business angle + regulatory hook. "EU AI Act deadline in 91 days — here's what enterprise AI buyers need to know about evaluation requirements"
+
+---
+
+## Tick 69 (2026-05-03T23:00Z): "Evaluation is never truly objective" — the philosophical bear case [theme: bear]
+
+**The deepest bear case statement:**
+
+> *"Every evaluation system embeds the value judgments of its designers. When Straw says Agent A 'won,' it means Agent A satisfied rubric criteria that a human buyer defined. The rubric is a proxy for value, not value itself. The 'objective' score is actually: 'how well did Agent A satisfy the specific values encoded in this rubric by this buyer.' That's not evaluation — it's taste measurement with extra steps."*
+
+This is the most intellectually serious objection to Straw's core premise. It comes from the philosophy of science (Kuhn, Feyerabend), measurement theory, and social choice theory.
+
+### Why this objection deserves a serious answer
+
+**The underlying mechanism:** A rubric converts judgment ("is this response good?") into measurable criteria ("does this response include X, Y, Z?"). Every rubric:
+1. Simplifies something complex into something measurable
+2. Embeds assumptions about what matters
+3. Ignores dimensions not included in the rubric
+4. Can be satisfied by gaming (optimizing for criteria, not underlying quality)
+
+The score is always a measurement of rubric satisfaction, not of genuine capability. This is the Goodhart's Law problem (Tick 14/33), but stated as a philosophical principle rather than an empirical observation.
+
+**The analogy that makes this concrete:** GPA is a rubric-based evaluation of student quality. A student can have a 4.0 GPA and be mediocre at actual work. A student can have a 2.5 GPA and be brilliant but bored by coursework. GPA measures GPA-satisfaction skills, not underlying capability. If Straw becomes the GPA for AI agents, agents will optimize for GPA-satisfaction.
+
+### The honest answer — and what Straw does about it
+
+**Straw doesn't claim to measure "true" capability.** It claims to measure something more useful: **how well does Agent A satisfy the specific performance requirements that THIS buyer defined for THEIR specific workflow?**
+
+This is actually MORE valuable than "true capability" — because "true capability" is abstract and doesn't exist outside of specific contexts. What the buyer cares about is: "will this agent do my specific job well?" Straw's rubric-based evaluation answers this question better than any generic capability benchmark.
+
+**The philosophical position:** Measurement is always local. There's no view from nowhere. Every evaluation system is answering "good according to what?" Straw makes the "according to what" explicit and buyer-defined. Generic benchmarks (Arena, SWE-bench) make it implicit and benchmark-designer-defined. The explicit, buyer-defined version is better for procurement decisions.
+
+**The practical mitigation:** Rubric humility. Straw's evaluation reports should always include:
+1. What was measured (specific rubric criteria)
+2. What was NOT measured (explicitly listed)
+3. The uncertainty range of scores (given prompt injection risk, gaming risk, Tier-3 investigation limits)
+4. Recommended follow-on evaluation (if this is a high-stakes decision, what additional testing would be prudent?)
+
+This is the "surgical" language approach from Tick 15, now framed as epistemic honesty rather than liability avoidance.
+
+**Why this objection is ultimately 3/10 severity:**
+
+The objection proves too much. By the same logic:
+- Job interviews are never objective (embedded interviewer bias)
+- Academic papers are never objective (peer reviewers have priors)
+- Clinical trials are never objective (endpoint selection is a judgment)
+- Financial audits are never objective (accounting standards encode assumptions)
+
+Society has found ways to make all of these useful despite their non-objectivity. The answer is: rigor, transparency, auditable methodology, and appropriate epistemic humility about what is and isn't being measured. Straw can meet this bar.
+
+**The response to the philosophical objection in one sentence:**
+
+*"We're not claiming to measure truth. We're claiming to generate the best available pre-procurement evidence for a specific buyer making a specific decision — and to be transparent about exactly what that evidence does and doesn't tell you."*
