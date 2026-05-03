@@ -38387,3 +38387,194 @@ VCs use staged access. Straw should mirror this:
 
 **At the seed stage:** Docsend analytics are more valuable than a fancy data room. Know which slides VCs spend time on → optimize based on engagement data.
 
+
+## Tick 520 — Supply Chain / Logistics Design Partners: The Super Agent Architecture [theme: GTM + design partners]
+
+### The 2026 Supply Chain AI Architecture: "Super Agent" Orchestration
+
+The dominant emerging architecture in logistics AI (2026) is the **Super Agent** model:
+
+> "A central AI orchestrator coordinates specialized sub-agents across the entire supply chain. Specialized sub-agents handle specific functions: one optimizes routes, another manages carrier procurement, a third handles customs documentation, a fourth monitors shipment risk."
+
+This architecture creates Straw's exact market condition:
+- Multiple specialized agents being procured simultaneously
+- Each agent evaluated on a specific function
+- The orchestrator layer selecting which sub-agent wins each function
+- Stakes: supply chain optimization is measured in millions of dollars of efficiency
+
+**Performance data validating the need:**
+- AI-powered dynamic routing: **10-15% reduction in fuel costs** (Gartner 2025 supply chain survey)
+- DHL's AI route optimization: **12% reduction in total transportation spend** across European network
+- Walmart autonomous procurement agents: significant cost reduction in supplier negotiations
+
+### The Major Carrier Deployments
+
+| Carrier | AI deployment | Straw relevance |
+|---|---|---|
+| DHL | Internal route optimization AI (12% transportation spend reduction) | Evaluating third-party AI vs. internal system |
+| FedEx | Berkshire Grey autonomous unloading robots + AI routing | Multi-vendor logistics AI evaluation |
+| UPS | Proprietary AI routing + ORION platform | Comparing AI routing vendors against ORION |
+| Amazon | SCOT (400M+ product demand forecasting) | Third-party logistics AI evaluation for sellers |
+
+**The key evaluation moment:** Mid-market logistics companies ($100M-$2B revenue) that can't build proprietary systems like Amazon SCOT are actively choosing between Wise Systems, Optimus Routes, Routific, and other AI logistics vendors. This is a Straw evaluation — rubric: fuel cost reduction, on-time delivery rate, carrier procurement savings.
+
+### Named Supply Chain Design Partners (#257-264)
+
+**#257 — Tobias Meyer** (CEO, DHL Group) — one of the world's largest logistics companies; AI transformation at scale; DHL's 12% cost reduction achievement = proven ROI on AI
+**#258 — Raj Subramaniam** (CEO, FedEx) — FedEx's AI strategy; Berkshire Grey robotics integration; supply chain AI procurement at scale
+**#259 — Carol Tomé** (CEO, UPS) — ORION AI routing system; evaluating third-party AI against internal systems
+**#260 — Saurabh Sharma** (VP Supply Chain AI, Amazon Logistics) — Amazon SCOT development; Amazon as AI logistics model that others want to replicate
+**#261 — Mark Manduca** (Chief Investment Officer, GXO Logistics) — pure-play contract logistics; AI agent adoption for warehouse and fulfillment operations
+**#262 — Brendan Canavan** (CDO, C.H. Robinson) — North America's largest freight broker; AI pricing and routing agents for carrier procurement
+**#263 — Annette Clayton** (CEO, Schneider National) — trucking and logistics; autonomous agents for capacity optimization
+**#264 — David Bozeman** (CEO, Amazon Logistics) — operates the world's largest private delivery network; AI procurement decisions at unprecedented scale
+
+### The Supply Chain GTM Entry
+
+**Wedge:** Carrier procurement agent evaluation for Fortune 500 supply chain executives
+
+- Task: "Evaluate 3 AI carrier procurement agents against our carrier selection process"
+- Rubric: Cost reduction per shipment, carrier SLA compliance prediction, dynamic routing accuracy, negotiation success rate
+- Stakes: Fortune 500 supply chain spend = $100M-$10B/year; 1% improvement = $1M-$100M
+- The ROI math: 0.1% improvement in carrier procurement = millions in savings → $15-50K Straw evaluation is obviously justified
+- Channel: Gartner Supply Chain Top 25 list companies = warm list of 25 enterprises with proven AI adoption and board-level supply chain focus
+
+---
+
+## Tick 521 — Straw TAM/SAM/SOM: The Market Size Analysis [theme: GTM]
+
+### The AI Agent Market Size (2026-2030)
+
+| Year | AI Agent Market (total) | Enterprise Agentic AI | Source |
+|---|---|---|---|
+| 2025 | $7.63B | ~$2.58B | MarketsandMarkets, Azumo |
+| 2026 | $10.91B | ~$3.5B | MarketsandMarkets projected |
+| 2030 | $52.62B | $24.50B | MarketsandMarkets, Grand View Research |
+| 2033 | $182.97B | est. $70-80B | Multiple sources |
+| 2035 | – | >$450B (30% of enterprise app software revenue) | Gartner |
+
+**CAGR:** 46.3% for AI agents overall (2025-2030); 46.2% for enterprise agentic AI
+
+**Gartner prediction:** 40% of enterprise applications will feature task-specific AI agents by end of 2026 (up from <5% in 2025). This means the market is doubling in penetration this calendar year.
+
+### TAM Calculation for Straw
+
+**Total Addressable Market (TAM):** Enterprise AI agent procurement decisions globally
+
+Approach 1: Bottom-up from procurement volume
+- 51% of enterprises have AI agents in production (2026 = ~150K enterprises globally with >$50M revenue)
+- Each makes 3-5 agent procurement decisions per year = 450K-750K decisions/year
+- Average Straw evaluation fee: $15K
+- TAM = ~$6.75-11.25B/year
+
+Approach 2: % of enterprise AI spend
+- Enterprise AI software spend 2026: ~$50B (IDC)
+- Evaluation = 3-5% of deployment spend (comparable to consulting/assessment fees)
+- TAM = ~$1.5-2.5B/year
+
+**Conservative TAM: $1.5-2.5B/year** (evaluation-only market)
+**Bull TAM: $6-11B/year** (including full procurement workflow)
+
+### SAM Calculation for Straw
+
+**Serviceable Addressable Market (SAM):** English-speaking, tech-forward enterprises in regulated industries
+
+- Geography filter: US, UK, Canada, Australia = ~40% of global TAM
+- Industry filter: Financial services, healthcare, legal, enterprise tech = ~50% of total market
+- Company size filter: >$100M revenue = ~30% of enterprises
+- Combined SAM = ~6-8% of TAM
+- **SAM = ~$90-200M/year**
+
+### SOM Calculation for Straw
+
+**Serviceable Obtainable Market (SOM):** What Straw can realistically capture in Years 1-3
+
+Year 1 (2027): 
+- 20 design partner pilots at $10-25K = $200-500K
+- 5 annual contracts at $50-150K = $250-750K
+- **Year 1 SOM: $450K-$1.25M**
+
+Year 2 (2028):
+- 50 active customers at $25-75K ACV = $1.25-3.75M
+- 3 enterprise contracts at $150-500K = $450K-$1.5M
+- **Year 2 SOM: $1.7-5.25M**
+
+Year 3 (2029):
+- 150 active customers at $50-100K ACV = $7.5-15M
+- 10 enterprise contracts at $200-500K = $2-5M
+- **Year 3 SOM: $9.5-20M**
+
+**Year 3 ARR target: $10-20M** — consistent with typical B2B SaaS Series A milestones.
+
+### The Goldman Sachs AI Agent Software Market Multiplier
+
+Goldman Sachs: "AI agents will boost productivity AND the size of the software market."
+
+The mechanism: AI agents don't just automate existing software workflows — they create demand for NEW software categories (agent evaluation, agent management, agent identity, agent payment). Straw is one of these new categories.
+
+Goldman's estimate: AI agents could increase enterprise software market from ~$1.5T to ~$2.2T by 2033 (47% growth attributable to agentic AI new categories). Straw's evaluation category = one of the new categories that didn't exist pre-2024.
+
+**The investor framing:**
+"Straw is entering a new software category being created by the AI agent wave. TAM of $1.5-2.5B for evaluation alone; Goldman projects the enterprise AI software market itself grows 47% on the back of agentic AI. Straw's evaluation category didn't exist in 2024 — it's being created now."
+
+---
+
+## Tick 522 — The Anthropic Ecosystem: 70% Fortune 100, Claude Partner Network = Straw Distribution [theme: GTM]
+
+### What Anthropic's Scale Means for Straw
+
+**Anthropic's enterprise stats (May 2026):**
+- **70% of Fortune 100** are Claude customers
+- **8 of Fortune 10** use Claude
+- **500+ customers spending >$1M annually**
+- **$19B annualized revenue** (up from $9B at year-end 2025)
+- **Claude Partner Network** (launched March 2026): $100M Anthropic investment, anchored by Accenture, Deloitte, Cognizant, Infosys
+
+**The Accenture detail:** Accenture dedicated an Anthropic Business Group + is training **30,000 professionals** on Claude. Cognizant opened Claude access to **350,000 associates** globally.
+
+### Why Anthropic's Scale Is Straw's Tailwind, Not a Threat
+
+**The apparent threat:** Anthropic could build its own evaluation tool for Claude agents. If Anthropic makes "Claude agent evaluation" a native feature, does Straw lose?
+
+**Why Anthropic won't do this:**
+1. Anthropic's business is selling Claude API access. Making Claude evaluation proprietary would mean evaluating Claude AGAINST competitors — which Anthropic has no incentive to do honestly.
+2. Anthropic building evaluation = Anthropic admitting its agents sometimes lose evaluations. Bad PR.
+3. Anthropic's business model rewards usage, not evaluation discipline. They want agents deployed, not evaluated more rigorously.
+4. Anthropic evaluating Claude agents on a rubric is like a university grading its own alumni — structurally compromised.
+
+**Why Anthropic's scale is Straw's distribution channel:**
+- Every Accenture engagement deploying Claude agents = a Straw evaluation opportunity
+- Every Deloitte AI advisory client using Claude = needs independent validation that Claude was the right choice
+- Straw can become the "neutral verification layer" for the entire Claude Partner Network ecosystem
+- Straw's pitch to Anthropic: "We make your enterprise customers MORE confident in their Claude deployments by providing independent validation. Happy customers renew."
+
+### The Infosys-Anthropic Integration Angle
+
+Infosys (February 2026): Integrated Claude and Claude Code into its "agentic AI platform" across "complex, regulated industries."
+
+**Infosys has ~300,000 employees serving enterprise clients globally.** Every regulated-industry Claude deployment Infosys delivers = a Straw evaluation opportunity before deployment.
+
+**The channel proposal to Infosys:**
+> "Infosys deploys Claude agents for regulated enterprises. Those enterprises need independent pre-deployment validation that satisfies their governance boards. Straw provides that. Infosys includes a Straw evaluation as standard in its regulated-industry Claude deployments — at a 20% channel fee."
+
+### The "Anthropic May Acquire Straw" Scenario
+
+If Anthropic wants to credibly claim "Claude agents are enterprise-ready," independent validation data helps them. Acquiring Straw gives Anthropic:
+1. Evaluation methodology credibility (third-party verified, not self-assessed)
+2. Multi-vendor comparison data (proves Claude wins when evaluated fairly)
+3. Enterprise procurement workflow integration (Straw + Claude = complete enterprise AI solution)
+
+**Acquisition price:** If Straw reaches $10-20M ARR and $50-100M valuation by 2028, Anthropic (at $380B valuation) can absorb this easily. The strategic premium would likely push acquisition price to $200-500M.
+
+**Strategic risk:** If Straw is acquired by Anthropic, it loses vendor neutrality — the core moat. Remain independent longer to maximize valuation and avoid compromising the brand.
+
+### Named Anthropic/Partner Network Design Partner Contacts
+
+**#265 — Dario Amodei** (CEO, Anthropic) — for partnership discussion (Straw as neutral eval layer for Claude deployments)
+**#266 — Mike Krieger** (CPO, Anthropic) — product integration lead; Straw API integration into Anthropic's enterprise products
+**#267 — Jason Warnke** (Global AI Lead, Accenture) — leads Accenture's Anthropic Business Group; 30K professionals trained on Claude
+**#268 — Bret Taylor** (Chairman, Anthropic; former Salesforce co-CEO) — board-level relationship; knows enterprise sales motion for AI tools
+**#269 — Srini Pallia** (CEO, Wipro) — Wipro is NOT in Claude Partner Network yet; opportunity to approach as a differentiated AI advisory partner alongside Straw
+**#270 — Ravi Kumar** (CEO, Cognizant) — Cognizant has 350K associates on Claude; Straw evaluation could be a Cognizant client offering
+
+---
