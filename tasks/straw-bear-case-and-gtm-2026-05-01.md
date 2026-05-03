@@ -20114,3 +20114,131 @@ Before raising Series A, Straw needs:
 - [ ] Named competitive win vs. status quo ("they were about to sign with Vendor X, ran Straw, chose different agent")
 - [ ] EU AI Act compliance positioning in deck
 
+
+---
+
+## Tick 274 (2026-05-03T00:04:00Z): Enterprise Rubric Design as a Product and Service [theme: gtm]
+
+**Research basis**: 2026 enterprise AI evaluation frameworks emphasize: trajectory-level metrics (full reasoning path) vs. outcome-level (task completion only), mandatory audit trails, compliance gating, business outcome anchoring. Checklist-based evaluation is insufficient for multi-step agents. Proprietary rubric quality = procurement gate.
+
+### The Rubric Design Gap Is Real
+
+Enterprise procurement teams know they need to evaluate agents. They don't know how to design rubrics that actually work. The gap is:
+
+**What most enterprises do**:
+- 5-question pass/fail checklist: "Does it integrate with Salesforce? Yes/No"
+- Vendor demo: "Watch us demo the agent on our curated use case"
+- Reference checks: "Call 3 customers the vendor pre-selected"
+
+**What actually predicts production performance**:
+- Trajectory-level evaluation: Does the agent take the right intermediate steps, not just produce the right final output?
+- Adversarial probing: What happens when the input is ambiguous, malformed, or adversarial?
+- Volume stress testing: Does it perform the same on task #1 as on task #1,000?
+- Failure mode analysis: How does it fail? Silently, or loudly?
+
+Most enterprises can't design the second type of rubric without expertise they don't have. This is Straw's "Rubric Scientist" value prop in action.
+
+### The Rubric-as-Service Revenue Stream
+
+**Offering**: Straw Rubric Design Service — $15,000-$25,000 per rubric, 2-4 week engagement.
+
+What Straw delivers:
+1. Task decomposition analysis (identify the 5-10 sub-capabilities the agent must master)
+2. Rubric scaffolding (outcome metrics + trajectory metrics + failure mode criteria)
+3. Test case library (50-100 test inputs across normal, edge, and adversarial conditions)
+4. Scoring methodology (automated + human-in-the-loop hybrid)
+5. Baseline calibration (what a "50th percentile" agent looks like on this rubric)
+
+**Why this works as a revenue stream**:
+- First-mover advantage: Enterprise AI evaluation is nascent; no standardized rubric library exists
+- Land-and-expand: Rubric design → competition → annual recertification = full customer lifecycle
+- Proprietary data: Every rubric Straw designs adds to the benchmark library; competitive moat compounds
+- Low marginal cost: Rubric templates reused across similar use cases; first rubric costs $25K, tenth rubric in same category costs $5K
+
+### The Salesforce vs. Microsoft Proxy War
+
+2026's most contested enterprise AI turf: which platform's agents win on enterprise workflows?
+
+- **Salesforce Agentforce**: CRM-native, autonomous agents, designed for customer-facing workflows (service, sales, marketing)
+- **Microsoft Copilot Studio**: Productivity-native, employee automation, Office 365 integrated
+
+Every enterprise with both Salesforce AND Microsoft deployments faces the same question: "Which agent should we buy for which workflow?" Straw is the neutral evaluator.
+
+**The enterprise caught in the middle**: A Fortune 500 company uses Salesforce for CRM, Microsoft 365 for productivity. They want AI agents for:
+- Customer service triage (Salesforce vs. independent?),
+- Internal knowledge management (Microsoft vs. independent?),
+- Contract analysis (neither — specialized legal AI?)
+
+They don't want to choose based on vendor allegiance. They want to choose based on performance. Straw runs the three-way competition.
+
+**GTM implication**: Target Salesforce and Microsoft SIs who serve customers with mixed tech stacks. They need Straw to give neutral advice that protects their consulting relationship. "We ran a Straw evaluation — here's which agent wins for your use case, regardless of platform."
+
+### Rubric Quality Benchmarks (Straw Internal Standards)
+
+Every Straw evaluation rubric must include:
+
+| Component | Requirement |
+|-----------|-------------|
+| Business outcome anchor | Primary KPI defined in measurable terms (e.g., "reduce AHT by 20%") |
+| Trajectory metrics | 3+ intermediate step checkpoints beyond final output |
+| Failure mode criteria | Explicit scoring for silent failures, off-target responses, hallucinations |
+| Adversarial test cases | ≥10% of test inputs are edge cases / adversarial |
+| Volume distribution | Minimum 200 test inputs per evaluation |
+| Human calibration | ≥3 human reviewers calibrate rubric before competition opens |
+
+This is Straw's quality bar — and part of what "Straw Certified" actually means.
+
+---
+
+## Tick 275 (2026-05-03T00:05:00Z): Salesforce Agentforce Partner Network as Design Partner Channel [theme: partners]
+
+**Research basis**: Salesforce Agentforce is the leading enterprise CRM agent platform in 2026, deployed by Salesforce's 150,000+ customers globally. Agentforce vs. Copilot Studio is the dominant enterprise AI platform war. SIs are building practices around both platforms. Evaluation of which platform/agent to deploy is a live enterprise decision.
+
+### Why Salesforce SI Partners Need Straw
+
+Salesforce's partner ecosystem — Deloitte Digital, Accenture, Slalom, Publicis Sapient, Cognizant — are building Agentforce practices. Their pitch: "We'll build you AI agents on Agentforce that transform your CX."
+
+The problem: when the client asks "how do we know this agent is better than a Microsoft Copilot Studio agent?" — the SI has no neutral answer. They're a Salesforce partner. Of course they'll recommend Agentforce.
+
+Straw gives SIs the neutral credential: "We ran an objective evaluation. Agentforce won for your CX use case because it scored higher on [specific rubric criteria]. Here's the report."
+
+This is a career-saving artifact for the SI partner who recommended it.
+
+### Named Salesforce SI Partner Targets
+
+| SI Partner | Focus Area | Key Contact (Title) | Why They Need Straw |
+|------------|------------|---------------------|---------------------|
+| **Slalom** | Mid-market Salesforce | NA Salesforce Practice Lead | Builds Agentforce deployments for 500+ clients; needs neutral evaluation to defend recommendations |
+| **Appirio** (now Wipro) | Salesforce + ServiceNow | Global CRM AI Practice | Multi-platform deployments; needs cross-platform evaluation |
+| **Silverline** | Financial services Salesforce | Managing Director, AI Practice | FS compliance requirements + agent evaluation = perfect Straw fit |
+| **Perficient** | Healthcare + Salesforce | Healthcare Technology Practice | HIPAA compliance + agent evaluation |
+| **Accenture Salesforce Practice** | Enterprise Agentforce | Managing Director, Salesforce NA | 10,000+ Salesforce certifications; massive Agentforce rollouts |
+| **Publicis Sapient** | Retail + CX Agentforce | Global Director, CX Technology | Retail AI agent evaluation for CX use cases |
+
+**Primary target**: **Slalom** — mid-market focused, reachable, and actively building Agentforce practices. Less political than Accenture. More likely to adopt a startup tool quickly.
+
+### The Slalom Opener
+
+> "Hi [Name] — Slalom is building some of the most sophisticated Agentforce practices in the market. When your clients ask 'how do we know this agent is better than what Microsoft or a startup could build?' — do you have a neutral answer? We're building the evaluation layer for that question. Straw runs competitive assessments that let you show your client objective performance data before they commit to a deployment. That turns your Agentforce recommendation from 'trust us' to 'here's the data.' Worth a conversation?"
+
+### The Microsoft SI Partners (The Other Side)
+
+Don't ignore Microsoft's SI ecosystem. The same dynamic applies:
+- **Avanade** (Accenture-Microsoft JV): Copilot Studio deployments need evaluation data
+- **Insight Enterprises**: Microsoft partner with enterprise AI practice
+- **Cognizant Microsoft Practice**: Large-scale Copilot deployments
+
+**Strategic insight**: SIs who serve both Salesforce AND Microsoft clients are Straw's highest-value partners. They need neutral evaluation that doesn't favor either platform. Being "Straw-powered" lets them sell to both camps without choosing sides.
+
+### Salesforce Ventures as a Funding Path
+
+Salesforce Ventures is the VC arm of Salesforce, investing in companies that expand the Salesforce ecosystem. They've invested in companies across: data integration, analytics, security, workflow automation, and now AI evaluation.
+
+**The pitch to Salesforce Ventures**:
+- Straw evaluations increase Agentforce adoption by providing objective proof that Agentforce wins
+- More rigorous pre-deployment evaluation = higher enterprise confidence = larger Agentforce deals
+- "Straw Certified: Agentforce" badge adds enterprise marketing value for Salesforce
+- Strategic investment + co-sell agreement = mutual upside
+
+**Caution**: Salesforce Ventures investment comes with strategic strings — they may push for Agentforce-exclusive positioning. Straw must maintain neutrality as a condition of any investor relationship. Make this explicit in term sheet negotiations.
+
