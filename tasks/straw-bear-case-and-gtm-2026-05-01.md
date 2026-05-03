@@ -13922,3 +13922,91 @@ The badge needs a display format, a registry, and a verification mechanism. For 
 ---
 
 *End of Morning Reading Guide. Research continues in subsequent ticks.*
+
+---
+
+## Tick 209 (2026-05-04T01:45Z): The AI agent liability black hole — Straw's legal exposure during competitions [theme: bear]
+
+### The 2026 legal landscape: deployers bear responsibility
+
+California's AI liability law (effective January 1, 2026): **A defendant cannot use the system's autonomous operation as a defense when an AI system causes harm.** "The AI made the decision" does not get you off the hook.
+
+EU AI Act (high-risk system rules effective August 2026): Creates explicit obligations for "deployers" of AI systems — requirements for human oversight, risk management, and transparency.
+
+EU Product Liability Directive (implementation by December 2026): Software and AI are now "products" subject to strict liability if found defective. If a deployed AI agent causes measurable harm, the deployer (the enterprise that chose it) bears strict product liability.
+
+**The Clifford Chance "liability gap" (February 2026):** "Many systems are still deployed under legacy technology contracts written for passive, predictable software firmly under human control. As vendors release agentic capabilities faster than contracts can evolve, a liability gap is emerging."
+
+### How the liability gap applies to Straw
+
+During a Straw competition, agents are running on the enterprise buyer's real tasks. Consider the scenarios:
+
+**Scenario A (Legal competition):** Harvey AI reviews an actual contract clause and recommends "this indemnification clause is standard." The enterprise's lawyer reads this during the competition review and, relying on it, agrees to the clause in a separate real deal. The clause turns out to be unusual and costly. Harvey's recommendation was incorrect. Is Straw liable? Is the enterprise? Is Harvey?
+
+**Scenario B (Coding competition):** Cursor generates code for a production bug fix as part of the competition. The code passes the rubric but introduces a security vulnerability. The enterprise uses the code reference as a starting point for the real fix. The vulnerability gets deployed. Breach occurs.
+
+**Scenario C (CX competition):** An AI support agent gives incorrect tax advice to a "test customer" who is actually a real customer whose ticket was used in the competition data sample. The incorrect advice is relied upon.
+
+### Straw's liability mitigation architecture
+
+The core principle: **Straw is an evaluation platform, not a deployment platform.** The competition output is a score and a recommendation, not a deployed system. This is the key liability distinction.
+
+**Required legal protections:**
+
+1. **Competition Terms of Service:** Competition results are for evaluation purposes only. Competition outputs (agent recommendations, generated code, analysis) are not production-ready and must not be relied upon for real decisions. The buyer acknowledges this before competition starts.
+
+2. **Agent operator data processing agreement:** Each agent operator running in a competition agrees: (a) competition tasks are evaluation-only, (b) they will not use competition data for model training, (c) they are providing evaluation services, not production services, during the competition window.
+
+3. **Real vs. synthetic task disclosure:** For the highest-risk verticals (legal, finance, medical), Straw's policy should default to synthetic tasks until the VPC execution mode is live. Synthetic tasks eliminate the Scenario A/B/C risk entirely — no real decisions are being made on real confidential data.
+
+4. **The "no deployment recommendation" limitation:** Straw's rubric measures performance on competition tasks. The Straw Certified badge says "this agent performed best on [rubric] at [company]." It does not say "this agent is safe for production deployment." The liability for deployment decisions remains with the enterprise that makes the deployment decision.
+
+**The bull case framing:** The EU AI Act and California's law actually increase Straw's value. Enterprises deploying AI agents without a documented evaluation process now face liability they couldn't use "the AI made the decision" to escape. Straw's competition record is the documentation that demonstrates due diligence. The liability landscape pushes enterprises *toward* Straw, not away from it.
+
+Sources: [Baker Donelson 2026 AI Legal Forecast](https://www.bakerdonelson.com/2026-ai-legal-forecast-from-innovation-to-compliance), [Clifford Chance Agentic AI Liability Gap](https://www.cliffordchance.com/insights/resources/blogs/talking-tech/en/articles/2026/02/agentic-ai-and-the-liability-gap-your-contracts-may-not-cover.html), [The Register AI Agent Liability](https://www.theregister.com/2026/04/05/ai_agents_liability/), [Squire Patton Boggs Agentic AI Legal Risks](https://www.squirepattonboggs.com/insights/publications/the-agentic-ai-revolution-managing-legal-risks/)
+
+---
+
+## Tick 210 (2026-05-04T02:00Z): AWS Marketplace listing — the enterprise distribution channel play [theme: gtm]
+
+### The AWS Marketplace opportunity
+
+**The mechanics:**
+- AWS now has a specific listing type: "SaaS API-based AI agent products" — Straw fits this exactly
+- Revenue share: 3% for public listings; 1.5% with ISV Accelerate membership (apply once you have traction)
+- Timeline to list: 4-8 weeks from initial setup to live listing
+- Enterprise transaction mechanism: private offers (negotiated pricing, commit burn-down, multi-year deals) — this is how the big deals actually happen on AWS Marketplace
+
+**The enterprise sales case:**
+- AWS Marketplace speeds sales cycles by **up to 40%** — enterprises already have AWS procurement relationships
+- Expands deal sizes by up to **80%** — AWS Marketplace purchases can draw down AWS Enterprise Discount Program (EDP) commitments, so a $50K Straw competition charges against the enterprise's existing AWS budget rather than requiring new procurement approval
+- 95M enterprise customers have AWS accounts — the largest single distribution network for B2B SaaS
+
+### Why AWS Marketplace is Straw's first priority distribution channel
+
+**The procurement friction elimination argument:** The biggest barrier to Straw's first enterprise deals is the procurement approval process — legal review, security review, vendor onboarding. For a $25-50K competition, this process can take 6-12 weeks. AWS Marketplace collapses this to days for companies already on AWS Enterprise: Straw appears as a line item in their existing AWS console, charged against their AWS budget, covered by their master AWS customer agreement (no new vendor legal review).
+
+**The Anthropic + AWS synergy:** Anthropic has a deep AWS partnership (Amazon invested $4B). Straw runs competitions that often include Claude as one of the competing agents. The Anthropic → AWS → Straw channel: Anthropic's AWS marketplace presence surfaces Straw to the same enterprise buyers evaluating Claude. "Evaluating which agent to deploy? Straw runs structured competitions — available in AWS Marketplace."
+
+### How to list Straw on AWS Marketplace (the action plan)
+
+**Step 1 (Immediate):** Create an AWS Marketplace seller account. Requires: AWS account, bank account, tax documentation. Takes 1-3 days for approval.
+
+**Step 2 (Week 1-2):** Choose the listing type: "SaaS contract with upfront payment" (maps to per-competition pricing). Implement the AWS Marketplace metering API (required for SaaS listings — tracks usage and billing through AWS). This is a technical integration, estimated 2-4 days.
+
+**Step 3 (Week 2-4):** Build the listing page: product description, use cases, pricing tiers. AWS has listing requirements: technical specifications, security review, documentation. The "AI agent evaluation tool" category is new in 2026 — AWS added specific fields for this.
+
+**Step 4 (Once listed):** Apply for ISV Accelerate. Requirements: active AWS Marketplace listing + $1M ARR (or equivalent). Reduces fees from 3% to 1.5% and gives access to AWS co-sell team (AWS account managers will recommend Straw to their enterprise accounts).
+
+**Step 5 (After first enterprise deal):** Use "private offers" for all enterprise deals. Private offers allow custom pricing, multi-year terms, and commit burn-down. A $100K/year Straw subscription through AWS private offer charges against the enterprise's AWS EDP — zero incremental procurement friction.
+
+### The revenue model math with AWS Marketplace
+
+At $50K/competition × 40 competitions/year = $2M ARR:
+- Without AWS Marketplace: standard procurement friction, 3-6 month sales cycles
+- With AWS Marketplace: 40% faster sales cycles, 1.5-3% revenue share ($30K-$60K/year in fees at $2M ARR)
+- Net benefit: faster cycles + larger deal sizes > AWS's fee
+
+The fee is 1.5-3% — trivial compared to the sales cycle acceleration and enterprise access.
+
+Sources: [AWS Marketplace Listing SaaS AI Agents](https://docs.aws.amazon.com/marketplace/latest/userguide/listing-saas-ai-agents.html), [Complete Guide to AWS Marketplace 2026](https://clazar.io/guides/aws-marketplace), [AWS Marketplace Revenue Guide](https://labra.io/marketplace-revenue-guide/), [Suger Complete Guide AWS Marketplace 2026](https://www.suger.io/resources/guides/aws-marketplace/)
