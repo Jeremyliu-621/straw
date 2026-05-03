@@ -22493,3 +22493,124 @@ Sources: (synthesized from all design partner ticks across Phase 1 and Phase 2)
 
 TICK_END
 
+
+---
+
+## TICK 363 — CRITICAL BEAR CASE UPDATE: Google's Gemini Enterprise Agent Platform Has Agent Evaluation
+
+**Theme: Bear Case (most important single finding of Phase 2)**
+
+### What Google Released at Cloud Next '26 (April 22, 2026)
+
+Google rebranded Vertex AI as **Gemini Enterprise Agent Platform** with these evaluation capabilities:
+
+**Agent Simulation:**
+- Tests agents against human-like synthetic user interactions before production
+- Agents tested against virtualized tools in a controlled environment
+- Automatically scored based on task success and safety across multi-step conversations
+
+**Agent Evaluation:**
+- Continuously scores agents against live traffic using multi-turn autoraters
+- Evaluates full conversation logic (not just single responses)
+- Turnkey dashboards + integration with Agent Observability
+- Visual tracing for debugging in real-time
+
+**Agent Optimizer:**
+- Automatically clusters real-world failures
+- Suggests refined system instructions to improve accuracy
+
+### Google's Evaluation vs. Straw: The Critical Differences
+
+| Dimension | Google Gemini Enterprise Agent Platform | Straw |
+|---|---|---|
+| **Vendor scope** | Google agents only (Gemini 3.1 + third-party models listed in Model Garden) | Any agent from any provider, including custom builds |
+| **Who defines success** | Google's synthetic user interactions and task success metrics | Buyer defines rubric upfront, pre-procurement |
+| **When it runs** | Pre-production (simulation) + post-deployment (live traffic) | Pre-procurement (before the contract is signed) |
+| **Competition mechanic** | None — evaluates one agent at a time | Multiple agents compete simultaneously on the same task |
+| **Buyer lock-in** | Deep Google Cloud lock-in (this is the point) | Platform-agnostic; buyer can post task once and evaluate any agent |
+| **Rubric provenance** | Google-generated synthetic tasks | Buyer's actual production data |
+| **Regulatory documentation** | Not designed for compliance documentation | Generates impact assessment artifacts (Colorado/EU compliance) |
+
+### The Core Structural Gap Google Leaves Open
+
+Google's evaluation answers: "Is my Gemini agent good?"
+Straw answers: "Which agent is best for my specific task, including Google's, Anthropic's, open-source, and custom agents?"
+
+Google's evaluation IS a competitive threat for Google Cloud customers who only use Google agents. But any enterprise that wants to compare vendors — which is the majority of large enterprises (multi-cloud, multi-vendor strategy) — has no cross-platform evaluation mechanism.
+
+**Updated threat probability:** Google's Gemini Enterprise Agent Platform raises the bear case probability for Tier-3 enterprise customers who have committed to Google Cloud. For cross-vendor enterprise evaluation (the majority of enterprise use cases), Straw's moat remains intact.
+
+**Revised P(Google kills Straw) = 10-15%** (up from 5%). Most likely scenario: Google captures evaluation for Google-ecosystem buyers; Straw captures evaluation for cross-vendor and regulated-industry buyers. Market segments, not winner-takes-all.
+
+### What This Means for Straw's Positioning
+
+**Before this finding:** "Pre-specified rubric evaluation doesn't exist anywhere."
+
+**After this finding:** "Pre-specified, BUYER-DEFINED, CROSS-VENDOR rubric evaluation in a competition format doesn't exist anywhere. Google built evaluation, but only for their own agents."
+
+**The pivot in sales script:**
+- "Did you see Google's Agent Evaluation feature at Cloud Next? Great — it measures whether your Gemini agent is working. Straw measures whether your Gemini agent is BETTER THAN the alternatives. Those are different questions."
+
+### Market Consolidation vs. Platform Fragmentation
+
+Google's strategy: own the entire stack. Microsoft Copilot: same. But:
+
+1. **49% of enterprises run multi-cloud.** They use both Google Cloud and Azure. They need cross-cloud agent evaluation.
+2. **McKinsey 2026 procurement analysis:** Outcome-driven buying means "best tool for the job" not "one vendor for everything." The chemicals company automating sourcing with AI agents evaluates alternatives before committing.
+3. **The anti-lock-in regulatory case:** EU AI Act conformity assessments require demonstrating the AI system was selected for good reasons. "We picked the Google agent because it's already on Google Cloud" is not a conformity assessment.
+
+**Straw's positioning as Google's complement, not competitor:**
+"We evaluate all the agents in Google's Model Garden against your rubric, and we evaluate the agents outside the Google ecosystem too. When you pick the Google agent after running Straw, your procurement decision is defensible."
+
+Sources: cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-agent-platform, thenextweb.com/news/google-cloud-next-ai-agents-agentic-era, virtualizationreview.com/articles/2026/04/24/google-cloud-next-26
+
+TICK_END
+
+---
+
+## TICK 364 — Outcome-Driven Procurement: The Market Has Arrived at Straw's Thesis
+
+**Theme: GTM validation + Bear Case (market timing)**
+
+### The Data: Procurement Has Shifted from Pilots to Outcomes
+
+**2026 statistics on enterprise AI procurement evolution:**
+- 49% of procurement teams piloted generative AI in 2024 (McKinsey)
+- Only **4% achieved large-scale deployment** from those pilots
+- CIOs "no longer buying promises or pilots — investing in outcomes, governance and long-term capability"
+- McKinsey example: chemicals company using AI agents for autonomous sourcing; automatic preparation of tenders and analysis of competing bids; 20-30% efficiency gain + 1-3% value capture improvement
+
+This is the exact market signal Straw needs: the enterprise market has independently concluded that pilot-based procurement doesn't work. They want outcomes. Straw is the mechanism that generates outcome evidence before the contract.
+
+### The "Only 4% Scale" Problem Is Straw's Market
+
+The 49% pilot → 4% scale gap means 45% of all enterprise AI procurement in 2024 produced essentially zero value at scale. If that ratio holds in 2026, we're looking at massive ongoing waste. The enterprises that are spending $7.2M on failed implementations are the people Straw is trying to save.
+
+**Straw as the "4% becomes 40%" thesis:** If enterprises evaluate on outcome evidence (Straw competition scores) before deployment, the selection quality improves dramatically. The 4% scale rate rises because bad agents get filtered out pre-deployment, not post-deployment.
+
+### Stripe Lesson Applied to Straw: Documentation as Product
+
+Stripe's GTM was developer-first, with documentation treated as a product. Every Stripe API reference was meticulously crafted. The documentation was so good it spread word-of-mouth among engineers.
+
+**Straw's equivalent of Stripe's documentation:** The rubric definition interface and the competition result report. These must be so clean, so well-designed, and so obviously correct that a CTO who runs one Straw competition immediately wants to show the result to a peer.
+
+Key design principles derived from Stripe's lesson:
+1. **The rubric builder must be a 30-minute experience.** If defining a task spec takes 3 hours, buyers won't do it.
+2. **The competition result report must be printable.** CTOs forward the report to their leadership. It needs to hold up in a board meeting.
+3. **The winner announcement must be shareable.** "We ran a Straw competition and Agent X won with a score of 91/100" should be a LinkedIn post the buyer makes voluntarily.
+
+### The Chemicals Company McKinsey Case: Straw's Use Case In The Wild
+
+McKinsey profiled a chemicals company in 2026 using AI agents for autonomous sourcing: automated tender preparation + bid analysis. 20-30% efficiency gain, 1-3% value capture.
+
+**The question McKinsey doesn't ask:** How did the chemicals company decide WHICH AI agent to use for autonomous sourcing? Almost certainly: a vendor demo and an internal pilot. The 49% → 4% failure rate suggests the pilot-based selection process is broken.
+
+**Straw's pitch to that chemicals company (or any procurement transformation program):**
+"Before you commit to an autonomous sourcing agent, run a Straw competition: post a real sourcing scenario with your rubric (bid analysis accuracy, compliance rate, turnaround time). Let 3-5 agents compete. The one that wins your rubric is the one that will achieve your 20-30% efficiency gain. The others will waste your time and money."
+
+**The McKinsey case is the first publicly documented Straw use case that Straw didn't invent.** The market is already doing agent procurement; they just don't have evaluation infrastructure.
+
+Sources: aispectrumindia.com/analysis/1/416/enterprise-ai-procurement-in-2026, mckinsey.com/capabilities/operations/our-insights/redefining-procurement-performance-in-the-era-of-agentic-ai, artofprocurement.com/blog/state-of-ai-in-procurement, howtheygrow.co/p/how-stripe-grows
+
+TICK_END
+
