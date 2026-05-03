@@ -13167,3 +13167,103 @@ For Straw's first 5 enterprise design partners, the optimal structure is:
 **The sequencing:** Start with the YC W26 agent company (#3) first — Jeremy already has the relationship, lowest friction, quickest to close. Use that first competition result as the case study that opens doors for #1, #2, #4, #5.
 
 Sources: [SaaStr Design Partner Incentives](https://www.saastr.com/dear-saastr-what-incentives-are-given-to-design-partners-and-other-super-early-customers/), [Common Paper Design Partner Agreement](https://commonpaper.com/blog/design-partner/), [Reechee SaaS Design Partner Guide](https://reechee.io/blog/what-is-a-design-partner-in-saas/), [Horizon Capital Founders Guide](https://horizoncap.vc/founders-guide-choose-your-first-design-partners/)
+
+---
+
+## Tick 196 (2026-05-03T22:30Z): Cursor $50B + Copilot 4.7M subs — the coding agent competition as Straw's first vertical [theme: gtm/partners]
+
+### The coding agent market: live procurement decision at every enterprise engineering team
+
+Current state of the coding agent market (May 2026):
+- **GitHub Copilot:** 4.7M paid subscribers (75% YoY growth); $10/month (autocomplete) or $39/month Pro+; deep GitHub Enterprise integration
+- **Cursor:** $2B ARR by February 2026 (doubled from $1B in November 2025); $20/month; raised at $29.3B valuation November 2025; preliminary funding talks at ~$50B in March 2026
+- **Devin (Cognition):** $20/month; fully autonomous agent; edits files, runs commands, operates across entire codebase
+- **Windsurf, Codeium, Continue.dev:** Multiple other competitors with growing enterprise adoption
+
+**Every VP Engineering at every 200+ person tech company is making this decision right now.** The decision is: Cursor vs. Copilot vs. Devin vs. "build our own." It is a $20-$39/developer/month decision that, at 200 developers, is $48K-$94K/year. For a 1,000-developer company, it's $240K-$470K/year. The stakes are high enough to warrant a structured evaluation.
+
+### Why "which coding agent" is the ideal first Straw competition
+
+**The buyer pain is acute and current.** VP Engineering teams have already tried at least one coding agent informally. They know the vendor demos are cherry-picked. They've seen the SWE-bench contamination story (Tick 176). They want to know: "Which agent produces the best pull requests on our actual codebase, with our coding standards, in our programming languages?"
+
+**The rubric is already understood.** Enterprise engineering teams have pull request review processes, code quality standards, test coverage requirements. Straw doesn't need to invent the evaluation criteria — it codifies what the engineering team already uses to evaluate human code contributions:
+- Test coverage delta (does the agent write tests?)
+- Code review pass rate (first review or multiple revision cycles?)
+- Documentation quality (comments, docstrings, README updates)
+- Security scan results (SAST tool pass/fail)
+- Bug introduction rate (does the agent's code introduce new defects?)
+
+**The competition format is tractable in 72 hours.** A set of 20-30 representative coding tasks from the company's GitHub backlog — mix of features, bugs, refactors. Each agent gets the same tasks. Results are scored against the rubric. Winner is clear.
+
+### The Cursor vs. Copilot Straw competition design
+
+A concrete competition template for the coding vertical:
+
+> **Competition: "Coding Agent Selection — [Company Name] Engineering Stack"**
+> **Tasks:** 25 representative GitHub issues (5 feature additions, 10 bug fixes, 5 refactors, 5 code reviews)
+> **Competing agents:** GitHub Copilot Pro+, Cursor, Devin (optional: Windsurf)
+> **Rubric (equal weights):**
+> - Test coverage: did agent write passing tests? (25%)
+> - Review round count: first-review accept vs. required revision (25%)
+> - Security scan: zero SAST violations (25%)
+> - Time-to-completion per task (25%)
+> **Prize:** Straw Certified badge + recommendation to standardize
+> **Duration:** 72 hours
+> **Price:** $25,000 (enterprise), $10,000 (startup/design partner)
+
+### Named design partner targets for coding vertical
+
+Specific companies where VP Engineering is actively deciding Cursor vs. Copilot (based on tech stack and engineering blog signals):
+
+1. **Notion** — already a Braintrust customer (uses Braintrust for AI observability); actively shipping AI features; 500+ engineers; Cursor is a natural Straw competition target
+2. **Linear** — developer tooling company that has documented opinions on code quality; small engineering team that values efficiency metrics
+3. **Retool** — enterprise SaaS builder with large engineering headcount and known Copilot/Cursor usage in blog posts
+4. **PostHog** — open-source analytics; engineering blog culture; has written publicly about AI coding tools in their stack
+5. **Vercel** — 300+ engineers; Next.js company with strong code review standards; shipped AI features and would benefit from rubric-based agent comparison
+
+**The outreach:** "Hi [VP Engineering name], your team is choosing between Cursor and GitHub Copilot. Instead of the vendor demo, we can run a 72-hour structured competition on your actual GitHub backlog with your code review rubric. Same tasks, same criteria, no cherry-picking. The score tells you which agent fits your team. Want to design the competition?"
+
+Sources: [NxCode Cursor vs Copilot 2026](https://www.nxcode.io/resources/news/github-copilot-vs-cursor-2026-which-to-pay-for), [Autonoma AI Cursor vs Copilot](https://getautonoma.com/blog/cursor-vs-copilot), [MindStudio Best AI Code Editors 2026](https://www.mindstudio.ai/blog/best-ai-code-editors)
+
+---
+
+## Tick 197 (2026-05-03T22:45Z): The token economy bear case — LLM providers profit from failure, distorting agent quality [theme: bear]
+
+### The fundamental misalignment in API pricing
+
+A critical structural bear case for Straw that hasn't been addressed in prior ticks:
+
+**OpenAI, Anthropic, and Google make more money when AI agents fail than when they succeed.** The mechanism: every API call — including retries, error recovery, hallucination corrections, and reattempts — generates token revenue. A chatbot that hallucinates and requires three retries to produce correct output generates 4x the revenue of one that works first time.
+
+Estimated magnitude: **38-48% of LLM provider revenue (~$3.7B in 2024) came from enterprise projects that ultimately failed.** These projects generated enormous API activity (planning calls, failed outputs, retry chains) before being abandoned.
+
+**The financial context:** OpenAI burned $8B against $13B revenue in 2025, projecting $14B in losses for 2026. Sam Altman publicly acknowledged OpenAI loses money on $200/month ChatGPT Pro subscriptions because usage exceeded projections. The all-you-can-eat AI pricing model is structurally unsustainable — usage-based billing is the inevitable destination.
+
+### How token economy distortion affects Straw
+
+**Bear case A: Straw competitions reward wrong-incentive agents.** If an agent is optimized for token efficiency (low API cost), it might score lower on Straw's rubric than a less efficient agent that uses more tokens to achieve better accuracy. Enterprise buyers want quality and cost efficiency simultaneously. Straw's rubric needs to include cost-per-task metrics, not just quality metrics, to avoid selecting agents that are "good but expensive."
+
+**Bear case B: API cost volatility breaks competition economics.** Straw prices competitions at $25-50K. Part of that price covers Straw's API costs for running agents across competition tasks. If OpenAI/Anthropic shift to true usage-based pricing (as the structural economics demand), API costs during a competition could be unpredictable. A 72-hour coding competition that uses 50M tokens per agent × 5 agents = 250M tokens. At volatile usage-based rates, the cost spread could be $5K-$50K depending on pricing tier.
+
+**Bear case C: The best agents are unpublished APIs.** If the winning agent at a Straw competition is an internal Anthropic model or a Google fine-tuned model not available to other enterprises, the "Straw Certified" badge is not portable. The winning agent can't be deployed at other companies because it's not commercially available.
+
+### The counterarguments
+
+**Against Bear A:** Rubric design is the solve. Straw's rubric explicitly includes a "cost-per-task" metric (or a "cost-efficiency" score that normalizes quality by API cost). This turns the token economy distortion into a Straw feature: "We're the only evaluation that tells you both which agent is best AND which is most cost-efficient for your use case."
+
+**Against Bear B:** Fixed-cost API arrangements mitigate this. Straw can pre-purchase token blocks at fixed rates from OpenAI/Anthropic (they offer enterprise volume pricing). Or charge enterprise clients a "token escrow" — $X for token budget, any surplus returned. Competition pricing becomes: fixed Straw platform fee + variable token escrow.
+
+**Against Bear C:** The publicly-available agent constraint is a feature. Straw only evaluates agents that the enterprise can actually deploy and buy. If a winning agent is an internal model not available for purchase, it doesn't belong in the competition. This is explicitly Straw's focus: commercially available, purchasable agents. The constraint is real but is resolved by competition design.
+
+### The structural unsustainability as Straw tailwind
+
+The token economy's move toward usage-based pricing creates a **new procurement problem:** enterprises need to predict and control AI operational costs, not just select the best-performing agent. 
+
+A future Straw competition rubric includes:
+- Quality score (how well does the agent complete the task?)
+- Cost score (what does each task cost in API tokens at production volume?)
+- **Cost-adjusted quality score (QPC — quality per dollar)** — the metric that actually matters for enterprise procurement
+
+This QPC metric is not available from any current benchmark. Straw could be the first platform to publish verifiable quality-per-dollar benchmarks on real enterprise tasks. This extends Straw beyond "which agent wins" to "which agent is the best value at your specific task volume." The addressable market expands: even companies already using one agent can run a Straw competition to audit their QPC against alternatives.
+
+Sources: [Futurism AI Token Economics](https://futurism.com/artificial-intelligence/economics-ai-tokens-crashing-down), [Medium $644B Economic Vandalism](https://skooloflife.medium.com/how-the-ai-industry-created-644-billion-of-economic-vandalism-in-2025-1ca0d71ab6f2), [Deloitte AI Token Dynamics](https://www.deloitte.com/us/en/insights/topics/emerging-technologies/ai-tokens-how-to-navigate-spend-dynamics.html)
