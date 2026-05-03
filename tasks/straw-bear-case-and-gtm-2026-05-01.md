@@ -19471,3 +19471,284 @@ New additions:
 
 Sources: agentmarketcap.ai (Windsurf $82M ARR), allhands.ai, cognition.ai/blog/funding-growth-and-the-next-frontier-of-ai-coding-agents, palantir.com/aip
 
+
+---
+
+## Tick 304 (2026-05-03T21:40Z): Two-sided marketplace cold start — which side builds first for Straw [theme: GTM]
+
+### The theoretical answer
+
+Marketplace theory: "start with the hard side." The hard side is the one with higher switching costs, more commitment required, or harder to acquire. Whoever creates more value for the other side is the hard side.
+
+For Uber: supply (drivers) was hard. Build supply → demand follows.
+For Airbnb: supply (hosts with listings) was hard. Build supply → guests follow.
+
+### Straw's two sides
+
+- **Demand side (enterprises/posters):** Companies that want to run procurement competitions. High ACV ($25K/year). Long sales cycle. Need proof of concept before committing.
+- **Supply side (agents/competitors):** AI agents or agent operators that want to compete. Low friction. Agents can be spun up for any competition. No "switching cost" — an agent can compete on any platform without exclusivity.
+
+### The cold start answer for Straw
+
+**Straw should build the demand side first.** This is the opposite of most marketplace playbooks, and here's why:
+
+1. **Supply (agents) is infinitely elastic.** Jeremy can always connect a new agent to Straw's competition API. Running a competition with Claude Code, Devin, and GitHub Copilot costs $0 in agent acquisition — Jeremy just calls their APIs. There is no "supply scarcity problem." Any agent can be a competitor.
+
+2. **Demand (enterprises) is the constraint.** The question is whether enterprises will post tasks with a rubric and pay for the evaluation. Without enterprise demand, there's nothing to compete on.
+
+3. **A single enterprise poster creates a competition worth running.** The minimum viable Straw competition is: 1 poster + 2-3 agents. Jeremy can supply all 3 agents himself using public APIs. The enterprise doesn't need to see "thousands of agents competing" to get value. They need to see "my 3 preferred agents compared on my task."
+
+**The cold start sequence:**
+1. **Month 1:** Jeremy runs internal competition (Jeremy posts → he connects 3 agents via API). This validates the pipeline.
+2. **Months 1-3:** 3 design partner enterprises post competitions (Jeremy provides agent connections). Enterprises bring the demand. Jeremy brings the supply.
+3. **Months 4-6:** Other agents/agent operators discover Straw and register (supply-side network effects start). Agent reputation scores accumulate.
+4. **Month 6+:** Network effects kick in. High-reputation agents get invited to more competitions. Enterprises choose from a richer supply.
+
+**The key insight:** Straw doesn't need a "supply side" in the traditional sense because supply (AI agents) is commoditized infrastructure that Jeremy can always provide. The scarce resource is demand: enterprise willingness to post real tasks with real rubrics and real budgets.
+
+### The "single player mode" design implication
+
+This means Straw should be useful in single-player mode (1 poster, 3 agents Jeremy connects) before it's a two-sided marketplace. The enterprise doesn't feel the "empty marketplace" problem because Jeremy ensures there are always agents to compete.
+
+PostHog's equivalent: "Single-player mode means you get value from your own events data before you need anyone else. The network is a bonus." For Straw: "Single-player mode means you get a competition report with 3 agents before you need a network of 300. The network is a bonus."
+
+Sources: sharetribe.com/how-to-build/two-sided-marketplace, reforge.com/guides/beat-the-cold-start-problem-in-a-marketplace, applicoinc.com/blog/marketplaces-and-the-chicken-and-egg-problem
+
+---
+
+## Tick 305 (2026-05-03T22:00Z): Big platform threat — Salesforce AgentExchange, Google Gemini, Microsoft Marketplace [theme: bear]
+
+### The landscape
+
+**Salesforce AgentExchange:** 200+ partners, relaunched 2025-2026. Shifted from component catalog to "deployable AI agents." Enterprises can discover, evaluate, and deploy agents through AgentExchange.
+
+**Google Gemini Enterprise:** Agent Gallery within Gemini Enterprise (folded from Agentspace). Partners: Accenture, Adobe, Atlassian, Deloitte, Lovable, Oracle, Palo Alto Networks, Replit, S&P Global, Salesforce, ServiceNow, Workday.
+
+**Microsoft Azure AI Marketplace:** 11,000 prepackaged models, 4,000+ AI apps and agents.
+
+**AWS AI Services Marketplace:** Largest cloud infrastructure base; developer-centric.
+
+### Are these competitors to Straw?
+
+**Short answer: No. They're potential channels.**
+
+These platforms are **discovery and deployment** marketplaces. An enterprise can browse AgentExchange and find a Salesforce-certified agent for their CRM workflow. The evaluation question — "which of these agents is actually best for MY specific task?" — is NOT answered by AgentExchange.
+
+AgentExchange gives you a catalog. Straw gives you a competition result.
+
+### The Salesforce opportunity
+
+Salesforce AgentExchange needs a quality signal. Right now, agent listings have:
+- Partner name
+- Description
+- Use case categories
+- Launch partner status
+
+What they DON'T have: an objective evaluation of agent performance on real CRM tasks.
+
+**The partnership pitch to Salesforce:** "AgentExchange lists 200+ agents. Your enterprise customers don't know which one to use for their specific Salesforce workflow. Straw runs competitions where 3-5 AgentExchange agents compete on the customer's real data. The competition report becomes the purchase decision filter. Straw + AgentExchange = discovery + validation."
+
+**Contact for Salesforce AgentExchange:** Adam Evans (SVP Product Management, Salesforce AI) or Clara Shih (CEO, Salesforce AI). Clara Shih is the more reachable one via Twitter: @clarashih. She posts regularly about enterprise AI strategy.
+
+### The Google Gemini angle
+
+Google has 40%+ of enterprise cloud market share. If Google integrates Straw-style competition infrastructure into Gemini Enterprise, they could commoditize Straw's core product for Google Cloud customers.
+
+**Probability: 10%** within 18 months. Google's strategic interest is selling Google Cloud infrastructure and Gemini Enterprise seats, not building procurement validation tooling. But if they acquire or copy Straw's mechanism, the risk is existential.
+
+**Mitigation:** Straw's value is in the evaluation methodology + tiered pipeline + agent reputation network, not the cloud infrastructure it runs on. A Google competitor would have the infrastructure advantage but not the evaluation methodology depth.
+
+### The correct frame: platforms as distribution channels
+
+Every enterprise marketplace (Salesforce, Google, Microsoft, AWS) is a **potential channel** for Straw to reach design partners. AgentExchange customers are Straw's ICP. A "Straw Verified" badge on AgentExchange agent listings would be a natural distribution partnership.
+
+**Clara Shih (@clarashih) as design partner #50:** VP/CEO Salesforce AI. Her mandate is making AgentExchange credible. Straw provides the evaluation layer that makes AgentExchange listings trustworthy.
+
+**Updated partner count: 50 named contacts** — the Phase 2 mandate ceiling is hit.
+
+Sources: salesforce.com/news/press-releases/2025/03/04/agentexchange-announcement, cloud.google.com/blog/products/ai-machine-learning/partner-built-agents-available-in-gemini-enterprise, cxtoday.com/crm/salesforce-agentexchange-ai-marketplace-agentic-cx
+
+---
+
+## Tick 306 (2026-05-03T22:20Z): The 50 named design partners — complete final list [theme: partners]
+
+### The complete list by tier
+
+**Tier 1: Contact THIS WEEK (8 highest-priority)**
+
+| # | Name | Org | Why first | Channel |
+|---|---|---|---|---|
+| 1 | Beth Barnes | METR | AI eval lab, most likely to be first to run a public competition | LinkedIn, Twitter @beth_b |
+| 2 | Pragya Saboo | Rubric AI (YC W26) | "Rubric AI" literally in their name; YC W26; building eval infra | LinkedIn, YC network |
+| 3 | James Hawkins | PostHog | Understands "build in public" GTM; PostHog is Straw's ICP for PLG playbook | Twitter @James406 |
+| 4 | Erik Bernhardsson | Modal | Has written about evals, approachable, warm via tech Twitter | Twitter @bernhardsson |
+| 5 | Ankur Goyal | Braintrust | AI eval native, complementary product, 200-person team | Twitter @agoyal100 |
+| 6 | Robert Brennan | All Hands AI | Needs a competitive win story vs. Devin; Straw provides it | LinkedIn, allhands.ai Discord |
+| 7 | Mike Knoop | ARC Prize (Zapier) | ARC Prize × Straw — agent capability measurement synergy | Twitter @mikeknoop |
+| 8 | Archana Vemulapalli | Goldman Sachs | EU AI Act deadline, post-Devin-pilot validation opportunity | LinkedIn |
+
+**Tier 2: Reach in weeks 2-3 (15 contacts)**
+
+| # | Name | Org | Why |
+|---|---|---|---|
+| 9 | Fergal Reid | Intercom | CX agent evaluation; Fin 67% resolution rate context |
+| 10 | David Morse | Cognition | Devin enterprise; would benefit from validation context |
+| 11 | Karri Saarinen | Linear | Developer-centric; understands agents and tooling |
+| 12 | Greg Brockman | xAI/ex-OpenAI | Connected to every major AI org; knows procurement problem |
+| 13 | Sri Viswanath | Sycamore | Trusted Agent OS; pre-deployment eval partnership |
+| 14 | Clara Shih | Salesforce AI | AgentExchange needs evaluation layer |
+| 15 | Teresa Heitsenrether | JPMorgan | $20B tech budget, 65K engineers, active agent procurement |
+| 16 | Ryan Orbuch | Cursor/ex | Developer tool PLG experience, AI eval perspective |
+| 17 | Rachel Woods | AI Exchange | Community of AI practitioners, warm intro channel |
+| 18 | Johannes Tönnessen | Apart Research | AI safety + eval research; grant writing opportunity |
+| 19 | Mary Phuong | DeepMind/Gemini | Safety eval track record; potential academic partner |
+| 20 | Collin Burns | Redwood Research | AI alignment eval, potential design partner |
+| 21 | Adam Jermyn | Anthropic alignment | Eval methodology collaborator potential |
+| 22 | Shyam Sankar | Palantir | AIP + agent procurement = natural Straw use case |
+| 23 | Lili Cheng | JPMorgan AI Research | More accessible than Heitsenrether |
+
+**Tier 3: Background research + LinkedIn follow (27 contacts)**
+
+| # | Name | Org |
+|---|---|---|
+| 24 | Dario Amodei | Anthropic |
+| 25 | Swyx | Latent Space / smol.ai |
+| 26 | Silas Alberti | Cognition research |
+| 27 | Jesse Pollak | Base/Coinbase |
+| 28 | Harrison Chase | LangChain |
+| 29 | Harri Edwards | DeepMind |
+| 30 | Paul Christiano | ARC Evals / Alignment Forum |
+| 31 | Evan Morikawa | GitHub Copilot |
+| 32 | Amjad Masad | Replit (post-Bounties) |
+| 33 | Sharif Shameem | ex-Vercel, AI labs |
+| 34 | Michael Truell | Cursor/Anysphere |
+| 35 | Brendan Fong | Topos Institute |
+| 36 | Alexandra Elbakyan | (academic citation source) |
+| 37 | Alex Wang | Scale AI |
+| 38 | Pieter Levels | @levelsio — solo dev |
+| 39 | Bob McGrew | ex-OpenAI / Sycamore angel |
+| 40 | David Haber | Lakera (adversarial eval) |
+| 41 | Eliezer Yudkowsky | MIRI (controversy + calibration) |
+| 42 | Nathan Benaich | Air Street Capital (portfolio) |
+| 43 | Zain Kahn | @therundownai (100K+ newsletter) |
+| 44 | Sam Altman | OpenAI (aspirational) |
+| 45 | Tom Brown | Scale/OpenAI alum |
+| 46 | Jeff Dean | Google DeepMind |
+| 47 | Shreya Rajpal | Guardrails AI |
+| 48 | Varun Mohan | Windsurf/Cognition |
+| 49 | Graham Neubig | All Hands AI / Carnegie Mellon |
+| 50 | Daniel Ek | Spotify (enterprise AI early adopter) |
+
+---
+
+## Tick 307 (2026-05-03T22:40Z): PHASE 2 FINAL MORNING READING GUIDE [theme: synthesis]
+
+*This supersedes all prior morning reading guides (Ticks 263, 283). Read this one.*
+
+---
+
+### THE ONE-PAGE BEAR THESIS
+
+**The bull case is real (Phase 1 established this).** VCG mechanism prevents gaming. Shapley attribution is fair. Enterprise procurement is broken. Tiered eval is defensible. The market is right-sized.
+
+**Here is what could still kill Straw:**
+
+The **#1 kill scenario** (25% probability): Enterprises don't actually feel the pain. Goldman deployed Devin "as a new employee" without a competition and got 3-4× productivity. If "pilot and observe" is good enough for the mainstream enterprise, Straw solves a problem customers tolerate rather than urgently want to solve. **Counter:** 80% failure rate (Gartner/RAND). Goldman is the exception. Straw's pitch is to the 80%, not the 4%.
+
+The **#2 kill scenario** (35% conditional): EU AI Act Digital Omnibus passes before August 2, 2026. Three failed trilogues so far; next attempt May 13. If it passes, the compliance urgency disappears for 18 months. The procurement validation pitch must stand on its own independent of compliance. **Counter:** Build the procurement pitch to not need compliance as a hook. Compliance is a bonus, not the core.
+
+The **#3 kill scenario** (20%): Cognition, Scale AI, or Google builds the enterprise task competition. Cognition at $25B has the resources. Scale Labs is explicitly building enterprise deployment evaluation. Google has Kaggle + DeepMind + enterprise sales. **Counter:** 12-18 month build time advantage. Execution and design partner lock-in matter more than eventual competition.
+
+**What won't kill Straw:** Kaggle (no private rubrics), LangSmith/Braintrust (different layer — monitoring not procurement), Devin (supply side not competition infrastructure), regulatory black holes (platform ToS defensible).
+
+---
+
+### THE 10 DESIGN PARTNER CONVERSATIONS THIS WEEK
+
+Ranked by expected days-to-meeting:
+
+1. **Beth Barnes (METR)** — LinkedIn DM. 1-2 days to reply. Subject: "METR measures capability; Straw measures task fit. Want to run a joint public competition?"
+2. **Robert Brennan (All Hands AI)** — allhands.ai Discord. 1-3 days. Subject: "Free competition: OpenHands vs. Devin on 20 real enterprise tasks. You win if OpenHands wins."
+3. **James Hawkins (PostHog)** — Twitter @James406. 2-3 days. Subject: "PostHog evaluates Cursor vs. Claude Code. We run the competition."
+4. **Pragya Saboo (Rubric AI, YC W26)** — LinkedIn / YC network. 1-2 days. Subject: "Rubric AI + Straw. Your rubric design infrastructure + our competition execution."
+5. **Erik Bernhardsson (Modal)** — Twitter @bernhardsson. 2-4 days. Subject: "Modal hosts the compute. Straw runs the competition. Run one for Modal's customers?"
+6. **Ankur Goyal (Braintrust)** — Twitter @agoyal100. 2-4 days. Subject: "Straw is pre-deployment. Braintrust is post. Same customer, different moments. 20-min call?"
+7. **Mike Knoop (ARC Prize)** — Twitter @mikeknoop. 2-4 days. Subject: "ARC Prize + Straw: agents competing on real enterprise tasks. Joint pilot?"
+8. **Archana Vemulapalli (Goldman Sachs)** — LinkedIn. 5-10 days. Subject: "Goldman chose Devin without a structured competition. What would have changed?"
+9. **Clara Shih (Salesforce AI)** — Twitter @clarashih. 3-5 days. Subject: "AgentExchange needs an evaluation layer. Straw is that layer."
+10. **David Morse (Cognition)** — LinkedIn. 5-10 days. Subject: "Devin keeps winning Straw competitions. Let's make that an official claim."
+
+---
+
+### THE ONE-PAGE GTM PLAYBOOK
+
+**The single north star:** One published competition report within 4 weeks.
+
+**Phase 0 (weeks 1-4): Proof of concept**
+- Run internal competition: Jeremy posts a task → connects Claude Code, Devin, GitHub Copilot via API → tiered eval runs → report generated
+- Fix everything that breaks
+- Publish the report publicly (even rough): "We ran 3 AI coding agents on 20 real tasks. Here's what happened."
+
+**Phase 1 (weeks 5-12): Design partner sprint**
+- 8 targeted outreach messages per week (Tier 1 list above)
+- Goal: 3 design partners with scheduled competition runs
+- First design partner competition runs (free): Beth Barnes / METR, Erik Bernhardsson / Modal, Robert Brennan / All Hands AI
+- Convert to $5K paid after second competition
+
+**Phase 2 (weeks 13-24): First revenue**
+- Show HN post after 3rd competition report is published
+- $15K ARR from 3 paid competitions at $5K each
+- One $25K/year Pro subscription from a design partner renewal
+- Start the GitHub rubric template repo (earns organic HN links)
+- Target: $50K ARR by month 6
+
+**Phase 3 (months 7-12): $100K ARR**
+- 4 Pro subscribers ($25K × 4 = $100K/year)
+- Or 20 single competitions ($5K × 20 = $100K)
+- Or combination
+- Series A conversation starts at $250K ARR
+
+**The marketing stack (in priority order):**
+1. Published competition reports (highest ROI, zero paid media cost)
+2. GitHub rubric template repo (organic HN + developer community)
+3. Show HN (one-time spike, high signal quality comments)
+4. Founder Twitter (threads with real data from competitions)
+5. Cold email to 50 named contacts (founder-led, not SDR)
+6. EU AI Act compliance pitch (for enterprises with EU operations, pre-August 2)
+
+**Never do (at this stage):**
+- Hire a sales rep
+- Run paid ads
+- Target Fortune 500 cold
+- SEO content for broad "AI agent evaluation" keywords
+- Build for supply-side (agents) before demand-side (enterprises) is proven
+
+---
+
+### OPEN QUESTIONS ONLY JEREMY CAN ANSWER
+
+**Q1: Is Jeremy willing to be the human in the loop for the first 10 competitions?**
+The "free first competition" model only works if Jeremy personally designs the rubric, advises on task selection, and interprets results with the enterprise. This is ~20 hours of Jeremy's time per competition. For 10 design partners, that's 200 hours. Is that the right trade-off vs. time spent on product?
+
+**Q2: Which specific task will Jeremy run for the internal competition in week 1?**
+The internal competition proves the pipeline and generates the first competition report. What's the task? Options: (a) "Fix these 20 GitHub issues from a real open-source repo," (b) "Write and test a payment processing module with these 8 edge cases," (c) "Refactor this 5,000-line legacy authentication service."
+
+**Q3: How does Jeremy price the METR/academic partner relationship?**
+METR is a nonprofit. They won't pay $25K/year. What's the model? Options: (a) Free forever as a reference partner, (b) Revenue share from METR referrals to commercial customers, (c) METR as co-developer of evaluation methodology (publication credit as payment).
+
+**Q4: What's the minimum viable rubric editor?**
+The product needs a rubric editor that's good enough for a Goldman Sachs VP Engineering to use. How prescriptive is it? Options: (a) Free-form markdown, (b) Structured form with rubric categories (correctness, security, maintainability, performance), (c) Template-based with 12 pre-defined rubrics.
+
+**Q5: Does Straw compete with the autonomous coding agent operators directly?**
+If Straw runs a competition where Devin beats Claude Code, and Devin pays Straw a referral fee, there's a conflict of interest. Does Straw need an explicit "no financial relationships with competing agents" policy?
+
+**Q6: How does Straw handle a 0% differentiation competition (all agents score 95%+)?**
+As frontier models converge in capability, there will be competitions where all agents score near-identical on the rubric. The enterprise gets a report saying "all three agents are equivalent." This is valuable information, but might feel anticlimactic for a $5K competition. How does the product handle this?
+
+**Q7: What's Jeremy's unfair advantage?**
+Every investor will ask this. The answer can't be "first mover" (Scale AI + Kaggle are first). It has to be something specific Jeremy brings: (a) specific technical relationships, (b) domain expertise in agent eval, (c) network in the AI safety/eval community, (d) some combination. What is it?
+
+---
+
+*End of Phase 2 morning reading guide. File runs from Tick 1 through Tick 307. Total: ~307 research ticks, ~2MB of findings.*
+
