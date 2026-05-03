@@ -2896,3 +2896,205 @@ This post has built-in distribution (everyone discussing the episode will share 
 ---
 
 **Push status (Session 5):** Writing complete — 4 new ticks (26–29). Committing as Jeremy Liu.
+
+---
+
+## Phase 2 Session 6 — Ticks 30–32 (2026-05-03, continued overnight)
+
+*Three new ticks: agent protocol landscape as Straw's supply-side growth strategy; Big 4 AI audit as threat and channel partner; Singapore as the highest-signal international market.*
+
+---
+
+## Tick 30 (2026-05-03T02:00Z): Protocol landscape — MCP + A2A as Straw's supply-side growth engine [theme: gtm]
+
+### The 2026 agent protocol stack (settled, not fragmented)
+
+The bear case about protocol fragmentation (MCP vs A2A vs ACP vs UCP) does not materialize as a Straw risk. Research as of Q1 2026 confirms these protocols are **complementary**, not competitive. The enterprise stack uses all four, each at a different layer:
+
+| Protocol | Layer | Adoption | Straw relevance |
+|---|---|---|---|
+| **MCP** (Model Context Protocol) | Agent ↔ Tools | 97M downloads, cross-vendor (Anthropic, OpenAI, Google, Microsoft) | Straw already has `@straw/mcp-server` built — competitions accessible via MCP |
+| **A2A** (Agent-to-Agent, Google) | Agent ↔ Agent | 150 production organizations, 50+ launch partners; governed by Linux Foundation | Task routing and agent discovery — agents using A2A can discover Straw competitions natively |
+| **ACP** (Agent Communication Protocol, IBM) | Local orchestration | More niche; enterprise intranet agent coordination | Less relevant for Straw's public marketplace |
+| **UCP** (Universal Commerce Protocol) | Agent commerce | Agentic commerce transactions | Relevant for Straw v2/v3 payment rails |
+
+Sources: [AI Agent Protocol Ecosystem Map 2026](https://www.digitalapplied.com/blog/ai-agent-protocol-ecosystem-map-2026-mcp-a2a-acp-ucp), [A2A Protocol survey arXiv 2505.02279](https://arxiv.org/html/2505.02279v1), [UCP vs MCP vs A2A decision matrix](https://www.ekamoira.com/blog/ucp-vs-mcp-vs-a2a-which-ai-commerce-protocol-should-you-adopt-in-2026-complete-comparison-decision-matrix), [Everest Group: Rise of Agent Protocols](https://www.everestgrp.com/uncategorized/the-rise-of-agent-protocols-exploring-mcp-a2a-and-acp-blog.html)
+
+---
+
+### The A2A integration is Straw's most important near-term supply-side play
+
+**Current state:** Straw's MCP server allows agents with MCP capability (Claude, any Anthropic-compatible agent) to discover and participate in competitions. 97M MCP downloads means the supply side is already large.
+
+**The A2A unlock:** Google's A2A protocol is in production at 150 organizations routing real tasks between agents. A2A uses "Agent Cards" (cryptographically signed, JSON identity documents) that describe an agent's capabilities. If Straw's competition specification format maps to A2A's task schema, any agent with an A2A Agent Card can:
+1. Discover Straw competitions natively via A2A discovery
+2. Register for competitions without separate Straw onboarding
+3. Receive task specifications in A2A format
+4. Submit artifacts back via A2A
+
+**What this unlocks for Straw:** The 150 production organizations running A2A have agent operators who are exactly Straw's supply side. An A2A integration is essentially a supply-side distribution deal with Google's entire A2A ecosystem — including the 50+ launch partners (Accenture, BCG, Deloitte, KPMG, McKinsey, Salesforce, ServiceNow, Workday).
+
+**Cost of A2A integration:** Low. A2A is well-documented, open source, and the Linux Foundation governs it. Mapping Straw's task specification format to A2A's task schema is a day of engineering work, not a months-long project.
+
+**The strategic argument for A2A integration before Series A:** "Straw is A2A-native" is a powerful narrative for the Series A. It means Straw is not a siloed platform — it is a node in the global agent protocol infrastructure. Every agent that implements A2A (which Google is actively pushing across its $750M partner ecosystem) is a potential Straw competition participant.
+
+---
+
+### The MCP server as a buyer-side distribution play
+
+Straw's MCP server also works in reverse: enterprise buyers can use their AI coding assistants (Claude Code, GitHub Copilot, Cursor) to **post tasks to Straw** directly from their development environment. "I want to run a Straw evaluation on this authentication service — which agent can refactor it to pass these security tests?" is a natural AI coding assistant workflow once the MCP server is connected.
+
+This turns Straw's MCP server from a supply-side tool into a buyer-side acquisition channel. Developers in VS Code → Claude Code → Straw MCP server → competition posted in seconds.
+
+---
+
+## Tick 31 (2026-05-03T02:30Z): Big 4 AI audit as threat AND channel partner [theme: bear/gtm]
+
+### The AI model risk management market is the upstream context for Straw
+
+**Market size:** AI model risk management market: $7.17B in 2025 → $8.33B in 2026 (growing $1.16B in a single year). The Big 4 are the major incumbents, alongside boutique AI audit firms.
+
+**The Big 4's current posture:**
+- KPMG: removing human involvement from "entire parts of audit process" by summer 2026; piloting full deployment 2027
+- PwC: expects "end-to-end AI audit automation within 2026"
+- Deloitte: Zora AI for automated agentic audit workflows (Nvidia-backed)
+- EY: AI handles 3M+ compliance cases per year (80,000 tax pros assisted)
+
+**Each firm's pricing model:** Custom/project-based. No public price list. Range: ₹50 lakhs to ₹10+ crores per engagement = approximately **$60K to $1.2M+ per engagement**. AI model risk assessments at large financial institutions: $200K–$800K per engagement based on scope.
+
+Sources: [AI Model Risk Management Market](https://www.globenewswire.com/news-release/2026/04/01/3266498/28124/en/AI-Model-Risk-Management-Market-Booming-Growing-by-1.16-Billion-YOY-in-2026-Comprehensive-Industry-Forecasts-to-2030-2035.html), [KPMG full automation timeline](https://www.accountingtoday.com/news/pwc-expects-end-to-end-ai-audit-automation-within-2026), [Big 4 AI audit overview](https://opentools.ai/news/big-four-giants-dive-into-ai-audits-deloitte-ey-kpmg-and-pwc-lead-the-charge)
+
+---
+
+### The threat: Big 4 build their own competitive evaluation tooling
+
+**The scenario:** Deloitte's AI practice team — which just made its "largest ever" investment in Google Cloud AI — decides to build competitive AI evaluation into their AI Center of Excellence service offering. They have 100+ deployed agents for enterprise clients. Adding "compare competing agent vendors on your actual task" as a premium advisory service is a natural extension.
+
+**Why this is lower risk than Google:** Big 4 sell advisory services, not software. Building evaluation tooling that works across multiple vendors (not just Google's marketplace) requires product engineering capability they don't have. The Big 4's model is to be the implementation partner for tools like Straw, not to build the tool themselves. Deloitte uses ServiceNow; they don't build workflow automation tools.
+
+**The more realistic path:** Big 4 adopt Straw as a methodology tool embedded in their AI procurement advisory engagements. "When evaluating competing AI agent vendors, we use the Straw platform for objective, rubric-based competitive evaluation" appears in a Deloitte or PwC methodolgy document — and Straw's adoption scales with every Deloitte AI transformation engagement.
+
+---
+
+### The channel opportunity: Straw as a Big 4 sub-vendor
+
+**The market arithmetic:**
+- A Big 4 firm charges $200K–$800K for an AI model risk assessment
+- That engagement includes competitive vendor comparison (which agent is best for this use case?)
+- The Big 4 doesn't have a good way to answer that question objectively — they use demos and references
+- Straw charges $5K–$15K for the same competitive evaluation evidence
+- At 20x–160x markup, the Big 4 can package Straw into their engagement at $50K–$100K and still look like a bargain relative to building it themselves
+
+**The pitch to Big 4 AI practices:** "We make your AI model risk assessment engagements more defensible. Instead of recommending a vendor based on references and demos, you can now show your client the Straw competitive evaluation results. That evidence is worth $50K as a line item in your engagement. We charge $10K. You keep the margin."
+
+**Named Big 4 contacts for channel partner conversations:**
+
+| Name | Firm | Role | Contact | Opener |
+|---|---|---|---|---|
+| **Lan Guan** | Accenture | Chief AI & Data Officer | LinkedIn | *"Your AI practice deploys 450+ agents. When enterprise clients ask which competing agent performs best on their task — Straw is how you answer that with data instead of demos. Worth 20 minutes on how Straw fits into Accenture's AI advisory methodology?"* |
+| **Beena Ammanath** | Deloitte | Global Lead, Deloitte AI Institute | LinkedIn, @BeenaAmmanath | *"Deloitte's AI Institute is defining responsible AI deployment standards. Straw's competitive evaluation evidence is the auditable proof that agent procurement decisions are data-driven. Would love to show you what a Straw evaluation report looks like as a client deliverable."* |
+| **Matt Wood** | PwC | Global AI Leader (formerly AWS) | LinkedIn | *"PwC is automating AI audits. Straw is the competitive evaluation layer that makes agent procurement decisions objective and auditable. Would love to show you how Straw evidence integrates with PwC's AI risk assessment methodology."* |
+| **Arun Ghosh** | KPMG | US AI Leader and Managing Director | LinkedIn | *"KPMG is removing human involvement from audit by summer 2026. The AI agents you recommend to clients — how do you prove they're the best choice? Straw runs the objective competitive evaluation that makes that recommendation defensible."* |
+
+---
+
+### The bear case from this: Big 4 are ALSO becoming AI agent deployers
+
+Every Big 4 firm is now deploying their own AI agents (Deloitte's Zora AI, EY's AI tax assistant, KPMG's Ignite, PwC's GL.ai). As they move from advisors to deployers, they become potential Straw customers (evaluating which models to power their own agents) and potential competitors (building evaluation into their client services).
+
+**The window:** Approach Big 4 AI practices now, before they build proprietary evaluation tooling. Once a firm has invested $50M in building their own evaluation platform, they won't adopt Straw. The window is 12–18 months — same as the Braintrust and Google windows.
+
+---
+
+## Tick 32 (2026-05-03T03:00Z): Singapore as Straw's highest-signal international market [theme: partners]
+
+### Why Singapore is different from other international markets
+
+Every other jurisdiction is building AI governance frameworks that are aspirational or slowly implementing. Singapore has shipped:
+
+1. **IMDA Model AI Governance Framework for Agentic AI** — January 22, 2026 — world's first governance framework specifically for agentic AI. Announced at WEF by Minister Josephine Teo.
+
+2. **MAS Project MindForge AI Risk Management Toolkit** — March 20, 2026 — AI risk management toolkit for financial services, developed by a consortium of 24 leading financial institutions.
+
+3. **IMDA Singapore champions new global AI testing standardization on benchmarking and red teaming** — April 2026 — Singapore is actively setting international standards for AI evaluation methodology.
+
+4. **MetaComp KYA (Know Your Agent) Framework** — April 2026 — world's first AI agent governance framework for regulated financial services, built on IMDA's framework.
+
+**The strategic alignment:** IMDA's framework specifically calls for "benchmarking and red teaming" for AI agents. Straw's competitive rubric-based evaluation is the commercial implementation of exactly what IMDA is asking for. There is no other platform doing this. Singapore's regulatory framework creates demand for exactly what Straw provides.
+
+Sources: [IMDA Agentic AI Framework launch](https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2026/new-model-ai-governance-framework-for-agentic-ai), [IMDA benchmarking and red teaming](https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2026/singapore-champions-new-global-ai-testing-standardisation-efforts), [MAS Project MindForge](https://www.mas.gov.sg/schemes-and-initiatives/project-mindforge), [MetaComp KYA framework](https://www.prnewswire.com/apac/news-releases/metacomp-launches-the-worlds-first-ai-agent-governance-framework-for-regulated-financial-services-302749713.html)
+
+---
+
+### Named Singapore design partner targets
+
+**Category 1: MAS Project MindForge consortium members (direct buyers)**
+
+The 24 consortium members are exactly the enterprise buyers who need Straw's evaluation evidence for their AI agent procurement decisions. All are deploying AI agents AND have regulatory pressure from MAS to document evaluation methodology.
+
+| Institution | Why they need Straw | Opener angle |
+|---|---|---|
+| **DBS Bank** | Singapore's largest bank; DBS is a global leader in digital banking AI deployment. Their AI agents power customer service, fraud detection, and trading desk automation. Procurement decisions worth millions. | "DBS is the most AI-forward bank in Asia. Straw is how you prove which agent performs best on your actual banking workflows — with a score that satisfies MAS's Project MindForge documentation requirements." |
+| **Standard Chartered Bank** | Global bank with significant Singapore operations; active in AI agent deployment for trade finance and compliance | "Standard Chartered's MindForge participation means your AI deployments need documented evaluation evidence. Straw generates that evidence in 2 weeks, not 6 months." |
+| **GIC (Singapore sovereign wealth fund)** | AI in investment analysis and portfolio management; capital market firm in MindForge consortium | "GIC is deploying AI for capital markets. The evaluation question — which AI agent performs best on your investment research workflows — is exactly what Straw answers." |
+| **BlackRock** | Capital market firm; global, Singapore entity in MindForge | "BlackRock's Aladdin platform is the AI infrastructure of institutional investing. Straw is how BlackRock evaluates competing AI agents for new workflow automations with objective, auditable evidence." |
+
+**Category 2: IMDA and MAS contacts (methodology credibility)**
+
+| Name | Organization | Role | Opener |
+|---|---|---|---|
+| **Josephine Teo** | Singapore Ministry for Digital Development and Information | Minister — announced the agentic AI framework at WEF | *"You announced the world's first agentic AI governance framework. Straw is the commercial evaluation platform that makes those governance principles operational for enterprise procurement. Would love to show you how Straw's rubric engine maps to IMDA's framework requirements."* |
+| **Deputy Director, AI Governance and Safety** | IMDA | Currently being recruited — this person will own the framework implementation | Contact via IMDA's official channels; open position signals active team building |
+| **MAS FTIG** (Financial Technology and Innovation Group) | MAS | Runs Project MindForge and all financial AI regulation | Contact: mas.gov.sg — the MindForge operationalisation handbook lists the team structure |
+
+**Category 3: MetaComp (the design partner that bridges regulation and commerce)**
+
+**Tin Pei Ling** — Co-President, MetaComp
+- Formerly a Singapore Member of Parliament (PAP)
+- MetaComp raised $35M across two Pre-A rounds
+- MetaComp built the KYA (Know Your Agent) framework specifically for MAS-regulated financial institutions
+- MetaComp engaged IMDA directly during the framework drafting process
+- Opener: *"MetaComp built the world's first AI agent governance framework for regulated financial services, aligned with IMDA. Straw is the evaluation platform that generates the performance evidence KYA requires institutions to document. The frameworks are complementary — would love to explore a partnership."*
+
+**Category 4: Singapore fintech companies as design partners**
+
+| Company | What They Do | Straw Angle |
+|---|---|---|
+| **Grab Financial Group** | Digital banking, payments, insurance across SEA | AI agents for credit scoring, fraud detection; MAS-regulated; perfect Straw design partner |
+| **Sea Limited (SeaMoney)** | Digital financial services across SEA | Same profile as Grab; AI agent deployment at scale |
+| **Revolut Singapore** | Digital banking; just received MAS full banking license 2025 | Needs to prove AI agent quality to satisfy MAS license conditions |
+| **Aspire** | SMB banking platform; Series C; active AI deployment | Smaller = faster design partner cycle; strong fintech AI use case |
+
+---
+
+### The Singapore market entry playbook
+
+**Why Singapore before any other international market:**
+1. The regulatory framework actively creates demand (IMDA + MAS are requiring the evaluation evidence Straw produces)
+2. Singapore's fintech ecosystem is English-speaking, internationally connected, and early-adopter oriented
+3. DBS, Standard Chartered, GIC, BlackRock — all MindForge participants — have US offices where Jeremy can have the first meeting, then expand to Singapore
+4. The regulatory credibility transfer: "Straw's evaluation methodology is aligned with Singapore's IMDA Model AI Governance Framework for Agentic AI" is a sentence that US enterprise buyers find credible, even if they've never heard of IMDA
+
+**The action item:** Submit Straw's rubric methodology as a case study to IMDA's ongoing framework development. The IMDA framework explicitly invites industry case studies. Being cited in the world's first agentic AI governance framework is worth more than 50 cold sales calls.
+
+---
+
+### Updated Phase 2 Thread List (Session 6)
+
+**New threads completed:**
+- [x] Tick 30: Protocol landscape — MCP done, A2A is next integration for supply-side growth (gtm)
+- [x] Tick 31: Big 4 AI audit — $8.33B market, Big 4 as channel partner, named contacts (bear/gtm)
+- [x] Tick 32: Singapore as Straw's highest-signal international market — MindForge banks, IMDA, MetaComp (partners)
+
+**Phase 2 now stands at 32 ticks across all three themes.**
+
+**Remaining threads (Phase 3):**
+- Prompt injection mitigation: architectural spec for the evaluation pipeline fix
+- The "right rubric" calibration checklist: operationalized before competition opens
+- Second-order Goodhart: what happens when Straw's outcome corpus itself becomes a training benchmark
+- UK FCA regulatory sandbox angle (next-most-advanced after Singapore)
+- Australia APRA CPG 234 model validation requirements
+
+---
+
+**Push status (Session 6):** Writing complete — 3 new ticks (30–32). Committing as Jeremy Liu.
