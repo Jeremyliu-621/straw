@@ -4722,3 +4722,209 @@ Based on Tick 28 research: Latent Space (Swyx + Alessio) covers AI engineering d
 | Latent Space pitch | — | — | — | June 15 target |
 
 **The metric to track:** Design partner pipeline growth week-over-week, measured by: (a) DMs from the right people (CTO/Head of AI/Procurement), (b) email list growth from lead magnets, (c) qualified calls booked per week. Target: 2+ qualified calls/week by June.
+
+---
+
+## Tick 52 (2026-05-03T14:30Z): Fintech design partners — Ramp, Stripe, and the procurement AI angle [theme: partners]
+
+**The hidden opportunity: Ramp is building procurement AI — and needs evaluation infrastructure**
+
+**Key finding:** Ramp launched a fleet of procurement AI agents in late 2025 that automate the corporate buying process: triaging requests, sourcing vendors, reviewing contracts, running compliance checks. They claim agents "eliminate 46 hours/month of manual work" and "save 16% annually on vendor spend."
+
+**The irony:** Ramp is building AI agents for procurement — and their own procurement of AI tools (Ramp uses Braintrust for observability) is done without objective evaluation infrastructure. Ramp's customers are using Ramp's AI agents to make procurement decisions, but Ramp has no systematic way to prove those agents outperform alternatives.
+
+**Two Straw angles with Ramp:**
+
+1. **Ramp as buyer:** Ramp's procurement team regularly evaluates AI vendors for their own stack. When Ramp's Head of AI evaluates whether to use Vendor A vs. Vendor B for a specific capability, they're doing exactly what Straw helps with — procurement decision under uncertainty. Straw could be used internally at Ramp for their own AI vendor evaluation.
+
+2. **Ramp as partner:** Ramp's customers use Ramp to manage procurement. If Ramp integrates Straw as a "evaluate this AI vendor" feature inside their procurement platform, they create a distribution channel of thousands of enterprise procurement teams. Revenue share: Ramp refers tasks to Straw; Straw pays Ramp 15-20% of competition fees.
+
+**Named Ramp contacts:**
+- **Eric Glyman** (CEO, @ericglyman) — co-founder; deeply focused on AI-native finance
+- **Karim Atiyeh** (CTO, @karim_atiyeh) — co-founder; builds the AI agent infrastructure
+- **Genevieve Juillard** (Chief of Staff / Head of Partnerships, LinkedIn) — partnerships lead
+- **Rahul Prasad** (VP Engineering, LinkedIn) — builds procurement agents
+
+**Opener for Eric Glyman:**
+> "You're building procurement AI agents for thousands of companies. When your customers use Ramp to evaluate which AI vendors to buy, they're doing procurement — but they don't have objective evaluation infrastructure for AI specifically. We built exactly that: task-specific rubrics, competitive agent evaluation, scores that don't lie. Would Straw inside Ramp's procurement flow change your product story? 15 minutes?"
+
+**The $500M fundraise context:** Ramp raised $500M recently to "rush AI." They're the fastest-growing fintech company in history. This means they're actively building new AI products and need partnerships that help them ship faster. Straw is not a competitor to Ramp — it's a module Ramp could embed.
+
+### Stripe — the evaluation angle from developer infrastructure
+
+**Why Stripe matters for Straw:** Stripe is a Braintrust customer (observability). They're deeply invested in AI for developer tools — Stripe AI, fraud detection agents, billing automation. Stripe's developer platform means they have internal teams evaluating AI agents constantly. They're also building tools that developers use to build SaaS businesses, which makes Stripe a potential distribution partner if they ever build AI tool evaluation into their ecosystem.
+
+**Named Stripe contacts:**
+- **Patrick Collison** (CEO, @patrickc) — known for intellectual curiosity; will engage with smart ideas
+- **Bryan Doerr** (CTO, @bryandoerr) — technology leadership
+- **Will Gaybrick** (President of Product & Business, LinkedIn) — business strategy
+- **Kiran Bhageshpur** (Head of AI, LinkedIn) — leads AI products at Stripe
+
+**Opener for Patrick Collison (use this only after some public signal exists — case study published):**
+> "Stripe evaluates AI vendors by hiring smart people to look at demos. You wrote once that 'increasing the number of people who are trying to understand the truth about the world' is important. Straw is infrastructure for evaluating AI agents by letting them do the work instead of demo the work. Would love 15 minutes if this resonates."
+
+(Patrick Collison responds to genuine intellectual engagement. Never pitch him directly — engage his ideas.)
+
+### Mercury — the fastest path to first design partner in fintech
+
+**Why Mercury over Stripe/Ramp for first conversation:** Mercury is smaller (targeting $5B valuation, not $20B+), still founder-accessible, and is building rapidly in the AI-native finance space. Their customer base (startups, YC companies) overlaps with Straw's target market perfectly.
+
+**Named Mercury contacts:**
+- **Immad Akhund** (CEO, @immad) — co-founder, active on X, responds to smart pitches
+- **Jason Metzger** (CTO) — technology lead
+
+**Opener for Immad Akhund (via X DM after engaging with his tweets):**
+> "Mercury's customers are the exact companies that need to make AI procurement decisions. You're building the fintech stack for startups — evaluation infrastructure for AI agents is a natural addition. Quick question: do your customers ask you which AI tools are actually good? Straw is building the answer to that question."
+
+### The fintech procurement pattern
+
+**Why fintech companies are natural design partners:**
+1. **High transaction volume = high stakes AI decisions** — fraud detection, credit scoring, AML agents make thousands of decisions/day. Getting the wrong agent is catastrophic.
+2. **Sophisticated procurement teams** — fintech companies have rigorous procurement processes already. They understand evaluation frameworks.
+3. **Regulatory audit requirements** — FinCEN, OCC, FDIC, FCA (for UK) all require documentation of AI decision systems. Straw's evaluation report can be part of the regulatory file.
+4. **Braintrust validation** — Ramp and Stripe both use Braintrust for production observability. They understand the "evaluation infrastructure" category. The Straw pitch doesn't require educating them about why evaluation matters.
+
+---
+
+## Tick 53 (2026-05-03T15:00Z): Cold start solution — how to seed the agent supply side [theme: bear/gtm]
+
+**The structural problem restated:** Straw is a two-sided marketplace. Buyers (companies) post tasks. Agents (AI vendors) submit solutions. Without agents, buyers get no value. Without buyers posting tasks, agents don't show up. This is the classic chicken-and-egg cold start.
+
+**But Straw has a structurally different cold start from most marketplaces.** The difference:
+- Airbnb cold start: Need hosts in a city before travelers will book
+- Upwork cold start: Need freelancers registered before clients post
+- **Straw cold start:** Need agent operators willing to submit, but agents can participate without pre-registration — any agent operator who hears about a task can show up and compete
+
+**The open-enrollment mechanic reduces cold start severity.** Unlike Upwork where freelancers must be pre-vetted, Straw's competitions are open to any agent that shows up before the deadline. This means Straw doesn't need a pre-registered agent database — it just needs the task to be visible to agent operators.
+
+### Supply-side seeding strategy — five concrete approaches
+
+**Approach 1: Free participation in first 10 competitions**
+No submission fee for the first 10 competitions on Straw. Any agent can participate at zero cost. This means:
+- Cost to Straw: waived submission fees (if they exist) — minimal
+- Benefit: real submissions in competitions that could otherwise have 0 entries
+
+**Approach 2: Reach agent operators directly via developer Discord servers**
+Every major AI agent framework has a Discord/Slack community:
+- **LangChain Discord** (~30K members): "We're running a contract review evaluation competition, $5K bounty, if your LangChain agent can compete — link below"
+- **AutoGen Discord** (Microsoft): Same approach
+- **OpenHands Discord** (OpenDevin): Same
+- **CrewAI Community** (~15K developers): Same
+- **Replit community** (students, indie hackers with small agents): Different audience, but good for volume
+
+Each of these outreach messages costs 30 minutes and reaches thousands of agent operators. Expected participation rate: 0.5-2% of a 10K community = 50-200 potential submitters.
+
+**Approach 3: Partnership with hackathon platforms**
+OpenClaw (the hackathon platform that ran the USDC hackathon with 200+ agent submissions, Tick 7) is the ideal platform partner. Their participant database is a ready supply side for Straw competitions. Joint competitions: Straw provides the task + bounty; OpenClaw provides the agent operator community. Revenue share: OpenClaw gets 10-15% of bounty for distribution.
+
+**Approach 4: "Seeded agent" for first competitions**
+For the first 3-5 competitions, Straw secretly operates a "reference agent" that completes the task using standard methods. This ensures:
+- Every competition has at least one serious submission (prevents the embarrassment of a buyer receiving 0 responses)
+- The reference agent sets a quality floor that human/agent operators compete against
+- Straw learns what "good" looks like for each task category
+
+This is disclosed to the task poster as "Straw may provide a reference submission using a standard methodology agent." Not disclosed publicly (to avoid gaming).
+
+**Approach 5: Supply-side bounty for first submissions**
+For the first 90 days: any agent operator who submits to ANY Straw competition (regardless of whether they win) receives a $50-$100 "participation credit" toward future Straw submission fees. This creates a real financial incentive to participate in early competitions — not just hope of winning the main bounty.
+
+Total cost: 50 participants × $100 = $5,000 supply-side seeding budget. This is the cheapest possible marketplace cold-start spend.
+
+### The "known agent ecosystem" supply-side partners
+
+Beyond open calls, Straw should establish direct relationships with known agent operators:
+
+| Agent company | What they build | Straw angle | Contact |
+|---|---|---|---|
+| **OpenHands** (formerly OpenDevin) | Open-source coding agent | Coding competitions; they need proof points | Robert Brennan (CEO) |
+| **CrewAI** | Multi-agent orchestration framework | Framework for building competing agents | João Moura (CEO, @joaomdmoura) |
+| **Replit Agent** | Code generation agent | Coding task supply | Amjad Masad (CEO, @amasad) |
+| **SWE-agent** (Princeton) | Research coding agent | Academic agent operator | John Yang + Carlos E. Jimenez (research team) |
+| **Devin** (Cognition AI) | Autonomous software engineer | Highest-capability coding agent | Scott Wu (CEO) |
+| **AgentQ** (Stanford) | Web interaction agent | Web research + browser task supply | Research team |
+
+**The supply-side pitch to agent operators:**
+> "We have a company paying $5K for the best agent that can [specific task]. If your agent is good, this is 45 minutes of work and $5K. If you win, you get the bounty AND a case study that your sales team can use. We're running the first 10 competitions this month. Want in?"
+
+### The "agent operator FOMO" mechanic
+
+The most powerful supply-side growth mechanic is making non-participation feel like missed credibility. Once 3-4 well-known agents participate in Straw competitions and one of them promotes "I won a Straw evaluation," every other agent operator will want to demonstrate they can win too.
+
+**Target for this flywheel:** Get ONE well-known agent (OpenHands, Devin, or a major YC company) to win a Straw competition and publicly promote it. That one signal creates the FOMO that brings the rest.
+
+**The strategy for getting that first well-known win:** Choose the first competition task specifically for the strengths of the agent you want as your launch story. Design a coding competition that OpenHands is likely to win. When they win, they'll promote it. Then run a contract review competition that Harvey's agent is likely to win. Sequentially seed the agent credibility story.
+
+---
+
+## Tick 54 (2026-05-03T15:30Z): Seed round mechanics — $3-5M raise, SAFE terms, investor sequencing [theme: gtm]
+
+**What the market says about seed round terms in 2026:**
+- Median AI seed raise: **$4.6M at $17.9M pre-money valuation** (Causo Hub data)
+- Most common SAFE type: post-money cap SAFE (not pre-money)
+- AI infrastructure premium: 42% above non-AI comparable valuations
+- SAFE cap on-market: if targeting $17.9M pre / $20.4M post, SAFE cap should be $15-18M
+
+**Straw-specific SAFE design:**
+
+For Straw at seed stage (pre-revenue, design partner phase), the appropriate raise is:
+- **Amount:** $3.5M-$5M
+- **SAFE cap:** $18M-$22M post-money (AI infrastructure premium)
+- **MFN clause:** Include — protects early investors if later SAFE has better terms
+- **Pro-rata rights:** Offer to first 3-4 investors — creates urgency to move fast
+- **No discount:** Post-money cap SAFE without percentage discount is now market standard for AI infra
+
+**Why this matters for design partner structure:** A $5M SAFE closes 12 months of runway at Straw's burn rate (estimated $35-45K/month for 2 engineers + infrastructure + BD). This runway covers:
+- Months 1-3: Design partners onboarded (5 companies), free evaluations, feedback cycle
+- Months 4-9: First paying competitions, $50K-$150K ARR established
+- Months 10-12: Series A prep, metrics proven, investor conversations begin
+
+**The capital raise sequence:**
+
+**Phase 1 — Angel checks ($50K-$250K each, total $500K-$1M):**
+Target: 3-5 angels who add signal beyond money
+- Domain experts: AI safety researchers, enterprise SaaS operators, legal AI veterans
+- Network amplifiers: YC alumni, operators at Braintrust's customers (Stripe, Notion, Ramp)
+- Goal: Fill the SAFE at the lower cap while building the story
+
+**Phase 2 — Lead VC check ($2M-$3M, total round to $4M-$5M):**
+Target: One lead investor from the list in Tick 48
+Sequencing:
+1. Complete 3 design partner evaluations first (before talking to VCs)
+2. Publish the case study
+3. Get 1-2 angel checks from domain experts
+4. Use the case study + angel backing to anchor the VC pitch
+
+**Why NOT to raise before design partners:**
+- Without case studies, Straw is a theory
+- VCs will ask "show me a customer" and you'll have nothing
+- Design partner validation → real evidence → VC terms improve dramatically
+- 3 months of design partner work = $3M+ improvement in SAFE cap (10M pre-money → 20M pre-money)
+
+**The investor pitch deck — 10-slide structure:**
+
+| Slide | Content |
+|---|---|
+| 1. Problem | How enterprise AI procurement is broken (the $6 figure demo problem) |
+| 2. Solution | Straw's task competition model in one sentence |
+| 3. How it works | Rubric → competition → tiered evaluation → winner report |
+| 4. Differentiation | Braintrust is Datadog; Straw is the pentest before you deploy to Datadog |
+| 5. Design partner results | 3 case studies with real numbers (evaluation score, company name if possible, outcome) |
+| 6. Market size | AI Agent procurement market: $7.84B → $52.62B by 2030 |
+| 7. Business model | Per competition pricing; design partner → paying customer conversion |
+| 8. Competitive landscape | 2×2 chart: Observability (Braintrust) vs Evaluation (Straw); self-eval vs competitive eval |
+| 9. Team | Jeremy's background + any advisors with AI eval credibility |
+| 10. The ask | $4M SAFE at $20M post-money cap; 12-month runway to Series A metrics |
+
+**The Series A conversion metrics:**
+- $800K ARR (can be demonstrated with 10-12 competitions at $5K-$15K each)
+- 3 enterprise contracts ($50K+/year each)
+- Agent supply side: 50+ registered agent operators
+- 90-day case studies showing procurement decisions made based on Straw evaluations
+
+**The $800K ARR math:**
+- 8 enterprise competitions × $15K average = $120K
+- 4 smaller competitions × $5K = $20K
+- 5 annual contracts × $25K = $125K
+- Annualized: ($120K + $20K) × 3 + $125K = $545K → ~$800K with growth trajectory
+
+This is achievable in 12 months with 3-4 enterprise design partners converting to paying customers.
