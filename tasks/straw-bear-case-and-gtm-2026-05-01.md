@@ -29381,3 +29381,85 @@ A buyer needs BOTH. An agent could pass security checks but underperform on task
 Sources: globenewswire.com/secureauth-agent-trust-registry, biometricupdate.com/ai-agent-identity-rsac-2026, genengnews.com/pharma-bets-big-ai-platforms-2026, klover.ai/pfizer-ai-strategy, biospace.com/ai-pharma-bottom-line
 
 TICK_END
+
+---
+
+## Tick 450 — Straw TAM Deep-Dive: Evaluation Budget Is $310K (Mid-Market) to $2.4M (F500) Per Company Per Year
+
+**Research date:** 2026-05-03
+
+### The specific budget number: what enterprises already spend on agent evaluation
+
+**Average annual spend on agent evals and observability:**
+- Mid-market companies: **$310,000/year**
+- Fortune 500 companies: **$2.4M/year**
+
+These are CURRENT budgets for post-deployment evaluation tools (Arize, Langfuse, Braintrust, Maxim). **This is the budget line Straw competes for.** Enterprises are already spending $310K-$2.4M/year on evaluation. Straw doesn't need to create a new budget — it redirects an existing one to a higher-value layer.
+
+---
+
+### TAM construction (bottom-up)
+
+**Layer 1: Evaluation budget TAM (direct competition)**
+
+| Segment | Companies | Annual Eval Budget | TAM |
+|---|---|---|---|
+| Fortune 500 | 500 | $2.4M | $1.2B/year |
+| Fortune 1000 | 1,000 | $1.5M (estimate) | $1.5B/year |
+| Mid-market (>1,000 employees) | ~10,000 | $310K | $3.1B/year |
+| **Total eval/observability TAM** | | | **~$5.8B/year** |
+
+Straw targeting 10-15% share of this market = $580M-$870M ARR potential.
+
+**Layer 2: Procurement competition layer (new category)**
+
+Straw also creates a new budget line for pre-procurement evaluation that doesn't exist in current spending. Each enterprise currently does bespoke vendor evaluation via consulting/RFP/internal analysis — typically $50K-$500K per major procurement decision (consultant fees, engineer time, pilot costs).
+
+If each Straw evaluation replaces $100K in manual procurement work and costs $25K:
+- 1,000 evaluations/year × $25K = $25M ARR at 1,000 evaluations
+- 10,000 evaluations/year × $25K = $250M ARR at 10,000 evaluations
+
+**Layer 3: Percentage-of-contract pricing (outcome-based)**
+
+As Straw moves to outcome-based pricing:
+- Global AI agent spend: $10.91B in 2026, $52.62B by 2030
+- Straw charges 1-3% of contract value for evaluation → $109M-$328M revenue on $10.9B market
+- 2030: $526M-$1.58B on $52.6B market
+
+**IDC: Agentic AI = $1.3 trillion by 2029.** Even 0.01% of that = $130M ARR.
+
+---
+
+### CIO pressure stat: 71% must prove AI value by mid-2026
+
+**"71% of CIOs must prove measurable AI value by mid-2026 or face budget reductions."**
+
+This is the most urgent sales stat in the deck. These CIOs need to show ROI for AI spend they already committed. The problem: they selected agents without rigorous pre-deployment evaluation, so they have no baseline against which to measure value.
+
+**Straw's retroactive value (new use case):** For CIOs who have already deployed agents and need to prove value — Straw can run a comparative evaluation of their current agent vs. alternatives, producing a score that demonstrates their deployment is performing at or above market. This is a RETROACTIVE proof-of-value service, not just a procurement tool.
+
+**The message to CIOs:** "You have until mid-2026 to show your board the ROI. If you didn't run a rigorous evaluation before deployment, you can't prove your agent is the best option. Straw runs the retrospective competition — your agent against the market. If yours wins, you have the defensible data. If it doesn't, you know what to switch to."
+
+---
+
+### Market growth trajectory
+
+| Year | AI Agent Market | Agentic AI IT Spend | Straw Addressable (1% of eval budget) |
+|---|---|---|---|
+| 2026 | $10.91B | 10-15% IT spend ($150B+) | $58M (conservative) |
+| 2027 | ~$16B | IDC: growing rapidly | $100M+ |
+| 2030 | $52.62B | $1.3T by 2029 (IDC) | $500M+ |
+
+**Global AI spending: $2 trillion in 2026 (Gartner). Agentic AI = 10-15% = $200-300B.**
+
+---
+
+### What this means for fundraising
+
+**Seed/Series A ask:** Raise enough to capture first 100 enterprise customers (design partner funnel → pilot → annual contract). At $250K average annual contract value (based on mid-market $310K eval budget less haircut), 100 customers = $25M ARR. Series A target: prove 30 paying customers → raise $15-25M.
+
+**The comparable:** Braintrust valued at $800M serving developers. Straw serves enterprise buyers with higher willingness-to-pay and zero competition. Straw could be a $2-5B company if it captures the procurement evaluation layer.
+
+Sources: rebasehq.ai/blog/enterprise-ai-spending-2026, marketsandmarkets.com/ai-agents-market, demandsage.com/ai-agents-market-size, idc.com/prUS53765225, cio.com/ai-agent-budgets-2026, paul-okhrem.com/enterprise-ai-agents-statistics-2026
+
+TICK_END
