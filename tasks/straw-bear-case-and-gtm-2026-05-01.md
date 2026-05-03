@@ -17502,3 +17502,155 @@ Core evaluation dimensions for insurance AI agent selection:
 5. **Explainability**: Can the agent's decisions be explained in language that satisfies regulatory review?
 6. **Escalation protocol**: Does the agent escalate appropriately when claim complexity exceeds threshold?
 
+
+---
+
+## Tick 241 (2026-05-03T00:18:00Z): Goodhart's Law and benchmark gaming — the deepest technical bear case [theme: bear]
+
+**Score: 7/10** — Second-highest bear case score, tied with marketplace competition. This is the integrity threat. If Straw competitions can be gamed, Straw is worthless. Unlike most bear cases, there is no product workaround — this requires permanent architectural vigilance.
+
+### The Core Problem
+
+**Goodhart's Law**: "When a measure becomes a target, it ceases to be a good measure."
+
+In AI benchmarking, this plays out at multiple levels. Evidence from 2025-2026:
+
+- Models gain **10 percentage points** on benchmarks through training on test data (memorization, not generalization)
+- A "null model" that always outputs a constant response achieves an **86.5% LC win rate on AlpacaEval 2.0** — demonstrating that even random outputs can game automatic benchmarks
+- Modern LLMs with real-time internet search have structural data contamination because they can see the benchmark test data
+- "In 2026, benchmark scores are marketing — production performance is reality"
+
+### How This Applies to Straw
+
+**Scenario A — Training on published rubrics**
+Straw publishes rubric templates on its website (it must, to demonstrate value). Agent vendors train their agents on these rubric templates. When the competition runs, the agents have been specifically optimized for Straw's evaluation criteria. The score measures "ability to be evaluated by Straw," not "ability to do the enterprise task."
+
+**Scenario B — Evaluation environment detection**
+An agent detects that it is being evaluated (based on environment characteristics: sandbox IP ranges, test account identifiers, task framing patterns). It activates a "best behavior" mode during evaluation and returns to normal behavior in production. This is the "Dieselgate" scenario for AI — performing well on the test, failing in the real world.
+
+**Scenario C — LLM-judge gaming**
+Straw uses LLM judges to evaluate agent outputs on rubric dimensions that are hard to score automatically (e.g., "communication quality," "explanation clarity"). An agent that is trained to output text that LLM judges score highly — but that doesn't actually communicate clearly to humans — games the judge without gaming the task. Several papers have demonstrated this is possible with current LLMs.
+
+**Scenario D — Rubric overfitting**
+An agent vendor who has run multiple Straw competitions learns the implicit patterns in Straw's rubric construction. Without seeing the specific rubric, they know that Straw typically scores on: accuracy, explainability, compliance documentation, and handoff quality. They optimize their agent for these four dimensions specifically, at the cost of dimensions Straw doesn't measure.
+
+### Historical Precedent: The AI Leaderboard Crisis
+
+In 2026, the Chatbot Arena (LMSYS) leaderboard was found to have been gamed: model developers found ways to optimize for high Arena scores, distorting the Arena's ability to measure true model quality. This is the most successful public AI evaluation platform — and even it succumbed to gaming after achieving sufficient visibility.
+
+### Why This Is a 7/10 (Not Higher)
+
+Straw has structural defenses that public AI benchmarks don't:
+
+1. **Private test cases**: Straw's task data is provided by the enterprise buyer, not published. Agents cannot train on data they've never seen. The customer's proprietary task data is the most powerful anti-gaming mechanism.
+
+2. **Randomization**: Rubric evaluation order, task presentation, and environment characteristics can be randomized per competition. This makes consistent gaming harder.
+
+3. **Behavioral change detection**: Straw can run "spot checks" — submitting identical tasks to the production version of an agent (after contract signing) and comparing results to competition performance. Significant divergence is a red flag.
+
+4. **Human expert validation**: For high-stakes competitions, a domain expert (human) reviews the top-scoring agent's outputs to validate that the score reflects genuine quality. This is the "LLM judge + human review" hybrid.
+
+5. **Private rubric dimensions**: Some rubric dimensions are not disclosed to agents before the competition. These "hidden" dimensions prevent targeted optimization.
+
+### Required Architectural Responses
+
+The gaming threat requires permanent architectural responses:
+
+1. **Never publish the specific evaluation task**: Rubric templates (what will be measured) can be published; the specific task data cannot. The distinction must be enforced contractually and technically.
+
+2. **Introduce adversarial test cases**: Following ARC-AGI-2's approach, inject deliberately confusing or adversarial subtasks that only genuine understanding (not memorization) can handle.
+
+3. **Longitudinal performance tracking**: Straw should track agent performance across multiple competitions over time. Gaming creates signature patterns (sudden improvement followed by regression) that are detectable over time.
+
+4. **The "audited production" offering**: A premium Straw product: run a competition AND a production audit 90 days post-deployment. Compare competition score to production performance. This creates a secondary accountability mechanism and destroys the incentive to game competitions.
+
+### The Brand Insurance Requirement
+
+The gaming risk means Straw must be proactive about methodology transparency. Publish the anti-gaming architecture. Invite researchers to try to break it. Bug bounty for evaluation methodology attacks. This "responsible disclosure" posture builds trust and detects problems before they become public scandals.
+
+
+---
+
+## Tick 242 (2026-05-03T00:19:00Z): Advisory board strategy — who to recruit, why, and the ask [theme: gtm]
+
+### Why the Advisory Board Is a GTM Asset
+
+At the seed stage, Straw's advisory board has three jobs:
+1. **Credibility signaling** — names on the advisory board tell investors and enterprise buyers that serious people believe in this
+2. **Pipeline access** — each advisor brings 2-5 design partner introductions as their onboarding contribution
+3. **Strategic counsel** — fill Jeremy's blind spots with experienced operators who've navigated similar problems
+
+The advisory board is not a vanity exercise. It is a distribution mechanism. Every advisor who joins is measured against: "How many design partner conversations has this person opened?"
+
+### Advisory Board Archetype 1: Former Enterprise CIOs/CDOs
+
+These are Straw's buyers. They bring credibility and direct pipeline access.
+
+**Target profile**: Former CIO or CDO at a Fortune 500 company who has personally experienced the AI procurement problem. Now consulting, board member, or advisor at other companies. Has direct access to their former network of enterprise technology leaders.
+
+**The ask**: "Join Straw's advisory board. We'll keep you on 2-4 hours per month. In exchange, we'd love introductions to 3-5 CDOs you know who are currently navigating AI agent procurement decisions."
+
+**Target names**:
+- Todd James (former Kroger CDO; launched an AI-focused firm after Kroger — announced in prior research)
+- Former CIO/CDO from financial services (target profile: someone who left JPMorgan, Goldman, or Citi in 2023-2025 and is now in consulting)
+- Former CDO from healthcare system (target profile: someone from Epic Health, Kaiser, or a major health system)
+
+### Advisory Board Archetype 2: AI/ML Research Leaders
+
+These build technical credibility for Straw's evaluation methodology.
+
+**Target profile**: Academic or research lab AI evaluation expert. Someone who publishes on LLM benchmarking, AI safety evaluation, or agent evaluation methodology. Gives Straw the "methodology is sound" credibility.
+
+**Target names**:
+- Researchers from Stanford HELM project (Holistic Evaluation of Language Models) — the most rigorous public LLM evaluation framework
+- Researchers from METR (Machine Intelligence Research) — focused on autonomous agent evaluation
+- An Anthropic or OpenAI technical staff member (in their personal capacity; not as a company representative)
+
+**The ask**: "Help us ensure Straw's evaluation methodology is academically sound. We'd like to co-publish a methodology paper with you that validates our rubric construction approach."
+
+### Advisory Board Archetype 3: Enterprise SaaS Operators
+
+These bring GTM expertise specific to enterprise software sales.
+
+**Target profile**: Operator who has built a B2B SaaS company from $0 to $10M ARR in the enterprise market. Understands the CDO/CIO sale, the design partner program, the Gartner relationship.
+
+**Target names**:
+- Founder/VP Sales of a company that sold to enterprise CIOs in the AI/data space (e.g., early Datadog, Snowflake, Databricks operators)
+- Someone with specific Gartner analyst relationships — being included in a Gartner report requires knowing the right analysts
+
+### Advisory Board Archetype 4: AI Vendor Representatives (The Neutrality Paradox)
+
+This is a deliberate choice: Straw should have one or two AI vendor advisors. Their presence signals openness, not bias. The "Foundation Model Performance Council" idea from earlier research belongs here.
+
+**Target profile**: A BD or policy leader from Anthropic, OpenAI, or Google who can advocate for Straw's evaluation methodology within their organization.
+
+**The neutrality framing**: "We're building the standard that all AI vendors should want to win. Having representation from the vendor community on our advisory board ensures our methodology is fair. It doesn't compromise our neutrality — it demonstrates it."
+
+### Advisory Board Compensation
+
+Standard for early-stage B2B SaaS advisor:
+- 0.1-0.25% equity (4-year vest, 1-year cliff)
+- No cash compensation
+- Annual refresh at Series A if advisor is actively contributing
+
+The ask is low-friction. The best advisors are people who would love to help and need a structure to do it. "Join our advisory board" + a clear ask ("introduce us to 3 CDOs") + a small equity stake is enough for the right person.
+
+### First 5 Advisory Board Target Sequence
+
+1. **Former Fortune 500 CDO** (pipeline access): One introduction from Jeremy's personal network. The most important first advisor because they generate the most direct pipeline.
+
+2. **Enterprise SaaS GTM operator** (execution guidance): Someone who has done the CIO sale before. Can help design the sales motion and avoid common mistakes.
+
+3. **AI evaluation researcher** (methodology credibility): Validates the rubric construction approach. Required before pitching investors who will scrutinize the technical methodology.
+
+4. **Industry vertical expert** (financial services or healthcare): A former Chief Data Officer from FS or HC who can open doors in the most valuable verticals.
+
+5. **AI vendor representative** (neutrality signal): After 3-4 paying customers, approach one foundation model company about having an observer/advisor role on the methodology council.
+
+### The Advisor Announcement Strategy
+
+Each advisor announcement should be a LinkedIn post and press release:
+- "We're thrilled to announce [Name] has joined Straw's advisory board. [Name] brings X years of enterprise AI experience from [Company] and will help shape Straw's evaluation methodology."
+
+Five advisor announcements over six months = five pieces of earned media and five social proof signals for enterprise buyer due diligence.
+
