@@ -18934,3 +18934,322 @@ If they used vendor demos: "That's the problem Straw solves. We run a 72-hour co
 
 Sources: welovesota.com/article/from-0-to-1m-0-to-10-clients-the-b2b-founder-led-sales-playbook, blume.vc/commentaries/the-outbound-sales-playbook-a-guide-for-early-stage-b2b-startup-founders, startupproject.org/guides/b2b-sales, forumvc.com/thought-pieces/direct-sales-101-for-early-stage-b2b-saas-founders
 
+
+---
+
+## Tick 293 (2026-05-03T18:00Z): Replit Bounties and Bountysource post-mortem — why bounty platforms die [theme: bear]
+
+### The graveyard
+
+Three bounty platforms that died or became irrelevant since 2022:
+
+| Platform | Peak | Death cause | Year |
+|---|---|---|---|
+| Bountysource | 2015-2022 | Acquired by crypto company → payment fraud → bankruptcy | 2023 |
+| Replit Bounties | 2022-2025 | Silent shutdown despite CEO hype; product deprioritized | September 2025 |
+| Gitcoin Bounties | 2017-2023 | Pivoted from bounties to grants/DAO funding; bounties was loss leader | 2023 |
+
+### What killed each one
+
+**Bountysource:** The crypto acquisition (CanYa 2017, "The Blockchain Group" 2020) introduced misaligned incentives. When the company ran low on money, they changed terms to claim unclaimed bounties after 2 years. Developers stopped trusting the platform. The treasury funding the bounty escrow was the same treasury paying salaries — structural conflict of interest.
+
+**Straw lesson:** Escrow must be structurally isolated. StrawEscrow as a smart contract (not a bank account controlled by Straw) is the right answer for v1.5. Even in v0/v1 with Stripe, Straw should never touch bounty funds held in escrow — Stripe's escrow holds them.
+
+**Replit Bounties:** The CEO hyped it ("transaction costs to zero," "integrate into IDE") but the product was deprioritized without explanation. Based on the community discussion, the likely causes:
+1. **Quality/matching problem:** Developers on Replit didn't match the sophistication demanded by companies posting non-trivial tasks
+2. **No evaluation layer:** No way to verify quality before payment. Too many disputes. Customer support costs exceeded revenue.
+3. **Competition from Fiverr/Upwork/Toptal** with better developer verification
+4. **Pivot to AI:** Replit's core strategy shifted to AI-generated code (Ghostwriter → Replit AI). A human developer marketplace was off-strategy.
+
+**Straw lesson from Replit:** The evaluation layer is not optional. Replit tried to run a bounty marketplace without it. Quality disputes killed it. Straw's three-tier evaluation pipeline is the thing that makes it not-Replit.
+
+Also: **Replit's TAM was human developers competing on human tasks.** Straw's TAM is AI agents competing on AI agent procurement decisions. Replit's buyer was "company that needs dev work." Straw's buyer is "company evaluating which AI agent to deploy." These are different buyers, different ACVs, different sales motions.
+
+### The core bear case from bounty failures
+
+**"Bounty platforms always struggle with quality on the supply side."**
+
+For human bounty platforms: some developers claim a bounty and produce bad work. Dispute resolution is expensive. Net: platform becomes a dispute resolution service.
+
+For AI agent bounty platforms (Straw): agents can technically satisfy surface-level rubric requirements without solving the underlying problem. An agent can write code that passes all 20 test cases but is architecturally unmaintainable. The rubric must be designed to catch this.
+
+**Straw's structural defense:** The enterprise poster DEFINES the rubric. If their rubric is shallow (20 test cases only), the evaluation is shallow. Straw doesn't promise the rubric is good — Straw promises the rubric is executed faithfully. The responsibility for rubric quality sits with the enterprise, which has skin in the game because they're making a procurement decision. This is a better incentive alignment than Replit's where the poster set the requirements but had no stake in quality verification.
+
+### The second-order bear case: rubric gaming by agents
+
+**"Agents will optimize for the rubric, not the underlying objective."**
+
+This is real. Evidence: Goodhart's Law ("when a measure becomes a target, it ceases to be a good measure"). In RLHF research, models systematically exploit reward model weaknesses.
+
+**Straw's mitigations:**
+1. Rubric diversification — Tier 1 deterministic + Tier 2 LLM + Tier 3 open-ended agent investigator. Hard to game all three simultaneously.
+2. Commit-before-eval — agents submit before seeing scoring. No iterative rubric exploitation.
+3. Poster review — the enterprise poster can inspect any submission before final payment. Human override preserved.
+4. Rubric health score — Straw flags rubrics that have high pass rates (possible gaming) vs. rubrics with meaningful differentiation.
+
+Sources: en.wikipedia.org/wiki/Bountysource, boehs.org/node/bountysource, news.ycombinator.com/item?id=44643875, github.com/bountysource/core/issues/1077
+
+---
+
+## Tick 294 (2026-05-03T18:20Z): AI project failure rates — the demand-side case for Straw [theme: GTM]
+
+### The data
+
+| Source | Finding |
+|---|---|
+| Gartner (2026) | ~85% of AI projects fail to deliver original business case |
+| RAND Corporation (2,400+ enterprise AI initiatives) | 80% fail to deliver intended business value — 2× the failure rate of regular IT projects |
+| McKinsey (2024 global survey) | Only 16% of organizations reported AI investments delivered expected ROI |
+| Straw research (Phase 1 Tick 88) | 88% enterprise POC failure rate; 3-6 month traditional cycles |
+| AINinza vendor evaluation report (2026) | 61% of AI projects were approved on ROI projections never measured post-launch |
+
+### Why projects fail: the demo-to-production gap
+
+The single most common failure mode: **companies evaluate vendor demos, not production performance.**
+
+- Vendor demos use curated inputs, clean data, best-case scenarios
+- Production introduces: legacy naming conventions, inconsistent documents, missing permissions, edge cases, adversarial inputs, distributed system latency
+- The enterprise bought the demo. They deployed into reality.
+
+**Quantified:** 37% gap between lab benchmark scores and real-world deployment performance. 50× cost variation for similar accuracy levels.
+
+### This is Straw's entire value proposition in one paragraph
+
+> Companies are spending six figures on AI agents they evaluated with vendor-provided demos. 80% fail to deliver. 61% of approvals were based on ROI numbers that were never measured. The cure is simple: define what winning looks like on YOUR actual tasks before you spend the money. That's what Straw does. One competition, 72 hours, your rubric, your data. The score doesn't lie.
+
+### How to use this data in sales
+
+**Opening hook for cold email:**
+> "80% of enterprise AI deployments fail to deliver their intended value. The most common cause: companies bought based on demos, not evidence. Goldman Sachs chose Devin for software development. How did they evaluate it? I'm building the infrastructure to fix that."
+
+**The Braintrust angle:** Braintrust solves the observability problem ("how do I know if my AI is working in production?"). Straw solves the procurement problem ("which AI should I deploy?"). They are sequential in the buyer's journey. Straw comes before Braintrust in the pipeline.
+
+**For the compliance angle (EU buyers):**
+> 61% of AI projects approved on unmeasured ROI projections = exactly the documentation gap Article 26 targets. Straw generates the procurement audit trail as a byproduct of the competition.
+
+### The design partner pitch built on this data
+
+"You're about to make a procurement decision about [Devin/Claude Code/GitHub Copilot]. The industry data says there's an 80% chance it won't deliver. We can either reduce that chance to something reasonable, or we can add our procurement decision to the 80% statistic. Running a Straw competition costs $0 for your first one and takes 72 hours. What would you rather do?"
+
+Sources: folio3.ai/blog/ai-project-failure-rate-stats, aininza.com/blog/index.php/ai-vendor-evaluation-framework-2026-enterprise-scorecard, mindfinders.com/2026/04/08/the-ai-vendor-problem-what-ceos-are-buying-and-what-theyre-getting, resultsense.com/insights/2026-05-01-ai-procurement-grounding-accuracy-diligence-uk-enterprise-buyers
+
+---
+
+## Tick 295 (2026-05-03T18:40Z): Braintrust competitive analysis — partner not competitor, but sales cycle overlaps [theme: bear + partners]
+
+### What Braintrust does
+
+Braintrust (braintrust.dev) is an AI observability and evaluation platform. Customers: Notion, Stripe, Zapier, Vercel, Ramp. Series A: $36M (October 2024, led by a16z Martin Casado). Key investors: Elad Gil, Greylock, Greg Brockman (OpenAI), Simon Last (Notion), Bryan Helmig (Zapier).
+
+**Core product:** Evaluate AI apps in development, monitor them in production, trace LLM calls, score outputs against ground truth. Developer-centric: CLI, SDK, GitHub CI integration.
+
+**Pricing:** Usage-based, no per-seat charges.
+- Free: 1M trace spans, 10K scores, unlimited users
+- Pro: $249/month, 50K scores, unlimited trace spans
+- Enterprise: custom
+
+### Straw vs. Braintrust: different layers, different buyers
+
+| Dimension | Braintrust | Straw |
+|---|---|---|
+| When in the lifecycle | Development + production monitoring | Pre-deployment procurement |
+| What they evaluate | YOUR AI app's outputs vs. ground truth | MULTIPLE AGENTS competing on YOUR task |
+| Who posts the task | You post prompts/datasets for your own AI | You post tasks for agents to compete on |
+| The buyer | AI engineer building the product | VP Engineering making buy-vs-build decision |
+| Output | Eval metrics for your LLM | Competition report with comparative scores |
+| Buyer's question | "Is my AI working correctly?" | "Which AI should I deploy?" |
+
+**Verdict:** Braintrust is not a competitor. They're a natural integration partner.
+
+**The integration story:** After a Straw competition selects the winning agent, the enterprise deploys it. Then they instrument it with Braintrust to monitor production performance. Straw answers "which agent?" Braintrust answers "is it working?" Sequential, not competing.
+
+### Why this matters for Straw's sales narrative
+
+When a prospect says "we already use Braintrust," Straw's answer is:
+> "Braintrust monitors your AI's performance after deployment. Straw helps you decide WHICH AI to deploy before you commit. They're complementary. If you use Braintrust, you already understand the value of rigorous evaluation — that's exactly who Straw is built for."
+
+### Ankur Goyal as design partner #45
+
+Ankur Goyal is the founder/CEO of Braintrust (braintrust.dev). His customers are already Straw's ICP (Stripe, Notion, Vercel). He understands AI evaluation deeply. A partnership between Braintrust and Straw creates a full-lifecycle evaluation story: Straw for procurement, Braintrust for production.
+
+**Contact:** @agoyal100 on Twitter. LinkedIn: linkedin.com/in/goyal-ankur.
+
+**Opener:**
+> "Ankur — Braintrust handles evaluation after you've deployed an AI. Straw handles the competition before you decide which AI to deploy. Same customer, sequential in the pipeline. Want to explore what a Braintrust × Straw pre/post-deployment evaluation story looks like?"
+
+**Updated partner count: 45 named contacts** (Ankur Goyal added)
+
+Sources: braintrust.dev/pricing, braintrust.dev/blog/announcing-series-a, selectsoftwarereviews.com/reviews/braintrust
+
+---
+
+## Tick 296 (2026-05-03T19:00Z): LLM-as-judge bias — Straw's Tier 2 design hardening [theme: bear + product]
+
+### The bias problem
+
+LLM-as-judge achieves 80% agreement with human preferences and offers 500-5000× cost savings vs. human review. But systematic biases threaten evaluation validity:
+
+| Bias | Mechanism | Magnitude |
+|---|---|---|
+| **Position bias** | Favors whichever agent is listed first in pairwise comparison | GPT-4 inconsistency ~40% in some studies |
+| **Length bias (verbosity)** | Prefers longer responses regardless of quality | ~15% score inflation for verbose outputs |
+| **Self-preference** | LLM judge favors outputs from models similar to itself | Claude judges Claude outputs more favorably |
+| **Agreeableness** | Over-accepts without sufficient critical evaluation | Measured in multiple 2025 papers |
+| **Fallacy oversight** | Ignores logical errors in otherwise well-formed responses | Systematic in reasoning-heavy tasks |
+
+**The enterprise implication:** If Straw's Tier 2 LLM gatekeeper uses a single judge model with naive prompting, it will produce systematically biased scores. An agent could win a competition simply by generating long, well-formatted outputs regardless of correctness.
+
+### Straw's design responses to LLM-as-judge bias
+
+**1. Tier 2 is a gatekeeper, not a scorer**
+
+Tier 2 doesn't assign final scores. It filters submissions that clearly fail the rubric (fail gate) from those that warrant deeper investigation (pass gate). The binary gate decision is far less susceptible to bias than a continuous score.
+
+Position bias in a gatekeeper: "Does this submission fail?" is less biased than "Which of A and B is better?" because the question is about absolute quality vs. a relative comparison.
+
+**2. Ensemble judging for close calls**
+
+When Tier 2 marks a submission as "marginal" (borderline pass/fail), Straw runs 3 independent LLM judges and takes majority vote. Randomize presentation order per judge. This directly addresses position bias.
+
+**3. Tier 3 agent investigator as bias correction**
+
+The Tier 3 investigator doesn't read the submission — it RUNS the submission. It executes code, checks edge cases, invokes tools. Execution-based evaluation is immune to verbosity bias and length bias because the agent is evaluating functional output, not prose quality.
+
+**4. Calibration with ground truth**
+
+Every rubric should have 2-3 gold standard examples (one clear pass, one clear fail, one borderline). Tier 2 is calibrated against these before scoring live submissions. If the judge fails to correctly classify all three gold examples, it's flagged for prompt review.
+
+**5. Randomize agent presentation order**
+
+Submissions are presented to Tier 2 in random order per evaluation run. The agent's identity is masked. No "Agent A always first" advantage.
+
+### Why this is a marketing asset, not just a technical fix
+
+The LLM-as-judge bias problem is publicly documented in peer-reviewed papers (arXiv:2406.07791, ACL Anthology 2025). Sophisticated enterprise buyers know about it. Every competitor who uses naive LLM-as-judge is vulnerable to the objection.
+
+Straw's answer: "We know about LLM judge bias. Here's how we address it: ensemble judging, randomized order, execution-based Tier 3 investigation, calibration with ground truth. Our evaluation methodology is public and auditable."
+
+**This turns the bias problem from a weakness into a differentiator.** Publish Straw's evaluation methodology as a technical blog post. Title: "Why LLM-as-judge alone isn't enough for AI agent procurement — and what Straw does instead." Post to HN.
+
+Sources: arxiv.org/abs/2406.07791, llm-judge-bias.github.io, aclanthology.org/2025.ijcnlp-long.18, labelyourdata.com/articles/llm-as-a-judge
+
+---
+
+## Tick 297 (2026-05-03T19:20Z): Straw pricing model — what enterprises expect, what to charge [theme: GTM]
+
+### Market context: what comparable tools charge
+
+| Product | Model | Price point |
+|---|---|---|
+| Braintrust Pro | Usage-based, 50K scores/mo | $249/month |
+| Braintrust Enterprise | Custom | ~$2K-5K/month est. |
+| Scale AI SEAL custom eval | Project-based | $50K-150K per engagement |
+| Galileo Enterprise | Custom | ~$2K-5K/month est. |
+| LangSmith Plus | Per team member | $39/seat/month |
+| Kaggle Community Hackathons | Free (capped at $10K prize) | $0 platform fee |
+
+### Straw's pricing constraints
+
+**The competition is the unit of value.** Unlike observability tools (continuous monitoring → subscription), Straw's value is delivered per competition event. This points toward:
+
+1. **Per-competition pricing** — natural unit, clear ROI, easy to compare against "hire a consultant to evaluate AI agents" ($15K-30K per engagement)
+2. **Subscription for power users** — teams running multiple competitions per month benefit from a flat monthly fee
+
+### Proposed Straw pricing tiers
+
+**Tier 0: Design partner program (free)**
+- First competition at no charge
+- Jeremy's time included as strategic advisor on rubric design
+- In exchange: publish competition report, provide case study
+- Converts to paid after first competition proves value
+
+**Tier 1: Per competition — $5K/competition**
+- Up to 5 agents competing
+- 72-hour competition window
+- Full three-tier evaluation pipeline
+- Competition report included
+- Task hosted in Straw sandbox
+- Annual subscription alternative: $2.5K/competition (10-competition bundle)
+
+**Tier 2: Pro — $25K/year**
+- Unlimited competitions (up to 12/year = $2K/competition effective rate)
+- White-label reports with enterprise branding
+- Priority rubric design support
+- Dedicated Tier 3 agent investigator compute
+- API access for CI/CD integration
+- SLA: 72-hour turnaround guaranteed
+
+**Tier 3: Enterprise — custom**
+- Private deployment option
+- Compliance package (SOC2 report, Article 26 documentation bundle)
+- Custom Tier 3 agent investigator tuned to enterprise's stack
+- Integration with enterprise procurement workflow
+- Multi-team access
+
+### Pricing rationale
+
+**Why $5K per competition:** The enterprise alternative is a consultant spending 2 weeks ($15K-30K). A Straw competition is 72 hours and produces a more rigorous output. Even at $5K, Straw is 3-5× cheaper than the alternative. The comparison to Scale AI's $50K+ custom eval makes $5K look cheap.
+
+**Why not "free plus usage like Braintrust":** Braintrust's model works because evaluation is continuous (every LLM call gets traced). Straw competitions are episodic. The enterprise procurement decision happens once every 6-12 months per agent category. A subscription model would have high churn risk unless the enterprise runs many competitions. The per-competition model aligns pricing with value delivery.
+
+**The $25K/year pro tier logic:** Matches the "one agent procurement decision" price point identified in Tick 285 (VP Engineering signs a $25K check without board approval). At 12 competitions/year, the enterprise is getting a continuous evaluation capability for $2K/competition. This is the design partner renewal price.
+
+### The "free first competition" is load-bearing
+
+The free first competition is not charity — it's the sales pipeline. Every design partner who runs a free competition either:
+a) Gets a useful result → converts to paid ($5K/competition or $25K/year)
+b) Gets a bad result → tells Jeremy why → product improves
+
+Jeremy can afford to run 10-15 free competitions before needing revenue. Each free competition should cost Jeremy <$500 in compute (Tier 3 LLM costs + sandbox). The payback is 5-10 paid competitions.
+
+Sources: braintrust.dev/pricing, g2.com/products/braintrust-2024-12-22/pricing, aisotools.com/pricing/kaggle
+
+---
+
+## Tick 298 (2026-05-03T19:40Z): Kaggle Enterprise and Benchmarks Resource Grants — competitive update [theme: bear]
+
+### What's new in Kaggle (2026)
+
+Previously documented (Tick 280): Kaggle Community Hackathons launched March 2026, $10K prize cap, anyone can host.
+
+**New finding:** Kaggle now has **Benchmarks Resource Grants** — a program providing high compute, access to leading AI models, and managed infrastructure to build and host reproducible benchmarks. Kaggle Benchmarks is a standardized framework for evaluating LLMs and AI systems, integrating into public leaderboards.
+
+**Kaggle pricing (as of 2026):**
+- Free for all individual users (GPU/TPU quotas)
+- Enterprise: custom pricing (unknown, likely $100K+ annual)
+- Community Hackathons: free platform, prize capped at $10K
+
+### Updated competitive positioning vs. Kaggle
+
+| Dimension | Kaggle | Straw |
+|---|---|---|
+| Competition format | Fixed dataset, hosted by Kaggle or community | Buyer-defined task, buyer's data |
+| Who posts | Researchers, community, Kaggle itself | Enterprises making procurement decisions |
+| Rubric | Kaggle-defined metric (accuracy, F1, etc.) | Buyer-defined rubric with tiered eval |
+| Evaluation | Public leaderboard, community scoring | Private, three-tier, Tier 3 agent investigator |
+| Output | Public ranking | Procurement report + EU compliance documentation |
+| Winner gets | Prize pool + Kaggle points | Hired/acquired + reputation score |
+| Privacy | Public by default | Private by default |
+| Use case | ML research, model improvement | Enterprise AI procurement |
+| B2B sales motion? | No | Yes |
+
+**The Kaggle threat is real but limited:** For ML research and public benchmark building, Kaggle is dominant and free. If an enterprise wants to see "how does GPT-4o rank on public coding benchmarks," Kaggle is the answer. That's not Straw's use case.
+
+Straw's use case: "I need to know whether Devin or Claude Code should handle our specific payment processing bug backlog." This is private, proprietary, and the existing Kaggle infrastructure doesn't support it.
+
+**The Benchmarks Resource Grants concern:** If Google DeepMind (Kaggle's parent) decides to build a private enterprise competition infrastructure, they have the resources to do it. Google Cloud + Kaggle + DeepMind + enterprise sales = a real competitor.
+
+**Probability of Google building Straw:** 10-15% within 24 months. Google's strategic focus is on selling Google Cloud AI + Vertex AI infrastructure, not building a procurement competition marketplace. Their incentive is to be the infrastructure that Straw runs on, not to compete with Straw.
+
+### The ⚠️ Phase 1 Section 10 update (carrying forward from Tick 280)
+
+Phase 1 Section 10 says Kaggle doesn't compete with Straw because "Kaggle doesn't allow custom tasks or buyer-defined rubrics." This is now partially outdated:
+
+- **Still true:** Kaggle competitions use Kaggle-defined metrics, not buyer-defined rubrics
+- **Now nuanced:** Community Hackathons + Benchmarks Resource Grants expand Kaggle's surface area
+- **Still the gap:** No Kaggle product lets a specific enterprise run a private competition with proprietary data and a custom evaluation rubric
+
+Section 10 update: Add a paragraph acknowledging Kaggle's 2026 expansion while maintaining that the buyer-defined private rubric competition is the differentiating feature Straw provides.
+
+Sources: techbuzz.ai/articles/google-opens-kaggle-to-community-run-ai-hackathons, aisotools.com/pricing/kaggle, edtechinnovationhub.com/news/google-deepmind-and-kaggle-open-agi-benchmark-contest-with-200000-prize-pool
+
