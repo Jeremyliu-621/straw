@@ -27958,3 +27958,110 @@ This builds on the existing regulatory stack:
 Sources: getmaxim.ai, arize.com, braintrust.dev, latitude.so, ropesgray.com/newsom-ai-vendor-certification-eo-n-5-26, langchain.com/state-of-ai-agents-2026, resultsense.com/insights/2026-05-01-ai-procurement-grounding
 
 TICK_END
+
+---
+
+## Tick 440 — Agent Marketplace Fragmentation 2026 + Straw as the Missing Procurement Layer
+
+**Research date:** 2026-05-03
+
+### The 8-marketplace fragmentation
+
+The AI agent marketplace landscape fragmented into 8 distinct platforms by 2026:
+
+| Platform | Audience | Optimization |
+|---|---|---|
+| Claude Skills | Developers + enterprise | Distribution + ecosystem |
+| GPT Store | Consumers + developers | Volume, consumer installs |
+| MCP Hubs | Developer tool builders | Technical integration |
+| Hugging Face Spaces | ML developers | Open source, research |
+| Replit Agent Market | Developer builders | Coding agents |
+| LangChain Hub | LLM app developers | Framework-native |
+| Vercel Agent Gallery | Frontend/fullstack devs | Web deployment |
+| Cloudflare AI Marketplace | Edge compute users | Infrastructure |
+
+**Two-tier split (confirmed by Digital Applied research 2026):**
+- **Developer marketplaces:** Optimize for distribution velocity, discoverability, end-user installs
+- **Enterprise marketplaces:** Optimize for procurement, compliance, LOB buyers
+
+**The critical gap:** ALL 8 platforms are supply-side directories. None are enterprise procurement competition platforms. The "enterprise marketplace" tier optimizes for compliance checklists and vendor profiles — but has no rubric evaluation, no competitive submission format, no buyer-defined scoring.
+
+**Straw's market position:** Not a marketplace. The procurement infrastructure LAYER that sits above all marketplaces. A buyer can discover an agent on Claude Skills, a second on GPT Store, a third from a direct vendor — and run all three through Straw simultaneously.
+
+### Network effects: fragmented, not winner-take-all
+
+43% of AI marketplaces struggle to quantify network-derived value. The market is structurally fragmented because:
+1. Different buyer personas (developers vs. enterprise) have different discovery needs
+2. Successful agents publish the same capability across 4+ platforms
+3. No single platform has achieved dominant market share
+
+**Straw benefits from fragmentation:** The more fragmented the supply side, the harder it is for buyers to evaluate across platforms — the more valuable Straw's neutral evaluation layer becomes.
+
+### CB Insights "5 AI Agent Predictions for 2026" — market timing
+
+CB Insights predicts: In 2026, "the enterprise procurement of AI agents will begin to formalize — buyers will demand task-level performance evidence rather than generic capability claims."
+
+This is the Straw thesis stated by CB Insights as a market prediction. We are at the inflection point.
+
+### Mayfield Fund "The Agentic Enterprise in 2026"
+
+Mayfield: 74% of enterprises plan to deploy agentic AI within 2 years. Only 21% have mature agent governance mechanisms in place.
+
+**The governance gap = Straw's opening.** 53% of enterprises will be deploying agents into production with immature governance within 24 months. Straw's evaluation log IS the governance mechanism — it documents the selection criteria, the competitive process, and the winning agent's verified performance before deployment.
+
+Sources: digitalapplied.com/blog/ai-agent-marketplaces-2026, hackmd.io/npsbtech0/state-of-ai-agent-marketplace-2026, mayfield.com/the-agentic-enterprise-2026, cbinsights.com/research/ai-agent-predictions-2026, getmonetizely.com/network-effects-ai-agent-marketplaces
+
+TICK_END
+
+---
+
+## Tick 441 — ProcureAbility 2026 CPO-CIO Report: The Procurement-IT Governance Gap Is Straw's Entry Point
+
+**Research date:** 2026-05-03
+
+### ProcureAbility 2026 CPO-CIO Report (published April 29, 2026)
+
+**The headline:** "Lack of collaboration between procurement and IT teams on AI governance is limiting AI deployments and adoption."
+
+**Key statistics:**
+
+| Finding | Statistic | Straw Relevance |
+|---|---|---|
+| Teams collaborating on AI to ANY degree | 96% | AI procurement is happening everywhere |
+| Teams NOT collaborating on AI GOVERNANCE | 54% | The governance gap — where Straw enters |
+| CPO and CIO are equal partners in tech procurement | 53% in 2026 (up from 45% in 2025) | Both CPO AND CIO need to sign off on Straw |
+| Biggest data-related barrier: insufficient data governance policies | 36% | Straw's rubric = the governance policy |
+| Procurement organizations with no AI skills internally | 26% (secondary barrier) | Straw's rubric builder lowers skill requirement |
+
+**The structural finding:** In 2024, CIOs led procurement decisions with CPOs in supporting roles (55%). By 2026, CPOs and CIOs are equal partners (53%). **This is critical for Straw's sales motion** — the procurement decision for AI agents is now jointly owned by two C-suite roles. Straw needs to sell to BOTH.
+
+### The CPO-CIO dual champion sales motion
+
+**CPO's pain:** Procurement doesn't have the technical skill to evaluate AI agent performance. They need an objective scoring framework that doesn't require AI expertise to interpret.
+
+**CIO's pain:** IT can't build a neutral evaluation framework without building it for every new vendor — and IT is resource-constrained. They need a platform that operationalizes evaluation, not more bespoke consulting.
+
+**Straw's dual value:**
+- For CPO: rubric builder with templates — no AI expertise required to define winning criteria
+- For CIO: evaluation platform with API integration — runs the competition, produces the score, generates the audit log
+
+**The 54% governance gap:** More than half of enterprises where AI procurement is happening are doing it WITHOUT IT governance oversight. These are the highest-risk deployments — and the most urgent Straw customers. The moment IT governance gets involved (which the ProcureAbility report signals is happening in 2026-2027), Straw becomes the standard evaluation tool IT governance teams want in every AI procurement.
+
+### ProcureAbility as channel partner
+
+ProcureAbility (Darshan Deshmukh, EVP — Design Partner #79, Tick 396) **published this report**. They are already publishing the research that validates Straw's problem statement. ProcureAbility advising Fortune 500 procurement teams on AI governance is the distribution channel — Straw is the platform their clients use to implement governance.
+
+**Revised Design Partner #79 / Channel Partner note:** ProcureAbility is potentially a more valuable channel partner than direct customer. They consult CPOs at Fortune 500 companies on AI procurement governance. A Straw + ProcureAbility partnership ("ProcureAbility-certified AI agent evaluations powered by Straw") reaches the exact buyer without direct enterprise sales cycles.
+
+### LOB leaders as primary buyers — the new sales reality
+
+**2026 enterprise AI procurement:** Business leaders (LOB = Line of Business) now have equal or greater influence than CIOs:
+- LOB leaders: 46% of decision-makers
+- CIOs: 38%
+- CTOs: 38%
+
+**Implication for Straw's GTM:** The primary buyer is the VP of Customer Operations, VP of Procurement, or VP of Engineering — not just the CIO. Cold outreach goes directly to functional leaders, not exclusively to IT. The rubric builder is pitched as a business tool, not a technical tool.
+
+Sources: prnewswire.com/procureabilitys-2026-cpo-cio-report, webpronews.com/procurements-ai-awakening-89-unprepared, intelligentcio.com/north-america/2026/04/30/procureability-2026-report, digidai.github.io/2026/enterprise-ai-procurement-cto-decision-logic
+
+TICK_END
