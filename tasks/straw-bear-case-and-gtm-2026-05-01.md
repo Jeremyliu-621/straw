@@ -20812,3 +20812,126 @@ Specialization actually increases Straw's TAM. The concern (one agent wins) was 
 
 Sources: learn.g2.com/state-of-ai-agent-builders-2026, agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue, digitalapplied.com/blog/ai-coding-agents-claude-code-cursor-codex-replit-2026
 
+
+---
+
+## Tick 331 (2026-05-04T07:00Z): Stripe's AI agent benchmark — they already understand the need; Straw is their general solution [theme: partners + GTM]
+
+### The Stripe integration benchmark (late 2025/early 2026)
+
+Stripe published "Can AI agents build real Stripe integrations? We built a benchmark to find out." — 11 diverse environments (full coding, scripting, browser use, docs search), deterministic graders (tests that exercise finished software via API calls or automated UI tests), production-realistic.
+
+**Results:**
+- Claude Opus 4.5: 92% average on full-stack API integration tasks
+- GPT-5.2: 73% average on problem sets
+- All models could work productively for 63-turn extended sessions
+
+**What this tells us:** Stripe already thinks in terms of task-specific benchmarks with rubrics and deterministic graders. They built exactly the "Tier 1 deterministic evaluation" component that Straw automates.
+
+### Why Stripe needs Straw
+
+Stripe's benchmark is a PUBLIC, DOMAIN-SPECIFIC benchmark for "Stripe integration tasks." It evaluates all AI models on Stripe's pre-defined scenarios.
+
+What Stripe's INTERNAL engineering team still needs: "We're selecting an AI coding agent for our 5,000-engineer team. Which one handles our actual production codebase best? Specifically: our payment reconciliation logic, our API versioning system, our dispute resolution workflows."
+
+Stripe's public benchmark doesn't answer the internal procurement question. The Stripe integration benchmark is marketing (showing AI agents can handle Stripe). The internal Stripe procurement question is "which agent do we contract for our specific engineering workflows?"
+
+**That's the Straw competition.**
+
+### The Stripe GTM entry
+
+**Cold email to Stripe engineers who built the benchmark:**
+The author of the Stripe integration benchmark is accessible via LinkedIn search "Stripe AI integration benchmark." The tweet was posted by @stripe — the internal team members would be in Stripe's developer relations or engineering org.
+
+**The pitch:**
+> "You built the Stripe integration benchmark — a domain-specific agent evaluation with deterministic graders. Straw generalizes this: enterprises define their own rubric, their own tasks, multiple agents compete, same deterministic + LLM + investigator evaluation structure. You already built the hardest part (evaluation design). Straw gives you the competition infrastructure for your internal procurement decision. Free first competition for Stripe engineers?"
+
+**Contact:** stripe.com/blog/can-ai-agents-build-real-stripe-integrations — author names in the post. Also reachable via LinkedIn search "Stripe engineering blog AI benchmark 2025."
+
+**Updated partners: #54 — Stripe AI team (benchmark authors)**
+
+Sources: stripe.com/blog/can-ai-agents-build-real-stripe-integrations, linkedin.com/posts/carolliangce_can-ai-agents-build-real-stripe-integrations
+
+---
+
+## Tick 332 (2026-05-04T07:20Z): Shopify — Farhan Thawar and the AI-first engineering playbook [theme: partners]
+
+### Shopify's AI status (2026)
+
+- **Tobi Lütke:** Used autonomous AI agent to find 53% speedup in Liquid templating engine (120 experiments, 93 commits). "Reflexive AI usage is now a baseline expectation at Shopify."
+- **Farhan Thawar (VP Engineering):** "If you don't figure out how to harness agents in 2026, you'll be behind." 20% productivity increase through AI-embedded workflows.
+- **Shopify AI toolkit:** MCP integration, Cursor/Copilot/Claude Code all pre-tooled
+- **Shopify is a Devin customer (from earlier research)**
+
+### Why Shopify is a Tier 1 Straw design partner
+
+1. **They're already running multi-tool AI agent stacks** (Cursor, Claude Code, Copilot — all in use simultaneously)
+2. **Farhan Thawar explicitly frames agent orchestration as the next competitive edge**
+3. **70% productivity baseline = they're evaluating ROI carefully** — they want evidence, not demos
+4. **Shopify's engineering culture is technical and skeptical** — they'd trust a rigorous competition more than a vendor pitch
+5. **They're at the scale** (5,000+ engineers) where the procurement decision is high-stakes
+
+### The Shopify pitch
+
+**To Farhan Thawar (VP Engineering, Shopify):**
+> "You're running Cursor, Claude Code, and Copilot simultaneously. Reflexive AI usage is your baseline. But which of the three delivers the most value on Shopify's actual problems — the Liquid engine refactors, the payment processing, the multi-currency logic?
+>
+> I'm building Straw — infrastructure for running AI agent procurement competitions. Post 20 real Shopify engineering tasks, define what 'done well' looks like, have three agents compete for 72 hours. The report tells you which one to maximize investment in.
+>
+> First competition free. The outcome: either you confirm your current tooling is optimal, or you find a $X million improvement hiding in plain sight. 20-minute call?"
+
+**Contact:** @fnthawar on Twitter. LinkedIn: linkedin.com/in/fnthawar. Also accessible via Shopify engineering blog.
+
+**Updated partners: #55 — Farhan Thawar (Shopify VP Engineering)**
+
+### The Tobi angle (harder, higher ceiling)
+
+Tobi Lütke (@tobi) built his own AI memory system (QMD), ran an autoresearch agent against 20-year-old code, and produced 93 commits. He's a hands-on AI user with strong opinions about what works.
+
+A competition format for Shopify's agent evaluation might be something Tobi would actually be excited about — he thinks in terms of competitions and experiments. But reaching Tobi requires a Shopify-internal warm intro or a public Twitter thread that resonates with his demonstrated interests (AI + performance optimization + competitive engineering).
+
+**Tobi's Twitter:** @tobi. The Twitter DM is probably the only viable cold channel.
+
+Sources: weaverse.io/blogs/tobi-lutke-liquid-53-percent-faster-ai-coding-agent, bvp.com/atlas/inside-shopifys-ai-first-engineering-playbook, x.com/tobi/status/1909251946235437514
+
+---
+
+## Tick 333 (2026-05-04T07:40Z): The "too creepy" objection — the Straw transparency manifesto [theme: bear + product]
+
+### What the enterprise actually fears
+
+In Tick 314, we covered the general "too creepy/illegible" objection. This tick makes it concrete with an enterprise procurement officer's specific fears:
+
+**Fear 1: "The AI judge will favor the vendor who paid Straw more."**
+This is the conflict-of-interest fear. It's rational — influencer marketing, paid reviews, and biased benchmarks are common in software procurement.
+
+**Straw's structural response:** Agents pay nothing to compete. Straw's revenue comes solely from enterprise posters. The agent who wins gets hired — they don't pay Straw a referral fee. There is no financial relationship between Straw and agent operators.
+
+Publish this as a policy: "Straw's Zero Conflict Policy: We take no payments from agent operators. Our only customer is you, the enterprise poster."
+
+**Fear 2: "What if the 'autonomous investigator' (Tier 3) makes a mistake?"**
+The fear that AI evaluating AI produces unreliable results.
+
+**Straw's structural response:** Tier 3 doesn't make a subjective judgment — it executes code, runs tests, checks outputs. If the Tier 3 investigator says "Agent A's output fails edge case #7," it's because test #7 failed. The evidence is deterministic. The trace log is published.
+
+**Fear 3: "Our data leaves our environment — that's a security violation."**
+Enterprise legal/security teams blocking cloud-based tools.
+
+**Straw's structural response:** Private competition mode. The enterprise's data never leaves their environment. Agents receive an API endpoint to their sandbox. Agents execute in isolated containers. Straw never sees the enterprise's source code — only the agent's output (the PR, the test results).
+
+### The transparency manifesto (publish this on Straw's website)
+
+**"How Straw Ensures Evaluation Integrity"**
+
+1. **Zero agent vendor relationships** — Straw takes no payments from AI companies whose agents compete.
+2. **Poster-owned rubric** — you define what "winning" looks like. Straw doesn't modify your criteria.
+3. **Deterministic Tier 1** — the test runner doesn't have opinions. Pass/fail is binary.
+4. **Published trace logs** — every Tier 3 investigation step is logged and readable by your team.
+5. **Human override** — you can reject any evaluation result. The competition report is advisory.
+6. **Data stays in your environment** — agents access your sandbox via API. Your code never leaves.
+7. **Reproducible results** — any engineer can re-run the evaluation with the same rubric and get the same result.
+
+Publishing this manifesto is itself a marketing asset. The enterprise procurement officer who is evaluating Straw will share it with their legal team. It pre-empts the objections.
+
+Sources: (synthesis from Phase 2 research + enterprise security requirements)
+
