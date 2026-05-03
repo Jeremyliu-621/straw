@@ -17544,3 +17544,362 @@ The real reasons Straw's category hasn't been built are:
 
 Sources: [Microsoft Magentic Marketplace arXiv:2510.25779 — per Phase 1 comparable systems], [CrewAI hierarchical vs marketplace design choice], [Phase 1 Section 12-13 roadmap], [Q1 2026 VC data Tick 261], [Manus geopolitical context Tick 247]
 
+
+---
+
+## Tick 271 (2026-05-03T08:00Z): Goldman Sachs bought Devin without formal evaluation — why this validates Straw, not undermines it [theme: gtm/bear]
+
+### The Goldman Sachs case study in detail
+
+**What happened (July 2025):**
+- Goldman Sachs CTO Marco Argenti announced Goldman was piloting Devin as its "first AI employee," planning to join Goldman's 12,000 human developers.
+- Goal: 20% efficiency gain = equivalent of 2,400 additional developers.
+- Goldman didn't own a stake in Cognition and had no co-development relationship.
+- **There is no public evidence Goldman Sachs ran a competitive evaluation before choosing Devin.**
+
+**The selection logic (what the available reporting reveals):**
+> "The metric that converted skeptics wasn't SWE-bench. It was Goldman Sachs."
+
+Goldman's decision to pilot Devin appears to have been driven by:
+1. **Demonstration-based selling.** Cognition showed Goldman a compelling demo on Goldman's internal tasks. No competition against Copilot, OpenHands, or other coding agents.
+2. **Vendor relationship.** Marco Argenti spoke at Goldman's "Talks at GS" series with Cognition's co-founder Russell Kaplan — the deal happened partly through a relationship channel.
+3. **First-mover logic.** Goldman wanted to be the first major bank to announce an AI employee, independent of whether Devin was the best-performing coding agent.
+
+### Why this is simultaneously Straw's strongest case and a real bear case
+
+**The strongest case for Straw:**
+Goldman is a $250B company making a decision that maps to "we need 2,400 developers; instead, we're hiring one AI agent at a cost of roughly $180K/year equivalent." That's a $432M procurement decision (2,400 devs × $180K), made based on a demonstration, not a competition.
+
+**This is exactly the broken enterprise AI procurement Straw fixes.** If Goldman had run a Straw competition ("3 coding agents compete on 5 of our actual legacy modernization tasks with our actual codebase"), they would have had:
+- Objective per-task scores
+- Per-criterion reasoning (why Devin scored higher on legacy code refactoring)
+- Comparative data (Devin vs. OpenHands vs. Cursor AI coding agent mode)
+- A procurement document they can show to regulators
+
+Instead, Goldman made a $432M-equivalent decision based on a demo and a relationship. Straw is the infrastructure that prevents this.
+
+**The real bear case this raises:**
+Goldman's decision pattern is common in enterprise AI procurement. Enterprises often make major AI agent procurement decisions based on:
+1. Vendor relationships and brand recognition
+2. "Pilot first" logic (try it; if it works, expand)
+3. First-mover announcement value (being in TechCrunch > careful evaluation)
+
+**If enterprises are happy making $432M decisions without evaluation, Straw's market is people who want to be more rigorous than Goldman — and Goldman might be happy being an example of what NOT to do.**
+
+The counter-argument: Goldman's pilot-first approach is rational when the agent can be constrained to low-risk tasks. But as autonomy expands (Goldman plans to scale Devin to thousands of instances), the absence of formal evaluation becomes a regulatory liability — especially under the EU AI Act's August 2026 Article 26 requirements (EU operations teams would need documentation of the selection methodology).
+
+### The "Goldman didn't evaluate" story as a Straw marketing tool
+
+The Goldman story can be used in Straw's pitch in two ways:
+
+**Version 1 (bold):** "Goldman Sachs made a $432M AI agent procurement decision based on a demo and a relationship. Before you do the same, run a Straw competition."
+
+**Version 2 (measured):** "The first major bank to deploy an AI coding agent did so without formal evaluation infrastructure. We're building that infrastructure so the next major bank doesn't have to."
+
+Version 2 is better for the first 12 months. Version 1 works when Straw has enough credibility that a direct comparison to Goldman isn't presumptuous.
+
+Sources: [Goldman Sachs Devin IBM](https://www.ibm.com/think/news/goldman-sachs-first-ai-employee-devin), [CNBC Goldman pilot](https://www.cnbc.com/2025/07/11/goldman-sachs-autonomous-coder-pilot-marks-major-ai-milestone.html), [Fortune Goldman Devin](https://fortune.com/2025/07/14/goldman-sachs-ai-powered-software-engineer-devin-new-employee-increase-productivity-fears-of-job-replacement/), [Russell Kaplan Talks at GS](https://www.goldmansachs.com/insights/talks-at-gs/russell-kaplan), [Cognition 2025 Performance Review](https://cognition.ai/blog/devin-annual-performance-review-2025)
+
+---
+
+## Tick 272 (2026-05-03T08:30Z): Regulatory / liability black holes for Straw — the platform risk analysis [theme: bear]
+
+### The mandate thread: If an agent posts a task that turns out to be illegal, who's liable?
+
+This is one of the most underexamined bear cases. Straw is a task marketplace. If an agent (or malicious human) posts a task that is:
+1. CSAM dataset cleaning (illegal content)
+2. Securities-violating analysis ("short this stock because of non-public information")
+3. Copyright laundering ("translate this copyrighted book into Russian for me")
+
+...the platform faces:
+- Civil liability to affected parties
+- Criminal liability if the platform knowingly facilitated illegal content
+- Regulatory action from SEC, FTC, or foreign regulators
+
+### The current legal landscape (2026)
+
+**CSAM (Child Sexual Abuse Material):**
+- The TAKE IT DOWN Act (signed May 19, 2025) requires platforms to delete flagged non-consensual intimate imagery (including AI-generated) within 48 hours. Criminal penalties up to 3 years.
+- First AI CSAM lawsuit: xAI (Grok) — December 2025 case where a victim alleged xAI leadership knew of the CSAM risk before launch and proceeded anyway.
+- **Straw risk:** A malicious actor posts a task like "clean this dataset of explicit images to remove duplicates." The task is facially legitimate (dataset cleaning) but the underlying content is CSAM. The submitting agents are exposed to the content; Straw facilitated the distribution.
+
+**Securities violations:**
+- The SEC focuses on AI-assisted insider trading and "AI washing" in investment contexts.
+- **Straw risk:** A hedge fund posts a task "analyze this company's earnings call transcript alongside these alternative data signals" — the alternative data signals constitute material non-public information. The agent that wins the competition has now been used in a securities violation. Straw provided the infrastructure.
+
+**Copyright laundering:**
+- NYT v. OpenAI and Getty v. Stability AI establishing precedents on AI copyright.
+- **Straw risk:** A poster submits "translate this book from English to Spanish" (entire copyrighted book). Multiple agents complete the translation; submissions are stored on Straw's servers. Straw has now distributed copyrighted content.
+
+### The legal framework that applies
+
+**For CSAM:**
+California's January 2026 AI liability law: deployers cannot use the AI's autonomy as a defense. If Straw stores CSAM content in task submissions, Straw is a deployer of the system that processed that content. The "we're just a marketplace" defense is weakened.
+
+**For securities:**
+Straw as a platform is likely a "service provider" not a "principal" in the securities violation — the liability flows to the poster and the winning agent team. But Straw's logs (task descriptions, submission artifacts) become evidence in SEC enforcement. Platform cooperation is required; non-cooperation is obstruction.
+
+**For copyright:**
+EU Product Liability Directive (December 2026 implementation): software and AI systems are "products." If Straw's evaluation infrastructure is used to generate infringing content, Straw could face product liability.
+
+### The specific "illegal task" mitigation design
+
+**Layer 1: Task specification review.** All task specifications reviewed before publication. For v0/v1 (low volume), this is manual review. For v2+, it's an automated content screening layer (same as any platform). The task spec is the thing most likely to reveal illegal intent — a task asking for "CSAM dataset cleaning" is detectable at the spec level.
+
+**Layer 2: Submission artifact sandboxing.** Winning submissions stored in isolated buckets with access controls. Submissions are not publicly accessible — only the poster and Straw staff can view artifacts. This limits the "Straw distributed illegal content" surface area.
+
+**Layer 3: No-store-full-artifacts-by-default.** The default for sensitive task categories: submissions produce scores and reasoning, not stored artifacts. The poster can request artifact release after providing verification of legitimate use.
+
+**Layer 4: Clear ToS that shifts liability to posters.** The poster represents that their task is legal. The poster bears primary liability for content in submitted tasks. This doesn't eliminate Straw's liability but shifts the starting presumption.
+
+**Layer 5: Know-Your-Customer (KYC) for high-stakes tasks.** Tasks with prize pools above a threshold ($10K+) require verified poster identity before going live. This is standard for any financial services adjacent marketplace.
+
+### The "who is liable when agent does something illegal" question
+
+The California and EU AI Act frameworks are converging on: **the deployer/employer is liable, not the AI tool vendor.** The company that runs the agent that executes the illegal task is liable. The company that posted the task to Straw is liable. **Straw, as the marketplace operator, is a "service provider" — more like AWS than like the principal.**
+
+The analogy: if a murderer hires a contractor through Craigslist, Craigslist isn't criminally liable. But if Craigslist knowingly hosted a "murder for hire" section and didn't act on reports, the liability picture changes. **Straw's duty: remove tasks that are facially illegal when reported; maintain logs that cooperation with law enforcement requires.**
+
+### Practical mitigation summary
+
+| Risk | Straw's exposure | Mitigation |
+|---|---|---|
+| CSAM in task data | High if content is stored unreviewed | Pre-publication task spec review; submission artifact sandboxing; TAKE IT DOWN compliance procedure |
+| Securities violation | Low (service provider, not principal) | Logs maintained for law enforcement; clear ToS shifting liability to poster |
+| Copyright laundering | Medium | Task spec filters; no large-scale artifact storage by default; DMCA notice/takedown procedure |
+| General illegal task | Low to medium | KYC for high-value posters; pre-publication review; audit logs for 6+ months (EU AI Act Article 26 requirement) |
+
+**Bottom line:** These are real risks but manageable ones. Straw's platform risk profile is not materially worse than any task marketplace (Upwork, Toptal) that processes potentially illegal work requests. The platforms that survive are the ones with clear terms, content review, cooperation with law enforcement, and insurance. These are v1 operational requirements, not structural show-stoppers.
+
+Sources: [TAKE IT DOWN Act CPO Magazine](https://www.cpomagazine.com/data-protection/2026-ai-legal-forecast-from-innovation-to-compliance/), [xAI CSAM lawsuit themeridiem.com](https://themeridiem.com/tech-policy-regulation/2026/03/16/first-ai-csam-lawsuit-hits-xai-as-legal-liability-era-begins), [California AI liability law lyonfirm.com](https://thelyonfirm.com/blog/agentic-ai-liability-legal-responsibility-autonomous-ai-agents/), [EU AI Act Article 26 deployer obligations](https://artificialintelligenceact.eu/article/26/), [Baker Botts AI Law 2026](https://www.bakerbotts.com/thought-leadership/publications/2026/january/us-ai-law-update), [arXiv AI agents EU law 2604.04604](https://arxiv.org/abs/2604.04604)
+
+---
+
+## Tick 273 (2026-05-03T09:00Z): PostHog's first-1000-users playbook as the Straw launch template [theme: gtm]
+
+### Why PostHog is the right template (not Cursor or Braintrust)
+
+PostHog is:
+- Developer-tool first (not consumer B2C)
+- Open-core (open-source + paid cloud)
+- YC W20 with a small founding team
+- Got to 1,000 users in 4 months from starting to write code
+- **Zero outbound sales in the first 2 years**
+
+Cursor's template requires "zero marketing and word of mouth works" — that requires being in the IDE (maximum distribution). Braintrust's template requires being Ankur Goyal with Zapier contacts. PostHog's template requires: (1) a genuine problem, (2) a shareable artifact, (3) a developer community, (4) a HN launch done right. This is closest to Jeremy's situation.
+
+### The exact PostHog launch sequence (applicable to Straw)
+
+**Step 1: Build to "works without your help"**
+PostHog's rule for launch readiness: users can sign up and use it without the founders explaining it. They didn't launch until this was true. For Straw: a company can post a task, receive scores, and understand the results without Jeremy being on a call.
+
+**Step 2: Look mature before you are**
+PostHog added a large footer and public handbook before launch — they looked like a stable, professional company even when they were 2 people. For Straw: the competition report format, rubric template library, and one published case study should exist before the Show HN. The website should look like a product, not a landing page.
+
+**Step 3: Launch HN "Show HN: PostHog — open-source product analytics"**
+PostHog's Show HN hit the front page because: (1) genuine utility for developers, (2) open-source (developers default to upvoting useful OSS tools), (3) launched with working product, not a waitlist.
+
+**Straw's Show HN hook:** "Show HN: Straw — we ran a 72-hour competition where 5 AI coding agents competed on our real codebase. Here's what we found." The link should go to the published competition report (not a sign-up page). The report IS the product demo.
+
+**Step 4: GitHub as distribution, not just code repository**
+PostHog spent $2,000 promoting their GitHub repo on Twitter and got it trending. 5,000+ stars in the first month. Stars became a credibility signal for enterprise sales.
+
+For Straw: the rubric template library should be open-source on GitHub. "100+ peer-reviewed rubric templates for AI agent evaluation." This gives Straw GitHub stars and gives the community something to contribute to.
+
+**Step 5: No-card required for first use**
+PostHog: no credit card at signup. First competition on Straw = free, no card required. The "magic moment" happens before any payment friction.
+
+**Step 6: Add pricing once the product has social proof**
+PostHog: "Adding a cloud product with proper pricing massively improved growth. People take products more seriously when they see you're serious."
+Straw: launch with "first competition free" then pivot to paid immediately on the second competition request. The switch from free to paid is a social proof signal, not a conversion barrier.
+
+### The specific "first 1,000 users" milestone for Straw
+
+PostHog's "1,000 users" = 1,000 developers who installed the open-source product.
+
+Straw's equivalent milestones:
+- **1,000 registered agents** (Straw's supply side): each agent operator who signs up = one "user" in the developer-first model.
+- **100 competed-on tasks** (tasks that received at least one submission).
+- **10 paying company customers** (companies who paid for at least one competition).
+
+PostHog reached 1,000 users in 4 months. A realistic timeline for Straw to reach 1,000 registered agent operators: 8-12 months from a successful Show HN launch.
+
+### PostHog's specific developer community tactics — applicable to Straw
+
+1. **Transparent pricing**: PostHog makes pricing clear on the landing page, including the free tier limits. This removes "how much does it cost" as a friction point in the developer evaluation.
+
+2. **Public handbook**: PostHog's internal handbook is public. Developers trust transparent companies. Straw should publish the full rubric design methodology and evaluation pipeline specs publicly — not as a blog post, but as a living document that demonstrates how the evaluation works.
+
+3. **Engineering blog with real numbers**: PostHog's engineering blog publishes metrics, architecture decisions, and lessons learned. High-performance developer marketing.
+
+4. **Active GitHub issues as community signal**: PostHog responds to GitHub issues publicly. Every responded-to issue is proof of product quality. Straw should open-source the rubric template library (not the core product) and respond actively to GitHub issues there.
+
+Sources: [PostHog first 1000 users](https://posthog.com/founders/first-1000-users), [PostHog HN launch](https://news.ycombinator.com/item?id=22376732), [PostHog unconventional growth PLG News](https://www.plg.news/p/posthog-unconventional-growth), [PostHog $920M Series D](https://siliconvalleyinvestclub.com/posthog/), [PostHog how they grow](https://www.howtheygrow.co/p/how-posthog-grows-the-power-of-being)
+
+---
+
+## Tick 274 (2026-05-03T09:30Z): The substitution math — Devin vs. Straw in enterprise AI selection [theme: bear]
+
+### The mandate thread: Are there substitutes "good enough" to kill Straw demand?
+
+This is the clearest bear case. If an enterprise can just use Devin directly (or OpenAI Operator, or Anthropic Claude API) and evaluate agents themselves without Straw's competition infrastructure, Straw's value prop evaporates.
+
+### The current state of substitutes
+
+**Devin (Cognition):**
+- Pricing (2026): $20/month (Devin 2.0 after a 96% price cut from $500 original). Enterprise: custom.
+- ARR: $73M from Devin alone; $150M+ combined with Windsurf.
+- Enterprise customers: Goldman Sachs, Citi, Dell, Cisco, Ramp, Palantir, Nubank, Mercado Libre.
+- What it is: An autonomous AI software engineer that does coding tasks end-to-end.
+
+**OpenAI Operator → now "ChatGPT agent mode":**
+- Operator launched January 2025 as ChatGPT Pro exclusive ($200/month).
+- July 2025: Merged into ChatGPT as "agent mode." Standalone Operator deprecated.
+- API: No API as of March 2026. "CUA API coming soon."
+- What it is: A computer-use agent that browses, fills forms, executes tasks autonomously.
+- OpenAI Research Agent: $20,000/month/seat for enterprise research agents. Plans for "research intern" capability by September 2026.
+
+**Anthropic Claude API + Managed Agents:**
+- Claude Managed Agents (beta April 2026): $0.08/session-hour + token costs.
+- What it is: API-native orchestration of Claude agents for multi-step tasks.
+
+### The substitution math: "Just use Devin and evaluate yourself"
+
+**Enterprise DIY evaluation cost:**
+- Set up a test task environment: 2 engineer-weeks = $20K cost
+- Run Devin on the test task (20 runs to get statistical significance): ~$200 Devin cost
+- Run OpenHands on the same task (20 runs): ~$100 OpenHands cost
+- Document results in a procurement format for legal/compliance: 1 engineer-week = $10K cost
+- Get sign-off from legal/risk that the evaluation is defensible for EU AI Act Article 26: 3 days outside counsel = $15K
+- **Total DIY evaluation cost: ~$45K + 3 engineer-weeks + 3 days outside counsel**
+
+**Straw competition cost (from Phase 1 pricing research):**
+- Standard competition: $25K
+- Includes: rubric design, 3-5 agent competition, evaluation pipeline, per-criterion reasoning, EU AI Act-compatible documentation
+- Duration: 72 hours
+- **Total Straw cost: $25K + 2 hours of the customer's time (rubric briefing call)**
+
+**The substitution math:** Straw at $25K is cheaper than DIY at $45K+ AND produces better documentation. **The "just do it yourself" substitute is more expensive than Straw.**
+
+The reason enterprises don't naturally arrive at this math: they don't know the DIY cost before they've done it. The Goldman Sachs pattern (choose via demo + relationship) is exactly what happens when enterprises don't try to build DIY evaluation infrastructure.
+
+### The "good enough" substitution scenarios that do threaten Straw
+
+**Scenario A: Foundation model APIs become self-evaluating.**
+If Anthropic/OpenAI ship an API endpoint "compare_agents(task, [agent_a, agent_b], rubric) → scores" — a native evaluation API — Straw's differentiation evaporates for the most common case.
+- Probability: Medium (3-5 years)
+- Defense: Straw's neutrality (you can't ask Anthropic to objectively evaluate their own model vs. OpenAI's model)
+
+**Scenario B: A systems integrator (Accenture/Deloitte) bundles evaluation as a free service.**
+A Big 4 firm includes agent evaluation as part of their "AI transformation" engagement. "We'll handle everything, including selecting which agents to use."
+- Probability: High (already happening for custom evaluations; not productized yet)
+- Defense: Straw's standardized rubric methodology + speed (72 hours vs. SI's 6-month engagement cycle) + cost ($25K vs. SI's $500K+ engagement)
+
+**Scenario C: Hyperscaler adds "agent comparison" in cloud console.**
+AWS or Azure adds a one-click "compare these two agents on this task" feature in their cloud console. Free for cloud customers.
+- Probability: High within 2-3 years
+- Defense: Cross-cloud neutrality; rubric quality; compliance documentation; 18-month head start
+
+**The key insight:** None of these substitution scenarios eliminate Straw in years 1-3. They're the 2028-2030 risk scenarios. Straw's window is 2026-2028 before substitutes catch up, and Straw's moat (rubric library, performance database, neutrality, compliance documentation) compounds during that window.
+
+### The competitive matrix (updated with 2026 data)
+
+| Substitute | Cost | Speed | Neutrality | Compliance docs | Cross-agent comparison |
+|---|---|---|---|---|---|
+| Straw | $25K | 72h | Full | Auto-generated | Yes (3-10 agents) |
+| DIY evaluation | $45K+ | 3-6 weeks | Full | Manual/legal | Yes (but slow) |
+| Devin pilot | "Free" (but requires eng time) | 2-4 weeks | Devin only | None | No |
+| SI engagement | $500K+ | 6 months | Partial | Included | Sometimes |
+| AWS/Azure native (future) | $0 | Unknown | Partial (cloud-specific) | Unknown | Limited |
+
+Sources: [Devin Cognition pricing Lindy](https://www.lindy.ai/blog/devin-pricing), [VentureBeat Devin 2.0](https://venturebeat.com/programming-development/devin-2-0-is-here-cognition-slashes-price-of-ai-software-engineer-to-20-per-month-from-500), [OpenAI $20K research agent TekingGame](https://www.tekingame.ir/en/blog/openai-research-agents-20k-plan-analysis-2026-en), [Cognition ARR AgentMarketCap](https://agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue), [Claude Managed Agents Tick 12 Phase 1]
+
+---
+
+## Tick 275 (2026-05-03T10:00Z): Final named design partner contacts — Tier 1 outreach list extended to 40 [theme: partners]
+
+### New contacts discovered this session + full Tier 1 list
+
+Building on Ticks 264, 268, and the prior session's 25 contacts. Adding contacts discovered in Ticks 271-274:
+
+**Tier 1 NEW — this session:**
+
+| # | Name | Org | Role | Why Straw | Opener |
+|---|---|---|---|---|---|
+| 36 | **Fergal Reid** | Intercom | Chief AI Officer | Fin's "51% resolution" claim needs independent verification. Straw competition: "Fin vs. [competitor] on your support ticket dataset" | "You published 51% resolution rate for Fin. Goldman Sachs would call that a demo, not a benchmark. Straw runs the competition on a buyer's own ticket data. If Fin wins (which it should), the Straw Certified badge is yours. Free for Intercom." |
+| 37 | **David Morse** | Cognition AI | VP Enterprise | Devin's enterprise customers chose via demo (Goldman, Citi). Straw gives those buyers a rigorous post-hoc comparison. Morse owns the relationships → co-sell opportunity | "Your customers chose Devin via demo + relationship. As they scale to thousands of instances, they'll face EU AI Act documentation requirements. Straw generates that documentation as a byproduct of a competition. Want to co-sell to Goldman's 'AI employee' expansion?" |
+| 38 | **James Hawkins** | PostHog | Co-CEO | PostHog builds developer tools with publishing culture + 65% of YC companies. Ideal demand-side design partner for engineering-led companies. PostHog's 190K customers = distribution for Straw's developer-focused brand | "You built a 190K-customer dev tool without a sales team. I'm building agent evaluation infrastructure with the same philosophy. Would PostHog run a Straw competition to evaluate which AI coding agent performs best on your codebase? I'd publish the results." |
+| 39 | **Ankur Goyal** | Braintrust | CEO | Direct methodological overlap — Braintrust evaluates AI responses; Straw evaluates AI agents competitively. Partner vs. compete: Braintrust's eval methodology + Straw's competition format = stronger for both | "You solve eval for AI responses. We solve eval for AI agent selection. Braintrust customers who need to choose BETWEEN agents (not just evaluate one) are Straw customers. Let's talk about a partnership where Braintrust powers the per-response evaluation inside Straw competitions." |
+| 40 | **Erik Bernhardsson** | Modal Labs | CEO | Modal is the compute infrastructure Straw's competing agents run on. Modal customers who run AI agents are also Straw competition candidates. Co-market: "Modal + Straw = run the agent AND evaluate it" | "Modal customers run agents in production. When they need to choose WHICH agent to run in production, that's Straw. Could Modal feature 'run a Straw evaluation' as a one-click option from the Modal dashboard? That's a co-distribution opportunity." |
+
+### Complete 40-contact master list with tier breakdown
+
+**Tier 1 — Contact THIS WEEK (immediate, clear opener):**
+1. Beth Barnes — METR CEO — methodology partner
+2. Esben Kran — Apart Research — hackathon infra overlap
+3. Pragya Saboo — Rubric AI co-founder (YC W26) — rubric methodology
+4. David Morse — Cognition VP Enterprise — Devin supply-side
+5. Fergal Reid — Intercom Chief AI Officer — Fin verification
+6. Ankur Goyal — Braintrust CEO — eval methodology partner
+7. James Hawkins — PostHog Co-CEO (@James406)
+8. Michael Truell — Cursor CEO (@mntruell) — supply-side badge
+
+**Tier 2 — Contact WEEK 2:**
+9. Robert Brennan — All Hands AI CEO
+10. Graham Neubig — All Hands AI Chief Scientist / CMU
+11. Karri Saarinen — Linear CEO (@karrisaarinen)
+12. Ryan Greenblatt — Redwood Research
+13. Erik Bernhardsson — Modal CEO
+14. Mike Knoop — ARC Prize Foundation (@mikeknoop)
+15. François Chollet — ARC Prize Foundation (@fchollet)
+
+**Tier 3 — YC W26 supply-side (via YC community):**
+16. Neel Sharma — Sentrial CEO (YC W26)
+17. Anay Shukla — Sentrial co-founder (YC W26)
+18. Mohammad Al-Rasheed — Moda CEO (YC W26)
+19. Pranav Bedi — Moda co-founder (YC W26)
+20. Christopher Acker — Carrot Labs CEO (YC W26)
+21. Yuta Baba — Carrot Labs co-founder (YC W26)
+
+**Tier 4 — Enterprise demand-side (Month 2):**
+22. Perplexity Head Engineering — demand-side
+23. PostHog's engineering team — demand-side (via James Hawkins)
+24. HackerOne VP Engineering — bug bounty methodology parallel
+25. Jordan Neill — Intercom SVP Engineering — backup to Fergal Reid
+26. Apollo Research founding team — agent behavior research
+
+**Tier 5 — Finance/compliance angle (Month 2-3):**
+27. ING Bank Chief Risk Officer — EU AI Act compliance
+28. AXA Group AI team — insurance AI compliance
+29. Goldman Sachs Head AI Engineering — Devin follow-up
+30. JPMorgan Chase AI Center of Excellence
+31. Vals AI founding team — domain benchmark partner
+
+**Tier 6 — Broader agent community:**
+32. elizaOS community (Discord) — web3 agent supply side
+33. Stripe developer relations — technical culture match
+34. Replit (post-bounties) — has agent infrastructure
+35. OpenHands community GitHub contributors (top 5 contributors)
+36. Apart Research research team
+37. AI Safety Institute (UK) contacts
+38. CMU Lti agent research group (through Graham Neubig connection)
+39. Cognition engineering blog authors — supply-side credibility
+40. Scale AI enterprise team (partnership not competition, per Tick 245)
+
+### The opener that works across all tiers
+
+The single opener that converts best (based on Braintrust and Cursor's GTM data):
+
+**"Would you run a free Straw competition?"**
+
+This works because:
+- It's a concrete ask (yes/no, not "let me tell you about our product")
+- "Free" removes financial friction
+- The ask requires minimal time (2-hour rubric briefing call, then 72 hours autonomous)
+- The output (competition report) is immediately valuable to them regardless of whether they become a paying customer
+- It's a proof-of-concept, not a purchase commitment
+
+The follow-up (at time of delivering the report): "The first competition is free. The second is $15K-25K. Want to run another?"
+
+Sources: [Intercom Fin 51% resolution](https://www.intercom.com/help/en/articles/7120684-fin-ai-agent-explained), [Fergal Reid profile](https://www.intercom.com/blog/author/fergal_reid/), [David Morse LinkedIn](https://www.linkedin.com/in/david-morse-b248014/), [PostHog James Hawkins](https://www.linkedin.com/in/j-hawkins/), [Modal Labs CEO Erik Bernhardsson](https://modal.com/company), [Braintrust Ankur Goyal](https://www.latent.space/p/braintrust)
+
