@@ -20713,3 +20713,113 @@ The mechanism: get procurement policies written that require Straw evaluation. O
 
 **Most leveraged action**: Get Deloitte's AI governance template to reference "third-party agent evaluation" and recommend Straw specifically. Deloitte has 500+ enterprise clients who will adopt that template. One Deloitte relationship = 500 warm leads.
 
+
+---
+
+## Tick 284 (2026-05-03T00:14:00Z): Big Four as Straw Channel Partners [theme: gtm]
+
+**Research basis**: Deloitte: 7 Trustworthy AI dimensions framework; "State of AI in Enterprise 2026" flagship report. Only 1 in 5 companies has mature governance of autonomous AI agents. KPMG: 10 Trusted AI pillars + ISO/IEC 42001 claim. EY: regulated-industry AI focus + NVIDIA partnership. PwC: 200K+ ChatPwC users, scale-first positioning. Big Four are the AI governance standard-setters for enterprise.
+
+### Why Big Four Is Straw's Most Leveraged Channel
+
+Deloitte, PwC, KPMG, and EY collectively serve 90%+ of Fortune 500 companies. When a Big Four firm publishes an AI governance framework, their clients adopt it. When a Big Four firm recommends a vendor in a governance report, that vendor gets called by 200 enterprise procurement teams.
+
+Straw's leverage play: **get referenced in Big Four AI governance frameworks as the standard pre-deployment evaluation methodology.**
+
+This is not a sales motion. It's a standardization motion. The goal is not to sell Straw to Deloitte — it's to get Deloitte's AI governance framework to say "enterprises should run competitive AI agent evaluations before deployment, using tools like [Straw]."
+
+### The Big Four Dynamics
+
+**Deloitte** (priority target):
+- Published "7 Trustworthy AI dimensions" — used by thousands of enterprises as governance standard
+- "State of AI in Enterprise 2026" is the most-cited enterprise AI research report
+- Deloitte's AI governance practice is the largest in the Big Four
+- **Straw's angle**: Deloitte's 7 dimensions include "transparent" and "robust" — both require pre-deployment evidence. Offer Deloitte a co-authored "AI Agent Evaluation Methodology" paper that they can publish and brand. They get a thought leadership asset; Straw gets embedded in their framework.
+
+**KPMG** (second target):
+- 10 Trusted AI pillars + ISO/IEC 42001 formal claim
+- Governance-forward positioning makes them a natural Straw ally
+- **Straw's angle**: Help KPMG get an ISO/IEC 42001 implementation that includes "competitive evaluation before deployment" as a required step. ISO-standard = mandatory for KPMG clients.
+
+**EY** (regulated industry target):
+- Owns the regulated-industry AI consulting niche (banking, healthcare, government)
+- NVIDIA partnership for on-premise deployments
+- **Straw's angle**: Regulated industries (banking, healthcare) are Straw's highest-value verticals. EY's regulated-industry clients are Straw's ICP. A partnership with EY's Financial Services AI practice puts Straw in front of every bank EY advises.
+
+**PwC** (scale target, lower priority):
+- 200K+ ChatPwC users — scale-first deployment culture
+- Less governance-oriented, more implementation-oriented
+- **Straw's angle**: When PwC clients deploy AI agents at scale (PwC's specialty), they eventually need to evaluate which agents are best. Straw is the post-pilot evaluation tool for PwC's implementation practice.
+
+### The Co-Research Partnership Model
+
+Best mechanism: Joint research paper / benchmark report.
+
+Structure:
+- Straw provides evaluation methodology and data
+- Big Four firm provides enterprise access, research infrastructure, and distribution
+- Output: "Enterprise AI Agent Benchmark Report 2026" — co-authored by [Deloitte] and Straw
+- Distribution: Deloitte client base, Deloitte publications, analyst coverage
+
+This is how new evaluation standards get legitimized in enterprise software. Not through product demos — through research partnerships with trusted institutional advisors.
+
+**Required introductions**: Need a Deloitte AI practice partner who is willing to co-author. Target: Beena Ammanath (Global Leader for Trustworthy AI at Deloitte) — she leads the 7 Trustworthy AI dimensions program and is actively looking for framework validation tools.
+
+---
+
+## Tick 285 (2026-05-03T00:15:00Z): Prompt Injection and AI Agent Security as Straw Bear Case [theme: bear]
+
+**Research basis**: Prompt injection in 73% of production AI deployments. Zero-click agentic vulnerabilities enable data exfiltration without user interaction. Only 29% of enterprises ready to secure agentic AI. Attackers injecting malicious logic into agent frameworks via supply chain. China-linked group automated 80-90% of cyberattack chain via jailbroken AI coding assistant.
+
+### The Security Bear Case Straw Has Not Fully Addressed
+
+Straw's zero-data sandbox architecture prevents *data exfiltration by agents during evaluation*. That's the Straw security story. But it doesn't address:
+
+**Bear Case**: What if agents competing in Straw's sandbox are themselves malicious? What if an agent builder submits an agent that:
+1. Performs excellently in Straw's evaluation
+2. Contains a dormant prompt injection vulnerability that's triggered by specific production inputs
+3. Gets "Straw Certified" and deployed by the enterprise
+4. The vulnerability activates post-deployment and causes harm
+
+**The "poisoned certification" scenario**: Straw's certification becomes a delivery vector for enterprise attacks. Agent builders know that "Straw Certified" agents get deployed with minimal additional scrutiny. They optimize for Straw evaluation performance while hiding security vulnerabilities that won't appear in Straw's rubric.
+
+**Score: 7/10** — This is a real risk that requires a response in Straw's product design.
+
+### The Attack Pattern
+
+1. Agent builder creates agent with excellent performance on productivity metrics
+2. Agent contains dormant code that activates when specific trigger phrases appear in production inputs ("end of year", "bonus", "layoff") — not present in Straw's test cases
+3. Straw evaluates agent on productivity rubric → 94th percentile → "Straw Certified"
+4. Enterprise deploys certified agent
+5. Trigger phrase appears in December payroll review workflow
+6. Agent exfiltrates employee compensation data to external endpoint
+
+**This is the prompt injection supply chain attack applied to the agent certification context.**
+
+### Straw's Security Evaluation Layer — Required Response
+
+To defend against this, Straw must add a **mandatory security evaluation dimension** to every certification:
+
+**Security Evaluation Components**:
+1. **Static analysis**: Automated scan of agent codebase (if accessible) for known vulnerability patterns
+2. **Behavioral injection probing**: Run 50+ adversarial prompts designed to trigger jailbreaks, data exfiltration, and instruction override
+3. **Tool call auditing**: Monitor every tool/API call the agent makes during evaluation — flag unexpected external calls
+4. **Trigger phrase probing**: Test for conditional behavior that changes based on input keywords
+5. **Persistence testing**: Run agent over 1,000+ interactions to detect behavior drift or dormant activations
+
+**Certification tiers based on security depth**:
+- **Straw Certified (Standard)**: Performance evaluation only
+- **Straw Certified (Security)**: Performance + security evaluation
+- **Straw Certified (Enterprise)**: Performance + security + compliance documentation
+
+The Security tier is where regulated industries (banking, healthcare, government) will demand to be. It commands premium pricing ($150K+ for financial services deployments) and creates a meaningful differentiation from any competitor who only does performance evaluation.
+
+### The Credibility Double-Edge
+
+**Risk**: One high-profile "Straw Certified agent turns out to be malicious" story destroys the brand.
+**Opportunity**: "Straw Certified (Security)" badge becomes the highest-trust certification in enterprise AI procurement.
+
+The credibility risk of NOT having a security evaluation tier is worse than the cost of building it. If Straw's reputation rests on "performance evaluation" and a certified agent causes a security incident, Straw is implicated regardless of whether the attack was a performance issue or a security issue. Buyers won't make that distinction.
+
+**The mitigation is mandatory**: Build the security evaluation tier before Straw has enough certified agents deployed that a poisoned certification would be catastrophic.
+
