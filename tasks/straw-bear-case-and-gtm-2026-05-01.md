@@ -23849,3 +23849,53 @@ Sources: cbinsights.com/research/ai-agent-predictions-2026, fortune.com/2026/04/
 
 TICK_END
 
+
+---
+
+## TICK 387 — Atlassian + Salesforce: The Enterprise "AI Adoption Gap" Is Straw's Market
+
+**Theme: GTM + Design Partners (#77)**
+
+### Salesforce: Only 8% Adoption After Year 1
+
+Benioff acknowledged a gap between "AI innovation and AI adoption." After one full year of Agentforce, only 12,000 of 150,000 Salesforce customers (8%) have adopted it. 138,000 customers have not.
+
+Why haven't they? The same reason 89% of AI agents never reach production: **enterprises don't have a reliable way to evaluate if the agent will actually work for their specific use case before committing.**
+
+The 92% who haven't adopted Agentforce are exactly Straw's market. They're not anti-AI — they're risk-averse. They've seen the 89% failure rate. They want proof before commitment.
+
+**The Salesforce x Straw narrative:** "Salesforce says 12,000 customers are using Agentforce. 138,000 aren't. We think the gap is evaluation: they don't know if Agentforce will outperform their existing workflow. Straw runs that evaluation before they commit."
+
+### Atlassian Rovo + Jira Agents: Design Partner #77
+
+**Company:** Atlassian ($1.8B Q3 FY2026 revenue, +32% YoY; 5M Rovo agentic AI users; Jira agents in GA)
+**CEO:** Mike Cannon-Brookes (@mcannonbrookes)
+**Key product:** Jira now assigns work to Rovo AND third-party agents. Open MCP toolchain. Partners include Amplitude, Figma, GitHub, Intercom.
+
+**Why Atlassian is an important design partner:**
+Atlassian's Jira is where enterprise work happens. When Atlassian enables third-party agents alongside Rovo, their enterprise customers need to evaluate: Rovo vs. GitHub Copilot vs. custom MCP agent for their specific engineering workflows.
+
+**The Atlassian x Straw product vision:**
+"Run Straw" as a native Jira action: post a task from your Jira backlog as a Straw competition. Agent submissions update the Jira ticket. Winner is assigned the task in Jira. This makes Straw evaluation native to the enterprise workflow where AI agents do work.
+
+**Pain point:** Atlassian laid off 1,600 employees (10%) in 2026 as an "AI investment." Cannon-Brookes needs Rovo to demonstrably outperform alternatives to justify those layoffs to shareholders and customers. Straw provides that independent validation.
+
+**Contact:** Mike Cannon-Brookes (@mcannonbrookes on Twitter/X)
+
+**Updated total: 77 named design partner contacts**
+
+### The "AI Adoption Gap" Across Enterprise Platforms (2026 Summary)
+
+| Platform | Total Customers | AI Adopters | Adoption Rate | Unadopted = Straw's Market |
+|---|---|---|---|---|
+| Salesforce Agentforce | 150,000 | 12,000 | 8% | 138,000 |
+| Workday | 11,000 (Fortune 500+) | Unknown | ~20% est. | ~8,800 |
+| Atlassian | 300,000+ | 5M Rovo users | ~15% orgs est. | ~250,000 |
+| Databricks | 20,000 | 80% DB built by agents | high | Evaluation quality unknown |
+
+The total addressable design partner pipeline = hundreds of thousands of enterprise teams that have access to AI agents but haven't evaluated which one is right for their specific use case. Straw's market is the evaluation gap, not the deployment gap.
+
+Sources: fortune.com/2025/10/21/salesforce-marc-benioff-ai-agents-dreamforce-agentforce-eye-on-ai, businesswire.com/news/home/20260430534706/en/Atlassian-Announces-Third-Quarter-Fiscal-Year-2026-Results, atlassian.com (Rovo agent partners announcement)
+
+TICK_END
+
