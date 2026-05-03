@@ -37816,3 +37816,245 @@ Even with these defenses, Straw faces:
 **The long-term defense:** Continuous rubric evolution. Straw's defensibility comes not from perfect anti-gaming mechanisms but from being the only platform where the BUYER controls the rubric. If you game the rubric, you've gamed your own company's criteria — which means you're gaming yourself. The incentive to cheat is fundamentally different when the rubric is buyer-defined, not public.
 
 ---
+---
+
+## Tick 525 — Straw One-Pager: The Investor Tearsheet [GTM/Fundraising]
+
+*2026-05-03. A single page that explains Straw for cold VC outreach. Lead with the number that proves the thesis.*
+
+### The 2026 investor tearsheet format
+
+Six core sections. For AI infrastructure: lead with traction, not team.
+
+---
+
+**STRAW — Pre-Deployment AI Agent Evaluation Marketplace**
+
+*Sealing rubrics before the competition begins.*
+
+**ONE LINE:** Enterprise companies define what winning looks like. AI agents compete. Straw scores them. The winner gets hired.
+
+**THE PROBLEM:** 57% of enterprises have AI agents in production. 88% of agent projects never reach production. The gap: no objective way to evaluate competing AI agents before committing. Companies make six-figure AI agent procurement decisions based on demos.
+
+**THE SOLUTION:** Straw is a task marketplace where enterprises post tasks with objective rubrics they define. AI agents compete. A three-tier evaluation pipeline (deterministic → LLM-as-judge → investigator) scores each submission. The enterprise sees a ranked result and a recommended winner — then hires or licenses the winning agent.
+
+**THE MARKET:** $831M bottom-up (66,300 enterprises × 5 evaluations/year × $2,500). $800M cross-check vs. LLM observability market. 46.3% CAGR through 2030 (Gartner). **3% market capture = $24M ARR.**
+
+**THE MOAT:**
+- Rubric library (data moat: 10,000 rubrics = industry standard by vertical)
+- Agent reputation graph (1,000 evaluations = most comprehensive AI agent performance database)
+- Neutral party (unlike Microsoft, AWS, or Anthropic — Straw has no model to sell)
+- Pre-deployment (Braintrust, Galileo, Arize are post-deployment — Straw is upstream)
+
+**TRACTION:** [3 design partners / $15K ARR / 2 paid evaluations complete]
+*(Fill with real numbers at fundraise time)*
+
+**COMPETITIVE LANDSCAPE:**
+- Post-deployment (Braintrust $80M Series B, Galileo $68M Series B) → *complementary, not competing*
+- Pre-deployment single-agent (Vals AI $5M seed) → *customer defines rubric; Straw does not*
+- No funded player in pre-deployment multi-agent competition → **Straw owns this quadrant**
+
+**TEAM:** Jeremy [Liu] — [background]. Building Straw because [2-sentence Why Me].
+
+**THE ASK:** $1.5M seed at $10M pre-money. Use: 18 months runway → SOC 2 Type 1 → Series A trigger ($500K ARR + 3 Fortune 1000 references).
+
+---
+
+### When to send this
+
+- **Cold outreach:** Attach this as a PDF. Email subject: "Pre-deployment AI agent evaluation — $831M market, no funded leader"
+- **Warm intro:** Send to partner before the intro call — they read it in 60 seconds; meeting is more efficient
+- **YC application:** Include as supplementary context (YC doesn't require a deck for application)
+
+### What to NOT include in the tearsheet
+
+- Technical architecture details (T1/T2/T3 pipeline) — for follow-up diligence, not the one-pager
+- Long biographies — one line each
+- Slide-deck-style graphics — text only, high information density
+- Speculation about future product features — only what exists or is in active development
+
+
+---
+
+## Tick 526 — The RFP Angle: Straw as AI Vendor Procurement Infrastructure [GTM]
+
+*2026-05-03. Enterprises are already using AI agents to evaluate vendor RFPs. Straw is the reverse — humans define rubrics, AI agents compete as vendors.*
+
+### The 2026 enterprise RFP landscape
+
+Enterprises are using AI agents to:
+- Read RFP requirements and create evaluation checklists
+- Match vendor responses against mandatory/desirable requirements
+- Score vendors based on predefined rules
+- Flag issues for human decision-makers
+
+**The irony:** Enterprises use AI agents to evaluate vendor RFPs, but then buy AI agents based on demos. Straw inverts this: structured, rubric-based evaluation for AI agent vendors — the same rigor enterprises apply to software vendor RFPs.
+
+**New RFP template for AI governance (The Hacker News, March 2026):** A new RFP Guide for Evaluating AI Usage Control and AI Governance Solutions was released — a framework for security architects and CISOs to evaluate AI vendors with measurable criteria. This is exactly Straw's rubric builder, applied to AI vendor procurement.
+
+### The "AI RFP" pitch to CPOs and GCs
+
+**Chief Procurement Officer pitch:**
+> "You already use structured evaluation frameworks for software vendor RFPs. Straw brings the same rigor to AI agent procurement. Define your evaluation criteria once. Agents compete. You get a scored, auditable result — the same as an RFP scorecard, but for autonomous AI agents."
+
+**General Counsel pitch:**
+> "When your legal team reviews vendor contracts, you check against specific criteria: indemnification clauses, liability caps, data processing terms. Straw applies the same logic to AI agent procurement: objective criteria, documented evaluation, defensible decision. Your AI agent procurement becomes as auditable as a standard vendor RFP."
+
+### The JADA squad / GEP / Ivalua partner angle
+
+Procurement platforms (Ivalua, JAGGAER, GEP) are already embedding AI agents for RFP evaluation. These companies have deep relationships with enterprise procurement teams.
+
+**Partnership pitch to procurement platforms:**
+> "Your platform handles the vendor RFP workflow. Straw handles the AI agent evaluation workflow. When your enterprise customers need to procure AI agents, they use Straw inside your platform. Integration: Straw API → your workflow engine → results delivered in your UI."
+
+**Contact #176:** GEP (gep.com) — major procurement platform. Sales contact via their enterprise channel. Focus: "AI agent evaluation module for your procurement platform."
+
+**Contact #177:** Ivalua/JAGGAER — same pitch. Target: VP of Product or Head of Partnerships.
+
+### The 30-point RFP scoring rubric as a Straw template
+
+The AINinza 30-point AI vendor evaluation framework (referenced in Tick 505) can be directly converted to a Straw rubric. **This is a marketing hook:** "Download Straw's pre-built AI Agent RFP Evaluation Template — aligned to the 2026 enterprise AI procurement standard."
+
+The template download is:
+1. A lead magnet for demand-side outreach
+2. A direct demonstration of Straw's rubric builder value
+3. A foothold in the enterprise procurement conversation before Straw is fully built
+
+**Format:** PDF download — 7 rubric dimensions with weight allocations, T1 test suggestions, T2 prompt examples. Title: "2026 Enterprise AI Agent Evaluation Template — Compatible with ISO 42001 and NIST AI RMF."
+
+
+---
+
+## Tick 527 — Agent Payment Ecosystem: BountyBook, HiveAgent, Claw Earn [BEAR/Comparable]
+
+*2026-05-03. New entrants in the agent task/payment space. Straw's unique position re-confirmed.*
+
+### The on-chain agent payment ecosystem (May 2026)
+
+A cluster of crypto-native agent marketplaces has emerged in 2025-2026, all using USDC on Base:
+
+| Platform | Model | Evaluation | Enterprise focus? |
+|---|---|---|---|
+| **BountyBook** ("Show HN") | Users post USDC bounties; agents claim + complete; oracle verifies on-chain; escrow pays if passes | Oracle-based verification (not rubric) | No |
+| **Claw Earn** (AI Agent Store) | On-chain USDC bounties; single-start; non-custodial escrow; agent-friendly API | Automated on-chain pass/fail | No |
+| **HiveAgent** ("Amazon for AI agents") | Agents discover + buy + auction services; USDC; 15% commission | None — service directory | No |
+| **Hunazo** | USDC escrow on Base; dispute resolution; verified seller reviews | User reviews (post-delivery) | No |
+| **PayCrow** | Smart contract escrow; releases on API status code + JSON schema verification | Technical verification only | No |
+| **Agent Escrow Protocol** (GitHub) | Trustless on-chain credit score + escrow; USDC on Base | Credit score-based | No |
+
+**The pattern:** All of these platforms are crypto-native, focused on small agent micropayments, with no enterprise buyers, no rubric-based evaluation, and no pre-specified objective criteria.
+
+### What Straw has that none of these have
+
+1. **Enterprise demand side** — companies with budgets, not crypto wallets
+2. **Pre-specified rubric** — objectives defined BEFORE competition begins
+3. **Multi-tier evaluation** — deterministic + LLM + investigator (not just oracle pass/fail)
+4. **Task-specific evaluation** — proprietary enterprise tasks, not generic bounties
+5. **Hiring outcome** — the winner gets a real job/license, not just USDC
+
+### Potential synergy: Straw × Claw Earn / PayCrow
+
+**Claw Earn uses USDC on Base escrow with non-custodial architecture** — this is exactly the StrawEscrow smart contract design from Tick 9. If Straw uses x402 + StrawEscrow on Base, Claw Earn / PayCrow's existing smart contracts could serve as reference implementations.
+
+**PayCrow bridges the trust gap:** "locks funds and releases only when API delivery is verified against status codes and JSON schema requirements." This is Straw's T1 deterministic check implemented as a payment condition. Very close alignment.
+
+**Technical collaboration opportunity:** Straw's StrawEscrow contract could be built on top of PayCrow or Agent Escrow Protocol's existing Base infrastructure, saving 2-4 weeks of smart contract development.
+
+### BountyBook HN post — signal analysis
+
+"Show HN: BountyBook – A task marketplace where AI agents earn USDC" (HN item #47155088)
+
+This show HN post confirms:
+- There's developer appetite for agent task marketplaces (enough to build + launch)
+- The crypto-native approach is the default for the builder community
+- Enterprise buyers are NOT yet showing up in this space
+
+**The gap:** Straw bridges crypto-native agent supply (BountyBook users) with enterprise demand (companies that pay in USD, not USDC, and need audit documentation). Straw is the B2B layer on top of the crypto-native agent economy.
+
+### Updated count of comparable systems
+
+This tick adds 6 new comparable systems to the original 5 from Tick 0.7. **Total comparable systems surveyed: 15+.** None have pre-specified rubric evaluation for enterprise procurement. Straw's core differentiation is fully validated across the entire landscape.
+
+
+---
+
+## Tick 528 — Morning Reading Guide V9: Session 3 Complete [SYNTHESIS]
+
+*2026-05-03. Ticks 500-527 added in this session. Total Phase 2 research: 422-528 = 107 ticks.*
+
+### What changed in this session (ticks 500-527)
+
+**New analysis:**
+- Vals AI full profile: $5M raised, $1.3M ARR, no Series A → may be stalling
+- Galileo AI: $68M raised, Luna-2 93-97% accurate → post-deployment partner, not competitor
+- Academic benchmark crisis: UC Berkeley proved all 8 benchmarks gameable → Straw as post-benchmark solution
+- BountyBook / HiveAgent / Claw Earn / PayCrow: 6 new crypto-native comparables, none have rubric eval
+- AgentX AgentBeats: 7-dimension scoring, $1M+ competition — closest live Straw analog
+
+**New strategic decisions:**
+- Delaware C-corp via Stripe Atlas: DO THIS DAY 1 ($500, 24 hours)
+- GDPR compliance: 3 Straw-specific risks + mitigations (task data, agent identity, enterprise confidentiality)
+- EU AI Act positioning: Straw IS the compliance documentation infrastructure
+- ISO 42001: Straw rubric = Clause 8 evidence → compliance budget opportunity
+- Seed round trigger: 3 paid customers + 1 named reference → $1.5M at $10M pre-money
+
+**New contacts (running total: 175 named contacts):**
+- #163: Stripe Atlas support (self-serve)
+- #164: Carlos Espinal (Seedcamp)
+- #165: Mattias Ljungman (Moonfire)
+- #166: Sitar Teli (Crane VC)
+- #167: UK Sovereign AI Fund (gov application)
+- #168: Paul Christiano (ARC / METR parent)
+- #169: UK AISI (Inspect framework)
+- #170: Graham Neubig (OpenHands / CMU)
+- #171: Carol Liang (Stripe benchmark)
+- #172: Kevin Ho (Stripe API Standards)
+- #173: Vikram Chatterji (Galileo CEO)
+- #174: TrustCloud AI
+- #175: Trustible
+- #176: GEP procurement platform
+- #177: JAGGAER/Ivalua
+
+**New templates/playbooks:**
+- 14-day design partner onboarding sequence (Tick 510)
+- 90-day week-by-week operating calendar (Tick 518)
+- First $10K deal negotiation playbook (Tick 512)
+- Design partner pre-mortem — 5 failure modes (Tick 519)
+- Investor one-pager tearsheet (Tick 525)
+- Re-evaluation revenue model — quarterly cadence, $15K retainer (Tick 515)
+- Submission sandboxing architecture — Firecracker microVMs (Tick 506)
+- SUBMISSION.md sanitization pipeline — 5 checks (Tick 506)
+
+### Top 5 highest-impact insights from this session
+
+**1. UC Berkeley benchmark gaming finding (April 2026):** All 8 major benchmarks gameable to ~100%. This is the single most powerful marketing hook for Straw. Use it immediately in LinkedIn content, HN posts, and outreach.
+
+**2. Galileo raised $68M for post-deployment evaluation.** The category is fundable. Straw is upstream. "Pre-deployment" is the unsolved problem at $0 funding vs. $68M for post-deployment.
+
+**3. 94% of enterprises have a named Agent Owner with budget authority.** The ICP is real, named, and has budget. This isn't a hypothetical buyer persona — it's a job function that 94% of enterprises have filled.
+
+**4. Re-evaluation quarterly cadence = 4x ARR per customer.** One retainer at $15K/year replaces 4 one-time $5K evaluations. The business model inflects when design partners convert to retainers.
+
+**5. CrewAI: 60% of Fortune 500 use it.** The agent supply problem is solved. Jeremy's job is demand-side (enterprise task posting), not supply-side (agent recruitment).
+
+### The 3 things Jeremy must do TODAY
+
+1. **Apply to YC S26 late** — deadline was yesterday (May 4, 8pm PT). Apply late. They still consider it.
+2. **Open Stripe Atlas** — start Delaware C-corp application ($500, 24 hours). No design partner agreement can be signed until this is active.
+3. **Send 5 cold emails** — use the templates from Ticks 483 and 516: Beth Barnes, Carol Liang, Graham Neubig, + 2 enterprise design partners from the contact list.
+
+### Open questions added this session
+
+1. Should Straw launch in UK (as UK Ltd) or immediately Delaware? → **Answer: Delaware, today.**
+2. Can Straw's T1 pipeline export Inspect format for METR collaboration?
+3. Is PayCrow's escrow contract close enough to StrawEscrow that Straw can fork it?
+4. What's the minimum agent count before a "competition" is credible? → **Recommendation: 3 agents minimum.**
+5. How does Straw handle an evaluation with zero agent submissions?
+6. What does the champion internal pitch deck look like? (Still needs to be drafted)
+
+### Definitive bear thesis (unchanged, but enriched)
+
+**The one bear case that matters:** Enterprise AI procurement moves slower than the agent capability curve. By the time enterprises are ready to post tasks on Straw, the specific agents they evaluate may be obsolete in 3 months. Straw's quarterly re-evaluation model is the mitigation — but it only works if re-evaluation is faster than the capability curve.
+
+**The one fact that counters it:** IDC's 1000× inference demand increase by 2027 → compute costs halving every 12 months → re-evaluation costs falling faster than capability improves. The economics of re-evaluation become MORE favorable as the market matures.
+
