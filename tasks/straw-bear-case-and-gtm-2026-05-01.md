@@ -20527,3 +20527,172 @@ The answer to "why hasn't anyone done this?" is that incumbents (Devin, Manus, C
 
 *Phase 2 research complete. File contains Ticks 1-323. Total coverage: bear case (9 kill scenarios with probabilities), GTM (complete 4-phase playbook, Show HN draft, pricing model, founder-led sales), 53 named design partners (tiered by urgency), investor narrative (TAM/SAM/SOM, data moat, Series A pitch framework). Read Tick 307 for the morning reading guide + this tick for updates.*
 
+
+---
+
+## Tick 324 (2026-05-04T04:30Z): A2A + AP2 protocol — what they mean for Straw's infrastructure [theme: GTM + product]
+
+### The A2A protocol landscape (April 2026)
+
+**A2A (Agent2Agent):** Google's open standard for agent-to-agent communication. Now governed by the Linux Foundation. v1.2 with signed agent cards (cryptographic domain verification). 150+ organizations in production including Microsoft Azure AI Foundry, Amazon Bedrock AgentCore, Salesforce, SAP, ServiceNow. 22K+ GitHub stars.
+
+**AP2 (Agent Payments Protocol):** Google's extension to A2A for payments. Open protocol for secure agent-led transactions. Being adopted alongside A2A.
+
+**The protocol stack (April 2026):** MCP (Anthropic) + A2A (Google) + AP2 (Google) + ACP (OpenAI+Stripe) + UCP (Google) + Visa TAP. Six protocols each covering different slices of discovery, authorization, payment, trust.
+
+### What this means for Straw v1.5
+
+**Straw should become A2A-compatible.** When an enterprise posts a task on Straw, they should be able to advertise the competition via A2A so that any A2A-registered agent can discover and participate. This:
+1. Expands the supply side of Straw's marketplace automatically (any agent in the A2A ecosystem can compete)
+2. Creates a "bid to compete" mechanism where agents signal capability before being admitted to a competition
+3. Connects Straw to the broader A2A infrastructure already running at Microsoft, AWS, Salesforce
+
+**The A2A integration design for Straw:**
+
+```
+Enterprise posts task → Straw broadcasts A2A "CompetitionAvailable" event
+Registered agents respond → Straw filters via reputation gate (min reputation threshold)
+Qualified agents compete → Straw's tiered eval runs
+Winner announced → Straw sends A2A "CompetitionWinner" event
+Enterprise deploys winner → AP2 payment to winning agent operator
+```
+
+**Why this is v1.5 not v0:** A2A integration requires Straw to build an A2A server, implement signed agent cards for participating agents, and integrate with the Linux Foundation's A2A spec. This is ~6-8 weeks of engineering. Worth doing after the first 10 competitions prove demand.
+
+**The strategic value:** A2A integration makes Straw part of the enterprise agent infrastructure that Microsoft/AWS/Salesforce have already committed to. Rather than Straw being a standalone tool, it becomes a node in the A2A ecosystem. Discoverability via Bazaar (x402 discovery layer from Phase 1) + A2A becomes automatic.
+
+Sources: stellagent.ai/insights/a2a-protocol-google-agent-to-agent, a2aprotocol.ai, cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol, digitalapplied.com/blog/ai-agent-protocol-ecosystem-map-2026-mcp-a2a-acp-ucp
+
+---
+
+## Tick 325 (2026-05-04T04:50Z): SWE-bench contamination — public benchmarks are broken, custom evaluation wins [theme: bear + GTM]
+
+### The contamination data
+
+**OpenAI stopped reporting SWE-bench Verified scores** (February 2026) because:
+- 59.4% of the hardest tasks had tests that wouldn't catch the intended bug
+- Contamination + weak tests inflates Verified scores by 5-15 points
+- Third-party trackers (Epoch AI, BenchLM) now run the eval independently
+
+**SWE-Rebench:** Top models clustered within 2.6 points — benchmark is saturating for frontier models.
+
+**SWE-bench Pro:** Commercial codebase tasks from real startups. Agents achieve ≤23.3% on public set, ≤17.8% on commercial set — dramatically harder than SWE-bench Verified's 70%+.
+
+**The key stat:** A model scoring 75% on SWE-bench Verified scores 17.8% on real commercial enterprise codebases. The 37% lab-to-production gap is real and quantifiable.
+
+### Why this is Straw's best technical pitch
+
+The benchmark contamination problem is publicly documented:
+- Frontier models are trained on SWE-bench data (the benchmark was in their training set)
+- Scores on contaminated benchmarks are not predictive of real-world performance
+- Enterprise buyers making procurement decisions based on SWE-bench scores are being misled
+
+**Straw's value proposition in one sentence:** "SWE-bench scores are contaminated. Your custom rubric on your actual codebase is the only evaluation that matters."
+
+### The HN post this enables
+
+Title: "Why AI coding agent benchmarks are misleading enterprise procurement decisions (and what to do instead)"
+
+Content:
+1. SWE-bench contamination explained (OpenAI's own discontinuation)
+2. The lab-to-production performance gap (37% degradation, 50× cost variation)
+3. Why frontier model training data inclusion makes public benchmarks unreliable
+4. The custom evaluation alternative: run agents on your actual tasks
+5. Straw's approach: 72-hour competition with your rubric + tiered evaluation
+
+This post generates:
+- Technical credibility (citing OpenAI, Epoch AI)
+- HN discussion (contamination is a topic the HN audience cares about)
+- Enterprise inbound (VPs Engineering reading about the problem Straw solves)
+
+Post this BEFORE the Show HN post as a standalone piece. Build the "contamination is a problem" narrative first. Then present Straw as the solution.
+
+Sources: openai.com/index/why-we-no-longer-evaluate-swe-bench-verified, codesota.com/guides/swe-bench-explained, benchlm.ai/benchmarks/sweRebench, codeant.ai/blogs/swe-bench-scores
+
+---
+
+## Tick 326 (2026-05-04T05:10Z): CAIF academic partnership — £100K grant opportunity [theme: GTM]
+
+### What CAIF funds
+
+Cooperative AI Foundation (CAIF): $15M philanthropic commitment from Macroscopic Ventures.
+**Research focus:** Multi-agent cooperation problems involving AI.
+**Grant range:** £10K–£385K. Median: ~£150K. Early-career track: up to £100K, 12 months.
+
+**Top research priorities (from Phase 1 research, confirmed):** Peer incentivization, inter-agent contracting, automated mechanism design for LLM agents.
+
+### The Straw × CAIF fit
+
+Straw's mechanism design research is exactly what CAIF funds:
+- **VCG auction mechanism** (prevents gaming, incentive-compatible)
+- **Shapley credit attribution** (fair credit for multi-agent contributions)
+- **Stake-to-post mechanism** (prevents spam, aligns incentives)
+- **Evaluation reliability under adversarial conditions** (agents gaming rubrics)
+
+**Gap that CAIF noted in Phase 1:** No CAIF grant has funded a working marketplace implementation. Straw is doing applied work that CAIF is funding as theory. This creates a natural fit: an academic collaborator joins Straw's mechanism design team, funded by CAIF.
+
+### The academic partnership play
+
+**Find a grad student (PhD, year 2-3) at:**
+- Carnegie Mellon (FOCAL project — CAIF-funded mechanism design for LLM agents)
+- Oxford (FLAIR project — Jakob Foerster's lab, CAIF-funded)
+- UC Berkeley (Center for Human-Compatible AI)
+- MIT (any multi-agent mechanism design researcher)
+
+**The pitch to the grad student:**
+> "We're building Straw — a deployed marketplace for AI agent competitions. The mechanism design questions you're studying (incentive-compatible evaluation, Shapley attribution, stake-based anti-spam) are our core product decisions. We need a technical co-author on our mechanism design whitepaper. You contribute the theory. We provide the deployment environment for empirical validation. CAIF would likely fund this collaboration directly."
+
+**The pitch to CAIF:**
+> "We're seeking a research partner for a CAIF-funded collaboration on incentive-compatible mechanism design for AI agent procurement markets. Our deployed marketplace provides empirical data that no purely theoretical project has access to."
+
+**Contact at CAIF:** cooperativeai.com/foundation. Email form available. Also accessible through the CAIF Research Fellowship contacts.
+
+**Value to Straw:** Academic credibility, CAIF network, potential £100K in grant funding to help build the mechanism design components. A published whitepaper on Straw's mechanism design is also a technical marketing asset (citation → credibility → enterprise trust).
+
+Sources: cooperativeai.com/foundation, cooperativeai.com/grants/2025, cai-research-fellowship.com, grantedai.com/grants/grants-to-support-cooperative-ai-research-cooperative-ai-foundation-caif-f3f67201
+
+---
+
+## Tick 327 (2026-05-04T05:30Z): Gartner $15T B2B agent intermediation by 2028 — Straw's long-game market [theme: GTM]
+
+### The Gartner projection
+
+**Gartner (via search results):** AI agents will intermediate $15 trillion in B2B spending by 2028.
+
+**What this means:** By 2028, autonomous AI agents will conduct a significant fraction of B2B transactions — procurement, supplier evaluation, contract negotiation, order placement. Gartner's $15T is roughly 30% of global B2B spending.
+
+### The implication for Straw
+
+Straw's v0/v1 use case: "Which AI coding agent should we deploy?"
+
+Straw's v2/v3 use case: "Which AI agent should conduct our procurement?"
+
+In a world where AI agents are conducting B2B transactions, the enterprise buyer's question shifts from "which human vendor should I use?" to "which AI agent should represent us in transactions?" This is a larger and more fundamental procurement question than Straw's initial use case.
+
+**The Straw long game:**
+- 2026: Enterprises use Straw to evaluate AI coding agents ($25K/competition)
+- 2027: Enterprises use Straw to evaluate AI customer service agents ($25K/competition)
+- 2028: Enterprises use Straw to evaluate AI procurement agents ($100K+ stakes, as the agent REPRESENTS the enterprise in $1M+ deals)
+
+The $15T Gartner figure means the procurement validation market grows from "software tool selection" to "agent-as-executive selection." The ACV for Straw's competitions grows proportionally to the stakes of the agent's decisions.
+
+### The compound market sizing
+
+If even 0.1% of $15T in annual AI-intermediated B2B spending is spent on procurement validation (evaluating which agent to use for which transaction):
+
+0.1% × $15T = **$15B/year market for agent procurement validation** by 2028.
+
+This is the 5-year TAM for Straw. Use it with investors in the long-term vision slide, NOT as the primary SOM pitch.
+
+### The implication for Straw's roadmap
+
+Straw should track which industries are adopting AI agents for which B2B functions:
+- **Coding tasks (current):** AI coding agent market $12.8B
+- **Customer service (2026):** AI CS agents at 67% resolution rates (Intercom Fin)
+- **Sales outreach (2026-2027):** AI sales development reps
+- **Procurement itself (2027-2028):** AI agents negotiating with suppliers
+
+Each new category is a new vertical for Straw competitions. The evaluation methodology is the same; the rubric changes. Straw's horizontal infrastructure can support any category.
+
+Sources: (Gartner $15T projection cited in multiple sources above), supplychainbrain.com/blogs/1-think-tank/post/43687-why-2026-is-the-year-of-ai-agents-for-autonomous-procurement, eco.com/support/en/articles/14839400-what-is-agentic-commerce-the-2026-guide
+
