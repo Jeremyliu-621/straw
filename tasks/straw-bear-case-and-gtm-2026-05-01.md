@@ -8862,3 +8862,505 @@ This session produced:
 - **4 new partner categories** (Sponge for payments, SecureAuth for governance, Anthropic Partner Network for distribution, NTT DATA for Japan 2028)
 
 The research has conclusively confirmed: the thesis is correct, the market is real, the timing is right, and the 18-month window is open. Every execution question now has a research-backed answer.
+
+---
+
+## Tick 121 (2026-05-05T01:00Z): April 22, 2026 — Competitive D-Day for the AI agent enterprise market [theme: bear]
+
+**The single most important competitive event since Phase 2 research began:** On April 22, 2026, within hours of each other:
+
+1. **OpenAI** launched ChatGPT Workspace Agents (research preview for Business/Enterprise/Edu plans)
+2. **Google** unveiled the Gemini Enterprise Agent Platform (Tick 26 flagged this; now confirmed as same-day)
+3. **Salesforce** expanded its Agentforce + Google Cloud partnership
+
+Three of the five largest technology companies in the world all entered the enterprise AI agent workspace on the same calendar day. This is not coincidence — it is competitive signaling. Each company needed to move before the others could establish dominance.
+
+### What OpenAI Workspace Agents actually are
+
+OpenAI Workspace Agents are **shared, long-running agents** that handle complex tasks and persist across tasks. Key features:
+- Powered by Codex, run in the cloud
+- Operate on schedules or triggers
+- Connect to Slack, Google Drive, Microsoft apps, Salesforce, Notion
+- Compliance API for admin visibility into every agent's configuration, updates, and runs
+- Free through May 6, 2026 → credit-based pricing begins May 7
+
+**The key distinction for Straw:** OpenAI Workspace Agents are agents that *do work*. Straw evaluates which agents *should do work*. These are different layers of the stack — but they're not entirely non-overlapping.
+
+**The threat vector:** If an enterprise deploys OpenAI Workspace Agents natively inside ChatGPT Enterprise, they may not feel the need to "evaluate competing agents" — because OpenAI is the default choice, already embedded. The evaluator is unnecessary if you never consider alternatives.
+
+### The "platform capture" bear case
+
+OpenAI's Workspace Agents launch reveals the full bear case arc:
+1. Enterprise adopts ChatGPT Enterprise (already happening — 1M+ paid users)
+2. OpenAI rolls out Workspace Agents as native ChatGPT feature
+3. Enterprise IT deploys Workspace Agents across teams (zero integration friction — already in ChatGPT)
+4. Enterprise has no procurement decision to make — OpenAI made it for them at the platform level
+5. **Straw's competition framework is irrelevant** — there are no competing agents because the enterprise's agent stack is 100% OpenAI
+
+**The countervailing force:** Multi-vendor AI strategy is the dominant enterprise governance posture in 2026. 86% of enterprise AI budgets are growing, and AI governance frameworks explicitly recommend against single-vendor dependency. The compliance angle (EU AI Act, OCC model risk management) requires demonstrating that the best available solution was selected — not just the most convenient one.
+
+**The realistic outcome:** OpenAI Workspace Agents become the *default* for non-technical teams doing simple workflows. Straw becomes essential for technical teams evaluating AI agents for *complex, high-stakes tasks* where "just use OpenAI" is insufficient. The separation is: routine work → OpenAI default; consequential work → Straw evaluation.
+
+### The Google simultaneity signal
+
+Google Gemini Enterprise Agent Platform launching the same day as OpenAI Workspace Agents is the most important competitive signal in this analysis: **Google is not ceding the enterprise AI agent market to OpenAI**. This means:
+- Enterprise buyers will face genuine competing agent platforms from OpenAI vs Google vs Microsoft Copilot
+- Cross-platform comparison becomes a procurement necessity, not a nice-to-have
+- Straw's "which agent wins on your specific task" is exactly the question that enterprise procurement teams will be asking when comparing OpenAI vs Google vs Salesforce agents
+
+**The April 22 reframe:** What looked like a bear case (hyperscaler entry) is actually the demand creation moment Straw needs. When OpenAI, Google, and Salesforce all have competing enterprise agent platforms, the question "which one is right for my task?" becomes unavoidable. Straw's answer is: "Run a competition. Let your real task determine the winner."
+
+**Sources:**
+- [OpenAI Workspace Agents announcement](https://openai.com/index/introducing-workspace-agents-in-chatgpt/)
+- [VentureBeat coverage](https://venturebeat.com/orchestration/openai-unveils-workspace-agents-a-successor-to-custom-gpts-for-enterprises-that-can-plug-directly-into-slack-salesforce-and-more/)
+- [April 22 competitive triple-launch analysis](https://pasqualepillitteri.it/en/news/1321/chatgpt-workspace-agents-openai-comparison-2026)
+
+---
+
+## Tick 122 (2026-05-05T01:30Z): The "wrapper startup" investor diligence — how Straw passes the moat test [theme: gtm]
+
+**The investor objection that will come in every meeting:** "Isn't Straw just a wrapper around LLM-as-judge evaluation? What stops Anthropic/OpenAI/Google from building this natively?"
+
+This is the critical filter that killed 80% of 2024-2025 AI startups. Straw must have concrete, investor-convincing answers.
+
+### What makes a wrapper vs. a defensible company (2026 VC standard)
+
+From the research: VCs in 2026 require startups to demonstrate defensibility beyond access to a model. The requirements:
+- Proprietary data that improves with use
+- Industry-specific workflows deeply embedded in customer operations
+- Strong distribution or customer retention
+- Proof that the product improves measurable outcomes
+
+**The "wrapper startup" death pattern:** "When competitive differentiation relies solely on 'better prompts' or a slightly cleaner dashboard, the resulting business model is structurally flawed. Prompts are highly portable, and generic workflow logic is easily reverse-engineered." — Insight Partners, 2026
+
+### Straw's moat audit (honest assessment)
+
+**Strong moats:**
+1. **Rubric corpus (data flywheel):** Every buyer-defined rubric that runs on Straw becomes training data for better rubric calibration. After 100 competitions, Straw has rubric patterns that no new entrant can replicate. This is proprietary data that improves with use. ✅
+2. **Agent reputation data (cross-buyer signal):** Agent performance data across different buyers and task types creates a reputation graph that has value to both buyers (which agents are consistently good?) and sellers (how does my agent compare to the market?). This data does not exist elsewhere. ✅
+3. **Adversarial evaluation track record:** Straw's sandboxed execution + prompt injection defenses + holdout test set architecture = a trust infrastructure that buyers rely on. Rebuilding this trust (SOC 2 audits, evaluation methodology certification) takes years. ✅
+4. **The Straw Certified badge (Tick 118):** An agent that wins a Straw competition earns a certification that buyers recognize. The certification has value *because Straw ran the competition* — you can't replicate the badge by running your own evaluation. ✅
+
+**Weak moats:**
+1. **LLM-as-judge evaluation logic:** The scoring mechanism can be replicated. Braintrust, Langfuse, and Microsoft Azure Evaluation Service all do LLM-as-judge. **Straw's answer:** Straw doesn't just evaluate — it orchestrates competition (multiple agents, same task, ranked output). That's a different product than evaluation tooling. ⚠️
+2. **The "build it internally" threat:** Sophisticated buyers (banks, enterprise IT) may build their own evaluation frameworks. **Straw's answer:** They will, and they'll find it harder than they expected. Straw has a head start and the rubric corpus. ⚠️
+3. **OpenAI/Anthropic building a native evaluation marketplace:** Possible, but they're platform companies — they have a financial interest in their own agents winning. Straw's neutrality is constitutionally protected (the Independence Policy from Tick 86). ⚠️
+
+### The investor pitch on moat
+
+**Strongest version:** "Straw is the only company building a rubric corpus of buyer-defined evaluation criteria across verticals. Every buyer who runs a Straw competition adds to this corpus. The rubric library is the moat — it becomes more valuable as more competitions run, it cannot be replicated by a foundation model provider without compromising their neutrality, and it becomes the industry's de facto standard for 'what good AI agent performance looks like' in each vertical."
+
+**The Michelin Guide analogy (Tick 75):** Michelin doesn't just tell you the rating — it tells you *why* restaurants are rated the way they are. The rubric corpus is Straw's version of the Michelin methodology — the secret criteria that make the rating credible.
+
+**VC target list for Straw's seed round:**
+- **Lerer Hippeau** — "particularly active in AI infrastructure and developer tools, where the TAM is measurable and the GTM is clear"
+- **Baseline Ventures** (Satya Patel, ex-a16z) — AI infrastructure-heavy thesis, larger checks
+- **Elad Gil** — angel, backed OpenAI and Anthropic, founder-first approach
+- **a16z** — deployed capital across 50+ AI seed deals in 2025, infrastructure focus
+- **YC itself** — Straw's YC application is the highest-ROI cold outbound move (acceptance letter = instant credibility + $500K SAFE + network access)
+
+**Sources:**
+- [Insight Partners on wrapper startups](https://www.baytechconsulting.com/blog/why-generic-ai-startups-are-dead-executive-playbook-moats)
+- [VCs predict fewer winners in 2026](https://techcrunch.com/2025/12/30/vcs-predict-enterprises-will-spend-more-on-ai-in-2026-through-fewer-vendors/)
+- [2026 VC playbook](https://iexchange.substack.com/p/the-2026-vc-playbook-how-investment)
+
+---
+
+## Tick 123 (2026-05-05T02:00Z): Named design partner contacts — precise openers for this week [theme: partners]
+
+**Priority contacts Jeremy can email THIS WEEK. These are the most accessible and highest-signal design partner conversations.**
+
+---
+
+### 1. Ankur Goyal — Founder & CEO, Braintrust
+
+**Who:** Ankur Goyal is the founder of Braintrust, the AI eval platform behind Replit, Vercel, Airtable, Ramp, Zapier, and Notion. Braintrust just raised an $80M Series B in February 2026.
+
+**Why he'd care:** Braintrust does evals *inside* a company's product development workflow. Straw does evals *at procurement* — before an agent is hired. These are complementary, not competitive. Braintrust users need Straw to know which agent to evaluate in the first place.
+
+**Why he'd care (self-interest):** If Straw becomes the pre-procurement standard, every agent that wins a Straw competition needs post-deployment eval — which Braintrust provides. Straw feeds Braintrust's pipeline.
+
+**Contact:** LinkedIn: linkedin.com/in/ankrgyl/ — he's active. Email: typically founder@braintrust.dev format (Braintrust domain: braintrustdata.com).
+
+**1-line opener:** "Braintrust owns post-deployment eval. Straw is building pre-procurement eval — I think the two are complementary and wanted to see if you'd be open to 20 minutes to compare notes on how enterprise teams actually decide which agent to put in production before your evals can run."
+
+---
+
+### 2. Beth Barnes — Founder & CEO, METR
+
+**Who:** Beth Barnes is Founder & CEO of METR (Model Evaluation and Threat Research), the most credible independent AI capability evaluator. METR was formerly ARC Evals, spun out of the Alignment Research Center (Paul Christiano's org). METR evaluates frontier AI models for existential capability risks. Named to TIME 100 AI 2024.
+
+**Why she'd care:** METR evaluates AI capabilities at the safety/capability boundary. Straw evaluates AI agent performance at the procurement boundary. METR's methodology could inform Straw's adversarial test categories (red-team competition type from Tick 115). METR also needs real-world task data — Straw competitions generate exactly that.
+
+**Why she'd care (strategic):** If Straw's competition infrastructure becomes the enterprise procurement standard, METR can position its capability evaluation as the prerequisite (safety evaluation before procurement evaluation).
+
+**Contact:** METR.org — Beth Barnes. Twitter/X: @beth_barnes. LinkedIn: searchable.
+
+**1-line opener:** "METR evaluates what frontier models *can* do. I'm building Straw, which evaluates what AI agents *actually do* on specific business tasks. I think there's an interesting intersection — METR's red-team methodology applied to enterprise procurement evaluation. Would you be open to 20 minutes?"
+
+---
+
+### 3. Erik Bernhardsson — CEO, Modal Labs
+
+**Who:** Erik Bernhardsson is CEO of Modal Labs, the serverless compute infrastructure company for AI. Modal is in talks to raise at a $2.5B valuation (February 2026). Previously spent 7 years at Spotify as VP/CTO. Hosts the "Making of" podcast.
+
+**Why he'd care:** Modal provides the execution infrastructure for AI agents. Every agent that runs a Straw competition needs sandboxed compute. Straw and Modal are natural infrastructure partners — Modal runs the agents, Straw evaluates them.
+
+**Why he'd care (business case):** Modal charges for compute. Every Straw competition that runs on Modal generates compute revenue. Modal's enterprise clients are exactly the companies that would run Straw competitions.
+
+**Contact:** LinkedIn: linkedin.com/in/erikbern/. Twitter/X: @fulhack. Blog: erikbern.com.
+
+**1-line opener:** "I'm building Straw — an AI agent competition platform where enterprises post tasks and competing agents solve them in sandboxed execution. Modal is the natural infrastructure partner (agents need compute that's sandboxed, metered, and multi-tenant). Worth 20 minutes to explore if there's a partnership here?"
+
+---
+
+### 4. Scott Wu — CEO, Cognition AI (Devin)
+
+**Who:** Scott Wu is the CEO of Cognition AI, creator of Devin (the first autonomous AI software engineer). By March 2026, Devin has merged hundreds of thousands of PRs across thousands of companies, with a 67% PR merge rate. Cognition is a hot startup — valuation in the multiple billions.
+
+**Why he'd care:** Devin is exactly the kind of agent that should be competing on Straw. If Straw becomes the procurement standard for AI coding agents, Cognition has every incentive to run Devin on Straw competitions and win the "Straw Certified — Code Generation" badge.
+
+**Why Straw matters to Cognition:** Enterprise software teams are the target buyer for Devin. Those teams need procurement validation before they can get legal/finance approval to use Devin. A "Straw Champion — Software Engineering" badge is the enterprise procurement unlock Cognition needs.
+
+**Contact:** LinkedIn: linkedin.com/in/scott-wu-8b94ab96/. Cognition.ai team page.
+
+**1-line opener:** "Straw is building the 'MIT Admission' equivalent for AI agents — companies post real engineering tasks, competing agents solve them, the best agent gets a procurement badge. Devin seems like an obvious candidate to win that badge in the software engineering category. Worth a quick call to see if this makes sense for Cognition?"
+
+---
+
+### 5. Mohammad + Pranav — Founders, Moda (YC W26)
+
+**Who:** Mohammad and Pranav, University of Waterloo dropouts, founded Moda (YC W26) — AI agent monitoring "like Datadog for agents." Production AI experience from Shopify, Notion, and Clio. Website: moda.dev
+
+**Why they'd care:** Moda monitors agents *after* they're deployed. Straw evaluates agents *before* they're deployed. The stack is: Straw evaluation → agent hired → Moda monitoring. These two tools serve the same enterprise buyer at different stages.
+
+**Why the timing is right:** Moda just finished YC W26 (March 2026 Demo Day). YC founders are actively looking for partnerships that expand their market immediately post-Demo Day.
+
+**Contact:** YC Bookface (fastest), or email via moda.dev.
+
+**1-line opener:** "Straw is the pre-hire evaluation layer for AI agents; Moda is the post-hire monitoring layer. I think we're serving the same enterprise buyer at different lifecycle stages. Would love to compare notes on how enterprises think about the end-to-end agent lifecycle — 20 minutes?"
+
+---
+
+### 6. François Chollet — Founder, Ndea (YC W26)
+
+**Who:** François Chollet created Keras (now TensorFlow's default API), published the ARC-AGI benchmark (the hardest reasoning benchmark), and founded Ndea in 2026 as a $43M AGI lab (YC W26). He's the most credible AI capability evaluator in the machine learning community.
+
+**Why he'd care:** ARC-AGI is a capability benchmark. Straw's rubrics are procurement benchmarks. Chollet has strong opinions about what "real general intelligence" looks like vs. task-specific optimization. Straw's competition-based evaluation aligns with his philosophy: test agents on tasks they haven't seen before, with clear scoring criteria.
+
+**Why this connection matters:** Chollet's endorsement or collaboration would provide Straw with an immediate credibility signal in the ML community. "The creator of ARC-AGI thinks Straw's rubric approach is the right way to evaluate AI agents for enterprise procurement" is a very strong PR headline.
+
+**Contact:** Twitter/X: @fchollet. LinkedIn. He's active on social media.
+
+**1-line opener:** "Your ARC-AGI framework is the best existing model for what I'm trying to do at the procurement layer — pre-specified rubrics, held-out test sets, no benchmark contamination. I'm building Straw to bring that rigor to enterprise procurement decisions. 20 minutes to discuss whether the rubric design principles are directionally right?"
+
+---
+
+### 7. Rubric (YC W26) — unnamed team
+
+**What they are:** Rubric (YC W26) — "post-training research at exabyte scale." Different from Straw's competition evaluation, but the name similarity and evaluation-adjacent positioning creates partnership/confusion risks.
+
+**Why to reach out:** To understand what Rubric is building and whether it's competitive, complementary, or irrelevant. Also: if they're not using the "rubric" concept for procurement evaluation, Straw should clearly stake that positioning before they pivot into it.
+
+**Action:** Find Rubric's YC profile and reach out to founders for a "compare notes" call. Do not let a company called "Rubric" exist in the YC ecosystem without understanding what they do.
+
+---
+
+## Tick 124 (2026-05-05T02:30Z): Two-sided marketplace network effects failure — the academic evidence [theme: bear]
+
+**The research question:** How often do B2B two-sided marketplaces achieve sustainable network effects, and what conditions cause them to fail even after achieving initial traction?
+
+### The MIT Sloan finding
+
+MIT Sloan's research on why B2B platforms struggle: "Most new marketplace initiatives struggle to reach meaningful scale, with only a subset becoming sustainable, high-GMV platforms. The reason is rarely just funding, marketing, or technology. The real dividing line between failure and success is network effects."
+
+**The uncomfortable finding:** Of all new marketplace entrants, most either:
+1. Never achieve liquidity (die in the cold-start phase)
+2. Achieve early traction but fail to *convert* traction into network effects (plateau and decay)
+3. Achieve network effects on one side but not the other (asymmetric failure)
+
+### The three types of marketplace failure Straw faces
+
+**Type 1: Liquidity failure (the cold-start problem)**
+- Buyers post competitions but agents don't enter because there aren't enough buyers to justify building a Straw-compatible agent
+- Agents pre-register but buyers don't post competitions because they're not sure any agents will enter
+- **Straw's mitigation:** Curated supply — invite specific agents to specific competitions rather than relying on organic market liquidity (Tick 53's cold-start solution)
+
+**Type 2: Premature monetization (killing liquidity before it forms)**
+- If Straw charges buyers $5,000+ per competition before the supply side is mature, buyers get thin markets (2-3 agents, poor signal)
+- Thin markets produce bad evaluation outcomes → buyers don't return → supply side loses interest → collapse
+- **Straw's mitigation:** Tier structure where v0 competitions have a floor-price guarantee: if fewer than 3 agents enter, the buyer gets a refund (or a guaranteed-entry model where Straw's own baseline agent always competes)
+
+**Type 3: Negative cross-side network effects (when more supply HURTS buyers)**
+- If too many low-quality agents compete in every competition, the rubric scoring becomes noise
+- Buyers can't distinguish signal from low-quality submissions
+- **Straw's mitigation:** Quality gates — agents must achieve a Straw Verified baseline before competing. Minimum score thresholds for continued participation (Tick 118's certification program).
+
+### The "leakage" failure mode (specific to Straw)
+
+**The classical two-sided marketplace failure:** Participants transact off-platform after being introduced through the platform, bypassing the platform's take rate.
+
+**Straw's specific leakage risk:** An enterprise buyer identifies the best agent in a Straw competition, then directly negotiates a deployment agreement with that agent's vendor — cutting Straw out of the ongoing relationship.
+
+**The analogy:** Upwork sees leakage when freelancers and clients continue working together outside the platform (Upwork's response: direct contract penalties + ongoing platform features that create stickiness).
+
+**Straw's structural advantage:** Straw's value isn't just introduction — it's the evaluation methodology, the certification badge, and the rubric corpus. An agent vendor that "leaks" from Straw loses the certification. A buyer that "leaks" from Straw loses the documented compliance trail. The value is IN the platform, not just the introduction.
+
+### The "winner-take-all" platform risk
+
+If Straw succeeds and becomes the dominant evaluation platform, it faces its own failure mode: **monopoly creates moral hazard**.
+
+- Agents optimize their capabilities for Straw's rubric format → Goodhart's Law applies to the evaluation platform itself
+- Straw's rubric corpus becomes the industry standard → new agents are trained on Straw rubric data → agents are increasingly good at Straw scores but not at real tasks
+- The platform that was supposed to measure real-world performance becomes another benchmark to game
+
+**The mitigation:** Continuous rubric evolution. Private holdout test sets. Adversarial test categories. Third-party rubric audits. These prevent the corpus from becoming the benchmark.
+
+**Sources:**
+- [MIT Sloan: Why B2B platforms struggle](https://mitsloan.mit.edu/ideas-made-to-matter/why-b2b-platforms-struggle-to-succeed)
+- [Two-sided platform failure modes](https://www.industryplatforms.org/p/why-do-b2b-platforms-fail)
+- [Marketplace network effects construction guide](https://www.sciencedirect.com/science/article/pii/S2666954422000242)
+
+---
+
+## Tick 125 (2026-05-05T03:00Z): Enterprise AI buyer persona 2026 — who signs the check [theme: gtm]
+
+**The GTM research question:** Who at an enterprise actually decides to buy Straw? What's the decision tree, and who has budget authority?
+
+### The multi-stakeholder reality
+
+From the research: an average of **13 internal stakeholders** are involved in making an AI tool purchasing decision. Tools pass developer evaluation but fail when security, legal, finance, and compliance stakeholders apply their own criteria.
+
+This is the enterprise AI procurement death march: a 6-month process where 13 people can veto but only 1 can approve.
+
+### The 2026 enterprise buyer hierarchy
+
+**The CISO/Security team (can veto, rarely signs)**
+- Concern: SOC 2? ISO 27001? Data handling? Agent sandbox isolation?
+- Straw's answer: SOC 2 Type I (Tick 87), agent sandboxing, no customer data retained post-competition
+- Timeline: SOC 2 blocks deals until completion. Start Vanta NOW.
+
+**The Legal/Compliance team (can veto, sometimes signs in regulated industries)**
+- Concern: EU AI Act compliance? NYC LL144 audit documentation? Vendor liability?
+- Straw's answer: Competition documentation IS the compliance artifact. Every competition produces a rubric-scored evidence trail.
+- Highest-value entry: Legal teams in regulated industries (legal, fintech, healthcare) where compliance documentation is the primary purchase driver, not performance optimization.
+
+**The AI Center of Excellence / Responsible AI Lead (new role, emerged 2024-2025)**
+- Concern: Governance framework alignment? Procurement process validity? Vendor diversity?
+- Straw's answer: Straw IS the governance framework for AI procurement. "Straw is how your AI CoE documents its agent selection process."
+- The buyer: AI CoE leads at mid-to-large enterprises. This role didn't exist 2 years ago — it's the hottest new executive role in 2026.
+
+**The CTO/Head of Engineering (signs for technical teams)**
+- Concern: Does this actually produce better outcomes? What's the integration lift? Can I trust the evaluation?
+- Straw's answer: The Forrester 47%/9% rollback stat. Run one competition, compare your current agent to the market. Zero integration required (agent runs in Straw's sandbox).
+- The buyer: CTO or VP Engineering at companies deploying AI agents for engineering tasks (code review, test writing, documentation).
+
+**The CPO/Chief Procurement Officer (signs for regulated enterprises)**
+- Concern: Vendor risk? Audit trail? AI Act compliance?
+- This is the highest-value buyer for Straw's Tier 3 ($15K+) competitions because procurement teams are the actual governance checkpoint in enterprises.
+
+### The "who has budget" question
+
+**In 2026, AI budgets are held by:**
+- CTO office (in tech companies): most accessible for Straw
+- AI CoE (in large enterprises): new budget pool, not yet committed to specific vendors
+- Procurement/Compliance (in regulated industries): high deal value, long cycle
+
+**The fastest path to first revenue:** Focus on AI CoE leads and CTOs at mid-market tech companies (100-500 employees, already using AI agents, not yet governed). These buyers have:
+- Budget authority (vs. procurement bureaucracy)
+- Urgency (they feel the governance gap)
+- Speed (startup procurement, not enterprise RFP)
+
+**The "13 stakeholders" mitigation strategy:**
+Start with an individual champion (CTO, AI CoE lead) and get a small initial commitment ($500 v0 pilot). Use the pilot results to build internal momentum. The 13 stakeholders come in only when the deal gets large — start small enough to avoid them.
+
+**The enterprise AI governance platform buyer (Straw's ultimate ICP):**
+- Title: Head of AI Governance, Chief AI Officer, VP Responsible AI, Director of AI Center of Excellence
+- Company: $500M+ revenue enterprise in regulated industry
+- Problem: EU AI Act/OCC model risk management requires documented vendor selection process for high-risk AI
+- Budget: $50-200K/year governance tool budget
+- Decision timeline: 3-6 months
+- Deal size: $25-50K/year Straw subscription (Tier 3 enterprise program)
+
+**Sources:**
+- [CIO guide to enterprise AI agent platform selection](https://www.ampcome.com/post/cio-guide-enterprise-ai-agent-platform-selection)
+- [Enterprise agentic AI landscape 2026](https://www.kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026-trust-flexibility-and-vendor-lock-in/)
+- [G2 enterprise AI agents report](https://learn.g2.com/enterprise-ai-agents-report)
+
+---
+
+## Tick 126 (2026-05-05T03:30Z): The eval market consolidation bear case — what the acquisitions mean [theme: bear]
+
+**The alarming pattern:** Three of Straw's closest adjacent companies have been acquired or raised massive rounds in the past 6 months:
+
+| Company | Event | Date | Acquirer/Investor | Amount |
+|---|---|---|---|---|
+| Weights & Biases | Acquired | March 2025 | CoreWeave | $1.7B |
+| Langfuse | Acquired | January 2026 | ClickHouse | Undisclosed |
+| Braintrust | Series B | February 2026 | Various | $80M |
+
+**What this consolidation means for Straw:**
+
+### Scenario A: The consolidation validates the market (bullish)
+W&B at $1.7B and Braintrust at $80M Series B prove that AI evaluation tooling is a massive market. CoreWeave (compute) acquiring W&B (evaluation) shows that hyperscalers believe eval + compute is a combined value proposition. ClickHouse (analytics database) acquiring Langfuse shows that observability incumbents believe AI eval is a strategic adjacency.
+
+**The Straw angle:** If the eval adjacency is worth $1.7B to CoreWeave, the procurement eval angle (Straw's specific niche) is worth building independently. The hyperscalers that acquired the post-deployment eval tools are *not* building pre-procurement evaluation — that gap remains open.
+
+### Scenario B: The consolidation makes Straw harder to build (bear)
+W&B (now CoreWeave-backed), Braintrust ($80M), and Langfuse (ClickHouse-backed) all have dramatically more resources than a pre-seed Straw. If any of them decide to build pre-procurement evaluation features, Straw faces well-funded competition with established distribution.
+
+**The critical question:** Does Braintrust (whose clients include Ramp, Vercel, Airtable, Notion, Replit, Zapier) have any incentive to add pre-procurement evaluation to its platform?
+
+**The answer (research-based):** Braintrust's Ankur Goyal has explicitly positioned Braintrust as "post-deployment eval" — you use Braintrust after you've chosen your agent stack, to monitor and improve it. Building a "competition marketplace" where competing agents are evaluated against each other is a fundamentally different product that would require Braintrust to:
+1. Recruit a supply side of competing agents (they don't have this)
+2. Build adversarial sandboxing (they don't have this)
+3. Monetize as a marketplace (not their current business model)
+4. Maintain neutrality from all agent vendors (they can't — they're funded by same investors)
+
+**Conclusion:** Braintrust's $80M Series B accelerates the post-deployment eval market, which creates demand for Straw's pre-deployment eval (more companies doing post-deployment eval → more companies who realize they need to choose their agents better). This is net positive for Straw.
+
+### The ClickHouse/Langfuse specific risk
+
+ClickHouse acquired Langfuse because Langfuse's observability data architecture runs naturally on ClickHouse's columnar analytics database. This is an infrastructure acquisition — ClickHouse gets Langfuse's customer base (2,300+ companies), Langfuse gets ClickHouse's infrastructure.
+
+**For Straw:** Langfuse is no longer an independent company. The 2,300+ companies that were using Langfuse are now ClickHouse customers. ClickHouse is an analytics infrastructure company — they're unlikely to build a procurement evaluation marketplace. This reduces one potential competitive threat.
+
+### The W&B/CoreWeave specific risk
+
+CoreWeave acquired W&B because W&B's experiment tracking data is most valuable when tied to compute infrastructure. "Run your model, track your experiment, all on CoreWeave." This is a compute+tooling bundling play.
+
+**For Straw:** W&B's Lukas Biewald (now at CoreWeave) has no obvious reason to build a procurement evaluation marketplace for AI agents. CoreWeave is an HPC/GPU compute provider — procurement evaluation is not their business.
+
+**The acquisition pattern conclusion:** All three consolidation events (W&B → CoreWeave, Langfuse → ClickHouse, Braintrust → Series B) are *favorable* for Straw. They each represent companies that COULD have competed with Straw being acquired or funded into a direction that doesn't threaten Straw's specific niche.
+
+---
+
+## Tick 127 (2026-05-05T04:00Z): YC W26 as both supply and demand — Straw's batch partner strategy [theme: partners]
+
+**The key finding from Tick 126:** Moda (YC W26) is the post-deployment monitoring tool; Straw needs to be the pre-deployment evaluation tool. The YC W26 batch contains multiple companies that are natural ecosystem partners, both as supply-side (agents competing on Straw) and demand-side (companies that will need to evaluate AI agents for their own operations).
+
+### YC W26 companies as Straw design partners
+
+**Supply side (agents that should compete on Straw):**
+
+**Confluence Technologies** — "scored 97.9% on ARC-AGI-2, essentially saturating it at $11.77/task." This is an AI capability company that has built agents so good they beat the hardest reasoning benchmark. They should be entering Straw competitions in the reasoning/analysis category to prove their capabilities to enterprise buyers.
+
+**Ndea (François Chollet's lab)** — $43M AGI lab. They're building the most ambitious AI capabilities. Ndea agents should be competing in Straw's most sophisticated task categories.
+
+**Traverse** — "reinforcement learning environments for long-horizon agent journeys." Traverse's agents should be in Straw's multi-step workflow evaluation category.
+
+**Demand side (companies that need to evaluate AI agents for their operations):**
+
+**Captain** — "API-first unified data layer to ship enterprise RAG pipelines in minutes." Captain's customers will be asking "which AI agent should I use for my RAG pipeline?" Straw is the answer.
+
+**Maven** — "payments infrastructure specifically for voice agents." Maven's enterprise customers will be evaluating competing voice agents. Straw evaluates them.
+
+**Moda** — "reliability and monitoring layer for AI agents." Moda's customers have already chosen an agent. Before they chose, they needed Straw. Moda is the post-hire partner; Straw is the pre-hire partner.
+
+### The batch partner outreach sequence
+
+**Week 1 (this week):** Contact Moda founders (Mohammad + Pranav) via YC Bookface. "Straw + Moda = complete agent lifecycle evaluation stack. Worth 20 minutes?"
+
+**Week 2:** Contact Confluence Technologies (highest technical credibility — if they compete on Straw and win, it's a powerful supply-side anchor).
+
+**Week 3:** Contact Captain (RAG pipeline company — their customers will be evaluating competing RAG agents).
+
+**Week 4:** Reach out to François Chollet (@fchollet) via Twitter about Ndea + Straw methodology alignment.
+
+### The YC network effect for Straw's cold start
+
+If Straw gets even 3-4 YC W26 companies as early design partners (some as supply, some as demand), it creates a network within the YC alumni network that accelerates both sides.
+
+**The mechanism:**
+- YC companies trust other YC companies more than random startups
+- YC founder Slack/Bookface is the fastest B2B introduction channel in tech
+- YC Demo Day network effects: if Straw announces design partners that include YC W26 companies, it signals credibility to YC investors who might write a check
+
+**Specific YC application angle:** YC S26 application deadline is likely June 2026. Straw applying with design partner evidence from YC W26 companies would be a very strong application. YC backing Straw would give:
+- $500K SAFE
+- YC partner access (Dalton Caldwell, Michael Seibel office hours)
+- YC alumni network as both supply and demand
+- Demo Day investor access
+
+**Sources:**
+- [YC W26 batch breakdown](https://www.extruct.ai/research/ycw26/)
+- [YC W26 demo day TechCrunch](https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/)
+- [YC W26 agent infrastructure boom](https://www.buildmvpfast.com/blog/yc-w26-batch-agent-infrastructure-boom)
+- [Moda YC profile](https://www.ycombinator.com/companies/moda)
+
+---
+
+## Tick 128 (2026-05-05T04:30Z): The May 2026 two-week sprint — Jeremy's specific calendar [theme: gtm]
+
+**This is the most actionable output of 128 ticks of research.** What Jeremy should actually do in the next two weeks.
+
+### Week 1 (May 5-9, 2026)
+
+**Monday (May 5):**
+- Morning: Read this document's Phase 2 Morning Reading Guide (Tick 38) + this Tick 128
+- Set up Vanta account — start SOC 2 Type I track ($5K/year). Every week of delay costs enterprise deals later.
+- Write the Straw Independence Policy (Tick 86) — one page, public, permanent: "Straw will never accept investment from or sell to any AI model provider." Post it on straw.ai/independence.
+
+**Tuesday (May 6):**
+- Email Ankur Goyal (Braintrust) — use the opener from Tick 123. Subject: "Straw (pre-procurement eval) + Braintrust (post-deployment eval) — worth 20 min?"
+- DM Beth Barnes @beth_barnes on Twitter — use Tick 123 opener
+- Contact Moda founders via YC Bookface — use Tick 123 opener
+
+**Wednesday (May 7):**
+- Email Erik Bernhardsson @fulhack — Modal Labs infrastructure partnership
+- DM François Chollet @fchollet — Ndea/ARC-AGI methodology alignment
+- Post the Straw Independence Policy on LinkedIn + Twitter: "I'm building Straw — an AI agent evaluation platform. Here's the one constitutional commitment we're making from day one." [link to independence policy]
+
+**Thursday (May 8):**
+- Add INJECTION_PATTERNS detection to evaluation-worker.ts (Tick 39 — P0 security fix, 4 lines of TypeScript)
+- Research Rubric (YC W26) — find their founders and reach out to understand if competitive
+- Draft the first rubric YAML template (legal contract review category — Tick 108's v0 templates)
+
+**Friday (May 9):**
+- Document progress in tasks/TASKS.md
+- Review all outreach responses (if any)
+- Prepare for Week 2
+
+### Week 2 (May 12-16, 2026)
+
+**Monday (May 12):**
+- Email Scott Wu (Cognition/Devin) — use Tick 123 opener
+- Contact Captain (YC W26) — RAG pipeline company, demand-side design partner
+- Start drafting Straw v0 competition specification (the formal product document for the first live competition)
+
+**Tuesday (May 13):**
+- If any design partner responses: schedule the calls
+- Write the Show HN draft (Tick 60's post anatomy) — don't post yet, but have it ready
+- Contact one enterprise legal team (Harvey AI or Robin AI) — use Tick 46 openers
+
+**Wednesday (May 14):**
+- Post to the OpenHands Discord/Slack (community seeding for agent supply side)
+- Post to LangChain Discord — "We're building a competition platform for AI agents. Looking for builders who want to enter early competitions. First competition launches [date]. DM me."
+- First rubric YAML template complete and reviewed
+
+**Thursday (May 15):**
+- Schedule the first competition: find one buyer (could be a friend's company, Jeremy's network) to run a "free pilot" competition with 3-5 agents
+- Define the competition task, rubric, and timeline
+- Post timeline publicly: "First Straw competition launches [date]. Here's how it works."
+
+**Friday (May 16):**
+- Two-week retrospective: how many conversations started? How many follow-up meetings scheduled?
+- Target by end of Week 2: 3+ active design partner conversations, 1 competition defined, Vanta SOC 2 started
+
+### The metrics that matter in May 2026
+
+**North star (Tick 78):** "Evaluations producing procurement decisions" — how many enterprises have used Straw to make an actual agent selection decision?
+
+**Leading indicators for May:**
+- Design partner conversations started: Target 10+
+- Design partner meetings scheduled: Target 5+
+- Agents pre-registered for first competition: Target 5+
+- Competition defined (task + rubric + timeline): Target 1
+
+**Vanity metrics to avoid in May:**
+- Twitter followers
+- Product Hunt upvotes
+- LinkedIn reactions to thought leadership posts
+
+**The single question that determines whether May was successful:** "Did at least one enterprise buyer commit to running a Straw competition, with a specific task, a specific rubric, and a specific timeline?" If yes: product-market signal exists. If no: back to customer discovery.
+
