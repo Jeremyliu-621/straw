@@ -14608,3 +14608,88 @@ The AI RFP market is growing: 30 AI-powered RFP tools exist in 2026 (DeepRFP, RF
 **The B2B channel play:** Partner with RFP tools (as a white-label or API integration) so that when a procurement team shortlists AI vendors through DeepRFP or RFP.ai, the platform automatically surfaces "Run a Straw competition for the shortlisted vendors." Revenue model: referral fee from Straw per competition that comes through the RFP tool integration.
 
 Sources: [Ivalua Vendor Selection Process 2026](https://www.ivalua.com/blog/vendor-selection-process/), [RFP.ai Complete Guide 2025](https://rfp.ai/resources/rfp-guide), [DeepRFP AI RFP Platform](https://deeprfp.com/)
+
+---
+
+## Tick 223 (2026-05-04T05:15Z): CoreWeave acquires W&B — the infrastructure layer capturing the evaluation toolchain [theme: bear]
+
+### The evaluation toolchain consolidation accelerates
+
+The competitive landscape has changed dramatically in 6 months:
+- **January 2026:** ClickHouse acquires Langfuse ($400M Series D)
+- **February 2026:** Braintrust raises $80M Series B at $800M valuation
+- **May 2025:** CoreWeave acquires Weights & Biases ($250M total raised)
+
+**What CoreWeave + W&B means:**
+- CoreWeave is a GPU cloud provider (runs the compute that trains AI models)
+- Weights & Biases is the experiment tracking and model evaluation platform
+- Together: CoreWeave controls the training infrastructure AND the evaluation toolchain
+- The strategic play: train your model on CoreWeave → evaluate it on W&B → deploy it on CoreWeave → monitor it on W&B. Full vertical integration.
+
+**The bear case for Straw from CoreWeave/W&B:** If CoreWeave adds "procurement evaluation" to W&B — "compare finished agents before deploying to production" — they have:
+- GPU infrastructure to run the competing agents
+- W&B evaluation framework for rubric-based scoring
+- Existing enterprise customer relationships (every AI company trains on CoreWeave)
+- Deep integration with the AI development workflow
+
+CoreWeave could offer "AI procurement evaluation" as a natural extension of their training + evaluation pipeline. An enterprise that trains their custom model on CoreWeave, evaluates it with W&B, and then runs a Straw-like competition against competing commercial agents would use CoreWeave's integrated offering rather than Straw's separate platform.
+
+### The differentiation from CoreWeave/W&B
+
+**Why the CoreWeave/W&B integration doesn't replace Straw:**
+
+1. **Conflict of interest:** CoreWeave sells GPU compute. An evaluation that reveals "the existing commercial API is better than your CoreWeave-trained custom model" is not in CoreWeave's financial interest. Straw's neutrality is structurally different from CoreWeave's evaluation offering.
+
+2. **W&B is a model development tool, not a procurement tool.** W&B's rubrics are designed for AI researchers evaluating model iterations. Straw's rubrics are designed for enterprise procurement officers evaluating commercial products. Different users, different rubric design language, different output format.
+
+3. **The Straw competition corpus has no conflict.** Straw's rubrics are designed by enterprise buyers, validated across multiple competitions, and represent what enterprise function owners actually care about (business outcomes, not ML metrics like perplexity or BLEU score).
+
+**The market positioning update from this data:** The evaluation-adjacent market is consolidating around infrastructure players (CoreWeave, ClickHouse) acquiring developer-facing tooling (W&B, Langfuse). Straw's position is upstream — enterprise procurement decisions are made before the evaluation infrastructure is selected. The CPO/VP Engineering making the evaluation decision doesn't care whether the agent runs on CoreWeave or AWS — they care which agent achieves 58% CX deflection.
+
+Sources: [Braintrust W&B Alternatives 2026](https://www.braintrust.dev/articles/best-weights-and-biases-alternatives-2026), [o-mega AI Observability Guide 2026](https://o-mega.ai/articles/top-5-ai-agent-observability-platforms-the-ultimate-2026-guide)
+
+---
+
+## Tick 224 (2026-05-04T05:30Z): Straw's rubric design methodology — the peer-reviewed technical foundation [theme: gtm]
+
+### What the 2025-2026 research says about rubric-based evaluation
+
+This research is directly relevant to Straw's core product design — the rubric is the only thing that makes Straw's competition meaningful. If the rubric is poorly designed, the competition produces misleading results.
+
+**Key findings from the evaluation research:**
+
+1. **Binary criteria (MET/UNMET) yield the highest inter-rater reliability.** LLM judges show "central tendency bias" on broad scales — they avoid extreme ratings on 10-point scales. Binary scoring removes this bias. Straw rubric design principle: use MET/UNMET criteria where possible, with 3-5 level ordinal scales only for genuinely continuous dimensions (e.g., response speed).
+
+2. **Narrow ordinal scales (3-5 levels) with clear behavioral anchors.** Each level must be defined by observable behavior, not vague quality terms ("good" vs. "excellent" is meaningless; "resolved in one exchange" vs. "required follow-up questions" is clear).
+
+3. **Recursive rubric decomposition.** Break complex evaluation dimensions into sub-criteria. "Legal accuracy" becomes: (a) correctly identifies governing law, (b) cites applicable precedent, (c) flags potential counterarguments, (d) recommends appropriate action. Each sub-criterion is binary (MET/UNMET). Total score = sum of met sub-criteria.
+
+4. **Evidence-anchored scoring.** Each rubric criterion requires "verifiable evidence" in the agent's output to receive a MET score. Not just "is this correct" — "can you point to the text that demonstrates this?"
+
+5. **Prometheus approach:** An open evaluator trained on thousands of customized rubrics can approach GPT-4-level agreement. This means Straw can use a fine-tuned judge model trained on Straw's competition rubric corpus to score competitions automatically, improving over time as the rubric library grows.
+
+6. **Regulatory alignment:** EU AI Act, NIST AI RMF, and ISO 42001 require "Technical Documentation" with auditable evidence. Straw's rubric output format (structured JSON with rubric criteria, scores, evidence citations, scoring methodology) is already audit-compliant by design.
+
+### The Straw rubric design service
+
+The rubric design process (for enterprise buyers) is not just software — it's a service. For each competition, Straw's value includes:
+
+**Step 1: Requirements interview (30 minutes)**
+Jeremy (or Straw's rubric designer) interviews the buyer: "What does a successful outcome look like for you? What are the 3-5 most important things this agent must do? What are the absolute deal-breakers?"
+
+**Step 2: Draft rubric design (48 hours)**
+Translate requirements into a structured rubric: 5-10 criteria, each with binary or narrow ordinal scale, behavioral anchors, and evidence requirements. Document the weights (how much each criterion contributes to the final score).
+
+**Step 3: Rubric validation (1 week with buyer)**
+Run the draft rubric on 3-5 sample tasks with human scoring to validate: does the rubric capture what the buyer actually cares about? Are there criteria that consistently produce MET/UNMET agreement between two independent raters?
+
+**Step 4: Competition launch**
+Once rubric is validated, tasks are collected, agents are onboarded, and the 72-hour competition runs with automated scoring + human spot-check on 10% of tasks.
+
+### The Autorubric paper (March 2026) — competitive threat and validation
+
+A paper posted to arxiv in March 2026 introduces "Autorubric: A Unified Framework for Rubric-Based LLM Evaluation" — a system that automatically generates rubrics for LLM evaluation tasks. If this becomes widely adopted, it could reduce the friction of rubric design but also commoditize the "design a rubric" step.
+
+**Straw's response:** Autorubric generates rubrics for LLM benchmarks (standardized tasks). Straw's rubrics are designed for buyer-specific enterprise tasks. The buyer's requirements are not in any training set — they're discovered through the requirements interview process. Autorubric can't replace that. But Straw can use Autorubric as the rubric draft generator (Step 2), reducing rubric design time from 48 hours to 2 hours.
+
+Sources: [Galileo Agent Evaluation Framework 2026](https://galileo.ai/blog/agent-evaluation-framework-metrics-rubrics-benchmarks), [Medium Rubric-Based Evals April 2026](https://medium.com/@adnanmasood/rubric-based-evals-llm-as-a-judge-methodologies-and-empirical-validation-in-domain-context-71936b989e80), [Autorubric arxiv 2026](https://arxiv.org/html/2603.00077v2), [Scale AI Rubrics as Rewards](https://scale.com/blog/rubrics-as-rewards), [Snorkel AI Science of Rubric Design](https://snorkel.ai/blog/the-science-of-rubric-design/)
