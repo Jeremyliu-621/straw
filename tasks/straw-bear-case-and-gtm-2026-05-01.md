@@ -34106,6 +34106,88 @@ YC W26 (Winter 2026) was the strongest batch in YC history:
 **YC S26 application timing:** Applications were due May 4, 2026 (yesterday). If Straw applied, the fact that 199 companies just Demo Day'd — and none are in the procurement evaluation category — is the strongest possible "why now" and "competitive differentiation" argument.
 
 ---
+
+---
+
+## Tick 491 — Agentalent.ai (monday.com) Deep-Dive: Closest Competitive Product + Key Differentiation [theme: bear]
+
+### Agentalent.ai — What It Is
+
+**Launched:** March 2026 by monday.com (in collaboration with AWS, Anthropic, Wix)
+**Tagline:** "A hiring platform for enterprise AI agents"
+**URL:** agentalent.ai
+**Pricing:** $2,000/month and up
+**Launch roster:** 17 available agents
+
+**Core workflow:**
+1. Enterprises post AI agent "job roles" with category, budget, and employment terms
+2. Agents undergo authentication, authorization, and qualification before listing
+3. Enterprises review qualified agents and select based on "task fit, business requirements, operational readiness"
+4. Selected agent is "hired" (ongoing subscription at $2K+/month)
+
+**Market validation:** The largest "work management" platform in the world (monday.com, $5B+ market cap) just validated the "AI agent hiring" market category.
+
+### Why Agentalent.ai is the Most Important Competitive Data Point
+
+**Agentalent.ai proves four things Straw needs:**
+
+1. **The "hiring agents" framing works with enterprises.** monday.com wouldn't have launched this without enterprise customer validation that the frame resonates. Straw uses the same frame. ✓
+
+2. **$2,000/month pricing is acceptable for enterprises.** At $2K/month × 12 = $24K/year per agent deployed. Straw's one-time evaluation ($10K-$50K) is cheaper than one year of an agent subscription AND derisks whether to deploy at all. ✓
+
+3. **The market is early.** Agentalent.ai launched with only 17 agents. This is not a scaled marketplace yet. Straw's supply-agnostic approach (any agent can compete) is structurally superior for early market. ✓
+
+4. **Big tech is paying attention.** AWS and Anthropic co-built Agentalent.ai. This validates that the problem space is fundable, strategic, and real. ✓
+
+### The Critical Differentiation: Agentalent.ai vs. Straw
+
+| Dimension | Agentalent.ai | Straw |
+|---|---|---|
+| Agent supply | 17 pre-vetted agents (supply-constrained) | Any agent from any vendor (supply-agnostic) |
+| Evaluation criteria | monday.com-defined ("task fit") | **Buyer-defined rubric** (specific to YOUR workflow) |
+| Selection process | Browse marketplace, pick one | **Multiple agents compete simultaneously** on your actual task |
+| Scoring | Opaque qualification by monday.com | **Transparent rubric scores** (Tier 1+2+3) |
+| Competition format | No — marketplace, not competition | **Yes — multi-vendor competitive evaluation** |
+| Audit trail | Unknown | **Full scoring record, reviewable by board/regulators** |
+| Pricing | $2,000/month recurring (per agent) | $10K-$50K one-time per evaluation |
+| Lock-in | monday.com ecosystem | Platform-agnostic |
+
+**The core differentiation in one sentence:**
+- **Agentalent.ai:** "We pre-screened these agents. Trust us. Pick one."
+- **Straw:** "You define exactly what winning looks like. These 5 agents compete. The score decides. You own the decision."
+
+### The "Monday.com as Distribution" Angle
+
+Agentalent.ai is a supply-side marketplace with **17 agents at launch.** They desperately need more agents and more demand. If Straw can run evaluations that say "this agent performs best for THIS task type on Straw's rubric," Agentalent.ai can list Straw-evaluated agents with a "Straw Verified" badge.
+
+**Channel partnership opportunity:** Straw evaluates agents → "Straw Score" → Agentalent.ai features high-scoring agents prominently. Straw gets supply-side distribution. Agentalent.ai gets credible evaluation methodology. A "Straw-Evaluated" badge on Agentalent.ai = instant credibility signal.
+
+### The "Hiring Funnel" Framing for Straw
+
+Agentalent.ai validates the hiring framing. Straw should adopt it explicitly:
+
+**Straw is the interview platform. Agentalent.ai is the job board.**
+- You don't hire someone without an interview.
+- You don't deploy an AI agent without a Straw evaluation.
+
+**The interview analogy in the cold email:**
+"Would you hire a critical employee — someone whose mistakes could cost you millions — without an interview? Then why are you deploying AI agents based on vendor demos? Straw is the interview. We run your candidate agents against your actual job requirements, score them on your criteria, and tell you which one to hire."
+
+### Bear Case Update: Does Agentalent.ai Preempt Straw?
+
+**No, for five reasons:**
+
+1. **Supply constraint:** 17 agents isn't a market. When an enterprise has 5 specific vendors they want to evaluate, Agentalent.ai doesn't help.
+
+2. **No buyer-defined rubric:** Enterprise procurement teams want to define what winning means for THEIR specific workflow, not trust monday.com's "qualification" criteria.
+
+3. **Price point conflict:** $2K/month per deployed agent means the enterprise is ALREADY paying before evaluation. Straw should be BEFORE they pay. Different point in the decision timeline.
+
+4. **monday.com ecosystem bias:** Enterprises using Salesforce, SAP, or ServiceNow won't trust a monday.com marketplace to evaluate agents cross-platform.
+
+5. **Evaluation ≠ marketplace:** Agentalent.ai is a hiring marketplace. Straw is an evaluation platform. Different things. Straw could even source competition participants FROM Agentalent.ai's 17 agents.
+
+---
 ## Tick 494 — Updated Competitive Scan: Maxim AI and the Full 2026 Evaluation Landscape [theme: bear]
 
 **Research date:** 2026-05-03
