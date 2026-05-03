@@ -30059,3 +30059,89 @@ The gap ($1-2M acqui-hire vs. $23-40K recruiting) = the value enterprises pay fo
 Sources: sapphireventures.com/blog/2026-outlook-10-ai-predictions, saastr.com/sapphire-ventures-2026-software-ai-report, pymnts.com/ai-talent-wars-acquihiring, heavybit.com/acqui-hire-age-of-ai, vccafe.com/2026-ai-predictions-agent-employee
 
 TICK_END
+
+---
+
+## Tick 457 — RFP Evaluation Criteria + Consulting Firm Channel Partners #140-142
+
+**Research date:** 2026-05-03
+
+### AI capabilities now 30-40% of enterprise RFP evaluation criteria
+
+**"AI capabilities now command 30-40% of evaluation criteria in enterprise RFPs, compared to zero previously."**
+Source: AnyReach AI Blog, "The RFP Is Changing: What Enterprise Buyers Now Require That They Didn't 18 Months Ago"
+
+This single stat confirms Straw's market timing is exactly right. 18 months ago, enterprises didn't evaluate AI capabilities in RFPs. Now it's 30-40% of the evaluation criteria. The problem is: WHAT criteria? How do you measure AI capability in an RFP?
+
+The answer is a rubric. Straw provides the rubric, the competition format, and the independent scoring.
+
+---
+
+### Hallucination = the SOC 2 problem
+
+**"Hallucination risk in regulated industries represents material liability. No equivalent of SOC 2 reports or OWASP checklists for AI accuracy claims."**
+
+SOC 2 is the standard compliance document that enterprise security and compliance teams require before signing any software contract. It certifies that a vendor has appropriate security controls. **AI has no equivalent.**
+
+Straw becomes the "AI accuracy SOC 2" — a third-party, objective evaluation of an AI agent's accuracy, hallucination rate, and performance on specific tasks. Enterprise compliance and legal teams need this before signing contracts for agents in regulated workflows.
+
+**The compliance buyer persona update:** Straw is not just for procurement executives and CIOs. It's for:
+- **General Counsel:** "Our legal team approved this agent after Straw evaluation confirmed hallucination rate <2%."
+- **Chief Risk Officer:** "Our risk committee required a Straw evaluation for any AI agent touching customer data."
+- **Chief Compliance Officer:** "Our compliance documentation includes the Straw evaluation log per EU AI Act requirements."
+
+---
+
+### Consulting Firm Channel Partners
+
+#### Design Partner #140 — McKinsey QuantumBlack (AI Implementation Channel)
+
+**What they're doing:** McKinsey launched "Agents-at-Scale" suite. OpenAI partner for Frontier AI agent platform implementation. Helps clients redesign workflows, integrate agents with systems, handle change management.
+
+**Straw channel fit:** McKinsey consultants working on client AI agent implementations need a neutral evaluation platform for vendor selection. A McKinsey engagement that includes a Straw evaluation gives the client a third-party-validated recommendation — much stronger than "McKinsey says this vendor is best."
+
+**Revenue model:** McKinsey buys Straw evaluations as part of engagements (billable at consulting rates to the client). McKinsey becomes Straw's highest-volume B2B channel.
+
+**Contact:** McKinsey QuantumBlack Global Head of AI, or head of McKinsey Technology Institute.
+
+---
+
+#### Design Partner #141 — BCG Gamma (AI Practice)
+
+**What they're doing:** BCG partnered with OpenAI for Frontier AI agent sales/implementation. BCG GENE (internal GPT-4o agent), "Deckster" (presentation automation). BCG Gamma is their AI practice unit.
+
+**Pain point:** BCG implements AI agents for Fortune 500 clients. Those clients need confidence that BCG selected the right agent vendor. Straw gives BCG the evaluation evidence to defend their recommendation. "We ran a Straw evaluation — here are the results."
+
+**Note:** BCG is currently an OpenAI partner. Running Straw competitions that might show OpenAI losing to Claude creates a conflict of interest. Position Straw as vendor-neutral infrastructure BCG uses for client benefit, not as a BCG product.
+
+**Contact:** BCG Gamma managing director, or BCG Chief AI Officer (Sylvain Duranton, Global Leader of BCG Gamma).
+
+---
+
+#### Design Partner #142 — Deloitte AI Institute
+
+**What they're doing:** Deloitte launched "Zora AI" (fleet of agents, NVIDIA partnership). Deloitte AI Institute publishes annual "State of AI in the Enterprise" report — the largest enterprise AI survey in the world.
+
+**Straw fit (dual):**
+1. Deloitte as channel: helps enterprise clients evaluate AI agents using Straw in their consulting engagements
+2. Deloitte as data partner: Straw evaluation data + Deloitte enterprise survey data = joint research publication ("State of AI Agent Procurement 2027")
+
+**Contact:** Beena Ammanath, Executive Director, Deloitte AI Institute. Or Technology and Transformation Practice Leader.
+
+---
+
+### Consulting channel GTM summary
+
+| Firm | AI Practice | Channel Model | Revenue Model |
+|---|---|---|---|
+| McKinsey QuantumBlack | Agents-at-Scale | Buy Straw evaluations for client engagements | Per evaluation |
+| BCG Gamma | OpenAI Frontier partner | Include Straw in client AI vendor selection | Per evaluation |
+| Deloitte AI Institute | Zora AI + NVIDIA | Data partnership + enterprise channel | Revenue share + joint research |
+| PwC AI Studio | AI governance framework | Straw as execution layer for their RAI framework | Per evaluation |
+| Bain AI | Sage + strategy consulting | Channel for M&A AI due diligence evaluations | Per evaluation |
+
+**The consulting channel is a force multiplier:** Each of these firms has hundreds of active enterprise AI implementation engagements at any given time. Straw + McKinsey means McKinsey's entire client portfolio runs evaluations on Straw.
+
+Sources: blog.anyreach.ai/rfp-changing, fortune.com/2026/02/23/openai-mckinsey-bcg-accenture-frontier, metaintro.com/bcg-ai-revenue-2026, noma.security/riskrubric-ai, purplesec.us/ai-security-risks-2026
+
+TICK_END
