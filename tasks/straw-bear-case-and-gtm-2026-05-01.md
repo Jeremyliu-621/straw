@@ -6162,3 +6162,143 @@ The ideal Straw brand is actually a hybrid: **"The AI agent evaluation standard 
 **Brand colors / visual identity note:** Straw is both a literal straw (the drinking implement — draw on the best) and "the last straw" (the final test that determines fitness). The straw-bale / agricultural aesthetic has texture and warmth that tech brands typically lack. Consider: tan + deep green + white, with a quality-mark visual motif (similar to certification seals). This signals: rigorous, independent, trustworthy — not slick, not corporate, not another blue tech logo.
 
 **The "Straw Champion" naming convention:** Over time, agents that win multiple Straw competitions across different categories earn the "Straw Champion" designation. This becomes the de facto enterprise AI credentialing system. "Has your agent been Straw-certified?" becomes the enterprise procurement question.
+
+---
+
+## Tick 76 (2026-05-04T02:30Z): "AI Winter 2026" bear case — what happens if enterprise AI adoption plateaus [theme: bear]
+
+**The bear case is live:** As of May 2026, there's a real discourse about enterprise AI performance plateauing:
+- Microsoft stock gained only 0.39% over twelve months despite massive AI investment
+- Enterprise AI pilot-to-production conversion rates stabilizing at 35-40%
+- Real-world performance plateauing while investment peaked
+- Warning signs: model drift, auditability risks, enterprise rollback signals
+
+**The "AI winter" hypothesis:** A period of reduced investment, slowed adoption, and general disillusionment, triggered when:
+1. Enterprise AI ROI fails to materialize at scale (95% of GenAI pilots not reaching measurable P&L impact — Tick 45)
+2. Multiple high-profile AI failures (the Replit database deletion incident, AI legal hallucinations) create liability fear
+3. VC funding slows, AI companies cut headcount, the "AI is solved" narrative takes hold
+4. Enterprise procurement committees add AI moratoriums or strict governance gates
+
+**What this means for Straw:** In an AI winter:
+- Enterprise AI adoption slows → fewer AI agents to evaluate → less demand for Straw
+- AI vendors face revenue pressure → less money for competition bounties → smaller prizes attract fewer submitters
+- VC funding for AI infrastructure dries up → Straw can't raise
+
+**Counter-thesis — why an AI winter might help Straw:**
+
+**Scenario A (weak AI winter):** Adoption slows but doesn't reverse. Companies are more cautious about deploying new AI. This increases, not decreases, the demand for third-party validation before deployment. A more cautious procurement environment is better for Straw because companies need MORE evidence before committing, not less.
+
+**Scenario B (strong AI winter):** Investment and adoption genuinely contract. Companies pull back from AI deployments. Fewer new AI procurement decisions = fewer Straw evaluations. This is the scenario where Straw's runway becomes critical.
+
+**The honest probability assessment:**
+
+The "AI winter" narrative has emerged but the underlying data doesn't support a full contraction:
+- 78% of Fortune 500 have implemented AI in procurement (up from 34% in 2024)
+- AI agent market growing at 46.3% CAGR ($7.84B → $52.62B by 2030)
+- The "plateau" narrative is about ROI measurement, not about adoption stopping
+
+The more likely scenario: **AI adoption continues but becomes more rigorous.** Companies stop deploying AI without evaluation evidence because they've been burned by failures. This is literally Straw's market thesis. The "AI winter" of 2026 may be the best market condition Straw could ask for.
+
+**The Straw strategic response to AI winter risk:** Diversify revenue sources so not all revenue depends on the "exuberant enterprise AI adoption" scenario:
+- Regulatory-mandated evaluations (EU AI Act, FTC, NYC Local Law 144) are non-cyclical — they're required by law regardless of AI sentiment
+- Safety-focused evaluations (METR-aligned) are counter-cyclical — concern about AI capability increases in downturns
+- Government evaluations (NIST/CAISI) are recession-resistant — government spending doesn't follow VC cycles
+
+**Bottom line:** This is a 5/10 bear case. Real risk, not fatal. Straw's regulated-industry revenue stream is the hedge. Build the compliance revenue stream before an AI winter arrives.
+
+---
+
+## Tick 77 (2026-05-04T03:00Z): AI-native companies — Perplexity, Notion, The Browser Company as design partners [theme: partners]
+
+**Why AI-native companies are the best first design partners:** They understand the agent capability problem from the inside. They've deployed AI agents, they've evaluated them, they know what "bad AI" costs. They don't need education about the problem.
+
+### Perplexity — the "Computer" agent enterprise launch
+
+**State of Perplexity (2026):** "Computer" is Perplexity's enterprise AI agent — described by VentureBeat as "taking aim at Microsoft and Salesforce." More than 100 enterprise customers demanded access over a single weekend. The agent can: compare vendors from RFP shortlists, pull pricing from websites, summarize terms, draft side-by-side evaluations.
+
+**The irony:** Perplexity's Computer agent does vendor comparison for enterprise procurement. This is adjacent to Straw's evaluation use case. Perplexity's enterprise customers are Straw's target buyers. And Perplexity's own agent could be evaluated by Straw.
+
+**Two Straw angles with Perplexity:**
+1. **Perplexity's enterprise customers as Straw buyers:** Companies using Perplexity Computer to do vendor research also need Straw to run actual competitive evaluations (not just research)
+2. **Perplexity Computer as a Straw supply-side agent:** Perplexity enters Perplexity Computer in Straw competitions for "vendor research and procurement comparison" tasks — and uses a Straw win to prove Computer's capability vs. alternatives
+
+**Named Perplexity contacts:**
+- **Aravind Srinivas** (CEO, @AravSrinivas) — co-founder, highly accessible on X
+- **Denis Yarats** (CTO, @denis_yarats) — technical lead
+- **Dmytro Shevelenko** (Chief Business Officer) — enterprise sales lead
+
+**Opener for Aravind Srinivas:**
+> "Perplexity Computer helps enterprises compare vendors. Straw helps enterprises compare AI agents. These are sequential steps in the same workflow: first, use Computer to research candidates; then, use Straw to actually test the finalists on your task. Could be a strong narrative to tell enterprise customers together. 15 minutes?"
+
+### Notion — the "Braintrust customer" connection
+
+**Braintrust's most important customer is Notion.** Notion was struggling with user search quality at scale and used Braintrust to monitor and improve it. This means:
+1. Notion already has deep experience with AI evaluation infrastructure
+2. Notion's team understands the problem Straw solves
+3. The Braintrust relationship opens a warm intro path (Braintrust CEO Ankur Goyal could introduce to Notion's AI team)
+
+**What Notion needs from Straw:** Notion is building AI agents for knowledge work — meeting summaries, document drafts, project tracking. They regularly evaluate whether to use Claude vs. GPT vs. Gemini for different Notion AI features. This is an internal AI procurement decision that Straw could serve.
+
+**Named Notion contacts:**
+- **Ivan Zhao** (CEO, @ivanzhaoo) — co-founder, product-focused
+- **Akshay Kothari** (COO, @akothari) — business and partnerships lead
+- **David Tibbitts** (Head of AI, LinkedIn) — leads Notion AI product
+
+**Opener for Akshay Kothari:**
+> "Notion uses Braintrust for production AI observability. We're building the pre-deployment evaluation layer — the thing that happens BEFORE an AI agent goes into Braintrust. You already believe in evaluation infrastructure. Straw adds the procurement evaluation moment. Are you currently running your own internal evaluations when choosing between AI models for Notion AI features? Curious whether Straw could replace that process."
+
+### The Browser Company (Arc) — niche but strategic
+
+**The Browser Company builds Arc** — an AI-native browser with deep agent integration. In 2026, they've pivoted heavily toward AI agents that can browse and act on the web. Their user base is technical, early adopter, and exactly the kind of person who builds and uses AI agents.
+
+**Why they matter:** Arc users are often agent operators. The Browser Company's developer community could be a supply-side source for Straw competitions, similar to the OpenClaw community. A "featured in Arc AI" integration (letting Arc users submit their web agents to Straw competitions from within the browser) could be a novel distribution channel.
+
+**Named contact:**
+- **Josh Miller** (CEO, @joshm) — highly accessible on X, known for thoughtful product thinking
+
+---
+
+## Tick 78 (2026-05-04T03:30Z): The Straw north star metric revisited — "evaluations producing procurement decisions" [theme: gtm]
+
+**Established in Phase 2 (Tick ~20):** The north star metric is "evaluations producing a decision" — how many completed evaluations resulted in the buyer making a procurement decision (hire, buy, reject) based on the Straw score.
+
+**Phase 3 context updates this metric:**
+
+**The problem with the original north star:** "Evaluation producing a decision" is hard to measure. It requires the buyer to self-report whether they made a decision based on Straw. Buyers may use Straw to build internal consensus but make the final decision based on other factors (relationships, integration concerns, price negotiation). The "decision" signal is noisy.
+
+**Revised north star framework (three-metric stack):**
+
+| Metric | What it measures | Why it matters | How to measure |
+|---|---|---|---|
+| **Evaluation completion rate** | % of posted tasks that reach final scoring | Whether the platform delivers value at all | Automated: task status tracking |
+| **Decision conversion rate** | % of completed evaluations where buyer reports using the result | Whether the evaluation influences real decisions | Survey at 30 days post-completion |
+| **Repeat evaluation rate** | % of buyers who run a 2nd evaluation within 90 days | Whether buyers find ongoing value | Automated: buyer account history |
+
+**The leading indicator is repeat evaluation rate.** If a buyer runs a second evaluation within 90 days, the first evaluation produced enough value that they came back. This is more reliable than survey-based "did you use the result?" questions, and it's a stronger business signal (recurring revenue).
+
+**Target: 60% repeat evaluation rate at 90 days.** If 3 out of 5 design partners run a second evaluation within 90 days, the product has product-market fit. Lower than 40% = the evaluation isn't compelling enough to warrant repeating. Lower than 20% = the product needs fundamental rethinking.
+
+**The onboarding flow that drives repeat:**
+
+1. Competition completes → winner report delivered
+2. 48-72 hour follow-up message: "Your evaluation is complete. The winning agent scored X on rubric criteria. Three questions: (1) Did the result surprise you? (2) Are you planning to deploy the winning agent? (3) Do you have another agent evaluation coming up in the next 90 days?"
+3. If yes to question 3: "Great — we'll reach out in 2 weeks to help you design the next rubric."
+4. The rubric design call for the second evaluation is Straw's retention mechanism.
+
+**The "State of Agent Capability" quarterly report as a retention tool:**
+
+Every quarter, Straw publishes an aggregate report: "Here's how AI agent capability has changed across our evaluation corpus this quarter." Design partners get this report first (exclusive early access). This creates:
+1. Reason for buyers to stay engaged with Straw between evaluations
+2. Annual report content that journalists cover
+3. A retention touchpoint that drives buyers to think about their next evaluation
+
+**The $800K ARR path (updated from Tick 54):**
+
+With the revised metric framework:
+- Month 1-3: 5 design partners, 0 revenue
+- Month 4-6: 3 design partners convert (60% rate) at $5K-$15K each = $15K-$45K
+- Month 7-9: Repeat evaluations + first new paying customers = $30K-$60K
+- Month 10-12: Annual contracts + new customers = $50K-$80K/month run rate
+- ARR at month 12: $600K-$960K
+
+The $800K ARR target is achievable if the 60% repeat rate holds and at least 2-3 new enterprise customers convert per month from the content/community strategy.
