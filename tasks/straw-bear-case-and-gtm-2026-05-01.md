@@ -39588,3 +39588,121 @@ This is a marketing asset, not a technical concern. Frame it as: "We trust Claud
 
 (Note: Straw can also use multiple models for T2/T3 to avoid single-model bias — including GPT-5.5, Gemini Ultra, and Claude in a panel. This is technically stronger and addresses the conflict of interest concern.)
 
+
+## Tick 530 — Commercial Real Estate Design Partners: Agentic Orchestration = The 2026-27 Shift [theme: GTM + design partners]
+
+### The CRE AI Signal: From Individual Features to Agentic Orchestration
+
+Propmodo analysis (2026): **"The most consequential shift coming in 2026 and 2027 is not individual AI features but agentic orchestration — where AI handles a coordinated sequence of tasks across a deal lifecycle."**
+
+This is the Straw market moment for CRE. Individual AI tools (lease abstraction, underwriting AI, market analysis) have been evaluated by internal teams. The next wave — multi-agent orchestration across a deal lifecycle — is exactly what Straw evaluates: which orchestration system performs best on YOUR deal types?
+
+### The Big Three CRE Platform AI Strategies
+
+**CBRE:**
+- Nexus AI platform: 39 billion data points from 300+ sources; 20,000 client sites; 1 billion square feet
+- SmartFM Solutions powered by Nexus
+- Underwriting AI: **3x faster** preliminary analysis (CBRE 2025 Tech Adoption Report)
+- 2026 commitment: "Show concrete evidence of real gains by end of 2026"
+
+**JLL:**
+- Falcon — JLL's internal AI platform
+- "Purpose-built agents to give clients clarity, revealing opportunities to help them make decisions with speed and certainty"
+- Using generative AI + agents across property management, leasing, procurement
+
+**Cushman & Wakefield:**
+- AI+ strategy — partnership with Microsoft (Azure OpenAI + Copilot 365)
+- Largest in terms of Bisnow's "AI scare" headlines — stock concerns reflect market perception that AI will disrupt their brokerage model
+
+**The competitive dynamic:** CBRE and JLL are racing to build proprietary AI that becomes their differentiation. Cushman is using Microsoft's stack. Each is making agent procurement decisions — which specific AI vendors for which specific workflows.
+
+### Named CRE Design Partners (#303-310)
+
+**#303 — Jim Fagan** (Global CEO, CBRE Data Center Solutions) — CBRE's data infrastructure; AI procurement at scale
+**#304 — Nasrin Rezai** (CTO, JLL) — JLL's Falcon platform; enterprise AI procurement; agentic orchestration decision-maker
+**#305 — Brett White** (Executive Chairman, Cushman & Wakefield) — board-level AI strategy; Microsoft partnership oversight
+**#306 — Christian Ulbrich** (CEO, JLL) — JLL CEO; responsible for Falcon AI strategy and ROI demonstration
+**#307 — Robert Sulentic** (CEO, CBRE) — CBRE CEO; 2026 commitment to show "concrete evidence" of AI ROI
+**#308 — Sam Chandan** (Dean, NYU Schack Institute of Real Estate) — academic authority on real estate AI; warm intro to 200+ CRE technology leaders
+**#309 — Mihir Shah** (founder, Propmodo) — CRE tech media authority; publishes on agentic AI in real estate; warm intro to CRE CIO community
+**#310 — Raj Singh** (Managing Director AI, CBRE) — CBRE's AI implementation lead; the operational-level champion inside CBRE
+
+### The CRE GTM Wedge
+
+**Entry:** Due diligence AI agent evaluation for institutional investors
+
+- Task: "Evaluate 3 AI due diligence agents on our last 10 completed transactions as the test set"
+- Rubric: Financial model accuracy, risk identification rate, document review completeness, time to complete
+- Stakes: A missed risk in a $50M commercial real estate transaction = catastrophic
+- The ROI math: 0.1% improvement in deal risk detection on a $1B annual deal portfolio = $1M in risk reduction → $25K Straw evaluation is trivial
+- Market: BlackRock Real Estate, Blackstone, Brookfield, Starwood Capital — all making AI procurement decisions for deal analysis
+
+---
+
+## Tick 531 — Competitive Landscape Final Scan: Still No Direct Competitor to Straw [theme: GTM + bear]
+
+### The "Buyers Want Task-Level Testing, Not Benchmark Theater" Signal
+
+From the enterprise AI agent procurement research (2026):
+
+> **"Buyers are asking for task-level testing, not benchmark theater."**
+> **"Non-deterministic outputs represent the number-one production-readiness barrier."**
+> **"Evaluation and observability tooling is the single hottest budget line of 2026."**
+
+These are three independent confirmations that the market Straw serves is real and active.
+
+### What Exists — Updated Competitive Matrix (May 2026)
+
+**Direct competitors (buyer-defined rubric + cross-vendor competition + procurement workflow):**
+- **None identified.** No company in the AI evaluation space operates with all three simultaneously.
+
+**Adjacent categories and why they're not Straw:**
+
+| Company | Category | What they do | What they don't do |
+|---|---|---|---|
+| **Vals.ai** (Sequoia $5M seed) | LLM benchmarking | Custom benchmarks for finance/legal/tax LLMs | Competition format; cross-vendor; procurement workflow |
+| **Credo AI** ($41.3M) | Post-deployment AI governance | Monitor deployed models for fairness, bias | Pre-deployment competition; buyer-defined rubric |
+| **Truesight** (Goodeye Labs) | Your own agent quality | Monitor YOUR agent's output quality | Any vendor neutrality; competition format |
+| **Rubric AI** (YC W26) | Agent reasoning infrastructure | Supply-side agent reasoning capability | Demand-side evaluation; procurement |
+| **Arize / Phoenix** | LLM observability | Post-deployment tracing and monitoring | Pre-procurement competition format |
+| **OpenAI Evals** | Open-source benchmark | Evaluate LLMs on known benchmarks | Buyer-defined rubrics; competition format |
+| **Holistic Agent Leaderboard** | Academic benchmark | Research-grade agent evaluation | Commercial; procurement; enterprise workflow |
+| **AgentBeats / AgentX** | Competition platform (academic) | Agents compete on fixed public leaderboards | Buyer-defined rubrics; private enterprise evaluation |
+| **ServiceNow AI Control Tower** | Governance monitoring | Monitor running agents in production | Pre-deployment competition; cross-vendor scoring |
+| **WPP Agent Hub + Satalia** | Agency AI marketplace | Brand-affiliated "Verified" status | Vendor-neutral; buyer-defined rubric |
+
+**The Straw whitespace:** Pre-procurement, buyer-defined, cross-vendor, competition-format evaluation → no company in the landscape does this.
+
+### The AgentBeats Academic Cousin
+
+Berkeley's AgentX-AgentBeats competition (Phase 2 launched March 2026):
+- Agents compete on public leaderboards against top agents from Phase 1
+- Prize: Hugging Face credits ($5K/$3K/$2K)
+- Focus: academic agent capability research
+
+**The key differences from Straw:**
+1. Public leaderboard (vs. Straw's private, buyer-specific tasks)
+2. Fixed task sets (vs. buyer-defined rubrics)
+3. Research-focused (vs. procurement-focused)
+4. No enterprise workflow or audit trail
+
+AgentBeats is the academic proof-of-concept that agent competition works. Straw is the commercial platform that brings competition to enterprise procurement.
+
+### The G2 Signal: 770 Verified Reviews on AI Agent Builders
+
+G2's "State of AI Agent Builders 2026" surveyed 770 verified enterprise users:
+- Most-rated platforms: Salesforce Agentforce, Microsoft Copilot Studio, Google Vertex AI Agent Builder, IBM watsonx Orchestrate
+- All rated for features AFTER deployment, not for pre-procurement evaluation
+- Not one of the 770 reviews mentions rubric-based evaluation or competition format
+
+**This confirms: Straw's product doesn't exist yet in the market.** It will exist after Straw builds it.
+
+### The "Non-Deterministic Outputs" Market Validation
+
+The #1 production-readiness barrier for enterprise AI agents (2026) is **non-deterministic outputs** — agents that give different answers to the same question on different runs.
+
+Straw's CLEAR framework reference (arXiv:2511.14136): agent reliability is **60% on a single run → 25% at 8-run consistency check**. Straw's Tier-3 investigator runs the agent multiple times on the same task to test non-determinism. This is exactly the evaluation methodology the market is demanding.
+
+**Straw's technical differentiation:** We address non-determinism directly through multi-run consistency testing. No other commercial evaluation platform does this systematically for enterprise procurement decisions.
+
+---
