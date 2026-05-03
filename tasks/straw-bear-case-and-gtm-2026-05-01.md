@@ -38058,3 +38058,184 @@ This tick adds 6 new comparable systems to the original 5 from Tick 0.7. **Total
 
 **The one fact that counters it:** IDC's 1000× inference demand increase by 2027 → compute costs halving every 12 months → re-evaluation costs falling faster than capability improves. The economics of re-evaluation become MORE favorable as the market matures.
 
+
+## Tick 517 — Yale CELI + McKinsey AI Trust: "Governance Is What Makes Adoption Durable" [theme: bear + GTM]
+
+### The May 2, 2026 Fortune/Yale CELI Article
+
+Fortune (May 2, 2026 — YESTERDAY): **"Anthropic's most powerful AI model just exposed a crisis in corporate governance. Here's the framework every CEO needs."**
+
+Author: Jeffrey Sonnenfeld (Yale School of Management, CELI)
+
+**What it says:**
+- Part 3 of a 4-part Yale CELI series on agentic AI adoption across industries
+- CELI analyzed hundreds of company materials + dozens of conversations with senior tech leaders (banking, healthcare, insurance, retail, supply chain)
+- Core finding: **"While Agentic AI systems evolve rapidly across industries, governance and regulatory policy are moving far more slowly"**
+- Without governance that addresses accountability, transparency, bias, and data privacy, **enterprise deployment will stall on its most significant risks**
+- The companies whose agentic systems "will still be running and trusted five years from now" are those that **established governance intelligently** — neither uniformly fast nor slow
+
+**The closing sentence:** "Done well, governance is what makes adoption durable."
+
+**This is the Straw thesis in one sentence.** Straw enables "governance done well" — buyer-defined criteria, independent evaluation, documented results.
+
+### The McKinsey AI Trust Report (May 2026)
+
+McKinsey published: **"State of AI Trust in 2026: Shifting to the Agentic Era"**
+
+Key finding: The shift from 2025 (capability) to 2026 (execution) requires trust infrastructure. The companies that built trust infrastructure in 2026 are positioned to capture disproportionate AI ROI in 2027-2028.
+
+**The "slow-motion stress test" framing (Fortune, February 2026):**
+> "The next 18 months of the agentic era will feel like a slow-motion stress test for CEOs. Most will make the same critical mistake."
+
+**What's the critical mistake?** Deploying agents without establishing governance frameworks first.
+
+**How to avoid it:** Define what success looks like BEFORE deploying. This is Straw's exact onboarding process — rubric definition comes before competition begins.
+
+### Synthesizing the Bear + Bull Case
+
+From Fortune/Yale CELI + McKinsey AI Trust, the precise market narrative becomes clear:
+
+**The bull case in 3 sentences:**
+"Agentic AI deployment is moving faster than governance infrastructure. 2026 is the year where companies that govern intelligently will separate from those that deploy recklessly. Straw is the governance infrastructure for AI procurement — the layer that makes deployment durable."
+
+**The bear case they address:**
+"Some enterprises will deploy without governance anyway." True. But those are NOT Straw's customers. Straw's customers are the ones who read the Yale CELI article and think: "This is exactly our problem. How do we fix it?"
+
+**The investor narrative:**
+"The Yale CELI article on May 2, Deloitte's 21% governance maturity stat, the NBER 90% no-impact finding, the Stanford 88% failure rate — all published in the last 90 days — confirm the same market need. Straw was built for this exact moment."
+
+---
+
+## Tick 518 — Cybersecurity AI Design Partners + RSAC 2026 Agentic SOC War [theme: GTM + design partners]
+
+### RSAC 2026: The Agentic SOC Moment
+
+RSA Conference 2026 — the year's most important cybersecurity event — was dominated by agentic AI announcements:
+
+**CrowdStrike:**
+- Extended Falcon with AI Runtime Protection and Shadow AI Discovery
+- Launched **Agentic MDR** — intelligent agents in managed detection and response
+- Opened platform to external AI via **Charlotte AI AgentWorks** (custom security agents on Falcon)
+
+**Palo Alto Networks:**
+- Introduced **Prisma AIRS 3.0** — "secure the full agentic AI lifecycle, from discovery through runtime governance"
+
+**Wiz (now Alphabet/Google):**
+- $32 billion acquisition by Alphabet completed March 2026 — largest pure-play cybersecurity acquisition ever
+- Launched **red, blue, and green security agents** for multi-cloud AI security
+
+**VentureBeat RSAC headline:**
+> **"CrowdStrike, Cisco and Palo Alto Networks all shipped agentic SOC tools at RSAC 2026 — the agent behavioral baseline gap survived all three"**
+
+The "agent behavioral baseline gap" = security vendors launched agents but couldn't establish what normal vs. abnormal agent behavior looks like. **Straw's Tier-3 investigator is exactly the "behavioral baseline" infrastructure they're missing.**
+
+### The Straw-Cybersecurity Connection
+
+Cybersecurity is the most high-stakes AI agent deployment category. An AI agent in a SOC is:
+- Making autonomous decisions about what's a threat (false negatives = breaches)
+- Possibly blocking legitimate traffic (false positives = operational disruption)
+- Acting with elevated privileges (security systems have admin access)
+
+**Every one of these requires pre-deployment validation.**
+
+The procurement decision: "Should we use CrowdStrike Charlotte AI, Palo Alto XSIAM, or a third-party SOC agent?" This is a Straw evaluation. Rubric: detection rate, false positive rate, mean time to respond, attacker simulation success rate.
+
+### The $3.6B Cybersecurity AI Funding Signal
+
+2026 YTD: **$3.6 billion** in cybersecurity AI startup funding (Crunchbase). New security agent startups entering the market: Qevlar AI, Surf AI, and dozens more.
+
+With $3.6B funding, the cybersecurity AI vendor market is crowded with differentiated performance claims. Every CISO making a SOC agent procurement decision needs objective evaluation. **The more crowded the vendor market, the more valuable Straw's neutral evaluation becomes.**
+
+### Named Cybersecurity Design Partners (#249-256)
+
+**#249 — Nikesh Arora** (CEO, Palo Alto Networks) — Palo Alto is deploying Prisma AIRS = they need validation methodology
+**#250 — George Kurtz** (CEO, CrowdStrike) — Charlotte AI AgentWorks = third-party agent ecosystem → Straw evaluates agents on Falcon
+**#251 — Assaf Rappaport** (CEO, Wiz → now Google/Alphabet) — post-acquisition, Wiz serves as Google's cybersecurity AI layer; multi-cloud agent evaluation
+**#252 — Mandy Andress** (CISO, Elastic) — practitioner-side CISO; making SOC agent procurement decisions
+**#253 — Chris Krebs** (former CISA Director; now consulting) — policy-level access to DHS/federal cybersecurity AI procurement
+**#254 — Alex Stamos** (former Facebook CSO; now Krebs Stamos Group) — cybersecurity advisory firm; bridges between Straw and CISO community
+**#255 — Nicole Perlroth** (author "This Is How They Tell Me the World Ends"; now CISA board) — policy + practitioner bridge; public speaker on AI security risks
+**#256 — Tomer Weingarten** (CEO, SentinelOne) — SentinelOne's Purple AI competes in the same space; would benefit from Straw evaluations that prove Purple AI outperforms alternatives
+
+### Cybersecurity GTM Wedge
+
+**Wedge:** SOC AI agent evaluation for Fortune 1000 CISOs
+
+- Task: "Evaluate 3 SOC automation agents on our 90-day historical alert dataset"
+- Rubric: Detection rate, false positive rate, time to response, human escalation accuracy
+- Stakes: A missed breach = $4.88M average cost (IBM Cost of Data Breach Report 2024)
+- The $4.88M breach cost makes a $15-50K Straw evaluation ROI-obvious
+- Regulatory tailwind: SEC's new cyber incident reporting rules require documented security system governance
+
+**Channel:** RSAC and Black Hat conference circuit → present Straw as "the objective SOC agent evaluation methodology"
+
+---
+
+## Tick 519 — "Open Source Evaluation Is Free" Bear Case: Why DeepEval, Arize, and OpenAI Evals Don't Replace Straw [theme: bear]
+
+### The Bear Case
+
+Multiple free and open-source evaluation frameworks exist:
+- **OpenAI Evals:** Open-source LLM evaluation framework + benchmark registry (GitHub: openai/evals)
+- **DeepEval:** Open-source; runs tests locally; safety issue detection
+- **Arize Phoenix:** Open-source LLM observability; self-hosted option; SOC 2 compliant
+- **Opik (Comet):** Open-source end-to-end testing; trace logging; annotation
+- **Langfuse:** Open-source; tracing, prompt management, testing
+- **LM Evaluation Harness (EleutherAI):** Academic benchmarking across standard tasks
+- **Artificial Analysis APEX-Agents-AA:** First leaderboard for AI agents on long-horizon professional services tasks
+
+**The objection:** "Why pay Straw $15K when I can run DeepEval or Arize for free?"
+
+### Why the Open Source Tools Don't Replace Straw
+
+**Fundamental architecture difference:**
+
+| Dimension | Open Source Tools | Straw |
+|---|---|---|
+| Purpose | Monitor/test YOUR agent after deployment | Evaluate COMPETING agents BEFORE deployment |
+| Rubric | Generic benchmarks or custom test suites (developer writes) | Buyer-defined criteria with Straw's rubric design assistance |
+| Agents evaluated | Your own agent(s) | Multiple competing external vendor agents |
+| Competition model | None | Winner-take-all competition format |
+| Multi-vendor neutrality | Not applicable (your agent only) | Core design: same task, same rubric, all vendors |
+| Integration | Developer-run | Non-technical buyer-accessible |
+| Audit trail | Internal logs | Third-party verified, shareable documentation |
+| Straw's Tier-3 | Not comparable | Autonomous investigator finds failure modes |
+
+**The key distinction:** Every open source evaluation tool evaluates agents you ALREADY have. Straw evaluates agents you're CONSIDERING. This is the pre-procurement vs. post-deployment divide.
+
+Using DeepEval to evaluate your deployed CrowdStrike Charlotte AI = monitoring.
+Using Straw to compare CrowdStrike Charlotte AI vs. Palo Alto XSIAM before signing = procurement.
+
+**These are different workflows with different decision-makers:**
+- Open source tools: Used by DevOps/MLOps engineers → no buying decision required
+- Straw: Used by AI Agent Owners, CPOs, CTOs → active procurement decision
+
+### The Artificial Analysis APEX-Agents-AA Signal
+
+Artificial Analysis launched APEX-Agents-AA — "the first leaderboard specifically designed to evaluate AI agents on long-horizon professional services tasks."
+
+**This is the closest open-source competitor to Straw.** But:
+1. It's a PUBLIC leaderboard → Goodhart's Law problem (agents train for APEX)
+2. It uses FIXED task sets → no buyer-defined rubric
+3. It benchmarks MODELS → not agent deployments on buyer-specific workflows
+4. No competition format → no winner determination, just rankings
+
+APEX-Agents-AA is useful for tracking LLM capability over time. Straw is useful for picking which agent to deploy for YOUR specific use case. Complementary, not competitive.
+
+### The $40K Holistic Agent Leaderboard Precedent
+
+The Holistic Agent Leaderboard (Kapoor et al., 2026) required **$40,000** to evaluate agents across 9 benchmarks. This is a RESEARCH project, not a commercial product.
+
+If the most comprehensive academic evaluation effort costs $40K to operate, Straw's $15-50K commercial pricing is actually validated — not expensive. The academic version costs as much as Straw's enterprise tier, without the buyer-defined rubric, multi-vendor competition, or commercial audit trail.
+
+### The Developer-Accessible Path
+
+Straw's answer to the "free tools" objection is:
+1. Acknowledge the tools exist and are useful for different purposes (monitoring, not procurement)
+2. Offer a Straw API/developer tier at $300/month that integrates with existing DevOps stacks
+3. Position Straw as the "procurement layer" that feeds INTO Arize/Langfuse monitoring
+4. The buyer journey: Straw → select winner → Arize/Langfuse → monitor winner
+
+This positions Straw as upstream of the free tools, not competing with them.
+
+---
