@@ -15671,3 +15671,127 @@ CPO (Chief Procurement Officer) and VP of Supply Chain are the buyers. They resp
 
 Target conference: Gartner Supply Chain Symposium (typically May/June each year). One speaking slot at this conference = 200 qualified CPO/VP-SCM leads.
 
+
+---
+
+## Tick 215 (2026-05-03T13:28:00Z): AI regulation reversal risk — what if the regulatory tailwind disappears? [theme: bear]
+
+### The Policy Environment in May 2026
+
+The regulatory tailwind that makes Straw's compliance angle compelling is a combination of: EU AI Act (mandatory August 2026), OMB M-26-04 (federal AI procurement documentation, sunsets December 2027), California Executive Order (April 2026), and sectoral guidance (OCC model risk management, HIPAA, FCA).
+
+But the Trump administration has taken a markedly different approach:
+- January 23, 2025: Executive Order revoking Biden's AI Executive Order, directing removal of barriers to AI leadership
+- December 11, 2025: National AI policy framework seeking to preempt state AI regulations, establishing DOJ AI Litigation Task Force to challenge state laws
+- March 11, 2026 deadline: Commerce Department review of state AI laws for preemption targeting
+
+This creates a genuine regulatory risk: if the federal deregulatory posture extends to AI, if state laws are preempted, and if the international regulatory environment softens, the urgency of "you need evaluation documentation" diminishes.
+
+### The Actual Risk Assessment
+
+**EU AI Act**: Geopolitically stable. EU AI Act is already law. US deregulation has zero effect on EU legal requirements. Any US company doing business in the EU — which is essentially all Fortune 500 companies — must comply with EU AI Act regardless of domestic deregulation. The August 2026 deadline is a hard legal fact.
+
+**OMB M-26-04**: Real risk. This memo sunsets December 2027. A new administration could rescind it earlier. However, its core requirements (documentation of AI evaluation, model cards, acceptable use policies) align with conservative governance goals — it's not a DEI-related policy that the Trump administration has targeted. Risk of rescission: medium.
+
+**California Executive Order / State AI Laws**: Under active attack. Trump's DOJ AI Litigation Task Force is challenging state AI laws. California's April 2026 executive order on AI procurement oversight may face federal preemption challenge. Risk: genuine, but California's regulators have historically resisted federal preemption in tech policy.
+
+**Sectoral Regulation (OCC, FCA, FDA, SEC)**: Stable. These regulatory bodies have independent rulemaking authority and political independence (OCC is a bureau of Treasury, but its Model Risk Management guidance is banking safety policy, not politically contested). The SEC's AI governance rules are driven by investor protection, not political ideology.
+
+**The "mirage of AI deregulation" insight** (from Science magazine article): Even if the regulatory text changes, organizational inertia and board governance requirements don't change with the regulation. Once a Fortune 500 company has established an internal AI governance process, they don't dismantle it because the regulatory pressure softens. The governance infrastructure is sticky.
+
+### How This Changes Straw's Pitch
+
+The regulatory angle is the most urgent pitch today (May 2026). But Straw should never be *only* a compliance play. The strongest long-term positioning is:
+
+1. **Compliance anchor** (immediate urgency, 2026): "The EU AI Act requires pre-deployment evaluation. Straw provides it."
+2. **Competitive intelligence value** (medium-term, 2027): "Your competitors are deploying AI faster than you. Straw tells you which AI is actually better — regardless of whether regulators require it."
+3. **Risk management value** (permanent): "Your AI agent made a $2M decision last quarter. Straw proved it was the most accurate agent available. That's your board's peace of mind."
+
+If the regulatory environment softens, the compliance anchor becomes less urgent but the competitive intelligence and risk management angles remain. Build these arguments into every sales conversation from the start — don't let Straw be a "compliance tool" that loses relevance if regulations change.
+
+### Bear Case Score: 4/10 (real, manageable with positioning discipline)
+
+The US deregulatory risk is real but: (a) EU AI Act is EU law, unaffected by US policy; (b) sectoral regulators (OCC, FCA, FDA) are politically independent; (c) board governance doesn't disappear with regulatory pressure. The mitigation is positioning Straw on three pillars (compliance + competitive intelligence + risk management), not just one. If the compliance anchor softens, the other two carry the value proposition.
+
+
+---
+
+## Tick 216 (2026-05-03T13:32:00Z): Conference strategy — specific speaking slots to target [theme: gtm]
+
+### Why Conference Talks Are Straw's Highest-ROI Marketing
+
+Unlike most enterprise SaaS companies where digital marketing and outbound are primary channels, Straw is in a category-creation mode — enterprise buyers don't know they need Straw yet. Conference talks reach buyers who are actively thinking about AI governance, AI procurement, and enterprise AI strategy. One good 20-minute conference talk in front of 500 relevant attendees generates 20-40 qualified conversations.
+
+The thesis: speaking is earned trust. A founder speaking at a respected industry conference is peer-to-peer communication. It bypasses the "who is this startup" skepticism of cold outreach.
+
+### Conference Priority List
+
+---
+
+**Tier 1: Must Be At (Q3-Q4 2026)**
+
+**1. RSA Conference (San Francisco, April-May annually)**
+- Audience: 40,000+ security professionals, CISOs, enterprise security buyers
+- Straw angle: "How to Evaluate AI Security Agents Before They Touch Your Network"
+- Why now: 82% of security analysts report alert fatigue from AI systems; 52% of organizations have AI in SOC production. The evaluation question is live.
+- Application deadline: RSA 2027 CFP typically opens September 2026. RSA 2026 CFP closed — attend as attendee/networker in 2026; apply to speak at RSA 2027.
+- Alternative: Apply for a vendor showcase session for RSA 2026 (shorter but still valuable)
+
+**2. Gartner Data & Analytics Summit (March annually; next one March 2027)**
+- Audience: CIOs, CDOs, Chief AI Officers from Fortune 500
+- Straw angle: "The AI Agent Procurement Gap: Why Enterprises Are Choosing Wrong"
+- Why: Gartner analysts are the most influential voices in enterprise tech procurement. If Gartner writes about Straw positively, it generates more inbound leads than any advertising campaign. Being at the Gartner summit is step 1 to getting Gartner's attention.
+
+**3. InsureTech Connect (Las Vegas, typically October)**
+- Audience: 5,000+ insurance executives, investors, innovators
+- Straw angle: "AI Agent Evaluation for Insurance: Building the Evidence Trail Your Regulators Require"
+- Why insurance: 22% of insurers plan AI agents in production by end-2026; NAIC AI guidance requires evaluation documentation. Straw is the solution.
+- Apply to speak: Submit CFP for InsureTech Connect 2026 (deadline typically June-July).
+
+**4. Money20/20 (Las Vegas, October; Amsterdam, June)**
+- Audience: 7,000+ fintech and banking executives
+- Straw angle: "OCC Model Risk Management Meets AI Agents: What Banks Need to Do Now"
+- Submit for Money20/20 US 2026 (Las Vegas, October): CFP typically opens March-April. Apply now.
+- Submit for Money20/20 Europe 2026 (Amsterdam, June): Attend to network with EU financial services buyers even if not speaking.
+
+**5. HIMSS Global Health Conference (February/March annually)**
+- Audience: 35,000+ healthcare IT professionals, hospital CIOs, clinical AI buyers
+- Straw angle: "HIPAA and Clinical AI Agents: The Evaluation Framework No One Has Published"
+- Why healthcare: Epic partnerships, clinical AI deployments accelerating, FDA AI/ML guidance pending
+- Apply for HIMSS 2027 (CFP opens typically August-September 2026)
+
+---
+
+**Tier 2: Target If First Tier Accepted (2026)**
+
+**6. Legalweek (New York, January annually)**
+- Audience: Law firm managing partners, legal technology executives, GCs
+- Straw angle: "AI Agents in Legal: What BigLaw Must Know Before Deploying"
+- Harvey, Ironclad, and Thomson Reuters CoCounsel are all active in this space — Straw's "neutral evaluation" angle resonates with BigLaw's institutional caution about AI
+
+**7. AI in Finance Summit (New York, November annually)**
+- Audience: Financial services AI executives
+- Straw angle: "Model Risk Management for AI Agents: An OCC SR 11-7 Framework"
+- Smaller audience (500-1000) but extremely targeted — every attendee is a potential Straw customer
+
+**8. NY Tech Week (June)**
+- Audience: NYC tech ecosystem, includes "AI in Real Estate Summit 2026" with 300 C-suite real estate executives
+- Straw angle: "Evaluating Real Estate AI Agents: A Framework for Property Operators"
+- Lower prestige than financial services conferences but fast to access; likely no application needed, just outreach to organizers
+
+---
+
+### Conference Application Strategy
+
+Submit abstracts to 6-8 conferences. Expect 2-3 acceptances. Prepare 2 talk concepts:
+- Talk A: "The $200K Mistake: Why Enterprise AI Procurement Is Broken (And What Fixes It)" — broadly applicable, works for any industry conference
+- Talk B: Vertical-specific (e.g., "AI Agents for Financial Services: What OCC Model Risk Management Requires") — adapted for each targeted vertical conference
+
+**What makes a conference talk abstract get accepted**:
+1. Specific, actionable takeaways (not "overview of AI trends")
+2. Original data or case study (even a single anonymized design partner case study)
+3. Non-promotional — educational, not a product pitch
+4. Timely — references the specific regulatory deadline or industry trend that's urgent NOW
+
+**Conference budget**: $15K-$25K for 2-3 conferences (registration, travel, booth if applicable). The ROI calculation: if one conference generates 2 qualified design partner conversations, and 1 converts at $20K, the ROI is 4-5x the conference cost.
+
