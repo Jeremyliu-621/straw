@@ -25815,3 +25815,46 @@ This is also a retention mechanism: once a rubric is saved in Straw, the enterpr
 Sources: opensource.microsoft.com/blog/2026/04/02/introducing-the-agent-governance-toolkit, github.com/microsoft/agent-governance-toolkit, augmentcode.com/guides/cto-ai-coding-checklist, onereach.ai/blog/agent-lifecycle-management-stages-governance-roi
 
 TICK_END
+
+---
+
+## Tick 421 — Databricks: 6× Production Conversion + Quotient AI Acquisition
+
+**Date researched:** 2026-05-03
+**Theme:** Market data / Straw pitch statistics
+
+### The 6× production conversion stat
+
+**Databricks 2026 State of AI Agents report:**
+> "Organizations that use evaluation tools move nearly 6× more AI systems to production."
+
+This is Straw's most important new ROI statistic. Not a claim — an empirical finding from Databricks' research across their enterprise customer base.
+
+**How to use this in sales conversations:**
+"Databricks found that enterprises using evaluation tools deploy 6× more AI systems successfully. You have 12 agent pilots this year. With Straw, you expect to get 6 to production instead of 1. What's the value of those 5 additional production deployments?"
+
+If each production agent generates $500K-$2M in value (per industry benchmarks), 5 additional deployments = $2.5M-$10M. At $25K/year for Straw, the ROI is 100-400×.
+
+### Databricks + Quotient AI acquisition (Agent evaluation expansion)
+
+Databricks acquired Quotient AI (evaluation + reinforcement learning for AI agents) and launched **Agent Bricks**, a unified platform with built-in evaluation:
+- Automated evaluation using synthetic task data + LLM judges
+- Trajectory-level logging (reasoning path, not just final output)
+- Structured tool call validation
+- Unity Catalog governance integration
+
+**Bear case update:** Databricks now has native agent evaluation for Databricks-native agents. This is ANOTHER platform-native evaluation tool (joining Google, Microsoft, OpenAI). Pattern is consistent: all platform evaluations are single-vendor locked.
+
+The "6× more production deployments" stat was generated from Databricks customers using ANY evaluation tools — not just Databricks' own. This validates the entire category, not just Databricks.
+
+### Updated design partner case: Databricks enterprise customers
+
+Straw's Tick 378 target was a named "Databricks partnership" — that contact was identified as the Databricks AI product lead.
+
+New angle from Agent Bricks: Databricks customers using Agent Bricks for Databricks agents ALSO need to evaluate competing agents from OpenAI/Anthropic/Google for the same workflows. Agent Bricks doesn't evaluate non-Databricks agents. Straw does.
+
+**The pitch to a Databricks enterprise customer:** "Agent Bricks evaluates your Databricks agents. But you're also evaluating OpenAI Codex for the same workflow. How do you compare them on the same rubric? Straw gives you the cross-vendor layer that Agent Bricks can't."
+
+Sources: databricks.com/resources/ebook/state-of-ai-agents, databricks.com/blog/enterprise-ai-agent-trends-top-use-cases-governance-evaluations-and-more, pulse2.com/databricks-acquisition-of-quotient-ai, saastr.com/databricks-only-19-of-organizations-have-deployed-ai-agents
+
+TICK_END
