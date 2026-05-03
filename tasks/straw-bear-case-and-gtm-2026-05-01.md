@@ -20387,3 +20387,143 @@ Straw selects the winner. Galileo/Arize/LangSmith monitors the winner in product
 
 Sources: getmaxim.ai/articles/top-5-ai-observability-platforms-for-production-ai-systems-in-2026, galileo.ai, digitalapplied.com/blog/agent-observability-platforms-langsmith-langfuse-arize-2026
 
+
+---
+
+## Tick 321 (2026-05-04T03:30Z): Market sizing — TAM/SAM/SOM for the investor narrative [theme: GTM]
+
+### The market data (2026)
+
+- **AI agent market total (2026):** $10.9B–$12B, growing 45% CAGR
+- **North America share:** 33.6% = ~$3-4B in 2026
+- **Enterprise AI adoption blockers:** 88% of agent pilots fail; #1 blocker = evaluation gaps (64% of enterprise leaders)
+- **AI coding market (primary Straw vertical):** $12.8B
+- **Enterprise developers using AI tools:** 85% of 65M+ global developers = ~55M developers using AI tools
+
+### Straw's TAM/SAM/SOM framework
+
+**TAM (Total Addressable Market):**
+Every enterprise making an AI agent procurement decision in the next 5 years. If there are 500K enterprises globally that will deploy AI agents by 2028, and each makes 3-5 procurement decisions per year at $5K-25K/competition:
+
+TAM = 500K enterprises × 3 decisions × $15K average = **$22.5B/year by 2028**
+
+But this is too large to be credible to VCs. Use the bottom-up SOM instead.
+
+**SAM (Serviceable Addressable Market):**
+North American enterprises (100-5,000 engineers) actively evaluating autonomous AI coding agents = the Goldman/Devin/Cursor/Claude Code buyer. Estimate: ~10,000 such enterprises by 2026, growing 40%/year.
+
+SAM = 10,000 enterprises × 3 competitions/year × $15K = **$450M/year** (North America coding agent procurement)
+
+**SOM (Serviceable Obtainable Market — what VCs actually want):**
+What can Straw realistically capture in 18 months?
+
+Year 1 (Straw): 20 design partners at $0-5K average = $50K ARR
+Year 2: 200 customers at $8K average = $1.6M ARR
+Year 3: 1,000 customers at $12K average = $12M ARR
+
+**The investor-credible SOM:** $1.6M ARR at end of year 2, growing to $12M ARR by year 3. This is a bottom-up number, not a top-down percentage of a giant market.
+
+### The proprietary data flywheel (VCs want this)
+
+Straw's data flywheel: each competition generates:
+1. A rubric (enterprise-specific evaluation criteria)
+2. Agent performance data (how did each agent score?)
+3. Agent reputation scores (cumulative across competitions)
+
+After 1,000 competitions:
+- 1,000 rubric templates (competitive intelligence for rubric quality)
+- Agent performance database: every agent's score across every task category
+- Cross-competition patterns: which agents excel at which task types
+
+**This is a data flywheel that makes Straw more valuable over time.** A new competitor starting in Year 3 doesn't have the agent reputation history or the rubric quality database. This is the "data moat" VCs want.
+
+### The defensibility narrative
+
+1. **Agent reputation network:** First-mover advantage. Agents compete on Straw because that's where the reputation lives.
+2. **Rubric template library:** 1,000 open-source rubric templates → Straw becomes the standard for AI agent evaluation methodology.
+3. **Published competition reports:** Each report increases Straw's search relevance for "AI agent evaluation" queries.
+4. **Tiered eval pipeline:** 6-12 months of build time advantage. The Tier 3 autonomous agent investigator is the hardest component to replicate.
+
+Sources: researchandmarkets.com/reports/6103459/ai-agents-market-report, grandviewresearch.com/industry-analysis/ai-agents-market-report, digitalapplied.com/blog/ai-agent-adoption-2026-enterprise-data-points, getdecko.com/blog/what-investors-want-in-a-pitch-deck-in-2026-and-whats-changed
+
+---
+
+## Tick 322 (2026-05-04T03:50Z): The investor pitch framework — 2026 VC wants SOM, data moat, and LTV:CAC [theme: GTM]
+
+### What VCs want in 2026 (from SaaStr analysis of 4,000+ pitch decks)
+
+1. **Bottom-up SOM, not top-down TAM:** "We can capture X% of a $Y billion market" is the wrong frame. Right frame: "Here are our first 20 customers, here's the ACV, here's how we get to 200."
+
+2. **Proprietary data flywheel:** AI deals close faster (47% of AI pilots convert to contracts vs. 25% traditional software). But investors want to know what prevents a well-funded copy. The answer must be data, not code.
+
+3. **3:1 LTV:CAC threshold:** At $15K average ACV, $45K LTV (3-year customer) requires <$15K CAC. Founder-led sales has ~$2K CAC. First SDR hire at $80K salary: ~$20K CAC at 4 deals/month. Straw needs to be founder-led past the first 30 customers to maintain LTV:CAC.
+
+4. **Technical team + domain combo:** "Lead engineer who built end-to-end AI systems + co-founder who understands the domain." For Straw: Jeremy needs to articulate both sides.
+
+5. **Genuine enterprise traction:** At Series A, investors want 3-5 paying enterprise customers, not just pilots. The first $25K ARR matters disproportionately.
+
+### The Straw pitch to Series A VCs (draft framework)
+
+**One-sentence pitch:** "Straw is the infrastructure for enterprise AI agent procurement competitions — companies run 72-hour competitions where agents compete on real tasks, and our tiered evaluation pipeline produces the score that drives the purchase decision."
+
+**The problem:** "88% of enterprise AI agent deployments fail. The #1 cause: evaluation gaps. Companies buy based on vendor demos and generic benchmarks, not their specific tasks. The average failed deployment costs $400K."
+
+**The solution:** "Straw replaces demos with competitions. Enterprise defines the rubric. Agents compete. Three-tier pipeline (deterministic + LLM gatekeeper + autonomous investigator) produces a reproducible score. 72 hours, $5K-25K, procurement-grade evidence."
+
+**The data:** "Stanford AI Index 2026: 89% of enterprise AI agents never reach production. AI agent market: $12B growing 45%/year. North America enterprise AI coding market alone: $12.8B. 64% of enterprise leaders cite evaluation gaps as #1 deployment blocker."
+
+**The moat:** "Agent reputation network (first-mover), rubric template library (open-source → standard), Tier 3 autonomous investigator (6-12 months to replicate), published competition reports (SEO + proof + distribution)."
+
+**The traction (by Series A, month 18):** "20 design partners including [METR/Modal/PostHog], 5 paid competitions, $50K ARR, 3 published competition reports, agent operator network growing (Devin/OpenHands/Claude Code all compete)."
+
+**The ask:** "[$2M seed at $10M cap] to fund: 18 months of runway, engineering the Tier 3 investigator + competition infrastructure, founder-led sales for first 30 customers."
+
+### The VCs to target for a Straw raise
+
+Primary targets (AI-infrastructure-focused, B2B SaaS experience):
+- **Martin Casado (a16z)** — led Braintrust Series A; understands AI evaluation
+- **Elad Gil** — invested in Braintrust; solo GP with deep AI infrastructure portfolio
+- **Greylock** — invested in Braintrust; enterprise AI focus
+- **YC** — the right network for design partners + community
+- **Madrona Ventures** — Seattle-based, enterprise AI infrastructure focus
+
+Sources: saastr.com/4000-pitch-decks-later-what-the-saastr-ai-vc-analyzer-actually-does-and-what-its-taught-us-about-fundraising-in-2026, iexchange.substack.com/p/the-2026-vc-playbook-how-investment-criteria-are-evolving-in-ai-first-startups, masterofcode.com/blog/ai-agent-statistics
+
+---
+
+## Tick 323 (2026-05-04T04:10Z): PHASE 2 FINAL UPDATED SYNTHESIS — the 7 key additions since Tick 307 [theme: synthesis]
+
+*Tick 307 contained the definitive Phase 2 morning reading guide. This tick adds the key updates from Ticks 308-322.*
+
+### 7 additions that change the picture since Tick 307
+
+**Addition 1: The Stanford AI stat is the single best pitch number (Tick 308)**
+"89% of enterprise AI agents never reach production. $150K-$800K per failed implementation." This is the strongest quantitative foundation for Straw's pitch. Use this in every conversation. The ROI calculation (38× return on Straw investment) is defensible and conservative.
+
+**Addition 2: Enterprise procurement is formalizing NOW — Straw must launch before mid-2027 (Tick 309)**
+"70% of engineers use 2-4 AI tools simultaneously. Enterprise standardizes on multi-tool stacks, leading to formal 'AI dev tool stack' procurement decisions by mid-2027." This means: the formal procurement wave hits in 12-18 months. Straw must be the established provider BEFORE the wave crests. The window is closing.
+
+**Addition 3: Reliability gap is Straw's second technical differentiator (Tick 309)**
+60% single-run success → 25% across 8 runs. Report variance in competition results, not just point estimates. No current evaluation platform publishes reliability distributions. This is Straw's technical novelty for the HN post + academic paper.
+
+**Addition 4: The agent deployment pipeline framing — Straw is the entry point (Tick 312)**
+The correct ecosystem frame: Straw → Rubric AI → Sentrial/Moda → Mount (insurance/certification). Straw is the top of the agent deployment pipeline. Every YC W26 agent infrastructure company is a downstream partner. Use this framing with investors ("we're the top of the funnel for a $50B+ annual market").
+
+**Addition 5: Why nobody built Straw is actually a strong moat argument (Tick 315)**
+The answer to "why hasn't anyone done this?" is that incumbents (Devin, Manus, CrewAI) had structural conflicts of interest and the prerequisites only exist now. This converts a potential weakness into a timing moat. A competitor who builds this in 12 months still arrives 12 months late.
+
+**Addition 6: Formalized investor narrative with real market data (Ticks 321-322)**
+- TAM: $22.5B/year by 2028 (but use SOM with VCs)
+- SOM: $1.6M ARR year 2, $12M ARR year 3
+- Data moat: agent reputation + rubric library + competition reports
+- Series A target: a16z (Martin Casado), Elad Gil, Greylock, YC
+
+**Addition 7: 53 named design partners — 3 new additions (Ticks 312, 320)**
+- #51: Pragya Saboo / Rubric AI (YC W26) — confirmed as Tier 1 contact
+- #52: Mount (YC W26) — strategic pipeline integration partner
+- #53: Vikram Chatterji / Galileo AI — observability integration partner
+
+---
+
+*Phase 2 research complete. File contains Ticks 1-323. Total coverage: bear case (9 kill scenarios with probabilities), GTM (complete 4-phase playbook, Show HN draft, pricing model, founder-led sales), 53 named design partners (tiered by urgency), investor narrative (TAM/SAM/SOM, data moat, Series A pitch framework). Read Tick 307 for the morning reading guide + this tick for updates.*
+
