@@ -34370,6 +34370,66 @@ TICK_END
 
 ---
 
+## Tick 492 — Straw Pricing Strategy: Value-Based Model + Lock-in Leverage Economics [theme: GTM]
+
+### The Value-Based Pricing Foundation
+
+Straw's pricing should anchor to the VALUE it creates, not the COST of running an evaluation. The relevant reference prices:
+
+**Comparison points:**
+1. **Agentalent.ai pricing:** $2,000/month per deployed agent = $24,000/year. Straw's one-time evaluation ($10K-$50K) is cheaper than one year of subscribing to an agent you didn't properly evaluate.
+2. **AI deployment investment:** Mid-market = $250K-$900K/year; large enterprise = $900K-$5M/year. Straw's evaluation is 0.5%-2% of the deployment decision's annual value.
+3. **Wrong deployment cost:** $315K average switching cost (Kai Waehner 2026). At 20% probability of choosing the wrong agent without evaluation, expected switching cost = $63K. Straw's evaluation at $25K eliminates this risk.
+4. **Internal evaluation cost:** $150K-$800K in staff time over 3-6 months (CIO.com 2026). Straw replaces this at $10K-$50K.
+
+**The ROI math:**
+- Enterprise pays $25K for a Straw evaluation
+- Straw saves them $150K+ in internal evaluation time
+- Straw derisks a $500K+ annual deployment decision
+- Net value created: 6x-20x the Straw fee
+- This is a 600%-2000% ROI on the Straw fee = trivially justified
+
+### Straw Pricing Architecture (V0)
+
+**Three-tier model:**
+
+| Tier | Price | What's included | Target buyer |
+|---|---|---|---|
+| Starter | **$3,000/evaluation** | 1 task definition, up to 3 competing agents, Tier 1+2 (deterministic + LLM ensemble), score report | Series A startup with first production deployment, SMB, 200-500 employees |
+| Professional | **$15,000/evaluation** | 1 task definition, up to 6 competing agents, Tier 1+2+3 (full pipeline including autonomous investigator), detailed rubric analysis, 2 revision rounds | Mid-market, 500-2000 employees, regulated workflows |
+| Enterprise | **$50,000+/evaluation** | Multi-task evaluation suite, unlimited agents, VPC/private deployment, full audit trail, compliance documentation (NAIC/SR 11-7/EU AI Act), dedicated evaluation engineer, custom rubric design workshop | Fortune 500, regulated industries (banking, insurance, healthcare, government) |
+
+**Annual subscription option (recurring evaluations):**
+
+| Plan | Price | Cadence | Target |
+|---|---|---|---|
+| Quarterly Review | **$40,000/year** ($10K/evaluation × 4) | Quarterly agent re-evaluation | Enterprise with deployed agents requiring ongoing performance monitoring |
+| Annual Portfolio | **$100,000/year** | Up to 8 evaluations, unlimited rubric revisions, dedicated eval engineer | Enterprise building AI agent portfolio across multiple use cases |
+
+### The Lock-in Leverage Angle
+
+2026 Kai Waehner data: "Organizations that will retain leverage in their AI vendor relationships in 2027-2028 are those that built abstraction layers in 2025-2026."
+
+**Straw IS the abstraction layer for procurement.** Running agents through Straw's rubric-based evaluation:
+1. Forces explicit definition of requirements before deployment
+2. Creates a documented rationale for vendor selection
+3. Makes the buyer-vendor relationship evidence-based rather than relationship-based
+4. Provides data for future renegotiation ("Our Straw scores show Agent X has degraded 15% — we need SLA credits or we'll re-evaluate")
+
+**The "scoreboard for renegotiation" pitch:** "When your AI vendor comes to you in year 2 asking for a 30% price increase, having Straw data showing exactly how their agent performs vs. competitors is the most valuable negotiating tool you have. Run Straw once before deployment. Run it again at renewal. The score gap is leverage."
+
+### AI-First SaaS Economics (for Straw's own business model)
+
+From 2026 SaaS pricing research:
+- AI-first B2B SaaS: inference costs = 20-40% variable COGS (vs. <5% for traditional SaaS)
+- Straw's Tier-3 investigator (Claude Opus orchestrating multi-turn investigation) = most expensive component
+- Tier-3 cost estimate: ~$5-15 per evaluation run (Claude Opus 4.7 at scale pricing)
+- At $15K Professional tier, Tier-3 cost is <1% of revenue — excellent unit economics
+- At $3K Starter tier (Tier 1+2 only, no Tier-3), inference costs are <$1 — 99.9% gross margin
+
+**Gross margin target:** 70-85% gross margin (industry benchmark for AI-first SaaS). Straw can hit 85%+ with Starter tier; 70-75% with Enterprise tier (dedicated engineer labor).
+
+---
 ## Tick 497 — Kaggle's Hidden Retention Failure and Straw's Content SEO Strategy [theme: bear + GTM]
 
 **Research date:** 2026-05-03
