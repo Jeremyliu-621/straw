@@ -32016,3 +32016,265 @@ LinkedIn: linkedin.com/in/rodney-zemmel
 Sources: pwc.com/us/en/tech-effect/ai-analytics/agentic-ai-in-procurement, artofprocurement.com/blog/state-of-ai-in-procurement, jadasquad.com/blog/ai-agents-in-procurement
 
 TICK_END
+
+---
+
+## Tick 474 — Government/Federal AI Procurement: NIST Standards Initiative and Straw as Compliance Tool [theme: GTM + partners]
+
+**Research date:** 2026-05-03
+
+### NIST AI Agent Standards Initiative (February 2026)
+
+On February 17, 2026, NIST's Center for AI Standards and Innovation (CAISI) launched the **AI Agent Standards Initiative** — the first US government program dedicated to interoperability and security standards for agentic AI systems.
+
+**Key facts:**
+- NIST AI RMF (AI Risk Management Framework) is now effectively required for federal AI procurement
+- No FAR clause specifically governs AI agent security yet (as of 2026) — standards are agency-internal
+- OMB M-25-22 framework routes through internal procurement procedures
+- NIST's guidance is expected to appear in vendor questionnaires and litigation by 2027
+- FedRAMP authorization is now a gate for cloud-based AI solutions in federal contracts
+
+**The Federal AI Procurement Failure Report (k4i.com, April 2026):**
+"Six Ways Federal Agencies Keep Getting AI Procurement Wrong" — the top failure modes:
+1. Buying for the demo, not the deployment
+2. No objective evaluation criteria before vendor selection
+3. Assuming security compliance = performance adequacy
+4. Skipping domain-specific testing in favor of general benchmarks
+5. Single-vendor pilots with no competitive baseline
+6. No post-deployment performance tracking
+
+**Every single failure mode is what Straw solves.** This is a powerful Federal sales narrative.
+
+### Federal/government as Straw's second design partner vertical
+
+**Why government now:**
+- HHS issued an RFI (#RFI1801896) on March 20, 2026 for enterprise workflow management system with AI integration
+- GSA (General Services Administration) manages government-wide procurement and is actively exploring AI procurement evaluation frameworks
+- DoD: largest enterprise AI buyer in the world, with specific evaluation and accreditation requirements (ATO — Authority to Operate)
+
+**Straw for government:**
+- NIST AI RMF compliance documentation (Straw's rubric scores = AI RMF "Govern" function evidence)
+- FedRAMP-authorized infrastructure (requirement for Straw to serve federal agencies — v2+ priority)
+- ATO support (government agents need Authority to Operate; Straw's evaluation evidence supports ATO packages)
+
+**The government pitch:** "NIST's AI RMF says agencies must govern and document AI agent evaluation. Straw is the evaluation documentation platform. Your NIST RMF evidence is the rubric scores from a Straw competition."
+
+### Named government contacts
+
+**#155 — Lynne Parker** (Former Assistant Director, OSTP; AI National Strategy lead)
+Key government AI procurement influencer. Current position: likely at university or think tank post-administration.
+
+**#156 — Eric Mill** (Senior Technology Advisor, GSA)
+GSA manages government-wide AI procurement standards. Eric Mill is a key technology advisor.
+
+**#157 — Craig Martell** (Chief Digital and AI Officer, Department of Defense)
+DoD is the largest enterprise AI buyer. Craig Martell sets the DoD AI evaluation standard.
+LinkedIn: linkedin.com/in/craig-martell
+
+**#158 — Arati Prabhakar** (Director, OSTP — White House Office of Science and Technology Policy)
+Top AI policy official in the US government. Not a direct sales target, but a key relationship for Straw's narrative.
+
+### FedRAMP timeline for Straw
+
+FedRAMP authorization takes 12-24 months and costs $250K-$1M in audit/compliance work. Government vertical is:
+- v0-v1: Excluded (no FedRAMP yet)
+- v1.5: Initiate FedRAMP application (if government inbound appears at $500K ARR)
+- v2: FedRAMP authorized + GSA Schedule listing
+
+This is a post-Series A priority.
+
+Sources: pillsburylaw.com/en/news-and-insights/nist-ai-agent-standards, labs.cloudsecurityalliance.org/research/csa-research-note-nist-ai-agent-standards-federal-framework, k4i.com/2026/04/13/six-ways-federal-agencies-keep-getting-ai-procurement-wrong, sprinklenet.com/federal-ai-procurement-guide-agencies-vendors
+
+TICK_END
+
+---
+
+## Tick 475 — Build vs. Buy for AI Evaluation: Why Enterprises Will Always Buy [theme: bear]
+
+**Research date:** 2026-05-03
+
+### The "build vs. buy" bear case for Straw
+
+**The objection:** "Enterprises will build their own internal evaluation pipeline instead of buying Straw. They have engineers. They can build rubrics in spreadsheets. Why pay $2,500 for a competition when they could build the same thing internally?"
+
+**The data: 95% of enterprise AI investments fail to produce measurable ROI.** The top failure modes:
+- Buying for the demo, not the deployment
+- Assuming plug-and-play means zero integration work
+- Skipping security and compliance review until post-contract
+- Underestimating total cost of customization
+
+But critically: **35% of enterprise teams have already replaced at least one purchased SaaS tool with a custom build in 2026** (Retool Builder Report). And 78% expect to build more of their own tools by end of 2026.
+
+**This creates a real bear case:** If enterprises increasingly build internal tools, why buy Straw?
+
+### Why enterprises will NOT build their own evaluation platform
+
+**1. The neutral party problem.** An internal evaluation system cannot credibly evaluate vendor claims. If your internal team builds the rubric AND runs the evaluation, vendors will question the methodology. Straw's independence is the value — "our score can't be influenced by our vendor relationships."
+
+**2. The agent supply problem.** An internal evaluation can only test agents the enterprise already has access to. Straw's marketplace gives access to ALL competing agents simultaneously, including ones the enterprise doesn't know exist yet.
+
+**3. The ongoing maintenance cost.** Building a rubric is a one-time effort. Maintaining evaluation pipelines, handling agent API changes, managing submission formats, running the scoring pipeline — this is 3-6 months of engineering time annually. Straw absorbs this cost.
+
+**4. The comparison baseline problem.** An internal evaluation gives absolute scores but no comparative baseline. "Our agent scored 72/100" means nothing without knowing what the best available agent scored. Straw's cross-company benchmarking (Tick 472) provides the baseline.
+
+**5. The commoditization of custom tools.** The 35% who built internal tools built generic workflow tools (replacing Notion, Slack bots, internal dashboards). They did NOT build evaluation pipelines with agent competition logic, multi-tier scoring, and reputation graphs. That's Straw's complexity moat.
+
+### The "buy until you're big enough to build" heuristic
+
+**Standard enterprise heuristic:** Buy if you process fewer than 50 evaluation events per year; build once you process 500+ events per year.
+
+- At 50 events/year: Straw cost = 50 × $2,500 = $125K/year. Build cost = 1 engineer × $200K = $200K/year. **Buy wins.**
+- At 500 events/year: Straw cost = 500 × $2,500 = $1.25M/year. Build cost = 2 engineers × $400K = $400K/year. **Build wins.**
+
+**Implication:** Straw's pricing should create an anchor below the "build threshold." If Straw charges $2,500 per evaluation, enterprise companies will buy until they reach ~200-500 evaluations/year — which is $500K-$1.25M ARR per enterprise account. At that point, they might build internal capability, but by then Straw has extracted $500K+ from that account and can compete on features/data that the internal build doesn't have (agent reputation graph, cross-company benchmarking, rubric library).
+
+### The "hybrid approach" insight
+
+2026 enterprise AI consensus: "Buy systems-of-record and compliance-heavy platforms where the value is in decades of edge cases and support infrastructure; build the differentiating intelligence layer."
+
+**This maps directly to Straw's positioning:** Straw is NOT the differentiating intelligence layer (which enterprises will build). Straw IS the evaluation infrastructure (which enterprises should buy because the value is in cross-company data and neutral independence).
+
+**The Straw buy/build framing:**
+"You'll build your agent. You'll customize your rubric. But you won't build the evaluation marketplace, the agent reputation graph, or the cross-company benchmarking data. Those are infrastructure. Buy those from Straw. Build the rest."
+
+Sources: techaheadcorp.com/blog/enterprise-ai-build-vs-buy-vs-partner, aisera.com/blog/build-vs-buy-ai, webchain.ro/build-vs-buy-software-how-ai-changed-the-decision-in-2026
+
+TICK_END
+
+---
+
+## Tick 476 — Competitive Map Final Update: Where Straw Sits vs. Vals AI, Braintrust, Langfuse, Arize [theme: GTM + bear]
+
+**Research date:** 2026-05-03
+
+### The full competitive map (2026)
+
+Every evaluation-adjacent platform in the market, plotted on two axes: (1) Pre-deployment vs. Post-deployment; (2) Single-agent testing vs. Multi-agent competition.
+
+```
+                      SINGLE AGENT TESTING
+                              │
+          Langfuse ●          │      ● Braintrust
+          Arize ●             │
+          LangSmith ●         │      ● Maxim AI
+                              │
+POST-DEPLOYMENT ──────────────┼────────────────── PRE-DEPLOYMENT
+                              │
+                    ●Vals AI  │      ⊕ STRAW
+                    (domain   │      (multi-agent
+                    benchmarks│       competition)
+                    per model)│
+                              │
+                    MULTI-AGENT COMPARISON
+```
+
+**Where each player sits:**
+
+| Platform | Deployment timing | Evaluation scope | Competition model? | Rubric defined by buyer? |
+|---|---|---|---|---|
+| Braintrust | Post-deployment (CI/CD) | Single agent vs. prompts | No | No (internal metrics) |
+| Langfuse | Post-deployment (traces) | Single agent observability | No | No |
+| Arize Phoenix | Post-deployment (LLM monitoring) | Single agent | No | No |
+| LangSmith | Post-deployment | Single agent testing | No | No |
+| Vals AI | Pre-deployment benchmark | Multi-model comparison | No (passive) | No (Vals-defined rubric) |
+| Maxim AI | Pre-deployment + post | Single agent quality gates | No | Partial |
+| **STRAW** | **Pre-deployment** | **Multi-agent competition** | **Yes (bounty model)** | **Yes (buyer-defined rubric)** |
+
+**The key insight:** Straw is the ONLY platform in the 2×2 quadrant of "Pre-deployment + Multi-agent competition + buyer-defined rubric." This is an unoccupied position.
+
+### Vals AI — closest pre-deployment competitor
+
+Vals AI (vals.ai) is the closest competitor to Straw in the pre-deployment, multi-model comparison space. Key differences:
+
+| Dimension | Vals AI | Straw |
+|---|---|---|
+| Rubric ownership | Vals defines the rubric | Buyer defines the rubric |
+| Competition model | Passive benchmark (models tested on Vals tasks) | Active competition (agents submit to buyer's task) |
+| Business model | Gated access, early stage; $5+ per question for o3 | Per-competition event pricing |
+| Vertical focus | Finance, law, software, healthcare (predefined) | Any vertical (buyer-defined task) |
+| Agent supply | Vals tests specific models | Open competition — any agent can enter |
+| Multi-agent hiring | No | Yes — winner can be hired/acquired |
+
+**Straw's positioning against Vals AI:** "Vals tells you which model performs best on Vals' rubric. Straw tells you which agent performs best on YOUR rubric, for YOUR specific task. If your workflow doesn't look like Vals' benchmark tasks, Vals' scores are meaningless for your procurement decision."
+
+### Where Braintrust's $80M filing creates opportunity for Straw
+
+Braintrust's Series B pitch (February 2026) positioned it as "the observability layer for AI." This creates a specific opportunity for Straw:
+
+**The Braintrust-Straw pitch stack:**
+"Straw helps you choose which agent to deploy (pre-deployment evaluation). Braintrust helps you monitor it once you deploy (post-deployment observability). These are sequential tools for the same procurement journey."
+
+Enterprise companies will use BOTH:
+1. Straw → "Which agent should we deploy?"
+2. Braintrust → "Is the agent we deployed performing correctly?"
+
+**This is not competitive. It's complementary.** A Straw-Braintrust partnership or co-marketing opportunity exists: companies that use Braintrust are EXACTLY the companies that should also use Straw before they deploy.
+
+**The pitch to Braintrust:** "Your Series B customers chose their AI agent before you existed to help them evaluate it. Straw is the platform they should have used before deploying. Let's co-market: Straw pre-deployment → Braintrust post-deployment."
+
+### Named contacts from competitive landscape
+
+**#159 — Ankur Goyal** (Braintrust CEO)
+The co-marketing opportunity. Straw before deployment + Braintrust after = complete enterprise AI evaluation stack.
+LinkedIn: linkedin.com/in/ankurgoyal
+
+Sources: braintrust.dev/articles/langfuse-alternatives-2026, confident-ai.com/knowledge-base/compare/top-braintrust-alternatives-and-competitors-compared, vals.ai/home, latitude.so/blog/agent-first-comparison-guide-vs-braintrust, getmaxim.ai/articles/top-5-ai-evaluation-tools
+
+TICK_END
+
+---
+
+## Tick 477 — Pricing Psychology for Straw: Anchoring, First Contract Strategy, Enterprise Negotiation [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The 2026 enterprise SaaS pricing psychology findings
+
+**Anchoring effect:** Presenting a higher-priced option first makes subsequent offerings appear more reasonable. Effective anchoring increases average contract values by 15-20% (Simon-Kucher & Partners). **At enterprise scale, this is less powerful because buying committees (6-10 members) each respond differently to anchoring.**
+
+**Decoy pricing:** Three-tier pricing with a "decoy" middle option that makes the highest tier look like best value. Anchoring + decoy pricing together drive 25-60% increases in average deal sizes.
+
+**But for Straw:** The key insight is that enterprise buyers with documented evaluation criteria (which Straw's rubric builder produces) are LESS susceptible to pricing psychology. They calculate ROI, not respond to anchors. So Straw's pricing should be framed in ROI terms, not in tier terms.
+
+### Straw's pricing framework (revised for enterprise psychology)
+
+**The ROI frame (more persuasive than tier anchoring):**
+
+"Your team will spend $50,000-$150,000 in engineering time on a 3-month internal AI agent pilot. Straw runs the equivalent evaluation in 2 weeks for $2,500-$10,000. That's a 5-40× ROI before your agent even goes live."
+
+**Straw's three tiers (anchored by scope, not features):**
+
+| Tier | Price | Scope | Target buyer |
+|---|---|---|---|
+| Starter | $500 | 1 task, up to 5 agents, 1 rubric dimension, 24-hour results | Small teams, first evaluation |
+| Standard | $2,500 | 1 task, unlimited agents, full rubric, 7-day evaluation | Agent Owner, department-level procurement |
+| Enterprise | $10,000+ | Multi-task, multiple rubric dimensions, Tier-3 investigator, private evaluation mode | CTO/CPO, company-wide procurement |
+
+**Anchoring strategy:** Lead with Enterprise ($10,000+) in all conversations. Always say "we have a $10,000 enterprise evaluation package and a $2,500 standard package." The $2,500 feels reasonable against $10,000.
+
+**First contract strategy:**
+- Do NOT negotiate below $2,500 for standard evaluation
+- Negotiate on SCOPE (add a free extra rubric dimension) not on PRICE (lower the per-event fee)
+- Offer "locked-in annual pricing" — commit to the same per-event price for 12 months regardless of future price increases
+- Never discount below $2,500 except for design partners (free for 90 days, then full price)
+
+### The "first contract is forever" principle
+
+**The most important pricing insight for Straw:** The first price a customer pays becomes their reference price for all future negotiations. If the first evaluation is $2,500, their internal mental model is "Straw evaluations cost $2,500." If the first evaluation is $500 (heavy discount), their mental model is "$500" and they'll resist future price increases.
+
+**Implication:** Never discount the first paid contract. Give free (design partner period), then charge full price. The psychological gap between "free" and "$2,500" is smaller than "discount price of $500" to "full price of $2,500."
+
+**Counter-offer template when asked for discount:**
+"I can't move on the $2,500 base price — that's our standard evaluation rate and we need to maintain it to keep our infrastructure running. What I can do: add a second rubric dimension at no charge, or give you a locked-in price for the next 3 evaluations at today's rate."
+
+### Enterprise contract negotiation dynamics
+
+**Average B2B buying committee: 6-10 members.** For Straw's $2,500 standard tier, this is BELOW most committee approval thresholds — decisions will be made by a single Agent Owner without committee review.
+
+**For Straw's $10,000+ enterprise tier:** Committee approval likely kicks in. Key objection: "We need to run this through procurement." Response: "Great — here's our Common Paper agreement (2 pages). Procurement approval is typically 2-3 weeks for contracts under $25,000 at most companies."
+
+**For Straw's multi-evaluation annual contracts ($25K-$100K+):** Requires VP-level approval + procurement + legal review. This is the Series A target. For now (pre-Series A), optimize for $2,500-$10,000 deals that close without committee.
+
+Sources: getmonetizely.com/articles/the-anchoring-effect-in-saas-pricing, getmonetizely.com/articles/behavioral-pricing-understanding-customer-psychology-in-saas, saasreviewer.io/how-to-negotiate-saas-pricing-for-better-enterprise-discounts-in-2026, softwarepricing.com/blog/enterprise-saas-pricing
+
+TICK_END
