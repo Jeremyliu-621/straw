@@ -15108,3 +15108,168 @@ If the answer is "we'd need to hire 2 people and it would take 6-12 months," the
 
 The "build it yourself" argument is real but wins only for the wrong customers (large tech companies who wouldn't pay anyway). For Straw's target customer — a Fortune 500 company with a specific AI procurement decision to make, on a timeline, with compliance requirements — building internally is slower, more expensive, and doesn't produce a credible external audit trail. The build argument is a sales objection, not an existential threat.
 
+
+---
+
+## Tick 209 (2026-05-03T12:56:00Z): Fine-tuned custom models as substitution — the "build your own" agent risk [theme: bear]
+
+### The Fine-Tuning Revolution Changes the Evaluation Target
+
+A critical 2025 finding: a 350M-parameter model fine-tuned on high-quality synthetic data can outperform generalist frontier models in specific tool-calling and API-orchestration domains. Organizations implementing fine-tuned multi-model workflows achieve 70-90% cost reductions versus a single large general-purpose model.
+
+The trend is clear: enterprises that were evaluating "which frontier model should we use" in 2024 are now asking "should we fine-tune our own model using our proprietary data?" in 2026.
+
+If enterprises build and fine-tune their own domain-specific AI agents — rather than procuring external agents — then Straw's "head-to-head competition between external vendors" use case shrinks. Why run a Straw competition to choose between GPT-5 and Claude when you're going to fine-tune your own model anyway?
+
+### Why This Is A Real Concern (But Not Existential)
+
+The fine-tuning path requires:
+1. **Training data**: A large dataset of high-quality labeled examples in the domain
+2. **ML engineering**: People who can manage the fine-tuning pipeline (see Tick 203 — these people are expensive and scarce)
+3. **Infrastructure**: Cloud compute for training + serving (adds $50K-$500K/year)
+4. **Evaluation** (the irony): You still need to evaluate whether the fine-tuned model performs better than the baseline frontier model
+
+Point 4 is the Straw opportunity. Even if an enterprise builds and fine-tunes their own agent, they need to verify:
+- Does the fine-tuned model actually outperform the baseline model?
+- Does it outperform fine-tuning on a different dataset?
+- Is it still performing well 6 months later after distribution shift?
+
+Every fine-tuned model decision is a Straw competition: fine-tuned v1 vs. fine-tuned v2 vs. generic GPT-5 vs. generic Claude 4. The rubric: the enterprise's own performance criteria.
+
+### Straw's Positioning in a Fine-Tuning World
+
+**Reframe the product**: Straw is not just "compare vendor agents" — it's "any AI performance question can be answered by a Straw competition." The rubric is what makes it Straw; the agents being compared are arbitrary.
+
+Three use cases:
+1. **Vendor selection competition**: Fine-tuned Agent X vs. generic Claude vs. competitor Vendor Y
+2. **Internal model iteration competition**: Fine-tuned v1 vs. Fine-tuned v2 vs. generic baseline
+3. **Deployment validation competition**: Deployed model vs. improved challenger model (prevent regression)
+
+Use case 3 is continuous — it's a recurring Straw revenue stream. Every time an enterprise wants to deploy an improved model version, they run a Straw validation competition to confirm the improvement is real and doesn't introduce regressions. This is the "Straw Audit" product motion mentioned in the BlackRock partner analysis (Tick 185).
+
+### The Custom Model Pipeline: When Does It Apply?
+
+Not every enterprise will fine-tune. The fine-tuning path makes economic sense only when:
+- The enterprise has a high-volume, narrow use case (thousands of similar tasks per day)
+- Training data exists (or can be generated) at scale
+- The enterprise has ML engineering capacity
+- The use case is stable enough that the model won't need constant retraining
+
+Most Fortune 500 companies in the first wave of AI agent deployment are in the early stages — their use cases are still broad ("help with document analysis") rather than narrow enough to fine-tune. Fine-tuning maturity is 2-3 years out for most enterprises.
+
+But the trajectory is clear: in 3-5 years, the most sophisticated enterprise AI buyers will be fine-tuning their own models. Straw needs to be positioned as the evaluation platform for that world too — "whether you're buying from vendors or building internally, Straw validates the choice."
+
+### Bear Case Score: 4/10 (medium-term, manageable)
+
+Fine-tuning does not eliminate the evaluation need — it changes what's being evaluated. Straw should expand its product messaging to include internal model evaluation (vendor selection AND iteration competition AND deployment validation). This reframe makes Straw more durable against the fine-tuning trend. The bear case is the one where Straw is so narrowly positioned around "external vendor competition" that fine-tuning renders it irrelevant — avoid that by expanding the positioning now.
+
+
+---
+
+## Tick 210 (2026-05-03T13:00:00Z): Top 10 design partner conversations to start this week — the definitive priority list [theme: partners]
+
+### Criteria for "This Week" Priority
+
+A target makes the top 10 if they satisfy ALL of:
+1. **Named contact confirmed**: A specific human being with a LinkedIn profile or email addressable contact
+2. **Urgency signal present**: A regulatory deadline, recent AI deployment announcement, or product launch that makes NOW the right time
+3. **Entry use case defined**: A specific Straw competition topic that maps to their current problem
+4. **Accessible without existing relationship**: Can be reached via cold LinkedIn or cold email with a strong opener
+
+### The Priority 10 — In Order
+
+---
+
+**#1 PRIORITY: SimCorp — Agent Launchpad**
+- Contact: SimCorp executive overseeing Agent Launchpad (LinkedIn: search "SimCorp Chief Product Officer" or "SimCorp head of AI")
+- Urgency: SimCorp launched Agent Launchpad on April 27, 2026 — 6 days ago. They are right now evaluating which AI agents to put in the Launchpad. This window is 30-60 days max.
+- Entry use case: Portfolio management AI agent evaluation for their asset management customers
+- Opener: "Congratulations on the Agent Launchpad launch. Your customers are about to make AI agent selection decisions based on your recommendations. Straw runs the independent evaluation that gives you and your customers a credible basis for those decisions — not just vendor demos. Worth a 20-minute conversation this week?"
+- Note: "First mover advantage" — if Straw is the evaluation layer for Agent Launchpad, it becomes embedded in SimCorp's whole platform. Extremely high leverage.
+
+---
+
+**#2: Phenom — Post-Plum acquisition**
+- Contact: Mahe Bayireddi, CEO (LinkedIn: linkedin.com/in/maheba)
+- Urgency: Just acquired Plum (April 28, 2026) for behavioral verification — shows massive investment in evaluation. And Be Applied acquisition (February 10, 2026). They're actively buying evaluation companies.
+- Entry use case: AI hiring agent evaluation across Phenom's enterprise customer base
+- Opener: [See full opener in Tick 181]
+
+---
+
+**#3: Morgan Stanley — Jeff McMillan**
+- Contact: Jeff McMillan, Head of Firmwide AI
+- Urgency: Fortune article (March 13, 2026) warns of AI breakthrough coming in 2026 — MS is preparing for a step change
+- Entry use case: Wealth management AI assistant evaluation for WM team
+- Opener: [See full opener in Tick 184]
+
+---
+
+**#4: Lemonade — Daniel Schreiber**
+- Contact: Daniel Schreiber, CEO (LinkedIn: linkedin.com/in/danielaschreiber)
+- Urgency: Insurance regulators intensifying scrutiny of AI claims decisions; California DOI post-wildfire scrutiny
+- Entry use case: Claims adjudication AI evaluation
+- Opener: [See full opener in Tick 188]
+
+---
+
+**#5: Eightfold AI — Ashutosh Garg**
+- Contact: Ashutosh Garg, CEO (LinkedIn: linkedin.com/in/ashutoshgarg893)
+- Urgency: AI interviewer launched; EEOC liability for AI interviews is hot topic in 2026
+- Entry use case: AI interviewer fairness and accuracy evaluation
+- Opener: [See full opener in Tick 181]
+
+---
+
+**#6: Harvey (Legal AI) — Gabriel Pereyra**
+- Contact: Gabriel Pereyra, CEO
+- Urgency: Harvey just raised $300M+ Series D; actively expanding to BigLaw enterprise
+- Entry use case: Legal document review AI evaluation for law firm customers
+- Opener: [See full opener in Tick 178]
+
+---
+
+**#7: Writer.com — May Habib**
+- Contact: May Habib, CEO (LinkedIn: linkedin.com/in/may-habib)
+- Urgency: Writer's enterprise customers (Vanguard, Intuit, L'Oréal) are making AI agent selection decisions now
+- Entry use case: Marketing content AI evaluation for brand compliance
+- Opener: [See full opener in Tick 181]
+
+---
+
+**#8: Abridge — Shiv Rao**
+- Contact: Shiv Rao, CEO/Founder
+- Urgency: Epic partnership announced for clinical AI; hospital CIOs evaluating clinical AI across multiple vendors
+- Entry use case: Clinical documentation AI evaluation — accuracy, HIPAA compliance
+- Opener: [See full opener in Tick 175]
+
+---
+
+**#9: Booz Allen Hamilton — AI Practice**
+- Contact: Booz Allen Hamilton Chief AI Officer (LinkedIn search: "Booz Allen Hamilton Chief AI Officer 2026")
+- Urgency: OMB M-26-04 compliance deadline for federal agencies creates demand for evaluation services NOW (March 2026 deadline just passed; agencies playing catch-up)
+- Entry use case: GovCon partner play — Booz Allen uses Straw for their federal AI advisory engagements
+- Opener: "OMB M-26-04 requires federal agencies to document their AI evaluation process. Your government clients are looking for the infrastructure to do that. Straw is the evaluation platform that produces the documentation they need. Would Booz Allen consider integrating Straw into your federal AI advisory practice?"
+
+---
+
+**#10: Salesforce Agentforce — Product Team**
+- Contact: Adam Evans, President of Agentforce (or search LinkedIn for Salesforce VP of Agentforce Product)
+- Urgency: Agentforce is Salesforce's biggest product bet. They're competing with Microsoft and HubSpot for enterprise CRM AI deals RIGHT NOW.
+- Entry use case: Agentforce vs. Microsoft Copilot head-to-head competition at enterprise customer accounts
+- Opener: [See full opener in Tick 202]
+
+---
+
+### Outreach Execution Plan for This Week
+
+**Monday**: Send #1 (SimCorp) and #2 (Phenom) via LinkedIn
+**Tuesday**: Send #3 (Morgan Stanley) and #4 (Lemonade) via LinkedIn
+**Wednesday**: Send #5 (Eightfold) and #6 (Harvey) via LinkedIn
+**Thursday**: Send #7 (Writer) and #8 (Abridge) via email (their contact information from Tick 175/181 is available)
+**Friday**: Send #9 (Booz Allen) and #10 (Salesforce) via LinkedIn; review any responses from Monday-Thursday
+
+**Response rate expectation**: 2-4 responses from 10 outreach (20-40%). One response may lead to a design partner conversation. One design partner conversation per week is the target.
+
+**Follow-up sequence** (if no response in 5 business days): One follow-up with a different hook (e.g., if first message was regulatory hook, second message is competitive differentiation hook).
+
