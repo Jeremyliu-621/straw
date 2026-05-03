@@ -3098,3 +3098,219 @@ The 24 consortium members are exactly the enterprise buyers who need Straw's eva
 ---
 
 **Push status (Session 6):** Writing complete — 3 new ticks (30–32). Committing as Jeremy Liu.
+
+---
+
+## Phase 2 Session 7 — Ticks 33–35 (2026-05-03, continued overnight)
+
+*Three new ticks: the recursive Goodhart problem for Straw's outcome corpus; the UK FCA AI sandbox and the 8 companies in the current cohort as design partners; the supply-side demand — AI agent vendors need Straw for their own sales process.*
+
+---
+
+## Tick 33 (2026-05-03T03:30Z): The recursive Goodhart problem — when Straw's corpus becomes the next benchmark [theme: bear]
+
+### The second-order failure mode that no previous tick addressed
+
+Phase 2 Tick 23 covered Goodhart's Law as it applies to rubric gaming *within* a Straw competition — agents optimizing for rubric criteria rather than the underlying capability. This tick covers the *second-order* Goodhart problem: **what happens when Straw's outcome corpus itself becomes a training dataset?**
+
+**The failure sequence:**
+1. Straw runs 100 competitions. The winning submissions are logged — agent output, rubric scores, winning criteria.
+2. Straw publishes (or leaks) the outcome corpus — either deliberately as a "benchmark" or because a competitor obtains the data.
+3. Agent builders fine-tune their models on the Straw winning submission corpus.
+4. Those agents now perform better on *Straw competitions* without genuinely being better at the underlying enterprise tasks.
+5. Straw's evaluation scores stop correlating with real-world performance. The "score doesn't lie" value proposition collapses.
+
+**The empirical precedent:** The Code Review Bench research proposes a "self-correcting" benchmark that checks offline evaluation against real-world developer behavior. When the two diverge, the benchmark is flagged as wrong. The Brookings Institution has a convening at Carnegie Mellon University (spring 2026) and UC Berkeley (fall 2026) specifically on "how to evaluate agentic AI" — acknowledging the benchmark contamination problem is unsolved and getting worse.
+
+**The GPT-4 Codeforces case:** When tested on Codeforces problems, GPT-4 consistently solved problems added before September 2021 but failed on problems added later — clear evidence of training set contamination of the evaluation corpus.
+
+Sources: [Brookings: How to evaluate agentic AI](https://www.brookings.edu/articles/how-can-we-best-evaluate-agentic-ai/), [Collinear Goodhart AI leaderboards](https://blog.collinear.ai/p/gaming-the-system-goodharts-law-exemplified-in-ai-leaderboard-controversy), [Code Review Bench self-correcting benchmark](https://withmartian.com/post/code-review-bench-v0), [Benchmark contamination review arXiv 2502.06559](https://arxiv.org/html/2502.06559v1)
+
+---
+
+### How this plays out for Straw at scale
+
+**Phase 1 Straw (0-50 competitions):** Corpus too small to fine-tune on. Not a meaningful training signal. Goodhart contamination is low.
+
+**Phase 2 Straw (50-500 competitions):** Corpus becomes meaningful. Agent builders notice that competition winners share patterns — they start building those patterns in. This is relatively benign: if the patterns are genuinely associated with quality, optimizing for them is fine.
+
+**Phase 3 Straw (500+ competitions, public awareness):** Corpus becomes a training target. An adversarial agent builder specifically fine-tunes on "Straw winning submissions" to optimize Straw scores. If the fine-tuning generalizes to real task quality, this is fine. If it doesn't, Straw's scores are contaminated. The enterprise buyers who relied on Straw's scores to make procurement decisions made bad decisions.
+
+**The most dangerous scenario:** A large AI lab decides to publish "Straw performance" as a capability claim in their marketing ("our model wins 73% of Straw competitions"). At that point, they will optimize for Straw scores specifically — and Straw becomes the next SWE-bench.
+
+---
+
+### The three mitigations Straw must build
+
+**Mitigation 1: The holdout test set per competition**
+Every competition has two tiers of evaluation: a public rubric (visible to agents, used for training/preparation) and a holdout evaluation set (not revealed until after submission, not included in any released corpus). The holdout set catches agents that have memorized rubric patterns without generalizing.
+
+Implementation: the holdout set is a set of additional test cases or rubric criteria that are NOT in the posted rubric. The evaluator runs both the public rubric AND the holdout evaluation. The final score weights holdout performance significantly (e.g., 40% public rubric, 60% holdout). Agents who over-optimize for the public rubric without genuine capability will underperform on holdout.
+
+**Mitigation 2: Corpus access control**
+Straw's competition corpus (which submissions scored how, what the rubric said, what the winning output looked like) should NOT be public by default. Access to the corpus:
+- Task poster: full access to all submissions and scores
+- Winning agent: access to their own score and ranking only
+- Platform: full access for aggregate statistics
+- Public: aggregate win-rate statistics per agent, NO raw submission content
+
+If the corpus is never public, fine-tuning on it requires (a) winning enough competitions to have your own submission data or (b) social engineering the platform to leak data. Both are significantly harder than a public download.
+
+**Mitigation 3: Competition turnover**
+Never run the same task twice. If a competition for "refactor this authentication service to pass these security tests" runs once, that specific task is retired. Agents cannot build a historical corpus of "Straw-flavored tasks" to fine-tune on if every task is genuinely novel.
+
+This is operationally expensive (requires generating new tasks for every competition) but structurally necessary for maintaining score integrity at scale.
+
+---
+
+### What the recursive Goodhart problem means for Straw's positioning
+
+**The honest answer:** Straw will eventually face the same contamination problem as every evaluation system — if Straw becomes important enough to optimize for, it will be optimized for. This is not a reason not to build; it's a reason to build the mitigations into the architecture from day one.
+
+**The stronger answer for enterprise buyers:** Even a partially contaminated Straw score is more meaningful than a vendor demo. The question is not "is Straw's score perfect?" — it's "is Straw's score more reliable than the alternative?" The alternative is no objective score at all. The contamination problem puts Straw in the same position as all other evaluation systems (SWE-bench, MMLU, GAIA) — imperfect but better than nothing.
+
+**The marketing framing:** Never advertise Straw as "the unbeatable evaluation." Always frame it as "the evaluation methodology that is harder to game than a vendor demo, and getting harder to game over time as we add holdout sets and task rotation."
+
+---
+
+## Tick 34 (2026-05-03T04:00Z): UK FCA AI sandbox — design partner targets and regulatory positioning [theme: gtm/partners]
+
+### What the FCA AI sandbox is (and why it matters for Straw)
+
+The FCA (UK Financial Conduct Authority) launched its "AI Lab" in October 2024 with two programs:
+
+1. **AI Live Testing** — firms trial AI systems in controlled real-world UK market conditions. Two cohorts: First cohort (October 2025), Second cohort (April 2026). Eight firms per cohort.
+
+2. **Supercharged Sandbox** — provides firms without extensive infrastructure with high-performance computing, enriched datasets, and advanced AI tools. Second intake opening May 5, 2026.
+
+**The second cohort (April 2026) — 8 named firms:**
+- **Aereve** — AI for financial services
+- **Coadjute** — property transaction platform (agentic payments focus)
+- **Barclays** — major UK bank (credit score insights use case)
+- **Experian** — consumer credit data (credit score AI for consumers)
+- **GoCardless** — payments infrastructure (agentic payments)
+- **Lloyds Banking Group (Scottish Widows)** — investment support AI
+- **UBS** — wholesale bank (AML detection)
+- **Palindrome** — AI-native fintech (KYC focus)
+
+**Timeline:** Testing began April 2026, concludes Q4 2026. Evaluation report published Q1 2027. FCA will publish "good and poor practice report for AI in financial services" in 2026.
+
+Sources: [FCA second cohort announcement](https://www.fca.org.uk/news/press-releases/fca-announces-second-cohort-ai-live-testing), [FCA AI Live Testing expansion](https://www.techmarketview.com/ukhotviews/archive/2026/04/22/fca-expands-ai-live-testing-with-eight-new-financial-services-firms), [FCA Supercharged Sandbox](https://www.fca.org.uk/firms/innovation/supercharged-sandbox)
+
+---
+
+### The Straw positioning relative to FCA AI Live Testing
+
+**The strategic framing:** FCA AI Live Testing is the regulated, government-overseen evaluation program for AI in UK financial services. Straw is the private-sector equivalent that companies can access without waiting for an FCA cohort application window (which is 3 months long, highly competitive, only 8 spots).
+
+**The pitch to FCA cohort participants:** "You're in the FCA AI Live Testing program — that proves your AI system meets the FCA's regulatory requirements. Straw is how your enterprise clients evaluate whether YOUR AI system outperforms competing alternatives on THEIR specific financial workflows. FCA Live Testing gets you regulatory clearance; Straw gets you procurement wins."
+
+**The pitch to companies that didn't get into the cohort:** "The FCA received far more applications than 8 spots. Straw is the private-sector evaluation program with no application window, no government gating, and results in 2 weeks instead of 8 months."
+
+---
+
+### Named FCA cohort contacts (design partner targets)
+
+| Company | FCA Use Case | Key Contact | Opener |
+|---|---|---|---|
+| **GoCardless** | Agentic payments | Hiroki Takeuchi (CEO) @hiroki_gocardless | *"GoCardless is in the FCA AI Live Testing cohort for agentic payments. Straw is the private-sector evaluation platform that proves which AI agent wins on your specific payment workflow — before the FCA report comes out. Design partner conversation?"* |
+| **Experian** | Credit score insights for consumers | Brian Cassin (CEO) LinkedIn | *"Experian is testing AI credit score insights with the FCA. The enterprises evaluating competing AI credit tools — from Harvey to Experian — need objective evaluation evidence. Straw is how that happens."* |
+| **Palindrome** | AI-native fintech, KYC focus | Founders via LinkedIn | *"Palindrome is in the FCA's AI testing cohort for KYC. Straw is how your bank clients evaluate Palindrome vs. competing KYC AI platforms — with objective, rubric-based competitive evidence. Design partner?"* |
+
+**The broader FCA opportunity:** The FCA will publish "good and poor practice" guidance for AI in financial services in 2026. If Straw can submit a methodology paper that aligns with FCA's evaluation principles, being cited in that guidance is worth more than any single customer relationship in the UK financial services market.
+
+---
+
+### UK regulatory contacts (methodology credibility, not buyers)
+
+| Name | Organization | Role | Opener |
+|---|---|---|---|
+| **Nikhil Rathi** | FCA | CEO | High-level — worth a letter/submission to the AI Lab team, not a cold DM |
+| **Jessica Rusu** | FCA | Chief Data, Information and Intelligence Officer | Leads FCA AI Lab; contact via FCA's innovation submission process |
+| **Bank of England AI team** | Bank of England | AI governance and stress testing | Contact via BoE's AI working group; methodology alignment with financial stability |
+
+---
+
+## Tick 35 (2026-05-03T04:30Z): Supply-side demand — AI agent vendors need Straw for their own sales process [theme: gtm]
+
+### The insight that reframes Straw's buyer universe
+
+Every previous tick has analyzed Straw's demand side as **enterprise buyers who want to evaluate agents before procurement.** This tick covers an equally important buyer group that hasn't been named: **AI agent vendors who want proof they're better.**
+
+**The documented problem:**
+
+Paid.ai's analysis of AI agent startup sales challenges: *"The hardest sales conversation is proving the value of what the agent is actually doing. At the sale, vendors can show capability, but they can't show proof, forcing the buyer to take a leap of faith."*
+
+Spend Matters (January 2026): "Why 'whose AI agents are better?' is not the right question to ask" — their answer is about organizational fit. But the AI agent vendor's problem is that they can't answer the question even when buyers ask it directly.
+
+"Agentwashing" is rampant: software providers claim agentic capabilities when they're actually running rules-based workflows. Buyers have no way to objectively verify claims. The result: **AI agent vendors lose deals to competitors who demo better, not competitors who perform better.**
+
+Sources: [paid.ai: Why AI agents lose deals](https://paid.ai/blog/ai-monetization/why-ai-agent-companies-are-losing-deals-they-should-be-winning), [Spend Matters: whose AI agents are better](https://spendmatters.com/2026/01/29/why-whose-ai-agents-are-better-is-not-the-right-question/), [JADA: AI agents in procurement](https://www.jadasquad.com/blog/ai-agents-in-procurement)
+
+---
+
+### The supply-side GTM play Straw hasn't talked about
+
+**The offer to AI agent vendors:**
+*"Run a Straw competition on your target use case. If your agent wins, you have an objective proof point for enterprise sales conversations: 'We won a Straw evaluation on exactly this type of task, with an enterprise-defined rubric, against open competition.' If your agent loses, you get the most valuable signal you could have: exactly what's wrong and exactly what the winning agent did better."*
+
+**Why agent vendors should pay Straw:**
+- The proof point is worth millions in sales conversion
+- A Straw win can be a press release: "AgentCo wins Straw competitive evaluation in enterprise customer support workflow"
+- The data from losing is pure product R&D — what specific rubric criteria did the competition score higher on?
+- No other platform provides this objective competitive signal
+
+**The pricing implications:** Agent vendors as buyers changes the pricing model:
+- Enterprise buyer posts task: company pays for the evaluation setup + prize pool
+- Agent vendor sponsors a competition: vendor pays for the task definition + prize pool to create proof points for their category
+- The vendor-sponsored competition is self-serving but valuable — the enterprise buyer still sets the rubric (or Straw defines it), and the vendor's win is more credible if the rubric is independently designed
+
+---
+
+### Named agent vendors who need Straw most urgently
+
+These are companies that have recently raised funding and face enterprise sales conversations where proof is the bottleneck:
+
+| Company | What they're selling | Why they need Straw proof | Specific opener |
+|---|---|---|---|
+| **Robert Brennan** / OpenHands | Open-source coding agent competing against Devin | "Best open-source coding agent" is a claim, not a proof | *"OpenHands vs. Devin is the enterprise coding agent comparison everyone's making. Straw makes it objective — your agent competes against alternatives on buyer-defined tasks with buyer-defined rubrics. A Straw win is worth 10 demos."* |
+| **Scott Wu** / Cognition Devin | Premium coding agent at $20/month | Enterprise sales at Team/Enterprise tier; CTO buyers want ROI data | *"Devin needs enterprise proof points that survive a procurement review. Straw provides the objective score that a VP of Engineering can show their CIO — not a demo, a competition result."* |
+| **João Moura** / CrewAI | Agent orchestration; enterprises deploying multi-agent workflows | "Best orchestration platform" is a market claim; objective performance on customer workflows is not | *"CrewAI customers want to know their orchestration setup outperforms alternatives on their actual workloads. Straw is how you prove it — and their proof point is your sales tool."* |
+| **Max Junestrand** / Legora | Legal AI competing against Harvey | Law firms comparing Legora vs. Harvey need an objective tie-breaker | *"Legora vs. Harvey is the most expensive legal AI comparison in the market right now. Straw is the neutral evaluation platform where that comparison happens with objective rubrics. Being the one who wins gives you $5.6B of justification."* |
+| **Munjal Shah** / Hippocratic AI | Healthcare AI nurses; health systems comparing vendors | Hospital procurement committees need documented evidence | *"Hippocratic is competing against every clinical AI documentation tool for health system contracts. Straw runs the objective head-to-head — your evaluation win is the documentation the procurement committee needs."* |
+
+---
+
+### The dual-sided sales motion this creates
+
+**The traditional marketplace model (Phase 1 thinking):**
+- Enterprise posts task → agents compete → enterprise pays Straw
+
+**The expanded model (this tick's finding):**
+- Enterprise posts task → agents compete → enterprise pays Straw *(AND)*
+- Agent vendor sponsors evaluation → enterprise gets independent rubric → agent wins → vendor pays Straw for the competition credit, gets the proof point
+
+**The compounding effect:** Every vendor who wins a Straw competition has incentive to talk about it publicly (it's a competitive differentiator). Every vendor who wins publicly creates demand for the evaluation from enterprises who didn't sponsor the competition but want to verify the claim independently. Straw's network effects grow on both sides simultaneously.
+
+**The bear case on this:** Vendor-sponsored competitions have an objectivity problem. If Legora sponsors a Straw evaluation of "legal AI on contract review," Legora might choose a task type where they're strongest. This is the same problem as companies choosing their own benchmarks. **Mitigation:** Straw must independently design the rubric and task specification when vendors sponsor competitions, not take the vendor's input without modification. The enterprise buyer's perspective must dominate rubric design even in vendor-sponsored competitions.
+
+---
+
+### Updated Phase 2 Thread List (Session 7)
+
+**New threads completed:**
+- [x] Tick 33: Recursive Goodhart — when Straw's corpus becomes the training benchmark (bear)
+- [x] Tick 34: UK FCA AI sandbox — cohort companies as design partners, regulatory positioning (gtm/partners)
+- [x] Tick 35: Supply-side demand — AI agent vendors need Straw for their own sales proof points (gtm)
+
+**Phase 2 now stands at 35 ticks across all three themes.**
+
+**Remaining threads (Phase 3):**
+- Prompt injection mitigation: architectural spec for evaluation-worker.ts fix
+- The "right rubric" calibration checklist: operationalized before competition opens
+- Australia APRA CPG 234 model validation requirements
+- The vendor-sponsored competition objectivity standard: policy framework
+
+---
+
+**Push status (Session 7):** Writing complete — 3 new ticks (33–35). Committing as Jeremy Liu.
