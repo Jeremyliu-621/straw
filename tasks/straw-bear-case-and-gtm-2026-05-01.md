@@ -23586,3 +23586,106 @@ Sources: qubit.capital/blog/ai-startup-valuation-multiples, eqvista.com/ai-start
 
 TICK_END
 
+
+---
+
+## TICK 382 — OpenAI Codex Enterprise + W&B/CoreWeave: The Competitive Landscape Completion
+
+**Theme: Bear Case (final competitive landscape)**
+
+### OpenAI Codex Enterprise Deployment (April 2026)
+
+**Scale:** 4M Codex Weekly Active Users. Enterprise partnerships with Accenture, PwC, Infosys. GPT-5.5 at 82.7% on Terminal-Bench 2.0.
+
+**The enterprise coding agent triad:**
+
+| Agent | Benchmark | Enterprise Partners | 2026 Status |
+|---|---|---|---|
+| OpenAI Codex / GPT-5.5 | 82.7% Terminal-Bench | Accenture, PwC, Infosys | 4M WAU, scaling worldwide |
+| Anthropic Claude Code | SWE-bench leader | Goldman Sachs, Dell, Citi | 8 of Fortune 10 using Claude |
+| Google Gemini Enterprise | Via Gemini Enterprise Agent Platform | Google Cloud customers | Gemini 3.1 Pro in Model Garden |
+| Cognition Devin | 51.5% SWE-bench (Verified) | Goldman Sachs, Citi, Dell | $25B valuation, $150M ARR |
+| Cursor | $30B valuation | 1.5M developers | $1.2B ARR, zero marketing spend |
+
+**Every enterprise CTO deploying AI coding agents faces the same question:** Which of these should I use for MY codebase, MY tech stack, MY team's specific failure modes?
+
+OpenAI's Terminal-Bench 2.0: 82.7%. Anthropic's SWE-bench: top score. Cognition's cognition-golden: 74.2%. These are all different benchmarks. None of them measure YOUR codebase.
+
+**Straw's pitch:** "You're choosing between 5 coding agents with 5 different benchmark scores on 5 different test sets. None of them measure your problem. Straw runs the competition on your actual codebase — same task, same rubric, all 5 competing. The winner is the one that works for you."
+
+### W&B Acquired by CoreWeave (May 2025): Competitive Update
+
+Weights & Biases (W&B Weave: LLMOps for tracking and evaluating LLM applications) was acquired by CoreWeave. W&B now serves the GPU infrastructure play — helping CoreWeave customers evaluate their models during training and fine-tuning.
+
+**What this means for Straw:**
+- W&B's acquisition repositions them as infrastructure-layer evaluation (during training), not pre-procurement competition
+- CoreWeave's focus is GPU utilization, not enterprise procurement decisions
+- The W&B acquisition REMOVES a potential competitor from Straw's space (W&B will focus on CoreWeave's GPU customer base, not on enterprise agent procurement)
+
+**Competitive landscape update:** The remaining true competitors in pre-procurement evaluation are: Google (vendor-lock-in), Microsoft (vendor-lock-in), Braintrust (post-deployment). No pure cross-vendor pre-procurement evaluation platform exists except Straw.
+
+### The Five-Player Coding Agent Triad = Straw's Best Launch Vertical
+
+Enterprise coding agent selection is Straw's ideal first vertical because:
+1. **5 competing, well-funded agents** — genuine choice problem, buyers need evaluation
+2. **Objectively measurable tasks** — code either passes tests or it doesn't (Tier 1 is deterministic)
+3. **High-stakes decisions** — $25B+ valuations, $500K+ annual contracts
+4. **Technical buyers** — CTOs/VP Engineering who understand evaluation methodology
+5. **Fast sales cycle** — engineering-driven decisions, budget authority often ≤ VP level
+
+**The first Straw competition should be in the coding agent vertical.** This is the strongest product-market fit intersection.
+
+Sources: openai.com/index/scaling-codex-to-enterprises-worldwide, tracxn.com/d/companies/weights-biases, interestingengineering.com/ai-robotics/opanai-gpt-5-5-agentic-coding-gains
+
+TICK_END
+
+---
+
+## TICK 383 — Pricing Model Calibration: What the Market Will Pay
+
+**Theme: GTM (pricing)**
+
+### Comparable Pricing Points (2026)
+
+| Product | Pricing | Why Relevant |
+|---|---|---|
+| Braintrust | $500/month starter + usage; enterprise custom | AI eval SaaS for post-deployment |
+| Scale AI SEAL | Custom enterprise (not public) | Model-level evaluation |
+| HackerOne | 15% of bounty as platform fee | Competition-based security evaluation |
+| Kaggle competitions | Free (sponsor paid prize) | Platform competition model (but Kaggle is dead) |
+| Toptal | 15-25% of contract value | Talent procurement middleman |
+| Upwork Enterprise | 10-15% of contract value | Freelancer marketplace |
+
+### Straw's Pricing Architecture (Refined)
+
+**Model A: Competition fee (percentage of prize pool)**
+- Platform fee: 15% of prize pool
+- At $10K prize: $1,500 Straw fee
+- At $100K prize: $15,000 Straw fee
+- Rationale: Aligns incentives (higher-stakes competitions = more revenue), scales naturally, easy to quote
+
+**Model B: Flat-fee per competition**
+- $5,000/competition (Starter)
+- $15,000/competition (Pro — includes Tier 3 agent investigation)
+- Custom/Enterprise — for annual multi-competition plans
+- Rationale: Predictable for both Straw and buyer; easier to budget-approve
+
+**Model C: Annual subscription**
+- $25K/year Pro (unlimited competitions up to $50K prize pool)
+- $100K/year Enterprise (unlimited + compliance documentation + dedicated account)
+- Rationale: ARR-predictable; locks in buyer
+
+**Recommended approach:** Lead with Model A (% of prize pool) for first 5 design partner competitions. This is easiest to justify ("you only pay when you have a meaningful prize"). Convert to Model B/C after two competitions (buyers prefer predictability for budgeting).
+
+### The WTP Signal: What Enterprise Buyers Pay for Adjacent Products
+
+- Braintrust enterprise contracts: likely $100K-500K/year (based on $800M valuation and 1,000+ enterprise customers)
+- Scale AI enterprise contracts: $500K+ for model evaluation
+- A competitive evaluation that prevents a $7.2M sunk cost mistake: 1% of $7.2M = $72K is rational WTP
+
+**Straw's initial pricing is BELOW its rational WTP.** At $5K-25K per competition, Straw is under-priced relative to the cost it prevents. The risk is that underpricing signals lack of confidence. After first 5 paying customers, test 2× price elasticity.
+
+Sources: braintrust.dev/pricing, spectup.com/resource-hub/series-a-traction-metrics, qubit.capital/blog/ai-startup-valuation-multiples
+
+TICK_END
+
