@@ -29938,3 +29938,69 @@ This sentence IS the Straw value proposition: "Quality is meaningless without de
 Sources: facilitiesdive.com/commercial-property-management-ai-2026, jll.com/insights/transforming-commercial-real-estate-ai, propmodo.com/cushman-wakefield-ai-push, mitsloan.mit.edu/action-items-ai-decision-makers-2026
 
 TICK_END
+
+---
+
+## Tick 455 — PwC 2026 AI Performance Study: The 20% Who Capture 74% of AI Value
+
+**Research date:** 2026-05-03
+
+### PwC 2026 AI Performance Study (April 2026) — the most important VC/enterprise stat
+
+**"74% of AI's economic value is captured by just 20% of organisations."**
+
+The other 80% are stuck in pilot mode. PwC identified what the top 20% do differently:
+- **1.7× more likely** to have a Responsible AI framework
+- **1.5× more likely** to have a cross-functional AI governance board
+- Enterprise-wide strategy with top-down program (senior leadership picks focused AI investments)
+- Centralized "AI Studio": reusable tech components, sandbox for testing, deployment protocols, skilled people
+
+**The Straw insight from this data:**
+
+The 20% who capture 74% of value are exactly the companies that WOULD use Straw — they have governance frameworks, they define criteria, they test before deploying. Straw is the product that enables the 80% to adopt the practices of the top 20%.
+
+**Cold email angle:** "74% of AI's economic value is captured by 20% of organizations. The one practice that distinguishes them: they define success criteria before deploying. That's the rubric. Straw is how your organization starts defining success criteria the way the top performers do."
+
+---
+
+### PwC AI Studio framework maps to Straw's pipeline
+
+PwC's "AI Studio" concept (centralized hub with sandbox, testing frameworks, deployment protocols):
+- **Sandbox for testing** → Straw's sandboxed evaluation environment
+- **Frameworks for assessing use cases** → Straw's rubric templates by vertical
+- **Deployment protocols** → Straw's evaluation log + winner selection flow
+- **Skilled people** → Straw's Tier-3 autonomous evaluator agent
+
+Straw is the SaaS product form of the "AI Studio" governance layer that only 20% of enterprises have today.
+
+---
+
+### PwC's 6 Business Predictions for AI in 2026
+
+1. Enterprise-wide AI strategy (top-down, not bottom-up)
+2. Responsible AI framework adoption
+3. Rigorous, repeatable evaluation processes
+4. Cross-functional AI governance boards
+5. Automated red teaming + monitoring
+6. ROI documentation becoming mandatory
+
+Every one of these predictions is a Straw use case:
+- Evaluation processes → Straw's rubric + competition engine
+- Red teaming → Straw's Tier-3 adversarial evaluation agent
+- ROI documentation → Straw's evaluation log (timestamped, signed, immutable)
+
+---
+
+### EdTech as a late-stage vertical (note for future)
+
+Education procurement is too slow and too underfunded for early Straw GTM. Key data points for future reference:
+- Khan Academy Khanmigo: pilot across 266 US school districts — interesting future market
+- Coursera + OpenAI partnership (ChatGPT embedded)
+- EdTech AI agents deployed in higher education for: procurement analysis, compliance reporting, student advising
+- "The Agentic AI University" is an Inside Higher Ed op-ed from January 2026 — universities are thinking about this
+
+**Recommendation:** EdTech vertical enters pipeline at Phase 3 (after banking, telecom, legal, manufacturing are proven). School districts and universities need the same rubric evaluation as enterprise, but procurement cycles are 2-4 years and budgets are constrained.
+
+Sources: pwc.com/us/en/tech-effect/ai-analytics/ai-predictions, pwc.com/gx/en/news-room/2026/pwc-2026-ai-performance-study, thebftonline.com/pwc-six-predictions-ai-2026, insidehighered.com/agentic-ai-university-2026
+
+TICK_END
