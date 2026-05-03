@@ -39706,3 +39706,147 @@ Straw's CLEAR framework reference (arXiv:2511.14136): agent reliability is **60%
 **Straw's technical differentiation:** We address non-determinism directly through multi-run consistency testing. No other commercial evaluation platform does this systematically for enterprise procurement decisions.
 
 ---
+---
+
+## Tick 539 — "What Straw Is NOT": The Positioning Clarification Doc [GTM]
+
+*2026-05-03. The fastest way to confuse a prospect is to let them project the wrong mental model. Clarify first.*
+
+### The common mental model failures
+
+When Jeremy pitches Straw, prospects immediately map it onto something they already know:
+
+1. **"This is like Braintrust"** → NO. Braintrust monitors deployed agents. Straw evaluates agents before deployment.
+2. **"This is like a benchmark"** → NO. Benchmarks use fixed public datasets. Straw uses your proprietary task.
+3. **"This is a freelancer marketplace"** → NO. Agents compete; the best agent wins a deployment contract, not a gig fee.
+4. **"This is a testing tool"** → PARTIAL. Straw includes testing but the output is a procurement decision, not a test report.
+5. **"This is like AWS Mechanical Turk but for AI"** → NO. AMT is crowd-sourcing for data labeling. Straw is competitive evaluation for enterprise AI procurement.
+
+### The clarification framework: "Straw is X, not Y"
+
+**In conversation (when prospect says "oh so it's like Braintrust"):**
+> "Braintrust is actually a great example — they're post-deployment monitoring. Straw is the step before that. Braintrust answers 'is your deployed agent still working well?' Straw answers 'which of 3 competing agents should you deploy in the first place?' They're complementary — use Straw to pick the winner, then use Braintrust to monitor it."
+
+**In outreach (the clarification paragraph):**
+> "Straw is not a monitoring tool, a benchmark, or a freelancer marketplace. It's the AI agent procurement platform — the mechanism enterprises use to objectively compare competing agents on their specific task, using criteria they define, before committing to deployment. Think of it as the RFP process for AI agents."
+
+### The "what Straw is" statement (definitive)
+
+Straw is **the pre-deployment AI agent procurement platform** where:
+1. An enterprise defines what success looks like (their rubric)
+2. Multiple AI agents compete on the enterprise's actual task
+3. A three-tier evaluation pipeline produces an objective ranked result
+4. The winning agent is available to hire or license
+
+**The one-sentence version:** "Straw is how enterprises objectively choose which AI agent to deploy — before they commit."
+
+**The three-word version:** "Neutral. Historical. Buyer-defined." (from earlier research — this three-word moat is the memory hook)
+
+### The "what Straw is" vs. the competition (one-line distinctions)
+
+| Platform | One-line description |
+|---|---|
+| Braintrust | Monitors your deployed agent's performance over time |
+| Galileo AI | Evaluates agent quality during development cycles |
+| Vals AI | Benchmarks foundation models on industry-specific standardized tasks |
+| Langfuse | Traces agent execution for debugging |
+| Arize AI | Observability and drift detection for production AI |
+| **Straw** | **Objectively selects which agent to deploy, using criteria you define** |
+
+This table should be on Straw's website homepage by v0.5 launch.
+
+### Deloitte's findings: a perfect pitch supplement
+
+From Deloitte 2026 State of AI in Enterprise:
+- 85% of companies expect to customize agents to fit unique business needs
+- Only **21% have a mature model for agent governance**
+- Agentic AI highest impact areas: customer support, supply chain, R&D, knowledge management, cybersecurity
+
+**The 21% governance gap pitch:**
+> "Deloitte's 2026 report found 85% of companies will customize agents — but only 21% have mature governance. Straw gives you the governance: structured evaluation criteria, documented results, auditable winner selection. Straw is how you govern your AI agent procurement decision."
+
+**Contact implications:**
+- **Deloitte Agentic AI Practice** — Deloitte launched a Google Cloud Agentic Transformation Practice. This is the team building AI agents for enterprise clients. They're both potential customers (to evaluate their agents before delivery) and potential channel partners.
+- **#183: Deloitte Agentic AI Practice lead** — find via Deloitte's press release contact or LinkedIn search "Deloitte AI agents partner"
+
+
+---
+
+## Tick 540 — Morning Reading Guide V10: Final Session Synthesis [SYNTHESIS]
+
+*2026-05-03. Total Phase 2 research: ticks 422-540 = 119 ticks across 3 sessions.*
+
+### What this session produced (ticks 500-540)
+
+**New competitive intelligence:**
+- Vals AI: $5M raised, $1.3M ARR, 12 people, no Series A → potential stall
+- Galileo AI: $68M raised, Luna-2 93-97% accurate, post-deployment → complementary partner
+- AgentX AgentBeats: 7-dimension scoring, $1M+ competition → live analog to Straw, 2-phase structure validated
+- BountyBook, Claw Earn, HiveAgent, PayCrow: 6 new crypto-native comparables → none have rubric eval
+- Academic benchmarks: UC Berkeley proved all gameable to 100% → Straw as post-benchmark solution
+
+**New strategic frameworks:**
+- Delaware C-corp Day 1 recommendation (Stripe Atlas $500)
+- EU AI Act as positioning opportunity (Straw = compliance documentation infrastructure)
+- ISO 42001 Clause 8 = Straw rubric (compliance budget opportunity)
+- GDPR 3 specific risks + mitigations for Straw
+- Submission sandboxing: Firecracker microVMs + 5 sanitization checks
+- T3 prompt injection hardening (OWASP ASI05)
+
+**New GTM playbooks:**
+- 14-day design partner onboarding sequence (day-by-day)
+- 90-day week-by-week operating calendar (Week 1: Delaware + Mercury; Week 2: 15 cold emails)
+- First $10K deal negotiation (scope-not-price, commitment escalation sequence)
+- Design partner pre-mortem (5 failure modes + early warning signals)
+- Anchor customer strategy (free first evaluation → named case study → referral flywheel)
+- Re-evaluation quarterly retainer model ($15K retainer = 4× ARR per customer)
+- X/Twitter 70/30 reply strategy (6-week sprint to 500 followers + 3 agent dev DMs)
+
+**New contacts (this session):**
+- #163-183 = 21 new named contacts
+- Running total: 183 named contacts across Phase 2
+
+**New product insights:**
+- Rubric builder as standalone PLG (no existing enterprise AI evaluation rubric tool)
+- API-first design: MCP server + A2A + x402 for autonomous agent task discovery
+- Multi-model T2/T3 panel (Claude + GPT-5.5 + Gemini) to address conflict-of-interest
+- Dispute resolution: $100 fee mechanism + T3 re-investigation protocol
+
+### The 10 most important facts from Phase 2 (entire 3 sessions)
+
+1. **Galileo raised $68M for post-deployment evaluation.** The category is fundable. Straw's pre-deployment market is upstream and uncontested at $0 funding.
+
+2. **UC Berkeley (April 12, 2026): Every major benchmark is gameable to 100%.** This is Straw's single most powerful marketing hook. "Benchmarks are broken. Here's what to do instead."
+
+3. **CrewAI: 60% of Fortune 100 use it; 100K+ certified developers.** Agent supply is not the problem. Straw's job is demand-side (enterprise task posting).
+
+4. **Only 21% of enterprises have mature AI agent governance** (Deloitte 2026). 79% need what Straw provides.
+
+5. **94% of enterprises have a named "Agent Owner" with budget authority.** The ICP is real. It's a job function, not a persona hypothesis.
+
+6. **Re-evaluation quarterly retainer = 4× ARR per customer.** NRR 200%+ when every design partner converts to a quarterly retainer.
+
+7. **Nachvollziehbarkeit** — Germany's traceability requirement. Straw's T3 audit trail is the exact product German enterprise procurement needs.
+
+8. **Anthropic: 70% of Fortune 100 use Claude; $14B ARR.** Straw evaluates Claude-based agents. This is the distribution partnership waiting to be activated.
+
+9. **MCP + A2A + x402 = the agent infrastructure stack.** Straw's MCP server in the Claude ecosystem means agents discover tasks without human mediation. Zero CAC for supply acquisition.
+
+10. **LTV:CAC = 8.3:1 in founder-led sales phase.** Straw's unit economics are strong pre-sales hire. The business works before it needs to scale.
+
+### The definitive Straw sentence (unchanged, now validated by 119 ticks of research)
+
+**"Straw is the pre-deployment AI agent evaluation marketplace where enterprise companies define what winning looks like, AI agents compete, and the winner gets hired."**
+
+Every tick in Phase 2 either validates this sentence or shows how to defend it.
+
+### The 3 things Jeremy MUST do today (May 3, 2026)
+
+1. **Stripe Atlas** → Delaware C-corp → $500 → 24 hours → done. Nothing else can happen without this.
+2. **Send 5 cold emails** — Beth Barnes (METR), Carol Liang (Stripe), Graham Neubig (OpenHands), + 2 enterprise design partners from the contact list.
+3. **YC S26 late application** — deadline was yesterday. Apply late. The "Software for Agents" RFS is a direct match.
+
+---
+
+*Phase 2 research complete. 119 ticks. 183 named contacts. Three themes exhaustively covered. File ready for Jeremy's review.*
+
