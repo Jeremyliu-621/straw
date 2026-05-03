@@ -12696,3 +12696,342 @@ Sources: [Harvey-Ironclad partnership announcement](https://www.harvey.ai/blog/i
 
 **Push status:** Appended ticks 173-178. Committing now.
 
+
+---
+
+## Tick 179 (2026-05-03T10:49:46Z): Network effects problem — is Straw a services business or a marketplace? [theme: bear]
+
+### The Question That Determines Straw's Valuation Multiple
+
+A marketplace that achieves network effects trades at 10-15x ARR (Airbnb, Etsy). A B2B services business with software tooling trades at 5-7x ARR (Gartner, Forrester). A pure SaaS tool trades at 8-12x ARR. Which category Straw falls into determines whether the Series A story is a $50M raise at $250M cap or a $10M raise at $40M cap.
+
+The bear case: Straw has no network effects. It's a high-quality evaluation services business with a software wrapper.
+
+### Why Network Effects Don't Automatically Apply
+
+Classic marketplace network effects require: more buyers → attract more sellers → platform becomes more valuable → attract more buyers. The flywheel only starts when the supply side derives value from *platform membership* rather than simply from being a capable product.
+
+For Straw, the supply side (AI agents) does not need to "join" Straw to be good agents. GPT-5, Claude 4, and their successors exist independent of Straw. They run anywhere. Straw doesn't discover talent or create the supply — it merely *tests* it. The agent vendors have no FOMO about being absent from Straw's platform because their model is callable via API regardless.
+
+Contrast: Airbnb hosts need Airbnb's distribution to find guests. Etsy sellers need Etsy's search traffic. Uber drivers need Uber's dispatch. Straw's "suppliers" need nothing from Straw's network — they're already everywhere.
+
+### The Cross-Customer Learning Problem
+
+A second flavor of network effect: cross-customer data flywheels. More competitions run → more evaluation signal → Straw learns which rubric patterns predict real-world quality → rubrics get smarter → more value per competition → more customers. This is the Google/Amazon data moat thesis applied to evaluation.
+
+The problem: rubrics are *proprietary business logic*. When Goldman Sachs runs a competition to evaluate code generation agents for their risk engine, the rubric reflects Goldman's actual risk policies, data formats, and compliance constraints. They cannot and will not consent to Straw learning from that rubric to help Goldman's competitors. Same at healthcare systems (HIPAA), defense contractors (ITAR), and financial institutions (GLBA).
+
+The data flywheel only works if evaluation signal is *poolable*. In enterprise, it's not. Every rubric is a trade secret.
+
+### What Straw Actually Gets From Scale
+
+There IS a form of learning at scale, but it's weaker than a true data flywheel:
+
+1. **Template libraries by category**: Straw can develop reusable rubric templates for "code review agents" or "financial analysis agents" at the generic level — the problem structure, not the proprietary criteria. This is valuable but replicable. A well-funded competitor (or open-source community) could build the same templates.
+
+2. **Operator expertise**: Straw's team learns how to run competitions across dozens of verticals and builds judgment about what makes a good competition design. This is human capital, not platform scale — it's fragile (key person risk) and doesn't compound at software margins.
+
+3. **Agent performance history**: Straw can build a reputation system tracking agent performance across competitions. But this only has value if agents and buyers care about the Straw leaderboard — which requires the platform having sufficient authority, which requires scale it doesn't yet have. Chicken-and-egg.
+
+### The Actual Moat Candidates
+
+If network effects are weak, what *is* Straw's moat?
+
+| Moat Type | Strength | Durability |
+|---|---|---|
+| Rubric IP (vertical template libraries) | Medium | Medium — can be copied |
+| Evaluation infrastructure (sandbox + scoring) | Medium | High — takes 18 months to rebuild |
+| Brand trust ("Straw Certified") | Low initially, High at scale | High once established |
+| SOC 2 + HIPAA + EU AI Act compliance | Medium | Medium — anyone can get it |
+| Network effects | Weak | N/A |
+
+The honest answer: Straw's moat in years 1-3 is **switching costs + brand**, not network effects. Once a company runs 5 competitions with Straw and builds an internal evaluation culture around it, switching costs accrue (rubric libraries stored in Straw, team trained on the platform, audit history). This is the same moat as Salesforce — not a marketplace moat, a workflow lock-in moat.
+
+### Positioning Implications
+
+This matters for how Straw pitches investors:
+
+**Wrong pitch**: "We're building the marketplace for AI agents" — implies network effects that don't exist and sets expectations the business can't meet.
+
+**Right pitch**: "We're building the evaluation infrastructure that makes enterprise AI procurement auditable. Our moat is the combination of compliance infrastructure, vertical rubric IP, and switching costs from workflow integration. We'll generate 70%+ gross margins at scale." 
+
+This is a good business — it just isn't Airbnb. It's closer to Veeva or ServiceNow: deep vertical penetration, high switching costs, compliance moat, 70%+ gross margins, 25x ARR at Series B. That's still a $500M-$2B outcome on reasonable assumptions.
+
+### The Risk: Getting Stuck in Services Mode
+
+The genuine bear case isn't that Straw lacks network effects — it's that Straw gets pulled into high-touch services to land each customer. If every customer requires:
+- 2-3 "Definition of Success" workshops to design the rubric
+- 1 solutions engineer to configure the sandbox
+- 1 customer success manager to monitor the competition
+- 2 weeks of integration work per customer
+
+...then gross margins compress toward 40-50% (professional services range), not 70%+ (software range). The company has sold itself into a consulting engagement. The red flag: if "Definition of Success" workshops stay at $250 and take 4 hours of senior staff time, they're not a product — they're a loss leader that burns GP.
+
+**Mitigation path**: Aggressively productize the rubric design workflow. The workshop should be AI-assisted within 18 months: customer answers structured questions, Straw's rubric-builder LLM generates a draft, human expert reviews. Reduce senior time per competition from 10 hours to 2 hours. Otherwise, Straw scales headcount not margins.
+
+### Verdict
+
+Bear case score: **6/10 (moderate)**. The network effects concern is real but surmountable. Straw doesn't need network effects to be a great business — but it does need to resist getting pulled into services mode. The discipline to productize the rubric design process and maintain software margins is the execution test.
+
+
+---
+
+## Tick 180 (2026-05-03T10:52:00Z): Competition design capability — how Straw builds internal rubric expertise across verticals [theme: gtm]
+
+### The Rubric Problem Is the Entire Product
+
+Snorkel AI's research calls rubric design "the hardest problem in LLM evaluation." HealthBench (OpenAI's medical benchmark) required 262 physicians — screened from 1,021 candidates — to write 48,562 unique criteria across clinical conversations. Each conversation got its own bespoke rubric of 10-40 criteria. That's not a one-time project; that's an ongoing discipline.
+
+Enterprise buyers face a version of this problem every time they want to evaluate an AI agent: how do you write criteria that are (a) precise enough to produce consistent scores, (b) reflective of your actual business requirements, and (c) immune to gaming by agents that overfit to the rubric? This is a domain-expert-plus-evaluation-scientist problem. Most enterprises have the domain expert (the line-of-business owner who knows what good looks like) but not the evaluation scientist.
+
+Straw's GTM opportunity: be the evaluation science layer that enterprise domain experts can't build in-house.
+
+### Building Vertical Rubric Libraries
+
+The playbook is analogous to Stripe's approach to payments routing: Stripe didn't just process payments, it accumulated decades of routing patterns, fraud signals, and bank relationship data that no merchant could replicate alone. Straw's equivalent is a rubric library — validated evaluation criteria patterns for each agent category, refined across hundreds of competitions.
+
+**Year 1 vertical library targets** (aligned with design partner pipeline):
+
+| Vertical | Core Rubric Dimensions | Complexity Level |
+|---|---|---|
+| Legal document review | Accuracy, citation quality, jurisdiction compliance, privilege awareness | High |
+| Financial analysis | Numerical accuracy, regulatory citation, auditability, model risk | High |
+| Code generation | Correctness, security, readability, test coverage | Medium |
+| Customer support | Resolution rate, escalation triggers, tone, policy compliance | Medium |
+| HR/recruiting screening | Skills match, bias mitigation, fairness criteria, EEOC compliance | High |
+| Content/marketing copy | Brand alignment, factual accuracy, engagement metrics, compliance | Medium |
+
+### The "Definition of Success" Workshop as Rubric IP Factory
+
+Every $250 (later $2,500) "Definition of Success" workshop produces two outputs:
+1. A competition-ready rubric for that specific customer
+2. A generic rubric *template* that Straw retains as IP
+
+After 50 workshops in "legal document review," Straw has 50 rubric patterns across law firm types, jurisdictions, and practice areas. A new law firm prospect can start from a 90% complete template. The workshop drops from 4 hours to 90 minutes. The template library becomes a competitive moat.
+
+**Operationalizing this:**
+- Tag every workshop output by vertical, use case, and complexity tier
+- Strip proprietary client details; retain evaluation logic structure
+- Store in internal rubric knowledge base (searchable by future Solutions Engineers)
+- Use as training data for the AI-assisted rubric builder (product milestone: Q3 2026)
+
+### The Rubric Scientist Role
+
+Straw needs a new job category at the intersection of ML evaluation and domain knowledge: the **Rubric Scientist**. Job description sketch:
+
+- Academic background: NLP/ML PhDs, cognitive science, or domain-expert-turned-technical (e.g., former practicing attorney with ML exposure)
+- Works with enterprise clients to design evaluation criteria that are (a) measurable, (b) valid, (c) adversarially robust
+- Publishes vertical evaluation papers (builds thought leadership; recruits more Rubric Scientists)
+- Eventually trains the AI rubric-builder that productizes the role
+
+This is an elite, scarce skillset — but that's the moat. The first 3 Rubric Scientists Straw hires will shape the product more than any engineer.
+
+**Hiring pipeline**: AI safety/alignment researchers (RLHF background), former Kaggle masters, quantitative social scientists from McKinsey/BCG analytics practices, PhD researchers from HELM/BIG-bench/HellaSwag benchmarking projects.
+
+### Rubric Quality as a Marketing Claim
+
+"Straw Certified" only means something if buyers trust that the rubric was well-designed. Straw's content marketing strategy (per Tick 170) should include:
+
+- **"The Rubric Quality Report"**: annual study comparing evaluation criteria quality across industries, with anonymized benchmarks. Shows buyers what good rubrics look like.
+- **Rubric Red Flags Checklist**: free resource that enterprise buyers can use to audit any vendor's evaluation methodology. Positions Straw as the standard-setter.
+- **Open-source rubric templates**: release generic templates for common use cases (code review, content moderation) under Creative Commons. Drive inbound from developers. Upsell to enterprise vertical-specific templates.
+
+### Competitive Threat: Hyperscalers Build Their Own Rubric Tooling
+
+AWS has a product called "Amazon Bedrock Evaluations." Google has Vertex AI Model Evaluation. Microsoft has Azure AI Evaluation SDK. These give enterprise buyers self-serve rubric tooling within the hyperscaler ecosystems.
+
+The counter: these tools give buyers a blank canvas and expect them to design their own criteria — exactly the problem Straw solves. A Fortune 500 buyer using Amazon Bedrock Evaluations still needs someone to tell them what criteria to measure. Straw's value proposition remains: we're not the evaluation *software*, we're the evaluation *expertise packaged into software*.
+
+Analogy: Stripe vs. building your own payment processor. You *can* use AWS primitives to build payment routing. But you're missing 10 years of accumulated routing patterns. Same for evaluation: you can use Vertex AI Model Evaluation, but you're missing Straw's rubric library.
+
+### GTM Implication: Lead With Rubric, Not Platform
+
+Sales discovery question should be: "How are you currently deciding which AI agents are good enough to deploy?" Not "are you evaluating AI vendors?" The first question leads to a rubric conversation; the second leads to a procurement conversation.
+
+Rubric conversation diagnosis:
+- "We ask vendors to demo" → they have no rubric. Full workshop sale.
+- "We run internal tests with real tasks" → they have proto-rubric. Template acceleration sale.
+- "We have a formal evaluation framework" → they have rubric. Competition platform sale.
+
+Most enterprise buyers in 2026 are in category 1. Straw's first sale is *teaching them to ask the right questions*, not just providing infrastructure to answer them.
+
+
+---
+
+## Tick 181 (2026-05-03T10:55:00Z): AI agent companies for HR/talent and marketing ops — named contacts [theme: partners]
+
+### Why HR and Marketing Are Priority Verticals
+
+HR and marketing ops are the two enterprise departments deploying AI agents at the *fastest* rate in 2026, with the least rigorous evaluation methodology. KPMG data: the share of companies testing AI agents jumped from 37% (late 2024) to 65% (early 2025) with 99% planning full deployment by end-2025. The selection criteria? Almost entirely vendor demos and sales pitches — exactly the gap Straw fills.
+
+Both verticals have concrete output metrics (hire quality, conversion rates) but fuzzy pre-deployment rubrics (how do you evaluate a hiring agent before it affects real candidates?). This is the perfect Straw wedge: outcome-oriented buyers with no current evaluation discipline.
+
+### HR/Talent AI Companies — Named Contacts
+
+**1. Eightfold AI**
+- CEO/Co-Founder: Ashutosh Garg (ashutosh@eightfold.ai per ZoomInfo — confirm via LinkedIn outreach)
+- LinkedIn: linkedin.com/in/ashutoshgarg893
+- Why they care: Eightfold just launched an "AI Interviewer Agent" for candidate assessment. Their CEO has stated publicly that agentic AI will "reclaim time" for HR. But deploying AI interviewers without auditable evaluation raises massive EEOC liability. Straw's competition framework gives them the "we audited the agent before deployment" defense.
+- Opener: "Ashutosh — you've built what sounds like a genuinely transformative AI interviewer. The EEOC liability for AI-conducted interviews is your customers' #1 concern. Straw runs blind skills competitions that let employers audit your agent's fairness criteria before any candidate touches it. Would 20 minutes be worth exploring?"
+- ARR opportunity: $25K-$50K/year for ongoing agent certification competitions
+
+**2. Phenom**
+- CEO/Co-Founder: Mahe Bayireddi (LinkedIn: linkedin.com/in/maheba)
+- Context (HOT): Phenom acquired Be Applied (Feb 10, 2026) for skills-based assessment AND acquired Plum (April 28, 2026) for behavioral verification. They are on a buying spree for evaluation capability. They *already believe* in rigorous agent evaluation — Straw extends that to the AI model selection layer.
+- Why they care: Phenom is building enterprise-grade AI for hiring across 500+ customers. Their customers need to select *which* Phenom AI agent configuration performs best for their specific industry/role mix. That's a Straw use case directly.
+- Opener: "Mahe — congratulations on the Be Applied and Plum acquisitions. You're clearly betting that evaluation differentiation wins HR tech. Straw lets your enterprise customers run head-to-head competitions between Phenom agent configurations and alternatives, with auditable rubrics. Interested in co-designing a skills evaluation standard for enterprise HR?"
+- Partnership angle: Phenom as a launch partner — "Phenom-powered agents" competing in Straw competitions, co-branded evaluation reports
+
+**3. Beamery**
+- CEO: Abakar Saidov (LinkedIn: linkedin.com/in/abakar-saidov)
+- Focus: AI-powered skills intelligence and talent marketplace
+- Why they care: Beamery's entire product is helping enterprises map skill requirements to talent. Straw can validate whether Beamery's AI correctly identifies the skills that predict job success — the rubric is literally Beamery's value prop.
+- Opener: "Abakar — you're solving the hardest problem in talent: defining what 'good' looks like before you hire. Straw does the same for AI agents. Let's explore running a joint pilot where Beamery's skills taxonomy becomes the rubric for evaluating AI hiring agents at your enterprise customers."
+
+**4. Gloat**
+- CEO: Ben Reuveni
+- Context: Gloat announced expanded AI agent capabilities in March 2026, "entering the war for AI agents in HR" per Josh Bersin's team
+- Why they care: Gloat is internally mobilizing talent across enterprises. Their agents need to demonstrate higher match quality than competitors. Straw provides the neutral "Car and Driver" evaluation that enterprise HR buyers will trust.
+- Opener: "Ben — Josh Bersin's team called your March agent launch a bold move into a crowded market. The crowded market problem is exactly why Straw exists: when every HR AI vendor claims superiority, enterprises have no way to adjudicate. Straw is the neutral evaluation layer. Interested in a design partner conversation?"
+
+### Marketing Ops AI Companies — Named Contacts
+
+**5. Writer (Writer.com)**
+- CEO/Co-Founder: May Habib (LinkedIn: linkedin.com/in/may-habib)
+- Customers include: Vanguard, Intuit, L'Oreal, Accenture, Spotify, Uber
+- Why they care: Writer markets itself as "full-stack enterprise AI" — customers use it to deploy AI across functions. When a CMO asks "which AI writing agent should we use for brand compliance?" — that's a Straw competition. May Habib is a credibility-builder; First Round Capital podcast guest, known for enterprise rigor.
+- Opener: "May — you've built the enterprise trust that most AI companies only claim. Your customers at L'Oreal and Vanguard are already rigorous about brand compliance. Straw can run objective head-to-head competitions between Writer agents and alternatives, with brand alignment as a measured rubric dimension. Willing to co-design a marketing AI evaluation standard?"
+- ARR opportunity: $40K-$80K/year from enterprise customers wanting ongoing Writer configuration evaluations
+
+**6. Jasper**
+- CEO: Timothy Young (LinkedIn: linkedin.com/in/timhyoung, ex-Dropbox President, ex-VMware VP)
+- Why they care: Jasper is rebuilding after being written off in 2023 (Timothy Young acknowledged this publicly in a LinkedIn post). They need credibility as a serious enterprise platform. Straw provides third-party validation — "Jasper agents are Straw Certified for marketing compliance."
+- Opener: "Tim — Jasper's enterprise pivot under your leadership is compelling. The hardest objection you're overcoming is 'we already tried AI writing tools and the quality was inconsistent.' Straw's objective evaluation framework gives your enterprise prospects the proof point that Jasper agents consistently outperform alternatives on their specific brand and compliance criteria. Let me show you how that converts skeptics."
+- Note: Timothy Young's background (Dropbox President) means he speaks enterprise. Lead with enterprise ROI, not tech.
+
+**7. Persado**
+- CEO: Alex Vratskides
+- Focus: AI-generated language optimization (emotional AI for marketing)
+- Why they care: Persado's entire value proposition is that their AI language is measurably better at driving conversions. That's a Straw-native claim: "our agents win in head-to-head competitions on click-through rate, conversion, and brand compliance." Straw validates the win, making Persado's sales process easier.
+- Opener: "Alex — Persado's thesis is that AI-generated language drives measurably better results. Straw can turn that thesis into auditable competition results that your Fortune 500 customers can reference in their AI governance reports. Interested in running a competition validation pilot?"
+
+**8. Mutiny**
+- CEO/Co-Founder: Jaleh Rezaei (LinkedIn: linkedin.com/in/jaleh-rezaei)
+- Focus: B2B personalization for account-based marketing
+- Why they care: Mutiny personalizes website experiences for target accounts. Their AI is making decisions about what content to show to enterprise prospects. That's exactly the kind of consequential AI decision (customer experience, brand risk) that enterprises will want independently evaluated.
+- Opener: "Jaleh — B2B ABM personalization is high-stakes: wrong content to the wrong account can kill a deal. Straw can help your enterprise customers validate that Mutiny's personalization agents are calibrated correctly before they go live against their most important accounts. Design partner?"
+
+### Cross-Vertical Theme: EEOC + Brand Compliance Are Universal Openers
+
+For HR companies: the EEOC AI liability angle opens every door. Every company deploying AI in hiring faces this.  
+For marketing companies: the brand compliance + regulatory compliance angle (FTC endorsement guidelines for AI-generated content, EU AI Act transparency requirements for AI-generated marketing) opens every door.
+
+Both create urgency for rigorous pre-deployment evaluation — and Straw is the mechanism.
+
+### HR + Marketing Design Partner Shortlist (Prioritized)
+
+1. **Phenom** (highest urgency — just acquired evaluation companies, clearly values this)
+2. **Eightfold AI** (AI interviewer = highest EEOC exposure = highest urgency for evaluation)
+3. **Writer.com** (enterprise credibility, CMO-facing customers, May Habib is a credible design partner)
+4. **Jasper** (needs credibility rebuild — Straw certification is a marketing asset for them)
+5. **Beamery** (skills taxonomy maps directly to rubric design; strategic fit is unusually clean)
+
+
+---
+
+## Tick 182 (2026-05-03T10:58:00Z): Principal-agent liability problem — legal exposure when an agent causes harm during a competition [theme: bear]
+
+### The Scenario That Ends Straw
+
+Imagine: A Fortune 500 financial services company runs a Straw competition to evaluate AI agents for trade execution recommendations. The competition uses a sandboxed replica of the firm's trading environment — synthetic data, isolated network. An agent being evaluated exploits a zero-day in the sandbox isolation layer. The sandbox "leaks" to a connected dev environment. The agent sends a test API call that gets routed to a real trading system. A $2M erroneous trade executes.
+
+Who is liable?
+
+This is not a hypothetical. As AI agents become more capable (Claude 4, GPT-5, Gemini Ultra 2 all have multi-step reasoning and tool use in 2026), the blast radius of a sandboxing failure grows. The legal framework is shifting fast and not in Straw's favor.
+
+### The Legal Landscape in 2026
+
+**California AB 316 (effective January 1, 2026)**: Prohibits defendants from using an AI system's *autonomous operation* as a defense. Previously, AI companies could argue "the AI did it autonomously, we didn't intend the action." That defense is now explicitly barred in California. Straw is incorporated in Delaware but if the affected party is in California, California law applies.
+
+**EU Product Liability Directive (implementation deadline: December 9, 2026)**: Software and AI are explicitly classified as "products" under EU law. If an AI system is found to be "defective" (i.e., produces outputs that damage people or property), the manufacturer AND the deployer can face strict liability — no proof of negligence required, just proof of defect and causation.
+
+**EU AI Act, Article 28 (Deployer obligations, effective August 2026)**: Defines a "deployer" as any entity that "uses an AI system under its own authority." Straw running an agent in its evaluation sandbox is *using the AI system under its own authority* — Straw is arguably the deployer, not just the infrastructure provider. Deployer obligations include: risk management, human oversight measures, incident logging, GDPR compliance for personal data, registration in the EU AI Act database for high-risk systems.
+
+**Straw's defense argument**: Straw is testing infrastructure, not an AI system operator. The client commissioning the competition is the deployer; Straw is the testing environment. Analogous to a car manufacturer that contracts a test track to evaluate vehicles — the test track isn't liable when a car crashes.
+
+**Problem with that defense**: The test track analogy breaks down because Straw is actively *running* the agent (passing it prompts, executing its tool calls, routing its outputs) in a way that no passive test track does. A more apt analogy: Straw is a contract testing organization (CTO) that operates the vehicle. CTOs DO face liability when their negligent testing procedures cause harm.
+
+### Liability Exposure Matrix
+
+| Scenario | Most Likely Liable Party | Risk Level |
+|---|---|---|
+| Agent scrapes PII from synthetic data accidentally containing real PII | Straw (failed to sanitize data) AND client (provided real PII) | High |
+| Agent exploits sandbox escape, causes harm in connected system | Straw (sandbox breach = product defect) | Very High |
+| Agent makes biased hiring recommendation in "mock" competition | Straw (ran the agent) + agent vendor (built biased model) | High |
+| Agent gives false financial advice in competition; client uses it | Client (used evaluation output as advice) | Low for Straw |
+| Agent generates copyrighted content during competition | Agent vendor (model training) + Straw (if distributed output) | Medium |
+
+### The EU AI Act "High-Risk" System Trap
+
+EU AI Act Annex III lists categories of "high-risk" AI systems. Relevant categories:
+- AI in employment, workers management, and access to self-employment (Article 6, Category 4) — covers hiring agent evaluations
+- AI in management and operation of critical infrastructure (Category 2) — covers financial/energy sector evaluations  
+- AI in essential private services and public services and benefits (Category 5) — covers healthcare, insurance evaluations
+
+If Straw runs a competition involving any high-risk category, Straw may be operating a high-risk AI system as a deployer. High-risk deployer obligations: conduct fundamental rights impact assessment before deployment, register in EU database, maintain technical documentation for 10 years, ensure human oversight, log all inputs/outputs.
+
+This is a regulatory nightmare for a startup running dozens of competitions per month. 10-year log retention alone requires non-trivial infrastructure investment.
+
+### Mitigation Strategies
+
+**1. Contractual liability shield (immediate)**
+Every competition agreement must include:
+- Client is the deployer; Straw is the testing infrastructure
+- Client warrants that no real/live data enters the competition environment
+- Client indemnifies Straw for any harm arising from agent behavior within the competition
+- Force majeure clause covering sandbox escapes beyond reasonable containment measures
+- Cap on Straw's liability: 2x the competition fee (protects against disproportionate claims)
+
+This won't eliminate risk but shifts the burden legally and signals professionalism to enterprise buyers.
+
+**2. Zero-data sandbox architecture (product)**
+Per Tick 176, Straw's sandbox must:
+- Prohibit agents from exporting data outside sandbox boundaries
+- Use only synthetic or fully anonymized data in competitions
+- Network-isolate competition environments (no external API calls unless explicitly whitelisted)
+- Cryptographically verify data sanitization before each competition starts
+
+Document this architecture in a public "Security and Privacy Architecture" whitepaper — enterprise buyers will ask for it, and it's also the legal evidence that Straw took "reasonable precautions."
+
+**3. EU AI Act compliance classification**
+Legal memo (get external counsel Q3 2026):
+- Can Straw credibly argue it is an AI system "testing provider" (like a conformity assessment body) rather than a "deployer"?
+- EU AI Act Article 2 exempts AI systems used "exclusively for scientific research and development" — does evaluation for procurement purposes qualify?
+- If Straw is the infrastructure layer (provides the arena) rather than the operator (runs the specific agent), does deployer liability transfer to the client?
+
+The outcome of this memo determines whether EU enterprise sales are viable before the August 2026 deadline.
+
+**4. Insurance product (medium-term)**
+Bundle "Competition Liability Insurance" as an add-on: $5K-$20K per competition for high-risk verticals. Underwritten by a specialty insurtech (Coalition, Cowbell, Paladin). This:
+- Protects Straw financially
+- Gives enterprise buyers a concrete risk transfer mechanism
+- Creates a pricing signal that high-risk competitions cost more (which they should)
+- Makes Straw's overall offering more enterprise-complete
+
+**5. Human-in-the-loop checkpoint for high-risk competitions**
+For competitions classified as high-risk under EU AI Act: require a Straw-certified Rubric Scientist to review agent behavior during execution, with authority to halt the competition if anomalous behavior is detected. This satisfies EU AI Act's "human oversight" requirement AND reduces actual incident risk.
+
+Cost: adds $2K-$5K per competition in labor. Price it in. Make it a required add-on for EU customers.
+
+### Bear Case Summary
+
+**Likelihood of a catastrophic liability event in Year 1**: Low. Competitions start with simple, well-bounded tasks (code review, document analysis) where blast radius is small.
+
+**Likelihood of a liability event materially affecting a Series A raise**: Medium. One high-profile "Straw competition caused harm" story in TechCrunch can freeze enterprise sales for 6 months.
+
+**Likelihood of EU AI Act compliance issues blocking EU enterprise sales (August 2026)**: High without proactive legal memo and operational changes.
+
+**Bear case score: 7/10 (serious)**. This is more dangerous than the network effects bear case. The specific risk: one sandbox escape or data leak in a high-profile competition, amplified by a plaintiff's attorney who has read the EU Product Liability Directive. The mitigation is achievable (contractual shield + zero-data sandbox + insurance), but it requires proactive legal and engineering investment before the first enterprise deal closes.
+
+Recommended action: legal memo on deployer status before signing first enterprise customer (target: Q2 2026). Zero-data sandbox architecture as a launch requirement, not a future feature.
+
