@@ -23474,3 +23474,115 @@ Sources: (synthesis from all Phase 2 research)
 
 TICK_END
 
+
+---
+
+## TICK 380 — Bear Case Update #2: Microsoft Copilot Studio Added "Agent Evaluations" (April 2026)
+
+**Theme: Bear Case**
+
+### What Microsoft Released
+
+Microsoft Copilot Studio (multi-agent GA, April 2026): Added "agent evaluations" to Copilot Studio's Lifecycle Management features. "Agent evaluations support ongoing quality and improvement." A2A protocol integrated. Autonomous agentic actions across Word, Excel, PowerPoint now GA.
+
+**Context:** Microsoft has 365M commercial Microsoft 365 users. Copilot agents run inside that ecosystem. "Agent evaluations" are built-in evaluation for Copilot agents.
+
+### Google + Microsoft: Both Validated the Category in April 2026
+
+In the same month (April 2026), both Google (Gemini Enterprise Agent Platform, April 22) and Microsoft (Copilot Studio GA, April 2026) added agent evaluation capabilities. The category is now formally recognized by the two largest enterprise software platforms in the world.
+
+**The two-platform validation is a signal:**
+1. **Validation:** Agent evaluation is a real product need, not a niche concern
+2. **Compression:** Two well-capitalized platforms are now in adjacent space
+3. **Differentiation clarity:** Straw must now articulate the cross-vendor, buyer-rubric gap more precisely, with more urgency
+
+### Updated Competitive Landscape (May 2026)
+
+| Player | What they built | What they lack | Straw's gap |
+|---|---|---|---|
+| Google Gemini Enterprise Agent Platform | Agent Simulation + Agent Evaluation | Only for Google/Model Garden agents | Cross-vendor, buyer-defined rubrics |
+| Microsoft Copilot Studio | Agent evaluations in Lifecycle Management | Only for Microsoft Copilot agents | Cross-vendor, buyer-defined rubrics |
+| Braintrust | AI observability, post-deployment | Pre-deployment competition mechanic | Pre-procurement + competition |
+| Scale AI SEAL | Model-level evaluation | Not task-specific, not buyer's rubric | Buyer's task + competition |
+| Harvey BigLaw Bench | Legal task evaluation | Vendor-operated, Harvey-specific | Buyer-defined rubric |
+| **None** | **Cross-vendor, pre-deployment, buyer-defined rubric competition** | — | **This is Straw** |
+
+**Updated P(competitor closes the gap in 18 months): 25-30%.** Both Google and Microsoft have shown they understand evaluation. If either extends to cross-vendor evaluation or adds a competition mechanic, Straw faces a significant threat. The 18-month window is confirmed; compressed, not extended.
+
+### The ICAAN Principle: Cross-Vendor Is Straw's Core Defense
+
+**I**nfrastructure-agnostic, **C**ross-vendor, **A**ny-agent, **A**ny-rubric, **N**o-lock-in.
+
+This must be Straw's architectural commitment: Straw never prefers one agent over another. Straw has no incentive to favor Google's agents, Anthropic's agents, or any agent — Straw earns its fee whether the Google agent wins or the open-source agent wins. This neutrality is the moat.
+
+If Google adds cross-vendor evaluation: they have a conflict of interest (they want Google agents to win). If Microsoft adds cross-vendor evaluation: same conflict. Straw has no such conflict.
+
+**The structural independence of Straw's evaluation = the defensible moat.**
+
+Sources: evermx.com/case/microsoft-copilot-studio-multi-agent-ga-april-2026, microsoft.com/en-us/microsoft-365/blog/2026/03/09/powering-frontier-transformation-with-copilot-and-agents, windowsnews.ai/article/microsoft-copilots-2026-strategy
+
+TICK_END
+
+---
+
+## TICK 381 — Fundraising Roadmap: Seed to Series A
+
+**Theme: GTM (fundraising strategy)**
+
+### Series A Benchmarks (AI Infrastructure, 2026)
+
+- **Minimum ARR:** $2.5M+ with 100%+ YoY growth
+- **Median Series A valuation:** $30-35M (15x-30x ARR)
+- **Strong outlier:** $50M+ with proven LLM infrastructure and data moat
+- **Key metrics investors want:** Gross margins, LTV:CAC ≥ 3.5:1, burn multiple, ARR growth rate
+
+### Straw's Fundraising Path
+
+**Seed ($1-3M) — Target: Q3 2026**
+
+Seed thesis: "We've proven the mechanism works with 3-5 design partner competitions. The architecture matches Anthropic's own evaluation guidance. Google and Microsoft validated the category in April 2026. We have 76 named enterprise design partners across 8 verticals. We need capital to scale the evaluation pipeline and convert design partners to paying customers."
+
+Target investors:
+- YC (if S26 application succeeds) — best distribution channel
+- ICONIQ Capital (led Braintrust's $80M round — they understand AI eval)
+- Andreessen Horowitz (led Cursor's Series A — they understand developer-first GTM)
+- Greylock (participated in Braintrust — AI infrastructure mandate)
+
+**Required before Seed:**
+- [ ] 3+ design partner conversations completed
+- [ ] 1+ competition run (even if free)
+- [ ] Case study published
+- [ ] Clear evidence that buyers will pay ($5K-25K) for the second competition
+
+**Series A ($10-20M) — Target: Q2-Q3 2027**
+
+Series A thesis: "We're at $2.5M+ ARR, growing 100%+ YoY. We have the first cross-vendor, buyer-defined AI agent evaluation platform with a proven competition mechanic. The regulatory compliance angle (EU AI Act, Colorado Act) is driving inbound. Braintrust is $800M for post-deployment observability; we're pre-deployment procurement. We're raising to expand to healthcare and legal verticals and build the reputation graph."
+
+**Required before Series A:**
+- $2.5M+ ARR
+- 15+ paying enterprise customers
+- NPS ≥ 40 (promoters who recommend to peers)
+- At least one named Fortune 500 case study
+- CAIF grant awarded (non-dilutive credibility signal)
+
+### The Non-Dilutive Capital Stack
+
+Before taking equity:
+1. **CAIF grant:** £100-150K for mechanism design research. No dilution.
+2. **YC standard deal:** $500K for 7%. Acceptable dilution given distribution value.
+3. **SBIR (if applicable):** NSF SBIR Phase I ($275K) for AI evaluation infrastructure research
+4. **Revenue-based financing:** After $50K ARR, consider revenue-based financing for working capital
+
+### The Strategic Investor Angle
+
+The most valuable fundraise is not from a pure financial VC — it's from a strategic investor who provides distribution:
+- **Databricks Ventures:** Access to 20,000 enterprise data engineering customers
+- **Anthropic's Claude Partner Network:** Access to 1,000+ $1M/year enterprise customers
+- **Google Ventures (GV):** Access to Google Cloud customers who want cross-vendor eval independent of Google
+
+A strategic investor's distribution is worth more than their capital.
+
+Sources: qubit.capital/blog/ai-startup-valuation-multiples, eqvista.com/ai-startup-fundraising-trends, spectup.com/resource-hub/series-a-traction-metrics
+
+TICK_END
+
