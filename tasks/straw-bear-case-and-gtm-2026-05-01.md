@@ -34106,3 +34106,182 @@ YC W26 (Winter 2026) was the strongest batch in YC history:
 **YC S26 application timing:** Applications were due May 4, 2026 (yesterday). If Straw applied, the fact that 199 companies just Demo Day'd — and none are in the procurement evaluation category — is the strongest possible "why now" and "competitive differentiation" argument.
 
 ---
+## Tick 494 — Updated Competitive Scan: Maxim AI and the Full 2026 Evaluation Landscape [theme: bear]
+
+**Research date:** 2026-05-03
+
+### New competitor to add to the map: Maxim AI
+
+Previous competitive map (Tick 476) covered: Braintrust, Langfuse, Arize, LangSmith, Vals AI, Maxim AI (briefly).
+
+**Updated Maxim AI analysis:** Maxim AI is emerging as the most serious potential competitor to Straw.
+
+**What Maxim AI does:** "End-to-end simulation, evaluation, and observability in a single closed-loop system." Key capabilities:
+- **Agent simulation before deployment** — generates diverse user personas and interaction patterns for pre-deployment testing
+- **Realistic scenarios at scale** — "test AI agents across hundreds of realistic scenarios before deployment"
+- **Single platform:** experimentation + simulation + evaluation + production observability
+
+**How Maxim AI differs from Straw (still):**
+
+| Dimension | Maxim AI | Straw |
+|---|---|---|
+| Who defines rubric | Maxim AI / developer | Enterprise buyer |
+| Competition model | None (single agent testing) | Multi-agent marketplace competition |
+| Task source | Developer-generated test scenarios | Enterprise-defined real tasks |
+| Output | "Does your agent pass your tests?" | "Which of N agents wins your rubric?" |
+| Business model | SaaS subscription | Per-competition event |
+| Use case | Agent developer quality gate | Enterprise procurement decision |
+
+**Straw vs. Maxim AI pitch:** "Maxim AI tests your agent against scenarios you created. Straw tests multiple vendors' agents against your business requirements. If you built the agent yourself, you want Maxim. If you're choosing which agent to buy, you want Straw."
+
+**The risk:** Maxim AI could add a "multi-agent comparison" feature. Timeline: 3-6 months if they prioritize it. Defense: they'd need to build the marketplace layer (agent registration, bounty mechanics, reputation graph) — not just a comparison UI. The marketplace is 12+ months of work.
+
+### The LangChain 2026 "State of AI Agents" report key stat
+
+"57% of organizations have agents in production. Quality cited as the top barrier by 32%."
+
+**This 32% "quality barrier" IS Straw's entire market.** 32% of enterprises with AI agents in production have a quality problem. These are NOT pre-deployment evaluation customers (it's too late for them) — but they are THE IDEAL CUSTOMERS for the next evaluation cycle ("we deployed, it didn't work as well as expected, now we need to re-evaluate").
+
+**The re-evaluation market:** A company that deployed an agent that underperformed is MORE motivated to run a Straw evaluation before their next deployment than a company with no agent yet. This is a second distribution channel: enterprises who already deployed + hit the quality wall.
+
+**Updated Straw pitch variant for this segment:**
+"Your agent is in production but not performing as expected. Before you switch vendors or build internal, let's run a competitive evaluation on your production task. You'll know if the problem is the agent or the rubric within 2 weeks."
+
+Sources: getmaxim.ai/articles/top-5-ai-evaluation-platforms-in-2026-2, medium.com/@kamyashah2018/top-5-ai-agent-evaluation-tools-in-2026, kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026
+
+TICK_END
+
+---
+
+## Tick 495 — Enterprise AI Team Communities: Where Agent Owners Gather Online [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The enterprise AI professional community landscape
+
+**Key insight from search:** There's no single "Agent Owner Discord" or "AI Ops Slack" community with hundreds of enterprise buyers. These people are fragmented across:
+
+1. **LinkedIn** (primary professional network; where Agent Owners announce role changes and share insights)
+2. **AI-specific Slack communities** (invite-only, smaller, higher quality)
+3. **Conference communities** (post-event Slack groups, Discord servers)
+4. **Vendor communities** (Salesforce Trailblazer for Agentforce users; Anthropic's developer Discord)
+
+### The communities worth joining/monitoring
+
+**For Demand Side (enterprise AI buyers / Agent Owners):**
+
+1. **AI Infrastructure Alliance Slack** — AI researchers, enterprise ML engineers; invite through direct outreach or AIinfra.community
+2. **Towards AI Slack** — 11,000+ members; mix of researchers, enterprise practitioners
+3. **OpenAI Developer Forum** — Not a Slack but active discussion forum; enterprise AI teams discuss deployment challenges
+4. **Anthropic Discord** — Claude users, including enterprise deployments; Agent Owners in regulated industries are here
+
+**For Supply Side (AI agent builders — Straw's supply side):**
+
+5. **LangChain Discord** — 50,000+ members; LangChain/LangGraph agent builders; largest agent developer community
+6. **CrewAI Discord** — Largest community of any specific agent framework
+7. **OpenHands Discord (All-Hands-AI)** — Autonomous coding agent community
+8. **AutoGPT/Auto-GPT Discord** — Early autonomous agent community; still active
+9. **HuggingFace Discord** — 100,000+ members; AI researchers and agent builders
+
+**For Both (mixed audience):**
+
+10. **Latent Space Discord** — ~20,000 members; AI engineers + enterprise technical leads; high quality
+11. **MLOps Community Slack** — Enterprise ML practitioners; adjacent to Agent Owner role
+12. **Aggregate Intellect (AISC) Slack** — AI researchers and enterprise AI adopters
+
+### Straw's community strategy
+
+**Phase 1 (now-Month 6): Listen and add value, don't pitch**
+- Join LangChain Discord and OpenHands Discord as supply-side communities
+- Join Latent Space and MLOps Community as buyer-adjacent communities
+- Post valuable content: share rubric templates, evaluation insights, ask thoughtful questions
+- Never pitch Straw directly in channels — give value first
+
+**Phase 2 (Month 3-6): Become a known voice**
+- Write a detailed answer to "how do you evaluate AI agents before deployment?" in relevant Discord/Slack channels
+- Reference Straw's rubric builder as a free resource (not as a sales pitch)
+- The goal: become the person people think of when they have evaluation questions
+
+**Phase 3 (Month 6+): Community partnerships**
+- Partner with Latent Space for a special episode/post on AI agent evaluation methodology
+- Sponsor or contribute to CrewAI community around evaluation best practices
+- Co-author a "State of AI Agent Evaluation 2026" report with an established community (e.g., MLOps.community or DAIR.AI)
+
+### The "community seed" approach for supply-side bootstrap
+
+**The most efficient supply-side bootstrap:** Post to LangChain Discord and CrewAI Discord:
+
+"Straw is launching its first AI agent evaluation competition: [Company] posted a [task type] task with a defined rubric. Prize: $[amount] to the winning agent's operator. 
+
+If your agent handles [task type], you can enter by [deadline]. Estimated time to integrate: 10 minutes via our API.
+
+[Link to task + rubric]"
+
+This is the cleanest possible supply-side acquisition: targeted to people who already have agents, incentivized by a bounty, and zero pitch language.
+
+Sources: digitalapplied.com/blog/ai-workflow-orchestration-tools-2026-comparison, clearfeed.ai/blogs/slack-ai-integration-tools
+
+TICK_END
+
+---
+
+## Tick 496 — "Why Jeremy" Founder Narrative for YC and Investor Pitches [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The "Why You" question — why it matters
+
+YC's selection process focuses on: "Problem clarity, founder credibility, and demonstrated ability to execute quickly."
+
+"Investors scrutinize Founder-Market Fit (personal brand & resilience)" as one of 7 critical due diligence areas beyond the pitch deck.
+
+"What separates memorable founders from forgettable ones is their ability to communicate why their idea matters" and "why THEY are the person to solve it."
+
+**The most common founder mistake:** Jumping straight to the product without establishing why they're the right person to build it.
+
+### The "Why Jeremy" narrative structure (for YC, investors, design partners)
+
+**Version 1 (60-second spoken):**
+
+"I've been building software systems my entire career, and for the past two years I've been embedded in enterprise AI adoption — watching companies make six-figure decisions about which AI agent to deploy based on 30-minute vendor demos. I kept seeing the same pattern: no objective baseline, no rubric, no way to compare apples to apples. A friend who builds AI agents said 'the problem isn't the technology, it's that nobody agrees on what winning looks like.' That's when I knew this was a platform problem, not a tooling problem. I've built [X], shipped [Y], and I know the enterprise procurement cycle from the inside. Straw is the obvious thing that needed to exist."
+
+**Version 2 (written, for YC application):**
+
+"I'm building Straw because I've spent [X years] at the intersection of enterprise software procurement and AI systems, and I kept seeing a specific failure mode: companies making $1M+ decisions based on demos that don't reflect their actual use case. The insight came from a conversation with an AI agent builder who said 'agents should want to prove themselves — give them a fair competition and they'll show you what they can do.' That phrase unlocked the whole thing. The platform should run the competition. The agent operator puts skin in the game. The enterprise defines winning. Straw is the marketplace that makes that happen. I'm the right person to build this because [specific relevant experience] and because I've already [evidence of execution: N evaluations run, X design partners engaged, pipeline code live]."
+
+**Version 3 (LinkedIn post — shorter):**
+
+"The insight that led me to build Straw: A friend who builds AI agents said 'agents should want to prove themselves on your actual tasks.' 
+
+At the time, I was watching enterprise companies make six-figure AI procurement decisions based on vendor demos. The demos didn't reflect the company's actual workflows. The decision was gut feel.
+
+The obvious fix: Define what winning looks like BEFORE the demo. Run the demo as a competition. Score objectively. Hire the winner.
+
+That's Straw. And it took an AI agent builder to tell me what enterprise buyers already knew they needed."
+
+### The "founder-market fit" signals Jeremy has (or needs to develop)
+
+**Strong signals (Jeremy has or can claim):**
+- Hands-on builder: Claude Code sessions show deep technical execution
+- Understands AI agent systems: building Straw on the infrastructure (evaluation pipeline, tiered scoring, rubric builder)
+- Understands enterprise procurement: knows the RFP process, procurement cycles, security requirements
+- Published thinking: Research file = 30,000+ lines of documented founder thinking on the problem
+
+**Signals to develop (before YC interview):**
+- Named design partner conversations started (even if not signed)
+- One real evaluation run (even if manual)
+- One LOI or commitment from a real company
+- Clear answer to "what makes YOU the person to build this vs. anyone else?"
+
+### The "Why Now / Why Me" investor frame
+
+For investor pitches, the framing should be:
+1. **Why Now (market timing):** "88% of AI agent projects fail. 41% trace to unclear success criteria. 66% of enterprises run pre-deployment evaluation manually. The market is ready for a platform."
+2. **Why Straw (insight):** "Evaluation requires a neutral third party. No platform player can credibly evaluate itself vs. competitors."
+3. **Why Me (founder-market fit):** "[Specific experience that gives Jeremy insight into both enterprise procurement and AI agent systems that competitors don't have]"
+
+The "Why Me" needs to be specifically about Jeremy's background. The placeholder above should be filled in by Jeremy before the next investor conversation.
+
+Sources: productmarketfit.tech/p/how-to-get-into-yc-the-spring-26, beststartup.us/what-startups-y-combinator-is-looking-for-in-2026, pitchworx.com/startup-funding-checklist-2026
+
+TICK_END
