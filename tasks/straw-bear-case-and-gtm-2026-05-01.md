@@ -25992,3 +25992,51 @@ Focus: Only the 51 deployments that ACTUALLY delivered measurable value
 Sources: digitaleconomy.stanford.edu/publication/enterprise-ai-playbook, aiassemblylines.com/post/enterprise-ai-transformation-success-factors-stanford-2026, artificialintelligencedynamics.com/2026/04/02/enterprise-ai-playbook-key-lessons
 
 TICK_END
+
+---
+
+## Tick 425 — Customer Service Agent Market: Vendor Choice + Straw's Evaluation Template
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets / Product (rubric templates)
+
+### Customer service AI agent market breakdown (2026)
+
+2026 enterprise CX agent deployment choices:
+- **26%** chose CX-suite-native (Zendesk AI Agents, Salesforce Service Agentforce)
+- **22%** chose specialist AI agent vendor (Intercom Fin, Ada, Forethought)
+- **18%** chose contact-center embedded (Genesys, NICE, Five9)
+- **34%** chose other/custom/hybrid
+
+**The decision is already complex:** Even with clear market leaders, enterprises are spread across 10+ vendors. No single vendor won. Every enterprise choosing a CX AI agent has the selection problem Straw solves.
+
+### The right customer service rubric (Straw template)
+
+Key insight from ASAPP 2026 buyer's guide: **"Autonomous resolution is a different standard."** Not "handle time," not "CSAT" — but the percentage of customer issues FULLY RESOLVED by the AI without:
+- Human involvement
+- A follow-up ticket
+- The customer trying again through another channel
+
+This is a three-part rubric criterion Straw should include in its customer service template:
+
+**Straw Customer Service Evaluation Template:**
+1. **Autonomous resolution rate** — % of test scenarios fully resolved without human fallback (threshold: ≥70%)
+2. **First-contact resolution** — % of issues resolved on the first interaction without customer re-contact (threshold: ≥90%)
+3. **Sentiment maintenance** — % of interactions that don't cause a measurable drop in customer sentiment score (threshold: ≥95%)
+4. **Escalation accuracy** — % of complex cases correctly escalated to human agents vs. incorrectly handled by AI (threshold: ≥90%)
+5. **Policy compliance** — % of responses that correctly apply return policy, discount policy, privacy policy without errors (threshold: 100%)
+
+Running Zendesk AI Agents vs. Intercom Fin vs. Salesforce Agentforce vs. Ada against this rubric on an enterprise's actual support ticket scenarios = the entire customer service CX AI selection decision, handled objectively.
+
+### Model commoditization = Straw's orchestration-layer value
+
+Stanford (42% of implementations) + 2026 market data confirms: foundation model choice is often fully interchangeable. The durable advantage is in:
+1. **Orchestration** (how the agent uses its tools and context)
+2. **Workflow integration** (how deeply the agent integrates with existing systems)
+3. **Rubric alignment** (does the agent's behavior match your success definition)
+
+**#3 is Straw's territory.** If models are commoditized, the buying decision shifts from "which model is best in the abstract" to "which agent's behavior best matches OUR rubric." That's exactly what Straw measures.
+
+Sources: kore.ai/blog/top-ai-agents-for-customer-service-tested-reviewed, asapp.com/hub/the-best-ai-agent-platforms-for-customer-service-a-2026-buyers-guide, fin.ai/learn/best-ai-agents-customer-service, digitalapplied.com/blog/customer-service-ai-agent-statistics-2026-data
+
+TICK_END
