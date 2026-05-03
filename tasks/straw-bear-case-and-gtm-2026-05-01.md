@@ -18575,3 +18575,362 @@ The 40-42 named contacts is sufficient for the first 3 months of outreach. Jerem
 - Run internal competition v0 (Jeremy posts → Jeremy's agents compete)
 - First competition report draft (even rough)
 
+
+---
+
+## Tick 287 (2026-05-03T16:00Z): Scale AI as Straw competitor — bear case analysis [theme: bear]
+
+### The threat framing
+
+Scale AI is the most credible potential competitor to Straw in the enterprise AI evaluation space. Three facts make it load-bearing for the bear case:
+
+1. **Scale Labs launched March 2026** — expanded research division building on SEAL (Safety, Evaluation, Alignment Lab, 2023). Focus: enterprise deployment reliability, real-world agentic evaluation, risk oversight infrastructure.
+2. **Scale already has the enterprise relationships.** They work directly with Anthropic, OpenAI, Google, Meta, and the US AI Safety Institute. Every major AI lab pays Scale to evaluate their models.
+3. **Scale has the data labeling moat.** Their ground truth generation and human feedback infrastructure is 4+ years ahead of any startup. Custom rubric calibration at scale requires this.
+
+### What Scale can do that Straw cannot (today)
+
+| Capability | Scale | Straw |
+|---|---|---|
+| Human-in-loop ground truth annotation | Yes (100K+ contractors) | No |
+| Pre-trained domain-expert raters | Yes | No |
+| Model fine-tuning from eval data | Yes | No |
+| Compliance certifications (SOC2, HIPAA) | Yes | Not yet |
+| Existing trust relationship with 1000+ enterprises | Yes | No |
+| Custom benchmark development at scale | Yes | No |
+
+### Why Scale doesn't yet threaten Straw's core
+
+**Scale evaluates AI models, not AI agents competing on YOUR task.** Their paradigm is: enterprise gives Scale a dataset, Scale annotates and evaluates, Scale returns a score. The task is defined by Scale's benchmark design team, not the enterprise.
+
+**Straw's paradigm is different:** Enterprise defines the task and rubric. Agents compete. Evaluation is tiered and automated. The score is reproducible by anyone. Scale is not a marketplace — Scale is a service bureau.
+
+The killer question: *Has Scale launched a product where a company can post a task, have 5 agents compete on it in 72 hours, and receive a comparative score?* As of May 2026: No.
+
+SWE-Atlas (Scale's coding eval) measures performance against fixed software engineering benchmarks. It doesn't let Stripe define "fix this specific bug in our payment system" as the task and have 5 agents compete on it.
+
+### The convergence risk (18-24 month horizon)
+
+**Probability: 20-25%** that Scale builds Straw's product within 18 months.
+
+Mechanism: Scale's largest enterprise customers start asking for "custom task competitions" as their evaluation sophistication matures. Scale already has the infrastructure. One product manager could spec this in a week. The question is whether enterprise AI procurement is a large enough market for Scale to prioritize it.
+
+**Scale's primary revenue driver is training data, not evaluation.** A marketplace product cannibalizes neither — it's additive. But Scale's current focus is foundational model evaluation, not deployment-selection procurement. The organizational inertia works in Straw's favor.
+
+### The partnership angle
+
+Scale Labs + Straw is actually a natural pairing:
+- Scale evaluates AI models (capability measurement)
+- Straw evaluates agent performance on buyer-specific tasks (procurement validation)
+- Neither eats the other's lunch
+
+**Potential partner pitch:** "Straw runs the competition. Scale verifies the rubric design and provides expert human raters for contested evaluations." Scale gets a new enterprise touchpoint. Straw gets annotation credibility.
+
+**Contact:** Alexandr Wang (@alexandr_wang on Twitter), CEO. Henry Fong (VP Product) would be the right person for a partnership conversation. Scale's enterprise sales is accessible via scale.com/enterprise.
+
+Sources: scale.com/blog/scale-labs, scale.com/blog/safety-evaluations-alignment-lab, labs.scale.com/leaderboard, fueler.io/blog/scale-ai-usage-revenue-valuation-growth-statistics
+
+---
+
+## Tick 288 (2026-05-03T16:20Z): EU AI Act Digital Omnibus — trilogue stalled, August 2026 holds — compliance wedge just got sharper [theme: bear + GTM]
+
+### Current status as of May 3, 2026
+
+The trilogue (EU Parliament + Council + Commission) scheduled April 28, 2026 **ended without agreement**. Next session: May 13, 2026.
+
+The Digital Omnibus proposed deferring high-risk AI obligations from **August 2, 2026 → December 2027**. But:
+
+- If Omnibus is not formally adopted before August 2, 2026, the **original obligations stand**
+- Each failed trilogue session narrows the window to close and transpose before August 2
+- The prudent enterprise assumption: **prepare for August 2026**
+
+### What Article 26 requires (effective August 2, 2026)
+
+For deployers of high-risk AI systems in the EU (any enterprise using AI in hiring, lending, medical, critical infrastructure, law enforcement, etc.):
+
+1. **Log retention:** Minimum 6 months of AI decision logs
+2. **Human oversight:** Qualified personnel reviewing AI outputs in high-stakes decisions
+3. **Documentation:** Technical documentation proving conformity with Article 10 (data governance)
+4. **Incident reporting:** Register and report serious incidents to national authorities
+
+The compliance cost estimate for a mid-size enterprise (500-2000 employees, EU operations): **$180K-$450K** first-year build-out.
+
+### Bear case: Digital Omnibus passes → compliance urgency drops 18 months
+
+If the May 13 trilogue reaches agreement AND the regulation passes before August 2, enterprises get 18 more months (until December 2027). The compliance wedge — Straw as Article 26 documentation byproduct — weakens.
+
+**Probability of bear case:** 35%. The trilogue needs to close in the next 6 weeks OR the deadline holds. The EU has not successfully rushed a major regulatory deferral in 6 weeks before. The default is August 2026.
+
+### Bull case: Omnibus stalls → compliance deadline is August 2, 2026
+
+Most enterprises that haven't started compliance preparations are now 91 days from the deadline. Straw's 72-hour competition generates the exact documentation Article 26 requires as a **byproduct**:
+
+- Task definition (technical documentation)
+- Rubric (conformity criteria)
+- All agent outputs logged (audit trail)
+- Tiered evaluation provenance (human oversight evidence)
+
+**The compliance urgency pitch (effective NOW):**
+> "You have 91 days until EU AI Act Article 26. The documentation your compliance team needs — logs, evaluation criteria, audit trails — is what Straw generates as a byproduct of your procurement decision. Run one competition, get both the procurement answer and the compliance file."
+
+### Updated GTM implication
+
+The EU AI Act is no longer a "future regulatory wedge" — it's a 91-day live fire drill for any enterprise with EU operations. This accelerates the sales conversation with:
+
+- **Citi** (EU banking = full Article 26 applicability)
+- **Goldman Sachs** (EU operations = compliance exposure)
+- **Any publicly-listed EU enterprise** (high-risk AI definition likely applies to their AI deployments)
+
+**For Straw's ICP refinement:** Add "EU operations" as a filter for near-term sales. These prospects have a burning deadline. Non-EU prospects can wait.
+
+Sources: iapp.org/news/a/ai-act-omnibus-what-just-happened, knowledge.dlapiper.com/dlapiperknowledge, resultsense.com/news/2026-04-30-eu-ai-act-omnibus-trilogue-stalls, ppc.land/brussels-ai-act-talks-collapse-but-the-august-2026-deadline-holds, onetrust.com/blog/eu-digital-omnibus-proposes-delay-of-ai-compliance-deadlines
+
+---
+
+## Tick 289 (2026-05-03T16:40Z): Finance vertical design partners — Archana Vemulapalli (Goldman) + Teresa Heitsenrether (JPMorgan) — named contacts 43-44 [theme: partners]
+
+### Archana Vemulapalli — Goldman Sachs #43
+
+**Who:** Joined Goldman Sachs April 6, 2026 as **Partner and Global Head of AI Product Management and Strategic Relations**. Previously: AMD (commercialization of enterprise AI), AWS (Global Head of Product and Strategy for Data and AI), IBM (CTO + GM for Global Technology Services, 175 countries), DC Government (CTO and cabinet member).
+
+**Why she's the right Straw contact at Goldman:**
+- Her mandate: develop AI offerings + manage vendor relationships that determine which external AI gets embedded in production. She controls which AI-enabled workflows reach banking/trading/compliance/operations.
+- Goldman piloted Devin for software development. She would have been consulted on or overseen that decision.
+- "Strategic Relations" in her title = she evaluates external AI vendors. Straw is precisely a procurement validation tool for that evaluation.
+
+**Opener:**
+> "Hi Archana — you recently took on vendor relationship responsibility for Goldman's AI deployments. I'm curious: what did Goldman's evaluation process look like for Devin? Specifically whether you compared it against alternatives on real codebases before committing.
+>
+> I'm building Straw — infrastructure for running AI agent procurement competitions. The idea: define the rubric upfront, have agents compete on your actual tasks for 72 hours, let the score decide. The documentation Straw generates is also exactly what Article 26 of the EU AI Act requires as of August 2.
+>
+> 15-minute call if the Goldman evaluation story is something you'd want to change retroactively?"
+
+**Channel:** LinkedIn (she just joined Goldman in April — LinkedIn is active). Twitter: @archana_vemulapalli (verify).
+
+---
+
+### Teresa Heitsenrether — JPMorgan Chase #44
+
+**Who:** Chief Data & Analytics Officer, member of JPMorgan's Operating Committee. Leads firmwide AI adoption strategy across 450+ use cases in production. Responsible for JPMorgan's AI governance and risk management. At JPMorgan her entire career — not a tech transplant.
+
+**Why she's the right Straw contact at JPMorgan:**
+- JPMorgan is tying 65,000 engineers' performance reviews to AI tool adoption as of March 2026 — she set that policy.
+- JPMorgan is piloting Claude Code (April 2026). Heitsenrether's office decides which AI tools get approved for production.
+- AI governance mandate means she cares about evaluation methodology, not just adoption speed.
+- JPMorgan $20B tech budget — they can afford a rigorous procurement process.
+
+**Why the cold email is harder:** She's been at JPMorgan her whole career. Not a startup-friendly profile. Probably needs to come through JPMorgan's formal vendor evaluation process OR through a warm intro from JPMorgan tech alumni.
+
+**Better path:** Target **Lili Cheng** (JPMorgan AI Research) or **Arpit Joshipura** (JPMorgan Global Head of Open Source and Cloud Native) — they are more accessible via tech conferences and have startup-friendly engagement patterns. **Lili Cheng** is reachable via LinkedIn and Microsoft Research alumni network.
+
+**Or: target the AI product team directly.** JPMorgan has 1,500+ AI/ML practitioners. The team evaluating Devin/Cursor/Claude Code would be a VP of Engineering level contact in software development tools — search "JPMorgan VP Engineering AI tools" on LinkedIn.
+
+---
+
+### Updated design partner count: 44 named contacts
+
+Ticks 286-289 brought us from 40 → 44:
+- #41: Sri Viswanath (Sycamore)
+- #42: Bob McGrew (ex-OpenAI, Sycamore angel)
+- #43: Archana Vemulapalli (Goldman Sachs)
+- #44: Teresa Heitsenrether (JPMorgan) — with the note to go through Lili Cheng instead for access
+
+**Finance vertical is now the second-best near-term partner vertical** (after AI safety/eval labs) because:
+1. EU AI Act deadline creates urgency
+2. Both Goldman and JPMorgan are actively evaluating AI vendors RIGHT NOW
+3. The "did you evaluate Devin before buying" hook is real and recent
+
+Sources: goldmansachs.com/pressroom/press-releases/2026/archana-vemulapalli, jpmorganchase.com/about/leadership/teresa-heitsenrether, efinancialcareers.com/news/goldman-sachs-and-jp-morgan-are-making-senior-changes-to-their-ai-teams, letsdatascience.com/blog/jpmorgan-tracks-65000-engineers-ai-usage-performance-reviews
+
+---
+
+## Tick 290 (2026-05-03T17:00Z): Content marketing vs. outbound for Straw — what works for technical AI ops teams in 2026 [theme: GTM]
+
+### The context
+
+Straw's target buyer is: VP Engineering or Head of AI at a 100-2000 engineer company. Technical. Skeptical of marketing. Reads HN daily. Has seen 50 AI vendor decks. Will not click a generic LinkedIn InMail.
+
+This buyer profile has strong implications for what works and what doesn't.
+
+### What doesn't work: volume outbound
+
+Generic outbound is noise for this persona. A purchased list of "VP Engineering" contacts with templated "AI is transforming your industry" emails will generate <0.5% reply rate and actively damage Straw's credibility.
+
+The research finding (Magentic Marketplace paper): first-proposal bias favors speed. But for high-ACV enterprise products ($25K+), speed doesn't win — relevance and trust win. This is a 30-day sales cycle with a $25K ACV. Volume outbound for volume's sake is wrong.
+
+### What works: the Straw marketing stack (ranked by expected ROI)
+
+**Tier 1 — Public evaluation reports (highest ROI, lowest cost, takes time to build)**
+
+The core content asset for Straw is a **competition report** — published, public, with real rubric, real scores, real winner. Each report does four things:
+1. Demonstrates Straw works (proof beats pitch)
+2. Generates SEO content about specific agent evaluation use cases
+3. Gives prospects a preview of what they'll buy
+4. Creates the reference case for outreach ("Company X ran a competition, here's what they found")
+
+**What to publish:**
+- "We ran 5 AI coding agents on our actual bug backlog. Here's what happened." (do this first, internally)
+- "How Devin vs. Claude Code vs. GitHub Copilot scored on real Stripe-style payment logic tasks"
+- "Rubric templates for evaluating AI coding agents: 12 scenarios we use at Straw"
+
+**Tier 2 — Show HN (spike traffic, one-time event, high signal quality)**
+
+Show HN posts drive 10K-50K visits in 48 hours but traffic is a spike. More valuable: HN comments reveal what technical users immediately trust, doubt, or misunderstand. The comment thread IS your product feedback session.
+
+**Show HN post timing:** Post after the first design partner runs a real competition and you have a report to link to. Not before. "Show HN: We built Kaggle for AI agents" is too abstract without a real report to show.
+
+**Tier 3 — Founder outbound to 15 warm-ish targets (the only outbound that works at this stage)**
+
+For Straw's first 10 design partners: direct outreach from Jeremy to 15 targets where at least one of the following is true:
+- Jeremy has a connection in common (LinkedIn 2nd-degree)
+- The target recently made a public statement about AI evaluation pain (tweet, blog post, conference talk)
+- The target is a Devin/Cursor customer (demonstrably bought AI tools)
+
+15 targets × 40% reply rate to a hyper-relevant 5-sentence email = 6 conversations = 2 design partners. Repeat 3x = 6 design partners.
+
+**Tier 4 — Technical content that earns HN/Twitter reach without Show HN (ongoing)**
+
+Twitter/X threads with real data:
+- "We evaluated 5 AI coding agents on the same set of 20 tasks. Thread on what surprised us."
+- "The problem with LLM-as-judge for agent evaluation: false confidence at 85%+ pass rates. Here's what we found."
+- Tagging: @mikeknoop (ARC), @James406 (PostHog), @mntruell (Anysphere/Cursor), @karpathy (independent)
+
+GitHub rubric template repo:
+- 12 evaluation rubrics, MIT licensed, PR-friendly
+- This gets HN points on its own ("Ask HN: What rubrics do you use for AI agent evaluation?")
+- Design partners can start using Straw's rubrics before they run their first competition
+
+### The rule: lead with evidence, not pitch
+
+Every Straw content asset should answer "can you prove it?" before the prospect asks. Don't say "our evaluation is rigorous." Publish a rubric. Don't say "agents compete fairly." Publish a competition log. Don't say "the score doesn't lie." Publish a report with the score.
+
+**The Braintrust playbook applied to Straw:**
+- Braintrust: open-source the eval framework → sell the hosted version + integrations
+- Straw: publish the rubric templates + competition methodology → sell the hosted competition infrastructure + Tier-3 agent investigator
+
+### One counterintuitive finding
+
+BoFU (bottom-of-funnel) content converts 10-25x more than ToFU content. For Straw, this means:
+- "Straw vs. Scale AI: which one for your specific use case" → converts
+- "What is AI agent evaluation?" → does not convert
+
+Write for people who are already searching for procurement solutions, not for people learning about AI evaluation for the first time.
+
+Sources: markepear.dev/blog/dev-tool-hacker-news-launch, onlook.substack.com/p/launching-on-hacker-news, saasrise.com/blog/whats-actually-working-in-b2b-saas-marketing-in-2026, position.digital/blog/b2b-saas-content-marketing-strategy
+
+---
+
+## Tick 291 (2026-05-03T17:20Z): Show HN post draft — structure, timing, and comment strategy [theme: GTM]
+
+### When to post Show HN
+
+**Not now.** The prerequisite for a Show HN is something to show. For Straw, that means:
+- First internal competition completed (Jeremy posts → Jeremy's agents compete)
+- Competition report published at a linkable URL
+- A working demo that lets someone post a task in 5 minutes
+
+**Target Show HN timing:** 4-6 weeks from today (June 2026) if the internal competition runs this week.
+
+### The Show HN post itself
+
+HN norms for Show HN:
+- First sentence: what it is, in plain language, no superlatives
+- Second sentence: what problem it solves, concrete
+- Short is better — let the link do the talking
+- Include a link to something working
+- Reply to every comment in the first 2 hours
+
+**Draft:**
+
+---
+**Show HN: Straw — run competitions where AI agents compete on your actual task**
+
+We built infrastructure for procurement competitions: you define a rubric, multiple AI agents submit solutions, a three-tier evaluation pipeline (deterministic → LLM gatekeeper → autonomous agent investigator) scores every submission against YOUR criteria.
+
+The motivation: enterprise AI procurement is broken. Six-figure decisions get made from vendor demos. We think the right approach is to define what "winning" looks like upfront, then let agents compete on real work.
+
+Today: you can post a task with a rubric, connect agents via our API, and get a competition report in 72 hours. We're running free first competitions for design partners.
+
+First competition report (link): [linked to a published competition log]
+
+---
+
+### Anticipated comment types and responses
+
+**"How is this different from Kaggle?"**
+> Kaggle is a fixed-dataset benchmark platform. Straw competitions use YOUR data, YOUR codebase, YOUR rubric. Kaggle tests an agent's general capability. Straw tests whether Agent A is better than Agent B for YOUR specific problem. The answer to Kaggle's question doesn't tell you which agent to hire.
+
+**"LLM-as-judge is not reliable."**
+> Agreed — that's why Tier 2 LLM scoring is a gatekeeper, not the final decision. Tier 3 deploys an autonomous agent investigator that actually runs the code, checks edge cases, and produces a traceable verdict. The LLM is the filter that saves time; the agent is the one that earns trust.
+
+**"Won't agents cheat / optimize for the rubric rather than solving the problem?"**
+> Yes, if the rubric is badly designed. That's why Straw's rubric editor flags common gaming patterns (e.g., rubrics that reward output volume). The competition format also requires agents to commit outputs before seeing evaluation results — no iterative rubric exploitation.
+
+**"How do you handle IP? The company's codebase is proprietary."**
+> Private competitions by default. The competition runs in an isolated sandbox. Straw never sees the codebase — agents connect to the task environment via API. The output (agent submissions + scores) is the company's property.
+
+### The first 2 hours strategy
+
+Show HN success depends heavily on early engagement. Jeremy needs to be online for the first 2 hours post-publication (9am PST Monday or Tuesday — best timing for HN).
+
+- Reply to every comment within 15 minutes
+- Don't be defensive — take critique seriously and update responses
+- Have a pre-written "thanks for trying, here's how to post a task" reply for people who want to try it
+- Share the post in 3-5 Slack communities (AI Labs Discord, Latent Space community, METR discord) within the first hour to seed upvotes/comments from people who know the space
+
+---
+
+## Tick 292 (2026-05-03T17:40Z): Founder-led sales — the first 10 enterprise customers pattern [theme: GTM]
+
+### The pattern across Cursor, Modal, Braintrust, PostHog
+
+Every technical B2B SaaS that hit $1M ARR quickly in 2024-2025 followed the same pattern:
+
+1. **Founder personally sells the first 10 customers.** Not an SDR. Not a sales deck. The founder answers questions at 11pm.
+2. **First 3 customers come from existing relationships.** Not cold outreach.
+3. **Customers 4-10 come from customer 1-3 referrals.** Referral > any other channel at this stage.
+4. **The sales conversation IS the product feedback session.** Jeremy hears the real objections and iterates on the product within days.
+5. **Price is negotiated, not fixed, for the first 5 customers.** The first customer might pay $5K. The tenth pays $25K. That's fine.
+
+### Applied to Straw: the first 10 customers map
+
+**Customers 1-3 (weeks 1-4): Known quantities**
+
+These come from Jeremy's existing network. Candidates:
+- Any YC company Jeremy knows personally (YC alumni network)
+- Any AI startup where Jeremy has a warm intro from investors
+- Erik Bernhardsson (Modal founder, @bernhardsson) — approachable, has written about evals, warm-ish via the tech Twitter sphere
+
+The goal for customers 1-3: run a real competition, generate a report, prove the product works. Revenue is secondary. They can pay $5K or $0 (design partners).
+
+**Customers 4-6 (weeks 5-8): Warm referrals from design partners**
+
+When customer #1 publishes their competition report (or just mentions Straw to their peers), Jeremy gets an inbound. One design partner typically refers 2-3 colleagues. Beth Barnes at METR → other AI safety contacts. Ankur Goyal at Braintrust → other MLOps founders.
+
+**Customers 7-10 (weeks 9-12): Targeted outbound to HN audience**
+
+After Show HN, the 5% of HN visitors who signed up (at 15,000 visitors: ~750 signups) get a 3-email onboarding sequence. The ones who open all 3 emails get a direct outreach from Jeremy. At 750 signups × 5% high-intent = ~35 high-intent leads. Close 3. That's customers 7-10.
+
+### The sales conversation for $25K ACV
+
+**Qualification question:** "Have you bought or evaluated any AI agents in the last 6 months?"
+
+If yes: "What did your evaluation process look like? Did you test them on your actual codebase or use vendor demos?"
+
+If they used vendor demos: "That's the problem Straw solves. We run a 72-hour competition on your real tasks. You define what winning looks like. Three agents compete. The score doesn't lie. For your stack, that probably means [specific rubric example]. First competition is free. When's your next procurement decision?"
+
+**The closing frame:** Not "buy our product." Instead: "Run one free competition. If the report is useful, we talk about a subscription. If it's not, you got a free competitive analysis of 3 AI agents on your real codebase. What do you have to lose?"
+
+### What not to do at this stage
+
+- **Don't build an outbound motion before 3 design partners.** You don't have the proof yet.
+- **Don't hire a sales rep.** They can't answer the technical questions your prospects will ask.
+- **Don't target companies > 5,000 employees yet.** The procurement cycle is 6-12 months. You need wins, not pipeline.
+- **Don't optimize the website for SEO yet.** At 0 customers, the website is for credibility, not acquisition.
+
+### The north star metric for Phase 0
+
+**One competition report, publicly shareable, in 4 weeks.** Everything else follows from that. If Jeremy can show a prospect "here's a real competition we ran, here's the rubric, here's the scores, here are the three agents' outputs," the sales conversation goes from abstract to concrete in 2 minutes.
+
+Sources: welovesota.com/article/from-0-to-1m-0-to-10-clients-the-b2b-founder-led-sales-playbook, blume.vc/commentaries/the-outbound-sales-playbook-a-guide-for-early-stage-b2b-startup-founders, startupproject.org/guides/b2b-sales, forumvc.com/thought-pieces/direct-sales-101-for-early-stage-b2b-saas-founders
+
