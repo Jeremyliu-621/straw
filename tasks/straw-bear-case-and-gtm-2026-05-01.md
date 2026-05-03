@@ -17903,3 +17903,213 @@ The follow-up (at time of delivering the report): "The first competition is free
 
 Sources: [Intercom Fin 51% resolution](https://www.intercom.com/help/en/articles/7120684-fin-ai-agent-explained), [Fergal Reid profile](https://www.intercom.com/blog/author/fergal_reid/), [David Morse LinkedIn](https://www.linkedin.com/in/david-morse-b248014/), [PostHog James Hawkins](https://www.linkedin.com/in/j-hawkins/), [Modal Labs CEO Erik Bernhardsson](https://modal.com/company), [Braintrust Ankur Goyal](https://www.latent.space/p/braintrust)
 
+
+---
+
+## Tick 276 (2026-05-03T10:30Z): ClawGig — the closest competitor to Straw that already launched [theme: bear]
+
+### What ClawGig is
+
+**ClawGig** launched on Hacker News on February 9, 2026 ("Show HN: ClawGig – A freelance marketplace where AI agents can earn USDC"). It is:
+
+- A freelance marketplace where **AI agents are the workers**, not humans.
+- Clients post gigs (e.g., "Scrape all YC W25 companies into a spreadsheet" for $3.50 USDC).
+- AI agents discover gigs via REST API and webhooks.
+- Agents submit proposals with pricing and approach.
+- Client accepts a proposal → funds escrow in USDC on Solana.
+- Agent delivers work → client approves → payment released to agent wallet.
+- Revenue split: 90% agent / 10% ClawGig / 5% service fee from client.
+
+### How ClawGig differs from Straw
+
+| Dimension | ClawGig | Straw |
+|---|---|---|
+| Who posts tasks | Any human or AI | Enterprises with real procurement need |
+| Task scale | Micro-tasks ($3.50 to ~$50) | Enterprise competitions ($10K-$100K bounty) |
+| Evaluation method | None — client eyeballs and approves manually | Pre-specified rubric + tiered AI evaluation pipeline |
+| Competitive dynamics | First AI to respond wins (first-proposal bias) | All compete equally; winner determined by rubric score |
+| Payment rail | USDC on Solana | Stripe fiat (v0/v1) → USDC (v2) |
+| Trust mechanism | Client manually reviews | Objective rubric score + per-criterion reasoning |
+| Enterprise readiness | None — no compliance docs, no formal selection | EU AI Act documentation as byproduct |
+| Target buyer | Individual developers / indie hackers | VP Engineering / Head of AI at enterprises |
+
+### What ClawGig proves and doesn't prove
+
+**What it proves (bullish for Straw):**
+1. The concept works. AI agents ARE willing to browse and apply for gig-style tasks when the economic environment is designed for them. ClawGig launched in February 2026; Straw's Phase 1 research predicted this category would emerge in 2026-2028. It arrived earlier.
+2. The USDC payment rail works for agent-to-agent micropayments at the micro-gig scale.
+3. There is developer interest in building on this pattern (Show HN made the front page, suggesting the concept resonated).
+
+**What it doesn't prove (bear case is still unresolved):**
+1. ClawGig serves indie-scale gigs ($3-50). Straw serves enterprise-scale competitions ($10K-$100K). These are different markets.
+2. ClawGig has **no evaluation infrastructure**. "Client eyeballs" is not rubric-based evaluation. This means ClawGig is a commodity task marketplace; Straw is a procurement evaluation platform. They're not competing.
+3. ClawGig is built by a solo developer (based on the DEV Community post and "doncaarbon" username). It has no backing, no institutional customers, no enterprise sales motion.
+
+### The bear case ClawGig actually raises for Straw
+
+**The "race to the bottom" risk:** If ClawGig-style platforms proliferate and normalize micro-task AI gigs at $3.50, enterprise buyers might develop the intuition that AI agent work should be cheap and fast, not $25K and 72 hours. The price anchoring effect from micro-task marketplaces could make Straw's pricing feel expensive.
+
+**Mitigation:** Straw's price is not for the task execution — it's for the **evaluation infrastructure, comparison signal, and compliance documentation.** A company that uses ClawGig to get $3.50 worth of data scraping is not the same company that needs a $25K Straw competition to decide which AI coding agent to deploy across their engineering team. These are different buyers with different budgets.
+
+**The deeper bear case:** If ClawGig (or a better-funded version) adds rubric-based evaluation and enterprise pricing, Straw's differentiation is at risk. The race is: Straw builds enterprise credibility before ClawGig-style platforms add enterprise features.
+
+**Strategic response:** Go enterprise-first aggressively. Don't let ClawGig prove out the concept at micro-task scale and then move up-market. Straw should lock in its first 5 enterprise design partners before ClawGig or a well-funded clone can build enterprise features.
+
+Sources: [ClawGig homepage](https://clawgig.ai/), [ClawGig Show HN](https://news.ycombinator.com/item?id=46938517), [DEV Community ClawGig](https://dev.to/doncaarbon/i-built-a-freelance-marketplace-where-ai-agents-do-the-work-4no9), [ClawGig gigs](https://clawgig.ai/gigs), [WebProNews ClawGig](https://www.webpronews.com/hiring-ai-like-youd-hire-a-freelancer-inside-the-bizarre-new-marketplace-where-software-agents-compete-for-gigs/)
+
+---
+
+## Tick 277 (2026-05-03T11:00Z): The "good enough" substitution bear case — Upwork/Toptal/Devin vs. Straw [theme: bear]
+
+### The substitution question applied to each competitor
+
+**Toptal (premium human freelancers):**
+- Toptal's average developer rate: $150-220/hour.
+- Toptal's positioning: "premium, human-first; AI used as productivity tool but human expertise drives deliverables."
+- The Toptal market has NOT been disrupted by AI coding agents in 2026. Human demand remains strong.
+- **Why this matters for Straw:** Toptal represents the "we don't trust AI agents yet, we use humans" segment. Straw helps the enterprise that's evaluating whether to switch FROM Toptal-style human talent TO AI agents. Straw's competition gives them the data to make that decision.
+- **Straw pitch for Toptal companies:** "You're paying $200K/year per developer. Devin is $20/month. Before you replace your Toptal devs, run a Straw competition to see if Devin actually performs as well as your current team on YOUR specific codebase."
+
+**Upwork (freelance + AI-assisted work):**
+- 40% of Upwork tasks now involve "significant AI agent assistance" (Q4 2025).
+- Demand for human skills remains strong but is bifurcating: commodity work is AI-assisted; premium work remains human-driven.
+- 52% of web development tasks involve AI agent assistance with Copilot/Claude Code.
+- **Why this matters for Straw:** Upwork freelancers using AI agents = human-supervised AI execution. This is a competitor to Straw's competition format only if the enterprise is happy with "Upwork dev + AI tool" rather than "pure AI agent." For many tasks, this substitution IS good enough.
+
+**The substitution math for "good enough" cases:**
+- For commodity coding tasks (CRUD, data migration, standard API integration): **Upwork dev + Cursor/Claude Code = "good enough" substitute for Straw.** These tasks are well-understood, the rubric is simple, and the Upwork developer adds a human review layer that compensates for AI unreliability.
+- For strategic tasks (architectural decisions, novel problem solving, multi-system integration): **Human freelancer + AI tool is NOT "good enough" vs. a specialized AI agent fleet.** These tasks are where Straw's evaluation produces meaningful comparative signal.
+
+**The implications for Straw's task selection:**
+Straw should **not** target commodity tasks where Upwork human + AI tool is good enough. Straw's sweet spot is:
+1. Tasks complex enough that the evaluation comparison produces meaningful signal (not just "which bot generates boilerplate fastest")
+2. Tasks with clear success criteria that can be encoded in a rubric
+3. Tasks where the agent's output will be used directly (not reviewed by a human before use)
+
+This is a positioning constraint on Straw that's worth explicitly acknowledging: **Straw is for complex, high-stakes enterprise tasks, not micro-gigs.**
+
+**The Devin disruption of Toptal/Upwork:**
+- Devin is not disrupting Toptal in 2026 — it's disrupting a *different budget category*: the "offshore coding contract" budget, not the "premium developer" budget.
+- Goldman Sachs framed Devin as equivalent to 2,400 developers at $180K each — this is the $180K/developer budget line, not the Toptal $200/hour contract line.
+- Straw sits at the intersection: it evaluates whether Devin (or another AI agent) can replace your $180K developers on your specific tasks.
+
+Sources: [Upwork AI 40% tasks 2026 CallSphere](https://callsphere.ai/blog/ai-agents-gig-economy-40-percent-upwork-tasks-ai-assisted), [Upwork in-demand skills 2026](https://investors.upwork.com/news-releases/news-release-details/upworks-demand-skills-2026-demand-top-ai-skills-more-doubles-ai), [Devin 73x ARR AgentMarketCap](https://agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue), [Toptal vs Upwork comparison Damongo](https://damongo.com/freelance-platforms-compared-2026/)
+
+---
+
+## Tick 278 (2026-05-03T11:30Z): Intercom Fin's resolution rate claims — the independent verification gap Straw fills [theme: gtm]
+
+### The Fin situation
+
+Intercom has made aggressive resolution rate claims for Fin:
+- "51% resolution rate out of the box" (Fin 2 launch claims)
+- "67% resolution rate over the last 30 days" (December 2025)
+- "60% average resolution rate" (general marketing)
+- Backed by Fin Million Dollar Guarantee: full refund of Fin spend (up to $1M) if not satisfied in 90 days; enterprise "$1M if Fin does not exceed 65% resolution rate"
+
+### The problem with Fin's claims (Straw's exact pitch point)
+
+Intercom's resolution rate is self-reported on Intercom's own customer population. It is:
+1. **Not independently verified.** No third party has audited Fin's 67% claim on a representative sample of real enterprise support tickets.
+2. **Measured on customers who chose Intercom.** Selection bias: enterprises that chose Fin probably had support ticket types that Fin handles well.
+3. **Not benchmarked against alternatives.** Intercom claims 67%; Zendesk AI claims similar; Salesforce Service Cloud Einstein claims similar. But no neutral third party has run all three on the same ticket dataset with the same rubric.
+
+The Intercom community forum itself shows confusion: "What is considered a good Fin resolution rate?" — customers are asking because they can't compare their actual Fin performance to an objective benchmark.
+
+### The Straw pitch for CX AI buyers
+
+**The exact pitch:** "Intercom claims 67% resolution rate. Zendesk claims similar. Before you commit to a 3-year enterprise contract, run a Straw competition: give 3 CX AI agents your last 1,000 support tickets. Define what 'resolved' means in your rubric. See who actually resolves more. 72 hours. $25K."
+
+This pitch works because:
+1. **The stakes are real.** An Intercom enterprise contract is $100K-$500K/year. $25K for validation is rational.
+2. **The claim is unverified.** No enterprise CX buyer can independently verify "67% resolution rate" on their specific ticket type.
+3. **The comparison is currently impossible to make.** There is no infrastructure for running Fin, Zendesk AI, Salesforce Einstein, and a custom Anthropic-powered bot on the same ticket dataset simultaneously. Straw IS that infrastructure.
+
+### The Fergal Reid opener (refined)
+
+"Intercom is making bold resolution rate claims. I'm building the infrastructure to independently verify those claims on a buyer's actual ticket data. If Fin genuinely resolves 67% of tickets better than alternatives, that result should be provable on any enterprise's dataset — not just on Intercom's self-selected customer base. Would Intercom be willing to participate in a Straw competition to independently validate Fin's claims? If Fin wins (which it should, if the claims are accurate), you get independent third-party validation worth more than any marketing campaign."
+
+This is the supply-side version of the Straw pitch: agents WANT to compete on Straw because winning produces independently verified proof of capability.
+
+### The CX vertical as Straw's second vertical (after coding)
+
+Coding is the obvious first vertical (Goldman/Devin case is the best story). CX/support is the second:
+- $8B+ market for AI customer support (Zendesk, Intercom, Salesforce Service Cloud)
+- All major players making bold, unverified claims
+- Enterprises unable to compare independently before $100K-$500K commitments
+- The "what is a good resolution rate for my specific tickets" question is unanswered
+
+**The Straw Certified CX Agent badge:** An Intercom Fin that wins a Straw CX competition on a buyer's real ticket data gets "Straw Certified CX Agent" status on that buyer's type. This is exactly the procurement validation that CX buyers need.
+
+Sources: [Intercom Fin explained](https://www.intercom.com/help/en/articles/7120684-fin-ai-agent-explained), [Fin resolution rate community](https://community.intercom.com/analyze-fin-93/what-is-considered-a-good-fin-resolution-rate-4784), [Fin vs Ada benchmark](https://fin.ai/learn/fin-vs-ada), [Intercom Million Dollar Guarantee pricing](https://www.gleap.io/blog/intercom-fin-ai-pricing-2026), [Lightspeed 65% resolution case study](https://fin.ai/customers/lightspeed)
+
+---
+
+## Tick 279 (2026-05-03T12:00Z): Phase 2 addendum — updated morning reading guide for Session 13+ [theme: all]
+
+> *This addendum supplements the TRULY FINAL morning reading guide from Tick 263. The core guide (5 pitch stats, 25 named contacts, GTM playbook, 6 open questions) stands. The following updates Tick 263 with new findings.*
+
+### NEW FINDINGS SINCE TICK 263
+
+**1. Straw has a direct competitor that already launched: ClawGig (Feb 2026)**
+
+ClawGig is a freelance marketplace for AI agents with USDC payments on Solana. Tasks are micro-scale ($3-50). Launched February 9, 2026 on HN. It is NOT a direct Straw competitor (wrong scale, no evaluation infrastructure, solo developer), but it proves the concept works and de-risks the "will enterprises believe this is real?" objection. The strategic implication: **get to enterprise design partners before ClawGig or a well-funded clone moves upmarket.**
+
+**2. Goldman Sachs chose Devin without formal evaluation — and regrets nothing**
+
+Goldman's procurement of Devin was demo-based and relationship-driven. No competitive evaluation. The institutional version of this is Straw's strongest pitch. But Goldman's success with Devin (so far) is the bear case: if demo-based procurement works, demand for rigorous evaluation is lower.
+
+**3. The regulatory liability black holes are manageable (not show-stoppers)**
+
+CSAM, securities violations, copyright laundering are real risks but parallel to any task marketplace (Upwork, Toptal). Mitigation is v1 operational: task review, KYC for high-value posters, DMCA procedure, ToS. Not a structural barrier.
+
+**4. The token economy collapse risk is avoidable with one rule: don't issue a tradeable token**
+
+Steemit/Helium/Kin collapsed due to speculation, not product failure. Straw's credit system = platform-specific non-transferable reputation, like airline miles. Never make credits tradeable. This sidesteps the entire collapse pattern.
+
+**5. Design partners: now 40 named, up from 25**
+
+Key additions since Tick 263:
+- **Fergal Reid** (Intercom Chief AI Officer) — CX AI vertical Straw pitch
+- **David Morse** (Cognition VP Enterprise) — Devin supply-side co-sell
+- **Erik Bernhardsson** (Modal CEO) — compute infrastructure co-marketing
+- **Ankur Goyal** (Braintrust CEO) — eval methodology partnership
+- **Pragya Saboo** (Rubric AI, YC W26) — rubric design methodology
+- **Neel Sharma/Anay Shukla** (Sentrial, YC W26) — monitoring partner
+- **Mohammad Al-Rasheed/Pranav Bedi** (Moda, YC W26) — monitoring partner
+- **Beth Barnes** (METR) — methodology credibility
+- **Mike Knoop/François Chollet** (ARC Prize Foundation, YC W26) — benchmark credibility
+
+**6. The PLG launch sequence is clear (PostHog template)**
+
+See Tick 273 for exact PostHog-based launch sequence. The three-step version:
+1. Build to "works without Jeremy's help" → then do the Show HN
+2. Show HN post = link to first published competition report (not sign-up page)
+3. First 10 customers from Jeremy's existing network, not cold outbound
+
+**7. The CX vertical is Straw's second moat (after coding)**
+
+No neutral infrastructure exists for comparing Fin vs. Zendesk AI vs. Salesforce Einstein on a buyer's actual support tickets. Straw fills this gap. The "$1M guarantee" framing Intercom uses = they know buyers are skeptical. Straw is the proof mechanism.
+
+### THE ONE THING THAT CHANGED SINCE TICK 263
+
+**The YC S26 deadline was May 4 at 8pm PT.** That was the most urgent action item. If Jeremy has already applied (or decided not to), the research agenda shifts to: close the first 3 design partner conversations this week.
+
+**The hierarchy of what to do first:**
+1. (If YC applied) — Prepare for an interview if invited (they often respond within 2-3 weeks)
+2. (First outreach) — Reach out to Beth Barnes (METR) + Pragya Saboo (Rubric AI) + one enterprise demand-side contact
+3. (Product) — Run the first "Jeremy posts, Jeremy's OpenClaws compete" internal competition to produce the first competition report
+4. (Show HN) — Once the first report is ready, do the Show HN
+
+### ONE NEW OPEN QUESTION FOR JEREMY
+
+**Q7: Is ClawGig a competitor, a partner, or a proof-of-concept?**
+
+ClawGig launched in February 2026 with Straw's core thesis applied at micro-task scale. Options:
+- **Ignore it** (different market, different scale)
+- **Study it** (build on what they learned from their HN launch)
+- **Contact the founder** ("doncaarbon" on DEV Community) for a conversation about what they've seen in the market
+- **Acquire or partner** if ClawGig proves out the supply-side at micro-scale while Straw takes enterprise
+
+→ Recommendation: Contact the ClawGig founder for a 30-minute call. They have 3 months of learnings about what AI agents actually do when you give them a gig. This is qualitative research Straw can't get anywhere else.
+
