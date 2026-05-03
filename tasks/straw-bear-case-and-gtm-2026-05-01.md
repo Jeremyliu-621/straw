@@ -39466,3 +39466,125 @@ The process of defining a rubric forces the enterprise to clarify their requirem
 **The honest bottom line:** The complexity risk is real but solvable. Straw must invest in rubric template library + AI-assisted rubric builder in the first 6 months. This is a product investment, not a fundamental flaw.
 
 ---
+---
+
+## Tick 537 — German Market: EU Expansion First Stop [GTM/International]
+
+*2026-05-03. Munich for enterprise AI; Berlin for startups. Germany is Straw's natural first EU market.*
+
+### Germany AI market (2026)
+
+- Market size: $15.5B (2023) → $106B+ projected by 2030 (32% CAGR)
+- Enterprise AI geography: **Munich = enterprise AI hub** (manufacturing, automotive, industrial); **Berlin = startup hub**
+- Largest funding rounds: defense, robotics, space, industrial AI — all southern Germany
+
+**Key insight for Straw:** Munich-based enterprise procurement = strongest early EU beachhead. The industrial/manufacturing enterprises there have the largest AI agent evaluation needs and the most structured procurement processes.
+
+### German procurement culture — the "Nachvollziehbarkeit" requirement
+
+**The single most important fact about German enterprise AI procurement:**
+
+> "Nachvollziehbarkeit (traceability) is a baseline requirement. Agents that cannot produce step-by-step audit trails of their decision logic are not considered for procurement in regulated domains regardless of output quality."
+
+**Translation:** German enterprise buyers want to know not just which agent won, but WHY. Straw's T3 investigator produces exactly this — a detailed investigation of what the top agents did, how they reasoned, and what distinguished the winner.
+
+**Straw's German market pitch:** "Straw's evaluation produces the Nachvollziehbarkeit documentation your procurement team requires. The rubric is defined upfront, the scoring is transparent, and the T3 investigator report provides the step-by-step audit trail. One document, fully auditable."
+
+### German procurement criteria (additional)
+
+1. **Sector-specific deployments with documented measurable outcomes** — generic agents are rejected
+2. **Explicit operational boundaries** — agents with undefined scope are not procured
+3. **ISO/GDPR compliance** — non-negotiable (covered in Tick 513)
+4. **"Made-in-Germany" preference** — less relevant for Straw as platform vs. agents competing on it
+
+**Straw's advantage:** Straw IS the tool for documenting measurable outcomes (rubric scores) and explicit operational boundaries (rubric dimensions define scope). Straw solves the German procurement problem.
+
+### Key German AI companies as targets
+
+| Company | Location | Relevance |
+|---|---|---|
+| **Aleph Alpha** (PhariaAI) | Heidelberg | EU sovereign AI model; explainability focus = Straw's audience |
+| **Scoutbee** | Würzburg | AI for procurement; natural co-marketing partner |
+| **Celonis** | Munich | Process mining + AI agents; large enterprise customer base |
+| **Personio** | Munich | HR SaaS; potential AI agent evaluation customer |
+
+**#180: Aleph Alpha** — Jonas Andrulis (CEO). PhariaAI = explainable AI for European enterprises. Aleph Alpha's enterprise customers are exactly Straw's target. Partnership pitch: "Aleph Alpha agents competing on Straw evaluations."
+
+**#181: Scoutbee** — procurement AI; natural partner for the "AI RFP" angle from Tick 526.
+
+### UK → Germany sequencing
+
+**Recommended expansion path:**
+1. **UK launch** (v0, May 2026) — English-speaking, common law, no GDPR differences, Jeremy's home market
+2. **Germany v1** (Month 12-18) — largest EU market, strong procurement culture, Nachvollziehbarkeit angle
+3. **France / Netherlands v2** (Month 24+) — secondary EU markets; follow enterprise customers
+
+**Germany entry requirements:**
+- GDPR compliance (already required from v0)
+- German-language landing page (simple; Google Translate can bootstrap)
+- EU entity or UK entity with adequate GDPR transfer mechanism (UK-EU adequacy currently in place)
+- German case study or reference (partner with Aleph Alpha or Celonis for reference)
+
+**No German sales rep needed before €100K ARR** — Jeremy can close German enterprise via video call. Cultural expectation: more formal, longer sales cycle, but higher ACV once closed.
+
+
+---
+
+## Tick 538 — Anthropic as Strategic Partner: 70% Fortune 100 Use Claude [GTM/Partners]
+
+*2026-05-03. Anthropic serves 300,000+ business customers. 70% of Fortune 100. Straw evaluates Claude agents. This is the distribution partner conversation.*
+
+### Claude enterprise adoption (2026)
+
+| Metric | Value |
+|---|---|
+| Business customers | 300,000+ |
+| Fortune 100 penetration | 70% |
+| Customers spending $1M+/year | 500+ |
+| Annualized revenue | $14B (February 2026) |
+| Revenue CAGR from 2024 | 14× in 14 months |
+| Largest deployment | Deloitte (470,000 people) |
+| Enterprise revenue share | 80% of total revenue |
+
+**Why this matters for Straw:** 70% of Fortune 100 companies use Claude. Many of these companies are building Claude-based agents. They need to evaluate those agents before deployment. **Straw is the evaluation infrastructure for Claude-based agents.**
+
+### Anthropic's enterprise customer list = Straw's prospect list
+
+Known Claude enterprise customers:
+- **Deloitte** (470,000 users) — consulting: would use Straw to evaluate agent implementations for clients
+- **Cognizant** (350,000 users) — IT services: builds agents for enterprise clients
+- **Accenture** (30,000 trained) — consulting: same as Deloitte
+- **Finance sector** (52% of surveyed firms using Claude for fraud/compliance)
+
+These are all either agent builders (Deloitte, Cognizant, Accenture) or agent deployers (FinServ firms). Both are Straw customers.
+
+### The Anthropic partnership pitch
+
+**Anthropic's incentive to promote Straw:**
+- Straw evaluations make Claude-based agents look good (if they win)
+- Straw's evaluation produces audit trails that support Anthropic's enterprise trust narrative
+- Straw reduces churn risk: enterprises confident in their Claude agents (via Straw evaluation) renew longer
+
+**What to ask Anthropic for:**
+1. **Marketplace listing** — list Straw in Anthropic's third-party tools directory
+2. **Developer program** — early access to Claude API credits for evaluation pipeline
+3. **Co-marketing** — "How Anthropic + Straw enable auditable enterprise AI deployment" blog post
+4. **Customer introductions** — warm intros to Claude enterprise customers building agents
+
+**Who to contact at Anthropic:**
+- **Mike Krieger** (Head of Product, Anthropic) — former Instagram co-founder; product-oriented leader
+- **Claude Partner Program** — partner@anthropic.com (hypothetical)
+- **Developer Relations team** — via Claude API developer program
+
+**#182: Mike Krieger (Anthropic)** — Head of Product. LinkedIn contact. Straw uses Claude for T2/T3 evaluation → natural product conversation. "We're building evaluation infrastructure that makes Claude-based agents more trustworthy in enterprise procurement."
+
+### The "Straw built on Claude" narrative
+
+Straw's T2 LLM-as-judge and T3 investigator use Claude models. This creates a recursive story:
+
+> "Claude evaluates Claude-based agents. When an enterprise uses Straw to evaluate their AI agents, and those agents are built on Claude, they're using Claude to validate Claude. The recursion is the point — it means the evaluation uses the same intelligence standard as the agents being evaluated."
+
+This is a marketing asset, not a technical concern. Frame it as: "We trust Claude's judgment to evaluate Claude-based agents. If Anthropic's model can't fairly evaluate agents built on top of it, no external model can do better."
+
+(Note: Straw can also use multiple models for T2/T3 to avoid single-model bias — including GPT-5.5, Gemini Ultra, and Claude in a panel. This is technically stronger and addresses the conflict of interest concern.)
+
