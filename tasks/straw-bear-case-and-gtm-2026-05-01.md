@@ -19969,3 +19969,148 @@ Straw's long-term moat: we become the trust layer of the agent economy. Not just
 
 **The FICO analogy is exact**: FICO doesn't issue loans. They don't run credit analysis for a living. They are the *score*. Straw's goal: be the score for AI agents. When an enterprise asks "should we deploy this agent?" the answer is "what's its Straw score?"
 
+
+---
+
+## Tick 272 (2026-05-03T00:02:00Z): EU AI Act Enforcement as GTM Tailwind [theme: gtm]
+
+**Research basis**: EU AI Act August 2, 2026 enforcement deadline for high-risk AI systems. Penalties up to €35M or 7% of global revenue. Enterprise AI trust maturity score 2.3/5 average. Only 1/3 of organizations report maturity ≥3 in agentic AI governance. Annual audits now required for high-risk AI in hiring, credit, financial decisions.
+
+### The Compliance Catalyst
+
+August 2, 2026 is five months away. Every multinational enterprise with EU operations deploying AI agents in Annex III high-risk categories (hiring, credit assessment, financial decisions, critical infrastructure) faces:
+
+1. **Mandatory conformity assessments** before deployment
+2. **Explainability documentation** — "meaningful information about the logic involved"
+3. **Annual audits** for high-risk systems
+4. **€35M or 7% of global revenue** penalties for violations
+
+Straw is not a compliance tool. But Straw generates the documentation that makes compliance possible.
+
+**The linkage**: An enterprise that runs a Straw evaluation gets:
+- Documented rubric defining what "good performance" means (satisfies explainability requirement)
+- Competitive benchmark showing how the deployed agent compares to alternatives (supports conformity assessment)
+- Reproducible evaluation methodology (auditable)
+- Timestamped certification artifact (evidence of pre-deployment diligence)
+
+### Positioning Straw as Pre-Deployment Due Diligence
+
+Legal counsel at every Fortune 2000 company is now asking: "How do we document that we chose the right AI agent, not just any AI agent?"
+
+Straw's answer: "We ran a competitive evaluation. Three agents competed on your exact task with your exact rubric. This one won. Here's the evaluation report."
+
+That's an audit trail. That's defensible. That's what legal counsel needs before August 2026.
+
+**Reframe Straw for compliance buyers**: "Straw is your pre-deployment conformity documentation for the EU AI Act."
+
+Not the full compliance story — but the most defensible piece of it. "We chose this agent because it won a competitive evaluation" is infinitely more auditable than "we chose this agent because the vendor demo looked good."
+
+### The Governance Gap GTM Motion
+
+The EU AI Act creates a *mandatory* GTM motion Straw has never explicitly targeted:
+
+**Target buyer**: Chief AI Officer / Head of AI Governance / General Counsel
+**Entry point**: "Are you ready for August 2026 EU AI Act enforcement?"
+**Straw's value**: Pre-deployment evaluation documentation + certification = your Annex III evidence file
+
+| Without Straw | With Straw |
+|---------------|------------|
+| "We chose this agent based on vendor demos" | "This agent won a competitive evaluation on our exact tasks" |
+| No documented selection rationale | Rubric + evaluation report + certification badge |
+| Vulnerability in audit | Defensible audit evidence |
+| Potential €35M penalty | Evidence of reasonable diligence |
+
+### Named Compliance Buyer Targets
+
+Companies with significant EU operations AND active AI agent deployments in high-risk categories:
+
+- **HSBC**: Financial decisions + hiring agents. UK-EU regulatory exposure. Chief AI Officer Stuart Beaumont.
+- **Siemens**: Industrial AI + hiring workflows. German HQ = maximum EU AI Act exposure. Head of AI Governance.
+- **Allianz**: Insurance AI agents + claims processing. GDPR + AI Act double exposure.
+- **Volkswagen Group**: Manufacturing + hiring AI. German HQ.
+- **AstraZeneca**: Pharma + clinical trial AI. High-risk Annex III exposure. Chief Digital Officer Tara Manoharan.
+- **Deutsche Bank**: Financial AI agents. BaFin + EU AI Act.
+
+**Cold opener for compliance buyers**:
+> "August 2, 2026 is 90 days away. If you're deploying AI agents in hiring, credit, or financial decisions, you need documented evidence that you chose the right agent. Straw is how enterprise buyers prove they ran a rigorous selection process before deployment — generating the rubric documentation, competitive evaluation report, and certification artifact that satisfies Annex III due diligence. Can we schedule 30 minutes before Q3?"
+
+### Scoring This GTM Motion
+
+- **Urgency**: 10/10 — hard deadline in <6 months
+- **Budget authority**: 9/10 — legal/compliance has direct budget, doesn't go through IT procurement
+- **Competitive differentiation**: 9/10 — no one else is positioned as "EU AI Act pre-deployment documentation"
+- **Sales cycle length**: 6/10 — legal procurement is thorough but urgent
+- **CAC**: 8/10 — legal firms and compliance consultants are a high-leverage referral channel
+
+This is the highest-urgency GTM motion Straw has not yet exploited.
+
+---
+
+## Tick 273 (2026-05-03T00:03:00Z): Series A Fundraising Narrative Optimization [theme: gtm]
+
+**Research basis**: 2026 Series A bar: $2.5M ARR median (up 75% from 2021). Investors want: narrow ICP wedge, defensible AI integration (not GPT wrappers), signed enterprise pilots, 130%+ NRR, 3+ design partners. Vertical AI wins because it speaks domain language and fits compliance rules.
+
+### The Fundraising Problem
+
+Straw's story is compelling but easy to misread. Common VC objections:
+1. "Why won't Anthropic/OpenAI just build this?" (competition)
+2. "Is this a feature, not a company?" (defensibility)
+3. "Enterprise sales cycles are 12-18 months — how do you hit $2.5M ARR?" (speed to traction)
+4. "Braintrust raised $121M — don't they already do this?" (competitive positioning)
+
+Each objection has a crisp answer. The fundraising narrative needs to pre-empt all four.
+
+### The Winning Narrative Architecture
+
+**Opening frame (30 seconds)**:
+"Enterprise AI procurement is broken. Companies are making six-figure decisions about which AI agent to deploy based on vendor demos. Straw fixes that. We run competitive evaluations — multiple agents compete on the buyer's exact task with the buyer's exact rubric. The score doesn't lie."
+
+**Why now (30 seconds)**:
+"Three forces collide in 2026: (1) AI agent deployment at scale — enterprises now have dozens of agent vendors to choose from. (2) EU AI Act enforcement August 2026 — companies need documented evidence they chose the right agent. (3) The Braintrust gap — $121M raised for monitoring deployed agents post-deployment; no one owns the procurement evaluation pre-deployment."
+
+**Why us (30 seconds)**:
+"We've built the zero-data sandbox architecture that makes trust-based evaluation possible. Agents compete without seeing real company data. We're the only platform where foundation model companies, SIs, and agent builders all want to win — because winning a Straw competition signals enterprise-readiness."
+
+**Traction (numbers-forward)**:
+- [X] design partners, paying pilots in [Y] verticals
+- $[Z]K ARR, targeting $2.5M by month 18
+- 130% NRR target based on 5 expansion triggers
+- LTV:CAC of 24.7:1 at steady state
+
+**Competitive moat**:
+"Braintrust monitors deployed agents — post-deployment observability. We evaluate agent candidates — pre-deployment procurement. Different buyers (operations vs. procurement), different moment (post-deployment vs. pre-deployment), different budget (OpEx monitoring vs. CapEx procurement). We see Braintrust as validation that evaluation tooling is a venture-scale category."
+
+### The "Why Won't Anthropic Build This?" Answer
+
+> "Anthropic is a foundation model company. They make money selling API access. Building a platform that says 'Anthropic scored 73, OpenAI scored 89' is existentially dangerous for them. We are neutral because our business depends on neutrality — we charge for evaluation services, not for selling any particular model. That neutrality is our product. Anthropic, OpenAI, and Google all want to win Straw competitions. None of them want to *run* them."
+
+### The "Feature, Not Company" Answer
+
+> "Salesforce CRM was a 'feature' of enterprise software stacks. HubSpot marketing automation was a 'feature' of marketing. When a feature becomes the *decision layer* for a category, it becomes the company. Straw is the decision layer for AI agent procurement — a $100B+ category. The data moat we build by running thousands of evaluations across hundreds of enterprises creates benchmarks that no single model provider can replicate. Benchmark data IS the product."
+
+### Target Investors for Straw Series A
+
+| Firm | Why Them | Key Partner |
+|------|----------|-------------|
+| **Bessemer** | B2B SaaS infrastructure; invested in Braintrust | Bryan Hoang (enterprise AI) |
+| **Accel** | Enterprise developer tools; HubSpot, Atlassian heritage | Vas Natarajan |
+| **Benchmark** | Category-defining B2B SaaS | Sarah Tavel (platform marketplaces) |
+| **Sequoia** | AI-native infrastructure; invested in Harvey, Anthropic | Sonya Huang (AI/enterprise) |
+| **Insight Partners** | Scale-up B2B SaaS | Jon Rosenbaum |
+| **Emergence Capital** | Enterprise software AI specialists | Carlotta Siniscalco |
+
+**Warm intro paths**:
+- Braintrust investors who understand the monitoring/procurement distinction
+- Legal tech investors who understand compliance-driven procurement (Harvey AI's investors)
+- Anthropic Partner Network connections (shared LPs across rounds)
+
+### Series A Milestone Checklist
+
+Before raising Series A, Straw needs:
+- [ ] 3+ paying enterprise design partners ($50K-$150K pilots)
+- [ ] One "marquee name" design partner for press (Fortune 500 brand)
+- [ ] Reproducible evaluation methodology documented and repeatable
+- [ ] NRR data showing expansion (at least 1 customer expanded)
+- [ ] Named competitive win vs. status quo ("they were about to sign with Vendor X, ran Straw, chose different agent")
+- [ ] EU AI Act compliance positioning in deck
+
