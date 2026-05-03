@@ -17160,3 +17160,179 @@ Platform evaluations happen inside proprietary systems with opaque scoring metho
 
 4. **Regulatory compliance as the differentiation**: Regulated enterprises cannot rely on platform evaluations for compliance documentation. Straw's audit-grade report is the one that satisfies EU AI Act deployer requirements.
 
+
+---
+
+## Tick 237 (2026-05-03T00:14:00Z): Federal government design partner targets — GAO report reveals the exact pain Straw solves [theme: partners]
+
+### The Government Opportunity in 2026
+
+The GAO published an April 2026 report (GAO-26-107859) reviewing 13 AI acquisitions at four federal agencies: DoD, DHS, GSA, and VA. Key findings:
+
+1. **Agencies "doubled AI use between 2023 and 2024"** — the adoption rate is accelerating dramatically
+2. **"Difficulty accessing AI technical experts to evaluate contractor proposals"** — agencies lack the internal expertise to evaluate AI vendor claims
+3. **Agencies make worse contracts and then struggle to hold vendors accountable** when they lack data scientists for evaluation
+4. **"Agencies are missing a step to share information on better AI acquisition"** — no shared rubric, no shared evaluation methodology
+5. **"Six Ways Federal Agencies Keep Getting AI Procurement Wrong"** — documented pattern of procurement failure
+6. **71% of CIOs must prove measurable AI value by mid-2026 or face budget reductions** — urgency is high
+
+**This is Straw's exact problem, described by the GAO, affecting federal agencies.** The government has:
+- Massive AI procurement volume
+- No internal evaluation expertise
+- Documented procurement failures
+- OMB M-26-04 documentation requirements (from prior research, December 2025)
+- A GAO report explicitly calling out the evaluation gap
+
+### Named Federal Target Contacts
+
+**DoD (Department of Defense)** — Largest AI procurement in the world; "AI-first agenda" under Hegseth
+
+| Name | Title | Why They Care |
+|---|---|---|
+| John Sherman | Former DoD CIO (now consulting) | Deep institutional knowledge of DoD AI procurement challenges |
+| Craig Martell | Chief Digital and AI Officer (CDAO) | Leads DoD AI adoption and evaluation standards |
+
+- **Context**: DoD has committed to "wartime speed" AI acquisition with "new AI evaluation criteria." Straw's competition methodology is directly responsive to DoD's stated evaluation gap.
+- **Pitch angle**: The DoD needs an evaluation framework that works at classified and unclassified levels. Straw's rubric methodology is the civilian commercial standard that DoD can adapt.
+- **Note**: Federal sales require FedRAMP authorization before meaningful traction. This is a 12-18 month runway item, not immediate. However, design partner relationship-building can start now.
+
+**DHS (Department of Homeland Security)** — Immigration, customs, cybersecurity AI deployments
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Eric Hysen | Chief Information Officer | Leads DHS technology and AI strategy |
+
+- **Context**: DHS was one of the four agencies in the GAO report. They are actively deploying AI for border security, customs processing, and cybersecurity monitoring — all high-stakes, all needing rigorous procurement evaluation.
+
+**GSA (General Services Administration)** — The federal procurement agency
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Stephen Ehikian | Administrator | GSA oversees federal technology purchasing; if Straw becomes a GSA Schedule vendor, all federal agencies can procure without individual RFPs |
+
+- **Context**: GSA is the meta-procurement agency. Getting on the GSA Schedule (specifically IT Schedule 70/MAS) is the single highest-leverage federal distribution move. One GSA contract gives Straw access to all 430+ federal agencies.
+- **Priority action**: Pursue GSA Schedule listing proactively. This is a product infrastructure investment that unlocks federal distribution.
+
+**VA (Department of Veterans Affairs)** — 9M veterans; massive AI deployment in healthcare and benefits
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Kurt DelBene | CIO | Leads VA technology modernization and AI adoption |
+
+- **Context**: VA is the largest integrated healthcare system in the US. Their AI procurement decisions directly affect veteran care. They have been one of the GAO-flagged agencies with procurement challenges.
+
+### Federal GTM Strategy
+
+**Phase 1 (now to 12 months): Civilian agency design partners**
+- Target GSA, VA, and one civilian agency as non-classified design partners
+- Run workshops on rubric development for "AI system evaluation criteria" (federal language)
+- Goal: Get cited in a federal agency's RFP as an evaluation methodology source
+
+**Phase 2 (12-24 months): GSA Schedule listing**
+- GSA IT Schedule 70 (Multiple Award Schedule) is the procurement vehicle
+- Once listed, federal agencies can buy Straw directly without a separate procurement process
+- Annual revenue from GSA sales is predictable and grows with federal AI spending
+
+**Phase 3 (24-36 months): DoD pathway**
+- After civilian agency references, approach DoD's CDAO office with "Straw for Defense"
+- FedRAMP authorization required for DoD systems
+- Classified rubric development requires additional security clearance infrastructure
+
+### The OMB M-26-04 Angle
+
+OMB M-26-04 (December 2025, sunsets December 2027) mandates AI procurement documentation. Every federal agency procuring AI must produce documentation of the evaluation methodology. Straw's competition report is exactly the format OMB requires. Every federal AI procurement is legally required to have what Straw produces. This is not a "nice to have" for federal buyers — it is compliance.
+
+**The pitch to federal agencies**: "Straw's competition report satisfies OMB M-26-04's documentation requirements. Run a Straw competition before you sign your AI contract, and your procurement paperwork is done."
+
+
+---
+
+## Tick 238 (2026-05-03T00:15:00Z): Conference and events GTM strategy — where to be and why [theme: gtm]
+
+### Why Events Are Critical for Enterprise AI Sales
+
+Enterprise AI procurement decisions are made by people, not algorithms. The CIO who attends Gartner Data & Analytics Summit in April sees a demo of three products, meets five vendors, and books three follow-up calls. One of those calls becomes a pilot. Events compress relationship timelines by months.
+
+Straw's GTM is 100% founder-led. Jeremy needs to be at the right conferences, with the right pitch, talking to the right people. This is the annual events strategy.
+
+### Tier 1 Events (Must Attend + Speak)
+
+**Gartner Data & Analytics Summit** (Annual, Spring — Orlando/London)
+- Audience: CIOs, CDOs, Chief Analytics Officers from Fortune 1000
+- Why critical: Gartner analyst relationships; every CDO who attends is an ICP buyer
+- Goal: Speaking slot on "Objective AI Agent Evaluation" or "Building the AI Procurement Rubric"
+- Target: Submit abstract 6 months in advance; speaker selection competitive
+- Backup: Attend as exhibitor if speaking slot not available in year 1
+
+**MIT CDOIQ Symposium** (Annual, July — Cambridge, MA)
+- Audience: 400+ Fortune 500 CDOs; invitation-only for speakers
+- Why critical: The most concentrated single-room collection of Straw's ICP anywhere in the world
+- How to get in: Direct referral from an advisory board member who is a former CDO; or invited paper submission
+- Goal: 20-minute talk + 5 design partner conversations in 3 days
+
+**CDO Club Summit** (Annual, Fall — New York)
+- Audience: Global Chief Data Officers
+- Why critical: CDOs are Straw's single most important buyer title
+- Goal: Speaker slot on AI procurement methodology; 10 design partner conversations
+
+**Gartner IT Symposium/Xpo** (Annual, October — Orlando)
+- Audience: CIOs from Fortune 500; 10,000+ attendees
+- Why critical: Largest CIO conference; Gartner hype cycle discussions happen here
+- Goal: Not to exhibit (too expensive at early stage) but to attend, get onto panels, and use fringe events
+- Tactic: Host a dinner or cocktail event for 20-30 CIOs on the conference sidelines; costs $5K-$10K, drives 20+ conversations
+
+**AI Forward / VentureBeat Transform** (Annual, Spring — San Francisco)
+- Audience: AI practitioners, VPs of AI, heads of AI at enterprise companies
+- Why critical: Technical buyer audience that champions Straw internally
+- Goal: Speaking slot on evaluation methodology; LinkedIn connection blitz at conference
+
+### Tier 2 Events (Strategic + Annual)
+
+**NRF (National Retail Federation)** (January, New York)
+- Attend if retail/CPG is an active vertical with 2+ design partners
+- Goal: 5 retail CTO/CDO conversations; announce Straw Certified in retail/CPG
+
+**Hannover Messe** (April/May, Germany)
+- Attend once manufacturing design partners are in place
+- Goal: Position Straw as the industrial AI evaluation standard
+
+**FS-ISAC (Financial Services) Annual Summit** (Spring, varies)
+- Financial services CISO and technology executive audience
+- Goal: Position Straw's zero-data sandbox as the financial services AI evaluation standard
+
+**AWS re:Invent** (December, Las Vegas)
+- AWS ecosystem buyers
+- Goal: Partner with AWS on listing; meet AWS Financial Services and Healthcare vertical leads
+
+### Tier 3 Events (Speaking Only, No Exhibit)
+
+- **HLTH Conference** (healthcare tech, October, Las Vegas)
+- **HR Tech Conference** (HR technology, October, Las Vegas)
+- **InsureTech Connect** (insurance, Fall)
+- **Money2020** (fintech, Fall)
+
+These are vertical-specific. Attend only after first design partner in that vertical is signed.
+
+### Speaking Topic Positioning
+
+Every speaking opportunity anchors on one of three angles:
+
+1. **"How to build an AI procurement rubric" (tutorial format)** — practical, actionable, demonstrates expertise, generates leads from people who want help
+2. **"The evaluation theater problem in enterprise AI" (provocation format)** — makes the audience uncomfortable in a productive way; positions Straw as the solution to a named problem
+3. **"What we learned running N AI agent competitions" (case study format)** — proof of execution; makes the company real
+
+**The panel vs. speaking decision**: Solo keynotes are worth 5x panel spots. Prioritize solo talks. If only panel is available, ensure Straw's specific positioning is center of the conversation.
+
+### Events Budget (Year 1)
+
+| Event | Cost Estimate | Priority |
+|---|---|---|
+| Gartner D&A Summit (attendee) | $3,000-$5,000 | Must |
+| MIT CDOIQ Symposium | $1,000-$2,000 (if speaking, often hosted) | Must |
+| CDO Club Summit | $1,500-$2,500 | Must |
+| AI Forward/VentureBeat Transform | $1,000-$2,000 | High |
+| Gartner IT Symposium dinner event | $5,000-$10,000 | High |
+| Total Year 1 | $12,000-$22,000 | |
+
+Events budget should be treated as pipeline investment, not marketing spend. Every $1K spent at the right conference with the right conversation should generate $10K+ in pipeline within 90 days.
+
