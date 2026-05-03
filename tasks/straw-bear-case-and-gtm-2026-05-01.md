@@ -21995,3 +21995,110 @@ SAIC (Science Applications International Corporation) and Leidos are mid-tier de
 
 **Most accessible target**: **Leidos Health IT** — they run health IT systems for the Veterans Affairs, building AI agents for clinical workflows. This overlaps with Straw's healthcare vertical. The VA context means FedRAMP Moderate compliance + HIPAA + government procurement = high Straw fit.
 
+
+---
+
+## Tick 308 (2026-05-03T00:38:00Z): Workday and HR Tech — AI Agent Partners [theme: partners]
+
+**Research basis**: Workday "reinvented as platform of agents" (Bersin, April 2026). Workday acquired HiredScore (talent intelligence), Evisort (contract AI), Paradox (conversational recruiting), Sana (learning AI). New agents: Payroll Agent, Total Rewards Agent, Talent Management Agent. Josh Bersin: HR AI market will consolidate to "superagents." A16Z: "Workday's Last Workday?" — existential threat analysis.
+
+### HR Tech AI Is Evaluating Agents at Scale
+
+Workday's transformation from "system of record" to "platform of agents" creates a massive evaluation need. They acquired 4 AI companies in 2 years. Each acquisition adds an AI agent to the Workday platform. Workday's enterprise customers (8,000+ organizations) are now being asked to adopt 6+ AI agents across recruiting, payroll, total rewards, talent management, learning, and frontline operations.
+
+**The Workday customer's problem**: "Workday says its Payroll Agent is better than its old system. Its competitor says their payroll AI is better than Workday's. How do we know who's right?" This is a Straw evaluation.
+
+### Named HR Tech Design Partner Targets
+
+| Company | AI Agent Focus | Key Contact | Straw Entry Point |
+|---------|----------------|-------------|-------------------|
+| **Workday** (platform) | Full HCM AI agent suite | Carl Eschenbach (CEO), Emily McEvilly (Chief Customer Officer) | Workday's enterprise customers need neutral evaluation of Workday AI agents vs. alternatives |
+| **SAP SuccessFactors** | HR AI agents | Jill Popelka (President, SAP SuccessFactors) | Competing with Workday — needs neutral evaluation to prove superiority |
+| **HiredScore** (Workday-acquired) | AI talent matching | Athena Karp (CEO) | HiredScore for recruiting — "which AI recruiter finds the best candidates for your specific job profiles?" |
+| **Paradox** (Workday-acquired) | Conversational AI recruiting | Aaron Matos (CEO) | Paradox "Olivia" conversational recruiter — evaluate vs. alternatives |
+| **Gloat** | AI talent marketplace | Ben Reuveni (CEO) | Gloat just entered the "crowded war for AI agents in HR" (Bersin March 2026); needs competitive differentiation |
+| **Beamery** | Talent lifecycle AI | Sultan Saidov (Co-founder) | Enterprise talent AI platform; needs evaluation to compete with Workday |
+| **Cornerstone OnDemand** | Talent development AI | Himanshu Palsule (CEO) | Competing in learning/development AI vs. Workday Sana |
+
+**Highest-priority design partner**: **Gloat** — they just entered the crowded HR AI agent market and explicitly need competitive differentiation. Straw certification would be their fastest path to proving superiority vs. Workday's built-in agents. Ben Reuveni is a founder who will understand the competitive intelligence value of a Straw evaluation.
+
+### A16Z's "Workday's Last Workday" Thesis — And Straw's Angle
+
+A16Z published a provocative analysis: "Workday's Last Workday?" — arguing that AI agents will replace Workday's workflow layer, making the system-of-record infrastructure unnecessary once AI agents can operate directly on data.
+
+If this thesis is correct (or even partially correct), it means:
+1. The market for HR AI agents is expanding rapidly as Workday's moat erodes
+2. Enterprises will evaluate multiple AI agents for each Workday workflow being replaced
+3. The evaluation decision becomes a multi-year platform commitment (not just a feature choice)
+
+Straw's HR tech evaluation opportunity grows if Workday's platform grip loosens. Every enterprise reconsidering their Workday relationship is also reconsidering which AI agents to deploy in the workflows Workday used to own.
+
+### The HR AI Rubric Categories
+
+HR evaluations require domain-specific rubric design:
+
+**Recruiting AI agents**:
+- Quality of candidate shortlists (% shortlisted candidates who get offers)
+- Diversity and inclusion metrics (composition of shortlists)
+- Time-to-fill reduction
+- Hiring manager satisfaction score
+
+**Talent management agents**:
+- Accuracy of performance review evidence (% supported by actual data)
+- Calibration bias detection (does the AI systematically rate certain groups higher?)
+- Manager time-per-review-cycle reduction
+
+**Payroll agents**:
+- Error rate (% of payroll transactions with errors)
+- Compliance accuracy (correct tax calculations, regulatory compliance)
+- Exception handling rate
+
+These rubrics require HR expertise to design well. Straw's "rubric scientist" for HR evaluations should have an HR analytics or people analytics background — not just an ML background.
+
+---
+
+## Tick 309 (2026-05-03T00:39:00Z): The Misaligned Incentives Bear Case — Straw's Principal-Agent Problem [theme: bear]
+
+**Research basis**: Enterprise procurement teams are the Straw buyer. Enterprise business units are the Straw user. Procurement teams are evaluated on cost savings, not deployment success. Business units are evaluated on productivity, not rigorous evaluation. "Evaluation theater" is a known dynamic. Agent builder ecosystem has strong incentive to undermine evaluation credibility.
+
+### An Under-Explored Bear Case: Who Actually Benefits From Rigorous Evaluation?
+
+Straw's value is clear at the organizational level: enterprises that run rigorous evaluations deploy better AI agents and achieve higher ROI. But within enterprises, individuals have misaligned incentives:
+
+**The procurement team**:
+- Evaluated on: vendor cost reduction, contract efficiency, speed of procurement
+- Not evaluated on: production performance of deployed agents
+- Incentive with Straw: adds cost and time to procurement. May make them look bad if the Straw-recommended agent still fails.
+- Incentive against Straw: faster procurement (skip evaluation), lower cost (no evaluation fee), less accountability (no documented evaluation = no documented failure)
+
+**The business unit**:
+- Evaluated on: productivity metrics, business outcomes
+- Has high motivation for agents to succeed
+- Incentive for Straw: wants the best agent
+- BUT: may have already committed emotionally to a specific vendor after demos
+
+**The IT/security team**:
+- Evaluated on: security compliance, uptime, integration reliability
+- Incentive for Straw: security evaluation tier addresses their concerns
+- BUT: adds another tool to manage, another vendor to govern
+
+**The AI/ML team (if internal)**:
+- Evaluated on: AI deployment success
+- HIGH motivation for rigorous evaluation (most aligned with Straw)
+- BUT: may see Straw as outsourcing their job
+
+**Score: 5/10** — Real misalignment, but manageable with the right buyer targeting.
+
+### The Solution: Target the AI CoE, Not Procurement
+
+The AI Center of Excellence is Straw's best buyer for a reason beyond the mandate argument: the AI CoE is the one team that IS evaluated on deployment success across the entire enterprise. They don't benefit from cheaper, faster procurement that leads to failures. They benefit from deployments that succeed.
+
+The CoE's incentive structure aligns perfectly with Straw:
+- CoE success metric: % of AI deployments achieving production-scale adoption
+- Straw's value: increases deployment success rate
+- CoE budget: directly funds Straw as a strategic investment
+
+**The procurement entry point creates misalignment. The CoE entry point creates alignment.** Straw should always be sold to the CoE (or equivalent) as the budget holder, not to the procurement team.
+
+If the CoE doesn't exist at a target account, find the person whose job depends on AI deployment success — that's the economic buyer.
+
