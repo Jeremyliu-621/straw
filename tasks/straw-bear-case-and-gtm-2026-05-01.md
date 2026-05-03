@@ -18274,3 +18274,144 @@ For Straw's first evaluation engineering hires:
 
 First hire target: PhD student or recent graduate from the Stanford NLP group or CMU LTI who has published on LLM evaluation or benchmarking methodology.
 
+
+---
+
+## Tick 251 (2026-05-03T00:28:00Z): The 70% multistep task failure problem — can Straw competitions proxy production? [theme: bear]
+
+**Score: 5/10** — A nuanced challenge to Straw's core product promise. If all agents fail similarly in production, the competition validates relative capability within an unreliable class. The response: Straw must be clear about what it measures and what it doesn't.
+
+### The Research Data
+
+- **Carnegie Mellon / Salesforce study**: AI agents fail nearly 70% of multistep office tasks in production conditions
+- **Stanford 2026 AI Index**: Agents achieve 66% success on OSWorld benchmarks — up from 12% last year — but 34% of tasks hit edge cases or require clarification
+- **88% of AI agents never reach production** (March 2026, 650 enterprise technology leaders)
+- Only **14%** have scaled an agent to production-grade operation (handling >50% of target task volume)
+- **40%+ of agentic AI projects will be canceled by 2027** (Gartner)
+- 70% of leaders cite "non-deterministic outputs" as the #1 production-readiness barrier
+
+### The Bear Case
+
+**Scenario**: A Straw competition tests three AI agents on a complex, multistep financial services task. The results:
+- Agent A: 64% task success rate
+- Agent B: 58% task success rate
+- Agent C: 52% task success rate
+
+The enterprise picks Agent A. In production, Agent A also fails ~70% of multistep tasks (consistent with industry data). The enterprise is unhappy. They return to Straw saying: "Your competition said Agent A was the best. Agent A is failing 70% of its tasks."
+
+Straw's answer has to be: "Agent A *was* the best of the three you tested — it achieved 64% vs. 52% for Agent C. We told you AI agents have real failure rates; we didn't promise 100% success."
+
+**The second, deeper bear case**: If all production agents cluster in the 30-70% success range for complex multistep tasks, enterprise buyers might rationally conclude that the differences between agents aren't large enough to justify a $25K evaluation. "They all fail — just pick the cheapest one."
+
+### Why This Is a 5/10 (Not a 9/10)
+
+**Counter-argument 1 — The relative difference matters enormously**
+
+A 12-percentage-point difference (64% vs. 52%) on a $10M/year business process is a $1.2M/year impact. Even in a world where all agents fail frequently, the *best* agent's relative superiority has significant economic value. Straw finds that best agent.
+
+**Counter-argument 2 — Task scoping is Straw's solution**
+
+Straw competitions work best on well-scoped, specific tasks — not arbitrary open-ended office work. A well-designed Straw rubric focuses on the specific task type the enterprise needs (e.g., "classify and route customer service tickets" not "do all office tasks"). The 70% failure rate applies to open-ended multistep agents; Straw measures performance on the specific task the enterprise cares about.
+
+**Counter-argument 3 — Comparison across agents prevents false equivalence**
+
+The Carnegie Mellon study tests generic agents on generic tasks. In a Straw competition, enterprise-specific domain-tuned agents are compared. A customer service agent that has been fine-tuned on telecom support data will significantly outperform a generic agent on telecom tasks. Straw surfaces that difference.
+
+**Counter-argument 4 — Straw is explicit about its scope**
+
+Straw never claims to guarantee production performance. It claims to provide relative comparison in a controlled evaluation environment. The Terms of Service (Tick 245) explicitly disclaim warranty of production fitness.
+
+### The Required Product Response
+
+1. **Task scoping advisory as a core service**: Straw's rubric design process must include a task scoping advisory that helps enterprises select the right granularity of task for evaluation. Open-ended tasks will yield noisy results; scoped tasks will yield signal.
+
+2. **Reliability dimensions in every rubric**: Every Straw rubric should include at least two reliability dimensions: (a) failure mode behavior (does the agent fail gracefully or catastrophically?), and (b) consistency across repetitions (run the same task 5 times — how consistent is the output?). These are separate from capability dimensions.
+
+3. **Production audit offering**: For enterprises worried about the competition-to-production gap, Straw offers a 90-day production audit: compare competition results to real production data. This closes the "does the competition predict production?" question empirically.
+
+4. **Communicate calibrated expectations**: In every competition kickoff, Jeremy explicitly tells the customer: "We're measuring relative performance on your task, in a controlled environment. The best agent in our competition will be the best agent in production — but 'best' means 'best available,' not 'perfect.'"
+
+
+---
+
+## Tick 252 (2026-05-03T00:29:00Z): HR tech design partner targets — talent AI is the second-biggest enterprise AI category [theme: partners]
+
+### Why HR Tech Is a Priority Vertical
+
+- **87% of businesses worldwide are leveraging AI-driven solutions for recruitment** (Gartner 2026)
+- HR/talent AI is the second-largest category of enterprise AI spend after customer service
+- The use cases are highly specific and measurable: resume screening accuracy, candidate ranking precision, bias rates, interview scoring consistency
+- Legal exposure is high: EEOC and OFCCP oversight of AI hiring tools means evaluation documentation is required
+- Two well-funded AI talent platforms from prior research: **Phenom** (CEO: Mahe Bayireddi) and **Eightfold** (CEO: Ashutosh Garg)
+- Enterprise HR AI procurement decisions run $500K-$5M+ per deployment
+
+### Named Target Contacts
+
+**Phenom** — AI talent intelligence platform; well-funded
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Mahe Bayireddi | CEO & Co-founder | Building the dominant AI talent platform; "Straw Certified" would give enterprise buyers independent validation |
+
+- **The Phenom opportunity (both-sided)**:
+  - (1) Phenom as a vendor: Enterprise companies evaluating Phenom vs. Eightfold vs. Workday AI could use Straw to run an independent comparison
+  - (2) Phenom as a design partner buyer: Phenom's own customers (enterprise HR departments) need to evaluate which AI sourcing/screening agent to deploy — Straw helps Phenom's customers make better decisions
+- **Opener**: "Phenom has built impressive AI talent intelligence. As enterprise HR departments evaluate Phenom against Eightfold and Workday AI, Straw provides the independent evaluation infrastructure. We'd like to discuss a design partnership."
+
+**Eightfold AI** — AI platform for talent acquisition and management
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Ashutosh Garg | CEO & Co-founder | Building enterprise talent AI; competes directly with Phenom |
+
+- **Context**: Eightfold raised significant capital and targets enterprise talent AI. The enterprise buyers deciding between Eightfold and Phenom are exactly the Straw use case.
+- **Straw Certified angle**: "Eightfold can be among the first AI talent platforms to earn Straw Certified, giving your enterprise sales team an independent validation that no competitor currently has."
+
+**Workday** — Major enterprise HR platform; adding AI capabilities
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Carl Eschenbach | CEO | Workday is adding AI across all HR modules; procurement decisions affect 10,000+ enterprise customers |
+| Sayan Chakraborty | President, Product & Technology | Leads Workday AI product strategy |
+
+- **Context**: Workday is embedding AI agents across their platform. Enterprise Workday customers evaluating whether to use Workday's built-in AI vs. a specialized vendor (Phenom, Eightfold) are Straw's direct use case.
+
+**Enterprise HR Buyers (Fortune 500 CHROs and VPs of HR Technology)**
+
+The most valuable Straw HR design partners are the buyers, not the vendors:
+
+| Company | Contact Profile | Why They Care |
+|---|---|---|
+| Amazon | VP of HR Technology or Head of People Analytics | Amazon processes millions of applications annually; AI screening decisions have legal implications |
+| JPMorgan Chase | Managing Director, HR Technology | Financial services HR AI compliance is strict; documentation required |
+| Walmart | Director of Talent Acquisition Technology | 1.6M US employees; high-volume hiring with massive AI agent spend |
+| Unilever | VP Global Talent Acquisition | Early adopter of HR AI; has been cited as a responsible AI in hiring leader |
+
+- **Note**: The HR buyer (VP of HR Technology or Director of TA Technology) is distinct from the technology buyer (CIO). Straw needs to develop messaging and channels specific to HR buyers.
+
+### HR Tech Regulatory Context
+
+The EEOC (Equal Employment Opportunity Commission) and state laws (New York City Local Law 144, Illinois AI Video Interview Act) require auditing of AI hiring tools for bias. This creates a legal mandate for evaluation documentation.
+
+Straw's rubric for HR AI must include fairness/bias evaluation as a required dimension — this is not optional for any HR tech evaluation. An enterprise that uses Straw for an HR AI evaluation and doesn't include bias testing creates legal exposure.
+
+**The EEOC + Straw pitch**: "Straw's HR AI evaluations include bias analysis as a standard rubric dimension. Our competition report satisfies audit requirements under EEOC guidance and New York City Local Law 144."
+
+### HR Tech Vertical Access
+
+**HR Tech Conference** (October, Las Vegas): The most important HR technology conference. CHROs, VPs of HR Technology, and HR AI product leaders from Fortune 500 attend. Phenom, Eightfold, and Workday all have major presences. A speaking slot on "Objective evaluation for AI talent tools" is the single highest-leverage access point.
+
+**SHRM (Society for Human Resource Management) Annual Conference**: Broader HR community, less technology-focused. Better for thought leadership and awareness than for design partner conversations.
+
+**Responsible AI in HR consortium**: Emerging industry group focused on responsible AI use in hiring. Straw's evaluation methodology is directly relevant to their agenda. Joining or contributing to this consortium creates access to the HR AI procurement decision-makers who are most concerned with bias and fairness.
+
+### HR AI Rubric Template
+
+Core evaluation dimensions for HR AI agent selection:
+1. **Application screening accuracy**: % of qualified candidates correctly identified in a labeled test set
+2. **False negative rate (bias risk)**: % of qualified underrepresented candidates incorrectly screened out
+3. **Disparate impact analysis**: Four-fifths rule check across protected class categories in test data
+4. **Interview question quality**: Relevance, legality (no legally prohibited questions), and insight of generated interview questions
+5. **Candidate experience quality**: Clarity and professionalism of AI-generated candidate communications
+6. **Data privacy compliance**: Does the agent produce any output that reveals PII it should not have accessed?
+
