@@ -8223,3 +8223,219 @@ rubric:
 - HR consulting firms (Mercer, Willis Towers Watson) as channel partners for enterprise access
 
 **The regulatory hook:** Companies in New York City using AI tools for employment decisions must have an annual bias audit under LL144. A Straw competition with bias_parity rubric criteria can serve as the bias audit evidence. The Warden AI + Straw bundle (independent bias certification + performance evaluation) is a complete enterprise HR AI procurement package.
+
+
+---
+
+## Tick 109 (2026-05-04T19:00Z): Scale Labs — Scale AI's evaluation expansion and the moat question [theme: bear]
+
+**The event:** Scale AI launched Scale Labs in March 2026 — an expanded research division for AI model capabilities, post-training evaluation, enterprise deployment, and risk oversight. Published benchmarks include SWE-Atlas (coding) and Voice Showdown (voice AI preference arena).
+
+### Scale Labs vs. Straw — the distinction that matters
+
+**Scale Labs is evaluating models, not agents on buyer tasks.**
+
+| Dimension | Scale Labs | Straw |
+|---|---|---|
+| What is evaluated | Foundation model capabilities (coding ability, voice quality) | Agent performance on a buyer's specific task |
+| Who defines "good" | Scale AI's research team + crowd preference | Enterprise buyer via rubric |
+| Output | Public leaderboard (which model is best at coding/voice) | Private evaluation report (which agent to buy for this task) |
+| Buyer | AI labs wanting benchmark position | Enterprises procuring AI agents |
+| Revenue model | Data labeling contracts + research partnerships | Per-competition fees |
+| Conflict of interest | Scale AI's customers are the AI labs being benchmarked | Straw has no financial relationship with competing agents |
+
+**The bear case scenario:** Scale Labs adds an enterprise evaluation tier — "bring your task spec, we'll evaluate competing agents." If Scale AI offers this as part of their data services platform (they already have the infrastructure for running AI evaluations at scale), they could enter Straw's market.
+
+**The moat counter:** Scale AI's primary customer is AI labs (Anthropic, OpenAI, Meta, Google are Scale AI's revenue). Evaluating those labs' agents against each other in a competitive procurement setting creates the same conflict-of-interest that OpenAI + Promptfoo created. Scale AI cannot credibly be neutral on which model is best when their revenue comes from model labs.
+
+**Voice Showdown's important signal:** Voice Showdown's results (Gemini 3 Pro and GPT-4o Audio at top) create political tensions between Scale AI and the labs whose models placed lower. Running model-level benchmarks is already causing friction with Scale AI's customers. Adding buyer-specific task evaluation (which directly affects procurement decisions at Scale AI's enterprise customers) would amplify this conflict.
+
+**The defense strategy:** Straw should publish the conflict-of-interest argument before Scale AI enters the market. "Straw is the only evaluation platform whose revenue comes from buyers, not from AI labs or agent builders." Once this is established as the industry positioning, Scale AI entering with a lab-funded evaluation service reinforces Straw's neutrality narrative rather than threatening it.
+
+---
+
+## Tick 110 (2026-05-04T19:30Z): Gartner Hype Cycle for Agentic AI — Peak of Inflated Expectations [theme: bear]
+
+**The Gartner 2026 finding:** Agentic AI is at the **Peak of Inflated Expectations**. The trough of disillusionment is coming.
+
+**The numbers:**
+- Only **17%** of organizations have deployed AI agents
+- **60%+** expect to deploy within 2 years — most aggressive adoption curve Gartner has ever measured
+- **40%+ of agentic AI projects will be canceled by end of 2027** due to escalating costs, unclear business value, or inadequate risk controls
+- Timeline to mainstream adoption: **2-5 years**
+
+### What this means for Straw
+
+**The bullish interpretation:**
+
+The 83% of organizations that haven't deployed yet will be deploying over the next 2-5 years. Every one of them will face a procurement decision. The evaluation market scales proportionally with deployment activity. Straw is building the platform before the wave.
+
+**The bearish interpretation:**
+
+40% cancellation rate by 2027 means 40% of potential customers will abandon AI agent programs entirely before they ever reach the procurement phase. The market is smaller and more survival-driven than the peak expectations suggest.
+
+**The Straw-specific bearish scenario:**
+
+If 40% of agentic AI programs are canceled by 2027, the companies that cancel are the ones without clear business value. The companies that survive are:
+1. Those that already deployed and got ROI (too late for Straw to help with initial procurement)
+2. Those with rigorous evaluation that proved ROI before deployment (exactly Straw's customer)
+3. Those with compliance requirements that mandate evaluation (regulatory buyers — exactly Straw's regulated-industry focus)
+
+**The counter-intuitive insight:** The 40% cancellation rate is actually a market-creating force for Straw. When 40% of AI agent programs fail and get canceled, the narrative becomes "AI agents are risky." The response from surviving enterprises will be "we need to evaluate more rigorously before committing." Straw becomes the insurance policy that prevents cancellations, not a victim of them.
+
+### The positioning for the trough of disillusionment
+
+The Gartner hype cycle predicts that agentic AI is entering a 12-18 month period of disillusionment after the Peak. During this period, the narrative shifts from "AI agents are amazing" to "most AI agents are failing to deliver ROI." The companies that perform best during the trough are the ones that:
+1. Deployed only rigorously-evaluated agents
+2. Have documented evidence of why their choice was the right one
+3. Can explain to their CFO why they chose Agent A over Agent B
+
+**Straw as the "trough survivor kit":**
+- Competition results are the documented evidence
+- Rubric scores are the "why we chose Agent A" explanation
+- 9% rollback rate vs. 47% (Forrester) is the ROI argument
+
+**Content opportunity:** Write "How to Survive the AI Agent Trough of Disillusionment" as Straw's flagship blog post in Q3 2026 — when the trough is beginning. Timing this correctly (publishing during the disillusionment phase, not during the peak) makes the content maximally relevant.
+
+### The agentic AI governance timeline
+
+Gartner also shows: agentic AI governance, agentic AI security, and FinOps for agentic AI are all at "rising concern" stages in the cycle. These are distinct from evaluation but complementary:
+
+- Governance → SecureAuth (identity/access)
+- Security → Microsoft Agent Governance Toolkit
+- FinOps → cost management for running agents
+- **Evaluation → Straw (performance and rubric validation)**
+
+The full enterprise AI agent maturation stack has four pillars. Straw owns the evaluation pillar. The other three pillars are building independent ecosystems. The partnership playbook (Tick 96) connects Straw to the full stack.
+
+---
+
+## Tick 111 (2026-05-04T20:00Z): OCC/Fed/FDIC model risk management guidance — the banking compliance hook [theme: gtm]
+
+**The event:** The OCC, Federal Reserve, and FDIC issued updated model risk management guidance in April 2026. While generative AI and agentic AI are "not within the scope" of the revised guidance explicitly, the agencies stated that banking organizations should apply existing risk management and governance frameworks to AI agents.
+
+**Translation:** Banks MUST have risk management documentation for AI agents. The regulators just haven't told them what form it takes.
+
+### The regulatory hook for Straw in banking
+
+The OCC/Fed/FDIC joint guidance says banks must provide evidence of:
+1. Clear documentation of model purpose and limitations
+2. Explainability for material decisions
+3. Appropriate human oversight
+4. Monitoring for bias or unintended outcomes
+
+Every one of these maps to a Straw rubric dimension:
+
+| Regulatory requirement | Straw rubric equivalent |
+|---|---|
+| Documentation of model purpose | Task specification + competition rubric (what the agent was evaluated on) |
+| Explainability for material decisions | Tier-3 reasoning trace (why each criterion scored as it did) |
+| Appropriate human oversight | Straw's tiered evaluation with human review option for uncertain cases |
+| Monitoring for bias | Bias parity rubric criterion (Tick 108) — demographic input consistency testing |
+
+**The regulatory pitch for banking:**
+
+"When your OCC examiner asks how you validated this AI agent before deployment, your answer is the Straw competition report. It documents: what task the agent was evaluated on, what rubric criteria it passed, how it compared to alternatives, and what the reasoning trace shows for each criterion. That's the model risk management evidence the regulators are asking for."
+
+### The specific banking targets
+
+**Fenrock AI (YC W26)** — banking back-office automation (KYC, AML). Already identified as a design partner target in Tick 88. The OCC guidance makes this more urgent: Fenrock's bank customers need model risk management documentation before deploying Fenrock in production.
+
+**Synapse / Column Bank / Evolve Bank** — Banking-as-a-Service infrastructure companies that power fintech products. They're both operating AI agents for credit decisioning and subject to OCC/Fed oversight. Their chief compliance officer is Straw's buyer.
+
+**The Goldman Sachs / JPMorgan Chase angle:** Both banks have publicly disclosed AI agent programs (Goldman's Marcus AI, JPMorgan's COIN document processing). Both are subject to OCC/Fed model risk management requirements. Both have internal AI/ML compliance teams that need evaluation evidence.
+
+### The "model risk management evidence" positioning
+
+The banking vertical doesn't need Straw to be sold as "competition between AI vendors." It needs Straw framed as "model risk management documentation infrastructure."
+
+**Tagline for banking:** "Your model risk management evidence for the next OCC exam."
+
+**Pricing implication:** Banking compliance documentation has established dollar values. Model risk management reviews cost $50K-$200K from consulting firms (Deloitte, PwC). Straw at $5K/competition is a fraction of the compliance spend that banks already make for model documentation.
+
+---
+
+## Tick 112 (2026-05-04T20:30Z): The pricing model v2 — informed by 112 ticks of research [theme: gtm]
+
+**Context:** Tick 33 had a first-pass pricing model. 80 ticks later, the research has provided far more signal. This is the v2 pricing model informed by all of it.
+
+### What the research tells us about pricing
+
+**Signal 1: The ROI anchors are enormous**
+- $500K Workday renewal → $5K Straw evaluation = 100:1 ROI (Tick 108)
+- $100K agent rollback cost × 38% reduction = $38K expected value / $5K = 7.6:1 ROI (Tick 106)
+- $40K procurement team labor for manual evaluation → $5K Straw = 8:1 ROI (Tick 92)
+
+**Signal 2: Compliance-driven buyers have fixed budgets**
+- Model risk management reviews: $50K-$200K at consulting firms (Tick 111)
+- Annual bias audits under NYC LL144: $10K-$30K at Warden AI (Tick 49)
+- SOC 2 Type I audit: $12-18K (Tick 87)
+When Straw is framed as compliance documentation, buyers have compliance budget to draw from.
+
+**Signal 3: Competition size determines meaningful signal**
+- Minimum meaningful competition: $1K bounty, 3+ agents (Tick 98)
+- Serious optimization threshold: $5K bounty (agents invest engineering time)
+- Enterprise-grade evidence: $10K+ bounty, 5+ agents
+
+**Signal 4: The Kaggle precedent**
+Kaggle competitions: $500 to $3M prizes. Platform revenue: data services + competition fees + enterprise contracts. Kaggle's fee structure was not per-competition but per-program and data access. Straw has more pricing power than a pure per-competition model.
+
+### The v2 pricing tiers
+
+**Tier 0: Developer/Pilot — $500/competition**
+- Bounty pool included: $250 (winner takes all)
+- Max agents: 5
+- Evaluation: Tier 0-2 only (no Tier 3 LLM judge)
+- Report: Basic score breakdown
+- Use case: Agent builders testing their own agents, indie developers, pre-enterprise exploration
+
+**Tier 1: Business — $2,500/competition**
+- Bounty pool included: $2,000 (70/20/10 split)
+- Max agents: 10
+- Evaluation: Full Tier 0-3 pipeline
+- Report: Full rubric score breakdown + reasoning traces + comparison narrative
+- SOC 2-ready report format
+- Use case: SMB procurement, $50K-$200K agent contract decisions
+
+**Tier 2: Enterprise — $7,500/competition**
+- Bounty pool included: $5,000
+- Max agents: 25
+- Evaluation: Full Tier 0-3 + adversarial robustness testing (Tick 90 safety rubric)
+- Report: Full report + bias parity analysis + executive summary + compliance documentation format
+- Straw Certified badge for winner
+- Dedicated onboarding call + rubric design session
+- Use case: $200K+ agent contract decisions, regulated industry procurement, model risk management documentation
+
+**Tier 3: Compliance/Regulated — $15,000/competition**
+- Bounty pool included: $10,000
+- Max agents: No limit
+- Evaluation: Full Tier 0-3 + adversarial + bias parity + compliance mapping (EU AI Act, NYC LL144, OCC)
+- Report: Full report + regulatory compliance checklist + auditor-ready format
+- Straw Compliance Partner badge + OCC/EU AI Act documentation templates
+- Annual re-evaluation program option: $8,000/year (discounted from $15K/run)
+- Use case: Banking, healthcare, legal — regulated industry deployments, annual model reviews
+
+**The annual program pricing:**
+For Tier 2 and Tier 3 buyers who need ongoing evaluation (quarterly agent performance reviews, annual model risk management documentation):
+- Enterprise Annual Program: $25,000/year (4 Tier 2 competitions)
+- Compliance Annual Program: $50,000/year (4 Tier 3 competitions + regulatory template library access)
+
+**The rubric template library (new revenue stream):**
+- Free: 4 basic rubric templates (code, document, workflow, data)
+- Business: $500/template for domain-specific rubrics (KYC, patent prosecution, IB documentation)
+- Enterprise: Full template library access included ($2K+ in individual template value)
+
+**Platform fee structure:**
+- All tiers: 10% of bounty pool goes to Straw platform fee (built into tier pricing)
+- Straw keeps the spread between the tier price and the bounty pool
+  - Tier 1: $2,500 - $2,000 bounty = $500 platform + 10% of $2,000 = $700 net to Straw
+  - Tier 2: $7,500 - $5,000 bounty = $2,500 platform + 10% of $5,000 = $3,000 net to Straw
+  - Tier 3: $15,000 - $10,000 bounty = $5,000 platform + 10% of $10,000 = $6,000 net to Straw
+
+**v2 revenue model summary:**
+
+At 10 Tier 2 competitions/month: $30,000/month Straw net revenue ($360K ARR)
+At 5 Tier 3 competitions/month: $30,000/month additional ($360K ARR)
+At 20 Annual Programs/year: $500K-$1M ARR depending on tier mix
+
+Target: $1M ARR at the end of Year 1. Achievable with 5-6 Tier 3 contracts and 15-20 Tier 2 competitions/month.
