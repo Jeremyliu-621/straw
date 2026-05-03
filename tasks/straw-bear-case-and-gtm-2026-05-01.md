@@ -5991,3 +5991,174 @@ Ranked by expected impact-to-effort ratio:
 **Q20: When does Straw's open-source strategy help vs. hurt?** Langfuse went open-source and was acquired for $400M. But open-sourcing the evaluation methodology means competitors (Braintrust, Google) can copy the methodology. The tension: open-source builds community; proprietary builds moat. The recommendation: open-source the framework (rubric design + basic scorer), keep the marketplace mechanics (competition logistics, reputation scoring, Tier-3 investigator pipeline) proprietary.
 
 **Phase 3 summary:** 33 new ticks (39-71), 50+ named contacts, all three themes continued. The research corpus now covers: 71 Phase 3 ticks + 38 Phase 2 ticks = 109 total ticks, ~5,800 lines, 170+ named contacts across 15 design partner categories. Phase 3 is complete. Morning reading guide is updated.
+
+---
+
+## Tick 73 (2026-05-04T01:00Z): OpenClaw — the 347K-star agent framework as Straw's supply-side goldmine [theme: partners]
+
+**The most important community Straw hasn't tapped:** OpenClaw is an open-source personal AI agent framework with 347,000 GitHub stars (April 2026) — the most starred repository in GitHub history. 180,000 Discord users. 450,000 subreddit members. ClawHub marketplace: 12,000+ community-built skills/plugins.
+
+**Why this matters for Straw's cold start:**
+- 180,000 Discord members are AI agent builders
+- Many are building ClawHub skills (plugins that extend OpenClaw's capabilities)
+- They're independently building AI agents that could compete on Straw tasks
+- This community is the largest concentration of potential Straw supply-side participants anywhere
+
+**OpenClaw's leadership situation:** Founder Peter Steinberger left to join OpenAI (March 2026). A 7-person technical steering committee now runs the project. This is a leadership transition moment — the community is looking for new value-adds and collaborations.
+
+**The partnership opportunity:** Straw reaches the OpenClaw steering committee with a proposal:
+- Straw hosts "OpenClaw Challenge Competitions" — tasks specifically designed for OpenClaw-based agents
+- Winners get featured in ClawHub marketplace ("Straw-Verified" badge for skills that won a competition)
+- Distribution: Straw announcements go to OpenClaw's Discord (180K members) and subreddit (450K members)
+
+This single partnership announcement would reach more potential supply-side participants than any other distribution action Straw can take.
+
+**Specific posts to make in OpenClaw communities:**
+
+**Discord (r/openclaw subreddit crosspost + Discord #announcements):**
+> "We're running the first AI agent task competition with real cash prizes for OpenClaw builders. Task: [specific task]. Bounty: $2,500. Deadline: [2 weeks]. Your OpenClaw agent submits via our API (3 lines of Python). Winner gets the cash + a Straw-Verified badge for your ClawHub skill. Who's in?"
+
+**The targeting angle:** Post in the OpenClaw Discord #builders channel (where skill developers congregate), not the general #general channel. Developers in #builders already have working agents; they need a reason to submit them to competitions.
+
+**Technical contact:** OpenClaw steering committee — contact via GitHub issues or Discord @committee role. Individual steering committee members visible on the GitHub repository.
+
+### The enterprise AI buying process — what Straw's sales motion must match
+
+**Finding from the search (2026):** Enterprise AI buying has shifted from "pilot experiments" to "outcome-driven buying." 78% of Fortune 500 companies have implemented AI automation in at least one procurement function (up from 34% in 2024). Boards and audit committees NOW regularly query AI projects on governance and compliance, forcing CIOs to "front-load risk mitigation into RFPs and vendor evaluations."
+
+**The three stakeholders in every enterprise AI purchase:**
+
+| Stakeholder | What they care about | How to reach them |
+|---|---|---|
+| **CIO/CTO** | Technical fit, integration, security, roadmap | Peer networks, Gartner Magic Quadrant mentions, technical content |
+| **CPO/VP AI** | Performance evidence, use case fit, vendor credibility | Case studies, benchmark scores, reference customers |
+| **CFO/Legal** | Cost, risk, liability, compliance, audit evidence | ROI calculations, compliance certifications, contractual protections |
+
+**The typical 90-day enterprise buying cycle for AI tools:**
+- Week 1-2: Problem identified, initial vendor research
+- Week 3-6: Long list of vendors (4-8), demos, initial scoring
+- Week 7-10: Short list (2-3 vendors), detailed evaluation, security review
+- Week 11-12: Procurement committee approval, legal/contract negotiation
+- Week 13+: Contract signature, implementation
+
+**Where Straw fits in this cycle:** Straw is a PRE-CYCLE tool. Before week 1, before the buyer even has a short list, Straw helps the buyer define what "winning" looks like. Straw's evaluation should happen at Week -4 to Week 0 — before the formal procurement cycle starts. This makes Straw's buyer conversation different: "Don't start your AI procurement until you've defined your rubric and run an evaluation. We can do that for you in 2 weeks."
+
+**The implication for Straw's sales motion:** Don't compete in the "vendor evaluation" phase of the procurement cycle. Position Straw as the thing that happens BEFORE the vendor evaluation. The buyer uses Straw to generate the evaluation criteria that the vendors then compete against.
+
+---
+
+## Tick 74 (2026-05-04T01:30Z): Community outreach strategy — specific Discord/Slack messages for supply-side seeding [theme: gtm]
+
+**The specific communities to target for Straw's first competition:**
+
+| Community | Platform | Size | Contact method | What to post |
+|---|---|---|---|---|
+| **OpenClaw** | Discord | 180K users | #builders channel | "First OpenClaw competition — $2.5K bounty" |
+| **LangChain** | Discord | ~50K | #announcements or founder DM | "Straw SDK connector — submit your LangChain agent" |
+| **CrewAI** | Discord | ~15K | João Moura DM first | "Run your Crew in a real enterprise evaluation" |
+| **OpenHands (OpenDevin)** | Discord/GitHub | ~40K | GitHub announcement | "OpenHands agents welcome — coding competition" |
+| **Hugging Face** | Discord + Community | 1M+ registered | Community post | "Hugging Face Spaces agent competition" |
+| **r/MachineLearning** | Reddit | 3M+ | Cross-post competition announcement | Competition announcement as community discussion |
+| **r/AIAgents** | Reddit | Growing | Post | Competition announcement |
+| **Hacker News** | HN | 5M+ unique/month | Ask HN or Show HN | "Ask HN: Want to test your AI agent in a real enterprise evaluation?" |
+
+**The template community message (adaptable for each platform):**
+
+```
+[Platform-appropriate header]
+
+We're running [task description] — a real enterprise task where AI agents compete 
+for a $[bounty amount] bounty.
+
+What you need:
+- An AI agent that can [specific capability]
+- 30-45 minutes to submit via our API
+- [Framework] agents work natively with our SDK
+
+What you get:
+- $[bounty] if your agent wins
+- A Straw performance certificate you can use in sales/grant applications
+- Your agent's rubric breakdown (even if you don't win — useful for debugging)
+
+Task: [specific description]
+Deadline: [2 weeks from now]
+Submit: [link]
+
+DM or comment if you have questions.
+```
+
+**The key elements:**
+1. **Specific task** — vague competition descriptions get ignored; specific tasks get submissions
+2. **Real money** — the bounty amount must be specific and credible
+3. **Low effort to submit** — "30-45 minutes" and "native SDK" removes friction
+4. **Value even if you lose** — the rubric breakdown is a training signal for the agent
+
+**The community reputation concern:** Some AI communities (especially research-focused ones like Hacker News) are skeptical of commercial competitions. The framing matters:
+- DO: "Test your agent on a real enterprise task and get $2.5K if you win"
+- AVOID: "Earn money with your AI agent!" (sounds spammy)
+- DO: Technical detail about the evaluation methodology
+- AVOID: Marketing language about Straw's benefits to buyers
+
+**The GitHub Actions integration angle:** Many agent developers run their agents as part of CI/CD pipelines. A GitHub Action that lets you submit your agent to a Straw competition in YAML:
+
+```yaml
+- name: Submit to Straw Competition
+  uses: straweval/submit@v1
+  with:
+    competition_id: 'comp_legal_review_2026_05'
+    agent_command: 'python run_agent.py --task $STRAW_TASK_INPUT'
+    api_key: ${{ secrets.STRAW_API_KEY }}
+```
+
+This reduces the submission friction to zero for developers who already run their agents in CI. They add the GitHub Action, and their agent automatically submits to competitions they've subscribed to.
+
+---
+
+## Tick 75 (2026-05-04T02:00Z): "Michelin Guide for AI agents" — the brand positioning that will travel [theme: gtm]
+
+**The brand positioning problem:** "AI agent evaluation platform" is a category description, not a brand. "Pre-procurement validation infrastructure" is accurate but jargon. Straw needs a reference that makes the category immediately understandable to a non-technical executive.
+
+**The Michelin Guide analogy:**
+
+Michelin Guide doesn't own restaurants. It doesn't run restaurants. It evaluates them — rigorously, with consistent criteria, by inspectors who visit anonymously. Restaurant owners don't know when they're being evaluated. The rating is awarded after evaluation. The rating is used by diners to make decisions.
+
+**Straw is the Michelin Guide for AI agents.** Companies post their task and criteria (the inspection criteria). Competing AI agents show their capability (the restaurant's food). Straw evaluates against the defined criteria (the inspectors score the meal). The winner is certified (the Michelin stars). Enterprises use the certification to make procurement decisions (the diners pick where to eat).
+
+**Why this analogy works:**
+1. Every enterprise executive knows Michelin. No explanation required.
+2. "A Michelin star is worth $3M in additional restaurant revenue" maps to "A Straw win is worth enterprise contract credibility"
+3. Michelin's value is INDEPENDENCE. Nobody doubts Michelin because they don't own the restaurants. Straw's value is the same.
+4. "Anonymous inspection" maps to "AI agent doesn't know the rubric in advance" (private rubrics)
+
+**The extension:** Just as Michelin has 1-star, 2-star, 3-star — Straw could have tiered certifications:
+- **Straw Verified:** Competed and completed the task (any submission that passed Tier 1)
+- **Straw Certified:** Won or placed in top 3 of a competition
+- **Straw Champion:** Won multiple competitions across diverse task types (the "3 Michelin stars" of AI evaluation)
+
+**Using the analogy in pitches:**
+
+*For investors:* "We're building the Michelin Guide for AI agents — an independent evaluation layer that enterprises trust precisely because we don't build the agents."
+
+*For enterprise buyers:* "You use Michelin to pick restaurants because you trust that independent experts have tested the food. We run the equivalent for AI agents — independent evaluation against criteria you define, so you can trust the result."
+
+*For agent vendors (supply side):* "A Michelin star is worth more to a restaurant than any amount of marketing. A Straw win is the same for your AI agent — it's third-party proof that your agent is actually good."
+
+**The Michelin Guide parallel that doesn't work:** Michelin inspectors visit anonymously without the restaurant's knowledge. Straw competitions are opt-in — agents choose to enter. This is more like a competitive culinary competition (James Beard Award, Bocuse d'Or) than a surprise inspection. The optics of "competition" are slightly different from "independent inspection."
+
+The ideal Straw brand is actually a hybrid: **"The AI agent evaluation standard — part independent benchmark, part competitive championship."** Both the benchmark credibility (no one can buy a Michelin star) and the competition format (agents genuinely compete for prizes).
+
+**Tagline options:**
+
+| Tagline | Strengths | Weaknesses |
+|---|---|---|
+| "The AI agent evaluation that doesn't lie." | Direct, honest, memorable | Slightly negative framing |
+| "Define winning. We'll find the winner." | Empowers the buyer; action-oriented | Doesn't convey independence |
+| "AI agents prove it. You decide." | Captures both sides | Vague |
+| "Third-party proof for AI procurement." | Accurate | Corporate, not memorable |
+| "The standard for AI agent capability." | Aspirational, authoritative | Requires brand building to earn |
+
+**Recommendation:** Use "Define winning. We'll find the winner." for the headline on the website (action-oriented, buyer-focused). Use "The Michelin Guide for AI agents" as the conversational explanation in pitch decks and press (memorable analogy for non-technical executives).
+
+**Brand colors / visual identity note:** Straw is both a literal straw (the drinking implement — draw on the best) and "the last straw" (the final test that determines fitness). The straw-bale / agricultural aesthetic has texture and warmth that tech brands typically lack. Consider: tan + deep green + white, with a quality-mark visual motif (similar to certification seals). This signals: rigorous, independent, trustworthy — not slick, not corporate, not another blue tech logo.
+
+**The "Straw Champion" naming convention:** Over time, agents that win multiple Straw competitions across different categories earn the "Straw Champion" designation. This becomes the de facto enterprise AI credentialing system. "Has your agent been Straw-certified?" becomes the enterprise procurement question.
