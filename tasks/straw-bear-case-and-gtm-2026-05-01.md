@@ -25032,3 +25032,99 @@ When any of these signals appear, Straw should pivot marketing to the "autonomou
 Sources: pymnts.com/news/b2b-payments/2026/agentic-commerce-shifts-b2b-marketplaces-intermediaries-infrastructure, pwc.com/us/en/services/consulting/front-office/agentic-commerce, digitalcommerce360.com/2025/11/28/gartner-ai-agents-15-trillion-in-b2b-purchases-by-2028
 
 TICK_END
+
+---
+
+## Tick 407 — OpenAI Frontier: Third Platform Validator + Lock-In Problem Escalates
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case update (competitive) / Market validation
+
+### OpenAI Frontier launches February 5, 2026 — with built-in evaluation
+
+OpenAI Frontier enables organizations to treat AI agents as "AI coworkers" — onboard, assign identities, grant scoped permissions, and "continuously evaluate for performance." Named customers at launch: State Farm, Oracle, Uber, HP.
+
+**This is the THIRD major platform that launched agent evaluation in 6 months:**
+1. Microsoft Copilot Studio GA (April 2026) — "agent evaluations" built in
+2. Google Gemini Enterprise Agent Platform (April 22, 2026) — Agent Simulation + Agent Evaluation
+3. **OpenAI Frontier (February 5, 2026) — "evaluation framework helps close the loop"**
+
+Three of the five largest enterprise software companies now offer agent evaluation natively.
+
+### Bear case update: lock-in problem gets WORSE, not better
+
+The bear case risk was: "Google/Microsoft native tools cannibalize Straw."
+
+The data says: this makes Straw's moat **stronger**, because now there are THREE competing evaluation frameworks, each locked to one vendor's ecosystem. An enterprise deploying OpenAI Frontier for its Uber-side agents AND Microsoft Copilot Studio for its operations agents AND Gemini for its analytics agents now has THREE incompatible evaluation frameworks, zero way to compare, and no cross-vendor view.
+
+Straw's ICAAN moat (Infrastructure-agnostic, Cross-vendor, Any-agent, Any-rubric, No-lock-in) just became more valuable, not less.
+
+**The sales narrative update:**
+
+Old: "Competitors don't have evaluation."
+New: "Every major platform has evaluation — and all of them are single-vendor silos. You're a State Farm with OpenAI + Microsoft + Google agents. How do you compare? Straw is the only cross-vendor evaluation layer."
+
+This also counters the fear that Google/Microsoft will "just add evaluation to their platform" — they DID, and it made the problem WORSE. An enterprise locked into three vendor evaluations now has MORE need for Straw, not less.
+
+### Named design partner from OpenAI Frontier (#94)
+
+**#94 — Joe Park, EVP and Chief Digital Information Officer, State Farm**
+- Quoted at OpenAI Frontier launch: "We're accelerating our AI capabilities..."
+- State Farm is a large insurance company (18,000+ employees, tens of millions of customers)
+- Already deploying OpenAI Frontier agents
+- The Straw pitch: "You're running OpenAI Frontier. As you expand to evaluate agents from other vendors for other workflows, how do you compare them? Straw is the cross-vendor layer."
+- Also note: State Farm is an insurance company — Tick 405 insurance vertical applies directly
+
+Sources: openai.com/index/introducing-openai-frontier, newsroom.statefarm.com/state-farm-advances-ai-vision-through-collaboration-with-openai, reworked.co/digital-workplace/openai-expands-enterprise-push-with-frontier-ai-agent-platform
+
+TICK_END
+
+---
+
+## Tick 408 — Coding Agent Selection: Straw's First Mass-Market Use Case
+
+**Date researched:** 2026-05-03
+**Theme:** Product / GTM (first use case vertical)
+
+### The coding agent selection problem is live now (2026)
+
+State of the market:
+- **Claude Code**: 80.8% SWE-bench Verified (highest of the three)
+- **Cursor**: 73.7% SWE-bench Multilingual; $2B ARR; 67% Fortune 500
+- **GitHub Copilot**: broadest enterprise integration (SSO, audit logs, IP indemnification); $19/seat/mo
+- **Most enterprises use 2+ tools** — the hybrid approach is the dominant pattern
+
+The problem: SWE-bench and CursorBench are generic. Your codebase is not generic. Your TypeScript Next.js monorepo with a specific test suite and a specific set of common bugs is not represented by SWE-bench.
+
+**The Straw coding evaluation use case:**
+1. Post a task to Straw: "Refactor our authentication module to support OAuth2. Rubric: (a) passes all 47 existing tests, (b) reduces line count by ≥15%, (c) no hardcoded strings, (d) TypeScript strict-mode compliant"
+2. Claude Code, Cursor, GitHub Copilot agent all compete on your ACTUAL codebase
+3. Tier 1 evaluation: run the 47 tests automatically (deterministic)
+4. Tier 2 evaluation: LLM judge scores rubric criteria (b), (c), (d)
+5. Tier 3: agent investigator reviews edge cases, integration test coverage
+6. Winner selected on YOUR specific rubric → you deploy that tool for your team
+
+### Why this is the right first vertical
+
+**Buyers are already spending:** 67% of Fortune 500 already deployed Cursor. Every enterprise has a GitHub Copilot license. They're already paying for coding agents. The question isn't "will we use AI coding agents?" — it's "which one for which task?"
+
+**Rubrics are easy to write:** Coding tasks have objective success criteria (tests pass, no regressions, performance benchmarks). A junior engineer can write a valid Straw rubric for a coding task in 20 minutes.
+
+**Evaluation is automatable:** All three Tier 1 criteria (tests pass, no compilation errors, performance bounds) can be verified in a CI/CD pipeline. The eval pipeline naturally integrates with GitHub Actions / CircleCI.
+
+**The benchmark contamination angle (Tick 346) is most salient here:** Cursor and Claude Code are both optimizing for SWE-bench scores, which may be contaminated. Your codebase isn't in SWE-bench. Straw's evaluation is contamination-immune because it's YOUR code.
+
+### The PLG (Product-Led Growth) motion for coding evaluation
+
+The coding evaluation use case enables a bottom-up PLG motion Straw doesn't have for enterprise procurement:
+
+1. A developer at a Fortune 500 uses Straw to compare Claude Code vs. Cursor on their team's specific refactoring task
+2. Result shared in Slack: "Straw ran the evaluation — Claude Code won on our auth module rewrite"
+3. CTO of the department sees the result and asks to run 5 more evaluations
+4. CTO of engineering asks for an enterprise contract
+
+**The PLG flywheel:** Developer → team → department → enterprise. Each evaluation is a shareable artifact (the rubric + score). When a score is shared internally, it creates pull from the next person who needs to make a tool decision.
+
+Sources: cosmicjs.com/blog/claude-code-vs-github-copilot-vs-cursor, faros.ai/blog/best-ai-coding-agents-2026, techcrunch.com/2026/03/02/cursor-has-reportedly-surpassed-2b-in-annualized-revenue, digitalapplied.com/blog/ai-coding-assistants-april-2026
+
+TICK_END
