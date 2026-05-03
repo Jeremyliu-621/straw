@@ -20696,3 +20696,119 @@ Each new category is a new vertical for Straw competitions. The evaluation metho
 
 Sources: (Gartner $15T projection cited in multiple sources above), supplychainbrain.com/blogs/1-think-tank/post/43687-why-2026-is-the-year-of-ai-agents-for-autonomous-procurement, eco.com/support/en/articles/14839400-what-is-agentic-commerce-the-2026-guide
 
+
+---
+
+## Tick 328 (2026-05-04T06:00Z): Customer service as Straw's second vertical — CX agent procurement [theme: GTM]
+
+### The CX AI agent market (2026)
+
+12+ vendors competing for autonomous customer service: Intercom Fin (65-70% resolution), Zendesk AI Agents (39-66% resolution), Fini (98% accuracy claim, $0.69/resolved ticket), HubSpot Breeze, Salesforce Agentforce, Freshdesk Freddy, and more.
+
+**The exact procurement problem:** A company with 200 customer support tickets/day is evaluating Intercom Fin vs. Zendesk AI vs. Fini. Each vendor claims 60-95% resolution rates. What resolution rate will they get on their specific ticket types?
+
+This is Straw's problem statement translated to CX.
+
+### The CX rubric (what a Straw CX competition looks like)
+
+**Task:** 500 real historical customer tickets from the enterprise's backlog (categories: billing issues, technical problems, shipping delays, account access, feature requests)
+
+**Rubric:**
+- Tier 1: Does the resolution match the correct answer stored in the enterprise's KB? (deterministic)
+- Tier 2: Is the tone appropriate (empathetic, not condescending)? Is the response complete? (LLM gatekeeper)
+- Tier 3: Does the agent correctly escalate edge cases? Does it avoid HIPAA/PII violations? (autonomous investigator)
+
+**Output:** Resolution rate by ticket category, CSAT proxy score, escalation rate, PII risk score.
+
+**Enterprise value:** Instead of trusting each vendor's resolution rate claim, they see their own ticket mix evaluated by each competing agent.
+
+### The Fergal Reid (Intercom) angle
+
+Intercom launched Fin as their AI CS agent. If Straw runs a competition where Fin competes against Fini and Zendesk AI on a customer's actual tickets, and Fin wins, Intercom would want that result published. If Fin loses, Intercom learns what to improve.
+
+**The pitch to Fergal Reid:**
+> "Fin claims 65-70% autonomous resolution. Fini claims 98% accuracy. Zendesk AI claims varies. None of these numbers means anything on YOUR ticket mix. Straw runs a competition: 500 of your real tickets, all three agents compete, your rubric. The winner is the one that solves your customers' actual problems. First competition is free — you get the competitive analysis."
+
+**Intercom as a design partner for Straw's CX vertical expansion.** Fergal Reid is #9 on the Tier 2 outreach list.
+
+### The CX vertical sizing
+
+- Global customer service software market: ~$15B (2026)
+- AI-enabled CS: growing 40%+/year
+- Average ACV for AI CS platform: $25K-100K/year (enterprise)
+- Enterprise companies evaluating CS AI agents: 50,000+ in 2026
+
+CX is a larger TAM than AI coding for Straw's competition format. The evaluation question is simpler (resolution rate is a single number) but the rubric design is harder (tone, HIPAA, escalation patterns). Straw's tiered eval pipeline handles both.
+
+Sources: usefini.com/guides/top-ai-agents-customer-service, fin.ai/learn/fin-vs-zendesk, salesmate.io/blog/fin-vs-zendesk-ai
+
+---
+
+## Tick 329 (2026-05-04T06:20Z): AI red-teaming vs. Straw — adjacent, not competing [theme: bear + GTM]
+
+### Virtue AI's Agent ForgingGround
+
+Virtue AI (March 2026): "First enterprise-scale testing ground designed to continuously evaluate and stress-test AI agents before, during, and after deployment." 50+ production environments (Salesforce, Gmail, Slack, etc.). Compatible with all major agent frameworks (CrewAI, LangGraph, Claude Code, Cursor, etc.).
+
+**Focus: security and safety testing** — jailbreaks, prompt injections, cross-tenant data leakage, unsafe outputs.
+
+### How red-teaming differs from Straw competitions
+
+| Dimension | Red-Teaming (ForgingGround, HackerOne AI) | Straw |
+|---|---|---|
+| Purpose | Find what breaks the agent (adversarial) | Find which agent performs best (comparative) |
+| Evaluation paradigm | Attack surface discovery | Task completion quality |
+| Buyer | Security team | VP Engineering / AI procurement |
+| Output | Vulnerability report, risk score | Comparative performance report, winner |
+| Timing | Ongoing (continuous) | Pre-deployment (episodic) |
+| Task type | Adversarial edge cases | Real production tasks |
+
+**Not competitors.** Red-teaming happens after deployment decision. Straw happens before.
+
+**Potential integration:** A Straw competition could include a "security rubric" Tier 1 component — does the agent's output introduce OWASP vulnerabilities? Does it leak PII? This makes Straw's evaluation more security-aware without becoming a red-teaming tool.
+
+### NIST AI Agent Standards (February 2026)
+
+NIST's AI Agent Standards Initiative (February 17, 2026) is the formal signal that governments are treating agentic AI as a distinct standardization priority. NIST standards create:
+1. Compliance requirements for enterprise AI agent deployments
+2. Documentation requirements similar to EU AI Act Article 26
+3. New urgency for procurement validation before deployment
+
+**The NIST angle for Straw's GTM:** When NIST standards crystallize (expected Q3-Q4 2026), Straw's competition reports become evidence of NIST-aligned procurement methodology. Add NIST compliance language to Straw's documentation within 30 days of NIST standards publication.
+
+Sources: helpnetsecurity.com/2026/03/18/virtue-ai-agent-forgingground, genai.owasp.org/resource/ai-security-solutions-landscape-for-ai-and-agentic-red-teaming-q2-2026, labs.cloudsecurityalliance.org/research/csa-research-note-nist-ai-agent-red-teaming-standards-202603
+
+---
+
+## Tick 330 (2026-05-04T06:40Z): The concentrated winner problem — concentration risk deepened [theme: bear]
+
+### The concentration risk refreshed
+
+Phase 1 covered "one-agent-wins-all" as a bear case. Phase 2 adds specificity:
+
+**The current market structure (April 2026):**
+- AI coding assistance: Cursor $2B ARR (clear market leader)
+- AI autonomous coding: Devin ($73M ARR, 73× growth)
+- AI CS agents: Intercom Fin + Zendesk (market share unclear)
+- General AI assistant: Claude Code $2.5B ARR, ChatGPT dominating
+
+**The concentration risk:** If one agent achieves 90%+ market share in each category, there's no procurement competition to run — every enterprise just deploys the default.
+
+**Current status:** The market has NOT concentrated yet. The AI coding assistance market has Cursor, Claude Code, GitHub Copilot, Codex, Windsurf all competing. The autonomous agent market has Devin, OpenHands, SWE-agent, Claude Code competing.
+
+**The timing sweet spot for Straw:** The market is fragmented NOW. Straw's competitions are most valuable during fragmentation. If the market consolidates to 1-2 dominant agents per category by 2028, Straw's primary use case weakens.
+
+**Mitigation:** Straw diversifies across categories (coding → CS → sales → procurement). If one category consolidates, the others provide revenue. The evaluation methodology is horizontal; the rubric changes but the pipeline doesn't.
+
+### The concentration vs. specialization split
+
+From the G2 state of AI agents 2026 report: "Market hasn't reached mature category consolidation yet. All 7 vendors named customer support as a primary workflow — unanimous agreement = lowest differentiation, highest saturation."
+
+The counterpoint: specialization is winning. Cursor dominates developer tools (not general coding). Devin dominates autonomous task delegation (not pair programming). Each category is developing its own winner.
+
+**Straw's response to specialization:** The more specialized agents get, the MORE valuable task-specific competitions become. If there are 20 specialized "payment processing agents" and 20 "customer support agents" and 20 "security audit agents," enterprises need Straw to evaluate which specialized agent is best for their specific variant of the task.
+
+Specialization actually increases Straw's TAM. The concern (one agent wins) was from the "general agent dominates everything" scenario. Specialization prevents that.
+
+Sources: learn.g2.com/state-of-ai-agent-builders-2026, agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue, digitalapplied.com/blog/ai-coding-agents-claude-code-cursor-codex-replit-2026
+
