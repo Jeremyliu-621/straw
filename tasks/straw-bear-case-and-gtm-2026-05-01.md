@@ -36381,3 +36381,131 @@ Natural triggers to send "re-evaluation" email:
 
 **Trigger for this feature:** When Straw has 20+ evaluations of the same task type → enough data to run reliable T1/T2 mini-evals without T3 overhead.
 
+
+## Tick 504 — The Straw Buyer Persona: Who Actually Buys This? [theme: GTM + bear]
+
+### The New Executive Landscape (2026)
+
+A new wave of C-suite and VP-level roles is emerging specifically for agentic AI management:
+
+| Role | Responsibility | Straw Relevance |
+|---|---|---|
+| **Chief AI Officer (CAIO)** | Enterprise-wide AI strategy + ethical implementation | High: sets AI procurement policy |
+| **AI Agent Owner** | Identifies high-value AI opportunities; oversees deployment | Very High: the day-to-day Straw user |
+| **Chief Agent Officer (CAO)** | Manages thousands of AI agents at scale | High: performance oversight = Straw's output |
+| **Agent Supervisor / AI Ops Manager** | Monitors agent performance, coordinates with humans | Medium: uses Straw outputs |
+| **Agent QA Lead** | Quality assurance for AI agent outputs | Medium: Tier-3 evaluation is their workflow |
+
+**The key stat:** 56% of enterprises now have a formal "AI agent owner" (up from 11% in 2024). This is Straw's primary buyer persona. They have budget authority, a mandate to evaluate agents, and a career incentive to make good procurement decisions.
+
+### Who Actually Champions Straw (Primary Persona)
+
+**Primary champion:** VP or Director of AI, Agentic Operations Lead, or "AI Agent Owner"
+- Pain: "I'm responsible for selecting and deploying agents but have no objective evaluation framework"
+- Trigger: A failed agent deployment, or a board/CEO question they couldn't answer with data
+- Success metric: "Agents deployed that actually perform as claimed" (they get promoted when this works)
+- Budget: Usually within IT or innovation budget — $50K-$250K for a pilot evaluation
+
+**Secondary champion:** CPO (Chief Procurement Officer) or VP Procurement
+- Pain: "AI vendors all claim to be the best; I have no way to compare them objectively"
+- Trigger: Reading ProcureAbility report ("100% use AI, 11% ready to scale"), or seeing Cal State's faculty revolt
+- Success metric: Defensible procurement process for AI vendors
+- Budget: Procurement technology budget — $50K-$500K
+
+**Approver (not champion):** CTO or CISO
+- They don't initiate Straw purchases but must approve
+- CTO cares: integration overhead, API reliability, security
+- CISO cares: data handling, vendor security posture, access controls
+
+### The "Wrong Champion" Bear Case
+
+**The Straw-specific GTM risk:** The person who NEEDS Straw (AI Agent Owner) is often too junior to have budget authority. The person WITH budget (CTO/CFO) doesn't feel the pain acutely enough to prioritize.
+
+**The misalignment in detail:**
+- AI Agent Owners are new roles; many are Directors, not VPs — they have influence but limited budget
+- CTOs are already sold on the agents they've evaluated — Straw's pitch implies their evaluation was inadequate
+- CFOs see Straw as "another evaluation tool" not as risk reduction or ROI proof
+- Procurement teams are bought into AI for procurement, not procurement OF AI
+
+**Straw's champion activation playbook:**
+1. Target organizations where the AI Agent Owner is VP-level or above (56% of enterprises have this role; target the ones with budget authority)
+2. Lead with the board/CEO angle: "Your board is asking about AI ROI. Straw gives you the evidence." CFOs and CTOs respond to board pressure.
+3. Use regulatory framing for regulated industries: AI Agent Owner + General Counsel = joint champion. Compliance risk elevates the purchase.
+4. Kaggle-style inbound: publish the competitive evaluation results publicly → Agent Owners find Straw by seeing their own use case benchmarked
+
+### Deloitte 2026 Data — The Governance Gap
+
+From Deloitte 2026 State of AI in Enterprise (3,000+ director-to-C-suite leaders):
+- **74% of companies plan to deploy agentic AI within 2 years**
+- **Only 21% have a mature model for agent governance**
+- The gap: 53% of companies will deploy agents WITHOUT mature governance
+- These 53% are the buyers who don't know they need Straw yet
+
+**The HBR signal:** HBR published "Who in the C-Suite Should Own AI?" (March 2026) — the debate is happening at board level. Companies that resolve this question by creating a CAIO or AI Agent Owner role = Straw's champion persona is crystallizing.
+
+### The Snowflake Scaling Lesson for Straw
+
+Snowflake's "Pilot to 6,000 Users" guide reveals the exact moment enterprises realize they need an evaluation layer:
+
+> "A single successful pilot agent creates pressure to expand to all 5,000 sales reps. But the answers usually expose a gap between what works for one team and what works at scale."
+
+**This is Straw's trigger moment:** The pilot-to-scale transition. After a team successfully deploys one agent, the enterprise faces: "Which agent do we deploy for ALL our teams? How do we know it's the right one at scale?" That's when they need Straw — not before the pilot, but before the enterprise-wide expansion.
+
+**Straw's positioning in the buyer journey:**
+1. Awareness: "We need to deploy agents enterprise-wide"
+2. Consideration: "How do we know which vendor to standardize on?"
+3. **Decision: "Let's run a Straw competition to pick the winner"** ← this is where Straw enters
+4. Deployment: Winner gets deployed enterprise-wide
+5. Monitoring: ServiceNow Control Tower / Snowflake Intelligence tracks ongoing performance
+
+Straw is in step 3. Not step 1 or 5.
+
+---
+
+## Tick 505 — Agribusiness Design Partners + The 80/20 Adoption Gap [theme: GTM + design partners]
+
+### Why Agribusiness Is a Non-Obvious Straw Vertical
+
+Agribusiness seems like an unlikely Straw market — but three properties make it compelling:
+
+1. **Deep AI investment with low adoption:** 80% of agribusinesses recognize AI potential, but only 20% have fully adopted. The gap = companies that want AI but can't evaluate it effectively.
+2. **Vendor data capture problem:** John Deere captures farm data from its machines (farmers get analytics; Deere keeps raw data). Bayer's Climate FieldView aggregates 60M hectares on 23 countries — its recommendations favor Bayer's own seeds. **Farms need a neutral evaluation layer precisely because major AI vendors have conflicts of interest.**
+3. **Enterprise supply chain + procurement:** Large agribusiness enterprises (Cargill, ADM, Bunge) deploy AI agents for supply chain optimization, commodity risk, and procurement — exactly the use cases Straw evaluates.
+
+### John Deere's AI Strategy and the Neutrality Problem
+
+John Deere's AI stack (2026):
+- **See & Spray™:** Computer vision to target herbicide application (90% chemical reduction)
+- **Autonomous 8R tractor:** GPS, sensor fusion, machine learning for tillage/planting
+- **Operations Center:** Farm management data platform
+
+**The conflict:** When a large farming operation evaluates AI agents for field decision-making, John Deere is simultaneously the hardware vendor, data platform, and AI recommendations provider. There's no neutral evaluator. A farm that asks "should I use Deere's AI or a third-party precision farming agent?" has no objective way to answer that question.
+
+**Straw's angle:** A farm management company running a Straw evaluation against both Deere's AI and third-party agents gets the first objective comparison. This is valuable enough to pay for.
+
+### Large Enterprise Agribusiness (the True Straw Customer)
+
+For Straw, the relevant buyer isn't individual farms — it's:
+- **Cargill, ADM, Bunge, Louis Dreyfus** (commodity trading/processing giants): AI agents for commodity price forecasting, logistics optimization, supply chain risk
+- **Agricultural chemical companies** (Bayer CropScience, Corteva, Syngenta): AI agents for field recommendations, crop protection optimization
+- **Agricultural finance** (Farm Credit System, Rabobank Agricultural): AI agents for loan underwriting, crop insurance risk assessment
+
+### Named Agribusiness Design Partners (#199-204)
+
+**#199 — Florian Schattenmann** (CTO, Cargill) — one of the largest private companies in the world; AI agent deployment at scale for commodity trading
+**#200 — Chad Colby** (VP Digital Agriculture, Corteva Agriscience) — agricultural chemicals company with AI recommendation engine; neutrality problem = Straw opportunity
+**#201 — Deanna Kovar** (President, Production & Precision Ag, John Deere) — John Deere's AI integration lead; might want Straw for third-party agent comparison, or might resist
+**#202 — Lars Rebien Sørensen** (Chairman, Novozymes; board director multiple agritech companies) — governance-level access to multiple agribusiness AI decisions
+**#203 — Kate Brandt** (Chief Sustainability Officer, Google Cloud Agriculture vertical) — Google's farming AI clients need evaluation frameworks
+**#204 — Gregory Saucier** (SVP Supply Chain AI, Bunge Global) — commodity processing giant; AI agents for logistics = active procurement decisions
+
+### The 30% CAGR Agri-AI Market
+
+GenAI in agriculture: **30% CAGR from 2025 to 2026** (StartUs Insights). This is among the highest growth rates of any AI vertical. The market is in active investment mode.
+
+**GTM path:**
+- Entry: Large agribusiness supply chain AI evaluations (Cargill, ADM, Bunge)
+- Mid-market: Agricultural technology companies (Corteva, Syngenta) evaluating AI agents for their own platforms
+- Channel: Rabobank's AgriTech accelerator + AGCO's precision agriculture ecosystem
+
+---
