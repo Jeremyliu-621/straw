@@ -12725,3 +12725,120 @@ Sources: [MIT GenAI pilot failure report via Fortune](https://fortune.com/2025/0
 
 **All stats cited in this document with verification sources. Jeremy should double-check any stat before using it publicly.**
 
+
+---
+
+## Tick 187 (2026-05-03T20:15Z): Rubric AI (YC W26) — natural partner or competitor? [theme: bear/partners]
+
+### What Rubric AI is
+
+Rubric AI (YC W26) — **Reasoning and Verification Infrastructure for AI Agents in High-Stakes Domains**
+
+**Founder:** Pragya Saboo (@pragyasaboo on LinkedIn) — Georgia Tech ISyE grad, product leadership at Asana + Oscar Health, product lead at Apella (AI/computer vision in clinical workflows), co-founder Aara Health. Background is healthcare + infrastructure.
+
+**What they build:** Runtime reasoning infrastructure that:
+- Turns expert judgment into training signals for frontier models and agents
+- Creates "purpose-built reasoning environments"
+- Curates expert-verified reasoning traces
+- Plugs in at **test time** to guide agents on: tool selection, step verification, error recovery, human escalation
+
+**Target domains:** Healthcare, finance, legal, code — all high-stakes, regulated industries.
+
+**The problem they solve:** AI agents that "look impressive in demos, then fail at runtime by selecting the wrong tools, failing to verify steps, or lacking the ability to recover from errors."
+
+Sources: [YC profile](https://www.ycombinator.com/companies/rubric-ai), [LinkedIn post](https://www.linkedin.com/posts/y-combinator_rubric-ai-yc-w26-builds-reasoning-and-verification-activity-7437994042518556674-aix6)
+
+### Rubric AI vs. Straw: partner or competitor?
+
+**The key distinction:** Rubric AI improves agent reasoning and verification at **runtime** (during deployment). Straw evaluates agent selection **pre-deployment** (before procurement).
+
+| Dimension | Rubric AI | Straw |
+|---|---|---|
+| Phase | Runtime (during deployment) | Pre-deployment (before procurement) |
+| What it does | Adds reasoning traces, expert verification to deployed agents | Evaluates competing agents head-to-head before you choose one |
+| Customer | Agent developers who want to improve their agent | Enterprise buyers who want to choose the right agent |
+| Output | Better-reasoning deployed agent | "Which agent to deploy" recommendation + documentation |
+| Target | Healthcare/pharma/legal agent builders | Healthcare/pharma/legal enterprise buyers |
+
+**They are natural partners:** Rubric AI makes agents better at reasoning and verification → Rubric-improved agents then compete in Straw competitions → the best Rubric-improved agent wins the Straw Certified badge → the buyer deploys that agent.
+
+The joint positioning: "Rubric AI trains your agent to reason correctly in high-stakes domains. Straw proves it's better than the competition."
+
+**The competitive risk:** If Rubric AI adds a "comparison evaluation" feature to their platform (run multiple agents through our reasoning evaluation, compare them), they expand from agent improvement into agent selection. This is technically feasible given their runtime evaluation infrastructure.
+
+**The partner play:**
+- Contact Pragya Saboo via LinkedIn: "You're building the reasoning + verification layer for healthcare agents. We're evaluating which of those agents enterprise hospitals should procure. Joint positioning: Rubric-trained + Straw-certified = the gold standard for enterprise healthcare AI procurement."
+- Propose co-marketing: Rubric AI agents that have earned a "Straw Certified" badge are the proof that Rubric's training methodology actually improves procurement outcomes
+
+### Pragya Saboo as a named design partner contact
+
+**Contact:** LinkedIn search "Pragya Saboo, Rubric AI" or @pragyasaboo on LinkedIn.
+
+**Opener:** "I'm building Straw — enterprise AI agent competition evaluations. You're building Rubric AI — reasoning verification for high-stakes agents. The joint positioning is: 'trained with Rubric, certified by Straw.' Would love to explore if there's a partnership opportunity, especially in the healthcare vertical where you're already working."
+
+---
+
+## Tick 188 (2026-05-03T20:30Z): Harvey AI legal evaluation — Straw's first legal competition design [theme: gtm/partners]
+
+### The published Harvey head-to-head evaluation results
+
+A legal AI evaluation study (from the search results) compared four AI tools across 7 legal tasks:
+- Harvey Assistant (Harvey)
+- CoCounsel (Thomson Reuters)
+- Vincent AI (vLex)
+- Oliver (Vecflow)
+
+**Results:**
+- Harvey won the highest scores in **5 of 6 tasks** including 94.8% accuracy on document Q&A
+- CoCounsel highest average score (79.5%) across 4 tasks
+- **LexisNexis WITHDREW from the evaluation** — did not participate in the final comparison
+
+**The LexisNexis withdrawal is significant:** The largest legal AI data provider refused to let their product be evaluated in a head-to-head comparison. This validates Straw's thesis: vendors don't want neutral evaluations because they might lose.
+
+Sources: [Vals AI Legal Report](https://www.vals.ai/industry-reports/vlair-2-27-25), [Spellbook Harvey vs LexisNexis](https://www.spellbook.legal/briefs/harvey-vs-lexisnexis), [Artificial Lawyer on Harvey+LexisNexis partnership](https://www.artificiallawyer.com/2025/06/18/lexisnexis-harvey-announce-alliance-will-share-legal-data/)
+
+### The Harvey + LexisNexis alliance — and what it means for Straw
+
+In June 2025, Harvey and LexisNexis announced a strategic alliance: Harvey's AI platform now has full access to LexisNexis's proprietary US legal library (primary law + Shepard's Citations). This is the first generative AI platform with full access to one of the two "must-have" legal research databases.
+
+**What this means:** Harvey + LexisNexis is now arguably the dominant position in legal AI. The question for law firms is: does the Harvey + LexisNexis alliance actually perform better on their specific contract types? Or is Ironclad's specialized CLM approach better for commercial contracts? Or is Microsoft's Legal Agent in Word "good enough" for routine work?
+
+**The Straw competition that emerges:** For any law firm that is deciding whether to commit to the Harvey + LexisNexis alliance ($288K/year+) vs. alternatives:
+
+"Task: 100 representative contracts from your matter types (M&A, commercial real estate, employment, IP licensing). Competing agents: Harvey (with LexisNexis data), Ironclad, CoCounsel (Thomson Reuters), Microsoft Legal Agent (Word). Rubric: clause identification accuracy (30%), risk flagging completeness (30%), redlining quality (20%), processing time (20%). Prize: Straw Certified badge + deployment recommendation. Price: $15,000."
+
+### Vals AI — the existing legal evaluation competitor
+
+From the search results: Vals AI is already doing legal AI evaluation research — they produced the legal AI evaluation report that showed Harvey winning 5 of 6 tasks. As covered in Tick 139, Vals AI is a Stanford-backed startup (Samsung NEXT investor) that does vertical-specific agent evaluations.
+
+**The positioning gap:** Vals AI produces academic/research-quality reports about which AI performs best in categories. They don't run buyer-defined competitions on buyer's actual data with commercial outcomes. Straw's Vals AI differentiation: "Vals AI tells you Harvey wins on academic legal benchmarks. Straw tells you which agent wins on YOUR firm's actual deal files."
+
+---
+
+## Tick 189 (2026-05-03T20:45Z): The "agent evaluation market consolidation" analysis — when does Straw need to be in market [theme: bear]
+
+### The consolidation timeline for AI evaluation platforms
+
+**Current state (May 2026):** No market leader in AI agent evaluation. Fragmented landscape with Braintrust, Langfuse, LangSmith, Maxim AI, Latitude, Galileo all competing. No company has established a defensible moat.
+
+**Consolidation drivers:**
+1. **Enterprise contracts require a clear leader** — procurement teams want 1-2 vendors, not 10. As more F500 companies sign multi-year AI evaluation contracts, one platform will capture anchor customers.
+2. **M&A by hyperscalers** — Google, Microsoft, Amazon could acquire an evaluation platform (similar to Humanloop/Anthropic). If they do, the independent evaluation market shrinks.
+3. **Benchmark data network effects** — the platform with the most competition history data is the hardest to displace (G2, Gartner peer review model).
+
+**Why "no winner yet" is the right window for Straw:**
+The evaluation market hasn't yet had its "Salesforce moment" — the company that defines the category and sets the standard. LMArena is the consumer evaluation platform ($1.7B). Who is the ENTERPRISE evaluation platform? Scale Labs (government/enterprise data labeling but not competition format)? Braintrust (developer observability but not procurement)? Straw can be the first enterprise procurement evaluation platform to achieve category definition if Jeremy moves in 2026.
+
+**The timeline pressure:**
+- **2026:** Category is being formed, no leader. Straw can claim the position.
+- **2027:** First enterprise evaluation contracts become multi-year. If Straw doesn't have anchor customers, another platform wins them.
+- **2028:** Category consolidation. The winner has data moat and brand that makes displacing them expensive.
+
+**The specific Straw moat to build in 2026 before consolidation:**
+1. Sign 5 enterprise buyers with multi-year evaluation contracts (data retention, annual re-certification)
+2. Create Straw's vertical rubric library (legal, finance, healthcare, coding) — proprietary rubric IP
+3. Establish the first "Straw Certified" badge success story (an agent that won a Straw competition, got deployed, and produced measurable ROI)
+4. Be named in NIST/GSA's AI evaluation guidelines as a reference implementation
+
+**The exit risk:** If Braintrust, Maxim AI, or Scale Labs adds a "competition/procurement" feature before Straw has market traction, they capture Straw's market with their existing enterprise relationships. **This is the most important reason to move NOW rather than wait for product perfection.**
+
