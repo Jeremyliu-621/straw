@@ -16565,3 +16565,153 @@ The technical architecture risks are real but manageable with thoughtful enginee
 
 The counter-intuitive read: Straw's technical complexity is more moat than liability. Each competitor who tries to build this will discover the same hard problems. The first mover who solves them cleanly — and gets SOC 2 certified — has a significant head start.
 
+
+---
+
+## Tick 229 (2026-05-03T00:06:00Z): Enterprise buyer psychology — the CYA mechanism and how Straw exploits it [theme: gtm]
+
+### The Structural Insight
+
+B2B AI purchases now involve **doubling stakeholder counts**. A GenAI tool purchase that previously required 2-3 signatures now requires 4-6. Boards and audit committees query AI projects on risk points. CFOs demand proof of value tied to business KPIs. 80% of organizations count "data privacy & compliance standards" as a top criterion.
+
+This is not a bug for Straw — it is the product-market fit.
+
+**The core insight**: The more stakeholders involved in an AI procurement decision, the stronger the demand for defensible, external, auditable evaluation. Committee buying amplifies the psychological need for audit trails, risk mitigation documentation, and narratives that reduce individual accountability fears.
+
+When the number of people who can say "no" goes up, the value of a credible third-party endorsement goes up proportionally. Straw is the endorsement infrastructure.
+
+### The CYA Dynamic
+
+Every enterprise buyer who runs a Straw competition is doing two things:
+
+1. **Making a better decision** (the stated reason)
+2. **Creating an audit trail that protects them if the decision turns out wrong** (the unstated, equally important reason)
+
+"We ran a competition. Three agents competed. Agent X won on five of seven rubric dimensions. Here are the scores. We chose Agent X." This is a defensible decision. The buyer who can say this survives the post-mortem. The buyer who says "we chose Agent X because the sales rep was compelling" does not.
+
+This is not cynical — it is how large organizations actually make decisions. The accountability structure creates genuine demand for documentation. Straw produces the documentation as a byproduct of the evaluation.
+
+### Tactical Implications for Sales
+
+**Lead with accountability, not capability**: The opening pitch should not be "Straw helps you find the best AI agent." It should be: "Straw gives you a defensible, auditable record of how you made your AI procurement decision."
+
+The second is more compelling to the actual decision makers — not the AI champion who cares about accuracy, but the CIO, General Counsel, and CFO who care about what happens when the decision goes wrong.
+
+**Target three buyer types specifically**:
+
+1. **The CIO protecting their job**: AI procurement decisions are highly visible. A CIO who makes a $3M AI commitment that fails publicly gets fired. Straw reduces that risk. "I used an independent evaluation platform — the score told me this was the best agent" is career protection.
+
+2. **The General Counsel reducing liability**: Regulators (EU AI Act, OMB M-26-04, NIST AI RMF) require documentation of AI procurement decisions. Straw's competition report is exactly the documentation format regulators expect.
+
+3. **The CFO requiring ROI proof**: "We spent $25K to evaluate three agents, chose the best one based on objective scoring, and avoided a $2M contract with an underperforming agent" is a clear CFO story.
+
+**The champion framing**: The AI champion (VP of AI, Head of AI Products) is the person who brings Straw in. They need internal air cover to run a competition. Give them the language to sell upward: "This is how we make sure we're buying the best tool, not the best marketed tool."
+
+### The Decision Defensibility Checklist (Give This to Every Champion)
+
+After running a Straw competition, the champion can check every box:
+
+- [ ] We evaluated multiple vendors on the same task (not separate demos)
+- [ ] The rubric criteria were defined before the competition (not post-hoc)
+- [ ] The scoring was automated (not subjective human opinion)
+- [ ] The results are documented in a reproducible format
+- [ ] An independent platform (Straw) ran the evaluation
+- [ ] The results are stored and auditable
+
+This checklist is the sales tool. Print it. Send it to champions. Tell them: "Here's what you'll be able to say at your next board meeting."
+
+### Committee Buying and Stakeholder Mapping
+
+For each enterprise deal, map the buying committee:
+
+| Stakeholder | Primary Fear | Straw's Answer |
+|---|---|---|
+| CIO | Bad vendor choice damages their credibility | Score proves best choice was made objectively |
+| CFO | Wasted budget on AI that doesn't work | Competition report shows ROI of evaluation itself |
+| General Counsel | Regulatory non-compliance | Straw report satisfies documentation requirements |
+| CISO | Data exposure in evaluation | Zero-data sandbox architecture |
+| AI Champion | Internal resistance to their recommendation | External validation removes internal politics |
+| Board/Audit Committee | Reputational risk from AI failure | Documented process shows due diligence |
+
+Each stakeholder needs a different message. The AI champion is not the only person Straw needs to convince.
+
+
+---
+
+## Tick 230 (2026-05-03T00:07:00Z): Energy and utilities design partner targets — named contacts [theme: partners]
+
+### Why Energy/Utilities Is a High-Value Straw Vertical
+
+- Energy is the fastest AI-adopting critical infrastructure sector in 2026
+- AI agents are being deployed for: grid optimization, demand forecasting, predictive maintenance, customer service, and regulatory compliance
+- The consequences of choosing a wrong AI agent are severe (grid reliability failures, regulatory fines, safety incidents)
+- Procurement decisions are large and visible — major utilities making $10M-$50M+ AI commitments
+- The regulatory environment (NERC CIP, FERC, state PUCs) makes procurement documentation requirements high — Straw's audit trail is a compliance feature
+
+### Named Target Contacts
+
+**Duke Energy** — 8.4M electric customers; most aggressive AI program of any major US utility
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Richard Donaldson | SVP & CIO | Leads digital strategy and AI transformation; focused on leveraging AI for internal operations and customer experience |
+| Bonnie Titone | EVP & CAO | Oversees IT operations, cybersecurity, digital transformation — ultimate technical decision authority |
+
+- **Context**: Duke Energy is publicly committed to AI as a grid modernization tool. CIO Donaldson has stated publicly that AI will transform their operations. An AI agent selection decision at Duke Energy is a $10M+ commitment.
+- **Pitch angle**: Duke is evaluating AI agents across customer service, grid optimization, and predictive maintenance simultaneously. Which agent to select for each domain is a $50M+ total commitment. Straw provides the evaluation infrastructure.
+- **Opener**: "I read about Duke Energy's digital transformation work under your leadership. I'm building an evaluation platform specifically for enterprise AI agent procurement and would love 20 minutes to understand how Duke is approaching agent vendor selection."
+
+**Xcel Energy** — 3.7M customers; newly appointed CTO focused on AI
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Rob Cain | SVP & CTO | New role (February 2026); chartered to enable AI and other advanced digital solutions; owns AI vendor selection |
+
+- **Context**: Cain's appointment is recent. New CTO's typically want quick wins and external validation. He has explicit mandate to "enable AI and other advanced digital solutions to reshape company operations."
+- **Pitch angle**: A new CTO needs to demonstrate judgment in AI vendor selection. Straw provides the framework that protects a new CTO's first major AI decision.
+- **Opener**: "Congratulations on the CTO role at Xcel. I'm working on an evaluation methodology for enterprise AI agent procurement and would love to hear how you're approaching vendor selection as you build out your AI program."
+
+**NextEra Energy** — World's largest renewable energy company; $15B+ market cap; massive AI investment
+
+| Name | Title | Why They Care |
+|---|---|---|
+| John Ketchum | CEO | Strong public commitment to AI as renewable energy competitive advantage |
+| Rebecca Kujawa | President/CEO, NextEra Energy Resources | Leads the renewable energy portfolio; operational AI at massive scale |
+
+- **Context**: NextEra has made AI a centerpiece of their renewable energy differentiation strategy. Grid management AI at their scale involves enormous agent procurement decisions.
+
+**National Grid** — UK/US transmission operator; high regulatory documentation requirements
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Paul Zeitz | Chief Digital and Technology Officer | Leads digital transformation across US/UK operations |
+
+- **Context**: National Grid operates in both the US and UK, meaning EU AI Act compliance is directly relevant. The documentation requirements for AI procurement in regulated utilities are intense. Straw's audit trail is a compliance tool, not just an evaluation tool.
+- **Pitch angle**: "National Grid operates in multiple regulated jurisdictions. Straw produces the AI procurement documentation that satisfies both OMB M-26-04 and EU AI Act deployer requirements."
+
+**Enel** — Italian multinational; largest European utility; active AI transformation
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Francesco Venturini | Head of Enel X | Digital services and energy management; AI agent deployment at global scale |
+
+- **Context**: Enel's innovation arm (Enel X) is deploying AI agents across building management, EV charging, and demand response. Each deployment represents a vendor selection decision.
+
+### Energy/Utilities Vertical Strategy
+
+**Regulatory documentation as the entry point**: Unlike retail or financial services, utilities have extremely formal procurement documentation requirements (NERC CIP, state PUC oversight, FERC oversight for transmission). The regulatory documentation requirement is not optional — it's a legal obligation. Straw's competition report is the format regulators expect.
+
+**Grid reliability as the risk frame**: The argument for rigorous AI agent evaluation in utilities is not "choose the best agent." It is "a wrong agent choice could contribute to a grid reliability event." That is a material risk that boards, regulators, and rating agencies care about. The Straw pitch to utilities is fundamentally risk mitigation.
+
+**NEC (National Electric Code) and NERC CIP integration**: Future product direction for Straw's utilities rubric: standard rubric dimensions pre-mapped to NERC CIP compliance requirements. This is a significant product differentiator for utilities buyers.
+
+### Rubric Template for Energy/Utilities
+
+Core evaluation dimensions for utility AI agent selection:
+1. **Grid reliability metric prediction accuracy** — tested on historical grid events
+2. **Demand forecasting error rate** — MAE vs. actual demand, rolling 30-day test window
+3. **Anomaly detection precision/recall** — on synthetic grid event data
+4. **Regulatory documentation quality** — does the agent produce audit-ready logs by default?
+5. **Response time under load** — latency under peak demand simulation
+6. **Fail-safe behavior** — how does the agent behave when the task is ambiguous or data is corrupted?
+
