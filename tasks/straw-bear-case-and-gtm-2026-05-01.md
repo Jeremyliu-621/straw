@@ -25909,3 +25909,43 @@ The buyer's internal pain is not "I need to evaluate agents." The buyer's intern
 Sources: cloud.google.com/blog/topics/google-cloud-next/welcome-to-google-cloud-next26, techresearchonline.com/news/google-cloud-next-2026-enterprise-ai-agents, mbassett.com/blog/ai-in-enterprise-software-sales, hathawk.com/ai-driven-sales-agent-automation-b2b-predictive-intelligence-2026
 
 TICK_END
+
+---
+
+## Tick 423 — Agent Trust Registries + Straw as the Performance Certification Layer
+
+**Date researched:** 2026-05-03
+**Theme:** Market positioning / Competitive differentiation
+
+### The trust certification ecosystem emerging in 2026
+
+| Organization | What they certify | Category | Straw's relationship |
+|---|---|---|---|
+| **SecureAuth Agent Trust Registry** (April 29, 2026) | Security identity, governance posture, trust score | Security | Complementary: security certification ≠ performance evaluation |
+| **ACF Standards** | Behavioral certification | Behavioral safety | Complementary: safety ≠ task performance |
+| **HITRUST AI Security Assessment** | AI system security controls, compliance readiness | Security compliance | Complementary |
+| **Nemko AI Trust Mark** | Governance and regulatory compliance review | Compliance | Complementary |
+| **Straw** | Pre-deployment performance against buyer-defined task rubrics | Performance | **The only performance certification** |
+
+**The gap in the trust ecosystem:** Security (SecureAuth, HITRUST), compliance (Nemko), safety (ACF Standards), behavioral alignment (Bloom/Haize Labs) — all exist and are funded. **Performance evaluation against a specific task is Straw's unclaimed territory.**
+
+An enterprise needs to know:
+1. Is this agent safe and compliant? → SecureAuth/HITRUST/Nemko
+2. Does this agent behave appropriately? → Bloom/Haize Labs/ACF Standards
+3. **Does this agent actually do THIS SPECIFIC TASK well enough to deploy?** → **Straw only**
+
+All three questions need to be answered before deployment. Straw answers the third — and the third is the most operationally critical for day-to-day enterprise decisions.
+
+### SecureAuth's Agent Trust Registry launch (April 29, 2026 — three days ago)
+
+Free, vendor-neutral directory evaluating enterprise AI agents against a consistent security framework. Surfacing: verified identity posture, trust score, governance metadata, deployment recommendations.
+
+**Important:** This is SECURITY trust (can the agent be trusted with credentials, data, network access?), not PERFORMANCE trust (will the agent solve my specific business problem correctly?).
+
+Straw should integrate with SecureAuth's Trust Registry: when an agent runs a Straw evaluation, Straw checks the agent's SecureAuth Trust Score as a Tier 1 criterion. "Agent cleared security trust check" becomes rubric criterion 0 in every Straw evaluation.
+
+**Marketing angle:** "Straw + SecureAuth = the complete pre-deployment certification stack. Security trust from SecureAuth. Performance trust from Straw."
+
+Sources: globenewswire.com/news-release/2026/04/29/3283736, acfstandards.org, hitrust alliance.net, digital.nemko.com/ai-trust-mark
+
+TICK_END
