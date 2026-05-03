@@ -13610,3 +13610,97 @@ Synthesizing all named contacts and companies identified across Phase 2 ticks (T
 **The single north star metric for the 2-week sprint:** Book 3 calls with potential design partners. Not 30. Not 10. Three. Three calls where Jeremy has a concrete rubric design proposal ready.
 
 Sources: Synthesized from Ticks 160-202 (all named contact research)
+
+---
+
+## Tick 204 (2026-05-04T00:30Z): The agentic AI market size as Straw's TAM context [theme: gtm]
+
+### Market size data
+
+The global AI agents market:
+- **2025:** $7.63 billion total market
+- **2026 projected:** ~$10.8 billion
+- **2033 projected:** $182.97 billion
+- **CAGR 2026-2033:** 49.6%
+
+Venture capital funding in agentic AI:
+- 2023: $1.3B in agent-native startups
+- 2024: $3.8B
+- 2025 (annualized): ~$6.5-7B
+- **Q1 2026:** $4.7B (annualized: $20B+ for 2026) — the largest software vertical funded since cloud-native in 2015-2017
+- 2025: AI VC overall hit $211B — half of all global VC funding
+
+### Straw's TAM calculation — two approaches
+
+**Approach 1: % of AI agent procurement spend**
+Enterprise AI agent market is projected at $10.8B in 2026. Historical precedent for procurement evaluation platforms: enterprises spend 2-5% of total software spend on evaluation/testing tools (analogous to how much is spent on load testing, security scanning, QA tools). At 2% of $10.8B = **$216M TAM** in 2026. At 5% = **$540M TAM**. Growing at 49.6% CAGR to 2033: $216M × 1.496^7 = **~$13B TAM by 2033**.
+
+**Approach 2: Per-competition pricing × addressable decisions**
+Straw's competition format: $25-50K per competition.
+Number of Fortune 500 companies: 500. Each has 5+ significant AI agent procurement decisions per year (coding, CX, legal, finance, operations).
+Fortune 500 alone: 500 × 5 decisions × $25K = **$62.5M/year** from Fortune 500 if Straw ran every competition.
+Expanding to Fortune 2000 at lower capture rate (50%): **$250M/year**.
+This is the "plausible revenue at scale" estimate — achievable within 5-7 years if Straw establishes category leadership.
+
+### The "no dedicated category" insight
+
+The search found that "evaluation as a service" is **not yet a named market segment** in analyst reports. Grand View Research, MarkNtel, and other market research firms have not carved out "AI agent evaluation platforms" as a distinct category — they lump it under broader "AI agents market" or "AI testing tools."
+
+This is simultaneously a bear case signal and a bull case signal:
+- **Bear:** No defined market = harder to raise, harder to explain to enterprise procurement, harder to benchmark against competitors
+- **Bull:** The category is pre-formed. Straw can define it. The company that names and owns the category before analysts carve it out gets 3-5 years of first-mover advantage. (Salesforce named CRM. HubSpot named inbound marketing. Straw can name "AI agent procurement evaluation.")
+
+### The content strategy to own the category name
+
+Jeremy should publish a canonical definition piece: **"The AI Agent Procurement Platform: A New Category"** on the Straw blog. The goal: when a VP of AI googles "how do we evaluate AI agents," they find Straw's framework, not a generic Gartner report. The piece should:
+1. Name the category explicitly: "AI Agent Procurement Platform"
+2. Define the three alternatives: (a) internal POC (fails 95% of time), (b) vendor demo (cherry-picked), (c) structured competition (Straw)
+3. Publish Straw's rubric design methodology as a free open-source template
+4. Include the QPC (quality-per-dollar) concept from Tick 197 — this is differentiated, quotable, and drives SEO for "AI agent cost efficiency evaluation"
+
+Sources: [Grand View Research AI Agents Market](https://www.grandviewresearch.com/industry-analysis/ai-agents-market-report), [Landbase Agentic AI Statistics 2026](https://www.landbase.com/blog/agentic-ai-statistics), [Foundation Capital AI 2026](https://foundationcapital.com/ideas/where-ai-is-headed-in-2026), [MEV Agentic AI Market Outlook](https://mev.com/blog/what-2025-2026-data-reveal-about-the-agentic-ai-market)
+
+---
+
+## Tick 205 (2026-05-04T00:45Z): Network effects and winner-take-all dynamics — will Straw become defensible? [theme: bear]
+
+### The core question: does Straw have winner-take-all properties?
+
+From a16z, NFX, and academic platform research:
+
+**The standard winner-take-all conditions:**
+1. High switching costs for participants on both sides
+2. Single-homing behavior (users choose one platform)
+3. Data/network effects that compound over time
+4. Differentiated inventory (creates diverse matching, not substitutable)
+
+**Where Straw has these properties:**
+
+| WTA Condition | Straw's Situation |
+|---|---|
+| **High switching costs** | Rubric library is proprietary — switching to a competitor means losing accumulated rubric IP. Moderate switching costs. |
+| **Single-homing** | Enterprise buyers might use multiple evaluation platforms (Straw + internal POC). Not strong single-homing. |
+| **Data flywheel** | Each competition adds to competition corpus. More data = better rubric calibration. Strong if Straw reaches critical mass. |
+| **Differentiated inventory** | Supply side: agent operators are different (Cursor ≠ Devin ≠ Harvey). Demand side: rubrics are unique per company. Very strong differentiation. |
+
+**The NFX differentiated inventory insight:** "Platforms with more differentiated inventory have stronger and longer-lasting network effects because they have a diversity of inventory that suits the unique preferences of customers." Straw's rubrics are the most differentiated inventory possible — each rubric is literally unique to one enterprise's specific tasks and criteria. This is the opposite of Kaggle (which uses standardized datasets). Straw's inventory diversity is its moat.
+
+### The anti-winner-take-all bear case
+
+From the same research: "Instead of winner-take-all markets, we're seeing markets split among multiple players. Even companies with established moats are struggling against copycats and new entrants."
+
+For Straw specifically:
+1. **Horizontal fragmentation:** Legal AI evaluation, coding agent evaluation, CX agent evaluation could each spawn specialist competitors (Vals AI for legal, internal tools for coding, etc.). Straw faces multi-front competition if it spreads too thin.
+2. **Enterprise DIY:** At scale, large enterprises build their own internal evaluation frameworks rather than paying Straw. They take Straw's rubric methodology (open-sourced), implement it internally, and stop paying. This is the open-source commoditization risk.
+3. **Hyperscaler capture:** Google, Microsoft, or Amazon builds an agent evaluation layer inside their existing cloud infrastructure. Enterprises already on Azure get Azure Agent Evaluation for free. The "free" tier commoditizes Straw's core.
+
+### The defensibility answer
+
+Straw's durable competitive position is not the software — it's the **rubric corpus and the badge**. Both require time and usage to build:
+
+- **Rubric corpus:** After 100+ enterprise competitions across 10 verticals, Straw has the world's most comprehensive library of peer-reviewed, production-tested AI evaluation rubrics. This is a 5-year asset. No hyperscaler can shortcut it.
+- **Straw Certified badge:** An AI agent operator that has won Straw competitions at 10 Fortune 500 companies has a credential no hyperscaler can replicate. The badge has value only if Straw is the recognized certification authority — which requires time, trust, and successful competition history.
+
+**The product implications:** Straw should actively give away the rubric methodology (open-source the rubric design framework) while keeping the competition corpus and badge proprietary. The open-source strategy does two things: (a) prevents competitor "clean room" implementation (they'll implement Straw's framework but call it something else), and (b) establishes Straw as the canonical rubric authority (if the framework is open-source, Straw is the reference implementation).
+
+Sources: [NFX Network Effects Manual](https://www.nfx.com/post/network-effects-manual), [a16z Dynamics of Network Effects](https://a16z.com/the-dynamics-of-network-effects/), [HBS What Are Network Effects](https://online.hbs.edu/blog/post/what-are-network-effects)
