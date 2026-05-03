@@ -13045,3 +13045,125 @@ The procurement and risk personas are **NET NEW buyers** that Straw can reach wi
 
 Sources: [PwC on AI Agents in Procurement](https://www.pwc.com/us/en/tech-effect/ai-analytics/agentic-ai-in-procurement.html), [McKinsey Agentic AI in Procurement](https://www.mckinsey.com/capabilities/operations/our-insights/redefining-procurement-performance-in-the-era-of-agentic-ai), [IBM AI Agents in Procurement](https://www.ibm.com/think/topics/ai-agents-in-procurement)
 
+---
+
+## Tick 194 (2026-05-03T22:00Z): Replit Bounties killed Sept 2025 — cold-start autopsy and Straw's structural differences [theme: bear]
+
+### The Replit Bounties shutdown
+
+Replit killed its Bounties program effective September 6, 2025. The program, launched circa 2023, was a marketplace where companies could post coding tasks and Replit developers would compete for payment. Replit's CEO Amjad Masad had heavily promoted Bounties in 2023 as "the next big thing for software development" — reducing transaction costs to zero, IDE-integrated bounty posting, solo devs building massive projects.
+
+**The execution failure signals:**
+- Developers were charged a **25% withdrawal fee** on all bounty earnings
+- **$350 minimum withdrawal** — meaning small bounties were effectively uneconomical for solvers
+- Solvers were trusting Replit as escrow holder on top of paying high fees
+- The Replit CEO publicly posted "I no longer think you should learn to code" — signaling a strategic pivot away from developer bounties toward AI code generation entirely
+
+**The death sequence:** Platform shifted to AI-first (Replit Agent, Replit's vibe coding product). Developer bounties became a distraction from the AI product pivot. The two-sided marketplace was abandoned when AI agents could do what the human solvers were doing.
+
+### The cold-start autopsy — what actually killed Bounties
+
+The Replit Bounties failure maps to the classic two-sided marketplace cold-start problem with specific aggravating factors:
+
+1. **Wrong supply incentives.** 25% fee + $350 minimum withdrawal made supply (developers) economically unattractive. The best developers chose Upwork or Toptal with lower fees and better reputation systems.
+
+2. **Undifferentiated demand.** Bounty posters could go to Upwork, Fiverr, or GitHub Sponsors. Replit's value-add was IDE integration — but that's a convenience feature, not a compelling reason to switch platforms and pay higher fees.
+
+3. **Quality signal problem.** No rubric-defined "winning." Bounty hunters submitted work of varying quality. Posters couldn't evaluate correctness without running the code. This is exactly the AI evaluation problem Straw solves.
+
+4. **Strategic incoherence.** Bounties competed with Replit Agent (AI that generates code). If Replit Agent can do the task, why post a bounty? The platform's own AI product cannibalized its marketplace.
+
+### Straw's structural differences from Replit Bounties
+
+This is the critical analysis: what makes Straw NOT Replit Bounties?
+
+**Difference 1: Defined rubric replaces quality ambiguity.** Replit Bounties had no structured evaluation — the poster judged "good enough" subjectively. Straw's entire value proposition is the rubric: the buyer defines what winning looks like quantitatively before the competition starts. The score is objective.
+
+**Difference 2: AI agents, not human developers.** Replit's problem was human supply (developers) vs. Straw's supply (AI agents). AI agents have near-zero marginal cost, no withdrawal fee resistance, no minimum payment threshold. The supply dynamics are completely different.
+
+**Difference 3: B2B procurement, not gig marketplace.** Replit Bounties was consumer/SMB (small coding tasks, $50-$500). Straw is enterprise procurement ($15K-$100K competitions). The B2B enterprise buyer is less price-sensitive and more motivated by risk reduction. The fee structure is order-of-magnitude different.
+
+**Difference 4: Straw is the record, not just the venue.** Replit Bounties was transactional — task posted, solved, paid, done. Straw creates a permanent evaluation record: the competition corpus, rubric, agent performance data, winner, ROI outcome. This data has long-term value (audits, re-certification, regulatory compliance). The platform is sticky after the competition ends.
+
+**Difference 5: Supply-side incentive is the badge, not the payment.** Replit developers competed for cash. Straw agents compete for the Straw Certified badge — a credential that increases commercial value in future enterprise sales. An agent operator that wins a Straw competition at a Fortune 500 can use that credential to win future contracts. The incentive is compounding, not one-time.
+
+### The residual cold-start bear case for Straw
+
+The Replit Bounties failure doesn't directly threaten Straw's model, but the cold-start problem is real in a different form:
+
+**Chicken-and-egg for Straw:** Enterprise buyers want to see that Straw competitions have produced reliable results at companies like theirs. Agent operators want to see that Straw competitions have produced paying deployment contracts. Neither side commits without the other already being active.
+
+**The solve:** Run the first 5 competitions as free research partnerships with enterprise design partners. The output is the public record that breaks the cold start: "Straw ran a competition at [Fortune 500 company]. [Agent] won with 94.3% on the customer support rubric. They signed a deployment contract 14 days later." That case study is the supply-demand bridge.
+
+Sources: [Replit Bounties Shutdown HN Thread](https://news.ycombinator.com/item?id=44643875), [Replit Bounties Blog Archive](https://blog.replit.com/bounties)
+
+---
+
+## Tick 195 (2026-05-03T22:15Z): Straw's design partner program — the exact terms to offer the first 5 partners [theme: gtm]
+
+### What the SaaStr / Common Paper canon says about design partner terms
+
+From SaaStr, Common Paper, and Reechee's founder guide consensus:
+
+**The right number:** 3–5 design partners maximum. More than 5 and you can't manage the feedback volume or maintain exclusivity. Fewer than 3 and you have too few data points to validate.
+
+**The incentive structure** (standard B2B SaaS design partner playbook):
+- **Option A (free during design):** Free access for 6-month design phase → 30-50% discount for 12-24 months post-launch → transition to market rate
+- **Option B (locked-in pricing):** No free period, but lock them into a favorable price for 3 years in exchange for formal commitments
+- **Option C (usage credits):** "$10K in usage credits during design phase, 20% discount on all usage for year 1 post-launch" — best for consumption-based pricing
+- **The equity option:** 0.5% equity in rare cases (strategic partners who also invest or distribute). Not common for typical design partners.
+
+**What partners commit to:**
+1. Bi-weekly or monthly feedback calls (structured agenda, documented feedback)
+2. Roadmap influence sessions (quarterly reviews of feature priorities)
+3. Private reference (will take calls from prospects)
+4. Public reference (case study, logo, testimonial) — this is the most valuable
+5. Right to terminate at any time (Common Paper design partner agreement default)
+
+**The Common Paper clause:** "Either party may terminate at any time — reflecting that so much is uncertain at the earliest stage of a startup." This removes the legal friction from early partnerships. Use the Common Paper Design Partner Agreement template rather than a custom contract.
+
+### Straw's specific design partner terms — the recommended offer
+
+For Straw's first 5 enterprise design partners, the optimal structure is:
+
+**What Straw offers:**
+- 1 free competition (up to $50K value) during the 6-month design phase
+- 50% discount on all subsequent competitions for 24 months
+- Direct access to Jeremy for rubric design and competition setup (white-glove)
+- Early access to the rubric library (pre-publication access to Straw's vertical rubric templates)
+- "Founding Partner" badge on Straw's website (public recognition)
+- Ability to make competition results private or public (they control the data story)
+
+**What the partner commits to:**
+- 1 bi-weekly call with Jeremy (30 min, structured feedback template)
+- Completion of at least 1 full competition within 90 days
+- Written case study permission (they can redact identifying details if needed)
+- Intro to 2 peer companies who might benefit from Straw (warm referrals)
+- Reference call availability for 1 year post-design phase
+
+**The non-negotiables:**
+- Straw retains the anonymized competition data for rubric library development (partners consent to this; their company name is not published without permission)
+- Competition results are Straw's IP (the rubric methodology, scoring framework); the raw task data belongs to the partner
+
+### How to find and qualify the first 5 design partners
+
+**Qualification criteria (in priority order):**
+1. Has an active AI agent procurement decision in flight (evaluating 2+ agents right now)
+2. Has a "VP of AI" or "Head of AI Operations" title on LinkedIn (indicates organizational maturity)
+3. $100M+ revenue (has budget for AI tools without requiring 3-tier CFO approval)
+4. Operates in a vertical where rubric design is tractable (coding, legal, finance, customer support)
+5. Has a champion who is personally invested in making the evaluation defensible (not just a buyer, an advocate)
+
+**The 5 target partners from the research so far:**
+
+| # | Target Company Type | Why They Qualify | Entry Point |
+|---|---|---|---|
+| 1 | **Mid-size law firm** (AmLaw 200) | Active Harvey vs. CoCounsel decision; partner accountability for AI selection | Managing Partner or VP Technology |
+| 2 | **Regional bank or credit union** (community banking) | OCC Model Risk Guidance + insurance exclusion forces documented evaluation | CTO or Chief Risk Officer |
+| 3 **YC W26 agent company** (Rubric AI, Salus, similar) | Want Straw Certified badge to prove performance to enterprise customers; supply-side partner who becomes demand-side reference | CEO/Founder (Jeremy knows them) |
+| 4 | **Mid-market SaaS company** (200-500 employees) | Evaluating Cursor, GitHub Copilot, Devin for coding; needs coding competition format | VP Engineering |
+| 5 | **Insurance or professional services firm** | ISO 42001 compliance requirement + CG 40 47/48 AI insurance exclusion; needs documented procurement | Head of AI / CISO |
+
+**The sequencing:** Start with the YC W26 agent company (#3) first — Jeremy already has the relationship, lowest friction, quickest to close. Use that first competition result as the case study that opens doors for #1, #2, #4, #5.
+
+Sources: [SaaStr Design Partner Incentives](https://www.saastr.com/dear-saastr-what-incentives-are-given-to-design-partners-and-other-super-early-customers/), [Common Paper Design Partner Agreement](https://commonpaper.com/blog/design-partner/), [Reechee SaaS Design Partner Guide](https://reechee.io/blog/what-is-a-design-partner-in-saas/), [Horizon Capital Founders Guide](https://horizoncap.vc/founders-guide-choose-your-first-design-partners/)
