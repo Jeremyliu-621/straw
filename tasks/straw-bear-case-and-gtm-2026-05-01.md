@@ -28638,6 +28638,43 @@ From most to least severe (updated Tick 443 state):
 6. **"Good enough" substitutes (LOWERED FURTHER):** After Tick 439's complete competitor survey — no one is doing cross-vendor buyer-defined competition evaluation. No substitute exists.
 
 Sources: digitalapplied.com/blog/why-most-agencies-botch-agentic-ai-2026, composio.dev/blog/why-ai-agent-pilots-fail-2026, ycombinator.com community discussion on OpenClaw security
+## Tick 444 (2026-05-03T14:40Z): OpenHands + autonomous agent operator community as Straw's supply side [theme: partners]
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets — agent builder community
+
+### OpenHands: the open-source supply side for Straw
+
+OpenHands raised $18.8M Series A (November 2025) to bring open-source cloud coding agents to enterprises. They achieved 77.6% success rate on SWE-bench — among the best open-source alternatives to Devin.
+
+**Why OpenHands users are Straw's most natural supply-side design partners:**
+- They're already running autonomous agents on real engineering tasks
+- They're explicitly building "parallel agent execution at scale" infrastructure
+- They need a way to validate their agents' performance for enterprise customers
+- Straw gives them the validation layer: "Run your OpenHands agent on Straw's evaluation and get a score you can show enterprise buyers"
+
+**The pitch to OpenHands enterprise team:**
+"OpenHands agents get scores on SWE-bench. But your enterprise customers don't have SWE-bench tasks — they have their specific engineering problems. Straw lets enterprise customers post their actual tasks and your OpenHands agent competes for real. The enterprise gets a defensible score; your agents get enterprise validation data."
+
+**Named contacts — OpenHands:**
+- **Graham Neubig** — Co-founder, OpenHands / Carnegie Mellon professor. LinkedIn: search "Graham Neubig OpenHands"
+- Opener: "Graham — OpenHands achieved 77.6% on SWE-bench. But enterprise buyers don't use SWE-bench. They use Straw, where they define the rubric. Let's run an OpenHands agent on 3 enterprise tasks with company-defined rubrics and see how it scores. This becomes OpenHands' enterprise case study."
+
+### The autonomous agent operator community — who builds agent fleets in 2026
+
+Beyond OpenHands, the agent operator community includes:
+
+**Kite AI operators:** Platform with 90+ registered service providers on mainnet (April 30, 2026). These operators would post subtasks on Straw for specialized work.
+
+**autonomous-agents.dev users:** The `Agents.md` protocol for autonomous coding — these developers are running agent daemons that read task backlogs and execute independently. They're the most technically sophisticated potential agent builders on Straw.
+
+**Modal Labs builders:** Modal's startup program has 500+ AI-native startups building inference applications. Many are building agent frameworks. Modal is Straw's natural distribution channel for agent builders.
+
+**YC S26 AI agent companies:** The Summer 2026 YC batch (July-September) will include 20-30 agent infrastructure companies. Being in YC S26 gives Jeremy access to all of them as natural agent builder sign-ups.
+
+### Named contacts added: #116-117
+116. **Graham Neubig** — OpenHands, Co-founder (Carnegie Mellon professor). Opener: SWE-bench → enterprise rubric gap.
+117. **Erik Bernhardsson** — Former Spotify ML, now Modal investor/advisor. Connector to Modal's startup community. Twitter: @bernhardsson
 
 TICK_END
 
@@ -28781,5 +28818,206 @@ Three independent sources now confirm the failure rate:
 **Investor signal:** Coatue led Sycamore. Coatue also co-led many AI infrastructure rounds. They are an active investor in the space that Straw operates adjacent to. Coatue should be on Straw's investor outreach list.
 
 Sources: techcrunch.com/2026/03/30/former-coatue-partner-65m-seed, salesmate.io/blog/ai-agents-adoption-statistics, digitalapplied.com/blog/ai-agent-adoption-2026-enterprise-data-points, lyzr.ai/state-of-ai-agents
+## Tick 445 (2026-05-03T15:00Z): The "Agent Owner" persona — Straw's exact buyer, now named and quantified [theme: GTM + bear]
+
+**Date researched:** 2026-05-03
+**Theme:** GTM — buyer persona definition with data
+
+### The "Agent Owner" role is now real and quantified
+
+From the Writer.com blog "AI Agent Owner role: New org chart for the agentic enterprise" (2026):
+
+**56% of enterprises now have a formal "AI Agent Owner" or "Agentic Ops" lead** — up from 11% in 2024. This role has emerged as the primary buyer for agent evaluation infrastructure.
+
+**Why they have budget authority:**
+- "Organizations should name an agent owner with budget authority before the second pilot"
+- One global financial services company moved the AI Owner function from CTO org → direct report to COO within 6 months
+- "The agent manager must have authority to change agent behavior without a multi-week IT approval process"
+
+**The production impact:** Organizations with a named agent owner have a **2.7× higher production-conversion rate.** Organizations without one are over-represented in the 22% negative-ROI cohort.
+
+### Why the Agent Owner IS Straw's buyer
+
+The Agent Owner needs to:
+1. Pick which agent to deploy for each use case
+2. Defend that choice to the COO/CFO
+3. Monitor agent performance after deployment
+4. Replace underperforming agents
+
+Straw directly supports steps 1 and 2. The evaluation competition gives the Agent Owner a defensible score. The rubric is the documented selection criteria. The leaderboard is the evidence for the COO.
+
+**The Agent Owner's purchase decision authority:**
+- Has budget authority (per the definition above)
+- Doesn't need IT approval for agent evaluation tools
+- Reports to COO or CTO — can approve $10K-$50K software without procurement committee
+- Incentivized by 2.7× production improvement metric — Straw helps hit this
+
+### How to find Agent Owners to reach out to
+
+**Job titles to search on LinkedIn:**
+- "AI Agent Owner" (new role, may not be on LinkedIn yet)
+- "Head of Agentic AI" or "Head of AI Agents"
+- "AI Ops Lead" or "Agentic Operations"
+- "Principal AI Engineer" (at companies with known agent deployments)
+- "AI Center of Excellence Lead" (at Fortune 500 companies)
+
+**Companies where Agent Owners are most likely to be named:**
+- Any company in the Salesforce Agentforce named customer list (Engine, OpenTable, 1-800Accountant)
+- Companies named in Anthropic's Managed Agents case studies (Rakuten, Notion, Cisco)
+- OpenAI Frontier's 2+ million businesses
+- JPMorgan, Goldman, Citi (per Tick 416 targets)
+
+**The LinkedIn search sequence for outreach:**
+1. Search "Head of AI [Company Name]" on LinkedIn
+2. Find the role between VP of Engineering and CISO
+3. Check for posts about AI agent deployment, evaluation, governance
+4. Send the 4-touch sequence from Tick 429
+
+### The bear case from this persona analysis
+
+The Agent Owner is a new role (11% penetration in 2024 → 56% in 2026). This means:
+- The role is being created NOW, during the exact window when Jeremy should be selling
+- Many enterprises don't have one yet — they're the companies most likely to have evaluation chaos
+- If the Agent Owner is embedded in IT (not COO/CTO), they may not have independent budget authority → longer sales cycles
+
+**The timing insight:** Jeremy should reach out to enterprises where the Agent Owner JUST got named (last 3 months). They're in their "first 90 days" of the role, setting their tool stack. This is the highest-intent window.
+
+**How to identify "just named" Agent Owners:** LinkedIn's "promoted to X" signals, company AI press releases, Anthropic/OpenAI customer announcement blogs (which identify new enterprise AI deployments).
+
+Sources: writer.com/blog/ai-agent-owner, digitalapplied.com/blog/ai-agent-adoption-2026-enterprise-data-points, beam.ai/agentic-insights/what-is-an-agent-manager
+
+TICK_END
+
+---
+
+## Tick 446 (2026-05-03T15:20Z): Updated comprehensive morning reading guide V6 — definitive synthesis [theme: synthesis]
+
+**Date written:** 2026-05-03 (continuation session ticks 436-446)
+**Ticks covered in this session:** 422-445 (+ remote session's 422-435)
+**Theme:** ALL THREE (bear case, GTM, design partners)
+
+---
+
+### WHAT'S NEW IN V6 (since V5 at Tick 432)
+
+| New finding | Source tick | Impact |
+|---|---|---|
+| Enterprise autonomy trust gap: only 6% fully trust AI agents | Tick 436 | Bear case: market isn't ready for fully autonomous agent transacting. But this is v3 Straw (2028), not v0/v1 Straw. The data actually validates the need for v0/v1 evaluation. |
+| Replit Bounties shut down because AI cannibalized the supply side | Tick 437 | NOT applicable to Straw — Straw evaluates AI agents (can't be cannibalized by AI). Different dynamic. |
+| Cisco acquires Galileo — pre-deployment evaluation gap confirmed | Tick 438 | Structural validation: every M&A is post-deployment. Pre-deployment (Straw) is the next layer. |
+| PwC "demonstrate true capabilities" mandate = Straw's pitch | Tick 439 | GTM: quote PwC directly in enterprise sales calls. Consulting firm as distribution channel. |
+| Kaggle sold to Google for ~$25-30M — no independent path | Tick 440 | Don't let Straw become a feature of Google. The annual subscription model prevents this. |
+| Agent Owner role: 56% penetration, 2.7× production conversion rate | Tick 445 | The buyer persona is now named, quantified, and findable on LinkedIn. |
+| OpenHands: $18.8M Series A, 77.6% SWE-bench, enterprise focus | Tick 444 | Best natural supply-side design partner. Graham Neubig (#116) is the contact. |
+| Shopify CTO Mikhail Parakhin + Farhan Thawar as design partners | Tick 441 | Two of the most AI-forward engineering leaders in the world. Warm openers available. |
+| Substitution math: enterprise pilot costs $50K, Straw costs $2,500 | Tick 442 | ROI case is 20× in the first evaluation alone. Vendor neutrality is structural, not replicable. |
+| Consulting firm distribution: PwC/Deloitte/Accenture as channels | Tick 443 | Single firm relationship unlocks hundreds of enterprise clients via co-authored methodology paper. |
+
+---
+
+### THE STEELMANNED BEAR THESIS (Final Version)
+
+**The single sentence:** If Straw fails, it will be because design partners didn't convert to paying customers within 180 days, not because the technology didn't work.
+
+**The full argument:**
+1. The market is real: 56% of enterprises now have Agent Owners. 88% are increasing AI budgets. 79% are already deploying agents.
+2. The timing is right: Three platforms (Google, Microsoft, OpenAI) launched single-vendor evaluation, validating the category while reinforcing the need for neutral third-party evaluation.
+3. The technology works: The evaluation pipeline is built. SUBMISSION.md, rubric-locked eval, LLM judge, eval container — all functional.
+4. **The risk is conversion.** Design partners give you 90 days of access. They don't give you a payment on Day 1. The window between "this was valuable" and "we'll add it to next year's budget" is where Straw loses. Jeremy must close the follow-on within 90 days of the first evaluation results, not 180 days.
+
+**The four death scenarios:**
+- A (40%): Cold-start + conversion failure — design partners don't convert, runway runs out
+- B (30%): Platform player ships "good enough" evaluation — free integration beats paid neutral tool
+- C (20%): Eval gaming — SUBMISSION.md injection attack compromises evaluation integrity
+- D (10%): Regulatory liability — unlicensed financial analysis task creates legal exposure
+
+**The single most important leading indicator:** By Month 6, 2 of the first 4 design partners must have made a follow-on payment (even $500). If not: debug conversion before acquiring more partners.
+
+---
+
+### THE FIRST 10 CONVERSATIONS — UPDATED WITH NEW CONTACTS
+
+| Priority | Contact | Company | Why now | Approach |
+|---|---|---|---|---|
+| 1 | **Beth Barnes** | METR (CEO) | Highest credibility; methodology co-authorship is the open | @BethMayBarnes — "TaskDev + rubric = complementary" |
+| 2 | **Carol Liang** | Stripe (AI benchmark author) | Literally wrote the problem Straw solves | "Your benchmark → Straw automates this" |
+| 3 | **Graham Neubig** | OpenHands (Co-founder) | Best supply-side partner; enterprise case study motivation | "SWE-bench → enterprise rubric gap" |
+| 4 | **Guy Halamish** | JPMorgan (IB COO) | New AI mandate + budget cycle | "New mandate + cross-vendor eval" |
+| 5 | **Dr. Andreas Schertzinger** | AXA (CDAIO) | EU AI Act 91 days; regulatory urgency | "Article 15 audit log as byproduct" |
+| 6 | **Mikhail Parakhin** | Shopify (CTO) | AI-first engineering; direct problem fit | "Which agent for YOUR codebase" |
+| 7 | **Steve Corfield** | Anthropic (Biz Dev) | Partner Network listing + referral distribution | "Evaluation layer for Claude's enterprise customers" |
+| 8 | **Daniel Kokotajlo** | Apollo Research (Mission Dir) | Safety eval paper co-authorship | "Scheming detection + performance eval = joint paper" |
+| 9 | **Joe Park** | State Farm (CDIO) | OpenAI Frontier customer; cross-vendor problem | "OpenAI + competitors — how do you compare?" |
+| 10 | **Beena Ammanath** | Deloitte AI Institute | Consulting firm distribution channel | "Straw operationalizes Trustworthy AI framework" |
+
+---
+
+### GTM PLAYBOOK: $0 → $100K ARR
+
+**Phase 0 (Now — Month 2): Foundation**
+- Legal: Delaware C-corp + Common Paper Design Partner Agreement + HackerOne-model ToS safe harbor
+- Product: SUBMISSION.md sanitization (4 days, P0 before first design partner)
+- Pricing: No public page. "Request access" form only. Every inquiry → discovery call.
+
+**Phase 1 (Month 1-3): First 5 design partners**
+- 10 personalized emails/day from Jeremy
+- Target: 5 signed agreements within 90 days
+- Offer: Free evaluation + rubric co-authorship + 50% discount for 24 months
+- High-touch: bi-weekly calls, direct Slack, rubric library contribution
+
+**Phase 2 (Month 3-6): Convert to paying**
+- Month 2 debrief call → present results → propose follow-on at $2,500
+- If 0/5 convert by Month 5: stop acquiring, debug the conversion problem
+- Expected: 2-3 conversions → $5K-$7.5K one-off revenue
+
+**Phase 3 (Month 6-9): HN launch + content**
+- "Show HN: We benchmarked 5 AI agents on [Company X]'s rubric — here's what the score revealed"
+- LinkedIn: 1 post/day from Jeremy's personal profile
+- Conference: AI Governance Summit, ProcureCon AI 2026
+
+**Phase 4 (Month 9-12): First enterprise subscription**
+- Annual deal: $12,000/year for 3 competitions
+- Consulting firm distribution: co-author PwC/Deloitte methodology paper
+- Goal: $100K ARR by Month 12 (combination of subscriptions + one-offs)
+
+---
+
+### OPEN QUESTIONS FOR PHASE 3 (Updated)
+
+1. **YC S26:** Application was due May 4. Did you submit? If accepted: interview in June; batch July-September.
+2. **Legal entity:** Do you have a Delaware C-corp? If not, form before signing the first design partner agreement.
+3. **SUBMISSION.md sanitization:** Has the 4-day P0 engineering task been scheduled? Must be done before first public evaluation.
+4. **Design partner offer language:** The Common Paper template is your contract. Fill in: free evaluation + 50% discount + 90-day program + bi-weekly calls. Send to the first 5 contacts today.
+5. **Benchmark contamination story:** Have you prepared the HN "Show HN" post framing? The OpenAI SWE-bench withdrawal is your hook. The private-task model is your solution.
+6. **Consulting firm outreach:** Which firm first? (Recommendation: PwC, because their 2026 survey is the verbatim pitch. Direct quote → direct opener → fastest conversion.)
+7. **Agent Owner identification:** Have you searched LinkedIn for "Head of Agentic AI" or "AI Ops Lead" at your top 10 enterprise targets? These are the direct buyers; the CTO is the champion, not the buyer.
+8. **OpenHands partnership:** This is the highest-leverage supply-side move. One OpenHands partnership puts 77.6% SWE-bench agents on Straw for every enterprise competition. Prioritize Graham Neubig outreach.
+
+---
+
+### DESIGN PARTNER MASTER COUNT: 117+ NAMED CONTACTS
+
+Contacts added this session:
+- **AI infrastructure platforms:** Steve Corfield (Anthropic, #100), Carol Liang/Kevin Ho (Stripe, #101-102), Shan Aggarwal (Coinbase, #103)
+- **AI safety/research:** Beth Barnes (METR, #104), Daniel Kokotajlo (Apollo, #105)
+- **Cloud/compliance:** Phil Venables (Google Cloud CISO, #106)
+- **Enterprise platform:** Zoubin Ghahramani (Google DeepMind VP Research, #108), Chris Painter (METR Policy, #109)
+- **Dev tools:** Mikhail Parakhin (Shopify CTO, #111), Farhan Thawar (Shopify VP Eng, #112)
+- **Consulting:** Beena Ammanath (Deloitte AI Institute, #114), PwC AI lead (#115)
+- **Agent community:** Graham Neubig (OpenHands, #116), Erik Bernhardsson (Modal advisor, #117)
+
+Total named contacts: **117**
+
+---
+
+### PUSH STATUS (after Tick 446)
+
+This session (Ticks 422-446) is complete. The file now covers all three Phase 2 themes comprehensively.
+
+**Next session should focus on:**
+- Running actual design partner outreach (not research)
+- Building the HN "Show HN" post content
+- Writing the PwC methodology white paper outline
+- First design partner agreement signed
 
 TICK_END
