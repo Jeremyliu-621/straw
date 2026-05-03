@@ -13267,3 +13267,103 @@ A future Straw competition rubric includes:
 This QPC metric is not available from any current benchmark. Straw could be the first platform to publish verifiable quality-per-dollar benchmarks on real enterprise tasks. This extends Straw beyond "which agent wins" to "which agent is the best value at your specific task volume." The addressable market expands: even companies already using one agent can run a Straw competition to audit their QPC against alternatives.
 
 Sources: [Futurism AI Token Economics](https://futurism.com/artificial-intelligence/economics-ai-tokens-crashing-down), [Medium $644B Economic Vandalism](https://skooloflife.medium.com/how-the-ai-industry-created-644-billion-of-economic-vandalism-in-2025-1ca0d71ab6f2), [Deloitte AI Token Dynamics](https://www.deloitte.com/us/en/insights/topics/emerging-technologies/ai-tokens-how-to-navigate-spend-dynamics.html)
+
+---
+
+## Tick 198 (2026-05-03T23:00Z): Customer support agent vertical — Straw's second competition format after coding [theme: gtm/partners]
+
+### The CX AI agent landscape in 2026
+
+Active commercial set that every enterprise CX leader is currently evaluating:
+- **Zendesk AI Agents** — $1.00 per automated resolution; claims "up to 80%" for some verticals
+- **Intercom Fin** — $0.99 per resolution; publishes 51% instant resolution rate
+- **Salesforce Agentforce** — $2.00 per conversation; deepest CRM integration
+- **Ada** — specialist AI agent vendor; enterprise-focused
+- **Forethought** — AI-native support automation
+- **Fini** — $0.69 per resolution, $1,799 monthly minimum
+
+**Market selection data (2026):**
+- 26% of new CX-AI deployments chose CX-suite-native (Zendesk, Salesforce Agentforce)
+- 22% chose specialist AI agent vendor (Intercom Fin, Ada, Forethought)
+- 18% chose contact-center embedded (Genesys, NICE, Five9)
+
+**Performance baseline:** Median tier-1 deflection is 41.2% across enterprise CX programs in 2026. Top quartile hits 58.7%. This means the typical enterprise is paying for CX AI that still sends 59% of tickets to human agents.
+
+### The key insight: performance is commoditized, integration is the differentiator
+
+From the Fini Labs analysis: "Vendor selection is now less about model capability (the underlying models are largely commoditized) and more about integration depth into the knowledge base, CRM, and order or billing system."
+
+This is Straw's entry point. When vendors say "our models are basically the same," the buyer has no way to evaluate which integrates better with their specific CRM data, product catalog, and support history. A Straw competition runs each agent against the buyer's actual support ticket history — the same 300 real tickets, the same product knowledge base, the same CRM data — and measures which achieves better resolution rate, escalation rate, and CSAT score.
+
+**The Straw CX competition rubric:**
+- **Resolution rate:** What % of tickets did the agent resolve without human escalation? (35%)
+- **Accuracy:** Were the resolved tickets actually correct? (spot check on closed tickets, 30%)
+- **Escalation quality:** When the agent escalated, did it provide useful context to the human agent? (15%)
+- **Response time:** Time-to-first-response and time-to-resolution (10%)
+- **CSAT proxy:** Did resolved tickets generate follow-up contacts? (10%)
+
+**Duration:** 72 hours using historical ticket data (no live customers involved during the competition).
+
+### The per-resolution pricing arbitrage opportunity
+
+The pricing spread ($0.69-$2.00 per resolution) creates a measurable ROI calculation. At 50,000 monthly resolutions:
+- Fini: $34,500/month
+- Zendesk: $50,000/month
+- Salesforce Agentforce: $100,000/month
+
+If Straw's competition reveals that Fini matches Zendesk's resolution rate on the buyer's ticket types, Straw pays for itself by saving $15,500/month ($186K/year) in vendor cost. The competition costs $25K and saves $186K/year. The ROI framing makes the buying decision trivial.
+
+### Named design partner targets for CX vertical
+
+Specific companies actively making AI customer support agent decisions:
+
+1. **Notion** — 10M+ users, complex support queries about product features; evaluating Intercom Fin vs. Zendesk AI
+2. **Figma** — design tool with known support volume; recently enterprise-scaled
+3. **Shopify** — massive merchant support volume; publicly uses AI for tier-1 support; has engineering and product sophistication to run a Straw competition
+4. **Duolingo** — high support volume, multilingual; has written publicly about AI in support; VP Engineering accessible via Twitter/LinkedIn
+5. **Gusto** — payroll/HR SaaS; high-stakes support queries (payroll errors); actively comparing AI agent vendors
+
+**Entry point for CX vertical:** Target Head of CX / VP Customer Success (not VP Engineering). The CX leader owns the $1-$2/resolution budget and feels the 59% escalation rate as a personal performance metric. Straw's value is immediately legible: "We can tell you which agent achieves 55% deflection vs. 41% on your ticket types, before you switch platforms."
+
+Sources: [Fini Labs 2026 CX AI Guide](https://www.usefini.com/guides/ai-support-platforms-native-integrations-zendesk-intercom-salesforce), [Digital Applied CX Agent Statistics 2026](https://www.digitalapplied.com/blog/customer-service-ai-agent-statistics-2026-data)
+
+---
+
+## Tick 199 (2026-05-03T23:15Z): The Kaggle comparison — how Straw must be structurally different to avoid Kaggle's failure modes [theme: bear]
+
+### Kaggle's core problem: optimizing for leaderboard, not deployment
+
+Kaggle is the precedent everyone will cite when comparing Straw. The objection: "Isn't this just Kaggle for AI agents? And Kaggle-style competitions have known failure modes."
+
+**What actually happens in Kaggle competitions:**
+1. **The shake-down:** In the Automated Essay Scoring 2.0 competition (2024), when final rankings were published, "the vast majority of participants dropped hundreds of positions." The top 20 dropped off; mid-tier participants surged to #1. Why: the public leaderboard used only 1/3 of the test data. Participants over-tuned to the public test set.
+2. **Leaderboard volatility:** The Optiver competition showed significant discrepancy between public and private scores — participants didn't know which leaderboard score to trust.
+3. **Winning ≠ deployable:** Kaggle winners optimize for competition metrics (accuracy on specific test sets). The winning model is often a massive ensemble that runs in hours on expensive hardware — undeploy-able in production. The enterprise buys the demo (the Kaggle solution) but can't use it.
+4. **Data contamination:** Kaggle competitions use benchmark datasets. In 2024-2025, multiple competitions had private test sets that were partially leaked into training data (similar to the SWE-bench contamination issue from Tick 176).
+
+### Straw's structural differences from Kaggle
+
+| Issue | Kaggle's Problem | Straw's Design |
+|---|---|---|
+| **Overfitting** | Public test set allows tuning to leaderboard | Tasks come from buyer's actual work — not public, not tunable |
+| **Shake-down** | Public vs. private set diverge | No train/test split: agents run on buyer's real tasks blindly |
+| **Winner can't deploy** | Ensemble models optimized for competition metrics | Winning agent must be a commercially deployable product the buyer can sign a contract for |
+| **Data contamination** | Public benchmarks get contaminated | Buyer's proprietary tasks are not public — cannot be contaminated |
+| **Community gamification** | Individual data scientists compete for rankings | Enterprise agent operators compete for deployment contracts — commercial incentive, not leaderboard points |
+| **Rubric defined by Kaggle** | Competition organizer defines metrics | Buyer defines the rubric — evaluation is buyer-specific, not Kaggle-generic |
+
+### The Kaggle business model failure for Straw
+
+Kaggle's B2B business model: companies pay Kaggle to post a competition, cash prize is the cost, community of data scientists competes for free. Straw's model is different in two key ways:
+
+1. **Straw's supply is commercial products, not individuals.** Kaggle competition winners are individual data scientists who want prize money and reputation. Straw competition winners are AI agent companies who want a deployment contract ($100K+/year) and the Straw Certified badge. The incentive structures are completely different. Commercial products compete to win commercial contracts, not to win $10K prize money.
+
+2. **Straw is a procurement platform, not a research platform.** Kaggle is fundamentally a data science research community (Google acquired it in 2017 to harvest talent and ML research). Straw is a B2B procurement tool. The outcome is a signed vendor contract and a documented evaluation record, not a published model or a Kaggle ranking.
+
+### The one Kaggle similarity that is actually a feature
+
+Kaggle's genuine value: **the competition corpus.** After every Kaggle competition, the task data, top solutions, and methodology discussions become public knowledge. This created an extraordinary ML education resource.
+
+Straw's analog: the **rubric library.** After each Straw competition, the rubric design (anonymized) goes into Straw's proprietary rubric library. "Here's the legal contract review rubric that 3 AmLaw 100 firms have used." "Here's the coding competition rubric that 5 fintech companies validated." The rubric library is Straw's Kaggle corpus — except it's proprietary to Straw and is the key moat (Tick 143 identified this as one of four Straw moats).
+
+Sources: [Kaggle Scandal Post 2024](https://datancoff.ee/2024/07/the-scandal-at-kaggle/), [ML Contests State of ML Competitions 2024](https://mlcontests.com/state-of-machine-learning-competitions-2024/)
