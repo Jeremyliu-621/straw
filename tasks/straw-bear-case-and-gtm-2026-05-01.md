@@ -12283,3 +12283,416 @@ Sources: [SimCorp Agent Launchpad](https://fintech.global/2026/04/27/simcorp-lau
 
 **Push status:** Appended ticks 167-172. Committing now.
 
+
+---
+
+## Tick 173 (2026-05-03T10:30Z): The open-source moat threat — does free always beat premium? [theme: bear]
+
+### The open-source agent landscape in 2026
+
+**OpenHands** (All Hands AI, Robert Brennan CEO):
+- MIT licensed core + enterprise license for advanced features
+- **77.6% on SWEBench** — rivaling or exceeding proprietary solutions
+- Backed by $18.8M Series A
+- Deployed by AMD, Apple, Google, Amazon, Netflix, NVIDIA
+- OpenHands Enterprise: self-hosted in VPC via Kubernetes, RBAC, SSO
+
+**SWE-agent** (Princeton, MIT licensed):
+- State-of-the-art on SWE-bench variants
+- Research-focused, minimal footprint
+- Free to self-host
+
+**The headline:** Open-source coding agents have matched or exceeded most proprietary agents on public benchmarks. At 77.6% on SWEBench, OpenHands is free and enterprise-deployable.
+
+---
+
+### Why this is a bear case for Straw's supply side
+
+If every enterprise can deploy a free, highly-capable open-source agent without paying for Devin, Harvey, or other premium vendors, the supply side of Straw (premium agents competing for contracts) collapses:
+
+- **No premium vendor to compete against:** "The best free agent is good enough" → no procurement decision, no competition needed
+- **Commoditization from the supply side:** Premium agents can't justify their cost differential if open-source matches their benchmark scores
+- **Competition result = "all agents tied":** If OpenHands scores 77.6% and Devin scores 78.2% on Straw's coding rubric, the signal is noise
+
+---
+
+### Why this bear case is significantly mitigated
+
+**Benchmark scores ≠ enterprise task performance.** The same 37% gap between lab benchmarks and production performance applies to open-source agents. SWEBench score measures GitHub issue resolution on specific code repos. Enterprise coding tasks look different: complex monorepos, internal APIs, proprietary frameworks, security-sensitive code.
+
+**OpenHands Enterprise has real costs.** MIT licensing is free; self-hosting OpenHands Enterprise in a VPC with RBAC, SSO, and Kubernetes infrastructure is NOT free. It requires:
+- Infrastructure costs (EC2, EKS, etc.): $2,000–$10,000/month at enterprise scale
+- Engineering time for deployment and maintenance: 0.5–1 FTE
+- Security review and compliance: 6–8 weeks
+- Total cost of ownership: $50,000–$150,000/year
+
+Devin at $500/month Team tier = $6,000/year. Self-hosted OpenHands at enterprise scale = $50,000–$150,000/year. The "free" option is often more expensive once total cost of ownership is calculated.
+
+**Specialization survives commoditization.** Harvey at $288K/year is not competing on raw coding capability — it's competing on legal-specific fine-tuning, law firm workflow integration, Am Law 100 customer trust, and legal responsibility for outputs. An open-source agent cannot replicate 3 years of fine-tuning on legal contracts or the liability framework Harvey provides.
+
+**Straw actually BENEFITS from open-source agents:** OpenHands as a free baseline competitor on Straw competitions would:
+1. Drive more competition participation (free to register, no licensing cost)
+2. Provide a strong baseline benchmark against which premium agents must differentiate
+3. Create a "Straw Certified" badge opportunity specifically for outperforming the open-source baseline
+
+**The reframe:** Open-source agents on Straw are a feature (strong baseline competition that makes premium agent differentiation meaningful), not a threat.
+
+---
+
+### The residual risk: "just use OpenHands + Claude API" as a substitute for Straw
+
+**The scenario:** An enterprise evaluates agents. They find OpenHands (free) + Claude API ($20/month) gives them 85% of Harvey's performance at 1% of the cost. They deploy OpenHands. No Straw competition needed.
+
+**The residual bear case:** This is a legitimate substitution risk for commodity coding tasks. Where Straw's evaluation is most defensible is in domains where:
+1. Specialized agents have genuine domain advantages (legal, healthcare, finance — Phase 1's compliance wedge)
+2. Adversarial robustness matters (red-team competitions — Tick 156)
+3. Regulatory documentation is required (OCC MRM, EU AI Act — Ticks 155, 166)
+
+For generic coding tasks, "OpenHands + Claude API" may beat a competition. For regulated-domain specialized tasks, it won't.
+
+**Implication for Straw's v1 strategy:** Lead with regulated verticals (legal, financial, healthcare) where open-source substitution is least viable and evaluation documentation is most valuable.
+
+Sources: [OpenHands vs SWE-Agent 2026](https://localaimaster.com/blog/openhands-vs-swe-agent), [OpenHands website](https://openhands.dev/), [OpenHands Series A announcement](https://openhands.dev/blog/openhands-index)
+
+---
+
+## Tick 174 (2026-05-03T11:00Z): The Series A narrative — from design partners to fundable traction [theme: gtm]
+
+### What investors actually want to see in 2026 for AI infra plays
+
+**Seed-stage AI valuations are 42% higher than non-AI peers** in 2026. Series A for AI startups averages $51.9M — 30% higher than non-AI. But the threshold bar has also risen: investors distinguish between "AI veneer companies" and genuine AI infrastructure plays.
+
+**The fundable seed story template (from research):** "8 design partners at top law firms, each running 50+ contracts per month through the platform, with early feedback showing the tool cuts contract review time by 40%." This is the structure investors want: specific partners, specific volume metrics, specific measurable outcome.
+
+---
+
+### The Straw seed narrative (what to say at $0 ARR with 3 design partners)
+
+**The headline:** "We're building the evaluation infrastructure for enterprise AI procurement — the missing layer between 'all AI vendors claim they're best' and 'we can prove which agent wins on our actual task.'"
+
+**The market hook:** "73% of enterprise AI projects fail because success criteria were undefined (McKinsey). Every enterprise deploying AI agents is making six-figure vendor decisions on vibes. The market for rigorous AI procurement evaluation is >$1B and nobody owns it."
+
+**The traction hook:** "[N] design partners at [categories]. [X] competitions run. [Y]% of companies that ran a free evaluation booked a paid competition within 30 days."
+
+**The moat hook:** "Our outcome corpus — the dataset of 'which agent wins at which task type' — is accumulating with every competition. After 50 competitions, Straw knows more about enterprise agent performance than any model lab or consulting firm. That data asset is irreproducible by any late entrant."
+
+**The urgency hook:** "The window to establish evaluation infrastructure as the standard is 12–18 months. Braintrust has $80M and is expanding into the competitive evaluation space. The OMB M-26-04 federal mandate creates institutional demand for documented AI procurement. We need to capture the first-mover position before either of those forces solidifies."
+
+---
+
+### Key metrics to track and present at seed round
+
+| Metric | Target at seed raise | Why investors care |
+|---|---|---|
+| Design partners (paying or committed) | 3–5 | Proves demand exists |
+| Competitions run | 10–20 | Proves the product works |
+| Average competition value | $5K–$15K | Proves WTP |
+| Free eval → paid conversion rate | 30%+ | Proves funnel quality |
+| NPS from design partners | 50+ | Proves product quality |
+| "Rubric quality" improvement over time | Measurable | Proves operational learning |
+| Outcome corpus size | 50+ agent-task data points | Proves moat formation |
+
+**The leading indicator that matters most:** Repeat usage. A design partner who runs 3 competitions in 3 months is worth more to the seed story than 10 one-time users.
+
+---
+
+### The right investor profile for Straw's seed round
+
+**Best fit investors (in priority order):**
+1. **Bessemer Venture Partners** — wrote the "AI pricing and monetization playbook," understand enterprise AI infrastructure deeply
+2. **a16z (Enterprise AI team)** — backed Braintrust at Series B, understand the evaluation infrastructure category
+3. **Lerer Hippeau** — active in AI dev tools, seed-stage focus
+4. **YC (as accelerator, not investor)** — if admitted to S26, $500K on standard terms
+5. **Elad Gil** — independent angel, backed Anthropic/OpenAI, understands evaluation market
+
+**Investors to avoid at seed:**
+- Pure consumer/PLG investors (Straw is enterprise sales-led at v1)
+- Investors who backed direct competitors (LangSmith/Braintrust lead rounds)
+- Web3/crypto-native investors (Straw should avoid the "crypto evaluation platform" framing)
+
+---
+
+### The seed round structure recommendation
+
+**Target:** $3M–$5M on a $15M–$20M post-money cap (SAFE)
+
+**Why this range:** 
+- $3M is enough for 18 months of operation at 3 FTEs + compute costs
+- $20M cap is realistic for an AI infra startup with 3 design partners + 10 competitions + clear regulatory tailwind
+- Avoid raising too much too early — enterprise sales takes longer than expected; a $2M runway extension is better than a down round
+
+**Dilution management:** 7% YC (if admitted) + 15% seed round = 22% total dilution through seed. Leaves room for Series A without excessive founder dilution.
+
+Sources: [AI startup seed valuations 2026](https://www.indexbox.io/blog/ai-startup-seed-valuations-surge-as-investor-focus-intensifies/), [Bessemer AI pricing playbook](https://www.bvp.com/atlas/the-ai-pricing-and-monetization-playbook), [AI fundraising trends 2026](https://eqvista.com/ai-startup-fundraising-trends/), [Pitchwise funding guide 2026](https://www.pitchwise.se/blog/the-complete-guide-to-seed-and-series-funding-rounds-for-founders-in-2026)
+
+---
+
+## Tick 175 (2026-05-03T11:30Z): Healthcare AI named contacts — hospital systems and clinical AI deployment [theme: partners]
+
+### The healthcare AI landscape in 2026
+
+**Epic's "Agent Factory" (announced March 2026):** Epic released a drag-and-drop platform at HIMSS Las Vegas that lets health systems build and deploy their own AI agents inside Epic. 200 AI features in development. Named AI agents: Art (clinical documentation), Emmie (patient engagement), Penny (financial operations). Epic holds **42.3% of US hospital EHR market.**
+
+**Oracle Health (Seema Verma, EVP):** Launched entirely new cloud-native EHR built for the "Agentic AI era." Voice-first clinical AI agent has saved US doctors 200,000+ hours since launch. Plans for acute care expansion in 2026.
+
+**The evaluation need:** Hospitals choosing between Epic's native AI agents and third-party specialized agents (ambient scribes, clinical decision support, medical coding) need independent comparative evaluation — the FDA has authorized 1,350+ AI-enabled medical devices, and hospital procurement teams cannot evaluate all of them.
+
+---
+
+### Named healthcare AI contacts
+
+**EHR vendors (supply side — agents that would compete on Straw):**
+
+| Name | Company | Role | Why | Opener |
+|---|---|---|---|---|
+| **Seema Verma** | Oracle Health | EVP & GM | Just launched Agentic AI EHR | "Oracle Health's clinical AI agent is one of dozens hospitals will evaluate. Straw is the independent evaluation platform that helps hospitals choose — and when Oracle's agent wins, that's the best marketing Oracle can have." |
+| **Lindsey McDonald** | Epic | Head of AI Strategy (search LinkedIn for exact role) | Epic Agent Factory launch | "Epic just shipped Agent Factory for health systems. Straw is where those health systems evaluate their Epic agents against alternatives before scaling deployment." |
+
+**Hospital AI decision-makers (demand side — Straw's buyers):**
+
+| Name | Company | Role | Why | Opener |
+|---|---|---|---|---|
+| **Ed Marx** | Former CIO, Cleveland Clinic & NYC Health + Hospitals | Independent Advisor / Consultant | Most vocal CIO on AI in healthcare | "You've spent 30 years on hospital IT procurement. AI agent selection is the procurement decision hospitals are most unprepared for. Would you evaluate Straw's approach to hospital AI agent evaluation?" |
+| **Sarah Vaezy** | Providence Health | Chief Digital Officer | Large integrated health system with AI deployment | "Providence is deploying AI agents across clinical and administrative workflows. Straw helps Providence choose between competing AI agent vendors using your actual tasks and rubrics. Design partner?" |
+| **Ryan Witt** | Commvault (ex-CISO, Mercy Health) | Healthcare Cybersecurity | Healthcare AI security expert | "Healthcare AI agents require HIPAA-compliant evaluation infrastructure. Straw provides BAA-backed evaluation with PHI handling controls." |
+
+**Clinical AI startups (supply side — agent vendors who would compete):**
+
+| Name | Company | What they build | Why for Straw |
+|---|---|---|---|
+| **Seth Hain** | Epic | VP of Applied AI Research | Building the models inside Epic | Needs third-party validation of Epic AI against competitors |
+| **Elise Berliner** | Ambience Healthcare | CEO | AI ambient documentation (live in hospitals) | Ambient scribes competing in Straw documentation competitions |
+| **Shiv Rao** | Abridge | CEO | AI clinical note documentation | $150M raised, deployed at UPMC — ideal Straw supply-side partner |
+
+---
+
+### The HIPAA compliance requirement for healthcare Straw competitions
+
+From Tick 176 preview: Any Straw competition involving clinical data (patient notes, medical records, imaging reports) triggers HIPAA:
+1. Straw becomes a "Business Associate" of the hospital
+2. Business Associate Agreement (BAA) required before any task data flows
+3. PHI must be de-identified before being submitted to competing agents, OR each competing agent must also sign BAAs with the hospital
+4. Competition environment must have access controls, audit logs, and encryption meeting HIPAA standards
+
+**The practical implication:** Healthcare competitions require a HIPAA-compliant competition pipeline. This is more expensive to build but creates a higher barrier to entry for competitors and justifies premium pricing ($25,000–$50,000+ per competition).
+
+**The opportunity:** Build the HIPAA-compliant competition pipeline first for healthcare, then leverage the same infrastructure (SOC 2 + data isolation + audit trail) for regulated finance competitions. One infrastructure investment, two regulated verticals.
+
+Sources: [Epic Agent Factory HIMSS 2026](https://medcitynews.com/2026/03/epic-hospital-ai-agent/), [Oracle Health agentic EHR launch](https://www.fiercehealthcare.com/health-tech/oracle-health-debuts-ai-powered-ehr-designed-voice-first-solution-embedded-agentic-ai), [Abridge clinical AI](https://www.abridge.com/), [Healthcare AI agent platforms 2026](https://www.kore.ai/blog/top-agentic-ai-platforms-for-healthcare)
+
+---
+
+## Tick 176 (2026-05-03T12:00Z): Privacy regulatory risk — HIPAA/GDPR/CCPA applied to enterprise task data [theme: bear]
+
+### The regulatory triangle: Straw processes enterprise task data
+
+When an enterprise posts a task on Straw containing real business data (contracts, financial records, patient notes, customer information), Straw becomes a **data processor** under GDPR Article 28. This triggers formal legal obligations.
+
+**The three-layer regulatory exposure:**
+
+1. **GDPR (EU enterprises):** Article 28 requires a Data Processing Agreement (DPA) signed before any personal data is processed. Personal data broadly defined — any information relating to an identified or identifiable natural person. Contract data (containing names, companies, transaction values) is almost certainly personal data under GDPR. Penalty: €20M or 4% of global annual turnover.
+
+2. **HIPAA (US healthcare tasks):** Protected Health Information (PHI) cannot be processed by a Business Associate without a signed BAA. BAA establishes permitted uses of PHI and breach notification requirements. No BAA = criminal liability for both Straw and the healthcare enterprise.
+
+3. **CCPA (California enterprise data):** California Consumer Privacy Act gives consumers rights over data. Enterprise task data containing California consumer information (customer contracts, sales records) may include CCPA-regulated data. Requirement: disclosure, deletion rights, opt-out of sale.
+
+---
+
+### What this means operationally for Straw
+
+**The minimum viable privacy stack for v1:**
+
+1. **GDPR Data Processing Agreement (DPA):** Standard template with enterprise customers (EU or EU-data-handling). Available from legal templates providers for ~$1K legal review. Must be signed before any task data is processed for EU enterprises.
+
+2. **HIPAA Business Associate Agreement (BAA):** For healthcare competitions only. More complex than DPA — specifies permitted uses of PHI, minimum necessary access, audit trail requirements. Standard template from HIPAA counsel, ~$2K–$5K.
+
+3. **CCPA disclosure and data subject rights:** Privacy policy update stating that task data submitted by enterprises may contain consumer data, Straw's data handling practices, and how consumers can exercise their rights. $0–$2K legal review.
+
+4. **Data residency controls:** Some EU enterprises require data to not leave EU servers. Straw needs the ability to run competitions on EU-region infrastructure. AWS/GCP both provide EU region options. Infrastructure cost: marginal.
+
+---
+
+### The deeper privacy risk: competing agents receive enterprise task data
+
+When Straw runs a competition, **three or more competing AI agents receive the enterprise's task data** to execute the task. This creates a multi-party data processing relationship:
+
+- Enterprise → Straw (DPA)
+- Straw → Agent Vendor A (sub-DPA required)
+- Straw → Agent Vendor B (sub-DPA required)
+- Straw → Agent Vendor C (sub-DPA required)
+
+**GDPR Article 28(4):** Sub-processors require the same GDPR obligations as the primary processor. Straw must flow down GDPR obligations to every agent vendor in a competition.
+
+**The risk:** If Agent Vendor A uses enterprise task data to train their models, Straw may bear secondary liability for enabling that data use.
+
+**The mitigation:**
+1. Competition data use agreements with all competing agent vendors: prohibit use of competition data for any purpose beyond completing the competition task
+2. Automatic data deletion: task data deleted from all agent vendor environments within 24 hours of competition close
+3. Encryption in transit and at rest: zero plaintext exposure outside Straw's sandboxed environment
+
+---
+
+### The privacy risk bear case
+
+**Scenario:** A healthcare enterprise posts a competition with patient records for clinical AI evaluation. One competing agent vendor exports the patient records, uses them as training data, and their subsequent model improvements are traceable to those records. Straw faces HIPAA liability (secondary) and the enterprise faces primary liability.
+
+**Probability:** Low at v0 (enterprise task data is tightly controlled; small volumes). Medium at v1+ (as Straw grows, the economic value of training data extracted from competitions increases).
+
+**The defense:** Zero-data competition architecture — agents execute in isolated sandboxes where they cannot export task data. Output artifacts (the completed task) are available; raw task data is never copyable outside the sandbox. This is the same architecture as private Kaggle competitions.
+
+**The cost:** Building zero-data sandbox architecture adds 4–8 weeks to the engineering timeline. But it is required before any healthcare or financial services competition.
+
+**This is not a showstopper.** Kaggle, HackerOne, Bugcrowd — all handle sensitive data in competitive environments. The architecture is well-understood. It requires implementation, not invention.
+
+Sources: [HIPAA & GDPR compliant AI agents 2026](https://fin.ai/learn/hipaa-gdpr-compliant-ai-agents), [AI agents and HIPAA PHI access](https://www.kiteworks.com/hipaa-compliance/ai-agents-hipaa-phi-access/), [OpenAI for Healthcare HIPAA BAA](https://openai.com/index/openai-for-healthcare/)
+
+---
+
+## Tick 177 (2026-05-03T12:30Z): Pricing elasticity — what makes enterprises commit vs. walk away [theme: gtm]
+
+### The 2026 pricing environment for enterprise AI
+
+**The key shift:** In 2025, enterprises operated in "AI adoption at all costs" mode — minimal price sensitivity, maximum experimentation. In 2026, the first wave of AI deployments hit renewal cycles. **Buyers are asking for ROI proof, not promise.** Soft ROI ("this will make your team more productive") is no longer sufficient. Hard ROI ("this reduced your contract review time by 40%, saving $150K in billable hours") is what closes 2026 enterprise deals.
+
+**Bessemer's pricing insight:** "Pricing must reflect actual value, not potential or promise." AI startups that priced on potential in 2025 face renewal difficulty in 2026 because the realized value doesn't always match the anticipated value.
+
+---
+
+### What the enterprise willingness-to-pay (WTP) data says
+
+**Price ranges in enterprise AI evaluation/observability tools (2026):**
+- Braintrust: enterprise custom ($50K–$100K+/year) 
+- Arize: enterprise managed ($50K–$150K/year for AX enterprise)
+- HackerOne: $20K–$50K/year access fee (plus optional triage services)
+- Bugcrowd: $30K–$150K/year
+
+**The $25K–$75K range is the "VP approval" zone** — a VP of Engineering at a Series B–D company can approve a $25K–$75K annual contract without requiring a full procurement committee or board approval. This is Straw's target initial contract zone.
+
+**43% of enterprise buyers consider outcome-based pricing** ("risk-share") as a significant factor. This maps directly to Straw's existing success fee model (5–8% of deal value on agent hire).
+
+---
+
+### The three pricing models that work for Straw
+
+**Model A: Competition fee + success fee (current)**
+- Per-competition fee: $3,000–$15,000 (depending on task complexity and prize pool size)
+- Success fee on hire/license/acquire: 5–8% of first-year deal value, capped at $50K
+- Best for: early design partners, companies that are unsure of their volume
+
+**Model B: Annual platform subscription (for repeat buyers)**
+- $25,000–$75,000/year for up to X competitions
+- Includes: rubric template library access, priority support, compliance documentation
+- Best for: enterprises running multiple competitions per year (regulated verticals, procurement teams)
+
+**Model C: Managed evaluation service (premium)**
+- $25,000–$50,000 per evaluation (Straw designs rubric, manages competition, delivers findings report)
+- Best for: regulated verticals (healthcare, banking) where Straw expertise is required
+- Highest margin: Straw provides the expertise, not just the infrastructure
+
+---
+
+### The pricing error to avoid: confusing procurement with product
+
+**The bear case from the research:** Many AI SaaS companies over-priced early because procurement made the decision at inflated valuations in 2024-2025. In 2026, practitioners and budget-holders are reviewing renewals. If Straw priced at $50K for a competition that delivers $25K of value, the renewal conversation is painful.
+
+**The Straw pricing philosophy:** Price based on demonstrable value.
+- A competition that helps a company avoid hiring the wrong agent at $200K/year saves $200K. Straw's value at $10K–$25K is an obvious 10x ROI.
+- A competition that produces a compliance certificate required for regulatory approval has near-infinite WTP for the regulated enterprise.
+- A competition for a generic coding task where OpenHands (free) would work just as well: WTP is low. Don't run that competition.
+
+**The hard ROI framing to use in every sales conversation:**
+> "If you make the wrong agent procurement decision, you'll spend $200K in year one before you realize it. Our competition costs $8,000. If there's a 5% chance we'll prevent a wrong $200K decision, the expected value of the evaluation is $10,000. It's not a question of whether to evaluate — it's a question of whether you're comfortable making a $200K decision without objective data."
+
+---
+
+### The outcome-based pricing option (for risk-share buyers)
+
+For enterprises who won't commit to a fixed fee, offer:
+- **Free competition** (Straw covers compute + evaluation costs)
+- **20% of first-year agent contract value** if the enterprise hires an agent based on Straw's results
+
+This aligns incentives: Straw is paid only when the evaluation generates a commercial outcome. The expected value math for a $200K/year agent contract: 20% = $40K Straw fee. Strong economics if the enterprise would have made the procurement decision anyway.
+
+**Risk:** If the competition runs but the enterprise doesn't hire anyone, Straw earns nothing. Use only for high-confidence design partners with clear procurement intent.
+
+Sources: [Bessemer AI pricing playbook](https://www.bvp.com/atlas/the-ai-pricing-and-monetization-playbook), [Enterprise AI pricing comparison 2026](https://coworker.ai/blog/enterprise-ai-pricing-comparison-2026), [AI pricing 2026 Zylo](https://zylo.com/blog/ai-cost/), [SaaS/AI pricing models 2026](https://www.getmonetizely.com/blogs/the-2026-guide-to-saas-ai-and-agentic-pricing-models)
+
+---
+
+## Tick 178 (2026-05-03T13:00Z): Legal tech contacts — Harvey, Ironclad, BigLaw AI leads [theme: partners]
+
+### The Harvey + Ironclad partnership (a consolidated design partner target)
+
+**September 2025:** Harvey and Ironclad announced a strategic partnership — Harvey's legal AI reasoning engine connected to Ironclad's CLM (contract lifecycle management) platform. This creates a combined platform for in-house legal teams: Ironclad manages the contract workflow; Harvey provides the AI reasoning.
+
+**March 2026:** Harvey hired **Keith Enright** (ex-Google Chief Privacy Officer, ex-Gibson Dunn partner) as Chief Strategy Officer.
+
+**May 2026:** Slaughter and May (UK Top 5 law firm) announced rolling out Harvey firm-wide.
+
+**February 2026:** Harvey announced a partnership with another Harvey (the data orchestration tool) — internal data integration.
+
+**The Harvey + Ironclad combined design partner pitch:**
+> "Harvey handles reasoning. Ironclad handles workflow. Straw handles procurement evaluation — how enterprise legal teams decide between Harvey, Ironclad, and Microsoft Legal Agent in Word. You're two sides of the same deal; Straw evaluates which combined solution wins your client's actual workflow."
+
+**Named contacts:**
+| Name | Company | Role | Contact | Opener |
+|---|---|---|---|---|
+| **Gabriel Pereyra** | Harvey | CEO & Co-founder | @gpereyra_ml | "Harvey is the evaluation benchmark everyone else is measured against in legal AI. Straw makes that official — legal teams run competitions to prove Harvey wins their actual contract types." |
+| **Keith Enright** | Harvey | CSO (ex-Google CPO) | LinkedIn | "You've spent 20 years on data privacy and corporate strategy. Straw's evaluation platform needs a strategic advisor who understands the trust dynamics in enterprise AI procurement. Would you take a call?" |
+| **Jason Boehmig** | Ironclad | CEO & Co-founder | @jasonboehmig | "Harvey + Ironclad is one of the most compelling legal AI platforms out there. Enterprise legal teams evaluating your combined solution vs. Microsoft Legal Agent need a neutral evaluation infrastructure. Straw is that infrastructure." |
+
+---
+
+### BigLaw firms deploying AI (demand side: who pays for competitions)
+
+**Slaughter and May** — UK Top 5 law firm. Just rolled out Harvey firm-wide (May 2026). Post-implementation, they'll want to evaluate whether Harvey is performing as expected vs. alternatives. This is the "internal benchmarking" competition type.
+
+**Allen & Overy / A&O Shearman** — First BigLaw firm to deploy Harvey firm-wide (2024). Now evaluating multi-year Harvey contract renewal. This is the "contract renewal evaluation" competition type — highest WTP because the cost of making the wrong renewal decision is millions.
+
+**Clifford Chance** — Deployed Microsoft Legal Agent in Word through M365 enterprise agreement. Now evaluating whether to add Harvey on top. "Platform + specialist" evaluation competition type.
+
+**The BigLaw evaluation opportunity:**
+> Each Am Law 100 firm has $500M–$3B in revenue and spends $30M–$150M/year on technology. Legal AI is the single largest new technology investment in BigLaw 2025-2026. A Straw competition at $25,000–$50,000 is a rounding error on the procurement decision it informs (a $500K–$2M annual Harvey contract).
+
+**Named BigLaw contacts:**
+| Name | Company | Role | Why |
+|---|---|---|---|
+| **Mitesh Ashar** | Allen & Overy / A&O Shearman | CTO | Deployed Harvey first; evaluating renewal |
+| **Will Pearce** | Clifford Chance | CIO | Deployed Microsoft Legal Agent; evaluating Harvey add-on |
+| **Faye Scanlon** | Slaughter and May | Director of Knowledge & Innovation | Just deployed Harvey; now in post-implementation evaluation phase |
+
+**Opener template for BigLaw contacts:**
+> "You just deployed [Harvey / Microsoft Legal Agent] firm-wide. Before you commit to a multi-year contract renewal or evaluate adding another platform, Straw runs a competition on 100 representative contracts from your actual matter types. The score tells you exactly what you're getting for [£500K / $1M] a year. Would you review what a Straw evaluation report looks like?"
+
+---
+
+### Legal tech VCs and ecosystem (for distribution)
+
+| Name | Firm | Why |
+|---|---|---|
+| **Jonathan Lachowitz** | Ironclad's lead investors | Understands CLM/legal AI procurement dynamics |
+| **Harvey's investors** (Sequoia, OpenAI Fund, a16z) | Various | Connection through Harvey relationship |
+| **The Legal Tech Fund** | Harvey partnership (March 2026) | Investing in legal tech startups; natural distribution channel |
+
+Sources: [Harvey-Ironclad partnership announcement](https://www.harvey.ai/blog/ironclad-announces-strategic-partnership-with-harvey), [Harvey Keith Enright CSO hire](https://www.artificiallawyer.com/2026/03/23/harvey-hires-gibson-dunn-partner-as-cso/), [Slaughter and May Harvey deployment](https://www.legalcheek.com/2026/05/slaughter-and-may-rolls-out-ai-giant-harvey-firmwide/), [Harvey Legal Tech Fund partnership](https://www.law.com/legaltechnews/2026/03/11/harvey-partners-with-the-legal-tech-fund-to-invest-in-startups/)
+
+---
+
+## Updated Phase 2 Thread List (Post-Tick 178)
+
+**Threads completed (Ticks 173-178):**
+- [x] Tick 173: Open-source moat threat (OpenHands 77.6% SWEBench) — reframes as supply-side feature (bear)
+- [x] Tick 174: Series A narrative from design partner traction — seed round structure and investor targets (gtm)
+- [x] Tick 175: Healthcare AI named contacts — Epic Agent Factory, Oracle Health, hospital AI decision-makers (partners)
+- [x] Tick 176: Privacy regulatory risk — HIPAA BAA, GDPR DPA, zero-data sandbox architecture (bear)
+- [x] Tick 177: Pricing elasticity — hard ROI framing, outcome-based pricing, three pricing model structures (gtm)
+- [x] Tick 178: Legal tech contacts — Harvey, Ironclad, BigLaw, named design partner targets (partners)
+
+**Threads still to dig:**
+- [ ] Tick 179 [bear]: The network effects problem — does Straw need network effects, or is it a services business?
+- [ ] Tick 180 [gtm]: The "competition design" capability — how does Straw build internal expertise in rubric design across verticals?
+- [ ] Tick 181 [partners]: AI agent companies building for HR/talent and marketing ops — named contacts
+- [ ] Tick 182 [bear]: The principal-agent liability problem — legal exposure when an agent causes harm during a Straw competition
+
+**Push status:** Appended ticks 173-178. Committing now.
+
