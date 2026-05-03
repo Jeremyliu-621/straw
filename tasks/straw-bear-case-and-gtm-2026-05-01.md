@@ -22142,3 +22142,195 @@ Sources: (synthesis from all GTM research to date)
 
 TICK_END
 
+
+---
+
+## TICK 357 — Regulatory Liability Black Hole: Three Deadlines, One Solution
+
+**Theme: Bear Case + GTM (double-edged: liability risk AND Straw's compliance wedge)**
+
+### The "Nobody to Sue" Problem (April 2026)
+
+The Register (April 5, 2026): "If AI agents mess up, there's nobody to sue."
+
+The core problem: enterprise AI liability is in a legal grey zone in 2026. Agent failures generate harm, but:
+- The agent vendor disclaims responsibility (ToS limitations)
+- The enterprise blames the vendor
+- The end user/affected party has no clear defendant
+
+**Gartner prediction:** By mid-2026, new categories of unlawful AI-informed decision-making will generate **$10B+ in remediation costs** across global AI vendors and enterprises.
+
+**California 2026 law:** Organizations cannot use an AI system's autonomous operation as a shield against liability. Under agency law principles, if you deployed and authorized an AI agent, you may bear legal responsibility for its actions.
+
+### Three Regulatory Deadlines Converging in 2026
+
+| Regulation | Deadline | Who It Affects | Key Requirement |
+|---|---|---|---|
+| **EU AI Act Article 26** | August 2, 2026 | Any company deploying high-risk AI in EU | Conformity assessments, technical documentation, human oversight, 6-month log retention |
+| **Colorado AI Act (SB 24-205)** | June 30, 2026 | Companies using AI in employment, housing, credit, health, insurance, education, legal services | Impact assessments (initial + annual), risk management programs, consumer notices; $20K/violation |
+| **California AI liability standards** | Already in effect 2026 | All companies in CA deploying autonomous AI agents | Cannot use AI autonomy as liability shield; principal liability for authorized AI agents |
+
+**Note:** Colorado's law is potentially being replaced by a Policy Work Group framework (March 2026 proposal). Original law is still scheduled for June 30 unless new legislation passes. **Use this deadline aggressively in May and June conversations; it's active.**
+
+### What Straw Generates That These Laws Require
+
+The Colorado AI Act requires an impact assessment with:
+1. **Purpose and intended use cases** — Straw: task spec (verbatim)
+2. **Known/foreseeable risks** — Straw: rubric dimensions (safety, error rate, edge case handling)
+3. **Known limitations** — Straw: score differentials across task categories
+4. **Data inputs and outputs** — Straw: submission artifacts + Tier 1 evaluation traces
+5. **Performance metrics** — Straw: competition scores + Tier 2/3 evaluation results
+6. **Transparency measures** — Straw: full audit trail of scoring methodology
+
+**Straw is an impact assessment machine.** Every competition generates the documentation that Colorado, EU, and California require. This is not a stretch — it's a direct mapping.
+
+### The Bear Case: Regulatory Risk Could Kill Enterprise Demand
+
+**Scenario:** Fear of regulatory liability makes enterprise CTOs SLOW DOWN AI agent adoption, not speed up. If procurement becomes governed by legal → 12-18 month procurement cycles → Straw can't close fast enough.
+
+**Counter-evidence:**
+- Deloitte: 42% of companies abandoned AI initiatives in 2025, but 85% plan to increase investment — abandonment and increased spend are happening simultaneously. Companies are learning to be more careful, not stopping.
+- Colorado/EU compliance creates urgency, not avoidance — companies that don't comply face $20K/violation and EU fines up to 3% of global turnover.
+- The compliance documentation requirement is a forcing function: companies MUST evaluate their AI agents formally. Straw IS the formal evaluation.
+
+**Verdict:** Regulatory environment is a net positive for Straw. The liability uncertainty creates urgency for structured evaluation; Straw provides both the evaluation AND the documentation.
+
+### New GTM Angle: Straw as Compliance Infrastructure
+
+Re-frame Straw for regulated industries:
+- **Instead of:** "Get the best AI agent for your task"
+- **Also say:** "Generate the impact assessment documentation required by Colorado AI Act and EU AI Act, as a byproduct of your agent evaluation competition"
+
+This makes Straw appealing to the **legal and compliance teams** who otherwise have no product to help them — and who control procurement in regulated industries.
+
+Target departments to add to outreach:
+- Chief Compliance Officers (CCOs) at financial services and healthcare
+- General Counsels at companies with EU operations
+- HR technology vendors that are themselves subject to Colorado's employment AI provisions
+
+Sources: theregister.com/2026/04/05/ai_agents_liability, aicompliancedocuments.com/blog/colorado-ai-law-91-days-deadline-requirements, legalnodes.com/article/eu-ai-act-2026-updates, bhfs.com/insight/colorados-landmark-ai-law-coming-online, gunder.com/en/news-insights/insights/2026-ai-laws-update
+
+TICK_END
+
+---
+
+## TICK 358 — Google A2A Protocol at 150+ Organizations: Infrastructure Maturity Is Straw's Tailwind
+
+**Theme: Bear Case (competitor threat analysis) + GTM**
+
+### A2A Protocol Status: Production Ready
+
+Google Agent2Agent (A2A) protocol: 1 year old as of April 2026. Current status:
+- **150+ organizations** supporting the standard
+- Deep integration across **Google, Microsoft, and AWS platforms**
+- Production deployments in supply chain, financial services, insurance, IT operations
+- **Version 1.0 released** (stable specification, multi-protocol support, enterprise-grade multi-tenancy)
+- Contributed to Linux Foundation — open standard
+
+Vertical production deployments: supply chain, financial services, insurance, IT operations.
+
+**What A2A does:** Standardizes how AI agents communicate with each other. An agent can discover, authenticate, and exchange work with another agent across platforms. Think of it as HTTP for agent-to-agent communication.
+
+### Is A2A a Competitive Threat to Straw?
+
+**Short answer: No. A2A is infrastructure; Straw is the evaluation/competition layer built on top.**
+
+A2A specifies HOW agents communicate. It does not specify:
+- HOW to evaluate the quality of an agent's output
+- HOW to structure competition between agents
+- HOW to map buyer requirements to evaluation rubrics
+- WHO wins when multiple agents complete the same task
+
+A2A is to Straw what TCP/IP is to Stripe: the transport protocol that makes the marketplace possible, not the marketplace itself.
+
+**The tailwind argument:** A2A's adoption at 150+ organizations means more enterprises are running multi-agent systems that need evaluation. Every organization that adopts A2A is a potential Straw customer — they have interoperable agents, they just don't have a competition platform to evaluate which agent to use for which task.
+
+### A2A + Straw Integration Design
+
+Straw could use A2A as the native communication protocol between:
+- Straw task server → competing agent (task delivery)
+- Competing agent → Straw evaluation server (submission delivery)
+- Tier 3 investigator agent → Straw results database (score delivery)
+
+This would make Straw natively interoperable with any A2A-compliant agent without custom integration per agent. **Supply-side friction drops to zero for A2A-compliant agents.**
+
+Timeline: A2A integration is a v1.5 feature. v0 uses direct API calls.
+
+### Anthropic Protocol (AP2) + A2A Together
+
+Combined context: A2A handles agent-to-agent communication; AP2 (Anthropic Protocol) handles AI-native payment flows for agents. Together they form the infrastructure stack that Straw competes on top of:
+
+| Protocol | Layer | Straw's Role |
+|---|---|---|
+| A2A | Agent communication | Task delivery + submission collection protocol |
+| AP2 / x402 | Agent payment | Prize payment to winning agent |
+| ERC-8004 | Agent identity | Persistent reputation across competitions |
+| Straw | Competition + evaluation | The layer that none of these protocols address |
+
+**Straw fills the gap that A2A, AP2, and ERC-8004 explicitly leave open: evaluation and selection.** The protocol authors are not competitors — they're building the plumbing that makes Straw's market possible.
+
+### Bear Case: A2A Could Include Evaluation Module
+
+Google could extend A2A to include an evaluation and selection framework. If Google adds "agent quality scoring" to the A2A specification, Straw's differentiation weakens for commodity task types.
+
+**Probability:** Low (10%). A2A is an open communication standard; adding opinionated evaluation would require consensus from 150+ organizations. Standards bodies don't move at product speed.
+
+**Mitigation:** Straw's moat is buyer-defined rubrics + competition mechanics + reputation data, not the communication protocol. Even if A2A adds a generic scoring module, Straw's "poster defines what winning looks like" mechanism is architecturally distinct.
+
+Sources: developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability, cloud.google.com/blog/products/ai-machine-learning/agent2agent-protocol-is-getting-an-upgrade, prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations, a2a-protocol.org/latest/specification
+
+TICK_END
+
+---
+
+## TICK 359 — Comprehensive Pre-Mortem Update: Probability Table with All Phase 2 Findings
+
+**Theme: Bear Case (final synthesis)**
+
+### Kill Scenarios: Updated Probability Assessment
+
+Phase 1 identified 9 kill scenarios (see Tick 302 for original table). Phase 2 adds material updates to 4 of them and adds 2 new scenarios.
+
+| # | Scenario | Original Probability | Phase 2 Update | Revised Probability |
+|---|---|---|---|---|
+| 1 | **Scale AI / well-funded competitor builds this** | 20-25% (18 months) | Scale AI SEAL is model-level, not buyer-rubric. Braintrust $800M valuation shows space is real but not pre-deployment. No convergence evidence found. | **15-20%** (slight decrease) |
+| 2 | **Platform bundling (Salesforce/SAP/MS absorbs eval)** | 20% | Tool consolidation trend is real (66% favor unified suites), but MS Copilot, Salesforce, SAP don't have competition mechanics — they have single-agent tools. Bundled eval ≠ competition. | **15%** (still threat but lower) |
+| 3 | **Cold start failure: no agents compete** | 25% | "Anti-chicken-and-egg" mechanism (single-agent eval adds value day 1). Cursor/Ramp/Notion as early demand. Supply side costs near zero. A2A v1.0 makes supply frictionless. | **15%** (materially lower) |
+| 4 | **Enterprise "too creepy/illegible" objection** | 15% | 94% of healthcare CIOs say AI delays create competitive disadvantage. Formal rubric-based evaluation is what buyers WANT, not what scares them. EU/Colorado compliance requirements FORCE formalization. | **10%** |
+| 5 | **Regulatory/liability black hole** | 15% | Colorado June 30 + EU August 2 + California already active. But this is a forcing function for evaluation, not against it. Straw generates compliance documentation. | **5%** (net positive reversal) |
+| 6 | **Benchmark contamination makes Straw obsolete** | NEW | PostTrainBench shows models gaming public benchmarks. This actually HELPS Straw (buyer-owned task = contamination-immune). | **<5%** |
+| 7 | **Disintermediation (buyers hire agents direct)** | NEW | Homejoy's failure mode analyzed. Straw's defense: evaluation data is Straw-native; reputation graph is cross-buyer; ongoing re-evaluation creates recurring need. | **10%** |
+| 8 | **"Good enough" substitutes (Cognition/Devin own eval)** | 15% | Cognition's eval is vendor-operated, opaque, Devin-specific. No buyer-defined rubric. Structural gap is clear. | **10%** |
+| 9 | **Timing: too early, market not ready** | 15% | Goldman/Devin market exists today. 42% enterprise abandonment rate drives demand for evaluation. EU/Colorado compliance creates urgency NOW. | **5%** |
+| 10 | **Execution failure / founder runs out of runway** | 30% | This remains the highest single risk. Non-market, non-product. | **30%** |
+
+### Aggregated Kill Probability
+
+Assuming scenarios are partially independent and some require multiple factors:
+
+**P(Straw dies by end of 2027) ≈ 35-45%** — primarily driven by execution risk (scenario 10) and cold start challenges.
+
+**P(Straw fails specifically because the market doesn't want it) ≈ 15-20%** — materially lower than initial estimates.
+
+**Critical finding:** The bear case has weakened on market risk and strengthened on execution risk. The question is not "will enterprises pay for this?" (they will) — the question is "can Jeremy/Straw build it fast enough and sell it before a well-funded competitor does?"
+
+### What Would Kill Straw Fastest
+
+Ranked by speed of kill:
+
+1. **Execution:** Jeremy can't ship v0 + win 3 design partners in 90 days → no seed funding → no team → done
+2. **Funded competitor:** Anthropic or Scale AI builds a competitive evaluation product with $50M behind it in 2026 → 12-18 months to kill
+3. **Disintermediation at scale:** If buyers routinely hire winning agents directly post-competition → unit economics break
+4. **Regulatory backfire:** If Colorado or EU compliance actually increases enterprise AI procurement timelines (legal reviews block decisions) → TAM compression
+
+**What Would Make Straw Succeed Fastest**
+
+1. One flagship design partner with a publishable case study (Cursor, Ramp, or similar)
+2. HN post about benchmark contamination + Straw solution goes viral
+3. A competition where the winning agent outperforms the incumbent the buyer had JUST hired on a demo → the "score doesn't lie" moment
+4. EU/Colorado compliance makes a CCO at a financial services firm call Jeremy proactively
+
+Sources: (synthesis from all Phase 2 research, Ticks 302-358)
+
+TICK_END
+
