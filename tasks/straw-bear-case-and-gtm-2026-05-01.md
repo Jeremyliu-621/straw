@@ -18415,3 +18415,137 @@ Core evaluation dimensions for HR AI agent selection:
 5. **Candidate experience quality**: Clarity and professionalism of AI-generated candidate communications
 6. **Data privacy compliance**: Does the agent produce any output that reveals PII it should not have accessed?
 
+
+---
+
+## Tick 253 (2026-05-03T00:30:00Z): "Build vs buy" trend — can enterprises self-build AI evaluation? [theme: bear]
+
+**Score: 4/10** — Real threat for specific types of enterprises (tech-native, well-resourced engineering teams) but not for the majority of Straw's target buyers.
+
+### The Market Data
+
+Retool's 2026 Build vs. Buy Report:
+- **35%** of enterprises have already replaced at least one SaaS tool with a custom build
+- **78%** expect to build more custom internal tools in 2026
+- AI-assisted development has compressed build timelines: teams can now prototype and ship features in days that required months two years ago
+
+**When enterprises are building** (not buying):
+- Core differentiating capabilities
+- Sensitive data scenarios where third-party routing creates compliance risk
+- Workflows that are uniquely theirs
+
+**When enterprises are buying**:
+- Reliability and scalability are paramount
+- Compliance-heavy platforms with decades of edge cases
+- When in-house team doesn't have the capacity to maintain long-term
+
+### The Specific Bear Case
+
+**Scenario**: Amazon's AI team evaluates whether to buy Straw for $25K per competition or build their own internal evaluation platform. Amazon has 10,000+ engineers, runs their own ML evaluation infrastructure, and has deep in-house expertise.
+
+Amazon builds an internal "agent competition" platform in 3 months for $200K in engineering time. It's not as elegant as Straw. It doesn't have rubric templates. It doesn't produce the same professional report. But it works, it's internal, it's free to run at scale.
+
+Amazon does not buy Straw. More broadly, every large tech company with a strong ML platform team (Google, Microsoft, Meta, Spotify, Airbnb, Uber) could build this internally.
+
+### Why This Is a 4/10 (The "Build" Threat Is Bounded)
+
+**The neutrality problem kills self-built evaluation**
+
+This is the most important counter-argument: **A company cannot credibly evaluate AI agents using its own internal evaluation infrastructure.** The principal-agent problem is the same as running your own financial audit — even if the results are accurate, they're not credible to external stakeholders.
+
+Straw's value is not just the technical capability to run evaluations. It is the **independence** of the evaluation. A Straw Certified badge says "an independent third party validated this." A self-built evaluation says "we validated ourselves." These are not substitutable for any stakeholder outside the engineering team.
+
+**The maintenance cost is underestimated**
+
+Building an evaluation platform once is not the moat. Maintaining it over time as agents evolve, rubric needs change, and evaluation methodology advances is the ongoing cost. The teams that build evaluation internally will find it increasingly difficult to maintain as a secondary project alongside their core work. Evaluation tool maintenance deprioritized against product shipping is a predictable outcome.
+
+**Rubric design expertise doesn't come with the platform**
+
+Even if an enterprise builds the sandbox and scoring infrastructure, they still need someone who knows how to design a valid rubric — what to measure, how to measure it, and how to interpret the results. That is the Rubric Scientist problem. The infrastructure is the easy part; the methodology is the hard part.
+
+**Calibrated risk: Enterprise segmentation**
+
+Build threat is real for: hyperscalers (Amazon, Google, Microsoft), mega-tech companies with large ML teams, consulting firms trying to build their own evaluation practice.
+
+Build threat is minimal for: traditional enterprises (financial services, healthcare, manufacturing, retail), regulated industries (prefer third-party validation), mid-market companies ($50M-$1B revenue) without dedicated ML teams.
+
+Straw's addressable market is almost entirely the latter category.
+
+
+---
+
+## Tick 254 (2026-05-03T00:31:00Z): Education and EdTech design partner targets [theme: partners]
+
+### Why Education Is a Compelling Straw Vertical
+
+- Coursera, Khan Academy, Duolingo are among the leading organizations deploying agentic AI at scale in 2026
+- AI tutoring, curriculum generation, and student assessment are all agent-driven tasks with measurable outcomes
+- Microsoft 365 Copilot is in use at 70% of Fortune 500 organizations for learning — enterprise L&D is a massive market
+- The K-12 and higher education procurement cycle is highly formalized (school board approval, federal compliance) — documentation requirements are high
+- The stakes are significant: an AI tutoring agent that teaches incorrectly has long-term learning consequences
+
+### Named Target Contacts
+
+**Khan Academy** — Khanmigo AI tutor deployed; leader in responsible AI education
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Sal Khan | CEO & Founder | Personally drove Khanmigo development; publicly advocates for responsible AI in education |
+| Kristen DiCerbo | Chief Learning Officer | Leads learning science and evaluation methodology |
+
+- **Context**: Khan Academy has deployed Khanmigo and has been one of the most thoughtful public voices on responsible AI use in education. They would be interested in Straw's evaluation methodology for future AI tutor procurement decisions — and as a thought partner for "what good AI education evaluation looks like."
+- **The Khan Academy design partner story**: Khan Academy + Straw co-developing an "AI Tutor Evaluation Standard" would be significant for the education market. Khan Academy's credibility in education would make the standard highly trusted.
+- **Opener to Sal Khan**: "Your work on Khanmigo has set the standard for responsible AI in education. I'm building the evaluation infrastructure for AI agent procurement and would love to explore whether Straw's methodology could help Khan Academy's future AI procurement decisions — or whether we could co-develop an AI tutor evaluation standard."
+
+**Duolingo** — 500M+ learners; most data on AI language learning outcomes
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Luis von Ahn | CEO & Co-founder | AI-native learning product at massive scale |
+| Severin Hacker | CTO & Co-founder | Technical decisions for AI model selection |
+
+- **Context**: Duolingo has been deploying GPT-4 for AI conversation partners and explanation tools. As they evaluate next-generation AI models for their learning features, Straw provides the evaluation framework for which model best serves Duolingo's specific learning outcomes.
+- **Pitch angle**: "Duolingo has the world's largest dataset on language learning outcomes. Straw can run a competition where multiple AI models are evaluated on Duolingo's specific metrics — response accuracy, engagement, pedagogical quality — to determine which model best serves your learners."
+
+**Coursera** — 148M learners; recently acquired Udemy
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Greg Hart | CEO | Leads Coursera's AI strategy; responsible for AI tool procurement across 148M learner platform |
+
+- **Context**: After acquiring Udemy, Coursera has massive scale. Their AI feature decisions affect the learning experience for hundreds of millions of people. They need rigorous evaluation of AI tools for content generation, learner support, and skill assessment.
+
+**Pearson** — Global education publisher; major AI in education investment
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Andy Bird | CEO | Leads Pearson's transformation into an AI-first learning company |
+
+- **Context**: Pearson has invested heavily in AI adaptive learning and assessment. Their enterprise clients (universities, K-12 systems) are making AI procurement decisions that Straw can support.
+
+**Chegg** — AI-powered learning platform for students
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Nathan Schultz | CEO | Leading Chegg's AI transformation; competing with Khan Academy and Duolingo |
+
+- **Context**: Chegg's survival depends on deploying better AI than competitors. Straw evaluation gives Chegg a rigorous way to ensure their AI tutor is genuinely superior.
+
+### Education Vertical Strategy
+
+**ASU+GSV Summit** (Spring, San Diego): The most prestigious education technology conference. University presidents, K-12 superintendents, edtech CEOs, and EdTech investors all attend. Sal Khan and Luis von Ahn are regular speakers.
+
+**ISTE (International Society for Technology in Education)** (Summer): Large K-12 technology conference. Technology directors from school districts — the actual procurement decision-makers for K-12 AI — are the target audience.
+
+**EDUCAUSE** (Fall): Higher education technology conference. CIOs and technology leaders from 700+ universities. Straw's evaluation methodology for AI in higher education.
+
+### Education Rubric Template
+
+Core evaluation dimensions for education AI agent selection:
+1. **Learning outcome improvement**: Pre/post test score improvement for students using the AI vs. control group (synthetic)
+2. **Pedagogical accuracy**: % of explanations that are factually correct and age-appropriate
+3. **Misconception detection**: Does the agent correctly identify when a student has a misconception and address it effectively?
+4. **Engagement metric**: Engagement duration and return rate in simulated student interactions
+5. **Accessibility compliance**: Does the agent's output satisfy WCAG 2.1 AA accessibility standards?
+6. **COPPA compliance (K-12)**: Does the agent avoid collecting or exposing any student PII prohibited under COPPA?
+
