@@ -38239,3 +38239,151 @@ Straw's answer to the "free tools" objection is:
 This positions Straw as upstream of the free tools, not competing with them.
 
 ---
+---
+
+## Tick 529 — Rubric Builder as Standalone PLG Product: The Single-Player Mode [GTM/Product]
+
+*2026-05-03. No existing standalone rubric builder for AI agent evaluation. Education market shows $7.99-$9.99/month for rubric tools. Enterprise AI evaluation rubric builders = white space.*
+
+### Why a standalone rubric builder matters
+
+**The cold-start bypass:** Straw's multi-agent competition requires both task posters AND agent competitors. But the rubric builder — the tool that helps enterprises define evaluation criteria — can deliver value with ZERO agent supply.
+
+An enterprise can:
+1. Use Straw's rubric builder to clarify their AI agent requirements
+2. Use the rubric to evaluate vendors they're ALREADY piloting (manually)
+3. When they're ready for Straw's full competition, their rubric is already built
+
+**This is the "single-player mode" for Straw.** It's the Cursor analogy: Cursor delivers value to one user (rubric definition) before the marketplace network exists.
+
+### The rubric builder market gap
+
+Education has AI rubric generators ($7.99-$9.99/month: MagicSchool AI, CoGrader). These are for grading student assignments.
+
+**No product exists for:** Enterprise AI evaluation rubrics — rubrics that map to T1 deterministic tests, T2 LLM scoring, T3 investigation, with weights, tiers, and business context.
+
+**The gap is specific, not general.** General assessment software doesn't understand:
+- "Which rubric dimensions can be verified deterministically (T1) vs. qualitatively (T2)?"
+- "What's the appropriate weight for security vs. correctness in a financial coding task?"
+- "How do I write rubric criteria that an LLM can reliably judge?"
+
+Straw's rubric builder is the first tool that answers these questions for enterprise AI evaluation.
+
+### Rubric builder pricing models
+
+**Option A: Free forever** (PLG seeding)
+- Give rubric builder for free
+- Gate: "Run a competition" requires paying
+- Builds enterprise user base before charging
+- Risk: Enterprises use the rubric internally without ever posting a task
+
+**Option B: Freemium** ($0 up to 3 rubric dimensions; $99/month for unlimited)
+- Captures value from enterprises who want comprehensive rubrics but aren't ready for full competition
+- $99/month × 200 enterprise rubric users = $238K ARR before any evaluation revenue
+- Risk: Rubric revenue cannibalizes full evaluation conversations
+
+**Option C: Free in v0, priced in v1**
+- Keep rubric builder free during design partner phase
+- Use it as a lead qualification tool (enterprises who build detailed rubrics = highest intent)
+- Price it at v1 as part of an "Evaluation Suite" subscription
+
+**Recommendation:** Option C for v0. Option A for v1 (PLG flywheel: free rubric → design partner → paid evaluation → retainer). The rubric is the hook; the competition is the revenue.
+
+### The "RFP Template" as a rubric builder lead magnet
+
+From Tick 526: A 30-point AI vendor evaluation template (PDF download) is a lead magnet.
+
+**The full funnel:**
+1. Enterprise finds/downloads "2026 Enterprise AI Agent Evaluation Template" (PDF)
+2. Template has a "Build this as an interactive rubric on Straw" CTA with link
+3. Enterprise registers on Straw, enters their task specifics into the rubric builder
+4. Rubric saved → Straw has their email, company, and task type
+5. Jeremy follows up: "Would you like to run a real competition against this rubric?"
+
+**This is the marketing flywheel:** Content (PDF template) → Product (rubric builder) → Sales (competition pitch). Each step delivers standalone value, making the funnel frictionless.
+
+### Feature requirements for rubric builder MVP
+
+Minimum viable rubric builder (v0, could be a Google Form + Jeremy's manual follow-up):
+
+| Feature | Priority | Implementation |
+|---|---|---|
+| Task description input | P0 | Text field |
+| Rubric dimensions (5-7) | P0 | Repeating row: dimension name + weight + tier assignment |
+| Weight validation (sum to 100%) | P0 | Real-time validation |
+| Tier assignment (T1/T2/T3) | P1 | Dropdown per dimension |
+| Export to YAML | P1 | One-click download |
+| Save and share | P2 | Unique URL per rubric |
+| Rubric templates by vertical | P2 | Coding / Research / Financial / CX / Other |
+
+**v0 can literally be a Google Form.** Jeremy runs the rubric session live; form captures the output. Engineering comes in v0.5.
+
+
+---
+
+## Tick 530 — Straw's Investor Data Room: What to Prepare for Seed Due Diligence [GTM/Fundraising]
+
+*2026-05-03. Build the data room BEFORE you start fundraising. VCs expect 50-70 documents. Here's what Straw needs.*
+
+### The data room structure (seed stage)
+
+VCs use staged access. Straw should mirror this:
+
+**Level 1 (Initial interest — send with first pitch):**
+- Investor one-pager (Tick 525) — already drafted
+- Pitch deck (12 slides; not yet drafted)
+- Executive summary (1 page)
+
+**Level 2 (Serious diligence — send after partner interest):**
+- Cap table (clean; Delaware C-corp, pre-money)
+- Financial model (3-year projection; Tick 501's financial model)
+- Customer evidence (LOIs / DPA signed / case study notes)
+- Product demo recording (loom.com, 5-minute walkthrough of rubric builder + evaluation pipeline)
+
+**Level 3 (Term sheet stage — controlled access):**
+- Employment agreements (Jeremy's own)
+- IP assignment documents (assign all pre-company work to the entity)
+- Tax documents
+- Technical architecture document
+
+### The documents Straw must create (pre-fundraise)
+
+**Already exists (drafted in research):**
+- ✅ Financial model (Tick 501 — $0→$30M ARR 5-year)
+- ✅ TAM analysis ($831M bottom-up, $800M cross-check) 
+- ✅ Competitive landscape (full quadrant, all 15+ comparables)
+- ✅ Investor one-pager (Tick 525)
+- ✅ YC application answers (Tick 480, 507)
+
+**Must create before fundraise:**
+- Delaware C-corp incorporation documents (Stripe Atlas → Day 1 this week)
+- Cap table (just Jeremy at 100%; add option pool at seed round)
+- Customer evidence (LOIs → paid contracts → case study quotes)
+- Product demo video (Loom recording of rubric builder + evaluation pipeline)
+- 12-slide pitch deck (format: problem → solution → market → traction → team → ask)
+
+**The most common early-stage data room red flag:** Missing IP assignment agreement. If Jeremy built the product before incorporating, the IP may not belong to the company. **Fix: IP assignment agreement between Jeremy-as-individual and Straw-as-entity, signed at incorporation.** Stripe Atlas handles this.
+
+### The 12-slide pitch deck outline (for reference)
+
+| Slide | Content | Data point to use |
+|---|---|---|
+| 1 | Cover: "Straw — Pre-Deployment AI Agent Evaluation" | — |
+| 2 | Problem: Enterprises make six-figure AI agent decisions based on demos | 88% never reach production; 41% fail from unclear criteria |
+| 3 | Solution: Post task → agents compete → Straw scores → winner hired | 3-step diagram |
+| 4 | Why now: 57% in production, only 38% have eval at month 12 | LangChain + MIT Sloan 2026 |
+| 5 | Product: Rubric builder → evaluation pipeline → results deck | Screenshot / demo |
+| 6 | Traction: [LOIs / paid contracts / evaluations complete] | Fill at fundraise time |
+| 7 | Market: $831M bottom-up; $800M cross-check; 46.3% CAGR | Gartner + bottom-up |
+| 8 | Competition: 2×2 quadrant (pre vs. post; single vs. multi) | Straw owns one quadrant |
+| 9 | Business model: $5K/evaluation → $15K retainer → platform fee | Per-unit + recurring |
+| 10 | Moat: Rubric library + agent reputation graph + neutral party | Data flywheel diagram |
+| 11 | Team: Jeremy [bio] + advisors | Founder-market fit narrative (Tick 496) |
+| 12 | Ask: $1.5M seed at $10M pre; 18 months to $500K ARR + 3 Fortune 1000 | Use of funds breakdown |
+
+### Data room infrastructure
+
+**Platform recommendation:** Notion (free) for Level 1; Docsend ($49/month) for Level 2+ (tracks who viewed which slide, how long, page-by-page analytics → tells you which investors are reading carefully).
+
+**At the seed stage:** Docsend analytics are more valuable than a fancy data room. Know which slides VCs spend time on → optimize based on engagement data.
+
