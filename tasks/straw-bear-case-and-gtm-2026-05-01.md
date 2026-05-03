@@ -36509,3 +36509,211 @@ GenAI in agriculture: **30% CAGR from 2025 to 2026** (StartUs Insights). This is
 - Channel: Rabobank's AgriTech accelerator + AGCO's precision agriculture ecosystem
 
 ---
+
+## Tick 506 — Energy/Utilities Design Partners + The 50% ROI Gap [theme: GTM + design partners]
+
+### The Energy Sector AI Signal: Only Half Are Getting ROI
+
+Microsoft Azure blog (April 21, 2026): "How agentic AI is transforming renewable energy operations"
+
+Key data point buried in the analysis: **Only half of utilities deploying autonomous agentic AI systems report positive ROI.**
+
+The gap: 100% deploying → 50% getting ROI. The other 50% are deploying agents that don't perform as expected. This is the Straw market in the energy vertical.
+
+### Energy AI Agent Use Cases That Need Straw Evaluation
+
+| Use Case | AI Agent Type | Procurement Challenge |
+|---|---|---|
+| Grid optimization | Real-time DERMS (Distributed Energy Resource Management) | Multiple vendors, no objective performance comparison |
+| Predictive maintenance | Asset health agents for turbines, transformers | Vendor claims vary widely; no head-to-head data |
+| Procurement automation | Contract management + regulatory filing agents | Audit trail requirements for energy regulators (FERC, NERC) |
+| Energy trading | Commodity price + demand forecasting agents | High-stakes financial decisions; validation required |
+| Customer engagement | Demand response agent (utilities) | Consumer protection regulations require validation |
+
+### FERC + NERC: The Energy Regulatory Angle
+
+Federal Energy Regulatory Commission (FERC) and North American Electric Reliability Corporation (NERC) govern AI systems that affect grid reliability. Any AI agent involved in grid operations is subject to NERC CIP standards (Critical Infrastructure Protection).
+
+**The compliance pitch for utilities:**
+"When your FERC auditor asks how you validated the AI agent managing your demand response program, Straw provides the independent evaluation documentation that demonstrates sound selection criteria and objective performance testing."
+
+### Named Energy/Utilities Design Partners (#205-212)
+
+**#205 — Duke Energy AI team:** Duke Energy partnered with Microsoft for AI-driven grid management; active AI procurement decisions
+**#206 — Xcel Energy CDO:** Xcel is one of the most aggressive utilities on AI and renewable integration; would benefit from cross-vendor agent evaluation
+**#207 — Dominion Energy Technology VP:** Active AI deployment for grid operations; NERC CIP compliance needs
+**#208 — Carlos Tavares** (former Stellantis CEO, now energy/mobility advisor) — strategic access to energy + automotive AI crossover
+**#209 — Sanjiv Sanghavi** (VP AI, Chevron) — Chevron deployed AI agents for upstream operations; O&G sector has procurement standards
+**#210 — Andrew Slaughter** (Deloitte Energy Center Director) — research authority on energy AI; warm intro to 15+ energy CDOs
+**#211 — Brent Dorazio** (National Grid AI Lead) — UK/US utility deploying AI for grid balancing; OFGEM regulatory context (UK)
+**#212 — Sami Rolnick** (VP Analytics, NextEra Energy) — NextEra is the largest US renewable generator; AI is core to their asset management
+
+### The Energy GTM Path
+
+**Wedge:** Predictive maintenance agent evaluation for utility asset management
+- Clear rubric: Mean Time to Failure prediction accuracy, false positive rate, maintenance cost reduction
+- High-stakes: wrong prediction = transformer failure = grid outage
+- NERC compliance requires documentation
+- Multiple vendors competing (IBM Maximo AI, Aspentech, C3.ai, NVIDIA DERMS)
+
+**Channel:** CIGRE (electric utility research organization) + Gridwise Alliance (smart grid industry group)
+
+---
+
+## Tick 507 — "Sales Cycles Are Too Long" Bear Case: The 6-18 Month Enterprise Reality [theme: bear]
+
+### The Bear Case in Full
+
+Straw's target customer — enterprise companies making AI agent procurement decisions — has sales cycles of **6-18 months**. A company with a seed round and 6-12 months of runway cannot survive on 6-18 month sales cycles. The math doesn't work.
+
+**The data:**
+- Median enterprise B2B SaaS sales cycle: **90-180+ days** (3-6 months minimum)
+- Enterprise deals involve **13 decision-makers on average** (up from 5.4 in 2020)
+- **70% of enterprise deals require a pilot/POC** before procurement signs off (adds 4-8 weeks)
+- Security reviews, legal, SOC 2, GDPR add **2-4 weeks** even for mid-market
+- ACV $50K+ deals: median 180+ days. ACV $250K+: 12-18 months.
+
+**Straw's specific problem:**
+Straw is a NEW category. Enterprise buyers need to understand what rubric-based AI evaluation is, why it's different from their current process, why the price is justified, and how to implement it. Category creation adds 3-6 months to standard enterprise sales cycles.
+
+For a startup, this means:
+- Month 1-3: Discovery calls, education, building interest
+- Month 3-6: Pilot design, security review, legal
+- Month 6-9: POC running, stakeholders evaluating
+- Month 9-12: Contract negotiation, procurement approval
+- Month 12-18: First dollar in
+
+**If Straw raises a seed round in Q3 2026 at 18 months runway, the first enterprise revenue might arrive after the runway runs out.**
+
+### Why This Bear Case Is Serious But Manageable
+
+**The mitigation framework:**
+
+**1. Mid-market entry first (not enterprise)**
+Mid-market companies ($10M-$500M revenue) have:
+- Shorter sales cycles: 60-90 days for $10-50K deals
+- Fewer stakeholders: 3-5 decision-makers
+- More urgent pain: they can't afford to bet wrong on AI agents
+- Faster POC: smaller teams = faster iteration
+
+**Target:** 5 mid-market design partners in tech/fintech/professional services, $10-25K pilot contracts, 60-90 day cycles.
+
+**2. Productize the POC**
+If 70% of deals require a POC before signing, make the POC a paid product:
+- "Straw Starter" at $3,000: Run a single 5-agent competition on one task
+- No sales cycle — it's a self-serve purchase
+- POC BECOMES the first revenue, not a cost center
+- Conversion from Starter → full contract: 30-60 days post-POC
+
+**3. Event-driven urgency shortens cycles**
+Deals close faster when there's a regulatory deadline, a board presentation, or an agent failure in production. Straw's sales motion should:
+- Target companies 2-3 months before regulatory deadlines (NAIC September, EU AI Act August)
+- Target companies that just had an AI agent failure or agent procurement dispute
+- Target companies preparing board AI governance presentations
+
+**4. Channel sales via SI partners**
+Big 4 consultancies (Deloitte, KPMG, PwC, Accenture) have existing enterprise relationships. Straw as a tool that SI partners include in their AI advisory engagements bypasses the cold enterprise sales cycle entirely.
+- SI partner can close a $50K Straw component of a $500K AI advisory engagement in weeks, not months
+- SI partner bears the relationship cost; Straw bears the product cost
+
+**5. The 90-day first revenue benchmark**
+YC-style investors expect 90-day cycles at launch. Straw achieves this by:
+- First 90 days: 5 design partner pilots at $3-10K (no sales cycle, "research partnership" framing)
+- Days 90-180: Convert 2 of 5 to annual contracts at $25-50K
+- Days 180-270: First mid-market enterprise contract at $50-150K
+- Days 270-360: First full enterprise contract at $150-500K
+
+### The Honest Timeline
+
+**First revenue:** Day 30-60 (design partner pilots, paid research partnerships)
+**First $50K ARR:** Day 90-180 (3-5 small contracts)
+**First $500K ARR:** Day 270-360 (mid-market converts + first enterprise)
+**First $1M ARR:** Month 12-18 (enterprise contracts begin closing)
+
+This is achievable with disciplined ICP focus and the productized POC strategy. The bear case only bites if Straw tries to sell enterprise-first before validating mid-market.
+
+---
+
+## Tick 508 — The Five-Way Control Plane War: Why Straw Wins by Being Swiss [theme: bear + GTM]
+
+### Everyone Is Claiming the "Control Plane" in April-May 2026
+
+In the 30 days from late April to early May 2026, five platforms independently announced their "control plane for agentic AI":
+
+| Platform | Announcement | Date |
+|---|---|---|
+| **ServiceNow** | AI Control Tower — "converts chaos to control" | Knowledge 2026, May 5-7 |
+| **Microsoft** | Azure AI Foundry — "unified control plane for AI" | April 2026 |
+| **Google** | Gemini Enterprise Agent Platform — "all AI tools under one roof" | Cloud Next 2026 |
+| **Salesforce** | Agentforce — "$540M, 6,000 customers, control layer" | Q1 2026 |
+| **Snowflake** | Snowflake Intelligence — "control plane for the agentic enterprise" | April 21, 2026 |
+
+**Five separate companies claiming the same control plane title in the same month.** This is not a solved market. This is a war.
+
+### What Each Platform Actually Controls
+
+| Platform | What they govern | What they DON'T govern |
+|---|---|---|
+| ServiceNow | Agents running inside ServiceNow workflows | Agents from other vendors running outside ServiceNow |
+| Microsoft Foundry | Azure-deployed agents | Non-Azure agents; competitive models |
+| Google Gemini Platform | Vertex AI agents | Non-Google models at production scale |
+| Salesforce Agentforce | CRM workflow agents | Non-CRM AI agents; competitor models |
+| Snowflake Intelligence | Data-grounded agents with Snowflake data | Agents that don't use Snowflake data |
+
+**The key insight:** Every control plane governs its OWN ecosystem. None of them governs the heterogeneous agent stacks that enterprises actually deploy.
+
+The reality: **72% of enterprises have 2+ primary AI platforms.** This means 72% of enterprises have agents across multiple control planes that none of the platforms can govern.
+
+### Why Straw Is Switzerland
+
+In a five-way control plane war, the only safe position is neutral:
+
+**The Straw position:** "We don't care which platform you use. We evaluate agents from ALL platforms against criteria YOU define. We have no stake in who wins — your problem wins."
+
+This is politically safe in enterprises where:
+- Salesforce champions are fighting Microsoft champions
+- The CTO owns Azure; the CMO owns Salesforce
+- No single platform can claim to evaluate the other platforms fairly
+
+**Straw can evaluate Salesforce vs. Microsoft vs. ServiceNow agents on the same rubric.** No control plane can do this for competitive reasons.
+
+### The Snowflake Data Point That Proves the War Is Unsettled
+
+Snowflake's claim (April 2026):
+> "Whoever owns the governed data layer also owns the seat where enterprise AI is granted permission to act, and AI can't be trusted to act until the data underneath it can be."
+
+Microsoft's implicit counter:
+> Azure AI Foundry is the unified platform for AI development + governance + security.
+
+ServiceNow's counter:
+> The workflow layer — not the data layer — is where AI governance happens. AI acts on workflows, not raw data.
+
+Google's counter:
+> The foundation model quality determines AI reliability; governance at the model level (Gemini) is more fundamental than governance at the data or workflow layer.
+
+**All four are wrong and right simultaneously** — because enterprise AI governance requires ALL layers: data, model, workflow, and deployment. The layer war will not resolve by 2027. Straw operates above all of them.
+
+### The Investment Case That Follows From the War
+
+The control plane war = vendor fragmentation = enterprises need neutral evaluation for longer.
+
+If the war settles in 18-24 months (one platform wins), Straw has a time-limited window before that winner adds evaluation features.
+
+If the war continues (more likely, given network effects of each platform), Straw has a durable long-term position.
+
+**Straw's strategic bet:** The war won't settle before Straw reaches scale. Even if it does settle, Straw will be the only vendor with trust data across all platforms — the control plane winner will want to acquire that.
+
+### Straw's M&A Premium from the War
+
+If platform consolidation does occur, Straw is the most logical acquisition target:
+- Neutral evaluation data = strategic asset for whoever wants to claim "we're the fair governor of all agents"
+- The platform that acquires Straw can credibly say "we evaluate ALL agents fairly, including competitors"
+- Acquisition thesis: **"Whoever acquires Straw's evaluation methodology + neutral data becomes the trusted control plane"**
+
+**Comparable acquirers:**
+1. ServiceNow: Would add Straw as "AI Control Tower Advanced" — pre-deployment evaluation layer
+2. Workday: AI evaluation for HR agent procurement = high-value adjacent category
+3. Deloitte/KPMG: Straw as their AI advisory tool + client deliverable
+4. AWS: Neutral evaluation that's not Microsoft/Google/Salesforce-aligned
+
+---
