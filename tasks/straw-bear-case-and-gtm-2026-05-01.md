@@ -31658,3 +31658,70 @@ TICK_END
 7. Contact Graham Neubig (OpenHands) re: supply-side partnership
 
 TICK_END
+
+---
+
+## Tick 463 — Insurance Vertical Design Partners #143-145 + NAIC September 2026 Urgency
+
+### Why Insurance Is a Tier-1 Design Partner Vertical
+
+Insurance combines three Straw-specific pressures into one vertical:
+
+1. **Regulatory urgency:** NAIC AI Systems Evaluation Tool Pilot — 12 states, runs January–September 2026. **Pilot closes September 2026.** November 2026 NAIC Fall Meeting presents pilot findings and enforcement recommendations. Insurance CIOs must demonstrate AI governance NOW — before the pilot closes.
+
+2. **Multi-vendor exposure:** Carriers universally use multiple AI vendors for different functions (claims, underwriting, customer service, fraud detection). Cross-vendor evaluation is not optional — it's required by the NAIC governance framework.
+
+3. **High-stakes consequences:** Actuarial decisions based on AI errors create regulatory, legal, and financial exposure. A "demo on trust" procurement = carrier management liability. Straw's rubric evaluation = evidence for examiners.
+
+### NAIC AI Systems Evaluation Tool (2026)
+
+National Association of Insurance Commissioners launched a structured Regulator Examination Tool for AI governance. The tool covers:
+- Governance program design
+- Model inventory (including "models nobody has classified as AI")
+- **Third-party oversight**
+- **Fairness testing**
+- **Ongoing monitoring**
+
+Pilot states will focus on high-risk AI systems first. Customer-facing AI agents (claims, customer service routing, underwriting recommendations) are explicitly high-risk.
+
+**The Straw use case:** Straw produces a scoring audit trail that directly satisfies the NAIC's "third-party oversight" and "ongoing monitoring" requirements. An insurance carrier that used Straw to select its AI agents has documented evidence that the agent was selected via objective, rubric-based evaluation — not vendor demo.
+
+**Swept AI framing (May 2026):** "Insurance CIO's AI Governance Playbook for Q3 2026: What to Ship Before the NAIC Pilot Closes." The urgency frame is Q3 2026. That's 3 months from now.
+
+### Design Partner #143 — Travelers Insurance
+
+**Company:** Travelers Companies ($40B+ revenue, largest commercial P&C insurer in the US)
+**Executive:** CTO (identified as "Lefebvre" in Fortune April 2026) — described as placing "fewer, bigger bets on AI"
+**AI position:** 20,000 internal AI users; Anthropic partnership for 10K engineers/data scientists (announced January 2026); OpenAI-powered AI Claim Assistant (launched February 2026) for agentic claims handling
+**The Straw pitch:** "You just launched two AI partnerships in 60 days — Anthropic AND OpenAI. Travelers has both vendors in production. How do you know which one is better for the next claims workflow? Your CTO said 'fewer, bigger bets.' Straw is how you decide which bet wins."
+**Budget signal:** Travelers is already spending on both Anthropic AND OpenAI simultaneously. They're clearly willing to pay for evaluation — they're just doing it implicitly (by running both). Straw makes it explicit and auditable for the NAIC pilot.
+**NAIC angle:** AI Claim Assistant is explicitly a customer-facing agentic AI system — exactly the "high-risk" category the NAIC evaluation tool prioritizes.
+
+### Design Partner #144 — AIG (American International Group)
+
+**Company:** AIG ($40B+ revenue, global commercial insurance)
+**Executive:** Claude Wade, Chief Digital Officer (CDO)
+**AI position:** "AIG Underwriter Assistance" GenAI tool; Anthropic AND Palantir as named technology partners; new Atlanta AI operations facility opening 2026
+**The Straw pitch:** "AIG has both Anthropic and Palantir as named partners for underwriting AI. Claude Wade needs to decide which agent wins which underwriting task class. NAIC examiners will ask how that decision was made. Straw provides the rubric-based selection evidence."
+**Budget signal:** Palantir AIP licensing for enterprise = $500K+ per year. That's the reference price point. AIG is not price-sensitive on AI infrastructure.
+**NAIC angle:** Underwriting AI is the highest-risk category under NAIC — direct actuarial impact, potential for discriminatory outcomes. Straw evaluation = fairness testing evidence.
+
+### Design Partner #145 — Zurich Insurance Group
+
+**Company:** Zurich Insurance Group (CHF 60B+ revenue, global)
+**AI position:** Collaborating with ETH Zurich Agentic Systems Lab + University of St. Gallen to "accelerate industry transformation using AI"; deployed ML for fraud detection
+**The Straw pitch:** "Zurich is partnering with a university lab to build AI agents — that means Zurich will have internally-developed AND vendor-supplied agents competing in the same environment. Straw is the neutral evaluation layer that tells you whether the ETH Zurich agent actually beats Salesforce or ServiceNow for that claims workflow."
+**Budget signal:** University AI lab partnerships typically cost CHF 1-5M/year. Zurich is clearly willing to invest in AI R&D. A $50K Straw evaluation subscription is rounding error.
+**European angle:** Zurich is based in Switzerland — EU AI Act August 2026 enforcement applies to their EU operations. Straw evaluation = compliance documentation.
+
+### Insurance Vertical Summary
+
+| Design Partner | Executive | Hook |
+|---|---|---|
+| Travelers | CTO "Lefebvre" | Dual vendor (Anthropic + OpenAI) simultaneous deployment — needs comparative evaluation |
+| AIG | Claude Wade CDO | Anthropic + Palantir both named — NAIC fairness testing requirement |
+| Zurich Insurance | Group AI Lead | ETH Zurich lab + vendor agents need neutral comparison; EU AI Act compliance |
+
+**NAIC September 2026 deadline = Straw urgency trigger for all 12 pilot states' major insurers.** Every carrier doing business in those states must demonstrate AI governance to state examiners by Q4 2026. Straw provides the audit trail.
+
+---
