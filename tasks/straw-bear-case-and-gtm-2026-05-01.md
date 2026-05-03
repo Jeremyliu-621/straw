@@ -34762,3 +34762,129 @@ The 40% cancellation risk is from INADEQUATE GOVERNANCE. That's Straw's exact ma
 **The 56% having a formal "AI agent owner" is the most powerful data point for Straw's buyer persona.** A company with a named "agentic ops lead" is exactly the buyer who would champion a structured Straw evaluation internally.
 
 ---
+## Tick 500 — Straw's M&A Exit Analysis: Who Buys Straw and At What Multiple [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The 2026 M&A landscape for AI evaluation tools
+
+**Key M&A data (2026):**
+- Agentic AI: 30% of enterprise software deals, $500M-$5B valuations
+- Vertical AI companies (domain expertise + industry data + regulatory knowledge) = strongest multiples
+- McKinsey: AI M&A now emphasizes "proprietary data, model IP, talent" over traditional scale economics
+- Notable deals: Cisco acquired Galileo ($68.1M raised), Arize raised $70M Series C (not acquired yet), Langfuse acquired by Clickhouse
+
+**Straw's M&A strategic value:**
+- Proprietary dataset: Straw's rubric library + agent reputation graph after 500+ evaluations is irreplaceable
+- Network position: Straw sits at the evaluation chokepoint between enterprise buyers and AI agent vendors
+- Community: Agent operator network (supply side) + enterprise Agent Owner network (demand side)
+- Regulatory coverage: NIST RMF documentation + HIPAA readiness + FedRAMP roadmap = compliance moat
+
+### The five most likely Straw acquirers (with strategic rationale)
+
+**Acquirer 1: S&P Global / Bloomberg / Morningstar (Financial data providers)**
+Strategic rationale: Financial services companies need objective AI agent evaluation for compliance and investment analysis workflows. A financial data provider acquiring Straw gets: (1) the most rigorous pre-deployment evaluation platform for financial AI, (2) recurring enterprise subscription revenue, (3) the ability to publish "Straw AI Agent Ratings" as a financial product analog to credit ratings.
+Valuation range: 15-20× ARR (financial data premium)
+Probability: Medium (15%)
+
+**Acquirer 2: ServiceNow / Workday / Salesforce (Enterprise workflow platforms)**
+Strategic rationale: These platforms are building agentic AI on top of their existing workflow systems. Acquiring Straw gives them a credible, neutral evaluation layer to tell enterprise customers "your agents were evaluated before deployment." ServiceNow acquired Moveworks ($2.85B) for AI workflow; Straw is the evaluation layer that complements this.
+Valuation range: 10-15× ARR (enterprise software premium)
+Probability: Medium-high (25%)
+
+**Acquirer 3: IBM / PwC / Accenture (AI governance and consulting)**
+Strategic rationale: AI governance is becoming a mandatory enterprise function. A consulting firm with Straw can charge clients 10× the platform fee for "AI governance as a service." Straw becomes the platform underneath a $500M AI governance consulting practice.
+Valuation range: 8-12× ARR (consulting premium, lower than software)
+Probability: Medium (20%)
+
+**Acquirer 4: Braintrust (strategic merger)**
+Strategic rationale: Braintrust is the post-deployment observability layer. Straw is the pre-deployment evaluation layer. Together = the complete AI agent lifecycle platform. A Braintrust-Straw merger creates a company with the full "evaluate → deploy → monitor" stack. ICONIQ already invested in Braintrust; would likely support strategic acquisitions.
+Valuation range: At Braintrust's last valuation ($800M), Straw at 10× ARR = 1.25% dilution — attractive for Braintrust if Straw is at $5-10M ARR.
+Probability: Medium (20%)
+
+**Acquirer 5: Trust/security company (Cisco, Palo Alto, CrowdStrike)**
+Strategic rationale: Cisco acquired Galileo to add AI evaluation to its security stack. The next step is pre-deployment evaluation. Straw's SUBMISSION.md sanitization + rubric sealing + agent reputation = a security product as much as an evaluation product.
+Valuation range: 12-18× ARR (cybersecurity premium)
+Probability: Lower-medium (10%)
+
+### The exit timing and multiple model
+
+**Ideal exit timing:**
+- Series A closes at $5M ARR (18-24 months) → investor expects 5-7 year hold
+- Strategic acquisition most likely at $15-30M ARR (36-48 months)
+- At 15× ARR × $25M = $375M acquisition price
+
+**The minimum exit target:** $50M ARR × 10× = $500M acquisition. This is the minimum for Series A investors to get a good return.
+
+**The realistic target:** $25M ARR × 15× = $375M. This is achievable within 5-7 years.
+
+Sources: feinternational.com/blog/ai-ma-trend, autonainews.com/5-enterprise-ai-innovators-poised-for-acquisition-in-2026, imap.com/us-en/insights/2026/Technology-Mergers-and-Acquisitions-Trends-2026, mckinsey.com/capabilities/m-and-a/our-insights/technology-m-and-a-ai-enters-its-industrial-phase
+
+TICK_END
+
+---
+
+## Tick 501 — The 5-Year Vision: Straw in the 2030 AI Agent Economy [theme: GTM + synthesis]
+
+**Research date:** 2026-05-03
+
+### The macro trajectory Straw is surfing
+
+**Gartner predictions for 2028-2030:**
+- 70% of enterprise AI apps will use multi-agent systems by 2028 (up from ~15% today)
+- 33% of enterprise software applications will include agentic AI by 2028
+- 15% of work decisions will be made autonomously by AI agents by 2028
+- Guardian agents will capture 10-15% of the agentic AI market by 2030
+- Gartner: Agentic AI resolves 80% of common customer service issues without human intervention by 2029
+- AI agent market: $7.84B in 2025 → $52.62B by 2030 (46.3% CAGR)
+
+**Translation:** The market Straw serves grows 6.7× in 5 years. Every company deploying multi-agent AI needs pre-deployment evaluation. Straw's TAM doesn't just grow with inflation — it expands with the market.
+
+### The 2030 Straw vision (scenario planning)
+
+**Scenario A (optimistic, 30% probability): Straw becomes the standard**
+"When enterprises issue RFPs for AI agents in 2030, the RFP includes a required field: 'Provide your Straw Evaluation Score for [task category].' AI agent vendors optimize to their Straw scores. Enterprises use Straw scores in procurement decisions automatically. Straw is to AI agent procurement what Dun & Bradstreet is to business credit: a required data point."
+
+At this scale: $100M+ ARR from a combination of enterprise evaluation events ($2,500-$100K each) + vendor certification fees (agents paying to get their Straw score) + platform fee for benchmarking data.
+
+**Scenario B (base case, 50% probability): Straw is a successful vertical SaaS**
+"Straw is the preferred evaluation platform for 20-30% of enterprise AI agent procurement. Revenue: $25-50M ARR. Valuation: $300-500M. Exit: acquired by ServiceNow or Braintrust."
+
+**Scenario C (bearish, 20% probability): Straw is acqui-hired early**
+"Straw closes 10-15 paying design partners, builds a strong proof of concept, and gets acquired for $50-100M by a platform player (Anthropic, Braintrust, IBM) before reaching escape velocity as a standalone company."
+
+### The "guardian agents" opportunity
+
+**Gartner: "Guardian agents" capture 10-15% of the agentic AI market by 2030.** Guardian agents are AI systems that monitor and govern other AI agents.
+
+**Straw's evolution into the guardian agent space:**
+- 2026: Pre-deployment evaluation platform (current)
+- 2027: Continuous monitoring add-on (post-deployment rubric tracking — competing with Braintrust in one specific layer)
+- 2028: Guardian agent integration (Straw's evaluation pipeline BECOMES the guardian agent for enterprise AI deployments)
+- 2030: "Straw Guardian" — an AI agent that monitors other AI agents against pre-defined rubrics, alerts when agents drift from their rubric, and triggers re-evaluation automatically
+
+This is the natural product evolution that takes Straw from "pre-deployment competition platform" to "AI agent governance infrastructure" — a much larger market.
+
+### The self-evaluating AI frontier
+
+By 2028-2030, AI agents will begin self-improving through interaction with themselves. This creates a new evaluation challenge: **how do you evaluate an agent that's better today than it was yesterday?**
+
+Straw's rubrics are designed to be re-run. The same rubric with the same task can be run quarterly to measure improvement. This creates Straw's "continuous evaluation" product: run the same competition every 90 days, track agent performance improvement over time, alert enterprises when a newer/better agent exceeds the current deployed agent's score.
+
+This is the **re-evaluation revenue model** — companies pay not once but repeatedly as agents improve. This is Straw's subscription analog: not monthly software access, but quarterly evaluation events.
+
+### 5-year financial model (base case)
+
+| Year | ARR | # Customers | Avg ACV | Headcount |
+|---|---|---|---|---|
+| 2026 | $0 (design partner) | 0 paying | — | 1 (Jeremy) |
+| 2027 | $250K | 10 | $25K | 3 |
+| 2028 | $2.5M | 50 | $50K | 15 |
+| 2029 | $10M | 150 | $67K | 40 |
+| 2030 | $30M | 300 | $100K | 100 |
+
+At $30M ARR × 15× = $450M exit valuation. Series A investors at $5M ARR get ~4× return at $30M ARR (typical Series A dilution assumptions). This is the base case, not the upside.
+
+Sources: deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/articles/agentic-ai-enterprise-2028, gartner.com/en/newsroom/press-releases/2025-06-11-gartner-predicts-that-guardian-agents, agentplace.io/blog/the-future-of-ai-agents-2026-2030-industry-predictions-and-roadmap, onereach.ai/blog/agentic-ai-adoption-rates-roi-market-trends
+
+TICK_END
