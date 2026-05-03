@@ -18634,3 +18634,147 @@ Working from Gartner's naming conventions and current research:
 
 Straw's job: Ensure that whichever name Gartner uses, the description of the category sounds like Straw's pitch. Influence the framing through research, analyst briefings, and customer case studies that Gartner analysts encounter.
 
+
+---
+
+## Tick 256 (2026-05-03T00:33:00Z): Telecom design partner targets — agentic AI growing 100x over 5 years [theme: partners]
+
+### Why Telecom Is a Tier 2 Straw Vertical
+
+- Appledore Research: agentic AI in telecom to grow by **100x over five years**
+- AT&T, Verizon, and T-Mobile cut **17,700 jobs in 2025** — explicitly attributing headcount reduction to AI
+- AI agents deployed across: customer service, network operations, billing, fraud detection
+- Verizon uses Google Gemini models and just integrated Anthropic's Mythos — a perfect multi-vendor evaluation use case
+- Most telecom operators' agents "come from vendors" (Verizon) while also developing own — the build-and-buy mix creates ongoing procurement decisions
+
+### Named Target Contacts
+
+**AT&T** — Most publicly committed to agentic AI transformation
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Andy Markus | SVP & Chief Data & AI Officer | Explicitly designed "the entire workflow to be agentic"; leads AI agent strategy |
+
+- **Context**: Markus told Mobile World Live that AT&T is designing every workflow to be agentic — that means hundreds of AI agent procurement decisions in the pipeline. Markus is the most public telecom AI executive and is actively thinking about evaluation methodology.
+- **Pitch angle**: "You've said you're designing the entire AT&T workflow to be agentic. That means evaluating dozens of AI agents across network ops, customer service, billing, and fraud. Straw gives you the evaluation infrastructure to compare agents objectively before committing."
+- **Opener**: "I read your comments on agentic workflow design at Mobile World Live. I'm building the evaluation infrastructure for enterprise AI agent procurement and would love 20 minutes to understand how AT&T is thinking about agent vendor selection at this scale."
+
+**Verizon** — Using Anthropic + Google Cloud simultaneously; perfect Straw use case
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Praveen Atreya | VP Technology Development and Planning | Oversees agentic AI deployment; acknowledges using vendor agents while building own |
+| Sowmyanarayan Sampath | CEO, Verizon Consumer | Consumer operations leader; owns customer service AI outcomes |
+
+- **Context**: Verizon is simultaneously running Google Gemini for customer service AND integrating Anthropic's Mythos for enterprise workflows. This is exactly the multi-vendor scenario that Straw evaluates. Verizon needs a way to determine which agent performs better for which use case — and to defend that decision to regulators and the board.
+- **Pitch angle**: "Verizon is running Gemini and Anthropic's Mythos simultaneously. Straw can run a blind competition to determine which agent performs better for each specific Verizon use case — customer service vs. enterprise workflow automation."
+
+**T-Mobile** — AI focus on customer experience
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Mike Sievert | CEO | AI as competitive differentiator; customer experience focus |
+| Ulf Ewaldsson | President of Technology | Technology strategy including AI agent deployment |
+
+- **Context**: T-Mobile has been focused on AI-driven customer experience differentiation. Their smaller scale (relative to AT&T/Verizon) makes them more agile for pilot partnerships.
+
+**Deutsche Telekom** — EU-based telecom; EU AI Act compliance requirements
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Claudia Nemat | Board Member, Technology & Innovation | EU telecom technology strategy and AI deployment |
+
+- **Context**: Deutsche Telekom operates in EU and faces EU AI Act compliance requirements. Straw's audit-grade report satisfies EU AI Act documentation requirements for high-risk system deployments.
+
+### Telecom Vertical Strategy
+
+**MWC (Mobile World Congress)** (February, Barcelona): The world's largest mobile industry conference. Every major telecom CTO and CDO attends. AT&T, Verizon, T-Mobile, Deutsche Telekom all have major presences. A Straw speaking slot on "AI agent evaluation standards for telecom" is the highest-leverage access point.
+
+**TM Forum**: The telecom industry's standards body. TM Forum has published AI frameworks for telecom. Getting Straw's evaluation methodology referenced in a TM Forum AI publication would be significant for telecom credibility.
+
+### Telecom Rubric Template
+
+Core evaluation dimensions for telecom AI agent selection:
+1. **Call deflection rate**: % of test customer queries fully resolved without human agent transfer
+2. **Network anomaly detection accuracy**: Precision/recall on synthetic network event dataset
+3. **Churn prediction accuracy**: Accuracy vs. labeled churn test data from synthetic customer profiles
+4. **Fraud detection precision**: True positive rate vs. false positive rate on synthetic fraud scenarios
+5. **Response latency**: P99 latency for customer-facing query responses under load
+6. **Regulatory compliance**: Does the agent handle CPNI (Customer Proprietary Network Information) correctly?
+
+
+---
+
+## Tick 257 (2026-05-03T00:34:00Z): Pharmaceutical and biotech design partner targets [theme: partners]
+
+### Why Pharma Is a Tier 2 Straw Vertical
+
+- Pfizer spending **$11B on R&D in 2026**; partnered with Boltz for exclusive AI models for target selection and structure prediction
+- AstraZeneca has a Biological Insights Knowledge Graph + 2M genome analysis program
+- AI procurement in pharma is a multi-year, multi-million dollar decision with regulatory oversight (FDA AI guidance)
+- The consequences of a wrong AI drug discovery agent are severe: failed trials cost $1B-$2B each
+- FDA's emerging AI/ML-based software as medical device (SaMD) guidance creates documentation requirements
+- Early-stage: most pharma AI is still research/R&D AI, not yet clinical — the procurement decisions are happening now, pre-clinical
+
+### Named Target Contacts
+
+**Pfizer** — $11B R&D budget; explicit AI agent partnerships
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Chris Boshoff | Chief Scientific Officer | Pairing AI engineers with scientists across R&D organization; owns AI agent procurement decisions in R&D |
+| Lidia Fonseca | EVP, Chief Digital and Technology Officer | Technology strategy and AI system procurement |
+
+- **Context**: Pfizer is spending $11B on R&D and adding 1,200+ GPUs. Their multi-year collaboration with Boltz for proprietary models means they are actively making AI agent procurement decisions. Straw can evaluate the AI agents Pfizer is considering for target selection, structure prediction, and biologics design.
+- **Pitch angle**: "Pfizer is making AI agent procurement decisions that will shape your drug discovery pipeline for the next decade. Straw provides the evaluation infrastructure to verify that the agents you're deploying are genuinely the best available — not just the best marketed."
+
+**AstraZeneca** — Biological Insights Knowledge Graph; 2M genome analysis
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Mark Combs | Chief Technology Officer | Technology strategy and AI systems |
+| Mene Pangalos | EVP, BioPharmaceuticals R&D | R&D AI strategy and vendor selection |
+
+- **Context**: AstraZeneca's AI program spans bioinformatics, clinical trials, and manufacturing. Their AI procurement decisions are large and frequent.
+
+**Moderna** — Most AI-native major pharmaceutical company
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Stephen Hoge | President | Deep technology investment thesis; Moderna is the most tech-forward major pharma |
+| Dave Johnson | Chief Digital Officer | Leads digital and AI strategy |
+
+- **Context**: Moderna has been the most publicly AI-committed major pharma company. Their mRNA platform is deeply computational. They are actively evaluating AI agents for drug design optimization.
+
+**Recursion Pharmaceuticals** — AI-native drug discovery startup; well-funded
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Chris Gibson | CEO & Co-founder | Building AI-native drug discovery platform |
+
+- **Context**: Recursion is not a traditional pharma company — it's an AI company that discovers drugs. They evaluate many AI tools and models as part of their core business. Straw could be valuable for their own procurement process.
+
+**Insilico Medicine** — AI-driven drug discovery; pipeline of AI-designed candidates in clinical trials
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Alex Zhavoronkov | CEO | Founder of AI drug discovery; deep expertise in AI evaluation for pharma |
+
+- **Context**: Insilico is the most advanced AI-native drug discovery company with clinical stage candidates. They have deep expertise in evaluating AI models — but they still have procurement decisions about which external AI tools and models to use.
+
+### Pharma Vertical Strategy
+
+**Bio-IT World Conference** (Spring, Boston): AI in pharma/biotech conference. CDOs, CIOs, and heads of AI from major pharma companies attend. Speaking slot on "evaluation standards for drug discovery AI agents."
+
+**HIMSS (Health Information and Management Systems Society)**: Covers both healthcare provider and pharma IT. Overlaps with the healthcare vertical from prior research.
+
+### Pharma Rubric Template
+
+Core evaluation dimensions for pharma AI agent selection:
+1. **Prediction accuracy on held-out test set**: Model accuracy on a blinded subset of the customer's proprietary compound library
+2. **False negative rate on known actives**: % of known active compounds the agent fails to identify as active
+3. **Novelty of generated structures**: Are the agent-generated molecular structures genuinely novel (not in training data)?
+4. **Regulatory documentation completeness**: Does the agent produce documentation sufficient for FDA pre-IND meeting preparation?
+5. **Computational efficiency**: CPU/GPU utilization per prediction — critical for cost at scale
+6. **Reproducibility**: Running the same input five times produces consistent outputs (important for regulatory validation)
+
