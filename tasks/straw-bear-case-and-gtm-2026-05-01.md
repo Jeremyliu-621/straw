@@ -26179,3 +26179,62 @@ LMArena is the Chatbot Arena spinoff (LMSYS project). $150M Series A (January 6,
 Sources: siliconangle.com/2026/01/06/ai-evaluation-startup-lmarena-raises-150m-1-7b-valuation, techcrunch.com/2026/01/06/lmarena-lands-1-7b-valuation-four-months-after-launching-its-product, prnewswire.com/news-releases/lmarena-raises-150-million
 
 TICK_END
+
+---
+
+## Tick 429 — Healthcare Named Design Partners #104-105: Sheba Medical Center + Atlantic Health System
+
+**Research date:** 2026-05-03
+
+### Why healthcare is a Straw vertical
+
+- 61% of large hospital networks planned to deploy AI-assisted procurement tools by end of 2026 (Gartner), up from 18% in 2023 — the buying motion is already there
+- Healthcare CIOs have formalized 90-day pilot evaluation timelines with defined pass/fail criteria — their procurement process IS a Straw rubric workflow, they just lack the competitive submission layer
+- Nature / npj AI paper (April 2026): validated rubric evaluation and seven-dimensional taxonomy for LLM-based clinical agents — the academic framework exists, enterprise tooling does not
+- FDA regulatory pressure: AI-as-Medical-Device (AIaMD) pre-market requirements demand documented performance baselines — Straw's evaluation log satisfies this
+
+### Design Partner #104 — Eyal Zimlichman, Sheba Medical Center
+
+**Who:** Chief Innovation, Transformation, and AI Officer + Founder/Director of ARC (Accelerate, Re-imagine, Collaborate) innovation center. Sheba ranked #9 in Newsweek World's Best Smart Hospitals 2026.
+
+**What they're doing with AI agents:**
+- Project K: fully automated AI-powered emergency department — real patients going through automated ER intake/triage
+- SmartER Ambient AI Platform (launched February 2026): ambient documentation in emergency department
+- AI agents for patient calls and intake (deployed 2026)
+- Partnership with Hippocratic AI for healthcare agent deployment
+- Microsoft avatar agent for mental health triage (3 cycles of clinical trials completed)
+
+**Pain point Straw solves:** Zimlichman's team evaluates multiple clinical AI vendors (Hippocratic, Microsoft, ambient documentation vendors) on the same clinical workflows. Their rubric criteria are already defined (triage accuracy, intake completion rate, patient satisfaction, caregiver handoff success). They lack a single platform to run competitive evaluations across vendors before commitment.
+
+**Cold email frame:** "You've run three cycles of clinical trials on the mental health triage agent. You've deployed SmartER alongside Hippocratic alongside Project K. Each evaluation was bespoke. Straw gives you one rubric board where every vendor competes on your criteria — and you get a comparable score before you write the contract."
+
+**Contact:** eyal.zimlichman@sheba.health.gov.il / ARC Innovation office, Tel Hashomer
+
+---
+
+### Design Partner #105 — Sunil Dadlani, Atlantic Health System
+
+**Who:** EVP, CIDO (Chief Information and Digital Officer), CISO, Chief Innovation, Chief AI Officer — one of the most title-stacked healthcare AI executives in the country. 7 hospital network, New Jersey.
+
+**Background:** Former CIO, New York State Department of Health — led largest public-sector digital transformation. HIMSS AI in Healthcare Forum speaker. Published on AI implementation across the care continuum.
+
+**Pain point Straw solves:** Dadlani runs a 7-hospital system procuring AI agents across revenue cycle, clinical documentation, patient communication, and supply chain. Each procurement decision is currently based on vendor demos and pilot negotiations — no competitive evaluation format. With 61% of hospital networks planning AI-assisted procurement, he needs a defensible evaluation record (compliance officer reviews audit trails per the 90-day procurement framework).
+
+**Cold email frame:** "Your compliance officer is already reviewing agent decision logs in your RCM pilots. The next step is pre-procurement: defining the rubric, running competitive submissions, and getting the evaluation log before you're locked into a 3-year contract. That's what Straw does — and your logs become your FDA AIaMD documentation."
+
+**Contact:** LinkedIn: linkedin.com/in/sunildadlani / Atlantic Health System Morristown NJ
+
+---
+
+### Healthcare vertical ICP summary
+
+| Hospital System | Champion | Title | AI Agent Use Case | Straw Fit |
+|---|---|---|---|---|
+| Sheba Medical Center (Israel) | Eyal Zimlichman | Chief AI + Innovation Officer | Clinical triage, ambient docs, patient intake agents | Multi-vendor competitive eval on clinical rubrics |
+| Atlantic Health System (NJ) | Sunil Dadlani | EVP CIDO CISO + Chief AI Officer | RCM, clinical, patient communication agents | Compliance-defensible rubric evaluation + audit log |
+
+**Vertical GTM note:** Healthcare is a later-stage vertical (longer sales cycles, BAA requirements, HIPAA data handling) but the rubric-definition muscle is stronger than any other vertical — clinical teams already write validated criteria for EHR-embedded agents. Straw's rubric builder is a natural fit. Enter via Sheba (innovation-first, no US procurement bureaucracy) and Atlantic Health (US proof point for enterprise healthcare expansion).
+
+Sources: mobihealthnews.com, sheba-global.com, shebaonline.org, hitconsultant.net, atlantichealth.org, rocketreach.co, nature.com/s44387-026-00076-4, medstrato.com/en/blog/ai-hospital-procurement-2026, gartner.com
+
+TICK_END
