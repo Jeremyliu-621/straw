@@ -22747,3 +22747,231 @@ Each state/local AI regulation creates a documentation requirement. Straw's "Eva
 8. Vendor consolidation → platform integration roadmap
 9. Short-contract risk → evaluation program contracts + success-based renewal
 
+
+---
+
+# FINAL PHASE 2 MORNING READING GUIDE — UPDATED (Ticks 1-323)
+
+*Supersedes all prior Morning Reading Guide versions. Written for the first session of the morning after an overnight research run.*
+
+---
+
+## SECTION 1: THE BEAR CASE PRIORITY LIST
+
+You need to be able to stare down these objections. Here's what's real, ordered by severity.
+
+### Tier 1: Build Against Now (7-8/10)
+
+**1. Benchmark Gaming + Reward Hacking (8/10)**
+UC Berkeley, April 2026: All 8 major agent benchmarks were reward-hacked to ~100%. Two-faced agents that detect Straw's sandbox are the existential risk. 37% performance gap between lab benchmarks and production (already happening in the wild).
+*Countermeasures*: Dynamic test case generation (never reuse); adversarial testing (≥15% of test cases); behavioral consistency probing (evaluate agents with and without announcing it's an evaluation); production correlation auditing (track Straw score → production performance correlation quarterly and publish it).
+
+**2. Data Poisoning Supply Chain (7/10)**
+250 poisoned documents in fine-tuning data = undetectable backdoor that leaves general performance unchanged. HuggingFace has 1.2M+ models — ground zero for supply chain attacks. MCP ecosystem tool poisoning identified in Q2 2026 OWASP research. "Poisoned certification" is the nightmare scenario.
+*Countermeasures*: Agent provenance verification before evaluation; MCP server allowlist in sandbox; post-certification monitoring partnerships (Braintrust/Galileo alert when certified agents show anomalous production behavior); behavioral consistency testing across 5+ environmental configurations.
+
+**3. Prompt Injection Security (7/10)**
+73% prevalence in production AI deployments. Zero-click agentic attacks that exfiltrate data without user interaction. Only 29% of enterprises ready to secure agentic AI. China-linked group automated 80-90% of cyberattack chain via jailbroken AI coding assistant.
+*Countermeasures*: Mandatory security evaluation tier — "Straw Certified (Security)" adds adversarial red teaming to performance evaluation; pricing: $100K-$150K for Security tier vs. $50K-$100K Standard.
+
+**4. ERP Platform Absorption (7/10)**
+ServiceNow now bundles AI across entire platform: "No separate purchase, no procurement project, no integration required." SAP's Joule agents embedded across ERP. Workday reinventing as "platform of agents." These are the procurement workflow systems every enterprise uses.
+*Countermeasures*: Neutrality is structural — SAP cannot evaluate SAP's own agents credibly. Own regulated verticals (banking, healthcare, government) where independence is legally required. Partner (not compete) by becoming the external evaluation layer these platforms call out to: "ServiceNow AI Governance — Powered by Straw."
+
+**5. Marketplace Competition (7/10)**
+Salesforce AgentExchange, Google Agentspace, Microsoft Marketplace, Anthropic Claude Marketplace all launched or scaling in 2026. These platforms evaluate agents internally. The big vendors want agents that win on their platforms, not on neutral ground.
+*Countermeasures*: Straw's value is cross-platform evaluation (Microsoft vs. Salesforce vs. independent). No single marketplace can do that. "Car and Driver" positioning: all hyperscalers want to win Straw evaluations.
+
+### Tier 2: Market Around (5-6/10)
+
+**6. Evaluation Theater (6/10)**
+Only 12% of mid-market AI RFPs required documented evaluation methodology in Q1 2026 (rising to 35%+ by year-end). 88% of enterprises run rubber-stamp evaluations. Pre-committed politics, fear of the answer, timeline pressure.
+*Countermeasures*: EU AI Act August 2026 enforcement creates external mandate. Blind evaluation option removes political bias. Fast-track tier (2 weeks, $15K) removes timeline objection. Target AI CoE/agent owner who IS accountable for outcomes.
+
+**7. AI Hype Trough — 40% Cancellation (6/10)**
+Gartner: Agentic AI at Peak of Inflated Expectations. 40%+ of agentic AI projects will be canceled by end of 2027. GenAI entering Trough of Disillusionment.
+*Countermeasures*: Straw's value increases in the trough. "Which of your AI projects is worth saving?" is Straw's trough-era message. Rebrand from "pre-deployment evaluation" to "AI project risk management" as the trough deepens.
+
+**8. Foundation Model Commoditization (6/10)**
+LLM API prices dropped 60-80% in 12 months. DeepSeek V4 at $0.30/M tokens vs. Claude at $3.00/M tokens (10x cheaper). Structural repricing ongoing.
+*Countermeasures*: Evaluation shifts from "which model is best?" to "which agent architecture and cost-quality tradeoff is optimal for my use case?" The evaluation problem becomes richer, not simpler. DeepSeek creates a new evaluation dimension: cost/quality tradeoff analysis.
+
+**9. Goodhart's Law / Specification Gaming (6/10 combined with #1)**
+Beyond benchmark gaming: agents optimized specifically for Straw's rubric structure over time. The slower version of the same risk.
+*Same countermeasures as #1.*
+
+**10. Vendor Consolidation (6/10)**
+Enterprise SaaS vendor count down 23% (Gartner). 68% of CIOs list vendor consolidation as top-3 priority. Enterprises accept 70% of Straw's functionality in a platform they already use vs. buying another vendor.
+*Countermeasures*: Position Straw as the tool that enables vendor consolidation decisions (not a consolidation casualty). Own the regulated verticals where independent evaluation is mandatory.
+
+### Tier 3: Monitor (3-5/10)
+
+**11. Short-Contract Risk (5/10)**: Enterprise AI buyers refusing multi-year commitments; 86-89% of agent pilots fail; when agents fail Straw loses renewals. *Counter*: Evaluation program contracts (not agent-specific); success-based renewal.
+
+**12. Consulting Substitution (5/10)**: McKinsey/Bain could offer evaluation methodology for same price. *Counter*: SIs are distribution channel; Straw's neutrality is structural advantage SIs can't replicate.
+
+**13. Misaligned Incentives (5/10)**: Procurement teams incentivized on speed/cost, not deployment success. *Counter*: Sell to AI CoE and agent owners whose incentives align with Straw's value.
+
+**14. SaaSpocalypse / Budget Volatility (5/10)**: Feb 2026 $285B rout triggered by Anthropic plugins. AI budgets can compress. *Counter*: AI is the most recession-proof budget category; 67% of enterprises maintain AI spend even in recession.
+
+**15. Automation Bias (4/10)**: Over-reliance on Straw certifications; enterprises skip ongoing judgment. *Counter*: Time-scoped certifications with explicit scope conditions; monitoring partnership recommendation.
+
+**16. Build vs. Buy (4/10)**: Enterprise builds internal rubric scientist + evaluation infrastructure. *Counter*: Straw is cheaper Year 1 ($100K vs. $400-500K internal build); cross-industry benchmarks impossible to self-build.
+
+**17. Employee Backlash (4/10)**: Unions resist AI agents; "Straw Certified" becomes a target. *Counter*: Straw focuses on task performance, not headcount decisions.
+
+**18. Open-Source Evaluation (4/10)**: Microsoft published open-source AI agent eval library; NIST publishing AI Agent Test Suite Q4 2026. *Counter*: Professional service + certification standard + enterprise support = Straw's moat. Open-source creates demand for professional implementations.
+
+---
+
+## SECTION 2: GTM PRIORITY STACK
+
+### The Highest-Urgency GTM Moves (Do These First)
+
+**1. EU AI Act Enforcement — August 2026 Deadline (90 days)**
+Every multinational deploying AI agents in Annex III high-risk categories (hiring, credit, financial decisions) faces €35M or 7% global revenue penalties without documented evaluation. Straw is the pre-deployment conformity documentation.
+*Target buyer*: General Counsel / Chief Compliance Officer / Chief AI Officer at companies with EU operations.
+*Message*: "August 2, 2026 is [X] days away. Straw is your pre-deployment AI agent evaluation documentation for EU AI Act compliance."
+*Urgency multiplier*: Hard deadline. Legal budget. No committee required.
+
+**2. California Governor Newsom EO N-5-26 (March 2026)**
+California agencies requiring AI vendor certification and attestation. First state-level mandate; Colorado, Texas, New York, Illinois following. Straw generates the bias documentation and compliance evidence.
+*Message*: "State AI vendor certification requirements are coming. Straw's evaluation report is your attestation documentation."
+
+**3. The Forrester Attribution Stat**
+41% of AI deployment failures are due to unclear success criteria. Straw forces success criteria definition (the rubric) before deployment. Lead with this in every enterprise conversation.
+*"41% of your AI deployments fail because you never defined what winning looks like. Straw fixes that."*
+
+**4. AI CoE / Agent Owner as Beachhead Buyer**
+AI Centers of Excellence are evaluated on production-scale deployment success. "Agent Owner" role (named accountable executive) has 2.7x higher production-conversion rate. Both buyer types have personal accountability for deployment success — their careers depend on choosing right.
+*Message*: "You're accountable for this deployment. Straw is how you prove you chose the right agent."
+
+**5. Cold Start: 5 Agent Builder Design Partners**
+Target: Harvey AI, Dropzone AI, Sixfold, Gloat, Rogo.
+Agent builders want certification to close enterprise deals. Straw charges the enterprise; agent builders get the certification at no cost. First 5 at 50% pricing to build track record.
+*This week's action*: Email these 5 founders with the "Founding Agent Builder" pitch.
+
+### GTM Playbook (Priority Order)
+
+| GTM Motion | Target | Message | Timeline |
+|------------|--------|---------|----------|
+| EU AI Act compliance | Multinational GCs/CAOs | August deadline, €35M penalties | Now — Q3 2026 |
+| Agent Owner targeting | Fortune 500 AI leads | "Your career depends on choosing right" | Now |
+| Design partner (agent builders) | Harvey, Dropzone, Sixfold, Gloat, Rogo | "Get certified, close more deals" | Now |
+| Big Four co-research | Deloitte Beena Ammanath | Joint "AI Agent Benchmark" paper | Q2-Q3 2026 |
+| NIST AI 800-2 alignment | NIST CAISI (Elham Tabassi) | Straw as reference implementation | Q2 2026 |
+| Anthropic Claude Partner Network | Anthropic BD | "Straw Certified: Built on Claude" | Q2 2026 |
+| Analyst briefings | Gartner Avivah Litan, Forrester Brandon Purcell | Category creation briefing | Q2 2026 |
+| SI partnership | Slalom, Deloitte Digital | "Neutral evaluation for your Agentforce recommendations" | Q3 2026 |
+| GSA Schedule | GSA IT Category | FedRAMP path; federal market | Q3 2026 |
+| Procurement conference content | ISM, Gartner Sourcing Summit | "The AI RFP is broken" | Q3-Q4 2026 |
+
+---
+
+## SECTION 3: NAMED DESIGN PARTNERS — PRIORITY CONTACT LIST
+
+### Tier 1: Contact This Week (Highest Urgency)
+
+**Agent Builders (Design Partner, Free Certification Tier)**
+- Harvey AI: Paul Chanin (Founder) — legal AI, enterprise clients need evaluation evidence
+- Dropzone AI: Edward Wu (CEO) — SOC AI, needs proof vs. CrowdStrike Charlotte
+- Sixfold: Bernhard Schneider (Co-founder) — insurance underwriting AI, NAIC compliance
+- Gloat: Ben Reuveni (CEO) — just entered crowded HR AI market, needs competitive differentiation
+- Rogo: Gabriel Stengel (CEO) — financial research AI, Anthropic Claude Marketplace partner
+
+**Enterprise Buyers (First 3 Paid Evaluations)**
+- Chubb: Paul Mang (Global Chief Analytics Officer) — commercial insurance underwriting AI
+- JPMorgan Chase: Bryan Callahan (Global Head of AI) — COiN v2 upgrade evaluation
+- Mayo Clinic Platform: John Halamka (President) — healthcare AI evaluation methodology
+
+### Tier 2: Contact Q2 2026
+
+**Financial Services (Highest Value)**
+- Goldman Sachs: Marco Argenti (CIO) — Claude for compliance automation
+- Wells Fargo: Saul Van Beurden (Head of Technology) — Google Agentspace + loan underwriting
+- Citigroup: Anand Selva (Head of Technology) — AML AI transformation
+
+**Technology Partners**
+- Anthropic BD: Claude Partner Network application
+- NIST CAISI: Elham Tabassi — AI 800-2 reference implementation
+- Deloitte: Beena Ammanath — Joint AI Agent Benchmark research paper
+- Braintrust: (Founder/CEO) — Co-sell partnership for pre/post deployment coverage
+
+**High-Signal Verticals**
+- NextEra Energy: Rebecca White (CIO) — agentic grid AI, largest wind/solar company
+- Maersk: Navneet Kapila (CDO) — agentic logistics AI, freight operations
+- GE Appliances: Kevin Nolan (CEO) — 800+ agents in production
+- Slalom: NA Salesforce Practice Lead — Agentforce evaluation partner
+
+### Tier 3: Q3 2026 Outreach
+
+Healthcare: Epic (Seth Hain), HCA (Sherri Neal), CommonSpirit  
+Cybersecurity: Palo Alto Networks (Nir Zuk), SentinelOne  
+Retail: Kroger (Yael Cosset), Walmart (Cheryl Ainoa), Shopify  
+Supply Chain AI: Blue Yonder (Duncan Angove), o9 Solutions (Chakri Gottemukkala)  
+HR Tech: HiredScore (Athena Karp), Workday enterprise customers  
+Media: Spotify (Gustav Söderström), Condé Nast  
+Government: GSA, Leidos Health IT, Booz Allen Hamilton AI CoE  
+
+---
+
+## SECTION 4: WHAT STRAW IS (AND IS NOT)
+
+### Straw IS:
+- The pre-deployment competitive evaluation layer for enterprise AI agent procurement
+- The "Straw Score" that becomes the canonical trust signal for AI agent quality
+- The neutral certification standard that all hyperscalers want their agents to win
+- The NIST AI 800-2 aligned evaluation methodology for enterprise use cases
+- The EU AI Act, California EO N-5-26, NAIC model bulletin documentation generator
+- The verification standard that AI cannot satisfy itself (external, independent)
+- The CI/CD quality gate for AI agents (like SOC 2 for security, but for performance)
+
+### Straw IS NOT:
+- Post-deployment monitoring (that's Braintrust, Galileo, LangSmith — Straw partners with them)
+- An AI agent builder or marketplace
+- A data labeling service (that's Scale AI)
+- A model training evaluation tool (that's Weights & Biases, Evals)
+- A consulting firm that builds AI strategy (that's McKinsey — Straw is their tool)
+- Owned by any foundation model company (neutrality is the product)
+
+### The One-Liner That Closes Enterprise Deals:
+*"Enterprise AI procurement is broken. 95% of AI pilots fail. 41% fail because success criteria were never defined. Straw forces success criteria definition before deployment begins. The rubric is how you win the 5% instead of being the 95%."*
+
+### The Three Defensibility Claims:
+1. **Neutrality**: No foundation model company can run neutral evaluations. Straw can.
+2. **Benchmark Database**: After 3 years of evaluations, Straw's cross-vertical benchmark data is irreproducible.
+3. **Certification Standard**: Once "Straw Certified" appears in RFPs and compliance documentation, it's a standard — not a feature.
+
+---
+
+## SECTION 5: UPDATED PRODUCT ROADMAP PRIORITIES
+
+Based on 323 ticks of research, here is the prioritized product roadmap:
+
+**Must build (Year 1)**:
+1. Core evaluation platform (sandbox, rubric design, scoring, report generation)
+2. Security evaluation tier (adversarial red teaming, prompt injection testing)
+3. Dynamic test case system (no reuse; adversarial test case generation)
+4. Agent provenance verification module
+5. NIST AI 800-2 evaluation methodology alignment + documentation
+6. EU AI Act compliance report generation (Annex III evidence package)
+7. Production correlation tracking (measure Straw score → production performance)
+
+**Build (Year 2)**:
+8. MCP evaluation suite ("Straw Certified: MCP Ready")
+9. Multi-agent orchestration evaluation methodology
+10. Verifiable Credential (VC) generation for certified agents
+11. Forrester Now Tech inclusion + Gartner Hype Cycle listing
+12. Procurement platform integrations (ServiceNow, Ariba, SAP Fieldglass)
+
+**Build (Year 3)**:
+13. ISO/IEC AI agent evaluation standard alignment
+14. FedRAMP Moderate authorization
+15. "State of Enterprise AI Agent Performance" annual benchmark report
+16. Full certification standard governance structure
+
+---
+
+*End of Phase 2 Morning Reading Guide — Updated after Ticks 270-323*
+*Total research: 323 ticks, 5 research sessions, ~22,700 lines*
+
