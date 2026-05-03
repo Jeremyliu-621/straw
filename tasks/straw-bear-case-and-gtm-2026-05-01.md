@@ -18549,3 +18549,88 @@ Core evaluation dimensions for education AI agent selection:
 5. **Accessibility compliance**: Does the agent's output satisfy WCAG 2.1 AA accessibility standards?
 6. **COPPA compliance (K-12)**: Does the agent avoid collecting or exposing any student PII prohibited under COPPA?
 
+
+---
+
+## Tick 255 (2026-05-03T00:32:00Z): Category creation playbook — defining "Competitive AI Evaluation" before anyone else [theme: gtm]
+
+### Why Category Creation Is the Real GTM Prize
+
+The most valuable GTM move Straw can make in 2026 is not winning a customer. It is naming the category that Straw will own.
+
+"Platform selection made in 2026 will determine AI execution capability for the next three to five years" — the same applies to category definition. If Straw names the problem before anyone else, Straw's competitors will forever be described as "trying to do what Straw does."
+
+The goal: by the time Gartner publishes the first "Magic Quadrant for AI Agent Evaluation" or "Hype Cycle for AI Procurement Tooling," Straw's terminology should be in it.
+
+### What "Category Creation" Actually Means
+
+Category creation is not about inventing a new problem — enterprises already experience the AI procurement problem. It is about **naming it**, **quantifying it**, and **owning the vocabulary** that describes it.
+
+**The naming choices** (pick one and commit):
+
+Option A: **"Competitive AI Evaluation"** — descriptive, enterprise-friendly, positions as a process
+Option B: **"AI Selection Science"** — aspirational, scientific framing, positions as a discipline
+Option C: **"Blind AI Competition"** — visceral, memorable, positions as the mechanism
+Option D: **"AI Procurement Intelligence"** — corporate-friendly, fits procurement budget categories
+
+**Recommendation**: Lead with "Competitive AI Evaluation" as the category name (it's the most enterprise-friendly and aligns with procurement terminology) and "AI Selection Science" as the aspirational frame for thought leadership content.
+
+### The Category Creation 4-Step Playbook
+
+**Step 1: Name the problem, not the solution**
+
+The first six months of content should be about the problem, not Straw. "The AI Procurement Visibility Problem" — enterprises make multi-million dollar AI commitments with no independent quality signal. This is what content, speaking, and PR should address.
+
+When the problem is named and recognized, the solution (Straw) emerges naturally.
+
+**Step 2: Commission the research**
+
+Category creators commission the research that defines their category.
+
+"Straw's 2026 State of AI Procurement Study" — survey 300 enterprise CIOs/CDOs on how they currently select AI agents, what evaluation processes they use, how many competitions they've run, and whether they'd trust a third-party evaluation. Publish the results with PR amplification.
+
+Expected findings (based on all prior research):
+- <10% have a formal rubric for AI agent selection
+- <5% have run any competitive evaluation
+- >80% have experienced a disappointment from an AI agent that didn't perform as expected in production
+
+These findings *prove* the category exists. "The AI Procurement Gap: 2026 Study" is Straw's category-defining research paper.
+
+**Step 3: Create the vocabulary**
+
+Every category has vocabulary that the creator owns:
+- "Straw Certified" — the badge that wins competitions and earns
+- "Rubric Scientist" — the role at the intersection of domain expertise and ML evaluation
+- "Evaluation Theater" — what happens when buyers use evaluation to rubber-stamp predetermined decisions (the failure mode Straw prevents)
+- "Blind Competition" — the mechanism: agents compete without knowing the specific task in advance
+- "AI Procurement Gap" — the problem: enterprises lack evaluation infrastructure
+
+Every time Jeremy uses these terms in speeches, articles, and customer conversations, they become industry vocabulary. If competitors use Straw's vocabulary, Straw wins the category war.
+
+**Step 4: Get cited**
+
+The category is real when Gartner, Forrester, or NIST cite Straw's research or methodology. This requires:
+- Consistent, credible research (the State of AI Procurement Study is the first piece)
+- Analyst relationship building (Gartner AI evaluation analyst is the priority)
+- Speaking at Gartner Data & Analytics Summit where analysts are present
+- Submitting methodology papers to NIST AI program for reference
+
+### Timing: The Window Is 18-24 Months
+
+"Platform selection made in 2026 will determine AI execution capability for the next three to five years." This is also true for category definition: whoever names the AI procurement evaluation category in 2026 will own it by 2028.
+
+The enterprise AI spending wave for agentic AI is 18-24 months out (Agentic AI at Peak of Inflated Expectations in 2026 — Trough of Disillusionment in 2027-2028, then Slope of Enlightenment and Plateau of Productivity in 2028-2030). Straw must become the established standard before that wave crests.
+
+If Straw waits until 2028, the enterprise buyers evaluating their first agentic AI agents will already have alternatives. If Straw owns the category in 2026-2027, those same buyers will evaluate with Straw because it's the recognized standard.
+
+### The "What Gartner Will Call This" Exercise
+
+In 2027, Gartner publishes a Cool Vendors or Emerging Technology report. They name a category. What do they call it?
+
+Working from Gartner's naming conventions and current research:
+- "AI Evaluation Platforms" (adjacent to AI Trust, Risk, and Security Management)
+- "Competitive AI Procurement Tools" (adjacent to Sourcing and Procurement Applications)
+- "AI Agent Quality Assurance" (adjacent to AI Engineering)
+
+Straw's job: Ensure that whichever name Gartner uses, the description of the category sounds like Straw's pitch. Influence the framing through research, analyst briefings, and customer case studies that Gartner analysts encounter.
+
