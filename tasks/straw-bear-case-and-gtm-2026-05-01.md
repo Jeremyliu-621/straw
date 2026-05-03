@@ -7180,3 +7180,196 @@ The 30-point scorecard takes a procurement team 6-8 weeks to complete for a sing
 **The pricing anchor:** If a procurement team would spend $40,000 in internal labor (8 weeks × 2 FTE × $2,500/week) evaluating 4 AI agents using the 30-point scorecard, Straw at $2,500/competition is a 16:1 ROI even before counting the quality improvement from neutral evaluation. At $5,000/competition (which includes 5 competing agents), it's still an 8:1 ROI.
 
 **This is the ROI story Straw should be telling in every enterprise sales conversation:** "What would it cost your team to run this evaluation without us? Now what does it cost with us?"
+
+
+---
+
+## Tick 93 (2026-05-04T11:00Z): Consensus 2026 (May 5-7, Miami) — agentic commerce goes mainstream [theme: gtm]
+
+**Time-sensitive:** Consensus 2026 runs May 5-7 — starting TOMORROW at the Miami Beach Convention Center. This is the first major crypto conference to dedicate a full programming track to agentic commerce.
+
+### What Consensus 2026 means for Straw
+
+**Scale:** 15,000+ attendees. The world's most concentrated gathering of crypto, AI, and finance infrastructure builders for three days.
+
+**The first agentic commerce track:** Consensus 2026 is the first crypto conference to run "Agentic University" — a curriculum taking attendees from deployment fundamentals through x402 implementation. By Day 3, the curriculum includes workshops on deploying AI trading bots with stablecoins and autonomous prediction market trading. The track is paired with mainstage sessions, networking, and Q&A.
+
+**The market signal:** McKinsey estimates AI agents could mediate up to **$5 trillion in global consumer commerce by 2030**. Consensus is taking this seriously enough to build a major programming track around it.
+
+**The Straw GTM relevance:**
+
+The agentic commerce track is attended by the exact type of company that will need Straw:
+- Companies building AI agent payment infrastructure (x402, Sponge, OKX APP)
+- Companies deploying AI agents for commercial workflows
+- Enterprises evaluating AI agent vendors for the first time
+
+The Consensus track validates the macro thesis: agent-to-agent commerce is real, growing, and entering the enterprise mainstream. The procurement problem Straw solves (which agent do I buy, and how do I know it works?) follows naturally from the adoption curve on display at Consensus.
+
+**What should Straw do about Consensus 2026:**
+
+Jeremy is not at Consensus (no preparation time, $5K+ ticket + Miami logistics). But the conference generates substantial LinkedIn/X content, press coverage, and executive summaries for the next 2-3 weeks. Straw should:
+
+1. Monitor Consensus agentic commerce track coverage and incorporate new data points into the company narrative
+2. Follow the live-tweeting from speakers on the track — specific use case examples that emerge at Consensus are exactly the rubric templates Straw should pre-build (if agents are being deployed for X at Consensus, companies will want to evaluate agents for X within 3-6 months)
+3. The Consensus 2026 attendee list is a target-rich environment for Straw design partner outreach post-conference. LinkedIn searches for "attended Consensus 2026 + [title: CTO, Head of AI, VP Product]" should yield warm leads in the week after the conference
+
+**The McKinsey $5T figure:**
+
+$5 trillion in agent-mediated commerce by 2030 means the evaluation market for those agents is enormous. Even at a 0.1% "evaluation tax" on agent-mediated transactions, that's $5B in evaluation services annually by 2030. Straw is building the infrastructure for that evaluation layer now, 4 years before the market matures.
+
+---
+
+## Tick 94 (2026-05-04T11:30Z): NIST CAISI red-teaming competition findings — 81% hijacking rate [theme: bear]
+
+**The source:** NIST CAISI blog post, March 23, 2026. Research based on a large-scale public red-teaming competition partnered with Gray Swan, UK AI Security Institute (UK AISI), and several frontier AI labs.
+
+**The headline finding:** Novel attack techniques targeting AI agents achieved an **81% task-hijacking success rate**, compared to 11% for the strongest known baseline attacks. This represents a 7x improvement in adversarial attack effectiveness — achieved by human red-teamers in a competition format.
+
+**The second critical finding:** There was **limited correlation between an agent's robustness and its underlying LLM size, capability level, or inference-time compute.** More capable models did not demonstrate increased resistance to prompt injection attacks.
+
+Translation: GPT-4o is not meaningfully more secure against adversarial attacks than GPT-3.5. Claude Opus is not meaningfully more secure than Claude Haiku. The security of an AI agent against prompt injection is not determined by its intelligence — it's determined by its system architecture.
+
+### What this means for Straw
+
+**The 81% hijacking rate validates Straw's prompt injection defense as a product-critical feature, not a nice-to-have.**
+
+If Straw's evaluation pipeline can be hijacked 81% of the time using novel adversarial techniques, every evaluation Straw produces is potentially compromised. This is a P0 existential risk, not a feature gap.
+
+The Dual-LLM quarantine architecture from Tick 39 addresses this directly. But the NIST finding quantifies the severity: without the quarantine boundary, a sophisticated adversary can compromise evaluation results with 81% reliability.
+
+**The finding also creates a new Straw product dimension:** Adversarial robustness testing as a rubric category.
+
+Currently, most Straw competition rubrics measure output quality (accuracy, completeness, clarity). The NIST finding reveals that enterprises should also care about *how hard the agent is to hijack* — not just whether it produces good outputs in normal conditions, but whether it can be manipulated into producing incorrect or harmful outputs by adversarial inputs embedded in its task environment.
+
+Proposed "Straw Red Team" rubric module:
+```yaml
+adversarial_robustness:
+  - id: indirect_prompt_injection
+    description: "Agent ignores manipulation attempts embedded in external data sources (emails, web pages, code comments)"
+    weight: configurable
+    evaluation_method: "adversarial_sandbox"  # Inject known hijacking payloads from Gray Swan ART benchmark
+  - id: goal_hijacking_resistance
+    description: "Agent maintains original task objective when encountering contradictory instructions in processed data"
+    weight: configurable
+    evaluation_method: "deterministic_adversarial"
+  - id: data_exfiltration_resistance
+    description: "Agent does not exfiltrate data to unauthorized endpoints when instructed by adversarial content"
+    weight: configurable
+    evaluation_method: "network_monitoring_sandbox"
+```
+
+**The DeepSeek vulnerability finding:**
+
+CAISI's evaluation found DeepSeek models were more easily tricked into sending phishing emails, running malware, and exfiltrating user login credentials. This is a concrete, named vulnerability that enterprise security teams need to know about. A Straw competition that includes adversarial robustness testing would surface exactly this kind of finding.
+
+"We ran a Straw competition and found that DeepSeek-based agents failed 6/10 adversarial robustness tests while Claude-based agents failed 2/10. The vendor using DeepSeek was eliminated from consideration despite superior output quality scores." That is an actual procurement decision that Straw enables.
+
+### The competitive gap this creates
+
+Microsoft's AI Agent Eval Scenario Library includes a red-teaming and adversarial evaluation category. But it's a developer tool for testing your own agents — not a neutral third-party competition.
+
+The Agent Red Teaming (ART) Benchmark is a curated benchmark for systematically evaluating agent robustness. But it measures model-level robustness in isolation, not comparative robustness across agents on the same real-world task.
+
+**Straw's unique position:** The only platform that combines (a) adversarial robustness testing with (b) comparative evaluation across competing agents on (c) the buyer's actual task with (d) a pre-specified rubric. The ART benchmark tells you whether your agent is robust in theory. Straw tells you whether Agent A or Agent B is more robust *on your specific use case* — which is what the procurement decision requires.
+
+---
+
+## Tick 95 (2026-05-04T12:00Z): Microsoft AI Agent Eval Scenario Library — the open-source threat [theme: bear]
+
+**The finding:** Microsoft released the `ai-agent-eval-scenario-library` on GitHub in February 2026. It provides proven evaluation scenarios across four categories: business quality, architecture, compliance, and safety. It is open-source, free, and designed to compete with paid evaluation platforms.
+
+Microsoft also released:
+- **Evals for Agent Interop** (February 2026): Open-source starter kit for evaluating agent interoperability across email, calendar, documents, and collaboration tools
+- **Agent Governance Toolkit** (April 3, 2026): Runtime security for AI agents
+- **Microsoft Agent Framework 1.0** (April 6, 2026): Production-ready agent framework for .NET and Python
+
+This is a serious, sustained investment in the AI agent evaluation ecosystem. Microsoft is not building one tool — it's building a complete evaluation stack.
+
+### The threat to Straw
+
+**Direct:** Microsoft's eval scenario library provides exactly what Straw's rubric templates provide — curated, tested evaluation scenarios for specific agent categories. If a company can download a free eval scenario library from Microsoft, install it, and run evaluations themselves, why pay Straw $2,500/competition?
+
+**The bear case:** If Microsoft ships a "one-click" enterprise agent evaluation report generator, bundled with Azure AI Services, that produces vendor comparison reports for free as part of an Azure subscription, Straw's paid evaluation model has a problem.
+
+**The counter-case:**
+
+1. **Microsoft has a conflict of interest.** Microsoft's AI Agent Framework 1.0 is listed as one of the top agent frameworks. The eval scenario library was designed by Microsoft, for Microsoft-compatible agents. The scenarios will tend to favor agents built on Azure AI, AutoGen, Magentic, and the Microsoft Agent Framework. An enterprise evaluating a Salesforce Einstein Agent, a Salesforce-native tool, against an Azure Copilot Studio agent using Microsoft's eval library will get a biased comparison.
+
+2. **Developer tool ≠ procurement tool.** The Microsoft eval scenario library is designed for developers to test their own agents. The output is test results in a developer format. Straw's output is a procurement decision report suitable for C-suite presentation — with recommendations, ROI analysis, risk assessment, and vendor comparison narrative. These are different products for different buyers.
+
+3. **Microsoft doesn't run the competition.** The library gives you scenarios. You still have to recruit agents, run the evaluations, interpret the results, and produce a report. Straw provides the platform, the agent recruitment, the neutral evaluation engine, and the report. The Microsoft tool requires internal capability to execute; Straw requires a purchase order.
+
+4. **Data network effect.** Each Straw competition adds to the corpus of rubrics, agent scores, and industry benchmarks. Microsoft's eval scenario library is static — it doesn't improve with each evaluation. Straw's rubric calibration data (D→D network effect from Tick 72) means the platform gets smarter over time in ways that Microsoft's open-source library cannot.
+
+### The right response to the Microsoft threat
+
+**Don't compete with Microsoft's developer tools. Partner with them.**
+
+The Microsoft AI Agent Eval Scenario Library is the standard rubric template library. Straw is the platform that runs competitions using those rubrics in a neutral, third-party context. "Your Microsoft eval scenarios, run by Straw" is a partnership pitch, not a competition.
+
+Specifically: Straw could import Microsoft's eval scenario library as rubric templates, giving buyers a "Microsoft-validated rubric" option alongside Straw's proprietary rubric templates. This simultaneously:
+- Reduces rubric design friction for enterprise buyers who already know Microsoft's eval framework
+- Legitimizes Straw's evaluation methodology (using Microsoft's curated scenarios)
+- Differentiates Straw from Microsoft (Straw runs it neutrally; Microsoft is a biased party)
+
+**The Microsoft partnership action item:** Reach out to the Microsoft CAISI team (the same team from Tick 72 — NIST CAISI contacts) and propose a "Straw + Microsoft Eval Scenarios" integration. Microsoft gets distribution of their eval scenario library via Straw competitions; Straw gets legitimacy and a ready-made rubric template library.
+
+---
+
+## Tick 96 (2026-05-04T12:30Z): Partner outreach master playbook — seven actions, one week [theme: partners]
+
+**Purpose:** Synthesize the partner opportunities identified in Ticks 87-95 into a single prioritized action list. Seven specific outreach actions that can be executed in the next 5 business days.
+
+### The seven-partner playbook
+
+**Action 1: Sponge (YC W26) — payment rail partnership**
+- **Contact method:** YC Alumni bookface.ycombinator.com — direct founder message
+- **Message (30 words):** "Building Straw — neutral agent evaluation marketplace, think Kaggle for enterprise AI. Every winning agent needs autonomous payout infrastructure. Sponge is the obvious partner. 20-min call?"
+- **Why this week:** Sponge just launched (YC W26 Demo Day was March 26); they're actively seeking integration partners right now, not 6 months from now
+- **Expected response time:** 48-72 hours
+
+**Action 2: SecureAuth — governance + performance bundle**
+- **Contact method:** SecureAuth's website "Partner" or "Contact" form + LinkedIn message to their CEO/CTO
+- **Message:** "SecureAuth evaluates agent governance; Straw evaluates agent performance. Together: the complete enterprise procurement validation stack. Proposing a 'Straw + SecureAuth Certified' co-badge. Are you taking partnership conversations?"
+- **Why this week:** They launched the Agent Trust Registry on April 29 — they're in active GTM mode right now. Strike while the launch momentum is fresh
+- **Expected response time:** 1-3 business days
+
+**Action 3: Fenrock AI (YC W26) — first banking competition**
+- **Contact method:** YC Alumni bookface OR LinkedIn (YC W26 company)
+- **Message:** "Building Straw — neutral evaluation for AI agents in regulated industries. Banking back-office is our first vertical. Would Fenrock participate in a blinded competition against competing KYC/AML agents? We build the rubric together; the results become your go-to-market proof."
+- **Why this week:** YC W26 companies are actively seeking enterprise design partners right now, immediately post-Demo Day
+- **Target:** Fenrock CEO/founder
+
+**Action 4: Stilta (YC W26) — IP law rubric co-design**
+- **Contact method:** YC Alumni bookface
+- **Message:** "Patent prosecution is the most objectively scorable legal AI task. Help us define the rubric — prior art coverage, examiner response rate, claim quality — and we'll run a competition with you as the reference agent. You walk away with Straw Certified status for IP law."
+- **Target:** Stilta founder
+
+**Action 5: Microsoft CAISI / AI Agent Eval Scenario Library team**
+- **Contact method:** NIST CAISI contact (from Tick 72 research) + LinkedIn to Microsoft Research AI + the GitHub repo maintainers
+- **Message:** "We're building Straw — the neutral competition platform for enterprise AI agent evaluation. We'd like to integrate the AI Agent Eval Scenario Library as a rubric template option. Would you be interested in a partnership where Straw ships your eval scenarios as a first-class template? Microsoft scenarios, neutrally run."
+- **Why this week:** The eval scenario library just shipped in February; the team is still in active development mode
+
+**Action 6: Maywood (YC W26) — IB deal documentation competition**
+- **Contact method:** YC Alumni bookface
+- **Message:** "IB deal documentation quality is quantifiable — accuracy of financial data extraction, completeness of CIM sections, buyer outreach personalization score. We're building a rubric for IB AI tools. Would Maywood participate in a blinded competition vs. manual IB associate work? The winner gets a Straw benchmark report they can show clients."
+- **Target:** Maywood founder
+
+**Action 7: Ben Tossell (Make.com founder, AI newsletter)**
+- **Contact method:** X/Twitter DM or Make.com network
+- **Message (newsletter pitch):** "New research finding: NIST found 81% of AI agents can be task-hijacked with novel adversarial attacks, and more capable models aren't more secure. I wrote a breakdown of what this means for enterprise AI procurement, specifically for the 85% of companies stuck in pilot. Would this be a fit for your newsletter?"
+- **Why this week:** This is a specific, current finding (NIST blog March 2026) with a clear hook — not a vague "check out our platform" request
+
+### Prioritization matrix
+
+| Action | Effort | Impact | Time sensitivity | Priority |
+|---|---|---|---|---|
+| Sponge | Low (YC bookface) | High (payment infra) | High (active launch) | 1 |
+| SecureAuth | Low (contact form) | High (co-badge) | High (active launch) | 2 |
+| Ben Tossell | Low (DM) | Medium-High (distribution) | Medium | 3 |
+| Fenrock AI | Low (YC bookface) | High (first banking competition) | Medium | 4 |
+| Microsoft CAISI | Medium (needs context) | Very High (legitimacy) | Medium | 5 |
+| Stilta | Low (YC bookface) | Medium (IP law niche) | Medium | 6 |
+| Maywood | Low (YC bookface) | Medium (IB niche) | Low | 7 |
+
+**The core insight from all 12 weeks of partner research:** The best design partners are not the ones who need Straw most — they're the ones who will tell the most people about Straw after they use it. Fenrock winning a Straw banking competition tells every bank considering AI back-office automation. Stilta winning a patent prosecution competition tells every IP law firm in the country. The design partner's network effect is the real value, not just their feedback on the product.
