@@ -21564,3 +21564,115 @@ Media/entertainment companies need a specialized Straw tier:
 
 This "IP-Safe" certification is something no other evaluation platform offers and is worth $200K-$400K per evaluation for a major media company facing $1B+ copyright litigation exposure.
 
+
+---
+
+## Tick 300 (2026-05-03T00:30:00Z): Data Poisoning Bear Case — The Supply Chain Attack on Straw [theme: bear]
+
+**Research basis**: 250 poisoned documents can implant backdoors leaving general performance unchanged. Poisoning reaches pre-training, fine-tuning, RAG, and agent tooling (full lifecycle). HuggingFace 1.2M+ models = ground zero for supply chain risk. MCP ecosystem tool poisoning and remote code execution flaws identified. Procurement/demand forecasting AI targeted by poisoned models for fraudulent vendor approvals.
+
+### The Straw-Specific Data Poisoning Risk
+
+Data poisoning creates a specific threat to Straw's certification credibility:
+
+**Scenario**: An adversary knows that Straw evaluations select winning agents for large enterprise deployments. They poison the training data of a targeted agent to perform exceptionally on Straw's evaluation conditions — while maintaining a backdoor that activates in specific production conditions (trigger phrases, specific data patterns, seasonal timing).
+
+This is more sophisticated than basic benchmark gaming (Tick 276). Benchmark gaming is an optimization problem. Data poisoning is a security attack. The agent doesn't just perform better on Straw's rubric — it is specifically trained to activate malicious behavior that Straw's evaluation won't detect.
+
+**Real-world mechanism**:
+- Attacker identifies Straw's test case patterns by submitting multiple agents and analyzing evaluation feedback
+- Attacker poisons fine-tuning data to perform well on Straw patterns while embedding backdoor
+- 250 poisoned documents in fine-tuning data = undetectable change to general performance
+- Agent passes Straw evaluation with flying colors
+- Enterprise deploys "Straw Certified" agent
+- Backdoor activates when trigger conditions appear in production
+
+**Score: 7/10** — This is the highest-severity security bear case because it specifically targets Straw's value proposition. Straw's entire brand is "the certification you can trust." A poisoned certification destroys that brand.
+
+### The MCP Supply Chain Attack Vector
+
+The data poisoning research specifically flagged MCP ecosystem tool poisoning and remote code execution flaws. Since Straw is building MCP evaluation capability (Tick 294), Straw itself could be attacked via MCP:
+
+- Straw's evaluation sandbox imports MCP tools to test agent behavior
+- An attacker poisons an MCP server that Straw uses in sandbox evaluation
+- The poisoned MCP server gives malicious agents artificially high performance scores
+- Or: the poisoned MCP server exfiltrates Straw's test case library, enabling future gaming
+
+This is a Straw security vulnerability, not just an agent-level risk.
+
+### Mandatory Defenses
+
+1. **Agent provenance verification**: Before evaluating any agent, Straw verifies the agent's training data provenance. Partners with HuggingFace, model hosts, and foundation model providers to confirm training data lineage.
+
+2. **Behavioral consistency testing**: Run the same agent in 5 different environmental configurations. Any agent that performs dramatically differently across configurations is flagged. Poisoned backdoors typically activate in specific conditions — consistency testing surfaces inconsistency.
+
+3. **MCP server allowlist**: Straw's evaluation sandbox only connects to MCP servers on a curated, audited allowlist. No third-party MCP servers in production evaluations.
+
+4. **Post-certification monitoring partnerships**: Straw partners with post-deployment monitoring tools (Braintrust, Galileo) to receive alerts when certified agents show anomalous production behavior. If a Straw-certified agent starts behaving anomalously, Straw gets notified and can revoke certification.
+
+5. **Red team the red team**: Straw hires an external security firm to attempt to compromise Straw's own evaluation methodology. Publish the results (with successful attacks disclosed after patching). This proactive transparency is the credibility insurance policy.
+
+---
+
+## Tick 301 (2026-05-03T00:31:00Z): Analyst Coverage Strategy — Getting on Gartner and Forrester Radar [theme: gtm]
+
+**Research basis**: Gartner predicts 40% of enterprise apps will have task-specific AI agents by year-end 2026 (up from <5% in 2025). No existing Gartner Magic Quadrant or Forrester Wave for "AI Agent Evaluation Platforms." Analysts are tracking AI agent orchestration, governance, and observability. Forrester predicts AI agents will reshape business models in 2026.
+
+### The Analyst Coverage Opportunity
+
+Gartner and Forrester have not yet published a Magic Quadrant or Forrester Wave for "AI Agent Evaluation" or "Competitive AI Evaluation." This is the category creation window:
+
+**How enterprise software categories get created**:
+1. Multiple vendors independently develop similar products
+2. Analysts notice the pattern and begin researching the emerging category
+3. Analysts publish "Market Guide" (Gartner) or "Now Tech" report (Forrester) naming the category
+4. The named category creates buying cycles — enterprises search for vendors in the new category
+5. Eventually, the category becomes mature enough for a Magic Quadrant or Wave
+
+Straw is in step 1-2. The goal is to accelerate to step 3 by engaging analysts proactively.
+
+### The Analyst Briefing Strategy
+
+**Gartner Analysts to Brief**:
+- **Avivah Litan** (VP Distinguished Analyst, AI Governance and Security) — covers AI governance, exactly where Straw lives
+- **Erick Brethenoux** (Distinguished VP Analyst, AI) — covers enterprise AI strategy and adoption
+- **Bern Elliot** (VP Analyst, AI and Machine Learning) — covers AI implementation patterns
+
+**Forrester Analysts to Brief**:
+- **Brandon Purcell** (VP Principal Analyst, AI) — leads Forrester's AI research practice
+- **Rowan Curran** (Principal Analyst, Enterprise AI) — covers AI deployment and governance
+
+**IDC Analysts to Brief**:
+- **Ritu Jyoti** (Group VP, AI Research) — influential in enterprise AI market sizing
+
+**Briefing approach**:
+1. Request analyst inquiry (15 minutes) to brief on Straw's category
+2. Frame Straw as "a new category: pre-deployment competitive AI agent evaluation"
+3. Share preliminary data (design partner evaluations, customer testimonials)
+4. Ask analyst to include Straw in any future research on AI governance tools
+
+### The Research Partnership Play
+
+Gartner's "Hype Cycle" reports include emerging technology and vendor categories. Being included in the Gartner Hype Cycle for AI Agents or AI Governance gives Straw:
+- Vendor visibility in 10,000+ enterprise reports
+- Legitimacy signal to enterprise procurement teams who check Gartner before buying
+- Research coverage that outlasts any individual marketing campaign
+
+**Path to Hype Cycle inclusion**: 
+1. Brief Avivah Litan on Straw's category
+2. Offer Straw as a case study in an upcoming Gartner research note
+3. Get cited in a Gartner "Market Guide for AI Governance Tools" as a vendor
+4. Progress to Hype Cycle "Innovation Trigger" positioning
+
+**Timeline**: 12-18 months from first analyst briefing to Hype Cycle inclusion. Start immediately.
+
+### The Forrester Wave Acceleration
+
+Forrester publishes Waves for enterprise software categories. The path to a Forrester Wave:
+1. Briefings with 2-3 Forrester analysts covering adjacent categories
+2. Sponsoring a Forrester Forum in the AI governance track (conferences = analyst relationship building)
+3. Being listed as an "Emerging Vendor" in a Forrester Now Tech report ($500-$5000 to include in the report)
+4. Winning a spot on the Wave when the category matures (2-3 years)
+
+**Key insight**: Forrester Now Tech reports are specifically for emerging categories where a Wave doesn't exist yet. Straw should actively pursue inclusion in the next "Now Tech: AI Governance Tools" report — it costs a small fee and puts Straw in front of Forrester's enterprise client base.
+
