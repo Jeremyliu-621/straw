@@ -20935,3 +20935,88 @@ Publishing this manifesto is itself a marketing asset. The enterprise procuremen
 
 Sources: (synthesis from Phase 2 research + enterprise security requirements)
 
+
+---
+
+## Tick 334 (2026-05-04T08:00Z): Ramp as design partner — the Modal connection + internal vs. external agent decision [theme: partners]
+
+### What Ramp built (January 2026)
+
+Ramp's internal coding agent "Inspect" powers 30-60% of all merged PRs across frontend and backend. Built on Modal (Erik Bernhardsson's platform). Background agent with full development environment access: databases, CI/CD, monitoring, feature flags. Sandboxed VMs on Modal.
+
+**Ramp built their own agent rather than deploying Devin/Claude Code/etc.** This tells us: Ramp believes their specific codebase/workflow requires custom tooling. But the question remains: is their internal agent actually better than Devin for their specific tasks? They have no counterfactual.
+
+Also: Ramp launched a fleet of AI procurement agents (April 29, 2026) to automate vendor sourcing, contract review, compliance checks. Ramp is now both an AI agent OPERATOR (their procurement agents) AND an AI agent BUYER (their engineering stack).
+
+### The two Straw competitions for Ramp
+
+**Competition A (engineering):** Ramp's internal agent (Inspect) vs. Devin vs. Claude Code — 50 real engineering tasks from Ramp's backlog. Does Inspect beat the external alternatives, or is Ramp over-indexing on custom tooling? Result: either validates their internal investment or reveals a cheaper external option.
+
+**Competition B (procurement):** Ramp's procurement agents vs. Lio (A16z-funded) vs. Zip — 20 real vendor sourcing tasks. Which procurement AI delivers more accurate vendor recommendations? Ramp already evaluates vendors using their own agents — this is the meta-competition.
+
+### The Ramp outreach via Modal
+
+**The warm path:** Erik Bernhardsson (Modal) is the Straw design partner most likely to know Ramp's engineering team. Ramp's blog post about building Inspect mentions Modal explicitly: "How Ramp built a full context background coding agent on Modal." This is on Modal's blog.
+
+**The pitch to Erik (via Twitter @bernhardsson):**
+> "Erik — Ramp built Inspect on Modal, powering 30-60% of their PRs. Straw could run a competition showing whether Inspect outperforms external alternatives on Ramp's actual codebase. That's a data point Modal would probably love to have too (Modal as infra for the winning agent). Does this sound interesting?"
+
+If Erik connects Straw with Ramp, Straw gets its most technically credible design partner: a company that already understands agents deeply enough to build their own.
+
+**Updated partners: #56 — Ramp engineering team (Zach Bruggeman, Inspect team)**
+
+Sources: infoq.com/news/2026/01/ramp-coding-agent-platform, modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal, pymnts.com/news/b2b-payments/2026/ramp-launches-ai-agents-to-automate-corporate-procurement
+
+---
+
+## Tick 335 (2026-05-04T08:20Z): Enterprise AI vendor scoring — the 30-point scorecard vs. Straw [theme: GTM + bear]
+
+### What enterprises currently use for AI vendor evaluation
+
+**The 30-point enterprise scorecard (AINinza 2026)** evaluates AI vendors on:
+- Technical fit (API execution, integration capabilities)
+- Data and privacy (governance, security controls)
+- Governance and safety (human-in-the-loop, audit trails)
+- Commercial terms (pricing model, lock-in risk)
+- Measurable business value (ROI evidence)
+- Implementation readiness (deployment timeline, internal dependencies)
+
+This is a STATIC scorecard. It asks vendors to self-report on these dimensions, then grades them.
+
+**The critical insight:** "Most enterprise AI RFPs fail because vendors are compared on demos, brand strength, or feature breadth before the organization agrees on what evidence should actually decide the outcome."
+
+### The scorecard vs. competition contrast
+
+| Dimension | 30-Point Scorecard | Straw Competition |
+|---|---|---|
+| Evidence basis | Vendor self-report | Actual task performance |
+| Bias risk | High (vendors optimize for scorecard) | Low (rubric is enterprise-defined, executed independently) |
+| Speed | 2-8 weeks | 72 hours |
+| Cost | 40+ person-hours of evaluation | $5K competition fee |
+| Result validity | Depends on rubric quality + vendor honesty | Deterministic + LLM + investigator pipeline |
+| Reproducibility | Zero (subjective) | Full trace logs, reproducible |
+
+**Straw is the scoring mechanism the enterprise scorecard was trying to proxy.** Instead of asking "does this vendor have production AI deployments?" (scorecard question), Straw asks "does this vendor's AI solve our specific production tasks?" (competition result).
+
+### The enterprise procurement officer persona for Straw
+
+Who actually USES the 30-point scorecard? Not the VP Engineering — they don't have time for 30-point matrices. The person using the scorecard is:
+
+**Chief Procurement Officer (CPO)** or **Head of Technology Procurement** — they run the formal RFP process. They're under pressure to prove due diligence. A Straw competition report IS their due diligence documentation.
+
+This adds a second buyer persona beyond VP Engineering:
+1. **VP Engineering / Head of AI:** Wants to know which agent is technically best. Cares about performance.
+2. **CPO / Technology Procurement:** Wants documented evidence of rigorous evaluation. Cares about process defensibility.
+
+The same Straw competition report serves both: the VP Engineering uses it to make the technical decision, the CPO uses it to defend the decision in procurement review.
+
+### The "procurement automation market" bear case
+
+From earlier: Ramp's procurement agents handle vendor sourcing, contract review, compliance. Lio (A16z $30M) automates enterprise procurement. If AI procurement agents become the standard, they might ALSO automate the AI agent vendor selection process.
+
+But: automating "which AI agent to buy" requires evaluating AI agent performance on real tasks — which is exactly what Straw does. The AI procurement agents would NEED Straw's evaluation infrastructure to make the selection. Rather than competing, Ramp's procurement agents would call Straw's API to run the competition and receive the winner recommendation.
+
+**The final form:** Straw's evaluation pipeline becomes the AI procurement agent's evaluation backend. Enterprises don't even run Straw directly — their procurement AI runs Straw as an API call.
+
+Sources: aininza.com/blog/index.php/ai-vendor-evaluation-framework-2026-enterprise-scorecard, dunnixer.com/insights/articles/the-six-dimensions-of-ai-vendor-evaluation-that-matter-most, ramp.com/blog/procurement-ai-agents
+
