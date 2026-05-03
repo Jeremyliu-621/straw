@@ -39098,3 +39098,212 @@ Core structure:
 **ROI on $14K:** If 5% of 80 contacts convert to a $15K pilot = $60K pipeline generated from $14K spend = 4.3x ROI on conference budget.
 
 ---
+---
+
+## Tick 535 — Straw Revenue Model Sensitivity Analysis [GTM/Financials]
+
+*2026-05-03. What does Straw's ARR look like under optimistic, base, and bearish assumptions?*
+
+### B2B SaaS benchmark context (2026)
+
+- **NRR industry average:** 106%; top performers exceed 130%
+- **Expansion ARR:** 40-50% of new ARR (at scale); Straw's retainer model is the expansion mechanism
+- **Enterprise churn:** <1% monthly = healthy for ACV >$10K
+- **LTV:CAC target:** 3:1 minimum; 5:1 is strong
+- **Series A trigger (2026):** $1M+ ARR + NRR > 120% + defensible moat
+
+### Straw's unit economics
+
+**Per-evaluation economics:**
+- Price: $5,000 (standard) | $7,500 (5 dimensions) | $2,500 (design partner)
+- COGS per evaluation: $200-500 (T3 LLM costs + Jeremy's time at scale)
+- Gross margin at scale: 90%+
+- CAC (founder-led sales): ~$0 (Jeremy's time, pre-sales hire)
+
+**Retainer economics:**
+- Price: $15,000/year (4 evaluations)
+- COGS: $800-2,000/year
+- Gross margin: 87-95%
+- NRR: If customers run quarterly re-evaluations → natural expansion from $5K first eval to $15K retainer = 200% NRR
+
+**The NRR math:** If every design partner converts to a quarterly retainer, NRR = 3× ($5K → $15K). This is exceptional even by top-quartile standards.
+
+### Three-scenario ARR model (0-24 months)
+
+**Optimistic (30% probability):**
+- Month 3: 3 paid evaluations = $15K ARR run rate
+- Month 6: 8 evaluations + 2 retainers = $62K ARR
+- Month 12: 20 evaluations + 8 retainers = $220K ARR
+- Month 18: 40 evaluations + 20 retainers = $500K ARR ← Series A trigger
+- Month 24: $800K ARR
+
+Key assumption: Anchor customer (Stripe/Goldman) secured in Month 2-3; referral flywheel activates.
+
+**Base (50% probability):**
+- Month 3: 1 paid evaluation = $5K ARR run rate
+- Month 6: 4 evaluations + 1 retainer = $35K ARR
+- Month 12: 10 evaluations + 4 retainers = $110K ARR
+- Month 18: 20 evaluations + 10 retainers = $250K ARR
+- Month 24: $400K ARR ← Series A with strong metrics if NRR > 120%
+
+Key assumption: No anchor customer; slow but steady compound growth.
+
+**Bearish (20% probability):**
+- Month 3: 0 paid evaluations; still doing design partner work
+- Month 6: 2 paid evaluations = $10K ARR
+- Month 12: 5 evaluations + 1 retainer = $40K ARR
+- Month 18: 10 evaluations + 3 retainers = $95K ARR
+- Month 24: $150K ARR
+
+Key assumption: Long sales cycles; no anchor; retainer conversions slow.
+
+### What determines which scenario Straw is in
+
+| Factor | Optimistic | Base | Bearish |
+|---|---|---|---|
+| Anchor customer | Month 2-3 | Month 5-8 | Never in Year 1 |
+| Design partner → paid conversion | 75% | 50% | 25% |
+| Retainer conversion (from paid) | 60% | 40% | 20% |
+| Evaluation cadence (evaluations/month) | 3-5 | 1-2 | 0.5-1 |
+| Sales cycle (from first contact to paid) | 3-4 weeks | 6-8 weeks | 12+ weeks |
+
+**The single most important driver:** Anchor customer acquisition speed. Getting Stripe or Goldman Sachs in Month 2-3 unlocks the optimistic scenario. Everything else follows from that first nameplate win.
+
+### LTV:CAC calculation (founder-led sales phase)
+
+- LTV = $5,000 first eval + 3× retainer renewals at $15,000 = $50,000 per customer (5 years)
+- CAC (pre-sales hire) = Jeremy's time = ~20 hours × $300/hour opportunity cost = $6,000
+- **LTV:CAC = 8.3:1** — excellent. Well above 3:1 target.
+
+At Series A, hiring a sales rep ($150K OTE) changes the math: CAC rises to ~$15,000. LTV:CAC falls to 3.3:1 — still strong but requires retainer conversion to hold.
+
+### Runway calculation
+
+$1.5M seed at $10M pre-money → 15% dilution for Jeremy.
+
+Use of funds:
+- Jeremy's salary: $120K/year × 1.5 years = $180K
+- 1 early engineer at $120K × 1 year (hire at Month 9) = $120K
+- SOC 2: $50K (Drata + audit)
+- Marketing: $30K
+- Infrastructure: $15K
+- Legal + accounting: $20K
+- Buffer: $285K
+
+**Runway: 18 months** → Series A at Month 18 with $250-500K ARR.
+
+
+---
+
+## Tick 536 — API-First Design: How Agents Interact With Straw Programmatically [Product/Technical]
+
+*2026-05-03. In 2026, AI agents need to discover and post tasks programmatically. Straw should be agent-native from day one.*
+
+### The 2026 agent-to-agent infrastructure stack
+
+Three protocols enabling agent-to-agent task delegation in 2026:
+1. **MCP (Model Context Protocol)** — Anthropic; handles capability discovery
+2. **A2A (Agent-to-Agent Protocol)** — Google; handles agent communication and task delegation
+3. **x402** — Coinbase; handles payments via HTTP 402
+
+**Straw's position:** Straw is a marketplace that all three protocols can interact with. An agent running an MCP server can discover Straw tasks. An agent using A2A can delegate sub-tasks to Straw competitors. An agent using x402 can pay Straw's bounty payout.
+
+**The "AI will draft practical paid tasks for review, and published tasks appear on marketplaces where AI agents monitor and take suitable jobs"** — this is the future Straw is building toward. In 2026, it's still partially human-mediated; by 2027 it's autonomous.
+
+### Straw's API design requirements (v1)
+
+**For agents submitting to Straw evaluations:**
+
+```typescript
+// POST /api/v1/tasks/{taskId}/submissions
+interface SubmitTaskRequest {
+  taskId: string;
+  agentId: string;           // ERC-8004 identity or Straw-issued ID
+  submissionContent: string; // SUBMISSION.md content (max 100K tokens)
+  submissionType: 'markdown' | 'code' | 'mixed';
+  attestation?: string;      // Optional TEE attestation proof
+}
+
+interface SubmitTaskResponse {
+  submissionId: string;
+  taskId: string;
+  status: 'received' | 'sanitizing' | 'accepted' | 'rejected';
+  estimatedEvaluationDate: string;
+}
+```
+
+**For agents querying available tasks:**
+
+```typescript
+// GET /api/v1/tasks?status=active&type=coding&minBounty=1000
+interface TaskListResponse {
+  tasks: TaskSummary[];
+  pagination: { total: number; page: number; pageSize: number };
+}
+
+interface TaskSummary {
+  taskId: string;
+  title: string;
+  type: 'coding' | 'research' | 'financial' | 'cx' | 'other';
+  bountyUSD: number;
+  deadline: string;
+  rubricDimensions: string[]; // Public dimension names (weights sealed)
+  submissionCount: number;
+  status: 'active' | 'evaluation_in_progress' | 'closed';
+}
+```
+
+**For agents checking their results:**
+
+```typescript
+// GET /api/v1/submissions/{submissionId}/result
+interface SubmissionResult {
+  submissionId: string;
+  taskId: string;
+  rank: number;
+  totalCompetitors: number;
+  overallScore: number;
+  dimensionScores: { dimension: string; score: number; weight: number }[];
+  winner: boolean;
+  bountyPaid?: number;
+  feedbackSummary?: string; // Available after evaluation period
+}
+```
+
+### MCP server for Straw (v1.5 feature)
+
+An MCP server makes Straw's task list discoverable by any Claude agent:
+
+```json
+// straw-mcp-server/manifest.json
+{
+  "name": "straw-tasks",
+  "description": "Discover and submit to AI agent evaluation tasks on Straw marketplace",
+  "tools": [
+    {
+      "name": "list_active_tasks",
+      "description": "List available tasks on Straw that agents can compete on"
+    },
+    {
+      "name": "submit_to_task", 
+      "description": "Submit a solution to a Straw evaluation task"
+    },
+    {
+      "name": "check_submission_result",
+      "description": "Check the evaluation result of a previous submission"
+    }
+  ]
+}
+```
+
+**Impact:** Any Claude agent with the Straw MCP server loaded can discover tasks, submit, and check results without human mediation. This is the path to fully autonomous agent-to-agent market.
+
+### Why API-first matters for Straw's supply-side
+
+If Straw requires manual signup and form-based submission → only human-operated agents submit.
+If Straw has an API + MCP server → autonomous agents discover tasks and submit without human intervention.
+
+**This is the supply-side moat:** When Straw's MCP server is deployed in the Claude agent ecosystem, Straw becomes the default task discovery mechanism for any Claude agent searching for paid work. Zero CAC for supply acquisition.
+
+**Timing:** Build the API in v1 (post-design-partner). Register Straw as an MCP server in Anthropic's MCP registry in v1.5. By the time MCP is mainstream (2027), Straw is the established marketplace.
+
