@@ -12842,3 +12842,102 @@ The evaluation market hasn't yet had its "Salesforce moment" — the company tha
 
 **The exit risk:** If Braintrust, Maxim AI, or Scale Labs adds a "competition/procurement" feature before Straw has market traction, they capture Straw's market with their existing enterprise relationships. **This is the most important reason to move NOW rather than wait for product perfection.**
 
+---
+
+## Tick 190 (2026-05-03T21:00Z): YC S26 "Economically Useful Evals" — Straw is the RFS answer [theme: gtm/partners]
+
+### YC Summer 2026 Requests for Startups — the 15 categories
+
+Y Combinator published its Summer 2026 Requests for Startups in late April 2026. The batch has 15 categories — 8 require hardware/capital (agriculture robots, counter-drone defence, lunar manufacturing, semiconductor supply chain, inference chips for agents, space electronics, AI personalised medicine, AI for low-pesticide agriculture). The 7 software-relevant categories are:
+
+1. **Company Brain and the AI OS for Companies** — a living map of how a company works; AI OS that turns company artifacts into a closed loop agents can reason over and act on
+2. **Software for Agents** — "The next trillion users on the internet won't be people, they'll be AI agents" — rebuild every software category for AI agents: APIs, MCPs, CLIs, machine-readable documentation, identity, permissions, payments
+3. **SaaS Challengers** — use AI coding to attack big, hard SaaS categories (ERP, chip design, industrial control systems, supply chain management)
+4. **Dynamic Software Interfaces** — software as primitives users and agents customize; users become their own forward-deployed engineers
+5. **Economically Useful Evals** — moving beyond simple benchmarks to evaluation systems that **prove real-world business ROI**
+6. **Selling to Huge Companies** — "AI makes Fortune 100 enterprise sales accessible to year-one teams"; the most underrated S26 category per VC Cafe
+7. **AI Personalised Medicine / Low-Pesticide Agriculture** (vertical AI)
+
+**"Economically Useful Evals" is the Straw category by definition.** YC's description: "moving beyond simple benchmarks to evaluation systems that prove real-world business ROI." This is the verbatim Straw pitch. The fact that YC published this as a named RFS category in April 2026 confirms: (a) the market need exists, (b) no compelling solution has emerged yet, (c) YC will fund the winner.
+
+### YC S26 as Straw's distribution channel — three pathways
+
+**Pathway 1: Apply to YC S26 directly.** S26 applications open soon (batch starts ~June/July 2026). Jeremy should apply. The pitch narrative writes itself: "YC asked for 'Economically Useful Evals.' Straw is the answer: B2B marketplace where enterprises post real tasks, agents compete, and the score proves ROI. We're not a benchmark library — we're the procurement layer that makes the buying decision defensible." $500K on $5M cap, YC network, Demo Day LP investor exposure.
+
+**Pathway 2: YC W26 batch companies as supply-side recruits.** YC W26 (March 2026 Demo Day) had 196 companies. The AI agent and evaluation cluster from W26 includes confirmed companies: Rubric AI (Pragya Saboo, agent evaluation), Salus (agent governance), Agentic Fabriq (multi-agent orchestration), Cascade (agent security policies). These are exactly the agent operators who benefit from Straw Certified badge — they want customers to trust their agents, and winning a Straw competition gives them verifiable credentials. Jeremy should be at every W26 Demo Day networking event.
+
+**Pathway 3: YC S26 companies as first buyers.** Companies in the S26 "Selling to Huge Companies" category are building enterprise AI products and need to prove their performance to enterprise buyers. They're the exact buyer profile: technical founder, AI-native, enterprise GTM, needs to prove "our agent wins on your real data." Straw as their sales weapon: "We passed a Straw competition at Acme Corp — want to run one at your company?"
+
+### The YC application frame: "Economically Useful Evals" is Straw
+
+YC's RFS language translates directly to Straw's pitch deck:
+
+| YC Language | Straw Translation |
+|---|---|
+| "Moving beyond simple benchmarks" | No more SWE-bench; Straw uses YOUR tasks |
+| "Evaluation systems that prove real-world business ROI" | Competition winner = deployment contract |
+| "Software for Agents: identity, permissions, payments" | Straw handles all three for the competition layer |
+| "Selling to Huge Companies" | Straw's competition format is the F500 enterprise sale |
+| "Company Brain: living map of how a company works" | Straw's rubric library maps what winning looks like for each function |
+
+**The YC anti-portfolio risk for Straw:** If YC funds another "Economically Useful Evals" startup from the S26 batch, that company gets $500K, YC brand, and Demo Day exposure before Straw. Jeremy has 6-8 weeks before S26 applications close to either apply or cement enough design partner traction to be uncatchable.
+
+### Design partner outreach through YC channels
+
+Specific actions:
+- **Email Garry Tan directly** with the Straw pitch + "I saw the S26 RFS Economically Useful Evals category — Straw is the answer, not a demo, actual traction." Garry tweets about enterprise AI evaluation weekly.
+- **YC W26 alumni Slack**: Post in the #b2b-enterprise or #founders channel: "Looking for teams using AI agents in production who want to prove performance to enterprise buyers." 5-10 W26 companies will DM.
+- **YC Startup School 2026** (announced by YC LinkedIn post, May 2026): Attend in person. This is the highest-density gathering of AI founders in 2026.
+- **YC Forum (news.ycombinator.com)**: Post: "Ask HN: What does your company use to evaluate AI agents before buying?" This surfaces lurkers who are already struggling with this exact problem.
+
+Sources: [VC Corner YC S26 All 15 Categories](https://www.thevccorner.com/p/yc-summer-2026-requests-for-startups-ideas), [VC Cafe S26 Edition](https://www.vccafe.com/2026/04/28/requests-for-startups-summer-2026-edition/), [Superframeworks YC S26 Hard-Tech Pivot](https://superframeworks.com/articles/yc-summer-2026-rfs-hard-tech-pivot), [YC Startup School 2026](https://events.ycombinator.com/startup-school-2026)
+
+---
+
+## Tick 191 (2026-05-03T21:15Z): Enterprise AI spend $547B wasted — the "wrong model selection" bear case and Straw thesis [theme: bear]
+
+### The $547B waste data point — bear or bull for Straw?
+
+From 2025 data: Enterprises spent $684B on AI in 2025. By year-end, **more than $547B (80%) produced no measurable business results.** The specific breakdown:
+- 80% of AI projects fail to deliver measurable business value (RAND, Gartner, BCG, McKinsey, MIT all converge on this figure)
+- 95% of generative AI pilots fail to produce measurable ROI
+- $7.2M average sunk cost per abandoned large enterprise initiative (10,000+ employee companies)
+- Large enterprises (10,000+ employees) abandoned an average of **2.3 AI initiatives in 2025**
+- Mid-market firms abandoned 1.1 AI initiatives on average
+
+### The root cause: technology-first selection, not technology failure
+
+This is the critical nuance. Of 140 enterprise AI implementations analyzed: **only 23% of failures were caused by model performance, data quality, or integration complexity.** The other 77% came down to:
+1. **Misunderstood problem definition** — enterprises didn't define what success looks like before selecting a tool
+2. **Technology-first mentality** — selected AI based on "capability hype rather than problem fit"
+3. **Insufficient infrastructure** for deployment and governance
+4. **Strategy and change management failures**
+
+**The bear case read:** Enterprises are so burned out from 2.3 failed AI initiatives that they've stopped buying. "AI fatigue" = smaller TAM. If the $547B waste creates a "we tried AI, it doesn't work" narrative, Straw's procurement platform has no buyers.
+
+**The bull case read (stronger):** Enterprises didn't fail because AI doesn't work — they failed because **they selected AI the wrong way** (capability hype, vendor demos). The 77% "strategy failure" bucket is exactly the problem Straw solves. $547B wasted on bad selection = enormous demand for a selection process that works. Every enterprise that abandoned 2.3 AI initiatives in 2025 is the perfect Straw prospect in 2026: "You spent $7.2M and got nothing. Straw would have cost $50K and given you ground truth before you committed."
+
+### The specific "wrong model selection" failure modes
+
+From enterprise fine-tuning and model selection research:
+- **"Most people reach for fine-tuning too early"** — enterprises spend weeks preparing data + renting GPUs for fine-tuned models when a better-crafted system prompt would have solved the problem in an afternoon. Straw's competition would surface this in 72 hours.
+- **State-of-the-art vs. state-of-appropriate** — enterprises "chased state-of-the-art rather than state-of-appropriate." GPT-4.5 selected for a task that Haiku handles better (and at 1/10th the cost).
+- **42% of companies abandoned AI initiatives in 2025** — not because AI failed technically, but because they couldn't justify ROI to the CFO after the pilot
+- **Emergent misalignment from fine-tuning** (Nature study, 2024): GPT-4o fine-tuned on insecure code produced violent/problematic outputs at 20x the baseline rate. Enterprises fine-tuning on domain data don't know if they've created alignment drift. Straw competitions include safety rubrics that catch this.
+
+### The Straw sales script from this data
+
+**Cold email opener** to enterprise VP of AI or Head of AI Operations:
+
+> "Hi [Name], your company likely abandoned 1-2 AI initiatives in the past 18 months (industry average: 2.3 abandoned per large enterprise). The root cause is almost never model failure — it's selection before testing. Straw runs a 72-hour structured competition on your actual tasks before you sign a vendor contract. You define what winning looks like. Agents compete. You don't buy the demo — you buy the winner. Want to see a sample competition design for [their specific use case]?"
+
+**The $547B wasted = $547B of demand for Straw.** Every abandoned AI initiative is a lost procurement decision that could have been made correctly with a Straw competition first.
+
+### Bear case residual: enterprise procurement paralysis
+
+The specific bear risk from this data: If enterprises respond to failed AI initiatives with **procurement freezes** (refuse to buy any AI until "the dust settles"), Straw's sales cycle extends to 18+ months. The 2025-2026 "AI winter" scenario: CFOs say "freeze all AI spend" after $7.2M write-offs. New purchases require 3-tier approval. Straw at $50K/competition is not a line item a VP of AI can approve unilaterally — it goes to CTO + CFO, adding 6-9 months to close.
+
+**Mitigation:** Price Straw's first 5 design partner competitions at **$0 (research partnership)** to remove procurement barrier entirely. Once they have results from 3 competitions with measurable ROI data, the cost justification writes itself. Free trial → proven ROI → $50K/year contract.
+
+Sources: [Talyx AI Enterprise Failure 2026](https://talyx.ai/insights/enterprise-ai-implementation-failure), [Bonjoy Enterprise AI Guide](https://bonjoy.com/articles/enterprise-ai-implementation-guide/), [Folio3 AI Failure Rate 2026](https://www.folio3.ai/blog/ai-project-failure-rate-stats), [Gauraw Fine-Tuning Guide 2026](https://www.gauraw.com/fine-tuning-llm-lora-dpo-guide-2026/)
+
