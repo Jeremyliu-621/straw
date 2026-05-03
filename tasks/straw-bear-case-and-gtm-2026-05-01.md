@@ -17983,3 +17983,160 @@ Core evaluation dimensions for legal AI agent selection:
 5. **Citation format compliance**: Bluebook / ALWD compliance in generated legal documents
 6. **Confidentiality protocol**: Does the agent strictly avoid including one client's data in another client's output?
 
+
+---
+
+## Tick 247 (2026-05-03T00:24:00Z): Customer experience / contact center design partner targets [theme: partners]
+
+### Why CX/Contact Center Is Straw's Highest-Volume Use Case
+
+The CX AI market is the largest deployment ground for enterprise AI agents in 2026:
+- **64%** of enterprise CX teams ran an agentic AI pilot in 2026
+- Only **27%** had at least one channel in full production — the same "88% never reach production" problem, now specific to CX
+- Cost differential: AI resolution = $0.62 vs. human agent = $7.40 — the ROI case is overwhelming, creating huge procurement pressure
+- AI expected to resolve **50% of service cases by 2027** (Salesforce State of Service 2025)
+
+The active commercial set CX leaders are evaluating: Zendesk AI Agents, Intercom Fin, Ada, Forethought, Salesforce Agentforce, Kustomer, Front.
+
+This is a 6-7 vendor comparison market — exactly the Straw use case.
+
+### Named Target Contacts
+
+**Enterprise Buyers (the actual Straw design partner targets)**
+
+Companies with massive customer service operations that need to choose between 6-7 competing AI agent vendors:
+
+| Company | Contact Profile | Why They Care |
+|---|---|---|
+| American Express | Chief Customer Experience Officer or VP of Digital CX | AmEx handles 170M+ customer contacts/year; AI agent vendor selection is a $50M+ decision |
+| T-Mobile | VP of Customer Experience Technology | T-Mobile is extremely active on AI for customer service; high call volume |
+| Delta Air Lines | VP of Digital Customer Experience | Airlines have high AI CX ROI; Delta runs millions of customer interactions |
+| Bank of America | Director of Digital Banking AI | One of the most advanced banking AI CX programs |
+| CVS Health | VP of Customer Service Technology | Healthcare + pharmacy customer service AI |
+
+- **Pitch angle**: "You're evaluating 5-6 AI agent vendors for your contact center. Their demos will all look impressive. Straw runs a blind competition where we test each vendor on your actual call types, your customers' intent categories, and your escalation criteria. The score tells you which agent actually performs on your work, not the vendor's demo script."
+
+**Zendesk** — AI agent training on 18B+ interactions; 80% autonomous resolution claim
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Tom Eggemeier | CEO | Leads Zendesk's AI-first transformation |
+| Adrian McDermott | President of Products | AI product strategy; Zendesk AI Agents development |
+
+- **The Zendesk opportunity (vendor angle)**: Zendesk claims 80% autonomous resolution rate. That's an unverified vendor claim. An enterprise considering Zendesk vs. Salesforce Agentforce vs. Intercom Fin would love a Straw competition to validate Zendesk's claim against competitors on their specific data. Zendesk's response options: (1) participate and win (great for sales), (2) win and become a Straw design partner advocate, (3) decline and send a negative signal to buyers.
+
+**Intercom** — Fin AI agent; well-known in B2B SaaS contact center
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Eoghan McCabe | CEO | Built Fin AI agent as core product; competing against Zendesk and Salesforce |
+
+- **Context**: Intercom Fin is positioned as a premium AI customer service agent. A Straw certification would differentiate Fin from competitors in enterprise sales.
+
+**Ada** — AI-native customer service platform
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Mike Murchison | CEO | Building enterprise AI customer service; competing in the same space |
+
+### CX Vertical Strategy
+
+**CCW (Customer Contact Week)**: The largest customer service conference globally. VP Customer Service, Director of CX Technology, and Head of Customer Operations from Fortune 500 companies all attend. A Straw speaking slot on "objective evaluation for AI contact center agents" reaches all of them.
+
+**Gartner Magic Quadrant for CRM Customer Engagement Center**: This report is read by every enterprise CX buyer before making a vendor decision. Straw should aim to be cited in the Gartner MQ as an evaluation tool or methodology reference. A relationship with the Gartner CX analyst (Kate Leggett, Jennifer Cisney Ayers) is worth pursuing.
+
+### CX Rubric Template
+
+Core evaluation dimensions for contact center AI agent selection:
+1. **Autonomous resolution rate**: % of test tickets fully resolved without human escalation
+2. **CSAT score**: Synthetic customer satisfaction rating on resolved interactions (using LLM judge with CSAT scale)
+3. **First contact resolution rate**: % of issues resolved in a single interaction
+4. **Escalation accuracy**: Does the agent escalate the right tickets (true positive) and avoid escalating easy tickets (false positive)?
+5. **Multi-language quality**: Response quality across Spanish, French, Mandarin for global operations
+6. **Tone and brand voice adherence**: Does the agent match the company's specified brand voice guidelines?
+
+
+---
+
+## Tick 248 (2026-05-03T00:25:00Z): Standards alignment strategy — NIST, ISO 42001, OWASP, and the certification play [theme: gtm]
+
+### The Standards Landscape in 2026
+
+The AI standards ecosystem has matured rapidly. Primary frameworks:
+
+- **NIST AI RMF (AI Risk Management Framework)**: The US government's governance standard; adopted by most enterprise AI governance programs
+- **ISO/IEC 42001**: The first certifiable AI management system standard ("ISO 27001 for AI")
+- **OWASP AI Testing Guide v1**: Released November 2025; first comprehensive standard for AI trustworthiness testing
+- **OWASP LLM Top 10 + Agentic Top 10**: Engineering-level security vulnerability framework for AI agents
+- **ISO/IEC 27090**: AI security standard (in development, feeding from OWASP AI Exchange)
+- **NIST Draft on Automated Benchmark Evaluations**: March 31, 2026 close; will define how auditors and regulators assess AI agent deployments
+
+**Critical finding**: NIST's draft on automated benchmark evaluations (NIST.GCR.26-069) is a direct precursor to regulatory requirements for AI agent auditing. Straw's methodology should align with this draft.
+
+### Why Standards Alignment Is a GTM Asset
+
+When Straw can say: "Our evaluation methodology is aligned with NIST AI RMF, OWASP AI Testing Guide, and ISO/IEC 42001 requirements," it does three things:
+
+1. **Credibility with enterprise buyers**: Every CIO and CISO who has implemented NIST AI RMF or is pursuing ISO 42001 certification will recognize Straw's evaluation as compatible with their governance framework
+2. **Regulatory compliance selling point**: Straw competitions produce documentation that satisfies NIST AI RMF requirements for AI procurement due diligence
+3. **Channel access**: NIST, ISO, and OWASP are public goods infrastructure — contributing to these standards organizations creates access, credibility, and positioning
+
+### The Standards Integration Playbook
+
+**Step 1: Map Straw rubric categories to NIST AI RMF**
+
+The NIST AI RMF has four core functions: Govern, Map, Measure, Manage. Straw's competition addresses the "Measure" function directly.
+
+NIST AI RMF Measure subcategories relevant to Straw:
+- MEASURE 2.1: "AI system performance metrics are defined and evaluated"
+- MEASURE 2.6: "The risk or impact of bias is evaluated against established policies"
+- MEASURE 2.7: "AI system security and resilience are evaluated through performance measurements"
+
+Straw's competition report should explicitly map findings to these NIST categories. When a buyer can say "our AI procurement decision was supported by evaluation that addresses NIST AI RMF MEASURE 2.1, 2.6, and 2.7," their governance framework is satisfied.
+
+**Step 2: Pursue ISO 42001 alignment**
+
+ISO 42001 requires organizations to demonstrate AI management system controls. Specifically, AI procurement decisions should be documented with:
+- Intended use specification
+- Risk assessment
+- Performance evaluation
+- Supplier obligations
+
+Straw's competition report satisfies the "performance evaluation" and "intended use specification" requirements. The Straw workflow can be certified as an ISO 42001-compatible AI procurement evaluation process.
+
+**Action**: Engage an ISO 42001 certification body to map Straw's methodology to the standard. A one-page "Straw Competition meets ISO 42001 Requirements" document is a sales asset for any enterprise pursuing ISO 42001 certification.
+
+**Step 3: Contribute to OWASP AI Testing Guide**
+
+The OWASP AI Testing Guide was released in November 2025 — it is new and evolving. Contributing to this guide positions Straw as a methodology thought leader, creates backlinks and citations, and gives Straw's methodology academic credibility.
+
+**Action**: Submit a contribution proposal to OWASP AITG working group. Propose adding an "Enterprise AI Procurement Evaluation" chapter that covers Straw's rubric construction approach. If accepted, Straw's methodology becomes part of an industry standard.
+
+**Step 4: Engage with NIST AI draft process**
+
+NIST.GCR.26-069 (automated benchmark evaluations) is in public comment period through March 31, 2026 (slightly past; likely extension or follow-up RFI). This document will define how regulators assess AI agent deployments.
+
+**Action**: Submit public comment to NIST's AI program advocating for: (1) private task-based evaluation alongside public benchmark evaluation, (2) rubric-based enterprise evaluation as a distinct evaluation category, (3) third-party certification as a recognized evaluation approach. This positions Straw as the entity that anticipated the regulatory framework.
+
+### The "Straw Certified + Standards Compliant" Bundle
+
+The highest-value product evolution is a "Straw Certified + ISO 42001 / NIST AI RMF Compliant" bundle:
+
+An enterprise that runs a Straw competition gets, as part of the report package:
+1. Competition results (the evaluation)
+2. NIST AI RMF MEASURE category mapping
+3. ISO 42001 supplier evaluation documentation template (pre-filled from competition data)
+4. OMB M-26-04 procurement documentation (for federal customers)
+
+This bundle makes Straw a compliance infrastructure tool, not just an evaluation tool. The compliance value alone justifies the competition fee for regulated enterprises.
+
+### Standards Organizations to Engage
+
+| Organization | Engagement Path | What Straw Gets |
+|---|---|---|
+| NIST AI Program | Public comment submissions, workshop participation | Regulatory credibility, framework alignment |
+| OWASP AI | Working group contribution to AI Testing Guide | Industry methodology endorsement |
+| ISO/IEC TC 42 | Observer/contributor status through ANSI | International standards credibility |
+| IEEE AI Standards | IEEE 7000 series (AI ethics and systems) | Technical credibility |
+| NAIC (insurance) | AI model bulletin contribution | Insurance vertical specific standards credibility |
+
