@@ -22181,3 +22181,111 @@ This is not just a safety measure — it's a revenue driver. Every recertificati
 
 **Annual recertification revenue from a $2M AI deployment**: $35K-$50K for standard recertification (vs. $100K-$150K for initial evaluation). This is the SaaS revenue component of Straw's model — recurring, predictable, not dependent on new enterprise acquisitions.
 
+
+---
+
+## Tick 312 (2026-05-03T00:42:00Z): TAM Analysis and the "Agent Owner" Buyer Persona [theme: gtm]
+
+**Research basis**: Global AI spending $2.5T in 2026 (Gartner). Enterprise AI market $114.87B in 2026, growing to $273B by 2031 (18.91% CAGR). $307B enterprise AI investment in 2025, $632B by 2028 (30%+ annual growth). 80% of apps embed agent, only 31% run in production = 49-point "deployment gap." Organizations with named "agent owner" role have 2.7x higher production-conversion rate.
+
+### Straw's TAM: The 49-Point Deployment Gap
+
+The most actionable market sizing insight: **80% of enterprises embed AI agents, but only 31% run one in production.** That 49-point gap represents the enterprises that attempted AI agent deployment but failed.
+
+Straw's TAM is the 49% who are in the gap — or rather, the $114.87B enterprise AI market's portion that touches agent selection and deployment decisions.
+
+**TAM calculation approach (bottoms-up)**:
+- 10,000+ large enterprises globally (Fortune 500 + Global 500 + equivalent)
+- Each enterprise makes 2-5 AI agent deployment decisions per year (at current deployment rates)
+- Straw charges $100K-$250K per evaluation
+- Market penetration target: 5% of enterprise AI agent deployments use Straw evaluation
+
+At current deployment rates:
+- 10,000 enterprises × 3 decisions/year × 5% penetration × $150K average deal = **$225M ARR potential** from this TAM segment alone
+
+At "agent as standard deployment practice" rates (2028+):
+- 40% of enterprise apps with task-specific agents (Gartner forecast) = 50,000+ deployment decisions per enterprise per year (different units)
+- Even 1% penetration at $100K = enormous TAM
+
+**Bottom line**: Straw doesn't need to "capture a large % of the enterprise AI market" — it needs to be in the selection decision for a small fraction of large deployments. The TAM is not enterprise AI overall ($114B) but enterprise AI **selection decisions** ($5-15B addressable).
+
+### The "Agent Owner" Buyer Persona Discovery
+
+The research reveals a new organizational role emerging: **the "Agent Owner."** Organizations with a named agent owner have a **2.7x higher production-conversion rate** for AI agents.
+
+The agent owner's role: convert abstract agentic ROI into an accountable function with a P&L. They own the production success or failure of specific AI agent deployments.
+
+**Why the agent owner is Straw's ideal buyer**:
+- They are accountable for deployment success — they want the best evaluation before committing
+- They have a P&L — they can justify Straw as a budget line
+- They are directly harmed by evaluation theater — if the agent fails, it's their failure
+- They are empowered to choose tools — they don't need IT/procurement approval for a $100K evaluation tool
+
+**Profile of the agent owner**:
+- Senior individual contributor or director-level
+- Domain expert who knows the workflow + technical understanding to evaluate agents
+- Often resides in operations, product, or a hybrid function
+- Usually reports to the Chief AI Officer or COO
+
+This is a new buyer persona that didn't exist 18 months ago. Straw should build marketing specifically for agent owners: "You're accountable for this deployment. Straw is how you make sure you chose the right agent."
+
+### The ICP Refinement
+
+Updated ICP based on all research:
+
+**Primary ICP**: Enterprise AI Centers of Excellence at regulated Fortune 500 companies, evaluated on production-scale AI deployment success.
+
+**Emerging ICP**: Named "Agent Owners" at mid-market and enterprise companies, personally accountable for specific AI agent deployment P&L, working without a formal CoE structure.
+
+**Channel ICP**: Systems integrators (Accenture, Slalom, Deloitte) building AI agent practices who need neutral evaluation to defend recommendations.
+
+The primary ICP has the budget and mandate. The emerging ICP has the urgency and accountability. The channel ICP has the distribution. Target all three simultaneously with differentiated messaging.
+
+---
+
+## Tick 313 (2026-05-03T00:43:00Z): Partnership with Post-Deployment Monitoring — Braintrust Co-Sell Strategy [theme: gtm]
+
+**Research basis**: Braintrust: $121M total raised ($80M Series B Feb 2026). Braintrust = post-deployment observability and LLM evaluation for AI teams. Straw = pre-deployment competitive evaluation for enterprise buyers. Different buyers, different moments, different budgets. But the same enterprise customer needs both. Partnership creates full lifecycle coverage.
+
+### The Straw + Braintrust Full Lifecycle Play
+
+The AI agent deployment lifecycle has two gaps that no current tool fills end-to-end:
+
+**Gap 1 (Pre-deployment)**: "Which agent should we choose?" — STRAW
+**Gap 2 (Post-deployment)**: "Is our agent performing as expected in production?" — BRAINTRUST
+
+The same enterprise needs both. They're sequential in the buyer journey. The natural co-sell: "Run a Straw evaluation to choose the best agent. Deploy it with Braintrust monitoring to confirm it performs as Straw predicted."
+
+**Why this partnership benefits both companies**:
+
+For Straw:
+- Braintrust's post-deployment data validates (or challenges) Straw's evaluation accuracy
+- If Straw-certified agents consistently outperform non-certified agents in Braintrust monitoring, Straw has empirical proof of its predictive validity
+- Braintrust has relationships with AI-forward enterprise teams who are Straw's ICP
+
+For Braintrust:
+- Pre-deployment evaluation data from Straw gives Braintrust a baseline to compare against production performance
+- Straw-certified agents coming into production are pre-qualified — Braintrust can offer "Straw Integration Package" (set up monitoring baselines matched to Straw evaluation criteria)
+- Straw provides distribution to enterprise procurement teams that Braintrust (more developer-focused) doesn't have
+
+### The Partnership Structure
+
+**Co-sell agreement**: Straw and Braintrust agree to recommend each other in enterprise deals.
+- Straw field reps mention Braintrust for post-deployment monitoring in every Straw sales call
+- Braintrust customer success mentions Straw when customers ask "how did we evaluate this agent before deploying?"
+
+**Technical integration**: Straw exports evaluation rubrics + performance expectations to Braintrust. Braintrust sets monitoring alerts based on Straw evaluation criteria. "If production performance drops below the 75th percentile threshold Straw certified, alert the agent owner."
+
+**Joint research**: Straw + Braintrust co-author a "Evaluation-to-Production Correlation" study. Key finding (hypothetical but valuable): "Agents that score 90th percentile in Straw evaluation maintain 85th+ percentile in Braintrust production monitoring for 12 months. Agents below 75th percentile degrade to below 60th percentile production performance within 6 months." This data both validates Straw and increases Braintrust's value.
+
+### Other Post-Deployment Monitoring Partners
+
+| Tool | Focus | Partnership Angle |
+|------|-------|------------------|
+| **Galileo AI** | LLM hallucination detection + production monitoring | Straw evaluates hallucination rate pre-deployment; Galileo monitors it post-deployment |
+| **LangSmith** (LangChain) | Agent tracing and observability | LangChain ecosystem agents evaluated by Straw; LangSmith monitors their production behavior |
+| **W&B (Weights & Biases)** | ML experiment tracking + model monitoring | Straw evaluation results integrated into W&B model registry as pre-deployment evaluation record |
+| **Arize AI** | ML observability platform | Arize monitors model drift; Straw's baseline evaluation provides the drift reference point |
+
+**Most valuable partner**: **Galileo AI** — they specialize in hallucination detection, which is Straw's most powerful GTM message ($67.4B in enterprise hallucination losses). Straw pre-deployment hallucination testing + Galileo post-deployment hallucination monitoring = complete hallucination risk management for enterprise.
+
