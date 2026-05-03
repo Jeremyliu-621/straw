@@ -37268,3 +37268,266 @@ Every CAIF priority area is directly relevant to Straw's core mechanism design p
 4. **PR:** "Y Combinator-backed Straw partners with Oxford's CAIF-funded FLAIR lab" = Tech/AI press coverage
 
 ---
+---
+
+## Tick 521 — Galileo AI: Post-Deployment Competitor with $68M Raised [BEAR/Competitive]
+
+*2026-05-03. Galileo is well-funded and capable. They are squarely post-deployment. Here's the full picture.*
+
+### Galileo AI 2026 state
+
+| Metric | Value |
+|---|---|
+| Total funding | $68M |
+| Series B | $45M (October 2024) |
+| Founded by | Google AI, Apple Siri, Google Brain veterans |
+| Key product | Luna-2 evaluation models: 93-97% accurate |
+| Latency | Sub-200ms |
+| Cost | ~$0.02 per million tokens |
+| Free tier | Available (2025 launch) |
+
+**What Galileo does:**
+- LLM-as-judge evaluation distilled into compact Luna models (low-latency, low-cost)
+- Agentic Evaluations: full lifecycle, step-by-step agent process tracing
+- Metrics: tool selection correctness, tool error detection, progress tracing, goal alignment
+- Target: developers running production agents
+
+### Galileo in Straw's competitive quadrant
+
+| | Pre-deployment | Post-deployment |
+|---|---|---|
+| Single agent | Vals AI | **Galileo, Braintrust, Arize, Langfuse, LangSmith** |
+| Multi-agent competition | **STRAW** | None |
+
+Galileo is firmly post-deployment + single agent. Their ideal customer has already deployed an agent and wants to monitor it. Straw's ideal customer hasn't deployed yet and needs to choose one.
+
+**Non-competing, complementary:** Galileo's free tier is the natural continuation after a Straw evaluation. Use Straw to pick the winner → use Galileo to monitor the winner in production.
+
+### Why Galileo can't pivot to pre-deployment competition
+
+Galileo's product architecture is built around tracing running agent executions — it requires a live agent to evaluate. Multi-agent competition requires infrastructure for blind simultaneous evaluation — fundamentally different product design. They'd need to rebuild core functionality to enter Straw's space.
+
+**Additionally:** $68M raised at Series B valuation = Galileo is optimizing for its existing post-deployment market, not entering a new pre-deployment market that competes with their customers (enterprises already deploying agents).
+
+### The Galileo co-marketing angle
+
+**Pitch to Galileo:** "Straw is the pre-deployment evaluation layer that feeds your post-deployment monitoring. When a Straw evaluation recommends Agent X, the enterprise deploys Agent X and signs up for Galileo. You get a warmed-up enterprise customer who already understands the value of agent evaluation."
+
+**Contact #173: Vikram Chatterji** — Galileo CEO. Potential co-marketing partner. LinkedIn: galilo.ai/about (check LinkedIn for contact).
+
+### The $68M signal for fundraising
+
+Galileo's $68M series B (for post-deployment evaluation) is evidence that AI agent evaluation infrastructure is fundable at serious scale. Straw's pre-deployment evaluation market is adjacent and arguably more urgent (fail earlier = cheaper). This is evidence for investors that the category warrants venture capital.
+
+**Pitch line:** "Galileo raised $68M for post-deployment agent evaluation. We're building pre-deployment. The two are complementary — and the pre-deployment market is larger because every production agent was first a procurement decision."
+
+
+---
+
+## Tick 522 — AI Governance Standards (ISO 42001 + NIST AI RMF): Straw as Compliance Infrastructure [GTM]
+
+*2026-05-03. ISO 42001 is certifiable. NIST AI RMF is voluntary but standard. Straw's evaluations produce compliance evidence for both.*
+
+### The three-framework landscape (2026)
+
+| Framework | Type | Geographic scope | Certification? |
+|---|---|---|---|
+| NIST AI RMF | Voluntary US guideline | US (adopted globally) | No |
+| ISO/IEC 42001 | Certifiable international standard | Global | Yes (BSI, DNV, TÜV) |
+| EU AI Act | Mandatory regulation | EU + applies to EU exports | Yes (for high-risk AI) |
+
+**Integration timeline for most US enterprises:**
+- 3-6 months: NIST AI RMF (risk management foundation)
+- +2-4 months: ISO 42001 certification
+- +2-4 months: EU AI Act (if EU exposure)
+
+**Total compliance journey: 7-14 months.** This is an active enterprise budget item.
+
+### How Straw produces compliance evidence
+
+**NIST AI RMF — Four functions:**
+- **Govern:** AI policies and accountability → Straw's rubric = documented evaluation policy
+- **Map:** Identify AI risks in context → Straw's T3 investigator flags risks in submissions
+- **Measure:** Evaluate AI performance → Straw's tiered evaluation IS the measurement
+- **Manage:** Implement risk controls → Straw's winner recommendation = documented control decision
+
+**ISO 42001 — Key clauses:**
+- Clause 8 (Operation): "Organizations shall evaluate AI systems before deployment" → Straw evaluation = clause 8 evidence
+- Clause 9 (Performance Evaluation): Monitoring and measurement → Straw's quarterly re-evaluation feeds this
+- Clause 6 (Planning): Risk-based approach to AI procurement → Straw's rubric defines what "safe enough" looks like
+
+**EU AI Act (high-risk systems):**
+- Technical documentation requirement → Straw's evaluation produces timestamped, auditable documentation
+- Testing before deployment → Straw's evaluation IS the pre-deployment test
+- Human oversight requirement → Straw's winner is a recommendation; human makes final decision
+
+### The compliance-as-a-feature pitch
+
+**For regulated industries (financial services, healthcare, pharma):**
+
+> "Straw's evaluation isn't just how you pick the best agent — it's how you document that you evaluated AI before deployment. Your ISO 42001 auditor will ask for evidence of pre-deployment assessment. Straw's evaluation report IS that evidence."
+
+**Positioning Straw as ISO 42001 / NIST RMF compliance documentation:**
+- Rubric = documented evaluation criteria (Clause 8 evidence)
+- T1 deterministic results = objective measurement record
+- T3 investigator report = risk assessment documentation
+- Winner recommendation = deployment decision record
+- Timestamp + version control = audit trail
+
+**The one sentence:** "Straw is the evaluation infrastructure that turns your AI agent pilot into an auditable, governance-ready procurement decision."
+
+### Enterprise compliance budget opportunity
+
+ISO 42001 certification:
+- BSI, DNV, TÜV charge $15-50K for initial certification audit
+- Annual surveillance audit: $5-15K
+- Total Year 1: $20-65K just for certification
+
+Enterprises spending $20-65K on ISO 42001 certification will spend $5-15K on Straw evaluations as a rounding error — if they understand the connection.
+
+**The GTM implication:** Target ISO 42001-seeking enterprises. They have compliance budgets, they need pre-deployment evidence, and they understand audit documentation. **Straw should be listed in ISO 42001 implementation guides as the tool for "pre-deployment evaluation documentation."**
+
+### Contact: AI governance consultants
+
+Instead of targeting individual enterprises directly for the compliance angle, target ISO 42001 implementation consultants who will recommend Straw as part of their implementation packages.
+
+**#174: TrustCloud AI (trustcloud.ai)** — published ISO 42001 + NIST AI RMF integration guide in 2026. Partnership: "TrustCloud + Straw for AI governance compliance." TrustCloud handles the certification; Straw handles the evaluation documentation.
+
+**#175: Trustible (trustible.ai)** — AI governance framework comparison. Same partnership logic.
+
+
+---
+
+## Tick 523 — Seed Round Mechanics: What Straw Needs to Raise $1-3M [GTM/Fundraising]
+
+*2026-05-03. AI seed valuations are at a premium in 2026. Here's exactly what the bar is.*
+
+### 2026 AI seed round benchmarks
+
+**TechCrunch (March 31, 2026):** "AI seed startups are commanding higher valuations — it's not your imagination."
+
+Seed round expectations for B2B SaaS AI (2026):
+- Median seed round size: varies by vertical, but AI infrastructure = $2-5M
+- Expected ARR at seed: $300K-$500K (but AI infrastructure can close on vision + early traction)
+- Valuation: 20-50× ARR at seed for AI infrastructure (vs. 10-15× for traditional SaaS)
+
+**The 2026 investor lens for AI infrastructure startups:**
+1. **Proprietary data loops** — does the product get better as more companies use it?
+2. **Embedded workflows** — is this duct-taped on, or does it sit inside the buyer's decision process?
+3. **Retention quality** — recurring vs. one-off; ARR that expands, not churns
+4. **Capital efficiency** — AI compute can destroy margins; how does unit economics work at scale?
+5. **Founder-market fit** — why this founder for this problem?
+
+### Straw's seed fundraising story
+
+**The "why now" proof:**
+- 96% of enterprises use AI agents; only 11% in full production → governance gap
+- IDC: 40% of AI initiatives could be discontinued without governance/ROI alignment
+- GPT-6 / Claude 5 coming late 2026/early 2027 → every enterprise evaluation from today is outdated in 12 months → quarterly re-evaluation becomes mandatory
+- UC Berkeley: benchmarks gameable to 100% → independent evaluation (Straw) becomes the only trustworthy signal
+
+**The data moat story:**
+- Each Straw evaluation adds to: rubric library (how companies define success), agent performance graph (how agents perform on real tasks), cross-company benchmarks (relative performance)
+- After 1,000 evaluations: Straw has the most comprehensive real-world agent performance dataset in existence
+- After 10,000 rubrics: industry-standard templates by vertical (like Common Paper for legal docs)
+
+**Proprietary data loops:** ✅ Yes. The rubric library + agent reputation graph get more valuable with every evaluation. This is the AI infrastructure investor's highest signal.
+
+**Embedded workflows:** ✅ Yes. Straw sits inside the AI procurement decision — the most critical workflow for enterprise AI teams in 2026.
+
+### The seed round trigger criteria (from Tick 465, refined)
+
+Don't fundraise until:
+1. ✅ 3 paid evaluations complete ($7,500-$15,000 in revenue)
+2. ✅ 1 named reference customer (willing to take a call)
+3. ✅ Repeatable sales motion documented (ICP clear, outreach → discovery → LOI → evaluation pipeline)
+4. ✅ T1/T2 pipeline automated (not just manual)
+
+**Target: Raise $1-2M seed at $8-12M pre-money valuation.** Use: 18 months of Jeremy's salary + 1 early engineer + Drata/SOC2 costs + marketing.
+
+### Active AI seed funds (2026, ranked by deal pace)
+
+From Capitaly's 2026 ranking of active AI seed funds:
+1. **Khosla Ventures** — highest AI deal pace; thesis-driven; needs strong technical story
+2. **YC** — best for network effects; if YC S26 accepted, pre-negotiated SAFE terms
+3. **General Catalyst** — AI infrastructure focus; Hemant Taneja thesis
+4. **a16z seed** — scout program; seed via 1-page description
+5. **Andreessen scout network** — 50+ scouts; warm intro via any portfolio company
+
+**The seed round is not a pitch competition — it's a trust competition.** VCs at seed stage fund founders they believe. The "Why Jeremy / Why Now / Why Straw" narrative (Tick 496) must be practiced until it's natural.
+
+### Fundraising timeline relative to 90-day plan
+
+- **Day 1-90:** Don't fundraise. Build. Get 3 paid customers.
+- **Day 90-120:** Prepare deck. Practice "Why Jeremy." Get warm intros via YC / Seedcamp / design partners.
+- **Day 120-150:** Partner meetings at 5-8 firms.
+- **Day 150-180:** Term sheet → close → $1-2M in bank.
+
+**Critical:** Don't start fundraising before the first paid contract. "We have 3 LOIs" is not traction. "We have $15,000 in closed revenue and 3 paying customers" is.
+
+
+---
+
+## Tick 524 — Agent Capability Trajectory: What Straw Looks Like When Agents Are 10× More Capable [BEAR+Vision]
+
+*2026-05-03. GPT-6 / Claude 5 coming late 2026/early 2027. How does Straw's value change as agents improve?*
+
+### The capability trajectory (2026-2027 state)
+
+**Current frontier (April 2026):**
+- Claude Sonnet 4.6: SWE-bench 87.6%, GAIA 74.6%, 1M token context
+- GPT-5.4: 1M token context, 83% GDPVal, leads computer-use benchmarks
+- Claude Opus 4.7: complex reasoning + long-running agent workflows
+- Multi-model routing (GPT-5.5/DeepSeek V4): developers using 3-5 models in same agent pipeline
+
+**2027 projections:**
+- GPT-6: late 2026/early 2027 → "autonomous worker" generation; independently completes complex multi-step tasks with minimal supervision
+- IDC: 10× increase in agent usage + 1000× increase in inference demand by 2027
+- Recursive self-improvement loops: possibly emerging H1 2027 (xAI co-founder Jimmy Ba)
+- IDC: 40% of enterprise applications use agentic automation by 2027
+
+**The fundamental shift:** From "AI that answers" to "AI that gets things done" (March 2026 tipping point).
+
+### Bear case: "Why evaluate when GPT-6 just wins everything?"
+
+**The objection:** When GPT-6 is 10× more capable, won't it simply dominate every Straw evaluation? Then Straw's results are always "use GPT-6" → zero differentiation → no value.
+
+**The flaw in this objection:**
+
+1. **Task-specific performance ≠ general capability.** Even if GPT-6 is the best foundation model, the AGENT built on top matters as much as the model. A well-architected CrewAI pipeline on Claude Opus 4.7 may outperform a naive GPT-6 wrapper for a specific enterprise task. Straw evaluates agents, not models.
+
+2. **The specialization paradox.** As general capability increases, the differentiation MOVES to specialization. If every agent uses GPT-6, the winner is the one with better tools, better context injection, better workflow design. Straw evaluates all of these — not just the model.
+
+3. **More capable agents → more agents → more competition.** GPT-6 will enable 10× more developers to build capable agents. More agents → more supply on Straw → more competition → more valuable evaluations, not less.
+
+4. **Re-evaluation frequency increases.** Every GPT-6 release creates a new evaluation: "Is your current agent still the best now that GPT-6 exists?" This INCREASES Straw's revenue — quarterly re-evaluations accelerate.
+
+5. **Governance and compliance don't go away.** ISO 42001 requires pre-deployment evaluation regardless of model capability. The compliance use case for Straw is model-capability-independent.
+
+### Bull case: Better agents → more enterprise adoption → more evaluation need
+
+IDC: 40% of enterprise applications use agentic automation by 2027. But today: only 11% of enterprises run agents in full production. **The gap between 11% and 40% in 18 months = the deployment wave Straw needs to catch.**
+
+Every enterprise moving from "AI agent pilot" to "AI agent in production" needs:
+1. A procurement evaluation (Straw v1)
+2. Ongoing performance monitoring (Braintrust)
+3. Quarterly re-evaluation (Straw v2)
+
+**The more enterprises deploy agents, the more evaluations Straw runs.** Straw's addressable market GROWS as agents get more capable, not shrinks.
+
+### The "1000× inference demand" implication for Straw's economics
+
+IDC: 1000× increase in inference demand by 2027. If Straw's T3 investigator uses Claude Opus or GPT-5.5, the cost per evaluation:
+- 2026: $50-200 compute cost per T3 investigation
+- 2027: $5-20 compute cost per T3 investigation (infrastructure costs halving every 12 months)
+
+**Straw's margin improves as capability increases.** Same evaluation quality, lower compute cost. By 2028, T3 investigation cost approaches $1-2 per evaluation — making per-evaluation pricing highly profitable.
+
+### The guardian agent evolution (from Tick 501 — re-examined)
+
+In 2028, Straw's "winner" isn't hired for one task — it's deployed as a continuous agent that Straw monitors via real-time T1/T2 checks. When a new, better agent appears, Straw automatically runs a re-evaluation challenge.
+
+**The 2028 product:** "Straw Guardian Agent" — monitors your deployed agent 24/7 and alerts you when a better alternative emerges. You set your rubric once; Straw continuously challenges your current agent with new competitors.
+
+This is the recurring subscription product that turns Straw into a $5,000/month/customer business by 2028.
+
