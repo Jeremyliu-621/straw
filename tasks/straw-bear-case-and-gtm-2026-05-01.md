@@ -13367,3 +13367,115 @@ Kaggle's genuine value: **the competition corpus.** After every Kaggle competiti
 Straw's analog: the **rubric library.** After each Straw competition, the rubric design (anonymized) goes into Straw's proprietary rubric library. "Here's the legal contract review rubric that 3 AmLaw 100 firms have used." "Here's the coding competition rubric that 5 fintech companies validated." The rubric library is Straw's Kaggle corpus — except it's proprietary to Straw and is the key moat (Tick 143 identified this as one of four Straw moats).
 
 Sources: [Kaggle Scandal Post 2024](https://datancoff.ee/2024/07/the-scandal-at-kaggle/), [ML Contests State of ML Competitions 2024](https://mlcontests.com/state-of-machine-learning-competitions-2024/)
+
+---
+
+## Tick 200 (2026-05-03T23:30Z): ISO 42001 as Straw's regulatory moat — compliance documentation as the product [theme: gtm/bear]
+
+### ISO 42001 creates a procurement procurement layer that favors Straw
+
+ISO/IEC 42001:2023 (AI Management System) is now actively shaping enterprise vendor decisions. The critical commercial reality from Deloitte, Schellman, and AI Governance Today research:
+
+> "Vendors with ISO 42001 certification are winning contracts that uncertified competitors cannot access, regardless of technical merit."
+
+The standard mandates 38 controls across 9 control objectives. Of particular relevance to Straw:
+- **Mandated risk and impact assessments** — enterprises must document AI risk before deployment
+- **AI system lifecycle documentation** — evidence of how AI systems were evaluated and selected
+- **Control catalog** — listing each safeguard and how it's enforced
+- **Compliance matrix** — mapping controls to EU AI Act, NIST RMF, and ISO 42001 clauses
+- **Risk register** — identifying owners, mitigations, and evidence for risks (data leakage, unauthorized actions)
+
+**The regulatory convergence:** EU AI Act entered enforcement for high-risk AI systems in August 2025. ISO 42001 is explicitly referenced in EU AI Act implementation guidance as the compliance mechanism. Any enterprise deploying AI in regulated contexts (HR, lending, medical, legal) must demonstrate conformity — and Straw's competition record is the evidence.
+
+### Straw's competition record IS the ISO 42001 compliance documentation
+
+The full lifecycle that ISO 42001 requires:
+
+| ISO 42001 Requirement | Straw Competition Record |
+|---|---|
+| Document AI system evaluation criteria | Competition rubric (defined before competition starts) |
+| Evidence of competitive evaluation | Competition transcript (all agents, all tasks, all scores) |
+| Risk assessment for chosen AI system | Straw's rubric includes risk categories (safety, accuracy, bias) |
+| Audit trail for procurement decision | Full competition log is exportable, timestamped, immutable |
+| Responsible party accountability | Buyer's name, agent vendor names, date, scoring methodology — all documented |
+
+**The GTM implication:** Straw is not just a procurement tool — it's a compliance tool. The ISO 42001 buyer and the AI procurement buyer are the same person (Head of AI / CISO / CPO). The Straw pitch to the compliance-aware enterprise:
+
+> "ISO 42001 requires you to document how you evaluated and selected AI systems. Straw generates that documentation automatically as a byproduct of running the competition. One competition = procurement decision + compliance record + audit trail."
+
+### The regulatory moat timeline
+
+For enterprises in regulated industries, Straw's competition record covers multiple compliance requirements simultaneously:
+
+1. **ISO 42001** (procurement documentation + risk assessment evidence)
+2. **EU AI Act** (human oversight documentation for high-risk AI deployments)
+3. **California EO N-5-26** (state agency AI procurement documentation, from Tick 154)
+4. **OCC Model Risk Guidance** (bank AI model selection documentation, from Tick 157)
+5. **Insurance AI exclusion clauses** (CG 40 47/48, from Tick 181) — documented evaluation exempts from policy exclusion
+
+No other platform generates all five compliance records simultaneously from a single competition. Braintrust covers production monitoring documentation. Langfuse covers observability logging. Only Straw covers the **pre-deployment selection process** documentation — the piece that matters most for regulatory compliance.
+
+### The bear case: ISO 42001 as table stakes, not moat
+
+**Bear concern:** If ISO 42001 compliance requirements push enterprises to any structured AI evaluation process, they might DIY a checklist rather than pay for Straw. "We reviewed three vendor demo decks, ran a 2-week internal POC, and documented the outcome — that satisfies our compliance team."
+
+**Reality check:** An internal POC satisfies the documentation requirement technically. But it has two fatal weaknesses: (a) the POC uses the vendor's cherry-picked demo data, not the buyer's real tasks — auditors are starting to question this; (b) it creates legal liability because the buyer conducted the evaluation with the vendor's help, muddying conflict-of-interest documentation. The ISO 42001 standard is trending toward requiring **independent** evaluation — which Straw provides and internal DIY doesn't.
+
+Sources: [AI Governance Today ISO 42001 2026](https://www.aigovernancetoday.com/news/iso-42001-redefining-ai-governance-2026), [Deloitte ISO 42001 Standard](https://www.deloitte.com/us/en/services/consulting/articles/iso-42001-standard-ai-governance-risk-management.html), [Schellman ISO 42001 FAQ 2026](https://www.schellman.com/blog/ai-services/ai-governance-and-iso-42001-faqs), [TTMS Shadow AI and ISO 42001](https://ttms.com/shadow-ai-iso-42001-ai-act-governing-ai-the-right-way/)
+
+---
+
+## Tick 201 (2026-05-03T23:45Z): Bountysource insolvency — escrow failure mode and Straw's trust architecture [theme: bear]
+
+### Bountysource's collapse: the escrow failure mode
+
+Bountysource was acquired by The Blockchain Group in July 2020. By June 2023, it had effectively stopped paying verified bounty claims. The GitHub issue is titled "CRITICAL: Bountysource is Insolvent, do not use!" The pattern: centralized escrow holder controls funds → platform becomes insolvent → escrowed funds disappear → developers with verified claims can't collect.
+
+Community characterization from the GitHub issue: "An abuse of the escrow, essentially an embezzlement." The Blockchain Group stopped responding to users. Developers who had completed verified work lost their expected payments.
+
+**The scale of the collapse:** Bountysource had processed thousands of open-source bounties. The platform death was sudden and without notice. The API stopped working. The funds disappeared.
+
+### Why Gitcoin survived (partially) and Bountysource didn't
+
+Gitcoin (web3-based bounty platform) avoided the centralized escrow failure by putting bounty funds directly on-chain — the funder locks funds in a smart contract, not in Gitcoin's bank account. When the task is completed and verified, the smart contract releases funds directly to the solver. Gitcoin's platform failure wouldn't trap funds.
+
+The structural lesson: **escrow centralization is an existential risk for bounty marketplaces.** Whoever controls the funds controls the platform's survival.
+
+### Straw's trust architecture — the Straw escrow problem
+
+Straw has an analogous problem. In the Straw competition model:
+1. Buyer commits to a prize (deployment contract + Straw Certified badge)
+2. Agent operators compete
+3. Winner gets the prize
+
+**The centralization risk:** If Straw is the intermediary that:
+- Holds the "prize" commitment
+- Controls the rubric scoring
+- Declares the winner
+- Facilitates the deployment contract
+
+...then Straw has centralized control of the entire transaction. If Straw goes bankrupt, changes its scoring methodology, or exercises bad judgment, both buyers and agent operators are exposed.
+
+**Three specific failure modes:**
+
+1. **Straw insolvency:** Straw goes under after a competition. Agent that won never gets the deployment contract Straw facilitated. Buyer has no recourse.
+
+2. **Straw rubric manipulation:** Straw changes the rubric after the competition to favor a preferred winner. Agent operators can't verify the scoring was fair. (This is analogous to the Kaggle shake-down.)
+
+3. **Straw capture:** Straw gets acquired by an agent operator. The platform now has a conflict of interest — the parent company's agents will win Straw competitions. (Similar to how exchanges get captured by market-makers.)
+
+### Straw's trust architecture recommendations
+
+To avoid Bountysource's failure mode, Straw needs to build trust at the architecture level, not just as a promise:
+
+**Recommendation 1: Immutable competition records.** All rubrics, task data (hashed), scores, and results are written to an immutable log (append-only, timestamped, verifiable). Neither Straw nor the buyer can retroactively change the competition record. This addresses the manipulation concern.
+
+**Recommendation 2: Third-party scoring verification.** For high-stakes competitions ($50K+), Straw uses an independent scorer — a third-party evaluator (human expert or independent model) who verifies the rubric scoring is correctly applied. This is analogous to how financial audits use independent auditors.
+
+**Recommendation 3: No cash escrow.** Straw does not hold cash prizes. The "prize" is a deployment contract commitment, not money. The buyer commits in writing before the competition starts: "If [rubric criteria] are met by the winning agent, we will sign a [scope of work] with that agent." This commitment is in a signed document — not held by Straw. Straw's insolvency doesn't affect the contract obligation between buyer and winning agent.
+
+**Recommendation 4: Straw Certified badge as non-custodial.** The badge is a public record of competition results. Even if Straw disappears, the competition record exists. The winning agent can publish their score independently.
+
+**The core trust insight:** Straw's value is the rubric and the record, not the escrow. Designing the architecture to make Straw a neutral notary (records the result) rather than a custodian (holds the prize) eliminates Bountysource's failure mode entirely.
+
+Sources: [Bountysource Insolvency GitHub Issue](https://github.com/bountysource/core/issues/1586), [Bountysource Wikipedia](https://en.wikipedia.org/wiki/Bountysource), [Resolvr Stacker News Analysis](https://stacker.news/items/301817)
