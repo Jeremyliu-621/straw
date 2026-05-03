@@ -14122,3 +14122,82 @@ The exact cold email opener to a VP Engineering at a 100-person engineering comp
 The ROI case for Straw itself: if the competition costs $25K and reveals Cursor isn't worth the additional $48K/year for 100 developers, Straw pays for itself in year 1 just from avoided spend. If the competition reveals Cursor is worth it, the ROI of that decision is $3M/year.
 
 Sources: [Cursor Pricing 2026 Vantage](https://www.vantage.sh/blog/cursor-pricing-explained), [Cursor Enterprise Pricing Analysis 2025 SideTool](https://www.sidetool.co/post/cursor-enterprise-pricing-2025-complete-cost-analysis-for-teams/), [getdx AI Coding Pricing Comparison](https://getdx.com/blog/ai-coding-assistant-pricing/)
+
+---
+
+## Tick 213 (2026-05-04T02:45Z): How Braintrust got early traction — the developer-first GTM playbook [theme: gtm]
+
+### The Braintrust traction pattern
+
+Braintrust's early customer list: **Perplexity, Notion, Stripe, Zapier.** All are AI-native companies or tech companies with large LLM deployments in production. Braintrust got traction because:
+
+1. **AI-native companies had the pain first.** Perplexity runs LLMs at search scale — they need production monitoring *right now*, not after a 6-month procurement cycle.
+2. **The product was developer-native.** Braintrust ships via SDK and API. A developer at Notion or Perplexity can add Braintrust to their codebase in a day without procurement approval. The $25K enterprise deal came *after* the developer champion already had it running.
+3. **No enterprise features required at launch.** Braintrust's first version just needed to log LLM calls and show evals. Developers paid for it before Braintrust had SSO, SAML, SOC 2, etc.
+
+### What Straw can learn from the Braintrust playbook
+
+**The dangerous misalignment:** Straw's current GTM targets Fortune 500 enterprises directly (big competition budgets, big ROI). But the Braintrust pattern says: **get traction with AI-native companies first (who move fast), then use those case studies to open Fortune 500 doors.**
+
+**The revised GTM sequence:**
+
+| Phase | Target | Goal |
+|---|---|---|
+| Months 1-2 | AI-native companies (YC W26 batch, Perplexity-equivalent) | Run first 5 competitions, produce first case studies |
+| Months 3-6 | Technical enterprises with active VP Engineering decisions | Use case studies to open doors, competitions run on their codebases |
+| Months 7-12 | Fortune 500 / enterprise formal procurement | Straw Certified badge established, regulatory tailwinds close deals |
+
+**The specific AI-native first targets:**
+
+Companies that (a) move fast, (b) have strong opinions about code quality, (c) would publish a case study if Straw worked:
+- **Perplexity** — AI-native, engineering-heavy, writes about tech stack publicly. Would benefit from Cursor vs. Copilot competition to optimize developer tooling.
+- **Linear** — developer tools company with extreme engineering culture. If they use Straw and publish results, it reaches 100K developers immediately.
+- **Vercel** — engineering blog that reaches the developer audience Straw needs to attract. "Vercel ran a Straw competition, here's how we chose Cursor" is $500K in earned PR.
+- **Retool** — internal tools platform, engineering-forward, has publicly discussed AI tool adoption.
+- **Loom (Atlassian)** — collaboration tool with AI features; Atlassian acquisition means budget and procurement process.
+
+**The developer-first content play:** Publish the competition rubric as open-source on GitHub. When developers at Perplexity/Linear fork the rubric to run their own internal evaluation, Straw gets GitHub stars and community awareness. Then: "We can run this for you professionally — 72 hours, no setup, all agents." Free tool → warm inbound.
+
+Sources: [Braintrust Best LLM Evaluation Platforms 2025](https://www.braintrust.dev/articles/best-llm-evaluation-platforms-2025), [Softcery AI Observability Comparison 2025](https://softcery.com/lab/top-8-observability-platforms-for-ai-agents-in-2025)
+
+---
+
+## Tick 214 (2026-05-04T03:00Z): Healthcare AI — the fourth vertical and why Straw should wait on it [theme: bear/partners]
+
+### The healthcare AI agent landscape
+
+**FDA clearance data (2025-2026):**
+- 1,250+ FDA-cleared AI-enabled medical devices as of July 2025
+- 295 new AI/ML device clearances in 2025 alone
+- 97% cleared via 510(k) pathway (substantial equivalence to predicate device)
+- 62% of clearances are Software as Medical Device (SaMD)
+- First foundation model (Aidoc's CARE1™) received FDA clearance February 2025
+
+**The healthcare AI evaluation problem:**
+"Over the next 12 months, there will be a new insistence from executive teams that AI investments demonstrate both clinical and financial performance." The healthcare AI procurement problem mirrors the general enterprise AI problem: **endless pilots, no production deployment.** "That pressure will accelerate vendor consolidation and help enforce new standards that emphasize clinical and operational outcomes — reducing endless experimentation."
+
+### Why healthcare is Straw's highest-value and highest-risk vertical
+
+**The bull case for healthcare:** Hospital systems are procuring AI agents for radiology, clinical decision support, billing optimization, patient engagement. These decisions involve life-and-death accuracy requirements. A Straw competition comparing two radiology AI agents on a hospital's specific imaging cases, with a rubric designed by their clinical team, would save months of POC time and produce FDA-compliant evaluation documentation.
+
+The 2026 Hospital OPPS Final Rule establishes CMS reimbursement for AI-assisted cardiac analysis. Healthcare organizations are being pushed by CMS, FDA, and private payers to document AI performance before deploying. Straw's competition record would satisfy these requirements.
+
+**The bear case for healthcare:** 
+
+1. **HIPAA.** Patient data cannot leave the hospital's systems without a Business Associate Agreement (BAA). Every task in a healthcare Straw competition contains PHI. Even anonymized medical records are subject to HIPAA de-identification requirements (18 Safe Harbor identifiers must be removed). Running a competition with hospital data requires a full HIPAA compliance stack that Straw doesn't have yet.
+
+2. **FDA clearance for SaMD.** If Straw's competition output influences a clinical decision, Straw itself might be classified as a Software as Medical Device and require FDA clearance. "This AI won the Straw competition and should be deployed for radiology" is potentially a clinical recommendation that triggers SaMD classification.
+
+3. **Liability concentration.** If a hospital relies on Straw's competition result to deploy an AI that then makes a diagnostic error, the liability chain runs through Straw. California's January 2026 AI liability law applies here.
+
+4. **Sales cycle.** Hospital procurement involves clinical leadership, IT, legal, compliance, and often a clinical AI governance committee. Sales cycles for healthcare IT are 12-24 months even with perfect product-market fit.
+
+### The healthcare verdict: wait until V2
+
+**Straw should not target healthcare in the first 12 months.** The HIPAA compliance stack, FDA SaMD risk, liability exposure, and sales cycle length make it a V2 vertical. The first four verticals (coding, CX, legal, finance) have lower regulatory exposure and faster sales cycles.
+
+**The exception:** If a healthcare company approaches Straw *inbound* (through the YC S26 application, the blog post, or the HN post), and they have a non-clinical use case (coding agent competition for their engineering team, CX agent competition for their patient-facing support), those are eligible under the standard Straw framework without HIPAA risk.
+
+**Healthcare in the 30-contact list:** Replace the "healthcare" row with an additional fintech contact for now. When Straw has 10+ competitions complete across other verticals and is ready to invest in HIPAA compliance (BAA template, on-premise execution mode), healthcare becomes the highest-value vertical opportunity.
+
+Sources: [Chief Healthcare Executive AI 2026](https://www.chiefhealthcareexecutive.com/view/ai-in-health-care-26-leaders-offer-predictions-for-2026), [FDA AI Medical Device Stats IntuitionLabs](https://intuitionlabs.ai/articles/fda-ai-medical-device-tracker), [Tateeda AI Trends Healthcare 2026](https://tateeda.com/blog/ai-trends-in-us-healthcare)
