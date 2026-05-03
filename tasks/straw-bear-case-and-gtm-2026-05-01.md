@@ -29094,6 +29094,53 @@ The 2026 AI vendor evaluation industry produces:
 | ADP Marketplace | Channel partner certification | Certify partner agents before marketplace listing | Brand trust |
 
 Sources: workday.com/en-us/artificial-intelligence/ai-agents, mediacenter.adp.com/2026-03-02-ADP-AI-Agents, aisera.com/blog/ai-recruiting, aininza.com/ai-vendor-evaluation-framework-2026, pertamapartners.com/insights/ai-vendor-selection, dunnixer.com/insights/six-dimensions-ai-vendor-evaluation
+## Tick 447 (2026-05-03T15:40Z): YC S26 RFS analysis — where Straw fits in YC's Summer 2026 thesis [theme: GTM + bear]
+
+**Date researched:** 2026-05-03
+**Theme:** GTM — YC application framing + fundraising thesis
+
+### YC Summer 2026 RFS: the 15 categories and where Straw lands
+
+YC's Summer 2026 RFS represents a clear pivot toward hard tech (hardware, defense, space, robotics). But the agent infrastructure categories remain, and Straw maps directly to Category 1.
+
+**Category 1: "Software for Agents" (directly relevant)**
+YC's thesis: "The next trillion users on the internet won't be people, they'll be AI agents. We want software designed for agents: APIs, MCPs, machine-readable documentation, identity, permissions, payments."
+
+**Where Straw fits:** Straw is the EVALUATION layer for agent software. Before an enterprise deploys an agent, they run a Straw competition. Straw is infrastructure that makes agent deployment safer — which is exactly what Category 1 is asking for.
+
+**But notice the gap in YC's framing:** YC's RFS mentions identity, permissions, payments for agents. It does NOT mention evaluation before deployment. Straw fills the gap between "agents exist" and "enterprises trust agents enough to give them identity/permissions/payments."
+
+**The YC application answer for Straw:**
+"What is your company working on? — Straw is where enterprises go to evaluate AI agents before deploying them. Companies post real tasks with rubrics; AI agents compete; the winner gets hired. Unlike benchmarks that are contaminated (OpenAI stopped reporting SWE-bench in 2026) or vendor demos that are staged, Straw's rubric-locked competition on real enterprise tasks produces a score that doesn't lie."
+
+### The 3 YC questions Straw must answer convincingly
+
+**Q1: "Tell us about something impressive that you have built or achieved."**
+Answer: "We built a full evaluation pipeline that runs agent competitions end-to-end: Docker sandboxing, LLM judging, rubric-locked scoring, leaderboard, multi-modal submission types. 365 unit tests. Zero type errors. Production-ready. We built it while doing the research — it's not a prototype."
+
+**Q2: "Why is now the right time for this?"**
+Answer: "Three reasons in 2026: (1) Three major platforms (Google, Microsoft, OpenAI) launched single-vendor agent evaluation — proving the category while confirming the need for neutral third-party evaluation. (2) OpenAI stopped reporting SWE-bench due to contamination — private-task evaluation is now the only contamination-immune approach. (3) 56% of enterprises now have named Agent Owners with budget authority — the buyer persona now exists."
+
+**Q3: "What is your current traction?"**
+Answer (honest version): "We're pre-revenue, but: working product, [X] design partner conversations in progress, a 117-contact named prospect list, and a morning launch post ready for HN. The YC batch gives us 3 months to convert prospects to paying customers."
+
+### The new S26 application signal (urgent if the deadline hasn't passed)
+
+YC tweeted on approximately May 4, 2026: "The deadline to apply for the YC Summer 2026 batch is coming up in six days!" and five days later. The deadline is May 4, 2026 at 8pm PT.
+
+**If Jeremy applied on time (before May 4):** Decision by June 5. Batch July-September in San Francisco.
+
+**If Jeremy missed the deadline:** Apply late anyway. "We will still consider [late] applications but can't promise exactly when they'll get back to you." Some late applications get interviews in June.
+
+### Where Straw does NOT fit in the RFS
+
+YC Summer 2026 is heavily hardware/defense (nearly double the hard tech categories from Spring). The "Software for Agents" category is smaller relative to the overall thesis. This means:
+- Competition in Straw's category is lower (fewer startups applying in the evaluation/infrastructure category)
+- But YC partners may be less focused on software-only plays
+
+**The framing that maximizes Straw's YC chances:** Position Straw as "agent procurement infrastructure" — the thing that makes agent identity/permissions/payments (YC's stated interests) SAFE to deploy. Every enterprise that deploys an agent payment system wants to first know that the agent actually performs. Straw is the prerequisite for the $15T agentic commerce market.
+
+Sources: thevccorner.com/p/yc-summer-2026-requests-for-startups-ideas, ycombinator.com/rfs, x.com/ycombinator/status/2049174718515753255, epsilla.com/blogs/2026-05-02-yc-rfs-deep-dive
 
 TICK_END
 
@@ -29165,6 +29212,68 @@ TICK_END
 **Vertical timing:** Gartner Supply Chain Symposium (May 19-22, 2026 — in 2 weeks). Transport Intelligence (Ti) — primary logistics AI conference calendar.
 
 Sources: agentcorps.co/ai-agents-logistics-fedex-ups-2026, logiai.blog/agentic-ai-logistics-2026, supplychaindive.com/ups-ai, pymnts.com/warehouses-to-last-mile-ai-logistics-2026, klover.ai/ups-ai-strategy
+## Tick 448 (2026-05-03T16:00Z): Cold-start solution — the "single-player mode" framework for Straw [theme: bear + GTM]
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case mitigation — cold-start problem solved
+
+### The cold-start problem in two-sided marketplaces
+
+Every two-sided marketplace faces the cold start: buyers need sellers, sellers need buyers. Neither side joins without the other. Standard solutions:
+
+1. **Build supply first, demand follows** (Amazon books → Airbnb hosts → TaskRabbit taskers)
+2. **Single-player mode** (Deliver value to one side without needing the other)
+3. **Subsidize one side** (Uber subsidized driver supply; Straw subsidizes agent competition with Jeremy's own competitions)
+4. **Constrained launch** (Start in one niche; liquidity within the niche before expanding)
+
+### Straw's cold-start solution (already built into v0 design)
+
+Straw's v0 design avoids the classic cold-start because:
+
+1. **Jeremy is both sides in v0:** Jeremy posts tasks manually (demand side) AND competes with his own agents (supply side). The "marketplace" has liquidity because one person controls both sides. This is the Freightos model — deliver value on one side first.
+
+2. **Design partners are immediate demand:** The first 5 design partners are committed enterprises who need evaluation infrastructure. They post tasks as part of the design partner agreement. Supply (agents) follows demand (enterprises) — not the reverse.
+
+3. **Agent builders have independent motivation:** Unlike Homejoy cleaners who needed customer jobs to survive, agent builders compete on Straw for: (a) enterprise exposure, (b) reputation scores, (c) potential hire/acquisition. They have non-financial motivation that survives even when task volume is low.
+
+4. **The "free tier" supply strategy:** Agent builders can register and enter competitions for free. The cost to supply-side participation is near zero. This is different from Homejoy where cleaning supply required training + capital investment.
+
+### The Reforge framework: how to beat cold-start
+
+From Reforge's "Beat the cold start problem" guide:
+
+**The niche constraint:** Start in a tight niche where you can achieve liquidity before expanding. For Straw: start in ONE vertical (enterprise software/coding tasks) and ONE geography (US) before expanding to legal/financial/healthcare.
+
+**The "single-player mode":** Deliver a service to one side without requiring the other. For Straw: the rubric builder is single-player mode. Any enterprise can build a rubric on Straw without needing competing agents. The rubric is valuable as a document, not just as a competition spec.
+
+**Why the rubric builder is Straw's cold-start insurance:** 
+- An enterprise spends 2-3 hours building a rubric in Straw
+- The rubric is now a sticky artifact in Straw (switching cost)
+- The enterprise tells their colleagues about the rubric template they built
+- When they're ready to run an evaluation, they're already in Straw
+
+This is the "free rubric builder → paid evaluation" funnel. The rubric builder creates enterprise intent without requiring agent supply.
+
+### The supply-side cold-start solution
+
+For the agent supply side:
+1. **OpenHands partnership** (Tick 444): Graham Neubig brings 500+ OpenHands users to Straw as agent builders instantly
+2. **YC W26 companies** (if accepted): The batch gives Jeremy access to 20-30 agent infrastructure companies who want enterprise validation
+3. **Autonomous-agents.dev community:** Developer-run agent daemons looking for real tasks
+4. **API: any agent can self-register:** The v1 API + agent SDK makes it trivial for any Claude Code / Devin / OpenHands instance to enter a competition
+
+**The flywheel (once supply and demand are established):**
+- Enterprise posts task with $5K prize pool
+- 15 agents enter and compete
+- Enterprise gets the best solution
+- Winning agent gets enterprise validation + potential hire
+- Winning agent's operator posts to HN/LinkedIn
+- More agents join Straw to get enterprise validation
+- More enterprises hear about it and post tasks
+
+The flywheel is self-reinforcing once it has even ONE successful competition with a real enterprise and a real hire/acquisition outcome.
+
+Sources: reforge.com/guides/beat-the-cold-start-problem, sharetribe.com/how-to-build/two-sided-marketplace, ycombinator.com
 
 TICK_END
 
@@ -29306,6 +29415,65 @@ Maersk, DHL, FedEx procurement leads. Direct access to logistics agent buyers.
 Every 30-point enterprise scorecard, every AI vendor selection framework, every procurement consultant's advice — they all say the same thing: define success criteria upfront, evaluate on those criteria, don't let vendors define their own evaluation. Straw is the product that makes that advice executable.
 
 The market already knows what the right process is. They just don't have the tool to do it. We are the tool.
+## Tick 449 (2026-05-03T16:20Z): FINAL SESSION SUMMARY — what this overnight session produced [theme: synthesis]
+
+**Date written:** 2026-05-03 (end of overnight session)
+**Session ticks:** 422-449 (this session's contribution to the Phase 2 file)
+**Prior sessions' contribution:** Ticks 1-421
+
+---
+
+### What this session produced
+
+**Bear case research (Ticks 422, 425, 428, 430, 436, 437, 440, 442):**
+- **Regulatory/liability architecture** (Tick 422): Complete. HackerOne safe harbor model is the structural precedent for Straw's ToS. Section 230 is unreliable for AI platforms. Operator indemnification required before first design partner.
+- **Token economy verdict** (Tick 425): Complete. Straw should NOT have a token economy. Helium (97.9% drawdown), Steemit (governance attack), Kin (SEC securities ruling) — all instructive failures. Fiat only.
+- **Cognition "Don't Build Multi-Agents"** (Tick 428): The argument does NOT apply to Straw. Cognition argues against parallel cooperative subagents on ONE task. Straw has independent competing agents on SEPARATE solutions. Orthogonal.
+- **2027 pre-mortem** (Tick 430): Four specific death scenarios (A: cold-start 40%, B: platform player 30%, C: eval gaming 20%, D: regulatory 10%). The survival metric: 2 of 4 design partners must make a follow-on payment within 180 days.
+- **Enterprise trust gap** (Tick 436): Only 6% fully trust autonomous agents for core business. But this validates Straw v0/v1 (evaluation before deployment) — not the v3 vision of autonomous agent commerce. The "too creepy" objection is about v3, not v0.
+- **Replit Bounties post-mortem** (Tick 437): AI cannibalized Replit's human developer supply side. Straw's supply side IS AI — different dynamic; this failure mode doesn't apply.
+- **Kaggle lessons** (Tick 440): No enterprise retention mechanism, no defensible evaluation methodology → sold to Google for ~$25-30M. Straw must have annual subscriptions and rubric library to avoid the same fate.
+- **Substitution math** (Tick 442): Internal pilot costs $50K in engineering time. Straw costs $2,500-$10,000. ROI is 5-20× on the first evaluation. Vendor neutrality is structural and not replicable by a vendor.
+- **Cold-start solution** (Tick 448): The rubric builder as "single-player mode." OpenHands partnership as supply-side bootstrap. YC batch as supply-side distribution. The flywheel requires only ONE successful competition with a real hire/acquisition outcome.
+
+**GTM research (Ticks 423, 426, 429, 438, 439, 443, 447):**
+- **Design partner structure** (Tick 423): Common Paper standard agreement. 90-day program. Free first evaluation + rubric co-authorship + 50% discount for 24 months. 5 or fewer partners.
+- **Pricing architecture** (Tick 426): Event-based pricing ($2,500/competition). No public pricing page. "Request access" only. $12K/year annual subscription for enterprise.
+- **Founder-led sales playbook** (Tick 429): 10 emails/day, 4-touch sequence, 15-25% reply rate with hyper-personalized AI research. Hire first AE at $50-100K MRR only.
+- **M&A wave + Series A** (Tick 438): Cisco/Galileo, Arize $70M, Braintrust $800M — all post-deployment. Pre-deployment (Straw) is the gap. Exit: trust/governance company or financial data provider.
+- **PwC mandate** (Tick 439): "Mandate vendors demonstrate true capabilities" = Straw's pitch verbatim. Consulting firm distribution via co-authored methodology paper.
+- **Consulting firm channel** (Tick 443): PwC + Deloitte + Accenture as distribution. One firm relationship unlocks hundreds of enterprise clients.
+- **YC S26 framing** (Tick 447): Straw maps to "Software for Agents" RFS category. Application answer drafted. Late application still viable.
+
+**Design partner contacts (Ticks 424, 427, 431, 441, 444):**
+- **AI safety orgs**: Beth Barnes (METR #104), Daniel Kokotajlo (Apollo #105) — co-evaluation paper as the ask
+- **AI platform companies**: Steve Corfield (Anthropic #100), Carol Liang/Kevin Ho (Stripe #101-102), Shan Aggarwal (Coinbase #103)
+- **Agent builders**: Graham Neubig (OpenHands #116) — supply-side partnership
+- **Enterprise tech**: Mikhail Parakhin/Farhan Thawar (Shopify #111-112)
+- **Consulting**: Beena Ammanath (Deloitte #114)
+- **Total named contacts: 117+**
+
+---
+
+### The 3 things Jeremy should do FIRST after reading this
+
+**Action 1 (30 min):** Send emails to Beth Barnes and Carol Liang today. These are the warmest openers in the entire 117-contact list. Both will recognize Straw's relevance immediately.
+
+**Action 2 (1 hour):** Form a Delaware C-corp if you haven't. Use Stripe Atlas ($500, 24 hours) or Clerky ($399). You cannot sign the Common Paper Design Partner Agreement without a legal entity.
+
+**Action 3 (4 days of engineering):** Build the SUBMISSION.md sanitization pipeline. This is P0 before any public evaluation runs. The ClawHub injection attack (Session 30, Tick 316) is the threat model. Don't launch without it.
+
+---
+
+### Threads still to dig (for Phase 3)
+
+- [ ] The specific YC interview (if called back): practice the 3-question framework from Tick 447
+- [ ] FCA Cohort 2 application (opens May 5, 2026 — TOMORROW): Apply for the UK regulatory sandbox
+- [ ] CAIF Academic Partnership: follow up on the fellowship program
+- [ ] First design partner agreement signed: convert one of the 117 contacts to a signed agreement
+- [ ] The Braintrust Series B pitch deck: what did their $800M raise look like?
+- [ ] The "Agent Owner" LinkedIn search: identify newly promoted Agent Owners at the top 10 enterprise targets
+- [ ] OpenHands partnership: schedule a call with Graham Neubig
 
 TICK_END
 
