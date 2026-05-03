@@ -29860,3 +29860,81 @@ On-prem agent trend = increasing Straw relevance, not decreasing.
 Sources: artofprocurement.com/blog/state-of-ai-in-procurement, suplari.com/how-ai-agents-change-procurement-2026, pymnts.com/ramp-ai-agents-corporate-procurement, aaif.io/mcp-enterprise-infrastructure-2026, foundationcapital.com/ideas/where-ai-is-headed-in-2026, aibusinessreview.org/ai-capital-expenditure-2026
 
 TICK_END
+
+---
+
+## Tick 454 — MIT Sloan 2026 "Quality Is Meaningless Without Definition" + CRE Design Partners #137-139
+
+**Research date:** 2026-05-03
+
+### MIT Sloan Management Review 2026 — the sentence Straw should quote in every pitch
+
+> **"45% of decision-makers rank output quality and accuracy as their top AI criterion — but 'quality' is meaningless without definition. Each use case requires different metrics, benchmarks, and evaluation methods."**
+> — MIT Sloan Action Items for AI Decision Makers 2026
+
+This sentence IS the Straw value proposition: "Quality is meaningless without definition." Straw forces enterprises to define what quality means — through the rubric — before any evaluation begins. The rubric is the definition of quality. MIT Sloan said the same thing in 2026 without knowing Straw exists.
+
+**Full MIT Sloan 2026 checklist aligns with Straw on every point:**
+1. "Define success before buying with measurable criteria" → Straw's rubric builder
+2. "Invest in data before AI" → Straw's task specification requires real data
+3. "Model true costs accounting for implementation and maintenance" → Straw's competition surfaces real costs
+4. "Establish governance structures before deployment" → Straw's evaluation log IS the governance structure
+
+**Only 38% of enterprises have appointed a Chief AI Officer.** The other 62% are making AI procurement decisions without a designated expert. These companies are the MOST at risk of bad vendor selection — and the most in need of Straw's objective rubric evaluation.
+
+---
+
+### Commercial Real Estate Design Partners
+
+#### Design Partner #137 — CBRE (Ellis AI Platform + Nexus)
+
+**What they're doing:**
+- Ellis AI Platform: won Forrester 2025 Technology Strategy Impact Award
+- Nexus AI platform: 39 billion data points from 300+ sources, deployed across 20,000 client sites / 1 billion square feet (SmartFM Solutions)
+- CBRE evaluating AI vendors for lease abstraction, property management automation, predictive maintenance
+
+**Pain point:** CBRE is both a user of AI agents (internal ops) and a technology provider to clients (SmartFM). They evaluate multiple AI vendors for their Nexus platform integrations. Straw gives their technology team a rubric-based competition framework for vendor selection.
+
+**Contact:** CBRE Chief Digital Officer, or Head of Technology Innovation. CBRE Technology: headquartered in Dallas.
+
+---
+
+#### Design Partner #138 — JLL (Falcon Platform)
+
+**What they're doing:**
+- JLL Falcon platform + JLL Property Assistant + Prism AI
+- AI-powered lease abstraction: 60% reduction in manual review labor, 3× volume handled, $1M+ uncovered in missed escalation clauses
+- Competing with CBRE and Cushman & Wakefield on AI-first property management platform
+
+**Pain point:** JLL proved $1M+ in value recovery from AI lease abstraction. Now they're selecting the next AI agent category — property valuation, tenant communication, predictive maintenance. Each selection is a multi-year commitment. Straw runs the competition on JLL's actual lease samples before they commit.
+
+**Cold email frame:** "JLL uncovered $1M in missed escalation clauses using AI lease abstraction. What's the multiplier on that if you're using the BEST lease abstraction agent rather than the first one that worked? Straw runs the competition — your lease samples, your criteria, objective score."
+
+**Contact:** JLL Chief Technology Officer or Head of Global Technology + Innovation. JLL Technology headquarters in Chicago.
+
+---
+
+#### Design Partner #139 — Cushman & Wakefield (AI Impact Barometer)
+
+**What they're doing:**
+- Microsoft Azure OpenAI + Copilot for Microsoft 365 deployment
+- Launched "AI Impact Barometer" in February 2026 — first model to quantify AI momentum across the built environment
+- Trying to close the gap with CBRE and JLL through AI investment
+
+**Unique angle:** Cushman published their own AI evaluation framework (AI Impact Barometer) — they're thinking rigorously about how to measure AI impact. They would immediately understand Straw's value proposition. They're behind CBRE and JLL and NEED a rigorous evaluation process to make better AI vendor selections and close the competitive gap.
+
+**Cold email frame:** "You launched the AI Impact Barometer to measure AI momentum. Straw measures the next step: which agent vendor performs best on your specific property management tasks before you commit. Your barometer measures market AI intensity — Straw measures your specific vendor performance."
+
+---
+
+### CRE vertical ICP summary
+
+| Target | Champion | AI Agent Use Case | Straw Rubric |
+|---|---|---|---|
+| CBRE | CTO / Head of Innovation | Lease abstraction, SmartFM predictive maintenance | Extraction accuracy, maintenance alert precision |
+| JLL | CTO | Falcon lease AI, tenant communication agents | Escalation clause recall, abstraction accuracy |
+| Cushman & Wakefield | CDO | Microsoft OpenAI integration for property workflows | Same vs. CBRE/JLL benchmarks |
+
+Sources: facilitiesdive.com/commercial-property-management-ai-2026, jll.com/insights/transforming-commercial-real-estate-ai, propmodo.com/cushman-wakefield-ai-push, mitsloan.mit.edu/action-items-ai-decision-makers-2026
+
+TICK_END
