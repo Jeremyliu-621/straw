@@ -33227,6 +33227,86 @@ TICK_END
 
 ---
 
+## Tick 485 — Competitor Landscape Update: Truesight, Vals.ai, Rubric AI (YC W26) [theme: bear]
+
+### Three New Competitors Analyzed — All Confirm Straw's Differentiation
+
+#### Truesight (Goodeye Labs)
+
+**What it does:** Lets domain experts (doctors, lawyers, analysts) define quality criteria in natural language; deploys those criteria as live API evaluation endpoints for their own agents.
+
+**Key features:** No-code setup for non-technical domain experts; multi-model support (OpenAI, Anthropic, Google, LiteLLM); SME review queue; MCP integration; live production deployment.
+
+**Target customer:** A single organization evaluating the quality of ITS OWN AI agent outputs.
+
+**Why it's NOT a Straw competitor:**
+- Evaluates one organization's agent against its own quality standard
+- Does NOT run multiple vendor agents against each other
+- Does NOT support procurement competition (multiple vendors competing for a contract)
+- No bounty/escrow/winner mechanics
+- No tiered evaluation pipeline (deterministic + LLM ensemble + autonomous investigator)
+
+**What Truesight does:** "Does our agent meet our quality bar?"
+**What Straw does:** "Which vendor's agent best meets our quality bar, and which one should we hire?"
+
+**The gap Truesight can't fill:** A Fortune 500 company wants to evaluate Agentforce vs. ServiceNow AI vs. a custom-built agent for their customer service workflow. Truesight evaluates one of them. Straw runs all three simultaneously with the buyer's rubric and crowns a winner.
+
+#### Vals.ai
+
+**What it does:** Evaluates language MODELS (not agents) against industry-specific tasks in finance, law, medicine.
+
+**Funding:** $5M seed — Sequoia Capital, Bloomberg Beta, Pear VC, 8VC, J12 (strong signal: sophisticated investors see the evaluation market as real).
+
+**Key distinction:** Vals.ai is LLM benchmarking for professional domains. "Which LLM performs best on legal research tasks?" They test models against pre-defined test suites — not buyer-defined rubrics, not agent competition, not procurement workflows.
+
+**Why it's NOT a Straw competitor:**
+- Evaluates models, not AI agents (models ≠ agents — agents have tool use, memory, multi-step execution)
+- Pre-defined test suites (their criteria) vs. buyer-defined rubrics (customer's criteria)
+- No competition format (buyer posts a bounty, agents compete)
+- No procurement workflow (escrow, winner selection, hire/acquire mechanics)
+
+**What Vals.ai does:** "GPT-4o scores 72/100 on our legal research benchmark vs. Claude 74/100."
+**What Straw does:** "For YOUR legal due diligence workflow with YOUR specific criteria, here's which agent wins."
+
+**The Vals.ai investor signal:** Sequoia backing a $5M seed in AI evaluation confirms the market category is real and attracting smart capital. Straw's differentiation (buyer-defined, agent-level, competition-format, procurement-focused) needs to be clear in any investor conversation.
+
+#### Rubric AI (YC W26)
+
+**What it does:** Runtime reasoning infrastructure for AI agent builders. Helps vertical AI companies make their agents smarter by curating expert-verified reasoning traces and plugging into agents at inference time.
+
+**Target customer:** Vertical AI COMPANIES building agents for healthcare, legal, finance, code — NOT enterprise buyers choosing between agents.
+
+**Key data:** 10,000+ vertical AI companies in their target market. This is a supply-side infrastructure play.
+
+**Why it's NOT a Straw competitor:**
+- Customer is the agent BUILDER, not the enterprise BUYER
+- Makes agents better (supply-side) vs. evaluates agents for buyers (demand-side)
+- No cross-vendor comparison
+- No procurement mechanics
+
+**What Rubric AI does:** "Helps Oscar Health's AI agent improve its reasoning on clinical tasks."
+**What Straw does:** "Helps Oscar Health evaluate which AI agent (from Oscar's internal team, Anthropic, or a vendor) should handle that clinical task."
+
+**The YC W26 signal:** YC backed BOTH Rubric AI (supply-side agent reasoning) and presumably other evaluation infrastructure plays. The category is validated. Straw's differentiation is the demand-side procurement layer.
+
+### Updated Competitor Matrix (Full Landscape)
+
+| Company | What they evaluate | Who sets criteria | Competition format | Procurement workflow |
+|---|---|---|---|---|
+| LMArena/Chatbot Arena | Foundation models | The lab / community | Blind ranking | No |
+| Vals.ai | Foundation models | Vals.ai team | Test suite | No |
+| Truesight | One org's own agents | The buyer | Quality bar | No |
+| Rubric AI | Agent reasoning | Domain experts (supply) | No | No |
+| LangSmith | LangChain agents | Developer | CI/CD tests | No |
+| Arize Phoenix | Any agent | Developer | Monitoring | No |
+| Braintrust | Any agent | Developer | CI tests | No |
+| **STRAW** | **Any agent, any vendor** | **The BUYER** | **Multi-vendor competition** | **Full (bounty, winner, hire)** |
+
+**The empty cell in the competitive matrix:** Only Straw occupies all four columns simultaneously. Every competitor fills 1-2. Straw fills all 4.
+
+**The investor pitch version:** "There are excellent tools for monitoring your own agent's quality (Truesight, Arize, LangSmith). There are useful tools for benchmarking LLMs (Vals.ai, Chatbot Arena). There is no tool for the procurement decision: 'Which of five competing vendors' AI agents should I deploy for THIS specific task?' Straw is that tool."
+
+---
 ## Tick 485 — The Straw Design Partner Discovery Call: 20-Minute Script [theme: GTM]
 
 **Research date:** 2026-05-03
