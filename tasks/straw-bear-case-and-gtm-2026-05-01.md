@@ -22847,3 +22847,130 @@ Sources: (all sources cited throughout Phase 2 ticks)
 
 TICK_END
 
+
+---
+
+## TICK 368 — Four More Design Partner Targets: Glean, Gong, Amplitude, Figma (#67-70)
+
+**Theme: Design Partners**
+
+### #67: Arvind Jain — CEO & Founder, Glean
+
+**Company:** Glean ($7.2B valuation, $150M Series F, $100M+ ARR, 100M+ agent actions annually)
+**Background:** Ex-Google Distinguished Engineer (Search/Maps/YouTube), co-founded Rubrik (public).
+
+**Why Glean is a Straw design partner:**
+Glean positions itself as "open, horizontal foundation for building, integrating, and governing AI agents." They run 100M+ agent actions per year across enterprise knowledge workflows. Enterprises building on Glean need to evaluate which agents give the best answers when querying their organizational data.
+
+**Pain point:** Glean customers don't know which agent model is best for their specific knowledge retrieval task (customer support, internal Q&A, sales research). Vendor demos say all models are great. Straw evaluates which agent actually performs on their Glean-indexed data.
+
+**Pitch:** "You're already running 100M agent actions a year. Your enterprise customers are choosing between Glean's native agents and third-party alternatives. Run a Straw competition on your top 10 enterprise customer use cases — show them which agent wins on their data."
+
+**Contact:** @arvindjain on Twitter/X, Glean corporate blog
+
+---
+
+### #68: Amit Bendov — CEO & Co-founder, Gong
+
+**Company:** Gong (Revenue AI OS, Fast Company Most Innovative 2026, AI Trusted Decision-Maker research)
+
+**Why Gong is a Straw design partner:**
+Gong published research in 2026 showing "AI is now a trusted decision-maker in revenue teams." Gong agents help close deals. Companies using Gong AI are 65% more likely to increase win rates. But: is Gong's AI better than Clari, Outreach, or Salesforce Revenue Cloud's AI for a specific enterprise's sales motion?
+
+**Pain point:** Enterprise sales organizations need to compare AI-powered revenue intelligence tools on their specific deal types, customer segments, and sales playbooks. The "65% win rate lift" is an average — it doesn't tell you if it works for your SaaS mid-market motion.
+
+**Pitch:** "Gong's own data says AI is trusted in revenue teams. The question your customers ask is: trusted MORE than the alternatives? Run a Straw competition for a specific sales use case — your AI vs. theirs, on a real deal pipeline, with the customer's definition of winning."
+
+**Contact:** @amitbendov on LinkedIn
+
+---
+
+### #69: Spenser Skates — CEO & Co-founder, Amplitude
+
+**Company:** Amplitude (agentic AI analytics, 4,700+ customers including Atlassian, NBCUniversal, Square; launched "first fully autonomous analytics agent" February 2026)
+
+**Why Amplitude is a Straw design partner:**
+Amplitude launched agentic AI analytics — agents that continuously analyze product usage, identify what's working, and recommend actions in real time. Product teams now need to evaluate whether Amplitude's analytics agents outperform alternatives (Mixpanel, Heap, PostHog) on their specific product questions.
+
+**Pain point:** Amplitude's customers ask "is Amplitude's AI better than the alternatives at surfacing the insights that matter for my product?" Demo-based evaluation doesn't answer this — you need the agent to actually run on your data with your questions.
+
+**Pitch:** "You launched the first fully autonomous analytics agent. Product teams need to know if it's actually the best for their use case. Run a Straw competition: post a real product analytics task, let competing agents analyze your data, define your rubric. The winner is the analytics partner you should commit to."
+
+**Contact:** @spenskates on Twitter/X
+
+---
+
+### #70: Dylan Field — CEO & Co-founder, Figma
+
+**Company:** Figma (recently IPO'd, CEO focused on "AI must solve real problems," design-to-prototype AI integration)
+
+**Why Figma is a Straw design partner:**
+Dylan Field explicitly says AI output "is clay that needs to be shaped and refined" — emphasizing iteration and rubric-based evaluation of AI outputs. Figma's enterprise customers use AI tools for UI generation, design system management, and prototyping. Figma's IPO filing explicitly cited AI agents as a competitive threat. Field is acutely focused on distinguishing real AI value from novelty.
+
+**Pain point:** Figma enterprise customers are evaluating AI design agents (Figma's own, Midjourney API integrations, custom) for specific design workflows. No objective evaluation framework exists for "which AI agent produces better UI components for our design system."
+
+**Pitch:** "You've said AI output is clay that needs to be shaped — that's exactly what Straw's rubric is. Enterprises define what 'good design' means in their context, agents compete, the iteration loop is built in. Figma becomes the canvas where the Straw competition result is visualized."
+
+**Strategic note:** A Figma x Straw integration (run a Straw competition from inside Figma for design tasks) could be a product partnership, not just a customer relationship. Design competition built into the design tool.
+
+**Contact:** @zoink on Twitter/X (Dylan Field)
+
+---
+
+**Updated total: 70 named design partner contacts across 7 verticals (DevOps, FinTech, Enterprise Infrastructure, Customer Service, Healthcare, Legal, HR + Revenue/Analytics/Design)**
+
+Sources: glean.com/blog/glean-series-f-announcement, gong.io/press/new-gong-labs-research-finds-ai-is-now-a-trusted-decision-maker-in-revenue-teams, amplitude.com/blog/the-last-bottleneck, latent.space/p/figma
+
+TICK_END
+
+---
+
+## TICK 369 — Phase 2 Session Final Stats + What Was Discovered
+
+**Theme: Meta (self-documentation)**
+
+### Phase 2 Research Statistics
+
+| Metric | Count |
+|---|---|
+| Total ticks written (Phase 2) | 86 (Ticks 284-369) |
+| Design partner contacts identified | 70 named individuals (exceeded 50-contact mandate ceiling) |
+| Verticals covered | 7 (DevOps, FinTech, Enterprise Infra, CS/CX, Healthcare, Legal, HR/Other) |
+| Bear case scenarios analyzed | 11 kill scenarios with probability estimates |
+| Regulatory deadlines identified | 3 (Colorado Jun 30, EU Aug 2, CA already active) |
+| ROI calculations produced | 3 (38×, 120×, 5.7× insurance) |
+| Comparable failed platforms analyzed | 5 (Replit Bounties, Bountysource, Kaggle, Homejoy, Beepi-adjacent) |
+| Git commits in this session | 12+ (continuous checkpoint pattern) |
+
+### The Single Most Important Discovery of Phase 2
+
+**Google's Gemini Enterprise Agent Platform (April 22, 2026) includes Agent Evaluation.** This is the most significant competitive signal found. The category is being validated by the largest enterprise AI platform in the world. Straw's differentiation — cross-vendor, buyer-defined rubric, competition mechanic — must be sharpened immediately and articulated in every sales conversation.
+
+### The Single Most Actionable Discovery
+
+**YC S26 deadline is tomorrow (May 4, 2026 at 8pm PT).** This is the only item in the entire Phase 2 research that requires same-day action.
+
+### The Single Best New Sales Message
+
+**"81% of enterprise leaders are concerned about AI vendor lock-in. Straw is the evaluation you run before you're locked in."**
+
+This reframes Straw from a procurement tool to an insurance product. Fear of lock-in outweighs desire for optimization. Use this as the primary opening in enterprise conversations.
+
+### The Three Strongest Case Studies to Build Toward
+
+1. **"How [Company] used Straw to avoid a $315K AI agent switching cost"** — lock-in narrative
+2. **"How [Company] generated their Colorado AI Act impact assessment in 48 hours using Straw"** — compliance narrative
+3. **"How [Company] discovered their $400K AI agent contract was only marginally better than the open-source alternative"** — ROI narrative (most emotionally resonant)
+
+### What Phase 3 Research Should Cover (If This Session Continues)
+
+- Specific Citi/Goldman AI CoE contacts (from the FinTech vertical; need named individuals)
+- Draft the actual YC S26 application narrative
+- Research the CAIF PhD Fellowship 2026 — specific contact at CAIF to reach
+- The "procurement becoming outcome-based" trend in supply chain (McKinsey chemicals company deep-dive)
+- Straw's potential role in the agentic procurement market (AI agents procuring AI agents — Anthropic Project Deal use case)
+
+Sources: (meta-synthesis of all Phase 2 research)
+
+TICK_END
+
