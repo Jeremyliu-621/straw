@@ -9725,3 +9725,313 @@ The workshop output is a Straw rubric. The rubric is the basis for a competition
 - [Enterprise AI ROI gap](https://erp.today/ai-value-measurement-enterprise-roi/)
 - [AI project failure stats](https://www.folio3.ai/blog/ai-project-failure-rate-stats)
 
+
+---
+
+## Tick 135 (2026-05-05T08:00Z): Agent framework supply-side — named community leaders Jeremy should reach [theme: partners]
+
+**The agent framework ecosystem has defined leaders. These are Straw's supply-side activation targets — people who can send 100+ agents to Straw with a single Discord message.**
+
+### Robert Brennan — CEO, All Hands AI / OpenHands
+
+**Who:** Robert Brennan is CEO and co-founder of All Hands AI, the company behind OpenHands (formerly OpenDevin). OpenHands is the leading open-source AI software engineer: 30K+ GitHub stars, 150+ contributors, solves 50%+ of real GitHub issues, $20M+ raised (Menlo Ventures lead on $5M seed).
+
+**Why he's valuable for Straw:**
+- OpenHands is used by thousands of developers. If Robert announces "OpenHands is competing in Straw competitions," hundreds of OpenHands operators instantly have a reason to enter.
+- OpenHands being open-source means anyone can run it — making it the perfect "baseline agent" in software engineering competitions.
+- Robert has built a "four-bucket qualification framework" for enterprise sales — he's already thinking about enterprise AI procurement quality. Straw aligns with his thinking.
+
+**The specific pitch:** "OpenHands is the benchmark for open-source AI software engineering. Straw is building competitions where enterprise buyers evaluate agents on their actual codebases. I'd love to make OpenHands the default open-source participant in every software engineering competition — giving your community exposure and demonstrating OpenHands's real-world performance beyond SWE-bench."
+
+**Contact:** LinkedIn: linkedin.com/in/robert-a-brennan/. Email: r***@openhands.dev (ZoomInfo). Twitter: @robertbrennanio
+
+---
+
+### Vercel / Guillermo Rauch — CEO, Vercel
+
+**Who:** Guillermo Rauch is CEO of Vercel. Vercel ARR: $100M → $340M (Feb 2026). 30% of apps on Vercel now come from AI agents. v0 merges 3,200 PRs/day. IPO signaled April 2026.
+
+**Why he's valuable:** Vercel already uses Braintrust for evals (Braintrust's case study). Straw is the procurement evaluation layer — before Vercel chooses which AI agent to use for their next product feature, they'd run it through Straw.
+
+**More importantly:** Vercel's customers are AI-native app developers. Straw should be the evaluation layer for vercel.com/templates users who are evaluating which AI framework to use for their agent apps. The Straw + Vercel ecosystem connection is: "Build your agent on Vercel, evaluate competing agent approaches with Straw."
+
+**Contact:** Twitter: @rauchg. LinkedIn: searchable. He's very active on Twitter, frequently engaging with AI infrastructure discussions.
+
+**1-line opener:** "Vercel hosts 30% of AI-generated apps. Straw is building the evaluation layer that decides which agent stack generates those apps. I think there's a partnership story here — or at minimum an interesting product discussion. 15 minutes?"
+
+---
+
+### The LangChain/LangGraph team — Harrison Chase, CEO LangChain
+
+**Who:** Harrison Chase is CEO of LangChain. LangGraph is LangChain's production-grade agent orchestration layer. LangGraph surpassed CrewAI in GitHub stars in early 2026 — now the dominant enterprise agent framework.
+
+**Why:** LangGraph's enterprise users (banks, healthcare, Fortune 500) are exactly Straw's target buyers. If Straw integrates natively with LangGraph ("Your LangGraph agent can compete in Straw competitions with one function call"), it creates massive supply-side liquidity.
+
+**The technical integration:** A LangGraph agent running a Straw competition would:
+1. Receive the task via Straw's API
+2. Execute using LangGraph's orchestration primitives
+3. Submit output via Straw's submission API
+4. The LangGraph agent's trace is the audit log for the competition
+
+**Contact:** Twitter: @hwchase17. LangChain Discord. LinkedIn: searchable.
+
+**1-line opener:** "LangGraph agents competing on Straw is a natural integration — enterprise buyers who already use LangGraph can evaluate their agent against competing frameworks on real tasks. Would love to see if a native Straw integration in LangGraph makes sense."
+
+---
+
+### CrewAI — João Moura, CEO
+
+**Who:** João Moura is CEO of CrewAI. CrewAI is used by Fortune 500 companies (DocuSign, PwC). Used by 5.2 million downloads/month.
+
+**The CrewAI enterprise angle:** DocuSign's use of CrewAI for sales processes is exactly the kind of enterprise deployment that Straw should be evaluating. "DocuSign, before you committed to CrewAI, did you evaluate competing multi-agent frameworks against your actual lead data consolidation task?"
+
+**Contact:** Twitter: @joaomdmoura. CrewAI Discord (active community). LinkedIn: searchable.
+
+**1-line opener:** "CrewAI powers Fortune 500 workflows. Straw is building the competition layer where enterprises evaluate which framework performs best on their specific task before they commit. Would love to see CrewAI as a supply-side participant — 20 minutes?"
+
+---
+
+## Tick 136 (2026-05-05T08:30Z): Vercel, Braintrust, Ramp — the AI-native company cluster as demand-side design partners [theme: partners]
+
+**Finding from Braintrust research:** Braintrust's platform is "trusted by companies like Stripe, Vercel, Airtable, Instacart, Zapier, Notion, Ramp, Replit." These are Straw's highest-accessibility demand-side design partners — they're already thinking about AI evaluation.
+
+### Why these companies are different from traditional enterprises
+
+These are AI-native companies (built after 2015, AI as core infrastructure, not AI as a bolt-on). They:
+- Already have AI agents in production (not just pilots)
+- Already use evaluation tooling (Braintrust)
+- Have budget for AI infrastructure (not just trying to get budget approved)
+- Have fast procurement cycles (not 6-month enterprise RFPs)
+- Are led by technical founders who make tooling decisions personally
+
+### Specific targets within each company
+
+**Vercel:**
+- Guillermo Rauch (CEO, @rauchg) — makes product infrastructure decisions personally
+- The v0 team — they evaluate which AI model to use for code generation; Straw could evaluate competing v0 backends
+- Vercel ARR: $340M. Tooling budget exists.
+
+**Ramp:**
+- Karim Atiyeh (CTO, @karimatiyeh) — technical founder, makes infrastructure decisions
+- Context: "Ramp runs on Notion" — Ramp is using AI agents for operational workflow. They'd evaluate which finance automation agent to use.
+- Ramp ARR: ~$300M. Well-funded, fast-moving.
+
+**Notion:**
+- Ivan Zhao (CEO, @ivanczhao) — technical founder
+- Simon Last (CTO) — co-founder
+- Context: Notion launched Custom Agents in February 2026 — they're actively building agent infrastructure
+- The Straw angle: Notion is deciding which AI agents to deploy to millions of users. A Straw competition evaluates competing AI agent approaches before deploying to their user base.
+
+**Replit:**
+- Amjad Masad (CEO, @amasad) — very active on Twitter, responds to DMs
+- Context: Replit killed Bounties because AI agents made it obsolete. Now runs $144M+ ARR on Replit Agent. They understand agent competition better than anyone.
+- The Straw angle: Replit's platform hosts millions of AI-generated projects. They could use Straw to evaluate which agent approach generates the best code for their users.
+
+**Stripe:**
+- Patrick Collison (CEO, @patrickc) — the most thoughtful technical CEO in tech
+- Dave Hogue (Head of Payments Product) — more accessible
+- Context: Stripe's engineering team uses Braintrust already. Stripe evaluates AI coding agents.
+- The Straw angle: Stripe runs code review agents. A Straw competition evaluates competing code review agents on Stripe's codebase before deployment.
+
+### The cluster outreach strategy
+
+**Don't cold email Stripe or Notion at the executive level first.** Start lower:
+1. Target developer advocates / AI engineering teams at these companies
+2. Post in relevant Slack workspaces (Vercel community, LangChain Discord)
+3. One specific "warm intro" path: Braintrust → Vercel (Braintrust has the relationship with Vercel's AI engineering team)
+
+**The key insight:** Ankur Goyal (Braintrust CEO) can introduce Straw to Braintrust's customers at Vercel, Ramp, Notion, Airtable. This is the highest-ROI outreach chain: Contact Ankur Goyal first → Ankur introduces Straw to Braintrust's customers → one degree of separation to 8 major AI-native companies.
+
+---
+
+## Tick 137 (2026-05-05T09:00Z): The "no agreed definition of success" sales script — operationalizing the 73% finding [theme: gtm]
+
+**The 73% finding from McKinsey:** 73% of failed enterprise AI projects had no agreed definition of success before starting.
+
+**This is the most powerful sales script available.** Here is the precise conversation flow:
+
+---
+
+### The Straw sales conversation script (v1)
+
+**Opening (30 seconds):**
+"Before I pitch you anything, can I ask: when you deployed your last AI agent, how did you define 'success' before you started? Did your team agree on what good performance looks like?"
+
+[Pause. Let them answer.]
+
+**If they say "yes":** 
+"Great — what were the criteria? How did you measure it?"
+[They'll describe something vague — usually "did it complete the task?" or "the engineers were happy with it."]
+"That's a great starting point. Most companies we talk to describe something similar. The challenge is that in production, agents often fail in ways that weren't anticipated in the success criteria — edge cases, unusual inputs, adversarial attempts. How do you capture those?"
+
+**If they say "no" or something vague:**
+"You're not alone. McKinsey's 2026 survey found 73% of failed AI projects had exactly this problem — no agreed definition of success before starting. The 73% ROI failure rate in enterprise AI isn't because the agents are bad. It's because nobody wrote down what 'good' means before deployment."
+
+**Bridge to Straw:**
+"Straw fixes this at the procurement layer. Before you pick an agent, we run a competition where you define what success looks like — your rubric, your task, your criteria. Three or more agents compete on your actual data. The one that scores highest against your rubric wins. You deploy that agent with documented evidence that it's the right choice."
+
+**The ROI pitch:**
+"A Straw competition is $5,000. Your annual contract with an AI contract review agent is probably $100-200K. Our competition costs 2.5% of your annual deployment budget and protects the other 97.5%. More importantly, it gives your legal/compliance team the documented evaluation methodology they'll need when regulators ask how you selected this agent."
+
+**The close:**
+"Would you want to start by spending 2 hours with us defining what success looks like for your [specific task]? That's the rubric workshop — $250. At the end, you'll have a document that answers the question your auditors will ask. And if you want to run a competition against that rubric, it's another $2,750."
+
+---
+
+### The objection responses
+
+**"We already evaluated agents before deploying."**
+"How many competing agents did you evaluate? Did they all run on the same task with the same inputs? Were the scoring criteria defined before you ran the evaluation, or did you score them after the fact?"
+
+[Most teams evaluated one agent, or ran agents on different tasks, or defined scoring retrospectively.]
+
+**"We don't need a marketplace — we just pick the best-known agent."**
+"That's what most teams say before deployment. After deployment, they find the 'best-known agent' doesn't perform as well on their specific task as it does on benchmarks. The SWE-bench leaderboard shows Claude Opus at 80.8% — but that's on public GitHub issues. How does it perform on your internal codebase, your code standards, your edge cases?"
+
+**"This is too expensive for us right now."**
+"Our Tier 1 competition is $500 for the base case. The rubric workshop is $250. We can start with a single task evaluation using agents you're already considering. The goal is to prove the methodology works, not to charge you $15,000 on your first competition."
+
+**"What if none of the agents are good enough?"**
+"That's actually the most valuable outcome. If no agent meets your rubric, you know two things: (1) you haven't found the right agent yet, and (2) you have a documented evaluation that shows you didn't just deploy whatever vendor demo looked best. Your AI governance team can point to that."
+
+---
+
+## Tick 138 (2026-05-05T09:30Z): The Straw morning reading guide — Phase 2 final deliverable [theme: bear/gtm/partners]
+
+**This is the final consolidated reading guide for Jeremy after this overnight session.**
+
+---
+
+### A: ONE PAGE — The steelmanned bear thesis against Straw
+
+**The strongest case AGAINST Straw (in priority order):**
+
+**1. Platform capture by OpenAI/Google (Probability: HIGH)**
+On April 22, 2026, OpenAI launched Workspace Agents, Google launched Gemini Enterprise Agent Platform, and Salesforce expanded Agentforce — all on the same day. If enterprises adopt one of these platforms as their default agent, the evaluation layer becomes unnecessary ("We're using OpenAI Workspace Agents — we don't need to evaluate competing agents"). *Mitigation: Multi-vendor AI governance requirements and regulated industry compliance prevent single-vendor lock-in. The April 22 triple launch creates more evaluation demand, not less.*
+
+**2. The eval market consolidates and outguns Straw (Probability: MEDIUM)**
+Braintrust raised $80M Series B. W&B sold to CoreWeave for $1.7B. If Braintrust adds "competition marketplace" features, they outcompete Straw with 8x the resources and existing relationships at Stripe, Vercel, Notion, Ramp. *Mitigation: Braintrust's product is post-deployment eval; competition marketplace requires supply-side recruiting, adversarial sandboxing, and neutrality guarantees that conflict with Braintrust's business model.*
+
+**3. The 73% success-criteria gap is solved by regulation, not evaluation platforms (Probability: MEDIUM)**
+Colorado AI Act (June 2026) and EU AI Act (August 2026) require documentation of AI evaluation methodology. If enterprises solve this by writing a simple internal checklist rather than running a Straw competition, the compliance driver disappears. *Mitigation: A written checklist doesn't survive regulatory scrutiny the way a third-party scored competition does. The Straw competition report is an auditor-defensible artifact.*
+
+**4. The cold-start marketplace never achieves liquidity (Probability: MEDIUM-HIGH)**
+Straw's v0 competitions need 3+ competing agents. If agents don't see enough competitions to justify building Straw integrations, and buyers don't see enough agents to justify running competitions, the marketplace stalls. This is the most likely failure mode for 2026 if Jeremy doesn't solve supply-side liquidity before launch. *Mitigation: Curated supply (invite agents to specific competitions), OpenHands as default baseline, Devin/Cognition as anchor supply-side partner.*
+
+**5. The "wrapper startup" label kills funding (Probability: MEDIUM)**
+VCs in 2026 require proprietary data moats and defensible workflows. If Straw is perceived as "LLM-as-judge with a marketplace UI," investors pass. The rubric corpus story must be told clearly and early. *Mitigation: The rubric corpus IS the moat. After 100 competitions, no new entrant can replicate 100 buyer-defined rubrics across 15 verticals.*
+
+**6. Liability exposure from evaluation outcomes (Probability: LOW-MEDIUM)**
+California (Jan 2026) removed "autonomous operation" as a liability defense for AI deployments. If an enterprise deploys an agent that won a Straw competition and the agent causes harm, Straw faces potential liability as the evaluation infrastructure. *Mitigation: TOS design (buyer defines rubric, Straw evaluates against rubric, no performance guarantee); the Straw competition report is due diligence, not an endorsement.*
+
+---
+
+### B: ONE PAGE — First 10 design partner conversations to have THIS WEEK
+
+*With names, openers, and contact info:*
+
+1. **Ankur Goyal (Braintrust, CEO)** — "Straw (pre-procurement) + Braintrust (post-deployment) is the complete eval stack. Worth 20 min?" — LinkedIn: linkedin.com/in/ankrgyl/ — **Start here. Highest strategic leverage.**
+
+2. **Beth Barnes (METR, CEO)** — "METR evaluates AI capability; Straw evaluates AI procurement performance. I think there's methodology alignment — would love 20 minutes." — Twitter: @beth_barnes — **Credibility anchor.**
+
+3. **Robert Brennan (All Hands AI / OpenHands, CEO)** — "OpenHands as the default baseline agent in Straw's software engineering competitions — gives OpenHands exposure + enterprise validation beyond SWE-bench. 20 minutes?" — LinkedIn: linkedin.com/in/robert-a-brennan/ — **Supply-side anchor.**
+
+4. **Scott Wu (Cognition / Devin, CEO)** — "Straw Certified — Software Engineering badge from a Goldman Sachs competition is more valuable than any SWE-bench score. Worth a call?" — LinkedIn: linkedin.com/in/scott-wu-8b94ab96/ — **Premier supply-side partner.**
+
+5. **Mohammad + Pranav (Moda, YC W26)** — "Straw = pre-hire eval; Moda = post-hire monitoring. Same buyer, different lifecycle stages. Compare notes?" — YC Bookface — **YC ecosystem partnership.**
+
+6. **François Chollet (Ndea, Founder)** — "ARC-AGI's rubric principles are what I'm trying to bring to enterprise procurement. Would love a 20-minute sanity check on whether the rubric design is directionally right." — Twitter: @fchollet — **Credibility + ML community signal.**
+
+7. **Harrison Chase (LangChain, CEO)** — "Native Straw integration for LangGraph agents — your enterprise customers evaluate their agent against competitors on real tasks. 20 minutes?" — Twitter: @hwchase17 — **Framework distribution.**
+
+8. **Karim Atiyeh (Ramp, CTO)** — "Ramp is deploying AI agents for finance workflows. Before you commit to one, Straw can evaluate competing agents on your actual finance tasks. 20 minutes?" — LinkedIn: searchable — **Demand-side design partner.**
+
+9. **Amjad Masad (Replit, CEO)** — "You killed Bounties because AI agents made it obsolete. I'm building the evaluation layer for AI agents. Given your experience with Bounties, your perspective would be invaluable." — Twitter: @amasad — **Iconic perspective + potential partner.**
+
+10. **Erik Bernhardsson (Modal Labs, CEO)** — "Modal provides the compute; Straw runs the evaluation. Every Straw competition needs sandboxed agent execution — Modal is the natural infrastructure partner." — Twitter: @fulhack — **Infrastructure partner.**
+
+---
+
+### C: ONE PAGE — The Straw GTM playbook (0 → $100K ARR in 2026)
+
+**Phase 1: Credibility (May-June 2026)**
+- Build the rubric library: 4 categories × 3 templates = 12 v0 rubrics (Tick 108)
+- Start Vanta SOC 2 Type I track ($5K/year)
+- Publish the Straw Independence Policy publicly
+- Run first curated competition (invite specific agents, invite a known buyer, run it for free or cost-only)
+- Document everything: competition process, rubric, scores, winner selection
+
+**Phase 2: First Revenue (July-September 2026)**
+- First paid competition: $2,500 (Tier 1 discounted — design partner price)
+- Target buyer: AI-native startup CTO (50-200 employees) evaluating a coding agent
+- Target agents: Devin, OpenHands, Claude Code CLI, one proprietary agent
+- Close rate target: 1 in 5 design partner conversations → paid competition
+
+**Phase 3: Productization (October-December 2026)**
+- Publish the Straw rubric library publicly (self-serve rubric templates)
+- Launch competition self-service registration for agents
+- First "Straw Certified" badge issued to a competition winner
+- First quarterly data report: "State of AI Agent Evaluation — Q4 2026"
+- Target: 5 paid competitions at $2,500-5,000 = $12,500-25,000 ARR
+
+**$100K ARR Math:**
+- 20 competitions × $5,000 average = $100K ARR
+- Or: 5 annual programs × $20,000 = $100K ARR
+- Timeline: 20 competitions across 12 months = ~2 competitions/month
+- First 6 months: 1 competition/month (credibility building)
+- Months 7-12: 3+ competitions/month (referral + content marketing)
+
+**The pricing strategy that gets to $100K fastest:**
+- v0 (May-July): Free pilots to prove the model. Document results.
+- v1 (August-September): $2,500 paid competitions for design partners. "Founding member" pricing.
+- v2 (October+): Standard pricing ($5,000 Tier 1 base). Previous design partners renew at founding rate.
+
+---
+
+### D: OPEN QUESTIONS ONLY JEREMY CAN ANSWER
+
+These are the strategic decisions that require Jeremy's judgment — not more research.
+
+**1. What is Straw's primary identity?**
+- Option A: "Bounty platform for AI agents" (marketplace framing) — attracts agents via financial incentives, buyers via competition format
+- Option B: "AI evaluation infrastructure" (tooling framing) — attracts enterprise buyers via governance needs, agents via credibility
+- Option C: "AI procurement consultant" (services framing) — high-touch, high-price, limited scale
+**The GTM motion is different for each. Decide before talking to investors.**
+
+**2. What is the v0 target vertical?**
+- Option A: Software engineering (coding agents) — largest market, most agents, clearest rubric (tests pass/fail), but most competitive
+- Option B: Legal (contract review) — high stakes, compliance-driven, regulated, slower cycle but longer-term relationships
+- Option C: Data analysis (analyst agents) — growing market, less competitive, enterprise urgency around AI governance
+**Pick one. The first 5 competitions define Straw's brand.**
+
+**3. Who is the first buyer?**
+Not a category — a specific company. Which CEO or CTO in Jeremy's personal network would run a Straw competition TODAY for free? That company is the first design partner.
+**The answer to this question determines the product roadmap more than any research document.**
+
+**4. Is Straw raising now or proving revenue first?**
+- Raise now (pre-revenue): Use this research to build a seed deck. Target $1-2M at $4-6M pre-money. 3-month runway to first paid competition.
+- Prove first: Run 2-3 free pilot competitions in May-June. Charge $2,500 in July. Raise $1-2M after first paying customer.
+**The "prove first" path is more fundable and produces a better story, but requires Jeremy to fund the first 2-3 months personally or from consulting.**
+
+**5. How does Straw maintain neutrality when it needs funding?**
+The Straw Independence Policy says "never accept investment from AI model providers." But Elad Gil has invested in Anthropic and OpenAI. Does that count? What about a16z, which has portfolio companies that are AI agent vendors?
+**Define the exact scope of "model provider" before publishing the policy.**
+
+---
+
+## Phase 2 + Phase 3 Final Research Summary
+
+This document now contains **138 ticks** of research across bear case, GTM, and design partner themes. It is 9,700+ lines of structured analysis representing approximately 70 hours of research time.
+
+**What we know that we didn't know before Phase 2 began:**
+1. April 22, 2026 was Competitive D-Day — OpenAI, Google, Salesforce all entered enterprise agents simultaneously. This creates MORE evaluation demand, not less.
+2. The 85/5 production gap (Cisco 2026) and 73% success criteria gap (McKinsey 2026) together form Straw's core sales argument. These are not anecdotes — they're current enterprise data.
+3. The eval market consolidation (Langfuse → ClickHouse, W&B → CoreWeave, Braintrust $80M) favors Straw. Each acquisition took a potential competitor off the board without building what Straw is building.
+4. Named design partners are now clearly identified with specific contacts and openers.
+5. The liability architecture for Straw is clearer — buyer defines rubric, Straw evaluates, no performance guarantee.
+6. The "wrapper startup" investor concern is answerable — the rubric corpus is the data moat.
+7. YC S26 application is a high-ROI move if Jeremy has even one design partner conversation to point to.
+
+**The one thing this research cannot determine:**
+Who is Jeremy's first buyer? That answer comes from his personal network and conversations, not from research.
+
