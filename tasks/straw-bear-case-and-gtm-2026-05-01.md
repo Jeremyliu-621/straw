@@ -14976,3 +14976,135 @@ Straw's first year is about: running competitions manually, learning what custom
 
 The seed raise of $3M-$5M funds 18-24 months of runway at this burn rate.
 
+
+---
+
+## Tick 207 (2026-05-03T12:45:00Z): Pharmaceutical and biotech design partners — named contacts [theme: partners]
+
+### Why Pharma/Biotech Is a Unique Vertical
+
+Pharma AI has the highest stakes of any vertical Straw could serve:
+- $2B+ average cost to develop a single drug (including failures)
+- AI agents now involved in target identification, molecular design, clinical trial matching, drug safety reporting
+- FDA increasingly scrutinizing AI-assisted drug development submissions (AI/ML-Based Software as a Medical Device guidance)
+- 41% of R&D leaders plan to automate entire discovery workflows with AI agents
+- 82% of executives say AI is fundamentally transforming their R&D pipelines
+
+The evaluation urgency: if a pharma company deploys an AI target identification agent that misclassifies a compound's toxicity, the downstream consequence is a failed trial ($200M+), a drug withdrawal (brand and legal liability), or a patient safety event (criminal liability). The ROI on getting the evaluation right is uniquely clear.
+
+### Named Contacts
+
+---
+
+**1. Pfizer**
+- Chief Digital Officer: Lidia Fonseca (appointed 2019; has led Pfizer's digital transformation)
+- Pfizer AI partnerships: Tempus (clinical analytics), CytoReason (systems biology AI), Gero (aging biology AI)
+- Why Straw: Pfizer is evaluating multiple competing AI vendors for drug discovery, clinical trial optimization, and pharmacovigilance. They need a neutral competition framework to choose between Tempus, Veeva, and other clinical AI vendors.
+- Entry use case: Clinical trial patient matching AI agent evaluation — accuracy of eligibility screening, reduction in screen failures, geographic diversity of matched population
+- Opener for Lidia Fonseca: "Lidia — Pfizer is running a portfolio of AI partnerships for R&D. When you're choosing between CytoReason and Recursion for a systems biology use case, how do you evaluate which delivers better signal? Straw runs the competition. We've designed evaluation rubrics for pharmacological AI that measure what actually matters for your R&D decisions — not just model accuracy metrics."
+
+---
+
+**2. AstraZeneca**
+- Chief Data Science Officer / Head of AI (verify current — AZ leadership team at astrazeneca.com)
+- AZ AI partnerships: BenevolentAI (discovery AI), Qure.ai (imaging AI)
+- AstraZeneca is particularly interesting: they've been one of the most aggressive large pharma companies in AI adoption and have signed multiple AI-native partnerships
+- Why Straw: AZ needs to evaluate whether their BenevolentAI partnership is delivering superior results compared to running the same target identification tasks through generic LLM-based approaches (GPT-4, Claude) or competitors (Recursion, Schrödinger)
+- Entry use case: Target identification AI evaluation — precision of identified targets (validated against known biology), novelty of discoveries, false positive rate on non-druggable targets
+
+---
+
+**3. Recursion Pharmaceuticals**
+- CEO: Chris Gibson (co-founder, publicly engaged on AI/science intersection)
+- CTO: Ben Mabey (verify current)
+- Recursion position: An AI-first drug company that runs massive phenomics screens — different from traditional pharma. Their "TechBio" model positions AI evaluation as a core competency.
+- Why Straw: Recursion sells its AI platform to other pharma companies (not just uses it internally). Their enterprise customers need to evaluate Recursion's platform against alternatives. Straw is the evaluation infrastructure for those procurement decisions.
+- Opener for Chris Gibson: "Chris — Recursion's platform is being evaluated by enterprise pharma customers who are choosing between your approach and traditional HTS or competitor AI platforms. Straw runs the neutral competition that gives those customers an audited result. When Recursion wins a Straw competition, you have a sales tool that closes the deal. Interested?"
+
+---
+
+**4. Moderna**
+- Chief Digital and Operational Excellence Officer: Brad Miller (verify current at modernatx.com)
+- Moderna context: Post-COVID, Moderna is reinventing itself as an AI-first biotech. Their mRNA platform relies heavily on AI for sequence design and immunogenicity prediction.
+- Why Straw: Moderna's AI is so core to their competitive moat that they can't afford to use an agent that underperforms on sequence optimization. The evaluation stakes are uniquely high.
+- Entry use case: mRNA sequence optimization AI evaluation — predicted immunogenicity accuracy, lipid nanoparticle delivery compatibility, manufacturing feasibility score
+
+---
+
+**5. Benchling**
+- CEO: Sajith Wickramasekara (Co-founder)
+- Benchling position: Electronic lab notebook and biotech R&D platform used by 80%+ of top biotech companies
+- Why Benchling: Benchling is a distribution play. If Benchling integrates Straw for AI agent evaluation within the Benchling platform, every biotech running experiments on Benchling has access to Straw. Benchling's customers are exactly the R&D scientists who need to evaluate competing AI analysis agents.
+- Opener: "Sajith — Benchling's customers are increasingly asking 'which AI analysis agent gives the best insights from our assay data?' Straw can run that competition inside the Benchling data environment. This is a co-product opportunity — not just a partnership."
+
+---
+
+### Pharma Vertical Regulatory Hook
+
+FDA's AI/ML-Based Software as a Medical Device (SaMD) guidance (Draft Guidance 2021; final expected 2025-2026) requires:
+- Predetermined Change Control Plan for AI/ML systems
+- Clear performance metrics and validation methodology
+- Post-market surveillance
+
+If Straw's competition results are structured to meet FDA's validation documentation requirements, pharma companies can use Straw's audit reports in their regulatory submissions. This converts Straw from a procurement tool to a regulatory filing artifact — the highest possible value for a pharma buyer.
+
+This requires a specific document format and content (work with an FDA regulatory consultant to design the report template). Investment: $20K-$50K in consulting. Return: every competition in the pharma vertical generates 5x the normal pricing.
+
+
+---
+
+## Tick 208 (2026-05-03T12:49:00Z): "Build vs. buy" as the dominant counter-narrative — and why Straw wins [theme: bear]
+
+### The "Build It Yourself" Bear Case
+
+The most common response a Straw salesperson will hear in enterprise sales conversations: "Why would we pay you when we can just build this with AWS Bedrock Evaluations and some internal tooling?"
+
+This is structurally related to the "free evaluation tools" bear case (Tick 198) but deserves its own analysis because the BUILD argument is more sophisticated than the "free tier" argument — it's not "why pay when there's a free version" but "why buy a product when we can custom-build something that exactly fits our needs?"
+
+Context from research: Building custom AI agents costs $75K-$500K and takes months. Gartner projects 70% of new enterprise applications will use no-code or low-code tools by 2026. The market trend is toward no-code platforms — which means enterprises are increasingly comfortable with "buy and configure" rather than "build from scratch."
+
+But evaluation infrastructure is different from application infrastructure. The no-code AI agent builders (Vertex AI Agent Builder, Copilot Studio, Agentforce) help enterprises BUILD AI agents — they don't help enterprises EVALUATE which AI agent to buy.
+
+### The Build vs. Buy Decision Tree for Straw
+
+The enterprise faces this decision: should we buy Straw or build internal evaluation infrastructure?
+
+**Arguments for building internally:**
+- Full control over evaluation methodology (can tune for proprietary criteria)
+- No external data sharing (sensitive task data stays in-house)
+- No recurring vendor cost once built
+- Integration with existing tools (JIRA, Confluence, internal risk management systems)
+
+**Arguments for buying Straw:**
+- Speed: 3 weeks to run first competition vs. 6-12 months to build internal tooling
+- Expertise: Rubric design expertise that can't be built internally without 2-3 specialized hires
+- Neutrality: Internal tool evaluating internal vendors = structural conflict; Straw is independent
+- "Straw Certified" badge: Internal evaluation results are not externally credible; Straw's badge is
+- Regulatory documentation: Straw's audit report format designed for regulatory submissions (OCC, FDA, EU AI Act)
+- Cost: $8K-$50K per competition vs. $75K-$500K build cost + ongoing maintenance
+
+**The decisive argument**: Internal evaluation infrastructure can tell you "Agent A scored 78% on our metrics." Straw's competition tells you "Agent A outperformed Agents B, C, and D on your specific rubric — here's the audit trail." The competitive comparison requires multiple agents running under identical conditions, which is exactly what internal tools don't do.
+
+An enterprise building internal evaluation infrastructure will still evaluate their own agent — not the alternatives. Straw runs the alternatives head-to-head. That's the product nobody builds internally.
+
+### The Real Build Risk: Enterprises That Can Build It
+
+The companies most likely to build internal evaluation infrastructure and not need Straw:
+- Companies with 50+ ML engineers (Google, Meta, Amazon — they evaluate AI internally all day)
+- Companies that already have multiple agents deployed and a dedicated MLOps team
+- Companies whose core business IS AI (Anthropic, OpenAI, Cohere — they build evaluations for their own models)
+
+None of these are Straw's target customers. Straw serves the Fortune 500 company that has 5 ML engineers, no dedicated evaluation team, and is making its first major AI agent procurement decision.
+
+### Counter-positioning for Sales
+
+When an enterprise prospect says "we'll build this internally," the right response is not to defend Straw's price or features. It's to ask:
+
+"That's a legitimate path. Can I ask — who on your team has built an evaluation system for a head-to-head competition between 4 different AI agents, with a rubric that's been validated by both your legal compliance team and your technical team? Because that's what we've already built and refined across 5 design partners. How long would it take your team to build and validate the same?"
+
+If the answer is "we'd need to hire 2 people and it would take 6-12 months," the sale is: "Straw runs your first competition in 3 weeks for $15K. After you've seen the output, decide if you want to rebuild it internally. You're buying speed and expertise, not software."
+
+### Bear Case Score: 4/10 (surmountable)
+
+The "build it yourself" argument is real but wins only for the wrong customers (large tech companies who wouldn't pay anyway). For Straw's target customer — a Fortune 500 company with a specific AI procurement decision to make, on a timeline, with compliance requirements — building internally is slower, more expensive, and doesn't produce a credible external audit trail. The build argument is a sales objection, not an existential threat.
+
