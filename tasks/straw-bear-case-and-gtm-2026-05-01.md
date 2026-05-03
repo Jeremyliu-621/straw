@@ -25128,3 +25128,106 @@ The coding evaluation use case enables a bottom-up PLG motion Straw doesn't have
 Sources: cosmicjs.com/blog/claude-code-vs-github-copilot-vs-cursor, faros.ai/blog/best-ai-coding-agents-2026, techcrunch.com/2026/03/02/cursor-has-reportedly-surpassed-2b-in-annualized-revenue, digitalapplied.com/blog/ai-coding-assistants-april-2026
 
 TICK_END
+
+---
+
+## Tick 409 — PLG Motion for Straw: The Cursor Reference Model
+
+**Date researched:** 2026-05-03
+**Theme:** GTM / Product strategy
+
+### The Cursor PLG precedent
+
+Cursor: $0 → $500M ARR in under 24 months. $200M ARR before hiring the first enterprise sales rep. The entire growth was developer-led, community-driven, no sales. Then enterprise layer added on top.
+
+**The Cursor lesson:** For a developer tool, the moment you need to hire your first enterprise sales rep is when enterprise is already pulling you — not when you go hunting. Build the product so good that enterprises start asking for contracts.
+
+### How Straw adapts the Cursor model
+
+Straw is NOT pure developer tooling. It's enterprise procurement infrastructure. But it can USE the developer motion to get enterprise access:
+
+**Stage 1 (now — Month 6):** Target the "Agent Owner" role at tech companies. These are hands-on technical operators who evaluate AI agents daily. They use Straw as a personal tool, share scores with their team. This is the PLG wedge.
+
+**Stage 2 (Month 6-18):** Teams start requesting Straw evaluations as part of their internal process. "We always run a Straw eval before deploying a new agent." Score artifacts get shared in Slack. Engineering managers ask for team accounts.
+
+**Stage 3 (Month 18-36):** Enterprise IT/procurement teams notice the bottom-up Straw adoption and ask for an enterprise contract (SSO, audit logs, centralized billing, compliance documentation). Sales motion turns on — but now there's pull, not push.
+
+**The hybrid motion:** Straw should have a self-serve tier (free to run one evaluation, pay per additional) AND an enterprise tier (unlimited evaluations + compliance docs + API access). Free tier creates developers who become internal advocates; enterprise tier captures the budget when pull happens.
+
+### "Agentic-Led Growth" — the new PLG for AI products
+
+The emerging concept: **"Agentic-Led Growth (ALG)"** — products where AI agents are both the tool AND the distribution mechanism. The user describes what they want to an agent; the agent does the work; the output demonstrates value.
+
+Straw's ALG motion:
+1. User posts a task (describes the problem to Straw's AI)
+2. Straw's agent evaluation pipeline runs automatically
+3. User gets a score report — value demonstrated in the first session
+4. User shares the score report (product is its own word-of-mouth)
+
+Every shared Straw score report is a marketing artifact. "Straw said Claude Code beat Copilot 87-72 on our auth module" is a tweet/Slack post/blog post waiting to happen.
+
+### Pricing for PLG
+
+- **Free tier:** 1 evaluation per month, up to 3 competing agents, basic rubric (5 criteria). No credit card required.
+- **Pro tier:** $99/month — unlimited evaluations, advanced rubric (unlimited criteria), full Tier 1+2 pipeline
+- **Team tier:** $499/month — 10 seats, shared score history, Tier 1+2+3 pipeline
+- **Enterprise tier:** Custom — SSO, audit logs, API, compliance documentation, dedicated support
+
+Note: These are user-facing price points for the PLG motion. The enterprise procurement pricing (Tick 394) is separate — enterprises paying for Straw to run competitive procurement, not for developer tooling.
+
+Sources: techcrunch.com/2026/03/02/cursor-has-reportedly-surpassed-2b-in-annualized-revenue, productled.com/blog/plg-predictions-for-2026, growthwithgary.com/p/product-led-growth-examples, saasmag.com/product-led-growth-next-chapter-saas-2026
+
+TICK_END
+
+---
+
+## Tick 410 — EU AI Act Audit Log = Straw Evaluation Log (Compliance Architecture)
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case (regulatory tailwind) / Product-market fit
+
+### What EU AI Act requires for audit logs (from August 2, 2026)
+
+High-risk AI systems (banking, insurance, HR, education, public services):
+- **5-year retention** of logs
+- **Tamper-resistant** and structured
+- **Indexed for forensic search** (by session, user, tool)
+- **Post-market monitoring plans** — systematic collection and review of deployed system experience
+- **Penalties:** up to €35M or 7% of global annual revenue for violations
+
+Non-high-risk systems:
+- 90-day minimum retention
+- Structured traces: user ID, tool name, input hash, authorization decision
+
+### Straw's evaluation log is already compliant with these requirements
+
+When a Straw evaluation runs:
+- Each rubric criterion is scored with reasoning (structured, queryable)
+- Each agent's submission is captured with timestamp and agent identity
+- Tier 1 deterministic results are bit-for-bit reproducible
+- Tier 2 LLM judge outputs are logged with the exact prompt + model + response
+- Tier 3 investigator tool calls are logged with inputs/outputs (same as EU AI Act tool tracing requirement)
+
+**A company running agent selection via Straw AUTOMATICALLY produces an EU AI Act-compliant audit log.** No additional configuration required.
+
+This means Straw can be marketed as the "compliance-native" path to agent evaluation. Other approaches (manual QA, vendor demos, post-deployment monitoring) don't produce an EU AI Act-compliant pre-deployment evaluation log because they weren't designed for this.
+
+### The compliance sale
+
+When approaching a banking or insurance CTO:
+
+"Starting August 2, your AI deployments in high-risk categories need a 5-year-retained evaluation log before deployment. The standard audit log shows what the agent DID after deployment. Straw produces the log that shows what agents were evaluated BEFORE deployment, on what criteria, with what scores. That's the pre-deployment documentation regulators are asking for — and currently no one else produces it automatically."
+
+This is the "compliance-as-motivation-to-sign-fast" version of the Straw pitch. Deadline: 91 days away.
+
+### The two-log model
+
+**Pre-deployment log (Straw):** Which agents were evaluated, on what rubric, with what results. This is the selection decision record.
+
+**Post-deployment log (Braintrust/Arize/Langfuse):** How the deployed agent performed in production. This is the monitoring record.
+
+Both logs are required for full EU AI Act compliance. Both logs reference the same agent identity. Straw covers the pre-deployment log; post-deployment observability tools cover the rest. Straw is complementary to Braintrust — not competing.
+
+Sources: secureprivacy.ai/blog/ai-governance, eu.ai-act.com (Article 26 deadlines), digitalapplied.com/blog/agent-governance-framework-policy-compliance-access, ethyca.com/guides/ai-governance, medium.com/@vasanthancomrads/ai-audit-logs-and-compliance-architecture
+
+TICK_END
