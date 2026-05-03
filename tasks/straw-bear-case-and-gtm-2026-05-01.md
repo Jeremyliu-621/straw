@@ -14502,3 +14502,109 @@ HackerOne is evaluating AI agents for their own platform (Hai, automated triage)
 **The supply-side play:** HackerOne security researchers are now using AI coding agents to write their own exploit code. Some of the 560+ autonomous agent submissions in 2025 were from researcher-built AI agents. These security researchers are potential Straw supply-side participants — they've already built agents that compete in competitions (HackerOne), and they might want to compete in Straw's coding or security evaluation competitions.
 
 Sources: [HackerOne 210% AI Vulnerability Spike](https://www.hackerone.com/press-release/hackerone-report-finds-210-spike-ai-vulnerability-reports-amid-rise-of-ai-autonomy), [Bugcrowd 2026 Cybersecurity Predictions](https://www.bugcrowd.com/blog/2026-cybersecurity-predictions/), [MSSP Alert HackerOne AI](https://www.msspalert.com/news/hackerone-ai-vs-ai-in-security-intensifies-as-adoption-accelerates)
+
+---
+
+## Tick 221 (2026-05-04T04:45Z): Devin (Cognition) as Straw's highest-value supply-side target [theme: partners]
+
+### Devin's enterprise adoption data
+
+Devin (Cognition AI) enterprise deployment as of 2026:
+- **Customers:** Goldman Sachs, Santander, Nubank, Citi, Dell, Cisco, Ramp, Palantir, Mercado Libre
+- **ARR growth:** ~$1M (September 2024) → ~$73M (June 2025) → ~$150-155M combined with Windsurf acquisition
+- **Windsurf acquisition:** 350+ enterprise customers, $82M ARR
+- **Infosys partnership (2026):** Infosys integrating Devin into internal engineering teams + client delivery models
+- **Performance claims:** 50% cost reduction, 2x developer productivity at Visma enterprise deployment
+
+Devin is deployed in production at some of the world's most sophisticated engineering organizations (Goldman Sachs, Palantir, Citi). These organizations are also the exact buyers Straw targets for coding competitions.
+
+### Why Devin is Straw's most important supply-side design partner
+
+**The sales weapon argument:** Devin has $150M ARR and enterprise deals at Goldman Sachs. But it loses deals too — Cursor's $50B valuation and $2B ARR means Cursor is winning a lot of the same deals. When Devin loses to Cursor at an enterprise account, what's the reason? "The CTO tried Cursor first and got comfortable with it."
+
+If Devin wins a Straw competition at a comparable enterprise account — head-to-head on real production coding tasks, with a defensible rubric — that's a sales weapon that overcomes incumbency bias. "We ran a Straw competition at [company similar to you]. Devin won on pull request quality and test coverage. Here's the verified score."
+
+**The Straw Certified badge as Devin's GTM asset:** Devin could prominently display Straw Certified badges on its enterprise sales page: "Straw Certified: Winner at [Company Type] engineering competition, May 2026. Rubric: test coverage, review quality, SAST compliance." For an enterprise evaluating Devin vs. Cursor, this is a third-party verified proof point that no vendor demo can match.
+
+### The Devin outreach
+
+Target: Harrison Chase (CTO) or Agniv Sharma (Head of Partnerships) at Cognition AI. LinkedIn / direct email.
+
+> **Subject:** Straw competition at Goldman Sachs — the verified Devin vs. Cursor comparison
+>
+> "Hi [Name],
+>
+> Devin is deployed at Goldman Sachs. So is Cursor. At every other Fortune 500, the question is: which one wins on OUR codebase?
+>
+> Straw runs head-to-head coding agent competitions — your tasks, your rubric, 72 hours. If Devin wins, the Straw Certified badge is on your enterprise sales page. If Devin loses, you know exactly where to improve before the next deal.
+>
+> For Cognition: no cost. We want you in every competition. The more Devin competes and wins, the more valuable the badge becomes for both of us.
+>
+> Would you be open to co-designing the first 'Coding Agent at Enterprise Scale' competition rubric? 30 min call?"
+
+### The supply-side partnership model
+
+Straw's supply-side economics: agent operators want to compete because winning = deployment contract. But Straw can further incentivize supply-side participation with a **Supply-Side Partner** tier:
+
+- **Standard:** Agent participates in buyer-defined competitions. No cost.
+- **Supply-Side Partner ($5K/month):** Agent gets early access to new competition rubric designs, can propose competition categories, gets "Straw Listed" verification (indicating the agent is actively participating in Straw competitions). This tier is for agent operators who want to actively grow their Straw Certified portfolio.
+
+At 20 supply-side partners at $5K/month: $1.2M ARR recurring before a single buyer competition. This changes Straw's revenue model entirely — supply side pays for market visibility, demand side pays for competitions. Double-sided monetization.
+
+Sources: [Cognition Devin Annual Performance Review 2025](https://cognition.ai/blog/devin-annual-performance-review-2025), [AgentMarketCap Devin 73x ARR](https://agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue), [Infosys Cognition Partnership](https://www.infosys.com/newsroom/press-releases/2026/collaboration-accelerate-ai-value-journey.html)
+
+---
+
+## Tick 222 (2026-05-04T05:00Z): Straw as the "live POC" inside enterprise AI RFPs [theme: gtm]
+
+### The enterprise AI vendor selection process
+
+Standard enterprise vendor selection process:
+1. **Research & screening (2-4 weeks):** Gather info on vendor capabilities, reputation, track record
+2. **RFP preparation (1-2 weeks):** Define requirements, criteria, timeline, scoring methodology
+3. **Vendor proposals (2-4 weeks):** Vendors respond with descriptions, pricing, references
+4. **Evaluation & scoring (2-6 weeks):** Assess proposals against predefined criteria
+5. **POC/pilot (6-12 weeks):** Test selected finalist(s) on real tasks
+6. **Contract negotiation and signing (4-8 weeks)**
+
+**Total: 3-6 months minimum for enterprise AI vendor selection**
+
+The failure point: Step 5 (POC) is where 95% of pilots fail to produce ROI. The POC is:
+- Run after the enterprise has already shortlisted the vendor (confirmation bias is high)
+- Vendor-assisted (vendor helps configure, cherry-picks success metrics)
+- Resource-intensive (enterprise team dedicates 2+ people for 6-12 weeks)
+- Not comparable (different POCs with different vendors can't be compared)
+
+### Straw as the POC replacement — and as an RFP component
+
+**Straw replaces Step 5 entirely.** Instead of a 6-12 week vendor-assisted POC, Straw runs a 72-hour blind competition. The competition is:
+- Structured (rubric defined BEFORE any vendor runs)
+- Independent (no vendor-assisted cherry-picking)
+- Comparable (all vendors run on the same tasks with the same rubric simultaneously)
+- Fast (72 hours vs. 6-12 weeks)
+- Documented (produces an audit trail for ISO 42001 / EU AI Act compliance)
+
+**The RFP integration play:** AI RFP tools (RFP.ai, DeepRFP, Inventive) are used by procurement teams to manage the vendor selection process. Straw could integrate with these platforms as the "live evaluation" step after RFP responses are scored. The RFP scores the vendor's proposal quality (documentation, pricing, references). Straw scores the vendor's actual performance.
+
+**The procurement team outreach:**
+> "Your RFP process evaluates AI vendor proposals — but proposals don't prove performance. Straw adds a 72-hour live evaluation step between RFP shortlist and contract. You score the proposal. Straw scores the agent. The combined score is your vendor decision. 30 min to show you a sample RFP-to-Straw workflow?"
+
+### The Straw + enterprise procurement workflow
+
+The specific new workflow Straw enables:
+
+**Old workflow:**
+RFP (documents) → POC (6-12 weeks, vendor-assisted) → Contract (vendor wins based on POC)
+
+**New workflow with Straw:**
+RFP (documents, quick screening) → **Straw Competition (72 hours, blind)** → Contract (rubric winner)
+
+The time savings: **Eliminates 6-12 weeks of POC**, producing a better decision in 72 hours. For a procurement team, this means: **go from RFP shortlist to contract in days rather than months.**
+
+### The RFP tool partnership channel
+
+The AI RFP market is growing: 30 AI-powered RFP tools exist in 2026 (DeepRFP, RFP.ai, Inventive, AutoRFP.ai). These tools automate the proposal-scoring step. Straw could be the natural extension: "You automated the proposal review. Straw automates the live performance evaluation."
+
+**The B2B channel play:** Partner with RFP tools (as a white-label or API integration) so that when a procurement team shortlists AI vendors through DeepRFP or RFP.ai, the platform automatically surfaces "Run a Straw competition for the shortlisted vendors." Revenue model: referral fee from Straw per competition that comes through the RFP tool integration.
+
+Sources: [Ivalua Vendor Selection Process 2026](https://www.ivalua.com/blog/vendor-selection-process/), [RFP.ai Complete Guide 2025](https://rfp.ai/resources/rfp-guide), [DeepRFP AI RFP Platform](https://deeprfp.com/)
