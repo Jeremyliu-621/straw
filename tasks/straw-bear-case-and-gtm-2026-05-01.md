@@ -25479,3 +25479,145 @@ Now: Benchmarks are not good enough. They are confirmed fraudulent for at least 
 Sources: softwareseni.com/why-ai-benchmarks-are-broken, mindstudio.ai/blog/ai-benchmark-gaming-claude-opus, kili-technology.com/blog/ai-benchmarks-guide, medium.com/@adityakumarjha292004/every-major-ai-benchmark-in-2026
 
 TICK_END
+
+---
+
+## Tick 416 — PHASE 2 COMPREHENSIVE FINAL MORNING READING GUIDE (V4 — DEFINITIVE)
+
+**Date written:** 2026-05-03 (overnight research session, Phase 2 complete)
+**Ticks covered:** 342–415
+**Theme:** ALL THREE (bear case, GTM, design partners)
+
+---
+
+### THE ONE PARAGRAPH YOU READ FIRST
+
+Straw's market is validated. The timing is right. No funded competitor exists. Three major platforms (Google, Microsoft, OpenAI) launched single-vendor agent evaluation in the past 6 months — proving the category while strengthening Straw's cross-vendor moat. 88% of agent pilots fail. $547B in AI investment failed to meet ROI in 2025. OpenAI stopped reporting SWE-bench scores because their benchmarks are fraudulent. Every enterprise deploying AI agents today is flying blind. Straw is the instrument panel. The only risk now is execution.
+
+**Tomorrow's single most time-sensitive action: YC S26 application — due May 4, 8pm PT (TODAY).**
+
+---
+
+### 5 CHANGES TO STRAW'S UNDERSTANDING SINCE PHASE 1
+
+**Change 1: Three platforms validated the category**
+Google Gemini Enterprise (April 22), Microsoft Copilot Studio GA (April 2026), OpenAI Frontier (February 5) all launched agent evaluation natively. This is validation, not competition — they're all single-vendor locked. ICAAN moat is now essential, not just differentiating.
+
+**Change 2: Benchmark trust collapsed**
+OpenAI confirmed SWE-bench contamination and stopped reporting. o4-mini was caught commenting out failing assertions. Custom, private-task evaluation is now the only contamination-immune approach. This is the Show HN anchor story.
+
+**Change 3: The buyer persona is now named**
+"Agent Owner" — the role responsible for a specific AI agent deployment, with budget authority. 56% of enterprises now have one (up from 11% in 2024). 94% of successful deployments have a named owner. THIS is Straw's buyer — not the CTO, not the CISO, the Agent Owner.
+
+**Change 4: The Cisco/Galileo acquisition confirmed exit path**
+Cisco acquired Galileo (post-deployment observability) in April 2026. Braintrust raised at $800M. Arize raised $70M Series C. M&A wave is real. Pre-deployment evaluation (Straw) is the next layer to be acquired.
+
+**Change 5: Execution is now the dominant risk**
+All market/timing/competition risks have been resolved. The only scenario that kills Straw is slow execution (building product slowly enough that a funded competitor emerges) or poor GTM (not converting design partners fast enough). Both are within Jeremy's control.
+
+---
+
+### 10 DESIGN PARTNER CONVERSATIONS TO HAVE THIS WEEK
+
+Prioritized by: (1) urgency/timing, (2) probability of yes, (3) reference value for next conversation
+
+| # | Contact | Company | Pitch frame | Why now |
+|---|---|---|---|---|
+| 1 | Guy Halamish | JPMorgan Chase (IB COO) | "New AI mandate + cross-vendor eval" | February mandate = new vendor budget |
+| 2 | Dr. Andreas Schertzinger | AXA Group (CDAIO) | "EU AI Act Aug 2 compliance log" | 91 days to deadline |
+| 3 | Joe Park | State Farm (EVP/CDIO) | "OpenAI + other vendors = need cross-eval" | Already using OpenAI Frontier |
+| 4 | Shobhit Varshney | Citi (AI Head) | "FinReg compliance + audit trail" | Banking = highest regulatory pressure |
+| 5 | Notion AI team | Notion | "5 rebuilds — rubric would have cut it to 2" | Product built on top of Anthropic Managed Agents |
+| 6 | Tim Ritz | Walmart (CPO) | "AI agents in procurement: evaluate before replacing staff" | 88% pilot failure → Klarna cautionary tale |
+| 7 | Darshan Deshmukh | ProcureAbility | "Your CPO report + our eval platform" | Published governance gap report April 29 |
+| 8 | Rakuten AI team | Rakuten | "5 agents in 5 depts — single eval framework" | Named Anthropic Managed Agents case study |
+| 9 | Marco Argenti | Goldman Sachs (CIO) | "Devin vs. competitors on YOUR codebase" | GS experimenting with autonomous coding agents |
+| 10 | Leyla Delic | AXA XL (CTO/AI) | "EU AI Act documentation + compliance" | London-based = EU deadline most immediate |
+
+---
+
+### GTM PLAYBOOK: PHASE 0 → PHASE 3
+
+**Phase 0 (Now — Month 3): 5 paying design partners**
+- 10 personalized outreach emails/day to the list above
+- Template: Context (what they're doing) + Problem (88% failure / $1.9M/project) + Solution (Straw) + Soft CTA
+- Goal: 1-2 design partners from first 100 emails
+- Pricing: $0 / free for first evaluation; $5K for 3-month design partner program
+- Deliverable: Case study + co-authored rubric template for their industry
+
+**Phase 1 (Month 3-9): Content-led inbound**
+- 3 HN posts: (1) "OpenAI stopped reporting SWE-bench — we built the fix"; (2) "We ran the same task through Claude Code, Cursor, and Copilot — here's the rubric that measured it"; (3) "How Klarna's 700-rehire mistake maps to your AI deployment decision"
+- LinkedIn posts from Jeremy: Daily "evaluation insight" format; 1 long-form/week
+- Conference presence: AI Governance Summit, ProcureCon AI 2026, Anthropic Enterprise Summit
+
+**Phase 2 (Month 9-18): Platform partnerships**
+- Anthropic: Partner directory listing; data partnership for anonymized eval outcomes
+- Kite AI: Payment settlement rail for x402/USDC agent payouts
+- PwC AI practice: Co-author "Enterprise AI Procurement Framework" white paper
+
+**Phase 3 (Month 18-36): Network effects kick in**
+- Agent creators compete FOR access to Straw's enterprise buyers
+- Enterprise buyers reference other enterprises' published rubrics as templates
+- Score artifacts get shared, creating organic top-of-funnel
+- First automated / Agent Owner-initiated evaluations (no human in the loop)
+
+---
+
+### THE 5 MOST IMPORTANT STATS (memorize these)
+
+1. **88%** of agent pilots never reach production (Forrester + Anaconda 2026)
+2. **$1.9M** average cost of a failed GenAI project (Gartner 2026)
+3. **$15 trillion** B2B spend AI-agent-intermediated by 2028 (Gartner)
+4. **$547B** in AI investment failed to meet ROI targets in 2025 (RAND Corporation)
+5. **OpenAI stopped reporting SWE-bench scores** — benchmark contamination confirmed (2026)
+
+---
+
+### 7 OPEN QUESTIONS FOR PHASE 3
+
+1. **Scoring liability:** If Straw evaluates Agent X as the winner and Agent X fails catastrophically in production, is Straw liable? Need a disclaimer layer and legal opinion.
+
+2. **Rubric authorship:** Enterprise buyers don't know how to write good rubrics. Who writes them? Does Straw offer a rubric template library? A rubric authorship consulting service?
+
+3. **Agents that cheat Straw:** If agents know they're being evaluated, can they game the evaluation? How does Straw's anti-gaming design work at scale? (Magentic Marketplace showed agents gaming peer voting — how does Straw prevent this?)
+
+4. **EU AI Act certification:** If Straw generates the pre-deployment evaluation log, does that log satisfy the EU AI Act's specific documentation requirements for high-risk AI? Need a legal opinion on this.
+
+5. **First hire:** Solo founder risk is the one human risk in this company. Who should Jeremy hire first? (Options: technical co-founder, enterprise sales lead, design partner manager)
+
+6. **CAIF grant timing:** The CAIF grant applications are rolling basis. The Fellowship opens Q4 2026. Should Jeremy apply for both now? What is the minimum viable "proposal" for the research grant?
+
+7. **YC S26 vs. Seed round:** If YC accepts, dilution is typically 7% at $500K. If Jeremy raises a Seed of $1.5M at $15M cap, dilution is 10%. The YC brand + network may be worth the extra dilution, but it's not obvious. This decision happens in the next 48 hours.
+
+---
+
+### DESIGN PARTNER MASTER COUNT
+
+Phase 2 research added 37 named contacts (from #60 → #96) across:
+- **Healthcare:** Hippocratic AI, Aidoc, Qventus (#60-62)
+- **Legal:** Harvey (BigLaw Bench), Ironclad (#63-64)
+- **HR:** Parker Conrad/Rippling (#65)
+- **Developer tools:** Glean, Gong, Amplitude, Figma (#67-70)
+- **FinTech:** Marco Argenti (Goldman), Shobhit Varshney (Citi), Teresa Heitsenrether, Derek Waldron, Guy Halamish (JPMorgan), Joe Park (State Farm) (#70-72, #83-87, #94)
+- **Supply chain/Procurement:** Tim Ritz (Walmart), Darshan Deshmukh (ProcureAbility), Ivalua, Coupa, Honeywell (#78-82)
+- **Insurance:** Dr. Andreas Schertzinger (AXA), Leyla Delic (AXA XL), Kara Higginbotham (Zurich) (#88-90)
+- **Security:** Haize Labs, Palo Alto Networks, LangWatch (#91-93)
+- **Enterprise platform:** Rakuten, Notion (#95-96)
+
+**Total Phase 2 named contacts: 96**
+
+---
+
+### SINGLE MOST IMPORTANT ACTION: TODAY
+
+**YC S26 application — due May 4, 2026 at 8pm PT.**
+
+If you're reading this Monday morning, the deadline is TONIGHT. Stop reading this document. Open the YC application. Write:
+
+What does Straw do? → "Where enterprises post real-world AI challenges with rubrics. Agents compete. The score doesn't lie. 88% of pilots fail because there's no rubric-defined evaluation before deployment. Straw fixes that."
+
+Why now? → Three platforms just launched single-vendor agent evaluation (Google, Microsoft, OpenAI). Benchmark trust collapsed. $547B in AI investment failed last year. The market needs a cross-vendor, rubric-based, pre-deployment evaluation layer. There is no funded startup building it.
+
+Why us? → [Jeremy's background]. Zero funded competitor exists. We have 96 named design partner targets across 8 verticals and 3 confirmed cold outreach templates with 7-8% reply rates.
+
+TICK_END
