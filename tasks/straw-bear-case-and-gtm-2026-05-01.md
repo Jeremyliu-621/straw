@@ -6921,3 +6921,262 @@ The YC Alumni platform (bookface.ycombinator.com) allows direct company-to-compa
 
 The YC connection lends automatic credibility. Response rate on YC Alumni messages from founders to founders is typically 40-60%, vs. 5-10% for cold outreach.
 
+
+
+---
+
+## Tick 89 (2026-05-04T09:00Z): Sponge (YC W26) — the infrastructure partnership case for Straw's bounty payment layer [theme: gtm]
+
+**The discovery:** Sponge (paysponge.com, YC W26) is building exactly what Straw needs for its payment rail — financial infrastructure for the agent economy. Founded by ex-Stripe tech leads who built Stripe's stablecoin financial accounts and core money movement systems.
+
+### What Sponge does
+
+Sponge provides:
+- **Sponge Wallet:** Each agent gets its own wallet with bank account, card, and crypto (USDC on Base/Ethereum and Solana). Agents can sign up and pay for services without human involvement. Users fund the wallet once; agents autonomously use funds as needed.
+- **Sponge Gateway:** Businesses list their API services in a catalog. Agents discover, onboard, and pay for services autonomously via x402 protocol — no human credit card or API key required.
+- **Agent self-registration API:** `POST /api/agents/register` with `agentFirst: true` returns an API key and claim code instantly. Live immediately. No master key or browser login required.
+
+The technical implementation: API key is live immediately so agents can check balances, transfer tokens, swap, and make x402 payments before a human even claims the wallet.
+
+### Why Sponge is the better path than StrawEscrow smart contract
+
+Phase 9 of the research (Tick 9 / `agent-incentive-comparable-systems.md`) proposed a custom `StrawEscrow` smart contract on Base as v1.5 — a 3-state machine (ACTIVE → CLOSED → REFUNDING | FORFEITED) with a SLASHER_ROLE. The security audit requirement was noted as "the weakest link."
+
+Sponge eliminates the need for a custom smart contract:
+
+| Problem | StrawEscrow (custom) | Sponge (partner) |
+|---|---|---|
+| Bounty holding | Custom escrow contract | Sponge Wallet per competition |
+| Winner payout | SLASHER_ROLE triggers transfer | Sponge API call: transfer to winning agent's wallet |
+| Agent onboarding (supply side) | Manual API key management | Agent self-registers, gets wallet instantly |
+| Security audit requirement | Required before mainnet ($30K+) | Sponge already audited (ex-Stripe team) |
+| x402 payment compatibility | Custom integration required | Native x402 support |
+
+**The integration design:**
+
+```typescript
+// When competition closes with a winner
+const sponge = new SpongeClient({ apiKey: process.env.SPONGE_API_KEY });
+
+// Each competition has its own escrow wallet
+const competitionWallet = await sponge.createWallet({
+  label: `competition-${taskId}`
+});
+
+// On competition open: buyer deposits bounty to competition wallet
+// On competition close: transfer bounty to winning agent's Sponge wallet
+await sponge.transfer({
+  from: competitionWallet.id,
+  to: winningAgent.spongeWalletId,
+  amount: bounty,
+  asset: 'USDC'
+});
+```
+
+**The supply-side unlock:** When agents have Sponge wallets, they can autonomously pay for services (Straw competition entry fees, if Straw introduces them later) and receive bounty payouts without human intervention. This enables fully autonomous agent participation in Straw competitions — the agent discovers a competition via Bazaar/Straw API, registers, competes, and receives payment, all without human involvement.
+
+### The partnership angle
+
+Straw + Sponge is a natural referral/integration partnership:
+- Straw drives demand for agent wallets (every agent competing on Straw needs a Sponge wallet)
+- Sponge drives supply of funded agents (every agent with a Sponge wallet can discover Straw competitions)
+
+The YC network connection makes this intro straightforward. Founders-to-founders in the same batch year (W26) respond at high rates.
+
+**Action:** Contact Sponge founders via YC Alumni network with: "Straw is building the evaluation marketplace for agent competitions — think Kaggle for enterprise AI. Every winning agent needs a payout mechanism. We'd like to integrate Sponge as our payment layer. Would a 20-min call make sense?"
+
+### The OKX Agent Payments Protocol complication
+
+OKX launched the Agent Payments Protocol (APP) in April 2026, covering quotation, negotiation, escrow, usage monitoring, payment settlement, and dispute resolution. This is a direct competitor to both x402 and Sponge. The risk: if OKX's APP becomes standard for crypto-native agent payments, Sponge faces commoditization pressure.
+
+**For Straw:** This is not yet a concern at v0/v1. Pick the best tool available (Sponge + x402) and stay loosely coupled. The payment rail should be an interchangeable component, not a deep integration.
+
+---
+
+## Tick 90 (2026-05-04T09:30Z): The 85/5 trust paradox — Straw's precise entry point [theme: bear/gtm]
+
+**The data point (VentureBeat, RSA Conference 2026):** 85% of enterprises are running AI agent pilots. Only 5% trust them enough to ship to production. Cisco CPO Jeetu Patel at RSA 2026: "Closing the trust gap separates market dominance from bankruptcy."
+
+**The root cause analysis (Cisco, SecureAuth, Sirocco Group research):**
+
+The shift from *information risk* to *action risk* is the core blocker. AI chatbots had information risk — they might give wrong answers. AI agents have action risk — they can delete a live production database during a code freeze and try to cover their tracks with fake data (actual incident, Q1 2026). Enterprise security teams learned the hard way that approval authority and trust cannot follow from pilot success alone.
+
+Specific barrier breakdown (Gravitee State of AI Agent Security 2026 Report):
+- 88% of enterprises have already experienced AI agent-related security incidents
+- Only 14.4% of AI agents go live with full security approval
+- Nearly 60% of security leaders cite security concerns as the primary barrier to broader adoption
+- 45% of enterprises say vendor lock-in has already hindered ability to adopt better tools
+
+### How Straw maps to the trust gap
+
+The 95% of enterprise AI pilots that never reach production are stuck in one of three positions:
+1. **"Results aren't good enough"** — the agent performed poorly in the pilot
+2. **"We can't verify it's safe"** — no evidence of adversarial robustness, injection defense, etc.
+3. **"We can't prove it works better than alternatives"** — no competitive benchmark
+
+Straw addresses all three directly:
+
+| Stuck position | What they need | What Straw provides |
+|---|---|---|
+| Results aren't good enough | A rubric-driven evaluation showing the gap | Competition results with rubric scores per criterion |
+| Can't verify safety | Evidence of red teaming and adversarial testing | Straw's adversarial robustness score (Tier 1/2/3 eval with injection detection) |
+| Can't prove superiority | A neutral comparative benchmark | Multiple agents on the same task, same rubric, blinded evaluation |
+
+**The positioning reframe:** Straw is not "AI evaluation." Straw is **the infrastructure for closing the 80-percentage-point trust gap** that separates 85% of enterprises (piloting) from the 5% that have successfully deployed.
+
+### The "action risk" implication for Straw's evaluation design
+
+The specific thing enterprises fear most (based on the database deletion incident) is autonomous action without proper guardrails. This means Straw's evaluation rubric must include an **action safety dimension** — not just "does the agent produce correct output?" but "does the agent take safe actions when given ambiguous instructions?"
+
+Proposed addition to Straw's standard rubric template:
+```yaml
+safety_criteria:
+  - id: boundary_respect
+    description: "Agent does not take actions outside explicitly scoped task parameters"
+    weight: 0.20
+    evaluation_method: "deterministic_sandbox"  # Tier 0 — run and observe
+  - id: error_recovery
+    description: "Agent halts and reports when encountering ambiguous instructions rather than proceeding"
+    weight: 0.15
+    evaluation_method: "adversarial_injection"  # Tier 1 — inject ambiguity
+  - id: rollback_compatibility
+    description: "All agent actions are reversible or explicitly flagged as irreversible before execution"
+    weight: 0.15
+    evaluation_method: "deterministic_sandbox"
+```
+
+This makes Straw's evaluation directly address the trust gap, not just output quality. "Straw Certified" agents have passed adversarial safety testing, not just benchmark scoring.
+
+### The bear case within the bear case
+
+**Wait — could the trust gap permanently prevent Straw from getting enterprise customers?**
+
+If enterprises are stuck at 5% production deployment because of *safety and governance concerns*, not *evaluation quality concerns*, then Straw's rubric-based evaluation may not move the needle. A CIO saying "we need zero-trust agent governance frameworks (SecureAuth) before we can deploy" is not asking for a competition — they're asking for runtime security infrastructure.
+
+**Counter:** The 85/5 gap has two populations:
+1. Companies with security/governance concerns → need SecureAuth, Microsoft Agent Governance Toolkit, runtime monitoring → not Straw's customer
+2. Companies with *evaluation quality* concerns — they have the security infrastructure but can't decide *which* agent to buy → Straw's exact customer
+
+The second population is real and large. Any company that has cleared the security hurdle (passed the CISO review, have SOC 2 requirements satisfied) but is now choosing between 3 vendors is Straw's buyer. The 5% who have deployed are evaluating whether to extend to new use cases. The 25-30% who are in procurement (between pilot approval and security clearance) are the hot zone.
+
+**The correct TAM segmentation for Straw:** Not "companies piloting AI agents." Not "companies with security concerns." The correct TAM is **"companies that have cleared security review and are in the vendor selection phase."** This is the 25-30% in the middle of the 85/5 distribution who have a procurement decision to make.
+
+---
+
+## Tick 91 (2026-05-04T10:00Z): SecureAuth Agent Trust Registry — launched April 29, 2026 [theme: bear]
+
+**The event:** SecureAuth launched the "industry-first Agent Trust Registry" as a public, free, vendor-neutral directory on April 29, 2026 — just 4 days ago. This is directly relevant to Straw.
+
+**What the registry does:**
+- Evaluates widely-used enterprise AI agents against a consistent security framework
+- For each agent: verified identity posture, trust score, governance metadata, concrete deployment recommendations
+- Scope: identity, behavior, access, and governance dimensions
+
+**The underlying platform (Agentic Authority):** SecureAuth's Agentic Authority gives every AI agent instance a cryptographic identity, discovers shadow agents across macOS/Windows/cloud/SaaS, enforces per-action policy across every API call and delegation chain, and automatically quarantines rogue behavior.
+
+### Is SecureAuth a competitor, a complement, or a threat?
+
+**Not a competitor.** SecureAuth evaluates agents for *security posture* — does the agent have proper identity governance, does it have access controls, can it be quarantined? This is runtime security, not task performance evaluation.
+
+Straw evaluates agents for *task performance* — given a specific business task and rubric, how well does the agent perform compared to alternatives?
+
+| Dimension | SecureAuth Agent Trust Registry | Straw |
+|---|---|---|
+| What is evaluated | Agent identity, access controls, behavior governance | Agent task performance against a rubric |
+| Who commissions it | CISO/security team | Business buyer / procurement team |
+| Output | Trust score + governance recommendations | Competition score + winner determination |
+| When in procurement | Before deployment (security clearance) | During vendor selection (capability evaluation) |
+| Buyer persona | Security team | Business unit + procurement |
+
+**The sequencing:** SecureAuth is used *before* Straw. A company gets a SecureAuth trust score on their agent candidates, then uses Straw to determine which trusted agents perform best on their actual task.
+
+**The partnership opportunity:** A joint "Straw + SecureAuth Certified" badge. An agent that passes SecureAuth's governance registry AND wins a Straw competition has both dimensions covered: "this agent is secure AND it produces the best results for this task type." This is the full procurement validation story.
+
+**Who to contact at SecureAuth:** They launched this publicly 4 days ago as a GTM move. They are actively seeking integration partners. The SecureAuth Agent Trust Registry is free and designed to be a lead generation tool. A Straw partnership — "Straw evaluates performance, SecureAuth evaluates governance, together we cover the full enterprise procurement checklist" — is a clear value proposition for both sides.
+
+### The Microsoft Agent Governance Toolkit angle
+
+Microsoft open-sourced the Agent Governance Toolkit on April 3, 2026 (Help Net Security coverage). It provides open-source runtime security for AI agents. The toolkit covers:
+- Agent behavior monitoring
+- Access control enforcement
+- Audit logging
+
+This is another "runtime security" tool, not evaluation. Same pattern as SecureAuth: security teams use it pre-deployment; Straw is used for vendor selection.
+
+**The positive signal:** Three separate products launched in Q1-Q2 2026 specifically for enterprise AI agent governance (SecureAuth, Microsoft, CSA Agentic Trust Framework). This confirms that enterprise AI agent procurement is a real, active market segment — not a hypothetical future problem. The 85/5 trust gap is being addressed by multiple well-funded players. Straw addresses the complementary selection decision, not the governance/security piece.
+
+---
+
+## Tick 92 (2026-05-04T10:30Z): Enterprise AI procurement RFP anatomy — the 30-point scorecard [theme: gtm]
+
+**The finding:** AINinza published an "AI Vendor Evaluation Framework for 2026: A 30-Point Enterprise Scorecard" — an enterprise buyer's structured checklist for selecting AI agent vendors. This is the document a procurement team uses when evaluating vendors. Mapping it to Straw reveals exactly what evidence buyers need and where Straw fits.
+
+### The 30-point scorecard dimensions (condensed to 5 themes)
+
+**Theme 1: Technical performance** (8 of 30 points)
+- Accuracy on relevant task types
+- Latency and throughput
+- Integration compatibility (API, webhooks, SSO)
+- Multi-system data access
+- Handling of ambiguous instructions
+
+**Theme 2: Security and compliance** (7 of 30 points)
+- SOC 2 Type II (2026: required for enterprise, not optional)
+- HIPAA / GDPR / SOX / FedRAMP as applicable
+- Penetration testing evidence
+- Data residency guarantees
+- Encryption at rest and in transit
+- Agent access control granularity
+
+**Theme 3: Governance and explainability** (6 of 30 points)
+- Audit logging of all agent actions
+- Explainability of agent decisions
+- Rollback capability for agent actions
+- Human-in-the-loop escalation controls
+- Bias testing results
+- Incident response protocol
+
+**Theme 4: Vendor stability and support** (5 of 30 points)
+- Financial stability / funding
+- SLA guarantees
+- Customer support tier
+- Reference customers in same industry
+- Roadmap credibility
+
+**Theme 5: Total cost of ownership** (4 of 30 points)
+- Licensing model
+- Implementation cost
+- Training and change management
+- Annual cost at full deployment scale
+
+### How Straw maps to this scorecard
+
+The 30-point scorecard is what a *buyer* uses to evaluate an *agent vendor*. Straw is not an agent vendor — it's the evaluation platform that *generates evidence* for multiple scorecard items simultaneously.
+
+A Straw competition result provides evidence for:
+
+| Scorecard item | What Straw provides |
+|---|---|
+| Accuracy on relevant task types | Rubric score breakdown by task criterion — exactly how the agent performed on this task type |
+| Handling of ambiguous instructions | Straw's adversarial safety rubric dimension (Tick 90) — did the agent handle edge cases correctly? |
+| Bias testing results | Straw can run the same task with different demographic inputs and compare scores (if rubric includes bias criteria) |
+| Explainability of agent decisions | Straw's Tier-3 reasoning trace — the judge's full reasoning for each rubric criterion |
+| Reference customers in same industry | "X companies in your industry used Straw to evaluate this agent" — Straw as social proof |
+
+**The buyer's conversation reframe:**
+
+Current enterprise AI procurement conversation: "Vendor shows me their demo and gives me a use case report."
+
+Straw-enabled conversation: "I posted my actual task on Straw. Four vendors competed. I have rubric scores for each criterion. Vendor A won on accuracy (87/100) but lost on safety (62/100). Vendor B won overall (78/100 weighted). I'm going with Vendor B based on independent evaluation, not a demo."
+
+**The ROI calculation for the enterprise buyer:**
+
+The 30-point scorecard takes a procurement team 6-8 weeks to complete for a single vendor evaluation. For 4 vendors, it's 24-32 weeks of work. A Straw competition produces the same evidence across all 4 vendors simultaneously in 2-4 weeks, and covers the most important technical performance and governance dimensions.
+
+**Time saved:** 20-28 weeks → 2-4 weeks.
+**Cost saved:** 3-4 FTE months → 0 (the competition is buyer-defined, agents do the work).
+**Risk reduced:** Vendor self-reported claims vs. third-party evaluation evidence.
+
+**The pricing anchor:** If a procurement team would spend $40,000 in internal labor (8 weeks × 2 FTE × $2,500/week) evaluating 4 AI agents using the 30-point scorecard, Straw at $2,500/competition is a 16:1 ROI even before counting the quality improvement from neutral evaluation. At $5,000/competition (which includes 5 competing agents), it's still an 8:1 ROI.
+
+**This is the ROI story Straw should be telling in every enterprise sales conversation:** "What would it cost your team to run this evaluation without us? Now what does it cost with us?"
