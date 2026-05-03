@@ -34888,3 +34888,74 @@ At $30M ARR × 15× = $450M exit valuation. Series A investors at $5M ARR get ~4
 Sources: deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/articles/agentic-ai-enterprise-2028, gartner.com/en/newsroom/press-releases/2025-06-11-gartner-predicts-that-guardian-agents, agentplace.io/blog/the-future-of-ai-agents-2026-2030-industry-predictions-and-roadmap, onereach.ai/blog/agentic-ai-adoption-rates-roi-market-trends
 
 TICK_END
+
+---
+
+## Tick 495 — SR 26-2: The Financial Services Regulatory Gap That Creates Straw's Mandate [theme: GTM + bear]
+
+### SR 11-7 → SR 26-2: The April 2026 Banking AI Regulatory Overhaul
+
+**Date:** April 17, 2026
+**Action:** Federal Reserve, FDIC, and OCC rescinded SR 11-7 (model risk management guidance), replacing it with SR 26-2 — a more risk-based, principles-driven framework.
+
+**The critical gap:** SR 26-2 explicitly states:
+> "Generative AI and agentic AI models are novel and rapidly evolving. As such, they are not within the scope of this guidance."
+
+**What this means:** Every US bank currently deploying AI agents for fraud detection, customer service, credit underwriting, trading support — has NO specific supervisory guidance for those agents. They must extrapolate principles from SR 26-2 that explicitly doesn't cover their use case.
+
+### Why This Creates the Straw Mandate
+
+The three foundational principles of SR 26-2 (inherited from SR 11-7) are:
+1. **Sound governance** — documented decision-making processes for AI
+2. **Independent validation** — validation by parties not involved in model development
+3. **Effective challenge** — credible questioning of model assumptions and outputs
+
+**Straw satisfies all three:**
+1. Sound governance: Straw forces documentation of evaluation criteria (rubric) before deployment decision
+2. **Independent validation: Straw IS the independent validator** — we're not Anthropic, we're not the bank's internal team
+3. Effective challenge: Straw's Tier-3 investigator actively attempts to find failure modes in agent outputs
+
+**The compliance pitch:** "SR 26-2 doesn't cover agentic AI — which means your regulators will ask how YOU validated your agents. Straw provides the independent validation documentation that would satisfy SR 26-2's principles even though you're in regulatory gray territory."
+
+### The Confidence Gap: 26.4% of Banks
+
+Wolters Kluwer Q1 2026 Survey: Only **26.4% of financial institutions express confidence in their AI compliance readiness.**
+
+This means **73.6% of financial institutions are NOT confident they can defend their AI compliance to regulators.** They have the same need as the 78% of enterprises that can't pass an AI governance audit (Grant Thornton).
+
+**The financial services urgency stack:**
+- SR 26-2 says agentic AI is out of scope (April 2026) = no safe harbor from regulatory compliance
+- Only 26.4% confident in AI compliance readiness (Q1 2026)
+- NAIC AI Systems Evaluation Tool Pilot (insurance, September 2026 deadline)
+- EU AI Act high-risk AI enforcement (August 2026)
+- OFR: systemic risk from "rapidly evolving agentic AI ecosystem without adequate safety rails"
+
+All four are pointing at the same gap, closing at the same time (August-September-November 2026).
+
+### The GARP Analysis: "SR 11-7 in the Age of Agentic AI"
+
+The Global Association of Risk Professionals (GARP) published "SR 11-7 in the Age of Agentic AI: Where the Framework Holds – and Where It Strains" (February 27, 2026).
+
+Key findings:
+- SR 11-7 holds well for "predictive AI" (credit scoring, fraud models)
+- SR 11-7 strains badly for "agentic AI" (multi-step autonomous action)
+- Key strains: evaluating non-deterministic behavior, long-horizon task completion, tool-use patterns
+- **Banks need NEW validation methodologies for agentic AI** — SR 11-7's traditional testing framework doesn't apply
+
+**The GARP-to-Straw connection:** GARP is telling risk managers they need new validation methodologies for agentic AI. Straw IS that new methodology. A bank CISO who reads the GARP paper and then hears about Straw has an immediate "that's exactly what we need" reaction.
+
+**The warm outreach play:** Share the GARP article on LinkedIn with: "GARP just confirmed that banks need new validation methodologies for agentic AI — the traditional SR 11-7 testing framework doesn't work for agents. Straw was built for exactly this: multi-dimensional, rubric-based agent evaluation that satisfies SR 26-2's governance principles even where the guidance is silent."
+
+### Financial Services Design Partners Updated (SR 26-2 Frame)
+
+Every major US bank with agentic AI deployment is now in regulatory gray territory. Their risk/compliance officers will be asking for validation documentation. The Straw pitch to bank risk leads:
+
+"SR 26-2 doesn't cover your agents. But your examiners will ask anyway. Straw produces the independent validation record that demonstrates sound governance, even in the gray zone."
+
+Named contacts with SR 26-2 urgency:
+- **Teresa Heitsenrether** (JPMorgan, Chief Data & Analytics Officer) — #145 in file
+- **Marco Argenti** (Goldman Sachs CIO) — #146 in file  
+- Tim Li (Citigroup Head of AI/ML) — #147 in file
+- Madhu Coimbatore (Morgan Stanley CDO) — in earlier ticks
+
+---
