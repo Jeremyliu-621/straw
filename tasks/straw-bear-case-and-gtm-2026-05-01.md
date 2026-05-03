@@ -14567,3 +14567,142 @@ Revenue concentration at seed stage is not a bug — it's a feature of selling c
 
 Revenue concentration will be a real risk in Year 1. It's manageable with: vertical diversification from the start, expansion motion built into the product, agent vendor recertification revenue as a second revenue stream, and proactive retention management. The deeper insight: the solution to concentration risk is making Straw so embedded in the customer's AI governance workflow that churning is more painful than staying.
 
+
+---
+
+## Tick 201 (2026-05-03T12:14:00Z): Energy and utilities design partners — named contacts [theme: partners]
+
+### Why Energy Is a Sleeper Opportunity
+
+Energy and utilities are deploying AI agents at rapid pace:
+- NextEra Energy is co-developing an AI-powered grid management product with Google Cloud (mid-2026 launch)
+- AES is deploying predictive AI for grid resilience and outage management
+- Microsoft published "How Agentic AI is Transforming Renewable Energy Operations" in April 2026
+- Agentic AI is now responsible for managing complex energy systems with real-time decision-making
+
+The regulatory hook: FERC (Federal Energy Regulatory Commission) and NERC (North American Electric Reliability Corporation) have reliability standards for AI systems in grid management. An AI agent making wrong load-forecasting decisions or incorrect dispatch commands has grid-level consequences. This creates the same "must document evaluation" pressure as financial services.
+
+### Named Contacts
+
+---
+
+**1. NextEra Energy**
+- CIO: Ashish Gupta (LinkedIn: linkedin.com/in/ashishgupta-cio)
+- CEO: John Ketchum (joined the AI Infrastructure Partnership March 2025)
+- Context: NextEra is deploying Google's TimesFM 2.5 and WeatherNext 2 models for security-constrained power flow modeling. They just signed a landmark Google Cloud strategic partnership (December 2025) for energy + AI. They're building AI products for the grid that they may commercialize to other utilities.
+- Why Straw: NextEra is developing an AI-powered grid management product they plan to sell to other utilities. They need to prove that their product outperforms alternatives. Straw is the neutral evaluation platform that validates their product's superiority in head-to-head tests.
+- Opener for Ashish Gupta: "Ashish — NextEra is building grid management AI that you're planning to commercialize. Your future utility customers will ask: 'How do you know your AI is better than the alternatives?' Straw runs the competition that answers that question. When your sales team brings Straw results into a utility sales conversation, the evaluation question is settled before the deal starts."
+- ARR opportunity: $30K-$60K for evaluation competitions during product development phase; $20K/year for annual recertification once commercialized
+
+---
+
+**2. AES Corporation**
+- CTO/Chief Innovation Officer: (Search via aes.com leadership — verify current)
+- AES AI focus: Predictive models for grid resilience, outage management, renewable energy optimization
+- Why AES: AES operates in 14 countries. Regulatory requirements for grid AI vary by country. A Straw competition proves the AI meets the required evaluation standard regardless of which country's regulators are asking.
+- Entry use case: Outage prediction AI agent evaluation — accuracy of outage prediction, false positive rate (unnecessary crew deployments), geography-specific calibration
+
+---
+
+**3. National Grid (UK/US)**
+- Group CTO: (Search via nationalgrid.com leadership)
+- National Grid context: Operates both in UK (NESO — National Energy System Operator) and US Northeast
+- UK angle: NESO is deploying AI for national grid balancing — one of the most safety-critical AI deployments in any country. UK government is watching this closely.
+- EU AI Act angle: National Grid UK operates under UK AI regulatory framework (which largely mirrors EU AI Act post-Brexit). Their AI systems for critical infrastructure (Category 2 under EU AI Act equivalent) require rigorous pre-deployment evaluation.
+- Opener: "Your NESO AI for national grid balancing is the most safety-critical AI in the UK's energy system. The UK AI regulatory framework will require documented pre-deployment evaluation of any AI in critical infrastructure. Straw produces that evaluation record, with the audit trail that regulators and parliament can review."
+
+---
+
+**4. Schneider Electric**
+- CEO: Peter Herweck
+- Chief Digital Officer / EVP Digital Energy: (Verify via se.com leadership)
+- Schneider Electric position: The world's largest energy management company. Their EcoStruxure platform includes AI agents for building energy management, industrial automation, data center optimization.
+- Why Straw: Schneider sells to Global 2000 enterprises. Their customers are deploying EcoStruxure AI agents in manufacturing plants, hospitals, and commercial real estate. Those customers' risk teams are asking "how did you validate this AI before you put it in charge of our building's energy system?" Straw is Schneider's answer.
+- Straw pitch to Schneider: "Offer 'Schneider EcoStruxure Straw-Certified' as a product tier — your enterprise customers can see competition results proving the EcoStruxure agent outperformed alternatives for their specific facility type."
+
+---
+
+**5. Vineyard Wind / Orsted (Offshore Wind AI)**
+- Orsted CTO: Rasmus Errboe (verify current via orsted.com)
+- Offshore wind uses AI agents for turbine maintenance prediction, wake loss optimization, grid integration
+- Why offshore wind is interesting: These are billion-dollar assets (individual turbines cost $5M+). An AI maintenance decision that causes an unnecessary turbine shutdown = $500K+ in lost generation revenue. The ROI on getting the AI right is enormous.
+- Straw pitch: "Your AI maintenance agent is making decisions about $500M+ in offshore wind assets. Straw evaluates whether it's making those decisions better than alternatives. At $30K per competition, the insurance value is 1/1000th of the downside risk."
+
+---
+
+### Energy Vertical GTM Note
+
+Energy has the longest procurement cycles of any vertical (12-24 months for major utility companies), but also the highest individual deal values. The right near-term strategy:
+
+1. Target **AI vendors selling to utilities** (like Schneider Electric) rather than utilities directly. Faster sales cycle; stronger economic motivation.
+2. Build one credible energy vertical reference customer (even a mid-size utility) that opens doors to the larger players.
+3. Join industry associations: ESIG (Energy Systems Integration Group), EPRI (Electric Power Research Institute). Thought leadership at one EPRI conference = 50 qualified leads.
+
+
+---
+
+## Tick 202 (2026-05-03T12:18:00Z): Enterprise software vendors as design partners — ServiceNow, Salesforce, SAP [theme: partners]
+
+### Why Enterprise Software Vendors Are a Special Partner Category
+
+ServiceNow, Salesforce, and SAP are not just potential customers — they're potential distribution channels, co-marketing partners, and competitive intelligence sources.
+
+The context:
+- Salesforce's Agentforce is the most-talked-about enterprise AI agent platform in 2025-2026
+- ServiceNow launched AI Agents to broad availability in January 2026 — "Amit Zavery (President, CPO, COO): 2026 is the year of agentic collaboration in the enterprise"
+- SAP's Joule AI and Agent Toolkit runs on top of SAP BTP (Business Technology Platform) — used by most Global 2000 companies for financial and operational processes
+- NVIDIA launched an enterprise AI agent platform with ServiceNow, Salesforce, SAP, and Adobe as adopters at GTC 2026
+
+Each of these vendors has enterprise customers who are evaluating whether to use the vendor's AI agents versus alternatives. Straw is the neutral platform that validates the choice. That creates two value propositions:
+1. For the **enterprise buyer**: Use Straw to evaluate whether Agentforce outperforms alternatives for your specific CRM use case
+2. For the **vendor** (Salesforce/ServiceNow): Your agents compete in Straw competitions and win. The "Straw Certified" badge is your marketing asset.
+
+### Named Contacts
+
+---
+
+**1. Salesforce**
+- President and Chief Engineer: Srinivas Tallapragada (verify — Salesforce engineering lead)
+- President, Agentforce: Adam Evans (frequently quoted on Agentforce; confirm via LinkedIn)
+- CEO: Marc Benioff
+- Why Salesforce: Agentforce is Salesforce's biggest product bet in a decade. They need enterprise buyers to trust Agentforce over competitors (HubSpot AI, Microsoft Dynamics 365 Copilot, etc.). Straw provides independent validation.
+- The interesting tension: Salesforce wants to win Straw competitions, but they also want to be able to claim that the competitions are rigged if they lose. The "Car and Driver" positioning makes Straw valuable precisely because Salesforce can't control the outcome.
+- Opener (to Agentforce product team): "Your enterprise customers are evaluating Agentforce against Microsoft Copilot and HubSpot AI. Without a neutral evaluation, it comes down to demos and trust. With Straw, the enterprise can see an audited head-to-head result. When Agentforce wins that competition — and we believe it often will — you have a sales tool that's more credible than any demo. Would you like to be the first major AI agent vendor to support Straw competitions for your customers?"
+- Note: Salesforce could become a distribution partner (referring enterprise customers to Straw for Agentforce evaluation). 15-20% referral commission = meaningful revenue.
+
+---
+
+**2. ServiceNow**
+- President, CPO, COO: Amit Zavery (LinkedIn: linkedin.com/in/amitzavery)
+- President of Global Customer Operations: Paul Fipps
+- Why ServiceNow: ServiceNow's AI Agents (Now Assist) are embedded in IT workflows, ITSM, HR service delivery, and field service. Enterprise customers are making $1M-$5M platform commitments. Straw validates that ServiceNow AI outperforms alternatives for their specific workflow.
+- ServiceNow is positioned as the "agentic backbone" for enterprise workflows. Their agents are workflow-native — they know the process context better than a generic LLM. That's a Straw competition advantage: give ServiceNow's agents the workflow context they're designed for, and they should win.
+- Opener for Amit Zavery: "Amit — you've said 2026 is the year of agentic collaboration. The enterprise's question is: collaboration with which agent? Straw runs the competition that answers that for ServiceNow's specific workflow categories. When Now Assist wins against alternatives in an audited competition, that's the case study that closes your next 10 enterprise deals."
+
+---
+
+**3. SAP**
+- CTO: Juergen Mueller (LinkedIn: linkedin.com/in/juergenmueller)
+- SVP, Joule: (Verify current contact for SAP's Joule AI product lead)
+- Why SAP: SAP processes 87% of global commerce. SAP Joule AI agents are embedded in financial close, procurement, HR, and supply chain workflows for Global 2000 companies. SAP's customers are the most compliance-sensitive organizations in the world.
+- SAP angle: SAP Joule's regulatory compliance AI (GDPR, SOX, IFRS compliance checking agents) is mission-critical. These agents making wrong compliance determinations = material financial risk. Straw's evaluation for SAP compliance agents is the highest-ROI competition imaginable.
+- Opener for Juergen Mueller: "SAP's compliance AI agents are making decisions that affect SOX reporting and GDPR obligations for the Global 2000. Straw runs pre-deployment evaluations that produce the audit documentation your customers' compliance teams need. The question isn't whether to evaluate — regulators require it. The question is who runs the evaluation."
+
+---
+
+**4. HubSpot**
+- CTO: Dharmesh Shah (co-founder and CTO — highly engaged on Twitter/X, reachable)
+- Why HubSpot: HubSpot is competing directly with Salesforce for CRM AI. Their "Breeze" AI agents are aimed at mid-market B2B companies. Mid-market companies are more likely to use a neutral evaluation platform than enterprise (lower internal evaluation capability).
+- Dharmesh Shah is especially interesting: he's technically sophisticated, publicly passionate about AI, and has built his personal brand on transparent sharing. He's the kind of person who would engage with Straw's methodology.
+- Opener via Twitter/X (informal approach): "@dharmesh — we're building the evaluation layer for enterprise AI agent procurement. Your 'Breeze' vs. Agentforce is exactly the comparison your customers are trying to make. Straw provides the neutral arena. Would love to show you how this works."
+
+---
+
+### Enterprise Software Vendor GTM Strategy
+
+The software vendor channel is different from direct enterprise sales: the vendor's motivation is marketing + sales enablement, not compliance documentation. The pitch is:
+
+"When your AI agent wins a Straw competition at your enterprise customer's site, you have a third-party validated win that your sales team can use in every subsequent deal. The competition result becomes your competitive differentiation. You're not asking your customers to trust your demo — you're showing them the audited competition result."
+
+Revenue from vendors: Agent vendors can pay for "Straw Certified" positioning campaigns — not influencing results, but guaranteed use of the badge and featured placement in Straw's vertical leaderboards once they win competitions. Price: $30K-$50K/year for "Straw Featured Vendor" status (runs legitimate competitions; displays results prominently in Straw marketing).
+
