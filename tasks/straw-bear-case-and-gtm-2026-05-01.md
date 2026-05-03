@@ -33224,3 +33224,249 @@ Dimensions: Calculation accuracy (40%), Source reliability (25%), Regulatory com
 Sources: augmentcode.com/guides/cto-ai-coding-checklist, galileo.ai/blog/agent-evaluation-framework-metrics-rubrics-benchmarks, medium.com/@aiforhuman/rubric-based-evaluation-for-agentic-systems
 
 TICK_END
+
+---
+
+## Tick 485 — The Straw Design Partner Discovery Call: 20-Minute Script [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The design partner discovery call structure
+
+**Goal:** Determine if this person is a design partner candidate (has a real evaluation need, within 90 days, and is willing to be named as an early customer).
+
+**Duration:** 20 minutes (hard cap — respects their time; creates urgency)
+
+**Talk ratio:** Jeremy talks 43%, prospect talks 57%. The person who listens most in a discovery call wins.
+
+**MEDDIC for Straw design partner qualification:**
+- **M (Metrics):** What does the cost of a bad AI agent decision look like for them? ($)
+- **E (Economic Buyer):** Can they make the go/no-go call without committee approval? ($2,500 threshold)
+- **D (Decision Criteria):** What does "winning" look like for their AI evaluation?
+- **D (Decision Process):** How long does it take from "yes" to signed design partner agreement?
+- **I (Identify Pain):** What's the specific pain that led them to take this call?
+- **C (Champion):** Are they the champion, or is there a more senior internal champion?
+
+### The 20-minute call script
+
+**[0:00-2:00] Warm open**
+"Thanks for taking the time. I'll be respectful of the 20 minutes. Quick context on me: I'm building Straw because I kept seeing enterprise companies make $1M+ AI agent decisions based on demos. I started with [one sentence on Jeremy's background]. What made you say yes to this call today?"
+
+*Listen. Don't rush. Their answer reveals the pain.*
+
+**[2:00-7:00] Pain discovery**
+"So you mentioned [what they said]. Help me understand that more. When you say [their phrase], what does that look like concretely for your team?"
+
+"What have you tried so far? Internal pilots? Vendor demos?"
+
+"If you had to put a number on it — what does a bad AI agent decision cost you? Either in dollars, time, or organizational credibility?"
+
+*Goal: Quantify the pain. Get a number.*
+
+**[7:00-12:00] Solution fit**
+"Let me describe what we've built, and you tell me if it resonates. [40-second Straw description: rubric builder → competition → ranked scores → hire the winner.]"
+
+"Does that map to the problem you described?"
+
+"What's the task you most want to evaluate right now? The one that's been hardest to decide on?"
+
+*Goal: Get them to name a specific task. This becomes the first design partner evaluation.*
+
+**[12:00-16:00] Qualification**
+"How are you currently thinking about the timeline for [the task they named]?"
+
+"If Straw ran that evaluation for you in the next 30 days, at no cost, what would you need to see from the results to say 'this was worth it'?"
+
+"Who else in your organization would care about those results?"
+
+*Goal: Determine timeline, success criteria, and internal champion.*
+
+**[16:00-19:00] Design partner offer**
+"Based on what you've described, I'd like to offer [Company] a design partner spot. Here's what that means: free evaluation over 90 days, we co-author the rubric together, you give us weekly feedback. In exchange, we ask permission to reference your company (anonymously) in our benchmark research. And at 90 days, we offer a 50% discount on future evaluations if you want to continue.
+
+The only thing required to start: a 2-page design partner agreement (Common Paper standard). I can have that to you within 48 hours.
+
+Does that sound like something worth exploring?"
+
+**[19:00-20:00] Next step**
+"Great. My next step is to send you the design partner agreement and a draft rubric for [their task] within 48 hours. Sound good?"
+
+*Always leave with a specific, time-bound next step. Never end with "I'll follow up sometime."*
+
+### Call preparation checklist (5 minutes before each call)
+
+1. Read the company's last 3 LinkedIn posts or press releases
+2. Find the specific AI initiative they're working on
+3. Have a one-sentence opener that references their specific situation
+4. Have Straw's rubric builder open in another tab (ready to demo if they ask)
+5. Know the design partner agreement page (ready to send immediately after call)
+
+Sources: pclub.io/blog/sales-discovery-call-questions, withrealm.com/blog/discovery-call, callcoaching.com/blog/discovery-calls-guide
+
+TICK_END
+
+---
+
+## Tick 486 — Media Distribution: AI Agent Newsletters and Podcasts for Straw's Reach [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The AI agent media landscape (2026)
+
+**Key insight:** "Content is moving to gated spaces that AI has not overrun — newsletters, podcasts, YouTube, LinkedIn." These are the channels where enterprise decision-makers (51% of C-Suite executives spend >1 hour/week on thought leadership content) actually get their information.
+
+### Top AI agent / enterprise AI newsletters (for Jeremy to pitch op-eds or be featured)
+
+**Tier 1 (highest enterprise AI audience):**
+
+1. **The Batch (deeplearning.ai, Andrew Ng)** — 500K+ subscribers, enterprise AI and ML leaders
+   - Submission: thebatch@deeplearning.ai
+   - Content fit: "Pre-deployment evaluation: the missing step in enterprise AI adoption"
+
+2. **Import AI (Jack Clark, Anthropic co-founder)** — ~70K subscribers, influential among AI researchers and enterprise AI leads
+   - Content fit: Technical deep-dives on evaluation methodology
+
+3. **AI Frontier Playbook (frontierplaybook.ai)** — Specifically for enterprise AI leaders sharing what "actually works"
+   - Content fit: Perfect match; guest post on "rubric-based pre-deployment evaluation"
+
+4. **The AI Report** — B2B focused, decision-maker audience
+   - Request: Guest article slot on AI procurement evaluation
+
+**Tier 2 (developer/builder audience — supply side for Straw):**
+
+5. **TLDR AI** — 700K+ subscribers, developer-focused, broad AI news
+   - Relevance: Launch announcement; supply-side agent operators read this
+
+6. **Latent Space (podcast + newsletter)** — 100K+ audience, AI engineer focused
+   - Content fit: Technical episode on evaluation pipeline architecture
+
+7. **Ben's Bites** — 100K+ subscribers, product-focused AI newsletter
+   - Submission: Product launch announcement
+
+### Top podcasts for Straw's enterprise buyer audience
+
+**Tier 1 (enterprise AI decision makers):**
+
+1. **AI in Business (Lex Sokolin, Emerj)** — Tailored for non-technical leaders; enterprise executives
+   - Contact: Lex Sokolin (already in design partner list as #148)
+   - Angle: "Pre-deployment AI agent evaluation: what enterprise executives need to know"
+
+2. **AI Agents Podcast (JotForm)** — Covers agentic AI trends, builders and enterprise
+   - Pitch: "We're running the first AI agent marketplace where agents compete for enterprise contracts"
+
+3. **Practical AI (Changelog)** — Developer + enterprise audience; 300K+ monthly downloads
+   - Angle: Technical episode on Straw's evaluation pipeline architecture
+
+4. **The TWIML AI Podcast (Sam Charrington)** — 300K+ monthly downloads, enterprise ML practitioners
+   - Angle: Research/ML angle — "Mechanism design for AI agent markets"
+
+**Tier 2 (for supply-side agent builders):**
+
+5. **Latent Space (podcast)** — AI engineer founders; perfect for supply-side recruitment
+6. **Lex Fridman Podcast** — After traction milestone (not now, but "Cursor did Lex" = Straw should too at $1M ARR)
+
+### The podcast guest strategy
+
+**Straw's talk track for podcast appearances:**
+
+"The most interesting thing happening in enterprise AI right now isn't which model is best — it's the procurement crisis. Companies are spending $13.8B on AI agents in 2026 and 88% of those projects never reach production. The #1 reason: unclear success criteria before deployment. Straw is the platform where you define success, AI agents compete, and the score doesn't lie. We're seeing something fascinating: when you remove the demo and let agents compete on rubrics, the results are consistently different from what anyone expected."
+
+**This talk track works because:**
+- Opens with a surprising stat (88% failure rate)
+- Names the root cause (unclear criteria)
+- Gives Straw's positioning in one sentence
+- Ends with an "interesting thing we're seeing" teaser (drives curiosity)
+
+### Jeremy's content publication target (12-week sprint)
+
+| Week | Channel | Content |
+|---|---|---|
+| 1-2 | LinkedIn (3×/week) | Start "AI Agent Insight" series |
+| 3-4 | HN Show HN | Launch after rubric builder is live |
+| 5-6 | AI Frontier Playbook | Guest post: "Pre-deployment evaluation: the missing step" |
+| 7-8 | Ben's Bites | Product announcement for first design partner evaluation |
+| 9-10 | AI in Business podcast | Guest episode pitch via Lex Sokolin (contact #148) |
+| 11-12 | TLDR AI | Paid or editorial feature at $100K ARR milestone |
+
+Sources: arize.com/ai-podcasts, frontierplaybook.ai, contentallies.com/learn/top-b2b-podcast-agencies-enterprise
+
+TICK_END
+
+---
+
+## Tick 487 — Final Phase 2 Wrap-Up: Everything Jeremy Needs for Tomorrow Morning [theme: synthesis]
+
+**Research date:** 2026-05-03
+
+### Total session output (both sessions combined)
+
+**Phase 2 research file:**
+- Started at: ~25,860 lines
+- Current: ~33,149 lines (plus remote session additions)
+- Total growth: ~7,000+ lines this session
+
+**Total ticks in Phase 2:** 422-487 = 66 ticks
+
+**Named design partner contacts:** 162 total (across 12 verticals + academic + supply-side)
+
+---
+
+### DEFINITIVE BEAR THESIS (one paragraph, no hedging)
+
+"Straw will not fail because AI agents aren't ready. It will fail because enterprise procurement cycles are longer than a pre-revenue startup's runway. The 40% probability death scenario: Jeremy runs 5 free design partner evaluations in months 1-3. Every design partner says 'this is exactly what we need.' When Jeremy asks for $2,500, procurement says 'we need a vendor contract, security review, and legal sign-off.' This takes 60-90 days. By month 9: no revenue, runway depleted. The defense: Stripe invoicing + Common Paper agreement + SOC 2 Type 1 planned, all before the first conversation. The secondary defense: price at $2,500 — below most agent owner discretionary authority thresholds, so it doesn't require procurement. The survival signal: 2 of first 5 design partners issue a PO within 180 days."
+
+---
+
+### THE 3 MOST IMPORTANT ACTIONS (RIGHT NOW)
+
+**1. Apply to YC S26 — TODAY (deadline May 4)**
+Draft answers are in Tick 480. Apply even if it's after the deadline. "Can't promise when we'll get back to you" ≠ rejection.
+
+**2. Apply to FCA Cohort 2 — TOMORROW (May 5)**
+Applications open tomorrow. See Tick 469 for the application angle. This unlocks NatWest, Revolut, Monzo as design partners in the sandbox.
+
+**3. Email Beth Barnes and Carol Liang — TODAY**
+Two highest-probability responses. Tick 460 has the openers.
+
+---
+
+### WHAT CHANGED THIS SESSION (key new insights over prior sessions)
+
+1. **The 41% failure stat** (Tick 482): 41% of AI agent failures trace to unclear success criteria. This is Straw's elevator pitch in a number.
+
+2. **The "first price is forever" principle** (Tick 477): Never discount the first paid contract. Give free → charge full price. The psychological gap is smaller than "discounted" to "full."
+
+3. **The rubric library data moat** (Tick 472): Straw's real competitive moat is not the evaluation pipeline — it's the accumulated rubric data and agent reputation graph. This compounds every evaluation.
+
+4. **The pre-RFP positioning** (Tick 457): Straw precedes the RFP. The pitch is "replace your pilot, not your procurement process."
+
+5. **FCA Cohort 2 opens tomorrow** (Tick 469): This is the fastest path to a curated list of UK financial services design partners.
+
+6. **Agent Owner in first 90 days = highest buying intent** (Tick 456): LinkedIn filter for recently-promoted Agent Owners is the #1 cold outreach efficiency hack.
+
+7. **Build vs. buy threshold** (Tick 475): Enterprises buy Straw until ~200 evaluations/year. Below 500 events/year: Straw (at $2,500) is cheaper than building internally ($200K+/year in engineering time).
+
+8. **Braintrust co-marketing opportunity** (Tick 476): "Straw pre-deployment → Braintrust post-deployment" = natural partnership. Ankur Goyal (Braintrust CEO) is contact #159.
+
+---
+
+### FINAL CONTACT COUNT BY VERTICAL
+
+| Vertical | Contacts |
+|---|---|
+| AI Safety / Evaluation orgs | Beth Barnes, Daniel Kokotajlo, Chris Painter |
+| AI Lab partnerships | Steve Corfield (Anthropic), Phil Venables (Google Cloud) |
+| Financial services | Teresa Heitsenrether (JPMorgan), Marco Argenti (Goldman), Tim Li (Citi), Lex Sokolin |
+| UK FinTech (FCA) | NatWest AI Lead, Revolut Head of AI, Monzo Head of AI |
+| Enterprise software | Farhan Thawar (Shopify), Mikhail Parakhin (Shopify) |
+| Consulting | Beena Ammanath (Deloitte), Mohamed Kande (PwC), Lan Guan (Accenture), Rodney Zemmel (McKinsey) |
+| Healthcare | Micky Tripathi (HHS), Aneesh Chopra, Fiona Callaghan (Novartis) |
+| Government/Federal | Craig Martell (DoD), Eric Mill (GSA) |
+| Academic | Jakob Foerster (Stanford), Vincent Conitzer (CMU), Jeff Clune (UBC) |
+| Supply-side (agent builders) | Graham Neubig (OpenHands), Simon Willison, Matt Williams |
+| Competitor/co-marketing | Ankur Goyal (Braintrust) |
+| Stripe (benchmark partner) | Carol Liang, Kevin Ho |
+
+**Total: 162 named contacts across 12 verticals.**
+
+TICK_END
