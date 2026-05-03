@@ -15375,3 +15375,163 @@ This is the bear case that's hardest to research away. It requires founder self-
 
 The action: start the co-founder search this week, in parallel with the customer outreach. The right co-founder makes every other bear case more manageable.
 
+
+---
+
+# UPDATED PHASE 2 MORNING READING GUIDE (After Tick 212 — May 3, 2026)
+
+*This guide supersedes the prior Morning Reading Guide from ticks 1-178. It incorporates all research from both Phase 2 sessions. Each section is meant to be read in one sitting.*
+
+---
+
+## Section 1: The Bear Thesis — 1-Page Summary
+
+**The Core Risk Portfolio** (ranked by urgency × magnitude):
+
+**IMMEDIATE (resolve before first enterprise sale):**
+
+1. **Evaluation Theater [7/10]** — Enterprises will use Straw to rubber-stamp decisions already made. Mitigation: blind rubric design process, immutable rubrics post-competition-start, minimum 3-agent rule, public appeals process. The losing agent experience is as important as the winning one.
+
+2. **Principal-Agent Liability [7/10]** — Straw running AI agents in its sandbox may be classified as an EU AI Act "deployer" with full compliance obligations. California AB 316 bars AI autonomy as liability defense. EU Product Liability Directive makes AI software a "product" subject to strict liability. Mitigation: legal memo on deployer status BEFORE signing first enterprise customer; zero-data sandbox architecture; client indemnification clause; AI competition insurance product.
+
+3. **Direct Competitors [7/10]** — Galileo AI ($68M raised), Fiddler AI ($66M raised), Arize AI, Braintrust are all in adjacent positions. They could pivot to compete. Straw's defense: land first 10 enterprise logos before any competitor adds "procurement competition" messaging. The "Straw Certified" brand must be established before anyone can copy it.
+
+4. **Solo Founder Execution [7/10]** — One founder doing sales + product + methodology + investor relations simultaneously is a real bottleneck risk after Month 6. Action: start co-founder search this week, in parallel with customer outreach.
+
+**MEDIUM-TERM (design for, monitor quarterly):**
+
+5. **Network Effects Absent [6/10]** — Straw is a switching-cost + brand + rubric-IP moat, not a marketplace moat. This is fine for a $500M-$2B outcome but sets investor expectations correctly. The real risk is getting pulled into professional services mode (40-50% gross margins) rather than software mode (70%+ gross margins). Product-ize the rubric design workflow aggressively.
+
+6. **Talent Scarcity [6/10]** — Rubric Scientists command $200K-$300K. The pool is small (former RLHF researchers, evaluation PhD candidates). Year 1: fractional researchers + university partnerships. Year 2: full-time hires with equity that makes leaving expensive.
+
+7. **Revenue Concentration [6/10]** — First 3-5 customers are 80%+ of ARR. If 2 churn: catastrophe. Mitigation: vertical diversification from Day 1, expansion motion built in (one dept → whole company), agent vendor recertification subscription as second revenue stream.
+
+8. **"Who Certifies the Certifier" [5/10]** — Straw's own methodology must be rigorous or "Straw Certified" is noise. Mitigation: publish methodology document v1.0, run calibration checks against ground truth, commission external methodology audit by Q4 2026.
+
+**LONG-TERM (monitor, don't lose sleep):**
+
+9. **Agent Monoculture [5/10]** — If one model wins 90%+ of competitions, Straw becomes a one-winner certification machine and loses differentiation. Design defense: category-specific leaderboards, portfolio recommendation framing, diversity statistics in annual transparency report.
+
+10. **Fine-Tuning Substitution [4/10]** — As enterprises build their own fine-tuned models, vendor comparison competitions shrink. Counterpoint: fine-tuning still requires evaluation. Position Straw for iteration competitions and deployment validation, not just vendor selection.
+
+11. **Free Evaluation Tools [4/10]** — AWS Bedrock Evaluations, Azure AI Eval, and OpenAI Evals are free and improving. They serve developers and engineers. Straw serves executive buyers making compliance-regulated procurement decisions. Different persona, different moment, different output. Not direct competition.
+
+12. **Build vs. Buy [4/10]** — Some enterprises will build internal evaluation tooling. They don't need "Straw Certified" because they're not buying from external vendors. These are the wrong customers anyway (they're large tech companies with 50+ ML engineers). Straw's market is Fortune 500 companies with 5 ML engineers making their first major AI agent purchase.
+
+13. **Cold Start [4/10]** — Simpler than a typical marketplace because supply (AI agents) pre-exists. The real cold start is brand credibility. Solve it by: making first 3 competitions impossibly high quality, publishing every result, getting an academic methodology advisor.
+
+**The Net Bear Assessment**: The bear thesis is real but not fatal. The highest-priority risks are execution risks (legal memo, competitor timing, founder capacity) not structural risks (network effects, substitution). Most risks are manageable with specific, near-term actions. Straw can survive all of them with the right decisions in the next 90 days.
+
+---
+
+## Section 2: First 10 Design Partner Conversations This Week
+
+*Send these outreach messages Monday-Friday this week (May 5-9, 2026). See Tick 210 for personalized openers.*
+
+| Priority | Company | Contact | Urgency | Entry Use Case |
+|---|---|---|---|---|
+| 1 | SimCorp | CPO/Head of AI (LinkedIn search) | Agent Launchpad launched April 27 — window is NOW | Portfolio management agent evaluation |
+| 2 | Phenom | Mahe Bayireddi, CEO | Just acquired Plum (April 28) + Be Applied (Feb 10) | AI hiring agent evaluation |
+| 3 | Morgan Stanley | Jeff McMillan, Head of Firmwide AI | AI breakthrough article in Fortune, March 2026 | Wealth management AI evaluation |
+| 4 | Lemonade | Daniel Schreiber, CEO | Insurance AI regulatory scrutiny post-wildfire season | Claims adjudication agent evaluation |
+| 5 | Eightfold AI | Ashutosh Garg, CEO | AI interviewer launch; EEOC liability hot | Hiring agent fairness evaluation |
+| 6 | Harvey (Legal) | Gabriel Pereyra, CEO | $300M Series D, expanding BigLaw enterprise | Legal document review evaluation |
+| 7 | Writer.com | May Habib, CEO | Enterprise customers (Vanguard, L'Oréal) making AI decisions | Marketing content AI evaluation |
+| 8 | Abridge | Shiv Rao, CEO | Epic partnership live; hospital AI rollout underway | Clinical documentation AI evaluation |
+| 9 | Booz Allen Hamilton | Chief AI Officer | OMB M-26-04 agencies scrambling for compliance documentation | Channel partnership for federal AI engagements |
+| 10 | Salesforce Agentforce | Adam Evans, President Agentforce | Competing vs. Microsoft/HubSpot for CRM AI deals | CRM AI competition for enterprise customers |
+
+**Send schedule**:
+- Monday: SimCorp (#1) and Phenom (#2)
+- Tuesday: Morgan Stanley (#3) and Lemonade (#4)
+- Wednesday: Eightfold (#5) and Harvey (#6)
+- Thursday: Writer (#7) and Abridge (#8)
+- Friday: Booz Allen (#9) and Salesforce (#10); review all responses
+
+**Follow-up rule**: If no response in 5 business days, send a second message with a different hook. Regulatory hook failed → try competitive differentiation hook. Competitive hook failed → try ROI framing.
+
+---
+
+## Section 3: GTM Playbook — $0 to $100K ARR in 2026
+
+**The 6-Month Path**:
+
+**Month 1 — 50 outreach messages, 3 workshops**  
+Spend the first 2 days building the 50-contact list (LinkedIn Sales Navigator + research from Ticks 185, 188, 191, 194, 197, 204, 207). Personalize every message — 3 sentences, specific trigger, specific use case. Send all 10 priority targets Monday-Friday Week 1. Weeks 2-4: continue outreach to Tier 2 and Tier 3. Goal: 3 workshops booked and paid at $2,500 each.
+
+**Month 2-3 — 3 workshops delivered, first competition signed**  
+Run 3 "Definition of Success" workshops. Deliverable: competition-ready rubric document. Convert 1-2 workshop clients to a full competition. First competition: 3-4 weeks, $8K-$15K. Deliver it manually. Learn what's hard.
+
+**Month 3-5 — 3 full competitions, $50K+ revenue**  
+Three competitions at $15K-$20K each = $45K-$60K. Plus 3 additional workshops = $7,500. Cumulative: $52K-$67K.
+
+**Month 5-6 — Engineering automation, price increase, $100K ARR**  
+Hire one platform engineer. Automate prompt formatting, output collection, score aggregation. Cut competition delivery time from 60 hours to 20 hours. Raise prices to $20K-$30K per competition. 2 more competitions at $25K each = $50K. Cumulative: $100K-$115K ARR run-rate.
+
+**Key GTM metrics to track weekly**:
+- Outreach messages sent (target: 20-30/week in Month 1)
+- Call conversion rate (response → first call: target 30-40%)
+- Workshop conversion rate (call → workshop: target 30-50%)
+- Competition conversion rate (workshop → competition: target 50-70%)
+- Gross margin per competition (starts at 20-30%; target 50% by Month 6 as automation reduces time-per-competition)
+
+**Pricing evolution**:
+- Month 1-2 workshops: $2,500 each (entry product)
+- Month 2-4 competitions: $8K-$15K each (design partner pricing)
+- Month 4-6 competitions: $15K-$25K each (standard pricing)
+- Month 6+ annual subscriptions: $30K-$80K/year (introduce once product is proven)
+
+**Channel acceleration (Month 4+)**:
+- Reach out to 2 Big 4 AI practice leads for partner program discussion
+- AWS Marketplace listing application (needs SOC 2 in progress — start Vanta track now)
+- If Big 4 partnership closes, 15-20% of competition revenue can come via channel by Month 8
+
+**Series A readiness milestone (Month 12)**:
+- $500K ARR (10-15 enterprise customers)
+- 3 verticals represented (financial services, healthcare, legal)
+- SOC 2 Type II in progress (needed for enterprise deals)
+- "Straw Certified" badge recognized in at least one industry publication
+- Co-founder on board OR exceptional VP Sales and VP Engineering hired
+
+---
+
+## Section 4: Open Questions Jeremy Must Answer
+
+*These are the 10 highest-leverage unknowns. Each answer unlocks a major decision. No amount of research substitutes for Jeremy's judgment on these.*
+
+**1. What's your honest co-founder status?**  
+Solo founder is a real execution risk (Tick 212). Are you actively searching? Do you have 2-3 specific candidates in mind? If not, start this week. A wrong co-founder is worse than no co-founder — but the right one makes Straw 2x faster and 2x more fundable.
+
+**2. Which vertical do you go all-in on first?**  
+This document covers financial services, healthcare, legal, HR, marketing, retail, insurance, energy, pharma, cybersecurity, federal government, media. You can't go all-in on all of them simultaneously. The first vertical determines the first rubric templates, the first industry advisor, the first conference talk, and the first sales pitch. Pick one. (Recommendation based on research: financial services — clearest regulatory hook, named contacts, highest budget.)
+
+**3. Have you started the legal memo on EU AI Act deployer status?**  
+Straw running AI agents in competitions may make it a "deployer" under EU AI Act (effective August 2026). Before signing the first enterprise competition agreement, you need an external counsel opinion on this. This is a $20K-$50K legal investment that protects against a potentially existential liability claim.
+
+**4. How are you personally positioned on the evaluation theater risk?**  
+This is not a legal or technical problem — it's a product philosophy problem. Will Straw invalidate a competition if the rubric was clearly engineered to favor the incumbent? Will Straw publish an appeals process and actually use it? These decisions require an answer before the first competition or the product philosophy is undefined.
+
+**5. What's your realistic path to SOC 2 Type II?**  
+JPMorgan, Goldman, most healthcare systems, and all government customers require SOC 2 before signing. The path: start Vanta track within 90 days ($10K-$15K/year), 4-5 months to Type I, 12 months to Type II. Budget this now. Don't get to Month 6 and discover you can't close JPMorgan because you haven't started the compliance track.
+
+**6. How are you going to build rubric design credibility before hiring a Rubric Scientist?**  
+The first 3 competitions are run by you. Your rubric quality is the product quality. What academic or practitioner advisors can you get in the next 30 days to review and validate your rubric design methodology? One good advisor (even a professor in a weekend capacity) provides the "independent methodology validation" that makes the first "Straw Certified" badges credible.
+
+**7. What's your fundraising timeline?**  
+Seed raise of $3M-$5M (per Tick 187 and 174). When do you need the money? The answer determines whether you can bootstrap to $100K ARR first (stronger negotiating position) or need to raise before $100K ARR (harder but possible with the right story). If you have 6+ months of personal runway, bootstrapping to $100K is the right path.
+
+**8. How do you handle the "evaluation theater" scenario when your first design partner is clearly rubber-stamping?**  
+This will happen. You'll recognize it partway through a competition when the rubric was clearly engineered to favor the client's incumbent agent. What do you do? Walk away? Redesign the rubric? Complete the competition but add a disclaimer? Your answer defines Straw's character. Decide before the first competition, not during it.
+
+**9. Are you genuinely willing to publish negative results about a winning agent vendor?**  
+If an agent wins a Straw competition but Straw's Rubric Scientist believes the rubric was badly designed and the win is misleading, do you publish that caveat? Do you invalidate the competition? This is the test of Straw's institutional integrity. Many founders would cave under commercial pressure. Are you one of them?
+
+**10. What does your personal burn rate allow?**  
+The 6-month GTM path to $100K ARR requires the founder to be effectively full-time on Straw from Day 1. Is that possible given your current financial situation? If you need early revenue to cover personal expenses, the first competition becomes a financial necessity, not a learning opportunity — which creates pressure to compromise on the evaluation quality questions in items 8 and 9. Know your personal financial constraints and plan accordingly before starting the clock.
+
+---
+
+*End of Phase 2 Morning Reading Guide — Updated May 3, 2026 after Tick 212*
+*Phase 2 Research File: /home/user/straw/tasks/straw-bear-case-and-gtm-2026-05-01.md*
+*Branch: phase2-research*
+
