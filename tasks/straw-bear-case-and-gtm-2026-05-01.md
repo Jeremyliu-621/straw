@@ -5790,3 +5790,204 @@ Society has found ways to make all of these useful despite their non-objectivity
 **The response to the philosophical objection in one sentence:**
 
 *"We're not claiming to measure truth. We're claiming to generate the best available pre-procurement evidence for a specific buyer making a specific decision — and to be transparent about exactly what that evidence does and doesn't tell you."*
+
+---
+
+## Tick 70 (2026-05-03T23:30Z): Platform deaths — Replit Bounties, Bountysource, Topcoder — what killed them [theme: bear]
+
+**Why these post-mortems matter:** Every investor will ask "why won't Straw die the same way?" This tick builds the honest answer.
+
+### Replit Bounties (2023 → killed September 2025)
+
+**What it was:** A marketplace where people posted coding tasks with bounties; Replit's developer community competed to complete them. Amjad Masad was bullish in 2023: "reducing transaction costs to zero," "integrating Bounties into the IDE," "enabling solo devs to build massive projects."
+
+**What killed it:** The explicit public shutdown notice (Hacker News, September 2025) cites product sunset without detailed explanation, but community post-mortems identify:
+1. **Quality enforcement problem:** "Non-responsive hunters harming posters' projects" — the platform could not ensure quality delivery after payment
+2. **Trust collapse:** Once a few bad actors burned posters, trust in the platform eroded
+3. **Not mission-critical enough:** Replit's core mission is the development platform itself; Bounties was a side experiment that never found product-market fit
+4. **AI ate the use case:** Replit's own AI agent can now complete many tasks that Bounties listed. Internal cannibalization.
+
+**The Straw lesson from Replit Bounties:**
+- Rule 1: Straw must not be a side experiment — it must be the core product with full engineering investment
+- Rule 2: Quality enforcement (Straw's tiered evaluation) is load-bearing. Replit had no quality gate; Straw does.
+- Rule 3: The "AI ate the use case" risk is real if Straw evaluates ONLY coding tasks. Diversify task types early into legal, healthcare, research — areas where AI won't fully replace the evaluation need.
+
+### Bountysource (2012 → bankruptcy 2023)
+
+**What killed it:**
+1. **Ownership chain collapse:** Sold to CanYa (crypto company) in 2017. Sold again to "The Blockchain Group" in 2020. Each new owner had less alignment with the open-source developer community.
+2. **Financial mismanagement:** The Blockchain Group changed ToS to allow claiming unclaimed bounties after 2 years. Then stopped paying verified claims (June 2023). Filed bankruptcy (November 2023).
+3. **Developer trust permanently destroyed:** $21,000+ stolen from developers. NewPipe lost €6,400. No accountability.
+4. **Revenue model never worked:** Open-source bounties are tiny ($50-$500 range). Platform fees on tiny bounties = not enough revenue to sustain operations.
+
+**The Straw lesson from Bountysource:**
+- Rule 1: Never let financial mismanagement near the escrow. This is why Straw's v1 escrow uses a smart contract (cryptographically locked bounties, no human can misappropriate them) or Stripe escrow with clear SLA commitments.
+- Rule 2: Trust is the entire product. One payment failure = permanent trust damage.
+- Rule 3: Small bounties don't work as a business model. Straw's minimum bounty should be $1,000+ (enterprise procurement budgets). No open-source $50 bug fix bounties.
+- Rule 4: Never sell to buyers who don't understand the community (Bountysource's fatal mistake was selling to crypto promoters).
+
+### Topcoder (peaked 2011-2015 → stagnation)
+
+**What killed it:** Topcoder Community: one million members; competitive programming contests with 20% of peak participation remaining. TCO (TopCoder Open) 2023 was the last virtual TCO ever.
+
+**Root causes of stagnation:**
+1. **Competitive programming as a product atrophied:** Leetcode, Codeforces, AtCoder ate the algorithmic competition use case at lower cost (free).
+2. **Enterprise offerings went upmarket poorly:** Topcoder tried to become a "crowdsourcing for enterprise" platform but couldn't compete with dedicated platforms (Upwork, Fiverr, Freelancer).
+3. **The community aged and didn't refresh:** Top competitive programmers move to FAANG jobs; the next generation didn't come to Topcoder because the prizes and recognition were elsewhere.
+4. **No network effects:** Each competition was discrete; winning didn't propagate reputation or create compounding value for participants.
+
+**The Straw lesson from Topcoder:**
+- Rule 1: Reputation must compound. A Straw competition win must meaningfully improve an agent's reputation score, which unlocks better competitions, higher bounties, and more exposure. Build flywheel mechanics.
+- Rule 2: Don't compete with free. Straw's competitive advantage is not algorithmic programming competitions (Leetcode ate that) — it's enterprise procurement evaluation. Never commoditize into free-tier competitions.
+- Rule 3: The enterprise customer is the anchor. Topcoder lost its enterprise orientation when it focused on community. Keep enterprise buyers as the primary customer.
+
+### The common failure taxonomy
+
+| Platform | Primary killer | Secondary killer | Straw mitigation |
+|---|---|---|---|
+| Replit Bounties | Not mission-critical; no quality gate | AI cannibalization of core use case | Core product; tiered eval is the quality gate |
+| Bountysource | Financial mismanagement / theft | Revenue model too small | Smart contract escrow; $1K+ minimum bounty |
+| Topcoder | Free competition ate the use case | Network effects didn't compound | Enterprise-only; reputation compounds |
+| Kaggle (stagnation, not death) | Prize amounts too small; commoditized | Academic vs. enterprise disconnect | Real economic stakes; buyer-defined rubrics |
+
+**The Kaggle addendum:** Kaggle isn't dead but has stagnated as a serious enterprise evaluation tool. After Google acquisition (2017), Kaggle became a data science education platform rather than an enterprise procurement tool. The problem: Kaggle competitions have fixed datasets and fixed evaluation metrics defined by Kaggle. There's no buyer-defined rubric. The "winner" is whoever optimizes the fixed metric best — which is not the same as "who should an enterprise deploy?"
+
+This is exactly Straw's differentiation: Kaggle has organizer-defined metrics; Straw has buyer-defined rubrics. The winner of a Kaggle competition proved they're good at Kaggle. The winner of a Straw competition proved they're good at THIS buyer's task.
+
+---
+
+## Tick 71 (2026-05-03T23:55Z): Why smart founders chose hierarchical over marketplace — the Harvey/Ironclad pattern [theme: bear]
+
+**The meta-bear case:** Every successful AI company has built a product/team rather than a marketplace. Harvey ($11B), Ironclad ($1B), Wayve ($5B), Cohere ($5.5B) — all hierarchical companies that build and own their AI agents. None of them built a marketplace where AI agents compete.
+
+**The question:** Why did these smart founders choose hierarchical? Is there something fundamentally superior about owning the AI agent rather than running a marketplace for them?
+
+### The seven reasons founders chose hierarchical
+
+**1. Quality control is non-negotiable.**
+Harvey controls every component of their legal AI — the model, the prompts, the tools, the fine-tuning data. They can guarantee quality because they build it. A marketplace that depends on third-party agents cannot guarantee quality. Harvey's 1,300 enterprise customers trust Harvey, not "whoever won the Straw competition this month."
+
+**2. Vertical integration captures more margin.**
+Harvey charges $190M ARR by owning the full stack. A marketplace takes 10-20% fees; the agent developer takes 80-90%. Hierarchical companies own 100% of the margin.
+
+**3. Proprietary data compounds asymmetrically.**
+Harvey processes 700K+ legal tasks/day. That data trains better models, improves fine-tuning, reduces hallucination. A marketplace agent doesn't get Harvey's data. The proprietary data moat grows over time and is impossible to replicate.
+
+**4. Customer trust requires accountability.**
+When an AI agent makes a legal error at Harvey, Harvey is accountable. In a marketplace, who's accountable? The agent developer (who might disappear)? The platform (Straw)? The enterprise customer needs a single throat to choke.
+
+**5. Sales cycle works better hierarchical.**
+Enterprise sales requires a relationship over months. "I'm from Harvey, we power 100K lawyers" is a credible conversation. "I'm from Straw, and we'll find you the best agent" is a less compelling story because the buyer's commitment is to the agent, not the marketplace.
+
+**6. Regulatory compliance is easier when you control the stack.**
+HIPAA compliance, EU AI Act conformity, SOC 2 — easier to achieve and certify when you control all components. A marketplace that plugs in third-party agents can't guarantee compliance of the agents.
+
+**7. IP and fine-tuning requires ownership.**
+To fine-tune an AI on a client's proprietary data, you need to own the model fine-tuning pipeline. A marketplace agent can't be fine-tuned on client data. This means hierarchical companies always outperform marketplace agents on domain-specific tasks.
+
+### Why these reasons don't necessarily kill Straw
+
+**Straw's response to each:**
+
+1. **Quality control:** Straw's tiered evaluation IS the quality gate. The "best agent from a competition" is better quality-controlled than "the agent we hired from a vendor demo." Straw's competition proves quality; Harvey's product assumes quality.
+
+2. **Margin:** Straw captures the procurement layer, not the delivery layer. The margin in procurement infrastructure is different from the margin in delivery. Straw doesn't compete on delivery margin; it captures evaluation fees.
+
+3. **Proprietary data:** Straw accumulates evaluation data (who won which task type, with what rubric) — that's the data moat. Not the same as Harvey's task data, but a different data asset.
+
+4. **Accountability:** Straw is explicitly NOT the accountable party for the deployed agent. Straw evaluates; the buyer deploys; the agent vendor is accountable for post-deployment performance. This is the "evaluation evidence" framing from Tick 15.
+
+5. **Sales cycle:** The Straw buyer (the enterprise) has a relationship with Straw for evaluation, and a relationship with the agent vendor for deployment. Two separate relationships. Straw doesn't need to own the deployment relationship.
+
+6. **Regulatory compliance:** Straw's evaluation report becomes the compliance documentation that applies to the agent the buyer deploys. Straw evaluates to the regulatory standard (EU AI Act criteria, FTC substantiation requirements); the agent vendor implements the deployment.
+
+7. **Fine-tuning:** For high-stakes, fine-tuning-required tasks (legal, medical), the winner of a Straw competition should be the fine-tuned specialist agent (Harvey, Luminance) that has the domain data. Straw's competition selects the fine-tuned specialist; it doesn't replace fine-tuning.
+
+**The honest answer:** Harvey built hierarchical because they were building a product for direct enterprise delivery. Straw is not a delivery product — it's an evaluation infrastructure product. The comparison is wrong. Harvey competes with Straw's customers (the enterprises that use Straw to evaluate whether to hire Harvey). Harvey is supply side for Straw, not competition.
+
+---
+
+## Tick 72 (2026-05-04T00:30Z): Phase 3 Morning Reading Addendum — what changed in ticks 39-71 [all themes]
+
+*This addendum updates the Phase 2 Morning Reading Guide (Tick 38). Read Phase 2 first, then this.*
+
+### New bear cases (Phase 3) — updated severity table
+
+| Bear case | Phase 2 score | Phase 3 update | Revised score |
+|---|---|---|---|
+| Google Gemini Adaptive Rubrics | 8/10 | Unchanged — still the most dangerous near-term threat | 8/10 |
+| Braintrust feature expansion | 6/10 | **Langfuse acquired by ClickHouse (Jan 2026)** — ClickHouse's distribution amplifies competitive pressure | 7/10 |
+| Prompt injection / eval manipulation | 6/10 | Architectural mitigation specified (Tick 39) — P0 solvable with Dual-LLM pattern | 5/10 with mitigation |
+| Recursive Goodhart / benchmark gaming | 7/10 | Adversarial arms race detailed (Tick 59) — private rubrics are the mitigation | 6/10 with mitigation |
+| Foundation model commoditization | 5/10 | Counter-thesis strengthened: commoditization INCREASES Straw's market | 4/10 |
+| LLM cost deflation | NEW | Tier-2 risk in 2+ years; near-term drives market expansion | 3/10 (near-term) |
+| Creepiness / job displacement | NEW | Manageable with language + framing | 4/10 |
+| Evaluation not truly objective | NEW | Proves too much; managed with epistemic humility | 3/10 |
+| Platform death precedents | NEW | Replit/Bountysource/Topcoder deaths have clear mitigations | 4/10 |
+| Hierarchical vs. marketplace | NEW | Harvey pattern doesn't compete with Straw's evaluation layer | 3/10 |
+| FTC regulatory risk | NEW | Double-edged: creates demand AND secondary liability risk | 5/10 |
+
+### New design partner contacts added in Phase 3 (supplement to Phase 2's 120+)
+
+**Legal AI (Tick 46):** Winston Weinberg (Harvey), Gabriel Pereyra (Harvey), Cai GoGwilt (Ironclad), Emily Foges (Luminance), Richard Robinson (Robin AI), Jack Newton (Clio)
+
+**Healthcare AI (Tick 49):** Shiv Rao (Abridge), Alex Lebrun (Nabla), Punit Soni (Suki AI), Mike Ng (Ambience); hospital CIO/CMIOs at Mayo Clinic, Mass General Brigham, Cleveland Clinic
+
+**Fintech (Tick 52):** Eric Glyman (Ramp), Karim Atiyeh (Ramp CTO), Immad Akhund (Mercury), Patrick Collison (Stripe — long game)
+
+**YC W26 (Tick 43):** Mohammed + Pranav (Moda), Sentrial founders, Captain Technologies founders; François Chollet (Ndea) for SWE-bench saturation conversation
+
+**AI safety labs (Tick 64):** Beth Barnes (METR), Marius Hobbhahn (Apollo Research), Ian Hogarth (UK AISI), Connor Leahy (Apart Research)
+
+**Cybersecurity (Tick 57):** Jay Kaplan (Synack), Peter Garraghan (Mindgard), Chris Evans (HackerOne CPO)
+
+**EU market (Tick 61):** Jonas Andrulis (Aleph Alpha), Florian Douetteau (Dataiku), Arthur Mensch (Mistral AI)
+
+**NIST/Federal (Tick 56):** Elham Tabassi (NIST), Yolanda Smith (CAISI), Robin Carnahan (GSA)
+
+**Investors (Tick 48):** Sarah Guo (Conviction), Elad Gil, Nat Friedman, Sonya Huang (Sequoia), Peter Fenton (Benchmark)
+
+**HR tech (Tick 58):** Daniel Chait (Greenhouse), Josh Laurito (HireVue), Sultan Saidov (Beamery), Ashutosh Garg (Eightfold), Daniel Chait (Greenhouse)
+
+**FCA UK (Tick 41):** Hiroki Takeuchi (GoCardless), Daniel Epstein (Coadjute), Magali Depras (FCA Innovation Hub)
+
+**Total Phase 3 additions: 50+ named contacts**
+
+### New GTM components (Phase 3)
+
+**Pricing model:** Hybrid A+B — 10-15% bounty commission + $500 flat platform fee. Design partner fee ($5K-$15K) is NOT for evaluation — it's for priority access and co-development input.
+
+**Seed round:** $3.5M-$5M SAFE at $18M-$22M post-money cap. Close after 3 design partner case studies. Sequence: angels first → case study → VC.
+
+**Launch sequence:** Design partner stealth (months 1-6) → Earned media launch (Ben's Bites, Hacker News Show HN) → Enterprise outreach (LinkedIn, case study) → Investor pitch (months 4-6).
+
+**Open-source strategy:** Publish rubric calibration framework + basic evaluation scorer as open-source. Not the full platform — just enough for developers to experience Straw's methodology. GitHub → developer community → supply side for competitions.
+
+**EU market entry:** Price at €4,500 for conformity assessment formatted reports. August 2 deadline creates urgency. White paper to European AI Office.
+
+**Newsletter strategy:** Ben's Bites first (organic), TLDR AI second ($6K paid), Latent Space (podcast pitch June), The Rundown AI (newsworthy hook required).
+
+### The 10 most important actions added by Phase 3
+
+Ranked by expected impact-to-effort ratio:
+
+1. **Submit NIST CAISI comment** (Tick 56) — 3 hours to write, 12-month government credibility payoff
+2. **Email FCA Innovation Hub** (Tick 41) — innovation@fca.org.uk, 15 minutes, accesses 8 FCA cohort companies
+3. **DM Ben Tossell** (Tick 68) — 15 minutes, 120K relevant AI newsletter readers
+4. **Build LangChain SDK connector** (Tick 62) — 1 day engineering, unlocks 47M download distribution
+5. **Email Beth Barnes (METR)** (Tick 64) — 30 minutes, academic credibility for evaluation methodology
+6. **Draft prompt injection L1 detection** (Tick 39) — 2 hours engineering, blocks P0 vulnerability
+7. **Contact Winston Weinberg (Harvey)** (Tick 46) — highest-value supply-side agent operator
+8. **EU AI Act white paper** (Tick 61) — European AI Office submission, unlocks 91-day urgency market
+9. **Draft Show HN post** (Tick 60) — write it now, publish when first competition is complete
+10. **Publish rubric calibration framework** (Tick 42) — first lead magnet, first content credibility signal
+
+### The three questions Phase 3 did NOT answer (for Jeremy to decide)
+
+**Q18: Is Straw a marketplace or infrastructure?** The Phase 2 Morning Reading Guide identified this as Q13. Phase 3 deepens the answer but doesn't resolve it. The recommendation: start as infrastructure (evaluation SaaS), let marketplace emerge naturally as agents register and reputation data accumulates. Don't try to be both on day one.
+
+**Q19: What is Straw's relationship to AI safety?** METR, Apollo Research, UK AISI are potential academic partners. But there's a risk: if Straw's evaluation methodology is used to certify AI systems for deployment in safety-critical contexts, and an AI causes harm after being "Straw-certified," what is Straw's liability? This question needs a legal opinion before any regulated-industry deployment.
+
+**Q20: When does Straw's open-source strategy help vs. hurt?** Langfuse went open-source and was acquired for $400M. But open-sourcing the evaluation methodology means competitors (Braintrust, Google) can copy the methodology. The tension: open-source builds community; proprietary builds moat. The recommendation: open-source the framework (rubric design + basic scorer), keep the marketplace mechanics (competition logistics, reputation scoring, Tier-3 investigator pipeline) proprietary.
+
+**Phase 3 summary:** 33 new ticks (39-71), 50+ named contacts, all three themes continued. The research corpus now covers: 71 Phase 3 ticks + 38 Phase 2 ticks = 109 total ticks, ~5,800 lines, 170+ named contacts across 15 design partner categories. Phase 3 is complete. Morning reading guide is updated.
