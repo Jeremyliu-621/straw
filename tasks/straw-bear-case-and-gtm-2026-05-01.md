@@ -4230,3 +4230,261 @@ Every design partner and early customer gets one free evaluation. The economics:
 | Regulated industry (financial services, healthcare) | Highest ($30K-$100K for compliance-grade evidence) | Legal + Compliance approval required | $100K-$500K ARR |
 
 **The design partner pricing note:** Design partners at v0 pay $5K-$15K "design partner fee." This is NOT for evaluation credits — it's for priority access, co-development input, and a case study. The evaluation itself is free. This framing converts the relationship from "client paying for a service" to "partner investing in infrastructure." Psychologically very different. Design partners feel like co-owners, not customers.
+
+---
+
+## Tick 46 (2026-05-03T11:40Z): Legal AI design partners — Harvey, Ironclad, Luminance, Robin AI with specific openers [theme: partners]
+
+**Why legal AI is the ideal beachhead:** Legal tasks have three properties that make them perfect for Straw's first competition:
+1. **High stakes per decision** — A contract review agent that misses a material clause can cost millions. The evaluation premium is justified.
+2. **Objective-ish criteria** — "Did the agent find all clauses of type X?" is more measurable than "was the email good?"
+3. **Buyer sophistication** — Legal teams understand evaluation; they run their own assessments. Straw's rubric model maps to how they already think.
+
+### Harvey — the most important legal AI company for Straw
+
+**State of Harvey (May 2026):**
+- $200M raised at $11B valuation (March 2026, co-led by GIC + Sequoia)
+- $190M ARR in January 2026 (up from $100M in August 2025)
+- 100,000+ lawyers across 1,300 organizations
+- 25,000+ custom agents, 700,000+ tasks/day, 400K+ agentic queries/day
+- Integrates Claude Opus 4.6 as primary model after finding frontier models outperform proprietary legal models on BigLaw Bench
+
+**BigLaw Bench clarification (correction from earlier research):** BigLaw Bench is NOT scrapped — it's actively expanding. Harvey launched BigLaw Bench: Global and BigLaw Bench: Research in 2026. Models now score ~90% on BLB criteria. The benchmark is saturating, not abandoned. This is the same saturation dynamic as SWE-bench.
+
+**Straw's angle on Harvey:**
+
+Harvey is the incumbent. Enterprise legal buyers already have Harvey. But Harvey's 25,000+ custom agents are built and deployed without third-party validation. An in-house legal team choosing between a Harvey-built contract review agent and a Harvey competitor doesn't have an objective comparison framework. They're comparing demos. Straw could run that comparison.
+
+**Two possible Harvey relationships:**
+1. **Harvey as Straw's supply side:** Harvey's agents compete on Straw tasks. Harvey wins (likely — they're the best), uses the Straw score in their enterprise sales. Revenue: Harvey pays submission fees ($500-$2K per competition entry).
+2. **Harvey as Straw's distribution partner:** Harvey refers their enterprise customers who want third-party validation to Straw. Harvey gets co-marketing; Straw gets warm enterprise leads.
+
+**The BigLaw Bench saturation creates an opening.** When BLB scores cluster near 90% across all frontier-model-backed legal agents, BLB loses discriminative power. Custom task evaluation (Straw's model) becomes necessary. Harvey knows this — they built BLB, they've watched it saturate. The right pitch to Harvey leadership is: "We're the next layer after BigLaw Bench."
+
+**Named contacts at Harvey:**
+- **Winston Weinberg** (Co-CEO, @winston_weinberg) — co-founder, leads business and go-to-market
+- **Gabriel Pereyra** (Co-CEO, @gabriel_pereyra) — co-founder, leads research and product
+- **Deja Jackson** (Head of Enterprise Sales, LinkedIn) — enterprise sales leader
+- **Danielle Brown** (Head of Marketing, LinkedIn) — marketing and content partnerships
+
+**Opener for Winston Weinberg:**
+> "Hi Winston — BigLaw Bench scores are clustering near 90% across frontier-model-backed agents. When the benchmark saturates, in-house legal teams are back to comparing demos. We're building evaluation infrastructure for custom legal tasks — buyer-defined rubric, competitive submissions, objective scoring. A Straw evaluation could be what 'BigLaw Bench says we're good' graduates to. 15 minutes to explore what this looks like for Harvey's enterprise customers?"
+
+### Ironclad — contract management + procurement evaluation fit
+
+**Ironclad's AI agents (March 2026 launch):** Jurist suite — Review Agent, Drafting Agent, Editing Agent, Research Agent, orchestrated by a Manager Agent. Generates playbooks, first-pass redlines, flags compliance gaps, conducts Bluebook-cited legal research.
+
+**The Straw angle:** Ironclad's in-house legal team customers are exactly the buyers who need to evaluate AI agents for contract review. They're already on Ironclad for contract management — adding Straw for agent evaluation is a natural extension. Ironclad itself could be a channel partner: Ironclad recommends Straw to customers evaluating whether to use Ironclad's Jurist agents vs. competitor agents.
+
+**Named contacts at Ironclad:**
+- **Jason Boehmig** (CEO, @jasonboehmig) — co-founder
+- **Cai GoGwilt** (CTO, @caigogwilt) — co-founder, builds the product
+- **Eric Gilboa** (Chief Product Officer, LinkedIn) — product strategy
+
+**Opener for Cai GoGwilt:**
+> "You're deploying contract review agents across thousands of in-house teams. Before they go live, do your customers have a framework for knowing how well the agents perform on their specific contract types? We're building the evaluation layer that answers that question with an objective rubric and competitive scoring. Would love your take on how you see evaluation fitting into Ironclad's deployment workflow."
+
+### Luminance — the UK/international incumbent
+
+**Luminance profile:** UK-based legal AI platform. Proprietary legal-specific ML (not just GPT wrapper). Strong in due diligence, contract review, lease abstraction. Used by law firms and in-house teams in 70+ countries. Privately held — no public funding figure, estimated $100M+ ARR.
+
+**Why Luminance matters:** Luminance is the incumbent in UK and European legal AI. UK FCA sandbox companies (GoCardless, Experian, Barclays — Tick 41) likely use Luminance or consider it. A Straw evaluation that independently scores Luminance agents vs. Harvey agents in a European regulatory context (GDPR, FCA requirements) would be uniquely valuable.
+
+**Named contacts:**
+- **Emily Foges** (CEO, @emilyfoges) — CEO since 2020
+- **Charlie Fowler** (CTO) — technology lead
+
+**Opener for Emily Foges:**
+> "The UK market is increasingly asking for third-party validation of legal AI agents — especially for FCA sandbox participants who need to document AI behavior for regulators. Straw produces audit-grade evaluation reports for legal AI agents: pre-specified rubrics, deterministic scoring, full submission history. If Luminance's enterprise customers are building FCA documentation packages, a Straw evaluation could be the independent evidence layer. Interested in exploring a UK pilot?"
+
+### Robin AI — the "legal AI for procurement" angle
+
+**Robin AI profile:** UK-based. Contract review + negotiation AI. Positioned around procurement and commercial contracts. Customers include Clifford Chance, Linklaters. Series B funded.
+
+**Straw angle:** Robin AI's target customers are legal and procurement teams evaluating commercial contracts. These teams are the exact buyers who would use Straw to evaluate AI agents for contract work. Robin AI could be a distribution channel — they're already in the room with the people Straw wants to reach.
+
+**Named contacts:**
+- **Richard Robinson** (CEO, @richard_robin_ai) — co-founder and CEO
+
+**Opener for Richard Robinson:**
+> "Your customers are making multi-year decisions about which AI to trust with their commercial contracts. Most are making those decisions based on demos and referrals. We've built evaluation infrastructure that lets them run their own contract types through competing AI agents and get objective scores. Would Robin AI be interested in a co-marketing experiment — we feature your customers' evaluation results, you refer buyers who need third-party validation?"
+
+### The legal AI design partner pitch — combined structure
+
+**The 5-company legal AI target list for this week:**
+1. Harvey (Winston Weinberg) — supply side + distribution
+2. Ironclad (Cai GoGwilt) — channel partner for in-house teams
+3. Luminance (Emily Foges) — UK market entry
+4. Robin AI (Richard Robinson) — co-marketing
+5. Clio (Jack Newton, CEO) — smaller firms / paralegal teams; lower deal size but faster sales cycle
+
+**The unified pitch:** "Legal AI companies have two problems: (a) buyers don't know how to evaluate agents objectively before buying, (b) vendors need third-party proof points beyond their own demos. Straw solves both. We'd like to build the first legal AI evaluation on Straw with you as the design partner — free first evaluation, full case study."
+
+---
+
+## Tick 47 (2026-05-03T12:10Z): FTC AI policy statement — the US regulatory tailwind Straw missed [theme: bear]
+
+**The finding:** The previous bear case analysis (Ticks 1-38) focused on EU AI Act, APRA, Singapore IMDA, and UK FCA as regulatory tailwinds. The FTC AI Policy Statement (March 11, 2026) was not covered. This is a significant gap — the FTC policy creates direct enterprise procurement obligations in the US market that are arguably more immediately actionable than the EU AI Act.
+
+### FTC AI Policy Statement — March 11, 2026
+
+**What it says:** The FTC interprets Section 5 of the FTC Act (century-old "unfair or deceptive practices" ban) as applying directly to AI systems across their entire lifecycle, including AI agents. Key provisions:
+
+1. **No "AI-powered" claims without substance.** If a product says "AI-powered," the AI must demonstrably work as described. Performance claims (accuracy, reliability, capabilities) must be substantiated with evidence.
+
+2. **Automated decision-making documentation.** AI-driven decisions affecting consumers (credit, hiring, ad targeting, pricing) require documentation, fairness auditing, and transparency. Enterprises deploying AI agents in customer-facing decisions must have evaluation evidence.
+
+3. **Enforcement priority: AI agents specifically.** The FTC identified AI agents as a priority enforcement area — agents that can take real-world actions on behalf of users (purchase goods, manage accounts, make decisions) face the highest scrutiny.
+
+4. **Shadow agents are a compliance liability.** Each unauthorized AI agent deployed inside an organization could represent a separate FTC violation.
+
+### The immediate enterprise procurement implication
+
+Before the FTC statement, enterprise AI procurement was largely about capability ("can it do the task?"). After the FTC statement, it's about documented performance evidence ("can you prove it does what you claim?"). The FTC's "substantiation" requirement maps exactly to Straw's evaluation certificates.
+
+**The specific use case:** A Fortune 500 company deploys an AI agent for customer-facing decisions (loan approvals, insurance underwriting, hiring screening). The FTC's enforcement framework requires them to have performance documentation. If an FTC investigation occurs, they need to produce:
+- Evidence that the AI was tested on representative cases before deployment
+- Evidence that the testing used objective, pre-specified criteria (not post-hoc cherry-picked results)
+- Evidence that they evaluated multiple alternatives before selecting the deployed agent
+
+Straw produces exactly this. The evaluation report becomes the FTC compliance artifact.
+
+### The bear case angle — FTC as a double-edged sword
+
+**The bear case:** The FTC's enforcement creates demand for evaluation, but also creates risk for Straw itself. If Straw's evaluation methodology is cited in an FTC enforcement action as the "documentation" that justified a biased or harmful AI deployment, Straw could face:
+- Secondary liability claims (facilitated the deployment of non-compliant AI)
+- FTC subpoena for evaluation data
+- Reputational damage if the evaluation methodology is shown to have missed the relevant failure mode
+
+**The mitigation:** Straw's evaluation certificates must explicitly state:
+- What was evaluated (specific rubric criteria)
+- What was NOT evaluated (explicitly list out-of-scope dimensions — fairness, demographic parity, GDPR compliance, etc.)
+- That the certificate is evidence of performance on the defined rubric, not a certification of compliance with any specific regulation
+
+This is the "surgical" language problem identified in Tick 15 (compliance certificate liability). The FTC context makes this language choice even more critical.
+
+### FTC contact + GTM opportunity
+
+**The FTC Bureau of Consumer Protection** (the enforcement arm) is actively building AI expertise in 2026. The FTC's Office of Technology (OT) has hired AI-specific technical staff. Being known to the FTC as the responsible evaluation infrastructure company — before any enforcement actions — is strategically valuable.
+
+**Named FTC contacts:**
+- **Lina Khan** (Chair, FTC) — outgoing but influential; her AI policy framework shapes the new chair's priorities
+- **Samuel Levine** (Director, Bureau of Consumer Protection)  
+- **Stephanie T. Nguyen** (Chief Technology Officer, FTC, @FTC_CTO)
+
+**The GTM play with FTC:** Straw submits a comment to the FTC's ongoing AI rulemaking process (ANPR for AI transparency). The comment positions Straw as the independent evaluation infrastructure that helps enterprises generate the substantiation documentation the FTC requires. This is not a regulatory approval — it's a positioning play that creates FTC familiarity and generates PR.
+
+**Subject line for FTC comment:** "Evaluation infrastructure for substantiating AI agent performance claims — a market-based approach to FTC Section 5 compliance."
+
+### State-level AI regulation (additional tailwinds)
+
+The Morgan Lewis report (April 2026) notes that as federal policy stalls, states are stepping in:
+
+| State | Status | Relevance to Straw |
+|---|---|---|
+| **California AB 2013** (signed) | Requires AI documentation for certain automated decisions | California-based enterprises need evaluation artifacts |
+| **Colorado AI Act** | Requires impact assessments for high-risk AI | Impact assessment = Straw evaluation certificate |
+| **Illinois HB 3773** | AI in employment decisions requires bias testing documentation | HR AI agents need Straw-type evaluation |
+| **Texas AI Governance Bill** | Pending; likely similar to Colorado | Texas enterprise customers |
+| **New York Local Law 144** | Automated employment decision tools: annual bias audits required | Already in effect; HR tech customers need annual audits |
+
+**NY Local Law 144 is immediately actionable.** NYC employers using AI for hiring decisions must: (a) conduct annual bias audits by an independent auditor, (b) publish results. The "independent auditor" requirement is exactly Straw's position. NY HR tech companies (Greenhouse, Lever, Workday's AI modules) are immediately affected. 
+
+**Design partner target from NY Local Law 144:**
+- **Greenhouse** (hiring platform, NYC-based) — CEO Daniel Chait (@danchait); they need annual bias audit for their AI scoring
+- **Beamery** (talent AI platform) — evaluates candidate fit; needs independent audit documentation
+
+---
+
+## Tick 48 (2026-05-03T12:40Z): The "Series A narrative" pressure-test — what will investors actually say [theme: bear]
+
+**Context:** The Phase 1 research (Tick 45 of the prior file) built a "Series A infrastructure company" narrative for Straw. This tick stress-tests that narrative against what venture investors are actually funding and saying in 2026.
+
+### What VCs are funding in 2026 (infrastructure layer)
+
+**Bessemer Venture Partners' AI Infrastructure Roadmap for 2026** identifies five frontier investment areas:
+1. Evaluation and trust infrastructure
+2. Multi-agent orchestration
+3. Memory and context management
+4. Agent identity and access management
+5. AI-native data pipelines
+
+Straw sits squarely in #1. But "evaluation infrastructure" is now a crowded category:
+- Braintrust ($80M Series B, Feb 2026)
+- Langfuse ($32M Series A, Sept 2025)
+- Arize AI ($51M Series C, 2024)
+- Weights & Biases ($225M Series C, 2024)
+- Scale AI ($1B round, 2024)
+- Galileo ($45M Series B)
+
+**The VC question Straw will get:** "Why are you different from Braintrust?" The answer must be sharper than it was in Phase 1.
+
+### The sharpest differentiation answer
+
+**Braintrust:** You deploy your own agent → you monitor how it performs → you use Braintrust inside your team. Braintrust is observability for your own agent. Customer pays for ongoing monitoring of a deployed agent.
+
+**Straw:** You don't know which agent to deploy → you run a competition → agents compete against each other on your task → Straw tells you which one wins. Straw is procurement evaluation before deployment. Customer pays once, per competition, for a purchase decision.
+
+Different buyer motivation, different moment in the agent lifecycle, different pricing model. This is not a feature difference — it's a category difference.
+
+**The infrastructure framing that resonates with VCs:**
+
+"Straw is the evaluation layer for the AI agent procurement stack — not the monitoring layer. Braintrust is Datadog. Straw is the penetration testing firm that certifies the code before it goes into Datadog. Different moment, different buyer need, different revenue model."
+
+(This framing will resonate because every VC knows Datadog. The analogy immediately clarifies the distinction.)
+
+### The "infrastructure vs. marketplace" identity question
+
+The most important positioning question Straw hasn't answered: **Is it a marketplace or infrastructure?**
+
+| Identity | What it means | Investor comparison | Risk |
+|---|---|---|---|
+| **Marketplace** | Match supply (agents) to demand (tasks); Straw facilitates the transaction | Upwork, Topcoder, Fiverr for AI | Cold start; winner-take-all dynamics; hard to defend |
+| **Infrastructure** | SaaS tools + APIs that enterprises use to run their own agent evaluations | Braintrust, Langfuse, Galileo | Longer sales cycle; competing with well-funded players |
+| **Benchmark authority** | Straw is the MLPerf for AI agents — third-party certification | MLCommons, HELM (Stanford), ARC Prize | Requires academic credibility; slow to monetize |
+| **Evaluation SaaS** (hybrid) | Enterprise SaaS + marketplace mechanics; each customer runs their own competitions | None (genuinely novel) | Harder to explain; genuinely new category |
+
+**The "evaluation SaaS" framing is the right answer** — it has the recurring revenue of SaaS (customers run multiple evaluations per year) with the marketplace dynamics (supply side of agents creates liquidity) and benchmark authority (public results build credibility over time).
+
+**The investor pitch in one sentence:**
+
+*"Straw is the SaaS layer that enterprises use to run competitive evaluations of AI agents — think MLPerf meets enterprise procurement, with economic stakes that ensure agents actually try."*
+
+### What will investors push back on
+
+**Push-back 1: "Enterprise sales cycles are 6-18 months. How do you get to revenue?"**
+Answer: Design partner model. First 5 customers are design partners, not deals. They pay $5K-$15K for priority access and co-development input. We prove the unit economics on 5 customers before building enterprise sales.
+
+**Push-back 2: "If Google has this, why does Straw win?"**
+Answer: Google's Adaptive Rubrics work only on Google agents. Straw is model-agnostic. No Google customer can run a Harvey-vs-Ironclad evaluation on Google's platform. Independent neutral evaluation is the product.
+
+**Push-back 3: "Braintrust has $80M and enterprise distribution. How do you compete?"**
+Answer: Braintrust is production monitoring. Straw is pre-deployment procurement evaluation. These are different moments in the enterprise AI workflow. Braintrust's customers need Straw before they become Braintrust customers.
+
+**Push-back 4: "How do you prevent agents from gaming your rubrics?"**
+Answer: Three-part answer: (a) rubrics are defined by the buyer, not by Straw; gaming requires knowing buyer's rubric in advance, (b) Tier-3 agentic investigation detects gaming behaviors, (c) prompt injection defenses prevent direct manipulation (Tick 39).
+
+**Push-back 5: "What's the supply-side moat? Why do agents participate?"**
+Answer: Agents participate because winning is worth more than the bounty — it's proof of capability for future enterprise sales. A Straw win is a credentialing event, not just money.
+
+### Named investor targets
+
+Based on portfolio fit and public statements on evaluation infrastructure:
+
+| Investor | Firm | Why they're relevant | Contact |
+|---|---|---|---|
+| **Sarah Guo** | Conviction | Invested in Braintrust; understands the eval space; open to differentiated bets | @saranormous |
+| **Elad Gil** | Elad Gil Ventures | Angel; portfolio includes Harvey ($11B), has LLM infrastructure conviction | @eladgil |
+| **Nat Friedman** | NFDG | Ex-GitHub CEO; deeply understands developer tools; backed Mistral, Perplexity | @natfriedman |
+| **Dylan Field** | Angel (ex-Figma CEO) | Deep network in enterprise design tools; may see Straw as "Figma for AI evaluation" | @zoink |
+| **Benchmark Capital** | Benchmark | Lead VC for developer infrastructure historically (GitHub, Elastic) | Peter Fenton (@pfenton) |
+| **Sequoia Capital** | Sequoia | Co-led Harvey's $11B round; understands legal AI procurement | Sonya Huang (@sonya_huang) — leads AI investments |
+| **Lightspeed** | Lightspeed | Portfolio: Replit (developer platform), several AI infra plays | Mercedes Bent (@mercbent) |
+
+**The warm-up sequence for investors:** Don't cold email VCs. The sequence is:
+1. Design partner → case study published
+2. Case study picked up by Latent Space or Logan Kilpatrick's newsletter
+3. VC sees the case study → inbound interest
+4. One design partner intro → warm intro chain to the right VC
+
+The case study is the investor pitch deck that converts. The investor pitch deck is the thing that summarizes the case study. Reverse the order: publish results first, pitch second.
