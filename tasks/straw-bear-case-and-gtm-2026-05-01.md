@@ -9364,3 +9364,364 @@ If Straw gets even 3-4 YC W26 companies as early design partners (some as supply
 
 **The single question that determines whether May was successful:** "Did at least one enterprise buyer commit to running a Straw competition, with a specific task, a specific rubric, and a specific timeline?" If yes: product-market signal exists. If no: back to customer discovery.
 
+
+---
+
+## Tick 129 (2026-05-05T05:00Z): The 80%/5% production gap — Straw's deepest market validation [theme: gtm]
+
+**The most important number in enterprise AI in 2026, confirmed by Cisco:** 85% of large enterprises have at least one AI agent in pilot, sandbox, or evaluation. Only 5% have an agent operating in production against live business data.
+
+**Source:** Cisco 2026 enterprise survey, cited by Cisco President Jeetu Patel at RSA Conference 2026. Confirmed by Gartner, Gravitee, and Cisco.
+
+### Why this gap exists (the root causes)
+
+From the research:
+1. **Integration complexity with legacy systems** — agent worked in sandbox, fails in prod
+2. **Inconsistent output quality at volume** — 92% success in pilot becomes 71% in production
+3. **Absence of monitoring tooling** — no visibility into production agent decisions
+4. **Unclear organizational ownership** — who's responsible when the agent fails?
+5. **Insufficient domain training data** — sandbox data doesn't represent production diversity
+
+**The meta-cause:** "Pilots are cheap. A handful of engineers can wire an agent into a sandbox in a weekend, but production is expensive. Production carries legal exposure, security exposure, and reputational exposure."
+
+**The trust statement:** "The biggest impediment to scaled adoption in enterprises for business-critical tasks is establishing a sufficient amount of trust." — Cisco President Jeetu Patel
+
+### Straw's position in the pilot-to-production gap
+
+**The key insight:** Straw doesn't help agents move from pilot to production. Straw helps enterprises *choose* which agent to put into production in the first place.
+
+The 85/5 gap is caused by enterprises picking agents through vendor demos and sandboxes — then discovering in production that the agent doesn't perform. Straw closes the gap by ensuring enterprises evaluate agents on their *actual production task* before committing.
+
+**The pitch reframe:** "85% of enterprises have an AI agent in pilot. Only 5% trust one in production. That gap — 80 points of trust deficit — exists because enterprises evaluate agents on vendor-supplied demos, not on their own tasks. Straw runs the evaluation on your task. The agent that wins Straw earns the trust for production."
+
+### The security failure correlation
+
+**Additional finding:** Only 14.4% of AI agents go live with full security approval. 88% of enterprises have already experienced AI agent-related security incidents.
+
+**The Straw security angle:** Straw's sandboxed execution environment + INJECTION_PATTERNS detection + audit trail = agents that pass Straw's security criteria are more likely to get security approval for production deployment.
+
+**The SOC 2 linkage:** A Straw competition report becomes security review evidence. When the CISO asks "Was this agent evaluated for prompt injection and scope violations?" — the answer is the Straw competition report.
+
+### The statistic stack for Straw's sales pitch (finalized)
+
+The definitive set of statistics that Jeremy should memorize and use in every sales conversation:
+
+1. **73%**: Enterprise AI projects that have no agreed definition of success before starting (McKinsey 2026)
+2. **80%**: Enterprise AI pilot-to-production gap (85% in pilot, 5% in production — Cisco 2026)
+3. **73%**: Enterprise AI projects that fail to deliver ROI (KPMG/McKinsey 2026)
+4. **88%**: Enterprises that have experienced AI agent-related security incidents (Cisco 2026)
+5. **47% vs 9%**: Rollback rate for agents without eval coverage vs with eval coverage (Forrester, Phase 3 Tick 110)
+6. **$665B**: Global enterprise AI spending in 2026 that fails to deliver ROI for 73% of deployments
+
+**The pitch opening (30 seconds):** "Enterprise AI is spending $665 billion in 2026. 73% of those projects will fail to deliver ROI. 88% of enterprises have already had AI agent security incidents. 85% have agents in pilot but only 5% trust them in production. The reason? Nobody evaluated these agents against their actual production task before deploying them. Straw is the evaluation layer that fixes this."
+
+**Sources:**
+- [85/5 production gap — Sirocco Group analysis](https://www.siroccogroup.com/ai-agents-the-85-5-production-gap/)
+- [VentureBeat: 85% enterprises, 5% production](https://venturebeat.com/security/85-of-enterprises-are-running-ai-agents-only-5-trust-them-enough-to-ship)
+- [$665B spending crisis](https://www.aigovernancetoday.com/news/enterprise-ai-spending-crisis-2026)
+- [79% face challenges](https://writer.com/blog/enterprise-ai-adoption-2026/)
+
+---
+
+## Tick 130 (2026-05-05T05:30Z): Straw's liability architecture — who is responsible if a competition produces a bad agent [theme: bear]
+
+**The unresolved question:** If Straw runs a competition, an enterprise deploys the winning agent based on Straw's evaluation, and the agent causes harm — who is liable?
+
+### The 2026 legal landscape
+
+**California (January 1, 2026):** Deployers of AI agents cannot use the system's autonomous operation as a defense against liability claims. If your organization deployed an AI agent that caused harm, "the agent did it autonomously" is not a valid defense.
+
+**Colorado AI Act (June 2026):** Deployers of high-risk AI systems must conduct regular impact assessments and maintain active risk management programs. "High-risk AI" includes systems used in consequential decisions (credit, employment, healthcare, legal).
+
+**EU AI Act (August 2026):** Full application to high-risk systems. Penalties: €35M or 7% of global revenue.
+
+### The liability chain for a Straw competition outcome
+
+**Scenario:** Enterprise uses Straw to evaluate three competing contract review agents. Agent A wins (highest rubric score). Enterprise deploys Agent A. Agent A misses a material contract clause. Enterprise incurs losses.
+
+**Who gets sued?**
+1. **Agent A's vendor:** Primary liable — they deployed the agent that failed. Under California law, the vendor cannot claim "the agent was autonomous." They provided the product.
+2. **The enterprise:** As the deployer, they accepted legal responsibility for their AI agent deployments. California's framework means they can't escape liability by saying "we trusted the evaluation."
+3. **Straw (the platform):** This is the key question. Straw evaluated Agent A's performance against the buyer's rubric. If Agent A scored highly on the rubric but the rubric missed the material clause type — is Straw liable?
+
+### Straw's liability defense architecture
+
+**Layer 1: Straw is an evaluation platform, not an endorser.** Straw evaluates agents against buyer-defined rubrics. Straw does NOT guarantee that the winning agent is safe for deployment. This is analogous to how Yelp is not liable if a restaurant they rate makes someone sick.
+
+**Layer 2: Rubric ownership.** The buyer defines the rubric. If the rubric fails to capture the relevant evaluation criteria, the buyer bears responsibility for the rubric design. Straw's Terms of Service should explicitly state: "Straw evaluates agents against buyer-provided rubrics. The quality and completeness of rubrics is the buyer's responsibility."
+
+**Layer 3: The Straw Certified caveat.** The "Straw Certified" badge (Tick 118) must clearly state: "This agent demonstrated superior performance against [buyer]'s rubric in [Task Domain] on [date]. This certification does not represent a guarantee of performance in production environments."
+
+**Layer 4: Rubric template compliance.** Straw provides rubric templates (Tick 108 — v0 templates). If a buyer uses Straw's template and it misses something critical, Straw has partial exposure. The mitigation: rubric templates should include a disclaimer that they represent "a starting point, not a comprehensive evaluation standard."
+
+**Layer 5: The indemnification clause.** Straw's TOS should include: "Buyer indemnifies Straw for any claims arising from the deployment of agents evaluated through Straw competitions." This shifts liability to the deploying enterprise, consistent with the California 2026 framework (deployers bear primary liability).
+
+### The product liability angle
+
+**AI vendor trend:** AI vendors are inserting broader indemnification clauses that shift liability to deployers. Enterprise procurement teams are demanding liability representations and warranties from AI vendors.
+
+**The Straw TOS approach:** Mirror the industry trend. Straw's TOS should: (1) make buyers responsible for rubric design; (2) indemnify Straw from deployment decisions; (3) make agent vendors responsible for their agents' performance in production. Straw is an evaluation infrastructure provider, not a performance guarantor.
+
+**The positive framing:** Straw's competition report IS the enterprise's documented due diligence. Under Colorado AI Act and EU AI Act requirements, enterprises must demonstrate they conducted appropriate evaluation before deploying high-risk AI. A Straw competition report is that documentation.
+
+**Sources:**
+- [Who is liable when AI agents cause harm](https://thelyonfirm.com/blog/agentic-ai-liability-legal-responsibility-autonomous-ai-agents/)
+- [California AI liability legislation 2026](https://www.wiley.law/article-2026-State-AI-Bills-That-Could-Expand-Liability-Insurance-Risk)
+- [Liability considerations for agentic AI systems](https://www.lathropgpm.com/insights/liability-considerations-for-developers-and-users-of-agentic-ai-systems/)
+
+---
+
+## Tick 131 (2026-05-05T06:00Z): The Linear/Cursor GTM playbook — what it actually means for Straw [theme: gtm]
+
+**The research question:** What specific GTM patterns from Linear and Cursor should Straw copy? Both went from zero to massive ARR with developer-first, high-quality, opinionated products.
+
+### Linear's playbook (2019-2023)
+
+**What they did:**
+1. Built for founders' friends at small tech startups — not enterprises, not developers-in-general
+2. Launched with a very opinionated product (no customization, no "configure it your way")
+3. Achieved profitability by June 2021 — 2 years after founding, 17 people, 1,000+ startup customers
+4. Negative lifetime burn — more cash in bank than total raised
+5. Never scaled aggressively until product-market fit was unambiguous
+
+**The key Linear insight:** "Karri Saarinen's design philosophy is that you should design something for someone — it's impossible to design really good things for everyone."
+
+**What Straw can copy:**
+- Build for a specific "someone" first — not "all enterprises evaluating all AI agents"
+- The "someone" for Straw v0: AI-native startup CTOs evaluating competing coding agents for their engineering stack
+- Build an opinionated product that says "here's how you evaluate, here are the rubric templates, don't try to customize everything"
+- Target profitability before scale — 10 competitions at $5K each = $50K ARR. Be profitable on $50K ARR before raising.
+
+### Cursor's playbook (2023-2026)
+
+**What they did:**
+1. Launched as a VS Code fork with AI autocomplete (narrow, specific, opinionated)
+2. Early adopters: individual developers in their network (no sales motion initially)
+3. 2024: Multi-file editing (Composer) → 100K users → $60M Series A
+4. Never built for everyone — built for developers who wanted the "best AI IDE experience"
+5. Corporate buyers grew from 25% of revenue (late 2024) to 60% of revenue ($2B ARR) — enterprise came AFTER product-market fit with individuals
+
+**The Cursor lesson for Straw:** Enterprise revenue follows individual/team adoption. Don't try to sell to enterprise CPOs in month one. Sell to CTOs/VP Eng at small tech companies who care about AI agent quality. Enterprise comes later.
+
+**Cursor revenue trajectory:**
+- 2023: Early developer traction
+- 2024: 100K users, $60M Series A
+- Nov 2025: $1B ARR
+- 2026: $29.3B valuation
+
+**Straw's parallel trajectory (if it follows the pattern):**
+- 2026: 10-20 design partner competitions, 5-10 paying customers, $50-100K ARR
+- 2027: Product-market fit with AI-native startups, $1-3M ARR
+- 2028: Enterprise adoption, $10-30M ARR (following individual/team adoption)
+
+### The key difference: Straw's procurement nature requires enterprise earlier
+
+**The critical mismatch:** Cursor could start with individual developers because developers make individual tool choices. Straw's product is inherently about organizational procurement — companies deciding which agent to deploy.
+
+This means Straw cannot follow the pure "individual → enterprise" trajectory. Even Straw's earliest customers will be making organizational decisions (even if the "organization" is a 5-person startup).
+
+**The modified playbook for Straw:**
+- v0 (2026): Target CTOs/founders at AI-native startups (5-50 person companies). These buyers:
+  - Make organizational decisions without procurement bureaucracy
+  - Have budget authority (CTO = the buyer and user)
+  - Respond to direct outreach (startup founder DM culture)
+  - Don't need SOC 2 (yet) — design partner exemption
+
+- v1 (2027): Target AI CoE leads at mid-market companies (100-500 employees). These buyers:
+  - Have dedicated AI governance budget
+  - Require SOC 2 (which Straw has by then)
+  - Make $15-25K procurement decisions without enterprise RFP
+
+- v2 (2028): Target enterprise procurement at Fortune 500. These buyers:
+  - Require RFP process, SOC 2 Type II, legal review, enterprise MSA
+  - $50K+ annual program deals
+  - 6-month sales cycles
+
+**The Linear quality principle for Straw:** Straw's first competitions must be EXCEPTIONAL. Better to run 5 deeply rigorous competitions with perfect rubrics, perfect evaluation, and clear winner selection than to run 50 thin-market competitions with 2 agents and ambiguous scoring. Quality over scale in v0.
+
+**Sources:**
+- [Linear path to product-market fit](https://review.firstround.com/linears-path-to-product-market-fit/)
+- [Cursor revenue and growth](https://aifundingtracker.com/cursor-revenue-valuation/)
+- [Karri Saarinen on design philosophy](https://www.runtime.news/linear-ceo-karri-saarinen-our-customer-base-is-quite-powerful/)
+
+---
+
+## Tick 132 (2026-05-05T06:30Z): The AI spending paradox as Straw's core sales argument [theme: bear/gtm]
+
+**The 2026 AI spending paradox:**
+- $665 billion in enterprise AI spending
+- 73% of deployments fail ROI targets
+- 80% of pilots never reach production
+- Only 29% of companies see significant ROI from generative AI
+
+**The math:** $665B × 73% failure rate = ~$485B wasted on AI that doesn't deliver. This is the largest single source of enterprise technology waste in history.
+
+**Why this is BOTH a bear case AND the sales argument:**
+
+### As a bear case
+
+If enterprises are wasting $485B on AI and getting poor results, they may:
+1. Cut AI budgets entirely ("AI is just hype — we've tried it and it doesn't work")
+2. Consolidate to one vendor (OpenAI/Microsoft) rather than evaluating alternatives
+3. Slow the adoption curve so dramatically that the agent marketplace never reaches critical mass
+4. Blame the AGENTS rather than the SELECTION PROCESS — leading to demand for better foundation models rather than better evaluation infrastructure
+
+**The 2026 budget rationalization signal:** "Experimental AI spending is likely to go down in 2026, as companies look for AI projects with proven results." This means enterprises will cancel AI experiments — which reduces the universe of companies that might run Straw competitions.
+
+### As the sales argument
+
+The $485B waste number is Straw's best friend in a sales pitch:
+- "Why does this waste happen? Because enterprises deployed agents without properly evaluating them first."
+- "Straw solves this by running evaluation competitions before deployment, not after."
+- "A $5,000 Straw competition is 0.001% of the average enterprise AI budget — but it prevents being in the 73% that fail."
+
+**The framing that works:** "You're about to spend $200K/year on an AI agent for contract review. Before you commit, spend $5K to run three competing agents on your actual contracts. The one that wins gets your $200K. The Straw competition costs 2.5% of the annual deployment cost — and it's the only thing that protects the other 97.5%."
+
+### The ROI calculation for Straw (from the buyer's perspective)
+
+**Inputs:**
+- Annual AI agent deployment budget: $200K
+- Probability of picking the wrong agent without evaluation: 73% (McKinsey)
+- Cost of wrong agent (wasted deployment + rollback + restart): typically 6-12 months of deployment cost = $100-200K
+- Straw competition cost: $5,000 (Tier 1)
+
+**Expected value calculation:**
+- Without Straw: Expected loss = $200K × 73% = $146K
+- With Straw: Expected loss = $200K × (73% - improvement from evaluation) × (1 - contest effectiveness)
+- Straw cost: $5K
+
+If Straw reduces the failure rate from 73% to even 40%: Expected loss reduction = $200K × (73% - 40%) = $66K saved. Against a $5K cost = 13x ROI on the Straw competition.
+
+**This is the ROI calculation Jeremy should have in every sales meeting.** Buyers don't pay for evaluation for its own sake — they pay because the cost of a wrong agent deployment dwarfs the cost of evaluation.
+
+### The spending rationalization angle
+
+The "AI budget rationalization" trend (enterprises consolidating overlapping AI tools) is NEUTRAL for Straw:
+- When enterprises consolidate from 10 AI tools to 3, they need to decide which 3 to keep → Straw evaluation
+- The rationalization pressure creates urgency for proper evaluation — "we can only afford 1 agent contract review tool — let's be sure we pick the right one"
+
+**The counter-intuitive positioning:** When AI budgets get cut, evaluation spend goes UP, not down. Because the agents that survive budget cuts must be demonstrably better than the ones cut.
+
+**Sources:**
+- [$665B AI spending crisis](https://www.aigovernancetoday.com/news/enterprise-ai-spending-crisis-2026)
+- [AI spending may slow](https://www.cio.com/article/4085325/ai-spending-may-slow-down-as-roi-remains-elusive.html)
+- [Enterprise AI adoption challenges](https://writer.com/blog/enterprise-ai-adoption-2026/)
+
+---
+
+## Tick 133 (2026-05-05T07:00Z): Devin/Cognition as a supply-side design partner — the anatomy [theme: partners]
+
+**Why Cognition/Devin is the highest-value supply-side design partner for Straw v0:**
+
+### Devin's 2026 position
+
+By March 2026, Devin has:
+- Merged hundreds of thousands of PRs across thousands of companies
+- PR merge rate: 34% → 67% year-over-year
+- Enterprise deployments: Goldman Sachs, Santander, Nubank
+- Cognition for Government (launched Feb 2026): Devin in federal agencies and defense contractors
+- Cognizant partnership (announced Jan 2026): go-to-market through one of the world's largest IT services companies
+
+Devin is the most enterprise-validated AI software engineer in 2026. Their enterprise footprint means they need procurement-ready validation: a "Straw Champion — Software Engineering" badge that CISOs and CIOs can point to.
+
+### Why Cognition needs Straw
+
+**The procurement barrier:** Goldman Sachs, Santander, and Nubank have rigorous vendor evaluation processes. "We tried Devin and our engineers liked it" is insufficient for Fortune 500 vendor approval at scale. The AI governance/procurement team needs:
+1. Documented evaluation methodology
+2. Rubric-based performance scores
+3. Comparison against competing agents
+4. Third-party evaluation certification
+
+Straw provides all four. A "Straw Certified — Software Engineering" badge from Goldman Sachs's evaluation process would be Cognition's most valuable sales asset.
+
+**The co-marketing angle:** When Cognition wins a Straw competition commissioned by a Fortune 500 client, both Straw and Cognition can announce it publicly (with buyer's permission): "Goldman Sachs ran a Straw competition evaluating 4 AI software engineers. Devin won. Goldman Sachs is deploying Devin across 500 engineering tasks."
+
+### The design partner conversation with Scott Wu
+
+**What to offer:**
+1. Early access to Straw's v0 competition infrastructure (before public launch)
+2. Dedicated support to ensure Devin's API integration with Straw's sandboxed execution environment works perfectly
+3. Co-marketing of first competition win
+4. "Straw Certified" badge program access — Devin is the first agent to earn Straw Champion status in code generation
+
+**What to ask:**
+1. One paid Straw competition commitment (they source the buyer — a Goldman Sachs or Santander internal team, or Cognition provides it as part of their sales process)
+2. Technical feedback on Straw's evaluation pipeline
+3. Public case study rights
+
+**The competition design for Devin:**
+- Task category: Software Engineering — Bug Fix
+- Task: Enterprise code repository, 50 open bugs of varying complexity
+- Competing agents: Devin, Claude Code CLI, Cursor Agent, GitHub Copilot Agent, SWE-Agent (open source)
+- Rubric: Test passage rate, PR quality (code review criteria), regression introduction rate, time-to-resolution
+- Buyer: An engineering team at a financial institution (Goldman Sachs is the target)
+
+### The SWE-bench evolution as context
+
+Devin's original SWE-bench score was 13.86% (groundbreaking in early 2024). By March 2026, Claude Opus 4.6 leads SWE-bench Verified at 80.8%. The benchmark has been saturated by foundation models.
+
+**The Straw argument to Devin:** "SWE-bench is dead as a differentiator — all foundation models score above 70%. The real question is: which agent performs best on Goldman Sachs's specific codebase, using their specific testing standards? That's what Straw evaluates. A Straw competition is your SWE-bench replacement."
+
+**Sources:**
+- [Devin 2025 performance review](https://cognition.ai/blog/devin-annual-performance-review-2025)
+- [Cognition enterprise](https://cognition.ai/)
+- [SWE-bench leaderboard 2026](https://www.swebench.com/)
+
+---
+
+## Tick 134 (2026-05-05T07:30Z): The 73% success-criteria gap — Straw's rubric as the enterprise's missing definition [theme: gtm/bear]
+
+**The critical research finding:** 73% of failed enterprise AI projects had no agreed definition of success before starting. This is not a coincidence — it's the root cause of the 73% ROI failure rate.
+
+**Source:** McKinsey Global AI Survey 2026: "73% of failed AI projects had no agreed definition of success before the project started. These projects were approved without quantified business objectives, launched while stakeholders disagreed on what the initiative should achieve."
+
+### Why this finding is central to Straw's value proposition
+
+**The causal chain:**
+1. Enterprise approves AI agent deployment based on vendor demo (no rubric)
+2. No agreed definition of "success" exists at deployment
+3. Agent fails to deliver expected value (ROI gap)
+4. Post-mortem: "The agent wasn't what we expected" → but nobody wrote down what was expected
+5. Project is canceled, budget is reallocated
+
+**The Straw intervention:** A Straw competition requires the buyer to define success criteria (the rubric) BEFORE the competition runs. The act of running a Straw competition forces the enterprise to answer: "What does winning look like?"
+
+**This is not just procurement infrastructure — it's enterprise AI governance.** When the AI CoE lead asks "Do we have documented success criteria for our contract review agent?" — the Straw rubric IS that documentation.
+
+### The rubric as the enterprise's AI governance artifact
+
+In regulated industries (banking, legal, healthcare):
+- OCC model risk management guidance requires "clear documentation of model performance standards"
+- EU AI Act (August 2026) requires "meaningful information about the testing of high-risk AI systems"
+- Colorado AI Act (June 2026) requires "regular impact assessments" for high-risk AI
+
+**A Straw rubric meets all three requirements.** It defines what the enterprise expects from the AI agent, documents how agents were evaluated against those expectations, and produces scored output that can be presented to regulators.
+
+**The enterprise compliance pitch:** "Your regulators are going to ask you how you selected your AI contract review agent. A Straw competition report is the answer. It shows that you defined success criteria before deployment, ran multiple agents against those criteria, and selected the winner based on documented, scored evaluation."
+
+### The "definition of success" workshop as Straw's product entry point
+
+**The new product idea:** Straw's first customer interaction is not "run a competition." It is a "Definition of Success" workshop — a 2-hour facilitated session where Straw helps the enterprise AI team define:
+1. What task the agent will perform
+2. What "good" looks like (quantifiable criteria)
+3. What "bad" looks like (automatic disqualifiers)
+4. How outputs will be scored (rubric weight allocation)
+5. What the competitive comparison should include
+
+The workshop output is a Straw rubric. The rubric is the basis for a competition. The competition can run immediately after the workshop.
+
+**Pricing:** Workshop = $500 (included in Tier 1 competition price). Workshop without competition = $250 (a new entry product that converts to competition customers).
+
+**The sales motion:** "We don't start with a competition — we start with helping you define what winning looks like. 2 hours, $250. At the end, you'll have a document that answers the question your regulators will ask. And if you want, we'll run a competition against that rubric for another $2,750."
+
+### The "no rubric, no trust" principle
+
+**The bear case implication:** If 73% of AI projects fail because they have no success criteria — the enterprises that are failing may not know what Straw provides is the solution. They may diagnose their problem as "bad agents" rather than "no success criteria."
+
+**The GTM risk:** Straw might be selling the right solution to a problem enterprises don't know they have. This is the classic "painkiller vs vitamin" challenge. Straw needs to be a painkiller: "You're getting sued under Colorado AI Act because you have no documented evaluation methodology → Straw is the documentation."
+
+**Sources:**
+- [McKinsey 73% success criteria finding](https://www.aigovernancetoday.com/news/enterprise-ai-spending-crisis-2026)
+- [Enterprise AI ROI gap](https://erp.today/ai-value-measurement-enterprise-roi/)
+- [AI project failure stats](https://www.folio3.ai/blog/ai-project-failure-rate-stats)
+
