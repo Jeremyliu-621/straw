@@ -35918,3 +35918,124 @@ Every enterprise procurement org is using AI. Only 11% can actually scale it con
 3. University AI governance consortia (University Innovation Alliance, AAU)
 
 ---
+
+## Tick 502 — Federal Government Design Partners: GSA + NIST Just Built Straw's Government Twin [theme: GTM]
+
+### The GSA/NIST CAISI Partnership — March 18, 2026
+
+**What happened:**
+- GSA and NIST's Center for AI Standards and Innovation (CAISI) signed a Memorandum of Understanding (March 2026)
+- CAISI will provide tooling and methodology to help GSA **evaluate advanced AI models**, select and interpret benchmarks, and conduct **hands-on testing within real federal workflows**
+- Purpose: Support USAi platform — GSA's centralized AI procurement toolbox for federal agencies
+- GSA's explicit goal: Help agencies "avoid duplicating efforts, lower costs, and move more quickly from experimentation to full deployment"
+- Published resources: evaluation guidelines and checklists any agency can use to assess AI tools
+
+**Translation:** The federal government just formalized the need for a structured AI evaluation layer for procurement. CAISI is doing for the government what Straw does for enterprises.
+
+### Why This Matters for Straw
+
+1. **Validation from the highest authority:** If NIST + GSA are building AI evaluation science for federal procurement, they've confirmed the market need. The US government doesn't spend MOU resources on problems that don't exist.
+
+2. **The gap CAISI doesn't fill:** CAISI builds evaluation STANDARDS (methodologies, benchmarks, checklists). It does NOT build a competitive marketplace where vendors compete against a buyer-defined rubric. That's Straw's value. The standard + the competition = complete procurement framework.
+
+3. **FedRAMP + Straw:** Every AI agent that wants federal contracts must be FedRAMP-authorized. But FedRAMP authorization doesn't prove performance on a specific agency's use case. That's exactly what Straw's rubric-based competition solves. **FedRAMP = security authorization; Straw = performance validation.**
+
+4. **OMB Memo M-25-22:** "Driving Efficient Acquisition of Artificial Intelligence in Government" — directed agencies to include AI-specific terms in contracts. Straw's evaluation report = the evidence base for those contractual performance claims.
+
+### The Federal GTM Path
+
+**Phase 1:** Sell to mid-size federal contractors (government systems integrators) who are procuring AI agents for their federal projects. They need defensible evaluation documentation for their agency clients.
+
+**Phase 2:** GSA Schedule listing. Straw as a GSA-approved evaluation platform creates an inbound federal channel.
+
+**Phase 3:** Direct agency relationships. Target agencies with explicit AI mandates (DOD, DHS, HHS, VA) where AI agent deployment is happening at scale.
+
+**Why not Phase 1 direct-agency first:**
+- Federal sales cycles: 12-24 months minimum
+- FedRAMP authorization: 6-18 months, expensive
+- Government contractors as proxies: faster, no FedRAMP needed initially, they carry the compliance burden
+
+### Federal Design Partners (#184-190)
+
+**#184 — Sonny Hashmi** (GSA Federal Acquisition Service Commissioner) — the USAi platform owner; directly relevant to Straw's federal procurement play
+**#185 — Elham Tabassi** (NIST CAISI Chief of Staff / AI Standards lead) — co-authored the CAISI-GSA MOU; understands AI evaluation methodology deeply
+**#186 — Chezian Sivagnanam** (DHS Chief AI Officer) — DHS has one of the largest AI agent deployments in federal government
+**#187 — Craig Martell** (former DOD Chief Digital and AI Officer) — now in private sector; bridge between DOD AI procurement and commercial applications
+**#188 — Terry Halvorsen** (former DOD CIO, now IBM Federal lead) — government AI procurement decision-maker with commercial lens
+**#189 — Russ Berkoff** (MITRE AI Division lead) — MITRE is a FFRDC that advises multiple agencies on AI procurement; a Straw design partnership with MITRE = federal distribution
+**#190 — David Bray** (Atlantic Council GeoTech Center) — policy-level AI governance thought leadership; warm intro to federal decision-makers
+
+### The Procurement Reform Tailwind
+
+Trump AI Action Plan (July 2025): Federal AI adoption must accelerate. CAISI was "featured prominently" in the plan.
+
+**Political alignment:** "Government AI procurement needs to move faster" = bipartisan position in 2026. Straw's model — competition → winner selection → deployment — is exactly the kind of "best value, measurable outcomes" procurement reform that both parties can support.
+
+---
+
+## Tick 503 — Healthcare Design Partners + The Epic Ecosystem Lock Problem [theme: GTM + design partners]
+
+### Why Healthcare Is a Tier-1 Straw Vertical
+
+Healthcare has three properties that make it ideal for Straw:
+
+1. **High stakes per AI decision:** Clinical AI agents affect patient outcomes. Hospitals CANNOT afford to deploy agents that self-report completion without validation (per the "Agents of Chaos" / Stanford data).
+2. **Heavy regulation:** HIPAA, FDA AI/ML guidance, CMS reimbursement requirements. Documentation of AI evaluation = required, not optional.
+3. **Multi-vendor heterogeneity:** Hospitals use Epic OR Cerner for EHR, but layer multiple AI vendors on top — ambient documentation, clinical decision support, revenue cycle agents, patient engagement bots. Cross-vendor evaluation is structurally needed.
+
+### The Epic / Cerner Dynamic
+
+**Epic's market position (2026):**
+- Leads deployed AI functionality at hundreds of hospitals
+- AI scribe (ambient documentation), doctor co-pilot (order set recommendations), scheduling agent, patient chatbot
+- Intermountain Health and UPMC just moved FROM Cerner TO Epic
+- Epic's AI is tightly integrated — but hospitals still deploy non-Epic AI agents on top
+
+**The gap:** Epic builds the EHR; they don't evaluate the 15+ AI vendors hospitals layer on top of Epic. Those decisions — which ambient scribe, which revenue cycle agent, which patient engagement bot — are made by hospital CIOs and CMIOs without objective evaluation frameworks.
+
+**Straw's position:** Not competing with Epic. Evaluating the agents that hospitals deploy INTO the Epic ecosystem. Epic integration is a feature, not a threat.
+
+### The 2026 Healthcare AI CIO Survey Data
+
+**15 best-fit AI agents for healthcare** (from getprosper.ai):
+- All are HIPAA-compliant
+- All claim deep Epic/Cerner integration
+- **None have objective performance data on specific hospital workflows**
+
+This is the exact problem. Every ambient AI scribe vendor claims "better documentation quality." No hospital CIO can objectively compare them without running a Straw evaluation.
+
+### The "Proof of Concept" Standard Straw Replaces
+
+Healthcare CIO procurement typically includes: "A successful pilot or proof of concept is often the next step, allowing organizations to test the solution and validate its return on investment in a controlled environment."
+
+**Current process:** Hospital does a 30-90 day custom POC with each vendor. Subjective feedback. Expensive. Time-consuming. Selection still influenced by vendor relationships.
+
+**Straw:** Pre-defined rubric (documentation quality, coding accuracy, workflow integration speed). Multiple vendors compete against the same tasks. Objective scoring. Hospital CIO picks the winner. Same governance standard that NIST and GSA are building for the federal government.
+
+### Named Healthcare Design Partners (#191-198)
+
+**#191 — Sumit Rana** (CMIO, Stanford Health Care) — Stanford runs multiple AI pilots; clinical evaluation methodology is their core problem
+**#192 — Shafiq Rab** (Chief Digital Officer, Tufts Medicine) — major health system CDO; public speaker on AI procurement governance
+**#193 — Theresa Meadows** (SVP/CIO, Cook Children's Health Care) — former CHIME Board Chair; national voice on healthcare CIO technology decisions
+**#194 — Aaron Miri** (CDO, Baptist Health) — prominent healthcare CIO; covers Epic ecosystem + AI agent deployment
+**#195 — Sarah Vreeland** (VP Digital Health, Intermountain Health) — Intermountain just migrated TO Epic; actively deploying AI layer on new Epic infrastructure = active buying decision
+**#196 — Liz Johnson** (former CIO, Tenet Healthcare) — CHIME Hall of Fame inductee; advisory board access to 2,500+ healthcare CIOs
+**#197 — Muthu Alagappan** (Chief AI Officer, Permanente Medicine) — clinical AI deployment at scale (Kaiser Permanente's physician group)
+**#198 — Michelle Wein** (Head of Digital Health, UPMC Ventures) — UPMC just migrated to Epic; UPMC Ventures invests in health IT startups = potential strategic partner
+
+### Healthcare GTM Entry Strategy
+
+**Wedge:** Ambient documentation AI evaluation (most acute procurement need in 2026)
+- Every hospital deploying AI scribes is doing so with subjective data
+- $2-5B market for ambient documentation alone
+- 3-5 vendors actively competing (Nuance (MSFT), Suki, Abridge, Ambience, DeepScribe)
+- A Straw pilot with ONE major health system = reference for all 6,000 US hospitals
+
+**Channel:** CHIME (College of Healthcare Information Management Executives)
+- 2,500+ healthcare CIO members
+- Annual Fall Forum (October 2026) = conference sales opportunity
+- Speaking slot on "AI agent evaluation standards" = inbound lead generation
+
+**Regulatory hook:** FDA is actively reviewing AI/ML-based software as a medical device (SaMD). Hospitals deploying clinical AI agents need documentation of performance validation. Straw provides it.
+
+---
