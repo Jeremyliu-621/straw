@@ -15795,3 +15795,127 @@ Submit abstracts to 6-8 conferences. Expect 2-3 acceptances. Prepare 2 talk conc
 
 **Conference budget**: $15K-$25K for 2-3 conferences (registration, travel, booth if applicable). The ROI calculation: if one conference generates 2 qualified design partner conversations, and 1 converts at $20K, the ROI is 4-5x the conference cost.
 
+
+---
+
+## Tick 217 (2026-05-03T13:38:00Z): Real estate and proptech design partners — named contacts [theme: partners]
+
+### Why Real Estate Is a Tactical, Not Strategic, Vertical
+
+Real estate doesn't have the regulatory urgency of financial services, healthcare, or legal. But it has: (a) AI agent deployment at scale, (b) high-value decisions per transaction, (c) emerging unicorn-stage startups with funds to pay for evaluation. The right play: target AI-native proptech companies who SELL AI to real estate operators, rather than real estate operators directly.
+
+### Named Contacts
+
+---
+
+**1. EliseAI (Multifamily Property Management AI)**
+- CEO: Minna Song
+- Series E funding: $250M raised August 2025, valuation $2.2B — massive recent investment
+- EliseAI position: "Agentic AI that manages correspondence and scheduling 24/7 for multifamily landlords" — leasing agents, maintenance coordination, lease audit
+- Why Straw: EliseAI just raised $250M. They're selling to real estate investment trusts (REITs) and property management companies who manage thousands of units. Those buyers need to know EliseAI's agents are accurately handling tenant inquiries (vs. competitors like Funnel or Rent Dynamics).
+- Straw pitch: "Your multifamily operator customers are evaluating EliseAI against competitors before signing multi-year platform contracts. Straw runs the head-to-head competition that gives them the audited result. When EliseAI wins, your sales team has an independent reference that closes deals."
+- Opener for Minna Song: "Minna — with $250M raised, EliseAI is the clear leader in multifamily AI. Your prospects are still comparing you to alternatives before they sign 5-year platform commitments. Straw runs the independent evaluation that gives them the confidence to commit. When EliseAI wins that evaluation — and our expectation is that you will for your use cases — you have a Straw Certified seal that shortens your sales cycle. Worth a conversation?"
+- ARR opportunity: $20K-$40K competition + ongoing annual recertification as EliseAI adds new agents
+
+---
+
+**2. VTS (Commercial Real Estate AI)**
+- Co-founder and CEO: Nick Romito
+- VTS position: Commercial real estate leasing and asset management platform with AI agents for deal tracking, market analysis, and lease optimization
+- Funding: VTS has raised $500M+ and manages a data advantage (VTS Market has data on 95B+ sq ft of commercial real estate)
+- Straw pitch: VTS's AI is making leasing recommendations for commercial properties worth billions. Brokers need proof that VTS's market analysis agent outperforms generic alternatives. Straw validates that.
+- Entry: "Nick — VTS has built the data advantage in commercial real estate. Your brokers are recommending VTS's market analysis to clients who are skeptical of AI. Straw runs the competition that gives those brokers the evidence they need."
+
+---
+
+**3. Cherre (Real Estate Data and AI)**
+- Co-founder and CEO: L.D. Salmanson
+- Cherre: Data intelligence platform for real estate — connects property data, AI agents for market analysis
+- Straw pitch: Cherre's AI is making property valuations and market analysis. Institutional investors using Cherre need to trust the AI's accuracy before deploying capital based on it. Straw provides the validation.
+
+---
+
+**4. Costar Group / Apartments.com**
+- CTO: Alastair Borthwick (verify via costar.com leadership)
+- CoStar: Largest commercial real estate data company. Apartments.com is their residential platform.
+- CoStar's AI: Market analysis, lease comp analysis, property valuation agents
+- Why Straw is interesting for CoStar: CoStar has a near-monopoly on commercial real estate data. But CoStar's AI is increasingly competing with Cherre, MSCI Real Estate, and generalist LLMs. Enterprise customers evaluating CoStar vs. alternatives for market analysis agents → Straw competition.
+
+---
+
+### Real Estate Industry Conference Opportunity
+
+**AI in Real Estate Summit 2026 (New York Tech Week, June)**:
+- 300 C-suite executives from real estate
+- Straw talk: "How EliseAI, VTS, and Property Tech Leaders Are Using AI Evaluation to Win Enterprise Deals"
+- Even without a speaking slot, attending and networking at this conference generates qualified leads from the proptech sector
+
+**The "Carrier and the Cargo" framing for real estate**:
+Real estate AI decisions are high-value but not safety-critical (unlike healthcare or financial services). The right pitch is competitive advantage + revenue, not compliance: "Your AI recommendation agent is making $10M leasing decisions. Straw proves it's the most accurate agent available. That's your leasing broker's confidence and your fund's competitive edge."
+
+
+---
+
+## Tick 218 (2026-05-03T13:42:00Z): The outcome gap — enterprises buy Straw but don't know what to do with the results [theme: bear]
+
+### The Hidden Problem with Procurement Tools
+
+Straw's value is in the competition results. But results are only valuable if the enterprise knows how to interpret them, act on them, and defend them to stakeholders. A score is not a decision.
+
+Example: Straw runs a competition. Agent A scores 78.3%; Agent B scores 71.2%. The enterprise CPO gets the report. Now what?
+
+Questions they'll face immediately:
+- Is 78.3% vs. 71.2% a meaningful difference or statistical noise?
+- What does a 7.1 percentage point gap translate to in business outcomes?
+- Agent A scored higher on accuracy but slower on latency. Which tradeoff matters more for our use case?
+- Our CTO says we should use Agent B because it integrates with our existing Azure stack. Does Straw's score override a technical integration requirement?
+- Our board wants to know why we spent $20K on an evaluation when we already had an internal champion for Agent A. How do we justify this?
+
+If Straw doesn't help the enterprise navigate these questions, the competition results collect dust. The customer gets "value" from having run the competition but doesn't change their behavior based on it. On renewal, they can't articulate what they got for their money.
+
+### The Customer Success Design Problem
+
+Straw's customer success motion needs to include post-competition consulting:
+
+**1. Results interpretation session (2 hours, included in competition fee)**  
+After delivering the competition results, Straw's Customer Success Manager spends 2 hours walking the enterprise team through:
+- How to read the scorecard
+- What statistical significance means in this context
+- The tradeoffs table (performance vs. latency vs. integration vs. cost)
+- How to use the Straw report in the board/leadership decision meeting
+- What questions the report doesn't answer (and what to do about them)
+
+**2. "Decision Brief" document (included in Enterprise tier)**  
+A 1-page executive summary of the competition result, written for a non-technical CEO/board audience:
+- "Based on your specific rubric, Agent A outperformed Agent B in [3 key areas]. Agent B outperformed in [1 area]. For your stated business objective of [X], our recommendation is Agent A."
+- This is what the CPO takes into the decision meeting. It converts a technical scorecard into a strategic recommendation.
+
+**3. Action accountability (Enterprise annual subscription)**  
+4 weeks after the competition: Straw CSM checks in on whether the enterprise implemented the competition winner. If not, why not? What blocked the decision?
+- If the enterprise chose differently than Straw's recommendation: understand why (technical integration, commercial deal, political factors) — document this for Straw's learning
+- If the enterprise hasn't made a decision: help them unstick the decision
+
+This sounds like customer success work, but it IS the product. Straw's value is helping enterprises make better AI procurement decisions. The competition is only valuable if it drives the decision.
+
+### The Bear Case Dimension
+
+If Straw runs competitions but enterprise customers don't act on the results at a 70%+ rate, two bad outcomes:
+1. Straw is perceived as a "nice to have" certification that doesn't change decisions
+2. Renewal rate drops because customers can't quantify what they got from the evaluation
+
+The leading indicator to watch: "competition result adoption rate" — percentage of Straw competitions where the enterprise chose the Straw recommended winner as their production agent. Target: 70%+. Below 60% means either the rubric isn't measuring what matters OR the post-competition support is failing to drive action.
+
+### Mitigation: Build Action Into the Product
+
+The results report should never be purely descriptive. Every Straw competition report includes:
+- A "Recommendation" section (not a disclaimer — a clear recommendation based on the rubric)
+- An "Uncertainty" section (where Straw is less confident, and what additional evidence would resolve it)
+- A "Decision Framework" section (the factors Straw evaluated vs. the factors Straw didn't evaluate but the client should consider before deciding)
+- A "Next Steps" section (specific actions for the enterprise team in the next 30 days)
+
+This makes the competition result actionable by design. The enterprise gets a report that drives decision, not just data.
+
+### Bear Case Score: 5/10 (manageable with product design)
+
+This is a product design problem, not a market problem. The fix is: build post-competition support into the product from Day 1. Every competition includes a 2-hour results interpretation session. Every enterprise tier includes a Decision Brief. Track action adoption rate as a core product metric. If adoption rate drops below 60%, iterate on results format until it improves.
+
