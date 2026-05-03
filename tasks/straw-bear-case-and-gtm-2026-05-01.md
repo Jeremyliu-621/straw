@@ -35786,3 +35786,135 @@ For 1-10 design partners, a Notion table is sufficient:
 
 **Review this table every Monday morning.** Any design partner with Last Touch > 5 days = send check-in email immediately.
 
+
+## Tick 500 — The AI Bubble: $527-765B Capex vs. $450B Income Run Rate [theme: bear]
+
+### The Goldman Sachs Numbers (January 2026)
+
+**Capex projections:**
+- Goldman Sachs baseline 2026 AI capex: **$527 billion** (conservative case)
+- Goldman Sachs implied model: **$765 billion** in 2026 annual AI capex
+- Other estimates: Top 4 hyperscalers alone hitting **$715 billion** in 2026
+- Cumulative 2026-2031 projection: **$7.6 trillion** across compute, data centers, and power
+
+**The return gap:**
+- Goldman analyst Ben Snider: to justify $500B/year capex with historical returns on capital, tech companies need **>$1 trillion annual profit run rate**
+- 2026 consensus AI income estimate: **$450 billion** — less than HALF what's needed
+- Goldman CEO David Solomon: expects **"a lot of capital that was deployed that doesn't deliver returns"**
+- Goldman's Jim Covello (Head of Global Equity Research): the $1 trillion total GenAI investment **"may never pay off"** if killer apps don't emerge
+
+**The ratio:**
+- Prior ticks documented: $400B capex vs $12B AI-specific revenue = 33:1 capex-to-revenue ratio
+- Updated with Goldman 2026 figures: $527-765B capex vs $450B consensus income = NOT all AI-attributed
+- More precise: enterprise AI application revenue (what customers pay for AI SaaS) remains a fraction of total tech income
+- The usrecessionnews.com analysis: **"$660B Capex, $51B Revenue"** for AI-native companies specifically
+
+### What the Bubble Means for Straw
+
+**The Bear Case Interpretation:**
+If the AI bubble pops, enterprise AI spending collapses. Companies stop procuring new agents, existing contracts get cancelled, Straw's market shrinks to a rump of cautious early adopters. The 40% Gartner project cancellation risk materializes industry-wide.
+
+**Why the Bear Case Is Wrong:**
+The bubble risk is in INFRASTRUCTURE (hyperscaler capex, data centers, chip demand). Enterprise APPLICATION spending — which is what Straw serves — tracks differently.
+
+The analogy: The dot-com bust (2000-2001) wiped out infrastructure overbuilders (Webvan, Pets.com, fiber overbuilders) but didn't stop enterprise software adoption. SAP, Oracle, and Salesforce grew THROUGH the bust because enterprises needed software to run operations regardless of whether NASDAQ was overvalued.
+
+**The more accurate frame:**
+1. Infrastructure bubble bursting = hyperscaler capex correction. Straw doesn't depend on hyperscaler capex.
+2. Enterprise AI application spending tracks ROI demonstration, not capex cycles.
+3. 90% of enterprises report no AI productivity impact (NBER 2026) → this is EXACTLY the market signal that creates demand for Straw's evaluation-first approach.
+4. The companies getting ROI from AI (the top 5%) did so by defining criteria first. Straw is the platform that makes more enterprises join the 5%.
+
+**The Bubble Validates Straw's Core Thesis:**
+Goldman's warning is: "AI investments won't return value without killer apps." Straw's pitch is: "The way to get ROI from AI is to evaluate agents against real use cases before deploying them." The bubble concern and Straw's value proposition are the same concern phrased differently.
+
+**Goldman's investor selectivity signal:**
+"Investors have rotated away from AI infrastructure companies and are rewarding companies demonstrating a clear link between capex and revenues."
+
+Enterprise buyers should do the same. Straw helps them demand that clear link: "Show me your performance on MY use case before I sign."
+
+### The Capex-to-Revenue Inflection Point: 2026-2027
+
+Goldman says 2026 is the "transition year" — from infrastructure build to revenue demonstration. This is Straw's entry window. Enterprises that invested in AI 2023-2025 are NOW being asked by their boards: "Where's the ROI?" They need Straw to validate whether their agents actually deliver before the next renewal cycle.
+
+**The board pressure angle:** CFOs and boards reading Goldman's analysis are asking "are WE getting returns on our AI investments?" The answer requires measurement. Straw = the measurement layer.
+
+---
+
+## Tick 501 — Higher Education Design Partners + The CPO-CIO AI Governance Gap [theme: GTM + design partners]
+
+### The Cal State / OpenAI Conflict: A Procurement Horror Story
+
+**What happened:**
+- CSU system signed a **$17 million contract** with OpenAI for ChatGPT Edu — all students, faculty, staff
+- **78% of students, faculty, and staff** said ethical AI use is a major concern (CSU internal survey)
+- Faculty wrote a formal petition to Chancellor Mildred García asking NOT to renew the contract (expires June 30, 2026)
+- CSU Academic Senate + California Faculty Association + Cal State Employees Union all opposed renewal
+- Complaint: Faculty were NOT consulted before the deal was made — shared governance violation
+- Financial context: CSU has ongoing budget troubles; faculty want $17M used for jobs, not AI contracts
+
+**The University of Colorado escalation:**
+- $2 million annual contract with OpenAI announced
+- Immediately generating faculty pushback
+- Pattern: **Top-down AI procurement decisions → bottom-up resistance → governance crisis**
+
+**The Straw angle:**
+The CSU/CU situation is exactly the procurement failure Straw prevents. If CSU had run a Straw evaluation:
+1. Faculty and staff would define the rubric → shared governance problem solved
+2. Multiple AI vendors compete → no single-vendor lock-in
+3. Objective scoring against defined criteria → "the score doesn't lie" replaces "we trust OpenAI"
+4. Paper trail → defensible to Academic Senate and accreditors
+
+**Cold outreach to higher ed:**
+> "Cal State just faced a faculty revolt over a $17M AI contract they couldn't objectively defend. Straw gives you the evaluation documentation to show your faculty senate exactly how and why you chose this vendor — before you sign."
+
+### The ProcureAbility 2026 CPO-CIO Report (April 30, 2026)
+
+**Key findings:**
+- **100% of surveyed procurement organizations use AI in some form**
+- **Only 11% consider themselves "fully ready" to deploy AI with confidence and scale**
+- **54% are NOT collaborating on AI governance** despite procurement tools depending on IT infrastructure
+- 36%: insufficient data governance policies = biggest data-related obstacle
+- 26%: limited internal skills to manage procurement data = second biggest obstacle
+- 96% of procurement+IT are collaborating "to some degree" — but only 53% say CPO and CIO are equal partners
+
+**The 100% use / 11% ready paradox:**
+Every enterprise procurement org is using AI. Only 11% can actually scale it confidently. The gap = no governance framework for AI in procurement decisions.
+
+**Straw addresses this gap directly:** Straw is not an AI tool FOR procurement (like an AI-powered RFP parser). Straw is an AI EVALUATION tool that creates the governance framework procurement teams need. When procurement evaluates AI agents via Straw, they're:
+1. Documenting decision criteria (governance)
+2. Getting independent scores (not vendor self-assessment)
+3. Creating reproducible evaluation records (audit trail)
+4. Enabling CPO-CIO collaboration (rubric definition is cross-functional)
+
+### Higher Education Design Partners (#176-183)
+
+**#176 — Mildred García** (Chancellor, CSU system) — currently at center of $17M OpenAI controversy; urgent need for defensible AI procurement framework
+**#177 — Michael Drake** (Former UC system President; current board roles) — UC system has $280B endowment; watches CSU controversy closely
+**#178 — Amy Gershkoff Bolles** (Chief Digital & AI Strategy Officer, Northeastern University) — Northeastern/Anthropic partnership; first-mover in university AI deployment
+**#179 — Mark McCahill** (Duke University AI initiatives) — Duke gave every undergrad GPT-4 access; now needs governance layer for agent procurement
+**#180 — Adam Boddison** (CEO, University of Oxford's Saïd Business School) — Oxford has OpenAI partnership; faculty pushback risk
+**#181 — Ronald Cenfetelli** (UBC AI Governance lead) — Canadian university AI governance; different regulatory environment (PIPEDA)
+**#182 — Drummond Reed** (former Evernym; now advising multiple university digital identity programs) — university digital identity infrastructure connects to AI agent identity
+**#183 — Joshua Kim** (Technology and Culture editor, Inside Higher Ed) — key media contact; covers every university AI procurement story; warm intro to every university CIO/CTO
+
+### The Higher Ed GTM Path
+
+**Entry angle:** The faculty governance crisis (CSU, CU) creates a specific product-market fit:
+- Decision-maker: Provost or Chief Academic Officer (not just CIO)
+- Pain: "We can't sign another AI contract without faculty buy-in"
+- Solution: Straw's rubric definition process = faculty participation mechanism
+- Sale cycle: 60-90 days (shorter than enterprise, longer than SMB)
+
+**Market size:**
+- 4,000+ degree-granting institutions in the US
+- Average AI contract value: $500K-$5M for mid-size universities
+- CSU: $17M for 23 campuses = $739K/campus
+- Straw as a percentage of annual AI spend: 5-10% of contract value as evaluation fee = $37K-$74K per campus
+
+**Priority targets:**
+1. Large state university systems with active AI contracts (CSU, CU, UT, UNC) — all have faculty governance issues
+2. R1 research universities deploying agent stacks for administrative automation (enrollment, financial aid, IT helpdesk)
+3. University AI governance consortia (University Innovation Alliance, AAU)
+
+---
