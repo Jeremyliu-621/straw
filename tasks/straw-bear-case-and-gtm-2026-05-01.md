@@ -14170,3 +14170,239 @@ Build into the product narrative: "The best enterprises don't use one AI agent f
 
 The monoculture risk materializes only if the AI market dramatically converges — which may happen but is not the 2-3 year scenario. The immediate risk (2026-2028) is the opposite: too much fragmentation, too many competing models, and Straw providing real value as the discriminator. The monoculture scenario is a Year 5+ problem. Worth designing for now (category-specific leaderboards, portfolio framing) but not existential in the seed-to-Series A window.
 
+
+---
+
+## Tick 196 (2026-05-03T11:53:00Z): Full pricing architecture — tiers, packaging, and deal mechanics [theme: gtm]
+
+### The 2026 Enterprise SaaS Pricing Context
+
+The market is shifting from pure per-seat to hybrid structures: platform tiers + consumption-based add-ons + outcome-based elements. Gartner forecasts 40% of enterprise SaaS will include outcome-based elements by 2026, up from 15% a few years ago. Zendesk charges $1.50 per AI-resolved ticket. HubSpot uses metric-linked tiers. 
+
+For Straw, the pricing must answer: "What does the customer actually value?" The answer: the competition result (value delivery), not platform access (seat/month). This pushes toward outcome-adjacent pricing.
+
+### Straw's Full Pricing Menu
+
+---
+
+**Tier 0: "Definition of Success" Workshop (Entry Point)**
+- Price: $2,500 per workshop (revised from $250 — that was below cost)
+- Duration: 90 minutes (AI-assisted rubric builder; human Rubric Scientist reviews output)
+- Deliverable: Competition-ready rubric document, task specification, success metric definitions
+- Who buys: Any enterprise evaluating an AI deployment decision (not committed to running a full competition yet)
+- Value: "You will spend 12 hours and $50K on a Deloitte workshop to get the same output. We do it in 90 minutes for $2,500."
+- Conversion: 60% of workshop customers should run at least one competition (if not, pricing or product is wrong)
+
+---
+
+**Tier 1: Single Competition**
+- Price: $8,000-$50,000 (variable based on competition complexity, number of agents, task duration)
+  - "Starter competition" (1-3 agents, simple rubric, 1 week): $8,000
+  - "Standard competition" (3-6 agents, complex rubric, 2 weeks): $20,000
+  - "Enterprise competition" (6+ agents, multi-tier rubric, 3 weeks + human review): $40,000
+  - "Regulated competition" (financial services or healthcare, requires HIPAA BAA / SOC 2 compliance, dedicated Rubric Scientist): $50,000
+- Deliverable: Auditable competition log, ranked agent scoreboard, Straw analysis report (3-5 pages), "Straw Certified" badge for winner
+- Who buys: Enterprise one-time procurement decision, or companies testing Straw before committing to annual subscription
+
+---
+
+**Tier 2: Annual Certification Subscription**
+- Price: $30,000-$120,000/year
+  - Team plan (up to 5 competitions/year, 1 vertical): $30,000
+  - Business plan (up to 12 competitions/year, 2 verticals): $60,000
+  - Enterprise plan (unlimited competitions, all verticals, dedicated Rubric Scientist, quarterly business reviews): $120,000
+- Why annual subscription? Enterprise buyers want budget certainty. The "unlimited competitions" at $120K/year is loss-leading in Year 1 (generates more data, more rubric IP) but a healthy margin business by Year 3 as the platform scales.
+- Discount for prepay: 15% off annual for upfront annual commitment
+- Add-ons: HIPAA BAA ($5K/year), EU AI Act compliance documentation package ($8K/year), Straw API access for custom integrations ($20K/year)
+
+---
+
+**Tier 3: "Straw Certified" Annual Recertification (For Agent Vendors)**
+- Price: $15,000-$30,000/year
+- Who pays: AI agent vendors who won a Straw competition and want to maintain the "Straw Certified" badge year-over-year
+- Rationale: A badge won in Q1 2025 may not reflect Q1 2026 performance (models drift, competitors improve). Annual recertification = quarterly audit competition (2 competitions/year, with the incumbent plus latest challengers)
+- Revenue flywheel: If 100 agent vendors pay $20K/year for recertification = $2M ARR from agent-side revenue entirely separate from enterprise competition fees
+
+---
+
+**Tier 4: Channel / White-Label (For Big 4 and SIs)**
+- Price: 15-20% commission on referred competitions
+- White-label option: Partner pays for "Straw infrastructure" and marks up 2x in their own brand
+  - Straw earns: $8K-$25K per competition (wholesale)
+  - Partner charges client: $16K-$50K (retail)
+  - Partner captures: $8K-$25K per competition for their relationship/delivery
+- Minimum volume commitment for white-label: 10 competitions/year ($80K+ in Straw wholesale revenue)
+
+---
+
+**Tier 5: Straw API (Developer/Platform Access)**
+- Price: $20,000/year platform fee + consumption-based API calls ($0.10-$0.50 per evaluation call depending on tier)
+- Who buys: Enterprise customers who want to integrate Straw competitions into their own procurement workflows, CI/CD pipelines, or GRC (Governance, Risk, Compliance) platforms
+- Use case: A bank with 50+ AI agents in production wants to run continuous automated evaluation every quarter. They call Straw's API from their GRC platform, which triggers a competition, pulls the results, and updates their model risk management dashboard.
+- This is the enterprise integration moat: once Straw's API is in a customer's GRC workflow, switching costs are enormous.
+
+---
+
+### Price Anchoring Strategy
+
+The Big 4 consultation framing is the anchor: a Deloitte AI vendor evaluation engagement = $500K-$2M, 3-6 months, team of 10-20 consultants.
+
+Straw's "Enterprise competition" at $40K-$50K = 4-8% of the Deloitte alternative. That's the anchor. Every Straw pricing conversation should reference the alternative.
+
+For enterprises who've done a Deloitte evaluation before: "You spent $800K and 5 months last time. We can deliver the same result, more objective, with a cryptographic audit trail, in 3 weeks for $40K. What's the ROI on your time alone?"
+
+---
+
+### LTV:CAC Targets
+
+Target unit economics by Year 2:
+- Average CAC: $15,000 (founder-led sales in Year 1; drops with channel)
+- Average ACV (Annual Contract Value): $50,000 (mix of single competitions + annual subscriptions)
+- Average contract duration: 2.5 years (annual subscriptions with ~70% renewal rate)
+- LTV: $125,000
+- LTV:CAC ratio: 8.3x (target: >4x is healthy; >8x means we're underpricing or underspending on sales)
+
+If LTV:CAC exceeds 10x, accelerate sales investment (we're leaving money on the table). If below 3x, investigate churn or CAC efficiency.
+
+
+---
+
+## Tick 197 (2026-05-03T11:56:00Z): Media and publishing design partners — named contacts [theme: partners]
+
+### Why Media Is a Long-Term Play, Not a Priority Vertical
+
+The Reuters Institute's 2026 survey finds: "Back-end automation considered 'important' by 97% of news organizations." AI agents are reshaping editorial workflows. But media companies are cash-strapped, AI-skeptical (brand risk of AI errors is enormous for editorial credibility), and have low procurement budgets compared to financial services.
+
+Media IS a high-profile vertical — a "New York Times Selects Straw-Certified AI for Fact-Checking" headline would be worth $50M in earned media. But the path to that headline is longer than the financial services path. Media should be Year 2-3, not Year 1.
+
+That said, three specific media companies have well-funded, serious AI programs and named technology executives worth building relationships with now.
+
+### Named Contacts
+
+---
+
+**1. Reuters / Thomson Reuters**
+- CTO: Cobus Potgieter (verify — Thomson Reuters technology leadership)
+- Reuters Institute for Study of Journalism published the definitive 2026 AI in journalism report, suggesting Thomson Reuters has strong in-house expertise on AI evaluation
+- Why Reuters: Thomson Reuters already has Westlaw AI and CoCounsel (acquired Casetext). They're deploying AI agents across legal research (enterprise customers) AND editorial (news). Both use cases have well-defined accuracy requirements (legal research: citation accuracy; news: factual accuracy).
+- Straw wedge: CoCounsel's legal AI agent needs to be evaluated against Harvey, Ironclad, and generic LLM approaches for enterprise legal department customers. Thomson Reuters would benefit from a neutral Straw competition showing CoCounsel's superiority — and from knowing internally if CoCounsel doesn't actually win.
+- Opener: "Cobus — Reuters/Thomson Reuters is deploying AI across editorial and legal. For your enterprise legal customers choosing between CoCounsel and alternatives, a neutral Straw competition gives them the objective performance data that replaces the demo. Would it make sense to explore using Straw to evaluate and certify CoCounsel's performance in specific legal task categories?"
+
+---
+
+**2. The Washington Post / Heliograf / Arc**
+- CTO: Shailesh Prakash (or current — verify via washingtonpost.com/people)
+- The Post built Heliograf (AI journalist) and Arc (publishing CMS). Arc now powers hundreds of news organizations.
+- Why The Post: Arc is used by hundreds of publishers. If Arc incorporates Straw as its AI agent evaluation layer for AI-generated content, hundreds of publishers get Straw access. This is a platform distribution play.
+- Entry use case: Heliograf or Arc's AI content generation agent evaluation — factual accuracy, editorial voice consistency, SEO headline quality, readability scores
+- Note: The Post's newsroom has been skeptical of AI given the trust implications. Lead with accuracy/factual evaluation, not efficiency. "We help you prove your AI content is accurate before it publishes, not just fast."
+
+---
+
+**3. Axel Springer**
+- CEO: Mathias Döpfner (very publicly bullish on AI; controversial for layoffs to fund AI transition)
+- CTO/CIO: (Verify at axelspringer.com/en/technology-innovation)
+- Axel Springer has made the most aggressive AI bets of any traditional media company: cut editorial jobs to fund AI, partnered with OpenAI, building AI-native news products
+- Why Axel Springer: They've bet the company on AI being accurate enough to replace journalists. They NEED Straw more than any other media company — because if their AI is wrong, the reputational and legal liability is massive. Straw's evaluation = their insurance policy.
+- Opener for Mathias Döpfner: "Axel Springer's AI bet is the most aggressive in media. If it works, you've created a scalable news organization. If an AI agent publishes a false story, the reputational loss is worth more than any efficiency gain. Straw evaluates your AI agents' factual accuracy before they publish. We're your risk management layer."
+
+---
+
+**4. Netflix**
+- CTO: Elizabeth Stone (Netflix CTO as of 2024 — verify current)
+- Netflix AI focus: personalization algorithms, content recommendation, now content production AI agents
+- Note: Netflix acquired InterPositive LLC (Ben Affleck's AI post-production company) in March 2026
+- Why Netflix: Netflix's recommendation algorithm is its #1 business differentiator. If Straw can evaluate recommendation accuracy — "which agent produces the most accurate content recommendations for Netflix's subscriber cohorts?" — that's a high-stakes competition with well-defined rubric (engagement rate, watch completion, churn reduction)
+- Complication: Netflix may view recommendation algorithm evaluation as competitive intelligence they can't share externally. The "public competition" model doesn't work for Netflix. But "private Straw competition with NDA, only client sees results" could work.
+
+---
+
+### Media Vertical Strategy Note
+
+The media angle creates a distinct opportunity: **earned media partnerships**. If a media publication *uses* Straw to evaluate AI, they have a first-person story to tell. The Washington Post running "We evaluated 5 AI fact-checkers using Straw — here's what we found" is an editorial product AND a case study for Straw.
+
+Pitch this directly to media company executives: "Would your editorial team consider writing the story of your AI agent evaluation process? We'd provide the platform; you'd get a compelling piece about responsible AI adoption in journalism. That's both a marketing benefit for Straw and a credibility piece for your newsroom."
+
+This is the content marketing flywheel in action: media companies produce the content that proves Straw's value, while Straw provides the platform that produces the story. Both parties win.
+
+
+---
+
+## Tick 198 (2026-05-03T11:59:00Z): The "free evaluation" competition from foundation model vendors [theme: bear]
+
+### The Threat
+
+Every major foundation model vendor now offers evaluation tooling:
+- **Anthropic**: Model evaluation capability (performance benchmarks, safety evaluations)
+- **OpenAI**: Evals framework (open-source), plus enterprise evaluation in OpenAI Platform
+- **AWS**: Amazon Bedrock Evaluations (integration with the AWS ecosystem)
+- **Google**: Vertex AI Model Evaluation (integrated with GCP)
+- **Azure**: Azure AI Evaluation SDK (integration with Microsoft ecosystem)
+
+These tools are: **free or near-free** at the basic tier. They're already integrated with the cloud infrastructure most enterprises use. They're maintained by billion-dollar organizations. And they're getting better fast.
+
+The bear question: why would an enterprise pay Straw $8K-$50K when they can run "free" evaluations using AWS Bedrock Evaluations or Azure AI Eval?
+
+### The Honest Accounting of What "Free" Gets You
+
+**AWS Bedrock Evaluations:**
+- What it does: Automated metrics (BERTScore, ROUGE, perplexity) and LLM-as-judge evaluation on custom datasets
+- What it doesn't do: Multi-agent blind competition, rubric design consulting, compliance documentation, neutrality guarantee, "Straw Certified" badge with external credibility, appeals process
+- Cost: "Free" but you pay for the compute (inference calls), the AWS engineers who configure it, and the time to build the evaluation pipeline
+
+**Azure AI Evaluation SDK:**
+- What it does: Programmatic evaluation with custom metrics, integration with Azure AI Studio
+- What it doesn't do: Cross-vendor (running a Google Gemini agent in Azure AI Evaluation is not a designed use case), neutral sandbox that isolates agents from their home environment, regulatory-compliant audit trail format
+
+**OpenAI Evals (open-source):**
+- What it does: Flexible evaluation framework for any model, customizable
+- What it doesn't do: Require expertise to use effectively, produce enterprise-grade documentation, include professional methodology validation
+
+**The key limitation of all hyperscaler evaluation tools**: They're tools, not expertise. Using Bedrock Evaluations to run a good evaluation requires the same domain expert + evaluation scientist time that using Straw requires. The tool is free; the expertise is not. Straw bundles both.
+
+### The Deeper Problem: Hyperscaler Tools Can't Be Neutral
+
+AWS cannot credibly tell a customer that an AWS-hosted Claude model won a head-to-head competition against a Google-hosted Gemini model — run on AWS infrastructure, evaluated using AWS's own evaluation framework. The structural conflict of interest is built into the platform.
+
+Straw's core advantage is not the evaluation mechanics — it's the neutrality. An independent, cloud-agnostic platform that runs all competing agents under identical conditions and produces a result that no vendor can challenge because no vendor controls the evaluation.
+
+This is the Car and Driver argument applied to evaluation tools: Consumer Reports doesn't review cars using Ford's testing track. It has its own. That independence is the product.
+
+### Google's Competitive Angle: The Most Dangerous Scenario
+
+Google has the most dangerous potential competitive move: create a truly neutral multi-model evaluation platform that evaluates GPT, Claude, and Gemini equally — positioned as an industry standard.
+
+Why would Google do this? Counterintuitive reason: Gemini performs very well on standardized benchmarks. Google would benefit from a "neutral" evaluation standard that consistently shows Gemini winning, while controlling the evaluation methodology.
+
+This is what Amazon tried with AWS Marketplace reviews in 2020 — appearing neutral while optimizing for Amazon's advantage. Watch for this.
+
+**Mitigation**: Straw must be visibly, demonstrably neutral in ways that are hard for hyperscalers to replicate:
+- No commercial relationships with any model provider for model performance
+- Published audit trails for every competition
+- Independent methodology reviews
+- Agent vendor access to full competition logs (not just their own scores — all scores)
+- The appeals process (Tick 186) that gives losing agents recourse
+
+If Straw has never had a competition result overturned after an agent vendor appeal, that's evidence of genuine neutrality. If Google builds "Google Neutral AI Evaluation," the question will be: "How many times has Google's platform ruled against Google's own models?" The answer will be zero, and the market will know it.
+
+### Quantifying the "Free Tool" Market Constraint
+
+The real market segmentation:
+
+| Segment | Will Use Straw? | Reason |
+|---|---|---|
+| Startups and developers | No | Free tools sufficient; no enterprise compliance need |
+| Mid-market (100-1000 employees) | Maybe | If they're in a regulated vertical or have a specific procurement decision |
+| Enterprise (1000+ employees, regulated vertical) | Yes | Compliance documentation, neutrality, expertise |
+| Enterprise (unregulated vertical) | Maybe | Depends on how much they care about evaluation rigor |
+
+Straw's addressable market is the enterprise + regulated mid-market segment. That segment will not use free hyperscaler tools for three reasons: (1) regulatory compliance requires documented methodology from an independent party, (2) hyperscaler tools can't evaluate agents from a different hyperscaler neutrally, (3) free tools require expertise that enterprises don't have in-house.
+
+The free tools serve as market education — they teach enterprise buyers what evaluation is, why it matters, and what the options are. Straw converts the educated buyer who has outgrown the free tier.
+
+### Bear Case Score: 4/10 (real but not existential)
+
+The hyperscaler evaluation tools are a headwind on the low end of the market, not a threat to the enterprise segment. Straw should explicitly acknowledge the free tools in its positioning: "AWS Bedrock Evaluations is excellent for developers testing their own models. When you need to make a $200K procurement decision and you need the result to be defensible to your board and your regulators, you need Straw."
+
+The existential risk emerges only if a hyperscaler builds a genuinely neutral, cross-vendor, expert-guided evaluation platform with compliance documentation and an appeals process. None of them have done this, and structural incentives make it unlikely they ever will.
+
