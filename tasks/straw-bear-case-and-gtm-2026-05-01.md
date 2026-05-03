@@ -21676,3 +21676,102 @@ Forrester publishes Waves for enterprise software categories. The path to a Forr
 
 **Key insight**: Forrester Now Tech reports are specifically for emerging categories where a Wave doesn't exist yet. Straw should actively pursue inclusion in the next "Now Tech: AI Governance Tools" report — it costs a small fee and puts Straw in front of Forrester's enterprise client base.
 
+
+---
+
+## Tick 302 (2026-05-03T00:32:00Z): Agent Identity as Straw's Third Pillar [theme: gtm]
+
+**Research basis**: 82% of organizations have unknown AI agents running in IT infrastructure. 30% of enterprises rely on AI agents acting independently by 2026. Traditional IAM fails for autonomous agents (built for human identity assumptions). NIST AI Agent Standards Initiative Pillar 3 = agent identity. Cisco, Microsoft, Strata building agentic identity solutions. "Straw Certified" = potential identity credential for evaluated agents.
+
+### The Agent Identity Gap Creates Straw's Third Product Pillar
+
+Straw's current two pillars:
+1. **Evaluation** — competitive evaluation of agent candidates before deployment
+2. **Certification** — "Straw Certified" badge as evidence of evaluation rigor
+
+Emerging third pillar:
+3. **Agent Identity** — Straw certification as a verifiable credential that enterprises can check when an agent presents itself for deployment or access
+
+**The insight**: 82% of organizations have unknown AI agents running in their IT infrastructure. When an enterprise's IT security team asks "is this AI agent authorized? Has it been evaluated? Can it be trusted?" — Straw's certification provides the answer.
+
+This is not just evaluation anymore. Straw certification becomes part of the agent's verifiable identity stack:
+- **Agent authentication**: Cryptographic proof this agent is who it claims to be (handled by IAM vendors)
+- **Agent authorization**: Proof this agent has been evaluated for the specific use case it's claiming (handled by Straw)
+- **Agent credential**: Persistent record of evaluation results that can be queried by any system (the Straw certification record)
+
+### The NIST Pillar 3 Alignment
+
+NIST's AI Agent Standards Initiative has three pillars:
+1. Agent security (adversarial robustness)
+2. Interoperability (cross-protocol)
+3. **Agent identity** (verifiable agent credentials)
+
+Pillar 3 is Straw's lane. The NIST framework for agent identity will eventually specify what information a "trusted agent credential" must contain. Straw should be in the NIST working groups defining that specification — ensuring that "evaluation history" and "certification status" are required fields in the agent identity standard.
+
+If the NIST agent identity standard requires evaluation certification as a mandatory field, Straw becomes infrastructure, not a service.
+
+### The Verifiable Credential Architecture
+
+Technical implementation: Straw issues W3C Verifiable Credentials (VCs) for certified agents.
+
+**What the Straw VC contains**:
+- Agent identifier (cryptographic hash of agent build)
+- Evaluation date and methodology version
+- Rubric category and task domain
+- Performance score (percentile)
+- Certification status (valid/expired/revoked)
+- Evaluation report IPFS hash (immutable reference to full report)
+
+**How enterprises use it**: When an agent requests access to an enterprise system, the enterprise's IAM system queries the agent's VC. If the VC shows "Straw Certified" for the relevant task domain, access proceeds. If not certified, access requires human review.
+
+This is the "FICO score for AI agents" made real at the technical level. The score is cryptographically verifiable, not self-reported.
+
+### The Cisco/Microsoft Partnership Opportunity
+
+Cisco announced in March 2026: "Cisco Reimagines Security for the Agentic Workforce" — building identity and access management for AI agents. Microsoft Security published "Four priorities for AI-powered identity security in 2026."
+
+Straw's angle: Cisco and Microsoft are building the *authentication* layer (proving an agent is who it claims to be). Straw builds the *authorization* layer (proving an agent has been evaluated for the use case it claims to serve). The two layers are complementary.
+
+**Partnership pitch to Cisco/Microsoft**:
+> "Cisco authenticates agents. Straw certifies agents. Together, we provide complete pre-deployment assurance: this agent is who it says it is (Cisco) AND it performs what it promises (Straw)."
+
+This is a natural co-sell partnership that neither company can execute alone.
+
+---
+
+## Tick 303 (2026-05-03T00:33:00Z): Cybersecurity Vertical — SOC AI Agent Partners [theme: partners]
+
+**Research basis**: AI SOC tools reducing investigation time from 30+ minutes to <2 minutes. SOC AI use cases: alert triage, threat hunting, anomaly detection, fraud detection. Evaluation criteria include signal-to-noise ratio, context quality, validation accuracy, workflow fit, auditability. Dropzone AI building "agentic SOC." 2026: AI SOC agents transitioning from pilots to production.
+
+### Cybersecurity Is Straw's Highest-Performance Vertical
+
+Cybersecurity SOC use cases have the clearest, most measurable rubrics of any enterprise AI deployment:
+- **Objective**: Reduce false positive rate AND catch true positives
+- **Measurable outcome**: Detection accuracy, investigation time, alert triage speed
+- **Ground truth**: Security incidents are real or not — no ambiguity about what "correct" means
+
+This is exactly the type of rubric Straw evaluation methodology is built for: clear task, measurable outcome, objective scoring criteria.
+
+The cybersecurity buyer also has the highest tolerance for rigorous evaluation — security teams don't trust vendor demos. They want proof. "Deploy an agent in our SOC sandbox, run it on a corpus of real-world alerts, measure false positive and negative rates." That's a textbook Straw evaluation.
+
+### Named Cybersecurity AI Partners
+
+| Company | AI SOC Focus | Key Contact | Straw Entry Point |
+|---------|-------------|-------------|-------------------|
+| **Palo Alto Networks (Cortex)** | AI-powered SOC platform, XSOAR | Nir Zuk (CTO/founder) | Palo Alto is building AI agents for SOC workflows — needs evaluation to prove Cortex AI outperforms competitors |
+| **CrowdStrike (Charlotte AI)** | AI threat detection, Falcon platform | Michael Sentonas (President) | Charlotte AI for SOC — evaluation against Sentinel and other AI SOC agents |
+| **Microsoft Sentinel (Copilot for Security)** | SOC copilot | Vasu Jakkal (CVP, Security, Compliance, Identity) | Microsoft Sentinel AI needs neutral third-party evaluation to compete with CrowdStrike |
+| **Google Chronicle / SecOps** | AI threat intelligence + SOC | Sunil Potti (VP, Cloud Security) | Google Chronicle AI agents need evaluation data |
+| **Dropzone AI** | Fully autonomous SOC agent (company) | Edward Wu (CEO) | Dropzone is building agentic SOC — Straw certification helps them sell to enterprise buyers |
+| **SentinelOne (Purple AI)** | AI threat hunting platform | Ric Smith (CTO) | Purple AI evaluation against CrowdStrike and Microsoft competitors |
+| **Darktrace** | Autonomous response AI, cybersecurity | Jack Stockdale (CTO) | Darktrace has been autonomous AI-first since inception; natural Straw partner |
+| **IBM (QRadar SIEM AI)** | Enterprise SOC AI | X-Force intelligence team | IBM enterprise customers need neutral evaluation of QRadar vs. alternatives |
+
+**Highest-priority target**: **Dropzone AI** — they're a startup building an agentic SOC, which makes them an agent builder (not just an enterprise buyer). Getting "Straw Certified" for the SOC use case would be a major differentiator for Dropzone against CrowdStrike's Charlotte AI and Microsoft's Copilot for Security. Their CEO Edward Wu is a technical founder who will understand the evaluation value immediately.
+
+**Second priority**: **Palo Alto Networks** — they have the enterprise relationships (3,000+ enterprise SOC customers) and the motivation (compete against Microsoft and CrowdStrike). Nir Zuk is a builder who cares about defensibility claims. "Run a Straw evaluation showing Cortex AI outperforms Copilot for Security on these SOC use cases" is a marketing asset worth $5M in ad spend to Palo Alto.
+
+### The SOC Cold Opener (Dropzone)
+
+> "Hi Edward — Dropzone is building the agentic SOC, which means when an enterprise CSO asks 'why should I trust an autonomous agent to triage my alerts over CrowdStrike Charlotte?' you need objective performance data, not a demo. Straw runs competitive evaluations on real SOC alert corpora — your agent vs. incumbents, scored on detection accuracy and false positive rate. 'Straw Certified' for SOC triage is the data your sales team needs to close enterprise security buyers. Worth 20 minutes?"
+
