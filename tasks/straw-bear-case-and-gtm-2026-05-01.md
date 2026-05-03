@@ -21256,3 +21256,94 @@ But Straw is not an aggregator in the traditional sense. Straw doesn't aggregate
 
 Straw is in the category of products that AI agents *can't* replace, because Straw IS part of the AI infrastructure stack, not a consumer of it.
 
+
+---
+
+## Tick 294 (2026-05-03T00:24:00Z): MCP Ecosystem as Straw's Infrastructure Layer [theme: gtm]
+
+**Research basis**: MCP de facto standard by 2026. 78% of enterprise AI teams with ≥50 ML practitioners have MCP-backed agents in production (up from 31% one year ago). 10,000+ public MCP servers, 97M monthly SDK downloads. Anthropic donated MCP to Linux Foundation / Agentic AI Foundation (co-founded by Anthropic, Block, OpenAI; Google, Microsoft, AWS supporting). 67% of CTOs committed to MCP as default within 12 months.
+
+### MCP Is the Operating System. Straw Is the Quality Assurance Layer.
+
+The model context protocol is becoming the universal standard for how AI agents connect to enterprise data and tools. 78% adoption in 12 months is exceptional — this is faster than most developer protocols reach critical mass.
+
+What MCP means for Straw:
+
+1. **Standardization creates auditability**: Before MCP, agents used bespoke integrations that were impossible to audit. With MCP, agent-to-tool connections follow a standard schema. Straw can now audit what tools an agent calls, with what inputs, and with what outputs — systematically.
+
+2. **MCP servers are the attack surface**: 10,000+ public MCP servers means 10,000+ potential entry points for prompt injection and supply chain attacks. Straw's security evaluation must test agent behavior against both legitimate and malicious MCP servers.
+
+3. **MCP compliance is a certification dimension**: "Does this agent correctly implement MCP protocol?" is an evaluable question. Straw can certify MCP compliance as part of the evaluation.
+
+4. **41% of enterprises have custom internal MCP servers**: These wrap proprietary systems of record. Straw evaluations in these environments must account for the custom MCP server architecture — each enterprise evaluation is customized to their internal MCP server configuration.
+
+### The MCP Ecosystem GTM Play
+
+The Agentic AI Foundation (Linux Foundation) is the new governance body for MCP. Members include Anthropic, OpenAI, Google, Microsoft, AWS, Block, Cloudflare — every major platform.
+
+**Straw's play**: Join the Agentic AI Foundation as a member. Position Straw as the evaluation partner for the MCP ecosystem. "Straw provides the pre-deployment quality assurance layer for MCP-enabled agents."
+
+Foundation membership gives Straw:
+- Credibility (same table as Anthropic, OpenAI, Google)
+- Co-marketing opportunities with foundation members
+- Early access to protocol changes that affect evaluation methodology
+- Reference in foundation documentation as "recommended evaluation tool"
+
+### MCP-Specific Evaluation Capability
+
+Straw should develop a "MCP Evaluation Suite" — evaluations specifically designed for agents that use MCP:
+
+1. **Tool call accuracy**: Does the agent call the right MCP tools at the right time?
+2. **Context persistence**: Does the agent correctly maintain context across multiple MCP tool calls?
+3. **Permission boundary compliance**: Does the agent respect the MCP permission scopes it's been granted?
+4. **Graceful tool failure**: When an MCP tool fails, does the agent handle it gracefully?
+5. **Protocol security**: Does the agent resist MCP-layer prompt injection?
+
+"MCP Certified" as a Straw certification tier — agents that pass the MCP Evaluation Suite receive "Straw Certified: MCP Ready" badge. Anthropic and the Agentic AI Foundation would benefit from this existing.
+
+### The Timeline Opportunity
+
+The 78% → 90%+ MCP adoption curve over the next 12 months means Straw has a 12-month window to establish MCP evaluation methodology before the market standardizes. After 12 months, MCP is so ubiquitous that enterprise teams will build in-house evaluation of MCP compliance.
+
+Move fast: publish the Straw MCP Evaluation Methodology within 60 days. Become the reference document for MCP evaluation before anyone else publishes one.
+
+---
+
+## Tick 295 (2026-05-03T00:25:00Z): Insurance AI Design Partners — Named Contacts [theme: partners]
+
+**Research basis**: Allianz built "Nemo" agentic AI (claims, travel delays, auto) in <100 days. 22% of insurers plan agentic AI in production by year-end 2026. NAIC model bulletin on AI adopted in 23 states + DC — national AI evaluation tool piloted across 12 states. Sixfold (AI underwriting agent, works with Generali GC&C). Global insurtech market $23.5B.
+
+### Insurance: High Regulation + High AI Investment = Strong Straw ICP
+
+Insurance is one of Straw's most compelling verticals for three reasons:
+1. **Regulatory mandates**: 23 states + DC adopted NAIC AI use model bulletin; national AI evaluation tool being piloted. External evaluation of AI tools is becoming mandatory.
+2. **High AI stakes**: Underwriting decisions affect policy pricing; claims automation affects payout accuracy. Wrong AI = material financial harm.
+3. **Active deployment**: Allianz building Nemo, 22% of insurers planning production AI — the buying cycle is happening NOW.
+
+### The NAIC Model Bulletin Signal
+
+The NAIC model bulletin on AI in insurance requires insurers to document how AI tools used in underwriting and claims meet fairness, accuracy, and transparency standards. The national AI evaluation tool being piloted across 12 states is essentially a government-built Straw for insurance AI.
+
+**Straw's angle**: Position as the commercial implementation of the NAIC's evaluation intent. "The NAIC wants insurers to evaluate AI tools before deployment. Straw is how you do it — with competitive evaluation, rubric-based scoring, and documented certification reports that satisfy NAIC examiners."
+
+### Named Insurance Design Partner Targets
+
+| Company | AI Agent Focus | Key Contact | Straw Entry Point |
+|---------|---------------|-------------|-------------------|
+| **Allianz** | "Nemo" claims automation (built in <100 days!) | Giulio Terzariol (CFO), Klaus-Peter Röhler (CEO Insurance) | Nemo is a first-generation agent; v2 evaluation is the Straw opportunity |
+| **Munich Re** | Underwriting AI agents | Torsten Jeworrek (Board, Reinsurance) | Risk model-intensive reinsurance = rigorous agent evaluation requirement |
+| **Swiss Re** | Climate risk + underwriting AI | Thomas Blunck (Board Member, P&C) | Climate AI modeling requires extensive evaluation |
+| **AIG** | Claims + underwriting automation | Sabra Purtill (Chief Investment Officer) | Post-Blackstone transformation; AI modernization mandate |
+| **Chubb** | Commercial lines AI underwriting | Paul Mang (Global Chief Analytics Officer) | Chubb is the most analytically sophisticated commercial insurer |
+| **Hartford Financial** | Small commercial + CX AI | Deepa Soni (Chief Information Officer) | Hartford building AI CX agents for small commercial customers |
+| **Lemonade** | AI-native claims (already automated) | Daniel Schreiber (CEO) | Lemonade is entirely AI-powered; Straw can certify which AI update improves claims performance |
+| **Sixfold** | AI underwriting platform (B2B) | Bernhard Schneider (Co-founder) | Sixfold is an AI agent builder — they need Straw certification to sell to insurers |
+
+**Highest-priority design partner target**: **Chubb** — Paul Mang as Global Chief Analytics Officer is exactly the Straw buyer profile. Rigorous analytics culture, large commercial lines book, EU exposure (Chubb has significant European operations). Paul Mang speaks the language of rubric-based evaluation natively.
+
+**Second priority**: **Sixfold** — they're an agent builder (not an enterprise buyer) which makes them a different kind of design partner. Sixfold could become the first AI underwriting agent to earn "Straw Certified" status. That certification helps them sell to insurers, and Straw gets a high-profile named customer in the insurtech space.
+
+### The Insurance Cold Opener (Chubb)
+
+> "Hi Paul — Chubb's reputation for analytical rigor in commercial underwriting is why I'm reaching out. You're deploying AI agents in underwriting workflows that affect billions in premium decisions annually. When you're choosing between AI underwriting tools, what's your evaluation methodology beyond vendor demos? Straw runs competitive evaluations — multiple agents compete on your exact underwriting rubric, with your actual risk criteria. The score doesn't lie, and the documentation satisfies NAIC examiners. Worth a conversation?"
+
