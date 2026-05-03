@@ -20915,3 +20915,114 @@ Straw should position toward becoming a standards body (like SOC 2 from AICPA, o
 
 3. **Own the highest-stakes verticals**: Financial services, healthcare, government can't use a platform's internal evaluation tool because of independence requirements. Straw owns the 20% of the market where independent evaluation is mandatory — and that 20% generates the majority of the category revenue.
 
+
+---
+
+## Tick 288 (2026-05-03T00:18:00Z): Short-Contract AI Procurement Bear Case [theme: bear]
+
+**Research basis**: Enterprise AI buyers explicitly refusing to commit beyond 1-year contracts. "Prompts are portable" — buyer churn threat unique to AI agents vs. traditional SaaS. AI agent pilot-to-production gap: only 11-14% of enterprise AI agent pilots reach production at scale. 86-89% failure rate means Straw's customers may deploy agents that don't survive, canceling Straw renewals.
+
+### The Bear Case: Short Contracts + High Churn = Fragile Revenue
+
+Straw's revenue model depends on:
+1. Annual recertification (agents get re-evaluated yearly)
+2. Expansion (customers add more evaluations as they deploy more agents)
+3. Multi-year relationships (Straw becomes embedded in procurement workflows)
+
+All three assumptions are threatened by the same dynamic: **enterprise AI buyers aren't committing to multi-year relationships with AI tools or AI agents.**
+
+**Why buyers resist multi-year AI commitments**:
+- AI capabilities are improving quarterly; locking in to a 3-year contract means being stuck with 2026 evaluation methodology in 2028
+- "Prompts are portable" — switching costs in AI are lower than traditional SaaS
+- 86-89% of AI agent pilots fail; buyers have learned not to over-commit
+- Foundation model API pricing dropping 10-20x per year → buyers want flexibility to switch models
+
+**Specific Straw risk scenarios**:
+1. Enterprise runs Straw evaluation, deploys agent → agent fails in production (joins the 86%) → enterprise abandons AI initiative → Straw loses renewal
+2. Enterprise renews Straw for Year 2 → discovers that Anthropic's new Claude 4.8 makes their old agent evaluations obsolete → demands re-evaluation at no charge → Straw's economics break
+3. Enterprise becomes sophisticated enough to run their own evaluations in Year 3 → "why do we need Straw when we have an internal rubric scientist?" → Straw loses the customer it trained
+
+**Score: 5/10** — Real but manageable. The key insight is that Straw's value increases when AI agents fail — because enterprises need to re-evaluate to find a replacement.
+
+### The Asymmetric Upside of Agent Failure
+
+Counter-intuitive: every enterprise AI failure is a Straw sales opportunity.
+
+When an enterprise deploys an AI agent without Straw and it fails in production, the post-mortem question is: "How do we prevent this from happening again?" The answer is Straw.
+
+**Net effect**: Short-term, Straw loses a renewal when the agent fails. Long-term, agent failure at scale drives Straw adoption. The 86% failure rate is Straw's most powerful sales argument: "Don't be in the 86%."
+
+### Contractual Mitigations
+
+1. **Embed Straw in the procurement cycle, not in the agent**: Straw contract = "we provide evaluation services for your AI procurement program" not "we certify this specific agent." When the agent fails, the Straw contract continues because the procurement program continues.
+
+2. **Success-based renewal**: Offer a contract structure where renewal is tied to enterprise AI deployment success. "If the Straw-certified agent performs as promised in production, you renew automatically. If it fails, Straw runs a new evaluation at 50% cost." This aligns Straw's incentives with the enterprise's and reduces renewal friction.
+
+3. **Annual "State of Your AI Portfolio" review**: Straw provides annual benchmark report showing how the enterprise's deployed agents compare to the market. This is a relationship-builder that exists independently of any individual agent evaluation. Makes Straw sticky regardless of whether individual agents succeed or fail.
+
+---
+
+## Tick 289 (2026-05-03T00:19:00Z): Multi-Agent Orchestration Evaluation — Straw's Next Product [theme: gtm]
+
+**Research basis**: Enterprise multi-agent orchestration is the April 2026 frontier. Only 11-14% of multi-agent pilots reaching production at scale. Primary failure causes: API integration failures, governance gaps, fragmented identity, context inconsistency, cascading failures. MIT: 95% of AI initiatives fail due to architectural robustness gaps, not model capability.
+
+### The Multi-Agent Evaluation Opportunity
+
+Straw's current product: evaluate single AI agents competing on a task. The market is moving to multi-agent systems — orchestrators that coordinate multiple agents to complete complex workflows.
+
+Multi-agent systems fail differently than single agents:
+- Single agent failure: wrong output on a task
+- Multi-agent failure: cascading errors, context inconsistency across agents, feedback loops that exhaust API budgets, false consensus between agents
+
+Current Straw evaluation methodology doesn't capture multi-agent dynamics. This is both a product gap and a product roadmap opportunity.
+
+### What Multi-Agent Evaluation Requires
+
+**New evaluation dimensions for multi-agent systems**:
+
+1. **Orchestration reliability**: Does the orchestrator correctly delegate tasks to specialist agents? Rate at which delegation succeeds vs. fails.
+
+2. **Context propagation**: Does context from Agent A correctly inform Agent B's next step? Context loss rate across agent handoffs.
+
+3. **Failure recovery**: When one agent fails, does the system gracefully degrade or catastrophically collapse? Graceful degradation score.
+
+4. **Resource efficiency**: Does the multi-agent system complete tasks without "runaway" API calls that exhaust budgets? Cost-per-task variance.
+
+5. **Consensus validity**: When multiple agents contribute to a decision, is the final consensus correct? False consensus detection rate.
+
+6. **End-to-end latency**: Time from task initiation to final output, across all agent handoffs.
+
+### The Pricing Model for Multi-Agent Evaluation
+
+Multi-agent evaluations are inherently more complex (more agents = more test surface) and higher stakes (multi-agent systems are typically deployed for more critical workflows). Pricing reflects this:
+
+- **Single agent evaluation**: $50,000-$100,000
+- **Multi-agent orchestration evaluation**: $150,000-$300,000
+- **Annual recertification (multi-agent)**: $75,000-$150,000
+
+This is a 2-3x ASP uplift over single-agent evaluation. As enterprises move to multi-agent systems in 2026-2027, Straw's average deal size scales with them.
+
+### The MCP/A2A Protocol Integration
+
+Multi-agent evaluation requires understanding how agents communicate. The MCP (Model Context Protocol, Anthropic) and A2A (Agent-to-Agent, Google) protocols are becoming the industry standards for agent interoperability.
+
+Straw's multi-agent evaluation must be protocol-aware:
+- Can evaluate agents that communicate via MCP
+- Can evaluate agents that communicate via A2A
+- Can evaluate cross-protocol orchestration (MCP agent orchestrating A2A subagent)
+
+Being "MCP + A2A certified" on multi-agent evaluations is a moat — evaluation tools that don't understand these protocols can't assess interoperability behavior.
+
+### Named Multi-Agent Deployment Scenarios
+
+Enterprises deploying multi-agent systems that Straw can evaluate:
+
+| Company | Multi-Agent Use Case | Current Framework | Straw Evaluation Value |
+|---------|---------------------|-------------------|----------------------|
+| **Morgan Stanley** | Research synthesis → trading recommendation | GPT-4 orchestrator + specialist agents | "Which orchestration architecture produces the most accurate research synthesis?" |
+| **Salesforce** | CX pipeline: intake → triage → resolution → escalation | Agentforce multi-agent | "Which 4-agent CX pipeline resolves tickets fastest with highest satisfaction?" |
+| **ServiceNow** | IT incident: detect → classify → route → remediate | Now Assist multi-agent | "Which incident response pipeline has lowest MTTR?" |
+| **Workday** | HR workflow: job post → screen → interview schedule → offer | Workday AI multi-agent | "Which HR pipeline produces the most qualified shortlists per hire?" |
+
+These are all enterprise deployments that are live or in production in 2026. Each represents a $150K-$300K Straw multi-agent evaluation opportunity.
+
