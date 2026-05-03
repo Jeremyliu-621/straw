@@ -31725,3 +31725,294 @@ Pilot states will focus on high-risk AI systems first. Customer-facing AI agents
 **NAIC September 2026 deadline = Straw urgency trigger for all 12 pilot states' major insurers.** Every carrier doing business in those states must demonstrate AI governance to state examiners by Q4 2026. Straw provides the audit trail.
 
 ---
+## Tick 469 — FCA AI Lab Supercharged Sandbox Cohort 2: Opens Tomorrow (May 5, 2026) [theme: partners + GTM]
+
+**Research date:** 2026-05-03
+
+### URGENT: FCA Supercharged Sandbox Cohort 2 opens May 5
+
+**Applications for Cohort 2 open May 5, 2026 — TOMORROW.**
+
+The UK Financial Conduct Authority's "Supercharged Sandbox" is a cohort-based program designed to help firms experiment, test, and develop AI use cases in financial services.
+
+**Cohort 2 focus areas (2026):** The FCA is specifically interested in:
+- **Agentic payment services** — autonomous payment agents
+- **Compliance agents** — AI agents for regulatory compliance
+- **Customer interaction / service agents** — AI for CX in financial services
+
+**What the Supercharged Sandbox provides:**
+- Secure cloud environment with GPU-enabled infrastructure
+- High-quality datasets for testing
+- Expert FCA staff support
+- Collaborative program culminating in a showcase event
+
+**Why Straw should apply to FCA Cohort 2:**
+
+Straw is DIRECTLY aligned with the FCA's focus. "Agentic payment services" and "compliance agents" are exactly the types of agents that UK financial services companies need to evaluate pre-deployment. Straw is the platform for that pre-deployment evaluation.
+
+**The Straw application angle:** "We are building the pre-deployment evaluation platform for financial services AI agents. FCA's focus on agentic compliance agents and payment services agents creates a specific need: how do you know which compliance agent to deploy? Straw's rubric-competition model gives financial services firms an objective, auditable answer. The Supercharged Sandbox would give us access to real financial services datasets and UK bank partners to run the first regulated-sector Straw evaluations."
+
+**Benefits of FCA Sandbox participation:**
+1. Access to UK financial services firms (NatWest, Barclays, HSBC, Revolut, Monzo) as evaluation partners
+2. FCA regulatory visibility — reduces future licensing complexity for Straw's UK operations
+3. Co-branding: "FCA Supercharged Sandbox participant" = credibility signal for enterprise sales globally
+4. Non-dilutive: no equity taken, just access + support
+
+**Cohort 1 participants (reference):** Eight firms participated in Cohort 1, including major banks and fintechs. Cohort 2 has not announced size but is likely similar.
+
+**Action required:** Apply May 5, 2026. Application process: fca.org.uk/firms/innovation/supercharged-sandbox
+
+### FCA Sandbox as design partner pipeline
+
+If Straw is accepted into FCA Cohort 2, every other participant becomes a potential design partner. Shared sandbox = implicit warm introduction to 7-15 UK financial services companies evaluating AI agents.
+
+**Named design partners accessible via FCA Cohort 2:**
+
+**#142 — NatWest AI Lead**
+UK retail bank, 19M customers, actively deploying AI agents for compliance and customer service. Contact via FCA sandbox network or LinkedIn.
+
+**#143 — Revolut CTO/Head of AI**
+Nik Storonsky (CEO) or lead AI engineer. Revolut is deploying payment AI agents at scale — exactly FCA Cohort 2's focus area.
+
+**#144 — Monzo Head of AI**
+Monzo (7M+ UK customers) is known for AI-native product development. Framing: "Monzo is defining what AI agents look like in retail banking. Straw helps you prove they work."
+
+Sources: fca.org.uk/firms/innovation/supercharged-sandbox, globalgovernmentfinance.com/fca-ai-lab-second-cohort, fstech.co.uk/FCA_Expands_AI_Testing, globalpolicywatch.com/2026/04/uk-financial-services-regulators-approach-to-artificial-intelligence-in-2026
+
+TICK_END
+
+---
+
+## Tick 470 — Financial Services Vertical: JPMorgan, Goldman, Citigroup as Design Partners [theme: partners]
+
+**Research date:** 2026-05-03
+
+### Financial services is Straw's highest-value vertical
+
+**Why financial services first:**
+- JPMorgan tech budget 2026: $19.8B. AI headcount: 2,000 people. 40,000 developers using AI coding assistants.
+- Goldman Sachs: Anthropic partnership announced early 2026 to deploy Claude for back-office tasks — trade reconciliation, transaction accounting, client onboarding, compliance.
+- Wells Fargo, Citigroup: Lead US banks in AI venture capital volume (AI deal-making, not just deployment).
+- McKinsey finding: Autonomous category agents in procurement deliver 15-30% efficiency improvement.
+
+**Straw's financial services thesis:**
+
+Goldman Sachs is deploying Claude for trade reconciliation. But they're also evaluating whether Claude is the right model. Before they signed with Anthropic, some team somewhere had to evaluate: Claude vs. GPT-4o vs. Gemini for trade reconciliation tasks. They almost certainly did this manually. **Straw is the platform that makes that evaluation objective and repeatable.**
+
+**The Straw pitch for financial services:**
+"You're about to deploy AI agents for [compliance/trading/reconciliation]. At $2M in annual agent license fees, how confident are you in your vendor selection? Straw runs your agents against your actual workflows, scores them on your rubric, and tells you which one to deploy. Cost: $10,000. Confidence: infinite."
+
+### Named financial services contacts
+
+**#145 — Teresa Heitsenrether** (JPMorgan, Chief Data & Analytics Officer / Head of AI)
+Teresa oversees JPMorgan's AI strategy including the 2,000-person AI team. JPMorgan's AI deployed for contract analysis (COiN platform, 360,000 hours saved/year) and transaction monitoring ($10T daily).
+LinkedIn: linkedin.com/in/teresa-heitsenrether
+Opener: "JPMorgan is deploying AI at $19.8B investment scale. Straw is the pre-deployment evaluation platform that tells you which agent to trust at that scale."
+
+**#146 — Marco Argenti** (Goldman Sachs, Chief Information Officer)
+Announced the Anthropic partnership for back-office agents. Responsible for the "which agent" decision at Goldman.
+LinkedIn: linkedin.com/in/marcoargenti
+Opener: "You partnered with Anthropic for trade reconciliation. How did you evaluate Anthropic vs. competitors for that specific workflow? Straw makes that evaluation reproducible."
+
+**#147 — Tim Li** (Citigroup, Head of AI/ML or equivalent)
+Citigroup leads AI venture deal volume among US banks. AI deployment across corporate banking, wealth management, insurance.
+Opener: "Citigroup is top 3 in AI venture activity. The gap: turning those investments into evaluated, deployed agents. Straw closes that gap."
+
+**#148 — Lex Sokolin** (Generative AI in fintech expert; previously at Consensys, Autonomous Research)
+Prolific writer on AI in financial services. Conference speaker and connector.
+Opener: "Would love your take on pre-deployment AI agent evaluation in fintech. Building a platform for it and your perspective would be invaluable."
+
+### Financial services evaluation complexity — Straw's product implications
+
+**Unique to financial services:**
+1. **Audit trail requirements:** FINRA, SEC, OCC require that AI decisions are auditable. Straw's rubric + score record is an audit artifact.
+2. **Model risk management (SR 11-7):** The OCC's Supervisory Guidance on Model Risk Management (SR 11-7) requires financial institutions to validate AI models before deployment. Straw is SR 11-7 documentation.
+3. **Explainability requirements:** EU AI Act + US regulatory guidance require AI decisions in financial services to be explainable. Straw's rubric scores + Tier-3 investigator reasoning = explainability documentation.
+4. **Data residency:** Financial institutions cannot send PII or proprietary trading data to external cloud. Straw's private evaluation mode (VPC deployment) is a P0 for this vertical.
+
+**Implication:** Straw for financial services is not just "evaluation tool" — it's "regulatory compliance documentation for AI deployment." This repositions Straw from a nice-to-have to a must-have for any bank deploying AI agents in regulated workflows.
+
+Sources: digitaldefynd.com/IQ/jp-morgan-using-ai-case-study, nimbleappgenie.com/blogs/agentic-ai-in-financial-services, evidentinsights.com/bankingbrief/banks-go-agentic, pwc.com/us/en/tech-effect/ai-analytics/agentic-ai-in-procurement
+
+TICK_END
+
+---
+
+## Tick 471 — Healthcare AI Agent Market: The FDA Complexity and Straw's Specific Opportunity [theme: bear + GTM]
+
+**Research date:** 2026-05-03
+
+### The healthcare AI agent market in 2026
+
+Healthcare AI is one of the fastest-growing sectors for agent deployment, but it has the most complex evaluation requirements.
+
+**Scale:**
+- 1,000+ AI tools already FDA-cleared as of 2026
+- FDA updating QMSR (Quality Management System Regulation) in 2026, aligning US with ISO 13485:2016
+- Trump administration's 3-year FDA approval pathway for clinical AI agents
+- Aidoc received FDA clearance for first comprehensive foundation model AI (January 2026)
+
+**The evaluation gap in healthcare:**
+Every hospital system choosing between AI diagnostic agents (Aidoc, Nuance, Google Health) for clinical workflows needs to evaluate which agent performs best on their specific patient population, with their specific EHR system, with their specific clinical protocols. This evaluation is currently done through:
+- IRB-approved clinical pilots (6-12 months, $200K+ in staff time)
+- Vendor-provided case studies (biased)
+- Literature reviews (no institution-specific signal)
+
+**Straw for healthcare: the opportunity AND the bear case**
+
+**Opportunity:** A healthcare system choosing between $2M/year AI diagnostic agents could save 12 months of pilot time and $200K in staff time with a Straw evaluation. The ROI calculation is even stronger than for software companies.
+
+**Bear case — the FDA complication:** Straw's evaluation process may constitute "use in a healthcare setting" if the tasks involve patient data or clinical decision-making. This triggers:
+- HIPAA data handling requirements
+- IRB review for any evaluation involving patient data
+- FDA's Software as a Medical Device (SaMD) classification if Straw's evaluation pipeline influences clinical decisions
+
+**The specific risk:** If a hospital runs a Straw evaluation using real patient cases and Straw's rubric says "Agent A should be used for diagnosis," this could be construed as a clinical recommendation subject to FDA oversight.
+
+**The healthcare moat strategy (if these risks are managed):** Healthcare is the highest-ACV vertical. A single health system evaluation is worth $25,000-$100,000 because the agent procurement decision is worth $5M-$20M annually. If Straw can serve healthcare with appropriate safeguards, the TAM expands by 40%.
+
+### Straw's healthcare product requirements (before entering this vertical)
+
+1. **HIPAA Business Associate Agreement (BAA)** — Required before any patient data enters Straw's platform. Stripe supports BAAs; Supabase has HIPAA compliance mode.
+2. **Synthetic data pipeline** — Convert real clinical cases to synthetic analogs that preserve task complexity without including PHI. This is the "private evaluation mode" for healthcare.
+3. **IRB-exempt framing** — Position Straw evaluations as "quality improvement" not "clinical research" — IRB review not required for QI activities.
+4. **De-identification certification** — 18-identifier safe harbor or expert determination under HIPAA.
+
+**Timing:** Healthcare is a v2+ vertical. Build the foundation in software/financial services; enter healthcare after $1M ARR with a dedicated compliance track.
+
+### Named healthcare design partner contacts
+
+**#149 — Micky Tripathi** (National Coordinator for Health Information Technology, HHS)
+US government mandate for healthcare AI evaluation. Contact via HHS AI procurement channel.
+
+**#150 — Aneesh Chopra** (CommonWell Health Alliance President; former US CTO)
+Strong advocate for AI interoperability and evaluation standards in healthcare.
+LinkedIn: linkedin.com/in/aneeshchopra
+
+**#151 — Fiona Callaghan** (Novartis, Head of Digital Health)
+Pharma AI agent deployment at scale; clinical trial optimization agents.
+
+Sources: ventus.ai/blog/manus-ai-agentic-ai-enterprise-healthcare-evaluation-guide, bipartisanpolicy.org/issue-brief/fda-oversight, fiercehealthcare.com/ai-and-machine-learning/trump-administration-creating-clinical-ai-agents-3-year-fda-approval
+
+TICK_END
+
+---
+
+## Tick 472 — Straw's Network Effects and Data Moat: The Compounding Competitive Advantage [theme: bear + GTM]
+
+**Research date:** 2026-05-03
+
+### The three network effects in Straw's model
+
+Straw is not just a SaaS tool — it's a marketplace with three distinct network effects that compound over time. This is the primary answer to the "why can't a bigger company build this?" bear question.
+
+**Network Effect 1: The Rubric Library (Data Moat)**
+
+Every rubric created on Straw becomes part of a proprietary dataset of "what enterprise companies care about when evaluating AI agents." This data doesn't exist anywhere else.
+
+The flywheel: More rubrics created → better rubric builder suggestions (AI-assisted) → better rubrics → better evaluation quality → more companies use Straw → more rubrics created.
+
+**After 100 rubrics:** Straw can say "we've seen how 100 enterprises across 12 verticals evaluate AI coding agents — here's the template."
+**After 1,000 rubrics:** Straw can publish "The Straw AI Agent Evaluation Benchmark" — an industry standard that companies reference before procurement.
+**After 10,000 rubrics:** Straw IS the evaluation standard. Vendors optimize to the Straw rubric format. Enterprises require Straw scores in RFPs.
+
+**Network Effect 2: Agent Reputation Graph (Supply-Side Moat)**
+
+Every agent that competes on Straw accumulates a performance record across rubric categories. An agent that has competed in 50 coding evaluations has a reputation signal that new agents don't have.
+
+The flywheel: More evaluations → richer agent reputation data → better agent matching to task types → better evaluation outcomes → more companies run evaluations → more agents compete.
+
+**After 100 agent evaluations:** Straw can recommend "for coding tasks, the top 5 agents by track record are..."
+**After 1,000 evaluations:** Straw's agent reputation graph is the most comprehensive AI agent performance database in the world — more valuable than any vendor marketing claim.
+
+**Network Effect 3: Cross-Company Benchmarking (Demand-Side Moat)**
+
+Anonymized, aggregated results from all evaluations on Straw create cross-company benchmarks. Company A learns how their AI agent evaluation results compare to similar companies.
+
+"Your evaluation score of 72/100 for customer service agents is in the 63rd percentile of enterprise CX deployments on Straw. Companies in the 80th+ percentile achieved 41.2% deflection rate."
+
+This cross-company benchmarking is valuable ONLY to companies that have run at least one Straw evaluation — creating a reason to keep running evaluations.
+
+### The data moat vs. commoditization bear case
+
+**Bear case:** "OpenAI or Anthropic builds a free evaluation platform and copies all of Straw's rubric format. All historical data is gone."
+
+**Reality check:** 
+1. OpenAI and Anthropic cannot credibly evaluate their own models vs. competitors — the neutrality problem is structural.
+2. Even if a competitor copies the format, they start with zero historical data. Straw's rubric library + agent reputation graph is 6-12 months ahead.
+3. The valuable data is CROSS-CUSTOMER AGGREGATE — this requires many customers simultaneously, which a new entrant cannot replicate instantly.
+
+**The data moat thesis for investors:** "Straw's competitive moat deepens with every evaluation run. At 50 evaluations, we have valuable data. At 500 evaluations, we have a benchmark. At 5,000 evaluations, we are the standard. The CAC:LTV ratio improves over time because historical data makes each new customer more successful, creating retention."
+
+### The "evaluation standard" endgame
+
+**The Straw 5-year vision:** Straw becomes what SWE-bench is for coding, but for enterprise AI procurement. When enterprises issue RFPs for AI agents, the RFP includes: "Provide your Straw Evaluation Score for [task category]."
+
+This is the same dynamic as:
+- ISO 9001 certification (companies must have it to sell to Fortune 500)
+- SOC 2 Type II (SaaS companies must have it to sell to enterprise)
+- SWE-bench score (AI coding agents must publish it to be taken seriously)
+
+**If Straw becomes the enterprise procurement standard**, the TAM transforms from "companies who choose to run evaluations" to "all AI agent vendors who need to prove performance." This expands the TAM from ~$800M (buyer-side) to potentially $5-10B (vendor-side certifications + buyer-side evaluations).
+
+Sources: hgbr.org/research_articles/the-ai-flywheel, greylock.com/greymatter/the-new-new-moats, bloomvp.substack.com/p/the-new-software-moats-stickiness, signalfire.com/blog/networked-saas-business-model
+
+TICK_END
+
+---
+
+## Tick 473 — Consulting Firms as Distribution Channel: PwC's AI in Procurement Playbook [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### PwC's "Agentic AI in Procurement" article — perfect alignment
+
+PwC published a direct-to-CPO article titled "How AI agents are transforming procurement: What CPOs should know" (pwc.com/us/en/tech-effect/ai-analytics/agentic-ai-in-procurement.html).
+
+**Key PwC finding:** "With the time, data, and tools that AI agents give them, procurement teams can create models or digital twins to simulate supplier networks that can help drive enterprise-level strategies to reduce costs, manage risks, boost resilience, and better select suppliers with whom to deepen relationships."
+
+**Translation:** PwC is telling CPOs to "better select suppliers." Straw is the platform that operationalizes that selection for AI agent vendors.
+
+**The distribution angle:** PwC is NOT Straw's competitor — PwC is Straw's distribution. A PwC senior manager advising a Fortune 500 CPO on AI procurement would happily recommend Straw as the platform for objective agent evaluation, because:
+1. PwC's engagement fees are $500K-$2M; Straw's fees are $10-50K — complementary, not competing
+2. Straw gives PwC a defensible, data-backed methodology to include in their AI procurement assessments
+3. PwC recommending Straw = credibility signal + pipeline for Straw without PwC margin pressure
+
+**94%** of procurement executives use generative AI at least weekly (up 44pp from 2024). Only 4% have large-scale deployment. **This 94% vs. 4% gap = the exact customer Jeremy should be targeting.** These are companies using AI tools but struggling to scale. They need evaluation infrastructure.
+
+### The five consulting firm playbook
+
+**Target firms (in priority order):**
+1. **PwC** — Already publishing on agentic AI in procurement; co-authorship opportunity is warm
+2. **Deloitte** — Beena Ammanath (AI Institute Executive Director) already in design partner list as #114
+3. **Accenture** — Largest AI transformation practice; 50,000 AI practitioners; procurement transformation is a major revenue line
+4. **McKinsey** — "15-30% efficiency improvement" finding = validation of AI procurement agents; their clients need evaluation
+5. **KPMG** — Smaller AI practice but large audit/financial services client base = ideal financial services pipeline
+
+### The co-authorship playbook
+
+**Step 1:** Reach out to PwC's AI in Procurement practice lead with: "Your article on agentic AI in procurement identified the vendor selection gap. We built the platform that closes it. Would you be interested in co-authoring a methodology white paper?"
+
+**Step 2:** If yes, PwC features Straw in their next AI procurement framework publication. PwC distributes to 100K+ enterprise leaders.
+
+**Step 3:** Every enterprise that reads the PwC paper and wants to implement the methodology → Straw as the tool.
+
+**The math:** PwC has ~100K clients globally. If 0.1% reach out to Straw after a co-branded publication = 100 enterprise conversations. At Straw's current conversion rate assumptions (10-20% conversion to paid), that's 10-20 new paying customers from one white paper.
+
+### Named consulting firm contacts
+
+**#152 — Mohamed Kande** (PwC Global AI Leader / Co-Chair)
+PwC's top AI spokesperson; co-authored multiple reports on AI in enterprise; LinkedIn engagement focus.
+LinkedIn: linkedin.com/in/mohamedkande
+
+**#153 — Lan Guan** (Accenture Chief AI Officer)
+Accenture's AI transformation practice is the largest in consulting. Lan Guan sets the methodology Accenture uses globally.
+LinkedIn: linkedin.com/in/languan
+
+**#154 — Rodney Zemmel** (McKinsey Senior Partner, Global Digital Leader)
+Leads McKinsey's AI practice; authored the "15-30% efficiency" procurement finding.
+LinkedIn: linkedin.com/in/rodney-zemmel
+
+Sources: pwc.com/us/en/tech-effect/ai-analytics/agentic-ai-in-procurement, artofprocurement.com/blog/state-of-ai-in-procurement, jadasquad.com/blog/ai-agents-in-procurement
+
+TICK_END
