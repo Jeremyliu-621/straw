@@ -30145,3 +30145,59 @@ Straw becomes the "AI accuracy SOC 2" — a third-party, objective evaluation of
 Sources: blog.anyreach.ai/rfp-changing, fortune.com/2026/02/23/openai-mckinsey-bcg-accenture-frontier, metaintro.com/bcg-ai-revenue-2026, noma.security/riskrubric-ai, purplesec.us/ai-security-risks-2026
 
 TICK_END
+
+---
+
+## Tick 458 — M&A AI Due Diligence + Three-Tier Agent Market Structure
+
+**Research date:** 2026-05-03
+
+### M&A AI due diligence: Straw as pre-acquisition performance validation
+
+**Bain & Company "Software M&A Report 2026":** "The difference between perceived value and validated value can be substantial, requiring deeper technical due diligence, tighter valuation frameworks and stronger contractual protections."
+
+**Skadden M&A 2026:** "Buyers are using earnouts tied to AI-related metrics — additional consideration payable only if the target achieves defined performance benchmarks." AND "Escrows to mitigate technical underperformance risks."
+
+**The M&A diligence question (2026):** "How do you validate the performance of an AI agent company before acquiring it?"
+
+**Straw's answer:** Run the acquisition target's agent through a rubric-based evaluation on your real tasks. Get an objective performance score. Structure your earnout around maintaining/exceeding that score post-acquisition. Straw becomes the technical diligence instrument for AI company M&A.
+
+**Straw M&A use case:** Any company acquiring an AI agent startup (Cisco/Galileo, Snowflake/Observe, and all future deals) needs a performance baseline before the acquisition. Straw is the diligence platform:
+1. Buyer defines rubric (the task criteria that matters for the acquisition)
+2. Acquisition target submits their agent
+3. Straw runs the evaluation in 3-5 days
+4. Buyer gets objective performance evidence before signing LOI
+
+**Revenue model for M&A diligence:** Premium pricing ($100-250K per M&A diligence evaluation). Time-sensitive, high-stakes. The $100-250K evaluation fee is trivial relative to a $50M+ acquisition.
+
+---
+
+### Three-tier agent market structure (G2 State of AI Agent Builders 2026)
+
+**No winner-take-all in agents.** A three-tier ecosystem is forming:
+
+**Tier 1:** Hyperscalers (Amazon Bedrock, Google Vertex AI, Microsoft Azure AI Foundry) — foundational infrastructure, compute, base models
+
+**Tier 2:** Enterprise software vendors embedding agents (Salesforce Agentforce $1.4B ARR, ServiceNow, SAP, Workday) — existing platform lock-in
+
+**Tier 3:** Agent-native startups — new architecture, new interfaces, agent-first from day one
+
+**Straw sits ABOVE all three tiers.** Straw doesn't care which tier the winning agent comes from — it evaluates across all tiers on the buyer's rubric. This is the ICAAN moat: Infrastructure-agnostic (works with any tier), Cross-vendor (Tier 1, 2, and 3 compete simultaneously), Any-agent, Any-rubric, No-lock-in.
+
+The three-tier fragmentation means there is NO single dominant evaluation authority. The buyer needs a neutral layer. Straw is that layer.
+
+---
+
+### Salesforce Agentforce $1.4B ARR — the CX agent benchmark
+
+**Salesforce Agentforce:** $1.4B ARR with Data 360, 9,500+ paid deals. At $2.00/conversation pricing, this represents hundreds of millions of customer interactions.
+
+This is the scale that makes Straw essential:
+- A company choosing between Salesforce Agentforce ($2.00/conversation) and Zendesk AI ($1.00/conversation) is making a decision worth $1M/month for every 1M conversations
+- Straw's $25K evaluation fee = 25 months of savings if Zendesk wins the competition with better resolution rates
+
+**Pricing arbitrage argument for Straw:** The evaluation fee pays for itself the first month a better-priced, better-performing agent is selected.
+
+Sources: bain.com/insights/software-ma-report-2026, skadden.com/insights/ma-in-the-ai-era-2026, learn.g2.com/state-of-ai-agent-builders-2026, salesmate.io/ai-agent-statistics, securityboulevard.com/ai-due-diligence-checklist-2026
+
+TICK_END
