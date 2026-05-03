@@ -25858,3 +25858,54 @@ New angle from Agent Bricks: Databricks customers using Agent Bricks for Databri
 Sources: databricks.com/resources/ebook/state-of-ai-agents, databricks.com/blog/enterprise-ai-agent-trends-top-use-cases-governance-evaluations-and-more, pulse2.com/databricks-acquisition-of-quotient-ai, saastr.com/databricks-only-19-of-organizations-have-deployed-ai-agents
 
 TICK_END
+
+---
+
+## Tick 422 — Google Cloud Named Customers + "Evidence Replaced Demos" Sales Insight
+
+**Date researched:** 2026-05-03
+**Theme:** Design partner targets / GTM (sales frame evolution)
+
+### Google Cloud Next 2026 named enterprise customers with quantified results
+
+| Company | Agent deployed | Measured result | Straw connection |
+|---|---|---|---|
+| Danfoss (Danish industrial) | Email-based order processing agent | 80% of transactional decisions automated; 42 hours → near real-time | Supply chain/procurement vertical — exact use case from Tick 385 |
+| Suzano (Brazilian pulp & paper) | NL → SQL query agent | 95% reduction in query time for 50,000 employees | Coding/data vertical; 50K employee scale = massive rubric value |
+| Papa John's | Food ordering personalization agent | Faster order delivery with customer preference memory | Customer service vertical |
+
+These companies deployed WITHOUT pre-deployment evaluation. They measured results post-deployment. Danfoss and Suzano are now locked into Google Cloud's agent — they have no cross-vendor comparison, no rubric that would let them switch to a better agent if one emerges.
+
+**Danfoss as a design partner target (#100):**
+- Large industrial manufacturer; AI agent in production for procurement workflow
+- Now the question is: "What agent should you use NEXT for the next workflow?"
+- Straw pitch: "You deployed an agent for email order processing. What's next — contract negotiation? Supplier selection? Each new workflow needs its own rubric evaluation."
+
+### "Evidence replaced demos" — the most important GTM insight from this session
+
+2026 B2B procurement data: **"Evidence of successful implementation and real data validation has replaced generic product pitches as the dominant decision criterion in enterprise procurement."**
+
+This is a paradigm shift. The enterprise buying committee (6-10 people) no longer evaluates vendors based on demos. They evaluate based on:
+- "Show me it worked for a company like us"
+- "Show me the data that proves it will work for our use case"
+- "Show me the score, not the pitch"
+
+**Straw's pitch is now: "Straw is the evidence." Not "Straw helps you evaluate." Straw produces the evidence document that the buying committee now requires before approving an AI deployment.**
+
+This reframes the entire sales motion:
+- Old: "We help you evaluate AI agents"
+- New: "We produce the evidence that gets your AI deployment approved by the buying committee"
+
+The buyer's internal pain is not "I need to evaluate agents." The buyer's internal pain is "I need to get my AI deployment approved by 6-10 people who want evidence, not demos." Straw solves THAT problem.
+
+### Enterprise sales cycle implications for Straw
+
+- B2B SaaS sales cycles: 84+ days
+- AI deployment: 6-10 stakeholder committee
+- Straw can compress this: running a Straw evaluation and getting a certified score gives the internal champion the evidence they need to convince the committee. Straw doesn't shorten the sales cycle for itself — it shortens the sales cycle for Straw's CUSTOMERS (getting AI deployments approved internally)
+
+**The enterprise internal champion pitch:** "You want to deploy Agent X. Your buying committee wants evidence it will work. Run a Straw evaluation with your rubric. Get a certified score. Show the score to your committee. That's the fastest path from pilot to approval."
+
+Sources: cloud.google.com/blog/topics/google-cloud-next/welcome-to-google-cloud-next26, techresearchonline.com/news/google-cloud-next-2026-enterprise-ai-agents, mbassett.com/blog/ai-in-enterprise-software-sales, hathawk.com/ai-driven-sales-agent-automation-b2b-predictive-intelligence-2026
+
+TICK_END
