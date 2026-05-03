@@ -22102,3 +22102,82 @@ The CoE's incentive structure aligns perfectly with Straw:
 
 If the CoE doesn't exist at a target account, find the person whose job depends on AI deployment success — that's the economic buyer.
 
+
+---
+
+## Tick 310 (2026-05-03T00:40:00Z): Supply Chain and Logistics AI Partners [theme: partners]
+
+**Research basis**: Maersk: agentic AI handling quoting, booking, compliance checks, disruption alerts. 60% reduction in cargo spoilage from AI monitoring. UPS automated 127 facilities by Q4 2024. AI in supply chain market: $14B in 2025 → $50B by 2031 (23% CAGR). Procurement agents evaluate supplier performance, contract terms, delivery reliability.
+
+### Supply Chain AI Is High-Volume, High-Stakes, Evaluable
+
+Supply chain AI agents have three characteristics that make them ideal Straw evaluation candidates:
+
+1. **Clear performance metrics**: Demand forecast accuracy, on-time delivery rate, inventory turnover, spoilage rate — all measurable, all objective
+2. **High stakes**: A wrong supply chain AI decision can cost millions (wrong demand forecast = excess inventory or stockout)
+3. **Multiple vendor options**: Dozens of supply chain AI vendors competing for the same enterprise workflows
+
+This is textbook Straw territory.
+
+### Named Supply Chain/Logistics Design Partners
+
+| Company | AI Agent Focus | Key Contact | Straw Entry Point |
+|---------|----------------|-------------|-------------------|
+| **Maersk** | Agentic AI: quoting, booking, compliance, disruption | Vincent Clerc (CEO), Navneet Kapila (Chief Digital Officer) | Maersk is the most AI-progressive freight/logistics company; actively deploying agentic AI |
+| **UPS** | Warehouse automation + route optimization AI | Juan Perez (Chief Information and Engineering Officer) | 127 automated facilities — which AI routing agent delivers the best optimization? |
+| **FedEx** | SENSE + Insight demand forecasting AI | Rob Carter (EVP and CIO) | FedEx uses AI for demand forecasting; which agent is most accurate for their network? |
+| **DHL** | Supply chain visibility + AI planning | Tim Scharwath (CEO, DHL Global Forwarding) | DHL integrating AI agents across freight operations |
+| **Amazon Supply Chain** | Predictive fulfillment + robotics | Via AWS Partner Network | Amazon's supply chain AI is the market benchmark; Straw evaluates against it |
+| **Blue Yonder** (Panasonic) | AI-driven supply chain planning | Duncan Angove (CEO) | Blue Yonder is the leading supply chain AI platform; "Straw Certified: Supply Chain Planning" would be a major credential |
+| **o9 Solutions** | AI demand sensing + S&OP | Chakri Gottemukkala (CEO) | o9 competes with Blue Yonder; needs competitive evaluation data |
+| **Kinaxis** | Supply chain agility AI | John Sicard (CEO) | Kinaxis + AI = needs evaluation vs. o9 and Blue Yonder |
+
+**Highest-priority**: **Blue Yonder** — they are the dominant supply chain AI platform, with 3,000+ customers (including Walmart, Toyota, Pfizer, Caterpillar). A "Straw Certified: Supply Chain Planning" evaluation would be the most significant certification in the supply chain AI market. Duncan Angove is an analytically-oriented CEO who would understand evaluation methodology.
+
+**Second priority**: **Maersk** — they are at the frontier of agentic AI deployment in logistics. Maersk's CDO Navneet Kapila is actively building AI infrastructure. A Maersk design partner relationship gives Straw a flagship global logistics brand.
+
+### The Supply Chain Cold Opener (Blue Yonder)
+
+> "Hi Duncan — Blue Yonder is the demand planning standard for 3,000+ enterprises. When your customers evaluate whether to deploy Blue Yonder's AI planning agents or a competitive alternative, what objective data do you offer beyond vendor-commissioned case studies? Straw runs competitive supply chain AI evaluations — your agents vs. competitors on the customer's exact product mix and demand patterns. 'Straw Certified: Best-in-Class Supply Chain Planning' is the independent proof your enterprise customers need to justify a $1M+ deployment. Worth 20 minutes?"
+
+---
+
+## Tick 311 (2026-05-03T00:41:00Z): Automation Bias Bear Case — Over-Reliance on Straw Certifications [theme: bear]
+
+**Research basis**: HBR March 2026: "When Using AI Leads to Brain Fry." AI cognitive fatigue: oversight of multiple agents = primary trigger. Automation bias: clinicians' tumor detection rate 6% LOWER after months of AI assistance. Error rates increase by 11% where oversight loads are highest. "Juggling 4 chatbots plus orchestration dashboard stretches attention across too many micro-decisions."
+
+### The Automation Bias Problem Applied to Straw
+
+Automation bias is the tendency to trust AI system outputs without sufficient scrutiny. Straw's certification is designed to be a rigorous evaluation that increases trust in AI agent deployments. But there's a failure mode on the other side: **excessive trust in Straw certifications replaces appropriate ongoing human judgment.**
+
+**Scenario**: Enterprise deploys a "Straw Certified" AI agent for financial analysis. The agent was certified 18 months ago on the rubric the enterprise provided at the time. Financial regulations changed 6 months ago. The rubric is now outdated. The agent is no longer compliant. But because it's "Straw Certified," the finance team's oversight has relaxed. They trust the certification. The compliance failure goes unnoticed until an audit.
+
+**The cognitive fatigue angle**: Human oversight of AI agents in 2026 is already stretched. Teams managing 5-10 AI agents experience "brain fry" — their critical thinking degrades as they context-switch between agent oversight. When a Straw Certified badge reduces that cognitive load further, it may also reduce the vigilance that catches real-world failures.
+
+**Score: 4/10** — This is a product design risk more than a market risk. Manageable but requires explicit communication about certification scope.
+
+### The "Certification Scope" Solution
+
+Straw's certifications must explicitly communicate:
+
+1. **Time scope**: "This certification is valid for 12 months from the date of evaluation. The agent's performance was assessed on conditions as of [date]. Straw recommends recertification before renewal."
+
+2. **Context scope**: "This certification is for [specific use case] with [rubric version]. Performance in other use cases or with different rubric criteria is not certified."
+
+3. **Monitoring recommendation**: "Straw Certification is not a substitute for ongoing production monitoring. Straw recommends integrating production monitoring tools (Braintrust, Galileo, LangSmith) alongside the Straw Certification."
+
+4. **Validity conditions**: "This certification is valid while: (1) the agent version has not changed, (2) the regulatory environment has not materially changed, (3) the enterprise's use case has not materially changed."
+
+These explicit scope conditions prevent automation bias while maintaining the certification's value as a trust signal.
+
+### The Recertification Business Model Implication
+
+Explicit time-scoped certification creates mandatory recertification:
+- 12-month certification expiry → enterprise must recertify annually
+- Regulatory changes → immediate recertification requirement
+- Agent version changes → recertification before redeployment
+
+This is not just a safety measure — it's a revenue driver. Every recertification = a new engagement. The automation bias risk, properly managed, becomes a recertification revenue stream.
+
+**Annual recertification revenue from a $2M AI deployment**: $35K-$50K for standard recertification (vs. $100K-$150K for initial evaluation). This is the SaaS revenue component of Straw's model — recurring, predictable, not dependent on new enterprise acquisitions.
+
