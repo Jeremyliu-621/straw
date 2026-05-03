@@ -6511,3 +6511,139 @@ The rubric corpus and performance history are proprietary data assets that compo
 **The network effect killer to avoid:** Network effects break when the core interaction quality degrades. For Straw, the core interaction is "buyer posts task → agents compete → buyer gets useful score." If the evaluation quality drops (bad rubrics, gaming, prompt injection), buyers stop using the platform and agents stop participating. Quality defense is the network effect defense.
 
 **Conclusion:** Straw has genuine multi-vector network effects. The rubric corpus + performance history combination is a data moat that grows with each competition. The 18-month window before a well-funded competitor can replicate the mechanics makes speed-to-first-competition the most important near-term action.
+
+---
+
+## Tick 82 (2026-05-04T05:30Z): DoD/CDAO defense angle — AI procurement evaluation for national security [theme: partners]
+
+**The January 2026 Pentagon AI Strategy memo:** The DoD released a new AI Strategy mandating "AI-first" across all components. The memo tasks CDAO (Chief Digital and AI Office) with:
+1. Ensuring latest AI models available to military users within 30 days of public release
+2. Reducing time required for evaluation and certification of AI systems
+3. Preventing vendor lock-in through MOSA (Modular Open Systems Architecture) enforcement
+4. Establishing a monthly "Barrier Removal Board" to waive procurement blockers
+
+**The key quote for Straw:** The memo emphasizes *reducing* the time for AI system "evaluation and certification." This is precisely Straw's product.
+
+**The CDAO architecture maps to Straw:**
+
+| DoD AI procurement need | Straw's answer |
+|---|---|
+| Standardized evaluation of AI capabilities before ATO | Task-specific rubric evaluation |
+| Vendor-agnostic testing (prevent lock-in) | Model-agnostic competition (any agent can enter) |
+| Speed: 30-day model-to-deployment timeline | 2-week competition timeline |
+| Audit documentation for program of record | Evaluation report with full audit trail |
+| Comparison across multiple competing AI systems | Multi-agent competition format |
+
+**Why this is harder to access than commercial:**
+- DoD procurement requires CMMC (Cybersecurity Maturity Model Certification)
+- FedRAMP authorization required for government cloud usage
+- Long procurement cycles (18+ months for full program of record)
+- Security clearances required for some interactions
+
+**The realistic path:** Straw's DoD angle is not a near-term revenue source — it's a 24-36 month play. The path:
+1. NIST/CAISI partnership (Tick 56) → established government credibility
+2. GSA Schedule contract (IT Category, Schedule 70) — 6-12 months
+3. SBIR Phase I (Small Business Innovation Research) application — $150K-$200K in non-dilutive funding for "AI agent evaluation methodology research"
+4. FedRAMP Moderate authorization — expensive ($300K+) but unlocks DoD cloud usage
+5. CDAO CDAO AI Sandbox pilot program participation
+
+**The non-dilutive funding opportunity:** SBIR/STTR grants from DoD, DARPA, DHS are a legitimate funding source for Straw's evaluation methodology research. DARPA's SBIR topics for 2026 include "AI system evaluation and verification" — directly applicable. Award: $150K-$250K Phase I, $1M-$2M Phase II. This is real money at Straw's stage.
+
+**Named CDAO contacts:**
+- **Cameron Stanley** (Acting CDAO as of January 2026) — frontrunner for permanent CDAO appointment
+- **Craig Martell** (outgoing CDAO) — returning to industry; could be an advisor
+- **Radha Plumb** (CPTO, Office of the Under Secretary of Defense) — technology procurement strategy
+
+**The near-term action:** Apply for a DARPA SBIR (AI evaluation and verification topic). The application requires: problem statement, technical approach, commercial potential. Straw qualifies on all three. Even if rejected, the application builds government relationships.
+
+---
+
+## Tick 83 (2026-05-04T06:00Z): Design partner patterns — what makes the relationship work or fail [theme: gtm]
+
+**The design partner pattern distilled from the Langfuse and Braintrust examples, plus the broader B2B SaaS literature:**
+
+### What makes a design partner relationship work
+
+**1. They have the problem RIGHT NOW, not in 6 months.**
+The best design partners have an immediate procurement decision pending. "We're evaluating AI agents for our contract review workflow next month" is better than "we'll probably need this eventually." Urgency drives engagement.
+
+**2. They're willing to give feedback, not just use the product.**
+A design partner who uses the product silently and churns is worse than a design partner who complains loudly. The value of a design partner is the feedback loop. The agreement should explicitly include: weekly 30-minute calls for the first 3 months, and completion of a post-evaluation survey.
+
+**3. The decision-maker is accessible, not a committee.**
+The ideal design partner has a single champion who has authority to move quickly: a founder, CTO, VP AI, or Head of Engineering who can say "yes" without a procurement committee. Enterprise companies with 18-month buying cycles make bad design partners for v0.
+
+**4. They're willing to be public (eventually).**
+The design partner's value to Straw isn't just the product feedback — it's the case study. "We can't be named publicly" design partners have diminished value. The agreement should include: "If the evaluation produces results you're happy with, we can publish a case study. Straw gets to mention [Company] as a design partner. We'll share the draft with you for approval."
+
+**5. They're adjacent to 3-4 other potential customers.**
+The best design partners are connected. When a design partner says "this is valuable," they tell 3-4 colleagues. One design partner at a YC company = potential introductions to 5 other YC companies. Choose design partners with rich networks in Straw's target segment.
+
+### What makes a design partner relationship fail
+
+**1. Slow time to first value.**
+If a design partner goes 3 weeks without seeing any useful output, they disengage. The rubric calibration call (Tick 42) should happen in week 1. The first competition should close in week 3. The winner report delivered in week 4. If this timeline slips, the design partner moves on.
+
+**2. Rubric mismatch.**
+If Straw delivers a rubric evaluation and the buyer thinks "this isn't what I meant," the relationship fails. Preventing this requires: rubric review call before the competition opens, explicit buyer sign-off on rubric criteria, and a rubric revision window (7 days after the calibration session before the competition opens).
+
+**3. Bad submissions (too few agents, low quality).**
+If a design partner's first competition receives 2 submissions from unknown agents with poor quality, they lose confidence in the platform. This is the cold-start problem at the individual competition level. Mitigation: Straw guarantees a minimum of 5 qualified submissions per competition (using the "seeded agent" approach from Tick 53), or offers a refund.
+
+**4. Using design partners as marketing without delivering value.**
+Some founders collect "design partners" who are just names for the pitch deck. The partner gets nothing real; the founder gets a logo. This destroys trust in the category. Straw's design partner program must deliver genuine product value first — the case study is a byproduct, not the primary goal.
+
+### The design partner selection filter (5 questions)
+
+Before accepting a design partner, Jeremy should be able to answer YES to all five:
+1. Does this company have a specific AI procurement decision pending in the next 90 days?
+2. Is the decision-maker directly accessible (not a committee)?
+3. Will they do weekly feedback calls for the first 3 months?
+4. Are they willing to be named in a case study if results are positive?
+5. Do they have at least 3 peers who have similar needs?
+
+If any answer is "no," consider whether this is a design partner (co-creator) or just an early customer (user). Both are valuable, but manage expectations differently.
+
+---
+
+## Tick 84 (2026-05-04T06:30Z): The acquisition scenario — when to sell vs. build independently [theme: gtm]
+
+**The question:** If a well-resourced acquirer offers to buy Straw at 12-18 months, what's the right decision?
+
+**Likely acquirers and their rationale:**
+
+| Acquirer | Why they'd want Straw | Likely price range | Timing |
+|---|---|---|---|
+| **Braintrust** | Add pre-deployment evaluation to their post-deployment monitoring stack | $20M-$80M (0-4x ARR) | After $800K ARR milestone |
+| **Snowflake/Databricks** | Evaluation data corpus for their AI platform; distribution channel | $50M-$200M | After meaningful data corpus exists |
+| **Synack/HackerOne** | Add AI agent evaluation to their bounty platform | $30M-$100M | After first 50 competitions |
+| **Scale AI** | Add competition mechanics to their data annotation and evaluation business | $40M-$150M | After regulated industry traction |
+| **Google Cloud** | Neutral evaluation layer for their Agent Gallery; deflect neutrality concern | $100M-$400M | After meaningful traction; neutrality premium |
+| **Anthropic** | Evaluation infrastructure for Claude-based agents; safety credibility | $50M-$200M | After METR research partnership |
+
+**The framework for the acquisition decision:**
+
+**Sell at $50M-$100M IF:**
+- The founder needs liquidity (personal financial situation)
+- A strategic acquirer has distribution that would 10x Straw's growth trajectory
+- Competing well-funded products are about to enter (Braintrust expanding, Google launching direct competitor)
+- The evaluation market is not growing as fast as expected (AI winter scenario)
+
+**Don't sell below $100M IF:**
+- Network effects are clearly compounding (rubric corpus growing, agent performance history accumulating)
+- Revenue is growing >100% YoY
+- No compelling strategic acquirer has appeared (don't sell to bad homes)
+- The market is clearly going to $1B+ TAM and Straw is the category leader
+
+**The Google acquisition scenario is the most interesting:**
+Google's Gemini Enterprise Agent Gallery (Tick 26) is Straw's biggest competitive threat. A Google acquisition of Straw would:
+1. Give Google's platform neutral evaluation credentials (can evaluate non-Google agents)
+2. Remove Straw as an independent player that could validate competitors' agents as superior to Google's
+3. Likely kill Straw's core value proposition (independence requires not being owned by Google)
+
+**If Google approaches:** The answer is almost certainly no, unless the price is catastrophically high ($500M+). Being acquired by Google destroys the neutrality that is Straw's core product. Microsoft, Snowflake, or Databricks are better homes — they're data infrastructure companies without the conflict of interest that a model lab has.
+
+**The IPO scenario (10+ years out):**
+If Straw becomes the MLPerf for enterprise AI — the industry-standard evaluation benchmark that every AI vendor submits to — the network effect value could support a $1B+ public company. This requires: dominant category position, recurring revenue from regulated industry compliance, and the "State of Agent Capability" quarterly report becoming a must-read industry reference. This is a 7-10 year path, not a 2-3 year path.
+
+**The recommendation:** Don't plan for acquisition. Build for independence. If the right acquirer appears at the right moment with the right structure (preserving neutrality through a subsidiary model, not full integration), consider it. But the default plan is to build Straw to $5M ARR, raise a Series A at $30-40M pre-money, and build toward category leadership. The acquisition conversations will come naturally as Straw builds credibility — respond to them, don't initiate them.
