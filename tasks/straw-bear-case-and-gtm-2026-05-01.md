@@ -25327,3 +25327,102 @@ For RAND: Use with CFOs and board-level AI governance leads. "$547B in failed AI
 Sources: iopex.com/blog/before-you-deploy-another-agent-read-this, aviasole.com/blog/why-ai-agent-deployments-fail, aiassemblylines.com/post/enterprise-ai-agents-fail-production-2026, techtarget.com/searchenterpriseai/feature/AI-deployments-gone-wrong
 
 TICK_END
+
+---
+
+## Tick 413 — PwC + Anthropic + Rakuten: New Distribution and Design Partner Signals
+
+**Date researched:** 2026-05-03
+**Theme:** GTM / Design partners (#95-96)
+
+### PwC + Anthropic enterprise partnership (February 2026)
+
+PwC US and Anthropic announced collaboration to accelerate enterprise AI deployment in:
+- AI-native Finance
+- Healthcare & Life Sciences
+
+Aligned with Anthropic Cowork launch + finance/engineering/design enterprise plugins (February 24, 2026).
+
+**Why this matters for Straw:**
+PwC is a Big 4 firm that advises every Fortune 500 CFO on AI strategy. When PwC deploys Anthropic agents for a financial services client, someone has to evaluate those agents before they go live. If PwC's standard deployment methodology includes a Straw evaluation step, Straw gets access to thousands of enterprise AI deployments at no marginal sales cost.
+
+**Partnership angle:** Reach out to PwC's AI practice leads (Chris Curran is PwC's Chief Technologist; several named partners lead AI deployment practices). Offer to co-author a "Framework for Enterprise AI Agent Procurement" white paper — PwC gets thought leadership, Straw gets distribution and credibility.
+
+### Rakuten as design partner (#95)
+
+Rakuten deploying Anthropic Managed Agents "across product, sales, marketing, finance, and HR teams, each deployed within a week" (Anthropic case study, 2026).
+
+- 5+ agent deployments across different business functions
+- Each deployment presumably evaluated independently
+- Each department has its own rubric criteria (sales agents vs. finance agents vs. HR agents have completely different success criteria)
+
+**Straw pitch:** "Rakuten deployed 5 agents in 5 departments in a week. How were they evaluated? How does Rakuten know the finance agent and the HR agent are both performing at the level expected? Straw gives you a single framework that works across all departments — different rubrics, same evaluation pipeline."
+
+Contact angle: Rakuten US has a technology leadership team; also reachable through Anthropic's partnership team.
+
+### Notion's 4-year struggle as a proof point (#96)
+
+Notion spent 4-5 complete rebuilds (2022-2026) of their agent infrastructure before shipping Custom Agents to production. Their core problem: "enabling users to automate complex workflows while maintaining enterprise-grade reliability, security, and cost efficiency."
+
+Every one of those rebuilds was an unevaluated deployment decision. If Notion had run Straw-style evaluations at each decision point, they might have reduced the number of rebuilds.
+
+**Straw pitch for Notion's AI product team:** "You rebuilt your agent infrastructure 5 times. What did you use to know when a rebuild was good enough? We give you the rubric-defined evaluation that makes 'good enough' measurable, so you ship faster with more confidence."
+
+Sources: pwc.com/us/en/about-us/newsroom/press-releases/pwc-anthropic-ai-native-finance-life-sciences, techcrunch.com/2026/02/24/anthropic-launches-new-push-for-enterprise-agents, infoq.com/news/2026/04/anthropic-managed-agents
+
+TICK_END
+
+---
+
+## Tick 414 — Bear Case Final Update: Comprehensive Risk Matrix With Revised Probabilities
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case (comprehensive update)
+
+### Summary of bear case changes since Phase 2 began (Tick 342 → Tick 414)
+
+This tick updates all bear case scenarios with new evidence from Phase 2 research.
+
+### Updated risk matrix
+
+| Risk | Category | Probability (Phase 1) | Probability (Now) | Key evidence update |
+|---|---|---|---|---|
+| Google/Microsoft native eval cannibalize Straw | Competition | HIGH (new) | **LOWER** | Three platforms now have native eval (Google, Microsoft, OpenAI) — all single-vendor locked; makes ICAAN moat stronger |
+| "Good enough" manual eval replaces Straw | Substitution | MEDIUM | **LOW** | 88% pilot failure rate proves manual eval is failing; the 12% that succeed all use automated eval |
+| No funded competitor emerges | Competition | CONFIRMED | **CONFIRMED** | After exhaustive research: zero funded startup in buyer-defined, cross-vendor, pre-deployment, competition-format evaluation |
+| Enterprises won't post tasks / trust process | Behavior | HIGH | **MEDIUM** | Anthropic Project Deal (186 deals, $4K, zero human intervention) + OpenClaw (200+ agent submissions) proves market exists |
+| Cold start chicken-and-egg | Marketplace | HIGH | **MEDIUM** | Single-agent eval adds value Day 1 (Tick 352); no supply side needed for first evaluations |
+| AI hype winter / budget freeze | Market | MEDIUM | **LOW** | GenAI in trough but agents at peak; $547B failed AI investment creates MORE urgency for evaluation, not less |
+| Regulatory liability if evaluation is wrong | Legal | MEDIUM | **MEDIUM — STABLE** | Strong regulatory tailwinds (Colorado, EU AI Act) but liability for false scores unclear; requires disclaimer layer |
+| Disintermediation (Homejoy pattern) | Structural | HIGH | **MEDIUM** | Enterprise context favors intermediary persistence; Straw's rubric is harder to replicate than Homejoy's matching |
+| Timing risk — too early | Timing | MEDIUM | **VERY LOW** | $1.9M average failed GenAI project, 88% pilot failure, Gartner in trough of disillusionment — demand is PRESENT |
+| Platform acquires Straw out of existence | Acquirer | MEDIUM | **LOW (reframed)** | M&A wave validates exit; Cisco/Galileo confirms category is buyable; acquirer risk becomes exit opportunity |
+| Technical complexity / execution risk | Execution | MEDIUM | **MEDIUM — DOMINANT** | No changed evidence; execution is now the primary risk because market + timing are validated |
+
+### Updated bear case verdict
+
+**Dominant risk: Execution**, not market or timing.
+
+The market is validated. The timing is right. Three platforms built their own single-vendor version, which proves the category. $547B in failed AI confirms the pain. Regulatory deadlines create urgency.
+
+**What can kill Straw now:**
+1. **Product execution** — building the Tier 1-3 eval pipeline to production quality before a funded competitor emerges
+2. **GTM execution** — converting the 96 named design partners into 5 paying customers in 6 months
+3. **Founder risk** — solo founder with no team has concentration risk; first hire matters
+
+**What WAS a risk but is no longer:**
+1. Market timing — validated
+2. Demand existence — validated
+3. Competitive uniqueness — validated (no funded direct competitor)
+
+### The most important bear case that remains
+
+The only scenario that truly kills Straw is: **an Anthropic, Microsoft, or Google product team decides to build the pre-deployment, cross-vendor, rubric-based competition format natively, and ships it with their existing 300K+ enterprise customer relationships.**
+
+Probability assessment: **15-20%** over a 24-month window.
+
+Why not higher: Building cross-vendor evaluation is antithetical to a platform that wants lock-in. Google won't evaluate Azure AI agents favorably. Microsoft won't promote AWS Bedrock agents. The cross-vendor feature is structurally unavailable to incumbent platforms because it requires recommending competitors.
+
+Sources: All Phase 2 ticks 342-414 — synthesized.
+
+TICK_END
