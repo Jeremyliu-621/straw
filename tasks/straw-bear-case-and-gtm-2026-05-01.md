@@ -17654,3 +17654,172 @@ Each advisor announcement should be a LinkedIn post and press release:
 
 Five advisor announcements over six months = five pieces of earned media and five social proof signals for enterprise buyer due diligence.
 
+
+---
+
+## Tick 243 (2026-05-03T00:20:00Z): Logistics and supply chain design partner targets [theme: partners]
+
+### Why Logistics/Supply Chain Is a Tier 1 Straw Vertical
+
+- FedEx plans to embed AI agents into **>50% of operational workflows by 2028** — they are making $100M+ in AI agent commitments
+- DHL and Maersk are piloting AI-driven customs platforms and AI-based pricing
+- Supply chain AI procurement decisions are large, repeated, and high-consequence
+- The rubric for logistics AI is highly objective: on-time delivery rate, exception handling accuracy, customs clearance speed — all measurable
+- FedEx's AI fluency program touches 300,000 employees — the scale of AI commitment is massive
+
+### Named Target Contacts
+
+**FedEx** — Plans AI agents in >50% of workflows by 2028; most aggressive logistics AI program
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Vishal Talwar | EVP & Chief Digital and Information Officer | Leads AI strategy and agent workforce program; built AI fluency training for 300K employees |
+
+- **Context**: Talwar is explicitly building FedEx's "AI agent workforce." Every agent deployment decision is a procurement decision. The scale (50%+ of workflows = thousands of agent deployments) creates a massive, recurring Straw use case.
+- **Pitch angle**: "You're planning to deploy AI agents across more than half of FedEx's operational workflows. Straw provides the evaluation infrastructure to ensure every agent that makes it into production has been independently validated. At FedEx's scale, a wrong agent choice in exception handling or shipment monitoring has operational and financial consequences."
+- **Opener**: "I read about FedEx's AI agent workforce plans — congratulations on the scope of that commitment. I'm building the evaluation methodology for enterprise AI agent procurement and would love to understand how FedEx is approaching agent vendor selection at this scale."
+
+**UPS** — Major carrier; active AI deployment in pricing and customs
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Wanda Gay Williams | Chief Information and Engineering Officer | Leads UPS technology strategy; AI in pricing and network optimization |
+
+- **Context**: UPS is using AI for shipper pricing, customs clearance, and network optimization. Each of these is a distinct agent procurement decision.
+
+**DHL** — Global logistics leader; AI in supply chain and pricing
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Jason Pawlowski | VP, IT at DHL Supply Chain | Technology strategy for supply chain AI |
+| Eric Walters | VP, Analytics and Performance Management at DHL Supply Chain NA | Analytics and AI performance; directly relevant to Straw's evaluation |
+
+- **Context**: DHL is experimenting with AI-based pricing and customs platforms. The pricing AI use case is particularly clean for rubric construction: margin accuracy, demand forecast error, volatility handling.
+
+**Maersk** — World's largest container shipping company; AI in global trade
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Navneet Kapila | Chief Technology Officer | Technology strategy for Maersk's digital transformation |
+
+- **Context**: Maersk is deploying AI for customs clearance, predictive maintenance on vessels, and route optimization. Each is a major procurement decision. Their scale ($60B+ annual revenue) means a wrong AI agent choice for route optimization has significant financial consequences.
+
+**o9 Solutions** — AI-native supply chain platform; raised significant VC
+
+| Name | Title | Why They Care |
+|---|---|---|
+| Chakri Gottemukkala | CEO & Co-founder | AI-native supply chain software; Straw could certify o9's agents |
+
+- **Context**: o9 is a supply chain AI vendor, not a buyer. But Straw can certify o9's agents for enterprise customers who are considering o9 vs. competitors. This is the "vendor as Straw partner" model — o9 benefits from "Straw Certified: Supply Chain AI" and uses it in their enterprise sales process.
+
+### Logistics Vertical Access Strategy
+
+**Council of Supply Chain Management Professionals (CSCMP)** — Annual conference attended by Fortune 500 supply chain executives. A speaking slot on "AI agent selection for supply chain operations" reaches Walmart, Target, P&G, FedEx, UPS, DHL, and Maersk simultaneously.
+
+**Gartner Supply Chain Top 25**: Gartner's annual ranking of the best supply chain companies. All 25 are active AI investors and all face the AI agent procurement problem. A Straw methodology reference in a Gartner supply chain report would be direct marketing to all 25.
+
+### Logistics Rubric Template
+
+Core evaluation dimensions for logistics AI agent selection:
+1. **On-time delivery forecast accuracy**: MAE vs. actual delivery outcomes in simulated test environment
+2. **Exception handling rate**: % of shipment exceptions correctly identified and escalated vs. missed
+3. **Customs documentation completeness**: Does the agent produce compliant customs documentation for test shipments?
+4. **Route optimization efficiency**: % improvement vs. baseline in simulated routing scenarios
+5. **Demand forecast error**: MAPE on synthetic demand dataset over rolling test window
+6. **Carrier API reliability**: Does the agent gracefully handle API timeouts, rate limits, and data quality issues?
+
+
+---
+
+## Tick 244 (2026-05-03T00:21:00Z): Unit economics deep dive — Straw's LTV/CAC model and financial projections [theme: gtm]
+
+### 2026 SaaS Unit Economics Benchmarks
+
+| Metric | Median B2B SaaS | Top Quartile | Straw Target |
+|---|---|---|---|
+| LTV:CAC ratio | 3.2-3.6:1 | 4-6:1 | 5:1 (year 2) |
+| CAC payback period | 15-18 months | <12 months | <6 months |
+| Gross margin | 52% (AI-first) / 77% (traditional SaaS) | 80%+ | 70-75% |
+| NRR | 110-115% median | 130%+ | 130%+ |
+
+Note: AI-first B2B SaaS faces higher COGS (20-40% for inference) vs. traditional SaaS (<5%). Straw's competition execution has real AI compute costs — this must be modeled carefully.
+
+### Straw's Unit Economics Model
+
+**Revenue per customer (Year 1)**
+- Entry point: 1 workshop ($2,500) + 1 competition ($20,000 average) = $22,500 initial contract
+- Year 1 expansion: 1 additional competition ($20,000) + annual recertification ($12,000) = $32,000 additional
+- Year 1 total: $54,500 average ACV
+
+**Cost to Acquire (CAC)**
+- Founder-led sales (Year 0-1): CAC ≈ 0 (Jeremy's time, not paid sales)
+- Year 1-2 sales/BD hire: Add $60K annual cost, targeting 10 new customers = $6,000 CAC per customer
+- Conference and events: $15K annually / 5 customers acquired = $3,000 events CAC
+- Total blended CAC (Year 1-2): ~$9,000 per enterprise customer
+
+**Gross Margin per Competition**
+- Competition revenue: $20,000 average
+- Compute costs (sandbox execution, LLM judges): $500-$1,500 per competition (estimate)
+- Straw team time (setup, QA, report): 20 hours @ $200/hour = $4,000
+- Variable cost per competition: $5,000-$6,000
+- **Gross margin per competition: 70-75%**
+
+**LTV Model**
+Assumptions:
+- Average customer lifetime: 4 years (enterprise SaaS average)
+- Annual NRR: 130% (Year 1 → Year 2 expansion)
+- Year 1 ACV: $54,500
+- Year 2 ACV: $70,850 (130% of Year 1)
+- Year 3 ACV: $92,105
+- Year 4 ACV: $91,000 (assumption: plateau at year 3)
+- 4-year LTV: $308,455 gross revenue × 72% margin = **$222,087 LTV**
+
+**LTV:CAC**: $222,087 / $9,000 = **24.7:1** — dramatically better than benchmark
+
+This is a strong unit economics story. The key driver: Straw is fundamentally high-value, low-frequency (3-10 competitions per customer per year), with high gross margins and natural expansion mechanics.
+
+### AI-First COGS Warning
+
+Straw is not a traditional SaaS business — it has real AI compute costs per competition. These must scale correctly:
+
+**Compute cost per competition (detailed)**
+- Sandbox execution: 3-8 agents, each running 50-100 task iterations = $200-$800 in inference costs
+- LLM judge evaluation: $100-$300 per competition (judging 50-100 outputs)
+- Infrastructure (Kubernetes sandbox, orchestration): $200-$500 per competition
+- **Total compute COGS: $500-$1,600 per competition**
+
+At $20K competition price, compute COGS are 2.5-8% of revenue — comfortably below the 20-40% AI-first benchmark concern. The high-ticket price protects gross margins.
+
+**Warning**: If Straw ever offers a sub-$5,000 competition tier, compute costs could compress margins to <50%. Stay at $15K minimum.
+
+### Financial Projections — 3-Year Model
+
+**Year 1 (0-12 months)**
+- Customers: 5-8 paying (3 at Tier 1 competition, 2 at Tier 2 subscription)
+- ARR: $75K-$120K
+- Gross margin: 68-72% (lower in Y1 due to labor-intensive setup)
+
+**Year 2 (12-24 months)**
+- New customers: 12-15
+- Total customers: 18-22
+- ARR: $400K-$600K (Y1 expansion + new customers)
+- Gross margin: 72-75% (processes more efficient)
+- Series A target: $500K-$750K ARR
+
+**Year 3 (24-36 months)**
+- New customers: 25-35
+- Total customers: 45-55
+- ARR: $1.5M-$2.5M
+- Gross margin: 75-78% (engineering efficiency improvements)
+- NRR: 130%+ (established expansion mechanics)
+
+### The Pricing Leverage Point
+
+The current $15K-$50K competition pricing is correct for design partner phase. At Series A, consider introducing:
+
+1. **Competition + Platform subscription bundle**: $30K competition fee + $12K/year platform access (rubric library, compliance templates, recertification workflow) = $42K blended year 1 ARPU
+
+2. **Outcome-based pricing component**: For high-confidence competitions, offer a "value guarantee" — if the winner doesn't perform at least 15% better than the runner-up in production at 90 days, Straw credits 50% of the fee. This removes buyer risk at the cost of small P&L exposure. Expected cost: low (most competitions will show clear winners).
+
+3. **Volume discount for multi-year**: Enterprises with 10+ planned competitions get a 20% discount on annual subscription. This creates predictable ARR and locks in the most valuable customers.
+
