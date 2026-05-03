@@ -38578,3 +38578,151 @@ If Anthropic wants to credibly claim "Claude agents are enterprise-ready," indep
 **#270 — Ravi Kumar** (CEO, Cognizant) — Cognizant has 350K associates on Claude; Straw evaluation could be a Cognizant client offering
 
 ---
+---
+
+## Tick 531 — X/Twitter Strategy: Building Straw's Developer Supply Community [GTM/Community]
+
+*2026-05-03. X/Twitter is where AI developers live. The 70/30 reply strategy is the 2026 algorithm.*
+
+### The 2026 X algorithm
+
+From source code analysis: X's 2026 algorithm weights **engagement quality > follower count**. Key signals:
+- Reply engagement rate (most weighted)
+- Bookmarks (strong positive signal)
+- Quote tweets with commentary
+- Profile link clicks
+
+The **70/30 reply strategy:** 70% of posts = replies to others; 30% = original content. Replies to high-follower accounts in your niche drive 3-5× more profile visits than standalone tweets.
+
+### Jeremy's X strategy for Straw supply-side
+
+**Target accounts to engage with (10 minutes/day, reply-first strategy):**
+
+Supply-side developers:
+- @cremaMaestro (CrewAI) — every release tweet
+- @simonw (Simon Willison) — AI tools commentary
+- @gneubig (Graham Neubig) — OpenHands updates
+- @LangChainAI — LangChain releases
+- @AnthropicAI — Claude updates that affect agents
+
+Demand-side enterprise buyers:
+- @swyx (Shawn Wang / Latent Space) — enterprise AI commentary
+- @emollick (Ethan Mollick / Wharton) — enterprise AI adoption research
+- @benedictevans — enterprise tech analysis
+- @bilawalsidhu — CTO/AI leader commentary
+
+**Reply format that drives profile visits:**
+> "[Engaging with their point] + [One-sentence Straw connection] + [Question back to them]"
+
+Example reply to a tweet about agent evaluation difficulty:
+> "Exactly why I'm building Straw. We seal the rubric before agents compete — no post-hoc rationalization possible. What's the evaluation problem you're seeing most often?"
+
+### Original content strategy (30% of posts)
+
+**Three post types that perform for AI infrastructure startups:**
+
+1. **Data posts** — "88% of AI agent projects never reach production. The #1 reason: no objective success criteria defined upfront. [Thread]"
+   - Format: Big stat → explanation → Straw angle
+   - Post Monday mornings (highest engagement)
+
+2. **Build-in-public updates** — "Day 14 of running Straw's first evaluation. Here's what surprised us about how enterprises define 'good agent output':"
+   - Format: Real process update + unexpected finding + lesson
+   - Post Tuesday/Thursday
+
+3. **Contrarian takes** — "Benchmarks are broken. UC Berkeley just proved every major agent benchmark can be gamed to 100%. Here's what to do instead:"
+   - Format: Counterintuitive claim → evidence → Straw solution
+   - Post Wednesday (peak debate day)
+
+### X compliance for automated content
+
+X permits: scheduled original posting, AI-assisted drafting, bulk uploading original content.
+X prohibits: keyword-triggered auto-replies, follow/unfollow scripts.
+
+**Jeremy's setup:** Claude Code writes draft posts → Jeremy approves → Buffer.com schedules. No autonomous posting — all content is human-reviewed. Zero compliance risk.
+
+### The 6-week X growth sprint
+
+| Week | Goal | Actions |
+|---|---|---|
+| 1 | Establish presence | 3 posts; 20 replies to target accounts; profile updated with Straw description |
+| 2 | First engagement traction | Reply to UC Berkeley benchmark paper authors; quote tweet with Straw commentary |
+| 3 | Supply-side outreach | Direct DMs to 5 CrewAI/OpenHands developers: "I'm running an agent competition on Straw..." |
+| 4 | First "build-in-public" thread | "Week 4 of Straw: here's what happened when 3 agents competed on the same enterprise task" |
+| 5 | Demand-side amplification | Quote tweet a LinkedIn thought leader with Straw data point |
+| 6 | First influencer partnership | Approach @swyx or @emollick: "I'll share first Straw evaluation data with you for a tweet" |
+
+**Target at 6 weeks:** 500+ followers, 3 agent developer DMs converted to "I'll compete on Straw."
+
+
+---
+
+## Tick 532 — The Anchor Customer Strategy: One Name That Opens Every Door [GTM]
+
+*2026-05-03. Enterprise SaaS buying committees are 11-20 people. One household name customer compresses the 6-month sales cycle.*
+
+### The anchor customer thesis
+
+In enterprise SaaS:
+- Typical sales cycle: 6 months minimum
+- Buying committee: 11-20 people
+- Primary decision barrier: trust and social proof
+- With 1 household-name customer: sales cycle compresses to 4-6 weeks for similar companies
+
+**The "anchor" mechanism:** When Jeremy says "We ran a Straw evaluation for [Fortune 500 Company]," the prospect's buying committee immediately knows:
+- Their legal team already approved the DPA
+- Their security team already reviewed the pipeline
+- They got value (otherwise the brand wouldn't allow the reference)
+- Straw is safe to buy
+
+**One anchor customer = 10× outreach effectiveness across comparable companies in the same vertical.**
+
+### Target anchor customers by vertical
+
+**Vertical 1: Financial services**
+- Target: Goldman Sachs, JPMorgan, or a major hedge fund
+- Why: FS is the most credibility-signaling vertical; every bank will ask "who else in FS uses this?"
+- Contact path: Marco Argenti (Goldman CIO, #146) or Teresa Heitsenrether (JPMorgan CDAO, #145)
+- Anchor power: If Goldman Sachs ran a Straw evaluation → every FS buyer accepts without lengthy review
+
+**Vertical 2: Developer tools**
+- Target: Stripe, Cloudflare, or Vercel
+- Why: Developer tools companies are trusted by every engineering-forward enterprise
+- Contact path: Carol Liang (Stripe, #171)
+- Anchor power: "Stripe evaluated agents using Straw" → every developer-tools adjacent company follows
+
+**Vertical 3: Enterprise software**
+- Target: Salesforce, ServiceNow, or Workday
+- Why: These are infrastructure companies — their endorsement signals Straw is enterprise-grade
+- Contact path: ServiceNow's AI innovation team (no specific contact yet — needs research)
+- Anchor power: ServiceNow + Straw = "evaluation infrastructure for enterprise AI orchestration"
+
+### How to convert an anchor (different from a standard design partner)
+
+Anchor customers require:
+1. **Free evaluation** — do not charge the anchor for the first evaluation (give up $5K; get $500K in sales leverage)
+2. **White-glove service** — Jeremy runs the entire evaluation personally; over-deliver on results quality
+3. **Named case study rights** — negotiate in DPA: "We may reference [Company] as a customer in our marketing materials, subject to review of each specific mention."
+4. **Executive sponsor** — get sign-off from a VP or C-level (their name makes the reference more credible)
+
+**The anchor ask at results delivery:**
+> "This evaluation went really well. Would [VP Name] be willing to be listed as a reference on our website? It would just be: '[Company] used Straw to evaluate AI agents for [use case] and selected [winner].' We'd send the exact language for approval."
+
+### How to use the anchor in outreach
+
+**Cold email with anchor reference:**
+> "We recently ran an AI agent evaluation for [Anchor Company]. Their agent selection team defined the rubric, 4 agents competed, and they had a winner recommendation in 14 days instead of 6 months. I'd like to discuss whether this makes sense for [Prospect Company]."
+
+**LinkedIn post (after anchor agrees):**
+> "[Anchor Company] just ran their first pre-deployment AI agent evaluation on Straw. They defined success criteria upfront, 4 agents competed, and they had an auditable winner recommendation in 14 days. This is what enterprise AI procurement should look like."
+
+**The virtuous cycle:** Anchor → outreach to anchor's vertical → second anchor in second vertical → reference both → third vertical → Series A.
+
+### The specific anchor pursuit sequence
+
+| Month | Anchor target | Approach |
+|---|---|---|
+| Month 1 (May) | Stripe (Carol Liang — warm) | Benchmark → Straw automation email; offer free evaluation |
+| Month 2 (June) | A Series B/C AI startup (warm via CrewAI/LangChain network) | Less credible anchor but faster to close; builds case study |
+| Month 3 (July) | Goldman Sachs or JPMorgan (cold, via FinServ content) | SR 11-7 compliance angle; free evaluation for named case study |
+| Month 4 (Aug) | One Fortune 500 (via anchor #1 reference) | Now have 2 case studies; much warmer pitch |
+
