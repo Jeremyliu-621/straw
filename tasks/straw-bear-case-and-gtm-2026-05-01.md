@@ -26141,3 +26141,41 @@ This is a direct Straw marketing opportunity. Every enterprise IT professional a
 Sources: newsroom.workday.com/2025-09-16-Workday-Illuminate, a16z.com/workdays-last-workday, biztechmagazine.com/article/2026/04/servicenow-knowledge-2026, store.servicenow.com (Now Assist Readiness Evaluation)
 
 TICK_END
+
+---
+
+## Tick 428 — LMArena $1.7B Valuation: Market Validation, Not Competition
+
+**Date researched:** 2026-05-03
+**Theme:** Bear case (competition) / Market sizing
+
+### LMArena raised $150M at $1.7B in January 2026
+
+LMArena is the Chatbot Arena spinoff (LMSYS project). $150M Series A (January 6, 2026), $1.7B post-money valuation, 5M monthly users, 60M conversations/month, $30M annualized consumption run rate 4 months after product launch.
+
+**Customers:** OpenAI, Google, xAI — the AI LABS.
+
+### Why LMArena does not compete with Straw
+
+| Dimension | LMArena | Straw |
+|---|---|---|
+| Who it's for | AI labs (model developers) | Enterprises (AI buyers, procurement teams) |
+| What it evaluates | How millions of users prefer Model A vs. Model B in general tasks | Whether Agent X meets THIS enterprise's specific task rubric |
+| Evaluation method | Crowdsourced A/B human preference voting | Automated rubric-based scoring, Tier 1+2+3 pipeline |
+| Output | ELO leaderboard ranking | Task-specific rubric score with per-criterion reasoning |
+| Contamination risk | Mitigated by prompt freshness | Immune — enterprise's private task is not in training data |
+| Revenue model | AI labs pay for model improvement data | Enterprises pay for pre-deployment procurement evaluation |
+
+**The analogy:** LMArena is Moody's for AI model capability in general. Straw is the underwriter that tells an enterprise whether THIS specific agent is ready for THIS specific deployment. General capability rating vs. task-specific procurement validation.
+
+### What LMArena's $1.7B means for Straw
+
+1. **Market confirmation:** The market values AI evaluation at $1.7B for just the developer-side layer. The enterprise procurement layer (Straw's market) is bigger — $15T in B2B spend being intermediated by AI agents all need evaluation before deployment.
+
+2. **Category credibility:** When investors ask "what other companies are doing AI evaluation?", the honest answer is: "LMArena serves AI labs with general evaluation at $1.7B. Straw serves enterprises with procurement evaluation — a completely different product for a different buyer in a completely different market."
+
+3. **Potential exit path:** LMArena (or its investors) would benefit from a Straw acquisition — the enterprise procurement layer is a natural downstream customer for LMArena's general model ratings. "Your model scores 87 on LMArena ELO. Now run a Straw evaluation to see if it scores 92 on your specific procurement workflow."
+
+Sources: siliconangle.com/2026/01/06/ai-evaluation-startup-lmarena-raises-150m-1-7b-valuation, techcrunch.com/2026/01/06/lmarena-lands-1-7b-valuation-four-months-after-launching-its-product, prnewswire.com/news-releases/lmarena-raises-150-million
+
+TICK_END
