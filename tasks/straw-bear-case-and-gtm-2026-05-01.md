@@ -25723,3 +25723,45 @@ Both matter, but the FIRST is the actual value unlock. An enterprise that writes
 Sources: masterofcode.com/blog/ai-roi, xcubelabs.com/blog/measuring-ai-agent-roi-how-enterprises-prove-value-from-agentic-ai, onereach.ai/blog/agent-lifecycle-management-stages-governance-roi, digitalapplied.com/blog/ai-agent-roi-measurement-beyond-task-completion
 
 TICK_END
+
+---
+
+## Tick 419 — OpenAI Codex 4M Users + Enterprise AI Budget Reallocation
+
+**Date researched:** 2026-05-03
+**Theme:** Market sizing / Design partner cross-referencing
+
+### OpenAI Codex enterprise customers (multiple Straw design partner overlaps)
+
+Codex named enterprise customers: **Virgin Atlantic, Ramp, Notion, Cisco, Rakuten**
+
+Cross-reference with Straw's design partner list:
+- **Rakuten** = already listed as design partner #95 (Anthropic Managed Agents customer)
+- **Notion** = already listed as design partner #96 (spent 4 years rebuilding agent infrastructure)
+- **Cisco** = acquired Galileo (April 2026); has AI security expertise + major AI infrastructure budget
+
+Key point: Rakuten and Notion are running BOTH Anthropic Managed Agents AND OpenAI Codex. This is exactly the cross-vendor scenario where Straw's ICAAN moat is most valuable — when a company uses multiple AI vendor products, no single vendor's evaluation framework covers all their agents.
+
+### Use-case-specific Codex deployments
+
+| Company | Codex use case | Straw rubric angle |
+|---|---|---|
+| Virgin Atlantic | Increase test coverage + team velocity | Rubric: "generates tests covering ≥80% of uncovered branches; tests pass existing CI" |
+| Ramp | Accelerate code review | Rubric: "identifies issues in ≤2 minutes per PR; false positive rate ≤10%" |
+| Notion | Build new features quickly | Rubric: "implements feature spec in one iteration; zero regression in existing test suite" |
+| Cisco | Understand large interconnected repos | Rubric: "traces dependency chains correctly across 3+ services for 95% of queries" |
+| Rakuten | Incident response | Rubric: "identifies root cause within 5 minutes for 90% of past incident types" |
+
+Each of these is a rubric that Straw could host as a template. If Straw published these as "Codex evaluation templates" in a public template library, Codex enterprise customers could clone them and customize for their specific codebase — instant inbound.
+
+### Enterprise AI budget reallocation: evaluation is hiding in the experimentation budget
+
+Key budget insight: evaluation tooling is embedded in the "Model API costs and experimentation" budget (30-40% of total AI budget), not broken out as a separate line item.
+
+This means: the budget for Straw is ALREADY being spent — just on manual engineering hours running comparisons, on A/B testing that isn't systematic, on vendor evaluations with no rubric. When an enterprise pays $25K/year for Straw, they're replacing 2-3 weeks of senior engineer time (at $500/day = $7-10K) spent running informal comparisons every quarter.
+
+**The budget conversation:** "You're already spending on agent evaluation — it's just not called that. It's called the 3 weeks your senior engineers spent comparing Codex vs. Cursor before your last deployment. Straw makes that 3 weeks into 3 days, with a documented rubric and a defensible score."
+
+Sources: openai.com/index/scaling-codex-to-enterprises-worldwide, openai.com/index/introducing-codex, softude.com/blog/ai-budget-allocation-infra-models-integration, stackai.com/insights/enterprise-ai-budgeting-in-2026
+
+TICK_END
