@@ -14406,3 +14406,164 @@ The hyperscaler evaluation tools are a headwind on the low end of the market, no
 
 The existential risk emerges only if a hyperscaler builds a genuinely neutral, cross-vendor, expert-guided evaluation platform with compliance documentation and an appeals process. None of them have done this, and structural incentives make it unlikely they ever will.
 
+
+---
+
+## Tick 199 (2026-05-03T12:05:00Z): First 90 days founder calendar — specific actions week by week [theme: gtm]
+
+### Philosophy: Sales Before Product
+
+The first 90 days objective is NOT to build the platform. It's to validate that enterprises will pay for competitions, and to run the first 3 competitions manually (with spreadsheets and Google Docs if necessary) to understand what customers actually need before building software around it.
+
+This is the Stripe principle: the first Stripe payment was processed manually by Patrick Collison writing code directly in a customer's browser developer console. The product came after the proof of demand.
+
+### Week-by-Week Calendar
+
+---
+
+**Week 1: Research and ICP (Ideal Customer Profile) Lock**
+- Monday: Write the ICP document (1 page). Answer: what does the ideal first customer look like? Industry, size, AI maturity, specific pain trigger (regulatory, competitive, operational)
+- Tuesday: Build a list of 50 target companies that fit the ICP, using LinkedIn Sales Navigator and public AI strategy announcements from 2025-2026
+- Wednesday: Tier the list: Tier 1 (10 companies — immediate outreach), Tier 2 (20 companies — 30-day outreach), Tier 3 (20 companies — 60-day outreach)
+- Thursday-Friday: Research each Tier 1 target. For each: find the specific named decision-maker (usually Head of AI, VP of Technology Strategy, Chief AI Officer), find a specific current trigger (regulatory deadline, AI deployment announced, failed project), draft a personalized 3-sentence opener
+
+**Deliverable end of Week 1**: 50-company list with tiers, 10 personalized outreach drafts ready to send
+
+---
+
+**Week 2: First Outreach Wave**
+- Monday: Send Tier 1 outreach (all 10 emails/LinkedIn messages simultaneously)
+- Tuesday-Wednesday: Research Tier 2 targets; write personalized openers
+- Thursday: Follow up on any Tier 1 responses; schedule any interested calls
+- Friday: Send Tier 2 first wave
+
+**Expected outcome**: 2-4 responses from 10 Tier 1 outreach (20-40% response rate is realistic for highly personalized cold outreach with specific triggers)
+
+---
+
+**Week 3: First Calls**
+- Goal: Book 5 discovery calls this week
+- Discovery call script (30 minutes):
+  - 5 min: "Tell me about your current AI deployment process"
+  - 10 min: "How do you currently evaluate whether an AI agent is good enough before deployment?"
+  - 10 min: "Let me show you what a Straw competition looks like" [show the Tick 187 pitch slides]
+  - 5 min: "Would you be interested in being a design partner for our first competition?"
+- Red flags in calls: "We already have an evaluation process" (probe whether it's actually rigorous), "Legal needs to review any vendor agreement first" (means 6-month cycle, prioritize lower friction prospects)
+- Green flags: "We've been struggling with this exact problem," "We're deploying AI agents in [regulated vertical]," "Our board has been asking about AI governance"
+
+---
+
+**Week 4: Close First Design Partner**
+- Goal: Sign 1 design partner agreement (even a handshake MOU is sufficient)
+- Design partner terms: 50% discount on first competition ($4K-$10K instead of $8K-$20K) in exchange for: feedback on process, permission to write a case study (anonymized), reference call availability for future customers
+- If no one is ready to sign: go back to Tier 2 outreach + research Tier 3
+
+---
+
+**Weeks 5-6: Build Minimum Viable Competition**
+- NOT a full SaaS product. A spreadsheet-based evaluation workflow:
+  - Rubric template in Google Docs
+  - Task definition document
+  - Agent scoring spreadsheet (manually input scores from running each agent)
+  - Analysis report template (3-5 pages)
+- Run the first competition: manually call each agent API, paste outputs into scoring spreadsheet, apply rubric, generate report
+- Cost to run: 40-60 hours of Jeremy's time + $200-$500 in API calls
+- Revenue: $4K-$10K (design partner rate)
+- Learning: what was hard? What did the client actually care about? What would save time in the next competition?
+
+---
+
+**Weeks 7-8: Iterate and Sell Competition #2**
+- Write the case study from Competition #1 (even if anonymized)
+- Use the case study in outreach to Tier 2 and Tier 3 prospects
+- Run Competition #2 for the first design partner (or a second design partner)
+- Begin building simple tooling to automate the most time-consuming part of competition #1 (likely: prompt formatting and output collection)
+
+---
+
+**Weeks 9-10: Second Design Partner and Feedback Loop**
+- Goal: 2 signed design partners, 2 competitions completed
+- Metrics to track: time spent per competition (reduce from 60 hours to 40 hours by Week 10), customer NPS after receiving results ("Would you commission another competition with Straw?"), rubric design time (reduce from 4 hours to 2 hours with AI-assisted rubric builder)
+
+---
+
+**Weeks 11-12: Foundation for Seed Round**
+- By end of Week 12: have 2 design partners, 2-3 competitions run, $8K-$25K in revenue, at least 3 warm investor introduction conversations started
+- Write the "Founder transparency" blog post (Tick 190, Week 12 content): "90 days in, here's what we've learned"
+- Deck in final form (Tick 187 structure)
+- First pitch meeting booked with target investor
+
+**90-day deliverable**: 2 paying design partners, $10K-$30K in competition revenue, seed round narrative in place, first press mention (even a "we spotted this startup" blurb), clear product roadmap based on real customer feedback
+
+---
+
+### Anti-Patterns to Avoid
+
+1. **Building before selling**: Don't build a SaaS product before you've run 3 manual competitions and know exactly what to build
+2. **Spray and pray outreach**: 50 personalized contacts > 500 generic emails. Personalization requires research. Research requires time. Timebox it.
+3. **Pursuing logos over learners**: Don't chase the Goldman Sachs logo if a mid-market financial services company will move faster and provide better feedback. The learning matters more than the brand in Month 1.
+4. **Premature pricing sophistication**: Start with one price ($10K per competition). Add tiers after learning what customers value most.
+5. **Hiring before process**: Don't hire a salesperson until the founder can clearly explain how to sell Straw to a specific ICP. You can't delegate a process you haven't mastered.
+
+
+---
+
+## Tick 200 (2026-05-03T12:09:00Z): Revenue concentration risk — the first 3 customers churn [theme: bear]
+
+### The Math Problem
+
+Seed-stage B2B startups typically land 2-5 early customers who represent 80-95% of ARR. At $10K-$50K per competition, Straw's first 5 customers represent $50K-$250K in Year 1 revenue. If 2 of those 5 customers churn — for any reason — Straw loses 40% of its ARR overnight.
+
+This is not unique to Straw. It's structural to early B2B. But for Straw specifically, several churn mechanisms are worth modeling:
+
+### Straw-Specific Churn Mechanisms
+
+**Churn Type 1: "We ran one competition and got our answer"**
+A company runs a competition to decide between Agent A and Agent B. Agent A wins. They deploy Agent A. Done. They have no need to run another competition for 18-24 months (until they're evaluating the next major AI deployment decision).
+
+This is the fundamental "point-in-time purchase" risk. Straw's value is realized at the moment of a procurement decision — which is episodic, not continuous.
+
+**Mitigation**: Convert episodic buyers to ongoing subscribers. The pitch: "You made one deployment decision. Now you need to recertify that Agent A is still performing as well 6 months later. And your next department wants to evaluate AI too. Subscribe to Straw's annual plan — unlimited competitions for the year."
+
+**Churn Type 2: "We built this internally"**
+A well-resourced enterprise watches Straw run their first competition and says "we can build this ourselves." They hire an ML engineer and replicate the basic evaluation workflow in-house.
+
+The mitigation is partially rubric IP and expertise — they can replicate the mechanics but not the rubric library or the vertical domain expertise. The stronger mitigation: build network effects into the platform that make self-replication harder. Example: the "Straw Certified" badge only has value if it's issued by Straw, not by an internal evaluation tool.
+
+**Churn Type 3: "The regulatory mandate changed"**
+EU AI Act implementation gets delayed 12 months. OMB M-26-04 sunsets (it expires December 2027). A new administration revokes the federal AI procurement guidance. The regulatory urgency that drove adoption evaporates.
+
+This is real political risk but not existential: evaluation is still valuable even without regulatory mandate. Companies that ran one Straw competition and got a good result will continue using it even if the regulation changes, because they experienced the value directly.
+
+**Churn Type 4: "The agent vendor we chose is shutting down"**
+Enterprise runs Straw competition, pays $20K, Agent X wins. They deploy Agent X. 9 months later, Agent X's vendor runs out of funding. The enterprise's AI agent is dead. The customer blames Straw for recommending a company that failed. Even if irrational, this churn is real.
+
+Straw should add a "vendor health" disclaimer to competition results: "Straw evaluates technical performance. We do not evaluate commercial viability of agent vendors. Please conduct separate due diligence on vendor financials and roadmap."
+
+### Revenue Concentration Mitigation Strategies
+
+**1. Design partner diversification from Day 1**  
+Straw's first 5 customers should span at least 3 different verticals and 2 different company sizes (mid-market + enterprise). Never more than 40% of ARR from a single vertical in Year 1.
+
+**2. Usage-based floor in annual subscriptions**  
+Annual subscriptions should have a minimum usage clause: 3 competitions/year minimum. This prevents "run 1 competition, pay annual fee, then go dark" churn patterns. If a subscriber doesn't use the minimum, Straw proactively schedules a rubric design workshop to identify the next evaluation need.
+
+**3. Expansion motion within accounts**  
+The first competition should target one department (e.g., legal). The expansion motion: "Legal used Straw for document review evaluation. Now finance is evaluating a trading research agent. And HR is evaluating a recruiting agent. All three departments can run on the same Straw enterprise subscription."
+
+Ideal expansion path: 1 department → 3 departments → enterprise-wide platform. Company expands from $20K (single competition) to $120K (enterprise subscription) without acquiring a new company.
+
+**4. Agent vendor subscription revenue (per Tick 196 Tier 3)**  
+If 10% of competition fees come from agent vendor recertification subscriptions by Year 2, Straw has a revenue stream that's structurally independent of enterprise buyer churn. An agent vendor pays for their annual recertification whether or not any specific enterprise customer churns.
+
+**5. Retention metrics early warning system**  
+Track: time since last competition (>90 days without a new competition is early churn signal), rubric workshop completion rate (customers who complete a workshop are 3x more likely to commission a competition), response rate to quarterly business reviews. Proactive outreach before the churn event, not after.
+
+### The Bull-Case Perspective
+
+Revenue concentration at seed stage is not a bug — it's a feature of selling correctly. You want 3 customers who each pay $50K and are deeply engaged, not 30 customers who each pay $5K and have no relationship. The deep engagement is what teaches Straw what to build. The diversification comes in Year 2 when you've learned what the ICP actually looks like.
+
+### Bear Case Score: 6/10 (real and manageable)
+
+Revenue concentration will be a real risk in Year 1. It's manageable with: vertical diversification from the start, expansion motion built into the product, agent vendor recertification revenue as a second revenue stream, and proactive retention management. The deeper insight: the solution to concentration risk is making Straw so embedded in the customer's AI governance workflow that churning is more painful than staying.
+
