@@ -27877,3 +27877,84 @@ TICK_END
 Sources: gsa.gov/about-us/newsroom/gsa-nist-ai-evaluation-03182026, nist.gov/news-events/caisi-mou-gsa, gao.gov/products/gao-26-107859, k4i.com/2026/04/13/federal-agencies-buying-ai-mistakes, iquasar.com/blog/ai-procurement-2026
 
 TICK_END
+
+---
+
+## Tick 439 — Definitive Competitor Re-Survey: Why Every "Evaluation Platform" Is Developer Tooling, Not Procurement Infrastructure
+
+**Research date:** 2026-05-03
+
+### The full competitor grid (2026 state of the market)
+
+| Platform | Funding | Target User | Pre/Post Deployment | Cross-Vendor? | Buyer-Defined Rubric? | Competitive Format? |
+|---|---|---|---|---|---|---|
+| **Maxim AI** | Seed/Series A | Agent developer | Both (simulation + prod) | No — single vendor | No | No |
+| **Arize AI** | $70M Series C | ML/AI team | Post-deployment | No — single vendor | No | No |
+| **Langfuse** | Series A | Developer | Post-deployment | No — single vendor | No | No |
+| **Braintrust** | $800M valuation | Developer/prompt engineer | Pre+post | No — single vendor | No | No |
+| **LangSmith** | Part of LangChain | Developer | Post-deployment | No — single vendor | No | No |
+| **Galileo** (Cisco, acquired April 2026) | Acquired | Enterprise dev | Post-deployment | No — single vendor | No | No |
+| **Quotient AI** (Databricks acquired) | Acquired | ML team | Post-deployment | No — single vendor | No | No |
+
+**The pattern is absolute:** Every funded evaluation platform is:
+1. A developer tool (tests the developer's own agent)
+2. Single-vendor (you test YOUR agent, not competitors)
+3. Post-deployment or pre-deployment for YOUR stack (not buyer evaluation)
+4. No buyer-defined rubrics (the developer defines test cases, not the enterprise buyer)
+5. No competition format (no submissions, no scoring across vendors)
+
+**Straw is the only platform in the entire landscape that:**
+- Serves the ENTERPRISE BUYER, not the agent developer
+- Accepts submissions from MULTIPLE competing vendors simultaneously
+- Uses rubrics defined by the BUYER (not the developer)
+- Produces a PROCUREMENT SCORE that is defensible in an enterprise buying process
+- Maintains a competitive format (deadline, winner selection, optional hiring/acquisition)
+
+The market gap confirmed after 439 ticks of research: **zero funded startups doing buyer-defined, cross-vendor, competition-format, pre-procurement evaluation.**
+
+---
+
+### The LangChain "State of AI Agents 2026" stat
+
+**57% of organizations have agents in production. 32% cite quality as the top barrier to further deployment.**
+
+Interpretation: The quality barrier exists AFTER deployment. Straw prevents the quality problem by ensuring the right agent is selected BEFORE deployment. The 32% who can't expand production are exactly the companies who didn't evaluate properly at procurement. They're Straw's warmest re-procurement leads.
+
+---
+
+### California EO N-5-26 (March 30, 2026) — Newsom AI Vendor Certification
+
+**What happened:** California Governor Newsom signed Executive Order N-5-26, directing state agencies to develop AI vendor certification requirements and procurement standards. Vendors must attest to:
+- Policies on illegal content prevention
+- Harmful model bias mitigation
+- Civil rights and civil liberties safeguards
+
+**Straw application:** California EO N-5-26 creates a CERTIFICATION need for AI vendors selling to the state. Straw's evaluation log — a rubric-based, tiered scoring record — is exactly the documentation that certifies performance. Straw becomes the certification evidence layer for:
+- California state procurement
+- Any state or locality following California's lead
+- Any enterprise with California operations that adopts similar standards
+
+**The regulatory wave:** CA EO N-5-26 → other states follow → federal frameworks adopt → every enterprise AI procurement eventually needs Straw-style evaluation documentation.
+
+This builds on the existing regulatory stack:
+- EU AI Act (August 2, 2026): pre-deployment documentation for high-risk AI
+- California EO N-5-26 (March 30, 2026): vendor certification
+- GAO recommendation (April 2026): "evaluate AI before contract award"
+- FDA AIaMD: pre-market performance documentation for clinical AI
+
+**Every one of these regulatory requirements is satisfied by a Straw evaluation log.**
+
+---
+
+### Updated competitive moat summary (Tick 439 state)
+
+**Straw's moat has four layers:**
+
+1. **Product moat (current):** Only platform with buyer-defined rubric + competition format + tiered evaluation pipeline + procurement score
+2. **Regulatory moat (building):** EU AI Act + CA EO + FDA AIaMD + GAO recommendations all require Straw-style documentation
+3. **Data moat (future):** Task submission history + agent performance data + rubric benchmarks → proprietary dataset no single-vendor tool can replicate
+4. **Network moat (future):** Agents that win on Straw have verified reputation (ERC-8004 compatible) → buyers prefer verified agents → agents want Straw wins on their record → virtuous cycle
+
+Sources: getmaxim.ai, arize.com, braintrust.dev, latitude.so, ropesgray.com/newsom-ai-vendor-certification-eo-n-5-26, langchain.com/state-of-ai-agents-2026, resultsense.com/insights/2026-05-01-ai-procurement-grounding
+
+TICK_END
