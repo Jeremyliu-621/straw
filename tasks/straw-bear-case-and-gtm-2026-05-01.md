@@ -20229,3 +20229,161 @@ This ToS structure is sufficient for v0/v1. It becomes a formal legal review at 
 
 Sources: (synthesis from Phase 1 research + general platform liability law)
 
+
+---
+
+## Tick 318 (2026-05-04T02:30Z): Design partner program structure — the Straw v0 program [theme: GTM]
+
+### What to offer, what to ask for (SaaStr standard)
+
+SaaStr's design partner recommendations:
+- Free access during design phase (6 months) → 50% discount at launch for 12-24 months
+- OR: Small equity stake (0.5%) OR revenue share (5% of first year's usage) for high-value partners
+- In exchange: structured feedback sessions (monthly), case study participation, reference customer status
+
+**Straw's design partner offer (v0):**
+
+| Tier | Offer | Ask |
+|---|---|---|
+| **Design Partner (Gold)** | Free first competition ($5K value) + 50% off first year ($12.5K/year vs. $25K/year) | Monthly 30-min feedback call + publish competition report + reference customer for 12 months |
+| **Design Partner (Research)** | Free first competition + free second competition | Detailed rubric feedback + participate in methodology publication + 1 HN/Twitter mention |
+| **Strategic Partner** | Free first 3 competitions ($15K value) | Write case study + speak at Straw's first customer event + refer 3 additional prospects |
+
+**Why the case study matters more than the discount:**
+
+Straw's primary marketing asset in months 1-12 is not SEO, not paid ads — it's published competition reports. Each design partner who agrees to publish their competition report generates:
+- Proof that Straw works (one public report = 100 sales pitches)
+- SEO content for specific use cases ("AI agent evaluation for payment processing")
+- Inbound interest from similar companies in the same vertical
+
+A design partner who runs a free competition and publishes the report is worth 10× more than one who pays $5K and keeps the result private.
+
+### The design partner "research access" framing
+
+For academic/nonprofit partners (METR, Apart Research, AI safety labs):
+
+"We're offering METR research-tier access to Straw's evaluation pipeline. You run one competition at no charge. In exchange, you can publish the methodology and results — we'd love a citation. This helps us validate our evaluation approach with the academic community. There's no commercial pressure."
+
+This framing makes Straw feel like a research collaboration rather than a sales pitch — the right positioning for Beth Barnes, Johannes Tönnessen, and the safety lab contacts.
+
+### The design partner contract minimum
+
+For v0: a simple 1-page agreement covering:
+1. Straw provides competition infrastructure at zero cost for one competition
+2. Enterprise provides task + rubric + agent API connections
+3. Results can be published (with enterprise approval of the report)
+4. No license to use competition data for training
+5. No exclusivity (Straw can run competitions for competitors)
+
+Don't over-lawyer this at v0. Use a standard YC SAFE template as the reference point for "acceptable legal weight." One page.
+
+Sources: saastr.com/dear-saastr-what-incentives-are-given-to-design-partners-and-other-super-early-customers, linkedin.com/pulse/dear-saastr-what-incentives-given-design-partners-other-super-early
+
+---
+
+## Tick 319 (2026-05-04T02:50Z): Cursor PLG applied to Straw — different viral loop, different motion [theme: GTM]
+
+### Cursor's viral loop (inapplicable to Straw)
+
+Cursor's PLG worked because:
+1. Individual developer tries Cursor for free
+2. Developer has "wow moment" (code autocomplete is 10× better)
+3. Developer tells the developer next to them
+4. Word spreads within a team organically
+5. Team adopts → company negotiates enterprise plan
+
+**Key: the individual is the buyer AND the user. The purchase decision happens at individual level, scales to team, scales to company.**
+
+### Why Straw's viral loop is different
+
+Straw's buyer is a VP Engineering making a procurement decision. The "user" is not a developer getting a productivity boost — the "user" is the enterprise getting a competitive analysis of AI agents.
+
+There is no individual developer "wow moment" for Straw. The value is realized at the organization level, not the individual level.
+
+**Straw's viral loop (fundamentally different):**
+1. VP Engineering at Company A runs a Straw competition
+2. Competition report is published publicly (or shared internally)
+3. VP Engineering at Company B reads the report and thinks "this is exactly what I need"
+4. VP Engineering at Company B reaches out to Straw
+
+The unit that spreads virally is the REPORT, not the user's experience of the product. Reports can be shared on HN, Twitter, LinkedIn, at conferences. Each published report is a marketing event.
+
+**The second viral loop:**
+1. Company runs Straw competition — Agent X wins
+2. Agent X's operator (All Hands AI, Cognition, etc.) sees that Agent X won
+3. Agent operator promotes the Straw result as marketing ("Agent X won in a rigorous independent competition")
+4. Other enterprises see the claim and want to verify it with their own competition
+5. Those enterprises become Straw customers
+
+This is a supply-side viral loop: winning agents advertise their Straw results, generating demand from enterprises who want to run their own validation.
+
+### The Cursor lessons that DO apply
+
+1. **Zero friction entry:** The first competition should start in under 10 minutes. Jeremy manually helps with the first 10 competitions to hide any product friction.
+
+2. **Build for the enthusiast:** Cursor's first users were developers who cared deeply about code quality. Straw's first users are VPs Engineering who care deeply about rigorous evaluation. Build for the obsessed, not the average.
+
+3. **The product IS the GTM:** Every competition Straw runs, well-run, generates more than one customer. The product quality is the only marketing that matters in months 1-12.
+
+4. **Individual advocate → organizational adoption:** At Cursor, one developer → whole team. At Straw, one design partner VP Engineering → their peers at other companies via referral. Identify the "superusers" early and make them advocates.
+
+### The HN factor for Straw (different from Cursor)
+
+Cursor's growth was organic developer-to-developer. Straw's HN moment is different: a "Show HN" post with a published competition report generates interest from enterprises who want to run their own, AND from AI agent operators who want their agents in competition. The HN post is a supply-AND-demand recruitment event.
+
+Sources: medium.com/@takafumi.endo/how-cursor-became-the-fastest-growing-saas, thegtmnewsletter.substack.com/p/deconstructing-cursor-growth-playbook-4m-to-2b-arr, contrary.com/company/cursor
+
+---
+
+## Tick 320 (2026-05-04T03:10Z): The AI eval observability market — why Galileo/LangSmith/Arize don't compete with Straw [theme: bear]
+
+### The observability platforms
+
+**LangSmith** (LangChain): 250K+ signups, 25K monthly active teams. Free tier: 5K traces/month. Plus: $39/seat/month. Focus: logging + tracing LLM calls during development and production.
+
+**Arize** (Phoenix + Arize AX): Open-source self-hosted + enterprise managed. Deep ML+LLM monitoring heritage. Focus: production observability, dataset management, experiment tracking.
+
+**Galileo**: $68M raised. Evaluation Foundation Models (proprietary). Real-time guardrails + agent evaluation metrics. Founded by Google AI/Siri/Google Brain alumni. Focus: real-time eval + guardrails in production.
+
+**Maxim AI**: Full-stack evaluation + observability. Position: "Braintrust alternative with deeper eval capabilities."
+
+### Why none of these are Straw competitors
+
+All four platforms share a common paradigm: **you bring your AI product, they help you evaluate and monitor it.**
+
+The implied workflow:
+1. You build an AI feature/agent
+2. You instrument it with LangSmith/Arize/Galileo
+3. You get logs, traces, eval scores for YOUR product
+4. You iterate and improve
+
+**No platform in this category answers the question: "I'm choosing between 3 AI agents from 3 different vendors — which is best for MY specific task?"**
+
+LangSmith helps you evaluate your LangChain agent. It doesn't run a competition between your LangChain agent, a CrewAI agent, and a Devin instance on the same task.
+
+Galileo gives you guardrails for your AI product. It doesn't tell you whether to buy Devin or build your own.
+
+### The market gap this confirms
+
+The entire $68M+ funded observability market (Galileo $68M + Arize undisclosed + Braintrust $36M + LangSmith bootstrapped at LangChain scale) is solving for:
+- "How do I monitor my AI in production?"
+- "How do I debug my AI's failures?"
+- "How do I improve my AI's performance?"
+
+No one is solving:
+- "Which AI agent should I deploy?"
+- "How do I prove to my board that I chose the right agent?"
+- "Which agent will win on MY specific task?"
+
+**This is not a gap that will accidentally be filled by these platforms** — they're built for AI builders, not AI buyers. Straw serves a fundamentally different buyer persona.
+
+### The integration play
+
+Straw selects the winner. Galileo/Arize/LangSmith monitors the winner in production. Straw + Galileo is a natural go-to-market partnership:
+
+**Partnership pitch to Galileo:** "Your customers just deployed an AI agent. We help them choose which one to deploy. Straw competitions generate the production-bound winner that your guardrails then protect. A Straw × Galileo integration could be the complete pre-deployment + post-deployment story."
+
+**Contact at Galileo:** Vikram Chatterji (CEO/Co-founder), formerly Google AI and Meta. @vikram_chatterji on LinkedIn. Add as design partner #53.
+
+Sources: getmaxim.ai/articles/top-5-ai-observability-platforms-for-production-ai-systems-in-2026, galileo.ai, digitalapplied.com/blog/agent-observability-platforms-langsmith-langfuse-arize-2026
+
