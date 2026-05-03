@@ -23689,3 +23689,101 @@ Sources: braintrust.dev/pricing, spectup.com/resource-hub/series-a-traction-metr
 
 TICK_END
 
+
+---
+
+## TICK 384 — Enterprise Consolidation + "Agent Owner" Persona: Straw's Buyer Profile Defined
+
+**Theme: GTM (buyer persona refinement)**
+
+### The Consolidation Signal
+
+2026 enterprise trend: "Enterprises are moving from testing many tools to picking 1-2 winners per category."
+
+This is the "enterprise AI procurement is maturing" signal applied to Straw's timing thesis: enterprises are making final selection decisions NOW, not in 2027. The window to help them make better decisions before they consolidate is the current moment.
+
+**What this means for Straw:**
+- The buyer is in "final selection" mode, not "exploration" mode
+- They've already run pilots; they're choosing between 2-3 finalists
+- Straw's value proposition: "Before you make the final decision, run the competition"
+
+### The "Agent Owner" Buyer Persona
+
+New job titles emerging in 2026: **Agent Supervisor, Agent QA Lead, AI Ops Manager, Chief AI Officer.**
+
+Key data: Organizations with a **named agent owner** have a 2.7× higher production-conversion rate.
+
+The "Agent Owner" is Straw's primary buyer persona — not the CTO (who sets strategy), not the CFO (who approves budget), but the person responsible for deploying and governing AI agents.
+
+**Agent Owner profile:**
+- Title: VP Engineering, Platform Engineering Lead, AI Ops Manager, or Head of AI
+- Budget: $25K-$250K/year authority (or VP Engineering budget approval)
+- Pain point: Responsible for making the right agent selection decision; personally accountable if the deployed agent fails
+- Decision driver: Reduces personal risk (selecting on Straw score is defensible; selecting on demo is not)
+- Success metric: Agent in production, performing at the rubric threshold, not generating compliance incidents
+
+**Straw's sales motion:** Sell to the Agent Owner who is trying to reduce personal risk, not to the CTO who is trying to optimize company strategy. The Agent Owner's fear of "picking the wrong agent" is the emotional hook.
+
+### Procurement Software Market as Comp
+
+Global Procurement Software market: **$6.6B in 2024**, growing. Zip (procurement automation): $18M ARR in 2023 → $193M ARR in 2025 (10× in 2 years). 
+
+If the addressable market for AI AGENT procurement software is 10% of traditional procurement software market: $660M. If Straw captures 1% of that in 3 years: $6.6M ARR — a reasonable Series A baseline.
+
+**The broader framing:** Straw is not just "AI evaluation" — it's **AI agent procurement software**. This positions it in the growing procurement technology category with a longer-term enterprise sales motion and an established buyer persona (procurement/finance leaders in addition to engineering).
+
+### Outcomes-Based Pricing Alignment
+
+Enterprise AI pricing is shifting toward outcomes-based models: "pay for results, not seats." This aligns directly with Straw's competition model:
+- Buyer pays Straw for the competition (the process of finding the winner)
+- Winner earns the prize (the outcome)
+- Ongoing engagement is performance-based
+
+Straw can pilot an **outcomes-based enterprise contract**: Buyer pays $5K/competition baseline + 10% success fee if the winning agent is deployed to production within 90 days. This aligns Straw's revenue with buyer success — and creates a powerful sales story: "We only earn our full fee if the agent we recommend actually ships."
+
+Sources: kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026-trust-flexibility-and-vendor-lock-in, getmonetizely.com/blogs/the-2026-guide-to-saas-ai-and-agentic-pricing-models, digitalapplied.com/blog/ai-agent-adoption-2026-enterprise-data-points
+
+TICK_END
+
+---
+
+## TICK 385 — Supply-Chain AI Evaluation: The McKinsey Chemicals Company Made Real
+
+**Theme: GTM (new vertical validation)**
+
+### The McKinsey Chemicals Company Scenario (Revisited)
+
+McKinsey 2026 procurement report cited a chemicals company running AI agents for autonomous sourcing: automated tender preparation + bid analysis → 20-30% efficiency gain + 1-3% value capture.
+
+The question Straw asks: HOW did they pick the agent? The procurement workflow for AI agent selection for procurement is itself being transformed by AI — but the agent selection decision still happens via demo.
+
+### Supply Chain as a Fourth Straw Vertical (Year 2)
+
+Supply chain AI agent evaluation market indicators:
+- McKinsey: 20-30% efficiency gain from AI-driven sourcing agents
+- Gartner: 40% of enterprise applications will integrate AI agents by end of 2026
+- 2026 is specifically "the year AI agents for autonomous procurement" (SupplyChainBrain)
+- Chemicals company example: autonomous bid analysis = objective comparison criteria (bid accuracy, time-to-analysis, compliance rate)
+
+**Supply chain rubric example:**
+| Criterion | Metric | Threshold |
+|---|---|---|
+| Bid evaluation accuracy | % of bids correctly ranked vs. procurement team's manual ranking | ≥ 85% |
+| Time-to-analysis | Hours from bid receipt to ranked recommendation | ≤ 4 hours |
+| Compliance coverage | % of supplier compliance requirements checked | 100% |
+| Cost savings | Recommended bids vs. baseline contract value | ≥ 2% improvement |
+
+These are exactly the kind of multi-dimensional rubrics Straw was designed to support.
+
+**Year 1 (2026):** Focus on coding agent evaluation (DevOps vertical — largest agent market, most technically accessible buyers).
+
+**Year 2 (2027):** Expand to supply chain / procurement AI evaluation. Target: Chief Procurement Officers at manufacturing/chemicals companies who are deploying sourcing agents.
+
+### Additional Design Partner Target: Supply Chain
+
+**CPO/Chief Digital Officer at a McKinsey-adjacent chemicals or manufacturing company** — use McKinsey's article to identify companies that have been through the McKinsey procurement AI engagement. The named case study company (if publicly identifiable) would be a direct warm lead.
+
+Sources: mckinsey.com/capabilities/operations/our-insights/redefining-procurement-performance-in-the-era-of-agentic-ai, supplychainbrain.com/blogs/1-think-tank/post/43687-why-2026-is-the-year-of-ai-agents-for-autonomous-procurement
+
+TICK_END
+
