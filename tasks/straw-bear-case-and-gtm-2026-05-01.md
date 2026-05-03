@@ -19253,3 +19253,221 @@ Section 10 update: Add a paragraph acknowledging Kaggle's 2026 expansion while m
 
 Sources: techbuzz.ai/articles/google-opens-kaggle-to-community-run-ai-hackathons, aisotools.com/pricing/kaggle, edtechinnovationhub.com/news/google-deepmind-and-kaggle-open-agi-benchmark-contest-with-200000-prize-pool
 
+
+---
+
+## Tick 299 (2026-05-03T20:00Z): The Goldman Sachs Devin story — Straw's origin case study [theme: GTM + bear]
+
+### What Goldman did
+
+Goldman Sachs (July 2025): deployed Devin "as a new employee." Evaluation methodology: Marco Argenti (CIO) described it as a "hybrid workforce" trial — Devin handles repetitive tasks (legacy code refactoring, dependency upgrades, debugging), human engineers verify outputs.
+
+**What Goldman DIDN'T do:** Run a structured competition comparing Devin against alternative agents on Goldman's actual codebase before committing. The evaluation was "pilot and observe" — not "compete and compare."
+
+### Why "pilot and observe" is broken
+
+The Goldman case is actually an exact example of the procurement problem Straw solves:
+
+1. Goldman chose Devin based on reputation + Cognition's marketing + industry buzz
+2. Goldman deployed hundreds of Devin instances
+3. Goldman is now observing results
+4. Goldman has NO competitive baseline — they don't know if Devin is the best agent for their codebase, or just a good one
+
+The 3-4× productivity improvement is reported by Goldman — but compared to what? Previous AI tools? Human-only? Not compared to Claude Code, GitHub Copilot, or Windsurf on the same tasks. Goldman made a $X million commitment without the comparative answer.
+
+**If Goldman had run a Straw competition:** They would know whether Devin is the best autonomous agent for their specific mix of legacy code + security fixes + refactoring work. They might have found the same answer. They might have found a different one. Either way, the procurement decision would have evidence.
+
+### The Straw pitch to Goldman
+
+"Goldman deployed Devin as a 'new employee.' Six months later, you have productivity metrics. What you don't have is a counterfactual: what would Claude Code or Windsurf have done on the same tasks? Straw gives you that counterfactual before you commit, not after. For your next agent procurement decision — or for validating Devin's continued contract — run one 72-hour competition."
+
+**Contact:** Archana Vemulapalli (Tick 289, #43), who controls Goldman's vendor relationships for AI deployments.
+
+### The bear case implication
+
+**Goldman didn't need Straw.** They ran a pilot without a rubric, without a competition, and they still got a good result. Maybe Devin is genuinely the best agent for Goldman's use case. If so, the "good enough" substitution problem is real: "pilot and observe" might work well enough that enterprises don't feel the pain Straw is designed to solve.
+
+**Counter:** 80% of those "good enough" pilots fail (Tick 294). Goldman's pilot may have worked. The Citi, Dell, and Ramp pilots may also work. But the industry base rate is 80% failure. Goldman got lucky or genuinely found the best tool. The other 80% represent Straw's market.
+
+Sources: techcrunch.com/2025/07/11/goldman-sachs-is-testing-viral-ai-agent-devin-as-a-new-employee, agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue, cognition.ai/blog/devin-annual-performance-review-2025
+
+---
+
+## Tick 300 (2026-05-03T20:20Z): Market bifurcation — assistance vs. autonomy — two different Straw pitches [theme: GTM]
+
+### The bifurcation
+
+The AI coding market has split into two fundamentally different segments:
+
+**Assistance segment (supervised):** Cursor ($2B ARR, $29.3B valuation), Claude Code ($2.5B ARR by Feb 2026), GitHub Copilot (~$1B ARR). Developer reviews each suggestion. IDE-embedded. Monthly subscription per developer seat. Usage: 100% of developers, every day.
+
+**Autonomy segment (async):** Devin ($73M ARR June 2025, 73× growth, $25B valuation target). AI receives task, executes asynchronously, returns result. Human reviews end-state, not each step. Usage: discrete tasks assigned to agent instances.
+
+### Why this matters for Straw's GTM
+
+**Two different competition formats, two different pitches:**
+
+**Pitch 1 — The autonomy competition (Straw's primary market):**
+"You're evaluating whether to use Devin or an alternative for your autonomous task delegation workload. Run a competition: same 20 tasks, three agents (Devin, Claude Code, Windsurf), 72 hours, your rubric. The score tells you which one to use for your specific tasks."
+
+Target buyers: Companies evaluating Devin, All Hands AI (OpenHands), SWE-agent, or other autonomous coding agents. These are the Goldman Sachs, Citi, Dell, Ramp profiles.
+
+ACV: $25K/year (multiple competitions per year as they rotate agent contracts)
+
+**Pitch 2 — The assistance competition (secondary market, harder sell):**
+"You're picking between Cursor and Claude Code for your 500 developers. Run a 72-hour benchmark: same 30 real tasks from your backlog, both IDEs with API access, your scoring rubric."
+
+Target buyers: VP Engineering at 200-1000 developer companies making a platform decision. But: assistance tools are often evaluated by individual developer preference, not enterprise procurement. The competition format may be less natural here.
+
+ACV: $5K-10K (one-time procurement competition before platform choice)
+
+### Market sizing implication
+
+The autonomy segment is Straw's sweet spot because:
+1. **Discrete task completion** is the natural unit for a competition (vs. continuous IDE experience)
+2. **Enterprise procurement** is already how autonomous agents are bought ($25K+/year contracts)
+3. **The rubric question is natural**: "Complete these tasks correctly" is a well-formed rubric
+4. **High ACV**: Companies spending $100K+/year on Devin will pay $25K for a procurement validation competition
+
+The assistance segment is harder because developer preference and habitual workflow drive tool selection. Rubrics are less clear for IDE tools. Enterprise decisions still happen (IT procurement), but individual developer preferences often override.
+
+### METR's role as both partner and frame
+
+METR measures AI agent capability on long-horizon tasks (Claude Opus 4.6 = 14.5 hour time horizon at 50% success rate). This is a general capability measure. Straw measures AI agent performance on YOUR SPECIFIC TASKS.
+
+METR tells you: "Claude Opus 4.6 can complete tasks up to 14.5 hours of human work with 50% reliability."
+Straw tells you: "On YOUR 20 legacy code refactoring tasks, Claude Opus 4.6 scored 78/100 vs. Devin's 71/100."
+
+They're complementary. METR's findings help Straw's buyers understand model capability baseline. Straw's competitions produce the domain-specific answer METR can't give.
+
+**Beth Barnes (METR founder/CEO) as design partner #46:** See Tick 270 for background. The METR × Straw partnership story: METR provides general capability benchmarks, Straw provides task-specific procurement benchmarks. An enterprise could use both: METR scores to shortlist candidates, Straw to final-select.
+
+**Updated partner count: 46 named contacts** (Beth Barnes carried from Tick 270)
+
+Sources: agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue, digitalapplied.com/blog/ai-coding-agents-claude-code-cursor-codex-replit-2026, metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks
+
+---
+
+## Tick 301 (2026-05-03T20:40Z): Cognition's $25B valuation — what it reveals about market dynamics [theme: bear]
+
+### The revenue data
+
+- September 2024: Devin $1M ARR
+- June 2025: Devin $73M ARR (73× in 9 months)
+- Post-Windsurf acquisition: +$82M ARR → combined ~$155M ARR
+- April 2026: Funding talks at $25B valuation (~65-68× ARR multiple)
+- Customer list: Goldman Sachs, Citi, Dell, Cisco, Palantir, Ramp, Nubank, Mercado Libre
+
+### What this reveals about the procurement dynamic
+
+**The 73× growth happened WITHOUT Straw's evaluation infrastructure.** Goldman didn't run a competition. Citi didn't run a competition. They heard the buzz, ran a basic pilot, saw productivity improvements, signed contracts.
+
+**The bull case interpretation:** Straw addresses the next phase. Once the excitement wears off and enterprises need to rationalize their AI agent spend, procurement rigor increases. The early adopters (Goldman, Citi) bought on buzz. The mainstream enterprise buyers (companies #500 through #5000 to adopt autonomous agents) will buy on evidence.
+
+**The bear case interpretation:** If 73× ARR growth happens without rigorous procurement evaluation, maybe the market simply doesn't demand rigor. Maybe the pain is not felt strongly enough.
+
+### The product market fit signal from Devin's growth
+
+**What Devin sells:** Autonomous coding tasks delivered asynchronously. $500/month + usage.
+**Who buys it:** Companies with large developer teams and well-defined repetitive coding tasks (legacy refactoring, security fixes, dependency upgrades).
+**Why they buy:** 3-4× productivity claims, tried a pilot, saw tasks get done.
+
+**The structural insight for Straw:** Devin's customers bought based on Cognition's stated productivity claims + their own internal pilot. They did NOT run a Straw-style competition. But they ARE the buyers who would benefit from one.
+
+As Devin's market matures and competitors (All Hands AI, Claude Code, SWE-agent) get better, the procurement decision becomes harder. When Devin 2.1 and Claude Code 3 and OpenHands 4 all perform "similarly," the differentiation moves to task-specific fit. That's when Straw's competition format becomes essential.
+
+**The market timing argument:** Straw is 12-18 months early for mass adoption of rigorous agent procurement, but exactly the right time to build and launch. The first 40 design partners prove the concept during the "Devin buzz" phase. By the time the market matures (2027), Straw has the infrastructure, reputation, and case studies to capture the mainstream.
+
+### Bear case: Cognition acquires Straw
+
+If Cognition reaches $25B valuation and wants to expand its moat, acquiring a procurement validation platform would make sense: "Devin is the best agent, and here's Straw to prove it." The acqui-hire would simultaneously remove a potential threat and add validation infrastructure.
+
+**Probability:** 10-15%. Cognition's current focus is expanding Devin's capabilities and integrating Windsurf, not buying evaluation infrastructure. But in 24 months, if Straw has 50+ design partners and a strong network effect, the acqui-hire scenario becomes more plausible.
+
+**The pre-emption:** Jeremy shouldn't raise this possibility with Cognition as a threat. It should be framed as a partnership (Straw validates Devin alongside alternatives) in the near term. The acquisition optionality is a value driver for Straw's investors, not a talking point.
+
+Sources: agentmarketcap.ai/blog/2026/04/11/cognition-devin-73x-arr-growth-coding-agent-revenue, sacra.com/c/cognition, cognition.ai/blog/devin-annual-performance-review-2025, pulse2.com/cognition-ai-coding-startup-in-funding-talks-at-25-billion-valuation
+
+---
+
+## Tick 302 (2026-05-03T21:00Z): Bear case synthesis — final kill scenario probability table [theme: bear]
+
+### The Phase 2 pre-mortem: what kills Straw by end of 2027
+
+Having now covered all the major bear case threads across Phase 1 + Phase 2, here is the definitive kill scenario table:
+
+| Kill Scenario | Mechanism | Probability by Dec 2027 | Mitigation |
+|---|---|---|---|
+| **Hyperscaler convergence** (Google Kaggle + DeepMind + GCP enterprise) | Google builds private rubric competition infrastructure. Free for GCP customers. | 15% | Straw's moat is the tiered eval pipeline + agent reputation network. Speed to market + design partner lock-in. |
+| **Devin + Cognition builds their own eval** | Cognition launches "Devin Certified" competition feature. $0 for Devin customers. | 20% | Straw evaluates Devin vs. competitors. Cognition would be creating anti-selection if they exclude competitors from their own eval. |
+| **Scale AI builds the enterprise task competition** | Scale Labs launches a custom task competition product for enterprise AI procurement. | 20-25% | Partnership angle: Straw runs competitions, Scale provides human rater calibration. Different layers. |
+| **Design partner desert** (nobody wants to pay $25K for procurement validation) | The "pilot and observe" model is good enough. Enterprises don't feel the pain Straw solves. | 25% | The 80% failure rate data (Gartner/RAND) is the counter. Goldman's success is the exception, not the rule. |
+| **Quality plateau / commoditization** | All frontier agents score 90-95% on any reasonable rubric. Straw can't differentiate. | 15% | Requires 2-3 years of model improvement at current rate. By then Straw's use case shifts to cost/latency/reliability differentiation, not capability. |
+| **EU AI Act Digital Omnibus passes** | August 2026 deadline deferred to December 2027. Compliance urgency drops 18 months. | 35% | Compliance wedge weakens but doesn't disappear. The procurement validation pitch survives even without compliance urgency. |
+| **Rubric gaming / evaluation arms race** | Agents learn to optimize for Straw rubrics. Competition becomes rubric hacking rather than genuine task performance. | 10% | Tier 3 execution-based investigator is the mitigation. Hard to game actual code execution. |
+| **Token economy collapse** (if Straw adds an on-chain reputation layer) | Following Steemit/Helium/Kin pattern: game theory exploits, regulatory attention, speculative collapse. | 40% (IF token added) | Keep v0/v1 off-chain. Reputation in Supabase. Only add on-chain in v2 with explicit governance safeguards. |
+| **Regulatory black hole** (EU AI liability, CSAM, IP infringement) | Agent produces infringing output on a Straw competition. Enterprise sues Straw as platform. | 5% | Clear ToS: agents compete on buyer's task, buyer owns outputs, Straw is infrastructure not agent operator. |
+
+### The bear case that keeps me up at night (ranked)
+
+**#1 (25%): The design partner desert.** The Goldman Sachs data shows that enterprises can deploy autonomous agents and get good results without rigorous procurement evaluation. If the market simply doesn't feel the pain of unvalidated procurement, Straw solves a problem customers don't know they have.
+
+**#2 (35% conditional): EU AI Act deferral.** The most likely near-term bear case. If the Omnibus passes, the compliance urgency disappears for 18 months. The pitch weakens. Jeremy should build the core procurement validation pitch to stand on its own merit, independent of compliance.
+
+**#3 (20%): Cognition builds "Devin Certified."** This one has both high impact and plausible mechanism. If Cognition gets to $25B and decides to foreclose competition by adding an evaluation moat, Straw faces a well-funded first-party competitor with the same customer base.
+
+### The mitigants that are structural (hard to copy)
+
+1. **Tiered eval pipeline** (Tier 1 + 2 + 3). No one else has execution-based agent investigation at Tier 3. This is 6-12 months of build time for a well-funded competitor.
+
+2. **Agent reputation network.** Once 50+ agents have competed and accumulated reputation scores, the network effect makes switching to a new platform costly. First mover advantage in agent reputation.
+
+3. **Poster-defined rubrics.** The institutional knowledge embedded in 200+ enterprise rubric definitions (who the enterprise is, what they care about, what "winning" means in their context) is a data asset that compounds over time.
+
+4. **Published competition reports.** Each public competition report is marketing (proof), SEO (content), and reference (sales). At 50 competition reports, Straw has an undeniable evidence base.
+
+---
+
+## Tick 303 (2026-05-03T21:20Z): Additional named design partners — Windsurf, All Hands AI, Palantir [theme: partners]
+
+### The Windsurf angle (#47)
+
+Windsurf (formerly Codeium) was acquired by Cognition and brought $82M ARR + enterprise customer base. However, before the acquisition, Windsurf was an independent coding assistant with strong enterprise traction. Key insight: **Windsurf's enterprise customers are now Devin customers** — same buyer profile as Straw's ICP.
+
+The relevant contact pre-acquisition was **Varun Mohan** (Windsurf CEO). Post-acquisition, the relevant contact is whoever manages Windsurf's enterprise accounts within Cognition. The enterprise customers who used Windsurf are exactly Straw's ICP for a "Devin vs. alternatives" competition.
+
+### All Hands AI / OpenHands (#48)
+
+All Hands AI (formerly OpenDevin) is the open-source autonomous coding agent startup. Open-source to start (OpenHands codebase), enterprise version paid.
+
+**Why they're a design partner target:**
+- They're positioning directly against Devin
+- An enterprise validation study comparing OpenHands vs. Devin would be their best marketing asset
+- They benefit from Straw's competition infrastructure more than Devin does (Devin has Goldman's name; All Hands needs a comparative win story)
+
+**Contact:** Robert Brennan (CEO, All Hands AI) via LinkedIn. @rbren on GitHub. The All Hands AI team is accessible via their Discord (allhands.ai/community).
+
+**Opener:**
+> "Robert — All Hands AI is competing against Devin for enterprise autonomous coding contracts. Straw runs competitions where both agents compete on the same tasks with the same rubric. If OpenHands wins on your customers' actual codebases, we can prove it. First competition is free. Want to run one against a mutual enterprise prospect?"
+
+### Palantir AI and AIP (#49)
+
+Palantir is on Devin's customer list (Tick 299). But more importantly, Palantir built **AIP (AI Platform)** — their enterprise AI deployment and workflow automation platform. AIP is used by defense agencies, healthcare systems, and Fortune 500 companies for production AI.
+
+Palantir's enterprise customers (who use AIP) are evaluating AI agents to run within AIP-orchestrated workflows. This is precisely Straw's use case: procurement validation for agent selection.
+
+**Contact:** Shyam Sankar (COO, Palantir), @shyamsankar on Twitter. Or Alex Moore (VP of Commercial Enterprise Sales) via LinkedIn.
+
+**Why Palantir would run a Straw competition:** AIP customers ask Palantir which agents to integrate. Palantir currently recommends agents based on Palantir's own testing. If Straw provides reproducible competition reports, Palantir can offer a more rigorous recommendation to their AIP customers — and position AIP as the platform that integrates the winner.
+
+### Updated partner count: 49 named contacts
+
+New additions:
+- #47: Varun Mohan / Windsurf-Cognition enterprise accounts
+- #48: Robert Brennan (All Hands AI / OpenHands)
+- #49: Shyam Sankar or Alex Moore (Palantir AIP)
+
+**We are now within 1 of the 50-target ceiling specified in the Phase 2 mandate.**
+
+Sources: agentmarketcap.ai (Windsurf $82M ARR), allhands.ai, cognition.ai/blog/funding-growth-and-the-next-frontier-of-ai-coding-agents, palantir.com/aip
+
