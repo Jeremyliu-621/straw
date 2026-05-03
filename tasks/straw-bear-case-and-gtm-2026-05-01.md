@@ -23787,3 +23787,65 @@ Sources: mckinsey.com/capabilities/operations/our-insights/redefining-procuremen
 
 TICK_END
 
+
+---
+
+## TICK 386 — CB Insights "M&A Battleground" + Salesforce Agentforce: The Acquisition Case
+
+**Theme: Bear Case + GTM (exit strategy)**
+
+### CB Insights: "AI Agent Evaluation Tooling is an M&A Battleground" (2026)
+
+CB Insights' 5 AI agent predictions for 2026 includes: **"AI agent observability & evaluation tooling becoming an M&A battleground."**
+
+This is the definitive validation of Straw's space. If CB Insights — one of the most-read enterprise intelligence platforms — is calling evaluation tooling an M&A target, then:
+
+1. **The space is validated** by analysts and VCs who track M&A
+2. **Potential acquirers are already identified** (they're the ones doing the acquiring)
+3. **Straw is building in the M&A battleground** — which means either: (a) Straw gets acquired at significant premium, or (b) Straw must defend its differentiation against well-capitalized acquirers
+
+**M&A battleground participants (most likely acquirers of evaluation tooling):**
+- **Salesforce:** $41.5B revenue, $800M Agentforce ARR, needs evaluation to prove Agentforce superiority
+- **Google (GV):** Already built Agent Evaluation into Gemini Enterprise — might acquire cross-vendor capability
+- **Microsoft:** Already added agent evaluations to Copilot Studio — same logic
+- **ServiceNow:** Enterprise AI platform growing rapidly; evaluation tooling is natural adjacent capability
+- **Datadog:** Observability platform expanding to AI — acquired several monitoring tools recently
+
+### Salesforce Agentforce: The CRM Vertical Play
+
+**Scale (2026):**
+- $800M Agentforce ARR (+169% YoY)
+- 29,000 deals
+- 12,000 enterprise users (out of 150,000 total Salesforce customers)
+- 2.4 billion agentic work units
+- Dell: cut onboarding time from months to days with Agentforce
+
+**The 138,000-customer opportunity:**
+138,000 Salesforce customers have NOT yet deployed Agentforce. They are evaluating whether to. The question they ask: "Is Agentforce better than building our own CRM automation, using HubSpot AI, or deploying a custom agent?"
+
+**Straw's Salesforce vertical pitch:**
+"Before your Salesforce customer spends $50K/year on Agentforce, run a Straw competition: Agentforce vs. your custom agent vs. HubSpot AI on your specific CRM workflow (lead scoring, opportunity progression, renewal prediction). The winner earns the contract; the buyer makes a defensible decision."
+
+### The Acquisition Scenario (Long-Term)
+
+If Straw builds:
+- 15+ paying enterprise customers
+- Published case studies with named companies
+- Cross-vendor eval reputation (the "Switzerland of AI evaluation")
+- The rubric template library as proprietary data asset
+
+Then Straw is acquirable by:
+1. **Salesforce** — adds independent evaluation to prove Agentforce superiority
+2. **Braintrust** — adds pre-deployment competition to their post-deployment observability
+3. **ServiceNow** — AI platform needs evaluation to accelerate Agentforce/AI competitor decisions
+
+**Estimated acquisition range:** 3-5× ARR at seed stage ($1.5-5M at $500K ARR), or strategic premium of 10-15× with proprietary data ($15-25M at $1.5M ARR, Series A stage).
+
+### AI Agent Market Size: $15B → $221B (2035)
+
+AI agents market: **$15B in 2026 → $221B by 2035** at 34.64% CAGR. If evaluation tooling represents 5-10% of the AI agent value chain: $750M-$1.5B in evaluation tooling by 2035. Straw's TAM is significant even as a slice of the larger agent market.
+
+Sources: cbinsights.com/research/ai-agent-predictions-2026, fortune.com/2026/04/18/salesforce-agentforce-ai-efficiency-revenue-growth, techhq.com/news/salesforce-agentforce-enterprise-agentic-ai
+
+TICK_END
+
