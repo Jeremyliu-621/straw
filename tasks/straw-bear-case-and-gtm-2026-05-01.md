@@ -14776,3 +14776,96 @@ For enterprises already paying for Claude Enterprise ($XX/month), the marginal c
 **The answer:** (a) Claude may not be the best agent for this specific task — you don't know until you compare. (b) Compliance documentation (ISO 42001, EU AI Act) requires evidence of evaluation. A "we defaulted to Claude" decision has no documentation. (c) The cost of a wrong AI deployment is $7.2M in sunk costs when the initiative fails. $25K to verify the right choice first is 0.35% insurance on a $7.2M risk.
 
 Sources: [Anthropic vs OpenAI 2026 Tech Insider](https://tech-insider.org/anthropic-vs-openai-2026/), [MindStudio Claude vs OpenAI Momentum 2026](https://www.mindstudio.ai/blog/google-vs-openai-vs-anthropic-momentum-2026-narrative)
+
+---
+
+## Tick 227 (2026-05-04T06:15Z): Retool as a design partner — internal tools platform with AI agent selection problem [theme: partners]
+
+### Why Retool is a strong Straw target
+
+Retool (Y Combinator W17, $4B valuation) builds the platform that enterprise teams use to create internal tools. Their customers are 11,000+ companies including Amazon, DoorDash, Brex, and Stripe that build internal dashboards, admin panels, and operational tools on Retool.
+
+**Retool's stated position:** "Build vs Buy AI Agents: Why Custom Solutions Win Long-Term" (recent Retool blog post). Retool is actively in the "should our customers build their own AI agents on Retool, or buy commercial agents?" conversation. This is exactly the Straw competition framing.
+
+**Their AI product portfolio:**
+- Retool Agents: agent orchestration platform for internal tools
+- Retool Assist: AI-assisted development (code completion, generation)
+- AI observability built into their platform
+- Integration with multiple AI providers (OpenAI, Anthropic, others)
+
+**The Straw competition for Retool:**
+
+Retool needs to decide which coding agents their internal engineering team should standardize on for building and maintaining the Retool codebase itself. They've written a blog post about AI-assisted development in their own workflow. They're testing multiple tools.
+
+> **Competition design:** "Retool Internal Development Tools Comparison"
+> Cursor vs. GitHub Copilot vs. Retool Assist (their own product) for the Retool engineering team
+> Rubric: React component generation quality, TypeScript strict mode compliance, test coverage, documentation quality
+> Duration: 72 hours
+> **The meta-value:** Retool might include Straw in a blog post "How we chose our AI coding agent" — a post that reaches 50,000 developers who build on Retool, all of whom are making the same decision
+
+**The outreach to Retool:**
+
+Target: Tom Preston-Werner (investor) or David Hsu (CEO) via mutual YC connection, or the engineering blog lead via LinkedIn.
+
+> "Hi [Name], you've built a platform for teams to build with AI. At some point, your own team needs to evaluate which AI coding agent works best for building Retool itself. The irony: you don't have a structured evaluation process for choosing your own AI tools. Straw runs that evaluation. 72 hours, your codebase, your rubric. If you blog about the result (and you would — it's a perfect engineering post), we get co-marketing. Free for Retool."
+
+Sources: [Retool Blog Build vs Buy AI Agents](https://retool.com/blog/build-vs-buy-ai-agents), [Retool Blog How Agents in Retool](https://retool.com/blog/how-agents-in-retool-solves-hard-parts-of-agent-development)
+
+---
+
+## Tick 228 (2026-05-04T06:30Z): Salesforce Agentforce vs. ServiceNow — the enterprise AI platform war as Straw's CRM/ITSM vertical [theme: gtm/partners]
+
+### The Salesforce vs. ServiceNow battleground
+
+Salesforce and ServiceNow are both claiming the enterprise AI agent platform position:
+
+**Salesforce Agentforce:**
+- $2/conversation pricing (consumption-based)
+- Strengths: CRM data access, customer-facing workflows (sales, support, marketing)
+- Weakness: CRM-centric architecture limits non-customer-facing use cases
+
+**ServiceNow:**
+- ITSM, HR, procurement, finance, facilities, legal agents
+- Bundled into platform licensing (opaque vs. $2/conversation comparison)
+- Strength: deep enterprise process automation, not just CRM
+
+**2026 market data:** Enterprises are choosing between these platforms for AI agent deployment in specific workflows. The choice depends on: where the workflow lives, which data it needs, which pricing model fits the budget.
+
+### The Salesforce source that calls for Straw explicitly
+
+From Futurum Group research (2025): "Enterprise AI procurement will require **simulation-validated performance metrics**, with AI agents needing **documented training hours** in realistic simulation environments before handling customer interactions."
+
+And from the enterprise platform comparison analysis: "In 2026, procurement teams will reward vendors that can demonstrate **revenue expansion, margin improvement, or scaled productivity gains — not just task-level efficiency.**"
+
+These two quotes are the Straw pitch written by analysts who aren't aware of Straw:
+- "Simulation-validated performance metrics" = Straw competition
+- "Revenue expansion, margin improvement, or scaled productivity" = Straw's rubric categories
+- "Procurement teams will reward vendors who can demonstrate" = Straw Certified badge
+
+### The Straw competition for the Agentforce vs. ServiceNow decision
+
+A concrete Straw competition template for enterprises choosing between Salesforce Agentforce and ServiceNow:
+
+> **Competition: "AI Agent Platform Selection — [Company] Customer Support + IT Helpdesk"**
+> **Scope:** Customer Support (Agentforce strength) + IT Helpdesk (ServiceNow strength) — two verticals, one competition
+> **Tasks:** 50 support tickets (25 customer support, 25 IT helpdesk) from the enterprise's actual ticket history
+> **Competing agents:** Salesforce Agentforce, ServiceNow AI agents, Microsoft Copilot for Service
+> **Rubric:**
+> - Resolution rate without human escalation (35%)
+> - Response accuracy (spot-check sample, 30%)
+> - Time-to-resolution (15%)
+> - Data integration quality (does the agent use the right CRM/ITSM data?) (20%)
+> **Prize:** Straw Certified badge for the winning agent in each use case
+> **Duration:** 5 days (ticket data is less time-sensitive than coding tasks)
+> **Price:** $35,000
+
+### Named targets for the CRM/ITSM Straw vertical
+
+Companies actively making the Agentforce vs. ServiceNow decision in 2026:
+
+1. **A mid-size SaaS company** (200-1,000 employees) migrating from Zendesk to Salesforce Service Cloud — the migration is the trigger event for an AI agent evaluation
+2. **A financial services firm** with both Salesforce CRM and ServiceNow ITSM — needs to evaluate which platform handles financial regulatory workflow agents better
+3. **A manufacturer with ServiceNow** — evaluating whether to expand ServiceNow into customer-facing workflows or add Agentforce for customer service separately
+4. **Salesforce's own partner ecosystem (SIs like Accenture, Deloitte)** — these companies run Salesforce implementations for Fortune 500 clients and need to advise on which AI agents to deploy. A Straw competition on a sample client workload gives them the evidence to recommend confidently.
+
+Sources: [CallSphere Salesforce vs ServiceNow 2026](https://callsphere.ai/blog/salesforce-vs-servicenow-enterprise-ai-agent-war-2026), [Futurum Was 2025 Year of Agentic AI](https://futurumgroup.com/insights/was-2025-really-the-year-of-agentic-ai-or-just-more-agentic-hype/), [Sana Labs Enterprise AI Platforms 2025-2026](https://sanalabs.com/agents-blog/leading-ai-enterprise-fortune-500)
