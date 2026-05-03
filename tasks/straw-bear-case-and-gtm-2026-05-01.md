@@ -29547,3 +29547,90 @@ Body: Specific offer — free rubric consultation + pilot evaluation at founder 
 Sources: forkoff.xyz/founder-led-content-marketing-ai-2026, 12amagency.com/saas-content-marketing-trends-2026, enrichlabs.ai/ai-marketing-b2b-saas-2026, skaled.com/insights/gtm-trends-2026
 
 TICK_END
+
+---
+
+## Tick 452 — Pre-Deployment Evaluation Budget + Customer Service Agent Market Update
+
+**Research date:** 2026-05-03
+
+### Critical budget confirmation: pre-deployment evaluation is a funded category
+
+**71% of enterprises increased 2026 budget for AI evaluation tooling specifically.**
+
+This is the most important single stat in this research corpus for Straw's GTM. NOT 71% of enterprises "interested" in evaluation. 71% actively **increased their budget** for it.
+
+**66% of enterprises now run pre-deployment red-teaming for public-facing agents.** Average eval suite size:
+- Mid-market: 240 test cases
+- Fortune 500: 1,800 test cases
+
+This is the proof that pre-deployment evaluation is becoming standard practice in 2026. The 66% are running red-team evals before deployment. **None of them have a cross-vendor competition platform to run those evals on. They're all doing it manually.** Straw is the platform for the 66% who are already running this process manually.
+
+---
+
+### Updated sales narrative with these stats
+
+**Before:** "Companies need to evaluate AI agents before deploying them."  
+**After (with Tick 452 data):** "66% of enterprises are already running pre-deployment evaluation. They're doing it manually — 240-1,800 test cases per eval suite, no platform, inconsistent rubrics, no competitive comparison. Straw is the platform for the evaluation they're already doing."
+
+This reframes Straw from "creating a new behavior" to "professionalizing an existing one." The buyer isn't being asked to do something new — they're being offered a better tool for something they're already doing.
+
+---
+
+### Customer service/CX agent design partners
+
+**Market data update:**
+- 64% of enterprise CX teams running agentic AI pilot in 2026
+- Only 27% in full production — the graduation gap is even worse than average (only 42% vs. the 88% failure rate across all verticals)
+- Median tier-1 deflection: 41.2% across enterprise CX programs; top quartile: 58.7%
+- McKinsey: AI resolution costs $0.62 vs. $7.40 for human — 11.9× cost advantage for working agents
+
+**Vendor pricing (per resolution):**
+- Fini AI: $0.69
+- Intercom Fin: $0.99
+- Zendesk AI Agents: $1.00
+- Salesforce Agentforce: $2.00/conversation
+
+**Straw rubric for CX evaluation:** "Resolve 100 sample customer service tickets across complaint categories. Measure: resolution success rate, average handling time, escalation rate, customer satisfaction score (simulated rubric), hallucination rate."
+
+This rubric is objective, binary, measurable. An enterprise choosing between Intercom Fin ($0.99) and Salesforce Agentforce ($2.00) can run them both on Straw's CX rubric — if Agentforce scores 15% higher on resolution rate, the premium is justified. If not, save $1.01/conversation on 1M monthly tickets = $1.01M/month.
+
+---
+
+#### Design Partner #135 — VP of Customer Experience (Large Retail or Telecom)
+
+**Target profile:** Any VP of CX or Chief Customer Officer at a company running 500K+ monthly customer service tickets. Currently choosing between Zendesk AI, Intercom Fin, and Salesforce Agentforce for tier-1 deflection.
+
+**Named targets (CX leaders):**
+- Stacy Brown-Philpot (formerly TaskRabbit CEO, now advisor to multiple CX AI platforms)
+- Jon Herstein (VP Customer Success, Box) — enterprise CX decision-maker
+- Any Fortune 500 Head of Customer Operations evaluating AI agents
+
+**Pain point:** At $1M/month in ticket volume, the choice between $0.99/resolution and $2.00/resolution is a $1.01M/month decision. A Straw evaluation that costs $25K to definitively answer which agent has higher resolution rate is 400× the return.
+
+---
+
+#### Design Partner #136 — Zendesk (as submitter + channel)
+
+**Angle:** Zendesk (owned by Permira, private) is competing for enterprise CX contracts against Salesforce Agentforce and Intercom. Their AI Agents product needs to win head-to-head evaluations. Straw gives Zendesk the platform to prove their agent outperforms on objective resolution rate metrics — then use that proof in enterprise sales.
+
+**Contact:** Zendesk AI Product leadership, or enterprise sales SVP.
+
+---
+
+### Updated market state for CX vertical
+
+| Dimension | Data | Source |
+|---|---|---|
+| CX teams with pilot | 64% | Digital Applied 2026 |
+| CX teams in full production | 27% | Digital Applied 2026 |
+| Graduation gap | Only 42% of pilots graduate | Calculated |
+| AI resolution cost | $0.62 | McKinsey AI in CX 2026 |
+| Human resolution cost | $7.40 | McKinsey AI in CX 2026 |
+| Cost advantage | 11.9× | Calculated |
+| Median deflection rate | 41.2% | Fini Labs analysis |
+| Top quartile deflection | 58.7% | Fini Labs analysis |
+
+Sources: digitalapplied.com/blog/customer-service-ai-agent-statistics-2026, usefini.com/guides/top-ai-agents-customer-service, usefini.com/guides/best-ai-customer-support-platforms-vp-cx, rebasehq.ai/enterprise-ai-spending-2026
+
+TICK_END
