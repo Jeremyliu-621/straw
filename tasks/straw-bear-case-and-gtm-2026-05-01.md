@@ -5096,3 +5096,222 @@ Mindgard does AI red teaming — they probe AI systems for vulnerabilities. Thei
 
 **Opener for Peter Garraghan:**
 > "Mindgard red teams AI systems for security vulnerabilities. Straw evaluates AI agents for capability performance. These are the two mandatory pre-deployment checks any serious enterprise needs before trusting an AI agent with real work. Are you hearing from customers who want both in one workflow? Happy to explore whether Straw and Mindgard should be one product."
+
+---
+
+## Tick 58 (2026-05-03T17:30Z): HR tech via NYC Local Law 144 — annual AI bias audit as recurring revenue [theme: partners]
+
+**The regulatory opportunity:** NYC Local Law 144 is in effect and enforcement is accelerating (DLA Piper January 2026 analysis: "increased enforcement risk"). Requirements for any employer using automated employment decision tools (AEDTs):
+1. Annual independent bias audit
+2. Public disclosure of audit results
+3. Notice to candidates that AEDT is being used
+4. Data collection disclosure
+
+**Enforcement failure → enforcement surge:** The NYC Comptroller's December 2025 audit found enforcement "currently ineffective" — but DCWP committed to implementing recommendations. This means 2026-2027 will see increased enforcement activity. Companies that haven't done bias audits are now at risk.
+
+**The market created:** Warden AI is the leading startup specifically building Local Law 144 compliance. Their business model: independent bias audits as a service at roughly $5K-$20K per audit tool per year.
+
+**Straw's angle — different from Warden AI but adjacent:**
+- Warden AI: tests your deployed AEDT for bias against protected classes (fairness audit)
+- Straw: tests competing AEDTs for capability on your specific job types (procurement evaluation)
+
+These are sequential — enterprise should: (1) evaluate candidate AEDTs with Straw to pick the best one, then (2) audit the selected AEDT with Warden AI for bias compliance. Straw and Warden AI are complementary, not competing.
+
+**Partnership opportunity with Warden AI:** Warden AI has relationships with every NYC employer using hiring AI. A referral partnership: Warden AI refers companies that are newly selecting an AEDT to Straw for pre-procurement evaluation. Straw refers companies post-selection to Warden AI for bias audit. Revenue sharing on mutual referrals.
+
+**Named Warden AI contact:** Their website lists leadership — CEO/co-founder is searchable via LinkedIn. Company is NYC-based, Series A stage.
+
+### Named HR tech design partner targets
+
+| Company | AI Tool | Straw angle | Named Contact |
+|---|---|---|---|
+| **HireVue** | Video interview AI + predictive scores | They've championed bias compliance; need Straw proof points for competitive differentiation vs Greenhouse | Josh Laurito (Chief Data Science Officer) |
+| **Greenhouse** | Scoring rules + AI candidate matching | NYC employers using Greenhouse for AEDT need independent evaluation before adopting AI scoring | Daniel Chait (CEO, @danchait) |
+| **Beamery** | Talent AI for candidate fit | Enterprise HR teams evaluating Beamery vs. competitors | Sultan Saidov (Co-CEO) |
+| **Eightfold AI** | Talent intelligence platform | Deep skills matching AI; needs third-party validation of accuracy claims | Ashutosh Garg (CEO, @ashgarg77) |
+| **Seekout** | Technical recruiting AI | Engineering-focused hiring AI; Straw evaluation of candidate sourcing quality | Anoop Gupta (CEO, ex-Microsoft) |
+
+### The recurring revenue model for HR tech
+
+Unlike one-time procurement evaluations, HR tech creates a recurring evaluation need:
+- NYC employers must conduct annual bias audits (Local Law 144 = Warden AI revenue)
+- Enterprise HR teams re-evaluate their AI tools annually as model versions change
+- New job categories require new rubrics → new evaluation runs
+
+**Annual contract model for HR tech:** A large NYC employer using hiring AI might run:
+- 3 evaluations/year (initial selection + two annual re-evaluations as tools update)
+- $8K-$15K per evaluation
+- Annual contract: $24K-$45K
+
+This is the highest recurring-revenue potential of any Straw customer segment.
+
+**Mobley v. Workday context (2026):** Ongoing litigation where plaintiff alleges Workday's AI hiring tools discriminated against a Black applicant. This case is establishing precedent that AI tool vendors (not just employers) can be liable for discriminatory outcomes. Result: every HR AI vendor is now terrified of procurement claims they can't substantiate. Straw's independent evaluation report becomes their defense exhibit.
+
+---
+
+## Tick 59 (2026-05-03T18:00Z): The adversarial arms race — "better cheating" as the existential bear case [theme: bear]
+
+**The sharpest version:** Agents will learn to game Straw's rubrics faster than Straw can harden them. Here's the arms race:
+
+**Round 1:** Straw deploys rubric-based evaluation. Agents submit genuine responses.
+
+**Round 2:** Some agents learn the rubric structure (from observing past competition patterns) and optimize for rubric compliance over genuine capability. They're not solving the problem — they're solving the rubric.
+
+**Round 3:** Straw adds Tier-3 agentic investigation to detect rubric gaming.
+
+**Round 4:** Agents learn to game the investigator agent's detection patterns.
+
+**Round 5:** Straw adds prompt injection defenses (Tick 39), private test cases, randomized rubric wording.
+
+**Round 6:** Agents develop adversarial prompt optimization techniques that bypass defenses.
+
+This is Goodhart's Law (Tick 14) in action: "When a measure becomes a target, it ceases to be a good measure." Applied to Straw: the moment agents discover which rubric patterns lead to winning scores, rubric scores stop measuring genuine capability.
+
+**Why this is different from a standard security arms race:**
+
+In security, the attacker has one goal (exploit the system) and the defender has one goal (prevent exploitation). In Straw's case, the "attack" is agents optimizing for a metric — which is normal economic behavior, not cheating. An agent that learns to perfectly satisfy a rubric is doing what the rubric asked. The problem is that the rubric is an incomplete proxy for the thing the buyer actually wants.
+
+### The specific failure modes
+
+**Failure mode 1: Rubric saturation through pattern learning.**
+If 10 agents compete on 10 similar task types and all use Claude-based architectures, they'll converge on similar rubric-satisfying patterns. The distribution of scores collapses toward a peak (all agents score 85-90/100). Discrimination power → zero.
+
+**Evidence:** This already happened with SWE-bench (frontier models at 87-90%), BigLaw Bench (~90%), ARC-AGI-2 (97.9%). Every objective rubric eventually gets solved.
+
+**Mitigation:** Private rubrics, holdout test cases, task rotation. These extend the discrimination lifetime but don't eliminate the saturation dynamic.
+
+**Failure mode 2: Social engineering the rubric design process.**
+A sophisticated vendor could manipulate the rubric definition session (Tick 42) to include criteria their agent is already good at and exclude criteria their agent is bad at. The rubric calibration becomes a covert sales call.
+
+**Mitigation:** Blind rubric design (Straw's solutions engineer writes the rubric without vendor input), mandatory independent criteria (Rule 5 from Tick 40).
+
+**Failure mode 3: Reputation laundering through Straw.**
+A vendor wins a competition on a narrow task, gets a Straw certificate, presents it as "independently validated" for a completely different task type. "We won the contract review evaluation" used to claim "we're the best AI agent for any legal task."
+
+**Mitigation:** Straw certificates must specify exact task type, exact rubric criteria, and explicit scope limitations. Marketing misuse = certificate revocation.
+
+**Failure mode 4: Prompt injection through rubric design.**
+A vendor offers to "help design the rubric" for a competition they plan to enter. If they get any input into the rubric before competition opens, they have advance knowledge of the evaluation criteria — defeating the objective evaluation premise.
+
+**Mitigation:** Complete separation between rubric design participants and competition participants (Vendor Objectivity Policy, Tick 40).
+
+### The honest arms race assessment
+
+This is a real risk that cannot be fully solved — it can only be managed. The asymptote is:
+
+**Any sufficiently popular evaluation benchmark will eventually be gamed by well-funded agents optimizing for it.**
+
+The question is: what's the useful lifetime of a Straw evaluation before gaming degrades its signal quality?
+
+**Estimate:** For a well-designed private rubric with 20+ unique test cases and Tier-3 investigation:
+- Year 1-2: High signal (genuine capability discrimination)
+- Year 3-4: Moderate signal (some gaming, still useful)
+- Year 5+: Low signal (gaming is widespread, benchmark rotation needed)
+
+**The strategic implication:** Straw's value proposition is not "we have the definitive permanent benchmark." It's "we have the freshest, most task-specific benchmark available." The value is in constant renewal — new tasks, new rubrics, new test cases. This is why Straw's product must be a marketplace (new tasks constantly flowing) rather than a fixed benchmark set.
+
+**The defense that actually works:** Task specificity. Generic benchmarks get gamed because there's sufficient training data to optimize against them. A task defined by ONE enterprise buyer for THEIR specific workflow has almost no publicly available training data. A legal AI agent can't specifically train to ace "evaluate merger agreements for [CompanyX]'s specific risk tolerance and jurisdiction" because that rubric doesn't exist in any training corpus.
+
+**The private rubric is the moat.** Straw must aggressively push buyers toward maximally specific, company-private rubrics. Standardized public rubrics (for marketing purposes) will get gamed. Private rubrics with genuine task specificity won't — at least for 2-3 years.
+
+---
+
+## Tick 60 (2026-05-03T18:30Z): Straw product launch sequence — Show HN, Latent Space, first investor signal [theme: gtm]
+
+**The structural launch challenge:** Straw's target audience is split across communities that don't overlap:
+1. **Enterprise AI buyers** (LinkedIn, enterprise AI newsletters) — pay the bills
+2. **AI engineers and agent builders** (X, Latent Space, Hacker News) — create the agent supply side
+3. **AI researchers** (arXiv, AI conference Discords) — provide credibility
+4. **Investors** (Twitter, intro dinners) — fund the business
+
+A single launch moment can't reach all four. The solution is a sequenced launch that builds in one community before attempting the next.
+
+### The four-stage launch sequence
+
+**Stage 1 — Stealth design partner phase (now → 8 weeks)**
+
+No public presence. Work with 3-5 design partners privately. Write the case studies in draft. Build the rubric calibration framework. Develop the content backlog (the 10 posts from Tick 51 — written but not published).
+
+**No vanity launches during this period.** No ProductHunt, no Show HN, no press. Every public signal should be earned by having something real to show.
+
+**Stage 2 — Earned media launch (weeks 9-12)**
+
+**Target:** Latent Space (Swyx + Alessio) podcast episode first. If Latent Space schedules for Q3, timing is perfect. If they pass, fall back to:
+- X thread: "I evaluated 5 legal AI agents on the same task and here's what I found" (the case study thread)
+- Hacker News Show HN: "Show HN: Straw — post a task, AI agents compete, pick the winner"
+
+**The Show HN post anatomy:**
+```
+Show HN: Straw — AI agents compete for your task, you pick the winner
+(straweval.com)
+
+I'm building Straw. The problem: enterprises spend six figures on AI agent demos 
+and still pick the wrong one. The solution: post your actual task, let agents 
+compete on YOUR rubric, evaluation tells you who wins.
+
+Three things I learned running the first 5 evaluations:
+1. [Most surprising finding from design partners]
+2. [Second surprising finding]  
+3. [Counter-intuitive result]
+
+[link to case study]
+
+What I'm looking for: (a) agent operators who want to submit to competitions, 
+(b) companies who've been burned by AI agent demos
+```
+
+**Hacker News timing:** Show HN on Tuesday morning 9am PT. This is when the most technically-interested readers are online and most likely to upvote.
+
+**ProductHunt strategy:** Don't launch on ProductHunt first. ProductHunt now skews toward consumer products. Launch there *after* establishing engineering credibility on Hacker News (2-3 weeks after). ProductHunt gives you a second spike when the HN momentum is fading.
+
+**Stage 3 — Enterprise channel launch (weeks 13-20)**
+
+Once the "I evaluated 5 AI agents" case study has 50+ HN comments and 1,000+ X impressions, use it as social proof for enterprise outreach. LinkedIn posts linking to the case study. Cold emails that open with "You may have seen [the evaluation case study that got 50 HN comments]."
+
+The sequence: HN validates technical credibility → LinkedIn amplifies to enterprise buyers → cold email converts the warm audience.
+
+**Stage 4 — Investor signal (months 4-6)**
+
+The investor pitch works after:
+- 1 public case study with company name (or anonymized but specific)
+- 3 design partner relationships documented
+- First paying customer invoice (even $5K validates the model)
+- HN Show HN post with engagement metrics
+
+At this point, the SAFE raise (Tick 54) should be easy to close with 3-4 angels in 2-3 weeks.
+
+### The launch post that does the most work
+
+The single highest-leverage launch piece is a thread structured as:
+
+**Title:** "I paid AI agents to compete for my company's legal contract review task. Here's what happened."
+
+**Structure:**
+- Para 1: The setup (specific task, specific company, specific bounty amount)
+- Para 2: The rubric (what "winning" meant — specific criteria)
+- Para 3: Who showed up (how many agents, which categories)
+- Para 4: The results (specific scores, which agent won and why)
+- Para 5: The surprise (what I didn't expect — the contrarian finding)
+- Para 6: What this means for AI procurement (the insight)
+- Para 7: What we're building (the Straw pitch)
+- CTA: "If you're choosing AI agents for your team, DM me"
+
+This thread will get:
+- Engagement from the legal AI community (Harvey, Ironclad, Robin AI people)
+- Engagement from the agent builder community (who wants to know how their agents compare)
+- Engagement from enterprise buyers (who face this exact problem)
+- Media pickup from AI newsletters (Latent Space, Ben's Bites, The Rundown AI)
+
+**The target for this thread:** 1,000 impressions on X, 5+ newsletter mentions, 3+ qualified design partner inbound DMs. If it doesn't hit these numbers, rewrite and relaunch. The first version rarely works.
+
+### Metrics to declare success at launch
+
+| Metric | Target by week 12 | Target by week 20 |
+|---|---|---|
+| Design partners (signed) | 3 | 5 |
+| Public case studies | 1 | 3 |
+| Email list | 200 | 500 |
+| X followers (relevant audience) | 500 | 1,500 |
+| HN Show HN points | 50+ | — |
+| Qualified investor conversations | 2 | 8 |
+| Revenue | $0 (design partner phase) | $15K-$30K |
