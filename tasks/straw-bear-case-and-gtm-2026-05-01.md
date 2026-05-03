@@ -16991,3 +16991,172 @@ Core evaluation dimensions for industrial AI agent selection:
 5. **OPC-UA/MQTT protocol compliance**: Standard industrial communication protocols — does the agent produce standards-compliant output?
 6. **Audit trail completeness**: Can the agent's every decision be traced and documented?
 
+
+---
+
+## Tick 235 (2026-05-03T00:12:00Z): LinkedIn and content marketing playbook for Straw [theme: gtm]
+
+### The 2026 LinkedIn Reality
+
+- 89% of B2B marketers use LinkedIn; it drives 80% of all social media B2B leads
+- 95% of decision-makers say thought leadership directly influences purchasing decisions
+- Organic reach declined ~50% year-over-year — generic content is dead
+- Employee/founder content reaches 561% further than company pages
+- Personal accounts consistently outperform company pages — and the gap is widening
+- "Verified Human" uploads are now prioritized; AI-generated content is penalized
+
+**The implication for Straw**: Jeremy's personal LinkedIn is the primary content asset. Not a Straw company page. Jeremy's voice, perspective, and lived experience in AI procurement is the content strategy.
+
+### The Content Pillars
+
+Three content pillars that build Straw's audience while creating pipeline:
+
+**Pillar 1 — "The AI procurement problem" (awareness)**
+Content that names the problem, validates enterprise buyer pain, and positions Jeremy as the expert who sees the dysfunction clearly.
+
+Example post angles:
+- "The most dangerous phrase in enterprise AI: 'The demo looked great'"
+- "I've talked to 40 CIOs about how they select AI agents. Almost none have a rubric. Here's why that needs to change."
+- "The $3M AI contract that failed. Autopsy."
+- Thread: "Eight things that determine whether your AI agent actually works in production — and zero of them appear in a vendor demo"
+
+**Pillar 2 — "How to build a rubric" (education)**
+Content that teaches the core Straw methodology, demonstrates competence, and produces leads from enterprises who want to do this themselves (then discover they need Straw's help).
+
+Example post angles:
+- "Five questions your AI procurement rubric must answer before you sign a contract"
+- "We ran our first competition. Here's how we designed the task. Here's what surprised us."
+- "How to write a pass/fail criterion for an AI agent (that actually means something)"
+- Thread: "The rubric I'd use to evaluate a customer service AI agent — steal this"
+
+**Pillar 3 — "Competition results and case studies" (proof)**
+Content that shows Straw working — with enough anonymized detail to be credible, not enough to expose customer data.
+
+Example post angles:
+- "We just ran a competition between three AI agents on a supply chain forecasting task. Here's what we found."
+- "Agent A won on accuracy. Agent B won on explainability. Here's how the client chose."
+- "What the losing agents got wrong — and what it would have cost if the client had signed with them first"
+
+### The Distribution Flywheel
+
+```
+Jeremy posts long-form LinkedIn thread (original insight)
+→ Enterprise AI leader engages (comment/share)
+→ Jeremy replies personally (1:1 relationship building)
+→ LinkedIn DM conversation → "Can we talk for 20 minutes?"
+→ Workshop conversation → Design partner opportunity
+```
+
+This is not a broadcast model. It is a relationship-at-scale model. Every engagement is a potential warm lead.
+
+### Frequency and Format
+
+- **3 posts per week minimum**: Two short-form posts (2-5 sentences), one long-form thread
+- **Long-form threads**: 8-12 tweets/posts in a carousel/thread format; dense, opinionated, shareable
+- **No outsourcing**: Jeremy's voice, not a ghostwriter. The authenticity is the product. Any AI assistance is for research and editing, never for voice.
+- **Video**: LinkedIn prioritizes short-form video (60-90 seconds). One 90-second video per week on "AI procurement myth-busting" is a high-leverage format in 2026.
+
+### Content Calendar — First 90 Days
+
+**Month 1 (Pre-product, pure thought leadership)**
+- Week 1: "Why enterprise AI demos don't tell you anything useful" — personal experience post
+- Week 2: Thread — "How to write an AI procurement rubric from scratch"
+- Week 3: "The five AI agent failures I've seen in the last year" — anonymized case studies
+- Week 4: "What I learned from talking to 30 CIOs about AI agent selection"
+
+**Month 2 (Tease the product)**
+- Week 5: "We're building something new. Here's the problem it solves." — teaser
+- Week 6: Thread on the mechanics of a Straw competition (without naming Straw)
+- Week 7: "The rubric template I use for [financial services AI agent] — free download" (lead gen)
+- Week 8: "We just ran our first pilot. Here's what surprised us."
+
+**Month 3 (Launch Straw publicly on LinkedIn)**
+- Week 9: "Announcing Straw — the evaluation platform for enterprise AI procurement"
+- Week 10: Customer quote / design partner case study thread
+- Week 11: "Straw's first rubric library is open. Here's how to use it."
+- Week 12: "What 'Straw Certified' means and why agents should want to earn it"
+
+### Amplification Tactics
+
+1. **Tag AI leaders in relevant threads**: Jeff McMillan (Morgan Stanley), Lori Beer (JPMorgan), Marco Argenti (Goldman), Nitin Tandon (Vanguard) — engage their public posts, then post content they'd find relevant
+2. **LinkedIn newsletter**: Launch "The AI Procurement Weekly" — 5 minutes of insight for CIOs evaluating AI agents. Each edition is a top-of-funnel pipeline tool.
+3. **Repurpose into email**: Every LinkedIn thread becomes an email to the Straw waitlist/newsletter list
+4. **Guest posting**: Bylines in VentureBeat and MIT Tech Review should be cross-posted to LinkedIn with original commentary
+
+
+---
+
+## Tick 236 (2026-05-03T00:13:00Z): AI agent marketplace competition — Salesforce AgentExchange, Google Agentspace, Microsoft Marketplace [theme: bear]
+
+**Score: 7/10** — The highest-scored bear case yet. Platform-embedded evaluation is the most dangerous competitive threat because it leverages existing enterprise relationships and makes Straw's neutral position look unnecessary.
+
+### The Marketplace Threat in 2026
+
+The 2026 AI agent marketplace landscape has consolidated into two tiers:
+
+**Enterprise Marketplaces (dominant)**
+- **Salesforce AgentExchange**: 200+ launch partners including Google Cloud, Docusign, Box — embedded in Salesforce's existing CRM relationships with 150,000+ enterprise customers
+- **Google Agentspace / Gemini Enterprise**: AI agent marketplace integrated with Google Workspace
+- **Microsoft Azure Marketplace / Copilot Studio**: Integrated with Microsoft 365 — deepest enterprise penetration
+- **AWS Bedrock Agent Marketplace**: For AWS-native enterprise deployments
+
+**Developer Marketplaces (fragmented)**
+- ClawHub, Claude Skills, GPT Store, MCP Hubs, LangChain Hub
+
+**Critical finding**: "The 2026 marketplace winners are the ones attached to existing enterprise procurement plumbing." The enterprise marketplaces don't need Straw to certify agents — they certify agents themselves.
+
+### The Specific Bear Case
+
+**Scenario: Salesforce's embedded evaluation layer**
+
+Salesforce has 150,000+ enterprise customers. They are building AgentExchange with their own certification standards. A Salesforce enterprise customer who wants to evaluate AI agents for a customer service use case can:
+
+1. Browse AgentExchange
+2. See "Salesforce Verified" agents
+3. Deploy a free trial inside their existing Salesforce CRM environment
+4. Measure actual performance against their real data
+
+Why would that enterprise need Straw?
+
+The Salesforce evaluation is: (a) free, (b) happens inside the enterprise's actual environment with their real data, (c) produces real performance metrics, and (d) is done through the existing procurement relationship.
+
+Straw's advantages (neutrality, rubric design, multi-vendor comparison) are valuable — but they require an enterprise to actively choose an independent evaluation process over the convenience of platform-embedded evaluation.
+
+**Scenario: Microsoft's automated agent evaluation**
+
+Microsoft has announced AI agent evaluation tools embedded in Azure AI Studio and Copilot Studio. An enterprise IT team that lives in Azure can evaluate competing AI agents without leaving the Microsoft ecosystem. Microsoft's evaluation tools score agents on accuracy, safety, and groundedness — automatically, for free, inside the Azure subscription the enterprise already pays for.
+
+### Why This Is a 7/10 (Most Serious Bear Case)
+
+Unlike most bear cases, this one has structural advantages that Straw cannot easily counter:
+- **Scale**: 150K+ enterprise Salesforce customers vs. Straw's 0-10 initial customers
+- **Convenience**: Evaluation happens inside existing workflows vs. Straw's separate process
+- **Price**: Free (included in platform subscription) vs. Straw's $15K-$50K fee
+- **Integration**: Real data, real environment vs. Straw's sandbox
+
+### Why Straw Still Has a Viable Position
+
+**The platform vendor conflict problem is structural and permanent**
+
+Salesforce AgentExchange does not evaluate third-party agents against each other objectively. It evaluates agents that Salesforce has already vetted and approved for its marketplace. The evaluation is: "which approved Salesforce partner agent is best?" not "is a Salesforce agent better than an independent agent?"
+
+An enterprise evaluating whether to deploy Salesforce Agentforce, Anthropic Claude Enterprise, Microsoft Copilot, or an independent AI agent vendor — across Salesforce, Microsoft, and Google ecosystems — cannot get that evaluation from Salesforce. They need Straw.
+
+**Multi-platform procurement is the real use case**
+
+The most valuable Straw competitions are cross-platform: "Compare Agent A (Salesforce partner) vs. Agent B (Microsoft partner) vs. Agent C (independent) on our specific task." No platform marketplace can run that competition. Straw can.
+
+**The Salesforce / Microsoft evaluation is not auditable or reproducible**
+
+Platform evaluations happen inside proprietary systems with opaque scoring methodologies. A CIO cannot bring the Salesforce evaluation report to the board and say "this is independently verified." Straw's report is auditable, reproducible, and third-party. For regulated industries (financial services, healthcare), the audit trail matters.
+
+### Tactical Response
+
+1. **Explicitly position against platform evaluations**: "Platform evaluations tell you which platform agent is best. Straw tells you which agent is best, across all platforms." This is the core differentiator.
+
+2. **Target cross-platform procurement decisions**: Straw's highest-value use case is the enterprise that is deciding between Salesforce, Microsoft, and an independent vendor. These decisions are common and high-stakes.
+
+3. **Build enterprise skepticism about platform evaluations**: A single story about a platform evaluation that favored the platform's own agents is Straw's best marketing. This story will exist — platform-embedded evaluation has structural conflicts.
+
+4. **Regulatory compliance as the differentiation**: Regulated enterprises cannot rely on platform evaluations for compliance documentation. Straw's audit-grade report is the one that satisfies EU AI Act deployer requirements.
+
