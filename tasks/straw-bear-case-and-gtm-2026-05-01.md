@@ -33779,3 +33779,192 @@ This is a deep, narrow workflow. And unlike horizontal tools (Braintrust, Langfu
 Sources: iternal.ai/ai-first-mover-advantage, fundersclub.com/learn/investment-strategies/evaluating-a-startup-for-investment/evaluate-competitive-advantage-and-defensibility, eqvista.com/ai-startup-fundraising-trends
 
 TICK_END
+
+---
+
+## Tick 491 — Sell Before You Build: The Straw Pre-Sales Validation Playbook [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The principle
+
+"Build first, sell later is the single most expensive mistake in early-stage SaaS. 34% of startups fail because of lack of product-market fit." The countermeasure: sell before you build.
+
+**For Straw specifically:** Several parts of Straw's product do NOT yet exist. The rubric builder, evaluation pipeline, agent marketplace — all in various stages of completion (some phases complete per TASKS.md, some pending). The question is: how much needs to exist before Jeremy can get the first commitment?
+
+### Minimum viable Straw for first pre-sale
+
+**What Jeremy can demonstrate TODAY:**
+1. A working rubric template (can be a Google Doc or PDF with the 7-dimension coding rubric from Tick 484)
+2. A description of the evaluation process (prose + diagram)
+3. A prototype of the task posting interface (even Figma mockup or wireframe)
+4. The pipeline's actual evaluation code (if any evaluation phases are complete)
+
+**What Jeremy does NOT need:**
+- A live marketplace with registered agents
+- An automated evaluation pipeline
+- A payments system
+- A beautiful UI
+
+**The "sell first" design partner offer:**
+"We're running Straw's first 5 design partner evaluations manually. You post the task, we build the rubric with you, we recruit agents, we run the evaluation by hand if needed, you get scored results. We're doing this manually to make sure the rubric and evaluation methodology are right before we automate it. At no cost to you."
+
+**This is genuine value.** Many founders have gotten signed LOIs with Figma mockups and a landing page. Straw has more: actual evaluation methodology, actual rubric templates, actual TypeScript pipeline.
+
+### The LOI / pilot agreement mechanics
+
+**Letters of Intent (LOIs) for Straw:**
+An LOI is a non-binding expression of interest: "If Straw delivers a working evaluation of [task] within [timeframe], [Company] intends to pay $[amount] for a standard evaluation package."
+
+- Get 3-5 LOIs before YC application deadline → strengthens application enormously
+- LOI template: 1 page, email-confirmable, asks for $0 now but commits to a future purchase
+- Language: "Subject to satisfactory completion of design partner evaluation, [Company] intends to purchase a Standard Evaluation ($2,500) within 30 days of satisfactory completion."
+
+**Paid pilot agreements:**
+- Even $100 "commitment fee" to enter the design partner program changes the conversation
+- A company that pays $100 to join a beta program is 10× more likely to provide feedback and convert
+- Consider: $0 for first evaluation (fully free), but require $100 "evaluation setup fee" to demonstrate commitment
+
+**One founder's actual execution:**
+"One founder got three paying customers committed before writing production code using clickable prototype demos and text-message beta invites, obtaining signed order forms before investing in building."
+
+**Straw's version:** Use the rubric builder (or even just the rubric template PDF), conduct a 20-minute discovery call (Tick 485 script), and ask: "Would you like to be one of our first 5 design partners? The agreement is 2 pages. I'll have a draft rubric for your use case in 48 hours."
+
+### The validation metric
+
+**Straw is validated when:** 3 enterprise contacts agree to sign a design partner agreement within 60 days of Jeremy's outreach campaign starting.
+
+If 3 agree: Product-market fit signal is strong. Proceed with engineering.
+If 1-2 agree: Product-market fit is uncertain. Dig into why the 3rd said no.
+If 0 agree: The pitch or target audience is wrong. Pivot before building.
+
+Sources: saasacademy.com/blog/preselling, dealmayker.com/blog/founder-playbooks/pre-selling-tactics-validate-b2b-saas-before-building, nxtstep.io/blog/how-to-sell-your-b2b-saas-before-you-build-it
+
+TICK_END
+
+---
+
+## Tick 492 — Enterprise Legal Minimum Viable Pack for Straw [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The enterprise legal checklist
+
+Before Straw can sign a paid enterprise contract (not design partner — paid), these legal artifacts must exist. This is the "legal MVT" (Minimum Viable Trust).
+
+**Layer 1: Required for ANY enterprise customer (Day 1)**
+
+1. **Delaware C-corp** — Formed via Stripe Atlas ($500, 24 hours). Enterprise buyers will not sign contracts with an unincorporated entity.
+2. **Common Paper Design Partner Agreement** — 2 pages, free, standard terms. Covers the free evaluation period.
+3. **Data Processing Agreement (DPA)** — Required for any European customer (GDPR) and most US enterprise security teams. Can use a standard DPA template (~10 pages).
+4. **Privacy Policy + Terms of Service** — Live on Straw's domain before first enterprise conversation.
+
+**Layer 2: Required for first PAID enterprise customer**
+5. **Master Service Agreement (MSA)** — The governing contract for paid services. Common Paper also has a standard MSA template.
+6. **Order Form** — Specific per-deal pricing and scope. Attaches to the MSA.
+7. **Business Associate Agreement (BAA)** — Required only for healthcare customers (HIPAA). Supabase and Stripe both support BAAs.
+
+**Layer 3: Required for enterprise deals >$10,000 (within 6-12 months)**
+8. **SOC 2 Type 1** — Timeline: 4-8 weeks for a startup. Cost: $15,000-$40,000. This is the enterprise trust threshold. Without it, Fortune 500 CISO will block the deal.
+9. **SOC 2 Type 2** — Timeline: 9-12 months after Type 1. Cost: additional $25,000. Required for any Fortune 500 deal.
+
+### SOC 2 planning for Straw
+
+**SOC 2 Type 1 timeline: Start NOW, finish in 4-8 weeks.**
+
+- Hire compliance automation tool: Drata ($12,000/year), Vanta ($15,000/year), or Sprinto ($10,000/year)
+- These tools automate 60-70% of the compliance work
+- The tool monitors your cloud infrastructure, generates evidence, and prepares you for audit
+- Get an auditor: KPMG, PWC, or a specialist (Johanson Group, Schellman) — $15,000-$25,000 for Type 1 audit
+- Total cost: $25,000-$40,000 (compliance tool + audit)
+- Result: SOC 2 Type 1 report in 4-8 weeks
+
+**The critical question:** When does Straw need SOC 2?
+
+- Design partner phase (free evaluations): NOT required. Customers accept the risk for free.
+- First paid evaluation ($2,500): Security questionnaire will be sent. A DPA + privacy policy + "SOC 2 Type 1 in progress" answer is acceptable for $2,500.
+- First $10,000+ evaluation: SOC 2 Type 1 may be required.
+- First Fortune 500 deal: SOC 2 Type 2 required.
+
+**Recommendation:** Start SOC 2 Type 1 process at Month 3 (when design partners are engaged and Straw has committed engineering infrastructure). Complete by Month 5. This unblocks first paid enterprise deals.
+
+### Straw's compliance roadmap
+
+| Timeline | Action | Cost |
+|---|---|---|
+| Today | Delaware C-corp (Stripe Atlas) | $500 |
+| Today | Common Paper DPA/MSA/order form templates | Free |
+| Today | Privacy Policy + ToS live on domain | $0-500 (template) |
+| Month 3 | Sign up for Drata or Vanta | $12,000/year |
+| Month 3-5 | SOC 2 Type 1 audit | $15,000-25,000 |
+| Month 5 | SOC 2 Type 1 report complete | ← unblocks enterprise |
+| Month 12 | Begin SOC 2 Type 2 observation period | $25,000 additional |
+| Month 21 | SOC 2 Type 2 complete | ← unblocks Fortune 500 |
+
+Sources: soc2compliancecost.com/type-1-vs-type-2, sprinto.com/blog/why-soc-2-for-saas-companies, dsalta.com/resources/soc-2/soc-2-type-1-vs-type-2-timeline-cost-guide
+
+TICK_END
+
+---
+
+## Tick 493 — Enterprise Champion Cultivation: Finding and Developing the Internal Advocate [theme: GTM]
+
+**Research date:** 2026-05-03
+
+### The champion vs. the economic buyer
+
+In every enterprise deal, there are at least two distinct roles:
+- **Champion:** The person who wants Straw to win internally. Uses the product. Gets career value from the success. Runs interference with procurement and legal.
+- **Economic Buyer:** The person who controls the budget and can say yes or no to the PO. Often a VP or C-level who doesn't directly use the product.
+
+Straw's success at each enterprise customer depends on:
+1. Identifying the champion early
+2. Arming the champion with everything they need to sell internally
+3. Getting to the economic buyer through the champion
+
+**The dual-role insight:** "Your MVP must provide enough value to the USER to make them an internal champion, and enough data to the BUYER to justify the spend."
+
+For Straw: The Agent Owner (user/champion) needs a rubric that works and scores they believe in. The CTO/CPO (economic buyer) needs an ROI story: "We saved $150K in pilot costs and chose the right agent."
+
+### How to identify the champion at a target company
+
+**Signs someone is a strong champion candidate:**
+1. They replied to your cold outreach enthusiastically
+2. They asked specific questions about the rubric methodology (signal: they've thought about this problem)
+3. They asked if Straw could help with a specific task they named (signal: they have an immediate need)
+4. They mentioned a specific internal pain point ("we've been arguing about which agent to use for 6 months")
+5. They are 3-12 months into the Agent Owner role (new enough to want wins; established enough to have budget influence)
+
+**Signs someone is NOT a strong champion candidate:**
+- "This sounds interesting, send me a deck" (passive)
+- "Let me forward this to someone on my team" (not personally invested)
+- "We'll look at this next quarter" (no urgency)
+- Senior title but 30-second responses (too busy to champion)
+
+### The champion development playbook
+
+**Step 1 (Post-first call):** Send a rubric draft within 48 hours of the first call. Make the champion look good by producing a high-quality artifact quickly.
+
+**Step 2 (Post-rubric review):** Co-author the rubric with the champion. Ask them to suggest changes. Their ownership of the rubric = their investment in the process.
+
+**Step 3 (Post-evaluation):** Give the champion a 1-page summary of evaluation results specifically formatted for their internal stakeholders. Do NOT expect them to format results themselves — do it for them.
+
+**Step 4 (Post-results):** Ask the champion: "Who else in your organization would benefit from seeing these results?" This is the warm introduction to the economic buyer.
+
+**Step 5 (Economic buyer meeting):** "I'd love to spend 20 minutes with [CTO/CPO name] to share what we found. [Champion] said this might be worth their time. Would you be comfortable making an introduction?"
+
+### The champion's internal pitch (arm them with this)
+
+When the champion needs to make the case internally for paying for a Straw evaluation, give them this script:
+
+"We're evaluating AI agents for [task]. Instead of running a 6-month pilot that costs $100K+ and produces no clean comparison, I want to run a Straw evaluation: we define what winning looks like, agents compete, we get ranked scores in 2 weeks for $2,500. I've already built the rubric — here it is. I think this is the right approach before we commit to a vendor. Can we get budget approval?"
+
+**Why this pitch works:** 
+- Mentions specific savings ($100K pilot vs. $2,500 Straw)
+- Champion already has the rubric artifact (tangible, reduces risk)
+- Asks for a small, justified amount ($2,500)
+- Clear ROI case built in
+
+Sources: resources.reachstream.com/how-enterprise-sales-teams-win-complex-b2b-deals-in-2026, wearepresta.com/from-idea-to-mvp-the-strategic-2026-guide-for-startup-founders
+
+TICK_END
