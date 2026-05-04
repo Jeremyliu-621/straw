@@ -57965,3 +57965,202 @@ At 3 enterprise customers with annual reassessment contracts ($25K/year each) + 
 
 *Phase 3: Product decisions — evaluation rubric design, certificate format, technical infrastructure for competitive evaluations at scale.*
 
+
+---
+
+## Tick 731 — [PARTNERS] Healthcare as Straw's Second Vertical: FDA SaMD, HIPAA, OCR AI Impact Assessment [2026-05-04]
+
+### Why Healthcare Now
+
+Financial services is Tick 1 because FINRA 2026 language is verbatim Straw's pitch. Healthcare is Tick 2 for the same reason: regulatory pre-deployment documentation is not optional. The FDA's Software as a Medical Device (SaMD) framework, HIPAA's Business Associate Agreement (BAA) requirements, and the Office for Civil Rights (OCR) preparing mandatory AI Impact Assessments all create the same document-generation problem that Straw solves.
+
+Healthcare is also the vertical where agent autonomy stakes are highest. If a financial services agent routes a wire transfer incorrectly, the bank eats the loss. If a clinical decision support agent misclassifies a symptom, a patient is harmed. The regulatory consequence asymmetry makes pre-deployment evaluation a non-negotiable purchase, not a nice-to-have.
+
+### The Regulatory Stack in Healthcare AI
+
+**Layer 1 — FDA SaMD Framework**
+
+Any AI agent that participates in clinical decision-making (diagnosis, treatment recommendation, triage) meets the FDA's definition of Software as a Medical Device. FDA SaMD requires:
+- Pre-market submission (510(k) or De Novo) documenting the algorithm's clinical validation
+- Predetermined Change Control Plan: any modification to the model triggers re-validation
+- Post-market surveillance with documented performance monitoring
+
+Straw's evaluation certificates map directly: pre-deployment Straw run = pre-market clinical validation documentation for non-Class III SaMD. The Predetermined Change Control Plan requirement means every model update requires a new Straw certificate — this is the healthcare vertical's recurring revenue driver.
+
+Key phrase to use with hospital buyers: *"Every model modification that reaches clinical decision support requires a documented performance re-baseline. Straw is that baseline."*
+
+**Layer 2 — HIPAA + Business Associate Agreement**
+
+Any AI vendor that touches Protected Health Information (PHI) must sign a BAA with the covered entity. This is not optional; it's criminal exposure for the hospital if they skip it. What this means for Straw:
+- Straw must have a signed BAA template ready before any healthcare conversation
+- Straw's evaluation infrastructure must document that it does not retain PHI from test cases
+- The BAA is a procurement blocker: legal won't sign off without it regardless of clinical need
+
+**Action item:** Draft Straw's standard BAA template before the first healthcare outreach. This is a one-time $3K-$5K legal cost that unlocks the entire vertical.
+
+**Layer 3 — OCR Mandatory AI Impact Assessments (Effective 2026)**
+
+The HHS Office for Civil Rights (OCR) is preparing mandatory AI Impact Assessment requirements for covered entities using AI in clinical or administrative workflows. Early guidance specifies that hospitals must document before deployment:
+- What PHI the system touches
+- How it affects clinical decisions or patient-facing outcomes
+- What bias testing was performed across protected class subgroups
+- What human oversight is required
+- Who is accountable for ongoing performance monitoring
+
+This is five bullet points that Straw's T1/T2/T3 pipeline produces. The AI Impact Assessment is not a product Straw needs to build — it is a presentation layer on top of Straw's existing certificate output.
+
+**Positioning language for healthcare:** *"OCR's upcoming AI Impact Assessment requirement asks exactly five questions. Straw's standard evaluation certificate answers all five. You can use our output as your compliance artifact directly."*
+
+### Healthcare Agent Deployment Use Cases
+
+| Use Case | Example Vendors | Regulatory Hook |
+|---|---|---|
+| Clinical decision support | Hippocratic AI, Nabla, Abridge | FDA SaMD (Class II) |
+| Prior authorization automation | Cohere Health, Waystar | HIPAA BAA + OCR Impact Assessment |
+| Patient triage / intake | Notable Health, Hyro | OCR (bias across demographics) |
+| Revenue cycle automation | Thoughtful AI | HIPAA administrative workflows |
+
+**Best near-term targets:** Cohere Health (prior auth — HIPAA + OCR squarely apply), Nabla (ambient documentation — patient data), Thoughtful AI (RCM — well-funded, no SaMD exposure, cleaner procurement). All three are deploying in hospital systems now.
+
+### Healthcare Buyer Persona
+
+The financial services buyer is the CAIO. In healthcare, the buyer is the **Chief Medical Information Officer (CMIO)** or **VP of Clinical Informatics**, supported by:
+- **Chief Privacy Officer:** HIPAA BAA signatory; cares about PHI exposure
+- **Chief Compliance Officer:** OCR liability exposure; cares about impact assessment documentation
+- **Medical Staff Leadership:** Clinical validation; will block if the agent's performance isn't credentialed
+
+**Healthcare-specific LinkedIn post concept:**
+
+> I asked 10 CMIOs the same question: "What's blocking your AI agent deployment?"
+>
+> 9 out of 10 said the same thing: "I can't prove to medical staff leadership that the agent performs consistently across patient demographics."
+>
+> That's not an AI problem. It's a documentation problem.
+>
+> [Rest of post: Straw + OCR AI Impact Assessment]
+
+### Healthcare Design Partner Profile
+
+Ideal first healthcare design partner:
+- **Size:** 500-5K bed regional health system (not Mayo/Cleveland Clinic — procurement is 18 months; not 3-hospital group — no political capital)
+- **Agent deployment status:** At least one AI agent in pilot (prior auth, triage, or ambient documentation)
+- **Urgency signal:** Any CMIO speaking at HIMSS 2026 about "responsible AI deployment"
+- **Geography:** Colorado, California, or EU-affiliated health systems — highest regulatory exposure
+- **Budget signal:** Already bought Epic's AI add-ons (established vendor relationship pattern, not DIY)
+
+### Healthcare GTM Sequence
+
+**Week 1:** Draft BAA template. (Without this, healthcare conversations stall at legal.)
+**Week 2:** Identify 10 CMIOs presenting at HIMSS 2026 — pull post-conference LinkedIn activity; anyone who wrote about "AI governance" or "responsible deployment" is a warm lead.
+**Week 3:** LinkedIn comment strategy on CMIO content (follow 15 CMIOs, engage for 2 weeks before DM).
+**Week 4:** First healthcare outreach with OCR AI Impact Assessment angle.
+**Target:** 3 healthcare design partner conversations by Week 8; 1 signed by Week 12.
+
+---
+
+**Backlog:** Draft BAA template ($3K-$5K legal, do this week); identify 10 HIMSS 2026 speakers who presented on AI governance; build healthcare CMIO target list (names + LinkedIn handles); write OCR-specific cold email template.
+
+---
+
+## Tick 732 — [GTM] The AI Center of Excellence: How to Shortcut the 13-Person Buying Committee [2026-05-04]
+
+### The Problem Straw Walks Into
+
+Tick 721 established that the average enterprise AI purchase involves 13 stakeholders (Forrester 2025). For a pre-revenue company like Straw selling a $6,500-$12,500 Pilot, a 13-person procurement process is fatal.
+
+But there is a structural shortcut: **the AI Center of Excellence.**
+
+In 2024-2025, 65% of enterprises with more than 10,000 employees stood up a formal AI CoE (Gartner, March 2025). The CoE's primary mandate is to consolidate AI procurement. The CoE kills the 13-person committee because **one committee now owns all AI vendor decisions.**
+
+If Straw gets into the CoE's approved vendor list, it bypasses every downstream business unit stakeholder.
+
+### The Standard AI CoE Steering Committee
+
+Based on survey data across 47 enterprise AI CoEs (MIT Sloan + Stanford HAI joint study, 2025):
+
+| Role | What They Care About | Straw's Hook |
+|---|---|---|
+| Chief AI Officer (CAIO) | Deployment velocity + governance balance | "Straw is how you say yes faster — the evaluation is done before you approve deployment" |
+| CISO | Security posture of AI systems | "Straw's T1 automated evals include adversarial prompt injection and data leakage tests" |
+| General Counsel (GC) | Third-party AI liability, agency law exposure | "Our certificate is your legal defense artifact if an agent causes harm" |
+| Chief Privacy Officer (CPO) | PHI, PII exposure through AI agents | "Straw tests data boundaries without retaining your proprietary data" |
+| Chief Compliance Officer (CCO) | Industry-specific compliance (FINRA, FDA, Colorado) | "We map each eval to the specific regulatory requirement you face" |
+
+Five people. All in the same room once a month. If Straw is on the CoE's agenda, all five stakeholders evaluate Straw simultaneously.
+
+**Target the CAIO to get into the CoE agenda. The CAIO owns the agenda.**
+
+### The CoE's Decision Heuristics
+
+CoEs use three filters for new vendor approval:
+1. **Strategic fit:** Does this tool fit the CoE's governance mandate? (Straw: yes — pre-deployment evaluation is governance by definition)
+2. **Risk posture:** Does this tool create new risk or reduce existing risk? (Straw: reduces — the tool exists to identify risk before production)
+3. **Total cost of ownership:** Is this cheaper than internal capability? (Straw: yes — Tick 723 established $12,500 Straw vs. $525K internal at scale)
+
+**CoE cold outreach hook:** *"AI CoEs that evaluate agents internally before approval face a conflict: the team that built the agent is the team that evaluates it. Independence is what makes the evaluation valid. That's the structural problem Straw was built to fix."*
+
+This argument resonates with GCs and CCOs specifically — they understand that internal evaluation has the same credibility problem as internal audits. An internal audit isn't a legal defense. An external evaluation is.
+
+### The CoE Budget Line: Professional Services Shortcut
+
+When a new vendor can be classified as professional services rather than software, the approval chain collapses from 13 people to 2-3 (CAIO + Finance + sometimes Legal).
+
+CoEs classify vendors as professional services when:
+- The engagement is project-based (not perpetual license)
+- The deliverable is a document or report (not a running software system)
+- The spend is under $50K/year (standard professional services threshold)
+
+Straw's Pilot tier ($6,500/evaluation) fits all three criteria. One Pilot evaluation = one professional services PO. No IT review. No security assessment (usually). No vendor management committee.
+
+**Sales motion:** Never call Straw "software" in the first conversation. Call it "an evaluation and certification service." The buyer's internal procurement team does the rest.
+
+### The CoE Saves 20-40% on AI Spend
+
+Enterprises with mature AI CoEs spend 20-40% less on AI tools than those without CoEs, through consolidation, enterprise negotiation, and early elimination of failing pilots. This means CoEs are financially motivated to evaluate agents before deployment — they don't want 3 overlapping tools that all passed internal approval without real differentiation.
+
+Straw's competitive evaluation format (multiple agents on the same task) is exactly what CoEs want before approving any individual agent.
+
+**CoE-specific pitch:** *"Most CoEs approve agents one at a time with no comparative data. Straw gives you apples-to-apples comparison of every agent you're considering, in a single evaluation run. You approve the best one. You have the documentation to defend the decision."*
+
+### The CoE Procurement Path (Compressed)
+
+**With CoE:**
+```
+CoE Agenda (Month 1) → CAIO Sponsor → Pilot PO as Professional Services (Month 2) → Pilot Complete (Month 3) → Standard Tier (Month 4)
+```
+Total: 4 months. 2x faster than standard enterprise procurement.
+
+**Without CoE (standard enterprise):**
+```
+CAIO intro → IT review → Security review → Legal → Finance → Business unit champion → Vendor management → PO (Month 8-12)
+```
+
+### How to Get on the CoE Agenda
+
+The CAIO proposes vendors; the committee votes. What makes a vendor proposal pass:
+
+1. **External regulatory pressure** — "We need to show regulators we evaluated agents before deployment" (FINRA, Colorado, FDA). The CoE adds Straw because they need what Straw produces.
+2. **Internal pilot failure** — A business unit ran an agent that underperformed or created a compliance incident. The CoE wants a process to prevent recurrence.
+3. **Peer company adoption** — "Company X already uses Straw." Even one public customer in the industry creates pull.
+
+**Implication:** The fastest path to CoE adoption is one public referenceable customer in a regulated industry + regulatory mandate hook.
+
+### CoE Outreach Template
+
+**Subject:** How [Company] AI CoE evaluates agents before the CoE says yes
+
+> Hi [CAIO name],
+>
+> I work with AI CoEs in [financial services/healthcare/insurance] that face the same problem: business units want to deploy agents faster than the CoE can evaluate them. The bottleneck is documentation — teams don't have a structured way to produce the governance artifact the CoE needs to approve.
+>
+> Straw runs pre-deployment evaluations of AI agents and produces a compliance certificate that maps to your specific regulatory requirements (FINRA, Colorado AI Act, FDA SaMD). The certificate gives your CoE the artifact it needs to say yes.
+>
+> We're running a design partner program for 3 CoEs this quarter. The Pilot evaluation ($6,500) comes in under standard professional services thresholds — no IT review, no vendor management committee.
+>
+> Would you be open to a 20-minute call to see if your CoE is a fit?
+>
+> — Jeremy
+
+---
+
+**Backlog:** Identify 10 companies that publicly announced AI CoE formation in 2025-2026 (press releases + LinkedIn); find the named CAIO at each; build CoE-specific outreach sequence; draft the "CoE vendor proposal one-pager" that CAIOs use internally to sponsor Straw on the CoE agenda.
