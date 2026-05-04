@@ -54266,3 +54266,95 @@ Each sequence is 3 touches over 2 weeks:
 
 Five sequences × 60 targets each = 300 total contacts × 3 touches = 900 email sends. This is 2 months of systematic outreach.
 
+
+---
+
+## Tick 688 — Compliance Artifact Taxonomy + Agent Payment Rail Update [2026-05-04]
+
+**Theme:** GTM (positioning language) / Bear Case (token economy collapse modes)
+
+---
+
+### The Three Compliance Artifacts Enterprises Need
+
+Enterprise AI governance compliance requires three artifacts (Oracle/NIST research finding):
+
+1. **AI inventory** (maps to NIST Govern function): What AI systems does the organization operate? What do they do? Who owns them?
+
+2. **Per-system risk classification** (maps to EU AI Act tiers): Is this system high-risk, limited-risk, or minimal-risk under EU AI Act? What controls are required?
+
+3. **AIMS audit trail** (maps to ISO 42001 Section 9): Evidence that AI systems were evaluated systematically before deployment and monitored in production. This is the performance evaluation record.
+
+**Straw produces Artifact #3.**
+
+The positioning language changes from "Straw is an evaluation platform" to: "Straw produces the AIMS audit trail that satisfies your ISO 42001 Section 9 requirement — the performance evaluation artifact that bridges your AI inventory and risk classification to your compliance documentation."
+
+This language is specific enough to resonate with a CISO or CAIO who is building their ISO 42001 compliance program. They know they need these three artifacts. They may have already built the inventory and risk classification. They're missing the AIMS audit trail. Straw fills that gap.
+
+**Cold email update for ISO 42001 buyers:**
+
+> Subject: The third compliance artifact you're missing
+>
+> Hi [Name],
+>
+> Most enterprise AI governance programs have the AI inventory and risk classification. The third artifact — the AIMS audit trail (ISO 42001 Section 9, performance evaluation evidence) — is the hardest to produce because it requires systematic, documented evaluation of each agent before deployment.
+>
+> Straw produces it. We run rubric-based evaluations against your specific task requirements and generate a tamper-proof certificate that satisfies Section 9 evidence requirements.
+>
+> 72% of Fortune 500 procurement teams are now screening for ISO 42001. If you're pursuing certification or vendor contracts that require it, this is the piece that takes the longest to produce.
+>
+> Worth a 20-minute call?
+>
+> Jeremy
+
+---
+
+### NIST International Coordination: Multi-Jurisdiction Compliance Advantage
+
+NIST is coordinating with ENISA (EU), Japan's AIST, and ISO/IEC to establish international mutual recognition for AI agent standards by 2027. Companies compliant with NIST CAISI standards will get streamlined EU AI Act review.
+
+This creates a compounding advantage for Straw's certificate if it's explicitly NIST-aligned:
+- NIST alignment → EU AI Act recognition → ISO 42001 evidence mapping → California EO N-5-26 attestation
+- One certificate, four compliance frameworks
+
+**The single-certificate multi-framework argument:**
+
+"Straw's evaluation certificate is aligned with NIST AI RMF, maps to ISO 42001 Section 9, satisfies FINRA audit trail requirements, and constitutes the attestation documentation for California EO N-5-26. One certificate. Four compliance frameworks. One 2-4 week evaluation."
+
+This is the infrastructure argument in its most compressed form.
+
+---
+
+### Agent Payment Rails: Phase 3 Update
+
+x402 (Coinbase): still the leading protocol, but now has real competition.
+
+**New developments since Phase 1 research:**
+- **OpenAI + Stripe ACP:** Agentic Commerce Protocol debuted in early 2026 via ChatGPT Instant Checkout. OpenAI's distribution gives this massive reach.
+- **Machine Payments Protocol (MPP):** Went live March 18, 2026. Streaming micropayments that batch on-chain. 0.5-second finality.
+- **Mastercard:** Extending AI agent and crypto payment rails for commerce.
+
+**Bear case update on Straw Phase 3 (marketplace payment economy):**
+
+Earlier bear case: "token/credit economy collapse modes — demand is just not there."
+
+Updated: demand is still growing slowly relative to expectations, but the infrastructure is being built by credible players (OpenAI, Stripe, Coinbase, Mastercard). The Phase 3 Straw marketplace (where companies post tasks and agents compete) now has actual payment infrastructure to build on.
+
+The timing implication: Phase 3 (agent marketplace) is possible in 2027-2028 with real payment rails, not hypothetical ones. The bear case on payment infrastructure has weakened significantly.
+
+**What this means for Phase 1:**
+
+Phase 1 (evaluation platform) still doesn't need any of this payment infrastructure. Enterprises pay Straw with corporate wire or credit card. The payment rails are relevant for Phase 3 when agents transact autonomously within the marketplace. No change to Phase 1 priorities.
+
+---
+
+### Final Open Question: Certificate Format Standardization
+
+The one question that might warrant a dedicated research tick: Is there a standard format for AI performance evaluation certificates that is gaining regulatory acceptance?
+
+Currently: NIST AI RMF, ISO 42001, and EU AI Act all describe what evidence should exist but don't specify the format of that evidence. Straw's UUID + timestamp + rubric + scores + Merkle hash format is Straw's own invention.
+
+The risk: if a regulatory body later specifies a different format, Straw's certificates may need reformatting. The opportunity: Straw can be the company that proposes the standard format and gets it adopted by NIST or ISO.
+
+Action item: Submit a comment to NIST CAISI (open for public comment through Q4 2026) proposing a standard AI agent performance evaluation certificate format. Straw's format becomes the NIST-referenced example.
+
