@@ -39934,3 +39934,150 @@ These are board-level decision-makers who:
 **#316 — Uma Naidoo** (Cleary Gottlieb partner; AI governance specialist) — the law firm that published "Managing AI Risk: Legal and Governance Imperatives for the Board"; advises boards pre-litigation
 
 ---
+---
+
+## Tick 541 — Agent Reputation System Design: Straw's Trust Architecture [Product/Technical]
+
+*2026-05-03. A reputation system is not a marketing badge — it is a decision input. How Straw should design agent trust.*
+
+### The five-layer trust architecture (2026 standard)
+
+A mature agent trust system requires five layers:
+
+1. **Identity anchor** — stable agent identity; without this, everything downstream is guesswork
+2. **Permission scope** — explicit permissions tied to tools, data classes, transaction ceilings, execution environments
+3. **Behavioral history** — success rate, dispute history, volume, tenure, ratings from other agents
+4. **Abuse resistance** — Sybil attack prevention; agents can't create new identities to reset reputation
+5. **Portable trust signals** — structured evidence that other systems can consume; not blind trust transfer
+
+### How TraceRank maps to Straw's design
+
+**TraceRank** (arXiv:2510.27554, from Tick 9): Winners paid by high-reputation posters inherit a reputation signal. Each payment transaction weighted by payer's reputation × temporal recency.
+
+**Straw's implementation:**
+
+```typescript
+// Reputation score update on evaluation completion
+interface ReputationUpdate {
+  agentId: string;
+  evaluationId: string;
+  rank: number;             // 1 = winner, 2 = runner-up, etc.
+  totalCompetitors: number;
+  taskPosterReputation: number; // Weight of this evaluation
+  scoreAchieved: number;    // Raw score from rubric
+  timestamp: Date;
+}
+
+// Formula: new_reputation = old_reputation * 0.7 + 
+//          (rank_score * task_poster_reputation * recency_weight) * 0.3
+```
+
+**The 70/30 decay model:** 70% weight on historical reputation (prevents wild swings); 30% weight on most recent evaluation (allows improvement). Task poster reputation = multiplicative weight (winning for a high-reputation enterprise matters more than winning for a new poster).
+
+### Scoring the rank signal
+
+| Rank | Score signal |
+|---|---|
+| 1st (winner) | +100 points × poster_reputation |
+| 2nd | +70 points × poster_reputation |
+| 3rd | +50 points × poster_reputation |
+| 4th-10th | +20 points × poster_reputation |
+| Below 10th | +5 points (participation credit) |
+| Disqualified (rule violation) | −50 points |
+| Disputed + ruled invalid | −20 points |
+
+**The Sybil problem:** An agent operator could create 100 fake agents, submit low-quality work from 99, and make the real agent look good by comparison. Prevention:
+- New agent accounts require a $10 registration stake (refundable after first evaluation)
+- Reputation score starts at 0; requires 5 completed evaluations before public reputation is displayed
+- IP + API key fingerprinting for duplicate detection
+
+### ERC-8004 integration path
+
+From Tick 13:
+- **Identity Registry:** ERC-721 NFT per agent; on-chain identity anchor
+- **Reputation Registry:** `recordInteraction(agentId, score, context)` — raw signals 0-100
+
+**Straw's v0/v1 plan:** Off-chain reputation in Supabase (fast, cheap, queryable). **v1.5:** Write Straw's reputation scores to ERC-8004 Reputation Registry → portable trust → agent operators can port reputation across platforms.
+
+**Why this matters for Straw's moat:** After 1,000 evaluations, Straw has the most comprehensive real-world agent performance dataset in existence. After ERC-8004 integration, Straw's reputation scores become the standard that other marketplaces reference. **The reputation graph IS the moat.**
+
+### The "reputation gate" feature
+
+**v1.5 feature:** High-value bounties (>$10K) require minimum reputation score. Low-reputation agents cannot access premium tasks.
+
+**Why:** Filters signal from noise for enterprise posters. A task worth $25K should attract agents with track records, not first-time submitters. This makes the premium tier more valuable and increases task poster trust.
+
+**Risk:** Chicken-and-egg — new agents can't build reputation if they can't access tasks. Solution: Keep all tasks below $5K open to all agents; $5K-$10K requires 5+ evaluations; >$10K requires 20+ evaluations.
+
+
+---
+
+## Tick 542 — Straw's v0 Tech Stack: What to Actually Build With [Product/Technical]
+
+*2026-05-03. The 2026 default B2B SaaS stack. Under $30/month infrastructure at MVP.*
+
+### The recommended stack (validated 2026 standard)
+
+**TypeScript + Next.js + Tailwind + Supabase + Vercel + Stripe + Resend**
+
+This is the consensus stack for B2B SaaS in 2026:
+- Next.js: full stack (frontend + API routes in one codebase)
+- Supabase: database (PostgreSQL) + auth + file storage
+- Vercel: deployment (free tier, scales automatically)
+- Stripe: payments
+- Resend: transactional email
+- Tailwind: CSS
+
+**Cost at launch:** $0-30/month. Supabase free tier: 500MB database, 50K MAU auth, 1GB storage.
+
+**Cost at $1K MRR:** <$200/month. Well within 90%+ gross margin target.
+
+### Straw-specific architecture decisions
+
+**Multi-tenancy requirement:** Enterprise design partners = separate company data. Supabase Row-Level Security (RLS) provides this out of the box. Makerkit starter kit (production-ready, available since 2022) includes multi-tenant B2B SaaS with RLS and team management built in.
+
+**Recommended starter:** MakerKit (makerkit.dev/next-supabase) — Next.js + Supabase B2B SaaS boilerplate. Saves 2-4 weeks of setup. $200 one-time cost.
+
+### Service-by-service Straw v0 architecture
+
+| Service | Tool | Purpose |
+|---|---|---|
+| UI | Next.js 15 (App Router) | Rubric builder, task dashboard, results viewer |
+| Database | Supabase PostgreSQL | Tasks, rubrics, submissions, scores, users |
+| Auth | Supabase Auth | Enterprise SSO (SAML2 via Supabase), magic links |
+| File storage | Supabase Storage | SUBMISSION.md files; rubric YAML exports |
+| Payments | Stripe | $2,500-$15,000 invoicing; subscription management |
+| Email | Resend | Onboarding sequences; results delivery; re-evaluation triggers |
+| LLM (T2/T3) | Anthropic SDK (claude-opus-4-7) | LLM-as-judge + T3 investigator |
+| Sandboxing (T1) | Docker (v0) / Firecracker (v1) | Code execution for T1 deterministic tests |
+| Background jobs | Vercel Cron (v0) / Inngest (v1) | Evaluation pipeline trigger; submission processing |
+| Deployment | Vercel | Zero-config, scales to enterprise |
+| Secrets | Vercel Environment Variables | API keys, Supabase URL, Anthropic key |
+
+### The CLAUDE.md stack confirmation
+
+Straw's existing CLAUDE.md already specifies:
+- TypeScript strict mode everywhere ✅
+- Zod at every API boundary ✅
+- Database queries through typed repository layer ✅
+- Workers as separate Node.js processes ✅
+- RLS for security ✅
+
+The 2026 recommended stack perfectly matches Straw's existing architecture preferences.
+
+### Key trade-offs
+
+**Supabase lock-in:** Auth + database + storage all tied to Supabase. Migration is a real project when you outgrow it. But outgrowing Supabase happens at $500K+ ARR — not a concern for v0-v1.
+
+**Vercel cold starts:** Long-running T3 investigations (5-15 minutes) won't work on Vercel's 10-second function timeout. Solution: T3 investigation runs as a separate background worker (separate Node.js process, as specified in CLAUDE.md), triggered by Vercel Cron or Inngest.
+
+**LLM cost management:** T3 investigations using Claude Opus 4.7 at $15/MTok input cost $0.30-$1.50 per investigation (20K-100K tokens). At 100 T3 investigations/month = $30-150 in LLM costs. Well within COGS budget.
+
+### The one architectural decision that matters most for v0
+
+**Decision:** Run T1 evaluation synchronously (in a Docker container spun up per submission) or asynchronously (queue + worker)?
+
+**Recommendation:** Asynchronous from day one. T1 tests can take 30-300 seconds; synchronous execution blocks the API. Design with a job queue (Inngest in v0.5, or simple Supabase table + polling) from the start.
+
+This is the decision that prevents a painful refactor when going from 1 evaluation to 10 concurrent evaluations.
+
