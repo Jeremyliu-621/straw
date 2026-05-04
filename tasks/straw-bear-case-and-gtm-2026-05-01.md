@@ -52901,3 +52901,198 @@ Cannot do solo (need to hire or partner for):
 
 The solo founder risk is real but manageable if the trajectory above is followed. The mistake solo founders make is trying to scale before proving the model. Don't hire before Month 3. Don't scale before Month 6. Build the machine before staffing it.
 
+
+---
+
+## Tick 675 — Pricing Recalibration: Red Teaming Comps and Straw's Under-Pricing Risk [2026-05-04]
+
+**Theme:** GTM (pricing) / Bear Case (pricing model)
+
+This tick challenges the $5,000 evaluation price point established in Tick 651 by comparing it to the adjacent AI red teaming market.
+
+---
+
+### The Adjacent Market Pricing Data
+
+**AI Red Teaming (security adversarial testing) 2026 pricing:**
+- Minimum viable engagement (single model, focused): $16,000
+- Typical enterprise range: $20,000–$150,000+
+- Full scope with source code review and re-test: $20,000–$25,000 for a single engagement
+- Market size: $2.26B in 2026
+
+**AI performance evaluation (what Straw does) 2026 pricing:**
+- Braintrust: $249/month platform fee (SaaS monitoring model)
+- LangSmith: $39/seat (plus trace volume)
+- Straw (planned): $5,000 per evaluation (Tick 651)
+
+---
+
+### The Pricing Problem
+
+Straw's evaluation is substantively closer to a red team engagement than to a Braintrust SaaS subscription. The comparison:
+
+| Dimension | Braintrust | Red Team | Straw |
+|---|---|---|---|
+| Type | Ongoing monitoring | One-time adversarial test | One-time performance evaluation |
+| Methodology | Automated observability | Human-led adversarial probing | Multi-tier (T1 auto + T2 LLM + T3 probing) |
+| Output | Dashboard | Report | Certificate |
+| Frequency | Continuous | Annual/project-based | Per procurement decision |
+| Price | $249-3K/month | $16K–$150K | $5K (current plan) |
+
+At $5K, Straw is positioned 3x cheaper than the cheapest red team engagement for a comparable one-time, expert-driven evaluation that produces a formal artifact. This may be leaving significant money on the table.
+
+---
+
+### The Case for Higher Pricing
+
+**1. Anchor pricing:**
+Red team buyers are conditioned to pay $16K-$150K for adversarial testing. Straw at $5K looks cheap, not affordable. A pricing anchor above $10K might actually close more enterprise deals (enterprises trust what costs $15K, are skeptical of what costs $5K from an unknown vendor).
+
+**2. Perceived value:**
+If Straw prevents a $340K failed deployment (average), the ROI calculation at $5K is a 68x multiple. At $15K, it's still a 23x multiple. The ROI argument doesn't weaken meaningfully from $5K to $15K.
+
+**3. White-glove labor cost:**
+T3 investigative evaluation requires 30-45 minutes of expert human review (Tick 656). At $5K, if Straw spends 8 hours total on an evaluation (rubric design + T1 + T2 + T3 + certificate), that's $625/hour. That's the right range for expert evaluation, but it leaves little margin for ops overhead.
+
+**4. The "why so cheap?" objection:**
+If an enterprise CISO is comparing Straw ($5K) to a red team engagement ($20K), the question is "why is Straw so much cheaper?" That requires explanation. If Straw is $15K, the question doesn't arise — it's in the same category.
+
+---
+
+### Revised Pricing Recommendation
+
+**Phase 1 pricing (first 10 evaluations — design partners):**
+- Calibration run: $1,500 (unchanged — rubric design + first pass)
+- Definitive evaluation: $5,000 (unchanged — multi-tier + certificate)
+- Combined first engagement: $6,500
+
+**Phase 2 pricing (months 3-6, post-product-market fit signal):**
+- Calibration run: $2,500 (increased — rubric design is white-glove)
+- Definitive evaluation: $8,000–$12,000 (increased — positioned as "professional services")
+- Full engagement: $10,500–$14,500
+
+**Phase 3 pricing (months 6-12, brand established):**
+- Multi-agent comparison (3 agents, one task): $20,000–$25,000
+- Ongoing program (4 evaluations/year, priority rubric support): $40,000–$60,000/year
+- Enterprise compliance package (unlimited evaluations, white-label certificates, dedicated rubric analyst): custom, starting at $100,000/year
+
+This trajectory positions Straw at the high end of the "professional services" tier and transitions from per-evaluation to annual subscription as volume grows.
+
+---
+
+### The Risk of Under-Pricing in B2B
+
+In B2B SaaS, under-pricing signals low quality. A $5K evaluation from an unknown company sounds like a tool, not a service. A $15K evaluation sounds like a professional assessment.
+
+The "how do you justify $15K?" question is easier to answer than "why is this $5K?" because the $15K answer is "we have a team of domain experts, a multi-tier evaluation process, and a tamper-proof certificate that satisfies your compliance requirements" — and the buyer already budgets $15K for red team engagements. The $5K answer requires explaining "we're not cheap, we're actually underpriced" which is a harder sales narrative.
+
+**Immediate action:** Before the first paid evaluation, run one more pricing test. Ask 5 design partner prospects: "If this evaluation also produced documentation you could file with FINRA / your ISO 42001 auditor / your board, what would the right price be for that?" Their answer will calibrate the actual willingness-to-pay ceiling.
+
+---
+
+### What This Tick Changes
+
+The Phase 1 $5,000 price point in Tick 651 is still correct for the **first 10 evaluations** (design partner phase — prioritize proving the model over revenue).
+
+From Month 3 onwards, the pricing should move to $10,000–$15,000 for a standard definitive evaluation. The red teaming market provides the anchor; Straw's certificate (more use-friendly, compliance-focused, procurement-specific) provides the differentiation.
+
+The $100K+/year enterprise program is the Year 2 goal, not Year 1. Build the single-evaluation business first.
+
+
+---
+
+## Tick 676 — Three More Regulatory Demand Drivers: Insurance Riders, Colorado AI Act, Workday Precedent [2026-05-04]
+
+**Theme:** Bear Case (structural demand) / GTM (new buyer pathways)
+
+Three regulatory/legal developments not previously covered that independently create demand for Straw's certificate.
+
+---
+
+### 1. AI Security Riders in Cyber Insurance (2026)
+
+Insurers are now conditioning cyber insurance coverage on documented AI-specific controls. The new requirement: **"AI Security Riders"** — policy addenda that require organizations to:
+
+- Maintain an inventory of all AI tools and platforms in use
+- Document what data each AI tool can access
+- Maintain contractual data protections with AI vendors
+- Produce model risk assessments when making claims
+
+The critical clause: **organizations that cannot produce AI inventory documentation at time of claim face difficulties with adjusters.** In other words, if you deploy an AI agent, have an incident, and your insurer asks "show me your evaluation documentation for that agent" — and you have nothing — your claim is at risk.
+
+Gartner (April 2026): General Counsel should assess AI insurance to mitigate AI risks. The GC is now explicitly in the AI governance conversation.
+
+**Straw's role in insurance compliance:**
+
+Straw certificate = model risk assessment record. It's precisely the documentation insurers require to:
+1. Underwrite the policy (prove you evaluated AI before deploying)
+2. Process a claim (prove you had a documented evaluation at time of deployment)
+
+**New buyer:** Chief Risk Officer (CRO) and General Counsel. These are not technical buyers. They're governance buyers who need documentation. The sales conversation is: "Your insurer will ask for your AI evaluation records when you make a claim. Straw is the evaluation record."
+
+---
+
+### 2. Colorado AI Act — Annual Assessment Requirement (Effective February 1, 2026)
+
+Colorado passed the first comprehensive state AI employment law, effective February 1, 2026. Key requirements for employers with 50+ employees:
+
+- **Establish risk management policies** for AI systems used in employment decisions
+- **Conduct annual impact assessments** for each AI system
+- **Complete new assessments within 90 days** of any AI system modifications
+
+The annual assessment requirement is structurally different from one-time procurement evaluation: it means companies using AI agents for employment-adjacent decisions need **recurring evaluation** — at minimum annually, and within 90 days of any system change.
+
+This transforms Straw's revenue model from one-time transaction to recurring assessment subscription:
+- Year 1: Initial evaluation ($10,000-$15,000)
+- Year 2: Annual reassessment ($7,500 — lighter rubric update + re-run)
+- Year 2 trigger: Agent modified (within 90-day window) → emergency assessment ($5,000)
+
+For a company running 3 AI agents in employment-adjacent workflows, the annual Straw bill could be $22,500–$30,000/year. This is a very different ARR profile than the one-time evaluation model.
+
+**Who this affects:** Any company with 50+ employees using AI agents for recruiting, screening, scheduling, performance review, or compensation decisions. Colorado is the template; other states will follow (Illinois HB 3773 addresses similar concerns).
+
+**New buyer:** HR Legal Counsel / Employment Law compliance teams. Not the CTO. The conversation is: "Colorado requires annual AI impact assessments for employment systems. Straw's annual evaluation program satisfies that requirement."
+
+---
+
+### 3. Workday Lawsuit — Vendor Direct Liability Precedent
+
+A federal court in California allowed a lawsuit to continue against Workday (HR tech vendor) under an **"agency" theory** — holding that the AI vendor itself (not just the employer) can be directly liable for discriminatory outcomes in hiring decisions.
+
+The legal logic: If an AI tool exercises a function traditionally performed by an employer (recruiting, screening, hiring), the AI vendor is acting as the employer's agent and can be held directly liable under employment discrimination law.
+
+**What this means for Straw:**
+
+First, it means AI vendors (the companies whose agents Straw evaluates) have a new legal incentive to get Straw certificates. A Straw certificate showing that an agent was independently evaluated for task performance (including bias testing in the rubric) is the vendor's best defense against the agency theory:
+
+"Our agent was independently evaluated by a third party against a defined rubric. That rubric included bias detection criteria. The evaluation certificate, with its tamper-proof hash, shows the evaluation was completed before deployment."
+
+Second, it means Straw needs to include bias testing criteria in its standard rubric templates for employment-adjacent agents. Not as an add-on — as a default.
+
+Third, it changes the seller dynamic: the vendor's own legal team is now a motivated buyer of Straw certificates because they need documentation that their agent was vetted. Straw doesn't just serve buyer companies — it can also serve agent vendors who want to prove their agents were independently evaluated before sale.
+
+**Dual-sided demand:**
+- Buyer side: Enterprise deploying AI agents needs Straw certificates for procurement compliance
+- Vendor side: AI agent company needs Straw certificate to protect against Workday-theory liability when selling to enterprises
+
+The dual-sided demand model means Straw can sell to both sides of every transaction. Agent vendor pays for evaluation once; the certificate serves their sales process with every customer they approach.
+
+---
+
+### Updated Regulatory Stack (Version 3)
+
+| Regulation | Effective Date | Buyer | Frequency | Straw Role |
+|---|---|---|---|---|
+| FINRA AI agent oversight | 2026 | CCO / compliance | Annual | Audit trail artifact |
+| SEC 2026 exam priorities | 2026 | Investment firm AI lead | Annual | Evaluation documentation |
+| EU PLD | Dec 9, 2026 | GC / legal | Per deployment | Due diligence record |
+| EU AI Act | Aug 2025 | CTO / compliance | Per deployment | Conformity evidence |
+| CA EO N-5-26 | July 2026 | Government affairs | Per contract | Attestation document |
+| ISO 42001 Section 9 | Now/growing | CTO / CISO | Annual | Performance evaluation record |
+| NIST CAISI | Q4 2026 | CTO | Voluntary | NIST-aligned certificate |
+| Cyber insurance riders | Now | CRO / GC | Per deployment | Model risk assessment record |
+| Colorado AI Act | Feb 1, 2026 | HR Legal | Annual + per change | Impact assessment |
+| Workday legal precedent | 2026 | Agent vendors | Per sale | Defense documentation |
+
+Ten distinct demand drivers. Each one operates independently. No single buyer is affected by all ten — but every enterprise buyer is affected by at least 3-4.
+
