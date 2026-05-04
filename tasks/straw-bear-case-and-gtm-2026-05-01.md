@@ -49466,3 +49466,87 @@ Figma's early GTM: Identified the most influential designers on Twitter. Filtere
 
 **Zero-cost community play:** Offer to write a guest post or resource for each community's newsletter or blog. "How to build an evaluation rubric for your enterprise AI agent in 4 steps." This is pure educational content that establishes credibility and drives inbound interest to Straw.
 
+
+---
+
+## Tick 643 — [PARTNERS + BEAR] Healthcare AI as a Vertical: The Highest Compliance Need and the Slowest Sales Cycle
+
+**Theme:** Design Partner Targets + Bear Case  
+**Date:** 2026-05-04  
+**Thread:** Vertical prioritization — when to enter healthcare  
+**Sources:** Jimerson Firm Healthcare AI Compliance 2026, FDA CDS Guidance 2026, Kiteworks AI Healthcare Requirements, Bipartisan Policy Center FDA AI Oversight, AHA Letter to FDA Dec 2025
+
+---
+
+### Why Healthcare AI Has the Strongest Evaluation Requirement of Any Vertical
+
+The healthcare AI evaluation need is not optional — it's regulatory:
+
+1. **FDA Clinical Decision Support (CDS) Classification:** Every AI system used in clinical settings must be classified under the FDA's CDS framework. The 2026 guidance update requires transparency about "data inputs, underlying logic, and how recommendations are generated — particularly for algorithmic or AI-driven CDS."
+
+2. **HIPAA applies to AI systems:** Any AI agent that accesses, processes, or transmits ePHI (electronic protected health information) is subject to HIPAA. The same audit trail requirements for human clinicians apply to AI agents.
+
+3. **Documentation requirement before deployment:** "Healthcare organizations should classify every AI system before clinical deployment, documenting the FDA CDS classification question and the basis for any non-device determination." This is a documented, auditable process — exactly what Straw's certificate supports.
+
+4. **Third-party validation explicitly encouraged:** The FDA and AHA are explicitly encouraging "third-party assurance organizations" for healthcare AI validation. Straw is literally what regulators are asking for.
+
+5. **"Black box" problem articulated by regulators:** "The black box nature of many AI systems makes it challenging for hospitals and health systems to identify flaws in models that may affect accuracy and validity." The FDA's own problem statement is Straw's pitch.
+
+---
+
+### The Healthcare Straw Pitch
+
+> "FDA's 2026 CDS guidance requires documented evaluation of clinical AI tools before deployment. HIPAA requires audit trails for any AI system handling patient data. Straw produces the documentation you need: a structured evaluation against your criteria, with a tamper-proof certificate your compliance team can file. It's not a vendor demo — it's the documented validation that the FDA is asking you to produce."
+
+This pitch works because:
+- It references specific regulations they're already worried about
+- It frames Straw as compliance infrastructure, not evaluation software
+- The certificate directly maps to their documentation requirement
+- "Third-party assurance" is language regulators have already endorsed
+
+---
+
+### Why Healthcare Is NOT the Right First Vertical
+
+Despite the strong compliance fit, healthcare should be a **Month 12+ vertical**, not a Month 1-6 priority:
+
+**Sales cycle is 12-18 months minimum.** Hospital systems have multi-layered procurement processes. Getting a Straw contract through a hospital IT committee, legal review, HIPAA BAA (Business Associate Agreement) negotiation, and clinical champion sign-off takes a full year even if everyone is enthusiastic.
+
+**HIPAA BAA is a blocker.** Before a healthcare customer can share any patient-adjacent data on Straw (including task definitions that involve clinical workflows), Straw must sign a Business Associate Agreement. This is a legal and operational requirement that Straw must build infrastructure for. Not ready in Phase 1.
+
+**FDA documentation requirements add complexity.** A Straw certificate for a clinical AI tool needs to be FDA-defensible, not just enterprise-grade. This is a higher bar than the standard compliance certificate and requires regulatory expertise.
+
+**Budget approval is slow.** Even enthusiastic hospital CIOs face 3-6 month budget approval cycles for software outside their existing contracts.
+
+**Recommended timing:** Target the AI health tech companies (the Nuance, the Epic AI module, the healthcare AI startup) rather than the hospitals directly. Health tech companies evaluating their own AI agents have faster procurement cycles and are already enterprise SaaS buyers. They need Straw to prove to hospitals that their agents are evaluation-certified before deployment — that's the sell-through strategy.
+
+---
+
+### Healthcare Design Partner Targets (Month 12+, or via health tech companies now)
+
+**Direct health tech (faster cycle):**
+
+| Name | Company | Role | Opener |
+|------|---------|------|--------|
+| Unknown | Abridge | AI clinical documentation | "Abridge's clinical note AI faces the same FDA documentation requirement that Straw's certificate addresses. Design partner conversation?" |
+| Unknown | Ambience Healthcare | AI scribe for doctors | Same framing |
+| Unknown | Nabla | AI clinical assistant | Same framing |
+| Clinical AI leads | Nuance (Microsoft) | DAX clinical AI | "Microsoft/Nuance's DAX product faces FDA validation requirements. Straw produces the third-party evaluation certificate the FDA is asking for. Design partner?" |
+
+**Hospital system (slower cycle, Month 12+):**
+- Kaiser Permanente AI team (known for enterprise AI adoption)
+- Mayo Clinic AI lead
+- Cleveland Clinic technology group
+
+---
+
+### The HIPAA BAA Timeline
+
+Before Straw can serve healthcare customers:
+1. Draft a standard HIPAA BAA template (legal cost: $5-15K with a healthcare-focused attorney)
+2. Implement technical safeguards: encryption at rest and in transit, access controls, audit logging
+3. Sign BAA with a cloud infrastructure provider (AWS, Google Cloud — both offer BAAs)
+4. Have a breach notification procedure in writing
+
+**Timeline to HIPAA readiness:** 60-90 days of focused work. Not complex, but must be done before the first healthcare customer conversation crosses into clinical data.
+
