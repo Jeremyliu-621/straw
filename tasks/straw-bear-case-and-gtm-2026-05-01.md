@@ -48837,3 +48837,172 @@ No pitch here — genuinely researching the space. Reply in thread or email jere
 
 Even the worst-case outcome (50 signups from 2nd page) is valuable: HN visitors are extremely high-quality for Straw's ICP. 50 HN signups > 500 generic landing page signups.
 
+
+---
+
+## Tick 637 — [GTM] LinkedIn Content Strategy: Jeremy's 12-Week Playbook for CAIO Reach
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Content vs. outbound — LinkedIn-specific playbook for founder  
+**Sources:** LinkBoost LinkedIn Strategy for SaaS Founders 2026, Averi.ai LinkedIn B2B Playbook 2026, Postiv AI LinkedIn B2B 2026, LinkedIn algorithm changes early 2026
+
+---
+
+### What the 2026 LinkedIn Algorithm Rewards
+
+LinkedIn's algorithm changed dramatically in early 2026. Key shifts:
+- **Personal accounts outperform company pages** — the gap is widening. Jeremy's personal LinkedIn is the channel, not a Straw company page.
+- **3-5 high-quality posts/week beats daily low-effort content** — substance rewards, spam punished.
+- **Comments on other people's posts = high-leverage** — LinkedIn's algorithm treats thoughtful comments on high-traffic posts as distribution.
+- **Native content outperforms external links** — posts that keep people on LinkedIn (no outbound URL) get more reach.
+- **Document posts / carousels outperform text-only** — PDF documents shared as LinkedIn posts get 2-3x more impressions.
+
+---
+
+### The CAIO Audience Profile on LinkedIn
+
+Jeremy's target is: **Chief AI Officers, VP AI, Head of AI Strategy, Head of AI Deployment** at companies with 200+ employees and active AI agent programs.
+
+What this audience posts about:
+- AI governance and accountability
+- "Lessons from our AI deployment failures"
+- Measuring AI ROI
+- Vendor selection frameworks
+- AI team building and hiring
+
+What this audience engages with:
+- Concrete data (stats, benchmarks)
+- Honest takes about AI failure modes
+- Framework-style posts ("The 3 things you need before deploying AI agents")
+- Contrarian takes that validate their own experience ("No, benchmarks don't tell you what you need to know")
+
+**Jeremy's content must hit this intersection:** credible expertise in AI evaluation + honest takes about the market.
+
+---
+
+### Jeremy's 12-Week LinkedIn Content Calendar
+
+**Weeks 1-4: Establish expertise**
+
+Goal: Be seen as the person who knows the most about AI agent evaluation. Not selling Straw — just demonstrating expertise.
+
+Post types:
+- **Framework post** (1x/week): "The 3 things enterprise buyers always get wrong about AI agent selection"
+- **Data post** (1x/week): "88% of AI pilots fail. 41% of those fail from unclear success criteria. Here's what I've learned building Straw." [Use a chart or document carousel]
+- **Thread post** (1x/week): Deep dive on one topic (evaluation gaming, the Kaggle model applied to AI agents, why agent benchmarks are broken)
+
+Sample Week 1 posts:
+1. "We interviewed 20 enterprise AI teams. Not one had a documented process for comparing AI agents. They all 'just tried it and it felt better.' That's not procurement — that's guessing. [1,000 word post about how enterprise AI evaluation currently works and what's broken]"
+2. "In April 2026, UC Berkeley found that all 8 major AI agent benchmarks had been gamed to uselessness. The benchmarks companies use to buy AI are broken. [Data post with chart, link to paper]"
+3. "The bug bounty model proved something: adversarial external testing is more trustworthy than internal QA. That same insight applies to AI agent evaluation. Here's why. [Framework post]"
+
+**Weeks 5-8: Engage with the target audience**
+
+Goal: Be in conversation with CAIOs and AI leads at target companies.
+
+Tactics:
+- **Comment on 5 posts/day** from CAIOs, VPs AI, Head of AI at target companies. Comments should add genuine insight (not "great post!"). 3-5 sentences minimum.
+- **DM anyone who engages with your posts** — not to pitch, but to continue the conversation. "Saw you liked the AI benchmark post — are you seeing the evaluation quality problem in your organization?"
+- **Tag target contacts in relevant posts** — when you publish a post that's directly relevant to their situation, tag them with a question: "[Name] — you're one of the most sophisticated AI buyers I follow. Curious what your current evaluation process looks like."
+
+**Weeks 9-12: Convert engagement to design partner conversations**
+
+Goal: Turn LinkedIn conversations into 20-minute discovery calls.
+
+When someone engages significantly (comments, DMs, shares your post):
+"Thanks for engaging with the benchmark post. I'm building Straw specifically to solve this — we certify AI agent performance with a verifiable audit trail. Would love to show you what we're building and get your take. 20 minutes?"
+
+---
+
+### Content Templates (Steal These)
+
+**Template A: The Data Post**
+```
+The number that changed how I think about AI procurement:
+
+88% of AI pilots fail.
+41% of failures come from unclear success criteria.
+
+That means nearly half of AI failure has nothing to do with the technology.
+It's a measurement problem.
+
+If you can't define what winning looks like before you deploy, you can't know if you won.
+
+We built Straw to solve the definition problem. Here's how it works: [3-4 bullet points]
+
+If you're evaluating AI agents right now, I'd love to hear how you're defining success.
+```
+
+**Template B: The Framework Post (performs best as a document carousel)**
+```
+The 4 things you need before deploying an AI agent:
+
+1. A rubric: What does success look like? 
+   Not "it's faster" — specific, measurable, verifiable.
+
+2. A baseline: How does your current process perform?
+   Without a baseline, you can't calculate ROI.
+
+3. An adversarial test: What's the hardest edge case?
+   Any agent can pass easy cases. The edge case is where they diverge.
+
+4. A compliance artifact: What document will you show your board?
+   "We tested it and liked it" is not procurement documentation.
+
+If you have all 4, you're ready to deploy. If you're missing any, you're guessing.
+
+[Save this for your next AI procurement conversation]
+```
+
+**Template C: The Contrarian Take**
+```
+Hot take: AI benchmarks are mostly useless for enterprise procurement.
+
+SWE-bench, WebArena, GAIA — all gamed. UC Berkeley showed this in April 2026.
+
+The reason is simple: if an agent operator knows the benchmark in advance, they can optimize 
+for the benchmark without solving the underlying problem.
+
+Enterprise AI procurement needs private rubrics.
+The evaluation criteria can't be public. The agents can't see them in advance.
+That's the only way the score is honest.
+
+[Share if you're skeptical of agent benchmarks]
+```
+
+---
+
+### LinkedIn vs. Twitter/X Distribution Decision
+
+**Use LinkedIn as primary channel for CAIO/enterprise buyer content.**
+- CAIO audience is on LinkedIn, not Twitter
+- B2B procurement decisions don't happen via Twitter
+- LinkedIn's algorithm rewards Jeremy's content type more
+
+**Use Twitter/X for AI research community content.**
+- AI safety researchers (Beth Barnes, Marius Hobbhahn) are on Twitter
+- Open-source AI community (OpenHands contributors) is on Twitter
+- Technical discussions about eval design live on Twitter
+
+**Recommendation:** 
+- LinkedIn: 3-4 posts/week, CAIO-focused, enterprise framing
+- Twitter: 5-7 posts/week, technical community, shorter, more casual
+- Don't cross-post the same content to both. Different audiences, different tone.
+
+---
+
+### The One LinkedIn Post Jeremy Should Write This Week
+
+**If Jeremy only does one thing on LinkedIn this week, it's this:**
+
+Write a 600-word post about one specific AI agent evaluation failure you've heard about in customer discovery (anonymized). Title: "The $2M AI Agent Mistake (And How We'd Have Caught It)"
+
+Why: 
+- Specific enough to be credible
+- Illustrates the problem without pitching the solution
+- CAIO audience will recognize themselves or their peers
+- Easy to share without feeling like they're promoting a startup
+
+Publish Monday 9am ET. Reply to every comment within 2 hours.
+
