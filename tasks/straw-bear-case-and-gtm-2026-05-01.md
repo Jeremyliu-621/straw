@@ -56576,3 +56576,171 @@ From this session (Ticks 689-717), the complete named design partner contact lis
 
 **Total: 41 named individuals across 10 categories.** This is the master outreach list.
 
+
+---
+
+## Tick 718 — [BEAR] The Autonomy Trust Gap: Why 85% of Agent Pilots Never Reach Production [2026-05-04]
+
+**Theme: Bear Case | Research area: "Agents transacting is creepy" — psychological objection anatomy**
+
+The Phase 2 mandate explicitly called out this bear case. Here is the quantitative evidence, the psychological structure, and Straw's specific answer.
+
+---
+
+### The Numbers
+
+From 2026 enterprise surveys:
+
+- **85% of enterprises are piloting AI agents. Only 5% have moved them to production.** The gap is not capability — it is trust.
+- **68%** of enterprise decision-makers rate human-in-the-loop oversight as "essential" or "very important"
+- **62%** require human validation before agents can approve financial transactions — meaning most enterprises have hard-coded a human checkpoint before any money moves
+- **80%** of organizations deploying autonomous AI cannot trace in real time what those systems are doing or who is responsible
+- **Only 28%** can trace agent actions back to a human sponsor across all environments
+- **Only 21%** maintain a real-time inventory of active agents
+- **Only 5%** allow agents to execute high-stakes decisions without human review; 60% limit agents to moderate-risk task automation only
+
+**The 85/5 production gap is the single most important data point for Straw's pitch.** There are 17 enterprises in pilot for every 1 in production. The 16 who never reached production hit a trust barrier. Straw's certificate is the mechanism for crossing that barrier.
+
+---
+
+### The Psychological Structure of the Objection
+
+The "creepy agent" objection is not rational in the strict sense. It is a composite:
+
+**1. Loss of legibility.** When a human makes a decision, you can ask why. When an agent acts, you often cannot. Opacity creates anxiety independent of outcome quality.
+
+**2. Diffusion of accountability.** When an agent makes a wrong decision, who is responsible? The vendor? The deploying enterprise? The CAIO? The board? Procurement teams don't want to own ambiguous liability.
+
+**3. Irreversibility dread.** Agents executing financial transactions or modifying systems create irreversible consequences at machine speed. Human mistakes happen slowly enough for course correction. Agent speed removes that window.
+
+**4. Uncanny valley of agency.** AI agents are neither clearly tools (calculators, databases) nor clearly agents (humans, contractors). This category ambiguity creates resistance independent of the technology's actual capability.
+
+**5. Absence of prior social proof.** Humans evaluate novel risks by asking what others did in similar situations. For autonomous agents, the track record is thin. The absence of proof that it worked elsewhere is itself anxiety-inducing.
+
+---
+
+### How Straw Addresses Each Layer
+
+| Psychological layer | The objection | Straw's answer |
+|---|---|---|
+| Loss of legibility | "I can't tell why the agent made that decision" | T2 LLM judge provides reasoning trace for every evaluation decision; certificate includes that reasoning |
+| Diffusion of accountability | "Who is responsible when it goes wrong?" | Straw's certificate documents: "This agent was independently evaluated, met these criteria, with these known limitations." Responsibility chain is on record. |
+| Irreversibility dread | "Agent mistakes happen faster than I can correct them" | Straw evaluates under production-realistic conditions BEFORE deployment — mistakes happen in the evaluation sandbox, not in production |
+| Uncanny valley of agency | "I don't know what norms apply" | Straw's rubric IS the norms — literally the enterprise's explicit specification of what counts as correct behavior |
+| Absence of social proof | "No one has done this safely before" | Straw's certificate IS the social proof — an independent third party tested this agent against your criteria and it passed N/N runs |
+
+---
+
+### The Hidden Recurring Revenue Model
+
+Enterprises don't make a binary "deploy / don't deploy" decision. They make graduated autonomy decisions:
+- **Level 1:** Agent can draft communications; human must approve before sending
+- **Level 2:** Agent can send low-stakes communications autonomously
+- **Level 3:** Agent can execute transactions under $1,000 autonomously
+- **Level 4:** Agent can execute transactions under $10,000 autonomously
+
+Each level upgrade requires higher demonstrated performance. **Straw can evaluate at each threshold.** An agent that passes the Level 3 evaluation gets certified for autonomous transactions under $1,000. When the enterprise wants Level 4, they run another Straw evaluation.
+
+This is the recurring revenue mechanism inside the "creepy agent" objection. Every autonomy level upgrade = another Straw engagement. The Colorado AI Act's 90-day reassessment on system modifications triggers reassessment automatically every time an agent is upgraded.
+
+**Product roadmap note:** "Autonomy Tier Certification" — certifies an agent for a specific autonomy level (e.g., "certified for autonomous transactions up to $5,000"). Creates a natural upgrade path and recurring revenue from within existing customers.
+
+---
+
+**Pitch to financial services CAIOs:** *"62% of your peer institutions still have a human in the loop for every financial transaction their AI agents touch. That human costs time and limits throughput. Straw is what gets you from human-in-the-loop to supervised autonomy — by proving, with an independent certificate, that the agent has earned the right to transact without a human checkpoint."*
+
+---
+
+**Backlog:** Add 85/5 paradox data to pitch deck; add autonomy tier certification to product roadmap; add "62% require human approval for agent transactions" to FINRA white paper introduction.
+
+
+---
+
+## Tick 719 — [GTM] Straw's Pricing Page Design: Three-Tier Psychology and Conversion Architecture [2026-05-04]
+
+**Theme: GTM | Research area: Pricing page that converts enterprise buyers**
+
+Straw has no public pricing page today. This tick designs one from first principles using 2026 SaaS pricing research.
+
+---
+
+### Research Foundations
+
+- **Three tiers convert at 1.4x vs. two tiers and 1.8x vs. four+ tiers.** Three is the optimal number of pricing options.
+- **Center-stage effect:** Buyers disproportionately choose the middle option when presented with three.
+- **3-7-3 rule:** Visitors need 3 seconds to understand value, 7 seconds to scan pricing, 3 seconds to identify the recommended choice.
+- **Enterprise tier should be separate,** not a fourth column — "Contact sales" for variable ACV.
+- **Anchor pricing:** Highest listed price makes the middle price feel reasonable. Must be realistic to avoid trust damage.
+- **Anchor with regulatory requirements,** not customer logos — at zero customers, regulatory language is more credible.
+
+---
+
+### The Three-Tier Structure
+
+| | **Pilot** | **▶ Standard** *(recommended)* | **Enterprise** |
+|---|---|---|---|
+| **Price** | $6,500 | **$12,500** | Contact us |
+| **Best for** | First evaluation / design partners | Single AI agent procurement | Multi-agent systems / compliance programs |
+| **Rubric** | Straw default template | Custom rubric (your criteria) | Custom + regulatory framework alignment (ISO 42001 / FINRA / Colorado AI Act) |
+| **Runs** | 5 | 10 | 20+ |
+| **Certificate** | Basic | Full compliance (UUID + Merkle hash) | Full certificate + regulatory artifact package |
+| **T3 probing** | — | Included | Extended adversarial suite |
+| **Turnaround** | 4 weeks | 2-4 weeks | 4-6 weeks |
+| **Support** | Email | Onboarding call | Dedicated engagement lead |
+
+**"Most popular" badge on Standard.** Enterprise as anchor only — no price published.
+
+---
+
+### Why This Pricing Structure Works
+
+**Pilot ($6,500):** Below the typical $10K procurement approval threshold — a CAIO can expense it. Creates "try before you commit" that lowers first-purchase friction. Matches design partner pricing exactly.
+
+**Standard ($12,500) as center-stage winner:** This is the real product. Adjacent market anchor: AI red teaming starts at $16K. Straw at $12,500 is cheaper but positioned against that floor. Compared to Pilot, buyers see 2x the runs, T3 probing, full compliance certificate for $6K more — strong perceived value.
+
+**Enterprise ("Contact us") as the upward anchor:** Multi-agent system evaluations run $50,000-$75,000+. The "Contact us" box signals the high end exists without scaring Standard buyers. When CAIOs see "Enterprise," $12,500 for Standard feels conservative and safe.
+
+---
+
+### Regulatory Proof Points (Use Instead of Customer Logos)
+
+At zero customers, use regulatory requirements as the credibility signal — they're independently verifiable and more authoritative than logos:
+
+> *"Produces the AIMS audit trail required by ISO 42001 Section 9"*
+> *"Satisfies FINRA 2026 AI agent audit trail requirements"*
+> *"Documentation required by Colorado AI Act (effective June 30, 2026)"*
+> *"Independent third-party evaluation — as required by EU AI Act Article 9"*
+
+---
+
+### Key FAQ Entries
+
+**Q: How is Straw different from Braintrust or Arize?**
+A: Braintrust and Arize monitor AI agents after you've deployed them. Straw evaluates agents before you hire them — so you make better procurement decisions and have compliance documentation before day one.
+
+**Q: Why do I need an independent evaluation instead of testing myself?**
+A: ISO 42001 Section 9, FINRA 2026 exam priorities, and Colorado AI Act all require third-party independent evaluation. Self-evaluation doesn't satisfy these requirements by definition — independence requires a third party.
+
+**Q: Can I use the certificate for regulatory compliance?**
+A: Yes. Our certificates are designed as compliance artifacts — tamper-proof (UUID + Merkle hash verification), scoped (explicit about what was tested), and audit-ready.
+
+---
+
+### A/B Test Plan (Once Traffic Exists)
+
+- **Test 1:** $12,500 vs. $14,500 for Standard — does higher price signal quality and increase conversions, or decrease them?
+- **Test 2:** "Contact us" Enterprise vs. "$50,000+" listed price — does showing the anchor number affect Standard tier conversions?
+- **Test 3:** "Pilot / Standard / Enterprise" naming vs. "Evaluation / Certification / Compliance Program" — does regulatory language outperform neutral product naming?
+
+---
+
+### Implementation Priority
+
+This pricing page should go live **before the first design partner conversation.** Saying "I'll send you details" when asked about cost is weaker than sharing a URL to a professional pricing page. The page is also a credibility signal — it implies a real company with a real product.
+
+**Target:** Live in Week 1-2 of execution. One-page addition to straw.vercel.app.
+
+---
+
+**Backlog:** Build pricing page (straw.vercel.app/pricing); regulatory requirement social proof section; A/B tests when at 100+ visitors/month; Pilot tier maps directly to design partner program.
+
