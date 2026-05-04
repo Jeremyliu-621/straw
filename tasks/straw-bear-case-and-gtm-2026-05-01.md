@@ -54156,3 +54156,113 @@ For companies doing 4+ evaluations per year, internal DIY is actually MORE expen
 
 The bear cases have been systematically researched and mitigation strategies identified. The two most structurally difficult (suite consolidation, Goodhart's Law) have viable but not trivial mitigations that require ongoing product investment.
 
+
+---
+
+## Tick 687 — The CAIO Buyer Persona + Cold Email Benchmarks [2026-05-04]
+
+**Theme:** GTM (buyer persona + outreach calibration)
+
+---
+
+### The CAIO: Straw's Primary Buyer in 2026
+
+**Adoption:**
+- 26% of organizations have a CAIO now (IBM IBV, Q1 2025)
+- 60% of Fortune 100 will have a Head of AI Governance by end of 2026 (Forrester)
+- 48% of FTSE 100 have a CAIO (65% of those appointments in the past 2 years)
+
+**What the CAIO actually does (time allocation):**
+- 25-30%: Strategic planning — developing enterprise AI strategy, evaluating emerging technologies
+- **20-25%: Governance and risk management** — overseeing AI governance frameworks, regulatory compliance (EU AI Act, NIST AI RMF), managing model risk
+
+The governance and risk management bucket is exactly where Straw's certificate serves. The CAIO who owns regulatory compliance (EU AI Act, NIST, ISO 42001) and model risk management needs:
+1. Documented evaluation process for AI agents before deployment
+2. Third-party verification of agent performance
+3. Compliance artifacts that satisfy FINRA, ISO 42001, California EO requirements
+
+Straw produces all three.
+
+**CAIO salary context:**
+- Base: $250K-$400K+
+- Total package at large enterprises: $1M+
+- Budget authority: typically has direct authority for tools in the $50K-$200K annual range without board approval
+
+At $12,000/evaluation and 4 evaluations/year = $48,000/year — well within the CAIO's individual authority. No lengthy procurement process required for the initial engagement.
+
+**CAIOs report 10% higher AI ROI** than companies without dedicated AI leadership. These are precisely the buyers who understand AI governance value and can articulate ROI.
+
+---
+
+### CAIO-Specific Cold Email Template
+
+**Subject:** Your CAIO mandate and pre-deployment evaluation documentation
+
+> Hi [Name],
+>
+> You're accountable for AI governance and regulatory compliance at [Company]. With FINRA's 2026 oversight report requiring AI agent audit trails and ISO 42001 adoption now screening 72% of Fortune 500 procurement, that mandate is getting more specific.
+>
+> The missing piece: pre-deployment performance evaluation documentation. Braintrust monitors what agents do after deployment. What produces the certificate you need before deployment — when the procurement decision is being made?
+>
+> Straw is the AI agent performance evaluation platform. We run agent evaluations against rubrics you define, across three tiers (automated + LLM judge + human investigative probing), and produce a tamper-proof certificate with UUID and Merkle hash verification. Model-agnostic — works for Claude, GPT-4o, and custom agents.
+>
+> 20 minutes to show you what the certificate looks like and which compliance frameworks it satisfies?
+>
+> Jeremy Liu
+> Straw
+> [verification URL for sample certificate]
+
+**Length check:** 118 words. Optimal range is 50-125 words for highest reply rates.
+
+---
+
+### Updated Cold Email Benchmarks and Funnel Math
+
+**Enterprise SaaS cold email benchmarks (2026):**
+- Reply rates: 5-10% for enterprise targets (high-ACV buyers are harder to reach)
+- Meeting rates: 1-3% of cold emails become meetings
+- Best email length: 50-125 words
+
+**Revised funnel math (replacing Tick 679 estimates):**
+
+| Activity | Volume | Response rate | Results |
+|---|---|---|---|
+| Cold email (CAIO/CCO) | 300 | 7% | 21 replies |
+| LinkedIn outreach | 80 | 10% | 8 connections |
+| Conference/event conversations | 15 | 40% | 6 warm leads |
+| Roundtable attendees | 15 | 33% | 5 warm leads |
+| Total responses | — | — | ~40 |
+| Qualify to demo | 40 | 70% | 28 demos |
+| Demo-to-close | 28 | 25% | 7 customers |
+| Avg evaluations/year | 7 customers × 1.5 | — | 10.5 evaluations |
+| Revenue at $12K/eval | 10.5 × $12,000 | — | $126,000 ARR |
+
+$126K ARR is above the $100K goal. This is achievable if outreach starts today and follows the 2-week daily plan from Tick 649.
+
+**The most important lever: personalization**
+The difference between 5% and 10% reply rates is personalization. Each email should reference:
+1. The specific regulatory requirement affecting their industry
+2. A specific agent deployment the company has announced or is known for
+3. A specific compliance challenge visible in their public filings or press releases
+
+Generic outreach at enterprise ($250K+ ACV) buyers: 2-3% reply. Personalized, trigger-based outreach: 8-12% reply. The 4x multiplier is worth the 3-4x additional time per email.
+
+---
+
+### The 5 Email Sequences That Should Run Concurrently
+
+Based on all research to date, five distinct cold email sequences should run in parallel, each targeting a different buyer persona:
+
+**Sequence 1 — CAIO/CCO (primary):** Regulatory compliance angle (FINRA/ISO 42001)
+**Sequence 2 — CRO/GC:** Insurance AI rider angle (cyber insurance coverage at risk)
+**Sequence 3 — HR Legal Counsel:** Colorado AI Act annual assessment angle
+**Sequence 4 — Government Affairs:** California EO N-5-26 vendor certification angle
+**Sequence 5 — AI Agent Vendors:** Workday liability precedent angle (agent vendor needs evaluation certificate to defend against agency theory)
+
+Each sequence is 3 touches over 2 weeks:
+- Touch 1: 100-word cold email (regulatory hook + Straw intro)
+- Touch 2 (Day 5): 60-word follow-up ("Did this land in the right place?")
+- Touch 3 (Day 12): 40-word breakup email ("If the timing isn't right, I'll check back in Q3")
+
+Five sequences × 60 targets each = 300 total contacts × 3 touches = 900 email sends. This is 2 months of systematic outreach.
+
