@@ -40261,3 +40261,159 @@ Instead of cold lists, Jeremy should prioritize signal-triggered outreach:
 | Conference speaker lists (AGENTIC AI, The AI Conference) | 20 | Week 3-8 |
 | CrewAI/LangChain community developers (supply-side) | 10 | Week 2-4 |
 
+
+---
+
+## Tick 545 — Press Strategy: Building Relationships Before You Need Them [GTM/Media]
+
+*2026-05-04. Average journalist response rate to PR pitches: 3.43%. Only 8% of PR pitches result in coverage. The alternative: build the relationship before you need it.*
+
+### The 2026 press landscape for AI startups
+
+By 2026, "being an AI company" is table stakes. Reporters require founders to explain:
+1. What specific problem they solve
+2. For whom
+3. With what evidence of traction
+4. Why their approach is meaningfully different
+
+**The outlets that matter for Straw:**
+- **TechCrunch** — largest reach for enterprise tech; write "Exclusive: Straw launches..."
+- **The Information** — premium enterprise tech; pays $400/year subscribers; influential with enterprise buyers
+- **Bloomberg Technology** — financial services audience; relevant for FS angle
+- **Wired** — mainstream tech credibility signal
+- **MIT Technology Review** — academic/research credibility (relevant for METR partnership)
+
+**Secondary outlets (specialist, high-signal):**
+- **Latent Space** (newsletter + podcast) — AI infrastructure audience; exactly Straw's ICP
+- **The Batch** (Andrew Ng, 500K+) — broad AI audience
+- **AI Frontier Playbook** — enterprise AI procurement specifically
+
+### The three-phase press strategy
+
+**Phase 1 (Months 1-3): Narrative building, no press**
+- Write 3 long-form thought leadership pieces (publish on company blog or Substack)
+- Topics: "Why AI agent benchmarks are broken" (UC Berkeley finding hook), "How enterprises should evaluate AI agents before deployment," "The missing piece in AI procurement"
+- These pieces serve dual purpose: SEO + relationship starter (journalists and analysts read them)
+
+**Phase 2 (Months 3-6): Build journalist relationships**
+- Identify 5-10 journalists who write about enterprise AI procurement
+- Follow on Twitter/X; reply to their posts with insights (not pitches)
+- When they write about AI evaluation, email with additional data/a quote they didn't use
+- Send 1-2 relevant data points from Straw's early evaluations (anonymized) — be a data source
+
+**Phase 3 (Month 6+): First story pitches**
+- Warm relationship established → pitch the story (not a press release)
+- Hook: "First enterprise AI agent evaluation marketplace closes $1.5M seed; 3 Fortune 500 design partners"
+- Alternatively: First press before raise, with "Show HN" as soft launch
+
+### The journalist relationship list (to build)
+
+**#184: Kyle Wiggers (TechCrunch AI)** — covers AI startups and enterprise AI tools
+**#185: Devin Coldewey (TechCrunch)** — covers AI/tech infrastructure
+**#186: Will Knight (Wired AI)** — deep tech AI coverage, skeptical and rigorous
+**#187: Eléonore Chouillou (The Information)** — enterprise AI beat
+**#188: Casey Newton (Platformer)** — independent newsletter, tech policy + enterprise AI
+
+**The approach for all:** Follow, engage with their content for 30 days before any pitch. Send a data point before any story request. Cold pitching a journalist who doesn't know you = 3.43% response rate. Warm relationship = 40%+.
+
+### The "exclusive" strategy
+
+TechCrunch and Bloomberg love exclusives. At seed announcement:
+- Offer ONE journalist an exclusive 48 hours before general announcement
+- They write the story before competition does → better placement
+- In return: you get a longer, more nuanced story vs. a brief mention
+
+**Who to offer the exclusive:** Kyle Wiggers (TechCrunch) — covers exactly Straw's space; large audience; fast turnaround.
+
+### The HN and Product Hunt as press substitutes
+
+For early traction (Month 1-3), before press relationships exist:
+- **Show HN** (already planned in Tick 478) = legitimate product launch channel
+- **Product Hunt** (Tuesday launch for maximum traffic) = developer and tech community
+- Both generate press coverage without journalist relationships
+
+**Show HN expected outcome:** 50-200 upvotes → 5-20 design partner inquiries (Tick 478 data). This is better than most cold press pitches.
+
+
+---
+
+## Tick 546 — First Engineering Hire: When, Who, and Job Description [GTM/Hiring]
+
+*2026-05-04. Solo founders at 36% of new startups in 2025. With Claude Code + Cursor, a technical solo founder can ship an MVP in 30-60 days. First hire should be later than Jeremy thinks.*
+
+### When to hire the first engineer
+
+**Solo founder with AI tools (2026):** Claude Code + GitHub Copilot handle AI-assisted development well enough that technical solo founders are shipping production MVPs in 30-60 days without additional hires.
+
+**Straw's trigger for first hire:**
+- T1/T2 pipeline automated (doesn't require Jeremy's time for each evaluation)
+- 2+ concurrent design partner evaluations running simultaneously
+- Jeremy is spending >50% of time on engineering vs. sales/customer success
+- ARR > $50K (can afford $120K/year engineer without burning runway)
+
+**Estimated timing:** Month 9-12 (after seed raise). NOT before.
+
+**What to do before first hire:** Use Claude Code aggressively. Every hour Jeremy spends on engineering that Claude Code could handle = opportunity cost against sales. The goal is 80% of engineering time automated before first hire.
+
+### Who to hire first
+
+**Title:** Full-Stack Engineer with AI tooling experience
+
+**What they actually build:**
+- T1 deterministic evaluation runner (Docker/Firecracker sandboxing)
+- Rubric builder UI (Next.js form → YAML export)
+- Results dashboard (score breakdown visualization)
+- Background job queue (Inngest/BullMQ for async evaluation pipeline)
+
+**Non-negotiable skills:**
+- TypeScript (strict mode)
+- Next.js App Router
+- Supabase (PostgreSQL + RLS)
+- Docker (for T1 sandbox)
+- Basic understanding of LLM APIs (Anthropic SDK)
+
+**Nice to have:**
+- Experience with evaluation frameworks (Inspect, Braintrust, etc.)
+- Open-source contributor (GitHub presence)
+- Past experience at a B2B SaaS startup (<50 people)
+
+### Job description (ready to post on YC Work at a Startup + Twitter/X)
+
+---
+
+**Engineer #1 @ Straw — Build the Evaluation Infrastructure for Enterprise AI**
+
+Straw is the pre-deployment AI agent evaluation marketplace. Enterprises post tasks with rubrics they define. AI agents compete. We score them. The winner gets hired.
+
+We're looking for a full-stack engineer to own our evaluation pipeline end to end: deterministic testing, LLM-as-judge scoring, async job processing, and a rubric builder UI.
+
+**What you'll build:**
+- T1 evaluation runner: Docker-sandboxed code execution for deterministic scoring
+- T2 LLM-as-judge: Anthropic SDK integration for rubric dimension scoring
+- Rubric builder: Next.js form → YAML export → evaluation pipeline trigger
+- Results dashboard: Score breakdown, agent ranking, PDF certificate generation
+
+**Stack:** TypeScript + Next.js + Supabase + Vercel + Anthropic SDK
+
+**We want you if:**
+- You've built production pipelines in TypeScript, not just demos
+- You're comfortable reading papers and translating research into working code
+- You want to own infrastructure that enterprise companies rely on
+- You think "AI agent evaluation" is an interesting problem, not just a job description
+
+**Compensation:** $120-150K base + 1-2% equity
+
+**Location:** Remote (UK/EU preferred for timezone overlap with Jeremy)
+
+---
+
+### Where to post
+
+1. **YC Work at a Startup** (high signal; AI startup candidates self-select)
+2. **Twitter/X** (Jeremy's personal account; "we're hiring" thread)
+3. **LinkedIn** (Jeremy's company page)
+4. **OpenHands Discord** (target community: agents who build code-generating agents)
+5. **LangChain Discord** (same audience)
+
+**Note:** 80%+ of roles are filled through referrals before posting publicly. Before posting: ask design partners, academic collaborators (Graham Neubig, Beth Barnes), and CAIF contacts if they know strong engineers in the agent evaluation space.
+
