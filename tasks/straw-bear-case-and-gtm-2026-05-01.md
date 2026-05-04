@@ -44717,3 +44717,369 @@ When an agent operator wins a Straw evaluation, they receive:
 
 **This is the supply-side marketing engine:** every winning agent is a Straw advertisement.
 
+
+---
+
+## Tick 598 — Bear Case Rebuttal: The Build vs Buy Pendulum (2026-05-03)
+
+### The Bear Case Version
+
+"As AI engineering talent floods the market and model APIs get cheaper, enterprises will bring evaluation in-house. Straw gets disintermediated by internal evaluation tooling."
+
+### Why This Bear Case Gets the Causality Backwards
+
+**The 76% "buy" shift is not a coincidence.** Beam.ai data: enterprises moved from ~50/50 build/buy on AI in 2024 to **76% buy in 2025**. Vendor-led AI deployments outperform internal builds **2:1**. Speed-to-production is the decisive metric.
+
+**Why do enterprises buy instead of build?**
+
+| Cost factor | Figure |
+|---|---|
+| Senior AI engineer salary | $300K+/year (competitive markets) |
+| Production generative AI model maintenance | ~$200K/month |
+| In-house agentic AI team (5-person, mid-market) | $500K–$1.5M/year |
+| Cost of a wrong vendor decision | $2M–$10M+ (implementation + rework + opportunity cost) |
+
+**The paradox:** The more enterprises buy AI, the more they need evaluation infrastructure. Every vendor they bring in is an unknown quantity. The 76% who are buying need Straw to validate what they're buying.
+
+**Internal "build your own evaluation" doesn't work because:**
+
+1. **Conflict of interest** — You can't objectively evaluate an agent built by your own team the same way you can't audit your own financial statements.
+2. **Rubric expertise** — Defining what "winning" looks like for a complex enterprise task requires evaluation expertise that is not in most engineering teams.
+3. **Cross-vendor baselines** — Internal evaluations produce scores that only make sense relative to other internal builds. Straw's score is anchored to a cross-company benchmark that gives the number meaning.
+4. **Certificate as procurement artifact** — A Straw certificate travels through procurement committees, legal sign-off, and board approval. An internal evaluation report does not.
+
+**The staffing cost angle:** A team capable of running rigorous pre-deployment evaluation (evaluation framework design, LLM-as-judge calibration, adversarial testing, deterministic test suite generation) costs $500K–$1M/year. Straw's $15K evaluation fee pays for itself in month 1 against that alternative — and produces an auditable, externally-signed artifact.
+
+**Hybrid reality creates MORE Straw demand, not less:** The dominant enterprise pattern in 2026 is "buy for most tasks, build for core competitive advantage." The buy side generates constant evaluation demand. The build side needs external validation even more (no vendor to blame if internal builds fail procurement; an independent Straw cert is the internal team's protection).
+
+**Counter to the "AI talent is flooding the market" sub-argument:** More AI engineers does not mean more evaluation engineers. Evaluation methodology is a distinct discipline (psychometrics, mechanism design, adversarial ML, LLM-as-judge bias). The talent pool for evaluation specialists is small and growing slowly.
+
+**Verdict:** The build vs buy pendulum moving toward "buy" is a demand amplifier for Straw, not a substitution threat. Every bought agent is an unvalidated agent until Straw evaluates it.
+
+
+---
+
+## Tick 599 — Design Partner Targets: Energy Sector (2026-05-03)
+
+### Why Energy Is a High-Value Vertical for Straw
+
+**The agentic AI use case density is extreme.** Energy companies deploy AI agents across: grid management and DERMS (Distributed Energy Resource Management), predictive maintenance on $50M–$500M assets, energy trading (synthesizing weather forecasts + market prices + grid conditions in real time), demand forecasting, renewable integration, field technician support, carbon credit optimization, and regulatory compliance filing.
+
+**The failure cost is catastrophic.** A grid management agent that miscalculates demand forecasting causes cascading outages. A predictive maintenance agent that misses a turbine failure causes multi-million dollar unplanned downtime. The stakes for "did this agent actually work?" are among the highest of any industry.
+
+**AI ROI is already proven — but only 50% report positive ROI.** Energy companies report 170% average ROI on deployed AI; predictive maintenance and renewable forecasting show the strongest returns. But only half of utilities report positive ROI on AI. The gap between 170% potential and 50% positive-ROI-realization IS the Straw wedge — validation narrows the gap.
+
+**NextEra + ExxonMobil + Google AI build-out (Dec 2025):** These three companies announced a joint AI infrastructure build-out. John Ketchum (NextEra CEO) is personally leading AI initiatives. NextEra + ExxonMobil + Google partnership signals that energy-sector AI investment is at CEO level — procurement decisions go through the C-suite.
+
+**Microsoft agentic AI in renewable energy (April 2026):** Microsoft published "How agentic AI is transforming renewable energy operations" — case studies of AI agents providing hyper-local weather predictions, grid interactions, and commercial energy trading. Confirms the sector is live with agent deployments.
+
+### Named Design Partner Targets: Energy
+
+| Company | Contact Target | Role | Straw Angle |
+|---|---|---|---|
+| **NextEra Energy** | [Head of Digital/AI] | SVP Digital Strategy | Grid management agent + AI infrastructure build; 170% ROI in predictive maintenance — needs validation before scaling |
+| **Shell** | [Chief Digital Officer] | CDO or Head of AI | Shell has an AI Centre of Excellence with 200+ AI use cases; agent deployment at scale needs audit trail |
+| **ExxonMobil** | [VP Technology] | VP Technology or Head of Digital | Partnered with NextEra + Google; needs independent validation for their AI build-out before committing $B+|
+| **Duke Energy** | Lynn Good (CEO) → [Head of AI Ops] | CTO's org | $1.1B/year AI investment announced; grid reliability is regulated; AI decisions touch utility regulation |
+| **Equinor** | [CDO] | Chief Digital Officer | Norway's state oil company; EU AI Act compliance critical; offshore asset management agents |
+| **Constellation Energy** | [VP AI/Digital] | | Nuclear plant AI management — safety-critical; highest possible Straw evaluation stakes |
+| **Enel** | [CTO Italy] | EVP Innovation | Italian-HQ'd utility; EU AI Act compliance mandatory; large grid optimization AI program |
+
+### Cold Email Angle for Energy
+
+**Subject:** Your grid AI agents before they touch live infrastructure
+
+**Opening:** Duke Energy committed $1.1B to AI in 2025. When an agent makes a real-time grid switching decision, the regulatory question is: how do you know it works? [From NERC reliability standards and FERC order 881, grid AI decisions require documented validation.]
+
+**Hook:** Straw runs pre-deployment evaluation for energy-sector AI agents — deterministic tests for SLA compliance + LLM-evaluated scenario performance — and produces a signed evaluation certificate that satisfies your compliance team's paper trail.
+
+**CTA:** Would it be worth 20 minutes to walk through one evaluation scenario specific to grid management?
+
+### Regulatory Angle Specific to Energy
+
+- **NERC CIP (Critical Infrastructure Protection):** Reliability standards for grid operators; AI agents making real-time grid decisions need documented "model validation" — Straw is that documentation.
+- **FERC Order 881 (Ambient Adjusted Ratings):** More dynamic grid operations require validated AI forecasting tools.
+- **NRC (Nuclear Regulatory Commission):** Any AI system influencing nuclear plant operations requires documented independent evaluation. Constellation Energy, Exelon, Southern Company are immediate targets.
+- **State PUC oversight:** State Public Utility Commissions require that utilities justify AI-driven rate decisions; an independent evaluation certificate is the justification artifact.
+
+
+---
+
+## Tick 600 — Design Partner Targets: Pharma & Biotech (2026-05-03)
+
+### Why Pharma Is a High-Value Vertical
+
+**The AI investment is enormous and the stakes are existential.** Eli Lilly, GSK, and Pfizer each signed major AI platform deals in the first three weeks of January 2026 alone. The global AI in pharmaceutical market: $1.94B in 2025 → $16.49B by 2034 (27% CAGR). 
+
+**The failure mode is catastrophic AND public.** No AI-designed drug has yet completed Phase III trials and received regulatory approval (expected 2026–2027). If the first AI-designed drug fails Phase III, it's front-page news. Pharma companies are acutely aware that unvalidated AI agents in the discovery pipeline carry reputational tail risk beyond financial loss.
+
+**FDA AI Drug Development Guidance (January 2026):** The FDA published a framework for evaluating AI-discovered drugs, including an Accelerated AI Pathway Pilot. This guidance means that AI agents used in drug discovery now have a regulatory paper trail requirement. Straw's evaluation certificate is the pre-deployment validation artifact that pharma regulatory affairs teams will demand.
+
+**Insilico Medicine breakthrough (February 2026):** INS018_055 — the first fully AI-designed drug for idiopathic pulmonary fibrosis — completed Phase IIa with statistically significant efficacy. This signals the pipeline is real and moving; the pressure to deploy AI agents in discovery is intensifying.
+
+**The validation gap:** 68% of retailers plan agentic AI adoption — a comparable statistic exists in pharma, and the space between "pilot" and "production" is exactly where Straw operates.
+
+### Named Contacts: Pharma CAIO/Head of AI
+
+| Company | Contact | Title | Context |
+|---|---|---|---|
+| **Eli Lilly** | **Thomas J. Fuchs** | Chief AI Officer (appointed Oct 2024) | Former Mount Sinai computational pathology director; runs AI across drug discovery, clinical trials, manufacturing, commercial ops. First CAIO at Lilly. |
+| **Pfizer** | **Berta Rodriguez-Hervas** | Chief AI & Analytics Officer (joined Aug 2024) | Co-chairs Pfizer AI Council. Previously VP of AI/ML at Stellantis (autonomous vehicles). Now focused on AI for drug discovery and manufacturing. |
+| **GSK** | [Search needed] | Head of AI / CDO | GSK has major AI partnerships (DeepMind for protein structure); CDO office owns AI evaluation. |
+| **Moderna** | [CDO/CIDO] | Chief Information & Digital Officer | Moderna's entire mRNA platform is AI-native; now expanding AI to commercial ops and manufacturing. |
+| **Regeneron** | [VP Computational Biology] | | Deep AI drug discovery program; proprietary VelociSuite platform — agent evaluation for discovery pipeline. |
+| **AstraZeneca** | [Head of AI] | | AZ-OpenAI partnership for clinical trial design; needs pre-deployment validation for clinical AI agents. |
+| **Roche / Genentech** | [Chief Data Officer] | | Complex AI deployment across diagnostics + therapeutics; regulatory affairs teams have strict documentation requirements. |
+
+### Straw Angle for Pharma
+
+**The core message:** Drug discovery AI agents are not like other enterprise software. When an AI agent recommends a molecular target, you need to know whether its reasoning is sound — not just whether it returned a result. Straw's T3 investigative evaluation examines the reasoning chain, not just the output.
+
+**FDA alignment:** The January 2026 FDA AI guidance requires documented evaluation of AI models used in drug development. A Straw certificate is the pre-clinical evaluation artifact that maps directly to FDA's "model documentation" requirements.
+
+**Cold email opener for Thomas Fuchs (Lilly):**
+"Dr. Fuchs — as the architect of Lilly's AI strategy, you're making decisions about which AI agents touch your drug discovery pipeline. The FDA's January 2026 guidance on AI in drug development requires documented evaluation frameworks. Straw runs pre-deployment evaluation for pharma AI agents and produces a signed evaluation certificate that maps to the FDA's documentation requirements. Worth 20 minutes?"
+
+**The "Phase IIa credibility transfer" play:** Insilico's INS018_055 success makes every pharma CAIO want to move faster on AI drug discovery. But moving faster without validation creates exactly the reputational tail risk they fear. Straw is the "move fast safely" solution.
+
+### Regulatory Angle Specific to Pharma
+
+- **FDA AI/ML Action Plan (updated 2026):** Software as a Medical Device (SaMD) regulations now explicitly cover AI agents used in clinical decision support. Pre-deployment validation is not optional.
+- **21 CFR Part 11 (Electronic Records, Electronic Signatures):** Any AI output that feeds into an IND or NDA application needs auditable electronic records — Straw's certificate + audit trail maps to Part 11.
+- **ICH E8(R1) (General Considerations for Clinical Studies, 2021):** Requires quality risk management for tools used in clinical trial design — AI agents are covered.
+- **EU Clinical Trials Regulation (536/2014):** EU pharma AI also faces EU AI Act high-risk classification (AI used in clinical decision-making = high-risk under Annex III). Straw evaluation = EU AI Act compliance artifact.
+
+
+---
+
+## Tick 601 — Design Partner Targets: Retail & Ecommerce (2026-05-03)
+
+### Why Retail Is a High-Density Target
+
+**Scale of agentic AI in retail is enormous.** Deloitte 2026 Retail Outlook: 68% of retailers plan agentic AI adoption in the next 12-14 months. By 2026, 80% of customer service organizations use AI agents (up from 47% in 2023). Companies using AI agents in e-commerce report 30% more revenue than competitors, 40-60% reduction in support costs, 15-20% higher conversion rates.
+
+**The fraud detection urgency.** Agentic commerce is forcing retailers to reassess fraud detection — their existing tools were built to block bots, not evaluate autonomous AI buyers. On the supply side, retailers deploying AI agents for inventory, pricing, and demand forecasting face the same trust gap: does this agent actually work in our environment?
+
+**The $3–5T agentic commerce opportunity (McKinsey, 2026).** When AI agents are both buyers and sellers in a marketplace, the evaluation of those agents becomes infrastructure. Straw is positioned to be the evaluation infrastructure for agentic commerce.
+
+**The "unified platform" consolidation trend (2026):** Retailers are moving toward unified agentic platforms combining personalization + commerce + service + logistics. Every vendor claiming to be "the unified agentic platform" needs to demonstrate that their agents actually work — Straw provides that proof.
+
+### Highest-ROI Retail AI Agent Use Cases for Straw Tasks
+
+| Use Case | What the Straw Task Would Test | Evaluation Complexity |
+|---|---|---|
+| 24/7 customer service agent | Resolves escalations correctly, routes appropriately, CSAT proxy | T1 (resolution rate) + T2 (tone, accuracy) |
+| Fraud detection agent | True positive rate, false positive rate on real transaction patterns | T1 (precision/recall) |
+| Personalization / recommendations | Click-through rate proxy, diversity, novelty — no filter bubble | T1 + T2 |
+| Dynamic pricing agent | Revenue optimization vs. competitor response, no illegal price coordination | T1 + T3 (adversarial pricing edge cases) |
+| Inventory/demand forecasting | RMSE on holdout set, rare event handling | T1 (quantitative) |
+| Supply chain orchestration agent | On-time delivery proxy, exception handling, vendor negotiation | T2 + T3 |
+
+### Named Design Partner Targets: Retail
+
+| Company | Contact Target | Role | Straw Angle |
+|---|---|---|---|
+| **Amazon / AWS** | [Head of Agentic Commerce] | VP Alexa Shopping / AI Commerce | Amazon is the largest agentic commerce infrastructure — they will want to validate agents before listing them in their ecosystem |
+| **Walmart** | [CDO] | Chief Data & Technology Officer | Walmart has ~3,000 internal AI use cases; agentic supply chain is live — needs evaluation framework |
+| **Target** | [Head of AI/ML] | VP AI & Machine Learning | Target's demand forecasting + inventory agents are in production; CISO + CTO-level compliance pressure |
+| **Shopify** | [Head of AI] | | Shopify launched "Sidekick" AI assistant; evaluating 3rd-party agent apps in their marketplace — Straw evaluates apps before listing |
+| **Klarna** | Sebastian Siemiatkowski (CEO) | CEO | Klarna's AI agent replaced 700 human customer service reps — canonical case study; needs independent validation |
+| **Best Buy** | [CDO] | Chief Digital Officer | In-store + online AI agent unification; personalization agent deployment |
+| **ASOS / Zalando** | [Head of AI] | VP or Head of AI | EU-based fashion ecommerce; AI Act compliance mandatory; personalization agent evaluation |
+
+### Klarna Is the Canonical Retail Straw Story
+
+**The Klarna AI agent story (2024):** Klarna's AI customer service agent handled 2.3M conversations in its first month, equivalent to the work of 700 full-time human agents. It resolved issues in 2 minutes vs. 11 minutes for humans with similar satisfaction scores.
+
+**The problem Straw solves:** How did Klarna KNOW the agent would perform as advertised before deploying at scale? Klarna's engineering team built the agent internally so they had visibility. But the next 10,000 companies buying agentic customer service platforms from Klarna or Salesforce or Zendesk or Intercom won't have that visibility. They're buying a black box.
+
+**Straw's position in the Klarna story:** Straw is the evaluation infrastructure that validates "does this agent ACTUALLY perform at 700-employee-replacement scale IN YOUR CUSTOMER CONTEXT before you sign the contract?" The contract has a $2M/year value. The evaluation costs $15K. This is the simplest ROI calculation in enterprise software.
+
+### Retail-Specific Cold Email Hook
+
+**Subject:** Klarna's AI agent replaces 700 employees — did anyone verify it first?
+
+"Klarna deployed an AI customer service agent that handled 2.3M conversations in month 1. The question every competitor is asking: how do we know OUR agentic vendor will actually do that for us? 
+
+Straw runs pre-deployment evaluation for retail AI agents — we test the specific scenarios your agents will face (returns, fraud exceptions, edge cases) before you sign. One evaluation run costs less than one bad month of an underperforming agent.
+
+Worth 20 minutes to walk through what a Customer Service Agent evaluation would look like for [their company]?"
+
+
+---
+
+## Tick 602 — Global AI Governance Convergence as Structural Tailwind (2026-05-03)
+
+### The Convergence Thesis
+
+Every major AI governance framework published since 2024 converges on the same four requirements:
+1. **Risk-based classification** — higher risk = stricter controls
+2. **Transparency obligations** — documentation of how the AI was built and tested
+3. **Human oversight requirements** — humans must be able to intervene
+4. **Accountability mechanisms** — someone must be responsible for AI failures
+
+Straw's evaluation certificate satisfies requirements 2 and 4 across ALL frameworks simultaneously. The same PDF, the same UUID, the same score breakdown — works in Brussels, London, Singapore, Tokyo, and increasingly Delhi and Brasília.
+
+**This is a once-in-a-generation structural tailwind.** Every country independently arriving at "pre-deployment evaluation + documentation" as the answer is not a coincidence — it's the only engineering-sound approach to AI risk management. Straw is the product that multiple regulatory bodies are independently demanding into existence.
+
+### UK: DSIT AI Assurance Innovation Fund (Spring 2026 Open)
+
+**The AI Security Institute (formerly AI Safety Institute)** is a directorate of DSIT — the world's first state-backed AI safety organization.
+
+**AI Assurance Innovation Fund:** DSIT announced the first round of applications opens Spring 2026. The fund finances pilots of innovative AI assurance solutions alongside cutting-edge AI technologies. **Straw is exactly the kind of "innovative AI assurance solution" this fund is designed to support.**
+
+**UK's "pro-innovation, sector-led" approach:** Individual regulatory bodies (FCA, CMA, ICO, FRC, MHRA) remain responsible for AI governance in their domains. This creates a **multi-regulator documentation problem** — companies must demonstrate AI compliance to 3–7 UK regulators. Straw's certificate + the UK's common evaluation taxonomy is the cross-regulatory solution.
+
+**Opportunity:** UK regulatory grant to pilot Straw as the evaluation tool for DSIT's AI Assurance Innovation Fund cohort. Public sector validation = credibility for enterprise sales.
+
+### Canada: AIDA and Voluntary Code
+
+**Artificial Intelligence and Data Act (AIDA):** Not yet passed as of May 2026, but the voluntary code of practice under development aligns with risk-based classification + pre-deployment testing requirements. Canada's federal procurement AI guidelines (Treasury Board Secretariat) now require documented AI evaluation for government AI procurement.
+
+**Target:** Government of Canada's Centre for Learning, Measurement, and Oversight of AI (CLMOA) — potential government design partner for evaluation tooling.
+
+### India: Hybrid Regulatory Strategy
+
+India's AI governance approach (2026): "flexible guidelines for private sector growth, strict rules for government data and high-stakes domains." The high-growth, risk-tolerant private sector + strict government procurement rules creates a split market where:
+
+- **Government procurement** (IT ministry, defence, banking) needs Straw-style evaluation certificates
+- **Private sector** (Infosys, TCS, Wipro running AI agent factories for global enterprises) wants evaluation capability to sell internationally
+
+**Opportunity:** Infosys / TCS / Wipro are the system integrators deploying AI agents for global companies. They are the "agent operators" in Straw's model — they need the "Straw Certified" badge to sell AI agents to US and EU companies who require governance documentation.
+
+### Brazil: Rights-Based AI Governance
+
+Brazil's AI governance grounds regulation in privacy and fundamental rights — similar to GDPR's rights-based approach. Enforcement focus: AI systems that affect employment decisions, creditworthiness, healthcare, or education.
+
+**Target:** Brazilian financial institutions operating in the US/EU + US companies deploying AI in Brazil. C6 Bank, Nubank, Itaú — all deploying AI agents for credit + customer service — face dual Brazilian + US/EU compliance requirements. Straw certificate = dual-jurisdiction compliance artifact.
+
+### Global Convergence Table
+
+| Jurisdiction | Framework | Status (May 2026) | Pre-deployment evaluation required? | Straw cert maps to |
+|---|---|---|---|---|
+| EU | EU AI Act | Enforcement Aug 2026 | YES (Article 9 + Annex III) | Full Annex III compliance documentation |
+| Singapore | IMDA Agentic AI Framework | Voluntary (Jan 2026) | YES (third-party testing recommended) | Third-party testing artifact |
+| UK | DSIT sector-led + AI Assurance Fund | Innovation grants open Spring 2026 | Recommended, sector-specific | Cross-regulator compliance tool |
+| US (Federal) | NIST RMF + executive orders | Voluntary (sector-specific mandates) | Sector-specific (FINRA, OCC, CMS, NERC) | Sector-specific compliance evidence |
+| US (California) | Governor's EO N-5-26 | Framework due Jul 2026 | YES for state contracts | Attestation evidence |
+| Japan | AI Promotion Act | Best-effort, innovation-first | Soft obligation | Voluntary quality certification |
+| Canada | AIDA (pending) + voluntary code | Voluntary | Recommended | Pre-deployment testing artifact |
+| India | Hybrid flexible/strict | Mixed | Strict for government AI | Government procurement evidence |
+| Brazil | Rights-based framework | Emerging | For high-impact domains | Fundamental rights compliance |
+
+### The Mutual Recognition Opportunity
+
+The 2026 governance priority list from the Partnership on AI and multiple government frameworks explicitly lists **"establishing mutual recognition processes for governments to recognize each other's certification and audit requirements."**
+
+If the EU and UK recognize each other's AI certifications (which is actively under discussion as part of UK-EU trade normalization post-Brexit), and if US sector regulators recognize EU AI Act certifications (which is the direction FINRA and OCC are heading), then **a Straw evaluation certificate issued for EU AI Act compliance could simultaneously satisfy US FINRA requirements.**
+
+**This is the SSL/TLS certificate analogy.** Today, you get one TLS certificate and it works everywhere. In 3-5 years, there may be one AI evaluation certificate that works everywhere. Straw's architecture — single evaluation → single certificate → multiple regulatory frameworks — positions Straw to be that universal certificate.
+
+
+---
+
+## Tick 603 — Straw Benchmark Index: Media Flywheel Strategy (2026-05-03)
+
+### The Core Insight
+
+**Every category-defining B2B platform eventually becomes a data authority.**
+
+- Glassdoor started as a review platform → became THE source for salary data and company culture intelligence
+- Pitchbook started as a data aggregator → became THE source for VC deal intelligence
+- SimilarWeb started as a traffic estimator → became THE source for competitive web traffic intelligence
+- HubSpot → Benchmark for marketing conversion rates
+- Benchmarkit → Benchmark for B2B SaaS performance metrics
+
+**Straw has a unique data asset:** Every evaluation it runs generates cross-company, cross-agent performance data — the only dataset of its kind. The Straw Benchmark Index is the publication strategy that converts this data into media authority, analyst credibility, and inbound sales demand.
+
+### What the Straw Benchmark Index Is
+
+**Quarterly publication.** Every 90 days, Straw publishes "The Straw Agent Benchmark Index" — a data report on AI agent performance across the evaluations Straw has run in that quarter.
+
+**Content structure per edition:**
+
+```
+THE STRAW AGENT BENCHMARK INDEX — Q2 2026
+
+SECTION 1: Market Summary
+  - Evaluations run this quarter: N
+  - Industries represented: [Financial Services, Legal, Healthcare, Energy]
+  - Average agent score across all evaluations: X.X / 10
+  - % agents passing threshold scores by industry
+
+SECTION 2: Performance Trends
+  - Which agent capabilities are improving fastest (YoY, QoQ)
+  - Which rubric dimensions are agents weakest on (most common failure modes)
+  - Score distribution: bell curve of agent performance
+
+SECTION 3: Category Deep Dive (rotating)
+  - Q2 2026: Customer Service Agents
+  - Anonymized comparison: 5 leading customer service agent vendors
+  - Score by dimension: Resolution accuracy, Escalation rate, Edge case handling, Tone compliance, Audit trail quality
+
+SECTION 4: The Rubric Library Additions
+  - 10 new rubrics added this quarter (freely viewable)
+  - Community-submitted rubric highlight
+
+SECTION 5: Methodology Note
+  - T1/T2/T3 evaluation pipeline description
+  - LLM-as-judge bias mitigations applied this quarter
+  - Reproducibility confidence interval update
+```
+
+### Why This Works as a Flywheel
+
+**Publishing creates inbound demand → more evaluations → more data → better index → more inbound demand.**
+
+1. **SEO authority.** "AI agent benchmark [industry]" is a high-intent search term that currently returns zero authoritative sources. Straw owns this. Each quarterly index edition is an SEO asset that ranks for these queries for years.
+
+2. **PR / journalist bait.** "Here's the first data on how AI agents actually perform in production environments" is a genuinely newsworthy story. VentureBeat, TechCrunch, The Information, WSJ's The Future of Everything all cover AI agent adoption — Straw index data is their source material.
+
+3. **Analyst credibility.** Gartner, Forrester, IDC publish AI agent market reports but have zero performance data. Straw's benchmark data is what they can't produce — it comes from real enterprise evaluations under real conditions. Straw should brief Gartner analysts quarterly before each index release; they will cite the data in their own reports.
+
+4. **Agent operator sales tool.** When a "Straw Certified" badge is on an AI agent operator's sales page, the agent operator can now reference the Straw Benchmark Index for the category average vs. their score. "Our customer service agent scores 8.7 on Straw. The industry average for Q2 2026 is 6.4." This is powerful B2B sales collateral the agent operator can't create any other way.
+
+5. **Competitive intelligence demand.** Enterprise buyers read the index to understand what the market looks like before they post their own evaluation task. "I see the average legal document review agent scores 6.4 on accuracy — I need at least 8.5 for our use case" → immediate conversion to Straw poster.
+
+### Publication Calendar and Execution
+
+| Week | Action |
+|---|---|
+| Week -4 | Pull data from evaluations run in quarter; anonymize; statistical analysis |
+| Week -3 | Draft report; fact-check methodology notes |
+| Week -2 | Embargoed analyst briefings (Gartner, Forrester, IDC) — they get data 2 weeks early |
+| Week -1 | Embargoed press briefings (VentureBeat, TechCrunch, The Information, WSJ) |
+| Launch Day | Publish at straw.ai/index; email to all Straw users + waitlist; LinkedIn post + thread; Product Hunt launch |
+| Week +1 | Podcast tour: Practical AI, Latent Space, 20VC, No Priors |
+
+### Year 1 Index Editions
+
+| Quarter | Category Deep Dive | Hook |
+|---|---|---|
+| Q3 2026 (launch) | Customer Service Agents | "We evaluated 50 customer service AI agents. Here's what they actually score." |
+| Q4 2026 | Financial Compliance Agents | "Which AI agents would survive a FINRA audit? We tested 30." |
+| Q1 2027 | Legal Document Review Agents | "The UC Berkeley benchmark finding validated: we tested 20 legal AI agents on real contracts." |
+| Q2 2027 | Code Generation Agents | "Beyond HumanEval: how enterprise coding agents perform on real internal codebases." |
+
+### What You Need for Evaluation #1
+
+**Minimum data for a credible Q3 2026 Straw Benchmark Index:**
+
+- 10 completed evaluations in a single category (e.g., customer service agents)
+- At least 3 different agent vendors represented
+- Same rubric applied across all (or highly compatible rubrics)
+- Anonymized company identifiers
+
+This is achievable by Q3 2026 if design partner outreach starts in Q2 2026. The design partner agreement's "anonymized benchmark summary publication right" clause (see Tick 565) is the legal enabler.
+
+### Defensibility
+
+**Why can't anyone else publish this?**
+
+- Competitors (Vals AI, Patronus, Braintrust) collect performance data only on agents THEY evaluate — no cross-vendor comparison
+- Consulting firms (McKinsey, BCG) are financially entangled with LLM providers — their data is not neutral
+- Academic benchmarks (HumanEval, SWE-bench) are gameable to ~100% and not enterprise-task-specific (the UC Berkeley finding from Tick 422)
+- Government frameworks (NIST, ENISA) publish methodology, not performance data
+
+**Straw's data is structurally unique:** Cross-company, cross-vendor, enterprise-task-specific, rubric-defined, produced under consistent evaluation methodology. No one else can produce it. The moat is the evaluation volume needed to produce statistically meaningful data — which Straw accumulates automatically with every evaluation run.
+
