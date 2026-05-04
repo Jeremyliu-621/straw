@@ -49188,3 +49188,198 @@ The research is done. The theory is solid. The only thing that matters now is th
 - **Total Phase 2 ticks:** 607-639 = 33 ticks across both sessions
 - **Total research file size:** ~49,000+ lines
 
+
+---
+
+## Tick 640 — [GTM] Cursor's GTM Story: What $1M → $100M ARR Teaches Straw (And Why PLG Won't Work for Us)
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Dev-tool first revenue stories — Cursor as the canonical 2024 case  
+**Sources:** Sacra Cursor revenue report, GetPanto Cursor statistics 2026, AI Funding Tracker Cursor revenue, DevGraphiq Cursor statistics 2025, Opsera Cursor adoption trends
+
+---
+
+### Cursor's Growth Trajectory
+
+| Year | ARR | Funding | Valuation |
+|------|-----|---------|-----------|
+| 2023 (launch) | $1M | $8M seed (OpenAI Startup Fund) | Pre-seed |
+| 2024 | $100M | $60M Series A → $105M Series B | $400M → $2.5B |
+| 2025 | $200M (projected) | $900M Series C | $9.9B |
+| 2026 | $300M+ (projected) | — | $29B |
+
+From $1M to $100M ARR in 12 months. The fastest SaaS growth in history.
+
+---
+
+### How Cursor Actually Did It: The PLG Flywheel
+
+1. **Individual developer adoption first.** Free tier, immediate value (tab autocomplete that actually works). No sales, no onboarding, no enterprise discussion. The individual developer experienced value in under 5 minutes.
+
+2. **Individual advocates to team conversions.** A developer using Cursor showed their colleagues. Colleagues tried it. Team-wide adoption happened bottom-up. The developer was the sales channel.
+
+3. **Team → enterprise.** When enough individuals on one team adopted, IT came in to formalize. Enterprise plan ($40/user/month + centralized management) closed organically.
+
+4. **Enterprise motion codified late.** Cursor hired former Rubrik President/CRO Brian McCarthy as President of Global Revenue only in **February 2026** — three years after launch. Before that, there was no enterprise sales team. PLG carried everything to $200M ARR.
+
+---
+
+### Why Straw Cannot Replicate Cursor's PLG Model
+
+Cursor works on PLG because:
+1. **The value is immediate and individual.** A developer can see Cursor's value in the first 10 minutes alone.
+2. **The cost of switching in is near zero.** Download, install, connect to your existing codebase. No migration, no data transfer, no integration.
+3. **The product is horizontal.** Every developer who writes code is a potential user. 100M+ developers globally.
+
+Straw fails on all three criteria:
+1. **The value requires a task definition.** Before Straw is useful, someone has to define the rubric, define the task, and have at least one agent to evaluate. This is 30 minutes of setup minimum.
+2. **The cost of switching in is high.** Enterprise procurement processes, compliance reviews, data handling agreements. Not 10-minute signups.
+3. **The product is vertical.** The ICP is specific: companies running multiple AI agents in production with compliance requirements. Not every developer. Not every company.
+
+**Straw must be founder-led enterprise sales, not PLG.** Attempting PLG for Straw is the fastest path to building a platform with 5,000 free users and zero paying customers.
+
+---
+
+### The Cursor Lesson That Does Apply to Straw
+
+**The only Cursor lesson that directly transfers:** The anchor story creates organic distribution.
+
+Cursor's breakthrough moment was not a specific marketing campaign — it was developers telling each other. The mechanism was: "I used Cursor for this project and it was way better than Copilot. Here's the specific thing it did better." One compelling use case, told by a credible peer, spread through engineering Slack channels.
+
+**Straw's equivalent:** "Our team used Straw to evaluate Devin vs. our custom agent for the expense reconciliation workflow. Devin scored 78. Our agent scored 91. We now have a certificate that our CFO can file. Here's the specific rubric we used."
+
+This story spreads through CAIO networks, not engineering Slack channels. But the mechanic is identical: one compelling, specific, credible use case told by a peer.
+
+**GTM Implication:** The first 10 Straw evaluations should be designed to generate this story. Not 10 average evaluations — 1-2 landmark evaluations with landmark customers that generate a story worth telling. Then give the customer the language to tell it.
+
+---
+
+### The Modal GTM Comparison (Bonus: The Mid-Tier Dev Tool Story)
+
+Modal's GTM was different from Cursor's:
+- Target: ML engineers who need serverless GPU compute
+- Method: Founder-led technical content (blog posts, tutorials, deep technical talks)
+- Revenue: $15M ARR in 2024, achieved without a sales team
+- Path to enterprise: technical credibility first → enterprise pulled them up
+
+Straw is closer to Modal than Cursor:
+- Specific technical buyer (ML/AI engineering teams, not all developers)
+- Technical credibility must be established before enterprise sales
+- Content (technical blog posts, evaluation methodology papers) is the primary trust-building channel
+- Enterprise doesn't get sold top-down — it gets pulled up from technical champions
+
+**The Modal playbook for Straw:**
+1. Write the best technical content on AI agent evaluation on the internet
+2. Publish the evaluation methodology openly (the "how" is not the moat; the execution is)
+3. Let technical AI leads find Straw through search and community
+4. Convert technical champions into design partners
+5. Let design partners advocate upward to their CAIOs for budget
+
+This is slower than Cursor's viral PLG but more appropriate for Straw's product and buyer.
+
+---
+
+### Revenue Milestone Benchmarks (What "Success" Looks Like at Each Stage)
+
+| Milestone | Timeline | What It Takes |
+|-----------|----------|--------------|
+| First $1K revenue | Week 6-8 | 1 design partner paying token fee |
+| $10K MRR | Month 4-6 | 4-5 customers at $2K-2.5K/evaluation |
+| $50K MRR | Month 9-12 | 10-12 customers, mix of per-eval and early subscriptions |
+| $100K ARR | Month 12 | 2-3 $12K/year subscription customers + 8-10 per-eval customers |
+| $1M ARR | Month 24-30 | 15-20 enterprise subscription customers + marketplace beginning |
+
+These are conservative projections based on Vals AI's $1.3M ARR and Braintrust's early trajectory. Cursor's numbers are not a relevant benchmark — that's a category-defining product with 100M+ potential users.
+
+
+---
+
+## Tick 641 — [BEAR + PARTNERS] Vals AI Competitive Analysis Update: Their Benchmark Methodology and Why Straw Is Different
+
+**Theme:** Bear Case + Design Partner Targets  
+**Date:** 2026-05-04  
+**Thread:** Closest competitor deep dive — updated with new 2026 benchmark data  
+**Sources:** Vals AI Finance Agent benchmark (Goldman Sachs, Silver Lake, Citadel curators), Vals VLAIR (Harvey, Thomson Reuters, vLex evaluation), DeepLearning.ai Vals AI profile, LawNext Vals benchmark 2025
+
+---
+
+### Vals AI: What They Actually Built
+
+Vals AI runs **domain-specific capability benchmarks** for AI models and agents in fintech and legal. Their methodology:
+
+1. **Expert-curated datasets:** Finance Agent benchmark curated by finance experts from Goldman Sachs, Silver Lake, and Citadel. Legal benchmark (VLAIR) evaluated Harvey, Thomson Reuters CoCounsel, vLex (Vincent AI), and Vecflow (Oliver).
+
+2. **Objective task types:** Document extraction, Q&A, summarization, redlining, transcript analysis, chronology generation. These are measurable tasks with clear correct answers.
+
+3. **Public benchmark results:** Results are published. The benchmark is designed to be an industry standard that model vendors aspire to top.
+
+4. **No compliance certificate:** Vals AI produces a research report, not a procurement artifact. There's no UUID, no hash chain, no tamper-proof evidence.
+
+---
+
+### The Fundamental Difference: Public vs. Private Rubric
+
+**Vals AI:** The benchmark is public. Harvey knows exactly what they're being evaluated on. Thomson Reuters knows. They can optimize their products specifically for the Vals Finance Agent benchmark.
+
+**Straw:** The rubric is private. The agent operator doesn't know the exact evaluation criteria. T3 investigative evaluation probes the submission rather than scoring a static report. Gaming-resistant by design.
+
+**The implication:**
+- Vals AI is a public benchmark = a marketing tool for the vendors being evaluated
+- Straw is a private evaluation = a procurement tool for the enterprise buyer
+
+Vals AI cannot serve the enterprise buyer who says: "I don't want to tell the vendor what we're testing them on, because they'll game the test." That's Straw's market.
+
+---
+
+### When a Customer Should Use Vals AI vs. Straw
+
+| Use Case | Vals AI | Straw |
+|----------|---------|-------|
+| "We want to see how Harvey compares to other legal AI tools on standard tasks" | ✓ Best fit | Not designed for this |
+| "We want to evaluate Harvey on our specific contract review workflow with our proprietary rubric" | ✗ | ✓ Best fit |
+| "We need a compliance-grade artifact for our AI procurement decision" | ✗ No certificate | ✓ Certificate included |
+| "We want to run a public benchmark that vendors will compete for" | ✓ | ✓ (marketplace phase) |
+| "We need vendor evaluation without the vendor knowing the criteria" | ✗ Public rubric | ✓ Private rubric |
+
+The Venn diagram overlap is meaningful: both Vals AI and Straw evaluate AI in domain-specific contexts. But the market they serve is different. Vals AI is funded by (and serves) the AI vendor side (vendors want to know where they stand). Straw is funded by (and serves) the enterprise buyer side (buyers want to know what they're buying).
+
+---
+
+### The Partnership Angle with Vals AI
+
+Vals AI's public benchmarks and Straw's private evaluations are complementary:
+
+1. **Straw refers to Vals AI benchmarks** as "public baseline data" in evaluation reports. "In the public Vals Finance Agent benchmark, Harvey scored X. In our private evaluation of Harvey against your specific workflow and rubric, Harvey scored Y."
+
+2. **Vals AI refers regulated enterprise buyers to Straw** for private evaluations. Vals AI's customers (vendors) might refer their enterprise clients to Straw for custom evaluation before procurement.
+
+3. **Straw licenses Vals AI domain expertise** for rubric design in fintech and legal. Vals AI's Goldman Sachs-curated finance experts know what makes a good finance agent evaluation rubric.
+
+**The partnership pitch to Vals AI:** "Your public benchmarks tell enterprises which agents are best in class generally. Straw tells them which agent is best for their specific workflow. We're serving different needs for the same buyer. Referral partnership?"
+
+---
+
+### Is Vals AI's $1.3M ARR a Ceiling or a Floor for Straw?
+
+Vals AI has reached $1.3M ARR with a public benchmark model in fintech + legal. This validates:
+1. Enterprise buyers will pay for domain-specific AI evaluation
+2. The fintech market is real and has budget
+3. The legal AI evaluation market is active (Harvey, Thomson Reuters all paying attention to benchmarks)
+
+But Vals AI's model has a natural ceiling: they need to maintain the integrity of a public benchmark, which limits how many enterprise customers can have custom evaluations (if everyone gets a custom eval, it's no longer a meaningful public standard).
+
+**Straw doesn't have this ceiling.** Every evaluation is private. The more evaluations Straw runs, the stronger the anonymized aggregate data becomes (for reputation scoring, for industry benchmarks), without compromising any individual customer's rubric confidentiality.
+
+**Bottom line:** Vals AI's $1.3M ARR is a floor estimate for what Straw can achieve in a single vertical (fintech or legal). Straw's model scales across verticals and doesn't face the public-private tension that limits Vals AI's growth.
+
+---
+
+### Outreach Angle to Vals AI
+
+**Target:** Vals AI founders (not yet identified publicly — check LinkedIn for "Vals AI" + founder/CEO)
+
+**Opener:** "I've been following Vals' Finance Agent benchmark work — the Goldman Sachs expert curation approach is the right call for establishing credibility. I'm building Straw, which sits on the private rubric / enterprise procurement side of evaluation (vs. Vals' public benchmark model). I think we're more complementary than competing — would love 20 minutes to explore what a partnership or referral relationship might look like."
+
+**Why this angle:** Positions as a peer (not competition), acknowledges their expertise, opens with partnership rather than sales. Vals AI founders are technical and will appreciate the framework-level discussion.
+
