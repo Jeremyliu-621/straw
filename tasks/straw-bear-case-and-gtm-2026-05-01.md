@@ -43075,3 +43075,153 @@ This unlocks both YC acceptance AND angel rounds.
 
 **Sources:** iapp.org/resources/article/global-ai-governance-australia, validata.ai/australia-ai-regulation-2026, regulations.ai/regulations/RAI-CA-NA-SUMMARY-2026, mltaikins.com/ai-governance-2026
 
+
+---
+
+## Tick 576 — Healthcare AI: FDA Pre-Deployment Evaluation as Highest-Stakes Context
+
+**Date researched:** 2026-05-03
+
+### The FDA AI medical device landscape (2026)
+
+- **1,016+ AI/ML medical devices** cleared by FDA as of December 2024
+- **295 new authorizations in 2025 alone** — accelerating rapidly
+- 96% approved under 510(k) clearance process (significant equivalence to prior device)
+- Three of every four entries are in imaging (radiology, pathology)
+
+**The 2026 FDA update:** Quality Management System Regulation (QMSR) aligns US AI device oversight with ISO 13485:2016 internationally. **This means ISO 42001 + QMSR = Straw's certificate is relevant to two major regulatory standards simultaneously.**
+
+**Predetermined Change Control Plan (PCCP):** FDA allows AI devices to update without full re-submission IF a PCCP is submitted at initial clearance documenting what changes are allowed and how they'll be validated. This means the FDA explicitly requires documented evaluation methodology before deployment.
+
+### Why hospitals are a Straw beachhead in healthcare
+
+**The hospital procurement problem:**
+
+Hospitals are not building FDA-cleared AI devices — they're buying them. A hospital CTO evaluating 3 AI diagnostic tools (radiology, pathology, clinical decision support) faces:
+1. FDA clearance exists for all 3 — doesn't differentiate between them
+2. Vendor benchmarks are on vendor's datasets — not the hospital's patient population
+3. No neutral third-party evaluation of "which AI performs best on our specific patient data"
+
+**Straw's healthcare pitch:**
+> "FDA clearance proves the device is safe. It doesn't tell you which cleared device performs best on your patients. You can't test on real patient data (HIPAA). But you can define the rubric: accuracy on anonymized case sets that represent your patient population. Run the cleared AI systems through Straw. The winner is deployed."
+
+**Healthcare-specific Straw adaptations:**
+- Evaluation task: anonymized clinical case sets (de-identified per HIPAA Safe Harbor)
+- Rubric dimensions: sensitivity (recall), specificity, false positive rate, clinical decision alignment
+- Compliance artifact: Straw certificate + HIPAA data processing addendum
+
+**Healthcare enterprise targets:**
+- #207: Mayo Clinic AI (mayoclinic.org) — largest private hospital in US, aggressive AI in diagnostics
+- #208: Epic Systems (epicor.com) — healthcare IT for 250M patient records, AI in clinical workflows
+- #209: Kaiser Permanente — 12.5M members, AI-first integrated health system, Oakland CA
+- #210: IBM Watson Health (now Merative) — AI in healthcare analytics for 200+ health systems
+
+**Sources:** fda.gov/ai-enabled-medical-devices, intuitionlabs.ai/fda-ai-medical-device-tracker, ketryx.com/fda-ai-ml-guidance, ballardspahr.com/fda-ai-medical-devices-2025
+
+---
+
+## Tick 577 — Legal Tech AI: 92% Lawyer Adoption, "Evaluation and Auditability" as Purchase Criterion
+
+**Date researched:** 2026-05-03
+
+### The legal AI market in 2026
+
+**92% of legal professionals now use AI in daily work** — highest enterprise AI adoption rate of any professional services category.
+
+**The shift in purchase criterion:** Legal AI is being judged "less on interface quality and more on operational discipline: evaluation, auditability, and predictable behaviour in real legal workflows." This is the enterprise legal buyer speaking — and they're describing Straw's value proposition exactly.
+
+**The failure pattern in legal AI:** Early-stage companies failing to convert pilots into enterprise agreements because law firms and legal departments are "more sophisticated in their evaluation criteria and less tolerant of tools that don't integrate cleanly." This is the "agent washing" problem playing out in legal specifically.
+
+**The Vals AI legal vertical:** Vals AI already has a "Vals Legal AI Report" (vals.ai/vlair) — legal domain benchmarks for AI models. This is closest to Straw in legal context. But Vals' rubric is Vals-defined (standard legal tasks). Straw's rubric is the law firm's specific task (e.g., "review this 50-page indemnification clause and extract all carve-outs").
+
+### The legal AI accuracy crisis
+
+**The core risk:** Every legal AI makes errors. Legal errors cause client harm + malpractice exposure. The difference is whether the platform makes errors "easy to catch."
+
+**The 2026 legal AI landscape (major players):**
+- **Harvey AI** — $300M+ raised, Goldman Sachs, A&O Shearman partnerships; legal research + contract analysis
+- **Lexis+ AI** (LexisNexis) — incumbent, retrieval-augmented legal research
+- **Casetext / Thomson Reuters** — acquired by Thomson Reuters $650M, AI paralegal capabilities
+- **Spellbook** (Sheets for lawyers) — contract review, mid-market focus
+
+**Why Straw fits:** Law firms evaluating Harvey AI vs. Casetext vs. Lexis+ AI on their specific contract review workflow need:
+1. A rubric defining "correct contract review" (what should the AI catch?)
+2. An objective evaluation of each on real anonymized contract samples
+3. A verifiable score they can show their clients and professional liability insurer
+
+**Legal-specific Straw pitch:**
+> "Your ABA professional responsibility obligations require you to competently supervise AI. 'I tested it with the vendor's samples and it worked great' is not competent supervision. 'We ran a rubric-defined evaluation on 50 real anonymized contract samples across 3 AI vendors, and Harvey scored 91/100 vs. Casetext's 78/100 on our specific indemnification clause review task' — that's defensible supervision."
+
+**Legal enterprise targets:**
+- #211: Clifford Chance LLP (cliffordchance.com) — magic circle firm, heavy tech law, "NewLaw" initiative
+- #212: Allen & Overy / A&O Shearman (aoshearman.com) — Harvey AI partnership; evaluating what Harvey actually does
+- #213: Latham & Watkins (lw.com) — largest US law firm by revenue, AI practice group
+- #214: Baker McKenzie (bakermckenzie.com) — global law firm, AI governance practice (already published Singapore agentic AI guidance)
+
+**Sources:** natlawreview.com/85-predictions-ai-law-2026, artificiallawyer.com/predictions-2026, spellbook.legal/legal-ai-tools, wolterskluwer.com/harnessing-ai-legal-teams
+
+---
+
+## Tick 578 — Financial Services: FINRA 2026 Report Names AI Agents for First Time
+
+**Date researched:** 2026-05-03
+
+### FINRA's historic 2026 regulatory signal
+
+**FINRA 2026 Annual Regulatory Oversight Report (released December 9, 2025):**
+
+This is the FIRST time FINRA explicitly addressed "AI agents" (not just GenAI) in regulatory guidance. Key definitions and requirements:
+
+**FINRA's definition of AI agents:** "Systems or programs that are capable of autonomously performing and completing tasks on behalf of a user."
+
+**FINRA's core concerns:**
+1. **Excessive autonomy:** Agent might overstep permissions or handle data improperly
+2. **Supervision gaps:** Existing supervision frameworks weren't designed for autonomous agents
+3. **Explainability failure:** "Lack of explainability in third-party tools is a primary driver of regulatory friction for mid-market firms"
+4. **Model risk:** Agents that influence consumer decisions fall under SR 11-7 Model Risk Management framework
+
+**FINRA's required governance framework for AI agents:**
+- Supervision framework with clear policies and procedures
+- Narrow scope and permissions for each agent
+- Audit trails of all agent actions
+- Explicit human checkpoints before execution
+- Comprehensive documentation throughout lifecycle
+- Ongoing monitoring and stored prompt/output logs
+- Tracking which model version was used and when
+
+**This is exactly the Straw output.** The Straw certificate documents: rubric-defined evaluation (what the agent was tested on), which model version was evaluated, scores with full T3 audit trail. FINRA's checklist is the Straw evaluation report.
+
+### The OCC Model Risk Management (SR 11-7) angle
+
+**OCC guidance (2024, but fully active in 2026):** AI tools used in marketing that influence consumer decisions fall under SR 11-7's model-risk framework, requiring:
+1. Model inventory
+2. Conceptual-soundness review
+3. **Validation** (independent validation of model outputs)
+4. Ongoing monitoring
+
+**"Validation"** in SR 11-7 means a function independent of the development team evaluates the model. For AI agents, this means an independent third party evaluates the agent before deployment. That's Straw.
+
+### The financial services vertical is Straw's highest-conviction beachhead
+
+**Why financial services over other verticals:**
+1. FINRA explicitly named "AI agents" in December 2025 guidance — the regulator has already defined the pain
+2. OCC SR 11-7 requires "independent validation" — Straw IS independent validation
+3. Banks are already accustomed to paying for third-party validation (model validators, internal audit, Big Four auditors)
+4. The cost of non-compliance is not a fine — it's a charter, license, or market access
+5. No other vertical has this combination of regulatory specificity + enterprise payment culture
+
+**Financial services Straw pitch (SR 11-7 framing):**
+> "SR 11-7 requires that models influencing consumer decisions be independently validated before deployment. Your AI agent is a model. Your current 'validation' is a vendor demo. FINRA's 2026 report makes explicit that this is insufficient. Straw provides independent, rubric-defined validation with a timestamped audit trail — the same rigor your quant models receive."
+
+**Financial services enterprise targets (addition to prior list):**
+- #215: Goldman Sachs AI Governance (goldmansachs.com) — Marcus, transaction banking AI, Goldman AI principles published
+- #216: JP Morgan Chase AI CoE (jpmorganchase.com) — JPM Coin, LLM Suite deployed to 200K employees
+- #217: BlackRock Aladdin (blackrock.com) — $21T in assets managed by Aladdin; AI in risk management; highest governance culture
+- #218: Stripe (stripe.com) — AI in payments fraud detection; Carol Liang contact from previous research
+
+**The "FINRA pressure = Straw urgency" equation:**
+
+FINRA has told every broker-dealer in the US: document your AI agent evaluation. $6,000 broker-dealers operate in the US. They cannot all build internal validation frameworks. They need Straw.
+
+**Sources:** finra.org/rules-guidance/2026-finra-annual-regulatory-oversight-report/gen-ai, debevoisedatablog.com/finras-2026-regulatory-oversight-report, smarsh.com/ai-governance-expectations-finra-2026, acaglobal.com/finra-releases-2026-oversight-report
+
