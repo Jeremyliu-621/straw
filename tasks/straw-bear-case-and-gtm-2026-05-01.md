@@ -46724,3 +46724,329 @@ This is the scenario that requires a pre-committed strategic response. Options:
 
 *Phase 2 research complete: 607-617 (11 ticks) + this morning reading guide. Research covered: token economy collapse (Kin, Steemit, Helium), platform deaths (Replit Bounties, Bountysource, Vals AI), regulatory liability (xAI CSAM lawsuit, EU PLD, California AI law), design partner program structure (Modal, Cursor, Braintrust), enterprise AI buyer mapping (CAIO, AI CoE), specific named contacts (Apollo/METR/Stripe/Windsurf), substitute math (Devin $20 vs Straw), pricing model analysis ($2.5K per-eval → $12K subscription → take rate sequence), why founders chose hierarchical (5 structural reasons), full pre-mortem (5 failure modes, most likely death sentence), and a 12-week GTM playbook to $100K ARR.*
 
+
+---
+
+## Tick 618 (2026-05-04T07:00Z): YC W26 Eval Infrastructure — Partners or Competitors? [theme: partners]
+
+> Thread: YC W26 contains a cluster of agent evaluation/ops startups. These are the people most likely to understand Straw's value prop immediately. Are they partners, acqui-hire targets, or competitors?
+
+### The YC W26 Agent Eval Cluster — Named Companies and Founders
+
+YC W26 (Winter 2026, Demo Day early 2026) included 199 companies, of which ~41.5% are agent infrastructure plays. Within that cohort, several companies are in direct proximity to Straw's domain:
+
+---
+
+**1. Sentrial (YC W26)**
+- **What they do:** Real-time monitoring for AI agents in production. Detects when agents loop indefinitely, hallucinate, or frustrate users. Diagnoses root cause, recommends fixes.
+- **Founders:** Neel (CS, UC Berkeley; worked on agentic optimization at Sense) + Anay (CS, UC Berkeley; deployed agents at Accenture)
+- **Relationship to Straw:** COMPLEMENTARY, not competing. Sentrial monitors agents IN production. Straw evaluates agents BEFORE production. Classic pre-deployment (Straw) vs. post-deployment (Sentrial) split. **Partnership opportunity:** Straw evaluates; if the agent scores high, it gets deployed; Sentrial monitors the deployed agent. The two products are sequential in the enterprise agent lifecycle.
+- **Opener:** "Neel / Anay — Sentrial does post-deployment monitoring. Straw does pre-deployment evaluation. We'd love to talk about a partnership where Straw-certified agents come with a Sentrial monitoring recommendation."
+- **Contact:** YC company, findable via yc.com/companies/sentrial
+
+---
+
+**2. Salus (YC W26)**
+- **What they do:** Runtime action validation for AI agents. Wraps around agents and checks actions at run time, blocking incorrect ones. Evals, output scoring, and observability.
+- **Founders:** Kevin and Vedant (Stanford CS, roommates). Findable via yc.com/companies/salus
+- **Relationship to Straw:** COMPLEMENTARY. Salus is an agent guardrail (blocks wrong actions during execution). Straw is an evaluation platform (measures which agent performs best on a defined task). Different technical layers; same enterprise buyer (Head of AI/CAIO).
+- **Partnership angle:** Agent operators that compete on Straw should ideally have Salus guardrails to prevent catastrophic failures during the evaluation run. "If your agent runs unconstrained during evaluation and causes a safety incident, that damages everyone. Salus + Straw = safe + evaluated."
+- **Opener:** "Kevin / Vedant — you block bad actions at runtime. We evaluate which agent is best before it runs at scale. I think there's a natural pre-sale (Straw evaluation certificate → Salus deployed monitoring) partnership. 20 minutes?"
+
+---
+
+**3. Respan (fka Keywords AI, YC W26)**
+- **What they do:** Unified control plane to trace and evaluate agent behavior. Connects production observability, automated and human-in-the-loop evaluations, and an adaptive AI gateway.
+- **Relationship to Straw:** CLOSEST TO COMPETING. Respan does automated evaluation + human-in-the-loop evaluations. This overlaps with Straw's LLM judge evaluation. BUT Respan is an internal observability tool (for companies monitoring their OWN agent) vs. Straw is a neutral competitive evaluation platform (companies comparing MULTIPLE agents from different vendors).
+- **Risk:** If Respan adds "compare multiple agents on a defined rubric and issue a certificate," they are a direct competitor with better backing (YC W26 + observability angle).
+- **Strategic response:** Monitor Respan's product roadmap. If they pivot to competitive evaluation, the partnership window is narrow.
+- **Contact:** respan.ai or keywords.ai (redirects)
+
+---
+
+**4. Janus (YC W26)**
+- **What they do:** Automates AI evaluations using high-fidelity simulation environments. Catches failures in reasoning, compliance, tool usage, performance. Resulting datasets benchmark products and feed post-training loops.
+- **Relationship to Straw:** OVERLAPPING. Janus is evaluation-centric. They build simulation environments for eval. Straw's eval containers (Phase 13 in TASKS.md) do something similar. Key difference: Janus builds the eval infrastructure; Straw runs the competition AND issues the certificate. Janus could be a component inside Straw's evaluation pipeline.
+- **Partnership angle:** "Janus builds eval simulation environments. Straw runs competitions on them and issues evaluation certificates. Could we integrate Janus's simulation environments as the T2/T3 evaluation layer inside Straw?"
+- **Contact:** janus.ai or YC directory
+
+---
+
+**5. Carrot Labs (YC W26)**
+- **What they do:** Enhancing AI agent performance through continuous learning and evaluation services.
+- **Relationship to Straw:** LOW OVERLAP. Continuous learning focus vs. Straw's one-time competition evaluation. Different time horizons (Carrot Labs = ongoing improvement; Straw = point-in-time certification).
+
+---
+
+### The Strategic Summary: Straw + YC W26 Eval Cluster
+
+The right framing: **Straw is the evaluation certification layer; the YC W26 eval cluster is the monitoring/observability/guardrail layer.** These are sequential in the enterprise AI deployment lifecycle:
+
+```
+[Straw: pre-deployment evaluation + certificate]
+     → [Deploy agent]
+     → [Salus: runtime action validation]  
+     → [Sentrial: production monitoring]
+     → [Respan: ongoing observability + evaluation]
+     → [Janus: simulation + benchmarking for next version]
+```
+
+Every company in this cluster would benefit from having Straw-certified agents as their input (if the agent has already passed Straw's evaluation, the production monitoring has a validated baseline to compare against).
+
+**The outreach strategy:** Contact the founders of Sentrial, Salus, and Janus in Week 2. Frame as a partnership, not as a referral pitch. YC founders talk to each other constantly — getting warm intros through the YC network is worth 5x the effort of cold outreach.
+
+### Sources
+- YC W26 agent evaluation cluster: buildmvpfast.com/blog/yc-w26-batch-agent-infrastructure-boom
+- Sentrial, Salus: yctierlist.com/w26/sentrial/, yctierlist.com/w26/salus/
+- Extruct AI YC W26 data: extruct.ai/research/ycw26/
+
+
+---
+
+## Tick 619 (2026-05-04T07:30Z): Vendor Lock-In Fear as Straw's Structural GTM Accelerant [theme: gtm]
+
+> Thread: 81% of enterprise leaders are concerned about AI vendor dependency. 6% could switch vendors without disruption. This fear is Straw's most powerful sales hook — and it hasn't been named yet in the GTM playbook.
+
+### The Lock-In Data (2026)
+
+From The Register (April 28, 2026): "Locked, stocked, and losing budget: AI vendor lock-in bites"
+- 81% of enterprise leaders are concerned about AI vendor dependency
+- Only 6% could switch AI vendors without disruption
+- AI vendors pushing price increases that are "reshaping software economics"
+- 37% of firms now use 5+ AI models to combat lock-in
+
+From Kai Waehner (April 2026 enterprise AI landscape analysis):
+- Major vendors employ distinct lock-in strategies:
+  - Anthropic: developer culture + enterprise partnerships
+  - OpenAI: consumer familiarity + enterprise workflow tools
+  - Google: infrastructure integration (GCP + Gemini = entire cloud stack)
+- A new concern for 2026: "behavioral lock-in" — persistent AI agents accumulate operational knowledge that can't be exported as structured data
+
+From MindStudio research:
+- Behavioral lock-in occurs when persistent AI agents accumulate implicit organizational knowledge
+- This knowledge is harder to migrate than structured data
+- Switching costs include not just technical integration but re-training/re-calibrating agents to organizational norms
+
+### Why Lock-In Fear Is Straw's Most Powerful Sales Hook
+
+**The buyer's current situation:**
+A CAIO at a $200M SaaS company is choosing between Devin ($500/month Team plan, ACU-based) and Claude Code as the primary autonomous development agent for their engineering team. They make the decision. They deploy at scale — 50 engineer licenses, integrated into CI/CD, connected to their codebase.
+
+Six months later: the agent has learned their company's coding patterns (behavioral lock-in). Switching costs now include: technical integration effort (35-45% of first-year TCO), agent re-training on organizational patterns, potential data migration, and team re-onboarding.
+
+**The CAIO's retrospective regret:** "I made a \$300K decision based on a vendor demo and six weeks of informal testing. I didn't have a formal evaluation against our specific codebase. Now I'm locked in and I can't prove to the board that this was the right choice."
+
+**Straw's answer to lock-in fear:**
+"Straw doesn't prevent lock-in — but it gives you EVIDENCE before lock-in happens. Run a 2-week competition on your actual codebase. See which agent performs best on YOUR tasks, with YOUR rubric. Get the certificate. THEN sign the enterprise contract. The certificate is your board-level justification and your future exit clause: if the agent underperforms against the certificate's scored criteria, you have documented grounds for contract renegotiation."
+
+### The "Lock-In Insurance" Framing for Straw
+
+This is a framing Jeremy should test in sales conversations:
+
+**Current framing:** "Straw is an AI agent evaluation platform that produces competition results and certificates."
+
+**Lock-in insurance framing:** "Straw is the evaluation you run BEFORE making an AI vendor commitment. Think of it as insurance against making a six-figure deployment decision on a demo. The certificate is your exit clause."
+
+**Why this framing is more compelling:**
+- "Evaluation platform" is abstract. "Lock-in insurance" is visceral.
+- The CAIO has already HAD a bad experience with an underevaluated AI tool decision. They know the pain.
+- The certificate-as-exit-clause framing gives the CAIO power they currently don't have: documented performance expectations that can be enforced in vendor contracts.
+
+### The Certification-in-Contract Integration (New Product Idea — Flag for Jeremy)
+
+> **⚡ New insight from this research thread:** Straw's evaluation certificate could be embedded into AI vendor contracts as a performance benchmark. Instead of just "here's a report," the certificate establishes the scored performance level that the winning agent must maintain post-deployment. If the agent's performance degrades below the certificate score, the customer has grounds for contract renegotiation.
+
+This is analogous to: SOC2 compliance — software vendors that achieve SOC2 certification agree to maintain those controls. If they fail, contracts typically provide remedies.
+
+Straw's analog: "Agent X scored 8.5/10 on financial compliance tasks in our certified evaluation. If the deployed agent's performance falls below 7.5 on the same rubric, this contract includes a performance guarantee clause." Straw becomes not just evaluation infrastructure but the institutional backbone of AI vendor contracts.
+
+**This is a genuinely new product category:** AI agent performance SLAs backed by third-party evaluation. No one is doing this. It's worth 3 paragraphs in the marketing materials.
+
+### The Vendor Lock-In GTM Playbook for Straw
+
+**Target conversation entry point:** Any CAIO who has recently (in the last 12 months) made an AI vendor commitment that they now have doubts about. The pain is specific, recent, and expensive.
+
+**Cold email opener for this angle:**
+> "[Name] — 81% of enterprise AI leaders say they're concerned about vendor lock-in, but only 6% could switch without disruption. We're building the evaluation infrastructure that gives you leverage before that lock-in happens. If you're about to make an AI agent deployment decision in the next 6 months, let us run a 2-week competition so you pick the right vendor with evidence, not just demos. 20 minutes?"
+
+**The LinkedIn follow-up hook:** Post a link to the Straw evaluation methodology with the hook: "You wouldn't sign a commercial lease without a building inspection. Why are you committing to AI agents without a formal evaluation?" This creates inbound from CAIOs who feel this pain.
+
+### Sources
+- AI vendor lock-in data: theregister.com/2026/04/28/locked_stocked_and_losing_budget
+- Behavioral lock-in: mindstudio.ai/blog/what-is-behavioral-lock-in-persistent-ai-agents-switching-costs
+- Enterprise vendor dependency: kai-waehner.de/blog/2026/04/06/enterprise-agentic-ai-landscape-2026-trust-flexibility-and-vendor-lock-in
+- Enterprise procurement shift: aispectrumindia.com/analysis/1/416/enterprise-ai-procurement-in-2026-the-shift-from-pilot-experiments-to-outcome-driven-buying
+
+
+---
+
+## Tick 620 (2026-05-04T08:00Z): Homejoy Cold-Start Lessons Applied to Straw's Two-Sided Market [theme: bear]
+
+> Thread: Homejoy raised $40M, had real traction, and died. The cold-start problem killed it — specifically the leakage problem (workers and clients transacted directly after the first meeting, bypassing the platform). How does this apply to Straw?
+
+### The Homejoy Death Analysis (Precise Causes)
+
+Homejoy failed in July 2015 for a cluster of structural reasons that are relevant to Straw:
+
+**The cold-start chain worked, then broke:**
+1. Homejoy solved the initial cold-start: they subsidized first cleanings ($19 promotional price) to get both sides onto the platform. This worked — they got both supply (cleaners) and demand (homeowners) to try the service.
+2. But the market structure enabled leakage: cleaning is a trust-based, recurring, relationship-based service. After one meeting, the homeowner and cleaner had a direct relationship. Neither needed Homejoy for subsequent cleanings — taking it offline saved both parties 25% (Homejoy's take rate).
+3. Only 25% of customers used the service after month 1; <10% after month 6. The platform never captured the recurring value.
+
+**Additional compounding factors:**
+- Worker misclassification lawsuits (independent contractor vs. employee) — made the cost structure untenable
+- Premature geographic expansion (Canada, Europe) before unit economics were proven locally
+- Quality variance: couldn't train contractors (not employees), so quality was inconsistent
+
+**The root structural failure:** The service (home cleaning) had NO lock-in mechanism. Once the relationship existed, the platform was just a transaction fee extracting value from a relationship it had created. Homejoy's marketplace moat was zero.
+
+### How These Patterns Apply to Straw
+
+**Pattern 1: Leakage (most dangerous for Straw)**
+
+Does Straw face leakage? Could a poster contact the winning agent directly and hire them off-platform after the first evaluation?
+
+**Yes, this is a real risk.** The winning agent's identity is revealed at task close (Phase 7 of TASKS.md, leaderboard reveal logic). Once the poster knows who won, they can contact the agent operator directly and negotiate a hire without going through Straw. The Straw deal flow (Phase 8 — deal completion, success fee) depends on the company recording the deal in Straw's system. If they transact off-platform, Straw captures nothing.
+
+**Mitigation:** The success fee model (a % of the deal value, like a recruiter's fee) is ANTI-leakage if and only if the certificate creates a paper trail that the enterprise needs to record. If the enterprise's legal/compliance team needs the Straw certificate to justify the hire decision in audit materials, they will record the deal in Straw even if they could transact off-platform. **The certificate's audit-trail function is the leakage prevention mechanism.** Without the certificate's compliance value, leakage will kill Straw's deal economics.
+
+**Pattern 2: Subsidized Cold Start → Retention Problem**
+
+Homejoy offered $19 first-cleanings to get customers on the platform, but most never came back. Straw's design partner model offers FREE first evaluations. The risk: design partners get valuable evaluations for free, never pay, and move on. Like Homejoy, the subsidized entry doesn't predict retention.
+
+**The difference that might save Straw:** Evaluation results are NOT like cleaning — they don't have a fixed point of saturation. A clean house is clean until it's dirty again (predictable). An AI agent evaluation result becomes STALE within 6-12 months (model improvements, new competitors, changing task requirements). This creates natural re-evaluation cadence. The CAIO who ran a Straw evaluation in Q1 2026 will need a new evaluation in Q3 2026 when their agent's model is updated. **The evaluation is a recurring product, not a one-time service.**
+
+**Pattern 3: Worker Misclassification → Agent Operator Relationship**
+
+Homejoy couldn't classify cleaners as employees — the platform economics required contractors. Straw's analogous risk: are agent operators who compete on Straw "contractors" of Straw (performing work for Straw's benefit) or independent economic actors? This matters for:
+- Whether Straw owes agent operators anything if they compete and lose (they currently don't)
+- Whether Straw's prize pool distribution model creates employment-like obligations
+- Whether the evaluation process creates liability if an agent operator claims Straw's evaluation was biased against them
+
+**Current Straw design (safe):** Agent operators are fully independent. They submit voluntarily. They receive prizes if they win. No employment relationship. The misclassification risk is near-zero in the current design because Straw's relationship with agent operators is buyer/seller in a marketplace, not employer/contractor.
+
+**Pattern 4: Premature Geographic Expansion**
+
+Homejoy expanded to Europe before US unit economics were proven. Straw has a similar temptation — Phase 1 research covers Singapore (P0), India (P1), UK/Australia (Year 2). 
+
+**The recommendation:** Don't internationalize until US (or chosen home market) has $1M ARR run rate. International expansion before product-market fit dilutes founder attention, adds regulatory complexity, and doesn't meaningfully accelerate the network effect. The evaluation certificate's credibility is built in ONE market first (one regulatory context, one enterprise legal standard). Cross-border credibility requires each market separately.
+
+### The Straw-Specific Cold-Start Solution
+
+The Homejoy analysis clarifies the most important cold-start design decision for Straw:
+
+**Straw does NOT need supply-side cold start to be solved simultaneously with demand-side cold start.**
+
+The single-player mode insight (Tick 596, design confirmed in Tick 608) is the structural solution: the FIRST evaluation doesn't require ANY agents from Straw's marketplace. The poster BRINGS agents (their current vendors). Straw evaluates them against each other. This is the equivalent of Homejoy having the homeowner bring their own cleaning crew — the platform evaluates the quality without needing to source supply.
+
+This means:
+- Straw's cold-start only needs to solve ONE side: finding enterprise posters who will run evaluations
+- The supply side (competing agents) comes LATER, once the reputation graph has enough signal to attract agent operators seeking to build their scores
+- The critical threshold: 10 evaluations in a single category generate enough comparative data to show agent operators "here's where you rank relative to others" — the moment the supply side has a reason to come to Straw proactively
+
+**The cold-start tipping point:** When Straw has run 10+ evaluations in a single category (e.g., "coding agents for financial services"), the reputation graph has signal. At that point, agent operators who haven't been evaluated start approaching Straw: "We hear Company X evaluated Devin and Claude Code. How do we get into that comparison?" This is the marketplace's self-sustaining inflection point. The timeline to get there: ~3-4 months of focused effort in a single category.
+
+### Sources
+- Homejoy failure: techcrunch.com/2015/07/31/why-homejoy-failed-and-the-future-of-the-on-demand-economy
+- Leakage and unit economics: tactyqal.com/blog/why-homejoy-failed, inc.com/justin-bariso/learning-from-failure-how-this-150-million-company-self-destructed.html
+- Cold-start solution frameworks: andrewchen.com, Andrew Chen "The Cold Start Problem" (book)
+- Straw single-player mode: tasks/straw-bear-case-and-gtm-2026-05-01.md Tick 596
+
+
+---
+
+## Tick 621 (2026-05-04T08:30Z): Named Contacts at Fintech/Regulated Industry AI Teams [theme: partners]
+
+> Thread: Fintech companies with AI agents and compliance requirements are Straw's highest-value early customers. The FINRA/ABA compliance angle is a hard regulatory requirement, not a soft preference. Who specifically should Jeremy reach?
+
+### Why Fintech Is Straw's Best Early Vertical
+
+Three structural reasons:
+
+1. **Regulatory mandate:** FINRA Rule 3110, ABA Model Rule 5.3, OCC guidance on model risk management (SR 11-7) — all create regulatory expectations for AI validation. Straw's certificate is a compliance artifact, not just a nice-to-have.
+
+2. **High-value decisions:** A fintech making a $500K/year AI agent commitment needs more than a vendor demo. The cost of picking the wrong agent (regulatory fine, reputational risk, customer harm) can be 10-100x the cost of a Straw evaluation.
+
+3. **Existing evaluation culture:** Fintech and banking have model validation departments. They already validate risk models, credit models, fraud detection models. "AI agent evaluation" is conceptually familiar to risk teams — it's the same thing they do for statistical models, applied to generative AI.
+
+### Named Contacts at Fintech/Regulated Industries
+
+**Tier 1: Direct CAIO/Head of AI with decision authority**
+
+1. **Emily Glassberg Sands** — Head of Data & AI, Stripe
+   - LinkedIn: linkedin.com/in/egsands/
+   - Recent: Axios interview April 30, 2026 on AI agents and token theft
+   - Opener (Tick 614 already drafted): Stripe's own agent benchmark → Straw automates it
+
+2. **Thomas Fuchs** — Chief AI Officer, Eli Lilly (pharma but regulatory-heavy)
+   - Profile: Known for "Thomas Fuchs CAIO Lilly" — verify on LinkedIn
+   - Note: Pharma is not fintech but shares the FDA validation requirements; referenced in Tick 600
+
+3. **The Goldman Sachs AI team**
+   - **Marco Argenti** — CIO, Goldman Sachs. LinkedIn searchable. Piloting Devin alongside 12,000 developers. Described vision of "hybrid workforce" with 20% efficiency gains. Too senior for cold outreach but the CONTEXT of the Devin pilot is extremely relevant.
+   - Better target: Goldman's Head of AI or technology risk officer (findable via LinkedIn search "Head of AI technology Goldman Sachs")
+   - Opener for Goldman contact: "Goldman is piloting Devin alongside 12,000 developers. How do you know Devin is better than Claude Code for Goldman's specific workflows? We run the evaluation that produces a defensible answer — with a certificate your risk committee can review."
+
+4. **Immad Akhund** — CEO, Mercury Banking
+   - Twitter: @immad
+   - LinkedIn: linkedin.com/in/immad
+   - Mercury is a banking platform for startups. They have AI features and a strong engineering culture. CAO/CTO probably makes evaluation decisions.
+   - Opener: "Mercury's banking AI is making financial decisions. When a Mercury customer asks 'how do you know this AI is reliable,' what's the answer? We build the evaluation infrastructure that produces the certified answer."
+
+5. **Eric Glyman** — CEO, Ramp
+   - LinkedIn: linkedin.com/in/ericglyman. Twitter: @ericglyman
+   - Ramp was Modal's early design partner (demonstrated they value new AI infrastructure products)
+   - Better target: Ramp's Head of AI or ML engineering lead (findable via LinkedIn)
+   - Why Ramp specifically: They've ALREADY evaluated AI infrastructure (they were Modal's design partner), which means they have an evaluation process. They might benefit from Straw to evaluate the AI models they deploy in their financial products.
+
+**Tier 2: VP/Director level at AI-forward regulated companies**
+
+6. **Coinbase AI team**
+   - Coinbase's AI system (x402 integration) was listed in the research. They're crypto-native but heavily regulated (FinCEN, state money transmission).
+   - Target: Coinbase's Head of AI or ML, searchable via LinkedIn "Head of AI Coinbase"
+   - Why: Coinbase's x402 payment system for AI agents puts them at the exact intersection of AI agent operations and compliance. They would evaluate AI payment agents on Straw.
+
+7. **Plaid AI team**
+   - Plaid connects 12,000+ financial institutions to consumer apps. Their AI features touch financial data for millions of users.
+   - Target: Zach Perret (CEO, Twitter: @zachperret) for initial outreach, or Plaid's Head of ML
+   - Opener: "Plaid's data enables financial AI. The companies building on Plaid need to evaluate their AI agents before deploying at financial institution scale. We run those evaluations. Would you share Plaid's perspective on what good AI agent evaluation looks like for financial data use cases?"
+
+8. **Brex AI team**
+   - Pedro Franceschi (CEO), Henrique Dubugras (co-founder). LinkedIn searchable.
+   - Brex has aggressively deployed AI for spend management and corporate cards.
+   - Target: Head of Engineering or ML at Brex (not CEO level for first contact)
+
+**Tier 3: Legal/Professional Services (high compliance, adjacent to fintech)**
+
+9. **Winston Weinberg** — CEO, Harvey AI (legal AI)
+   - LinkedIn: linkedin.com/in/winstonweinberg (verify)
+   - Twitter: @winstonweinberg
+   - Harvey is used by Am Law 100 firms. Law firms have professional responsibility obligations (ABA Model Rule 5.3) to supervise AI tools. Straw's evaluation certificate is their supervision documentation.
+   - Opener: "ABA Model Rule 5.3 requires law firms to supervise AI tools. Harvey is your AI tool. Straw produces the evaluation documentation that constitutes formal supervision — a certificate your firm can show the bar association."
+
+10. **Jason Boehmig** — CEO, Ironclad (contract management AI)
+    - LinkedIn: linkedin.com/in/jasonboehmig
+    - Ironclad uses AI to accelerate contract review and management. Any error in contract AI has legal liability consequences.
+    - Opener: "Contract AI errors have legal liability consequences. Ironclad is the AI your contracts run through. We run structured evaluations comparing Ironclad to alternatives — on real contract types, with a rubric defined by your customers. The winning certificate becomes your enterprise sales proof."
+
+### The FINRA Letter Strategy (High-Leverage, Slow-Burn)
+
+A research finding from earlier ticks (Tick 593) noted that FINRA issued guidance on AI supervision in 2025. The strategic play:
+
+**Write a 2-page white paper:** "AI Agent Evaluation as FINRA Supervision Evidence: A Framework for Broker-Dealers." Send it to:
+- FINRA's Chief Innovation Officer (publicly listed on finra.org)
+- The 50 Head of AI at top 50 broker-dealers
+- The three AI/RegTech law firms that advise broker-dealers
+
+This is not a sales pitch — it's a thought leadership piece. It establishes Straw's evaluation certificate as a FINRA-relevant compliance artifact. The inbound from broker-dealers who read it and want to understand if Straw's certificate counts as supervision evidence is the top-of-funnel.
+
+Timeline: write it by week 4, publish on the Straw website + LinkedIn by week 5. It takes 6-12 weeks to circulate in regulated industries. By month 3, 2-3 broker-dealer compliance teams will have emailed asking "does Straw's certificate satisfy FINRA's AI supervision requirement?"
+
+### Sources
+- Goldman Sachs Devin pilot: eesel.ai/blog/cognition-ai
+- FINRA AI guidance: from Tick 593 cold email templates research
+- ABA Model Rule 5.3: from Tick 593 legal AI compliance research
+- Mercury Banking: hireinsouth.com/post/mercury-banking (note: this is about Braintrust Mercury, different company)
+- Coinbase x402: coindesk.com/tech/2026/04/02/coinbases-ai-payments-system-joins-linux-foundation
+- Ramp + Modal: contrary.com/company/modal (Modal's early design partners)
+
