@@ -56744,3 +56744,213 @@ This pricing page should go live **before the first design partner conversation.
 
 **Backlog:** Build pricing page (straw.vercel.app/pricing); regulatory requirement social proof section; A/B tests when at 100+ visitors/month; Pilot tier maps directly to design partner program.
 
+
+---
+
+## Tick 720 — [BEAR] Regulatory Liability Black Holes: Who Pays When an Agent Does Damage [2026-05-04]
+
+**Theme: Bear Case | Research area: Regulatory/liability black holes as both risk and demand driver**
+
+---
+
+### The Liability Gap Is Real and Growing
+
+From April 5, 2026 — The Register: *"If AI agents mess up, there's nobody to sue"*
+
+From Gartner: By mid-2026, new categories of unlawful AI-informed decision-making will generate **more than $10 billion in remediation costs** across global AI vendors and enterprises.
+
+The structural problem: AI agents increasingly take actions on behalf of organizations — sending communications, executing transactions, modifying data — but the legal framework for who is responsible when things go wrong is not settled.
+
+---
+
+### The Three Parties and Who Actually Owns Liability
+
+**Under agency law**, when an organization deploys an AI agent:
+- The organization is the principal
+- The agent acts on behalf of the principal
+- The principal is generally liable for the agent's actions that fall within the authorized scope
+
+**What this means concretely:**
+- If your AI agent sends a customer a communication with a false representation of their contract terms — you own that
+- If your AI agent executes an unauthorized financial transaction — you own that
+- If your AI agent discriminates in hiring or employment decisions — you own that (and the Colorado AI Act gives affected individuals a private right of action)
+
+The vendor contract offers no real protection. Vendors offer warranties ("tested for bias, regularly updated") but disclaim responsibility when bias traces to how the enterprise deployed or prompted the system. **Both parties are trying to make the other the liable party.** Enterprises are deploying faster than they're building legal protection.
+
+---
+
+### The Three Legal Exposure Categories
+
+**Category 1: Product Liability (EU Product Liability Directive)**
+The EU PLD (applicable from December 9, 2026 transposition deadline) creates strict liability for AI systems that cause harm as "products." The burden of proof shifts to the vendor — they must prove the system was not defective.
+
+**Category 2: Employment Law (Colorado AI Act + Federal Discrimination Law)**
+Any AI system used in employment decisions (hiring, performance review, scheduling, termination) in Colorado must have annual impact assessments. Failure to document the assessment = legal exposure if the system discriminates. The Colorado AI Act gives affected individuals an explicit private right of action.
+
+**Category 3: Financial Services (FINRA + SEC)**
+When AI agents participate in financial decision-making (trade recommendations, customer communications, risk assessments), the firm is responsible for ensuring those decisions meet regulatory standards. FINRA's 2026 exam priorities explicitly include "documented AI agent evaluation before deployment."
+
+---
+
+### How the Liability Black Hole Becomes a Demand Driver
+
+This analysis reveals **who is most motivated to buy Straw:**
+
+**General Counsels and Chief Compliance Officers** — they are personally exposed when AI agents create liability. They are the ones who will be deposed. They are the ones whose career ends if the company faces a $100M class action from AI-agent discrimination. The CAIO answers to regulators; the GC/CCO answers in court.
+
+**New cold email persona to add to the sequence:**
+
+**Subject:** Gartner says AI agents will generate $10B in liability costs by mid-2026
+
+[Name] — A recent Register article (April 5, 2026) made the point directly: "If AI agents mess up, there's nobody to sue." Under agency law, your organization owns the liability for actions your agents take on your behalf.
+
+Gartner expects $10B+ in remediation costs from unlawful AI decision-making by mid-2026.
+
+Straw provides the pre-deployment evaluation documentation that establishes: your agent was independently tested, met these criteria, with these known limitations. That documentation is the difference between "we were negligent" and "we did our due diligence."
+
+Worth 20 minutes?
+
+Jeremy Liu | Straw | [calendly]
+
+**Best prospect for this email:** Chief Compliance Officers (CCO) and General Counsels (GC) at financial services and insurance companies, not just CAIOs.
+
+---
+
+### The Straw Certificate as Legal Defense
+
+The Straw certificate serves a specific legal function when litigation occurs:
+
+1. **Establishes pre-deployment diligence.** "We engaged an independent evaluator before deploying this agent. Here is the evaluation report."
+2. **Scopes the authorized behavior.** "The agent was evaluated for [these specific criteria] in [this context]. Actions outside this scope were not authorized and were not tested."
+3. **Documents known limitations.** "The evaluation identified [these limitations]. We implemented [these controls] in response."
+4. **Tamper-proof audit trail.** UUID + Merkle hash means the certificate cannot be altered retroactively — it is the document that existed at deployment time.
+
+This is the difference between "reckless deployment" and "reasoned deployment with documented diligence." In litigation, documented diligence is the only real defense available.
+
+**Legal framing for the pitch:** *"Straw's certificate is not just a procurement artifact — it is your pre-litigation documentation. If your AI agent ever causes harm, the first question your GC will ask is 'what evaluation did we do before deploying this agent?' Straw is the answer to that question."*
+
+---
+
+### The Liability Landscape Intensifies Straw's Value Over Time
+
+Every new regulation that creates AI agent liability (Colorado AI Act, EU PLD, FINRA, SEC) adds another reason to have pre-deployment documentation. The regulatory stack is not yet mature — there will be more AI liability legislation in 2026-2028. **Straw's certificate becomes more valuable with every new liability framework.**
+
+This is the inverse of most technology risks: most enterprise software sees its market shrink as regulation tightens. Straw's market GROWS as regulation tightens, because regulation increases the cost of NOT having documentation.
+
+---
+
+**New target from this tick:** Add CCO and GC buyer persona to the 5 parallel outreach sequences. Email template above.
+
+**Backlog:** Create CCO/GC cold email template; add "Gartner $10B in AI liability" to pitch deck risk section; add "legal defense" framing to Straw's marketing copy.
+
+
+---
+
+## Tick 721 — [GTM] Enterprise AI Buying Committee: The 13 Stakeholders Straw Must Navigate [2026-05-04]
+
+**Theme: GTM | Research area: Enterprise buying process, who must approve, and how to shortcut it**
+
+---
+
+### The Buying Committee Reality
+
+From Forrester 2026: **An average of 13 internal stakeholders are involved in making an AI tool purchasing decision** in enterprise companies. This is a 30-month average sales cycle at traditional enterprise SaaS, not the 120-day cycle Straw needs to hit $100K ARR.
+
+The 13 stakeholders typically include:
+- CAIO / Chief AI Officer (1)
+- CIO / IT leadership (1-2)
+- CISO / Security (1-2)
+- CFO / Finance (1)
+- General Counsel / Chief Compliance Officer (1-2)
+- Business unit owner (1-2)
+- Procurement team (1-3)
+- Technical evaluator (1-2)
+
+---
+
+### How Straw Shortcuts the Enterprise Buying Committee
+
+The traditional enterprise sale requires convincing all 13 stakeholders. Straw's positioning has structural shortcuts that reduce the effective number of stakeholders needed to say yes.
+
+**Shortcut 1: Regulatory compliance mandate bypasses the "is this useful?" question.**
+When the CAIO tells the committee "ISO 42001 requires an AIMS audit trail and FINRA requires documented evaluation before deployment," the business case is pre-made. Nobody argues with regulatory requirements. The committee shifts from "should we buy this?" to "which vendor should we use?" — which is a much shorter conversation.
+
+**Shortcut 2: Design partner pricing reduces procurement involvement.**
+At $6,500 (Pilot tier), many CAIOs can expense this without triggering formal procurement. The $10K threshold for requiring procurement sign-off varies by company, but $6,500 is under most people's authority limit. This lets Straw close a deal with 2-3 stakeholders instead of 13.
+
+**Shortcut 3: "Professional services" category avoids software procurement track.**
+Straw's evaluation engagement can be scoped as a professional services project (like a consulting engagement) rather than a software license. Professional services procurement is typically faster (weeks vs. months) because it doesn't trigger software security review, vendor risk assessments, or compliance checklists for SaaS providers. This is also why getting SOC 2 Type II is critical — without it, Straw can't pass the software security track even if that track is triggered.
+
+**Shortcut 4: Urgency closes faster than consensus.**
+Colorado AI Act (June 30, 2026) and FINRA 2026 exam cycles create hard deadlines. When there's a regulatory deadline, the "we'll evaluate this for Q3" objection doesn't work. Urgency moves the deal from committee approval (slow) to "the CAIO just signed because we had 8 weeks to the deadline" (fast).
+
+---
+
+### The Stakeholder Matrix: Who to Win First
+
+Not all 13 stakeholders are equally hard to win. Here is the correct sequence:
+
+**Step 1: Win the CAIO / Head of AI first.**
+They have the largest governance mandate and the most direct regulatory exposure. They are also the most likely to understand Straw's value proposition intuitively. 20-minute call, FINRA or ISO 42001 hook.
+
+**Step 2: Win the GC / CCO second.**
+They are the liability owners. The "Gartner $10B in liability costs" hook and the "Straw certificate as pre-litigation documentation" framing resonates specifically with this persona. They will PULL for Straw because it reduces their personal exposure.
+
+**Step 3: Finance approves at Pilot tier automatically.**
+$6,500 is below the threshold where CFO attention is needed. At Standard tier ($12,500), the CFO needs to see ROI: "$340K average cost of failed AI project (Tick 671) vs. $12,500 evaluation = required to be wrong 1 in 27 times." This math is trivially favorable.
+
+**Step 4: CISO / Security approves with SOC 2 Type II.**
+Without SOC 2, the CISO blocks the deal. With SOC 2, this is a checkbox. This is why getting SOC 2 Type II is the highest-priority infrastructure investment for Straw. Every enterprise sale that enters the formal security track without SOC 2 will die.
+
+**Step 5: IT / Procurement sign off on the contract.**
+At Pilot tier as professional services, this is often bypassed entirely. At Standard tier with formal contract, expect 2-4 weeks of legal review. Have a standard MSA ready.
+
+---
+
+### The Minimum Viable Path to First Design Partner
+
+For the first 3-5 design partners, Straw should not need more than 3 stakeholders to say yes. The sequence:
+
+1. CAIO says yes (champion, regulatory hook)
+2. GC says yes (reduces their personal liability)
+3. Finance expenses $6,500 under the CAIO's discretionary budget
+
+That's it. Pilot tier, professional services category, regulatory urgency. No CISO review at this price point. No formal procurement process.
+
+**The CAIO champion must be coached to keep this out of formal procurement.** The framing: "We're running a pilot evaluation — it's under my discretionary budget and it's scoped as a professional services project. Security review and procurement are for software licenses, not consulting engagements."
+
+---
+
+### What the 30-Point AI Vendor Evaluation Scorecard Looks Like
+
+From AINinza's 2026 enterprise evaluation framework (30-point scorecard), the criteria that matter for Straw's enterprise deals:
+
+| Category | Key Questions | Straw's Position |
+|---|---|---|
+| Integration | Bidirectional API with enterprise systems? | Not yet — Year 2 priority |
+| Access Control | Field-level access control, audit logs? | Included in certificate format |
+| Compliance | ISO 42001, FINRA, regulatory alignment? | Core value proposition |
+| Accuracy / Output Quality | Rubric-based evaluation, multi-run consistency? | Core product feature |
+| Data Security | Data residency, encryption, SOC 2? | SOC 2 Type II needed urgently |
+| Vendor Stability | Funding, track record? | Solo founder — needs narrative |
+| Implementation Support | Onboarding, dedicated contact? | Included in Standard + Enterprise |
+
+**The two gaps to close before enterprise deals above $25K ACV:**
+1. SOC 2 Type II (currently blocking security review)
+2. Funding / stability narrative (solo founder concern; address by emphasizing design partner program + customer references)
+
+---
+
+### The Minimum Viable Sales Materials (Build This Week)
+
+1. **One-page overview** (PDF, <500 words): "What Straw Does, Who It's For, What You Get"
+2. **Pricing page** (straw.vercel.app/pricing) — the three-tier table from Tick 719
+3. **Compliance artifact sample** — a redacted example certificate showing the UUID, Merkle hash, rubric excerpt, run summary
+4. **Standard MSA template** — a simple 3-page professional services agreement that doesn't require legal negotiation
+
+With these four materials, Straw can run an enterprise sales conversation professionally. Without them, first-call credibility suffers.
+
+---
+
+**Backlog:** Build the four MVP sales materials (one-pager, pricing page, sample certificate, MSA template); get SOC 2 Type II started; coach CAIO champions to scope as professional services.
+
