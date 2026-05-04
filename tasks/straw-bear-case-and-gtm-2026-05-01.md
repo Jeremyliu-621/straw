@@ -42279,3 +42279,253 @@ Bloomberg Terminal: $24,000/year. Moody's Analytics: $15,000-50,000/year. These 
 
 **Sources:** quickchat.ai/ai-agent-pricing-models, ibbaka.com/b2b-saas-agentic-ai-pricing-predictions-2026, chargebee.com/pricing-ai-agents-playbook
 
+
+---
+
+## Tick 563 — International Expansion: Japan (AI Promotion Act, Innovation-First Soft Law)
+
+**Date researched:** 2026-05-03
+
+### Japan's AI regulatory framework (2026)
+
+**Japan AI Promotion Act (passed May 28, 2025; effective June 4, 2025):** Japan deliberately chose an "innovation-first" approach — the opposite of the EU's precautionary model. Core design principles:
+
+1. AI as a strategic national asset
+2. Promote industrial use aggressively
+3. Mitigate risks through transparency (not prohibition)
+4. Contribute to international AI norms
+
+**The explicit goal:** Make Japan "the world's most AI-friendly country." Japan was responding to low AI adoption rates vs. US/UK. The AI Promotion Act is designed to accelerate investment and experimentation by avoiding stringent rules or penalties.
+
+**AI Strategic Headquarters:** Launched late 2025 — centralized governing body coordinating Japan's national AI strategy. Government agencies now bound by formal procurement guidelines for generative AI — the government itself is a model AI user.
+
+**Private sector obligations:** "Best-effort obligations" — not legally binding mandates. This means Japan's enterprise AI compliance is voluntary, self-regulatory, and driven by market forces more than legal risk.
+
+**Agentic AI:** Japan has NOT specifically addressed agentic AI in law or policy yet. The broader "responsible and trustworthy AI" principles apply, but no specific agentic AI framework exists.
+
+### GTM implication for Straw in Japan
+
+**Japan's AI adoption paradox:** Japan wants to be the most AI-friendly country but has historically been slow to adopt new enterprise technology. The AI Promotion Act creates top-down pressure to adopt. **The enterprise governance gap is large but driven by internal governance culture rather than regulatory mandate.**
+
+**The Japan pitch:** Not "compliance risk" (regulatory stakes are low). Instead: "Your competitors in the US and UK are evaluating AI agents with objective rubrics before deploying them. Japan's government is explicitly encouraging AI adoption. Straw gives you the governance infrastructure to move fast AND safely."
+
+**Japanese enterprise targets:**
+- **SoftBank** — $100B+ Vision Fund AI investments, internal AI deployment massive; Masayoshi Son publicly committed to AI-first strategy
+- **Toyota** — AI in manufacturing, autonomous systems; "Woven City" AI deployment; 350,000 employees
+- **Sony** — AI in entertainment, gaming, devices; PlayStation AI recommendations
+- **Fujitsu** — Japanese enterprise IT company, 130,000+ employees, heavy enterprise AI consulting
+- **NTT Data** — largest IT services company in Japan, 190,000 employees, sells to every major Japanese enterprise
+- **Recruit Holdings** — Japan's largest job/HR platform, AI in matching algorithms, heavy AI investment
+
+**Japan-specific contacts:**
+- #190: NTT Data AI Strategy (nttdata.com) — "Straw's evaluation standard for AI agents you're deploying at Japanese enterprise clients"
+- #191: SoftBank AI CoE (softbank.jp) — "How does SoftBank evaluate AI agents before deploying them to portfolio companies?"
+
+**Language consideration:** Japanese enterprise software purchases typically require Japanese-language UI at some point. v0 can be English-only (global teams understand English). v1.5 needs Japanese localization for SMB expansion.
+
+**Best entry point:** NTT Data or Fujitsu as a channel partner — they resell to every major Japanese enterprise. One channel agreement = access to 10,000+ enterprise clients.
+
+**Sources:** fpf.org/japan-ai-promotion-act, weforum.org/japan-path-to-responsible-ai, ainewsdesk.app/japan-ai-regulation-2026, iapp.org/resources/ai-governance-japan
+
+---
+
+## Tick 564 — ISO 42001: The $60K-$200K Certification Straw Reduces to $5K
+
+**Date researched:** 2026-05-03
+
+### What enterprises actually pay for ISO 42001 certification
+
+**ISO 42001** (Artificial Intelligence Management System) — published December 2023, ratified 2024, enterprise adoption accelerating in 2026.
+
+**Cost breakdown for enterprises:**
+- **Implementation consulting:** $30K-$120K (depending on scope and existing ISO 27001)
+- **Certification audit:** $5K-$25K (initial), $2K-$10K/year ongoing surveillance
+- **Internal resources:** $20K-$80K (staff time, documentation, evidence gathering)
+- **Total Year 1 cost:** $60K-$200K+ for enterprises
+- **ISO 27001 holders get 40-50% discount** — overlapping governance frameworks
+
+**Timeline:** 4-12 months from scratch; 4-6 months with existing ISO 27001
+
+**Clause 8** (the key one for Straw): "Technical and Operational Controls" — specifically requires pre-deployment evaluation documentation. This is where Straw's certificate lives as evidence.
+
+### The Straw value proposition against ISO 42001
+
+**The problem with ISO 42001 certification:** Enterprise spends $60K-200K to prove their AI management system meets the standard. But ISO 42001 doesn't prescribe HOW to evaluate AI systems — it just says you must have a documented evaluation process.
+
+**Straw's positioning:** "We provide the evaluation evidence that Clause 8 requires. You run your agent through Straw. We produce a timestamped, rubric-defined, reproducible certificate. That's your Clause 8 documentation. Your ISO 42001 auditor accepts it. You save 2-4 months of internal evidence-gathering and $20K-80K in engineering time."
+
+**The ISO 42001 auditor question:** "Can you show me how you evaluated this AI system before deploying it?" The answer is the Straw certificate.
+
+**Competitive positioning against DIY documentation:** The enterprise alternative to Straw for Clause 8 evidence:
+1. Write custom evaluation rubric internally (~40 hours of senior AI engineer time)
+2. Run evaluation internally (30-60 days of testing)
+3. Document everything in audit-ready format (20 hours of technical writing)
+4. Have legal review the documentation (10 hours = $5K-15K)
+**Total DIY cost: $30K-80K in internal time + $10K-20K in external costs.**
+
+**Straw cost: $5K (Starter) or $15K (Professional with ISO package).**
+
+### How Straw integrates into an ISO 42001 program
+
+```
+Enterprise ISO 42001 Certification Timeline:
+Month 1-2: Gap analysis + policy documentation
+Month 3-4: Risk management framework implementation
+Month 5-6: Evidence gathering (← STRAW FITS HERE)
+Month 7-8: Internal audit
+Month 9-10: Certification audit
+Month 11-12: Certificate issued
+```
+
+**Straw's play:** Partner with ISO 42001 consultants (BSI, Bureau Veritas, DNV GL) as a preferred evidence provider. When consultants reach Month 5-6 "evidence gathering" phase, they recommend Straw for Clause 8 documentation.
+
+**Channel partner opportunities for ISO 42001:**
+- #192: BSI Group (bsigroup.com) — largest ISO certification body globally, UK-based, enterprise clients
+- #193: Bureau Veritas (bureauveritas.com) — French global certification body, 80,000 employees
+- #194: DNV GL Digital (dnv.com) — Norwegian certification + assurance company, technology focus
+
+**These three firms have 50,000+ enterprise clients combined. A single channel agreement with any one of them creates a referral stream of ISO 42001 certification clients who need Clause 8 evidence.**
+
+**Sources:** cycoresecure.com/iso-42001-certification-cost-timeline, certbetter.com/iso-42001-cost, vanta.com/iso-42001-certification-cost, elevateconsult.com/iso-42001-certification-timeline-budget
+
+---
+
+## Tick 565 — Design Partner Agreement: Structure, Key Clauses, Templates
+
+**Date researched:** 2026-05-03
+
+### What a design partner agreement must accomplish
+
+A design partner agreement is NOT a sales contract. It is:
+1. A framework for co-development — they provide feedback, you provide access
+2. Proof of intent — shows investors a real company agreed to participate
+3. An IP-safe collaboration — customer data used to improve product must be explicitly authorized
+
+**Minimum viable design partner agreement (4 pages):**
+
+**Section 1: Access Grant**
+Straw grants Company access to the Straw evaluation platform in pre-release ("alpha") form. Access is non-exclusive, non-transferable, revocable. Straw may modify or discontinue features at any time.
+
+**Section 2: Feedback & Co-development**
+Company agrees to provide structured feedback: (a) minimum 4 hours/month in feedback sessions with Straw team, (b) completion of evaluation rubrics for ≥1 real task during the term, (c) written summary of evaluation results shared with Straw team. Straw owns all IP in platform improvements arising from feedback. Company retains ownership of its evaluation data.
+
+**Section 3: Pricing**
+Access is provided at no charge during the Design Partner Period (defined as _____ through _____). After the Design Partner Period, Company may convert to the Professional tier at the then-current rate with 90 days notice.
+
+**Section 4: Data & Confidentiality**
+Company's task data is confidential. Straw may use aggregated, anonymized data for platform improvement and benchmarking. Company's name may be used in Straw's marketing with written approval. Straw's source code and rubric methodology are Straw's confidential information.
+
+**Section 5: No Warranty**
+Platform is provided "AS IS" in alpha/beta form. No uptime SLA, no warranty of fitness for purpose. Company accepts risk of alpha software.
+
+**Section 6: Termination**
+Either party may terminate with 14 days written notice. On termination, Company's data is exported within 7 days, then deleted within 30 days.
+
+### Common Paper Design Partner Agreement
+
+Common Paper (YC W23) maintains a free, attorney-reviewed Design Partner Agreement template at commonpaper.com/standards/design-partner-agreement/. Created by a committee of lawyers representing both tech vendors and procurement teams.
+
+**Key defaults in Common Paper DPA:**
+- Feedback obligation: Yes (structured)
+- Payment: $0 or nominal fee
+- IP ownership: Vendor owns platform improvements; customer owns data
+- Case study rights: Optional (on/off)
+- Auto-conversion to paid: Optional clause
+- Governing law: Delaware (default)
+
+**YC Sales Agreement:** Y Combinator provides a free SaaS sales agreement template at ycombinator.com/sales_agreement — suitable for first paid customers but NOT design partners (designed for paid, not co-development).
+
+### Straw-specific design partner terms
+
+**The most important Straw-specific clause:**
+```
+"Company authorizes Straw to publish a Benchmark Summary derived from 
+Company's evaluation task, in anonymized form (no Company name, no 
+Company-specific data), for the purpose of demonstrating the Straw 
+platform's capabilities. The Benchmark Summary may include: the evaluation 
+domain (e.g., 'financial document analysis'), rubric structure (categories 
+and weights, without specific criteria text), and aggregate score 
+distribution across submissions. Company may review the Benchmark Summary 
+before publication and request modifications."
+```
+
+This clause is the key to Straw's content marketing. Every design partner evaluation produces a publishable benchmark summary — anonymized proof of product, solver recruitment asset, media hook.
+
+**The case study clause (optional, offered as incentive):**
+```
+"If Company elects to be identified in a Straw Case Study, Company agrees 
+to (a) provide a 1-paragraph written quote from a senior technical leader, 
+(b) participate in a 30-minute recorded video interview, and (c) allow use 
+of Company logo on Straw website and marketing materials. In exchange, 
+Straw will provide Company with [3 additional free evaluations / a 6-month 
+Professional subscription / a named founding partner badge on the Straw 
+Evaluation Certificate]."
+```
+
+**Sources:** commonpaper.com/standards/design-partner-agreement, ycombinator.com/sales_agreement, pandadoc.com/saas-agreement-template
+
+---
+
+## Tick 566 — Content Marketing Strategy: What Topics Land with Enterprise AI Buyers
+
+**Date researched:** 2026-05-03
+
+### What enterprise AI decision-makers actually read
+
+From CTO Magazine, Deloitte State of AI, MIT Sloan (2026):
+
+Enterprise AI decision-makers (CTOs, Head of AI, VP Engineering) consume content about:
+1. **Governance and risk** — "How do I govern AI at scale without slowing down engineering?"
+2. **Vendor evaluation** — "How do I know which AI vendor to trust?"
+3. **ROI measurement** — "How do I prove AI is delivering value to the board?"
+4. **Regulatory readiness** — "Am I ready for EU AI Act / ISO 42001 requirements?"
+5. **Security** — "How do I prevent AI agents from exposing sensitive data?"
+
+**What does NOT land:**
+- "AI is amazing and changing everything" (noise)
+- "10 AI tools you should know about" (tool roundups)
+- Anything that feels like a vendor pitch in disguise
+
+### The Straw content calendar (Month 1-6)
+
+**Weekly cadence: 1 LinkedIn post + 1 newsletter edition + 1 long-form piece**
+
+**LinkedIn post topics (highest engagement for enterprise AI):**
+- "The UC Berkeley finding that should terrify every enterprise CTO" — AI agent benchmarks are gameable to 100% accuracy; link to the arXiv paper
+- "Why 95% of enterprise AI pilots never reach production" — the governance gap, not the technology gap
+- "I asked 50 enterprise CTOs how they evaluate AI agents. Every single answer was 'gut feel + demos'" — research-based post
+- "The ISO 42001 audit question your AI team isn't ready for" — Clause 8 pre-deployment documentation
+- "Singapore just published the world's first agentic AI governance framework. Here's what it means for your AI procurement"
+- "The 85/5 paradox: 85% piloting AI agents, 5% in production. Here's the math on why"
+- "Braintrust raised $80M to tell you how your AI is performing AFTER you deploy it. We're building what happens BEFORE you deploy"
+
+**Newsletter (biweekly, "The Evaluation Standard"):**
+- Real evaluation findings: "We ran 5 agents on a financial document analysis task. Here's what we found."
+- Regulatory radar: what's happening in EU/Singapore/Japan AI governance this week
+- Interview: 1 enterprise CTO on their AI procurement process
+- Tool review: 1 AI agent tool, evaluated on a sample Straw rubric
+
+**Long-form content (monthly):**
+- "The Complete Guide to AI Agent Procurement Due Diligence" — SEO target: "how to evaluate AI agents"
+- "ISO 42001 Clause 8: What Pre-Deployment AI Evidence Do You Need?" — SEO target: "ISO 42001 Clause 8 requirements"
+- "Why Enterprise AI Benchmarks Are Broken (And What To Do About It)" — reference the UC Berkeley paper
+- "The 5 Questions Every CTO Should Ask Before Deploying an AI Agent" — top-of-funnel
+
+### The "Show HN" strategy (substitute for press)
+
+Press coverage at pre-revenue stage has 3.43% journalist response rate (per previous research). **Show HN is more effective for Straw's profile:**
+
+**Show HN post:** "Show HN: Straw — we built the evaluation marketplace where enterprise companies post AI agent tasks with rubrics, agents compete, and the winner gets hired. Here's the first evaluation we ran."
+
+**What to attach:**
+1. A real evaluation task (finance domain, anonymized)
+2. Three agent submissions (1 from GPT-4o, 1 from Claude, 1 from a custom agent)
+3. The T1+T2+T3 scores with full rationale
+4. The certificate PDF
+
+**Expected result:** 200-500 upvotes, HN front page for 4-6 hours, 3-5K website visitors, 50-100 email signups, 5-10 qualified enterprise inquiries.
+
+**The HN community who matters for Straw:** Ex-FAANG engineers now at AI startups, CTOs of Series A-C companies, developer-adjacent buyers. They become Straw's supply-side champions (they build agents; they'll compete on Straw) and eventually demand-side referrers (they move to enterprise roles).
+
+**Sources:** ctomagazine.com, hpcwire.com/bigdatawire/deloittes-state-of-ai-2026, mitsloan.mit.edu/ai-decision-makers-2026, jasper.ai/state-of-ai-marketing-2026
+
