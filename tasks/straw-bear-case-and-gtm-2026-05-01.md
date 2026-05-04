@@ -49383,3 +49383,86 @@ But Vals AI's model has a natural ceiling: they need to maintain the integrity o
 
 **Why this angle:** Positions as a peer (not competition), acknowledges their expertise, opens with partnership rather than sales. Vals AI founders are technical and will appreciate the framework-level discussion.
 
+
+---
+
+## Tick 642 — [GTM + PARTNERS] The Emerging "AI Ops" Job Role: Straw's Secondary Buyer
+
+**Theme:** GTM Motion + Design Partner Targets  
+**Date:** 2026-05-04  
+**Thread:** Buyer map — who signs the Straw contract beyond the CAIO  
+**Sources:** Beam AI Enterprise AI Agent Trends 2026, Salesforce AI Agent Trends 2026, MIT Enterprise AI Forum 2026
+
+---
+
+### The New Job Roles That Are Straw's Buyers
+
+In 2026, enterprises are hiring for roles that didn't exist 18 months ago:
+
+- **Agent Supervisor** — monitors agent behavior in production, flags anomalies, escalates to humans
+- **Agent QA Lead** — tests agent performance before deployment, owns agent quality
+- **AI Ops Manager** — manages the operational infrastructure running agents (similar to DevOps for AI)
+- **Chief AI Officer (CAIO)** — executive owner of AI strategy and procurement
+
+The enterprise is maturing from "AI as experiment" to "AI as operational infrastructure." These new job titles signal that AI agents are being treated like production systems, not research projects.
+
+---
+
+### Why AI Ops Managers Are Straw's Secondary Buyer
+
+The CAIO signs the contract. But the **AI Ops Manager** is the one who:
+1. Feels the pain of not having evaluation infrastructure every day
+2. Advocates internally for a platform like Straw
+3. Runs the technical due diligence on Straw before the CAIO presentation
+4. Becomes the ongoing user who runs evaluations quarterly
+
+The **AI Ops Manager** is the internal champion Straw needs. They're the equivalent of the DevOps engineer who advocated for Datadog before the CTO signed the enterprise contract.
+
+---
+
+### How to Find AI Ops Managers on LinkedIn
+
+Search: `"AI Operations" OR "Agent Operations" OR "AI Ops" -"Machine Learning" site:linkedin.com`
+
+Or filter: LinkedIn → People → Title contains "AI Operations" OR "Agent QA" OR "Agent Supervisor"
+
+These roles are mostly at companies with 500+ employees that have active AI agent programs. The job postings for these roles are also a leading indicator of companies that need Straw — **if a company is hiring an AI Ops Manager, they're running AI agents at scale and will need evaluation infrastructure.**
+
+**Job posting strategy:** Set up a Google Alert for job postings matching "Agent QA" OR "AI Operations Manager" OR "AI Ops". Every job posting is a prospecting signal — this company is ready for Straw.
+
+---
+
+### The Figma Lesson Applied to Straw's CAIO Outreach
+
+Figma's early GTM: Identified the most influential designers on Twitter. Filtered to people who were personally inspirational. Cold emailed them specifically. The community followed the influencers.
+
+**The Straw translation:**
+
+1. **Identify the 20 most influential CAIOs/AI leads on LinkedIn.** Criteria: post frequently about AI strategy, have 10K+ followers, work at companies with known AI agent programs. These are the people whose opinions other CAIOs follow.
+
+2. **Build a relationship before the ask.** Engage genuinely with their posts for 2-4 weeks. Add specific insights, not generic "great post!" comments. Become a recognized name in their feed before the cold outreach.
+
+3. **The outreach:** Reference the specific post you engaged with. "Saw your LinkedIn post about [specific insight]. I'm building Straw — specifically addressing [the problem they mentioned]. Would love 20 minutes."
+
+4. **The flywheel:** When an influential CAIO uses Straw and posts about it, other CAIOs see it. The community follows the influencer. This is Figma's trick applied to the CAIO market.
+
+**The 10 LinkedIn CAIO influencers to target first:** Search LinkedIn for "Chief AI Officer" filtered by number of followers or posting frequency. Look for people who post 3+ times per week about enterprise AI and have 10K+ connections. The specific names change weekly as new influencers emerge — this is a live research task for Jeremy, not something this agent can complete with search data.
+
+---
+
+### Community Entry Points for AI Practitioners
+
+**The communities where AI Ops practitioners congregate:**
+
+1. **MIT Enterprise AI Forum (ILP)** — academic-enterprise bridge. Annual event. The practitioners who attend are exactly Straw's ICP.
+
+2. **Salesforce Agentforce community** — Salesforce has built an active community around their enterprise agent platform. These practitioners use Salesforce agents and will need cross-platform evaluation.
+
+3. **LangChain Discord (70K+ members)** — technical practitioners building production agent workflows. Not all enterprise, but the enterprise engineers are in here.
+
+4. **Beam AI Community** — Beam AI publishes the "Enterprise AI Agent Trends" report. Their community is enterprise-focused AI practitioners.
+
+5. **LinkedIn "AI Agents in Enterprise" group** — search LinkedIn Groups for this topic. Several active groups with 5-20K members of enterprise AI practitioners.
+
+**Zero-cost community play:** Offer to write a guest post or resource for each community's newsletter or blog. "How to build an evaluation rubric for your enterprise AI agent in 4 steps." This is pure educational content that establishes credibility and drives inbound interest to Straw.
+
