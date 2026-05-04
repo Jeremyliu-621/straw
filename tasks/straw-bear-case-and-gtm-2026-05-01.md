@@ -53510,3 +53510,104 @@ Update the YC framing from Tick 647 based on this intelligence:
 **Why it's defensible:**
 "Our probe library compounds with every evaluation. Rubric templates are industry-specific IP. Our certificate format becomes the standard for ISO 42001, FINRA, and California EO N-5-26 compliance. The moat is the data flywheel and the regulatory standard-setting, not the software."
 
+
+---
+
+## Tick 681 — TAM Update + Anthropic Compliance API: Threat or Non-Threat? [2026-05-04]
+
+**Theme:** Bear Case (TAM + competitive threat) / GTM (market sizing)
+
+---
+
+### Revised Total Addressable Market
+
+The AI governance market numbers are now sharper than Phase 1 estimates:
+
+**AI Governance Market:**
+- $492M in 2026 spending
+- Surpassing $1B by 2030
+- $2.63B by 2030 at 44.3% CAGR
+
+**AI Agent Enterprise Spend:**
+- IDC: $1.4 trillion global AI agent enterprise spend forecast for 2027
+- McKinsey: $1.2–1.6 trillion
+- AI agents market: $5.25B (2024) → $199B by 2034 at 43.84% CAGR
+
+**Compliance as % of spend:**
+- Regulatory compliance adds 20-50% to AI orchestration budgets
+- By 2030, global AI regulation will extend to 75% of world economies
+- $1B in total compliance spending driven by regulatory fragmentation
+
+**Straw's TAM within these numbers:**
+
+The AI governance market ($492M → $2.63B) is Straw's primary TAM. Within that:
+- Pre-deployment performance evaluation is approximately 20-25% of governance spend (the rest is monitoring, identity, data governance)
+- Straw's SAM: $100M in 2026, growing to $650M by 2030
+- Straw's SOM (Year 1-2): $1M-$5M (100-500 evaluations at $5K-$15K each)
+
+These are defensible numbers for an investor conversation. The TAM is large and growing; the SOM is achievable without changing the world.
+
+---
+
+### The Demand Gap is Confirmed
+
+From the AI agent governance search:
+- **64% of enterprises cite evaluation gaps as top production blockers** (not technical capability — evaluation)
+- **57% cite governance friction** as a blocker
+- 88% of agent pilots fail to graduate to production
+- 56% of enterprises now have a formal "AI agent owner" — up from 11% in 2024
+
+The "AI agent owner" stat is particularly important. This new role is Straw's internal champion. The AI agent owner is accountable for the performance and governance of their organization's agent portfolio. They need evaluation documentation. They need compliance certificates. They need something to show the board when things go wrong.
+
+Straw's outreach should explicitly target "AI agent owners" or "agentic ops leads" alongside CAIOs and CCOs.
+
+---
+
+### Anthropic Compliance API (March 24, 2026): Not a Threat
+
+Anthropic launched the Compliance API on March 24, 2026. Key features:
+- Programmatic real-time access to Claude usage data and customer content
+- Audit trails of Claude-based agent activity
+- Tool permissions and MCP server monitoring
+- Automated policy enforcement for Claude deployments
+- Selective data deletion and retention management
+
+**What it is:** Production monitoring for Claude-based agents. Tells you what happened in production, who triggered what, when.
+
+**What it isn't:** Pre-deployment performance evaluation. Rubric-based task evaluation. Multi-agent comparison. Tamper-proof procurement certificate. Model-agnostic.
+
+**The three structural differences from Straw:**
+
+1. **Claude-only:** The Compliance API only covers Claude-powered agents. Straw evaluates any agent — Claude, GPT-4o, Gemini 1.5, Llama 3, open-source, custom fine-tuned. An enterprise evaluating three competing agents from different vendors cannot use Anthropic's Compliance API for that comparison.
+
+2. **Production monitoring vs. pre-deployment evaluation:** The Compliance API monitors what agents do after they're deployed. Straw evaluates agents before deployment to support the procurement decision.
+
+3. **Audit trail vs. procurement certificate:** The Compliance API produces audit logs (what happened). Straw produces evaluation certificates (what is expected to happen, validated against a rubric). These are different legal artifacts for different purposes.
+
+**The threat scenario:**
+
+Anthropic adds a "pre-deployment evaluation" feature to their Compliance API suite. This would let Claude-based agent vendors submit their agent for Anthropic's own evaluation before selling to enterprises.
+
+Risk level: Low-medium. Reasons:
+- Anthropic has a conflict of interest (they make money from Claude API calls — they're incentivized to certify Claude agents as good, not reject them)
+- Independent third-party certification has more legal credibility than vendor-operated self-certification
+- Straw evaluating Claude agents is not a threat to Anthropic — it's co-marketing (enterprise chooses Claude-based agent → Anthropic wins API revenue → Straw wins evaluation fee)
+
+**The opportunity (from Anthropic's conflict of interest):**
+
+Anthropic's Compliance API actually creates demand for Straw. Why? Because the Compliance API proves enterprises are investing in Claude-based agent governance. Those same enterprises need independent evaluation of the agents before deploying them — independent from the model provider who profits from their usage.
+
+"Anthropic will tell you what your agent is doing. Straw will tell you whether it should be deployed in the first place. Those are different questions."
+
+---
+
+### The Model-Agnostic Framing as a Moat
+
+The Compliance API reinforces why Straw must be model-agnostic. If Straw only evaluated Claude agents, it would be vulnerable to Anthropic building this feature in-house. If Straw only evaluated GPT-4 agents, it would be vulnerable to OpenAI.
+
+Straw's model-agnostic evaluation — the ability to compare a Claude-based agent against a GPT-4o-based agent against a custom fine-tuned Llama 3 agent, all on the same rubric — is the feature no single model provider can replicate because no single model provider is incentivized to fairly evaluate competing models.
+
+This is Straw's structural independence advantage, and it should be in every sales conversation and every investor pitch.
+
+"Anthropic can tell you how their Claude agent performed. We can tell you whether you should pick Claude, GPT-4o, or the open-source Llama agent for your specific task. Anthropic can't answer that question without a conflict of interest."
+
