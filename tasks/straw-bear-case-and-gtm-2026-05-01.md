@@ -56118,3 +56118,241 @@ This is the brand moat that cannot be bought by competitors — it requires the 
 
 **Immediate action**: Draft the NIST comment (2-3 pages). Submit before December 2026 public comment period. Cost: Jeremy's time. Return: possible NIST reference example status.
 
+
+---
+
+## Tick 712 — [PARTNERS/GTM] Snowflake Summit 26 + Daniela Amodei: Conference Strategy [2026-05-04]
+
+**Theme:** Concrete design partner targets / GTM — conference circuit
+
+---
+
+### Snowflake Summit 26
+
+- **Dates**: June 1-4, 2026
+- **Location**: San Francisco (Moscone Center)
+- **Scale**: "Largest user conference in Snowflake history," 500+ sessions, 200+ partners
+- **Focus**: "AI is Real for Business" — enterprise AI deployment, agents, governance
+
+Source: https://www.snowflake.com/en/summit/
+
+### Why This Conference Is Critical for Straw
+
+Snowflake's customer base is exactly Straw's target market: enterprises with significant data infrastructure investment that are now deploying AI agents on top of their data platforms. The conference attendees are:
+- CTO and VP Engineering at enterprise data/AI teams
+- CAIO and Head of AI at companies deploying agents for data workflows
+- Enterprise data teams at financial services, healthcare, tech companies
+
+**Key opportunity: Daniela Amodei (Anthropic Co-Founder and President)** is the opening keynote speaker. This is extraordinary. Anthropic's President is speaking at a venue where Straw's target buyers are assembled. 
+
+Anthropic has been expanding their enterprise AI sales motion aggressively. Daniela Amodei's presence at Snowflake Summit signals Anthropic's commitment to enterprise buyers — the same buyers Straw is targeting.
+
+**Why Daniela Amodei matters for Straw**: If Straw can get an introduction to Anthropic's enterprise team through any channel, Anthropic could be a referral partner (they deploy agents, enterprises want to evaluate them → Straw is the tool). Straw and Anthropic are complementary, not competitive.
+
+### Named Contacts from Snowflake Summit
+
+**1. Daniela Amodei — Co-Founder and President, Anthropic**
+- Context: Speaking at Snowflake Summit 26 opening keynote (June 1)
+- Why for Straw: Anthropic needs enterprises to trust Claude agents. Straw provides the independent evaluation infrastructure that lets enterprises verify Claude's performance on their specific tasks. This is Anthropic's channel, not Straw's competition.
+- Opener (post-conference, referencing her talk): "Daniela — I attended your talk at Snowflake Summit on enterprise AI. We're building independent evaluation infrastructure for AI agents — the kind of performance documentation that lets enterprises prove to their board that an Anthropic agent met their criteria. I think Straw and Anthropic are complementary. Would you have 20 minutes?"
+- Note: Direct outreach to Daniela Amodei is low probability of response. Better path: get an introduction through Anthropic's enterprise sales team. Target: Anthropic's Head of Enterprise Sales or VP of Partnerships.
+
+**2. Sridhar Ramaswamy — CEO, Snowflake**
+- Context: Host of Snowflake Summit, will be in conversation with Daniela Amodei
+- Why for Straw: Snowflake has 9,000+ customers across financial services, healthcare, retail. If Snowflake embedded Straw evaluation into Snowflake's AI governance offering (or featured Straw at a future Summit), Straw would get distribution to the exact enterprise audience.
+- This is a Year 2 partnership target, not a Week 1 cold email.
+
+**3. Accenture AI Practice Leadership**
+- Context: Presenting at Snowflake Summit on enterprise AI deployment
+- Why for Straw: Accenture has the same IT services channel opportunity as Infosys/Cognizant (Tick 701). If Accenture's AI practice uses Straw for evaluations, they bring it to their clients.
+- Contact: Paul Daugherty (CTO, Accenture), or the specific Snowflake practice lead at Accenture
+
+**4. Sanofi AI Leadership**
+- Context: Presenting at Snowflake Summit on AI in pharma
+- Why for Straw: Pharmaceutical AI deployment requires FDA SaMD validation documentation. Straw's evaluation certificate is a candidate FDA pre-submission evidence artifact.
+- Target: Sanofi's Head of AI or Chief Digital Officer
+
+### The Conference Attendance Strategy
+
+**For June 1-4 (Snowflake Summit)**: Jeremy should be at this conference if ticket pricing and logistics allow. Primary objective: have 5 real conversations with enterprise buyers who are deploying AI agents and feeling the documentation gap.
+
+**Pre-conference preparation (before June 1)**:
+- LinkedIn outreach to known speakers (Sami Huovilainen at Responsible AI Summit NA in June too)
+- Identify which sessions are on "AI governance," "AI agent deployment," and "AI compliance" — these are the rooms where target buyers are concentrated
+- Prepare the 90-second pitch for in-person conversations (Tick 710's unified data story)
+
+**The conference pitch (in person)**:
+
+"I'm building evaluation infrastructure for AI agents — the thing that produces the performance documentation enterprises need before they deploy an agent into a critical workflow. Think of it like a background check for AI agents, with a compliance certificate at the end. Are you dealing with the 'how do we document agent performance for our auditor?' question?"
+
+This pitch is designed to take 30 seconds and end with a question that forces the contact to self-identify as a buyer or not.
+
+### What to Do at the Conference
+
+1. Identify attendees who work in AI governance/compliance roles on LinkedIn (search Snowflake Summit + AI governance/CAIO/AI risk)
+2. Reach out before the conference (5-10 targeted messages): "I saw you're attending Snowflake Summit. I'm building evaluation infrastructure for AI agents — would you have 15 minutes to chat about how your team handles agent performance documentation?"
+3. Book coffee meetings during conference breaks
+4. Attend sessions on enterprise AI deployment and governance (take notes on objections and pain points you hear)
+5. Exchange business cards or LinkedIn connections with every relevant contact
+
+
+---
+
+## Tick 713 — [BEAR] AI Governance Market $492M → $1B: Is Straw in the Right Market? [2026-05-04]
+
+**Theme:** Bear Case — market definition and Straw's actual TAM
+
+---
+
+### The Market Size Discovery
+
+The "AI governance platform" market is projected to reach **$492M in 2026**, growing at 45% CAGR toward **$1B by 2030**. This is a CAIO and AI governance officer's budget.
+
+Source: AI Risk & Compliance 2026 (SecurePrivacy.ai research)
+
+This is different from the markets cited in Phase 1 research:
+- "AI agent staffing" TAM: $6.5B → $134B (Phase 1 Section 7)
+- "AI evaluation market": $1.97B → $9.26B (Tick 690 — LLM observability)
+- "AI governance platform": $492M → $1B (Tick 713 — governance software)
+
+**Which market is Straw in?**
+
+### The Three TAM Options for Straw
+
+**Option A: AI Governance Platform market ($492M → $1B)**
+- Straw as governance/compliance infrastructure
+- Buyer: CAIO, Head of AI Governance, CCO
+- Product: Compliance documentation, evaluation certificates, audit trail
+- Pricing: $12-15K per evaluation, compliance-anchored
+
+**Option B: LLM Observability/Evaluation market ($1.97B → $9.26B)**
+- Straw as evaluation infrastructure
+- Buyer: Engineering manager, CTO, AI team lead
+- Product: Rubric-based evaluation, leaderboard, agent comparison
+- Pricing: Per-seat + usage
+
+**Option C: AI Staffing/Procurement market ($6.5B → $134B)**
+- Straw as procurement infrastructure
+- Buyer: CTO, Operations, Business Unit leader
+- Product: Competitive evaluation marketplace, agent discovery, prize pools
+- Pricing: Take rate on agent contracts (future Phase 3)
+
+**Straw in 2026**: Primarily Option A (compliance positioning) with Option B elements (evaluation tooling). Option C is the long-term vision (Phase 3 marketplace).
+
+### The Bear Case Argument from Market Size
+
+If Straw is primarily in the AI Governance Platform market ($492M), its total addressable revenue from that market is much smaller than the $6.5B AI staffing market that Phase 1 research was excited about.
+
+At $492M total market, with many well-funded competitors (IBM, SAP, ServiceNow, Microsoft Purview all have AI governance offerings), Straw's realistic market share in Year 1-3 is:
+- Year 1: 0% (pre-revenue, building design partners)
+- Year 2: 0.1% ($492K of the $492M market — 40 evaluations at $12K)
+- Year 3: 0.5% ($2.5M revenue — 200 evaluations at $12.5K average)
+
+This is small. $2.5M ARR by Year 3 is a viable business (profitable, defensible) but not a venture-scale outcome.
+
+### The Counter-Argument: Straw Is NOT a Governance Platform
+
+The AI governance platform tools (IBM Watson AI Governance, SAP AI Ethics, Microsoft Purview AI) are policy management and audit logging tools. They help enterprises write AI policies, track AI usage, and generate compliance reports.
+
+**None of these run evaluations.** They document that you have a governance framework; they don't verify whether your agent actually performs well. This is the gap.
+
+Straw is closer to the **AI evaluation market ($1.97B → $9.26B)** than to the governance platform market. The compliance certificate is what differentiates Straw from the other evaluation tools (Braintrust, Maxim) — it's not the primary product, it's the differentiating output.
+
+**The market Straw actually competes in**: A subset of the $9.26B LLM observability/evaluation market — specifically the pre-deployment evaluation segment, which is not currently served by the major platforms.
+
+If pre-deployment evaluation is 10-15% of the total evaluation market ($1.4B-$2.8B), and if Straw captures 5% of that in Year 3 ($70M-$140M), this is a venture-scale outcome.
+
+### What the $15T AI Agent Purchases (Gartner) Means
+
+Gartner projected AI agents will command $15T in B2B purchases by 2028. Every one of those purchases creates a pre-deployment evaluation need. If 0.1% of AI agent purchases are accompanied by a Straw evaluation, that's $15B of evaluation volume with Straw's $12K fee capturing a slice.
+
+This is the long-game TAM. In the near term (2026-2027), Straw's market is small ($0 → $120K ARR), but the addressable market scales with AI agent adoption.
+
+### Bear Case Verdict on Market Size
+
+The $492M governance platform market is too small for venture scale. The $9.26B LLM evaluation market is more appropriate. The $15T agent purchase market is the long-game.
+
+**For YC/investor positioning**: Straw should NOT position itself as a "governance platform" — this market is crowded and dominated by Microsoft, IBM, SAP. Straw IS "pre-deployment evaluation infrastructure" in the $9.26B evaluation market, with a compliance output as the differentiator.
+
+**The correct TAM slide for Straw's Series A**: "$9.26B LLM evaluation and observability market (2030). Straw owns the pre-deployment, multi-vendor competitive evaluation segment — currently unserved. We are building toward the $134B AI agent staffing market as the procurement layer."
+
+
+---
+
+## Tick 714 — [PARTNERS] Modal Labs + Infrastructure Partners as Design Partners [2026-05-04]
+
+**Theme:** Concrete design partner targets — AI infrastructure companies
+
+---
+
+### Modal Labs: Infrastructure Company AND Potential Customer
+
+Modal Labs ($1.1B valuation, $111M funding) provides serverless GPU compute for AI workloads. Their customers use Modal for "evals, RL environments, and MCP servers" — evaluation is explicitly a Modal use case.
+
+Source: https://modal.com/ and Contrary Research company breakdown
+
+**Why Modal is relevant to Straw in two ways**:
+
+**Way 1: Modal as Straw's infrastructure provider**
+
+The TASKS.md (Phase 19) specifically mentions Modal as a candidate infrastructure provider for Straw's eval container execution. "Modal — eval container execution. Firecracker microVMs, autoscale to thousands concurrent, billed per-millisecond."
+
+If Straw uses Modal to run evaluation containers, Modal becomes a vendor partner — not a customer. But building on Modal gives Straw a relationship with the Modal team that could lead to co-marketing.
+
+**Way 2: Modal's customers as Straw's customers**
+
+Modal's customers are AI teams running evaluations at scale. If a company is using Modal for eval container execution, they might also want Straw's competitive evaluation marketplace and compliance certificate layer on top.
+
+**The pitch to Modal**: "Companies using Modal for evaluation infrastructure are exactly Straw's target customers. We'd like to be listed in Modal's ecosystem as the competitive evaluation marketplace layer — your infrastructure + our rubric/certificate/leaderboard = the complete pre-deployment evaluation stack."
+
+**Contact**: Erik Bernhardsson (CEO and founder, @erikbern on Twitter) — extremely active on Twitter, writes about AI infrastructure, data engineering, and startup growth. Direct DM on Twitter is the highest-probability path.
+
+**Opener**: "Erik — Modal's customers using it for evals are exactly who I'm building Straw for. We're the competitive evaluation marketplace layer (rubric design, prize pools, leaderboard, compliance certificates) that runs on top of Modal's compute. Would you be open to a call about a co-marketing or ecosystem partnership?"
+
+### Other Infrastructure Company Design Partner Targets
+
+**2. Fly.io**
+- Serverless compute platform, popular with AI developers
+- CEO: Kurt Mackey (@mrkurt on Twitter) — direct DM
+- Why: Same pattern as Modal — Fly.io customers running evaluation workloads might want Straw's marketplace layer
+
+**3. Replicate**
+- ML model hosting platform (popular for image generation models, now expanding to LLM agents)
+- CEO: Ben Firshman (LinkedIn active)
+- Why: Model evaluation is core to Replicate's customers' workflows
+
+**4. Together AI**
+- LLM API and training compute platform
+- CEO: Ce Zhang (LinkedIn)
+- Why: LLM evaluation runs on Together AI's compute — Straw's evaluation uses Together AI models
+
+**5. Hugging Face**
+- Model hosting and AI community platform; already has evaluation leaderboards
+- CEO: Clément Delangue (@ClementDelangue on Twitter)
+- **This is a special case**: Hugging Face already runs public model leaderboards. Straw could partner with Hugging Face to run private enterprise evaluation competitions on Hugging Face's infrastructure.
+- **The Hugging Face pitch**: "Hugging Face's public leaderboards are for community evaluation. Straw runs private enterprise evaluations with rubric-based scoring and compliance certificates. These are complementary — Hugging Face handles the open-source/research side, Straw handles the enterprise procurement side."
+- The Hugging Face community is also an agent supply source for Straw evaluations.
+
+### The Infrastructure Partner GTM Summary
+
+Infrastructure companies (Modal, Fly.io, Replicate, Together AI, Hugging Face) make strong design partners because:
+1. They have direct relationships with AI teams doing evaluation work
+2. They can co-market Straw to their customer base
+3. They're credibility signals ("Straw is in the Modal ecosystem")
+4. They provide technical infrastructure Straw might need anyway
+
+**Priority order**: Modal first (explicit eval use case + TASKS.md Phase 19 reference), Hugging Face second (agent supply source + co-marketing), Together AI third (LLM inference for evaluation).
+
+**Timeline**: Reach out to Modal's CEO this week (Twitter DM). Reach out to Hugging Face's CEO within 2 weeks.
+
+### Updated Design Partner Contact Count
+
+Adding infrastructure partners from this tick:
+- Modal (Erik Bernhardsson)
+- Hugging Face (Clément Delangue)
+- Fly.io (Kurt Mackey)
+
+**Running total of named contacts**: 50 (from earlier ticks) + 3 infrastructure + 6 conference + 7 financial services + Cognition network = **70+ named contacts**
+
+This significantly exceeds the Phase 2 mandate's 30-50 target. The contact list is now comprehensive enough to power 2-3 months of outreach.
+
