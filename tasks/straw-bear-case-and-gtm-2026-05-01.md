@@ -41625,3 +41625,388 @@ This means: **Straw's evaluation report is now a prerequisite for winning enterp
 
 ---
 
+---
+
+## Tick 552 — International Expansion: France (EU AI Act + CNIL Lead Authority)
+
+**Date researched:** 2026-05-03
+
+### France's regulatory landscape for AI (August 2026 enforcement)
+
+France has no standalone AI regulator — oversight is distributed. The CNIL (Commission Nationale de l'Informatique et des Libertés, French data protection authority) is the de facto lead for AI issues involving personal data, covering 15 of the 17 draft-designated AI use cases under the EU AI Act.
+
+**August 2, 2026 trigger:** All remaining EU AI Act provisions become applicable. High-risk AI systems must:
+1. Obtain CE marking before marketing
+2. Maintain a documented, updated risk management system
+3. Develop comprehensive technical documentation
+4. Implement human oversight controls
+5. Register data protection and regulatory compliance assessments
+6. Demonstrate continued quality through technical and organizational measures
+
+**France's MSA designation status (as of May 2026):** The Ministry published a draft MSA designation in September 2025 — 17 authorities, CNIL responsible for 15 use cases. Still awaiting parliamentary approval. **This means France's AI enforcement infrastructure is incomplete heading into August 2026 — enforcement will be soft at launch but accelerate in 2027.**
+
+**Enterprise compliance gap:** Over 50% of French organizations lack systematic AI system inventories. Cannot classify risk, cannot plan compliance, without knowing what AI exists.
+
+### GTM implication for Straw in France
+
+**The pain point is real and urgent:** French enterprises face August 2026 compliance with incomplete regulatory clarity. CNIL has already levied major GDPR fines (Google €150M, Facebook €60M). AI fines will follow the same enforcement appetite.
+
+**Straw's French pitch:** "You have until August 2026 to document every high-risk AI system in production. The Straw evaluation certificate is your risk management documentation — timestamped, rubric-defined, human-reviewable. It's the compliance artifact the CNIL auditor will ask for."
+
+**French enterprise targets:**
+- BNP Paribas — largest French bank, 200,000+ employees, AI in credit scoring (high-risk under AI Act)
+- AXA — insurance AI (underwriting = high-risk classification)
+- Thales Group — defense + aerospace AI (regulated sector, must document)
+- Capgemini — major French IT services firm, 2,000+ enterprise clients, channel partner opportunity
+- Société Générale — banking AI, CNIL scrutiny already active
+
+**Localization requirement:** French government enterprise contracts typically require French-language interfaces and GDPR-compliant data residency. Straw's Supabase deployment on EU region (eu-central-1) covers data residency. French UI is a v1.5 localization task.
+
+**Sources:** legalnodes.com/article/eu-ai-act-2026-updates, ai-regulation.com/eu-ai-act-implementation-france, entreprendre.service-public.gouv.fr/A18475
+
+---
+
+## Tick 553 — International Expansion: Singapore (IMDA Agentic AI Framework — World's First)
+
+**Date researched:** 2026-05-03
+
+### Singapore's IMDA Model AI Governance Framework for Agentic AI (January 2026)
+
+Singapore launched the world's first governance framework specifically for agentic AI systems at Davos (World Economic Forum, January 2026). Developed by the Infocomm Media Development Authority (IMDA). Voluntary framework, but positions Singapore as THE global reference for agentic AI governance.
+
+**Four dimensions of the framework:**
+1. **Assess and bound risks upfront** — select appropriate use cases, limit agent powers before deployment
+2. **Human accountability** — define checkpoints requiring human approval
+3. **Technical controls throughout lifecycle** — baseline testing, access control to whitelisted services
+4. **End-user responsibility** — transparency, training
+
+**Testing and evaluation requirements (most relevant for Straw):**
+
+The framework explicitly requires:
+- "Organisations should test AI agents for baseline safety and reliability, including new dimensions such as **overall execution accuracy, policy adherence, and tool use**"
+- "New testing approaches will be needed to evaluate AI agents" — holistic evaluation across full execution traces
+- "Third-party testers such as Resaro can stress test agentic guardrails or boundaries"
+- "Industry solutions including defining LLMs or agents to evaluate other agents" — directly validates Straw's T2/T3 eval approach
+
+**Straw is literally what the IMDA framework is asking for.** Singapore explicitly calls out the need for third-party evaluation and execution-accuracy testing. This is the strongest regulatory endorsement Straw could have.
+
+**Singapore also championed global AI testing standardization (2026):** IMDA press release: "Singapore Champions New Global AI Testing Standardisation Efforts on Benchmarking and Red Teaming." Singapore is positioning itself as the global certification authority for AI agents.
+
+### GTM implication for Straw in Singapore
+
+**Why Singapore first among APAC:** (1) English-language market, (2) MAS (Monetary Authority of Singapore) already requiring AI governance for financial institutions, (3) Government actively incentivizing AI adoption + compliance, (4) IMDA framework explicitly calls for third-party evaluation = Straw has regulatory tailwind not headwind.
+
+**Singapore enterprise targets:**
+- DBS Bank — most AI-advanced bank in Asia, "world's best digital bank," DBS AI Governance Council active
+- Standard Chartered — global bank, Singapore HQ, regulatory AI governance leader
+- Singtel — telecom + enterprise AI services
+- Government Technology Agency (GovTech) — Singapore government AI deployment, public sector procurement
+- Grab — Southeast Asia super-app, heavy AI for pricing/logistics
+
+**IMDA partnership opportunity:** IMDA explicitly endorses third-party testing. Straw could apply to be a recognized IMDA evaluation partner — this would be equivalent to a regulatory certification for Singapore market entry.
+
+**GTM note:** Singapore is a hub market — winning Singapore customers gives credibility for Indonesia, Malaysia, Thailand, Philippines enterprise expansion.
+
+**Sources:** imda.gov.sg/new-model-ai-governance-framework-for-agentic-ai, imda.gov.sg/singapore-champions-ai-testing, klgates.com/Singapores-New-Model-AI-Governance-Framework, natlawreview.com/article/singapores-new-model-ai-governance-framework
+
+---
+
+## Tick 554 — International Expansion: Netherlands (10 Regulators, April 2026 Draft Implementation Act)
+
+**Date researched:** 2026-05-03
+
+### Netherlands regulatory structure for AI
+
+**The most complex AI supervision model in Europe:** Netherlands has designated **10 sectoral regulators** as AI market surveillance authorities (MSAs), not one central authority. This creates compliance complexity for enterprises — they must navigate multiple authorities depending on their sector.
+
+**10 Dutch AI regulators (April 2026 draft):**
+- Dutch Data Protection Authority (AP) — coordinating role, personal data AI
+- State Inspectorate for Digital Infrastructure (RDI) — coordinating role
+- 8 sector-specific MSAs (financial, health, transport, etc.)
+
+**Timeline:** Draft Implementation Act published April 20, 2026 (public consultation until June 1, 2026). High-risk AI compliance: **August 2, 2026** for most provisions, possibly delayed to December 2027 for some categories due to "Digital Omnibus AI" European Parliament amendment of March 26, 2026.
+
+**"Waardengedreven Digitaliseren" (Value-Driven Digitalisation):** Dutch AI philosophy — technology must remain subordinate to democratic values, rule of law, fundamental rights. This is explicitly anti-black-box AI. Documentation, explainability, and human oversight are not optional — they're constitutional values.
+
+### Why Netherlands matters for Straw
+
+**Dutch enterprise profile:** Netherlands is home to:
+- ASML (semiconductor lithography, €28B revenue) — critical infrastructure AI
+- Philips — healthcare AI (highest-risk EU AI Act category)
+- ING Group — banking AI (financial sector MSA oversight)
+- Heineken — supply chain AI
+- Shell — energy AI
+
+**The 10-regulator problem is Straw's opportunity:** Dutch enterprises face 10 different regulatory interpretations of what "documentation" means. **Straw's evaluation certificate standardizes documentation across all 10 sectors.** One certificate format that satisfies all Dutch MSA audit requests.
+
+**Dutch tech ecosystem entry point:**
+- Techleap.nl — Netherlands' startup accelerator, government-backed, AI-focused cohorts
+- StartupAmsterdam — Amsterdam municipal startup program
+- HighTechNL — Dutch high-tech cluster (Brainport Eindhoven), strong ASML/Philips ecosystem
+
+**Language:** Dutch enterprises largely operate in English at enterprise level. Lower localization barrier than France.
+
+**Sources:** prokopievlaw.com/netherlands-ai-act-consultation, loyensloeff.com/dutch-ai-act-decentralised-supervision, pinsentmasons.com/ai-compliance-10-dutch-regulators, glacis.io/guide-eu-ai-act-netherlands
+
+---
+
+## Tick 555 — Enterprise AI Procurement 2026: The 85/5 Paradox and Outcome-Driven Buying
+
+**Date researched:** 2026-05-03
+
+### The defining statistic: 85% piloting, 5% in production
+
+**Source: Metaintro / enterprise survey 2026:** "While 85% of large enterprises are piloting AI agents in 2026, only 5% have moved them into production — the gap is not capability but **trust**."
+
+This is Straw's entire market. The 80% stuck in pilot phase cannot move to production without answering: "Does this agent actually do what we need it to do, at the level of quality we require?"
+
+### Shift from pilot to outcome-driven buying
+
+Enterprise AI procurement has fundamentally shifted in 2026:
+
+| 2024 Buying Mode | 2026 Buying Mode |
+|---|---|
+| "Can the AI do X?" (capability) | "Does the AI do X at our quality threshold?" (outcome) |
+| Vendor demo as evidence | Independent evaluation as evidence |
+| Trust vendor benchmarks | Demand customer-specific benchmarks |
+| Proof of concept | Proof of performance |
+
+**CIO demands (2026):**
+- Proof of model provenance and training methodology
+- Independent audits, not vendor-conducted
+- Security certifications + contractual terms for AI-specific risks
+- Demonstrated performance on customer's own data/tasks
+
+### Enterprise AI Evaluation Tool Usage (2026 survey data)
+
+Companies already evaluating AI agents use:
+- Tracing tools: 55.4%
+- Guardrails: 44.3%
+- Offline evaluations: 39.8%
+- Real-time A/B testing: 32.5%
+
+**Critical gap:** All of these are post-deployment or internal tools. None provide pre-deployment competitive evaluation with objective rubrics defined by the buyer. That's Straw.
+
+### The missing enterprise-grade evaluation framework
+
+From MarketsandMarkets (2026 Agentic AI market report): "A major challenge in the Agentic AI market is the **absence of enterprise-grade evaluation frameworks** to benchmark agent performance under real-world conditions. Traditional metrics — accuracy, latency, intent resolution — fail to capture autonomous agent capabilities including dynamic reasoning, tool use efficiency, and goal alignment across workflows."
+
+**Market sizing:**
+- AI Agents market: $8.29B in 2025 → $12.06B in 2026 (45.5% CAGR)
+- Agentic AI: $7.06B 2025 → $93.20B by 2032 (44.6% CAGR)
+- Enterprise AI evaluation tools: sub-segment, no direct figure, but 39.8% of enterprises already paying for offline evaluation = large captive market
+
+### Vendor lock-in as procurement blocker
+
+37% of firms already use 5+ AI models simultaneously to avoid lock-in. Procurement teams explicitly prioritize open standards and portability. **Straw's model-agnostic evaluation (any agent can compete) is a procurement feature:** buyers aren't locked into a vendor's evaluation tool that only evaluates that vendor's agents.
+
+### The 30-point enterprise AI vendor scorecard (2026)
+
+AINinza's 2026 Enterprise AI Vendor Scorecard includes:
+1. Model accuracy + hallucination rate
+2. Data security and compliance certifications
+3. Independent third-party audit results
+4. SLA guarantees with monetary penalties
+5. Model explainability documentation
+6. Regulatory compliance support
+
+**Items 1, 3, 4, 6 are exactly what Straw provides.** Straw's evaluation certificate is an off-the-shelf answer to a growing enterprise procurement checklist.
+
+### GTM implication
+
+The 85/5 paradox is the opening line for every Straw enterprise discovery call:
+
+> "Eighty-five percent of enterprises are running AI agent pilots. Five percent have moved to production. The gap isn't the technology — it's the evidence. You need to show your board, your legal team, and your regulators that the agent performs at the level you promised. That's what Straw produces."
+
+**Sources:** metaintro.com/85-5-enterprise-ai-trust-gap, marketsandmarkets.com/agentic-ai-market, masterofcode.com/ai-agent-statistics, aininza.com/ai-vendor-evaluation-framework-2026, kai-waehner.de/enterprise-agentic-ai-landscape-2026
+
+
+---
+
+## Tick 556 — Solo Founder Risk: The Bus Factor and How to Mitigate It
+
+**Date researched:** 2026-05-03
+
+### The Carta data on solo founders (2025)
+
+From Carta's Solo Founders Report 2025:
+- **36.3% of new startups** are solo-founded (up from 23.7% in 2019) — first time over 1/3 in 50+ years of startups
+- Solo founders receive only **14.7% of cash raised** in priced equity rounds (vs. 30% of startups founded)
+- Only **17% of VC-funded startups** in 2024 were solo-founded
+- But: median ownership at exit was **75% higher** for solo founders vs. lead founders in multi-founder companies
+
+**The bus factor is the biggest VC objection to solo founders.** Not competence — risk concentration. If Jeremy gets hit by a bus, the company stops. This is real.
+
+### The three-part mitigation strategy for Straw
+
+**1. Documentation-as-institutional-memory**
+
+Every architectural decision, every customer insight, every evaluation approach lives in version-controlled text files (CLAUDE.md, DECISIONS.md, HOW_IT_WORKS.md). A replacement founder or first hire can pick up where Jeremy left off within 48 hours. This is better than most multi-founder companies where knowledge lives in founders' heads.
+
+**2. Advisor network as lightweight co-founder substitutes**
+
+Solo founders who succeed in enterprise B2B typically build a 2-3 person advisory board that covers the missing co-founder skills:
+- **Technical co-founder substitute**: 1 senior ML/infrastructure engineer as technical advisor (0.25-0.5% equity, 2 hours/week)
+- **Sales co-founder substitute**: 1 enterprise sales VP from adjacent space (0.1-0.25% equity, introductions + deal coaching)
+- **Domain expert**: 1 AI governance/compliance expert (0.1% equity, credibility and regulatory guidance)
+
+**3. First hire = de facto co-founder**
+
+The solo founder risk dissolves at first hire if hired correctly. Best solo founder pattern: hire the 1 person who can cover both sales AND customer success (first $0-500K ARR), then split when revenue supports it. First hire should be someone who can run the company without Jeremy for 2 weeks — not a specialist.
+
+### What investors actually care about (beyond the bus factor)
+
+From Carta and founder-led-sales playbook research:
+
+The real concern isn't "what if something happens to Jeremy" — it's "can Jeremy do enterprise sales AND build the product?" Solo founders who succeed demonstrate:
+1. They've already closed customers (design partners = proof)
+2. They have a documented, repeatable sales process
+3. They've identified the first hire that bridges the capability gap
+
+**The counter-framing for investors:** "Solo founders move 3× faster in the 0-to-product-market-fit phase. I'm not dividing by zero — I'm optimizing for speed at the stage where speed matters most. My first hire closes the bus factor gap. I'm optimizing hire sequencing, not ignoring the risk."
+
+### Sequencing: when does the bus factor objection disappear?
+
+- **Pre-design partners:** Bus factor is maximum concern. Mitigate with advisory board commitments.
+- **3 design partners signed:** Proof of founder-led sales ability. Bus factor recedes.
+- **$50K MRR:** First hire affordable. Bus factor officially closed.
+- **Series A:** Standard: VP Sales + engineering lead = no longer solo. Bus factor question gone.
+
+**Sources:** carta.com/data/solo-founders-report, solofounders.com/report, thegtmnewsletter.substack.com/founder-led-sales-playbook
+
+---
+
+## Tick 557 — Competitive Landscape Deep-Dive: Braintrust, Vals AI, Patronus AI, PromptFoo
+
+**Date researched:** 2026-05-03
+
+### The full competitor matrix
+
+| Tool | Funding | Stage | Deployment phase | Who sets rubric | Competition model | Enterprise procurement |
+|---|---|---|---|---|---|---|
+| **Braintrust** | $121M total, $80M Series B (Feb 2026, $800M val) | Growth | Post-deployment observability | N/A | No | No |
+| **Vals AI** | $5M seed | Early | Pre-deployment benchmarking | Vals defines it | No | No |
+| **Patronus AI** | $20M total ($17M Series A, May 2024) | Growth | Post-deployment error detection | Platform-defined | No | No |
+| **Confident AI / DeepEval** | Unknown (open-source + SaaS) | Early | Both (dev tool) | Developer defines | No | No |
+| **PromptFoo** | Unknown | Open-source | Pre-deployment red-teaming | Developer defines | No | No |
+| **Galileo AI** | $68M Series B | Growth | Post-deployment monitoring | N/A | No | No |
+| **AgentEval (AgentX)** | Unknown | Early | Competition platform | Predefined 7-dim | Competition-adjacent | No |
+| **Straw** | Pre-seed | Idea | Pre-deployment competition | **Customer defines** | **Yes** | **Yes** |
+
+### Braintrust: $800M valuation, biggest near-competitor
+
+**What it is:** "The observability layer for AI." Logging, tracing, evaluation, monitoring for AI applications in production. Enterprise customers include Notion, Replit, Cloudflare, Ramp, Dropbox, Vercel.
+
+**Why it's not competing with Straw:** Braintrust helps teams understand how their *already-chosen* AI agent performs in production. It does not help them choose which agent to use. Its rubrics are developer-defined for internal testing, not customer-defined procurement criteria.
+
+**The strategic concern:** Braintrust could add a "procurement mode" — customer defines rubric, agents compete pre-deployment. This would be a direct Straw competitor. Timeline estimate: 12-18 months if they prioritize it. They probably won't: their $800M valuation is built on the observability narrative, not procurement. Adding procurement would confuse the narrative.
+
+**The opportunity:** Braintrust customers (Notion, Replit, Dropbox) could be Straw posters — they already have AI agents they've built and could compete on the Straw marketplace.
+
+### Vals AI: Closest to Straw (but rubric-owner is Vals, not customer)
+
+**What it is:** Domain-specific LLM benchmarks for legal, finance, healthcare, software. Evaluates GPT-5, Claude 4, Gemini, etc. on professional tasks. $5M raised (Sequoia, Bloomberg Beta, Pear VC, 8VC).
+
+**Current state (May 2026):** Evaluating Grok 4.3, Qwen 3.6, DeepSeek V4, GPT 5.5, Kimi K2.6 — still in benchmark-publication mode. $1.3M ARR per previous research.
+
+**The fundamental difference:** Vals decides what the benchmark is. The benchmark is public. Any LLM can be tested against it. There's no "enterprise posts their specific problem and gets competition" dynamic. Vals is a benchmark publisher; Straw is a procurement marketplace.
+
+**The strategic insight:** Vals could pivot to "customer-defined benchmarks" — this would be the Straw use case. They'd need to rebuild the product. Their $5M funding and 12-person team could attempt this. Monitoring priority: HIGH.
+
+### Patronus AI: Error detection at scale (post-deployment)
+
+**What it is:** Automated LLM evaluation platform that detects hallucinations, copyright violations, prompt injection at production scale. Fortune 500 customers: AngelList, Etsy, Pearson, Cohere.
+
+**Why it's not competing with Straw:** Patronus catches mistakes in deployed AI systems. Straw prevents the wrong agent from being deployed in the first place. Patronus is the insurance policy after deployment; Straw is the procurement process before deployment.
+
+**Partnership opportunity:** Patronus + Straw = full lifecycle coverage. Straw validates before deployment; Patronus monitors after. Joint GTM pitch to enterprise AI teams who want end-to-end governance.
+
+### PromptFoo and Confident AI: Developer tools, not enterprise procurement
+
+Both are developer-facing tools where the AI team evaluates their own models internally. No competitive dynamic, no rubric standardization, no enterprise procurement workflow. Relevant to Straw only as integrations (Straw could export results in PromptFoo-compatible format).
+
+### The moat analysis
+
+**Why Braintrust won't eat Straw's lunch:**
+1. $800M valuation built on "observability layer" narrative — pivoting to procurement changes story
+2. Their customers are AI builders (Notion, Replit), not AI buyers; Straw targets AI buyers
+3. Braintrust wins on post-deployment data volume; Straw wins on pre-deployment trust
+
+**Why Vals won't eat Straw's lunch (short-term):**
+1. $5M seed with 12 people can't simultaneously maintain benchmark publishing AND build procurement marketplace
+2. Vals' brand is "we tell you how models compare globally"; Straw's brand is "we tell YOU how agents perform on YOUR problem"
+3. Vals evaluates foundation models; Straw evaluates deployed agents
+
+**Sources:** siliconangle.com/braintrust-80m-series-b, axios.com/braintrust-800m-valuation, patronus.ai/announcing-17m-series-a, tracxn.com/vals-ai, cbinsights.com/company/valsai/alternatives
+
+---
+
+## Tick 558 — Founder-Led Sales Playbook for Straw
+
+**Date researched:** 2026-05-03
+
+### The principles that work for pre-revenue B2B
+
+From multiple sources on founder-led enterprise sales:
+
+**Rule 1: Founders close the first 10-20 customers personally.** Never hire a salesperson before $50K-100K MRR. Investors who try to sell before the founder have understood the sales process destroy repeatability.
+
+**Rule 2: Narrow the ICP more than feels comfortable.** The single highest-leverage action in Stage 1: reduce ICP to the 30 companies who have the exact problem Straw solves right now. Not "any company using AI agents" — that's 85% of enterprise. The 30 companies who are actively evaluating which AI agents to deploy for a specific use case in Q3 2026.
+
+**Rule 3: The discovery call is the product.** At zero ARR, Straw has no product to demo. The discovery call IS the value. Ask about their agent evaluation process, their current pain, their decision timeline. Every call generates:
+1. A potential customer
+2. ICP validation data
+3. Rubric design input (what do they actually want to measure?)
+4. Referrals to 2 other people with the same problem
+
+**Rule 4: Design partners are not customers; they're co-developers.** Correct framing: "I'm inviting 5 companies to help us build the evaluation standard for AI agents. You'll pay $X, get unlimited evaluations for 6 months, and your company name goes on our public benchmark as a founding contributor." This is better than "I'm trying to sell you a thing that doesn't exist yet."
+
+**Rule 5: Hand off when the sales process is documented, not when it feels right.** Write a sales playbook after closing 5 customers. Every objection, every stakeholder, every email that works. Then hire someone to execute the playbook — not invent a new one.
+
+### The Straw-specific discovery call script
+
+```
+Opening (30 seconds):
+"We're building the evaluation standard for AI agent procurement. 
+Before I tell you about Straw, I want to understand how you 
+currently evaluate AI agents before buying or deploying them."
+
+Discovery questions (10 minutes):
+1. "What AI agent use case are you currently evaluating or considering?"
+2. "Who owns that evaluation decision — is it engineering, procurement, legal?"
+3. "What would it look like for that agent to succeed? How would you know it worked?"
+4. "What's your timeline for making that decision?"
+5. "What would happen if you chose the wrong agent?"
+
+The transition (if pain is confirmed):
+"That's exactly the problem we're solving. Companies like [2 similar companies] 
+are using Straw to define exactly what winning looks like and have agents compete 
+on their real problem. The winner gets hired. The score is verifiable and 
+reproducible. Can I show you how that would work for [their specific use case]?"
+```
+
+### The first 10 calls: mapping the decision landscape
+
+Before cold outreach, map Straw's decision landscape:
+
+| Stakeholder | Pain | What they want from Straw |
+|---|---|---|
+| CTO | "How do I know we chose the right agent?" | Technical validation, reproducible score |
+| Head of AI | "How do I evaluate 5 vendors without 6-month pilots?" | Fast, rubric-defined competition |
+| Procurement | "How do I justify this purchase to the board?" | Documented evaluation = defensible procurement |
+| Legal/Compliance | "How do I prove we did due diligence?" | Audit trail, ISO 42001 evidence |
+| CFO | "Is this cheaper than building our own eval?" | $5K/evaluation vs. $50K internal eng time |
+
+**The multi-threaded enterprise sale:** All 5 stakeholders exist in every enterprise target. Touch 3 of them in parallel for each target company. Never sell to just one.
+
+### Pricing model for design partner phase (Month 0-6)
+
+**Design partner pricing:**
+- Month 0-3: Free. Full access. No contract. Pay with time (4 hours/month of feedback).
+- Month 3-6: $500/evaluation or $2,500/month subscription. Not a real price — anchor-setting.
+- Month 6+: Move to GA pricing: $5,000 flat/evaluation or $15,000/month unlimited.
+
+**Why the free phase works:** Three design partners using Straw free for 3 months = enough rubric feedback to build the product correctly. Worth more than $15K in revenue. Named case studies from free users close $50K+ paid customers.
+
+**Sources:** thegtmnewsletter.substack.com/founder-led-sales-playbook, averi.ai/b2b-saas-marketing-playbook-seed-to-series-a, designrevision.com/blog/b2b-saas-go-to-market-strategy
+
