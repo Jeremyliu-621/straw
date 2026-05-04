@@ -42918,3 +42918,160 @@ This unlocks both YC acceptance AND angel rounds.
 
 **Sources:** sky9capital.com/pre-seed-investors-ai-startups, lightyear.ai/angel-pre-seed-round, eqvista.com/ai-startup-fundraising-trends, angelinvestorsnetwork.com/startup-funding-guide
 
+
+---
+
+## Tick 573 — EU AI Act Enforcement Reality: €35M or 7% Revenue Is Not Soft
+
+**Date researched:** 2026-05-03
+
+### The penalty structure is severe
+
+**EU AI Act Article 99 penalties (fully enforceable August 2, 2026):**
+
+| Violation type | Fine cap |
+|---|---|
+| Prohibited AI practices | €35M or **7% of global annual turnover** (whichever higher) |
+| High-risk AI system non-compliance | €15M or **3% of global annual turnover** |
+| Incorrect/misleading information | €7.5M or **1% of global annual turnover** |
+
+**Comparison to GDPR enforcement:**
+- GDPR maximum: 4% of global annual turnover
+- EU AI Act maximum (prohibited): 7% of global annual turnover
+- The EU AI Act is MORE severe than GDPR for the worst violations
+
+**2026 enforcement activation:** The Commission's supervision and enforcement powers over GPAI model providers became fully active August 2, 2026. High-risk AI requirements + associated documentation must be ready.
+
+### The "enforcement will be soft at launch" bear case
+
+**The argument:** GDPR was passed in 2018 but enforcement was light for 1-2 years. EU AI Act August 2026 enforcement might similarly start light.
+
+**The rebuttal:**
+
+1. **GDPR precedent is misleading:** GDPR's early softness was primarily because regulators were understaffed and guidance was unclear. EU AI Act has had a 2-year runway (August 2024 to August 2026) for regulators to prepare. MSAs have been designating since 2025.
+
+2. **France is enforcement-aggressive:** CNIL levied €150M against Google and €60M against Facebook under GDPR. CNIL is the lead AI regulator for 15 of France's 17 MSA use cases. CNIL will not be soft.
+
+3. **Documentation gaps are the easiest enforcement target:** Unlike behavioral fines (hard to prove), documentation gaps are binary — either you have the documentation or you don't. AI regulators will ask "show me your pre-deployment evaluation" first. That's the lowest-effort enforcement path.
+
+4. **Enterprise customers are more risk-averse than the regulation requires:** Even if enforcement is soft, enterprise legal teams price in the risk of being the first major fine example. A CTO who hasn't documented pre-deployment evaluation is one regulator request away from a career-defining mistake.
+
+### The documentation gap is Straw's enforcement wedge
+
+**The most underestimated compliance burden:** Over 50% of enterprises lack AI system inventories. Technical documentation, risk assessments, testing records, and data governance materials represent a more massive undertaking than most organizations have begun.
+
+**The Straw documentation pitch (August 2026 specific):**
+> "August 2, 2026 is the enforcement date. Your high-risk AI systems need documented, contemporaneous evidence of pre-deployment evaluation. Not a PowerPoint your team made last year. Not a vendor demo recording. A timestamped, rubric-defined evaluation certificate that holds up to audit. If your regulator asks 'how did you evaluate this AI agent before deploying it?' — can you answer that question today? Straw is the answer."
+
+**The CNIL enforcement sequence:** France's CNIL will likely send documentation requests (not fines) to 10-20 major enterprises in Q4 2026 to establish the documentation standard. Companies that can produce Straw certificates will satisfy the request in 30 minutes. Companies that can't will spend 3 months building remediation documentation.
+
+**Sources:** artificialintelligenceact.eu/article/99, holisticai.com/penalties-of-eu-ai-act, legalnodes.com/eu-ai-act-2026-updates, gdprregister.eu/eu-ai-act-penalties
+
+---
+
+## Tick 574 — Build vs. Buy AI Evaluation: The Economic Case for Straw Over DIY
+
+**Date researched:** 2026-05-03
+
+### Why enterprise DIY AI evaluation fails
+
+**The DIY evaluation stack requires:**
+- AI/ML engineering for retrieval pipelines and model tuning
+- MLOps infrastructure for managing evaluation environments
+- Security and compliance expertise for audit-ready documentation
+- Ongoing maintenance: retraining evaluation metrics as models evolve
+
+**The economic reality:** For 90% of enterprise use cases, buying beats building. The DIY path reduces time-to-value from weeks (vendor) to 18 months (internal build). Total cost of ownership is lower for purchased solutions — no infrastructure maintenance, no specialized hiring.
+
+### The build vs. buy math for enterprise AI evaluation
+
+**DIY evaluation build cost:**
+- 1 senior ML engineer × 3 months to build evaluation framework: $75K-90K
+- Infrastructure setup (containers, GPU, storage): $15K-30K
+- Security review and documentation: $10K-20K
+- Ongoing maintenance (0.5 FTE): $50K-75K/year
+- **Total Year 1 DIY cost: $150K-215K**
+- **Ongoing cost: $50K-75K/year**
+
+**Straw Professional cost:**
+- $15K/evaluation (3-5 evaluations/year) = $45K-75K/year
+- No infrastructure, no maintenance, no specialist hire
+- Audit-ready documentation included
+- **Total Year 1 Straw cost: $45K-75K**
+
+**DIY is 2-3× more expensive than Straw in Year 1** and requires scarce ML engineering talent that most enterprise AI teams can't spare.
+
+**The core argument:** "Building your own evaluation framework is the right choice if evaluation is core to how your product creates value. If you're an AI agent vendor, build your own eval. If you're an enterprise buying AI agents, use Straw — the same way you don't build your own audit firm."
+
+### The "we can just use PromptFoo/DeepEval" objection
+
+**The objection:** "We can download PromptFoo for free and run our own evaluations."
+
+**The rebuttal:**
+
+1. **PromptFoo requires an AI engineer to configure and run.** The enterprise AI buyer is not an AI engineer. The head of procurement cannot install PromptFoo. The board cannot verify a PromptFoo result. Straw requires no technical expertise and produces verifiable, auditable certificates.
+
+2. **PromptFoo is now owned by OpenAI.** Can you trust a vendor evaluation tool owned by a model vendor to fairly evaluate competing models? OpenAI's PromptFoo evaluating Claude, Gemini, and open-source agents introduces a conflict of interest that an enterprise audit will flag.
+
+3. **Internal results are not audit-ready.** CNIL or an ISO 42001 auditor will not accept "we ran PromptFoo and it said 85%." They want a neutral third-party evaluation with documented methodology, rubric versioning, and signature chain. Straw produces this; PromptFoo does not.
+
+4. **Time cost of DIY config.** Writing YAML rubric configs in PromptFoo for complex enterprise tasks requires 20-40 hours of engineering time per evaluation. At $200/hour, that's $4K-8K per evaluation — already comparable to Straw's $5K Starter tier, without the certificate.
+
+### The "build buy or partner" decision framework for Straw customers
+
+| Scenario | Recommendation |
+|---|---|
+| Company is an AI agent vendor (they build agents) | Build internal evaluation; also compete on Straw to validate |
+| Company is buying 1-3 AI agent vendors | Use Straw ($5K-15K/evaluation) |
+| Company is buying AI agents quarterly (ongoing) | Straw Enterprise retainer ($50K/year) |
+| Company has existing ISO 27001 program | Use Straw as Clause 8 evidence provider (ISO 42001 path) |
+| Company has internal AI governance team (>3 people) | Straw + Credo AI as complementary stack |
+
+**Sources:** aisera.com/build-vs-buy-ai, techaheadcorp.com/enterprise-ai-build-vs-buy-vs-partner, hp.com/enterprise-ai-services-build-vs-buy, gocascade.ai/current-state-enterprise-ai-buy-vs-build
+
+---
+
+## Tick 575 — Australia and Canada: Different GTM Than EU (Market Education Over Compliance Fear)
+
+**Date researched:** 2026-05-03
+
+### Australia: Voluntary Framework, But Growing Fast
+
+**Regulatory posture:** No standalone AI Act. Relies on existing laws + sector regulators + voluntary guidance + new AI Safety Institute (AUD29.9M launched early 2026).
+
+**Key 2026 milestone:** Automated decision-making transparency effective December 10, 2026: entities must disclose types of personal information used in substantially automated decisions. First mandatory AI-adjacent requirement.
+
+**National AI Plan 2025 (December 2025):** Government's most comprehensive AI policy statement. Strategy: leverage existing technology-neutral laws, introduce targeted reforms, retain sector regulator responsibility.
+
+**The enterprise AI landscape in Australia:** Australia has high enterprise AI adoption intent but lags on governance. The Big Four banks (Commonwealth Bank, ANZ, NAB, Westpac) are all running significant AI deployment programs. Mining + resources (BHP, Rio Tinto) have AI in operations. Healthcare (Ramsay, Medibank) building AI for patient management.
+
+**GTM for Australia:** NOT compliance fear (enforcement too soft). Instead: competitive differentiation + governance maturity narrative.
+
+**Australian pitch:** "Your competitors in the US and UK are running rubric-defined agent evaluations before deploying. Australian enterprises that wait for regulation to mandate this will be 18 months behind on AI governance maturity when the regime tightens. Straw is how forward-thinking companies get ahead."
+
+**Australian enterprise targets:**
+- #201: Commonwealth Bank of Australia (CBA) — "AI factory" strategy, 1,000+ AI models in production, needs evaluation governance
+- #202: BHP Digital — largest mining company, AI in operations, safety-critical decisions = highest governance urgency
+- #203: Telstra AI — Australian telecom, enterprise AI services arm
+
+### Canada: Federal + Provincial Patchwork, Ontario Leading
+
+**Regulatory posture:** No comprehensive federal AI legislation. Hybrid soft law + binding policies for federal institutions.
+
+**Binding requirements:**
+- Treasury Board's Directive on Automated Decision-Making: algorithmic impact assessments + transparency measures for federal institutions
+- Ontario's Enhancing Digital Security and Trust Act (late 2024): accountability requirements for public sector AI
+
+**The enterprise Canada opportunity:** Canadian banks, telecoms, and government contractors face US-adjacent pressure (US executive orders on AI governance trickle into Canada via cross-border compliance). The major Canadian banks (Royal Bank, TD, Scotia, BMO) operate extensively in the US and must comply with US AI governance requirements.
+
+**GTM for Canada:** Compliance spillover from US + ISO 42001 as voluntary credentialing.
+
+**Canadian pitch:** "You operate in the US market. US federal contractors are now required to document AI governance. Your US subsidiaries and clients will ask for evidence of pre-deployment evaluation. Straw gives you that evidence now."
+
+**Canadian enterprise targets:**
+- #204: Royal Bank of Canada (RBC) — largest Canadian bank, US operations, AI in investment banking + retail
+- #205: Shopify — Canadian tech unicorn, heavy AI for merchant tools, developer-friendly culture (likely Straw supply-side champion)
+- #206: Bombardier — aerospace manufacturing, AI in design/production, safety-critical (highest governance urgency)
+
+**Sources:** iapp.org/resources/article/global-ai-governance-australia, validata.ai/australia-ai-regulation-2026, regulations.ai/regulations/RAI-CA-NA-SUMMARY-2026, mltaikins.com/ai-governance-2026
+
