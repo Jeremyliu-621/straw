@@ -53417,3 +53417,96 @@ At $10K/evaluation average and 2 evaluations per customer per year: $80K-$140K A
 
 **The most important thing to do today:** Start conversations. The sales cycle is 120 days. Every conversation started today is revenue in September. Every conversation delayed is revenue delayed by the same amount.
 
+
+---
+
+## Tick 680 — YC Competitive Intelligence: Ashr, General Analysis, and the W26 Infrastructure Boom [2026-05-04]
+
+**Theme:** Bear Case (competition) / GTM (positioning)
+
+The YC Winter 2026 batch (194 companies, largest in YC history) is heavily agent infrastructure-focused. 41.5% of companies are building the "plumbing underneath AI agents." This tick maps the closest competitors to Straw in that cohort.
+
+---
+
+### The Closest Competitor: Ashr (YC W26)
+
+**Ashr** is building "testing and evaluation infrastructure for AI agents, specifically by simulating real user behavior inside production-like environments before anything ships."
+
+Their positioning: "Most teams currently find agent failures in production, which is a bad way to find them. Ashr is the earlier intervention."
+
+This is the closest overlap with Straw discovered in this research session.
+
+**How Ashr differs from Straw:**
+
+| Dimension | Ashr | Straw |
+|---|---|---|
+| Evaluation type | Behavioral simulation (functional QA) | Rubric-based performance evaluation |
+| Output | Bug report / pass-fail | Compliance certificate with UUID + Merkle hash |
+| Use case | "Find failures before production" | "Prove quality for procurement and compliance" |
+| Buyer | Engineering team (dev QA) | Procurement, compliance, legal |
+| Rubric | Simulated user behavior | Buyer-defined rubric for specific business task |
+| Regulatory artifact | No | Yes |
+| Multi-agent comparison | Not core | Core function |
+
+The key structural difference: Ashr is a **developer tool** for finding bugs before production. Straw is a **governance tool** for proving quality during procurement.
+
+Ashr's buyer is the CTO/engineering team. Straw's buyer is the CCO/CISO/compliance team. They are selling to different people within the same enterprise for different reasons.
+
+This means Ashr and Straw could coexist in the same enterprise: Ashr catches functional bugs before deployment, Straw certifies performance quality for compliance before procurement. Different tools, different buyers, different outputs.
+
+However, if Ashr expands to compliance certificates or Straw expands to functional QA, there's competitive overlap. Watch Ashr's product roadmap.
+
+---
+
+### General Analysis (YC-backed): Safety Red Teaming
+
+**General Analysis** provides "safety and performance reports for enterprise AI models" using red-teaming frameworks and interpretability techniques. 
+
+They are adversarial security testing (what happens when an attacker steers the model across multiple turns, injects instructions, exploits tool permissions). This is security red teaming — occupying Layer 2 of the due diligence stack (Tick 678).
+
+Different from Straw (Layer 3 — performance evaluation). General Analysis is the YC-backed version of Haize Labs and Mindgard (also mentioned in Tick 675 on red teaming). All three are in the security/adversarial testing space, not the task performance space.
+
+---
+
+### The YC W26 Infrastructure Thesis
+
+The W26 batch analysis confirms Straw's architecture thesis: "Governance is the defensible position now: the ability to audit, control, and verify what your agents did and why."
+
+Companies building governance infrastructure in W26:
+- **Ashr:** Pre-production behavioral testing
+- **Agentic Fabriq:** Identity and permissions ("Okta for agents")
+- **General Analysis:** Safety and red teaming
+
+These companies are building individual layers of the agent governance stack. None are building the integrated procurement evaluation layer with compliance certificates.
+
+The YC pattern (building individual layers of a stack) creates an opportunity for Straw to be the coordination layer above all of them: a certificate that encompasses security (sourced from General Analysis or SecureAuth), identity (sourced from Agentic Fabriq), and performance (Straw's own evaluation). The certificate is the integration point.
+
+---
+
+### Why Apply to YC Today Despite the Competition
+
+Four YC-backed companies in adjacent spaces (Ashr, General Analysis, plus others in monitoring and identity) means:
+1. YC partners understand the agent governance infrastructure space
+2. They're actively investing in it
+3. They likely see a gap (none of the above fill Straw's Layer 3 position)
+4. Being YC-backed in this space gets you into the same investor/customer conversations these companies are having
+
+The competition makes the YC application harder (YC won't fund another Ashr if they already have Ashr). But it also makes the case for differentiation more important: Straw = compliance certificate for procurement governance, not functional QA, not security red teaming.
+
+**The YC application's most critical section:** "Why now, and why Straw?" Answer: the agent governance stack is being built piece by piece. Ashr tests functionality. General Analysis tests security. SecureAuth verifies identity. Nobody produces the third-party compliance certificate that procurement teams and regulators actually need. Straw is that missing piece.
+
+---
+
+### YC S26 Application Language (Given Competitive Landscape)
+
+Update the YC framing from Tick 647 based on this intelligence:
+
+**Problem statement:**
+"Enterprises are deploying AI agents with no independent performance evaluation. Ashr catches functional bugs. General Analysis catches security vulnerabilities. SecureAuth verifies identity. But there's no Layer 3 — no platform that evaluates task performance on buyer-defined rubrics and produces a compliance certificate that regulators, auditors, and insurance underwriters actually require."
+
+**Solution:**
+"Straw is the AI agent performance evaluation platform. We run buyer-defined rubric evaluations across a three-tier pipeline (automated + LLM judge + human investigative probing), produce a tamper-proof compliance certificate with UUID and Merkle hash, and serve as the independent third-party evaluator for AI procurement decisions."
+
+**Why it's defensible:**
+"Our probe library compounds with every evaluation. Rubric templates are industry-specific IP. Our certificate format becomes the standard for ISO 42001, FINRA, and California EO N-5-26 compliance. The moat is the data flywheel and the regulatory standard-setting, not the software."
+
