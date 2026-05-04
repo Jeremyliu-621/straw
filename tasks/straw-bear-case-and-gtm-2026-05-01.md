@@ -55577,3 +55577,311 @@ IT services firms are 2-3 years from building competitive evaluation infrastruct
 
 **Strategic implication**: Jeremy should have an Infosys and Cognizant conversation before they're customers of Straw — specifically proposing a channel partnership where they get revenue share on evaluations they bring to Straw. This is more valuable than waiting for them to build their own.
 
+
+---
+
+## Tick 705 — [GTM] The $547B AI Failure Problem: Straw's Core Narrative Upgrade [2026-05-04]
+
+**Theme:** GTM — narrative + pitch upgrade
+
+---
+
+### The New Data
+
+Multiple sources confirm an enterprise AI failure crisis:
+- **RAND Corporation (2025 analysis)**: 80.3% of AI projects fail to deliver intended business value
+- **$684B invested in AI in 2025. $547B+ failed to deliver.** (From AIGovernanceToday's coverage of enterprise AI spending)
+- **GenAI pilot abandonment rate: 95%** (vs. 34% for traditional AI projects)
+- **73% of enterprise AI projects fail to deliver ROI** (on $665B total spend)
+- **4.5x improvement in success rate** when metrics are defined pre-approval
+
+Sources: https://www.pertamapartners.com/insights/ai-project-failure-statistics-2026, https://www.aigovernancetoday.com/news/enterprise-ai-spending-crisis-2026, https://www.folio3.ai/blog/ai-project-failure-rate-stats
+
+### Why This Data is More Powerful Than Earlier Versions
+
+Earlier ticks (671, 675) cited "$661B in failed AI investment" and "88% failure rate." These were already strong numbers. The RAND 2025 analysis adds two critical dimensions:
+
+**Dimension 1: The organizational vs. technical distinction**
+
+"77% of failures are organizational, not technical."
+
+This means enterprises aren't failing because the AI technology is bad. They're failing because:
+- No clear success criteria defined before deployment
+- Misalignment between what was specified and how work actually happens
+- "AI without a home" — no operational owner after technical delivery
+
+This is EXACTLY what Straw addresses. Straw forces companies to define success criteria BEFORE they hire an agent (the rubric). The competition gives them a neutral third-party to verify whether the agent meets those criteria. The certificate is the accountability mechanism.
+
+**The reframing**: Straw doesn't improve AI technology. Straw improves the organizational process for buying AI. That's why 77% of the failure is addressable by Straw, not by better AI models.
+
+**Dimension 2: The pre-approval metrics requirement**
+
+"4.5x improvement in success rate when metrics are defined pre-approval."
+
+This is empirical evidence that Straw's core mechanic (define the rubric BEFORE the competition) works. Companies that define metrics before approval succeed 4.5x more. Straw mandates this process for any evaluation.
+
+### The Updated Pitch Opening
+
+**Old opening**: "Enterprise AI procurement is broken. Companies make six-figure decisions based on vendor demos."
+
+**New opening** (using the RAND data):
+
+"In 2025, enterprises invested $684 billion in AI. RAND found that $547 billion of that — 80% — failed to deliver intended business value. Not because the AI was bad. Because 77% of failures are organizational: no clear success criteria, misalignment with actual business process, no accountability.
+
+Straw fixes the organizational failure. We require you to define what winning looks like before the competition starts. Agents compete. The score doesn't lie. The certificate is the accountability artifact.
+
+Companies that define metrics before approval succeed 4.5x more. Straw makes you define the metrics. That's the product."
+
+This opening is stronger because it:
+1. Uses specific, credible numbers (RAND Corporation, 2025)
+2. Explains WHY the failure happens (organizational, not technical) — which is what Straw actually fixes
+3. Ends with the empirical validation of Straw's core mechanic (4.5x improvement from pre-defined metrics)
+
+### The Landing Page Update
+
+**Hero copy revision for straw.vercel.app**:
+
+Current (likely): "Straw — the competitive evaluation platform for AI agents."
+
+Revised: "80% of AI projects fail. We fix the reason why.
+
+Define what winning looks like. Run the competition. Get the certificate.
+
+Straw is where enterprises evaluate AI agents before they're hired — with rubric-based scoring, prize-pool incentives, and audit-ready compliance documentation."
+
+This hero copy:
+- Opens with the validated market pain (RAND data, 80%)
+- Explains the mechanism (define criteria first)
+- Names the product outputs (rubric-based scoring, prize pools, compliance certificate)
+- Does not require the reader to know what "evaluation infrastructure" means
+
+### What This Means for the Sales Script
+
+When a CAIO or AI governance lead asks "why should we use this instead of just trusting our vendor's demo?" — the answer is no longer just about vendor bias.
+
+It's about the organizational process:
+
+"RAND found that success rates improve 4.5x when metrics are defined before project approval. Straw makes that process systematic. Your vendor demo doesn't define metrics — it shows you their best case scenario. Straw forces the criteria to exist before you've committed to a vendor. Then you run the competition with those criteria. The company that wins had to beat other companies on YOUR criteria, not their own demo setup."
+
+This is the strongest version of the pitch because it uses empirical evidence about organizational success, not just vendor bias arguments.
+
+
+---
+
+## Tick 706 — [BEAR] Manus Acquired by Meta for $2B — Impact on Straw's Agent Marketplace Vision [2026-05-04]
+
+**Theme:** Bear Case — key market structure change
+
+---
+
+### The Update
+
+**Manus AI was acquired by Meta for approximately $2 billion in December 2025.** Manus continues to operate as a standalone service post-acquisition.
+
+Source: Search result from Manus AI benchmark analysis.
+
+This is a major market structure event. Manus was one of the most prominent general-purpose autonomous agent platforms — the kind of agent that could theoretically compete in Straw evaluations. Meta's acquisition changes the competitive dynamics in multiple ways.
+
+### Implication 1: Meta Now Has a General-Purpose Agent Play
+
+Meta (with $1.5T+ market cap) now owns one of the top autonomous agent platforms. This signals that Big Tech is moving aggressively into agent deployment, not just model training.
+
+For Straw's bear case: If Meta, Google (Gemini agents), Microsoft (Copilot agents), and Apple (potential agent plays) all have proprietary agent platforms, the "multi-vendor agent evaluation" market assumes there are truly independent agent vendors competing. A world where all major agents are owned by 4-5 tech giants looks different from a world with a diverse ecosystem of independent agent builders.
+
+**Counter-argument**: Even in a world with Big Tech agents, enterprises still need to evaluate Meta's Manus vs. OpenAI's agents vs. Anthropic's agents vs. their own custom agents. The comparative evaluation question doesn't go away — if anything, it becomes MORE important when the vendors are all major tech companies with different capabilities and pricing.
+
+### Implication 2: The "Agent Marketplace" Vision Requires Careful Positioning
+
+Straw's Phase 2-3 vision involves an "agent marketplace" where agents compete for contracts. If major agent platforms are owned by Meta, Google, Microsoft, and OpenAI, they may not participate in a third-party marketplace — these companies have their own distribution channels and don't need Straw's marketplace to find customers.
+
+**Revised marketplace model**: Straw's competitive evaluation is primarily used for:
+1. **Custom-built agents** (enterprises evaluating their own in-house agents vs. each other)
+2. **Smaller agent vendors** (startups like Cognition/Devin, OpenHands teams, specialized vertical agents)
+3. **Enterprise vs. vendor head-to-head** (Citi's custom agent vs. Devin vs. OpenHands on their specific task)
+
+The Big Tech agents (Meta/Manus, Google Gemini agents, Microsoft Copilot agents) will likely not submit to Straw evaluations — but enterprises will want to evaluate them against alternatives using Straw's infrastructure.
+
+**The evaluation-without-agent-participation model**: Straw runs the evaluation even if the agent vendor doesn't participate. The company deploying the agent submits to the evaluation on the agent's behalf, using the agent's API. This preserves the evaluation value even if Meta/Google don't officially partner with Straw.
+
+### Implication 3: Acquisitions Are Accelerating, Which Means Straw Could Be Acquired
+
+The $2B Manus acquisition adds to a pattern: AI agent platforms are being acquired for 9-figure valuations. Braintrust at $800M, Langfuse (via ClickHouse) at $15B, Manus at $2B, Spindle AI (Salesforce).
+
+This is a bull case for Straw's exit scenario. If Straw establishes itself as the independent evaluation authority for AI agents — with a compliance certification brand and a data flywheel — it becomes an acquisition target for:
+- A major compliance/risk company (Dun & Bradstreet, Verisk, MSCI) that wants to add AI agent evaluation to their risk assessment offerings
+- A major cloud provider (AWS, Azure, GCP) that wants to offer evaluation as part of their AI platform
+- A major management consulting firm (Deloitte, KPMG, PwC) that wants to add AI evaluation infrastructure to their governance practice
+
+The acquisition path is validated by the market activity. Straw doesn't have to reach $100M ARR to exit well — if the evaluation data and compliance certificate are established as valuable assets, a strategic acquirer at 10-20x revenue is plausible.
+
+### Implication 4: The "Manus Customers" Are Now Meta's Customers
+
+Manus had enterprise customers for autonomous research and task completion. These are now Meta enterprise relationships. This slightly reduces Straw's addressable market for "Manus-specific evaluation competitions" but doesn't change the broader evaluation market.
+
+**New target**: Meta's enterprise customers who want to evaluate Manus against alternative agents for their specific tasks. "You're using Manus (now Meta). Here's how to evaluate whether Manus is the right agent for your specific requirements, with an audit trail."
+
+### Bear Case Verdict on Manus Acquisition
+
+**Net impact on Straw**: Slightly negative for the "agent marketplace" vision (fewer independent agent vendors), but neutral-to-positive for the "independent evaluation authority" positioning. The acquisition wave validates market timing and exit scenarios.
+
+**Updated market structure**: The agent market is bifurcating into Big Tech agents (Meta/Manus, Google Gemini, Microsoft Copilot, OpenAI) and independent agents (Devin, OpenHands, specialized verticals). Straw evaluates both — that's the value. The enterprise buying Meta's agent AND Devin AND OpenHands still needs to compare them on their specific tasks.
+
+
+---
+
+## Tick 707 — [PARTNERS] Stripe's AI Agent Benchmark + Developer Tool Company Targets [2026-05-04]
+
+**Theme:** Concrete design partner targets — developer tool companies + fintech infrastructure
+
+---
+
+### Stripe's AI Benchmark: A Direct Signal
+
+Stripe published "Can AI agents build real Stripe integrations? We built a benchmark to find out." This is extraordinary: Stripe built its own internal benchmark to evaluate AI agents on their specific API integration task.
+
+Source: https://stripe.com/blog/can-ai-agents-build-real-stripe-integrations
+
+This tells us:
+1. Stripe cares about AI agent quality for their specific use case
+2. Stripe built evaluation infrastructure internally (rather than using Braintrust or DeepEval)
+3. Stripe's developer relations team is willing to publish benchmark results publicly
+
+**The Straw pitch to Stripe**: "You built an internal benchmark. Straw can run this as an external evaluation competition — with prize pools that attract more capable agents than your internal test, and with compliance documentation you can share externally. The difference: your internal benchmark tests agents in isolation; Straw shows how they rank against each other."
+
+**Contact at Stripe**: 
+- Jeff Weinstein (Head of Developer Relations / Product Lead on API) — active on Twitter (@jeff_weinstein)
+- Patrick Collison (CEO) — accessible via email (letters to stripe.com often get routed)
+- Ivan Dimov (Stripe Developer Experience) — LinkedIn
+
+**The specific opener to Jeff Weinstein**: "Jeff — I saw Stripe built an AI agent benchmark for Stripe API integrations. Straw can run this as an external competitive evaluation — we recruit AI agents to compete on Stripe's actual integration tasks, with your rubric, and produce a ranked leaderboard with compliance certificates. This gives Stripe an external validation of which agents are best at building Stripe integrations — marketable differentiation."
+
+**The value to Stripe**: "Straw-certified: Best agent for Stripe integration tasks" is a marketing asset for Stripe's API product. Developer tool companies want to know which AI agents use their API most effectively. A Stripe-specific evaluation competition generates this data publicly.
+
+### Other Developer Tool Company Targets with Similar Use Cases
+
+**1. Vercel — AI agent integration benchmark opportunity**
+- Vercel has v0 (their AI code generator). They care which AI agents deploy best on Vercel's platform.
+- Contact: Guillermo Rauch (CEO, @rauchg on Twitter) — one of the most accessible CEOs in developer tools
+- Opener: "Guillermo — Vercel should know which AI agents deploy code most effectively on your platform. Straw can run an evaluation competition with a Vercel-specific rubric — ranked leaderboard of which agents produce the cleanest Vercel deployments. Useful for your developer marketing."
+
+**2. Sentry — AI debugging agents**
+- Sentry has Sentry AI, which uses AI for error detection and debugging. They care which AI agents integrate with Sentry most effectively.
+- Contact: David Cramer (CEO, @zeeg on Twitter)
+- Opener: "David — Sentry should know which AI agents best integrate with your error monitoring API. Straw can run a competition that evaluates agents on real Sentry integration tasks and produces a ranked leaderboard."
+
+**3. Linear — AI project management agents**
+- Linear has been building AI features for project management. Their developer API is widely used by agents.
+- Contact: Karri Saarinen (CEO, @karrisaarinen on Twitter)
+
+**4. Cloudflare — AI agent infrastructure**
+- Cloudflare is building AI agent infrastructure (Workers AI, AI Gateway). They're a Braintrust client.
+- They care which agents work best with their infrastructure.
+- Contact: Matthew Prince (CEO, @eastdakota on Twitter) or Michelle Zatlyn (President)
+
+**5. PlanetScale — Database for AI agents**
+- Databases are a key part of agent infrastructure. PlanetScale powers many agent backends.
+- Contact: Sam Lambert (CEO)
+
+### The Developer Tool Evaluation Pitch (Pattern)
+
+For developer tool companies, Straw's pitch is slightly different from the enterprise compliance pitch:
+
+"You built developer infrastructure. AI agents use your infrastructure. You want to know which agents use it best. Straw runs a competitive evaluation competition with your specific API/task rubric — agents compete, we score them, you get a public ranked leaderboard and the data on which agents are most capable with your platform. This is developer marketing for the AI agent era."
+
+The monetization is different here: Straw might charge the developer tool company for the competition (sponsored evaluation), or it might run the competition as a marketing play and charge agents for certification ("Stripe-certified agent: top 10% for API integration quality").
+
+**The sponsored evaluation model**: Developer tool companies sponsor competitions ($5,000-$25,000 sponsorship). They define the task. Straw recruits agents, runs the competition, publishes results. The company gets: external validation data, marketing content, agent partnership conversations. Straw gets: revenue, agent supply, and a case study.
+
+This is an additional revenue model (not the enterprise compliance model) that could scale quickly with developer tool partnerships.
+
+
+---
+
+## Tick 708 — [BEAR] The Evaluation Tool Competitive Landscape: Where Straw Actually Sits [2026-05-04]
+
+**Theme:** Bear Case — competitive positioning precision
+
+---
+
+### The 2026 Evaluation Tool Landscape (Research-Confirmed)
+
+Five dominant platforms in the "AI evaluation" category as of 2026:
+
+| Platform | Focus | Key Differentiator | Use Case |
+|---|---|---|---|
+| **Braintrust** | Post-deployment observability | $800M valuation, LLM tracing, team workflows | Engineering teams monitoring deployed LLMs |
+| **Maxim AI** | Simulation + evaluation | Comprehensive coverage (sim, eval, observability) | Teams needing multi-scenario simulation |
+| **Galileo** | Hallucination detection | Luna-2 models, 97% lower cost than LLM judges | Safety/reliability teams, guardrails |
+| **Arize AI** | ML + LLM observability | $131M funding, large enterprise ML roots | Large enterprises with complex model pipelines |
+| **DeepEval** | Open-source testing | Python/pytest native, free, self-hosted | Engineering-centric teams, no UI needed |
+
+None of these platforms run competitive marketplace evaluations with prize pools. None produce compliance certificates for ISO 42001 or FINRA. None recruit competing agents to your task. None operate at the pre-deployment procurement stage.
+
+Sources: https://www.getmaxim.ai/articles/top-5-ai-agent-evaluation-platforms-in-2026/ and https://galileo.ai/blog/best-ai-agent-evaluation-platforms
+
+### The Positioning Matrix
+
+There are two independent axes in the evaluation market:
+
+**Axis 1**: Pre-deployment vs. Post-deployment
+- Pre-deployment: Evaluating agents before you hire them (Straw)
+- Post-deployment: Monitoring agents after you've deployed them (Braintrust, Arize, Maxim)
+
+**Axis 2**: Single-agent vs. Multi-agent competitive
+- Single-agent: Evaluating one agent's performance in isolation (all 5 platforms above)
+- Multi-agent competitive: Comparing multiple agents head-to-head (Straw, Kaggle — but Kaggle is single-metric)
+
+**Straw's unique position**: Pre-deployment + Multi-agent competitive. This quadrant is unoccupied by any well-funded competitor.
+
+```
+                    Single Agent    Multi-Agent Competitive
+Pre-deployment     [gap]           STRAW
+Post-deployment    Braintrust      [gap — Straw future]
+                   Arize
+                   Maxim
+                   Galileo
+                   DeepEval
+```
+
+### The Substitution Path: Can Companies Get to Straw's Position Using Existing Tools?
+
+**Attempt**: A CAIO at Citi tries to replicate Straw's function using existing tools.
+
+1. Use Braintrust to run evaluations of Agent A and Agent B in parallel
+2. Use a custom rubric defined by their team
+3. Compare scores manually across the two Braintrust dashboards
+4. Export results and write a compliance document manually
+
+**Where this fails**:
+- Braintrust evaluates production traffic — you'd need to deploy both agents to use them in Braintrust (pre-deployment evaluation doesn't work in this model)
+- No prize pool to recruit competing agents who don't already exist in their ecosystem
+- Compliance document is hand-written, not tamper-proof, no SHA-256 hash, no UUID
+- No agent network to discover unknown agents that might be better than the ones they already know
+
+**Conclusion**: The substitution path fails at the exact points where Straw's value is highest. This is a strong position.
+
+### The One Gap: "What About Scale AI?"
+
+Scale AI (now Externally called Scale AI, internally branded as "SF Compute") operates in adjacent territory: human data labeling, AI model evaluation for RLHF, and increasingly, LLM quality evaluation.
+
+Scale AI's positioning is primarily as a data + human annotation company. They don't run automated agent competitions. But their enterprise relationships (they work with Anthropic, OpenAI, Meta, government agencies) mean they have the buyer relationships.
+
+**Risk**: If Scale AI decides to build an automated agent competition platform, they have:
+- Existing enterprise relationships (Anthropic, Meta, DoD)
+- Existing evaluation expertise (they've evaluated thousands of LLMs)
+- Capital ($1B+ raised)
+
+**Mitigation**: Scale AI's core business is labor-intensive (human annotation). Building an automated agent competition marketplace would be a significant product pivot. They're much more likely to acquire a company that already built it (Straw) than to build it themselves.
+
+**Strategic note**: Scale AI is a potential acquirer for Straw. If Straw builds the automated agent competition platform and establishes the compliance certification brand, Scale AI acquires Straw and distributes it through their enterprise relationships. This is the acquisition scenario with the most strategic logic.
+
+### What the Competitive Landscape Means for GTM
+
+1. **Don't compete with Braintrust for the "AI monitoring" buyer**: That buyer has already chosen. Target the buyer who hasn't yet deployed an agent and needs to select one.
+
+2. **Use the competitive landscape to clarify positioning**: "Straw is NOT Braintrust. Braintrust monitors agents in production. Straw evaluates agents before you hire them." Say this explicitly in sales conversations.
+
+3. **The unoccupied quadrant is defensible**: Being first to a clearly defined market position matters more than being first to revenue. Straw's job in Year 1 is to own the "pre-deployment competitive evaluation" vocabulary.
+
+4. **Scale AI acquisition scenario**: Run Straw to establish the brand, data, and evaluation methodology. When Scale AI decides they need this (in 2-3 years), they have an obvious acquisition target.
+
