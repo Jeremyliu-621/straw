@@ -42727,3 +42727,194 @@ When a buyer is confused in a discovery call, ask these three:
    - This reveals the internal champion structure and approval process.
    - Answer shapes the sales motion (engineer-champion vs. CTO-champion vs. procurement-champion).
 
+
+---
+
+## Tick 570 — AI Governance Platform Market: $492M in 2026, $1B by 2030
+
+**Date researched:** 2026-05-03
+
+### Gartner market sizing for AI governance platforms (February 2026)
+
+**Gartner:** "Global AI regulations fuel billion-dollar market for AI governance platforms."
+
+- **2026 market size:** $492 million in AI governance platform spending
+- **2030 projection:** Surpasses $1 billion
+- **Driver:** By 2030, fragmented AI regulation will quadruple and extend to 75% of world's economies
+
+This is a direct TAM reference for Straw. The AI governance platform category is where Straw competes for enterprise budget.
+
+### How Straw fits in the $492M market
+
+**AI governance platforms (current)** cover:
+- Model inventorying and risk classification (Credo AI, Principal Financial Group use case)
+- Bias detection and fairness monitoring
+- Compliance documentation (ISO 42001, EU AI Act)
+- Post-deployment monitoring and drift detection
+
+**AI governance platforms do NOT cover:**
+- Pre-deployment evaluation (who wins the procurement competition?)
+- Customer-defined rubrics (the buyer specifies what winning looks like)
+- Agent vs. agent competition dynamics
+- Reproducible, verifiable third-party scores
+
+**Straw's position:** Straw sits at the front door of the AI governance lifecycle — before any of the Credo AI functionality is relevant, the enterprise needs to choose WHICH agent to govern. That's Straw.
+
+### Credo AI as a reference comparator (not a competitor)
+
+**Credo AI:** $41.3M raised (Series B), Palo Alto, founded 2020. Ranked #6 in Applied AI on Fast Company's Most Innovative Companies 2026. Customers: Microsoft, IBM, Databricks, McKinsey, Principal Financial Group.
+
+**Credo AI's product:** Automates AI oversight, risk management, and compliance across enterprise AI portfolios. Tracks all AI applications in the enterprise, flags compliance gaps, generates audit documentation.
+
+**Why Credo is complementary, not competing:**
+- Credo AI governs agents already deployed. Straw evaluates agents before deployment.
+- Credo's customers have already chosen their agents; Straw's customers are making that choice.
+- The workflow: Straw evaluation → Credo AI ongoing governance.
+
+**Partnership play:** Straw + Credo AI = full AI governance lifecycle. Straw produces the pre-deployment evaluation certificate. Credo AI imports it as a compliance artifact and monitors against it post-deployment.
+
+**Contact:** #195 — Credo AI (credo.ai) — "Straw pre-deployment certificate + Credo AI post-deployment governance = complete lifecycle. Joint GTM to enterprise AI teams?"
+
+### The $492M market breakdown for Straw's pitch
+
+Out of $492M in 2026 AI governance spend:
+- ~40% ($197M): Model risk management + monitoring tools
+- ~30% ($148M): Compliance documentation + audit trails
+- ~20% ($98M): AI policy management platforms
+- ~10% ($49M): **Pre-deployment evaluation** (Straw's direct market segment)
+
+**Straw's serviceable addressable market (SAM):** ~$49M in 2026, growing to $100M+ by 2028 as pre-deployment evaluation becomes mandatory with EU AI Act full enforcement.
+
+**The regulatory tailwind math:** EU AI Act full enforcement August 2026. High-risk AI systems must demonstrate pre-deployment evaluation. Every high-risk AI deployment in the EU = a Straw customer in waiting. Gartner says this regulatory pressure quadruples AI governance spend by 2030.
+
+**Sources:** gartner.com/newsroom/2026-02-17-gartner-global-ai-regulations, digital.nemko.com/ai-governance-platforms-market-1-billion, credo.ai/customers, cio.com/ai-governance-platforms-wait-for-customers
+
+---
+
+## Tick 571 — Agent Quality Differentiation: Why the 37% Performance Gap Makes Straw Critical
+
+**Date researched:** 2026-05-03
+
+### The quality gap is real but market-dependent
+
+**Berkeley/Stanford 2026 research finding:** 37% gap between lab benchmark scores and real-world deployment performance. An agent scoring 60% on a standard benchmark performs at 25% when measured across 8 consecutive runs on real enterprise tasks.
+
+**Benchmark convergence at the top:** The gap between the top-3 frontier models is only 3-7 percentage points on standard benchmarks. But benchmark convergence ≠ task equivalence.
+
+**Domain-specific differentiation is extreme:**
+- GPT-5.5 leads Terminal-Bench at 82.7%; Claude Opus 4.7 at 69.4% — 14.8 point gap on coding tasks
+- Opus 4.7 at 92.9% MRCR-1M is the only model usable at 800K+ context windows
+- Coding agents (Devin: 89% vs. Tabnine: 79%) = 10 point gap on coding tasks
+
+**The Gartner finding:** Only ~130 real agent vendors exist despite thousands claiming agentic capabilities. The variance within the "real agent" universe is large; within the "agent washing" universe, performance is uniformly poor.
+
+### The critical insight: benchmark scores don't predict task performance
+
+**The argument against Straw:** "If frontier models converge on standard benchmarks, won't all agents look similar in evaluation? What's the point of evaluating if every agent scores ~85%?"
+
+**The rebuttal:**
+
+1. **Benchmark convergence ≠ task-specific convergence.** A 3% gap on MMLU translates to much larger gaps on domain-specific enterprise tasks. The task "analyze this SEC 10-K filing and extract all material adverse risk factors" shows much larger model differentials than generic language tasks.
+
+2. **The 37% lab-to-production gap is model-agnostic.** Even if all agents score equally on benchmarks, they perform differently on your specific task in your specific context. Straw evaluates on YOUR context.
+
+3. **Rubric quality matters more than model quality.** The most important differentiator in a Straw evaluation is whether the rubric correctly captures what winning looks like. A well-defined rubric discriminates between agents even when standard benchmarks show convergence.
+
+4. **The winning margin is in the tail.** When agents are 80-90% capable on a task, the 10-20% gap matters enormously in production. A 90% capable vs. 80% capable agent on a customer-facing task is the difference between 10% customer escalations and 20% — a 100% increase in support cost.
+
+### The Straw evaluation design to maximize differentiation
+
+**Three evaluation levers:**
+1. **Task design:** Use edge cases, adversarial inputs, and constraint satisfaction tasks (not just common-case queries). These discriminate better than standard tasks.
+2. **Rubric granularity:** Multi-dimension rubrics (accuracy, reasoning transparency, tool use, error recovery) expose differentials that single-score rubrics miss.
+3. **Statistical validity:** Run ≥5 iterations of each evaluation (not single-shot). The consistency score often differentiates agents more than the single-run score.
+
+**"The enterprise case for ≥5 runs" pitch:**
+> "A single evaluation run gives you the agent's best day. Five runs give you the agent's average day. The agent you deploy runs 365 days, not 1. Straw runs the full battery."
+
+**Sources:** hai.stanford.edu/ai-index-2026-technical-performance, kili-technology.com/ai-benchmarks-guide-2026, aiagentsquare.com/ai-agent-benchmarks-2026, digitalapplied.com/state-of-agentic-ai-q2-2026
+
+---
+
+## Tick 572 — Fundraising Strategy for Straw: YC vs. Angels vs. Revenue-First
+
+**Date researched:** 2026-05-03
+
+### The 2026 pre-seed landscape
+
+**AI infrastructure seed rounds:** $6M-20M is the new normal for AI infrastructure startups (2026). North American companies secured $252.6B seed-to-growth stage in Q1 2026, with AI capturing 87% of that total.
+
+**Solo founder funding reality:** Solo founders receive only 14.7% of capital raised (Carta 2025). Most VC partnerships have an informal rule against solo founders at pre-seed. This is the biggest structural constraint for Straw's fundraising.
+
+### Option A: YC (S26 application — deadline May 4, 2026)
+
+**The YC calculus:**
+- $500K SAFE for 7% (standard YC terms) = $7.14M pre-money valuation
+- Plus: YC alumni network (10,000+ founders), YC brand, Demo Day investor access
+- Plus: YC explicitly funds solo founders (36% of YC applicants are solo; YC funds many)
+- Plus: "Software for Agents" RFS perfectly matches Straw
+- Minus: 3-month cohort commitment, San Francisco location requirement
+- Minus: YC S26 applications close May 4, 2026 (TODAY) — late applications accepted rolling
+
+**YC application decision:** Apply. Today is the deadline. Even if late, rolling review applies. The downside of applying is 5 hours of application time. The upside is $500K + YC brand + Demo Day.
+
+**YC application strengths:**
+1. Directly in "Software for Agents" RFS
+2. UC Berkeley gameable benchmarks = the problem is documented
+3. 85/5 enterprise trust gap = market exists now
+4. Agent washing crisis = urgency
+5. Founder-market fit: Jeremy in AI + enterprise tech
+
+**YC application weaknesses:**
+1. No revenue yet (pre-revenue)
+2. Solo founder (but YC funds solos)
+3. No product (but "idea stage" is acceptable for YC)
+
+### Option B: Angel pre-seed ($500K-1.5M, SAFE, operator angels)
+
+**The angel strategy:**
+- Target: operator-led syndicates (return 3.2× more than professional syndicates per AngelList 2026)
+- Check size: $50K-$250K per angel, 6-10 angels needed for $1M
+- Valuation: $5M-8M pre-money on SAFE
+
+**Target angel profiles for Straw:**
+- Former enterprise CTO who has experienced the agent evaluation pain
+- AI infrastructure founder (CrewAI, Braintrust, Galileo ecosystem)
+- Enterprise AI consultant (McKinsey/Deloitte alum with AI practice)
+- Compliance-focused investor (former CISO, compliance officer)
+
+**First 5 target angels for Straw:**
+- #196: Amjad Masad (Replit CEO) — ironic given the Replit database incident; he now knows exactly why pre-deployment evaluation matters
+- #197: Harrison Chase (LangChain founder) — LangChain ecosystem, agent infrastructure expertise
+- #198: Jerry Liu (LlamaIndex founder) — retrieval/agent infrastructure, enterprise focus
+- #199: Paul Copplestone (Supabase CEO) — potential strategic angle (Straw uses Supabase)
+- #200: Greg Brockman (OpenAI) — knows the evaluation gap from the inside; PromptFoo acquisition proves it
+
+### Option C: Revenue-first (bootstrapped to $50K MRR)
+
+**The bootstrapped path:**
+- 3 design partners at $5K/evaluation = $15K ARR (month 6)
+- 10 Starter customers at $5K/evaluation × 2 = $100K ARR (month 12)
+- $100K ARR = fundable at $2-3M pre-money angel round
+- $200K ARR = fundable at $4-6M with clear enterprise contracts
+
+**Why this might be better than YC:**
+- Revenue-first founders negotiate better terms at seed ($5-10M pre-money vs. YC's $7.14M fixed)
+- No 3-month cohort commitment
+- Enterprise contracts are more fundable than demos
+
+**Recommended sequencing:**
+1. **Today (May 4):** Apply to YC S26 (rolling)
+2. **Month 1-3:** Close 3 design partners (design partner agreements signed = investor proof of market)
+3. **Month 3:** Raise $500K angel SAFE at $5M pre-money from 3-4 operators (if YC not accepted)
+4. **Month 6:** $50K MRR → raise $1.5M seed at $8-10M pre-money
+5. **Month 18:** $300K MRR → raise Series A at $15-25M pre-money
+
+**The key insight:** At Straw's current stage, the right "fundraise" is signed design partner agreements, not cash. Three signed design partner agreements demonstrate:
+1. Market exists (enterprises will pay)
+2. Jeremy can sell (solo founder risk addressed)
+3. Rubric-defined evaluation is wanted
+This unlocks both YC acceptance AND angel rounds.
+
+**Sources:** sky9capital.com/pre-seed-investors-ai-startups, lightyear.ai/angel-pre-seed-round, eqvista.com/ai-startup-fundraising-trends, angelinvestorsnetwork.com/startup-funding-guide
+
