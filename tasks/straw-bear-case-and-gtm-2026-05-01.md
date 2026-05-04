@@ -53302,3 +53302,118 @@ Straw's timing risk (introduced in Tick 673) is less severe than it might appear
 
 Straw should move as fast as possible to establish the performance evaluation certificate as the Layer 3 standard before another company does.
 
+
+---
+
+## Tick 679 — Academic Validation + Sales Cycle Math: Getting to $100K ARR [2026-05-04]
+
+**Theme:** GTM ($100K ARR path) / Product (evaluation methodology validation)
+
+---
+
+### Academic Validation of Straw's Methodology
+
+The research community in 2026 is converging on exactly the evaluation architecture Straw is building. Two relevant frameworks:
+
+**AEMA (Verifiable Evaluation Framework):**
+"A process-aware and auditable multi-agent evaluation framework that plans, executes, and aggregates multi-step evaluations across heterogeneous agentic workflows under human oversight."
+
+Translation: the academic framing for Straw's T1 (automated, plan+execute) → T2 (LLM judge, aggregate) → T3 (human oversight probing) pipeline. The research community validated this architecture independently. Straw's design is academically defensible.
+
+**CLEAR Framework (Cost, Latency, Efficacy, Assurance, Reliability):**
+Tested 6 leading agents on 300 enterprise tasks. Key finding: "Optimizing for accuracy alone yields agents 4.4-10.8x more expensive than cost-aware alternatives with comparable performance."
+
+Implication for Straw: Straw's rubric should include cost-efficiency as a scored evaluation dimension by default. An agent that scores 95% on task quality but costs 5x more than an alternative that scores 92% is not necessarily the better choice. The rubric needs to capture the cost/quality tradeoff.
+
+**Action item:** Add a "cost efficiency" rubric dimension to Straw's default template library:
+- Task completion cost per run (T1 automated measurement)
+- Cost/quality ratio vs. baseline (calculated metric)
+- API call count and token usage (measured automatically)
+
+This strengthens the T1 evaluation with quantitative cost data that enterprises care about and no rubric design session is required to specify.
+
+---
+
+### The Sales Cycle Math: $100K ARR by Q3 2026
+
+**Key B2B enterprise metrics (2026):**
+- SQL-to-close rate: 20-25% (1 in 4 qualified prospects becomes a customer)
+- Enterprise sales cycle: ~120 days (deal identified → contract signed)
+- Demo-to-close: 22-30%
+
+**Working backward from $100K ARR target:**
+
+$100K ARR at $10K/evaluation (revised pricing from Tick 675, Phase 2):
+→ 10 evaluations/year
+→ Approximately 7-8 customers (some customers do 1 evaluation, some do 2+)
+
+To get 7-8 customers with a 22-30% demo-to-close rate:
+→ Need 24-35 demos
+→ Need ~40-50 qualified prospects in the pipeline
+
+To get 40-50 qualified prospects in 120 days (starting today):
+→ Need to start 40-50 qualified conversations by end of July 2026
+
+**The funnel math:**
+- Outreach: 200 cold emails + 50 LinkedIn messages + 10 conference conversations = 260 touches
+- Response rate (well-targeted, personalized): 10-15%
+- Responses: 26-39 interested prospects
+- Qualify to demo: 70% of responses = 18-27 demos
+- Demo-to-close: 25% = 4-7 paying customers
+
+At $10K/evaluation average and 2 evaluations per customer per year: $80K-$140K ARR. Call it $100K.
+
+**The constraint:** This math requires starting TODAY. Every week of delay pushes $100K ARR further into 2027.
+
+---
+
+### The $100K ARR Sprint Plan
+
+**Week 1-2 (May 4-15): Pipeline seeding**
+- Send 20 personalized cold emails to fintech contacts (FINRA compliance angle)
+- Connect with 20 LinkedIn targets from Tick 634 contact list
+- Apply to YC S26 today (deadline 8pm PT today — May 4)
+- Post first Twitter thread (benchmark gaming + why private rubrics matter)
+
+**Week 3-4 (May 15-29): Demo conversion**
+- Run first 5 discovery calls with prospects who responded
+- Run 3 design partner rubric design sessions
+- Complete first 2 evaluations with design partners
+- Post FINRA white paper on LinkedIn (6-page, compliance-focused)
+
+**Month 2 (June): Product proof + expansion**
+- Complete 5 evaluations total (design partner pricing: $6,500 each = $32,500)
+- Raise to standard pricing ($10K+) for new customers
+- First Show HN post (with real certificate from first completed evaluation)
+- Conference outreach: apply as speaker at AI Conference (Sept 30-Oct 1)
+
+**Month 3 (July): Revenue acceleration**
+- 10 evaluations completed
+- 3-4 design partners converted to standard pricing
+- Revenue: $50K-$70K (cumulative)
+- Second roundtable (dev tool focus)
+- ISO 42001 white paper published
+
+**Month 4-6 (Aug-Oct): Compounding**
+- Evaluation pipeline running
+- Repeat evaluations from early customers (annual assessments, new agents)
+- $100K ARR milestone: October 2026 (6 months from today)
+
+---
+
+### The Critical Path
+
+**What has to be true for $100K ARR by October:**
+1. MVP evaluation pipeline is live by June 1 (certificate generation works, T1/T2 operational)
+2. First 5 design partner evaluations are completed by June 30
+3. Pricing moved to $10K+ by July 1
+4. At least 3 design partners converted to ongoing evaluation programs by August
+5. Content flywheel (Twitter + LinkedIn + white papers) drives at least 10 inbound inquiries
+
+**Where it breaks:**
+- If the MVP isn't live by June 1: design partner timeline slips 6 weeks, everything else slips
+- If design partners don't convert to paying: pricing/value proposition needs to be revisited
+- If outreach response rate is below 5%: the targeting list is wrong or the cold email is wrong
+
+**The most important thing to do today:** Start conversations. The sales cycle is 120 days. Every conversation started today is revenue in September. Every conversation delayed is revenue delayed by the same amount.
+
