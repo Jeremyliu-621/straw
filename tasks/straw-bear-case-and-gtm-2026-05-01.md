@@ -44399,3 +44399,139 @@ Jeremy
 
 **Sources:** sendr.ai/b2b-cold-email-templates, sequenzy.com/cold-email-templates-b2b-saas, smartlead.ai/blog/cold-email-templates, upliftgtm.com/cold-email-templates-b2b
 
+
+---
+
+## Tick 594 — "AI Evaluating AI" Objection: LLM-as-Judge Bias and Straw's Mitigation
+
+**Date researched:** 2026-05-03
+
+### The enterprise objection
+
+**"If you're using Claude to evaluate agent submissions, isn't Claude just evaluating its own family of models favorably? How can we trust an LLM-as-judge evaluation?"**
+
+This is a sophisticated, valid concern. 93% of teams report struggling with LLM-as-judge implementation despite widespread adoption. The academic research identifies 12 distinct bias types.
+
+### The documented bias types in LLM-as-judge
+
+**Critical research findings:**
+- **Position bias:** LLM judges favor responses listed first in their context (regardless of quality). When researchers swapped answer positions, GPT-4's judgment flipped to favor the alternative.
+- **Self-preference bias:** LLM evaluators recognize and favor outputs from their own model family. "A proven linear correlation between self-recognition capability and self-preference bias strength" (NeurIPS 2024).
+- **Verbosity bias:** LLM judges favor longer, more detailed responses even when conciseness is correct.
+- **Format bias:** Responses that use markdown formatting, bullet points, or numbered lists are systematically favored.
+
+**The CALM framework (2026):** A systematic bias categorization for LLM-as-judge, published April 2026 (arXiv:2604.23178), identifies 12 bias types and proposes mitigation strategies.
+
+### How Straw's evaluation architecture mitigates LLM-as-judge bias
+
+**Mitigation 1: Tiered evaluation (T1 → T2 → T3)**
+
+T1 is 100% deterministic — no LLM judgment involved. For rubric criteria that can be evaluated deterministically (regex matches, format checks, length, presence/absence of required elements), T1 scores without any LLM. T2 and T3 are only invoked for criteria that genuinely require language understanding.
+
+**The principle:** Push as much scoring as possible to T1 (no bias) and use T2/T3 (potential bias) only where necessary.
+
+**Mitigation 2: Position randomization**
+
+Submissions are presented to the T2 judge in randomized order. No submission is consistently in position 1, 2, or 3. This neutralizes position bias.
+
+**Mitigation 3: Multiple-judge consensus**
+
+Elite evaluation architectures use multi-judge consensus (top 15% of teams, achieving 2.2× better reliability). Straw's T2 can use multiple models as judges (Claude + GPT-4o + Gemini) and require ≥2 of 3 to agree on a scoring decision. Disagreements surface to T3 for human-in-loop review.
+
+**Mitigation 4: Evidence-grounded scoring (T3)**
+
+The T3 investigator doesn't score from general impression — it generates evidence quotes (specific excerpts from the submission that support each rubric criterion) before scoring. This grounds the score in verifiable evidence, not LLM preference. The evidence is auditable: humans can verify that the quote is real and that the scoring logic is coherent.
+
+**Mitigation 5: Rubric specificity beats impression scoring**
+
+Generic rubrics ("is this good?") maximize LLM bias. Specific rubrics ("does the submission identify all 5 required elements from the SEC 10-K, with citation, in the exact section format specified?") minimize it. Straw's rubric design process is specifically built to convert vague evaluation criteria into objective, specific scoring dimensions.
+
+**Mitigation 6: Model neutrality in evaluator selection**
+
+Straw uses Claude as the primary evaluator, not Claude to evaluate Claude-based agents specifically. Agents on Straw are evaluated against the rubric, not against each other's model origin. The rubric criteria are the benchmark, not "which model writes better."
+
+### The enterprise-ready answer to the objection
+
+> "You're right that LLM-as-judge has documented biases. Here's how we address them: First, we use deterministic scoring (T1) for anything that can be objectively checked. Second, we randomize submission order to eliminate position bias. Third, our T3 investigator grounds every score in quoted evidence from the submission — you can verify the reasoning. Fourth, we support multi-model judging (Claude + GPT-4o + Gemini) with consensus required for contested criteria. The score isn't a vibe — it's evidence-grounded, multi-verified, and reproducible."
+
+### The reproducibility guarantee
+
+**Straw's commitment:** Any evaluation can be re-run at any time and will produce a score within ±3% of the original (assuming same rubric version and same submission version). This reproducibility guarantee is what allows the certificate to be an audit artifact — not just a snapshot.
+
+**Sources:** galileo.ai/llm-as-judge-vs-human-evaluation, techcommunity.microsoft.com/evaluating-ai-agents-llm-as-judge, openreview.net/forum/llm-as-judge-bias, arxiv.org/abs/2604.23178, labelyourdata.com/llm-as-a-judge
+
+---
+
+## Tick 595 — Enterprise Data Security: How Straw Handles Confidential Task Data
+
+**Date researched:** 2026-05-03
+
+### The enterprise data security objection
+
+**"Our evaluation tasks contain confidential business information. If we post a rubric on Straw, we're exposing our process IP. If agent submissions include our proprietary data, we're leaking it to a third-party platform."**
+
+This is the #1 enterprise objection to any cloud-based evaluation tool. It is valid and solvable.
+
+### What enterprises are actually afraid of
+
+1. **Task content exposure:** The evaluation task describes their real business process (e.g., "analyze this quarterly earnings call for material adverse disclosures"). This reveals competitive intelligence.
+2. **Submission data:** Agent operators' submissions may include analysis of the company's confidential documents.
+3. **Rubric exposure:** The rubric reveals how the company measures performance — competitive intelligence.
+4. **Data residency:** EU GDPR, Singapore PDPA, Japan APPI all require data to reside in specific geographies.
+
+### Straw's data security architecture (v0 and v1)
+
+**Data classification model:**
+
+| Data type | Who can see it | How long retained |
+|---|---|---|
+| Poster task brief (public summary) | Public (anonymized) | Indefinitely (for benchmark index) |
+| Poster rubric criteria | Straw only + winner | 24 months |
+| Poster task documents (if any) | Straw only (evaluation pipeline) | Deleted after evaluation |
+| Agent submissions | Straw + poster | 24 months (for re-evaluation) |
+| T3 evaluation transcript | Straw + poster | 24 months |
+| Certificate (with UUID) | Public (anonymized scores only) | Indefinitely |
+
+**The anonymization promise:** Posters can designate their evaluation as "Private" — in which case:
+- No public benchmark entry
+- Task brief not shared with other parties
+- Rubric criteria redacted from all public-facing outputs
+- Only the UUID + score + date appear on the public certificate verification page
+
+**Data residency (v0):** Straw uses Supabase hosted on eu-central-1 (Frankfurt). All EU data stays in EU. A US-only option (us-east-1) is available for US federal/financial services customers who need data residency on US soil.
+
+**Encryption at rest + in transit:** Supabase provides AES-256 encryption at rest and TLS 1.3 in transit as defaults. No additional configuration required.
+
+### Handling truly confidential tasks: Private Evaluation Mode
+
+**Private Evaluation Mode (v1 feature):**
+
+For tasks with highest sensitivity (financial models, clinical trials, defense applications), Straw offers:
+1. **End-to-end encrypted task upload:** Task documents encrypted with customer-provided key (KMS) before reaching Straw servers. Straw cannot read the document — only the evaluation pipeline (running as a secure process) decrypts it temporarily.
+2. **No submission storage:** Submissions evaluated and immediately discarded after scoring. Only the scores + evidence quotes retained.
+3. **On-premises evaluation pipeline (v1.5):** For customers who cannot allow any data to leave their environment, Straw packages the T1/T2/T3 pipeline as a Docker container that runs on the customer's infrastructure. Straw receives only scores + evidence quotes — not the task data or submissions.
+
+### The PromptVault integration opportunity
+
+**PromptVault (2026):** PII/sensitive data redaction middleware. Intercepts prompts before they reach any LLM, replaces sensitive values with anonymized tokens, then re-inserts them in responses. "Raw PII, financial data, PHI, and confidential business content never leave the enterprise environment in identifiable form."
+
+**Straw + PromptVault integration:**
+
+A poster who uses PromptVault can pipe their evaluation task through PromptVault first, ensuring all sensitive values are anonymized before reaching Straw's evaluation pipeline. Straw sees "[COMPANY_NAME] revenue declined [PERCENTAGE] in [QUARTER]" — not the actual values. The evaluation still works because the rubric is about document structure and reasoning quality, not specific values.
+
+**This eliminates the data security objection entirely for most tasks.**
+
+### The enterprise conversation
+
+> "We handle confidential evaluation data the same way an external auditor handles your financial statements — with strict access controls, retention limits, and data processing agreements. Our Data Processing Addendum (DPA) is available before you sign anything. If your legal team has specific requirements — EU data residency, KMS encryption, on-premises pipeline — we have solutions for all three. What's the specific data security requirement I can help address?"
+
+**Key deliverables for enterprise security review:**
+- [ ] Data Processing Addendum (DPA) — GDPR compliant
+- [ ] SOC 2 Type 1 report (target: Month 18)
+- [ ] Data residency options (EU / US / on-premises)
+- [ ] Retention policy documentation
+- [ ] Penetration test results (annual)
+- [ ] Encryption standards documentation
+
+**Sources:** designrush.com/enterprise-ai-security-2026, airia.com/california-ai-procurement-order-enterprise, dialzara.com/ai-tools-transparent-data-policies, siliconflow.com/most-secure-enterprise-ai-provider
+
