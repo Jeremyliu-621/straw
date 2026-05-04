@@ -50658,3 +50658,134 @@ The government is now actively working on AI agent evaluation standards. This:
 
 **GTM angle:** "Straw's evaluation methodology was designed in alignment with NIST's AI Agent Standards Initiative. When your procurement team needs NIST-compliant documentation, Straw's certificate is the artifact they need." This angle works for government contractors, defense-adjacent tech companies, and any enterprise with government contracts.
 
+
+---
+
+## Tick 654 — [GTM] Twitter Content Strategy: Building AI Safety + Technical Credibility in 280 Characters
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Content channels — Twitter/X for the technical AI community audience  
+**Sources:** Previous ticks on LinkedIn strategy (Tick 637), AI safety community channels (Tick 625), OpenHands community research (Tick 630)
+
+---
+
+### Twitter vs. LinkedIn: Who's on Each Platform
+
+**LinkedIn audience (from Tick 637):** CAIOs, VPs of AI, enterprise AI strategy leads. Business framing, professional tone, decision-makers.
+
+**Twitter/X audience for Straw:** AI safety researchers, ML engineers, open-source agent developers, technical AI founders, quantitative investors, AI journalists. Technical framing, informal tone, practitioners.
+
+These are different populations with different roles in Straw's GTM:
+- **LinkedIn** converts → design partners, paying customers, enterprise sales
+- **Twitter** amplifies → technical credibility, AI safety community relationships, journalist coverage, investor awareness
+
+---
+
+### Jeremy's Twitter Persona
+
+The persona that wins on technical Twitter in 2026:
+
+> "Founder building in the intersection of AI evaluation, enterprise procurement, and AI safety. Sharing what I learn about measuring what AI systems actually do vs. what they claim to do."
+
+This persona:
+- Is intellectually credible (not marketing)
+- Connects to the AI safety community's concern (verification of AI claims)
+- Is specific enough to be interesting (not "AI founder building stuff")
+- Creates a reason to follow (ongoing learnings from building Straw)
+
+---
+
+### Content Types That Win on Technical AI Twitter
+
+**Type 1: The Sharp Observation (performs best)**
+- Format: 1-3 tweets, no thread
+- Style: "Here's the thing nobody is saying about [topic]"
+- Examples from Straw's research:
+
+> "UC Berkeley showed all 8 major AI benchmarks are gamed. 
+> 
+> SWE-bench, WebArena, GAIA, OSWorld — all broken.
+> 
+> The problem isn't the agents. It's that the test is public. If you know the rubric in advance, you optimize for the rubric.
+> 
+> Private rubrics aren't optional. They're necessary."
+
+> "The FINRA 2026 exam priorities include: how investment firms evaluate AI tools before deployment.
+> 
+> Most firms have no documented evaluation process.
+> 
+> This isn't a product gap. It's a compliance gap."
+
+> "LMArena raised $150M at $1.7B valuation.
+> 
+> Their business: crowd-sourced human preference evaluation of AI models.
+> 
+> What they can't do: private rubrics for enterprise tasks. Their model requires showing the task to 5M users.
+> 
+> That's the gap."
+
+**Type 2: The Data Thread (good reach with right data)**
+- Format: 3-7 tweets with a clear narrative arc
+- Each tweet = one data point or insight
+- Ends with "implications" or "what this means"
+
+**Type 3: The Opinion Take (high engagement, higher risk)**
+- Format: Single strong take that people will disagree with
+- Example: "Hiring Devin without running an evaluation first is reckless. Here's why."
+- Risk: Draws critics. Reward: High engagement from people who agree + people who disagree equally
+
+**Type 4: The Behind-the-Scenes Post (authenticity, founder brand)**
+- Format: 1-2 tweets about what you're building and learning
+- Example: "Working on the non-determinism problem in AI agent evaluation today. How do you certify something that's different every time? Turns out: you treat it like a drug trial. N=7 runs, report mean ± CI."
+- These build parasocial relationship with the technical community
+
+---
+
+### Weekly Twitter Cadence
+
+**5-7 posts per week, distributed:**
+- 2 sharp observations (can be posted any day, pick the one that feels most timely)
+- 1 data thread (Tuesday-Thursday, when reach is highest)
+- 1 opinion take (Wednesday, when engagement is highest for opinion content)
+- 1-2 behind-the-scenes posts (Friday or weekend, lower pressure)
+- Reply to 10-15 posts/day from the AI safety + agent community (comments are high-leverage distribution)
+
+---
+
+### The 5 Twitter Accounts Jeremy Should Engage With Daily
+
+1. **@MariusHobbhahn** (Apollo Research) — AI safety evaluation, technically credible, engaged community
+2. **@ESYudkowsky** (Eliezer Yudkowsky) — AI alignment, high-reach, engaging builds credibility by association
+3. **@karpathy** (Andrej Karpathy, independent) — ML researcher, ex-Tesla/OpenAI, huge reach, engages with interesting technical takes
+4. **@gneubig** (Graham Neubig, OpenHands) — agent research, directly relevant to Straw's technical domain
+5. **@hausman_k** (or similar prominent AI safety researcher) — epistemic credibility in the AI safety community
+
+**The strategy:** Comment on their posts with substantive additions (not "great point!"), referencing Straw's research or the evaluation problem. When Jeremy has something to add to their conversation, add it. This is how you get noticed by high-reach accounts.
+
+---
+
+### The 10 Best Tweets Jeremy Can Write This Week
+
+Based on all Phase 2 research, these specific tweets should perform well with the technical AI community:
+
+1. "All 8 major AI agent benchmarks are broken. UC Berkeley showed this in April 2026. The fix isn't a better benchmark. It's a private rubric the agents don't see in advance." [Thread with the 8 benchmarks and the gaming mechanism]
+
+2. "The FINRA 2026 oversight report added AI agent audit trails to examination priorities. If you're a fintech deploying AI agents without documented evaluation, you're already behind."
+
+3. "LMArena: $1.7B valuation, crowd-sourced human preferences, 5M users. What they can't do: evaluate your AI agent on confidential data. That's the gap."
+
+4. "Goodhart's Law is coming for every AI evaluation platform. When evaluation scores become targets, they stop being good measures. The mitigation: adversarial T3 probing + rubric rotation."
+
+5. "NIST just launched an AI Agent Standards Initiative (Feb 2026). They're creating the framework. Someone needs to be the accredited testing lab. [Announcing Straw]"
+
+6. "The enterprise AI adoption data is actually shocking: 57% of organizations have agents in production. 32% cite quality as the top deployment barrier. Nobody has systematic evaluation infrastructure."
+
+7. "The non-determinism objection to AI evaluation: 'your score changes every time.' True. But drug trials don't report one patient's outcome either. N=7 runs, report mean ± CI."
+
+8. "Why we called it single-player mode: the Straw marketplace doesn't need external supply to be useful on day 1. Bring your own 3 agents. Evaluate them against your rubric. Get a certificate." [Explanation of the cold-start solution]
+
+9. "The evaluation gaming doom loop: evaluation → agents optimize for evaluation → evaluation loses validity → new evaluation → repeat. The only exit: private rubrics. Agents can't optimize for what they can't see."
+
+10. "Built for the compliance officer, not just the CTO. The CTO asks 'which agent is better?' The compliance officer asks 'what documentation do we have that this decision was made correctly?' Straw answers both."
+
