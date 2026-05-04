@@ -59066,3 +59066,254 @@ Identify any shared connection with Capital One AI/Risk leadership via LinkedIn 
 - Multi-agent competitive evaluation (when Capital One is evaluating new AI vendors): $25,000-$50,000
 - Total potential annual value from Capital One: $50,000-$100,000/year
 
+
+---
+
+## Tick 749 — 2026-05-04 UTC — Anthropic Enterprise Ecosystem: Accenture/Infosys/PwC as Channel Partners [PARTNERS/GTM]
+
+**Research question:** Anthropic's enterprise partnerships (Accenture, Infosys, PwC) are deploying Claude agents to enterprises. Can these SIs become Straw channel partners?
+
+**Sources:** Anthropic newsroom (Accenture multi-year partnership); CRN Asia (Infosys-Anthropic 2026); PwC-Anthropic press release; VentureBeat (Claude Cowork announcement); PYMNTS (Anthropic gaining on OpenAI 2026).
+
+---
+
+### Anthropic Enterprise Metrics (2026)
+
+- $14B run-rate revenue (growing 10x/year for 3 consecutive years)
+- 300,000+ business customers by October 2025
+- 80% of revenue from enterprise
+- Series G: $30B raise at $380B post-money valuation
+- HIPAA-compliant Claude for Enterprise now available
+- HIPAA availability: direct route into healthcare enterprise market
+
+**Key Anthropic partnerships in 2026:**
+- **Accenture:** 30,000+ professionals trained on Claude. Multi-year partnership to drive enterprise AI across industries. Accenture is the deployment layer for Anthropic in Fortune 500 accounts.
+- **Infosys:** Partners to integrate Claude into enterprise AI deployments.
+- **PwC:** AI-native finance and life sciences enterprise agents.
+- **Deloitte:** Rolling out to 470,000+ employees (largest Claude enterprise deployment publicly known).
+
+---
+
+### The Channel Partner Opportunity
+
+The pattern: Accenture, Infosys, and PwC are deploying Claude agents to their enterprise clients. The enterprise clients then need to demonstrate that these Claude agents were independently evaluated before deployment (FINRA 2026, ISO 42001, EU AI Act, Colorado AI Act).
+
+The SI firms (Accenture, Infosys, PwC) are the ones fielding the "how do we prove our AI agents are compliant?" questions from their enterprise clients. They don't have an answer today for "pre-deployment independent evaluation certificate."
+
+**The Straw channel partner play:**
+- Accenture/Infosys/PwC recommends Straw to every enterprise Claude deployment they implement
+- Straw evaluates the Claude agent in the enterprise's specific use case
+- Straw produces the compliance certificate the enterprise needs
+- The SI firm looks like a sophisticated partner that handles regulatory compliance proactively
+
+**Channel economics:**
+- Straw pays 10-15% referral fee to the SI on evaluations they refer
+- SI firm marks up Straw evaluation as part of their AI implementation package
+- Enterprise pays SI, SI pays Straw, Straw pays SI referral fee
+- At 20 enterprise deployments/year per SI: 20 × $12,500 × 3 SIs = $750K ARR from SI channel alone
+
+---
+
+### Specific Contacts
+
+**Accenture:**
+- Contact: Julie Sweet (CEO, LinkedIn/public), Jim Wilson (Managing Director AI), or the lead of Accenture's Anthropic practice
+- LinkedIn search: "Accenture" + "Anthropic" + "practice lead" or "AI governance"
+- Opener: "Accenture's 30,000 professionals deploying Claude agents will face increasing client requests for independent pre-deployment evaluation under FINRA 2026, EU AI Act, and ISO 42001. Straw produces the compliance certificate. A referral arrangement where Straw is recommended in every Accenture-Claude engagement could create value for both sides. Worth 30 minutes?"
+
+**Infosys:**
+- Contact: Mohit Joshi (President, LinkedIn), Head of AI Practice
+- Infosys has a formal "Responsible AI" practice — Straw fits directly
+- Opener: "Infosys's enterprise Claude deployments will increasingly require independent evaluation documentation. Straw is the evaluation layer that produces the FINRA/EU AI Act/ISO 42001 artifact. A referral relationship would complement Infosys's Responsible AI practice."
+
+**PwC:**
+- Known for life sciences and finance AI agent work (from press release)
+- Contact: Matt Wood (US AI Leader), or the PwC Anthropic practice lead
+- Opener: "PwC's AI-native finance and life sciences deployments are in FINRA 2026 and EU AI Act high-risk scope. Straw produces the pre-deployment evaluation artifact. A co-branded 'PwC AI evaluation methodology powered by Straw' would add compliance credibility to every engagement."
+
+---
+
+### Why This Is High-Priority
+
+The SI channel gives Straw access to enterprise accounts it could never cold-reach. An Accenture recommendation carries the Accenture brand's credibility. The SI has an existing relationship with the GC/CCO and CAIO — the Straw pitch comes pre-warmed.
+
+**Target:** One SI channel partner signed by Month 6. Even one Infosys or Accenture referral arrangement covering 10 engagements/year = $125K ARR from one partner.
+
+---
+
+## Tick 750 — 2026-05-04 UTC — AI Red Teaming: Adjacent Competitor or Complementary Service? [BEAR]
+
+**Research question:** The AI red teaming market hit $2.26B in 2026, with minimum engagements starting at $16K. Does AI red teaming compete for Straw's budget?
+
+**Sources:** PenLigent AI (2026 ultimate guide to AI penetration testing); AI Agent Security (pricing 2026); The Register (red teaming cornerstone Jan 2026); Our Code World (top 9 red teaming tools).
+
+---
+
+### What AI Red Teaming Is
+
+AI red teaming uses adversarial testing to find vulnerabilities in AI systems: prompt injection, model extraction, jailbreaks, unauthorized data access, agent misuse, chained attacks. It tests whether the AI system can be exploited by a sophisticated attacker.
+
+**Market size:** $2.26B in 2026.
+**Minimum engagement price:** ~$16K for a focused red team on a single model.
+**Leading vendors:** HackerOne (AI Red Teaming), Zscaler (Continuous Automated Red Teaming), Penligent AI, Novee AI.
+
+**Regulatory alignment:** Red team results can be mapped to NIST AI RMF, EU AI Act, SOC 2, ISO 42001, HITRUST, GDPR.
+
+---
+
+### Is Red Teaming Straw's Competitor?
+
+**Partially, yes. But they're different products for different buyers.**
+
+**What red teaming does:**
+- Security/penetration testing perspective (can the agent be exploited by an adversary?)
+- Tests for vulnerabilities, jailbreaks, prompt injection
+- Results: security audit report + vulnerability list
+
+**What Straw does:**
+- Business performance/compliance perspective (does the agent perform correctly on the intended task?)
+- Tests for business criteria fit, regulatory compliance, failure modes on legitimate use cases
+- Results: compliance certificate + evaluation report
+
+**The buyer split:**
+- Red teaming buyer: CISO, Security team, AI security team
+- Straw buyer: CAIO, GC/CCO, AI procurement team
+
+**Where they overlap:** Both can produce ISO 42001 / EU AI Act evidence. Both are "pre-deployment testing." A sophisticated enterprise will buy both: red teaming for security assurance + Straw for compliance and business performance assurance.
+
+---
+
+### Bear Case: Red Teaming Budgets Compete with Straw
+
+If an enterprise has a $50K "AI pre-deployment testing" budget and spends $16K-$25K on red teaming, the remaining $25K-$34K is available for Straw. But if red teaming is framed as "AI safety testing" and Straw is framed as "evaluation platform," they might compete for the same line item.
+
+**The risk:** Red teaming firms (HackerOne, Penligent) are expanding their scope beyond security testing to include "business impact" testing. If HackerOne launches a "compliance evaluation" product, they compete directly with Straw in the CAIO/GC budget.
+
+---
+
+### Straw's Defense and Positioning
+
+**Position against red teaming:** "Red teaming finds security vulnerabilities. Straw validates business performance and regulatory compliance. You need both. Red teaming tells you if the agent can be hacked. Straw tells you if the agent actually works for your business use case and satisfies FINRA/ISO 42001/EU AI Act."
+
+**The combined pitch:** "We recommend commissioning both red teaming (for security) and Straw evaluation (for compliance and business fit) before deployment. The combined cost ($16K + $12.5K = $28.5K) is the complete pre-deployment assurance package."
+
+**Partner opportunity:** A formal partnership with a red teaming firm (HackerOne, Penligent) where they recommend Straw after every red team engagement, and Straw recommends them after every compliance evaluation. Both get referrals; neither competes.
+
+---
+
+## Tick 751 — 2026-05-04 UTC — Rubric Design Methodology: Straw's Core IP [GTM]
+
+**Research question:** What is Straw's evaluation rubric methodology, and how does it create defensibility through scientific rigor?
+
+**Sources:** Adnan Masood PhD (April 2026 — rubric-based evals, LLM-as-a-Judge); Galileo.ai (agent evaluation framework 2026); Autorubric paper (arXiv 2603.00077); Stanford RubricEval (CS224N 2026); Promptfoo LLM rubric documentation; Freeplay blog (evaluation criteria design).
+
+---
+
+### What the Research Says About Rubric Design
+
+**From the 2026 literature:**
+
+1. **Recursive rubric decomposition** materially improves judgment quality and evaluation reliability (Autorubric, 2026)
+2. **Item Response Theory (IRT)** can determine which criteria are too ambiguous or too sensitive — Straw can use IRT to validate its rubric quality
+3. **Calibration target:** 0.80+ Spearman correlation with human expert evaluation is the reliability standard
+4. **Cronbach's alpha** (>0.70) is used to validate rubric consistency across multiple evaluation runs
+5. **Narrow scales (3-5 levels)** with clear behavioral anchors outperform broad scales because LLM judges exhibit central tendency bias on broad scales
+6. **Ensemble approaches** (multiple judge instances, randomized presentation order) reduce the 50%+ error rate caused by position bias, length bias, and agreeableness bias in LLM evaluators
+7. **The calibration problem:** "Error rates exceeding 50% in LLM evaluators driven by position bias, length bias, and agreeableness bias" — enterprise red flag if Straw doesn't address this explicitly
+
+---
+
+### Straw's Rubric Design Methodology (What It Should Be)
+
+**Tier 1 — Task rubric design (pre-evaluation, 3-5 hours):**
+1. Elicit the enterprise's success criteria in plain language (what does "working" look like?)
+2. Translate into 5-8 specific, measurable criteria with behavioral anchors
+3. Weight criteria by business importance (not equal weighting)
+4. Validate criteria with the enterprise's subject matter expert (a FINRA compliance officer, a clinical quality lead)
+5. Calibrate against 10 human-labeled examples before running the full evaluation
+
+**Tier 2 — Agent evaluation (multi-run, ensemble judge):**
+1. Run the agent against 50-100 test cases across the criteria (for Pilot tier) or 200-500 test cases (for Standard tier)
+2. Use ensemble LLM judges with randomized presentation order to reduce position bias
+3. Include T3 adversarial cases (edge cases, boundary conditions, failure-mode scenarios)
+4. Measure: accuracy, consistency (Cronbach's alpha), and reliability (Spearman correlation with expert labels where available)
+
+**Tier 3 — Report and certificate generation:**
+1. Rubric scorecard by criterion (weighted scores, confidence intervals)
+2. Pass/fail determination against enterprise-defined thresholds
+3. Failure mode analysis (what cases did the agent fail, and what business risk does that represent?)
+4. Compliance mapping (how does the rubric evidence map to FINRA/ISO 42001/EU AI Act requirements?)
+5. Tamper-proof certificate generation (UUID + Merkle hash)
+
+---
+
+### Why This Methodology Is a GTM Credibility Builder
+
+When a CAIO or GC asks "how do you evaluate?" the answer is not "we run some tests." It's:
+
+> "We use item response theory to validate rubric quality before the evaluation starts. We run ensemble judges with randomized presentation order to minimize bias. We calibrate against 0.80+ Spearman correlation with human expert labels where available. The result is a rubric scorecard with confidence intervals and a Cronbach's alpha reliability score — the same standards used in academic psychology research. Our certificates are not an opinion — they're a statistically calibrated measurement."
+
+This is the methodological credibility that differentiates Straw from "we ran some prompts and scored the outputs."
+
+---
+
+### Rubric Design As a Separate Product
+
+**Consideration:** The rubric design phase (pre-evaluation, 3-5 hours of founder time) is itself a valuable service that enterprises can use independently of the full evaluation.
+
+A "rubric design workshop" could be sold as:
+- Price: $2,500-$3,500 (3-5 hours of founder time)
+- Output: A validated evaluation rubric for an enterprise's AI use case, calibrated against human expert labels
+- Upsell: "Now that you have the rubric, run a Straw evaluation against it for an additional $6,500"
+
+This creates a two-step sales motion: rubric workshop → full evaluation. The rubric workshop is a much lower-commitment entry point than the full evaluation.
+
+---
+
+## Tick 752 — 2026-05-04 UTC — The "One-Page Pitch Deck" for Straw [GTM]
+
+**Research question:** If Jeremy has one page to convince a CAIO to become a design partner, what does it say?
+
+---
+
+### The One-Page Pitch (Design Partner Version)
+
+**Header:** Straw — Independent AI Agent Evaluation & Compliance Certification
+
+**The problem (3 sentences):**
+80% of AI projects fail (RAND 2025). 56% of CEOs report no financial ROI from AI investment (PwC 2026). The root cause: no defined success criteria before deployment, and no independent verification that the agent meets them.
+
+**The solution (3 sentences):**
+Straw evaluates your AI agents against the specific criteria your business requires — before you deploy. We use a statistically calibrated rubric methodology to measure whether the agent actually works. The output is a tamper-proof compliance certificate that satisfies FINRA 2026, ISO 42001 Section 9, EU AI Act Article 9, and Colorado AI Act requirements.
+
+**Why it matters now (3 sentences):**
+Three regulatory deadlines hit in the next 90 days: Colorado AI Act (June 30), California N-5-26 (July 27), EU AI Act (August 2). All three require pre-deployment independent evaluation documentation. Companies without it are exposed to regulatory sanction — and, more importantly, to litigation claiming negligence if the agent causes harm.
+
+**What you get from Straw:**
+- A 15-30 page evaluation report covering rubric design, test results by criterion, adversarial edge case analysis, and failure mode review
+- A tamper-proof compliance certificate (UUID + Merkle hash) mapping to your specific regulatory requirements
+- A confidence interval on agent performance — not a binary pass/fail, but a statistical measurement with uncertainty bounds
+
+**The design partner offer:**
+Straw is offering 3-5 design partner evaluations at cost ($1,500, vs. $6,500 Pilot price) in exchange for:
+- Public case study rights with company name
+- Logo on pricing page
+- 30-minute product feedback call post-evaluation
+- 1 warm referral to a colleague at another company
+
+**Who is the right design partner:**
+A company that (a) has an AI agent in production or 60 days from production, (b) faces regulatory requirements from FINRA, Colorado AI Act, EU AI Act, ISO 42001, or NAIC, and (c) has a CAIO, compliance lead, or GC who would be willing to be a public reference.
+
+**Contact:** Jeremy Liu | straw.vercel.app | [email] | [calendly]
+
+---
+
+### Why This One-Pager Works
+
+- Every paragraph answers a specific question the buyer has ("why should I care?", "what do I get?", "what do you want from me?", "am I the right person?")
+- The regulatory urgency is built in with specific dates (not vague "regulatory pressure")
+- The design partner offer is structured to remove financial risk (at-cost) while creating specific obligations (case study, logo, referral)
+- The "who is the right design partner" section self-selects qualified leads — if they don't meet the criteria, they don't reach out, saving everyone's time
+
+**Usage:** Attach to every cold email as a PDF or linked one-pager. Replace the "let's do a demo" CTA with "interested? Here's the design partner one-pager." Reduces the number of unqualified conversations.
+
