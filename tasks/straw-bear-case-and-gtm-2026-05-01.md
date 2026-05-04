@@ -43715,3 +43715,137 @@ This framing: (a) gives a deadline, (b) acknowledges the relationship, (c) disco
 
 **Sources:** onramp.us/customer-onboarding-metrics, custify.com/saas-customer-onboarding-retention-statistics, litmos.com/top-saas-onboarding-trends, csinsider.co/what-is-customer-success
 
+
+---
+
+## Tick 586 — Bear Case: LLM Providers as Evaluation Competitors
+
+**Date researched:** 2026-05-03
+
+### The threat scenario
+
+**The argument:** "Google already offers AI evaluation via Vertex AI Gen AI Evaluation Service. OpenAI's Agents SDK includes evaluation tools. Anthropic has Managed Agents with session-level observability. These are free or bundled. Why would enterprises pay Straw?"
+
+### What providers actually offer
+
+**Google Vertex AI Gen AI Evaluation Service:**
+- Evaluates models deployed on Vertex AI
+- "Supports evaluating partner models, such as Anthropic and Llama models"
+- Metrics: quality, safety, accuracy
+- Purpose: help enterprises choose which model to use on Google Cloud
+- Cost: bundled with Vertex AI usage
+
+**OpenAI Agents SDK:**
+- Open-source evaluation tools for OpenAI-built agents
+- Part of the Agents SDK ecosystem
+- No additional first-party runtime fee beyond API pricing
+- Purpose: developer tooling for OpenAI API customers
+
+**Anthropic Managed Agents:**
+- $0.08/session-hour + standard token pricing
+- Session-level observability (what did the agent do?)
+- Purpose: infrastructure for running Claude-based agents at scale
+- NOT evaluation against customer-defined rubrics
+
+### The fatal conflict of interest
+
+**Every major LLM provider has a direct financial interest in making their own models look better on evaluation.** This is not a hypothetical — it's structural:
+
+- Google's evaluation service runs on Google Cloud infrastructure
+- OpenAI's evaluation tools naturally test OpenAI models
+- Anthropic's Managed Agents observability reflects Claude-based agents
+
+**The auditor independence rule:** A company cannot audit itself. An accounting firm that also does consulting for a client faces Independence Rule violations. The same principle applies to AI evaluation.
+
+**Would Microsoft trust Google's evaluation of Azure AI vs. Google Cloud AI?**
+**Would JPMorgan trust OpenAI's evaluation of GPT-5 vs. Claude 4?**
+**Would Zurich Insurance trust Anthropic's evaluation of Claude agents?**
+
+The answer is no. Enterprise procurement requires a neutral third-party evaluator. Straw is that evaluator.
+
+### The "free" bundled evaluation objection
+
+**"But if Google/OpenAI offer it for free, enterprises won't pay Straw."**
+
+**Rebuttal:**
+
+1. **Bundled tools evaluate against the provider's benchmarks, not the customer's rubric.** Google's Gen AI Evaluation Service evaluates quality, safety, accuracy — Google-defined metrics. The enterprise customer who wants "accuracy on redlining this specific contract template with these 12 criteria" cannot use Google's evaluation service for that.
+
+2. **Bundled tools don't evaluate competing providers.** Google's evaluation service doesn't fairly evaluate Anthropic agents. OpenAI's tools don't evaluate Google's agents. Enterprise buyers considering multiple providers NEED a neutral platform.
+
+3. **Free bundled tools can't produce audit-ready certificates.** Google's evaluation results are internal developer tooling. They're not timestamped third-party certificates with UUID verification that satisfy a CNIL auditor or an ISO 42001 audit requirement.
+
+4. **PromptFoo precedent (OpenAI-owned, still free):** Braintrust raised $80M at $800M valuation despite PromptFoo being free and open-source. Enterprise buyers pay for hosted infrastructure, compliance features, support SLAs, and neutral third-party status — not just the evaluation algorithm.
+
+### The strategic opportunity in the "provider wars"
+
+**OpenAI partnerships with McKinsey/BCG/Accenture/Capgemini (February 2026).**
+**Anthropic partnerships with Accenture/Deloitte.**
+**Google partnerships with McKinsey/BCG/Deloitte/Accenture/Bain.**
+
+Every major consulting firm is now financially entangled with one or more LLM providers. This means:
+1. Consulting firms have a conflict of interest in recommending neutral AI evaluation
+2. They will recommend the LLM provider they're partnered with
+3. Enterprises that rely on consulting firms for AI evaluation will get biased recommendations
+
+**Straw's positioning against the consulting-LLM partnership ecosystem:**
+> "Your AI consultant is a partner of the AI provider they're recommending. That's not an evaluation — that's a sales pitch. Straw is the independent third party with no commercial relationship with any LLM provider."
+
+**Sources:** thenewstack.io/ai-agent-harness-pricing-split, fortune.com/openai-partners-mckinsey-bcg-accenture, businessof.tech/openai-enlists-bcg-mckinsey-accenture, digitalcommerce360.com/anthropic-openai-google-agentic-commerce
+
+---
+
+## Tick 587 — Bear Case: Big Consulting Builds This
+
+**Date researched:** 2026-05-03
+
+### The threat scenario
+
+**The argument:** "McKinsey's 'Agents-at-Scale' suite, PwC's Agent OS, KPMG's Workbench — these firms have enterprise relationships, trusted brands, and the AI talent to build a custom evaluation service. Accenture booked $2.2 billion in AI consulting last quarter. Why won't they just build Straw?"
+
+**Accenture $2.2B quarterly AI consulting revenue.** McKinsey QuantumBlack. BCG X. Deloitte Digital. These are not small players.
+
+### Why consulting firms WON'T build Straw (and can't compete even if they try)
+
+**Reason 1: They're already partnered with the vendors being evaluated.**
+
+McKinsey, BCG, Accenture, Capgemini are all formal OpenAI partners. Deloitte and Accenture are Anthropic partners. Google has embedded forward-deployed engineers alongside all five major consulting firms.
+
+A consulting firm that is simultaneously:
+- An OpenAI partner (getting paid to implement OpenAI's Frontier platform)
+- An "independent AI evaluator" of OpenAI vs. Claude
+
+...has an unresolvable conflict of interest. Their enterprise clients would immediately recognize this.
+
+**Reason 2: Consulting firms can't run a marketplace.**
+
+Consulting is a high-touch, bespoke service. Running a marketplace requires: self-serve workflows, automated evaluation pipelines, standardized rubric formats, agent submission APIs, reputation scoring systems. This is product engineering, not consulting delivery. Consulting firms don't build scalable products — they deliver one-off services.
+
+**Reason 3: Their cost structure makes Straw uneconomical to replicate.**
+
+A McKinsey evaluation study costs $200K-500K (minimum 4-week engagement, partner-led). Straw's $5K Starter evaluation is 40-100× cheaper. McKinsey cannot deliver at $5K — their cost structure won't allow it. They would need to spin out a separate entity (different brand, different team, different cost model) to compete with Straw.
+
+**Reason 4: They're too slow to win the 12-18 month window.**
+
+YC's window: "If building agent infrastructure, the window to become the default tool in your layer is 12–18 months." McKinsey's internal product development timelines are 18-24 months minimum. By the time McKinsey would launch a Straw competitor, Straw will have 1,000+ evaluations and a reputation graph that would take McKinsey 5 years to replicate.
+
+### The consulting firm as channel partner (not competitor)
+
+**The correct frame:** Consulting firms are Straw's best channel partners, not competitors.
+
+**The channel partner pitch for McKinsey:**
+> "When your Agents-at-Scale practice recommends an AI agent to a client, you can't neutrally evaluate it — you're an OpenAI partner. Recommend Straw for the evaluation phase. Client runs the evaluation independently. They make an informed decision. Your relationship stays clean. You get referral fee or formal channel agreement."
+
+**Why this works:** Consulting firms WANT neutral evaluation tools they can recommend because it:
+1. Removes the conflict-of-interest critique from their advice
+2. Gives clients a defensible paper trail for the consultant's recommendation
+3. Differentiates their practice ("we use Straw for independent AI evaluation — not the vendor's benchmarks")
+
+**Target consulting channel partners:**
+- #234: McKinsey QuantumBlack (mckinsey.com/quantumblack) — AI + analytics practice
+- #235: BCG X (bcg.com/x) — BCG's tech build/operate arm
+- #236: Deloitte Agentic AI Practice (deloitte.com) — previously identified in research
+- #237: PwC AI CoE (pwc.com) — "Agent OS" — they need a neutral evaluator to recommend
+
+**Sources:** fortune.com/openai-partners-mckinsey-bcg-accenture, agent.nexus/accenture-vs-mckinsey-ai, natesnewsletter.substack.com/accenture-2-2-billion-ai-consulting, klover.ai/ai-agents-enterprise-market-survey-mckinsey-pwc-deloitte-gartner
+
