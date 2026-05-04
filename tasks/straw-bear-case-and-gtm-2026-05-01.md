@@ -50897,3 +50897,219 @@ New contacts from this tick to add to the Week 3+ pipeline:
 
 These are Month 2+ contacts (after the first wave of S and A priority outreach generates feedback and learnings).
 
+
+---
+
+## Tick 656 — [BEAR] The Talent Scaling Problem: T3 Evaluation Requires Expertise That Doesn't Scale Automatically
+
+**Theme:** Bear Case  
+**Date:** 2026-05-04  
+**Thread:** Operational scaling risk — can Straw's evaluation quality be maintained at 100 evaluations/month?  
+
+---
+
+### The Bear Case: Manual Expertise in the Evaluation Loop
+
+Straw's T3 investigative evaluation requires a skilled judge to:
+1. Actively probe the agent's submission with follow-up questions
+2. Design adversarial test cases on the fly based on the submission content
+3. Identify gaming behaviors that static metrics would miss
+4. Calibrate scores against the rubric criteria with domain expertise
+
+This is not purely automatable. The "investigative" nature of T3 requires judgment that LLM judges alone may not exercise consistently.
+
+**The scaling math:**
+- Each T3 evaluation: 2-4 hours of skilled evaluator time
+- At 10 evaluations/month (target by Month 6): 20-40 hours/month of evaluator time
+- At 50 evaluations/month (target by Month 12): 100-200 hours/month
+- At 200 evaluations/month (Series A milestone): 400-800 hours/month
+
+400-800 hours/month of expert evaluator time = 2-5 full-time evaluators with domain expertise in the categories being evaluated. At $150-200K loaded cost each, that's $300K-$1M/year in evaluator costs at 200 evaluations/month.
+
+**The margin math:**
+200 evaluations/month × $5,000/evaluation = $1M/month revenue
+Evaluator cost: $50-80K/month (4-5 evaluators at $150K each, prorated monthly)
+Gross margin on T3 evaluations: 50-70% — acceptable but not software-level margins
+
+---
+
+### The Mitigation: Automating the Automatable, Keeping Humans for What Matters
+
+The bear case is real but manageable with the right architecture:
+
+**What can be automated (T1 and T2):**
+- T1 automated scoring: fully automatable (code tests, API validation, structured output comparison)
+- T2 LLM judge: the rubric scoring can be largely automated with well-designed prompts
+- Template probe library: 80% of follow-up probing questions can be pre-templated per category
+
+**What requires human judgment (core of T3):**
+- Recognizing novel gaming strategies not in the template library
+- Designing new probes for genuinely novel submission approaches
+- Calibrating scores when rubric criteria are ambiguous
+- Quality review of automated evaluations for anomalies
+
+**The architecture implication:** T3 becomes a "human-in-the-loop review" rather than a "human-as-primary-evaluator." A skilled evaluator reviews automated T1+T2 results, runs the template probe library, and exercises judgment only when the automated system flags anomalies or when a novel situation arises.
+
+Estimated time per evaluation with this architecture: 30-45 minutes of skilled human review rather than 2-4 hours. This changes the scaling math dramatically:
+- 200 evaluations/month × 40 minutes = 133 hours/month = 0.75 FTE evaluator
+- At $150K/year per FTE: $112K/year evaluator cost for 200 evaluations/month
+- Gross margin at $5K/evaluation: ($1M revenue - $112K evaluator - $50K infra) / $1M = 84% gross margin
+
+This is software-level margins with a human-in-the-loop quality gate.
+
+---
+
+### The Domain Expertise Problem
+
+More problematic than time-per-evaluation is **domain expertise**. A T3 evaluation of a fintech expense automation agent requires the judge to understand:
+- What good expense reconciliation looks like
+- What gaming behaviors are possible in this domain
+- What edge cases are meaningful vs. trivial
+- What the rubric should weight heavily
+
+A single generalist evaluator cannot credibly judge evaluations across: legal AI agents, fintech agents, healthcare agents, code generation agents, HR agents. Each domain requires genuine domain knowledge.
+
+**Mitigation options:**
+
+1. **Vertical-first expansion:** Start with fintech only (Straw's recommended first vertical). Build deep fintech evaluation expertise before expanding. Add legal evaluation in Month 12, healthcare in Month 18.
+
+2. **Advisory board of domain experts:** 5-10 domain experts (former Goldman Sachs quant for fintech, former BigLaw partner for legal, former healthcare CIO for medical) who review evaluation rubrics and calibrate domain-specific scoring. Advisory board compensation: equity, not salary.
+
+3. **Vals AI model:** Vals AI explicitly hired Goldman Sachs, Silver Lake, and Citadel experts to curate their Finance Agent benchmark. This is the right approach for credibility. Straw should do the same for each vertical.
+
+4. **Customer-provided domain expertise:** In the rubric design phase, the customer defines what success looks like in their domain. The rubric co-design session with the customer IS the domain expertise transfer. Straw doesn't need to know what good expense reconciliation looks like — the customer tells Straw via the rubric. The T3 probe library then tests whether the agent meets the customer's own criteria.
+
+---
+
+### Net Assessment: The Talent Scaling Bear Case Is Real but Manageable
+
+**Short-term (Months 1-12):** Jeremy IS the evaluator. His domain knowledge (from extensive research) + the rubric co-design session with the customer = sufficient expertise for early evaluations. This is the right use of founder time.
+
+**Medium-term (Months 12-24):** First evaluator hire. Should be someone with: domain expertise in fintech (or the first vertical), comfort with LLM systems, attention to detail, ability to design adversarial test cases. Profile: former fintech data scientist or quant analyst who is excited about AI safety.
+
+**Long-term (Months 24+):** The template probe library is the moat. Every evaluation generates probe patterns that get added to the library. Over 1,000 evaluations, the library becomes self-sustaining — the automated system handles 90%+ of evaluations without human review.
+
+The talent scaling problem is not a reason not to build Straw. It's a reason to invest early in building the probe library as a data asset.
+
+
+---
+
+## Tick 657 — [GTM] The Content Flywheel: How Research → Tweet → LinkedIn → White Paper → Email → Customer
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Content strategy synthesis — how individual pieces reinforce each other  
+
+---
+
+### The Flywheel Architecture
+
+All of Straw's GTM content channels work as a reinforcing system, not separate tactics:
+
+```
+Research (Phase 1 + Phase 2 files)
+    ↓
+Twitter thread (sharp observation from research)
+    ↓ amplified by AI safety/technical community
+LinkedIn post (enterprise framing of same insight)
+    ↓ amplified by CAIO/VP AI community
+White paper (deep dive on one theme: FINRA, NIST, UC Berkeley benchmark gaming)
+    ↓ used as credibility artifact
+Cold email (references one specific finding from white paper + research)
+    ↓ opens the discovery conversation
+Discovery call (the questions, the demo, the certificate)
+    ↓ converts to
+Design partner → public case study → next wave of content
+```
+
+Each piece feeds the next. The research generates the tweets. The tweets generate LinkedIn engagement. The LinkedIn engagement demonstrates credibility to cold email recipients. The white paper is the leave-behind that converts fence-sitters.
+
+---
+
+### The 5 Pieces of Content Jeremy Must Create in Month 1
+
+**Piece 1: The FINRA White Paper (6 pages)**
+"Satisfying FINRA's 2026 AI Agent Audit Trail Requirement: A Practitioner's Guide"
+- Use as cold email attachment for fintech contacts
+- Pitch to Debevoise/Sidley compliance blogs as guest contribution
+- Share on LinkedIn as a document carousel
+
+**Piece 2: "The AI Agent Evaluation Problem" — The 3-Page Leave-Behind**
+(described in Tick 630)
+- Page 1: The 88% failure problem
+- Page 2: The evaluation framework
+- Page 3: Case study / how Straw works
+- Use at every conference, every discovery call
+- Send as PDF attachment to follow-up emails
+
+**Piece 3: The UC Berkeley Benchmark Gaming Twitter Thread**
+(described in Tick 654)
+"All 8 major AI benchmarks are broken. Here's why private rubrics are the only answer."
+- Establishes technical credibility
+- Drives AI safety community engagement
+- Positions Straw as the solution, not just the problem diagnoser
+
+**Piece 4: The "Straw Evaluation Methodology" Technical Documentation**
+(public, on straw.dev or GitHub)
+- T1/T2/T3 evaluation design explained
+- Anti-gaming approach documented
+- N-run sampling and variance methodology
+- This is the document a CTO or AI lead asks for before approving spend
+- It's also what NIST alignment will reference in the future
+
+**Piece 5: The First Public Case Study (Month 2-3)**
+"How [Company Type, not named] evaluated [agent type] and saved [X hours/$/risk]"
+- Even a hypothetical with anonymized numbers is acceptable at early stage
+- The case study is the piece that closes skeptical prospects
+- Write it as if it's already happened; turn it into reality as soon as a design partner completes their first evaluation
+
+---
+
+### The Flywheel Monthly Cadence
+
+**Month 1 (May 2026):**
+- Write FINRA white paper
+- Start 3-4 LinkedIn posts/week
+- Start 5-7 Twitter posts/week
+- Send 20 cold emails across all templates
+- Target: 3 discovery calls, 1 design partner interest
+
+**Month 2 (June 2026):**
+- Publish evaluation methodology documentation (public, on GitHub)
+- Convert 1-2 design partners from Month 1 conversations
+- Run first free evaluation
+- Write the first draft case study (anonymized)
+- Submit Snowflake Summit speaker application
+
+**Month 3 (July 2026):**
+- Publish first case study (even if anonymized)
+- Start token pricing ($500/evaluation) for continuing design partners
+- HN "Ask HN" post: "If you're running AI agents in production, how do you decide which ones to keep?"
+- Target: 5 active design partner conversations
+
+**Month 4-5 (August-September 2026):**
+- Move to real pricing ($2,500/evaluation)
+- First paying customer
+- Write "first paid customer" story for LinkedIn
+- Draft Show HN launch post
+
+**Month 6 (October 2026):**
+- Show HN launch
+- The AI Conference attendance (Sept 30 - Oct 1)
+- YC S26 Demo Day (if applied and accepted)
+- Target: 3 paying customers, $7,500/month in revenue
+
+---
+
+### The One Content Metric That Matters
+
+Out of all content metrics (reach, impressions, likes, follows), the only one that matters for Straw's GTM is:
+
+**"Number of qualified discovery conversations initiated from content"**
+
+Not followers. Not impressions. Not even email clicks. Discovery conversations.
+
+Track this in the funnel spreadsheet: column = "How they found Straw (LinkedIn / Twitter / Cold Email / Referral / HN / Conference / White Paper)."
+
+At the end of Month 2, review: which channel produced the most discovery conversations? Double down on that channel.
+
