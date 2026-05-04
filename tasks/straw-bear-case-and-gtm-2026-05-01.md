@@ -40081,3 +40081,183 @@ The 2026 recommended stack perfectly matches Straw's existing architecture prefe
 
 This is the decision that prevents a painful refactor when going from 1 evaluation to 10 concurrent evaluations.
 
+
+---
+
+## Tick 543 — How Enterprise Companies "Hire" the Winning Agent: The Post-Evaluation Mechanics [Product/GTM]
+
+*2026-05-04. The winner is selected. Now what? The handoff from Straw to deployment is the value completion moment.*
+
+### The 2026 contract model for AI agents (Mayer Brown)
+
+Agentic AI contracts are shifting from "SaaS licensing" to "BPO-style service agreements":
+
+- **Old model (SaaS):** License software; user runs it; vendor not responsible for outcomes
+- **New model (agentic):** Agent executes tasks autonomously; provider bears performance responsibility
+- **Enterprise owns:** All data submitted + all outputs including IP rights therein
+- **Vendor lock-in risk:** Enterprises want contractual permission to transfer agent deliverables to alternative platforms
+
+**This affects how Straw designs the "winner handoff."** The enterprise isn't just licensing the winning agent — they're entering a service relationship with the agent's operator.
+
+### Three winner handoff models
+
+**Model A: Direct hire (Straw facilitates introduction)**
+- Straw introduces enterprise to winning agent operator
+- Enterprise signs a direct services agreement with the agent operator
+- Straw receives: platform fee (5% of bounty) + referral fee (5-10% of first year of service contract)
+- Straw's role ends at introduction
+
+**Model B: Straw as intermediary**
+- Enterprise contracts with Straw for ongoing agent services
+- Straw subcontracts to winning agent operator
+- Straw manages SLA, performance, billing
+- Straw receives: platform fee + margin on managed service
+- Higher complexity; Straw becomes a staffing agency for AI agents
+
+**Model C: Agent licensing**
+- Winning agent operator licenses the agent to enterprise
+- Enterprise runs the agent internally
+- Straw receives: platform fee + license referral commission
+- Common for open-source or framework-based agents
+
+**Recommendation for v0:** Model A (direct hire). Straw should NOT be in the middle of the ongoing service relationship. The value is in the evaluation; the handoff is an introduction.
+
+### The winner announcement flow
+
+**Day 14 of evaluation:**
+1. Jeremy runs T1/T2/T3 pipeline
+2. Results deck prepared: winner + runner-up + score breakdown
+3. Results call with enterprise champion
+4. After results: email to champion with winner agent operator's contact info
+5. Enterprise reaches out directly to winner agent operator
+6. Straw sends invoice for evaluation fee ($5,000)
+
+**The "hiring package" Straw provides:**
+- Evaluation report (PDF): task brief + rubric + score breakdown + winner recommendation
+- Agent operator contact info + their submitted proposal
+- "Straw Evaluation Certificate" — a one-pager confirming the evaluation was run, the rubric was sealed, and the winner was selected by Straw's pipeline
+
+**The certificate is a product.** Enterprise can share it internally as proof of due diligence. Their board can see: "We ran a competitive evaluation via Straw. Agent X won. Here's the certificate." This is the SOC 2 analog for AI procurement.
+
+### IP and data rights (from Mayer Brown guidance)
+
+Straw's DPA must specify:
+- Enterprise owns the task brief data
+- Enterprise owns the evaluation results
+- Agent operators own their submission content
+- Straw owns the evaluation methodology and pipeline
+- No winning agent can claim IP rights over the enterprise's rubric
+
+**The "work made for hire" trap:** If an enterprise argues that the winning agent's submission is "work made for hire" (which would give them IP ownership over the submission itself), Straw should disclaim this: submissions are competitive proposals, not works for hire. IP rights to the submission remain with the agent operator until a separate service agreement is signed.
+
+### The "Straw Evaluation Certificate" — product design
+
+One-page PDF, auto-generated at evaluation completion:
+
+```
+STRAW EVALUATION CERTIFICATE
+Task ID: [hash]
+Task Type: [Coding / Research / Financial / Other]
+Enterprise: [Company Name or "Confidential"]
+Evaluation Date: [Date]
+Rubric Sealed: [Timestamp]
+Competitors Evaluated: [N]
+Winner Recommendation: [Agent ID or "Confidential"]
+Winner Score: [X.X / 100]
+Runner-Up Score: [X.X / 100]
+Evaluation Pipeline: T1 Deterministic + T2 LLM-as-Judge + T3 Investigator
+Signed by: Straw Evaluation Service
+Certificate ID: [UUID]
+Verify at: straw.ai/verify/[UUID]
+```
+
+**Why this matters:** The certificate is sharable, verifiable, and audit-ready. It turns a consulting deliverable into a product artifact. Enterprises will use this in board decks, vendor selection documentation, and ISO 42001 compliance files.
+
+
+---
+
+## Tick 544 — Cold Email Math: How Many Emails to Get 3 Design Partners [GTM]
+
+*2026-05-04. The exact funnel calculation for Jeremy's first 90 days of outreach.*
+
+### 2026 cold email benchmarks (B2B SaaS enterprise)
+
+| Metric | Benchmark |
+|---|---|
+| Open rate (good personalization) | 30-45% |
+| Reply rate (positive) | 8-15% |
+| Meeting booking rate | 1-3% per 1,000 contacts |
+| Enterprise ACV >$10K reply rate | 5-10% |
+| Signal-triggered sends vs. cold list | 1.2-3.2% meetings vs. 0.3-0.6% |
+
+**Key finding:** Enterprise AI buyers (SaaS decision-makers) receive 15+ cold emails/week. Noise is high. Personalization and signal-triggering are essential.
+
+### Straw's target conversion rates (conservative)
+
+Jeremy is not sending volume — he's sending highly personalized outreach with:
+- Strong personal angle (PhD researcher, building in public)
+- Specific trigger events (person wrote about AI agent evaluation, recent LinkedIn post, etc.)
+- Concrete offering (free design partner evaluation)
+- Short emails (under 150 words)
+
+**Adjusted target rates for Straw:**
+- Open rate: 50% (highly personalized subject lines)
+- Reply rate: 15-20% (specific, relevant angle)
+- Discovery call conversion from reply: 60%
+- Design partner LOI conversion from call: 40%
+- Design partner → paid: 50%
+
+### The cold email funnel math
+
+To get 3 paid design partners (90-day goal):
+
+| Stage | Target | Emails needed at each stage |
+|---|---|---|
+| 3 paid design partners | → | — |
+| ÷ 50% conversion (DP → paid) | → | 6 LOIs needed |
+| ÷ 40% conversion (call → LOI) | → | 15 discovery calls needed |
+| ÷ 60% conversion (reply → call) | → | 25 replies needed |
+| ÷ 17% reply rate | → | 147 cold emails needed |
+
+**Jeremy needs to send 150 personalized cold emails in 90 days.**
+
+That's 1.67 emails per day. Extremely achievable. The constraint is not volume — it's quality. Each email requires 15-20 minutes of research for effective personalization.
+
+**Time budget:** 150 emails × 20 min = 50 hours of outreach effort over 90 days = <1 hour/day.
+
+### The 4-touch sequence (already drafted in Tick 483)
+
+- Day 1: Initial email (under 150 words, specific hook)
+- Day 3: Follow-up (add one data point; keep it short)
+- Day 7: Follow-up (angle shift; try a different approach)
+- Day 14: Final follow-up (breakup email; low-pressure CTA)
+
+**Total: 4 emails per prospect × 150 prospects = 600 emails over 90 days**
+
+**2026 compliance:** Under 50 emails per day per domain. 600 emails ÷ 90 days = 6.7 emails/day. Well under the limit. No domain warm-up needed.
+
+### The signal-triggered approach (3× better than cold list)
+
+Instead of cold lists, Jeremy should prioritize signal-triggered outreach:
+
+**Trigger signals to watch:**
+1. New LinkedIn post about "AI agent evaluation" or "AI procurement" → reply within 24 hours
+2. New job posting for "AI Manager" or "Agent Owner" → outreach to the hiring manager
+3. Company announces AI agent deployment → outreach about re-evaluation as capability changes
+4. New paper about agent benchmarking → email the author about Straw
+5. Company raises funding with AI infrastructure → outreach to new CTO/CAIO
+
+**Why signal-triggered outreach works:** The prospect is in-context. They just demonstrated they care about this topic. Straw's email arrives when they're thinking about the problem. Reply rates 3-5× higher than cold list.
+
+**Signal monitoring tools:** Google Alerts for "AI agent evaluation" + "agent procurement"; LinkedIn Sales Navigator ($100/month) for job posting alerts; Twitter/X search for target keywords.
+
+### The 150 email outreach plan by source
+
+| Source | Count | Priority |
+|---|---|---|
+| Contact list compiled in Phase 2 (183 named contacts) | 50 | Week 1-3 (highest intent) |
+| Signal-triggered via Google Alerts | 30 | Week 1-6 (ongoing) |
+| LinkedIn search (Agent Owner title, first 90 days in role) | 40 | Week 2-6 |
+| Conference speaker lists (AGENTIC AI, The AI Conference) | 20 | Week 3-8 |
+| CrewAI/LangChain community developers (supply-side) | 10 | Week 2-4 |
+
