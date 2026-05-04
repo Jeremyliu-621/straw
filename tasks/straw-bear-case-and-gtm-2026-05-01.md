@@ -57508,3 +57508,231 @@ As of Q2 2026, the AI evaluation and monitoring market has five categories. Stra
 
 **Backlog:** Contact Navrina Singh (Credo AI CEO) about Straw integration; add complete competitive landscape table to pitch deck; add "Straw → Humanloop" workflow description to positioning doc.
 
+
+---
+
+## Tick 727 — [GTM] The FINRA White Paper: Full Outline + Key Arguments [2026-05-04]
+
+**Theme: GTM | Research area: Content authority asset #1 — the FINRA compliance white paper**
+
+The FINRA white paper is Straw's highest-leverage content asset. It is the "technical blog post" equivalent of Modal's founder writing — the content that drives inbound from exactly the right buyers.
+
+---
+
+### FINRA 2026: The Specific Requirements (Verbatim)
+
+From FINRA's 2026 Regulatory Oversight Report (published December 2025):
+
+1. **"Firms using GenAI today should expect examiners to ask how models are tested, monitored, governed, and supervised in real time."**
+2. **"Firms should document how AI is used, test and monitor outputs, assign human accountability, and retain records related to AI-assisted decisions."**
+3. **"Firms should implement formal review and approval processes with comprehensive documentation throughout the lifecycle of a GenAI tool."**
+4. **"FINRA expects firms to assess regulatory compliance obligations BEFORE deploying GenAI."** (Emphasis: before deploying)
+5. **"Firms should conduct robust testing to understand model capabilities, limitations, and performance."**
+6. **"Establish governance frameworks to supervise GenAI usage."**
+
+Requirement 4 is the critical one: **"FINRA expects firms to assess regulatory compliance obligations before deploying GenAI."** This is Straw's exact use case stated in FINRA's own language.
+
+---
+
+### White Paper Outline: "How to Build an AI Agent Audit Trail for FINRA 2026"
+
+**Title:** *How to Build an AI Agent Audit Trail for FINRA 2026: A Practical Guide for Broker-Dealers and Investment Advisers*
+
+**Target reader:** Chief Compliance Officers and CAIOs at FINRA-regulated broker-dealers and investment advisers. Has budget authority up to $25K. Preparing for a 2026 FINRA examination or periodic review.
+
+**Length:** 6-8 pages (PDF, professional format)
+
+**Publication channels:** LinkedIn (link in first comment), Substack, direct email to target list, shared at Compliance in the Age of AI 2026 conference
+
+---
+
+**Section 1: The Regulatory Context (1.5 pages)**
+
+*What FINRA 2026 actually requires for AI agents*
+
+- FINRA's standalone GenAI section in the 2026 Regulatory Oversight Report
+- The five specific examiner questions your firm must be prepared to answer
+- Why "we tested it internally" is not a sufficient answer (examiner perspective)
+- The distinction between monitoring deployed AI (Braintrust, Arize) and evaluating AI before deployment (required by FINRA requirement 4)
+- The Workday lawsuit precedent: why broker-dealers cannot rely on vendor indemnification
+
+**Section 2: The Three-Part Documentation Framework (2 pages)**
+
+*What the audit trail must contain*
+
+- Part 1: Pre-deployment evaluation report (what was tested, rubric, methodology, results)
+- Part 2: Known limitations documentation (explicit scope of what the agent was NOT tested on)
+- Part 3: Human accountability assignment (who is responsible for the agent's actions)
+
+For each part: what it must contain, why FINRA examiners ask for it, common gaps firms have.
+
+**Section 3: The Evaluation Methodology (2 pages)**
+
+*How to run an evaluation that satisfies FINRA*
+
+- Why rubric-based evaluation is required (criteria must be defined before evaluation — RAND 4.5x improvement data)
+- The three evaluation layers: automated testing (T1), LLM judge (T2), investigative probing (T3)
+- N-run sampling: why single-run evaluations are insufficient ("if you only tested it once, how do you know it's consistent?")
+- Variance reporting: what examiners actually look for
+- The tamper-proof audit trail: why the certificate must be immutable
+
+**Section 4: What to Expect in a FINRA Examination (1 page)**
+
+*The five questions your examiner will ask*
+
+1. "What testing did you conduct before deploying this AI agent?" (Answer: Straw evaluation)
+2. "What were the criteria for evaluating performance?" (Answer: the rubric, defined pre-evaluation)
+3. "Who reviewed and approved the evaluation results?" (Answer: CAIO + CCO, documented in certificate)
+4. "What are the known limitations of this system?" (Answer: documented in certificate's scope section)
+5. "Is this evaluation documentation independently verifiable?" (Answer: UUID + Merkle hash verification)
+
+**Section 5: A 90-Day Compliance Roadmap (0.5 pages)**
+
+*What to do before your next FINRA exam*
+
+- Week 1-2: Define the AI agents in scope (any AI participating in customer communications, trade recommendations, or compliance monitoring)
+- Week 3-4: Define evaluation criteria (the rubric) — what does success look like for each agent?
+- Week 5-8: Run independent evaluation (Straw or equivalent)
+- Week 9-10: Review results, document limitations, assign accountability
+- Week 11-12: Archive tamper-proof certificate; brief compliance team on agent's scope
+- Ongoing: Annual re-evaluation + 90-day reassessment on modifications
+
+**Section 6: Straw's Role (0.5 pages)**
+
+*How Straw produces FINRA-compliant documentation*
+
+Brief product description. Not a sales pitch — a factual explanation of how Straw's output maps to each FINRA requirement. End with: "If you're preparing for a FINRA examination cycle, reach out to explore how Straw can produce the documentation your examiner will ask for."
+
+---
+
+### Why This White Paper Drives Pipeline
+
+**Authority:** CCOs and CAIOs forward this to each other. "Have you seen the FINRA AI audit trail guide?" passes between compliance teams at conferences and on LinkedIn.
+
+**Gated vs. ungated:** Publish ungated. The goal is maximum distribution and authority building, not email collection at this stage. If you gate it, you'll get 20 downloads. If you don't gate it, you'll get 2,000 shares and 3 inbound calls.
+
+**Distribution sequence:**
+1. Publish on Straw's website (straw.vercel.app/finra-guide)
+2. Share on LinkedIn as a document post (LinkedIn algorithm heavily favors document posts for Depth Score)
+3. Post to relevant compliance forums (Comply.com community, SIFMA discussions, etc.)
+4. Send direct to the 8 financial services CAIOs in earlier ticks with a 3-sentence email: "I wrote this guide on FINRA 2026 AI agent requirements. Thought it might be useful as you prepare for exam cycles. Happy to discuss."
+
+**Timeline to write:** 4-6 hours. Priority: This week.
+
+---
+
+**Backlog:** Write the FINRA white paper this week; publish on website + LinkedIn; direct email to financial services CAIO targets.
+
+
+---
+
+## Tick 728 — [GTM] The Virtual Roundtable Strategy: How Straw Gets in Front of 5 CAIOs at Once [2026-05-04]
+
+**Theme: GTM | Research area: Virtual roundtable as design partner pipeline tool**
+
+---
+
+### Why Roundtables Work for Enterprise B2B
+
+The traditional cold email → demo → close cycle takes 90-180 days for enterprise deals. A virtual roundtable compresses this by letting multiple buyers self-qualify simultaneously.
+
+**The mechanic:** A CAIO accepts a roundtable invitation not because they want to buy Straw — they accept because they want to hear what peer CAIOs are doing. Straw hosts. Straw facilitates. Straw earns trust without pitching.
+
+After the roundtable, the relationship already exists. The cold email becomes a warm email. The first call isn't a demo — it's a follow-up to a conversation that already happened.
+
+---
+
+### The Roundtable Format
+
+**Size:** 5-7 participants (not more — larger groups prevent real peer discussion)
+
+**Format:** 60 minutes, 3 sections
+- Section 1 (15 min): "The State of AI Agent Deployment in Your Organization" — each participant shares a 2-minute update on where they are in the AI agent journey. No prepared slides. Just current situation.
+- Section 2 (35 min): Facilitated discussion on 2 specific questions. Straw facilitates but does not dominate.
+- Section 3 (10 min): "Where do you go from here?" — each participant shares their next 90-day priority. Straw offers a resource (the FINRA white paper, a tool, a framework) relevant to what was discussed.
+
+**No pitch in the roundtable.** The value exchange is: Straw provides the venue and facilitation; participants get access to peer perspectives. If anyone asks about Straw, answer honestly and briefly, then return to the discussion.
+
+**Participants:** CAIOs and heads of AI governance at regulated enterprises. NOT a mix of vendors and buyers — only buyers. Vendors corrupt the trust dynamic.
+
+---
+
+### The Two Discussion Questions for Roundtable 1 (FINRA/Fintech Focus)
+
+**Question 1:** "FINRA's 2026 Regulatory Oversight Report has a standalone GenAI section. What documentation are you preparing to show examiners that you evaluated your AI agents before deploying them? Where are the gaps in your current approach?"
+
+This question directly opens the "we don't have the documentation" conversation — which is Straw's use case. If even one of the five CAIOs says "we're not sure what FINRA is actually expecting," Straw has found a design partner.
+
+**Question 2:** "When your board asks 'how do you know the AI agent we deployed performs correctly?' — what's your current answer? What would make that answer more defensible?"
+
+This question opens the "we need independent validation" conversation. Most CAIOs will not have a satisfying answer. Straw is the answer.
+
+---
+
+### The Roundtable Invitation Email
+
+**Subject:** Roundtable: AI Agent Governance for FINRA 2026 — 5 CAIOs, 60 minutes
+
+[Name] —
+
+I'm putting together a small virtual roundtable of 5 CAIOs from FINRA-regulated firms to discuss one question: What documentation are you preparing to show FINRA examiners that your AI agents were properly evaluated before deployment?
+
+FINRA's 2026 report explicitly expects firms to "assess regulatory compliance obligations before deploying GenAI." Most of the governance conversation I hear is about monitoring deployed systems — the pre-deployment piece seems underdeveloped.
+
+I'll facilitate. No decks. No vendor pitches. 60 minutes of peer discussion with a small group of CAIOs who are all wrestling with the same question.
+
+Interested in joining? The call would be in the next 2-3 weeks — I'll fit to your schedule.
+
+Jeremy Liu | Straw | [email] | [calendly]
+
+---
+
+**Why This Email Works:**
+- 25 words or fewer to understand the value proposition (it's peer networking, not a vendor call)
+- Names the specific FINRA requirement (shows domain knowledge)
+- "No vendor pitches" is explicit — removes the usual objection
+- Short, respectful of their time
+- 60 minutes is a manageable commitment
+
+---
+
+### The Post-Roundtable Follow-Up
+
+**Same day (1 hour after call ends):**
+
+Subject: Thank you + the FINRA guide I mentioned
+
+[Name] — Great conversation today. Thank you for sharing your perspective on [specific thing they said].
+
+I mentioned the FINRA AI agent audit trail guide Straw published — here's the link: [straw.vercel.app/finra-guide]
+
+If it would be useful to discuss whether Straw can help produce the documentation you described needing, I'm happy to set up a 30-minute follow-up.
+
+Jeremy
+
+---
+
+**Why This Works:** The post-roundtable email is warm, not cold. You're following up on a conversation. The offer is explicit but soft — "if it would be useful" gives them an easy out if they're not interested, while making clear the next step if they are.
+
+---
+
+### The Roundtable Pipeline
+
+If Jeremy runs 3 roundtables with 5 CAIOs each:
+- 15 CAIOs experience Straw's value first-hand (via facilitation + domain expertise)
+- Conversion rate to demo call: ~30-40% (for peer networking events with relevant participants, conversion to follow-up meeting is much higher than cold outreach)
+- Conversion to design partner: ~20% of demo calls → 1-2 design partners from 3 roundtables
+
+Timeline:
+- **Week 2-3:** Send 15 roundtable invitations (target: first 5 financial services CAIOs)
+- **Week 4:** First roundtable (5 participants)
+- **Week 5:** First 1-2 design partner conversations from roundtable
+- **Week 6:** Second roundtable (new 5 CAIOs)
+- **Week 8:** Third roundtable + first design partner signed
+
+This is the fastest path to 3 design partners: 3 roundtables, 3 conversions.
+
+---
+
+**Backlog:** Send 15 roundtable invitation emails this week; book 3 Calendly slots for the first roundtable; write the two discussion questions on a one-pager to share with participants before the call.
+
