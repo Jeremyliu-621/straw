@@ -52507,3 +52507,210 @@ The ultimate mitigation: **Straw evaluates on the buyer's actual tasks, not simu
 
 The residual risk is real but manageable. The counterfactual (public benchmarks, internal conflict-of-interest evals, or no evaluation) is worse.
 
+
+---
+
+## Tick 671 — The $661B AI Failure Problem: Why Straw Exists [2026-05-04]
+
+**Theme:** Bear Case (market demand validation) / GTM (top-of-funnel story)
+
+This tick is the demand-side argument in its most concrete form.
+
+---
+
+### The Numbers Are Staggering
+
+- **$684 billion** invested in AI projects globally in 2025
+- **$137 billion** (120 of 1,000 projects) reached production deployment
+- **$23 billion** (3.4% of investment) actually met ROI targets
+- **$661 billion**: money spent on AI that did not meet ROI targets in 2025 alone
+
+This is not a small-sample anomaly. Multiple independent studies converge on 80-88% failure rates:
+- 88% of AI agent projects never reach production
+- 80.3% of AI projects fail to deliver intended business value
+- 33.8% abandoned before reaching production
+- 28.4% reach completion but fail to deliver expected value
+
+The average cost of a failed AI agent project: **$340,000 in direct expenses**, $4.2M–$8.4M in total cost including opportunity cost, migration, and remediation.
+
+---
+
+### Why They Fail (And How Straw Addresses Each)
+
+**Failure mode 1: Wrong agent selected for the task (upstream problem)**
+The "blind agent problem" — buying an agent that demos well but fails on the real task. 88% failure rate despite demo success.
+
+Straw's address: evaluation on the actual task, not a demo. You see the agent perform on YOUR rubric BEFORE you deploy.
+
+**Failure mode 2: Infrastructure costs 3-5x projections at production scale**
+Companies go from proof-of-concept to production and discover the scaling costs weren't modeled.
+
+Straw's address: evaluation before commitment. If you know the agent's actual capability before deploying at scale, you can model the economics correctly. A failed Straw evaluation at $5,000 saves $340,000 in failed deployment.
+
+**Failure mode 3: Governance gap (only 14.4% deploy with full security/IT approval)**
+Most organizations are deploying agents without governance in place. This creates retroactive compliance risk.
+
+Straw's address: a compliance certificate creates retroactive defensibility. Even for agents already in production, running a Straw evaluation produces documentation that the agent was evaluated, scored, and passed before (or shortly after) deployment. This is the "retroactive certification" use case — not just pre-deployment evaluation, but governance artifact generation for agents already running.
+
+**Failure mode 4: Scope creep and data quality (61% of combined failures)**
+Projects expand beyond their defined scope; training data doesn't match production data.
+
+Straw's address: the rubric design session forces scope definition. Writing a rubric is an act of defining exactly what success means. Companies that go through a Straw rubric design session emerge with a clearer specification of what they need the agent to do — before building it, not after.
+
+---
+
+### The ROI Argument for Straw (Version 2.0)
+
+Version 1 (what Tick 659 covered): "Straw is infrastructure, like Stripe for AI procurement."
+
+Version 2 (more concrete): "A Straw evaluation costs $5,000. A failed AI project costs $340,000 in direct expenses. The math requires you to be wrong 1 in 68 times to justify the evaluation spend. You're currently wrong 7 in 8 times."
+
+Version 2 is better for discovery calls. It converts the abstract infrastructure argument into a specific, provable return on investment. Every enterprise buyer can evaluate this: if I've deployed 10 agents and 8 of them failed, how many of those failures would Straw have caught? If Straw caught even 2 out of 8, it paid for itself 136x.
+
+---
+
+### The Retroactive Certification Use Case
+
+Only 14.4% of organizations send agents to production with full security/IT approval. The other 85.6% are running agents that were never formally evaluated.
+
+This creates a use case that was not on the Phase 2 radar: **retroactive certification.**
+
+A company has 3 agents already in production with no governance documentation. An auditor, an ISO 42001 audit, or a California EO N-5-26 vendor certification requirement creates demand to document those agents. Running a Straw evaluation on an already-deployed agent produces a certificate. The agent was in production — now it has documentation.
+
+This is a separate buyer conversation from pre-deployment evaluation:
+- Pre-deployment: "Evaluate this agent before you commit to it"
+- Retroactive: "Document this agent before your auditor asks why you didn't"
+
+Both produce the same output (a Straw certificate). The buyer motivation is different. The sales conversation is different.
+
+**Retroactive certification cold email:**
+
+> Subject: 85% of deployed AI agents have no governance documentation
+>
+> Hi [Name],
+>
+> A statistic from multiple 2026 enterprise AI deployment studies: only 14.4% of organizations deploy AI agents with full security or IT approval. The rest go to production without governance documentation.
+>
+> That gap is closing fast — your auditors, insurers, and regulators are asking about it.
+>
+> Straw can evaluate any agent, including ones already running in production, and produce a tamper-proof compliance certificate documenting what the agent does, how it performed against a defined rubric, and who reviewed it.
+>
+> If you have agents in production without evaluation documentation, worth a 20-minute call.
+>
+> Jeremy
+
+---
+
+### The Market Timing Signal This Tick Reveals
+
+The $661B failure problem has been building for 3 years. The difference in 2026 is that **the failure rate is now visible to boards and CFOs** — not just engineering teams.
+
+The first wave (2023-2024): "Let's try AI." No accountability.
+The second wave (2025): "Why didn't our AI project deliver?" Post-mortems and blame.
+The current wave (2026): "How do we evaluate AI before deploying it?" Structured procurement.
+
+Straw is a 2026 product because the enterprise buying behavior that creates demand for pre-deployment evaluation only exists after the pain of failed post-deployment evaluation has become visible. The pain is visible now. The market is ready.
+
+
+---
+
+## Tick 672 — Monday.com's Agentalent.ai: Validation, Not Competition [2026-05-04]
+
+**Theme:** Bear Case (competitive threat) / GTM (partnership opportunity)
+
+42 days ago, Monday.com launched Agentalent.ai — a marketplace for hiring enterprise AI agents. Built with Anthropic, AWS, and Wix. Launched with 17 agents. Pricing starting at $2,000/month.
+
+This tick is the full analysis of what Agentalent.ai means for Straw.
+
+---
+
+### What Agentalent.ai Does
+
+Agentalent.ai is a marketplace where enterprises can discover, evaluate, and hire AI agents for defined business roles. Before listing, agents undergo "authentication, authorization, and qualification." Companies can post roles, review agent candidates, and test performance before adoption.
+
+Managed by Monday.com. Integrated into the Monday.com workflow ecosystem. Early partner agents from Wix, Mesh Payments, and consulting firms (Matrix, Ness Xebia, Devoteam).
+
+---
+
+### Why This is NOT a Straw Competitor
+
+**The structural difference:**
+
+Agentalent.ai is an agent distribution channel. Straw is an evaluation infrastructure layer.
+
+Agentalent.ai = "here are 17 agents you can hire for business roles"
+Straw = "here is how you verify which of those agents actually does what it claims"
+
+The qualification process Monday.com runs before listing agents is:
+1. Vendor-driven (agents are listed by their builders, not by independent evaluators)
+2. One-size-fits-all (same authentication process for all agents, not task-specific)
+3. Conflict-of-interest (Monday.com benefits from more agents on the platform; rejection undermines their marketplace)
+4. Not a compliance artifact (no UUID certificate, no Merkle hash, no tamper-proof verification)
+
+The Straw evaluation is the artifact a buyer would use BEFORE trusting an agent from any marketplace — including Agentalent.ai.
+
+**The analogy:** Amazon lists millions of products. UL (Underwriters Laboratories) tests products and certifies them safe before Amazon lists them. Agentalent.ai is Amazon. Straw is UL.
+
+---
+
+### Why This IS a Validation Signal
+
+Monday.com has ~$1B in revenue and built this product with Anthropic and AWS backing. They don't build products without demand signal.
+
+Three things Agentalent.ai validates for Straw:
+
+1. **Enterprise buyers want to hire AI agents on a marketplace basis.** The "hire an AI agent" UX is working — companies are comfortable with the concept of selecting and deploying AI agents as workforce additions, not just software tools.
+
+2. **The supply side is thin (17 agents at launch).** The cold-start problem is real for agent marketplaces. But thin supply creates demand for quality signals — when you have 17 choices instead of 10,000, discovery is easy; when you have 10,000, you need a quality signal to filter. Straw's certificate becomes more valuable as supply grows.
+
+3. **The $2,000/month price point validates willingness to pay.** Enterprises are paying $2,000+/month to hire AI agents. A $5,000 one-time evaluation certificate on a $2,000/month agent ($24,000/year contract) is a <21% evaluation premium. That math is compelling: pay 21% upfront to verify you're not buying the wrong thing.
+
+---
+
+### The Partnership Angle
+
+Straw should reach out to the Agentalent.ai team within 30 days.
+
+The partnership pitch: "Let Straw be the evaluation layer for Agentalent.ai listings."
+
+Instead of Monday.com running their own authentication/qualification process (which has conflict-of-interest problems), agents that want to list on Agentalent.ai can submit a Straw evaluation certificate as part of their listing application. The Straw certificate:
+- Is third-party verified (removes Monday.com's conflict-of-interest)
+- Is task-specific and rubric-backed (stronger than general qualification)
+- Has a tamper-proof UUID (Agentalent.ai can display the verification link on the listing)
+- Becomes a quality differentiator for listed agents ("Straw-certified" vs. uncertified)
+
+Monday.com's incentive: Better agents on the platform = better enterprise outcomes = less churn. They want a quality filter that isn't them.
+
+Straw's incentive: Every agent listed on Agentalent.ai is a potential evaluation customer. 17 agents at launch → 170 agents by year-end → 170 potential Straw evaluation customers, all coming through a single channel.
+
+**Who to contact:**
+- Daniel Langer (VP Product, Monday.com) — LinkedIn
+- Eran Zinman (Co-CEO, Monday.com) — LinkedIn, @eran_zinman on Twitter
+- The Agentalent.ai team email is likely engineering@monday.com or partnerships@monday.com
+
+**The opener:**
+> "You just launched Agentalent.ai — it's the right move at the right time. I'm building Straw, an independent AI agent evaluation platform. Your qualification process would be stronger with a third-party evaluation layer. Your agents get verified by someone without a conflict of interest; Straw gets a distribution channel. Worth 20 minutes?"
+
+---
+
+### The Broader Marketplace Landscape (Q2 2026)
+
+Agentalent.ai is the most enterprise-focused, but eight marketplaces are now active:
+
+1. **Claude Skills** (Anthropic) — Claude-native agents
+2. **GPT Store** (OpenAI) — consumer and developer agents
+3. **MCP Hubs** — model-context-protocol agent tools
+4. **Hugging Face Spaces** — open-source ML agents
+5. **Replit Agent Market** — developer-built agents
+6. **LangChain Hub** — LangChain-native agents
+7. **Vercel Agent Gallery** — Next.js-focused agents
+8. **Cloudflare AI Marketplace** — edge-deployed agents
+9. **Agentalent.ai** (Monday.com) — enterprise workforce agents
+10. **Kore.ai** — enterprise workflow agents (300+ integrations)
+
+**The opportunity:** None of these eight marketplaces have a third-party evaluation layer. All of them have a conflict-of-interest problem (they benefit from listing more agents, not fewer). All of them would benefit from a "Straw-certified" badge that signals quality to enterprise buyers.
+
+Straw as the cross-marketplace quality standard: the Kite Mark that enterprise buyers learn to look for regardless of which marketplace they're sourcing from.
+
+This is Straw's Phase 3 vision — not just evaluating individual agents, but becoming the quality certification layer for the entire enterprise AI agent distribution stack.
+
