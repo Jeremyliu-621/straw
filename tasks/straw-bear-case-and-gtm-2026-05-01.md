@@ -48221,3 +48221,144 @@ Straw's translation:
 
 The bear case is not that this strategy is wrong. The bear case is that executing it requires capital, patience, and founder-market fit that may not survive the 18-month path to first $100K ARR.
 
+
+---
+
+## Tick 632 — [GTM] The First Design Partner Call: Discovery Framework and Conversion Script
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Founder-led sales execution — turning cold outreach into paying design partners  
+**Sources:** Dorian Barker Founder-Led Sales 2026, Higher Levels B2B Sales for Founders, Horizon Cap B2B SaaS Sales Funnel, TwSales Founder-Led Sales Guide
+
+---
+
+### The Goal of the First Call
+
+The first call is not a demo. It is a discovery conversation. Jeremy should talk 30%, listen 70%.
+
+**What you are learning:**
+1. Does this company have a real AI agent evaluation problem (not just a vague interest in AI)?
+2. How costly is the problem today (in dollars, time, or reputation risk)?
+3. Are they actively looking for a solution, or just curious?
+4. Who signs the contract and what do they need to say yes?
+5. What would a successful outcome look like to them — specifically enough that you can measure it?
+
+**What you are NOT doing on call 1:**
+- Walking through a feature list
+- Showing a demo unless they explicitly ask for it
+- Discussing pricing in detail
+- Promising anything specific
+
+---
+
+### Call Structure (30 minutes)
+
+**Minutes 0-3: Set the agenda**
+```
+"Thanks for making time. Here's what I'm thinking for today — I want to spend most of this 
+call hearing about what you're working on and what's painful. If there's natural alignment 
+with what Straw does, I'll show you a quick demo at the end. Sound good?"
+```
+
+This immediately signals you're not here to pitch. You're here to understand. This alone increases receptivity by 30-40%.
+
+**Minutes 3-10: Understand their current state**
+
+Open with: "Tell me where you are with AI agents today."
+
+Then probe with:
+- "How many different AI agents or agent frameworks are you actively using or evaluating?"
+- "When you need to compare two agents for a specific task — like deciding whether to use Devin or a custom Claude agent for [their use case] — how do you currently make that decision?"
+- "Who in your org is responsible for that decision?"
+- "What does the last AI procurement decision look like in terms of process?"
+
+**The question that reveals everything:**
+> "If you had to justify to your board or legal team why you selected Agent A over Agent B for a workflow that costs you $500K/year — what document do you show them?"
+
+If they say "we don't have that, we just kind of tried it and it seemed to work better" — that's your opening. That is the problem Straw solves.
+
+If they say "we have an internal eval framework" — ask to understand it. You're either a complement or a competitor to their current process.
+
+**Minutes 10-20: Identify the pain and quantify it**
+
+"You mentioned [specific thing they said]. How expensive is that problem for you?"
+
+Probe for:
+- Time lost: "How many engineer-hours go into evaluating a new agent deployment?"
+- Money at risk: "What's the contract value of the agent deployments you're making these decisions about?"
+- Political cost: "If you make a wrong call on an agent selection, who feels that pain?"
+
+The goal is to get them to say a number. "Honestly, we probably spend $50K in engineering time every time we evaluate a new agent vendor." Now Straw at $2,500/evaluation is a 20x ROI calculation.
+
+**Minutes 20-25: Show the minimum viable demo**
+
+Only if you've confirmed real pain. The demo is 5 minutes, not 20. Show:
+1. Task definition interface (30 seconds)
+2. Agent submission and scoring (30 seconds)  
+3. The certificate output (2 minutes — this is the money shot)
+4. Certificate verification URL (30 seconds)
+
+"The certificate is the thing your procurement team, your legal team, and your board can actually look at. It shows what was tested, what the rubric was, and what the agent scored — with a tamper-proof hash so nobody can edit it after the fact."
+
+**Minutes 25-30: Close for next step**
+
+"Based on what you've told me about [their specific problem], Straw seems like it could directly address [specific pain point they named]. Here's what I'm proposing for a next step:
+
+Our design partner program gives you 3 evaluation runs free in exchange for 4 structured feedback sessions over 12 weeks. You get the evaluation results and certificates to use however you need. We get your feedback to improve the product.
+
+Is that something worth doing, or is there a reason we're not the right fit right now?"
+
+The binary close ("do this, or tell me why not") is more effective than an open-ended "let me know if you're interested."
+
+---
+
+### Handling the 4 Most Common Objections
+
+**Objection 1: "We're still figuring out our AI agent strategy. Not sure we're ready."**
+
+Response: "That's actually the perfect time — Straw helps you *define* what success looks like before you commit to an agent. Most companies that wait until they have a strategy end up having to backtrack when the first agent doesn't perform. Would it be useful to run one evaluation to benchmark your current setup before the strategy is finalized?"
+
+**Objection 2: "We have an internal eval process."**
+
+Response: "Can you tell me more about how it works? I'm genuinely curious about what you've built." 
+
+[Listen carefully. Then:] "So the gap I'm hearing is [specific gap — usually compliance documentation, reproducibility, or third-party independence]. Is that a gap that matters to your procurement team?" 
+
+Often, internal eval processes are engineer-built and don't produce compliance-grade artifacts. Straw fills the last-mile gap.
+
+**Objection 3: "How do I know your evaluation is accurate?"**
+
+Response: "Great question — and it's the right one to ask. Our T3 investigative evaluation is adversarial: the judge actively probes the submission to look for gaming. We also use private rubrics that the agents don't see in advance — which means there's no way to optimize for the test without actually solving the problem. Would you be willing to red-team our evaluation in a design partner run? Bring an agent you know is great and an agent you know is mediocre, and we'll see if the scores match your expectation."
+
+**Objection 4: "What does this cost?"**
+
+If asked early: "We're still in design partner mode, so for the first few runs there's no charge in exchange for structured feedback. When we move to paid, evaluations are in the $2,500–$5,000 range per run. Does that price range work for the budget you'd be working with?"
+
+If they say "too expensive" at $2,500: they're not the right ICP. An evaluation of an agent contract worth $50K+ should have a $2,500 due-diligence budget.
+
+---
+
+### Post-Call Process (Within 24 Hours)
+
+1. **Send a written summary** of what you heard, what Straw does, and what the proposed next step is. This doubles as documentation for their internal champion to share upward.
+
+2. **Include one specific stat** from the call: "You mentioned 40 engineer-hours per agent evaluation. At $125/hour loaded cost, that's $5,000 per evaluation — and Straw replaces that with a $2,500 run that produces compliance-grade documentation."
+
+3. **Attach the one-pager** (the "AI Agent Procurement Problem" framework from Tick 630). Give them collateral they can put in front of their boss.
+
+4. **Set a 7-day follow-up** in your calendar regardless of their response.
+
+---
+
+### The Decision to Skip the Free Tier
+
+At some point, Jeremy should stop offering free design partner runs and start charging from the first evaluation. The trigger: when 3 paying customers exist who paid without discounts.
+
+Until then, the design partner offer is correct — but insist on a co-marketing commitment in exchange for free access. Every design partner must agree to:
+- One public testimonial (can be anonymized as "a Series B fintech company")
+- One case study write-up (Jeremy writes, they approve)
+- One 30-minute quarterly feedback call
+
+Without this commitment structure, design partners give you their time inconsistently and you lose the research value. "Free in exchange for structured feedback" is a contract, not a favor.
+
