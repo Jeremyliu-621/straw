@@ -57298,3 +57298,213 @@ Question 5 is the most important. The answer tells you whether you have a recurr
 
 **Backlog:** Build the design partner tracking spreadsheet; draft the design partner contract (2-page professional services agreement with co-design commitments); prepare the 8-week program timeline as a PDF to share with design partners.
 
+
+---
+
+## Tick 725 — [GTM] LinkedIn Founder Content Strategy: How Jeremy Reaches CAIOs at Scale [2026-05-04]
+
+**Theme: GTM | Research area: Content vs. outbound — LinkedIn as primary inbound channel**
+
+---
+
+### The LinkedIn 2026 Algorithm Reality
+
+Key data for 2026 LinkedIn:
+- **LinkedIn penalizes external links by 60%** in the algorithm — never put the URL in the post body; put it in the first comment
+- **Depth Score** is the new primary ranking signal — measured by how long users engage with your content, not just clicks
+- **79% of B2B decision-makers actively ignore cold direct messages** in 2026 — cold DM is nearly dead; content builds the relationship before the DM
+- **2-5x weekly posting cadence** is the sweet spot; companies/founders that post 4x/week see 2x engagement lift
+- **Founder-led thought leadership drives significantly higher reach** than corporate page posts — in AI, cybersecurity, and compliance markets, buyers want domain experts, not brand accounts
+- **Documents and newsletters outperform standard posts** for Depth Score
+
+---
+
+### Why LinkedIn Is Straw's Primary Inbound Channel (Not Twitter/X)
+
+Straw's buyer persona (CAIO, CCO, GC at enterprise companies) is on LinkedIn, not Twitter/X. Twitter/X is where AI developers, researchers, and VCs live. CAIOs and compliance officers live on LinkedIn.
+
+Jeremy should have presence on both, but:
+- **LinkedIn → enterprise buyer relationship building** (CAIO, CCO, GC)
+- **Twitter/X → developer, researcher, and VC relationship building** (Show HN audience, YC, AI researchers)
+
+For the first $100K ARR, LinkedIn is more important. For Series A fundraising, Twitter/X matters more.
+
+---
+
+### The 12-Week LinkedIn Content Calendar
+
+This calendar builds a CAIO readership by showing domain expertise in AI governance, regulatory compliance, and agent evaluation methodology. Rotate through four content types.
+
+**Content Type 1: Regulatory Education Posts (Hook: "Here's what the regulation actually requires")**
+- Converts compliance-curious readers into followers
+- Example: "FINRA 2026 AI agent exam priorities: Here's exactly what your exam team will ask about. Thread."
+- Format: 3-7 bullet list with specific regulatory language + plain-English translation + 1-sentence Straw mention at the end
+
+**Content Type 2: Data-Backed Insight Posts (Hook: "The number that surprised me")**
+- High engagement because CAIOs love sharing data with their boards
+- Example: "85% of enterprises are piloting AI agents. Only 5% reached production. The gap is not capability — it's trust. Here's what creates the gap, and how to close it."
+- Format: Strong opening number, 3-4 sentences explaining why, 1 practical takeaway
+
+**Content Type 3: Lessons from the Field (Hook: "What I learned running an AI evaluation")**
+- The most authentic content type; impossible to fake
+- Example: "We ran Straw's T3 investigative probing on a financial services AI agent last week. The probe that revealed the most wasn't the hardest question — it was this: [describe specific finding without identifying the customer]"
+- Format: Story format, specific detail, learning that CAIO can apply
+
+**Content Type 4: Contrarian Takes (Hook: "The conventional wisdom is wrong about this")**
+- Highest share rate when done well
+- Example: "Everyone says hire an ML engineer to evaluate your AI agents. Wrong. Here's why internal evaluation is legally insufficient for FINRA compliance — and what to do instead."
+- Format: State the wrong belief, explain why it's wrong with specific evidence, state the right approach
+
+---
+
+### The 12-Week Calendar (One Post Per Type Per Week = 4 Posts/Week)
+
+| Week | Regulatory Education | Data-Backed Insight | Field Lesson | Contrarian Take |
+|---|---|---|---|---|
+| 1 | "FINRA 2026 AI exam: exactly what they'll ask" | "85% piloting, 5% in production" | "What the first Straw evaluation taught me" | "Why vendor demos are insufficient for AI procurement" |
+| 2 | "Colorado AI Act: 8 weeks, what you need to do" | "RAND: 80% of AI projects fail. The reason isn't the AI." | "What happens when T3 probing finds a failure" | "Self-evaluation doesn't satisfy ISO 42001. Here's why." |
+| 3 | "ISO 42001 Section 9: the AIMS audit trail requirement" | "Gartner: $10B in AI liability costs by mid-2026" | "The rubric design mistake every first-time enterprise buyer makes" | "Braintrust and Arize are great — but they're for the wrong problem" |
+| 4 | "EU AI Act August deadline: 5 things to do now" | "62% require human approval for agent transactions" | "How to define success criteria before the competition starts" | "The 'we'll evaluate it ourselves' objection is invalid. Thread." |
+| 5 | "SEC 2026 exam priorities: the AI agent question" | "Builder.ai: $220M claimed, $55M actual. This is why third-party evaluation exists." | "The CAIO who came to Straw with a $300K AI project and a 5-question rubric" | "The Kaggle leaderboard got gamed. So did Chatbot Arena. Here's what works instead." |
+| 6-12 | Rotate similar themes with updated regulatory and market data | | | |
+
+---
+
+### The LinkedIn Post Structure That Gets CAIO Engagement
+
+The Depth Score algorithm rewards posts where readers keep reading. The optimal structure:
+
+**Line 1:** The hook. Strong enough to stop scrolling. Specific number, bold claim, or direct question.
+`Example: "62% of enterprises still require a human to approve every financial transaction their AI agent touches."`
+
+**Lines 2-4:** The context. Why this matters. What it means.
+`Example: "That's not because AI can't handle it. It's because the organization can't verify that AI will handle it correctly. The documentation doesn't exist. The independent evaluation was never done."`
+
+**Lines 5-7:** The insight or lesson.
+`Example: "FINRA 2026 exam priorities now explicitly include 'documented AI agent evaluation before deployment.' Your exam team will ask for this documentation. Most organizations don't have it."`
+
+**Line 8:** The call to action or reframe (NOT a link in the body).
+`Example: "This is the gap Straw was built for. If you're preparing for a FINRA exam cycle, feel free to DM me — happy to share the checklist we use."`
+
+**First comment:** Link to relevant content (white paper, pricing page, etc.)
+
+**Length:** 200-400 words. Enough for Depth Score; not so much it feels like an essay.
+
+---
+
+### The Engagement Strategy Before Posting
+
+Before Jeremy's account has reach, the flywheel starts by engaging with CAIO content:
+
+1. **Follow 20 CAIOs** (from the names in earlier ticks — Jodie Wallis, Shobhit Varshney, David Rice, Daniele Magazzeni, etc.)
+2. **Like and comment substantively** on their posts for 2 weeks before posting anything yourself
+3. **A substantive comment** (2-3 sentences adding real value) on a CAIO's post reaches all of their followers — effectively borrowing their audience
+4. **After 2 weeks of engagement, post your first original content** — you'll have a warm audience that already knows your name
+
+This is the "comment before post" strategy. Most founders skip it and wonder why their posts get no engagement. The algorithm rewards accounts that engage before broadcasting.
+
+---
+
+**Backlog:** Build 12-week LinkedIn content calendar in a spreadsheet; write the first 3 posts this week (FINRA 2026, 85/5 paradox, first field lesson); follow 20 CAIOs; spend first 2 weeks engaging, not posting.
+
+
+---
+
+## Tick 726 — [BEAR] Vellum, Humanloop, PromptLayer: Adjacent Tools, Not Competitors [2026-05-04]
+
+**Theme: Bear Case | Research area: Complete competitive landscape — where do prompt management/LLM tools sit?**
+
+---
+
+### The Full Competitive Landscape (Complete Picture)
+
+As of Q2 2026, the AI evaluation and monitoring market has five categories. Straw is in only one:
+
+| Category | Players | Buyer | Stage | Straw Overlap? |
+|---|---|---|---|---|
+| **Pre-deployment competitive evaluation** | Straw | CAIO, CCO, Procurement | Before deployment | Core product |
+| **Post-deployment observability/monitoring** | Braintrust ($800M), Arize ($131M), Maxim AI, Langfuse | Engineering teams | After deployment | None — complement |
+| **Prompt management + LLM testing** | Humanloop, Vellum, PromptLayer, Langsmith | Engineering teams | During development | None — different buyer |
+| **AI safety / red teaming** | METR, Anthropic safety team, Apart Research | Safety researchers | Before/during deployment | None — different concern |
+| **AI governance platforms** | Credo AI, Holistic AI | Risk/compliance | Enterprise-wide | Partial overlap — but they are process tools, Straw is the evaluation artifact |
+
+**Straw's position is confirmed unique:** No well-funded competitor occupies the pre-deployment competitive evaluation for procurement compliance quadrant.
+
+---
+
+### Vellum: Visual LLM Workflow Builder (Not a Competitor)
+
+**What Vellum does:** Visual workflow builder for LLM applications. Side-by-side prompt comparison. One-click deployment. Enterprise RBAC.
+
+**Who buys Vellum:** Engineering teams and product managers building LLM-powered features. They're comparing "should I use GPT-4o or Claude for this specific workflow?" Not "should I hire this AI agent for this production role?"
+
+**Why Vellum is not a Straw competitor:**
+- Vellum evaluates LLM outputs, not AI agent performance on enterprise tasks
+- Vellum's buyer is an engineer or PM; Straw's buyer is a CAIO or CCO
+- Vellum produces no compliance certificate; it produces engineering dashboards
+- Vellum is a development tool; Straw is a procurement/compliance tool
+
+**Relationship to Straw:** Vellum users are often the people who BUILD the agents that Straw evaluates. The agent builder uses Vellum during development → the enterprise uses Straw before buying. Complementary.
+
+---
+
+### Humanloop: Enterprise LLM Evaluation for Engineering Teams (Not a Competitor)
+
+**What Humanloop does:** Enterprise-grade LLM evaluation with prompt management and observability. Evaluation criteria + rubrics + human rating workflows. "Best for organizations that need prompt management with real governance: version controls, controlled deployments."
+
+**Who buys Humanloop:** Engineering teams shipping high-stakes LLM features in legal, support, healthcare, finance.
+
+**Why Humanloop is not a Straw competitor:**
+- Humanloop evaluates LLM prompts and responses, not AI agents competing on enterprise tasks
+- Humanloop's evaluation is for improving a single LLM deployment — not comparing multiple competing agents head-to-head
+- Humanloop produces no compliance certificate; it produces engineering metrics
+- Humanloop is a development/QA tool; Straw is a procurement/compliance tool
+
+**The subtle difference:** Humanloop helps you make one AI system better. Straw helps you decide which AI system to hire. These are sequential, not competing, decisions.
+
+**Potential partnership:** A company using Humanloop in production could use Straw to evaluate agent candidates before deploying them to Humanloop monitoring. Straw → Humanloop is a natural workflow.
+
+---
+
+### PromptLayer: Logging and Version Tracking for Non-Technical Users (Not a Competitor)
+
+**What PromptLayer does:** Easy-to-set-up prompt logging and version tracking. Under 30 minutes to start. Low cost. Visual version control for non-engineers.
+
+**Who buys PromptLayer:** Non-technical subject matter experts (legal professionals, healthcare specialists) who manage AI prompts without engineering bottlenecks.
+
+**Why PromptLayer is not a Straw competitor:** Same reasoning as Humanloop and Vellum — engineering/product tool, not compliance/procurement tool.
+
+---
+
+### Credo AI and Holistic AI: AI Governance Platforms (Partial Overlap, Complement)
+
+**What Credo AI does:** AI governance platform. Helps enterprises manage AI risk, ensure compliance, run AI inventories. Gartner Market Guide for AI Governance Platforms. Named No. 6 in Fast Company's World's Most Innovative Companies 2026.
+
+**What Holistic AI does:** Enterprise AI governance platform. Full lifecycle oversight — model discovery, risk management, compliance.
+
+**Where these overlap with Straw:**
+- Both serve compliance and governance buyers (similar buyer persona to Straw)
+- Both address AI regulatory requirements (ISO 42001, EU AI Act, etc.)
+- Both could theoretically produce AI agent evaluation artifacts
+
+**Where Straw differs:**
+- Credo AI and Holistic AI are *process platforms* — they help you manage AI governance as an ongoing workflow
+- Straw is an *evaluation artifact* — it produces a specific compliance document (the AIMS audit trail) for a specific agent at a specific point in time
+- Straw is the instrument that generates the artifact that Credo AI and Holistic AI help you track and manage
+
+**Relationship:** Credo AI customer → uses Credo AI to track their AI inventory and manage governance process → needs Straw to generate the evaluation artifact for each new agent → Straw certificate gets logged in Credo AI's system. **Straw and Credo AI are not competitors — Straw is a data source for Credo AI's governance dashboard.**
+
+**Partnership opportunity:** Contact Navrina Singh (Credo AI CEO) about an integration: "Straw evaluation certificates as a native data source in Credo AI's AI inventory." This makes Straw sticky — once Credo AI pulls Straw data, every Credo AI customer is a potential Straw customer.
+
+---
+
+### The Positioning Statement That Closes the Competitive Landscape
+
+**When a CAIO asks "how are you different from Braintrust, Humanloop, Vellum?":**
+
+"Braintrust, Arize, Humanloop, and Vellum are all tools for engineering teams building and monitoring AI systems after you've decided what to build. They're useful. Straw is for before you've decided — when you're evaluating which AI agent to hire. We're the instrument you use before the procurement decision, not after the deployment. The compliance certificate we produce is something none of those tools create. And they can't — they're all part of your internal stack, which means they can't produce an independent third-party audit artifact."
+
+---
+
+**Backlog:** Contact Navrina Singh (Credo AI CEO) about Straw integration; add complete competitive landscape table to pitch deck; add "Straw → Humanloop" workflow description to positioning doc.
+
