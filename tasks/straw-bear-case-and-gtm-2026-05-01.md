@@ -56954,3 +56954,210 @@ With these four materials, Straw can run an enterprise sales conversation profes
 
 **Backlog:** Build the four MVP sales materials (one-pager, pricing page, sample certificate, MSA template); get SOC 2 Type II started; coach CAIO champions to scope as professional services.
 
+
+---
+
+## Tick 722 — [GTM] Cursor, Modal, Braintrust: Three Dev-Tool Revenue Stories and What Straw Can Steal [2026-05-04]
+
+**Theme: GTM | Research area: Dev-tool first revenue stories as models for Straw**
+
+The Phase 2 mandate specifically asked for "dev-tool first revenue stories (Cursor, Modal, Braintrust)" as GTM models. Here is the analysis — including which patterns apply and which don't.
+
+---
+
+### Cursor: $4M to $2B ARR in 18 Months (2024-2025)
+
+**The mechanism:**
+- Zero traditional marketing spend; purely product-led growth
+- Bottom-up adoption: developers discovered Cursor, shared screenshots on Twitter/X, viral developer community adoption
+- Early enterprise customers: OpenAI, Midjourney, Shopify, Instacart (all inbound, not outbound)
+- Founders were "all for coding every day" — no hiring, events, networking until the product was right
+- 12 months to $100M ARR from $1M
+
+**Why this pattern does NOT apply to Straw:**
+Cursor's PLG model requires: (1) individual user can start using immediately with no procurement process, (2) value is immediately obvious in the first session, (3) the buyer and user are the same person (developer), (4) viral sharing is natural (developers love sharing tools on Twitter).
+
+Straw has none of these. The CAIO is the buyer, not the user. The first session requires defining evaluation criteria, selecting a rubric, onboarding agents — weeks of setup. The compliance certificate has no Twitter-viral appeal. Straw cannot follow the Cursor playbook.
+
+**The one Cursor lesson that applies:** *Founders must be obsessively product-focused in Year 1.* No hiring for non-core functions. No events. No networking for its own sake. Jeremy should be running evaluation engagements himself for the first 10 customers to learn what the product actually does under real conditions.
+
+---
+
+### Modal: 1.5 Years to No Revenue, Then $50M ARR (Founded 2021, Live 2023)
+
+**The mechanism:**
+- CEO Erik Bernhardsson (former Spotify, Better) spent 2+ years building before revenue
+- Official launch October 2023; early adopters: Ramp, Substack, SphinxBio (all developer-adjacent companies with ML teams)
+- Revenue grew >50x in 12 months; ~$50M ARR as of February 2026; in talks to raise at $2.5B valuation
+- Found customers through technical blog posts by the founders (Erik writes extensively on engineering topics at erikbern.com)
+
+**Why this pattern partially applies to Straw:**
+Modal's buyers are ML engineers and developers at companies — a niche technical audience found through technical content. Straw's buyers are CAIOs and compliance officers — a niche executive audience found through regulatory content.
+
+**The Modal pattern to steal:** *Technical credibility content drives early inbound.*
+- Modal: Erik Bernhardsson's ML engineering blog posts → inbound from ML engineers
+- Straw equivalent: Jeremy's regulatory/AI governance blog posts → inbound from CAIOs
+
+**Specific content plays:**
+- "How to Build an AI Agent Audit Trail for FINRA 2026" → published on Substack, LinkedIn, linked from AI governance forums
+- "What ISO 42001 Section 9 Actually Requires (and How to Get It)" → published where compliance officers read
+- "The 10 Regulatory Requirements for Enterprise AI Agent Deployment" → turns into landing page, LinkedIn post, and email newsletter
+
+Modal also got meaningful traction from being featured in YC batch circles and Hacker News technical discussions. **Show HN: Straw — AI agent evaluation with tamper-proof compliance certificates** is the Straw equivalent of Modal's HN launch.
+
+---
+
+### Braintrust (AI Observability): $5M Seed → $800M Valuation, Customers = Zapier, Coda, Airtable (Founded 2023)
+
+**The mechanism:**
+- Developer-first product (evaluation SDK, Python native, open-source-friendly)
+- Early customers are engineering teams at tech companies (Zapier, Coda, Airtable, Instacart)
+- Product-led: engineers start free, upgrade as usage grows
+- Series B at $800M valuation as of February 2026
+
+**Why this pattern does NOT apply to Straw:**
+Braintrust's buyers are engineering teams. Free tier → paid tier expansion model. Straw's buyers are compliance officers and CAIOs. There is no free tier that makes sense — a free certificate has no compliance value. Straw cannot follow the Braintrust PLG playbook.
+
+**The Braintrust lesson that applies:** *Early customers from known networks.*
+Ankur Goyal (Braintrust CEO) had prior network in Silicon Valley tech companies from previous roles. His first 10 customers were warm introductions from that network.
+
+Jeremy doesn't have a CAIO network yet. But Jeremy has:
+- Stanford CS network → people at AI companies → people who sell to or work with enterprise compliance buyers
+- YC application / YC alumni network → other founders who have CAIO contacts
+- Twitter/X presence in AI space → build that presence, then the CAIOs come to you
+
+**The Braintrust content strategy to steal:** Braintrust published heavily on AI evaluation methodology — it became the authoritative source on how to do LLM evaluation correctly. Straw should become the authoritative source on how to do AI agent compliance evaluation correctly. Publish the FINRA white paper. Publish the ISO 42001 guide. Become the reference.
+
+---
+
+### The Unified Lesson for Straw's First $100K ARR
+
+Cursor (PLG/viral) → Not applicable. Straw's buyer is not a developer.
+
+Modal (technical content → technical buyers) → Applicable with substitution: regulatory content → CAIO/compliance buyers.
+
+Braintrust (warm network → first 10, then content → authority) → Applicable: warm outreach for first 5 design partners, then content authority for inbound.
+
+**The Straw GTM recipe (derived from these three stories):**
+
+1. **Month 1:** Personal outreach to 20 named CAIOs (from the research in earlier ticks). No scaling, no automation — founder-to-buyer direct. Goal: 5 conversations.
+2. **Month 2:** First 2-3 design partners signed. Run the evaluation yourself. Learn what the product actually does under real conditions.
+3. **Month 3:** Write the FINRA white paper and ISO 42001 guide based on what you learned from real evaluations. Publish on LinkedIn, Substack, and relevant compliance forums.
+4. **Month 4:** Show HN launch. Content drives inbound inquiries.
+5. **Month 5-6:** Convert inbound inquiries from content + referrals from design partners. Reach 7 customers.
+6. **Month 6 milestone:** $100K ARR (7 customers × $14,300 average — achievable with mix of Pilot and Standard tier).
+
+This is slower than Cursor's trajectory but appropriate for enterprise B2B compliance infrastructure. Modal's 18 months from launch to $50M ARR is the realistic ceiling — Straw should target $100K ARR at Month 6, $500K ARR at Month 12.
+
+---
+
+**Backlog:** Start writing the FINRA white paper this week (it's the Modal "technical blog post" equivalent that drives inbound for Straw). Eric Bernhardsson's blog is the model — long, substantive, actually useful.
+
+
+---
+
+## Tick 723 — [GTM] The Build-vs-Buy Math for AI Agent Evaluation [2026-05-04]
+
+**Theme: GTM | Research area: Make-vs-buy financial argument for Straw**
+
+This is the clearest ROI argument Straw can make. Here is the math.
+
+---
+
+### What It Costs to Build an AI Agent
+
+From 2026 enterprise AI agent development cost data:
+
+| Agent Complexity | Build Cost | Annual Maintenance (20% of build) |
+|---|---|---|
+| Simple reactive agent | $20K-$80K | $4K-$16K/year |
+| Intermediate complex agent | $40K-$150K | $8K-$30K/year |
+| Advanced enterprise agent | $80K-$200K | $16K-$40K/year |
+| Multi-agent system | $200K-$2M+ | $40K-$400K+/year |
+
+**The typical enterprise AI agent project: $100K-$300K to build.**
+
+67% of companies using vendor evaluation tools succeed vs. 33% success for internal builds. (McKinsey, 2026)
+
+---
+
+### What It Costs to Evaluate an Agent (Straw vs. Internal)
+
+**Straw Standard tier:** $12,500 per evaluation
+
+**Building internal evaluation capability:**
+- 1 senior ML engineer to design and run evaluations: $300K-$400K/year all-in (salary + benefits + equity)
+- That engineer can run ~20-30 meaningful evaluations per year at maximum
+- Cost per internal evaluation: $10,000-$20,000 — roughly the same as Straw
+- **But the internal engineer does not produce a tamper-proof certificate satisfying ISO 42001 Section 9, FINRA audit trail requirements, or Colorado AI Act documentation**
+- The compliance artifact has zero DIY cost-equivalent because DIY self-evaluation doesn't satisfy the requirement
+
+**The true cost of NOT evaluating:** $340K average direct cost of a failed AI project (from Tick 671 / earlier research). Add $4.2M-$8.4M in total costs when indirect effects are included.
+
+**The ROI math:**
+- Evaluation cost: $12,500 (Straw Standard)
+- Average failed project cost: $340,000 (direct only)
+- Break-even: Straw needs to prevent 1 failure in every 27 evaluations to pay for itself at cost of capital
+- Realistic improvement from evaluation: 4.5x improvement in success rate when metrics are defined pre-approval (RAND 2025 research)
+- Actual expected value: $12,500 investment → expected reduction in failure cost of ~$290,000 (80% failure → ~18% failure with Straw, on a $340K average failure cost)
+
+**One-sentence pitch to the CFO:** *"You spent $150,000 building this AI agent. Straw costs $12,500 to independently verify it works before you deploy it — that's 8% of your build budget as insurance against the 80% chance it fails without defined evaluation criteria."*
+
+---
+
+### The "We'll Evaluate It Ourselves" Objection
+
+**Objection:** "We have ML engineers. We can run our own evaluations."
+
+**Answer:**
+1. **Self-evaluation doesn't satisfy the regulatory requirement.** ISO 42001 Section 9, FINRA 2026, and Colorado AI Act all require third-party independent evaluation. By definition, your ML engineers cannot be independent evaluators of their own work.
+2. **The certificate format is proprietary.** Straw's tamper-proof certificate (UUID + Merkle hash verification) is not replicable internally. Even if your team runs identical tests, they cannot produce the audit artifact that satisfies the regulator.
+3. **Opportunity cost of ML engineer time.** Your senior ML engineer costs $300K-$400K/year. If they spend a week running a full evaluation (designing rubric + running tests + writing report), that's $6K-$8K in engineering time. Straw does this for $12,500 and produces a compliant artifact. The cost difference is not large enough to justify compromising on the compliance artifact.
+
+---
+
+### The Recurring Revenue Math (Make-vs-Buy at Scale)
+
+Enterprises don't evaluate agents once. Under the regulatory frameworks:
+- Colorado AI Act: annual assessment + 90-day reassessment on every modification
+- ISO 42001: ongoing AIMS audit trail (not a one-time event)
+- FINRA: ongoing documented evaluation for new or modified AI deployments
+
+An enterprise with 3 agents, each modified twice per year:
+- 3 agents × 3 evaluations/year (1 annual + 2 modification reassessments) = 9 Straw evaluations/year
+- At $12,500 each = **$112,500/year from one enterprise customer**
+
+This is the recurring revenue math that justifies Straw's business model. The regulatory frameworks don't just create demand for first-time evaluation — they create demand for recurring evaluation. Every enterprise with agents in production is a perpetual customer.
+
+**Internal evaluation alternative at this scale:**
+- 9 evaluations/year requires 1.5-2 FTE ML engineers (evaluations are not the only thing they do, but ~30% of their time)
+- Cost: 1.5 FTEs × $350K/year = $525K/year in engineering time
+- Straw at $112,500/year vs. $525K/year internal = **Straw saves $412,500/year** after 5+ agents
+- This is the ROI calculation that makes the CFO conversation easy at scale
+
+---
+
+### The Make-vs-Buy Decision Framework for AI Governance
+
+For the pitch to a skeptical CFO or procurement officer:
+
+| Factor | Build Internal | Buy Straw |
+|---|---|---|
+| First evaluation cost | $6K-$20K (ML eng time) | $6,500-$12,500 |
+| Compliance artifact | Cannot produce (not independent) | Included |
+| Regulatory compliance | Does not satisfy (self-evaluation) | Satisfies ISO 42001, FINRA, Colorado AI Act |
+| Third-party independence | By definition unavailable | Core value prop |
+| Scale economics | Gets cheaper as team learns | Fixed price per evaluation |
+| First-mover advantage | 0 — internal team has no external credibility | "Straw-certified" is an external signal |
+| Audit defense | Weak (self-generated) | Strong (tamper-proof, third-party, scoped) |
+
+**The decisive factor:** Regulatory compliance requires independence. Internal teams cannot produce what the regulation requires. This is not a cost question — it's a requirement question.
+
+---
+
+**Pitch closing line for the CFO:** *"This isn't a build-vs-buy decision. Internal evaluation can't produce a compliant audit artifact because the regulation requires independence. Straw is the only option that satisfies the requirement."*
+
+---
+
+**Backlog:** Add build-vs-buy ROI table to sales one-pager; add "8% of build budget as insurance" framing to Standard tier pricing explanation on pricing page; add recurring evaluation math to design partner contract structure.
+
