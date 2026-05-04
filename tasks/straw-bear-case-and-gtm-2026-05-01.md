@@ -41020,3 +41020,56 @@ Straw provides all three regardless of where on the commoditization curve models
 
 ---
 
+---
+
+## Tick 551 — AI Agent Liability Insurance: The Emerging Coverage Gap [BEAR/GTM]
+
+*2026-05-04. Major insurers are adding generative AI exclusions as of January 2026. Straw exists in a new liability environment.*
+
+### The 2026 AI insurance landscape
+
+**The major shift (January 2026):**
+ISO (Insurance Services Office) introduced new optional endorsements CG 40 47 and CG 40 48 — generative AI exclusions under Commercial General Liability (CGL) policies. Insurers can now deny coverage for claims tied to generative AI outputs.
+
+**The coverage gap for enterprises:** Traditional CGL policies may NOT cover AI agent failures. Enterprises deploying AI agents have a hidden liability exposure.
+
+**Gartner (April 2026):** General counsel should assess AI insurance to mitigate AI risks. By 2030, P&C insurers will mandate strong AI risk controls for affirmative AI liability coverage.
+
+**Armilla AI (Lloyd's of London):** First specialized AI liability policy — up to $25M per organization. Covers hallucinations, model drift, inaccurate outputs, data leakage, AI regulatory violations.
+
+### Catastrophic risk scenario
+
+**Aon's assessment:** The industry could absorb a $400-500M hit from a single company's misfiring agent. But NOT an upstream failure producing thousands of simultaneous losses from one model. The systemic risk is the model's failure mode, not individual agents.
+
+**What this means for Straw:** Straw evaluates agents before deployment. A Straw-certified agent that later causes a catastrophic failure creates liability questions:
+- Did Straw's evaluation mislead the enterprise about agent safety?
+- Was Straw's evaluation scope limited to the evaluated task (not generalized safety)?
+- Does Straw's "Evaluation Certificate" imply a broader safety guarantee?
+
+**Straw's liability shield:**
+- Evaluation Certificate must state: "This certificate covers performance on the specific rubric defined at evaluation time. It does not represent a general safety guarantee."
+- Straw's DPA must disclaim: "Straw evaluates agent performance on enterprise-specified criteria. Straw does not warrant agent safety in production environments."
+- Straw is not liable for agent behavior after deployment.
+
+### How Straw's evaluation REDUCES enterprise insurance risk
+
+**The positive angle:** Enterprises with documented pre-deployment evaluation may qualify for lower AI liability insurance premiums.
+
+**Armilla AI's pricing model:** Enterprises with stronger AI governance = lower risk = lower premiums. Straw's Evaluation Certificate = documented governance evidence.
+
+**Pitch to enterprise insurance/risk teams:**
+> "Straw's evaluation certificate documents your pre-deployment AI agent assessment. Some AI liability insurance carriers (including Armilla AI via Lloyd's) offer discounts for enterprises with documented evaluation processes. The $5,000 Straw evaluation may reduce your annual AI liability insurance premium by more than its cost."
+
+This is the "insurance discount" pitch — works particularly well for:
+- Financial services (SR 11-7 model risk management)
+- Healthcare (FDA-cleared AI tools)
+- Regulated industries where insurance premiums are material
+
+### Straw as an insurance-adjacent product
+
+Long-term vision (2028-2030): Straw partners with AI liability insurance carriers. Enterprises that run annual Straw evaluations qualify for lower premiums. Insurance carriers fund agent evaluations as risk mitigation.
+
+**The model:** Armilla AI (insurer) + Straw (evaluator) = enterprise AI deployment package. Armilla covers the tail risk; Straw certifies the pre-deployment process. This mirrors the SOC 2 + cyber insurance bundle in traditional SaaS.
+
+**#189: Armilla AI** — First specialized AI liability Lloyd's coverholder. Contact via their website (armilla.ai). Partnership pitch: "Straw evaluation → Armilla coverage discount for enterprises."
+
