@@ -50074,3 +50074,166 @@ The three fintech personas Jeremy should have conversations with in the first mo
 
 The compliance angle is the fastest path to a non-discretionary sale. The CAIO conversation is optional (they can always decide to build evaluation internally). The CCO conversation is mandatory — they have a regulatory requirement that Straw directly satisfies.
 
+
+---
+
+## Tick 649 — [SYNTHESIS] The Two-Week Action Plan: What Jeremy Does Monday Through Friday, Two Weeks Straight
+
+**Theme:** All three themes synthesized  
+**Date:** 2026-05-04  
+**Thread:** Morning reading guide addendum — concrete daily action plan  
+
+---
+
+### Preamble: What This Session Produced
+
+This research session (Ticks 627-649) added 23 new ticks to the Phase 2 file across all three themes. The key new material:
+
+**Bear case:**
+- Enterprise autonomy trust data (20% trust AI for financial transactions)
+- OpenAI Operator substitution math ($200/month informal substitute vs $2,500 formal)
+- EU PLD correction (AILD withdrawn, strict no-fault liability from Dec 9 2026)
+- Anthropic enterprise push (Managed Agents, Cowork, plug-ins — 12-18 month threat window)
+- Goodhart's Law doom loop (evaluation gaming is inevitable at scale; T3 + rubric rotation mitigates)
+- Market structure is fragmented (not winner-take-all, $6.24B by 2030)
+
+**GTM:**
+- Cold email templates (5 verticals, 3-touch sequence, 18% reply rate with signal personalization)
+- Conference strategy (Snowflake Summit June 1-4, The AI Conference Sept 30-Oct 1)
+- Discovery call framework (30/70 talk ratio, the key question, 4 objection handlers)
+- LinkedIn 12-week CAIO playbook (3-4 posts/week, personal account)
+- Show HN launch draft (post Monday 9am, after 3 design partners signed)
+- FINRA/SEC regulatory mandate (SEC examiners looking for AI evaluation documentation — non-discretionary demand)
+- FINRA white paper strategy (6-page white paper as credibility proxy before 10 customers)
+
+**Partners:**
+- Complete 35-contact table (10 S-priority, 16 A-priority, 9 B-priority)
+- OpenHands / All Hands AI contacts (Robert Brennan, Xingyao Wang)
+- YC W26 infrastructure companies (Janus, Casco, Kashikoi, Laminar, Langfuse)
+- AI Ops Manager as secondary buyer (emerging job role, design partner candidate)
+- Vals AI partnership angle (Straw = private rubric / Vals = public benchmark — referral relationship)
+- Investor targets (a16z, KP, Felicis, First Round, Elad Gil, The House Fund)
+- Healthcare AI: postpone to Month 12, pursue health tech companies now
+
+---
+
+### Week 1: Days 1-5 (Monday-Friday)
+
+**Monday AM — First 2 Hours:**
+1. Write and send one cold email to Beth Barnes (METR) using Template 1 (AI eval lab)
+2. Write and send one cold email to one CAIO using Template 2 (CAIO fintech opener with FINRA hook)
+3. Publish first LinkedIn post: "The $2M AI Agent Mistake (And How We'd Have Caught It)"
+
+**Monday PM:**
+4. Draft the FINRA white paper outline (6 pages, use the framework from Tick 648)
+5. Write one more Template 1 email (Marius Hobbhahn, Apollo Research)
+
+**Tuesday:**
+6. Send 3 more Template 2 (CAIO) emails: Mercury AI lead, Ramp AI lead, one more fintech
+7. Write and publish LinkedIn post #2: "88% of AI pilots fail. Here's the number that explains why." [data carousel format]
+8. Draft the "AI Agent Procurement Problem" 3-pager (leave-behind for conferences + sales calls)
+
+**Wednesday:**
+9. Send 2 more Template 1 emails: Esben Kran (Apart), Redwood Research
+10. Submit Snowflake Summit speaker application (June 1-4, SF) — write the talk abstract
+11. Start FINRA white paper draft (target 500 words per page, 6 pages = 3000 words)
+
+**Thursday:**
+12. Send 3 Template 2 emails: Stripe Head of Data Science, Coinbase AI lead, Plaid VP Engineering
+13. Comment on 5 CAIO LinkedIn posts (genuine, 3-5 sentence comments, not "great post!")
+14. Write LinkedIn post #3: "The AI benchmark everyone uses has been gamed. Here's what actually works." [UC Berkeley finding]
+
+**Friday:**
+15. Send 2 Template 1 emails: AI safety contacts from Tick 634
+16. Review any email replies received — schedule discovery calls immediately
+17. Draft response to any LinkedIn engagement (DMs from post interactions)
+18. Update "live funnel spreadsheet": columns = Name / Company / Template Used / Status / Next Step
+
+**Week 1 target:** 15 outbound sends, 3+ replies, 1+ discovery call scheduled, 3 LinkedIn posts published.
+
+---
+
+### Week 2: Days 6-10 (Monday-Friday)
+
+**Monday AM:**
+1. Run first discovery call if scheduled
+2. Send 3 Template 3 emails (dev tool founders): Scott Wu (Cognition), Ankur Goyal (Braintrust), Varun Mohan (Windsurf)
+3. Publish LinkedIn post #4: "Why enterprise AI buyers need a compliance certificate, not a benchmark score"
+
+**Monday PM:**
+4. Send 2 Template 5 emails (YC): Janus team, Casco team
+
+**Tuesday:**
+5. Send 3 more Template 3 emails: Robert Brennan (All Hands AI), Xingyao Wang (All Hands AI), Langfuse co-founder
+6. Draft the YC S26 application (or at minimum, the two key questions: "What does Straw do?" and "What's your insight?")
+7. Publish LinkedIn post #5: "The FINRA 2026 requirement that your CCO doesn't know about yet"
+
+**Wednesday:**
+8. Run any discovery calls scheduled from Week 1 outreach
+9. Send Template 4 emails (bug bounty): Alex Rice (HackerOne), Casey Ellis (Bugcrowd)
+10. Write the first section of the FINRA white paper (complete first 2 pages)
+
+**Thursday:**
+11. Follow up (Day 4 follow-up template) on any Week 1 outreach with no reply
+12. Send remaining B-priority contacts from Tick 634
+13. Publish LinkedIn post #6: "What the LMArena $1.7B valuation tells you about AI evaluation market timing"
+
+**Friday:**
+14. Complete all follow-ups for Week 2 sends
+15. Review Week 2 funnel: total outbound → replies → calls scheduled → design partner interest signals
+16. Write the design partner offer to any interested contacts: "Free evaluation run in exchange for structured feedback + co-marketing agreement"
+17. Update live funnel spreadsheet
+
+**Week 2 target:** 15 more outbound sends (30 total), 2-4 total replies, 2-3 discovery calls, 1 design partner conversation progressed.
+
+---
+
+### The Living Funnel Document (Build This Today)
+
+Create a Google Sheet with these columns:
+1. Name
+2. Company
+3. Role
+4. Priority (S/A/B)
+5. Template Used (1-5)
+6. Date Sent
+7. Date of First Reply
+8. Notes from Reply
+9. Discovery Call Scheduled (Y/N/Date)
+10. Discovery Call Outcome
+11. Design Partner Status (Interested / Active Conversation / Declined / Signed)
+12. Next Action
+
+This spreadsheet is the single source of truth. Update it after every email sent, every reply received, every call completed.
+
+**The weekly rhythm after these 2 weeks:**
+- Monday AM: Review funnel, schedule follow-ups
+- Tuesday-Thursday: Run calls, send new outbound
+- Friday: Update funnel, write LinkedIn post
+
+---
+
+### The 3 Metrics Jeremy Checks Every Morning
+
+1. **Outbound emails sent (this week):** Target = 8-10 per week in Weeks 1-2
+2. **Active conversations (email threads or calls in progress):** Target = 5 by end of Week 2
+3. **Design partner interest signals (someone said "yes, tell me more"):** Target = 2 by end of Week 2
+
+If after 2 weeks: 0 design partner interest signals → the messaging is wrong. Go back to discovery, not to product building. Straw's value proposition needs sharpening before more outbound.
+
+If after 2 weeks: 3+ design partner interest signals → the messaging is working. Push harder on outbound (25 sends in Week 3).
+
+---
+
+### The One Thing: If Jeremy Only Does ONE Thing From This Document
+
+**Send the FINRA cold email to the Chief Compliance Officer of a fintech company today.**
+
+Subject: FINRA 2026 AI exam prep: your evaluation documentation
+
+Body: (Template 2, fintech version from Tick 648)
+
+The compliance officer has a regulatory deadline. The SEC is examining in 2026. The documentation requirement is real and non-discretionary. This is the most time-sensitive, most compliant-with-existing-regulation, most non-optional conversation in the design partner pipeline.
+
+Everything else in this document can wait 24 hours. This email cannot.
+
