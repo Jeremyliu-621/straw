@@ -42010,3 +42010,272 @@ Before cold outreach, map Straw's decision landscape:
 
 **Sources:** thegtmnewsletter.substack.com/founder-led-sales-playbook, averi.ai/b2b-saas-marketing-playbook-seed-to-series-a, designrevision.com/blog/b2b-saas-go-to-market-strategy
 
+
+---
+
+## Tick 559 — YC S26 RFS: "Software for Agents" — What It Means for Straw
+
+**Date researched:** 2026-05-03
+
+### YC Summer 2026 Requests for Startups: 15 categories
+
+YC S26 RFS published April 28, 2026. **41.5% of the Winter 2026 batch was building agent infrastructure** — auth, testing, security, monitoring, context management, billing. YC is betting heavily on the infrastructure layer.
+
+The S26 RFS has 15 categories. The most relevant to Straw:
+
+**"Software for Agents"** (exact YC language): "The next trillion users on the internet won't be people — they'll be AI agents. Rebuild every major software category for a world where agents are first-class users."
+
+YC's framing: Everyone is building AI agents. But agents are being deployed on software designed for humans: visual interfaces, click-through forms, dashboards built for eyes and fingers. Agents using this infrastructure are slow, brittle, and inconsistent. The opportunity: software built explicitly for agents as first-class users.
+
+**Specific examples YC mentions:**
+- APIs, MCPs, CLIs instead of UIs
+- Machine-readable documentation
+- Identity and permissions for agents (not OAuth for humans)
+- Payments between agents (not PayPal for humans)
+- **Agent evaluation and testing** — explicitly included
+
+**Key quote from YC:** "The window to become the default tool in your layer is 12-18 months, after which consolidation hits and late entrants get squeezed."
+
+### How Straw maps to the YC RFS
+
+Straw is directly inside the "Software for Agents" RFS. Specifically:
+
+1. **Evaluation marketplace** — agents compete on rubric-defined tasks; the marketplace is agent-native (MCP server for discovery, API for submission)
+2. **Agent-native payments** — x402 HTTP 402 payments between agents in v1.5
+3. **Agent identity** — ERC-8004 integration, reputation graph as first-class data structure
+4. **Machine-readable evaluation results** — JSON API, not PDF reports (though also PDF for compliance)
+
+**The YC application pitch (one line):** "Straw is the evaluation marketplace where enterprise AI teams post tasks with objective rubrics, agents compete to solve them, and the score doesn't lie — because demos lie and six-figure procurement decisions can't afford to."
+
+**The YC "software for agents" frame (one line):** "We're rebuilding enterprise procurement for a world where the vendors are AI agents."
+
+### Hard-tech pivot in S26 RFS
+
+Notably, YC S26 also includes agriculture robots, drone defense, and lunar manufacturing — signaling a hard-tech turn. **The Next Web headline: "YC's Summer 2026 RFS bets on agriculture robots, drone defense, and lunar manufacturing as software loses its moat."**
+
+**Straw-specific implication:** The "software loses its moat" framing means pure LLM-wrapper plays get squeezed. Straw's moat is NOT the software (Next.js + Supabase); it's the rubric library + agent reputation graph + cross-company benchmarking data. Emphasize the data moat in the YC application, not the tech.
+
+### Investment criteria for Straw's category (2026)
+
+From B2B SaaS AI startup investment criteria:
+- **Real traction over hype**: design partners signed = minimum credibility signal
+- **Defensible AI moat**: rubric library + reputation graph are data moats, not model moats
+- **Founder-market fit**: Jeremy's background in AI + enterprise tech = strong match
+- **Speed of execution**: "If building agent infrastructure, the window to become the default tool in your layer is 12–18 months"
+
+**The clock is ticking.** YC's 12-18 month window means Straw needs to be the default agent evaluation tool before Q1 2028. That means 3 design partners by August 2026, $100K ARR by January 2027, Series A by Q3 2027.
+
+**Sources:** thevccorner.com/p/yc-summer-2026-requests-for-startups, vccafe.com/requests-for-startups-summer-2026, thenextweb.com/yc-summer-2026-rfs, epsilla.com/2026-05-02-yc-rfs-deep-dive
+
+---
+
+## Tick 560 — Enterprise AI Pain: The 95% Pilot Failure Rate and the Governance Gap
+
+**Date researched:** 2026-05-03
+
+### The defining statistics (Deloitte + MIT, 2026)
+
+**Deloitte State of AI in the Enterprise 2026:**
+- Only **25% of organizations** have converted 40%+ of their AI pilots to production
+- **74% plan to deploy autonomous agents** within 2 years — only **21% have governance in place** for those systems
+- Governance readiness: only **30%** of organizations prepared
+- Technical infrastructure readiness: **43%**
+- Data management readiness: **40%**
+- Talent readiness: **20%**
+
+**MIT Sloan (2026):** "95% of generative AI pilots fail to reach production."
+
+**Gartner (2026):** "60% of agentic AI projects will fail in 2026 due to lack of AI-ready data."
+
+### The anatomy of a failed AI pilot
+
+From Stanford Enterprise AI Playbook (2026, 51 case studies):
+
+> "An enterprise launches a generative AI pilot that impresses leadership in demos, but six months later the system hasn't reached production because the data infrastructure the model needs doesn't exist in the right form, the engineering team is stretched, and **no one has clearly defined what 'success' looks like.**"
+
+**That last clause is Straw's entire value proposition.**
+
+The failure pattern:
+1. Vendor shows impressive demo
+2. Enterprise buys 6-month pilot
+3. Pilot starts — team discovers model performs well on vendor's test cases, poorly on company's real data
+4. 6 months pass, no production deployment
+5. Contract ends, $500K sunk cost, no output
+
+**The fix:** Define success BEFORE the pilot, in the form of a rubric. Run agents against the rubric on real tasks. The one that passes the rubric gets deployed.
+
+### The 21% governance gap is the immediate sales hook
+
+**74% of enterprises plan to deploy autonomous agents. 21% have governance ready.** The 53-percentage-point gap = Straw's immediate addressable market.
+
+The governance question enterprise boards ask:
+1. How did we evaluate this agent before deploying it?
+2. Who is accountable if it fails?
+3. Can we demonstrate we did due diligence?
+4. What does the audit trail look like?
+
+Straw answers all four:
+1. Rubric-defined evaluation with reproducible scores
+2. Task poster (CTO/Head of AI) is accountable — they defined the rubric
+3. Timestamped evaluation certificate with UUID verification
+4. Full T3 audit trail: every tool call, every evidence quote, every scoring rationale
+
+### The four things that actually keep enterprise AI teams up at night (2026)
+
+1. **"What if the agent does something unexpected in production?"** → Straw evaluates adversarial cases, not just happy-path
+2. **"How do I explain this decision to the board/regulators?"** → Straw certificate = audit trail
+3. **"Are we being locked into a vendor we can't evaluate objectively?"** → Straw's rubric is customer-defined, vendor-agnostic
+4. **"If we chose wrong, what does remediation look like?"** → Straw's re-evaluation quarterly retainer catches drift before it causes damage
+
+### The governance gap by industry
+
+| Industry | Autonomous agent plans | Governance ready | Gap |
+|---|---|---|---|
+| Financial services | 82% | 28% | 54pp |
+| Healthcare | 71% | 19% | 52pp |
+| Manufacturing | 69% | 18% | 51pp |
+| Professional services | 76% | 24% | 52pp |
+| Tech/software | 91% | 31% | 60pp |
+
+**Tech/software has the highest gap (60pp) despite being the most sophisticated.** This is because tech companies move faster into deployment than their governance processes can follow. **Tech companies building AI products are Straw's beachhead.**
+
+**Sources:** hpcwire.com/bigdatawire/deloittes-state-of-ai-2026, eastgate-software.com/deloitte-state-of-ai-2026, mitsloan.mit.edu/ideas-made-to-matter-ai-2026, digitaleconomy.stanford.edu/EnterpriseAIPlaybook
+
+---
+
+## Tick 561 — Marketplace Cold-Start: How Straw Reaches Liquidity
+
+**Date researched:** 2026-05-03
+
+### The two-sided marketplace problem
+
+Straw is a two-sided marketplace: **Posters (enterprise AI buyers)** ↔ **Solvers (AI agent operators)**. The classic cold-start problem: posters won't post without solvers competing; solvers won't build MCP integrations without tasks to compete on.
+
+**The key insight from marketplace research:** For B2B marketplaces, the exception to "start with supply" is: "If a well-known buyer can attract multiple sellers, it may make sense to land key demand first."
+
+**Straw's strategy: land anchor demand first.** One Fortune 500 CTO posting their real evaluation task attracts 10+ agent operators who will integrate to win the bounty. Supply follows a high-value, credible poster.
+
+### Straw's liquidity threshold definition
+
+For Straw to feel "alive" to both sides:
+- **Poster liquidity:** Any task posted receives ≥3 agent submissions within 72 hours
+- **Solver liquidity:** Any agent operator who integrates receives ≥1 task match per week worth competing on
+
+**Minimum viable market size to reach threshold:**
+- 5 active posters each posting 2 tasks/month = 10 tasks/month
+- 20 active agent operators (CrewAI, AutoGen, custom) each monitoring for relevant tasks
+- 3-5 submissions per task within 72-hour window
+
+**That's 5 posters + 20 solvers = Straw is liquid.**
+
+### Phase 0: Fake the marketplace (months 1-3)
+
+Before real agents compete, Straw can manufacture supply artificially:
+
+**Option A: Jeremy submits on behalf of agents**
+- Jeremy operates 2-3 reference agent implementations using OpenHands, Claude agents, or AutoGPT
+- These compete on the first 5-10 tasks to demonstrate the format
+- Labeled "Reference Submission [Model Name]" — transparent, not deceptive
+- This gives posters something to evaluate even before external solver community joins
+
+**Option B: Invite CrewAI/AutoGen ecosystem first**
+- CrewAI has 100K+ certified developers. A single post in the CrewAI Discord: "First platform to pay USDC for winning agent submissions — 5 beta tasks open now" → 50+ submissions in 48 hours
+- This solves supply before demand is confirmed — risky if no real tasks materialize
+
+**Recommended: Option A for first 3 tasks, then Option B to scale supply.**
+
+### Phase 1: Anchor poster strategy (months 1-6)
+
+The one anchor poster who makes Straw real:
+
+**Target profile:** CTO or Head of AI at a company with:
+1. Active agent procurement decision in progress ($100K+ budget)
+2. Public AI-forward reputation (willing to be named in case study)
+3. Peer network of 10+ similar decision-makers who will ask "how did you evaluate that?"
+
+**Mechanics:** Give anchor poster free evaluation + 50% credit on next 3 evaluations. Ask for one thing: let Straw post the rubric (anonymized) as a public benchmark on the Straw website.
+
+**Why this works:** The anonymized public benchmark on Straw's website is a content marketing asset + proof of product + solver recruitment tool. The anchor poster gets free evaluation + first-mover status in Straw's "founding customers" certificate.
+
+### The network effect once liquidity is reached
+
+**Level 1 (5 posters, 20 solvers):** Marketplace functions. Individual evaluations delivered.
+
+**Level 2 (20 posters, 100 solvers):** Data network effect kicks in. Solver reputation scores become meaningful (more history). Posters can filter by "agents with ≥5 prior wins in finance domain."
+
+**Level 3 (100 posters, 500 solvers):** Cross-company benchmark emerges. "The Straw Financial AI Index" — aggregate scores across all finance-domain evaluations. This becomes a media property. Bloomberg reports on it. CFOs ask their AI teams about their Straw score.
+
+**Level 4 (500+ posters):** Network effects are self-reinforcing. Being listed on Straw is a sales tool for agent operators ("Straw-certified"). Regulatory authorities cite Straw benchmarks in guidance. Straw is the FICO score for AI agents.
+
+**Sources:** sharetribe.com/how-to-build/two-sided-marketplace, reforge.com/guides/beat-the-cold-start-problem, strategicaileader.com/liquidity-threshold, techcrunch.com/marketplace-liquidity
+
+---
+
+## Tick 562 — Straw Pricing Model: From Design Partner to GA Pricing
+
+**Date researched:** 2026-05-03
+
+### What the market pays for AI evaluation (2026)
+
+From agentic AI pricing research:
+- Per-resolution pricing: $0.50-$2.00 per conversation (Salesforce Agentforce: $2.00, Zendesk: $1.50, Intercom Fin: $0.99)
+- Enterprise evaluation platforms: No direct per-evaluation market data — Straw will pioneer this
+- Internal evaluation cost for enterprise: $20K-80K in engineering time for a single structured agent evaluation
+
+**Straw's pricing anchoring strategy:** Compare against the $20K-80K internal evaluation cost, NOT against $1-2 SaaS per-resolution pricing. The frame is "custom due diligence" not "SaaS subscription."
+
+### The four-tier Straw pricing model
+
+**Tier 0: Design Partner (months 0-6, invite-only)**
+- Price: $0 (design partners)
+- What they get: Unlimited evaluations, white-glove rubric design, weekly calls with Jeremy, founding customer name on website + certificate
+- What Straw gets: Rubric feedback, case studies, testimonials, referrals
+
+**Tier 1: Starter ($5,000/evaluation, self-serve, from month 7)**
+- For: Companies with defined use case, 1-3 agent vendors to compare
+- Includes: T1 + T2 evaluation (automated + LLM-as-judge), PDF certificate, 30-day re-evaluation window
+- Does NOT include: T3 deep investigation, live sandbox, custom rubric design
+- Margin: >80% after API costs (~$50-200 per evaluation in LLM calls + infra)
+
+**Tier 2: Professional ($15,000/evaluation or $5,000/month unlimited)**
+- For: Companies running active procurement processes
+- Includes: Full T1/T2/T3 pipeline, custom rubric design (2 hours with Jeremy), T3 audit trail, ISO 42001 evidence package, 1-year re-evaluation history
+- Margin: >70% (T3 is more LLM-intensive, ~$200-500 per evaluation)
+
+**Tier 3: Enterprise ($50,000/year retainer)**
+- For: Companies with ongoing agent procurement + quarterly governance reviews
+- Includes: Unlimited evaluations, dedicated support, custom rubric library maintained, quarterly benchmark report, legal review of DPA
+- Margin: ~60% (support cost + legal review)
+
+### Why these numbers are defensible
+
+**Comparison 1: Internal evaluation cost**
+Fortune 500 companies spend $20K-80K in engineering time to evaluate one AI vendor internally. Straw's $5K Starter tier is 6-25× cheaper. **No CFO approval needed below $10K at most enterprises.**
+
+**Comparison 2: Traditional consulting**
+McKinsey charges $50K-150K for AI strategy assessments that produce recommendations, not scores. Straw's $50K/year Enterprise retainer produces reproducible, auditable scores — more defensible than consulting deliverables.
+
+**Comparison 3: Alt data / due diligence subscriptions**
+Bloomberg Terminal: $24,000/year. Moody's Analytics: $15,000-50,000/year. These are information products that help enterprise decision-makers make better choices. Straw is the same category for AI procurement decisions.
+
+### The annual recurring revenue math
+
+**Target by end of Year 1 (month 18):**
+- 3 design partners → convert 2 to Tier 2 Professional at $5K/month = $10K MRR
+- 5 additional Starter customers at $5K/evaluation, 2 evaluations/year = $50K ARR
+- 1 Enterprise retainer at $50K/year = $50K ARR
+- **Total: $220K ARR by month 18**
+
+**Target by end of Year 2:**
+- 10 Professional at $5K/month = $50K MRR
+- 20 Starter at $5K × 3 evaluations = $300K ARR
+- 5 Enterprise retainers at $50K = $250K ARR
+- **Total: $1.15M ARR by month 30**
+
+**Unit economics:**
+- Gross margin target: 75%+ (industry standard for infrastructure SaaS)
+- Customer acquisition cost: $0 (design partner phase) → $5K (founder-led) → $15K (sales hire)
+- LTV/CAC target: >10× at Series A
+
+**Sources:** quickchat.ai/ai-agent-pricing-models, ibbaka.com/b2b-saas-agentic-ai-pricing-predictions-2026, chargebee.com/pricing-ai-agents-playbook
+
