@@ -50789,3 +50789,111 @@ Based on all Phase 2 research, these specific tweets should perform well with th
 
 10. "Built for the compliance officer, not just the CTO. The CTO asks 'which agent is better?' The compliance officer asks 'what documentation do we have that this decision was made correctly?' Straw answers both."
 
+
+---
+
+## Tick 655 — [PARTNERS] Agentic AI Platform Companies as Straw's Referral Network
+
+**Theme:** Design Partner Targets  
+**Date:** 2026-05-04  
+**Thread:** Agentic List 2026 — platform companies as referral partners for enterprise customers  
+**Sources:** AgentConference Agentic List 2026 (5,000+ nominations, 120 companies selected), Kanerika Top Agentic AI Companies 2026, Straive Top Agentic AI Companies 2026, Google Cloud Next 2026 customer round-up
+
+---
+
+### The Referral Network Insight
+
+The 120 companies on the Agentic List 2026 are building enterprise agent platforms. Their customers — Merck, Tata Steel, Citi Wealth, Home Depot, Capcom — are the enterprises that will eventually need Straw's evaluation certificates.
+
+The play: **Partner with the platform companies to get referrals to their enterprise customers.**
+
+The platform company (Kore.ai, Glean, Moveworks) introduces Straw to their enterprise customer with a warm word: "Our customer at [enterprise] is trying to decide which agent configuration to standardize on. Straw's evaluation can give you a certificate you can show your board."
+
+This is a **referral channel**, not a competition. The platform company refers the customer to Straw; Straw's evaluation validates the platform company's agents (or helps the customer choose which platform to standardize on).
+
+---
+
+### The Top Agentic AI Platforms and Their Outreach Angle
+
+**Tier 1: Customer-Facing Automation (Customer Success + CX)**
+
+**Sierra** — conversational AI for enterprise customer experience
+- Why they care: Their enterprise customers need to justify which conversational agent is best for their specific CX workflows
+- Outreach: "Sierra enterprise customers will eventually ask 'how do we prove Sierra is better than [alternative] for our CX workflow?' Straw is the evaluation infrastructure for that question. Referral partnership?"
+- Contact: Sierra founders (startup, likely 10-30 person team, LinkedIn for founders)
+
+**Decagon** — AI agents for customer success
+- Similar positioning to Sierra. CX-focused agent company.
+
+**Cognigy** — enterprise conversational AI (established, German company)
+- Bigger sales motion. VP/Director of partnerships at Cognigy.
+
+---
+
+**Tier 2: Knowledge & Search Agents**
+
+**Glean** — AI-powered enterprise search and knowledge management
+- Why they care: Enterprises choosing between Glean and a custom Anthropic/Claude-based knowledge system will need an evaluation
+- Outreach: "Enterprises evaluating Glean against alternatives for their knowledge management workflow — Straw gives them the evaluation artifact their procurement team needs."
+
+**Moveworks** — AI for enterprise IT service management
+- Strong enterprise customer base (Fortune 500). Their procurement team at customers would benefit from a Straw certificate before signing a multi-year Moveworks contract.
+
+---
+
+**Tier 3: Internal Service / HR Agents**
+
+**Aisera** — AI for internal service environments (IT, HR)
+- Large enterprise customer base. IT and HR workflows are exactly where agent evaluation matters.
+- Contact: Aisera CEO Muddu Sudhakar (LinkedIn, active founder)
+
+---
+
+### The Enterprise Customer Design Partner Angle
+
+Rather than approaching the platform companies directly, Jeremy can identify their large enterprise customers and approach those customers:
+
+**Merck** — deploying up to $1B agentic platform with Google Cloud
+- Contact: Merck Head of AI / Digital Innovation / Digital Transformation
+- Opener: "Merck is investing up to $1B in agentic AI with Google Cloud. One of the governance questions that investment raises is 'how do we measure which agents are delivering the returns?' Straw's evaluation certificate is the measurement infrastructure you need."
+
+**Tata Steel** — 300+ AI agents deployed globally
+- Contact: Tata Steel Chief Digital Officer / AI lead
+- Opener: "300 AI agents running across your global operations is impressive. The question your CFO will ask: which ones are delivering ROI and which ones should be cut? Straw is the evaluation infrastructure for that decision."
+
+**Citi Wealth** — Google Cloud agentic deployment
+- Financial services + AI = the highest compliance need. Straw's FINRA alignment is directly relevant.
+
+**Home Depot** — agentic systems for customer service and operations
+- Large retail, consumer-facing agents. Different ICP from fintech but strong volume potential.
+
+---
+
+### The Key Insight from the Agentic List Data
+
+> "The enterprises scaling fastest in H1 2026 built governance infrastructure before scaling agent autonomy."
+
+This is Straw's sales argument in one sentence. Governance infrastructure = what Straw produces. The enterprises failing at agent adoption are the ones who skipped governance.
+
+**The 3-bullet enterprise pitch derived from this:**
+1. "The enterprises scaling fastest built governance before scaling autonomy."
+2. "Governance infrastructure means being able to answer: which agent performs best, measured against defined criteria, with a documented process."
+3. "Straw's evaluation certificate is that documentation. One evaluation run gives you the governance artifact you need before you scale."
+
+---
+
+### Adding to the Design Partner Contact Table
+
+New contacts from this tick to add to the Week 3+ pipeline:
+
+| Priority | Name | Org | Role | Contact Method |
+|----------|------|-----|------|----------------|
+| B | Muddu Sudhakar | Aisera | CEO | LinkedIn: Muddu Sudhakar |
+| B | AI lead | Glean | AI/ML lead | LinkedIn search at Glean |
+| B | AI lead | Moveworks | AI/ML lead | LinkedIn search at Moveworks |
+| B | Digital Innovation | Merck | Chief Digital Officer | LinkedIn + Merck annual report for name |
+| B | CDO | Tata Steel | CDO | LinkedIn |
+| B | AI lead | Citi Wealth | AI/fintech lead | LinkedIn |
+
+These are Month 2+ contacts (after the first wave of S and A priority outreach generates feedback and learnings).
+
