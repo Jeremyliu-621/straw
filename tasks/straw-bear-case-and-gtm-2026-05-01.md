@@ -51852,3 +51852,117 @@ The weakest investors ask: "Can you build this with 3 engineers?" or "What's the
 
 Screen investors by the quality of their question after your 3-minute pitch. The investors who ask question 1-4 are worth follow-up. The ones who ask generic questions will not be useful board members.
 
+
+---
+
+## Tick 665 — [GTM] The Design Partner Agreement: What It Must Include and What to Avoid
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Legal and operational structure — formalizing the design partner relationship  
+
+---
+
+### What a Design Partner Agreement Must Include
+
+The design partner agreement is a short (3-5 page) document that formalizes the design partner relationship. It must include:
+
+**1. Scope of what Straw will deliver:**
+- Number of evaluation runs (e.g., 3 evaluations during the 12-week program)
+- Type of evaluation (single-player: company brings 2-3 agents to compare)
+- Deliverables: evaluation certificate with UUID, score breakdown, verification URL
+- Feedback sessions: 4 x 30-minute structured feedback calls over 12 weeks
+
+**2. What the design partner will deliver:**
+- Access to agents for evaluation (via API or standardized interface)
+- Task definition and rubric co-design (1 rubric definition session, 90 minutes)
+- Structured feedback on 4 dimensions (evaluation rubric quality, certificate format, scoring methodology, UI/UX)
+- At least one co-marketing commitment (testimonial, case study, public reference — choose one)
+- If a case study: review and approval of the written version before publication
+
+**3. Payment terms:**
+- For fully free design partners: explicit statement that the evaluations are provided at no charge in exchange for structured feedback
+- For token-pricing design partners: $500 per evaluation run (not per session; per run)
+- Payment: net-30 on invoice (the act of invoicing matters even at $500)
+
+**4. Data handling:**
+- Straw will not share the company's task definition, rubric, or evaluation results with any third party
+- Straw will not use the company's rubric or task definition to train or improve evaluation models without explicit consent
+- The evaluation certificate is the company's property and may be used in their procurement records
+- Straw retains the right to publish anonymized aggregate statistics (e.g., "fintech companies saw an average 23% performance variance between their best and worst agents")
+
+**5. Intellectual property:**
+- The rubric belongs to the company; Straw may use rubric structure/format patterns (not content) to improve rubric template library
+- Agent performance data during evaluation belongs to Straw (in anonymized form) for benchmark research
+- The evaluation certificate is jointly issued — the company owns the certificate, Straw operates the verification infrastructure
+
+**6. The no-competition clause (important):**
+- "During the design partner program and for 6 months after, Straw will not use information about [Company]'s specific AI agent procurement decisions to inform outreach or marketing to [Company]'s direct competitors."
+- This is a soft promise that builds trust. It's not legally complex but matters greatly to the CAIO.
+
+**7. Termination:**
+- Either party may terminate with 7 days notice
+- Certificates already issued remain valid regardless of termination
+
+---
+
+### What to Avoid in the Design Partner Agreement
+
+**Avoid:** Non-disclosure agreements (NDAs) that require Straw to keep the existence of the relationship confidential. If the company won't let you say "we work with fintech companies," they're not the right design partner. The co-marketing commitment (even anonymized) is a deal-breaker requirement.
+
+**Avoid:** Exclusivity provisions. "Straw agrees not to work with any other fintech company during the design partner program." This is not reasonable and constrains GTM dramatically.
+
+**Avoid:** Strict SLAs on evaluation turnaround time before you know your actual delivery time. "Evaluation certificates delivered within 5 business days" sounds good until you have 3 evaluations running simultaneously with manual T3.
+
+**Avoid:** Warranty language on evaluation accuracy. "Straw warrants that its evaluation scores accurately represent agent performance." No warranty is possible. Include instead: "Straw evaluations reflect performance on the defined task and rubric under the specified test conditions. Straw makes no warranty about agent performance in production environments outside the evaluation scope."
+
+---
+
+### The One-Page Design Partner Offer Letter (Before the Full Agreement)
+
+Before sending the full 3-5 page agreement, send a 1-page offer letter that summarizes the deal. This letter can be sent immediately after the discovery call.
+
+```
+Date: [Date]
+
+Dear [Name],
+
+Thank you for the conversation about Straw. Based on our discussion, here's what I'm proposing:
+
+**The Design Partner Program:**
+- 3 evaluation runs (free) + 4 structured feedback sessions
+- Deliverable: Evaluation certificate for each run
+- Your commitment: Structured feedback + 1 co-marketing element (testimonial or anonymous case study)
+- Duration: 12 weeks
+
+**Why this makes sense for [Company]:**
+[1-2 sentences specific to their situation — e.g., "Given that you're evaluating 3 coding agents for your internal developer tooling, this gives you the documented comparison your procurement team needs without the cost of an independent consultant."]
+
+**Timeline:**
+- If you're in: I'll send a 3-page design partner agreement this week
+- Week 1-2: Rubric design session (90 min)
+- Week 3-4: First evaluation run
+- Certificate delivered by [specific date]
+
+If this looks right to you, just reply "yes" and I'll send the agreement.
+
+Jeremy
+```
+
+This offer letter is low-friction (reply "yes") and makes the next step clear. The full agreement is a formality that follows after intent is confirmed.
+
+---
+
+### The First Design Partner Legal Checklist
+
+Before sending the design partner agreement:
+- [ ] Have a standard design partner agreement template (can use a startup-friendly template from Clerky, Stripe Atlas docs, or standard YC template)
+- [ ] Add Straw-specific data handling clauses (Section 4)
+- [ ] Add the no-competition clause (Section 6)
+- [ ] Remove any warranty language
+- [ ] Have a lawyer (or a tech-savvy startup-friendly attorney) review it once — cost $300-500
+- [ ] Use DocuSign or HelloSign for e-signatures — professional and tracks execution
+- [ ] File a copy in a Google Drive folder labeled "Design Partner Agreements"
+
+**Total legal cost for first design partner agreement:** $300-500 for attorney review + $15/month DocuSign. Not worth trying to save on this — the agreement protects both parties and builds trust.
+
