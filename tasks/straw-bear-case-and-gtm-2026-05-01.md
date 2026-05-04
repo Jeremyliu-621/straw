@@ -51113,3 +51113,114 @@ Track this in the funnel spreadsheet: column = "How they found Straw (LinkedIn /
 
 At the end of Month 2, review: which channel produced the most discovery conversations? Double down on that channel.
 
+
+---
+
+## Tick 658 — [SYNTHESIS] Phase 2 Session 2 Final Status: What's Done, What's Open, What Changed
+
+**Theme:** All themes — session close  
+**Date:** 2026-05-04  
+**Thread:** End-of-session accounting and next session handoff  
+
+---
+
+### Session 2 Statistics
+
+- **Ticks completed this session:** 627–658 (32 ticks)
+- **Total Phase 2 ticks:** 607–658 (52 ticks across both sessions)
+- **Git commits this session:** 16 commits, all pushed to master
+- **Research file size:** ~51,000+ lines
+- **Themes covered:** Bear case (16 ticks), GTM (13 ticks), Partners (10 ticks), Synthesis (4 ticks)
+- **Web searches conducted:** 18 searches with substantive findings
+
+---
+
+### What Session 2 Added That Session 1 Didn't Have
+
+**Bear Case (new in Session 2):**
+- Enterprise autonomy trust data: 20% trust AI for financial transactions (Tick 627)
+- OpenAI Operator: $200/month informal substitute, compliance limitations (Tick 628)
+- EU PLD correction: AILD withdrawn, no-fault strict liability from Dec 9 2026 (Tick 633)
+- Anthropic enterprise push: Managed Agents, 12-18 month threat window (Tick 635)
+- Goodhart's Law doom loop: evaluation gaming is inevitable, rubric rotation is mitigation (Tick 645)
+- Non-determinism objection: N-run sampling + variance reporting as technical answer (Tick 650)
+- Talent scaling problem: T3 requires 30-45 min/evaluation human review; manageable with probe library (Tick 656)
+- Market structure: NOT winner-take-all, $6.24B by 2030, fragmented market (Tick 646)
+- Agent-to-agent economy moving faster than bear case assumed (Tick 652)
+- NIST AI Agent Standards Initiative: opportunity not threat (Tick 653)
+
+**GTM (new in Session 2):**
+- Cold email templates: 5 vertical-specific, 3-touch sequence (Tick 629)
+- Conference strategy: Snowflake Summit June 1-4, The AI Conference Sept 30 (Tick 630)
+- Discovery call framework: 30/70 ratio, key questions, 4 objection handlers (Tick 632)
+- LinkedIn 12-week CAIO playbook: 3-4 posts/week, personal account (Tick 637)
+- Show HN launch draft: complete post text ready (Tick 636)
+- FINRA/SEC regulatory mandate: SEC examines how firms evaluate AI before deployment (Tick 648)
+- Investor targets: 8 GPs with AI evaluation conviction (Tick 644)
+- YC S26 application strategy: frame as AI governance infrastructure (Tick 647)
+- Pricing experiment playbook: 4-stage WTP validation (Tick 651)
+- Content flywheel: research → Twitter → LinkedIn → white paper → email → customer (Tick 657)
+- Cursor GTM lesson: PLG won't work for Straw; Modal model is closer (Tick 640)
+- Twitter content strategy: 10 best tweets, 5-7 posts/week, technical AI community (Tick 654)
+
+**Partners (new in Session 2):**
+- Complete 35-contact table with social handles and priority order (Tick 634)
+- Agentic platform companies as referral network: Sierra, Glean, Moveworks, Aisera (Tick 655)
+- AI Ops Manager as secondary buyer: emerging job title, LinkedIn search strategy (Tick 642)
+- Conference/community entry: LangChain Discord, CrewAI community, MIT Enterprise AI Forum (Tick 642)
+- Healthcare AI: HIPAA BAA required, sales cycle 12-18 months, health tech companies now (Tick 643)
+- Vals AI partnership angle: public benchmark (Vals) + private rubric (Straw) = referral relationship (Tick 641)
+- Multi-agent framework communities as zero-cost outreach: LangGraph Discord, AutoGen GitHub (Tick 638)
+- More fintech CCO/GC contacts for compliance buyer path (Tick 648)
+
+---
+
+### Updated Bear Case Priority Ranking (Final for Session 2)
+
+1. **GTM execution gap** (most likely cause of failure) — the distance between design partner enthusiasm and first payment. Mitigated by charging $500 from Day 1.
+
+2. **Goodhart's Law evaluation gaming** (most serious long-term threat) — inevitable at scale. Mitigated by T3 + rubric rotation + evaluation integrity hire in Year 2.
+
+3. **Anthropic/OpenAI feature absorption** (12-18 month threat) — mitigated by multi-vendor framing (Straw evaluates Claude + Devin + Gemini; they can't).
+
+4. **Cold-start marketplace supply** (marketplace phase, months 12+) — mitigated by single-player mode (company brings own agents).
+
+5. **EU PLD strict liability** (Dec 9 2026 for EU customers) — mitigated by US-first launch, E&O insurance, scope limitations in certificates.
+
+6. **Talent scaling for T3 evaluations** — mitigated by probe library automation, vertical-first focus.
+
+7. **Non-determinism objection** — mitigated by N-run sampling + variance reporting (implement before first demo).
+
+8. ~~"Agents transacting is creepy"~~ — this objection is fading faster than expected (Tick 652).
+
+---
+
+### The 5 Most Important Open Threads (For Next Session)
+
+1. **The first paying customer name.** All research is done. The only thing that matters now is: who is the first person getting a cold email on Monday? Name them.
+
+2. **The NIST alignment document.** When Q4 2026 AI Agent Interoperability Profile drops, Straw needs a "How Straw aligns with NIST" post within 48 hours. Set a calendar reminder for Q4 2026.
+
+3. **The probe library architecture.** What does the template probe library look like technically? How is it versioned? How does a new evaluation run add to the library? This is a product architecture decision with long-term moat implications.
+
+4. **The first evaluation run.** When does Jeremy run the first actual evaluation? On what agent? On what task? With what rubric? The first run reveals product gaps that no amount of research will reveal.
+
+5. **The non-determinism implementation.** N-run sampling + variance reporting needs to be in the certificate format BEFORE the first customer demo. This is a code change, not a research task.
+
+---
+
+### Final Deliverable Summary
+
+**The Phase 2 Morning Reading Guide (already written after Tick 617) contains:**
+- 1-page bear thesis
+- 1-page first 10 design partner conversations  
+- 1-page GTM playbook 0→$100K ARR
+- 6 open questions
+
+**Session 2 addenda (Ticks 639 + 658) update:**
+- 4 new critical corrections (AILD withdrawn, LMArena $1.7B, Anthropic enterprise push, benchmark gaming)
+- 4 new open questions (compliance requirement gate, EU PLD timing, Anthropic relationship, multi-vendor demo)
+- 5 most important open threads for the next session
+
+**The session is complete. Jeremy has everything he needs to act. The only remaining question is whether he acts.**
+
