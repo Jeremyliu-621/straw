@@ -1176,3 +1176,66 @@ git push -u origin master
 
 # Next tick if continuing: 312
 ```
+
+---
+
+## Research Sessions: straw-bear-case-and-gtm-2026-05-01.md
+
+**Status:** Phase 2 Session 2 complete — Ticks 627–658 added (2026-05-04)
+
+**File location:** `tasks/straw-bear-case-and-gtm-2026-05-01.md`
+**Current size:** ~51,500+ lines
+**Current tick:** 658
+
+### Phase 2 Sessions Summary
+
+| Session | Ticks | Date | Key Topics |
+|---|---|---|---|
+| Phase 2 Session 1 | 607–626 | 2026-05-01 (overnight) | Token economy collapse, design partner program, regulatory liability (original), AI safety contacts (Beth Barnes, Marius Hobbhahn), Replit Bounties + Bountysource deaths, substitution math, Morning Reading Guide, enterprise CAIO buyer, dev-tool contacts, pre-mortem, pricing experiments, hierarchical agents, YC W26 cluster, vendor lock-in, Homejoy cold-start, fintech contacts, UC Berkeley benchmark gaming, content vs. outbound, 88% AI pilot failure rate, Mrinank Sharma departure, LMArena $1.7B |
+| Phase 2 Session 2 | 627–658 | 2026-05-04 | Enterprise autonomy trust (20% for financial transactions), OpenAI Operator substitution math, EU PLD correction (AILD withdrawn, no-fault liability Dec 9 2026), complete 35-contact table, Kaggle vs Bountysource cold-start, cold email templates (5 verticals), conference strategy + YC/OpenHands contacts, discovery call framework, Anthropic enterprise push (Managed Agents), Show HN launch draft, LinkedIn 12-week CAIO playbook, Cursor GTM analysis, Vals AI updated analysis, market structure (NOT winner-take-all, $6.24B by 2030), YC S26 application strategy, FINRA/SEC regulatory mandate, agent-to-agent economy acceleration, NIST AI Agent Standards Initiative, Twitter content strategy, pricing experiment playbook, agentic platform companies referral network, content flywheel synthesis, talent scaling bear case, Goodhart's Law doom loop, non-determinism objection + N-run sampling answer, investor targets |
+
+### Key Phase 2 Findings
+
+**Bear case (highest priority):**
+1. GTM execution gap (design partner enthusiasm → first payment) — most likely cause of failure
+2. Goodhart's Law doom loop — evaluation gaming inevitable at scale; rubric rotation + probe library mitigates
+3. Anthropic/OpenAI feature absorption — 12-18 month threat window; multi-vendor framing mitigates
+4. Cold-start supply for marketplace — single-player mode mitigates (months 1-12)
+5. EU PLD strict liability — US-first launch + E&O insurance + scope limitations mitigates
+
+**GTM (immediate actions):**
+- Send FINRA cold email to fintech CCO/compliance lead FIRST (most non-discretionary demand driver)
+- 20 outbound sends in first 2 weeks (5 cold email templates, signal-based personalization)
+- LinkedIn 3-4 posts/week, personal account; Twitter 5-7 posts/week, technical AI community
+- FINRA white paper (6 pages) as credibility artifact before product demo
+- Show HN launch in Month 3-4 after 3 design partners signed
+
+**Critical corrections to Phase 1 research:**
+- EU AI Liability Directive was WITHDRAWN Feb 11 2025 — EU PLD is now operative (no-fault, Dec 9 2026)
+- LMArena = $1.7B valuation, $30M ARR — add to competitive landscape
+- Anthropic launched Managed Agents + enterprise plug-ins (Apr 2026) — 12-18 month substitute risk
+- UC Berkeley April 2026: all 8 major benchmarks broken — add caveats to "the score doesn't lie" narrative
+
+### How to Resume (If More Research Needed)
+
+```bash
+# Check current state
+tail -30 tasks/straw-bear-case-and-gtm-2026-05-01.md
+wc -l tasks/straw-bear-case-and-gtm-2026-05-01.md
+
+# Append next tick, commit with author flag
+git add tasks/straw-bear-case-and-gtm-2026-05-01.md
+git commit --author="Jeremy Liu <jeremyliu621@gmail.com>" -m "research(phase2): tick N — topic [theme]"
+git push -u origin HEAD:master
+
+# Next tick if continuing: 659
+```
+
+### Execution Next Steps (Priority Order After Session 2)
+
+1. **Send first FINRA cold email** to a fintech CCO or Head of AI (Monday 9am, Template 2 fintech variant from Tick 648)
+2. **Write FINRA white paper** (6 pages, framework from Tick 648 — use as credibility artifact for all fintech outreach)
+3. **Implement N-run sampling + variance reporting** in Straw's certificate format (before any customer demo)
+4. **Build living funnel spreadsheet** (columns: Name, Company, Template, Date Sent, Reply Date, Call Scheduled, Design Partner Status, Next Action)
+5. **Apply to Snowflake Summit as speaker** (June 1-4, SF — talk: "88% of AI pilots fail from unclear criteria; here's the measurement fix")
+6. **Draft YC S26 application** (target: submit this week, batch starts August 2026)
