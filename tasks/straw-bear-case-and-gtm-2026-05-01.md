@@ -55272,3 +55272,308 @@ Free alternatives will commoditize the bottom of the market. Companies with stro
 
 **Mitigation**: Focus on compliance + certification moat. Price at the "third-party audit" tier, not the "evaluation tool" tier. The repositioning from "evaluation platform" to "independent evaluation authority" is the key strategic move.
 
+
+---
+
+## Tick 701 — [PARTNERS] Cognition/Devin Customers as Straw Design Partners + IT Services Channel [2026-05-04]
+
+**Theme:** Concrete design partner targets — agent operators + IT services channel
+
+---
+
+### The Cognition/Devin Network: Confirmed Enterprise Customers Who Are Also Straw Targets
+
+Devin has enterprise customers including: Goldman Sachs, Citi, Santander, Nubank, OpenSea, Ramp, Curai Health, Microsoft, Dell, Cisco, Palantir, Mercado Libre.
+
+Source: https://cognition.ai/blog/devin-annual-performance-review-2025 and Contrary Research company breakdown
+
+**The strategic insight**: These enterprises are already deploying AI agents from Cognition. But they may not have evaluated Devin against alternatives (OpenHands, GitHub Copilot Workspace, Cursor, etc.). Straw's pitch to these companies is: "You're already paying for Devin. How do you know Devin is the right agent for your specific engineering tasks? Have you compared Devin against alternatives on your tasks, with your criteria?"
+
+This is the multi-vendor evaluation pitch. It works because:
+1. They're already buying into AI agents (so they believe in the category)
+2. They're paying Cognition's pricing without independent validation
+3. Large enterprises routinely run competitive evaluations for any $100K+ vendor relationship
+
+### Named Design Partner Targets from Devin's Customer List
+
+**1. Goldman Sachs AI governance team**
+- Already Devin customer
+- FINRA regulated
+- Pitch: "You're using Devin. Have you validated its performance against your specific engineering tasks compared to alternatives? Your FINRA compliance documentation requires pre-deployment validation of AI tools."
+- Contact: Jeff McMillan (Head of Firmwide AI, identified in Tick 697) + their Head of Model Risk
+
+**2. Citi — Devin customer + Responsible AI Summit speaker**
+- Already Devin customer
+- Sami Huovilainen speaking at Responsible AI Summit (Tick 692)
+- Double hook: "Citi is already using Devin + attending responsible AI governance conferences"
+- This makes Citi the highest-priority target: they are a Devin customer (need multi-vendor evaluation), they have a named responsible AI leader (Sami Huovilainen), and they're attending the conference where Jeremy should be networking
+
+**3. Ramp — Devin customer + Braintrust client**
+- Ramp is both a Devin customer AND a Braintrust client (per Tick 690)
+- Ramp is a fintech company (payments, expense management) with serious engineering culture
+- Pitch to Ramp's Head of Engineering: "You're using Braintrust to monitor deployed agents and Devin to build code. Have you run an independent evaluation of Devin vs. alternatives on your specific Ramp tasks? We can do that in 2-4 weeks."
+- Ramp's public-facing AI leader: Eric Glyman (CEO), Karim Atiyeh (CTO) — both accessible on LinkedIn/Twitter
+- This is the "stack up" pitch: Braintrust (monitor) + Straw (select) + Devin (execute)
+
+**4. Nubank — Devin customer, Brazilian fintech**
+- Latin American largest digital bank, FINRA-adjacent regulation
+- Pitch: "Nubank uses Devin. We can evaluate whether Devin is the best agent for your specific banking tasks vs. alternatives, with a certificate for your compliance documentation."
+- Contact: Cristina Junqueira (co-founder) or head of engineering/AI
+
+**5. Infosys — Strategic partner of Cognition (not just customer)**
+- Infosys has integrated Devin into its client delivery models (not just using it internally — they're deploying it TO clients)
+- Infosys is a B2B2B channel partner opportunity: they evaluate AI tools on behalf of their enterprise clients
+- If Infosys uses Straw to evaluate AI agents for client deployments, they bring Straw to every Infosys client
+- This is the **biggest channel opportunity** in the contact list
+- Estimated Infosys AI revenue: $3B+ from AI-related services by 2026
+- Contact: Infosys AI/Automation practice leadership. Public contact: Balakrishna D.R. (EVP, Digital, Infosys) or Sumit Virmani (CMO, has spoken on AI)
+- Pitch to Infosys: "Infosys is deploying Devin to clients. When clients ask 'how do you know this is the best agent for our task?' — Straw gives you the independent evaluation documentation that satisfies that question. This becomes part of your AI integration services offering."
+
+**6. Cognizant — Strategic partner of Cognition + Windsurf**
+- Cognizant has deployed Devin AND Windsurf across their engineering teams and customer base
+- Same B2B2B channel opportunity as Infosys
+- Estimated Cognizant AI services: $2B+ by 2026
+- Contact: Cognizant AI practice leadership
+
+### The IT Services Channel: Structural Analysis
+
+IT services firms (Infosys, Cognizant, Accenture, Wipro, TCS) are becoming the distribution layer for enterprise AI agents. They:
+1. Have relationships with 500+ enterprises
+2. Are deploying AI agents on behalf of clients
+3. Will need to answer "how do you evaluate the agents you deploy?" for every enterprise client
+4. Are large enough to pay for Straw evaluations as a service they include in their AI offering
+
+**The IT services channel argument**: One Infosys partnership could generate 50-100 evaluations/year at $12,000 each = $600K-$1.2M ARR from a single channel partner. This is the highest-leverage GTM motion if it works.
+
+**The channel partnership pitch to Infosys/Cognizant**:
+"Add 'independent agent evaluation' to your AI integration services. You already help clients select and deploy AI agents. Now you can offer them an independent evaluation certification that satisfies their compliance requirements. Straw runs the evaluation, produces the certificate, you include it in your services scope."
+
+Revenue share: Infosys marks up Straw evaluations by 20-30% as part of their services engagement. Straw charges $12,000, Infosys charges the client $15,000-18,000, keeps the margin. Both parties win.
+
+This is the B2B2B model. It should be tested in Year 1 if any IT services contact is willing to pilot it.
+
+
+---
+
+## Tick 702 — ⚠️ YC S26 DEADLINE WAS TODAY + Positioning Correction for YC Applications [2026-05-04]
+
+**Theme:** GTM — immediate action item (already flagged in Tick 674 earlier)
+
+---
+
+### IMMEDIATE: YC S26 Deadline is May 4 at 8PM PT — Today
+
+The YC Summer 2026 batch application deadline is **tonight**. If Jeremy has not applied yet, the window is closing.
+
+Per prior Tick 674 analysis: Straw should apply to YC. Solo founder risk is manageable (Garry Tan era YC has funded solo founders; W26 had multiple). The application should emphasize:
+- "AI procurement infrastructure" — not "evaluation platform" or "compliance tool"
+- The market timing argument (FINRA 2026, ISO 42001, EU AI Act enforcement all converging in 2026-2027)
+- The founder as both technical AND domain expert (Jeremy has built the full product stack through Phase 17+, understands the AI agent ecosystem deeply)
+- Working product (straw.vercel.app is live)
+
+**If the deadline has passed**: Apply to the next batch (likely W27, opens Q3 2026). Use the time to collect design partner data that makes the application stronger.
+
+### Critical Positioning Correction for YC Applications
+
+From the YC S26 batch analysis: **"compliance-only plays are dropping from 5.3% to 3.0%"** of YC batches. YC partners are skeptical of compliance-only positioning because:
+1. Compliance features get absorbed into broader platforms
+2. Regulatory windows close when regulations change
+3. The TAM for compliance is smaller than for broader platform plays
+
+**What works for YC**: "AI infrastructure" and "developer tools" went from ~25% to 40%+ of batches. YC is funding infrastructure, not compliance wrappers.
+
+**Straw's YC positioning (revised)**:
+
+Wrong: "Straw is a compliance documentation tool for enterprises deploying AI agents."
+Right: "Straw is the competitive evaluation infrastructure for AI agents — companies run competitions to discover and hire the best agents for their specific tasks, and get compliance documentation as a byproduct."
+
+The compliance documentation is a feature, not the product. The product is the competitive evaluation marketplace. This positioning is more fundable, larger TAM, and more defensible at YC interview.
+
+Source: https://www.buildmvpfast.com/blog/yc-w26-batch-agent-infrastructure-boom
+
+### The YC Partner Question Prep
+
+YC partner interviews last 10 minutes and involve rapid-fire questions. Based on the Straw pitch, likely questions and answers:
+
+**Q: "Why can't they just use Kaggle or Braintrust?"**
+A: "Kaggle is single-metric leaderboard for data science, not multi-dimensional rubric evaluation for AI agents. Braintrust monitors agents in production — that's post-deployment. Straw is pre-deployment: you run a competition before you hire an agent, and you get a compliance certificate. Different moment in the lifecycle, different buyer."
+
+**Q: "Why won't Google just build this?"**
+A: "Google built Kaggle in 2010. Kaggle just opened free community hackathons because they can't monetize the bottom of the market. The enterprise evaluation market — rubric-based, compliance-certified, multi-vendor — requires neutrality. Google can't provide neutral evaluation for Google agents. We can."
+
+**Q: "Who is your first customer?"**
+A: "We're targeting financial services CAIOs and AI compliance leads — specifically FINRA member firms where the 2026 Regulatory Oversight Report creates a non-discretionary documentation requirement. We have 3 design partners in conversations [or: we have 1 signed design partner from the financial services sector]."
+
+**Q: "What's the revenue model?"**
+A: "$12,000 per evaluation (2-4 weeks). Target: 10 evaluations in Year 1 = $120K ARR. Scale to 100 evaluations = $1.2M. The unit economics work: each evaluation requires ~20 hours of expert time, rest is automated."
+
+**Q: "How do you get agents to compete?"**
+A: "We partner with agent builders (OpenHands community, Cognition/Devin, AI safety labs) as our supply side. Initially, we recruit agents directly from our existing relationships. At scale, agents find us because we're where companies go to discover and hire AI agents."
+
+**Q: "What's the moat?"**
+A: "Three compounding moats: (1) evaluation data flywheel — every evaluation teaches us what good agents look like for each task category; (2) compliance certificate brand — 'Straw certified' becomes the standard for pre-deployment AI performance documentation; (3) agent network — the platform with the best agents attracts the best companies, which attracts more agents."
+
+### YC Timeline (if applying to W27)
+
+If S26 passed: Begin W27 application now. Target submission: September 2026. W27 batch starts February 2027.
+
+Use the 5 months to:
+- Complete 3-5 evaluations with paying design partners
+- Build case study content
+- Hit $30-50K ARR (1-3 paying evaluations)
+- Collect data: completion rate, NPS, repeat evaluation rate, number of agents competing per evaluation
+
+These metrics are exactly what YC wants to see: early revenue, strong customer engagement, and a working product.
+
+
+---
+
+## Tick 703 — [PARTNERS] OpenHands + Developer Tool Agent Builder Community [2026-05-04]
+
+**Theme:** Concrete design partner targets — agent builder community
+
+---
+
+### OpenHands: The Best Agent Supply Partner
+
+OpenHands (formerly OpenDevin) is an open-source AI software development agent platform with:
+- 2.1K+ contributions from 188+ contributors
+- MIT license (no commercial restrictions)
+- Multi-LLM backend support (Claude, GPT-4, Gemini, and local models)
+- Evaluated on SWE-Bench, GAIA, SWT-Bench, and the new OpenHands Index
+- Active enterprise deployment community
+
+Source: https://openhands.dev/ and https://github.com/OpenHands/OpenHands
+
+**Why OpenHands is Straw's most important supply-side partner**:
+
+OpenHands builders are exactly the kind of agents who should be competing in Straw evaluations. They're already evaluation-aware (OpenHands Index), technically sophisticated, and building agents for real software engineering tasks.
+
+If OpenHands builders can submit to Straw evaluations — and compete for prize pools — this creates the supply side of Straw's marketplace. The OpenHands community provides the agent supply; enterprise customers provide the demand (tasks + prize pools).
+
+### OpenHands Contact Strategy
+
+**Graham Neubig** — Faculty advisor, Carnegie Mellon University, co-creator of OpenDevin
+- Why: Academic leadership of the OpenHands project. Could facilitate a formal partnership where OpenHands builders are encouraged to participate in Straw evaluations.
+- LinkedIn: Search "Graham Neubig CMU NLP"
+- Opener: "Graham — I'm building evaluation infrastructure for AI agents, and the OpenHands community is exactly the kind of agent builder that should be competing for enterprise evaluation contracts. Would you be interested in a partnership where OpenHands builders can submit to Straw evaluations?"
+
+**Robert Brennan** — Likely community lead (OpenHands Cloud)
+- Note: OpenHands Cloud is a commercial offering built on OpenHands. The team running the cloud product is the right contact for partnership discussions.
+- Contact via: GitHub issues/discussions, Discord server, or LinkedIn
+
+**The supply-side pitch to OpenHands community**:
+"OpenHands builders: Straw is running evaluation competitions where enterprises post tasks with prize pools ($5K-$50K). Your agent can compete, win prizes, and get hired. Think Kaggle competitions but for AI agents on real enterprise tasks. Register at straw.vercel.app."
+
+This pitch should go in the OpenHands Discord server, the GitHub Discussions, and as a post on the relevant HN/Reddit/Twitter channels where OpenHands builders hang out.
+
+### Other Agent Builder Community Targets
+
+**2. SWE-Bench leaderboard top performers**
+- SWE-Bench Verified leaderboard tracks autonomous coding agents by GitHub issue resolution rate
+- The top-performing teams are exactly who Straw needs as competitors
+- Current top performers include teams from: OpenBMB (TraSE), Bytedance (Seed-Coder), Meta (Auggie), MIT, CMU
+- These academic and industrial teams would love prize pool competitions and enterprise customer contracts
+- Contact: Publication authors for top SWE-Bench submissions
+
+**3. Cursor team (agent-building layer)**
+- Cursor is building agent capabilities for code editors
+- Their engineering team builds agents that solve coding tasks
+- Contact: Michael Truell (CEO, Cursor) or Aman Sanger (co-founder) — both active on Twitter
+- Opener: "Michael — Cursor agents should be competing in Straw evaluations. Enterprise customers are posting coding tasks with prize pools. Want to see if Cursor's agent can win?"
+
+**4. Replit Agent team**
+- Replit is deploying AI agents for code generation (Replit Agent 3.0)
+- Amjad Masad (CEO) is very active on Twitter — direct DM
+- Opener: "Amjad — Replit's agent should be competing in Straw's enterprise task evaluations. Would you be open to having Replit participate as a supply-side agent?"
+
+**5. Continue.dev (open source coding assistant)**
+- Nate Sesti and Patrick Muehlbauer (co-founders) — GitHub/Twitter active
+- Open source coding assistant with local LLM support
+- Their community (local LLM enthusiasts) may want to compete in Straw evaluations
+
+**6. Aider (AI pair programming tool)**
+- Paul Gauthier (creator) — very active on Twitter, maintains SWE-bench leaderboard entries
+- Aider regularly submits to SWE-Bench evaluations — already familiar with competitive evaluation
+- Opener: "Paul — Aider is on the SWE-Bench leaderboard. Straw is running enterprise task evaluations with prize pools. Would you be interested in Aider competing for real enterprise contracts?"
+
+### The Community Flywheel Strategy
+
+Phase 1 (Month 1-3): Directly recruit 5-10 agent builders to compete in the first 3 design partner evaluations. Personal outreach to the people above.
+
+Phase 2 (Month 3-6): Post in OpenHands Discord, SWE-Bench community Slack, Cursor Discord, Replit community. "Straw is running an evaluation competition with a $10K prize pool. Register at straw.vercel.app."
+
+Phase 3 (Month 6+): Show HN launch (Tick 699) + blog post "The state of competitive AI agent evaluation" using data from first 10 evaluations. This is the content that brings the next wave of agent builders to Straw organically.
+
+**The key insight**: Agent supply is easier to get than agent demand. If Jeremy can recruit 10-15 capable agent builders to participate, the first evaluations have legitimate competition. Without competition, the evaluation has no marketplace value.
+
+
+---
+
+## Tick 704 — [BEAR] The IT Services Disintermediation Risk [2026-05-04]
+
+**Theme:** Bear Case — channel conflict + IT services bundling
+
+---
+
+### The Threat Scenario
+
+Infosys and Cognizant are deploying Devin (and other AI agents) at enterprise scale for their clients. Infosys specifically "integrated Devin into its client delivery models" — meaning Infosys is now an AI agent deployment firm, not just a traditional IT services firm.
+
+When Infosys deploys Devin for Goldman Sachs, Goldman asks: "How do you know Devin is the right agent for our task?"
+
+Infosys has two options:
+1. **Use Straw**: Pay $12,000 for an independent evaluation, get a certificate, show Goldman the results.
+2. **Build their own**: Spend 3 months building an internal evaluation framework, never pay for Straw, and sell "Infosys AI Evaluation" as part of their services offering.
+
+Option 2 is the bear case.
+
+### Why IT Services Firms Build Their Own Evaluation (The Margin Argument)
+
+IT services firms run on margin. Their value proposition to clients is "we bring expertise you don't have." If they buy Straw evaluations ($12K), they mark them up 20-30% and charge clients $15K-18K. But:
+- Straw captures $12K of the value
+- Infosys keeps $3-6K margin on a $15-18K engagement piece
+- The total evaluation engagement is probably 10-20x larger ($150K-$300K services project), so evaluation is 5-10% of the total
+
+At this scale, IT services firms are incentivized to own the evaluation piece internally and capture the full $15-18K margin, especially if they can build a defensible "Infosys AI Agent Evaluation Framework" they can sell across all clients.
+
+**Historical pattern**: Every major consulting firm builds its own version of any tool that becomes widely used in their client base. McKinsey built its own AI platform. Accenture built myNav. BCG built X (their AI division). Bain built FRWD.
+
+The question is not whether Infosys will eventually build evaluation — they will. The question is whether Straw gets embedded deeply enough before they build it that Infosys uses Straw anyway (because Straw is better, faster, or has the compliance certification brand that clients trust more than "Infosys AI Evaluation").
+
+### The Defense Against IT Services Disintermediation
+
+**Defense 1: The compliance certificate requires third-party independence**
+
+If the compliance certificate must come from an independent third party (FINRA, ISO 42001), then "Infosys AI Evaluation" doesn't satisfy it — a consulting firm evaluating its own deployed agents is not independent. This is the KPMG argument from Tick 694 applied to IT services.
+
+The question is whether regulators actually require independence for AI model evaluation (as they do for financial audits). Currently, FINRA requires "robust testing" but doesn't specify that it must be third-party. If FINRA or ISO evolve to require independent evaluation (as they have for financial models at large banks), the third-party requirement becomes a structural moat.
+
+**Action item**: Monitor FINRA guidance for any language specifying "third-party" or "independent" for AI model validation. Lobby NIST to include "independent" in evaluation standards.
+
+**Defense 2: The evaluation data flywheel is not replicable**
+
+Infosys can build an evaluation tool. They cannot replicate Straw's historical evaluation database — the cross-company benchmarks showing how agents perform across thousands of evaluations. "The average document processing agent scores 73/100 on Straw's rubric" is data Infosys doesn't have.
+
+This is a 2-3 year moat (Straw needs to run ~500 evaluations before the database is meaningfully differentiated). The early years are about running evaluations — not because they're profitable, but because they build the data asset.
+
+**Defense 3: The marketplace remains closed to IT services replication**
+
+Infosys can build evaluation for the agents they already deploy. They cannot run a competitive evaluation marketplace that brings new, unknown agents to their clients' tasks. Straw can. This is the marketplace moat — you need both buyer (the company) and seller (the agents) to run a marketplace, and IT services firms don't have the agent supply side.
+
+**Defense 4: The Straw brand as independent authority**
+
+"Straw-certified" should become the term enterprises use to signal they ran an independent evaluation. Like "ISO certified" or "SOC 2 compliant." Once the brand is established, IT services firms will include "Straw certification" as part of their client service offerings rather than building competing certifications.
+
+This is the long-game brand moat. It requires Straw to be first to market, run 100+ evaluations, and establish the vocabulary before IT services firms build their own alternatives.
+
+### Bear Case Verdict on IT Services Disintermediation
+
+**Severity**: High in 2028-2029, Low in 2026.
+
+IT services firms are 2-3 years from building competitive evaluation infrastructure. The window to establish Straw's moats (data flywheel, compliance brand, marketplace) is 2026-2027.
+
+**The good news**: IT services firms are also the highest-leverage channel partners. Converting Infosys or Cognizant as a channel partner (Tick 701) before they build their own is the highest-priority risk mitigation. If they're Straw partners, they have less incentive to build competing evaluation.
+
+**Strategic implication**: Jeremy should have an Infosys and Cognizant conversation before they're customers of Straw — specifically proposing a channel partnership where they get revenue share on evaluations they bring to Straw. This is more valuable than waiting for them to build their own.
+
