@@ -49943,3 +49943,134 @@ YC's S26 batch will have ~194 companies. Among those, Straw should target:
 
 The YC network effect for Straw is specifically strong because: enterprise AI agent deployment is highest at venture-backed tech companies (exactly the YC/YC-alumni universe).
 
+
+---
+
+## Tick 648 — [PARTNERS + GTM] FINRA 2026 and SEC AI Examination Priorities: The Regulatory Mandate for Straw's Certificate
+
+**Theme:** Design Partner Targets + GTM  
+**Date:** 2026-05-04  
+**Thread:** Fintech-first vertical — regulatory mandate creates non-discretionary demand  
+**Sources:** FINRA 2026 Annual Regulatory Oversight Report (Dec 9 2025), Debevoise FINRA 2026 AI analysis, SEC 2026 Examination Priorities (wealthmanagement.com), Shumaker Loop GenAI Financial Services Compliance Playbook 2026, Sidley Austin US Financial Regulator AI Guidelines
+
+---
+
+### The Regulatory Mandate That Makes Straw Non-Optional for Fintech
+
+**This is the most important finding from this research session for enterprise sales.**
+
+FINRA's 2026 Annual Regulatory Oversight Report (published December 9, 2025) explicitly states:
+
+> "For AI agents that can act or transact, implement a narrow scope, permissions, **audit trails of actions**, and explicit human checkpoints before execution."
+
+And the SEC's 2026 Examination Priorities add:
+
+> "Examiners reviewing how investment firms **evaluate AI tools before deployment**, how they **monitor AI-generated outputs**, how they **document human oversight**, and whether their written information security programs address the new risks AI introduces."
+
+**Translation for Straw's sales pitch:**
+
+If you are a registered investment advisor, broker-dealer, or any financial services firm regulated by FINRA or the SEC, and you are deploying AI agents:
+1. You must have an audit trail of AI agent actions (FINRA requirement)
+2. You must document how you evaluated AI tools before deployment (SEC examination priority)
+3. You must document human oversight of AI agent decision-making (both FINRA and SEC)
+
+**Straw's certificate directly satisfies requirements 1 and 2.** The evaluation rubric + agent scores + tamper-proof certificate = the "documentation of how the firm evaluated AI tools before deployment" that SEC examiners are looking for.
+
+---
+
+### The Compliance Language Map: FINRA/SEC → Straw
+
+| Regulatory Requirement | Straw's Certificate Provides |
+|------------------------|------------------------------|
+| "Audit trails of actions" for AI agents | Certificate includes evaluation methodology, rubric version, agent actions during evaluation, judge's probing log |
+| "How investment firms evaluate AI tools before deployment" | Certificate documents the evaluation process end-to-end |
+| "Document human oversight of AI agent decision-making" | Certificate includes human-approved rubric, human-reviewed results |
+| "Written information security programs address AI risks" | Certificate scope section documents data handling and security controls during evaluation |
+| "Vendor management: logging access, model change notifications" | Certificate locks in the agent version evaluated; future versions require new evaluation |
+
+---
+
+### The FINRA Sales Opener (Most Powerful Cold Email Trigger)
+
+**The biggest missed opportunity in Straw's current GTM plan:** Using FINRA's own language as the opening line of every fintech cold email.
+
+Template rewrite for Template 2 (CAIO cold email) for fintech:
+
+**Subject:** FINRA 2026 AI exam prep: your evaluation documentation
+
+**Body:**
+```
+Hi [Name],
+
+The SEC's 2026 Examination Priorities include how [Company] evaluates AI tools before deployment.
+
+Straw is the platform specifically designed to produce that documentation: a structured evaluation of 
+your AI agents against your criteria, with a tamper-proof certificate that satisfies FINRA's audit 
+trail requirement for AI agent deployments.
+
+If you're running AI agents in production and expecting an SEC/FINRA examination in the next 18 
+months, this conversation is worth 20 minutes.
+
+Worth it?
+
+Jeremy
+```
+
+**Why this works:** Opens with a regulatory concern they already have (not a new product). The documentation they need for the SEC examination is exactly what Straw produces. The 18-month timeline creates urgency without artificial pressure.
+
+---
+
+### The FINRA White Paper Strategy (High-Leverage Content)
+
+Previous ticks mentioned writing for the FINRA audience. Now we have the specific regulatory hook.
+
+**Write a 6-page white paper: "Satisfying FINRA's 2026 AI Agent Audit Trail Requirement: A Practitioner's Guide"**
+
+Content:
+- Page 1: What FINRA's 2026 report says (exact quotes)
+- Page 2: What SEC examiners will look for in 2026-2027
+- Page 3: The evaluation documentation gap — most firms don't have this
+- Page 4: A framework for building audit-trail-ready AI agent evaluation documentation
+- Page 5: Case study (hypothetical or anonymized design partner)
+- Page 6: How Straw's certificate addresses each FINRA requirement
+
+Distribution:
+- Submit to FINRA's knowledge exchange / financial compliance forums
+- Pitch to compliance-focused legal blogs (Debevoise, Sidley) as a guest post
+- Send directly to every compliance officer and general counsel at target fintech companies
+- Use as the leave-behind for every enterprise sales call in financial services
+
+**The white paper substitutes for product credibility.** Before Straw has 10 paying customers, the white paper signals: "We understand your regulatory environment better than anyone else in this space."
+
+---
+
+### Fintech Compliance Contacts to Add to the Design Partner List
+
+| Name | Org | Role | Opener |
+|------|-----|------|--------|
+| General Counsel | Any FINRA member firm | GC / Chief Compliance Officer | "FINRA's 2026 oversight report added AI agent audit trails to examination priorities. Straw produces the documentation your compliance team needs. Worth 20 minutes before your next exam prep cycle." |
+| Chief Compliance Officer | Ramp | CCO (if exists) | Same opener |
+| Chief Compliance Officer | Mercury | CCO or Head of Compliance | Same opener |
+| Risk and Compliance Lead | Stripe | Risk/compliance leadership | "Stripe's AI agent deployments will face the same SEC examination scrutiny. Straw's certificate is the audit trail documentation FINRA is asking for." |
+| AI Risk Lead | Goldman Sachs | AI risk / compliance team | "Goldman's AI agent deployments face the most scrutiny of any firm. Straw's evaluation certificate is the 'documented evaluation before deployment' the SEC examinations will require." |
+
+**Note:** The compliance buyer is different from the CAIO. The CAIO wants to know if the agent works. The CCO wants to know if the deployment is auditable. For fintech, both are decision-makers. Straw should have conversations with both.
+
+---
+
+### Net Assessment: Fintech Is the Right First Vertical
+
+This regulatory data confirms: **financial services is the highest-urgency market for Straw's compliance certificate.**
+
+- SEC examination in 2026-2027 = hard deadline for documentation
+- FINRA requirements = non-discretionary (not nice-to-have, mandatory)
+- The compliance officer as a buyer = procurement happens through legal/risk channel, not technology channel
+- Willingness to pay = high (compliance failures cost banks $millions; a $2,500-5,000 evaluation certificate is immaterial relative to the risk)
+
+The three fintech personas Jeremy should have conversations with in the first month:
+1. **CAIO / Head of AI** — wants to evaluate which agent is best
+2. **Chief Compliance Officer** — needs the audit trail documentation
+3. **General Counsel** — will eventually ask "what documentation do we have for our AI procurement decisions?"
+
+The compliance angle is the fastest path to a non-discretionary sale. The CAIO conversation is optional (they can always decide to build evaluation internally). The CCO conversation is mandatory — they have a regulatory requirement that Straw directly satisfies.
+
