@@ -48362,3 +48362,214 @@ Until then, the design partner offer is correct — but insist on a co-marketing
 
 Without this commitment structure, design partners give you their time inconsistently and you lose the research value. "Free in exchange for structured feedback" is a contract, not a favor.
 
+
+---
+
+## Tick 633 — [BEAR] EU Product Liability Directive Update: AI Liability Directive Withdrawn, PLD Is Now the Framework
+
+**Theme:** Bear Case  
+**Date:** 2026-05-04  
+**Thread:** Regulatory/liability black holes — critical update to Tick 609  
+**Sources:** European Commission PLD Framework, Outlex PLD 2026 Blog, Goodwin Law EU PLD Update, IAPP AI Liability Directive Withdrawal Notice, Reed Smith PLD Software Analysis
+
+---
+
+### Critical Update: The AI Liability Directive Is Dead (February 11, 2025)
+
+> **CORRECTION TO TICK 609:** That tick assumed the AI Liability Directive (AILD) was the primary EU AI liability framework. On February 11, 2025, the European Commission withdrew the AILD from consideration. The primary liability framework for AI systems in the EU is now the **Product Liability Directive (PLD)**, which member states must implement by **December 9, 2026.**
+
+This changes the analysis significantly. The AILD was a fault-based framework (you had to prove negligence). The PLD is **no-fault liability** (strict liability). Software causes harm → you pay. No negligence required.
+
+---
+
+### What the EU Product Liability Directive Actually Says About AI
+
+**The PLD explicitly covers:**
+- Software sold as a standalone product
+- Software integrated into other products
+- AI systems (recitals make this explicit)
+- SaaS and cloud-delivered software
+
+**The no-fault liability clause:**
+If Straw's product (the evaluation, the certificate, the platform) causes harm to someone, Straw is liable for damages **even without negligence.** The customer doesn't have to prove Straw made a mistake. They just have to prove the product caused harm.
+
+**The rebuttable presumption clause (most dangerous):**
+If a claimant faces "excessive difficulties" in proving defectiveness or causation due to "technical or scientific complexity," courts can **presume defectiveness** if the claimant shows it's *likely* the product was defective. For AI, almost every causation question involves technical complexity. This means courts will routinely presume Straw's evaluation was defective if harm results from an agent selection that used a Straw certificate.
+
+**Substantial modification triggers manufacturer liability:**
+If an AI system is "substantially modified" — including by continuous learning — the modifier becomes the manufacturer. For Straw: if the evaluation rubric is updated between when a company first uses Straw and when they rely on the certificate for a procurement decision, Straw could be considered the "manufacturer" of the modified evaluation product.
+
+**Cannot contract out of liability:**
+EULA provisions that disclaim liability are unenforceable under PLD. Straw's terms of service cannot say "we are not responsible for procurement decisions made based on our certificates."
+
+---
+
+### The Specific PLD Scenarios That Apply to Straw
+
+**Scenario A: False Positive Certificate Causes Harm**
+
+Company uses Straw to evaluate Agent X. Straw issues a certificate: "Agent X scored 91/100 on your expense automation task." Company deploys Agent X at scale based on the Straw certificate. Agent X has a failure mode in edge cases not covered by Straw's evaluation. Agent X causes $2M in fraudulent expense approvals.
+
+Company sues Straw: "Your certificate said it was good. We relied on it. We were harmed." Under PLD strict liability, Straw may be liable because the evaluation "product" produced a defective result (missed the failure mode) that caused harm. Straw cannot disclaim this in the EULA.
+
+**Probability of this scenario occurring:** Low in early years (Straw is small). HIGH risk scenario if Straw scales to many enterprise customers.
+
+**Scenario B: False Negative Certificate Causes Different Harm**
+
+Company uses Straw to evaluate Agent Y (a competitor's agent). Straw scores Agent Y at 62/100. Company rejects Agent Y based on the certificate. Agent Y's developer sues: "Your evaluation was incorrect, you falsely scored our agent low, we lost a $5M contract." 
+
+Under PLD, this is a harder case for the plaintiff but still risky given the "technical complexity" presumption.
+
+**Scenario C: Evaluation Data Breach**
+
+A company's private evaluation rubric (which contains confidential task specifications) is exposed due to a Straw security breach. The rubric exposure causes competitive harm. Under PLD, data destruction/corruption is now compensable harm.
+
+---
+
+### What This Means for Straw's Architecture and Legal Structure
+
+**Action 1: Incorporate in a jurisdiction with more favorable liability law**
+
+PLD applies to products placed on the "EU market." If Straw's initial customers are US-only, PLD does not apply until EU customers onboard. Defer EU market entry until Straw has enough revenue to fund EU legal compliance.
+
+**Action 2: The certificate must include explicit scope limitations**
+
+Every Straw certificate must state:
+- The specific task definition evaluated
+- The specific evaluation date
+- The specific rubric criteria (at a summary level)
+- What the certificate does NOT assess (e.g., "this evaluation does not assess security vulnerability exposure, regulatory compliance, or performance on tasks outside the defined scope")
+
+Scope limitations don't eliminate PLD liability but they reduce the range of harms that can be attributed to the certificate.
+
+**Action 3: Build a documented evaluation methodology**
+
+PLD liability is rebuttable if Straw can demonstrate that its evaluation methodology was state-of-the-art at the time of the certificate. A documented, versioned, reproducible methodology is Straw's primary defense. "We followed the published evaluation protocol v2.3, which was the standard in the field at the time."
+
+**Action 4: Evaluation insurance**
+
+Professional liability insurance (E&O insurance, "errors and omissions") specifically for evaluation services. Straw should price this into its cost structure from the beginning. $1M E&O policy for a company this size is likely $10-30K/year.
+
+**Action 5: Partner with a law firm specializing in AI liability**
+
+The EU PLD is December 2026. Straw should have a law firm relationship with an EU AI liability specialist before its first EU customer. Wilson Sonsini, Goodwin Procter, and Cooley all have EU AI practice groups. Cost: retainer conversation with one of these firms before any EU deal closes.
+
+---
+
+### Net Assessment: PLD Risk Level for Straw
+
+| Risk Level | Phase | Scenario |
+|-----------|-------|----------|
+| LOW | Months 0-12 | US-only customers, design partner phase, no EU onboarding |
+| MEDIUM | Months 12-24 | First EU customers onboard after December 2026 |
+| HIGH | Months 24+ | Straw certificates are routinely used in enterprise procurement; an agent certified by Straw causes significant harm |
+
+The PLD risk is real but manageable if Straw: (a) delays EU expansion, (b) builds documented methodology, (c) includes scope limitations in every certificate, and (d) carries E&O insurance before EU market entry.
+
+> → CROSS-REFERENCE: Tick 609 covered regulatory liability at a high level. This tick provides the updated framework (AILD withdrawn, PLD is now the operative law) and specific scenarios. Jeremy should flag this to any EU counsel he engages before international expansion.
+
+
+---
+
+## Tick 634 — [PARTNERS] Complete Contact Table: All 35 Targets With Social Handles, Roles, and Openers
+
+**Theme:** Design Partner Targets  
+**Date:** 2026-05-04  
+**Thread:** Named contacts for Jeremy's next 2 weeks — comprehensive table  
+**Sources:** Previous ticks (610, 614, 621, 625, 630), LessWrong/METR profiles, company websites, GitHub, LinkedIn
+
+---
+
+### Master Contact Table: 35 Targets
+
+**Priority: S = Reach in Week 1, A = Week 2, B = Month 2**
+
+---
+
+#### Group 1: AI Safety / Evaluation Labs (High Alignment with Straw's Mission)
+
+| Priority | Name | Org | Role | Contact Method | 1-Line Opener |
+|----------|------|-----|------|----------------|---------------|
+| S | Beth Barnes | METR | Co-founder & Head of Research | LessWrong: @beth-barnes / Website: barnes.page | "Your METR auditing clarification post on LessWrong — the distinction between evaluation infrastructure and deployment decisions is exactly what Straw is building for enterprise. Would love 20 minutes." |
+| S | Marius Hobbhahn | Apollo Research | CEO/Director | Twitter: @MariusHobbhahn / apolloresearch.ai | "Apollo's scheming evaluation work is the best adversarial eval design I've seen. Straw's T3 investigative evaluation was partly inspired by it — would love your pressure-test on our enterprise version." |
+| S | Esben Kran | Apart Research | Founder | Twitter: @EsbenKran / apartresearch.com | "Apart's hackathon-to-paper pipeline is a brilliant model. I'm building a competitive evaluation platform for enterprise AI procurement — the adversarial testing architecture has direct parallels. 20 minutes?" |
+| A | Mrinank Sharma | (ex-Anthropic, independent) | Researcher | Twitter: @MrinankSharma | "You left Anthropic in February — I'm guessing there's a thesis you're working on. I'm building enterprise AI evaluation infrastructure. Might overlap. Coffee or call?" |
+| A | Redwood Research team | Redwood Research | Researchers | forum.effectivealtruism.org + LessWrong | "Redwood's work on AI reliability is foundational for what I'm building. Would love your take on whether enterprise 'evaluation certificates' are useful or misleading from an alignment perspective." |
+| A | UK AISI researchers | UK AI Safety Institute | Evaluations team | gov.uk/aisi — public contact form | "AISI's pre-deployment evaluations and Straw's enterprise evaluations are complementary — different scope, different buyer. Would love to understand your rubric methodology and see if there's a data-sharing angle." |
+| B | Anthropic Fellows (2026 cohort) | Anthropic | AI safety researchers | alignment.anthropic.com — application/contact | "I'm building the enterprise evaluation layer that sits between pre-deployment safety evaluations (METR/AISI) and real-world procurement decisions. Might be interesting to map where these domains connect." |
+
+---
+
+#### Group 2: Enterprise AI / CAIO Buyers
+
+| Priority | Name | Org | Role | Contact Method | 1-Line Opener |
+|----------|------|-----|------|----------------|---------------|
+| S | Emily Glassberg Sands | Stripe | Head of Data Science + AI | LinkedIn: Emily Glassberg Sands | "Stripe's AI infrastructure decisions set the standard for fintech. I'm building the evaluation layer for enterprise AI agent procurement — would love to understand if 'independent agent evaluation' is something Stripe's AI team has felt the need for." |
+| S | Anthropic enterprise team (unnamed) | Anthropic | Enterprise partnerships | enterprise@anthropic.com | "Building Straw — an enterprise evaluation platform for AI agents. Our evaluations generate performance certificates for Claude-based agents. Wondering if there's a partnership angle given we're driving enterprise adoption of Claude." |
+| S | Mercury AI lead | Mercury | Head of AI / engineering lead | LinkedIn search: "AI" OR "ML" at Mercury | "Mercury is one of the most sophisticated fintech engineering orgs. Curious whether you've built evaluation infrastructure for your AI agent workflows or if that's still informal." |
+| A | Ramp AI team | Ramp | Head of AI | LinkedIn | "Ramp's expense automation is exactly the category where agent evaluation matters most. The 'which agent handles the edge cases' question is what Straw is built to answer with a compliance-grade certificate." |
+| A | Coinbase AI lead | Coinbase | Head of AI engineering | LinkedIn | "Crypto + AI agent = maximum regulatory scrutiny. I'm building evaluation certificates for AI agent procurement — the compliance dimension seems particularly high-value for Coinbase's context." |
+| A | Plaid engineering leadership | Plaid | VP Engineering / AI | LinkedIn | "Plaid's infrastructure-for-fintech model is the closest analogy to what Straw is building for AI evaluation. Would love to understand how you're currently evaluating the AI agents you run internally." |
+| B | Goldman Sachs AI team | Goldman Sachs | Marcus / AI engineering | LinkedIn (search internally) | "Goldman's AI deployment decisions come with the highest accountability standards in finance. I'm building the independent evaluation infrastructure for enterprise AI procurement — curious if that's a gap you've felt." |
+
+---
+
+#### Group 3: Dev Tool Founders (Partnership + Design Partner)
+
+| Priority | Name | Org | Role | Contact Method | 1-Line Opener |
+|----------|------|-----|------|----------------|---------------|
+| S | Scott Wu | Cognition (Devin) | CEO | Twitter: @scott_wu_cognition / LinkedIn | "Devin is exactly what companies run ON Straw — they use Devin on a task, compare it against alternatives, get a certificate. Not competing, complementary. Worth 20 minutes to explore the partnership angle?" |
+| S | Ankur Goyal | Braintrust | CEO | Twitter: @ankrgyl / LinkedIn | "Braintrust handles eval during development; Straw handles eval at procurement. I think we're sequential not competing — would love your take and potentially a referral angle where we both benefit." |
+| S | Varun Mohan | Windsurf (Codeium) | CEO | Twitter: @varun_mohan / LinkedIn | "Windsurf's enterprise positioning is a great model. I'm building the evaluation layer for when enterprise buyers need to pick between coding agents — not competing with Windsurf, potentially complementary. 20 minutes?" |
+| A | Igor Ostrovsky | Augment Code | CEO | Twitter: @igorostrovsky / LinkedIn | "Augment's memory-of-your-codebase differentiation is exactly the kind of thing that should show up in an evaluation rubric but currently doesn't. Would love to discuss what 'measuring Augment's advantage' looks like in a structured eval." |
+| A | Robert Brennan | All Hands AI (OpenHands) | Co-founder (commercial) | LinkedIn: Robert Brennan / All Hands AI | "OpenHands is what agents run on. Straw is where they get evaluated for enterprise procurement. Your enterprise customers will eventually need to justify which agents to keep — that's our moment. Partnership conversation?" |
+| A | Xingyao Wang | All Hands AI (OpenHands) | Technical co-founder | GitHub: @xingyaoww / Twitter (search OpenHands contributors) | "OpenHands is the evaluation substrate in a lot of ways — you run the agents. I certify their performance for enterprise procurement. Structural partnership angle worth 20 minutes?" |
+| B | Max Haining | Langfuse | Co-founder | GitHub: @maxhaining / Twitter (Langfuse) | "Langfuse observes agents continuously; Straw evaluates them at procurement time. Natural data handoff — the observability data informs the rubric design. Integration or partnership angle?" |
+| B | Harvey AI leadership | Harvey AI | Engineering / product | LinkedIn | "Harvey's legal AI agents have the highest compliance bar in AI. The evaluation certificate Straw produces is precisely what law firms need to document their AI procurement decisions. Design partner?" |
+
+---
+
+#### Group 4: AI Agent Operators (Practitioners Who Run Agents at Scale)
+
+| Priority | Name | Org | Role | Contact Method | 1-Line Opener |
+|----------|------|-----|------|----------------|---------------|
+| S | Ironclad AI team | Ironclad | Head of AI / legal tech | LinkedIn | "Ironclad's contract AI is in the same compliance-heavy space where Straw's evaluation certificates are most valuable. If you're evaluating which AI agents to run in your legal workflows, that's exactly Straw's use case." |
+| A | OpenHands enterprise customers | via All Hands AI | Enterprise practitioners | Ask Robert Brennan for intros | N/A — warm intro through All Hands AI |
+| A | Janus team | YC W26 | Founders | YC company directory / LinkedIn | "Janus does QA testing for agents; Straw does procurement evaluation. Complementary — your customers need both. Design partner conversation?" |
+| A | Casco team | YC W26 | Founders | YC company directory / LinkedIn | Same as Janus |
+| B | Laminar team | (independent/YC) | Founders | GitHub (laminar-ai org) / Twitter | "Laminar traces agent runs; Straw certifies their performance. The observability data you capture is the raw material for the rubrics we evaluate against. Integration conversation?" |
+
+---
+
+#### Group 5: Bug Bounty / Security Eval (Structural Analogues)
+
+| Priority | Name | Org | Role | Contact Method | 1-Line Opener |
+|----------|------|-----|------|----------------|---------------|
+| A | Alex Rice | HackerOne | CTO/co-founder | Twitter: @alexrice / LinkedIn | "Bug bounty and AI agent evaluation share the same core insight: adversarial external testing is more trustworthy than internal QA. I'm building Straw with that architecture. Would love your take on where bounty platforms got the supply-side dynamics right." |
+| A | Casey Ellis | Bugcrowd | Founder / Advisor | Twitter: @caseyellis / LinkedIn | "Bugcrowd's managed submission model is exactly the architecture I'm adapting for AI agent evaluation. Different domain, same structural insight. 20 minutes?" |
+| B | Synack leadership | Synack | Enterprise security | LinkedIn | "Synack's credentialed researcher model (quality over quantity) is the right analogy for Straw's evaluation approach. We're doing something similar but for AI agent performance rather than security vulnerabilities." |
+
+---
+
+#### Group 6: Investors / Ecosystem (For Introduction Requests)
+
+| Priority | Name | Org | Role | Contact Method | 1-Line Opener |
+|----------|------|-----|------|----------------|---------------|
+| A | Martin Casado | a16z | GP (Infra/AI) | Twitter: @martin_casado / LinkedIn | "a16z led LMArena's $150M round — you clearly have conviction on the AI evaluation market. Straw is the enterprise custom evaluation layer LMArena can't serve due to confidentiality requirements. 20 minutes to show you the differentiation?" |
+| A | Any YC partner with agent infra portfolio | Y Combinator | Partner | YC directory / HN | "I'm building Straw — enterprise AI agent evaluation with compliance certificates. Seeing W26 companies building infrastructure for agents. Would love to understand if Straw complements your portfolio and whether there's a design partner referral from any W26 companies." |
+
+---
+
+### Summary Stats
+
+- **Total contacts:** 35
+- **Priority S (Week 1):** 10 contacts — send today through Thursday
+- **Priority A (Week 2):** 16 contacts — send Monday through Friday next week
+- **Priority B (Month 2):** 9 contacts — build in after first wave of replies
+
+**Expected conversion math:**
+- 35 outbound → 25% reply rate (signal-based personalization) = ~9 replies
+- 9 replies → 60% agree to a call = ~5 discovery calls
+- 5 calls → 40% convert to design partner interest = ~2 design partners
+- 2 design partner agreements in 2 weeks = on track for 5 by month 3
+
