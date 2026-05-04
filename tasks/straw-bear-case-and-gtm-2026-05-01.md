@@ -53795,3 +53795,90 @@ The white papers come first because they're the sales tools. The blog posts come
 
 The highest leverage activity to build Year 1 moat: complete 10 evaluations with real enterprise customers and publish case studies (with customer permission). 10 evaluations with documented outcomes makes Straw the most experienced evaluation provider in the certificate category — because nobody else has 10.
 
+
+---
+
+## Tick 684 — Procurement Checklists + "AI Accuracy is a Procurement Question" Validation [2026-05-04]
+
+**Theme:** GTM (positioning alignment) / Bear Case (consolidation risk)
+
+---
+
+### Consolidation Risk Revisited
+
+The consolidation risk is real but specific: "Suite vendors absorb agentic capabilities into existing surfaces (Salesforce + Slack + Service Cloud convergence is a leading indicator)."
+
+The threat scenario: Salesforce adds "Agentforce Evaluation" to Agentforce. ServiceNow adds "agent quality scoring" to their platform. Microsoft Copilot adds evaluation dashboards.
+
+**Why this is a manageable threat (not a lethal one):**
+
+1. **Conflict of interest:** Salesforce cannot be an independent evaluator of Agentforce agents. The evaluation will always have a conflict of interest. Straw's independence is the differentiator that embedded suite features cannot replicate.
+
+2. **Certificate format:** Suite evaluation features will produce dashboards and reports, not tamper-proof compliance certificates with UUID and Merkle hash verification URLs. The compliance artifact is a specific output format that requires specific engineering investment.
+
+3. **Multi-vendor comparison:** Salesforce will never build a tool that fairly compares Agentforce agents against ServiceNow agents against OpenAI Operator agents. Straw can.
+
+4. **Regulatory mandate:** When FINRA or California EO N-5-26 compliance requires documented third-party evaluation, a Salesforce-internal evaluation doesn't qualify as "third-party."
+
+**The key insight:** Suite evaluation features may eliminate the casual buyer who just wants some evaluation metrics. They won't eliminate the compliance buyer who needs a third-party certificate for regulatory purposes. Straw should focus entirely on the compliance buyer.
+
+---
+
+### The Enterprise AI Procurement Checklist: How to Appear on It
+
+Enterprise AI procurement checklists in 2026 include these evaluation requirements:
+- Bias testing and fairness assessment
+- Transparency (can the vendor explain how the AI works)
+- Auditability (audit logs and evaluation records)
+- Security compliance (SOC 2, HIPAA, GDPR)
+- Vendor accountability (contractual liability for failures)
+- Independent assessment (third-party evaluation)
+
+Straw addresses five of these six directly. The one it doesn't address yet: security compliance (SOC 2 for Straw itself, not for the agents being evaluated).
+
+**Action item:** Get SOC 2 Type II for Straw (Year 1, $20K-$40K). This makes Straw appear on enterprise procurement checklists as a vendor that enterprises can actually use. Without SOC 2, large enterprises will block Straw in their vendor approval process before the evaluation conversation even starts.
+
+**The "appear on the checklist" strategy:**
+
+When enterprise procurement teams create AI vendor evaluation checklists, they reference frameworks like NIST AI RMF, ISO 42001, and California EO N-5-26. If Straw's certificate is explicitly aligned with these frameworks (with documentation explaining the mapping), it appears on the checklist as the "independent evaluation" line item.
+
+Content strategy: publish a "How Straw Satisfies Your Enterprise AI Procurement Checklist" document. Map each standard requirement to Straw's certificate output. Send this document to procurement teams, not just to CAIOs and CTOs.
+
+---
+
+### "AI Accuracy is a Procurement Question" — Validation Published May 1, 2026
+
+Resultsense published on May 1, 2026 (three days ago): "AI Accuracy is a Procurement Question: A Diligence Framework for UK Enterprise Buyers."
+
+This exact framing — AI evaluation as procurement due diligence, not post-deployment QA — is Straw's core positioning. The fact that independent consulting firms are now writing about this validates that the market is moving in the direction Straw is building.
+
+The article argues: enterprises should treat AI accuracy as a due diligence question in procurement, not an engineering question after deployment.
+
+This is the thesis Straw is selling. An article from an independent consulting firm making the same argument, published three days ago, is a demand signal.
+
+**The Twitter thread this validates:**
+
+> "Most enterprises evaluate AI agents the wrong way.
+>
+> They deploy first. They discover problems in production. Then they do a post-mortem.
+>
+> The right sequence: evaluate before deployment. Define your rubric. Run the evaluation. Get the certificate. Then deploy.
+>
+> AI accuracy is a procurement question, not an engineering question."
+
+This positions Straw naturally without mentioning it in the hook. The thread can end with "Straw does this evaluation for you" in the last tweet.
+
+---
+
+### The Buyer Fatigue Opportunity
+
+73.7% of enterprise buyers are open to switching vendors in 2025-2028. Only 17.6% have firm plans. The rest (56.1%) would consider switching based on market conditions.
+
+This means: enterprises that have Braintrust or LangSmith for monitoring are NOT locked in. If Straw provides a certificate that their existing monitoring tool doesn't provide, and that certificate unlocks a regulatory compliance requirement, they'll add Straw to their stack.
+
+Straw is not replacing Braintrust. It's a new line item on the enterprise AI governance stack. The fatigue is with overlap and redundancy — not with genuinely differentiated capabilities.
+
+The Straw pitch to a Braintrust customer: "You already have monitoring. You don't have procurement evaluation certificates. These are different tools for different purposes. Straw is $12,000/evaluation, one-time. Your Braintrust subscription continues as is."
+
+This positions Straw as a complement, not a replacement, eliminating the switching cost objection.
+
