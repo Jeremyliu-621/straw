@@ -53096,3 +53096,209 @@ The dual-sided demand model means Straw can sell to both sides of every transact
 
 Ten distinct demand drivers. Each one operates independently. No single buyer is affected by all ten — but every enterprise buyer is affected by at least 3-4.
 
+
+---
+
+## Tick 677 — METR Positioning + PMF Measurement Framework [2026-05-04]
+
+**Theme:** GTM (positioning + traction measurement)
+
+---
+
+### METR and the Third-Party Evaluation Credibility Stack
+
+METR (formerly ARC Evals) is the leading nonprofit third-party AI safety evaluator. They:
+- Evaluate frontier AI models for autonomous capabilities that could pose catastrophic risks
+- Partner with Anthropic, OpenAI on pre-deployment model evaluations
+- Are part of NIST AI Safety Institute Consortium and European AI Office
+- Are funded by philanthropic grants (explicitly NOT by AI labs)
+- Are the closest thing to an established credibility standard in AI third-party evaluation
+
+METR evaluates MODELS for safety (can this model autonomously conduct cyberattacks? can it avoid being shut down?). Straw evaluates AGENTS for performance (does this agent complete my specific business task at a standard I'd accept for production use?).
+
+These are different missions — safety vs. performance. But both are third-party evaluation, and both are valuable to enterprises.
+
+**The positioning opportunity:**
+
+Straw should position itself explicitly as the performance evaluation complement to safety evaluation: "METR evaluates whether AI systems are safe. Straw evaluates whether AI agents are performant. Your enterprise needs both before deployment."
+
+This positions Straw alongside a credible, well-funded, well-regarded organization without claiming to be METR or to do what METR does. It also pre-handles the "aren't there already third-party evaluators?" objection — yes, there are safety evaluators. There are no performance evaluators. Straw is the performance evaluator.
+
+**The credibility anchoring strategy:**
+1. Cite METR in content ("METR evaluates safety; Straw evaluates performance — two different due diligence requirements for enterprise AI deployment")
+2. Attend the same conferences METR attends (MATS, Anthropic events, alignment forums)
+3. Potentially hire someone with METR-adjacent background (AI safety researcher who understands evaluation methodology)
+
+---
+
+### The AI Lab Watch Insight
+
+AI Lab Watch noted: "AI companies aren't really using external evaluators." This is a credibility gap in the safety evaluation space.
+
+The same gap exists in performance evaluation. Enterprise AI buyers want third-party performance evaluations but there's currently no standard provider. Straw's opportunity: become that standard before the market consolidates.
+
+The right analogy: before SOC 2 became standard, security-conscious companies did their own security assessments. Third-party auditors (Schellman, Drata, Vanta) built the market for standardized external assessment. SOC 2 was the certification standard; the auditors were the evaluation layer.
+
+Straw is building the evaluation layer for AI agent performance. ISO 42001, FINRA, California EO — those are the certification standards. Straw produces the documentation.
+
+---
+
+### Product-Market Fit Measurement Framework for Straw
+
+Based on 2026 B2B SaaS PMF indicators, here's how to know if Straw has hit PMF:
+
+**Leading indicators (Months 1-3):**
+- Do design partners complete the full evaluation process (rubric design → T1/T2/T3 → certificate)? Or do they drop off at rubric design?
+- Do design partners share the certificate internally? (Did compliance, legal, or the board see it?)
+- Do design partners mention Straw in the context of "we evaluated this agent using..." vs. never mentioning it?
+- Does a design partner ask about evaluating a second agent within 60 days?
+
+**The PMF signal:**
+Sean Ellis PMF test asks "How would you feel if you could no longer use this product?" — Straw's version: "How would you feel if you had to deploy an AI agent without a Straw certificate?" If the answer is "uncomfortable" or "we'd have to do something equivalent internally" — that's PMF.
+
+**Lagging indicators (Month 3-6):**
+- NRR > 110%: do customers come back for more evaluations? (This is the #1 indicator)
+- Inbound referrals: did a design partner refer a colleague at another company?
+- Certificate sharing: has anyone linked to a Straw certificate publicly?
+- Competitive displacement: has a prospect said "we were going to do this internally but we chose Straw instead"?
+
+**PMF failure signals:**
+- Design partners complete one evaluation and don't come back
+- The rubric design session is the hardest part (customers can't define success criteria)
+- Certificate is produced but never shared or filed
+- The compliance team at the design partner doesn't engage with the certificate
+
+**What to do if early signals are negative:**
+If 3 of the first 5 design partners don't repeat-buy within 90 days, something is wrong. Three hypotheses to test:
+1. Wrong buyer (the person who wanted the evaluation isn't the person who needs the certificate)
+2. Wrong rubric design (rubric didn't capture what actually matters for their use case)
+3. Wrong certificate format (compliance team doesn't recognize the format as useful)
+
+Run a structured 30-minute retro call with each non-repeating design partner at Day 60. Ask the Sean Ellis question. Ask who saw the certificate. Ask what would have made it more useful. The answers will tell you which of the three hypotheses is correct.
+
+---
+
+### The NRR > 110% Goal
+
+The companies commanding the highest valuations in 2026 have NRR above 110%. For Straw, NRR > 110% means:
+- Customers are evaluating more agents per year than they did in Year 1
+- Annual assessment requirements (Colorado AI Act, ISO 42001) are driving re-upsells
+- The evaluation program grows with customer's agent portfolio
+
+Target: each design partner starts with 1-2 evaluations/year and grows to 4-6 evaluations/year as their agent portfolio expands. That's organic NRR expansion without adding new logos.
+
+Year 1 customer revenue trajectory:
+- Month 1: $6,500 (calibration + definitive)
+- Month 6: $12,000 (second agent evaluation at standard pricing)
+- Month 12: $25,000 (3 agents evaluated, annual reassessment of original agent)
+- NRR: ~385% on that single original customer
+
+That is the high-expansion-per-customer model that drives premium valuations in 2026.
+
+
+---
+
+## Tick 678 — The Agent Certification Ecosystem: Straw's Position in the Trust Stack [2026-05-04]
+
+**Theme:** Competitive Intelligence / GTM (positioning)
+
+Five days ago (April 29, 2026), SecureAuth launched the "industry-first Agent Trust Registry." Experian also launched "Agent Trust" for commerce. This tick maps the emerging agent certification ecosystem and where Straw fits.
+
+---
+
+### Who Is Building What
+
+**SecureAuth Agent Trust Registry (launched April 29, 2026):**
+- Security and identity focused
+- Evaluates: verified identity posture, trust score, governance metadata
+- Based on: continuous profiling, not vendor self-assessments
+- Output: standardized risk score + deployment recommendations
+- Focus: "Is this agent secure? What controls should I put in place?"
+
+**Experian Agent Trust (2026):**
+- Commerce-focused
+- Evaluates AI-driven commerce agents for identity and trust signals
+- Powering "trusted AI-driven commerce" — credit, identity verification use cases
+
+**TAB Verified:**
+- Marketplace with Trust Seal grades (Platinum/Gold/Silver/Bronze)
+- 3-dimension scores: Performance, Security, Reliability
+
+**METR (nonprofit):**
+- Safety focused
+- Evaluates frontier AI models for catastrophic risk capabilities
+- Not enterprise-procurement focused
+
+**Straw (not yet launched):**
+- Performance focused
+- Evaluates: task completion on buyer-defined rubrics
+- Output: tamper-proof compliance certificate with UUID and Merkle hash
+- Focus: "Does this agent complete my specific business task at a standard I'd accept?"
+
+---
+
+### The Complete Enterprise AI Due Diligence Stack
+
+Enterprises deploying AI agents in 2026 need three layers of assurance before deployment:
+
+**Layer 1 — Security/Identity Verification:** "Is this agent who it says it is? Is it secure?"
+→ SecureAuth Agent Trust Registry (new, free, public)
+
+**Layer 2 — Safety Evaluation:** "Can this agent do dangerous things? Does it pose catastrophic risks?"
+→ METR (nonprofit, frontier models; not enterprise-focused)
+→ AI red teaming firms ($16K-$150K per engagement)
+
+**Layer 3 — Performance Evaluation:** "Does this agent complete MY specific business task at a standard I'd accept for production use?"
+→ **Straw** (nothing else fills this position)
+
+Layer 3 is the gap. SecureAuth is filling Layer 1. Red team firms are filling Layer 2 (for security) and Layer 2 (for safety separately). Nobody is filling Layer 3 — the task-specific, rubric-based, compliance-certificate-generating performance evaluation layer.
+
+This is the clearest articulation of Straw's unoccupied market position: **the performance evaluation layer of the enterprise AI due diligence stack.**
+
+---
+
+### Why Straw Shouldn't Try to Compete with SecureAuth
+
+The instinct might be to expand Straw's certificate to include security and identity posture. Don't. Reasons:
+
+1. SecureAuth has a head start (live since April 29), domain expertise in identity, and a free product that enterprises will adopt
+2. Security evaluation requires different methodology (adversarial attacks, identity probing) than performance evaluation (rubric-based task assessment)
+3. Trying to cover security + performance = diluted focus, higher ops cost, longer development timeline
+
+**The right move:** Partnership. Straw and SecureAuth are complementary. A full enterprise AI agent certification package could combine:
+- SecureAuth score: identity posture + security trust score
+- Straw certificate: task performance against buyer's rubric
+
+"Before you deploy this agent, here's what you need: SecureAuth verified the identity (Layer 1), Straw evaluated the performance (Layer 3). Both checks complete."
+
+**Who to contact at SecureAuth:** Craig Lund (CEO), Matt Tesauro (security team). The outreach angle: "You're filling the security layer. We're building the performance layer. Our certificates are natural companions. Let's explore a referral arrangement."
+
+---
+
+### The Goldman Sachs Signal: Agents in Core Financial Workflows
+
+Goldman Sachs is using Anthropic Claude agents for core trade accounting and client onboarding. JPMorgan Chase has been the top AI adopter among financial institutions for four consecutive years. Banks are moving from "assistance" to "transactional authority" — agents are settling trades, managing compliance, executing at the revenue layer.
+
+The higher the stakes of the agent's task, the higher the value of a pre-deployment performance evaluation. An agent summarizing news articles doesn't need Straw. An agent settling routine trades does.
+
+The fintech target list (from Tick 634) is correct: senior compliance and AI risk contacts at Goldman Sachs, JPMorgan, Citi, and Morgan Stanley. Their agents are in production for high-stakes tasks without performance evaluation documentation. That's the gap.
+
+**The fintech cold email update:**
+
+Add to the FINRA white paper distribution list: Goldman Sachs AI risk team, JPMorgan Chief AI Officer office, Morgan Stanley technology risk division.
+
+The opener for a Goldman contact: "Goldman's Claude agents for trade accounting are exactly the type of high-stakes agent deployment that requires pre-deployment performance documentation. FINRA's 2026 oversight guidance requires audit trails. Straw produces the certificate that makes that audit trail defensible. 20 minutes?"
+
+---
+
+### What the Agent Certification Ecosystem Tells Us About Timing
+
+The fact that SecureAuth and Experian both launched agent certification products in April 2026 confirms:
+1. The market is ready for certification infrastructure
+2. Enterprises want standardized evaluation before deployment
+3. The first movers in each certification layer will establish the standard
+
+Straw's timing risk (introduced in Tick 673) is less severe than it might appear: the regulatory and market signals are creating pull demand, and Layer 3 (performance evaluation) is still unoccupied. SecureAuth's launch is a rising tide signal, not a competitive threat.
+
+Straw should move as fast as possible to establish the performance evaluation certificate as the Layer 3 standard before another company does.
+
