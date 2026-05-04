@@ -41073,3 +41073,377 @@ Long-term vision (2028-2030): Straw partners with AI liability insurance carrier
 
 **#189: Armilla AI** — First specialized AI liability Lloyd's coverholder. Contact via their website (armilla.ai). Partnership pitch: "Straw evaluation → Armilla coverage discount for enterprises."
 
+## Tick 539 — First 90-Day GTM Action Plan: Specific Sequences [theme: GTM]
+
+### The Context
+
+Straw has no product yet, no revenue, and no customers. But it has:
+- A defined ICP (enterprise AI governance buyers: CDOs, Chief AI Officers, VP Engineering, Legal/Compliance)
+- 350+ named design partner targets across 20+ verticals
+- A category-defining value proposition ("objective, buyer-defined AI agent evaluation")
+- A regulatory tailwind ($527-765B capex, 80% governance gap, EU AI Act August 2026)
+
+The first 90 days are entirely about one thing: **getting 5 design partners who will pay (or commit to pay) for a pilot evaluation.**
+
+"Pay or commit" is critical. Free pilots don't validate willingness to pay. Even a $5,000 commitment from a design partner proves the unit economics are real.
+
+---
+
+### Week 1-2: Pre-Outreach Infrastructure (Days 1-14)
+
+**Day 1:**
+- Incorporate (Delaware C-Corp via Stripe Atlas — $500, 24-hour turnaround)
+- Set up workspace: Linear for task tracking, Notion for design partner notes, Superhuman for email
+- Create jeremy@strawai.com founder email (Google Workspace — $12/month)
+
+**Day 2-3: Build the Outreach Stack**
+- Apollo.io ($49/month): pull verified emails for all 350+ named targets, enrich with LinkedIn/title/recent news
+- LinkedIn Sales Navigator ($99/month): monitor job changes, funding rounds, new AI announcements for targets
+- Instantly.ai ($37/month): cold email sending infrastructure, warm-up IP from day 1
+- Total monthly stack: ~$200/month
+
+**Day 4-5: Write the Master Message Library**
+- 5 ICP-specific pain variant emails (one per vertical: finserv, healthcare, manufacturing, CPG, enterprise tech)
+- 3 subject line variants per email (A/B test)
+- LinkedIn connection note (50 words max)
+- LinkedIn follow-up DM after connection accepted
+
+**Day 6-7: Identify First 50 Targets (Priority Tier)**
+From the 350+ named targets, filter to the highest-priority 50 using:
+- Has public AI governance gap signal (press release about AI deployment, governance audit fail)
+- Has named contact with CISO/Chief AI Officer/CDO title verified on LinkedIn
+- Organization above $1B in revenue (larger procurement budgets)
+- Has recent AI vendor announcement (using AI without evaluation = urgency trigger)
+
+---
+
+### Week 3-4: Founder-Led Cold Outreach (Days 15-28)
+
+**Volume targets:**
+- 10 cold emails per day (custom, not templated — takes 45 min with Apollo context)
+- 5 LinkedIn connection requests per day (with personalized note)
+- 1 Twitter/X interaction per day with target's company AI announcement
+
+**The 5-email sequence (over 14 days):**
+1. **Day 0 — Problem email:** "78% of enterprises deploying AI agents can't pass a governance audit. Here's why." (no ask, just value)
+2. **Day 3 — Social proof email:** "How [relevant peer company] built their agent evaluation rubric" (name-drop a near-competitor of theirs)
+3. **Day 7 — Specificity email:** "Your [recent AI announcement/product] + what validation would look like for your use case" (custom to their news)
+4. **Day 10 — Urgency email:** "EU AI Act enforcement August 2 — 3 things your AI evaluation program needs by July" (regulatory urgency)
+5. **Day 14 — Break-up email:** "I'll stop after this one — just want to know if [specific problem] is on your radar for Q3." (low stakes, high response rate)
+
+**Expected outcomes (based on 2026 enterprise cold email benchmarks):**
+- 8-12% reply rate when ICP-matched → 5-7 replies per 50 targets
+- 30-40% of replies agree to an intro call → 2-3 calls booked per 50 targets
+- 50% of calls convert to design partner interest → 1-2 design partners per 50 targets
+
+**First 90 days target: 250 contacts × 2% conversion = 5 design partners.** This is conservative.
+
+---
+
+### Week 5-8: Design Partner Calls and Scoping (Days 29-56)
+
+**The design partner call (30 minutes):**
+- Minutes 0-5: Confirm the problem ("Tell me about how you're validating your AI agents before deployment")
+- Minutes 5-15: Demo the concept (Figma mockup of rubric builder, evaluation pipeline, procurement score)
+- Minutes 15-25: Identify their specific use case ("If we ran an evaluation for you right now, what would the rubric say?")
+- Minutes 25-30: Pricing ask ("For a pilot evaluation of [use case], we're offering design partners a $5,000 fixed-fee pilot — does that work for Q3?")
+
+**What a "yes" looks like:**
+- Verbal commitment to a pilot (ideally with a specific use case scoped)
+- Agreement to be interviewed for 60 minutes to build the rubric
+- Willingness to sign a 2-page design partner agreement (no legal complexity)
+
+**What a "maybe" looks like:**
+- "This is interesting, but we're in budget planning — revisit in Q3"
+- "I need to loop in [someone else] — can we schedule a follow-up?"
+- Both of these are leads, not losses.
+
+---
+
+### Week 9-12: Design Partner Scoping and Prototype (Days 57-90)
+
+By Day 90, the goal is:
+- **5 signed design partner agreements** (paid or committed to pay)
+- **2 rubrics fully scoped** (with specific criteria for a specific agent evaluation)
+- **1 prototype evaluation completed** (even manually — spreadsheet + rubric, not full-stack)
+
+The prototype doesn't need to be the eventual platform. It needs to produce a believable result:
+1. Company submits a task description
+2. Straw (manually) collects submissions from 2-3 agent systems
+3. Straw (manually using spreadsheet rubric + GPT scoring) generates a procurement score
+4. Straw delivers a 3-page evaluation report to the customer
+
+**This manually-delivered prototype is enough to:**
+- Prove the customer will pay for the result
+- Build the rubric schema for the actual product
+- Validate that the evaluation report answers the buyer's real questions
+
+---
+
+### The Signal-Based Trigger for Outreach Priority
+
+**In 2026, the highest-converting B2B outreach is signal-triggered, not sequence-triggered.** Don't wait for a sequence cycle — send immediately when a signal fires.
+
+Priority signal triggers for Straw outreach:
+1. **Target company announces new AI deployment** (press release, LinkedIn post) → outreach within 24 hours
+2. **Target company announces governance audit or compliance review** → outreach within 24 hours
+3. **Target company announces new Chief AI Officer or CDO hire** → first 30 days of new role = highest receptivity
+4. **Target company raises funding** → new capital means new vendor budgets
+5. **Target company mentions AI agent failures/hallucinations publicly** → validation urgency at peak
+
+Apollo.io and LinkedIn Sales Navigator both support signal monitoring. The Straw outreach stack should be configured to alert on all five signals for every named target.
+
+---
+
+### LinkedIn Personal Brand: The Inbound Engine
+
+**Inbound outreach converts at 14.6% vs 1.7% for outbound.** The fastest path to 5 design partners is making prospects come to you.
+
+Jeremy should post to LinkedIn 3x per week for the first 90 days:
+- **Monday:** A specific data point about AI agent failure (sourced from this research file)
+- **Wednesday:** A case study from a design partner vertical (anonymized) showing what rubric evaluation reveals
+- **Friday:** A contrarian take on AI procurement ("Why AI benchmarks don't predict enterprise performance")
+
+**Goal:** 1,000 LinkedIn followers in 90 days among Chief AI Officers, CDOs, and VP Engineering at $1B+ companies.
+
+At 14.6% inbound conversion, 1,000 followers in the target ICP generates ~146 unsolicited approaches — more than enough to reach 5 design partners without cold email.
+
+---
+
+### The Non-Obvious GTM Move: Partner with the Compliance Consultancies
+
+The fastest path to enterprise buyers is NOT direct outreach to the buyer. It's outreach to the compliance consultancy that already has the buyer's ear.
+
+Priority partner targets for Straw:
+1. **Grant Thornton AI Practice** — already published that 78% of enterprises can't pass AI governance audit → they're telling clients exactly the problem Straw solves
+2. **Deloitte Agentic AI Practice** — published the 21% governance maturity data → they're recommending governance tools to clients
+3. **Accenture AI Governance Practice** — Accenture has "AI governance-by-default" clients who need a validation tool
+4. **KPMG Trusted AI Practice** — KPMG published the board governance principles → their clients are asking "what do we buy?"
+5. **Big 4 AI Audit Arms** → regulatory compliance customers are already in the buying cycle
+
+**The partner pitch:** "When your client asks 'how do we validate our AI agents?', Straw is the answer. We co-brand the evaluation report. You get the consulting engagement. We get the evaluation fee. Neither of us has to build the other's product."
+
+**This is the highest-leverage first 90-day move.** A single Deloitte partner recommending Straw could generate 10+ design partners without any cold outreach.
+
+---
+
+
+## Tick 540 — Insurance Vertical Deep Dive: NAIC Pilot + AI Agent Governance [theme: design partners]
+
+### Why Insurance Is Tier-1 for Straw
+
+Insurance has three features that make it the best early vertical for Straw:
+1. **Regulation is already live and specific:** NAIC AI Systems Evaluation Tool pilot, 12 states, March-September 2026. Insurers in these states are being directly examined on their AI governance.
+2. **AI is already deployed at scale:** AXA has 60+ agentic AI use cases in testing or partial deployment. Munich Re integrated Sixfold AI into its core underwriting platform. 35%+ of insurers deploying AI across 3+ functions by late 2026.
+3. **Stakes are existential:** AI agents making underwriting and claims decisions at scale. A wrong decision is potential litigation, regulatory fine, and reputational damage — all at once.
+
+**The insurance buyer's three fears:**
+1. "Our AI agent is making discriminatory underwriting decisions" (NAIC bias concern)
+2. "Our AI agent is approving claims it shouldn't" (loss ratio impact)
+3. "Regulators are about to examine our AI, and we don't have documentation"
+
+Straw addresses all three with pre-deployment validation + audit trail.
+
+### The NAIC Pilot: A Direct Sales Trigger
+
+**What it is:** NAIC AI Systems Evaluation Tool, 12-state pilot running March-September 2026.
+
+**12 states:** California, Colorado, Connecticut, Florida, Iowa, Louisiana, Maryland, Pennsylvania, Rhode Island, Vermont, Virginia, Wisconsin.
+
+**What it requires of insurers:** During the pilot, state regulators can request documentation of:
+- Extent and use of AI in operations
+- Governance and risk mitigation practices
+- Information about potentially high-risk AI models
+- Data inputs to AI systems
+
+**Adoption timeline:** Tool to be updated September-October 2026. Final adoption at NAIC Fall National Meeting November 2026. After November 2026, this becomes a nationwide regulatory baseline.
+
+**The Straw sales trigger:** Any insurer in these 12 states that receives an NAIC AI examination request in 2026 needs to produce governance documentation immediately. Straw's evaluation report IS that documentation.
+
+**Cold email hook for insurance targets in NAIC pilot states:**
+"The NAIC AI Systems Evaluation Tool is now live in [their state]. Regulators are actively examining AI governance documentation. Here's what they're asking for — and how Straw produces it."
+
+### Insurance Design Partners (#351-370)
+
+| # | Company | AI signal | Straw entry point | Contact target |
+|---|---|---|---|---|
+| 351 | **AXA** | 60+ agentic AI use cases in testing; AXA rewrites insurance model | Validate 60 use cases before production rollout | Chief Data & AI Officer, AXA |
+| 352 | **Munich Re** | Integrated Sixfold AI into Realytix Zero (underwriting, risk analysis, pricing) | Validate Sixfold AI against Munich Re's own underwriting standards | Head of AI Risk, Munich Re |
+| 353 | **Swiss Re** | AI-powered risk model recalibration; treaty underwriting AI | Validate treaty AI models before global deployment | Chief Technology Officer, Swiss Re |
+| 354 | **Lloyd's of London** | Lloyd's Lab AI cohorts; market-wide AI governance | Design the market standard for AI agent evaluation in Lloyd's market | Head of Innovation, Lloyd's |
+| 355 | **Marsh McLennan** | Risk advisory + insurance; AI risk quantification products | Validate AI risk scoring agents (they're selling to others who need validation) | Chief AI Officer, Marsh McLennan |
+| 356 | **Chubb** | AI claims processing; underwriting decision AI | NAIC pilot state exposure → regulatory documentation urgency | Chief Digital Officer, Chubb |
+| 357 | **Travelers** | AI underwriting; Claim Genius integration | Validate before federal AI risk model scrutiny | VP AI & Analytics, Travelers |
+| 358 | **Hartford Financial** | AI small commercial underwriting agents; digital transformation | NAIC pilot state (CT) → direct regulatory pressure | Chief Data Officer, Hartford |
+| 359 | **Progressive** | Snapshot telematics AI + pricing AI at massive scale | Validate pricing AI agents vs. actuarial standards | Chief Analytics Officer, Progressive |
+| 360 | **Allstate** | Allstate Esurance AI; claims automation AI | Validate before national rollout; IL + CA both NAIC pilot states | Chief AI Officer, Allstate |
+| 361 | **Allianz** | Global AI transformation; 100+ use cases | European insurer: EU AI Act + NAIC analog = dual compliance validation need | Chief Data Officer, Allianz |
+| 362 | **Zurich Insurance** | AI risk advisory; underwriting AI | EU + US dual compliance exposure → Straw spans both | Global Head of AI & Data |
+| 363 | **Lemonade** | AI-first insurer; Blaze AI for claims | Claims AI validation before regulatory scrutiny (CA pilot state) | Chief Technology Officer, Lemonade |
+| 364 | **Root Insurance** | Telematics AI; behavioral pricing agents | Validate pricing AI before state insurance commissioner examination | VP Data Science |
+| 365 | **Next Insurance** | AI-native SMB insurance; automated underwriting | Validate AI underwriting vs. state compliance criteria | Chief Product Officer, Next Insurance |
+| 366 | **Coalition** | Cyber insurance AI; claims + risk scoring | AI risk scoring validation → clients trust the score if Straw validated it | Chief Underwriting Officer |
+| 367 | **Corvus Insurance** | Cyber + supply chain AI risk models | Validate AI risk models before underwriting decisions at scale | Head of Data Science, Corvus |
+| 368 | **Pie Insurance** | Workers' comp AI underwriting | NAIC pilot → validate workers' comp AI before Colorado/California examination | Chief Data Officer, Pie |
+| 369 | **Openly** | Homeowners AI underwriting (backed by Travelers) | FL pilot state + rapid growth → governance gap | VP Actuarial & Data |
+| 370 | **Hippo Insurance** | Property AI agents; smart home data integration | CA pilot state → NAIC examination risk | Chief Technology Officer |
+
+### Munich Re as the Ideal First Insurance Partner
+
+Munich Re is writing insurance for AI systems (AI liability policies). They've simultaneously deployed AI in their own underwriting. This creates a unique double-exposure:
+
+1. **They need to validate their own AI** (Sixfold integrated into Realytix Zero — is Sixfold performing against Munich Re's underwriting standards?)
+2. **Their clients need to validate their AI** (Munich Re's AI risk assessment products require documentation of their customers' AI governance)
+3. **They understand the validation problem from both sides**
+
+The Munich Re pitch: "You're underwriting AI risk for others. You also have AI running your own underwriting. Straw validates both — and your AI risk assessment products become more credible when your underwriting AI itself was validated with the same standard you're selling."
+
+### AXA's 60-Use-Case Scaling Problem
+
+AXA has 60+ agentic AI use cases "in testing or partial deployment." This is exactly the problem Straw solves: at 60 use cases, no human team can manually evaluate each agent against AXA's standards. They need an automated evaluation framework.
+
+Straw for AXA:
+- AXA defines the rubric for each of 60 use cases
+- Straw runs systematic evaluation for each
+- AXA gets a governance score per use case
+- High-scoring use cases proceed to production; borderline cases get investigated; failing cases get flagged
+
+**This is the Straw platform operating exactly as designed, at enterprise scale, with a willing early adopter.**
+
+AXA contact: Laurent Sorge (Chief Data & AI Officer, AXA) or Sidharth Ojha (Chief AI Scientist, AXA XL) — both have public AI commentary.
+
+### The NAIC → Straw Pipeline Logic
+
+The beauty of the NAIC pilot is that it creates a **named list of companies with a regulatory deadline**:
+1. Find every major insurer with significant operations in any of the 12 pilot states
+2. Outreach tied directly to "NAIC examination documentation — here's what they're asking for"
+3. Every insurer in those states is a potential Straw customer before November 2026
+
+This is not a speculative pipeline. It's a regulation-created list of motivated buyers.
+
+---
+
+
+## Tick 541 — Fundraising Pathway: YC S26, FCA Sandbox, and Seed Round Strategy [theme: GTM]
+
+### YC S26 — Late Application (Deadline Missed by 1 Day)
+
+**Status:** YC S26 application deadline was May 4, 2026 at 8:00 PM PT. Today is May 3. The deadline has passed as of this session.
+
+**But late applications are still accepted:** YC reviews late applications on a rolling basis. Timeline for response is not guaranteed, but applications are considered.
+
+**Apply today.** Every day of delay is a day where YC might close the review window.
+
+**YC S26 batch:** July-September 2026 in San Francisco. ~1,100 companies interviewed for ~200 spots.
+
+**What makes Straw's YC application strong:**
+
+1. **Market timing:** "Agentic AI has crossed $10B in 2026 and 88% is failing. We evaluate it." — reads well in Q2 2026
+2. **Founding team:** Jeremy Liu, strong CS background, agent infrastructure knowledge
+3. **Traction:** If 1-2 design partners are signed before the interview, this becomes a conversion story
+4. **Technical credibility:** Tier 1/2/3 evaluation pipeline is technically non-trivial — YC respects technical depth
+5. **Category creation:** "No one has pre-specified rubric evaluation + tiered deterministic+LLM evaluation" — YC loves category creators
+
+**The one-paragraph YC company description:**
+"Straw is the enterprise AI agent evaluation platform. Companies post tasks with rubrics defining exactly what winning looks like. AI agents from any vendor compete. Straw's tiered evaluation pipeline (deterministic checks, LLM scoring, autonomous investigator) produces a verifiable procurement score. Buyers get the objective performance proof they need before six-figure AI purchasing decisions. No comparable system exists."
+
+**Fallback: YC W26 Application**
+If S26 is already closed for review, YC W26 (Winter 2026 batch) applications open in September with a November 10 deadline. W26 batch runs January-March 2027. This should be the primary target if S26 doesn't work.
+
+---
+
+### FCA Supercharged Sandbox Cohort 2 — Application Strategy
+
+**Status:** FCA Supercharged Sandbox Cohort 2 opened May 5, 2026 (yesterday). This is a live opportunity.
+
+**What the FCA Supercharged Sandbox offers:**
+- Direct FCA regulatory engagement with real financial services firms
+- Testing of novel financial services products in a live but supervised environment
+- Cohort 1 (2025) covered AI in financial services — Cohort 2 focus areas expected to extend this
+- FCA provides regulatory guidance and supervisory certainty during testing
+- Alumni of Cohort 1 have used the sandbox to launch products with implicit FCA endorsement
+
+**Why Straw qualifies:**
+1. AI agent evaluation for financial services is a regulated activity concern
+2. NAIC (US) and FCA (UK) are both examining AI governance simultaneously
+3. FCA Consumer Duty (July 2023) + AI Act applicability creates demand for agent validation in UK finserv
+4. Straw can demonstrate AI agent evaluation for underwriting, financial advice, or trading agents — all core FCA concerns
+
+**FCA application key messages:**
+- "Straw validates AI agents used in financial services decisions before those agents interact with consumers"
+- "Our evaluation produces the audit trail FCA examiners are requesting from regulated firms"
+- "No existing tool provides buyer-defined rubric evaluation for AI agents in financial services"
+
+**The FCA beachhead:** If Straw enters the FCA sandbox with a UK insurance or banking partner, the resulting FCA engagement letter becomes a sales tool for every UK financial institution worried about AI regulation. "FCA sandbox participant" on the Straw website is worth more than any marketing budget.
+
+**FCA Cohort 2 application:** Apply immediately. The window is open. First-mover advantage is real in sandbox cohorts.
+
+---
+
+### Seed Round Strategy: $3-5M at $15-20M Pre-Money
+
+**Timing:** Raise seed after first 3 design partners are signed and first paid pilot is complete. Target Q4 2026.
+
+**The fundraising narrative progression:**
+
+| Stage | What you need | Time |
+|---|---|---|
+| Pre-seed (YC or angels) | Founding team + clear thesis + 1 design partner | Q2-Q3 2026 |
+| Seed | 3+ paying customers + evaluation methodology proven | Q4 2026 |
+| Series A | $1M ARR + proven sales motion + 90%+ NRR | 2027 |
+
+**Pre-seed path (no YC):**
+If YC doesn't work out, approach angels directly:
+- **Anthropic alumni** — they understand the agent evaluation problem from the inside
+- **Enterprise AI founders** — founders who've navigated enterprise AI procurement appreciate the pain
+- **Insurance/finserv angels** — sector credibility for early insurance pipeline
+- **Ex-McKinsey/BCG partners turned angel** — understand enterprise procurement complexity
+
+**Target investors for seed round:**
+
+| Investor type | Why relevant to Straw |
+|---|---|
+| Emergence Capital | Focused on enterprise AI + SaaS; portfolio: Salesforce, Zoom, Veeva |
+| Andreessen Horowitz (a16z) | "Software is eating the world" → Straw is software eating AI procurement |
+| Scale Ventures Partners | Enterprise software, governance tools |
+| Decibel Partners | AI infrastructure + enterprise tech |
+| Work-Bench | NYC-based enterprise software VC |
+| Unusual Ventures | Founder first, enterprise focus |
+| SemperVirens | HR/Future of Work angle (agent workforce displacement) |
+
+**The seed pitch deck structure (12 slides):**
+1. **The problem:** 88% of AI deployments fail; 41% because success criteria weren't defined
+2. **The consequence:** $527-765B in AI capex, 40% at risk of cancellation — trillion-dollar governance gap
+3. **The solution:** Straw — buyer-defined rubrics + tiered evaluation + verifiable procurement score
+4. **How it works:** Task → competition → Tier 1/2/3 evaluation → procurement score (animated demo)
+5. **Why now:** 5 regulatory tailwinds converging in 2026 (NAIC + EU AI Act + SR 26-2 + FCA + board mandates)
+6. **Why us:** Only platform with pre-specified rubric evaluation + autonomous Tier-3 investigator
+7. **Traction:** X design partners, Y paid pilots, Z evaluations completed
+8. **Market:** $1.5-2.5B conservative TAM (evaluation layer only); $10.91B adjacent (agentic AI total)
+9. **Business model:** Tier structure ($5K starter → $50K pro → $200K enterprise); retainer 4x ARR
+10. **Go-to-market:** Compliance consultancy partnerships + direct enterprise + regulatory trigger outreach
+11. **Team:** Why Jeremy Liu + [co-founder/advisor if any] are the right people to build this
+12. **Ask:** $3-5M seed at $15-20M pre-money to hire 3 engineers + 1 sales lead + 6 months runway
+
+---
+
+### Conference Speaking Strategy: Building the Category
+
+Speaking at the right conferences positions Straw as the "AI evaluation" category owner. The goal is NOT sales — it's becoming the canonical voice on "objective AI agent procurement."
+
+**Priority conference submissions:**
+
+| Conference | When | Topic | Submit by |
+|---|---|---|---|
+| **Gartner IT Symposium/Xpo 2026** | October 2026 | "Why 88% of AI Agents Fail: The Evaluation Gap in Enterprise AI" | Submit June 2026 |
+| **Money20/20 USA** | October 2026 | "NAIC 12-State Pilot: What It Means for Your AI Governance Framework" | Submit July 2026 |
+| **RSA Conference 2027** | June 2027 | "AI Agent Security: How Evaluation Pipelines Detect Prompt Injection Before Production" | CFP opens Sept 2026 |
+| **Strata Data & AI** | March 2027 | "The Benchmark Gaming Problem: Why Generic LLM Evals Don't Protect Enterprise Buyers" | CFP opens Nov 2026 |
+| **NAIC Summer Meeting 2026** | August 2026 | Submit public comment on AI evaluation tool → establish thought leadership with regulators | Submit June 2026 |
+| **Anthropic Developer Summit (if exists)** | 2026 | "Building Neutral AI Agent Evaluation on the Anthropic Stack" | Monitor for CFP |
+| **World Economic Forum Davos 2027** | January 2027 | "AI Procurement Transparency: The Missing Layer" | Nomination-based — build relationships now |
+
+**The speaking strategy principle:** Jeremy should submit to 3 events per quarter. Even one accepted talk generates 20+ warm inbound leads and establishes category ownership.
+
+---
+
