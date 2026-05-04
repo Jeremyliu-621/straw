@@ -51224,3 +51224,229 @@ At the end of Month 2, review: which channel produced the most discovery convers
 
 **The session is complete. Jeremy has everything he needs to act. The only remaining question is whether he acts.**
 
+
+---
+
+## Tick 659 — [GTM] The Infrastructure Narrative: "Straw Is to AI Procurement What Stripe Is to Payment Processing"
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Investor + enterprise narrative — the infrastructure framing  
+
+---
+
+### Why the Infrastructure Framing Is More Powerful Than the "Evaluation Tool" Framing
+
+Current Straw description: "an AI agent evaluation platform that produces compliance certificates."
+
+This is accurate but positions Straw as a tool — something you might use occasionally. Tools get churned. Infrastructure gets embedded.
+
+The more powerful framing: **Straw is the infrastructure layer for enterprise AI procurement decisions.**
+
+Compare:
+- "Stripe is a payment processing tool" (weak) vs. "Stripe is the infrastructure layer for internet commerce" (strong)
+- "AWS is a server rental service" (weak) vs. "AWS is the cloud infrastructure layer that businesses build on" (strong)
+- "Straw is an AI evaluation tool" (weak) vs. "Straw is the evaluation infrastructure layer for enterprise AI procurement" (strong)
+
+Infrastructure companies get:
+- Higher valuations (infrastructure companies trade at 15-25x revenue; tools at 5-10x)
+- Higher retention (infrastructure is embedded into workflows, not evaluated quarterly)
+- Higher ARPU (infrastructure scales with the customer's usage, not just their headcount)
+- Stronger moat narrative (infrastructure is standard; tools are interchangeable)
+
+---
+
+### The Stripe Analogy Applied to Straw
+
+**What Stripe did for payment processing:**
+- Before Stripe: every company built their own payment integration (Paypal, Authorize.net, bank APIs)
+- The problem: inconsistent, fragile, not portable across vendors, no fraud protection, no compliance
+- Stripe's solution: one integration, all payment methods, compliance handled, fraud protection included
+- The result: companies stopped building payment infrastructure and just used Stripe
+
+**What Straw does for AI agent procurement:**
+- Before Straw: every company evaluates AI agents ad-hoc (engineer time, informal demos, gut feel)
+- The problem: inconsistent, not reproducible, not compliant, no third-party independence
+- Straw's solution: one evaluation framework, any agent, compliance certificate included, anti-gaming built in
+- The result: companies stop building evaluation infrastructure and just use Straw
+
+**The parallel:**
+| Stripe | Straw |
+|--------|-------|
+| Infrastructure for payment decisions | Infrastructure for AI procurement decisions |
+| Every company needs to accept payment | Every company deploying AI agents needs to evaluate them |
+| Banks require PCI compliance | Regulators (FINRA, SEC) require AI evaluation documentation |
+| Stripe handles compliance so you don't have to | Straw handles evaluation compliance so you don't have to |
+| One integration across all payment types | One evaluation across all agent frameworks |
+| Network effect from transaction data | Network effect from evaluation data (benchmarks improve) |
+
+---
+
+### The Bloomberg Terminal Analogy (Secondary Frame)
+
+The Phase 1 research used Bloomberg Terminal as a comparison. It's also valid:
+- Bloomberg = indispensable data infrastructure for financial decisions
+- Straw = indispensable evaluation infrastructure for AI procurement decisions
+- Both products become embedded in workflows over time (high switching cost)
+- Both serve the financial services and enterprise market as primary customers
+- Both started with a specific use case and expanded
+
+**For different audiences:**
+- For investors: "We're building the Bloomberg Terminal for AI agent performance data"
+- For enterprise buyers: "We're building the Stripe of AI agent evaluation — one integration, any agent, compliance included"
+- For technical audiences: "We're the NIST-aligned evaluation infrastructure for enterprise AI procurement"
+- For the CAIO: "We're the compliance layer between your AI deployment and your board presentation"
+
+---
+
+### The Infrastructure Pricing Model
+
+Infrastructure companies don't charge per feature — they charge on usage.
+
+**Straw's infrastructure pricing evolution:**
+
+Phase 1 (per-evaluation): $2,500-5,000 per evaluation run (current plan)
+Phase 2 (subscription): $12,000/year for unlimited evaluations in one category
+Phase 3 (usage-based): $X per evaluation run + platform fee, all within Straw's standard SLA
+Phase 4 (data/API): Enterprise API access to Straw's aggregate benchmark data, annual license
+
+The Phase 4 model is where the Bloomberg Terminal analogy becomes financial: the aggregate data from 10,000 evaluations (which agents perform best on which task types, in which industries, with which models) becomes a proprietary dataset that enterprises pay to access. This is not available in Phase 1 — it requires the scale of a real marketplace — but it's the infrastructure endgame.
+
+---
+
+### How to Use This Framing in Sales
+
+**Opening line (CAIO meeting):** "Most companies treat AI agent evaluation as something you do occasionally when you have a problem. We're building Straw to be the infrastructure layer — the thing you integrate once and use for every AI procurement decision going forward, the way you integrated Stripe once and it handles every payment."
+
+**Follow-up (for skeptics):** "Every company running more than 3 AI agents in production has an evaluation problem. They're making six-figure procurement decisions with no documented evaluation process. That's not sustainable — FINRA is already examining it. Straw is the infrastructure that makes evaluation systematic instead of ad-hoc."
+
+**The close:** "We're not asking you to buy a tool. We're asking you to adopt the evaluation infrastructure that your AI procurement process will eventually require. The question is whether you're first or last."
+
+
+---
+
+## Tick 660 — [GTM] MVP Demo Requirements: What Must Exist Before the First Design Partner Call
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Product readiness for GTM — what to build vs. what to fake  
+
+---
+
+### The Core Principle: Fake Everything Except the Certificate
+
+The fastest path to first design partner sign-on is:
+- **Automate nothing** that requires a week to build
+- **Fake the UI** if it saves two weeks of product work
+- **Make real** the one thing that has to be real: the certificate
+
+Why the certificate must be real:
+1. The certificate is the value proposition — if it doesn't work, nothing works
+2. The certificate requires actual cryptographic logic (UUID, Merkle hash, verification URL)
+3. The certificate is what the compliance officer needs to see before approving spend
+
+Everything else in the first demo can be a Wizard of Oz operation (manually powered, looks automated).
+
+---
+
+### The Minimum Viable Demo (What to Build in 2 Weeks)
+
+**What exists today (based on Phase 14-18 build status):**
+- Working Next.js app with auth
+- Database schema with evaluation tables
+- ZeroClaw worker (agent execution in containers)
+- Basic task posting and agent submission
+- Some form of evaluation scoring
+
+**What needs to be added for the first demo:**
+
+1. **The rubric definition interface (2 days)**
+   - A form where a company can define 3-5 evaluation criteria for their task
+   - Each criterion has: name, description, weight (0-100), scoring method (binary/scale/LLM judge)
+   - No fancy UI needed. A Google Form equivalent works for the first demo.
+
+2. **The certificate generation + verification URL (3 days)**
+   - After evaluation completes: generate a UUID, hash the rubric + submission + scores using SHA-256
+   - Store in database as an immutable record
+   - Create a public verification URL: `/verify/[uuid]` that shows the certificate contents
+   - The certificate displays: Task ID, Agent version, Rubric summary, Score breakdown, Date, Hash
+   - This is the money shot of the demo. Must work perfectly.
+
+3. **N-run sampling (1 day)**
+   - Run any evaluation 7 times, report mean ± standard deviation
+   - Store all 7 runs in DB, display the aggregate in the certificate
+   - Requirement: must be in the certificate before any enterprise buyer sees it (Tick 650)
+
+4. **The demo task + rubric (1 day)**
+   - Create a pre-built demo task: "Expense reconciliation for a fintech company"
+   - Pre-built rubric: accuracy (40%), edge case handling (30%), output format (20%), speed (10%)
+   - Run Devin and a simple custom Claude agent against this demo task
+   - Have the certificate pre-generated and ready to show
+   - The demo should require NO real-time computation — show a pre-computed result
+
+5. **The "walkthrough" (no code, 0.5 days)**
+   - A 5-minute demo script that shows: task definition → agent run → certificate output → verification URL
+   - Practice this script 10 times before the first call
+   - Record it as a Loom video for async follow-up after calls
+
+---
+
+### What NOT to Build for the First Demo
+
+**Don't build:**
+- A marketplace (agents competing publicly)
+- Leaderboard rankings
+- A beautiful rubric builder with drag-and-drop
+- Automatic agent onboarding SDK
+- Complex billing/payment integration
+- Any machine learning models for scoring (use LLM APIs directly)
+- Automated email notifications
+- A company dashboard with analytics
+- SSO integration
+- SOC 2 compliance documentation
+
+**Why not:** None of these are needed to demonstrate the value proposition. The value proposition is: "define task + rubric → run agents → get certificate." Everything else is noise that delays the first design partner conversation.
+
+The best first demo is a demo that takes 5 minutes and shows only the core loop. Every additional feature adds time and reduces focus.
+
+---
+
+### The "Manual-First" Operations Protocol
+
+For the first 5 design partner evaluations:
+1. Company sends Jeremy the task description and rubric criteria (via email or a simple form)
+2. Jeremy manually configures the evaluation in the Straw backend
+3. Jeremy runs the agent(s) against the task
+4. The scoring happens semi-automatically (T1 automated, T2 LLM judge via API, T3 Jeremy reviews)
+5. The certificate is generated automatically and sent to the company
+
+Total time per evaluation: 4-6 hours of Jeremy's time
+Value delivered: A real certificate that the company can actually use
+What the company experiences: Seamless delivery of a compliance artifact
+
+The company doesn't need to know the evaluation was 40% manual. The certificate is real. The hash is real. The verification URL works. The rubric was their own.
+
+This is the Wizard of Oz MVP. It proves the model works before you automate anything.
+
+---
+
+### The One Product Decision That Has Long-Term Moat Implications
+
+**Decision:** Should the certificate verification URL be publicly accessible (anyone with the URL can verify) or privately gated (requires login)?
+
+**Arguments for public:**
+- Compliance teams can verify without creating a Straw account
+- The certificate becomes shareable and portable (company can include it in vendor contracts)
+- Public verification = "Straw Certified" is a meaningful badge
+- This is how SOC 2 report verification works (auditor can check the certificate ID)
+
+**Arguments for private:**
+- Enterprise data confidentiality (the rubric may contain sensitive task specifications)
+- Competitive sensitivity (company doesn't want competitors to know what tasks they're evaluating)
+
+**Recommendation:** Public verification of the EXISTENCE of the certificate and the hash (proves it hasn't been tampered with). Private access to the full rubric content (requires the company's authentication to see the criteria).
+
+This gives compliance teams what they need (verification that the certificate is authentic) while protecting the rubric confidentiality that enterprise buyers require.
+
+Build this in week 1. It sets the right architecture before the first customer.
+
