@@ -40417,3 +40417,109 @@ We're looking for a full-stack engineer to own our evaluation pipeline end to en
 
 **Note:** 80%+ of roles are filled through referrals before posting publicly. Before posting: ask design partners, academic collaborators (Graham Neubig, Beth Barnes), and CAIF contacts if they know strong engineers in the agent evaluation space.
 
+## Tick 534 — Workforce Displacement + The Straw-as-Governance Play [theme: GTM + bear]
+
+### Yale CELI Fortune Article: "AI Won't Kill Your Job — It Will Kill the Path to Your First One" (April 29, 2026)
+
+**Four days before today (May 3, 2026)**, Jeffrey Sonnenfeld + Yale CELI published this in Fortune.
+
+The finding: **41% of mid-market agencies froze or paused at least one role tied to their agentic-AI rollout** (DigitalApplied.com Q2 2026 Labor Survey).
+
+The shift:
+- Production and coordination roles: **-24% YoY net new hiring**
+- Agentic engineering: **+34% YoY growth**
+- AI-Ops roles: **+28% YoY growth**
+
+**The structural problem:** "The learning curve is being automated." When an AI can generate SQL queries, summarize legal briefs, or debug code, the economic rationale for junior hires collapses. Young professionals can't build expertise through low-level work if agents are doing that work.
+
+### The Governance Urgency This Creates
+
+Companies deploying agents to replace entry-level roles are making personnel decisions with economic consequences:
+1. If the agent works → cost savings + productivity gains → good
+2. If the agent fails silently → no output, wrong output, or harmful output → catastrophic (no human backup)
+3. If the agent is biased → hiring freezes that disadvantage specific demographics → legal exposure
+
+**Without governance (80% of deployers don't have it per Deloitte), companies are:**
+- Making workforce decisions based on agents they haven't objectively validated
+- Cutting human roles before confirming agent adequacy
+- Accepting legal exposure from agent failures with no documentation trail
+
+**The Straw urgency argument:**
+"Your company is deploying agents to replace functions that humans used to catch failures in. Before you cut those humans, you need to be certain the agent works. Straw is how you get certain."
+
+### The "Hiring Freeze" as the Primary Straw Sales Trigger
+
+The top trigger for a Straw evaluation is no longer "we're choosing between vendors." It's now: **"we're deploying an agent that will replace human oversight."**
+
+The sales trigger sequence:
+1. CFO/CEO mandates cost reduction through AI agent deployment
+2. HR team identifies roles for "agentic replacement"
+3. Legal and compliance ask: "how do we validate the agent before cutting the humans?"
+4. **THIS IS WHERE STRAW ENTERS:** "Straw validates that the agent performs at the required standard. Here's your documentation."
+5. Post-Straw: deploy agent, restructure team, have audit trail for board/EEOC/EU AI Act
+
+**This is a STRONGER pull than "we're evaluating AI vendors."** This is a risk mitigation purchase, not just a better procurement process.
+
+---
+
+## Tick 535 — The Master Statistics Dashboard: Every Key Number in One Place [theme: bear + GTM]
+
+### Enterprise AI Agent Market Statistics (Updated May 2026)
+
+**Adoption:**
+- 79% of enterprises have at least some AI agent adoption (2026)
+- 57% of B2B decision-makers have AI agents in production
+- 51% of enterprises have AI agents running in production (Deloitte)
+- 40% of enterprise applications will include task-specific AI agents by end of 2026 (Gartner — up from <5% in 2025)
+- Agentic AI presence: <1% in 2024 → 33% by 2028 (33x growth in 4 years)
+- 80% of enterprise apps shipped or updated in Q1 2026 embed at least one AI agent
+
+**Failure and governance:**
+- 88% of enterprise AI deployments fail or underperform (Stanford 2025)
+- 66% of agents reach benchmark success; 89% never reach production (Stanford AI Index 2026)
+- 90% of firms report no AI productivity impact (NBER February 2026)
+- 40% of agentic AI projects at risk of cancellation by 2027 (Gartner)
+- 80% of organizations deploying agents WITHOUT governance infrastructure (Deloitte)
+- Only 21% have a mature governance model for AI agents (Deloitte)
+- 41% of enterprise AI failures from unclear success criteria (DigitalApplied)
+- 78% of enterprises can't pass an AI governance audit (Grant Thornton April 2026)
+
+**ROI (for those who succeed):**
+- Average ROI for enterprise agentic AI: 171% (US: 192%)
+- 88% of early adopters seeing positive ROI from at least one agentic use case (Google Cloud)
+- Only 41% of agent rollouts cross positive ROI within 12 months (Gartner Agentic AI Pulse 2026)
+- 19% of agent deployments never reach payback (Gartner)
+- 5% of enterprises see real AI returns; those 5% defined criteria first (MasterOfCode 2026)
+
+**Regulatory:**
+- SR 26-2 (April 2026): agentic AI explicitly out of scope of US banking AI governance
+- Only 26.4% of financial institutions confident in AI compliance readiness (Wolters Kluwer Q1 2026)
+- NAIC AI Evaluation Tool Pilot: 12 states, March-September 2026
+- EU AI Act August 2, 2026 enforcement (unless Digital Omnibus defers to December 2027)
+- 56% of enterprises now have formal "AI agent owner" (up from 11% in 2024)
+
+**Market size:**
+- AI agent market 2026: $10.91B
+- Enterprise agentic AI 2026: ~$3.5B, growing to $24.5B by 2030
+- Straw's conservative TAM: $1.5-2.5B/year (evaluation market only)
+- Goldman Sachs 2026 AI capex: $527-765B
+- McKinsey: 20,000 AI agents deployed
+
+**Investment:**
+- AI startup funding Q1 2026: $242B (80% of all VC)
+- AI seed median pre-money: $17.9M
+- Typical AI seed: $10M at $40-45M post-money
+- AI startup revenue multiples: 10x-50x (median 20-30x)
+
+### The Five Statistics That Define Straw's Entire Investment Thesis
+
+1. **41%** of enterprise AI failures = unclear success criteria (DigitalApplied) → Straw defines criteria before deployment
+2. **88%** failure rate overall → 5% succeed when they define criteria first → criteria definition = the key variable
+3. **80%** deploying agents WITHOUT governance → the gap is enormous and closing regulation is forcing action
+4. **40%** projects at risk of cancellation by 2027 = INADEQUATE GOVERNANCE → Straw's exact market
+5. **171% average ROI** for the ones that succeed → the prize is enormous → Straw's fee is trivial vs. the upside
+
+**In one paragraph:**
+"88% of enterprise AI deployments fail, 41% because success criteria were never defined. The 5% that succeed defined criteria first. 80% of deployers have no governance infrastructure, and 40% of projects face cancellation. Yet the average ROI for the ones that succeed is 171%. The prize is enormous; the path to the prize is clear. Straw is the platform that puts companies on the 5% path by forcing criteria definition before competition begins."
+
+---
