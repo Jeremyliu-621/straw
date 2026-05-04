@@ -50342,3 +50342,112 @@ The certificate locks in the specific model version and environment configuratio
 
 **Priority:** Build N-run sampling and variance reporting into the certificate format BEFORE the first customer demo. The certificate that shows only "Score: 91/100" without variance will lose the credibility fight against a CTO who understands statistics. The certificate that shows "Score: 91.3 ± 2.8 (95% CI, N=7, internal consistency: High)" wins the credibility fight.
 
+
+---
+
+## Tick 651 — [GTM] Pricing Experiment Playbook: How to Find Straw's True Willingness to Pay
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Pricing experiments — from free design partner to first paid customer  
+**Sources:** SaaS Validation "Willingness to Pay is Discovered by Charging", WillingnessToPay.com B2B SaaS case studies, Orb pricing experiments guide, ContentSquare SaaS startup pricing strategy
+
+---
+
+### The Core Principle: WTP is a Behavior, Not a Belief
+
+> "Willingness to pay is not a belief that can be reported accurately in response to a hypothetical — it is a behavior that only becomes visible at the moment of an actual transaction."
+
+**The mistake:** Asking "Would you pay $2,500 for this?" in a customer interview. Saying yes costs them nothing. The answer is meaningless.
+
+**The correct approach:** Tell them the price in the middle of a real conversation when they've expressed interest, and watch what they do next.
+
+---
+
+### The 4-Stage Straw Pricing Experiment
+
+**Stage 0: Manual free (Weeks 1-4, design partner phase)**
+
+Straw runs evaluations manually (human-constructed rubrics, human-run agent tests, hand-crafted certificate) for 3-5 design partners at $0. The goal is not to validate price — it's to validate that the output (the certificate) has value at all.
+
+**Signal to watch:** Do design partners use the certificate? Do they show it to their team? Do they mention it in internal communications? Do they ask when the next evaluation will run? Behavioral signals of value, even at $0.
+
+**Exit condition:** At least 2 design partners have used the certificate in a real decision (shown it to their board/legal/procurement team).
+
+---
+
+**Stage 1: Token price (Week 5-8)**
+
+Start charging design partners a token amount: $500 per evaluation. This is below cost (the manual delivery is worth 10-20 hours of your time). But $500 is real money that tests whether they'll transact at all.
+
+**The ask framing:** "We're moving from fully free to a design partner rate of $500 per evaluation. You'd still be getting full access to our team and structured feedback sessions included. The $500 is just to validate that this is a real business relationship, not just a favor."
+
+**Signal to watch:** Do they pay without significant pushback? Do they try to negotiate down to $0? Does one of the 3-5 design partners decline the $500 price?
+
+**Exit condition:** At least 2 of 5 design partners pay $500 without negotiating. This proves transactional willingness, even at a token level.
+
+---
+
+**Stage 2: Real price (Month 3-6)**
+
+Charge the first "real" price: $2,500 per evaluation. This is the intended commercial price for Phase 1.
+
+**The script for introducing real price:**
+> "Our design partner rate was $500 while we were learning from your feedback. We're now moving to our commercial pricing: $2,500 per evaluation run. Design partners get 12 weeks of support included. Would you like to continue at that rate?"
+
+**Expected outcome:**
+- 1-2 design partners continue at $2,500 → these are your first real customers
+- 1-2 decline at $2,500 → this is price resistance data, not rejection. Ask "what price would be right for you?" and listen.
+- 1-2 say "we need to get budget approval" → this is a procurement process signal. Help them build the internal ROI case.
+
+**Signal to watch:** At $2,500, does the buyer change? Do individual champions suddenly need to escalate to procurement? Does the conversation shift from "is this useful" to "can I get this approved"?
+
+---
+
+**Stage 3: Value-based anchoring experiment (Month 6+)**
+
+Once you have 3+ paying customers at $2,500, test the $5,000 price point on new prospects (not existing customers). 
+
+**The Van Westendorp price sensitivity test for Straw:**
+Ask new design partner candidates: 
+1. "At what price would this be so cheap you'd question the quality?" 
+2. "At what price would this be expensive but still worth it?" 
+3. "At what price would this be too expensive to consider?"
+
+Aggregate answers across 10+ conversations. The acceptable price range is between answer 1 and answer 3; the optimal price is near answer 2.
+
+**Based on current market data:**
+- Vals AI prices enterprise evaluation in the $5,000-20,000 range
+- A single Devin Enterprise license costs ~$500/month ($6,000/year) — evaluating before signing this contract at $2,500 is a 2.4-month payback
+- A typical agent deployment contract is $50,000+ annually — evaluating at $2,500 is 5% of the contract value (standard due diligence budget)
+
+**Hypothesis:** Straw's acceptable price range is $2,500-$10,000 per evaluation. The optimal price is $5,000 per evaluation for the enterprise fintech buyer. Test this.
+
+---
+
+### The Pricing Signal That Changes Everything
+
+The most valuable pricing insight is not the number — it's who needs to approve it.
+
+**If the champion can approve $2,500 without escalation:** You're selling to a buyer with budget authority. The product is priced correctly for the individual champion.
+
+**If $2,500 requires VP/CAIO approval:** The price point has crossed into "needs procurement." This is actually good — it means the CAIO is now in the conversation, which opens the subscription conversion (CAIO signs an annual contract rather than individual evaluations).
+
+**If $2,500 requires CFO/board approval:** Price may be too low — enterprise buyers treat low-cost items as expense (approved by individuals) vs. higher-cost items as investment (approved by finance). A $2,500 evaluation might be harder to approve than a $12,000 annual subscription because the annual subscription gets treated as a budget line, not an ad-hoc expense.
+
+This counter-intuitive dynamic (higher price is easier to approve because it goes through the right procurement channel) explains why some enterprise SaaS companies deliberately price higher than the market expects.
+
+---
+
+### The Freemium Trap: Why Straw Should Never Have a Free Tier
+
+Every day Straw runs free evaluations, it:
+1. Trains the market to expect free evaluation
+2. Misses the willingness-to-pay signal
+3. Attracts non-ICP users who will never convert
+4. Delays the discovery of what enterprise buyers actually value
+
+**The only legitimate free tier:** Design partner evaluations, explicitly framed as free-in-exchange-for-structured-feedback, with a clear timeline for when pricing kicks in.
+
+"Free forever" is a consumer product strategy. Straw is enterprise. There should be no free forever tier. Ever.
+
