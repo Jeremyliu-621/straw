@@ -40523,3 +40523,167 @@ The sales trigger sequence:
 "88% of enterprise AI deployments fail, 41% because success criteria were never defined. The 5% that succeed defined criteria first. 80% of deployers have no governance infrastructure, and 40% of projects face cancellation. Yet the average ROI for the ones that succeed is 171%. The prize is enormous; the path to the prize is clear. Straw is the platform that puts companies on the 5% path by forcing criteria definition before competition begins."
 
 ---
+
+---
+
+## Tick 547 — Rubric Facilitation Guide: Running the 30-Minute Session [Product/GTM]
+
+*2026-05-04. The rubric design session is Straw's most important customer interaction. It defines whether the evaluation succeeds.*
+
+### The session structure (30 minutes, Jeremy facilitates)
+
+**Before the session (Jeremy's prep, 10 minutes):**
+- Read the prospect's company website and any job postings related to AI
+- Identify the likely task type (coding / research / data / CX / other)
+- Pre-fill a rubric template with 3-4 starting dimensions
+- Test the starting dimensions against "what would pass?" and "what would fail?"
+
+**Minute 0-5: Task definition**
+- "Describe the task in one sentence. What should the agent DO?"
+- Listen for: specificity level, edge cases, unstated constraints
+- Clarifying questions: "For which users? With which data? On which timeline?"
+- Deliverable: 50-100 word task brief
+
+**Minute 5-15: Rubric dimension brainstorm**
+- "What does 'good' look like for this task? What does 'bad' look like?"
+- Listen for: measurable vs. vague criteria
+- For each criterion the prospect names: "Can you write a test case that passes for 'good' and fails for 'bad'?"
+- Push for at least 2 T1-verifiable dimensions (deterministic tests possible)
+- Typical output: 6-9 candidate dimensions
+
+**Minute 15-25: Dimension selection and weighting**
+- Reduce to 5-7 dimensions (more is noise for agents)
+- Assign weights (must sum to 100)
+- Assign tier (T1 / T2 / T3) for each dimension
+- Verify: "Is there any scenario where an agent could score 100% on these dimensions but still be 'wrong'?"
+
+**Minute 25-30: Seal confirmation**
+- "I'm about to seal this rubric. Once sealed, agents compete on these exact criteria."
+- Read back the 5-7 dimensions with weights
+- Ask: "Would you use this to make the hiring decision? Or are we missing something?"
+- Get written confirmation: "Yes, proceed with these criteria"
+- Rubric locked; timestamp recorded
+
+### The single most important question
+
+**"What would make you refuse to hire the winner, even if they score highest?"**
+
+This question reveals hidden constraints that weren't captured in the rubric. Common answers:
+- "If they can't integrate with our Salesforce CRM"
+- "If they produce hallucinated data"
+- "If they expose our customer data in the output"
+
+Each of these becomes a mandatory T1 gate (binary pass/fail) added to the rubric.
+
+### Rubric quality markers (yes/no checklist)
+
+| Marker | Good rubric | Bad rubric |
+|---|---|---|
+| At least 2 T1-verifiable dimensions | ✅ | ❌ |
+| Weights sum to 100% | ✅ | ❌ |
+| "What would make you refuse to hire the winner" → answered | ✅ | ❌ |
+| No dimension >40% weight (single-point-of-failure) | ✅ | ❌ |
+| Rubric approved by champion in writing | ✅ | ❌ |
+| Rubric doesn't describe the PROCESS (how) only the OUTCOME (what) | ✅ | ❌ |
+
+**The last marker is subtle but critical:** A bad rubric says "use RAG with BM25 retrieval." A good rubric says "correctly answer 19/20 test questions from the document set." The rubric should define what success looks like, not prescribe how to achieve it. Prescribing the solution eliminates competition.
+
+### Common rubric failure modes (and fixes)
+
+| Failure | Example | Fix |
+|---|---|---|
+| Too vague | "Good code quality" (20%) | "Zero critical Sonarqube issues; test coverage >80%" (T1 verifiable) |
+| Impossible T1 test | "Creative writing quality" | Elevate to T2: "LLM judge scores 1-10 on clarity and originality" |
+| Missing binary gates | No must-pass criteria | Add 1-2 T1 dimensions as mandatory pass/fail gates (failure = disqualified) |
+| Overconstrained process | "Must use LangChain" | Replace with outcome: "Must complete 10-step workflow end-to-end" |
+| Single point of failure | One dimension at 60% | Cap dimensions at 40%; distribute weight across at least 4 dimensions |
+
+### Post-session artifacts
+
+After each rubric session:
+1. **Rubric YAML** (exported from rubric builder or Google Form)
+2. **Session notes** (hidden constraints identified + champion's confirmation quote)
+3. **Task brief** (50-100 words; used in task announcement to agents)
+
+Jeremy stores these in Supabase with the evaluation record. They become training data for the rubric library.
+
+
+---
+
+## Tick 548 — Straw Homepage: What the Landing Page Should Say [GTM/Product]
+
+*2026-05-04. The homepage is the first impression for enterprises AND agents. It must speak to both.*
+
+### The two audiences problem
+
+Straw's homepage has two distinct audiences:
+1. **Enterprise buyers** (demand side): "How do I evaluate AI agents before deploying?"
+2. **Agent developers** (supply side): "Where can I compete for enterprise contracts?"
+
+Both audiences need to leave the homepage with a clear next step. The homepage can't optimize for both with the same headline.
+
+**Recommendation:** Optimize the above-the-fold for enterprise buyers (higher ACV, harder to acquire). Add a clear "For Agent Developers" section below the fold with a separate CTA.
+
+### The homepage structure
+
+**Above the fold (enterprise focus):**
+
+```
+HEADLINE: The pre-deployment AI agent evaluation marketplace
+
+SUBHEADLINE: Enterprise companies define what winning looks like. 
+AI agents compete. Straw scores them objectively. 
+The winner gets hired.
+
+CTA BUTTON: [Run your first evaluation — free] → design partner intake form
+
+SOCIAL PROOF: "Used by teams at [Company A], [Company B], [Company C]"
+(Fill in once design partners confirmed)
+```
+
+**Three-column value proposition (below headline):**
+
+| Define | Compete | Hire |
+|---|---|---|
+| Write a rubric that says exactly what a winning agent looks like. Seal it before the competition. | AI agents from across the ecosystem compete on your task. No demos. Real work. | See a ranked leaderboard with scores. Hire the winner. Done in 14 days. |
+
+**Why Straw exists section:**
+
+> "88% of AI agent projects never reach production. The #1 reason: no objective success criteria. Straw fixes that. You define winning. We prove who wins."
+
+**The moat section (for investors and skeptics):**
+
+Three columns: "Neutral" + "Historical" + "Buyer-defined"
+- Neutral: "We don't sell AI agents. We evaluate them."
+- Historical: "Every evaluation adds to the most comprehensive agent performance database in existence."
+- Buyer-defined: "The rubric belongs to you. We seal it before competition begins."
+
+**For Agent Developers section:**
+
+> "Win enterprise contracts. Post your agent to Straw evaluations. The best agent wins a deployment contract — not just a leaderboard position."
+> [Register as agent developer →]
+
+### SEO considerations (key terms to target)
+
+| Primary keywords | Monthly search volume (estimated) |
+|---|---|
+| "AI agent evaluation" | High (growing 40% YoY) |
+| "pre-deployment AI testing" | Medium (new category) |
+| "enterprise AI procurement" | Medium |
+| "AI agent benchmarking" | High |
+| "how to evaluate AI agents" | High |
+
+**Content strategy for SEO:** The 6-piece 12-month content calendar from Tick 497 targets these keywords. The homepage should rank for "AI agent evaluation" by Month 6 with consistent content production.
+
+### The "Straw Evaluation Certificate" as social proof
+
+Each certificate generated becomes shareable content:
+- "We just ran an AI agent evaluation on Straw. Verify our results: straw.ai/verify/[UUID]"
+- This creates verified, distributable social proof that Twitter/LinkedIn can amplify
+- Each certificate is also an SEO backlink when shared on company blogs
+
+**Product design for maximum shareability:**
+- Certificate URL is public (no auth required to view)
+- Certificate shows: company type (not name, if confidential), task type, number of competitors, winner score
+- Contains "Evaluated by Straw" watermark → organic brand awareness
+
