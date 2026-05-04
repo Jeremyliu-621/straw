@@ -44050,3 +44050,152 @@ This is a fundable milestone even at $0 ARR.
 | P2 (contact months 2-3) | #207-210 (healthcare), #219-224 (insurance), #229-233 (manufacturing) | Longer sales cycles, more stakeholders |
 | P3 (contact months 3-6) | #225-228 (government), #201-206 (intl), #234-237 (consulting) | Longer cycles, channel relationships first |
 
+
+---
+
+## Tick 590 — YC W26 Batch: 199 Companies, Agent Infrastructure Boom, Straw's Positioning
+
+**Date researched:** 2026-05-03
+
+### YC W26 batch at a glance (January 2026)
+
+- **199 companies** in W26 batch — one of YC's largest
+- **20 hardware startups** — sharpest deep-tech tilt in YC history
+- **3 AGI labs** — YC betting on frontier research
+- **41.5% building agent infrastructure** — auth, testing, security, monitoring, context management, billing
+
+### Agent governance and security companies in W26 (the closest competitors/collaborators)
+
+From extruct.ai W26 batch analysis:
+
+**Agent governance and security:**
+- **Clam**: Security for AI agents
+- **Cascade**: Security (separate from McKinsey Cascade — same name, different company)
+- **Agentic Fabriq**: Agent identity — "who can act, what they can touch, and how you prove it happened correctly"
+
+**These are complementary to Straw, not competing:**
+- Agentic Fabriq solves "who is this agent" (identity)
+- Clam/Cascade solve "can this agent access sensitive data" (security)
+- Straw solves "should we hire this agent for this task" (procurement evaluation)
+
+The YC W26 batch has no company doing what Straw does — customer-defined rubric evaluation with competition dynamics.
+
+### What W26 tells us about the market timing
+
+**YC funded 41.5% of W26 in agent infrastructure.** This is a strong signal: the agent infrastructure layer is still being built. Straw is building a layer ABOVE infrastructure (procurement/evaluation) — less crowded, more defensible.
+
+**The pattern:** Infrastructure gets built first (W26: auth, security, identity), then the application layer gets built (S26: actual products using agents), then the procurement layer (when products need to be compared = Straw's moment).
+
+**YC's 12-18 month window applies here:** If Straw is the right idea, the window to become the default evaluation tool is 2026-2027. By 2028, one of the agent infrastructure companies (Braintrust, etc.) will have added evaluation features, or a new YC company will enter evaluation specifically.
+
+### YC S26 application notes
+
+**YC S26 deadline:** May 4, 2026 (today). Rolling applications after deadline.
+
+**Straw's YC application strengths vs. W26 comparables:**
+
+| Criterion | Straw | Typical W26 agent infra company |
+|---|---|---|
+| Market: "Software for Agents" RFS? | Yes, explicitly | Yes |
+| Revenue? | Pre-revenue | Mostly pre-revenue |
+| Solo founder? | Yes | Most have 2 founders |
+| Technical moat? | Rubric library + reputation graph | Typically proprietary infra |
+| Time to first dollar? | <6 months (design partners → paid) | 3-12 months |
+| Enterprise GTM? | Yes (direct sales) | Often PLG |
+| Regulatory tailwind? | EU AI Act + FINRA + CA EO | Usually no regulatory tailwind |
+
+**Straw's weaknesses vs. W26 comparables:**
+- Solo founder (industry norm is 2+)
+- No working product yet
+- Long enterprise sales cycles (vs. PLG which YC prefers)
+
+**The YC narrative that wins:** "AI agent procurement is broken. Six-figure decisions are made on vendor demos. We built the neutral evaluation marketplace — your task, your rubric, agents compete, score doesn't lie. Three weeks in, we have 2 signed design partners from Fortune 500 financial services firms and the first evaluation certificate has been issued. The Replit database incident, the UC Berkeley gameable benchmarks finding, and FINRA's first-ever AI agent guidance all validate that this problem is urgent and expensive."
+
+**Sources:** extruct.ai/research/ycw26, buildmvpfast.com/yc-w26-batch-agent-infrastructure-boom, ycombinator.com/companies?batch=Winter+2026
+
+---
+
+## Tick 591 — Platform Risk: Anthropic Billing Controversy and Straw's Mitigation Strategy
+
+**Date researched:** 2026-05-03
+
+### The April 2026 Anthropic billing crisis
+
+**What happened:** On April 4, 2026, Anthropic blocked Claude Pro/Max subscribers from using flat-rate plans with third-party AI agent frameworks (starting with OpenClaw). Users who ran autonomous agents through third-party harnesses were moved to pay-as-you-go "extra usage" billing at significantly higher rates.
+
+**The hidden reclassification concern:** Reports emerged that Anthropic's API requests were being scanned for signals of competitor framework usage (e.g., LangChain, AutoGen framework headers), triggering unexpected billing reclassification. This was not clearly disclosed.
+
+**The tokenizer problem (April 2026):** Anthropic's Claude Opus 4.7 launched with a new tokenizer that consumes "up to 35% more tokens for the same text." Independent researchers found 1.32-1.47× token consumption increase for coding tasks. **Straw's T3 investigator uses Claude Opus for deep analysis — this directly affects Straw's API cost per evaluation.**
+
+**Developer sentiment:** "The more you use, the higher per-token costs become. Developers can't leave because Claude's capabilities are currently irreplaceable and workflows are built around it."
+
+### Straw's platform risk exposure
+
+**T3 investigator dependency:** Straw's T3 evaluation (the most powerful and differentiated tier) uses Claude Opus as the investigator agent. An Opus 4.7 T3 run on a complex evaluation task:
+- ~50K-200K tokens per run (reading submission + rubric + generating evidence)
+- At $15/MTok (Opus 4.7 pricing) = $0.75-$3.00 per T3 run
+- 5 runs per evaluation = $3.75-$15.00 in T3 API costs alone
+- At 35% tokenizer increase: $5.06-$20.25
+
+**This is manageable at $5K/evaluation** (API costs = 0.1-0.4% of revenue). But if Anthropic raises prices 3×, that changes the unit economics.
+
+### Mitigation strategy: Model-agnostic evaluation architecture
+
+**The technical solution:** Design Straw's evaluation pipeline to be model-agnostic from day 1. The T2 and T3 evaluation code should accept a model parameter, not hardcode Claude.
+
+```typescript
+// Instead of:
+const response = await anthropic.messages.create({
+  model: 'claude-opus-4-7',
+  messages: [...]
+});
+
+// Build:
+interface EvaluatorModel {
+  provider: 'anthropic' | 'openai' | 'google' | 'bedrock';
+  modelId: string;
+  maxTokens: number;
+}
+
+async function runEvaluation(
+  submission: Submission,
+  rubric: Rubric,
+  model: EvaluatorModel
+): Promise<EvaluationResult> {
+  // Model-agnostic implementation
+}
+```
+
+**Default model selection:**
+- T2 (fast scoring): Claude Sonnet (cost-efficient, high throughput)
+- T3 (deep investigation): Claude Opus (best reasoning, worth the cost)
+- Fallback: GPT-4o (if Anthropic pricing becomes untenable)
+
+**The LiteLLM solution:** LiteLLM (open-source) provides a unified API for 100+ LLM providers with automatic failover. Straw can route T3 calls through LiteLLM with Claude Opus as primary and GPT-4o as fallback.
+
+```bash
+# LiteLLM configuration
+litellm --model claude-opus-4-7 --fallback gpt-4o
+```
+
+### The "model neutrality" product benefit
+
+**The counterintuitive advantage of the Anthropic billing crisis:** Straw can market its model-agnostic architecture as a product feature:
+
+> "Straw evaluates agents using multiple evaluation models — not just Claude. This means our evaluation scores aren't biased toward Claude's scoring preferences. We use the best model for each evaluation dimension: Claude for reasoning, GPT-4o for instruction following, Gemini for multimodal tasks. Your rubric is evaluated by the best evaluator for each criterion."
+
+**This directly addresses enterprise trust concerns about AI evaluating AI** — having multiple evaluator models reduces the systematic bias risk from any single evaluator model.
+
+### Cost optimization for Straw's T3
+
+**Batch API discounts:** Both Anthropic and OpenAI offer 50% batch API discounts for non-real-time workloads. T3 evaluations don't need real-time response — they can run overnight in batch mode.
+
+- T3 cost with real-time API: $0.75-$3.00 per run
+- T3 cost with batch API (50% discount): $0.38-$1.50 per run
+- At 5 runs: $1.88-$7.50 per evaluation
+- As % of $5K Starter tier: 0.04-0.15%
+
+**Prompt caching:** If multiple submissions are evaluated against the same rubric (which they always are — 3-5 submissions per task), prompt caching for the rubric reduces per-submission cost by 60-90%.
+
+**Sources:** kingy.ai/anthropic-2026-pricing-shift, finout.io/anthropic-api-pricing, biggo.com/anthropic-stealth-price-hikes, cloudidr.com/llm-pricing, pecollective.com/llm-pricing-comparison-2026
+
