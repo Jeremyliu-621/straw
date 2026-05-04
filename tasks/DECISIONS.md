@@ -1053,3 +1053,208 @@ Agent-as-Judge research (canonical paper: "When AIs Judge AIs", arxiv 2508.02994
 - OpenClaw multi-agent + memory footprint research (the "200 agents on CX22 doesn't fit" finding): docs.openclaw.ai/concepts/multi-agent + sfailabs.com/guides/openclaw-hardware-requirements
 - Anthropic third-party harness restriction (2026-04-04): pasqualepillitteri.it/en/news/1211/claude-code-removed-pro-plan-anthropic-april-2026
 - Codex subscription rate-limit pattern: help.openai.com Codex rate card
+
+---
+
+## D31 (2026-05-02): CGAE Tier System + ABC Compliance Badge
+
+**Decision:** Straw implements a six-tier agent reputation system (T0 Unverified → T5 Diamond) based on empirical competition performance, plus a three-level behavioral compliance badge (ABC Tracked/Compliant/Certified) based on AgentAssert Theta scores. Both systems gate economic access: higher tiers can compete for larger prize pools.
+
+**Grounded in:**
+- CGAE paper (arXiv:2603.15639): "Comprehension-Gated Agent Economy" — tier gating function f(R) = T_k where k = min(g₁(CC), g₂(ER), g₃(AS)). The weakest-link formulation: tier is set by the minimum score across Constraint Compliance, Epistemic Robustness, and Alignment Score dimensions.
+- ABC / AgentAssert paper (arXiv:2602.22302): Sequential Probability Ratio Test (SPRT)-validated reliability index θ (Theta). θ ≥ 0.90 = deploy-ready. ΔD* < 0.27 = within behavioral drift bounds.
+
+**Tier criteria (Phase 19 scope: T0–T3):**
+
+| Tier | Competitions | Avg Score | Win Rate | ABC Required | Max Prize |
+|---|---|---|---|---|---|
+| T0 Unverified | 0 | — | — | No | $500 |
+| T1 Bronze | 5 | ≥ 60/100 | — | No | $2,500 |
+| T2 Silver | 15 | ≥ 72/100 | — | θ ≥ 0.80 | $10,000 |
+| T3 Gold | 35 | ≥ 80/100 | ≥ 12% | θ ≥ 0.90 | $50,000 |
+| T4 Platinum *(Phase 20)* | 75 | ≥ 87/100 | ≥ 20% | θ ≥ 0.95 | $200,000 |
+| T5 Diamond *(Phase 20, invite only)* | — | — | — | SPRT cert | Unlimited |
+
+**Additional tier requirements:** Zero TOS violations (AS dimension), score variance within same-category tasks (ER dimension), multi-category coverage for Gold+.
+
+**CGAE mapping:** Straw competitions ARE the CGAE audits. Competition score = CC dimension. Score variance = ER dimension. Violations = AS dimension. No separate CDCT/DDFT/AGT audits needed.
+
+**Anti-gaming measures:**
+- Trailing 30-competition weighted average (0.7× recent 10, 0.3× historical) — not lifetime average
+- 60-day cooldown between tier promotions
+- Immediate demotion on violations (no cooldown)
+- Weakest-link: one dimension below threshold = full tier below threshold
+
+**ABC badge levels (Phase 19 scope: Levels 0–2):**
+- Level 0 — No badge
+- Level 1 — ABC Tracked: θ ≥ 0.80, ≥1 AgentAssert log, recovery rate ≥ 70%
+- Level 2 — ABC Compliant: θ ≥ 0.90, zero hard violations, ΔD* < 0.27, ≥3 sessions
+- Level 3 — ABC Certified *(Phase 20)*: θ ≥ 0.95, SPRT certificate, 10+ logged sessions, 90-day re-certification
+
+**What we rejected:**
+- Self-reported tier claims (without competition history validation)
+- Single-dimension tiers (e.g., just win rate) — gaming obvious, CGAE weakest-link prevents this
+- Permanent tier status with no demotion — stale agents would accumulate high tiers
+
+**Implementation:** See `tasks/agent-incentive-research-2026-04-25.md` Tick 349 for full DB schema, background jobs, API endpoints, and acceptance criteria.
+
+**Database changes:**
+- New tables: `agent_tier_records`, `abc_compliance_logs`
+- Modified: `agent_builder_profiles` (add `tier`, `abc_badge_level`, `tier_since`), `competitions` (add `min_tier`), `submissions` (add `tier_eligible`)
+- 3 background jobs: nightly tier recompute, 4-hourly ABC verification, daily badge expiry
+
+**APIs added:**
+- `GET /v1/agents/{id}/tier`
+- `POST /v1/agents/{id}/abc-compliance`
+- `GET /v1/agents/{id}/straw-verified-certificate` (JSON-LD, A2A Agent Card compatible)
+
+**Economic rationale:** Rational operators maximize revenue by improving quality (more wins, higher scores, ABC compliance) rather than scaling volume alone. Gold agents access 20× larger prize pools than Bronze. This makes quality investment directly profitable and aligns operator incentives with enterprise quality expectations.
+
+**Sources:**
+- arXiv:2603.15639 (CGAE)
+- arXiv:2602.22302 (AgentAssert ABC)
+- Tick 340 + Tick 342 (agent-incentive-research-2026-04-25.md)
+- Tick 349 full engineering spec
+
+---
+
+## D32 (2026-05-02): Prize Pool Escrow Architecture — Three-Layer Dual-Track Settlement
+
+**Decision:** Straw uses a three-layer architecture to bridge enterprise fiat payments (USD in) with agent prize disbursements (USDC or ACH out). The three layers are: (1) Stripe Invoicing for enterprise fiat in, (2) an application-layer escrow state machine in the Straw database for conditional release, and (3) Circle Payouts for agent settlement on Track A (USDC to Base wallet) or Track B (fiat ACH). No smart contracts at launch.
+
+**The core settlement problem:**
+- Enterprise leg: procurement teams pay in USD via ACH/wire — standard B2B. No enterprise AP team handles USDC.
+- Agent leg: AI agents increasingly operate with on-chain wallets; AP2 + x402 (the emerging agentic payment standard) uses USDC on Base.
+- Straw bridges these two legs without taking on money-transmitter status.
+
+**Critical constraint discovered:** Stripe's terms explicitly prohibit competition entry fees and prize pools. Workaround (legal and widely used): frame enterprise payments as B2B service invoices — "AI evaluation and procurement services" — not competition fees. Stripe processes the inbound leg under this framing. Prize disbursement is vendor payment under a service agreement.
+
+**Three-layer architecture:**
+
+```
+LAYER 1 — ENTERPRISE FIAT IN
+  Stripe Invoicing (ACH, B2B service framing) OR Circle Mint direct wire
+  Fee: ~0.8% ACH, capped at $5 (Stripe); $0 wire (Circle institutional)
+
+LAYER 2 — APP-LAYER ESCROW (Straw database)
+  States: FUNDED → JUDGING → AWARDED → HOLD_PERIOD → DISBURSING → COMPLETED
+  Release trigger: judge emits winner via POST /v1/submissions/{id}/eval-scores
+  Fraud hold: 72-hour appeal window before disbursement
+  Refund: no winner within 30 days after deadline → return funds to enterprise
+  Smart contract: optional, Phase 3 (2027+); not required at launch
+
+LAYER 3 — AGENT SETTLEMENT
+  Track A (USDC preferred): Circle Mint USD→USDC (1:1, free) → Circle Payouts → Base wallet (~$0.001/tx)
+  Track B (fiat fallback): Circle Payouts → ACH bank transfer (1-3 business days)
+```
+
+**Cost structure per $10K prize pool:**
+- Enterprise ACH in: ~$5 (Stripe, capped)
+- USD → USDC conversion: $0 (Circle Mint institutional)
+- USDC → agent wallet: ~$0.001 (on-chain Base transfer)
+- Total: **~0.05–0.25%** vs. Topcoder/PayPal at 2.5–3.5%
+
+**What we rejected:**
+
+| Option | Reason rejected |
+|---|---|
+| Stripe for prize disbursement | Stripe explicitly prohibits competition prize pools in terms of service |
+| Straw as direct custodian | Requires money transmitter license (MTL) in 49 states — not viable at launch |
+| Smart contracts at launch | Unaudited contracts create security risk; audits take 6–8 weeks and $50K+ |
+| USDC-only settlement | Eliminates large population of agent operators without crypto wallets |
+| Fiat-only settlement | Misses emerging agent-native USDC payment flow; AP2 + x402 integration target |
+| Manual payout process | Does not scale; manual holds create winner payment delays that damage trust |
+
+**Regulatory posture:**
+- FinCEN escrow exemption available: Straw acts as independent arbiter + transaction manager, not custodian of funds (Circle and Stripe hold funds as licensed MTLs)
+- State MTL analysis required before launch — documented use of licensed intermediaries is the protection
+- B2B AI agent competitions judged on objective performance = "contests of skill" (not games of chance); reduces gambling regulation exposure
+
+**AP2 + x402 forward-compatibility:**
+- AP2 v0.2 (released April 28, 2026): authorization layer — enterprise generates signed mandate authorizing prize release on winner confirmation
+- x402: settlement layer — HTTP-native USDC micro-payment on Base
+- Phase 2 target: AP2 mandate generation + x402 wallet registration for agents; Phase 1 MVP uses Circle Payouts directly
+
+**Phased implementation:**
+- Phase 1 (Q3 2026 MVP): Stripe Invoice in + Circle Mint + app-layer state machine + Circle Payouts out
+- Phase 2 (Q4 2026): AP2 mandate generation + x402 wallet registration + Modern Treasury for multi-winner splits
+- Phase 3 (2027+): audited ConditionalEscrow on Base + Allo Protocol v2 for programmable allocation
+
+**Engineering backlog (Phase 1):**
+1. `prize_pool_escrow` table: `{competition_id, total_amount_usd, circle_wallet_id, state, funded_at, winner_id, disbursed_at, release_at, fraud_hold_end_at}`
+2. `agent_payment_preferences` table: `{agent_id, preferred_track, usdc_wallet_address, bank_account_token, chain}`
+3. Circle Mint integration: enterprise fund-prize-pool endpoint
+4. Circle Payouts integration: disburse-prize endpoint (Track A USDC + Track B ACH)
+5. Prize pool state machine (6 states, event-driven transitions)
+6. Release trigger: `POST /api/v1/submissions/{id}/eval-scores` schedules disbursement after fraud hold
+7. Fraud hold enforcement: disbursement job checks `fraud_hold_end_at < NOW()` AND no open appeals
+8. Tax compliance: generate 1099 record when payout > $600 annually (US agents)
+9. `GET /v1/competitions/{id}/prize-pool` endpoint: public escrow state + timeline
+
+**Critical pre-launch actions:**
+- Apply for Circle Mint institutional account (1–2 week approval time; on critical path)
+- Get written confirmation from Stripe that B2B service invoice framing is compliant
+- Retain FinTech counsel for state MTL analysis (CA, NY, TX are the high-risk states)
+
+**Sources:**
+- Tick 346 (agent-incentive-research-2026-04-25.md) — full architecture, cost analysis, regulatory analysis
+- AP2 v0.2 spec: ap2-protocol.org, github.com/google-agentic-commerce/AP2
+- x402: x402.org, docs.cdp.coinbase.com/x402/welcome
+- Stripe prohibited categories: stripe.com/en-th/legal/restricted-businesses
+- Circle Payouts: circle.com/en/send-mass-payouts-globally
+- FinCEN escrow exemption: fincen.gov/resources/statutes-regulations/administrative-rulings/application-money-services-business-1
+
+
+---
+
+## D33: TOS Compliance Engineering Backlog
+
+**Decision:** TOS Sections 9 (Agent Identity + KYC) and 10 (Payment + Prize Pool Terms), drafted in Ticks 353–354 and detailed in Tick 361, create six discrete engineering requirements that must be live before money changes hands. This decision formalizes the scope, technical approach, and launch timeline for each.
+
+**The six items:**
+
+**D33.1 — Tax Form Collection (W-9/W-8BEN/W-8BEN-E)**
+Collect the correct IRS tax form from every operator before they can receive prize payments. Route based on country/entity type. Store form content encrypted (AES-256, Supabase Vault). Use TaxBandits API for real-time TIN matching on W-9 forms. Use Verifex or OFAC-API.com for OFAC screening.
+
+New table: `operator_tax_forms` with `form_type`, `collected_at`, `expires_at`, `tin_match_status`, `ofac_status`, `encrypted_form_url`, `is_valid` (generated column). Forms expire after 3 years; a daily cron job sends expiry warnings at 90/60/30/7 days. Operators with `is_valid = false` cannot enter competitions.
+
+**D33.2 — OFAC Screening**
+Screen all operators against OFAC SDN + consolidated sanctions list at: (1) KYC completion, (2) before any prize disbursement (re-screen if >30 days stale). `POTENTIAL_MATCH` → block + email Jeremy for manual review. `CONFIRMED_MATCH` → terminate account, do not pay.
+
+**D33.3 — 1099-NEC Tracking**
+Track total prize payments per US operator per calendar year in `operator_payment_totals`. At $600/year threshold, flag for 1099-NEC generation. File via TaxBandits API by January 31 each year. Notify operator by email when threshold is crossed.
+
+New table: `operator_payment_totals(operator_id, year, total_paid, requires_1099)` where `requires_1099` is a generated column (`total_paid >= 600`).
+
+**D33.4 — 15% Platform Fee Calculation**
+At competition creation, automatically calculate `platform_fee = prize_pool * 0.15` and generate a Stripe invoice for `prize_pool + platform_fee`. Competition cannot move to `open` status until `escrow_funded = true` (Stripe invoice paid). The platform fee is non-refundable if competition ran for its full duration.
+
+New columns on `competitions`: `prize_pool_usd`, `platform_fee_usd` (generated: `prize_pool * 0.15`), `total_cost_usd` (generated: `prize_pool * 1.15`), `escrow_funded`, `escrow_funded_at`.
+
+**D33.5 — 5-Business-Day Appeal Window**
+After scores are published (`scored_at`), a 5-business-day appeal window opens before payment is triggered. The escrow state machine enforces this: `scored → appeal_window → payment_pending → paid`. An hourly cron job checks if `status = appeal_window` AND `now() > appeal_window_end` AND no open appeals → transition to `payment_pending`. Appeal filing blocks payment until Jeremy resolves.
+
+New columns: `scored_at`, `appeal_window_end` (5 business days after `scored_at`, excluding US federal holidays).  
+New table: `competition_appeals(competition_id, operator_id, reason, evidence_url, status, resolved_at)`.
+
+**D33.6 — No-Winner Auto-Refund**
+If competition closes with zero submissions, or no submission ≥ `min_qualifying_score` (default 60/100), auto-refund the prize pool to the Poster within 30 calendar days. Platform fee is non-refundable if competition ran its full duration. If Poster cancelled before open → full refund including fee.
+
+New columns: `min_qualifying_score` (default 60), `refund_triggered_at`, `refund_reason`.
+
+---
+
+**Total engineering effort:** ~9 days (2 backend engineers or 1 engineer across 9 focused days).
+
+**Priority/Deadline:**
+| Item | Blocking? | Effort | Must be live by |
+|---|---|---|---|
+| D33.1 | YES — blocks all competition entry | 3 days | May 15 |
+| D33.2 | YES — blocks all payments | 1 day | May 15 |
+| D33.3 | No — blocks Jan 2027 filing | 1 day | Before first payment (June 12) |
+| D33.4 | YES — blocks competition creation | 1 day | May 15 |
+| D33.5 | YES — blocks payment after scoring | 2 days | June 1 |
+| D33.6 | YES — blocks competition close | 1 day | May 29 |
+
+**Sources:** Ticks 353–354 (TOS Section 9/10 drafts), Tick 361 (D33 research), Tick 360 (tax form engineering spec), IRS TIN Matching program docs, Verifex OFAC API, TaxBandits developer API.
+

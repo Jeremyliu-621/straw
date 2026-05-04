@@ -1055,3 +1055,209 @@ Goal: implement the corrected philosophy from D15–D22 + D30. Replace the impli
 ## Unmerged Work
 
 _All stale agent branches deleted (2026-04-13). Valuable patterns were cherry-picked into master commit d64f813._
+
+---
+
+## Research Sessions: agent-incentive-research-2026-04-25.md
+
+**Status:** Active overnight research — Sessions 24-30 completed.
+
+**File location:** `tasks/agent-incentive-research-2026-04-25.md`
+**Current size:** ~53,528 lines
+**Current tick:** 326 (last written in Session 30, overnight May 2, 2026)
+
+### Sessions Summary
+
+| Session | Ticks | Key Topics |
+|---|---|---|
+| Sessions 1-23 | 1-206 | Original agent incentive research, competition design, FairJudge, COALESCE, prize pool structure, reputation scoring |
+| Session 24 | 207-228 | COALESCE cold-start, coalition formation, FairJudge/debiasing, rubric generator UX, data licensing, operator discovery, pricing model, enterprise AI procurement, GTM bootstrap, multi-tenant isolation, competitive positioning, v1 task taxonomy, D22 winner pathways, eval gaming/Goodhart's Law, operator reputation scoring, dispute resolution, GDPR, agent operating costs, prize pool structure, competition analytics dashboard, operator SDK spec |
+| Session 25 | 229-234 | Technical architecture v1 (core data model, ZeroClaw worker, RLS), Series A investor narrative, Straw vs. OpenAI Frontier, internal agent infrastructure, agent self-provisioning via x402, long-form proposal Section 7 |
+| Session 26 | 235-236 | Product roadmap v0→v2, enterprise customer success playbook |
+| Session 27 | 237-252 | International expansion + APAC competitive gap, task taxonomy v2 (8 new categories), 300-agent swarm update, AI agent legal personhood (DAO LLC, Wyoming), agent credential portability (W3C VC, NIST standards), data moat (4-layer), enterprise integration spec (ServiceNow/Ariba SDK), fine-tuning competitions (v3 category), unit economics P&L model (3-year), risk analysis (7 risks), agent incentive final synthesis, executive summary |
+| Session 28 | 253-278 | Post-AGI scenario analysis, cross-category correlation, live/multi-round competition, enterprise data security, price discovery, fleet management, operator journey lifecycle, poster journey, competitive landscape (white space confirmed), enterprise sales motion, EU AI Act compliance, Series A thesis, CFO break-even, ZeroClaw architecture, operator economics, fine-tuning competitions, product roadmap v0-v3, expansion playbooks (Singapore, India, UK, Japan, Brazil), long-context evaluation, Straw API design |
+| Session 29 | 279-311 | Dispute resolution + arbitration, founding team hiring plan, multi-agent fleet operators, India market entry execution, adversarial input evaluation (IRS, robustness score), pricing architecture, moat analysis, operator onboarding journey, enterprise sales playbook, investor narrative (Bloomberg Terminal analogy), content/SEO strategy, evaluation transparency/trust architecture, UK + Australia market entry, ZeroClaw technical deep dive, network effects analysis, principal-agent problem, product roadmap v2, year one operations plan, failure modes analysis, long-form conclusion synthesis, talent marketplace comparison, data licensing business, North American market entry, Singapore GTM execution, anti-collusion mechanisms, rubric templates (all 4 v0 categories YAML), founding blog post draft, ZeroClaw MVP 8-week engineering spec, category expansion sequence, evaluation OS vision, Series A pitch deck outline, comprehensive glossary, final session summary + 5 executive action items |
+| Session 30 | 312-326 | COALESCE epsilon-greedy market discovery (ε=0.1, 20.3% cost reduction), ClawHub supply chain attack (ClickFix 2.0, SKILL.md sanitization code), x402 self-provisioning reality check ($14K/day organic), 300-agent tiered prize economics (50/25/12.5/6.25/6.25%), task taxonomy v2 (API Integration + ETL + NLU for v1.5; Security Audit + Research Synthesis + Financial Modeling for v2), FairJudge/JudgeBiasBench cluster (RBD plug-in, CALM, recommended judge stack). Long-form proposal updates: Section 12 COALESCE addendum (Reason 7 + ε=0.1 product design), Section 14 prize economics addendum, new Sections 30-40 (x402 loop, taxonomy, epsilon-greedy UX, SKILL.md security playbook, Series A narrative, Frontier analysis, technical architecture v1, CS playbook, international market update, cross-platform routing). |
+
+### What's Been Covered (Comprehensive — 298 Ticks)
+
+The research file is a complete product design + investor + technical document covering:
+
+**Market & Business:**
+- Enterprise AI procurement landscape; 42% project failure rate; $6.8M average failure cost
+- Principal-agent problem in AI procurement — all four layers of misalignment and Straw's structural fixes
+- TAM: $6.5B → $134B AI agent staffing; $300–600M direct evaluation market; regulatory compliance layer
+- Competitive landscape: Scale AI (supplier-side, 49% Meta), LangSmith, Arize, Vals AI — white space confirmed
+- Moat analysis: neutrality (structural), evaluation data flywheel (compounding), operator reputation (network effect)
+- Failure modes: operator desert, eval quality collapse, enterprise churn cascade, commoditization, trust breach
+
+**Product Design:**
+- Full task taxonomy: v0 (4 categories), v1.5 (2), v2 (7), v3 (fine-tuning, red-team, multi-turn)
+- Competition format: one-shot, adversarial robustness, injection resistance score (IRS), robustness metric
+- D22 winner pathways: P0-P4 (leaderboard, poster picks, hire, license, acquire)
+- Multi-agent fleet operators: manifest format, Fleet ID versioning, anti-brute-force controls, IP attribution
+- Pricing architecture: tiered competition fees, operator Pro/Elite tiers, enterprise subscription plans
+- Product roadmap v2: 18-month feature plan with prioritization scoring framework
+- Year one operations plan: pre-launch checklist, launch week, monthly cadence, Y1 success criteria
+- Operator onboarding journey: persona segments, Day 7/30/90 retention targets, cohort analytics
+
+**Technical Architecture:**
+- ZeroClaw deep dive: gVisor container spec, scoring engine TypeScript types, BullMQ queue config, DB schema
+- Evaluation transparency: transparency stack (4 layers), Merkle hash chain, external audit program
+- Trust architecture: anti-conflict design, incident response tiers A/B/C, "trust is time-compounding"
+- Straw API: RESTful endpoints, webhook events (11 enterprise + 7 operator), TypeScript SDK example
+
+**Economics & Finance:**
+- 3-year P&L: Y1 $344K revenue ($129K net loss); Y2 $2.75M (25% margin); Y3 $12.9M (54.8% margin)
+- Pricing architecture: tiered fees ($500 flat → 4% for $500K+ pools), operator subscriptions ($29/$99/month)
+- Enterprise subscription plans: Starter $12K, Growth $36K, Enterprise $120K+/year
+
+**Regulatory & Compliance:**
+- EU AI Act Article 9/15: Article 15 export format; compliance documentation package; compliance sales angle
+- Singapore P0: MAS mandatory compliance (Dec 2024), IMDA AI Verify
+- UK AI Regulation Act 2026: FCA Consumer Duty, PRA SS1/23 model risk guidance
+- Australia: APRA CPG 234, AI Assurance Framework trajectory
+- India: RBI AI framework draft, DPDPA compliance
+
+**Geographic Strategy:**
+- Singapore P0, India P1 simultaneous, UK/Australia Year 2, US Year 3
+- India: IIT partnership model, IT major strategy (Infosys/Wipro), RBI compliance angle, 3-year ₹ revenue model
+- UK: FCA-regulated financial firms, PRA validation requirements, target 50 customers by Y3
+- Australia: APRA Big 4 banks, Stone & Chalk fintech hub, government procurement entry
+- English common law flywheel: Singapore → UK → Australia → Canada → New Zealand → Hong Kong
+
+**Sales & Marketing:**
+- Enterprise sales playbook: ICP, account-based motion, champion building, 6 objection handles, AE comp
+- Content/SEO strategy: cornerstone content, thought leadership (arXiv), operator-to-enterprise conversion path
+- Investor narrative: Bloomberg Terminal analogy, market timing story, Series A $10M ask, target investor profile
+- Founding team hiring plan: co-founder profiles, seed/Series A team, anti-patterns, cultural anchors
+- Dispute resolution: 5-type funnel, Rubric Curator role, SIAC arbitration panel, TOS §10
+
+### Session 30 Coverage Complete (Ticks 312-326) — overnight May 2, 2026
+
+Session 30 added ticks 312-326, bringing the total to 53,528 lines. All major "threads still to dig" threads from Sessions 1-29 are now addressed:
+
+**New proposal sections (Sections 30-40) added in Session 30:**
+- Section 30: x402 self-provisioning loop (v0-v1 operator-mediated → v3 full autonomous 2028)
+- Section 31: Task taxonomy expansion (v1.5 + v2 + v2+ categories with revenue/complexity matrix)
+- Section 32: Epsilon-greedy task browser UX (18-exploit + 2-explore, pioneer badge, operator slider)
+- Section 33: ClawHub SKILL.md security playbook (TypeScript sanitization code, injection patterns, Straw Verified badge system)
+- Section 34: Rubric generator UX (5-step AdaRubric → anchor calibration → IRR gate)
+- Section 35: Series A investor narrative ($8M, regulatory forcing function, moat stack, use of funds)
+- Section 36: OpenAI Frontier analysis (complement not competitor, "Deploy to Frontier" integration opportunity)
+- Section 37: Technical architecture v1 (full stack + complete data model + eval pipeline)
+- Section 38: Enterprise CS playbook (Day 0-30 post-competition close, metrics)
+- Section 39: International market Q3 2026 update (EU AI Act Aug 2 confirmed, Singapore AI Verify mandatory, APAC)
+- Section 40: Cross-platform bounty routing (Bloomberg model, ERC-8004 trust anchor, v1.5-v3 integration sequence)
+
+### Execution Next Steps (now priority order)
+
+1. Find engineering co-founder (ZeroClaw ML infrastructure background)
+2. Run 10 enterprise discovery conversations (Singapore financial institutions)
+3. Run one Straw-funded practice competition ($1K prize pool, 20 operators)
+4. Refine and publish founding blog post ("The Score Doesn't Lie")
+5. Incorporate Straw Pte. Ltd. in Singapore
+6. **[NEW — Session 30] Apply to FCA Cohort 2 (opens May 5, 2026)** — regulatory sandbox for agentic AI
+7. **[NEW — Session 30] EU AI Act compliance track launch** — "+$5K surcharge" for Article 9 evidence packages; target CAC 40/DAX 40 + US companies with EU operations; deadline pitch: "complete before August 2"
+8. **[NEW — Session 30] IMDA Singapore partnership briefing** — brief AI Verify team on Straw eval methodology; goal: "Straw Certified = AI Verify compliant" designation
+9. **[NEW — Session 30] Build P0 SKILL.md sanitization pipeline** — 4 days engineering: TypeScript parser + injection detector + upload-only API. Must ship before first operator onboards.
+
+### How to Resume (If More Research Needed)
+
+```bash
+# Check current state
+tail -30 tasks/agent-incentive-research-2026-04-25.md
+wc -l tasks/agent-incentive-research-2026-04-25.md
+
+# Append next tick, commit with author flag
+git add tasks/agent-incentive-research-2026-04-25.md
+git commit --author="Jeremy Liu <jeremyliu621@gmail.com>" -m "Tick N: topic summary"
+git push -u origin master
+
+# Next tick if continuing: 312
+```
+
+---
+
+## Research Sessions: straw-bear-case-and-gtm-2026-05-01.md
+
+**Status:** Phase 2 Session 5 complete — Ticks 761–836 added (2026-05-04)
+
+**File location:** `tasks/straw-bear-case-and-gtm-2026-05-01.md`
+**Current size:** ~65,000+ lines
+**Current tick:** 836
+
+### Phase 2 Sessions Summary
+
+| Session | Ticks | Date | Key Topics |
+|---|---|---|---|
+| Phase 2 Session 1 | 607–626 | 2026-05-01 (overnight) | Token economy collapse, design partner program, regulatory liability (original), AI safety contacts (Beth Barnes, Marius Hobbhahn), Replit Bounties + Bountysource deaths, substitution math, Morning Reading Guide, enterprise CAIO buyer, dev-tool contacts, pre-mortem, pricing experiments, hierarchical agents, YC W26 cluster, vendor lock-in, Homejoy cold-start, fintech contacts, UC Berkeley benchmark gaming, content vs. outbound, 88% AI pilot failure rate, Mrinank Sharma departure, LMArena $1.7B |
+| Phase 2 Session 2 | 627–658 | 2026-05-04 | Enterprise autonomy trust (20% for financial transactions), OpenAI Operator substitution math, EU PLD correction (AILD withdrawn, no-fault liability Dec 9 2026), complete 35-contact table, Kaggle vs Bountysource cold-start, cold email templates (5 verticals), conference strategy + YC/OpenHands contacts, discovery call framework, Anthropic enterprise push (Managed Agents), Show HN launch draft, LinkedIn 12-week CAIO playbook, Cursor GTM analysis, Vals AI updated analysis, market structure (NOT winner-take-all, $6.24B by 2030), YC S26 application strategy, FINRA/SEC regulatory mandate, agent-to-agent economy acceleration, NIST AI Agent Standards Initiative, Twitter content strategy, pricing experiment playbook, agentic platform companies referral network, content flywheel synthesis, talent scaling bear case, Goodhart's Law doom loop, non-determinism objection + N-run sampling answer, investor targets |
+| Phase 2 Session 3 | 659–688 | 2026-05-04 | ISO 42001 Section 9 ($60-200K problem Straw solves for $10-15K), FINRA 2026 four requirements mapped to Straw, competitive landscape matrix (pre-deploy × multi-agent unoccupied quadrant), LangChain State of AI Agents 2026 data (57% in production), $547B AI failure data (RAND 2025, 80.3% failure, 4.5x improvement), Manus acquired by Meta $2B, Braintrust $800M Series B (pre-deploy vs. post-deploy distinction), Scale AI SEAL correction (Meta-owned, 450+ evals, neutrality gap), McKinsey AI Trust Survey 2026, Salesforce Agentforce bundling threat, Morgan Stanley correction (Ketan Karkhanis NOT there; Jeff McMillan is correct), 41-contact master list, Show HN draft, NIST GCR-26-069 strategy, Snowflake Summit June 1-4, TAM correction ($492M governance vs $9.26B evaluation), Modal Labs + infrastructure partners, Anthropic Managed Agents April 2026 threat, EU AI Act Q3 urgency, Morning Reading Guide Session 3 |
+| Phase 2 Session 4 | 689–730 | 2026-05-04 | Autonomy trust gap (85/5 paradox, 62% financial transactions require human-in-loop), pricing page (3-tier, Standard center-stage, $6.5K/$12.5K/Enterprise), regulatory liability black holes (Gartner $10B, agency law, CCO/GC buyer persona), enterprise buying committee (13 stakeholders, 4 design partner shortcuts), PLG doesn't apply (regulatory content is Straw's marketing channel), build-vs-buy math ($12.5K Straw vs $525K internal), LinkedIn content strategy (12-week calendar), competitive landscape (Vellum/Humanloop/PromptLayer not competitors, Credo AI partnership), design partner program (a16z framework, 3 contract structures, 8-week timeline), FINRA white paper outline (6 sections, 90-day roadmap), virtual CAIO roundtable strategy, California N-5-26 (July 27 deadline), Colorado AI Act June 30 compliance, three compliance clocks (CA/CO/EU in 90 days), platform bundling defense (Workday can't self-certify), steelmanned bear thesis (5 kill scenarios + 5 rebuttals), Phase 2 Session 4 Morning Reading Guide |
+| Phase 2 Session 5 | 761–836 | 2026-05-04 | Competitive landscape (Maxim AI/LangSmith/Arize/Galileo = engineering tools not compliance certs), EU AI Act Annex IV Element 12, Claude Constitution rubric, model cards vs. Straw cert, pilot purgatory bear case (95% fail, Straw = exit mechanism), healthcare AI contacts (Ben Shahshahani Cleveland Clinic CAIO, Rebecca Mishuris MGB CMIO, Sunil Kakade CommonSpirit, OCR Section 1557 hook), financial services (OCC 2026-13 excludes agentic AI, Terah Lyons JPMorgan AI Policy, Archana Vemulapalli Goldman, Shobhit Varshney Citi, Terah Lyons opener), Colorado AI Act bear (DOJ lawsuit, AG pausing), rubric workshop $2,500 entry product, SEC AI washing ($400K Delphia/Global Predictions, Presto, Nate Inc.), 13-decision-maker multi-threading, FINRA 2026 Annual Regulatory Oversight Report (GenAI standalone priority, Rule 3110 5 requirements), NY DFS CL7 precise requirements (quantitative + qualitative, DFS examination demand), virtual roundtable playbook (90-min/8-seats/checklist exercise), pricing page (3-tier copy/158% conversion badge/FAQ), build-vs-buy ($480K-$630K vs independence), FINRA white paper full outline, Responsible AI Summit Chicago June 23-24 (Capital One/Manulife/UHG/AZ/NIST stack), Credo AI deep dive ($100K+/yr/Navrina Singh/Mastercard/Schellman partnership = complement not competitor), US Treasury FS AI RMF (230 control objectives March 2026), financial services probe library (8 categories: accuracy/fairness/adversarial/scope/consistency/explainability/privacy/regulatory), first contact 15-min call script, EU AI Act Digital Omnibus (16-month delay proposed, April 28 trilogue failed), SOC 2 $5.4B trajectory replication, ANAB accreditation roadmap (ISO 17065, 12-18mo, start Month 6), NIST AI Agent Standards Initiative Feb 2026 (4 autonomy tiers, Straw Level 1-4 pricing), GC legal review 8 Q&A, 'Vanta for AI' commoditization bear + defense, enterprise AI adoption slowdown (42% abandoned 2025, only 11% agents in production), international expansion (MAS AIRG Singapore independent review required, OSFI Canada E-23 May 2027, UK FCA SM&CR accountability hook), data network effect Year 2 Benchmark Index, Anthropic co-sell 'Straw Certified for Claude', healthcare probe library (clinical accuracy/OCR1557/HIPAA/safety boundaries/adverse decision), annual subscription model ($15K/$35K/$75K ARR model), FINAL Phase 2 Morning Reading Guide (5 sections: bear thesis, 10 named contacts, GTM playbook, 8 open questions, 72-hour action plan), 'free substitute' bear, 30-min demo script, platform expansion paths, partner ecosystem, 7-touch outbound cadence |
+
+### Key Phase 2 Findings
+
+**Bear case (highest priority):**
+1. GTM execution gap (design partner enthusiasm → first payment) — most likely cause of failure
+2. Goodhart's Law doom loop — evaluation gaming inevitable at scale; rubric rotation + probe library mitigates
+3. Anthropic/OpenAI feature absorption — 12-18 month threat window; multi-vendor framing mitigates
+4. Cold-start supply for marketplace — single-player mode mitigates (months 1-12)
+5. EU PLD strict liability — US-first launch + E&O insurance + scope limitations mitigates
+
+**GTM (immediate actions):**
+- Send FINRA cold email to fintech CCO/compliance lead FIRST (most non-discretionary demand driver)
+- 20 outbound sends in first 2 weeks (5 cold email templates, signal-based personalization)
+- LinkedIn 3-4 posts/week, personal account; Twitter 5-7 posts/week, technical AI community
+- FINRA white paper (6 pages) as credibility artifact before product demo
+- Show HN launch in Month 3-4 after 3 design partners signed
+
+**Critical corrections to Phase 1 research:**
+- EU AI Liability Directive was WITHDRAWN Feb 11 2025 — EU PLD is now operative (no-fault, Dec 9 2026)
+- LMArena = $1.7B valuation, $30M ARR — add to competitive landscape
+- Anthropic launched Managed Agents + enterprise plug-ins (Apr 2026) — 12-18 month substitute risk
+- UC Berkeley April 2026: all 8 major benchmarks broken — add caveats to "the score doesn't lie" narrative
+
+### How to Resume (If More Research Needed)
+
+```bash
+# Check current state
+tail -30 tasks/straw-bear-case-and-gtm-2026-05-01.md
+wc -l tasks/straw-bear-case-and-gtm-2026-05-01.md
+
+# Append next tick, commit with author flag
+git add tasks/straw-bear-case-and-gtm-2026-05-01.md
+git commit --author="Jeremy Liu <jeremyliu621@gmail.com>" -m "research(phase2): tick N — topic [theme]"
+git push -u origin HEAD:master
+
+# Next tick if continuing: 837
+```
+
+### Execution Next Steps (Priority Order After Session 5)
+
+**72 HOURS (Start Today):**
+1. **Send cold email to Terah Lyons** (JPMorgan AI Policy, Managing Director) — OCC RFI / FINRA 2026 hook (opener in Tick 775)
+2. **Send cold email to Jeffery Hawkins** (Hartford Financial, SVP Innovation) — NY DFS CL7 hook (opener in Tick 790)
+3. **Send cold email to Dr. Ben Shahshahani** (Cleveland Clinic CAIO) — OCR Section 1557 hook (opener in Tick 774)
+4. **Build pipeline spreadsheet** — 33 contacts, 5 tiers, Stage/Next Action Date columns
+5. **Begin FINRA white paper** — complete Section 4 (regulatory mapping table) first — full outline in Tick 794
+
+**THIS WEEK:**
+6. **Send cold email to Shawn Tumanov** (Manulife AVP AI Governance) — multi-jurisdiction hook
+7. **Send cold email to Michael Kitson** (Bridgewater CCO) — SEC AI washing hook (opener in Tick 786)
+8. **Publish FINRA white paper** — ungated at straw.ai/finra; LinkedIn native doc upload
+9. **Schedule startup lawyer** — MSA + design partner agreement review; GC pre-flight checklist (Tick 816)
+10. **Send virtual roundtable invitations** to 8 FinServ CAIOs — June target (playbook in Tick 791)
+
+**NEXT 30 DAYS:**
+11. **Close 3 design partners** ($2,500 rubric workshop or $6,500 Pilot) — Tick 829 morning guide has specific openers
+12. **Attend Responsible AI Summit Chicago June 23-24** — approach Capital One/Manulife/UHG/AZ/NIST (Tick 781)
+13. **Contact Navrina Singh (Credo AI CEO)** — partnership conversation (Tick 806)
+14. **Contact Kate Jensen (Anthropic)** — 'Straw Certified for Claude' co-endorsement (Tick 825)
+15. **Start ANAB accreditation no later than Month 6** — ISO/IEC 17065 Track A (Tick 814 roadmap)
+
+**CORRECTIONS TO KEEP IN MIND:**
+- ⚠️ Ketan Karkhanis is NOT at Morgan Stanley — Jeff McMillan is correct (appointed Head of Firmwide AI March 2024)
+- ⚠️ Scale AI SEAL is a real competitor — but Meta ownership (49%) creates neutrality gap that is Straw's structural defense
+- ⚠️ TAM is LLM evaluation market ($9.26B by 2030), NOT AI governance platform market ($492M)
