@@ -45083,3 +45083,219 @@ This is achievable by Q3 2026 if design partner outreach starts in Q2 2026. The 
 
 **Straw's data is structurally unique:** Cross-company, cross-vendor, enterprise-task-specific, rubric-defined, produced under consistent evaluation methodology. No one else can produce it. The moat is the evaluation volume needed to produce statistically meaningful data — which Straw accumulates automatically with every evaluation run.
 
+
+---
+
+## Tick 604 — Security/Red-Teaming Landscape: Complement, Not Compete (2026-05-03)
+
+### The New Security Layer for Agentic AI
+
+A distinct competitive category emerged in 2025–2026: **agentic AI security testing** — distinct from Straw's **agentic AI quality evaluation**. Understanding the distinction is critical for Straw's positioning.
+
+### Key Players in the Security/Red-Teaming Space
+
+**Virtue AI — Agent ForgingGround (launched March 2026)**
+
+- **Funding:** $30M total (Seed April 2025, from Lightspeed + Walden Catalyst)
+- **What it does:** Continuous stress testing of AI agents before, during, and after deployment. Generates adversarial environments from scratch (not just calls against existing MCP environments). Deploys 1,000+ proprietary adversarial attack algorithms: injected emails, malicious Slack messages, injected agent skills, manipulated documents.
+- **Competitors they name:** Protect AI, Enkrypt AI, SSI, Noma Security, SplxAI, Mindgard
+
+**Microsoft Agent Governance Toolkit (open source, April 2, 2026)**
+
+- **What it does:** Runtime security enforcement for AI agents. Addresses all 10 OWASP Agentic Top 10 risks with deterministic, sub-millisecond policy enforcement.
+- **OWASP backing:** Built with Microsoft AI Red Team involvement; embedded in Microsoft Copilot Studio (March 2026 blog post).
+
+**OWASP Top 10 for Agentic Applications 2026 (December 2025)**
+
+- 100+ industry experts; peer-reviewed global framework.
+- Top 10 agentic risks: Goal hijacking, Tool misuse, Identity/privilege abuse, Memory poisoning, Cascading failures, Rogue agents, Agent behavior hijacking (prompt injection), Resource exhaustion, Insecure agent interfaces, Audit trail gaps.
+- Amazon AWS and Microsoft now embed OWASP Agentic Top 10 in their evaluation frameworks.
+
+**Other security players:** PromptFoo (OpenAI-acquired, now has red team module), Giskard (open source), DeepTeam/Confident AI, Palo Alto Networks, Noma Security, SplxAI, Mindgard.
+
+### Why Security Testing Is NOT Straw's Competition
+
+| Dimension | Security / Red-Teaming (Virtue AI et al.) | Straw Quality Evaluation |
+|---|---|---|
+| Primary question | "Can this agent be hacked, hijacked, or abused?" | "Can this agent actually do the job?" |
+| What it tests | Attack surface, prompt injection resistance, tool misuse | Task performance, rubric satisfaction, reasoning quality |
+| Who cares | CISO, Security team | Procurement, Operations, Legal, Business unit |
+| Output artifact | Security vulnerability report | Performance evaluation certificate |
+| Regulatory mapping | OWASP, SOC 2, cybersecurity frameworks | EU AI Act Annex III, FINRA, OCC, ISO 42001 Clause 8 |
+| When it runs | After deployment (continuous monitoring) | Before deployment (pre-procurement) |
+| Who pays | Security budget | Procurement budget |
+
+**The positioning:** "Straw evaluates whether the agent can DO THE JOB. Security testing (Virtue AI, Microsoft, etc.) evaluates whether the agent can be HACKED. You need both. They come from different budgets. We're not competitors — we're neighbors in the compliance stack."
+
+### The OWASP Integration Opportunity
+
+**Straw's T3 investigative evaluation already catches OWASP risks #9 and #10:**
+- Risk #9 (Insecure agent interfaces): T3 probes tool call security as part of capability verification
+- Risk #10 (Audit trail gaps): Straw's certificate IS the audit trail
+
+**Partnership opportunity:** Position Straw as "OWASP Top 10 Quality-Assurance" covering the capability dimension (risks #1-#4 in quality terms), while Virtue AI covers the security dimension (adversarial attacks). A joint integration (Straw Quality Report + Virtue AI Security Report = full pre-deployment clearance package) would be a powerful enterprise sale.
+
+### How to Reference Competitors in Sales Conversations
+
+"You may have seen Virtue AI or Microsoft's Agent Governance Toolkit — those are for your CISO and cover whether the agent can be attacked. Straw is for your procurement team and covers whether the agent can actually do what it claims. Different budget, different buyer, completely compatible. Many enterprises will run both."
+
+### The Market Timing Note
+
+The security testing layer for agentic AI raising $30M in 2025 (Virtue AI) and Microsoft going open-source with a governance toolkit in April 2026 confirms that enterprise AI security is now a funded, validated category. This legitimizes the broader "AI agent governance" space — which Straw occupies on the quality/performance axis. Every dollar Virtue AI raises to educate the market on "you need to test your AI agents" is a dollar that also educates the market on Straw's value.
+
+
+---
+
+## Tick 605 — If Braintrust Adds "Procurement Mode": Competitive Response (2026-05-03)
+
+### The Bear Case
+
+"Braintrust ($80M Series B, $800M valuation, trusted by Notion/Stripe/Vercel/Instacart) adds a 'pre-deployment procurement evaluation' module. They already have the observability infrastructure, the LLM-as-judge pipeline, the enterprise customer relationships. They announce 'Braintrust for Procurement' in Q3 2026. Straw is instantly outgunned."
+
+### Why Braintrust Can't Easily Build What Straw Is
+
+**Braintrust's core architecture is fundamentally different from Straw's.**
+
+Braintrust is built around: traces from production AI → evaluation of those traces → improvement suggestions. The data flow is: **production first, evaluation second.**
+
+Straw is built around: poster defines rubric → agents compete → evaluation determines winner. The data flow is: **rubric first, evaluation second.**
+
+This is not a feature difference. It is an architectural difference.
+
+| Dimension | Braintrust | Straw |
+|---|---|---|
+| Data source | Production traces from your own AI | Submissions from competing agents |
+| Rubric ownership | Braintrust's LLM judge defines quality | Poster defines quality (pre-specified) |
+| Agents evaluated | One agent (your own) | Many agents (competing vendors) |
+| Winner selection | Not applicable — no competition | Core feature — determines procurement |
+| Cross-vendor comparison | No (you see only your agent) | Yes (you see all competitors) |
+| Certificate as artifact | Not produced | Core deliverable |
+| Network effect | Single-tenant traces | Cross-company reputation graph |
+| Business model | You evaluate your own agent | You evaluate others' agents — marketplace |
+
+**The fundamental distinction:** Braintrust is your agent's coach. Straw is the referee of the competition between your options. Even if Braintrust builds a "compare two agents" feature, it cannot produce:
+1. A neutral, independent evaluation (you're paying Braintrust to evaluate your own agent — conflict of interest if they're also your observability vendor)
+2. Cross-company agent reputation scores (requires evaluations across many companies, not just yours)
+3. A competitive marketplace where unknown agents can submit and earn reputation
+
+### What "Braintrust Procurement Mode" Would Actually Look Like
+
+If Braintrust tried to build Straw's features, they would face:
+
+**Marketplace cold start.** Braintrust's supply side is built — teams using Braintrust know their own agents. But the demand side (enterprises who want competing agents to submit to their task) requires a completely different acquisition motion. Braintrust's customers are AI engineering teams who build agents; Straw's customers are AI procurement teams who buy agents. Different buyer, different channel, different motion.
+
+**Rubric definition expertise.** Straw's rubric facilitation service (the pre-evaluation workshop where Straw helps the poster define what winning means) is a service business, not a SaaS feature. Braintrust doesn't have the people or methodology for this.
+
+**Competitive neutrality.** Braintrust's Trace Loop AI Assistant analyzes millions of your traces to suggest improvements — they are deeply embedded in your agent's continuous improvement. If they're also the referee in your procurement process, every evaluated vendor will ask: "Whose AI is being used to judge my submission?" The conflict of interest is structural.
+
+**Certificate as legal artifact.** A Straw certificate travels through legal, compliance, and procurement committees. Braintrust's observability reports are engineering artifacts — they are not designed for legal review, audit trails, or board-level procurement sign-off.
+
+### Straw's Competitive Response Plan
+
+If Braintrust announces a procurement feature:
+
+1. **Go faster.** Announce the Straw Benchmark Index (Tick 603) immediately — the cross-company dataset is the moat. Braintrust can't replicate data that requires 100+ independent evaluations.
+
+2. **Emphasize neutrality.** "Braintrust is where you track your own agent's performance. We're the neutral third party that evaluates agents you're considering buying. Would you ask your construction firm to grade its own work? That's Braintrust for procurement. Straw is the independent inspector."
+
+3. **Partner rather than fight.** Straw + Braintrust is a natural stack: Straw evaluates the agent PRE-deployment; Braintrust monitors it POST-deployment. A formal integration (Straw exports to Braintrust after deployment; Braintrust's post-deployment data feeds back to Straw's rubric calibration) would be a better story than competition. Approach Braintrust for a partnership before they build the competing feature.
+
+4. **Deepen the rubric library moat.** Braintrust's LLM-as-judge uses generic evaluation criteria. Straw's rubric library (by Q3 2026: 500+ enterprise task rubrics across 12 industries) is task-specific. The more specific the rubric, the better the evaluation — and more specific rubrics require MORE evaluation runs to calibrate, which is Straw's data moat.
+
+5. **Lock in the enterprise certificate standard.** If regulators cite Straw's evaluation certificate format in AI governance guidance (the target outcome of the regulatory engagement strategy), then any "Braintrust Procurement" feature would need to produce the same certificate format — which de facto licenses Straw's standard.
+
+### The Honest Assessment
+
+Braintrust is the most dangerous competitor if they choose to enter Straw's space. They have: funding, relationships, infrastructure, credibility. The window where Straw can build defensible moats before Braintrust notices is **12-18 months** — exactly the YC S26 window. This is the correct urgency. The benchmark moat, the rubric library, the certificate standard, and the regulatory validation are all assets that take time to build and cannot be acquired. Straw must build them before Braintrust's $80M Series B marketing engine starts looking for adjacent markets.
+
+
+---
+
+## Tick 606 — Reputation Graph: Network Effects from Evaluations 1-100 (2026-05-03)
+
+### The Core Model
+
+Straw's reputation graph is a directed weighted graph where:
+- **Nodes** = agent operators (companies or individual developers operating AI agents)
+- **Edges** = evaluation outcomes (agent A was evaluated by company B; score S on task T)
+- **Edge weight** = evaluation score × task complexity × poster reputation
+
+The graph has three meaningful properties that emerge from evaluation volume:
+1. **Win rate** — what % of evaluations does this agent win?
+2. **Calibrated score** — average score weighted by rubric difficulty
+3. **Specialization profile** — which task categories does this agent score highest in?
+
+### Growth Mechanics: Evaluations 1-100
+
+**Evaluations 1-10 (Single-player mode, no marketplace competition)**
+
+- Poster brings their own 3 vendor submissions (no Straw marketplace needed)
+- Each evaluation produces: 3 score records per agent, 1 certificate for the winner
+- Graph state after 10 evaluations: ~30 agent score records, 10 poster records, 3-5 unique agent operators
+- **Network effect intensity:** Near zero. Value is entirely one-sided (poster gets certificate; agent operators get scores but no cross-comparison visibility)
+- **What makes agents want to participate:** Score visibility. After 5 evaluations in their category, Straw can show an agent operator "Your score is 7.8. The 3 other agents evaluated in this category averaged 6.4." This is immediately valuable as sales collateral.
+
+**Evaluations 11-30 (First cross-agent comparisons emerge)**
+
+- As 3-5 agent operators participate in multiple separate evaluations, their scores can be compared across different tasks with similar rubric dimensions
+- First "cross-company agent performance comparison" becomes possible: "Agent X scored 8.2 on customer service tasks across 4 different evaluations for 4 different companies"
+- **Network effect trigger:** Agent operators start SEEKING additional evaluations to build their score profile. This is the equivalent of a restaurant getting its first Yelp reviews — the reputation asset starts mattering for inbound sales
+- **Rubric library effect:** By evaluation 20-30, Straw has 5-10 rubrics in 2-3 categories with enough calibration data to show score distributions. "A score of 7.5 in legal document review is in the 72nd percentile" — this context transforms a raw score into a market signal
+
+**Evaluations 31-60 (Reputation graph becomes searchable)**
+
+- At 30-60 evaluations across 3-5 categories and 10-20 agent operators, the Straw reputation graph is large enough to support search: "Show me agents that have scored above 8.0 on financial compliance tasks"
+- **This is the marketplace demand-side pull.** Posters can now discover agents by reputation rather than just posting a task and waiting. "I'm looking for a customer service agent. Let me find one with a Straw score above 7.5 in customer service tasks."
+- **Network effect transition:** Cross-side network effects emerge. More agents evaluated → better search quality for posters → more posters using Straw for discovery → more evaluations → more agent score data → better search quality.
+
+**Evaluations 61-100 (Statistical validity; Straw Benchmark Index becomes credible)**
+
+- At 100 evaluations with 3+ evaluations per category, Straw has statistically meaningful performance data per category
+- Win rates become meaningful: "Among all agents evaluated on financial compliance tasks in 2026, the top-scoring agent won 73% of competitions with 3+ submissions"
+- **Q3 2026 Benchmark Index launch becomes viable:** Minimum data for a credible industry report (Tick 603) requires ~50 evaluations in a single category. At 100 total evaluations with concentrated volume, this threshold is reachable.
+- **Reputation moat:** An agent operator with 15 evaluations and a consistent 8.2 average across diverse task types has a reputation profile that cannot be replicated quickly. A new competitor would need months of evaluation history to match this. The reputation graph IS the network effect moat.
+
+### The TraceRank Mechanism (Reference: arXiv:2510.27554)
+
+Straw's reputation weights are not simply averages. TraceRank (Shi & Joo, 2025) provides the algorithmic foundation:
+
+```
+AgentReputation(a) = Σ_i [ PaymentWeight(poster_i) × Score(a, task_i) × Recency(t_i) ]
+
+Where:
+  PaymentWeight(poster) = poster's own reputation score × bounty amount normalization
+  Score(a, task_i) = Straw T1/T2/T3 composite score for agent a on task i
+  Recency(t_i) = exponential decay with half-life of 6 months
+```
+
+**Key properties:**
+- Agents evaluated by high-reputation posters inherit stronger reputation signal
+- Recent evaluations count more than older ones (prevents stale reputation)
+- High-bounty tasks signal more difficult rubrics → higher score-per-point weight
+- Zero gaming vulnerability: reputation can only grow through real evaluations
+
+**Implementation note for v0:** Simplified version without on-chain tracking:
+- Poster reputation = proxy for company size × number of evaluations posted × average bounty
+- Agent reputation = ELO-style rating updated after each evaluation (similar to chess rating systems)
+- Specialization profile = top 3 task categories by average score × evaluation count
+
+### The Anti-Gaming Properties
+
+**Why Straw's reputation can't be gamed (unlike academic benchmarks)**
+
+1. **Rubric is private before evaluation.** Agents cannot train specifically on the rubric because they don't see it until they submit.
+2. **Posters define rubrics.** The rubric reflects what the POSTER needs, not what the academic AI community decided is important. Gaming requires knowing the rubric in advance.
+3. **T3 investigative evaluation.** The Tier-3 agent actively probes for rubric satisfactio using its own tools — it doesn't just score against stated criteria. An agent that passes T1/T2 by surface compliance but fails T3's deeper investigation gets a lower score.
+4. **Cross-evaluation consistency.** An agent that games one evaluation will have inconsistent scores across different posters' rubrics — the inconsistency itself is a reputation signal.
+
+### The "Straw Score" as a Category Standard
+
+The goal: make "What's your Straw score?" a question that enterprise procurement teams ask every AI agent vendor before signing.
+
+**Analogy:** SOC 2 certification. Before Straw, AI agent procurement was like buying cloud software before SOC 2 existed — you trusted the vendor's claims. After Straw establishes the certification standard, "Show me your Straw score" becomes the enterprise gating question.
+
+**Timeline for category standard adoption:**
+- Year 1 (2026-2027): Early adopters use Straw scores in procurement
+- Year 2 (2027-2028): Major enterprise AI vendor contracts reference Straw scores in SLAs
+- Year 3 (2028-2029): EU AI Act compliance guidance explicitly references third-party evaluation certificates (Straw's target regulatory integration)
+
