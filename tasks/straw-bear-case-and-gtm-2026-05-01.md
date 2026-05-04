@@ -44535,3 +44535,185 @@ A poster who uses PromptVault can pipe their evaluation task through PromptVault
 
 **Sources:** designrush.com/enterprise-ai-security-2026, airia.com/california-ai-procurement-order-enterprise, dialzara.com/ai-tools-transparent-data-policies, siliconflow.com/most-secure-enterprise-ai-provider
 
+
+---
+
+## Tick 596 — Straw's Single-Player Mode: Value Before the Marketplace Exists
+
+**Date researched:** 2026-05-03 (synthesis)
+
+### The OpenTable insight
+
+The "single player mode" strategy was popularized by OpenTable: they built restaurant table management software (useful standalone) BEFORE building the consumer booking marketplace (requires network). Restaurants adopted the table management tool for standalone value; the marketplace emerged naturally from restaurant participation.
+
+**Straw's single-player mode:** Evaluation infrastructure that works for ONE poster with ZERO marketplace solvers.
+
+### What Straw can do before any agents compete
+
+**Scenario:** A CTO has 3 AI agent vendors they're already evaluating. They just need help defining the rubric and running a structured evaluation. No marketplace needed.
+
+**Single-player Straw workflow:**
+1. Poster defines task + rubric (2-hour session with Jeremy)
+2. Poster submits the 3 vendors' evaluation results to Straw (as SUBMISSION.md files)
+3. Straw runs T1 + T2 + T3 evaluation on all 3 submissions
+4. Straw produces comparative scores + individual certificates
+5. CTO presents certificates to board as evidence of due diligence
+
+**The value Straw delivers in single-player mode:**
+- Rubric design facilitation (2 hours of Jeremy's time)
+- Structured evaluation (T1 deterministic + T2 LLM + T3 investigator)
+- Comparable scores (3 vendors on the same rubric)
+- Audit-ready certificate (timestamped, UUID, reproducible)
+
+**This is the SAME certificate, SAME value, with ZERO marketplace.**
+
+### The JTBD (Job to be Done) in single-player mode
+
+**"I have 3 AI vendor pitches on my desk. I need to evaluate them objectively before committing $500K and presenting to my board."**
+
+Straw solves this job WITHOUT a marketplace. The marketplace (agents competing without prior human submission) is a Phase 2 optimization, not a prerequisite for value.
+
+### Why single-player mode is strategically correct
+
+**1. Lower sales resistance:** "I'm not asking you to join a marketplace. I'm offering to run a structured evaluation of vendors you're already evaluating." This removes the chicken-and-egg concern from the customer's mind.
+
+**2. Faster time to first value:** No need to recruit agent operators. The poster brings their own submissions. Evaluation starts in 24 hours.
+
+**3. Stronger design partner proof:** The certificate produced from a single-player evaluation is identical to the certificate from a marketplace competition. The social proof is the same.
+
+**4. Marketplace emerges from single-player usage:** Once a poster has used single-player Straw and loves the certificate, they'll ask: "Can agent operators compete directly on the platform?" That's the pull request for the marketplace — asked by a real customer who's already paying.
+
+### The positioning shift in sales
+
+**Don't say:** "Straw is a marketplace where agents compete."
+**Say:** "Straw is an evaluation infrastructure where you define what winning looks like and get a verifiable score — regardless of whether you're comparing 3 vendors you're already talking to or running an open competition."
+
+**The single-player → marketplace migration:**
+
+| Phase | What poster does | What marketplace adds |
+|---|---|---|
+| Single-player | Brings their own submissions | Nothing |
+| Hybrid | Posts task publicly; some solvers compete; poster also invites vendors | More solver options |
+| Full marketplace | Posts task; solvers discover and compete autonomously | Maximum competition |
+
+Posters graduate through phases naturally. The single-player mode is the entry point, not a limitation.
+
+---
+
+## Tick 597 — The Straw Evaluation Certificate: Design Specification
+
+**Date researched:** 2026-05-03 (synthesis + design)
+
+### What the certificate must accomplish
+
+A Straw Evaluation Certificate is a trust artifact — the same function as a SOC 2 report, an ISO certificate, or an audit opinion letter. It must:
+1. Be immediately credible to a non-technical executive (CTO, CFO, board member)
+2. Contain enough technical detail to satisfy an auditor
+3. Be verifiable by anyone with the UUID (public URL)
+4. Be professionally designed (not a PDF export from a spreadsheet)
+5. Be shareable (LinkedIn, investor decks, regulatory filings)
+
+### Certificate content specification (v0)
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  STRAW EVALUATION CERTIFICATE                                   │
+│  [Straw Logo]                                  [Issue Date]     │
+├─────────────────────────────────────────────────────────────────┤
+│  TASK                                                           │
+│  Domain: Financial Document Analysis                            │
+│  Task Type: Extraction + Reasoning                              │
+│  Evaluation Scope: 5 anonymized SEC 10-K filings               │
+│  Task ID: task_2026_04_a7f3                                    │
+├─────────────────────────────────────────────────────────────────┤
+│  EVALUATION RESULTS                                             │
+│                                                                 │
+│  Rank 1: Agent Operator Alpha                         91/100   │
+│  Rank 2: Agent Operator Beta                          78/100   │
+│  Rank 3: Agent Operator Gamma                         62/100   │
+│                                                                 │
+│  Winning agent performance by dimension:                        │
+│  ├── Extraction Accuracy: 94/100                               │
+│  ├── Reasoning Quality: 89/100                                 │
+│  ├── Citation Completeness: 91/100                             │
+│  └── Response Format: 87/100                                   │
+├─────────────────────────────────────────────────────────────────┤
+│  EVALUATION METHODOLOGY                                         │
+│  T1 Deterministic: Yes (42 criteria evaluated)                 │
+│  T2 LLM-as-Judge: Yes (model: claude-sonnet-4-6,              │
+│    randomized presentation, 3-run average)                      │
+│  T3 Investigator: Yes (claude-opus-4-7, 847 evidence quotes)  │
+│  Rubric Version: rubric_v1.2 (locked on 2026-04-01)           │
+├─────────────────────────────────────────────────────────────────┤
+│  CERTIFICATE IDENTITY                                           │
+│  Certificate ID: STRAW-2026-04-A7F3-91-001                    │
+│  Issued: 2026-04-14 09:23 UTC                                  │
+│  Poster: [Anonymized — Private Evaluation]                     │
+│  Valid for: 12 months (re-evaluation recommended at expiry)    │
+│                                                                 │
+│  Verify at: straw.ai/verify/STRAW-2026-04-A7F3-91-001         │
+│  [QR Code]                                                     │
+├─────────────────────────────────────────────────────────────────┤
+│  LEGAL NOTICE                                                   │
+│  This certificate documents evaluation results on the specified │
+│  task under the specified rubric. It does not constitute a     │
+│  warranty of general fitness for purpose, safety, or           │
+│  regulatory compliance of any evaluated AI system. Evaluation  │
+│  results are reproducible within ±3% under the same rubric     │
+│  version. Straw, Inc. accepts no liability for deployment       │
+│  decisions made based on this certificate.                     │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Certificate design principles
+
+**Visual identity:**
+- Clean, professional typography (Inter or Geist font family)
+- Straw brand color: #4A7CF5 (blue) for borders and accents
+- White background — no clutter
+- Score displayed prominently in large font with progress arc
+- Rank numbers large and bold — the key information a CTO wants
+
+**The QR code is critical.** Scanning the QR code takes the viewer to a public verification page that displays:
+- Same content as the certificate
+- Timestamp chain (when rubric was locked, when evaluation ran, when certificate issued)
+- Hash of the evaluation inputs (rubric JSON hash + submission hash) — proves nothing was modified after evaluation
+
+**The "Verify" URL is the trust mechanism.** A CTO who receives the certificate from a vendor can independently verify it at straw.ai/verify/{UUID}. This is the same trust model as an SSL certificate — the verification is independent of the presenting party.
+
+### What goes on the public verify page
+
+```
+straw.ai/verify/STRAW-2026-04-A7F3-91-001
+
+Certificate Status: VALID ✓
+Issued: April 14, 2026
+Rubric: Financial Document Analysis v1.2
+Winner Score: 91/100
+
+[Expand: Rubric structure]
+[Expand: Methodology details]
+[Expand: Score breakdown by dimension]
+[Download: Full certificate PDF]
+[Share: LinkedIn / X / Email]
+```
+
+### Sharing mechanics for agent operators
+
+When an agent operator wins a Straw evaluation, they receive:
+1. The full PDF certificate (with winning score + breakdown)
+2. A shareable "Straw Certified" badge (SVG/PNG, 3 sizes)
+3. A LinkedIn-optimized share link with preview image
+4. A code snippet for embedding on their website:
+
+```html
+<a href="https://straw.ai/verify/STRAW-2026-04-A7F3-91-001">
+  <img src="https://straw.ai/badges/straw-certified.svg" 
+       alt="Straw Certified - Verified AI Agent" />
+</a>
+```
+
+**The badge becomes a sales tool.** An AI agent vendor puts "Straw Certified" on their website next to their enterprise pricing page. Enterprise buyers see this and ask: "Where can I get that for the agent I'm evaluating?"
+
+**This is the supply-side marketing engine:** every winning agent is a Straw advertisement.
+
