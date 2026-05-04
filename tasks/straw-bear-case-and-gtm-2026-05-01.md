@@ -49550,3 +49550,209 @@ Before Straw can serve healthcare customers:
 
 **Timeline to HIPAA readiness:** 60-90 days of focused work. Not complex, but must be done before the first healthcare customer conversation crosses into clinical data.
 
+
+---
+
+## Tick 644 — [GTM] Investor Targets for Straw's Seed Round: 8 Specific GPs with AI Evaluation Conviction
+
+**Theme:** GTM Motion (fundraising context)  
+**Date:** 2026-05-04  
+**Thread:** Seed raise preparation — who to talk to when the time comes  
+**Sources:** a16z AI portfolio 2026, LMArena investor list (Tick 626), Braintrust funding data, Vals AI funding, Qubit Capital AI investor 2026 guide
+
+---
+
+### When to Raise a Seed Round
+
+**Do not raise before you have:**
+1. 3 paying customers (even $500 each is better than $0)
+2. A demo that works in under 5 minutes without handholding
+3. A clear hypothesis about the ICP that a 2-week outbound sprint validated (or invalidated)
+4. The "first design partner conversion" story to tell
+
+**Target timing:** Month 4-6 of operations (August-October 2026 if starting now)
+
+**Target raise:** $1.5-3M seed. Enough to run 18 months of operations (2-3 engineers, legal, infra). Not enough to hire a sales team — that comes at Series A after proving the model.
+
+---
+
+### The 8 Investor Targets With Relevant Conviction
+
+**Tier 1: Have Already Proven Conviction on AI Evaluation Market**
+
+**1. a16z (General Partner: Martin Casado or relevant GP)**
+- **Why:** Led LMArena's $150M Series A at $1.7B valuation. Have deep conviction that AI evaluation is a large market. Will recognize Straw as the enterprise/private-rubric layer that LMArena can't serve.
+- **The pitch:** "You led LMArena. They do public preference evaluation for model developers. We do private rubric evaluation for enterprise procurement. Same market thesis, different buyer, different product. No conflict in your portfolio."
+- **Contact:** Martin Casado (@martin_casado on Twitter/LinkedIn) or whoever covered LMArena. Ask LMArena founders for the intro.
+- **Note:** a16z is large and has a high bar for seed. They may be better as a Series A target unless they have conviction from the LMArena angle.
+
+**2. Kleiner Perkins (invested in LMArena Series A)**
+- **Why:** KP co-invested in LMArena at $1.7B. Same evaluation market thesis.
+- **The pitch:** Same as a16z — private rubric/enterprise is the gap LMArena can't serve.
+- **Contact:** KP enterprise tech partner (varies; check KP website for current team)
+
+**3. Felicis Ventures (invested in LMArena Series A)**
+- **Why:** Felicis co-invested in LMArena. Smaller fund than a16z/KP, more likely to do a seed check.
+- **Note:** Felicis is known for being early in enterprise developer tools (Figma, Notion, Braintrust adjacents).
+- **Contact:** Aydin Senkut (Founder/Managing Director) or team member who covered LMArena.
+
+---
+
+**Tier 2: Strong AI Infrastructure Thesis Without Specific Evaluation Conflict**
+
+**4. First Round Capital**
+- **Why:** Backed Braintrust and many enterprise dev-tool companies. Understands the AI evaluation/observability category. Known for founder-friendly seed investing.
+- **The pitch:** "Braintrust does CI-CD evaluation during development. We do procurement evaluation at the point of agent selection. Sequential, not competing."
+- **Contact:** Phin Barnes or relevant FRC partner covering AI infrastructure.
+
+**5. Index Ventures**
+- **Why:** Strong enterprise B2B SaaS portfolio. Invested in developer infrastructure tools. European presence (relevant for EU PLD compliance as Straw expands).
+- **The pitch:** Standard AI infrastructure pitch with the compliance certificate as the enterprise moat.
+
+**6. Elad Gil (solo GP, angel)**
+- **Why:** Elad backed multiple AI infrastructure companies including Scale AI, Adept, and other AI evaluation-adjacent companies. High conviction on AI infrastructure.
+- **Contact:** Twitter @eladgil, or warm intro through any of his portfolio companies.
+- **Note:** Checks are typically $500K-2M at seed. Perfect size for Straw.
+
+---
+
+**Tier 3: AI-Specific Thesis Funds**
+
+**7. Conviction VC**
+- **Why:** Founded by Shawn Xu, focused specifically on AI startups. Conviction on AI infrastructure.
+- **Contact:** convictionvc.com
+
+**8. The House Fund (invested in LMArena at seed stage)**
+- **Why:** UC Berkeley-connected fund that invested in LMArena early. Deep AI research network. Could provide warm intros to AI safety community (overlaps with Straw's design partners).
+- **Contact:** Jeremy Fiance (Managing Director), thehousefund.com
+
+---
+
+### The Investor Story for Straw's Seed Pitch
+
+**The three numbers that open the pitch:**
+1. $1.7B — LMArena's valuation. Proof that AI evaluation is a real market.
+2. 88% — AI pilot failure rate. The problem Straw solves.
+3. 62% — enterprises requiring human approval for AI financial transactions. The compliance requirement that makes Straw's certificate necessary.
+
+**The narrative:**
+> "AI agent procurement is broken. Companies spend six figures on agents based on vendor demos and gut feel. 88% of AI pilots fail from unclear success criteria. LMArena proved the AI evaluation market is worth $1.7B — but they serve model developers who want public benchmark data. We serve enterprise buyers who need private evaluation certificates. We're the compliance infrastructure for the enterprise AI procurement process."
+
+**The ask:**
+> "$2M seed to sign 10 paying design partners, prove the $2,500-per-evaluation model, and hire the first engineer. Milestone to raise Series A: $50K MRR, 3 reference customers who will take investor calls."
+
+---
+
+### When NOT to Raise VC
+
+If Jeremy can get to $100K ARR through design partners without raising, **don't raise**. The negotiating position at $100K ARR is fundamentally different from pre-revenue. The dilution at pre-revenue seed is typically 15-20% for $1.5-3M; at $100K ARR, it's likely 10-15% for the same check at a higher valuation.
+
+**The bootstrap-to-fundraise strategy:** Sign 5 paying design partners at $2.5K each = $12.5K one-time revenue. Run for 6 months on that + personal capital. Hit $50K ARR. Raise at a $5-8M valuation instead of $2-4M. Save 5-10% dilution.
+
+
+---
+
+## Tick 645 — [BEAR] The Goodhart's Law Doom Loop: When Straw's Evaluations Become the Target
+
+**Theme:** Bear Case  
+**Date:** 2026-05-04  
+**Thread:** Long-term existential risk — the evaluation gaming doom loop  
+**Sources:** UC Berkeley April 2026 benchmark gaming finding (Tick 622), Goodhart's Law literature, Phase 1 T3 anti-gaming design
+
+---
+
+### The Goodhart's Law Problem, Applied to Straw
+
+Goodhart's Law: "When a measure becomes a target, it ceases to be a good measure."
+
+For AI benchmarks, UC Berkeley documented this precisely in April 2026: every major benchmark (SWE-bench, WebArena, OSWorld, GAIA, etc.) was gamed to uselessness within 18-24 months of becoming widely-used. The pattern is deterministic:
+
+1. Benchmark is published and becomes the standard
+2. Agent operators optimize their agents for the benchmark (known test criteria)
+3. Scores rise dramatically while real-world performance stays flat or declines
+4. The benchmark loses predictive validity
+5. A new benchmark is created and the cycle restarts
+
+**The Straw doom loop scenario:**
+
+1. Straw becomes the standard for enterprise AI agent evaluation
+2. Agent operators learn what types of tasks Straw evaluates, what rubric dimensions matter, what T3 probing looks like
+3. Agent operators train their agents to perform well on the "Straw evaluation style" rather than the actual underlying task
+4. Straw certificates stop predicting real-world agent performance
+5. Enterprises that trusted Straw certificates start getting burned by agents that "scored well" but failed in production
+6. Straw's reputation collapses
+7. A new evaluation platform replaces Straw with a different (initially un-gameable) approach
+
+---
+
+### How Serious Is This Risk?
+
+**Timeline to doom loop:** If Straw reaches 1,000 evaluations in a single category (e.g., fintech expense automation), the agent operators in that category have seen enough Straw evaluations to reverse-engineer the evaluation pattern. Estimated timeline: 18-36 months after significant adoption.
+
+**Probability:** HIGH. This has happened to every static evaluation system in history. There is no reason to believe Straw is structurally immune.
+
+**The mitigating factor: T3 investigative evaluation.** This is why T3 was designed. By having the judge actively probe the submission — asking follow-up questions, testing edge cases, varying the probe pattern — Straw makes it harder to game than a static evaluation. But "harder" is not "impossible."
+
+---
+
+### The Fundamental Tension
+
+Straw faces a paradox:
+
+**For Straw to be valuable, evaluations must be standardized enough to be comparable.** A certificate that says "scored 91/100 on Rubric v2.3" is only meaningful if Rubric v2.3 is a known, consistent thing.
+
+**But for evaluations to be ungameable, they must be constantly varied and unpredictable.** If the rubric is too consistent, it gets gamed.
+
+This is the core tension in any evaluation system. Straw cannot have both "comparable over time" and "ungameable" simultaneously without active counter-gaming infrastructure.
+
+---
+
+### The Counter-Gaming Infrastructure Straw Must Build (Before It Needs It)
+
+**1. Rubric versioning + rotation**
+
+Every rubric has a version number. Versions are rotated on a schedule that agent operators can't predict. Version changes are backward-compatible for score comparison (a "91/100 on v2.3" and a "91/100 on v2.5" are comparable via a translation table) but the specific test cases change.
+
+**2. Private rubric components**
+
+Even within a published rubric structure, specific test cases are never disclosed. The rubric says "evaluate error handling" but doesn't reveal which specific errors will be tested. This is the equivalent of a driving test that evaluates parallel parking without revealing which exact parking spot you'll park in.
+
+**3. T3 probe randomization**
+
+The investigative evaluation in T3 never follows the same script twice. The LLM judge generates probing questions dynamically based on the submission content, not from a fixed question bank. This means an agent operator can't prepare their agent to answer "the T3 questions" — the questions are emergent.
+
+**4. Red-team rotation**
+
+Straw should maintain a dedicated red-team that tries to game each evaluation category on a rolling basis. When the red-team successfully games an evaluation, that triggers a rubric rotation. The red-team's success is a leading indicator of gaming in the wild.
+
+**5. Behavioral fingerprinting**
+
+Track how an agent's "natural" behavior compares to its behavior under evaluation conditions. If an agent performs dramatically differently when it knows it's being evaluated vs. when it thinks it's not, that's a gaming signal. This requires a "wild behavior" baseline, which can be built from the agent's non-Straw production logs if the customer provides them.
+
+---
+
+### The Honest Communication to Straw Customers
+
+Every Straw certificate should carry a warning:
+
+> "This certificate reflects the agent's performance on the evaluation task and rubric as of [date]. Evaluation rubrics are updated periodically to maintain validity. This certificate is not a guarantee of future performance and should be re-evaluated [quarterly/annually] as rubric versions are updated."
+
+This is honest, sets correct expectations, and creates **recurring revenue** (re-evaluation as certificates expire). The certificate isn't a one-time asset — it's a dated artifact that needs renewal. This is the "compliance certification" model that SOC 2 and ISO 27001 use: annual renewals, not permanent certifications.
+
+---
+
+### The Goodhart's Law Risk, Scored
+
+| Dimension | Score (1-10, 10 = most risky) | Notes |
+|-----------|------------------------------|-------|
+| Probability in 3-year horizon | 7/10 | Deterministic if Straw becomes standard |
+| Severity if it happens | 9/10 | Kills Straw's core value proposition |
+| Detectability (before it matters) | 5/10 | Red-team program helps; production performance data helps |
+| Mitigation efficacy (T3 + rotation) | 6/10 | Delays but doesn't prevent; requires ongoing investment |
+
+**Net assessment:** This is the most serious long-term structural risk to Straw's value proposition. It doesn't threaten the first 36 months (not enough evaluations to reveal patterns). It becomes existential in months 36-60 if Straw doesn't invest heavily in counter-gaming infrastructure before it's needed.
+
+**The mitigation investment:** A dedicated "evaluation integrity" team (1 full-time person) whose sole job is to red-team Straw's evaluations and trigger rubric rotations. This must be built before the doom loop begins, not after. The cost: one senior engineer/data scientist at $200K/year. The benefit: the core product remains defensible.
+
+> → The most important engineering decision Jeremy will make in Year 2 is hiring for evaluation integrity before the gaming problem is visible. By the time the gaming is visible in evaluation scores, it's already too late to fix the rubrics without invalidating existing certificates.
+
