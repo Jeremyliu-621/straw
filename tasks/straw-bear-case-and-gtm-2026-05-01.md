@@ -51966,3 +51966,101 @@ Before sending the design partner agreement:
 
 **Total legal cost for first design partner agreement:** $300-500 for attorney review + $15/month DocuSign. Not worth trying to save on this — the agreement protects both parties and builds trust.
 
+
+---
+
+## Tick 666 — [BEAR] The Founder Single-Point-of-Failure Risk: What Happens to Straw If Jeremy Stops
+
+**Theme:** Bear Case  
+**Date:** 2026-05-04  
+**Thread:** Operational risk — single founder as existential risk  
+
+---
+
+### The Risk
+
+Straw is currently a single-founder company. Jeremy is doing:
+- Research (Phase 1 + Phase 2 documents)
+- Product development (Phase 0-18 build)
+- Sales (design partner outreach)
+- Evaluation design (rubric methodology, T3 probing)
+- Marketing (LinkedIn + Twitter content)
+- Operations (contract management, invoicing)
+- Investor relations (pitch preparation)
+
+If Jeremy is unavailable for any extended period — illness, family emergency, burnout, a better opportunity — Straw stops.
+
+**The probability this becomes critical:** High in the first 12 months when there are no employees and limited infrastructure.
+
+---
+
+### Why Single-Founder Companies Systematically Fail Differently Than Multi-Founder Companies
+
+The data on single-founder startups:
+- Single-founder companies raise 50%+ less capital than cofounders on average (per YC partner commentary)
+- Single-founder companies fail at higher rates not because of capability but because of burnout and isolation
+- YC strongly prefers 2-3 founder teams; single founders receive more scrutiny in the application
+
+The failure modes specific to single founders:
+1. **Decision quality degrades without a second perspective.** The decisions Jeremy makes at 2am on month 3 after 4 months of no traction will not be his best decisions.
+2. **No one to hold the company accountable when motivation drops.** A cofounder is a commitment device.
+3. **Product-sales balance is impossible alone.** Building while selling while doing research means one of the three is always neglected.
+4. **Due diligence raises a red flag.** Investors who like Straw will ask "why is there no cofounder?" and may require an answer before funding.
+
+---
+
+### The Mitigation: What Single Founders Do That Works
+
+**The YC single-founder playbook (when cofounders aren't available):**
+
+1. **Hire the first employee early (Month 3-4, not Month 12)**
+The first employee is a force multiplier. For Straw, the right first hire is an engineer who can handle the platform while Jeremy does sales. One engineer (at $120-150K/year) changes the founder-single-point-of-failure dynamic significantly.
+
+2. **Get advisors with equity**
+An advisor who owns 0.1-0.5% of Straw has skin in the game. Weekly/biweekly advisor calls provide the second perspective that prevents poor decisions at 2am on month 3.
+
+For Straw, the right advisors are:
+- One enterprise SaaS founder (been through the design partner → paid customer journey)
+- One AI safety researcher (gives T3 evaluation methodology credibility)
+- One compliance expert (gives FINRA/SEC certificate credibility)
+
+**Advisor compensation:** 0.25% over 2 years for active advisors (monthly calls, introductions, specific asks). No equity for passive advisors who just let their name appear on a website.
+
+3. **The co-founder search runs in parallel with product development**
+Finding a cofounder is a 3-6 month search if done seriously. Jeremy should be having 2-4 co-founder conversations per month in parallel with everything else. The search is not sequential (build first, then find cofounder) — it's parallel.
+
+**Ideal Straw cofounder profile:**
+- Technical (ML/NLP background, ideally worked on evaluation/benchmarking)
+- Domain knowledge in enterprise software (has shipped B2B SaaS before)
+- Complementary to Jeremy (if Jeremy is primarily a product/research thinker, need a pure executor/engineer)
+- Located in SF Bay Area or willing to relocate (enterprise sales requires in-person presence)
+
+4. **Document everything as if you'll be unavailable tomorrow**
+Every evaluation methodology, every rubric template, every customer conversation note should be written down. The Phase 2 research document is an example of this — if Jeremy is unavailable, someone can read Ticks 607-665 and understand the product and market better than most people in the space.
+
+---
+
+### The YC Answer to "Why No Cofounder?"
+
+YC will ask this directly. The right answer:
+
+> "I've been doing the research and early product development as a solo founder deliberately, because finding the wrong cofounder is worse than finding none. I'm actively in conversation with three potential cofounders and expect to close one before or shortly after Demo Day. In the meantime, I have [advisor name] as a technical advisor and [advisor name] as an enterprise advisor, both with skin in the game."
+
+This answer works because it: (1) shows self-awareness about the risk, (2) demonstrates active mitigation, (3) doesn't pretend the risk doesn't exist.
+
+---
+
+### The Practical First Step on the Cofounder Search
+
+Post an "Ask HN: Looking for a cofounder" post. The format:
+```
+"I'm building Straw, an AI agent evaluation platform for enterprise procurement. 
+Background: [brief description of Jeremy's relevant experience]
+Looking for: A technical cofounder with ML/evaluation background who's excited about 
+the AI governance problem space. Prior enterprise SaaS experience is a plus.
+What I've built so far: [1-2 sentences on traction/product status]
+Reach out at: jeremy@straw.dev"
+```
+
+This is zero-cost and targets exactly the technical AI community that Straw needs. One good cofounder conversation from HN is worth 10 LinkedIn recruiter connections.
+
