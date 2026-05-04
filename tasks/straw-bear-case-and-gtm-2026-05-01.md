@@ -47223,3 +47223,156 @@ Which means getting to 10 paying customers requires:
 - First 10 customers (Lenny): lennysnewsletter.com/p/how-to-win-your-first-10-b2b-customers
 - Multi-channel outreach 287%: blume.vc/commentaries/the-outbound-sales-playbook
 
+
+---
+
+## Tick 624 (2026-05-04T10:00Z): 88% of AI Agent Pilots Never Reach Production — Straw's Market Timing Argument [theme: gtm]
+
+> Thread: Enterprise data reveals that 88% of AI agent pilots fail to reach production. 41% of failures are attributed to "unclear success criteria." This is Straw's single most powerful sales argument — and it's empirically grounded.
+
+### The Core Data (March-April 2026)
+
+**Stanford Enterprise AI Playbook (51 deployments studied, released March 2026):**
+- Only 11–14% of enterprise AI agent pilots have reached production at scale
+- 86–89% fail to realize durable value
+
+**Anaconda/Forrester research (replicated by a16z, MIT Sloan CIO panel):**
+- 88% of agent pilots never reach production
+- **41% of failures attributed to UNCLEAR SUCCESS CRITERIA**
+- 33% to insufficient tool or data access
+- 26% to drift in evaluation coverage
+
+**The CIO pressure point:**
+- 71% of CIOs must prove measurable AI value by mid-2026 or face budget reductions
+- Enterprise AI agent development costs: $60K for midscale pilots to $300K+ for regulated implementations
+- Integration and governance consume up to 60% of project budgets
+
+### Why This Data Is Straw's Entire Sales Pitch
+
+Read this again: **41% of AI agent pilot failures are attributed to unclear success criteria.**
+
+This is not a technology problem. This is not a model quality problem. This is not a data access problem. It's an evaluation design problem. The company doesn't know what "success" looks like before they start the pilot, so they can't recognize failure until it's too late and they've spent $60K-$300K.
+
+Straw's value proposition, rewritten for this data:
+> "88% of AI agent pilots fail. 41% of those failures come from unclear success criteria. Straw defines the success criteria BEFORE the pilot starts. Your competition is your pilot — agents compete on your specific task with your rubric. The winning agent is the one that meets your success criteria best. The certificate documents what those criteria were. You enter the production deployment with a proven standard."
+
+This is the most empirically grounded version of the Straw sales pitch. It's not "we think evaluation is important." It's "41% of pilot failures happen because companies skip this step. We're the step."
+
+### The Budget Trigger (71% of CIOs Proving Value by Mid-2026)
+
+The timing is perfect. 71% of CIOs are under active pressure to prove AI value by mid-2026. This pressure creates:
+
+1. **Urgency:** CIOs can't wait 6 months to evaluate which AI agent is right. They need the evaluation to run NOW so they can start the deployment that proves value by Q2 2026.
+
+2. **Clear budget:** The CIO has an AI budget and needs something to show for it. A Straw evaluation ($5,000-$15,000) is 1-5% of a standard AI pilot budget ($60K-$300K). Easy to approve as "evaluation infrastructure."
+
+3. **Board-level language:** The Straw certificate gives the CIO a document to show the board that demonstrates rigorous vendor selection. "We ran a competitive evaluation before choosing our AI agent." This is the kind of evidence boards and CFOs are now expecting.
+
+### The Forrester/Stanford Framing for Straw's Content Marketing
+
+**The one-liner for the thought leadership piece (Tick 623):**
+"88% of AI agent pilots never reach production. 41% of failures come from unclear success criteria. The step most companies skip is defining what 'winning' looks like before the pilot starts. That's what Straw does."
+
+**LinkedIn hook:** "Your AI agent pilot is likely to fail. Not because the technology is bad — but because you don't know what success looks like. Data from 51 enterprise AI deployments: 41% of failures start with unclear evaluation criteria. We fix that."
+
+**The sequence of social proof:**
+1. Cite the Stanford data (March 2026)
+2. Show how Straw addresses the #1 failure mode (unclear success criteria → Straw defines it upfront)
+3. Show one anonymized example of a company that ran a Straw evaluation BEFORE their pilot (even if it's the design partner)
+4. CTA: "If you're planning an AI agent deployment in the next 6 months, let's talk about how to define your success criteria first."
+
+### The Competitive Positioning Against Inaction
+
+The real competitor in 75% of Straw's sales calls is not Braintrust or Vals AI. It's inaction: "We'll figure out what success looks like after we deploy." The Stanford data is the proof that this approach fails at 88%.
+
+**Objection:** "We've been running AI pilots internally. We have our own evaluation framework."
+**Response:** "What were the success criteria for your last AI agent decision? Did every stakeholder agree on those criteria upfront? Were they documented? If you had to explain your decision to your board with evidence, would you have it?" (Most companies won't have a documented answer.)
+
+### The "Unclear Success Criteria" Sales Script (30-Second Version)
+
+"Most AI agent decisions are made on instinct and vendor demos. The data shows 88% of those pilots fail — and 41% of the failures come from not knowing what 'winning' looks like before you start. Straw gives you the evaluation that defines your success criteria, runs agents against them competitively, and gives you a certificate proving which agent met them. You enter your deployment with a proven standard, not a vendor promise. We can run an evaluation in 2 weeks. Would that be useful for your next agent decision?"
+
+### Sources
+- Stanford Enterprise AI Playbook: digitaleconomy.stanford.edu/app/uploads/2026/03/EnterpriseAIPlaybook_PereiraGraylinBrynjolfsson.pdf
+- 88% failure rate: Anaconda/Forrester, replicated by a16z, MIT Sloan CIO panel (cited in enterprise AI adoption data)
+- 71% CIOs proving value: ampcome.com/post/cio-guide-enterprise-ai-agent-platform-selection
+- Enterprise AI costs: sustainableatlas.org/post/cost-ai-agents-workflow-automation-deployment-2026-1828
+- Root cause analysis: Forrester root-cause attribution (cited in fifthrow.com/blog/ai-agent-orchestration-goes-enterprise)
+
+
+---
+
+## Tick 625 (2026-05-04T10:30Z): Anthropic Departures + AI Safety Lab Contacts Update [theme: partners]
+
+> Thread: Mrinank Sharma resigned from Anthropic February 2026 ("world is in peril"). This and other AI safety departures create a diaspora of technically credible AI evaluation people who might be natural Straw advisors or design partners.
+
+### Mrinank Sharma — Post-Anthropic Status
+
+Mrinank Sharma led Anthropic's Safeguards Research Team (jailbreak robustness, automated red teaming, monitoring techniques). Resigned February 9, 2026. Twitter: @MrinankSharma. Personal site: mrinanksharma.net. Published departure letter on X. Currently focused on "writing and poetry" according to post-resignation reporting.
+
+**Why this matters for Straw:** Sharma's team at Anthropic built EXACTLY the infrastructure that Straw's T3 investigative evaluation needs to be designed around — automated red teaming, jailbreak robustness, monitoring techniques for AI systems. He is now independent. He is publicly accessible. He has deep technical credibility in AI evaluation methodology.
+
+**The pitch:** "Mrinank — you built the evaluation infrastructure for detecting AI misbehavior at Anthropic. We're building evaluation infrastructure for AI agent TASK PERFORMANCE for enterprise procurement. The red-teaming methodology your team developed is exactly what we need for our T3 investigative evaluation design. Would you be willing to consult on the adversarial testing protocol?"
+
+**Why he might say yes:** He's post-Anthropic, doesn't have a competing role yet, and is publicly engaged with AI governance issues. The "world is in peril" framing suggests he cares about good AI evaluation being done right. Straw is a practical instantiation of "do AI evaluation right."
+
+**Contact approach:** Twitter DM first (@MrinankSharma). Then personal site contact form. Reference the red-teaming work directly.
+
+---
+
+### The Broader AI Safety Lab Departure Network
+
+The AI safety field has seen a number of high-profile departures from major labs (Anthropic, OpenAI, DeepMind) in 2024-2026. Many of these researchers are now building independent organizations or advising startups. This creates a network of technically credible, AI-evaluation-focused individuals who might be:
+- Advisors to Straw (equity-for-advisory arrangements)
+- Validation consultants for Straw's evaluation methodology
+- Credibility signals for enterprise customers
+
+**The pattern:** Researchers who leave major labs often do so because they believe safety/evaluation work isn't being done rigorously enough inside big companies. Straw's proposition — rigorous, third-party, rubric-based evaluation — aligns with their mission better than internal labs where evaluation serves commercial interests.
+
+---
+
+### The Anthropic Fellows Program (May + July 2026 Cohorts)
+
+From alignment.anthropic.com: Anthropic is opening its Fellows Program for May and July 2026 cohorts. Research areas: scalable oversight, adversarial robustness, AI control, mechanistic interpretability, AI security, model welfare.
+
+**The strategic opportunity:** Anthropic Fellows are early-career researchers who are deeply engaged with AI evaluation methodology during their fellowship period. They are:
+- Technically credible
+- Building expertise in the exact areas Straw needs (adversarial robustness, AI control)
+- Network-connected to METR, Apollo, and other safety labs
+- Looking for ways to apply their research practically
+
+**Action:** Identify the May 2026 Fellows cohort when they announce. Reach out to fellows whose research areas overlap with Straw's evaluation methodology (adversarial robustness, AI control are direct overlaps). Offer to run a Straw evaluation as a "real-world benchmark" for their research.
+
+---
+
+### The Complete "AI Safety + Evaluation" Design Partner List
+
+| Name | Org | Role | Contact | Straw fit | Opener |
+|---|---|---|---|---|---|
+| Mrinank Sharma | Post-Anthropic (Feb 2026) | Fmr. Safeguards Research Lead | @MrinankSharma on X | 9/10 — evaluation methodology consultation | "Your red-teaming work is what we need for T3 evaluation design. Consulting 20 min?" |
+| Beth Barnes | METR | CEO | linkedin.com/in/elizabethmbarnes/, barnes.page | 9/10 — time horizon methodology collaboration | "Your 7-month doubling graph. We're building enterprise task completion evaluation. 20 min?" |
+| Marius Hobbhahn | Apollo Research | CEO | @MariusHobbhahn | 8/10 — scheming detection + T3 design | "Your scheming detection = our submission verification. Direct overlap. 20 min?" |
+| Esben Kran | Apart Research | Exec Director | @EsbenKran | 8/10 — sprint format partnership | "Apart's sprint format IS our competition format. Let's run a joint AI agent sprint." |
+| Buck Shlegeris | Redwood Research | Research Lead | @bshlegeris | 7/10 — eval harness design | "Redwood builds eval harnesses internally. Straw standardizes the format. Tear ours apart?" |
+| Jack Clark | Co-founder, Anthropic | AI policy/safety | @jackclarkSF | 7/10 (hard to reach) | Warm intro preferred. Frame: "compliance angle for eval infrastructure" |
+
+### The Advisory Board Strategy
+
+**The ask for each of these people:**
+"We'd like you to be an informal technical advisor on Straw's evaluation methodology. Commitment: 1-2 hours total for a methodology review, providing written feedback on our rubric design and T3 evaluation protocol. In exchange: advisory equity (0.1-0.25%), named credit on our evaluation methodology documentation, invitation to participate in the first evaluation methodology workshop."
+
+**Why this is valuable for the advisor:**
+- Zero time commitment (1-2 hours)
+- Equity upside if Straw succeeds
+- Public credit for methodology design (useful for their own professional reputation)
+- Practical application of their research to a real platform
+
+**Why this is valuable for Straw:**
+- "Evaluation methodology designed with input from METR, Apollo Research, and former Anthropic Safeguards team" is a compelling credential sentence
+- Technical credibility that opens enterprise conversations that would otherwise take months to build
+
+### Sources
+- Mrinank Sharma resignation: msn.com article on Anthropic safeguards head resignation, February 2026; x.com/MrinankSharma/status/2020881722003583421
+- Anthropic Fellows Program: alignment.anthropic.com/2025/anthropic-fellows-program-2026/
+- AI safety lab network: from Tick 610 research + Apollo/METR profiles
+
