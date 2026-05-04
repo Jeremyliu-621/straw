@@ -47753,3 +47753,348 @@ Even a fully enterprise-grade Operator with audit logs cannot offer:
 
 > → GTM implication: The first discovery question in every Straw sales call should be "Do you have a procurement policy that requires third-party verification for AI vendor selection?" If yes: Straw is compliant, Operator is not. If no: qualify harder, they may not need Straw yet.
 
+
+---
+
+## Tick 629 — [GTM] Cold Email Templates: Five Vertical-Specific Templates for First 10 Design Partners
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Specific outbound templates Jeremy can use this week  
+**Sources:** Autobound 2026 Cold Email Playbook, SmartLead B2B Templates, HiMail 2026 Outreach Guide
+
+---
+
+### Baseline Principles (What 2026 Data Says Works)
+
+- **Under 125 words total.** Longer = lower reply rate. No exceptions.
+- **Subject line: under 7 words.** Curious or signal-based. Not salesy.
+- **Signal-first opening.** Reference something specific to them (funding, tweet, conference talk, job posting, product launch). 18% reply rate with signals vs. 3.4% generic.
+- **Single ask.** One question. One CTA. Not "let me know if you're interested."
+- **No attachments.** They trigger spam filters and feel presumptuous.
+- **Send Tuesday–Thursday, 9–11am.** Statistically highest reply windows.
+- **Follow-up sequence:** Day 1, Day 4, Day 9. Stop after 3 touches. Don't be the pest.
+
+---
+
+### Template 1: The AI Eval Lab / Safety Org
+
+**Use for:** METR, Apollo Research, Redwood Research, Apart Research, ARC Evals
+
+**Subject:** Your [paper/eval framework] + a question
+
+**Body:**
+```
+Hi [Name],
+
+Read your [specific paper/eval framework] on [topic] last week — the [specific finding] reframed how I'm thinking about evaluation robustness.
+
+I'm building Straw — a platform where companies post tasks, AI agents compete, and results are certified against a private rubric. T3 investigative evaluation (judge actively probes the submission) was designed specifically around the gaming problem you documented in [their work].
+
+Would love 20 minutes to show you what we're building and pressure-test the eval design. Happy to share the architecture in exchange for honest pushback.
+
+Worth a call?
+
+Jeremy
+```
+
+**Why it works:** Genuine intellectual engagement. Positions Straw as a solution to their documented problem. Asks for their expertise (not just their money/time). Reciprocal value exchange.
+
+---
+
+### Template 2: The CAIO / Head of AI at Enterprise
+
+**Use for:** Any F500 or F1000 AI leader. CAIOs at Goldman, Stripe, Mercury, Ramp, Coinbase, etc.
+
+**Subject:** [Company]'s AI agent procurement process
+
+**Body:**
+```
+Hi [Name],
+
+I noticed [Company] is [specific signal: hiring AI engineers / expanding Devin deployment / running internal agent pilots] — smart move given the 2026 market.
+
+I'm Jeremy, founder of Straw. We help AI leaders answer "which AI agent actually performs best on our specific workflows" with a structured evaluation and a compliance certificate — the thing your procurement team needs before signing off on a six-figure agent contract.
+
+88% of AI pilots fail from unclear success criteria. We fix the definition problem before the signing happens.
+
+If you're evaluating any agents in the next 90 days, 20 minutes with me would save 6 months of buyer's remorse.
+
+Interested?
+```
+
+**Why it works:** Opens with a real signal. Names the exact problem (procurement sign-off gap). Uses the 88% stat as urgency without being alarmist. Concrete ROI framing (20 min → 6 months saved).
+
+---
+
+### Template 3: The Dev Tool Founder (for Partnership + Design Partner)
+
+**Use for:** Braintrust, Langfuse, Laminar, AgentHub, Vals AI founders; YC batch companies building agent infrastructure
+
+**Subject:** Partnership idea — Straw × [Their Company]
+
+**Body:**
+```
+Hi [Name],
+
+Love what [Company] is doing with [specific feature/approach]. The [specific differentiator] is the right call.
+
+I'm building Straw — structured evaluation and certification for enterprise AI agent selection. We're complementary: you handle [observability/CI-CD/logging], we handle the formal evaluation that happens *before* procurement decisions.
+
+I'm curious whether you've seen demand from customers for independent third-party evaluation artifacts — the kind of thing procurement needs before signing a six-figure agent contract. If so, there may be a referral or integration angle worth exploring.
+
+30 minutes?
+
+Jeremy
+```
+
+**Why it works:** Flattery is specific (not generic). Positions as partner, not customer. Asks about *their* customer demand rather than pitching Straw. Low commitment ask.
+
+---
+
+### Template 4: The Bug Bounty / Security Eval Founder
+
+**Use for:** HackerOne, Bugcrowd, Synack security leaders; CTF community figures
+
+**Subject:** Bug bounty model → AI agent evaluation
+
+**Body:**
+```
+Hi [Name],
+
+The bug bounty market validated a key insight: companies don't know their own security posture until external researchers test it. They trust the result because the process is adversarial.
+
+I'm building Straw — same insight applied to AI agents. Companies post tasks. Agents compete. Independent evaluation certifies the result. The adversarial structure is why it's trustworthy.
+
+You understand marketplace dynamics + adversarial testing better than almost anyone. Would love 20 minutes to get your take on whether the model maps cleanly — and whether your customers would find value in an agent evaluation certificate the way they find value in CVE disclosure.
+
+Worth it?
+
+Jeremy
+```
+
+**Why it works:** Opens with a structural analogy they immediately understand. Positions them as an expert being consulted. Ties to their existing customer value (not cold pivot). Intellectual peer-to-peer tone.
+
+---
+
+### Template 5: The YC/Accelerator Batch Company (Cold)
+
+**Use for:** YC W26 infrastructure companies; any early-stage agent company that will need to sell themselves to enterprise customers
+
+**Subject:** Early design partner spot — Straw
+
+**Body:**
+```
+Hi [Name],
+
+Congrats on [YC/recent launch/funding]. The [specific thing they're building] is clearly needed.
+
+I'm Jeremy — building Straw. When your enterprise customers eventually ask "can you prove your agent performs better than the alternatives?", Straw is the evaluation infrastructure they'll use to answer that question.
+
+I'm offering 5 design partner spots to teams building agent infrastructure — free evaluation runs in exchange for structured feedback on the process. You get a certificate showing your agent's performance benchmark; we get a design partner we can reference publicly.
+
+Worth 20 minutes if you're planning to sell into enterprise in the next 6 months?
+```
+
+**Why it works:** Opens with specific congrats (not generic). Makes the value exchange explicit (evaluation + certificate in exchange for feedback). Creates scarcity ("5 design partner spots"). Ties free offer to a clear future need they will have.
+
+---
+
+### Follow-Up Sequence (Same Template for All 5)
+
+**Day 4 follow-up:**
+```
+Hi [Name],
+
+Quick bump — sent you a note on [day]. I know inboxes are noisy.
+
+One line summary: I'm building an AI agent evaluation platform with a compliance certificate for enterprise procurement. Happy to send a 2-page overview if easier than a call.
+
+Worth it?
+```
+
+**Day 9 follow-up (last touch):**
+```
+Hi [Name],
+
+Last note — don't want to crowd your inbox. I'll take silence as "not the right time" and check back in Q3.
+
+If AI agent evaluation ever becomes relevant (who's performing best on your specific workflows, with a certificate your procurement team can use), my email is jeremy@straw.dev.
+
+Thanks for your time.
+```
+
+---
+
+### Prioritized Send Order (Next 2 Weeks)
+
+**Week 1 (Days 1–5): 10 sends using Template 1 + 2**
+- Template 1: Beth Barnes (METR), Marius Hobbhahn (Apollo), Esben Kran (Apart), 2 more AI safety contacts from Tick 625
+- Template 2: 3 CAIO contacts from Tick 621 (Goldman, Stripe, Mercury AI leads), 2 fintech heads of AI
+
+**Week 2 (Days 6–10): 10 sends using Template 3 + 4 + 5**
+- Template 3: Ankur Goyal (Braintrust), Max Haining (Langfuse), Xingyao Wang (OpenHands/All Hands AI)
+- Template 4: 1-2 HackerOne/Bugcrowd contacts
+- Template 5: 3-4 YC W26 agent infrastructure companies
+
+**Total pipeline:** 20 outbound → expect 3-4 conversations (15-20% reply rate with signals) → 1-2 design partner converts
+
+
+---
+
+## Tick 630 — [GTM + PARTNERS] Conference Strategy + YC/OpenHands Design Partner Contacts
+
+**Theme:** GTM Motion + Design Partner Targets  
+**Date:** 2026-05-04  
+**Thread:** 2026 conference calendar + agent infrastructure founder contacts  
+**Sources:** Crossmint AI Agent Conference Calendar 2026, LangWatch AI Agent Events 2026, ALM Corp AI Conferences Guide, YC S25/W26 batch analysis, OpenHands GitHub data
+
+---
+
+### Part A: 2026 Conference Strategy
+
+**Philosophy:** Jeremy should attend 3-4 events maximum. At each event, the goal is not to present Straw broadly — it's to have 10 scheduled conversations. Every conference should generate 3+ design partner qualified leads.
+
+---
+
+#### The 4 Events Worth Jeremy's Time in 2026
+
+**Event 1: Snowflake Summit 2026**  
+- **Date:** June 1–4, 2026 | San Francisco  
+- **Why:** "Democratizing connected agentic experiences across organizations" is the stated theme. Enterprise AI leaders who make budget decisions. CAIOs and AI product heads at enterprise companies.
+- **Jeremy's play:** Get a speaker slot or a roundtable. Topic: "The Hidden Problem With AI Agent Pilots: Why 88% Fail and How to Measure What Actually Matters." This is not a product pitch — it's a talk that makes the audience feel the problem viscerally before Jeremy mentions Straw.
+- **Target connections:** 10 pre-scheduled 1:1 meetings with AI product heads using LinkedIn + conference app. Not booth conversations — meetings.
+- **Prep required:** 15-slide talk draft. Partner with Snowflake data team for data story.
+
+**Event 2: AI Dev 26 (Already Passed — April 28–29 — Use for Network Follow-Up)**  
+- **Date:** April 28–29, 2026 | San Francisco (passed)  
+- **Action:** If Jeremy or anyone from his network attended, follow up with people from this event immediately. Andrew Ng's community is technical founders. Cold email: "I saw you spoke/attended AI Dev 26 — I'm building something in the AI eval space I'd love to get your take on."
+- **Target:** Technical founders in AI agent tooling who attended.
+
+**Event 3: The AI Conference 2026**  
+- **Date:** September 30 – October 1, 2026 | San Francisco  
+- **Why:** Vendor-neutral, developer-focused, "AI Strategy" track = the buyer that Straw needs. Enterprise AI strategy leads.
+- **Jeremy's play:** Submit a talk proposal NOW (June deadline likely). Topic: "Building the Infrastructure Layer for Enterprise Agent Procurement." Position as thought leadership before Straw is a household name.
+- **Target connections:** Pre-meet CAIO track attendees. Use LinkedIn to find confirmed speakers and reach out in advance.
+
+**Event 4: AI Con USA 2026**  
+- **Date:** June 7–10, 2026 | Seattle  
+- **Why:** "Agentic AI" track + software development impacts. Developer-heavy audience. Good for recruiting early design partners from the technical side.
+- **Jeremy's play:** Sponsor a workshop (if budget allows) on "How to Define Evaluation Criteria for Your AI Agent." Pure educational content that puts Straw in the room. Alternatively, exhibit at the cheapest possible tier and do 1:1 outreach to attendees pre-show.
+
+---
+
+#### Conferences to Skip
+
+- **NeurIPS/ICML** — too academic, wrong buyers for enterprise B2B SaaS
+- **Davos/WEF AI sessions** — too top-of-funnel, buyers not making procurement decisions
+- **VentureBeat Transform** — too media-focused, wrong audience for design partners
+- **Any crypto/web3 AI event** — wrong association for enterprise trust building
+
+---
+
+#### Conference Content Strategy (3-Pager to Distribute)
+
+Bring a 3-page PDF to every conference. Title: **"The AI Agent Procurement Problem: A Framework for Measuring What Matters"**
+
+- Page 1: The problem (88% AI pilot failure rate, 41% from unclear criteria)
+- Page 2: The evaluation framework (rubric design → agent testing → certificate)
+- Page 3: Case study (either real design partner result or hypothetical walkthrough)
+
+Goal: People should take this home and put it on the desk of their CAIO. It's a leave-behind for the conversation, not a brochure for Straw.
+
+---
+
+### Part B: YC W26 + OpenHands Agent Infrastructure Design Partner Contacts
+
+**Context:** YC W26 had 194 companies (largest batch ever), with 41.5% building AI agent infrastructure. These companies need to sell into enterprise. Enterprise buyers will eventually need evaluation certificates. These founders are simultaneously potential design partners AND future referral partners (they refer their enterprise customers to Straw).
+
+---
+
+#### YC-Adjacent Agent Infrastructure Companies (Specific Contacts)
+
+**Laminar** — Open-source AI observability for complex agent workflows  
+- What they do: Traces agent runs, replays/debugs, detects anomalies  
+- Why they care: Their enterprise customers will need evaluation certificates when making procurement decisions; Laminar sees the observability data that Straw's evaluation synthesizes  
+- Outreach angle: "Your observability data + Straw's evaluation rubric = complete picture of agent performance. Partnership angle worth exploring?"
+- Contact method: GitHub contributors list, their team page, LinkedIn
+
+**Langfuse** — Open-source LLM observability (MIT license, full feature set)  
+- What they do: LLM-as-a-judge evaluations, annotation queues, prompt experiments  
+- Why they care: Complementary toolset — Langfuse does continuous observability; Straw does point-in-time procurement evaluation  
+- Contact: Max Haining (co-founder), reachable via Langfuse GitHub issues and Twitter (@maxhaining or similar)
+
+**Janus** — YC W26 agent testing/QA  
+- What they do: QA testing for AI agents in enterprise workflows  
+- Why they care: Directly adjacent — they test agents for quality; Straw evaluates agents for procurement. Referral relationship natural.
+- Outreach angle: "Do your customers ever ask for a procurement-grade evaluation artifact after your QA process? We might be the missing piece."
+
+**Casco** — YC W26 agent testing  
+- Similar profile to Janus. Testing/QA for agent workflows. Referral partner candidate.
+
+**Kashikoi** — YC W26 eval platform  
+- Most directly competitive/complementary in the YC cluster. Worth understanding their approach.
+- Outreach angle: "Building Straw — focused on enterprise procurement evaluation with compliance certificates. Saw Kashikoi in the W26 batch. Would love to understand how you're thinking about the enterprise procurement use case vs. developer testing use case. 20 minutes?"
+
+---
+
+#### OpenHands / All Hands AI (High Priority)
+
+**Profile:**  
+- 70,000+ GitHub stars, 490+ contributors, v1.6.0 released March 2026  
+- Backed by All Hands AI, Inc. ($20M+ raised)  
+- Enterprise tier: self-hosted in VPC via Kubernetes, source-available license  
+- Founders: Xingyao Wang, Graham Neubig (CMU NLP professor), Robert Brennan
+
+**Why High Priority for Straw:**  
+OpenHands is what agents RUN ON before they're evaluated on Straw. A company that has deployed OpenHands Enterprise to run coding agents will eventually ask: "Which of these agents should we keep paying for?" That's Straw's moment.
+
+OpenHands Enterprise customers are also exactly Straw's ICP: enterprise companies that have committed to AI agents operationally and need governance/evaluation infrastructure.
+
+**Specific Outreach — Xingyao Wang:**
+- GitHub: @xingyaoww
+- Role: Primary technical founder, maintains OpenHands codebase
+- Outreach: "Building Straw — the evaluation layer that sits after OpenHands deployment. When your enterprise customers ask 'which agent is actually performing best on our workflows?', Straw answers that with a certificate. Partnership angle?"
+
+**Specific Outreach — Robert Brennan:**
+- More commercial-focused founder (vs. Xingyao on research side)
+- LinkedIn: Robert Brennan, All Hands AI
+- Better target for design partner/commercial conversation
+
+---
+
+#### The Agent Infrastructure Referral Network (Full Map)
+
+```
+[Company deploys agents using:]              [Straw evaluates which to keep]
+  - OpenHands (coding agents)                 ← natural handoff point
+  - Devin (Cognition) (coding agents)         ← natural handoff point
+  - Manus (acquired by Meta)                  ← legacy deployments
+  
+[Company monitors agents using:]             [Straw certifies performance]
+  - Langfuse (LLM observability)              ← data feeds evaluation
+  - Laminar (agent tracing)                   ← data feeds evaluation
+  - Braintrust (eval CI/CD)                   ← complementary workflow stage
+
+[Company QAs agents using:]                  [Straw does procurement eval]
+  - Janus / Casco / Kashikoi (YC W26)        ← pre-procurement step
+```
+
+The pitch to every company in the left column: "After your customers run your product, they still have to decide which agents to buy, scale, or cut. Straw is the platform they use for that decision. If you refer a customer to Straw, we'll refer your platform in our evaluation reports."
+
+---
+
+#### Prioritized Contact List for Week 2
+
+| Name | Company | Role | Method | Template |
+|------|---------|------|--------|----------|
+| Robert Brennan | All Hands AI | Co-founder (commercial) | LinkedIn | Template 3 (Partnership) |
+| Xingyao Wang | All Hands AI | Technical founder | GitHub DM / Twitter | Template 3 (Partnership) |
+| Graham Neubig | All Hands AI / CMU | Research founder | Twitter @gneubig | Template 3 (Partnership) |
+| Langfuse co-founder | Langfuse | Co-founder | GitHub / Twitter | Template 3 (Partnership) |
+| Janus team | YC W26 | Testing/QA agents | YCombinator directory | Template 5 (YC) |
+| Casco team | YC W26 | Testing/QA agents | YCombinator directory | Template 5 (YC) |
+| Kashikoi founder | YC W26 | Eval platform | YCombinator directory | Template 5 (YC) |
+
+**Note on YC Directory Access:** Jeremy should apply for YC's alumni network access or reach contacts through the YC Hacker News community (news.ycombinator.com). Posting: "Ask HN: Looking for agent evaluation design partners — building Straw, working with companies that run multi-agent workflows in production" is a legitimate zero-cost outreach channel that has worked for early-stage B2B tools.
+
