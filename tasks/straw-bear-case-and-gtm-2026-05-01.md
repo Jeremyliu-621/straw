@@ -44199,3 +44199,203 @@ litellm --model claude-opus-4-7 --fallback gpt-4o
 
 **Sources:** kingy.ai/anthropic-2026-pricing-shift, finout.io/anthropic-api-pricing, biggo.com/anthropic-stealth-price-hikes, cloudidr.com/llm-pricing, pecollective.com/llm-pricing-comparison-2026
 
+
+---
+
+## Tick 592 — Bear Case: Economic Recession + AI Spending Freeze
+
+**Date researched:** 2026-05-03
+
+### The recession risk data (2026)
+
+**Real GDP growth expected: 1.9% for 2026** — "much of that concentrated in the first half of the year, with domestic demand slowing in the second half as AI-related consumer spending and business investment growth shift lower."
+
+**The structural vulnerability:** AI capital expenditure projected to climb to 94% of operating cash flows (hyperscalers) in 2025-2026. "A drop in AI-related spending could be enough to push the economy into a recession."
+
+**The AI bubble argument (May 2026):** Multiple commentators argue the 2026 AI bubble is bursting as subsidies end and ROI math becomes the dominant conversation. Enterprise AI deployment is slowing as the gap between pilot costs and production ROI becomes visible.
+
+### The "67% maintain AI spending" counter-data
+
+**Enterprise AI Business Survey 2026:** 67% of business leaders stated they will maintain AI spending even if a recession occurs within the next 12 months. Average enterprise AI spend projected: $124M per company.
+
+**Why enterprises maintain AI spending in recessions:**
+1. AI-driven cost reduction becomes MORE urgent in downturns (need to cut headcount, not add features)
+2. AI governance becomes MORE important in regulatory scrutiny environments
+3. Sunk costs: enterprises that have already deployed agents can't easily walk away
+
+### The counter-intuitive argument: Straw is COUNTER-CYCLICAL
+
+**In a bull market (2024-2025):** Enterprises buy AI agents first, evaluate later. "Move fast and break things." Evaluation is an afterthought.
+
+**In a bear market (potential 2026-2027):** Enterprises must justify every $500K AI spend to the board. "Prove it before we renew." Evaluation becomes mandatory.
+
+**The CFO test in a recession:**
+- 2024 CFO: "Let's pilot 5 AI vendors and see what sticks." → No rubric needed.
+- 2026 CFO: "We need to justify why we chose this AI vendor and why we're paying $500K/year." → Straw certificate required.
+
+**Straw's recession pitch:**
+> "In 2024, everyone was doing AI. In 2026, everyone is asking 'which AI actually works?' and 'how do we prove it?' Budget scrutiny is Straw's best friend. The companies cutting AI spend are the ones who never had an objective evaluation process. The companies maintaining AI spend are the ones who can show their board a rubric-defined evaluation score."
+
+### The "AI bubble burst" risk assessment
+
+**The legitimate concern:** If enterprise AI deployment slows dramatically — not just pilot-to-production gaps, but actual cancellation of AI programs — demand for pre-deployment evaluation decreases.
+
+**Why this is unlikely to affect Straw:**
+1. Gartner: 40% of AI projects cancel BY 2027 — the cancellations haven't happened yet; they're pending. Companies haven't cancelled yet because they're still waiting to see results.
+2. The cancellations that DO happen will mostly be "un-evaluated" agents. Straw-evaluated agents have evidence of performance — much harder to cancel.
+3. The ISO 42001 + EU AI Act + FINRA regulatory pressure creates a non-discretionary compliance budget for AI governance. Even if growth AI spend is cut, compliance spend is contractually required.
+
+**Sources:** aibusinessweekly.net/enterprise-ai-spending-recession-proof, unboxfuture.com/2026-ai-bubble-burst, deloitte.com/global-economic-outlook-2026, capitalnumbers.com/enterprise-ai-trends-2026
+
+---
+
+## Tick 593 — Cold Email Templates for Straw Design Partner Outreach
+
+**Date researched:** 2026-05-03 (synthesis with cold email research)
+
+### Cold email principles (2026)
+
+- **50-125 words:** Busy executives skim on mobile. If it requires scrolling, it's too long.
+- **First sentence about them, not you:** "I noticed [specific thing about their company]" not "I'm building Straw."
+- **One call-to-action:** Don't ask for a call + a demo + to read a case study. Pick one.
+- **2-3 follow-ups:** Optimal follow-up count. After 3 attempts with no response, move on.
+
+### Template 1: Financial Services Head of AI (FINRA angle)
+
+```
+Subject: FINRA's 2026 report called out AI agent evaluation — how are you handling it?
+
+Hi [Name],
+
+FINRA's 2026 regulatory oversight report named AI agents for the first time, 
+requiring supervision frameworks and audit trails for any agent "capable of 
+autonomously performing tasks." I noticed [Company] has been actively 
+deploying AI in [specific area from LinkedIn/press].
+
+I'm building Straw — the pre-deployment evaluation marketplace for enterprise 
+AI agents. We run rubric-defined evaluations and generate timestamped certificates 
+that satisfy SR 11-7 independent validation requirements.
+
+We're inviting 5 financial services companies to help us build the evaluation 
+standard. No cost, 4 hours of feedback per month.
+
+Would a 20-minute call this week make sense?
+
+Jeremy Liu, Straw
+```
+
+### Template 2: Legal Tech Head of AI (ABA supervision angle)
+
+```
+Subject: How [Firm Name] is supervising Harvey AI before deploying
+
+Hi [Name],
+
+The ABA's professional responsibility rules require "competent supervision" 
+of AI. But if you're evaluating Harvey AI, Casetext, or Lexis+ AI on demo 
+data, you're not supervising — you're spectating.
+
+I'm building Straw — we run your AI vendor candidates on your actual anonymized 
+contract samples with a rubric you define. The winner gets a verifiable score, 
+not a vendor claim.
+
+We're working with 2 other law firms right now and have one design partner slot 
+left. No charge — just 4 hours of feedback on what makes evaluation useful for 
+legal procurement.
+
+15 minutes this week?
+
+Jeremy Liu, Straw
+```
+
+### Template 3: CTO, Enterprise Tech Company (UC Berkeley finding angle)
+
+```
+Subject: UC Berkeley found every major AI benchmark is gameable to 100%
+
+Hi [Name],
+
+In April 2026, UC Berkeley tested whether the 8 most-used AI agent benchmarks 
+could be gamed to near-perfect scores without actually solving the tasks. 
+
+They could. Every single one.
+
+So when your AI vendor shows you 94% on SWE-Bench, it means nothing.
+
+I'm building Straw — enterprise companies post their actual task with a rubric 
+they define. AI agents compete on the real problem. The score is verifiable.
+
+We're inviting 5 companies into our design partner program. Free for 6 months, 
+4 hours of feedback per month. You'd be one of the first 5 companies to shape 
+how enterprise AI evaluation works.
+
+Worth a conversation?
+
+Jeremy Liu, Straw
+```
+
+### Template 4: Follow-up email #1 (Day 4 after email #1)
+
+```
+Subject: Re: [original subject]
+
+Hi [Name],
+
+Just checking in on the above — I know inboxes are brutal.
+
+One thing I didn't mention: the UC Berkeley gameable benchmarks finding 
+isn't just academic. FINRA (or the EU AI Act, or your ISO 42001 auditor, 
+depending on [Company's] regulatory context) will eventually ask: 
+"How did you evaluate the AI agent before deploying it?"
+
+Straw's certificate is the answer to that question.
+
+Happy to share our evaluation format if you'd like to see what it looks like 
+before committing to a call.
+
+Best,
+Jeremy
+```
+
+### Template 5: Follow-up email #2 (Day 9 — final)
+
+```
+Subject: Last note — [specific benchmark/cert question]
+
+Hi [Name],
+
+Last follow-up — don't want to be a nuisance.
+
+Quick question: does [Company] have a documented process for evaluating AI 
+agents before deployment? Not asking to sell you anything — genuinely curious 
+whether this is a solved problem at your level or still "gut feel + demos."
+
+If it's solved, I'd love to hear how you do it. If it's not, let's talk.
+
+Jeremy
+P.S. I've now completed one evaluation for a financial services company. 
+Happy to share the anonymized certificate if you'd like to see what our 
+output looks like.
+```
+
+### Template 6: Referral ask (after a good discovery call that didn't convert)
+
+```
+Subject: Quick ask — 2 names you'd send this to?
+
+Hi [Name],
+
+Great talking last week. Even if the timing isn't right for [Company] right 
+now, I'm curious: 
+
+Who in your network is actively wrestling with AI agent evaluation or 
+procurement right now? If 2 names come to mind, I'd really appreciate the 
+introduction — this is the kind of problem where the right person matters 
+more than the right pitch.
+
+Thanks,
+Jeremy
+```
+
+**Sources:** sendr.ai/b2b-cold-email-templates, sequenzy.com/cold-email-templates-b2b-saas, smartlead.ai/blog/cold-email-templates, upliftgtm.com/cold-email-templates-b2b
+
