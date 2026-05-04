@@ -57161,3 +57161,140 @@ For the pitch to a skeptical CFO or procurement officer:
 
 **Backlog:** Add build-vs-buy ROI table to sales one-pager; add "8% of build budget as insurance" framing to Standard tier pricing explanation on pricing page; add recurring evaluation math to design partner contract structure.
 
+
+---
+
+## Tick 724 — [GTM] Straw's Design Partner Program: Structure, Selection, and Transition to Paid [2026-05-04]
+
+**Theme: GTM | Research area: Design partner program structure**
+
+---
+
+### The a16z Framework Applied to Straw's Design Partners
+
+a16z's three criteria for great design partners: **Urgency, Capability, Representativeness.**
+
+**Urgency — Pick partners who need you, not who like you.**
+
+Straw's urgency filters (at least one must be true):
+- FINRA 2026 exam cycle is underway or starting in the next 90 days
+- Colorado AI Act takes effect June 30, 2026 (active compliance deadline)
+- Recent CAIO appointment (new in role = new governance agenda = motivated)
+- Recent AI agent deployment incident (embarrassing failure that creates urgency for better evaluation)
+- ISO 42001 certification in progress (Section 9 gap is blocking completion)
+- Cyber insurance AI rider renewal coming up (insurer demanding evaluation documentation)
+
+If none of these are true, the prospect may like Straw but doesn't urgently need it. Deprioritize.
+
+**Capability — Get a written understanding of how the project is viewed internally.**
+
+Questions to answer before committing to a design partner:
+- Who owns this internally? (CAIO, GC/CCO, head of AI governance — not a junior analyst)
+- Who blocks it if it doesn't work? (CISO, procurement, CFO — map the internal resistance)
+- Who wins if this works? (The CAIO's bonus? The GC's legal exposure reduction? Identify the internal champion's incentive.)
+- Does the champion have budget authority? (At $6,500 Pilot tier, most CAIOs do. At $25K+, probably need CFO sign-off.)
+- Is the AI agent they want to evaluate actually real? (Don't waste 6 weeks evaluating a proof-of-concept that will never go to production.)
+
+**Representativeness — Your design partner should look like your future market.**
+
+Straw's target future market: mid-to-large enterprises in regulated industries (financial services, healthcare, insurance, government) with active AI agent deployments facing regulatory scrutiny.
+
+Design partners that do NOT look like this:
+- A startup with no AI agents in production yet (urgency is fake; they're "interested" not "buying")
+- A Big 4 consulting firm evaluating Straw for their clients (wrong buyer — they want to be the evaluator, not the client)
+- An AI research lab that wants to evaluate their own models (they have their own evaluation infrastructure; they're not Straw's market)
+- A company so large that procurement takes 6 months (the deal is real but the timeline kills the program)
+
+Straw's ideal design partner profile:
+- 500-5,000 employees (large enough to have budget, small enough to move fast)
+- Regulated industry (financial services, healthcare, insurance)
+- Has at least 1-3 AI agents in production or near-production
+- CAIO or equivalent is in role and has budget authority up to $25K
+- Faces at least 1 active regulatory deadline in the next 90 days
+
+---
+
+### The Straw Design Partner Contract Structure
+
+From the research: "Free is fine only if it's structured. Define from Day 1 what triggers a shift to paid."
+
+**Option A: Pilot at half price ($3,250 instead of $6,500)**
+
+Conditions:
+- Design partner commits to 4 structured feedback sessions over 8 weeks
+- Design partner allows Straw to write an anonymized case study (no company name required)
+- Design partner agrees to be a reference call for future prospects (identity disclosed after 6 months)
+- Milestone to full pricing: when partner signs next evaluation engagement at full Standard tier price
+
+This is the Snyk model: early adopters get discounts in exchange for deep involvement in product development.
+
+**Option B: Full Pilot price ($6,500) with co-design commitments**
+
+Conditions:
+- Partner agrees to a 30-minute weekly sync for 6 weeks
+- Partner shares their internal success criteria before the evaluation begins
+- Partner allows Straw to include their use case (anonymized) in the regulatory white papers
+
+Option B is better if the partner has high status (e.g., a major bank CAIO) — the credibility of having them as a reference is worth more than the $3,250 discount.
+
+**Option C: Free evaluation, equity kicker (aggressive but possible)**
+
+For a truly transformative early design partner (e.g., HSBC or JPMorgan):
+- Free evaluation in exchange for: case study, reference call, LinkedIn recommendation from CAIO, and right of first refusal on 1 year of annual evaluation engagements at $50,000
+- No equity involved (Straw doesn't need to give equity to early customers)
+
+Note: Avoid giving equity to design partners. This creates governance complexity, cap table mess, and alignment problems. The only currency Straw should give is discounts and time.
+
+---
+
+### The Design Partner Exit Criteria (When to Stop Being a Design Partner)
+
+Design partnerships are NOT permanent. After 1-2 evaluation cycles, move the relationship to full commercial:
+
+**Exit triggers:**
+- Partner has run ≥2 evaluations with Straw → they understand the product; the "co-design" justification for the discount is gone
+- Partner has a signed commercial contract for future evaluations → the relationship is now a customer relationship
+- Partner's CAIO has left → the champion is gone; re-establish with the new CAIO at full price
+
+**The transition conversation:**
+"We've learned a lot from our work together, and Straw is much better because of your input. At this point, we're transitioning from design partner pricing to our standard commercial rates. For your next evaluation engagement, that's $12,500 for the Standard tier."
+
+Charge. Charging turns feedback into truth and the relationship into a real business one.
+
+---
+
+### The Design Partner Tracking Sheet
+
+Build this in a spreadsheet before the first conversation:
+
+| Name | Company | Urgency Signal | Champion | Budget Authority | Status | Last Contact | Next Action |
+|---|---|---|---|---|---|---|---|
+| Jodie Wallis | Manulife | Cyber insurance AI rider renewal | CAIO | Yes (<$25K) | Prospecting | — | LinkedIn engage |
+| Shobhit Varshney | Citi | FINRA 2026 exam | Head of AI | Yes | Prospecting | — | Cold email |
+| David Rice | HSBC | New CAIO (April 2026) | CAIO | Yes | Prospecting | — | Wait 30 days |
+
+Track every prospect here. The sheet is your external memory during a founder-led sales process where context is everything.
+
+---
+
+### The 8-Week Design Partner Program Timeline
+
+**Week 1-2:** Kick-off call, define success criteria together, select or build rubric
+**Week 3-4:** Straw runs T1 automated testing, shares preliminary results
+**Week 5-6:** T2 LLM judge evaluation, partner reviews rubric performance feedback
+**Week 7:** T3 investigative probing (if Standard tier), final results call
+**Week 8:** Certificate delivery, feedback session, case study interview
+
+**The feedback session is mandatory and structured:**
+1. What worked about the evaluation process?
+2. What would you change?
+3. What did you learn about your agent that you didn't know before?
+4. Would you recommend this to a peer CAIO? If not, why not?
+5. What would make you want to run another evaluation in 6 months?
+
+Question 5 is the most important. The answer tells you whether you have a recurring customer or a one-time transaction.
+
+---
+
+**Backlog:** Build the design partner tracking spreadsheet; draft the design partner contract (2-page professional services agreement with co-design commitments); prepare the 8-week program timeline as a PDF to share with design partners.
+
