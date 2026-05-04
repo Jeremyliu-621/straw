@@ -58625,3 +58625,236 @@ Once sending at volume (20+ emails/week), test:
 
 Track: reply rate, reply-to-call rate, call-to-design-partner rate. Iterate weekly.
 
+
+---
+
+## Tick 741 — 2026-05-04 UTC — Agent Sprawl: The GTM Frame That Beats "Evaluation" [GTM/BEAR]
+
+**Research question:** The "agent sprawl" phenomenon — 94% of organizations concerned about it (OutSystems Research, April 2026) — is it a bear case or a bull case for Straw?
+
+**Sources:** OutSystems Enterprise AI Agent Report 2026 (BusinessWire, April 7, 2026); Kai Waehner enterprise agentic AI landscape April 2026; Reco.ai agent sprawl analysis; KnowledgeHub Media agent sprawl analysis; VentureBeat governance mirage article.
+
+---
+
+### The Agent Sprawl Data
+
+**OutSystems Research (April 7, 2026):** Agentic AI has gone mainstream in enterprise, but 94% raise concerns about sprawl.
+
+**The governance numbers:**
+- Only 7-8% of organizations have integrated cross-agent governance
+- 72% of enterprises are running multiple "primary" AI platforms with no clear owner
+- Only 24.4% of organizations have full visibility into which AI agents are communicating with each other
+- More than 50% of all agents run without any security oversight or logging
+- Only 23% of enterprises are able to fully inventory and trace agent actions
+
+**VentureBeat:** "72% of enterprises don't have the control and security they think they do" — the "AI governance mirage."
+
+**The Register (April 22, 2026):** Google says it has "all the answers for AI agent sprawl." Google Cloud is positioning its Vertex AI Agent Builder as the governance layer for enterprise agent sprawl. (This is the bundling threat again — see Tick 720.)
+
+---
+
+### Agent Sprawl Is a Bull Case, Not a Bear Case
+
+**Why this is a bull case for Straw:**
+
+More agents = more evaluation demand. The agent sprawl problem (94% concerned) is exactly the problem Straw solves. An enterprise with 30 AI agents deployed across 12 business functions is exactly the enterprise that needs:
+1. An inventory of what each agent does (Straw produces this via evaluation)
+2. A compliance certificate for each agent in regulated use cases (Straw's core product)
+3. Annual reassessment as agents are modified (Straw's recurring revenue)
+
+The governance gap (only 23% can trace agent actions, only 7-8% have integrated cross-agent governance) is not a problem of evaluation tools — it's a problem of *not having started evaluation in the first place.* Straw is the first step to fixing agent sprawl: evaluate before you deploy, so you know what you have.
+
+---
+
+### The "Agent Sprawl" GTM Reframe
+
+**Current positioning:** "Pre-deployment AI agent evaluation with compliance certificate"
+
+**Agent sprawl reframe:** "The gate that prevents agent sprawl — evaluate before you deploy, so you know exactly what you're adding to your stack"
+
+**The pitch to the CAIO/CIO struggling with sprawl:**
+> "94% of organizations are concerned about AI agent sprawl. The root cause is simple: agents get deployed before anyone defines what they do, what they don't do, or whether they work. Straw is the gate. We evaluate the agent before it joins your stack — so every agent has a documented profile, tested performance, and a compliance certificate. 30 agents deployed through Straw = 30 agents with full traceability. No more governance mirage."
+
+**The "portfolio evaluation" upsell:** An enterprise with 10+ deployed agents that hasn't evaluated any of them is a retroactive portfolio evaluation customer. Straw could offer: "AI agent portfolio audit — we evaluate all current deployed agents, produce a compliance report, and identify the ones that need immediate remediation." Price: $5,000-$8,000 per agent in the portfolio at scale.
+
+---
+
+### What Google's "All the Answers" Move Means for Straw
+
+The Register report (April 22, 2026): Google is positioning Vertex AI Agent Builder as the enterprise governance layer for agent sprawl. This is the same bundling threat as Workday (Tick 720) — a platform vendor claiming to solve the sprawl problem by owning the control plane.
+
+**The same independence defense applies:** Google cannot independently validate Google agents. Vertex AI Agent Builder can track what agents are doing (post-deployment observability), but it cannot produce the independent pre-deployment evaluation artifact that regulators require. The governance mirage VentureBeat described is partly created by enterprises trusting platform-native tools to provide "governance" — which doesn't satisfy the independence requirement.
+
+---
+
+## Tick 742 — 2026-05-04 UTC — Venture Funding for AI Compliance Infrastructure: Market Validation [GTM]
+
+**Research question:** What does the 2026 venture funding landscape for AI compliance and governance companies tell us about Straw's investor story?
+
+**Sources:** Crunchbase (Q1 2026 funding records); Spektr $20M Series A (NEA); Variance $21.5M Series A; VC Lab (Agentic VC April 2026); Ventureburn (AI infrastructure investment thesis).
+
+---
+
+### The Market Signal: AI Compliance Infrastructure Is Getting Funded
+
+**Spektr — $20M Series A, NEA-led, 2026:**
+"Spektr provides infrastructure for compliance teams in financial services by combining configurable workflows with AI agents that execute tasks such as document reviews, ownership mapping and risk analysis."
+
+**Variance — $21.5M Series A, 2026:**
+"Builds automation tools for compliance and risk workflows — AI agents that ingest regulatory documents, map requirements to internal policies, and monitor compliance gaps in real time."
+
+Both companies are AI-native compliance infrastructure companies raising $20-22M Series A. This validates:
+1. The market exists and investors believe it (NEA and other top-tier VCs are investing)
+2. The price points are enterprise ($20M+ Series A implies $10M+ ARR target)
+3. The compliance workflow is a real budget item, not a nice-to-have
+
+**Broader market:** Q1 2026 saw $300B in global startup funding (record), with AI dominating. Series A/B investment was $25.1B, up 56% year-over-year. The AI compliance infrastructure category is in the funding sweet spot.
+
+---
+
+### How This Informs Straw's Investor Story
+
+**Straw's positioning to investors:** Straw is not a compliance workflow tool (that's Spektr and Variance). Straw is the *evaluation artifact generator* that compliance workflow tools like Spektr need to pull data from. Straw is infrastructure, not workflow.
+
+**The analogy that lands with investors:**
+- Vanta/Drata = compliance workflow automation (Spektr/Variance equivalent)
+- A-LIGN, Schellman = auditors who issue the actual SOC 2 report (Straw equivalent for AI agents)
+
+Vanta raised $150M. The auditors (A-LIGN, Schellman) are private businesses generating $50M-$200M in revenue. The infrastructure layer (the audit) is less flashy but more defensible.
+
+**What Straw tells Series A investors:**
+1. Compliance-grade evaluation is getting funded ($20M+ Series A for adjacent companies)
+2. Straw occupies the unique position of the *actual artifact generator* — the tamper-proof compliance document that the workflow tools track
+3. Independence requirement means Straw is structurally un-replaceable by platform vendors
+4. Regulatory tailwinds (3 active compliance deadlines in Q2-Q3 2026) create immediate urgency
+
+**When to raise:** After 5+ paying customers and $50K ARR. The Spektr/Variance comps give investors a valuation framework: $20M Series A implies 5-10x ARR multiple = $2M-$4M ARR threshold for a credible Series A. Straw doesn't need to raise until $100K ARR — at which point the story is easy.
+
+---
+
+## Tick 743 — 2026-05-04 UTC — Responsible AI Summit NA June 23-24, Chicago: Target Speakers [PARTNERS]
+
+**Research question:** Who is speaking at the Responsible AI Summit NA (June 23-24, Chicago) that Jeremy should engage? What's the cold strategy for conference contacts?
+
+**Sources:** Responsible AI Summit NA 2026 website (aidataanalytics.network); AI Expert Magazine event preview; EcommerceeTech events listing.
+
+---
+
+### Event Facts
+
+**Event:** Responsible AI Summit North America 2026
+**Date:** June 23-24, 2026
+**Location:** DoubleTree by Hilton Hotel Chicago — Magnificent Mile
+**Format:** Closed-door executive summit (invitation-only; prioritizes candid discussion)
+**Attendees:** 60+ senior speakers from Fortune 500 and highly regulated industries (finance, healthcare, retail, energy, defense)
+
+**Named speakers confirmed (from search results):**
+- Representatives from Walmart, AstraZeneca, Capital One, General Motors, NIST
+
+**Two integrated streams:**
+1. Technical implementation
+2. Governance and oversight
+
+---
+
+### Target Speakers/Attendees to Reach Before the Summit
+
+**Pre-event strategy (6 weeks before = send outreach before May 12):**
+
+The best conference strategy is pre-event outreach that references the summit: "I'll be at the Responsible AI Summit June 23-24 in Chicago. Would love to connect there and show you how Straw maps to the compliance framework you're presenting on."
+
+This works because:
+1. The reference proves you're attending (credibility signal — you're not a random cold email)
+2. It creates a specific in-person meeting opportunity (much higher conversion than "let's do a Zoom")
+3. You can research their likely session topics and personalize the pitch
+
+---
+
+### Named Target: Capital One
+
+Capital One has one of the most well-known AI governance programs in US financial services (ML Model Risk Management practice, "open source AI governance tools"). They are at the summit likely presenting on financial services AI governance.
+
+**Contact strategy:** Search LinkedIn for Capital One Head of Responsible AI or VP of AI Governance. Pre-event outreach: "Attending the Responsible AI Summit June 23-24. Capital One's AI governance program is one of the most mature in financial services — would love to connect in Chicago and show you how Straw's pre-deployment evaluation maps to your existing governance framework."
+
+**Why Capital One is high-priority:** A Capital One design partner gives Straw a top-10 US bank logo. It's the "anchor customer" that changes every future financial services conversation.
+
+---
+
+### Named Target: AstraZeneca Speaker
+
+AstraZeneca is a confirmed summit participant. This is likely related to Evinova (AstraZeneca's AI health-tech subsidiary) — making this a direct complement to the Evinova/Cristina Duran outreach from Tick 733.
+
+**Contact strategy:** Find AstraZeneca/Evinova representative presenting at the summit. Reference in outreach: "I saw AstraZeneca is presenting at the Responsible AI Summit — and I'm attending. Evinova's AI-native clinical platform is exactly the multi-agent system that benefits from pre-deployment independent evaluation under EU AI Act Article 9. Would love 20 minutes at the summit."
+
+---
+
+### Named Target: NIST Representative
+
+NIST is presenting at the summit. NIST AI Risk Management Framework (AI RMF) is directly referenced in Colorado AI Act's affirmative defense (companies aligned with NIST AI RMF get the compliance defense). A NIST connection opens the path to Tick 711's strategy: positioning Straw as a reference implementation of NIST AI RMF measurement practices.
+
+**Contact strategy:** LinkedIn search for NIST AI RMF team members (Elham Tabassi, Chief of Smart Grid). Ask about the summit presentation and whether Straw's evaluation methodology could be featured in NIST guidance materials.
+
+---
+
+### The Summit Pitch (For In-Person Conversations)
+
+> "I built Straw — pre-deployment AI agent evaluation with a compliance certificate that satisfies ISO 42001 Section 9, FINRA 2026, and EU AI Act Article 9. Three compliance deadlines hit in the next 60 days. I'm here to find the first 3-5 enterprise design partners. You're deploying [specific AI use case] — what's your current answer when your audit committee asks for independent evaluation documentation?"
+
+---
+
+## Tick 744 — 2026-05-04 UTC — The Competition Tier Pricing Innovation [GTM]
+
+**Research question:** Should Straw run competitive evaluations (multiple agents competing) in addition to single-agent evaluations? How does the competitive format change the pricing and the buyer conversation?
+
+---
+
+### Why the Competitive Format Is Straw's Unique Differentiator
+
+The Straw name comes from the idea of agents "competing" — it's in the founding product concept. But in Sessions 1-4, most research and GTM work has focused on single-agent compliance evaluation (evaluate *this* agent before you deploy it). The competitive format hasn't been fully explored as a GTM motion.
+
+**The competitive format:** Multiple AI agents compete to solve the same enterprise task against the same rubric. The buyer sees scores, side-by-side comparisons, and the winning agent earns the "Straw Certified" compliance certificate.
+
+---
+
+### The Three Buyer Motivations for Competitive Evaluation
+
+**Buyer 1 — AI procurement:** "We're evaluating 3 AI agent vendors for our loan underwriting workflow. We need an independent party to evaluate all three against our business rubric and tell us which one to hire."
+- Deal value: $25,000-$50,000 (3 agents × $12,500 plus coordination premium)
+- Regulatory upside: The evaluation artifact covers all three vendors' pre-deployment requirements simultaneously
+
+**Buyer 2 — Build vs. buy decision:** "We built an in-house agent and we're also evaluating Anthropic Managed Agents and a third vendor. Before we commit to a $2M deployment decision, we want independent validation of which performs better on our actual tasks."
+- Deal value: $35,000-$75,000 (complex, multi-agent, enterprise)
+- This is the "six-figure decisions based on vendor demos" problem Straw's vision statement explicitly names
+
+**Buyer 3 — Ongoing agent benchmarking:** "We have 5 agents in production across different vendors. We want a quarterly benchmark to see if our current vendor is still the best, and if any newer agents have improved."
+- Deal value: $50,000/year recurring (5 agents × quarterly evaluation)
+- This is the clearest recurring revenue case from the competitive format
+
+---
+
+### Competitive Evaluation Pricing Tier
+
+Current pricing:
+- Pilot: $6,500 (single agent, basic rubric)
+- Standard: $12,500 (single agent, extended rubric + T3 adversarial)
+- Enterprise: custom (multi-agent, full compliance package)
+
+**New tier proposal: Competition Evaluation**
+- Price: $25,000 (2-4 agents competing on same rubric + comparison report + certificates for winner)
+- Target buyer: Enterprises making AI vendor selection decisions ($100K+ procurement)
+- ROI framing: "You're about to spend $200K/year on an AI agent vendor. Spending $25,000 to independently compare all your options saves you from a $200K mistake."
+- Required milestone: Straw needs 3+ single-agent evaluations completed first (to establish methodology credibility before offering competitive format)
+
+---
+
+### The Founding Vision Revisited
+
+The founding product vision (implicit in the "Straw" name): companies post tasks, agents compete, the score doesn't lie. The single-agent compliance evaluation is the beachhead. The competitive multi-agent format is the long-term vision — and it's the format with the highest defensibility (no compliance automation tool can replicate the competitive evaluation dynamic, because the competition requires actually running multiple agents against the same task simultaneously under a neutral rubric).
+
+**Roadmap:**
+- 2026: Single-agent compliance evaluations (beachhead)
+- 2027: 2-agent competitive evaluations (premium product for procurement decisions)
+- 2028: Open platform where any enterprise can post a task and have multiple agents compete (the original vision)
+
+Each stage expands the TAM: compliance evaluation → procurement evaluation → open agent marketplace.
+
