@@ -51541,3 +51541,142 @@ This isn't a data flywheel — it's a reputation flywheel. The more credible Jer
 
 The reputation flywheel is Straw's Year 1 moat. Everything else is a Year 3+ moat.
 
+
+---
+
+## Tick 662 — [BEAR + GTM] The Rubric Design Problem: Who Writes Good Rubrics?
+
+**Theme:** Bear Case + GTM  
+**Date:** 2026-05-04  
+**Thread:** Product design — the human bottleneck in evaluation quality  
+
+---
+
+### The Fundamental Problem
+
+The quality of Straw's evaluation is only as good as the quality of the rubric. If the rubric is vague, the evaluation is meaningless. If the rubric is wrong, the certificate is actively misleading.
+
+**Who defines the rubric?**
+- The company (enterprise buyer) defines what success looks like for their workflow
+- Straw's T1/T2/T3 evaluation measures performance against that rubric
+- If the company writes a bad rubric, Straw faithfully measures failure to meet a bad standard
+
+**The rubric design problem is the hardest unsolved UX problem in Straw's product.**
+
+---
+
+### What Makes a Rubric Bad
+
+A bad rubric is:
+1. **Vague:** "The agent should produce good output." (What is good? Good for whom?)
+2. **Unmeasurable:** "The agent should understand the customer's needs." (How do you score "understands"?)
+3. **Incomplete:** "The agent should produce a formatted expense report." (What format? What fields? What edge cases?)
+4. **Biased:** "The agent should use our internal accounting conventions." (If the agent doesn't know your conventions in advance, it can't be fairly evaluated on them)
+5. **Wrong weight:** "Accuracy (10%) + speed (90%)." (A company that weights speed 9x more than accuracy for a financial compliance workflow has made a dangerous tradeoff)
+
+**The consequence of bad rubrics:** Straw certifies an agent as "91/100" on a rubric that doesn't actually measure what matters. The company deploys the agent. It fails in production. They blame Straw. Straw's reputation is damaged.
+
+This is the foundational product quality risk.
+
+---
+
+### The Three Options for Rubric Quality Control
+
+**Option 1: Self-serve rubric builder (current direction)**
+
+The company uses Straw's rubric builder to define their own criteria. Straw provides templates and suggestions.
+
+Pros: Scales without hiring; company has domain expertise
+Cons: Most companies write bad rubrics; Straw has no quality gate before the evaluation runs; bad certificate = damaged reputation
+
+Risk level: HIGH without quality gates
+
+**Option 2: Collaborative rubric design (white-glove)**
+
+Jeremy (or a trained Straw evaluator) runs a 60-90 minute rubric design session with the customer before every evaluation. The session uses a structured framework to help the customer articulate clear, measurable criteria.
+
+Pros: High rubric quality; design session builds trust; early discovery of what the company actually needs
+Cons: Doesn't scale; 2-4 hours of Jeremy's time per evaluation; bottleneck as volume grows
+
+Recommendation: **This is the right approach for the first 20 evaluations.** White-glove rubric design reveals what customers actually care about, which informs the template library.
+
+**Option 3: Rubric templates + light QA**
+
+Straw provides pre-built rubric templates for common evaluation types (fintech expense, fintech document processing, legal contract review, code generation). The customer selects a template and modifies the weighting.
+
+Straw performs a light QA review of any custom rubric before the evaluation runs — checking for vagueness, unmeasurability, completeness.
+
+Pros: Scales better than option 2; templates encode Straw's domain expertise; QA gate prevents worst rubrics
+Cons: Template design requires significant upfront investment; QA gate is still manual
+
+---
+
+### The Rubric Design Session Framework (For White-Glove Phase)
+
+A structured 60-minute session with the customer:
+
+**Part 1 (15 min): Task definition**
+- What task is the agent supposed to perform?
+- What input does it receive?
+- What output does it produce?
+- Who are the users of the output?
+
+**Part 2 (20 min): Success definition**
+- "Describe a perfect output to me. What would it include?" (Gets to what they actually want)
+- "Describe an output that would be a failure. What would make it wrong?" (Gets to their real concerns)
+- "What's the most common failure mode you've seen in AI agents doing this task?" (Historical context)
+- "If I gave this output to your most skeptical stakeholder, what would they complain about?" (Identifies unstated criteria)
+
+**Part 3 (15 min): Criteria crystallization**
+- Translate the discussion into 4-6 measurable criteria
+- For each criterion: name, description, measurement method (binary/scale/LLM judge), weight
+- Validate: "If the agent scores 90/100 on this rubric, would that actually make you confident in deployment?"
+
+**Part 4 (10 min): Edge case mapping**
+- "What are the 3 hardest inputs this agent will face in production?"
+- Add those as required test cases in the evaluation
+- These become the T3 probe scenarios
+
+---
+
+### The Product Implication: Rubric Designer as a Feature
+
+The Phase 1 research (Tick 534 or similar) recommended building a "rubric generator" UX. Based on the rubric design problem analysis, the MVP requirement is:
+
+1. **A guided rubric creation wizard** (not just a free-form text field)
+   - Step 1: Task description
+   - Step 2: Output format definition
+   - Step 3: Success criteria (with prompts like "what does failure look like?")
+   - Step 4: Weight allocation
+   - Step 5: Review + preview (shows what T1/T2/T3 will actually test)
+
+2. **A rubric quality checker** (automated)
+   - Flags: vague criteria ("good"), unmeasurable criteria ("understands"), weights that don't sum to 100%, missing edge cases
+   - Shows a "rubric quality score" before the evaluation runs
+   - Soft gate: warns the customer but doesn't block the evaluation
+
+3. **A rubric template library** (starts with 5 fintech templates, grows over time)
+   - Template: "Fintech expense report generation"
+   - Template: "Financial document extraction"
+   - Template: "Customer service response quality"
+   - Template: "Code review + bug detection"
+   - Template: "Legal contract risk flagging"
+
+**This UX can be built in 3-5 days.** It doesn't need to be beautiful — it needs to be clear. The rubric wizard is the key UX that transforms Straw from a professional services product into a self-serve product.
+
+---
+
+### The Bear Case Side: Rubric Design Is a Consulting Problem Pretending to Be a Product Problem
+
+**The hardest rubric design challenge:** The customer doesn't know what they actually want until they see a bad output.
+
+This is the "I know it when I see it" problem. The customer can describe what good looks like abstractly, but they can't fully specify it until they've seen Straw evaluate an agent and the result surprises them (either the score is lower than expected, revealing a gap in the rubric, or the score is higher than expected, revealing that the rubric missed the real problem).
+
+**Implication:** Every Straw customer's rubric gets better after the first evaluation. The first evaluation is a rubric calibration run as much as a real evaluation. Pricing for the calibration run should be different from pricing for the definitive evaluation.
+
+**The 2-evaluation sequence:**
+- Evaluation 1 ($1,500): rubric calibration run. Straw helps the customer refine their rubric based on agent performance. The result is a better rubric, not a definitive certificate.
+- Evaluation 2 ($5,000): definitive run with calibrated rubric. Produces the compliance certificate.
+
+This 2-evaluation sequence also creates recurring revenue (every new use case starts with calibration) and reduces the risk of bad certificates.
+
