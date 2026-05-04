@@ -43500,3 +43500,218 @@ When this happens, Straw is no longer competing on features or price — it's co
 
 **Sources:** medium.com/cenrunzhe/ai-killed-the-feature-moat, v7labs.com/data-moats-guide, a16z.com/empty-promise-data-moats, seedtoscale.com/all-networks-are-not-created-equal, medium.com/rsaker/ai-is-eating-enterprise-saas
 
+
+---
+
+## Tick 584 — Straw v1 Product Roadmap: Months 0-18
+
+**Date researched:** 2026-05-03 (synthesis)
+
+### The roadmap philosophy
+
+**Build what design partners ask for. Ship nothing else.**
+
+The biggest mistake at the design partner phase is building ahead of customer demand. Every feature shipped without a customer asking for it is wasted engineering time. The roadmap is derived FROM design partner feedback, not imposed on them.
+
+**The constraint:** Jeremy is the sole engineer for months 0-12. Every feature takes 2-4× longer without a team. Ruthless prioritization is survival.
+
+### Phase 0: Pre-product (Months 0-3)
+
+**Goal:** Sign 3 design partner agreements. Build minimum viable evaluation pipeline.
+
+**What ships:**
+- **Week 1-2:** Static landing page (Next.js, Tailwind, MakerKit boilerplate). Email capture. Calendly for discovery calls. No product behind it.
+- **Week 3-4:** Rubric design template (Google Form + Notion page). Customer fills out form, Jeremy converts to structured rubric JSON. 100% manual.
+- **Week 5-6:** T1 evaluation runner (Python scripts, Firecracker microVMs, deterministic scoring). No UI. Jeremy runs it manually and emails results.
+- **Week 7-8:** T2 evaluation (Claude API, LLM-as-judge scoring with rubric). Manual trigger. Results in JSON, Jeremy adds narrative.
+- **Week 9-10:** Straw Evaluation Certificate (PDF generator, Jinja2 template). Timestamped, UUID, QR code verification link. First certificate issued to design partner.
+- **Month 3:** First design partner completes first evaluation. Feedback collected. Roadmap prioritized.
+
+**NOT built in Phase 0:**
+- Authentication / user accounts
+- Web dashboard
+- Agent submission portal
+- Payment processing
+- T3 (complex investigator) — not needed until Phase 1
+
+**Design partner onboarding (Month 3 touchpoints):**
+- Week 1: 2-hour rubric design session with Jeremy
+- Week 2: Jeremy runs evaluation pipeline manually
+- Week 3: Results review call + certificate walkthrough
+- Week 4: Feedback session (what worked, what didn't, what they'd pay for)
+
+### Phase 1: First Product (Months 3-9)
+
+**Goal:** 3 paying customers at $5K+/evaluation. First $50K ARR.
+
+**What ships (prioritized by design partner feedback):**
+
+**Month 4-5: Task Submission Portal**
+- Web form for posters to submit tasks + rubric criteria
+- Supabase database for task storage
+- Email notifications (Resend) for submission status
+- No agent self-service yet — Jeremy manually routes to evaluators
+
+**Month 5-6: Agent Submission Interface**
+- Web form for agent operators to submit against active tasks
+- SUBMISSION.md format specification (public documentation)
+- Manual review queue (Jeremy + T1 automation)
+
+**Month 6-7: T3 Evaluation (Investigator Agent)**
+- Automated Claude-based investigator for complex tasks
+- Prompt injection hardening (OWASP ASI05)
+- Audit trail generation (evidence quotes + reasoning)
+- Certificate auto-generation from T3 results
+
+**Month 7-8: Self-Serve Payments**
+- Stripe integration for $5K Starter tier
+- Invoice generation for $15K Professional tier
+- Revenue recognition tracking in Supabase
+
+**Month 8-9: Basic Dashboard**
+- Poster dashboard: active tasks, submission count, evaluation status, certificate download
+- Solver dashboard: task feed, submission history, score history
+
+**NOT built in Phase 1:**
+- MCP server for agent discovery
+- ERC-8004 on-chain identity
+- x402 payments
+- Reputation graph (needs >20 evaluations to be meaningful)
+- Custom rubric suggestions
+
+### Phase 2: Scale (Months 9-18)
+
+**Goal:** $300K ARR. 20+ active posters. Series A fundable.
+
+**What ships:**
+
+**Month 9-11: MCP Server + API**
+- Straw MCP server: agents discover and submit to tasks programmatically
+- REST API: /tasks, /submit, /results, /certificates
+- API key management
+- Webhook notifications (submission received, evaluation complete)
+
+**Month 11-13: Reputation Graph v1**
+- Agent reputation scores (0-100 scale)
+- Win rate by domain
+- Consistency score across multiple runs
+- Public agent profiles (opt-in for solvers)
+
+**Month 13-15: Rubric Suggestions**
+- Meta-rubric model: given task description, suggest rubric structure
+- Trained on accumulated rubric library (needs 100+ evaluations)
+- Reduces rubric design time from 2 hours → 30 minutes
+
+**Month 15-17: Cross-Company Benchmark Index**
+- Anonymized aggregate benchmark scores published quarterly
+- "Straw Financial AI Index Q1 2027"
+- Domain-specific leaderboards (opt-in for agent operators)
+- Press kit for journalists
+
+**Month 17-18: Enterprise Features**
+- SSO (SAML, Okta integration)
+- Data Processing Addendum (DPA) for EU GDPR compliance
+- ISO 42001 Clause 8 evidence package (structured compliance artifact)
+- SOC 2 Type 1 report (start process Month 12)
+- Dedicated Slack channel per enterprise customer
+
+### The 18-month milestone list
+
+| Milestone | Target Month | Metric |
+|---|---|---|
+| First evaluation completed | 3 | 1 |
+| First design partner signed | 1 | 1 |
+| 3 design partners signed | 3 | 3 |
+| First Straw certificate issued | 3 | 1 |
+| First paying customer | 7 | $5K |
+| $50K ARR | 9 | ARR |
+| 10 paying customers | 12 | customers |
+| MCP server live | 11 | - |
+| $150K ARR | 15 | ARR |
+| Reputation graph v1 | 13 | - |
+| Straw Benchmark Index v1 | 15 | - |
+| $300K ARR | 18 | ARR |
+| SOC 2 Type 1 | 18 | certification |
+
+**Sources:** gainhq.com/blog/saas-product-roadmap, custify.com/saas-customer-onboarding-retention-statistics, prodpad.com/blog/saas-product-roadmap
+
+---
+
+## Tick 585 — Customer Success Playbook for Straw Design Partners
+
+**Date researched:** 2026-05-03 (synthesis)
+
+### The onboarding imperative
+
+**Key research finding:** If a customer doesn't experience value in the first 14 days, they are 3× more likely to churn in the first 90 days. For design partners at $0 revenue, "churn" means losing the case study and the referral.
+
+**Straw's 14-day value delivery target:** The first Straw certificate must be delivered within 14 days of design partner onboarding. Everything before that is setup; the certificate is the first real value.
+
+**14-day design partner onboarding sequence:**
+
+```
+Day 0: Design partner agreement signed (DocuSign)
+Day 1: Onboarding call (60 min)
+  - Rubric design session: Jeremy + poster's Head of AI
+  - Task specification: define the evaluation task
+  - Submission format: walk through SUBMISSION.md spec
+  - Expected timeline reviewed
+Day 2-3: Jeremy converts rubric to formal evaluation spec
+  - Rubric document sent to poster for approval
+  - Poster approves or revises
+Day 4-7: Submissions collected
+  - Straw posts task (or Jeremy manually recruits 2-3 agent operators)
+  - Agent operators submit SUBMISSION.md
+Day 8-10: Evaluation runs
+  - T1 deterministic scoring
+  - T2 LLM-as-judge scoring
+  - T3 investigator deep analysis
+Day 11-12: Results review
+  - Jeremy reviews T3 output, checks for anomalies
+  - Certificate generated (PDF + UUID verification)
+Day 13: Results delivery call (60 min)
+  - Walk through scores and rationale
+  - Discuss implications for procurement decision
+  - Collect feedback on rubric quality, evaluation process, certificate format
+Day 14: Follow-up survey (Typeform)
+  - NPS question
+  - 3 open-ended feedback questions
+  - "What would you be willing to pay for this service?"
+```
+
+### The post-onboarding retention loop
+
+**Monthly design partner touchpoints (months 2-6):**
+- Week 1 of each month: 30-min check-in call
+- Week 3: Written update on product improvements based on prior feedback
+
+**The three questions every design partner check-in answers:**
+1. "What decision has changed for you based on the evaluation?"
+2. "Who else in your organization or network has this problem?"
+3. "What would make you upgrade to a paid subscription today?"
+
+**The case study pipeline:**
+- Month 3: "Can we write an anonymized case study based on your evaluation?" (yes/no)
+- Month 4: If yes, draft case study sent for review
+- Month 5: Case study published on Straw website
+- Month 6: Case study used in outreach to 10 similar companies
+
+**Customer success metrics for design partner phase:**
+
+| Metric | Target | Red Flag |
+|---|---|---|
+| Time to first certificate | <14 days | >21 days |
+| Poster satisfaction (NPS) | ≥50 | <30 |
+| Rubric quality score (poster self-report) | ≥4/5 | <3/5 |
+| Follow-on evaluation requested | ≥1 in 6 months | None requested |
+| Referral generated | ≥1 per design partner | None |
+| Case study consent | ≥2 of 3 design partners | <1 |
+
+**The "convert to paid" conversation (Month 5-6):**
+
+> "We're moving design partners to paid subscription starting [date]. Based on everything we've built together, the Professional tier at $5K/evaluation or $5K/month unlimited is where you'd land. I want to give you first-mover pricing: $3,500/evaluation for the first year as a founding customer. Would that work for your budget?"
+
+This framing: (a) gives a deadline, (b) acknowledges the relationship, (c) discounts from anchor price, (d) asks a yes/no question.
+
+**Sources:** onramp.us/customer-onboarding-metrics, custify.com/saas-customer-onboarding-retention-statistics, litmos.com/top-saas-onboarding-trends, csinsider.co/what-is-customer-success
+
