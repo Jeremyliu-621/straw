@@ -52064,3 +52064,127 @@ Reach out at: jeremy@straw.dev"
 
 This is zero-cost and targets exactly the technical AI community that Straw needs. One good cofounder conversation from HN is worth 10 LinkedIn recruiter connections.
 
+
+---
+
+## Tick 667 — [GTM] The Virtual Roundtable Strategy: Zero-Cost Design Partner Acquisition
+
+**Theme:** GTM Motion  
+**Date:** 2026-05-04  
+**Thread:** Zero-cost acquisition channels — creating inbound design partner demand  
+
+---
+
+### The Strategy
+
+Before Straw has 10 paying customers, before the Show HN launch, before the FINRA white paper is even finished — Jeremy can host a virtual roundtable for 5 CAIOs and AI leads to discuss the AI agent evaluation problem.
+
+**The format:**
+- 5 invited guests (CAIOs, AI Ops leads, Head of AI at enterprise companies)
+- 60 minutes, moderated by Jeremy
+- Topic: "How do you currently measure AI agent performance in your organization?"
+- Outcome for guests: candid peer conversation with 4 other people who have the same problem
+- Outcome for Jeremy: 5 qualified discovery conversations in one session
+
+**Why this works:**
+1. CAIOs want to talk to each other. The roundtable gives them peer access that's otherwise hard to get.
+2. Jeremy positions as convener, not seller. He's not pitching Straw — he's hosting a conversation.
+3. The research question "how do you currently measure AI agent performance?" is exactly the question Straw needs answered before the final pitch.
+4. A roundtable participant who explicitly describes their evaluation gap is already a warm lead for Straw.
+
+---
+
+### How to Run It
+
+**Step 1: Identify the 5 guests**
+- Use the contact list from Tick 634 and 655
+- Select 5 guests from different companies (no direct competitors)
+- Mix: 2 fintech, 1 dev tool company, 1 regulated industry (healthcare/legal), 1 enterprise tech company
+- All 5 should have expressed some interest in the topic via LinkedIn engagement or email
+
+**Step 2: The outreach (adapt from cold email templates)**
+
+Subject: Virtual roundtable — AI agent evaluation practices
+
+```
+Hi [Name],
+
+I'm organizing a small virtual roundtable (5 people, 60 minutes) for AI leads who are 
+actively deploying agents in production.
+
+Topic: "How do you currently measure AI agent performance in your organization?"
+
+No slides. No pitch. Just a candid conversation between people who are working through 
+the same problems. I'm hosting because I'm building Straw — an AI agent evaluation 
+platform — and I want to understand how practitioners actually solve this problem today.
+
+The other participants are AI leads at [Company A], [Company B], [Company C], [Company D].
+
+Date options: [3 options over 2 weeks]
+
+Interested?
+```
+
+**Step 3: The roundtable agenda (moderated by Jeremy)**
+
+0:00-0:05: Introductions (each person: name, role, one sentence on how many AI agents they're running)
+0:05-0:20: "Walk me through how you made your last AI agent selection decision."
+0:20-0:35: "Where does your current evaluation process break down?"
+0:35-0:50: "What documentation do you produce for AI procurement decisions? Who sees it?"
+0:50-0:60: "If you could improve one thing about how you evaluate AI agents, what would it be?"
+
+**Step 4: The follow-up**
+
+48 hours after the roundtable:
+- Send a summary email to all participants: "Here's what we heard from the group"
+- Include Jeremy's key observations (anonymized quotes from the discussion)
+- Include a 1-paragraph introduction to Straw: "The themes from this conversation — inconsistent evaluation, no compliance documentation, difficulty comparing agents — are exactly what Straw was designed to address. If you want to continue that conversation, reply and I'll show you what we're building."
+
+The summary email is the natural transition from "roundtable host" to "Straw founder."
+
+---
+
+### Why the Roundtable Works Better Than Individual Cold Calls
+
+**Individual cold call dynamics:**
+- Jeremy is in selling mode (asymmetric)
+- The prospect is in "do I need this?" mode (skeptical)
+- The conversation is transactional
+
+**Roundtable dynamics:**
+- Jeremy is in convening mode (neutral)
+- The prospect is in sharing mode (peers are present, defenses lower)
+- The conversation is collaborative
+
+The roundtable format removes the "this is a sales call" dynamic that activates buying resistance. By the time Jeremy sends the follow-up email with the Straw introduction, the prospect has already spent 60 minutes thinking about their evaluation gap — which Jeremy didn't create; their peers confirmed it was real.
+
+---
+
+### The Cost and Timeline
+
+**Cost:** $0 (Zoom or Google Meet, 60 minutes of prep, 2 hours of follow-up)
+**Timeline:** Can run within 2-3 weeks of starting outreach
+**Expected conversion:** 5 roundtable participants → 2-3 expressed interest in Straw → 1 design partner
+
+This is the highest-efficiency zero-cost acquisition channel in the Straw playbook.
+
+**Run 3 roundtables in Months 1-2:**
+- Roundtable 1: Fintech focus (5 fintech CAIOs/AI leads)
+- Roundtable 2: Dev tool / agent infrastructure focus (5 agent infrastructure founders)
+- Roundtable 3: Cross-vertical (mix of industries)
+
+Each roundtable generates 2-3 warm leads. 3 roundtables = 6-9 warm leads = 2-3 design partners.
+
+---
+
+### The Event Strategy (Optional Upgrade in Month 3-4)
+
+After 2 successful roundtables, upgrade to a "State of AI Agent Evaluation" virtual event:
+- 10-15 attendees
+- 90 minutes
+- Guest speaker: one AI safety researcher (METR or Apollo — from the existing outreach)
+- Panel: 2-3 enterprise AI leads sharing their evaluation practices
+- Jeremy moderates + introduces Straw at the end
+
+The event creates content (video recording, key quotes for LinkedIn, a written summary), design partner leads, and positions Straw as the platform hosting the conversation about AI evaluation — not just another vendor.
+
