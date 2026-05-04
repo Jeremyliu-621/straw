@@ -43849,3 +43849,204 @@ YC's window: "If building agent infrastructure, the window to become the default
 
 **Sources:** fortune.com/openai-partners-mckinsey-bcg-accenture, agent.nexus/accenture-vs-mckinsey-ai, natesnewsletter.substack.com/accenture-2-2-billion-ai-consulting, klover.ai/ai-agents-enterprise-market-survey-mckinsey-pwc-deloitte-gartner
 
+
+---
+
+## Tick 588 — Straw Week 1-12 Action Plan: The Concrete Daily Tasks
+
+**Date researched:** 2026-05-03 (synthesis)
+
+### The philosophy: bias toward customer conversations over building
+
+The #1 mistake at pre-product stage is building instead of selling. Every week without a signed design partner is a week of building with zero validation. The first 12 weeks are 70% sales/customer discovery, 30% product.
+
+### Week 1: Legal + Landing Page + First 10 Outreach
+
+**Day 1 (Today — May 4, 2026):**
+- [ ] Apply to YC S26 (late application, rolling review). Use the exact one-liner: "Straw is the evaluation marketplace where enterprise AI teams post tasks with objective rubrics, agents compete to solve them, and the score doesn't lie — because demos lie and six-figure procurement decisions can't afford to."
+- [ ] Start Stripe Atlas Delaware C-Corp application ($500, 2 business days). Straw, Inc. 100% sole shareholder Jeremy Liu. 10M authorized shares.
+
+**Day 2-3:**
+- [ ] Register domain: straw.ai (check availability; if taken: straweval.com, getstraw.ai, strawmarket.ai)
+- [ ] Set up Mercury bank account (after EIN received from Stripe Atlas, ~Day 4)
+- [ ] Set up Google Workspace (jeremyliu@straw.ai)
+- [ ] Create GitHub org: github.com/strawmarket (or similar)
+
+**Day 4-5:**
+- [ ] Deploy landing page on Vercel. MakerKit B2B SaaS boilerplate ($200). Content: one-liner, problem statement (5 sentences), how it works (3 steps), "Apply to be a Design Partner" CTA (Calendly link)
+- [ ] Set up Loops.so email automation (design partner welcome sequence)
+- [ ] Write the first 10 cold outreach emails using the 4-touch 14-day sequence
+
+**First 10 outreach targets (priority order):**
+
+1. Head of AI, Stripe — "Your benchmark team built their own eval. Straw automates this."
+2. CTO, a fintech Series A company (1-3 agent vendors being evaluated right now)
+3. Head of AI, a legal tech company evaluating Harvey AI vs. alternatives
+4. VP Engineering, a Series B AI-native company (they build agents; potential supply-side champion)
+5. CTO, a mid-market financial services firm (FINRA SR 11-7 pressure)
+6. Director of AI, an insurance company (NAIC compliance pressure)
+7. Head of AI, a large tech company deploying Claude agents (EU AI Act compliance)
+8. CTO, a healthcare tech company evaluating clinical AI tools (FDA + ISO 42001)
+9. Head of ML, a consulting firm building AI solutions (channel partner potential)
+10. Founder, an AI agent startup (want Straw as validation tool for their sales process)
+
+### Week 2-3: Discovery Calls + Rubric Design
+
+**Week 2 goal:** Book 5 discovery calls from week 1 outreach.
+
+**Discovery call script (reminders):**
+- Never pitch for the first 10 minutes. Ask about their evaluation process.
+- "How do you currently evaluate AI agents before deploying them?"
+- "What would success look like for the agent you're evaluating?"
+- "Who else in your org is involved in this decision?"
+- Only transition to Straw pitch after they've described the pain.
+
+**Week 3 goal:** Convert 1 discovery call to design partner agreement.
+
+**Design partner ask:** "I'm inviting 5 companies to help us shape how enterprise AI evaluation works. No payment — just 4 hours of feedback per month and help us get the rubric right. In exchange: unlimited evaluations for 6 months, your company name on our founding partner list, and early access to the full platform. Would you be willing to join?"
+
+### Week 4-6: First Evaluation
+
+**Week 4:** First design partner signs agreement (Common Paper template). Start rubric design session (2 hours with Jeremy + partner's Head of AI).
+
+**Week 5:** Run first evaluation:
+- Day 1-2: Rubric finalized and sent to partner for approval
+- Day 3-5: Recruit 2-3 agent operators to submit (post in CrewAI Discord, AutoGen GitHub Discussions, OpenHands forum)
+- Day 5-7: Agent submissions received
+- Day 7-9: T1 + T2 evaluation runs manually
+- Day 10: T3 investigation (Claude API, 3-4 hour run)
+- Day 11-12: Certificate generated, results reviewed
+
+**Week 6:** Results delivery call. Certificate sent. Feedback collected.
+
+### Week 7-9: Second Design Partner + Show HN
+
+**Week 7:** Second design partner outreach (using first design partner evaluation results as proof of product). Send anonymized benchmark summary to 5 new prospects.
+
+**Week 8:** Post on Hacker News: "Show HN: Straw — we built the evaluation marketplace where enterprises post AI agent tasks with rubrics, agents compete, and the winner gets hired. Here's our first evaluation."
+
+Attach to post:
+- Link to landing page with first certificate (anonymized)
+- First evaluation benchmark summary
+- SUBMISSION.md format specification
+- T1/T2/T3 pipeline description
+
+**Expected HN response:** 200-500 upvotes if the problem resonates. 50+ comments = qualitative validation. 3-5 enterprise inquiries = pipeline.
+
+**Week 9:** Second design partner signed. Start second evaluation immediately.
+
+### Week 10-12: Third Design Partner + Series Monetization Planning
+
+**Week 10:** Begin LinkedIn content cadence (1 post per week). First post: "The UC Berkeley finding that should terrify every enterprise CTO who approved an AI agent purchase in the last 12 months."
+
+**Week 11:** Third design partner outreach using two completed evaluation results as proof. Begin conversation about pricing for paid tier (what would they pay? What would make them stop using Straw?).
+
+**Week 12:** Third design partner signed. Three design partners = minimum viable evidence for YC/angel round.
+
+**12-week metrics targets:**
+- Discovery calls held: ≥15
+- Design partners signed: ≥3
+- Evaluations completed: ≥2
+- Certificates issued: ≥2
+- HN upvotes: ≥200
+- Email list: ≥100
+- YC application: ✅ submitted
+
+**The key insight:** At week 12, Straw has proven:
+1. The sales process works (Jeremy closed 3 design partners cold)
+2. The product works (2 evaluations delivered with certificates)
+3. The market cares (HN validation, 100+ email subscribers)
+4. The rubric format works (2 different rubric domains completed)
+
+This is a fundable milestone even at $0 ARR.
+
+**Sources:** stripe.com/atlas, getathenic.com/stripe-atlas-guide, kracov.co/writing/first-90-days, saasconsult.co/saas-launch-strategy-90-days
+
+---
+
+## Tick 589 — Contact Master List: All Contacts Organized by Theme (189 → 237+)
+
+**Date researched:** 2026-05-03 (synthesis)
+
+### Contact list summary by category (all contacts added in this research session)
+
+**TECHNOLOGY COMPANIES (AI-forward enterprises):**
+- #190: NTT Data AI Strategy (Japan) — Enterprise AI, channel partner for Japanese market
+- #191: SoftBank AI CoE (Japan) — AI deployment at scale, Vision Fund portfolio companies
+- #196: Amjad Masad (Replit CEO) — "pre-deployment evaluation" insight after DB incident
+- #197: Harrison Chase (LangChain founder) — Agent infrastructure, ecosystem lead
+- #198: Jerry Liu (LlamaIndex founder) — Retrieval/agent infrastructure, enterprise focus
+- #199: Paul Copplestone (Supabase CEO) — Strategic angle (Straw uses Supabase)
+- #200: Greg Brockman (OpenAI) — PromptFoo acquisition proves evaluation market
+- #205: Shopify (Canada) — Developer-friendly culture, heavy AI, supply-side champion potential
+
+**FINANCIAL SERVICES:**
+- #215: Goldman Sachs AI Governance — AI principles, AI governance culture
+- #216: JP Morgan Chase AI CoE — LLM Suite for 200K employees, highest AI deployment volume
+- #217: BlackRock Aladdin — $21T assets, highest governance culture in asset management
+- #218: Stripe — AI in payments fraud, Carol Liang contact (from previous research)
+
+**LEGAL:**
+- #211: Clifford Chance LLP — Magic circle firm, "NewLaw" initiative, AI evaluation need
+- #212: Allen & Overy / A&O Shearman — Harvey AI partnership; need to evaluate Harvey
+- #213: Latham & Watkins — Largest US law firm, AI practice group
+- #214: Baker McKenzie — Global firm, AI governance practice
+
+**HEALTHCARE:**
+- #207: Mayo Clinic AI — Largest US private hospital, AI in diagnostics
+- #208: Epic Systems — Healthcare IT for 250M patient records
+- #209: Kaiser Permanente — 12.5M members, AI-first integrated health system
+- #210: IBM Watson Health (Merative) — AI in healthcare for 200+ health systems
+
+**INSURANCE:**
+- #219: Zurich Insurance Group — AIAF since 2022, 500+ AI applications
+- #220: AXA Group — 60+ agentic AI use cases
+- #221: Allianz — Project Nemo, 7 specialized AI agents in insurance
+- #222: Munich Re — Largest reinsurer, AI in risk modeling
+- #223: Prudential Financial — US insurer, AI in underwriting
+- #224: Progressive Insurance — Technology-first insurer, AI in auto pricing
+
+**MANUFACTURING:**
+- #229: Siemens Digital Industries — Largest industrial automation, AI manufacturing suite
+- #230: ABB Ltd — Industrial robots, factory automation, AI in operations
+- #231: General Electric Aerospace — AI in aircraft manufacturing + maintenance
+- #232: Toyota Manufacturing — "Woven City" AI, ADAS development
+- #233: Foxconn Technology — Largest contract manufacturer (Apple supplier), AI inspection
+
+**GOVERNMENT / PUBLIC SECTOR:**
+- #225: California Department of Technology — EO N-5-26 implementation; reference tool
+- #226: US General Services Administration — Federal procurement, AI acquisition guidance
+- #227: Leidos — Largest US government IT contractor, AI in defense/health/civil
+- #228: Booz Allen Hamilton — #2 federal IT contractor, AI in intelligence community
+
+**INTERNATIONAL:**
+- #201: Commonwealth Bank of Australia — "AI factory" strategy, 1,000+ AI models
+- #202: BHP Digital — Mining AI, safety-critical decisions
+- #203: Telstra AI — Australian telecom, enterprise AI services
+- #204: Royal Bank of Canada — Largest Canadian bank, US operations, AI in banking
+- #206: Bombardier — Aerospace manufacturing, safety-critical AI governance urgency
+
+**STANDARDS / CERTIFICATION CHANNEL PARTNERS:**
+- #192: BSI Group — Largest ISO certification body globally
+- #193: Bureau Veritas — French global certification body, 80,000 employees
+- #194: DNV GL Digital — Norwegian certification + assurance, technology focus
+- #195: Credo AI — $41M AI governance platform, complementary stack, partnership
+
+**CONSULTING CHANNEL PARTNERS:**
+- #234: McKinsey QuantumBlack — AI + analytics practice, potential channel partner
+- #235: BCG X — BCG's tech build/operate arm
+- #236: Deloitte Agentic AI Practice — Previously identified
+- #237: PwC AI CoE — "Agent OS" — need neutral evaluator to recommend
+
+**Total contacts in this research session: #190-237 = 48 new contacts**
+**Total contacts across all research sessions: 237+ unique contacts**
+
+**Priority tier by urgency and probability:**
+
+| Priority | Contacts | Reason |
+|---|---|---|
+| P0 (contact this week) | Stripe, Braintrust, Harvey AI (from earlier research) | Warm intro potential, clear pain, tight geographic proximity |
+| P1 (contact weeks 2-4) | #215-218 (financial services), #211-214 (legal), Credo AI #195 | FINRA+OCC regulatory urgency, clear rubric need |
+| P2 (contact months 2-3) | #207-210 (healthcare), #219-224 (insurance), #229-233 (manufacturing) | Longer sales cycles, more stakeholders |
+| P3 (contact months 3-6) | #225-228 (government), #201-206 (intl), #234-237 (consulting) | Longer cycles, channel relationships first |
+
