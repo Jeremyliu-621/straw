@@ -69,18 +69,42 @@ You have strong opinions. You share them. You push back when something is wrong.
 
 ---
 
-## Session Start
+## Session Start: Reading Order
 
-At the start of every session, read these files in full:
+After completing this list you should be able to answer: **what is Straw, where are we, what's the pitch, what's next.** Don't skim; don't reorder.
 
-- `CLAUDE.md` (this file)
-- `tasks/REQUIREMENTS.md` — product requirements and user stories
-- `tasks/TASKS.md` — current task list and progress tracker
-- `tasks/DECISIONS.md` — architectural decisions and rationale
-- `tasks/HOW_IT_WORKS.md` — plain-English technical guide
-- `tasks/TESTING.md` — pipeline testing instructions
+### 1. What Straw IS (~10 min, read in full)
 
-Do not skim. Every word.
+- `tasks/AGENT_FIRST_DREAM.md` — the north star, the filter every architecture decision passes through
+- `tasks/REQUIREMENTS.md` — product spec, in/out of v1
+- `tasks/HOW_IT_WORKS.md` — pipeline, eval, submission in plain English
+
+### 2. Where we are NOW (~10 min, read in full)
+
+- `tasks/TASKS.md` — find the `<!-- RESUME HERE -->` marker; that's the next thing
+- `tasks/DECISIONS.md` — D34/D35/D36 are this week (domain → straw.wiki, worker → Hetzner, prove-loop-first); **D30 (eval architecture) is in flux** — see banner inside the entry
+- `tasks/HANDOFF.md` — branch-specific in-flight context
+- `tasks/lessons.md` — corrections from past sessions you must not repeat
+
+### 3. The pitch + WHY (skim, don't memorize)
+
+- `tasks/yc/YC_APPLICATION_DRAFT.md` — current pitch
+- `tasks/strategy/PRODUCT_VISION.md` — the long-form
+- `tasks/strategy/WHY_NOW.md` — the timing argument
+
+### Read on demand only — NOT at session start
+
+- `tasks/research/` — when work touches eval, ZeroClaw, agent incentives, or the bear case. The single highest-leverage research file is `tasks/research/eval-research-deep-2026-04-25.md`. Use `tasks/research/agent-incentive-research-DISTILL.md` instead of the gitignored 53k-line raw.
+- `tasks/ops/` — when work touches deployment, scaling, or schema/permissions
+- `tasks/strategy/` — when defending or amending a strategic claim
+- `tasks/archive/` — historical context only
+- `tasks/TESTING.md` — when running pipeline tests; note parts are stale post Phase 17
+
+### Where things live
+
+`tasks/README.md` is the directory map. Read it once at session start so you know what's in which folder. **Before authoring any new doc, read it again.**
+
+---
 
 ---
 
@@ -138,3 +162,41 @@ At the end of every session:
 4. Move `<!-- RESUME HERE -->` to the next incomplete task
 
 `tasks/TASKS.md` is your external memory. If the next Claude instance can't pick up cleanly, you didn't update it well enough.
+
+---
+
+## Working with Docs
+
+Four rules to keep the docs surface clean as new content lands. The folder structure under `tasks/` is enforced by these rules, not by tooling.
+
+### Reference rule
+
+Prefer stable identifiers over hardcoded paths in any reference that lives outside the file itself.
+
+1. **Decision IDs** (`D30`, `D32`) — never moves. First choice when referring to decisions.
+2. **Wikilinks** (`[[zeroclaw-build-research]]`) — Claude resolves via `grep -rn "\[\[zeroclaw-build" .`. First choice when referring to research files.
+3. **Repo paths** (`tasks/research/zeroclaw-build-research.md`) — only when (1) and (2) won't do.
+
+This file (CLAUDE.md) is the only place that hardcodes paths. The seven anchors listed below are the allowlist.
+
+### Path-move rule
+
+Before moving or renaming any tracked file: run `git status`. If you have unstaged tracked changes that touch the same domain, commit them first as a pure content commit, then do the structural commit. **Never mix `git mv` with content authoring in the same commit.**
+
+### INDEX-gate rule
+
+Before authoring any new doc in `tasks/`: read `tasks/README.md`. If a doc already covers the topic, append/update it instead of creating a new one. After authoring a new doc, register it in `tasks/README.md` and the relevant folder's `README.md` in the same commit. **A new doc that isn't in the INDEX is broken work.**
+
+### Anchor-list rule
+
+CLAUDE.md is the only file in this repo that hardcodes doc paths. The seven anchors are:
+
+- `tasks/REQUIREMENTS.md`
+- `tasks/TASKS.md`
+- `tasks/DECISIONS.md`
+- `tasks/HOW_IT_WORKS.md`
+- `tasks/TESTING.md`
+- `tasks/lessons.md`
+- `tasks/todo.md`
+
+Code refers to docs by stable IDs or wikilink slugs, never paths. If a route handler or worker logs `see tasks/X.md`, that's a smell — log a stable URL or symbol instead.
