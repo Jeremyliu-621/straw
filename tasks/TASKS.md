@@ -817,7 +817,7 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 
 The next milestone is **one real task → one real submission → one real score**, not "deploy workers." Order of ops:
 
-- [ ] **Verify `REDIS_URL` is set in Vercel env.** `vercel env ls` (CLI not installed; `npm i -g vercel` first) or check the dashboard. Without it the web app on `straw.wiki` can't enqueue jobs.
+- [x] **Verify `REDIS_URL` is set in Vercel env.** ✓ Confirmed 2026-05-04: set in both Preview and Production for 11 days (`vercel env ls`). Vercel CLI 52.2.1 is also installed locally.
 - [ ] **Write `npm run seed:competition`** (Phase 18a) — creates company user, posts a real task with rubric, creates an agent builder + API key, prints the key. One command, no browser.
 - [ ] **Run workers locally against prod Upstash + Supabase.** Two terminals: `npm run eval-worker` + `npm run webhook-worker`. Confirm both log "waiting for jobs" and connect to Upstash.
 - [ ] **Hand the API key to Claude Code (or OpenClaw).** Have the agent discover the task, build, upload via the v1 API (zip + `SUBMISSION.md`), call `/complete`, and poll for score.
@@ -1055,6 +1055,37 @@ Goal: implement the corrected philosophy from D15–D22 + D30. Replace the impli
 - [ ] Delete the D15 quota-verification tasks at TASKS.md:824 and TASKS.md:912 once the new cap (default 15, hard 25) is verified live in prod
 - [ ] Remove the historical-note banner on `tasks/SCALE_PASS_PLAN.md` once Phase 20 ships and the doc is fully irrelevant
 - [ ] Audit all `*_test.ts` files for invariants that assume the pre-D17 sealed-information model and update or delete
+
+---
+
+## Code Hygiene Backlog (2026-05-04 audit)
+
+Findings from a deep audit of `src/`, `packages/`, root, and migrations. **None of these block the D36 milestone — they're hygiene that should land after the loop closes.** Listed roughly by pain × cheapness.
+
+### Cheap fixes (each <1hr)
+
+- [ ] **Quota number contradiction.** D15 says default 15, hard cap 25. But `src/app/api/docs/route.ts:28` says "up to 5", `:95-96` says `default_per_task: 5, max_per_task: 20`, and `packages/mcp-server/src/prompts/compete.ts:28` says "default 5". Three of four places wrong. Sweep + fix.
+- [ ] **SDK + MCP `baseUrl` sweep + republish** (D34, also tracked in 14c). Defaults to `straw.vercel.app`; should be `straw.wiki`. Affects `packages/agent-sdk/client.ts:40`, `packages/mcp-server/src/index.ts:12`, `dist/*` rebuild, READMEs, then `npm publish` both packages.
+- [ ] **TASKS.md phase numbering anomaly.** Two "Phase 14"s (lines 422 + 466) and Phase 18 appears AFTER Phase 19. Either renumber chronologically OR split this file into `done.md` / `now.md` / `later.md`.
+- [ ] **`/api/dev/pipeline-test`** — dev-only endpoint still publicly callable in prod. Auth-gate or remove before any public announce.
+
+### Medium effort (1-3 hrs each)
+
+- [ ] **Migration sequence gap + schema_migrations backfill.** Files jump 001 → 002 → 003 → 004 → 017. Twelve numbers missing. `supabase_migrations.schema_migrations` table only tracks 028-030. Fresh `supabase db push` will try to re-apply 001-027 and break. Either backfill the tracking table OR collapse 001-003 into a `000_baseline.sql` reflecting current prod state.
+- [ ] **Move `optiboarding-repo/` out of the working tree.** It's a separate Next.js app ("optimal-ai") gitignored at repo root. Polluting every grep, every file picker, every Glob. Should live in its own clone elsewhere.
+- [ ] **Delete the stale `e2e-pipeline.ts` script** + update TESTING.md. Both reference the Phase 17-deleted docker-execution path. Anyone running `npm run test:pipeline` today gets confused.
+- [ ] **Sweep `src/`/`scripts/`/`DEPLOY.md`/`README.md`/`package.json` for hardcoded `tasks/X.md` paths.** Per CLAUDE.md anchor-list rule, only CLAUDE.md should hardcode paths. Find and replace any code-side references with stable IDs or wikilink slugs.
+
+### Big architectural decisions (need product input, not just code)
+
+- [ ] **3D arena vs AGENT_FIRST_DREAM doctrine.** ~12k LOC in `src/components/arena-3d/` ships on `src/app/page.tsx` (live on `straw.wiki`). But `tasks/AGENT_FIRST_DREAM.md:41-43` explicitly rejects "3D arena visualization as the front page hero." Pick one: amend the doctrine OR remove the import from page.tsx. Right now you have 12k LOC of code your own canon rejects.
+- [ ] **Two API surfaces — pick the end state.** 29 v1 routes + 36 non-v1 routes; **7 paths exist as both** (`/api/tasks` + `/api/v1/tasks`, `/api/submissions` + `/api/v1/submissions`, `/api/deals` + `/api/v1/deals`, plus close/leaderboard/test-suite). Phase 19 was supposed to be the migration; it shipped v1 but never deleted/redirected the legacy. Three options: (a) delete legacy, (b) 308-redirect to v1, (c) document why both stay. Don't leave it ambiguous — every API-key user can't tell which surface is canonical.
+
+### What's already noted elsewhere (cross-references, not new work)
+
+- D36 loop-proof milestone → see "Right Now Milestone" above
+- Pre-launch polish items (OAuth callbacks to straw.wiki, `test-suites` bucket, submission quota verification) → see "Pre-launch polish" above
+- Eval architecture flux (D30 revised twice) → see DECISIONS.md D30 + `tasks/research/eval-research-deep-2026-04-25.md`
 
 ---
 
