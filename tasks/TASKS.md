@@ -437,15 +437,16 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
 - [x] DEPLOY.md step-by-step guide
 - [x] Conditional dotenv loading in workers (dev vs production)
 
-<!-- RESUME HERE -->
-### 14c: Worker Deployment (TODO)
+### 14c: Worker Deployment (TODO — revised 2026-05-04, see D35/D36)
 
-**Step 1: Redis (free, 5 min)**
-- [ ] Create free Redis at upstash.com → copy `REDIS_URL` (`rediss://default:xxx@xxx.upstash.io:6379`)
-- [ ] Add `REDIS_URL` to Vercel env vars (web app needs it to enqueue jobs)
+> **Order of ops changed.** Per D36, prove the loop locally before paying for a VPS. The deploy block below stays — but it is gated on "milestone in Phase 18a is green" (one real task scored end-to-end on the dev box).
 
-**Step 2: VPS ($4-12/mo, 10 min)**
-- [ ] Create VPS: Hetzner CX22 ($4.50/mo) or DigitalOcean ($12/mo), Ubuntu 24.04
+**Step 1: Redis (already done locally, verify Vercel)**
+- [x] Upstash Redis provisioned in ca-central-1 (Montreal). `REDIS_URL` set in `.env.local`.
+- [ ] **Verify `REDIS_URL` is set in Vercel env** (`vercel env ls`, or check dashboard). Without this the web app on `straw.wiki` can't enqueue jobs.
+
+**Step 2: VPS — Hetzner CX22 (~$4.50/mo, ~10 min). D35 supersedes the earlier OVH plan.**
+- [ ] Create Hetzner CX22, Ubuntu 24.04 (or 25.04)
 - [ ] SSH in and run:
   ```
   curl -fsSL https://get.docker.com | sh
@@ -456,10 +457,12 @@ Goal: Replace the JSON pattern-matching test runner with executable evaluation. 
   docker compose -f docker-compose.prod.yml logs -f  # verify connected
   ```
 
-**Step 3: Remaining**
-- [ ] Update GitHub OAuth callback URL → `https://your-domain.vercel.app/api/auth/callback/github`
-- [ ] Update Google OAuth callback URL → `https://your-domain.vercel.app/api/auth/callback/google`
+**Step 3: Domain + buckets**
+- [ ] Update GitHub OAuth callback URL → `https://straw.wiki/api/auth/callback/github`
+- [ ] Update Google OAuth callback URL → `https://straw.wiki/api/auth/callback/google`
+- [ ] Confirm `NEXT_PUBLIC_APP_URL=https://straw.wiki` is set in Vercel env
 - [ ] Create `test-suites` bucket in Supabase Storage (Dashboard → Storage → New bucket, private)
+- [ ] **SDK + MCP `baseUrl` sweep:** update `packages/agent-sdk/client.ts:40`, `packages/mcp-server/src/index.ts:12`, README snippets, and rebuild `dist/*`. Republish `@straw/agent-sdk` and `@straw/mcp-server` to npm. Default base URL must be `https://straw.wiki`.
 
 ---
 
@@ -786,40 +789,55 @@ Goal: Reduce the highest-friction points across the platform. 8 workstreams addr
 
 ---
 
-## Deployment: OVH VPS + Local Bridge (2026-04-18 → in progress)
+## Deployment: Hetzner CX22 + Local Bridge (revised 2026-05-04 — supersedes the earlier OVH plan)
 
-Goal: Get Straw fully deployed. Web is on Vercel. Workers are the last piece.
+Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are the last piece. **Per D36, prove the upload→score loop locally before paying for the VPS.**
 
-**Decided architecture:** Vercel (web) + OVH VPS-2 Beauharnois (workers) + Upstash Montreal (Redis) + Supabase us-east-1 (DB). Full rationale in `tasks/DECISIONS.md` D13. Full walkthrough in `DEPLOY.md` Section 2.
+**Decided architecture:** Vercel (web, `straw.wiki`) + Hetzner CX22 EU (workers, ~$4.50/mo — D35) + Upstash Montreal (Redis) + Supabase us-east-1 (DB). Full rationale in `tasks/DECISIONS.md` D13/D35/D36. Full walkthrough in `DEPLOY.md` Section 2 (host-agnostic; Hetzner is a one-line swap).
 
-### Already done (as of 2026-04-18)
+### Already done (as of 2026-05-04)
 
-- [x] Vercel web app deployed at `straw.vercel.app`
-- [x] OAuth apps configured (GitHub + Google)
-- [x] Upstash Redis provisioned in ca-central-1 (Montreal)
+- [x] Vercel web app deployed at `straw.wiki` (was `straw.vercel.app` — D34)
+- [x] OAuth apps configured (GitHub + Google) — callback URLs still point at `straw.vercel.app`, need to be moved to `straw.wiki` (tracked in 14c step 3)
+- [x] Upstash Redis provisioned in ca-central-1 (Montreal). `REDIS_URL` lives in `.env.local`. **Not yet verified in Vercel env.**
 - [x] Supabase project `straw` (`ptvipiqorbqxoypbfeoj`) in us-east-1
 - [x] Gemini API key provisioned
 - [x] **Migration 030 applied** — RLS hardening on 6 public-schema tables (webhooks/webhook_deliveries/notifications/task_invitations/submission_artifacts/task_comments), tightened audit_log INSERT, pinned search_path on 3 trigger functions. Zero security lints remaining.
+- [x] **OVH pre-order dropped (D35).** Hetzner CX22 chosen instead — 3.5× cheaper, instant provisioning, identical capability for eval-container mode.
+
+### Honest production state (2026-05-04)
+
+- **Redis is alive but useless.** `REDIS_URL` connects from local. Web app *probably* can't enqueue from Vercel until step 1 below is verified. **No worker is consuming the queue in production** — eval-worker has never been deployed. A real submission today lands in Supabase Storage, may or may not enqueue, and never gets scored.
+- **Submit half works for daemons; judge half doesn't run.** This is the dominant gap to "live bounty board people can use."
+- **SDK + MCP defaults still point at `straw.vercel.app`.** Every external `npm install @straw/agent-sdk` user hits the wrong host until the sweep + republish in 14c step 3 ships.
 
 <!-- RESUME HERE -->
 
-### Next up — finish the OVH pre-order
+### Right Now Milestone (D36) — close the loop locally, then buy Hetzner
 
-- [ ] **Complete OVH VPS-2 Beauharnois checkout** at the page where we stopped (No commitment, Ubuntu 25.04, skip all add-ons — automated backup is already included free). $16 CAD/mo, 7-day delivery.
-- [ ] While waiting for the VPS, run workers on the dev machine per `DEPLOY.md` Bridge Plan — test end-to-end with real Upstash/Supabase (`npm run eval-worker` + `npm run webhook-worker` in two terminals).
+The next milestone is **one real task → one real submission → one real score**, not "deploy workers." Order of ops:
 
-### When the VPS arrives (within ~7 days of order)
+- [ ] **Verify `REDIS_URL` is set in Vercel env.** `vercel env ls` (CLI not installed; `npm i -g vercel` first) or check the dashboard. Without it the web app on `straw.wiki` can't enqueue jobs.
+- [ ] **Write `npm run seed:competition`** (Phase 18a) — creates company user, posts a real task with rubric, creates an agent builder + API key, prints the key. One command, no browser.
+- [ ] **Run workers locally against prod Upstash + Supabase.** Two terminals: `npm run eval-worker` + `npm run webhook-worker`. Confirm both log "waiting for jobs" and connect to Upstash.
+- [ ] **Hand the API key to Claude Code (or OpenClaw).** Have the agent discover the task, build, upload via the v1 API (zip + `SUBMISSION.md`), call `/complete`, and poll for score.
+- [ ] **Confirm a score lands in `evaluation_results`** with per-criterion reasoning. Capture the screenshot. **This is the milestone.** Until it's green, deployment is a distraction.
 
+### After the milestone — buy Hetzner CX22 (D35)
+
+- [ ] Create Hetzner CX22 in EU, Ubuntu 24.04 (or 25.04). ~$4.50/mo, provisions in minutes.
 - [ ] SSH in, run UFW + swap + Docker install per `DEPLOY.md` Section 2 Step 2
 - [ ] Clone repo, fill `.env.prod` with same values as Vercel env (especially `REDIS_URL` must match exactly)
 - [ ] `docker compose -f docker-compose.prod.yml up -d --build`, verify both workers log "waiting for jobs"
-- [ ] Trigger `POST /api/dev/pipeline-test`, confirm an eval runs on the VPS (not laptop) and writes to Supabase
+- [ ] Re-run the seed script + Claude-as-agent loop, confirm an eval runs on Hetzner (not laptop) and writes to Supabase
 - [ ] Stop local worker processes on laptop
 - [ ] Remove or auth-gate `/api/dev/pipeline-test` before any public announce
 
 ### Pre-launch polish (do before announcing to the world)
 
-- [ ] Buy a real domain + point at Vercel, update `NEXT_PUBLIC_APP_URL`, update OAuth callback URLs
+- [ ] **SDK + MCP `baseUrl` sweep + republish** (D34): `packages/agent-sdk/client.ts:40`, `packages/mcp-server/src/index.ts:12`, READMEs, rebuild `dist/*`, `npm publish` both packages. Default to `https://straw.wiki`.
+- [ ] Move OAuth callbacks to `straw.wiki` (tracked in 14c step 3)
+- [ ] Track `straw.com` / `getstraw.com` / `straw.ai` acquisition as a pre-Series-A blocker (D34)
 - [ ] Backfill `supabase_migrations.schema_migrations` for migrations 001–027 (currently only 028–030 are tracked; `supabase db push` will try to re-apply 001–027 and may fail until this is fixed)
 - [ ] Verify submission quota: default 15/agent/task, poster-configurable, hard cap 25 (D15)
 

@@ -1258,3 +1258,63 @@ New columns: `min_qualifying_score` (default 60), `refund_triggered_at`, `refund
 
 **Sources:** Ticks 353–354 (TOS Section 9/10 drafts), Tick 361 (D33 research), Tick 360 (tax form engineering spec), IRS TIN Matching program docs, Verifex OFAC API, TaxBandits developer API.
 
+---
+
+## D34 (2026-05-04): Domain — `straw.wiki` is interim, `.com` / `.ai` is a pre-launch blocker
+
+**Decision:** Run on `straw.wiki` while we prove the loop with daemons (OpenClaw, etc.). Treat acquiring `straw.com`, `getstraw.com`, or `straw.ai` as a blocker before any pitch to enterprise buyers or any public Series-A-stage announcement. Do not put `.wiki` on a deck.
+
+**Why:**
+- `.wiki` reads as hobbyist / community-encyclopedia / MediaWiki-adjacent. Verbal handoff sounds like a fan site, not a platform a CFO signs a six-figure contract on.
+- `.wiki` is fine right now: cheap, available, easy to say, hints at the open-during-build-window collaboration model, and the audience for the next 4–8 weeks is daemon operators who don't care about TLD prestige.
+- Re-domaining later costs less than waiting on a perfect name today.
+
+**What we rejected:** `.io` (also reads as developer-tool-ish, less B2B-credible than `.com`/`.ai`); paying premium for `straw.com` today (capital better spent on a real eval-worker host).
+
+**How to apply:**
+- All marketing site copy, OAuth callback URLs, `NEXT_PUBLIC_APP_URL`, and metadata point at `straw.wiki` for now.
+- `packages/agent-sdk/client.ts:40`, `packages/mcp-server/src/index.ts:12`, the built `dist/*` artifacts, and the README snippets still default to `straw.vercel.app`. **Sweep + republish the SDK and MCP server before any external agent integration.** Otherwise every `npm install @straw/agent-sdk` user hits the wrong host.
+- Track `.com` / `.ai` acquisition as a pre-launch line item, not a "nice to have."
+
+---
+
+## D35 (2026-05-04): Worker host — Hetzner CX22, not OVH (revises D13's "OVH VPS-2 Beauharnois")
+
+**Decision:** Run the eval worker + webhook worker on **Hetzner CX22 (~$4.50/mo, EU)** instead of OVH VPS-2 Beauharnois ($16 CAD/mo, Canada). The OVH pre-order in `tasks/TASKS.md:808` is dropped.
+
+**Why:**
+- Hetzner is **3.5× cheaper at this stage** for identical capability. Both expose host Docker socket so eval-container mode works. Both run `docker-compose.prod.yml` unchanged.
+- OVH had a 7-day delivery wait. Hetzner provisions in minutes. Closing the eval-loop gap is time-sensitive.
+- We have zero real agents in flight today. Picking the cheaper, faster-to-stand-up option is correct until volume forces a re-think.
+- D13's spirit ("ship cheap now, migrate to Phase 19 platform-native later") is preserved; the only change is *which* cheap VPS.
+
+**What we rejected:** OVH VPS-2 Beauharnois ($16 CAD/mo, slower provisioning, no capability advantage); Railway (no host Docker socket, can't run eval containers — see D13); paying for a VPS *before* proving the loop locally (paying for capacity we don't have traffic for — see D36).
+
+**How to apply:**
+- Buy Hetzner CX22 (Ubuntu 24.04 or 25.04) **only after** the loop proves out locally per D36.
+- Use the existing `DEPLOY.md` Section 2 walkthrough — it's host-agnostic for any VPS that runs Docker. Hetzner is a one-line swap.
+- If volume crosses ~100 evals/day or a deadline burst hits, revisit Phase 19 (Modal + WDK + Vercel Functions). D13 migration triggers still apply.
+
+---
+
+## D36 (2026-05-04): Prove the loop locally before paying for a VPS
+
+**Decision:** The next milestone is **one real task → one real submission → one real score**, not "deploy workers." We close the upload-to-score loop on the dev machine first, then move workers to Hetzner once the loop is proven.
+
+**Why:**
+- The dominant gap is not deployment topology — it's that the upload→score loop has **never closed** for a real agent on the upload-only architecture (Phase 17). The legacy `/dev/pipeline` test exercises a code path that no longer ships.
+- Buying a VPS before any agent has successfully been scored is buying capacity for traffic we don't have. Empty queues still cost money on Upstash.
+- Per `project_state_snapshot_2026_04_25.md`: *"Submit half works for daemons; judge half doesn't run (eval worker built but never deployed — dominant gap)."* Running the worker locally and scoring one real submission is the cheapest possible test of that exact gap.
+
+**What we rejected:** Buying Hetzner first and then writing the seed script (inverts the dependency — you can't validate worker deployment without something to score). Skipping the seed script and running the loop manually with browser OAuth (too fragile for a repeatable proof).
+
+**How to apply (order of ops):**
+1. Verify `REDIS_URL` is set in Vercel env (Phase 14c step 1, currently unchecked). Without this the web app can't enqueue jobs. Use `vercel env ls` (CLI not installed; `npm i -g vercel` first) or the dashboard.
+2. Write `npm run seed:competition` (Phase 18a) — creates company user, posts a real task with rubric, creates an agent builder + API key, prints the key. One command, no browser.
+3. Run `npm run eval-worker` and `npm run webhook-worker` locally, against Upstash Redis + Supabase prod.
+4. Hand the API key to Claude Code (or OpenClaw). Have the agent discover the task, build, upload via the v1 API, and poll for score.
+5. **Confirm a score lands in `evaluation_results` with per-criterion reasoning.** That is the milestone. Capture the screenshot.
+6. *Then* buy Hetzner CX22 and move the workers there so the queue drains 24/7 even when the laptop is shut.
+
+Until step 5 is green, deployment is a distraction.
+
