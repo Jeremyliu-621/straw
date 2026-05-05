@@ -813,15 +813,25 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 
 <!-- RESUME HERE -->
 
-### Right Now Milestone (D36) — close the loop locally, then buy Hetzner
+### Right Now Milestone (D36) — REFRAMED 2026-05-04
 
-The next milestone is **one real task → one real submission → one real score**, not "deploy workers." Order of ops:
+**The original "prove the loop locally" framing was wrong** — the loop was already proven on 2026-04-15. See `tasks/research/phase18-results.md`: three real tasks created, three quality tiers submitted via `scripts/submit-tiers.ts`, scores 95.75 / 45.00 / 36.25, leaderboard verified, zero bugs. The core upload→eval→score path works.
+
+What's actually unproven splits into two questions:
+
+**Q1 — Does it still work today?** 19 days have passed since Phase 18. Code has churned (D34/D35/D36 + structural reorg). A fresh end-to-end run is a smoke test, not a milestone.
+
+**Q2 — Does it work for an autonomous agent?** Phase 18 used `scripts/submit-tiers.ts` — a hardcoded driver that knows the task ID, the API shape, and the upload path. That's not the agent-first test. The real test: hand a daemon (Claude Code, OpenClaw) an API key + base URL + **nothing else**, and watch it discover the task via `/api/docs` and compete. **This is what's never been done.** It's the test of whether `tasks/AGENT_FIRST_DREAM.md`'s thesis holds in practice.
+
+Steps:
 
 - [x] **Verify `REDIS_URL` is set in Vercel env.** ✓ Confirmed 2026-05-04: set in both Preview and Production for 11 days (`vercel env ls`). Vercel CLI 52.2.1 is also installed locally.
-- [ ] **Write `npm run seed:competition`** (Phase 18a) — creates company user, posts a real task with rubric, creates an agent builder + API key, prints the key. One command, no browser.
-- [ ] **Run workers locally against prod Upstash + Supabase.** Two terminals: `npm run eval-worker` + `npm run webhook-worker`. Confirm both log "waiting for jobs" and connect to Upstash.
-- [ ] **Hand the API key to Claude Code (or OpenClaw).** Have the agent discover the task, build, upload via the v1 API (zip + `SUBMISSION.md`), call `/complete`, and poll for score.
-- [ ] **Confirm a score lands in `evaluation_results`** with per-criterion reasoning. Capture the screenshot. **This is the milestone.** Until it's green, deployment is a distraction.
+- [x] **Seed-competition + multi-tier submitter scripts exist.** `scripts/seed-competition.ts`, `scripts/seed-more-tasks.ts`, `scripts/submit-tiers.ts`, `scripts/verify-local.sh`. Three open tasks live in prod (Markdown→HTML, URL shortener, CSV parser).
+- [x] **Workers run locally.** Documented + exercised end-to-end on 2026-04-15.
+- [x] **Loop validated end-to-end with a hardcoded driver.** Phase 18 results — three tiers, scored, ordered correctly.
+- [ ] **Smoke test (Q1):** start `npm run eval-worker` locally, run `npm run submit-tiers` (or equivalent) against any of the 3 existing open tasks. Confirm a score still lands. ~10 min.
+- [ ] **Agent-first test (Q2):** start `npm run eval-worker` locally, hand Claude Code (or OpenClaw) an API key + base URL `https://straw.wiki` + the two-line brief: *"compete on Straw, use `/api/docs` or MCP `compete` prompt."* No tutorial, no path hints. Watch what happens. **This is the load-bearing test.** Capture the transcript.
+- [ ] **Then deploy.** Once Q1 is green and Q2 has produced findings, buy Hetzner CX22 so the worker drains 24/7 (next section).
 
 ### After the milestone — buy Hetzner CX22 (D35)
 
