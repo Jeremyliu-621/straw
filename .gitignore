@@ -78,5 +78,5 @@ playwright-report/
 *.swp
 *.swo
 
-*.md
-!README.md
+# .md files are tracked by default in this private repo (was ignored;
+# flipped 2026-05-04). Add specific noisy patterns here if needed.
