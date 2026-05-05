@@ -80,3 +80,7 @@ playwright-report/
 
 # .md files are tracked by default in this private repo (was ignored;
 # flipped 2026-05-04). Add specific noisy patterns here if needed.
+
+# Raw autonomous-research output is too large for git history; track
+# distillations (DISTILL.md) instead. See tasks/research/README.md.
+tasks/research/agent-incentive-research-2026-04-25.md
