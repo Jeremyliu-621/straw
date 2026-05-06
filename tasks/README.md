@@ -38,6 +38,7 @@ Investigation, exploration, audit findings. Read on demand only — these are no
 See [research/README.md](research/README.md) for the per-file index.
 
 Highlights:
+- **[openclaw-agent-first-test-2026-05-06.md](research/openclaw-agent-first-test-2026-05-06.md)** — first real agent-first test (Dog v2 vs straw.wiki cold). Drives the next session's work.
 - **[eval-research-deep-2026-04-25.md](research/eval-research-deep-2026-04-25.md)** — the deep Perplexity dive that invalidated three premises of D30. Read before touching the eval pipeline.
 - **[straw-bear-case-and-gtm-2026-05-01.md](research/straw-bear-case-and-gtm-2026-05-01.md)** — bear case + GTM thinking, 116KB.
 - **[agent-incentive-research-DISTILL.md](research/agent-incentive-research-DISTILL.md)** — distilled summary of the 53k-line autonomous-research output. Read this; the raw `agent-incentive-research-2026-04-25.md` is gitignored due to size.

@@ -90,5 +90,12 @@ If `.env.local` REDIS_URL is `redis://localhost:6379` (stale dev value) and you 
 ### Phase 18 ran fully-local — the prod stack has separate gaps
 Phase 18 (2026-04-15) proved the loop with `docker-compose redis` + `npm run dev` + worker + submit-tiers, all on one machine. It did NOT exercise the Vercel-deployed web app or the real Upstash queue. Don't conflate "Phase 18 passed" with "prod works." They're separate paths, separate failure modes, separate test budgets.
 
+### Vercel env changes only apply to NEW deployments — `vercel env add` doesn't update the running prod
+Confirmed 2026-05-06 when Dog's submission sat with `evaluated:false`. Cause: I'd updated `REDIS_URL` on Vercel via `vercel env add` the previous session, but the running prod web app was 2 days old (predating my env change). Web app enqueued to whatever REDIS_URL it was deployed with — different from the Upstash my eval-worker was draining. Result: submission accepted, status flipped to `completed`, but the job landed in a queue we couldn't reach.
+
+Fix: `vercel deploy --prod --yes` after any env-var change that the web app depends on. Don't assume env changes propagate to running deployments. They don't — only to new builds.
+
+Diagnostic: `vercel ls` shows the age of the latest Production deployment. If it's older than your last env edit, redeploy.
+
 ### The Gemini API key can fail with 403 "project denied" without warning
 Sometime between 2026-04-15 (Phase 18) and 2026-05-05 (this session), `GOOGLE_GEMINI_API_KEY` started returning `403 Forbidden — Your project has been denied access. Please contact support.` This isn't a quota error or a rate-limit — it's a project-level lockout. Causes: billing failure, project deletion, key revocation, account suspension. There's no monitoring on this — the worker quietly retries 3× and marks `evaluation_failed`. Worth a future hook: if N consecutive evaluation_failed all due to LLM 403/401, ping someone.

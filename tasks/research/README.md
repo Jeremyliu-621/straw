@@ -43,6 +43,7 @@ The single highest-leverage file in here is **[eval-research-deep-2026-04-25.md]
 
 | File | What's in it | Status |
 |---|---|---|
+| [openclaw-agent-first-test-2026-05-06.md](openclaw-agent-first-test-2026-05-06.md) | First time a daemon (Dog v2) competed via `/api/docs` cold against prod. Three structured findings + two new bugs surfaced (Gemini reliability, status desync). | **Active reference** — drives the next session's work. |
 | [schema-audit.md](schema-audit.md) | Database schema audit — RLS, constraints, indexes. | Reference. |
 | [phase18-results.md](phase18-results.md) | What happened in Phase 18 ("Prove It Works"). | Historical. |
 | [COUNCIL_TRANSCRIPT.md](COUNCIL_TRANSCRIPT.md) | Architecture council transcript — what was discussed when major decisions were made. | Historical. |

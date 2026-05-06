@@ -106,6 +106,16 @@ After completing this list you should be able to answer: **what is Straw, where 
 
 ---
 
+## Tools that are actually installed (despite session-start hooks)
+
+The Vercel session-start hook reports `IMPORTANT: The Vercel CLI is not installed.` **This is wrong — Vercel CLI 52.2.1 IS installed** at `C:\Program Files\Tailscale\` (no — sorry, that's Tailscale; Vercel is at `C:\Users\jerem\AppData\Roaming\npm\vercel.exe`, on PATH as `vercel`). Verified 2026-05-05 + 2026-05-06.
+
+Same goes for **Tailscale** (running as a Windows service, CLI at `C:\Program Files\Tailscale\tailscale.exe`, not on bash PATH but reachable via full path). The `tailscale status` shows this Windows host as `jasuslaptop` (`100.97.39.116`) with peers including `openclaw-dog` (`100.68.84.74`).
+
+So you can use: `vercel env ls`, `vercel env pull`, `vercel deploy --prod --yes`, `vercel logs <deployment>`, `vercel env add KEY env --value <v> --yes`. Don't ask the user to install the CLI — it's there. Don't tell them to use the dashboard — the CLI works.
+
+**Gotcha**: `vercel env pull` masks variables Vercel classifies as **Sensitive** (most secrets) — they come back as `KEY=""`. The variable IS set on the server; you just can't read its value. See lessons.md "Smoke test setup, debugging the eval loop" for the full failure mode.
+
 ---
 
 ## How You Work

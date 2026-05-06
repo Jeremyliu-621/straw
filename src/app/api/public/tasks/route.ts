@@ -12,10 +12,16 @@ export async function GET(req: Request) {
   const { limit, cursor } = parsePagination(new URL(req.url));
   const db = createServiceClient();
 
+  // Defensive deadline filter: the close-tasks cron runs daily at midnight
+  // UTC, so a task that expires mid-day stays in status="open" for hours
+  // before the cron transitions it. Filter at read time so public/agent
+  // listings never show clearly-expired tasks. Found 2026-05-06 by Dog
+  // during the agent-first test.
   let query = db
     .from("tasks")
     .select("id, title, description, category, budget_cents, deadline, status, eval_mode, created_at")
     .eq("status", TASK_STATUS.OPEN)
+    .gt("deadline", new Date().toISOString())
     .order("created_at", { ascending: false })
     .limit(limit + 1);
 
