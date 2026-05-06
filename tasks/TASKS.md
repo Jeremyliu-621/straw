@@ -817,7 +817,7 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 **The blocker:** `GOOGLE_GEMINI_API_KEY` returns `403 Forbidden — Your project has been denied access. Please contact support.` Same key on `.env.local` and Vercel. This is the only thing standing between us and a real score landing right now.
 
 **Remaining gaps:**
-- ❌ **Gemini API key denied.** Jeremy needs to visit `aistudio.google.com/apikey`, fix the project (likely billing/suspension), and rotate. Update `.env.local` AND `vercel env add GOOGLE_GEMINI_API_KEY production --value <new>`.
+- ✅ ~~Gemini API key denied~~ — **rotated 2026-05-05.** New key (`AIzaSyDe1...`) verified working against gemini-2.5-flash + scored a real submission. Pushed to Vercel Production. `.env.local` has stale denied key — should be updated for cleanliness, but the inline-export pattern works fine for the worker.
 - ⏸ **No worker deployed 24/7.** Worker only runs when Jeremy starts it locally. Hetzner CX22 still needed for "live bounty board" (D35). But this is *after* the Gemini fix.
 - ⏸ **OpenClaw bridge port closed.** Dog's Gateway binds to `127.0.0.1:18789`, not the Tailscale interface (`100.68.84.74`). See memory `project_openclaw_bridge.md` for the rebind instructions Jeremy needs to give Dog.
 - ⏸ **SDK + MCP defaults** still point at `straw.vercel.app` (D34). Sweep + republish before any external integration.
@@ -830,34 +830,33 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 
 **Two milestones, in order:**
 
-**Q1 — Does the loop work end-to-end against real Upstash, today?**
+**Q1 — Does the loop work end-to-end against real Upstash, today?** ✅ **YES (2026-05-05 evening)**
 - ✅ Worker connects to real Upstash (no ECONNREFUSED — was failing earlier with stale `redis://localhost` in `.env.local`)
 - ✅ `quick-submit` accepted, enqueued, dequeued, artifact downloaded, prompt built
-- ❌ **Gemini 403 — needs Jeremy to fix the API key.** Until this is resolved, no score lands.
-- 🔧 Once Gemini works: re-run the smoke test (~30 sec — submission body in `/tmp/submission-body.json` is a known-good minimal Markdown→HTML, just curl POST again)
+- ✅ Gemini scoring works (after Jeremy rotated the dead key 2026-05-05)
+- ✅ **Score landed: `final=45.5` on submission `09190436-eed1-40d4-a4eb-ab84fb09dac1`** for the minimal Markdown→HTML submission. Consistent with Phase 18 tier-2 quick baseline (45.00).
+- 🔧 Re-runnable any time: `/tmp/submission-body.json` has the known-good body. Curl POST to `/api/v1/tasks/<id>/quick-submit` (or use `/request_re_eval` on the existing submission).
 
 **Q2 — Does it work for an autonomous agent?** Phase 18 used a hardcoded driver. The agent-first test (give Dog/Claude API key + base URL + nothing else, watch it discover via `/api/docs` and compete) has never been run. Brief composed; pasted to Jeremy this session for OpenClaw. Bridge to Dog blocked on port-rebind (see `project_openclaw_bridge.md`).
 
 ### Exact next steps for the next session
 
 **1. Ask Jeremy** for:
-- A new `GOOGLE_GEMINI_API_KEY` (current one is 403'd; he'll rotate via `aistudio.google.com/apikey`)
 - Confirmation that Dog's Gateway port is rebound to `0.0.0.0:18789` (or `tailscale serve` is set up)
 - The OpenClaw Gateway auth token (only after the rebind — see `project_openclaw_bridge.md`)
 
-**2. Once Gemini key is provided:**
-- Update `.env.local` line `GOOGLE_GEMINI_API_KEY=<new>`
-- Push to Vercel: `vercel env rm GOOGLE_GEMINI_API_KEY production --yes` then `vercel env add GOOGLE_GEMINI_API_KEY production --value <new> --yes`
-- Re-run smoke test: start `npm run eval-worker` (with `REDIS_URL=<upstash>` inline since `.env.local`'s value is `redis://localhost...` and stale), then re-curl the submission body in `/tmp/submission-body.json` to localhost:3000 OR straw.wiki
-- Watch worker log; expect score in ~10-30s
+**2. ~~Re-run smoke test~~ — DONE (2026-05-05 evening, score 45.5 landed).**
 
-**3. Once OpenClaw bridge works:**
-- Test Dog reachability: `curl -sS -H "Authorization: Bearer $OPENCLAW_TOKEN" http://100.68.84.74:18789/v1/chat/completions -d '{"model":"openclaw/default","messages":[{"role":"user","content":"ping"}]}'`
-- If responsive, send Dog the agent-first brief (in chat history this session — also captured in memory `project_openclaw_bridge.md` "Use Dog as a collaborator")
+**3. Run agent-first test (Q2) via OpenClaw bridge:**
+- Once Dog's Gateway is reachable: test with `curl -sS -H "Authorization: Bearer $OPENCLAW_TOKEN" http://100.68.84.74:18789/v1/chat/completions -d '{"model":"openclaw/default","messages":[{"role":"user","content":"ping"}]}'`
+- If responsive, send Dog the agent-first brief (composed this session — see chat or `project_openclaw_bridge.md` "Use Dog as a collaborator")
 - Have Dog compete on task `c36a63d7-5373-4f24-8c59-63b60b8c7f73` with the API key in `/tmp/seed-out.txt` (or rerun seed if expired)
+- Worker startup command: `REDIS_URL='rediss://default:<pw>@smashing-krill-73558.upstash.io:6379' GOOGLE_GEMINI_API_KEY='<new key>' npm run eval-worker` (both inline because `.env.local` is stale on both)
+- Dev server (only needed if Dog hits localhost; can also hit `straw.wiki` directly): same env-var prefix, then `npm run dev`
 
-**4. Once Q1 + Q2 both green:**
-- Buy Hetzner CX22 (D35), deploy `docker-compose.prod.yml` there
+**4. Once Q2 finds something interesting:**
+- Capture Dog's transcript + any audit findings in a new `tasks/research/openclaw-agent-first-test-<date>.md`
+- Buy Hetzner CX22 (D35), deploy `docker-compose.prod.yml` there with the same `REDIS_URL` and rotated `GOOGLE_GEMINI_API_KEY`
 - Address the Code Hygiene Backlog (below)
 
 ### After the milestone — buy Hetzner CX22 (D35)
@@ -1102,6 +1101,7 @@ Findings from a deep audit of `src/`, `packages/`, root, and migrations. **None 
 ### Cheap fixes (each <1hr)
 
 - [ ] **Quota number contradiction.** D15 says default 15, hard cap 25. But `src/app/api/docs/route.ts:28` says "up to 5", `:95-96` says `default_per_task: 5, max_per_task: 20`, and `packages/mcp-server/src/prompts/compete.ts:28` says "default 5". Three of four places wrong. Sweep + fix.
+- [ ] **Missing `notification_preferences` table.** Eval worker dispatch code logs `PGRST205: Could not find the table 'public.notification_preferences' in the schema cache` after every successful eval. Surfaced 2026-05-05 during smoke test. Non-blocking (eval still completes), but means agents miss notifications. Either restore the table OR remove the dispatch path that references it.
 - [ ] **SDK + MCP `baseUrl` sweep + republish** (D34, also tracked in 14c). Defaults to `straw.vercel.app`; should be `straw.wiki`. Affects `packages/agent-sdk/client.ts:40`, `packages/mcp-server/src/index.ts:12`, `dist/*` rebuild, READMEs, then `npm publish` both packages.
 - [ ] **TASKS.md phase numbering anomaly.** Two "Phase 14"s (lines 422 + 466) and Phase 18 appears AFTER Phase 19. Either renumber chronologically OR split this file into `done.md` / `now.md` / `later.md`.
 - [ ] **`/api/dev/pipeline-test`** — dev-only endpoint still publicly callable in prod. Auth-gate or remove before any public announce.
