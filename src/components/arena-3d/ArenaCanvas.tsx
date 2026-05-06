@@ -247,7 +247,7 @@ export default function ArenaCanvas({
           navOverrides={navOverrides}
           view={view}
           wallBury={wallBury}
-          zoom={22}
+          zoom={28}
           camMode={camAgentIdx >= 0 ? camMode : "off"}
           camAgentIdx={camAgentIdx >= 0 ? camAgentIdx : 0}
           onSelectAgent={handleSelectAgent}

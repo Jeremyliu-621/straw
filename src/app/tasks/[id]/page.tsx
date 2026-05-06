@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -57,6 +57,47 @@ export default function TaskDetailPage() {
 
   const isOwner = task?.company_id === session?.user?.supabaseId;
   const canCompete = !isOwner;
+
+  // ── Resizable split pane ──────────────────────────────────────────────────
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [leftPct, setLeftPct] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isLg, setIsLg] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    setIsLg(mq.matches);
+    const h = (e: MediaQueryListEvent) => setIsLg(e.matches);
+    mq.addEventListener("change", h);
+    return () => mq.removeEventListener("change", h);
+  }, []);
+
+  const handleDividerMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onMove = (ev: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      const pct = ((ev.clientX - rect.left) / rect.width) * 100;
+      setLeftPct(Math.min(Math.max(pct, 25), 72));
+    };
+
+    const onUp = () => {
+      setIsDragging(false);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  }, []);
 
   const handleDeadlineExpired = useCallback(() => {
     fetch(`/api/tasks/${id}/close`, { method: "POST" }).catch(() => {});
@@ -139,9 +180,12 @@ export default function TaskDetailPage() {
     <div className="h-screen overflow-hidden bg-[#FDFCFC]">
       {/* Two-column layout: left = details, right = leaderboard */}
       <div className="max-w-[1720px] mx-auto border-x border-gray-200 h-screen overflow-hidden">
-        <div className="flex flex-col lg:flex-row h-full">
+        <div ref={containerRef} className="flex flex-col lg:flex-row h-full">
           {/* Left panel — task details */}
-          <div className="w-full lg:w-[40%] lg:border-r border-gray-200 overflow-y-auto">
+          <div
+            className="w-full overflow-y-auto"
+            style={isLg ? { flex: `0 0 ${leftPct}%`, minWidth: 0 } : undefined}
+          >
             <div className="px-8 lg:px-12 py-8 space-y-8">
               {/* Heading */}
               <div className="flex flex-col gap-4">
@@ -301,8 +345,14 @@ export default function TaskDetailPage() {
             </div>
           </div>
 
+          {/* Draggable divider */}
+          <DividerHandle onMouseDown={handleDividerMouseDown} isDragging={isDragging} />
+
           {/* Right panel — leaderboard */}
-          <div className="w-full lg:w-[60%] overflow-y-auto">
+          <div
+            className="w-full overflow-y-auto"
+            style={isLg ? { flex: 1, minWidth: 0 } : undefined}
+          >
             <div className="px-8 lg:px-8 py-8">
               {/* Deadline + countdown */}
               <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
@@ -344,7 +394,7 @@ export default function TaskDetailPage() {
                       Hidden on narrow viewports where the panel is too
                       cramped; shown on md+ above the leaderboard table. */}
                   <div className="hidden md:block mb-6 border border-gray-200 rounded-md overflow-hidden">
-                    <ArenaCanvas taskId={id} height={460} showSidebar={false} />
+                    <ArenaCanvas taskId={id} height={540} showSidebar={false} />
                   </div>
                   <Leaderboard taskId={id} />
                 </>
@@ -358,6 +408,73 @@ export default function TaskDetailPage() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Draggable divider ─────────────────────────────────────────────────────────
+
+function DividerHandle({
+  onMouseDown,
+  isDragging,
+}: {
+  onMouseDown: (e: React.MouseEvent) => void;
+  isDragging: boolean;
+}) {
+  return (
+    <div
+      onMouseDown={onMouseDown}
+      className="hidden lg:flex group relative flex-shrink-0 items-center justify-center select-none"
+      style={{ width: 12, cursor: "col-resize", zIndex: 10 }}
+    >
+      {/* Separator line */}
+      <div
+        className="absolute inset-y-0 transition-all duration-150"
+        style={{
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: isDragging ? 2 : 1,
+          background: isDragging ? "#9ca3af" : "#e5e7eb",
+          transition: "width 100ms, background 100ms",
+        }}
+      />
+
+      {/* Floating grip pill — fades in on hover / drag */}
+      <div
+        className={`relative z-10 flex flex-col gap-[3px] rounded-[3px] px-[3px] py-[5px] transition-all duration-150 ${
+          isDragging
+            ? "opacity-100 shadow-md"
+            : "opacity-0 group-hover:opacity-100 shadow-sm"
+        }`}
+        style={{
+          background: "white",
+          border: `1px solid ${isDragging ? "#d1d5db" : "#e5e7eb"}`,
+          boxShadow: isDragging
+            ? "0 2px 8px rgba(0,0,0,0.14)"
+            : "0 1px 3px rgba(0,0,0,0.10)",
+        }}
+      >
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="flex gap-[3px]">
+            <div
+              className="rounded-full transition-colors duration-150"
+              style={{
+                width: 3,
+                height: 3,
+                background: isDragging ? "#6b7280" : "#9ca3af",
+              }}
+            />
+            <div
+              className="rounded-full transition-colors duration-150"
+              style={{
+                width: 3,
+                height: 3,
+                background: isDragging ? "#6b7280" : "#9ca3af",
+              }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
