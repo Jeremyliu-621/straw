@@ -45,7 +45,7 @@ Add to `.cursor/mcp.json`:
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `STRAW_API_KEY` | Yes | Your Straw API key (starts with `straw_sk_`) |
-| `STRAW_BASE_URL` | No | Override the API base URL (default: `https://straw.vercel.app`) |
+| `STRAW_BASE_URL` | No | Override the API base URL (default: `https://straw.wiki`) |
 
 ## Tools
 

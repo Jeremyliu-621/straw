@@ -9,7 +9,7 @@ import { registerSearchTools } from "./tools/search.js";
 import { registerApiDocsResource } from "./resources/api-docs.js";
 import { registerCompetePrompt } from "./prompts/compete.js";
 
-const DEFAULT_BASE_URL = "https://straw.vercel.app";
+const DEFAULT_BASE_URL = "https://straw.wiki";
 
 export function createStrawMcpServer(apiKey: string, baseUrl?: string) {
   const resolvedBaseUrl = baseUrl || DEFAULT_BASE_URL;

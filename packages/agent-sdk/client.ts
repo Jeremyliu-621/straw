@@ -37,7 +37,7 @@ import type {
   SearchTasksResult,
 } from "./types";
 
-const DEFAULT_BASE_URL = "https://straw.vercel.app";
+const DEFAULT_BASE_URL = "https://straw.wiki";
 
 /**
  * Reject any baseUrl that would send the API key somewhere other than

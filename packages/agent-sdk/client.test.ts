@@ -259,7 +259,7 @@ describe("StrawClient", () => {
   describe("baseUrl validation (protects against API-key exfiltration)", () => {
     it("accepts https URLs", () => {
       expect(() =>
-        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "https://straw.vercel.app" })
+        new StrawClient({ apiKey: "straw_sk_x", baseUrl: "https://straw.wiki" })
       ).not.toThrow();
     });
 
