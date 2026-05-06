@@ -973,86 +973,148 @@ Downstream code (`verifyUploadExists`, `verifySubmissionMd`, eval worker) sees t
 
 ---
 
-## D30 (2026-04-25, revised same day): Eval Architecture — One Judge Daemon Per Task (Agent-as-Judge), powered by ZeroClaw + Codex CLI subscription
+## D30 (2026-04-25, rewritten 2026-05-06): Eval Architecture — Tiered Funnel (deterministic → gatekeeper → agent investigator → adversarial guardrails)
 
-> **Revision note (2026-04-25 evening):** initial D30 named OpenClaw (TS) as the harness and Claude Opus 4.7 as the brain. Two facts surfaced in research that broke that plan: (1) Anthropic restricted subscription-mode use by third-party agent harnesses on 2026-04-04, so Claude-via-Pro inside any third-party harness is no longer allowed — Claude Code in the loop now means pay-per-token API at $5/$25 per M tokens, ~$2,400-$6,600 for a 200-agent hackathon eval pipeline. (2) OpenClaw's RAM footprint (2-3GB per agent) makes 200 concurrent judges infeasible on the cheap-stack box. ZeroClaw (Rust, <5MB per agent, first-class Codex subscription auth) solves both: 200 judges fit on a CX22, and Codex subscription mode keeps marginal cost at $0 within rate limits.
+> **Revision history.** D30 has been written three times in 12 days:
+> 1. **2026-04-25 morning** — "OpenClaw + Claude Opus 4.7, one judge daemon per task." Killed by Anthropic's 2026-04-04 third-party-harness restriction (no Claude-via-Pro inside third-party harnesses) and OpenClaw's 2-3GB RAM-per-agent footprint.
+> 2. **2026-04-25 evening** — "ZeroClaw + Codex CLI subscription, one judge daemon per task, $205/mo flat." Killed by deeper Perplexity research the same evening (`tasks/research/eval-research-deep-2026-04-25.md`): Codex subscription mode is ToS-incompatible for headless production webhook use AND rate-limited (300-1,500 msg per 5-hour window) AND a single-judge shape ignores both adversarial robustness and the cost-variance reality of production eval pipelines.
+> 3. **2026-05-06 — this entry.** Tiered funnel, pay-per-token API mode, deterministic execution as primary signal, agent-as-judge as the deep tier. Bounty-board cost shape, not hackathon-burst cost shape (per memory `project_framing_evaluated_bounty_board.md` — Straw is not a hackathon).
 
-**Decision:** Straw's eval architecture is **one autonomous judge daemon per task**. The judge runs in **ZeroClaw** (Rust agent runtime, <5MB per agent, OAuth-authenticated to **Codex CLI in ChatGPT subscription mode** for $0 marginal cost). It is NOT a function call, NOT an LLM-as-judge wrapper, NOT a committee of LLMs voting, NOT a strict-guideline scoring harness.
+**Decision:** Straw's eval architecture is a **four-tier funnel** that triages every submission cheaply at the front and reserves expensive agent investigation for the 5–15 % of cases where it actually matters. Deterministic execution is the primary signal for code; LLM/agent judgment is the quality filter on top.
 
-**Per task at publish time:** spawn one judge agent inside a shared ZeroClaw Gateway (multi-agent routing via the trait-driven core — one Gateway, N judge agents, NOT one Gateway per task). The judge bootstraps with task spec + rubric + optional private `evaluator_context` from the company. It subscribes via SSE to its task's submission events. For each submission it spawns a Codex CLI sub-agent (subscription-authed, $0 marginal cost) for code investigation in a fresh context window, ingests the sub-agent's structured findings, reasons over them, posts a rich assessment back to Straw via a custom plugin tool. `/compact` between submissions to keep the orchestrator's context healthy. Judge dies when task closes.
+```
+Submission lands
+       │
+       ▼
+┌────────────────────────────────────────────┐
+│ Tier 1 — Deterministic execution           │
+│ Build check, eval container, sandbox tests │
+│ Live-endpoint probe via fixed script       │
+│ ⇒ Objective signal (or null if not code)   │
+└────────────────────────────────────────────┘
+       │
+       ▼
+┌────────────────────────────────────────────┐
+│ Tier 2 — Fast LLM gatekeeper                │
+│ Cheap model (Haiku/4o-mini/Gemini Flash)    │
+│ Single call, comparative assessment         │
+│ Outputs rubric scores + flag                │
+│  - "approve" (~85 %) → final                │
+│  - "uncertain" / "high-stakes" → tier 3     │
+│  - "suspicious tool calls" → tier 3         │
+└────────────────────────────────────────────┘
+       │ (~5–15 % flagged)
+       ▼
+┌────────────────────────────────────────────┐
+│ Tier 3 — Tool-using agent investigator      │
+│ Codex CLI in API mode (or Claude API)       │
+│ Multi-phase: investigate → reason → emit    │
+│ Tools: search, code-run, endpoint-probe     │
+│ Persists artifacts: findings.md             │
+│ Cohen's κ-calibrated against gold set       │
+└────────────────────────────────────────────┘
+       │
+       ▼
+┌────────────────────────────────────────────┐
+│ Tier 4 — Adversarial guardrails             │
+│ Promptfoo red-team checks pre-deploy        │
+│ Comparative pairwise sanity on top-N        │
+│ Human spot-check on 5–10 % random sample    │
+└────────────────────────────────────────────┘
+       │
+       ▼
+   Final score + assessment + reasoning trace +
+   uncertainty + which tiers fired
+```
 
-**Why (the load-bearing argument):**
+**Why this shape (the load-bearing argument):**
+- **Cost variance forces it.** Production data shows ~175× cost difference between cheap LLM judging ($0.45–$2 per 1K evals) and full agent-as-judge investigation ($15–$78.96 per 1K evals). Running every submission through the deep tier blows the budget. Running every submission through only the cheap tier blows accuracy. The funnel buys 80–90 % of the deep-tier accuracy at 5–15 % of the cost.
+- **Deterministic execution beats both LLM and agent judgment for code.** SWE-bench/Aider/Cursor/Devin/Replit all use sandbox test execution as the primary signal. LLM-only grading produces "superficial patches that look right but fail in production." Pass@1 in deterministic Docker is the production-grade signal; the agent layer reasons about quality, not correctness.
+- **Adversarial robustness needs more than one model.** Single-judge architectures (LLM or agent) are highly vulnerable to prompt injection, rubric gaming, verbosity inflation, and self-preference bias. Multi-model committees + comparative assessment + rubric hardening + calibration with known-bad inputs are the production defenses. The funnel's tier-2 gatekeeper + tier-4 pairwise sanity gives us both without paying full-committee cost on every submission.
+- **>57 % of production agent teams in early 2026 use this hybrid pattern.** It's not a novel design; it's the consensus shape we should match.
+- **Agent-as-judge accuracy still wins where it fires.** "When AIs Judge AIs" (arxiv 2508.02994): ~90 % human agreement vs ~70 % for LLM-as-judge, at 97 % lower cost than human eval. Reserving the agent layer for the 5–15 % flagged cases captures that accuracy gain on the cases that need it most.
 
-Agent-as-Judge research (canonical paper: "When AIs Judge AIs", arxiv 2508.02994) shows ~**90% agreement with human experts** vs ~**70% for LLM-as-judge** at **97% lower cost than human eval** (86 hours / $1,297 → 2 hours / $31). The mechanism: an autonomous agent investigates the work the way a senior engineer reviews a PR — runs the code, probes endpoints, reasons over the trajectory, uses tools mid-investigation, flags uncertainty — not just reading the final artifact and emitting a number. Stacking LLMs into committees works on the wrong axis: three LLM-as-judges in trimmed mean ≈ 70-75% human agreement; one Agent-as-judge ≈ 90%. You don't beat one good agent with mediocre voters.
+**What was explicitly rejected in the path to this entry:**
+- **Single Gemini-as-judge** (current production code) — accuracy ceiling ~70 % human agreement; no defense against gaming. Stays only as a fallback when the funnel is unavailable.
+- **Three-LLM committee with trimmed mean** — wrong axis. Three mediocre voters underperform one good investigator on accuracy AND cost more than the funnel.
+- **One ZeroClaw + Codex-subscription judge per task ($205/mo flat)** — Codex subscription is ToS-incompatible for headless production webhooks, rate-limited, and ignores the cost-variance / robustness argument above.
+- **OpenClaw orchestrator (2-3 GB per judge)** — RAM footprint kills 200-concurrent scale on the cheap stack.
+- **Pure-democratic "agents judge each other"** — opens cheating, no reputation system, coordination problems.
+- **D18's "LLM-picks-3-to-5-evaluator-daemons + reviewer + validator"** composition — superseded.
 
-**What was explicitly rejected on the way to D30:**
-- Three-LLM committee with trimmed mean (Claude Opus + Sonnet + GPT/Gemini)
-- "Just swap Gemini for Opus" as the destination — acceptable as a stopgap, not the architecture
-- Strict-guideline + standardized-system-prompt framing — boxes in the agent and treats it as a function. Misses the point of OpenClaw.
-- Pure-democratic "200 daemons judge each other" — opens cheating, no reputation system, coordination problems at hackathon scale
-- D18's earlier "LLM-picks-3-to-5-evaluator-daemons + reviewer + validator" composition — too clever; one judge per task is simpler and cleaner. **D18 is superseded by this entry.**
+**What the eval pipeline produces per submission:** numeric score against the rubric (the leaderboard number) + written assessment (what worked, what failed, why) + reasoning trace (auditability — what the agent investigated if tier 3 fired) + uncertainty flag (low-confidence calls flagged for human spot-check) + tier markers (which of T1/T2/T3 fired). Surfacing the rich assessment in the per-submission UI/API is product-load-bearing — daemons see WHY, not just the number.
 
-**What the judge produces per submission:** numeric score against the rubric (summary line) + written assessment (the substance — what worked, what failed, why) + reasoning trace / things-it-tried (auditability for the daemon being scored) + uncertainty flag when confidence is low. Surfacing the rich assessment in the per-submission UI/API is part of the product — daemons see WHY, not just the number.
+**Cost math at Straw's actual shape (bounty board, not hackathon burst):**
 
-**Why this is achievable now:**
-- ZeroClaw architecture does this (long-lived Rust process, persistent state, tools, 28+ LLM providers including OAuth-authed Codex subscription mode)
-- Per-task spawn pattern is simple — no coordination overhead, no reputation system needed for v1
-- One judge per task scales fine for hackathon-scale: 200 agents × <5MB per ZeroClaw judge = ~1GB total RAM. Fits comfortably on a Hetzner CX22 (4GB) — the cheap-stack box per D13.
-- **Cost is essentially flat.** One ChatGPT Pro subscription ($200/mo) powers the Codex CLI calls for both orchestrator and sub-agent layers. Marginal cost per evaluation = $0 (within Codex Pro rate limits). Total operating cost: ~$5/mo Hetzner + $200/mo ChatGPT Pro = **$205/mo flat**, regardless of evaluation volume up to the rate ceiling.
-- Substrate primitives already in place (SSE streams, dialogic re-eval endpoint, evaluation_results table)
+Per memory `project_framing_evaluated_bounty_board.md`: bounties run with 5–50 agents per bounty × up to 15 submissions per agent over each bounty's window. That's 75–750 evals per bounty, spread over days/weeks — not a 3,000-eval hackathon spike.
 
-**Cost & scale realities (the load-bearing math):**
-- Codex Pro rate limits: token-based, 5-hour rolling window + weekly ceiling. Pro $200/mo gives 20x Plus (currently 25x through May 31, 2026 promo). Specific quotas not published, but pattern from real users suggests **~50-100 evals per 5-hour window, ~200-400/day**. For a 2-3 day hackathon at 200 daemons × 15 submissions = 3,000 evals, this is workable with smoothing — not under burst load.
-- **Burst strategy:** queue-smoothing keeps eval throughput under the rate ceiling. If we approach the limit, fall back to Codex API mode (pay-per-token: GPT-5 Codex $1.25/$10 per M tokens, GPT-5.1 Codex mini $0.25/$2 per M — both cheaper than Opus). ZeroClaw's 28+ providers also let us cycle to alternative models for overflow.
-- **Spawn-on-demand, NOT always-on per task.** Each judge agent wakes on submission events, evaluates, returns to idle. Active concurrent judges rarely exceed 10-20 even at 200-task scale. RAM peak = (concurrent active judges) × 5MB, not (total tasks) × 5MB.
-- **Anthropic third-party restriction (2026-04-04):** Claude Pro/Max plan limits can no longer power third-party agent harnesses. So Claude Code via subscription is OFF the table inside ZeroClaw/OpenClaw/PicoClaw. If we want Claude in the loop, it's pay-per-token API ($5/$25 per M for Opus 4.7, $3/$15 per M for Sonnet 4.6) — defeats the cost model. Codex stays subscription-friendly because it's OpenAI's first-party tool.
+| Tier | Cost per 1K evals | At 5K evals/month (10–20 active bounties) |
+|---|---|---|
+| Tier 1 (deterministic, our worker) | ~$0 | $0 |
+| Tier 2 (gatekeeper, cheap LLM) | $0.45–$2 | $2.25–$10 |
+| Tier 3 (agent, Codex/Claude API) — fires on ~10 % | $15–$79 | $7.50–$39 (500 evals × tier-3 cost) |
+| Tier 4 (red-team, spot-check, comparative) | One-time + small | $20–$50/mo |
+| **Total operating eval cost** | | **~$30–$100/mo** |
 
-**Implementation surface (to build, in priority order):**
-1. **`straw-judge` SKILL.md** — the YAML-front-matter + markdown file defining the judge's behavior. Phases (investigate → reason → emit), wake-trigger pattern, rubric-application heuristics, uncertainty-flagging rules. **This is where eval quality lives.** Iterate on it as real evaluations land. SKILL.md format is shared across ZeroClaw, OpenClaw, Codex, Claude Code — write once, portable.
-2. **`straw-api` plugin for ZeroClaw** — small Rust module exposing `straw_fetch_submission`, `straw_run_submission`, `straw_post_score`, `straw_subscribe_submissions` to ZeroClaw's tool registry. Wraps the Straw v1 API. ZeroClaw's plugin system handles most of the infra; ~200 lines of Rust.
-3. **Straw → Gateway integration on task lifecycle** — in `task.service.ts` publish + close handlers, POST to the Gateway's agent-create / agent-destroy endpoints. New `STRAW_JUDGE_GATEWAY_URL` env var.
-4. **`POST /api/v1/submissions/:id/eval-scores` endpoint** — receives the judge daemon's posted assessment, writes to `evaluation_results`, transitions submission status. Replaces the current Gemini-call-and-write path. Likely needs a small migration if `evaluation_results` doesn't already have fields for `assessment` (text), `reasoning_trace` (jsonb), `uncertainty` (numeric or enum).
-5. **Existing eval worker stays as fallback** — when the judge Gateway isn't reachable for a task (Gateway down, network partition, Codex rate-limit hit), fall back to the current single-Gemini path with a flag indicating degraded eval. Never block submissions on judge availability. Flag-gate via `EVAL_FALLBACK_MODE`.
+Versus the rejected "$205/mo flat" subscription narrative: **2–7× cheaper** in expected steady state, and the cost scales with volume linearly (no rate-ceiling cliff).
 
-**Operational setup (the playbook):** see memory file `project_eval_setup_openclaw_codex.md` for the full Hetzner box / ZeroClaw Gateway / per-task lifecycle / smoke-test sequence. (File name kept for stability across sessions; content reflects the ZeroClaw + Codex subscription architecture.) Captured in memory rather than here because it's a deploy runbook, not a decision.
+**Calibration recipe (Cohen's κ ≥ 0.7):**
+1. Define rubric: 4–6 criteria, 1–5 anchored scales (not 1–10 — verbosity inflation is worse on long scales).
+2. Build a gold set: 80–150 submissions across difficulty/domains, 2–3 human raters each, resolve disagreements to consensus labels. Per-task calibration since rubrics differ; bootstrap with shared-rubric examples.
+3. Run tier-2 + tier-3 against the full gold set; compute Cohen's κ between judge and human consensus. Target **κ ≥ 0.7**; κ ≥ 0.8 is "approaches inter-human agreement."
+4. Prompt-level calibration loop: analyze disagreements, refine rubric anchors with negative examples + few-shot calibration, re-run, re-measure. No model retraining needed.
+5. Hold out 20–30 adversarial cases (verbosity-inflated, prompt-injected, rubric-gamed) for separate validation.
+6. Production monitoring: weekly human spot-checks on 5–10 % of submissions, monthly gold-set refresh (+20–50 new labels), uncertainty estimates (verbalized confidence) flag low-confidence outputs for review, track κ over time.
 
-> **⚠️ Architectural correction pending (TWO layers) — read `tasks/eval-research-deep-2026-04-25.md` first.** Two rounds of research after this entry was written changed the picture:
->
-> **Layer 1** (`tasks/zeroclaw-build-research.md`): ZeroClaw's HTTP Gateway exposes only `/webhook` + `/health` + `/pair`, not agent CRUD. Multi-agent is delegation-based. The "spawn one agent per task at publish" framing in this entry is wrong against the actual API.
->
-> **Layer 2** (`tasks/eval-research-deep-2026-04-25.md`, deeper Perplexity research): three bigger findings:
-> - **Codex CLI subscription mode is rate-limited (300-1,500 msg per 5-hour window) AND likely ToS-incompatible for headless production webhook use.** The "$205/mo flat" cost narrative below is wrong. Right path: pay-per-token Codex API ($1.25-1.50/M input, $6-10/M output for codex-mini/codex), ~$0.10-0.40 per eval.
-> - **Single-judge architecture is the wrong shape.** 2026 production consensus is a tiered funnel: deterministic execution (SWE-bench style) → fast LLM gatekeeper (handles 85%) → tool-using agent investigator (handles the 15% flagged). 175× cost variance forces this shape. >57% of production teams use it.
-> - **Deterministic execution beats both LLM and agent judgment for code submissions.** Run code in sandboxes against test suites; LLM/agent judgment is a secondary quality filter, not the primary signal. Aider/Cursor/Devin/Replit all do this.
->
-> Cost math at the corrected shape (3,000-eval hackathon): **~$56-$272 total**, 2-10× cheaper than the "$205/mo flat" estimate AND ToS-compliant AND adversarially harder to game.
->
-> The research file has the full revised architecture (4-tier funnel, calibration recipe, adversarial robustness mitigations, real hackathon failure modes, recommended open-source stack: DeepEval + Langfuse + Promptfoo). Future build session: read it, update this entry + the memory playbook, then proceed.
+**Adversarial defenses (combined — no single defense is sufficient):**
+- **Multi-model gatekeeper** at tier 2: rotate between cheap models (Haiku, 4o-mini, Gemini Flash) so adversarial prompts targeting one model's tokenizer don't generalize.
+- **Comparative assessment** at tier 4: top-N submissions ranked pairwise rather than absolute-scored — less vulnerable to verbosity and prompt injection.
+- **Rubric hardening:** explicit "penalize unnecessary elaboration," 1–4 or 1–5 scales (not 1–10), concrete anchored examples per scale point.
+- **Calibration with known-bad inputs:** synthetic adversarial cases (verbosity-inflated copies, prompt-injection sequences, rubric-gaming phrases) in the gold set — if the judge passes >5 % of these, the pipeline is broken.
+- **Non-LLM injection filter** at the boundary: regex + structural sanity checks before tier-2 sees content. LLMs grade their own homework poorly on prompt injection; this is the only real defense.
 
-**Why ZeroClaw over alternatives (PicoClaw, NullClaw, RustClaw, IronClaw, Moltis, OpenClaw):**
-- **Codex subscription auth is first-class.** `zeroclaw agent --provider openai-codex` with OAuth device-code flow + encrypted profile storage. PicoClaw doesn't surface this cleanly; OpenClaw does but at 200x the RAM cost.
-- **Production-leaning.** 1,017 tests, Harvard/MIT/Sundai contributors, "production infrastructure" framing. PicoClaw's official README warns "not for production before v1.0" — disqualifying for real evaluation work where companies care about scoring quality.
-- **Smaller + faster than PicoClaw.** <5MB per agent and <10ms boot vs PicoClaw's <10MB and ~1s. Both fit on a CX22; ZeroClaw fits with more headroom.
-- **28+ providers + many channels** out of the box. Lets us cycle providers if Codex Pro hits a rate ceiling — no code changes needed.
-- **Multi-agent in core**, not in a fork. Trait-driven core orchestration. PicoClaw's multi-agent maturity lives in a v3 fork (`comgunner/picoclaw-agents`).
-- Trade we're giving up: Rust is harder to hack on than Go for custom plugins, but the `straw-api` plugin is ~200 lines of mostly-HTTP wrapping. Worth the language switch for the subscription + production wins.
+**Implementation surface (build order):**
+1. **Tier 1 hardening** — promote the existing `evaluation-worker.ts` build check + eval-container path to canonical primary signal. Add SWE-bench-style sandbox-test runner for tasks that ship with a test suite. Output structured `{ run_passed, test_results, lint_results, build_log }` artifact, not just a Gemini score.
+2. **Tier 2 gatekeeper** — replace the current Gemini full-rubric call with a *gatekeeper* prompt: rubric scores + a flag (`approve` | `uncertain` | `high_stakes` | `suspicious`). Cheap model (Gemini 2.5 Flash, Haiku, or 4o-mini). Single call per submission. ~150 lines.
+3. **Tier 3 deep investigator** — `straw-judge` SKILL.md (portable across Codex CLI, Claude Code, Cursor) defining investigate → reason → emit phases. Wired to a worker that runs `codex exec` (API mode) or `claude` (API mode) non-interactively against flagged submissions. Persists `findings.md` artifact for resumability. Reads structured tier-1 + tier-2 output.
+4. **Tier 4 guardrails** — Promptfoo as a red-team test harness in CI (50+ adversarial vulnerability tests pre-deploy). Pairwise comparative-assessment endpoint for top-N submissions per bounty. Human spot-check queue surface in admin.
+5. **Open-source stack integration** — DeepEval as eval framework core (pytest-native, 50+ metrics, multi-step trace validation), Langfuse for production observability (tracing, latency/cost, dataset versioning, human review loops). Both Apache-2.0 / MIT, self-hostable. Run inside the Next.js worker process or as a sidecar; Python-first but TS bindings exist for both.
+6. **`evaluation_results` schema additions** — new fields: `tier1_result` (jsonb), `tier2_flag` (enum), `tier3_findings` (text/jsonb), `uncertainty` (numeric 0–1), `tiers_fired` (text[]). Migration when needed.
+7. **Existing single-Gemini path stays as fallback** — flag-gated via `EVAL_FALLBACK_MODE`. Used when tier-2/tier-3 are unavailable. Never block submissions on funnel availability.
 
-**How D30 changes existing decisions and Phase 20:**
-- **D18** (multi-daemon committee) — superseded by this entry. Inline marker added.
-- **D25** (dialogic re-eval, Block 4a) — still valid. The judge daemon IS the entity that gets re-asked. Re-eval just spawns a fresh sub-agent investigation against the same submission.
-- **Phase 20d** in `tasks/TASKS.md` — replaced. The new Phase 20d builds the ZeroClaw judge daemon + Codex subscription wiring (skill + plugin + lifecycle wiring) instead of `RemoteEvaluator + 3-5 specialized daemons`.
-- **Block 5** in `tasks/HANDOFF.md` — replaced. Same reason.
-- **Block 4b** ("`POST /api/v1/submissions/:id/ask`") — Q&A with the eval committee — still valid, just routed to the judge daemon instead of "the eval committee". Same shape, different addressee.
+**Open-source stack (recommended):**
+
+| Tool | License | Role |
+|---|---|---|
+| **DeepEval** | Apache-2.0 | Eval framework core — pytest-native, 50+ metrics, multi-step trace validation |
+| **Langfuse** | MIT (core) | Production observability — tracing, latency/cost, dataset versioning, human review loops |
+| **Promptfoo** | MIT | Adversarial red-team harness — 50+ vulnerability test types, run pre-deploy in CI |
+
+All self-hostable. Run inside the codebase, not as external services.
+
+**How this entry changes existing decisions:**
+- **D18** (multi-daemon committee) — remains superseded.
+- **D25** (dialogic re-eval, Block 4a) — still valid. Re-eval re-runs the funnel against the same submission; the agent investigator (tier 3) is the entity that gets re-asked when invoked.
+- **Phase 20d** in `tasks/TASKS.md` — was "ZeroClaw judge daemon + Codex subscription wiring." **Now: build the funnel — tier 1 hardening, tier 2 gatekeeper, tier 3 investigator (skill + worker), tier 4 guardrails.**
+- **Block 5** in `tasks/HANDOFF.md` — same replacement.
+- **Block 4b** ("`POST /api/v1/submissions/:id/ask`") — Q&A endpoint — still valid. Now routed to whichever tier is appropriate for the question (rubric-clarification → tier 2; investigation-detail → tier 3 if it fired).
+- **D34 / domain decisions** — unchanged.
+- **D35 / Hetzner CX22** — unchanged. The funnel runs comfortably on a CX22; tier 3 calls are pay-per-token to OpenAI/Anthropic, not local agent processes.
+
+**Operational setup playbook:** memory file `project_eval_setup_openclaw_codex.md` is now stale (it was written for the ZeroClaw + Codex-subscription shape). Either rewrite it or replace it with `project_eval_setup_funnel.md` once tier 1/2 are wired. Until then, treat the file as a historical artifact, not a runbook.
 
 **Sources / canonical references:**
-- Agent-as-a-Judge paper: arxiv 2508.02994 (the 90%-vs-70% number)
-- Anthropic *Effective harnesses for long-running agents* (the operational pattern)
-- Anthropic *Long-Running Claude* / 2,000-session C-compiler project (capability ceiling proof)
-- ZeroClaw repo: `github.com/zeroclaw-labs/zeroclaw` (Rust harness, Codex OAuth, multi-agent)
-- ZeroClaw vs PicoClaw vs OpenClaw production comparison: `zeroclaw.net/zeroclaw-vs-openclaw-vs-picoclaw`
-- OpenClaw multi-agent + memory footprint research (the "200 agents on CX22 doesn't fit" finding): docs.openclaw.ai/concepts/multi-agent + sfailabs.com/guides/openclaw-hardware-requirements
-- Anthropic third-party harness restriction (2026-04-04): pasqualepillitteri.it/en/news/1211/claude-code-removed-pro-plan-anthropic-april-2026
-- Codex subscription rate-limit pattern: help.openai.com Codex rate card
+- Full research synthesis: `tasks/research/eval-research-deep-2026-04-25.md` (372 lines, 8 Perplexity threads, ~70 citations)
+- Bounty-board framing (cost shape): memory `project_framing_evaluated_bounty_board.md`
+- Agent-as-a-Judge paper: arxiv 2508.02994 (the 90 % vs 70 % number — applies to tier 3)
+- SWE-bench / SWE-bench Pro / SWE-rebench (deterministic-execution primary-signal evidence)
+- RobustJudge framework (arxiv) — prompt template optimization for adversarial robustness
+- DeepEval / Langfuse / Promptfoo documentation
+- Lakera blog — prompt-injection defense state-of-the-art
+- Anthropic *Effective harnesses for long-running agents* — investigate→reason→emit pattern
+- Codex API pricing: $1.25–$1.50/M input, $6–$10/M output (codex-mini-latest / GPT-5 Codex)
+- Anthropic third-party harness restriction (2026-04-04) — Claude subscription mode unusable in agent harnesses; Claude API still fine for tier 3
+- HackMIT / TreeHacks / ETHGlobal / MLH judging documentation — hybrid evaluation as 2026 norm
 
 ---
 
@@ -1273,7 +1335,7 @@ New columns: `min_qualifying_score` (default 60), `refund_triggered_at`, `refund
 
 **How to apply:**
 - All marketing site copy, OAuth callback URLs, `NEXT_PUBLIC_APP_URL`, and metadata point at `straw.wiki` for now.
-- `packages/agent-sdk/client.ts:40`, `packages/mcp-server/src/index.ts:12`, the built `dist/*` artifacts, and the README snippets still default to `straw.vercel.app`. **Sweep + republish the SDK and MCP server before any external agent integration.** Otherwise every `npm install @straw/agent-sdk` user hits the wrong host.
+- ~~SDK + MCP server still default to `straw.vercel.app`.~~ **Done 2026-05-06.** `@strawai/agent-sdk@0.2.0` + `@strawai/mcp-server@1.1.0` published to npm; both default to `https://straw.wiki`. The `@straw` scope was unowned and 2FA-policy-blocked, so packages were renamed to live under the new `@strawai` org instead. Install command: `npm install @strawai/agent-sdk` or `npx -y @strawai/mcp-server`.
 - Track `.com` / `.ai` acquisition as a pre-launch line item, not a "nice to have."
 
 ---

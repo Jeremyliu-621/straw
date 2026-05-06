@@ -798,7 +798,7 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 ### Already done (as of 2026-05-04)
 
 - [x] Vercel web app deployed at `straw.wiki` (was `straw.vercel.app` — D34)
-- [x] OAuth apps configured (GitHub + Google) — callback URLs still point at `straw.vercel.app`, need to be moved to `straw.wiki` (tracked in 14c step 3)
+- [x] OAuth apps configured (GitHub + Google) — production deployment serves callbacks from `https://straw.wiki/api/auth/callback/{github,google}` (verified live 2026-05-06). External OAuth-app dashboards (GitHub/Google) need straw.wiki added as an allowed redirect URI if not already; Jeremy must verify.
 - [x] Upstash Redis provisioned in ca-central-1 (Montreal). `REDIS_URL` lives in `.env.local`. **Not yet verified in Vercel env.**
 - [x] Supabase project `straw` (`ptvipiqorbqxoypbfeoj`) in us-east-1
 - [x] Gemini API key provisioned
@@ -820,7 +820,7 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 - ✅ ~~Gemini API key denied~~ — **rotated 2026-05-05.** New key (`AIzaSyDe1...`) verified working against gemini-2.5-flash + scored a real submission. Pushed to Vercel Production. `.env.local` has stale denied key — should be updated for cleanliness, but the inline-export pattern works fine for the worker.
 - ⏸ **No worker deployed 24/7.** Worker only runs when Jeremy starts it locally. Hetzner CX22 still needed for "live bounty board" (D35). But this is *after* the Gemini fix.
 - ⏸ **OpenClaw bridge port closed.** Dog's Gateway binds to `127.0.0.1:18789`, not the Tailscale interface (`100.68.84.74`). See memory `project_openclaw_bridge.md` for the rebind instructions Jeremy needs to give Dog.
-- ⏸ **SDK + MCP defaults** still point at `straw.vercel.app` (D34). Sweep + republish before any external integration.
+- ✅ ~~SDK + MCP defaults still point at `straw.vercel.app`~~ — **swept + republished 2026-05-06.** `@strawai/agent-sdk@0.2.0` and `@strawai/mcp-server@1.1.0` live on npm, both default to `https://straw.wiki`. Smoke-tested via `npx -y @strawai/mcp-server@1.1.0` end-to-end. (Note: `@straw` scope was unowned, so packages live under new org `@strawai` instead.)
 
 <!-- RESUME HERE -->
 
@@ -874,7 +874,7 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 - [ ] **SDK + MCP `baseUrl` sweep + republish** (D34): `packages/agent-sdk/client.ts:40`, `packages/mcp-server/src/index.ts:12`, READMEs, rebuild `dist/*`, `npm publish` both packages. Default to `https://straw.wiki`.
 - [ ] Move OAuth callbacks to `straw.wiki` (tracked in 14c step 3)
 - [ ] Track `straw.com` / `getstraw.com` / `straw.ai` acquisition as a pre-Series-A blocker (D34)
-- [ ] Backfill `supabase_migrations.schema_migrations` for migrations 001–027 (currently only 028–030 are tracked; `supabase db push` will try to re-apply 001–027 and may fail until this is fixed)
+- [x] Backfill `supabase_migrations.schema_migrations` for migrations 001–027 (done 2026-05-06). 15 rows inserted with versions matching the Supabase CLI's `^([0-9]+)_(.+)\.sql$` parse — `001`, `002`, `003`, `004`, `017`–`027` (005–016 don't exist as files and don't need rows). 028–037 keep their existing 14-digit timestamp versions. `supabase db push` against this project should now be a no-op against current head.
 - [ ] Verify submission quota: default 15/agent/task, poster-configurable, hard cap 25 (D15)
 
 ---
@@ -1100,15 +1100,15 @@ Findings from a deep audit of `src/`, `packages/`, root, and migrations. **None 
 
 ### Cheap fixes (each <1hr)
 
-- [ ] **Quota number contradiction.** D15 says default 15, hard cap 25. But `src/app/api/docs/route.ts:28` says "up to 5", `:95-96` says `default_per_task: 5, max_per_task: 20`, and `packages/mcp-server/src/prompts/compete.ts:28` says "default 5". Three of four places wrong. Sweep + fix.
+- [x] ~~Quota number contradiction~~ — **already fixed** (verified 2026-05-06). All four sites read 15/25 correctly: `src/app/api/docs/route.ts:26` ("default 15, hard cap 25"), `:148-149` (`default_per_task: 15, max_per_task: 25`), `packages/mcp-server/src/prompts/compete.ts:28` ("default 15…hard cap 25"), `packages/mcp-server/src/tools/company.ts:34` (`min(1).max(25)…default 15, hard cap 25`). The 2026-05-04 audit caught a state that had already been corrected.
 - [ ] **Missing `notification_preferences` table.** Eval worker dispatch code logs `PGRST205: Could not find the table 'public.notification_preferences' in the schema cache` after every successful eval. Surfaced 2026-05-05 during smoke test. Non-blocking (eval still completes), but means agents miss notifications. Either restore the table OR remove the dispatch path that references it.
 - [x] **SDK + MCP `baseUrl` sweep + rebuild** (D34, 2026-05-06). Source + READMEs updated, dist rebuilt, both packages bumped (`agent-sdk` 0.1.0 → 0.2.0, `mcp-server` 1.0.0 → 1.1.0). All 6 stale `straw.vercel.app` references replaced with `straw.wiki`. Verified: built dist contains `straw.wiki` 5× total, `straw.vercel.app` 0×. **Publish step pending — Jeremy must run `npm login` then `cd packages/agent-sdk && npm publish --access public`, then `cd ../mcp-server && npm install && npm publish --access public`.**
 - [ ] **TASKS.md phase numbering anomaly.** Two "Phase 14"s (lines 422 + 466) and Phase 18 appears AFTER Phase 19. Either renumber chronologically OR split this file into `done.md` / `now.md` / `later.md`.
-- [ ] **`/api/dev/pipeline-test`** — dev-only endpoint still publicly callable in prod. Auth-gate or remove before any public announce.
+- [x] ~~`/api/dev/pipeline-test` publicly callable in prod~~ — **already fixed** (verified 2026-05-06). Two-factor gated via `assertDevEndpointEnabled()` in `src/lib/dev-gate.ts`: requires both `NODE_ENV === "development"` AND `ALLOW_DEV_ENDPOINTS === "true"`. Returns 403 otherwise. The 2026-05-04 audit caught a state that had already been corrected.
 
 ### Medium effort (1-3 hrs each)
 
-- [ ] **Migration sequence gap + schema_migrations backfill.** Files jump 001 → 002 → 003 → 004 → 017. Twelve numbers missing. `supabase_migrations.schema_migrations` table only tracks 028-030. Fresh `supabase db push` will try to re-apply 001-027 and break. Either backfill the tracking table OR collapse 001-003 into a `000_baseline.sql` reflecting current prod state.
+- [x] ~~Migration sequence gap + schema_migrations backfill~~ — **partial fix 2026-05-06.** Backfilled `supabase_migrations.schema_migrations` with 15 rows for 001/002/003/004 + 017–027 using version strings that match the Supabase CLI's `^([0-9]+)_(.+)\.sql$` parse. `supabase db push` against this project should now be a no-op against current head. The deeper "rename to timestamp format or collapse into 000_baseline" question is unresolved — left as a future call.
 - [ ] **Move `optiboarding-repo/` out of the working tree.** It's a separate Next.js app ("optimal-ai") gitignored at repo root. Polluting every grep, every file picker, every Glob. Should live in its own clone elsewhere.
 - [ ] **Delete the stale `e2e-pipeline.ts` script** + update TESTING.md. Both reference the Phase 17-deleted docker-execution path. Anyone running `npm run test:pipeline` today gets confused.
 - [ ] **Sweep `src/`/`scripts/`/`DEPLOY.md`/`README.md`/`package.json` for hardcoded `tasks/X.md` paths.** Per CLAUDE.md anchor-list rule, only CLAUDE.md should hardcode paths. Find and replace any code-side references with stable IDs or wikilink slugs.
@@ -1122,7 +1122,7 @@ Findings from a deep audit of `src/`, `packages/`, root, and migrations. **None 
 
 - D36 loop-proof milestone → see "Right Now Milestone" above
 - Pre-launch polish items (OAuth callbacks to straw.wiki, `test-suites` bucket, submission quota verification) → see "Pre-launch polish" above
-- Eval architecture flux (D30 revised twice) → see DECISIONS.md D30 + `tasks/research/eval-research-deep-2026-04-25.md`
+- Eval architecture (D30 rewritten 2026-05-06 to tiered funnel) → see DECISIONS.md D30 + `tasks/research/eval-research-deep-2026-04-25.md`. Phase 20d in this file is now **build the funnel** (T1 hardening → T2 gatekeeper → T3 deep investigator → T4 guardrails) instead of "build the ZeroClaw judge."
 
 ---
 

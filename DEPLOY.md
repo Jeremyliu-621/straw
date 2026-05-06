@@ -35,8 +35,8 @@ The Next.js app deploys to Vercel with zero config.
 
 ### After deploying
 
-- Update your GitHub OAuth app's callback URL to `https://your-domain.vercel.app/api/auth/callback/github`
-- Update your Google OAuth app's callback URL to `https://your-domain.vercel.app/api/auth/callback/google`
+- Update your GitHub OAuth app's callback URL to `https://<your-domain>/api/auth/callback/github` (production currently uses `https://straw.wiki/api/auth/callback/github`)
+- Update your Google OAuth app's callback URL to `https://<your-domain>/api/auth/callback/google`
 - Update `NEXT_PUBLIC_APP_URL` to match your domain
 
 ---
@@ -211,7 +211,7 @@ docker compose -f docker-compose.prod.yml logs --tail=5
 # [webhook] Webhook worker started, waiting for jobs...
 
 # Test from your deployed app
-curl -X POST https://your-domain.vercel.app/api/dev/pipeline-test
+curl -X POST https://<your-domain>/api/dev/pipeline-test
 # (remove this endpoint before going live)
 ```
 
