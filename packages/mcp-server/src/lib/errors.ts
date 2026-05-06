@@ -1,4 +1,4 @@
-import { StrawApiError } from "@straw/agent-sdk";
+import { StrawApiError } from "@strawai/agent-sdk";
 
 export type McpToolResult = {
   content: Array<{ type: "text"; text: string }>;

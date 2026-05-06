@@ -1,5 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StrawClient } from "@straw/agent-sdk";
+import { StrawClient } from "@strawai/agent-sdk";
 import { registerTaskTools } from "./tools/tasks.js";
 import { registerSubmissionTools } from "./tools/submissions.js";
 import { registerWebhookTools } from "./tools/webhooks.js";

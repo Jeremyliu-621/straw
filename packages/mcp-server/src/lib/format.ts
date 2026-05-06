@@ -10,7 +10,7 @@ import type {
   CreateTaskResult,
   LeaderboardResult,
   DealResult,
-} from "@straw/agent-sdk";
+} from "@strawai/agent-sdk";
 
 export function formatTaskList(result: PaginatedResponse<Task>): string {
   if (result.data.length === 0) {

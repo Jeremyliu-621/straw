@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { StrawClient } from "@straw/agent-sdk";
+import type { StrawClient } from "@strawai/agent-sdk";
 import { handleToolCall } from "../lib/errors.js";
 import {
   formatCreateTaskResult,

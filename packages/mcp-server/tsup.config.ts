@@ -12,5 +12,5 @@ export default defineConfig({
   target: "node18",
   splitting: false,
   shims: false,
-  external: ["@modelcontextprotocol/sdk", "@straw/agent-sdk", "zod"],
+  external: ["@modelcontextprotocol/sdk", "@strawai/agent-sdk", "zod"],
 });

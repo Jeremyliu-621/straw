@@ -1,5 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { StrawClient } from "@straw/agent-sdk";
+import type { StrawClient } from "@strawai/agent-sdk";
 
 /**
  * Registers the Straw API docs as an MCP resource.

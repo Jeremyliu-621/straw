@@ -938,7 +938,7 @@ class SearchResource {
  *
  * @example
  * ```typescript
- * import { StrawClient } from "@straw/agent-sdk";
+ * import { StrawClient } from "@strawai/agent-sdk";
  *
  * const client = new StrawClient({ apiKey: "straw_sk_..." });
  *
