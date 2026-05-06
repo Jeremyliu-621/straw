@@ -171,30 +171,6 @@ function LeaderboardTable({
         borderRight: borderRight ? "1px solid var(--border)" : undefined,
       }}
     >
-      {/* Header row */}
-      <div
-        className="grid font-sans"
-        style={{
-          gridTemplateColumns: showSubScores
-            ? "1fr 80px 80px 90px"
-            : "1fr 90px",
-          fontSize: "11px",
-          fontWeight: 500,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase" as const,
-          color: "var(--text-muted)",
-          borderBottom: "1px solid var(--border)",
-          padding: "12px 16px",
-          background: "var(--bg-subtle)",
-        }}
-      >
-        <span>Agent</span>
-        {showSubScores && <span style={{ textAlign: "right" }}>Test</span>}
-        {showSubScores && <span style={{ textAlign: "right" }}>LLM</span>}
-        <span style={{ textAlign: "right" }}>Score</span>
-      </div>
-
-      {/* Data rows */}
       {entries.map((entry) => (
         <LeaderboardRow
           key={entry.submissionId}
@@ -220,27 +196,17 @@ function LeaderboardRow({
     <div
       className="grid font-sans"
       style={{
-        gridTemplateColumns: showSubScores
-          ? "1fr 80px 80px 90px"
-          : "1fr 90px",
-        height: "56px",
+        gridTemplateColumns: showSubScores ? "1fr 52px 52px 44px" : "1fr 44px",
+        height: 26,
         alignItems: "center",
         borderBottom: "1px solid var(--border)",
-        padding: "0 16px",
-        transition: "background-color 0.15s ease",
-        cursor: "default",
-      }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.background = "var(--bg-subtle)";
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.background = "transparent";
+        padding: "0 10px",
       }}
     >
       <span
-        className="font-sans flex items-baseline gap-3"
+        className="font-sans flex items-baseline gap-2 truncate"
         style={{
-          fontSize: "15px",
+          fontSize: 12,
           fontWeight: isWinner ? 500 : 400,
           color: "var(--text)",
         }}
@@ -248,26 +214,25 @@ function LeaderboardRow({
         <span
           className="font-mono"
           style={{
-            fontSize: "13px",
+            fontSize: 11,
             fontWeight: isWinner ? 600 : 400,
             color: "var(--text-muted)",
-            minWidth: "20px",
+            minWidth: 16,
+            flexShrink: 0,
           }}
         >
           {entry.rank}
         </span>
-        {entry.agentName}
+        <span className="truncate">{entry.agentName}</span>
       </span>
       {showSubScores && (
         <span
           className="font-mono"
           style={{
             textAlign: "right",
-            fontSize: "14px",
-            color:
-              entry.testScore !== null
-                ? "var(--text)"
-                : "var(--text-faint)",
+            fontSize: 11,
+            color: entry.testScore !== null ? "var(--text-muted)" : "var(--text-faint)",
+            fontVariantNumeric: "tabular-nums",
           }}
         >
           {entry.testScore !== null ? entry.testScore.toFixed(1) : "\u2014"}
@@ -278,11 +243,9 @@ function LeaderboardRow({
           className="font-mono"
           style={{
             textAlign: "right",
-            fontSize: "14px",
-            color:
-              entry.llmScore !== null
-                ? "var(--text)"
-                : "var(--text-faint)",
+            fontSize: 11,
+            color: entry.llmScore !== null ? "var(--text-muted)" : "var(--text-faint)",
+            fontVariantNumeric: "tabular-nums",
           }}
         >
           {entry.llmScore !== null ? entry.llmScore.toFixed(1) : "\u2014"}
@@ -292,9 +255,10 @@ function LeaderboardRow({
         className="font-mono"
         style={{
           textAlign: "right",
-          fontSize: isWinner ? "18px" : "14px",
+          fontSize: isWinner ? 13 : 12,
           fontWeight: 600,
           color: "var(--text)",
+          fontVariantNumeric: "tabular-nums",
         }}
       >
         {entry.finalScore.toFixed(1)}
@@ -326,22 +290,22 @@ function LeaderboardSkeleton() {
           overflow: "hidden",
         }}
       >
-        {[1, 2, 3].map((i) => (
+        {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
             style={{
-              height: "56px",
+              height: 26,
               borderBottom: "1px solid var(--border)",
               display: "flex",
               alignItems: "center",
-              padding: "0 16px",
+              padding: "0 10px",
             }}
           >
             <div
               className="animate-pulse"
               style={{
-                height: "16px",
-                width: `${60 + i * 10}%`,
+                height: 10,
+                width: `${50 + i * 8}%`,
                 background: "var(--bg-subtle)",
                 borderRadius: "var(--radius)",
               }}

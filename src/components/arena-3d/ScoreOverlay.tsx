@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
 import type { ArenaAgent } from "./useStrawAgents";
 
 interface ScoreOverlayProps {
@@ -10,27 +10,76 @@ interface ScoreOverlayProps {
   onSelectAgent: (id: string | null) => void;
 }
 
-function formatScore(score: number | null): string {
-  if (score === null) return "--";
-  return score.toFixed(1);
-}
+const LABEL_STYLE: React.CSSProperties = {
+  fontSize: 11,
+  fontWeight: 500,
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+  color: "var(--text-muted)",
+};
 
-function statusLabel(status: string | null): { text: string; color: string } {
-  switch (status) {
-    case "running":
-      return { text: "Running", color: "#d97706" };
-    case "pending":
-      return { text: "Queued", color: "#6366f1" };
-    case "completed":
-      return { text: "Done", color: "#16a34a" };
-    case "failed":
-    case "evaluation_failed":
-      return { text: "Failed", color: "#dc2626" };
-    case "registered":
-      return { text: "Registered", color: "#64748b" };
-    default:
-      return { text: "Idle", color: "#94a3b8" };
-  }
+function LeaderboardRow({
+  agent,
+  isSelected,
+  onSelect,
+}: {
+  agent: ArenaAgent;
+  isSelected: boolean;
+  onSelect: () => void;
+}) {
+  const rank = agent.rank ?? 0;
+  const isWinner = rank === 1;
+
+  return (
+    <button
+      onClick={onSelect}
+      className="w-full text-left font-sans grid"
+      style={{
+        gridTemplateColumns: "1fr 44px",
+        alignItems: "center",
+        height: 26,
+        padding: "0 10px",
+        borderBottom: "1px solid var(--border)",
+        background: isSelected ? "rgba(0,0,0,0.04)" : undefined,
+        cursor: "pointer",
+      }}
+    >
+      <span
+        className="flex items-baseline gap-2 truncate"
+        style={{
+          fontSize: 12,
+          fontWeight: isWinner ? 500 : 400,
+          color: "var(--text)",
+        }}
+      >
+        <span
+          className="font-mono"
+          style={{
+            fontSize: 11,
+            fontWeight: isWinner ? 600 : 400,
+            color: "var(--text-muted)",
+            minWidth: 16,
+            flexShrink: 0,
+          }}
+        >
+          {rank}
+        </span>
+        <span className="truncate">{agent.displayName ?? `Agent ${rank}`}</span>
+      </span>
+      <span
+        className="font-mono"
+        style={{
+          textAlign: "right",
+          fontSize: isWinner ? 13 : 12,
+          fontWeight: 600,
+          color: "var(--text)",
+          fontVariantNumeric: "tabular-nums",
+        }}
+      >
+        {agent.score !== null ? agent.score.toFixed(1) : "—"}
+      </span>
+    </button>
+  );
 }
 
 export default function ScoreOverlay({
@@ -39,112 +88,117 @@ export default function ScoreOverlay({
   selectedAgentId,
   onSelectAgent,
 }: ScoreOverlayProps) {
-  const [collapsed, setCollapsed] = useState(false);
+  const sorted = useMemo(
+    () => [...agents].sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999)),
+    [agents]
+  );
+
+  const half = Math.ceil(sorted.length / 2);
+  const cols = [sorted.slice(0, half), sorted.slice(half)];
 
   return (
     <div
-      className="flex flex-col border-l border-gray-200 bg-white/95 backdrop-blur-sm"
-      style={{ width: collapsed ? 48 : 300, transition: "width 200ms ease" }}
+      style={{
+        flex: "1 1 40%",
+        minWidth: 0,
+        borderLeft: "1px solid var(--border)",
+        background: "var(--bg)",
+        padding: "20px 16px",
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-        {!collapsed && (
-          <span className="text-[11px] font-medium uppercase tracking-wide text-gray-400">
-            Live Rankings
+      <div
+        className="flex items-baseline justify-between font-sans"
+        style={{ marginBottom: 8 }}
+      >
+        <span style={LABEL_STYLE}>Leaderboard</span>
+        {agents.length > 0 && (
+          <span style={{ fontSize: 11, color: "var(--text-muted)" }}>
+            {agents.length} agent{agents.length !== 1 ? "s" : ""}
           </span>
         )}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="text-gray-400 hover:text-black transition-colors"
-          title={collapsed ? "Expand" : "Collapse"}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {collapsed ? (
-              <path d="M9 18l6-6-6-6" />
-            ) : (
-              <path d="M15 18l-6-6 6-6" />
-            )}
-          </svg>
-        </button>
       </div>
 
-      {collapsed ? null : (
-        <div className="flex-1 overflow-y-auto">
-          {loading ? (
-            <div className="p-4 space-y-3">
+      {loading ? (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            overflow: "hidden",
+          }}
+        >
+          {[0, 1].map((col) => (
+            <div
+              key={col}
+              style={{ borderRight: col === 0 ? "1px solid var(--border)" : undefined }}
+            >
               {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="h-10 bg-gray-50 rounded animate-pulse" />
+                <div
+                  key={i}
+                  style={{
+                    height: 26,
+                    padding: "4px 10px",
+                    borderBottom: "1px solid var(--border)",
+                  }}
+                >
+                  <div
+                    className="animate-pulse rounded"
+                    style={{ height: 10, background: "var(--border)", width: "70%" }}
+                  />
+                </div>
               ))}
             </div>
-          ) : agents.length === 0 ? (
-            <div className="p-6 text-center">
-              <p className="text-sm text-gray-500">No agents competing yet</p>
-              <p className="text-xs text-gray-400 mt-1">
-                Agents will appear here as they submit
-              </p>
+          ))}
+        </div>
+      ) : agents.length === 0 ? (
+        <div
+          style={{
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            padding: "24px 16px",
+            textAlign: "center",
+          }}
+        >
+          <p className="font-sans" style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>
+            No agents competing yet
+          </p>
+          <p
+            className="font-sans"
+            style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4, opacity: 0.6 }}
+          >
+            Agents will appear as they submit
+          </p>
+        </div>
+      ) : (
+        <div
+          style={{
+            position: "relative",
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            overflow: "hidden",
+            background: "var(--bg)",
+          }}
+        >
+          {cols.map((entries, i) => (
+            <div
+              key={i}
+              style={{ borderRight: i < cols.length - 1 ? "1px solid var(--border)" : undefined }}
+            >
+              {entries.map((agent) => (
+                <LeaderboardRow
+                  key={agent.id}
+                  agent={agent}
+                  isSelected={selectedAgentId === agent.id}
+                  onSelect={() => onSelectAgent(agent.id)}
+                />
+              ))}
             </div>
-          ) : (
-            <div>
-              {agents.map((agent, idx) => {
-                const { text: statusText, color: statusColor } = statusLabel(agent.latestStatus);
-                const isSelected = selectedAgentId === agent.id;
-
-                return (
-                  <button
-                    key={agent.id}
-                    onClick={() => onSelectAgent(isSelected ? null : agent.id)}
-                    className="w-full text-left px-4 py-2.5 border-b border-gray-100 hover:bg-gray-50/80 transition-colors"
-                    style={{
-                      background: isSelected ? "rgba(99, 102, 241, 0.05)" : undefined,
-                      borderLeft: isSelected ? "2px solid #6366f1" : "2px solid transparent",
-                    }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span
-                        className="font-mono text-xs text-gray-400 w-5 text-right"
-                        style={{ fontWeight: idx === 0 ? 600 : 400 }}
-                      >
-                        {idx + 1}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <p
-                          className="text-[13px] font-medium text-gray-900 truncate"
-                          style={{
-                            fontWeight: idx === 0 ? 600 : 500,
-                            color: agent.displayName === null ? "#94a3b8" : undefined,
-                            fontStyle: agent.displayName === null ? "italic" : undefined,
-                          }}
-                        >
-                          {agent.displayName ?? "Awaiting submission"}
-                        </p>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <span
-                            className="text-[10px] font-medium uppercase tracking-wider"
-                            style={{ color: statusColor }}
-                          >
-                            {statusText}
-                          </span>
-                          <span className="text-[10px] text-gray-300">|</span>
-                          <span className="text-[10px] text-gray-400 truncate">
-                            {agent.taskTitle}
-                          </span>
-                        </div>
-                      </div>
-                      <span
-                        className="font-mono text-sm tabular-nums"
-                        style={{
-                          fontWeight: idx < 3 ? 600 : 400,
-                          color: agent.score !== null ? "#111" : "#94a3b8",
-                        }}
-                      >
-                        {formatScore(agent.score)}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          ))}
         </div>
       )}
     </div>

@@ -141,7 +141,7 @@ export default function TaskDetailPage() {
       <div className="max-w-[1720px] mx-auto border-x border-gray-200 h-screen overflow-hidden">
         <div className="flex flex-col lg:flex-row h-full">
           {/* Left panel — task details */}
-          <div className="w-full lg:w-[52%] lg:border-r border-gray-200 overflow-y-auto">
+          <div className="w-full lg:w-[40%] lg:border-r border-gray-200 overflow-y-auto">
             <div className="px-8 lg:px-12 py-8 space-y-8">
               {/* Heading */}
               <div className="flex flex-col gap-4">
@@ -302,7 +302,7 @@ export default function TaskDetailPage() {
           </div>
 
           {/* Right panel — leaderboard */}
-          <div className="w-full lg:w-[48%] overflow-y-auto">
+          <div className="w-full lg:w-[60%] overflow-y-auto">
             <div className="px-8 lg:px-8 py-8">
               {/* Deadline + countdown */}
               <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">

@@ -232,7 +232,8 @@ export default function ArenaCanvas({
     <div className="flex w-full" style={{ height }}>
       {/* 3D canvas */}
       <div
-        className={`flex-1 relative overflow-hidden ${showSidebar ? "rounded-l-lg" : "rounded-lg"}`}
+        className={`relative overflow-hidden ${showSidebar ? "rounded-l-lg" : "rounded-lg"}`}
+        style={{ flex: showSidebar ? "1 1 60%" : "1 1 auto", minWidth: 0 }}
       >
         <TunerScene
           cohort={cohort}
