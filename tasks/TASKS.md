@@ -805,33 +805,60 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 - [x] **Migration 030 applied** — RLS hardening on 6 public-schema tables (webhooks/webhook_deliveries/notifications/task_invitations/submission_artifacts/task_comments), tightened audit_log INSERT, pinned search_path on 3 trigger functions. Zero security lints remaining.
 - [x] **OVH pre-order dropped (D35).** Hetzner CX22 chosen instead — 3.5× cheaper, instant provisioning, identical capability for eval-container mode.
 
-### Honest production state (2026-05-04)
+### Honest production state (updated 2026-05-05)
 
-- **Redis is alive but useless.** `REDIS_URL` connects from local. Web app *probably* can't enqueue from Vercel until step 1 below is verified. **No worker is consuming the queue in production** — eval-worker has never been deployed. A real submission today lands in Supabase Storage, may or may not enqueue, and never gets scored.
-- **Submit half works for daemons; judge half doesn't run.** This is the dominant gap to "live bounty board people can use."
-- **SDK + MCP defaults still point at `straw.vercel.app`.** Every external `npm install @straw/agent-sdk` user hits the wrong host until the sweep + republish in 14c step 3 ships.
+**The pipeline works.** As of the 2026-05-05 smoke test:
+
+- ✅ **Real Upstash URL works for BullMQ.** Eval-worker connects, drains queue, processes jobs without ECONNREFUSED. URL format: `rediss://default:<password>@smashing-krill-73558.upstash.io:6379` (TCP/TLS, NOT the REST URL).
+- ✅ **Vercel REDIS_URL Production** is now set to the working Upstash URL (overrode previously-empty value 2026-05-05). Preview pending — needs `vercel env add REDIS_URL preview <gitbranch>` syntax fix.
+- ✅ **`quick-submit` → Supabase Storage → Upstash → eval-worker** all healthy. Smoke test submission `09190436-eed1-40d4-a4eb-ab84fb09dac1` traversed the full pipeline.
+- ✅ **Worker error handling is correct** — Gemini 403 retried 3×, marked `evaluation_failed`, no fake score written.
+
+**The blocker:** `GOOGLE_GEMINI_API_KEY` returns `403 Forbidden — Your project has been denied access. Please contact support.` Same key on `.env.local` and Vercel. This is the only thing standing between us and a real score landing right now.
+
+**Remaining gaps:**
+- ❌ **Gemini API key denied.** Jeremy needs to visit `aistudio.google.com/apikey`, fix the project (likely billing/suspension), and rotate. Update `.env.local` AND `vercel env add GOOGLE_GEMINI_API_KEY production --value <new>`.
+- ⏸ **No worker deployed 24/7.** Worker only runs when Jeremy starts it locally. Hetzner CX22 still needed for "live bounty board" (D35). But this is *after* the Gemini fix.
+- ⏸ **OpenClaw bridge port closed.** Dog's Gateway binds to `127.0.0.1:18789`, not the Tailscale interface (`100.68.84.74`). See memory `project_openclaw_bridge.md` for the rebind instructions Jeremy needs to give Dog.
+- ⏸ **SDK + MCP defaults** still point at `straw.vercel.app` (D34). Sweep + republish before any external integration.
 
 <!-- RESUME HERE -->
 
-### Right Now Milestone (D36) — REFRAMED 2026-05-04
+### Right Now Milestone (D36) — Q1 PARTIAL, Q2 BLOCKED ON GEMINI
 
-**The original "prove the loop locally" framing was wrong** — the loop was already proven on 2026-04-15. See `tasks/research/phase18-results.md`: three real tasks created, three quality tiers submitted via `scripts/submit-tiers.ts`, scores 95.75 / 45.00 / 36.25, leaderboard verified, zero bugs. The core upload→eval→score path works.
+**Phase 18 already proved the upload→eval→score path on 2026-04-15** (see `tasks/research/phase18-results.md`: three quality tiers, scores 95.75/45.00/36.25). The 2026-05-05 smoke test confirmed the path still works at every layer except the LLM call.
 
-What's actually unproven splits into two questions:
+**Two milestones, in order:**
 
-**Q1 — Does it still work today?** 19 days have passed since Phase 18. Code has churned (D34/D35/D36 + structural reorg). A fresh end-to-end run is a smoke test, not a milestone.
+**Q1 — Does the loop work end-to-end against real Upstash, today?**
+- ✅ Worker connects to real Upstash (no ECONNREFUSED — was failing earlier with stale `redis://localhost` in `.env.local`)
+- ✅ `quick-submit` accepted, enqueued, dequeued, artifact downloaded, prompt built
+- ❌ **Gemini 403 — needs Jeremy to fix the API key.** Until this is resolved, no score lands.
+- 🔧 Once Gemini works: re-run the smoke test (~30 sec — submission body in `/tmp/submission-body.json` is a known-good minimal Markdown→HTML, just curl POST again)
 
-**Q2 — Does it work for an autonomous agent?** Phase 18 used `scripts/submit-tiers.ts` — a hardcoded driver that knows the task ID, the API shape, and the upload path. That's not the agent-first test. The real test: hand a daemon (Claude Code, OpenClaw) an API key + base URL + **nothing else**, and watch it discover the task via `/api/docs` and compete. **This is what's never been done.** It's the test of whether `tasks/AGENT_FIRST_DREAM.md`'s thesis holds in practice.
+**Q2 — Does it work for an autonomous agent?** Phase 18 used a hardcoded driver. The agent-first test (give Dog/Claude API key + base URL + nothing else, watch it discover via `/api/docs` and compete) has never been run. Brief composed; pasted to Jeremy this session for OpenClaw. Bridge to Dog blocked on port-rebind (see `project_openclaw_bridge.md`).
 
-Steps:
+### Exact next steps for the next session
 
-- [x] **Verify `REDIS_URL` is set in Vercel env.** ✓ Confirmed 2026-05-04: set in both Preview and Production for 11 days (`vercel env ls`). Vercel CLI 52.2.1 is also installed locally.
-- [x] **Seed-competition + multi-tier submitter scripts exist.** `scripts/seed-competition.ts`, `scripts/seed-more-tasks.ts`, `scripts/submit-tiers.ts`, `scripts/verify-local.sh`. Three open tasks live in prod (Markdown→HTML, URL shortener, CSV parser).
-- [x] **Workers run locally.** Documented + exercised end-to-end on 2026-04-15.
-- [x] **Loop validated end-to-end with a hardcoded driver.** Phase 18 results — three tiers, scored, ordered correctly.
-- [ ] **Smoke test (Q1):** start `npm run eval-worker` locally, run `npm run submit-tiers` (or equivalent) against any of the 3 existing open tasks. Confirm a score still lands. ~10 min.
-- [ ] **Agent-first test (Q2):** start `npm run eval-worker` locally, hand Claude Code (or OpenClaw) an API key + base URL `https://straw.wiki` + the two-line brief: *"compete on Straw, use `/api/docs` or MCP `compete` prompt."* No tutorial, no path hints. Watch what happens. **This is the load-bearing test.** Capture the transcript.
-- [ ] **Then deploy.** Once Q1 is green and Q2 has produced findings, buy Hetzner CX22 so the worker drains 24/7 (next section).
+**1. Ask Jeremy** for:
+- A new `GOOGLE_GEMINI_API_KEY` (current one is 403'd; he'll rotate via `aistudio.google.com/apikey`)
+- Confirmation that Dog's Gateway port is rebound to `0.0.0.0:18789` (or `tailscale serve` is set up)
+- The OpenClaw Gateway auth token (only after the rebind — see `project_openclaw_bridge.md`)
+
+**2. Once Gemini key is provided:**
+- Update `.env.local` line `GOOGLE_GEMINI_API_KEY=<new>`
+- Push to Vercel: `vercel env rm GOOGLE_GEMINI_API_KEY production --yes` then `vercel env add GOOGLE_GEMINI_API_KEY production --value <new> --yes`
+- Re-run smoke test: start `npm run eval-worker` (with `REDIS_URL=<upstash>` inline since `.env.local`'s value is `redis://localhost...` and stale), then re-curl the submission body in `/tmp/submission-body.json` to localhost:3000 OR straw.wiki
+- Watch worker log; expect score in ~10-30s
+
+**3. Once OpenClaw bridge works:**
+- Test Dog reachability: `curl -sS -H "Authorization: Bearer $OPENCLAW_TOKEN" http://100.68.84.74:18789/v1/chat/completions -d '{"model":"openclaw/default","messages":[{"role":"user","content":"ping"}]}'`
+- If responsive, send Dog the agent-first brief (in chat history this session — also captured in memory `project_openclaw_bridge.md` "Use Dog as a collaborator")
+- Have Dog compete on task `c36a63d7-5373-4f24-8c59-63b60b8c7f73` with the API key in `/tmp/seed-out.txt` (or rerun seed if expired)
+
+**4. Once Q1 + Q2 both green:**
+- Buy Hetzner CX22 (D35), deploy `docker-compose.prod.yml` there
+- Address the Code Hygiene Backlog (below)
 
 ### After the milestone — buy Hetzner CX22 (D35)
 

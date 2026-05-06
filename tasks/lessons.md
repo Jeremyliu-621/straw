@@ -58,3 +58,37 @@ Updated heuristic after round 7: 13 → 4 → 2 → 2 → 2 → 0 → 1. Pass 6 
 The `packages/agent-sdk` `StrawClient` constructor previously accepted any baseUrl string. That's fine in isolation, but the SDK ships into customer environments (Claude Code, Cursor, OpenCode, custom agents) and runs with the customer's own API key. Any env-var or config-file injection in THOSE environments — which we don't control — could redirect traffic to an attacker. Constructor-time validation is the right layer because it's the first place the value becomes load-bearing; by the time it's used in `fetch()` the auth header is already being composed.
 
 Lesson: when a class or function takes a config value that will carry a secret (auth token, API key, session cookie) to a downstream sink, assume the value is adversarial and validate at the boundary, not at the sink.
+
+---
+
+## Smoke test setup, debugging the eval loop (2026-05-05)
+
+### `vercel env pull` masks sensitive variables to empty — don't conclude "the value is empty"
+Pulling a Vercel-managed env (Production, Preview) returns `KEY=""` for any variable Vercel has classified as **Sensitive** (high entropy, looks secret-y, OR explicitly added with `--sensitive`). The variable IS set on the server; you just can't read it back via the CLI. I burned ~30 minutes this session concluding "Vercel REDIS_URL is empty" based on `vercel env pull` output, when it was actually set the whole time.
+
+How to diagnose: `vercel env ls` shows the var as "Encrypted" → it's set and sensitive. The ONLY reliable way to verify the *value* is to redeploy and exercise the code path that uses it, OR overwrite with `vercel env add KEY env --value <new> --force --yes`.
+
+To opt out of sensitive-by-default: add `--no-sensitive` when creating the var. Then it's pullable. Don't do this for credentials; it's only for non-secret config that needs to be auditable.
+
+### BullMQ needs the Redis-protocol URL, not the REST URL
+Upstash exposes two endpoints on the same database:
+- **REST API**: `UPSTASH_REDIS_REST_URL=https://<db>.upstash.io` + `UPSTASH_REDIS_REST_TOKEN=...`. HTTP+JSON. For serverless/edge code that can't speak Redis protocol.
+- **TCP/Redis protocol**: `REDIS_URL=rediss://default:<password>@<db>.upstash.io:6379`. What ioredis (and therefore BullMQ) speaks.
+
+These have **different credentials** (the REST token and the TCP password are not interchangeable, even when they LOOK structurally similar). Always check the user's pasted credential — if it starts with `https://` or `UPSTASH_REDIS_REST_*=`, it's REST and won't work for BullMQ.
+
+In the Upstash console: Connect section → **TCP** tab (not REST tab) → reveal + copy the URL.
+
+### Worker debugging path: dotenv override semantics
+`dotenv` defaults to **NOT overriding** existing process env. So when debugging "wrong REDIS_URL," the order matters: `REDIS_URL=<prod_value> npm run eval-worker` overrides whatever's in `.env.local`. Don't edit `.env.local` for one-off debugging — use the inline override.
+
+If `.env.local` REDIS_URL is `redis://localhost:6379` (stale dev value) and you want to test against prod, just inline. Don't touch the file. The worker reads dotenv first, then sees your shell-set REDIS_URL via `process.env.REDIS_URL` (because dotenv didn't override).
+
+### "Missing required env vars" is misleading when only one is missing
+`evaluation-worker.ts:105` checks `if (!REDIS_URL || !SUPABASE_URL || !SUPABASE_KEY || !GEMINI_API_KEY)` and prints "Missing required env vars" — without saying *which*. When debugging, write a small script that loads dotenv and prints each var's status (length, prefix). `scripts/check-env.ts` is committed for exactly this. Use it before guessing.
+
+### Phase 18 ran fully-local — the prod stack has separate gaps
+Phase 18 (2026-04-15) proved the loop with `docker-compose redis` + `npm run dev` + worker + submit-tiers, all on one machine. It did NOT exercise the Vercel-deployed web app or the real Upstash queue. Don't conflate "Phase 18 passed" with "prod works." They're separate paths, separate failure modes, separate test budgets.
+
+### The Gemini API key can fail with 403 "project denied" without warning
+Sometime between 2026-04-15 (Phase 18) and 2026-05-05 (this session), `GOOGLE_GEMINI_API_KEY` started returning `403 Forbidden — Your project has been denied access. Please contact support.` This isn't a quota error or a rate-limit — it's a project-level lockout. Causes: billing failure, project deletion, key revocation, account suspension. There's no monitoring on this — the worker quietly retries 3× and marks `evaluation_failed`. Worth a future hook: if N consecutive evaluation_failed all due to LLM 403/401, ping someone.
