@@ -1403,6 +1403,10 @@ interface TunerSceneProps {
    *  steers the scene camera toward `camAgentIdx`. Defaults to "off". */
   camMode?: CamMode;
   camAgentIdx?: number;
+  /** Called when the user clicks an agent mesh. Receives the agent's id. */
+  onSelectAgent?: (id: string) => void;
+  /** Highlights the matching agent with a ground ring. */
+  selectedAgentId?: string | null;
 }
 
 function ClusterGroupRender({ cluster }: { cluster: ClusterGroup }) {
@@ -2402,6 +2406,64 @@ function TickLoop({
   return null;
 }
 
+/**
+ * Renders agents by reading id/name/rank from agentRef each frame so that
+ * external callers can override pool agent identity without causing re-renders
+ * on every tick. Replaces the static array map for arena/live use cases.
+ */
+function DynamicAgentRenderer({
+  agentRef,
+  count,
+  onSelectAgent,
+  selectedAgentId,
+}: {
+  agentRef: React.RefObject<RenderAgentState[]>;
+  count: number;
+  onSelectAgent?: (id: string) => void;
+  selectedAgentId?: string | null;
+}) {
+  const [agentKeys, setAgentKeys] = useState<
+    { id: string; name: string | null; rank: number | null }[]
+  >(() =>
+    Array.from({ length: count }).map((_, i) => ({
+      id: agentRef.current[i]?.id ?? `tuner_agent_${i}`,
+      name: agentRef.current[i]?.name ?? null,
+      rank: agentRef.current[i]?.rank ?? null,
+    }))
+  );
+
+  useFrame(() => {
+    const next = Array.from({ length: count }).map((_, i) => ({
+      id: agentRef.current[i]?.id ?? `tuner_agent_${i}`,
+      name: agentRef.current[i]?.name ?? null,
+      rank: agentRef.current[i]?.rank ?? null,
+    }));
+    const changed = next.some(
+      (a, i) =>
+        a.id !== agentKeys[i]?.id ||
+        a.name !== agentKeys[i]?.name ||
+        a.rank !== agentKeys[i]?.rank
+    );
+    if (changed) setAgentKeys(next);
+  });
+
+  return (
+    <>
+      {agentKeys.map((agent) => (
+        <AgentCharacter
+          key={agent.id}
+          agentId={agent.id}
+          agentName={agent.name}
+          rank={agent.rank}
+          agentsRef={agentRef}
+          onSelect={onSelectAgent}
+          isSelected={selectedAgentId === agent.id}
+        />
+      ))}
+    </>
+  );
+}
+
 export default function TunerScene({
   cohort,
   stationIdxByAgent,
@@ -2418,6 +2480,8 @@ export default function TunerScene({
   zoom,
   camMode = "off",
   camAgentIdx = 0,
+  onSelectAgent,
+  selectedAgentId,
 }: TunerSceneProps) {
   const { items, clusters, stations } = useMemo(() => {
     if (cohort === "gym") return buildGymStations(gymTuning);
@@ -2477,15 +2541,12 @@ export default function TunerScene({
           <ClusterGroupRender key={cluster.id} cluster={cluster} />
         ))}
 
-        {Array.from({ length: getAgentCount(cohort) }).map((_, i) => (
-          <AgentCharacter
-            key={`tuner_agent_${i}`}
-            agentId={`tuner_agent_${i}`}
-            agentName={String.fromCharCode(65 + i)}
-            rank={i + 1}
-            agentsRef={agentRef}
-          />
-        ))}
+        <DynamicAgentRenderer
+          agentRef={agentRef}
+          count={getAgentCount(cohort)}
+          onSelectAgent={onSelectAgent}
+          selectedAgentId={selectedAgentId}
+        />
 
         <PingPongBalls agentsRef={agentRef} arcHeight={miscTuning.pingPongArcHeight} />
 
@@ -3033,6 +3094,42 @@ export function useTunerAgent(opts?: {
     return true;
   }, [planPath]);
 
+  /** Like triggerLeave but targets a specific pool slot by index. */
+  const triggerLeaveAt = useCallback(
+    (poolIdx: number): boolean => {
+      const agents = agentRef.current;
+      const agent = agents[poolIdx];
+      if (!agent || agent.hidden || agent.leavingToDoor) return false;
+      agent.clusterUntil = undefined;
+      agent.talkUntil = undefined;
+      agent.talkPartnerId = undefined;
+      agent.couchUntil = undefined;
+      agent.socialSpotType = undefined;
+      agent.sitBackOverride = undefined;
+      agent.sinkDepthOverride = undefined;
+      agent.lookAtX = undefined;
+      agent.lookAtY = undefined;
+      agent.lookAtAgentId = undefined;
+      agent.lookAtUntil = undefined;
+      agent.leavingToDoor = true;
+      const plan = planPath(agent.x, agent.y, ARENA_DOOR_INSIDE_X, ARENA_DOOR_INSIDE_Y);
+      agent.state = "walking";
+      agent.path = plan.waypoints;
+      agent.plannedPath = [{ x: agent.x, y: agent.y }, ...plan.waypoints.map((p) => ({ ...p }))];
+      agent.plannedPathRouted = plan.routed;
+      agent.targetX = ARENA_DOOR_INSIDE_X;
+      agent.targetY = ARENA_DOOR_INSIDE_Y;
+      ambientNextAtRef.current[poolIdx] = Infinity;
+      setStationIdxByAgent((prev) => {
+        const next = [...prev];
+        next[poolIdx] = null;
+        return next;
+      });
+      return true;
+    },
+    [planPath]
+  );
+
   // Spawn one random cluster. Same logic as the ambient-interval cluster
   // trigger, extracted so the dev button can fire it on demand. Returns
   // true if a cluster was started, false if no eligible anchor/peers.
@@ -3349,6 +3446,7 @@ export function useTunerAgent(opts?: {
     triggerCluster,
     triggerJoin,
     triggerLeave,
+    triggerLeaveAt,
     tuning,
     setTuning,
     gymTuning,
