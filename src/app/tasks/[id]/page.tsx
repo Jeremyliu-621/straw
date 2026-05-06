@@ -60,7 +60,7 @@ export default function TaskDetailPage() {
 
   // ── Resizable split pane ──────────────────────────────────────────────────
   const containerRef = useRef<HTMLDivElement>(null);
-  const [leftPct, setLeftPct] = useState(50);
+  const [leftPct, setLeftPct] = useState(48);
   const [isDragging, setIsDragging] = useState(false);
   const [isLg, setIsLg] = useState(true);
 
