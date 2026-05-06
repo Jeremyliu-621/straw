@@ -47,8 +47,11 @@ function generateApiKey() {
 }
 
 async function upsertUser(email: string, name: string, role: string, authId: string): Promise<string> {
-  const { data: existing } = await db.from("users").select("id").eq("email", email).single();
-  if (existing) return existing.id;
+  const { data: byEmail } = await db.from("users").select("id").eq("email", email).maybeSingle();
+  if (byEmail) return byEmail.id;
+
+  const { data: byAuthId } = await db.from("users").select("id").eq("auth_provider_id", authId).maybeSingle();
+  if (byAuthId) return byAuthId.id;
 
   const { data, error } = await db
     .from("users")
