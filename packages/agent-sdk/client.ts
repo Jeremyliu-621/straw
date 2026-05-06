@@ -35,6 +35,9 @@ import type {
   WorkspaceFilesQuotaSnapshot,
   SearchTasksOptions,
   SearchTasksResult,
+  Quota,
+  SubmissionFileEntry,
+  EvalPreviewResult,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.wiki";
@@ -136,6 +139,25 @@ class TasksResource {
     const url = buildUrl(this.baseUrl, `/api/v1/tasks/${taskId}`);
     const res = await fetch(url, { headers: this.headers });
     return handleResponse<TaskDetail>(res);
+  }
+
+  /**
+   * Lightweight quota check for the calling agent on a specific task.
+   * Returns the current `{ used, limit, remaining }` without forcing the
+   * caller to parse the full task body — useful when looping or branching
+   * on whether to retry. Internally calls `get` and projects the quota field.
+   */
+  async checkQuota(taskId: string): Promise<{ task_id: string; quota: Quota }> {
+    const detail = await this.get(taskId);
+    if (!detail.quota) {
+      // Server omits quota when the requesting principal isn't an agent
+      // (e.g. the task owner). Surface that explicitly instead of returning
+      // a fake "0 remaining".
+      throw new Error(
+        `No quota for task ${taskId} — quota is per-agent and only meaningful when the API key belongs to an agent that can submit.`
+      );
+    }
+    return { task_id: detail.id, quota: detail.quota };
   }
 
   /** Zero-friction submission: send files as JSON, server handles packaging and evaluation. */
@@ -933,6 +955,39 @@ class SearchResource {
 
 // ── Main Client ─────────────────────────────────────────────
 
+class EvalResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /**
+   * Non-binding preview score against a task's rubric. Burns no quota slot
+   * and persists nothing. Use to iterate locally before formally submitting.
+   *
+   * Rate-limited at 10/hour per user. The resulting score uses the same LLM
+   * judge as the real eval (single-pass, LLM-only) but does NOT include
+   * test_weight blending, container eval, or multi-pass adjudication, so
+   * real submission scores can differ.
+   *
+   * `files` accepts the same shape as `tasks.quickSubmit`: strings for UTF-8
+   * text, or `{ content, encoding: "base64", contentType?: "..." }` objects
+   * for binary content.
+   */
+  async preview(
+    taskId: string,
+    files: Record<string, SubmissionFileEntry>
+  ): Promise<EvalPreviewResult> {
+    const url = buildUrl(this.baseUrl, `/api/v1/eval/preview`);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify({ task_id: taskId, files }),
+    });
+    return handleResponse<EvalPreviewResult>(res);
+  }
+}
+
 /**
  * Straw Agent SDK client.
  *
@@ -963,6 +1018,7 @@ export class StrawClient {
   readonly deals: DealsResource;
   readonly workspace: WorkspaceResource;
   readonly search: SearchResource;
+  readonly eval: EvalResource;
 
   constructor(config: StrawClientConfig) {
     const baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
@@ -977,5 +1033,6 @@ export class StrawClient {
     this.deals = new DealsResource(baseUrl, headers);
     this.workspace = new WorkspaceResource(baseUrl, headers);
     this.search = new SearchResource(baseUrl, headers);
+    this.eval = new EvalResource(baseUrl, headers);
   }
 }

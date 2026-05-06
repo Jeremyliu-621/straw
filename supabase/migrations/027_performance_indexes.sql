@@ -14,7 +14,7 @@
 -- specific index with CONCURRENTLY from a psql session outside the
 -- migration runner.
 --
--- See tasks/SCALE_PASS_PLAN.md for the full rationale.
+-- See [[scale-pass-plan]] for the full rationale.
 
 -- ============================================================================
 -- submissions — leaderboard, agent dashboard

@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase";
 import { apiError } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import { validateSubmissionAgainstContract, submissionContractSchema } from "@/lib/submission-contract";
+import { decodeSubmissionFiles, sniffContentType, type SubmissionFilesInput } from "@/lib/submission-files";
 import {
   SUBMISSION_STATUS,
   SUBMISSION_MODE,
@@ -28,7 +29,15 @@ import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
  *
  * Request body:
  * {
- *   "files": { "main.py": "print('hello')", "README.md": "..." },
+ *   "files": {
+ *     "main.py": "print('hello')",                    // string = UTF-8 text (legacy)
+ *     "README.md": "...",
+ *     "logo.png": {                                    // object = opt-in binary
+ *       "content": "iVBORw0KGgo...",
+ *       "encoding": "base64",
+ *       "contentType": "image/png"                     // optional, sniffed from extension if absent
+ *     }
+ *   },
  *   "agent_display_name": "my-agent-v2"  // optional
  * }
  *
@@ -47,7 +56,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const db = createServiceClient();
 
   // Parse request body
-  let body: { files?: Record<string, string>; agent_display_name?: string };
+  let body: { files?: SubmissionFilesInput; agent_display_name?: string };
   try {
     body = await req.json();
   } catch {
@@ -57,8 +66,24 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const { files, agent_display_name } = body;
 
   if (!files || typeof files !== "object" || Object.keys(files).length === 0) {
-    return apiError("'files' is required and must be a non-empty object mapping filenames to content strings", 400, "VALIDATION_ERROR");
+    return apiError("'files' is required and must be a non-empty object mapping filenames to content (a string for UTF-8 text, or { content, encoding?, contentType? } for binary)", 400, "VALIDATION_ERROR");
   }
+
+  // ── Decode files (binary-safe) ─────────────────────────
+  // Pre-D-something we treated every file as UTF-8 text/plain. Now we accept
+  // either a string (legacy = utf8) or { content, encoding, contentType }.
+  // Decode once at the boundary so size checks, contract validation, and
+  // storage upload all see the same Buffers.
+  const decoded = decodeSubmissionFiles(files);
+  if (!decoded.ok) {
+    return apiError(
+      "One or more files failed to decode",
+      400,
+      "VALIDATION_ERROR",
+      { file_errors: decoded.errors }
+    );
+  }
+  const decodedFiles = decoded.files;
 
   // ── Idempotency-Key ────────────────────────────────────
   // Optional header. Lets clients safely retry on network timeouts without
@@ -119,8 +144,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     return apiError("Task deadline has passed", 410, "DEADLINE_PASSED");
   }
 
-  // ── Validate file sizes ────────────────────────────────
-  const totalSize = Object.values(files).reduce((sum, content) => sum + Buffer.byteLength(content, "utf8"), 0);
+  // ── Validate file sizes (decoded bytes — accurate for binary uploads) ──
+  const totalSize = Object.values(decodedFiles).reduce((sum, f) => sum + f.buffer.byteLength, 0);
   const maxSizeMb = task.submission_contract?.max_total_size_mb ?? 200;
   if (totalSize > maxSizeMb * 1024 * 1024) {
     return apiError(`Total file content exceeds ${maxSizeMb}MB limit`, 413, "FILE_TOO_LARGE");
@@ -131,7 +156,12 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (task.submission_contract) {
     const parsed = submissionContractSchema.safeParse(task.submission_contract);
     if (parsed.success) {
-      const contractResult = validateSubmissionAgainstContract(files, parsed.data);
+      // Contract validator wants Buffers — pass the decoded map's buffers.
+      const bufferMap: Record<string, Buffer> = {};
+      for (const [name, f] of Object.entries(decodedFiles)) {
+        bufferMap[name] = f.buffer;
+      }
+      const contractResult = validateSubmissionAgainstContract(bufferMap, parsed.data);
       if (!contractResult.valid) {
         return apiError(
           "Submission does not meet the task's contract requirements",
@@ -195,7 +225,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   // that mirrors the rubric criteria so the judge has the right shape to score
   // against — but every section is flagged "(not addressed by agent)" so the
   // judge can't mistake placeholder text for real claims about the work.
-  const fileEntries = { ...files };
+  const fileEntries: Record<string, { buffer: Buffer; contentType: string }> = { ...decodedFiles };
   if (!fileEntries["SUBMISSION.md"]) {
     const { data: criteriaRows } = await db
       .from("rubric_criteria")
@@ -212,7 +242,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       return `${heading}\n${prompt}\n\n_(not addressed by agent — no custom SUBMISSION.md was provided)_`;
     });
 
-    fileEntries["SUBMISSION.md"] = [
+    const placeholder = [
       "# SUBMISSION.md",
       "",
       "> ⚠ Auto-generated. The agent did not supply a SUBMISSION.md, so this is a placeholder that mirrors the task's rubric criteria. The judge reads this file before scoring — agents that write their own (addressing each criterion explicitly) consistently outperform agents that ship the auto-generated version.",
@@ -224,6 +254,11 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         ? ["## Address each evaluation criterion", "", ...criterionSections]
         : ["_(no rubric criteria registered on this task)_"]),
     ].join("\n");
+
+    fileEntries["SUBMISSION.md"] = {
+      buffer: Buffer.from(placeholder, "utf8"),
+      contentType: sniffContentType("SUBMISSION.md"),
+    };
   }
 
   // ── Create submission ──────────────────────────────────
@@ -272,15 +307,19 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   }
 
   // ── Upload files individually to storage ───────────────
+  // Each file is uploaded with its decoded buffer + the correct contentType
+  // (sniffed from the extension, or whatever the client overrode it to).
+  // Storing as text/plain regardless of payload — the previous behaviour —
+  // breaks any download path that respects Content-Type and confuses CDNs.
   const storagePath = getSubmissionStoragePath(submission.id);
 
-  for (const [filename, content] of Object.entries(fileEntries)) {
+  for (const [filename, { buffer, contentType }] of Object.entries(fileEntries)) {
     const filePath = `${storagePath}/${filename}`;
     const { error: uploadError } = await db.storage
       .from(UPLOAD_STORAGE_BUCKET)
-      .upload(filePath, Buffer.from(content, "utf8"), {
+      .upload(filePath, buffer, {
         upsert: true,
-        contentType: "text/plain",
+        contentType,
       });
 
     if (uploadError) {
@@ -331,6 +370,16 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     metadata: { task_id: taskId, mode: "quick-submit", file_count: Object.keys(fileEntries).length },
   }).catch(() => {});
 
+  // ── Compute updated quota (includes the submission we just created) ─
+  // Saves the agent a round-trip — they know if they have headroom for
+  // retries without polling get_task again.
+  const newUsed = used + 1;
+  const quota = {
+    used: newUsed,
+    limit,
+    remaining: Math.max(0, limit - newUsed),
+  };
+
   return NextResponse.json(
     {
       id: submission.id,
@@ -339,6 +388,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       files_uploaded: Object.keys(fileEntries).length,
       message: "Submission received, evaluation queued. Poll GET /api/v1/submissions/" + submission.id + " for results.",
       poll_url: `/api/v1/submissions/${submission.id}`,
+      quota,
     },
     { status: 202 }
   );

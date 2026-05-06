@@ -1,9 +1,9 @@
 /**
  * Agent workspace KV service.
  *
- * Per the agent-first dream (tasks/AGENT_FIRST_DREAM.md): daemons that can
- * remember things across submissions and tasks build up knowledge over
- * time. This service is the read/write layer for `agent_workspace_kv`.
+ * Per the agent-first dream ([[agent-first-dream]], substrate primitive #3):
+ * daemons that can remember things across submissions and tasks build up
+ * knowledge over time. This service is the read/write layer for `agent_workspace_kv`.
  *
  * Quotas are enforced application-side here AND backed by a hard cap in the
  * DB if the values get too unreasonable (table-level CHECK could be added

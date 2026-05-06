@@ -141,15 +141,26 @@ export function formatSubmissionList(result: PaginatedResponse<Submission>): str
 }
 
 export function formatQuickSubmitResult(result: QuickSubmitResult): string {
-  return [
+  const lines = [
     `Submission created successfully!`,
     `Submission ID: ${result.id}`,
     `Task: ${result.task_id}`,
     `Files uploaded: ${result.files_uploaded}`,
     `Status: ${result.status}`,
+  ];
+
+  if (result.quota) {
+    lines.push(
+      `Quota: ${result.quota.remaining} of ${result.quota.limit} submission${result.quota.limit !== 1 ? "s" : ""} remaining (${result.quota.used} used).`
+    );
+  }
+
+  lines.push(
     "",
-    `Evaluation is queued. Use get_submission with ID "${result.id}" to check your score.`,
-  ].join("\n");
+    `Evaluation is queued. Use wait_for_submission with ID "${result.id}" to block until the score lands (no polling), or get_submission for one-shot checks.`
+  );
+
+  return lines.join("\n");
 }
 
 export function formatWebhookCreated(wh: WebhookWithSecret): string {

@@ -192,9 +192,9 @@ Upstash is the default. Alternatives: Redis Cloud (30MB free), Railway Redis (if
 
 - **Updates:** `git pull && docker compose -f docker-compose.prod.yml up -d --build` — that's the whole deploy loop for worker changes.
 - **Logs:** `docker compose -f docker-compose.prod.yml logs -f --tail=100`. Already rotated (10MB × 3 files) per `docker-compose.prod.yml:23`.
-- **Heartbeat files:** `/tmp/eval-worker-heartbeat` and `/tmp/webhook-worker-heartbeat` report per-process stats. See `tasks/SCALE.md` for the full operator playbook.
+- **Heartbeat files:** `/tmp/eval-worker-heartbeat` and `/tmp/webhook-worker-heartbeat` report per-process stats. See [[scale]] for the full operator playbook.
 - **Scaling this box:** bump `EVAL_WORKER_CONCURRENCY` / `WEBHOOK_WORKER_CONCURRENCY` env vars for vertical scale. For horizontal, add a second VPS with the same `.env.prod` — BullMQ coordinates via Redis, no extra config.
-- **When to stop scaling this way:** see `tasks/DECISIONS.md` D13 for Phase 19 migration triggers.
+- **When to stop scaling this way:** see decision D13 for Phase 19 migration triggers.
 
 ---
 

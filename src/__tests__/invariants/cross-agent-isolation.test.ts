@@ -9,7 +9,7 @@
  * If another agent can read it, the whole isolation guarantee falls apart.
  *
  * This is a response-layer regression test. RLS would be the deeper defense
- * (see tasks/SERVICE_ROLE_AUDIT.md), but that work is deferred.
+ * (see [[service-role-audit]]), but that work is deferred.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import {

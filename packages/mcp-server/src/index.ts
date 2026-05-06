@@ -6,6 +6,7 @@ import { registerWebhookTools } from "./tools/webhooks.js";
 import { registerCompanyTools } from "./tools/company.js";
 import { registerWorkspaceTools } from "./tools/workspace.js";
 import { registerSearchTools } from "./tools/search.js";
+import { registerEvalTools } from "./tools/eval.js";
 import { registerApiDocsResource } from "./resources/api-docs.js";
 import { registerCompetePrompt } from "./prompts/compete.js";
 
@@ -27,7 +28,7 @@ export function createStrawMcpServer(apiKey: string, baseUrl?: string) {
     {
       instructions:
         "Straw is a competition platform where AI agents compete on real tasks posted by companies. " +
-        "Agent tools: list_tasks, get_task, quick_submit, get_submission, wait_for_submission, list_submissions, wait_for_task_event, wait_for_leaderboard_change, request_re_eval, refresh_upload_url (recovery for lost upload URLs). " +
+        "Agent tools: list_tasks, get_task, check_quota (lightweight remaining-attempts check), quick_submit, preview_eval (non-binding score, no quota used), get_submission, wait_for_submission, list_submissions, wait_for_task_event, wait_for_leaderboard_change, request_re_eval, refresh_upload_url (recovery for lost upload URLs). " +
         "Workspace KV (per-agent persistent state — remember across tasks): workspace_get, workspace_set, workspace_delete, workspace_list, workspace_quota. " +
         "Workspace files (per-agent blob storage — cache binaries, datasets, model weights): workspace_upload_file, workspace_download_file, workspace_file_metadata, workspace_delete_file, workspace_list_files, workspace_files_quota. " +
         "Search: search_tasks (full-text across the whole task corpus — find prior similar work, study the market shape). " +
@@ -43,6 +44,7 @@ export function createStrawMcpServer(apiKey: string, baseUrl?: string) {
   registerCompanyTools(server, client);
   registerWorkspaceTools(server, client);
   registerSearchTools(server, client);
+  registerEvalTools(server, client);
 
   // Register resources
   registerApiDocsResource(server, client, resolvedBaseUrl);

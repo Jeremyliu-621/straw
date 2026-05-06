@@ -5,6 +5,17 @@ import {
   type SubmissionContract,
 } from "@/lib/submission-contract";
 
+// Test helper — the contract validator now operates on decoded Buffers (so it
+// can size binary uploads correctly). Tests still write fixture content as
+// strings for readability; this wraps them at the boundary.
+function toBuffers(files: Record<string, string>): Record<string, Buffer> {
+  const out: Record<string, Buffer> = {};
+  for (const [name, content] of Object.entries(files)) {
+    out[name] = Buffer.from(content, "utf8");
+  }
+  return out;
+}
+
 describe("submissionContractSchema", () => {
   it("parses a full contract", () => {
     const result = submissionContractSchema.parse({
@@ -62,7 +73,7 @@ describe("validateSubmissionAgainstContract", () => {
       "main.py": "print('hello')",
     };
 
-    const result = validateSubmissionAgainstContract(files, baseContract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), baseContract);
     expect(result.valid).toBe(true);
     expect(result.errors).toHaveLength(0);
   });
@@ -73,7 +84,7 @@ describe("validateSubmissionAgainstContract", () => {
       "main.py": "print('hello')",
     };
 
-    const result = validateSubmissionAgainstContract(files, baseContract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), baseContract);
     expect(result.valid).toBe(false);
     expect(result.errors).toHaveLength(1);
     expect(result.errors[0]).toContain("ARCHITECTURE.md");
@@ -83,7 +94,7 @@ describe("validateSubmissionAgainstContract", () => {
   it("fails when multiple required files are missing", () => {
     const files = { "main.py": "print('hello')" };
 
-    const result = validateSubmissionAgainstContract(files, baseContract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), baseContract);
     expect(result.valid).toBe(false);
     expect(result.errors).toHaveLength(2);
   });
@@ -102,7 +113,7 @@ describe("validateSubmissionAgainstContract", () => {
       "SUBMISSION.md": "x".repeat(2048), // 2KB
     };
 
-    const result = validateSubmissionAgainstContract(files, contract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), contract);
     expect(result.valid).toBe(false);
     expect(result.errors[0]).toContain("exceeds size limit");
   });
@@ -119,7 +130,7 @@ describe("validateSubmissionAgainstContract", () => {
 
     const files = { "SUBMISSION.md": "short" };
 
-    const result = validateSubmissionAgainstContract(files, contract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), contract);
     expect(result.valid).toBe(true);
   });
 
@@ -139,7 +150,7 @@ describe("validateSubmissionAgainstContract", () => {
       // only 2, need 3
     };
 
-    const result = validateSubmissionAgainstContract(files, contract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), contract);
     expect(result.valid).toBe(false);
     expect(result.errors[0]).toContain("requires at least 3");
     expect(result.errors[0]).toContain("found 2");
@@ -161,7 +172,7 @@ describe("validateSubmissionAgainstContract", () => {
       "README.md": "# Project",
     };
 
-    const result = validateSubmissionAgainstContract(files, contract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), contract);
     expect(result.valid).toBe(true);
   });
 
@@ -177,7 +188,7 @@ describe("validateSubmissionAgainstContract", () => {
     const bigContent = "x".repeat(11 * 1024 * 1024);
     const files = { "big.bin": bigContent };
 
-    const result = validateSubmissionAgainstContract(files, contract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), contract);
     expect(result.valid).toBe(false);
     expect(result.errors[0]).toContain("exceeds limit");
   });
@@ -197,7 +208,7 @@ describe("validateSubmissionAgainstContract", () => {
 
     const files = { "README.md": "# Hi" };
 
-    const result = validateSubmissionAgainstContract(files, contract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), contract);
     expect(result.valid).toBe(false);
     expect(result.errors).toHaveLength(3); // 2 missing files + 1 pattern
   });
@@ -212,7 +223,7 @@ describe("validateSubmissionAgainstContract", () => {
 
     const files = { "main.py": "print(1)" };
 
-    const result = validateSubmissionAgainstContract(files, contract);
+    const result = validateSubmissionAgainstContract(toBuffers(files), contract);
     expect(result.valid).toBe(true);
   });
 });

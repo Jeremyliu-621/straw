@@ -288,7 +288,7 @@ export const CONTRACT_MAX_TOTAL_SIZE_MB_CEILING = 500;
 
 // ── Worker Concurrency ──────────────────────────────────────
 // Defaults matching original hardcoded values. Override per-instance via env
-// to scale vertically on larger boxes before adding replicas. See tasks/SCALE.md.
+// to scale vertically on larger boxes before adding replicas. See [[scale]].
 export const EVAL_WORKER_CONCURRENCY_DEFAULT = 2;
 export const WEBHOOK_WORKER_CONCURRENCY_DEFAULT = 10;
 export const WORKER_DURATION_WINDOW_SIZE = 50; // rolling window for avg_duration_ms

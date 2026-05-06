@@ -1,44 +1,38 @@
 # Testing the Pipeline
 
-End-to-end test of the full submission pipeline: submit agent → Docker execution → LLM evaluation → score on leaderboard.
+End-to-end test of the submission pipeline as it exists post-Phase 17:
+**agent uploads its own work → eval worker scores it → score on leaderboard.**
+
+The old "execution worker runs `straw-test/*` Docker images on behalf of the agent" path was deleted in Phase 17. Agents do their own work and upload artifacts; the platform only handles evaluation.
 
 ---
 
 ## Prerequisites
 
-1. **Docker Desktop** running (needed for agent containers + Redis/Postgres)
-2. **Environment variables** set in `.env.local` (Supabase URL/keys, Redis URL, Gemini API key)
+1. **Redis** reachable (Upstash for prod-like, or `docker-compose up -d` for local).
+2. **Environment variables** in `.env.local`:
+   - `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
+   - `REDIS_URL` (NB: `.env.local` may be stale — see lessons.md "smoke test setup")
+   - `GOOGLE_GEMINI_API_KEY` (live, not a denied key)
 
 ---
 
 ## Setup Steps
 
-Run these in order:
-
 ```powershell
-# 1. Start Redis + Postgres
+# Start Redis (skip if using Upstash):
 docker-compose up -d
 
-# Verify both are healthy:
-docker-compose ps
-
-# 2. Build the 4 test Docker agent images
-cd test-agents; bash build-all.sh; cd ..
-
-# Verify images exist:
-docker images | Select-String straw-test
-
-# 3. Start the execution worker (new terminal)
-npm run worker
-
-# 4. Start the evaluation worker (new terminal)
+# Start the evaluation worker (separate terminal):
 npm run eval-worker
 
-# 5. Start the Next.js app (new terminal)
+# Start the Next.js app (separate terminal):
 npm run dev
 ```
 
-You should now have **4 terminals** running: docker-compose, worker, eval-worker, and dev.
+You should now have **2 terminals** running: eval-worker and dev. (Three if you're using local Redis via docker-compose.)
+
+`/api/dev/pipeline-test` is double-gated — it returns 403 unless BOTH `NODE_ENV=development` AND `ALLOW_DEV_ENDPOINTS=true`. Set the latter in `.env.local` for local testing.
 
 ---
 
@@ -46,122 +40,88 @@ You should now have **4 terminals** running: docker-compose, worker, eval-worker
 
 Open **http://localhost:3000/dev/pipeline** in your browser.
 
-- Click **"Run Pipeline Test"**
-- Watch the 4 agents progress through: Pending → Executing → Evaluating → Done/Failed
-- Each agent shows a live progress bar and final score
-- Results section shows ranked scores with bar chart
-- Log panel at the bottom shows timestamped events
+- Click **"Run Pipeline Test"**.
+- Watch the 4 simulated agents progress: Pending → Evaluating → Done/Failed.
+- Each agent shows a live progress bar and final score.
+- Results section shows ranked scores with a bar chart.
+- Log panel at the bottom shows timestamped events.
 
-The page creates test data, submits all 4 agents, and polls for results automatically.
-
----
-
-## Option B: CLI Script (headless)
-
-```bash
-npm run test:pipeline
-```
-
-This script:
-1. Cleans up any previous E2E test data
-2. Creates a test company, 4 agent builder users, and a task with rubric
-3. Submits all 4 agents and enqueues execution jobs
-4. Polls the status API until all submissions resolve
-5. Verifies:
-   - Crash agent failed
-   - Good/Okay/Sloppy agents were scored
-   - Score ordering: Good >= Okay >= Sloppy
-   - Evaluation results exist in the database with LLM reasoning
-   - Leaderboard API returns entries
-6. Exits with `PASS` or `FAIL`
+The page POSTs to `/api/dev/pipeline-test`, which seeds a test company + 4 agents + a task with rubric, writes pre-canned SUBMISSION.md content directly to Supabase Storage on each agent's behalf (no execution worker needed), and enqueues evaluation jobs.
 
 ---
 
-## Attaching a Test Suite
+## Option B: cURL (headless)
 
-To test automated scoring (when `test_weight > 0`), create a `suite.json` file and set it on the task before running the pipeline.
+```powershell
+# Default LLM-only eval:
+curl -X POST http://localhost:3000/api/dev/pipeline-test
 
-**Format:**
-```json
-{
-  "test_cases": [
-    {
-      "name": "checks for keyword",
-      "input": "Validate JSON data against the provided schema definition.",
-      "expected_output": "valid",
-      "match_type": "contains"
-    },
-    {
-      "name": "checks structure",
-      "input": "same input",
-      "expected_output": "\"result\":",
-      "match_type": "regex"
-    }
-  ]
-}
+# Container-mode eval (requires Docker daemon + a built eval image):
+curl -X POST "http://localhost:3000/api/dev/pipeline-test?eval_mode=container"
 ```
 
-Match types: `exact` (substring match), `contains` (case-insensitive substring), `regex` (regex against full output).
+The response includes the task ID and submission IDs. Poll any of them with:
 
-**To attach a test suite to the dev pipeline task:**
+```powershell
+curl http://localhost:3000/api/v1/submissions/<id>
+```
 
-The pipeline test creates a task with `test_weight: 0` (LLM-only). To test automated scoring:
+…or use the SDK's `client.submissions.waitUntilDone()` / MCP `wait_for_submission` to block on a terminal status (no polling tax).
 
-1. Run the pipeline test to get a task ID
-2. Upload your suite via the API directly:
-   ```bash
-   curl -X POST http://localhost:3000/api/tasks/{TASK_ID}/test-suite \
-     -F "file=@suite.json" \
-     -H "Cookie: <your-session-cookie>"
+---
+
+## What the simulated agents do
+
+The route at `src/app/api/dev/pipeline-test/route.ts` defines four canned agents:
+
+| Agent | Behavior | Expected Result |
+|-------|----------|-----------------|
+| Good Agent | Comprehensive, structured SUBMISSION.md | Highest score |
+| Okay Agent | Correct but minimal SUBMISSION.md | Mid-range score |
+| Sloppy Agent | Terse, low-content SUBMISSION.md | Low score |
+| Crash Agent | Empty SUBMISSION.md | Lowest / failed |
+
+These are **content tiers**, not Docker images. Phase 17 removed agent-side container execution; the platform now only evaluates, and these tiers exist purely to exercise the LLM judge with predictable inputs.
+
+---
+
+## Real agent submission path (production-equivalent)
+
+`/api/dev/pipeline-test` is a synthetic harness. To exercise the **actual** agent submission flow that external agents use:
+
+1. Get an API key from `/dashboard/api`.
+2. Use the SDK or MCP server:
+   ```ts
+   const client = new StrawClient({ apiKey: "straw_sk_..." });
+   const sub = await client.tasks.quickSubmit(taskId, {
+     files: { "SUBMISSION.md": "...", "main.py": "..." },
+   });
+   const result = await client.submissions.waitUntilDone(sub.id);
    ```
-   Or use the task creation form at `/tasks/new` — when you set "Automated Tests" weight above 0%, a file upload appears.
+3. Or use `scripts/seed-competition.ts` to spin up a one-shot agent against a seeded task.
 
-3. The evaluation worker will automatically fetch the suite from Supabase Storage and run it.
-
-**Supabase Storage setup (one-time):**
-
-Create the `test-suites` bucket in your Supabase dashboard:
-- Go to Storage → New bucket
-- Name: `test-suites`
-- Public: **off** (private)
+This path is the one external agents (Claude Code, Cursor, OpenCode, custom dispatchers) actually take. The dev pipeline test only exercises the eval half.
 
 ---
 
-## What the Test Agents Do
+## Testing eval containers (`eval_mode: "container"` or `"hybrid"`)
 
-| Agent | Image | Behavior | Expected Result |
-|-------|-------|----------|-----------------|
-| Good Agent | `straw-test/good-agent` | Reads input, produces thorough structured output | Highest score |
-| Okay Agent | `straw-test/okay-agent` | Produces correct but minimal output | Mid-range score |
-| Sloppy Agent | `straw-test/sloppy-agent` | Fast, cuts corners, partial output | Lowest score |
-| Crash Agent | `straw-test/crash-agent` | Exits with non-zero code | Status: failed |
+When a task uses container eval, the evaluation worker runs the company's Docker image against the agent's uploaded output.
 
-All images are Alpine-based shell scripts in `test-agents/`. They read `$MAP_TASK_INPUT` and write to `/output/`.
+### How the eval pipeline runs containers
 
----
-
-## Testing with Eval Containers
-
-If a task uses `eval_mode: "container"` or `"hybrid"`, the evaluation worker runs the company's Docker eval image against agent output.
-
-### How it works in the eval pipeline
-
-1. Agent output files are downloaded from Supabase Storage to `tmpDir/agent_output/`
-2. Eval container runs with agent output mounted at `/agent_output` (read-only)
-3. Container writes results to `/results/score.json`
-4. Worker validates score.json and records the score
+1. Agent output files are downloaded from Supabase Storage to `tmpDir/agent_output/`.
+2. Eval container runs with agent output mounted at `/agent_output` (read-only).
+3. Container writes results to `/results/score.json`.
+4. Worker validates `score.json` and records the score.
 
 ### Testing an eval container locally
 
-Use the SDK's `run-local.sh` script:
+Use the SDK's `run-local.sh`:
 
 ```bash
 cd packages/eval-sdk
-
-# Run an eval container against a directory of agent output:
 bash run-local.sh myorg/eval:latest ./path/to/agent/output/
-
-# It will print the score.json output
 ```
 
 Or manually:
@@ -180,23 +140,7 @@ docker run --rm \
 cat /tmp/results/score.json
 ```
 
-### Using the example eval container
-
-```bash
-cd packages/eval-sdk/example
-
-# Build the example eval image
-docker build -t straw-eval-example .
-
-# Create some fake agent output
-mkdir /tmp/test-output
-echo '{"result": "hello world"}' > /tmp/test-output/result.json
-
-# Run the eval
-cd .. && bash run-local.sh straw-eval-example /tmp/test-output
-```
-
-### score.json schema
+### `score.json` schema
 
 ```json
 {
@@ -209,7 +153,7 @@ cd .. && bash run-local.sh straw-eval-example /tmp/test-output
 
 - `score` (required): 0–100
 - `pass` (required): boolean
-- `breakdown` (optional): per-criterion scores, keys match rubric criteria names
+- `breakdown` (optional): per-criterion scores, keys match rubric criterion names
 - `notes` (optional): free-text, shown alongside scores
 
 ### Container constraints
@@ -228,22 +172,23 @@ cd .. && bash run-local.sh straw-eval-example /tmp/test-output
 
 ## Troubleshooting
 
-**Worker won't start / Redis connection error**
-- Check Redis is running: `docker-compose ps`
-- Check `REDIS_URL` in `.env.local` (default: `redis://localhost:6379`)
+**Eval worker won't start / Redis connection error**
+- For local: `docker-compose ps` should show Redis healthy.
+- For Upstash: `REDIS_URL` should start with `rediss://` (TLS), not the REST URL.
+- See `tasks/lessons.md` "Smoke test setup, debugging the eval loop" for more.
 
-**"Docker image pull failed"**
-- Test images are local-only. Make sure you ran `build-all.sh`
-- Verify: `docker images | Select-String straw-test`
+**`/api/dev/pipeline-test` returns 403**
+- Set `ALLOW_DEV_ENDPOINTS=true` in `.env.local` AND ensure `NODE_ENV=development`.
+- Both gates are required (`src/lib/dev-gate.ts`).
 
 **Evaluation never completes**
-- Check the eval-worker terminal for errors
-- Verify `GOOGLE_GEMINI_API_KEY` is set in `.env.local`
+- Check the eval-worker terminal for Gemini errors (rotated key? denied project?).
+- Confirm `GOOGLE_GEMINI_API_KEY` is set + valid.
 
 **Submissions stuck in "pending"**
-- Check the execution worker terminal — is it running and connected to Redis?
-- Check BullMQ dashboard or Redis directly: `docker exec -it <redis-container> redis-cli LLEN bull:execution:wait`
+- Eval worker connected to Redis? `docker exec -it <redis-container> redis-cli LLEN bull:evaluation:wait`
+- For Upstash, no shell — check the eval-worker logs for connection lines.
 
 **GUI page shows nothing after clicking Run**
-- Open browser dev tools → Network tab, check the POST to `/api/dev/pipeline-test`
-- Check the Next.js terminal for server-side errors
+- Open browser dev tools → Network tab, check the POST to `/api/dev/pipeline-test` returned 200.
+- Check the Next.js terminal for server-side errors.

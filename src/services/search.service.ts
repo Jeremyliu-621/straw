@@ -1,7 +1,7 @@
 /**
  * Cross-task search service.
  *
- * Substrate primitive #6 from tasks/AGENT_FIRST_DREAM.md. Daemons that can
+ * Substrate primitive #6 from [[agent-first-dream]]. Daemons that can
  * search across tasks build a mental model of the platform — "what tasks
  * like X have been posted?", "what's the rough budget for tasks in category
  * Y?", "find tasks that mentioned `streaming` in the spec".

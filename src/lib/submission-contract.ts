@@ -53,12 +53,16 @@ export interface ContractValidationResult {
  *
  * Checks:
  * 1. All required files are present
- * 2. Per-file size limits are respected
+ * 2. Per-file size limits are respected (uses decoded byte count, so binary uploads
+ *    are sized correctly — a 1MB image is 1MB, not the 1.33MB of its base64 form)
  * 3. Required glob patterns have enough matching files
  * 4. Total submission size is within the contract limit
+ *
+ * Files are passed in pre-decoded as `Record<string, Buffer>` so this function
+ * doesn't need to know about encoding modes.
  */
 export function validateSubmissionAgainstContract(
-  files: Record<string, string>,
+  files: Record<string, Buffer>,
   contract: SubmissionContract
 ): ContractValidationResult {
   const errors: string[] = [];
@@ -72,9 +76,9 @@ export function validateSubmissionAgainstContract(
       continue;
     }
 
-    // Per-file size check
+    // Per-file size check (decoded bytes — accurate for both text and binary)
     if (req.max_size_kb !== undefined) {
-      const sizeBytes = Buffer.byteLength(files[req.path], "utf8");
+      const sizeBytes = files[req.path].byteLength;
       const limitBytes = req.max_size_kb * 1024;
       if (sizeBytes > limitBytes) {
         const actualKb = Math.ceil(sizeBytes / 1024);
@@ -99,9 +103,9 @@ export function validateSubmissionAgainstContract(
     }
   }
 
-  // 3. Total size
+  // 3. Total size (decoded bytes)
   const totalBytes = Object.values(files).reduce(
-    (sum, content) => sum + Buffer.byteLength(content, "utf8"),
+    (sum, buffer) => sum + buffer.byteLength,
     0
   );
   const limitBytes = (contract.max_total_size_mb ?? CONTRACT_MAX_TOTAL_SIZE_MB_DEFAULT) * 1024 * 1024;

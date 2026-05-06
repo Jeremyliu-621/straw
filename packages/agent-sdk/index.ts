@@ -53,4 +53,7 @@ export type {
   ContractRequiredPattern,
   ContractOptionalFile,
   ContainerTestResult,
+  SubmissionFileEntry,
+  EvalPreviewDimension,
+  EvalPreviewResult,
 } from "./types";

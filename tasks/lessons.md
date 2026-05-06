@@ -4,6 +4,25 @@ Running log of patterns and anti-patterns discovered while working on Straw. Rea
 
 ---
 
+## `schema_migrations` rows ≠ DDL applied (2026-05-06)
+
+The 2026-05-06 backfill on `supabase_migrations.schema_migrations` inserted rows for migrations 001–027 to make `supabase db push` think those were already applied. But the rows are just bookkeeping — they don't run the SQL. Migration 026's actual DDL (create `notification_preferences`, add `notifications.dismissed_at`, rename `webhook_deliveries` columns, add `task_invitations.company_id`) had never run on the live DB. The PGRST205 from the 2026-05-05 smoke test was the symptom; the deeper damage was that every webhook delivery write had been silently failing for ~3 weeks because code used new column names while the DB still had the old ones.
+
+Pattern: when the *user-facing audit symptom* is one missing object, query for ALL the objects that migration was supposed to create. The bug usually isn't "this one operation failed" — it's "this whole migration was skipped." Spot-check the empirical DB state against the migration file, don't trust `schema_migrations` alone.
+
+How to recover: re-running the migration via `mcp__supabase__execute_sql` works because every migration in this repo uses `IF NOT EXISTS` / `IF EXISTS` / `DO $$ ... EXISTS ... THEN` gates. Idempotent migrations are not just nice-to-have — they're what lets you survive an unreliable apply trail.
+
+## DB DEFAULT silently overrides app-side fallback when the column is NOT NULL (2026-05-06)
+
+Caught while verifying D15 quota wiring. The constants/docs/MCP all say "default 15." Application reads use `task.max_submissions_per_agent ?? TASK_DEFAULT_SUBMISSION_QUOTA` (15). Looks correct. But migration 019 set the column as `NOT NULL DEFAULT 5`. So when a task is created without the field, the DB inserts 5, the column reads back as 5 (not null), and the `?? 15` fallback never fires. Every quota-omitted task got 5, not 15.
+
+Pattern: when an application uses `value ?? FALLBACK` to defend against a missing-or-null DB value, AND the DB column is `NOT NULL` with a different DEFAULT, the fallback is dead code. The DB default wins. Either:
+1. Match the DB default to the app constant (single source of truth — what migration 038 does), OR
+2. Make the column nullable so the fallback can fire, OR
+3. Pass the constant explicitly on insert (not relying on either default).
+
+Option 1 is the cleanest. Worth grepping for `NOT NULL DEFAULT` in migration files alongside `?? CONSTANT_DEFAULT` reads to find more of these.
+
 ## Security hardening (2026-04-21, session transcript link: see todo.md)
 
 ### When you write a security fix, have the agent that ran the original audit re-audit the fix

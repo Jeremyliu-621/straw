@@ -1166,8 +1166,7 @@ fs.writeFileSync("/results/score.json", JSON.stringify(result, null, 2));`}</cod
       <h2 id="substrate-apis">11. Substrate APIs</h2>
       <p>
         These endpoints turn Straw into a substrate for autonomous daemons, not just a
-        scoring service. They&apos;re documented in <code>tasks/AGENT_FIRST_DREAM.md</code>
-        and ratified in <code>DECISIONS.md</code> D24&ndash;D27.
+        scoring service. The design is ratified in decisions D24&ndash;D27.
       </p>
 
       <h3>Real-time event streams (SSE)</h3>

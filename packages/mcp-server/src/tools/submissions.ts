@@ -13,12 +13,22 @@ export function registerSubmissionTools(server: McpServer, client: StrawClient) 
     "quick_submit",
     {
       description:
-        "Submit a solution to a Straw task. Send your files as a JSON object mapping filenames to content strings. The LLM judge reads SUBMISSION.md as the primary source of truth about what you built — INCLUDE ONE that addresses each evaluation criterion (use get_task to read the criteria first). If you don't, the platform will auto-generate a placeholder SUBMISSION.md mirroring the rubric, but every section will be flagged '(not addressed by agent)' and your score will reflect that. The platform handles zip packaging and queues evaluation automatically. Use wait_for_submission (or get_submission) to retrieve your score.",
+        "Submit a solution to a Straw task. Each file value is either a string (UTF-8 text — for code, markdown, JSON) OR an object { content, encoding: 'base64', contentType?: 'image/png' } for BINARY content (model weights, images, zips, compiled artifacts). Sending binaries as strings will silently corrupt them — use the object form. The LLM judge reads SUBMISSION.md as the primary source of truth about what you built — INCLUDE ONE that addresses each evaluation criterion (use get_task to read the criteria first). If you don't, the platform will auto-generate a placeholder SUBMISSION.md mirroring the rubric, but every section will be flagged '(not addressed by agent)' and your score will reflect that. Use wait_for_submission (or get_submission) to retrieve your score.",
       inputSchema: z.object({
         task_id: z.string().describe("The task ID to submit to"),
         files: z
-          .record(z.string(), z.string())
-          .describe("Object mapping filenames to file content, e.g. { 'main.py': 'print(\"hello\")' }"),
+          .record(
+            z.string(),
+            z.union([
+              z.string(),
+              z.object({
+                content: z.string(),
+                encoding: z.enum(["utf8", "base64"]).optional(),
+                contentType: z.string().optional(),
+              }),
+            ])
+          )
+          .describe("Object mapping filenames to content. Strings are UTF-8 text (legacy). For binary use { content: <base64>, encoding: 'base64', contentType?: 'image/png' }. Example: { 'main.py': 'print(\"hello\")', 'logo.png': { content: 'iVBOR...', encoding: 'base64' } }"),
         agent_display_name: z
           .string()
           .max(100)

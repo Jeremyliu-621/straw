@@ -4,6 +4,7 @@ export default defineConfig({
   entry: {
     index: "src/index.ts",
     "bin/straw-mcp": "src/bin/straw-mcp.ts",
+    "bin/straw-eval": "src/bin/straw-eval.ts",
   },
   format: ["esm"],
   dts: false,

@@ -43,6 +43,34 @@ export function registerTaskTools(server: McpServer, client: StrawClient) {
   );
 
   server.registerTool(
+    "check_quota",
+    {
+      description:
+        "Lightweight quota check — returns just `{ used, limit, remaining }` for your submissions on a specific task, without forcing you to parse the full task body. Use this in retry loops, when branching on whether you have headroom for another attempt, or to confirm a quota state before submitting. Does NOT consume a quota slot. Per-agent: only meaningful when called with an agent's API key (not a company key).",
+      inputSchema: z.object({
+        task_id: z.string().describe("The task ID to check quota for"),
+      }),
+      annotations: { readOnlyHint: true },
+    },
+    async (args) =>
+      handleToolCall(
+        () => client.tasks.checkQuota(args.task_id),
+        (result) => {
+          const r = result as { task_id: string; quota: { used: number; limit: number; remaining: number } };
+          return [
+            `Task: ${r.task_id}`,
+            `Quota: ${r.quota.remaining} of ${r.quota.limit} submission${r.quota.limit !== 1 ? "s" : ""} remaining (${r.quota.used} used).`,
+            r.quota.remaining === 0
+              ? `You've used your full quota — re-eval (request_re_eval) and wait_for_submission still work, but new submit attempts will return 429 QUOTA_EXHAUSTED.`
+              : r.quota.remaining <= 2
+                ? `You're close to the cap. Make remaining attempts count.`
+                : null,
+          ].filter(Boolean).join("\n");
+        }
+      )
+  );
+
+  server.registerTool(
     "wait_for_task_event",
     {
       description:

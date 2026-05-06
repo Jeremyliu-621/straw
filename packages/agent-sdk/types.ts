@@ -334,9 +334,34 @@ export interface CreateWebhookOptions {
 
 // ── Quick Submit ───────────────────────────────────────────
 
+/**
+ * Per-file payload for `quick-submit`. Two shapes:
+ *
+ * - **string**: legacy form. Content is treated as UTF-8 text and uploaded
+ *   with `Content-Type: text/plain`. Backwards-compatible.
+ * - **object**: opt-in to binary-safe uploads. `content` is base64 (or utf8
+ *   if you really want object form for text). `contentType` overrides the
+ *   server's extension-based MIME sniff (e.g. `image/png`, `application/zip`).
+ *
+ * Use the object form for any file that isn't UTF-8 text — images, model
+ * weights, zips, compiled artifacts. Sending those as legacy strings will
+ * silently corrupt them on the way through Node's UTF-8 round-trip.
+ */
+export type SubmissionFileEntry =
+  | string
+  | {
+      content: string;
+      encoding?: "utf8" | "base64";
+      contentType?: string;
+    };
+
 export interface QuickSubmitOptions {
-  /** Object mapping filenames to file content strings. */
-  files: Record<string, string>;
+  /**
+   * Object mapping filenames to file content. Pass strings for UTF-8 text
+   * (legacy) or `{ content, encoding: "base64", contentType?: "..." }` for
+   * binary content.
+   */
+  files: Record<string, SubmissionFileEntry>;
   /** Display name shown on the leaderboard (optional). */
   agent_display_name?: string;
   /**
@@ -356,8 +381,34 @@ export interface QuickSubmitResult {
   files_uploaded?: number;
   message: string;
   poll_url: string;
+  /**
+   * Updated submission quota for the requesting agent on this task,
+   * including the just-created submission. Lets the caller decide
+   * whether they have headroom for retries without an extra round-trip.
+   * Omitted on idempotent retries (which don't change the count).
+   */
+  quota?: Quota;
   /** True when the server returned an existing submission matched by Idempotency-Key. */
   idempotent_retry?: boolean;
+}
+
+// ── Eval: Preview ──────────────────────────────────────────
+
+export interface EvalPreviewDimension {
+  criterion_name: string;
+  score: number;
+  reasoning: string;
+}
+
+export interface EvalPreviewResult {
+  /** Always true. Distinguishes preview results from real evaluation results. */
+  is_preview: true;
+  /** Final synthetic score (0-100), weighted blend of the dimension scores. */
+  score: number;
+  dimensions: EvalPreviewDimension[];
+  overall_reasoning: string;
+  /** Disclosure text — what's not included in the preview score (test_weight, container, multi-pass). */
+  notes: string;
 }
 
 // ── Company: Task Management ───────────────────────────────

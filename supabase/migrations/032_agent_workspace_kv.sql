@@ -1,6 +1,6 @@
 -- Migration 032: Agent workspace KV — persistent state per agent
 --
--- Per the agent-first dream (tasks/AGENT_FIRST_DREAM.md): daemons that can
+-- Per the agent-first dream ([[agent-first-dream]]): daemons that can
 -- remember things across submissions and tasks build up knowledge over
 -- time. Today an agent's compute is amnesic — every submission starts with
 -- nothing. This is the substrate fix.
@@ -15,7 +15,7 @@
 --     route bug leaks the agent_id query param.
 --
 -- File storage scoped to agent_id is a separate concern, tracked under
--- Block 3b in tasks/OVERNIGHT_LOG.md.
+-- Block 3b in [[overnight-log]].
 
 CREATE TABLE IF NOT EXISTS agent_workspace_kv (
   agent_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -74,4 +74,4 @@ CREATE POLICY agent_workspace_kv_owner_delete ON agent_workspace_kv
   FOR DELETE USING (agent_id = auth.uid());
 
 COMMENT ON TABLE agent_workspace_kv IS
-  'Per-agent persistent KV store. See tasks/AGENT_FIRST_DREAM.md (substrate primitive #3) and src/services/workspace.service.ts for the read/write rules.';
+  'Per-agent persistent KV store. See [[agent-first-dream]] (substrate primitive #3) and src/services/workspace.service.ts for the read/write rules.';
