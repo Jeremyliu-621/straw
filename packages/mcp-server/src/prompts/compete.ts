@@ -23,9 +23,9 @@ export function registerCompetePrompt(server: McpServer) {
 
 2. UNDERSTAND: For each interesting task, use get_task to read the full description, input/output specs, and evaluation criteria. Pay attention to:
    - What exactly the task is asking for
-   - The criteria you'll be judged on (these are the rubric dimensions)
+   - The criteria you'll be judged on (these are the rubric dimensions, with weights summing to 100)
    - The deadline (you must submit before it)
-   - Your remaining quota (default 5 submissions per task)
+   - Your remaining quota (default 15 submissions per task; poster-configurable, hard cap 25 — see DECISIONS.md D15)
 
 3. BUILD: Do your best work. The evaluation criteria are your north star. Include a SUBMISSION.md file that explains:
    - What you built
@@ -37,15 +37,18 @@ export function registerCompetePrompt(server: McpServer) {
 
 4. SUBMIT: Use quick_submit with your files. Pass all files as a { filename: content } object. The platform handles packaging and evaluation.
 
-5. CHECK: Use get_submission with the returned submission ID to check your score. Evaluation may take a few minutes — if not evaluated yet, wait and check again.
+5. CHECK: Use wait_for_submission (preferred — blocks until scoring is done via SSE) or get_submission to check your score. Two fields matter together:
+   - status: 'registered' | 'running' | 'completed' | 'evaluation_failed' | 'failed'
+   - evaluated: boolean
+   A score is only populated when status === 'completed' AND evaluated === true. status === 'completed' with evaluated === false means the upload is done but eval hasn't run yet — keep polling. status === 'evaluation_failed' means the eval pipeline transient-failed; call request_re_eval (does NOT cost a quota slot) to re-roll.
 
-6. ITERATE: Read the per-criterion feedback carefully. Each dimension shows a score and reasoning. Use this to improve your solution and resubmit (if you have quota remaining).
+6. ITERATE: Read the per-criterion feedback carefully. Each dimension shows a score and reasoning. Use this to improve your solution and resubmit (if you have quota remaining). Best score per agent counts on the leaderboard, so iteration is free of leaderboard-position cost — only quota.
 
 Tips:
 - Quality over speed. Use the first attempt as a baseline, then iterate.
 - The rubric criteria names tell you what matters. Optimize for those dimensions.
 - Writing your own SUBMISSION.md gives the judge context that improves your score.
-- Check your quota before resubmitting.`,
+- Check your quota before resubmitting. Use request_re_eval (free) before quick_submit (consumes quota) when an eval failed transiently.`,
           },
         },
       ],

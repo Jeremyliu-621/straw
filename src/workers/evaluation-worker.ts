@@ -973,7 +973,12 @@ async function handleLlmEval(
         const failureReason = `LLM evaluation failed after ${LLM_MAX_RETRIES} retries. This submission needs manual review.`;
         log.error(`MANUAL REVIEW NEEDED — LLM judge failed completely`, submissionId);
 
-        await db
+        // Capture the update result. Previously this `.update()` was awaited
+        // without checking `.error`, so a silent DB failure left submissions
+        // stuck at the prior `status=running` (set by request_re_eval) — Issue 5
+        // in research/openclaw-agent-first-test-2026-05-06.md, observed
+        // 2026-05-06 with Dog v2.
+        const { error: updateErr } = await db
           .from("submissions")
           .update({
             status: SUBMISSION_STATUS.EVALUATION_FAILED,
@@ -981,6 +986,17 @@ async function handleLlmEval(
             completed_at: new Date().toISOString(),
           })
           .eq("id", submissionId);
+
+        if (updateErr) {
+          log.error(
+            `CRITICAL: failed to write evaluation_failed status (DB error): ${updateErr.message} — submission may stay stuck at prior status`,
+            submissionId
+          );
+          // Re-throw so BullMQ records this as a job failure (instead of
+          // silent success). Operations team can scan worker logs for
+          // CRITICAL: and reconcile manually.
+          throw new Error(`Status-write failed: ${updateErr.message}`);
+        }
 
         log.error(
           `Submission marked as evaluation_failed — no score written, needs manual review`,
@@ -1563,13 +1579,32 @@ async function evaluateWithLLM(
   const prompt = buildEvaluationPrompt(task, criteria, agentOutput, buildResult);
 
   for (let attempt = 1; attempt <= LLM_MAX_RETRIES; attempt++) {
-    const result = await callLLM(prompt, submissionId);
+    // Cycle through fallback models — attempt 1 uses default, attempt 2
+    // tries the next fallback, etc. Useful when one model is overloaded.
+    const modelName = LLM_FALLBACK_MODELS[(attempt - 1) % LLM_FALLBACK_MODELS.length];
+    const { result, errorClass } = await callLLM(prompt, submissionId, modelName);
     if (result) return result;
 
+    // Fatal errors (auth, permanent 4xx): don't burn retries, fail fast.
+    if (errorClass === "fatal") {
+      log.error(
+        `LLM evaluation failed with fatal error on attempt ${attempt}/${LLM_MAX_RETRIES} — not retrying`,
+        submissionId
+      );
+      return null;
+    }
+
     if (attempt < LLM_MAX_RETRIES) {
-      const backoffMs = LLM_BACKOFF_BASE_MS * Math.pow(3, attempt - 1); // 1s, 3s, 9s
+      // Backoff: schema errors retry quickly (1s, 3s, 9s — model may
+      // produce different output next time). Transient errors (503, 429,
+      // overload) need to wait for the upstream to recover (15s, 45s).
+      const baseMs =
+        errorClass === "transient"
+          ? LLM_BACKOFF_BASE_MS * 15 // 15s, 45s, 135s
+          : LLM_BACKOFF_BASE_MS; // 1s, 3s, 9s
+      const backoffMs = baseMs * Math.pow(3, attempt - 1);
       log.warn(
-        `LLM attempt ${attempt}/${LLM_MAX_RETRIES} failed — retrying in ${backoffMs}ms`,
+        `LLM attempt ${attempt}/${LLM_MAX_RETRIES} failed (class=${errorClass}) — retrying in ${backoffMs}ms`,
         submissionId
       );
       await sleep(backoffMs);
@@ -1697,51 +1732,114 @@ Respond ONLY with valid JSON matching this exact schema:
 Do not include any text outside the JSON.`;
 }
 
-async function callLLM(prompt: string, submissionId?: string): Promise<LLMResponse | null> {
+// Gemini structured-output schema — forces the model to emit valid JSON
+// matching this shape. Eliminates the JSON-parse-failure class of bugs
+// that surfaced on 2026-05-06 (Dog v2 test, Issue 4 in
+// research/openclaw-agent-first-test-2026-05-06.md). Mirrors
+// llmResponseSchema (Zod) at runtime; if either changes, both must.
+const GEMINI_RESPONSE_SCHEMA = {
+  type: "object",
+  properties: {
+    dimensions: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          criterion_name: { type: "string" },
+          score: { type: "number" },
+          reasoning: { type: "string" },
+        },
+        required: ["criterion_name", "score", "reasoning"],
+      },
+    },
+    overall_reasoning: { type: "string" },
+  },
+  required: ["dimensions", "overall_reasoning"],
+} as const;
+
+// Fallback model order — tried in sequence on transient errors. If
+// gemini-2.5-flash is overloaded (503), we fall back to 2.0-flash on the
+// next retry attempt. Both are JSON-schema-capable.
+const LLM_FALLBACK_MODELS = [EVALUATION_LLM_MODEL, "gemini-2.0-flash"] as const;
+
+// Classify an LLM error so we know whether/how to retry.
+function classifyLLMError(err: unknown): "transient" | "schema" | "fatal" {
+  const msg = (err as Error)?.message ?? String(err);
+  // Gemini API surface: 503, 429 (quota/rate), 500
+  if (/\b(429|500|502|503|504)\b/.test(msg)) return "transient";
+  if (/quota|rate.?limit|overloaded|unavailable|currently experiencing/i.test(msg)) return "transient";
+  // Permanent: 401/403 (auth), 400 (bad request)
+  if (/\b(400|401|403|404)\b/.test(msg)) return "fatal";
+  // Unknown errors default to schema (retryable)
+  return "schema";
+}
+
+async function callLLM(
+  prompt: string,
+  submissionId?: string,
+  modelOverride?: string
+): Promise<{ result: LLMResponse | null; errorClass: "transient" | "schema" | "fatal" | null }> {
+  const modelName = modelOverride ?? EVALUATION_LLM_MODEL;
   try {
-    const model = gemini.getGenerativeModel({ model: EVALUATION_LLM_MODEL });
+    const model = gemini.getGenerativeModel({ model: modelName });
     const response = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
         maxOutputTokens: LLM_MAX_TOKENS,
         responseMimeType: "application/json",
+        // Structured-output schema — Gemini guarantees valid JSON conforming
+        // to this shape. Eliminates parse failures from malformed arrays,
+        // missing commas, etc.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        responseSchema: GEMINI_RESPONSE_SCHEMA as any,
       },
     });
 
     const text = response.response.text();
 
+    // With responseSchema, Gemini should return clean JSON without
+    // surrounding prose. Keep the regex extraction as a defense-in-depth
+    // fallback for older models or future API changes.
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-      log.error("No JSON found in LLM response", submissionId);
-      return null;
+      log.error(`No JSON found in LLM response (model=${modelName})`, submissionId);
+      return { result: null, errorClass: "schema" };
     }
 
     let parsed: unknown;
     try {
       parsed = JSON.parse(jsonMatch[0]);
     } catch (parseErr) {
-      // Attempt to sanitize common JSON issues from LLM output
+      // Attempt to sanitize common JSON issues from LLM output (rare with
+      // responseSchema, but defense-in-depth for partial responses)
       const sanitized = sanitizeJsonString(jsonMatch[0]);
       try {
         parsed = JSON.parse(sanitized);
-        log.info("JSON parse succeeded after sanitization", submissionId);
+        log.info(`JSON parse succeeded after sanitization (model=${modelName})`, submissionId);
       } catch {
-        log.error(`JSON parse failed even after sanitization: ${(parseErr as Error).message}`, submissionId);
-        return null;
+        log.error(
+          `JSON parse failed even after sanitization (model=${modelName}): ${(parseErr as Error).message}`,
+          submissionId
+        );
+        return { result: null, errorClass: "schema" };
       }
     }
 
     const validated = llmResponseSchema.safeParse(parsed);
 
     if (!validated.success) {
-      log.error(`LLM response validation failed: ${z.prettifyError(validated.error)}`, submissionId);
-      return null;
+      log.error(
+        `LLM response validation failed (model=${modelName}): ${z.prettifyError(validated.error)}`,
+        submissionId
+      );
+      return { result: null, errorClass: "schema" };
     }
 
-    return validated.data;
+    return { result: validated.data, errorClass: null };
   } catch (err) {
-    log.error("LLM call failed", submissionId, err);
-    return null;
+    const errorClass = classifyLLMError(err);
+    log.error(`LLM call failed (model=${modelName}, class=${errorClass})`, submissionId, err);
+    return { result: null, errorClass };
   }
 }
 
