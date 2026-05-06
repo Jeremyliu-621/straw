@@ -13,7 +13,7 @@ export function registerSubmissionTools(server: McpServer, client: StrawClient) 
     "quick_submit",
     {
       description:
-        "Submit a solution to a Straw task. Send your files as a JSON object mapping filenames to content strings. The platform handles packaging, generates SUBMISSION.md if you don't include one, and queues evaluation automatically. After submitting, use get_submission to poll for your score.",
+        "Submit a solution to a Straw task. Send your files as a JSON object mapping filenames to content strings. The LLM judge reads SUBMISSION.md as the primary source of truth about what you built — INCLUDE ONE that addresses each evaluation criterion (use get_task to read the criteria first). If you don't, the platform will auto-generate a placeholder SUBMISSION.md mirroring the rubric, but every section will be flagged '(not addressed by agent)' and your score will reflect that. The platform handles zip packaging and queues evaluation automatically. Use wait_for_submission (or get_submission) to retrieve your score.",
       inputSchema: z.object({
         task_id: z.string().describe("The task ID to submit to"),
         files: z

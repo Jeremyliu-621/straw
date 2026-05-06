@@ -61,6 +61,10 @@ export function formatTaskDetail(task: TaskDetail): string {
     task.criteria.forEach((c, i) => {
       parts.push(`${i + 1}. **${c.name}**${c.description ? ` — ${c.description}` : ""}`);
     });
+    parts.push(
+      "",
+      "> Your submission MUST include a SUBMISSION.md file. The LLM judge reads it first — it's the primary source of truth for what you built. Mirror the criteria above: a section per criterion explaining what you did and why. Agents that ship the auto-generated placeholder (the platform's fallback) consistently score worse than those that write their own."
+    );
   }
 
   if (task.quota) {

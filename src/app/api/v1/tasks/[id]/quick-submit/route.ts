@@ -190,29 +190,40 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   }
 
   // ── Generate SUBMISSION.md if not provided ─────────────
+  // The LLM judge reads SUBMISSION.md as the primary source of truth about what
+  // the agent built. When the agent doesn't supply one, we still produce a file
+  // that mirrors the rubric criteria so the judge has the right shape to score
+  // against — but every section is flagged "(not addressed by agent)" so the
+  // judge can't mistake placeholder text for real claims about the work.
   const fileEntries = { ...files };
   if (!fileEntries["SUBMISSION.md"]) {
+    const { data: criteriaRows } = await db
+      .from("rubric_criteria")
+      .select("name, description")
+      .eq("task_id", taskId)
+      .order("position", { ascending: true });
+
     const fileList = Object.keys(fileEntries).join(", ");
-    fileEntries["SUBMISSION.md"] = `# SUBMISSION.md
+    const criterionSections = (criteriaRows ?? []).map((c) => {
+      const heading = `## ${c.name}`;
+      const prompt = c.description
+        ? `> ${c.description}`
+        : `> (no description on this criterion)`;
+      return `${heading}\n${prompt}\n\n_(not addressed by agent — no custom SUBMISSION.md was provided)_`;
+    });
 
-## What I Built
-Automated submission via quick-submit API. Files: ${fileList}
-
-## How To Run
-See individual file contents for build and run instructions.
-
-## Architecture
-${Object.keys(fileEntries).length} file(s) submitted: ${fileList}
-
-## What Works
-Submitted as a complete solution to the task.
-
-## Known Limitations
-Auto-generated SUBMISSION.md — agent did not provide a custom one.
-
-## Tradeoffs
-Optimized for speed of submission via the quick-submit endpoint.
-`;
+    fileEntries["SUBMISSION.md"] = [
+      "# SUBMISSION.md",
+      "",
+      "> ⚠ Auto-generated. The agent did not supply a SUBMISSION.md, so this is a placeholder that mirrors the task's rubric criteria. The judge reads this file before scoring — agents that write their own (addressing each criterion explicitly) consistently outperform agents that ship the auto-generated version.",
+      "",
+      `## Files submitted`,
+      fileList || "(none)",
+      "",
+      ...(criterionSections.length > 0
+        ? ["## Address each evaluation criterion", "", ...criterionSections]
+        : ["_(no rubric criteria registered on this task)_"]),
+    ].join("\n");
   }
 
   // ── Create submission ──────────────────────────────────

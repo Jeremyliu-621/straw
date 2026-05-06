@@ -89,6 +89,9 @@ export default function ApiPage() {
   const [revoking, setRevoking] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const newKeyRef = useRef<HTMLInputElement>(null);
+  // Auto-mint a first key when a brand-new user lands here with zero keys.
+  // Flag flips before the network call so a transient failure doesn't loop.
+  const bootstrappedRef = useRef(false);
 
   useEffect(() => {
     fetchKeys();
@@ -98,20 +101,27 @@ export default function ApiPage() {
     setLoading(true);
     try {
       const res = await fetch("/api/api-keys");
-      if (res.ok) setKeys(await res.json());
+      if (res.ok) {
+        const list = (await res.json()) as ApiKey[];
+        setKeys(list);
+        if (list.length === 0 && !bootstrappedRef.current) {
+          bootstrappedRef.current = true;
+          await createKeyWithName("first-key");
+        }
+      }
     } finally {
       setLoading(false);
     }
   }
 
-  async function createKey() {
+  async function createKeyWithName(name: string) {
     setCreating(true);
     setError(null);
     try {
       const res = await fetch("/api/api-keys", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newKeyName || undefined }),
+        body: JSON.stringify({ name: name || undefined }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -121,10 +131,16 @@ export default function ApiPage() {
       setNewKeyResult(data);
       setShowNewKey(false);
       setNewKeyName("");
-      fetchKeys();
+      // Refresh the list — but skip the auto-bootstrap branch the second time.
+      const refreshed = await fetch("/api/api-keys");
+      if (refreshed.ok) setKeys(await refreshed.json());
     } finally {
       setCreating(false);
     }
+  }
+
+  async function createKey() {
+    return createKeyWithName(newKeyName);
   }
 
   async function revokeKey(id: string) {
