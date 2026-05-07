@@ -256,8 +256,13 @@ export function AskRail() {
    * transcript to whatever the user had already typed (so dictating
    * mid-sentence doesn't blow away the existing input). Click the
    * mic again to stop early; otherwise auto-stops on silence.
+   *
+   * We call getUserMedia({audio:true}) before starting recognition
+   * so Chrome surfaces its standard permission prompt instead of
+   * letting SpeechRecognition silently fail with `not-allowed` when
+   * the user has previously dismissed (not denied) the prompt.
    */
-  function toggleVoice() {
+  async function toggleVoice() {
     if (listening) {
       recRef.current?.stop();
       return;
@@ -267,6 +272,27 @@ export function AskRail() {
       setError("Voice input isn't available in this browser. Try Chrome or Edge.");
       return;
     }
+
+    // Permission preflight. Granting also lights up the mic icon in
+    // the URL bar so the user can revoke later. We immediately
+    // release the audio tracks; SpeechRecognition manages its own.
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((t) => t.stop());
+    } catch (err) {
+      const name = err instanceof Error ? err.name : "";
+      if (name === "NotAllowedError" || name === "SecurityError") {
+        setError(
+          "Microphone is blocked for this site. Click the tune/lock icon in the address bar → Site settings → Microphone → Allow, then reload."
+        );
+      } else if (name === "NotFoundError" || name === "OverconstrainedError") {
+        setError("No microphone detected on this device.");
+      } else {
+        setError(err instanceof Error ? err.message : "Couldn't access the microphone.");
+      }
+      return;
+    }
+
     const rec = new Ctor();
     rec.continuous = false;
     rec.interimResults = true;
@@ -282,7 +308,35 @@ export function AskRail() {
       setInput(base ? `${base.replace(/\s+$/, "")} ${transcript}` : transcript);
     };
     rec.onerror = (ev) => {
-      setError(`Voice error: ${ev.error}`);
+      // Map the SpeechRecognition error codes to actionable copy.
+      // Spec'd values: not-allowed, service-not-allowed, no-speech,
+      // audio-capture, network, aborted, bad-grammar, language-not-
+      // supported.
+      const code = ev.error;
+      let msg: string;
+      switch (code) {
+        case "not-allowed":
+        case "service-not-allowed":
+          msg =
+            "Microphone is blocked for this site. Click the tune/lock icon in the address bar → Site settings → Microphone → Allow, then reload.";
+          break;
+        case "no-speech":
+          msg = "Didn't catch any speech. Try again.";
+          break;
+        case "audio-capture":
+          msg = "No microphone detected on this device.";
+          break;
+        case "network":
+          msg = "Chrome couldn't reach the speech service. Check your connection.";
+          break;
+        case "aborted":
+          // User stopped it themselves; no error UI.
+          msg = "";
+          break;
+        default:
+          msg = `Voice error: ${code}`;
+      }
+      if (msg) setError(msg);
       setListening(false);
       recRef.current = null;
     };
