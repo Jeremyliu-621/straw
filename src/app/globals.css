@@ -76,6 +76,76 @@
   --accent-muted: #3f3f46;
 }
 
+/* ── Theme: warm-dim — beige/cream surfaces, warmer text. ─────────
+   Same pastels (orbs unchanged) but tints shift slightly warmer to
+   keep them legible against the cream background. */
+:root[data-theme="warm-dim"] {
+  --bg: #efe7d8;
+  --bg-subtle: #e8debf;
+  --bg-card: #f7f0e1;
+  --bg-strong: #ddd1b3;
+
+  --border: #d4c8a9;
+  --border-strong: #b9aa86;
+
+  --text: #2a1f12;
+  --text-body: #5a4d3d;
+  --text-muted: #8a7a64;
+  --text-faint: #b3a48a;
+  --inverse-bg: #2a1f12;
+  --inverse-text: #f7f0e1;
+
+  /* Tints reworked for cream base */
+  --tint-peach:    #f5dccd;
+  --tint-lavender: #e0dbef;
+  --tint-blue:     #dadfeb;
+  --tint-beige:    #e8ddc6;
+  --tint-coral:    #efd6c8;
+  --tint-sage:     #d8dec8;
+}
+
+/* ── Theme: dark — deep neutral surface. ──────────────────────────
+   Pastels stay vivid (color identity is the point). Tints flip to
+   dark-saturated versions so they read as "tint" without going white
+   on a black surface. */
+:root[data-theme="dark"] {
+  --bg: #0e0e10;
+  --bg-subtle: #18181b;
+  --bg-card: #1f1f23;
+  --bg-strong: #27272a;
+
+  --border: #2f2f33;
+  --border-strong: #3f3f46;
+
+  --text: #fafafa;
+  --text-body: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --text-faint: #71717a;
+  --inverse-bg: #fafafa;
+  --inverse-text: #0e0e10;
+
+  /* Pastels stay vivid in dark mode — color is the brand */
+  --orb-peach:    #f7d4d0;
+  --orb-lavender: #d9d4f6;
+  --orb-blue:     #cfd5e8;
+  --orb-beige:    #e0d6d0;
+  --orb-coral:    #ecd0cc;
+  --orb-sage:     #d0d7d1;
+
+  /* Tints flip to dark-saturated for use as card backgrounds */
+  --tint-peach:    #3a2925;
+  --tint-lavender: #29243a;
+  --tint-blue:     #1f2436;
+  --tint-beige:    #322c25;
+  --tint-coral:    #382925;
+  --tint-sage:     #262e28;
+
+  --accent: var(--text);
+  --accent-subtle: var(--bg-strong);
+  --accent-border: var(--border);
+  --accent-muted: var(--text-muted);
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-subtle: var(--bg-subtle);

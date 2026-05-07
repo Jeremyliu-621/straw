@@ -24,6 +24,8 @@ import {
 } from "./sidebar-context";
 import { NotificationsPanel, SEEN_STORAGE_KEY } from "./notifications-panel";
 import { useAskRail } from "./ask-rail-context";
+import { FeedbackDialog } from "./feedback-dialog";
+import { ThemePicker } from "@/components/theme/theme-picker";
 
 /**
  * Title + optional crumb resolved from the current pathname. The dashboard
@@ -75,6 +77,7 @@ export function TopBar() {
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -249,7 +252,15 @@ export function TopBar() {
 
       {/* Right — actions + avatar */}
       <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
-        <TopBarPill icon={<MessageSquare size={13} strokeWidth={2} aria-hidden="true" />} label="Feedback" href="mailto:hello@straw.wiki?subject=Straw%20feedback" />
+        {/* Temporary theme picker — Jeremy compares light / warm-dim / dark
+            and we drop this once a winner is chosen. */}
+        <ThemePicker />
+        <TopBarPillButton
+          icon={<MessageSquare size={13} strokeWidth={2} aria-hidden="true" />}
+          label="Feedback"
+          onClick={() => setFeedbackOpen(true)}
+          ariaExpanded={feedbackOpen}
+        />
         <TopBarPill icon={<BookOpen size={13} strokeWidth={2} aria-hidden="true" />} label="Docs" href="/dashboard/docs" />
         {/* Ask — toggles the global AskRail (rendered by DashboardShell). */}
         <button
@@ -469,7 +480,58 @@ export function TopBar() {
           )}
         </div>
       </div>
+      {feedbackOpen && <FeedbackDialog onClose={() => setFeedbackOpen(false)} />}
     </header>
+  );
+}
+
+function TopBarPillButton({
+  icon,
+  label,
+  onClick,
+  ariaExpanded,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+  ariaExpanded?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-expanded={ariaExpanded}
+      className="font-sans"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "5px",
+        height: "30px",
+        padding: "0 11px",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        background: "var(--bg-card)",
+        color: "var(--text-muted)",
+        fontSize: "12px",
+        fontWeight: 500,
+        whiteSpace: "nowrap",
+        cursor: "pointer",
+        transition: "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.background = "var(--bg-subtle)";
+        e.currentTarget.style.color = "var(--text)";
+        e.currentTarget.style.borderColor = "var(--text-faint)";
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.background = "var(--bg-card)";
+        e.currentTarget.style.color = "var(--text-muted)";
+        e.currentTarget.style.borderColor = "var(--border)";
+      }}
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
   );
 }
 
