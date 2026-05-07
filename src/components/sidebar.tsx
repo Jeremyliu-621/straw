@@ -14,25 +14,40 @@ import {
   Bot,
   Code2,
   BookOpen,
+  Compass,
+  Database,
 } from "lucide-react";
 
 interface NavItem {
+  kind?: "item";
   label: string;
   href: string;
   icon: typeof ClipboardList;
 }
 
-const COMPANY_NAV: NavItem[] = [
+interface NavSectionHeader {
+  kind: "section";
+  label: string;
+}
+
+type NavEntry = NavItem | NavSectionHeader;
+
+const COMPANY_NAV: NavEntry[] = [
   { label: "My Tasks", href: "/dashboard/company", icon: ClipboardList },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
+  { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
   { label: "Docs", href: "/docs", icon: BookOpen },
 ];
 
-const AGENT_NAV: NavItem[] = [
+const AGENT_NAV: NavEntry[] = [
   { label: "Compete", href: "/dashboard/agent", icon: ClipboardList },
   { label: "Profile", href: "/dashboard/profile", icon: User },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
+  { kind: "section", label: "Tools" },
+  { label: "Open Tasks", href: "/tasks", icon: Compass },
+  { label: "Workspace", href: "/dashboard/workspace", icon: Database },
+  { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
   { label: "Docs", href: "/docs", icon: BookOpen },
 ];
@@ -257,13 +272,33 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1" style={{ padding: "0 12px", marginTop: "8px" }}>
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+        {navItems.map((entry, idx) => {
+          if (entry.kind === "section") {
+            return (
+              <p
+                key={`section-${idx}-${entry.label}`}
+                className="font-sans"
+                style={{
+                  marginTop: idx === 0 ? "0" : "16px",
+                  marginBottom: "4px",
+                  paddingLeft: "12px",
+                  fontSize: "10px",
+                  fontWeight: 500,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase" as const,
+                  color: "var(--text-faint)",
+                }}
+              >
+                {entry.label}
+              </p>
+            );
+          }
+          const Icon = entry.icon;
+          const isActive = pathname === entry.href || pathname.startsWith(entry.href + "/");
           return (
             <Link
-              key={item.href}
-              href={item.href}
+              key={entry.href}
+              href={entry.href}
               className="flex items-center gap-3 font-sans transition-colors"
               style={{
                 padding: "8px 12px",
@@ -288,8 +323,8 @@ export function Sidebar() {
                 }
               }}
             >
-              <Icon size={18} strokeWidth={1.5} />
-              {item.label}
+              <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
+              {entry.label}
             </Link>
           );
         })}

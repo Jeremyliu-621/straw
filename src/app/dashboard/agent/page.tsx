@@ -8,6 +8,7 @@ import { KpiTile } from "@/components/dashboard/kpi-tile";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import type { ActivityEvent } from "@/lib/dashboard-events";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
+import { TaskCard } from "@/components/dashboard/task-card";
 import { SubmissionHeatmap } from "@/components/dashboard/submission-heatmap";
 import { WorkspaceUsage } from "@/components/dashboard/workspace-usage";
 import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
@@ -50,7 +51,8 @@ interface SubmissionSummary {
   created_at: string;
 }
 
-const TASKS_PREVIEW_LIMIT = 5;
+// 3-col grid × 2 rows fits cleanly above the "Show N more" link.
+const TASKS_PREVIEW_LIMIT = 6;
 
 export default function AgentDashboard() {
   const { data: session } = useSession();
@@ -257,11 +259,17 @@ export default function AgentDashboard() {
           />
         ) : (
           <>
-            <RowGroup>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+                gap: "12px",
+              }}
+            >
               {visibleTasks.map((task) => (
-                <RichTaskRow key={task.id} task={task} viewerRole="agent" />
+                <TaskCard key={task.id} task={task} />
               ))}
-            </RowGroup>
+            </div>
             {hiddenTaskCount > 0 && (
               <Link
                 href="/tasks"
@@ -277,7 +285,7 @@ export default function AgentDashboard() {
                 }}
               >
                 Show {hiddenTaskCount} more
-                <ArrowUpRight size={12} strokeWidth={2} />
+                <ArrowUpRight size={12} strokeWidth={2} aria-hidden="true" />
               </Link>
             )}
           </>
