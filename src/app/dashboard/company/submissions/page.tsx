@@ -168,6 +168,29 @@ export default function CompanySubmissionsPage() {
               active={statusFilter === "failed"}
               onClick={() => setStatusFilter("failed")}
             />
+            {(query || statusFilter !== "all") && (
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery("");
+                  setStatusFilter("all");
+                }}
+                className="font-sans"
+                style={{
+                  marginLeft: "4px",
+                  fontSize: "12px",
+                  color: "var(--text-muted)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "5px 8px",
+                  textDecoration: "underline",
+                  textUnderlineOffset: "3px",
+                }}
+              >
+                Clear all
+              </button>
+            )}
           </div>
 
           <div

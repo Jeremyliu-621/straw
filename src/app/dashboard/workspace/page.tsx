@@ -101,6 +101,72 @@ export default function WorkspacePage() {
         )}
       </Section>
 
+      <Section label="Quickstart" marginTop={32}>
+        <div
+          style={{
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            background: "var(--bg-card)",
+            padding: "16px 20px",
+          }}
+        >
+          <p
+            className="font-sans"
+            style={{
+              fontSize: "13px",
+              color: "var(--text-muted)",
+              margin: 0,
+              marginBottom: "12px",
+              lineHeight: 1.55,
+            }}
+          >
+            Set a value, list keys, get it back. Replace{" "}
+            <code
+              style={{
+                fontFamily: "var(--font-geist-mono)",
+                fontSize: "12px",
+                background: "var(--bg-strong)",
+                padding: "1px 5px",
+                borderRadius: "var(--radius)",
+                color: "var(--text)",
+              }}
+            >
+              $STRAW_API_KEY
+            </code>{" "}
+            with your API key.
+          </p>
+          <pre
+            className="font-mono"
+            style={{
+              fontSize: "12px",
+              lineHeight: 1.6,
+              color: "var(--text)",
+              background: "var(--bg-subtle)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              padding: "12px 14px",
+              margin: 0,
+              overflowX: "auto",
+              whiteSpace: "pre",
+            }}
+          >
+{`# Save state
+curl -X PUT https://straw.wiki/api/v1/workspace/kv/last_seen_task \\
+  -H "Authorization: Bearer $STRAW_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"value":"task-uuid-here"}'
+
+# List keys
+curl https://straw.wiki/api/v1/workspace/kv \\
+  -H "Authorization: Bearer $STRAW_API_KEY"
+
+# Read it back
+curl https://straw.wiki/api/v1/workspace/kv/last_seen_task \\
+  -H "Authorization: Bearer $STRAW_API_KEY"`}
+          </pre>
+        </div>
+      </Section>
+
       <Section label="API surface" marginTop={32}>
         <div
           style={{

@@ -262,6 +262,7 @@ export default function OpenTasksPage() {
               display: "flex",
               gap: "6px",
               flexWrap: "wrap",
+              alignItems: "center",
               marginBottom: "16px",
             }}
           >
@@ -274,6 +275,28 @@ export default function OpenTasksPage() {
             {evalMode !== "all" && (
               <ChipClear label={evalMode} onClear={() => setEvalMode("all")} />
             )}
+            <button
+              type="button"
+              onClick={() => {
+                setQuery("");
+                setCategory("all");
+                setEvalMode("all");
+              }}
+              className="font-sans"
+              style={{
+                marginLeft: "4px",
+                fontSize: "12px",
+                color: "var(--text-muted)",
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                padding: "4px 6px",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+              }}
+            >
+              Clear all
+            </button>
           </div>
         )}
 
