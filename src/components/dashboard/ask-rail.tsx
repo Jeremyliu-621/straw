@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   AlertCircle,
@@ -10,7 +10,7 @@ import {
   History,
   PanelRight,
   Mic,
-  AudioLines,
+  X,
 } from "lucide-react";
 import { useAskRail, ASK_RAIL_WIDTH, ASK_GUTTER } from "./ask-rail-context";
 
@@ -41,33 +41,208 @@ type Msg =
   | { kind: "assistant"; content: string; animated?: boolean }
   | { kind: "tool"; label: string; status: ToolStatus };
 
+interface ChatSession {
+  id: string;
+  title: string;
+  updatedAt: string;
+  messages: Msg[];
+}
+
 const STARTERS = [
   "How do I get an API key?",
   "Where can I see my submissions?",
   "How does the eval pipeline work?",
 ];
 
+const HISTORY_KEY = "straw:ask-history";
+const HISTORY_CAP = 50;
+
+function newId(): string {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return `id-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function deriveTitle(messages: Msg[]): string {
+  const firstUser = messages.find((m): m is Extract<Msg, { kind: "user" }> => m.kind === "user");
+  if (!firstUser) return "Untitled chat";
+  const t = firstUser.content.trim().split("\n")[0];
+  return t.length > 60 ? t.slice(0, 57) + "…" : t;
+}
+
+function relativeShort(iso: string): string {
+  const ms = Date.now() - new Date(iso).getTime();
+  if (Number.isNaN(ms)) return "";
+  const m = Math.floor(ms / 60000);
+  if (m < 1) return "just now";
+  if (m < 60) return `${m} minute${m === 1 ? "" : "s"} ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h} hour${h === 1 ? "" : "s"} ago`;
+  const d = Math.floor(h / 24);
+  if (d < 7) return `${d} day${d === 1 ? "" : "s"} ago`;
+  const w = Math.floor(d / 7);
+  if (w < 5) return `${w} week${w === 1 ? "" : "s"} ago`;
+  const mo = Math.floor(d / 30);
+  return `${mo} month${mo === 1 ? "" : "s"} ago`;
+}
+
+/* ─────────── Web Speech API typing (lib.dom doesn't ship the
+   webkit-prefixed constructor, so we narrow to what we actually
+   use). Falls back gracefully if the API isn't available. ─────── */
+interface SpeechResultAlt {
+  transcript: string;
+}
+interface SpeechResult {
+  isFinal: boolean;
+  0: SpeechResultAlt;
+  length: number;
+}
+interface SpeechResultList {
+  length: number;
+  [index: number]: SpeechResult;
+}
+interface SpeechRecognitionResultEvent {
+  resultIndex: number;
+  results: SpeechResultList;
+}
+interface SpeechRecognitionInstance {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+  onresult: ((e: SpeechRecognitionResultEvent) => void) | null;
+  onend: (() => void) | null;
+  onerror: ((e: { error: string }) => void) | null;
+}
+interface SpeechRecognitionCtor {
+  new (): SpeechRecognitionInstance;
+}
+function getSpeechCtor(): SpeechRecognitionCtor | null {
+  if (typeof window === "undefined") return null;
+  const w = window as Window & {
+    SpeechRecognition?: SpeechRecognitionCtor;
+    webkitSpeechRecognition?: SpeechRecognitionCtor;
+  };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
+
 export function AskRail() {
   const { open, setOpen } = useAskRail();
   const router = useRouter();
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [currentId, setCurrentId] = useState<string>(() => newId());
+  const [history, setHistory] = useState<ChatSession[]>([]);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
+  const [listening, setListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const transcriptRef = useRef<HTMLDivElement>(null);
+  const recRef = useRef<SpeechRecognitionInstance | null>(null);
+  const inputAtVoiceStart = useRef<string>("");
 
-  // Autofocus when the rail opens; reset transcript on close so a
-  // fresh open feels like "new chat", matching the screenshot.
+  // Load persisted history on mount.
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(HISTORY_KEY);
+      if (raw) {
+        const parsed: unknown = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          setHistory(parsed as ChatSession[]);
+        }
+      }
+    } catch {
+      // localStorage may be blocked; just start with an empty list.
+    }
+  }, []);
+
+  // Persist whenever history changes.
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    } catch {
+      // ignore
+    }
+  }, [history]);
+
+  /**
+   * Move the current chat (if it has any messages) into the history
+   * list under the same id. Used before swapping to a new chat or
+   * loading an old one. Idempotent: re-archiving updates in place
+   * rather than appending duplicates.
+   */
+  const archiveCurrent = useCallback(() => {
+    setHistory((prev) => {
+      if (messages.length === 0) return prev;
+      const session: ChatSession = {
+        id: currentId,
+        title: deriveTitle(messages),
+        updatedAt: new Date().toISOString(),
+        // Strip the typewriter `animated` flag so reloading an
+        // archived chat doesn't replay the animation.
+        messages: messages.map((m) =>
+          m.kind === "assistant" ? { ...m, animated: false } : m
+        ),
+      };
+      const filtered = prev.filter((s) => s.id !== currentId);
+      return [session, ...filtered].slice(0, HISTORY_CAP);
+    });
+  }, [messages, currentId]);
+
+  const startNewChat = useCallback(() => {
+    archiveCurrent();
+    setMessages([]);
+    setCurrentId(newId());
+    setError(null);
+    setInput("");
+    setHistoryOpen(false);
+    inputRef.current?.focus();
+  }, [archiveCurrent]);
+
+  const loadSession = useCallback(
+    (s: ChatSession) => {
+      archiveCurrent();
+      setMessages(s.messages.map((m) => (m.kind === "assistant" ? { ...m, animated: false } : m)));
+      setCurrentId(s.id);
+      setError(null);
+      setInput("");
+      setHistoryOpen(false);
+      inputRef.current?.focus();
+    },
+    [archiveCurrent]
+  );
+
+  const deleteSession = useCallback((id: string) => {
+    setHistory((prev) => prev.filter((s) => s.id !== id));
+  }, []);
+
+  // Autofocus when the rail opens; archive + reset on close so the
+  // next open starts a fresh chat (history persists through close).
   useEffect(() => {
     if (open) {
       inputRef.current?.focus();
     } else {
+      // Archive any in-progress chat before clearing.
+      archiveCurrent();
       setMessages([]);
+      setCurrentId(newId());
       setInput("");
       setError(null);
       setThinking(false);
+      setHistoryOpen(false);
+      // Stop any in-flight voice recognition.
+      recRef.current?.abort();
+      recRef.current = null;
+      setListening(false);
     }
+    // archiveCurrent is intentionally excluded: capturing it stale
+    // here is fine, we only care about the current snapshot at the
+    // moment of close.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   useEffect(() => {
@@ -75,6 +250,59 @@ export function AskRail() {
       transcriptRef.current.scrollTop = transcriptRef.current.scrollHeight;
     }
   }, [messages, thinking]);
+
+  /**
+   * Voice-to-text via the Web Speech API. Appends the live
+   * transcript to whatever the user had already typed (so dictating
+   * mid-sentence doesn't blow away the existing input). Click the
+   * mic again to stop early; otherwise auto-stops on silence.
+   */
+  function toggleVoice() {
+    if (listening) {
+      recRef.current?.stop();
+      return;
+    }
+    const Ctor = getSpeechCtor();
+    if (!Ctor) {
+      setError("Voice input isn't available in this browser. Try Chrome or Edge.");
+      return;
+    }
+    const rec = new Ctor();
+    rec.continuous = false;
+    rec.interimResults = true;
+    rec.lang = navigator.language || "en-US";
+    inputAtVoiceStart.current = input;
+
+    rec.onresult = (e) => {
+      let transcript = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        transcript += e.results[i][0].transcript;
+      }
+      const base = inputAtVoiceStart.current;
+      setInput(base ? `${base.replace(/\s+$/, "")} ${transcript}` : transcript);
+    };
+    rec.onerror = (ev) => {
+      setError(`Voice error: ${ev.error}`);
+      setListening(false);
+      recRef.current = null;
+    };
+    rec.onend = () => {
+      setListening(false);
+      recRef.current = null;
+      inputRef.current?.focus();
+    };
+
+    recRef.current = rec;
+    setListening(true);
+    setError(null);
+    try {
+      rec.start();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Couldn't start voice input.");
+      setListening(false);
+      recRef.current = null;
+    }
+  }
 
   async function send(text: string) {
     const trimmed = text.trim();
@@ -196,14 +424,27 @@ export function AskRail() {
           </h2>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-          <IconButton aria-label="New chat" onClick={() => setMessages([])}>
+          <IconButton aria-label="New chat" onClick={startNewChat}>
             <Plus size={15} strokeWidth={2} aria-hidden="true" />
           </IconButton>
-          <IconButton aria-label="History (coming soon)" disabled>
+          <IconButton
+            aria-label="Chat history"
+            aria-pressed={historyOpen}
+            onClick={() => setHistoryOpen((v) => !v)}
+          >
             <History size={15} strokeWidth={2} aria-hidden="true" />
           </IconButton>
         </div>
       </header>
+
+      {historyOpen && (
+        <HistoryOverlay
+          history={history}
+          onClose={() => setHistoryOpen(false)}
+          onSelect={loadSession}
+          onDelete={deleteSession}
+        />
+      )}
 
       {/* Transcript */}
       <div
@@ -336,32 +577,37 @@ export function AskRail() {
           }
         `}</style>
         <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "4px" }}>
-          <IconButton aria-label="Voice input (coming soon)" disabled>
-            <Mic size={14} strokeWidth={2} aria-hidden="true" />
+          <IconButton
+            aria-label={listening ? "Stop voice input" : "Voice input"}
+            onClick={toggleVoice}
+          >
+            <Mic
+              size={14}
+              strokeWidth={2}
+              aria-hidden="true"
+              style={{
+                color: listening ? "var(--cta)" : undefined,
+              }}
+            />
           </IconButton>
+          {/* Hidden submit button so Enter still triggers form submit
+              for keyboard users; kept off-screen rather than removed
+              entirely since native form submission needs *some* type
+              ="submit" element. */}
           <button
             type="submit"
             disabled={!input.trim() || thinking}
-            aria-label="Send"
+            aria-hidden="true"
+            tabIndex={-1}
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "26px",
-              height: "26px",
-              borderRadius: "999px",
-              background:
-                input.trim() && !thinking ? "var(--text)" : "var(--bg-strong)",
-              color:
-                input.trim() && !thinking ? "var(--inverse-text)" : "var(--text-faint)",
-              border: "none",
-              cursor: input.trim() && !thinking ? "pointer" : "not-allowed",
-              transition: "background-color 0.12s ease, color 0.12s ease",
-              flexShrink: 0,
+              position: "absolute",
+              left: "-10000px",
+              width: "1px",
+              height: "1px",
+              opacity: 0,
+              pointerEvents: "none",
             }}
-          >
-            <AudioLines size={13} strokeWidth={2} aria-hidden="true" />
-          </button>
+          />
         </div>
       </form>
     </aside>
@@ -413,6 +659,204 @@ function IconButton({
     >
       {children}
     </button>
+  );
+}
+
+function HistoryOverlay({
+  history,
+  onClose,
+  onSelect,
+  onDelete,
+}: {
+  history: ChatSession[];
+  onClose: () => void;
+  onSelect: (s: ChatSession) => void;
+  onDelete: (id: string) => void;
+}) {
+  return (
+    <div
+      role="dialog"
+      aria-label="Chat history"
+      style={{
+        position: "absolute",
+        inset: 0,
+        background: "var(--bg-subtle)",
+        zIndex: 10,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <header
+        style={{
+          padding: "12px 12px 12px 14px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderBottom: "1px solid var(--border)",
+          flexShrink: 0,
+        }}
+      >
+        <h2
+          className="font-sans"
+          style={{
+            fontSize: "13px",
+            fontWeight: 600,
+            color: "var(--text)",
+            margin: 0,
+            letterSpacing: "-0.005em",
+          }}
+        >
+          Chat History
+        </h2>
+        <IconButton aria-label="Close history" onClick={onClose}>
+          <X size={15} strokeWidth={2} aria-hidden="true" />
+        </IconButton>
+      </header>
+      <div
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "8px",
+        }}
+      >
+        {history.length === 0 ? (
+          <div style={{ padding: "32px 16px", textAlign: "center" }}>
+            <p
+              className="font-sans"
+              style={{
+                fontSize: "13px",
+                color: "var(--text-muted)",
+                margin: 0,
+              }}
+            >
+              No chats yet.
+            </p>
+          </div>
+        ) : (
+          <ul
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: "2px",
+            }}
+          >
+            {history.map((s) => (
+              <HistoryRow
+                key={s.id}
+                session={s}
+                onSelect={() => onSelect(s)}
+                onDelete={() => onDelete(s.id)}
+              />
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function HistoryRow({
+  session,
+  onSelect,
+  onDelete,
+}: {
+  session: ChatSession;
+  onSelect: () => void;
+  onDelete: () => void;
+}) {
+  const [hover, setHover] = useState(false);
+  return (
+    <li>
+      <div
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        style={{
+          position: "relative",
+          padding: "10px 12px",
+          borderRadius: "8px",
+          background: hover ? "var(--bg-strong)" : "transparent",
+          transition: "background-color 0.12s ease",
+        }}
+      >
+        <button
+          type="button"
+          onClick={onSelect}
+          className="font-sans"
+          style={{
+            width: "100%",
+            textAlign: "left",
+            background: "transparent",
+            border: "none",
+            padding: 0,
+            cursor: "pointer",
+          }}
+        >
+          <p
+            style={{
+              margin: 0,
+              fontSize: "13px",
+              fontWeight: 600,
+              color: "var(--text)",
+              lineHeight: 1.35,
+              // Reserve room for the trash button on hover so the
+              // title doesn't reflow when the icon appears.
+              paddingRight: "20px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {session.title}
+          </p>
+          <p
+            style={{
+              margin: "2px 0 0 0",
+              fontSize: "11px",
+              color: "var(--text-faint)",
+              fontVariantNumeric: "tabular-nums" as const,
+            }}
+          >
+            {relativeShort(session.updatedAt)}
+          </p>
+        </button>
+        {hover && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+            aria-label="Delete chat"
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              width: "20px",
+              height: "20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "transparent",
+              border: "none",
+              color: "var(--text-faint)",
+              cursor: "pointer",
+              borderRadius: "4px",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.color = "var(--text)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.color = "var(--text-faint)";
+            }}
+          >
+            <X size={13} strokeWidth={2} aria-hidden="true" />
+          </button>
+        )}
+      </div>
+    </li>
   );
 }
 
