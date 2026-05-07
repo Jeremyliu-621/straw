@@ -1,14 +1,15 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, Zap, ArrowUpRight, Settings } from "lucide-react";
+import { Search, Zap, ArrowUpRight, Settings, Trophy } from "lucide-react";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import type { ActivityEvent } from "@/lib/dashboard-events";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { TaskCard } from "@/components/dashboard/task-card";
+import { CompletedTaskCard } from "@/components/dashboard/completed-task-card";
 import { SubmissionHeatmap } from "@/components/dashboard/submission-heatmap";
 import { WorkspaceUsage } from "@/components/dashboard/workspace-usage";
 import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
@@ -109,6 +110,30 @@ export default function AgentDashboard() {
 
   const visibleTasks = tasks.slice(0, TASKS_PREVIEW_LIMIT);
   const hiddenTaskCount = Math.max(0, tasks.length - TASKS_PREVIEW_LIMIT);
+
+  // Completed tasks: the agent's submissions where a score landed,
+  // de-duplicated by task_id (best score per task wins, since
+  // best-score-per-agent is what the leaderboard uses anyway). Sorted
+  // newest-first by submission created_at.
+  const completedSubmissions = useMemo(() => {
+    const byTask = new Map<string, SubmissionSummary>();
+    for (const sub of submissions) {
+      if (sub.final_score == null) continue;
+      const existing = byTask.get(sub.task_id);
+      if (!existing || (sub.final_score ?? 0) > (existing.final_score ?? 0)) {
+        byTask.set(sub.task_id, sub);
+      }
+    }
+    return Array.from(byTask.values()).sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+  }, [submissions]);
+
+  const visibleCompleted = completedSubmissions.slice(0, TASKS_PREVIEW_LIMIT);
+  const hiddenCompletedCount = Math.max(
+    0,
+    completedSubmissions.length - TASKS_PREVIEW_LIMIT
+  );
 
   return (
     <div>
@@ -285,6 +310,58 @@ export default function AgentDashboard() {
                 }}
               >
                 Show {hiddenTaskCount} more
+                <ArrowUpRight size={12} strokeWidth={2} aria-hidden="true" />
+              </Link>
+            )}
+          </>
+        )}
+      </Section>
+
+      {/* Completed — tasks the agent has already competed on with a
+          score in hand. Sister to Open Tasks but for past work. Same
+          grid shape; cards lead with the score rather than the
+          deadline. */}
+      <Section
+        label="Completed"
+        count={!loading ? completedSubmissions.length : undefined}
+        marginTop={40}
+      >
+        {loading ? (
+          <RowSkeleton rows={2} />
+        ) : completedSubmissions.length === 0 ? (
+          <EmptyState
+            icon={<Trophy size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
+            title="No completed tasks yet"
+            body="Once your submissions are scored, they'll show up here with the result."
+          />
+        ) : (
+          <>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+                gap: "12px",
+              }}
+            >
+              {visibleCompleted.map((sub) => (
+                <CompletedTaskCard key={sub.id} submission={sub} />
+              ))}
+            </div>
+            {hiddenCompletedCount > 0 && (
+              <Link
+                href="/dashboard/agent#submissions"
+                className="font-sans"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  marginTop: "12px",
+                  fontSize: "13px",
+                  color: "var(--text-muted)",
+                  textDecoration: "none",
+                }}
+              >
+                Show {hiddenCompletedCount} more
                 <ArrowUpRight size={12} strokeWidth={2} aria-hidden="true" />
               </Link>
             )}
