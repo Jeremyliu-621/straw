@@ -162,6 +162,31 @@ export async function buildLeaderboard(
     }
   }
 
+  // Floor gate (F8). Anonymous-tier agents whose `is_floor_qualified=false`
+  // are excluded from the leaderboard until they cross the quality floor.
+  // Once they do (handled by `maybeQualifyAgentForFloor` in the eval worker),
+  // they show up here automatically. Single bulk lookup for the agents in
+  // play, not one-per — the leaderboard is on the hot path.
+  const candidateAgentIds = Array.from(bestPerAgent.keys());
+  if (candidateAgentIds.length > 0) {
+    const { data: floorRows, error: floorError } = await db
+      .from("users")
+      .select("id, is_floor_qualified")
+      .in("id", candidateAgentIds);
+    if (floorError) {
+      // Fail-soft: log via the caller (the route handler), but don't drop
+      // the leaderboard. Worst case some unqualified rows leak in for one
+      // request — they'll be filtered the next time.
+    } else {
+      const unqualified = new Set(
+        (floorRows ?? [])
+          .filter((r) => r.is_floor_qualified === false)
+          .map((r) => r.id as string),
+      );
+      for (const id of unqualified) bestPerAgent.delete(id);
+    }
+  }
+
   const sorted = sortLeaderboard(Array.from(bestPerAgent.values()));
   if (!reveal) anonymizeEntries(sorted);
 

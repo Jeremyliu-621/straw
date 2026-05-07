@@ -276,30 +276,115 @@ export async function claimStake(
   };
 }
 
-// ── Outbound charge creation (stub) ──────────────────────────
+// ── Outbound charge creation ─────────────────────────────────
 
 export interface CreateChargeInput {
   amountUsdc?: number;
   metadata?: Record<string, string>;
+  /** Optional override for the API base URL — useful for the sandbox or
+   *  for tests pointing at a mock server. */
+  apiBaseUrl?: string;
 }
+
+export interface CoinbaseChargeResponse {
+  id: string;
+  hosted_url: string;
+  amount_usdc: number;
+  /** The full Coinbase Commerce response, untouched. Persisted to
+   *  stake_charges.raw_charge for audit. */
+  raw: Record<string, unknown>;
+}
+
+export type CreateChargeError =
+  | { kind: "not_configured" }
+  | { kind: "api_error"; status: number; body: unknown }
+  | { kind: "internal"; detail?: string };
+
+const COINBASE_COMMERCE_API_BASE = "https://api.commerce.coinbase.com";
 
 /**
  * Create a Coinbase Commerce charge for the stake-to-bootstrap flow.
  *
- * STUB. Wires up once `COINBASE_COMMERCE_API_KEY` lands in env. The wire
- * format is documented at https://commerce.coinbase.com/docs/api/.
+ * Reads `COINBASE_COMMERCE_API_KEY` from env. Returns `not_configured` when
+ * the key is missing — the route layer handles that as a 503 so admins can
+ * configure and retry without code changes.
  *
- * Until then, callers can still seed a `stake_charges` row by hand for
- * testing the claim flow against a synthetic charge_id, and the webhook
- * verification + replay protection above are fully usable.
+ * Persists nothing here — the caller is responsible for inserting a row into
+ * `stake_charges` with the returned `id` (so the webhook handler can find it).
+ *
+ * Wire format: https://commerce.coinbase.com/docs/api/#charges
  */
 export async function createCharge(
-  _input: CreateChargeInput = {},
-): Promise<{ id: string; hosted_url: string; amount_usdc: number }> {
-  throw new Error(
-    `Coinbase Commerce charge creation not wired. ` +
-      `Need COINBASE_COMMERCE_API_KEY in env. Until then, ` +
-      `seed a stake_charges row directly for testing the claim flow. ` +
-      `Default stake amount: ${STAKE_AMOUNT_USDC} USDC.`,
-  );
+  apiKey: string | undefined,
+  input: CreateChargeInput = {},
+): Promise<{ ok: true; charge: CoinbaseChargeResponse } | { ok: false; error: CreateChargeError }> {
+  if (!apiKey) return { ok: false, error: { kind: "not_configured" } };
+
+  const amount = input.amountUsdc ?? STAKE_AMOUNT_USDC;
+  const baseUrl = input.apiBaseUrl ?? COINBASE_COMMERCE_API_BASE;
+
+  // Coinbase Commerce charge body. `pricing_type=fixed_price` + USDC means
+  // the user pays exactly `amount` USDC; no FX conversion. `metadata` is
+  // returned in the webhook so we can correlate without persisting state.
+  const body = {
+    name: "Straw stake-to-bootstrap",
+    description:
+      "Refundable stake to mint a Straw API key. Refunded on first qualifying submission (score >= 30).",
+    pricing_type: "fixed_price",
+    local_price: { amount: String(amount), currency: "USDC" },
+    metadata: input.metadata ?? {},
+  };
+
+  let res: Response;
+  try {
+    res = await fetch(`${baseUrl}/charges`, {
+      method: "POST",
+      headers: {
+        "X-CC-Api-Key": apiKey,
+        "X-CC-Version": "2018-03-22",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  } catch (err) {
+    return {
+      ok: false,
+      error: { kind: "internal", detail: `network: ${(err as Error).message}` },
+    };
+  }
+
+  if (!res.ok) {
+    let errBody: unknown = null;
+    try {
+      errBody = await res.json();
+    } catch {
+      errBody = await res.text();
+    }
+    return { ok: false, error: { kind: "api_error", status: res.status, body: errBody } };
+  }
+
+  let payload: { data?: Record<string, unknown> };
+  try {
+    payload = await res.json();
+  } catch {
+    return { ok: false, error: { kind: "internal", detail: "non-json response" } };
+  }
+
+  const data = payload.data;
+  if (!data?.id || !data?.hosted_url) {
+    return {
+      ok: false,
+      error: { kind: "internal", detail: "missing id/hosted_url in response" },
+    };
+  }
+
+  return {
+    ok: true,
+    charge: {
+      id: String(data.id),
+      hosted_url: String(data.hosted_url),
+      amount_usdc: amount,
+      raw: data,
+    },
+  };
 }
