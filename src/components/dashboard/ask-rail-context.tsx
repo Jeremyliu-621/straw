@@ -43,6 +43,6 @@ export function useAskRail(): AskRailContextValue {
 }
 
 /** Width of the rail when open. The dashboard's right inset is this + gutter on each side. */
-export const ASK_RAIL_WIDTH = 440;
+export const ASK_RAIL_WIDTH = 400;
 /** Gutter between the inset dashboard and the viewport edges (and between dashboard and rail). */
 export const ASK_GUTTER = 12;

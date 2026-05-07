@@ -158,7 +158,7 @@ export function AskRail() {
         right: `${ASK_GUTTER}px`,
         bottom: `${ASK_GUTTER}px`,
         width: `${ASK_RAIL_WIDTH}px`,
-        background: "var(--bg-card)",
+        background: "var(--bg-subtle)",
         border: "1px solid var(--border)",
         borderRadius: "12px",
         boxShadow: "0 8px 32px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)",
@@ -294,7 +294,7 @@ export function AskRail() {
           padding: "10px 10px 8px 12px",
           border: "1px solid var(--border)",
           borderRadius: "12px",
-          background: "var(--bg-subtle)",
+          background: "var(--bg-card)",
           display: "flex",
           flexDirection: "column",
           gap: "4px",
@@ -313,7 +313,7 @@ export function AskRail() {
           }}
           rows={2}
           placeholder="Ask anything…"
-          className="font-sans outline-none"
+          className="font-sans straw-ask-textarea"
           style={{
             width: "100%",
             resize: "none",
@@ -322,10 +322,20 @@ export function AskRail() {
             color: "var(--text)",
             background: "transparent",
             border: "none",
+            outline: "none",
+            boxShadow: "none",
             padding: 0,
             maxHeight: "140px",
           }}
         />
+        <style>{`
+          .straw-ask-textarea:focus,
+          .straw-ask-textarea:focus-visible {
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+          }
+        `}</style>
         <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "4px" }}>
           <IconButton aria-label="Voice input (coming soon)" disabled>
             <Mic size={14} strokeWidth={2} aria-hidden="true" />
