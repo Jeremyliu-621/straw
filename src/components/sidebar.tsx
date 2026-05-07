@@ -141,17 +141,21 @@ export function Sidebar() {
       aria-label="Primary navigation"
     >
       {/* Logo — height locked to TOPBAR_HEIGHT so its bottom border
-          aligns horizontally with the top bar's bottom border. The
-          logo itself sits vertically centred in that 52px slice. */}
+          aligns with the top bar's. Anchored to the LEFT (matches the
+          x-position of nav-row icons below it) so it doesn't "crash
+          to centre" when the rail collapses. The long-form logo
+          becomes the short square mark, but the mark itself stays at
+          the same x as the icons below. */}
       <div
         style={{
           height: `${TOPBAR_HEIGHT}px`,
-          padding: collapsed ? "0" : "0 20px",
+          padding: "0 20px",
           display: "flex",
           alignItems: "center",
-          justifyContent: collapsed ? "center" : "flex-start",
+          justifyContent: "flex-start",
           borderBottom: "1px solid var(--border)",
           flexShrink: 0,
+          width: `${SIDEBAR_WIDTH_EXPANDED}px`,
         }}
       >
         <Link
@@ -167,13 +171,17 @@ export function Sidebar() {
         </Link>
       </div>
 
-      {/* Workspace switcher — small top gap so it doesn't kiss the
-          logo's bottom border. */}
+      {/* Workspace switcher — fixed expanded layout regardless of
+          collapse state. The 240px row is naturally clipped by the
+          rail's overflow:hidden when the rail is 64px, so the icon
+          stays anchored at its expanded x-position and the label
+          fades out of view. No "crash to centre" jolt. */}
       <div
         ref={dropdownRef}
         style={{
-          padding: collapsed ? "12px 8px 0" : "12px 12px 0",
+          padding: "12px 12px 0",
           position: "relative",
+          width: `${SIDEBAR_WIDTH_EXPANDED}px`,
         }}
       >
         <button
@@ -182,7 +190,7 @@ export function Sidebar() {
           className="flex items-center gap-3 font-sans transition-colors"
           style={{
             width: "100%",
-            padding: collapsed ? "10px 12px" : "10px 12px",
+            padding: "10px 12px",
             fontSize: "14px",
             fontWeight: 500,
             color: "var(--text)",
@@ -193,7 +201,6 @@ export function Sidebar() {
             cursor: "pointer",
             textAlign: "left",
             transition: "all 0.15s ease",
-            justifyContent: collapsed ? "center" : "flex-start",
           }}
           onMouseOver={(e) => {
             if (!dropdownOpen) {
@@ -219,12 +226,25 @@ export function Sidebar() {
           >
             <ActiveIcon size={14} strokeWidth={1.5} />
           </div>
-          {!collapsed && (
-            <>
-              <span className="flex-1 truncate">{activeWorkspace.label}</span>
-              <ChevronsUpDown size={14} strokeWidth={1.5} style={{ color: "var(--text-faint)", flexShrink: 0 }} />
-            </>
-          )}
+          {/* Label + chevron stay in the markup so screen readers can
+              still read the workspace name; they're just clipped out
+              of view when the rail is 64px. */}
+          <span
+            className="flex-1 truncate"
+            style={{ opacity: collapsed ? 0 : 1, transition: "opacity 0.12s ease" }}
+          >
+            {activeWorkspace.label}
+          </span>
+          <ChevronsUpDown
+            size={14}
+            strokeWidth={1.5}
+            style={{
+              color: "var(--text-faint)",
+              flexShrink: 0,
+              opacity: collapsed ? 0 : 1,
+              transition: "opacity 0.12s ease",
+            }}
+          />
         </button>
 
         {/* Dropdown */}
@@ -311,15 +331,23 @@ export function Sidebar() {
         )}
       </div>
 
-      {/* Navigation */}
+      {/* Navigation — fixed expanded layout. Width is 240px regardless
+          of collapse state; the rail's `overflow: hidden` clips the
+          right-hand text. Icons stay anchored at x=24px from the rail
+          edge whether collapsed or expanded — no "crash to centre"
+          shift. ElevenLabs uses this exact pattern. */}
       <nav
         className="flex-1"
-        style={{ padding: collapsed ? "0 8px" : "0 12px", marginTop: "8px" }}
+        style={{
+          padding: "0 12px",
+          marginTop: "8px",
+          width: `${SIDEBAR_WIDTH_EXPANDED}px`,
+        }}
       >
         {navItems.map((entry, idx) => {
           if (entry.kind === "section") {
             // Collapsed mode: render section breaks as a thin divider
-            // instead of a text label, since labels would be clipped.
+            // (constrained to the visible 64px) instead of a text label.
             if (collapsed) {
               return (
                 <div
@@ -328,7 +356,8 @@ export function Sidebar() {
                   style={{
                     height: "1px",
                     background: "var(--border)",
-                    margin: idx === 0 ? "0 8px 8px" : "12px 8px 8px",
+                    width: `${SIDEBAR_WIDTH_COLLAPSED - 16}px`,
+                    margin: idx === 0 ? "0 4px 8px" : "12px 4px 8px",
                   }}
                 />
               );
@@ -362,7 +391,7 @@ export function Sidebar() {
               aria-label={collapsed ? entry.label : undefined}
               className="flex items-center gap-3 font-sans transition-colors"
               style={{
-                padding: collapsed ? "8px" : "8px 12px",
+                padding: "8px 12px",
                 fontSize: "14px",
                 fontWeight: isActive ? 500 : 400,
                 color: isActive ? "var(--text)" : "var(--text-muted)",
@@ -370,7 +399,6 @@ export function Sidebar() {
                 background: isActive ? "rgba(0,0,0,0.07)" : "transparent",
                 borderRadius: "var(--radius)",
                 transition: "all 0.15s ease",
-                justifyContent: collapsed ? "center" : "flex-start",
               }}
               onMouseOver={(e) => {
                 if (!isActive) {
@@ -386,7 +414,14 @@ export function Sidebar() {
               }}
             >
               <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
-              {!collapsed && entry.label}
+              <span
+                style={{
+                  opacity: collapsed ? 0 : 1,
+                  transition: "opacity 0.12s ease",
+                }}
+              >
+                {entry.label}
+              </span>
             </Link>
           );
         })}
