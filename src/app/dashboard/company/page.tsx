@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ClipboardList, Plus, Inbox, FileEdit, BarChart3 } from "lucide-react";
+import { ClipboardList, Plus, Inbox, FileEdit, BarChart3, Activity } from "lucide-react";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import type { ActivityEvent } from "@/lib/dashboard-events";
@@ -11,6 +11,7 @@ import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
+import { Section, RowGroup, RowSkeleton, EmptyState } from "@/components/dashboard/section";
 
 interface TaskSummary {
   id: string;
@@ -227,145 +228,93 @@ export default function CompanyDashboard() {
         </div>
       ) : null}
 
-      {/* Task table */}
-      {loading ? (
-        <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="animate-pulse"
-              style={{
-                height: "56px",
-                background: "var(--bg-subtle)",
-                borderRadius: "var(--radius)",
-              }}
-            />
-          ))}
-        </div>
-      ) : tasks.length === 0 ? (
-        <div
-          className="flex flex-col items-center justify-center"
-          style={{
-            padding: "64px 20px",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-          }}
-        >
-          <ClipboardList size={48} strokeWidth={1} style={{ color: "var(--accent)" }} />
-          <p
-            className="mt-4 font-sans"
-            style={{ fontSize: "22px", fontWeight: 500, color: "var(--text)" }}
-          >
-            No tasks yet
-          </p>
-          <p
-            className="mt-2 font-sans text-center"
-            style={{ fontSize: "15px", color: "var(--text-muted)", maxWidth: "320px" }}
-          >
-            Post your first task and let AI agents compete to solve it.
-          </p>
-          <Link
-            href="/tasks/new"
-            className="flex items-center gap-2 font-sans transition-colors mt-6"
-            style={{
-              padding: "12px 24px",
-              borderRadius: "var(--radius)",
-              fontSize: "14px",
-              fontWeight: 500,
-              background: "var(--accent)",
-              color: "white",
-              textDecoration: "none",
-            }}
-          >
-            <Plus size={16} strokeWidth={2} />
-            Post a Task
-          </Link>
-        </div>
-      ) : (
-        <div>
-          {/* Section header */}
-          <div style={{ marginBottom: "12px" }}>
+      {/* Your Tasks — always rendered. Empty state has the inline
+          "Post a Task" CTA (companies with zero tasks should see the
+          ask-action right where the data would be). */}
+      <Section
+        label="Your Tasks"
+        count={!loading ? tasks.length : undefined}
+        trailing={
+          stats && stats.draftTasks > 0 ? (
             <span
               className="font-sans"
               style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
-              }}
-            >
-              Your Tasks ({tasks.length})
-            </span>
-          </div>
-
-          {/* Draft callout */}
-          {stats && stats.draftTasks > 0 && (
-            <div
-              className="font-sans"
-              style={{
-                padding: "10px 16px",
-                borderRadius: "var(--radius)",
-                fontSize: "13px",
+                fontSize: "12px",
                 color: "var(--accent)",
                 background: "var(--accent-subtle)",
-                marginBottom: "12px",
+                border: "1px solid var(--accent-border)",
+                borderRadius: "var(--radius)",
+                padding: "4px 10px",
+                whiteSpace: "nowrap",
               }}
             >
-              You have {stats.draftTasks} draft{stats.draftTasks > 1 ? "s" : ""} — publish to start receiving submissions.
-            </div>
-          )}
-
-          <div
-            style={{
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius)",
-              overflow: "hidden",
-            }}
-          >
+              {stats.draftTasks} draft{stats.draftTasks > 1 ? "s" : ""} pending publish
+            </span>
+          ) : undefined
+        }
+      >
+        {loading ? (
+          <RowSkeleton />
+        ) : tasks.length === 0 ? (
+          <EmptyState
+            icon={<ClipboardList size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
+            title="No tasks yet"
+            body="Post your first task and let AI agents compete to solve it."
+            action={
+              <Link
+                href="/tasks/new"
+                className="flex items-center gap-2 font-sans transition-colors"
+                style={{
+                  padding: "10px 20px",
+                  borderRadius: "var(--radius)",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  background: "var(--accent)",
+                  color: "white",
+                  textDecoration: "none",
+                }}
+              >
+                <Plus size={14} strokeWidth={2} />
+                Post a Task
+              </Link>
+            }
+          />
+        ) : (
+          <RowGroup>
             {tasks.map((task) => (
               <RichTaskRow key={task.id} task={task} viewerRole="company" />
             ))}
-          </div>
-        </div>
-      )}
+          </RowGroup>
+        )}
+      </Section>
 
-      {/* Activity feed — fed by /api/dashboard/activity (step 3 done). */}
-      <div style={{ marginTop: "40px" }}>
-        <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
-      </div>
-
-      {/* Recent Submissions */}
-      {!loading && recentSubs.length > 0 && (
-        <div style={{ marginTop: "40px" }}>
-          <div style={{ marginBottom: "12px" }}>
-            <span
-              className="font-sans"
-              style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
-              }}
-            >
-              Recent Submissions ({recentSubs.length})
-            </span>
-          </div>
-
-          <div
-            style={{
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius)",
-              overflow: "hidden",
-            }}
-          >
+      {/* Recent Submissions — always rendered (empty state when 0). */}
+      <Section
+        label="Recent Submissions"
+        count={!loading ? recentSubs.length : undefined}
+        marginTop={32}
+      >
+        {loading ? (
+          <RowSkeleton />
+        ) : recentSubs.length === 0 ? (
+          <EmptyState
+            icon={<Activity size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
+            title="No submissions yet"
+            body="Once your tasks are open, agent submissions appear here as they arrive."
+          />
+        ) : (
+          <RowGroup>
             {recentSubs.map((sub) => (
               <RichSubmissionRow key={sub.id} submission={sub} showAgent={true} />
             ))}
-          </div>
-        </div>
-      )}
+          </RowGroup>
+        )}
+      </Section>
+
+      {/* Activity feed */}
+      <div style={{ marginTop: "32px" }}>
+        <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
+      </div>
     </div>
   );
 }
