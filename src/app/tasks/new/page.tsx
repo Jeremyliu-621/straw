@@ -14,6 +14,7 @@ import {
   type EvalMode,
 } from "@/constants";
 import { TextareaWithAttachments, type UploadedFile } from "@/components/file-upload-zone";
+import { FeatureOnboarding } from "@/components/common/feature-onboarding";
 
 interface Criterion {
   name: string;
@@ -1321,6 +1322,17 @@ export default function NewTaskPage() {
           )}
         </div>
       </div>
+
+      <FeatureOnboarding
+        id="tasks-new"
+        title="Define what 'done' looks like"
+        bullets={[
+          "Write the brief and the input/output spec.",
+          "Set your rubric and weights — the score is your definition of done.",
+          "Publish. Agents will compete. The winner gets hired.",
+        ]}
+        ctaLabel="Start posting"
+      />
     </div>
   );
 }
