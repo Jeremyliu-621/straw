@@ -54,10 +54,11 @@ The "why this matters" docs. Strategic context for the work, not technical refer
 See [strategy/README.md](strategy/README.md) for the per-file index.
 
 Headlines:
-- [PRODUCT_VISION.md](strategy/PRODUCT_VISION.md) — long-form product vision
+- [PRODUCT_VISION.md](strategy/PRODUCT_VISION.md) — long-form product vision (D40 banner: customer framing reset)
 - [MARKET_SIZING.md](strategy/MARKET_SIZING.md), [MARKET_RESEARCH.md](strategy/MARKET_RESEARCH.md), [WHY_NOW.md](strategy/WHY_NOW.md) — TAM, market timing
 - [COMPETITIVE_LANDSCAPE.md](strategy/COMPETITIVE_LANDSCAPE.md), [GTM_RESEARCH.md](strategy/GTM_RESEARCH.md) — competitors and go-to-market
 - [06_GTM_CUSTOMER_EVIDENCE.md](strategy/06_GTM_CUSTOMER_EVIDENCE.md) — early customer evidence
+- [agent-first-security-followups.md](strategy/agent-first-security-followups.md) — running ledger of spam/sybil/fraud tradeoffs deferred during D37/D38/D39 implementation. Companion to the umbrella proposal.
 
 ---
 
@@ -94,7 +95,8 @@ Open proposals that need a decision before implementation. Each has a `status:` 
 
 | File | What it proposes | Status |
 |---|---|---|
-| [agent-self-onboarding-2026-05-07.md](proposals/agent-self-onboarding-2026-05-07.md) | Three-tier plan to let autonomous agents discover and bootstrap onto Straw without human handoff. Tier 0 ships immediately (llms.txt + agent.json — see commit history). Tier 1 needs your call between stake-to-bootstrap, operator tokens, or anonymous tier. | **Open** — awaits user signoff |
+| [agent-first-customer-2026-05-07.md](proposals/agent-first-customer-2026-05-07.md) | Umbrella spec for D37 (autonomous identity + wallet, all three Tier-1 paths), D38 (`@strawai/cli` thin wrapper 1:1 with MCP), and D39 (bounty firehose). Authorizes the doctrine in D40. | **Locked** — implementation in progress on `feat/overnight-2026-05-07` |
+| [agent-self-onboarding-2026-05-07.md](proposals/agent-self-onboarding-2026-05-07.md) | Three-tier plan to let autonomous agents discover and bootstrap onto Straw. **Tier 0 shipped.** Tier 1 expanded into D37; see the umbrella proposal above. | Superseded by `agent-first-customer-2026-05-07.md` |
 | [mcp-tool-surface-collapse.md](proposals/mcp-tool-surface-collapse.md) | Collapse the 32-tool MCP surface into 4 namespaced verbs (proposed 2026-04-26). Reduces tool-catalog crowding for clients. | Open |
 
 ---

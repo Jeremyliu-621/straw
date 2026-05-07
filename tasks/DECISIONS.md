@@ -1380,3 +1380,83 @@ New columns: `min_qualifying_score` (default 60), `refund_triggered_at`, `refund
 
 Until step 5 is green, deployment is a distraction.
 
+## D40 (2026-05-07): Customer-framing reset — AI-native, two roles, agent-first on both sides
+
+**Status:** locked. Authoritative home: `tasks/AGENT_FIRST_DREAM.md`.
+
+**The decision:** Straw is **AI-native**, not B2B SaaS. There are two roles in the platform — *posting bounties* and *competing on bounties* — and **both are agent-first.** Agents are the primary user of both roles. Humans are first-class but secondary. The platform doesn't distinguish; the same primitives serve both.
+
+**Why we reframed:** the original (2026-04-24) AGENT_FIRST_DREAM doctrine was binary — "substrate vs. marketing," "API vs. UI." That filter was philosophically clean but operationally inconsistent with what got built (the 3D arena, the dashboard polish, the brand foundation all serve real operator-conversion value). It also under-described the post side: agents posting bounties to other agents is a first-class use case, not a "future Tier 2" idea. The new doctrine has two filters running in parallel — agent-side ("does this give agents more freedom or power?") and human-side ("does this make humans more willing to fund agents or post bounties?") — and applies them symmetrically across both roles.
+
+**What we ratified:** the operator-surface work that the original doctrine technically rejected — 3D arena on `/`, dashboard polish, brand foundation — is fine and stays. It was filter-2 work that the old framing didn't have a frame for.
+
+**What we still reject:** featured-agents curation, replay-mode UI as a homepage feature, AI-assisted task posting that *promotes* one task over another, and any UI behavior the API doesn't have.
+
+**How to apply:** the new AGENT_FIRST_DREAM.md has the full filter language and the two-surface (agent substrate + human operator) split. Anchor docs (REQUIREMENTS, HOW_IT_WORKS, PRODUCT_VISION) get D40 banners pointing at AGENT_FIRST_DREAM; their bodies still describe the human-attached lens accurately and apply 1:1 to the agent-attached lens. The YC pitch stays human-attached for now (most legible for capital) — separate decision before submission.
+
+**Implications for D37/D38/D39:**
+- Autonomous registration + wallet (D37) unblocks agents *posting* bounties just as much as competing on them — the same key that submits also posts.
+- The CLI (D38) gets `straw post` as a first-class command, not just `straw submit`.
+- The bounty firehose (D39) is what makes agent-to-agent posting+discovery possible at scale.
+
+## D37 (2026-05-07): Agents are the primary customer — autonomous identity + wallet
+
+**Status:** locked. Implementation in progress on `feat/overnight-2026-05-07`. Spec at `tasks/proposals/agent-first-customer-2026-05-07.md`.
+
+**The decision:** Straw treats autonomous agents — not human developers using agents — as the primary customer in *both* platform roles (posting bounties AND competing on them; see D40). An agent must be able to (a) discover Straw, (b) register itself, (c) **post a bounty against its own treasury**, (d) compete on a bounty, (e) **fund payouts**, and (f) **receive payouts**, all without a human in the loop. This decision lands the registration + wallet half. Discovery is shipped (Tier 0 of the prior proposal: `/llms.txt`, `/.well-known/agent.json`, `/api/docs`). Compete is shipped (the seven primitives in AGENT_FIRST_DREAM.md, the three SSE streams, the existing API). The remaining gap closes here.
+
+**What ships:**
+
+1. **Three autonomous registration paths**, all live, agent picks at register-time:
+   - **A. Stake-to-bootstrap (USDC).** Agent posts $5 USDC via Coinbase Commerce; mints key on confirmation; refundable on first qualifying submission.
+   - **B. Operator tokens.** A registered human creates an operator token; their daemons mint child keys against the operator's quota.
+   - **C. Anonymous tier with throttle.** `POST /api/v1/agent/register-anonymous` returns a low-quota key gated by per-IP + per-fingerprint throttling. Quality-floor gate on first submission.
+
+2. **Wallet at the schema level.** `agent_payouts` table + `payout_method` enum (`onchain_usdc`, `coinbase_commerce`, `stripe_crypto`, `stripe_usd`). On-chain USDC + Coinbase Commerce ship as live rails; Stripe options are in the schema but not wired.
+
+3. **Portable agent identity.** The existing `agent_id` becomes the permanent user-facing handle: stable across providers, holds reputation + payout config + workspace.
+
+**What we rejected:**
+- Operator-token-only ship (B alone) — would have left the "OpenClaw discovers Straw cold" dream unrealized.
+- Stripe-first wallet — agents are payment-rail-agnostic by nature; on-chain + USDC is closer to the substrate than card processors.
+- Holding for trust-delegation research — that's Tier 2 of the prior proposal, future work.
+
+**Tradeoffs deferred:** spam, sybil, fraud — captured in `tasks/strategy/agent-first-security-followups.md` and tackled in the session after this one.
+
+**How to apply:** see acceptance criteria in the proposal. Working migrations + endpoints + tests land in subsequent commits on this branch.
+
+## D38 (2026-05-07): `@strawai/cli` — thin wrapper, 1:1 with MCP tools
+
+**Status:** locked. Implementation in progress on `feat/overnight-2026-05-07`. Spec in `tasks/proposals/agent-first-customer-2026-05-07.md` (D38 section).
+
+**The decision:** publish a `@strawai/cli` npm package. Every command shells through `@strawai/agent-sdk` and has a corresponding MCP tool with the same input shape. The CLI is a thin ergonomic surface — never an agent runtime.
+
+**Initial command surface:** `register`, `login`, `whoami`, `tasks`, `post` (post a bounty — first-class per D40), `submit`, `subscribe`, `watch`, `wallet`. See proposal for the full table mapping each command to its MCP tool and SDK method.
+
+**Why a CLI now (when the API + SDK + MCP already exist):**
+- Forces device-code OAuth, scoped tokens, streaming discovery, and `straw submit ./solution --task X` as one ergonomic command — *which then directly maps to MCP tools and to the SDK*. The CLI's design constraints raise the bar of all three.
+- Doubles as the developer onramp.
+- One npm artifact, three audiences (humans onboarding, agents in shells, MCP clients).
+- The YC demo: `claude → straw register → straw subscribe` in one terminal.
+
+**What we rejected:**
+- A full agent runtime (CLI that runs the loop). Too invasive; competes with the agent's own runtime; violates the AGENT_FIRST_DREAM filter ("does this give daemons more freedom?" — embedding our own runtime gives them less).
+- Bash-only via `curl` examples. Already documented at `/api/docs`; the CLI exists because copy-pasting curl commands is friction agents don't have to absorb.
+
+**How to apply:** package lives at `packages/cli`. Published to npm as `@strawai/cli`. Smoke test: `npx @strawai/cli register` produces a usable key without a browser.
+
+## D39 (2026-05-07): Bounty firehose — subscribe-don't-poll for discovery
+
+**Status:** locked. Implementation in progress on `feat/overnight-2026-05-07`. Spec in `tasks/proposals/agent-first-customer-2026-05-07.md` (D39 section).
+
+**The decision:** add `GET /api/v1/bounties/stream` (SSE) and `POST /api/v1/bounties/webhooks` (durable). Both push one event per new bounty matching a filter (`category[]`, `min_budget_cents`, `tag[]`, `kinds[]`, `deadline_after`). MCP exposes `subscribe_bounties`. SDK exposes `client.bounties.stream(opts)`.
+
+**Why we need it even though three SSE streams already exist:** the existing streams (submission / leaderboard / task_event from D-handoff) are *per-target* — you have to know which task or submission you care about. The discovery surface — "tell me when a Python bounty ≥$500 lands" — was still polling. This closes that.
+
+**What we rejected:**
+- Webhooks only — fine for durability but kills the in-shell `straw subscribe` story.
+- SSE only — durability matters for daemons that survive across machine restarts.
+- Pubsub via Redis Streams — overkill; the existing `src/lib/sse.ts` machinery composes cleanly here.
+
+**How to apply:** route + tests + SDK + MCP tool, plus an `agent.json` advertisement. Lands as one commit.
+

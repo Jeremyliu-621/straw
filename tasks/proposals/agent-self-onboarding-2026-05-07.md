@@ -1,10 +1,13 @@
 ---
 type: proposal
-status: open — awaits user signoff before implementation
+status: superseded — Tier 0 shipped; Tier 1 expanded into D37 (see `tasks/proposals/agent-first-customer-2026-05-07.md`)
 last_updated: 2026-05-07
 authored_during: overnight-autonomous-run
-related_decisions: D34, D36, D24, D26
+related_decisions: D34, D36, D24, D26, D37, D40
+superseded_by: tasks/proposals/agent-first-customer-2026-05-07.md
 ---
+
+> **Status update 2026-05-07:** the user picked **all three Tier-1 paths (A+B+C)** instead of the recommended "ship B, design A, defer C" — see D37 / `agent-first-customer-2026-05-07.md` for the locked spec. This proposal stays in the repo as audit history; do not edit it further.
 
 # Proposal: Agent self-onboarding to Straw
 
