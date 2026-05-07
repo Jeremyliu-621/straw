@@ -56,9 +56,32 @@ Output directory: `tasks/research/agent-context-management/`
 
 [Phase 3a (visual direction doc) done — `tasks/dashboard-revamp-direction.md`. Implementation steps 1–12 are in that file as a sequenced list. Each is independently shippable; pick them up from the top in subsequent loop iterations.]
 
+### Phase 3 progress (this branch)
+
+- [x] **Step 1 — `<KpiTile>` component + tests** — done 2026-05-07 05:50.
+  - `src/components/dashboard/sparkline-points.ts` — pure helper, computes inline-SVG `<polyline>` + `<path>` (area fill) + trend direction from a numeric series. No charting library. Handles empty / single-point / all-equal / negative / out-of-window-fit / custom padding.
+  - `src/components/dashboard/sparkline-points.test.ts` — 11 cases. All pass via `npx vitest run` against the master tree's deps. Pure-function math, no jsdom needed.
+  - `src/components/dashboard/kpi-tile.tsx` — Stripe-style tile: label + value + optional unit + optional sparkline + optional PoP delta chip. Color-coded by `(direction × isGoodWhenHigher)`. Compact mode for tertiary tiles. Optional `href` for click-through.
+  - Wired into `src/app/dashboard/agent/page.tsx` — replaces the four `StatCard` instances. Sparkline currently mocked via deterministic `mockTrend()` helper until step 4 (`/api/dashboard/kpi-trends`) ships.
+  - TypeScript strict mode clean. Type-checked against master tree's `node_modules` since worktree doesn't have its own install yet.
+  - Pending: visual verification in browser. Worktree doesn't have node_modules yet — next iteration should `cd ../mop-overnight && npm install` once and run `npm run dev` from the worktree to verify.
+- [ ] **Step 2 — `<ActivityFeed>` component + mocked-data render.**
+- [ ] **Step 3 — `GET /api/dashboard/activity` endpoint** — query union over submissions, evaluation_results, deals, audit_log. Paginated. Indexes assessed for cost.
+- [ ] **Step 4 — `GET /api/dashboard/kpi-trends?metric=&days=14` endpoint** — Postgres aggregate against submissions/evaluation_results, replaces `mockTrend()` calls.
+- [ ] **Step 5 — Refactor `dashboard/agent/page.tsx`** to full new layout per direction doc.
+- [ ] **Step 6 — Refactor `dashboard/company/page.tsx`** likewise.
+- [ ] **Step 7 — `<RichTaskRow>` / `<RichSubmissionRow>`** — replace bare table rows with dense Vercel-deployment-style.
+- [ ] **Step 8 — Tile additions:** QuickActions, LeaderboardPreview, ReputationTile, WorkspaceUsage.
+- [ ] **Step 9 — Empty + loading + error states** for each new component.
+- [ ] **Step 10 — Mobile responsive pass.**
+- [ ] **Step 11 — A11y pass.**
+- [ ] **Step 12 — Polish (subtle entrance animation, focus-ring consistency).**
+
 <!-- CURSOR -->
 
-[Next iteration of /loop: start with **direction-doc step 1 — `<KpiTile>` component + tests**. The direction doc has the prop interface, behavior spec, and verification recipe. No API change required for step 1; mocked sparkline data is fine. Land it as a single commit `feat(overnight): KpiTile component`, then advance the cursor to step 2.]
+[Next iteration of /loop: **Phase 3 step 2 — `<ActivityFeed>` component**. Direction doc names the props (`ActivityEvent[]`, filter chips, relative timestamps, ~50 events max). For now use mocked event data; step 3 wires the real endpoint. Land as `feat(overnight): ActivityFeed component`, then advance to step 3.]
+
+[Worktree onboarding for next iteration: `cd ../mop-overnight && npm install` once. Then `npm run dev` from the worktree on port 3001 (master tree dev server is on 3000). Visual-verify the four KpiTiles render with sparklines on `/dashboard/agent` before moving to step 2.]
 
 ## Phase 2 — Self-onboarding agent docs / CLI / MCP
 

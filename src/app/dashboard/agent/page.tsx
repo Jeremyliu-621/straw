@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search, Zap } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
+import { KpiTile } from "@/components/dashboard/kpi-tile";
 
 interface TaskSummary {
   id: string;
@@ -121,13 +122,32 @@ export default function AgentDashboard() {
             marginBottom: "32px",
           }}
         >
-          <StatCard label="Tasks Entered" value={stats.tasksEntered} />
-          <StatCard label="Your Submissions" value={stats.mySubmissions} />
-          <StatCard label="Completed" value={stats.completedSubmissions} />
-          <StatCard
+          {/* TODO: replace mocked sparklines with real data once
+              GET /api/dashboard/kpi-trends ships (see
+              tasks/dashboard-revamp-direction.md step 4). */}
+          <KpiTile
+            label="Tasks Entered"
+            value={stats.tasksEntered}
+            sparkline={mockTrend(stats.tasksEntered, "up")}
+            href="/tasks"
+          />
+          <KpiTile
+            label="Your Submissions"
+            value={stats.mySubmissions}
+            sparkline={mockTrend(stats.mySubmissions, "up")}
+          />
+          <KpiTile
+            label="Completed"
+            value={stats.completedSubmissions}
+            sparkline={mockTrend(stats.completedSubmissions, "up")}
+          />
+          <KpiTile
             label="Avg Score"
-            value={stats.avgScore != null ? stats.avgScore.toString() : "--"}
+            value={stats.avgScore != null ? stats.avgScore.toFixed(1) : "—"}
             mono
+            sparkline={
+              stats.avgScore != null ? mockTrend(stats.avgScore, "up") : undefined
+            }
           />
         </div>
       ) : null}
@@ -362,50 +382,44 @@ export default function AgentDashboard() {
   );
 }
 
-function StatCard({
-  label,
-  value,
-  mono,
-}: {
-  label: string;
-  value: string | number;
-  mono?: boolean;
-}) {
-  return (
-    <div
-      style={{
-        padding: "20px",
-        borderRadius: "var(--radius)",
-        border: "1px solid var(--border)",
-        background: "var(--bg)",
-      }}
-    >
-      <p
-        className="font-sans"
-        style={{
-          fontSize: "11px",
-          fontWeight: 500,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase" as const,
-          color: "var(--text-muted)",
-          marginBottom: "8px",
-        }}
-      >
-        {label}
-      </p>
-      <p
-        className={mono ? "font-mono" : "font-sans"}
-        style={{
-          fontSize: "28px",
-          fontWeight: 600,
-          color: "var(--text)",
-          letterSpacing: "-0.02em",
-        }}
-      >
-        {value}
-      </p>
-    </div>
-  );
+/**
+ * Synthesize a plausible 14-point trending series from a single end value.
+ *
+ * This is intentionally a stand-in until `GET /api/dashboard/kpi-trends`
+ * ships (direction doc step 4). It's deterministic per `endValue` so the
+ * sparkline doesn't flicker between renders.
+ *
+ * For an "up" trend, generates a series ending at `endValue` with mild
+ * monotonically-non-decreasing variance. For "down", the inverse. For
+ * "flat", a flat line at `endValue`.
+ */
+function mockTrend(
+  endValue: number | null | undefined,
+  shape: "up" | "down" | "flat"
+): number[] {
+  if (endValue == null || !Number.isFinite(endValue)) return [];
+  const N = 14;
+  if (shape === "flat") return Array.from({ length: N }, () => endValue);
+
+  // Deterministic pseudo-random based on endValue
+  let seed = Math.abs(Math.floor(endValue * 31)) || 1;
+  const next = () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    return seed / 4294967296;
+  };
+
+  const span = Math.max(1, Math.abs(endValue) * 0.25);
+  const startValue = shape === "up" ? endValue - span : endValue + span;
+  const series: number[] = [];
+  for (let i = 0; i < N; i++) {
+    const t = i / (N - 1);
+    const linear = startValue + (endValue - startValue) * t;
+    const jitter = (next() - 0.5) * span * 0.15;
+    series.push(linear + jitter);
+  }
+  // Force the last point to exactly match endValue so sparkline tracks reality.
+  series[N - 1] = endValue;
+  return series;
 }
 
 const labelStyle = {
