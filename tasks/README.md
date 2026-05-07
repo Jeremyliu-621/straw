@@ -47,6 +47,20 @@ Highlights:
 
 ---
 
+## [design/](design/) — UI references and pattern library
+
+Visual references and distilled patterns for dashboard / UI work. Read when touching look-and-feel, accent colors, or empty-state design.
+
+See [design/README.md](design/README.md) for the per-file index.
+
+Headlines:
+- [design/inspiration-patterns.md](design/inspiration-patterns.md) — 10 patterns lifted from ElevenLabs (card-based home, gradient hero, mood tiles, first-visit modals…) translated into rules for Straw. Color palette + texture + animation conventions.
+- [design/elevenlabs-references/](design/elevenlabs-references/) — 11 ElevenLabs screenshots (sourced 2026-05-07).
+
+Companion: the older [dashboard-revamp-direction.md](dashboard-revamp-direction.md) at the root has the audit + KPI-tile thinking; the design/ folder has the visual direction.
+
+---
+
 ## [strategy/](strategy/) — market, GTM, product vision
 
 The "why this matters" docs. Strategic context for the work, not technical reference.
