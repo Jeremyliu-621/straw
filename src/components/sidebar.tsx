@@ -8,6 +8,7 @@ import {
   useSidebar,
   SIDEBAR_WIDTH_EXPANDED,
   SIDEBAR_WIDTH_COLLAPSED,
+  TOPBAR_HEIGHT,
 } from "@/components/dashboard/sidebar-context";
 import {
   ClipboardList,
@@ -139,17 +140,23 @@ export function Sidebar() {
       }}
       aria-label="Primary navigation"
     >
-      {/* Logo */}
+      {/* Logo — height locked to TOPBAR_HEIGHT so its bottom border
+          aligns horizontally with the top bar's bottom border. The
+          logo itself sits vertically centred in that 52px slice. */}
       <div
         style={{
-          padding: collapsed ? "20px 0 12px" : "24px 20px 12px",
+          height: `${TOPBAR_HEIGHT}px`,
+          padding: collapsed ? "0" : "0 20px",
           display: "flex",
+          alignItems: "center",
           justifyContent: collapsed ? "center" : "flex-start",
+          borderBottom: "1px solid var(--border)",
+          flexShrink: 0,
         }}
       >
         <Link
           href="/dashboard"
-          className="font-sans"
+          className="font-sans inline-flex items-center"
           style={{ fontSize: "16px", fontWeight: 600, color: "var(--text)", textDecoration: "none" }}
         >
           {collapsed ? (
@@ -160,11 +167,12 @@ export function Sidebar() {
         </Link>
       </div>
 
-      {/* Workspace switcher */}
+      {/* Workspace switcher — small top gap so it doesn't kiss the
+          logo's bottom border. */}
       <div
         ref={dropdownRef}
         style={{
-          padding: collapsed ? "0 8px" : "0 12px",
+          padding: collapsed ? "12px 8px 0" : "12px 12px 0",
           position: "relative",
         }}
       >
