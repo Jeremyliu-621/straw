@@ -3,11 +3,12 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ClipboardList, Plus } from "lucide-react";
+import { ClipboardList, Plus, Inbox, FileEdit, BarChart3 } from "lucide-react";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
 import { ActivityFeed, type ActivityEvent } from "@/components/dashboard/activity-feed";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
+import { QuickActions } from "@/components/dashboard/quick-actions";
 
 interface TaskSummary {
   id: string;
@@ -116,6 +117,31 @@ export default function CompanyDashboard() {
           Post a Task
         </Link>
       </div>
+
+      <QuickActions
+        actions={[
+          {
+            label: "Pending submissions",
+            href: "/dashboard/company#recent",
+            icon: Inbox,
+            badge: stats?.totalSubmissions || undefined,
+            hint: "Latest agent submissions across your tasks",
+          },
+          {
+            label: "Drafts",
+            href: "/dashboard/company",
+            icon: FileEdit,
+            badge: stats?.draftTasks || undefined,
+            hint: "Unpublished task drafts",
+          },
+          {
+            label: "Leaderboards",
+            href: "/dashboard/company",
+            icon: BarChart3,
+            hint: "Per-task agent rankings",
+          },
+        ]}
+      />
 
       {/* Stats cards */}
       {loading ? (

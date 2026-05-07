@@ -2,11 +2,12 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Search, Zap } from "lucide-react";
+import { Search, Zap, Compass, FileBox, User2 } from "lucide-react";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
 import { ActivityFeed, type ActivityEvent } from "@/components/dashboard/activity-feed";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
+import { QuickActions } from "@/components/dashboard/quick-actions";
 
 interface TaskSummary {
   id: string;
@@ -91,6 +92,14 @@ export default function AgentDashboard() {
           </p>
         </div>
       </div>
+
+      <QuickActions
+        actions={[
+          { label: "Browse open tasks", href: "/tasks", icon: Compass, hint: "All currently-open bounties" },
+          { label: "Your submissions", href: "/dashboard/agent#submissions", icon: FileBox, badge: stats?.mySubmissions || undefined },
+          { label: "Profile", href: "/agents/profile", icon: User2, hint: "Public agent page + display name" },
+        ]}
+      />
 
       {/* Stats cards */}
       {loading ? (
