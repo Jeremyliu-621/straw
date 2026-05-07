@@ -303,3 +303,90 @@ export const INVITATION_STATUS = {
 export type InvitationStatus = (typeof INVITATION_STATUS)[keyof typeof INVITATION_STATUS];
 export const INVITATION_MESSAGE_MAX_LENGTH = 1000;
 export const INVITATION_MAX_PER_TASK = 20;
+
+// ── Agent Identity Tiers (D37, D40) ─────────────────────────
+// Each api_key carries a tier indicating which registration path minted it.
+// Wire format mirrors the Postgres enum `api_key_tier` exactly. Source of
+// truth: supabase/migrations/040_agent_identity_and_wallet.sql.
+export const API_KEY_TIER = {
+  VERIFIED: "verified",
+  OPERATOR_CHILD: "operator_child",
+  STAKED: "staked",
+  ANONYMOUS: "anonymous",
+  DEV: "dev",
+} as const;
+export type ApiKeyTier = (typeof API_KEY_TIER)[keyof typeof API_KEY_TIER];
+
+// ── Operator Tokens (D37 path B) ────────────────────────────
+// Format: straw_op_<32 hex chars from 16 random bytes>. Distinct from api_key
+// prefix so logs and grep can tell them apart at a glance.
+export const OPERATOR_TOKEN_PREFIX = "straw_op_" as const;
+export const OPERATOR_TOKEN_RANDOM_BYTES = 16;
+export const OPERATOR_TOKEN_DEFAULT_MONTHLY_QUOTA = 1000;
+export const OPERATOR_TOKEN_MAX_PER_USER = 10;
+export const OPERATOR_TOKEN_DEFAULT_CHILD_QUOTA_PCT = 100;
+
+// ── Stake-to-Bootstrap (D37 path A) ─────────────────────────
+// $5 USDC per the proposal. Refundable on first qualifying submission per F2
+// (with the staged refund mitigation TBD).
+export const STAKE_AMOUNT_USDC = 5 as const;
+export const STAKE_QUALIFYING_SCORE_FLOOR = 30;
+
+// ── Anonymous Tier Throttle (D37 path C) ────────────────────
+// Per-IP and per-fingerprint rate limits on `register-anonymous`. Conservative
+// defaults; loosen once F1's stronger fingerprinting lands. Submissions from
+// anonymous-tier agents do not count for the leaderboard until the user
+// crosses the floor (F8).
+export const ANONYMOUS_REGISTER_PER_IP_PER_HOUR = 3;
+export const ANONYMOUS_REGISTER_PER_IP_PER_DAY = 10;
+export const ANONYMOUS_REGISTER_PER_FINGERPRINT_PER_DAY = 5;
+export const ANONYMOUS_TIER_SUBMISSIONS_BEFORE_FLOOR = 1;
+export const ANONYMOUS_TIER_FLOOR_SCORE = 30;
+
+// ── Wallet / Payout Methods (D37) ───────────────────────────
+// Wire format mirrors the Postgres enum `payout_method` exactly. On-chain USDC
+// and Coinbase Commerce are the two live rails; Stripe options are designed
+// in schema but not wired yet.
+export const PAYOUT_METHOD = {
+  ONCHAIN_USDC: "onchain_usdc",
+  COINBASE_COMMERCE: "coinbase_commerce",
+  STRIPE_CRYPTO: "stripe_crypto",
+  STRIPE_USD: "stripe_usd",
+} as const;
+export type PayoutMethod = (typeof PAYOUT_METHOD)[keyof typeof PAYOUT_METHOD];
+
+export const PAYOUT_METHOD_LIVE = [
+  PAYOUT_METHOD.ONCHAIN_USDC,
+  PAYOUT_METHOD.COINBASE_COMMERCE,
+] as const;
+
+// Default chain for on-chain USDC. Base is the Coinbase L2; cheapest USDC fees
+// for autonomous agents.
+export const PAYOUT_DEFAULT_CHAIN = "base" as const;
+export const PAYOUT_SUPPORTED_CHAINS = ["base", "optimism", "arbitrum", "mainnet"] as const;
+export type PayoutChain = (typeof PAYOUT_SUPPORTED_CHAINS)[number];
+
+// EVM address regex. Matches Postgres CHECK constraint
+// `users_payout_address_format` exactly.
+export const EVM_ADDRESS_REGEX = /^0x[0-9a-fA-F]{40}$/;
+
+// ── Payout Status (D37) ─────────────────────────────────────
+export const PAYOUT_STATUS = {
+  PENDING: "pending",
+  QUEUED: "queued",
+  SENT: "sent",
+  CONFIRMED: "confirmed",
+  FAILED: "failed",
+  REFUNDED: "refunded",
+} as const;
+export type PayoutStatus = (typeof PAYOUT_STATUS)[keyof typeof PAYOUT_STATUS];
+
+// ── Stake Charge Status (D37 path A) ────────────────────────
+export const STAKE_CHARGE_STATUS = {
+  PENDING: "pending",
+  CONFIRMED: "confirmed",
+  EXPIRED: "expired",
+  CLAIMED: "claimed",
+  REFUNDED: "refunded",
+} as const;
+export type StakeChargeStatus = (typeof STAKE_CHARGE_STATUS)[keyof typeof STAKE_CHARGE_STATUS];
