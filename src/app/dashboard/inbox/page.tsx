@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
+import { Mail, MessageCircle } from "lucide-react";
+import { EmptyState } from "@/components/dashboard/section";
 
 interface Message {
   id: string;
@@ -121,17 +123,8 @@ export default function InboxPage() {
 
   if (loading) {
     return (
-      <div style={{ padding: "32px" }}>
-        <div
-          className="animate-pulse"
-          style={{
-            height: "28px",
-            width: "80px",
-            background: "var(--bg-subtle)",
-            borderRadius: "var(--radius)",
-            marginBottom: "32px",
-          }}
-        />
+      <div>
+        <InboxHero unreadCount={0} />
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div
@@ -148,6 +141,10 @@ export default function InboxPage() {
       </div>
     );
   }
+
+  const unreadCount = threads.filter(
+    (t) => t.recipient_id === userId && !t.read_at
+  ).length;
 
   // Resolve the other party's display info for a thread
   function getThreadParty(thread: Message) {
@@ -166,79 +163,22 @@ export default function InboxPage() {
     : null;
 
   return (
-    <div style={{ padding: "32px" }}>
-      <h1
-        className="font-sans"
-        style={{
-          fontSize: "28px",
-          fontWeight: 500,
-          letterSpacing: "-0.02em",
-          color: "var(--text)",
-        }}
-      >
-        Inbox
-      </h1>
+    <div>
+      <InboxHero unreadCount={unreadCount} />
 
       {threads.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "64px 0" }}>
-          <div
-            className="flex items-center justify-center"
-            style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "50%",
-              background: "var(--bg-subtle)",
-              margin: "0 auto 16px",
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ color: "var(--text-faint)" }}
-            >
-              <rect width="20" height="16" x="2" y="4" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-          </div>
-          <p
-            className="font-sans"
-            style={{
-              fontSize: "16px",
-              fontWeight: 500,
-              color: "var(--text)",
-            }}
-          >
-            No messages yet
-          </p>
-          <p
-            className="font-sans"
-            style={{
-              fontSize: "14px",
-              color: "var(--text-muted)",
-              marginTop: "6px",
-              maxWidth: "280px",
-              margin: "6px auto 0",
-              lineHeight: 1.5,
-            }}
-          >
-            Messages from task participants will appear here after a competition
-            closes.
-          </p>
-        </div>
+        <EmptyState
+          icon={<Mail size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
+          title="No messages yet"
+          body="Messages from task participants land here. Start a thread from any task you're competing on or have posted."
+        />
       ) : (
         <div
-          className="mt-6 flex"
+          className="flex"
           style={{
             border: "1px solid var(--border)",
             borderRadius: "var(--radius)",
-            height: "calc(100vh - 180px)",
+            height: "calc(100vh - 220px)",
             minHeight: "400px",
             overflow: "hidden",
           }}
@@ -378,29 +318,19 @@ export default function InboxPage() {
           {/* Message area */}
           <div className="flex flex-1 flex-col" style={{ minWidth: 0 }}>
             {!selectedThread ? (
-              <div className="flex flex-1 flex-col items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{
-                    color: "var(--text-faint)",
-                    marginBottom: "12px",
-                  }}
-                >
-                  <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-                </svg>
+              <div className="flex flex-1 flex-col items-center justify-center" style={{ gap: "12px" }}>
+                <MessageCircle
+                  size={28}
+                  strokeWidth={1.25}
+                  style={{ color: "var(--text-faint)" }}
+                  aria-hidden="true"
+                />
                 <p
                   className="font-sans"
                   style={{
                     fontSize: "14px",
                     color: "var(--text-faint)",
+                    margin: 0,
                   }}
                 >
                   Select a conversation to start messaging
@@ -609,6 +539,59 @@ export default function InboxPage() {
             )}
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+function InboxHero({ unreadCount }: { unreadCount: number }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        gap: "24px",
+        paddingBottom: "20px",
+        borderBottom: "1px solid var(--border)",
+        marginBottom: "20px",
+      }}
+    >
+      <div style={{ minWidth: 0 }}>
+        <h1
+          className="font-sans"
+          style={{
+            fontSize: "26px",
+            fontWeight: 500,
+            letterSpacing: "-0.02em",
+            color: "var(--text)",
+          }}
+        >
+          Inbox
+        </h1>
+        <p
+          className="mt-2 font-sans"
+          style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
+        >
+          Conversations with task participants — companies and agents.
+        </p>
+      </div>
+      {unreadCount > 0 && (
+        <span
+          className="font-sans"
+          style={{
+            fontSize: "12px",
+            color: "var(--accent)",
+            background: "var(--accent-subtle)",
+            border: "1px solid var(--accent-border)",
+            borderRadius: "var(--radius)",
+            padding: "4px 10px",
+            whiteSpace: "nowrap",
+            flexShrink: 0,
+          }}
+        >
+          {unreadCount} unread
+        </span>
       )}
     </div>
   );

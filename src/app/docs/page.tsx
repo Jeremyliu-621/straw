@@ -21,7 +21,7 @@ export default function DocsPage() {
   );
 }
 
-function DocsContent() {
+export function DocsContent() {
   return (
     <article className="docs-article">
       <style>{`

@@ -49,7 +49,7 @@ const COMPANY_NAV: NavEntry[] = [
   { label: "Deals", href: "/dashboard/company/deals", icon: Handshake },
   { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
-  { label: "Docs", href: "/docs", icon: BookOpen },
+  { label: "Docs", href: "/dashboard/docs", icon: BookOpen },
 ];
 
 const AGENT_NAV: NavEntry[] = [
@@ -63,7 +63,7 @@ const AGENT_NAV: NavEntry[] = [
   { label: "Workspace", href: "/dashboard/workspace", icon: Database },
   { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
-  { label: "Docs", href: "/docs", icon: BookOpen },
+  { label: "Docs", href: "/dashboard/docs", icon: BookOpen },
 ];
 
 interface WorkspaceOption {
