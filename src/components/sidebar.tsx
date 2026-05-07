@@ -19,6 +19,10 @@ import {
   Trophy,
   Home,
   Swords,
+  Plus,
+  ListChecks,
+  FileBox,
+  Handshake,
 } from "lucide-react";
 
 interface NavItem {
@@ -36,8 +40,13 @@ interface NavSectionHeader {
 type NavEntry = NavItem | NavSectionHeader;
 
 const COMPANY_NAV: NavEntry[] = [
-  { label: "My Tasks", href: "/dashboard/company", icon: ClipboardList },
+  { label: "Home", href: "/dashboard/company", icon: Home },
+  { label: "Post Task", href: "/tasks/new", icon: Plus },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
+  { kind: "section", label: "Tools" },
+  { label: "Tasks", href: "/dashboard/company/tasks", icon: ListChecks },
+  { label: "Submissions", href: "/dashboard/company/submissions", icon: FileBox },
+  { label: "Deals", href: "/dashboard/company/deals", icon: Handshake },
   { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
   { label: "Docs", href: "/docs", icon: BookOpen },
