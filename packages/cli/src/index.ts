@@ -12,6 +12,8 @@
  * versions.
  */
 
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join, relative, extname } from "node:path";
 import { apiFetch } from "./api";
 import { loadConfig, saveConfig, clearConfig, DEFAULT_BASE_URL } from "./config";
 
@@ -81,7 +83,7 @@ function fail(message: string, exitCode = 1): never {
 
 // ── Commands ─────────────────────────────────────────────────
 
-const HELP = `${bold("straw")} — Straw CLI ${dim("(v0.1.0)")}
+const HELP = `${bold("straw")} — Straw CLI ${dim("(v0.2.0)")}
 
 Usage: straw <command> [args]
 
@@ -94,8 +96,12 @@ Identity & wallet:
   ${bold("wallet")} set --address <0x..> --method onchain_usdc [--chain base]
                           Update the wallet payout config.
 
-Coming soon (v0.2.0+):
-  tasks, post, submit, subscribe, watch — all 1:1 with MCP tools.
+Discover & compete:
+  ${bold("tasks")}                    List open bounties.   --category=python --min-budget=500
+  ${bold("tasks")} <id>               Show one bounty in detail.
+  ${bold("subscribe")}                Tail the bounty firehose (D39).   --category=python --min-budget=500
+  ${bold("submit")} <task-id>         Submit the current dir as a solution. --dir ./my-solution
+  ${bold("watch")} <submission-id>    Block until a submission is scored, print result.
 
 Global flags:
   --api-key <key>          Override the saved API key for this call.
@@ -325,6 +331,274 @@ async function cmdWallet(args: ParsedArgs): Promise<void> {
   fail(`Unknown wallet subcommand: ${sub}. Try \`straw wallet get\` or \`straw wallet set\`.`);
 }
 
+// ── Tasks (v0.2.0) ───────────────────────────────────────────
+
+interface TaskSummary {
+  id: string;
+  title: string;
+  category: string;
+  status: string;
+  budget_cents: number;
+  deadline: string;
+  eval_mode?: string | null;
+}
+
+async function cmdTasks(args: ParsedArgs): Promise<void> {
+  const id = args.subcommand ?? args.positional[0];
+  if (id) {
+    const result = await apiFetch<unknown>(`/api/v1/tasks/${id}`, { method: "GET" });
+    if (!result.ok) fail(`tasks ${id} failed (HTTP ${result.status})`);
+    if (args.flags.json) {
+      printJson(result.body);
+      return;
+    }
+    const t = result.body as TaskSummary & {
+      description: string | null;
+      criteria: Array<{ name: string; weight: number; description: string | null }>;
+    };
+    console.log(bold(t.title));
+    console.log(`  id:        ${t.id}`);
+    console.log(`  category:  ${t.category}`);
+    console.log(`  status:    ${t.status}`);
+    console.log(`  budget:    $${(t.budget_cents / 100).toLocaleString()}`);
+    console.log(`  deadline:  ${t.deadline}`);
+    if (t.criteria?.length) {
+      console.log("");
+      console.log(bold("Rubric"));
+      for (const c of t.criteria) {
+        console.log(`  • ${c.name} (${c.weight}%)${c.description ? ` — ${c.description}` : ""}`);
+      }
+    }
+    if (t.description) {
+      console.log("");
+      console.log(bold("Description"));
+      console.log(t.description);
+    }
+    return;
+  }
+
+  // List form. Pass through filter flags.
+  const params = new URLSearchParams();
+  if (args.flags.category) params.set("category", String(args.flags.category));
+  if (args.flags["min-budget"]) {
+    params.set(
+      "min_budget_cents",
+      String(Math.round(Number(args.flags["min-budget"]) * 100)),
+    );
+  }
+  const path = `/api/v1/tasks${params.toString() ? "?" + params.toString() : ""}`;
+  const result = await apiFetch<{ data?: TaskSummary[]; open?: TaskSummary[] }>(
+    path,
+    { method: "GET" },
+  );
+  if (!result.ok) fail(`tasks failed (HTTP ${result.status})`);
+  const tasks = result.body.data ?? result.body.open ?? [];
+  if (args.flags.json) {
+    printJson(tasks);
+    return;
+  }
+  if (tasks.length === 0) {
+    console.log(yellow("No open tasks match your filter."));
+    return;
+  }
+  console.log(`${tasks.length} open task${tasks.length === 1 ? "" : "s"}:`);
+  for (const t of tasks) {
+    console.log(
+      `  ${dim(t.id.slice(0, 8))}  ${t.category.padEnd(20)}  $${(t.budget_cents / 100).toLocaleString().padStart(8)}  ${t.title}`,
+    );
+  }
+  console.log(dim(`\nDetail: straw tasks <id>`));
+}
+
+// ── Submit (v0.2.0) ──────────────────────────────────────────
+//
+// Reads files from a directory, base64-encodes binaries, posts to
+// /api/v1/tasks/<id>/quick-submit. Server side handles zipping and
+// SUBMISSION.md normalization.
+
+const BINARY_EXTENSIONS = new Set([
+  ".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf", ".zip", ".gz", ".tar",
+  ".onnx", ".pt", ".bin", ".safetensors", ".wasm", ".woff", ".woff2", ".ico",
+]);
+
+function collectFiles(root: string, base = root): Array<{ path: string; entry: unknown }> {
+  const out: Array<{ path: string; entry: unknown }> = [];
+  const entries = readdirSync(root);
+  for (const name of entries) {
+    if (name === "node_modules" || name === ".git" || name.startsWith(".")) continue;
+    const full = join(root, name);
+    const st = statSync(full);
+    if (st.isDirectory()) {
+      out.push(...collectFiles(full, base));
+    } else if (st.isFile()) {
+      const rel = relative(base, full).replace(/\\/g, "/");
+      const ext = extname(name).toLowerCase();
+      if (BINARY_EXTENSIONS.has(ext)) {
+        out.push({
+          path: rel,
+          entry: {
+            content: readFileSync(full).toString("base64"),
+            encoding: "base64",
+          },
+        });
+      } else {
+        out.push({ path: rel, entry: readFileSync(full, "utf8") });
+      }
+    }
+  }
+  return out;
+}
+
+async function cmdSubmit(args: ParsedArgs): Promise<void> {
+  const taskId = args.positional[0];
+  if (!taskId) fail("Usage: straw submit <task-id> [--dir ./]");
+  const dir = (args.flags.dir as string | undefined) ?? ".";
+  const collected = collectFiles(dir);
+  if (collected.length === 0) fail(`No files found under ${dir}.`);
+
+  const files: Record<string, unknown> = {};
+  for (const { path, entry } of collected) files[path] = entry;
+
+  if (!Object.keys(files).some((p) => p.toLowerCase() === "submission.md")) {
+    console.error(
+      yellow(
+        `Warning: no SUBMISSION.md found. The platform will auto-generate a placeholder mirroring the rubric, with every section flagged as "(not addressed by agent)" — your score will reflect that. Add a SUBMISSION.md with your reasoning to do better.`,
+      ),
+    );
+  }
+
+  const result = await apiFetch<unknown>(`/api/v1/tasks/${taskId}/quick-submit`, {
+    method: "POST",
+    body: JSON.stringify({ files }),
+  });
+  if (!result.ok) {
+    if (args.flags.json) printJson(result);
+    else
+      fail(
+        `submit failed (HTTP ${result.status}): ${
+          (result.body as { error?: { message?: string } })?.error?.message ?? "unknown"
+        }`,
+      );
+    return;
+  }
+  if (args.flags.json) {
+    printJson(result.body);
+    return;
+  }
+  const r = result.body as { id: string; quota?: { used: number; limit: number } };
+  console.log(green(`✓ Submitted (${Object.keys(files).length} file${Object.keys(files).length === 1 ? "" : "s"})`));
+  console.log(`  submission_id: ${r.id}`);
+  if (r.quota) console.log(`  quota:         ${r.quota.used}/${r.quota.limit}`);
+  console.log("");
+  console.log(`Block on score: straw watch ${r.id}`);
+}
+
+// ── Watch (v0.2.0) ───────────────────────────────────────────
+
+async function cmdWatch(args: ParsedArgs): Promise<void> {
+  const submissionId = args.positional[0];
+  if (!submissionId) fail("Usage: straw watch <submission-id>");
+
+  // For simplicity, poll get_submission rather than open SSE — fewer moving
+  // parts in the CLI. Daemons that want push semantics use the SDK.
+  const cfg = loadConfig();
+  if (!cfg.api_key) fail("Not logged in. Run `straw register` or `straw login <api_key>` first.");
+
+  const start = Date.now();
+  const TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
+  const POLL_MS = 5000;
+
+  process.stdout.write("Waiting for score");
+  while (Date.now() - start < TIMEOUT_MS) {
+    const result = await apiFetch<{
+      evaluated?: boolean;
+      scores?: { final_score?: number };
+      status?: string;
+    }>(`/api/v1/submissions/${submissionId}`, { method: "GET" });
+    if (!result.ok) {
+      console.log("");
+      fail(`watch failed (HTTP ${result.status})`);
+    }
+    if (result.body.evaluated && result.body.scores?.final_score !== undefined) {
+      console.log("");
+      console.log(green(`✓ Scored: ${result.body.scores.final_score}/100`));
+      if (args.flags.json) printJson(result.body);
+      return;
+    }
+    process.stdout.write(".");
+    await new Promise((r) => setTimeout(r, POLL_MS));
+  }
+  console.log("");
+  fail(`Timeout after ${TIMEOUT_MS / 1000}s without a score landing.`);
+}
+
+// ── Subscribe (v0.2.0 — D39 firehose) ────────────────────────
+
+async function cmdSubscribe(args: ParsedArgs): Promise<void> {
+  const cfg = loadConfig();
+  if (!cfg.api_key) fail("Not logged in. Run `straw register` or `straw login <api_key>` first.");
+
+  const params = new URLSearchParams();
+  const cats = args.flags.category;
+  if (typeof cats === "string") {
+    for (const c of cats.split(",")) params.append("category", c.trim());
+  }
+  if (args.flags["min-budget"]) {
+    params.set(
+      "min_budget_cents",
+      String(Math.round(Number(args.flags["min-budget"]) * 100)),
+    );
+  }
+  const path = `/api/v1/bounties/stream${params.toString() ? "?" + params.toString() : ""}`;
+
+  const url = `${cfg.base_url.replace(/\/$/, "")}${path}`;
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${cfg.api_key}`, Accept: "text/event-stream" },
+  });
+  if (!res.ok || !res.body) {
+    fail(`subscribe open failed (HTTP ${res.status})`);
+  }
+
+  console.log(dim("Listening for new bounties (Ctrl-C to stop)…"));
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let count = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let nl;
+    while ((nl = buffer.indexOf("\n\n")) !== -1) {
+      const block = buffer.slice(0, nl);
+      buffer = buffer.slice(nl + 2);
+      const lines = block.split("\n");
+      const event = lines.find((l) => l.startsWith("event:"))?.slice(6).trim();
+      const data = lines.find((l) => l.startsWith("data:"))?.slice(5).trim();
+      if (!data) continue;
+      try {
+        const parsed = JSON.parse(data);
+        if (event === "connected") {
+          console.log(green("✓ Connected. Filter:"), JSON.stringify(parsed.filter));
+        } else if (event === "bounty") {
+          count++;
+          if (args.flags.json) {
+            printJson(parsed);
+          } else {
+            console.log(
+              `${dim("[" + new Date().toISOString() + "]")} ${parsed.category.padEnd(15)} $${(parsed.budget_cents / 100).toLocaleString().padStart(7)}  ${bold(parsed.title)} ${dim("(" + parsed.id + ")")}`,
+            );
+          }
+        }
+      } catch {
+        // ignore parse errors on heartbeats etc.
+      }
+    }
+  }
+  console.log(dim(`Stream closed. ${count} bount${count === 1 ? "y" : "ies"} seen.`));
+}
+
 // ── Dispatch ─────────────────────────────────────────────────
 
 async function main(): Promise<void> {
@@ -356,10 +630,18 @@ async function main(): Promise<void> {
       return cmdWhoami(args);
     case "wallet":
       return cmdWallet(args);
+    case "tasks":
+      return cmdTasks(args);
+    case "submit":
+      return cmdSubmit(args);
+    case "watch":
+      return cmdWatch(args);
+    case "subscribe":
+      return cmdSubscribe(args);
     case "version":
     case "--version":
     case "-v":
-      console.log("0.1.0");
+      console.log("0.2.0");
       return;
     default:
       console.error(red(`Unknown command: ${args.command}`));

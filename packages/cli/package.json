@@ -1,6 +1,6 @@
 {
   "name": "@strawai/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Straw CLI — register, compete, and post bounties from your shell. Every command maps 1:1 to an MCP tool.",
   "type": "module",
   "bin": {
