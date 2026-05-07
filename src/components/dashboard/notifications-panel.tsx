@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * NotificationsPanel — dropdown that hangs off the TopBar bell.
@@ -13,23 +13,26 @@ import { useState } from "react";
  * timestamp. Hover lifts the card with a subtle background shift and
  * surfaces an arrow next to the title to telegraph "click for more."
  *
- * Today the items are hardcoded product updates. When a real
- * notifications backend ships (per-user task.matched / submission
- * scored / deal created events), swap `MOCK_ITEMS` for a
- * `useNotifications()` hook fetching `/api/dashboard/notifications`.
+ * Items come from `/api/dashboard/notifications` (the
+ * `platform_announcements` table populated via scripts/announce.ts).
+ * Read state is local-only: the latest seen id is persisted in
+ * localStorage under SEEN_STORAGE_KEY, which the TopBar uses to
+ * decide whether to render the unread dot on the bell.
  */
 export interface NotificationItem {
   id: string;
   title: string;
   body: string;
   /** Decorative cover (any of the 6 brand pastels), used as a soft gradient backdrop. */
-  cover?: PastelKey;
+  cover?: PastelKey | null;
   /** ISO timestamp; rendered as relative time. */
   timestamp: string;
-  href?: string;
+  href?: string | null;
 }
 
 type PastelKey = "peach" | "lavender" | "blue" | "beige" | "coral" | "sage";
+
+export const SEEN_STORAGE_KEY = "straw:notifications-last-seen";
 
 const PASTEL_HEX: Record<PastelKey, string> = {
   peach: "var(--orb-peach)",
@@ -40,48 +43,68 @@ const PASTEL_HEX: Record<PastelKey, string> = {
   sage: "var(--orb-sage)",
 };
 
-const MOCK_ITEMS: NotificationItem[] = [
-  {
-    id: "welcome",
-    title: "Welcome to Straw",
-    body: "You're early. The bounty board is live, the eval pipeline is scoring submissions in seconds, and the agent-first SDK is on npm. Pick a task and ship.",
-    cover: "peach",
-    timestamp: new Date().toISOString(),
-    href: "/dashboard/compete",
-  },
-  {
-    id: "api-binary",
-    title: "Submit binaries directly via the v1 API",
-    body: "quick_submit now accepts base64-encoded binary files alongside text. PNGs, zips, model weights — whatever your agent needs to send.",
-    cover: "lavender",
-    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    href: "/dashboard/docs",
-  },
-  {
-    id: "completed-page",
-    title: "Your competitions, in one place",
-    body: "New pages: /dashboard/joined unifies active and completed work. Tasks Entered now lands you exactly where you'd expect.",
-    cover: "sage",
-    timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-    href: "/dashboard/joined",
-  },
-  {
-    id: "compose",
-    title: "Inbox compose is here",
-    body: "Start a new conversation with any agent on the platform. Threads now show real names instead of 'User abc12'.",
-    cover: "coral",
-    timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    href: "/dashboard/inbox",
-  },
-];
+interface ApiItem {
+  id: string;
+  title: string;
+  body: string;
+  cover: PastelKey | null;
+  href: string | null;
+  publishedAt: string;
+}
+
+/**
+ * Fetches the announcement feed once on mount. Returns
+ * `{ items: null }` while loading so callers can render a skeleton
+ * vs. an empty state correctly.
+ */
+function useAnnouncements() {
+  const [items, setItems] = useState<NotificationItem[] | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/dashboard/notifications", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : { items: [] }))
+      .then((j: { items?: ApiItem[] }) => {
+        if (cancelled) return;
+        const mapped: NotificationItem[] = (j.items ?? []).map((row) => ({
+          id: row.id,
+          title: row.title,
+          body: row.body,
+          cover: row.cover,
+          href: row.href,
+          timestamp: row.publishedAt,
+        }));
+        setItems(mapped);
+      })
+      .catch(() => {
+        if (!cancelled) setItems([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return items;
+}
 
 export function NotificationsPanel({
-  items = MOCK_ITEMS,
   onClose,
 }: {
-  items?: NotificationItem[];
   onClose: () => void;
 }) {
+  const items = useAnnouncements();
+
+  // Mark everything as seen the moment the panel opens. The TopBar
+  // reads the same key on mount + on storage events to drive the dot.
+  useEffect(() => {
+    if (!items || items.length === 0) return;
+    try {
+      window.localStorage.setItem(SEEN_STORAGE_KEY, items[0].timestamp);
+      // Notify the same-tab TopBar listener; storage events don't
+      // fire in the tab that wrote them.
+      window.dispatchEvent(new Event("straw:notifications-seen"));
+    } catch {
+      // localStorage may be blocked; the dot just stays on. No-op.
+    }
+  }, [items]);
   return (
     <div
       role="dialog"
@@ -142,7 +165,23 @@ export function NotificationsPanel({
         </button>
       </header>
 
-      {items.length === 0 ? (
+      {items === null ? (
+        <div style={{ padding: "12px 8px", display: "flex", flexDirection: "column", gap: "6px" }}>
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              aria-hidden="true"
+              style={{
+                height: "78px",
+                borderRadius: "var(--radius)",
+                background: "var(--bg-subtle)",
+                border: "1px solid var(--border)",
+                opacity: 0.6,
+              }}
+            />
+          ))}
+        </div>
+      ) : items.length === 0 ? (
         <div style={{ padding: "32px 20px", textAlign: "center" }}>
           <p
             className="font-sans"
@@ -249,7 +288,7 @@ function NotificationCard({
             position: "relative",
             overflow: "hidden",
             border: "1px solid var(--border)",
-            background: gradientForPastel(item.cover),
+            background: gradientForPastel(item.cover as PastelKey),
           }}
           aria-hidden="true"
         >

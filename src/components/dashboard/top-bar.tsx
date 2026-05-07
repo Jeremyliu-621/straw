@@ -22,7 +22,7 @@ import {
   SIDEBAR_WIDTH_EXPANDED,
   SIDEBAR_WIDTH_COLLAPSED,
 } from "./sidebar-context";
-import { NotificationsPanel } from "./notifications-panel";
+import { NotificationsPanel, SEEN_STORAGE_KEY } from "./notifications-panel";
 
 /**
  * Title + optional crumb resolved from the current pathname. The dashboard
@@ -74,6 +74,7 @@ export function TopBar() {
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
 
@@ -94,6 +95,52 @@ export function TopBar() {
       return () => document.removeEventListener("mousedown", onClickOutside);
     }
   }, [menuOpen, notifOpen]);
+
+  /**
+   * Drives the unread-dot on the bell. Compares the latest
+   * `published_at` from `/api/dashboard/notifications` against the
+   * `last-seen` timestamp persisted by the panel. Re-runs when the
+   * panel writes (via the same-tab "straw:notifications-seen" event)
+   * or on `storage` events from other tabs.
+   */
+  useEffect(() => {
+    let cancelled = false;
+    async function recompute() {
+      try {
+        const res = await fetch("/api/dashboard/notifications", { cache: "no-store" });
+        if (!res.ok) return;
+        const j: { items?: Array<{ publishedAt: string }> } = await res.json();
+        const latest = j.items?.[0]?.publishedAt ?? null;
+        if (!latest) {
+          if (!cancelled) setHasUnread(false);
+          return;
+        }
+        let seen: string | null = null;
+        try {
+          seen = window.localStorage.getItem(SEEN_STORAGE_KEY);
+        } catch {
+          seen = null;
+        }
+        if (!cancelled) setHasUnread(!seen || seen < latest);
+      } catch {
+        // Network failure — leave dot in its current state.
+      }
+    }
+    recompute();
+    function onSeen() {
+      setHasUnread(false);
+    }
+    function onStorage(e: StorageEvent) {
+      if (e.key === SEEN_STORAGE_KEY) recompute();
+    }
+    window.addEventListener("straw:notifications-seen", onSeen);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("straw:notifications-seen", onSeen);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
 
   const initials = (session?.user?.name ?? "U")
     .split(" ")
@@ -232,20 +279,21 @@ export function TopBar() {
             }}
           >
             <Bell size={13} strokeWidth={2} aria-hidden="true" />
-            {/* Unread dot — purely decorative until real notifs land */}
-            <span
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                top: "5px",
-                right: "5px",
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "var(--cta)",
-                border: "1px solid var(--bg-card)",
-              }}
-            />
+            {hasUnread && (
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  top: "5px",
+                  right: "5px",
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "var(--cta)",
+                  border: "1px solid var(--bg-card)",
+                }}
+              />
+            )}
           </button>
           {notifOpen && (
             <NotificationsPanel onClose={() => setNotifOpen(false)} />

@@ -130,6 +130,36 @@ So you can use: `vercel env ls`, `vercel env pull`, `vercel deploy --prod --yes`
 
 ---
 
+## Shipping rituals
+
+When you ship something user-visible — a new dashboard page, a new API capability, a meaningful UX change, anything Jeremy would point at and say "look what landed" — **publish a `platform_announcement` for it as part of the same commit batch.** That announcement appears in the TopBar bell dropdown ("What's new") for every signed-in user, so the dashboard stays self-explaining as the surface evolves.
+
+Run:
+
+```bash
+npm run announce -- \
+  --id <slug> \
+  --title "<short headline>" \
+  --body "<one to two sentences, plain English>" \
+  --cover <peach|lavender|blue|beige|coral|sage> \
+  --href <where the user should land if they click>
+```
+
+Rules:
+
+- **`--id` is the primary key.** Use a stable lowercase slug (e.g. `binary-uploads`, `joined-page`, `inbox-compose`). Re-running with the same id is an idempotent upsert — fix typos, refine copy, no extra row.
+- **Cover is optional but encouraged for big ships.** Pick the brand pastel that thematically fits (peach = welcome/warmth, sage = organization/clarity, coral = attention/CTA, lavender = API/builder, blue = trust/data, beige = neutral/utility).
+- **`--href` should point at the actual destination**, not at the docs about the thing. If you ship `/dashboard/joined`, link to `/dashboard/joined`.
+- **Don't announce internal-only changes** — refactors, type-fixes, dependency bumps, anything that doesn't change what a user can see or do. The feed is for product news, not commit logs.
+- **Keep `--body` to 1–2 sentences, max ~200 chars.** It renders in a 380px-wide card; long copy looks broken.
+- **`npm run announce -- --list`** shows everything currently published. **`npm run announce -- --delete <id>`** removes one.
+
+What this writes to: the `platform_announcements` table (migration 041), exposed via `GET /api/dashboard/notifications` and rendered by `src/components/dashboard/notifications-panel.tsx`. There is no admin UI; the script is the admin UI.
+
+If migration 041 hasn't run on your local DB yet (the table is missing), run `npm run seed:announcements` after the migration applies — that bootstraps the four founding entries.
+
+---
+
 ## Engineering Preferences
 
 - **DRY aggressively.** If you're writing the same logic twice, extract it.

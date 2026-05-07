@@ -14,6 +14,8 @@
     "webhook-worker": "tsx src/workers/webhook-worker.ts",
     "seed": "tsx src/db/seed.ts",
     "seed:competition": "tsx scripts/seed-competition.ts",
+    "seed:announcements": "tsx scripts/seed-announcements.ts",
+    "announce": "tsx scripts/announce.ts",
     "format": "prettier --write ."
   },
   "dependencies": {
