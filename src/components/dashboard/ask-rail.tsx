@@ -8,7 +8,7 @@ import {
   Loader2,
   Plus,
   History,
-  PanelRight,
+  PanelLeft,
   Mic,
   X,
 } from "lucide-react";
@@ -461,9 +461,34 @@ export function AskRail() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <IconButton aria-label="Close ask rail" onClick={() => setOpen(false)}>
-            <PanelRight size={15} strokeWidth={2} aria-hidden="true" />
-          </IconButton>
+          {/* Bare icon (no container) — matches the dashboard sidebar
+              collapse glyph style; click closes the rail. */}
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Close ask rail"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "20px",
+              height: "20px",
+              padding: 0,
+              background: "transparent",
+              border: "none",
+              color: "var(--text-muted)",
+              cursor: "pointer",
+              transition: "color 0.12s ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.color = "var(--text)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.color = "var(--text-muted)";
+            }}
+          >
+            <PanelLeft size={16} strokeWidth={2} aria-hidden="true" />
+          </button>
           <h2
             className="font-sans"
             style={{
