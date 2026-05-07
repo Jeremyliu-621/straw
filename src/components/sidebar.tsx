@@ -23,6 +23,7 @@ import {
   ListChecks,
   FileBox,
   Handshake,
+  Settings,
 } from "lucide-react";
 
 interface NavItem {
@@ -42,6 +43,7 @@ type NavEntry = NavItem | NavSectionHeader;
 const COMPANY_NAV: NavEntry[] = [
   { label: "Home", href: "/dashboard/company", icon: Home },
   { label: "Post Task", href: "/tasks/new", icon: Plus },
+  { label: "Profile", href: "/dashboard/profile", icon: User },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { kind: "section", label: "Tools" },
   { label: "Tasks", href: "/dashboard/company/tasks", icon: ListChecks },
@@ -50,6 +52,7 @@ const COMPANY_NAV: NavEntry[] = [
   { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
   { label: "Docs", href: "/dashboard/docs", icon: BookOpen },
+  { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 const AGENT_NAV: NavEntry[] = [
@@ -64,6 +67,7 @@ const AGENT_NAV: NavEntry[] = [
   { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
   { label: "Docs", href: "/dashboard/docs", icon: BookOpen },
+  { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 interface WorkspaceOption {

@@ -9,6 +9,7 @@ import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import type { ActivityEvent } from "@/lib/dashboard-events";
 import { TaskCard } from "@/components/dashboard/task-card";
 import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
+import { SubmissionHeatmap } from "@/components/dashboard/submission-heatmap";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
 import { Section, RowGroup, RowSkeleton, EmptyState } from "@/components/dashboard/section";
@@ -236,6 +237,16 @@ export default function CompanyDashboard() {
           />
         </div>
       ) : null}
+
+      {/* Submissions Activity — heatmap of submissions received across
+          your tasks, by day. Companion to the agent dashboard's heatmap;
+          the same visual signal but the data source flips (agent's own
+          submissions vs. submissions to your tasks). */}
+      {!loading && recentSubs.length > 0 && (
+        <Section label="Submissions Activity" count={recentSubs.length}>
+          <SubmissionHeatmap submissions={recentSubs} />
+        </Section>
+      )}
 
       {/* Active Tasks — TaskCard grid for visual parity with the agent
           dashboard. One-row preview; "View all" routes to the full
