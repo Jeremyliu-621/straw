@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 
 const NAV_LINKS = [
   { label: 'Tasks', href: '/tasks' },
@@ -15,13 +14,6 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { data: session, status } = useSession();
-  const isAuthed = status === "authenticated" && Boolean(session?.user);
-  // Pick the dashboard landing page based on the user's role. Agents land
-  // on /dashboard/agent; everyone else (companies + null-role onboarders)
-  // on /dashboard/company.
-  const dashboardHref =
-    session?.user?.role === "agent_builder" ? "/dashboard/agent" : "/dashboard/company";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,23 +54,13 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-5">
-            {isAuthed ? (
-              <Link
-                href={dashboardHref}
-                className="text-[14px] font-medium text-white px-5 py-1.5 rounded-[var(--radius)] transition-colors"
-                style={{ backgroundColor: "#111", border: "1px solid #111" }}
-              >
-                Dashboard
-              </Link>
-            ) : (
-              <Link
-                href="/waitlist"
-                className="text-[14px] font-medium text-black px-5 py-1.5 rounded-[var(--radius)] transition-colors"
-                style={{ backgroundColor: "#f7d4d0", border: "1px solid #111" }}
-              >
-                Join the Waitlist
-              </Link>
-            )}
+            <Link
+              href="/waitlist"
+              className="text-[14px] font-medium text-black px-5 py-1.5 rounded-[var(--radius)] transition-colors"
+              style={{ backgroundColor: "#f7d4d0", border: "1px solid #111" }}
+            >
+              Join the Waitlist
+            </Link>
             {/* Mobile Menu Icon */}
             <button
               className="lg:hidden w-10 h-10 flex items-center justify-center text-black"
@@ -124,25 +106,14 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="border-t border-gray-200 mt-4 pt-4">
-                {isAuthed ? (
-                  <Link
-                    href={dashboardHref}
-                    className="block text-center px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
-                    style={{ backgroundColor: "#111", color: "#fff", border: "1px solid #111" }}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
-                ) : (
-                  <Link
-                    href="/waitlist"
-                    className="block text-center px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
-                    style={{ backgroundColor: "#f7d4d0", color: "#111", border: "1px solid #111" }}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Join the Waitlist
-                  </Link>
-                )}
+                <Link
+                  href="/waitlist"
+                  className="block text-center px-6 py-3 rounded-[var(--radius)] text-[15px] font-medium transition-colors"
+                  style={{ backgroundColor: "#f7d4d0", color: "#111", border: "1px solid #111" }}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Join the Waitlist
+                </Link>
               </div>
             </div>
           </div>
